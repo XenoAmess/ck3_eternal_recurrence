@@ -1872,12 +1872,14 @@ def _cross_stage_proof(
         )
         == cold_frame.get("event_definition_key")
         == EXPECTED_EVENT_KEY,
-        "same_calculated_event_id": seed_frame.get("calculated_event_id")
-        == cold_frame.get("calculated_event_id")
-        and _signed_int32(seed_frame.get("calculated_event_id")),
-        "same_runtime_stats_ordinal": seed_frame.get("runtime_stats_ordinal")
-        == cold_frame.get("runtime_stats_ordinal")
-        and _signed_int32(seed_frame.get("runtime_stats_ordinal")),
+        "process_local_calculated_event_ids_are_signed_int32": _signed_int32(
+            seed_frame.get("calculated_event_id")
+        )
+        and _signed_int32(cold_frame.get("calculated_event_id")),
+        "process_local_runtime_stats_ordinals_are_signed_int32": _signed_int32(
+            seed_frame.get("runtime_stats_ordinal")
+        )
+        and _signed_int32(cold_frame.get("runtime_stats_ordinal")),
         "same_materialized_options": seed_frame.get("options")
         == cold_frame.get("options")
         and _expected_option_shape(cold_frame.get("options")),
@@ -1914,8 +1916,14 @@ def _cross_stage_proof(
         "current_event_instance_id": seed.get("event_instance_id"),
         "date_raw": seed_snapshot.get("date_raw"),
         "event_definition_key": cold_frame.get("event_definition_key"),
-        "calculated_event_id": cold_frame.get("calculated_event_id"),
-        "runtime_stats_ordinal": cold_frame.get("runtime_stats_ordinal"),
+        "seed_calculated_event_id": seed_frame.get("calculated_event_id"),
+        "cold_calculated_event_id": cold_frame.get("calculated_event_id"),
+        "seed_runtime_stats_ordinal": seed_frame.get(
+            "runtime_stats_ordinal"
+        ),
+        "cold_runtime_stats_ordinal": cold_frame.get(
+            "runtime_stats_ordinal"
+        ),
         "checks": checks,
         "ok": all(checks.values()),
     }
@@ -2154,7 +2162,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "cold_has_no_mod_bridge"
         )
         is True,
-        "canonical_key_and_two_signed_definition_integers": all(
+        "canonical_key_and_stage_local_registration_metadata": all(
             context_checks.get(key) is True
             for key in (
                 "canonical_definition_key",
@@ -2162,8 +2170,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 "runtime_stats_ordinal_is_signed_int32",
             )
         )
-        and cross_checks.get("same_calculated_event_id") is True
-        and cross_checks.get("same_runtime_stats_ordinal") is True,
+        and cross_checks.get(
+            "process_local_calculated_event_ids_are_signed_int32"
+        )
+        is True
+        and cross_checks.get(
+            "process_local_runtime_stats_ordinals_are_signed_int32"
+        )
+        is True,
         "rendered_native_presentation_exact": all(
             context_checks.get(key) is True
             for key in (
@@ -2292,8 +2306,18 @@ def main() -> int:
                 "ok": payload.get("ok"),
                 "event_instance_id": cross.get("current_event_instance_id"),
                 "event_definition_key": cross.get("event_definition_key"),
-                "calculated_event_id": cross.get("calculated_event_id"),
-                "runtime_stats_ordinal": cross.get("runtime_stats_ordinal"),
+                "seed_calculated_event_id": cross.get(
+                    "seed_calculated_event_id"
+                ),
+                "cold_calculated_event_id": cross.get(
+                    "cold_calculated_event_id"
+                ),
+                "seed_runtime_stats_ordinal": cross.get(
+                    "seed_runtime_stats_ordinal"
+                ),
+                "cold_runtime_stats_ordinal": cross.get(
+                    "cold_runtime_stats_ordinal"
+                ),
                 "output": str(output),
                 "error": payload.get("error"),
             },

@@ -58,7 +58,7 @@ callsite；真正的 required-trigger callsite 是 `0x16CC94E -> 0x334C510`。�
 
 | exact-build 字段/入口 | 已闭合语义 |
 |---|---|
-| `EventData+0x08/+0x0C/+0x10` | calculated event ID / runtime statistics ordinal / canonical namespaced event key MSVC string；stable identity 不能用 ordinal 替代 |
+| `EventData+0x08/+0x0C/+0x10` | process/playset-local calculated event ID / process/playset-local runtime statistics ordinal / canonical namespaced event key MSVC string；跨进程 stable identity 只能使用 key，不能用前两个数值替代 |
 | `CEventOption+0x10/+0x18/+0x1C` | dynamic option-name 候选向量的 data/capacity/count；resolver 为 `0x33E7FF0` |
 | `CEventOption+0x28` | `ai_chance` scripted-modifier 子对象；其 base 在绝对 `+0x88`，constructor 默认 raw `100000`（语义 `1`） |
 | `CEventOption+0x90` | required validity trigger；`0x16CC94E` 调 `0x334C510` |
@@ -498,7 +498,7 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 至少发布：
 
 - instance ID、stable interaction key、actor/recipient/intermediary/secondary actors 与 target identity；
-- stable key 必须来自 definition canonical string/hash；同时可给 runtime ordinal，但明确它不稳定；
+- stable key 必须来自 definition canonical string/hash；同时可给 calculated ID/runtime ordinal，但明确两者只在当前 loaded process 内稳定；
 - target 发布 `present/raw_type_index/type_key/typed_identity_status/typed_identity`；未支持的 generic scope payload
   返回 typed unavailable，而不是把已经闭合的 type key 也降级成 unknown 或填入空 ID；
 - 每个 send option 发布 native index、numeric flag identifier、selected、shown/valid evaluation status 与 exclusive；

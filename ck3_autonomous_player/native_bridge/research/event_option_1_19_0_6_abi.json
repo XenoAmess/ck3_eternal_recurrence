@@ -485,12 +485,12 @@
   },
   "EventData": {
     "database_vector": "+0x40 EventData** data, +0x4C int32 count in the duplicate-validator receiver",
-    "calculated_event_id": "+0x08 int32; duplicate validator compares this field to detect duplicate IDs",
-    "runtime_stats_ordinal": "+0x0C int32; separately observed runtime statistics ordinal, not stable identity",
+    "calculated_event_id": "+0x08 int32; duplicate validator compares this field inside the currently loaded EventData database; live Attempt3 proves it is process/playset-local and not stable across reloads with different playsets",
+    "runtime_stats_ordinal": "+0x0C int32; process/playset-local runtime statistics ordinal, not stable identity",
     "canonical_namespaced_key": "+0x10 MSVC string; first formatter argument in the exact duplicate-event-ID diagnostic",
     "source_location": "+0x240; resolved for the diagnostic's new/previous location arguments",
     "current_event_definition_path": "SPlayerEventData/ActiveEvent+0x1B0 -> EventData*",
-    "read_rule": "After matching the full current ActiveEvent instance ID, validate +0x10 MSVC bounds and double-observe the EventData pointer, +0x08, +0x0C and +0x10 before publishing; never expose the pointer."
+    "read_rule": "After matching the full current ActiveEvent instance ID, validate +0x10 MSVC bounds and double-observe the EventData pointer, +0x08, +0x0C and +0x10 before publishing; require the numeric fields to stay fixed only within the loaded process/frame, use +0x10 for cross-process definition identity, and never expose the pointer."
   },
   "CEventOption": {
     "size": "0x480",

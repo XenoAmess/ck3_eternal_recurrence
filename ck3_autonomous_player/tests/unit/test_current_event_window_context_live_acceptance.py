@@ -142,6 +142,7 @@ def _frame() -> dict[str, object]:
 
 def _query_result(sequence: int, frame: object | None = None) -> dict[str, object]:
     selected = copy.deepcopy(frame if frame is not None else _frame())
+    selected_event_id = selected["current_event_instance_id"]
     result = {
         "step": HARNESS.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
         "accepted": True,
@@ -170,7 +171,7 @@ def _query_result(sequence: int, frame: object | None = None) -> dict[str, objec
             "native_revision": NATIVE_REVISION,
             "date_raw": DATE_RAW,
             "expected_revision": PUBLIC_REVISION,
-            "event_instance_id": EVENT_ID,
+            "event_instance_id": selected_event_id,
         },
     }
     for key in (
@@ -193,11 +194,48 @@ def _query_result(sequence: int, frame: object | None = None) -> dict[str, objec
     return result
 
 
+def _cross_stage_inputs() -> tuple[dict[str, object], dict[str, object]]:
+    seed = {
+        "ok": True,
+        "event_instance_id": EVENT_ID,
+        "seed_query": _query_result(1),
+        "stable_pre_save_snapshot": _snapshot(),
+        "same_process_proof": {"bridge_pid": 101},
+        "fixture_projection_proof": {
+            "content_manifest": {
+                "sha256": HARNESS.FIXTURE_CONTENT_MANIFEST_SHA256
+            }
+        },
+        "mutation_boundary": {"ok": True},
+    }
+    cold = {
+        "ok": True,
+        "mod_bridge_loaded": False,
+        "same_process_proof": {"bridge_pid": 202},
+        "fixture_projection_proof": {
+            "content_manifest": {
+                "sha256": HARNESS.FIXTURE_CONTENT_MANIFEST_SHA256
+            },
+            "checks": {"mod_bridge_presence_matches_stage": True},
+        },
+        "sequence": {
+            "current_event_instance_id": EVENT_ID,
+            "date_raw": DATE_RAW,
+            "first_query": _query_result(2),
+            "mutation_boundary": {"ok": True},
+        },
+    }
+    return seed, cold
+
+
 class _FakeQueryService:
-    def __init__(self, *, drift: bool = False) -> None:
+    def __init__(
+        self, *, drift: bool = False, numeric_drift: bool = False
+    ) -> None:
         self.calls: list[tuple[int, int]] = []
         self._queries = 0
         self._drift = drift
+        self._numeric_drift = numeric_drift
 
     def snapshot(self) -> dict[str, object]:
         value = _snapshot()
@@ -210,7 +248,10 @@ class _FakeQueryService:
     ) -> dict[str, object]:
         self.calls.append((event_id, expected_revision))
         self._queries += 1
-        return _query_result(9 + self._queries)
+        frame = _frame()
+        if self._numeric_drift and self._queries >= 2:
+            frame["calculated_event_id"] += 1
+        return _query_result(9 + self._queries, frame)
 
 
 def _make_projection_spec(root: Path, *, seed_stage: bool) -> SimpleNamespace:
@@ -502,37 +543,23 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
         self.assertFalse(result["ok"])
         self.assertFalse(result["checks"]["between_same_paused_binding"])
 
+    def test_double_query_rejects_process_local_numeric_drift(self) -> None:
+        result = HARNESS._run_double_query_sequence(
+            _FakeQueryService(numeric_drift=True),
+            expected_event_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+        )
+
+        self.assertFalse(result["ok"])
+        self.assertTrue(result["checks"]["first_context_valid"])
+        self.assertTrue(result["checks"]["second_context_valid"])
+        self.assertFalse(
+            result["checks"]["adjacent_context_frames_strictly_equal"]
+        )
+        self.assertFalse(result["checks"]["only_query_sequence_changed"])
+
     def test_cross_stage_binds_full_identity_definition_and_fixture_bytes(self) -> None:
-        seed = {
-            "ok": True,
-            "event_instance_id": EVENT_ID,
-            "seed_query": _query_result(1),
-            "stable_pre_save_snapshot": _snapshot(),
-            "same_process_proof": {"bridge_pid": 101},
-            "fixture_projection_proof": {
-                "content_manifest": {
-                    "sha256": HARNESS.FIXTURE_CONTENT_MANIFEST_SHA256
-                }
-            },
-            "mutation_boundary": {"ok": True},
-        }
-        cold = {
-            "ok": True,
-            "mod_bridge_loaded": False,
-            "same_process_proof": {"bridge_pid": 202},
-            "fixture_projection_proof": {
-                "content_manifest": {
-                    "sha256": HARNESS.FIXTURE_CONTENT_MANIFEST_SHA256
-                },
-                "checks": {"mod_bridge_presence_matches_stage": True},
-            },
-            "sequence": {
-                "current_event_instance_id": EVENT_ID,
-                "date_raw": DATE_RAW,
-                "first_query": _query_result(2),
-                "mutation_boundary": {"ok": True},
-            },
-        }
+        seed, cold = _cross_stage_inputs()
 
         proof = HARNESS._cross_stage_proof(seed, cold, {"ok": True})
         self.assertTrue(proof["ok"])
@@ -545,7 +572,73 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
                 seed, indicator_drift, {"ok": True}
             )["ok"]
         )
+
         cold["same_process_proof"]["bridge_pid"] = 101
+        self.assertFalse(
+            HARNESS._cross_stage_proof(seed, cold, {"ok": True})["ok"]
+        )
+
+    def test_cross_stage_accepts_process_local_numeric_changes(self) -> None:
+        seed, cold = _cross_stage_inputs()
+        process_local_frame = _frame()
+        process_local_frame["calculated_event_id"] += 420_000
+        process_local_frame["runtime_stats_ordinal"] += 892
+        cold["sequence"]["first_query"] = _query_result(
+            2, process_local_frame
+        )
+        process_local_proof = HARNESS._cross_stage_proof(
+            seed, cold, {"ok": True}
+        )
+
+        self.assertTrue(process_local_proof["ok"])
+        self.assertNotEqual(
+            process_local_proof["seed_calculated_event_id"],
+            process_local_proof["cold_calculated_event_id"],
+        )
+        self.assertNotEqual(
+            process_local_proof["seed_runtime_stats_ordinal"],
+            process_local_proof["cold_runtime_stats_ordinal"],
+        )
+
+    def test_cross_stage_rejects_invalid_process_local_numeric_metadata(self) -> None:
+        for stage, field, value in (
+            (stage, field, value)
+            for stage in ("seed", "cold")
+            for field in ("calculated_event_id", "runtime_stats_ordinal")
+            for value in (True, None, 2**31)
+        ):
+            with self.subTest(stage=stage, field=field, value=value):
+                seed, cold = _cross_stage_inputs()
+                frame = _frame()
+                frame[field] = value
+                if stage == "seed":
+                    seed["seed_query"] = _query_result(1, frame)
+                else:
+                    cold["sequence"]["first_query"] = _query_result(
+                        2, frame
+                    )
+                self.assertFalse(
+                    HARNESS._cross_stage_proof(
+                        seed, cold, {"ok": True}
+                    )["ok"]
+                )
+
+    def test_cross_stage_rejects_key_or_full_instance_drift(self) -> None:
+        seed, cold = _cross_stage_inputs()
+        key_frame = _frame()
+        key_frame["event_definition_key"] = "wrong.1"
+        cold["sequence"]["first_query"] = _query_result(2, key_frame)
+        self.assertFalse(
+            HARNESS._cross_stage_proof(seed, cold, {"ok": True})["ok"]
+        )
+
+        seed, cold = _cross_stage_inputs()
+        instance_frame = _frame()
+        instance_frame["current_event_instance_id"] = EVENT_ID + 1
+        cold["sequence"]["current_event_instance_id"] = EVENT_ID + 1
+        cold["sequence"]["first_query"] = _query_result(
+            2, instance_frame
+        )
         self.assertFalse(
             HARNESS._cross_stage_proof(seed, cold, {"ok": True})["ok"]
         )

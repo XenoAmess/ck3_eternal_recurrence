@@ -172,6 +172,11 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `is_cancel_option=yes` 的 row 发布 `cancel=false` 并使验收 RED。exact parser 证明
   `timeout_option/show_unlock_reason/is_cancel_option` 分别位于 `+0x478/+0x479/+0x47A`；修法是按 materialized
   authored native index 找回 `EventData` 的 `CEventOption*` 并读 `+0x47A`，不能把夹具预期降为 false。
+- **事件 calculated ID/runtime ordinal 不能跨不同 playset 比较相等**：Attempt3 在相同 save、完整 event instance ID、
+  canonical definition key 与逐字节相同 fixture 下，seed（额外加载 mod bridge）观测到 `4360001/6773`，cold
+  production+fixture 观测到 `3940001/5881`；两次 cold 同帧查询各自稳定。两字段是当前 loaded definition table 的
+  process/playset-local 数值。跨进程 fixture identity 应绑定 canonical key、definition bytes、完整 active instance 与
+  save/date；数值字段只要求各进程内是 signed int32 且同帧不漂移。
 - **大厅规则选择持久化在 `player\game_rules\presets.txt` 的 `LastAppliedRules` 块**，新开局重放它；
   改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。

@@ -186,7 +186,8 @@ payload、visitor 的八个 exact effect identifier、trait/scheme 稳定身份�
 - current event instance ID：**静态确认**，`ActiveEvent+0x1BC == CEventWindowData+0x00`。
 - stable event definition key：**静态确认**。current `SPlayerEventData/ActiveEvent+0x1B0 -> EventData*`；
   `EventData+0x10` 是 canonical namespaced MSVC string，`+0x08 int32` 是 calculated event ID，`+0x0C int32`
-  是另行观察到的 runtime statistics ordinal，不能互相替代。
+  是另行观察到的 runtime statistics ordinal，不能互相替代。Attempt3 进一步实证两个数值都随 process/playset 的
+  loaded definition table 改变；它们只能用于同一加载进程内的双观察，不能充当跨进程 definition identity。
 - stable root scope identity：**unknown**。
 - stable saved-scope identities：**unknown**。
 - event deadline/days remaining 的稳定 typed ABI：**unknown**。
@@ -205,7 +206,8 @@ DB `+0x40/+0x4C` 的 `EventData*`，比较每项 `+0x08`；重复时把 `+0x10` 
 `4AAF5D5EE7438AFD1786185DD49F9D669957EB4268607261ECB272CCC3C9D71A`）。application-main callback 在复制窗口前后
 各读取一次完整 `ActiveEvent*`、`EventData*`、instance ID、两个原生 `int32` 与 bounded nonempty key；任一 pointer、值或
 字符串漂移都让整帧 unavailable，pointer 不进入 DTO、JSON 或 worker。两个数值字段只按完整 signed `int32` 发布，不推断
-正负数的额外业务语义。
+正负数的额外业务语义，也不要求它们跨不同 playset 的 cold process 相等；跨进程定义绑定只使用 canonical key 与逐字节
+fixture/source 证明。
 
 root/saved scopes 与 deadline 仍可在 schema 中显式 `null/unavailable`，但不能以长期 `null` 宣称完成依赖它们的策略。
 

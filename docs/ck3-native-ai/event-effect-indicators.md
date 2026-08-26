@@ -10,7 +10,7 @@
 | `game/gui/shared/event_windows.gui` | `8668174191A58AECE3FBA57A0E65C7E7DC1384F1B3A7BA281EA6E801D76811F4` |
 | `game/gui/event_windows/letter_event.gui` | `D93677E603C04827AE23DFFA6566E47984A8923FE77E89F02AC9291082A9CA88` |
 | `game/gui/event_windows/scheme_preparations_event.gui` | `6B14FDAEC5FDEDB50442B4D141F7F2CC3E5EC724453E45C1960653163EC3E691` |
-| 本文配套 `event_option_1_19_0_6_abi.json` | `961E8B11B8985C23452587EC3D4BBD3B4537029DF3C0170F5F0E54291D22280B` |
+| 本文配套 `event_option_1_19_0_6_abi.json` | `FB2027F3D4E1A3EE48256531D35789243D31A2F8F6E2665C1A17A4C948549ABF` |
 
 [static-confirmed] `CEventOptionItem+0x88` 的 `OptionEffectItem` vector 不是完整 effect preview。它是引擎专门为事件按钮绘制少量图标而生成的、面向当前玩家角色的有损 **effect indicator**：
 

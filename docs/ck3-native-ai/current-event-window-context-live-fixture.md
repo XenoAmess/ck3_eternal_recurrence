@@ -8,9 +8,12 @@
   `CEventOption+0x478 timeout_option` 错当成 cancel 来源，使 authored native index `3` 的
   `is_cancel_option=yes` 发布为 `cancel=false`。因此 `current_event_window_context_live_ready` 仍不得标为 `true`，
   fixture 预期也不得降成 false 来掩盖故障。
-- **[static-confirmed；Attempt3 frozen，live pending]** exact parser/token/consumer 已把 cancel 更正到 authored
-  `CEventOption+0x47A`；combined cancel + indicator source 已冻结为 `cea30a0...`，fresh DLL/injector 与 runner 常量见下表。
-  本轮截至该冻结点仍没有启动或 attach CK3，必须由 Attempt3 artifact 决定 live readiness。
+- **[live-confirmed harness RED；capability fields passed]** Attempt3 的 seed 与 cold 都精确读到 native index `3`
+  `cancel=true`、三个空 typed indicator 子集及 truthful readiness；失败只来自 runner 错把 process/playset-local
+  calculated ID/runtime ordinal 当作跨进程稳定 identity。该 RED 不得改写，但它已给出修正验收合同的直接实证。
+- **[static-confirmed；Attempt4 pending]** combined cancel + indicator source 仍冻结为 `cea30a0...`，fresh DLL/injector
+  不变；runner 已改为跨进程绑定 canonical key/fixture bytes/完整 instance，只要求两个数值字段在各自进程内为 signed
+  int32 且同帧稳定。必须由全新 Attempt4 artifact 决定整体 live readiness。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -39,7 +42,7 @@
 | event definition SHA-256 | `CE5416E0BB2D508F5A3445B73EAEEA7D1383727FC465D18486467B4CD58D972E` |
 | definition + 9 loc files manifest SHA-256 | `D2B6AC3D39D6362BA905299912BBF91EACF2C90A58DA00D0423E10F237BF3C7A` |
 
-## Attempt3 candidate 冻结输入
+## Attempt3/Attempt4 冻结 binary 输入
 
 | 项 | 冻结值 |
 |---|---|
@@ -49,8 +52,8 @@
 | injector size / SHA-256 | `823,808` / `1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF` |
 | fresh native CTest | `37/37` passed |
 
-该 build 从已推送、tracked-clean 的 `cea30a0...` 配置到全新 MSVC/Ninja 目录；不复用 Attempt1/2 DLL。runner、focused
-unit 与本页只在上述 commit 与两个 binary hash 一致时允许进入 launch seam。
+该 build 从已推送、tracked-clean 的 `cea30a0...` 配置到全新 MSVC/Ninja 目录；不复用 Attempt1/2 DLL。Attempt4 只修正
+runner 的跨进程证据合同，不改 production source 或 binary，因此继续要求上述 commit 与两个 hash 精确一致。
 
 ## Attempt1 immutable RED：PhysFS 路径超过 250 字符
 
@@ -101,6 +104,27 @@ unknown/`is_cancel_option` parser error；artifact size `61905`，SHA-256
 能力证据（size `24065`，SHA-256 `27A195A508FB4FAB4225797F3C4D69FC2937D1803EF66427683BF543AF2D892B`）。
 两个 diagnostic root、Attempt1 旧 root 后续均经 marker 验证并由 runner `_cleanup_root` 删除；该后续清理不改写
 Attempt1 artifact 当时的 `root cleanup unproven` 事实。
+
+## Attempt3 immutable RED：把 process-local 数值误当跨进程 identity
+
+2026-08-26 的 Attempt3 artifact 固定在
+`C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt3.json`，size `130667`，
+SHA-256 `2EF4BF85FB95CDD3D969C36BF79761AA33807C6159373CB27247D5248985D561`。seed PID `73636` 与 cold PID
+`12820` 均为 green，完整 event instance ID `17`、date `53175816`、canonical key、逐字节 fixture、三项 option 与全部
+readiness 一致；native index `3` 在两侧都真实发布 `cancel=true`，每项 indicator rows 均为空且 coverage 精确。
+
+唯一失败为 cross-stage 的 `same_calculated_event_id=false` 与 `same_runtime_stats_ordinal=false`：seed 因额外加载
+seed-only mod bridge，读到 `calculated_event_id=4360001`、`runtime_stats_ordinal=6773`；cold 只加载 production+fixture，
+两次相邻 query 都稳定读到 `3940001/5881`。这在相同 save、完整 instance/key 与 byte-identical fixture 下直接证明
+`EventData+0x08/+0x0C` 是 loaded definition table 的 process/playset-local 数值，不是 cross-process identity。修正合同必须：
+
+- 跨进程继续要求完整 active instance、date、canonical key、save/checkpoint 与 fixture bytes 一致；
+- `+0x08/+0x0C` 在每个进程内仍须为 signed int32，并由同帧/同进程双查询约束不漂移；
+- 不要求 seed 与 cold 数值相等，也不要求它们必须不同。
+
+Attempt3 没有选择 option；两个 managed process、nonce root 均清理成功，artifact 的
+`no_ck3_processes_after=true`、`disposable_cleanup.ok=true`。它不能升级整体 readiness，但不能被描述成 cancel/indicator
+再次失败。
 
 ## 确定性事件物化
 
@@ -168,8 +192,9 @@ cold clone 必须继续加载相同 definition/localization bytes，否则 save 
 
 1. `status=available`、`window_match_count=1`，full instance ID 与 snapshot/binding/envelope 全部一致；
 2. `event_definition_key=xar_event_window_live_fixture.1`；
-3. `calculated_event_id` 与 `runtime_stats_ordinal` 各自是 signed int32，并且 seed/cold/两次 cold query 均不漂移；
-   不推断其正负值业务语义，也不把 ordinal 当 canonical identity；
+3. `calculated_event_id` 与 `runtime_stats_ordinal` 在 seed/cold 各自都必须是 signed int32；两次 cold query 必须各自
+   不漂移，但 seed 与 cold 可因 playset/load order 不同而取不同值。不推断其正负值业务语义，也不把任一数值当
+   canonical identity；
 4. rendered/native indices 恰为 `(0,0) (1,1) (2,3)`，并按上表逐项验证 shown、enabled、resolved name、
    unavailable reason、cancel 和 fallback；
 5. native indices `2` 与 `4` 不在物化 vector；本夹具没有 gameplay effect，每项 `effect_indicators` 必须精确为
@@ -201,21 +226,21 @@ py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_contex
 immutable capability RED；旧
 `aab1daf...` source tree、DLL SHA 与 injector 只能复核历史 artifact，绝不能再次作为 live candidate。
 
-Attempt3 使用 detached clean source tree 与独立 pipe/output；不传 `--state-dir`，继续用默认
+Attempt4 使用同一 detached clean production source/binary 与独立 pipe/output；不传 `--state-dir`，继续用默认
 `%TEMP%\xew-<32-hex>` root 复验 path gate：
 
 ```powershell
 $env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source'
 & 'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\run_current_event_window_context_live_acceptance.py' `
   --game-dir 'Crusader Kings III' `
-  --bridge-pipe '\\.\pipe\xar-event-window-context-cea30a0-attempt3' `
+  --bridge-pipe '\\.\pipe\xar-event-window-context-cea30a0-attempt4' `
   --bridge-dll 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll' `
   --expected-bridge-dll-sha256 '52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0' `
   --bridge-injector 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe' `
-  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt3.json'
+  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json'
 ```
 
-该 output 名不得已存在，也不得覆盖 Attempt1/2。只有 preflight 重新验证 commit、EXE/save/fixture/DLL/injector、source
+该 output 名不得已存在，也不得覆盖 Attempt1/2/3。只有 preflight 重新验证 commit、EXE/save/fixture/DLL/injector、source
 cleanliness 与最长路径后，runner 才能启动 CK3。
 
 只有 artifact 自身 `ok=true`、全部 harness check 为 true、readiness 精确保持
