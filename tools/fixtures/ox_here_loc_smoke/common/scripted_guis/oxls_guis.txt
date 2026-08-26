@@ -1,0 +1,28 @@
+﻿oxls_delivery_observer_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = oxls_waiting_for_delivery
+		any_courtier = {
+			NOT = { has_character_flag = oxls_baseline_courtier }
+			has_trait = giant
+			has_trait = fecund
+			culture = culture:kanuri
+			prowess >= 46
+			prowess <= 66
+			is_knight_of = root
+		}
+	}
+	effect = {
+		# GUI state scheduling can queue the same Execute call twice in one frame.
+		# Keep the observer marker exactly-once even when that happens.
+		if = {
+			limit = {
+				NOT = { has_character_flag = oxls_delivery_reported }
+			}
+			add_character_flag = oxls_delivery_reported
+			remove_character_flag = oxls_waiting_for_delivery
+			debug_log = "OXLS: TEST PASS production_delivery"
+		}
+	}
+}

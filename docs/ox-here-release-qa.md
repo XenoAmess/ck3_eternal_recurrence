@@ -9,6 +9,10 @@ that every gate below has the same validation strength.
 - Version: `1.0.1`
 - Supported and live-tested engine baseline: CK3 `1.19.0.6`
 - Formal package: the deterministic 22-file staging produced by `tools/build_ox_here_release.py`
+- Git identity: commit `5e93fe5a73cbcce206aa31268f3ef601408d4d3d`, annotated tag `ox-here-v1.0.1`
+- Public GitHub release: `https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/ox-here-v1.0.1`
+- Public Workshop item: `3790635143`, title `Ox Here! / 牛来`,
+  `https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143`
 - Thumbnail: `ox_here/thumbnail.png`, projected from `images/ox_here_key_art.png` by
   `tools/compose_ox_here_key_art.py`
 - Workshop copy: `workshop/ox_here_description.bbcode`
@@ -48,20 +52,31 @@ court terminology, the localized `Ox, come!` / `The ox arrived!` wordplay, gramm
 file syntax. This is a model-led release review performed on the user's behalf. It is explicitly **not** native-speaker
 certification, and no second call to MiniMax is counted as independent semantic verification.
 
-## Current Automated Checks
+## Automated And Package Checks
 
-Snapshot recorded on 2026-08-27 before the final Workshop upload:
+Final release snapshot recorded on 2026-08-27:
 
 | Check | Result | Evidence |
 |---|---|---|
 | MiniMax caller unit tests | GREEN, 19 tests | `tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py` |
 | Ox Here release-builder tests | GREEN, 7 tests | `tools/.venv/Scripts/python.exe tools/test_build_ox_here_release.py` |
 | Nine-language structure audit | GREEN | UTF-8 BOM, identical order of 18 keys per language, CK3 bracket-scope and escaped-newline token parity |
-| Deterministic release check | GREEN, 22 files | Manifest SHA-256 `08ec997424d4d3d161e789ae455979a49427d23b6c696a10a66b164e6e3616d2`; ZIP SHA-256 `4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a` |
+| Clean-tag deterministic release | GREEN, 22 files | Formal manifest SHA-256 `601cde2d39365230e226b71c6c22220000cd6230ec42fe19b1009f1f377681ae`; ZIP SHA-256 `4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a` |
+| Workshop-ID sidecar | GREEN, 22 files | Sidecar manifest SHA-256 `4acd11a741de3d088d1e4f9afb5079e9e3303aabeb8f5f3b93b1dd9852a3c13b`; binds item `3790635143` without changing the product ZIP |
+| Fresh Workshop cache verification | GREEN, 22/22 files | The item cache was moved aside, downloaded into an absent path, and strictly verified against the ID-bearing sidecar with only the launcher's canonical descriptor normalization permitted |
 | Commit-pinned screenshot fetch | GREEN, 4 images | Media commit `f0f6066e44c76f3f78fd10bc28e2c90e45681df7`; HTTP 200 `image/jpeg`, byte length and SHA-256 matched all four local files |
+| Official tag CI | GREEN | Run `33013156110` on tag `ox-here-v1.0.1`, head `5e93fe5a73cbcce206aa31268f3ef601408d4d3d`; artifact `release-candidate-ox-here-v1.0.1-33013156110`, 701,529-byte Actions archive, artifact digest `sha256:6cf45327d15a6e5fad848c215752371abe63eaef0f285cc04b81e14a1ad8d07b` |
 
-The manifest and ZIP hashes identify this snapshot only. Rerun `tools/build_ox_here_release.py --check` after any later
-localization, descriptor, thumbnail or runtime edit and replace the hashes before tagging.
+The Actions artifact digest identifies GitHub's outer artifact archive; it is not the deterministic product ZIP hash. The
+formal manifest and product ZIP hashes above identify the clean tagged release. Rerun
+`tools/build_ox_here_release.py --check` after any later localization, descriptor, thumbnail or runtime edit and replace
+the release hashes for the next version.
+
+The public GitHub release exposes the two canonical clean-tag deliverables: `ox_here-v1.0.1.manifest.json` (4,026 bytes,
+SHA-256 `601cde2d39365230e226b71c6c22220000cd6230ec42fe19b1009f1f377681ae`) and
+`ox_here-v1.0.1.zip` (701,751 bytes, SHA-256
+`4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a`). The item-ID sidecar remains verification
+evidence only and is not substituted for the canonical public manifest.
 
 ## Real CK3 Functional Evidence
 
@@ -101,23 +116,54 @@ Rendered African appearance and blond hair were manually reviewed in the capture
 script-level phenotype assertion; the report says CK3 exposes no reliable live trigger for generated phenotype or rendered
 hair color.
 
-## Honest Boundary And Remaining Publication Gates
+## Published Workshop-Copy Functional Evidence
 
-The GREEN functional artifact mounted a 14-file source-runtime projection containing English and Simplified Chinese. It
-predates the seven added language files, the release thumbnail, and the final 22-file package. Therefore it proves the
-gameplay implementation and the captured Chinese presentation path, but it does **not** by itself prove that all nine
-language files load without visual truncation or that a Steam-downloaded copy matches the final staging.
+After strict 22/22 fresh-cache verification, the downloaded item was normalized into a disposable runtime copy and passed
+the same non-debug functional scenario:
 
-Before making the Workshop item public:
+- Artifact: `C:\Users\xenoa\AppData\Local\Temp\oxa_workshop_3790635143_green_20260827`
+- Top-level `report.json` SHA-256:
+  `2bb66729773dec95a333323664527675c51d0c54ec005f43d843c28242363b1c`
+- Result: `GREEN`; cell duration: 255.448 seconds
+- Product runtime tree SHA-256 before and after:
+  `cbf393d4201c31a0d8e73ff9d9811ba6304e395800ccb73673d73519729488e8`
+- The normalized runtime contained all 22 formal files, including nine localization files and the thumbnail; its product
+  and fixture trees remained unchanged, project diagnostics were empty, and protected real player storage remained
+  unchanged through the five-second postflight.
+- The functional markers again passed decline, exact one-character delivery, warrior identity/Prowess, Knight and Champion
+  appointment, affairs/secret, incompatible-orientation Seduce, and zero Champion salary.
 
-1. Rerun the localization/unit/builder checks and create the formal staging from a clean tagged commit.
-2. Upload the package while hidden; keep `remote_file_id` only in the outer user-directory `.mod` and rebuild staging after
-   the launcher temporarily writes it into the inner descriptor.
-3. The four GitHub raw URLs pinned to media commit
-   `f0f6066e44c76f3f78fd10bc28e2c90e45681df7` already match their recorded SHA-256 values. Upload the same JPEGs to Steam,
-   record the actual Steam CDN bases, and anonymously verify the media strip and description.
-4. Download into a fresh empty Workshop cache, verify its tree against the rebuilt canonical staging, and boot that copy.
-5. Inspect the decision and arrival text in all nine game languages for raw keys, broken scopes and visible truncation.
-   Structural/model review must not be reported as native-speaker certification.
-6. Only after those checks are GREEN should visibility be changed to public and the final item ID, URL, package hashes and
-   fresh-cache evidence be appended here.
+This is real execution of a copy derived from the newly downloaded Workshop cache. It does not turn the descriptor's
+remote-ID/line-ending normalization into a repository change, and it does not prove Steam CDN availability outside the
+network and time observed during this release.
+
+## Workshop Publication Result
+
+The Steam-started PDX launcher logged `Publishing mod succeeded` at `2026-08-26T21:14:08.252Z`. Anonymous Steam API and
+public-page checks then established:
+
+- item `3790635143`, title `Ox Here! / 牛来`, public `visibility: 0`;
+- content manifest `7196545944095046595` and API `file_size: 716112`;
+- preview URL
+  `https://images.steamusercontent.com/ugc/13157177357891033813/768F75FE6A133ED324B0E52746240C69EAE8C9AB/`;
+- the query-free preview response is the expected 640×640 RGB PNG, 686,490 bytes, SHA-256
+  `330bf1fb1330fd817b46b47ac3345e4e5f32472152b18d4277790c0c0c767b59`, byte-identical to the clean-tag thumbnail;
+- the public HTML contains exactly four `highlight_strip_item` screenshots in the ledger order;
+- the published description contains exactly the four commit-pinned GitHub raw image URLs from
+  `workshop/ox_here_description.bbcode`.
+
+The same four Steam CDN screenshot originals were anonymously fetched as `image/jpeg`; dimensions, byte counts and hashes
+matched the four tracked Workshop JPEGs exactly. Their final CDN bases are recorded in
+`workshop/ox_here_screenshots.md`.
+
+## Honest Boundary
+
+The original GREEN artifact mounted the then-current source projection; the later Workshop-copy artifact closes the
+important gap by executing a normalized copy of the final 22-file fresh download. The nine-language structure, key order,
+protected-token parity and model-led semantic review are GREEN, and the full package loads without project diagnostics.
+There is still no nine-cell visual matrix that opens both UI surfaces under every game language, so this release does
+**not** claim native-speaker certification or per-language proof against every possible font-specific truncation.
+
+The live AI scheduler was not held until it happened to choose the decision, so the published-cache run does not add an
+empirical AI choice-frequency distribution. It confirms that the exact production policy loaded and that the shared
+recruitment path executes; the 12-month checks, low weights and exact one-year cooldown remain code-contract evidence.

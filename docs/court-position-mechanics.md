@@ -36,6 +36,32 @@
 - 本独立 mod 是主项目“AI 永远不得触发”规则的明确例外：AI 可以使用，但基础意愿为 0。骑士不足/低勇武骑士只给决议 `+1`、招募项 `+5`；主要战争方战争分数不高于 -50 才给决议 `+10`、招募项 `+25`，拒绝项始终为 100。
 - 所有 AI 头衔层级的检查间隔均为 12 个月；每次 AI 执行后设置 `ox_here_ai_cooldown`，持续时间**恰好 1 年**。这是用户指定的最高上限，禁止将该冷却增加到 1 年以上。真人玩家不读取该冷却。
 
+### 原生 option-list 的隐式 tooltip 合同
+
+CK3 `1.19.0.6` 的 `game/gui/decision_view_widgets/decision_view_widget_option_list_generic.gui` 从
+`DecisionViewWidgetOptionList.GetEntries` 物化每个行项，并在 `DecisionOptionItem` 上直接绑定
+`tooltip = "[Entry.GetTooltip]"`。原版决议数据说明该 getter 的 loc 合同由 `item.value` 命名，与显式行名
+`localization` 和详情文案 `current_description` 分开：
+
+- `90_minor_decisions.txt` 的 `value = hire_physician_decision` 配套
+  `hire_physician_decision_tooltip`；
+- `dlc_decisions/bp3/00_bp3_other_decisions.txt` 的 `value = master_forest_terrain` 明明把行名和详情都指向
+  `designated_terrain_forest_decision`，英文 loc 仍单独定义 `master_forest_terrain_tooltip`。
+
+因此精确公式是：每个 `item { value = V }` 的行 tooltip 键为 **`V_tooltip`**。牛来的两个始终物化的
+value 是 `ox_here_recruit` 和 `ox_here_decline`，所以每种发布语言都必须同时有
+`ox_here_recruit_tooltip` 与 `ox_here_decline_tooltip`。已有的 `ox_here_decision_option_recruit_desc` /
+`ox_here_decision_option_decline_desc` 只满足 `current_description`，不会被 `Entry.GetTooltip` 当作回退键。
+
+2026-08-27 的英文发布缓存 loc-smoke Attempt4 给出了真实 UI 证据：
+`C:\Users\xenoa\AppData\Local\Temp\oxls_workshop_3790635143_english_attempt4` 从 Steam item
+`3790635143` 的已验证缓存启动 exact-build，招募行显示正确名称 `Mother...`，但 hover 浮层显示 raw
+`ox_here_recruit_tooltip`。顶层 `report.json` 以此返回 RED，SHA-256 为
+`e552553f6e2c11687566a28c81f8d87dcd6b659d1f73fd8b34a14002da3e3b1d`；截图
+`cells/l_english/05_native_decision_selected.png` 的 SHA-256 为
+`36334c0f08da05305d678185fd50d20c0cdc251d35a2caf475aa3728087bd59c`。该 Attempt4 **直接实读**了 recruit 键；当次鼠标没有
+hover decline，故 decline 键的必需性是由同一原生逐行合同与两行均可见推出，不冒充当次实读。
+
 ## `牛来` 的实现
 
 - 决议 effect 只有在统治者拥有 Royal Court、可以雇佣 `champion_court_position`、且当前没有该职位时，才会调用 `court_position_grant_effect`。

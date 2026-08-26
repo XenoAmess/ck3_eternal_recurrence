@@ -1,0 +1,18 @@
+﻿# Extend the vanilla hook; never replace its effect or events.
+on_game_start_after_lobby = {
+	on_actions = {
+		oxls_on_game_start
+	}
+}
+
+oxls_on_game_start = {
+	effect = {
+		every_player = {
+			every_courtier = {
+				add_character_flag = oxls_baseline_courtier
+			}
+			add_character_flag = oxls_waiting_for_delivery
+			debug_log = "OXLS: TEST READY gameplay"
+		}
+	}
+}

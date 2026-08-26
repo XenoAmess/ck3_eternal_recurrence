@@ -1,0 +1,5 @@
+﻿l_spanish:
+ oxls_anchor_decision:0 "LOC SMOKE SPANISH"
+ oxls_anchor_decision_confirm:0 "DO NOT CLICK"
+ oxls_anchor_decision_desc:0 "External localization acceptance locator."
+ oxls_anchor_decision_tooltip:0 "This fixture row must never ship."

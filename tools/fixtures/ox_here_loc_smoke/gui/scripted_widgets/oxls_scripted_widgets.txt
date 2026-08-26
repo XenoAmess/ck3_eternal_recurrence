@@ -1,0 +1,1 @@
+﻿gui/oxls_bridge.gui = oxls_bridge_window

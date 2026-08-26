@@ -21,7 +21,7 @@ import build_ox_here_release as release  # noqa: E402
 
 REVISION = "a" * 40
 WORKSHOP_ID = "987654321"
-DESCRIPTOR = b'version="1.0.1"\r\nname="Ox Here fixture"\r\npicture="thumbnail.png"\r\n'
+DESCRIPTOR = b'version="1.0.2"\r\nname="Ox Here fixture"\r\npicture="thumbnail.png"\r\n'
 
 
 class OxHereReleaseTests(unittest.TestCase):
@@ -75,10 +75,10 @@ class OxHereReleaseTests(unittest.TestCase):
             result = release.check_reproducible(source, revision=REVISION)
             self.assertEqual(22, result["file_count"])
             self.assertRegex(result["manifest_sha256"], r"^[0-9a-f]{64}$")
-            _, manifest, archive, details = self.build(root, source, parent="formal", versioned_sidecars=True, git_tag="ox-here-v1.0.1")
-            self.assertEqual("ox_here-v1.0.1.manifest.json", manifest.name)
-            self.assertEqual("ox_here-v1.0.1.zip", archive.name)
-            self.assertEqual("ox-here-v1.0.1", details["git_tag"])
+            _, manifest, archive, details = self.build(root, source, parent="formal", versioned_sidecars=True, git_tag="ox-here-v1.0.2")
+            self.assertEqual("ox_here-v1.0.2.manifest.json", manifest.name)
+            self.assertEqual("ox_here-v1.0.2.zip", archive.name)
+            self.assertEqual("ox-here-v1.0.2", details["git_tag"])
 
     def test_missing_assets_languages_and_any_extra_file_fail_closed(self):
         with self.fixture() as (_, source):
@@ -144,11 +144,11 @@ class OxHereReleaseTests(unittest.TestCase):
                 release.verify_manifest(staging, manifest)
 
             def clean_git(*args, **_kwargs):
-                return "" if args[0] == "status" else "ox-here-v1.0.1"
+                return "" if args[0] == "status" else "ox-here-v1.0.2"
 
             with mock.patch.object(release, "DEFAULT_SOURCE", source), mock.patch.object(release, "git_sha", return_value=REVISION), mock.patch.object(release, "git_output", side_effect=clean_git):
                 identity = release.release_identity(source)
-            self.assertEqual("ox-here-v1.0.1", identity["git_tag"])
+            self.assertEqual("ox-here-v1.0.2", identity["git_tag"])
             with mock.patch.object(release, "DEFAULT_SOURCE", source), mock.patch.object(release, "git_sha", return_value=REVISION), mock.patch.object(release, "git_output", return_value="dirty"):
                 with self.assertRaisesRegex(ValueError, "clean worktree"):
                     release.release_identity(source)

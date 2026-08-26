@@ -13,6 +13,7 @@
 | `Theme missing in event` | 事件没写 `theme` | 加 `theme = <common/event_themes 里的键>` |
 | `Unknown effect: after` | 事件 option 里写了 `after` | CK3 option 没有 after 字段；逻辑直接写在 option 里 |
 | `Missing loc key 'x' for custom localization` | 当前语言的 yml 里没有该键 | custom loc 的键不吃英文回退，**每种在用语言的 yml 都要有** |
+| 原生决议 option-list 的行 hover 显示 raw key，如 `ox_here_recruit_tooltip` | `decision_option_list_controller` 会为每个 `item.value = V` 隐式请求 `V_tooltip`；`localization` 只是行名，`current_description` 也不会代替该 tooltip。原版 GUI 的每个 `DecisionOptionItem` 都绑定 `tooltip = "[Entry.GetTooltip]"`；CK3 1.19.0.6 原版 `value = master_forest_terrain` 在行名/描述另用 `designated_terrain_forest_decision` 时，仍配套 `master_forest_terrain_tooltip` | 对每个可物化的 option value 在每种发布语言中补齐 `<value>_tooltip`。牛来两行因此分别要求 `ox_here_recruit_tooltip` 和 `ox_here_decline_tooltip`；不能用已有的 `ox_here_decision_option_*_desc` 冒充。2026-08-27 英文发布缓存 loc-smoke Attempt4 已在招募行实机复现 raw key（artifact `C:\Users\xenoa\AppData\Local\Temp\oxls_workshop_3790635143_english_attempt4`）；拒绝行结论是同一原生逐行合同的静态必然结果，不冒充本次 hover 实读 |
 | `Unknown anchor 'topleft'` | 锚点写法 | 用 `top\|left` 这类合法组合 |
 | `Variable 'x' is used but is never set` | 有引用无写入（删残留代码没删干净） | 清理孤儿引用 |
 | `Variable 'x' is set but is never used` | 生成器写入了没有任何游戏状态读取者的变量；只在 localization 中用也不算读取 | 删除无用写入，或让机制在状态脚本中实际消费；不要白名单忽略 |

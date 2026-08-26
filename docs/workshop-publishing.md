@@ -169,3 +169,52 @@ Steam 从空路径安装上述新 manifest 后，sidecar manifest SHA-256
 `4b2cb5c58c19f90a9b7f9ce98afc7d99bdbf581d277adf0cc1c2259fdcfa2704` 与
 `b5d7f276c128878ae3f6a7f28110840515f7ce585fc6bf2e3cb998d73b460c08`。官方 tag artifact 与公开 Release
 下载件哈希一致：`https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/vivhite-v1.0.1`。
+
+## Ox Here 独立版首次上传
+
+Ox Here 使用 `tools/build_ox_here_release.py`，正式身份为 commit
+`5e93fe5a73cbcce206aa31268f3ef601408d4d3d`、annotated tag `ox-here-v1.0.1`。首次上传创建公开 item
+`3790635143`，标题 `Ox Here! / 牛来`：
+`https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143`。Steam 启动链中的 PDX launcher 在
+`2026-08-26T21:14:08.252Z` 记录 `Publishing mod succeeded`；匿名 API 随后返回 `visibility: 0`、内容
+manifest `7196545944095046595` 和 `file_size: 716112`。
+
+本次首次上传再次确认：新外层 `.mod` 应先稳定落盘，再启动经 Steam 初始化的 launcher。如果 descriptor 恰好在
+launcher 扫描 mod 库的同时创建或改写，新项目可能暂时不出现在上传下拉框；退出该 launcher，确认 descriptor 已稳定，
+再从 Steam 重新启动即可被正常枚举。这只是启动器扫描时序现象，不应通过预填 `remote_file_id` 或复制
+`steam_appid.txt` 绕过。
+
+clean-tag formal staging 共 22 文件，formal manifest SHA-256 为
+`601cde2d39365230e226b71c6c22220000cd6230ec42fe19b1009f1f377681ae`，deterministic ZIP SHA-256 为
+`4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a`。上传后立即重建 formal staging，恢复
+无 ID 的 canonical 内层 descriptor；另从同一 tag 生成只用于核验的 item-ID sidecar，manifest SHA-256 为
+`4acd11a741de3d088d1e4f9afb5079e9e3303aabeb8f5f3b93b1dd9852a3c13b`。sidecar 只新增 manifest 元数据中的
+`workshop_item_id: "3790635143"`，不改变 product ZIP。
+
+验证时先把 item `3790635143` 的缓存目录整体移出 `steamapps/workshop/content/1158310/`，再从空路径下载内容
+manifest `7196545944095046595`。`build_ox_here_release.py --verify ... --workshop-cache` 对 22/22 文件 strict
+GREEN。随后把该 fresh cache 规范化为一次性 runtime copy，运行非 debug CK3 全功能验收；artifact 为
+`C:\Users\xenoa\AppData\Local\Temp\oxa_workshop_3790635143_green_20260827`，顶层 report SHA-256
+`2bb66729773dec95a333323664527675c51d0c54ec005f43d843c28242363b1c`，结果 GREEN、项目诊断为空、真实玩家
+受保护存储在五秒 postflight 后仍未变化。该轮证明 fresh-downloaded package 的共享 gameplay 路径；它不等于九种
+语言逐一打开两类 UI 的视觉矩阵，也不提供 AI 随机选择频率分布。
+
+远端 preview 为
+`https://images.steamusercontent.com/ugc/13157177357891033813/768F75FE6A133ED324B0E52746240C69EAE8C9AB/`。
+匿名下载返回 640×640 RGB PNG、686,490 字节、SHA-256
+`330bf1fb1330fd817b46b47ac3345e4e5f32472152b18d4277790c0c0c767b59`，与 clean-tag `thumbnail.png`
+逐字节一致。公开 HTML 精确包含四个 `highlight_strip_item`，四张 Steam CDN 原图的尺寸、字节数和 SHA-256
+逐一匹配仓库 JPEG；description 同时精确包含 `workshop/ox_here_description.bbcode` 的四个 commit-pinned
+GitHub raw URL。CDN 基址与最终顺序见 `workshop/ox_here_screenshots.md`。
+
+官方 tag CI run `33013156110` 为 GREEN，绑定同一 tag/head；Actions artifact
+`release-candidate-ox-here-v1.0.1-33013156110` 大小 701,529 字节，artifact digest 为
+`sha256:6cf45327d15a6e5fad848c215752371abe63eaef0f285cc04b81e14a1ad8d07b`。该 digest 属于 GitHub Actions
+外层 artifact archive，不得与其中 deterministic product ZIP 的 SHA-256 混用。
+
+公开 GitHub Release 为
+`https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/ox-here-v1.0.1`。其中 canonical
+`ox_here-v1.0.1.manifest.json` 为 4,026 字节、SHA-256
+`601cde2d39365230e226b71c6c22220000cd6230ec42fe19b1009f1f377681ae`；`ox_here-v1.0.1.zip` 为
+701,751 字节、SHA-256 `4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a`。item-ID sidecar 只保留作
+fresh-cache 验证证据，不替换公开 Release 中的 canonical manifest。

@@ -1,0 +1,23 @@
+﻿# The ASCII locator sits immediately above the production decision.
+# It lets the runner derive the production row without treating multilingual
+# OCR as positive localization evidence.
+oxls_anchor_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_invite_knights.dds"
+	}
+	decision_group_type = ox_here
+	sort_order = 11
+	desc = oxls_anchor_decision_desc
+	selection_tooltip = oxls_anchor_decision_tooltip
+	is_shown = {
+		is_ai = no
+		is_ruler = yes
+		is_married = yes
+	}
+	is_valid = { always = yes }
+	effect = {
+		debug_log = "OXLS: TEST FAIL anchor_clicked"
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
