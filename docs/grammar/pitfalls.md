@@ -6,6 +6,7 @@
 
 | 错误信息 | 原因 | 解法 |
 |---|---|---|
+| 宫廷职位“任命免费”但仍产生月度薪资，或用 `temporary_court_position_cost_removal` 后薪资仍未归零 | 任命/替换、撤销威望费用、月度 `salary` 是三条不同机制；该 flag 只影响 `minor/medium/major_court_position_prestige_revoke_cost`，不影响 `champion_total_salary_value` | 先用 `appoint_court_position` / `court_position_grant_effect` 处理任命，再在对应职位的 total salary script value 中按 `scope:liege` + `any_court_position_holder` 精确检查持有者 flag 后 `multiply = 0`。CK3 1.19.0.6 本条为源码静态确认，尚未实机验证；详见 [court-position-mechanics.md](../court-position-mechanics.md) |
 | `should be in utf8-bom encoding`（lexer.cpp，txt/gui） | 文件无 BOM | 加 UTF-8 BOM（警告级，建议都加） |
 | `Missing UTF8 BOM`（yml） | yml 无 BOM | **必须加**，否则整个文件不加载 |
 | `Cannot read [xxx] as a script value` / `Failed to find a valid event target link 'xxx'` | script value 定义放错目录 | 目录是 `common/script_values`，不是 `scripted_values` |

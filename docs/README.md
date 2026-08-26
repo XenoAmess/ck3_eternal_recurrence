@@ -27,5 +27,6 @@
 - [scoring-rules.md](scoring-rules.md) — **完整算分规则**（逐条分列，README 只放链接；实现本体在 `common/scripted_effects/xar_effects.txt`）
 
 ## 语法篇
+- [court-position-mechanics.md](court-position-mechanics.md) — Royal Court 宫廷职位、勇士自动任命与定向零薪资的静态机制记录
 
 - [grammar/](grammar/README.md) — CK3 Paradox 脚本语法梳理与踩坑合集
