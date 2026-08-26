@@ -32,8 +32,10 @@
 也不依赖 `special_data`；剩余验收是 paused white-peace 全零与普通非宗教非零成本实机 fixture。
 effect preview 的下一步应优先
 解码 pending 中引擎已经物化的 `0x268` 字节借用对象，而不是重放 effect evaluator。
-白和平的实际停战/战果条款仍需独立闭合其 `special_data` subtype 与 WarID 绑定；不能用
-generic description 假装已经覆盖。
+白和平的 `special_data` subtype 与 WarID 绑定已经在
+[pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 静态闭合：八字节
+special object 只是 exact subtype tag，WarID 来自 actor/recipient 的共同战争关系。production reader
+与 paused live 尚未实现，且仍不能用 generic description 假装已经覆盖实际停战/战果条款。
 
 ## 2. 范围与证据规则
 
@@ -49,7 +51,7 @@ generic description 假装已经覆盖。
 ### 2.2 本文明确不覆盖
 
 - owner-deferred 宗教专用树、字段、bridge、策略或实机矩阵；
-- `special_data` 的未知虚函数或 subtype mutator；
+- 三种已闭合 war-exit subtype 以外的 `special_data` 虚函数、布局或 mutator；
 - notification/tooltip/localization 文本到条款的反推；
 - `0x3380410` effect executor，或任何回复、发送、战争结算 mutator；
 - 使用旧 war-exit 自造 `WarEffectContext` 重放 generic effect preview；
@@ -465,7 +467,8 @@ white peace 对 generic terms 的价值与局限：
 - secondary actor/recipient 仍可能表达 selected hostages，必须保留完整五角色 identity；
 - 战争、CB、战分和实际停战结果属于 special war context；generic description 可能描述 authored
   interaction effects，但没有证据证明它覆盖全部 hard-coded/CB outcome；
-- pending `special_data` 尚未绑定稳定 WarID。不能从 pointer、notification 文本或目标缺失推断 WarID；
+- 三种 war-exit pending 的 stable WarID 原生关系链已静态闭合，但 reader/live 尚未接入；在此之前仍不能从
+  裸 pointer、notification 文本或目标缺失推断 WarID；
 - 原生 total raw 会包含 owner-deferred opaque 节点。可以调用原生总分，但不能谎称 breakdown 已完整结构化。
 
 ## 10. Production readiness gates
@@ -494,7 +497,7 @@ white peace 对 generic terms 的价值与局限：
 |---|---|---|
 | `generic_costs_ready` | static/query true；新增 live 尚未验 | 十槽映射、signed wire 与 same-frame reader 已闭合；paused fixture 后升级 live |
 | `generic_effects_ready` | false | pending inline typed row/root/polarity mapping + paused fixture |
-| `special_terms_ready` | false | white-peace `special_data` subtype、WarID 与 outcome binding |
+| `special_terms_ready` | false | subtype/WarID/outcome 已静态闭合；仍需 production reader、same-frame gates 与 paused fixture |
 | `native_ai_acceptance_ready` | outbound only / pending human N/A | finalized AI-responder context + raw/final live fixture |
 | `interaction_semantic_decision_ready` | false | 当前互动所需上述子门全部 true |
 
@@ -527,8 +530,10 @@ white peace 对 generic terms 的价值与局限：
 
 ### Slice C：white-peace special terms 与 acceptance
 
-1. 静态闭合 white-peace `special_data` subtype、稳定 WarID 与 pending lifetime；
-2. 组合既有 war-state/exit-term 只读观测，不恢复曾崩溃的 custom loaded-effect preview；
+1. [done static] 按 [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md)
+   闭合三种 war-exit `special_data` exact subtype、actor/recipient relation WarID 与 active CWar 绑定；
+2. 实现 full-generation/same-frame typed reader，并组合既有 war-state/exit-term 只读观测，不恢复曾崩溃的
+   custom loaded-effect preview；
 3. outbound AI fixture 在完整 context 生命周期内同时发布 intermediary raw、recipient raw、
    outer mode-1 status；inbound human pending 明确标记 acceptance `not_applicable`；
 4. 只有 generic 与 special 两部分均 ready，才允许 white-peace 策略做接受/拒绝动作并验证状态转换。
@@ -537,7 +542,6 @@ white peace 对 generic terms 的价值与局限：
 
 | 优先级 | unknown | 下一确定入口 | 未闭合时行为 |
 |---:|---|---|---|
-| P0 | pending `special_data` → white-peace WarID | special subtype constructor/accessor 与 manager materialization xref | `special_terms` unavailable |
 | P0 | 四个 compiled effect root → authored branch | definition parser registration + known one-effect fixtures | `generic_effects` unavailable |
 | P0 | `0x78` effect view typed row ABI/polarity | `0x24B11D0` consumers、typed GUI registration、offline fixture | 不发布 row/text |
 | P1 | generic outer status 非 `0/1/2` 值语义 | exact callers 与 paused AI-responder fixture | 保留 raw，semantic unavailable |

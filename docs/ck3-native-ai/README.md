@@ -44,8 +44,13 @@
   [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的十槽 compiled-cost evaluator、
   engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer 原生 AI 接受链；十个资源槽
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
-  effect typed row/root、white-peace `special_data`/WarID 仍是 production 观测依赖，当前不得把 legality 或已付成本
+  effect typed row/root 与 special-war production reader 仍是观测依赖，当前不得把 legality 或已付成本
   冒充 semantic decision readiness。
+- [static-confirmed, implementation pending]
+  [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 证明三种普通 war-exit
+  `special_data` 都只是八字节 exact subtype tag，并闭合 actor/recipient common-war relation → full WarID → active
+  `CWar` 的原生只读链；generic effect materializer 不读取该 special object。下一步是把 type + WarID 绑定接入现有
+  pending query 并做 paused white-peace fixture；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
 - [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，

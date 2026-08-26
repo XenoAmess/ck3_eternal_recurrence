@@ -226,7 +226,9 @@ DLL template 本身当成随时可执行动作。
 - [events-and-interactions.md](events-and-interactions.md)、[event-window-context.md](event-window-context.md)、
   [interaction-notification-ack.md](interaction-notification-ack.md) 与
   [interaction-structured-terms.md](interaction-structured-terms.md)：通用事件 selector、窗口 option 物化、人物互动
-  candidate/acceptance、notification ACK 与 structured-terms exact seam；stable event root、完整 preview/terms 与 live matrix 仍待闭合；
+  candidate/acceptance、notification ACK 与 structured-terms exact seam；
+  [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 另行闭合三种普通 war-exit
+  subtype 到 active WarID 的静态绑定；完整 preview/terms、production reader 与 live matrix 仍待闭合；
 - [prewar-encounter-inputs.md](prewar-encounter-inputs.md)：宣战前 participant/route/encounter 输入；
 - [army-contact-resolution.md](army-contact-resolution.md)：normal daily arrival/contact queue、Province full-CUnitID
   数值序、已有战斗优先与 participant/攻守构造的静态决策树；live actual-contact scope 与 non-daily placement 仍待施工。
