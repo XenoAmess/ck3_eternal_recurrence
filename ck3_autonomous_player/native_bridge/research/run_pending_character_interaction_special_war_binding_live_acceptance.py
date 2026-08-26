@@ -595,6 +595,43 @@ def _mutation_boundary_proof(commands: object) -> dict[str, object]:
     }
 
 
+def _cross_stage_proof(
+    seed_stage: object,
+    production_stage: object,
+    transfer: object,
+) -> dict[str, object]:
+    """Adapt the shared cross-stage proof to this runner's stricter key."""
+
+    proof = pending_live._cross_stage_proof(
+        seed_stage, production_stage, transfer
+    )
+    checks = _mapping(proof.get("checks"))
+    seed = _mapping(seed_stage)
+    production = _mapping(production_stage)
+    seed_mutation = _mapping(seed.get("mutation_boundary"))
+    seed_mutation_checks = _mapping(seed_mutation.get("checks"))
+    sequence = _mapping(production.get("sequence"))
+    production_mutation = _mapping(sequence.get("mutation_boundary"))
+    production_mutation_checks = _mapping(
+        production_mutation.get("checks")
+    )
+    seed_no_reply = seed_mutation_checks.get("no_reply_action") is True
+    production_no_reply_or_ack = (
+        production_mutation_checks.get("no_reply_or_ack") is True
+    )
+    checks["no_default_reply"] = seed_no_reply and production_no_reply_or_ack
+    proof["checks"] = checks
+    proof["reply_boundary_adapter"] = {
+        "seed_check_key": "no_reply_action",
+        "seed_check_value": seed_no_reply,
+        "production_check_key": "no_reply_or_ack",
+        "production_check_value": production_no_reply_or_ack,
+        "production_is_stricter": True,
+    }
+    proof["ok"] = all(checks.values())
+    return proof
+
+
 def _run_double_query_sequence(
     service: GameplayBridgeService,
     *,
@@ -1041,7 +1078,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                     or "production special-war query stage failed"
                 )
             )
-        cross_stage = pending_live._cross_stage_proof(
+        cross_stage = _cross_stage_proof(
             seed_stage, production_stage, transfer
         )
         if cross_stage.get("ok") is not True:

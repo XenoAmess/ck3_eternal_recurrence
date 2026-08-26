@@ -2,8 +2,9 @@
 
 ## 状态
 
-- [not-live-evidence] 本文只冻结 runner、fixture、二进制和验收条件；截至本次落盘，**未启动或 attach CK3**，
-  也没有 production artifact。
+- [live-attempt RED] Attempt 1 已实际运行；所有 production readiness gates、两次 typed query、同 revision
+  `war_state` 互证、source invariant 与 cleanup 都为 true，但 shared cross-stage helper 读取了旧字段名，令总体 artifact
+  保持 RED。该次不能升级 production-live readiness。
 - [static-confirmed] 目标合同是 `pending-character-interaction-special-war-binding-v1`，只覆盖普通、非宗教
   `claim_cb` 的 `end_war_attacker_white_peace_interaction`。
 - [static-confirmed] runner 位于
@@ -142,18 +143,41 @@ production command list 只能是两条
 - source save 改变、checkpoint bytes 迁移不一致、非 production-only cold playset；
 - 任一受管进程、driver 或 nonce disposable root 未完成清理。
 
-## 待授权实机命令
+## Attempt 1 immutable RED
 
-[not-live-evidence] 以下命令只记录后续串行执行方式，本次没有运行：
+Attempt 1 artifact：
+
+- 路径：`C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-20260826.json`；
+- SHA-256：`AED8411D6B8F8D5436DE83427AD38D1E03CA5DEC4215103B5C6F134B01F2A8E3`；
+- seed / production PID：`71000` / `120912`；总时长 `228.657` 秒；
+- pending ID `738197506`，date `53175816`，public/native revision `4/3`；
+- normalized context SHA-256：`75EBDD9649DC2405E8F72701D97247715BAF6438303E74DF93149F4532A96763`；
+- checkpoint `66,579,686` bytes，SHA-256
+  `3ABF8B9750911910D95B6AE2108B71BAA040613B3E4410578F1C4F76F16019DF`；
+- 15/15 顶层 production readiness gates 为 true，seed、production query sequence、两次 context、active-war
+  corroboration、严格 mutation boundary、source invariant 和所有 cleanup 均为 true。
+
+唯一失败是 `cross_stage_proof.checks.no_default_reply=false`。shared
+`pending_live._cross_stage_proof` 固定读取 production mutation key `no_reply_action`，而本 runner 为了同时覆盖普通 reply 与
+ACK，发布的是更严格的 `no_reply_or_ack=true`。artifact 的实际 command list 精确为两条
+`query-pending-character-interaction-context-v1`，`forbidden_reply_steps_observed=[]`；因此这是验收器 key mismatch，
+不是 pending/WarID/role/readiness 或游戏状态失败。
+
+Attempt 1 原报告永久保持 RED。最小修复只在本 runner 增加 cross-stage adapter：seed 继续读取已实测的
+`no_reply_action`，production 明确读取 `no_reply_or_ack`，并由二者共同生成兼容的 `no_default_reply` cross-stage check；
+不放宽 mutation boundary，不改 production bridge，也不重写 Attempt 1 artifact。
+
+## Attempt 2 待执行命令
+
+[not-live-evidence] 以下命令只记录修复后的新候选；本次文档更新没有运行 Attempt 2：
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" `
   "ck3_autonomous_player\native_bridge\research\run_pending_character_interaction_special_war_binding_live_acceptance.py" `
-  --output "C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live.json"
+  --output "C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-attempt2.json"
 ```
 
 运行前应确认没有其它 CK3 live harness；一个输出路径只允许写一次。取得 GREEN 后再记录 artifact size/SHA、两个 PID、
 pending ID、revision/date、context frame SHA 和 checkpoint SHA，并只把
 `pending-character-interaction-special-war-binding-v1` 的 ordinary white-peace production-live readiness 改为 true。
 RED artifact 保持 RED，不靠重写报告升级。
-

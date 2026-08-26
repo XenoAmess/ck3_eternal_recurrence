@@ -498,6 +498,65 @@ class PendingSpecialWarBindingLiveAcceptanceTests(unittest.TestCase):
                     bad["forbidden_reply_steps_observed"], [forbidden]
                 )
 
+    def test_cross_stage_adapts_stricter_no_reply_or_ack_key(self) -> None:
+        seed = {
+            "ok": True,
+            "pending_identity": {
+                "instance_id": PENDING_ID,
+                "sender_character_id": HARNESS.SOURCE_CHARACTER_ID,
+            },
+            "stable_pre_save_snapshot": {"date_raw": DATE_RAW},
+            "same_process_proof": {"bridge_pid": 101},
+            "mutation_boundary": {
+                "checks": {"no_reply_action": True}
+            },
+        }
+        production = {
+            "ok": True,
+            "same_process_proof": {"bridge_pid": 202},
+            "production_projection_proof": {"ok": True},
+            "sequence": {
+                "pending_interaction_id": PENDING_ID,
+                "date_raw": DATE_RAW,
+                "mutation_boundary": {
+                    "checks": {"no_reply_or_ack": True}
+                },
+                "first_query": _query_result(1),
+            },
+        }
+
+        proof = HARNESS._cross_stage_proof(
+            seed, production, {"ok": True}
+        )
+
+        self.assertTrue(proof["ok"])
+        self.assertTrue(proof["checks"]["no_default_reply"])
+        self.assertEqual(
+            proof["reply_boundary_adapter"],
+            {
+                "seed_check_key": "no_reply_action",
+                "seed_check_value": True,
+                "production_check_key": "no_reply_or_ack",
+                "production_check_value": True,
+                "production_is_stricter": True,
+            },
+        )
+        seed["mutation_boundary"]["checks"]["no_reply_action"] = False
+        self.assertFalse(
+            HARNESS._cross_stage_proof(
+                seed, production, {"ok": True}
+            )["ok"]
+        )
+        seed["mutation_boundary"]["checks"]["no_reply_action"] = True
+        production["sequence"]["mutation_boundary"]["checks"][
+            "no_reply_or_ack"
+        ] = False
+        self.assertFalse(
+            HARNESS._cross_stage_proof(
+                seed, production, {"ok": True}
+            )["ok"]
+        )
+
     def test_preflight_failure_cannot_enter_a_live_stage(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

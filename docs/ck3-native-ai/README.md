@@ -54,7 +54,8 @@
   pending query，paused white-peace fixture 尚待完成；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
   [pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md) 已冻结可复用的 ordinary
   `claim_cb` seed/cold-checkpoint runner、542228a DLL、同 revision `war_state` 互证与不升级整体 semantic readiness 的
-  验收条件；当前仍为 [not-live-evidence]，未启动 CK3。
+  验收条件；Attempt 1 的 production 业务门全部通过，但 cross-stage 字段名错配令 artifact 保持 RED，修复后 GREEN
+  尚未执行，因此 production-live readiness 仍为 false。
 - [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，

@@ -262,8 +262,9 @@ subtype 不调用 relation、known definition/vptr 或 null-special mismatch、a
 [not-live-evidence] 下列步骤是下一轮验收合同，不是本轮已经取得的实机证据：
 
 独立 runner、冻结二进制、checkpoint 生成接缝、同 revision `war_state` 互证与严格 readiness 边界见
-[pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md)。该 runner 当前仅完成静态准备，
-没有启动 CK3。
+[pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md)。Attempt 1 的全部 production
+业务门均通过，但因 cross-stage helper 的 `no_reply_action` / `no_reply_or_ack` 字段名错配保持 immutable RED；最小 adapter
+已静态回归，尚未取得修复后的 GREEN，故 live readiness 仍为 false。
 
 1. 使用现有普通 `end_war_attacker_white_peace_interaction` pending fixture；不创建宗教或 holy-war
    fixture，不提交 reply；
