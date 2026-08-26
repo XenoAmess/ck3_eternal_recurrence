@@ -1,0 +1,597 @@
+{
+  "format_version": 1,
+  "voice": "Microsoft David Desktop",
+  "minimum_chapter_seconds": 37.0,
+  "narration_padding_seconds": 1.25,
+  "chapters": [
+    {
+      "id": "00-prologue",
+      "type": "title_card",
+      "title_en": "THE CK3 AUTONOMOUS AGENT — CAPABILITY ATLAS",
+      "title_zh": "CK3 自动游玩智能体——全能力图谱",
+      "narration_en": "This film is a complete tour of the capabilities that genuinely exist today in our Crusader Kings Three autonomous-agent project. The destination is an intelligent player that can observe, decide, act, verify, and remember across an entire campaign. We are not at that destination yet. Every chapter carries an evidence badge, separating production loops, production primitives, fixture-live results, and archived fixed-scenario visuals. The point is to show the muscle without hiding the frontier.",
+      "subtitle_zh": "本片完整展示项目今天真实具备的能力。终极目标是贯穿整场战役的“观察、决策、操作、验证、记忆”循环；当前尚未完成，所有镜头都会明确区分生产闭环、生产原语、夹具实机与历史固定场景。",
+      "status": {
+        "en": "VERIFIED CAPABILITIES — NOT COMPLETE",
+        "zh": "已验证能力——尚未完成",
+        "classification": "showcase-boundary"
+      },
+      "body_en": [
+        "OBSERVE → DECIDE → ACT → VERIFY → MEMORY",
+        "English primary narration • Simplified Chinese in-frame subtitles",
+        "CK3 1.19.0.6 • exact-build evidence labels on every chapter"
+      ],
+      "body_zh": [
+        "观察 → 决策 → 操作 → 验证 → 记忆",
+        "英语主叙事 • 简体中文画内字幕",
+        "CK3 1.19.0.6 • 每章标注真实证据等级"
+      ],
+      "min_duration_seconds": 45.0
+    },
+    {
+      "id": "01-native-core",
+      "type": "evidence_card",
+      "title_en": "EXACT-BUILD NATIVE CORE",
+      "title_zh": "精确版本原生核心",
+      "narration_en": "The production path is frozen to CK3 version 1.19.0.6 and an exact executable hash. A version-bound adapter reads typed state and submits semantic commands while the game may remain minimized. The current adapter advertises fifty-six state and command capability templates, including time, save recovery, events, interactions, armies, wars, sieges, and combat. A template is not an unrestricted action: every executable literal is bound to the current process generation, frame revision, and identity. An acknowledgement never substitutes for a verified gameplay postcondition.",
+      "subtitle_zh": "生产路径冻结到 CK3 1.19.0.6 与精确 EXE 哈希。原生桥可在窗口最小化时读取 typed 状态并提交语义命令；56 项 capability 只是模板，动作必须绑定当前进程代次与帧，ACK 不能冒充玩法后置状态。",
+      "status": {
+        "en": "PRODUCTION-LIVE PRIMITIVE",
+        "zh": "生产实机原语",
+        "classification": "production-live-primitive"
+      },
+      "sources": [
+        {"path": "../../ck3-native-ai/autonomous-capability-roadmap.md", "label": "Capability ledger"},
+        {"path": "../../../ck3_autonomous_player/README.md", "label": "Agent runtime contract"}
+      ],
+      "body_en": [
+        "CK3: 1.19.0.6",
+        "EXE: 2D00FF31…F83DB86",
+        "56 typed state / command templates",
+        "NO OCR • NO MOUSE • NO FOREGROUND DEPENDENCY"
+      ],
+      "body_zh": [
+        "精确版本：1.19.0.6",
+        "EXE：2D00FF31…F83DB86",
+        "56 项 typed 状态 / 命令模板",
+        "原生路径无 OCR、无鼠标、无前台依赖"
+      ]
+    },
+    {
+      "id": "02-fixed-opening",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00001-frame-d24e4478ebfa49cfa7ae957be7bf1adf.png",
+      "title_en": "FIXED 1066 OPENING AND INTERRUPTION HANDLING",
+      "title_zh": "固定 1066 开局与中断处理",
+      "narration_en": "The earlier visible controller can traverse the fixed Robert the Fox opening: select the 1066 ruler, accept the recurrence contract, resolve blessing and curse pages, enter the map, open the player character, choose the expected lifestyle path, and advance time through known interruptions. This is real CK3 footage and real successful command receipts. It is preserved as a regression asset, not presented as native semantic understanding or a general opening planner. These paths may use visible text, keyboard shortcuts, mouse input, or fixed coordinates.",
+      "subtitle_zh": "早期可见控制器能走完固定罗贝尔 1066 开局、契约、祝福诅咒、角色与生活方式流程，并处理预期中断。这是真实 CK3 历史实机，但属于固定回归路径，可能使用 OCR、键鼠或坐标，不是通用开局智能。",
+      "status": {
+        "en": "ARCHIVED DEVELOPMENT LIVE",
+        "zh": "历史开发实机",
+        "classification": "visual-narrow-archive"
+      }
+    },
+    {
+      "id": "03-visible-panels-building",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260822T190656Z-opening-bfa943a7/artifacts/00009-frame-42c59fab31d348f389ad0427efb76e24.png",
+      "title_en": "VISIBLE DOMAIN, COUNCIL, MILITARY AND BUILDING FLOW",
+      "title_zh": "可见领地、内阁、军事与建造流程",
+      "narration_en": "Seven finalized opening archives also prove a wider fixed user-interface route. The controller opened domain, military, council, and decision panels, inspected the expected holdings, selected an affordable economic building, spent one hundred fifty gold on a level-one pasture, and later observed construction progress. The image here is bound to a finalized green report. It demonstrates useful operating reach and regression coverage. It does not establish general economic budgeting, council optimization, military preparation, or arbitrary building selection across different rulers and governments.",
+      "subtitle_zh": "七个已收口 GREEN 档案证明固定 UI 路径能打开领地、军事、内阁与决议面板，并花 150 金建造一级牧场后验证施工进度。它展示操作覆盖，不代表通用经济预算、内阁优化或任意建造策略。",
+      "status": {
+        "en": "VISUAL-NARROW ARCHIVE",
+        "zh": "固定场景视觉档案",
+        "classification": "visual-narrow-archive"
+      }
+    },
+    {
+      "id": "04-time-checkpoint-recovery",
+      "type": "evidence_card",
+      "title_en": "PAUSE, BOUNDED TIME, CHECKPOINT AND COLD RECOVERY",
+      "title_zh": "暂停、有界时间、检查点与冷恢复",
+      "narration_en": "The managed owner can identify a playable map, pause, set speed, advance within a strict budget, and re-observe the next paused frame. Production evidence then crosses the harder boundary: save materialization, complete reclamation of the old CK3 process, launch of a fresh PID, and recovery to the same date and character. Query-only turns and command acknowledgements do not count as gameplay progress. The active-war continuation has accumulated two hundred ten successful turns, seventy-eight visible gameplay turns, seventy-five game days, periodic checkpoints, and proven cleanup after every run.",
+      "subtitle_zh": "受管 owner 能暂停、控速、有界推进并复查下一 paused frame；生产实证还闭合了检查点落盘、旧进程回收、fresh PID 冷恢复到同日期与角色。既有战争续跑累计 210/210 回合、78 个可见玩法回合与 75 个游戏日。",
+      "status": {
+        "en": "PRODUCTION-LIVE LOOP",
+        "zh": "生产实机闭环",
+        "classification": "production-live-loop"
+      },
+      "sources": [
+        {"path": "../../testing-workflow.md", "label": "Managed runtime evidence"},
+        {"path": "../../ck3-native-ai/player-counterpolicy.md", "label": "Active-war continuation ledger"}
+      ],
+      "body_en": [
+        "Checkpoint: E8041581…9189F07 • PID 81684 → 34084",
+        "Active war: 210/210 turns • 78 visible • 75 game days",
+        "Periodic + final checkpoint • managed cleanup",
+        "Boundary: high-level intent recovery is not universal"
+      ],
+      "body_zh": [
+        "检查点：E8041581…9189F07 • PID 81684 → 34084",
+        "既有战争：210/210 回合 • 78 可见 • 75 游戏日",
+        "周期与最终 checkpoint • 受管清理",
+        "边界：高层意图恢复尚非通用"
+      ]
+    },
+    {
+      "id": "05-campaign-discovery",
+      "type": "evidence_card",
+      "title_en": "CAMPAIGN ROOT AND LOADED FEATURE DISCOVERY",
+      "title_zh": "战役根与已加载功能发现",
+      "narration_en": "The campaign-root query has production evidence on two distinct political positions: an independent ruler and a vassal. It binds the played character, primary title, tier, capital, liege, government flags, and game rules. A separate loaded-feature query returned every one of forty-four registry rows and twenty-nine runtime has-DLC keys from the running process. This gives the planner a typed feature gate instead of guessing from menus. It is map-context discovery, not campaign setup intelligence, and runtime keys do not prove account ownership or cover every government and landless configuration.",
+      "subtitle_zh": "Campaign-root 已在独立统治者与封臣两种政治位置完成生产实机，读取角色、主头衔、等级、首都、领主、政府标志与规则；feature manifest 返回 44/44 registry row 与 29 个 runtime key。它不是开局选择智能，也不证明账号 entitlement。",
+      "status": {
+        "en": "ARCHIVED PRODUCTION-LIVE PRIMITIVE",
+        "zh": "冻结生产实机原语",
+        "classification": "production-live-primitive"
+      },
+      "sources": [
+        {"path": "${TEMP}/xar-campaign-root-context-live-a-v2.json", "label": "Independent ruler"},
+        {"path": "${TEMP}/xar-campaign-root-context-live-b-v1.json", "label": "Vassal ruler"},
+        {"path": "${TEMP}/xar-loaded-feature-manifest-live-v1.json", "label": "Loaded feature manifest"}
+      ],
+      "body_en": [
+        "Character 29829 • duchy 2141 • capital 2619 • independent",
+        "Character 36108 • liege 37011 • vassal",
+        "44 / 44 registry rows • 29 runtime keys",
+        "Runtime feature ≠ account entitlement"
+      ],
+      "body_zh": [
+        "角色 29829 • 公爵领 2141 • 首都 2619 • 独立",
+        "角色 36108 • 领主 37011 • 封臣",
+        "44 / 44 registry row • 29 runtime key",
+        "Runtime feature 不等于账号所有权"
+      ]
+    },
+    {
+      "id": "06-dynasty-succession",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00002-frame-1ab0ca760ae642e6870c5d41edda0947.png",
+      "title_en": "DYNASTY AND SUCCESSION REVIEW",
+      "title_zh": "宗族与继承审阅",
+      "narration_en": "The historical development controller can open the dynasty and succession surfaces, inspect the player family and visible inheritance presentation, and retain those observations in its report. The one-life runtime also knows when the played character has changed away from the episode character. Together, these are useful pieces of family and lifecycle awareness. They are not yet an intelligent partition planner, title-grant strategy, guardian system, education policy, or general campaign continuation across every succession outcome. This image is an archived development frame and is not paired with an independent native artifact as one continuous run.",
+      "subtitle_zh": "历史控制器能打开宗族与继承界面并记录可见家庭、继承信息；一代制 runtime 也能识别玩家已离开本局角色。这些是家庭与生命周期基础，不是智能分封、教育或通用继承规划。画面属于独立历史开发档案。",
+      "status": {
+        "en": "IMPLEMENTED / ARCHIVED VISUAL",
+        "zh": "已实现 / 历史画面",
+        "classification": "implemented-historical"
+      }
+    },
+    {
+      "id": "07-marriage",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00011-frame-982458f9d45a4be58d1caf4c591f9988.png",
+      "title_en": "MARRIAGE RELATION, CANDIDATE AND RESPONSE",
+      "title_zh": "婚姻关系、候选与回信",
+      "narration_en": "Marriage support can read spouse and betrothed relations, identify legal Character-ID candidates, submit a proposal in the fixed historical route, and wait for the relationship postcondition. The archived scene shows a real candidate with plus thirty-one acceptance, followed elsewhere in the same development archive by proposal and accepted reply. Current candidate choice may still be the first legal row, so this is implemented capability rather than high-intelligence marriage strategy. Under the owner’s boundary, faith may be consulted only as a minimal opaque legality or acceptance input when marriage makes it unavoidable.",
+      "subtitle_zh": "婚姻路径能读取配偶与婚约关系、识别合法 CharacterID、提交提案并等待关系后置状态；历史画面显示 +31 接受度与成功回信。但当前仍可能选择首个合法候选，不是高智商婚姻策略；信仰只允许作为不可避免的最小 opaque 判定。",
+      "status": {
+        "en": "IMPLEMENTED / PARTIAL LIVE RESULT",
+        "zh": "已实现 / 局部实机结果",
+        "classification": "implemented-partial-live"
+      }
+    },
+    {
+      "id": "08-historical-event-action",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00003-frame-2a68354995b747d9b77f5829c529cbe5.png",
+      "title_en": "HISTORICAL EVENT SELECTION AND AUTO-RUN",
+      "title_zh": "历史事件选择与自动运行",
+      "narration_en": "The historical command layer has selected numeric event options in real CK3 and verified that the old instance disappeared and a new instance materialized. The visible development route also handled ordinary interruptions while auto-turn and auto-run advanced time. In the strongest recorded numeric example, event instance fourteen exposed five options; submitting option one produced instance fifteen with three options. That proves action plumbing and postcondition identity. It does not know the full text, long-term effects, scopes, or optimal utility of an arbitrary event, and fixed option one is not semantic decision-making.",
+      "subtitle_zh": "历史命令层曾在真实 CK3 中提交数值事件选项，并验证旧实例消失、新实例出现；可见流程也能在 auto-turn / auto-run 时处理中断。它证明动作与后置身份，不代表理解任意事件文本、完整效果或最优效用，固定 option 1 不是语义决策。",
+      "status": {
+        "en": "HISTORICAL PRODUCTION PRIMITIVE",
+        "zh": "历史生产原语",
+        "classification": "historical-production-primitive"
+      }
+    },
+    {
+      "id": "09-current-event-window",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/ck3-autonomous-agent-event-window-bilingual-20260827-004648.mp4",
+      "start_seconds": 102.0,
+      "end_seconds": 145.0,
+      "title_en": "CURRENT EVENT WINDOW: IDENTITY, OPTIONS AND COLD RECOVERY",
+      "title_zh": "当前事件窗口：身份、选项与冷恢复",
+      "narration_en": "The newer current-window query reads what the actual window materialized: canonical event key, full instance, shown and enabled options, disabled reason, authored native index, fallback and cancel. The same-run bilingual recording crosses a checkpoint into a distinct fresh CK3 PID, then repeats two adjacent paused queries. Instance seventeen, the canonical key, indices zero, one, and three, and the cancel flag on index three survive the handoff. This remains fixture-live and read-only. Empty typed indicator rows are only a lossy GUI subset, not proof of no effects, and semantic-decision readiness is false.",
+      "subtitle_zh": "Current-window 查询读取真实物化的事件 key、实例、显示与可用状态、禁用原因、authored index、fallback 与 cancel；同次录像跨 checkpoint 到 fresh PID 后再次验证 `[0,1,3]` 与 index 3 的 cancel。它仍是只读 fixture-live，空 indicator 不等于无效果，语义决策 readiness=false。",
+      "status": {
+        "en": "FIXTURE-LIVE — READ ONLY",
+        "zh": "夹具实机——只读",
+        "classification": "fixture-live"
+      }
+    },
+    {
+      "id": "10-pending-interaction",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-pending-white-peace-binding-20260827-013631-868.mp4",
+      "start_seconds": 134.0,
+      "end_seconds": 172.766,
+      "title_en": "PENDING INTERACTION: TYPED WHITE-PEACE WAR BINDING",
+      "title_zh": "待处理互动：白和请求的 typed 战争绑定",
+      "narration_en": "This is a fresh recording made for the showcase. A first managed process materialized an ordinary, nonreligious claim-war white-peace request and saved it. A distinct production-only process cold-loaded the request and queried it twice while paused. The bridge recovered stable interaction kind, five role slots, routing, deadline, reply legalities, and the exact War ID 16,777,290 with primary attacker and defender. The runner did not accept, reject, block, acknowledge, or end the war. Structured terms and a semantic reply policy remain incomplete, so the badge is production-live primitive, not loop.",
+      "subtitle_zh": "本片 fresh 录制先物化普通非宗教 claim-war 白和请求，再由独立 production-only 进程冷恢复并双查询；原生桥读取互动类型、五类角色、routing、deadline、legality 与 WarID 16777290。runner 没有回复或结束战争，structured terms 与语义策略仍未完成。",
+      "status": {
+        "en": "FRESH PRODUCTION-LIVE PRIMITIVE",
+        "zh": "新录生产实机原语",
+        "classification": "production-live-primitive"
+      }
+    },
+    {
+      "id": "11-notification-ack",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-notification-ack-20260827-014338-352.mp4",
+      "start_seconds": 144.0,
+      "end_seconds": 182.033,
+      "title_en": "AUTO-ACCEPT NOTIFICATION: QUERY, ACK, VERIFY",
+      "title_zh": "自动接受通知：查询、确认、验证",
+      "narration_en": "A second fresh recording exercises the generic notification channel through a deterministic nonreligious definition fixture. The seed process saved a generation-bearing notification without resolving it. A fresh process performed two identical typed queries, submitted exactly one fixed acknowledgement, and proved that the old full pending ID disappeared while the game stayed paused on the same date and character. No accept, reject, or block path ran. This is a real postcondition beyond an ACK receipt, but it remains fixture-live. It is not a natural stock notification and does not establish general intermediary or semantic interaction policy.",
+      "subtitle_zh": "第二条 fresh 录像用非宗教定义夹具验证通知通道：seed 保存带 generation 的通知，fresh 进程双查询后提交唯一 ACK，并证明旧 full ID 消失、日期与暂停状态不变，且没有 accept/reject/block。后置状态真实，但仍是 fixture-live，不代表原版自然通知或通用互动策略。",
+      "status": {
+        "en": "FRESH FIXTURE-LIVE",
+        "zh": "新录夹具实机",
+        "classification": "fixture-live"
+      }
+    },
+    {
+      "id": "12-war-entry",
+      "type": "evidence_card",
+      "title_en": "FIXED CANDIDATE WAR DECLARATION",
+      "title_zh": "固定候选宣战",
+      "narration_en": "The command layer has historical production evidence for declaring one fixed, legal candidate war. Command literal declare-war 29097, 11, 0 produced real War ID 16,777,290, after which the controller could observe the active war. The archived Palermo campaign also gives strong visible footage for raising, moving, sieging, winning, and disbanding. This is a mechanical primitive and a fixed regression scenario, not intelligent casus-belli selection. It does not compare targets, title value, reserves, alliances, finances, truces, factions, or simultaneous wars. The Palermo holy war appears only under the owner-authorized war-OODA exception.",
+      "subtitle_zh": "历史生产实证中，固定合法 literal `declare-war-29097-11-0` 生成真实 WarID 16777290；巴勒莫档案随后覆盖集结、行军、围城、胜利与解散。它是固定机械原语，不是智能 CB、目标、联盟、财政或多战争比较；圣战只按战争 OODA 窄例外展示。",
+      "status": {
+        "en": "HISTORICAL PRODUCTION-LIVE PRIMITIVE",
+        "zh": "历史生产实机原语",
+        "classification": "historical-production-primitive"
+      },
+      "sources": [
+        {"path": "../../../ck3_autonomous_player/README.md", "label": "War command history"},
+        {"path": "../../ck3-native-ai/player-war-entry-policy.md", "label": "Native war-entry tree"}
+      ],
+      "body_en": [
+        "declare-war-29097-11-0 → WarID 16777290",
+        "Fixed candidate • fixed 1066 regression",
+        "Holy-war semantics: war OODA exception only",
+        "NOT smart target / CB / alliance selection"
+      ],
+      "body_zh": [
+        "declare-war-29097-11-0 → WarID 16777290",
+        "固定候选 • 固定 1066 回归场景",
+        "圣战语义：仅战争 OODA 例外",
+        "不是智能目标 / CB / 联盟选择"
+      ]
+    },
+    {
+      "id": "13-movement-siege",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00010-frame-8acec59180d84bedb7c1cd06303bdfaa.png",
+      "title_en": "RAISE, ROUTE, MOVE AND SIEGE",
+      "title_zh": "集结、路线、行军与围城",
+      "narration_en": "In the fixed historical war, the controller raised all armies, selected the player stack, issued a route toward the Palermo objective, handled ordinary-event interruption, resumed bounded time, and confirmed siege state on the target fort. The newer native path adds typed objectives, route preview, occupation, fort and garrison data, active siege identity, breach and assault surface, split-and-merge recovery, and periodic checkpoints. Portions of this existing-war path qualify as production loops. It still does not cover arbitrary supply, attrition, embarkation, raiding, mercenaries, allies, or general multi-army scheduling from war start to legal exit.",
+      "subtitle_zh": "固定历史战争能集结、选军、向巴勒莫目标行军、处理中断并确认围城；新原生路径还提供 objective、route preview、occupation、fort、garrison、siege、breach 与 assault typed 状态以及 checkpoint。它尚不覆盖通用补给、损耗、海运、劫掠、盟友或多军团调度。",
+      "status": {
+        "en": "PARTIAL PRODUCTION-LIVE LOOP + ARCHIVE",
+        "zh": "局部生产闭环 + 历史画面",
+        "classification": "production-live-loop-partial"
+      }
+    },
+    {
+      "id": "14-victory-disband",
+      "type": "still",
+      "source": "${LOCALAPPDATA}/XarAutoplayer/runs/20260823T032552Z-dev-session-b4ded92f/artifacts/00012-frame-1228aa7dd1e04aa98a73a05addcb4dbd.png",
+      "title_en": "ONE HUNDRED PERCENT, ENFORCE AND DISBAND",
+      "title_zh": "百分百战分、执行要求与解散军队",
+      "narration_en": "The archived fixed campaign reached one hundred percent war score, opened the victory terms, enforced demands, dismissed the victory result, confirmed the changed map, disbanded the raised armies, and saved again. Individual command receipts for this sequence are successful even though the larger development session contains unrelated failed attempts and is therefore never labeled globally green. This is valuable end-to-end visual proof for the historical scenario. It does not mean the current native planner can autonomously take an arbitrary war from peace through declaration, every battle and siege, legal termination, postwar cleanup, and cold recovery.",
+      "subtitle_zh": "固定历史战役曾达到 100% 战分、打开胜利条款、执行要求、确认领土变化、解散军队并再次保存。相关命令 receipt 成功，但整场开发会话含无关失败，因此只按逐条历史实机展示；它不等于当前原生 planner 能把任意战争从和平自动打到终局。",
+      "status": {
+        "en": "ARCHIVED DEVELOPMENT LIVE",
+        "zh": "历史开发实机",
+        "classification": "visual-narrow-archive"
+      }
+    },
+    {
+      "id": "15-contact-combat-inputs",
+      "type": "evidence_card",
+      "title_en": "EXACT CONTACT IDENTITY AND COMBAT INPUT PLANE",
+      "title_zh": "精确接敌身份与战斗输入面",
+      "narration_en": "The native war controller can preview a route’s contact date and then observe the first real battle at the matching date. It binds the new Combat ID, province, both sides, and stored orders, and preserves that identity across a cold process. A deeper combat query publishes twenty-seven characters, three armies, fifteen constructor sources, and one hundred thirty-two references, including phase, terrain, width, commanders, knights, men-at-arms, and strength ledgers. These are planner inputs, not a calibrated win probability, casualty forecast, or authorization to attack. Join-existing and multiple-compatible-combat branches remain open.",
+      "subtitle_zh": "原生控制器能让路线接触 ETA 与真实首次接敌日期一致，绑定 CombatID、省份、双方与 stored order，并跨冷启动保持身份；combat v3 还发布 27 个角色、3 支军队、15 个 constructor source 与 132 个引用。它们只是输入，不是胜率或伤亡预测；join-existing 与多兼容战斗仍未闭合。",
+      "status": {
+        "en": "PRODUCTION-LIVE LOOP + PRIMITIVE",
+        "zh": "生产实机闭环 + 原语",
+        "classification": "production-live-mixed"
+      },
+      "sources": [
+        {"path": "${TEMP}/xar-war-entry-production6b-state/logs/p0-actual-contact-first-live.json", "label": "First actual contact"},
+        {"path": "${TEMP}/xar-war-entry-production6b-state/logs/p0-actual-contact-cold-restore-live.json", "label": "Cold contact identity"},
+        {"path": "${TEMP}/xar-war-entry-production6b-state/logs/combat-v3-shared-main-thread-paused-live-acceptance.json", "label": "Combat input plane"}
+      ],
+      "body_en": [
+        "Route ETA = first real contact date",
+        "CombatID + Province + both stored orders",
+        "27 Characters • 3 Armies • 15 sources • 132 refs",
+        "INPUTS — NOT A WIN PROBABILITY"
+      ],
+      "body_zh": [
+        "路线 ETA = 首次真实接敌日期",
+        "CombatID + Province + 双方 stored order",
+        "27 角色 • 3 军队 • 15 来源 • 132 引用",
+        "这些是输入——不是胜率"
+      ]
+    },
+    {
+      "id": "16-battle-hold",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-planner-battle-hold-20260827-013412-340.mp4",
+      "start_seconds": 38.0,
+      "end_seconds": 85.0,
+      "title_en": "BOUNDED ONGOING-BATTLE OBSERVATION AND HOLD",
+      "title_zh": "有界战中观察与坚守",
+      "narration_en": "This fresh same-run clip drives the production service and planner through two exact query, one-day advance, and re-query cycles. The Combat ID remains 335,544,325 while the maneuver phase advances from day one to day two to day three. Current, soft, and hard strength ledgers are re-read after each bounded day. The only gameplay action is life-advance; no retreat order, combat constructor, or attack resolver is invoked. This is a genuine narrow observe-decide-act-verify loop for holding the battle. It is not a calibrated forecast, dynamic reinforcement policy, or complete battle strategy.",
+      "subtitle_zh": "本片 fresh 同次录像执行两轮“精确查询 → 推进一天 → 再查询”；CombatID 335544325 保持不变，maneuver day 从 1 到 2 到 3，并重读 current/soft/hard ledger。唯一玩法动作是 life-advance；这是狭窄的坚守 OODA，不是胜率预测、动态增援或完整战斗策略。",
+      "status": {
+        "en": "FRESH PRODUCTION-LIVE LOOP",
+        "zh": "新录生产实机闭环",
+        "classification": "production-live-loop"
+      }
+    },
+    {
+      "id": "17-retreat-legality-full-side",
+      "type": "evidence_card",
+      "title_en": "RETREAT LEGALITY AND FULL-SIDE ACTION",
+      "title_zh": "撤退合法性与整侧撤退动作",
+      "narration_en": "Retreat was first observed across sixteen bounded game days. Day fourteen still returned too early; on day fifteen, while the same battle remained in main phase, the native validator became legal. In the full-side action acceptance, the planner previewed destination province 2579, consumed a battle-bound token, submitted the movement, and verified retreating state, route, the old Combat ID, and transition from main phase into pursuit. This is production-live action evidence. It does not claim the native AI’s general retreat destination scoring, decision cadence, or universal behavior across every composition and battlefield.",
+      "subtitle_zh": "撤退合法性经过 16 个有界游戏日观测：第 14 日仍 too early，第 15 日同一战斗 main phase 才合法。整侧动作随后预览省份 2579、消费 battle-bound token、提交并验证 retreating、路线、旧 CombatID 与 pursuit 转换。它不代表通用原生 AI 撤退评分或 cadence。",
+      "status": {
+        "en": "PRODUCTION-LIVE LOOP",
+        "zh": "生产实机闭环",
+        "classification": "production-live-loop"
+      },
+      "sources": [
+        {"path": "${TEMP}/xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3/logs/active-retreat-query-days-live.json", "label": "Day-by-day legality"},
+        {"path": "${TEMP}/xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3/logs/active-retreat-action-full-side-transition-live-v6.json", "label": "Full-side transition"}
+      ],
+      "body_en": [
+        "Day 14: too_early",
+        "Day 15: legal in main phase",
+        "Preview 2579 → token → submit → retreating",
+        "Main/12 → pursuit/0"
+      ],
+      "body_zh": [
+        "第 14 日：too_early",
+        "第 15 日：main phase 合法",
+        "预览 2579 → token → 提交 → retreating",
+        "Main/12 → pursuit/0"
+      ]
+    },
+    {
+      "id": "18-owner-subset-retreat",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-owner-subset-retreat-20260827-014658-029.mp4",
+      "start_seconds": 320.0,
+      "end_seconds": 359.9,
+      "title_en": "OWNER-SUBSET RETREAT: PLAYER UNIT LEAVES, ALLY STAYS",
+      "title_zh": "按所有者撤退：玩家单位离场，友军留战",
+      "narration_en": "The strongest fresh action clip uses four isolated CK3 stages to construct and then production-test a mixed-owner side. The final production-only process cold-loads the canonical checkpoint and executes the real retreat. CUnit 357, owned by the player, enters its retreat route; same-side CUnit 33,554,657, owned by another character, remains in the old Combat ID; the enemy also remains. The command therefore does not incorrectly remove the whole side. All four managed PIDs are reclaimed. This proves owner-subset behavior in the accepted fixture composition, not a universal autonomous retreat destination policy.",
+      "subtitle_zh": "最强 fresh 动作录像用四个隔离 CK3 阶段构造并生产验证混合所有者战场。最终进程冷加载 checkpoint 后，玩家 CUnit 357 进入撤退路线；同侧异主 CUnit 33554657 与敌军仍留在旧 CombatID，证明命令没有错误移除整侧。它不等于通用自主撤退目的地策略。",
+      "status": {
+        "en": "FRESH PRODUCTION-LIVE LOOP",
+        "zh": "新录生产实机闭环",
+        "classification": "production-live-loop"
+      }
+    },
+    {
+      "id": "19-reinforcement",
+      "type": "evidence_card",
+      "title_en": "REINFORCEMENT ASSIGNMENT OBSERVATION",
+      "title_zh": "增援 assignment 观测",
+      "narration_en": "The reinforcement query can read whether a unit is asking for reinforcement, whether an assignment exists, the AI parent stored order, route, and active Combat ID. The accepted production sample reported asking true and assigned false. After owner-subset retreat, independent membership was also observed reopening. This is useful because it makes the absence of assignment an explicit value instead of an unknown field. It is still only a production-live primitive. Assigned-and-aligned arrival time, real joining of an existing combat, player reassignment, and the corresponding successor-state verification remain unfinished, so reinforcement readiness stays false.",
+      "subtitle_zh": "增援查询能读取 asking、assigned、AI parent stored order、route 与 active CombatID；已验收样本为 asking=true、assigned=false，subset 撤退后也观测到 membership reopen。它仍只是生产原语：assigned ETA、真实 join、玩家改派与后置验证尚未完成。",
+      "status": {
+        "en": "PRODUCTION-LIVE PRIMITIVE",
+        "zh": "生产实机原语",
+        "classification": "production-live-primitive"
+      },
+      "sources": [
+        {"path": "${TEMP}/xar-battle-reinforcement-assignment-live-v2.json", "label": "Reinforcement assignment live"}
+      ],
+      "body_en": [
+        "asking = true",
+        "assigned = false",
+        "AI parent order + route + active CombatID available",
+        "Missing: assigned ETA • real join • reassign action"
+      ],
+      "body_zh": [
+        "asking = true",
+        "assigned = false",
+        "可读 AI parent order、route 与 active CombatID",
+        "缺失：assigned ETA • 真实 join • 改派动作"
+      ]
+    },
+    {
+      "id": "20-battle-terminal",
+      "type": "video_clip",
+      "source": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-battle-normal-terminal-20260827-013940-668.raw.mkv",
+      "start_seconds": 108.0,
+      "end_seconds": 155.0,
+      "title_en": "NORMAL BATTLE TERMINAL THROUGH PASSIVE JOURNAL",
+      "title_zh": "通过被动日志观测 normal 战斗终局",
+      "narration_en": "This fresh raw capture contains a green terminal runner even though a later recorder-window race prevented its final sidecar. The runner advanced the same combat exactly one day at a time and, on day thirty-three, observed a normal result through the passive production journal and successor query. The old Combat ID vanished globally and from the province; result identity remained; war-score row 2,135,850 appeared; and the player subject was retreating. No battle finalizer, score writer, constructor, or contact resolver was called. Only the normal branch is closed; no-normal, residual, and re-entry branches remain open.",
+      "subtitle_zh": "这段 fresh raw 录屏中的 terminal runner 为 GREEN；仅后续录屏窗口竞态阻止了单段 sidecar。runner 对同一战斗逐日推进，第 33 日通过被动 journal 与 successor query 观测 normal result：旧 CombatID 全局与省份双删除、Result 保留、战分 row 2135850 出现、玩家进入 retreat。仅 normal 分支闭合。",
+      "status": {
+        "en": "FRESH PRODUCTION LIVE — NORMAL BRANCH",
+        "zh": "新录生产实机——normal 分支",
+        "classification": "production-live-normal-terminal"
+      }
+    },
+    {
+      "id": "21-war-exit",
+      "type": "evidence_card",
+      "title_en": "WAR TERMINATION OPTIONS — READ ONLY",
+      "title_zh": "战争终止选项——只读",
+      "narration_en": "A separate paused production query reads the current claim war and three termination surfaces without changing the war. At plus forty-one player-relative score after three hundred forty-seven days, surrender was valid with AI value plus eight hundred sixty, white peace was valid at plus eleven, and victory was not valid at minus fifty-eight. These numbers are native inputs, not an exit action. White-peace and surrender writes remain frozen until structured dynamic terms and campaign-decision readiness are complete. The pending white-peace request shown earlier proves identity binding, not that the agent can safely choose or execute a general autonomous war exit.",
+      "subtitle_zh": "另一个 paused 生产查询只读获取 claim war 的三个终战面：玩家相对战分 +41、持续 347 日，surrender +860、white peace +11、victory -58。它们是原生输入，不是退出动作；在 structured dynamic terms 与 campaign readiness 完成前，白和与投降写路径保持冻结。",
+      "status": {
+        "en": "PRODUCTION-LIVE PRIMITIVE — WRITES FROZEN",
+        "zh": "生产实机原语——写路径冻结",
+        "classification": "production-live-primitive-read-only"
+      },
+      "sources": [
+        {"path": "../../ck3-native-ai/war-termination.md", "label": "Native termination tree and live evidence"},
+        {"path": "../../../artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-pending-white-peace-binding-20260827-013631-868.live.json", "label": "Fresh pending white-peace binding"}
+      ],
+      "body_en": [
+        "WarID 16777290 • score +41 • duration 347 days",
+        "Surrender +860 • White peace +11 • Victory -58",
+        "READ ONLY — NO TERMINATION SUBMISSION",
+        "Dynamic terms / campaign readiness incomplete"
+      ],
+      "body_zh": [
+        "WarID 16777290 • 战分 +41 • 持续 347 日",
+        "投降 +860 • 白和 +11 • 胜利 -58",
+        "只读——未提交终战动作",
+        "动态条款 / campaign readiness 未完成"
+      ]
+    },
+    {
+      "id": "22-one-life-settlement",
+      "type": "evidence_card",
+      "title_en": "ONE-LIFE TERMINAL AND SETTLEMENT",
+      "title_zh": "一代制终局与结算",
+      "narration_en": "When the played character changed from episode character 29,829 to heir 38,822, the one-life planner executed only its death-terminal path. It did not send marriage, war, save, or time-advance actions to the heir. Native settlement returned a raw score equivalent to 6.8, candidate record six, one blessing, and a written record; the high-score bit was observed stable twice before episode completion. This is a production-live primitive for the one-life mode. It is not yet a full natural-death episode matrix, the no-heir case, or general continuation as the ordinary campaign successor.",
+      "subtitle_zh": "当 played character 从本局角色 29829 切换到继承人 38822 时，一代制 planner 只执行 death-terminal，不向继承人发送婚姻、战争、存档或推进动作。Native settlement 返回 6.8 分、候选纪录 6、一次祝福与已写纪录；这是生产原语，不是自然死亡全矩阵或普通继承续玩。",
+      "status": {
+        "en": "PRODUCTION-LIVE PRIMITIVE",
+        "zh": "生产实机原语",
+        "classification": "production-live-primitive"
+      },
+      "sources": [
+        {"path": "../../ck3-agent-one-life-terminal.md", "label": "One-life terminal contract"},
+        {"path": "../../ck3-native-settlement-contract.md", "label": "Native settlement contract"}
+      ],
+      "body_en": [
+        "Episode Character 29829 → played heir 38822",
+        "Only action: death-terminal",
+        "Score 6.8 • record candidate 6 • record written",
+        "No actions issued to the heir"
+      ],
+      "body_zh": [
+        "本局角色 29829 → 当前继承人 38822",
+        "唯一动作：death-terminal",
+        "分数 6.8 • 候选纪录 6 • 已写纪录",
+        "未向继承人发送任何动作"
+      ]
+    },
+    {
+      "id": "23-next-episode-memory",
+      "type": "evidence_card",
+      "title_en": "IMMUTABLE NEXT EPISODE AND MINIMAL CROSS-RUN MEMORY",
+      "title_zh": "不可变新局与最小跨局记忆",
+      "narration_en": "Start-next-episode stopped PID 119,628 and launched PID 110,972 from an immutable episode seed. The run identity changed, terminal state cleared, and the new minimized process submitted one native army move from province 2618 toward 2615, then advanced seven game days under control. A small cross-run plan carries selected outcomes into the next episode. That is enough to prove process replacement, immutable restart, and minimal continuity. It is not a learned world model, a long-horizon value function, or ordinary campaign succession. The one-life design intentionally does not continue playing the heir.",
+      "subtitle_zh": "Start-next-episode 停止 PID 119628，并从不可变 seed 启动 PID 110972；新 run 清除 terminal 状态，在最小化进程中提交 2618→2615 的原生行军并受控推进 7 日。跨局记忆只保存少量结果，证明最小连续性，不是学习型世界模型或普通继承续玩。",
+      "status": {
+        "en": "PRODUCTION-LIVE PRIMITIVE",
+        "zh": "生产实机原语",
+        "classification": "production-live-primitive"
+      },
+      "sources": [
+        {"path": "../../ck3-agent-one-life-terminal.md", "label": "Episode transition evidence"},
+        {"path": "../goal-and-roadmap.md", "label": "Current memory boundary"}
+      ],
+      "body_en": [
+        "PID 119628 → 110972",
+        "Immutable episode seed • new run identity",
+        "Native move 2618 → 2615 • seven controlled days",
+        "Memory: small outcome set, not a learned world model"
+      ],
+      "body_zh": [
+        "PID 119628 → 110972",
+        "不可变 episode seed • 新 run identity",
+        "原生移动 2618 → 2615 • 受控推进七日",
+        "记忆：少量结果，不是学习型世界模型"
+      ]
+    },
+    {
+      "id": "24-evidence-frontier",
+      "type": "evidence_card",
+      "title_en": "WHAT IS STRONGEST — AND WHAT IS STILL MISSING",
+      "title_zh": "最强成果与仍缺能力",
+      "narration_en": "The strongest current results are narrow production loops: managed checkpoint recovery, portions of an existing war, create-new contact identity, bounded battle hold, and full-side plus owner-subset retreat. Around them are production primitives for campaign discovery, combat inputs, terminal observation, interactions, war-exit options, and one-life settlement; fixture-live event and notification channels; and implemented historical visual actions. No gameplay domain is complete. General economy, council, preparation, intelligent war entry, multi-war control, family and succession strategy, diplomacy, vassals, schemes, prisoners, health, culture, law, activities, court, and long-horizon learning remain unfinished.",
+      "subtitle_zh": "当前最强成果是狭窄生产闭环：受管 checkpoint 恢复、既有战争部分流程、create-new 接敌、战中 hold、整侧与 owner-subset 撤退；外围还有多项生产原语、fixture-live 与历史动作。没有任何玩法域达到 complete，经济、内阁、军备、智能宣战、多战争、家庭继承、外交、封臣、谋略、健康、文化法律、活动宫廷与长期学习仍未完成。",
+      "status": {
+        "en": "NOT COMPLETE — EVIDENCE-BOUND STATUS",
+        "zh": "尚未完成——按证据定级",
+        "classification": "not-complete"
+      },
+      "sources": [
+        {"path": "../goal-and-roadmap.md", "label": "Canonical capability status"},
+        {"path": "2026-08-27-full-capability-showcase-storyboard.md", "label": "Showcase evidence map"}
+      ],
+      "body_en": [
+        "GREEN LOOPS: recovery • partial war • contact • hold • retreat",
+        "PRIMITIVES: discovery • combat inputs • terminal • interactions",
+        "FIXTURES: current event • notification ACK",
+        "No gameplay domain is COMPLETE"
+      ],
+      "body_zh": [
+        "绿色闭环：恢复 • 局部战争 • 接敌 • 坚守 • 撤退",
+        "原语：发现 • 战斗输入 • 终局 • 互动",
+        "夹具：当前事件 • 通知 ACK",
+        "当前没有任何玩法域达到 COMPLETE"
+      ]
+    },
+    {
+      "id": "25-religion-boundary",
+      "type": "title_card",
+      "title_en": "RELIGION IS INTENTIONALLY DEFERRED",
+      "title_zh": "宗教域按所有者要求暂缓",
+      "narration_en": "Religion remains intentionally deferred because the game is expected to refactor it substantially. Only two narrow exceptions are permitted: the minimal holy-war semantics required inside a war observe-decide-act-verify loop, and minimal faith-dependent legality or acceptance when marriage cannot avoid it. Faith stays opaque. This showcase does not analyze doctrines, tenets, fervor, conversion, reformation, great holy wars, or religious strategy. Holy orders also remain deferred. The Palermo footage is therefore labeled as a war-OODA exception, never as a completed religion capability.",
+      "subtitle_zh": "鉴于近期将大规模重构，宗教域按所有者要求暂缓。只允许两项窄例外：战争 OODA 必需的最小圣战语义，以及婚姻无法回避时的最小信仰合法性或接受度；faith 保持 opaque。教义、教条、热情、改宗、改革、大圣战、宗教策略与 holy order 均未探索。",
+      "status": {
+        "en": "DEFERRED — TWO MINIMAL EXCEPTIONS",
+        "zh": "暂缓——仅两项最小例外",
+        "classification": "owner-deferred"
+      },
+      "body_en": [
+        "ALLOWED: minimal holy-war data inside war OODA",
+        "ALLOWED: minimal opaque marriage legality / acceptance",
+        "DEFERRED: faith systems • doctrines • tenets • conversion",
+        "DEFERRED: reformation • great holy war • holy orders"
+      ],
+      "body_zh": [
+        "允许：战争 OODA 内的最小圣战数据",
+        "允许：婚姻必要的最小 opaque 合法性 / 接受度",
+        "暂缓：信仰系统 • 教义 • 教条 • 改宗",
+        "暂缓：改革 • 大圣战 • 骑士团"
+      ]
+    },
+    {
+      "id": "26-finale",
+      "type": "title_card",
+      "title_en": "A MEASURED FOUNDATION FOR A GENUINELY INTELLIGENT PLAYER",
+      "title_zh": "迈向真正高智商玩家的可度量基础",
+      "narration_en": "This is not the finish line. It is a measured foundation: exact-build typed observations, generation-bound native actions, real postcondition checks, cold recovery, and several narrow gameplay loops that survive contact with CK3 itself. The evidence wall records every source and hash, and the badges prevent a fixture, schema, command acknowledgement, or historical fixed script from masquerading as a complete domain. From here, development continues domain by domain: first close the remaining combat and war-controller branches, then build the same observe-decide-act-verify discipline across peace, family, diplomacy, economy, and long-horizon campaign planning.",
+      "subtitle_zh": "这不是终点，而是一套经 CK3 实机检验的可度量基础：exact-build typed 观测、代次绑定原生动作、真实后置验证、冷恢复与多个狭窄玩法闭环。证据墙记录全部来源与哈希，状态徽章阻止 fixture、schema、ACK 或固定脚本冒充完整能力。下一步将按玩法域继续闭合战争、和平期、家庭、外交、经济与长期战役规划。",
+      "status": {
+        "en": "NO DOMAIN IS COMPLETE — BUILD CONTINUES",
+        "zh": "没有玩法域已完成——建设继续",
+        "classification": "not-complete"
+      },
+      "body_en": [
+        "EXACT OBSERVATION • BOUNDED DECISION • NATIVE ACTION",
+        "VERIFIED POSTCONDITION • CHECKPOINT • COLD RECOVERY",
+        "Every claim is evidence-bound",
+        "The autonomous campaign player is still under construction"
+      ],
+      "body_zh": [
+        "精确观测 • 有界决策 • 原生动作",
+        "后置验证 • 检查点 • 冷恢复",
+        "每项声明都绑定证据",
+        "完整自动战役玩家仍在持续建设"
+      ],
+      "min_duration_seconds": 48.0
+    }
+  ]
+}

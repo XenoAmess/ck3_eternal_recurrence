@@ -1,4 +1,4 @@
-# 琉焰卿的永恒轮回（AGENTS 指南）
+﻿# 琉焰卿的永恒轮回（AGENTS 指南）
 
 ## 项目结构
 
@@ -6,7 +6,7 @@
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
-- `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图与日报、周报入口；能力状态必须回链原生专题与实机证据
+- `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图与日报、周报、月报入口；能力状态必须回链原生专题与实机证据
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
 - 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**。
   `remote_file_id` 的 canonical 副本**只能留在各自用户目录外层 .mod，不能同步进仓库内层 descriptor.mod**。
@@ -144,22 +144,27 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   同样创建当天日报。同一天有多个里程碑时持续更新同一文件，并在当天最后一次任务提交/推送前再核对一次。
 - **每个有项目工作的 ISO 周必须创建或更新** `docs/autonomous-agent-progress/weekly/YYYY-Www.md`。当前周报作为滚动报告，
   每个工作日随日报同步更新；最迟在该周最后一个工作日补齐本周结果、未闭合项和下周入口。
+- **每个自然月的 27 日约 02:00（Asia/Shanghai）必须创建或更新**
+  `docs/autonomous-agent-progress/monthly/YYYY-MM.md`。月报既总结上次月报截止以来的增量，也维护截至本次截止的完整能力清单、
+  诚实 readiness 边界和下一阶段主线；首次月报允许以项目迄今的累计能力盘点作为基线。
 - 日报和周报至少写明：完成了什么、正在做什么、为什么做、能力/readiness 变化、测试与 live artifact、RED/阻点、
   下一步、相关 commit/push。报告模板分别位于 `docs/autonomous-agent-progress/daily/TEMPLATE.md` 与
   `docs/autonomous-agent-progress/weekly/TEMPLATE.md`。
-- **每份日报必须配套当天的 show-off 视频；每份周报必须配套当周的汇总 show-off 视频。** 视频未产出或未通过媒体与
-  内容抽检时，对应报告只能标记为“未完成/滚动中”，不能算交付。周报视频最迟在该周收口时生成；滚动周报应明确写出
-  当前视频状态。
-- show-off 视频统一采用**英语为主叙事，简体中文作为副标题/字幕**：开场、阶段卡、游戏过程 lower-third 与最终证据卡都必须
-  中英双语；英文保持主要视觉层级，中文不得只是报告外的另附文本。日报/周报必须记录成片路径、时长、分辨率、编码、
-  SHA-256、对应 live artifact 及诚实能力边界。视频是展示层，不替代 artifact/ABI/live evidence。
+- **日报和周报只要求文字报告，不再要求也不默认制作配套视频。** 已存在的日级、周级或阶段性录像可以作为历史证据素材
+  继续引用，但视频缺失不影响日报完成或周报收口，也不得把历史素材冒充当月正式成片。
+- **每份月报必须配套一条截至当月截止时的完整能力 show-off 视频。** 视频未产出或未通过媒体、字幕和内容抽检时，月报只能
+  标记为“未完成/重制中”，不能算正式交付。月报视频统一采用**英语为主叙事，简体中文作为画面内副标题/字幕**：开场、阶段卡、
+  游戏过程 lower-third 与最终证据卡都必须中英双语；英文保持主要视觉层级。中文字幕必须按句意断句，并按实际渲染宽度自动
+  换行，禁止单行穿出安全区或被画面裁切。月报必须记录成片路径、时长、分辨率、编码、SHA-256、对应 live artifact 索引及
+  诚实能力边界。视频是展示层，不替代 artifact/ABI/live evidence。
 - 视频与 sidecar 默认输出到 `artifacts/demos/YYYY-MM-DD/`，录制规范与索引见
   `docs/autonomous-agent-progress/demos/README.md`。可复用录制器应提交进仓库；大体积成片不进 Git，但必须在报告中留下
   可核验路径和哈希。
 - 状态必须严格区分 `research`、`static-ready`、`fixture-live`、`production-live primitive`、
   `production-live loop` 和 `complete`。没有真实 paused artifact 时不得写 live；ACK、schema 字段、单元测试或单场 fixture
   不得冒充完整 OODA。失败 attempt 必须保留，并区分 harness RED 与 capability RED。
-- 多代理并行时，负责实际工作包的代理必须把可核验的结果、测试、artifact/commit 和遗留项写入当天/当周报告；若协调者
+- 多代理并行时，负责实际工作包的代理必须把可核验的结果、测试、artifact/commit 和遗留项写入当天/当周报告，并让这些记录
+  能在月报截止时汇总；若协调者
   正在编辑同一文件，则先发送这些字段，由协调者合并，不能因避免冲突而漏报。
 
 ## 自动游玩 Agent：价值优先与安全边界
