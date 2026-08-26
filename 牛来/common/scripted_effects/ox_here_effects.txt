@@ -1,0 +1,91 @@
+﻿ox_here_invite_warrior_effect = {
+	save_scope_as = ox_here_ruler
+
+	create_character = {
+		employer = root
+		template = ox_here_african_warrior
+		save_scope_as = ox_here_warrior
+	}
+
+	# The employer field should place the character in court; retain a safe fallback.
+	if = {
+		limit = {
+			scope:ox_here_warrior = {
+				NOT = { is_courtier_of = scope:ox_here_ruler }
+			}
+		}
+		scope:ox_here_ruler = {
+			add_courtier = scope:ox_here_warrior
+		}
+	}
+
+	scope:ox_here_warrior = {
+		force_character_skill_recalculation = yes
+		set_knight_status = force
+	}
+
+	# A vacant Royal Court champion position is filled automatically. The forced
+	# knight remains eligible for the native accolade UI.
+	if = {
+		limit = {
+			scope:ox_here_ruler = {
+				has_dlc_feature = royal_court
+				has_royal_court = yes
+				can_employ_court_position_type = champion_court_position
+				NOT = { employs_court_position = champion_court_position }
+				can_appoint_char_to_court_position = {
+					CHAR = scope:ox_here_warrior
+					COURT_POS = champion_court_position
+				}
+			}
+		}
+		court_position_grant_effect = {
+			CANDIDATE = scope:ox_here_warrior
+			EMPLOYER = scope:ox_here_ruler
+			POS = champion
+		}
+	}
+
+	# Apply the affair to every available consort, not just the primary spouse.
+	scope:ox_here_ruler = {
+		every_consort = {
+			limit = {
+				is_alive = yes
+				is_adult = yes
+			}
+			save_scope_as = ox_here_consort
+
+			# Remove both possible pre-existing relationship tiers explicitly.
+			scope:ox_here_ruler = {
+				if = {
+					limit = { has_relation_soulmate = scope:ox_here_consort }
+					remove_relation_soulmate = scope:ox_here_consort
+				}
+				if = {
+					limit = { has_relation_lover = scope:ox_here_consort }
+					remove_relation_lover = scope:ox_here_consort
+				}
+			}
+
+			scope:ox_here_warrior = {
+				set_relation_lover = {
+					target = scope:ox_here_consort
+					reason = ox_here_secret_affair
+				}
+				add_secret = {
+					type = secret_lover
+					target = scope:ox_here_consort
+				}
+			}
+		}
+	}
+
+	# Deliberately use the direct effect rather than a validity gate: the request
+	# requires the seduction scheme regardless of gender or sexual orientation.
+	scope:ox_here_warrior = {
+		start_scheme = {
+			type = seduce
+			target_character = scope:ox_here_ruler
+		}
+	}
+}

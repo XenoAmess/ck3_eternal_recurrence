@@ -1,0 +1,12 @@
+﻿ox_here_african_warrior = {
+	age = { 25 35 }
+	gender = male
+	dynasty = none
+	culture = culture:kanuri
+	faith = faith:west_african_bori_pagan
+	ethnicity = ox_here_african_blond
+	prowess = { 40 60 }
+	trait = giant
+	trait = fecund
+	random_traits = no
+}

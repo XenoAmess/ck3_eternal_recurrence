@@ -1,0 +1,8 @@
+﻿ox_here_african_blond = {
+	visible = no
+	template = "african"
+	hair_color = {
+		# The game's African palette labels this range as Blonde.
+		100 = { 0.25 0.2 0.75 0.55 }
+	}
+}
