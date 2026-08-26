@@ -313,4 +313,4 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
 | stable event definition identity | 静态确认、wire 已接入、实机待验 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；同 callback 双观察 pointer/key/两个 int32 |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
-| production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；完整 effect preview 仍 unavailable |
+| production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) 已静态冻结但未启动 CK3；完整 effect preview 仍 unavailable |

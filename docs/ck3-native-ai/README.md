@@ -36,30 +36,34 @@
   artifact SHA `D20E339D...B8BC89`。事件 current GUI data locator 已发布生产查询；EventData 稳定 key 与
   player-only trait/stress/death/scheme indicator 子集已静态闭合，但完整结构化 preview、resource/relation 语义、
   completeness 与 event live fixture 仍待施工；notification discovery/ACK 另见下一专题。宗教/信仰内容按 owner 指示保持 opaque
-  compatibility，不计入完成。
+  compatibility，只有圣战战争 OODA 与婚姻必要判定可取最小原生输入，宗教域整体仍不计入完成。
 - [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
   construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格
-  full-ID ACK step，queue 后仍以旧 pending ID 推进作为成功条件。非宗教 production live fixture 尚未完成。
+  full-ID ACK step，queue 后仍以旧 pending ID 推进作为成功条件。非宗教 definition-only fixture 已完成 fresh-cold
+  query/query/ACK/旧 full ID 消失；它不是 stock 或 production-only playset，自然 stock 与 intermediary notification 仍待实机。
 - [static-confirmed + implementation-confirmed, cost live pending]
   [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的十槽 compiled-cost evaluator、
   engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer 原生 AI 接受链；十个资源槽
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-confirmed + implementation-confirmed, live pending]
+- [static-confirmed + implementation-confirmed + ordinary white-peace production-live]
   [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 证明三种普通 war-exit
   `special_data` 都只是八字节 exact subtype tag，并闭合 actor/recipient common-war relation → full WarID → active
   `CWar` 的原生只读链；generic effect materializer 不读取该 special object。type + WarID + primary-side 绑定已接入现有
-  pending query，paused white-peace fixture 尚待完成；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
-  [pending-special-war-binding-live-fixture.md](pending-special-war-binding-live-fixture.md) 已冻结可复用的 ordinary
-  `claim_cb` seed/cold-checkpoint runner、542228a DLL、同 revision `war_state` 互证与不升级整体 semantic readiness 的
-  验收条件；Attempt 1 的 production 业务门全部通过，但 cross-stage 字段名错配令 artifact 保持 RED，修复后 GREEN
-  尚未执行，因此 production-live readiness 仍为 false。
+  pending query。[paused fixture](pending-special-war-binding-live-fixture.md) Attempt 2 已用普通 `claim_cb` 闭合
+  white-peace subtype、WarID `16777290`、primary attacker/defender 与同 revision active-war 互证，artifact SHA-256
+  `3140B47AD855DF50BE182CB41E5957D1041E2221496A7256C7FF903E660810EE`。Attempt 1 仍为 RED；victory/defeat、
+  special outcome terms、structured terms 与 semantic decision readiness 仍为 false。其它 subtype 保持 opaque；圣战只能
+  在独立战争切片中取完整 war OODA 所需最小输入，其余宗教专用语义继续暂缓。
 - [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
-  frontend 由 in-game idler/window vtable 与完整 current event instance ID 排除。完整 effect preview 与实机 fixture 仍未完成。
+  frontend 由 in-game idler/window vtable 与完整 current event instance ID 排除。generic 非宗教 seed/checkpoint/cold
+  双查询 runner 与精确 fixture bytes 已在
+  [current-event-window-context-live-fixture.md](current-event-window-context-live-fixture.md) 静态冻结，但尚未获准启动 CK3，
+  因此仍是 `[not-live-evidence]`；完整 effect preview、scope identity 与 semantic decision 也仍未完成。
 - [static-confirmed] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
   `OptionEffectItem` vector：玩家角色的 trait add/remove、stress direction/critical、death 与 scheme start 可发布为
   typed indicators；该 vector 不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
