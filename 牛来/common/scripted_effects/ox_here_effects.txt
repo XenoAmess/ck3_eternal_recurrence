@@ -39,6 +39,9 @@
 				}
 			}
 		}
+		scope:ox_here_warrior = {
+			add_character_flag = ox_here_free_champion
+		}
 		court_position_grant_effect = {
 			CANDIDATE = scope:ox_here_warrior
 			EMPLOYER = scope:ox_here_ruler
