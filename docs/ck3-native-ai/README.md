@@ -33,8 +33,9 @@
 - [static-confirmed + production-live] [events-and-interactions.md](events-and-interactions.md) 冻结通用事件 option 的
   `SetupOptions` shown/enabled/fallback/exclusive/cancel/name/reason/effect-preview 静态 ABI、原生 AI exact weighted selector，
   以及人物互动的候选/接受树；人物互动 typed bridge/MCP 已对普通 white-peace recipient pending 完成跨存档冷恢复双查询，
-  artifact SHA `D20E339D...B8BC89`。事件 current GUI data locator、preview collector output，以及互动 structured terms、
-  intermediary live fixture 仍待施工；notification discovery/ACK 另见下一专题。宗教/信仰内容按 owner 指示保持 opaque
+  artifact SHA `D20E339D...B8BC89`。事件 current GUI data locator 已发布生产查询；EventData 稳定 key 与
+  player-only trait/stress/death/scheme indicator 子集已静态闭合，但完整结构化 preview、resource/relation 语义、
+  completeness 与 event live fixture 仍待施工；notification discovery/ACK 另见下一专题。宗教/信仰内容按 owner 指示保持 opaque
   compatibility，不计入完成。
 - [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
@@ -44,17 +45,20 @@
   [interaction-structured-terms.md](interaction-structured-terms.md) 分开冻结普通人物互动的十槽 compiled-cost evaluator、
   engine-owned `InteractionEffectsDescription` 物化链，以及 intermediary/recipient/outer 原生 AI 接受链；十个资源槽
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
-  effect typed row/root 与 special-war production reader 仍是观测依赖，当前不得把 legality 或已付成本
+  effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-confirmed, implementation pending]
+- [static-confirmed + implementation-confirmed, live pending]
   [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 证明三种普通 war-exit
   `special_data` 都只是八字节 exact subtype tag，并闭合 actor/recipient common-war relation → full WarID → active
-  `CWar` 的原生只读链；generic effect materializer 不读取该 special object。下一步是把 type + WarID 绑定接入现有
-  pending query 并做 paused white-peace fixture；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
+  `CWar` 的原生只读链；generic effect materializer 不读取该 special object。type + WarID + primary-side 绑定已接入现有
+  pending query，paused white-peace fixture 尚待完成；其它 subtype 保持 opaque，宗教 subtype 保持 owner-deferred。
 - [static-confirmed + implementation-confirmed, live pending] [event-window-context.md](event-window-context.md) 复用原生
   `0xAA43C0` accessor 闭合 `module+0x570F7B8 → owner+0x10 → CIngameInterfaceIdlerGfx` stable root，继续冻结
   manager/window/data 生命周期与最终 shown/enabled option context；production 已发布 owning-thread 最小只读 query，
   frontend 由 in-game idler/window vtable 与完整 current event instance ID 排除。完整 effect preview 与实机 fixture 仍未完成。
+- [static-confirmed] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
+  `OptionEffectItem` vector：玩家角色的 trait add/remove、stress direction/critical、death 与 scheme start 可发布为
+  typed indicators；该 vector 不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

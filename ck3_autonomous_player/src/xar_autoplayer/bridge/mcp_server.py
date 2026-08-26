@@ -213,7 +213,7 @@ def _ck3_query_pending_character_interaction_context_v1(
     pending_interaction_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Observe one pending request, including exact generic authored costs."""
+    """Observe one pending request, including costs and typed war binding."""
     return service.query_pending_character_interaction_context_v1(
         pending_interaction_id,
         expected_revision=expected_revision,
@@ -597,7 +597,7 @@ def create_server(driver: GameplayBridgeDriver):
         pending_interaction_id: int,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read routing, options, paid generic costs, deadline, and legality."""
+        """Read routing, paid costs, exact special-war binding, and legality."""
         return _ck3_query_pending_character_interaction_context_v1(
             service,
             pending_interaction_id,

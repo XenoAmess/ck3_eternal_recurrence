@@ -13,6 +13,8 @@ namespace {
 
 constexpr std::int32_t kPendingId = 16'777'249;
 constexpr std::int32_t kPlayedCharacterId = 2'001;
+constexpr std::int32_t kActorCharacterId = 1'001;
+constexpr std::int32_t kWarId = 16'777'250;
 constexpr std::size_t kPendingSlotIndex = 33;
 constexpr std::size_t kPendingSlotCount = 34;
 constexpr std::size_t kCharacterSlotCount = 3'002;
@@ -49,7 +51,12 @@ struct Fixture {
   std::vector<std::byte> character_slots =
       std::vector<std::byte>(kCharacterSlotCount * 0x10);
   std::array<std::byte, 0x220> played_character{};
+  std::array<std::byte, 0x220> actor_character{};
   std::array<std::byte, 0x2A60> definition{};
+  std::array<std::byte, 0x08> special_data{};
+  std::array<std::byte, 0x28> common_war_relation{};
+  std::array<std::byte, 0x28> second_common_war_relation{};
+  std::array<std::byte, 0x360> active_war{};
   std::vector<std::byte> rows = std::vector<std::byte>(2 * kRowStride);
   std::array<std::uint8_t, 2> selected{1, 0};
   std::array<std::byte, 0x20> target_registry{};
@@ -68,11 +75,16 @@ struct Fixture {
   bool change_frame_on_final_capture = false;
   bool change_selection_between_observations = false;
   bool change_cost_between_observations = false;
+  bool change_relation_between_observations = false;
+  bool change_special_vptr_between_observations = false;
   std::int32_t capture_calls = 0;
   std::int32_t route_calls = 0;
   std::int32_t validator_calls = 0;
   std::int32_t selected_read_calls = 0;
   std::int32_t cost_calls = 0;
+  std::int32_t common_war_relation_calls = 0;
+  std::int32_t resolve_active_war_calls = 0;
+  std::int32_t special_vptr_read_calls = 0;
   std::vector<std::int32_t> trigger_order;
 
   Fixture() { Reset(); }
@@ -85,13 +97,19 @@ struct Fixture {
     character_storage.fill(std::byte{});
     std::fill(character_slots.begin(), character_slots.end(), std::byte{});
     played_character.fill(std::byte{});
+    actor_character.fill(std::byte{});
     definition.fill(std::byte{});
+    special_data.fill(std::byte{});
+    common_war_relation.fill(std::byte{});
+    second_common_war_relation.fill(std::byte{});
+    active_war.fill(std::byte{});
     std::fill(rows.begin(), rows.end(), std::byte{});
     selected = {1, 0};
     target_registry.fill(std::byte{});
     std::fill(target_registry_entries.begin(), target_registry_entries.end(),
               std::byte{});
     expiration_days = 60;
+    definition_key = "fixture_request_support_interaction";
     pending_storage_pointer = pending_storage.data();
     character_storage_pointer = character_storage.data();
     on_main_thread = true;
@@ -104,11 +122,16 @@ struct Fixture {
     change_frame_on_final_capture = false;
     change_selection_between_observations = false;
     change_cost_between_observations = false;
+    change_relation_between_observations = false;
+    change_special_vptr_between_observations = false;
     capture_calls = 0;
     route_calls = 0;
     validator_calls = 0;
     selected_read_calls = 0;
     cost_calls = 0;
+    common_war_relation_calls = 0;
+    resolve_active_war_calls = 0;
+    special_vptr_read_calls = 0;
     trigger_order.clear();
 
     Store(pending_storage, 0x20, static_cast<void *>(pending_slots.data()));
@@ -161,12 +184,37 @@ struct Fixture {
           static_cast<void *>(played_character.data()));
     Store(played_character, 0x18, character_id);
   }
+
+  void InstallActorCharacter() {
+    const auto index =
+        static_cast<std::uint32_t>(kActorCharacterId) & 0x00FFFFFFU;
+    Store(character_slots, static_cast<std::size_t>(index) * 0x10 + 0x08,
+          static_cast<void *>(actor_character.data()));
+    Store(actor_character, 0x18, kActorCharacterId);
+  }
+
+  void SetSpecialWar(std::string key, std::uintptr_t vtable,
+                     bool actor_is_attacker = true) {
+    definition_key = std::move(key);
+    InstallActorCharacter();
+    Store(special_data, 0, vtable);
+    Store(pending, 0x348, static_cast<void *>(special_data.data()));
+    Store(common_war_relation, 0x20, kWarId);
+    Store(second_common_war_relation, 0x20, kWarId);
+    Store(active_war, 0x08, kWarId);
+    Store(active_war, 0x288,
+          actor_is_attacker ? kActorCharacterId : kPlayedCharacterId);
+    Store(active_war, 0x28C,
+          actor_is_attacker ? kPlayedCharacterId : kActorCharacterId);
+    Store(active_war, 0x358, static_cast<void *>(nullptr));
+  }
 };
 
 bool DummyRoute(void *, void *) { return false; }
 bool DummyValidator(void *) { return false; }
 bool DummyTrigger(void *, const void *) { return false; }
 void DummyCost(const void *, const void *, std::int64_t *) {}
+void *DummyCommonWarRelation(void *, void *) { return nullptr; }
 void *DummyRegistry() { return nullptr; }
 const std::string *DummyIdentifier(std::int32_t) { return nullptr; }
 
@@ -188,6 +236,16 @@ bool IsMainThread(void *context) noexcept {
 bool ReadMemory(void *context, const void *address, void *output,
                 std::size_t size) noexcept {
   auto &fixture = *static_cast<Fixture *>(context);
+  if (address == fixture.special_data.data() &&
+      size == sizeof(std::uintptr_t)) {
+    ++fixture.special_vptr_read_calls;
+    if (fixture.change_special_vptr_between_observations &&
+        fixture.special_vptr_read_calls >= 2) {
+      const std::uintptr_t changed = 0x33333331U;
+      std::memcpy(output, &changed, sizeof(changed));
+      return true;
+    }
+  }
   if (address >= fixture.selected.data() &&
       address < fixture.selected.data() + fixture.selected.size() &&
       size == 1) {
@@ -297,6 +355,34 @@ bool InvokeCost(
   return true;
 }
 
+bool InvokeCommonWarRelation(
+    void *context,
+    xar::ck3_11906::NativePendingInteractionCommonWarRelationV1 function,
+    void *actor_character, void *recipient_character, void *&output) noexcept {
+  auto &fixture = *static_cast<Fixture *>(context);
+  ++fixture.common_war_relation_calls;
+  if (function != DummyCommonWarRelation ||
+      actor_character != fixture.actor_character.data() ||
+      recipient_character != fixture.played_character.data()) {
+    output = nullptr;
+    return false;
+  }
+  output = fixture.change_relation_between_observations &&
+                   fixture.common_war_relation_calls >= 2
+               ? static_cast<void *>(fixture.second_common_war_relation.data())
+               : static_cast<void *>(fixture.common_war_relation.data());
+  return true;
+}
+
+bool ResolveActiveWar(void *context, std::int32_t war_id,
+                      void *&output) noexcept {
+  auto &fixture = *static_cast<Fixture *>(context);
+  ++fixture.resolve_active_war_calls;
+  output = war_id == kWarId ? static_cast<void *>(fixture.active_war.data())
+                            : nullptr;
+  return output != nullptr;
+}
+
 bool InvokeRegistry(
     void *context,
     xar::ck3_11906::NativePendingInteractionTargetTypeRegistryGetterV1,
@@ -326,10 +412,14 @@ Environment(Fixture &fixture) {
   output.reply_validator = DummyValidator;
   output.trigger_evaluator = DummyTrigger;
   output.cost_evaluator = DummyCost;
+  output.common_war_relation = DummyCommonWarRelation;
   output.target_type_registry = DummyRegistry;
   output.script_identifier_name = DummyIdentifier;
   output.reply_primary_vtable = 0x11111111U;
   output.reply_secondary_vtable = 0x22222222U;
+  output.war_victory_special_vtable = 0x33333331U;
+  output.war_white_peace_special_vtable = 0x33333332U;
+  output.war_defeat_special_vtable = 0x33333333U;
   return output;
 }
 
@@ -344,6 +434,8 @@ xar::ck3_11906::PendingCharacterInteractionAccessV1 Access(Fixture &fixture) {
   output.invoke_reply_validator = InvokeValidator;
   output.invoke_trigger_evaluator = InvokeTrigger;
   output.invoke_cost_evaluator = InvokeCost;
+  output.invoke_common_war_relation = InvokeCommonWarRelation;
+  output.resolve_active_war = ResolveActiveWar;
   output.invoke_target_type_registry = InvokeRegistry;
   output.invoke_script_identifier_name = InvokeIdentifier;
   return output;
@@ -413,6 +505,12 @@ int main() {
           "treasury_or_gold" ||
       output.terms->structured_costs.entries[7].raw != 50'000 ||
       !output.readiness.generic_costs_ready ||
+      output.terms->special_war_binding.status !=
+          xar::game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
+      output.terms->special_war_binding.reason !=
+          "special_war_binding_not_applicable" ||
+      output.readiness.special_war_binding_ready ||
+      output.readiness.special_outcome_terms_ready ||
       output.readiness.interaction_semantic_decision_ready ||
       fixture.route_calls != 2 || fixture.validator_calls != 6 ||
       fixture.cost_calls != 2 ||
@@ -433,8 +531,240 @@ int main() {
                 "\"pending_payment_state\":\"already_applied\"") ||
       !Contains(serialized,
                 "\"resource_key\":\"treasury_or_gold\",\"raw\":50000") ||
+      !Contains(serialized,
+                "\"special_war_binding\":{\"status\":\"unavailable\","
+                "\"value\":null,\"reason\":"
+                "\"special_war_binding_not_applicable\"") ||
       !Contains(serialized, "\"value\":null")) {
     return Fail("available serializer contract failed");
+  }
+
+  fixture.Reset();
+  fixture.definition_key = "end_war_attacker_white_peace_interaction";
+  if (!Read(fixture, output) || output.terms->special_data_present ||
+      output.terms->special_war_binding.reason !=
+          "special_interaction_identity_mismatch" ||
+      fixture.common_war_relation_calls != 0 ||
+      fixture.resolve_active_war_calls != 0 ||
+      xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output)
+          .empty()) {
+    return Fail("known war-exit definition accepted missing special data");
+  }
+  auto inconsistent_absent_special = output;
+  inconsistent_absent_special.terms->special_war_binding.reason =
+      "special_war_binding_not_applicable";
+  inconsistent_absent_special.readiness.not_ready_reasons[0] =
+      "special_war_binding_not_applicable";
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           inconsistent_absent_special)
+           .empty()) {
+    return Fail("serializer accepted known war-exit as not applicable");
+  }
+
+  struct SpecialCase {
+    std::string_view definition_key;
+    std::uintptr_t vtable;
+    std::string_view special_interaction_kind;
+    std::string_view absolute_outcome;
+    bool actor_is_attacker;
+  };
+  constexpr std::array<SpecialCase, 3> special_cases{{
+      {"end_war_attacker_victory_interaction", 0x33333331U,
+       "end_war_attacker_victory_interaction", "attacker_victory", true},
+      {"end_war_attacker_white_peace_interaction", 0x33333332U,
+       "end_war_white_peace_interaction", "white_peace", false},
+      {"end_war_attacker_defeat_interaction", 0x33333333U,
+       "end_war_attacker_defeat_interaction", "attacker_defeat", true},
+  }};
+  for (const auto &test_case : special_cases) {
+    fixture.Reset();
+    fixture.SetSpecialWar(std::string(test_case.definition_key),
+                          test_case.vtable, test_case.actor_is_attacker);
+    if (!Read(fixture, output) || !output.terms->special_data_present ||
+        output.terms->special_war_binding.status !=
+            xar::game::PendingCharacterInteractionSemanticStatusV1::available ||
+        output.terms->special_war_binding.special_interaction_kind !=
+            test_case.special_interaction_kind ||
+        output.terms->special_war_binding.absolute_outcome !=
+            test_case.absolute_outcome ||
+        output.terms->special_war_binding.war_id != kWarId ||
+        output.terms->special_war_binding.actor_war_role !=
+            (test_case.actor_is_attacker ? "primary_attacker"
+                                         : "primary_defender") ||
+        output.terms->special_war_binding.recipient_war_role !=
+            (test_case.actor_is_attacker ? "primary_defender"
+                                         : "primary_attacker") ||
+        output.terms->special_war_binding.binding_source !=
+            "native_common_war_relation" ||
+        !output.readiness.special_war_binding_ready ||
+        output.readiness.special_outcome_terms_ready ||
+        output.readiness.structured_terms_ready ||
+        output.readiness.interaction_semantic_decision_ready ||
+        output.readiness.not_ready_reasons !=
+            std::vector<std::string>(
+                {"special_outcome_terms_unavailable",
+                 "structured_exchanges_unavailable",
+                 "structured_effect_preview_unavailable"}) ||
+        fixture.common_war_relation_calls != 2 ||
+        fixture.resolve_active_war_calls != 2) {
+      return Fail("exact special-war identity or active-War binding failed");
+    }
+  }
+  const auto special_serialized =
+      xar::ck3_11906::SerializePendingCharacterInteractionContextV1(output);
+  if (!Contains(special_serialized,
+                "\"special_interaction_kind\":"
+                "\"end_war_attacker_defeat_interaction\"") ||
+      !Contains(special_serialized,
+                "\"absolute_outcome\":\"attacker_defeat\"") ||
+      !Contains(special_serialized, "\"war_id\":16777250") ||
+      !Contains(special_serialized,
+                "\"binding_source\":\"native_common_war_relation\"") ||
+      !Contains(special_serialized, "\"special_war_binding_ready\":true") ||
+      !Contains(special_serialized, "\"special_outcome_terms_ready\":false")) {
+    return Fail("special-war serializer contract failed");
+  }
+  auto malformed_special = output;
+  malformed_special.terms->special_war_binding.absolute_outcome = "white_peace";
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_special)
+           .empty()) {
+    return Fail("serializer accepted an inconsistent special-war outcome");
+  }
+  malformed_special = output;
+  malformed_special.terms->special_war_binding.special_interaction_kind =
+      "end_war_white_peace_interaction";
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_special)
+           .empty()) {
+    return Fail("serializer accepted an inconsistent special-war kind");
+  }
+  malformed_special = output;
+  malformed_special.terms->special_war_binding.actor_war_role =
+      "primary_defender";
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_special)
+           .empty()) {
+    return Fail("serializer accepted inconsistent special-war roles");
+  }
+  malformed_special = output;
+  malformed_special.terms->special_war_binding.binding_source = "tooltip";
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_special)
+           .empty()) {
+    return Fail("serializer accepted an invented special-war source");
+  }
+  malformed_special = output;
+  malformed_special.terms->special_data_present = false;
+  if (!xar::ck3_11906::SerializePendingCharacterInteractionContextV1(
+           malformed_special)
+           .empty()) {
+    return Fail("serializer accepted available binding without special data");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("fixture_request_support_interaction", 0x44444444U);
+  if (!Read(fixture, output) ||
+      output.terms->special_war_binding.reason !=
+          "special_interaction_subtype_opaque" ||
+      fixture.common_war_relation_calls != 0 ||
+      fixture.resolve_active_war_calls != 0) {
+    return Fail("opaque special subtype crossed the exact allowlist");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("owner_deferred_religious_special_fixture",
+                        0x55555555U);
+  if (!Read(fixture, output) ||
+      output.terms->special_war_binding.reason !=
+          "special_interaction_subtype_opaque" ||
+      fixture.common_war_relation_calls != 0 ||
+      fixture.resolve_active_war_calls != 0) {
+    return Fail("owner-deferred subtype crossed the exact allowlist");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_victory_interaction", 0x33333332U);
+  if (!Read(fixture, output) ||
+      output.terms->special_war_binding.reason !=
+          "special_interaction_identity_mismatch" ||
+      fixture.common_war_relation_calls != 0) {
+    return Fail("definition/vptr mismatch was not typed unavailable");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  Store(fixture.active_war, 0x28C, std::int32_t{9'001});
+  if (!Read(fixture, output) ||
+      output.terms->special_war_binding.reason !=
+          "special_war_roles_mismatch" ||
+      output.readiness.special_war_binding_ready) {
+    return Fail("special-war primary-side mismatch was not rejected");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  Store(fixture.actor_character, 0x18, std::int32_t{33'555'433});
+  if (!Read(fixture, output) ||
+      output.terms->special_war_binding.reason !=
+          "special_war_binding_unavailable" ||
+      fixture.common_war_relation_calls != 0) {
+    return Fail("special-war actor generation mismatch leaked a binding");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  Store(fixture.played_character, 0x18, std::int32_t{33'556'433});
+  if (xar::ck3_11906::ReadPendingCharacterInteractionContextV1(
+          Environment(fixture), Access(fixture), Request(), output) !=
+          ReadPendingCharacterInteractionContextResultV1::unavailable ||
+      output.reason != "played_character_generation_mismatch" ||
+      fixture.common_war_relation_calls != 0) {
+    return Fail("special-war recipient generation mismatch was not rejected");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  Store(fixture.active_war, 0x08, std::int32_t{33'554'466});
+  if (!Read(fixture, output) || output.terms->special_war_binding.reason !=
+                                    "special_war_binding_unavailable") {
+    return Fail("active CWar full identity mismatch leaked a binding");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  Store(fixture.active_war, 0x358,
+        static_cast<void *>(fixture.definition.data()));
+  if (!Read(fixture, output) || output.terms->special_war_binding.reason !=
+                                    "special_war_binding_unavailable") {
+    return Fail("ended CWar leaked a special-war binding");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  fixture.change_relation_between_observations = true;
+  if (xar::ck3_11906::ReadPendingCharacterInteractionContextV1(
+          Environment(fixture), Access(fixture), Request(), output) !=
+          ReadPendingCharacterInteractionContextResultV1::unavailable ||
+      output.reason != "state_changed") {
+    return Fail("special-war relation pointer drift was not rejected");
+  }
+
+  fixture.Reset();
+  fixture.SetSpecialWar("end_war_attacker_white_peace_interaction",
+                        0x33333332U);
+  fixture.change_special_vptr_between_observations = true;
+  if (xar::ck3_11906::ReadPendingCharacterInteractionContextV1(
+          Environment(fixture), Access(fixture), Request(), output) !=
+          ReadPendingCharacterInteractionContextResultV1::unavailable ||
+      output.reason != "state_changed") {
+    return Fail("special-war vptr drift was not rejected");
   }
 
   fixture.Reset();
@@ -632,8 +962,13 @@ int main() {
                        kPendingInteractionTargetTypeRegistryGetterV1Rva ||
       reinterpret_cast<std::uintptr_t>(bound.cost_evaluator) !=
           module + xar::ck3_11906::kPendingInteractionCostEvaluatorV1Rva ||
+      reinterpret_cast<std::uintptr_t>(bound.common_war_relation) !=
+          module + xar::ck3_11906::kPendingInteractionCommonWarRelationV1Rva ||
       bound.reply_primary_vtable !=
-          module + xar::ck3_11906::kPendingInteractionReplyPrimaryVtableV1Rva) {
+          module + xar::ck3_11906::kPendingInteractionReplyPrimaryVtableV1Rva ||
+      bound.war_white_peace_special_vtable !=
+          module + xar::ck3_11906::
+                       kPendingInteractionWarWhitePeaceSpecialVtableV1Rva) {
     return Fail("exact-build environment binding drifted");
   }
 

@@ -3343,6 +3343,9 @@ void RunConnectedSession(
               query.access.invoke_cost_evaluator =
                   &xar::ck3_11906::
                       InvokePendingCharacterInteractionCostEvaluatorDirectV1;
+              query.access.invoke_common_war_relation =
+                  &xar::ck3_11906::
+                      InvokePendingCharacterInteractionCommonWarRelationDirectV1;
               query.access.invoke_target_type_registry =
                   &xar::ck3_11906::
                       InvokePendingCharacterInteractionTargetTypeRegistryDirectV1;

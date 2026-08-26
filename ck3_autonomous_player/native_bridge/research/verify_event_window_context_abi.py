@@ -70,8 +70,9 @@ def main() -> int:
         )
 
     pdata_ranges = runtime_function_ranges(data, image)
-    spans = contract["source_contract"]["exact_function_spans"]
-    for span in spans:
+    source_contract = contract["source_contract"]
+    function_spans = source_contract["exact_function_spans"]
+    for span in function_spans:
         declared_regions = span.get("runtime_function_regions")
         if declared_regions:
             regions = []
@@ -87,6 +88,38 @@ def main() -> int:
                     "is not an exact .pdata runtime-function extent"
                 )
 
+        start = integer(span["start_rva"])
+        end = integer(span["end_rva"])
+        expected_length = integer(span["byte_length"])
+        actual_length = end - start
+        if actual_length != expected_length:
+            failures.append(
+                f"{span['name']}: declared length 0x{expected_length:X}, "
+                f"RVA range length 0x{actual_length:X}"
+            )
+            continue
+        offset = image.rva_to_offset(start)
+        blob = data[offset : offset + actual_length]
+        if len(blob) != actual_length:
+            failures.append(f"{span['name']}: range is not fully file-backed")
+            continue
+        actual_sha = hashlib.sha256(blob).hexdigest().upper()
+        expected_sha = span["sha256"].upper()
+        if actual_sha != expected_sha:
+            failures.append(
+                f"{span['name']}: expected {expected_sha}, found {actual_sha}"
+            )
+            continue
+        print(
+            f"OK {span['name']} RVA=0x{start:X}..0x{end:X} "
+            f"bytes=0x{actual_length:X} SHA256={actual_sha}"
+        )
+
+    additional_spans = [
+        *source_contract.get("exact_semantic_spans", []),
+        *source_contract.get("exact_data_spans", []),
+    ]
+    for span in additional_spans:
         start = integer(span["start_rva"])
         end = integer(span["end_rva"])
         expected_length = integer(span["byte_length"])
@@ -188,7 +221,8 @@ def main() -> int:
             print(f"FAIL {failure}")
         return 1
     print(
-        f"PASS spans={len(spans)} pdata=1 exact_build=1 read_only=1 "
+        f"PASS spans={len(function_spans) + len(additional_spans)} "
+        "pdata=1 exact_build=1 read_only=1 "
         "source_contract=1 live_pending=1"
     )
     return 0

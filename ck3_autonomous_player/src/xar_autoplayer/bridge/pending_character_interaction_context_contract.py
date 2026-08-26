@@ -24,6 +24,9 @@ PENDING_CHARACTER_INTERACTION_CONTEXT_V1_EXECUTABLE_SHA256: Final = (
 PENDING_CHARACTER_INTERACTION_CONTEXT_V1_BACKEND_ID: Final = (
     "ck3-1.19.0.6-native-pending-character-interaction-context-v1"
 )
+PENDING_CHARACTER_INTERACTION_SPECIAL_WAR_BINDING_V1_CONTRACT: Final = (
+    "pending-character-interaction-special-war-binding-v1"
+)
 
 _FIELDS: Final = {
     "schema",
@@ -109,6 +112,14 @@ _COST_VALUE_FIELDS: Final = {
     "entries",
 }
 _COST_ENTRY_FIELDS: Final = {"resource_key", "raw"}
+_SPECIAL_WAR_VALUE_FIELDS: Final = {
+    "special_interaction_kind",
+    "absolute_outcome",
+    "war_id",
+    "actor_war_role",
+    "recipient_war_role",
+    "binding_source",
+}
 _COST_RESOURCE_KEYS: Final = (
     "gold",
     "prestige",
@@ -125,13 +136,14 @@ _LEGALITY_ITEM_FIELDS: Final = {"status", "allowed", "reason"}
 _LEGALITY_KEYS: Final = ("accept", "reject", "block", "acknowledge")
 _LEGALITY_FIELDS: Final = set(_LEGALITY_KEYS)
 _TERMS_KEYS: Final = (
+    "special_war_binding",
     "structured_costs",
     "structured_exchanges",
     "structured_effect_preview",
     "recipient_ai_acceptance_score",
     "recipient_ai_final_decision",
 )
-_UNAVAILABLE_TERMS_KEYS: Final = _TERMS_KEYS[1:]
+_UNAVAILABLE_TERMS_KEYS: Final = _TERMS_KEYS[2:]
 _TERMS_FIELDS: Final = {"special_data_present", *_TERMS_KEYS}
 _READINESS_BOOL_KEYS: Final = (
     "stable_definition_ready",
@@ -144,6 +156,8 @@ _READINESS_BOOL_KEYS: Final = (
     "auto_accept_ready",
     "reply_legality_ready",
     "generic_costs_ready",
+    "special_war_binding_ready",
+    "special_outcome_terms_ready",
     "structured_terms_ready",
     "same_frame_ready",
     "interaction_semantic_decision_ready",
@@ -158,11 +172,36 @@ _PROVENANCE_VALUES: Final = {
     "reply_validator_rva": "0x26B3540",
     "auto_accept_trigger_evaluator_rva": "0x334C510",
     "cost_evaluator_rva": "0x2CDB7B0",
+    "common_war_relation_rva": "0x2610840",
     "target_type_registry_getter_rva": "0x33C52B0",
     "target_type_registry_rva": "0x4FFE290",
     "script_identifier_name_rva": "0x3B58970",
     "reply_primary_vtable_rva": "0x4082930",
     "reply_secondary_vtable_rva": "0x4082900",
+    "war_victory_special_vtable_rva": "0x428EEA8",
+    "war_white_peace_special_vtable_rva": "0x428EF88",
+    "war_defeat_special_vtable_rva": "0x428EF18",
+}
+_SPECIAL_WAR_UNAVAILABLE_REASONS: Final = {
+    "special_war_binding_not_applicable",
+    "special_interaction_subtype_opaque",
+    "special_interaction_identity_mismatch",
+    "special_war_binding_unavailable",
+    "special_war_roles_mismatch",
+}
+_SPECIAL_WAR_PAIRS: Final = {
+    "end_war_attacker_victory_interaction": (
+        "end_war_attacker_victory_interaction",
+        "attacker_victory",
+    ),
+    "end_war_attacker_white_peace_interaction": (
+        "end_war_white_peace_interaction",
+        "white_peace",
+    ),
+    "end_war_attacker_defeat_interaction": (
+        "end_war_attacker_defeat_interaction",
+        "attacker_defeat",
+    ),
 }
 _TOP_STATUSES: Final = {"available", "unavailable", "invalid"}
 _UNAVAILABLE_REASONS: Final = {
@@ -350,11 +389,95 @@ def _normalize_legality(
     return result
 
 
+def _normalize_special_war_binding(
+    value: object,
+    *,
+    definition_key: str,
+    special_data_present: bool,
+) -> tuple[dict[str, object], bool, str | None]:
+    item = _exact_object(
+        value,
+        _STATUS_VALUE_REASON_FIELDS,
+        "terms.special_war_binding",
+    )
+    status = item.get("status")
+    reason_value = item.get("reason")
+    if status == "unavailable":
+        reason = _reason(reason_value, "terms.special_war_binding.reason")
+        if item.get("value") is not None or reason not in (
+            _SPECIAL_WAR_UNAVAILABLE_REASONS
+        ):
+            raise ValueError("special-war binding invented unavailable state")
+        known_definition = definition_key in _SPECIAL_WAR_PAIRS
+        reason_matches_presence = (
+            reason == "special_war_binding_not_applicable"
+            and not special_data_present
+            and not known_definition
+        ) or (
+            reason == "special_interaction_subtype_opaque"
+            and special_data_present
+            and not known_definition
+        ) or (
+            reason == "special_interaction_identity_mismatch"
+            and (special_data_present or known_definition)
+        ) or reason == "special_war_binding_unavailable" or (
+            reason == "special_war_roles_mismatch"
+            and special_data_present
+            and known_definition
+        )
+        if not reason_matches_presence:
+            raise ValueError("special-war availability disagrees with special_data")
+        return (
+            {"status": "unavailable", "value": None, "reason": reason},
+            False,
+            reason,
+        )
+    if status != "available" or reason_value is not None or not special_data_present:
+        raise ValueError("special-war binding must use a typed status")
+    expected_pair = _SPECIAL_WAR_PAIRS.get(definition_key)
+    binding = _exact_object(
+        item.get("value"),
+        _SPECIAL_WAR_VALUE_FIELDS,
+        "terms.special_war_binding.value",
+    )
+    if expected_pair is None or (
+        binding.get("special_interaction_kind"),
+        binding.get("absolute_outcome"),
+    ) != expected_pair:
+        raise ValueError("special-war definition/kind/outcome pair drifted")
+    actor_role = binding.get("actor_war_role")
+    recipient_role = binding.get("recipient_war_role")
+    if (actor_role, recipient_role) not in {
+        ("primary_attacker", "primary_defender"),
+        ("primary_defender", "primary_attacker"),
+    }:
+        raise ValueError("special-war roles must be opposite primary sides")
+    if binding.get("binding_source") != "native_common_war_relation":
+        raise ValueError("special-war binding source drifted")
+    normalized_binding = {
+        "special_interaction_kind": expected_pair[0],
+        "absolute_outcome": expected_pair[1],
+        "war_id": _positive_int32(
+            binding.get("war_id"), "terms.special_war_binding.value.war_id"
+        ),
+        "actor_war_role": actor_role,
+        "recipient_war_role": recipient_role,
+        "binding_source": "native_common_war_relation",
+    }
+    return (
+        {"status": "available", "value": normalized_binding, "reason": None},
+        True,
+        None,
+    )
+
+
 def _normalize_readiness(
     value: object,
     *,
     available: bool,
     target_present: bool,
+    special_war_binding_available: bool,
+    special_war_binding_reason: str | None,
     top_reason: str | None,
 ) -> dict[str, object]:
     readiness = _exact_object(value, _READINESS_FIELDS, "readiness")
@@ -386,6 +509,8 @@ def _normalize_readiness(
             "auto_accept_ready": True,
             "reply_legality_ready": True,
             "generic_costs_ready": True,
+            "special_war_binding_ready": special_war_binding_available,
+            "special_outcome_terms_ready": False,
             "structured_terms_ready": False,
             "same_frame_ready": True,
             "interaction_semantic_decision_ready": False,
@@ -398,6 +523,12 @@ def _normalize_readiness(
                 if target_present
                 else []
             ),
+            *(
+                [special_war_binding_reason]
+                if not special_war_binding_available
+                else []
+            ),
+            "special_outcome_terms_unavailable",
             "structured_exchanges_unavailable",
             "structured_effect_preview_unavailable",
         ]
@@ -697,6 +828,15 @@ def _normalize_available_frame(
             terms.get("special_data_present"), "terms.special_data_present"
         )
     }
+    (
+        normalized_terms["special_war_binding"],
+        special_war_binding_available,
+        special_war_binding_reason,
+    ) = _normalize_special_war_binding(
+        terms.get("special_war_binding"),
+        definition_key=normalized_definition["canonical_key"],
+        special_data_present=normalized_terms["special_data_present"],
+    )
     structured_costs = _exact_object(
         terms.get("structured_costs"),
         _STATUS_VALUE_REASON_FIELDS,
@@ -776,6 +916,8 @@ def _normalize_available_frame(
         frame.get("readiness"),
         available=True,
         target_present=present,
+        special_war_binding_available=special_war_binding_available,
+        special_war_binding_reason=special_war_binding_reason,
         top_reason=None,
     )
     return {
@@ -889,6 +1031,8 @@ def normalize_pending_character_interaction_context_v1(
             frame.get("readiness"),
             available=False,
             target_present=False,
+            special_war_binding_available=False,
+            special_war_binding_reason=None,
             top_reason=reason,
         )
         normalized = {

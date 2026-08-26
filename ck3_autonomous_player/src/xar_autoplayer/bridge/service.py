@@ -1721,7 +1721,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read one exact pending interaction, including paid generic costs."""
+        """Read one exact pending interaction with costs and war binding."""
         if (
             isinstance(pending_interaction_id, bool)
             or not isinstance(pending_interaction_id, int)

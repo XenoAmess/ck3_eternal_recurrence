@@ -16,7 +16,9 @@
     "doctrine",
     "tenet",
     "fervor",
-    "holy_war"
+    "holy_war",
+    "holy_order",
+    "great_holy_war"
   ],
   "source_contract": {
     "range_convention": "start inclusive, end exclusive",
@@ -123,6 +125,13 @@
         "sha256": "95CCAFC60E3AF959C3EB664890FDB01E6EC6368A20B8CAA34DC04ECA4989CD79"
       },
       {
+        "name": "EventData_duplicate_calculated_id_validator",
+        "start_rva": "0x33D4DA0",
+        "end_rva": "0x33D5082",
+        "byte_length": "0x2E2",
+        "sha256": "33D9FF7EBF7BE4431285D0AE41262D5B2497057FAF2E2AB1718AB9CB5A5A727A"
+      },
+      {
         "name": "event_option_effect_item_append_logical_extent",
         "start_rva": "0x16D3A40",
         "end_rva": "0x16D3BF1",
@@ -191,6 +200,25 @@
         "sha256": "5C996710D6155015E305D69F792B9BDC845B2390D4E79CA13CAE8D936C4E5255"
       }
     ],
+    "exact_semantic_spans": [
+      {
+        "name": "EventData_duplicate_calculated_id_validator_semantic_body",
+        "start_rva": "0x33D4DA0",
+        "end_rva": "0x33D505A",
+        "byte_length": "0x2BA",
+        "sha256": "6466EE00D394D6A79F87BB48EEA00AF1257393A538FA5EE45EE4CF42D4548028"
+      }
+    ],
+    "exact_data_spans": [
+      {
+        "name": "duplicate_event_id_error_literal",
+        "start_rva": "0x44D9E50",
+        "end_rva": "0x44D9E9C",
+        "byte_length": "0x4C",
+        "sha256": "85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42",
+        "bytes_utf8_nul": "Duplicated event ID '%s' found. New Location: '%s', Previous Location: '%s'\\0"
+      }
+    ],
     "entry_only_anchors": {
       "in_game_idler_native_accessor": "0xAA43C0",
       "idler_creation_callsite": "0x82813C",
@@ -256,7 +284,12 @@
   "event_identity": {
     "CEventWindowData_instance_id": "+0x00 uint32 copied from ActiveEvent+0x1BC",
     "current_active_event": "Existing EventManager current-event getter RVA 0x2706AD0 resolves the live ActiveEvent; matching by the full +0x1BC instance ID is required.",
-    "stable_event_definition_key": "unknown",
+    "EventData_source": "SPlayerEventData/ActiveEvent+0x1B0 -> EventData* on the current event path",
+    "EventData_calculated_event_id": "+0x08 int32; duplicate validator compares this field across EventData* rows",
+    "EventData_runtime_stats_ordinal": "+0x0C int32; separately observed runtime statistics ordinal, not the stable definition identity",
+    "stable_event_definition_key": "EventData+0x10 canonical namespaced MSVC string; duplicate validator passes it as the first formatter argument for duplicate +0x08 calculated IDs",
+    "EventData_source_location": "+0x240 object; duplicate validator resolves the new and previous source-location strings for the second and third formatter arguments",
+    "identity_query_rule": "Copy +0x08/+0x0C/+0x10 only after the complete ActiveEvent instance ID is matched; validate MSVC string bounds and repeat the ActiveEvent/EventData pointer plus numeric/string observation before returning. Never publish the EventData pointer.",
     "root_scope_stable_identity": "unknown",
     "saved_scope_stable_identities": "unknown",
     "GetScope": "GUI callback RVA 0x16D0990 resolves data+0x00 through EventManager and returns the live ActiveEvent pointer; it does not publish a stable cross-process scope identity."
@@ -283,13 +316,15 @@
   },
   "OptionEffectItem": {
     "size_and_stride": "0x18",
-    "opaque_payload_0": "+0x00 uint64; semantic type unknown, do not publish",
-    "opaque_payload_1": "+0x08 uint64; semantic type unknown, do not publish",
+    "trait_payload": "+0x00 CTrait* only when kind=0; publish only a validated loaded-DB native ID and canonical stable key",
+    "scheme_type_payload": "+0x08 CSchemeType* only when kind=3; publish only a validated canonical scheme type key",
+    "inactive_payload_rule": "The non-kind payload can contain an engine fallback/sentinel and must never be interpreted or published.",
     "kind": "+0x10 int32; 0=trait, 1=stress, 2=death, 3=scheme; other values unknown",
-    "gain": "+0x14 uint8; zero is loss",
-    "affected_by_trait": "+0x15 uint8",
-    "critical": "+0x16 uint8",
-    "semantic_boundary": "These are engine-materialized GUI effect indicators, not a complete or executable effect preview."
+    "gain": "+0x14 uint8; trait add/remove and stress increase/decrease only; death/scheme raw true is mechanical and not a typed direction or utility",
+    "affected_by_trait": "+0x15 uint8; meaningful only for stress_impact aggregation",
+    "critical": "+0x16 uint8; meaningful only for stress and indicates post-aggregate stress level exceeds the pre-level",
+    "semantic_boundary": "These are engine-materialized GUI effect indicators, not a complete or executable effect preview. See docs/ck3-native-ai/event-effect-indicators.md.",
+    "payload_source_contract": "event_option_1_19_0_6_abi.json verifies the indicator visitor, payload getters, effect identifier registry, trait resolver and CStartSchemeEffect stable-type chain."
   },
   "native_ai_selector": {
     "source_contract": "event_option_1_19_0_6_abi.json",
@@ -310,6 +345,8 @@
       "current_event_instance_id",
       "window_match_count",
       "event_definition_key",
+      "calculated_event_id",
+      "runtime_stats_ordinal",
       "root_scope",
       "saved_scopes",
       "options"
@@ -326,9 +363,13 @@
       "effect_preview_unavailable"
     ],
     "nullable_until_reverse_closed": [
-      "event_definition_key",
       "root_scope",
       "saved_scopes"
+    ],
+    "static_closed_not_yet_published_by_v1": [
+      "event_definition_key",
+      "calculated_event_id",
+      "runtime_stats_ordinal"
     ]
   },
   "readiness": {
@@ -338,7 +379,8 @@
     "effect_indicator_abi_static_ready": true,
     "native_ai_selector_static_ready": true,
     "stable_root_to_idler_ready": true,
-    "stable_event_definition_key_ready": false,
+    "stable_event_definition_key_static_ready": true,
+    "stable_event_definition_key_published": false,
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
     "bridge_query_static_ready": true,
@@ -349,7 +391,7 @@
     "Do not call trigger, name, preview or effect functions from a worker thread.",
     "Do not call loaded-effect executor RVA 0x3380410 for preview.",
     "Do not retain engine-owned pointers after the owning-thread snapshot.",
-    "Do not infer a stable event key or stable scope IDs from an ActiveEvent pointer.",
+    "Do not infer a stable event key from an ActiveEvent pointer: when implemented, copy and validate EventData+0x10 through the exact +0x1B0 definition path. Stable scope IDs remain unknown.",
     "Do not call an event option executor from current-event-window-context-v1; it is a read-only application-main copy only."
   ],
   "production_query": {
@@ -381,6 +423,8 @@
     ],
     "explicitly_unavailable": [
       "event_definition_key",
+      "calculated_event_id",
+      "runtime_stats_ordinal",
       "root_scope",
       "saved_scopes",
       "full_effect_preview"

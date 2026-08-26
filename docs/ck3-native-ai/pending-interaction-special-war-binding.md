@@ -14,11 +14,13 @@
 - [static-confirmed] generic `InteractionEffectsDescription` materializer `0x24B1B20` 在完整
   exact span 内不读取 `CCharacterInteractionContext+0x330`，所以四路 generic effect view
   不包含、也不能冒充 hard-coded special war outcome。特殊战争绑定必须是独立 typed term。
-- [implementation-proposed] 最小下一能力名为
-  `pending-character-interaction-special-war-binding-v1`。它只发布三种已闭合的普通、非宗教
-  war-exit subtype、absolute outcome 与同一 active WarID；其它 subtype 保持 opaque/unavailable。
-- [not-live-evidence] 本轮没有启动 CK3、没有调用 effect executor、没有提交 interaction reply，
-  也没有修改现有 reader/wire。production live readiness 仍为 `false`。
+- [implementation-confirmed] `pending-character-interaction-special-war-binding-v1` 已作为现有
+  `pending-character-interaction-context-v1` 的 additive typed term 接入 production reader、application-main
+  mailbox、serializer、Python native driver/service/MCP strict normalizer 与 synthetic fixtures。它只发布三种
+  已闭合的普通、非宗教 war-exit subtype、absolute outcome、同一 active WarID 与双方 primary war role；
+  其它 subtype 保持 opaque/unavailable。
+- [not-live-evidence] 本轮没有启动 CK3、没有调用 effect executor、没有提交 interaction reply 或战争 mutator。
+  static/query readiness 已为 `true`，production live readiness 仍为 `false`。
 
 本文是 [interaction-structured-terms.md](interaction-structured-terms.md) 的独立 exact-build
 侦察记录，并复用 [battle-terminal-and-reentry.md](battle-terminal-and-reentry.md) 已闭合的
@@ -174,11 +176,12 @@ special_outcome_terms_ready = true/false
 上述 `0x2610840` 四区是同一优化后函数的完整连续 source span，不得只 hash 第一条 unwind row；
 `0x2070D80` 则必须明确记录为无独立 `.pdata` row 的 leaf thunk。
 
-## 最小 production wire
+## 已实现的最小 production wire
 
-建议把新字段作为现有 `pending-character-interaction-context-v1` 的 additive typed term，而不是另开
-一条扫描 pending manager 的竞态路径。能力 manifest 使用独立名称
-`pending-character-interaction-special-war-binding-v1`，便于在 live 前保持 false。
+新字段作为现有 `pending-character-interaction-context-v1` 的 additive typed term 发布，没有另开
+一条扫描 pending manager 的竞态路径。ABI 子合同名称是
+`pending-character-interaction-special-war-binding-v1`；它的 static/query readiness 与 live readiness
+分开记录，未做实机前不得把后者设为 true。
 
 示例形状：
 
@@ -226,7 +229,8 @@ allowlist，不能直接要求两个字符串相等。
 
 | 情况 | typed reason 建议 |
 |---|---|
-| `special_data == null` | `special_war_binding_not_applicable` |
+| `special_data == null` 且 definition 不是三种 exact war-exit | `special_war_binding_not_applicable` |
+| 三种 exact war-exit definition 之一但 `special_data == null` | `special_interaction_identity_mismatch` |
 | 非 allowlisted vptr | `special_interaction_subtype_opaque` |
 | definition 与 concrete type 不一致 | `special_interaction_identity_mismatch` |
 | relation/WarID/active war 不可解析 | `special_war_binding_unavailable` |
@@ -237,6 +241,21 @@ allowlist，不能直接要求两个字符串相等。
 `special_outcome_terms_ready`、总 `structured_terms_ready` 与
 `interaction_semantic_decision_ready` 必须继续为 false，直到完整 dynamic terms/counter-policy
 各自闭合。不得因为 WarID 已绑定就自动发送 accept/reject。
+
+### Production 接线与静态验收
+
+[implementation-confirmed] reader 只在 exact-build environment 与 application-main mailbox 内调用
+`0x2610840`；active war 解析复用既有 generation-bearing `ResolveWar`，并再次检查 `CWar+0x08`、
+`+0x358` 与 `+0x288/+0x28C`。完整 observation 连续读取两次，保留 actor、recipient、special vptr、
+relation 与 active-CWar pointer，最后再通过 outer paused frame gate。serializer 与 Python normalizer
+同时约束 exact definition/vptr outcome pair、相反 primary roles、`native_common_war_relation` source、
+special presence/reason 组合及 readiness reason 顺序。
+
+synthetic 覆盖包括：无 special 的普通互动仍保持 query available、三种 exact pair、unknown/owner-deferred
+subtype 不调用 relation、known definition/vptr 或 null-special mismatch、actor/recipient/WarID generation
+失配、ended war、primary role 失配、inner pointer 漂移，以及 serializer 对 outcome/kind/role/source/presence
+伪造的拒绝。ABI verifier 对 exact EXE 的 34 个累计 spans 逐字节校验，其中本切片新增的七个 span
+与下文 hash 一致。以上都是 static/synthetic 证据，不是 paused CK3 live fixture。
 
 ## Paused live fixture 计划
 
@@ -266,6 +285,6 @@ victory 与 defeat 仍各需独立 fixture；white-peace live 不能替代另外
 | 其它普通 special subtype 的 concrete layouts | 各 subtype 自己的 RTTI/factory/accessor | `opaque_other`，不按相邻 vtable 猜 |
 | 任何宗教专用 subtype/语义 | owner 明确解除暂缓后再排期 | owner-deferred，不研究、不实现 |
 
-本切片已经消除旧账本中“从 `special_data` payload 直接读 white-peace WarID”的错误施工方向。
-下一最小实现应只接这份 type + active-War binding；不要为了顺手填充 generic effects、tooltip 或
-宗教分支而扩大 wire。
+本切片已经消除旧账本中“从 `special_data` payload 直接读 white-peace WarID”的错误施工方向，并已完成
+type + active-War binding 的最小 production query。下一步是用 fresh DLL 做 paused white-peace live fixture，
+随后才研究普通非宗教 dynamic outcome rows；不要为了顺手填充 generic effects、tooltip 或宗教分支而扩大 wire。

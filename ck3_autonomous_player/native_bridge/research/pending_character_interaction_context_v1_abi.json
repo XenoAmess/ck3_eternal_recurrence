@@ -11,9 +11,9 @@
   "production_wired": true,
   "live_validated": true,
   "live_validated_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
-  "not_live_validated_scope": "the newly wired generic authored cost vector, notification ACK, intermediary routing and semantic decision",
+  "not_live_validated_scope": "the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
   "game_process_started": true,
-  "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality and authored generic cost vector",
+  "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality, authored generic cost vector and the exact ordinary nonreligious three-subtype special-war binding",
   "owner_deferred_domains": [
     "religion",
     "faith",
@@ -37,6 +37,8 @@
       "0x2C42A30 reply-state predicate",
       "0x334C510 generic trigger evaluator for proven trigger fields",
       "0x2CDB7B0 engine-generic compiled-cost evaluator into a caller-zeroed ten-int64 vector",
+      "0x2610840 read-only common-war relation lookup for generation-resolved actor and recipient Character objects",
+      "existing generation-safe active-CWar resolver reached from the mailbox's captured game_state",
       "0x33C52B0 generic script-scope type registry getter",
       "0x3B58970 script identifier name resolver"
     ],
@@ -263,6 +265,63 @@
         "end_rva": "0x2CDD6BC",
         "byte_length": "0x6CC",
         "sha256": "119C6D85299B865659AC0255C074D5EC45A7F93ACF0BFDA2CBF6318F301FB3A0"
+      },
+      {
+        "name": "pending_special_common_war_relation_lookup",
+        "start_rva": "0x2610840",
+        "end_rva": "0x26108F0",
+        "byte_length": "0xB0",
+        "sha256": "F8775B263CF77288E58D1B97AFA4FB900327EC072D0AA4CFB0CB4EA94256A8B9",
+        "span_kind": "contiguous_logic_span_across_four_pdata_runtime_functions",
+        "runtime_function_regions": [
+          "0x2610840..0x2610869",
+          "0x2610869..0x26108D4",
+          "0x26108D4..0x26108E4",
+          "0x26108E4..0x26108F0"
+        ]
+      },
+      {
+        "name": "pending_special_war_scope_builder",
+        "start_rva": "0x2070C60",
+        "end_rva": "0x2070D77",
+        "byte_length": "0x117",
+        "sha256": "20B4DCC7B2AC8B2C7FDFEC7149168F8610CC81842E8B3779BC6CFE5D1523EFEB"
+      },
+      {
+        "name": "pending_special_war_shared_vfunc_thunk",
+        "start_rva": "0x2070D80",
+        "end_rva": "0x2070D8B",
+        "byte_length": "0x0B",
+        "sha256": "E2E24085CA765BEC713AE4EE49CFA3013539B1741FACF3D17635CC76E235A681",
+        "span_kind": "leaf_thunk_without_pdata_runtime_function_row"
+      },
+      {
+        "name": "pending_special_war_victory_factory",
+        "start_rva": "0x2070E90",
+        "end_rva": "0x2070EB9",
+        "byte_length": "0x29",
+        "sha256": "B9B6BF59591CEB21C678EB883D8B4C99BE0D2C8DB19B1E04F5487DB7DEBAF282"
+      },
+      {
+        "name": "pending_special_war_white_peace_factory",
+        "start_rva": "0x2070F00",
+        "end_rva": "0x2070F29",
+        "byte_length": "0x29",
+        "sha256": "79CE167BE7BBBC0A0270BC40211D3534B24F9362A046FDEA70267C68499EF313"
+      },
+      {
+        "name": "pending_special_war_defeat_factory",
+        "start_rva": "0x2070F70",
+        "end_rva": "0x2070F99",
+        "byte_length": "0x29",
+        "sha256": "0C5D1B367AF2F1D4782D60889FB90C5B32D0B8F4D7A79E2EC5DAB48F51082C9C"
+      },
+      {
+        "name": "generic_interaction_effect_description_materializer",
+        "start_rva": "0x24B1B20",
+        "end_rva": "0x24B20D6",
+        "byte_length": "0x5B6",
+        "sha256": "BB06B4DF46AE835C1B6FE97874078BB8E00759A92866A2A1C03362ACD03DF52F"
       }
     ],
     "entry_only_anchors": {
@@ -280,6 +339,9 @@
       "generic_interaction_cost_render_loop": "0x2CDAA80",
       "generic_interaction_cost_vector_serializer": "0x2CDBB70",
       "generic_interaction_cost_affordability_gate": "0x2CDCFF0",
+      "pending_special_common_war_relation_lookup": "0x2610840",
+      "pending_special_war_scope_builder": "0x2070C60",
+      "generic_interaction_effect_description_materializer": "0x24B1B20",
       "pending_manager_response_transition": "0x2751410",
       "pending_notification_enumerator": "0xD9DAE0",
       "pending_notification_materializer": "0xF06030",
@@ -291,7 +353,10 @@
     "direct_data_anchors": {
       "generic_script_scope_type_registry": "0x4FFE290",
       "generic_script_scope_out_of_range_fallback_entry": "0x5000AB0",
-      "character_interaction_expiration_days": "0x570F528"
+      "character_interaction_expiration_days": "0x570F528",
+      "end_war_attacker_victory_special_vtable": "0x428EEA8",
+      "end_war_white_peace_special_vtable": "0x428EF88",
+      "end_war_attacker_defeat_special_vtable": "0x428EF18"
     }
   },
   "rtti": {
@@ -310,6 +375,27 @@
       "secondary_complete_object_locator_rva": "0x4A7B450",
       "secondary_subobject_offset": "0x2A80",
       "secondary_vtable_rva": "0x4403CA8"
+    },
+    "CEndWarAttackerVictoryInteractionData": {
+      "type_descriptor_rva": "0x546AB30",
+      "complete_object_locator_rva": "0x48F78D8",
+      "vtable_rva": "0x428EEA8",
+      "factory_rva": "0x2070E90",
+      "allocation_size": "0x08"
+    },
+    "CEndWarWhitePeaceInteractionData": {
+      "type_descriptor_rva": "0x546AAB8",
+      "complete_object_locator_rva": "0x48F7888",
+      "vtable_rva": "0x428EF88",
+      "factory_rva": "0x2070F00",
+      "allocation_size": "0x08"
+    },
+    "CEndWarAttackerDefeatInteractionData": {
+      "type_descriptor_rva": "0x546AAF0",
+      "complete_object_locator_rva": "0x48F78B0",
+      "vtable_rva": "0x428EF18",
+      "factory_rva": "0x2070F70",
+      "allocation_size": "0x08"
     }
   },
   "storage": {
@@ -383,6 +469,18 @@
       "pending_interaction_id": "+0x20 int32",
       "reply": "+0x24 int32; 0 accept, 1 reject, 2 block, 4 acknowledge",
       "submission_flags": "0x0E"
+    },
+    "CommonWarRelation": {
+      "lookup_rva": "0x2610840",
+      "lookup_arguments": "generation-resolved actor Character pointer, generation-resolved recipient Character pointer",
+      "war_id": "+0x20 full generation-bearing int32"
+    },
+    "CWarSpecialBindingFields": {
+      "war_id": "+0x08 full generation-bearing int32",
+      "primary_attacker_character_id": "+0x288 full CharacterID",
+      "primary_defender_character_id": "+0x28C full CharacterID",
+      "ended_data": "+0x358 pointer; must be null",
+      "resolution": "reuse the existing game_state+0xA0 -> war manager+0x29C20 -> storage+0x20 generation-safe active-CWar resolver"
     }
   },
   "stable_definition_identity": {
@@ -448,6 +546,47 @@
     },
     "coverage_boundary": "the vector covers engine-generic authored interaction cost only; it is not a future liability of the current responder and does not claim special subtype transfers or effect outcomes",
     "read_gate": "paused application-main only; resolve the full pending generation twice, evaluate the complete ten-entry vector twice, and publish only when both observations and outer frame are identical"
+  },
+  "special_war_binding": {
+    "contract": "pending-character-interaction-special-war-binding-v1",
+    "scope": "ordinary nonreligious end-war victory, white-peace and defeat interactions only; all other concrete subtypes remain typed opaque and all religion-specific subtypes remain owner-deferred",
+    "special_pointer": "CCharacterInteractionContext+0x330, therefore CPendingCharacterInteraction+0x348",
+    "exact_pairs": [
+      {
+        "definition_key": "end_war_attacker_victory_interaction",
+        "vtable_rva": "0x428EEA8",
+        "special_interaction_kind": "end_war_attacker_victory_interaction",
+        "absolute_outcome": "attacker_victory"
+      },
+      {
+        "definition_key": "end_war_attacker_white_peace_interaction",
+        "vtable_rva": "0x428EF88",
+        "special_interaction_kind": "end_war_white_peace_interaction",
+        "absolute_outcome": "white_peace"
+      },
+      {
+        "definition_key": "end_war_attacker_defeat_interaction",
+        "vtable_rva": "0x428EF18",
+        "special_interaction_kind": "end_war_attacker_defeat_interaction",
+        "absolute_outcome": "attacker_defeat"
+      }
+    ],
+    "payload_boundary": "each concrete special object is exactly one vptr in an 8-byte allocation; it contains no WarID payload",
+    "war_join": "generation-resolve actor and recipient CharacterIDs, call read-only 0x2610840(actor,recipient), read relation+0x20 full WarID, then reuse the existing generation-safe active-CWar resolver",
+    "war_validation": "resolved CWar+0x08 equals relation WarID, CWar+0x358 is null, and +0x288/+0x28C equal actor/recipient on opposite primary sides",
+    "double_observation": "both observations retain pending, definition, actor, recipient, special, vptr, relation and active-CWar pointers plus all public values; any drift or outer frame change returns state_changed",
+    "binding_source": "native_common_war_relation",
+    "typed_unavailable": [
+      "special_war_binding_not_applicable",
+      "special_interaction_subtype_opaque",
+      "special_interaction_identity_mismatch",
+      "special_war_binding_unavailable",
+      "special_war_roles_mismatch"
+    ],
+    "presence_identity_gate": "special_war_binding_not_applicable is valid only when special_data is null and the definition is not one of the three exact war-exit definitions; a known war-exit definition with null special_data is special_interaction_identity_mismatch and never enters the common-war relation lookup",
+    "semantic_boundary": "special_war_binding_ready does not imply special_outcome_terms_ready, structured_terms_ready or interaction_semantic_decision_ready; the query never sends a reply or calls an effect/war mutator",
+    "production_wired": true,
+    "live_validated": false
   },
   "deadline": {
     "age_days": "pending+0x5B8",
@@ -517,14 +656,15 @@
       "target presence, stable generic-scope type key and raw type envelope",
       "age, expiration and remaining days",
       "independent accept, reject, block and acknowledge legality",
-      "complete ten-key signed Q100000 generic authored cost vector, with actor/on-send/already-applied payment semantics"
+      "complete ten-key signed Q100000 generic authored cost vector, with actor/on-send/already-applied payment semantics",
+      "for the three exact ordinary nonreligious end-war definition/vptr pairs only: absolute outcome, active full WarID and opposite actor/recipient primary war roles"
     ],
     "unavailable_without_subtype_decoder": [
       "typed identity for every generic target kind",
       "numeric option flag identifier to canonical string",
       "special-subtype resource transfers beyond the generic authored cost vector",
       "structured relationship or title exchanges",
-      "special_interaction payload fields",
+      "all non-allowlisted special_interaction subtype payloads",
       "structured hard-coded and scripted effect preview",
       "recipient AI acceptance score and final random decision"
     ],
@@ -541,7 +681,7 @@
     "routing": "raw kind and auto_accept_notification",
     "deadline": "age_days, expiration_days, remaining_days and expiry_boundary_status",
     "legality": "four independent status/bool/reason objects",
-    "terms": "structured_costs is an available ten-key signed Q100000 vector tagged actor/on_send/already_applied; exchanges, effect preview and native AI terms remain typed unavailable",
+    "terms": "structured_costs is an available ten-key signed Q100000 vector tagged actor/on_send/already_applied; special_war_binding is available only for the three exact ordinary nonreligious end-war definition/vptr pairs; special outcome rows, exchanges, effect preview and native AI terms remain typed unavailable",
     "interaction_semantic_decision_ready": "true only when definition, responder, required target, all decision-relevant terms and at least one legal reply are semantically available"
   },
   "readiness": {
@@ -558,6 +698,10 @@
     "generic_costs_static_ready": true,
     "generic_costs_query_ready": true,
     "generic_costs_live_ready": false,
+    "special_war_binding_static_ready": true,
+    "special_war_binding_query_ready": true,
+    "special_war_binding_live_ready": false,
+    "special_outcome_terms_ready": false,
     "structured_terms_ready": false,
     "bridge_query_ready": true,
     "ordinary_pending_query_ready": true,
@@ -567,7 +711,7 @@
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; the newly wired generic cost vector, notification ACK, intermediary routing and semantic decision remain outside live coverage",
+    "production_live_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },
@@ -624,6 +768,7 @@
   "next_reverse_engineering": [
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
     "live-validate all-zero generic authored costs on the existing nonreligious white-peace pending fixture, then validate at least one nonzero nonreligious authored cost without sending or replying",
+    "live-validate the exact white-peace definition/vptr pair and active WarID binding twice in one paused revision without sending a reply; victory and defeat remain separate future fixtures",
     "close an engine-generic read-only effect-description seam without calling subtype mutators or effect executors",
     "validate the production paused application-main query against an intermediary fixture; the ordinary recipient fixture is live-confirmed",
     "run a nonreligious auto-accept notification paused fixture through typed query and one strict ACK, then prove the old full generation-bearing pending ID no longer resolves; queue submission alone is insufficient"

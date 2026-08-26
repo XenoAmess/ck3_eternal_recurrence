@@ -58,6 +58,7 @@ callsite；真正的 required-trigger callsite 是 `0x16CC94E -> 0x334C510`。�
 
 | exact-build 字段/入口 | 已闭合语义 |
 |---|---|
+| `EventData+0x08/+0x0C/+0x10` | calculated event ID / runtime statistics ordinal / canonical namespaced event key MSVC string；stable identity 不能用 ordinal 替代 |
 | `CEventOption+0x10/+0x18/+0x1C` | dynamic option-name 候选向量的 data/capacity/count；resolver 为 `0x33E7FF0` |
 | `CEventOption+0x28` | `ai_chance` scripted-modifier 子对象；其 base 在绝对 `+0x88`，constructor 默认 raw `100000`（语义 `1`） |
 | `CEventOption+0x90` | required validity trigger；`0x16CC94E` 调 `0x334C510` |
@@ -132,18 +133,26 @@ flowchart TD
   `0x3380170`。后者通过 loaded-effect
   vtable `+0x58`、`r8d=0` 收集 preview/presentation。它与 command 路径使用的 effect executor `0x3380410`
   是两个不同入口。
+- [static-confirmed] 该 collector 使用的具体 `CEventOptionIndicatorVisitor` 与 item `+0x88` output 已闭合为
+  trait add/remove、stress increase/decrease、played-character death 与 start-scheme type 四类有损 GUI indicator；
+  trait/scheme payload 可转为 stable key，但 resource/relation、stress magnitude 与 completeness signal 不在该 vector。
+  exact identifiers、hash、Mermaid 与实施门见 [`event-effect-indicators.md`](event-effect-indicators.md)。
 - [static-confirmed] `show_unlock_reason` at `+0x479` 由 `0x16D26B7` 测试，`0x16D273A` 调用 `0x2537490`。该函数消费
   `+0x3F0/+0x408/+0x420` metadata；没有专门 metadata 时可从 `+0x90` trigger failure 构造 reason。
 - [static-confirmed] `CIngameInterfaceIdlerGfx+0x28 → event-window manager → CEventWindow+0xE8 →
   CEventWindowData` 的下半 locator、构造/析构与 manager 同 tick 压缩生命周期已经闭合，详见
-  `event-window-context.md`；[unknown] 稳定 global root/capture seam 与 `0x3380170` collector/output ABI 仍未闭合。
-  因而现阶段不得从 bridge worker 直接调用 trigger/name/preview evaluator，也不得调用 effect executor 来“预览”。
+  `event-window-context.md`；stable passive root 与 indicator output 子集均已静态闭合，完整 structured preview 仍 unknown。
+  不得从 bridge worker 直接调用 trigger/name/preview evaluator，也不得调用 effect executor 来“预览”。
 
 ### 玩家选择命令与后置条件
 
 - [static-confirmed] 当前本地事件由 `CEventManager` getter RVA `0x2706AD0` 返回；active event 的
   `event_data/instance_id` 分别位于 `+0x1B0/+0x1BC`，`EventData` 的 option pointer array/count 也分别位于
-  `+0x1B0/+0x1BC`。
+  `+0x1B0/+0x1BC`。duplicate validator 完整 `.pdata 0x33D4DA0..0x33D5082` 比较 `EventData+0x08 int32`
+  calculated ID，并把 `EventData+0x10` canonical key 作为 duplicate-ID error 的第一个 formatter 参数；业务 body
+  `0x33D4DA0..0x33D505A` SHA-256 为
+  `6466EE00D394D6A79F87BB48EEA00AF1257393A538FA5EE45EE4CF42D4548028`，完整函数 SHA-256 为
+  `33D9FF7EBF7BE4431285D0AE41262D5B2497057FAF2E2AB1718AB9CB5A5A727A`。
 - [static-confirmed] `CSelectEventOptionCommand` 为 `0x28` bytes，instance ID at `+0x20`，zero-based native
   option index at `+0x24`；主/次 vtable 为 `0x4335240/0x4335210`。
 - [static-confirmed] executor chain 最终进入 RVA `0x33E68C0`。它只做 `0 <= index < option_count`，随后读取
@@ -440,12 +449,14 @@ engine-generic intermediary routing/full-ID/mailbox；不能拿 test interaction
 每次查询必须绑定 fresh paused snapshot 的 date/revision、active event instance 和 exact build，并至少发布：
 
 - `status = available | unavailable | invalid` 与 typed `unavailable_reason`；
-- stable event definition key/hash（若本 build 只有 numeric registry identity，则明确名称与 generation 语义）；
+- stable event definition identity：`EventData+0x10` canonical namespaced key、`+0x08` calculated ID 与 `+0x0C`
+  runtime statistics ordinal 分栏发布；必须做 string bounds 与同帧双重观察，不能只发 numeric ordinal；
 - event root 与已保存 named scopes 的类型化 identity；
 - authored/native option index，以及真正 rendered option number；
 - 每项 `shown`、`enabled`、`fallback`、`exclusive`、`is_cancel_option`，未知字段不得用 false 代填；
 - option name 的 loc key/已解析当前语言文本及解析状态；
-- effect preview 的结构化资源/关系/角色/战争/头衔 delta 与 `preview_status`；遇到不能保证只读的 loaded effect
+- effect indicators 与完整 effect preview 分栏：前者发布已闭合的 trait/stress/death/scheme 子集及明确 coverage；后者仍需
+  结构化资源/关系/角色/战争/头衔 delta、completeness 与 `preview_status`。遇到不能保证只读的 loaded effect
   一律标 unavailable，不得调用已证明会使 production 路径崩溃的 preview helper；
 - 原生 `ai_will_select`/`ai_chance` 的 raw fixed-point weight、选择器类型与求值状态，作为策略先验而非最终效用；
 - `event_semantic_decision_ready` 只在至少一个 shown+enabled option 拥有足够的文本/效果语义时为 true。
@@ -489,13 +500,13 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 
 ## 当前 exact 下一入口
 
-- [candidate] 在 in-game idler per-frame `0xAA72B0` 或精确 callsite `0xAA8233` 捕获 idler/manager，并在
-  idler destructor `0xAA4070` 清除；用 RTTI、vector bounds 与 `CEventWindowData+0x00 == ActiveEvent+0x1BC`
-  排除 frontend collision。只有该 stable capture/lifetime 经 production live 闭合后才实现只读 snapshot。
-- [static-confirmed] `0x16D2CF0 -> 0x3380170`：继续闭合 presentation collector 的输出布局与只读边界；在输出 ABI、
-  线程和上下文生命周期闭合前只作为静态 seam，不直接调用。
+- [static-confirmed] production current-window reader 已改走 `event-window-context.md` 的 passive stable root；
+  `0xAA72B0/0xAA8233/0xAA4070` capture 只保留诊断用途，不再是 production 依赖。
+- [static-confirmed] `0x16D2CF0 -> 0x3380170` 的 indicator output 子集已闭合；下一入口是其它
+  `CEffectDescriptionVisitorInterface` derived visitor 或 engine-owned structured tooltip model 中会保留
+  resource/relationship delta、target identity 与 completeness 的输出，不能扩义 `OptionEffectItem`。
 - [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；`+0x47A` 业务名；cancel-index `-1/-2`
-  sentinel 区别；stable event definition key 与保存 scopes 的 engine identity。
+  sentinel 区别；保存 scopes 的 engine identity。stable event definition key 已由 duplicate validator 闭合。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路

@@ -35,6 +35,7 @@ DEFAULT_MAILBOX = (
     HERE.parent / "src" / "pending_character_interaction_context_v1_mailbox.cpp"
 )
 DEFAULT_BRIDGE = HERE.parent / "src" / "bridge.cpp"
+DEFAULT_CK3_SOURCE = HERE.parent / "src" / "ck3_11906.cpp"
 
 
 def integer(value: object) -> int:
@@ -72,6 +73,7 @@ def main() -> int:
     parser.add_argument("--serializer", type=Path, default=DEFAULT_SERIALIZER)
     parser.add_argument("--mailbox", type=Path, default=DEFAULT_MAILBOX)
     parser.add_argument("--bridge", type=Path, default=DEFAULT_BRIDGE)
+    parser.add_argument("--ck3-source", type=Path, default=DEFAULT_CK3_SOURCE)
     arguments = parser.parse_args()
 
     failures: list[str] = []
@@ -161,6 +163,11 @@ def main() -> int:
                 "NativePendingInteractionCostEvaluatorV1",
                 "invoke_cost_evaluator",
                 "generic_costs_ready",
+                "kPendingInteractionCommonWarRelationV1Rva",
+                "invoke_common_war_relation",
+                "resolve_active_war",
+                "special_war_binding_ready",
+                "special_outcome_terms_ready",
             ),
         ),
         "reader": (
@@ -169,6 +176,9 @@ def main() -> int:
                 "kDefinitionCostBlockOffset = 0x38",
                 "treasury_or_gold",
                 "pending_payment_state = \"already_applied\"",
+                "ReadSpecialWarBinding",
+                "special_interaction_identity_mismatch",
+                "native_common_war_relation",
                 "second != first",
             ),
         ),
@@ -179,15 +189,33 @@ def main() -> int:
                 '\\"application_timing\\"',
                 '\\"pending_payment_state\\"',
                 '\\"cost_evaluator_rva\\"',
+                '\\"special_war_binding\\"',
+                '\\"common_war_relation_rva\\"',
+                '\\"special_outcome_terms_ready\\"',
             ),
         ),
         "mailbox": (
             arguments.mailbox,
-            ("ProxyInvokeCostEvaluator", "IsExecutingExactMailboxSlot"),
+            (
+                "ProxyInvokeCostEvaluator",
+                "ProxyInvokeCommonWarRelation",
+                "ProxyResolveActiveWar",
+                "IsExecutingExactMailboxSlot",
+            ),
         ),
         "bridge": (
             arguments.bridge,
-            ("InvokePendingCharacterInteractionCostEvaluatorDirectV1",),
+            (
+                "InvokePendingCharacterInteractionCostEvaluatorDirectV1",
+                "InvokePendingCharacterInteractionCommonWarRelationDirectV1",
+            ),
+        ),
+        "ck3_source": (
+            arguments.ck3_source,
+            (
+                "ResolvePendingCharacterInteractionActiveWarV1",
+                "ResolveWar(bindings, game_state, war_id)",
+            ),
         ),
     }
     for name, (path, required_tokens) in source_contracts.items():
@@ -279,6 +307,96 @@ def main() -> int:
         )
     ):
         failures.append("fixture: signed ten-key generic-cost contract drifted")
+
+    special = contract.get("special_war_binding", {})
+    expected_special_pairs = [
+        (
+            "end_war_attacker_victory_interaction",
+            "0x428EEA8",
+            "end_war_attacker_victory_interaction",
+            "attacker_victory",
+        ),
+        (
+            "end_war_attacker_white_peace_interaction",
+            "0x428EF88",
+            "end_war_white_peace_interaction",
+            "white_peace",
+        ),
+        (
+            "end_war_attacker_defeat_interaction",
+            "0x428EF18",
+            "end_war_attacker_defeat_interaction",
+            "attacker_defeat",
+        ),
+    ]
+    actual_special_pairs = [
+        (
+            row.get("definition_key"),
+            row.get("vtable_rva"),
+            row.get("special_interaction_kind"),
+            row.get("absolute_outcome"),
+        )
+        for row in special.get("exact_pairs", [])
+        if isinstance(row, dict)
+    ]
+    if (
+        special.get("contract")
+        != "pending-character-interaction-special-war-binding-v1"
+        or actual_special_pairs != expected_special_pairs
+        or special.get("binding_source") != "native_common_war_relation"
+        or special.get("typed_unavailable")
+        != [
+            "special_war_binding_not_applicable",
+            "special_interaction_subtype_opaque",
+            "special_interaction_identity_mismatch",
+            "special_war_binding_unavailable",
+            "special_war_roles_mismatch",
+        ]
+        or "known war-exit definition with null special_data is "
+        "special_interaction_identity_mismatch"
+        not in special.get("presence_identity_gate", "")
+        or special.get("production_wired") is not True
+        or special.get("live_validated") is not False
+    ):
+        failures.append("contract: exact ordinary special-war binding drifted")
+    fixture_vectors = {
+        row.get("name"): row
+        for row in fixture.get("vectors", [])
+        if isinstance(row, dict)
+    }
+    required_special_vectors = {
+        "ordinary_white_peace_exact_special_war_binding",
+        "ordinary_victory_exact_special_war_binding",
+        "ordinary_defeat_exact_special_war_binding",
+        "owner_deferred_religious_special_subtype_stays_opaque",
+        "known_definition_vptr_mismatch_is_unavailable",
+        "known_definition_missing_special_data_is_identity_mismatch",
+        "active_war_generation_or_role_failure_is_unavailable",
+    }
+    if not required_special_vectors.issubset(fixture_vectors):
+        failures.append("fixture: special-war source vectors are incomplete")
+    religious_vector = fixture_vectors.get(
+        "owner_deferred_religious_special_subtype_stays_opaque", {}
+    )
+    if (
+        religious_vector.get("expected", {}).get(
+            "common_war_relation_invoked"
+        )
+        is not False
+    ):
+        failures.append("fixture: owner-deferred subtype crossed relation lookup")
+    missing_special_vector = fixture_vectors.get(
+        "known_definition_missing_special_data_is_identity_mismatch", {}
+    )
+    if not (
+        missing_special_vector.get("expected", {}).get("reason")
+        == "special_interaction_identity_mismatch"
+        and missing_special_vector.get("expected", {}).get(
+            "common_war_relation_invoked"
+        )
+        is False
+    ):
+        failures.append("fixture: known war definition accepted null special data")
     external_live = fixture.get("external_live_evidence", {})
     if not (
         isinstance(external_live, dict)
@@ -300,6 +418,17 @@ def main() -> int:
     if fixture_readiness.get("generic_costs_live_ready") is not False:
         failures.append("fixture: synthetic cost slice cannot claim live readiness")
     if not (
+        readiness.get("special_war_binding_static_ready") is True
+        and readiness.get("special_war_binding_query_ready") is True
+        and readiness.get("special_war_binding_live_ready") is False
+        and readiness.get("special_outcome_terms_ready") is False
+        and fixture_readiness.get("special_war_binding_static_ready") is True
+        and fixture_readiness.get("special_war_binding_query_ready") is True
+        and fixture_readiness.get("special_war_binding_live_ready") is False
+        and fixture_readiness.get("special_outcome_terms_ready") is False
+    ):
+        failures.append("contract: special-war readiness boundary drifted")
+    if not (
         readiness.get("ordinary_pending_query_live_ready") is True
         and readiness.get("production_live_ready") is True
         and fixture_readiness.get("ordinary_pending_query_live_ready") is True
@@ -314,6 +443,7 @@ def main() -> int:
             isinstance(source, str)
             and "historical ordinary" in source
             and "generic cost" in source
+            and "special war binding" in source
             and "notification ACK" in source
             and "intermediary" in source
             and "semantic decision" in source
@@ -325,12 +455,15 @@ def main() -> int:
         == "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only"
         and isinstance(contract.get("not_live_validated_scope"), str)
         and "generic authored cost" in contract["not_live_validated_scope"]
+        and "special war binding" in contract["not_live_validated_scope"]
         and "notification ACK" in contract["not_live_validated_scope"]
         and "intermediary" in contract["not_live_validated_scope"]
         and "semantic decision" in contract["not_live_validated_scope"]
     ):
         failures.append("contract: top-level historical live scope drifted")
-    if "religion" not in contract["owner_deferred_domains"]:
+    if not {"religion", "faith", "holy_war"}.issubset(
+        contract["owner_deferred_domains"]
+    ):
         failures.append("contract: owner-deferred religion boundary was lost")
 
     if failures:
@@ -339,7 +472,7 @@ def main() -> int:
         return 1
     print(
         f"PASS spans={len(spans)} exact_build=1 source_hashes=1 "
-        "cost_mapping=10 read_only=1 live_pending=1"
+        "cost_mapping=10 special_war_pairs=3 read_only=1 live_pending=1"
     )
     return 0
 

@@ -16,7 +16,9 @@
     "doctrine",
     "tenet",
     "fervor",
-    "holy_war"
+    "holy_war",
+    "holy_order",
+    "great_holy_war"
   ],
   "corrected_false_leads": [
     {
@@ -57,6 +59,60 @@
         "sha256": "A38D1C098C6B7CCE65F47A4D4C7D5C4C65D9F2E846CF2BCB5BB77BE4236B45CE"
       },
       {
+        "name": "CEventOptionIndicatorVisitor_main_callback",
+        "start_rva": "0x16D1EC0",
+        "end_rva": "0x16D2380",
+        "byte_length": "0x4C0",
+        "sha256": "379F0DC5E1EA524EEECF8E77372265450FA5130F9B82BAD966017CE7C6DFF2D0"
+      },
+      {
+        "name": "event_option_effect_item_append_logical_extent",
+        "start_rva": "0x16D3A40",
+        "end_rva": "0x16D3BF1",
+        "byte_length": "0x1B1",
+        "sha256": "83CB8AAA50E164BE53B64F4C5AA8DC68D253F6B30EB54230E60211BED125A3C5",
+        "runtime_function_regions": [
+          "0x16D3A40..0x16D3AE8",
+          "0x16D3AE8..0x16D3BCA",
+          "0x16D3BCA..0x16D3BF1"
+        ]
+      },
+      {
+        "name": "OptionEffectItem_GetTrait_callback",
+        "start_rva": "0x16A2580",
+        "end_rva": "0x16A25B4",
+        "byte_length": "0x34",
+        "sha256": "537784016B293D6D8DB81059395383E88968B6673942CC4A6426CC412A04EB80"
+      },
+      {
+        "name": "OptionEffectItem_GetScheme_callback",
+        "start_rva": "0x16A25C0",
+        "end_rva": "0x16A25F5",
+        "byte_length": "0x35",
+        "sha256": "E9AAD91128FCC59C3A8AAA6AD0D296CFE7E9E82A95357500BBF9213906225232"
+      },
+      {
+        "name": "indicator_trait_scope_resolver",
+        "start_rva": "0x2011950",
+        "end_rva": "0x2011987",
+        "byte_length": "0x37",
+        "sha256": "E3FD0D69274C43B934B857DE933687BEC40DAAD4F6043B4C82C383EF0C762A19"
+      },
+      {
+        "name": "CStartSchemeEffect_initializer",
+        "start_rva": "0x2EB4D10",
+        "end_rva": "0x2EB4FF7",
+        "byte_length": "0x2E7",
+        "sha256": "6366D08F6A110701D3C111934F14B2D2F7E9248762F0209860804BFD3A699654"
+      },
+      {
+        "name": "CStartSchemeEffect_stable_key_consumer",
+        "start_rva": "0x2EB5000",
+        "end_rva": "0x2EB5116",
+        "byte_length": "0x116",
+        "sha256": "8D910D404DDB79F5D2A0E867E9888BB8A3D5B27EDF96008BC099407422AAE8DB"
+      },
+      {
         "name": "CEventOptionItem_vector_materializer",
         "start_rva": "0x16D6B10",
         "end_rva": "0x16D6DF7",
@@ -76,6 +132,13 @@
         "end_rva": "0x21F1590",
         "byte_length": "0x140",
         "sha256": "E5B2460607EA8233198327B644FE590977C69EB02DE25EC50E4BEC9275005C02"
+      },
+      {
+        "name": "EventData_duplicate_calculated_id_validator",
+        "start_rva": "0x33D4DA0",
+        "end_rva": "0x33D5082",
+        "byte_length": "0x2E2",
+        "sha256": "33D9FF7EBF7BE4431285D0AE41262D5B2497057FAF2E2AB1718AB9CB5A5A727A"
       },
       {
         "name": "event_option_unlock_reason_materializer",
@@ -183,6 +246,137 @@
         "sha256": "EFEB6F509AAC0B0EB1A5B18A864D58E1D0A335068A934AE56614B63E2B70CDB5"
       }
     ],
+    "exact_semantic_spans": [
+      {
+        "name": "EventData_duplicate_calculated_id_validator_semantic_body",
+        "start_rva": "0x33D4DA0",
+        "end_rva": "0x33D505A",
+        "byte_length": "0x2BA",
+        "sha256": "6466EE00D394D6A79F87BB48EEA00AF1257393A538FA5EE45EE4CF42D4548028"
+      }
+    ],
+    "exact_data_spans": [
+      {
+        "name": "duplicate_event_id_error_literal",
+        "start_rva": "0x44D9E50",
+        "end_rva": "0x44D9E9C",
+        "byte_length": "0x4C",
+        "sha256": "85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42",
+        "bytes_utf8_nul": "Duplicated event ID '%s' found. New Location: '%s', Previous Location: '%s'\\0"
+      },
+      {
+        "name": "effect_registry_row_add_trait_0x287B",
+        "start_rva": "0x42BE730",
+        "end_rva": "0x42BE740",
+        "byte_length": "0x10",
+        "sha256": "730DAD9DF55EA9121BFC932FA32E6E129C270B19F92F160ECA0DBE6BC1EA860D"
+      },
+      {
+        "name": "effect_registry_string_add_trait",
+        "start_rva": "0x40F6C30",
+        "end_rva": "0x40F6C3A",
+        "byte_length": "0xA",
+        "sha256": "3199D0D20A976C68AD77B2F779ED34EAB7CF3C35A76F385E74EAD9F8C6B8FCBE"
+      },
+      {
+        "name": "effect_registry_row_remove_trait_0x287C",
+        "start_rva": "0x42BE740",
+        "end_rva": "0x42BE750",
+        "byte_length": "0x10",
+        "sha256": "D3FCF94BC7E94309798D501411A642955A286AEC9301B1D4F9429F437DDD9CE8"
+      },
+      {
+        "name": "effect_registry_string_remove_trait",
+        "start_rva": "0x40F6AE8",
+        "end_rva": "0x40F6AF5",
+        "byte_length": "0xD",
+        "sha256": "E15FEA6C56FB9AFF6A4397A57E95690D6B74BF43F958611AEE48A9FBC75F51D7"
+      },
+      {
+        "name": "effect_registry_row_add_stress_0x28D2",
+        "start_rva": "0x42BE7D0",
+        "end_rva": "0x42BE7E0",
+        "byte_length": "0x10",
+        "sha256": "67AAB20F62FA1BCDC90585DBC26ABA71CA46676BC9D97CF500455C367C139019"
+      },
+      {
+        "name": "effect_registry_string_add_stress",
+        "start_rva": "0x40F75B0",
+        "end_rva": "0x40F75BB",
+        "byte_length": "0xB",
+        "sha256": "29E428364923835C7F7744D5F3D9CDE2057EDE9D2BE99F0B5C347D052491DCC2"
+      },
+      {
+        "name": "effect_registry_row_stress_impact_0x28D3",
+        "start_rva": "0x42BE7E0",
+        "end_rva": "0x42BE7F0",
+        "byte_length": "0x10",
+        "sha256": "46D5DA2D69D03C60EF8DEDEE3C52340220A19FC5C4C10B514F4ACB14696E8B09"
+      },
+      {
+        "name": "effect_registry_string_stress_impact",
+        "start_rva": "0x4299168",
+        "end_rva": "0x4299176",
+        "byte_length": "0xE",
+        "sha256": "1DDA67AECEB9DFFB2F3F247E9FA2C65E8722292593594D8ACF0D58F706B28A4C"
+      },
+      {
+        "name": "effect_registry_row_death_0x2767",
+        "start_rva": "0x42BDE70",
+        "end_rva": "0x42BDE80",
+        "byte_length": "0x10",
+        "sha256": "7CE31946343442E3FE1824EC8FD81D9585AA28ED3A6948903994B979324BBCC5"
+      },
+      {
+        "name": "effect_registry_string_death",
+        "start_rva": "0x4095820",
+        "end_rva": "0x4095826",
+        "byte_length": "0x6",
+        "sha256": "106B5B35A3759BA0F9693DCAAD18AC6E72213621326235891255F6CA8586C2A9"
+      },
+      {
+        "name": "effect_registry_row_add_trait_force_tooltip_0x2C0F",
+        "start_rva": "0x42BFD70",
+        "end_rva": "0x42BFD80",
+        "byte_length": "0x10",
+        "sha256": "8E12C1100A27589ACAF36D641212C2D86ACBA55055FF7F4BB9CDE0B11CEC9403"
+      },
+      {
+        "name": "effect_registry_string_add_trait_force_tooltip",
+        "start_rva": "0x4299FC8",
+        "end_rva": "0x4299FE0",
+        "byte_length": "0x18",
+        "sha256": "1AAFAD31C34C95D451C906FC9E2B95F00BC75AC2C5E4CF4667690118DE2D5F7B"
+      },
+      {
+        "name": "effect_registry_row_remove_trait_force_tooltip_0x2FC9",
+        "start_rva": "0x42C2890",
+        "end_rva": "0x42C28A0",
+        "byte_length": "0x10",
+        "sha256": "F6477365C2D6D625BADF17DB27A5982BC7DFB756AAB1AC48A520F52E49CE4537"
+      },
+      {
+        "name": "effect_registry_string_remove_trait_force_tooltip",
+        "start_rva": "0x429D4F0",
+        "end_rva": "0x429D50B",
+        "byte_length": "0x1B",
+        "sha256": "43DBF58D4180B3768C55E420257E3B2E82C60CF4BC222E3DF8F3796658217720"
+      },
+      {
+        "name": "effect_registry_row_start_scheme_0x2920",
+        "start_rva": "0x42BEAE0",
+        "end_rva": "0x42BEAF0",
+        "byte_length": "0x10",
+        "sha256": "E95DBA80E6A867F62B11EF9EEF2300316467782906DF144FE72867E0E223FAA8"
+      },
+      {
+        "name": "effect_registry_string_start_scheme",
+        "start_rva": "0x4298F60",
+        "end_rva": "0x4298F6D",
+        "byte_length": "0xD",
+        "sha256": "711B5BD11336F8BCF4D84E815DFDFE2CFF1C640B148F5ECACBB24FDE4D6FCBAF"
+      }
+    ],
     "entry_only_anchors": {
       "setup_options_caller": "0x16CB782",
       "required_trigger_callsite": "0x16CC94E",
@@ -199,6 +393,15 @@
       "ai_will_select_evaluator": "0x1409696C0",
       "ai_chance_evaluator": "0x337B210"
     }
+  },
+  "EventData": {
+    "database_vector": "+0x40 EventData** data, +0x4C int32 count in the duplicate-validator receiver",
+    "calculated_event_id": "+0x08 int32; duplicate validator compares this field to detect duplicate IDs",
+    "runtime_stats_ordinal": "+0x0C int32; separately observed runtime statistics ordinal, not stable identity",
+    "canonical_namespaced_key": "+0x10 MSVC string; first formatter argument in the exact duplicate-event-ID diagnostic",
+    "source_location": "+0x240; resolved for the diagnostic's new/previous location arguments",
+    "current_event_definition_path": "SPlayerEventData/ActiveEvent+0x1B0 -> EventData*",
+    "read_rule": "After matching the full current ActiveEvent instance ID, validate +0x10 MSVC bounds and double-observe the EventData pointer, +0x08, +0x0C and +0x10 before publishing; never expose the pointer."
   },
   "CEventOption": {
     "size": "0x480",
@@ -236,6 +439,7 @@
   },
   "CEventOptionItem": {
     "size_and_stride": "0x1B8",
+    "effect_indicator_vector": "+0x88 data, +0x90 capacity, +0x94 int32 count; OptionEffectItem stride 0x18",
     "owner": "+0x160 CEventWindowData*",
     "clicksound_resource": "+0x168",
     "resolved_name": "+0x170 MSVC string",
@@ -244,6 +448,40 @@
     "enabled": "+0x1B4 uint8",
     "fallback_materialized": "+0x1B5 uint8",
     "shown": "vector membership; hidden authored options have no item"
+  },
+  "OptionEffectItem": {
+    "size_and_stride": "0x18",
+    "trait_payload": "+0x00 CTrait* only for kind=0; validate complete loaded Trait DB membership, native ID and canonical key before publishing identity",
+    "scheme_type_payload": "+0x08 CSchemeType* only for kind=3; validate loaded DB/fallback/vtable and canonical +0x18 stable key before publishing identity",
+    "inactive_payload_rule": "The non-kind payload may be a nonzero engine fallback/sentinel; never interpret or publish it.",
+    "kind": "+0x10 int32; 0=trait, 1=stress, 2=death, 3=scheme; preserve unsupported values as typed unknown without dereferencing payloads",
+    "gain": "+0x14 uint8; trait: add/remove; stress: increase/decrease; raw true on death/scheme has no typed direction or utility meaning",
+    "affected_by_trait": "+0x15 uint8; meaningful only for stress_impact aggregation",
+    "critical": "+0x16 uint8; meaningful only for stress and means post-delta stress level is strictly higher",
+    "producer_scope": "CEventOptionIndicatorVisitor only emits recognized effects whose affected Character resolves to the played Character.",
+    "recognized_effect_keys": [
+      "add_trait",
+      "add_trait_force_tooltip",
+      "remove_trait",
+      "remove_trait_force_tooltip",
+      "add_stress",
+      "stress_impact",
+      "death",
+      "start_scheme"
+    ],
+    "identifier_to_key": {
+      "0x287B": "add_trait",
+      "0x2C0F": "add_trait_force_tooltip",
+      "0x287C": "remove_trait",
+      "0x2FC9": "remove_trait_force_tooltip",
+      "0x28D2": "add_stress",
+      "0x28D3": "stress_impact",
+      "0x2767": "death",
+      "0x2920": "start_scheme"
+    },
+    "lossiness": "Exact duplicate rows collapse; all stress deltas aggregate to sign/flags without magnitude; death collapses to presence; stress and death append after traversal; ignored effects have no persisted count.",
+    "coverage": "played-character GUI icon indicators only; no completeness signal and no resource/relationship delta",
+    "research_note": "docs/ck3-native-ai/event-effect-indicators.md"
   },
   "SetupOptions": {
     "abi": "rcx=CEventWindowData*, rdx=SPlayerEventData const*, r8=GuiContextGUI*, r9d=disabled-item limit",
@@ -265,8 +503,9 @@
   "effect_paths": {
     "execution": "RVA 0x33E68C0 bounds-checks native index, reads option+0x358 and calls 0x3380410; it does not re-run trigger/exclusive/fallback/enabled",
     "preview_presentation": "RVA 0x16D2CF0 passes option+0x358, SPlayerEventData and a presentation collector to RVA 0x3380170; collector invokes loaded-effect vtable +0x58 with r8d=0",
-    "preview_output_abi": "unknown",
-    "worker_thread_callability": "not proven"
+    "effect_indicator_output_abi": "static-confirmed OptionEffectItem subset at CEventOptionItem+0x88; see the OptionEffectItem section and event-effect-indicators.md",
+    "full_structured_preview_output_abi": "unknown; the indicator subset has no completeness signal and omits resource/relationship effects",
+    "reader_rule": "Copy the already-materialized vector in the owning-thread current-window query. Do not call the collector from a worker or to reconstruct omitted effects."
   },
   "native_ai_selector": {
     "abi": "rcx=EventData*, rdx=SPlayerEventData*, r8d=decision_value, r9b=context_mode",
@@ -287,9 +526,12 @@
     "static_option_visibility_ready": true,
     "static_ai_selector_ready": true,
     "static_name_resolver_ready": true,
+    "stable_event_definition_key_static_ready": true,
+    "stable_event_definition_key_published": false,
     "preview_entry_static_ready": true,
-    "preview_output_abi_ready": false,
-    "engine_owned_window_locator_ready": false,
+    "effect_indicator_output_abi_ready": true,
+    "full_structured_effect_preview_ready": false,
+    "engine_owned_window_locator_static_ready": true,
     "bridge_query_ready": false,
     "live_validated": false
   },

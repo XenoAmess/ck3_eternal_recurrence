@@ -60,11 +60,15 @@ def _provenance() -> dict[str, str]:
         "reply_validator_rva": "0x26B3540",
         "auto_accept_trigger_evaluator_rva": "0x334C510",
         "cost_evaluator_rva": "0x2CDB7B0",
+        "common_war_relation_rva": "0x2610840",
         "target_type_registry_getter_rva": "0x33C52B0",
         "target_type_registry_rva": "0x4FFE290",
         "script_identifier_name_rva": "0x3B58970",
         "reply_primary_vtable_rva": "0x4082930",
         "reply_secondary_vtable_rva": "0x4082900",
+        "war_victory_special_vtable_rva": "0x428EEA8",
+        "war_white_peace_special_vtable_rva": "0x428EF88",
+        "war_defeat_special_vtable_rva": "0x428EF18",
     }
 
 
@@ -91,12 +95,20 @@ def _legality(
     }
 
 
-def _readiness(*, target_present: bool = False) -> dict[str, object]:
+def _readiness(
+    *,
+    target_present: bool = False,
+    special_war_binding_available: bool = False,
+    special_war_binding_reason: str = "special_war_binding_not_applicable",
+) -> dict[str, object]:
     reasons = []
     if target_present:
         reasons.append("target_generic_scope_payload_identity_not_closed")
+    if not special_war_binding_available:
+        reasons.append(special_war_binding_reason)
     reasons.extend(
         [
+            "special_outcome_terms_unavailable",
             "structured_exchanges_unavailable",
             "structured_effect_preview_unavailable",
         ]
@@ -112,6 +124,8 @@ def _readiness(*, target_present: bool = False) -> dict[str, object]:
         "auto_accept_ready": True,
         "reply_legality_ready": True,
         "generic_costs_ready": True,
+        "special_war_binding_ready": special_war_binding_available,
+        "special_outcome_terms_ready": False,
         "structured_terms_ready": False,
         "same_frame_ready": True,
         "interaction_semantic_decision_ready": False,
@@ -153,6 +167,8 @@ def _frame(
     reason: str | None = None,
     target_present: bool = False,
     notification: bool = False,
+    special_war_binding: dict[str, object] | None = None,
+    definition_key: str = "fixture_request_support_interaction",
 ) -> dict[str, object]:
     if status != "available":
         selected_reason = reason or (
@@ -216,7 +232,7 @@ def _frame(
         "reason": None,
         "build": _build(),
         "definition": {
-            "canonical_key": "fixture_request_support_interaction",
+            "canonical_key": definition_key,
             "deterministic_key_hash": 0x12345678,
             "runtime_ordinal": 42,
         },
@@ -269,7 +285,13 @@ def _frame(
         },
         "legality": legality,
         "terms": {
-            "special_data_present": False,
+            "special_data_present": special_war_binding is not None,
+            "special_war_binding": special_war_binding
+            or {
+                "status": "unavailable",
+                "value": None,
+                "reason": "special_war_binding_not_applicable",
+            },
             "structured_costs": {
                 "status": "available",
                 "value": {
@@ -331,19 +353,52 @@ def _frame(
                 "reason": "recipient_ai_final_decision_unavailable",
             },
         },
-        "readiness": _readiness(target_present=target_present),
+        "readiness": _readiness(
+            target_present=target_present,
+            special_war_binding_available=(
+                special_war_binding is not None
+                and special_war_binding.get("status") == "available"
+            ),
+            special_war_binding_reason=(
+                str(special_war_binding.get("reason"))
+                if special_war_binding is not None
+                and special_war_binding.get("status") != "available"
+                else "special_war_binding_not_applicable"
+            ),
+        ),
         "provenance": _provenance(),
     }
 
 
-def _native_result(status: str = "available") -> dict[str, object]:
+def _white_peace_binding() -> dict[str, object]:
+    return {
+        "status": "available",
+        "value": {
+            "special_interaction_kind": "end_war_white_peace_interaction",
+            "absolute_outcome": "white_peace",
+            "war_id": 16_777_250,
+            "actor_war_role": "primary_defender",
+            "recipient_war_role": "primary_attacker",
+            "binding_source": "native_common_war_relation",
+        },
+        "reason": None,
+    }
+
+
+def _native_result(
+    status: str = "available",
+    *,
+    frame: dict[str, object] | None = None,
+) -> dict[str, object]:
     return {
         "step": STEP,
         "accepted": True,
         "status": status,
         "query_sequence": 12,
         "snapshot_revision": NATIVE_REVISION,
-        "pending_character_interaction_context": _frame(status),
+        "pending_character_interaction_context": (
+            copy.deepcopy(frame) if frame is not None else _frame(status)
+        ),
         "backend_id": "native-headless",
     }
 
@@ -369,8 +424,12 @@ _MIRROR_KEYS = (
 )
 
 
-def _driver_result(status: str = "available") -> dict[str, object]:
-    result = _native_result(status)
+def _driver_result(
+    status: str = "available",
+    *,
+    frame: dict[str, object] | None = None,
+) -> dict[str, object]:
+    result = _native_result(status, frame=frame)
     frame = result["pending_character_interaction_context"]
     assert isinstance(frame, dict)
     for key in _MIRROR_KEYS:
@@ -485,6 +544,127 @@ class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
             normalized["readiness"]["target_typed_identity_ready"]
         )
 
+    def test_exact_white_peace_special_war_binding_is_typed_but_not_semantic_ready(
+        self,
+    ) -> None:
+        binding = _white_peace_binding()
+        normalized = normalize_pending_character_interaction_context_v1(
+            _frame(
+                special_war_binding=binding,
+                definition_key=(
+                    "end_war_attacker_white_peace_interaction"
+                ),
+            ),
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertTrue(normalized["readiness"]["special_war_binding_ready"])
+        self.assertFalse(
+            normalized["readiness"]["special_outcome_terms_ready"]
+        )
+        self.assertFalse(normalized["readiness"]["structured_terms_ready"])
+        self.assertEqual(
+            normalized["terms"]["special_war_binding"]["value"]["war_id"],
+            16_777_250,
+        )
+        self.assertEqual(
+            normalized["readiness"]["not_ready_reasons"],
+            [
+                "special_outcome_terms_unavailable",
+                "structured_exchanges_unavailable",
+                "structured_effect_preview_unavailable",
+            ],
+        )
+
+    def test_special_war_binding_rejects_invented_pair_and_roles(self) -> None:
+        for field, value in (
+            ("absolute_outcome", "attacker_victory"),
+            ("actor_war_role", "primary_attacker"),
+            ("binding_source", "tooltip"),
+        ):
+            with self.subTest(field=field):
+                binding = {
+                    "status": "available",
+                    "value": {
+                        "special_interaction_kind": (
+                            "end_war_white_peace_interaction"
+                        ),
+                        "absolute_outcome": "white_peace",
+                        "war_id": 16_777_250,
+                        "actor_war_role": "primary_defender",
+                        "recipient_war_role": "primary_attacker",
+                        "binding_source": "native_common_war_relation",
+                    },
+                    "reason": None,
+                }
+                binding["value"][field] = value
+                with self.assertRaises(ValueError):
+                    normalize_pending_character_interaction_context_v1(
+                        _frame(
+                            special_war_binding=binding,
+                            definition_key=(
+                                "end_war_attacker_white_peace_interaction"
+                            ),
+                        ),
+                        expected_pending_interaction_id=PENDING_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
+    def test_known_war_definition_requires_special_identity(self) -> None:
+        frame = _frame(
+            definition_key="end_war_attacker_white_peace_interaction"
+        )
+        frame["terms"]["special_war_binding"]["reason"] = (
+            "special_interaction_identity_mismatch"
+        )
+        frame["readiness"]["not_ready_reasons"][0] = (
+            "special_interaction_identity_mismatch"
+        )
+        normalized = normalize_pending_character_interaction_context_v1(
+            frame,
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertFalse(normalized["terms"]["special_data_present"])
+
+        frame["terms"]["special_war_binding"]["reason"] = (
+            "special_war_binding_not_applicable"
+        )
+        frame["readiness"]["not_ready_reasons"][0] = (
+            "special_war_binding_not_applicable"
+        )
+        with self.assertRaises(ValueError):
+            normalize_pending_character_interaction_context_v1(
+                frame,
+                expected_pending_interaction_id=PENDING_ID,
+                expected_date_raw=DATE_RAW,
+                expected_snapshot_revision=NATIVE_REVISION,
+            )
+
+    def test_owner_deferred_special_subtype_stays_opaque(self) -> None:
+        binding = {
+            "status": "unavailable",
+            "value": None,
+            "reason": "special_interaction_subtype_opaque",
+        }
+        normalized = normalize_pending_character_interaction_context_v1(
+            _frame(
+                special_war_binding=binding,
+                definition_key="owner_deferred_religious_special_fixture",
+            ),
+            expected_pending_interaction_id=PENDING_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(
+            normalized["terms"]["special_war_binding"]["reason"],
+            "special_interaction_subtype_opaque",
+        )
+
     def test_intermediary_and_notification_channels_remain_distinct(self) -> None:
         intermediary = _frame()
         intermediary["roles"]["intermediary_character_id"] = 3001
@@ -573,6 +753,9 @@ class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
             "cost_payment_state": lambda row: row["terms"][
                 "structured_costs"
             ]["value"].__setitem__("pending_payment_state", "not_applied"),
+            "special_ready": lambda row: row["readiness"].__setitem__(
+                "special_war_binding_ready", True
+            ),
             "semantic_ready": lambda row: row["readiness"].__setitem__(
                 "interaction_semantic_decision_ready", True
             ),
@@ -743,6 +926,29 @@ class PendingCharacterInteractionContextV1NativeDriverTests(unittest.TestCase):
                 expected_revision=int(driver.take_snapshot()["revision"]),
             )
 
+    def test_driver_preserves_exact_special_war_binding(self) -> None:
+        driver, endpoint = _native_driver()
+        special_frame = _frame(
+            special_war_binding=_white_peace_binding(),
+            definition_key="end_war_attacker_white_peace_interaction",
+        )
+        _answer_with(
+            endpoint,
+            lambda: _native_result(frame=special_frame),
+        )
+
+        result = driver.query_pending_character_interaction_context_v1(
+            PENDING_ID,
+            expected_revision=int(driver.take_snapshot()["revision"]),
+        )
+
+        self.assertEqual(
+            result["terms"]["special_war_binding"]["value"]["war_id"],
+            16_777_250,
+        )
+        self.assertTrue(result["readiness"]["special_war_binding_ready"])
+        self.assertFalse(result["pending_character_interaction_context_ready"])
+
 
 class _ServiceDriver:
     def __init__(
@@ -753,12 +959,14 @@ class _ServiceDriver:
         drift: bool = False,
         mirror_drift: bool = False,
         paused: bool = True,
+        frame: dict[str, object] | None = None,
     ) -> None:
         self.status = status
         self.advertise = advertise
         self.drift = drift
         self.mirror_drift = mirror_drift
         self.paused = paused
+        self.frame = copy.deepcopy(frame)
         self.calls = 0
 
     def capabilities(self) -> dict[str, object]:
@@ -825,7 +1033,7 @@ class _ServiceDriver:
             or expected_revision != PUBLIC_REVISION
         ):
             raise AssertionError("service changed pending query binding")
-        result = _driver_result(self.status)
+        result = _driver_result(self.status, frame=self.frame)
         if self.mirror_drift:
             result["pending_interaction_id"] += 2**24
         return result
@@ -878,6 +1086,26 @@ class PendingCharacterInteractionContextV1ServiceTests(unittest.TestCase):
                 )
                 self.assertIsNone(result["terms"])
                 self.assertFalse(result["legality"]["accept"]["allowed"])
+
+    def test_service_preserves_exact_special_war_binding(self) -> None:
+        frame = _frame(
+            special_war_binding=_white_peace_binding(),
+            definition_key="end_war_attacker_white_peace_interaction",
+        )
+        result = GameplayBridgeService(
+            _ServiceDriver(frame=frame)
+        ).query_pending_character_interaction_context_v1(
+            PENDING_ID,
+            expected_revision=PUBLIC_REVISION,
+        )
+        self.assertEqual(
+            result["terms"]["special_war_binding"]["value"][
+                "absolute_outcome"
+            ],
+            "white_peace",
+        )
+        self.assertTrue(result["readiness"]["special_war_binding_ready"])
+        self.assertFalse(result["pending_character_interaction_context_ready"])
 
     def test_service_rejects_alias_capability_revision_mirror_and_drift(self) -> None:
         with self.assertRaisesRegex(BridgeUnavailableError, "paused"):
@@ -934,7 +1162,11 @@ class PendingCharacterInteractionContextV1McpTests(
     async def test_official_client_lists_and_calls_pending_context_tool(self) -> None:
         from mcp import Client
 
-        server = create_server(_ServiceDriver())
+        frame = _frame(
+            special_war_binding=_white_peace_binding(),
+            definition_key="end_war_attacker_white_peace_interaction",
+        )
+        server = create_server(_ServiceDriver(frame=frame))
         async with Client(server) as client:
             listed = await client.list_tools()
             names = {tool.name for tool in listed.tools}
@@ -953,6 +1185,11 @@ class PendingCharacterInteractionContextV1McpTests(
         payload = result.structured_content
         self.assertEqual(payload["status"], "available")
         self.assertEqual(payload["pending_interaction_id"], PENDING_ID)
+        self.assertEqual(
+            payload["terms"]["special_war_binding"]["value"]["war_id"],
+            16_777_250,
+        )
+        self.assertTrue(payload["readiness"]["special_war_binding_ready"])
         self.assertFalse(payload["pending_character_interaction_context_ready"])
 
 

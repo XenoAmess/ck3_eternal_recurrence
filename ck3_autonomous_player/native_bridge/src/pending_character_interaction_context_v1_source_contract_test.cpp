@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
           "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86" ||
       kPendingCharacterInteractionContextV1BackendId !=
           "ck3-1.19.0.6-native-pending-character-interaction-context-v1" ||
+      kPendingCharacterInteractionSpecialWarBindingV1Contract !=
+          "pending-character-interaction-special-war-binding-v1" ||
       kPendingInteractionStorageSlotV1Rva != 0x57BF1C8 ||
       kPendingInteractionCharacterStorageSlotV1Rva != 0x570C130 ||
       kPendingInteractionExpirationDaysV1Rva != 0x570F528 ||
@@ -64,12 +66,16 @@ int main(int argc, char **argv) {
       kPendingInteractionReplyValidatorV1Rva != 0x26B3540 ||
       kPendingInteractionTriggerEvaluatorV1Rva != 0x334C510 ||
       kPendingInteractionCostEvaluatorV1Rva != 0x2CDB7B0 ||
+      kPendingInteractionCommonWarRelationV1Rva != 0x2610840 ||
       kPendingInteractionTargetTypeRegistryGetterV1Rva != 0x33C52B0 ||
       kPendingInteractionTargetTypeRegistryV1Rva != 0x4FFE290 ||
       kPendingInteractionTargetTypeFallbackEntryV1Rva != 0x5000AB0 ||
       kPendingInteractionScriptIdentifierNameV1Rva != 0x3B58970 ||
       kPendingInteractionReplyPrimaryVtableV1Rva != 0x4082930 ||
       kPendingInteractionReplySecondaryVtableV1Rva != 0x4082900 ||
+      kPendingInteractionWarVictorySpecialVtableV1Rva != 0x428EEA8 ||
+      kPendingInteractionWarWhitePeaceSpecialVtableV1Rva != 0x428EF88 ||
+      kPendingInteractionWarDefeatSpecialVtableV1Rva != 0x428EF18 ||
       kPendingInteractionMaximumSendOptionsV1 != 256) {
     std::cerr << "compiled exact-build binding drifted\n";
     return 1;
@@ -81,6 +87,8 @@ int main(int argc, char **argv) {
                     "played_character_id", "invoke_local_routing",
                     "invoke_reply_validator", "invoke_trigger_evaluator",
                     "invoke_cost_evaluator", "generic_costs_ready",
+                    "invoke_common_war_relation", "resolve_active_war",
+                    "special_war_binding_ready", "special_outcome_terms_ready",
                     "invoke_target_type_registry",
                     "invoke_script_identifier_name",
                     "interaction_semantic_decision_ready"}) ||
@@ -110,6 +118,14 @@ int main(int argc, char **argv) {
                             "treasury_or_gold",
                             "barter_goods",
                             "environment.cost_evaluator",
+                            "environment.common_war_relation",
+                            "ReadSpecialWarBinding",
+                            "special_interaction_identity_mismatch",
+                            "special_war_roles_mismatch",
+                            "native_common_war_relation",
+                            "kWarPrimaryAttackerCharacterIdOffset = 0x288",
+                            "kWarPrimaryDefenderCharacterIdOffset = 0x28C",
+                            "kWarEndedDataOffset = 0x358",
                             "raw[index]",
                             "selected_capacity < send_options.context_count",
                             "second != first",
@@ -119,13 +135,26 @@ int main(int argc, char **argv) {
       !ContainsAll(
           serializer,
           {"\\\"schema\\\":\\\"pending-character-interaction-context-v1\\\"",
-           "\\\"raw_type_index\\\"", "\\\"raw_16_bytes_hex\\\"",
-           "\\\"type_key_status\\\"", "\\\"typed_identity_status\\\"",
-           "\\\"canonical_flag_status\\\"", "\\\"legality\\\"",
-           "\\\"structured_costs\\\"", "\\\"value\\\":null",
-           "\\\"raw_scale\\\"", "\\\"resource_key\\\"", "\\\"payer_role\\\"",
-           "\\\"application_timing\\\"", "\\\"pending_payment_state\\\"",
+           "\\\"raw_type_index\\\"",
+           "\\\"raw_16_bytes_hex\\\"",
+           "\\\"type_key_status\\\"",
+           "\\\"typed_identity_status\\\"",
+           "\\\"canonical_flag_status\\\"",
+           "\\\"legality\\\"",
+           "\\\"structured_costs\\\"",
+           "\\\"value\\\":null",
+           "\\\"raw_scale\\\"",
+           "\\\"resource_key\\\"",
+           "\\\"payer_role\\\"",
+           "\\\"application_timing\\\"",
+           "\\\"pending_payment_state\\\"",
            "\\\"cost_evaluator_rva\\\":\\\"0x2CDB7B0\\\"",
+           "\\\"special_war_binding\\\"",
+           "\\\"absolute_outcome\\\"",
+           "\\\"actor_war_role\\\"",
+           "\\\"recipient_war_role\\\"",
+           "\\\"common_war_relation_rva\\\":\\\"0x2610840\\\"",
+           "\\\"special_outcome_terms_ready\\\"",
            "\\\"recipient_ai_acceptance_score\\\"",
            "\\\"interaction_semantic_decision_ready\\\"",
            "\\\"target_type_registry_rva\\\":\\\"0x4FFE290\\\""}) ||
@@ -147,6 +176,13 @@ int main(int argc, char **argv) {
            "8D89DE114321AD18474443F7310F0850AE5C4C5187B009D7CB1FB5F26145AF28",
            "988DB7F261BE88BE4DBA77DAFB1D73460907C902DCE6DE3CEF9B420C3307AEF4",
            "119C6D85299B865659AC0255C074D5EC45A7F93ACF0BFDA2CBF6318F301FB3A0",
+           "F8775B263CF77288E58D1B97AFA4FB900327EC072D0AA4CFB0CB4EA94256A8B9",
+           "20B4DCC7B2AC8B2C7FDFEC7149168F8610CC81842E8B3779BC6CFE5D1523EFEB",
+           "E2E24085CA765BEC713AE4EE49CFA3013539B1741FACF3D17635CC76E235A681",
+           "B9B6BF59591CEB21C678EB883D8B4C99BE0D2C8DB19B1E04F5487DB7DEBAF282",
+           "79CE167BE7BBBC0A0270BC40211D3534B24F9362A046FDEA70267C68499EF313",
+           "0C5D1B367AF2F1D4782D60889FB90C5B32D0B8F4D7A79E2EC5DAB48F51082C9C",
+           "BB06B4DF46AE835C1B6FE97874078BB8E00759A92866A2A1C03362ACD03DF52F",
            "advances the compiled-row index and the formatter enum together",
            "treasury_or_gold",
            "disabled clamp may preserve a negative authored value",
@@ -167,6 +203,10 @@ int main(int argc, char **argv) {
            "\"generic_target_type_key_static_ready\": true",
            "\"generic_costs_static_ready\": true",
            "\"generic_costs_live_ready\": false",
+           "\"special_war_binding_query_ready\": true",
+           "\"special_war_binding_live_ready\": false",
+           "\"presence_identity_gate\"",
+           "\"special_outcome_terms_ready\": false",
            "\"ordinary_pending_query_live_ready\": true",
            "D20E339D56AFEFF8EB53F90FFD120AA8C42216AD214D38B7AC1B0EA9A2B8BC89",
            "enum 4 returns true before pending storage resolution",
@@ -185,6 +225,14 @@ int main(int argc, char **argv) {
                     "malformed_selected_option_count_fails_closed",
                     "opaque_generic_target_preserves_legality_but_blocks_"
                     "semantic_readiness",
+                    "ordinary_white_peace_exact_special_war_binding",
+                    "ordinary_victory_exact_special_war_binding",
+                    "ordinary_defeat_exact_special_war_binding",
+                    "owner_deferred_religious_special_subtype_stays_opaque",
+                    "known_definition_vptr_mismatch_is_unavailable",
+                    "known_definition_missing_special_data_is_identity_"
+                    "mismatch",
+                    "active_war_generation_or_role_failure_is_unavailable",
                     "notification_full_id_queues_fixed_ack",
                     "stale_generation_rejected_before_queue",
                     "snapshot_revision_mismatch_rejected_before_adapter",
@@ -199,6 +247,8 @@ int main(int argc, char **argv) {
                     "\"raw\": -50000",
                     "\"payer_role\": \"actor\"",
                     "\"generic_costs_query_ready\": true",
+                    "\"special_war_binding_query_ready\": true",
+                    "\"special_war_binding_live_ready\": false",
                     "\"generic_target_type_key_static_ready\": true",
                     "\"notification_ack_query_ready\": true",
                     "\"notification_ack_action_ready\": true",

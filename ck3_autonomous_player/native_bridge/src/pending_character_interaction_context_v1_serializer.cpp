@@ -101,7 +101,9 @@ bool ValidFailure(
          !ready.send_options_ready && !ready.routing_ready &&
          !ready.deadline_ready && !ready.auto_accept_ready &&
          !ready.reply_legality_ready && !ready.generic_costs_ready &&
-         !ready.structured_terms_ready && !ready.same_frame_ready &&
+         !ready.special_war_binding_ready &&
+         !ready.special_outcome_terms_ready && !ready.structured_terms_ready &&
+         !ready.same_frame_ready &&
          !ready.interaction_semantic_decision_ready &&
          ready.not_ready_reasons.size() == 1 &&
          ready.not_ready_reasons.front() == context.reason;
@@ -139,6 +141,61 @@ bool ValidStructuredCosts(
     }
   }
   return true;
+}
+
+bool ValidSpecialWarBinding(
+    const game::PendingCharacterInteractionSpecialWarBindingV1 &binding,
+    std::string_view definition_key, bool special_data_present) noexcept {
+  const bool known_definition =
+      definition_key == "end_war_attacker_victory_interaction" ||
+      definition_key == "end_war_attacker_white_peace_interaction" ||
+      definition_key == "end_war_attacker_defeat_interaction";
+  if (binding.status ==
+      game::PendingCharacterInteractionSemanticStatusV1::unavailable) {
+    const bool known_reason =
+        binding.reason == "special_war_binding_not_applicable" ||
+        binding.reason == "special_interaction_subtype_opaque" ||
+        binding.reason == "special_interaction_identity_mismatch" ||
+        binding.reason == "special_war_binding_unavailable" ||
+        binding.reason == "special_war_roles_mismatch";
+    const bool reason_matches_presence =
+        (binding.reason == "special_war_binding_not_applicable" &&
+         !special_data_present && !known_definition) ||
+        (binding.reason == "special_interaction_subtype_opaque" &&
+         special_data_present && !known_definition) ||
+        (binding.reason == "special_interaction_identity_mismatch" &&
+         (special_data_present || known_definition)) ||
+        binding.reason == "special_war_binding_unavailable" ||
+        (binding.reason == "special_war_roles_mismatch" &&
+         special_data_present && known_definition);
+    return known_reason && reason_matches_presence &&
+           binding.special_interaction_kind.empty() &&
+           binding.absolute_outcome.empty() && binding.war_id == -1 &&
+           binding.actor_war_role.empty() &&
+           binding.recipient_war_role.empty() && binding.binding_source.empty();
+  }
+  if (binding.status !=
+          game::PendingCharacterInteractionSemanticStatusV1::available ||
+      !special_data_present || binding.war_id <= 0 || !binding.reason.empty() ||
+      binding.binding_source != "native_common_war_relation" ||
+      !((binding.actor_war_role == "primary_attacker" &&
+         binding.recipient_war_role == "primary_defender") ||
+        (binding.actor_war_role == "primary_defender" &&
+         binding.recipient_war_role == "primary_attacker"))) {
+    return false;
+  }
+  return (definition_key == "end_war_attacker_victory_interaction" &&
+          binding.special_interaction_kind ==
+              "end_war_attacker_victory_interaction" &&
+          binding.absolute_outcome == "attacker_victory") ||
+         (definition_key == "end_war_attacker_white_peace_interaction" &&
+          binding.special_interaction_kind ==
+              "end_war_white_peace_interaction" &&
+          binding.absolute_outcome == "white_peace") ||
+         (definition_key == "end_war_attacker_defeat_interaction" &&
+          binding.special_interaction_kind ==
+              "end_war_attacker_defeat_interaction" &&
+          binding.absolute_outcome == "attacker_defeat");
 }
 
 bool ValidAvailable(
@@ -182,6 +239,9 @@ bool ValidAvailable(
       !ValidAvailableLegality(context.legality.block) ||
       !ValidAvailableLegality(context.legality.acknowledge) ||
       !ValidStructuredCosts(terms.structured_costs) ||
+      !ValidSpecialWarBinding(terms.special_war_binding,
+                              definition.canonical_key,
+                              terms.special_data_present) ||
       !ValidUnavailableTerm(terms.structured_exchanges,
                             "structured_exchanges_unavailable") ||
       !ValidUnavailableTerm(terms.structured_effect_preview,
@@ -248,11 +308,22 @@ bool ValidAvailable(
            "target_generic_scope_payload_identity_not_closed")) {
     return false;
   }
+  const bool special_binding_available =
+      terms.special_war_binding.status ==
+      game::PendingCharacterInteractionSemanticStatusV1::available;
+  if (!special_binding_available &&
+      (ready.not_ready_reasons.size() <= reason_index ||
+       ready.not_ready_reasons[reason_index++] !=
+           terms.special_war_binding.reason)) {
+    return false;
+  }
   const bool exact_reasons =
-      ready.not_ready_reasons.size() == reason_index + 2U &&
+      ready.not_ready_reasons.size() == reason_index + 3U &&
       ready.not_ready_reasons[reason_index] ==
-          "structured_exchanges_unavailable" &&
+          "special_outcome_terms_unavailable" &&
       ready.not_ready_reasons[reason_index + 1U] ==
+          "structured_exchanges_unavailable" &&
+      ready.not_ready_reasons[reason_index + 2U] ==
           "structured_effect_preview_unavailable";
   return exact_reasons && ready.stable_definition_ready && ready.roles_ready &&
          ready.target_type_key_ready &&
@@ -260,8 +331,9 @@ bool ValidAvailable(
          ready.send_options_ready && ready.routing_ready &&
          ready.deadline_ready && ready.auto_accept_ready &&
          ready.reply_legality_ready && ready.generic_costs_ready &&
-         !ready.structured_terms_ready && ready.same_frame_ready &&
-         !ready.interaction_semantic_decision_ready;
+         ready.special_war_binding_ready == special_binding_available &&
+         !ready.special_outcome_terms_ready && !ready.structured_terms_ready &&
+         ready.same_frame_ready && !ready.interaction_semantic_decision_ready;
 }
 
 void AppendOptionalString(std::string &output,
@@ -328,6 +400,34 @@ void AppendStructuredCosts(
     output.push_back('}');
   }
   output += "]},\"reason\":null}";
+}
+
+void AppendSpecialWarBinding(
+    std::string &output,
+    const game::PendingCharacterInteractionSpecialWarBindingV1 &binding) {
+  output += "{\"status\":";
+  AppendJsonString(output, SemanticStatusName(binding.status));
+  output += ",\"value\":";
+  if (binding.status !=
+      game::PendingCharacterInteractionSemanticStatusV1::available) {
+    output += "null,\"reason\":";
+    AppendOptionalReason(output, binding.reason);
+    output.push_back('}');
+    return;
+  }
+  output += "{\"special_interaction_kind\":";
+  AppendJsonString(output, binding.special_interaction_kind);
+  output += ",\"absolute_outcome\":";
+  AppendJsonString(output, binding.absolute_outcome);
+  output += ",\"war_id\":";
+  output += SignedNumber(binding.war_id);
+  output += ",\"actor_war_role\":";
+  AppendJsonString(output, binding.actor_war_role);
+  output += ",\"recipient_war_role\":";
+  AppendJsonString(output, binding.recipient_war_role);
+  output += ",\"binding_source\":";
+  AppendJsonString(output, binding.binding_source);
+  output += "},\"reason\":null}";
 }
 
 std::string TargetEnvelopeHex(const std::array<std::uint8_t, 16> &bytes) {
@@ -500,6 +600,8 @@ std::string SerializePendingCharacterInteractionContextV1(
     const auto &terms = *context.terms;
     output += "{\"special_data_present\":";
     output += terms.special_data_present ? "true" : "false";
+    output += ",\"special_war_binding\":";
+    AppendSpecialWarBinding(output, terms.special_war_binding);
     output += ",\"structured_costs\":";
     AppendStructuredCosts(output, terms.structured_costs);
     output += ",\"structured_exchanges\":";
@@ -533,6 +635,10 @@ std::string SerializePendingCharacterInteractionContextV1(
   output += ready.reply_legality_ready ? "true" : "false";
   output += ",\"generic_costs_ready\":";
   output += ready.generic_costs_ready ? "true" : "false";
+  output += ",\"special_war_binding_ready\":";
+  output += ready.special_war_binding_ready ? "true" : "false";
+  output += ",\"special_outcome_terms_ready\":";
+  output += ready.special_outcome_terms_ready ? "true" : "false";
   output += ",\"structured_terms_ready\":";
   output += ready.structured_terms_ready ? "true" : "false";
   output += ",\"same_frame_ready\":";
@@ -556,11 +662,15 @@ std::string SerializePendingCharacterInteractionContextV1(
             "\"reply_validator_rva\":\"0x26B3540\","
             "\"auto_accept_trigger_evaluator_rva\":\"0x334C510\","
             "\"cost_evaluator_rva\":\"0x2CDB7B0\","
+            "\"common_war_relation_rva\":\"0x2610840\","
             "\"target_type_registry_getter_rva\":\"0x33C52B0\","
             "\"target_type_registry_rva\":\"0x4FFE290\","
             "\"script_identifier_name_rva\":\"0x3B58970\","
             "\"reply_primary_vtable_rva\":\"0x4082930\","
-            "\"reply_secondary_vtable_rva\":\"0x4082900\"}}";
+            "\"reply_secondary_vtable_rva\":\"0x4082900\","
+            "\"war_victory_special_vtable_rva\":\"0x428EEA8\","
+            "\"war_white_peace_special_vtable_rva\":\"0x428EF88\","
+            "\"war_defeat_special_vtable_rva\":\"0x428EF18\"}}";
   return output;
 }
 

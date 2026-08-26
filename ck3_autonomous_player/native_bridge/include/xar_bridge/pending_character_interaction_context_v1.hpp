@@ -187,8 +187,25 @@ struct PendingCharacterInteractionStructuredCostsV1 {
              const PendingCharacterInteractionStructuredCostsV1 &) = default;
 };
 
+struct PendingCharacterInteractionSpecialWarBindingV1 {
+  PendingCharacterInteractionSemanticStatusV1 status =
+      PendingCharacterInteractionSemanticStatusV1::unavailable;
+  std::string special_interaction_kind;
+  std::string absolute_outcome;
+  std::int32_t war_id = -1;
+  std::string actor_war_role;
+  std::string recipient_war_role;
+  std::string binding_source;
+  std::string reason;
+
+  friend bool
+  operator==(const PendingCharacterInteractionSpecialWarBindingV1 &,
+             const PendingCharacterInteractionSpecialWarBindingV1 &) = default;
+};
+
 struct PendingCharacterInteractionTermsV1 {
   bool special_data_present = false;
+  PendingCharacterInteractionSpecialWarBindingV1 special_war_binding;
   PendingCharacterInteractionStructuredCostsV1 structured_costs;
   PendingCharacterInteractionUnavailableTermV1 structured_exchanges;
   PendingCharacterInteractionUnavailableTermV1 structured_effect_preview;
@@ -210,6 +227,8 @@ struct PendingCharacterInteractionReadinessV1 {
   bool auto_accept_ready = false;
   bool reply_legality_ready = false;
   bool generic_costs_ready = false;
+  bool special_war_binding_ready = false;
+  bool special_outcome_terms_ready = false;
   bool structured_terms_ready = false;
   bool same_frame_ready = false;
   bool interaction_semantic_decision_ready = false;
@@ -276,6 +295,9 @@ inline constexpr std::string_view
 inline constexpr std::string_view
     kPendingCharacterInteractionContextV1BackendId =
         "ck3-1.19.0.6-native-pending-character-interaction-context-v1";
+inline constexpr std::string_view
+    kPendingCharacterInteractionSpecialWarBindingV1Contract =
+        "pending-character-interaction-special-war-binding-v1";
 
 inline constexpr std::uintptr_t kPendingInteractionStorageSlotV1Rva = 0x57BF1C8;
 inline constexpr std::uintptr_t kPendingInteractionCharacterStorageSlotV1Rva =
@@ -290,6 +312,8 @@ inline constexpr std::uintptr_t kPendingInteractionTriggerEvaluatorV1Rva =
     0x334C510;
 inline constexpr std::uintptr_t kPendingInteractionCostEvaluatorV1Rva =
     0x2CDB7B0;
+inline constexpr std::uintptr_t kPendingInteractionCommonWarRelationV1Rva =
+    0x2610840;
 inline constexpr std::uintptr_t
     kPendingInteractionTargetTypeRegistryGetterV1Rva = 0x33C52B0;
 inline constexpr std::uintptr_t kPendingInteractionTargetTypeRegistryV1Rva =
@@ -302,6 +326,12 @@ inline constexpr std::uintptr_t kPendingInteractionReplyPrimaryVtableV1Rva =
     0x4082930;
 inline constexpr std::uintptr_t kPendingInteractionReplySecondaryVtableV1Rva =
     0x4082900;
+inline constexpr std::uintptr_t
+    kPendingInteractionWarVictorySpecialVtableV1Rva = 0x428EEA8;
+inline constexpr std::uintptr_t
+    kPendingInteractionWarWhitePeaceSpecialVtableV1Rva = 0x428EF88;
+inline constexpr std::uintptr_t kPendingInteractionWarDefeatSpecialVtableV1Rva =
+    0x428EF18;
 inline constexpr std::int32_t kPendingInteractionMaximumSendOptionsV1 = 256;
 
 #if defined(_MSC_VER)
@@ -322,6 +352,9 @@ using NativePendingInteractionCostEvaluatorV1 =
     void(XAR_PENDING_INTERACTION_FASTCALL *)(const void *compiled_cost_block,
                                              const void *event_target_scope,
                                              std::int64_t *out10);
+using NativePendingInteractionCommonWarRelationV1 =
+    void *(XAR_PENDING_INTERACTION_FASTCALL *)(void *actor_character,
+                                               void *recipient_character);
 using NativePendingInteractionTargetTypeRegistryGetterV1 =
     void *(XAR_PENDING_INTERACTION_FASTCALL *)();
 using NativePendingInteractionScriptIdentifierNameV1 = const std::string *(
@@ -340,12 +373,16 @@ struct PendingCharacterInteractionNativeEnvironmentV1 {
   NativePendingInteractionReplyValidatorV1 reply_validator = nullptr;
   NativePendingInteractionTriggerEvaluatorV1 trigger_evaluator = nullptr;
   NativePendingInteractionCostEvaluatorV1 cost_evaluator = nullptr;
+  NativePendingInteractionCommonWarRelationV1 common_war_relation = nullptr;
   NativePendingInteractionTargetTypeRegistryGetterV1 target_type_registry =
       nullptr;
   NativePendingInteractionScriptIdentifierNameV1 script_identifier_name =
       nullptr;
   std::uintptr_t reply_primary_vtable = 0;
   std::uintptr_t reply_secondary_vtable = 0;
+  std::uintptr_t war_victory_special_vtable = 0;
+  std::uintptr_t war_white_peace_special_vtable = 0;
+  std::uintptr_t war_defeat_special_vtable = 0;
 };
 
 using CapturePendingCharacterInteractionFrameV1 = bool (*)(
@@ -372,6 +409,11 @@ using InvokePendingCharacterInteractionCostEvaluatorV1 =
              std::array<std::int64_t,
                         game::kPendingCharacterInteractionCostResourceCountV1>
                  &output) noexcept;
+using InvokePendingCharacterInteractionCommonWarRelationV1 = bool (*)(
+    void *context, NativePendingInteractionCommonWarRelationV1 function,
+    void *actor_character, void *recipient_character, void *&output) noexcept;
+using ResolvePendingCharacterInteractionActiveWarAccessV1 =
+    bool (*)(void *context, std::int32_t war_id, void *&output) noexcept;
 using InvokePendingCharacterInteractionTargetTypeRegistryV1 = bool (*)(
     void *context, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept;
@@ -392,6 +434,10 @@ struct PendingCharacterInteractionAccessV1 {
   InvokePendingCharacterInteractionTriggerEvaluatorV1 invoke_trigger_evaluator =
       nullptr;
   InvokePendingCharacterInteractionCostEvaluatorV1 invoke_cost_evaluator =
+      nullptr;
+  InvokePendingCharacterInteractionCommonWarRelationV1
+      invoke_common_war_relation = nullptr;
+  ResolvePendingCharacterInteractionActiveWarAccessV1 resolve_active_war =
       nullptr;
   InvokePendingCharacterInteractionTargetTypeRegistryV1
       invoke_target_type_registry = nullptr;
@@ -422,6 +468,9 @@ bool InvokePendingCharacterInteractionCostEvaluatorDirectV1(
     std::array<std::int64_t,
                game::kPendingCharacterInteractionCostResourceCountV1>
         &output) noexcept;
+bool InvokePendingCharacterInteractionCommonWarRelationDirectV1(
+    void *context, NativePendingInteractionCommonWarRelationV1 function,
+    void *actor_character, void *recipient_character, void *&output) noexcept;
 bool InvokePendingCharacterInteractionTargetTypeRegistryDirectV1(
     void *context, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept;

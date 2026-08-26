@@ -37,6 +37,11 @@ constexpr std::size_t kPendingSpecialDataOffset = 0x348;
 constexpr std::size_t kPendingAgeDaysOffset = 0x5B8;
 constexpr std::size_t kPendingRoutingKindOffset = 0x5C0;
 constexpr std::size_t kPendingAutoAcceptNotificationOffset = 0x5C6;
+constexpr std::size_t kWarIdentityOffset = 0x08;
+constexpr std::size_t kWarPrimaryAttackerCharacterIdOffset = 0x288;
+constexpr std::size_t kWarPrimaryDefenderCharacterIdOffset = 0x28C;
+constexpr std::size_t kWarEndedDataOffset = 0x358;
+constexpr std::size_t kCommonWarRelationWarIdOffset = 0x20;
 constexpr std::size_t kDefinitionRuntimeOrdinalOffset = 0x10;
 constexpr std::size_t kDefinitionKeyHashOffset = 0x14;
 constexpr std::size_t kDefinitionCanonicalKeyOffset = 0x18;
@@ -94,10 +99,16 @@ struct FailureV1 {
 struct ObservationV1 {
   void *pending = nullptr;
   void *played_character = nullptr;
+  void *actor_character = nullptr;
+  void *recipient_character = nullptr;
   void *definition_pointer = nullptr;
   void *selected_option_data = nullptr;
   void *send_option_rows = nullptr;
   void *target_type_registry = nullptr;
+  void *special_data = nullptr;
+  std::uintptr_t special_data_vtable = 0;
+  void *common_war_relation = nullptr;
+  void *active_war = nullptr;
   game::PendingCharacterInteractionDefinitionV1 definition;
   game::PendingCharacterInteractionRolesV1 roles;
   game::PendingCharacterInteractionTargetV1 target;
@@ -264,10 +275,14 @@ bool EnvironmentIsExact(const PendingCharacterInteractionNativeEnvironmentV1
       environment.reply_validator == nullptr ||
       environment.trigger_evaluator == nullptr ||
       environment.cost_evaluator == nullptr ||
+      environment.common_war_relation == nullptr ||
       environment.target_type_registry == nullptr ||
       environment.script_identifier_name == nullptr ||
       environment.reply_primary_vtable == 0 ||
-      environment.reply_secondary_vtable == 0) {
+      environment.reply_secondary_vtable == 0 ||
+      environment.war_victory_special_vtable == 0 ||
+      environment.war_white_peace_special_vtable == 0 ||
+      environment.war_defeat_special_vtable == 0) {
     return false;
   }
   if (environment.offline_fixture_function_overrides) {
@@ -291,6 +306,8 @@ bool EnvironmentIsExact(const PendingCharacterInteractionNativeEnvironmentV1
              base + kPendingInteractionTriggerEvaluatorV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.cost_evaluator) ==
              base + kPendingInteractionCostEvaluatorV1Rva &&
+         reinterpret_cast<std::uintptr_t>(environment.common_war_relation) ==
+             base + kPendingInteractionCommonWarRelationV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.target_type_registry) ==
              base + kPendingInteractionTargetTypeRegistryGetterV1Rva &&
          reinterpret_cast<std::uintptr_t>(environment.script_identifier_name) ==
@@ -298,7 +315,13 @@ bool EnvironmentIsExact(const PendingCharacterInteractionNativeEnvironmentV1
          environment.reply_primary_vtable ==
              base + kPendingInteractionReplyPrimaryVtableV1Rva &&
          environment.reply_secondary_vtable ==
-             base + kPendingInteractionReplySecondaryVtableV1Rva;
+             base + kPendingInteractionReplySecondaryVtableV1Rva &&
+         environment.war_victory_special_vtable ==
+             base + kPendingInteractionWarVictorySpecialVtableV1Rva &&
+         environment.war_white_peace_special_vtable ==
+             base + kPendingInteractionWarWhitePeaceSpecialVtableV1Rva &&
+         environment.war_defeat_special_vtable ==
+             base + kPendingInteractionWarDefeatSpecialVtableV1Rva;
 }
 
 void SetFailure(game::PendingCharacterInteractionContextV1 &output,
@@ -912,12 +935,171 @@ void InitializeUnavailableTerms(
       "recipient_ai_final_decision_unavailable";
 }
 
+void SetSpecialWarBindingUnavailable(
+    game::PendingCharacterInteractionSpecialWarBindingV1 &binding,
+    std::string_view reason) {
+  binding = {};
+  binding.reason.assign(reason);
+}
+
+struct SpecialWarIdentityV1 {
+  std::string_view definition_key;
+  std::string_view special_interaction_kind;
+  std::string_view absolute_outcome;
+  std::uintptr_t vtable = 0;
+};
+
+bool KnownSpecialWarDefinition(std::string_view key) noexcept {
+  return key == "end_war_attacker_victory_interaction" ||
+         key == "end_war_attacker_white_peace_interaction" ||
+         key == "end_war_attacker_defeat_interaction";
+}
+
+std::optional<SpecialWarIdentityV1> ResolveSpecialWarIdentity(
+    const PendingCharacterInteractionNativeEnvironmentV1 &environment,
+    std::uintptr_t vtable) noexcept {
+  if (vtable == environment.war_victory_special_vtable) {
+    return SpecialWarIdentityV1{"end_war_attacker_victory_interaction",
+                                "end_war_attacker_victory_interaction",
+                                "attacker_victory", vtable};
+  }
+  if (vtable == environment.war_white_peace_special_vtable) {
+    return SpecialWarIdentityV1{"end_war_attacker_white_peace_interaction",
+                                "end_war_white_peace_interaction",
+                                "white_peace", vtable};
+  }
+  if (vtable == environment.war_defeat_special_vtable) {
+    return SpecialWarIdentityV1{"end_war_attacker_defeat_interaction",
+                                "end_war_attacker_defeat_interaction",
+                                "attacker_defeat", vtable};
+  }
+  return std::nullopt;
+}
+
+bool ReadSpecialWarBinding(
+    const PendingCharacterInteractionNativeEnvironmentV1 &environment,
+    const PendingCharacterInteractionAccessV1 &access,
+    ObservationV1 &output) noexcept {
+  auto &binding = output.terms.special_war_binding;
+  if (!ReadValue(access, output.pending, kPendingSpecialDataOffset,
+                 output.special_data)) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+  output.terms.special_data_present = output.special_data != nullptr;
+  if (output.special_data == nullptr) {
+    SetSpecialWarBindingUnavailable(
+        binding, KnownSpecialWarDefinition(output.definition.canonical_key)
+                     ? "special_interaction_identity_mismatch"
+                     : "special_war_binding_not_applicable");
+    return true;
+  }
+  if (!ReadValue(access, output.special_data, 0, output.special_data_vtable)) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+
+  const auto identity =
+      ResolveSpecialWarIdentity(environment, output.special_data_vtable);
+  if (!identity.has_value()) {
+    SetSpecialWarBindingUnavailable(
+        binding, KnownSpecialWarDefinition(output.definition.canonical_key)
+                     ? "special_interaction_identity_mismatch"
+                     : "special_interaction_subtype_opaque");
+    return true;
+  }
+  if (output.definition.canonical_key != identity->definition_key) {
+    SetSpecialWarBindingUnavailable(binding,
+                                    "special_interaction_identity_mismatch");
+    return true;
+  }
+
+  FailureV1 component_failure{};
+  output.actor_character = ResolveComponent(
+      access, environment.character_storage_slot,
+      output.roles.actor_character_id, kCharacterIdentityOffset,
+      "character_storage_unavailable", "special_war_actor_generation_mismatch",
+      component_failure);
+  component_failure = {};
+  output.recipient_character = ResolveComponent(
+      access, environment.character_storage_slot,
+      output.roles.recipient_character_id, kCharacterIdentityOffset,
+      "character_storage_unavailable",
+      "special_war_recipient_generation_mismatch", component_failure);
+  if (output.actor_character == nullptr ||
+      output.recipient_character == nullptr) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+  if (!access.invoke_common_war_relation(
+          access.context, environment.common_war_relation,
+          output.actor_character, output.recipient_character,
+          output.common_war_relation) ||
+      output.common_war_relation == nullptr) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+
+  std::int32_t relation_war_id = -1;
+  if (!ReadValue(access, output.common_war_relation,
+                 kCommonWarRelationWarIdOffset, relation_war_id) ||
+      relation_war_id <= 0 ||
+      !access.resolve_active_war(access.context, relation_war_id,
+                                 output.active_war) ||
+      output.active_war == nullptr) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+
+  std::int32_t observed_war_id = -1;
+  std::int32_t primary_attacker_character_id = -1;
+  std::int32_t primary_defender_character_id = -1;
+  void *ended_data = nullptr;
+  if (!ReadValue(access, output.active_war, kWarIdentityOffset,
+                 observed_war_id) ||
+      !ReadValue(access, output.active_war,
+                 kWarPrimaryAttackerCharacterIdOffset,
+                 primary_attacker_character_id) ||
+      !ReadValue(access, output.active_war,
+                 kWarPrimaryDefenderCharacterIdOffset,
+                 primary_defender_character_id) ||
+      !ReadValue(access, output.active_war, kWarEndedDataOffset, ended_data) ||
+      observed_war_id != relation_war_id || ended_data != nullptr) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_binding_unavailable");
+    return true;
+  }
+
+  const bool actor_is_attacker =
+      primary_attacker_character_id == output.roles.actor_character_id &&
+      primary_defender_character_id == output.roles.recipient_character_id;
+  const bool actor_is_defender =
+      primary_defender_character_id == output.roles.actor_character_id &&
+      primary_attacker_character_id == output.roles.recipient_character_id;
+  if (actor_is_attacker == actor_is_defender) {
+    SetSpecialWarBindingUnavailable(binding, "special_war_roles_mismatch");
+    return true;
+  }
+
+  binding = {};
+  binding.status = game::PendingCharacterInteractionSemanticStatusV1::available;
+  binding.special_interaction_kind.assign(identity->special_interaction_kind);
+  binding.absolute_outcome.assign(identity->absolute_outcome);
+  binding.war_id = relation_war_id;
+  binding.actor_war_role =
+      actor_is_attacker ? "primary_attacker" : "primary_defender";
+  binding.recipient_war_role =
+      actor_is_attacker ? "primary_defender" : "primary_attacker";
+  binding.binding_source = "native_common_war_relation";
+  return true;
+}
+
 bool ReadObservation(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access,
     const PendingCharacterInteractionContextRequestV1 &request,
     ObservationV1 &output, FailureV1 &failure) noexcept {
   output = {};
+  InitializeUnavailableTerms(output.terms);
   output.pending = ResolveComponent(
       access, environment.pending_storage_slot, request.pending_interaction_id,
       kComponentIdentityOffset, "pending_storage_unavailable",
@@ -950,18 +1132,10 @@ bool ReadObservation(
                       failure) ||
       !ReadStructuredCosts(environment, access, output.definition_pointer,
                            output.pending, output.terms.structured_costs,
-                           failure)) {
+                           failure) ||
+      !ReadSpecialWarBinding(environment, access, output)) {
     return false;
   }
-  void *special_data = nullptr;
-  if (!ReadValue(access, output.pending, kPendingSpecialDataOffset,
-                 special_data)) {
-    return Fail(failure,
-                game::PendingCharacterInteractionContextStatusV1::unavailable,
-                "pending_terms_unavailable");
-  }
-  output.terms.special_data_present = special_data != nullptr;
-  InitializeUnavailableTerms(output.terms);
   return true;
 }
 
@@ -1070,6 +1244,28 @@ bool InvokePendingCharacterInteractionCostEvaluatorDirectV1(
 #endif
 }
 
+bool InvokePendingCharacterInteractionCommonWarRelationDirectV1(
+    void *, NativePendingInteractionCommonWarRelationV1 function,
+    void *actor_character, void *recipient_character, void *&output) noexcept {
+  output = nullptr;
+  if (function == nullptr || actor_character == nullptr ||
+      recipient_character == nullptr) {
+    return false;
+  }
+#if defined(_MSC_VER)
+  __try {
+    output = function(actor_character, recipient_character);
+    return output != nullptr;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = nullptr;
+    return false;
+  }
+#else
+  output = function(actor_character, recipient_character);
+  return output != nullptr;
+#endif
+}
+
 bool InvokePendingCharacterInteractionTargetTypeRegistryDirectV1(
     void *, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept {
@@ -1139,6 +1335,9 @@ BindPendingCharacterInteractionNativeEnvironmentV1(
   output.cost_evaluator =
       reinterpret_cast<NativePendingInteractionCostEvaluatorV1>(
           module_base + kPendingInteractionCostEvaluatorV1Rva);
+  output.common_war_relation =
+      reinterpret_cast<NativePendingInteractionCommonWarRelationV1>(
+          module_base + kPendingInteractionCommonWarRelationV1Rva);
   output.target_type_registry =
       reinterpret_cast<NativePendingInteractionTargetTypeRegistryGetterV1>(
           module_base + kPendingInteractionTargetTypeRegistryGetterV1Rva);
@@ -1149,6 +1348,12 @@ BindPendingCharacterInteractionNativeEnvironmentV1(
       module_base + kPendingInteractionReplyPrimaryVtableV1Rva;
   output.reply_secondary_vtable =
       module_base + kPendingInteractionReplySecondaryVtableV1Rva;
+  output.war_victory_special_vtable =
+      module_base + kPendingInteractionWarVictorySpecialVtableV1Rva;
+  output.war_white_peace_special_vtable =
+      module_base + kPendingInteractionWarWhitePeaceSpecialVtableV1Rva;
+  output.war_defeat_special_vtable =
+      module_base + kPendingInteractionWarDefeatSpecialVtableV1Rva;
   return output;
 }
 
@@ -1169,6 +1374,8 @@ ReadPendingCharacterInteractionContextV1(
         access.invoke_reply_validator == nullptr ||
         access.invoke_trigger_evaluator == nullptr ||
         access.invoke_cost_evaluator == nullptr ||
+        access.invoke_common_war_relation == nullptr ||
+        access.resolve_active_war == nullptr ||
         access.invoke_target_type_registry == nullptr ||
         access.invoke_script_identifier_name == nullptr) {
       SetFailure(output,
@@ -1264,6 +1471,10 @@ ReadPendingCharacterInteractionContextV1(
     output.readiness.auto_accept_ready = true;
     output.readiness.reply_legality_ready = true;
     output.readiness.generic_costs_ready = true;
+    output.readiness.special_war_binding_ready =
+        output.terms->special_war_binding.status ==
+        game::PendingCharacterInteractionSemanticStatusV1::available;
+    output.readiness.special_outcome_terms_ready = false;
     output.readiness.structured_terms_ready = false;
     output.readiness.same_frame_ready = true;
     output.readiness.interaction_semantic_decision_ready = false;
@@ -1271,6 +1482,12 @@ ReadPendingCharacterInteractionContextV1(
       output.readiness.not_ready_reasons.push_back(
           "target_generic_scope_payload_identity_not_closed");
     }
+    if (!output.readiness.special_war_binding_ready) {
+      output.readiness.not_ready_reasons.push_back(
+          output.terms->special_war_binding.reason);
+    }
+    output.readiness.not_ready_reasons.push_back(
+        "special_outcome_terms_unavailable");
     output.readiness.not_ready_reasons.push_back(
         "structured_exchanges_unavailable");
     output.readiness.not_ready_reasons.push_back(

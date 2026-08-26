@@ -158,6 +158,32 @@ bool ProxyInvokeCostEvaluator(
              event_target_scope, output);
 }
 
+bool ProxyInvokeCommonWarRelation(
+    void *opaque, NativePendingInteractionCommonWarRelationV1 function,
+    void *actor_character, void *recipient_character, void *&output) noexcept {
+  const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
+  return proxy != nullptr && proxy->query != nullptr &&
+         proxy->stamp != nullptr &&
+         proxy->query->access.invoke_common_war_relation != nullptr &&
+         IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
+         proxy->query->access.invoke_common_war_relation(
+             proxy->query->access.context, function, actor_character,
+             recipient_character, output);
+}
+
+bool ProxyResolveActiveWar(void *opaque, std::int32_t war_id,
+                           void *&output) noexcept {
+  output = nullptr;
+  const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
+  return proxy != nullptr && proxy->query != nullptr &&
+         proxy->stamp != nullptr &&
+         IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
+         ResolvePendingCharacterInteractionActiveWarV1(
+             proxy->query->bindings,
+             reinterpret_cast<void *>(proxy->stamp->game_state), war_id,
+             output);
+}
+
 bool ProxyInvokeTargetTypeRegistry(
     void *opaque, NativePendingInteractionTargetTypeRegistryGetterV1 function,
     void *&output) noexcept {
@@ -308,6 +334,8 @@ bool ExecutePendingCharacterInteractionContextMailboxQueryV1(
     access.invoke_reply_validator = &ProxyInvokeReplyValidator;
     access.invoke_trigger_evaluator = &ProxyInvokeTriggerEvaluator;
     access.invoke_cost_evaluator = &ProxyInvokeCostEvaluator;
+    access.invoke_common_war_relation = &ProxyInvokeCommonWarRelation;
+    access.resolve_active_war = &ProxyResolveActiveWar;
     access.invoke_target_type_registry = &ProxyInvokeTargetTypeRegistry;
     access.invoke_script_identifier_name = &ProxyInvokeScriptIdentifierName;
     query->read_result = ReadPendingCharacterInteractionContextV1(

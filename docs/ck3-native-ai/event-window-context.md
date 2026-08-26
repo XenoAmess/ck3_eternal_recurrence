@@ -158,10 +158,14 @@ flowchart TD
 | `+0x14 uint8` | 非零为 gain，零为 loss | `0xD494D0`、`0x16A2600` |
 | `+0x15 uint8` | affected-by-trait | `0xD9E8C0` |
 | `+0x16 uint8` | critical | `0xD9E900` |
-| `+0x00 uint64` | opaque payload | unknown；不得发布或猜类型 |
-| `+0x08 uint64` | opaque payload | unknown；不得发布或猜类型 |
+| `+0x00 uint64` | `kind=trait` 时为 `CTrait*`；其它 kind 不解释 | `GetTrait` callback `0x16A2580` / leaf `0xA1BF50` |
+| `+0x08 uint64` | `kind=scheme` 时为 `CSchemeType*`；其它 kind 不解释 | `GetScheme` callback `0x16A25C0` / leaf `0x7F7EB0` |
 
-这条 seam 只证明 GUI 已物化的**效果指示器**。它没有闭合金币、威望、关系、健康等完整数值 delta，也没有闭合任意 scripted effect 的文本或结构化预览。首个 reader 只能复制上述 kind/flags；不得调用 preview collector，更不得把 gameplay executor `0x3380410` 当预览函数。
+payload、visitor 的八个 exact effect identifier、trait/scheme 稳定身份、stress 聚合与信息丢失边界详见
+[`event-effect-indicators.md`](event-effect-indicators.md)。这条 seam 只证明 GUI 已物化的**效果指示器**：它没有闭合金币、
+威望、关系、健康等完整数值 delta，也没有完整 scripted effect 集合或 completeness signal。后续 reader 可以复制并按 kind
+验证上述 indicator，但不得调用 preview collector，更不得把 gameplay executor `0x3380410` 当预览函数；
+`effect_preview.status` 仍须与 indicator 子集分开保持 unavailable。
 
 ## stable event key 与 scopes
 
@@ -170,12 +174,23 @@ flowchart TD
 当前边界：
 
 - current event instance ID：**静态确认**，`ActiveEvent+0x1BC == CEventWindowData+0x00`。
-- stable event definition key：**unknown**。没有从 `EventData` 基址猜字段。
+- stable event definition key：**静态确认**。current `SPlayerEventData/ActiveEvent+0x1B0 -> EventData*`；
+  `EventData+0x10` 是 canonical namespaced MSVC string，`+0x08 int32` 是 calculated event ID，`+0x0C int32`
+  是另行观察到的 runtime statistics ordinal，不能互相替代。
 - stable root scope identity：**unknown**。
 - stable saved-scope identities：**unknown**。
 - event deadline/days remaining 的稳定 typed ABI：**unknown**。
 
-这些字段在未来 schema 中可以显式 `null/unavailable`，但不能以长期 `null` 宣称完成依赖它们的策略。它们各自需要后续 exact-build reverse slice。
+event identity 的直接证据是 duplicate validator：其完整 `.pdata` 为 `0x33D4DA0..0x33D5082`（SHA-256
+`33D9FF7EBF7BE4431285D0AE41262D5B2497057FAF2E2AB1718AB9CB5A5A727A`），业务 body
+`0x33D4DA0..0x33D505A`（SHA-256 `6466EE00D394D6A79F87BB48EEA00AF1257393A538FA5EE45EE4CF42D4548028`）遍历
+DB `+0x40/+0x4C` 的 `EventData*`，比较每项 `+0x08`；重复时把 `+0x10` 作为 exact error 的第一个 formatter
+参数，并从新旧两项 `+0x240` 解析 source location。error literal 位于 `0x44D9E50`：
+`Duplicated event ID '%s' found. New Location: '%s', Previous Location: '%s'`（含 NUL SHA-256
+`85135404DB9CD9414603326956E1E12A82453B31676C95DB5ECCC87F96E93A42`）。production 扩展只能在完整 instance ID
+匹配后校验 `+0x10` string bounds，并双重观察 EventData pointer、`+0x08/+0x0C/+0x10`；不得发布 pointer。
+
+root/saved scopes 与 deadline 仍可在 schema 中显式 `null/unavailable`，但不能以长期 `null` 宣称完成依赖它们的策略。
 
 ## 原生 AI selector 冻结
 
@@ -215,7 +230,9 @@ flowchart TD
 status / revision / availability
 current_event_instance_id
 window_match_count
-event_definition_key          # null/unavailable until reverse-closed
+event_definition_key          # static ABI 已闭合；当前 v1 尚未发布时仍为 unavailable
+calculated_event_id            # static ABI 已闭合；当前 v1 尚未发布
+runtime_stats_ordinal          # 运行时统计序号，不是稳定定义 identity；当前 v1 尚未发布
 root_scope                    # null/unavailable until reverse-closed
 saved_scopes                  # null/unavailable until reverse-closed
 options[]:
@@ -238,7 +255,10 @@ options[]:
 1. bridge 只在客户端提交的 `expected_revision` 等于当前发布 revision，且该 revision 的 snapshot 为 paused、map-ready、有存活 played character 与相同完整 `event_instance_id` 时接受查询。
 2. 查询经 fixed typed main-thread mailbox 投递到 application/UI owning thread；callback 内再次读取 snapshot，沿上述 stable root 定位 manager，并一次性复制 option vector 与 MSVC strings。
 3. 每个窗口要求 exact `CEventWindow` primary vtable，每个 option 要求 owner backpointer 等于匹配的 inline data；vector/count/string 均有硬上限。零匹配、多匹配、布局漂移或前后 snapshot 不同都返回 typed unavailable。
-4. v1 只发布 rendered/native index、shown、enabled、fallback、cancel、resolved name 与 unavailable reason。event definition key、root/saved scopes 与完整 effect preview 显式 unavailable；不得用 GUI indicator 冒充完整 effect preview。
+4. 当前 v1 只发布 rendered/native index、shown、enabled、fallback、cancel、resolved name 与 unavailable reason。event
+   definition key、calculated ID 与 runtime stats ordinal 的静态 ABI 已闭合但尚未接入当前 wire；root/saved scopes 与完整
+   effect preview 仍显式 unavailable。不得用 GUI
+   indicator 冒充完整 effect preview。
 5. reader 不调用 trigger、name resolver、preview collector、loaded-effect executor 或事件选项 executor；它只复制已经物化的 UI 数据。
 
 ## planner typed-first 消费规则
@@ -274,12 +294,12 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
 | data lifetime | 静态确认 | manager same-tick keep-alive/remove/compact |
 | data instance ID | 静态确认 | data ctor `0x16CA380`；setup `0x16CADC0` |
 | shown/enabled/name/reason/native index/fallback | 静态确认 | `SetupOptions` 与 `CEventOptionItem` ABI |
-| effect indicator kind/flags | 静态确认 | append `0x16D3A40` 与八个 GUI accessors |
+| effect indicator kind/flags/payload | 静态确认 | visitor/append、GUI getters/accessors 与 [`event-effect-indicators.md`](event-effect-indicators.md) |
 | native `SetupOptions` / AI selector 树 | 静态确认 | existing event-option exact-build contract |
 | stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
 | frontend collision exclusion | 静态确认、实机待验 | in-game accessor + exact idler/window vtable + complete current event ID；不读取 `0xE30E78` root |
 | per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
-| stable event definition key | unknown | 继续追 EventData definition/serialization identity consumer |
+| stable event definition key | 静态确认、wire 待接入 | duplicate validator `0x33D4DA0..0x33D5082`：`EventData+0x08/+0x10/+0x240` |
 | stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
-| full structured effect preview | unknown | opaque payload 与非 icon/danger-indicator 输出 consumer 未闭合 |
+| full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
 | production bridge query | 静态实现、实机待验 | `current-event-window-context-v1` fixed mailbox；完整 effect preview 仍 unavailable |

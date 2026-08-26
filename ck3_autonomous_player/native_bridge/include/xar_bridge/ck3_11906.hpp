@@ -458,6 +458,13 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept;
 
 bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept;
 
+// Reuses the exact-build generation-bearing active-CWar resolver for the
+// pending-interaction read-only mailbox. The caller supplies the already
+// captured application-main game_state; no command or effect is executed.
+bool ResolvePendingCharacterInteractionActiveWarV1(
+    const Bindings &bindings, void *game_state, std::int32_t war_id,
+    void *&output) noexcept;
+
 using game::ReadArmyStrengthsResult;
 
 // Paused, read-only aggregate for every public CUnit currently published by

@@ -90,6 +90,8 @@ def main() -> int:
     spans = [
         *source_contract["exact_function_spans"],
         *source_contract["setup_options_semantic_spans"],
+        *source_contract.get("exact_semantic_spans", []),
+        *source_contract.get("exact_data_spans", []),
     ]
     for span in spans:
         start = integer(span["start_rva"])

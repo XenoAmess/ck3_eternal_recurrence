@@ -31,6 +31,10 @@ bool XAR_TEST_PENDING_FASTCALL FakeTriggerEvaluator(void *, const void *) {
 void XAR_TEST_PENDING_FASTCALL FakeCostEvaluator(const void *, const void *,
                                                  std::int64_t *) {}
 
+void *XAR_TEST_PENDING_FASTCALL FakeCommonWarRelation(void *, void *) {
+  return reinterpret_cast<void *>(0x5678);
+}
+
 void *XAR_TEST_PENDING_FASTCALL FakeTargetTypeRegistry() {
   return reinterpret_cast<void *>(0x1234);
 }
@@ -79,6 +83,16 @@ bool InvokeCostEvaluator(
   return function == &FakeCostEvaluator;
 }
 
+bool InvokeCommonWarRelation(
+    void *,
+    xar::ck3_11906::NativePendingInteractionCommonWarRelationV1 function,
+    void *, void *, void *&output) noexcept {
+  ++g_native_invocations;
+  output = function == &FakeCommonWarRelation ? reinterpret_cast<void *>(0x5678)
+                                              : nullptr;
+  return output != nullptr;
+}
+
 bool InvokeTargetTypeRegistry(
     void *,
     xar::ck3_11906::NativePendingInteractionTargetTypeRegistryGetterV1 function,
@@ -125,6 +139,7 @@ void PrimeMailbox(
   query.access.invoke_reply_validator = &InvokeReplyValidator;
   query.access.invoke_trigger_evaluator = &InvokeTriggerEvaluator;
   query.access.invoke_cost_evaluator = &InvokeCostEvaluator;
+  query.access.invoke_common_war_relation = &InvokeCommonWarRelation;
   query.access.invoke_target_type_registry = &InvokeTargetTypeRegistry;
   query.access.invoke_script_identifier_name = &InvokeScriptIdentifierName;
 }
@@ -212,7 +227,7 @@ bool TestTypedCompletion(
   if (!xar::ck3_11906::ExecutePendingCharacterInteractionContextMailboxQueryV1(
           &query, stamp) ||
       g_reader_calls != calls_before + 1 ||
-      g_native_invocations != invokes_before + 6 ||
+      g_native_invocations != invokes_before + 8 ||
       query.executor_invocations != 1 ||
       query.completion !=
           xar::ck3_11906::
@@ -252,6 +267,17 @@ bool TestTypedCompletion(
 
 namespace xar::ck3_11906 {
 
+bool ResolvePendingCharacterInteractionActiveWarV1(const Bindings &,
+                                                   void *game_state,
+                                                   std::int32_t war_id,
+                                                   void *&output) noexcept {
+  ++g_native_invocations;
+  output = game_state == reinterpret_cast<void *>(0x4000) && war_id == 17
+               ? reinterpret_cast<void *>(0x9ABC)
+               : nullptr;
+  return output != nullptr;
+}
+
 bool ReadSnapshot(const Bindings &, game::Snapshot &output) noexcept {
   output = g_snapshot;
   return true;
@@ -272,12 +298,16 @@ ReadPendingCharacterInteractionContextV1(
              game::kPendingCharacterInteractionCostResourceCountV1>
       costs{};
   void *registry = nullptr;
+  void *relation = nullptr;
+  void *war = nullptr;
   const std::string *identifier_name = nullptr;
   if (access.capture_frame == nullptr || access.is_main_thread == nullptr ||
       access.invoke_local_routing == nullptr ||
       access.invoke_reply_validator == nullptr ||
       access.invoke_trigger_evaluator == nullptr ||
       access.invoke_cost_evaluator == nullptr ||
+      access.invoke_common_war_relation == nullptr ||
+      access.resolve_active_war == nullptr ||
       access.invoke_target_type_registry == nullptr ||
       access.invoke_script_identifier_name == nullptr ||
       !access.is_main_thread(access.context) ||
@@ -293,11 +323,18 @@ ReadPendingCharacterInteractionContextV1(
       !access.invoke_cost_evaluator(access.context, &FakeCostEvaluator,
                                     reinterpret_cast<void *>(0x60),
                                     reinterpret_cast<void *>(0x70), costs) ||
+      !access.invoke_common_war_relation(access.context, &FakeCommonWarRelation,
+                                         reinterpret_cast<void *>(0x80),
+                                         reinterpret_cast<void *>(0x90),
+                                         relation) ||
+      !access.resolve_active_war(access.context, 17, war) ||
       !access.invoke_target_type_registry(access.context,
                                           &FakeTargetTypeRegistry, registry) ||
       !access.invoke_script_identifier_name(
           access.context, &FakeScriptIdentifierName, 41, identifier_name) ||
-      !routed || !valid || evaluated || costs[0] != 0 || registry == nullptr ||
+      !routed || !valid || evaluated || costs[0] != 0 ||
+      relation != reinterpret_cast<void *>(0x5678) ||
+      war != reinterpret_cast<void *>(0x9ABC) || registry == nullptr ||
       identifier_name == nullptr || *identifier_name != "fixture_identifier") {
     return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
   }

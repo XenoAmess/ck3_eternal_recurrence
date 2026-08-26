@@ -6749,7 +6749,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Read one exact full-generation pending interaction while paused."""
+        """Read exact routing, paid costs, and typed special-war binding."""
         if (
             isinstance(pending_interaction_id, bool)
             or not isinstance(pending_interaction_id, int)
@@ -8466,7 +8466,7 @@ class ConfiguredHybridFallbackDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Keep the parameterized pending query on the native backend."""
+        """Keep the typed parameterized pending query on the native backend."""
         if (
             isinstance(pending_interaction_id, bool)
             or not isinstance(pending_interaction_id, int)

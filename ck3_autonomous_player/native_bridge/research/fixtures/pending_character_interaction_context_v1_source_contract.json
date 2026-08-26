@@ -35,6 +35,7 @@
     "generic_cost_mapping": "all ten evaluator ordinals are mapped by the same-index render/formatter loop and independently cross-checked by the fixed-token serializer and affordability dispatch; no slot name is inferred from documentation order",
     "generic_cost_payment": "the actor paid the generic authored cost on_send, so an observed pending interaction reports already_applied history rather than a future responder liability",
     "generic_cost_signed_raw": "preserve signed int64 Q100000 because the native negative clamp is conditional",
+    "special_war_binding": "only the three exact ordinary nonreligious definition/vptr pairs may join through 0x2610840 to one generation-valid active CWar; every other subtype remains typed opaque and no reply/effect/war mutator is called",
     "semantic_readiness": "legal reply availability alone never makes interaction_semantic_decision_ready true"
   },
   "defaults": {
@@ -119,12 +120,19 @@
         {"resource_key": "barter_goods", "raw": 400000}
       ]
     },
+    "special_war_binding": {
+      "special_data_present": false,
+      "status": "unavailable",
+      "reason": "special_war_binding_not_applicable"
+    },
     "semantic_domains": {
       "stable_definition": "available",
       "roles": "available",
       "target": "available",
       "selected_send_options": "available",
       "structured_costs": "available",
+      "special_war_binding": "unavailable",
+      "special_outcome_terms": "unavailable",
       "structured_exchanges": "unavailable",
       "structured_effect_preview": "unavailable"
     }
@@ -146,8 +154,12 @@
         "can_block": true,
         "can_acknowledge": false,
         "generic_costs_ready": true,
+        "special_war_binding_ready": false,
+        "special_outcome_terms_ready": false,
         "interaction_semantic_decision_ready": false,
         "not_ready_reasons": [
+          "special_war_binding_not_applicable",
+          "special_outcome_terms_unavailable",
           "structured_exchanges_unavailable",
           "structured_effect_preview_unavailable"
         ]
@@ -334,9 +346,172 @@
         "interaction_semantic_decision_ready": false,
         "not_ready_reasons": [
           "target_generic_scope_payload_identity_not_closed",
+          "special_war_binding_not_applicable",
+          "special_outcome_terms_unavailable",
           "structured_exchanges_unavailable",
           "structured_effect_preview_unavailable"
         ]
+      }
+    },
+    {
+      "name": "ordinary_white_peace_exact_special_war_binding",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_white_peace_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x428EF88",
+          "relation_war_id": 16777250,
+          "resolved_war_id": 16777250,
+          "war_active": true,
+          "primary_attacker_character_id": 2001,
+          "primary_defender_character_id": 1001
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": true,
+        "special_interaction_kind": "end_war_white_peace_interaction",
+        "absolute_outcome": "white_peace",
+        "war_id": 16777250,
+        "actor_war_role": "primary_defender",
+        "recipient_war_role": "primary_attacker",
+        "binding_source": "native_common_war_relation",
+        "special_outcome_terms_ready": false,
+        "structured_terms_ready": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "ordinary_victory_exact_special_war_binding",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_victory_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x428EEA8",
+          "relation_war_id": 16777250,
+          "resolved_war_id": 16777250,
+          "war_active": true,
+          "primary_attacker_character_id": 1001,
+          "primary_defender_character_id": 2001
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": true,
+        "special_interaction_kind": "end_war_attacker_victory_interaction",
+        "absolute_outcome": "attacker_victory",
+        "war_id": 16777250,
+        "actor_war_role": "primary_attacker",
+        "recipient_war_role": "primary_defender"
+      }
+    },
+    {
+      "name": "ordinary_defeat_exact_special_war_binding",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_defeat_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x428EF18",
+          "relation_war_id": 16777250,
+          "resolved_war_id": 16777250,
+          "war_active": true,
+          "primary_attacker_character_id": 1001,
+          "primary_defender_character_id": 2001
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": true,
+        "special_interaction_kind": "end_war_attacker_defeat_interaction",
+        "absolute_outcome": "attacker_defeat",
+        "war_id": 16777250
+      }
+    },
+    {
+      "name": "owner_deferred_religious_special_subtype_stays_opaque",
+      "overrides": {
+        "definition": {
+          "canonical_key": "fixture_owner_deferred_religious_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x4FFFFFF",
+          "common_war_relation_invoked": false
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": false,
+        "reason": "special_interaction_subtype_opaque",
+        "common_war_relation_invoked": false,
+        "special_outcome_terms_ready": false,
+        "interaction_semantic_decision_ready": false
+      }
+    },
+    {
+      "name": "known_definition_vptr_mismatch_is_unavailable",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_victory_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x428EF88",
+          "common_war_relation_invoked": false
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": false,
+        "reason": "special_interaction_identity_mismatch",
+        "common_war_relation_invoked": false
+      }
+    },
+    {
+      "name": "known_definition_missing_special_data_is_identity_mismatch",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_white_peace_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": false,
+          "common_war_relation_invoked": false
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": false,
+        "reason": "special_interaction_identity_mismatch",
+        "common_war_relation_invoked": false
+      }
+    },
+    {
+      "name": "active_war_generation_or_role_failure_is_unavailable",
+      "overrides": {
+        "definition": {
+          "canonical_key": "end_war_attacker_white_peace_interaction"
+        },
+        "special_war_binding": {
+          "special_data_present": true,
+          "vptr_rva": "0x428EF88",
+          "relation_war_id": 16777250,
+          "resolved_war_id": 33554466,
+          "war_active": false,
+          "primary_attacker_character_id": 9001,
+          "primary_defender_character_id": 9002
+        }
+      },
+      "expected": {
+        "status": "available",
+        "special_war_binding_ready": false,
+        "reason": "special_war_binding_unavailable",
+        "interaction_semantic_decision_ready": false
       }
     }
   ],
@@ -522,6 +697,10 @@
     "generic_costs_static_ready": true,
     "generic_costs_query_ready": true,
     "generic_costs_live_ready": false,
+    "special_war_binding_static_ready": true,
+    "special_war_binding_query_ready": true,
+    "special_war_binding_live_ready": false,
+    "special_outcome_terms_ready": false,
     "structured_terms_ready": false,
     "bridge_query_ready": true,
     "ordinary_pending_query_ready": true,
@@ -531,7 +710,7 @@
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; excludes the newly wired generic costs, notification ACK, intermediary routing and semantic decision",
+    "production_live_scope": "historical ordinary nonreligious pending identity, roles, route, deadline and reply legality only; excludes the newly wired generic costs and special war binding, notification ACK, intermediary routing and semantic decision",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   }

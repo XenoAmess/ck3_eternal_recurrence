@@ -5940,6 +5940,17 @@ bool FinalizeWarExitPrestigeFactor(
 
 } // namespace
 
+bool ResolvePendingCharacterInteractionActiveWarV1(
+    const Bindings &bindings, void *game_state, std::int32_t war_id,
+    void *&output) noexcept {
+  output = nullptr;
+  if (!bindings.enabled || game_state == nullptr || war_id <= 0) {
+    return false;
+  }
+  output = ResolveWar(bindings, game_state, war_id);
+  return output != nullptr;
+}
+
 std::string_view LastWarTerminationExitTermsUnavailableReason() noexcept {
   return g_last_war_termination_exit_terms_unavailable_reason;
 }
