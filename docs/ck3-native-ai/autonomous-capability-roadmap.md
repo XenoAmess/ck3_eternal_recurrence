@@ -40,11 +40,13 @@ gameplay 能力，
 安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
 理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
 
-宗教/信仰域自 2026-08-26 起由项目所有者明确暂缓，原因是 CK3 近期版本将对该系统做大规模重构。在项目所有者明确通知
-“可以开始宗教相关内容”以前：只允许 feature manifest、通用事件/互动/资源接口保留足以不破坏其他玩法的 opaque
-identity 与兼容边界；不得深入逆向 faith/doctrine/tenet/fervor、宗教改组/皈依/圣战原生 AI 树，不得新增宗教专用
-bridge、策略或实机矩阵。文化、创新、法律、政府和非宗教决议仍按原路线施工；暂缓不是将宗教域冒充完成，最终总验收仍须在
-解除暂缓后补齐。
+宗教/信仰域自 2026-08-26 起由项目所有者明确暂缓，原因是 CK3 近期版本将对该系统做大规模重构。项目所有者随后给出两项
+窄例外：**战争场景允许圣战，婚姻场景允许不得不考虑信仰时做最小调用**。因此 war OODA 可以研究和实现圣战/大圣战所必需
+的最小观测、原生合法性、目标、费用、参战、军队行动和结束语义；marriage OODA 可以调用候选筛选、合法性、接受度、费用和
+结果所必需的最小原生信仰判定。两者均优先复用原生最终结果/原因，faith/religion 只作为 opaque identity 或直接影响当前圣战/
+婚姻的最小输入。除这两项窄例外外，在项目所有者明确通知“可以开始宗教相关内容”以前，不得深入逆向 faith/doctrine/tenet/
+fervor、宗教改革、改宗或通用宗教 AI，不得新增相应 bridge、策略或实机矩阵；holy order 也继续暂缓。文化、创新、法律、政府
+和非宗教决议仍按原路线施工；暂缓不是将宗教域冒充完成，最终总验收仍须在解除暂缓后补齐。
 
 本次盘点以这些实现入口为准，后续 capability 变化必须同步更新本页：
 
@@ -215,8 +217,8 @@ DLL template 本身当成随时可执行动作。
 
 - 从和平状态由 planner 自主选择并宣告一场有效用依据的战争，再一直打到胜/和/降并处理战后；
 - 一次不可避免接敌的“预测 → 接战/绕行/增援/撤退 → 实际战斗结果”闭环；
-- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵与 raid；骑士团、great holy war 按宗教 owner-deferred 边界暂缓；
-- 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化、活动/旅行等长期自治；宗教域暂缓；
+- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵、raid 与圣战/大圣战完整战争 OODA；骑士团仍按宗教 owner-deferred 边界暂缓；
+- 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化、活动/旅行等长期自治；婚姻只调用必要的最小信仰判定，除圣战/婚姻两项例外外宗教域暂缓；
 - 自然死亡完整终验，以及普通 campaign 跨继承继续。
 
 ## 原生 AI 文档覆盖账本
@@ -256,7 +258,7 @@ DLL template 本身当成随时可执行动作。
 - MAA、骑士、commanders、集结/补给/损耗/海运/raid 的长期军备树；
 - 外交关系、封臣管理、契约、派系、头衔授予/撤销；
 - schemes、hooks、secrets、prisoners/crime；
-- health/stress、decisions、culture、innovations、laws/government；faith 专题保持 owner-deferred；
+- health/stress、decisions、culture、innovations、laws/government；faith 专题保持 owner-deferred，信仰只在圣战与婚姻域做最小调用；
 - activities/travel、royal court、artifacts、accolades 与 enabled-DLC 专题。
 
 任何针对这些域的 planner 施工，都必须先创建相应专题并按本目录 README 工作流维护证据与 Mermaid 图。
@@ -369,7 +371,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 ### P5：智能宣战、联盟与多战争调度
 
-- 原生 AI 树：扩充 war-declaration/prewar 树的财政、CB cost、ally willingness、participant join ETA、multi-war 与 truce 分支。
+- 原生 AI 树：扩充 war-declaration/prewar 树的财政、CB cost、ally willingness、participant join ETA、multi-war 与 truce 分支；圣战/大圣战只梳理战争 OODA 必需的原生分支和最小宗教输入。
 - 观测：所有合法 CB 的成本/收益、目标 title 价值、双方可动员 reserve、盟友/宗主可召性与接受度、其它战争占用、truce/faction/
   succession 风险及 participant arrival bounds。
 - 动作：declare、call ally/house member、offer/join war、hire/raise/assign、拒绝不值当的盟友战争；所有请求均有后置 participant 验证。
@@ -379,9 +381,9 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 ### P6：家庭、婚姻、教育、继承与王朝
 
 - 原生 AI 树：新建 `marriage-and-alliance.md`、`education-and-guardians.md`、`succession-and-title-planning.md`，梳理候选评分、
-  生育/遗传、联盟、继承、title grant 与 disinherit 等原生树。
+  生育/遗传、联盟、继承、title grant 与 disinherit 等原生树；仅在婚姻合法性或接受度确实依赖信仰时记录最小原生调用和结果原因。
 - 观测：完整家族/继承序列、titles/laws、claim、年龄/属性/traits/health/fertility、联盟价值、婚姻接受度、教育 focus/guardian、
-  partition loss 与可行修复动作。
+  partition loss 与可行修复动作；faith/religion 保持 opaque identity，必要时附原生 marriage legality/acceptance 结果，不展开通用教义树。
 - 动作：求婚/订婚/离婚、guardian/education、指定或影响继承、title grant、create/destroy/usurp、disinherit/restore（按合法资源与策略）。
 - 策略：婚姻不再选首个合法 CharacterID；按当前继承、联盟、遗传、声望、近亲和长期 title plan 联合评分，并为 ruler death 提前布局。
 - 验证：生产场景中完成配偶/子女婚姻、教育和 partition 缓解；一代死亡后后置 title distribution 与预测一致。普通 campaign 模式再继续继承人。
@@ -405,17 +407,17 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 - 策略：把谋略收益与暴露、关系、继承、战争和角色风险联合计算；健康策略服务于继承与当前目标，不盲目延寿或减压。
 - 验证：至少一条 hostile/personal scheme、一轮囚犯处置、一段疾病/高压力场景均由 native state 驱动并核对结果。
 
-### P9：法律、政府、文化、创新与决议；信仰暂缓
+### P9：法律、政府、文化、创新与决议；信仰暂缓（圣战/婚姻归各自域窄例外）
 
 - 原生 AI 树：当前建立 `laws-and-government.md`、`culture-and-innovations.md`、`decisions.md`，覆盖 authority/law、
   culture fascination/tradition/hybrid/diverge 和 major decision 触发/权重；`faith-and-religion.md` 及 convert/reform 树等所有
-  宗教专用深入研究等待项目所有者明确解除暂缓。
+  宗教专用深入研究等待项目所有者明确解除暂缓；圣战/大圣战的最小战争树只在 P1/P2/P5 与特殊战争能力项处理，婚姻所需最小判定只在 P6 处理，均不扩入通用信仰模型。
 - 观测：当前覆盖 government、laws、authority、succession law、culture/traditions/acceptance、innovations、所有非宗教 decision
   eligibility/cost/effect；faith 仅保留通用兼容所需 opaque identity，不展开 doctrines/tenets/fervor。
 - 动作：当前覆盖 change law/authority、culture action、fascination、take non-religious decision；convert/reform/convert county 等
   宗教专用动作等待解除暂缓。
 - 策略：把合法性、封臣反应、财政、军事与长期目标纳入制度选择；决议按时间窗口与机会成本排序。
-- 验证：暂缓期间至少覆盖一次 law/authority 变更、culture 项目与一个非宗教 major decision；宗教场景不运行，也不计完成。
+- 验证：暂缓期间至少覆盖一次 law/authority 变更、culture 项目与一个非宗教 major decision；除圣战与婚姻两项窄例外外，宗教场景不运行，也不计完成。
   解除暂缓后再补 faith 项目并跨年观察预期长期效果。
 
 ### P10：活动、旅行、宫廷、宝物、勋号与 DLC feature packs
@@ -460,8 +462,8 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
 | 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
 | 6 | army composition / supply / mercenary；holy order 暂缓 | 常规军备 `research`/partial input；holy order `owner-deferred` | 先完成非宗教和平备战、动员、补给、战争、复员闭环。 |
-| 7 | war entry / CB / ally / multi-war | tree `research`，策略 blocked | 能比较并自主选择宣战或不战。 |
-| 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果。 |
+| 7 | war entry / CB / ally / multi-war / holy war | tree `research`，策略 blocked | 能比较普通与圣战候选并自主选择宣战或不战；宗教输入保持战争所需最小集。 |
+| 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果；如合法性或接受度依赖信仰，只调用原生最小判定。 |
 | 9 | children / education / dynasty | `visual-narrow` | 多子女教育与王朝资源规划。 |
 | 10 | succession / titles / laws | `visual-narrow` | 预测并缓解 partition，普通 campaign 跨继承。 |
 | 11 | diplomacy / relations | interaction ID-only `implemented` | 通用外交组合改善可测关系/战略位置。 |
@@ -469,11 +471,11 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 13 | schemes / hooks / secrets | `absent` | hostile/personal scheme 与风险反馈闭环。 |
 | 14 | prisoners / crime / tyranny | `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
 | 15 | health / stress / fertility | `absent` | 疾病、高压和继承风险联合管理。 |
-| 16 | culture / innovations；faith 暂缓 | culture/innovations `absent`；faith `owner-deferred` | 先闭合文化/创新长期项目；收到明确许可后再做宗教完整 OODA。 |
+| 16 | culture / innovations；faith 暂缓 | culture/innovations `absent`；faith `owner-deferred` | 先闭合文化/创新长期项目；圣战归战争域窄例外，收到明确许可后再做宗教完整 OODA。 |
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
 | 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |
 | 19 | royal court / positions / artifacts / accolades | combat accolade input only `research` | enabled feature 各一条 OODA。 |
-| 20 | raids / embark / special wars；great holy wars 暂缓 | 非宗教类型 `absent`；great holy wars `owner-deferred` | 先完成 feature-gated 非宗教战争类型；收到明确许可后再补宗教战争。 |
+| 20 | raids / embark / special wars / great holy wars | `absent`；圣战为战争域允许项 | 完成 feature-gated 特殊战争 OODA；圣战仅取原生合法性及战争执行所需最小宗教输入。 |
 | 21 | save / restore / process ownership | `live-loop` | 长跑和域场景持续复用；只修实际故障。 |
 | 22 | death settlement / next episode | primitive `live` | 自然死亡完整结算、下一 episode；另有跨继承 campaign。 |
 | 23 | long-horizon goals / learning / memory | minimal booleans `implemented` | 多域层次规划与 outcome 校准通过整局矩阵。 |
