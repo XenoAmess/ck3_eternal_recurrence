@@ -162,6 +162,10 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   （内容在 `Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`）。
   **改完代码在游戏里看不到，先怀疑这个**。runner 每次跑前 robocopy /MIR 仓库 → 工坊缓存
   （用户已批准，不恢复；工坊更新时 Steam 会重下复原）。
+- **CK3 PhysFS 会拒绝过长的 disposable mod 路径**：2026-08-26 的 paused event-window Attempt1 使用长度 99 的
+  默认 root，`error.log` 对四个 fixture localization 路径报告 `path is over 250 characters long`，CK3 在事件出现前
+  以 code 1 退出。live runner 的默认 root/stage 必须为最长 localization 文件预留到完整路径严格小于 250 字符，并在
+  启动前按实际 root 枚举校验；默认前缀应保持短小。调用者指定的目录超限时，改用显式短 `--state-dir`，不要继续启动。
 - **大厅规则选择持久化在 `player\game_rules\presets.txt` 的 `LastAppliedRules` 块**，新开局重放它；
   改规则文件的 `default` 不影响已有档案。runner 会先移除该块内全部 `xar_on/xar_off/xar_selftest`，再写入场景目标值并验证同时只剩一个（事后恢复）。
 - **pyautogui 合成键盘事件进不了 CK3**（esc/space/+ 实测全部无效），鼠标点击有效。

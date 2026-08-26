@@ -30,7 +30,7 @@ import copy
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import shutil
 import subprocess
@@ -217,7 +217,10 @@ SEED_NOOP_INBOX = "# XAR event-window fixture inbox: no effects.\n"
 
 _ROOT_MARKER_NAME = ".xar-current-event-window-context-live.json"
 _ROOT_KIND = "xar_current_event_window_context_live_acceptance"
-_ROOT_PREFIX = "xar-current-event-window-context-"
+_ROOT_PREFIX = "xew-"
+_CK3_PHYSFS_PATH_LIMIT = 250
+_SEED_STAGE_NAME = "seed-trigger-query-save-event"
+_COLD_STAGE_NAME = "fresh-fixture-cold-double-query"
 _FORBIDDEN_ACTION_PREFIXES = ("select-event-option-",)
 _RELIGION_TOKENS = frozenset(
     {
@@ -369,6 +372,60 @@ def _fixture_content() -> dict[Path, bytes]:
         )
         files[relative] = _bom(_localization_source(header))
     return files
+
+
+def _generated_fixture_path_length_contract(
+    root: Path,
+) -> dict[str, object]:
+    root_path = PureWindowsPath(str(root.expanduser().resolve()))
+    fixture_content = _fixture_content()
+    rows: list[dict[str, object]] = []
+    for stage in (_SEED_STAGE_NAME, _COLD_STAGE_NAME):
+        profile_relative = PureWindowsPath(stage) / "profile"
+        fixture_relative = (
+            profile_relative / "mod-content" / FIXTURE_MOD_TARGET_NAME
+        )
+        generated = [
+            fixture_relative / "descriptor.mod",
+            *(
+                fixture_relative / PureWindowsPath(relative.as_posix())
+                for relative in fixture_content
+            ),
+            profile_relative / "mod" / FIXTURE_MOD_OUTER_NAME,
+        ]
+        for relative in generated:
+            path = root_path / relative
+            rows.append(
+                {
+                    "stage": stage,
+                    "relative_path": str(relative),
+                    "path": str(path),
+                    "characters": len(str(path)),
+                }
+            )
+    rows.sort(key=lambda row: (int(row["characters"]), str(row["path"])))
+    maximum = max(int(row["characters"]) for row in rows)
+    longest = [row for row in rows if row["characters"] == maximum]
+    checks = {
+        "ck3_physfs_limit_is_250": _CK3_PHYSFS_PATH_LIMIT == 250,
+        "both_stage_fixture_paths_covered": {
+            str(row["stage"]) for row in rows
+        }
+        == {_SEED_STAGE_NAME, _COLD_STAGE_NAME}
+        and len(rows) == 2 * (len(fixture_content) + 2),
+        "maximum_generated_path_within_limit": maximum
+        < _CK3_PHYSFS_PATH_LIMIT,
+    }
+    return {
+        "root": str(root_path),
+        "root_characters": len(str(root_path)),
+        "ck3_physfs_path_limit": _CK3_PHYSFS_PATH_LIMIT,
+        "maximum_generated_path_characters": maximum,
+        "longest_paths": longest,
+        "paths": rows,
+        "checks": checks,
+        "ok": all(checks.values()),
+    }
 
 
 def _content_manifest(files: dict[Path, bytes]) -> dict[str, object]:
@@ -1891,6 +1948,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     dependency_source = _dependency_source_contract()
     fixture_definition = _fixture_definition_contract()
     fixture_effect = _effect_contract()
+    generated_path_lengths = _generated_fixture_path_length_contract(root)
     source_save: Path | None = None
     source_identity: dict[str, object] | None = None
     source_before: dict[str, object] | None = None
@@ -1916,6 +1974,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             raise AgentError("fixture definition/localization contract differs")
         if fixture_effect.get("ok") is not True:
             raise AgentError("fixture generation effect contract differs")
+        if generated_path_lengths.get("ok") is not True:
+            raise AgentError(
+                "generated fixture path is not below the CK3 PhysFS "
+                "250-character boundary; use a shorter explicit --state-dir"
+            )
         source_save, source_identity = pending_live._resolve_source_save(
             source_profile,
             args.source_save,
@@ -1934,7 +1997,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         )
         seed_spec, seed_materialization = owner_live._prepare_stage(
             source_profile=source_profile,
-            target_state=root / "seed-trigger-query-save-event",
+            target_state=root / _SEED_STAGE_NAME,
             game_dir=game_dir,
             save_source=source_save,
             save_name=CONTINUE_SAVE_NAME,
@@ -1972,7 +2035,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
 
         cold_spec, cold_materialization = owner_live._prepare_stage(
             source_profile=source_profile,
-            target_state=root / "fresh-fixture-cold-double-query",
+            target_state=root / _COLD_STAGE_NAME,
             game_dir=game_dir,
             save_source=seed_checkpoint,
             save_name=CONTINUE_SAVE_NAME,
@@ -2054,6 +2117,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     seed_binary = _mapping(seed.get("exact_binary_proof"))
     cold_binary = _mapping(cold.get("exact_binary_proof"))
     readiness_gates = {
+        "generated_fixture_paths_within_ck3_physfs_limit": (
+            generated_path_lengths.get("ok") is True
+        ),
         "generic_nonreligious_fixture_contract": fixture_definition.get("ok")
         is True
         and fixture_effect.get("ok") is True,
@@ -2170,6 +2236,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             ),
         },
         "isolated_dependency_source": dependency_source,
+        "generated_fixture_path_length_contract": generated_path_lengths,
         "fixture_definition_contract": fixture_definition,
         "fixture_effect_contract": fixture_effect,
         "source_save": source_identity,

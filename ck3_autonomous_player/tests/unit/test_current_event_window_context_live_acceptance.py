@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from types import SimpleNamespace
 import tempfile
 import threading
@@ -275,6 +275,38 @@ class CurrentEventWindowContextLiveAcceptanceTests(unittest.TestCase):
             "no_religion_semantics",
         ):
             self.assertTrue(proof["checks"][key], key)
+
+    def test_default_root_reserves_longest_windows_fixture_path(self) -> None:
+        root = Path(r"C:\Users\xenoa\AppData\Local\Temp") / (
+            HARNESS._ROOT_PREFIX + "0" * 32
+        )
+        proof = HARNESS._generated_fixture_path_length_contract(root)
+
+        self.assertEqual(HARNESS._ROOT_PREFIX, "xew-")
+        self.assertEqual(HARNESS._CK3_PHYSFS_PATH_LIMIT, 250)
+        self.assertTrue(proof["ok"])
+        self.assertEqual(proof["maximum_generated_path_characters"], 243)
+        self.assertEqual(len(proof["longest_paths"]), 1)
+        self.assertEqual(
+            proof["longest_paths"][0]["relative_path"],
+            str(
+                PureWindowsPath(HARNESS._COLD_STAGE_NAME)
+                / "profile"
+                / "mod-content"
+                / HARNESS.FIXTURE_MOD_TARGET_NAME
+                / "localization"
+                / "simp_chinese"
+                / "xar_event_window_context_live_fixture_l_simp_chinese.yml"
+            ),
+        )
+
+        at_limit = root.with_name(root.name + "x" * 7)
+        rejected = HARNESS._generated_fixture_path_length_contract(at_limit)
+        self.assertFalse(rejected["ok"])
+        self.assertEqual(
+            rejected["maximum_generated_path_characters"],
+            rejected["ck3_physfs_path_limit"],
+        )
 
     def test_fixture_projection_keeps_identical_content_and_drops_mod_bridge(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -2,8 +2,11 @@
 
 ## 当前证据状态
 
-- **[not-live-evidence]** 本文冻结的是下一次实机验收的 runner、夹具字节与判定合同。本轮没有启动或 attach CK3，
-  没有生成 live artifact，也没有把 `current_event_window_context_live_ready` 标为 `true`。
+- **[live-confirmed harness RED；not capability evidence]** 主代理执行的 Attempt1 在事件物化前因 CK3 PhysFS
+  路径超长而退出；该 RED 只证明 runner 路径故障，不证明事件观测能力。`current_event_window_context_live_ready`
+  仍不得标为 `true`。
+- **[not-live-evidence]** Attempt1 后的短根目录与路径长度 preflight 修复只完成了静态验证；本次修复没有启动或
+  attach CK3，必须由全新 Attempt2 实机复验。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -31,6 +34,25 @@
 | fixture event key | `xar_event_window_live_fixture.1` |
 | event definition SHA-256 | `CE5416E0BB2D508F5A3445B73EAEEA7D1383727FC465D18486467B4CD58D972E` |
 | definition + 9 loc files manifest SHA-256 | `D2B6AC3D39D6362BA905299912BBF91EACF2C90A58DA00D0423E10F237BF3C7A` |
+
+## Attempt1 immutable RED：PhysFS 路径超过 250 字符
+
+2026-08-26 的 Attempt1 artifact 固定保留在
+`C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-aab1daf-live-attempt1.json`，SHA-256 为
+`3B376184260F52CA813009A8D18ACFA83A595FDD7E86CD46E2190A21B7B269D4`。默认 disposable root 是
+`C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-80b050946ba74bbc8239ef0faf2a1f56`，长度为 99。
+CK3 `error.log` 对 fixture 的 german、korean、french、polish 四个 localization 路径逐条报告
+`path is over 250 characters long and will likely cause a crash on open`，进程随后以 code 1 退出；generation marker、
+事件窗口和任何 typed query 均未发生。
+
+该 artifact 的 `seed_stage.cleanup.ok=false`，最终 `disposable_cleanup.attempted=false/removed=false/ok=false`，原因是
+`managed cleanup unproven for: seed-trigger-query-save-event`；不能把当前 root 仍存在改写成已清理。与此同时
+`no_ck3_processes_after=true`（NoCK3），所以 RED 没有遗留 CK3 进程，但这不补足 root cleanup 证明。
+
+最小修复只把默认 `_ROOT_PREFIX` 缩短为 `xew-`，并在创建 root/stage 或启动 CK3 前，按实际 root 枚举 seed/cold
+两阶段 descriptor 与 10 个 fixture definition/localization 文件的 Windows 路径，要求最长路径严格小于实证的 PhysFS
+上限 250。当前机器的默认 TEMP + 32 位 nonce 下最长 cold `simp_chinese` 路径为 243；如果调用者给出更长的
+`--state-dir`，preflight 直接 RED 并要求改用显式短路径。冻结 source commit、DLL、injector 与 fixture bytes 均未改变。
 
 runner 要求 `XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT` 指向上述 commit 的独立 source tree。运行依赖由该树加载；runner
 文件和最终 artifact 位于工作树外侧也可以。这样不会让验收悄悄消费共享 dirty worktree。生产 singleton verifier
@@ -127,19 +149,20 @@ preflight 不得 launch：
 py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance -v
 ```
 
-当前结果为 `12/12`；另在临时 detached `aab1daf...` worktree 作为 runtime dependency root 重跑同一 focused suite，
-仍为 `12/12`，且 `_dependency_source_contract.ok=true`。临时 worktree 已移除，CK3 进程仍为 0。以下仅是冻结的未来
-命令模板，**本轮没有执行**；必须等主代理明确批准启动 CK3，并先准备一个 detached `aab1daf...` source tree：
+Attempt1 修复后的当前结果为 `13/13`，`py_compile` 通过，CK3 进程仍为 0；此前 detached `aab1daf...` runtime
+dependency tree 的 `_dependency_source_contract.ok=true`，该 tree 当前保留给 Attempt2。以下是新的 Attempt2 命令模板，
+**本次修复没有执行**；必须等主代理明确批准启动 CK3。它不传 `--state-dir`，从而直接验收新的默认
+`%TEMP%\xew-<32-hex>` root：
 
 ```powershell
-$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = '<isolated-aab1daf-root>'
+$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-aab1daf-source'
 py ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py `
   --game-dir 'Crusader Kings III' `
-  --bridge-pipe '\\.\pipe\xar-event-window-context-aab1daf' `
+  --bridge-pipe '\\.\pipe\xar-event-window-context-aab1daf-attempt2' `
   --bridge-dll 'ck3_autonomous_player/native_bridge/.build-event-definition-identity-v1-msvc/xar_ck3_bridge.dll' `
   --expected-bridge-dll-sha256 'A6CB88C8F02866A8F5052FE74BCA098A961459079FC1FC9B4F0DC017F915D1C4' `
   --bridge-injector 'ck3_autonomous_player/native_bridge/.build-event-definition-identity-v1-msvc/xar_ck3_bridge_injector.exe' `
-  --output 'artifacts/current-event-window-context-aab1daf-live-attempt1.json'
+  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-aab1daf-live-attempt2.json'
 ```
 
 只有 artifact 自身 `ok=true`、全部 readiness gate 为 true、managed process cleanup 与 nonce-root removal 都为 true 后，
