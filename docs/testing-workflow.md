@@ -380,6 +380,14 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   result、before/after paused binding、事件/互动/WarID/ArmyID 摘要与最后 durable
   checkpoint。它表示 runner 看到的第一个停止点；bound exhaustion 是 harness incomplete，不能自动升级为 capability RED。真正改
   对应策略前仍须先更新该域的 exact-build 原生 AI 专题；梳理完成后允许先做最小 blocker-removal 并把质量差距记账。
+- `driver-state.json` 是恢复状态，也保留完整 command history；不得为每条纯只读命令同步重写已经增长到数十 MB 的整个文件。
+  2026-08-27 production 战局的冻结状态已有 `2744` 条 history、`79,517,587` bytes；同一 paused 日期连续执行
+  `132` 次 move preview 与 `35` 次 route-contact query 时，旧实现每条都 deepcopy 全 history 并 pretty-print atomic replace，
+  实际把只读扫描放大到分钟级，证据见 [army-controller.md](ck3-native-ai/army-controller.md)。成功的 `query-*`、合法
+  `preview-move-army-*` 与 `preview-active-combat-retreat-v1-*` 因不改变 CK3 frame，可以只先进入内存 history；下一条非只读
+  command、任意失败、其它 driver-state 状态迁移或正常 driver close 必须同步冲刷完整 suffix。这样动作 ACK 返回前仍把其前置
+  query/preview 与动作一起持久化，`save-checkpoint` 的 v2 history anchor、managed restore 的 pre-relaunch marker 与失败 artifact
+  合同均不变；硬崩最多遗失末尾成功只读 suffix，恢复后必须重新查询，不能把遗失 cache 当成 gameplay 进度。
 - `xar_checkpoint.ck3` 是原位覆盖。保存命令开始提交后、完整 post-snapshot/hash/history 验证前失败时，core 必须撤销同路径旧
   metadata 的 `recoverable` 声明；readiness preflight 在提交前失败则保留旧恢复点。`native-one-generation` 对前一种失败只能回落到
   run 开始前归档在 `seed/` 的 immutable checkpoint + driver state。

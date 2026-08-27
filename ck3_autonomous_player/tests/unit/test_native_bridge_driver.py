@@ -27,6 +27,7 @@ from xar_autoplayer.bridge.native_driver import (
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
     _fresh_route_contact_advance_steps,
+    _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
     _native_unobservable_started_assaults,
 )
@@ -2688,6 +2689,389 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "driver_state_restored"
                 ]
             )
+
+    def test_read_only_history_step_classifier_is_exact_for_previews(self) -> None:
+        self.assertTrue(
+            _is_deferred_read_only_history_step("query-fixture-v1")
+        )
+        self.assertTrue(
+            _is_deferred_read_only_history_step(
+                "preview-move-army-101-to-2585"
+            )
+        )
+        self.assertTrue(
+            _is_deferred_read_only_history_step(
+                "preview-active-combat-retreat-v1-101-to-2585"
+            )
+        )
+        self.assertFalse(
+            _is_deferred_read_only_history_step(
+                "preview-move-army-0-to-2585"
+            )
+        )
+        self.assertFalse(
+            _is_deferred_read_only_history_step(
+                "preview-active-combat-retreat-v1-101-to-0"
+            )
+        )
+        self.assertFalse(
+            _is_deferred_read_only_history_step("move-army-101-to-2585")
+        )
+
+    def test_successful_read_only_history_batches_until_action_barrier(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            state_path = state_dir / "native-session" / "driver-state.json"
+            baseline = state_path.read_bytes()
+            read_only_steps = [
+                "query-fixture-v1",
+                "preview-move-army-101-to-2585",
+                "preview-active-combat-retreat-v1-101-to-2585",
+            ]
+
+            for step in read_only_steps:
+                driver._record_command(
+                    step,
+                    ok=True,
+                    result={"step": step, "status": "available"},
+                )
+                self.assertEqual(state_path.read_bytes(), baseline)
+
+            self.assertTrue(driver._driver_state_dirty)
+            self.assertEqual(
+                [
+                    row["command"]
+                    for row in driver.take_snapshot()[
+                        "native_command_history"
+                    ]
+                ],
+                read_only_steps,
+            )
+
+            driver._record_command(
+                "life-advance",
+                ok=True,
+                result={"step": "life-advance", "elapsed_days": 1},
+            )
+
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                [row["command"] for row in persisted["command_history"]],
+                [*read_only_steps, "life-advance"],
+            )
+            self.assertFalse(driver._driver_state_dirty)
+
+    def test_failed_read_only_command_flushes_the_pending_suffix(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            state_path = state_dir / "native-session" / "driver-state.json"
+            baseline = state_path.read_bytes()
+
+            driver._record_command(
+                "query-fixture-v1",
+                ok=True,
+                result={"step": "query-fixture-v1"},
+            )
+            self.assertEqual(state_path.read_bytes(), baseline)
+            driver._record_command(
+                "query-fixture-v2",
+                ok=False,
+                error="BridgeUnavailableError: fixture failure",
+            )
+
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(persisted["command_history"]), 2)
+            self.assertTrue(persisted["command_history"][0]["ok"])
+            self.assertFalse(persisted["command_history"][1]["ok"])
+            self.assertFalse(driver._driver_state_dirty)
+
+    def test_close_flushes_only_a_pending_read_only_suffix(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            state_path = state_dir / "native-session" / "driver-state.json"
+            baseline = state_path.read_bytes()
+            driver._record_command(
+                "preview-move-army-101-to-2585",
+                ok=True,
+                result={"step": "preview-move-army-101-to-2585"},
+            )
+            self.assertEqual(state_path.read_bytes(), baseline)
+
+            driver.close()
+
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                persisted["command_history"][-1]["command"],
+                "preview-move-army-101-to-2585",
+            )
+            self.assertFalse(driver._driver_state_dirty)
+            self.assertTrue(endpoint.closed)
+
+    def test_persistence_failure_keeps_dirty_state_for_close_retry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+
+            with mock.patch(
+                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                side_effect=OSError("fixture write failure"),
+            ):
+                driver._record_command(
+                    "life-advance",
+                    ok=True,
+                    result={"step": "life-advance"},
+                )
+
+            self.assertTrue(driver._driver_state_dirty)
+            self.assertIn(
+                "fixture write failure",
+                str(driver._driver_state_error),
+            )
+            driver.close()
+            persisted = json.loads(
+                (
+                    state_dir / "native-session" / "driver-state.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                persisted["command_history"][-1]["command"],
+                "life-advance",
+            )
+            self.assertFalse(driver._driver_state_dirty)
+            self.assertTrue(endpoint.closed)
+
+    def test_query_appended_during_write_remains_dirty_for_close(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            state_path = state_dir / "native-session" / "driver-state.json"
+            write_started = threading.Event()
+            release_write = threading.Event()
+
+            def blocked_write(path: Path, payload: object) -> None:
+                write_started.set()
+                self.assertTrue(release_write.wait(timeout=1.0))
+                write_json_atomic(path, payload)
+
+            worker = threading.Thread(
+                target=lambda: driver._record_command(
+                    "life-advance",
+                    ok=True,
+                    result={"step": "life-advance"},
+                )
+            )
+            with mock.patch(
+                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                side_effect=blocked_write,
+            ):
+                worker.start()
+                self.assertTrue(write_started.wait(timeout=1.0))
+                driver._record_command(
+                    "query-fixture-v1",
+                    ok=True,
+                    result={"step": "query-fixture-v1"},
+                )
+                self.assertTrue(driver._driver_state_dirty)
+                release_write.set()
+                worker.join(timeout=1.0)
+                self.assertFalse(worker.is_alive())
+
+            persisted_before_close = json.loads(
+                state_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                [
+                    row["command"]
+                    for row in persisted_before_close["command_history"]
+                ],
+                ["life-advance"],
+            )
+            self.assertTrue(driver._driver_state_dirty)
+
+            driver.close()
+
+            persisted_after_close = json.loads(
+                state_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                [
+                    row["command"]
+                    for row in persisted_after_close["command_history"]
+                ],
+                ["life-advance", "query-fixture-v1"],
+            )
+            self.assertFalse(driver._driver_state_dirty)
+            self.assertTrue(endpoint.closed)
+
+    def test_close_reflushes_query_appended_during_its_write(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            driver._record_command(
+                "query-fixture-v1",
+                ok=True,
+                result={"step": "query-fixture-v1"},
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            first_write_started = threading.Event()
+            release_first_write = threading.Event()
+            write_count = 0
+
+            def block_first_write(path: Path, payload: object) -> None:
+                nonlocal write_count
+                write_count += 1
+                if write_count == 1:
+                    first_write_started.set()
+                    self.assertTrue(release_first_write.wait(timeout=1.0))
+                write_json_atomic(path, payload)
+
+            worker = threading.Thread(target=driver.close)
+            with mock.patch(
+                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                side_effect=block_first_write,
+            ):
+                worker.start()
+                self.assertTrue(first_write_started.wait(timeout=1.0))
+                driver._record_command(
+                    "query-fixture-v2",
+                    ok=True,
+                    result={"step": "query-fixture-v2"},
+                )
+                release_first_write.set()
+                worker.join(timeout=2.0)
+                self.assertFalse(worker.is_alive())
+
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                [row["command"] for row in persisted["command_history"]],
+                ["query-fixture-v1", "query-fixture-v2"],
+            )
+            self.assertEqual(write_count, 2)
+            self.assertFalse(driver._driver_state_dirty)
+            self.assertTrue(endpoint.closed)
+
+    def test_close_does_not_loop_without_driver_state_storage(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            state_dir=None,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.state.played-character")
+        )
+        endpoint.publish(
+            _snapshot(
+                1,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        driver.take_snapshot()
+        driver._record_command(
+            "query-fixture-v1",
+            ok=True,
+            result={"step": "query-fixture-v1"},
+        )
+
+        driver.close()
+
+        self.assertTrue(driver._driver_state_dirty)
+        self.assertTrue(endpoint.closed)
 
     def test_v1_hot_migration_then_cold_checkpoint_resume_rolls_back_tail(
         self,
@@ -7744,6 +8128,22 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(seed_path.read_bytes(), payload)
             self.assertEqual(result["episode_seed"]["name"], seed_path.name)
             self.assertTrue(result["episode_seed"]["immutable"])
+            persisted = json.loads(
+                (
+                    Path(temporary)
+                    / "state"
+                    / "native-session"
+                    / "driver-state.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["last_checkpoint"], checkpoint)
+            self.assertEqual(
+                persisted["command_history"][checkpoint["history_index"] - 1][
+                    "command"
+                ],
+                "save-checkpoint",
+            )
+            self.assertFalse(driver._driver_state_dirty)
             plan = GameplayBridgeService(driver).plan_turn()["plan"]
             self.assertNotEqual(plan.get("selected_step"), "save-checkpoint")
             self.assertEqual(plan.get("required_step"), "dynasty-review")

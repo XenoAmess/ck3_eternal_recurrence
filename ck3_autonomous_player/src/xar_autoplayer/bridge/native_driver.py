@@ -725,6 +725,7 @@ class NativeHeadlessGameplayDriver:
         )
         self._driver_state_lock = threading.RLock()
         self._driver_state_write_lock = threading.Lock()
+        self._driver_state_dirty = False
         self._history_lock = self._driver_state_lock
         self._last_checkpoint: dict[str, object] | None = None
         self._command_history: list[dict[str, object]] = []
@@ -2698,7 +2699,9 @@ class NativeHeadlessGameplayDriver:
             if error is not None:
                 row["error"] = error
             self._command_history.append(row)
-        self._persist_driver_state()
+            self._driver_state_dirty = True
+        if not (ok and _is_deferred_read_only_history_step(step)):
+            self._persist_driver_state()
 
     def _observe_arrange_marriage_outcome(
         self, snapshot: dict[str, object]
@@ -3553,23 +3556,30 @@ class NativeHeadlessGameplayDriver:
     def _persist_driver_state(self) -> None:
         if self.state_dir is None:
             return
-        with self._driver_state_lock:
-            if self._session_bridge_pid is None:
-                return
-            payload = self._driver_state_payload_locked()
-        try:
-            with self._driver_state_write_lock:
+        with self._driver_state_write_lock:
+            try:
+                # Serialize snapshot capture with the write itself.  A query
+                # appended while this payload is being written sets dirty
+                # again and must remain visible to the next barrier/close.
+                with self._driver_state_lock:
+                    if self._session_bridge_pid is None:
+                        return
+                    payload = self._driver_state_payload_locked()
+                    self._driver_state_dirty = False
                 write_json_atomic(self._native_driver_state_path(), payload)
-            with self._driver_state_lock:
-                self._driver_state_error = None
-        except (OSError, TypeError, ValueError) as error:
-            # A gameplay command has already happened by this point.  Keep the
-            # live agent usable and surface persistence failure in capabilities
-            # instead of falsely reporting that the game command failed.
-            with self._driver_state_lock:
-                self._driver_state_error = (
-                    f"{type(error).__name__}: {error}"
-                )
+            except (OSError, TypeError, ValueError) as error:
+                # A gameplay command has already happened by this point.  Keep
+                # the live agent usable and surface persistence failure in
+                # capabilities instead of falsely reporting that the game
+                # command failed.
+                with self._driver_state_lock:
+                    self._driver_state_dirty = True
+                    self._driver_state_error = (
+                        f"{type(error).__name__}: {error}"
+                    )
+            else:
+                with self._driver_state_lock:
+                    self._driver_state_error = None
 
     def _execute_primitive_step(
         self,
@@ -8615,6 +8625,19 @@ class NativeHeadlessGameplayDriver:
         return self.take_snapshot()
 
     def close(self) -> None:
+        while True:
+            with self._driver_state_lock:
+                flush_driver_state = bool(
+                    self.state_dir is not None
+                    and self._session_bridge_pid is not None
+                    and self._driver_state_dirty
+                )
+            if not flush_driver_state:
+                break
+            self._persist_driver_state()
+            with self._driver_state_lock:
+                if self._driver_state_error is not None:
+                    break
         self.endpoint.close()
 
     def _transport_error(self) -> str | None:
@@ -8623,6 +8646,18 @@ class NativeHeadlessGameplayDriver:
             return None
         value = getter()
         return value if isinstance(value, str) and value else None
+
+
+def _is_deferred_read_only_history_step(step: object) -> bool:
+    """Return commands whose successful result may wait for a durable barrier."""
+    return bool(
+        isinstance(step, str)
+        and (
+            step.startswith("query-")
+            or parse_preview_move_army_step(step) is not None
+            or parse_preview_active_combat_retreat_v1_step(step) is not None
+        )
+    )
 
 
 class MinimizedRejectingVisualDriver:
