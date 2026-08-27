@@ -35,6 +35,7 @@
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
+| GEN-012 | B1 | `life-advance` 部分复合执行期间发生 revision turnover | 正式长跑在第 97 回合以 `expected 159, current 160` 停止；此前 `96` 回合、`44` gameplay 与 `14` checkpoints 成功，session、mailbox、观测与 cleanup 均正常。错误发生在 opaque composite 返回前，不能用旧 plan 跨 revision 继续，也不能归因于 CK3 AI policy | 只让 composite owner 对可证明安全重入的暂停收尾做有界 fresh-frame 收口，不放宽 typed query same-frame gate；单测后从 `1D6A...F443D` cold seed 实机越过边界并保存新 checkpoint | production run RED；blocker-removal 施工中 |
 
 ## Degraded heuristic 纪律
 
@@ -168,3 +169,21 @@
 - 下一施工严格限定为从该 durable checkpoint 执行全寿命续跑：`--max-turns 50000 --timeout 604800
   --readiness-timeout 300 --checkpoint-every-advances 3`。再次仅耗尽人工边界则继续恢复；真实 B0/B1 才先更新对应 exact-build
   原生树并做最小 blocker-removal。只有匹配 CharacterID `29829` 的 terminal sidecar 与全部 G1 gates 闭合后才升级状态。
+
+## 2026-08-27 19:12：GEN-012 runtime revision blocker
+
+- 修复两日 battle hold 后的正式续跑 `20260827T104548Z-one-generation-5eb950f7` 已真实跨过旧 battle blocker：共完成
+  `96/97` turns、`44` gameplay turns、`14` checkpoints，战斗正常结束，普通事件完成 option-1 生命周期，且继续出现合法的
+  一日与两日推进。随后第 97 回合在 opaque `life-advance` 内命中
+  `native gameplay revision mismatch: expected 159, current 160`；这是 harness B1，不是新的战争/事件/原生 AI 策略 blocker。
+- 权威 `report.json` SHA-256 为 `7F5ECDCF1133BF4D071425B29D542F069F2812086866489DE196A28A3CE17994`；
+  `first-blocker.json` SHA-256 为 `9243C785F434C8354D5D39E921A093FC748C30D9D3C2E2033145724F89DD81D1`。
+  CharacterID `29829` 与 episode `native-29829-ee172aa720db` 仍存活且未改变，mailbox 和 cleanup 全绿。
+- report 因 opaque composite 合同保守回落 immutable seed；独立字节取证另确认 turn 93 的最新已完成 checkpoint 未被尾部覆盖：
+  `date_raw=53196960`、history `1996`、size `73,492,278`、SHA-256
+  `1D6A994388232C130AE1BD168132D9ECBE6825725D7FF8E53A4A8C3F9E4F443D`，并与 `last_save.ck3`、`autosave.ck3` 完全一致。
+  后续仅把它复制进 fresh state 重新冻结为 cold seed，并让 restore 按 anchor 截去失败分支 history。
+- 最小修复只针对 `life-advance` 的暂停收尾：fresh 帧已暂停时采用该真实后置帧；仍 running 时仅在既有事件/速度语义稳定的
+  条件下，以 fresh revision 最多再提交一次 `pause-map`。不允许 service 通用 re-plan、不削弱 query same-frame gate，也不改
+  battle controller、war termination、ongoing-battle 或其它 CK3 AI policy 树。只有实机续跑越过此边界并保存更新 checkpoint 后，
+  `GEN-012` 才能关闭。

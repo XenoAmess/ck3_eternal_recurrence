@@ -359,6 +359,21 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   run 开始前归档在 `seed/` 的 immutable checkpoint + driver state。
 - `service.auto_turn()` 是不透明的 plan+execute 组合调用；中途异常无法证明 planner 尚未选择并提交 checkpoint，因此同样撤销 live
   path 并回落 immutable seed。只有 typed outcome 完整返回后，runner 才按实际 step 解除这项保守假设。
+- 2026-08-27 正式全寿命续跑 `20260827T104548Z-one-generation-5eb950f7` 在第 97 回合命中真实 harness B1：此前
+  `96/97` turns 成功，包含 `44` 个 gameplay turns 与 `14` 个 checkpoints；CharacterID `29829` 仍存活，cleanup 全绿。
+  `first-blocker.json` 报告 `native gameplay revision mismatch: expected 159, current 160`，SHA-256
+  `9243C785F434C8354D5D39E921A093FC748C30D9D3C2E2033145724F89DD81D1`；`report.json` SHA-256
+  `7F5ECDCF1133BF4D071425B29D542F069F2812086866489DE196A28A3CE17994`。错误发生在 opaque composite 返回前，故正式
+  wrapper 仍按合同撤销 live path 并指向 immutable seed；不得从该报告本身声称未知内部动作未提交。
+- 同次故障的独立事后取证确认：最后一次已完成 checkpoint 位于 turn 93、`date_raw=53196960`、history `1996`，且
+  `xar_checkpoint.ck3`、`last_save.ck3`、`autosave.ck3` 字节完全一致，SHA-256 均为
+  `1D6A994388232C130AE1BD168132D9ECBE6825725D7FF8E53A4A8C3F9E4F443D`；失败尾部没有再次提交 save。它可在新 state
+  中作为人工重新冻结并逐字节验证的 cold seed，driver history 必须回退到其 `1996` anchor，不能把失败分支的尾部 history
+  当成已持久进度。
+- 此类 revision turnover 的回归合同是有界重新观测：一般 planner 必须 re-plan；只有 composite owner 能证明某阶段可安全重入时
+  才允许内部重试，并必须验证目标后置状态。当前最小例外只属于 `life-advance` 的暂停收尾：刷新帧若已暂停就采用真实帧；若仍
+  running 且现有事件/速度语义未漂移，只允许一次 fresh-revision `pause-map`；其它漂移或再次竞争继续失败。单元测试只授予
+  static-ready；必须从上述 cold seed 真实越过同类边界并再产出合格 checkpoint，才能恢复 production-live 声明。
 - 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
   66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中

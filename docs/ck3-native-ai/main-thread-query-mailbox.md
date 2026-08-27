@@ -139,6 +139,28 @@ AI-context, power leaves, repeated native output, and the mailbox performs a
 post-callback TLS/pause/date/object double sample. Any drift discards the
 payload.
 
+## Runtime consumer revision boundary (2026-08-27)
+
+The production one-generation run
+`20260827T104548Z-one-generation-5eb950f7` stopped inside a composite
+`life-advance` after its runtime consumer observed a public revision turnover
+from expected `159` to current `160`. This is a harness/runtime boundary, not
+a mailbox-executor failure and not a CK3 AI-policy branch. Immediately before
+the blocker the mailbox remained `ready=true`, `failure=0`,
+`executor_submission_enabled=true`, with `executed_requests=8`; the existing
+typed-query paused-frame and revision bindings therefore remain in force.
+
+The public revision advances only when an ingested normalized
+`state_snapshot` changes. Heartbeat, pong, and `command_result` frames do not
+advance it. A primitive still sends the current frame's `native_revision` as
+its wire `expected_revision`. When a newer public revision appears, a consumer
+must not merely replace the old expected value and execute an old plan. It
+must re-observe and re-plan, or the owner of a bounded composite must prove
+that the current phase is either pre-submission or safely re-entrant and then
+verify its intended postcondition. The production artifact does not preserve
+the full `159` and `160` frames, so it does not prove which normalized field
+changed or which internal primitive first observed the turnover.
+
 Combat-v3 binds the caller's positive `expected_revision`, the complete last
 published paused snapshot, and its full-generation encounter IDs before
 submission. Its executor re-reads that snapshot on application-main, requires
