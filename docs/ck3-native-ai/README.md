@@ -65,10 +65,12 @@
   它闭合 canonical identity、process-local 数值、实际 presentation/cancel 与空 indicator surface。详见
   [current-event-window-context-live-fixture.md](current-event-window-context-live-fixture.md)。stock event、非空 indicator、
   selection lifecycle、完整 effect preview、scope identity 与 semantic decision 仍未完成。
-- [static-confirmed + empty-surface fixture-live] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
+- [static-confirmed + bounded nonempty fixture-live] [event-effect-indicators.md](event-effect-indicators.md) 闭合 `CEventOptionItem+0x88` 的 engine-owned
   `OptionEffectItem` vector：玩家角色的 trait add/remove、stress direction/critical、death 与 scheme start 可发布为
-  typed indicators；Attempt4 已实读三条 available/empty rows，但非空 kinds 仍待 live。该 vector 不含资源/关系 delta、
-  完整性信号或 effect execution order，不得冒充 full preview。
+  typed indicators；Attempt4 已实读三条 available/empty rows，后续 Attempt1 又在非选择式 generic fixture 中实读
+  `trait/add brave`、`stress/increase affected=false/critical=false` 与 `death/played_character`，artifact SHA-256
+  `1DE73B16...8249C3`。这只升级这些特定 backing rows，不覆盖 visual icon、trait remove、其它 stress 分支或 scheme。该 vector
+  不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到

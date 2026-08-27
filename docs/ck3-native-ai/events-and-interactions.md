@@ -419,7 +419,7 @@ flowchart TD
 
 | 子域 | 当前已发布 | 仍缺的决策事实 | readiness |
 |---|---|---|---|
-| active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、process-local calculated event ID/runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；Attempt4 已对 generic 非宗教 fixture 做 seed/checkpoint/fresh-cold live；select command 仍用 native index + instance-change postcondition | stock event、非空 indicator kinds、selection lifecycle、stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI | fixture available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
+| active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、process-local calculated event ID/runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；Attempt4 已对 generic 非宗教 fixture 做 seed/checkpoint/fresh-cold empty-surface live，非空 Attempt1 又实读 `trait/add brave`、`stress/increase affected=false/critical=false` 与 `death/played_character`；select command 仍用 native index + instance-change postcondition | stock event、其余非空 indicator branches、selection lifecycle、stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI | fixture available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
@@ -431,6 +431,14 @@ flowchart TD
 process-local 合同分别为 `3930001/5847` 与 `3940001/5881`。artifact SHA-256 为
 `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`；没有选择 option，所有 cleanup gate 为 true。
 这只升级 current-window read-only observation 与 empty-indicator surface，不升级 semantic event decision。
+
+[live-confirmed fixture-scoped] 非空 indicator Attempt1 见
+[`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md)。它冻结
+native `0` 空 row control、native `1` 的 `brave` trait/add，以及 native `3` 的 stress/increase→played-character death，
+继续要求 paused seed→checkpoint→fresh-cold 双查询、无 option selection、full preview 与 semantic readiness 为 false；
+stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。artifact `136947` bytes、SHA-256
+`1DE73B16CBD90FE05112D60A7F09274E95FE1BAC8D18D79C2AF8A8A2BC8249C3`，seed/cold PID `23632/35364`；不能据此升级
+其它同 kind 分支、视觉 icon、stock event、完整 effect preview 或 selection lifecycle 的 evidence level。
 
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 已能确认 definition identity、实际显示项与 enabled 状态，但仍不知道
 每项的完整结构化效果与长期效用；
@@ -541,8 +549,10 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 - [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；timeout-index `-1/-2`
   sentinel 区别；保存 scopes 的 engine identity。stable event definition identity 已由 current-local-event getter、duplicate
   validator 与 application-main 双观察接入 wire；generic Attempt2 因旧 cancel ABI mismatch 为 RED，Attempt4 已对修正版
-  canonical identity、presentation/cancel 与 empty-indicator surface 完成 fixture-scoped paused live。stock events、非空
-  indicator kinds、fallback-positive、selection lifecycle、保存 scopes 与完整 effects 仍待闭合。
+  canonical identity、presentation/cancel 与 empty-indicator surface 完成 fixture-scoped paused live。后继 Attempt1 又对特定的
+  `trait/add brave`、`stress/increase affected=false/critical=false` 与 death backing rows 完成 fixture-scoped live；trait remove、
+  其它 stress 分支、视觉 icon、stock events、scheme nonempty、fallback-positive、selection lifecycle、保存 scopes 与完整 effects
+  仍待闭合。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路

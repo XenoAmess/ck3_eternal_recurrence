@@ -13,8 +13,9 @@ byte-identical fixture, but no ``mod_bridge`` or run inbox.  A distinct
 supervised CK3 process cold-loads the event and performs exactly two adjacent
 same-revision ``current-event-window-context-v1`` queries.  GREEN binds the
 full event instance ID and canonical definition key across stages, requires
-both process-local definition integers to remain signed and stable inside
-each process, and binds materialized option order and presentation, exact
+both process-local definition integers to be signed while the cold stage also
+keeps them stable across its adjacent queries, and binds materialized option
+order and presentation, exact
 EXE/DLL/fixture bytes, immutable source bytes, and managed cleanup.
 
 This is a generic nonreligious fixture-definition playset, not stock or

@@ -21,9 +21,18 @@
 - 这项 capability 可以给 planner 新增真实语义，但不能单独把多选事件的 `readiness.semantic_decision_ready` 变为 `true`。
 
 本文的 ABI 研究阶段没有启动或 attach CK3，只读取冻结 EXE 与原版 GUI；随后 2026-08-27 Attempt4 用 generic、
-非宗教 fixture 对**空 indicator surface**完成 production bridge paused live。它没有命中任何非空 kind，也没有展开
+非宗教 fixture 对**空 indicator surface**完成 production bridge paused live；同日非空 Attempt1 又对三个特定 backing rows
+完成 seed/checkpoint/fresh-cold fixture-live。两轮都没有展开
 faith/doctrine/tenet/fervor、改宗、宗教改革或 holy order。项目所有者允许的圣战战争 OODA 与婚姻必要 faith 判定两项
 最小例外均未被本专题使用。
+
+[live-confirmed fixture-scoped] 非空 row 的独立、不选择 option 的 fixture runner 中，production
+query 与 cold 双查询保持只读，seed setup 仍会在 disposable clone 内写 guard、触发事件并保存 checkpoint：
+[`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md)：保留一条
+空 row control，并在另两条 option 中确定性描述 `brave` trait、stress increase 与 played-character death；它复用
+Attempt4 的 seed/checkpoint/fresh-cold 双查询和 cleanup 合同，不选择选项。Attempt1 artifact SHA-256
+`1DE73B16...8249C3` 已证明这些特定 backing rows；不得外推为 trait remove、stress decrease/affected=true/critical transition、
+scheme、stock event、完整 kind family 或视觉图标已核验。
 
 ### 同轮闭合的 current EventData identity
 
@@ -286,7 +295,7 @@ flowchart LR
 
 ## 最小 production implementation / readiness gate
 
-`current-event-window-context-v1` 现已把本节的最小 typed indicator 子集接入 production bridge；下列第 1–8 项已由 exact-build binding、owning-thread reader、strict wire contract 与 synthetic fixture 静态闭合。第 9 项的空 surface 已 fixture-live，非空 kinds 仍待验：
+`current-event-window-context-v1` 现已把本节的最小 typed indicator 子集接入 production bridge；下列第 1–8 项已由 exact-build binding、owning-thread reader、strict wire contract 与 synthetic fixture 静态闭合。第 9 项的空 surface 与三个特定非空 backing rows 已 fixture-live：
 
 1. **exact build**：启动时验证 EXE SHA-256；静态 verifier 复验下表所有代码 span、RTTI/vtable anchor 与 effect registry row/string。
 2. **只读现有物化物**：复用 `current-event-window-context-v1` 的 application/UI owning-thread mailbox、完整 event instance ID、window vtable、owner backpointer 与 snapshot revision gate；只复制 item `+0x88` vector，不调用 `0x3380170`、trigger/name resolver、effect executor 或 option executor。
@@ -298,8 +307,9 @@ flowchart LR
 8. **静态与 fixture**：source-contract test 覆盖每个 span/hash；synthetic reader fixture 覆盖四 kind、trait add/remove、stress increase/decrease/critical/affected、unknown kind、fallback identity、malformed span 与 revision drift。
 9. **paused production live**：Attempt4 已在 seed/checkpoint/fresh-cold 中对三条 option 实读 available、精确 coverage、
    `complete_effect_set=false` 与 `rows=[]`，相邻 cold frame 严格一致。因此只把 empty-indicator wire 标为 fixture-live。
-   下一步仍须用非宗教事件分别命中 trait、stress 与 scheme/death 中可稳定构造的类型，核对 GUI 图标与 typed row；另用
-   有授权的选择 fixture 验证旧 instance 推进及真实后置状态。在此之前 nonempty-kind/lifecycle live readiness 保持 false。
+   非空 Attempt1 又以一个空对照、一个 `brave` trait row，以及同一 option 中的 stress→death rows 完成 PID
+   `23632 → 35364` 实机重物化；seed/cold options 逐项相等且 full preview/semantic readiness 继续为 false。另用有授权的
+   选择 fixture 验证旧 instance 推进及真实后置状态；其余 nonempty branch 与 lifecycle readiness 保持 false。
 
 关键代码 span：
 
@@ -325,8 +335,8 @@ flowchart LR
 | relationship delta | unavailable | 八个识别 identifier 中没有 relation row；不能用空数组表示 none |
 | indicator subset completeness | unavailable | 临时 callback count 未持久化，ignored identifiers 无 row |
 | full structured effect preview | unknown / next observation dependency | 需寻找另一 engine-owned structured visitor/output；不得扩义本 vector 或解析 tooltip/OCR |
-| bridge indicator query | implemented / empty-surface fixture-live | 已并入 `current-event-window-context-v1` 的 production bridge/contract/service/MCP；Attempt4 SHA `690EB5EA...70B7B` 验证三条空 rows；full preview/completeness/resource/relation/semantic readiness 均保持 false |
-| production paused nonempty kinds | pending | 分别命中 trait、stress、scheme/death，核对 GUI 与 typed row，并另验 selection lifecycle/postcondition |
+| bridge indicator query | implemented / bounded nonempty fixture-live | 已并入 `current-event-window-context-v1` 的 production bridge/contract/service/MCP；Attempt4 SHA `690EB5EA...70B7B` 验证三条空 rows；非空 Attempt1 SHA `1DE73B16...8249C3` 验证三个特定 backing rows；full preview/completeness/resource/relation/semantic readiness 均保持 false |
+| production paused nonempty kinds | bounded fixture-live | [`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md) Attempt1 已在 seed/cold PID `23632/35364` 冻结空 control + `trait/add brave` + `stress/increase affected=false/critical=false` + death 与禁止 option selection 的 transcript；trait remove、其它 stress、scheme、stock/visual/lifecycle 仍未完成 |
 | owner-deferred religious domain | deferred, not complete | 本专题不使用圣战/婚姻两项窄例外；其余宗教域等待项目所有者解除暂缓 |
 
 冻结后的下一 exact 入口不是继续猜 `OptionEffectItem`：该结构已经证明没有 resource/relation 完备性。应从 `CEffectDescriptionVisitorInterface` 的其它具体 derived visitors 或事件 tooltip 的 engine-owned structured model 反查一个会保留 resource/relationship delta 与 target identity 的只读输出；在找到明确输出 ABI 前，完整 preview 和多选 semantic policy 保持 typed dependency。

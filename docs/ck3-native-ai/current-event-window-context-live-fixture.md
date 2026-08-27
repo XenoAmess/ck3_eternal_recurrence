@@ -120,7 +120,7 @@ seed-only mod bridge，读到 `calculated_event_id=4360001`、`runtime_stats_ord
 `EventData+0x08/+0x0C` 是 loaded definition table 的 process/playset-local 数值，不是 cross-process identity。修正合同必须：
 
 - 跨进程继续要求完整 active instance、date、canonical key、save/checkpoint 与 fixture bytes 一致；
-- `+0x08/+0x0C` 在每个进程内仍须为 signed int32，并由同帧/同进程双查询约束不漂移；
+- `+0x08/+0x0C` 在 seed/cold 都须为 signed int32；只有 cold 有相邻双查询，可据此约束 cold 进程内不漂移；
 - 不要求 seed 与 cold 数值相等，也不要求它们必须不同。
 
 Attempt3 没有选择 option；两个 managed process、nonce root 均清理成功，artifact 的
@@ -276,3 +276,9 @@ runner 仍会先验证 commit、EXE/save/fixture/DLL/injector、source cleanline
 Attempt4 已满足 artifact `ok=true`、全部 harness check、truthful readiness、managed process cleanup 与 nonce-root removal，故本专题
 更新为 `[live-confirmed fixture-scoped]`。stable root/saved scopes、非空 indicator kinds、完整 structured effect preview、
 event-window lifecycle 与 semantic event decision 仍然没有完成。
+
+其中“非空 indicator kinds”的后继已另行冻结并实机完成在
+[`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md)：它复用本文
+两阶段 managed runner，只替换 disposable definition/localization 与 exact option-row 断言。Attempt1 已在 PID `23632/35364`
+实读 `trait/add brave`、`stress/increase affected=false/critical=false` 与 death backing rows，artifact SHA-256
+`1DE73B16...8249C3`。本文 Attempt4 自身仍只证明 empty surface；后继 GREEN 不倒改 Attempt4 的证据范围。
