@@ -21,7 +21,7 @@ flowchart LR
 
 - 当前 exact build：CK3 `1.19.0.6`。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：`e4e0620`。
+- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：helper `1fd0a94`，GEN-004 core `51fe8cf`。
 - 能力明细以
   [`autonomous-capability-roadmap.md`](../ck3-native-ai/autonomous-capability-roadmap.md) 为施工账本，
   以 [`docs/ck3-native-ai/README.md`](../ck3-native-ai/README.md) 为原生 AI 证据索引。
@@ -55,8 +55,11 @@ flowchart LR
 再用重复 run、更多 seed 与原生决策树逐步替换这些降级策略。
 
 当前 normal-desktop 启动入口与严格判定见
-[`one-generation-canary-handoff.md`](one-generation-canary-handoff.md)：它固定 clean runner、production6b checkpoint、driver state、
-pipe、DLL/injector 和 `20 / 21600 / 300 / 3` bounds；20-turn 存活只算经过完整 sidecar/cleanup 校验的 canary 通过，绝不冒充 G1。
+[`one-generation-canary-handoff.md`](one-generation-canary-handoff.md)：单一 helper 支持两个互不混配的 profile——默认
+`legacy` 固定 `480f287 + 旧 DLL/injector`，`claim-cb-white-peace` 固定 `51fe8cf + 新 DLL/injector`；两者共用已冻结的
+production6b checkpoint、driver state、pipe 与 `20 / 21600 / 300 / 3` bounds。两套 canonical dry-run 都已验证 identity、no target
+与 CK3=0；当前 sandbox 的 claim Execute 被 normal-desktop host guard 正确拒绝。尚未发生正常桌面 Execute，20-turn 存活即使通过
+完整 sidecar/cleanup 校验也只算 bounded canary，绝不冒充 G1。
 
 原生 AI 研究前置保持不变：遇到相关玩法，先冻结并落盘 exact-build 原版决策树、输入和 unknown 分支；完成这一步后，我方不必立刻复制
 整棵树，可以选择足以继续游戏的最小实现。原生树中尚未采用的输入/分支必须作为可追踪能力债记录，后续以 production outcome
@@ -76,6 +79,7 @@ pipe、DLL/injector 和 `20 / 21600 / 300 / 3` bounds；20-turn 存活只算经�
 | active retreat | `production-live loop`（full-side 与 owner-subset） | 读取 day-15 legality，绑定目标路线 token，执行玩家军队撤退并验证旧 CombatID/双方后置状态。 | 不代表已闭合原生 AI 的通用撤退目的地评分或所有战斗策略。 |
 | reinforcement assignment observation | `production-live primitive` | 读取 asking、AI parent stored order、route 和 active CombatID；见过 owner-subset 后 membership reopen。 | assigned+aligned ETA、真实 join 和改派动作仍未完成。 |
 | battle terminal | `production-live primitive/loop`（normal 分支） | 通过 journals/query 识别 normal terminal、旧 CombatID 删除、战分和玩家 retreat。 | no-normal、residual、assignment-reopened 分支尚未 live，aggregate readiness 仍为 false。 |
+| 窄 `claim_cb` white-peace termination | `static-ready` | 逐 option 读取 typed final recipient response；同一 paused frame 按 options → v1 claim terms → literal offer，fresh 重审后仅以旧 full WarID 消失记 `applied`，否则记 `submitted_pending` 并按 720 `date_raw` cooldown；跨战争 100% enforce 永远优先。 | 尚未正常桌面 live；不是完整 v2/campaign 战争退出，不支持其它 CB、holy war 或 surrender。旧 DLL 缺 `recipient_response`，会被新 strict schema 有意拒绝，不能与新源码混用。 |
 | pending character interaction | typed query `production-live primitive`；单键 degraded reply `static-ready` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；仅 exact-build allowlist 的 `spar_with_knight_interaction` 可按 same-frame reject-first / unique-accept 规则解除阻塞，并验证旧 full ID 推进；100% enforce-demands 始终优先。 | 该 fallback 不是通用 ordinary 分类、原生等价或高智商语义策略；stock reject/unique-accept 尚未 production live，typed definition/subtype、war-special 与 structured terms/effects 仍缺。 |
 | auto-accept notification ACK | `fixture-live` | 非宗教 definition-only fixture 中完成 query/query/ACK/旧 full ID 消失。 | 不是 stock/production-only 语义证据，自然 stock 与 intermediary 仍待验。 |
 | campaign root 与 loaded feature manifest | `production-live primitive` | 读取玩家主头衔/tier、capital、liege、government/rules，以及当前进程 feature registry/runtime keys。 | 开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
@@ -140,7 +144,9 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 ### P2：从既有战争打到合法终局
 
 - 补 score breakdown/ticking、occupation、participants、盟友 ETA、财政 runway、补给/损耗、完整 objective 与 exit terms。
-- 实机验收 raise、assault start/stop、disband、enforce；恢复经过 terms/readiness 门的 white peace/surrender surface。
+- GEN-004 的最窄 `claim_cb` white-peace 已 `static-ready`；先在 normal desktop 验证 final response、options → v1 terms → offer 与
+  applied/pending 后置结果，再以 production outcome 替换未采用的 v2/campaign 输入。
+- 实机验收 raise、assault start/stop、disband、enforce；继续扩展其它 CB 的 white peace 与独立 surrender surface。
 - 增加 call ally、rally、embark、reassignment、mercenary 等动作和后置状态。
 - 从 active-war checkpoint 无人工输入走到 victory/white peace/surrender，处理战后、保存并冷恢复。
 
