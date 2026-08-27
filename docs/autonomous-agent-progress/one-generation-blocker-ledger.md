@@ -35,7 +35,7 @@
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
-| GEN-012 | B1 | `life-advance` 部分复合执行期间发生 revision turnover | 正式长跑在第 97 回合以 `expected 159, current 160` 停止；此前 `96` 回合、`44` gameplay 与 `14` checkpoints 成功，session、mailbox、观测与 cleanup 均正常。错误发生在 opaque composite 返回前，不能用旧 plan 跨 revision 继续，也不能归因于 CK3 AI policy | 只让 composite owner 对可证明安全重入的暂停收尾做有界 fresh-frame 收口，不放宽 typed query same-frame gate；单测后从 `1D6A...F443D` cold seed 实机越过边界并保存新 checkpoint | production run RED；blocker-removal 施工中 |
+| GEN-012 | B1 | `life-advance` 部分复合执行期间发生 revision turnover | 正式长跑在第 97 回合以 `expected 159, current 160` 停止；此前 `96` 回合、`44` gameplay 与 `14` checkpoints 成功，session、mailbox、观测与 cleanup 均正常。错误发生在 opaque composite 返回前，不能用旧 plan 跨 revision 继续，也不能归因于 CK3 AI policy | 只让 composite owner 对可证明安全重入的暂停收尾做有界 fresh-frame 收口，不放宽 typed query same-frame gate；单测后从 `1D6A...F443D` cold seed 实机越过边界并保存新 checkpoint | blocker-removal static-ready；production revalidation pending |
 
 ## Degraded heuristic 纪律
 
@@ -187,3 +187,9 @@
   条件下，以 fresh revision 最多再提交一次 `pause-map`。不允许 service 通用 re-plan、不削弱 query same-frame gate，也不改
   battle controller、war termination、ongoing-battle 或其它 CK3 AI policy 树。只有实机续跑越过此边界并保存更新 checkpoint 后，
   `GEN-012` 才能关闭。
+- blocker-removal 已 static-ready：自动暂停并携带 active event 的 fresh 帧会被真实采用且不伪造 action；仍 running 的一次无害日期
+  竞争只提交一个 fresh-native-revision `pause-map`；event/speed 漂移、第二次 running race、非 revision 错误仍失败。完整
+  `test_native_bridge_driver.py` 为 `123 passed, 102 subtests passed`，`test_native_auto_run.py` 为
+  `32 passed, 13 subtests passed`，`test_gameplay_bridge.py` 为 `169 passed, 35 subtests passed`。全 unit suite 除临时 worktree
+  `safe.directory` 外为 `1307 passed, 2 skipped`；带进程局部 Git 配置重跑环境套件为 `54 passed, 1 skipped, 7 subtests passed`。
+  独立只读审阅 PASS；尚未据此声称 production-live。

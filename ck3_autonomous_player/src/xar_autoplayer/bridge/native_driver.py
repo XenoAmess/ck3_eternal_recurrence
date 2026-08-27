@@ -8511,7 +8511,21 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if snapshot.get("paused") is True:
             return snapshot
-        result = self._execute_composite_primitive("pause-map", snapshot)
+        try:
+            result = self._execute_composite_primitive("pause-map", snapshot)
+        except BridgeUnavailableError as error:
+            if "native gameplay revision mismatch" not in str(error):
+                raise
+            # A timeline tick can auto-pause the map (most notably when an
+            # event opens) between the progress observation and pause-map's
+            # pre-submit revision check.  Adopt that fresh, already-satisfied
+            # postcondition without forging a pause action.  A still-running
+            # frame remains an error; _execute_composite_primitive has already
+            # used its one bounded retry for a harmless running-state race.
+            refreshed = self.take_snapshot()
+            if refreshed.get("paused") is not True:
+                raise
+            return refreshed
         actions.append({"step": "pause-map", "result": result})
         paused = self._wait_for_snapshot(
             self.take_snapshot(),

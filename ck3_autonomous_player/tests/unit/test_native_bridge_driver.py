@@ -8482,6 +8482,249 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["ending_date_raw"], 53_171_448)
         self.assertTrue(result["paused"])
 
+    def test_pause_life_advance_adopts_fresh_auto_paused_frame(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(
+            _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
+        )
+        observed = driver.take_snapshot()
+        original_take_snapshot = driver.take_snapshot
+        calls = 0
+
+        def auto_pausing_snapshot() -> dict[str, object]:
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        active_event={"instance_id": 2, "option_count": 1},
+                        date_raw=53_171_424,
+                        speed=5,
+                        paused=True,
+                    )
+                )
+            return original_take_snapshot()
+
+        driver.take_snapshot = auto_pausing_snapshot  # type: ignore[method-assign]
+        actions: list[dict[str, object]] = []
+        paused = driver._pause_life_advance(observed, actions)
+
+        self.assertTrue(paused["paused"])
+        self.assertEqual(paused["date_raw"], 53_171_424)
+        self.assertEqual(paused["active_event"]["instance_id"], 2)
+        self.assertEqual(actions, [])
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                and frame.get("step") == "pause-map"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_pause_life_advance_retries_one_running_date_race(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(
+            _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
+        )
+        observed = driver.take_snapshot()
+        original_take_snapshot = driver.take_snapshot
+        calls = 0
+
+        def racing_snapshot() -> dict[str, object]:
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        date_raw=53_171_424,
+                        speed=5,
+                        paused=False,
+                    )
+                )
+            return original_take_snapshot()
+
+        driver.take_snapshot = racing_snapshot  # type: ignore[method-assign]
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": "pause-map", "accepted": True},
+                }
+            )
+            endpoint.publish(
+                _snapshot(
+                    3,
+                    date_raw=53_171_424,
+                    speed=5,
+                    paused=True,
+                )
+            )
+
+        endpoint.send_hook = answer
+        actions: list[dict[str, object]] = []
+        paused = driver._pause_life_advance(observed, actions)
+        pause_frames = [
+            frame
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+            and frame.get("step") == "pause-map"
+        ]
+
+        self.assertTrue(paused["paused"])
+        self.assertEqual(len(pause_frames), 1)
+        self.assertEqual(pause_frames[0]["expected_revision"], 2)
+        self.assertEqual([action["step"] for action in actions], ["pause-map"])
+
+    def test_pause_life_advance_rejects_running_control_drift(self) -> None:
+        for drift in ("event", "speed"):
+            with self.subTest(drift=drift):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                endpoint.publish(
+                    _hello("game.state.snapshot", "game.command.pause-map")
+                )
+                endpoint.publish(
+                    _snapshot(
+                        1,
+                        date_raw=53_171_400,
+                        speed=5,
+                        paused=False,
+                    )
+                )
+                observed = driver.take_snapshot()
+                original_take_snapshot = driver.take_snapshot
+                calls = 0
+
+                def drifting_snapshot() -> dict[str, object]:
+                    nonlocal calls
+                    calls += 1
+                    if calls == 1:
+                        endpoint.publish(
+                            _snapshot(
+                                2,
+                                active_event=(
+                                    {"instance_id": 2, "option_count": 1}
+                                    if drift == "event"
+                                    else None
+                                ),
+                                date_raw=53_171_424,
+                                speed=4 if drift == "speed" else 5,
+                                paused=False,
+                            )
+                        )
+                    return original_take_snapshot()
+
+                driver.take_snapshot = drifting_snapshot  # type: ignore[method-assign]
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError,
+                    "native gameplay revision mismatch",
+                ):
+                    driver._pause_life_advance(observed, [])
+                self.assertFalse(
+                    any(
+                        frame.get("type") == "execute_step"
+                        for frame in endpoint.frames
+                    )
+                )
+
+    def test_pause_life_advance_bounds_two_running_revision_races(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(
+            _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
+        )
+        observed = driver.take_snapshot()
+        original_take_snapshot = driver.take_snapshot
+        calls = 0
+
+        def repeatedly_racing_snapshot() -> dict[str, object]:
+            nonlocal calls
+            calls += 1
+            if calls in (1, 3):
+                revision = 1 + (calls + 1) // 2
+                endpoint.publish(
+                    _snapshot(
+                        revision,
+                        date_raw=53_171_400 + (revision - 1) * 24,
+                        speed=5,
+                        paused=False,
+                    )
+                )
+            return original_take_snapshot()
+
+        driver.take_snapshot = repeatedly_racing_snapshot  # type: ignore[method-assign]
+        with self.assertRaisesRegex(
+            BridgeUnavailableError,
+            "native gameplay revision mismatch",
+        ):
+            driver._pause_life_advance(observed, [])
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
+
+    def test_pause_life_advance_keeps_initial_paused_frame(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(_snapshot(1, paused=True))
+        observed = driver.take_snapshot()
+
+        with mock.patch.object(
+            driver,
+            "take_snapshot",
+            side_effect=AssertionError("paused frame should need no refresh"),
+        ):
+            actions: list[dict[str, object]] = []
+            paused = driver._pause_life_advance(observed, actions)
+
+        self.assertEqual(paused, observed)
+        self.assertEqual(actions, [])
+        self.assertFalse(
+            any(
+                frame.get("type") == "execute_step"
+                for frame in endpoint.frames
+            )
+        )
+
     def test_command_result_does_not_forge_a_semantic_change(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
