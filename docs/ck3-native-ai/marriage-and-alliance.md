@@ -14,7 +14,7 @@
 - [live-confirmed] 当前请求已经以完整 signed pending ID `-2013265918` 出现在 paused production frame；
   玩家 `29829` 是直接 recipient，四个婚姻角色齐全，无 intermediary，六个 send-option 均未选择，
   accept/reject/block 合法，acknowledge 非法。
-- [counter-policy] 本次一代长跑的最小解除方案不是把它加入 generic ordinary allowlist，也不是凭发送时先验自动接受，
+- [production-live loop] 本次一代长跑的最小解除方案不是把它加入 generic ordinary allowlist，也不是凭发送时先验自动接受，
   而是增加一条 **仅匹配上述窄合同的 reject-only** 分支。proposal 的存在确实证明 exact stock AI 在发送时得到
   “玩家侧反事实 `ai_accept > 0`”，但当前不能重验该分数，也不能验证接受后 secondary pair 的婚姻/联盟结果。
   拒绝会写入五年 `player_declined_marriage` 并触发 decline event，因此该选择明确记为非最优的 G1 blocker removal。
@@ -74,7 +74,7 @@ marriage special 保持 fail-closed 而 RED；managed cleanup 为 GREEN，不能
 - [static-confirmed] slot 8 读取两名 secondary character 的年龄/性别与 context option：只有双方成人且
   `grand_wedding_promise=false` 才走 `0x2660B20` marriage，否则走 `0x2660F40` betrothal。当前 row 0 未选择，
   但 wire 没有两人的 adult bool，因此不能为本请求宣称最终 outcome kind。row 1 `matrilineal=false` 已由 authored
-  option 顺序和同一 context vector闭合，不需要先完成 numeric flag → string 通用映射。
+  option 顺序和同一 context vector 闭合，不需要先完成 numeric flag → string 通用映射。
 - [owner-deferred boundary] 当前 proposal 已通过完整 stock Can Send 与 reply legality，足以消费 opaque final legality；
   不为本 blocker 展开 clergy、same-sex、consanguinity、faith hostility 或 gender doctrine。若以后语义接受成为真实质量
   blocker，最小扩展是在同一 pending query 发布 `CMarriageOffer` subtype、secondary adult/outcome、lineality 与 opaque
@@ -188,6 +188,19 @@ flowchart TD
 [live-confirmed] query 本身成功；planner 的唯一 blocker 是
 `interaction_war_or_special_semantics_unclassified`。run 随后没有提交 reply，旧 pending 保持不变；报告保存了 immutable
 seed，cleanup 全绿。故本专题解除的是当前真实 semantic classification/policy blocker，不新增 transport、WAL 或安全门禁。
+
+[production-live loop] commit `c21c096263325e1d8a13a4b01eebaa38ac88d2dd` 的 fresh cold replay
+`20260827T191804Z-one-generation-8c116e3e` 从同一不可变 `date_raw=53211480` seed 恢复。turn 2 推进一日并再次产生
+negative full ID `-2013265918`；turn 3 typed query 保持同一 paused frame，turn 4 按
+`arrange-marriage-reject-only-v1` 选择 `reject-pending-character-interaction`。native result 明确为
+`interaction_result.status=rejected`、instance/sender `-2013265918/30287`，且 after snapshot 与
+`remaining_pending_character_interaction` 均为 `null`，不是只信 queue ACK。随后又完成三次日期推进到 `53211576`，保存
+periodic/final 两份 checkpoint；最终 checkpoint 76,993,050 bytes、SHA-256
+`EEBE541E5C6CA8372E95F294FA3C93B9E7A423D8E8281EE7E0FE9BC4CFB0B57B`。12/12 turns 成功，角色 `29829`
+仍存活，只因人为 turn bound 收口；cleanup 全绿且 CK3 进程归零。report SHA-256
+`3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973`，first-blocker 仅为 bound，SHA-256
+`B821A021F42C881865070BDBE6BA0F9C5C7884C549B1DBD13CBEF76C62AB5FA2`。这把本篇窄 reject lifecycle 升级为
+production-live loop，但不升级 accept、secondary-pair semantic outcome 或完整婚姻效用。
 
 `age_days=0` 与相同 `date_raw=53211504` 说明请求生成后尚未经过 pending manager 的下一次 daily aging，且 typed query
 没有让游戏再前进一天；all-role IDs、selected options 与 reply legality 又来自同一 frozen pending context。因此

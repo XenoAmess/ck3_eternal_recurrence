@@ -128,6 +128,32 @@ class RouteContactHorizonContractTests(unittest.TestCase):
             [53_176_200, 53_176_248, 53_176_296],
         )
 
+    def test_stationary_subject_uses_empty_current_province_timeline(
+        self,
+    ) -> None:
+        payload = _payload()
+        payload["target_province_id"] = 2603
+        payload["subject_route"] = {
+            "timeline_observable": True,
+            "army_id": 11,
+            "current_province_id": 2603,
+            "effective_origin_province_id": 2603,
+            "route_province_ids": [],
+            "arrival_date_raws": [],
+        }
+
+        normalized = normalize_route_contact_horizon(
+            payload,
+            expected_subject_army_id=11,
+            expected_target_province_id=2603,
+            expected_hostile_army_ids=(31, 41),
+            expected_date_raw=53_176_176,
+            expected_snapshot_revision=2**32 + 7,
+        )
+
+        self.assertEqual(normalized["subject_route"]["route_province_ids"], [])
+        self.assertTrue(normalized["one_day_contact_free"])
+
     def test_timeline_rejects_null_or_misaligned_arrivals(self) -> None:
         for arrivals in ([53_176_200, None, 53_176_296], [53_176_200]):
             payload = copy.deepcopy(_payload())

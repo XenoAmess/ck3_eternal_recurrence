@@ -29,6 +29,7 @@ from xar_autoplayer.bridge.settlement_contract import (
 from xar_autoplayer.bridge.war_contract import (
     advance_route_contact_horizon_step,
     normalize_active_wars,
+    query_route_contact_horizon_step,
     war_objective_province_ids,
 )
 from xar_autoplayer.strategy import (
@@ -2071,6 +2072,121 @@ class GameplayBridgeTests(unittest.TestCase):
             "native_war_route_contact_horizon_global_blocked",
         )
         self.assertIsNone(plan["selected_step"])
+
+    def test_stationary_subject_proof_completes_global_one_day_horizon(
+        self,
+    ) -> None:
+        primary = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[31, 2585],
+        )
+        stationary = _army(
+            12,
+            soldiers=700,
+            province_id=22,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=99,
+            controllable=False,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[22, 31, 2585],
+        )
+        query_stationary = query_route_contact_horizon_step(
+            12, 22, (21,)
+        )
+        advance_step = advance_route_contact_horizon_step(11, 2585, (21,))
+        moving_proof = _route_contact_row(
+            1,
+            origin=20,
+            target=2585,
+            date_raw=24_000,
+            route=[31, 2585],
+            hostile_ids=(21,),
+            contact_free=True,
+        )
+
+        required = _native_war_plan(
+            player=primary,
+            players=[primary, stationary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[moving_proof],
+            steps=(query_stationary, advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            required["phase"], "native_war_stationary_contact_horizon"
+        )
+        self.assertEqual(required["selected_step"], query_stationary)
+
+        stationary_proof = _route_contact_row(
+            2,
+            army_id=12,
+            origin=22,
+            target=22,
+            date_raw=24_000,
+            route=[],
+            hostile_ids=(21,),
+            contact_free=True,
+        )
+        proven = _native_war_plan(
+            player=primary,
+            players=[primary, stationary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[moving_proof, stationary_proof],
+            steps=(query_stationary, advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            proven["phase"], "native_war_route_contact_horizon_progress"
+        )
+        self.assertEqual(proven["selected_step"], advance_step)
+        self.assertEqual(
+            [row["army_id"] for row in proven["stationary_contact_horizons"]],
+            [12],
+        )
+
+        blocked = _native_war_plan(
+            player=primary,
+            players=[primary, stationary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[
+                moving_proof,
+                _route_contact_row(
+                    2,
+                    army_id=12,
+                    origin=22,
+                    target=22,
+                    date_raw=24_000,
+                    route=[],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                ),
+            ],
+            steps=(advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            blocked["phase"],
+            "native_war_route_contact_horizon_global_blocked",
+        )
+        self.assertIsNone(blocked["selected_step"])
 
     def test_route_preview_freshness_uses_date_origin_and_latest_restore(
         self,

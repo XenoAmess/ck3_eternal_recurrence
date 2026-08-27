@@ -43,6 +43,7 @@ from xar_autoplayer.bridge.war_contract import (
     parse_start_assault_step,
     parse_stop_assault_step,
     parse_split_army_half_step,
+    query_route_contact_horizon_step,
     split_army_half_step,
     start_assault_step,
     stop_assault_step,
@@ -6453,6 +6454,165 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["timeline_policy"], "exact_one_day_contact")
         self.assertTrue(result["paused"])
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
+    def test_stationary_contact_proof_is_required_for_exact_day_step(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+                "game.command.set-speed-1",
+                "game.command.resume-map",
+                "game.command.pause-map",
+            )
+        )
+        start_date = 53_212_728
+        moving = _army(
+            101,
+            province_id=20,
+            move_target_province_id=30,
+            army_state="moving",
+            route_province_ids=[25, 30],
+        )
+        stationary = _army(
+            202,
+            province_id=22,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            31,
+            province_id=99,
+            controllable=False,
+            move_target_province_id=30,
+            army_state="moving",
+            route_province_ids=[23, 22, 25, 30],
+        )
+        war = _war(
+            allied_armies=[moving, stationary],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[30],
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=start_date,
+                active_wars=[war],
+                player_armies=[moving, stationary],
+            )
+        )
+        snapshot = driver.take_snapshot()
+        hostiles = (31,)
+        moving_query = query_route_contact_horizon_step(101, 30, hostiles)
+        stationary_query = query_route_contact_horizon_step(
+            202, 22, hostiles
+        )
+        advance_step = advance_route_contact_horizon_step(101, 30, hostiles)
+        self.assertIn(
+            stationary_query, driver.capabilities()["action_steps"]
+        )
+
+        def proof_row(
+            index: int,
+            *,
+            step: str,
+            subject_id: int,
+            current: int,
+            target: int,
+            route: list[int],
+            arrivals: list[int],
+        ) -> dict[str, object]:
+            return {
+                "index": index,
+                "command": step,
+                "ok": True,
+                "result": {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "route_contact_horizon": {
+                        "status": "available",
+                        "date_raw": start_date,
+                        "snapshot_revision": snapshot["native_revision"],
+                        "subject_army_id": subject_id,
+                        "target_province_id": target,
+                        "hostile_army_ids": [31],
+                        "subject_route": {
+                            "timeline_observable": True,
+                            "army_id": subject_id,
+                            "current_province_id": current,
+                            "effective_origin_province_id": (
+                                route[0] if route else current
+                            ),
+                            "route_province_ids": route,
+                            "arrival_date_raws": arrivals,
+                        },
+                        "hostile_routes": [
+                            {
+                                "timeline_observable": True,
+                                "army_id": 31,
+                                "current_province_id": 99,
+                                "effective_origin_province_id": 23,
+                                "route_province_ids": [23, 22, 25, 30],
+                                "arrival_date_raws": [
+                                    start_date + 24,
+                                    start_date + 48,
+                                    start_date + 72,
+                                    start_date + 96,
+                                ],
+                            }
+                        ],
+                        "horizon_start_date_raw": start_date,
+                        "horizon_end_date_raw": start_date + 24,
+                        "one_day_contact_free": True,
+                        "conflicts": [],
+                    },
+                    "queried_snapshot_id": snapshot["snapshot_id"],
+                    "queried_revision": snapshot["revision"],
+                    "queried_native_revision": snapshot["native_revision"],
+                    "queried_connection_generation": snapshot[
+                        "diagnostics"
+                    ]["connection_generation"],
+                    "queried_episode_run_id": snapshot["episode_run_id"],
+                },
+            }
+
+        moving_proof = proof_row(
+            1,
+            step=moving_query,
+            subject_id=101,
+            current=20,
+            target=30,
+            route=[25, 30],
+            arrivals=[start_date + 24, start_date + 48],
+        )
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(snapshot, [moving_proof]),
+        )
+        stationary_proof = proof_row(
+            2,
+            step=stationary_query,
+            subject_id=202,
+            current=22,
+            target=22,
+            route=[],
+            arrivals=[],
+        )
+        self.assertIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                snapshot, [moving_proof, stationary_proof]
+            ),
+        )
 
     def test_existing_move_target_still_advertises_preview_not_duplicate_move(
         self,

@@ -48,10 +48,11 @@
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-confirmed + one production blocker live] [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
+- [static-confirmed + production-live loop] [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
   `arrange_marriage_interaction` 的 AI→玩家专用发送前接受树、五角色 redirect、marriage special 分类、六项 option 与
   accept/decline effect 边界；fresh paused run 已实见 negative full pending ID `-2013265918`、四个婚姻角色、无 intermediary、
-  六 option 全未选和正常双向 reply legality。当前仅给出 definition-bound 的 G1 reject-only blocker-removal；发送时具体
+  六 option 全未选和正常双向 reply legality；definition-bound reject-only 已实机令旧 negative full ID 消失并继续推进/checkpoint。
+  当前只把该窄分支标为 G1 blocker-removal；发送时具体
   `ai_accept` raw/breakdown、secondary pair/alliance 后置观测与完整 P6 婚姻效用仍未完成，faith 只保留最小 opaque legality。
 - [static-confirmed + implementation-confirmed + ordinary white-peace production-live]
   [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 证明三种普通 war-exit
@@ -85,10 +86,13 @@
   不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
-- [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到
+- [static-confirmed + production blocker live] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到
   normal daily movement，并闭合“全军移动后按 queue 接触”、省份 full-CUnitID 数值序 opponent、已有战斗优先、
   多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；public speed 1..5 不改变这条逐 native-day
-  movement/contact 链，但异步 pause 的各速 overshoot envelope 仍为 unknown；非 daily placement 也仍为虚线 unknown。
+  movement/contact 链。最新六支可控军正式帧又证明 geometric stationary threat 把敌军 `134` 日后的 route vertex
+  错当成当前危险；既有 per-subject timed query 已足够为 stationary `target=current` 补一日证明，缺口仅是 Python
+  query projection 与同帧全军 conjunction，不需要新增 native ABI。该 stationary query 的 fresh replay、异步 pause
+  各速 overshoot envelope 与非 daily placement 仍为 unknown。
 - [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
   application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
   `join_existing` 与 multiple-compatible 实机分支仍待闭合。

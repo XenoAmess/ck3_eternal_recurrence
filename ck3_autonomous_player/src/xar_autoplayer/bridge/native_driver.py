@@ -11770,10 +11770,32 @@ def _action_steps(
                 and enemy.get("army_state_code") != 6
             }
         )
+        route_contact_enemies = [
+            enemy
+            for enemy in enemy_armies_from_wars(wars)
+            if not _army_is_retreating(enemy)
+        ]
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):
                 continue
+            stationary_contact_target = (
+                _stationary_contact_horizon_query_target(
+                    army, route_contact_enemies
+                )
+                if expand_route_contact_horizons
+                and paused is True
+                and 0 < len(hostile_ids) <= 64
+                else None
+            )
+            if stationary_contact_target is not None:
+                steps.add(
+                    query_route_contact_horizon_step(
+                        army_id,
+                        stationary_contact_target,
+                        hostile_ids,
+                    )
+                )
             army_target_provinces = set(target_provinces)
             current_province_id = army.get("current_province_id")
             current_route = army.get("route_province_ids")
@@ -11850,6 +11872,37 @@ def _route_contact_hostile_ids(
             }
         )
     )
+
+
+def _stationary_contact_horizon_query_target(
+    army: dict[str, object],
+    enemies: list[dict[str, object]],
+) -> int | None:
+    """Return current Province only for a geometrically threatened hold."""
+    army_id = army.get("army_id")
+    province_id = army.get("current_province_id")
+    route = army.get("route_province_ids")
+    if not (
+        _positive_native_id(army_id)
+        and _positive_native_id(province_id)
+        and army.get("controllable") is True
+        and army.get("move_target_province_id") is None
+        and isinstance(route, list)
+        and not route
+        and _army_is_known_stationary(army)
+        and not _army_in_combat_or_retreat(army)
+    ):
+        return None
+    for enemy in enemies:
+        enemy_route = enemy.get("route_province_ids")
+        if province_id in {
+            enemy.get("current_province_id"),
+            enemy.get("move_target_province_id"),
+        } or (
+            isinstance(enemy_route, list) and province_id in enemy_route
+        ):
+            return int(province_id)
+    return None
 
 
 def _fresh_route_contact_advance_steps(
@@ -11931,7 +11984,10 @@ def _fresh_route_contact_advance_steps(
             and result.get("queried_episode_run_id")
             == snapshot.get("episode_run_id")
             and _route_contact_advance_scope_isolated(
-                snapshot, subject_army_id=subject_army_id
+                snapshot,
+                subject_army_id=subject_army_id,
+                history=scoped_history,
+                hostile_army_ids=hostiles,
             )
         ):
             continue
@@ -11975,7 +12031,11 @@ def _canonical_timed_route(route: object) -> list[int] | None:
 
 
 def _route_contact_advance_scope_isolated(
-    snapshot: dict[str, object], *, subject_army_id: int
+    snapshot: dict[str, object],
+    *,
+    subject_army_id: int,
+    history: list[dict[str, object]],
+    hostile_army_ids: tuple[int, ...],
 ) -> bool:
     """Fail closed when one subject proof would advance another risky army."""
     armies = snapshot.get("player_armies")
@@ -12001,6 +12061,7 @@ def _route_contact_advance_scope_isolated(
         province_id = army.get("current_province_id")
         if not _positive_native_id(province_id):
             return False
+        geometrically_threatened = False
         for enemy in enemies:
             if (
                 enemy.get("retreating") is True
@@ -12015,8 +12076,96 @@ def _route_contact_advance_scope_isolated(
             } or (
                 isinstance(enemy_route, list) and province_id in enemy_route
             ):
-                return False
+                geometrically_threatened = True
+                break
+        if geometrically_threatened and not _fresh_stationary_contact_proof(
+            snapshot,
+            history,
+            army=army,
+            hostile_army_ids=hostile_army_ids,
+        ):
+            return False
     return True
+
+
+def _fresh_stationary_contact_proof(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+    *,
+    army: dict[str, object],
+    hostile_army_ids: tuple[int, ...],
+) -> bool:
+    """Require a same-frame native one-day proof for one stationary army."""
+    army_id = army.get("army_id")
+    province_id = army.get("current_province_id")
+    route = army.get("route_province_ids")
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    if not (
+        _positive_native_id(army_id)
+        and _positive_native_id(province_id)
+        and army.get("controllable") is True
+        and army.get("move_target_province_id") is None
+        and isinstance(route, list)
+        and not route
+        and _army_is_known_stationary(army)
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+        and isinstance(native_revision, int)
+        and not isinstance(native_revision, bool)
+        and native_revision > 0
+    ):
+        return False
+    expected_step = query_route_contact_horizon_step(
+        int(army_id), int(province_id), hostile_army_ids
+    )
+    for row in reversed(history):
+        command, result = _effective_native_history_entry(row)
+        if command != expected_step or row.get("ok") is not True:
+            continue
+        horizon = (
+            result.get("route_contact_horizon")
+            if isinstance(result, dict)
+            else None
+        )
+        try:
+            normalized = normalize_route_contact_horizon(
+                horizon,
+                expected_subject_army_id=int(army_id),
+                expected_target_province_id=int(province_id),
+                expected_hostile_army_ids=hostile_army_ids,
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError:
+            continue
+        subject_route = normalized.get("subject_route")
+        if not (
+            normalized.get("one_day_contact_free") is True
+            and isinstance(subject_route, dict)
+            and subject_route.get("current_province_id") == province_id
+            and subject_route.get("effective_origin_province_id")
+            == province_id
+            and subject_route.get("route_province_ids") == []
+            and subject_route.get("arrival_date_raws") == []
+            and result.get("queried_snapshot_id")
+            == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == native_revision
+            and result.get("queried_connection_generation")
+            == connection_generation
+            and result.get("queried_episode_run_id")
+            == snapshot.get("episode_run_id")
+        ):
+            continue
+        return True
+    return False
 
 
 def _army_by_id(

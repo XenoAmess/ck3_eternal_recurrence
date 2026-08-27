@@ -562,12 +562,26 @@ instance/sender 均写 signed int32，Python 已接受 sender signed int 与 boo
 因此这是 generation 高位把 full ID 表示成负 JSON number 的唯一诊断解释。report 未保留 rejected raw ID，本文不臆造精确数值。
 artifact：`C:/Users/xenoa/AppData/Local/Temp/xar-delivery-diag-f1230f6-state/runs/20260827T181439Z-one-generation-a991f39a/report.json`，
 SHA-256 `A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB`。这只证明旧 positive-only consumer
-实际阻断 campaign 并要求修约；signed-negative typed query/reply/old-ID advancement 仍须在修正版 fresh replay 后才可标 production-live。
+实际阻断 campaign 并要求修约；当时 signed-negative typed query/reply/old-ID advancement 仍须在修正版 fresh replay 后才可标 production-live。
+
+[production-live loop] 修正版 commit `c21c096263325e1d8a13a4b01eebaa38ac88d2dd` 的 fresh cold replay
+`20260827T191804Z-one-generation-8c116e3e` 已闭合完整 signed-negative lifecycle：snapshot 与 typed query 均保留
+ID `-2013265918`，definition 为 `arrange_marriage_interaction`；definition-bound reject 返回 typed
+`status=rejected`，old full ID 在 after snapshot 中消失，随后继续日期推进并保存两份 checkpoint。12/12 turns 成功，角色仍存活，
+只因人为 bound 收口，cleanup 全绿。report SHA-256
+`3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973`。这把 negative signed snapshot/query/reply/
+old-ID advancement 升级为 production-live；婚姻语义边界另见 [marriage-and-alliance.md](marriage-and-alliance.md)。
 
 ### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
 
 [implementation-confirmed / pay-ransom production-live / other allowlisted branches live=false] 原生 reply 树、四路 legality与 exact-build pending identity 已先按上文
 冻结；在此基础上，`strategy.py` 采用 `ordinary-reject-unique-accept-v1` 解除一代人长跑中的普通 pending blocker：
+
+[production-live loop] `arrange_marriage_interaction` 不进入上述 ordinary allowlist，而由独立
+`arrange-marriage-reject-only-v1` 处理：只匹配 direct local recipient、四个正 CharacterID marriage roles、无 intermediary、
+age/expiry `0/60/60`、definition/context 各六个 send option 且全部未选、opaque `CMarriageOffer` special、normal reply channel，
+并且 reject 原生合法且命令可达的同帧请求。该分支永不落入 unique-accept；任何 shape/legality 偏差都继续 blocked。当前 live
+只证明 typed reject 与旧 ID 推进，不宣称 secondary pair 婚姻/联盟结果或语义最优。
 
 1. 只消费同一 paused snapshot 的完整 pending ID、public/native revision、date、stable key、五 roles、local responder、deadline、
    四路 legality 与 special-war classification。stale、unavailable、sender/actor 或 responder identity 不一致均不提交 reply。
@@ -614,9 +628,9 @@ structured exchange/effect、target payload identity、campaign utility，以及
 |---|---|---|---|
 | active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、process-local calculated event ID/runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；Attempt4 已对 generic 非宗教 fixture 做 seed/checkpoint/fresh-cold empty-surface live，非空 Attempt1 又实读 `trait/add brave`、`stress/increase affected=false/critical=false` 与 `death/played_character`；select command 仍用 native index + instance-change postcondition | stock event、其余非空 indicator branches、selection lifecycle、stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI | fixture available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
-| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；普通非负 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | signed-negative 修正版 live replay、intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=false`；历史非负样本 `interaction_typed_query_wired=true`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
+| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；negative full ID `-2013265918` 已完成 production snapshot→typed query→reject→old-ID 消失，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=true`、`interaction_typed_query_wired=true`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
-| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` reject 已 production-live loop；notification ACK 为 fixture-live；`spar`、unique-accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
+| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；ordinary degraded reply 只对 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用；`arrange_marriage_interaction` 另有 direct/same-day/zero-option reject-only 分支；任何未分类 definition 与 known/opaque war-special fail-closed；active war 同帧时 100% enforce-demands 无条件优先 | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；marriage accept 的当前 score 与 secondary-pair postcondition；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` 与窄 `arrange_marriage` reject 均 production-live loop；notification ACK 为 fixture-live；`spar`、unique-accept、marriage accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready=false` |
 
 [live-confirmed fixture-scoped] 2026-08-27 的 current-event Attempt4 在 seed PID `22976` 与 fresh-cold PID `43140`
 中保持完整 instance `17`、date `53175816`、canonical key `xar_event_window_live_fixture.1` 与逐字节相同 fixture；三条
@@ -637,9 +651,10 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 每项的完整结构化效果与长期效用；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
-`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用上述 reject-first fallback；其中后者的真实 reject→旧 full ID 消失→继续
-推进/checkpoint 已 production-live。“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
-definition 与 known/opaque special 均停在 observation dependency。generic recipient notification 的 fixture-scoped
+`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用 ordinary reject-first fallback；其中后者的真实 reject→旧 full ID 消失→继续
+推进/checkpoint 已 production-live。definition-bound `arrange_marriage_interaction` 的独立 zero-option reject-only 分支也已在 negative
+full ID 上完成同样 lifecycle。“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它 definition 与 known/opaque
+special 均停在 observation dependency。generic recipient notification 的 fixture-scoped
 query→ACK 已闭合；下一步补 `spar`、unique-accept、intermediary/自然 stock notification
 与结构化条款观测并替换为真实效用选择。不得退回默认接受，reject 命令缺失也不得触发 accept。
 
@@ -755,9 +770,9 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路
   reply legality 已冻结在 `pending_character_interaction_context_v1_abi.json`，并通过 application-main paused read-only
   query 接入 native driver/service/MCP；普通非负 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询。
-- [production-live diagnostic RED / live-pending] 当前最高优先级不是补新的 fixture，而是从上文 immutable 一代人 checkpoint
-  fresh replay 实际 signed-negative pending；必须证明完整负数 ID 穿过 snapshot/query/合法 reply，并由后置 snapshot 证明旧 ID 推进。
-  完成后再补 intermediary fixture；在此之前 `negative_signed_pending_id_live_ready=false`。
+- [production-live loop] signed-negative pending 已从 immutable 一代人 checkpoint fresh replay，完整负数 ID 已穿过
+  snapshot/query/合法 reject，并由后置 snapshot 证明旧 ID 推进；`negative_signed_pending_id_live_ready=true`。当前最高优先级回到
+  从最新 durable checkpoint 继续同一角色全寿命长跑；intermediary fixture 与结构化 terms 只有成为真实 blocker 时才抢占 G1。
 - [live-confirmed fixture-scoped] auto-accept notification discovery 已移除旧 `+0x5C6 != 0` 过滤，typed query 与固定
   enum-4 ACK action 已在 definition-only 非宗教 fixture 中跨 fresh cold process 完成双 query→ACK→旧 full ID 消失；
   action 重验 full ID/paused/local route/flag。artifact SHA-256

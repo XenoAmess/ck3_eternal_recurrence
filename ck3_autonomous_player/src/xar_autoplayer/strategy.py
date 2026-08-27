@@ -4730,9 +4730,88 @@ def choose_one_life_turn(
                             for candidate in unsafe_armies
                             if candidate.get("army_id") != army_id
                         ]
+                        stationary_contact_horizons: list[
+                            dict[str, object]
+                        ] = []
+                        uncovered_stationary_armies: list[
+                            dict[str, object]
+                        ] = []
+                        for candidate in sorted(
+                            threatened_stationary_armies,
+                            key=lambda row: _native_int(row.get("army_id"))
+                            or 2**31,
+                        ):
+                            candidate_id = _native_int(
+                                candidate.get("army_id")
+                            )
+                            candidate_province_id = _native_int(
+                                candidate.get("current_province_id")
+                            )
+                            if (
+                                candidate_id is None
+                                or candidate_province_id is None
+                            ):
+                                uncovered_stationary_armies.append(candidate)
+                                continue
+                            stationary_horizon = _fresh_route_contact_horizon(
+                                rows,
+                                snapshot,
+                                army_id=candidate_id,
+                                origin_province_id=candidate_province_id,
+                                target_province_id=candidate_province_id,
+                                hostile_army_ids=route_threat_enemy_ids,
+                                route_province_ids=[],
+                            )
+                            if stationary_horizon is None:
+                                stationary_step = (
+                                    query_route_contact_horizon_step(
+                                        candidate_id,
+                                        candidate_province_id,
+                                        route_threat_enemy_ids,
+                                    )
+                                )
+                                if stationary_step in available_steps:
+                                    return {
+                                        "policy": "one-life-turn-v1",
+                                        "phase": "native_war_stationary_contact_horizon",
+                                        "selected_step": stationary_step,
+                                        "reason": "resolve a future geometric route intersection against this stationary army's subject-bound exact one-day occupancy",
+                                        "route_audit": passive_route_audit,
+                                        "stationary_army": candidate,
+                                        "active_wars": war_summary,
+                                    }
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_stationary_contact_horizon_unsupported",
+                                    "selected_step": None,
+                                    "required_step": stationary_step,
+                                    "reason": "the threatened stationary army requires its own fresh exact one-day contact horizon",
+                                    "route_audit": passive_route_audit,
+                                    "stationary_army": candidate,
+                                    "active_wars": war_summary,
+                                }
+                            if (
+                                stationary_horizon.get(
+                                    "one_day_contact_free"
+                                )
+                                is True
+                            ):
+                                stationary_contact_horizons.append(
+                                    {
+                                        "army_id": candidate_id,
+                                        "current_province_id": (
+                                            candidate_province_id
+                                        ),
+                                        "contact_horizon": (
+                                            stationary_horizon
+                                        ),
+                                    }
+                                )
+                            else:
+                                uncovered_stationary_armies.append(candidate)
                         if (
                             other_unsafe_armies
-                            or threatened_stationary_armies
+                            or uncovered_stationary_armies
                             or [
                                 candidate
                                 for candidate in combat_retreat_armies
@@ -4747,7 +4826,8 @@ def choose_one_life_turn(
                                 "reason": "one army's contact-free horizon cannot authorize time while another controllable army remains unsafe or threatened",
                                 "route_audit": passive_route_audit,
                                 "other_unsafe_armies": other_unsafe_armies,
-                                "threatened_stationary_armies": threatened_stationary_armies,
+                                "threatened_stationary_armies": uncovered_stationary_armies,
+                                "stationary_contact_horizons": stationary_contact_horizons,
                                 "active_wars": war_summary,
                             }
                         advance_step = advance_route_contact_horizon_step(
@@ -4762,6 +4842,7 @@ def choose_one_life_turn(
                                 "selected_step": advance_step,
                                 "reason": "the exact native timeline proves the intersecting active route contact-free for the next day",
                                 "route_audit": passive_route_audit,
+                                "stationary_contact_horizons": stationary_contact_horizons,
                                 "move_intent": observed_intent,
                                 "active_wars": war_summary,
                             }
