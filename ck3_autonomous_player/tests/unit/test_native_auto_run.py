@@ -1362,6 +1362,24 @@ class NativeAutoRunTests(unittest.TestCase):
             72,
         )
 
+    def test_compact_plan_preserves_no_declare_evidence(self) -> None:
+        plan = {
+            "phase": "native_war_entry_no_declare",
+            "selected_step": "life-advance",
+            "decision": {"outcome": "NO_DECLARE"},
+            "required_capabilities": ["forecast"],
+            "declaration": {"declaration_id": "29097-11-0"},
+            "war_entry_assessment": {"target_character_id": 29_097},
+            "war_entry_expected_utility": {
+                "eu_lower_raw": None,
+                "automatic_declaration_enabled": False,
+            },
+        }
+
+        compact = native_auto_run_module._compact_plan(plan)
+
+        self.assertEqual(compact, plan)
+
     def test_turn_limit_materializes_visible_tail_checkpoint(self) -> None:
         report, harness = self._run(["advance"])
 

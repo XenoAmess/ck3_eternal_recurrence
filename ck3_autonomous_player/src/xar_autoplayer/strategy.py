@@ -5640,7 +5640,7 @@ def choose_one_life_turn(
                     "casus_belli_key": declaration.get("casus_belli_key"),
                     "native_power_assessment_consumed": fresh_assessment,
                     "eu_lower_raw": power_eu.get("eu_lower_raw"),
-                    "bounded_advance_days": 1,
+                    "advance_contract": "native_life_advance",
                     "automatic_declaration_enabled": False,
                     "native_ai_equivalent": False,
                     "semantic_optimal": False,

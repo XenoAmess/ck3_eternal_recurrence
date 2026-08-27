@@ -83,7 +83,10 @@ class NativeDeclarationContractTests(unittest.TestCase):
         self.assertEqual(
             declaration["decision"]["declaration_id"], "808-17-0"
         )
-        self.assertEqual(declaration["decision"]["bounded_advance_days"], 1)
+        self.assertEqual(
+            declaration["decision"]["advance_contract"],
+            "native_life_advance",
+        )
         self.assertEqual(
             declaration["declaration"]["casus_belli_key"],
             "county_conquest_cb",
