@@ -17,6 +17,9 @@
 - [live-confirmed fixture-scoped] Attempt 8 已完成 paused seed → checkpoint → distinct cold process → adjacent typed
   query/query → fixed ACK → old full ID 消失的完整闭环；artifact SHA-256
   `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。
+- [contract boundary] pending full ID 是完整 generation-bearing signed int32；仅 `-1` 是 invalid sentinel，`0` 结构合法但
+  尚无 live 样本。generation byte 令 bit 31 置位时 JSON 数值会为负，bridge 仍必须原样保留。Attempt 8 的实值
+  `738197506` 为非负数，所以该 GREEN 不覆盖 signed-negative ID。
 - [owner-deferred] 不读取或实现 faith、doctrine、tenet、fervor、conversion、reformation、holy-war 等宗教专用语义。
 
 ## 原生生成、持久化与清理树
@@ -155,8 +158,8 @@ subtype 或 contract payload，不能用当前无 options/target 的最小 dispo
 - artifact：`artifacts/pending-notification-ack-70bf8e6-live-attempt8-fixture-definition.json`，93767 bytes，
   SHA-256 `E696C54F4A761C5BE29D00E7AA62C5529185F7D35F8F2D790BB2830CDBCB1308`。
 - seed PID `85336`，cold PID `30592`；二者不同且均由 managed shutdown 回收。
-- notification full ID `738197506`，low-24-bit slot `2`、generation `44`；sender `29829`、recipient/local player
-  `36108`、date `53175816`，跨 checkpoint/cold load 不变。
+- notification full ID `738197506`，low-24-bit slot `2`、generation `44`；它是 signed-int32 domain 内的非负样本。
+  sender `29829`、recipient/local player `36108`、date `53175816`，跨 checkpoint/cold load 不变。
 - cold query binding 为 public revision `4`、native revision `3`、同一 full ID/date；两次 query sequence 为 `1/2`，
   去除 sequence 后 frame 严格相等，canonical context SHA-256
   `951C01496BF832CFDDC620A44AC7BCB81C550FFD7E3352DDD77292D9C1154175`。
@@ -196,7 +199,8 @@ subtype 或 contract payload，不能用当前无 options/target 的最小 dispo
    同日且无既有 pending。
 3. 第二次 inbox 才在 `Province:2619.owner` actor scope 内执行 `run_interaction`，显式 actor/recipient，
    `send_threshold=decline`；要求 actor `is_ai=yes`、recipient `is_ai=no`、二者不同。
-4. 只接受 sender `29829`、canonical fixture key、`auto_accept_notification=true` 的 positive full ID；普通 pending 立即 RED。
+4. 只接受 sender `29829`、canonical fixture key、`auto_accept_notification=true` 的完整 signed-int32 full ID；`-1` 立即
+   RED，`0` 在结构上允许。本次冻结样本的精确期望值仍为非负 `738197506`；普通 pending 立即 RED。
 5. inbox 切回 no-op，双 poll 后 native `save-checkpoint`；seed 不 ACK，不 accept/reject/block。
 
 ### Stage B：fresh cold query → ACK
@@ -263,6 +267,15 @@ source commit、fixture key/角色/definition hash、日志摘录及 cleanup inv
 
 - [live-confirmed fixture-scoped] Attempt 8 已以相同 full ID 跨 byte-identical fixture cold reload，并在两次 adjacent
   same-revision typed query 后用 fixed ACK 让旧 ID 消失，同时保持 date/pause/player。
+- [production-live diagnostic RED] 后续一代人 run `20260827T181439Z-one-generation-a991f39a` 在
+  `snapshot_id=native:14`、`date_raw=53211600` 拒绝 signed pending frame，error 为
+  `native pending_character_interaction is malformed`；8 个 rejected frames 与 `status=written`、revision `10`、
+  `44025`-byte publish diagnostic 把问题定位到旧 positive-only consumer contract。frozen serializer/consumer 分支只能解释为
+  high-generation full ID 被 signed JSON 表示为负；report 未保存 rejected raw ID，故不臆造精确值。artifact：
+  `C:/Users/xenoa/AppData/Local/Temp/xar-delivery-diag-f1230f6-state/runs/20260827T181439Z-one-generation-a991f39a/report.json`，
+  SHA-256 `A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB`。
+- [live-pending] signed-negative 合同修正版仍须从同一 immutable checkpoint fresh replay，并以 typed query/reply 与旧 full ID
+  推进收口；Attempt 8 的正数 GREEN 不能替代这项验收。
 - [live-pending] 自然 stock 非宗教 notification 的 campaign 出现矩阵仍缺；fixture 证明 generic native channel，不能冒充
   某个 stock interaction 的玩法条款或原生 AI 选择。
 - [unknown] route kind `1` intermediary notification 不由本 fixture 代替，需独立 fixture。

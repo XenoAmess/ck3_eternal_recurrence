@@ -11,7 +11,7 @@
 
 namespace {
 
-constexpr std::int32_t kPendingId = 16'777'249;
+constexpr std::int32_t kPendingId = -2'130'706'399;
 constexpr std::int32_t kPlayedCharacterId = 2'001;
 constexpr std::int32_t kActorCharacterId = 1'001;
 constexpr std::int32_t kWarId = 16'777'250;

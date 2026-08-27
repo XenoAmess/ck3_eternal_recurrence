@@ -24,6 +24,8 @@ import xar_autoplayer.native_auto_run as native_auto_run_module  # noqa: E402
 
 
 _CHECKPOINT_PAYLOAD = b"native-auto-run periodic checkpoint fixture"
+_SIGNED_PENDING_ID = -2_130_706_360
+_NEXT_SIGNED_PENDING_ID = -2_130_706_359
 
 
 def _white_peace_war() -> dict[str, object]:
@@ -94,7 +96,7 @@ class _NativeAutoRunHarness:
         )
         self.pending_character_interaction = (
             {
-                "instance_id": 72,
+                "instance_id": _SIGNED_PENDING_ID,
                 "sender_character_id": 501,
                 "auto_accept_notification": False,
                 "source": "native",
@@ -358,7 +360,7 @@ class _NativeAutoRunHarness:
                 raise AssertionError("reply action lacks a pending interaction")
             self.pending_character_interaction = (
                 {
-                    "instance_id": 73,
+                    "instance_id": _NEXT_SIGNED_PENDING_ID,
                     "sender_character_id": 502,
                     "auto_accept_notification": False,
                     "source": "native",
@@ -522,7 +524,7 @@ class _NativeAutoRunHarness:
             "acknowledge-pending-character-interaction",
         }:
             plan["pending_character_interaction"] = {
-                "instance_id": 72,
+                "instance_id": _SIGNED_PENDING_ID,
                 "interaction_key": "fixture_nonreligious_interaction",
                 "roles": {
                     "actor_character_id": 501,
@@ -1016,7 +1018,7 @@ class NativeAutoRunTests(unittest.TestCase):
             turn["before"]["active_context"]["pending_character_interaction"][
                 "instance_id"
             ],
-            72,
+            _SIGNED_PENDING_ID,
         )
         self.assertIsNone(
             turn["after"]["active_context"]["pending_character_interaction"]
@@ -1025,7 +1027,7 @@ class NativeAutoRunTests(unittest.TestCase):
             turn["result"]["interaction_result"],
             {
                 "status": "rejected",
-                "instance_id": 72,
+                "instance_id": _SIGNED_PENDING_ID,
                 "sender_character_id": 501,
             },
         )
@@ -1047,7 +1049,7 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             result["remaining_pending_character_interaction"],
             {
-                "instance_id": 73,
+                "instance_id": _NEXT_SIGNED_PENDING_ID,
                 "sender_character_id": 502,
                 "auto_accept_notification": False,
                 "source": "native",
@@ -1073,7 +1075,7 @@ class NativeAutoRunTests(unittest.TestCase):
             blocker["before"]["active_context"][
                 "pending_character_interaction"
             ]["instance_id"],
-            72,
+            _SIGNED_PENDING_ID,
         )
         self.assertIsNone(
             blocker["after"]["active_context"][

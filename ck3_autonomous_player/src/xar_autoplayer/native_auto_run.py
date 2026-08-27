@@ -19,6 +19,9 @@ import time
 from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from .bridge.event_contract import parse_event_option_step
 from .bridge.native_driver import NativeHeadlessGameplayDriver
+from .bridge.pending_character_interaction_context_contract import (
+    normalize_pending_interaction_id,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.settlement_contract import (
     normalize_fixed_score,
@@ -1734,9 +1737,7 @@ def _pending_interaction_lifecycle_verified(
     )
     return bool(
         "pending_interaction_changed" in evidence
-        and isinstance(old_instance_id, int)
-        and not isinstance(old_instance_id, bool)
-        and old_instance_id > 0
+        and _valid_pending_interaction_id(old_instance_id)
         and isinstance(interaction_result, dict)
         and interaction_result.get("status") == expected_status
         and interaction_result.get("instance_id") == old_instance_id
@@ -2382,6 +2383,14 @@ def _positive_integer(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise AgentError(f"{name} must be a positive integer")
     return value
+
+
+def _valid_pending_interaction_id(value: object) -> bool:
+    try:
+        normalize_pending_interaction_id(value)
+    except ValueError:
+        return False
+    return True
 
 
 def _positive_seconds(value: object, name: str) -> float:

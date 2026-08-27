@@ -3016,7 +3016,7 @@ void RunConnectedSession(
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
-                          "ACK requires expected_revision and a positive "
+                          "ACK requires expected_revision and a valid signed "
                           "full pending_interaction_id"));
           } else if (expected_revision != state_revision) {
             connected = xar::bridge::WriteFrame(

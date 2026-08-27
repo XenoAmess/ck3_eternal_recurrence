@@ -334,7 +334,9 @@ flowchart TD
 
 - [static-confirmed] pending storage slot 为 `0x57BF1C8`。分配器/构造器 `0x27541F0` 以 `0x5C8` 为对象
   stride；`CPendingCharacterInteraction` RTTI TypeDescriptor 为 `0x54BB780`，主 vtable 为 `0x431C550`。
-  `+0x10` 是完整 generation-bearing component ID，读取时只能用低 24 位找 slot，随后必须比较完整 ID。
+  `+0x10` 是完整 generation-bearing signed-int32 component ID，读取时只能用低 24 位找 slot，随后必须比较完整 ID。
+  high generation byte 占 bits `24..31`，所以 bit 31 置位时同一完整 ID 在 canonical JSON 中是负数；仅 `-1` 是 invalid
+  sentinel。`0` 结构上合法但尚无 live pending 样本，bridge/query/reply 不得用“正数”作为身份门禁。
 - [static-confirmed] `CPendingCharacterInteraction+0x18` 不是另一个 pending 指针，而是内嵌的 `0x338`-byte
   `CCharacterInteractionContext`。构造器在 `0x2754335` 调用 context copy constructor `0x2C3ED50`；因此
   context 内的定义指针、roles、target、send-option 状态和 special payload 都随请求冻结在同一个 pending 对象里。
@@ -551,6 +553,17 @@ authored 顺序一致，但 canonical numeric-flag→string mapping 尚未闭合
 `13500FC7C1221859A5F9D03C26193748EF9DD4D4D645C0CF6FC086DC8F1D5351`。这把 exact `pay_ransom` reject 生命周期升级为
 production-live loop，不升级 `spar_with_knight`、unique-accept、其它 definition 或赎金 semantic utility。
 
+[production-live diagnostic RED] frozen commit `f1230f6830028fb1e81164d52f1eeba4b549f5ba` 的后续一代人 run
+`20260827T181439Z-one-generation-a991f39a` 已把 signed-ID 边界变成真实 blocker：最后被拒 frame 为
+`snapshot_id=native:14`、`date_raw=53211600`、speed `1`、running，累计 8 个 state-frame rejection，错误为
+`native pending_character_interaction is malformed`。最后一条 publisher diagnostic 同时明确
+`status=written`、revision `10`、payload `44025` bytes，排除“该帧没有写入/因过大未送达”。在该 frozen source 中，native 对
+instance/sender 均写 signed int32，Python 已接受 sender signed int 与 boolean notification flag，唯一失败分支是负数 instance；
+因此这是 generation 高位把 full ID 表示成负 JSON number 的唯一诊断解释。report 未保留 rejected raw ID，本文不臆造精确数值。
+artifact：`C:/Users/xenoa/AppData/Local/Temp/xar-delivery-diag-f1230f6-state/runs/20260827T181439Z-one-generation-a991f39a/report.json`，
+SHA-256 `A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB`。这只证明旧 positive-only consumer
+实际阻断 campaign 并要求修约；signed-negative typed query/reply/old-ID advancement 仍须在修正版 fresh replay 后才可标 production-live。
+
 ### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
 
 [implementation-confirmed / pay-ransom production-live / other allowlisted branches live=false] 原生 reply 树、四路 legality与 exact-build pending identity 已先按上文
@@ -601,7 +614,7 @@ structured exchange/effect、target payload identity、campaign utility，以及
 |---|---|---|---|
 | active event identity/action | `current-event-window-context-v1` 已发布完整 instance ID、bounded nonempty canonical event key、process-local calculated event ID/runtime stats ordinal，以及 GUI 实际物化的 shown/enabled/native-index/name/reason/cancel/fallback 和有损 typed trait/stress/death/scheme/unknown indicator 子集；Attempt4 已对 generic 非宗教 fixture 做 seed/checkpoint/fresh-cold empty-surface live，非空 Attempt1 又实读 `trait/add brave`、`stress/increase affected=false/critical=false` 与 `death/played_character`；select command 仍用 native index + instance-change postcondition | stock event、其余非空 indicator branches、selection lifecycle、stable root/saved scope identity、resource/relationship delta、完整 effect-preview output ABI | fixture available 时 `readiness.event_definition_identity_ready=true`、`readiness.option_presentation_ready=true`、`readiness.effect_indicators_ready=true`；`readiness.effect_preview_ready=false`、`readiness.semantic_decision_ready=false` |
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
-| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
+| pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；普通非负 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | signed-negative 修正版 live replay、intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=false`；历史非负样本 `interaction_typed_query_wired=true`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
 | current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` reject 已 production-live loop；notification ACK 为 fixture-live；`spar`、unique-accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
 
@@ -716,8 +729,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 3. [Python] 删除“count 自动补 enabled=true”的 native fallback；缺 shown/enabled 时 readiness 必须 false，planner 不提交。
 4. [production paused live] 同一个真实事件做稳定双查询，至少包含一项 enabled 与一项 disabled/hidden；选择 planner 指定的
    exact native index 后，观察旧 instance 消失/变更，并核对预期资源或角色 delta。
-5. [production pending live] 分别验收 accept、reject、block（有合法 fixture 时）和 auto-accept acknowledge；每次都验证原
-   pending ID 推进以及关键游戏状态后置条件，ACK 本身不算成功。
+5. [production pending live] 分别验收 accept、reject、block（有合法 fixture 时）和 auto-accept acknowledge；ID wire domain 必须覆盖
+   除 `-1` 外的完整 signed int32，不得因 JSON 为负而拒绝；每次都验证原 pending ID 推进以及关键游戏状态后置条件，ACK 本身不算成功。
 6. [campaign OODA] 连续处理多个不同类别的通用事件/互动；语义缺失时必须返回 typed observation dependency，或使用本篇明确
    定义、完整记账且有生命周期后置验证的 blocker-removal fallback。不得退回 OCR、鼠标、前台窗口或未记录的“默认点第一个/
    默认接受”。宗教专项 fixture 在 owner 解除暂缓前不进入矩阵。
@@ -741,8 +754,10 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路
   reply legality 已冻结在 `pending_character_interaction_context_v1_abi.json`，并通过 application-main paused read-only
-  query 接入 native driver/service/MCP；普通 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询，
-  下一步补 intermediary fixture。
+  query 接入 native driver/service/MCP；普通非负 recipient fixture 已完成跨 checkpoint 冷恢复的非宗教 live 双查询。
+- [production-live diagnostic RED / live-pending] 当前最高优先级不是补新的 fixture，而是从上文 immutable 一代人 checkpoint
+  fresh replay 实际 signed-negative pending；必须证明完整负数 ID 穿过 snapshot/query/合法 reply，并由后置 snapshot 证明旧 ID 推进。
+  完成后再补 intermediary fixture；在此之前 `negative_signed_pending_id_live_ready=false`。
 - [live-confirmed fixture-scoped] auto-accept notification discovery 已移除旧 `+0x5C6 != 0` 过滤，typed query 与固定
   enum-4 ACK action 已在 definition-only 非宗教 fixture 中跨 fresh cold process 完成双 query→ACK→旧 full ID 消失；
   action 重验 full ID/paused/local route/flag。artifact SHA-256

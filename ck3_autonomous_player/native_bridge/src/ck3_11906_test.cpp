@@ -19,6 +19,12 @@ namespace {
 
 using xar::ck3_11906::Bindings;
 
+constexpr std::int32_t kInitialPendingInteractionId = 0x01000001;
+constexpr std::int32_t kSignedPendingInteractionId =
+    static_cast<std::int32_t>(0x81000001U);
+constexpr std::int32_t kStaleSignedPendingInteractionId =
+    static_cast<std::int32_t>(0x82000001U);
+
 std::array<std::byte, 0x78> g_player{};
 std::array<std::byte, 0x1C2> g_active_event{};
 std::array<std::byte, 0x1C0> g_event_data{};
@@ -288,6 +294,7 @@ bool g_submit_called = false;
 bool g_submit_result = true;
 bool g_pending_visibility_result = true;
 bool g_pending_accept_validation_result = true;
+std::int32_t g_expected_pending_command_id = kInitialPendingInteractionId;
 std::int32_t g_pending_visibility_calls = 0;
 std::int32_t g_pending_visibility_fail_on_call = -1;
 std::int32_t g_pending_mutate_generation_on_call = -1;
@@ -618,7 +625,8 @@ bool FixtureValidateReplyCharacterInteractionCommand(void *opaque_command) {
   std::memcpy(&pending_id, command + 0x20, sizeof(pending_id));
   std::memcpy(&reply, command + 0x24, sizeof(reply));
   return g_pending_accept_validation_result && primary == 0x99999999 &&
-         secondary == 0xAAAAAAAA && pending_id == 0x01000001 &&
+         secondary == 0xAAAAAAAA &&
+         pending_id == g_expected_pending_command_id &&
          reply == 0;
 }
 
@@ -2495,7 +2503,7 @@ bool FixtureSubmit(void *manager, void *opaque_command, std::uint32_t flags) {
     g_submit_called =
         manager == reinterpret_cast<void *>(0x1234) && flags == 0x0E &&
         primary == 0x99999999 && secondary == 0xAAAAAAAA &&
-        command_flags == 0 && player_id == 0x01000001 &&
+        command_flags == 0 && player_id == g_expected_pending_command_id &&
         reply == (g_expected_command == ExpectedCommand::reply_accept
                       ? 0
                       : g_expected_command == ExpectedCommand::reply_reject
@@ -6645,8 +6653,23 @@ int main() {
       g_submit_called) {
     return Fail("notification discovery did not preserve the ACK-only channel");
   }
+  g_expected_pending_command_id = kSignedPendingInteractionId;
+  Store(g_pending_interaction, 0x10, kSignedPendingInteractionId);
+  g_pending_visibility_calls = 0;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.has_pending_character_interaction ||
+      snapshot.pending_character_interaction_id !=
+          kSignedPendingInteractionId ||
+      !snapshot.pending_auto_accept_notification ||
+      g_pending_visibility_calls != 1) {
+    return Fail("signed pending generation was not preserved in snapshot");
+  }
+  if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(bindings, -1) !=
+      xar::ck3_11906::AcknowledgePendingInteractionResult::unavailable) {
+    return Fail("notification ACK accepted the native invalid sentinel");
+  }
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::
               requires_paused ||
       g_submit_called) {
@@ -6654,7 +6677,7 @@ int main() {
   }
   Store(jomini_state, 0x20, std::uint8_t{1});
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x02000001) !=
+          bindings, kStaleSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::
               pending_interaction_mismatch ||
       g_submit_called) {
@@ -6664,18 +6687,18 @@ int main() {
   g_pending_mutate_generation_on_call = 1;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::state_changed ||
       g_submit_called) {
     return Fail("notification ACK missed same-frame generation drift");
   }
   g_pending_mutate_generation_on_call = -1;
-  Store(g_pending_interaction, 0x10, std::int32_t{0x01000001});
+  Store(g_pending_interaction, 0x10, kSignedPendingInteractionId);
   g_pending_visibility_calls = 0;
   g_pending_visibility_fail_on_call = 2;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::
               not_for_played_character ||
       g_pending_visibility_calls != 2 || g_submit_called) {
@@ -6686,7 +6709,7 @@ int main() {
   g_pending_clear_notification_on_call = 2;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::state_changed ||
       g_pending_visibility_calls != 2 || g_submit_called) {
     return Fail("notification ACK missed same-frame channel drift");
@@ -6698,7 +6721,7 @@ int main() {
   g_pending_accept_validation_calls = 0;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::submitted ||
       !g_submit_called || g_pending_accept_validation_calls != 0) {
     return Fail("notification ACK did not submit fixed enum 4 by full ID");
@@ -6706,7 +6729,7 @@ int main() {
   g_submit_result = false;
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::
               queue_rejected ||
       !g_submit_called) {
@@ -6716,7 +6739,7 @@ int main() {
   Store(g_pending_interaction, 0x5C6, std::uint8_t{0});
   g_submit_called = false;
   if (xar::ck3_11906::SubmitAcknowledgePendingInteraction(
-          bindings, 0x01000001) !=
+          bindings, kSignedPendingInteractionId) !=
           xar::ck3_11906::AcknowledgePendingInteractionResult::
               acknowledgement_not_required ||
       g_submit_called) {

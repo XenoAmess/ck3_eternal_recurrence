@@ -89,6 +89,7 @@ from .pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_interaction_id,
     normalize_pending_character_interaction_context_v1,
 )
 from .active_combat_retreat_contract import (
@@ -609,13 +610,9 @@ class GameplayBridgeService:
         """Accept or reject the exact pending native character interaction."""
         if not isinstance(accept, bool):
             raise ValueError("accept must be a boolean")
-        if interaction_instance_id is not None and (
-            isinstance(interaction_instance_id, bool)
-            or not isinstance(interaction_instance_id, int)
-            or interaction_instance_id < 0
-        ):
-            raise ValueError(
-                "interaction_instance_id must be a non-negative integer"
+        if interaction_instance_id is not None:
+            interaction_instance_id = normalize_pending_interaction_id(
+                interaction_instance_id, "interaction_instance_id"
             )
         snapshot = self.snapshot()
         pending = snapshot.get("pending_character_interaction")
@@ -663,14 +660,9 @@ class GameplayBridgeService:
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         """Acknowledge one exact generation-bearing auto-accept notification."""
-        if (
-            isinstance(interaction_instance_id, bool)
-            or not isinstance(interaction_instance_id, int)
-            or not 1 <= interaction_instance_id <= 2**31 - 1
-        ):
-            raise ValueError(
-                "interaction_instance_id must be a positive full int32"
-            )
+        interaction_instance_id = normalize_pending_interaction_id(
+            interaction_instance_id, "interaction_instance_id"
+        )
         snapshot = self.snapshot()
         pending = snapshot.get("pending_character_interaction")
         if not isinstance(pending, dict):
@@ -1782,14 +1774,9 @@ class GameplayBridgeService:
         expected_revision: int,
     ) -> dict[str, object]:
         """Read one exact pending interaction with costs and war binding."""
-        if (
-            isinstance(pending_interaction_id, bool)
-            or not isinstance(pending_interaction_id, int)
-            or not 1 <= pending_interaction_id <= 2**31 - 1
-        ):
-            raise ValueError(
-                "pending_interaction_id must be a positive full int32"
-            )
+        pending_interaction_id = normalize_pending_interaction_id(
+            pending_interaction_id
+        )
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(

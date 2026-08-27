@@ -7083,7 +7083,7 @@ ReplyPendingInteractionResult SubmitReplyToPendingInteraction(
 AcknowledgePendingInteractionResult SubmitAcknowledgePendingInteraction(
     const Bindings &bindings,
     std::int32_t pending_interaction_id) noexcept {
-  if (!bindings.enabled || pending_interaction_id <= 0 ||
+  if (!bindings.enabled || pending_interaction_id == -1 ||
       bindings.command_manager == nullptr ||
       bindings.submit_command == nullptr ||
       bindings.pending_character_interaction_storage_slot == nullptr ||

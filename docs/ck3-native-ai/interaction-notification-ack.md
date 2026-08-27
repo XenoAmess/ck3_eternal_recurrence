@@ -12,16 +12,22 @@
   分类或实现任何宗教专用分支。
 - [implementation-confirmed] production bridge 的普通 accept/reject 行为保持不变；新增能力只让已经自动结算、
   `+0x5C6 != 0` 的本地通知可被发现、typed query 和严格 ACK。它不是通用 reply/mutator 入口。
-- [unknown] 本轮按要求不启动 CK3，因此 notification 生成、ACK 提交和旧完整 pending ID 消失的 production paused
-  实机链仍未 live-confirmed；下文不会把 queue ACK 当成 gameplay 后置条件。
+- [live-confirmed fixture-scoped] 非宗教 definition-only fixture 已以非负 full ID `738197506` 完成 fresh-cold
+  query/query → fixed ACK → 旧 ID 消失；这证明 generic channel，但不覆盖自然 stock notification 或 signed-negative ID。
+- [production-live diagnostic RED] 一代人长跑已真实遇到 high-generation signed ID：旧 consumer 把 native frame 拒为
+  `native pending_character_interaction is malformed`。本篇据此更正 ID 合同，但在修正版完成同一 checkpoint 复跑前，
+  不把 signed-negative query/reply 升级为 production-live。
 
 ## 原生 notification 发现树
 
 ### engine-owned 枚举没有过滤 auto-accept notification
 
 - [static-confirmed] notification 枚举 RVA `0xD9DAE0..0xD9DD92` 从 engine-owned pending-ID vector 按原顺序取
-  `int32` 完整 component ID；每个 ID 先以低 24 位选 `module+0x57BF1C8` storage slot，再要求
-  `pending+0x10 == complete_id`。
+  signed `int32` 完整 component ID；每个 ID 先以低 24 位选 `module+0x57BF1C8` storage slot，再要求
+  `pending+0x10 == complete_id`。高 generation byte 占 bits `24..31`，所以 bit 31 置位时 canonical JSON 数值为负；
+  这仍是合法完整身份，而不是 malformed ID。
+- [static-confirmed] 完整 ID 的 wire domain 是 `-2147483648..2147483647`，仅 `-1` 是 invalid sentinel。
+  `0` 在结构上合法，尽管当前没有 ID `0` 的实机 pending 样本；不得以“必须为正数”替代引擎的完整 signed identity 合同。
 - [static-confirmed] 每个 generation-valid candidate 都调用 `0x1266BA0(pending, played_character)`。该 predicate
   先要求 component liveness，再按 route kind `0/2 -> recipient+0x2F4`、`1 -> intermediary+0x300` 选择 responder，
   比较玩家完整 `CharacterID`，最后要求 reply-state predicate `0x2C42A30(context,false,false,false)`。
@@ -58,10 +64,11 @@ flowchart TD
     A --> C["[static-confirmed] CReplyCharacterInteractionCommand reply=4, flags=0x0E"]
     C --> E["[static-confirmed] executor 0x26B3480 再次 full-ID resolve"]
     E --> T["[static-confirmed] manager transition 0x2751410"]
-    T -. "[unknown] 尚缺 production paused fixture" .-> P["[unknown] 旧完整 ID 消失及游戏可见通知关闭"]
+    T --> P["[live-confirmed fixture-scoped, nonnegative ID] 旧完整 ID 消失"]
+    T -. "[production-live diagnostic RED] signed-negative 修正版尚待复跑" .-> N["[live-pending] negative full ID query/reply/推进"]
     A -. "[unknown] intermediary notification 尚无实机样本" .-> I["[unknown] route kind 1 notification live behavior"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class P,I unknown;
+    class N,I unknown;
 ```
 
 ## ACK executor 与 manager transition
@@ -93,8 +100,9 @@ flowchart TD
 ### 严格 ACK action
 
 - [implementation-confirmed] 新 step 为 `acknowledge-pending-character-interaction`，capability 为
-  `game.command.acknowledge-pending-character-interaction`。请求必须同时携带正数
-  `expected_revision` 和正数完整 `pending_interaction_id`。
+  `game.command.acknowledge-pending-character-interaction`。请求必须同时携带正数 `expected_revision`，以及除 `-1`
+  外任意 canonical signed-int32 完整 `pending_interaction_id`；`0` 结构合法，负数必须保留原值穿过 JSON、query 与 command，
+  不能先截成 low-24-bit slot。
 - [implementation-confirmed] bridge 只在当前 action revision 相等时进入 adapter；adapter fresh-read snapshot 后要求
   paused、当前发现项完整 ID 等于请求、`+0x5C6 != 0`，再 generation-resolve pending 与 played Character、重跑
   `0x1266BA0`，并在入队前复验完整 ID 与 flag。任何 mismatch、ordinary channel、route drift 或 queue rejection 都返回
@@ -103,6 +111,18 @@ flowchart TD
   不暴露 block 或 manager/executor 直调入口，也不调用 validator enum 4。
 - [implementation-confirmed] native driver 在 command queue 返回后继续等待 snapshot 中旧完整 pending ID 消失或推进；
   只有该 postcondition 成立才返回 `interaction_result.status=acknowledged`。原始 command result 的 `submitted` 单独看不算成功。
+- [production-live diagnostic RED] frozen commit `f1230f6830028fb1e81164d52f1eeba4b549f5ba` 的 run
+  `20260827T181439Z-one-generation-a991f39a` 在 last rejected `snapshot_id=native:14`、`date_raw=53211600`、
+  speed `1`、running frame 上累计拒绝 8 帧，consumer error 为
+  `native pending_character_interaction is malformed`。同一 report 的最后 publish diagnostic 为
+  `status=written`、publisher revision `10`、payload `44025` bytes，因此这是 consumer schema rejection，不是 frame 未写入或
+  payload 过大。该 commit 的 native JSON writer 对 instance/sender 都输出 signed int32，Python 对 sender 与 boolean flag 已放行，
+  唯一仍拒绝的分支是 `instance_id < 0`；由此可以唯一诊断为 generation 高位令 full ID 的 JSON 数值为负。report 没有保留
+  rejected raw ID，故不声称其精确数值。artifact：
+  `C:/Users/xenoa/AppData/Local/Temp/xar-delivery-diag-f1230f6-state/runs/20260827T181439Z-one-generation-a991f39a/report.json`，
+  SHA-256 `A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB`。
+- [live-pending] 上述 RED 证明 positive-only gate 是实际 campaign blocker，也证明修订有必要；它尚未证明修正版能对负数 full ID
+  完成 typed query、ACK/accept/reject 或旧 ID 推进。production-live 升级必须等待同一 immutable checkpoint 的 fresh replay。
 
 ```mermaid
 flowchart TD
@@ -135,11 +155,12 @@ flowchart TD
 | reply validator enum-4 false seam | `0x26B3540..0x26B3644` | exact | `8A4FD3CD51CF0079A6AB0785DD0E43EAD46647E8D57C9FBA66331277D38CA5AC` |
 | pending manager response transition | `0x2751410..0x27514F4` | exact | `E4B3EC7A721B3CE61565C027228D30B23623B7C216918905B2B65DACB3CF7F83` |
 
-## unknown 与下一验收入口
+## 遗留与下一验收入口
 
-- [unknown] 非宗教 auto-accept interaction 的 deterministic paused checkpoint 尚未生成；下一步 live runner 应先只读双查询
-  同一 notification，确认 full ID、flag、route 与 `can_acknowledge=true` 稳定，再提交一次严格 ACK。
-- [unknown] ACK live 后置必须至少证明旧完整 ID generation-safe 不再 resolve、snapshot 中该通知消失或推进，并记录相关
+- [live-pending] 最高优先级是从上述一代人 immutable checkpoint 复跑实际 signed-negative pending：先证明 snapshot/query 保留
+  完整负数 ID，再执行 planner 选定的合法 reply，并证明旧 full ID generation-safe 消失或推进；不得用既有正数 fixture 替代。
+- [live-pending] 自然 stock 非宗教 notification 的 campaign 出现矩阵仍缺；若出现，ACK 后置必须至少证明旧完整 ID
+  generation-safe 不再 resolve、snapshot 中该通知消失或推进，并记录相关
   可见状态没有重复应用；queue result 本身不计。
 - [unknown] route kind `1` intermediary notification 尚无 live fixture。static executor 的 channel projection已闭合，但不能由
   ordinary route `0/2` fixture替代。

@@ -8,6 +8,8 @@
 
 namespace {
 
+constexpr std::int32_t kSignedPendingId = -2'130'706'399;
+
 #if defined(_MSC_VER)
 #define XAR_TEST_PENDING_FASTCALL __fastcall
 #else
@@ -132,7 +134,7 @@ void PrimeMailbox(
   query.mailbox = &mailbox;
   query.ticket.sequence = sequence;
   query.request.expected_snapshot_revision = 77;
-  query.request.pending_interaction_id = 16'777'249;
+  query.request.pending_interaction_id = kSignedPendingId;
   query.request.played_character_id = 2'001;
   query.expected_snapshot = g_snapshot;
   query.access.invoke_local_routing = &InvokeLocalRouting;
@@ -175,6 +177,18 @@ bool TestParsing() {
              R"({"step":"query-pending-character-interaction-context-v1", "pending_interaction_id": 16777249, "expected_revision": 77})",
              revision, pending_id) &&
          revision == 77 && pending_id == 16'777'249 &&
+         ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":-2130706399})",
+             revision, pending_id) &&
+         revision == 77 && pending_id == kSignedPendingId &&
+         ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":0})",
+             revision, pending_id) &&
+         revision == 77 && pending_id == 0 &&
+         ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":-2147483648})",
+             revision, pending_id) &&
+         revision == 77 && pending_id == (-2'147'483'647 - 1) &&
          !ParsePendingCharacterInteractionContextRequestV1(
              R"({"expected_revision":0,"pending_interaction_id":16777249})",
              revision, pending_id) &&
@@ -185,7 +199,16 @@ bool TestParsing() {
              R"({"expected_revision":77,"pending_interaction_id":-1})",
              revision, pending_id) &&
          !ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":-0})",
+             revision, pending_id) &&
+         !ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":-01})",
+             revision, pending_id) &&
+         !ParsePendingCharacterInteractionContextRequestV1(
              R"({"expected_revision":77,"pending_interaction_id":2147483648})",
+             revision, pending_id) &&
+         !ParsePendingCharacterInteractionContextRequestV1(
+             R"({"expected_revision":77,"pending_interaction_id":-2147483649})",
              revision, pending_id) &&
          !ParsePendingCharacterInteractionContextRequestV1(
              R"({"expected_revision":77,"pending_interaction_id":16777249,"pending_interaction_id":16777250})",
@@ -200,7 +223,7 @@ bool TestDirectInvocationRejected() {
   query.mailbox = &mailbox;
   query.ticket.sequence = 1;
   query.request.expected_snapshot_revision = 77;
-  query.request.pending_interaction_id = 16'777'249;
+  query.request.pending_interaction_id = kSignedPendingId;
   query.request.played_character_id = 2'001;
   const auto stamp = Stamp();
   const auto calls_before = g_reader_calls;
@@ -235,7 +258,7 @@ bool TestTypedCompletion(
                   completed ||
       query.result.snapshot_revision != 77 ||
       query.result.date_raw != g_snapshot.date_raw ||
-      query.result.pending_interaction_id != 16'777'249 ||
+      query.result.pending_interaction_id != kSignedPendingId ||
       query.execution_stamp != stamp) {
     return false;
   }
@@ -386,7 +409,7 @@ int main() {
   g_snapshot.played_character_alive = true;
   g_snapshot.played_character_id = 2'001;
   g_snapshot.has_pending_character_interaction = true;
-  g_snapshot.pending_character_interaction_id = 16'777'249;
+  g_snapshot.pending_character_interaction_id = kSignedPendingId;
   if (!TestParsing()) {
     std::cerr << "pending-interaction mailbox parser fixture failed\n";
     return 1;

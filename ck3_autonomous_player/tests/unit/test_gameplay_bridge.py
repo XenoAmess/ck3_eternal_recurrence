@@ -3537,7 +3537,7 @@ class GameplayBridgeTests(unittest.TestCase):
             snapshot=lambda: {
                 **_snapshot(6),
                 "pending_character_interaction": {
-                    "instance_id": 72,
+                    "instance_id": -2_130_706_360,
                     "sender_character_id": 501,
                     "auto_accept_notification": False,
                 },
@@ -3556,7 +3556,10 @@ class GameplayBridgeTests(unittest.TestCase):
             "query-pending-character-interaction-context-v1",
         )
         self.assertEqual(plan["phase"], "pending_character_interaction_query")
-        self.assertEqual(plan["pending_character_interaction"]["instance_id"], 72)
+        self.assertEqual(
+            plan["pending_character_interaction"]["instance_id"],
+            -2_130_706_360,
+        )
 
     def test_planner_acknowledges_auto_accept_notification(self) -> None:
         driver = CallbackGameplayDriver(
@@ -3621,7 +3624,7 @@ class GameplayBridgeTests(unittest.TestCase):
     def test_planner_rejects_ordinary_pending_after_typed_observation(self) -> None:
         plan = _plan_for_pending_context(
             _pending_context_result(
-                pending_id=72,
+                pending_id=-2_130_706_360,
                 revision=6,
                 native_revision=41,
                 date_raw=53_175_816,
@@ -3649,7 +3652,8 @@ class GameplayBridgeTests(unittest.TestCase):
             ]
         )
         self.assertEqual(
-            plan["pending_character_interaction"]["instance_id"], 72
+            plan["pending_character_interaction"]["instance_id"],
+            -2_130_706_360,
         )
         self.assertEqual(
             plan["pending_character_interaction"]["roles"][

@@ -82,6 +82,7 @@ from xar_autoplayer.bridge.pending_character_interaction_context_contract import
     PENDING_CHARACTER_INTERACTION_CONTEXT_V1_GAME_VERSION,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_interaction_id,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.environment import (  # noqa: E402
@@ -2067,12 +2068,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             raise AgentError(str(seed_stage.get("error") or "seed stage failed"))
         seed_pending = _mapping(seed_stage.get("pending_identity"))
         pending_id = seed_pending.get("instance_id")
-        if (
-            isinstance(pending_id, bool)
-            or not isinstance(pending_id, int)
-            or not 1 <= pending_id <= 2**31 - 1
-        ):
-            raise AgentError("seed stage lacks a positive full pending ID")
+        try:
+            pending_id = normalize_pending_interaction_id(pending_id)
+        except ValueError as error:
+            raise AgentError(
+                "seed stage lacks a valid signed full pending ID"
+            ) from error
         seed_snapshot = _mapping(seed_stage.get("stable_pre_save_snapshot"))
         expected_date_raw = seed_snapshot.get("date_raw")
         if isinstance(expected_date_raw, bool) or not isinstance(

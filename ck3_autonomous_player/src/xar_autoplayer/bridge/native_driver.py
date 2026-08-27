@@ -144,6 +144,7 @@ from .pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_interaction_id,
     normalize_pending_character_interaction_context_v1,
 )
 from .active_combat_retreat_contract import (
@@ -2566,14 +2567,12 @@ class NativeHeadlessGameplayDriver:
                 if isinstance(pending, dict)
                 else None
             )
-            if (
-                isinstance(pending_id, bool)
-                or not isinstance(pending_id, int)
-                or not 1 <= pending_id <= 2**31 - 1
-            ):
+            try:
+                pending_id = normalize_pending_interaction_id(pending_id)
+            except ValueError as error:
                 raise BridgeUnavailableError(
-                    "CK3 has no positive full pending interaction ID"
-                )
+                    "CK3 has no valid signed full pending interaction ID"
+                ) from error
             return self.query_pending_character_interaction_context_v1(
                 pending_id,
                 expected_revision=expected_revision,
@@ -4083,10 +4082,12 @@ class NativeHeadlessGameplayDriver:
                 "CK3 has no pending character interaction"
             )
         instance_id = pending.get("instance_id")
-        if not _positive_native_id(instance_id) or int(instance_id) > 2**31 - 1:
+        try:
+            instance_id = normalize_pending_interaction_id(instance_id)
+        except ValueError as error:
             raise BridgeUnavailableError(
-                "CK3 pending character interaction lacks a positive full ID"
-            )
+                "CK3 pending character interaction lacks a valid signed full ID"
+            ) from error
         notification = pending.get("auto_accept_notification")
         acknowledging = (
             step == ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP
@@ -7100,14 +7101,9 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Read exact routing, paid costs, and typed special-war binding."""
-        if (
-            isinstance(pending_interaction_id, bool)
-            or not isinstance(pending_interaction_id, int)
-            or not 1 <= pending_interaction_id <= 2**31 - 1
-        ):
-            raise ValueError(
-                "pending_interaction_id must be a positive full int32"
-            )
+        pending_interaction_id = normalize_pending_interaction_id(
+            pending_interaction_id
+        )
         step = QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
         starting = self.take_snapshot()
         if starting.get("paused") is not True:
@@ -9150,14 +9146,9 @@ class ConfiguredHybridFallbackDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Keep the typed parameterized pending query on the native backend."""
-        if (
-            isinstance(pending_interaction_id, bool)
-            or not isinstance(pending_interaction_id, int)
-            or not 1 <= pending_interaction_id <= 2**31 - 1
-        ):
-            raise ValueError(
-                "pending_interaction_id must be a positive full int32"
-            )
+        pending_interaction_id = normalize_pending_interaction_id(
+            pending_interaction_id
+        )
         native_bridge_capabilities = set(
             _string_list(
                 self.native.capabilities().get("bridge_capabilities")
@@ -9227,14 +9218,12 @@ class ConfiguredHybridFallbackDriver:
                 if isinstance(pending, dict)
                 else None
             )
-            if (
-                isinstance(pending_id, bool)
-                or not isinstance(pending_id, int)
-                or not 1 <= pending_id <= 2**31 - 1
-            ):
+            try:
+                pending_id = normalize_pending_interaction_id(pending_id)
+            except ValueError as error:
                 raise BridgeUnavailableError(
-                    "CK3 has no positive full pending interaction ID"
-                )
+                    "CK3 has no valid signed full pending interaction ID"
+                ) from error
             return self.query_pending_character_interaction_context_v1(
                 pending_id,
                 expected_revision=expected_revision,
@@ -11624,10 +11613,9 @@ def _action_steps(
         advertise_pending_interaction_context
         and paused is True
         and isinstance(pending_character_interaction, dict)
-        and _positive_native_id(
+        and _valid_pending_interaction_id(
             pending_character_interaction.get("instance_id")
         )
-        and int(pending_character_interaction["instance_id"]) <= 2**31 - 1
     ):
         steps.add(QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP)
     if (
@@ -12493,6 +12481,14 @@ def _positive_native_id(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
 
 
+def _valid_pending_interaction_id(value: object) -> bool:
+    try:
+        normalize_pending_interaction_id(value)
+    except ValueError:
+        return False
+    return True
+
+
 def _valid_native_route(value: object) -> bool:
     return isinstance(value, list) and bool(value) and all(
         _positive_native_id(province_id) for province_id in value
@@ -12891,11 +12887,14 @@ def _pending_character_interaction(value: object) -> dict[str, object] | None:
     instance_id = value.get("instance_id")
     sender_character_id = value.get("sender_character_id")
     auto_accept_notification = value.get("auto_accept_notification")
+    try:
+        instance_id = normalize_pending_interaction_id(instance_id)
+    except ValueError as error:
+        raise ValueError(
+            "native pending_character_interaction is malformed"
+        ) from error
     if (
-        isinstance(instance_id, bool)
-        or not isinstance(instance_id, int)
-        or instance_id < 0
-        or isinstance(sender_character_id, bool)
+        isinstance(sender_character_id, bool)
         or not isinstance(sender_character_id, int)
         or not isinstance(auto_accept_notification, bool)
     ):

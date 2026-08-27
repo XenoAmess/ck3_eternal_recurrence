@@ -51,6 +51,11 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import write_bytes_atomic, write_json_atomic
 
 
+_SIGNED_PENDING_ID = -2_130_706_341
+_SIGNED_NOTIFICATION_ID = -2_130_706_340
+_SIGNED_SERVICE_NOTIFICATION_ID = -2_130_706_339
+
+
 class FakeEndpoint:
     def __init__(self, pipe_name: str = r"\\.\pipe\xar_fixture") -> None:
         self.pipe_name = pipe_name
@@ -4550,7 +4555,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(
                 27,
                 pending_character_interaction={
-                    "instance_id": 91,
+                    "instance_id": _SIGNED_PENDING_ID,
                     "sender_character_id": 4_294_967,
                     "auto_accept_notification": False,
                 },
@@ -4558,7 +4563,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         snapshot = driver.take_snapshot()
         self.assertEqual(
-            snapshot["pending_character_interaction"]["instance_id"], 91
+            snapshot["pending_character_interaction"]["instance_id"],
+            _SIGNED_PENDING_ID,
         )
         self.assertEqual(
             driver.capabilities()["action_steps"],
@@ -4600,7 +4606,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(
                 29,
                 pending_character_interaction={
-                    "instance_id": 92,
+                    "instance_id": _SIGNED_NOTIFICATION_ID,
                     "sender_character_id": 4_294_968,
                     "auto_accept_notification": True,
                 },
@@ -4649,13 +4655,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "acknowledge-pending-character-interaction",
         )
         self.assertEqual(ack_command["expected_revision"], 29)
-        self.assertEqual(ack_command["pending_interaction_id"], 92)
+        self.assertEqual(
+            ack_command["pending_interaction_id"], _SIGNED_NOTIFICATION_ID
+        )
 
         endpoint.publish(
             _snapshot(
                 31,
                 pending_character_interaction={
-                    "instance_id": 93,
+                    "instance_id": _SIGNED_SERVICE_NOTIFICATION_ID,
                     "sender_character_id": 13,
                     "auto_accept_notification": True,
                 },
@@ -4681,16 +4689,22 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.send_hook = answer_service_ack
         service = GameplayBridgeService(driver)
         service_ack = service.acknowledge_pending_character_interaction(
-            interaction_instance_id=93
+            interaction_instance_id=_SIGNED_SERVICE_NOTIFICATION_ID
         )
         self.assertTrue(service_ack["acknowledged"])
-        self.assertEqual(service_ack["interaction_instance_id"], 93)
+        self.assertEqual(
+            service_ack["interaction_instance_id"],
+            _SIGNED_SERVICE_NOTIFICATION_ID,
+        )
         service_ack_command = next(
             frame
             for frame in reversed(endpoint.frames)
             if frame.get("type") == "execute_step"
         )
-        self.assertEqual(service_ack_command["pending_interaction_id"], 93)
+        self.assertEqual(
+            service_ack_command["pending_interaction_id"],
+            _SIGNED_SERVICE_NOTIFICATION_ID,
+        )
 
     def test_pending_notification_queue_ack_is_not_postcondition(self) -> None:
         endpoint = FakeEndpoint()

@@ -286,6 +286,16 @@ def _positive_int32(value: object, name: str) -> int:
     return _int(value, name, minimum=1, maximum=2**31 - 1)
 
 
+def normalize_pending_interaction_id(
+    value: object, name: str = "pending_interaction_id"
+) -> int:
+    """Normalize CK3's signed int32 generation-bearing component identity."""
+    result = _int(value, name, minimum=-(2**31), maximum=2**31 - 1)
+    if result == -1:
+        raise ValueError(f"{name} must not use CK3's -1 invalid sentinel")
+    return result
+
+
 def _character_id(
     value: object,
     name: str,
@@ -944,7 +954,7 @@ def normalize_pending_character_interaction_context_v1(
 ) -> dict[str, object]:
     """Normalize one full-generation, same-frame pending interaction."""
 
-    expected_id = _positive_int32(
+    expected_id = normalize_pending_interaction_id(
         expected_pending_interaction_id, "expected_pending_interaction_id"
     )
     expected_date = _int(
@@ -981,7 +991,7 @@ def normalize_pending_character_interaction_context_v1(
         minimum=-(2**31),
         maximum=2**31 - 1,
     )
-    pending_id = _positive_int32(
+    pending_id = normalize_pending_interaction_id(
         frame.get("pending_interaction_id"), "pending_interaction_id"
     )
     if revision != expected_native_revision:

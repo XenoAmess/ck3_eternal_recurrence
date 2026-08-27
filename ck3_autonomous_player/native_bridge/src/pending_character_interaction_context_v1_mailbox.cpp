@@ -19,7 +19,7 @@ bool IsExecutingExactMailboxSlot(
     const MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
       query.request.expected_snapshot_revision == 0 ||
-      query.request.pending_interaction_id <= 0 ||
+      query.request.pending_interaction_id == -1 ||
       query.request.played_character_id <= 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
@@ -244,6 +244,47 @@ bool ParseCanonicalPositiveIntegerField(std::string_view json,
          output > 0;
 }
 
+bool ParseCanonicalPendingInteractionIdField(
+    std::string_view json, std::string_view key,
+    std::int32_t &output) noexcept {
+  output = -1;
+  const auto at = json.find(key);
+  if (at == std::string_view::npos ||
+      json.find(key, at + key.size()) != std::string_view::npos) {
+    return false;
+  }
+  auto begin = at + key.size();
+  while (begin < json.size() && (json[begin] == ' ' || json[begin] == '\t' ||
+                                 json[begin] == '\r' || json[begin] == '\n')) {
+    ++begin;
+  }
+  auto end = begin;
+  if (end < json.size() && json[end] == '-') {
+    ++end;
+  }
+  const auto digits_begin = end;
+  while (end < json.size() && json[end] >= '0' && json[end] <= '9') {
+    ++end;
+  }
+  auto delimiter = end;
+  while (delimiter < json.size() &&
+         (json[delimiter] == ' ' || json[delimiter] == '\t' ||
+          json[delimiter] == '\r' || json[delimiter] == '\n')) {
+    ++delimiter;
+  }
+  if (end == digits_begin ||
+      (json[digits_begin] == '0' && end - digits_begin != 1U) ||
+      (begin != digits_begin && json[digits_begin] == '0') ||
+      (delimiter < json.size() && json[delimiter] != ',' &&
+       json[delimiter] != '}')) {
+    return false;
+  }
+  const auto parsed =
+      std::from_chars(json.data() + begin, json.data() + end, output);
+  return parsed.ec == std::errc{} && parsed.ptr == json.data() + end &&
+         output != -1;
+}
+
 void MakeInternalUnavailable(
     PendingCharacterInteractionContextMailboxContextV1 &query,
     const MainThreadExecutionStampV1 &stamp) {
@@ -293,7 +334,7 @@ bool ParsePendingCharacterInteractionContextRequestV1(
   std::int32_t parsed_pending_id = 0;
   if (!ParseCanonicalPositiveIntegerField(
           json, "\"expected_revision\":", parsed_revision) ||
-      !ParseCanonicalPositiveIntegerField(
+      !ParseCanonicalPendingInteractionIdField(
           json, "\"pending_interaction_id\":", parsed_pending_id)) {
     return false;
   }

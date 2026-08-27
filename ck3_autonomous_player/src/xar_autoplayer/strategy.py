@@ -37,6 +37,7 @@ from .bridge.marriage_contract import (
 from .bridge.pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_interaction_id,
 )
 from .bridge.event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
@@ -387,9 +388,7 @@ def _same_frame_pending_interaction_context(
     revision = snapshot.get("revision")
     snapshot_id = snapshot.get("snapshot_id")
     if (
-        isinstance(pending_id, bool)
-        or not isinstance(pending_id, int)
-        or pending_id <= 0
+        not _valid_pending_interaction_id(pending_id)
         or isinstance(revision, bool)
         or not isinstance(revision, int)
         or not isinstance(snapshot_id, str)
@@ -442,6 +441,14 @@ def _same_frame_pending_interaction_context(
             continue
         return context
     return None
+
+
+def _valid_pending_interaction_id(value: object) -> bool:
+    try:
+        normalize_pending_interaction_id(value)
+    except ValueError:
+        return False
+    return True
 
 
 def _pending_interaction_missing_semantics(
@@ -629,9 +636,7 @@ def _pending_interaction_evidence_gaps(
         gaps.append("context_not_available")
     pending_id = pending.get("instance_id")
     if (
-        isinstance(pending_id, bool)
-        or not isinstance(pending_id, int)
-        or pending_id <= 0
+        not _valid_pending_interaction_id(pending_id)
         or context.get("pending_interaction_id") != pending_id
     ):
         gaps.append("pending_full_identity_mismatch")

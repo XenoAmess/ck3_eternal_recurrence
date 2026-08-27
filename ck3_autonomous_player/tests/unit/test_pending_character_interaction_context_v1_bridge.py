@@ -29,12 +29,13 @@ from xar_autoplayer.bridge.pending_character_interaction_context_contract import
     PENDING_CHARACTER_INTERACTION_CONTEXT_V1_GAME_VERSION,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+    normalize_pending_interaction_id,
     normalize_pending_character_interaction_context_v1,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 
 
-PENDING_ID = 16_777_249
+PENDING_ID = -2_130_706_399
 NATIVE_REVISION = 41
 PUBLIC_REVISION = 7
 DATE_RAW = 53_178_264
@@ -479,6 +480,14 @@ def _semantic_snapshot(
 
 
 class PendingCharacterInteractionContextV1ContractTests(unittest.TestCase):
+    def test_pending_identity_preserves_signed_int32_and_zero(self) -> None:
+        self.assertEqual(normalize_pending_interaction_id(PENDING_ID), PENDING_ID)
+        self.assertEqual(normalize_pending_interaction_id(-(2**31)), -(2**31))
+        self.assertEqual(normalize_pending_interaction_id(0), 0)
+        for invalid in (-1, -(2**31) - 1, 2**31, True, 1.0):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                normalize_pending_interaction_id(invalid)
+
     def test_available_absent_target_preserves_semantic_red(self) -> None:
         frame = _frame()
         frame["target"]["raw_16_bytes_hex"] = (

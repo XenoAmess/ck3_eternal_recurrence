@@ -10,8 +10,8 @@
   "advertised": true,
   "production_wired": true,
   "live_validated": true,
-  "live_validated_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
-  "not_live_validated_scope": "the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
+  "live_validated_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only",
+  "not_live_validated_scope": "negative signed pending-ID consumption and reply, the newly wired generic authored cost vector, special war binding, notification ACK, intermediary routing and semantic decision",
   "game_process_started": true,
   "scope": "engine-generic pending character-interaction identity, roles, target envelope, selected send options, routing, deadline, reply legality, authored generic cost vector and the exact ordinary nonreligious three-subtype special-war binding",
   "owner_deferred_domains": [
@@ -404,12 +404,19 @@
     "capacity": "+0x2C signed int32",
     "slot_stride": "0x10",
     "slot_object": "+0x08",
-    "identity_rule": "use low 24 bits only to choose the slot, then require object+0x10 to equal the complete requested component ID and require the component liveness virtual predicate"
+    "identity_rule": "use low 24 bits only to choose the slot, then require object+0x10 to equal the complete requested component ID and require the component liveness virtual predicate",
+    "component_id_domain": {
+      "wire_type": "complete generation-bearing signed int32 in the inclusive range -2147483648..2147483647",
+      "invalid_sentinel": -1,
+      "zero_boundary": "0 is structurally valid and must not be rejected, although no live pending sample with ID 0 has been observed",
+      "negative_boundary": "the high generation byte occupies bits 24..31, so setting bit 31 makes the canonical JSON number negative; this does not make the component ID malformed",
+      "slot_rule": "mask the signed full ID to its low 24 bits for slot selection, then compare the complete signed int32 identity"
+    }
   },
   "layouts": {
     "CPendingCharacterInteraction": {
       "size_and_stride": "0x5C8",
-      "component_instance_id": "+0x10 full generation-bearing int32",
+      "component_instance_id": "+0x10 full generation-bearing signed int32; -1 alone is the invalid sentinel",
       "embedded_context": "+0x18, size 0x338",
       "materialized_notification_description_bundle": "+0x350 through the tail before +0x5B8; internal structured ABI not closed",
       "age_days": "+0x5B8 signed int32, initialized zero and incremented once per manager daily pass",
@@ -630,7 +637,7 @@
     "step": "acknowledge-pending-character-interaction",
     "request": {
       "expected_revision": "positive uint64 matching the current published native snapshot revision",
-      "pending_interaction_id": "positive full generation-bearing int32; never a low-24-bit slot"
+      "pending_interaction_id": "complete generation-bearing signed int32 other than -1; 0 is structurally valid; never a low-24-bit slot"
     },
     "preconditions": [
       "fresh exact-build Snapshot is paused and still exposes the same full pending ID",
@@ -673,7 +680,7 @@
   "proposed_observation": {
     "status": "available | unavailable | invalid",
     "snapshot_identity": "exact build hash, paused date and revision",
-    "pending_identity": "full component ID",
+    "pending_identity": "complete generation-bearing signed int32 component ID; -1 is the sole invalid sentinel",
     "definition": "canonical key, deterministic hash and optional runtime ordinal",
     "roles": "five full CharacterIDs plus current responder role",
     "target": "present, raw type index, stable type key, raw envelope evidence, typed payload status and typed identity when supported",
@@ -710,8 +717,10 @@
     "notification_ack_query_ready": true,
     "notification_ack_action_ready": true,
     "notification_ack_live_ready": false,
+    "signed_pending_id_contract_ready": true,
+    "negative_signed_pending_id_live_ready": false,
     "production_live_ready": true,
-    "production_live_scope": "historical ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
+    "production_live_scope": "historical nonnegative ordinary nonreligious recipient pending identity, roles, route, deadline and reply legality only; negative signed pending-ID consumption and reply, the newly wired generic cost vector and special war binding, notification ACK, intermediary routing and semantic decision remain outside live coverage",
     "interaction_semantic_decision_ready": false,
     "capability_advertised": true
   },
@@ -763,9 +772,27 @@
     "reply_action_invoked": false,
     "managed_process_cleanup": true,
     "disposable_root_cleanup": true,
-    "scope_boundary": "This validates one ordinary nonreligious recipient request with the pre-cost-vector DLL. It does not validate the newly wired generic cost vector, intermediary routing, notification discovery/ACK, structured white-peace terms, target payload decoders, or a semantic reply policy."
+    "scope_boundary": "This validates one ordinary nonreligious recipient request with a nonnegative full ID and the pre-cost-vector DLL. It does not validate negative signed pending-ID consumption, the newly wired generic cost vector, intermediary routing, notification discovery/ACK, structured white-peace terms, target payload decoders, or a semantic reply policy."
+  },
+  "signed_pending_id_diagnostic": {
+    "status": "production-live diagnostic RED; corrected signed-ID contract still requires replay",
+    "source_commit": "f1230f6830028fb1e81164d52f1eeba4b549f5ba",
+    "run_id": "20260827T181439Z-one-generation-a991f39a",
+    "artifact_path": "C:/Users/xenoa/AppData/Local/Temp/xar-delivery-diag-f1230f6-state/runs/20260827T181439Z-one-generation-a991f39a/report.json",
+    "artifact_sha256": "A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB",
+    "last_rejected_native_revision": 14,
+    "last_rejected_date_raw": 53211600,
+    "last_rejected_speed": 1,
+    "last_rejected_paused": false,
+    "rejected_frame_count": 8,
+    "consumer_error": "native pending_character_interaction is malformed",
+    "delivery_diagnostic": "the last recorded snapshot_publish_diagnostic ended with status written at publisher revision 10 and payload_bytes 44025; the failure was consumer-side schema rejection, not an absent or oversized state-frame write",
+    "diagnostic_inference": "At the frozen commit, the native serializer emitted instance_id and sender_character_id as signed int32 JSON numbers and auto_accept_notification as a JSON boolean. The Python consumer already accepted the sender signed int and boolean flag but required instance_id to be positive. Therefore this malformed-pending branch uniquely diagnoses a complete generation-bearing pending ID whose high generation bit made its JSON representation negative. The rejected raw ID was not retained in this report, so no exact numeric ID is claimed.",
+    "corrected_contract": "accept every canonical signed int32 full component ID except -1; 0 remains structurally valid but has no live sample",
+    "claim_boundary": "This RED artifact proves the previous positive-only consumer contract blocked a real campaign frame and justifies the correction. It does not prove that the corrected consumer can query, acknowledge, accept or reject a negative ID; production-live promotion requires a fresh replay with the old full ID observed to advance."
   },
   "next_reverse_engineering": [
+    "replay the immutable one-generation checkpoint through a negative signed pending ID, then require typed query/reply and old-full-ID advancement before marking negative_signed_pending_id_live_ready",
     "map the generic target scope registry indexes used by supported non-deferred interaction target types to stable typed payload decoders",
     "live-validate all-zero generic authored costs on the existing nonreligious white-peace pending fixture, then validate at least one nonzero nonreligious authored cost without sending or replying",
     "live-validate the exact white-peace definition/vptr pair and active WarID binding twice in one paused revision without sending a reply; victory and defeat remain separate future fixtures",
