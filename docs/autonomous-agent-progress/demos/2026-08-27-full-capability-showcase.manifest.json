@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "voice": "Microsoft David Desktop",
+  "voice": "en-GB-SoniaNeural",
   "minimum_chapter_seconds": 37.0,
   "narration_padding_seconds": 1.25,
   "chapters": [

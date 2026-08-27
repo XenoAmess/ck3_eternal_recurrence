@@ -37,6 +37,17 @@ artifacts/demos/YYYY-MM-DD/
 录制器、字幕模板和验证脚本属于可复现基础设施，应提交进仓库。生成的 MP4、artifact 和 sidecar 留在 `artifacts/`，
 由报告记录其路径与哈希。
 
+## 旁白合成
+
+- 后续 show-off 视频构建固定使用 `edge-tts==7.2.8`，默认英语女声为 `en-GB-SoniaNeural`；manifest 的
+  `voice` 字段和命令行 `--voice` 均表示 Edge voice short name。不再提供 Windows SAPI fallback。
+- 无可用缓存的 clean synthesis 需要联网访问 Edge 语音服务；已有通过指纹和媒体验证的逐章缓存可直接复用。
+  `--force` 会跳过缓存并重新合成，因此同样需要联网。
+- 上述迁移只影响未来构建。2026-08 canonical 月报成片仍使用 Windows SAPI / `Microsoft David Desktop`；
+  不重制该历史成片，其路径、时长和 SHA-256 保持不变。历史 manifest 冻结在提交 `be7fc8b`，SHA-256 为
+  `BFC4F38B3F47882888EB7B5AE754CD67125D8CE81D4BAA2649C302D688A72B32`；仓库当前同名 manifest 已切换为
+  后续 Edge TTS 构建输入，不能拿它替代历史 sidecar 记录的冻结字节。
+
 ## 月报节奏
 
 - 月报视频不是最后一天录像的简单复制；它必须盘点截至当月截止时仍然成立的全部能力，并逐项显示证据等级与未闭合边界。

@@ -2010,6 +2010,7 @@ def package_checks(errors):
         "tools/requirements-static.txt", "python -m compileall -q tools",
         "python tools/test_gen_no_heir_gui.py", "python tools/test_build_release.py",
         "python tools/test_build_vivhite_release.py",
+        "python tools/test_build_full_agent_showcase.py",
         "python tools/validate_static.py", "scoring_data.assert_reference_vectors()",
         "python tools/validate_vivhite_static.py",
         "python tools/build_release.py --check", "python tools/build_release.py --release",
