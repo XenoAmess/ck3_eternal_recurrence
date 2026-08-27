@@ -3226,7 +3226,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(selected["war"], "query-declarable-wars")
         self.assertEqual(selected["marriage"], "query-arrange-marriage-choices")
 
-    def test_legal_native_declaration_does_not_bypass_war_entry_evidence(self) -> None:
+    def test_legal_native_declaration_defers_without_bypassing_evidence(self) -> None:
         snapshot = {
             **_snapshot(7),
             "played_character": {
@@ -3274,8 +3274,10 @@ class GameplayBridgeTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(plan["phase"], "native_war_entry_evidence_required")
-        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["phase"], "native_war_entry_no_declare")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(plan["decision"]["automatic_declaration_enabled"])
         self.assertEqual(plan["declaration"]["declaration_id"], "808-17-0")
         self.assertIn(
             "game.command.query-combat-simulation-inputs-v3-N",
@@ -7457,6 +7459,29 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(same_day_plan["selected_step"], "life-advance")
 
+        response_window = _ready_white_peace_snapshot(
+            date_raw=submitted_date_raw + 24,
+            history=history,
+        )
+        response_window["war_termination_options"] = []
+        response_window["war_termination_terms"] = []
+        response_plan = choose_one_life_turn(
+            history,
+            snapshot=response_window,
+            action_steps=(
+                "query-war-termination-options-88",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+        self.assertNotEqual(
+            response_plan.get("selected_step"),
+            "query-war-termination-options-88",
+        )
+        self.assertNotEqual(
+            response_plan.get("selected_step"), "offer-white-peace-88"
+        )
+
         for elapsed_raw, expected_offer in ((719, False), (720, True)):
             restored = _ready_white_peace_snapshot(
                 date_raw=submitted_date_raw + elapsed_raw,
@@ -7943,6 +7968,42 @@ class GameplayBridgeTests(unittest.TestCase):
 
         self.assertEqual(plan["phase"], "native_postwar_disband")
         self.assertEqual(plan["selected_step"], "disband-army-71")
+
+    def test_native_war_planner_checkpoints_verified_postwar_cleanup(self) -> None:
+        history = [
+            {"index": 1, "command": "save-checkpoint", "ok": True},
+            {"index": 2, "command": "disband-army-71", "ok": True},
+        ]
+        plan = choose_one_life_turn(
+            history,
+            snapshot={
+                **_snapshot(10, history),
+                "active_wars": [],
+                "player_armies": [],
+                "declarable_wars": [],
+            },
+            action_steps=("save-checkpoint", "query-declarable-wars"),
+        )
+
+        self.assertEqual(plan["phase"], "native_postwar_checkpoint")
+        self.assertEqual(plan["selected_step"], "save-checkpoint")
+        self.assertEqual(plan["postwar_disband_history_index"], 2)
+
+        history.append(
+            {"index": 3, "command": "save-checkpoint", "ok": True}
+        )
+        after_save = choose_one_life_turn(
+            history,
+            snapshot={
+                **_snapshot(11, history),
+                "active_wars": [],
+                "player_armies": [],
+                "declarable_wars": [],
+            },
+            action_steps=("save-checkpoint", "query-declarable-wars"),
+        )
+        self.assertEqual(after_save["phase"], "native_war_discovery")
+        self.assertEqual(after_save["selected_step"], "query-declarable-wars")
 
     def test_typed_war_service_routes_exact_native_commands(self) -> None:
         player = _army(

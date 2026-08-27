@@ -3240,6 +3240,16 @@ def choose_one_life_turn(
                     ),
                     "active_wars": war_summary,
                 }
+            if (
+                isinstance(cooldown, dict)
+                and cooldown.get("status") == "cooldown"
+            ):
+                # The outbound proposal remains inside CK3's asynchronous
+                # response window.  Do not spend every game day rebuilding
+                # same-WarID termination contexts which the duplicate gate
+                # will reject anyway; continue ordinary military OODA until
+                # the WarID disappears or the exact 30-day retry boundary.
+                continue
             options = termination_by_war_id.get(war_id)
             if not isinstance(options, dict):
                 query_step = query_war_termination_options_step(war_id)
@@ -5250,6 +5260,37 @@ def choose_one_life_turn(
             "reason": "create a native CK3 recovery point before strategic mutations",
         }
 
+    latest_checkpoint_index = _latest_index(rows, "save-checkpoint")
+    latest_postwar_disband_index = _latest_prefix_index(
+        rows, "disband-army-"
+    )
+    if latest_postwar_disband_index > latest_checkpoint_index:
+        if "save-checkpoint" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_postwar_checkpoint",
+                "selected_step": "save-checkpoint",
+                "reason": (
+                    "the last active war is gone and every residual player "
+                    "army has been disbanded; persist this verified peaceful "
+                    "state before starting long-term governance"
+                ),
+                "postwar_disband_history_index": (
+                    latest_postwar_disband_index
+                ),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_postwar_checkpoint_unsupported",
+            "selected_step": None,
+            "required_step": "save-checkpoint",
+            "reason": (
+                "the verified postwar cleanup is newer than the durable "
+                "checkpoint, but this backend cannot save it"
+            ),
+            "postwar_disband_history_index": latest_postwar_disband_index,
+        }
+
     if (
         cross_run_focus == "succession"
         and not _latest_index(rows, "succession-review")
@@ -5560,7 +5601,55 @@ def choose_one_life_turn(
         # contributes exact native power/network risk to candidate ordering
         # and the EU ledger.  It is still not a battle forecast, campaign-cost
         # model, exit assessment, or calibrated utility policy, so this partial
-        # EU record cannot authorize an automatic declaration.
+        # EU record cannot authorize an automatic declaration.  Missing entry
+        # evidence is a NO_DECLARE decision, not a reason to stop an otherwise
+        # playable lifetime: advance one bounded interval when that primitive
+        # is available and re-observe the world on the next turn.
+        required_capabilities = [
+            QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+            "game.forecast.combat-monte-carlo-v1",
+            "game.command.query-war-entry-assessments-v1-N",
+        ]
+        shared_evidence = {
+            "required_capabilities": required_capabilities,
+            "declaration": declaration,
+            "war_entry_assessment": (
+                dict(assessment_row) if fresh_assessment else None
+            ),
+            "war_entry_expected_utility": power_eu,
+        }
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_entry_no_declare",
+                "selected_step": "life-advance",
+                "reason": (
+                    "the native declaration is legally available and exact "
+                    "strategic power is consumed when present, but participant "
+                    "bounds, combat forecast, campaign costs, exit outcomes, "
+                    "and calibrated utility are incomplete; choose "
+                    "NO_DECLARE and advance one bounded interval"
+                ),
+                "decision": {
+                    "policy": "war-entry-minimal-defer-v1",
+                    "outcome": "NO_DECLARE",
+                    "declaration_id": declaration.get("declaration_id"),
+                    "target_character_id": declaration.get(
+                        "target_character_id"
+                    ),
+                    "casus_belli_key": declaration.get("casus_belli_key"),
+                    "native_power_assessment_consumed": fresh_assessment,
+                    "eu_lower_raw": power_eu.get("eu_lower_raw"),
+                    "bounded_advance_days": 1,
+                    "automatic_declaration_enabled": False,
+                    "native_ai_equivalent": False,
+                    "semantic_optimal": False,
+                    "missing_components": list(
+                        power_eu.get("missing_components", [])
+                    ),
+                },
+                **shared_evidence,
+            }
         return {
             "policy": "one-life-turn-v1",
             "phase": "native_war_entry_evidence_required",
@@ -5571,16 +5660,7 @@ def choose_one_life_turn(
                 "entry still requires participant bounds, a combat forecast, "
                 "campaign costs, exit outcomes, and a calibrated utility policy"
             ),
-            "required_capabilities": [
-                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
-                "game.forecast.combat-monte-carlo-v1",
-                "game.command.query-war-entry-assessments-v1-N",
-            ],
-            "declaration": declaration,
-            "war_entry_assessment": (
-                dict(assessment_row) if fresh_assessment else None
-            ),
-            "war_entry_expected_utility": power_eu,
+            **shared_evidence,
         }
 
     if QUERY_DECLARABLE_WARS_STEP in available_steps:

@@ -417,7 +417,7 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             "declarable_wars": [declaration],
             "war_entry_assessments": _payload([808]),
         }
-        blocked = choose_one_life_turn(
+        deferred = choose_one_life_turn(
             [{"index": 1, "command": "save-checkpoint", "ok": True}],
             snapshot=snapshot,
             action_steps={
@@ -426,10 +426,18 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
                 "life-advance",
             },
         )
-        self.assertEqual(blocked["phase"], "native_war_entry_evidence_required")
-        self.assertIsNone(blocked["selected_step"])
-        self.assertEqual(blocked["war_entry_assessment"], _row(808))
-        eu = blocked["war_entry_expected_utility"]
+        self.assertEqual(deferred["phase"], "native_war_entry_no_declare")
+        self.assertEqual(deferred["selected_step"], "life-advance")
+        self.assertEqual(deferred["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(
+            deferred["decision"]["automatic_declaration_enabled"]
+        )
+        self.assertTrue(
+            deferred["decision"]["native_power_assessment_consumed"]
+        )
+        self.assertIsNone(deferred["decision"]["eu_lower_raw"])
+        self.assertEqual(deferred["war_entry_assessment"], _row(808))
+        eu = deferred["war_entry_expected_utility"]
         self.assertEqual(eu["status"], "native_power_component_ready")
         self.assertTrue(eu["native_power_component_ready"])
         self.assertEqual(

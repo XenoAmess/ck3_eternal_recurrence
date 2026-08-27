@@ -1930,6 +1930,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "decision",
         "war_id",
         "army_id",
+        "postwar_disband_history_index",
         "target_province_id",
         "event_instance_id",
         "event_decision",

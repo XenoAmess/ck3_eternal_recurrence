@@ -46,7 +46,7 @@ class NativeDeclarationContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "declaration_id"):
             normalize_declarable_wars([changed])
 
-    def test_planner_queries_then_requires_war_entry_evidence(self) -> None:
+    def test_planner_queries_then_defers_without_declaring(self) -> None:
         commands = [
             {"index": 1, "command": "save-checkpoint", "ok": True},
         ]
@@ -74,8 +74,16 @@ class NativeDeclarationContractTests(unittest.TestCase):
                 "life-advance",
             },
         )
-        self.assertEqual(declaration["phase"], "native_war_entry_evidence_required")
-        self.assertIsNone(declaration["selected_step"])
+        self.assertEqual(declaration["phase"], "native_war_entry_no_declare")
+        self.assertEqual(declaration["selected_step"], "life-advance")
+        self.assertEqual(declaration["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(
+            declaration["decision"]["automatic_declaration_enabled"]
+        )
+        self.assertEqual(
+            declaration["decision"]["declaration_id"], "808-17-0"
+        )
+        self.assertEqual(declaration["decision"]["bounded_advance_days"], 1)
         self.assertEqual(
             declaration["declaration"]["casus_belli_key"],
             "county_conquest_cb",
@@ -88,6 +96,23 @@ class NativeDeclarationContractTests(unittest.TestCase):
             "game.forecast.combat-monte-carlo-v1",
             declaration["required_capabilities"],
         )
+
+    def test_missing_advance_keeps_incomplete_war_entry_blocked(self) -> None:
+        plan = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot={
+                "active_wars": [],
+                "player_armies": [],
+                "declarable_wars": [_declaration()],
+            },
+            action_steps={
+                "query-declarable-wars",
+                "declare-war-808-17-0",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "native_war_entry_evidence_required")
+        self.assertIsNone(plan["selected_step"])
 
     def test_submitted_declaration_advances_before_another_query(self) -> None:
         plan = choose_one_life_turn(
