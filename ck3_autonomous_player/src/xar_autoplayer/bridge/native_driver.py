@@ -1112,6 +1112,35 @@ class NativeHeadlessGameplayDriver:
         self._observe_arrange_marriage_outcome(snapshot)
         return snapshot
 
+    def _with_internal_planning_view(
+        self,
+        snapshot: dict[str, object],
+        planner: Callable[
+            [dict[str, object], list[dict[str, object]]],
+            dict[str, object],
+        ],
+    ) -> dict[str, object]:
+        """Run the in-process planner against owned history without copying it."""
+        with self._history_lock:
+            rollback_war_failures = copy.deepcopy(
+                self._rollback_war_failures
+            )
+            planning_snapshot = {
+                **snapshot,
+                "native_rollback_war_failure": (
+                    copy.deepcopy(rollback_war_failures[0])
+                    if rollback_war_failures
+                    else None
+                ),
+                "native_rollback_war_failures": rollback_war_failures,
+            }
+            # The callback is the local one-step planner.  Keeping it inside
+            # this lock prevents concurrent history mutation, and the view is
+            # never returned through the public snapshot/MCP surface.
+            return copy.deepcopy(
+                planner(planning_snapshot, self._command_history)
+            )
+
     def take_snapshot(self) -> dict[str, object]:
         snapshot = self.take_internal_semantic_snapshot()
         with self._driver_state_lock:
@@ -3606,13 +3635,13 @@ class NativeHeadlessGameplayDriver:
         required_capability: str | None = None,
         request_fields: dict[str, object] | None = None,
         timeout_seconds: float | None = None,
-        lean_timeline_snapshot: bool = False,
+        internal_semantic_snapshot: bool = False,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
         capabilities = (
             self.state.capabilities()
-            if lean_timeline_snapshot
+            if internal_semantic_snapshot
             else self.capabilities()
         )
         if required_capability is None:
@@ -3629,7 +3658,7 @@ class NativeHeadlessGameplayDriver:
             )
         snapshot = (
             self.take_internal_semantic_snapshot()
-            if lean_timeline_snapshot
+            if internal_semantic_snapshot
             else self.take_snapshot()
         )
         revision = int(snapshot["revision"])
@@ -4739,7 +4768,21 @@ class NativeHeadlessGameplayDriver:
     def _execute_native_war_step(
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
-        starting = self.take_snapshot()
+        termination_query_war_id = (
+            parse_query_war_termination_options_step(step)
+        )
+        termination_terms_query_war_id = (
+            parse_query_war_termination_terms_step(step)
+        )
+        internal_read_only_query = bool(
+            termination_query_war_id is not None
+            or termination_terms_query_war_id is not None
+        )
+        starting = (
+            self.take_internal_semantic_snapshot()
+            if internal_read_only_query
+            else self.take_snapshot()
+        )
         starting_revision = int(starting["revision"])
         selected_revision = (
             expected_revision
@@ -4839,12 +4882,6 @@ class NativeHeadlessGameplayDriver:
                 ),
                 "queried_episode_run_id": starting.get("episode_run_id"),
             }
-        termination_query_war_id = (
-            parse_query_war_termination_options_step(step)
-        )
-        termination_terms_query_war_id = (
-            parse_query_war_termination_terms_step(step)
-        )
         exit_terms_query_war_id = (
             parse_query_war_termination_exit_terms_step(step)
         )
@@ -7141,7 +7178,9 @@ class NativeHeadlessGameplayDriver:
                 f"{war_id}"
             )
         result = self._execute_primitive_step(
-            step, expected_revision=selected_revision
+            step,
+            expected_revision=selected_revision,
+            internal_semantic_snapshot=True,
         )
         if (
             set(result)
@@ -7178,7 +7217,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native war-termination terms query lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_internal_semantic_snapshot()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError(
                 "native war-termination terms query crossed a snapshot revision"
@@ -7370,7 +7409,9 @@ class NativeHeadlessGameplayDriver:
 
         if query_war_id is not None:
             result = self._execute_primitive_step(
-                step, expected_revision=selected_revision
+                step,
+                expected_revision=selected_revision,
+                internal_semantic_snapshot=True,
             )
             if (
                 set(result)
@@ -7404,7 +7445,7 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native war-termination query lacks query_sequence"
                 )
-            current = self.take_snapshot()
+            current = self.take_internal_semantic_snapshot()
             if not _same_paused_native_frame(starting, current):
                 raise BridgeUnavailableError(
                     "native war-termination query crossed a snapshot revision"
@@ -8595,7 +8636,7 @@ class NativeHeadlessGameplayDriver:
             "pause-map",
             expected_revision=None,
             timeout_seconds=remaining,
-            lean_timeline_snapshot=True,
+            internal_semantic_snapshot=True,
         )
         actions.append({"step": "pause-map", "result": result})
         remaining = max(0.0, deadline - time.monotonic())
@@ -8620,7 +8661,7 @@ class NativeHeadlessGameplayDriver:
             return self._execute_primitive_step(
                 step,
                 expected_revision=int(observed_snapshot["revision"]),
-                lean_timeline_snapshot=True,
+                internal_semantic_snapshot=True,
             )
         except BridgeUnavailableError as error:
             if "native gameplay revision mismatch" not in str(error):
@@ -8631,7 +8672,7 @@ class NativeHeadlessGameplayDriver:
             return self._execute_primitive_step(
                 step,
                 expected_revision=int(refreshed["revision"]),
-                lean_timeline_snapshot=True,
+                internal_semantic_snapshot=True,
             )
 
     def _wait_for_life_advance_snapshot(

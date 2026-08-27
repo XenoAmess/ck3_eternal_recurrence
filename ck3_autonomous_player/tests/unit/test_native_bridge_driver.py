@@ -7096,9 +7096,20 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
 
         endpoint.send_hook = answer
-        queried = driver.execute_step(
+        selected_revision = int(driver.take_snapshot()["revision"])
+        with mock.patch.object(
+            driver,
+            "_history_snapshot",
+            wraps=driver._history_snapshot,
+        ) as options_history_snapshot:
+            queried = driver.execute_step(
+                "query-war-termination-options-16777290",
+                expected_revision=selected_revision,
+            )
+        self.assertEqual(options_history_snapshot.call_count, 0)
+        self.assertEqual(
+            driver.take_snapshot()["native_command_history"][-1]["command"],
             "query-war-termination-options-16777290",
-            expected_revision=int(driver.take_snapshot()["revision"]),
         )
         self.assertEqual(queried["query_sequence"], 9)
         self.assertFalse(
@@ -7119,7 +7130,19 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "query-war-termination-terms-v1-16777290",
             ],
         )
-        driver.execute_step("query-war-termination-terms-v1-16777290")
+        with mock.patch.object(
+            driver,
+            "_history_snapshot",
+            wraps=driver._history_snapshot,
+        ) as terms_history_snapshot:
+            driver.execute_step(
+                "query-war-termination-terms-v1-16777290"
+            )
+        self.assertEqual(terms_history_snapshot.call_count, 0)
+        self.assertEqual(
+            driver.take_snapshot()["native_command_history"][-1]["command"],
+            "query-war-termination-terms-v1-16777290",
+        )
         self.assertEqual(
             driver.capabilities()["action_steps"],
             [
@@ -8808,6 +8831,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         public = driver.take_snapshot()
         self.assertNotIn("native_command_history", internal)
         self.assertEqual(len(public["native_command_history"]), 4096)
+        with mock.patch.object(
+            driver, "_with_internal_planning_view", None
+        ):
+            public_plan = GameplayBridgeService(driver).plan_turn()
+        with mock.patch.object(
+            driver,
+            "_history_snapshot",
+            wraps=driver._history_snapshot,
+        ) as planning_history_snapshot:
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned, public_plan)
+        self.assertEqual(planning_history_snapshot.call_count, 0)
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":

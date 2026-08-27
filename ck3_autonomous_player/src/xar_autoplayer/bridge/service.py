@@ -141,20 +141,20 @@ class GameplayBridgeService:
         return self.driver.take_snapshot()
 
     def plan_turn(self) -> dict[str, object]:
-        snapshot = self.snapshot()
+        internal_snapshot = getattr(
+            self.driver, "take_internal_semantic_snapshot", None
+        )
+        internal_planning_view = getattr(
+            self.driver, "_with_internal_planning_view", None
+        )
+        use_internal_view = callable(internal_snapshot) and callable(
+            internal_planning_view
+        )
+        snapshot = (
+            internal_snapshot() if use_internal_view else self.snapshot()
+        )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
-        raw_history = snapshot.get("history")
-        history = (
-            [row for row in raw_history if isinstance(row, dict)]
-            if isinstance(raw_history, list)
-            else []
-        )
-        native_history = snapshot.get("native_command_history")
-        if isinstance(native_history, list):
-            history.extend(
-                row for row in native_history if isinstance(row, dict)
-            )
         cross_run_plan = None
         state_dir = self._strategy_state_dir()
         if state_dir is not None:
@@ -163,24 +163,54 @@ class GameplayBridgeService:
                 candidate = strategy.get("next_run_plan")
                 if isinstance(candidate, dict):
                     cross_run_plan = candidate
-        plan = choose_one_life_turn(
-            history,
-            snapshot=snapshot,
-            action_steps=available_steps,
-            bridge_capabilities=(
-                capabilities.get("bridge_capabilities")
-                if isinstance(capabilities.get("bridge_capabilities"), list)
-                else ()
+
+        def plan_from_view(
+            planning_snapshot: dict[str, object],
+            native_history: list[dict[str, object]],
+        ) -> dict[str, object]:
+            raw_history = planning_snapshot.get("history")
+            history = (
+                [row for row in raw_history if isinstance(row, dict)]
+                if isinstance(raw_history, list)
+                else []
+            )
+            history.extend(
+                row for row in native_history if isinstance(row, dict)
+            )
+            plan = choose_one_life_turn(
+                history,
+                snapshot=planning_snapshot,
+                action_steps=available_steps,
+                bridge_capabilities=(
+                    capabilities.get("bridge_capabilities")
+                    if isinstance(
+                        capabilities.get("bridge_capabilities"), list
+                    )
+                    else ()
+                ),
+                next_run_plan=cross_run_plan,
+            )
+            if cross_run_plan is not None:
+                plan = {**plan, "cross_run_plan_used": cross_run_plan}
+            return {
+                "snapshot_id": planning_snapshot["snapshot_id"],
+                "revision": planning_snapshot["revision"],
+                "plan": _route_plan_to_available_step(
+                    plan, available_steps
+                ),
+            }
+
+        if use_internal_view:
+            return internal_planning_view(snapshot, plan_from_view)
+        public_native_history = snapshot.get("native_command_history")
+        return plan_from_view(
+            snapshot,
+            (
+                public_native_history
+                if isinstance(public_native_history, list)
+                else []
             ),
-            next_run_plan=cross_run_plan,
         )
-        if cross_run_plan is not None:
-            plan = {**plan, "cross_run_plan_used": cross_run_plan}
-        return {
-            "snapshot_id": snapshot["snapshot_id"],
-            "revision": snapshot["revision"],
-            "plan": _route_plan_to_available_step(plan, available_steps),
-        }
 
     def _strategy_state_dir(self):
         state_dir = getattr(self.driver, "state_dir", None)
