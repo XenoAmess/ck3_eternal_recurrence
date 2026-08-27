@@ -21,6 +21,9 @@
   `E3BACD9F3360837F6ED7D5F22B937AB7E79CB675AD804819A627CB73970CE699` 互证。
 - [static-confirmed] 原始逆向阶段只做反汇编、RTTI/xref 与原版数据读取；没有调用任何会改变游戏世界的 native helper，也从未调用战斗构造入口 `0x27FB7C0`。
 - [implementation-confirmed] production bridge 现已在主线程恢复前安装 `0x230A590` 终局入口与 `0x222A69B` 战分写入后继点的两个被动 detour；两者只把 typed observation 写入 bridge-owned bounded journal。正式 query、service 与 MCP 均已发布，旧 `query-battle-transition-v1` 保持兼容。
+- [implementation-confirmed 2026-08-28] terminal journal 现在还在 finalizer 入口复制 exact `observed_date_raw` 与
+  `CCombat+0x6B4 phase_day`，并分别发布为 `prior.terminal_date_raw` / `prior.phase_day`。这两个字段把终局发生时刻与
+  稍后的外部 pause 日期分开，供五档 terminal parity 使用。
 - [live-confirmed 2026-08-26] immutable active-battle save `9104CCB8...CC63` 的 managed non-debug v6 只用逐日 `life-advance`，在第 33 日观察到 normal terminal；artifact SHA-256 为 `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`。源存档不变，受管进程树与 disposable clone 均完整清理。该证据关闭 normal-result/玩家 retreat 后继分支，不替代 no-normal、同省 residual 与 assignment-reopened 三个独立 live fixture。
 - 本文中的 `CCombatResultData` 是 RTTI 的正式 native 类型名；仓库旧接口中的 `BattleResult` 是同一外层对象的兼容简称。其内嵌的 `CBattleResult`、`CBattleResultSide` 是另外两种 RTTI 类型，不可混为一谈。
 
@@ -39,6 +42,10 @@
 9. [static-confirmed] 单场 row `+0x40` 是非负 Q100000 magnitude，row `+0x50` 才记录 winner 是否为 war attacker。`0x2903150` 分别汇总进攻/防守胜场，取 attacker-wins 减 defender-wins，再按 CB 累计 cap 截断。因此 script `warscore_value` 本身不带战争相对正负号。
 10. [static-confirmed] `0x23A2360` / `0x2934FE0` 并非 `on_commander_combat_finished` / `on_army_combat_finished`；它们是败北 raid/barter army 的 loot 转移 dispatcher，分别对应 `on_defeat_raid_army` 与 `on_defeat_barter_army`。
 11. [live-confirmed] `CombatID=335544325` 在 date raw `53179056` 以 `normal_result` 终结：journal sequence `14`，phase `3`、winner side `1`，旧 CombatID 已从全局 storage 与 Province `2586` 双重删除；battle-score row `2` 记录 `2135850` Q100000，折算 war-attacker relative delta 为 `-2135850`。玩家 CUnit `83886341` 的 combat backlink 已清空、movement raw 为 `3`，因此即使其 AI membership 为 typed `unavailable`，仍由独立强证据得到 `subject_retreating`。
+12. [live-confirmed 2026-08-28] 同一 immutable checkpoint 的五档 terminal 平衡复测十笔都在 exact date
+    `53179056`、`phase_day=0` 得到同一 winner、Result/wipe、ordered sides 与 removal；只有 battle-score magnitude 在
+    `2131550..2137600` 间漂移。同档 1/2/3 已直接漂移；合并前一轮第三样本后 4/5 也漂移。因此单次 row magnitude
+    是本次 normal terminal 的精确事实，但不是该 save 的跨重载确定常量，更不能把跨档差异直接归因于速度。
 
 ## 终局分叉：phase done 与 invalidation sweep
 
@@ -456,6 +463,7 @@ BattleTerminalObservationV1 {
   province_id,
   suppress_normal_result_envelopes,
   phase_raw,
+  phase_day,
   winner_raw,
   finalized_before,
   daily_guard_raw,
@@ -483,7 +491,12 @@ BattleWarscoreObservationV1 {
 仍覆盖完整可用 interval 时才返回 `unavailable_after_removal`。cursor 早于 ring oldest 的 overflow/gap 必须令整个查询返回
 `status=unavailable, unavailable_reason=journal_gap`，不能伪装成“本进程未观察到”。
 
-`active_not_terminal` 不是一个空壳：此时 `phase/winner/finalized/daily/province/result/wipe/primary participants/side CUnits`
+`observed_date_raw` 是 finalizer 入口的精确原生日历边界，response 将它作为
+`prior.terminal_date_raw` 发布；`phase_day` 同时从 `CCombat+0x6B4` 复制。两者属于被动 journal 事件，不能用稍后
+Python 看到 paused snapshot 的日期或 phase-day 反推。`active_not_terminal` 的 `terminal_date_raw=null`，但当前
+`phase_day` 仍直接读取。
+
+`active_not_terminal` 不是一个空壳：此时 `phase/phase_day/winner/finalized/daily/province/result/wipe/primary participants/side CUnits`
 来自仍严格解析的当前 CCombat；唯独 finalizer 第二参数仍不可知，所以
 `suppress_normal_result_envelopes=null`，`battle_warscore.status=unavailable`。只有旧 CombatID 已删除且 ring 在无缺口区间内仍无匹配事件的
 `unavailable_after_removal`，才把这些 journal-only prior 字段保持为 `null`。
@@ -516,8 +529,9 @@ BattleTerminalTransitionV1 {
       normal_result |
       no_normal_result |
       unavailable_after_removal,
+    terminal_date_raw?,
     suppress_normal_result_envelopes?,
-    phase_raw?, winner_raw?, finalized_before?, daily_guard_raw?,
+    phase_raw?, phase_day?, winner_raw?, finalized_before?, daily_guard_raw?,
     province_id?, battle_result_id?, wipe_raw?,
     attacker_primary_participant_character_id?,
     defender_primary_participant_character_id?,
@@ -645,6 +659,24 @@ date raw `53178264` 逐日推进到 `53179056`。33 个 advance 每个都严格�
 `61D0D912206A90D9B34DDE3555AEC941EC3538C253DBC4DCEB9D177D7456FDB1`；source save 前后 SHA 相同，session shutdown、tree gone、driver close 与 clone removal 全部为 true。由此
 `terminal_journal_implemented=true`、`transition_query_implemented=true`、`normal_terminal_live_ready=true`。aggregate
 `battle_terminal_ready` 仍须等待 no-normal、residual 与 assignment-reopened 三个分支，不能把本次单场 normal GREEN 外推到它们。
+
+### 五档 terminal journal 复测
+
+[live-confirmed 2026-08-28] research-only `terminal-parity` 从 managed checkpoint
+`F2252BA060EDA701ADC85BBE97894B01A38FC997712A5B7F315F8D3E81F44723` 每臂冷恢复，先以起始
+battle-control frame 绑定 exact CombatID，再冻结 bridge-local terminal cursor。最终查询只接受 cursor 后的新 event；
+因此恢复前一次同 CombatID 的 journal 记录不会冒充本臂终局。
+
+十笔平衡 artifact `terminal-parity-1to5-balanced-v3.json` SHA-256
+`1C19372B51CDE8A66380F556B51495476A668DD028C705CADC7EE7D51E731103`。全部 arm operational、checkpoint
+immutable、cleanup GREEN；九笔外部 pause lag 为零，一笔 speed 5 lag 一日。后者仍由 journal 证明 exact terminal
+date 为 `53179056`，说明外部停稳日期与终局事件日期必须保持两个字段。
+
+剥离 query metadata、journal sequence、晚到的 subject/successor 和 `battle_warscore` 后，十笔 outcome 只有一个
+SHA-256：`B846D554B59E48CEE34FEBE8EF6FBCAC17637952BFBBABA9264E8CEB060D1F98`。完整严格 outcome 因 warscore
+同档不复现而保持 RED-inconclusive；不得为了拿 GREEN 删除 battle-warscore 判等，也不得把同档漂移解释为 speed effect。
+该复测验证了新增 `terminal_date_raw` / `phase_day` 的受控终局用途，不改变 aggregate `battle_terminal_ready` 仍缺
+no-normal/residual/assignment-reopened 的边界。
 
 ## 明确禁止的调用与剩余 unknown
 

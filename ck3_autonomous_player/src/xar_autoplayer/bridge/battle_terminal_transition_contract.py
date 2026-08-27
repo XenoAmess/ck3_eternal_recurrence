@@ -42,8 +42,10 @@ _JOURNAL_FIELDS: Final = {
 _PRIOR_FIELDS: Final = {
     "combat_id",
     "terminal_kind",
+    "terminal_date_raw",
     "suppress_normal_result_envelopes",
     "phase_raw",
+    "phase_day",
     "winner_raw",
     "finalized_before",
     "daily_guard_raw",
@@ -406,6 +408,12 @@ def _normalize_prior(
     terminal_kind = prior.get("terminal_kind")
     if terminal_kind not in _TERMINAL_KINDS:
         raise ValueError("prior terminal_kind is invalid")
+    terminal_date_raw = _optional_integer(
+        prior.get("terminal_date_raw"),
+        "battle_terminal_transition.prior.terminal_date_raw",
+        minimum=0,
+        maximum=2**31 - 1,
+    )
     suppress = _optional_boolean(
         prior.get("suppress_normal_result_envelopes"),
         "battle_terminal_transition.prior."
@@ -415,6 +423,12 @@ def _normalize_prior(
         prior.get("phase_raw"),
         "battle_terminal_transition.prior.phase_raw",
         minimum=-(2**31),
+        maximum=2**31 - 1,
+    )
+    phase_day = _optional_integer(
+        prior.get("phase_day"),
+        "battle_terminal_transition.prior.phase_day",
+        minimum=0,
         maximum=2**31 - 1,
     )
     winner_raw = _optional_integer(
@@ -489,8 +503,10 @@ def _normalize_prior(
     warscore = _normalize_warscore(prior.get("battle_warscore"))
 
     observed_fields = (
+        terminal_date_raw,
         suppress,
         phase_raw,
+        phase_day,
         winner_raw,
         finalized_before,
         daily_guard_raw,
@@ -511,6 +527,7 @@ def _normalize_prior(
     elif terminal_kind == "active_not_terminal":
         current_fields = (
             phase_raw,
+            phase_day,
             winner_raw,
             finalized_before,
             daily_guard_raw,
@@ -520,7 +537,11 @@ def _normalize_prior(
             attacker_ids,
             defender_ids,
         )
-        if suppress is not None or any(item is None for item in current_fields):
+        if (
+            terminal_date_raw is not None
+            or suppress is not None
+            or any(item is None for item in current_fields)
+        ):
             raise ValueError(
                 "active_not_terminal omitted current combat state or invented "
                 "a suppress flag"
@@ -535,8 +556,10 @@ def _normalize_prior(
         if terminal_kind != "unavailable_after_removal":
             raise ValueError("unobserved terminal state invented terminal kind")
         removed_fields = (
+            terminal_date_raw,
             suppress,
             phase_raw,
+            phase_day,
             winner_raw,
             finalized_before,
             daily_guard_raw,
@@ -556,8 +579,10 @@ def _normalize_prior(
         **prior,
         "combat_id": combat_id,
         "terminal_kind": terminal_kind,
+        "terminal_date_raw": terminal_date_raw,
         "suppress_normal_result_envelopes": suppress,
         "phase_raw": phase_raw,
+        "phase_day": phase_day,
         "winner_raw": winner_raw,
         "finalized_before": finalized_before,
         "daily_guard_raw": daily_guard_raw,

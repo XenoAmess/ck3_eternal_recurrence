@@ -1,6 +1,6 @@
 # 战斗推进速度与暂停边界
 
-状态：**static-confirmed / live A/B pending**
+状态：**1/2/3 ongoing parity live GREEN / five-speed terminal strict parity RED-inconclusive / production selector unchanged**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -23,14 +23,23 @@
 
 1. **战斗并不要求每天暂停。** maneuver、没有撤退/改派决策的 main、pursuit 都会由原生日更自动继续；当前
    “推进一天 -> 暂停 -> rich query”是自动玩家的保守事务边界，不是 CK3 的计算要求。
-2. **2 速实时粗判可行，3 速有条件可行。** 250 ms heartbeat 在 defines 的名义速率下分别有约 `4`、`2`
-   个观察机会/游戏日，足以让 running-safe sentinel 发现状态 epoch 变化并请求暂停；但完整 battle-control query
-   仍要求 paused，且 Windows 调度、CK3 负载和 command queue 会吃掉余量，因此必须先实测 pause overshoot。
+2. **2/3 速的 1 日与 3 日 ongoing battle-frame parity 已在同一 seed 实机全绿。** 每档两次、升降序平衡；1 日
+   六笔与 3 日六笔都得到同一个完整 normalized battle frame。3 日端到端吞吐相对 1 速为 `1.610x / 2.360x`，达到
+   既定 `1.5x / 2x` 研究门；1 日只有 `1.422x / 1.947x`，说明短事务固定成本会吃掉收益。该单 seed 结果支持继续
+   受控多日 tranche，不等于 production selector 已开放。
 3. **4/5 速不能靠 Python 轮询逐日兜底。** 4 速只有 `0.8 heartbeat/day`；5 速是负载相关的无节流档，现实侧
    没有有限的“下一日反应窗口”。战中 4/5 速必须由 CK3 application-main 的同日 sentinel/deadline guard 停住。
 4. **“兵力悬殊”不能只由人数比证明。** exact-build 原生 power share、soldier ratio 与
    `side_strength_raw` 都不是胜率。它们可筛选 A/B 样本，不能单独授权 5 速生产直跑；当前
    `monte_carlo_ready=false`，所以 5 速 crush 仍是 research。
+5. **五档都能在这场真实战斗中完成受控停表，但这不是战斗结果等价证明。** [live-confirmed] 同一 active-battle
+   episode 的 `1,2,3,4,5,5,4,3,2,1` 矩阵共十个样本，全部精确推进一日、观察/停稳超调均为零，最终
+   `paused=true`、`map_ready=true`、checkpoint 不变且 cleanup GREEN。它只证明当前机器/负载的 stop envelope；
+   4/5 速任意中途决策仍需 native same-day sentinel。
+6. **五档终局的核心结果相同，但严格 warscore parity 仍是 RED-inconclusive。** 十笔平衡复测的 exact terminal date、
+   phase/day、winner、Result/wipe、ordered sides 与 removal 全部相同；只有 battle warscore 漂移。1/2/3 在同档两次间
+   也漂移；合并前一轮第三样本后 4/5 同样出现同档不同值。因此当前证据证明“不能归因速度”，不能把 RED 写成
+   高速少算，也不能把去掉 warscore 后的全等冒充严格 GREEN。
 
 按 defines 计算，连续 15 个纯原生日的理论时间是：1 速 `30s`、2 速 `15s`、3 速 `7.5s`、4 速
 `3s`、5 速负载相关。若一次“游戏日”事务现实里接近半分钟，主要成本来自 pause、paused rich query、Python
@@ -73,8 +82,25 @@ Bridge heartbeat 名义周期是 250 ms；表中 heartbeat 数量只用于比较
 
 [live-confirmed] speed 1 也不是“请求一天就严格一天”：97 个一日切片曾得到
 `3 x 1日 / 72 x 2日 / 22 x 3日`，正式战斗出现过同 CombatID `main/32 -> main/34`。speed 3 只有一次
-最小非战斗一日链；speed 5 旧事务曾推进两日，另有 12 秒约 35 日的原始移动样本；speed 2/4 尚无 live
-分布。因此所有速度都必须按最终 paused date 与 rich state 验证，不能信 speed、请求 horizon 或 ACK 本身。
+最小非战斗一日链；speed 5 旧事务曾推进两日，另有 12 秒约 35 日的原始移动样本；speed 2/4 仍没有足够大的
+live 分布。因此所有速度都必须按最终 paused date 与 rich state 验证，不能信 speed、请求 horizon 或 ACK 本身。
+
+[live-confirmed] 新 research-only harness 在已接战 seed 上关闭了“速度档本身能否停住”这个较窄问题：artifact
+`C:\Users\xenoa\AppData\Local\Temp\xar-smx-stop-ae8-20260828-01\artifacts\stop-envelope-active-battle-1to5.json`
+SHA-256 为 `0B6818DA2630786A31EE28729694CA911A27781C9E8A60F1955B4F07F0DE6FEA`。每档两个样本，十笔均为
+目标 `+1` 日、最终 `+1` 日；观察超调与停稳超调均为 `0`。按 end-to-end 游戏日/秒均值：
+
+| 速度 | 游戏日/秒 | 总耗时均值 | pause settle 均值 | 相对 1 速 |
+|---:|---:|---:|---:|---:|
+| 1 | `0.317` | `3221 ms` | `501 ms` | `1.000x` |
+| 2 | `0.575` | `1740 ms` | `251 ms` | `1.812x` |
+| 3 | `0.799` | `1252 ms` | `251 ms` | `2.518x` |
+| 4 | `0.998` | `1002 ms` | `252 ms` | `3.147x` |
+| 5 | `1.669` | `623 ms` | `246 ms` | `5.261x` |
+
+该矩阵没有每臂恢复，也没有比较 terminal winner/casualty/war score，故不得把它升级为 parity 或 production
+授权。它还说明 4 速在当前机器上确有独立于 3/5 的吞吐位置，是否值得长期 selector 分支仍取决于后续等价性与
+sentinel 复杂度。
 
 ## 行军、接敌与已接战执行矩阵
 
@@ -156,6 +182,26 @@ tranche 得到实际收益；不需要等 4/5 速设施全部完成才开始优�
 2. `run-until-date-or-sentinel`：设置 absolute date 与 sentinel epoch，在每个原生日更后的稳定边界检查，满足任一
    条件即暂停。ACK 只证明提交，最终仍要求 paused state、actual date delta 与 RQ 后置验证。
 
+### same-day sentinel 的 exact-build 施工入口
+
+[static-confirmed] `CDailyTickCommand` 的 secondary vtable 是 `0x40AAB60`，三级日更函数为
+`0x26D3030 / 0x26D3160 / 0x26D3E80`。第一阶段在 `0x26D30A7` 调 `0x204EFC0`，其中
+`0x204F0CD` 执行 `date_raw += 0x18`；第二阶段已经读取新日期并运行 managers/tasks。因此不能在 date writer
+刚写完时暂停，也不能只钩 `CCombatManager::daily 0x27FB5D0` 后宣称已覆盖当日 movement/contact/reinforcement。
+
+最小首选 detour 是最终/post 阶段 `0x26D3E80`：完整 15-byte prologue 为
+`48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20`，resume `0x26D3E8F`。wrapper 必须先且只调用一次原函数，
+再检查有界 arm 状态；命中后在已证明的 application-main owner thread 调原生 pause wrapper
+`0x346B910(jomini, true, armed_player_id)`。`0x346B850` 是 core，`0x346B910` 还处理状态差异、pause timestamp 与
+解暂停 gates；不得裸写 paused 字段。
+
+现有 PeekMessage rich mailbox 不能直接充当 running sentinel：running pump 会撤销 paused ownership proof。施工时应在
+连续两个 paused pump epoch 后，把 owner TID、TLS context/marker、player id、start/target date、CombatID 与 terminal
+cursor 复制进独立 immutable arm state；daily hook 只读固定内存/atomics 和既有 terminal journal，不分配、不运行 rich
+query。TID/TLS 不匹配、journal gap 或日钩计数异常只记录 infrastructure failure 并停用本臂，不得宣称 zero overshoot。
+首个 live admission 必须先用 speed 1 证明 post hook 每日恰好一次、delta=24、owner/TLS 一致、wrapper 单次暂停与最终
+paused 同日，再扩展五档 `+1/+3` 日矩阵。该 primitive 目前仍是 static-ready 施工入口，不是 production-live 能力。
+
 ```mermaid
 flowchart TD
     P["[implementation-confirmed] paused rich frame"] --> B{"[counter-policy] active decision now?"}
@@ -172,20 +218,21 @@ flowchart TD
     N -->|yes; crush gate| S5["speed 5 terminal-or-sentinel"]
     S4 --> RQ
     S5 --> RQ
-    U["[unknown] speed 2/4 overshoot and crush parity"] -. "live A/B required" .-> G2
+    U["[unknown] large-sample overshoot and crush parity"] -. "live A/B required" .-> G2
     RQ --> P
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U unknown;
 ```
 
-## 最小 live A/B（harness static-ready；尚未启动 CK3）
+## 最小 live A/B（ongoing GREEN；terminal strict RED-inconclusive）
 
 [implementation-confirmed] 独立研究入口
 `ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py`
-已经把五档 stop envelope 与已接战 parity 做成可执行矩阵；它直接复用现有 exact-build timeline primitive 和
+已经把五档 stop envelope、已接战逐日 parity 与五档 terminal parity 做成可执行矩阵；它直接复用现有 exact-build timeline primitive 和
 managed native-session cleanup，不调用 `life-advance`，也不改 `_life_advance_timeline_policy` 或 production selector。
-本次只完成离线实现与测试，**没有启动 CK3，也没有新增 live 结论**。
+五档 active-battle stop envelope、1/2/3 ongoing parity 与五档 terminal matrix 均已有下文 live artifact；严格证据边界
+分别按 GREEN、RED-inconclusive 与未授权生产使用记录。
 
 矩阵使用升序/降序平衡顺序。默认每档六个样本时，完整顺序严格为：
 
@@ -193,7 +240,7 @@ managed native-session cleanup，不调用 `life-advance`，也不改 `_life_adv
 1,2,3,4,5,5,4,3,2,1  × 3
 ```
 
-两个模式的边界如下：
+三个模式的边界如下：
 
 | 模式 | 当前允许速度 | checkpoint 策略 | 结论边界 |
 |---|---|---|---|
@@ -201,6 +248,7 @@ managed native-session cleanup，不调用 `life-advance`，也不改 `_life_adv
 | `stop-envelope --stop-envelope-scenario active-battle` | `1 2 3 4 5` | 冷恢复一次；要求指定的可控 army 始终在战斗中 | 只量化真实战斗负载下的外部停表能力；仍不授权 4/5 速战斗策略 |
 | `battle-parity` | `1 2 3` | 第一 arm 冷恢复；其后每个 arm 都恢复同一 immutable checkpoint | 只比较相同起始 frame、相同实际 elapsed days、相同最终日期的 battle frame |
 | `battle-parity` 请求 `4/5` | 明确拒绝 | 不启动 session | 等 application-main `run-until-date-or-battle-sentinel` 真正接线后再开放；不能用 Python polling 冒充 |
+| `terminal-parity` | `1 2 3 4 5` | 每个 arm 恢复同一 immutable checkpoint；恢复不会倒退 bridge-owned journal，故每臂先冻结新的全局 cursor | 只比较 passive exact-build journal 记录的精确终局；外部 pause 仅用于恢复查询能力，不授权 4/5 任意中途决策 |
 
 已定位的 exact battle seed 可作为 `battle-parity` 输入源：
 
@@ -208,10 +256,13 @@ managed native-session cleanup，不调用 `life-advance`，也不改 `_life_adv
 - SHA-256：`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`；
 - `date_raw=53178264`，episode character `29829`，subject army `83886341`，CombatID `335544325`，
   Province `2586`，初始 `maneuver/1`；
+- 该 seed 是劣势样本，不是 crush：side strength `49787 : 106544`（`0.4673`），derived fighting
+  `140300000 : 322100000`（`0.4356`），我方 1 支 army 对敌方 2 支；不得把其 terminal 结果外推成 5 速碾压准入；
 - temp 路径不是长期 artifact。实测前必须把它复制到一次性 state，先生成 managed checkpoint，矩阵只对副本做恢复，
   不修改这份源文件。
 
-把上述 `last_save.ck3` 放进一次性 state 后，先用现有单场 probe 在原日期物化 managed checkpoint（此步骤本次未执行）：
+把上述 `last_save.ck3` 放进一次性 state 后，先用现有单场 probe 在原日期物化 managed checkpoint；2026-08-28 live
+矩阵已按此流程完成，下面保留复现实验入口：
 
 ```powershell
 py ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py `
@@ -257,6 +308,72 @@ py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acc
   --speeds 1 2 3 --samples-per-speed 6 --target-days 1
 ```
 
+五档终局等价性示例：
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
+  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
+  --bridge-injector <injector> --output <artifact.json> `
+  --cold-start-checkpoint --mode terminal-parity --subject-army-id 83886341 `
+  --speeds 1 2 3 4 5 --samples-per-speed 1 `
+  --terminal-max-days 45 --terminal-max-pause-lag-days 1 `
+  --slice-timeout 180 --timeout 1800
+```
+
+`terminal-parity` 在每臂恢复后先做两次 paused battle-control query，锁定相同起始 frame 与 exact CombatID；随后
+两次查询 terminal journal 并以全局 `latest_sequence` 作为本臂 exclusion cursor。subject 离战后立即请求 pause，
+再用 `after_terminal_sequence=cursor` 双采样，只接受新的 `observed` 事件。判等投影包括 exact terminal date、
+phase/day、winner/finalized、Result/wipe、两侧 ordered CUnit、battle warscore 与 removal/result retention；排除 journal
+sequence、查询 metadata 和晚到的 subject/successor 状态。外部 pause lag 单独报告且默认不得超过一日；终局是否落在
+45 日窗口内只看 journal date，不能用外部首次观察日期代替。
+
+### 2026-08-28 live 结果
+
+bootstrap 使用隔离 state `xar-smx-parity-ae8-20260828-01`，artifact
+`bootstrap-terminal-fields-v3.json` SHA-256
+`2ADB40FE5601429BBAFAFAAE5C93FA5FBA1A6D2CE77A36557A9485DA04AF1B34`；起始 battle frame SHA-256
+`C36CA603F28072E89C52A464A8BFADE8B20F1A052D62CEDBA0F3AEAAFE4137FC` 与已知 seed 一致。managed checkpoint
+为 `date_raw=53178264`、SHA-256
+`F2252BA060EDA701ADC85BBE97894B01A38FC997712A5B7F315F8D3E81F44723`。
+
+#### ongoing 1/2/3：GREEN
+
+| horizon | artifact SHA-256 | 六笔最终 frame | 1/2/3 平均 E2E | 相对 1 速 | 结论 |
+|---:|---|---|---|---|---|
+| 1 日 | `1148E8DF2904D70C9BF0E1DE574E99295614C8A25CBA42F1306D90B32BEE269A` | `52D3B47A11960BC748A83710FCA6AF10F944A1636B4197FD5B88388098E60E24` | `2.603 / 1.831 / 1.337s` | `1.000 / 1.422 / 1.947x` | 严格 frame parity GREEN；短事务吞吐略低于门 |
+| 3 日 | `C7A9E7658C65977523E6586212BC4A563CDC4DE18F73831E3F6D8DD7910EACD5` | `6901E073779807DB3F6FD8C9313F4A35DB6F2B1B5AB4B3756D33C1C7344BC8A7` | `7.605 / 4.722 / 3.222s` | `1.000 / 1.610 / 2.360x` | 严格 frame parity GREEN；达到 2/3 速研究门 |
+
+两轮都是 schedule `1,2,3,3,2,1`，12/12 arm operational；每轮六笔 actual elapsed/final date 完全一致，
+checkpoint before/after 哈希不变，managed cleanup 全绿。这证明当前 maneuver seed 上可把三个无新决策的游戏日合并为
+2/3 速 tranche；仍需 running sentinel 才能跨越未知 phase/roster/contact/retreat 边界。
+
+#### terminal 1/2/3/4/5：严格 RED，但速度归因不成立
+
+首轮每档一笔 artifact `terminal-parity-1to5-v2.json` SHA-256
+`484E8B926DB032BC08326E36DA42142FAA04E840FA671A7B75B94913EC6BD4CE`。五笔都是 exact terminal
+`date_raw=53179056`、33 游戏日、pause lag `0`，但 warscore raw 不同，故严格 parity RED。随后运行升降序平衡
+`1,2,3,4,5,5,4,3,2,1`；artifact `terminal-parity-1to5-balanced-v3.json` SHA-256
+`1C19372B51CDE8A66380F556B51495476A668DD028C705CADC7EE7D51E731103`：
+
+| 速度 | v3 warscore raw Q100000 | 合并 v2 后该档观测集合 | v3 平均 E2E | 相对 1 速 |
+|---:|---|---|---:|---:|
+| 1 | `2131550, 2133250` | `2131550, 2133250, 2135000` | `76.621s` | `1.000x` |
+| 2 | `2137600, 2133250` | `2133250, 2137600` | `43.866s` | `1.747x` |
+| 3 | `2133250, 2135850` | `2133250, 2135850, 2137600` | `28.104s` | `2.726x` |
+| 4 | `2133250, 2133250` | `2133250, 2140200` | `17.864s` | `4.289x` |
+| 5 | `2133250, 2133250` | `2133250, 2135000` | `12.587s` | `6.087x` |
+
+v3 的十笔除 `battle_warscore` 外，终局投影只有一个 SHA-256：
+`B846D554B59E48CEE34FEBE8EF6FBCAC17637952BFBBABA9264E8CEB060D1F98`；exact terminal date、phase-day `0`、
+winner `1`、ResultID `553648135`、wipe、ordered sides、removal/result retention 全等。十笔都 operational，九笔
+pause lag `0`，一笔 speed-5 外部观察/停稳 lag `1` 日，但 journal 仍证明 exact terminal date 相同且在 bound 内；
+checkpoint/cleanup 全绿。
+
+因此完整 warscore 不能删出严格判等，v3 仍诚实 RED；但每档合并三笔后都出现同档漂移，当前数据也不能支持
+“速度造成差异”。下一次若要回答速度对 warscore 分布是否有统计影响，应在代表性 seed 上预先定义重复数与容差；
+在此之前只把五档核心终局一致写为研究证据，不授予 4/5 中途或 crush production 权限。
+
 每个 row 分开记录 set-speed、resume 与 pause 的 submit/ACK/observed 时间，target 首次 observed date、最终 paused
 date、heartbeat 与 semantic revision delta、connection generation、游戏日/秒、观察超调和停稳超调。ACK 不算完成；
 最终必须再次看到 `paused=true`、`map_ready=true`、请求速度、同一 episode 与同一 connection generation。日期差不是
@@ -290,8 +407,9 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
    tranche。对每个 tranche 核对 CombatID、phase/day 实际 delta、ordered roster 与 casualty ledger。
 2. speed 2 全绿后才加 speed 3；两档都必须在 day-14 guard、roster epoch、phase 变化、terminal/reopen 或事件时停。
 3. 吞吐门：speed 2 相对当前 speed 1 至少 `1.5x`，speed 3 至少 `2x`；达不到就不增加 selector 分支。
-4. crush forecast 与 native sentinel live 后，从同一 overwhelming checkpoint 做 speed `1/4/5` terminal 配对，核对
-   第 4/5 速准入门第 6 条的全部结果。
+4. passive terminal journal 已允许先从普通 battle checkpoint 做 research-only 五档终局结果配对；它只回答“从这个
+   checkpoint 不干预直至终局时，各速度是否得到同一原生结果”。crush forecast 与 native sentinel live 后，仍须从同一
+   overwhelming checkpoint 重做 speed `1/4/5` 配对并核对第 4/5 速准入门第 6 条全部结果，才涉及生产授权。
 5. 每个 arm 都必须保存请求前 paused artifact、最终 paused artifact、actual date delta、checkpoint 和 managed cleanup；
    harness RED 与 capability/parity RED 分开记录。
 
@@ -301,9 +419,11 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
 的 defines 日长；2/3 速的名义 heartbeat 余量；4/5 速为何不能依赖外部逐日 polling；当前 bridge 已具备 2/4 speed
 primitive，但 composite battle selector 尚未使用。
 
-仍没有 speed-2/4 战斗 live sample、五档 `E_s`、running-safe tactical sentinel、native same-day stop、speed-3 多日战斗
-parity 或 speed-4/5 crush artifact。因此：
+已有 speed-2/4 的 active-battle 一日 stop sample、当前机器上的五档零超调小样本、1/2/3 的一日与三日严格
+ongoing parity，以及五档 terminal 核心结果一致/strict warscore inconclusive artifact。但仍没有每档足够大的 `E_s`
+分布、running-safe tactical sentinel、native same-day stop、跨 phase/roster epoch 的多日 parity、可归因的五档 warscore
+分布或 speed-4/5 crush artifact。因此：
 
 - 当前 production 战中仍按一日 horizon、speed 1、paused RQ 工作；
-- speed 2 是下一档应立即实测的候选，speed 3 紧随其后；
+- speed 2/3 已是受控三日 tranche 的实证研究候选；下一步是 native sentinel 与更多决策 epoch，而不是再次重复同一 seed；
 - speed 4/5 战斗保持 research，不得写为 production-live。

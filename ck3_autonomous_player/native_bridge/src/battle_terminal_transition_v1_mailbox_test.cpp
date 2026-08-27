@@ -61,8 +61,10 @@ xar::game::BattleTerminalTransitionSnapshotV1 CompleteResult() {
       xar::game::BattleTerminalJournalEventStatusV1::observed;
   result.prior.combat_id = 5;
   result.prior.terminal_kind = xar::game::BattleTerminalKindV1::normal_result;
+  result.prior.terminal_date_raw = 1233;
   result.prior.suppress_normal_result_envelopes = false;
   result.prior.phase_raw = 3;
+  result.prior.phase_day = 33;
   result.prior.winner_raw = 0;
   result.prior.finalized_before = false;
   result.prior.daily_guard_raw = std::uint8_t{1};
@@ -130,6 +132,8 @@ bool TestParserAndSerializer() {
           std::string::npos ||
       json.find("\"terminal_kind\":\"normal_result\"") ==
           std::string::npos ||
+      json.find("\"terminal_date_raw\":1233") == std::string::npos ||
+      json.find("\"phase_day\":33") == std::string::npos ||
       json.find("\"ai_membership_status\":\"none\"") ==
           std::string::npos ||
       json.find("\"combat_backlink_id\":null") == std::string::npos ||
@@ -219,6 +223,7 @@ bool TestJournalAndDetourAnchors() {
   std::array<std::int32_t, 1> defender_ids{2};
   Store(combat.data(), 0x08, std::int32_t{5});
   Store(combat.data(), 0x6B0, std::int32_t{3});
+  Store(combat.data(), 0x6B4, std::int32_t{33});
   Store(combat.data(), 0x6B8, static_cast<void *>(province.data()));
   Store(combat.data(), 0x6E0, std::int32_t{0});
   Store(combat.data(), 0x704, std::uint8_t{0});
@@ -272,6 +277,8 @@ bool TestJournalAndDetourAnchors() {
   const auto normal = LookupBattleTerminalJournalV1(5, 0);
   if (normal.status != BattleTerminalJournalLookupStatusV1::observed ||
       normal.event.sequence != 1 ||
+      normal.event.observed_date_raw != 1234 ||
+      normal.event.phase_day != 33 ||
       normal.event.suppress_normal_result_envelopes ||
       normal.event.attacker_public_cunit_ids_in_stored_order[0] != 3 ||
       normal.event.defender_public_cunit_ids_in_stored_order[0] != 4) {

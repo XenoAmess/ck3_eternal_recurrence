@@ -78,8 +78,10 @@ def _normal_frame() -> dict[str, object]:
         "prior": {
             "combat_id": PRIOR_COMBAT_ID,
             "terminal_kind": "normal_result",
+            "terminal_date_raw": DATE_RAW - 24,
             "suppress_normal_result_envelopes": False,
             "phase_raw": 3,
+            "phase_day": 33,
             "winner_raw": 0,
             "finalized_before": False,
             "daily_guard_raw": 0,
@@ -151,8 +153,10 @@ def _active_frame() -> dict[str, object]:
     frame["prior"] = {
         "combat_id": PRIOR_COMBAT_ID,
         "terminal_kind": "active_not_terminal",
+        "terminal_date_raw": None,
         "suppress_normal_result_envelopes": None,
         "phase_raw": 1,
+        "phase_day": 12,
         "winner_raw": -1,
         "finalized_before": False,
         "daily_guard_raw": 0,

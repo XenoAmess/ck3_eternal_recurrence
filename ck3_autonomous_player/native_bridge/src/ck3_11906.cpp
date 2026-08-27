@@ -10582,9 +10582,11 @@ void PopulateTerminalPriorFromEventV1(
       event.suppress_normal_result_envelopes
           ? game::BattleTerminalKindV1::no_normal_result
           : game::BattleTerminalKindV1::normal_result;
+  output.terminal_date_raw = event.observed_date_raw;
   output.suppress_normal_result_envelopes =
       event.suppress_normal_result_envelopes;
   output.phase_raw = event.phase_raw;
+  output.phase_day = event.phase_day;
   output.winner_raw = event.winner_raw;
   output.finalized_before = event.finalized_before;
   output.daily_guard_raw = event.daily_guard_raw;
@@ -10631,6 +10633,7 @@ bool PopulateTerminalPriorFromActiveCombatV1(
   }
   output.terminal_kind = game::BattleTerminalKindV1::active_not_terminal;
   output.phase_raw = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  output.phase_day = LoadAt<std::int32_t>(combat, kCombatPhaseDayOffset);
   output.winner_raw = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
   output.finalized_before = false;
   output.daily_guard_raw = LoadAt<std::uint8_t>(
@@ -10661,7 +10664,8 @@ bool PopulateTerminalPriorFromActiveCombatV1(
                       kCombatSidePrimaryCharacterIdOffset);
   output.attacker_public_cunit_ids_in_stored_order.emplace();
   output.defender_public_cunit_ids_in_stored_order.emplace();
-  return output.attacker_primary_participant_character_id.value_or(-1) > 0 &&
+  return output.phase_day.value_or(-1) >= 0 &&
+         output.attacker_primary_participant_character_id.value_or(-1) > 0 &&
          output.defender_primary_participant_character_id.value_or(-1) > 0 &&
          ReadBattleTransitionSidePublicIds(
              bindings, combat, kCombatAttackerSideOffset, combat_id,

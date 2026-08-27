@@ -31,6 +31,7 @@ constexpr std::size_t kCombatIdOffset = 0x08;
 constexpr std::size_t kCombatAttackerSideOffset = 0x20;
 constexpr std::size_t kCombatDefenderSideOffset = 0x368;
 constexpr std::size_t kCombatPhaseOffset = 0x6B0;
+constexpr std::size_t kCombatPhaseDayOffset = 0x6B4;
 constexpr std::size_t kCombatProvinceOffset = 0x6B8;
 constexpr std::size_t kCombatWinnerOffset = 0x6E0;
 constexpr std::size_t kCombatFinalizedOffset = 0x704;
@@ -230,6 +231,7 @@ bool CaptureTerminalUnsafe(void *combat,
   event.suppress_normal_result_envelopes =
       suppress_normal_result_envelopes;
   event.phase_raw = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  event.phase_day = LoadAt<std::int32_t>(combat, kCombatPhaseDayOffset);
   event.winner_raw = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
   const auto finalized_raw =
       LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset);
@@ -248,7 +250,7 @@ bool CaptureTerminalUnsafe(void *combat,
   event.province_id = province == nullptr
                           ? -1
                           : LoadAt<std::int32_t>(province, kProvinceIdOffset);
-  if (event.combat_id <= 0 || event.province_id <= 0 ||
+  if (event.combat_id <= 0 || event.province_id <= 0 || event.phase_day < 0 ||
       event.winner_raw < -1 || event.winner_raw > 1 || finalized_raw > 1 ||
       event.attacker_primary_participant_character_id <= 0 ||
       event.defender_primary_participant_character_id <= 0) {

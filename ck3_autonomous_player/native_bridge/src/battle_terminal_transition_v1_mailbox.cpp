@@ -245,6 +245,20 @@ bool ValidateSnapshot(
                             .participant_overlap_public_cunit_ids_in_prior_order)) {
     return false;
   }
+  const bool terminal_event_observed =
+      journal.event_status ==
+      game::BattleTerminalJournalEventStatusV1::observed;
+  if ((terminal_event_observed &&
+       (!snapshot.prior.terminal_date_raw.has_value() ||
+        snapshot.prior.terminal_date_raw.value_or(-1) < 0 ||
+        snapshot.prior.phase_day.value_or(-1) < 0)) ||
+      (!terminal_event_observed &&
+       snapshot.prior.terminal_kind ==
+           game::BattleTerminalKindV1::active_not_terminal &&
+       (snapshot.prior.terminal_date_raw.has_value() ||
+        snapshot.prior.phase_day.value_or(-1) < 0))) {
+    return false;
+  }
   const bool any_ai_identity = snapshot.subject.coordinator_id.has_value() ||
       snapshot.subject.unit_stack_stored_index.has_value() ||
       snapshot.subject.subunit_stored_index.has_value();
@@ -605,10 +619,14 @@ std::string SerializeBattleTerminalTransitionV1(
   if (!AppendNumber(output, prior.combat_id)) return {};
   output += ",\"terminal_kind\":";
   AppendJsonString(output, TerminalKindName(prior.terminal_kind));
+  output += ",\"terminal_date_raw\":";
+  if (!AppendOptionalNumber(output, prior.terminal_date_raw)) return {};
   output += ",\"suppress_normal_result_envelopes\":";
   AppendOptionalBool(output, prior.suppress_normal_result_envelopes);
   output += ",\"phase_raw\":";
   if (!AppendOptionalNumber(output, prior.phase_raw)) return {};
+  output += ",\"phase_day\":";
+  if (!AppendOptionalNumber(output, prior.phase_day)) return {};
   output += ",\"winner_raw\":";
   if (!AppendOptionalNumber(output, prior.winner_raw)) return {};
   output += ",\"finalized_before\":";

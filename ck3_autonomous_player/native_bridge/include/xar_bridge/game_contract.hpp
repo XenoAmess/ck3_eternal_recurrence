@@ -1257,8 +1257,10 @@ struct BattleTerminalPriorSnapshotV1 {
   std::int32_t combat_id = -1;
   BattleTerminalKindV1 terminal_kind =
       BattleTerminalKindV1::unavailable_after_removal;
+  std::optional<std::int32_t> terminal_date_raw;
   std::optional<bool> suppress_normal_result_envelopes;
   std::optional<std::int32_t> phase_raw;
+  std::optional<std::int32_t> phase_day;
   std::optional<std::int32_t> winner_raw;
   std::optional<bool> finalized_before;
   std::optional<std::uint8_t> daily_guard_raw;

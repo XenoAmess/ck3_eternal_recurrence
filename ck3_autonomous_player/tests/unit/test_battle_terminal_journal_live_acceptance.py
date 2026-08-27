@@ -116,8 +116,10 @@ class _FakeTerminalService:
                 "prior": {
                     "combat_id": COMBAT,
                     "terminal_kind": "active_not_terminal",
+                    "terminal_date_raw": None,
                     "suppress_normal_result_envelopes": None,
                     "phase_raw": 1,
+                    "phase_day": self.day,
                     "winner_raw": -1,
                     "finalized_before": False,
                     "daily_guard_raw": 0,
@@ -185,8 +187,10 @@ class _FakeTerminalService:
             "prior": {
                 "combat_id": COMBAT,
                 "terminal_kind": self.terminal_kind,
+                "terminal_date_raw": self.date_raw,
                 "suppress_normal_result_envelopes": suppress,
                 "phase_raw": 3,
+                "phase_day": self.terminal_day,
                 "winner_raw": 0,
                 "finalized_before": False,
                 "daily_guard_raw": 1,

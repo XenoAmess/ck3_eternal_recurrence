@@ -556,6 +556,7 @@
         "province_id": "positive full int32 ProvinceID",
         "suppress_normal_result_envelopes": "bool copied from DL",
         "phase_raw": "int32",
+        "phase_day": "nonnegative int32 copied from CCombat+0x6B4 at terminal entry",
         "winner_raw": "int32 in -1..1",
         "finalized_before": "bool sampled before 0x230A5C4 write",
         "daily_guard_raw": "uint8 from CCombat+0x705",
@@ -618,8 +619,10 @@
       "prior": {
         "combat_id": "positive full int32 CombatID",
         "terminal_kind": "active_not_terminal | normal_result | no_normal_result | unavailable_after_removal",
+        "terminal_date_raw": "optional signed int32; exact bridge-local observed_date_raw for journal terminal kinds, null while active or unavailable-after-removal",
         "suppress_normal_result_envelopes": "optional bool; only from a gap-free journal event",
         "phase_raw": "optional int32; journal entry for terminal kinds, current CCombat for active_not_terminal",
+        "phase_day": "optional nonnegative int32; journal entry for terminal kinds, current CCombat+0x6B4 for active_not_terminal",
         "winner_raw": "optional int32",
         "finalized_before": "optional bool",
         "daily_guard_raw": "optional uint8",
@@ -694,6 +697,29 @@
       "sample revision/date/journal cursor/IDs/counts/memberships/routes/backlinks twice inside one paused application-main callback",
       "any drift returns state_changed"
     ],
+    "terminal_speed_parity_live_2026_08_28": {
+      "checkpoint_sha256": "F2252BA060EDA701ADC85BBE97894B01A38FC997712A5B7F315F8D3E81F44723",
+      "single_sample_artifact_sha256": "484E8B926DB032BC08326E36DA42142FAA04E840FA671A7B75B94913EC6BD4CE",
+      "balanced_ten_arm_artifact_sha256": "1C19372B51CDE8A66380F556B51495476A668DD028C705CADC7EE7D51E731103",
+      "schedule": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "exact_terminal_date_raw": 53179056,
+      "exact_phase_day": 0,
+      "non_warscore_outcome_sha256": "B846D554B59E48CEE34FEBE8EF6FBCAC17637952BFBBABA9264E8CEB060D1F98",
+      "strict_parity": "red_inconclusive",
+      "reason": "battle warscore varies within the same speed after checkpoint reload; no speed attribution is supported",
+      "boundary": "terminal date/phase/winner/result/wipe/ordered sides/removal are equal; battle warscore remains part of strict equality and is not discarded"
+    },
     "implementation_sequence": [
       "terminal journal detour and bounded typed ring",
       "post-writer battle-warscore observation and CombatID join",
