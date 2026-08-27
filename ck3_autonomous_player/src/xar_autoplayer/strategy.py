@@ -56,6 +56,7 @@ from .bridge.war_contract import (
     is_life_advance_step,
     merge_armies_step,
     move_army_step,
+    offer_white_peace_step,
     parse_merge_armies_step,
     parse_move_army_step,
     parse_preview_move_army_step,
@@ -66,6 +67,7 @@ from .bridge.war_contract import (
     preview_move_army_step,
     query_route_contact_horizon_step,
     query_war_termination_options_step,
+    query_war_termination_terms_step,
     start_assault_step,
     stop_assault_step,
     war_objective_province_ids,
@@ -88,6 +90,7 @@ _NATIVE_DEFEAT_SCORE_DROP = 20
 _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
+_WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _NATIVE_ENEMY_TARGET_MILESTONES_DAYS = (7, 14)
 _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP = (
     "accept-pending-character-interaction"
@@ -2049,6 +2052,179 @@ def _native_marriage_attempt_state(
     return None
 
 
+def _same_frame_termination_row(
+    snapshot: dict[str, object], row: object, war_id: int
+) -> bool:
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    return bool(
+        isinstance(row, dict)
+        and row.get("war_id") == war_id
+        and row.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+        and row.get("queried_revision") == snapshot.get("revision")
+        and row.get("queried_native_revision")
+        == snapshot.get("native_revision")
+        and row.get("queried_connection_generation")
+        == connection_generation
+        and row.get("episode_run_id") == snapshot.get("episode_run_id")
+    )
+
+
+def _claim_cb_white_peace_base_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    war_id = war.get("war_id")
+    if not isinstance(war_id, int) or isinstance(war_id, bool):
+        return False
+    if not _same_frame_termination_row(snapshot, options, war_id):
+        return False
+    assert isinstance(options, dict)
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    option_rows = options.get("options")
+    white_peace = (
+        option_rows.get("white_peace")
+        if isinstance(option_rows, dict)
+        else None
+    )
+    response = (
+        white_peace.get("recipient_response")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    return bool(
+        snapshot.get("paused") is True
+        and war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 <= score < 100
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= 365
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == "claim_cb"
+        and options.get("cb_allows_white_peace") is True
+        and isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+        and white_peace.get("context_constructed") is True
+        and white_peace.get("native_validator_passed") is True
+        and white_peace.get("available") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    )
+
+
+def _claim_cb_white_peace_terms_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: dict[str, object],
+    terms: object,
+) -> bool:
+    war_id = war.get("war_id")
+    if (
+        not isinstance(war_id, int)
+        or isinstance(war_id, bool)
+        or not _same_frame_termination_row(snapshot, terms, war_id)
+    ):
+        return False
+    assert isinstance(terms, dict)
+    option_cb = options.get("active_casus_belli_identity")
+    terms_cb = terms.get("casus_belli")
+    readiness = terms.get("readiness")
+    played_character = snapshot.get("played_character")
+    target_title_ids = war.get("targeted_title_ids")
+    claims = terms.get("claims")
+    return bool(
+        terms.get("status") == "available"
+        and isinstance(option_cb, dict)
+        and isinstance(terms_cb, dict)
+        and terms_cb.get("canonical_key") == "claim_cb"
+        and terms_cb.get("database_index")
+        == option_cb.get("database_index")
+        and isinstance(readiness, dict)
+        and readiness.get("ready") is True
+        and isinstance(played_character, dict)
+        and terms.get("claimant_character_id")
+        == played_character.get("character_id")
+        and isinstance(target_title_ids, list)
+        and bool(target_title_ids)
+        and terms.get("target_title_ids") == target_title_ids
+        and isinstance(claims, list)
+        and len(claims) == len(target_title_ids)
+        and all(
+            isinstance(claim, dict)
+            and claim.get("title_id") == title_id
+            and claim.get("present") is True
+            for claim, title_id in zip(claims, target_title_ids, strict=True)
+        )
+    )
+
+
+def _white_peace_submission_cooldown(
+    commands: list[dict[str, object]],
+    *,
+    war_id: int,
+    date_raw: object,
+    episode_run_id: object,
+) -> dict[str, object] | None:
+    if isinstance(date_raw, bool) or not isinstance(date_raw, int):
+        return {"status": "invalid_current_date"}
+    expected_step = offer_white_peace_step(war_id)
+    for row in reversed(commands):
+        if row.get("command") != expected_step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(action, dict)
+            and action.get("war_id") == war_id
+            and action.get("outcome") == "white_peace"
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            continue
+        submitted_date_raw = action.get("submitted_date_raw")
+        if isinstance(submitted_date_raw, bool) or not isinstance(
+            submitted_date_raw, int
+        ):
+            return {"status": "malformed_submission_history"}
+        elapsed_raw = date_raw - submitted_date_raw
+        if elapsed_raw < _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW:
+            return {
+                "status": "cooldown",
+                "submitted_date_raw": submitted_date_raw,
+                "elapsed_raw": elapsed_raw,
+                "remaining_raw": (
+                    _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW - elapsed_raw
+                ),
+                "same_day_pending": (
+                    elapsed_raw == 0
+                    and action.get("status") == "submitted_pending"
+                ),
+                "history_index": row.get("index"),
+            }
+        return None
+    return None
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -2441,6 +2617,61 @@ def choose_one_life_turn(
         and isinstance(snapshot.get("active_wars"), list)
         else []
     )
+    war_summary = [
+        {
+            "war_id": war.get("war_id"),
+            "player_side": war.get("player_side"),
+            "primary_opponent_character_id": war.get(
+                "primary_opponent_character_id"
+            ),
+            "player_is_primary_war_leader": war.get(
+                "player_is_primary_war_leader"
+            ),
+            "enemy_primary_default_raise_province_id": war.get(
+                "enemy_primary_default_raise_province_id"
+            ),
+            "player_relative_war_score": war.get(
+                "player_relative_war_score"
+            ),
+        }
+        for war in active_wars
+    ]
+    enforceable = next(
+        (
+            war
+            for war in active_wars
+            if isinstance(war.get("war_id"), int)
+            and isinstance(war.get("player_relative_war_score"), int)
+            and int(war["player_relative_war_score"]) >= 100
+            and (
+                war.get("player_is_primary_war_leader") is True
+                or (
+                    war.get("player_is_primary_war_leader") is None
+                    and enforce_demands_step(int(war["war_id"]))
+                    in available_steps
+                )
+            )
+        ),
+        None,
+    )
+    if isinstance(enforceable, dict):
+        step = enforce_demands_step(int(enforceable["war_id"]))
+        if step in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_enforce_demands",
+                "selected_step": step,
+                "reason": "the native war reached 100%; enforce demands before issuing more army orders",
+                "active_wars": war_summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_enforce_demands_unsupported",
+            "selected_step": None,
+            "required_step": step,
+            "reason": "the war reached 100% but this backend cannot enforce demands",
+            "active_wars": war_summary,
+        }
     pending_interaction = (
         snapshot.get("pending_character_interaction")
         if isinstance(snapshot, dict)
@@ -2759,6 +2990,22 @@ def choose_one_life_turn(
             and isinstance(row.get("war_id"), int)
             and not isinstance(row.get("war_id"), bool)
         }
+        raw_termination_terms = (
+            snapshot.get("war_termination_terms")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        termination_terms_by_war_id = {
+            row["war_id"]: row
+            for row in (
+                raw_termination_terms
+                if isinstance(raw_termination_terms, list)
+                else []
+            )
+            if isinstance(row, dict)
+            and isinstance(row.get("war_id"), int)
+            and not isinstance(row.get("war_id"), bool)
+        }
         raw_exit_terms = (
             snapshot.get("war_termination_exit_terms")
             if isinstance(snapshot, dict)
@@ -2776,27 +3023,11 @@ def choose_one_life_turn(
             and isinstance(row.get("readiness"), dict)
             and row["readiness"].get("exit_terms_ready") is True
         }
-        war_summary = [
-            {
-                "war_id": war.get("war_id"),
-                "player_side": war.get("player_side"),
-                "primary_opponent_character_id": war.get(
-                    "primary_opponent_character_id"
-                ),
-                "player_is_primary_war_leader": war.get(
-                    "player_is_primary_war_leader"
-                ),
-                "enemy_primary_default_raise_province_id": war.get(
-                    "enemy_primary_default_raise_province_id"
-                ),
-                "player_relative_war_score": war.get(
-                    "player_relative_war_score"
-                ),
-            }
-            for war in active_wars
-        ]
         for summary in war_summary:
             termination = termination_by_war_id.get(summary.get("war_id"))
+            termination_terms = termination_terms_by_war_id.get(
+                summary.get("war_id")
+            )
             exit_terms = exit_terms_by_war_id.get(summary.get("war_id"))
             if isinstance(termination, dict):
                 options = termination.get("options")
@@ -2821,6 +3052,9 @@ def choose_one_life_turn(
                             "auto_accept_observable"
                         ),
                         "auto_accept": option.get("auto_accept"),
+                        "recipient_response": option.get(
+                            "recipient_response"
+                        ),
                     }
                     for name, option in (
                         options.items() if isinstance(options, dict) else []
@@ -2860,6 +3094,10 @@ def choose_one_life_turn(
                 if not acceptance_complete:
                     unknown_fields.append("opponent_acceptance")
                 summary["war_termination_options"] = dict(termination)
+                if isinstance(termination_terms, dict):
+                    summary["war_termination_terms"] = dict(
+                        termination_terms
+                    )
                 if isinstance(exit_terms, dict):
                     summary["war_termination_exit_terms"] = dict(exit_terms)
                 summary["war_exit_assessment"] = {
@@ -2920,42 +3158,6 @@ def choose_one_life_turn(
                         "game.forecast.campaign-outcomes-v1",
                     ],
                 }
-        enforceable = next(
-            (
-                war
-                for war in active_wars
-                if isinstance(war.get("war_id"), int)
-                and isinstance(war.get("player_relative_war_score"), int)
-                and int(war["player_relative_war_score"]) >= 100
-                and (
-                    war.get("player_is_primary_war_leader") is True
-                    or (
-                        war.get("player_is_primary_war_leader") is None
-                        and enforce_demands_step(int(war["war_id"]))
-                        in available_steps
-                    )
-                )
-            ),
-            None,
-        )
-        if isinstance(enforceable, dict):
-            step = enforce_demands_step(int(enforceable["war_id"]))
-            if step in available_steps:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_enforce_demands",
-                    "selected_step": step,
-                    "reason": "the native war reached 100%; enforce demands before issuing more army orders",
-                    "active_wars": war_summary,
-                }
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "native_war_enforce_demands_unsupported",
-                "selected_step": None,
-                "required_step": step,
-                "reason": "the war reached 100% but this backend cannot enforce demands",
-                "active_wars": war_summary,
-            }
         if isinstance(snapshot, dict) and snapshot.get("paused") is True:
             latched_unobservable_assaults = _unobservable_started_assaults(
                 snapshot,
@@ -2977,6 +3179,172 @@ def choose_one_life_turn(
                 **pending_war_interaction_plan,
                 "active_wars": war_summary,
             }
+        for war in active_wars:
+            if not isinstance(war, dict):
+                continue
+            war_id = war.get("war_id")
+            if (
+                isinstance(war_id, bool)
+                or not isinstance(war_id, int)
+                or war_id <= 0
+            ):
+                continue
+            cooldown = _white_peace_submission_cooldown(
+                rows,
+                war_id=war_id,
+                date_raw=(
+                    snapshot.get("date_raw")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+                episode_run_id=(
+                    snapshot.get("episode_run_id")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+            )
+            if isinstance(cooldown, dict) and cooldown.get(
+                "same_day_pending"
+            ) is True:
+                if "life-advance" in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_white_peace_response_advance",
+                        "selected_step": "life-advance",
+                        "war_id": war_id,
+                        "decision": {
+                            "policy": "claim-cb-minimal-white-peace-v1",
+                            "outcome": "white_peace",
+                            "status": "submitted_pending",
+                            "cooldown": cooldown,
+                            "native_ai_equivalent": False,
+                            "semantic_optimal": False,
+                        },
+                        "reason": (
+                            "the same-WarID white-peace proposal was queued "
+                            "on this game date; advance once so the recipient "
+                            "AI can process it, without treating ACK as an "
+                            "applied war result"
+                        ),
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_white_peace_response_advance_unsupported",
+                    "selected_step": None,
+                    "required_step": "life-advance",
+                    "war_id": war_id,
+                    "reason": (
+                        "a queued white-peace proposal needs one same-day "
+                        "advance before any repeat proposal"
+                    ),
+                    "active_wars": war_summary,
+                }
+            options = termination_by_war_id.get(war_id)
+            if not isinstance(options, dict):
+                query_step = query_war_termination_options_step(war_id)
+                if query_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_termination_query",
+                        "selected_step": query_step,
+                        "war_id": war_id,
+                        "reason": (
+                            "read the exact native termination contexts, "
+                            "final recipient response, and score evidence "
+                            "before any claim_cb white-peace decision"
+                        ),
+                        "active_wars": war_summary,
+                    }
+                continue
+            if not (
+                isinstance(snapshot, dict)
+                and _claim_cb_white_peace_base_ready(
+                    snapshot, war, options
+                )
+            ):
+                continue
+            terms = termination_terms_by_war_id.get(war_id)
+            if not isinstance(terms, dict):
+                terms_step = query_war_termination_terms_step(war_id)
+                if terms_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_termination_terms_v1_query",
+                        "selected_step": terms_step,
+                        "war_id": war_id,
+                        "decision": {
+                            "policy": "claim-cb-minimal-white-peace-v1",
+                            "outcome": "white_peace",
+                            "status": "terms_required",
+                            "native_ai_equivalent": False,
+                            "semantic_optimal": False,
+                        },
+                        "reason": (
+                            "the exact recipient would accept white peace; "
+                            "read same-frame claim-disposition v1 before "
+                            "offering it"
+                        ),
+                        "active_wars": war_summary,
+                    }
+                continue
+            if not (
+                isinstance(snapshot, dict)
+                and _claim_cb_white_peace_terms_ready(
+                    snapshot, war, options, terms
+                )
+            ):
+                continue
+            step = offer_white_peace_step(war_id)
+            if cooldown is None and step in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_claim_cb_minimal_white_peace",
+                    "selected_step": step,
+                    "war_id": war_id,
+                    "decision": {
+                        "policy": "claim-cb-minimal-white-peace-v1",
+                        "outcome": "white_peace",
+                        "recipient_response": dict(
+                            options["options"]["white_peace"][
+                                "recipient_response"
+                            ]
+                        ),
+                        "claimant_character_id": terms.get(
+                            "claimant_character_id"
+                        ),
+                        "target_title_ids": list(
+                            terms.get("target_title_ids", [])
+                        ),
+                        "all_declared_target_claims_present": True,
+                        "weak_claims_allowed": True,
+                        "native_ai_equivalent": False,
+                        "semantic_optimal": False,
+                        "campaign_forecast_used": False,
+                    },
+                    "reason": (
+                        "owner-authorized blocker removal: this primary "
+                        "attacker claim_cb is at least one year old, below "
+                        "100%, the exact recipient accepts, and same-frame "
+                        "v1 proves every declared target claim is retained; "
+                        "this minimal rule is not native-equivalent or the "
+                        "full v2 campaign policy"
+                    ),
+                    "active_wars": war_summary,
+                }
+            if cooldown is None:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_claim_cb_minimal_white_peace_unsupported",
+                    "selected_step": None,
+                    "required_step": step,
+                    "war_id": war_id,
+                    "reason": (
+                        "same-frame minimal white-peace evidence is ready, "
+                        "but the exact native literal is not reachable"
+                    ),
+                    "active_wars": war_summary,
+                }
         if not controlled_armies:
             if RAISE_TROOPS_STEP in available_steps:
                 return {
@@ -2994,30 +3362,6 @@ def choose_one_life_turn(
                 "reason": "the active war cannot continue until this backend can raise troops",
                 "active_wars": war_summary,
             }
-
-        for summary in war_summary:
-            if "war_termination_options" in summary:
-                continue
-            war_id = summary.get("war_id")
-            if (
-                isinstance(war_id, int)
-                and not isinstance(war_id, bool)
-                and war_id > 0
-            ):
-                query_step = query_war_termination_options_step(war_id)
-                if query_step in available_steps:
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": "native_war_termination_query",
-                        "selected_step": query_step,
-                        "reason": (
-                            "read the exact native termination contexts, "
-                            "legality, war-score evidence, and per-option AI "
-                            "acceptance before choosing another war action"
-                        ),
-                        "active_wars": war_summary,
-                    }
-
         primary_defensive_wars = [
             summary
             for summary in war_summary

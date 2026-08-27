@@ -343,17 +343,22 @@ def _termination_options(
     war_id: int = 88,
     *,
     score: int = 17,
+    claim_cb_ready: bool = False,
+    war_duration_days: int = 203,
+    recipient_decision_status_raw: int = 0,
 ) -> dict[str, object]:
     return {
         "war_id": war_id,
         "player_side": "attacker",
         "player_is_primary_war_leader": True,
         "player_relative_war_score": score,
-        "war_duration_days": 203,
+        "war_duration_days": war_duration_days,
         "active_casus_belli_present": True,
         "active_casus_belli_identity": {
-            "database_index": 17,
-            "canonical_key": "county_conquest_cb",
+            "database_index": 0 if claim_cb_ready else 17,
+            "canonical_key": (
+                "claim_cb" if claim_cb_ready else "county_conquest_cb"
+            ),
         },
         "cb_allows_white_peace": True,
         "absolute_war_scores_observable": True,
@@ -379,13 +384,18 @@ def _termination_options(
                 },
                 "auto_accept_observable": True,
                 "auto_accept": True,
+                "recipient_response": {
+                    "status": "available",
+                    "decision_status_raw": 0,
+                    "would_accept_now": True,
+                },
             },
             "white_peace": {
                 "outcome": "white_peace",
                 "hostage_variant": "none",
                 "context_constructed": True,
-                "native_validator_passed": None,
-                "available": False,
+                "native_validator_passed": True if claim_cb_ready else None,
+                "available": claim_cb_ready,
                 "terms_observable": False,
                 "terms": {
                     "status": "unavailable",
@@ -398,6 +408,23 @@ def _termination_options(
                 },
                 "auto_accept_observable": True,
                 "auto_accept": False,
+                "recipient_response": (
+                    {
+                        "status": "available",
+                        "decision_status_raw": (
+                            recipient_decision_status_raw
+                        ),
+                        "would_accept_now": (
+                            recipient_decision_status_raw != 2
+                        ),
+                    }
+                    if claim_cb_ready
+                    else {
+                        "status": "unavailable",
+                        "decision_status_raw": None,
+                        "would_accept_now": None,
+                    }
+                ),
             },
             "victory": {
                 "outcome": "attacker_victory",
@@ -417,28 +444,38 @@ def _termination_options(
                 },
                 "auto_accept_observable": True,
                 "auto_accept": False,
+                "recipient_response": {
+                    "status": "unavailable",
+                    "decision_status_raw": None,
+                    "would_accept_now": None,
+                },
             },
         },
         "source": "native",
     }
 
 
-def _termination_terms(war_id: int = 88) -> dict[str, object]:
+def _termination_terms(
+    war_id: int = 88,
+    *,
+    claimant_character_id: int = 29_829,
+    strong: bool = True,
+) -> dict[str, object]:
     return {
         "schema_version": 1,
         "status": "available",
         "war_id": war_id,
         "casus_belli": {"database_index": 0, "canonical_key": "claim_cb"},
         "supported_slice": "claim_cb_claim_disposition",
-        "claimant_character_id": 29_829,
+        "claimant_character_id": claimant_character_id,
         "target_title_ids": [2_388],
         "claims": [
             {
                 "title_id": 2_388,
                 "present": True,
-                "strong": True,
+                "strong": strong,
                 "implicit": False,
-                "state": "strong_explicit",
+                "state": "strong_explicit" if strong else "weak_explicit",
             }
         ],
         "outcomes": {
@@ -478,6 +515,85 @@ def _termination_terms(war_id: int = 88) -> dict[str, object]:
             ),
         },
     }
+
+
+def _ready_white_peace_snapshot(
+    *,
+    revision: int = 11,
+    date_raw: int = 53_177_976,
+    score: int = 37,
+    options: dict[str, object] | None = None,
+    terms: dict[str, object] | None = None,
+    history: list[dict[str, object]] | None = None,
+    include_terms: bool = True,
+) -> dict[str, object]:
+    war_id = 88
+    snapshot = {
+        **_snapshot(revision),
+        "paused": True,
+        "native_revision": 7,
+        "date_raw": date_raw,
+        "episode_run_id": "native-29829-ready",
+        "diagnostics": {"connection_generation": 3},
+        "played_character": {"character_id": 29_829, "alive": True},
+        "active_wars": [
+            _war(
+                war_id=war_id,
+                allied_armies=[
+                    _army(
+                        11,
+                        soldiers=900,
+                        province_id=20,
+                        controllable=True,
+                    )
+                ],
+                enemy_armies=[],
+                score=score,
+                targeted_title_ids=[2_388],
+            )
+        ],
+        "player_armies": [
+            _army(
+                11,
+                soldiers=900,
+                province_id=20,
+                controllable=True,
+            )
+        ],
+        "native_command_history": history or [],
+    }
+    binding = {
+        "queried_snapshot_id": snapshot["snapshot_id"],
+        "queried_revision": revision,
+        "queried_native_revision": 7,
+        "queried_connection_generation": 3,
+        "episode_run_id": "native-29829-ready",
+    }
+    snapshot["war_termination_options"] = [
+        {
+            **(
+                options
+                if options is not None
+                else _termination_options(
+                    score=score,
+                    claim_cb_ready=True,
+                    war_duration_days=436,
+                )
+            ),
+            **binding,
+        }
+    ]
+    snapshot["war_termination_terms"] = (
+        [
+            {
+                **(terms if terms is not None else _termination_terms()),
+                **binding,
+            }
+        ]
+        if include_terms
+        else []
+    )
+    return snapshot
 
 
 def _termination_exit_terms_v2() -> dict[str, object]:
@@ -4569,6 +4685,102 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(plan["battle_subject_army_id"], 202)
 
+    def test_cross_war_enforce_precedes_active_combat_query(self) -> None:
+        combat = _army(
+            202,
+            soldiers=500,
+            province_id=31,
+            controllable=True,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+        )
+        enemy = _army(
+            303, soldiers=450, province_id=31, controllable=False
+        )
+        snapshot = {
+            **_snapshot(8),
+            "active_wars": [
+                _war(
+                    war_id=88,
+                    allied_armies=[combat],
+                    enemy_armies=[enemy],
+                    score=12,
+                ),
+                _war(
+                    war_id=99,
+                    allied_armies=[],
+                    enemy_armies=[],
+                    score=100,
+                ),
+            ],
+            "player_armies": [combat],
+        }
+
+        plan = choose_one_life_turn(
+            [],
+            snapshot=snapshot,
+            action_steps=(
+                "enforce-demands-99",
+                "query-battle-control-snapshot-v1-202",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-99")
+
+    def test_missing_cross_war_enforce_literal_blocks_combat_query(self) -> None:
+        combat = _army(
+            202,
+            soldiers=500,
+            province_id=31,
+            controllable=True,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+        )
+        enemy = _army(
+            303, soldiers=450, province_id=31, controllable=False
+        )
+        snapshot = {
+            **_snapshot(8),
+            "active_wars": [
+                _war(
+                    war_id=88,
+                    allied_armies=[combat],
+                    enemy_armies=[enemy],
+                    score=12,
+                ),
+                _war(
+                    war_id=99,
+                    allied_armies=[],
+                    enemy_armies=[],
+                    score=100,
+                ),
+            ],
+            "player_armies": [combat],
+        }
+
+        plan = choose_one_life_turn(
+            [],
+            snapshot=snapshot,
+            action_steps=(
+                "query-battle-control-snapshot-v1-202",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_enforce_demands_unsupported"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["required_step"], "enforce-demands-99")
+        self.assertNotEqual(
+            plan.get("required_step"),
+            "query-battle-control-snapshot-v1-202",
+        )
+
     def test_battle_query_precedes_other_armys_urgent_reroute(self) -> None:
         stronger = _army(
             101,
@@ -7099,6 +7311,164 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             plan["selected_step"], "query-war-termination-options-88"
         )
+
+    def test_claim_cb_white_peace_planner_queries_terms_then_offers(self) -> None:
+        without_terms = _ready_white_peace_snapshot(include_terms=False)
+
+        terms_plan = choose_one_life_turn(
+            [],
+            snapshot=without_terms,
+            action_steps=(
+                "query-war-termination-options-88",
+                "query-war-termination-terms-v1-88",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(
+            terms_plan["phase"], "native_war_termination_terms_v1_query"
+        )
+        self.assertEqual(
+            terms_plan["selected_step"],
+            "query-war-termination-terms-v1-88",
+        )
+
+        weak_terms = _termination_terms(strong=False)
+        ready = _ready_white_peace_snapshot(terms=weak_terms)
+        offer_plan = choose_one_life_turn(
+            [],
+            snapshot=ready,
+            action_steps=(
+                "query-war-termination-options-88",
+                "query-war-termination-terms-v1-88",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(
+            offer_plan["phase"],
+            "native_war_claim_cb_minimal_white_peace",
+        )
+        self.assertEqual(
+            offer_plan["selected_step"], "offer-white-peace-88"
+        )
+        self.assertTrue(offer_plan["decision"]["weak_claims_allowed"])
+        self.assertFalse(offer_plan["decision"]["native_ai_equivalent"])
+
+    def test_claim_cb_white_peace_rejects_stale_final_no_and_other_cb(self) -> None:
+        rejected_options = _termination_options(
+            score=37,
+            claim_cb_ready=True,
+            war_duration_days=436,
+            recipient_decision_status_raw=2,
+        )
+        rejected_options["options"]["white_peace"]["ai_acceptance"] = {
+            "raw": 1_279_120,
+            "scale": 100_000,
+        }
+        rejected = _ready_white_peace_snapshot(options=rejected_options)
+        stale = _ready_white_peace_snapshot()
+        stale["war_termination_options"][0][
+            "queried_native_revision"
+        ] = 6
+        holy = _ready_white_peace_snapshot()
+        holy["war_termination_options"][0]["active_casus_belli_identity"] = {
+            "database_index": 22,
+            "canonical_key": "holy_war_cb",
+        }
+        steps = (
+            "query-war-termination-options-88",
+            "query-war-termination-terms-v1-88",
+            "offer-white-peace-88",
+            "life-advance",
+        )
+
+        for name, snapshot in (
+            ("final_rejection", rejected),
+            ("stale", stale),
+            ("holy_war", holy),
+        ):
+            with self.subTest(name=name):
+                plan = choose_one_life_turn(
+                    [], snapshot=snapshot, action_steps=steps
+                )
+                self.assertNotEqual(
+                    plan.get("selected_step"), "offer-white-peace-88"
+                )
+
+    def test_enforce_demands_cross_war_precedes_minimal_white_peace(self) -> None:
+        snapshot = _ready_white_peace_snapshot()
+        snapshot["active_wars"].append(
+            _war(
+                war_id=99,
+                score=100,
+                allied_armies=[],
+                enemy_armies=[],
+            )
+        )
+
+        plan = choose_one_life_turn(
+            [],
+            snapshot=snapshot,
+            action_steps=(
+                "enforce-demands-99",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-99")
+
+    def test_white_peace_history_advances_once_and_honors_720_raw_cooldown(
+        self,
+    ) -> None:
+        submitted_date_raw = 53_177_976
+        history = [
+            {
+                "index": 1,
+                "command": "offer-white-peace-88",
+                "ok": True,
+                "result": {
+                    "war_termination_result": {
+                        "status": "submitted_pending",
+                        "war_id": 88,
+                        "outcome": "white_peace",
+                        "episode_run_id": "native-29829-ready",
+                        "submitted_date_raw": submitted_date_raw,
+                    }
+                },
+            }
+        ]
+        steps = ("offer-white-peace-88", "life-advance")
+        same_day = _ready_white_peace_snapshot(
+            date_raw=submitted_date_raw, history=history
+        )
+
+        same_day_plan = choose_one_life_turn(
+            history, snapshot=same_day, action_steps=steps
+        )
+
+        self.assertEqual(
+            same_day_plan["phase"],
+            "native_war_white_peace_response_advance",
+        )
+        self.assertEqual(same_day_plan["selected_step"], "life-advance")
+
+        for elapsed_raw, expected_offer in ((719, False), (720, True)):
+            restored = _ready_white_peace_snapshot(
+                date_raw=submitted_date_raw + elapsed_raw,
+                history=history,
+            )
+            plan = choose_one_life_turn(
+                history, snapshot=restored, action_steps=steps
+            )
+            self.assertEqual(
+                plan.get("selected_step") == "offer-white-peace-88",
+                expected_offer,
+            )
 
     def test_planner_does_not_select_crash_disabled_exit_terms_v2(
         self,

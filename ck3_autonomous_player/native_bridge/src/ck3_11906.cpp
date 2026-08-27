@@ -3453,6 +3453,10 @@ void ReadWarTerminationAcceptance(
   }
 }
 
+bool ReadWarExitRecipientResponse(
+    const Bindings &bindings, void *context,
+    game::WarExitRecipientResponseSnapshot &response) noexcept;
+
 bool EvaluateWarResolutionContext(
     const Bindings &bindings, void *war, bool attacker_victory,
     game::WarTerminationOptionSnapshot &option) noexcept {
@@ -3472,6 +3476,14 @@ bool EvaluateWarResolutionContext(
     option.native_validator_passed =
         bindings.validate_character_interaction_context(context, nullptr);
     ReadWarTerminationAcceptance(bindings, context, option);
+    game::WarExitRecipientResponseSnapshot response{};
+    if (ReadWarExitRecipientResponse(bindings, context, response)) {
+      option.recipient_response.observable = true;
+      option.recipient_response.decision_status_raw =
+          response.decision_status_raw;
+      option.recipient_response.would_accept_now =
+          response.would_accept_now;
+    }
   }
   bindings.destroy_character_interaction_context(context);
   return true;
@@ -3497,6 +3509,14 @@ bool EvaluateWhitePeaceContext(
     option.native_validator_passed =
         bindings.validate_character_interaction_context(context, nullptr);
     ReadWarTerminationAcceptance(bindings, context, option);
+    game::WarExitRecipientResponseSnapshot response{};
+    if (ReadWarExitRecipientResponse(bindings, context, response)) {
+      option.recipient_response.observable = true;
+      option.recipient_response.decision_status_raw =
+          response.decision_status_raw;
+      option.recipient_response.would_accept_now =
+          response.would_accept_now;
+    }
   }
   bindings.destroy_character_interaction_context(context);
   return true;

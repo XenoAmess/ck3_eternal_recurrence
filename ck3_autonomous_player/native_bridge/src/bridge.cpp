@@ -1220,6 +1220,21 @@ void AppendWarTerminationOption(
   } else {
     result += "null";
   }
+  result += ",\"recipient_response\":{\"status\":\"";
+  result += option.recipient_response.observable ? "available" : "unavailable";
+  result += "\",\"decision_status_raw\":";
+  if (option.recipient_response.observable) {
+    result += SignedNumber(option.recipient_response.decision_status_raw);
+  } else {
+    result += "null";
+  }
+  result += ",\"would_accept_now\":";
+  if (option.recipient_response.observable) {
+    result += option.recipient_response.would_accept_now ? "true" : "false";
+  } else {
+    result += "null";
+  }
+  result += '}';
   result += '}';
 }
 

@@ -26,6 +26,19 @@ import xar_autoplayer.native_auto_run as native_auto_run_module  # noqa: E402
 _CHECKPOINT_PAYLOAD = b"native-auto-run periodic checkpoint fixture"
 
 
+def _white_peace_war() -> dict[str, object]:
+    return {
+        "war_id": 16_777_290,
+        "player_side": "attacker",
+        "player_is_primary_war_leader": True,
+        "player_relative_war_score": 37,
+        "war_duration_days": 436,
+        "targeted_title_ids": [2_388],
+        "allied_armies": [],
+        "enemy_armies": [],
+    }
+
+
 def _session_report(pipe_name: str) -> dict[str, object]:
     return {
         "kind": "ck3_native_session",
@@ -88,6 +101,11 @@ class _NativeAutoRunHarness:
             }
             if any(action.startswith("reply_") for action in self.actions)
             else None
+        )
+        self.active_wars = (
+            [_white_peace_war()]
+            if any(action.startswith("white_peace_") for action in actions)
+            else []
         )
         self.history: list[dict[str, object]] = []
         self.ready_snapshot_observed = False
@@ -218,7 +236,7 @@ class _NativeAutoRunHarness:
             "pending_character_interaction": copy.deepcopy(
                 self.pending_character_interaction
             ),
-            "active_wars": [],
+            "active_wars": copy.deepcopy(self.active_wars),
             "player_armies": [],
             "native_command_history": copy.deepcopy(self.history),
             "diagnostics": self._diagnostics(),
@@ -372,6 +390,56 @@ class _NativeAutoRunHarness:
                     }
                 )
         elif action in {
+            "white_peace_applied",
+            "white_peace_pending",
+            "white_peace_ack_only",
+        }:
+            step = "offer-white-peace-16777290"
+            starting_snapshot_id = f"native:{self.native_revision}"
+            starting_date_raw = self.date_raw
+            old_war = copy.deepcopy(self.active_wars[0])
+            if action in {"white_peace_applied", "white_peace_ack_only"}:
+                self.active_wars = []
+            self.native_revision += 1
+            self.public_revision += 1
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+                "backend_id": "native-headless",
+            }
+            if action != "white_peace_ack_only":
+                remaining = (
+                    copy.deepcopy(old_war)
+                    if action == "white_peace_pending"
+                    else None
+                )
+                result["war_termination_result"] = {
+                    "status": (
+                        "submitted_pending"
+                        if action == "white_peace_pending"
+                        else "applied"
+                    ),
+                    "war_id": 16_777_290,
+                    "outcome": "white_peace",
+                    "submitted_date_raw": starting_date_raw,
+                    "observed_date_raw": self.date_raw,
+                    "episode_run_id": "native-707-test-run",
+                    "starting_snapshot_id": starting_snapshot_id,
+                    "observed_snapshot_id": f"native:{self.native_revision}",
+                    "command_acknowledged": True,
+                    "war_id_absent_after_ack": remaining is None,
+                    "recipient_decision_status_raw": 0,
+                    "recipient_would_accept_now": True,
+                    "casus_belli": {
+                        "database_index": 0,
+                        "canonical_key": "claim_cb",
+                    },
+                    "claimant_character_id": 707,
+                    "target_title_ids": [2_388],
+                    "remaining_active_war": remaining,
+                }
+        elif action in {
             "death_terminal",
             "death_terminal_source_mismatch",
             "death_terminal_score_mismatch",
@@ -464,6 +532,13 @@ class _NativeAutoRunHarness:
             plan["decision"] = {
                 "rule_id": "ordinary-reject-unique-accept-v1",
                 "selected_action": "reject",
+            }
+        if step.startswith("offer-white-peace-"):
+            plan["war_id"] = 16_777_290
+            plan["decision"] = {
+                "rule_id": "native_ai_claim_cb_minimal_white_peace_v1",
+                "selected_action": "offer_white_peace",
+                "native_ai_equivalent": False,
             }
         return {
             "status": "executed",
@@ -1011,6 +1086,174 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertNotIn("interaction_result", blocker["result"])
         self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_white_peace_applied_preserves_bounded_semantic_evidence(
+        self,
+    ) -> None:
+        report, _harness = self._run(["white_peace_applied"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["selected_step"], "offer-white-peace-16777290")
+        self.assertIn("war_changed", turn["evidence"])
+        self.assertEqual(
+            turn["plan"]["decision"]["selected_action"],
+            "offer_white_peace",
+        )
+        termination = turn["result"]["war_termination_result"]
+        self.assertEqual(termination["status"], "applied")
+        self.assertTrue(termination["command_acknowledged"])
+        self.assertTrue(termination["war_id_absent_after_ack"])
+        self.assertIsNone(termination["remaining_active_war"])
+
+    def test_white_peace_pending_is_recorded_but_not_visible_completion(
+        self,
+    ) -> None:
+        report, _harness = self._run(["white_peace_pending"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["outcome"], "not_qualified")
+        self.assertEqual(
+            report["first_blocker"]["kind"], "run_bound_exhausted"
+        )
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["evidence"], ["no_semantic_delta"])
+        termination = turn["result"]["war_termination_result"]
+        self.assertEqual(termination["status"], "submitted_pending")
+        self.assertFalse(termination["war_id_absent_after_ack"])
+        self.assertEqual(
+            termination["remaining_active_war"]["war_id"],
+            16_777_290,
+        )
+
+    def test_white_peace_ack_without_typed_end_state_stops_the_run(self) -> None:
+        report, _harness = self._run(["white_peace_ack_only"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(
+            report["first_blocker"]["kind"],
+            "white_peace_lifecycle_postcondition_failed",
+        )
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_white_peace_lifecycle_rejects_contradictory_identity_fields(
+        self,
+    ) -> None:
+        before = {
+            "snapshot_id": "native:1",
+            "date_raw": 53_171_400,
+            "episode_run_id": "native-707-test-run",
+            "_semantic": {
+                "played_character": {"character_id": 707},
+                "active_wars": [_white_peace_war()],
+            },
+        }
+        after = {
+            "snapshot_id": "native:2",
+            "date_raw": 53_171_400,
+            "episode_run_id": "native-707-test-run",
+            "active_wars": [],
+        }
+        action = {
+            "status": "applied",
+            "war_id": 16_777_290,
+            "outcome": "white_peace",
+            "submitted_date_raw": 53_171_400,
+            "observed_date_raw": 53_171_400,
+            "episode_run_id": "native-707-test-run",
+            "starting_snapshot_id": "native:1",
+            "observed_snapshot_id": "native:2",
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": True,
+            "recipient_decision_status_raw": 0,
+            "recipient_would_accept_now": True,
+            "casus_belli": {
+                "database_index": 0,
+                "canonical_key": "claim_cb",
+            },
+            "claimant_character_id": 707,
+            "target_title_ids": [2_388],
+            "remaining_active_war": None,
+        }
+        result = {"war_termination_result": action}
+        self.assertTrue(
+            native_auto_run_module._white_peace_lifecycle_verified(
+                "offer-white-peace-16777290",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=["war_changed"],
+            )
+        )
+        contradictions = {
+            "submitted_date_raw": 53_171_399,
+            "observed_date_raw": 53_171_401,
+            "episode_run_id": "other-run",
+            "recipient_decision_status_raw": 2,
+            "claimant_character_id": 708,
+            "target_title_ids": [9_999],
+        }
+        for field, value in contradictions.items():
+            with self.subTest(field=field):
+                malformed = copy.deepcopy(result)
+                malformed["war_termination_result"][field] = value
+                self.assertFalse(
+                    native_auto_run_module._white_peace_lifecycle_verified(
+                        "offer-white-peace-16777290",
+                        malformed,
+                        before=before,
+                        after_snapshot=after,
+                        evidence=["war_changed"],
+                    )
+                )
+        malformed = copy.deepcopy(result)
+        malformed["war_termination_result"]["casus_belli"][
+            "canonical_key"
+        ] = "holy_war_cb"
+        self.assertFalse(
+            native_auto_run_module._white_peace_lifecycle_verified(
+                "offer-white-peace-16777290",
+                malformed,
+                before=before,
+                after_snapshot=after,
+                evidence=["war_changed"],
+            )
+        )
+        malformed = copy.deepcopy(result)
+        malformed["war_termination_result"]["casus_belli"][
+            "database_index"
+        ] = -1
+        self.assertFalse(
+            native_auto_run_module._white_peace_lifecycle_verified(
+                "offer-white-peace-16777290",
+                malformed,
+                before=before,
+                after_snapshot=after,
+                evidence=["war_changed"],
+            )
+        )
+
+        pending = copy.deepcopy(result)
+        pending_action = pending["war_termination_result"]
+        pending_action["status"] = "submitted_pending"
+        pending_action["war_id_absent_after_ack"] = False
+        pending_action["remaining_active_war"] = _white_peace_war()
+        changed_after = copy.deepcopy(after)
+        changed_war = _white_peace_war()
+        changed_war["player_relative_war_score"] = 38
+        changed_after["active_wars"] = [changed_war]
+        self.assertFalse(
+            native_auto_run_module._white_peace_lifecycle_verified(
+                "offer-white-peace-16777290",
+                pending,
+                before=before,
+                after_snapshot=changed_after,
+                evidence=["war_changed"],
+            )
+        )
 
     def test_session_exit_during_readiness_is_classified_as_session_exit(self) -> None:
         report, _harness = self._run(

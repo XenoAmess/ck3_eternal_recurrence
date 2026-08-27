@@ -1326,7 +1326,7 @@ exact contract：
    再调用 command manager queue，flags=`0x0E`，并严格采纳其 bool 返回值。
 6. 无论成功失败，都按已构造边界析构 command 内嵌的 `command+0x20` context 与临时 context；只有 queue bool=true
    才返回 `submitted`，false 返回 `submission_failed`。
-7. `auto_accept=false` 不禁止提交；它只表示对手仍需答复。ACK 绝不等于白和成立，只有后续新的 paused snapshot 中该
+7. `auto_accept=false` 不禁止提交；它只表示对手仍需答复。ACK 绝不等于白和成立，只有命令后当前可用 paused observation 中该
    full-generation `WarID` 消失，并核对关键条款状态变化，才能标记战争结束。
 
 建议 native 结果枚举至少区分：`unavailable`、`requires_paused`、`no_played_character`、`war_not_found`、
@@ -1381,3 +1381,81 @@ game.command.query-war-termination-options-N
 原版事实只定义“CK3 AI 怎么做”，不定义我方应怎么做。更严格的止损树见
 [player-war-exit-policy.md](player-war-exit-policy.md)。真正的战斗概率输入边界见
 [combat-simulation-inputs.md](combat-simulation-inputs.md)；原生 AI 战力比和实际战斗模拟分别由对应专题维护。
+
+## GEN-004 owner 允许的最窄 `claim_cb` 白和 counter-policy（2026-08-27）
+
+> [counter-policy / static-ready] 本节只覆盖解除当前一代人 run blocker 的最小写策略。它建立在本文已经冻结的原生
+> interaction/context、AI response 与 `claim_cb` outcome 树之后，但**不是原生 AI 等价实现，也不是完整 exit-policy v2**。
+> 本节按日期取代上文“必须等待完整 dynamic v2/campaign forecast 才广告 white-peace literal”的旧施工冻结；原生事实、完整
+> v2 schema 和质量债均不被删改。surrender 仍冻结。
+
+### 新 options 观测契约
+
+- 每个 termination option 现在都必须带 typed
+  `recipient_response={status,decision_status_raw,would_accept_now}`。`status=available` 时 raw 必须是非 bool 的整数
+  `0/1/2`，并保持 `would_accept_now == (decision_status_raw != 2)`；`status=unavailable` 时后两项必须为 `null`。
+- exact-build reader 在每个 finalized option context teardown **之前**调用既有
+  `ReadWarExitRecipientResponse`，其最终 evaluator 是
+  `0x2C43B40(context,1,0,null,null)`。raw AI acceptance 与 auto-accept 仍作为诊断并列，但不得以
+  `acceptance.raw > 0`、validator 或 auto-accept 推导 final response；fixture 已覆盖 acceptance 为正而 final status=`2`
+  仍为拒绝。
+- validator=false 或 evaluator status>=3 只令该 option 的 response 显式 unavailable；整份 termination-options query 仍然
+  available，其他 option 也照常发布。Python 新 source 对缺字段或 malformed response 严格拒绝，因此必须与本次新 DLL 配套。
+
+### 唯一允许的 planner/action 路径
+
+```mermaid
+flowchart TD
+    S["paused full WarID"] --> E{"任一战争可 100% enforce?"}
+    E -->|yes| V["enforce-demands；跨 war 永远优先"]
+    E -->|no| P{"有 pending interaction?"}
+    P -->|yes| PI["先按 typed pending policy 处理"]
+    P -->|no| O{"本 WarID 有 same-frame options?"}
+    O -->|no| QO["T1 query termination options"]
+    O -->|yes| G{"primary attacker + claim_cb<br/>0≤score<100 + duration≥365<br/>WP legal/no hostage/final accept"}
+    G -->|no| M["恢复既有军事 OODA；不提白和"]
+    G -->|yes| T{"same-frame claim terms v1 ready?"}
+    T -->|no| QT["T2 query terms v1"]
+    T -->|yes| C{"claimant=played；targets exact；claims all present"}
+    C -->|no| M
+    C -->|yes| W["T3 offer-white-peace-full WarID"]
+    W --> A{"fresh paused snapshot 中旧 WarID 消失?"}
+    A -->|yes| X["applied；semantic war_changed"]
+    A -->|no| SP["submitted_pending；T4 同日 life-advance 一次"]
+    SP --> CD["同 WarID 720 raw 冷却；期间恢复军事 OODA"]
+```
+
+所有 gate 必须同时成立：paused；options 与 claim terms v1 绑定同 snapshot/revision/native revision/date、connection
+generation、episode 和 full-generation WarID；玩家为 primary attacker；active CB identity 的 database index/key 自洽且 key
+恰为 `claim_cb`；`0 <= player_relative_war_score < 100`；`war_duration_days >= 365`；CB 允许白和，white-peace context/
+validator/available 为真；hostage variant=`none`；typed recipient response 明确 `would_accept_now=true`；v1
+`available/ready`，claimant 等于 played CharacterID，target IDs 与战争全部 declared targets 完全一致，且每项 claim 都 present。
+weak claim 合法：原版 `claim_cb` 白和会保留并强化 weak claim，强制“全部 strong”会把原生明确支持的有利止损错误排除。
+
+active event 仍保持最先处理；其后 100% enforce-demands 是跨战争绝对高优先级，先于 auto-accept notification、pending
+interaction、battle-control 和白和。即使 enforce literal 缺失，也只能报告该缺口，不能降级到后续动作。pending interaction
+随后优先于白和。unknown/other CB、holy war、宗教输入、人质组合、玩家 defender/非 primary、负战分、满 100 战分、未满一年与
+surrender 都不进入本切片。此处没有借圣战例外展开 faith/religion。
+
+direct execute 不信 planner 的旧判断：必须 fresh 重验 raw capabilities、同一 options/terms cache binding、snapshot/episode/date/
+WarID/CB/validator/final response/claims 与 720 raw history cooldown，再走已存在的 native queue。ACK 必须严格为 exact step、
+`accepted=true`、`status=submitted`；随后读取命令后当前可用的 observation（不要求 snapshot/revision 必然推进），并只接受同
+bridge PID、connection generation、episode、played CharacterID、paused 且 date 未变化的绑定。WarID 消失才返回 typed
+`applied`；仍存在只返回 `submitted_pending` 和 after 的完整 war row。
+ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一次让 AI 处理；history 持久化后在 restore 中仍以 24 raw/day、
+30 日=`720` raw 抑制同 WarID 重复，`+719` 阻断、`+720` 才重开提议门。
+
+### production6b 当前证据与 live 边界
+
+- [live-confirmed, old fields only] 当前 paused 角色 `29829`、WarID `16777290`、玩家 attacker/primary、最新战分 `37`、
+  target `[2388]`。旧帧曾见战争时长 `436` 与 WP validator/available=true；这些值仍必须由 fresh frame 重查。
+- [not live] 当前 production6b artifact 没有新 `recipient_response`，也从未发出 claim terms v1 query。历史 acceptance
+  `+12.7912` 不能替代 final evaluator；文档曾 live-confirmed 的 strong claim 也不能跨帧当作 planner machine input。
+- [static forecast] 配套新 DLL 的预期 turn 是 T1 options → T2 same-frame v1 → T3 offer；若仍 pending，T4
+  `life-advance`。只有后续 WarID 消失才进入 disband/save/continue；否则 720 raw 内恢复军事 OODA而不重提。
+- 固定 G1 handoff 的 source `480f287` + 旧 DLL 继续作为独立 legacy 组合。新 strict source 与旧 DLL 不兼容，不能混配或
+  静默复用旧 canary clone；首次验收必须另建 new-source/new-DLL canary，在此之前不得称新字段 live。
+
+完整 v2/campaign 替换口仍是：逐人 actual resources、truce、PoW/hostage、resolved title/vassal operations、finance、双方可动员
+兵力与补员、encounter distribution、围城/增援 ETA、人格/文化/其它战争等原生输入，再比较 continue/white peace/surrender 的
+风险调整效用。本最小包只提供 deterministic blocker removal；production outcome 必须回写本专题用于后续校准。

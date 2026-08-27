@@ -25,7 +25,10 @@ from .bridge.settlement_contract import (
     normalize_one_life_settlement,
     settlement_ready_for_episode,
 )
-from .bridge.war_contract import is_life_advance_step
+from .bridge.war_contract import (
+    is_life_advance_step,
+    parse_offer_white_peace_step,
+)
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
 from .native_session import (
@@ -519,8 +522,43 @@ def native_auto_run(
                         "native pending-interaction reply lacks a typed "
                         "old-instance lifecycle postcondition"
                     )
+            white_peace_submission_pending = False
+            if parse_offer_white_peace_step(step) is not None:
+                result = outcome.get("result")
+                if not _white_peace_lifecycle_verified(
+                    step,
+                    result,
+                    before=before,
+                    after_snapshot=after_snapshot,
+                    evidence=evidence,
+                ):
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="white_peace_lifecycle_postcondition_failed",
+                        message=(
+                            "native white-peace submission lacks a typed "
+                            "same-WarID applied-or-pending postcondition"
+                        ),
+                    )
+                    raise AgentError(
+                        "native white-peace submission lacks a typed "
+                        "same-WarID applied-or-pending postcondition"
+                    )
+                assert isinstance(result, dict)
+                war_termination_result = result.get(
+                    "war_termination_result"
+                )
+                assert isinstance(war_termination_result, dict)
+                white_peace_submission_pending = (
+                    war_termination_result.get("status")
+                    == "submitted_pending"
+                )
             counts[turn_class] += 1
-            if turn_class == "gameplay" and evidence:
+            if (
+                turn_class == "gameplay"
+                and evidence
+                and not white_peace_submission_pending
+            ):
                 visible_gameplay_turns += 1
                 dirty_gameplay_since_checkpoint = True
             turns.append(
@@ -1694,6 +1732,145 @@ def _pending_interaction_lifecycle_verified(
     )
 
 
+def _white_peace_lifecycle_verified(
+    step: str,
+    result: object,
+    *,
+    before: dict[str, object],
+    after_snapshot: dict[str, object],
+    evidence: list[str],
+) -> bool:
+    """Bind typed applied/pending status to old/full WarID presence."""
+    war_id = parse_offer_white_peace_step(step)
+    if war_id is None or not isinstance(result, dict):
+        return False
+    action = result.get("war_termination_result")
+    if not isinstance(action, dict) or set(action) != {
+        "status",
+        "war_id",
+        "outcome",
+        "submitted_date_raw",
+        "observed_date_raw",
+        "episode_run_id",
+        "starting_snapshot_id",
+        "observed_snapshot_id",
+        "command_acknowledged",
+        "war_id_absent_after_ack",
+        "recipient_decision_status_raw",
+        "recipient_would_accept_now",
+        "casus_belli",
+        "claimant_character_id",
+        "target_title_ids",
+        "remaining_active_war",
+    }:
+        return False
+    before_semantic = before.get("_semantic")
+    before_wars = (
+        before_semantic.get("active_wars")
+        if isinstance(before_semantic, dict)
+        else None
+    )
+    after_wars = after_snapshot.get("active_wars")
+    before_war = next(
+        (
+            war
+            for war in (
+                before_wars if isinstance(before_wars, list) else []
+            )
+            if isinstance(war, dict) and war.get("war_id") == war_id
+        ),
+        None,
+    )
+    before_present = any(
+        isinstance(war, dict) and war.get("war_id") == war_id
+        for war in (before_wars if isinstance(before_wars, list) else [])
+    )
+    after_present = any(
+        isinstance(war, dict) and war.get("war_id") == war_id
+        for war in (after_wars if isinstance(after_wars, list) else [])
+    )
+    after_war = next(
+        (
+            war
+            for war in (after_wars if isinstance(after_wars, list) else [])
+            if isinstance(war, dict) and war.get("war_id") == war_id
+        ),
+        None,
+    )
+    status = action.get("status")
+    before_played = (
+        before_semantic.get("played_character")
+        if isinstance(before_semantic, dict)
+        else None
+    )
+    casus_belli = action.get("casus_belli")
+    decision_status_raw = action.get("recipient_decision_status_raw")
+    target_title_ids = action.get("target_title_ids")
+    declared_target_title_ids = (
+        before_war.get("targeted_title_ids")
+        if isinstance(before_war, dict)
+        else None
+    )
+    common = bool(
+        before_present
+        and action.get("war_id") == war_id
+        and action.get("outcome") == "white_peace"
+        and action.get("command_acknowledged") is True
+        and action.get("episode_run_id") == before.get("episode_run_id")
+        and action.get("starting_snapshot_id") == before.get("snapshot_id")
+        and action.get("observed_snapshot_id")
+        == after_snapshot.get("snapshot_id")
+        and action.get("submitted_date_raw") == before.get("date_raw")
+        and action.get("observed_date_raw")
+        == after_snapshot.get("date_raw")
+        and action.get("episode_run_id")
+        == after_snapshot.get("episode_run_id")
+        and action.get("recipient_would_accept_now") is True
+        and isinstance(decision_status_raw, int)
+        and not isinstance(decision_status_raw, bool)
+        and decision_status_raw in {0, 1}
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == "claim_cb"
+        and set(casus_belli) == {"database_index", "canonical_key"}
+        and isinstance(casus_belli.get("database_index"), int)
+        and not isinstance(casus_belli.get("database_index"), bool)
+        and casus_belli.get("database_index") >= 0
+        and isinstance(before_played, dict)
+        and isinstance(before_played.get("character_id"), int)
+        and not isinstance(before_played.get("character_id"), bool)
+        and action.get("claimant_character_id")
+        == before_played.get("character_id")
+        and isinstance(target_title_ids, list)
+        and bool(target_title_ids)
+        and all(
+            isinstance(title_id, int)
+            and not isinstance(title_id, bool)
+            and title_id > 0
+            for title_id in target_title_ids
+        )
+        and target_title_ids == declared_target_title_ids
+    )
+    if not common:
+        return False
+    if status == "applied":
+        return bool(
+            not after_present
+            and action.get("war_id_absent_after_ack") is True
+            and action.get("remaining_active_war") is None
+            and "war_changed" in evidence
+        )
+    if status == "submitted_pending":
+        remaining = action.get("remaining_active_war")
+        return bool(
+            after_present
+            and action.get("war_id_absent_after_ack") is False
+            and isinstance(remaining, dict)
+            and remaining.get("war_id") == war_id
+            and _semantic_digest(remaining) == _semantic_digest(after_war)
+        )
+    return False
+
+
 def _same_native_frame(
     before: dict[str, object], after: dict[str, object]
 ) -> bool:
@@ -1826,6 +2003,34 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
                 if key in remaining
             }
             if isinstance(remaining, dict)
+            else None
+        )
+    if "war_termination_result" in result:
+        action = result.get("war_termination_result")
+        compact["war_termination_result"] = (
+            {
+                key: action.get(key)
+                for key in (
+                    "status",
+                    "war_id",
+                    "outcome",
+                    "submitted_date_raw",
+                    "observed_date_raw",
+                    "episode_run_id",
+                    "starting_snapshot_id",
+                    "observed_snapshot_id",
+                    "command_acknowledged",
+                    "war_id_absent_after_ack",
+                    "recipient_decision_status_raw",
+                    "recipient_would_accept_now",
+                    "casus_belli",
+                    "claimant_character_id",
+                    "target_title_ids",
+                    "remaining_active_war",
+                )
+                if key in action
+            }
+            if isinstance(action, dict)
             else None
         )
     return compact

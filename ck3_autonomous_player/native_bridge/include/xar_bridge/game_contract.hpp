@@ -503,6 +503,19 @@ struct ActiveWarSnapshot {
                          const ActiveWarSnapshot &) = default;
 };
 
+// Final recipient decision read from the exact interaction context.  The
+// unavailable state is explicit because a context may be absent or may fail
+// the native validator; neither case may be reconstructed from ai_acceptance.
+struct WarTerminationRecipientResponseSnapshot {
+  bool observable = false;
+  std::int32_t decision_status_raw = 3;
+  bool would_accept_now = false;
+
+  friend bool operator==(const WarTerminationRecipientResponseSnapshot &,
+                         const WarTerminationRecipientResponseSnapshot &) =
+      default;
+};
+
 // One native WarOverview result context built for the currently played
 // primary war leader. `native_validator_observable=false` means validation was
 // not run because no context could be constructed; it must not be serialized
@@ -516,6 +529,7 @@ struct WarTerminationOptionSnapshot {
   FixedPointValue ai_acceptance;
   bool auto_accept_observable = false;
   bool auto_accept = false;
+  WarTerminationRecipientResponseSnapshot recipient_response;
 
   friend bool operator==(const WarTerminationOptionSnapshot &,
                          const WarTerminationOptionSnapshot &) = default;

@@ -247,7 +247,8 @@ flowchart TD
 ## 防抖与复核
 
 - [counter-policy] 同一 paused snapshot 只提交一个终止 interaction，不同时发送白和与投降。
-- [counter-policy] ACK 不等于战争结束；必须在新 paused snapshot 中确认 WarID 消失，并核对条款产生的关键状态变化。
+- [counter-policy] ACK 不等于战争结束；必须在命令后当前可用 paused observation 中确认 WarID 消失，并核对条款产生的关键状态变化；
+  不要求 snapshot/revision 必然推进。
 - [counter-policy] 任何战斗结果、援军加入/拒绝、关键人物被俘、objective 占领、债务层级、AI 接受分或 CB 条款变化都会打开新 epoch。
 - [counter-policy] 有 active route、combat、retreat、Assault 或敌 tactical route 时最多推进一日；没有这些状态也不得跨过下一次财政、补员、
   siege 或 termination acceptance 复核门。
@@ -378,3 +379,46 @@ flowchart LR
 6. restore/episode/WarID generation 隔离，禁止旧接受分和旧条款跨恢复复用。
 7. 单测覆盖：正战分但主力不可战、负战分但援军将到、白和优于投降、投降优于灾难继续、CB 禁白和、
    AI 拒绝白和、100% 强制结果、人质导致 landless 屏障和输入 unknown 全部 fail closed。
+
+## GEN-004 最小 blocker-removal 例外（2026-08-27）
+
+[counter-policy / static-ready] owner 已明确允许在完整 v2 与 campaign forecast 尚未 live 前，先对一个极窄、原生结果已经
+足够确定的 `claim_cb` 情形开放白和，以解除一代人自动游玩中的战争终局 blocker。本节按日期取代上文“dynamic v2 全部 ready
+之前任何 white-peace literal 都冻结”的施工门，但不改变上文的理想策略、风险模型或质量债；它不声称原生 AI 等价、语义最优或
+完整 v2，surrender 仍不开放。
+
+### 最小 rule
+
+只有同一 paused frame 的 full WarID 同时满足以下条件才选白和：
+
+1. active event 仍最先处理；其后所有战争先检查 100% enforce-demands。任何可 enforce 的战争都先于 notification、pending reply、
+   battle-control 与白和，literal 缺失也不能降级到后续动作。
+2. 之后处理 active pending interaction；没有 pending 才进入白和门。
+3. 玩家是该战争 primary attacker，active CB exact key=`claim_cb`，`0 <= score < 100`，duration 至少 365 日。
+4. white peace permission/context/native validator/available 全真、hostage=`none`，并且新 typed final recipient response 明确
+   `would_accept_now=true`。acceptance raw 为正不算；status `2` 仍是拒绝，unavailable 仍 fail closed。
+5. options 后按相同 snapshot/revision/native revision/date、connection、episode 与 full WarID 查询 claim terms v1；v1 必须
+   available/ready，claimant=played character，target IDs 与战争 declared targets 完全一致，且每个 target claim present。
+   weak claim 允许，因为原生 `claim_cb` white peace 保留并强化 weak claim；只允许 strong 会无依据缩窄原生已证明的优势结果。
+6. literal 与三项 raw capability 都可达、同 WarID 没有最近 720 raw proposal history，才执行
+   `offer-white-peace-<WarID>`。unknown/other CB、holy war、宗教、defender/非 primary、hostage、负分、100 分、未满一年均不进入。
+
+planner 的确定顺序是 options → claim terms v1 → offer。direct execute 会 fresh 重验同一整套 cache/frame/identity/CB/validator/
+response/terms，而不是信任旧 plan。native queue 的 ACK 只表示 submitted：命令后当前 paused observation 中旧 full WarID 消失才记
+`applied`；仍在则记 `submitted_pending`，同日只 `life-advance` 一次等待 AI，再用持久 history 抑制 720 raw 内的同 WarID 重提。
+restore 后同样抑制；`+719` 不可重试、`+720` 可重试。strict runner 只把带 `war_changed` 的 WarID 消失算 visible gameplay；pending
+submission 仍可审计地保留 decision/submission/result，但绝不冒充战争已结束或 run complete。
+
+### 为什么当前允许、仍欠什么
+
+原版树已经静态证明当前 slice 中 white peace 相比 attacker defeat 保留（并可能强化）declared claim、holder 不变、没有 baseline
+gold reparations；因此对“played claimant、全部 declared claims present、无 hostage”的窄 `claim_cb` 可以先采用确定性止损。它没有使用
+原生白和评分树中的债务、其它战争、人格、文化/特质和特殊战争分支，也没有使用我方完整模型中的 finance、军事储备、补员、合理
+encounter distribution、围城/增援 ETA、actual resources/truce/PoW、动态 title/vassal operation 或 campaign utility。以上全部保留为
+替换入口；首次 production outcome 后继续校准，不能把本规则包装成“高智商终态”。宗教域没有扩展，holy war 明确被本 slice 阻断。
+
+production6b 目前只有旧字段 live：played `29829`、WarID `16777290`、attacker/primary、score `37`、target `[2388]`；duration
+`436`、WP validator/available 来自旧帧，必须 fresh 重查。旧 acceptance `+12.7912` 不能代替新 final status；production6b 从未查询
+v1 terms，历史 strong claim 不能跨帧复用。因此这里只能预测 T1 options → T2 same-frame v1 → T3 offer →（若 pending）T4
+life advance，不能称新门 production-live。固定 G1 source `480f287` + 旧 DLL 是独立 legacy 组合；新 strict source 必须配套新 DLL
+另跑 canary，二者不得混配。

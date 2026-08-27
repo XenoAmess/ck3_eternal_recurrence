@@ -410,6 +410,7 @@ std::int32_t g_exit_terms_truce_duration_calls = 0;
 std::int32_t g_exit_terms_primary_title_calls = 0;
 std::int32_t g_exit_terms_monthly_income_calls = 0;
 std::int32_t g_exit_terms_answer_calls = 0;
+std::vector<std::int32_t> g_exit_terms_answer_destroy_counts;
 std::int32_t g_exit_terms_factor_identifier_id = 82;
 std::int32_t g_white_peace_construct_calls = 0;
 std::uint8_t g_last_special_interaction_index = 0;
@@ -2243,6 +2244,8 @@ std::uint8_t FixtureEvaluateCharacterInteractionAnswer(
     void *opaque_context, std::uint8_t answer_mode, std::uint8_t flag,
     void *error_sink_a, void *error_sink_b) {
   ++g_exit_terms_answer_calls;
+  g_exit_terms_answer_destroy_counts.push_back(
+      g_interaction_destroy_calls);
   if (opaque_context == nullptr || answer_mode != 1 || flag != 0 ||
       error_sink_a != nullptr || error_sink_b != nullptr) {
     return 3;
@@ -7800,11 +7803,42 @@ int main() {
   g_white_peace_construct_calls = 0;
   g_auto_accept_trigger_calls = 0;
   g_interaction_destroy_calls = 0;
+  g_exit_terms_answer_calls = 0;
+  g_exit_terms_answer_destroy_counts.clear();
   g_send_interaction_construct_called = false;
   g_submit_called = false;
   if (xar::ck3_11906::ReadWarTerminationOptions(
           bindings, active_war_id, termination_options) !=
-          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      xar::ck3_11906::ReadWarTerminationOptionsResult::available) {
+    return Fail("war-termination query was unavailable");
+  }
+  if (g_exit_terms_answer_calls != 3 ||
+      g_exit_terms_answer_destroy_counts !=
+          std::vector<std::int32_t>{0, 1, 2}) {
+    std::cerr << "answer calls=" << g_exit_terms_answer_calls
+              << " destroy-counts=";
+    for (const auto count : g_exit_terms_answer_destroy_counts) {
+      std::cerr << count << ',';
+    }
+    std::cerr << '\n';
+    return Fail("recipient response ran after native context teardown");
+  }
+  if (!termination_options.surrender.recipient_response.observable ||
+      termination_options.surrender.recipient_response.decision_status_raw !=
+          1 ||
+      !termination_options.surrender.recipient_response.would_accept_now) {
+    return Fail("surrender final recipient response was not typed");
+  }
+  if (!termination_options.white_peace.recipient_response.observable ||
+      termination_options.white_peace.recipient_response
+              .decision_status_raw != 0 ||
+      !termination_options.white_peace.recipient_response.would_accept_now) {
+    return Fail("white-peace final recipient response was not typed");
+  }
+  if (termination_options.victory.recipient_response.observable) {
+    return Fail("invalid victory final recipient response was published");
+  }
+  if (
       termination_options.war_id != active_war_id ||
       termination_options.player_side !=
           xar::ck3_11906::PlayerWarSide::attacker ||
@@ -7854,11 +7888,40 @@ int main() {
       g_war_resolution_absolute_outcomes[0] ||
       !g_war_resolution_absolute_outcomes[1] ||
       g_white_peace_construct_calls != 1 ||
-      g_auto_accept_trigger_calls != 1 ||
+      g_auto_accept_trigger_calls != 2 ||
       g_interaction_destroy_calls != 3 ||
       g_send_interaction_construct_called || g_submit_called) {
     return Fail("war-termination query lost paused native result contexts");
   }
+
+  // A positive ai_acceptance diagnostic is not the final answer.  Status 2
+  // is an exact rejection and must remain false even for the +100 surrender
+  // score in this fixture.
+  g_exit_terms_answer_status_override = 2;
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.surrender.ai_acceptance.raw != 10'000'000 ||
+      !termination_options.surrender.recipient_response.observable ||
+      termination_options.surrender.recipient_response.decision_status_raw !=
+          2 ||
+      termination_options.surrender.recipient_response.would_accept_now) {
+    return Fail("war-termination final rejection was inferred from raw score");
+  }
+  g_exit_terms_answer_status_override = 0xFF;
+
+  // Validator-false contexts keep the overall options query available but
+  // publish an explicit unavailable recipient response.
+  g_interaction_validate_result = false;
+  if (xar::ck3_11906::ReadWarTerminationOptions(
+          bindings, active_war_id, termination_options) !=
+          xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
+      termination_options.surrender.recipient_response.observable ||
+      termination_options.white_peace.recipient_response.observable ||
+      termination_options.victory.recipient_response.observable) {
+    return Fail("validator rejection made recipient response look available");
+  }
+  g_interaction_validate_result = true;
 
   Store(g_casus_belli_type_0, 0x1718, std::uint32_t{0});
   g_war_resolution_construct_calls = 0;

@@ -1903,6 +1903,7 @@ def _normalize_war_termination_option(
         "ai_acceptance",
         "auto_accept_observable",
         "auto_accept",
+        "recipient_response",
     }:
         raise ValueError(
             f"native war_termination_options.options.{name} is malformed"
@@ -1993,6 +1994,12 @@ def _normalize_war_termination_option(
             "native war_termination_options cannot evaluate acceptance "
             f"without a constructed {name} context"
         )
+    recipient_response = _normalize_war_termination_recipient_response(
+        value.get("recipient_response"),
+        name=name,
+        context_constructed=context_constructed,
+        validator=validator,
+    )
     return {
         "outcome": expected_outcome,
         "hostage_variant": "none",
@@ -2006,6 +2013,62 @@ def _normalize_war_termination_option(
         "ai_acceptance": acceptance,
         "auto_accept_observable": auto_accept_observable,
         "auto_accept": auto_accept,
+        "recipient_response": recipient_response,
+    }
+
+
+def _normalize_war_termination_recipient_response(
+    value: object,
+    *,
+    name: str,
+    context_constructed: bool,
+    validator: bool | None,
+) -> dict[str, object]:
+    path = f"war_termination_options.options.{name}.recipient_response"
+    if not isinstance(value, dict) or set(value) != {
+        "status",
+        "decision_status_raw",
+        "would_accept_now",
+    }:
+        raise ValueError(f"native {path} is malformed")
+    status = value.get("status")
+    decision_status_raw = value.get("decision_status_raw")
+    would_accept_now = value.get("would_accept_now")
+    if status == "unavailable":
+        if decision_status_raw is not None or would_accept_now is not None:
+            raise ValueError(
+                f"native {path} unavailable branch must contain null values"
+            )
+        return {
+            "status": "unavailable",
+            "decision_status_raw": None,
+            "would_accept_now": None,
+        }
+    if status != "available":
+        raise ValueError(f"native {path}.status is malformed")
+    if not context_constructed or validator is not True:
+        raise ValueError(
+            f"native {path} cannot be available without a valid context"
+        )
+    if (
+        isinstance(decision_status_raw, bool)
+        or not isinstance(decision_status_raw, int)
+        or decision_status_raw not in {0, 1, 2}
+    ):
+        raise ValueError(
+            f"native {path}.decision_status_raw must be one of 0, 1, 2"
+        )
+    would_accept = _strict_bool(
+        would_accept_now, f"{path}.would_accept_now"
+    )
+    if would_accept is not (decision_status_raw != 2):
+        raise ValueError(
+            f"native {path}.would_accept_now disagrees with final status"
+        )
+    return {
+        "status": "available",
+        "decision_status_raw": decision_status_raw,
+        "would_accept_now": would_accept,
     }
 
 

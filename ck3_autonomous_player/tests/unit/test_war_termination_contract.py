@@ -24,6 +24,7 @@ def _option(
     *,
     constructed: bool = True,
     validator: bool | None = True,
+    decision_status_raw: int = 0,
 ) -> dict[str, object]:
     return {
         "outcome": outcome,
@@ -44,6 +45,19 @@ def _option(
         ),
         "auto_accept_observable": constructed,
         "auto_accept": False if constructed else None,
+        "recipient_response": (
+            {
+                "status": "available",
+                "decision_status_raw": decision_status_raw,
+                "would_accept_now": decision_status_raw != 2,
+            }
+            if constructed and validator is True
+            else {
+                "status": "unavailable",
+                "decision_status_raw": None,
+                "would_accept_now": None,
+            }
+        ),
     }
 
 
@@ -169,6 +183,66 @@ class WarTerminationContractTests(unittest.TestCase):
             normalized["options"]["surrender"]["ai_acceptance"],
             {"raw": -2_900_000, "scale": 100_000},
         )
+
+    def test_final_recipient_status_is_typed_and_not_inferred_from_score(
+        self,
+    ) -> None:
+        raw = _termination_options()
+        raw["options"]["white_peace"] = _option(
+            "white_peace", decision_status_raw=2
+        )
+        raw["options"]["white_peace"]["ai_acceptance"] = {
+            "raw": 1_100_000,
+            "scale": 100_000,
+        }
+
+        normalized = normalize_war_termination_options(raw)
+
+        self.assertEqual(
+            normalized["options"]["white_peace"]["recipient_response"],
+            {
+                "status": "available",
+                "decision_status_raw": 2,
+                "would_accept_now": False,
+            },
+        )
+
+    def test_normalizer_rejects_missing_or_malformed_recipient_response(
+        self,
+    ) -> None:
+        malformed_rows: list[dict[str, object]] = []
+        missing = _termination_options()
+        missing["options"]["white_peace"].pop("recipient_response")
+        malformed_rows.append(missing)
+        boolean_status = _termination_options()
+        boolean_status["options"]["white_peace"]["recipient_response"][
+            "decision_status_raw"
+        ] = True
+        malformed_rows.append(boolean_status)
+        unavailable_status = _termination_options()
+        unavailable_status["options"]["white_peace"][
+            "recipient_response"
+        ]["decision_status_raw"] = 3
+        malformed_rows.append(unavailable_status)
+        inconsistent = _termination_options()
+        inconsistent["options"]["white_peace"]["recipient_response"][
+            "would_accept_now"
+        ] = False
+        malformed_rows.append(inconsistent)
+        invalid_unavailable = _termination_options()
+        invalid_unavailable["options"]["white_peace"][
+            "recipient_response"
+        ] = {
+            "status": "unavailable",
+            "decision_status_raw": 0,
+            "would_accept_now": True,
+        }
+        malformed_rows.append(invalid_unavailable)
+
+        for raw in malformed_rows:
+            with self.subTest(raw=raw):
+                with self.assertRaises(ValueError):
+                    normalize_war_termination_options(raw)
 
     def test_normalizer_rejects_side_outcome_or_partial_score_evidence(
         self,

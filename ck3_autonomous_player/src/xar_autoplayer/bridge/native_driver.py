@@ -200,6 +200,7 @@ from .war_contract import (
     normalize_route_contact_horizon,
     normalize_war_termination_options,
     normalize_war_termination_terms,
+    offer_white_peace_step,
     parse_disband_army_step,
     parse_enforce_demands_step,
     parse_merge_armies_step,
@@ -249,6 +250,7 @@ _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT = 2
 _RESTORE_CHECKPOINT_STEP = "restore-checkpoint"
 _MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
+_WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
@@ -887,9 +889,35 @@ class NativeHeadlessGameplayDriver:
                 query_war_entry_assessments_step([target])
                 for target in distinct_targets
             )
-        # Native surrender and white-peace ABIs are intentionally not Python
-        # actions yet. claim-disposition v1 is necessary but not sufficient:
-        # dynamic exit terms and campaign-decision readiness remain required.
+        # Owner-authorized minimal claim_cb counter-policy.  This is narrower
+        # than the frozen native/v2 exit tree: only a same-frame, recipient-
+        # accepted, claim-preserving white peace can become a literal action.
+        if (
+            isinstance(current_snapshot, dict)
+            and {
+                QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+                QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
+                OFFER_WHITE_PEACE_CAPABILITY,
+            }
+            <= bridge_capabilities
+        ):
+            for war in current_snapshot.get("active_wars", []):
+                if not isinstance(war, dict) or not _positive_native_id(
+                    war.get("war_id")
+                ):
+                    continue
+                war_id = int(war["war_id"])
+                ready, _, _ = _claim_cb_white_peace_readiness(
+                    current_snapshot, war_id
+                )
+                cooldown = _white_peace_proposal_cooldown(
+                    self._history_snapshot(),
+                    war_id=war_id,
+                    current_date_raw=current_snapshot.get("date_raw"),
+                    episode_run_id=current_snapshot.get("episode_run_id"),
+                )
+                if ready and cooldown is None:
+                    action_steps.add(offer_white_peace_step(war_id))
         terminal_reason = (
             current_snapshot.get("one_life_terminal_reason")
             if isinstance(current_snapshot, dict)
@@ -1673,6 +1701,7 @@ class NativeHeadlessGameplayDriver:
                         "queried_revision": snapshot.get("revision"),
                         "queried_native_revision": native_revision,
                         "episode_run_id": episode_run_id,
+                        "queried_connection_generation": connection_generation,
                     }
                 )
             for war_id in stale_ids:
@@ -1730,6 +1759,7 @@ class NativeHeadlessGameplayDriver:
                         "queried_revision": snapshot.get("revision"),
                         "queried_native_revision": native_revision,
                         "episode_run_id": episode_run_id,
+                        "queried_connection_generation": connection_generation,
                     }
                 )
             for war_id in stale_ids:
@@ -2561,9 +2591,13 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=expected_revision
             )
         if parse_offer_white_peace_step(step) is not None:
-            raise BridgeUnavailableError(
-                "native white_peace submission requires "
-                "structured_terms_v2 and campaign decision readiness"
+            if step not in capabilities["action_steps"]:
+                raise BridgeUnavailableError(
+                    "native white_peace submission lacks fresh same-frame "
+                    "claim_cb decision readiness"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
             )
         if parse_surrender_war_step(step) is not None:
             raise BridgeUnavailableError(
@@ -7363,10 +7397,121 @@ class NativeHeadlessGameplayDriver:
         option_name = (
             "surrender" if surrender_war_id is not None else "white_peace"
         )
-        raise BridgeUnavailableError(
-            f"native {option_name} submission requires structured_terms_v2 "
-            "and campaign decision readiness"
+        if option_name != "white_peace":
+            raise BridgeUnavailableError(
+                "native surrender submission remains disabled by the "
+                "minimal claim_cb counter-policy"
+            )
+        bridge_capabilities = set(
+            _string_list(self.state.capabilities().get("bridge_capabilities"))
         )
+        if not {
+            QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+            QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
+            OFFER_WHITE_PEACE_CAPABILITY,
+        } <= bridge_capabilities:
+            raise BridgeUnavailableError(
+                "native white_peace submission lacks exact raw capabilities"
+            )
+        ready, reason, evidence = _claim_cb_white_peace_readiness(
+            starting, war_id
+        )
+        if not ready:
+            raise BridgeUnavailableError(
+                "native white_peace fresh validation failed: " + reason
+            )
+        cooldown = _white_peace_proposal_cooldown(
+            self._history_snapshot(),
+            war_id=war_id,
+            current_date_raw=starting.get("date_raw"),
+            episode_run_id=starting.get("episode_run_id"),
+        )
+        if cooldown is not None:
+            raise BridgeUnavailableError(
+                "native white_peace proposal is suppressed by its 30-day "
+                "same-WarID cooldown"
+            )
+        result = self._execute_primitive_step(
+            step, expected_revision=selected_revision
+        )
+        if (
+            set(result) != {"step", "accepted", "status", "backend_id"}
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "submitted"
+        ):
+            raise BridgeUnavailableError(
+                "native white_peace queue returned a malformed ACK"
+            )
+        current = self.take_snapshot()
+        starting_played = starting.get("played_character")
+        current_played = current.get("played_character")
+        starting_diagnostics = starting.get("diagnostics")
+        current_diagnostics = current.get("diagnostics")
+        if not (
+            current.get("paused") is True
+            and current.get("episode_run_id")
+            == starting.get("episode_run_id")
+            and isinstance(starting_diagnostics, dict)
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation")
+            == starting_diagnostics.get("connection_generation")
+            and current_diagnostics.get("bridge_pid")
+            == starting_diagnostics.get("bridge_pid")
+            and isinstance(starting_played, dict)
+            and isinstance(current_played, dict)
+            and current_played.get("character_id")
+            == starting_played.get("character_id")
+            and isinstance(starting.get("date_raw"), int)
+            and not isinstance(starting.get("date_raw"), bool)
+            and isinstance(current.get("date_raw"), int)
+            and not isinstance(current.get("date_raw"), bool)
+            and current.get("date_raw") == starting.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native white_peace ACK lacks a fresh paused postcondition"
+            )
+        remaining_war = _war_by_id(current, war_id)
+        status = "applied" if remaining_war is None else "submitted_pending"
+        options = evidence["options"]
+        terms = evidence["terms"]
+        white_peace = evidence["white_peace"]
+        response = white_peace["recipient_response"]
+        return {
+            **result,
+            "war_termination_result": {
+                "status": status,
+                "war_id": war_id,
+                "outcome": "white_peace",
+                "submitted_date_raw": starting.get("date_raw"),
+                "observed_date_raw": current.get("date_raw"),
+                "episode_run_id": starting.get("episode_run_id"),
+                "starting_snapshot_id": starting.get("snapshot_id"),
+                "observed_snapshot_id": current.get("snapshot_id"),
+                "command_acknowledged": result.get("accepted") is True,
+                "war_id_absent_after_ack": remaining_war is None,
+                "recipient_decision_status_raw": response.get(
+                    "decision_status_raw"
+                ),
+                "recipient_would_accept_now": response.get(
+                    "would_accept_now"
+                ),
+                "casus_belli": copy.deepcopy(
+                    options.get("active_casus_belli_identity")
+                ),
+                "claimant_character_id": terms.get(
+                    "claimant_character_id"
+                ),
+                "target_title_ids": copy.deepcopy(
+                    terms.get("target_title_ids")
+                ),
+                "remaining_active_war": (
+                    copy.deepcopy(remaining_war)
+                    if isinstance(remaining_war, dict)
+                    else None
+                ),
+            },
+        }
 
     def _execute_restore_checkpoint(
         self, *, expected_revision: int | None
@@ -11164,6 +11309,189 @@ def _war_by_id(
         ),
         None,
     )
+
+
+def _termination_cache_row(
+    snapshot: dict[str, object], field: str, war_id: int
+) -> dict[str, object] | None:
+    rows = snapshot.get(field)
+    matches = [
+        row
+        for row in (rows if isinstance(rows, list) else [])
+        if isinstance(row, dict) and row.get("war_id") == war_id
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+def _claim_cb_white_peace_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Validate the owner-authorized narrow claim_cb white-peace slice."""
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    terms = _termination_cache_row(
+        snapshot, "war_termination_terms", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    if not isinstance(terms, dict):
+        return False, "termination_terms_v1_missing", {"options": options}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(
+        row.get(key) != expected
+        for row in (options, terms)
+        for key, expected in expected_binding.items()
+    ):
+        return False, "termination_evidence_not_same_frame", {}
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    option_cb = options.get("active_casus_belli_identity")
+    terms_cb = terms.get("casus_belli")
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 <= score < 100
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= 365
+        and options.get("active_casus_belli_present") is True
+        and isinstance(option_cb, dict)
+        and option_cb.get("canonical_key") == "claim_cb"
+        and isinstance(terms_cb, dict)
+        and terms_cb.get("canonical_key") == "claim_cb"
+        and terms_cb.get("database_index")
+        == option_cb.get("database_index")
+        and options.get("cb_allows_white_peace") is True
+    ):
+        return False, "claim_cb_white_peace_base_gate_failed", {}
+    raw_options = options.get("options")
+    white_peace = (
+        raw_options.get("white_peace")
+        if isinstance(raw_options, dict)
+        else None
+    )
+    response = (
+        white_peace.get("recipient_response")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    if not (
+        isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+        and white_peace.get("context_constructed") is True
+        and white_peace.get("native_validator_passed") is True
+        and white_peace.get("available") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    ):
+        return False, "white_peace_recipient_or_validator_gate_failed", {}
+    readiness = terms.get("readiness")
+    played_character = snapshot.get("played_character")
+    played_character_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    target_title_ids = war.get("targeted_title_ids")
+    claims = terms.get("claims")
+    if not (
+        terms.get("status") == "available"
+        and isinstance(readiness, dict)
+        and readiness.get("ready") is True
+        and terms.get("claimant_character_id") == played_character_id
+        and isinstance(target_title_ids, list)
+        and bool(target_title_ids)
+        and terms.get("target_title_ids") == target_title_ids
+        and isinstance(claims, list)
+        and len(claims) == len(target_title_ids)
+        and all(
+            isinstance(claim, dict)
+            and claim.get("title_id") == title_id
+            and claim.get("present") is True
+            for claim, title_id in zip(claims, target_title_ids, strict=True)
+        )
+    ):
+        return False, "claim_disposition_v1_gate_failed", {}
+    return True, "ready", {
+        "war": war,
+        "options": options,
+        "terms": terms,
+        "white_peace": white_peace,
+    }
+
+
+def _white_peace_proposal_cooldown(
+    history: list[dict[str, object]],
+    *,
+    war_id: int,
+    current_date_raw: object,
+    episode_run_id: object,
+) -> dict[str, object] | None:
+    if isinstance(current_date_raw, bool) or not isinstance(
+        current_date_raw, int
+    ):
+        return {"status": "invalid_current_date"}
+    step = offer_white_peace_step(war_id)
+    for row in reversed(history):
+        if row.get("command") != step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(action, dict)
+            and action.get("war_id") == war_id
+            and action.get("outcome") == "white_peace"
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            continue
+        submitted_date_raw = action.get("submitted_date_raw")
+        if isinstance(submitted_date_raw, bool) or not isinstance(
+            submitted_date_raw, int
+        ):
+            return {"status": "malformed_submission_history"}
+        elapsed_raw = current_date_raw - submitted_date_raw
+        if elapsed_raw < _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW:
+            return {
+                "status": "cooldown",
+                "submitted_date_raw": submitted_date_raw,
+                "elapsed_raw": elapsed_raw,
+                "remaining_raw": (
+                    _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW - elapsed_raw
+                ),
+                "history_index": row.get("index"),
+            }
+        return None
+    return None
 
 
 def _assault_siege_observation(
