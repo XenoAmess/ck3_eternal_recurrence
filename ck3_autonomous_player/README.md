@@ -252,12 +252,29 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3
 ```
 
 `native-auto-run` 是单进程 ownership 入口：它先建立 named pipe，再启动受管 CK3，会在 exact-build、默认关闭启动探针、
 paused map、episode identity 与 main-thread mailbox 全部就绪后有界执行 planner。查询与玩法回合分账；每三个确实返回
 `postcondition` 且产生语义变化的推进回合自动物化并核验 checkpoint，回合上限结束时也保存尚未落盘的可见进度。
 `--cold-start-checkpoint` 要求 `--state-dir` 中的 v2 checkpoint anchor 与同一 pipe 名完全匹配；不恢复现有 checkpoint 时省略它。
+
+`native-one-generation` 复用同一 production owner，但采用严格的一代人完成合同并始终从 exact v2 cold checkpoint 开始。它在
+任何 gameplay action 前把 checkpoint 与匹配的 driver state 复制到
+`<state-dir>/runs/<utc>-one-generation-<nonce>/seed/`，随后持续运行到首个 blocker 或本次真实执行的 `death-terminal`。只有初始
+角色/run identity 始终不变、出现可见日期推进、结算 `source_character_id` 与初始角色一致、分数与完整 settlement/cross-run
+record 一致、没有继承人 gameplay，且 CK3 进程树完成回收时才返回 `ok=true`。达到 turn/wall 上限只会得到
+`bounded_incomplete`；可保存的尾部仍会 checkpoint，但绝不冒充一代完成。最终 `report.json` 总是保留完整 turns/checkpoints；失败另写
+`first-blocker.json`，成功另写 `terminal-settlement.json`。默认每 3 个已验证 eligible advance 保存一次；这里计的是动作次数，
+不是游戏日。当前和平 `life-advance` 通常以约 30 天为一个 horizon，因此默认大致形成季度级恢复点，并避免角色在第一份周期
+checkpoint 前已经积累数年乃至死亡。归档的 seed 是本次已验证
+map-ready recovery anchor，不代表该角色从出生或即位当天起的更早历史也由本次进程游玩。
+checkpoint 保存命令已开始提交后若 post-snapshot/hash/history 任一验证失败，core 会撤销所有同路径旧 metadata 的可恢复声明；
+readiness preflight 在提交前失败则保留旧恢复点。严格包装器只会
+降级到本次 `seed/` 下同时归档的不可变 checkpoint 与 driver state，不会把已经被覆盖的旧路径写成 durable recovery point。
+由于 `GameplayBridgeService.auto_turn()` 把规划与执行封装成一次调用，调用中途异常会按“可能已由 planner 提交 checkpoint”处理；
+只有它返回 typed outcome 后才解除这项保守假设。
 
 `vision-session` 与 `hybrid` 需要由新代码启动的 `opening-dev-session`；它在 run 目录公开 `bridge/inbox`/`outbox`，MCP 请求与
 stdin 共用同一主线程命令处理，因此策略、MCP daemon 和大多数 Python driver 改动不要求重启这一局 CK3。数据 Mod 原型位于

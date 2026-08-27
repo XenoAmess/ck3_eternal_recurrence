@@ -7,6 +7,8 @@ module owns both lifetimes in one process and never imports a visual backend.
 
 from __future__ import annotations
 
+import copy
+from collections.abc import Callable
 import hashlib
 import json
 import math
@@ -18,10 +20,18 @@ from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from .bridge.event_contract import parse_event_option_step
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
+from .bridge.settlement_contract import (
+    normalize_fixed_score,
+    normalize_one_life_settlement,
+    settlement_ready_for_episode,
+)
 from .bridge.war_contract import is_life_advance_step
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
-from .native_session import native_session
+from .native_session import (
+    native_session,
+    validate_cold_start_checkpoint_for_pipe,
+)
 from .runtime import (
     NativeBridgeLaunchConfig,
     native_bridge_launch_config_from_environment,
@@ -54,6 +64,10 @@ def native_auto_run(
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
     poll_interval_seconds: float = READINESS_POLL_SECONDS,
+    checkpoint_every_eligible_advances: int = (
+        CHECKPOINT_EVERY_ELIGIBLE_ADVANCES
+    ),
+    completion_contract: str = "bounded",
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -67,6 +81,14 @@ def native_auto_run(
     poll_seconds = _positive_seconds(
         poll_interval_seconds, "poll_interval_seconds"
     )
+    checkpoint_cadence = _positive_integer(
+        checkpoint_every_eligible_advances,
+        "checkpoint_every_eligible_advances",
+    )
+    if completion_contract not in {"bounded", "one_generation"}:
+        raise AgentError(
+            "completion_contract must be 'bounded' or 'one_generation'"
+        )
     config = (
         native_bridge_launch_config_from_environment()
         if native_bridge is None
@@ -78,8 +100,17 @@ def native_auto_run(
             "native-auto-run requires --bridge-mode native-headless; "
             f"selected mode is {selected!r}"
         )
+    if completion_contract == "one_generation" and not cold_start_checkpoint:
+        raise AgentError(
+            "one_generation completion requires an exact cold-start checkpoint"
+        )
 
     ensure_state_path_safe(spec.state_dir)
+    fixed_seed = (
+        validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+        if completion_contract == "one_generation"
+        else None
+    )
     started_wall = utc_now()
     started = time.monotonic()
     run_deadline = started + timeout
@@ -106,9 +137,98 @@ def native_auto_run(
     eligible_since_checkpoint = 0
     dirty_gameplay_since_checkpoint = False
     visible_gameplay_turns = 0
+    date_advanced = False
     terminal_pending = False
+    terminal_proof: dict[str, object] | None = None
+    initial_episode: dict[str, object] | None = None
+    same_episode_binding = True
     status = "starting"
     primary_error: str | None = None
+    current_attempt: dict[str, object] | None = None
+    first_failure: dict[str, object] | None = None
+
+    def capture_first_failure(
+        *,
+        stage: str,
+        kind: str,
+        message: str,
+        error: BaseException | None = None,
+    ) -> None:
+        nonlocal first_failure
+        if first_failure is not None:
+            return
+        attempt = current_attempt if isinstance(current_attempt, dict) else {}
+        before = attempt.get("before")
+        after = attempt.get("after")
+        checkpoint_invalidation_reason = {
+            "checkpoint": "checkpoint_submit_not_fully_verified",
+            "opaque_auto_turn": (
+                "opaque_auto_turn_may_have_submitted_checkpoint"
+            ),
+        }.get(attempt.get("stage"))
+        checkpoint_recovery_invalidated = (
+            checkpoint_invalidation_reason is not None
+        )
+        last_checkpoint = (
+            None
+            if checkpoint_recovery_invalidated
+            else (checkpoints[-1] if checkpoints else fixed_seed)
+        )
+        first_failure = {
+            "observed_at": utc_now(),
+            "turn_index": attempt.get("turn_index", 0),
+            "stage": stage,
+            "kind": kind,
+            "status": status,
+            "completion_contract": completion_contract,
+            "message": message,
+            "error_type": type(error).__name__ if error is not None else None,
+            "error": (
+                f"{type(error).__name__}: {error}"
+                if error is not None
+                else message
+            ),
+            "initial_episode": (
+                {
+                    key: readiness.get(key)
+                    for key in (
+                        "episode_character_id",
+                        "episode_run_id",
+                        "date_raw",
+                        "played_character_alive",
+                    )
+                }
+                if isinstance(readiness, dict)
+                else None
+            ),
+            "before": copy.deepcopy(before),
+            "plan": copy.deepcopy(attempt.get("plan")),
+            "selected_step": attempt.get("selected_step"),
+            "result": _compact_step_result(attempt.get("result")),
+            "after": copy.deepcopy(after),
+            "active_context": copy.deepcopy(
+                after.get("active_context")
+                if isinstance(after, dict)
+                else (
+                    before.get("active_context")
+                    if isinstance(before, dict)
+                    else None
+                )
+            ),
+            "last_durable_checkpoint": copy.deepcopy(last_checkpoint),
+            "recoverable_from_checkpoint": last_checkpoint is not None,
+            "checkpoint_recovery_invalidated": (
+                checkpoint_recovery_invalidated
+            ),
+            "checkpoint_recovery_invalidation_reason": (
+                checkpoint_invalidation_reason
+            ),
+            "cleanup": None,
+        }
+
+    def mark_checkpoint_submit_started() -> None:
+        if isinstance(current_attempt, dict):
+            current_attempt["stage"] = "checkpoint"
 
     def supervise() -> None:
         try:
@@ -130,6 +250,15 @@ def native_auto_run(
             session_done.set()
 
     try:
+        current_attempt = {
+            "turn_index": 0,
+            "stage": "startup",
+            "before": None,
+            "plan": None,
+            "selected_step": None,
+            "result": None,
+            "after": None,
+        }
         # NativeNamedPipeServer.start() completes in the constructor.  CK3 is
         # deliberately launched only after this endpoint can accept the DLL.
         driver = NativeHeadlessGameplayDriver(
@@ -146,6 +275,7 @@ def native_auto_run(
         session_thread.start()
         session_started = True
 
+        current_attempt["stage"] = "readiness"
         readiness = _wait_for_readiness(
             driver,
             session_done=session_done,
@@ -158,15 +288,48 @@ def native_auto_run(
             cold_start_checkpoint=cold_start_checkpoint,
             allow_terminal=False,
         )
+        current_attempt["before"] = _public_binding(readiness)
+        initial_episode = {
+            "episode_character_id": readiness.get("episode_character_id"),
+            "episode_run_id": readiness.get("episode_run_id"),
+            "date_raw": readiness.get("date_raw"),
+        }
+        if completion_contract == "one_generation":
+            try:
+                _verify_one_generation_binding(readiness, initial_episode)
+            except AgentError as error:
+                same_episode_binding = False
+                capture_first_failure(
+                    stage="readiness",
+                    kind="identity_violation",
+                    message=str(error),
+                    error=error,
+                )
+                raise
         status = "running"
 
         for turn_index in range(1, turn_count + 1):
+            current_attempt = {
+                "turn_index": turn_index,
+                "stage": "session",
+                "before": None,
+                "plan": None,
+                "selected_step": None,
+                "result": None,
+                "after": None,
+            }
             if session_done.is_set():
                 raise AgentError(_premature_session_exit(session_state))
             remaining = run_deadline - time.monotonic()
             if remaining <= 0:
                 status = "timeout"
+                capture_first_failure(
+                    stage="bound",
+                    kind="wall_clock_bound_exhausted",
+                    message="native-auto-run gameplay timeout expired",
+                )
                 raise AgentError("native-auto-run gameplay timeout expired")
+            current_attempt["stage"] = "readiness"
             before = _wait_for_readiness(
                 driver,
                 session_done=session_done,
@@ -177,7 +340,25 @@ def native_auto_run(
                 cold_start_checkpoint=False,
                 allow_terminal=True,
             )
+            current_attempt["before"] = _public_binding(before)
+            if completion_contract == "one_generation":
+                try:
+                    _verify_one_generation_binding(before, initial_episode)
+                except AgentError as error:
+                    same_episode_binding = False
+                    capture_first_failure(
+                        stage="readiness",
+                        kind="identity_violation",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise
             turn_started = utc_now()
+            # GameplayBridgeService.auto_turn() owns planning and execution in
+            # one call.  Until it returns a typed step, an exception may have
+            # occurred after a planner-selected save already overwrote the
+            # canonical checkpoint path.
+            current_attempt["stage"] = "opaque_auto_turn"
             outcome = service.auto_turn()
             outcome_status = outcome.get("status")
             plan = outcome.get("plan")
@@ -185,9 +366,13 @@ def native_auto_run(
             if not isinstance(selected_step, str) and isinstance(plan, dict):
                 selected_step = plan.get("selected_step")
             step = selected_step if isinstance(selected_step, str) else None
+            current_attempt["plan"] = copy.deepcopy(plan)
+            current_attempt["selected_step"] = step
+            current_attempt["result"] = copy.deepcopy(outcome.get("result"))
             turn_class = _turn_class(step, outcome_status, plan)
 
             if outcome_status == "blocked":
+                current_attempt["stage"] = "planning"
                 counts["terminal"] += 1
                 turns.append(
                     _turn_record(
@@ -201,6 +386,15 @@ def native_auto_run(
                     )
                 )
                 status = "blocked"
+                capture_first_failure(
+                    stage="planning",
+                    kind="planner_blocked",
+                    message=str(
+                        plan.get("reason")
+                        if isinstance(plan, dict)
+                        else "no executable step"
+                    ),
+                )
                 raise AgentError(
                     "native planner is blocked: "
                     + str(
@@ -210,6 +404,7 @@ def native_auto_run(
                     )
                 )
             if outcome_status == "terminal":
+                current_attempt["stage"] = "planning"
                 counts["terminal"] += 1
                 turns.append(
                     _turn_record(
@@ -222,14 +417,41 @@ def native_auto_run(
                         evidence=[],
                     )
                 )
-                status = "episode_complete"
+                if completion_contract == "one_generation":
+                    status = "terminal_preexisting"
+                    capture_first_failure(
+                        stage="readiness",
+                        kind="preexisting_terminal",
+                        message=(
+                            "one-generation completion requires death-terminal "
+                            "to be executed and verified by this run"
+                        ),
+                    )
+                    raise AgentError(
+                        "one-generation completion requires death-terminal "
+                        "to be executed and verified by this run"
+                    )
+                status = "terminal_preexisting"
                 break
             if outcome_status != "executed" or step is None:
+                capture_first_failure(
+                    stage="planning_or_action",
+                    kind="malformed_auto_turn_outcome",
+                    message=(
+                        "native auto-turn returned a malformed outcome: "
+                        f"status={outcome_status!r}, step={step!r}"
+                    ),
+                )
                 raise AgentError(
                     "native auto-turn returned a malformed outcome: "
                     f"status={outcome_status!r}, step={step!r}"
                 )
 
+            current_attempt["stage"] = (
+                "checkpoint"
+                if turn_class == "checkpoint"
+                else "postcondition_observation"
+            )
             after_snapshot = service.snapshot()
             terminal_pending = bool(
                 after_snapshot.get("one_life_terminal") is True
@@ -238,7 +460,10 @@ def native_auto_run(
                 )
             )
             after = _compact_binding(driver.capabilities(), after_snapshot)
+            current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
+            if "date_advanced" in evidence:
+                date_advanced = True
             if parse_event_option_step(step) is not None:
                 result = outcome.get("result")
                 selection = (
@@ -255,6 +480,14 @@ def native_auto_run(
                     and selection.get("old_event_instance_id")
                     != selection.get("new_event_instance_id")
                 ):
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="event_lifecycle_postcondition_failed",
+                        message=(
+                            "native event selection lacks an old-instance "
+                            "lifecycle postcondition"
+                        ),
+                    )
                     raise AgentError(
                         "native event selection lacks an old-instance lifecycle postcondition"
                     )
@@ -273,19 +506,58 @@ def native_auto_run(
                     evidence=evidence,
                 )
             )
+            if completion_contract == "one_generation":
+                try:
+                    _verify_one_generation_binding(after, initial_episode)
+                except AgentError as error:
+                    same_episode_binding = False
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="identity_violation",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise
+            if step == "death-terminal":
+                try:
+                    terminal_proof = _verify_one_generation_terminal(
+                        outcome.get("result"),
+                        snapshot=after_snapshot,
+                        binding=after,
+                        initial_episode=initial_episode,
+                    )
+                except AgentError as error:
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="settlement_invalid",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise
             if turn_class == "query" and (
                 evidence or not _same_native_frame(before, after)
             ):
+                capture_first_failure(
+                    stage="postcondition",
+                    kind="read_only_query_changed_frame",
+                    message="read-only native query changed its paused semantic frame",
+                )
                 raise AgentError(
                     "read-only native query changed its paused semantic frame"
                 )
             if time.monotonic() >= run_deadline:
                 status = "timeout"
+                capture_first_failure(
+                    stage="bound",
+                    kind="wall_clock_bound_exhausted",
+                    message="native-auto-run gameplay timeout expired during auto-turn",
+                )
                 raise AgentError(
                     "native-auto-run gameplay timeout expired during auto-turn"
                 )
 
             if turn_class == "checkpoint":
+                current_attempt["stage"] = "checkpoint"
                 checkpoint = _verify_checkpoint_result(
                     outcome.get("result"),
                     snapshot=after_snapshot,
@@ -298,6 +570,7 @@ def native_auto_run(
                         **checkpoint,
                     }
                 )
+                current_attempt["stage"] = "checkpoint_complete"
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
             elif turn_class == "recovery":
@@ -310,9 +583,19 @@ def native_auto_run(
 
             if (
                 eligible_since_checkpoint
-                >= CHECKPOINT_EVERY_ELIGIBLE_ADVANCES
+                >= checkpoint_cadence
                 and not terminal_pending
             ):
+                checkpoint_binding = _public_binding(after)
+                current_attempt = {
+                    "turn_index": turn_index,
+                    "stage": "checkpoint_preflight",
+                    "before": copy.deepcopy(checkpoint_binding),
+                    "plan": {"phase": "periodic_checkpoint"},
+                    "selected_step": "save-checkpoint",
+                    "result": None,
+                    "after": copy.deepcopy(checkpoint_binding),
+                }
                 checkpoint, checkpoint_snapshot = _materialize_checkpoint(
                     service,
                     driver,
@@ -324,32 +607,44 @@ def native_auto_run(
                         max(0.001, run_deadline - time.monotonic()),
                     ),
                     poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
                 )
                 counts["checkpoint"] += 1
                 checkpoints.append(
                     {
                         "turn_index": turn_index,
                         "phase": "periodic_checkpoint",
-                        "eligible_advance_ordinal": (
-                            CHECKPOINT_EVERY_ELIGIBLE_ADVANCES
-                        ),
+                        "eligible_advance_ordinal": checkpoint_cadence,
                         **checkpoint,
                     }
                 )
+                current_attempt["stage"] = "checkpoint_complete"
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
                 after = _compact_binding(
                     driver.capabilities(), checkpoint_snapshot
                 )
+                current_attempt["after"] = _public_binding(after)
                 if time.monotonic() >= run_deadline:
                     status = "timeout"
+                    capture_first_failure(
+                        stage="bound",
+                        kind="wall_clock_bound_exhausted",
+                        message=(
+                            "native-auto-run gameplay timeout expired during "
+                            "periodic checkpoint"
+                        ),
+                    )
                     raise AgentError(
                         "native-auto-run gameplay timeout expired during "
                         "periodic checkpoint"
                     )
 
-            if step in _TERMINAL_STEPS:
+            if step == "death-terminal":
                 status = "episode_complete"
+                break
+            if step in _TERMINAL_STEPS:
+                status = "terminal_non_death_step"
                 break
         else:
             status = (
@@ -362,24 +657,56 @@ def native_auto_run(
         # Queries never dirty this tail, and terminal/unknown frames are never
         # forced through a save operation.
         if status == "turn_limit" and dirty_gameplay_since_checkpoint:
+            last_after = turns[-1].get("after") if turns else None
+            current_attempt = {
+                "turn_index": len(turns),
+                "stage": "checkpoint_preflight",
+                "before": copy.deepcopy(last_after),
+                "plan": {"phase": "final_checkpoint"},
+                "selected_step": "save-checkpoint",
+                "result": None,
+                "after": copy.deepcopy(last_after),
+            }
             if time.monotonic() >= run_deadline:
                 status = "timeout"
+                capture_first_failure(
+                    stage="bound",
+                    kind="wall_clock_bound_exhausted",
+                    message=(
+                        "native-auto-run gameplay timeout expired before "
+                        "final checkpoint"
+                    ),
+                )
                 raise AgentError(
                     "native-auto-run gameplay timeout expired before final "
                     "checkpoint"
                 )
-            checkpoint, _snapshot = _materialize_checkpoint(
-                service,
-                driver,
-                spec.profile_dir / "save games",
-                session_done=session_done,
-                session_state=session_state,
-                timeout_seconds=min(
-                    readiness_timeout,
-                    max(0.001, run_deadline - time.monotonic()),
-                ),
-                poll_interval_seconds=poll_seconds,
-            )
+            try:
+                checkpoint, _snapshot = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout,
+                        max(0.001, run_deadline - time.monotonic()),
+                    ),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+            except BaseException as error:
+                status = "stopped_on_error"
+                checkpoint_failure_stage = str(
+                    current_attempt.get("stage", "checkpoint_preflight")
+                )
+                capture_first_failure(
+                    stage=checkpoint_failure_stage,
+                    kind=_generic_failure_kind(checkpoint_failure_stage),
+                    message=str(error),
+                    error=error,
+                )
+                raise
             counts["checkpoint"] += 1
             checkpoints.append(
                 {
@@ -388,18 +715,57 @@ def native_auto_run(
                     **checkpoint,
                 }
             )
+            current_attempt["stage"] = "checkpoint_complete"
             eligible_since_checkpoint = 0
             dirty_gameplay_since_checkpoint = False
             if time.monotonic() >= run_deadline:
                 status = "timeout"
+                capture_first_failure(
+                    stage="bound",
+                    kind="wall_clock_bound_exhausted",
+                    message=(
+                        "native-auto-run gameplay timeout expired during "
+                        "final checkpoint"
+                    ),
+                )
                 raise AgentError(
                     "native-auto-run gameplay timeout expired during final "
                     "checkpoint"
                 )
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as error:
+        capture_first_failure(
+            stage=(
+                str(current_attempt.get("stage"))
+                if isinstance(current_attempt, dict)
+                else "session"
+            ),
+            kind="operator_stop",
+            message="operator requested stop",
+            error=error,
+        )
         status = "operator_stop"
         primary_error = "KeyboardInterrupt: operator requested stop"
     except BaseException as error:
+        session_exited = session_done.is_set()
+        failure_stage = (
+            "session"
+            if session_exited
+            else (
+                str(current_attempt.get("stage"))
+                if isinstance(current_attempt, dict)
+                else "startup"
+            )
+        )
+        capture_first_failure(
+            stage=failure_stage,
+            kind=(
+                "session_exit"
+                if session_exited
+                else _generic_failure_kind(failure_stage)
+            ),
+            message=str(error),
+            error=error,
+        )
         if status in {"starting", "running"}:
             status = (
                 "session_exit" if session_done.is_set() else "stopped_on_error"
@@ -419,6 +785,12 @@ def native_auto_run(
                 driver_closed = True
             except BaseException as error:
                 detail = f"{type(error).__name__}: {error}"
+                capture_first_failure(
+                    stage="cleanup",
+                    kind="driver_close_failed",
+                    message=str(error),
+                    error=error,
+                )
                 primary_error = (
                     detail
                     if primary_error is None
@@ -439,27 +811,99 @@ def native_auto_run(
             or cleanup.get("reason")
             or "managed native-session cleanup was not proven"
         )
+        if first_failure is None:
+            capture_first_failure(
+                stage="cleanup",
+                kind="cleanup_failed",
+                message=cleanup_error,
+            )
         primary_error = (
             cleanup_error
             if primary_error is None
             else f"{primary_error}; cleanup: {cleanup_error}"
         )
 
-    qualified = (
-        primary_error is None
-        and status in {"turn_limit", "episode_complete"}
-        and visible_gameplay_turns > 0
-        and cleanup.get("ok") is True
-    )
+    qualification_gates = {
+        "start_alive": bool(
+            isinstance(readiness, dict)
+            and readiness.get("played_character_alive") is True
+        ),
+        "fixed_seed_verified": fixed_seed is not None,
+        "started_at_seed_date": bool(
+            isinstance(fixed_seed, dict)
+            and isinstance(readiness, dict)
+            and fixed_seed.get("saved_date_raw") == readiness.get("date_raw")
+        ),
+        "same_episode_binding": same_episode_binding,
+        "visible_gameplay": visible_gameplay_turns > 0,
+        "date_advanced": date_advanced,
+        "death_terminal_executed": bool(
+            isinstance(terminal_proof, dict)
+            and terminal_proof.get("executed_by_this_run") is True
+        ),
+        "settlement_matches_episode": bool(
+            isinstance(terminal_proof, dict)
+            and terminal_proof.get("settlement_matches_episode") is True
+        ),
+        "no_heir_gameplay": bool(
+            isinstance(terminal_proof, dict)
+            and terminal_proof.get("no_heir_gameplay") is True
+        ),
+        "cleanup_proven": cleanup.get("ok") is True,
+    }
+    if completion_contract == "one_generation":
+        qualified = bool(
+            primary_error is None
+            and status == "episode_complete"
+            and all(qualification_gates.values())
+        )
+    else:
+        qualified = bool(
+            primary_error is None
+            and status in {"turn_limit", "episode_complete"}
+            and visible_gameplay_turns > 0
+            and (
+                status != "episode_complete" or terminal_proof is not None
+            )
+            and cleanup.get("ok") is True
+        )
+    if qualified:
+        first_blocker = None
+    elif first_failure is not None:
+        first_blocker = copy.deepcopy(first_failure)
+        first_blocker["run_status"] = status
+        first_blocker["cleanup"] = copy.deepcopy(cleanup)
+    else:
+        first_blocker = _first_blocker_report(
+            status=status,
+            error=primary_error,
+            completion_contract=completion_contract,
+            readiness=readiness,
+            turns=turns,
+            checkpoints=checkpoints,
+            fixed_seed=fixed_seed,
+            cleanup=cleanup,
+        )
     outcome = (
         "qualified"
         if qualified
         else (
-            "not_qualified"
+            (
+                "bounded_incomplete"
+                if completion_contract == "one_generation"
+                else "not_qualified"
+            )
             if primary_error is None and cleanup.get("ok") is True
             else "failed"
         )
     )
+    attempted_turns = len(turns)
+    if isinstance(first_failure, dict):
+        failed_turn_index = first_failure.get("turn_index")
+        if isinstance(failed_turn_index, int) and not isinstance(
+            failed_turn_index, bool
+        ):
+            attempted_turns = max(attempted_turns, failed_turn_index)
     return {
         "format_version": 1,
         "kind": "ck3_native_auto_run",
@@ -471,19 +915,19 @@ def native_auto_run(
         "status": status,
         "outcome": outcome,
         "ok": qualified,
+        "completion_contract": completion_contract,
         "cold_start_checkpoint": cold_start_checkpoint,
+        "fixed_seed": fixed_seed,
         "bounds": {
             "requested_turns": turn_count,
             "max_wall_seconds": timeout,
             "readiness_timeout_seconds": readiness_timeout,
-            "checkpoint_every_eligible_advances": (
-                CHECKPOINT_EVERY_ELIGIBLE_ADVANCES
-            ),
+            "checkpoint_every_eligible_advances": checkpoint_cadence,
         },
         "identity": _identity(config, readiness, spec),
         "readiness": _public_binding(readiness) if readiness is not None else None,
         "auto_run": {
-            "attempted_turns": len(turns),
+            "attempted_turns": attempted_turns,
             "successful_turns": sum(
                 1 for row in turns if row.get("ok") is True
             ),
@@ -494,6 +938,9 @@ def native_auto_run(
             "turns": turns,
         },
         "checkpoints": checkpoints,
+        "terminal": terminal_proof,
+        "qualification_gates": qualification_gates,
+        "first_blocker": first_blocker,
         "session": _compact_session_report(session_report),
         "cleanup": cleanup,
         "error": primary_error,
@@ -720,6 +1167,155 @@ def _raise_fatal_diagnostics(diagnostics: object) -> None:
         )
 
 
+def _verify_one_generation_binding(
+    binding: dict[str, object],
+    initial_episode: dict[str, object] | None,
+) -> None:
+    if not isinstance(initial_episode, dict):
+        raise AgentError("one-generation initial episode binding is unavailable")
+    expected_character_id = initial_episode.get("episode_character_id")
+    expected_run_id = initial_episode.get("episode_run_id")
+    if (
+        isinstance(expected_character_id, bool)
+        or not isinstance(expected_character_id, int)
+        or not isinstance(expected_run_id, str)
+        or not expected_run_id
+    ):
+        raise AgentError("one-generation initial episode binding is malformed")
+    if binding.get("episode_character_id") != expected_character_id:
+        raise AgentError(
+            "one-generation episode CharacterID changed before settlement: "
+            f"{binding.get('episode_character_id')!r} != {expected_character_id!r}"
+        )
+    if binding.get("episode_run_id") != expected_run_id:
+        raise AgentError(
+            "one-generation episode run changed before settlement: "
+            f"{binding.get('episode_run_id')!r} != {expected_run_id!r}"
+        )
+
+
+def _verify_one_generation_terminal(
+    result: object,
+    *,
+    snapshot: dict[str, object],
+    binding: dict[str, object],
+    initial_episode: dict[str, object] | None,
+) -> dict[str, object]:
+    """Require a scored death settlement for the immutable episode character."""
+    _verify_one_generation_binding(binding, initial_episode)
+    assert isinstance(initial_episode, dict)
+    expected_character_id = initial_episode["episode_character_id"]
+    expected_run_id = initial_episode["episode_run_id"]
+    if not isinstance(result, dict):
+        raise AgentError("death-terminal returned no structured result")
+    terminal_reason = result.get("terminal_reason")
+    snapshot_reason = snapshot.get("one_life_terminal_reason")
+    allowed_reasons = {
+        "played_character_dead",
+        "played_character_changed",
+        "played_character_missing",
+    }
+    if (
+        result.get("step") != "death-terminal"
+        or result.get("terminal") is not True
+        or terminal_reason not in allowed_reasons
+        or snapshot.get("one_life_terminal") is not True
+        or snapshot_reason != terminal_reason
+        or result.get("episode_character_id") != expected_character_id
+        or snapshot.get("episode_character_id") != expected_character_id
+        or snapshot.get("episode_run_id") != expected_run_id
+        or result.get("settlement_status") != "complete"
+        or result.get("settlement_unavailable") is True
+        or result.get("continue_as_heir_after_death") is not False
+        or result.get("heir_gameplay_actions") != 0
+    ):
+        raise AgentError(
+            "death-terminal did not satisfy the immutable no-heir settlement contract"
+        )
+    try:
+        settlement = normalize_one_life_settlement(
+            result.get("one_life_settlement")
+        )
+        snapshot_settlement = normalize_one_life_settlement(
+            snapshot.get("one_life_settlement")
+        )
+        score = normalize_fixed_score(result.get("score"), "score")
+    except (TypeError, ValueError) as error:
+        raise AgentError(f"death-terminal settlement is malformed: {error}") from error
+    if (
+        not settlement_ready_for_episode(settlement, expected_character_id)
+        or not settlement_ready_for_episode(
+            snapshot_settlement, expected_character_id
+        )
+        or settlement != snapshot_settlement
+        or not isinstance(settlement, dict)
+        or settlement.get("final_score") != score
+    ):
+        raise AgentError(
+            "death-terminal settlement score/source does not match the episode"
+        )
+    persistence = result.get("record_persistence")
+    persistence_status = (
+        persistence.get("status") if isinstance(persistence, dict) else None
+    )
+    if persistence_status not in {
+        "persisted",
+        "not_required_zero_score",
+        "not_required_no_new_record",
+    }:
+        raise AgentError(
+            "death-terminal record persistence was not verified or explicitly unnecessary"
+        )
+    if settlement.get("record_written") is True:
+        if not (
+            isinstance(persistence, dict)
+            and persistence.get("required") is True
+            and persistence_status == "persisted"
+        ):
+            raise AgentError(
+                "death-terminal new record lacks stable persistence proof"
+            )
+    cross_run = result.get("cross_run_strategy")
+    recorded_episode = (
+        cross_run.get("recorded_episode")
+        if isinstance(cross_run, dict)
+        else None
+    )
+    successful_steps = (
+        recorded_episode.get("successful_steps")
+        if isinstance(recorded_episode, dict)
+        else None
+    )
+    if (
+        not isinstance(recorded_episode, dict)
+        or recorded_episode.get("run_id") != expected_run_id
+        or recorded_episode.get("score") != score
+        or recorded_episode.get("continue_as_heir_after_death") is not False
+        or recorded_episode.get("heir_gameplay_actions") != 0
+        or not isinstance(successful_steps, list)
+        or "death-terminal" not in successful_steps
+    ):
+        raise AgentError(
+            "death-terminal did not persist the matching one-life episode record"
+        )
+    return {
+        "status": "verified",
+        "executed_by_this_run": True,
+        "settlement_matches_episode": True,
+        "no_heir_gameplay": True,
+        "terminal_reason": terminal_reason,
+        "terminal_kind": result.get("terminal_kind"),
+        "episode_character_id": expected_character_id,
+        "episode_run_id": expected_run_id,
+        "date_raw": snapshot.get("date_raw"),
+        "score": score,
+        "one_life_settlement": settlement,
+        "record_persistence": persistence,
+        "recorded_episode": recorded_episode,
+        "final_binding": _public_binding(binding),
+    }
+
+
 def _compact_binding(
     capabilities: dict[str, object], snapshot: dict[str, object]
 ) -> dict[str, object]:
@@ -753,6 +1349,14 @@ def _compact_binding(
         "episode_character_id": snapshot.get("episode_character_id"),
         "episode_run_id": snapshot.get("episode_run_id"),
         "episode_identity_pending": snapshot.get("episode_identity_pending"),
+        "one_life_terminal": snapshot.get("one_life_terminal"),
+        "one_life_terminal_reason": snapshot.get(
+            "one_life_terminal_reason"
+        ),
+        "one_life_settlement_status": snapshot.get(
+            "one_life_settlement_status"
+        ),
+        "active_context": _active_context_summary(snapshot),
         "driver_state_restored": control.get("driver_state_restored") if isinstance(control, dict) else None,
         "driver_state_restore_kind": control.get("driver_state_restore_kind") if isinstance(control, dict) else None,
         "episode_binding_state": control.get("episode_binding_state") if isinstance(control, dict) else None,
@@ -780,6 +1384,185 @@ def _compact_binding(
             "one_life_terminal": snapshot.get("one_life_terminal"),
             "one_life_terminal_reason": snapshot.get("one_life_terminal_reason"),
         },
+    }
+
+
+def _active_context_summary(snapshot: dict[str, object]) -> dict[str, object]:
+    event = snapshot.get("active_event", snapshot.get("current_event"))
+    pending = snapshot.get("pending_character_interaction")
+    wars = snapshot.get("active_wars")
+    armies = snapshot.get("player_armies")
+    return {
+        "active_event": (
+            {
+                key: event.get(key)
+                for key in (
+                    "instance_id",
+                    "definition_id",
+                    "option_count",
+                    "presentation_ready",
+                    "semantic_decision_ready",
+                )
+                if key in event
+            }
+            if isinstance(event, dict)
+            else None
+        ),
+        "pending_character_interaction": (
+            {
+                key: pending.get(key)
+                for key in (
+                    "instance_id",
+                    "kind",
+                    "deadline_date_raw",
+                    "response_ready",
+                )
+                if key in pending
+            }
+            if isinstance(pending, dict)
+            else None
+        ),
+        "war_ids": [
+            row.get("war_id")
+            for row in wars
+            if isinstance(row, dict) and row.get("war_id") is not None
+        ]
+        if isinstance(wars, list)
+        else [],
+        "army_ids": [
+            row.get("army_id")
+            for row in armies
+            if isinstance(row, dict) and row.get("army_id") is not None
+        ]
+        if isinstance(armies, list)
+        else [],
+        "terminal": snapshot.get("one_life_terminal"),
+        "terminal_reason": snapshot.get("one_life_terminal_reason"),
+        "settlement_status": snapshot.get("one_life_settlement_status"),
+    }
+
+
+def _generic_failure_kind(stage: str) -> str:
+    return {
+        "startup": "startup_failed",
+        "readiness": "readiness_failed",
+        "session": "session_exit",
+        "opaque_auto_turn": "opaque_auto_turn_failed",
+        "planning_or_action": "action_failed",
+        "postcondition_observation": "postcondition_observation_failed",
+        "postcondition": "postcondition_failed",
+        "checkpoint": "checkpoint_failed",
+        "checkpoint_preflight": "checkpoint_preflight_failed",
+        "cleanup": "cleanup_failed",
+        "bound": "wall_clock_bound_exhausted",
+    }.get(stage, "action_or_postcondition_failed")
+
+
+def _first_blocker_report(
+    *,
+    status: str,
+    error: str | None,
+    completion_contract: str,
+    readiness: dict[str, object] | None,
+    turns: list[dict[str, object]],
+    checkpoints: list[dict[str, object]],
+    fixed_seed: dict[str, object] | None,
+    cleanup: dict[str, object],
+) -> dict[str, object]:
+    latest = turns[-1] if turns else None
+    latest_plan = latest.get("plan") if isinstance(latest, dict) else None
+    latest_before = latest.get("before") if isinstance(latest, dict) else None
+    latest_after = latest.get("after") if isinstance(latest, dict) else None
+    cleanup_failed_after_completion = bool(
+        status == "episode_complete" and cleanup.get("ok") is not True
+    )
+    if status == "blocked":
+        stage, kind = "planning", "planner_blocked"
+    elif status == "turn_limit":
+        stage, kind = "bound", "run_bound_exhausted"
+    elif status == "turn_limit_terminal_pending":
+        stage, kind = "postcondition", "terminal_finalization_pending"
+    elif status == "terminal_preexisting":
+        stage, kind = "readiness", "preexisting_terminal"
+    elif status == "terminal_non_death_step":
+        stage, kind = "planning", "non_death_terminal_step"
+    elif status == "timeout":
+        stage, kind = "bound", "wall_clock_bound_exhausted"
+    elif status == "session_exit":
+        stage, kind = "session", "session_exit"
+    elif status == "starting":
+        stage, kind = "startup", "startup_failed"
+    elif cleanup_failed_after_completion:
+        stage, kind = "cleanup", "cleanup_failed"
+    elif isinstance(error, str) and "episode " in error and "changed" in error:
+        stage, kind = "postcondition", "identity_violation"
+    elif isinstance(error, str) and (
+        "settlement" in error or "death-terminal" in error
+    ):
+        stage, kind = "postcondition", "settlement_invalid"
+    elif status == "operator_stop":
+        stage, kind = "session", "operator_stop"
+    else:
+        stage, kind = "action", "action_or_postcondition_failed"
+    message = error
+    if message is None:
+        message = {
+            "turn_limit": "run bound ended before the player death settlement",
+            "turn_limit_terminal_pending": (
+                "run bound ended on a terminal frame before death settlement"
+            ),
+            "terminal_non_death_step": (
+                "a non-death terminal planner step ended the loop"
+            ),
+        }.get(status, f"run ended without qualification: {status}")
+    error_type = None
+    if isinstance(error, str) and ":" in error:
+        error_type = error.split(":", 1)[0]
+    last_checkpoint = checkpoints[-1] if checkpoints else fixed_seed
+    return {
+        "observed_at": utc_now(),
+        "turn_index": latest.get("index") if isinstance(latest, dict) else 0,
+        "stage": stage,
+        "kind": kind,
+        "status": status,
+        "completion_contract": completion_contract,
+        "message": message,
+        "error_type": error_type,
+        "error": error,
+        "initial_episode": (
+            {
+                key: readiness.get(key)
+                for key in (
+                    "episode_character_id",
+                    "episode_run_id",
+                    "date_raw",
+                    "played_character_alive",
+                )
+            }
+            if isinstance(readiness, dict)
+            else None
+        ),
+        "before": latest_before,
+        "plan": latest_plan,
+        "selected_step": (
+            latest.get("selected_step") if isinstance(latest, dict) else None
+        ),
+        "result": (
+            latest.get("result") if isinstance(latest, dict) else None
+        ),
+        "after": latest_after,
+        "active_context": (
+            latest_after.get("active_context")
+            if isinstance(latest_after, dict)
+            else (
+                latest_before.get("active_context")
+                if isinstance(latest_before, dict)
+                else None
+            )
+        ),
+        "last_durable_checkpoint": last_checkpoint,
+        "recoverable_from_checkpoint": last_checkpoint is not None,
+        "cleanup": cleanup,
     }
 
 
@@ -877,6 +1660,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "target_province_id",
         "event_instance_id",
         "event_decision",
+        "required_step",
+        "required_capability",
+        "active_event",
+        "pending_character_interaction",
+        "cross_run_plan_used",
     )
     return {key: plan.get(key) for key in keys if key in plan}
 
@@ -899,7 +1687,16 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "revision",
         "terminal",
         "terminal_kind",
+        "terminal_reason",
+        "episode_character_id",
         "settlement_status",
+        "settlement_unavailable",
+        "score",
+        "continue_as_heir_after_death",
+        "heir_gameplay_actions",
+        "one_life_settlement",
+        "record_persistence",
+        "cross_run_strategy",
         "checkpoint",
         "event_selection",
     )
@@ -951,6 +1748,7 @@ def _materialize_checkpoint(
     session_state: dict[str, object],
     timeout_seconds: float,
     poll_interval_seconds: float,
+    on_checkpoint_submit: Callable[[], None] | None = None,
 ) -> tuple[dict[str, object], dict[str, object]]:
     binding = _wait_for_readiness(
         driver,
@@ -962,6 +1760,8 @@ def _materialize_checkpoint(
         cold_start_checkpoint=False,
         allow_terminal=False,
     )
+    if on_checkpoint_submit is not None:
+        on_checkpoint_submit()
     result = service.save_checkpoint(
         expected_revision=int(binding["revision"])
     )

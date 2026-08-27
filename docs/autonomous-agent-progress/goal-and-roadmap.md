@@ -54,7 +54,7 @@ flowchart LR
 操作跨过 blocker。当前账本见 [`one-generation-blocker-ledger.md`](one-generation-blocker-ledger.md)。首次一代 GREEN 后，
 再用重复 run、更多 seed 与原生决策树逐步替换这些降级策略。
 
-原生 AI 研究前置保持不变：遇到相关玩法，先冻结并落盘原版决策树、输入和 unknown 分支；完成这一步后，我方不必立刻复制
+原生 AI 研究前置保持不变：遇到相关玩法，先冻结并落盘 exact-build 原版决策树、输入和 unknown 分支；完成这一步后，我方不必立刻复制
 整棵树，可以选择足以继续游戏的最小实现。原生树中尚未采用的输入/分支必须作为可追踪能力债记录，后续以 production outcome
 决定替换和校准顺序。
 
@@ -77,6 +77,7 @@ flowchart LR
 | campaign root 与 loaded feature manifest | `production-live primitive` | 读取玩家主头衔/tier、capital、liege、government/rules，以及当前进程 feature registry/runtime keys。 | 开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
 | 婚姻关系与最小候选动作 | `implemented`，部分结果 live | 读取配偶/婚约关系，枚举合法 CharacterID 候选并提交、等待关系结果。 | 当前仍可能选择首个候选，不是智能婚姻策略。 |
 | 一代结算 | `production-live primitive` | 读取死亡结算 snapshot、分数/纪录/契约进度并可从 immutable seed 开新 episode。 | 自然死亡完整 episode 与普通 campaign 跨继承仍未完成。 |
+| 一代人严格 runner | `static-ready` | 复用纯原生 owner，从归档的 exact cold seed 持续 OODA；周期保存，并对首个 blocker 或匹配初始角色的 scored death settlement 输出独立 artifact。 | 尚未在正常交互桌面跑出自然死亡完整 episode；G1 仍未取得。 |
 
 已有 managed war run 的已记录量化里程碑为 `210/210` 成功回合、78 个可见 gameplay 回合和 75 个游戏日；这是既有战争
 checkpoint 的稳定性证据，不是全游戏覆盖率。

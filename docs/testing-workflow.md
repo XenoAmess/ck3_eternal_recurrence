@@ -342,6 +342,23 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   session 已持有的锁，也不得先关 pipe 后等待 CK3。initial readiness 要在同一 PID/generation 上同时闭合 exact-build hello、
   default-OFF containment/recorder、paused map、存活 episode character 与同日期 main-thread mailbox；cold checkpoint 还要闭合
   `driver_state_restore_kind=cold_checkpoint`、`episode_binding_state=active_resumed` 且无 candidate rejection。
+- 完整一代验收使用独立 `native-one-generation`，不得把 `native-auto-run` 的 bounded `turn_limit` GREEN 当成替代。该入口始终要求
+  pipe 名与 v2 cold checkpoint driver state 完全一致，在首个 gameplay action 前把 checkpoint 和 driver state 复制到本次
+  `state/runs/<run-id>/seed/`。默认每 3 个 verified eligible advance checkpoint；这是动作次数，不是游戏日，和平
+  `life-advance` 通常约 30 天一步，因此默认大致形成季度级恢复点。turn/wall bound 耗尽必须返回
+  `bounded_incomplete` 并写 `first-blocker.json`。唯一 GREEN 终点是本次执行的 `death-terminal` 同时闭合：初始
+  episode CharacterID/run 未变化、terminal reason 为 dead/changed/missing、settlement ready 且 source/score 匹配、record persistence
+  已证明或明确无需、cross-run episode 已记录、继承人 gameplay 为零、cleanup proven。终局已存在于启动帧、裸
+  `status=terminal`、`strategy-review`、ACK 或 `settlement_unavailable` 都不能计为一代完成。
+- `first-blocker.json` 以 first-write-wins 保存当前失败尝试，而不是事后取上一条成功 turn；它包含 plan、selected step、action
+  result、before/after paused binding、事件/互动/WarID/ArmyID 摘要与最后 durable
+  checkpoint。它表示 runner 看到的第一个停止点；bound exhaustion 是 harness incomplete，不能自动升级为 capability RED。真正改
+  对应策略前仍须先更新该域的 exact-build 原生 AI 专题；梳理完成后允许先做最小 blocker-removal 并把质量差距记账。
+- `xar_checkpoint.ck3` 是原位覆盖。保存命令开始提交后、完整 post-snapshot/hash/history 验证前失败时，core 必须撤销同路径旧
+  metadata 的 `recoverable` 声明；readiness preflight 在提交前失败则保留旧恢复点。`native-one-generation` 对前一种失败只能回落到
+  run 开始前归档在 `seed/` 的 immutable checkpoint + driver state。
+- `service.auto_turn()` 是不透明的 plan+execute 组合调用；中途异常无法证明 planner 尚未选择并提交 checkpoint，因此同样撤销 live
+  path 并回落 immutable seed。只有 typed outcome 完整返回后，runner 才按实际 step 解除这项保守假设。
 - 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
   66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中

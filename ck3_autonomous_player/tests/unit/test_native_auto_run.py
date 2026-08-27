@@ -54,10 +54,16 @@ class _NativeAutoRunHarness:
         actions: list[str],
         *,
         initial_unready_snapshot: bool = True,
+        cold_start: bool = False,
+        session_exits_immediately: bool = False,
+        fail_save_checkpoint: bool = False,
     ) -> None:
         self.spec = spec
         self.actions = list(actions)
         self.initial_unready_snapshot = initial_unready_snapshot
+        self.cold_start = cold_start
+        self.session_exits_immediately = session_exits_immediately
+        self.fail_save_checkpoint = fail_save_checkpoint
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -65,6 +71,8 @@ class _NativeAutoRunHarness:
         self.heartbeat_date_raw = self.date_raw
         self.heartbeat_lag_capability_reads = 0
         self.terminal = False
+        self.episode_character_id = 707
+        self.settlement: dict[str, object] | None = None
         self.active_event_id = (
             900
             if self.actions
@@ -109,6 +117,9 @@ class _NativeAutoRunHarness:
         if not isinstance(config, NativeBridgeLaunchConfig):
             raise AssertionError("native session lacks the validated launch config")
         self.events.append("session_start")
+        if self.session_exits_immediately:
+            self.events.append("session_return")
+            return _session_report(config.pipe_name)
         if not stop_event.wait(timeout=2.0):
             raise AssertionError("native auto-run did not stop its managed session")
         self.events.append("session_stop")
@@ -133,10 +144,14 @@ class _NativeAutoRunHarness:
             "diagnostics": diagnostics,
             "native_session_control": {
                 "configured": True,
-                "driver_state_restored": False,
+                "driver_state_restored": self.cold_start,
                 "driver_state_error": None,
-                "driver_state_restore_kind": "new_episode",
-                "episode_binding_state": "active_new",
+                "driver_state_restore_kind": (
+                    "cold_checkpoint" if self.cold_start else "new_episode"
+                ),
+                "episode_binding_state": (
+                    "active_resumed" if self.cold_start else "active_new"
+                ),
                 "cold_candidate_rejection": None,
             },
             "checkpoint_materialization": {
@@ -171,13 +186,17 @@ class _NativeAutoRunHarness:
                 "character_id": 707,
                 "alive": not self.terminal,
             },
-            "episode_character_id": 707,
+            "episode_character_id": self.episode_character_id,
             "episode_run_id": "native-707-test-run",
             "episode_identity_pending": False,
             "one_life_terminal": self.terminal,
             "one_life_terminal_reason": (
                 "played_character_dead" if self.terminal else None
             ),
+            "one_life_settlement_status": (
+                "ready" if self.settlement is not None else "pending"
+            ),
+            "one_life_settlement": copy.deepcopy(self.settlement),
             "active_event": (
                 {
                     "instance_id": self.active_event_id,
@@ -209,6 +228,20 @@ class _NativeAutoRunHarness:
                 "snapshot_id": f"native:{self.native_revision}",
                 "revision": self.public_revision,
             }
+        if action == "preexisting_terminal":
+            return {
+                "status": "terminal",
+                "plan": {
+                    "phase": "terminal_complete",
+                    "selected_step": None,
+                    "reason": "fixture already had a terminal result",
+                },
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+            }
+        if action == "opaque_checkpoint_failure":
+            self.save_checkpoint(expected_revision=self.public_revision)
+            raise OSError("fixture opaque checkpoint execution failed")
 
         if action in {"query", "query_change"}:
             step = "query-declarable-wars"
@@ -227,6 +260,7 @@ class _NativeAutoRunHarness:
             "slow_advance",
             "terminal_advance",
             "no_delta_advance",
+            "identity_change",
         }:
             step = "life-advance"
             starting_date_raw = self.date_raw
@@ -235,6 +269,7 @@ class _NativeAutoRunHarness:
                 "lagged_advance",
                 "slow_advance",
                 "terminal_advance",
+                "identity_change",
             }:
                 if action == "slow_advance":
                     time.sleep(0.02)
@@ -247,6 +282,8 @@ class _NativeAutoRunHarness:
                     self.heartbeat_date_raw = self.date_raw
                 if action == "terminal_advance":
                     self.terminal = True
+                if action == "identity_change":
+                    self.episode_character_id = 708
             result = {
                 "step": step,
                 "accepted": True,
@@ -279,6 +316,70 @@ class _NativeAutoRunHarness:
                     "selected_native_option_index": 0,
                 },
             }
+        elif action in {
+            "death_terminal",
+            "death_terminal_source_mismatch",
+            "death_terminal_score_mismatch",
+            "death_terminal_unavailable",
+        }:
+            if not self.terminal:
+                raise AssertionError("death-terminal action lacks terminal state")
+            step = "death-terminal"
+            source_character_id = (
+                999
+                if action == "death_terminal_source_mismatch"
+                else 707
+            )
+            self.settlement = {
+                "ready": True,
+                "commit_serial": 1,
+                "source_character_id": source_character_id,
+                "final_score": 125,
+                "score_before_reject": 125,
+                "record_candidate": 125,
+                "old_record": 125,
+                "record_delta": 0,
+                "blessing_count": 2,
+                "refusal_count": 1,
+                "contract_progress": 3,
+                "record_written": False,
+            }
+            settlement_status = (
+                "settlement_unavailable"
+                if action == "death_terminal_unavailable"
+                else "complete"
+            )
+            score = 126 if action == "death_terminal_score_mismatch" else 125
+            result = {
+                "step": step,
+                "accepted": True,
+                "terminal": True,
+                "terminal_kind": "native_played_character_dead",
+                "terminal_reason": "played_character_dead",
+                "episode_character_id": 707,
+                "settlement_status": settlement_status,
+                "settlement_unavailable": (
+                    settlement_status == "settlement_unavailable"
+                ),
+                "score": score,
+                "continue_as_heir_after_death": False,
+                "heir_gameplay_actions": 0,
+                "one_life_settlement": copy.deepcopy(self.settlement),
+                "record_persistence": {
+                    "status": "not_required_no_new_record",
+                    "required": False,
+                    "record_candidate": 125,
+                },
+                "cross_run_strategy": {
+                    "recorded_episode": {
+                        "run_id": "native-707-test-run",
+                        "score": score,
+                        "continue_as_heir_after_death": False,
+                        "heir_gameplay_actions": 0,
+                        "successful_steps": ["life-advance", "death-terminal"],
+                    }
+                },
+            }
         else:
             raise AssertionError(f"unsupported fake action {action!r}")
 
@@ -305,6 +406,8 @@ class _NativeAutoRunHarness:
                 "checkpoint was not bound to the current public revision"
             )
         self.events.append("save_checkpoint")
+        if self.fail_save_checkpoint:
+            raise OSError("fixture checkpoint failed")
         path = self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(_CHECKPOINT_PAYLOAD)
@@ -454,11 +557,18 @@ class NativeAutoRunTests(unittest.TestCase):
         *,
         initial_unready_snapshot: bool = True,
         timeout_seconds: float = 2.0,
+        completion_contract: str = "bounded",
+        checkpoint_every_eligible_advances: int = 3,
+        session_exits_immediately: bool = False,
+        fail_save_checkpoint: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
             actions,
             initial_unready_snapshot=initial_unready_snapshot,
+            cold_start=completion_contract == "one_generation",
+            session_exits_immediately=session_exits_immediately,
+            fail_save_checkpoint=fail_save_checkpoint,
         )
         with mock.patch.object(
             native_auto_run_module,
@@ -472,6 +582,20 @@ class NativeAutoRunTests(unittest.TestCase):
             native_auto_run_module,
             "native_session",
             side_effect=harness.run_session,
+        ), mock.patch.object(
+            native_auto_run_module,
+            "validate_cold_start_checkpoint_for_pipe",
+            return_value={
+                "name": "xar_checkpoint.ck3",
+                "load_save_name": "xar_checkpoint",
+                "path": str(
+                    self.spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+                ),
+                "size": len(_CHECKPOINT_PAYLOAD),
+                "sha256": hashlib.sha256(_CHECKPOINT_PAYLOAD).hexdigest(),
+                "saved_date_raw": harness.date_raw,
+                "history_index": 1,
+            },
         ):
             report = native_auto_run_module.native_auto_run(
                 self.spec,
@@ -481,6 +605,13 @@ class NativeAutoRunTests(unittest.TestCase):
                 native_bridge=self.config,
                 readiness_stable_seconds=0.0,
                 poll_interval_seconds=0.001,
+                checkpoint_every_eligible_advances=(
+                    checkpoint_every_eligible_advances
+                ),
+                cold_start_checkpoint=(
+                    completion_contract == "one_generation"
+                ),
+                completion_contract=completion_contract,
             )
         return report, harness
 
@@ -506,6 +637,26 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(args.timeout, 19)
         self.assertEqual(args.readiness_timeout, 3)
         self.assertTrue(args.cold_start_checkpoint)
+
+    def test_parser_exposes_strict_one_generation_runner(self) -> None:
+        args = cli.parser().parse_args(
+            [
+                "--bridge-mode",
+                "native-headless",
+                "native-one-generation",
+                "--max-turns",
+                "50000",
+                "--timeout",
+                "7200",
+                "--checkpoint-every-advances",
+                "180",
+            ]
+        )
+
+        self.assertEqual(args.command, "native-one-generation")
+        self.assertEqual(args.max_turns, 50000)
+        self.assertEqual(args.timeout, 7200)
+        self.assertEqual(args.checkpoint_every_advances, 180)
 
     def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
         stderr = io.StringIO()
@@ -665,6 +816,143 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIn(
             "old-instance lifecycle postcondition", str(report["error"])
         )
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["turn_index"], 1)
+        self.assertEqual(blocker["stage"], "postcondition")
+        self.assertEqual(
+            blocker["kind"], "event_lifecycle_postcondition_failed"
+        )
+        self.assertEqual(
+            blocker["before"]["active_context"]["active_event"][
+                "instance_id"
+            ],
+            900,
+        )
+        self.assertEqual(blocker["plan"]["selected_step"], "select-event-option-1")
+        self.assertEqual(blocker["selected_step"], "select-event-option-1")
+        self.assertEqual(
+            blocker["result"]["event_selection"]["old_event_instance_id"],
+            900,
+        )
+        self.assertEqual(
+            blocker["result"]["event_selection"]["new_event_instance_id"],
+            900,
+        )
+        self.assertEqual(
+            blocker["after"]["active_context"]["active_event"][
+                "instance_id"
+            ],
+            900,
+        )
+        self.assertEqual(report["auto_run"]["attempted_turns"], 1)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_session_exit_during_readiness_is_classified_as_session_exit(self) -> None:
+        report, _harness = self._run(
+            ["advance"], session_exits_immediately=True
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "session_exit")
+        self.assertEqual(report["first_blocker"]["stage"], "session")
+        self.assertEqual(report["first_blocker"]["kind"], "session_exit")
+        self.assertIn(
+            "managed native-session exited before auto-run stop",
+            report["first_blocker"]["message"],
+        )
+
+    def test_periodic_checkpoint_failure_names_checkpoint_attempt(self) -> None:
+        report, _harness = self._run(
+            ["advance", "advance", "advance"],
+            completion_contract="one_generation",
+            fail_save_checkpoint=True,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["stage"], "checkpoint")
+        self.assertEqual(blocker["kind"], "checkpoint_failed")
+        self.assertEqual(blocker["turn_index"], 3)
+        self.assertEqual(blocker["plan"], {"phase": "periodic_checkpoint"})
+        self.assertEqual(blocker["selected_step"], "save-checkpoint")
+        self.assertIsNone(blocker["result"])
+        self.assertIn("fixture checkpoint failed", blocker["message"])
+        self.assertTrue(blocker["checkpoint_recovery_invalidated"])
+        self.assertFalse(blocker["recoverable_from_checkpoint"])
+        self.assertIsNone(blocker["last_durable_checkpoint"])
+
+    def test_checkpoint_preflight_failure_keeps_previous_recovery(self) -> None:
+        with mock.patch.object(
+            native_auto_run_module,
+            "_materialize_checkpoint",
+            side_effect=AgentError("fixture checkpoint preflight failed"),
+        ):
+            report, _harness = self._run(
+                ["advance", "advance", "advance"],
+                completion_contract="one_generation",
+            )
+
+        self.assertFalse(report["ok"])
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["stage"], "checkpoint_preflight")
+        self.assertEqual(blocker["kind"], "checkpoint_preflight_failed")
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(
+            blocker["last_durable_checkpoint"], report["fixed_seed"]
+        )
+
+    def test_opaque_auto_turn_failure_invalidates_live_checkpoint_path(self) -> None:
+        report, _harness = self._run(
+            ["opaque_checkpoint_failure"],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["stage"], "opaque_auto_turn")
+        self.assertEqual(blocker["kind"], "opaque_auto_turn_failed")
+        self.assertTrue(blocker["checkpoint_recovery_invalidated"])
+        self.assertEqual(
+            blocker["checkpoint_recovery_invalidation_reason"],
+            "opaque_auto_turn_may_have_submitted_checkpoint",
+        )
+        self.assertFalse(blocker["recoverable_from_checkpoint"])
+        self.assertIsNone(blocker["last_durable_checkpoint"])
+
+    def test_compact_failure_context_preserves_pending_interaction_identity(self) -> None:
+        context = native_auto_run_module._active_context_summary(
+            {
+                "pending_character_interaction": {
+                    "instance_id": 72,
+                    "kind": "marriage_offer",
+                    "deadline_date_raw": 53_171_430,
+                    "response_ready": True,
+                }
+            }
+        )
+        self.assertEqual(
+            context["pending_character_interaction"],
+            {
+                "instance_id": 72,
+                "kind": "marriage_offer",
+                "deadline_date_raw": 53_171_430,
+                "response_ready": True,
+            },
+        )
+        self.assertEqual(
+            native_auto_run_module._compact_plan(
+                {
+                    "phase": "pending_character_interaction_query",
+                    "pending_character_interaction": {
+                        "instance_id": 72,
+                        "kind": "marriage_offer",
+                    },
+                }
+            )["pending_character_interaction"]["instance_id"],
+            72,
+        )
 
     def test_turn_limit_materializes_visible_tail_checkpoint(self) -> None:
         report, harness = self._run(["advance"])
@@ -736,6 +1024,99 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             report["auto_run"]["eligible_advances_since_checkpoint"], 3
         )
+
+    def test_one_generation_requires_matching_scored_death_terminal(self) -> None:
+        report, harness = self._run(
+            ["advance", "terminal_advance", "death_terminal"],
+            completion_contract="one_generation",
+            checkpoint_every_eligible_advances=365,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "episode_complete")
+        self.assertEqual(report["outcome"], "qualified")
+        self.assertEqual(report["completion_contract"], "one_generation")
+        self.assertEqual(report["terminal"]["status"], "verified")
+        self.assertEqual(report["terminal"]["episode_character_id"], 707)
+        self.assertEqual(report["terminal"]["score"], 125)
+        self.assertTrue(all(report["qualification_gates"].values()))
+        self.assertIsNone(report["first_blocker"])
+        self.assertEqual(
+            [row["selected_step"] for row in report["auto_run"]["turns"]],
+            ["life-advance", "life-advance", "death-terminal"],
+        )
+        self.assertNotIn("start-next-episode", harness.events)
+
+    def test_one_generation_bound_is_incomplete_and_checkpointed(self) -> None:
+        report, _harness = self._run(
+            ["advance"],
+            completion_contract="one_generation",
+            checkpoint_every_eligible_advances=365,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["outcome"], "bounded_incomplete")
+        self.assertEqual(report["checkpoints"][-1]["phase"], "final_checkpoint")
+        self.assertEqual(
+            report["first_blocker"]["kind"], "run_bound_exhausted"
+        )
+        self.assertTrue(report["first_blocker"]["recoverable_from_checkpoint"])
+
+    def test_one_generation_rejects_invalid_settlement_proofs(self) -> None:
+        cases = {
+            "death_terminal_source_mismatch": "score/source",
+            "death_terminal_score_mismatch": "score/source",
+            "death_terminal_unavailable": "no-heir settlement",
+        }
+        for terminal_action, marker in cases.items():
+            with self.subTest(terminal_action=terminal_action):
+                report, _harness = self._run(
+                    ["advance", "terminal_advance", terminal_action],
+                    completion_contract="one_generation",
+                    checkpoint_every_eligible_advances=365,
+                )
+
+                self.assertFalse(report["ok"])
+                self.assertEqual(report["status"], "stopped_on_error")
+                self.assertIn(marker, str(report["error"]))
+                self.assertEqual(
+                    report["first_blocker"]["kind"], "settlement_invalid"
+                )
+                self.assertTrue(
+                    report["first_blocker"]["recoverable_from_checkpoint"]
+                )
+                self.assertEqual(
+                    report["first_blocker"]["last_durable_checkpoint"],
+                    report["fixed_seed"],
+                )
+                self.assertEqual(
+                    report["auto_run"]["turns"][-1]["selected_step"],
+                    "death-terminal",
+                )
+
+    def test_one_generation_rejects_episode_identity_change(self) -> None:
+        report, _harness = self._run(
+            ["identity_change"],
+            completion_contract="one_generation",
+            checkpoint_every_eligible_advances=365,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertFalse(report["qualification_gates"]["same_episode_binding"])
+        self.assertEqual(report["first_blocker"]["kind"], "identity_violation")
+        self.assertEqual(report["first_blocker"]["turn_index"], 1)
+
+    def test_one_generation_rejects_bare_preexisting_terminal_status(self) -> None:
+        report, _harness = self._run(
+            ["preexisting_terminal"],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "terminal_preexisting")
+        self.assertEqual(report["first_blocker"]["kind"], "preexisting_terminal")
 
     def test_action_finishing_after_deadline_cannot_qualify(self) -> None:
         report, harness = self._run(

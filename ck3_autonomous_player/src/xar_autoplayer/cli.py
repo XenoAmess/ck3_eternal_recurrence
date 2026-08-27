@@ -17,6 +17,7 @@ from .environment import (
 )
 from .errors import AgentError
 from .locking import exclusive_state_lock
+from .one_generation_run import ONE_GENERATION_CHECKPOINT_CADENCE
 from .runtime import (
     DEFAULT_NATIVE_BRIDGE_PIPE,
     NATIVE_BRIDGE_DISABLED,
@@ -185,6 +186,37 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="launch and bind the exact v2 xar_checkpoint save",
     )
+    one_generation_parser = commands.add_parser(
+        "native-one-generation",
+        help=(
+            "run one fixed-seed ruler lifetime through the pure native "
+            "observe-plan-act-verify loop and save blocker/terminal artifacts"
+        ),
+    )
+    one_generation_parser.add_argument(
+        "--max-turns",
+        type=int,
+        required=True,
+        help="hard planner-turn bound; exhausting it is incomplete, never GREEN",
+    )
+    one_generation_parser.add_argument(
+        "--timeout", type=float, default=604800
+    )
+    one_generation_parser.add_argument(
+        "--readiness-timeout",
+        type=float,
+        default=300,
+        help="maximum seconds to wait for a stable paused native map",
+    )
+    one_generation_parser.add_argument(
+        "--checkpoint-every-advances",
+        type=int,
+        default=ONE_GENERATION_CHECKPOINT_CADENCE,
+        help=(
+            "eligible verified advances between durable checkpoints "
+            f"(default: {ONE_GENERATION_CHECKPOINT_CADENCE})"
+        ),
+    )
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -252,7 +284,8 @@ def main(argv: list[str] | None = None) -> int:
     spec = make_spec(args.state_dir, args.game_dir)
     try:
         if (
-            args.command in {"native-session", "native-auto-run"}
+            args.command
+            in {"native-session", "native-auto-run", "native-one-generation"}
             and args.bridge_mode != "native-headless"
         ):
             raise AgentError(
@@ -339,6 +372,18 @@ def main(argv: list[str] | None = None) -> int:
                 readiness_timeout_seconds=args.readiness_timeout,
                 cold_start_checkpoint=args.cold_start_checkpoint,
             )
+        elif args.command == "native-one-generation":
+            from .one_generation_run import native_one_generation_run
+
+            result = native_one_generation_run(
+                spec,
+                max_turns=args.max_turns,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                checkpoint_every_eligible_advances=(
+                    args.checkpoint_every_advances
+                ),
+            )
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy
 
@@ -358,6 +403,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
     print(json.dumps(_summary(args.command, result), ensure_ascii=False, indent=2))
-    if args.command == "native-auto-run" and result.get("ok") is not True:
+    if (
+        args.command in {"native-auto-run", "native-one-generation"}
+        and result.get("ok") is not True
+    ):
         return 1
     return 0

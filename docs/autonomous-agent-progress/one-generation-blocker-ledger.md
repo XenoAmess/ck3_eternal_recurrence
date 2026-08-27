@@ -24,12 +24,12 @@
 
 | ID | 等级 | 场景 | 当前事实 | 最小解除条件 | 状态 |
 |---|---|---|---|---|---|
-| GEN-001 | B0 | 一代人 supervised runner | 现有 managed runner 覆盖战争或专用 fixture，尚无“直到玩家死亡”的统一终止合同 | 固定 seed、无人输入循环、周期 checkpoint、死亡/一代结算终点、首个 blocker artifact | 待施工 |
+| GEN-001 | B0 | 一代人 supervised runner | 已在现有纯原生 owner 上实现严格 `one_generation` 合同与 artifact wrapper：固定 cold seed 归档、无人输入循环、可调周期 checkpoint、first-blocker、死亡结算与 cleanup gates 均已 `static-ready`；没有另造 gameplay loop | 在正常交互桌面用最终 clean source/new prepared state 跑 20-turn canary，再启动长跑并由首个真实 blocker 排序 | static-ready；production live 待 `GEN-008` |
 | GEN-002 | B1 | 当前事件有多个合法选项 | current-window identity/presentation 与有限 indicator 已 live；scope wire 已 static-ready；完整效果与 semantic readiness 仍不足。现已实现只吃 same-frame shown+enabled 的可审计 fallback，并把直接动作升级为旧 full instance 必须推进 | 正常交互桌面完成 scope query 与多选事件 degraded selection live；artifact 验证候选账本、预期 native index、旧 instance 推进、paused/episode/cleanup | static-ready；live 待 `GEN-008` A/B |
 | GEN-003 | B1/B2 | pending character interaction | ordinary white peace typed primitive 与 notification ACK 已有；其它 stock terms/effects 不完整 | 对必须答复的合法互动提供按类型的最小 accept/decline/ack policy，并验证旧 full ID 消失 | 未开始 |
 | GEN-004 | B1 | 已有战争到终局 | 移动、围城、接敌、战斗 hold/retreat 与 normal terminal 较成熟，但完整 victory/white-peace/surrender 路径未闭合 | 当前 run 遇战时至少有一个合法终局路径、战后解散/保存/继续 | 未开始 |
 | GEN-005 | B2 | 非战争长期治理 | 经济、内阁、生活方式、家庭等大多不是通用 native semantic policy | 不出现强制 UI 时允许时间推进；出现阻塞则提升为 B1 并补最小动作 | 记账观察 |
-| GEN-006 | B1 | 自然死亡与结算 | 一代结算 snapshot/immutable seed primitive 已有，但尚无自然完整 episode | runner 观测玩家死亡，读取结算、保存 artifact 并正常终止 | 未开始 |
+| GEN-006 | B1 | 自然死亡与结算 | strict runner 现只接受本次执行且 source CharacterID/score/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`，并输出独立 terminal sidecar；自然完整 episode 尚未实机发生 | production 长跑观测玩家自然死亡，生成 `terminal-settlement.json` 并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；自然 episode live 待执行 |
 | GEN-007 | B2/B3 | 战斗质量 | reinforcement assigned/join、异常 terminal 与 forecast 未全闭合 | 若不阻塞当前 run 先记录；真实卡住或导致无法结束战争时提升为 B1 | 记账观察 |
 | GEN-008 | B0（环境） | 当前执行会话无法启动 CK3 live acceptance | 相同 exact EXE/save/runner 在 `CodexSandboxOffline`、`WinSta0\\CodexSandboxDesktop-*` 中于启动期固定崩溃 `ck3+0x1DABD89`；当日既有 live GREEN 均来自 `xenoa` 的普通交互环境。事件 scope query 从未执行，因此不能判为 capability RED | 在 `xenoa` 正常交互 PowerShell / `WinSta0\\Default` 原样复跑 a860702 default-off acceptance，完成同命令 A/B；在此之前继续可离线的 blocker-removal，不改 native 逻辑掩盖环境差异 | 外部 A/B 待执行 |
 
@@ -52,3 +52,26 @@
 4. `G3 broadened`：增加 ruler、政府、战争/和平起点与 enabled-feature 代表场景。
 
 本周最高优先级是尽快取得 G1；G2/G3 与策略质量持续推进，但不得反过来阻塞首个 G1。
+
+## 2026-08-27 11:56：G0 static-ready
+
+- `native_auto_run` 新增向后兼容的 `completion_contract=one_generation`；原 bounded 合同保留。strict 模式冻结初始
+  episode CharacterID/run/date，要求 exact v2 cold checkpoint，检查每个 before/after binding，并沿用已验证的三次 eligible advance
+  checkpoint cadence。
+- 唯一成功终点是本次实际执行的 `death-terminal`：terminal reason、完整 settlement、source CharacterID、score、record
+  persistence、cross-run recorded episode、零继承人 gameplay 与 cleanup 必须全部吻合。启动帧已有 terminal、裸 terminal status、
+  `strategy-review`、`settlement_unavailable` 或上限耗尽均不能 GREEN。
+- `native-one-generation` 会先归档固定 seed checkpoint 与匹配 driver state，再原子写 `report.json`；失败写
+  `first-blocker.json`，成功写 `terminal-settlement.json`。blocker 以 first-write-wins 保留当前失败尝试的 plan、动作、result、
+  before/after、active context 和最后 durable checkpoint；即使失败发生在 turn append 前，attempted count 也不会错误归零。
+  bound exhaustion 明确只是 `bounded_incomplete`。
+- 默认 cadence 是 3 次 verified eligible advance，不是 3 个游戏日；和平 `life-advance` 通常约 30 天一步，因此默认大致是季度级
+  恢复点。此前 365-action 默认最坏可能丢掉约三十年进度，现已作为实际恢复性问题纠正。fixed
+- checkpoint 使用同一 `xar_checkpoint.ck3` 原位覆盖；保存命令开始提交后若 post-snapshot/hash/history 验证失败，core 会立即撤销
+  所有同路径旧 metadata 的可恢复声明；readiness preflight 在提交前失败则保留旧恢复点。严格 wrapper 只把前一种 blocker 降级重绑
+  到本次 `seed/` 中不可变归档的 checkpoint + driver state，宁可丢掉本轮进度，也不声称已被覆盖的旧字节可恢复。
+- 组合式 `service.auto_turn()` 在 typed outcome 返回前无法暴露 planner 选中的 step；其中途异常按“可能已经提交 save-checkpoint”处理，
+  同样撤销 live path 并回落 immutable seed。返回 blocked/terminal 或其它 typed step 后再解除该不透明窗口。
+  seed 证明从当前 map-ready recovery anchor 到死亡的一代过程，不把 seed 之前的出生/即位历史算成本次 Agent 游玩。
+- orchestration 复用既有 planner/driver，没有新增策略候选或评分，因此本包不派生新的原生 AI 树。首次 live blocker 若要求修改事件、
+  互动、战争或其它策略，仍先更新对应 exact-build 原生专题，再允许最小实现并记账。

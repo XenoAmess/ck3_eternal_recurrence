@@ -161,8 +161,11 @@
    游戏动作或改变时间流逝。
 4. [unknown] 无法闭合的枚举、评分账本、事件触发器和分支顺序必须继续留作虚线 unknown，不得用“看起来像”
    补成实现契约。
-5. [inference] 只有决策树已落入本目录、证据边界清楚后，才允许据此调整我方 planner；策略层必须保留
-   失败回退和观察窗口，不能调用尚未证实的 native 分支。
+5. [counter-policy] 只有决策树已落入本目录、证据边界清楚后，才允许设计或调整我方 planner；落盘后不要求照搬或
+   一次实现整棵原生树。为解除一代 run 的真实 blocker，可以先交付只消费已证合法候选、具备真实后置验证的最小
+   deterministic policy；未采用的原生输入/分支、质量差距与替换入口必须写入对应专题或
+   `docs/autonomous-agent-progress/one-generation-blocker-ledger.md`。策略层仍须保留失败回退和观察窗口，不能调用尚未证实的
+   native 分支。该许可不覆盖 owner-deferred 宗教域；宗教仍只限圣战战争 OODA 与婚姻必要判定两项最小例外。
 6. [static-confirmed] CK3 升级后按“新 SHA → 重新静态定位 → 只读互证 → 更新树 → 再改策略”的顺序执行，
    先改我方策略再补逆向文档不构成完成。
 
