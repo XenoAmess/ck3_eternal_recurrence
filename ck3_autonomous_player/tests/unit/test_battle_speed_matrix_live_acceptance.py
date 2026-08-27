@@ -149,6 +149,21 @@ def test_stop_envelope_accepts_all_five_but_battle_refuses_four_and_five() -> No
         )
 
 
+def test_active_battle_is_explicit_stop_envelope_scenario_not_neutral() -> None:
+    snapshot = _snapshot()
+    snapshot["active_wars"] = [{"war_id": 7}]
+    snapshot["player_armies"] = [
+        {
+            "army_id": 83_886_341,
+            "controllable": True,
+            "in_combat": True,
+            "retreating": False,
+        }
+    ]
+    assert HARNESS._neutral_start_reason(snapshot) == "active_war"
+    assert HARNESS._battle_start_reason(snapshot, 83_886_341) is None
+
+
 def test_timeline_slice_uses_requested_primitive_and_proves_final_pause() -> None:
     driver = _FakeTimelineDriver()
     starting = driver.take_internal_semantic_snapshot()

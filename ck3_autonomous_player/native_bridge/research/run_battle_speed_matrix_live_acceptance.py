@@ -47,6 +47,7 @@ RAW_HOURS_PER_DAY = 24
 ALL_SPEEDS = (1, 2, 3, 4, 5)
 EXTERNAL_BATTLE_SPEEDS = (1, 2, 3)
 MATRIX_MODES = ("stop-envelope", "battle-parity")
+STOP_ENVELOPE_SCENARIOS = ("neutral", "active-battle")
 MAX_TIMELINE_COMMAND_ATTEMPTS = 2
 METADATA_KEYS = frozenset(
     {
@@ -73,6 +74,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--mode", choices=MATRIX_MODES, default="stop-envelope")
+    parser.add_argument(
+        "--stop-envelope-scenario",
+        choices=STOP_ENVELOPE_SCENARIOS,
+        default="neutral",
+    )
     parser.add_argument("--speeds", type=int, nargs="+", default=list(ALL_SPEEDS))
     parser.add_argument("--samples-per-speed", type=int, default=6)
     parser.add_argument("--target-days", type=int, default=1)
@@ -924,13 +930,15 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 )
 
             starting_internal = driver.take_internal_semantic_snapshot()
-            start_reason = (
-                _neutral_start_reason(starting_internal)
-                if args.mode == "stop-envelope"
-                else _battle_start_reason(
+            if (
+                args.mode == "stop-envelope"
+                and args.stop_envelope_scenario == "neutral"
+            ):
+                start_reason = _neutral_start_reason(starting_internal)
+            else:
+                start_reason = _battle_start_reason(
                     starting_internal, int(args.subject_army_id)
                 )
-            )
             if start_reason is not None:
                 raise RuntimeError(
                     f"sample {sample_index} speed {speed} invalid start: {start_reason}"
@@ -959,11 +967,16 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 starting=starting_internal,
                 final=final_internal,
             )
-            final_scenario_reason = (
-                _neutral_start_reason(final_internal)
-                if args.mode == "stop-envelope"
-                else None
-            )
+            if args.mode == "stop-envelope":
+                final_scenario_reason = (
+                    _neutral_start_reason(final_internal)
+                    if args.stop_envelope_scenario == "neutral"
+                    else _battle_start_reason(
+                        final_internal, int(args.subject_army_id)
+                    )
+                )
+            else:
+                final_scenario_reason = None
             row: dict[str, object] = {
                 "sample_index": sample_index,
                 "requested_speed": speed,
@@ -1108,6 +1121,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "elapsed_seconds": round(max(0.0, time.monotonic() - started), 3),
         "ok": ok,
         "mode": args.mode,
+        "stop_envelope_scenario": args.stop_envelope_scenario,
         "speeds": list(speeds),
         "samples_per_speed": args.samples_per_speed,
         "target_days": args.target_days,
@@ -1154,8 +1168,22 @@ def main() -> int:
             "--cold-start-checkpoint is required so every matrix uses an "
             "immutable managed seed"
         )
-    if args.mode == "battle-parity" and args.subject_army_id is None:
-        raise SystemExit("--subject-army-id is required for battle-parity")
+    if (
+        args.mode == "battle-parity"
+        and args.stop_envelope_scenario != "neutral"
+    ):
+        raise SystemExit(
+            "--stop-envelope-scenario applies only to stop-envelope"
+        )
+    subject_required = bool(
+        args.mode == "battle-parity"
+        or args.stop_envelope_scenario == "active-battle"
+    )
+    if subject_required and args.subject_army_id is None:
+        raise SystemExit(
+            "--subject-army-id is required for battle-parity and "
+            "active-battle stop-envelope"
+        )
     for name in ("timeout", "readiness_timeout", "slice_timeout"):
         if getattr(args, name) <= 0:
             raise SystemExit(f"--{name.replace('_', '-')} must be positive")

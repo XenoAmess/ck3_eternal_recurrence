@@ -198,6 +198,7 @@ managed native-session cleanup，不调用 `life-advance`，也不改 `_life_adv
 | 模式 | 当前允许速度 | checkpoint 策略 | 结论边界 |
 |---|---|---|---|
 | `stop-envelope` | `1 2 3 4 5` | 冷恢复一次；同一 episode 交错采样 | 量化外部 stop 的 empirical max overshoot；不证明战斗安全 |
+| `stop-envelope --stop-envelope-scenario active-battle` | `1 2 3 4 5` | 冷恢复一次；要求指定的可控 army 始终在战斗中 | 只量化真实战斗负载下的外部停表能力；仍不授权 4/5 速战斗策略 |
 | `battle-parity` | `1 2 3` | 第一 arm 冷恢复；其后每个 arm 都恢复同一 immutable checkpoint | 只比较相同起始 frame、相同实际 elapsed days、相同最终日期的 battle frame |
 | `battle-parity` 请求 `4/5` | 明确拒绝 | 不启动 session | 等 application-main `run-until-date-or-battle-sentinel` 真正接线后再开放；不能用 Python polling 冒充 |
 
@@ -231,6 +232,18 @@ py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acc
   --bridge-injector <injector> --output <artifact.json> `
   --cold-start-checkpoint --mode stop-envelope `
   --speeds 1 2 3 4 5 --samples-per-speed 6 --target-days 1
+```
+
+从已知 battle seed 量化五档停表包络时，必须显式声明实验场景；默认 `neutral` 仍会拒绝 active war：
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
+  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
+  --bridge-injector <injector> --output <artifact.json> `
+  --cold-start-checkpoint --mode stop-envelope `
+  --stop-envelope-scenario active-battle --subject-army-id 83886341 `
+  --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 1
 ```
 
 已接战 1/2/3 parity 示例：
