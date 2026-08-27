@@ -21,7 +21,7 @@ flowchart LR
 
 - 当前 exact build：CK3 `1.19.0.6`。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：`9e9ebbad6475`。
+- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：`e4e0620`。
 - 能力明细以
   [`autonomous-capability-roadmap.md`](../ck3-native-ai/autonomous-capability-roadmap.md) 为施工账本，
   以 [`docs/ck3-native-ai/README.md`](../ck3-native-ai/README.md) 为原生 AI 证据索引。
@@ -54,6 +54,10 @@ flowchart LR
 操作跨过 blocker。当前账本见 [`one-generation-blocker-ledger.md`](one-generation-blocker-ledger.md)。首次一代 GREEN 后，
 再用重复 run、更多 seed 与原生决策树逐步替换这些降级策略。
 
+当前 normal-desktop 启动入口与严格判定见
+[`one-generation-canary-handoff.md`](one-generation-canary-handoff.md)：它固定 clean runner、production6b checkpoint、driver state、
+pipe、DLL/injector 和 `20 / 21600 / 300 / 3` bounds；20-turn 存活只算经过完整 sidecar/cleanup 校验的 canary 通过，绝不冒充 G1。
+
 原生 AI 研究前置保持不变：遇到相关玩法，先冻结并落盘 exact-build 原版决策树、输入和 unknown 分支；完成这一步后，我方不必立刻复制
 整棵树，可以选择足以继续游戏的最小实现。原生树中尚未采用的输入/分支必须作为可追踪能力债记录，后续以 production outcome
 决定替换和校准顺序。
@@ -72,15 +76,19 @@ flowchart LR
 | active retreat | `production-live loop`（full-side 与 owner-subset） | 读取 day-15 legality，绑定目标路线 token，执行玩家军队撤退并验证旧 CombatID/双方后置状态。 | 不代表已闭合原生 AI 的通用撤退目的地评分或所有战斗策略。 |
 | reinforcement assignment observation | `production-live primitive` | 读取 asking、AI parent stored order、route 和 active CombatID；见过 owner-subset 后 membership reopen。 | assigned+aligned ETA、真实 join 和改派动作仍未完成。 |
 | battle terminal | `production-live primitive/loop`（normal 分支） | 通过 journals/query 识别 normal terminal、旧 CombatID 删除、战分和玩家 retreat。 | no-normal、residual、assignment-reopened 分支尚未 live，aggregate readiness 仍为 false。 |
-| pending character interaction | `production-live primitive` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；普通 white peace 已绑定 WarID/primary side。 | structured terms/effects 和 semantic reply policy 未完成。 |
+| pending character interaction | typed query `production-live primitive`；单键 degraded reply `static-ready` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；仅 exact-build allowlist 的 `spar_with_knight_interaction` 可按 same-frame reject-first / unique-accept 规则解除阻塞，并验证旧 full ID 推进；100% enforce-demands 始终优先。 | 该 fallback 不是通用 ordinary 分类、原生等价或高智商语义策略；stock reject/unique-accept 尚未 production live，typed definition/subtype、war-special 与 structured terms/effects 仍缺。 |
 | auto-accept notification ACK | `fixture-live` | 非宗教 definition-only fixture 中完成 query/query/ACK/旧 full ID 消失。 | 不是 stock/production-only 语义证据，自然 stock 与 intermediary 仍待验。 |
 | campaign root 与 loaded feature manifest | `production-live primitive` | 读取玩家主头衔/tier、capital、liege、government/rules，以及当前进程 feature registry/runtime keys。 | 开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
 | 婚姻关系与最小候选动作 | `implemented`，部分结果 live | 读取配偶/婚约关系，枚举合法 CharacterID 候选并提交、等待关系结果。 | 当前仍可能选择首个候选，不是智能婚姻策略。 |
 | 一代结算 | `production-live primitive` | 读取死亡结算 snapshot、分数/纪录/契约进度并可从 immutable seed 开新 episode。 | 自然死亡完整 episode 与普通 campaign 跨继承仍未完成。 |
-| 一代人严格 runner | `static-ready` | 复用纯原生 owner，从归档的 exact cold seed 持续 OODA；周期保存，并对首个 blocker 或匹配初始角色的 scored death settlement 输出独立 artifact。 | 尚未在正常交互桌面跑出自然死亡完整 episode；G1 仍未取得。 |
+| 一代人严格 runner | `static-ready` | 复用纯原生 owner，从归档的 exact cold seed 持续 OODA；周期保存，并对首个 blocker 或匹配初始角色的 scored death settlement 输出独立 artifact；固定 production6b 的非破坏 canary handoff 已通过真实 dry-run 与独立审查。 | 尚未在 `xenoa / WinSta0\\Default` 跑出 20-turn live canary 或自然死亡完整 episode；G1 仍未取得。 |
 
 已有 managed war run 的已记录量化里程碑为 `210/210` 成功回合、78 个可见 gameplay 回合和 75 个游戏日；这是既有战争
 checkpoint 的稳定性证据，不是全游戏覆盖率。
+
+production6b 还带有一个明确的 G2 债务：`episode-seed.json` 指向另一 state，而复制体内没有配套
+`xar_episode_seed.ck3`。它不影响当前固定 checkpoint 的单寿命 G1 canary/死亡结算，但会阻塞之后的
+`start-next-episode`；跨代前必须复制并验证真实 seed，或明确清理旧 metadata 后重新建立，不能声称 strict wrapper 已自动重绑。
 
 ## 当前事件能力的精确状态
 
