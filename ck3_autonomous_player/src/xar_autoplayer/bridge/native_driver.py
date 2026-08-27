@@ -8518,39 +8518,26 @@ class NativeHeadlessGameplayDriver:
         if snapshot.get("paused") is True:
             return snapshot
         deadline = time.monotonic() + self.command_timeout_seconds
-        current = snapshot
-        while current.get("paused") is not True:
-            remaining = deadline - time.monotonic()
-            if remaining <= 0:
-                raise BridgeUnavailableError(
-                    "native life-advance pause-map revision convergence "
-                    "timed out"
-                )
-            try:
-                result = self._execute_primitive_step(
-                    "pause-map",
-                    expected_revision=int(current["revision"]),
-                    timeout_seconds=remaining,
-                )
-            except BridgeUnavailableError as error:
-                if "native gameplay revision mismatch" not in str(error):
-                    raise
-                # pause-map is the idempotent postcondition of this bounded
-                # timeline transaction.  CK3 can publish several running
-                # frames between observation and the primitive's pre-submit
-                # revision check.  Keep adopting the real fresh frame until
-                # the existing command deadline, but never extend this rule
-                # to another primitive or record an action that was not sent.
-                current = self.take_snapshot()
-                if current.get("paused") is True:
-                    return current
-                if time.monotonic() >= deadline:
-                    raise BridgeUnavailableError(
-                        "native life-advance pause-map revision convergence "
-                        "timed out"
-                    ) from error
-                continue
-            break
+        current = self.take_snapshot()
+        if current.get("paused") is True:
+            return current
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise BridgeUnavailableError(
+                "native life-advance pause-map submission timed out"
+            )
+        # The exact 1.19.0.6 DLL pause handler does not consume the wire
+        # expected_revision.  It fresh-reads CK3, returns already_paused when
+        # satisfied, or queues the idempotent paused=1 command.  Requiring a
+        # second Python public-revision comparison can starve forever while a
+        # speed-five map publishes frames, so only this composite-owned pause
+        # bypasses that redundant pre-submit comparison.  Direct primitives
+        # and every other action keep their existing revision contract.
+        result = self._execute_primitive_step(
+            "pause-map",
+            expected_revision=None,
+            timeout_seconds=remaining,
+        )
         actions.append({"step": "pause-map", "result": result})
         remaining = max(0.0, deadline - time.monotonic())
         paused = self._wait_for_snapshot(

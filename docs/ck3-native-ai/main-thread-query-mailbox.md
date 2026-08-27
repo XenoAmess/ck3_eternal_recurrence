@@ -173,14 +173,34 @@ paused postcondition. The artifact does not retain the internal refreshed
 frames, so it cannot distinguish an active-event change from a speed change;
 neither may be asserted.
 
-This observed failure is the necessity boundary for the next consumer fix.
-Only `life-advance`'s `pause-map` phase may converge across more than one
-fresh running revision, and only until the existing command timeout expires.
-Every iteration must re-read the current frame before submission. An
-already-paused frame is the real postcondition and is adopted without a
-synthetic action; a successful submit is recorded exactly once and must still
-be followed by a paused observation. No other primitive, typed query,
-planner action, or old plan receives a generic retry.
+That observed failure justified a first consumer fix which kept refreshing
+only `life-advance`'s `pause-map` phase within the existing command timeout.
+Run `20260827T115837Z-one-generation-9bed68f0` production-revalidated the
+change across 47 successful turns and seven new checkpoints, but then proved
+that a speed-five map can publish public revisions continuously for the whole
+10-second window. The run stopped with
+`native life-advance pause-map revision convergence timed out`; no pause
+request had won the Python pre-submit comparison.
+
+The exact production DLL source at `51fe8cf` closes the native command tree.
+`bridge.cpp` dispatches `step == "pause-map"` directly to `SubmitPauseMap`
+without parsing or comparing the JSON `expected_revision`. `SubmitPauseMap`
+itself performs a fresh `ReadSnapshot`; if CK3 is already paused it returns
+`already_paused`, otherwise it validates the command bindings and local
+player, constructs the pinned command with `paused = 1`, and submits it to the
+native queue. Thus the Python public-revision equality check is not part of
+the native pause contract and can starve an otherwise valid, idempotent
+control command while the map is running.
+
+The next minimal consumer rule is therefore narrower than a generic retry:
+only the internal `life-advance` pause owner may submit `pause-map` without a
+Python public-revision equality comparison. It still refreshes once before
+submission, sends exactly one real request, records exactly one action only
+after ACK, shares the existing command deadline with paused-postcondition
+observation, and requires the final real frame to be paused. The wire keeps
+the fresh native revision as audit data although this exact handler does not
+consume it. Direct planner/user primitives, every query, and every other
+action retain their existing revision gates.
 
 Combat-v3 binds the caller's positive `expected_revision`, the complete last
 published paused snapshot, and its full-generation encounter IDs before

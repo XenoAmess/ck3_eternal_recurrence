@@ -35,7 +35,7 @@
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
-| GEN-012 | B1 | `life-advance` 暂停收尾期间连续 revision turnover | 首个一次重试修复已在正式续跑中越过旧 `159→160` 边界并形成 17 个新 checkpoint，但第 107 回合又以 `expected 183, current 185` 停止；日志证明 CK3 已 resume 并执行引擎帧，仍属 composite pause 阶段的真实 production race，不是 CK3 AI policy | 只让 composite owner 在既有 command timeout 内令 `pause-map` 对 fresh running frames 收敛，采用真实 paused 帧且最多记录一次成功提交；不放宽 typed query/其它 primitive/旧 plan。单测后从 `AE73...5B42` cold checkpoint 续跑 | 更新 blocker-removal static-ready；production revalidation pending |
+| GEN-012 | B1 | `life-advance` 暂停收尾被连续 public revision 饿死 | timeout 收敛修复已 production-live 完成 47 回合和 7 个新 checkpoint，随后 speed-five frame stream 在完整 10 秒内持续变化并超时。exact DLL `51fe8cf` 证明 native `pause-map` 不消费 expected revision，而是 fresh-read 后幂等提交；Python 冗余预检才是 blocker | 只让 composite owner 的内部 pause 跳过 Python public-revision equality，一次提交、一次 ACK、同 deadline 验证 paused；direct primitive/query/其它 action 不变。单测后从 `578B...5C38` cold checkpoint 续跑 | blocker-removal static-ready；production revalidation pending |
 
 ## Degraded heuristic 纪律
 
@@ -221,3 +221,28 @@
   `32 passed, 13 subtests passed`，gameplay bridge 为 `169 passed, 35 subtests passed`；全 unit suite 为
   `1316 passed, 2 skipped, 882 subtests passed`。`py_compile` 与 `git diff --check` GREEN，独立只读审阅 PASS；在从
   `AE73...5B42` cold restore 实机越过并保存更新 checkpoint 前仍不得关闭 `GEN-012`。
+
+## 2026-08-27 20:13：GEN-012 pause revision 饥饿根因
+
+- `3bd8934` 的正式续跑 `20260827T115837Z-one-generation-9bed68f0` 已 production-revalidate 前一修复并继续同一 episode：完成
+  `47/48` turns、`23` gameplay turns、`23` visible gameplay turns 与 `7` checkpoints；随后第 48 回合以
+  `native life-advance pause-map revision convergence timed out` 停止。角色 `29829` 仍活、无 terminal，cleanup 全绿。
+- 权威 `report.json` 为 `225,174` bytes、SHA-256
+  `FF8D78C5E0D1CBA6D85BEEE6D0D752AA844EEFD4E9DF896E02FC74E255A470A2`；`first-blocker.json` 为 `3,965`
+  bytes、SHA-256 `6DDD926CCFADA821121A987F2103335A758EF3CCFD53944940EFC11FF2149C97`。driver state history `2175`
+  是失败的 `life-advance`；此前 `2173` 已成功推进至 `date_raw=53199216`，但尚未达到三次推进 checkpoint cadence。
+- 最新显式可信恢复点为 turn 42、`date_raw=53199144`、history `2169`、size `74,009,701`、SHA-256
+  `578B02896FBCD04BD96212C8B1E3A337A689EFC1C3753B5060013717D7B95C38`。退出前 CK3 的普通 `last_save/autosave`
+  已在失败窗口写成另一份 `DFA62E1D...40B3B`，没有匹配的显式 driver checkpoint anchor，故不得用它替代 `xar_checkpoint.ck3`；
+  轮转的 `autosave_1.ck3` 则与显式 checkpoint 逐字节一致，可作为独立物理互证。
+- exact production DLL commit `51fe8cf` 的命令分发证明 `pause-map` 不解析或比较 JSON `expected_revision`，而是直接调用
+  `SubmitPauseMap`；后者 fresh-read 当前 CK3，paused 时幂等返回，否则构造并入队 `paused=1`。因此连续 Python public-revision
+  equality 重试没有增加 native 正确性，只会在 speed-five 帧流中饥饿。真实故障与 exact-build 代码共同构成必要性证据。
+- 下一最小修复只改 composite-owned `_pause_life_advance`：fresh-read 后若已 paused 就采用；否则调用同一个 primitive sender 但不做
+  Python expected-public-revision 比较，仍发送 fresh native revision 作为 wire 审计字段，且只允许一次真实请求、一次 action 记录与
+  同 deadline paused 验证。direct `pause-map`、所有 query、其它 primitive/planner/AI policy 均不变；没有证据支持更广扩张。
+- blocker-removal 已 static-ready：连续 running revision、event/speed drift、sender refresh 时自动暂停、单 deadline、ACK 后不重提、
+  non-revision 错误直抛，以及 direct stale `pause-map` 仍被拒绝均有回归。聚焦为 `10 passed, 2 subtests passed`，完整 driver 为
+  `128 passed, 102 subtests passed`，auto-run + gameplay bridge 为 `201 passed, 48 subtests passed`；全 unit suite 为
+  `1318 passed, 2 skipped, 882 subtests passed`。`py_compile` 与 `git diff --check` GREEN；仍须从 `578B...5C38` cold restore
+  实机越过该 10 秒边界并形成更新 checkpoint，才能关闭 `GEN-012`。

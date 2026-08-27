@@ -373,11 +373,14 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 此类 revision turnover 的回归合同是有界重新观测：一般 planner 必须 re-plan；只有 composite owner 能证明某阶段可安全重入时
   才允许内部重试，并必须验证目标后置状态。首个最小例外只给 `life-advance` 暂停收尾一次 fresh-revision `pause-map`；它已在
   `20260827T112207Z-one-generation-3c7aa5e2` 越过旧边界并形成 17 个新 checkpoint，但随后由 production artifact 证明连续
-  running revision 仍可在同一暂停窗口耗尽一次重试（`expected 183, current 185`）。因此更新后的最小合同仍只属于
-  `pause-map`：在既有 command timeout 内反复读取 fresh frame；已暂停就采用真实帧且不伪造 action，仍 running 就用该帧提交，
-  revision 再变化则继续收敛，成功提交只记录一次并等待 paused 后置状态。不得把该循环外推到 query、其它 primitive 或旧 plan。
-  单元测试只授予 static-ready；必须从最新 SHA `AE73EFE1...75B42` cold checkpoint 实机越过同类边界并再产出合格 checkpoint，
-  才能恢复 production-live 声明。
+  running revision 仍可在同一暂停窗口耗尽一次重试（`expected 183, current 185`）。第一次更新后的 timeout 收敛在
+  `20260827T115837Z-one-generation-9bed68f0` 连续成功 47 回合并保存 7 个新 checkpoint，随后又由真实 speed-five 帧流证明
+  public revision 可在完整 10 秒内持续变化，最终明确超时。exact production DLL `51fe8cf` 的 `pause-map` handler 不解析或比较
+  wire `expected_revision`；它自己 fresh-read CK3，已 paused 就返回 `already_paused`，否则提交幂等 `paused=1` 原生命令。
+  因此最新最小合同只让 `life-advance` 内部 pause owner 跳过 Python 的冗余 public-revision 预检：提交前仍 fresh-read，一次请求只
+  记一个真实 ACK，并在同一剩余 deadline 内等待真实 paused 后置帧。不得外推到 direct primitive、query、其它 action 或旧 plan。
+  单元测试只授予 static-ready；必须从最新显式 checkpoint SHA `578B0289...5C38` cold restore 实机越过超时边界并再产出合格
+  checkpoint，才能关闭该 blocker。
 - 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
   66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中
