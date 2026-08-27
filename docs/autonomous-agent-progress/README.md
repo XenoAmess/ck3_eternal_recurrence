@@ -8,6 +8,9 @@
 ## 导航
 
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
+- [日/周计划会制度与模板](meetings/README.md)
+- [2026-08-27 早会（补录）](meetings/daily/2026-08-27.md)
+- [2026-W35 周计划会（补录）](meetings/weekly/2026-W35.md)
 - [2026-08-27 日报](daily/2026-08-27.md)
 - [2026-W35 周报](weekly/2026-W35.md)
 - [2026-08 月报：完整能力盘点](monthly/2026-08.md)
@@ -24,9 +27,9 @@
 1. exact-build ABI JSON、生产代码与冻结 artifact；
 2. `docs/ck3-native-ai/` 对应专题及 Mermaid 原生决策树；
 3. `docs/testing-workflow.md` 的实机验收记录；
-4. 本目录的路线图、日报、周报和月报摘要。
+4. 本目录的路线图、日/周计划会、日报、周报和月报摘要。
 
-日报、周报与月报是便于持续协作的索引，不是把 `implemented` 升级为 `live` 的证据来源。报告引用的状态必须能回链到上述
+计划会、日报、周报与月报是便于持续协作的索引，不是把 `implemented` 升级为 `live` 的证据来源。报告引用的状态必须能回链到上述
 前三类材料。
 
 ## 状态词汇
@@ -45,10 +48,13 @@
 
 ## 更新节奏
 
-- 每个工作日更新 `daily/YYYY-MM-DD.md`；同日有多个里程碑时持续更新同一文件。
-- 每个有项目工作的 ISO 周更新 `weekly/YYYY-Www.md`，作为滚动周报；最后一个工作日补齐本周结果与下周入口。
+- 每天在次日 00:00（Asia/Shanghai）正式收口前一自然日的 `daily/YYYY-MM-DD.md`；同日有多个里程碑时持续滚动更新。
+- 前一日日报收口后立即创建新一天 `meetings/daily/YYYY-MM-DD.md` 早会；当天日报正式收口时逐项对照该早会，标明完成状态、
+  未完成原因、是否顺延以及计划外成果。
+- 每个有项目工作的 ISO 周持续更新 `weekly/YYYY-Www.md`，并在下周一 00:00（Asia/Shanghai）正式收口。
+- 前一周周报收口后立即创建新一周 `meetings/weekly/YYYY-Www.md` 计划会；周报正式收口时逐项对照该周计划，不能只罗列成果。
 - 日报和周报只交付文字，不要求也不默认制作视频；已有日级、周级或阶段性录像只作为可选历史素材，缺视频不影响报告收口。
-- 每个自然月 27 日约 02:00（Asia/Shanghai）更新 `monthly/YYYY-MM.md`，并配套一条覆盖截至当时全部真实能力的 show-off
+- 每个自然月 27 日 00:00（Asia/Shanghai）更新 `monthly/YYYY-MM.md`，并配套一条覆盖截至当时全部真实能力的 show-off
   视频。英语是主叙事，简体中文是画面内副标题/字幕；中文字幕须按句意断句并受实际渲染宽度约束。缺成片或抽检未通过时，
   月报保持“未完成/重制中”。详细规范见 [`monthly/README.md`](monthly/README.md) 与 [`demos/README.md`](demos/README.md)。
 - 报告必须区分“已完成”“正在进行”“为什么做”“证据/测试”“未闭合”“下一步”。

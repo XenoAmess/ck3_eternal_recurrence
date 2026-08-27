@@ -4,13 +4,25 @@
 
 周期：YYYY-MM-DD 至 YYYY-MM-DD
 
-本次截止：YYYY-MM-DD HH:MM（Asia/Shanghai）
+正式收口：下周一 YYYY-MM-DD 00:00（Asia/Shanghai）
+
+本周计划会：[`../meetings/weekly/YYYY-Www.md`](../meetings/weekly/YYYY-Www.md)
 
 提交范围：`<first>` 至 `<last>`
 
 ## 本周目标
 
 - `<本周希望形成的可见 OODA 里程碑>`
+
+## 周计划承诺对照
+
+| # | 周计划承诺 | 结果 | 证据 / 未完成原因 | 是否顺延 |
+|---:|---|---|---|---|
+| W1 | `<原样引用周计划交付项>` | `<完成/部分完成/未完成/取消>` | `<artifact/test/commit，或具体原因>` | `<否/顺延到哪一周>` |
+
+### 计划外完成
+
+- `<不倒改周计划；在这里记录临时插入并完成的事项>`
 
 ## 本周成果
 

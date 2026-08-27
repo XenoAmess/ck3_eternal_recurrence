@@ -6,7 +6,7 @@
 - `Eternal_Recurrence_Vivhite_Courtier/` — 白绮特供独立版源目录；正式发布只使用 `build_vivhite_release.py` 生成的 27 文件 staging
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
-- `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图与日报、周报、月报入口；能力状态必须回链原生专题与实机证据
+- `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
 - 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**。
   `remote_file_id` 的 canonical 副本**只能留在各自用户目录外层 .mod，不能同步进仓库内层 descriptor.mod**。
@@ -143,16 +143,23 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 统一入口为 `docs/autonomous-agent-progress/README.md`；终极目标、真实能力边界与完整后续工作维护在
   `docs/autonomous-agent-progress/goal-and-roadmap.md`。它们是进度索引，不替代 `docs/ck3-native-ai/` 的原生 AI
   专题、ABI 合同、`docs/testing-workflow.md` 或冻结 live artifact。
-- **每个工作日必须创建或更新** `docs/autonomous-agent-progress/daily/YYYY-MM-DD.md`。如果周末也开展项目工作，
-  同样创建当天日报。同一天有多个里程碑时持续更新同一文件，并在当天最后一次任务提交/推送前再核对一次。
-- **每个有项目工作的 ISO 周必须创建或更新** `docs/autonomous-agent-progress/weekly/YYYY-Www.md`。当前周报作为滚动报告，
-  每个工作日随日报同步更新；最迟在该周最后一个工作日补齐本周结果、未闭合项和下周入口。
-- **每个自然月的 27 日约 02:00（Asia/Shanghai）必须创建或更新**
+- **每天在次日 00:00（Asia/Shanghai）收口前一自然日的** `docs/autonomous-agent-progress/daily/YYYY-MM-DD.md`；如果周末也开展
+  项目工作，同样创建当天日报。同一天有多个里程碑时持续更新同一文件，午夜正式收口时必须逐项对照当天早会，标明
+  “完成 / 部分完成 / 未完成 / 取消”，另列计划外完成项；未完成项必须写原因与是否顺延。
+- **前一日日报收口后必须立即召开新一天早会**，写入
+  `docs/autonomous-agent-progress/meetings/daily/YYYY-MM-DD.md`。早会列出当天按优先级排序的可交付项、验收条件、依赖、非目标与
+  计划调整规则；不得在晚间倒填成仿佛 00:00 已知的计划。确需补录时必须标明真实补录时间与当时已经完成的基线。
+- **每个有项目工作的 ISO 周必须创建或更新** `docs/autonomous-agent-progress/weekly/YYYY-Www.md`。周报作为滚动报告随日报更新，
+  并在下周一 00:00（Asia/Shanghai）正式收口；收口时必须逐项对照该周计划会，规则与日报对照相同。
+- **前一周周报收口后必须立即召开新一周计划会**，写入
+  `docs/autonomous-agent-progress/meetings/weekly/YYYY-Www.md`，列明本周目标、优先级、验收条件、依赖和明确非目标。补录不得冒充
+  周初原始计划。下一份周报必须链接并逐项核对这份计划会。
+- **每个自然月的 27 日 00:00（Asia/Shanghai）必须创建或更新**
   `docs/autonomous-agent-progress/monthly/YYYY-MM.md`。月报既总结上次月报截止以来的增量，也维护截至本次截止的完整能力清单、
   诚实 readiness 边界和下一阶段主线；首次月报允许以项目迄今的累计能力盘点作为基线。
 - 日报和周报至少写明：完成了什么、正在做什么、为什么做、能力/readiness 变化、测试与 live artifact、RED/阻点、
   下一步、相关 commit/push。报告模板分别位于 `docs/autonomous-agent-progress/daily/TEMPLATE.md` 与
-  `docs/autonomous-agent-progress/weekly/TEMPLATE.md`。
+  `docs/autonomous-agent-progress/weekly/TEMPLATE.md`；日/周计划会模板位于 `docs/autonomous-agent-progress/meetings/`。
 - **日报和周报只要求文字报告，不再要求也不默认制作配套视频。** 已存在的日级、周级或阶段性录像可以作为历史证据素材
   继续引用，但视频缺失不影响日报完成或周报收口，也不得把历史素材冒充当月正式成片。
 - **每份月报必须配套一条截至当月截止时的完整能力 show-off 视频。** 视频未产出或未通过媒体、字幕和内容抽检时，月报只能
