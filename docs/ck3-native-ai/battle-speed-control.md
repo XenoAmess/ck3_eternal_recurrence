@@ -179,7 +179,81 @@ flowchart TD
     class U unknown;
 ```
 
-## 最小 live A/B（本轮只设计，不启动 CK3）
+## 最小 live A/B（harness static-ready；尚未启动 CK3）
+
+[implementation-confirmed] 独立研究入口
+`ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py`
+已经把五档 stop envelope 与已接战 parity 做成可执行矩阵；它直接复用现有 exact-build timeline primitive 和
+managed native-session cleanup，不调用 `life-advance`，也不改 `_life_advance_timeline_policy` 或 production selector。
+本次只完成离线实现与测试，**没有启动 CK3，也没有新增 live 结论**。
+
+矩阵使用升序/降序平衡顺序。默认每档六个样本时，完整顺序严格为：
+
+```text
+1,2,3,4,5,5,4,3,2,1  × 3
+```
+
+两个模式的边界如下：
+
+| 模式 | 当前允许速度 | checkpoint 策略 | 结论边界 |
+|---|---|---|---|
+| `stop-envelope` | `1 2 3 4 5` | 冷恢复一次；同一 episode 交错采样 | 量化外部 stop 的 empirical max overshoot；不证明战斗安全 |
+| `battle-parity` | `1 2 3` | 第一 arm 冷恢复；其后每个 arm 都恢复同一 immutable checkpoint | 只比较相同起始 frame、相同实际 elapsed days、相同最终日期的 battle frame |
+| `battle-parity` 请求 `4/5` | 明确拒绝 | 不启动 session | 等 application-main `run-until-date-or-battle-sentinel` 真正接线后再开放；不能用 Python polling 冒充 |
+
+已定位的 exact battle seed 可作为 `battle-parity` 输入源：
+
+- 当前源：`C:\Users\xenoa\AppData\Local\Temp\xar-active-retreat-query-v1-a72f4846fa01477ab26860479927c1b3\profile\last_save.ck3`；
+- SHA-256：`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`；
+- `date_raw=53178264`，episode character `29829`，subject army `83886341`，CombatID `335544325`，
+  Province `2586`，初始 `maneuver/1`；
+- temp 路径不是长期 artifact。实测前必须把它复制到一次性 state，先生成 managed checkpoint，矩阵只对副本做恢复，
+  不修改这份源文件。
+
+把上述 `last_save.ck3` 放进一次性 state 后，先用现有单场 probe 在原日期物化 managed checkpoint（此步骤本次未执行）：
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py `
+  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <bootstrap-pipe> --bridge-dll <exact-build-dll> `
+  --bridge-injector <injector> --output <bootstrap-artifact.json> `
+  --subject-army-id 83886341 --save-checkpoint --advance-days 0
+```
+
+bootstrap artifact 与生成的 `xar_checkpoint.ck3` SHA-256 审阅一致后，才运行下面的冷恢复矩阵。
+
+五档中性停表包络示例：
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
+  --state-dir <disposable-neutral-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
+  --bridge-injector <injector> --output <artifact.json> `
+  --cold-start-checkpoint --mode stop-envelope `
+  --speeds 1 2 3 4 5 --samples-per-speed 6 --target-days 1
+```
+
+已接战 1/2/3 parity 示例：
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
+  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
+  --bridge-injector <injector> --output <artifact.json> `
+  --cold-start-checkpoint --mode battle-parity --subject-army-id 83886341 `
+  --speeds 1 2 3 --samples-per-speed 6 --target-days 1
+```
+
+每个 row 分开记录 set-speed、resume 与 pause 的 submit/ACK/observed 时间，target 首次 observed date、最终 paused
+date、heartbeat 与 semantic revision delta、connection generation、游戏日/秒、观察超调和停稳超调。ACK 不算完成；
+最终必须再次看到 `paused=true`、`map_ready=true`、请求速度、同一 episode 与同一 connection generation。日期差不是
+非负的 24 整数倍时样本直接 RED。harness 不自动处理事件或 pending interaction，遇到它们会暂停并把该 arm 标为污染。
+报告同时哈希矩阵前后的 `xar_checkpoint.ck3`；只有 size/SHA-256 均未变化才满足 immutable seed gate。
+
+战斗 frame 比较只剥离 query/transport revision metadata，保留 CombatID、Province、phase/day、winner/finalized、
+ordered roster、current/soft/hard ledger 与 side strength。不同实际 elapsed days 记为
+`insufficient_matched_elapsed`，不能误报为计算不等价；相同 elapsed/final date 而 normalized frame 不同才记
+`mismatch`。完整 session 仍由 managed cleanup 验证进程树退出。
 
 ### A. 五档 stop envelope
 
