@@ -17,6 +17,7 @@ from xar_autoplayer.bridge.war_contract import (
     parse_advance_route_contact_horizon_step,
     parse_query_route_contact_horizon_step,
     query_route_contact_horizon_step,
+    stationary_province_contact_free_in_horizon,
 )
 from xar_autoplayer.bridge.native_driver import _action_steps
 
@@ -153,6 +154,38 @@ class RouteContactHorizonContractTests(unittest.TestCase):
 
         self.assertEqual(normalized["subject_route"]["route_province_ids"], [])
         self.assertTrue(normalized["one_day_contact_free"])
+
+    def test_hostile_timelines_project_stationary_closed_window(self) -> None:
+        normalized = normalize_route_contact_horizon(
+            _payload(),
+            expected_subject_army_id=11,
+            expected_target_province_id=2585,
+            expected_hostile_army_ids=(31, 41),
+            expected_date_raw=53_176_176,
+            expected_snapshot_revision=2**32 + 7,
+        )
+
+        self.assertTrue(
+            stationary_province_contact_free_in_horizon(normalized, 2594)
+        )
+        normalized["hostile_routes"][0]["arrival_date_raws"][0] = 53_176_200
+        self.assertFalse(
+            stationary_province_contact_free_in_horizon(normalized, 2594)
+        )
+
+    def test_hostile_current_province_blocks_stationary_projection(self) -> None:
+        normalized = normalize_route_contact_horizon(
+            _payload(),
+            expected_subject_army_id=11,
+            expected_target_province_id=2585,
+            expected_hostile_army_ids=(31, 41),
+            expected_date_raw=53_176_176,
+            expected_snapshot_revision=2**32 + 7,
+        )
+
+        self.assertFalse(
+            stationary_province_contact_free_in_horizon(normalized, 2583)
+        )
 
     def test_timeline_rejects_null_or_misaligned_arrivals(self) -> None:
         for arrivals in ([53_176_200, None, 53_176_296], [53_176_200]):

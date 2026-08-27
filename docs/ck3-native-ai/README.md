@@ -90,9 +90,11 @@
   normal daily movement，并闭合“全军移动后按 queue 接触”、省份 full-CUnitID 数值序 opponent、已有战斗优先、
   多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；public speed 1..5 不改变这条逐 native-day
   movement/contact 链。最新六支可控军正式帧又证明 geometric stationary threat 把敌军 `134` 日后的 route vertex
-  错当成当前危险；既有 per-subject timed query 已足够为 stationary `target=current` 补一日证明，缺口仅是 Python
-  query projection 与同帧全军 conjunction，不需要新增 native ABI。该 stationary query 的 fresh replay、异步 pause
-  各速 overshoot envelope 与非 daily placement 仍为 unknown。
+  错当成当前危险；随后 live replay 也证明 wire/schema 虽能表达空 route，exact-build reader 的 stationary
+  `target=current` 路径仍会在 interval projection 前因 move-mode/origin 前置返回 `route_unavailable`。最小 counter-policy
+  不再发第二条 query，而是复用成功 moving horizon 已发布的完整 hostile timelines，按原生闭区间语义重投影同帧 stationary
+  holds，再与全军条件取 conjunction；该方案为 static-ready、live replay pending，不需要新增 native ABI。异步 pause 各速
+  overshoot envelope 与非 daily placement 仍为 unknown。
 - [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
   application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
   `join_existing` 与 multiple-compatible 实机分支仍待闭合。

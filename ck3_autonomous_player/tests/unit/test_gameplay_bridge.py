@@ -2073,7 +2073,7 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(plan["selected_step"])
 
-    def test_stationary_subject_proof_completes_global_one_day_horizon(
+    def test_moving_proof_hostile_timelines_cover_stationary_army(
         self,
     ) -> None:
         primary = _army(
@@ -2102,9 +2102,6 @@ class GameplayBridgeTests(unittest.TestCase):
             army_state="moving",
             route_province_ids=[22, 31, 2585],
         )
-        query_stationary = query_route_contact_horizon_step(
-            12, 22, (21,)
-        )
         advance_step = advance_route_contact_horizon_step(11, 2585, (21,))
         moving_proof = _route_contact_row(
             1,
@@ -2115,31 +2112,15 @@ class GameplayBridgeTests(unittest.TestCase):
             hostile_ids=(21,),
             contact_free=True,
         )
-
-        required = _native_war_plan(
-            player=primary,
-            players=[primary, stationary],
-            enemies=[enemy],
-            score=0,
-            date_raw=24_000,
-            history=[moving_proof],
-            steps=(query_stationary, advance_step, "life-advance"),
-            route_contact_horizon_supported=True,
-        )
-        self.assertEqual(
-            required["phase"], "native_war_stationary_contact_horizon"
-        )
-        self.assertEqual(required["selected_step"], query_stationary)
-
-        stationary_proof = _route_contact_row(
-            2,
-            army_id=12,
-            origin=22,
-            target=22,
-            date_raw=24_000,
-            route=[],
-            hostile_ids=(21,),
-            contact_free=True,
+        hostile_route = moving_proof["result"]["route_contact_horizon"][
+            "hostile_routes"
+        ][0]
+        hostile_route.update(
+            {
+                "effective_origin_province_id": 22,
+                "route_province_ids": [22, 31, 2585],
+                "arrival_date_raws": [24_048, 24_072, 24_096],
+            }
         )
         proven = _native_war_plan(
             player=primary,
@@ -2147,8 +2128,8 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[enemy],
             score=0,
             date_raw=24_000,
-            history=[moving_proof, stationary_proof],
-            steps=(query_stationary, advance_step, "life-advance"),
+            history=[moving_proof],
+            steps=(advance_step, "life-advance"),
             route_contact_horizon_supported=True,
         )
         self.assertEqual(
@@ -2160,25 +2141,14 @@ class GameplayBridgeTests(unittest.TestCase):
             [12],
         )
 
+        hostile_route["arrival_date_raws"] = [24_024, 24_048, 24_072]
         blocked = _native_war_plan(
             player=primary,
             players=[primary, stationary],
             enemies=[enemy],
             score=0,
             date_raw=24_000,
-            history=[
-                moving_proof,
-                _route_contact_row(
-                    2,
-                    army_id=12,
-                    origin=22,
-                    target=22,
-                    date_raw=24_000,
-                    route=[],
-                    hostile_ids=(21,),
-                    contact_free=False,
-                ),
-            ],
+            history=[moving_proof],
             steps=(advance_step, "life-advance"),
             route_contact_horizon_supported=True,
         )

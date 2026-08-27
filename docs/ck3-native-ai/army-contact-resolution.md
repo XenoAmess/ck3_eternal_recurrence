@@ -174,31 +174,47 @@ SHA-256 `FC7D4E5069C84A4D10A3E5359A387C3F9BD5CD422FFE20D45ACCEB0ADDD4DF90`；冻
   `134` 日后的 vertex 立即归类为 `enemy_route_to_stationary_province`，令 Army `150995278` 阻断已经通过的
   moving horizon。这是我方 counter-policy 的时间维度丢失，不是原生 contact resolver 报告危险。
 
-[static-confirmed] 现有 `query-route-contact-horizon-v1-N` native reader 已具备直接闭合该 stationary row 的
-全部原生输入，无需新增 C++ ABI：以 subject `150995278`、target=current `8658` 和同一完整 hostile scope 查询时，
-`BuildSubjectRouteTimeline` 对 `effective_origin == current == target` 返回 available，subject route/arrival arrays
-为空；`BuildTimelineIntervals` 因而把 Province `8658` 作为覆盖完整一日窗口的 occupancy。随后仍以所有 hostile
-active route 的原生 arrival dates 计算 closed-interval overlap：
+[live-confirmed] commit `1048a45` 的 cold replay 已经实际提交第二条 query：driver history index `3176` 是
+`query-route-contact-horizon-v1-150995278-to-8658-h-3-83886265-117440646-117440838`，但 application-main reader
+返回 `route_unavailable`，外层错误为 `CK3 could not build a complete contact route`。run 位于
+`C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/runs/20260827T195517Z-one-generation-fb0d980b/`；
+`report.json` SHA-256 为 `396003CC8C325C0D2B8B02082E0F2B19831DC52E90922354725234FD012655F1`，
+`first-blocker.json` SHA-256 为 `04017F1AE0D414EA755168F7D534481D4B3B6A0476064645E7AA7F55A219ACC8`。
+同帧 moving query index `3175` 仍成功，故失败不是 hostile scope、暂停态或 mailbox 不可达。
 
-- 敌军已经在 `8658` 时，双方 occupancy 在 horizon start 就重叠，必须返回 `same_province` conflict；
-- 敌军恰在 horizon end 到达时，closed boundary 仍算 conflict；
-- 本帧敌军到达 `8658` 是 `53215944`，远在 horizon end `53212752` 后，不构成这一日的 overlap；
-- stationary subject 没有 route edge，因此不会伪造 opposing-edge 冲突；任一 current、timeline、完整 hostile
-  scope 或 before/after paused identity 不闭合时，query 仍返回 unavailable/state-changed，而不是猜安全。
+[static-confirmed] 这里必须区分“wire/schema 能表达”与“exact-build reader 能生成”：Python normalization 接受
+`target=current`、空 subject route/arrival arrays，`BuildTimelineIntervals` 也会把这种 timeline 解释为 current Province
+覆盖完整闭区间 `[horizon_start,horizon_end]`；但 `BuildSubjectRouteTimeline` 只对**非空**且末端等于 target 的 committed
+route 直接调用 `BuildActiveRouteTimeline`。空 route 会先调用
+`get_army_move_mode(unit,current,1)`、再调用 `resolve_move_origin`，之后才到 same-current early return。对本帧
+`regular` hold，生产 reader 在这些前置中返回 `route_unavailable`；当前粗粒度 status 不能再区分是 move mode `2`、
+origin 为 null，还是空 route 下 origin 不是 current。此前把后置 same-current 分支写成“现有 reader 已支持 stationary
+query”属于证据误读，现已由 live artifact 纠正。
 
-[counter-policy] 最小可行入口是复用现有单-subject query，而不是扩成新的 multi-subject native API：先保留
-Army `33554818` 的 fresh moving horizon，再为每支 geometric-threatened stationary army 用
-`target=current province` 取得同一 paused revision 的 fresh horizon；只有所有必要 subject 都
-`one_day_contact_free=true`，且其它军队已经由 complete geometric audit 证明无交集，才使用既有 moving subject 的
-proof-bound one-day advance。当前 Python action-step projection 会排除“空 route + current target”的 query literal，
-因此只需窄化地把这一既有 typed query 暴露给被威胁 stationary army，并在 planner 中做全军 conjunction；不需要
-新 native 字段、命令或 schema。任一 stationary query 为 false/unavailable 时继续 reroute/hold/block，绝不由另一支
-军队的 proof 代签。推进后仍重读全部 ArmyID、route、combat、retreat 与 paused date。
+[static-confirmed + counter-policy] 不需要第二条 subject query，也不需要修改 native ABI。成功的 moving query 已在同一
+paused revision 返回**完整 hostile scope 的全部 `hostile_routes` 和原生 arrival dates**；bridge 只有在
+completion/current/previous 三份完整 snapshot 相等时才发布结果。因此可以把同一帧中每支明确为
+`regular/sieging`、无 target、空 route、非 combat/retreat 的玩家军建模成只读 hold occupancy，并严格复刻原生
+`BuildTimelineIntervals` / `ClosedIntervalsOverlap`：
 
-[unknown] 该 exact frame 尚未实际执行 subject `150995278 -> 8658` 的 production query，因此上面的 reader/interval
-语义是 static-confirmed，具体返回值在 fresh replay 前仍为 live-pending。现有一日 predicate也不宣称预测窗口内
-可能发生的原生 retarget/invalidation，更不授权 speed 2..5 或多日 tranche；这些边界沿用既有一日
-paused-to-paused 合同，不为本 blocker 扩张。
+- stationary occupancy 是 `[horizon_start,horizon_end]` 闭区间；
+- hostile current Province 占用 `[horizon_start, first_arrival]`，空 route 时占用到 horizon end；每个 route Province
+  占用 `[arrival[i], next_arrival 或 horizon_end]`，所有边界都闭合；
+- 因而敌军已经在 stationary Province，或对该 Province 的任一原生 arrival `<= horizon_end`（包括恰在一日末端）时
+  都必须判 unsafe；本帧 `53215944 > 53212752`，所以 `8658` 在下一日没有 same-province overlap；
+- stationary subject 没有 edge，只需重投影 `same_province`，不得凭空产生 `opposing_edge`；moving subject 自身的
+  opposing-edge 仍由原生 query 结果负责。
+
+[counter-policy] 最小入口是让 planner 与 advance-step advertisement 共用同一个 closed-interval helper：从 fresh moving
+horizon 取得 hostile timelines，对同一 snapshot 的所有 stationary rows 重投影，再与 moving
+`one_day_contact_free=true`、其它 geometric-safe rows及无 combat/retreat 条件取全局 conjunction。只有 conjunction 为真才
+复用原有 moving-proof-bound one-day advance；任一 timeline、date/revision/connection/episode binding、hostile scope 或
+stationary shape 不完整时继续 reroute/hold/block。该复用是我方基于同帧原生 hostile timeline 的派生判定，不冒充
+stationary ArmyID 自己取得了 native subject proof。推进后仍重读全部 ArmyID、route、combat、retreat 与 paused date。
+
+[static-ready, live replay pending] 共享 hostile timeline 方案尚未从该 durable checkpoint 完成 fresh replay，不能标
+production-live。现有一日 predicate 也不宣称预测窗口内可能发生的原生 retarget/invalidation，更不授权 speed 2..5 或
+多日 tranche；这些边界沿用既有一日 paused-to-paused 合同，不为本 blocker 扩张。
 
 ```mermaid
 flowchart TD
@@ -206,17 +222,20 @@ flowchart TD
     P --> S["[live-confirmed] stationary 150995278<br/>current 8658; empty route"]
     P --> E["[live-confirmed] hostile 117440646<br/>arrival at 8658 = 53215944"]
     M --> MH["[live-confirmed] moving horizon<br/>53212728..53212752 contact-free"]
-    S --> Q["[counter-policy] query same subject<br/>target=current 8658"]
-    Q --> O["[static-confirmed] empty subject route<br/>occupancy 8658 for whole horizon"]
+    MH --> HR["[live-confirmed] same result carries complete<br/>hostile routes + arrival dates"]
+    S --> O["[counter-policy] same-frame hold occupancy<br/>8658 for closed whole horizon"]
+    HR --> X
     E --> X{"[static-confirmed] hostile occupancy overlaps<br/>8658 within closed one-day window?"}
     O --> X
     X -->|yes; including already there / exact end| B["[counter-policy] conflict; reroute / hold / block"]
-    X -->|no| SH["[counter-policy] stationary subject one-day proof"]
+    X -->|no| SH["[counter-policy] derived stationary row is safe one day"]
     MH --> A{"[counter-policy] every relevant controllable<br/>has geometric-safe or fresh timed proof?"}
     SH --> A
     A -->|yes| D["[counter-policy] existing proof-bound one-day advance<br/>then re-read all armies paused"]
     A -->|no| B
-    L["[unknown] stationary-subject result<br/>production replay pending"] -. "[unknown] live acceptance" .-> Q
+    F["[live-confirmed] target=current native query<br/>route_unavailable before interval projection"] --> N["[counter-policy] do not issue a second query"]
+    N --> HR
+    L["[unknown] shared-timeline counter-policy<br/>production replay pending"] -. "[unknown] live acceptance" .-> A
     R["[unknown] in-window native retarget/invalidation"] -. "[unknown] unchanged one-day predicate boundary" .-> D
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class L,R unknown;
@@ -415,7 +434,7 @@ flowchart TD
 | 同省 opponent 顺序 | [static-confirmed] | Province `+0x748` 是 unsigned full CUnitID lower-bound 数值升序；首筛取第一个合格 opponent，builder 也按此序 append。 |
 | 已有战斗 vs 新战斗 | [static-confirmed] | 始终优先已有 XOR-compatible CCombat；多个 compatible 时取 `+0x760` 升序表中的最后一个，再否则创建新战斗。 |
 | 同日第三军 | [static-confirmed] | 先处理的 initiator 创建/加入 combat 后，后续 queue row 会观察到更新后的 active combat；加入 pursuit 可重开 main phase。 |
-| 多支可控军的一日放行 | [static-confirmed + live blocker] | 日期只推进一次，接触按实际 placement/Province 逐军发生；future route vertex 不是立即 contact。当前 blocker 的完整 timed hostile route 已可观测，缺口仅是为 stationary `target=current` 取得 subject-bound proof 并与 moving proof 取 conjunction。 |
+| 多支可控军的一日放行 | [static-confirmed + live blocker] | 日期只推进一次，接触按实际 placement/Province 逐军发生；future route vertex 不是立即 contact。stationary `target=current` native query 已 live 证明在 interval projection 前返回 `route_unavailable`；当前 static-ready 入口是复用 moving result 的完整 hostile timelines，按闭区间重投影同帧 holds，再与 moving proof 取 conjunction。 |
 | 攻守方向 | [static-confirmed] | 由 holding 关系计算 `initiator_is_defender`；true 是 initiator side1 defender，绝非 initiator attacker。 |
 | manager stored order 来源 | [unknown] | 已证它传播为同日 initiator tie-break，但未闭合该表由创建、ID、分区或其它生命周期规则如何维护。 |
 | non-daily placement 全序 | [unknown] | script/event placement、传送、撤退结束及 wrapper 多 callsite 尚未闭合统一相对顺序。 |

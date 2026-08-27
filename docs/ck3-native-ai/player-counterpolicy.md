@@ -215,11 +215,12 @@ flowchart TD
 `requested_horizon_days=1`、`timeline_speed=3`、`timeline_policy=remote_enemy_route`。原 production action 仍是旧策略的
 speed 1，实际推进两日；fixture 只证明 selector 与 paused 后置字段，不把合成的 speed-3 elapsed 当成实机调度证据。
 
-[unknown] 已发布 exact route-contact horizon 能为“stationary subject + target=current province”构造敌军完整 timed
-route，并给出一日 contact-free 关系；但 production action surface 目前只对已 committed player route 发布 proof-bound
-advance，而且 speed-3 异步暂停的最大 overshoot 尚未闭合。因此，若要继续加速这个 endpoint 最终指向玩家的具体帧，
-下一入口应是先用隔离 A/B 冻结 speed-3 elapsed envelope，再以 timed arrival 与该 envelope 的明确余量授权；不能用 route
-长度或 first hop 代替 ETA，也不能把现有 speed-1 exact transaction 直接改成 speed 3。
+[live-confirmed + static-ready] stationary `target=current` query 已证明会在 interval projection 前返回
+`route_unavailable`；但成功的 moving horizon 已发布完整 hostile timed routes，可以按同一闭区间语义重投影同帧 hold 的
+一日 contact 关系。该共享-timeline counter-policy 尚待 live replay，production action surface 也仍只对已 committed player
+route 发布 proof-bound advance，而且 speed-3 异步暂停的最大 overshoot 尚未闭合。因此，若要继续加速 endpoint 最终指向
+玩家的具体帧，下一入口仍是先用隔离 A/B 冻结 speed-3 elapsed envelope，再以 timed arrival 与该 envelope 的明确余量授权；
+不能用 route 长度或 first hop 代替 ETA，也不能把现有 speed-1 exact transaction 直接改成 speed 3。
 
 ### 2026-08-28 同 checkpoint live A/B：查询提速已闭合，speed 3 仍未命中
 
@@ -290,7 +291,7 @@ flowchart LR
 - [inference][counter-policy] 每支玩家军最终都要有 `escape/reunion`、`safe siege`、`exact objective` 或
   `explicit safe hold` 之一；另一支军有安全 active route 不足以替一个无目标或受威胁 stack 放行时间。
 
-### 2026-08-28 多军团 horizon blocker：按 subject 补齐同帧证明
+### 2026-08-28 多军团 horizon blocker：复用同帧 hostile timeline
 
 [live-confirmed] 最新正式长跑的 paused `native:167` / revision `168` 在 `date_raw=53212728` 有六支可控军。
 moving Army `33554818` 与 stationary Army `150995278` 同在 Province `8658`；前者的 fresh one-day horizon
@@ -302,49 +303,58 @@ arrival 是 `53215944`，距当前 `134` 游戏日。旧 `_stationary_province_t
 `AB9FDD76D0251070F1A12AAE8CAE51C2CB23B0CA675EF229DF42724C35500AB0`；原生接触与 interval 证据详见
 [army-contact-resolution.md](army-contact-resolution.md)。
 
-[inference][counter-policy] 这个 blocker 不需要新的 native observation schema。现有 typed query 一次只绑定一个
-subject，所以 moving Army `33554818` 的 proof 不能直接替 Army `150995278` 签名；但同一个 query 已支持
-stationary `target=current`：空 subject route 被解释成 current Province 覆盖整个 one-day horizon，并继续与完整
-hostile timed routes 做 closed-interval overlap。于是最小施工只需：
+[live-confirmed] commit `1048a45` 的 replay 随后确实广告并提交了 stationary literal
+`query-route-contact-horizon-v1-150995278-to-8658-h-3-83886265-117440646-117440838`，但 exact-build reader 返回
+`route_unavailable / CK3 could not build a complete contact route`。report SHA-256
+`396003CC8C325C0D2B8B02082E0F2B19831DC52E90922354725234FD012655F1`，first-blocker SHA-256
+`04017F1AE0D414EA755168F7D534481D4B3B6A0476064645E7AA7F55A219ACC8`。wire/schema 虽允许空 subject timeline，
+native `BuildSubjectRouteTimeline` 却会在 same-current return 之前先要求 move mode 与 effective origin；所以“schema 可接收
+target=current”不能升级成“exact-build reader 能为 regular hold 生成该结果”。
 
-1. action-step projection 为 `regular/sieging`、无 target、空 route 且 geometric-threatened 的 controllable army
-   广告 `query-route-contact-horizon-v1-<army>-to-<current>-h-...`；这只是暴露已有 typed query，不新增 API；
-2. 以稳定 ArmyID 顺序为每个该类 subject 取得同一个 paused snapshot/revision、同一完整 hostile scope 的 fresh result；
-3. `same_province`（包括敌军已经在省内或恰在 horizon end 到达）、`opposing_edge`、false、unavailable、stale、
-   subject/current/hostile scope 不一致均不放行；
-4. 只有 moving route proof、所有 stationary timed proofs 与其余 geometric-safe controllable rows 全部成立，且无其它
-   combat/retreat，才复用 moving Army `33554818` 已有的 proof-bound one-day advance；paused 后重读全军，而不是
-   删除全局 guard 或改用普通 `life-advance`；
-5. 本帧只有 `150995278` 需要新增 query；Province `2619` 的另外四支 stationary army 与完整 hostile routes 无
-   geometric intersection，不为它们重复花费 native query。
+[inference][counter-policy] 这个 blocker 仍不需要新的 native observation schema。前一条成功的 moving query 已在同一
+paused frame 返回完整 hostile scope 的每条 `hostile_routes` 与 arrival dates；其发布还受完整 snapshot
+completion/current/previous 相等门禁约束。最小施工改为：
 
-[inference][counter-policy] “safe”在这里严格只表示当前 active routes 下下一日没有 same-province/opposing-edge
-contact，不表示战力有利、长期 hold 安全、敌军 134 日内不会 retarget，也不授权 speed 2..5。若 stationary query
-返回 contact，才进入既有 reroute/rendezvous/merge 或保持暂停分支；没有 exact combat forecast 时不把 contact 改写成
+1. 保留 moving Army `33554818` 的 fresh、`one_day_contact_free=true` horizon，并取得其中全部 hostile timelines；
+2. 从同一 snapshot 选出 `regular/sieging`、无 target、空 route、非 combat/retreat 的 controllable rows；不再为它们
+   广告或提交 `target=current` query；
+3. planner 与 advance advertisement 共用一个 helper，逐字复刻 `BuildTimelineIntervals` 的闭区间：stationary Province
+   占用 `[start,end]`；hostile current 占用到 first arrival，每个 route Province 从自身 arrival 占用到 next arrival/end；
+4. hostile 已在该省或任一该省 arrival `<= end`（包括恰在一日末端）即 unsafe；stationary 没有 edge，故此派生层只产生
+   `same_province`，moving subject 的 `opposing_edge` 仍以原生 horizon 为准；
+5. 只有 moving proof、所有派生 stationary rows、其余 geometric-safe rows与无其它 combat/retreat 条件全部成立，才广告并
+   执行既有 moving-proof-bound one-day advance；任一 frame binding、timeline、hostile scope 或 army shape 不完整都阻断。
+
+[inference][counter-policy] “safe”在这里严格只表示当前 active routes 下下一日没有接触，不表示战力有利、长期 hold
+安全、敌军 134 日内不会 retarget，也不授权 speed 2..5。共享 hostile timeline 是同帧原生观测上的 counter-policy
+派生，不冒充 stationary ArmyID 自己取得了 subject-bound native proof；没有 exact combat forecast 时也不把 contact 改写成
 “可以打”。
 
-[unknown] subject `150995278 -> 8658` 的真实 production query/随后一日 postcondition 尚待从 durable checkpoint
-fresh replay；在此之前只能标 static-ready/counter-policy-ready，不能标 production-live。未来出现“所有军队都 stationary、
-没有任何 committed moving proof 可作为现有 advance token”的真实 blocker 时，再依据实证决定是否扩展 stationary-bound
-advance；本轮不得为未发生形状新增 multi-subject API 或另一套时间命令。
+[static-ready, live replay pending] 共享 hostile timeline 的随后一日 postcondition 尚待从 durable checkpoint fresh replay；
+在此之前不能标 production-live。未来出现“所有军队都 stationary、没有任何 committed moving proof 可作为现有 advance
+token”的真实 blocker 时，再依据实证决定是否扩展 stationary-bound advance；本轮不得为未发生形状新增 multi-subject API
+或另一套时间命令。
 
 ```mermaid
 flowchart TD
     P["[live-confirmed] paused frame<br/>M hostile × N controllable"] --> G["[counter-policy] complete geometric audit"]
     G --> C["[live-confirmed] moving 33554818<br/>fresh one-day proof=true"]
+    C --> H["[live-confirmed] extract complete hostile routes<br/>from the same fresh result"]
     G --> T{"[counter-policy] stationary current appears<br/>in hostile current/target/route?"}
     T -->|no| GS["[counter-policy] geometric-safe row"]
-    T -->|yes| Q["[counter-policy] query that stationary ArmyID<br/>target=current; same revision/scope"]
-    Q --> H{"[counter-policy] fresh available<br/>one_day_contact_free=true?"}
-    H -->|no / unavailable / conflict| B["[counter-policy] reroute / rendezvous / merge / block"]
-    H -->|yes| SS["[counter-policy] subject-bound stationary proof"]
+    T -->|yes| X{"[counter-policy] closed stationary occupancy overlaps<br/>same-frame hostile intervals?"}
+    H --> X
+    X -->|yes / unavailable / stale| B["[counter-policy] reroute / rendezvous / merge / block"]
+    X -->|no| SS["[counter-policy] derived stationary row safe one day"]
     C --> A{"[counter-policy] conjunction over every controllable row<br/>and no other combat/retreat?"}
     GS --> A
     SS --> A
     A -->|yes| D["[counter-policy] existing moving proof-bound<br/>one-day advance"]
     A -->|no| B
     D --> R["[counter-policy] paused re-observe all armies"]
-    U["[unknown] stationary subject production result"] -. "[unknown] fresh replay" .-> H
+    F["[live-confirmed] stationary target=current query<br/>route_unavailable"] --> N["[counter-policy] do not issue a second query"]
+    N --> H
+    U["[unknown] shared-timeline production result"] -. "[unknown] fresh replay" .-> A
     V["[unknown] future all-stationary advance shape"] -. "[unknown] only if a real blocker appears" .-> D
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,V unknown;

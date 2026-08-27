@@ -69,6 +69,7 @@ from .bridge.war_contract import (
     query_route_contact_horizon_step,
     query_war_termination_options_step,
     query_war_termination_terms_step,
+    stationary_province_contact_free_in_horizon,
     start_assault_step,
     stop_assault_step,
     war_objective_province_ids,
@@ -4753,58 +4754,34 @@ def choose_one_life_turn(
                             ):
                                 uncovered_stationary_armies.append(candidate)
                                 continue
-                            stationary_horizon = _fresh_route_contact_horizon(
-                                rows,
-                                snapshot,
-                                army_id=candidate_id,
-                                origin_province_id=candidate_province_id,
-                                target_province_id=candidate_province_id,
-                                hostile_army_ids=route_threat_enemy_ids,
-                                route_province_ids=[],
-                            )
-                            if stationary_horizon is None:
-                                stationary_step = (
-                                    query_route_contact_horizon_step(
-                                        candidate_id,
+                            try:
+                                stationary_contact_free = (
+                                    stationary_province_contact_free_in_horizon(
+                                        contact_horizon,
                                         candidate_province_id,
-                                        route_threat_enemy_ids,
                                     )
                                 )
-                                if stationary_step in available_steps:
-                                    return {
-                                        "policy": "one-life-turn-v1",
-                                        "phase": "native_war_stationary_contact_horizon",
-                                        "selected_step": stationary_step,
-                                        "reason": "resolve a future geometric route intersection against this stationary army's subject-bound exact one-day occupancy",
-                                        "route_audit": passive_route_audit,
-                                        "stationary_army": candidate,
-                                        "active_wars": war_summary,
-                                    }
-                                return {
-                                    "policy": "one-life-turn-v1",
-                                    "phase": "native_war_stationary_contact_horizon_unsupported",
-                                    "selected_step": None,
-                                    "required_step": stationary_step,
-                                    "reason": "the threatened stationary army requires its own fresh exact one-day contact horizon",
-                                    "route_audit": passive_route_audit,
-                                    "stationary_army": candidate,
-                                    "active_wars": war_summary,
-                                }
-                            if (
-                                stationary_horizon.get(
-                                    "one_day_contact_free"
-                                )
-                                is True
-                            ):
+                            except ValueError:
+                                stationary_contact_free = False
+                            if stationary_contact_free:
                                 stationary_contact_horizons.append(
                                     {
                                         "army_id": candidate_id,
                                         "current_province_id": (
                                             candidate_province_id
                                         ),
-                                        "contact_horizon": (
-                                            stationary_horizon
+                                        "proof_subject_army_id": army_id,
+                                        "horizon_start_date_raw": (
+                                            contact_horizon.get(
+                                                "horizon_start_date_raw"
+                                            )
                                         ),
+                                        "horizon_end_date_raw": (
+                                            contact_horizon.get(
+                                                "horizon_end_date_raw"
+                                            )
+                                        ),
+                                        "one_day_contact_free": True,
                                     }
                                 )
                             else:

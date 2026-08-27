@@ -802,6 +802,70 @@ def _normalize_timed_route(
     }
 
 
+def stationary_province_contact_free_in_horizon(
+    value: object,
+    province_id: int,
+) -> bool:
+    """Project one stationary Province against a validated hostile timeline.
+
+    The route-contact query is subject-bound, but its hostile route array is
+    complete for the exact paused frame.  A stationary friendly army can
+    therefore reuse that array: contact exists when a hostile already occupies
+    its Province at the closed-window start, or arrives there on/before the
+    closed-window end.
+    """
+    province = _positive_int32_id(
+        province_id, "stationary route-contact province_id"
+    )
+    if not isinstance(value, dict):
+        raise ValueError("stationary route-contact horizon must be an object")
+    subject = _positive_int32_id(
+        value.get("subject_army_id"),
+        "stationary route-contact subject_army_id",
+    )
+    target = _positive_int32_id(
+        value.get("target_province_id"),
+        "stationary route-contact target_province_id",
+    )
+    date_raw = _signed_int32(
+        value.get("date_raw"), "stationary route-contact date_raw"
+    )
+    revision = value.get("snapshot_revision")
+    hostile_ids = _required_list(
+        value.get("hostile_army_ids"),
+        "stationary route-contact hostile_army_ids",
+    )
+    normalized = normalize_route_contact_horizon(
+        value,
+        expected_subject_army_id=subject,
+        expected_target_province_id=target,
+        expected_hostile_army_ids=hostile_ids,
+        expected_date_raw=date_raw,
+        expected_snapshot_revision=revision,
+    )
+    horizon_start = int(normalized["horizon_start_date_raw"])
+    horizon_end = int(normalized["horizon_end_date_raw"])
+    routes = normalized["hostile_routes"]
+    if not isinstance(routes, list):
+        raise ValueError("stationary route-contact hostile routes are malformed")
+    for route in routes:
+        if not isinstance(route, dict):
+            raise ValueError("stationary route-contact hostile route is malformed")
+        if route.get("current_province_id") == province:
+            return False
+        provinces = route.get("route_province_ids")
+        arrivals = route.get("arrival_date_raws")
+        if not isinstance(provinces, list) or not isinstance(arrivals, list):
+            raise ValueError("stationary route-contact timeline is malformed")
+        for route_province, arrival in zip(provinces, arrivals, strict=True):
+            if (
+                route_province == province
+                and horizon_start <= arrival <= horizon_end
+            ):
+                return False
+    return True
+
+
 def player_armies_from_state(
     active_wars: Iterable[dict[str, object]],
     explicit_player_armies: object,

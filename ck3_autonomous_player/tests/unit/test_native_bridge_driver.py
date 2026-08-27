@@ -6455,7 +6455,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertTrue(result["paused"])
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
 
-    def test_stationary_contact_proof_is_required_for_exact_day_step(
+    def test_moving_contact_proof_covers_stationary_army_exact_day(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -6512,11 +6512,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         snapshot = driver.take_snapshot()
         hostiles = (31,)
         moving_query = query_route_contact_horizon_step(101, 30, hostiles)
-        stationary_query = query_route_contact_horizon_step(
-            202, 22, hostiles
-        )
+        stationary_query = query_route_contact_horizon_step(202, 22, hostiles)
         advance_step = advance_route_contact_horizon_step(101, 30, hostiles)
-        self.assertIn(
+        self.assertNotIn(
             stationary_query, driver.capabilities()["action_steps"]
         )
 
@@ -6594,24 +6592,48 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             route=[25, 30],
             arrivals=[start_date + 24, start_date + 48],
         )
-        self.assertNotIn(
+        self.assertIn(
             advance_step,
             _fresh_route_contact_advance_steps(snapshot, [moving_proof]),
         )
-        stationary_proof = proof_row(
-            2,
-            step=stationary_query,
-            subject_id=202,
-            current=22,
-            target=22,
-            route=[],
-            arrivals=[],
-        )
-        self.assertIn(
+        gathering_snapshot = copy.deepcopy(snapshot)
+        next(
+            army
+            for army in gathering_snapshot["player_armies"]
+            if army["army_id"] == 202
+        )["army_state"] = "gathering"
+        self.assertNotIn(
             advance_step,
             _fresh_route_contact_advance_steps(
-                snapshot, [moving_proof, stationary_proof]
+                gathering_snapshot, [moving_proof]
             ),
+        )
+        malformed_route_snapshot = copy.deepcopy(snapshot)
+        next(
+            army
+            for army in malformed_route_snapshot["player_armies"]
+            if army["army_id"] == 202
+        )["route_province_ids"] = [None]
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                malformed_route_snapshot, [moving_proof]
+            ),
+        )
+        blocked_proof = copy.deepcopy(moving_proof)
+        hostile_route = blocked_proof["result"]["route_contact_horizon"][
+            "hostile_routes"
+        ][0]
+        hostile_route["route_province_ids"] = [22, 25, 30]
+        hostile_route["arrival_date_raws"] = [
+            start_date + 24,
+            start_date + 72,
+            start_date + 96,
+        ]
+        hostile_route["effective_origin_province_id"] = 22
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(snapshot, [blocked_proof]),
         )
 
     def test_existing_move_target_still_advertises_preview_not_duplicate_move(
