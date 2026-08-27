@@ -8389,17 +8389,26 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "route-contact one-day advance requires a paused map"
             )
-        assault_history = self._history_snapshot()
-        open_assaults = _native_open_assault_lifecycles(assault_history)
+        # Assault lifecycle checks are read-only.  Scan the owned transcript
+        # under its lock so a timeline slice does not deep-copy an ever-growing
+        # command history merely to decide whether it may resume the map.
+        with self._history_lock:
+            open_assaults = _native_open_assault_lifecycles(
+                self._command_history
+            )
+            unresolved_assaults = (
+                _native_unobservable_started_assaults(
+                    starting, self._command_history
+                )
+                if starting.get("paused") is True
+                else []
+            )
         if open_assaults and starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native life-advance requires a paused rich snapshot while "
                 "an assault_started lifecycle remains open"
             )
         if starting.get("paused") is True:
-            unresolved_assaults = _native_unobservable_started_assaults(
-                starting, assault_history
-            )
             if unresolved_assaults:
                 raise BridgeUnavailableError(
                     "native life-advance refused an unresolved assault_started "

@@ -8856,7 +8856,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertTrue(result["paused"])
         self.assertEqual(result["timeline_speed"], 1)
-        self.assertEqual(history_snapshot.call_count, 1)
+        self.assertEqual(history_snapshot.call_count, 0)
 
     def test_paused_life_advance_rejects_stale_revision_before_resume(self) -> None:
         endpoint = FakeEndpoint()
