@@ -94,9 +94,11 @@
 - [static-confirmed] [battle-simulation.md](battle-simulation.md) 记录真实 `CCombat` phase/day tick、战宽、
   commander roll、advantage、MAA counter、主阶段 damage、casualty/pursuit 与 PRNG 边界；同时冻结
   exact-native-parity Monte Carlo 的完整输入门，并明确当前局胜率为 unavailable，而不是近似人数比。
-- [static-confirmed + live-confirmed] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
-  溃退、追击与战斗终结串成原生控制树；P1 ongoing identity/ledger、bounded hold 与 normal terminal query 已 production-live，
-  `battle_identity_live_ready=true`、`battle_hold_ready=true`、`battle_retreat_ready=true`；full-side 与 owner-subset
+- [static-confirmed + live-confirmed + production RED] [battle-controller.md](battle-controller.md) 把接触/参战、求援/增援、主动撤退、
+  溃退、追击与战斗终结串成原生控制树；P1 ongoing identity/ledger 与 normal terminal query 已 production-live，
+  `battle_identity_live_ready=true`、`battle_retreat_ready=true`。正式长跑实见请求一日后 paused frame 为同 CombatID
+  `main/32→34`、action 自报 `elapsed_days=2` 且 ledger coherent，旧硬编码单日 verifier 因而阻断；最小修复与复跑前
+  `planner_battle_hold_live_ready=false`。full-side 与 owner-subset
   retreat postcondition 均已 live，增援 assignment 只读查询也已 production-live，但 assigned+ETA/join、forecast、no-normal/residual/
   assignment-reopened terminal 分支与总 controller 仍未完成。
 - [live-confirmed expanded frame] [ongoing-battle-frame.md](ongoing-battle-frame.md)
@@ -105,8 +107,9 @@
   main 2 原 frame artifact SHA 为 `A0FC6BB7268E38026CC8EED6D6388BFD675AD5DCFB60A1A65FE1C1B64E816AC6`；新增
   selected identity/scope/flags/four-gate legality 又通过 day 0–16 production progression，artifact SHA 为
   `FB521B39AD5529434596212DB9ADC1EA27D4C270D28D13575B9A2D80913BCF40`；production planner 两轮
-  query→one-day advance→same-CombatID requery 也已 GREEN，artifact SHA
-  `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`；full-side 完整撤退 transition artifact SHA 为
+  query→one-day advance→same-CombatID requery 的历史 GREEN artifact SHA 为
+  `96CE25384517F0060A58623958DE071F43C3C2F7B68AEB6E668473E986C1DD57`；production 两日 overshoot RED report SHA 为
+  `E1710E19DC4039716D3EC7A42BC6729D6245E6D99F2FDDDD0771E8FC7CC36403`；full-side 完整撤退 transition artifact SHA 为
   `21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA`。
 - [static-confirmed + full-side/owner-subset live-confirmed] [active-combat-retreat.md](active-combat-retreat.md) 冻结 active battle movement
   candidate、共同 legality、full-side/owner-subset apply 与 pursuit 边界；同帧只读 retreat projection 已证明 day 14 false、

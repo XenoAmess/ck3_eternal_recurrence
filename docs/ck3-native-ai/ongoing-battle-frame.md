@@ -90,7 +90,11 @@ flowchart TD
     R --> F
     L --> F
     RS --> F
-    F --> B["bounded hold → advance exactly one day<br/>then reobserve"]
+    F --> B["request one-day hold at speed 1"]
+    B --> D{"paused reobservation<br/>actual date delta"}
+    D -->|24| O["verify one native daily transition"]
+    D -->|48; observed overshoot| T["require same identity/phase<br/>phase-day +2 + coherent ledger"]
+    D -->|other| X["block and recover checkpoint"]
     RP["[unknown] generic active AI policy<br/>native destination scorer"] -.-> RA["planner target + exact preview/order<br/>semantic action live"]
     RA --> RT["[live-confirmed] prior CombatID transition query<br/>winner / phase / side order"]
     RF["[unknown] helper assignment / ETA<br/>same-day join order"] -.-> FC["future reinforcement forecast"]
@@ -102,9 +106,10 @@ flowchart TD
     class RP,RF,FC,TE,TF unknown;
 ```
 
-“hold” 本身不是 CK3 mutation；它是 controller 的策略选择。生产动作仍复用 bounded one-day advance，ACK 后必须
-重新读本帧并看见同 CombatID 的合法 phase/day/ledger transition，或显式 terminal/removal discriminant。日期前进或
-命令 ACK 单独都不算验证。
+“hold” 本身不是 CK3 mutation；它是 controller 的策略选择。生产动作请求一个游戏日并在 speed 1 运行，但异步 pause
+可能在第一个可观测日界之后才生效。ACK 后必须读取动作实际 start/end/elapsed，再重读本帧：通常接受同 CombatID 的
+`+24 / phase_day +1`；已实证的 `+48 / phase_day +2` 只有在 identity、phase 与 exact ledger 一致时才接受。其它跨度继续阻断；
+显式 join/reopen/terminal/removal 仍走自己的 discriminant。日期前进或命令 ACK 单独都不算验证。
 
 ## exact-build 布局
 
@@ -359,13 +364,16 @@ v1 最小实机矩阵：
    unavailable 而非伪造 hard；side `+0x98/+0xA0` cache 与 entry sum 分别保留，match boolean 必须真实；
 4. 连续两次查询除 request/query sequence 元数据外 byte-identical；
 5. managed cold restore 后 identity、phase/day、全 ledger、commander、roll、int64 advantage、strength 全等；
-6. bounded advance 一天后，要么同 CombatID 出现合法 phase/day 或 ledger transition，要么返回显式
-   terminal/removal discriminant；ACK 或 date 单独不算；
+6. 请求一日的 bounded advance 后，按动作实际 start/end/elapsed 验证同 CombatID 的 phase/day 与 ledger：通常为
+   `+24 / +1`；只有已实证的 pause overshoot 可为 `+48 / +2`，且必须保持 identity/phase 与 exact ledger coherent；
+   否则返回显式 terminal/removal discriminant 或阻断；ACK 或 date 单独不算；
 7. managed cleanup 后 CK3 process 为零，并恢复基线 checkpoint/driver state。
 
-这组矩阵已完成，并且第 6 项覆盖 main day 1 与 day 2 的真实 soft/hard/current ledger delta，故
-`battle_identity_live_ready=true`、`battle_hold_ready=true`。这两个 readiness 只允许 controller 观察战斗与选择
-bounded hold；retreat command 的后续独立证据和 reinforcement forecast 不能由它们推断。
+这组原始矩阵已完成，并且第 6 项覆盖 main day 1 与 day 2 的真实 soft/hard/current ledger delta，故
+`battle_identity_live_ready=true` 仍成立。历史 `+24 / +1` hold primitive 也仍有效；但下述正式长跑反例否定了执行器
+“请求一日必然只观察到一个日界”的假设，因此最小修复与 checkpoint 复跑前 `planner_battle_hold_live_ready=false`。
+这些 readiness 只允许 controller 观察战斗与选择 bounded hold；retreat command 的后续独立证据和 reinforcement forecast
+不能由它们推断。
 
 这里的“已完成”最初只指原 frame 字段；下列旧 artifact 的 canonical hashes 不含后来追加的 active-retreat 字段。随后 fresh
 production run 从同一 immutable battle save 查询 17 帧：elapsed day 0–14 均为 native false + `too_early`，day 15/16 在 main
@@ -400,6 +408,23 @@ battle query→one-day life advance→battle requery：同一 `CombatID=33554432
 `53178264→53178288→53178312`，maneuver day `1→2→3`，两轮 transition 都是 `same_combat_advanced`；撤退动作执行数为 0。
 source autosave SHA 前后不变，managed cleanup 与临时 profile clone 删除均成立。因此
 `planner_battle_hold_live_ready=true`，但这不解锁 forecast/retreat strategy。
+
+### 2026-08-27 production longrun：两日 paused overshoot blocker
+
+正式 `native-one-generation` 在 turn `1134` 的 speed-1 `life-advance` 中实际返回
+`53195880→53195928`、`elapsed_days=2`、`progress_status=postcondition`。前后 exact frame 都绑定
+`CombatID=687865860`、同 CArmy/Province、`phase=main`，phase day 为 `32→34`；双方 current/soft/hard ledger
+同时演进：attacker `397120/34722071/14880809 → 0/35000056/14999944`，defender
+`16941842/27900826/11957332 → 16818259/27987341/11994400`。这与 exact-build dispatcher 每个 native day
+令 phase-day 加一的树一致，不能判成原生非法跳跃。
+
+旧 verifier 把所有 post-advance frame 固定限制为 `before_date+24`，因此在 turn `1136` 返回
+`native_war_battle_transition_invalid`。report size `6519552`、SHA-256
+`E1710E19DC4039716D3EC7A42BC6729D6245E6D99F2FDDDD0771E8FC7CC36403`；first blocker size `4814`、SHA-256
+`DBACD2824CCB8E382CEC1EFB5649A634D305D957BEED3082144C08E1526F1470`。最后 durable checkpoint
+`date_raw=53195880/history=1888`、SHA-256 `3F8A3355ADFC00190C4679ED887114A4E70C4FCEDD7DECF5E7FBB935B3EE4355`，
+角色 `29829` 存活且 cleanup 全绿。修复边界只覆盖 action 自报 `elapsed_days=2`、`date_delta=48`、同 identity/phase、
+`phase_day_delta=2` 与 coherent ledger；不放宽任意多日或任意 phase 跳跃。
 
 ### 2026-08-26 production 实机证据
 
@@ -444,8 +469,9 @@ levy cache 也独立闭合：main day 1 attacker `84300000 → 78321731`、defen
 8. **[completed] P1.8 active-retreat command/semantic layer**：Python production composition 将 battle frame、exact
    `PreviewMoveArmy`、target route 与一次性 token 全绑定，复用玩家 move command；full-side 实机看到真实 retreating/target/route，
    ACK 保持 verification pending。
-9. **[completed] P1.9 planner-integrated hold live**：真实 planner 连续两轮消费 exact battle query、只推进一个游戏日并重查
-   同一 CombatID，phase day 与日期后置状态均成立；没有调用 retreat 或视觉 fallback。
+9. **[live RED] P1.9 planner-integrated hold**：历史 planner 连续两轮 exact battle query、`+24` advance 与同 CombatID requery
+   仍为有效证据；正式长跑又实见请求一日后 paused envelope 实际为 `+48 / phase_day +2`，旧 verifier 因硬编码单日上限阻断。
+   最小 correlated-overshoot 修复与 checkpoint 复跑前不得恢复完成态；全程没有调用 retreat 或视觉 fallback。
 10. **[completed] P1.10 full-CombatID transition live**：新增不依赖 retreating subject 的 paused lifecycle query；full-side
     实机闭合 `main/12→pursuit/0`、opposite winner 与双方 stored order。
 
