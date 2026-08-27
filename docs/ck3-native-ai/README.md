@@ -102,6 +102,10 @@
   `planner_battle_hold_live_ready=false`。full-side 与 owner-subset
   retreat postcondition 均已 live，增援 assignment 只读查询也已 production-live，但 assigned+ETA/join、forecast、no-normal/residual/
   assignment-reopened terminal 分支与总 controller 仍未完成。
+- [static-confirmed / live A/B pending] [battle-speed-control.md](battle-speed-control.md) 证明 public speed `1..5`
+  不改变逐 native-day 的 movement/contact/combat 计算，只改变外部介入时间；冻结五档在行军、接触、交战、围城、
+  突击、撤退和追击中的准入/退出矩阵。近期先做 speed-2 有界战斗 tranche，speed 3 在同 checkpoint A/B 后开放；
+  speed 4 仅作为带原生 deadline guard 的 capped cruise，speed 5 战斗仍待 tactical sentinel 与 crush forecast。
 - [live-confirmed expanded frame] [ongoing-battle-frame.md](ongoing-battle-frame.md)
   冻结 `query-battle-control-snapshot-v1` 的 exact ABI、
   retained entry/current-soft-hard ledger 与 bounded hold 后置验证；cold checkpoint `9104CCB8...CC63` 的 maneuver 1 到

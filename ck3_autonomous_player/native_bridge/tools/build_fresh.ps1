@@ -60,13 +60,20 @@ function Repair-NinjaMsvcDependencyPrefix {
 
     $valueGroup = $matches[0].Groups["value"]
     $generatedPrefix = $valueGroup.Value
-    $repairedPrefix = [System.Text.Encoding]::UTF8.GetString(
-        [System.Text.Encoding]::Default.GetBytes($generatedPrefix)
-    )
     # Keep the script ASCII so Windows PowerShell 5.1 does not decode an
     # unmarked UTF-8 .ps1 through code page 936 before evaluating it.
     $expected2052Prefix = [System.Text.Encoding]::UTF8.GetString(
         [System.Convert]::FromBase64String("5rOo5oSPOiDljIXlkKvmlofku7Y6")
+    )
+    # Current CMake releases can preserve the UTF-8 prefix directly. Accept
+    # that exact value instead of corrupting it through the legacy repair.
+    if ($generatedPrefix.StartsWith($expected2052Prefix) -and
+        $generatedPrefix.Substring($expected2052Prefix.Length).Trim().Length -eq 0) {
+        return "direct-2052-utf8"
+    }
+
+    $repairedPrefix = [System.Text.Encoding]::UTF8.GetString(
+        [System.Text.Encoding]::Default.GetBytes($generatedPrefix)
     )
     if (-not $repairedPrefix.StartsWith($expected2052Prefix) -or
         $repairedPrefix.Substring($expected2052Prefix.Length).Trim().Length -ne 0) {

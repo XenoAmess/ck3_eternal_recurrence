@@ -1229,8 +1229,8 @@ bool TestSourceContract(int argc, char **argv) {
     }
   }
   if (!StrictUtf8WithoutReplacement(documentation) ||
-      CountOccurrences(documentation, "```mermaid") != 2 ||
-      CountOccurrences(documentation, "```") != 4 ||
+      CountOccurrences(documentation, "```mermaid") != 3 ||
+      CountOccurrences(documentation, "```") != 6 ||
       !Contains(documentation, "paused_owner_verified_pump_epochs") ||
       !Contains(documentation, "live-confirmed") ||
       !Contains(abi, "\"live_observation\": true") ||

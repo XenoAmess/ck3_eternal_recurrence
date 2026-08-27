@@ -24,7 +24,7 @@ import time
 from typing import Protocol
 import uuid
 
-from ..environment import write_json_atomic
+from ..environment import write_bytes_atomic, write_json_atomic
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
@@ -264,7 +264,7 @@ _NATIVE_SIEGE_ADVANCE_MAX_DAYS = 7
 _NATIVE_ASSAULT_ADVANCE_MAX_DAYS = 1
 _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS = 1
 _NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS = 1
-_LIFE_ADVANCE_PAUSE_RETRY_SECONDS = 1.0
+_LIFE_ADVANCE_TIMELINE_RETRY_SECONDS = 1.0
 _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
     "CK3 battle-control state changed during query"
 )
@@ -3055,6 +3055,38 @@ class NativeHeadlessGameplayDriver:
             payload["rollback_war_failures"] = rollback_war_failures
         return payload
 
+    def _encode_driver_state_locked(self) -> bytes:
+        """Encode the current locked state without cloning its full history."""
+        rollback_war_failures = self._rollback_war_failures
+        payload = {
+            "format_version": _NATIVE_DRIVER_STATE_VERSION,
+            "pipe_name": self.pipe_name,
+            "bridge_pid": self._session_bridge_pid,
+            "episode_character_id": self._episode_character_id,
+            "episode_run_id": self._episode_run_id,
+            "last_checkpoint": self._last_checkpoint,
+            "command_history": self._command_history,
+            # Singular stays as the latest advisory for old readers.
+            "rollback_war_failure": (
+                rollback_war_failures[0]
+                if rollback_war_failures
+                else None
+            ),
+            "managed_restore_transaction": self._managed_restore_transaction,
+        }
+        # Keep an old-state migration recognizable across a crash before the
+        # first playable snapshot supplies the restored physical origin.
+        if not self._rollback_war_failures_migration_required:
+            payload["rollback_war_failures"] = rollback_war_failures
+        return (
+            json.dumps(
+                payload,
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+
     def _managed_restore_request_state(
         self, transaction: dict[str, object]
     ) -> str:
@@ -3605,15 +3637,18 @@ class NativeHeadlessGameplayDriver:
             return
         with self._driver_state_write_lock:
             try:
-                # Serialize snapshot capture with the write itself.  A query
-                # appended while this payload is being written sets dirty
-                # again and must remain visible to the next barrier/close.
+                # Encode one immutable snapshot under the state lock, then
+                # keep the write lock through its atomic replacement.  A
+                # query appended while those bytes are being written sets
+                # dirty again for the next barrier/close.
                 with self._driver_state_lock:
                     if self._session_bridge_pid is None:
                         return
-                    payload = self._driver_state_payload_locked()
+                    encoded = self._encode_driver_state_locked()
                     self._driver_state_dirty = False
-                write_json_atomic(self._native_driver_state_path(), payload)
+                write_bytes_atomic(
+                    self._native_driver_state_path(), encoded
+                )
             except (OSError, TypeError, ValueError) as error:
                 # A gameplay command has already happened by this point.  Keep
                 # the live agent usable and surface persistence failure in
@@ -8487,19 +8522,7 @@ class NativeHeadlessGameplayDriver:
                 f"speed {timeline_speed}"
             )
 
-        resume_result = self._execute_composite_primitive(
-            "resume-map", current
-        )
-        actions.append({"step": "resume-map", "result": resume_result})
-        current = self._wait_for_life_advance_snapshot(
-            self.take_internal_semantic_snapshot(),
-            lambda snapshot: snapshot.get("paused") is False,
-            timeout_seconds=self.command_timeout_seconds,
-        )
-        if current.get("paused") is not False:
-            raise BridgeUnavailableError(
-                "native life-advance did not observe the running map"
-            )
+        current = self._resume_life_advance(current, actions)
 
         progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
         while not _life_advance_progressed(
@@ -8610,6 +8633,93 @@ class NativeHeadlessGameplayDriver:
             "revision": current["revision"],
         }
 
+    def _resume_life_advance(
+        self,
+        snapshot: dict[str, object],
+        actions: list[dict[str, object]],
+    ) -> dict[str, object]:
+        if snapshot.get("paused") is False:
+            return snapshot
+        deadline = time.monotonic() + self.command_timeout_seconds
+        current = self.take_internal_semantic_snapshot()
+        if current.get("paused") is False:
+            return current
+        if not _retryable_life_advance_resume_owner(snapshot, current):
+            raise BridgeUnavailableError(
+                "native life-advance resume-map owner changed before submission"
+            )
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise BridgeUnavailableError(
+                "native life-advance resume-map submission timed out"
+            )
+        # The exact 1.19.0.6 handler fresh-reads CK3 and treats an already
+        # running map as success.  This composite owns the timeline slice, so
+        # it can bypass the redundant Python revision comparison while direct
+        # resume-map primitives retain their public-revision gate.
+        result = self._execute_primitive_step(
+            "resume-map",
+            expected_revision=None,
+            timeout_seconds=remaining,
+            internal_semantic_snapshot=True,
+        )
+        actions.append({"step": "resume-map", "result": result})
+        resume_attempt_count = 1
+        resume_ack_statuses = [_timeline_ack_status(result)]
+        remaining = max(0.0, deadline - time.monotonic())
+        current = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
+            lambda candidate: candidate.get("paused") is False,
+            timeout_seconds=min(
+                remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
+            ),
+        )
+        if current.get("paused") is False:
+            return current
+
+        retry_suppressed = None
+        if not _retryable_life_advance_resume_owner(snapshot, current):
+            retry_suppressed = "owner_changed"
+        else:
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                resume_attempt_count = 2
+                try:
+                    result = self._execute_primitive_step(
+                        "resume-map",
+                        expected_revision=None,
+                        timeout_seconds=remaining,
+                        internal_semantic_snapshot=True,
+                    )
+                except (BridgeUnavailableError, UnsupportedStepError) as error:
+                    raise BridgeUnavailableError(
+                        "native life-advance second resume-map request failed; "
+                        f"resume_attempts={resume_attempt_count}, "
+                        f"resume_ack_statuses={resume_ack_statuses}, "
+                        f"second_error={type(error).__name__}: {error}"
+                    ) from error
+                actions.append({"step": "resume-map", "result": result})
+                resume_ack_statuses.append(_timeline_ack_status(result))
+                remaining = max(0.0, deadline - time.monotonic())
+                current = self._wait_for_life_advance_snapshot(
+                    self.take_internal_semantic_snapshot(),
+                    lambda candidate: candidate.get("paused") is False,
+                    timeout_seconds=remaining,
+                )
+        if current.get("paused") is not False:
+            raise BridgeUnavailableError(
+                "native life-advance did not observe the running map; "
+                f"resume_attempts={resume_attempt_count}, "
+                f"resume_ack_statuses={resume_ack_statuses}, "
+                f"retry_suppressed={retry_suppressed}, "
+                f"last_revision={current.get('revision')}, "
+                f"last_native_revision={current.get('native_revision')}, "
+                f"last_date_raw={current.get('date_raw')}, "
+                f"last_speed={current.get('speed')}, "
+                f"last_paused={current.get('paused')}"
+            )
+        return current
+
     def _pause_life_advance(
         self,
         snapshot: dict[str, object],
@@ -8641,13 +8751,13 @@ class NativeHeadlessGameplayDriver:
         )
         actions.append({"step": "pause-map", "result": result})
         pause_attempt_count = 1
-        pause_ack_statuses = [_pause_ack_status(result)]
+        pause_ack_statuses = [_timeline_ack_status(result)]
         remaining = max(0.0, deadline - time.monotonic())
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
             lambda candidate: candidate.get("paused") is True,
             timeout_seconds=min(
-                remaining, _LIFE_ADVANCE_PAUSE_RETRY_SECONDS
+                remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
             ),
         )
         if current.get("paused") is True:
@@ -8675,7 +8785,7 @@ class NativeHeadlessGameplayDriver:
                         f"second_error={type(error).__name__}: {error}"
                     ) from error
                 actions.append({"step": "pause-map", "result": result})
-                pause_ack_statuses.append(_pause_ack_status(result))
+                pause_ack_statuses.append(_timeline_ack_status(result))
                 remaining = max(0.0, deadline - time.monotonic())
                 current = self._wait_for_life_advance_snapshot(
                     self.take_internal_semantic_snapshot(),
@@ -10548,6 +10658,26 @@ def _retryable_life_advance_pause_owner(
     previous: dict[str, object], refreshed: dict[str, object]
 ) -> bool:
     """Keep one idempotent pause retry bound to the same running episode."""
+    return _retryable_life_advance_timeline_owner(
+        previous, refreshed, expected_paused=False
+    )
+
+
+def _retryable_life_advance_resume_owner(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Keep one idempotent resume retry bound to the same paused episode."""
+    return _retryable_life_advance_timeline_owner(
+        previous, refreshed, expected_paused=True
+    )
+
+
+def _retryable_life_advance_timeline_owner(
+    previous: dict[str, object],
+    refreshed: dict[str, object],
+    *,
+    expected_paused: bool,
+) -> bool:
     previous_diagnostics = previous.get("diagnostics")
     refreshed_diagnostics = refreshed.get("diagnostics")
     if not isinstance(previous_diagnostics, dict) or not isinstance(
@@ -10556,7 +10686,7 @@ def _retryable_life_advance_pause_owner(
         return False
     return bool(
         refreshed.get("map_ready") is True
-        and refreshed.get("paused") is False
+        and refreshed.get("paused") is expected_paused
         and refreshed.get("one_life_terminal_reason") is None
         and previous.get("episode_character_id")
         == refreshed.get("episode_character_id")
@@ -10569,7 +10699,7 @@ def _retryable_life_advance_pause_owner(
     )
 
 
-def _pause_ack_status(result: dict[str, object]) -> str:
+def _timeline_ack_status(result: dict[str, object]) -> str:
     status = result.get("status")
     return status if isinstance(status, str) and status else "missing"
 

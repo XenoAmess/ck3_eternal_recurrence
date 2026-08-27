@@ -250,6 +250,55 @@ flowchart TD
     A -. "[unknown] CK3 application-main or publication delay" .-> P
 ```
 
+### 2026-08-28: idempotent timeline ACK must force a fresh state frame
+
+The `0ceb7d8` production revalidation first completed `12/12` turns, six
+speed-one gameplay days and two checkpoints from `79B71103...85F2`.  The
+following formal run
+`20260827T171107Z-one-generation-ee8ac4b9` then completed another `25`
+gameplay days and eight checkpoints before a `resume-map` ACK was followed by
+`native life-advance did not observe the running map`.  The pre-action state
+was paused at `date_raw=53211504`; CharacterID `29829` remained alive and
+cleanup was GREEN.  `dedicated_server.log` recorded the same interval as
+`paused=true` followed by `paused=false`, so this failure occurred after CK3
+had applied resume, not before submission or before ACK.
+
+A clean unmodified cold replay from the still-valid checkpoint
+`date_raw=53211480 / FBC40774...D9E9C` reproduced the observation fault on the
+opposite edge.  CK3 advanced exactly one day to `53211504`; the first
+`pause-map` ACK was `submitted` and the one allowed retry returned
+`already_paused`, while Python's last semantic snapshot remained
+`paused=false / native_revision=5`.  The dedicated log recorded
+`paused=false -> paused=true` in that second, proving the exact handler saw
+and CK3 held the requested paused state.  This artifact does not identify
+whether the state frame was lost in the pipe, rejected by ingress, or
+otherwise missed; it does rule out an unapplied pause command.
+
+The exact-build source explains why one lost state frame can remain invisible.
+`SubmitPauseMap` and `SubmitResumeMap` fresh-read CK3 and return
+`already_paused` / `already_running` when the target state already holds.
+`PublishSnapshot`, however, suppresses a frame when its internal
+`previous_snapshot` already equals the fresh snapshot.  Python still has no
+consumer acknowledgement in that comparison and correctly refuses to treat
+a command ACK as state.  Therefore an idempotent retry can confirm the native
+state yet fail to repair a stale consumer cache.
+
+The minimum blocker-removal has two coupled parts:
+
+1. only after an idempotent `already_paused` or `already_running` result, the
+   bridge clears `previous_snapshot` before its existing fresh
+   `PublishSnapshot` call, forcing one new native revision and real state
+   frame; an initial `submitted` result retains normal change publication;
+2. the composite-owned resume edge receives the same bounded rule as pause:
+   observe for one second, then submit at most one more idempotent request
+   under the same bridge PID/generation, episode, map, speed and event owner,
+   using the original 10-second absolute deadline.
+
+Neither ACK is a postcondition.  The driver still succeeds only after a real
+`paused=false` or `paused=true` semantic snapshot.  Direct primitives,
+queries and other actions keep their existing revision gates.  No broader
+transport audit or defensive protocol is justified by these artifacts.
+
 Combat-v3 binds the caller's positive `expected_revision`, the complete last
 published paused snapshot, and its full-generation encounter IDs before
 submission. Its executor re-reads that snapshot on application-main, requires

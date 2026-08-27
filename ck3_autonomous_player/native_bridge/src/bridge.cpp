@@ -2855,6 +2855,13 @@ void RunConnectedSession(
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
+              // Timeline postconditions must be observable even when the
+              // bridge already cached the same semantic state.  A consumer
+              // can otherwise miss one state frame and wait forever after an
+              // idempotent already_paused ACK while CK3 is truly paused.
+              if (result == xar::game::PauseSubmitResult::already_paused) {
+                previous_snapshot.reset();
+              }
               connected = PublishSnapshot(pipe, game, previous_snapshot,
                                           state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);
@@ -2874,6 +2881,12 @@ void RunConnectedSession(
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, true, status));
             if (connected) {
+              // Symmetric with pause-map: already_running forces one fresh
+              // state frame.  The ACK remains insufficient on its own;
+              // Python still verifies paused=false.
+              if (result == xar::game::ResumeSubmitResult::already_running) {
+                previous_snapshot.reset();
+              }
               connected = PublishSnapshot(pipe, game, previous_snapshot,
                                           state_revision, checkpoint_submission,
                                           published_checkpoint_sequence);

@@ -22,6 +22,7 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
         self.assertIn('$env:VSLANG = "1033"', source)
         self.assertIn("Repair-NinjaMsvcDependencyPrefix", source)
         self.assertIn('return "repaired-2052-utf8"', source)
+        self.assertIn('return "direct-2052-utf8"', source)
         self.assertIn('FromBase64String("5rOo5oSPOiDljIXlkKvmlofku7Y6")', source)
         self.assertIn("fresh native bridge build directory already exists", source)
         self.assertIn("Get-NativeBridgeSourceFingerprint", source)
@@ -119,6 +120,56 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             repaired = rules.read_text(encoding="utf-8")
             self.assertIn("msvc_deps_prefix = 注意: 包含文件:  ", repaired)
             self.assertNotIn("娉ㄦ剰", repaired)
+
+    @unittest.skipUnless(os.name == "nt", "PowerShell helper targets Windows")
+    def test_2052_only_toolchain_accepts_direct_utf8_prefix(self) -> None:
+        powershell = shutil.which("powershell.exe")
+        self.assertIsNotNone(powershell)
+        with tempfile.TemporaryDirectory(prefix="xar-native-prefix-direct-") as temporary:
+            root = Path(temporary)
+            build_dir = root / "configured-build"
+            rules = build_dir / "CMakeFiles" / "rules.ninja"
+            rules.parent.mkdir(parents=True)
+            original = "rule CXX\nmsvc_deps_prefix = 注意: 包含文件:  \n"
+            rules.write_text(original, encoding="utf-8")
+            compiler = root / "toolchain" / "cl.exe"
+            compiler.parent.mkdir(parents=True)
+            compiler.touch()
+            locale_resource = compiler.parent / "2052" / "clui.dll"
+            locale_resource.parent.mkdir()
+            locale_resource.touch()
+
+            environment = os.environ.copy()
+            environment.update(
+                {
+                    "XAR_FRESH_HELPER": str(HELPER),
+                    "XAR_FRESH_PLAN": str(root / "unused-plan-build"),
+                    "XAR_FRESH_FIXTURE_BUILD": str(build_dir),
+                    "XAR_FRESH_FIXTURE_COMPILER": str(compiler),
+                }
+            )
+            result = subprocess.run(
+                [
+                    powershell,
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-Command",
+                    "$null = . $env:XAR_FRESH_HELPER "
+                    "-BuildDir $env:XAR_FRESH_PLAN -PlanOnly; "
+                    "$mode = Repair-NinjaMsvcDependencyPrefix "
+                    "-BuildRoot $env:XAR_FRESH_FIXTURE_BUILD "
+                    "-CompilerPath $env:XAR_FRESH_FIXTURE_COMPILER; "
+                    "Write-Output ('MODE=' + $mode)",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                env=environment,
+            )
+            self.assertIn("MODE=direct-2052-utf8", result.stdout)
+            self.assertEqual(rules.read_text(encoding="utf-8"), original)
 
     @unittest.skipUnless(os.name == "nt", "PowerShell helper targets Windows")
     def test_existing_build_directory_is_rejected_even_for_a_plan(self) -> None:

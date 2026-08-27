@@ -643,6 +643,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   header，full CTest `23/23` GREEN。exact bridge 改公共 header 后若出现只在旧目录复现的入口崩溃，仍须先用全新
   构建目录复核，并记录候选 DLL/injector SHA；不能把“build 命令返回成功”当作所有 translation units 已按新 header
   重编译的证据，也不能为消除 RED 去调用任何会写真实 combat 的 refresh helper。
+- 2026-08-28 的 Visual Studio 18 / CMake 4.3 fresh configure 又实测到另一条合法输出：`rules.ninja` 已直接以 UTF-8
+  保存 `注意: 包含文件:`，不再是需要 code-page 逆转换的 mojibake。`build_fresh.ps1` 现在只接受两种 exact 结果：
+  已正确的 direct UTF-8 原样保留，或旧 CMake 的已知 mojibake 做一次确定性修复；其它前缀继续 fail closed，随后仍必须由
+  `ninja -t deps` 证明 `ck3_11906.hpp` 同时进入 producer/consumer 对象。fresh Release 目录
+  `xar-native-gen015-20260828T0145Z` 以 `direct-2052-utf8` 模式完成 `37/37` CTest；DLL/injector SHA-256 分别为
+  `50227D28...831F2` / `2F6CEB43...35B5C`。这是构建兼容修复，不放宽公共 header 依赖门禁。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

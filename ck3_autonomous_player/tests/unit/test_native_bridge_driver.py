@@ -48,7 +48,7 @@ from xar_autoplayer.bridge.war_contract import (
     stop_assault_step,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
-from xar_autoplayer.environment import write_json_atomic
+from xar_autoplayer.environment import write_bytes_atomic, write_json_atomic
 
 
 class FakeEndpoint:
@@ -2780,6 +2780,51 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
             self.assertFalse(driver._driver_state_dirty)
 
+    def test_driver_state_barrier_encodes_without_payload_history_clone(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+
+            with mock.patch.object(
+                driver,
+                "_driver_state_payload_locked",
+                side_effect=AssertionError("full payload clone is forbidden"),
+            ):
+                driver._record_command(
+                    "life-advance",
+                    ok=True,
+                    result={"step": "life-advance", "elapsed_days": 1},
+                )
+
+            state_path = state_dir / "native-session" / "driver-state.json"
+            encoded = state_path.read_bytes()
+            persisted = json.loads(encoded.decode("utf-8"))
+            self.assertTrue(encoded.endswith(b"\n"))
+            self.assertNotIn(b'\n  "', encoded)
+            self.assertEqual(persisted["format_version"], 2)
+            self.assertEqual(
+                persisted["command_history"][-1]["command"],
+                "life-advance",
+            )
+            self.assertFalse(driver._driver_state_dirty)
+
     def test_failed_read_only_command_flushes_the_pending_suffix(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             state_dir = Path(temporary)
@@ -2879,7 +2924,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver.take_snapshot()
 
             with mock.patch(
-                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                "xar_autoplayer.bridge.native_driver.write_bytes_atomic",
                 side_effect=OSError("fixture write failure"),
             ):
                 driver._record_command(
@@ -2929,10 +2974,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             write_started = threading.Event()
             release_write = threading.Event()
 
-            def blocked_write(path: Path, payload: object) -> None:
+            def blocked_write(path: Path, payload: bytes) -> None:
                 write_started.set()
                 self.assertTrue(release_write.wait(timeout=1.0))
-                write_json_atomic(path, payload)
+                write_bytes_atomic(path, payload)
 
             worker = threading.Thread(
                 target=lambda: driver._record_command(
@@ -2942,7 +2987,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             )
             with mock.patch(
-                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                "xar_autoplayer.bridge.native_driver.write_bytes_atomic",
                 side_effect=blocked_write,
             ):
                 worker.start()
@@ -3013,17 +3058,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             release_first_write = threading.Event()
             write_count = 0
 
-            def block_first_write(path: Path, payload: object) -> None:
+            def block_first_write(path: Path, payload: bytes) -> None:
                 nonlocal write_count
                 write_count += 1
                 if write_count == 1:
                     first_write_started.set()
                     self.assertTrue(release_first_write.wait(timeout=1.0))
-                write_json_atomic(path, payload)
+                write_bytes_atomic(path, payload)
 
             worker = threading.Thread(target=driver.close)
             with mock.patch(
-                "xar_autoplayer.bridge.native_driver.write_json_atomic",
+                "xar_autoplayer.bridge.native_driver.write_bytes_atomic",
                 side_effect=block_first_write,
             ):
                 worker.start()
@@ -9779,6 +9824,228 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["starting_date_raw"], 53_171_400)
         self.assertEqual(result["ending_date_raw"], 53_171_448)
         self.assertTrue(result["paused"])
+
+    def test_resume_life_advance_retries_once_after_ack_without_running(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=2.5,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.resume-map")
+        )
+        endpoint.publish(_snapshot(1, speed=1, paused=True))
+        observed = driver.take_snapshot()
+        submissions = 0
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal submissions
+            if frame.get("type") != "execute_step":
+                return
+            submissions += 1
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": "resume-map",
+                        "accepted": True,
+                        "status": (
+                            "submitted"
+                            if submissions == 1
+                            else "already_running"
+                        ),
+                    },
+                }
+            )
+            if submissions == 2:
+                endpoint.publish(_snapshot(2, speed=1, paused=False))
+
+        endpoint.send_hook = answer
+        actions: list[dict[str, object]] = []
+        paused = driver.take_internal_semantic_snapshot()
+        waits = 0
+
+        def wait_then_observe_running(
+            snapshot: dict[str, object],
+            predicate: object,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            nonlocal waits
+            waits += 1
+            if waits == 1:
+                return paused
+            return driver.take_internal_semantic_snapshot()
+
+        with mock.patch.object(
+            driver,
+            "_wait_for_life_advance_snapshot",
+            side_effect=wait_then_observe_running,
+        ):
+            running = driver._resume_life_advance(observed, actions)
+
+        self.assertFalse(running["paused"])
+        self.assertEqual(
+            [action["result"]["status"] for action in actions],
+            ["submitted", "already_running"],
+        )
+        resume_frames = [
+            frame
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+            and frame.get("step") == "resume-map"
+        ]
+        self.assertEqual(len(resume_frames), 2)
+        self.assertEqual(
+            [frame.get("expected_revision") for frame in resume_frames],
+            [1, 1],
+        )
+
+    def test_resume_life_advance_retries_at_most_once_within_deadline(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=2.5,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.resume-map")
+        )
+        endpoint.publish(_snapshot(1, speed=1, paused=True))
+        observed = driver.take_snapshot()
+        current_time = 100.0
+
+        def monotonic() -> float:
+            return current_time
+
+        def wait_without_running(
+            snapshot: dict[str, object],
+            predicate: object,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            nonlocal current_time
+            current_time += timeout_seconds
+            return snapshot
+
+        with (
+            mock.patch(
+                "xar_autoplayer.bridge.native_driver.time.monotonic",
+                side_effect=monotonic,
+            ),
+            mock.patch.object(
+                driver,
+                "_execute_primitive_step",
+                return_value={
+                    "step": "resume-map",
+                    "accepted": True,
+                    "status": "submitted",
+                },
+            ) as execute,
+            mock.patch.object(
+                driver,
+                "_wait_for_life_advance_snapshot",
+                side_effect=wait_without_running,
+            ) as wait,
+        ):
+            with self.assertRaisesRegex(
+                BridgeUnavailableError,
+                "resume_attempts=2",
+            ):
+                driver._resume_life_advance(observed, [])
+
+        self.assertEqual(execute.call_count, 2)
+        self.assertEqual(wait.call_count, 2)
+        self.assertEqual(
+            [call.kwargs["timeout_seconds"] for call in wait.call_args_list],
+            [1.0, 1.5],
+        )
+
+    def test_resume_life_advance_does_not_retry_after_owner_change(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.resume-map")
+        )
+        endpoint.publish(_snapshot(1, speed=1, paused=True))
+        observed = driver.take_snapshot()
+        changed = copy.deepcopy(observed)
+        changed["diagnostics"]["connection_generation"] += 1
+
+        with (
+            mock.patch.object(
+                driver,
+                "_execute_primitive_step",
+                return_value={
+                    "step": "resume-map",
+                    "accepted": True,
+                    "status": "submitted",
+                },
+            ) as execute,
+            mock.patch.object(
+                driver,
+                "_wait_for_life_advance_snapshot",
+                return_value=changed,
+            ),
+        ):
+            with self.assertRaisesRegex(
+                BridgeUnavailableError,
+                "retry_suppressed=owner_changed",
+            ):
+                driver._resume_life_advance(observed, [])
+
+        execute.assert_called_once()
+
+    def test_resume_life_advance_preserves_first_ack_when_retry_fails(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.resume-map")
+        )
+        endpoint.publish(_snapshot(1, speed=1, paused=True))
+        observed = driver.take_snapshot()
+        with (
+            mock.patch.object(
+                driver,
+                "_execute_primitive_step",
+                side_effect=(
+                    {
+                        "step": "resume-map",
+                        "accepted": True,
+                        "status": "submitted",
+                    },
+                    BridgeUnavailableError("second ACK timed out"),
+                ),
+            ),
+            mock.patch.object(
+                driver,
+                "_wait_for_life_advance_snapshot",
+                return_value=observed,
+            ),
+        ):
+            with self.assertRaisesRegex(
+                BridgeUnavailableError,
+                "resume_ack_statuses=\\['submitted'\\].*second ACK timed out",
+            ):
+                driver._resume_life_advance(observed, [])
 
     def test_pause_life_advance_adopts_fresh_auto_paused_frame(self) -> None:
         endpoint = FakeEndpoint()
