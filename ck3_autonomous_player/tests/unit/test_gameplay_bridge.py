@@ -7989,6 +7989,27 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "save-checkpoint")
         self.assertEqual(plan["postwar_disband_history_index"], 2)
 
+        residual = choose_one_life_turn(
+            history,
+            snapshot={
+                **_snapshot(10, history),
+                "active_wars": [],
+                "player_armies": [
+                    _army(
+                        72,
+                        soldiers=250,
+                        province_id=50,
+                        controllable=False,
+                    )
+                ],
+                "declarable_wars": [],
+            },
+            action_steps=("save-checkpoint", "query-declarable-wars"),
+        )
+        self.assertNotEqual(
+            residual["phase"], "native_postwar_checkpoint"
+        )
+
         history.append(
             {"index": 3, "command": "save-checkpoint", "ok": True}
         )

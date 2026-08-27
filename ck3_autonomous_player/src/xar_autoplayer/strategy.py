@@ -5264,7 +5264,10 @@ def choose_one_life_turn(
     latest_postwar_disband_index = _latest_prefix_index(
         rows, "disband-army-"
     )
-    if latest_postwar_disband_index > latest_checkpoint_index:
+    if (
+        latest_postwar_disband_index > latest_checkpoint_index
+        and not player_armies
+    ):
         if "save-checkpoint" in available_steps:
             return {
                 "policy": "one-life-turn-v1",
