@@ -2279,7 +2279,104 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(deferred["selected_step"])
 
-    def test_threatened_exact_siege_collects_all_previews_then_uses_shortest(
+    def test_production_shape_187_objectives_stops_after_first_safe_preview(
+        self,
+    ) -> None:
+        player = _army(
+            33_554_797,
+            soldiers=900,
+            province_id=5598,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        approaching_enemy = _army(
+            117_440_838,
+            soldiers=800,
+            province_id=496,
+            controllable=False,
+            move_target_province_id=5598,
+            army_state="moving",
+            route_province_ids=[
+                5565,
+                5566,
+                5567,
+                5568,
+                5576,
+                5577,
+                753,
+                5684,
+                5683,
+                5596,
+                5597,
+                5598,
+            ],
+        )
+        objectives = [3708, *range(10_000, 10_184), 5598, 2638]
+        self.assertEqual(len(objectives), 187)
+        objective_states = [
+            _objective_state(
+                province_id,
+                occupant=707 if province_id == 2638 else None,
+                fort_level=1 if province_id == 3708 else 4,
+                garrison_size=250 if province_id == 3708 else 625,
+            )
+            for province_id in objectives
+        ]
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[approaching_enemy],
+            score=24,
+            date_raw=53_208_648,
+            history=[
+                _preview_row(
+                    2578,
+                    army_id=33_554_797,
+                    origin=5598,
+                    target=3708,
+                    date_raw=53_208_648,
+                    route=[
+                        738,
+                        951,
+                        950,
+                        8668,
+                        947,
+                        8665,
+                        8666,
+                        3788,
+                        3796,
+                        3703,
+                        3704,
+                        3708,
+                    ],
+                )
+            ],
+            objectives=objectives,
+            objective_states=objective_states,
+            occupation_supported=True,
+            fort_level_supported=True,
+            garrison_supported=True,
+            steps=(
+                "move-army-33554797-to-3708",
+                "preview-move-army-33554797-to-10000",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-33554797-to-3708")
+        self.assertEqual(
+            plan["pursuit"]["route_audit"]["selection"],
+            {
+                "policy": "first_safe_ranked_exact_objective",
+                "route_hops": 12,
+                "objective_rank": 0,
+                "evaluated_candidate_count": 1,
+                "unevaluated_candidate_count": 185,
+            },
+        )
+
+    def test_first_safe_exact_routing_continues_after_unsafe_candidate(
         self,
     ) -> None:
         player = _army(
@@ -2299,64 +2396,8 @@ class GameplayBridgeTests(unittest.TestCase):
             army_state="moving",
             route_province_ids=[2596, 2585],
         )
-        first_preview = _preview_row(
-            1,
-            origin=2585,
-            target=2510,
-            date_raw=24_000,
-            route=[2587, 2599, 2604, 2510],
-        )
-        steps = (
-            "preview-move-army-11-to-2510",
-            "preview-move-army-11-to-2548",
-            "move-army-11-to-2510",
-            "move-army-11-to-2548",
-            "life-advance",
-        )
 
-        collect = _native_war_plan(
-            player=player,
-            enemies=[approaching_enemy],
-            score=24,
-            date_raw=24_000,
-            history=[first_preview],
-            objectives=[2585, 2510, 2548],
-            steps=steps,
-        )
-        self.assertEqual(collect["phase"], "native_war_route_preview")
-        self.assertEqual(
-            collect["selected_step"], "preview-move-army-11-to-2548"
-        )
-
-        shortest = _native_war_plan(
-            player=player,
-            enemies=[approaching_enemy],
-            score=24,
-            date_raw=24_000,
-            history=[
-                first_preview,
-                _preview_row(
-                    2,
-                    origin=2585,
-                    target=2548,
-                    date_raw=24_000,
-                    route=[2587, 2548],
-                ),
-            ],
-            objectives=[2585, 2510, 2548],
-            steps=steps,
-        )
-        self.assertEqual(shortest["selected_step"], "move-army-11-to-2548")
-        self.assertEqual(
-            shortest["pursuit"]["route_audit"]["selection"],
-            {
-                "policy": "shortest_safe_route_then_objective_rank",
-                "route_hops": 2,
-                "objective_rank": 2,
-            },
-        )
-
-        tied = _native_war_plan(
+        plan = _native_war_plan(
             player=player,
             enemies=[approaching_enemy],
             score=24,
@@ -2367,20 +2408,31 @@ class GameplayBridgeTests(unittest.TestCase):
                     origin=2585,
                     target=2510,
                     date_raw=24_000,
-                    route=[2587, 2510],
+                    route=[2596, 2510],
                 ),
                 _preview_row(
                     2,
                     origin=2585,
                     target=2548,
                     date_raw=24_000,
-                    route=[2599, 2548],
+                    route=[2587, 2548],
                 ),
             ],
-            objectives=[2585, 2510, 2548],
-            steps=steps,
+            objectives=[2510, 2548],
+            steps=("move-army-11-to-2548", "life-advance"),
         )
-        self.assertEqual(tied["selected_step"], "move-army-11-to-2510")
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2548")
+        self.assertEqual(
+            plan["pursuit"]["route_audit"]["selection"],
+            {
+                "policy": "first_safe_ranked_exact_objective",
+                "route_hops": 2,
+                "objective_rank": 1,
+                "evaluated_candidate_count": 2,
+                "unevaluated_candidate_count": 0,
+            },
+        )
 
     def test_ordinary_exact_routing_keeps_first_safe_rank_without_full_scan(
         self,

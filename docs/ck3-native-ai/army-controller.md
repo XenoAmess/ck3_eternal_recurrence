@@ -118,6 +118,56 @@ flowchart TD
     class U unknown;
 ```
 
+### 2026-08-27 production 反例：我方 exact objective 不得全量做 final route scan
+
+- [static-confirmed] 上述原生树只让 preliminary top `MIN_GOALS_PER_STACK=10` 进入包含 pathfinding 的 final
+  evaluation；它没有对一个 stack 的全部潜在目标逐一做昂贵 final pathfinding。这个原生边界不能证明我方应照抄
+  top 10，但足以证明“先缩小候选，再做 exact route”是原生 controller 的既有结构，而不是要求全量扫描才能正确行动。
+- [production-live] 正式一代长跑的普通 `claim_cb` 战争 `33554527` 在 paused `date_raw=53208648` 发布了
+  `187` 个互异 `war_objective_province_ids`。玩家军 `33554797` 正在 Province `5598` 围城，敌军
+  `117440838` 的完整 route 终点也是 `5598`，故 planner 合法进入 threatened exact-siege 换路分支。旧 counter-policy
+  为了全局选择 `shortest_safe_route_then_objective_rank`，在游戏日期完全不变时从 history `2578` 到 `2744`
+  连续完成 `132` 次 exact move preview 与 `35` 次 route-contact horizon，共 `167` 条原生查询，仍未提交 move。
+  冻结 driver-state 为
+  `C:\Users\xenoa\AppData\Local\Temp\xar-war-route-planning-history2738-frozen-driver-state.json`，size
+  `79,517,587` bytes，SHA-256
+  `3A5BFF57D6AA41403503DD8D922510279B0B6F667AC8C4A32B293AFF9E981AFB`。
+- [production-live] 同一冻结状态中，既有 fort/garrison/native-order 排名的第一个未完成候选就是 Province
+  `3708`（fort `1`、garrison `250`）。history `2578` 的第一条 preview 已返回 exact route
+  `[738,951,950,8668,947,8665,8666,3788,3796,3703,3704,3708]`；对同帧两支非撤退敌军的
+  current/target/full route audit 为 `safe`、零 conflict。因此这次真实局面并不需要后续 `166` 条已观测查询：第一条
+  preview 已足以授权既有 move command 与其 route/contact 后置验证。
+- [counter-policy] threatened exact-siege 换路从现在起按已经发布的
+  `fort_level -> garrison_size -> native objective order` 逐项处理，在**第一个**同时通过 fresh exact route、
+  route/contact horizon（若相交）与 rollback-memory 检查的候选处立即停止并提交 move。它不是固定 top-K：前项 blocked、
+  deferred、unsafe 或 rollback-failed 时仍继续下一项，直到找到安全候选或穷尽全集，因此不会因为人为上限把后部已有安全
+  候选错误写成“无目标”。move ACK 后原有 route/contact paused postcondition 保持不变。
+- [counter-policy] 明确质量取舍：该冻结帧的 first-safe `3708` 是 `12` hops；旧全局最短扫描后来已经看到的
+  `5590` 是 `1` hop，但其 fort/garrison 为 `4/625`。新策略优先保留既有攻城质量排名和立即脱离受威胁位置，不再为
+  全局最短路阻塞游戏时间。只有后续 production outcome 证明该取舍实际恶化战争结果时，才考虑“保留当前 best-safe 并
+  有界比较更多候选”的替换入口；不得恢复全量门禁。
+- [implementation-confirmed] 将上述冻结文件的完整 `2744` 条 command history、真实 `187` 项 objective/state、双方军队
+  route 和同帧能力投影离线回放给新 planner 后，它在约 `0.020` 秒内直接返回
+  `move-army-33554797-to-3708`，并记录 `evaluated_candidate_count=1`、`unevaluated_candidate_count=185`。
+  这项计时不包含读取/解析 79 MB JSON，也不冒充 native command 的实机延迟；它证明 planner 不再等待全量候选查询。
+
+```mermaid
+flowchart TD
+    P["[counter-policy] exact objectives<br/>fort -> garrison -> native order"] --> C["[counter-policy] 取下一候选"]
+    C --> B{"blocked / same threatened province?"}
+    B -->|yes| C
+    B -->|no| R["fresh exact native route preview"]
+    R --> A{"route audit safe?"}
+    A -->|no; geometric intersection| H["exact one-day route-contact horizon"]
+    H -->|unsafe| C
+    H -->|safe| K{"rollback-memory match?"}
+    A -->|yes| K
+    K -->|yes| C
+    K -->|no| M["[counter-policy] first safe ranked objective<br/>stop enumeration + submit move"]
+    C -->|set exhausted| N["no safe exact route"]
+    O["[static-confirmed] native preliminary top 10<br/>then final pathfinding"] -->|"[inference] bounded-final-evaluation precedent;<br/>not claimed as identical ranking"| P
+```
+
 ### 敌军目标 power 曲线
 
 - [static-confirmed] `IDEAL_ENEMY_POWER_TO_TARGET=0.5`，因此

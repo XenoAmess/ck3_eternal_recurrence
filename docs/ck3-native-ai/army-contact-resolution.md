@@ -99,7 +99,8 @@ CUnit 内部的实际调用顺序；全局不做二次排序。
 
 ```mermaid
 flowchart TD
-    D["[static-confirmed] 0x27F9B50<br/>unit-manager stored order"] --> U["[static-confirmed] 0x2247C50<br/>逐 CUnit movement tick"]
+    S["[static-confirmed] public speed 1..5<br/>改变现实时间推进速率"] --> D["[static-confirmed] 每个 native day 进入 0x27F9B50<br/>unit-manager stored order"]
+    D --> U["[static-confirmed] 0x2247C50<br/>逐 CUnit movement tick"]
     U --> K{"[static-confirmed] 本 tick 进入 native placement branch？"}
     K -->|no| NEXT["[static-confirmed] 下一 CUnit"]
     K -->|yes| I["[static-confirmed] target Province 按 full CUnitID lower-bound 插入"]
@@ -113,12 +114,30 @@ flowchart TD
     C --> P["[static-confirmed] opponent scan 读取 post-movement<br/>Province full-CUnitID ascending order"]
     X["[unknown] unit-manager stored order 的正式业务 tie-break / 生命周期来源"] -. "[unknown] governs traversal provenance" .-> D
     Y["[unknown] byte0 非零及 non-daily placement 的统一业务名/顺序"] -. "[unknown] outside normal daily contract" .-> F
+    Z["[unknown] speed 1/3/5 的精确 wall-clock 比率与异步 pause overshoot"] -. "[unknown] scheduler latency" .-> S
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class X,Y unknown;
 ```
 
 这里闭合的是 normal daily movement 同日规则，不是把 unit manager stored order猜成“创建时间”或“ArmyID 排序”。
 反汇编证明遍历和传播顺序，却尚未证明该 manager 表为什么形成当前顺序。
+
+### 时间线速度不会替代 daily movement/contact 计算
+
+- [static-confirmed] public `set-speed-1..5` 只把 user-facing `1..5` 映射为 native `0..4`，经
+  `CSetGameSpeedCommand` 写入 `CGameState+0x70`；同一 exact build 的 normal daily movement/contact 链仍以每个
+  native day 为单位进入 `0x27F9B50 -> 0x2247C50 -> 0x27C0E90`。本文已闭合的 movement stored order、Province
+  数值序与 contact queue 规则没有按 public speed 分叉。因此较高时间线速度不会省略 CK3 的逐日 movement/contact
+  计算；它只让这些 native day 在更短现实时间内被调度。
+- [live-confirmed] 2026-08-23 的 minimized exact-build probe 已实际提交 `set-speed-3`、`resume-map`，观察
+  `date_raw=53171400 -> 53171424` 后提交 `pause-map` 并回读 `paused=true`。这证明 speed 3 可执行相同的
+  paused -> running -> date tick -> paused 原生命令链；它不单独证明活动战争下每次都只越过一个日界。
+- [live-confirmed] 2026-08-27 的正式一代长跑又反证 speed 1 不是“严格逐日”保证：当前恢复段的成功
+  speed-1 `life-advance` 已出现 `elapsed_days=2` 与 `3`。所以 planner 必须按 action 自报的实际 date delta 和
+  更新后的 paused state 验证，而不能把 speed 数值当作计算次数或日界上限。
+- [unknown] 1/3/5 速的精确 wall-clock tick 比率、world-size/load 对 pump latency 的影响，以及异步
+  `pause-map` 在 speed 3/5 下的最大 overshoot 尚未闭合。任何提速 counter-policy 都必须保留 paused 后置回读；
+  battle、retreat、Assault 和已证明的一日 route-contact transaction 不得仅凭上述 speed-3 probe 放宽。
 
 ## `0x2208320`：同省接触 resolver
 

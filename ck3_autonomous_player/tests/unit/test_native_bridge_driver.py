@@ -595,8 +595,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         active_wars: list[dict[str, object]],
         player_armies: list[dict[str, object]],
         extra_capabilities: tuple[str, ...] = (),
+        policy_capabilities: tuple[str, ...] = (
+            "game.state.army-routes",
+            "game.state.war-objective-assault",
+        ),
         expected_speed: int,
         horizon_days: int,
+        actual_elapsed_days: int | None = None,
     ) -> tuple[dict[str, object], list[str]]:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -607,14 +612,21 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(
             _hello(
                 "game.state.snapshot",
+                *policy_capabilities,
                 "game.command.pause-map",
                 "game.command.resume-map",
                 "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
                 *extra_capabilities,
             )
         )
         start_date = 53_175_216
+        elapsed_days = (
+            horizon_days
+            if actual_elapsed_days is None
+            else actual_elapsed_days
+        )
 
         def publish(
             revision: int, *, date_raw: int, speed: int, paused: bool
@@ -661,14 +673,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
                 publish(
                     4,
-                    date_raw=start_date + horizon_days * 24,
+                    date_raw=start_date + elapsed_days * 24,
                     speed=expected_speed,
                     paused=False,
                 )
             elif step == "pause-map":
                 publish(
                     5,
-                    date_raw=start_date + horizon_days * 24,
+                    date_raw=start_date + elapsed_days * 24,
                     speed=expected_speed,
                     paused=True,
                 )
@@ -1191,6 +1203,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "game.state.war-objective-assault",
                         "game.command.pause-map",
                         "game.command.resume-map",
+                        "game.command.set-speed-1",
+                        "game.command.set-speed-3",
                         "game.command.set-speed-5",
                     )
                 )
@@ -1236,6 +1250,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.war-objective-assault",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -1312,6 +1328,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.war-objective-assault",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -1445,9 +1463,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             steps, ["set-speed-1", "resume-map", "pause-map"]
         )
         self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["requested_horizon_days"], 1)
+        self.assertEqual(result["timeline_speed"], 1)
+        self.assertEqual(result["timeline_policy"], "player_tactical")
 
     def test_active_assault_one_day_slice_uses_speed_one(self) -> None:
-        player = _army(101, province_id=2585, army_state="sieging")
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
         siege = _active_siege(
             assault_observable=True,
             breach_level=1,
@@ -1477,6 +1503,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             steps, ["set-speed-1", "resume-map", "pause-map"]
         )
         self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["timeline_policy"], "player_assault")
 
     def test_ordinary_siege_seven_day_slice_keeps_speed_five(self) -> None:
         player = _army(101, province_id=2585, army_state="sieging")
@@ -1505,48 +1532,47 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             steps, ["set-speed-5", "resume-map", "pause-map"]
         )
         self.assertEqual(result["elapsed_days"], 7)
+        self.assertEqual(result["timeline_policy"], "bounded_non_tactical")
 
-    def test_one_day_slice_without_speed_one_fails_before_resume(self) -> None:
-        endpoint = FakeEndpoint()
-        driver = NativeHeadlessGameplayDriver(
-            endpoint.pipe_name,
-            endpoint=endpoint,
-        )
-        endpoint.publish(
-            _hello(
-                "game.state.snapshot",
-                "game.command.pause-map",
-                "game.command.resume-map",
-                "game.command.set-speed-5",
-            )
-        )
-        player = _army(
-            101,
-            province_id=2598,
-            move_target_province_id=2596,
-            route_province_ids=[2596],
-            army_state="moving",
-        )
-        endpoint.publish(
-            _snapshot(
-                1,
-                speed=5,
-                active_wars=[_war(allied_armies=[player])],
-                player_armies=[player],
-            )
-        )
+    def test_life_advance_requires_all_timeline_speed_primitives(self) -> None:
+        for omitted in ("set-speed-1", "set-speed-3", "set-speed-5"):
+            with self.subTest(omitted=omitted):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                commands = {
+                    "set-speed-1",
+                    "set-speed-3",
+                    "set-speed-5",
+                }
+                commands.remove(omitted)
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.state.army-routes",
+                        "game.state.war-objective-assault",
+                        "game.command.pause-map",
+                        "game.command.resume-map",
+                        *(f"game.command.{step}" for step in sorted(commands)),
+                    )
+                )
+                endpoint.publish(_snapshot(1, speed=5))
 
-        with self.assertRaisesRegex(
-            BridgeUnavailableError, "requires set-speed-1.*not resumed"
-        ):
-            driver.execute_step("life-advance")
-
-        self.assertFalse(
-            any(
-                frame.get("type") == "execute_step"
-                for frame in endpoint.frames
-            )
-        )
+                self.assertNotIn(
+                    "life-advance", driver.capabilities()["action_steps"]
+                )
+                with self.assertRaisesRegex(
+                    UnsupportedStepError, "does not implement.*life-advance"
+                ):
+                    driver.execute_step("life-advance")
+                self.assertFalse(
+                    any(
+                        frame.get("type") == "execute_step"
+                        for frame in endpoint.frames
+                    )
+                )
 
     def test_active_route_life_advance_horizon_is_one_day_until_arrival(
         self,
@@ -1610,8 +1636,22 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "active_wars": [_war(allied_armies=[safe, army])],
                 }
                 self.assertEqual(_life_advance_horizon_days(snapshot), 1)
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=[_war(allied_armies=[safe, army])],
+                    player_armies=[safe, army],
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"], "player_tactical"
+                )
 
-    def test_combat_and_enemy_route_one_day_slices_use_speed_one(self) -> None:
+    def test_combat_stays_speed_one_and_remote_enemy_route_uses_three(
+        self,
+    ) -> None:
         combat = _army(
             101, province_id=20, army_state="combat", army_state_code=2
         )
@@ -1626,7 +1666,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(combat_result["elapsed_days"], 1)
 
-        player = _army(101, province_id=2585, army_state="sieging")
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
         enemy = _army(
             202,
             province_id=2581,
@@ -1640,13 +1685,692 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _war(allied_armies=[player], enemy_armies=[enemy])
             ],
             player_armies=[player],
+            expected_speed=3,
+            horizon_days=1,
+            actual_elapsed_days=3,
+        )
+        self.assertEqual(
+            enemy_steps, ["set-speed-3", "resume-map", "pause-map"]
+        )
+        self.assertEqual(enemy_result["requested_horizon_days"], 1)
+        self.assertEqual(enemy_result["elapsed_days"], 3)
+        self.assertTrue(enemy_result["paused"])
+        self.assertEqual(enemy_result["timeline_speed"], 3)
+        self.assertEqual(
+            enemy_result["timeline_policy"], "remote_enemy_route"
+        )
+
+    def test_enemy_route_intersecting_stationary_player_stays_speed_one(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2585,
+            route_province_ids=[2585],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(allied_armies=[player], enemy_armies=[enemy])
+            ],
+            player_armies=[player],
             expected_speed=1,
             horizon_days=1,
         )
+
         self.assertEqual(
-            enemy_steps, ["set-speed-1", "resume-map", "pause-map"]
+            steps, ["set-speed-1", "resume-map", "pause-map"]
         )
-        self.assertEqual(enemy_result["elapsed_days"], 1)
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
+
+    def test_deep_enemy_route_endpoint_at_player_stays_speed_one(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2585,
+            route_province_ids=[2596, 2595, 2585],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(allied_armies=[player], enemy_armies=[enemy])
+            ],
+            player_armies=[player],
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
+
+    def test_production_history_2575_route_to_player_stays_speed_one(
+        self,
+    ) -> None:
+        player_armies = [
+            _army(
+                33554797,
+                province_id=5598,
+                army_state="sieging",
+                army_state_code=3,
+                route_province_ids=[],
+            ),
+            *(
+                _army(
+                    army_id,
+                    province_id=2619,
+                    army_state="regular",
+                    army_state_code=1,
+                    route_province_ids=[],
+                )
+                for army_id in (
+                    33554818,
+                    67109252,
+                    83886358,
+                    117440751,
+                    218103933,
+                )
+            ),
+        ]
+        enemies = [
+            _army(
+                83886265,
+                province_id=702,
+                controllable=False,
+                army_state="sieging",
+                army_state_code=3,
+                route_province_ids=[],
+            ),
+            _army(
+                117440838,
+                province_id=496,
+                controllable=False,
+                move_target_province_id=5598,
+                army_state="moving",
+                army_state_code=7,
+                route_province_ids=[
+                    5565,
+                    5566,
+                    5567,
+                    5568,
+                    5576,
+                    5577,
+                    753,
+                    5684,
+                    5683,
+                    5596,
+                    5597,
+                    5598,
+                ],
+            ),
+        ]
+
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    war_id=33554527,
+                    allied_armies=player_armies,
+                    enemy_armies=enemies,
+                )
+            ],
+            player_armies=player_armies,
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["requested_horizon_days"], 1)
+        self.assertEqual(result["timeline_speed"], 1)
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
+
+    def test_production_history_2421_remote_route_uses_speed_three(
+        self,
+    ) -> None:
+        player_armies = [
+            _army(
+                33554797,
+                province_id=5598,
+                army_state="sieging",
+                army_state_code=3,
+                route_province_ids=[],
+            ),
+            *(
+                _army(
+                    army_id,
+                    province_id=2619,
+                    army_state="regular",
+                    army_state_code=1,
+                    route_province_ids=[],
+                )
+                for army_id in (
+                    33554818,
+                    67109252,
+                    83886358,
+                    117440751,
+                    218103933,
+                )
+            ),
+        ]
+        enemies = [
+            _army(
+                83886265,
+                province_id=5740,
+                controllable=False,
+                move_target_province_id=701,
+                army_state="moving",
+                army_state_code=7,
+                route_province_ids=[
+                    5739,
+                    5733,
+                    5734,
+                    5735,
+                    5731,
+                    5732,
+                    701,
+                ],
+            ),
+            _army(
+                117440838,
+                province_id=496,
+                controllable=False,
+                army_state="gathering",
+                army_state_code=5,
+                route_province_ids=[],
+            ),
+        ]
+
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    war_id=33554527,
+                    allied_armies=player_armies,
+                    enemy_armies=enemies,
+                )
+            ],
+            player_armies=player_armies,
+            expected_speed=3,
+            horizon_days=1,
+            actual_elapsed_days=2,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-3", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["requested_horizon_days"], 1)
+        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(result["timeline_speed"], 3)
+        self.assertEqual(result["timeline_policy"], "remote_enemy_route")
+        self.assertTrue(result["paused"])
+
+    def test_remote_route_requires_route_and_assault_observation(self) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        for policy_capabilities in (
+            (),
+            ("game.state.army-routes",),
+            ("game.state.war-objective-assault",),
+        ):
+            with self.subTest(policy_capabilities=policy_capabilities):
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=[
+                        _war(
+                            allied_armies=[player],
+                            enemy_armies=[enemy],
+                        )
+                    ],
+                    player_armies=[player],
+                    policy_capabilities=policy_capabilities,
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"],
+                    "enemy_route_imminent_or_unknown",
+                )
+
+    def test_remote_route_requires_valid_enemy_current_province(self) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        for province_id in (None, 0):
+            with self.subTest(province_id=province_id):
+                enemy = _army(
+                    202,
+                    province_id=province_id,
+                    controllable=False,
+                    move_target_province_id=2596,
+                    route_province_ids=[2596],
+                    army_state="moving",
+                )
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=[
+                        _war(
+                            allied_armies=[player],
+                            enemy_armies=[enemy],
+                        )
+                    ],
+                    player_armies=[player],
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"],
+                    "enemy_route_imminent_or_unknown",
+                )
+
+    def test_enemy_route_intersecting_second_player_stays_speed_one(
+        self,
+    ) -> None:
+        players = [
+            _army(
+                101,
+                province_id=2585,
+                army_state="sieging",
+                route_province_ids=[],
+            ),
+            _army(
+                303,
+                province_id=2586,
+                army_state="regular",
+                route_province_ids=[],
+            ),
+        ]
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2586, 2596],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(allied_armies=players, enemy_armies=[enemy])
+            ],
+            player_armies=players,
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
+
+    def test_incomplete_enemy_route_stays_speed_one(self) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(allied_armies=[player], enemy_armies=[enemy])
+            ],
+            player_armies=[player],
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
+
+    def test_remote_route_speed_three_fails_closed_on_player_state(self) -> None:
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        for state in ("gathering", "unknown-native-state"):
+            with self.subTest(state=state):
+                player = _army(
+                    101,
+                    province_id=2585,
+                    army_state=state,
+                    route_province_ids=[],
+                )
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=[
+                        _war(
+                            allied_armies=[player],
+                            enemy_armies=[enemy],
+                        )
+                    ],
+                    player_armies=[player],
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"],
+                    "enemy_route_imminent_or_unknown",
+                )
+
+    def test_remote_route_speed_three_requires_complete_player_projection(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        cases: list[tuple[str, dict[str, object], list[dict[str, object]]]] = []
+
+        missing_allied = _war(
+            allied_armies=[player], enemy_armies=[enemy]
+        )
+        missing_allied.pop("allied_armies")
+        cases.append(("missing_allied", missing_allied, [player]))
+
+        other_player = _army(
+            303,
+            province_id=2586,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        cases.append(
+            (
+                "allied_set_mismatch",
+                _war(allied_armies=[player], enemy_armies=[enemy]),
+                [player, other_player],
+            )
+        )
+
+        ally_at_wrong_province = dict(player)
+        ally_at_wrong_province["current_province_id"] = 2586
+        cases.append(
+            (
+                "allied_position_mismatch",
+                _war(
+                    allied_armies=[ally_at_wrong_province],
+                    enemy_armies=[enemy],
+                ),
+                [player],
+            )
+        )
+
+        ally_with_route = dict(player)
+        ally_with_route["army_state"] = "moving"
+        ally_with_route["move_target_province_id"] = 2587
+        ally_with_route["route_province_ids"] = [2587]
+        cases.append(
+            (
+                "allied_tactical_projection_mismatch",
+                _war(
+                    allied_armies=[ally_with_route],
+                    enemy_armies=[enemy],
+                ),
+                [player],
+            )
+        )
+
+        incomplete_player = _army(
+            404,
+            province_id=2585,
+            army_state="sieging",
+        )
+        cases.append(
+            (
+                "missing_player_route_projection",
+                _war(
+                    allied_armies=[incomplete_player],
+                    enemy_armies=[enemy],
+                ),
+                [incomplete_player],
+            )
+        )
+
+        for name, war, players in cases:
+            with self.subTest(name=name):
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=[war],
+                    player_armies=players,
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"],
+                    "enemy_route_imminent_or_unknown",
+                )
+
+    def test_remote_route_rejects_duplicate_or_inconsistent_projections(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        inconsistent_enemy = dict(enemy)
+        inconsistent_enemy["move_target_province_id"] = 2597
+        inconsistent_enemy["route_province_ids"] = [2597]
+        cases = (
+            (
+                "duplicate_allied_in_one_war",
+                [
+                    _war(
+                        allied_armies=[player, dict(player)],
+                        enemy_armies=[enemy],
+                    )
+                ],
+            ),
+            (
+                "duplicate_enemy_in_one_war",
+                [
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy, dict(enemy)],
+                    )
+                ],
+            ),
+            (
+                "inconsistent_enemy_across_wars",
+                [
+                    _war(
+                        war_id=61,
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                    ),
+                    _war(
+                        war_id=62,
+                        allied_armies=[dict(player)],
+                        enemy_armies=[inconsistent_enemy],
+                    ),
+                ],
+            ),
+        )
+        for name, wars in cases:
+            with self.subTest(name=name):
+                result, steps = self._run_life_advance_speed_fixture(
+                    active_wars=wars,
+                    player_armies=[player],
+                    expected_speed=1,
+                    horizon_days=1,
+                )
+                self.assertEqual(
+                    steps, ["set-speed-1", "resume-map", "pause-map"]
+                )
+                self.assertEqual(
+                    result["timeline_policy"],
+                    "enemy_route_imminent_or_unknown",
+                )
+
+    def test_consistent_enemy_projection_across_wars_can_use_speed_three(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    war_id=61,
+                    allied_armies=[player],
+                    enemy_armies=[enemy],
+                ),
+                _war(
+                    war_id=62,
+                    allied_armies=[dict(player)],
+                    enemy_armies=[dict(enemy)],
+                ),
+            ],
+            player_armies=[player],
+            expected_speed=3,
+            horizon_days=1,
+            actual_elapsed_days=2,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-3", "resume-map", "pause-map"]
+        )
+        self.assertEqual(result["requested_horizon_days"], 1)
+        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(result["timeline_policy"], "remote_enemy_route")
+        self.assertTrue(result["paused"])
+
+    def test_mixed_complete_and_incomplete_enemy_routes_stay_speed_one(
+        self,
+    ) -> None:
+        player = _army(
+            101,
+            province_id=2585,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        complete = _army(
+            202,
+            province_id=2581,
+            controllable=False,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        incomplete = _army(
+            303,
+            province_id=2582,
+            controllable=False,
+            move_target_province_id=2597,
+            route_province_ids=[],
+            army_state="moving",
+        )
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[
+                _war(
+                    allied_armies=[player],
+                    enemy_armies=[complete, incomplete],
+                )
+            ],
+            player_armies=[player],
+            expected_speed=1,
+            horizon_days=1,
+        )
+
+        self.assertEqual(
+            steps, ["set-speed-1", "resume-map", "pause-map"]
+        )
+        self.assertEqual(
+            result["timeline_policy"], "enemy_route_imminent_or_unknown"
+        )
 
     def test_moving_state_without_route_fields_enforces_one_day_horizon(
         self,
@@ -5214,6 +5938,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["starting_date_raw"], start_date)
         self.assertEqual(result["ending_date_raw"], start_date + 24)
         self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["timeline_speed"], 1)
+        self.assertEqual(result["timeline_policy"], "exact_one_day_contact")
         self.assertTrue(result["paused"])
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
 
@@ -7476,6 +8202,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.command.pause-map",
                 "game.command.resume-map",
                 "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
                 "game.command.select-event-option-N",
             )
@@ -7579,8 +8306,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(
             _hello(
                 "game.state.snapshot",
+                "game.state.army-routes",
+                "game.state.war-objective-assault",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -7644,6 +8375,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -7677,6 +8410,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -7857,9 +8592,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(
             _hello(
                 "game.state.snapshot",
+                "game.state.army-routes",
+                "game.state.war-objective-assault",
                 "game.command.pause-map",
                 "game.command.resume-map",
                 "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -7924,7 +8662,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _snapshot(
                     revision,
                     date_raw=date_raw,
-                    speed=1,
+                    speed=3,
                     paused=False,
                     active_wars=[war(enemy)],
                     player_armies=[player],
@@ -7948,12 +8686,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": {"step": step, "accepted": True},
                 }
             )
-            if step == "set-speed-1":
+            if step == "set-speed-3":
                 endpoint.publish(
                     _snapshot(
                         81,
                         date_raw=start_date,
-                        speed=1,
+                        speed=3,
                         active_wars=[starting_war],
                         player_armies=[player],
                     )
@@ -7976,7 +8714,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     _snapshot(
                         85,
                         date_raw=start_date + 24,
-                        speed=1,
+                        speed=3,
                         paused=True,
                         active_wars=[war(threatening_enemy)],
                         player_armies=[player],
@@ -7990,8 +8728,24 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertEqual(pause_before_threat, [True])
         self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["requested_horizon_days"], 1)
         self.assertEqual(result["progress_status"], "postcondition")
+        self.assertEqual(result["timeline_policy"], "remote_enemy_route")
         self.assertTrue(result["paused"])
+        self.assertEqual(
+            result["war_progress_after"]["wars"][0]["enemy_armies"][0][
+                "route_province_ids"
+            ],
+            [2585],
+        )
+        submitted_steps = [
+            frame.get("step")
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(
+            submitted_steps, ["set-speed-3", "resume-map", "pause-map"]
+        )
 
     def test_active_war_life_advance_wall_timeout_keeps_date_progress(self) -> None:
         endpoint = FakeEndpoint()
@@ -8005,6 +8759,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -8105,6 +8861,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -8187,6 +8945,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.command.pause-map",
                 "game.command.resume-map",
                 "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -8282,6 +9041,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.war-objective-siege-progress",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )
@@ -8422,6 +9183,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.snapshot",
                 "game.command.pause-map",
                 "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.set-speed-5",
             )
         )

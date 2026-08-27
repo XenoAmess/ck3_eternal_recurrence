@@ -82,7 +82,8 @@
   `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
 - [static-confirmed] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到
   normal daily movement，并闭合“全军移动后按 queue 接触”、省份 full-CUnitID 数值序 opponent、已有战斗优先、
-  多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；非 daily placement 仍为虚线 unknown。
+  多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；public speed 1..5 不改变这条逐 native-day
+  movement/contact 链，但异步 pause 的各速 overshoot envelope 仍为 unknown；非 daily placement 也仍为虚线 unknown。
 - [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
   application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
   `join_existing` 与 multiple-compatible 实机分支仍待闭合。

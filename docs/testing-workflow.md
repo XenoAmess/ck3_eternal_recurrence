@@ -350,6 +350,32 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   episode CharacterID/run 未变化、terminal reason 为 dead/changed/missing、settlement ready 且 source/score 匹配、record persistence
   已证明或明确无需、cross-run episode 已记录、继承人 gameplay 为零、cleanup proven。终局已存在于启动帧、裸
   `status=terminal`、`strategy-review`、ACK 或 `settlement_unavailable` 都不能计为一代完成。
+- 战时自适应 speed-3 首次实机 A/B 必须等当前 production owner 与 CK3 进程树完整退出；不得抢占仍在运行的同名 pipe。
+  先把最新 checkpoint state 在静止状态复制到新的 `%TEMP%` 子目录，并逐字节核对源/副本的
+  `profile/save games/xar_checkpoint.ck3` 与 `native-session/driver-state.json`；副本继续使用 driver state 已绑定的 pipe 名，
+  然后从包含候选 Python policy 的干净 runtime 执行：
+
+  ```powershell
+  & "<python>" "<candidate-runtime>\ck3_autonomous_player\agent.py" `
+    --state-dir "<fresh-cloned-state>" `
+    --game-dir "<CK3-dir>" `
+    --bridge-mode native-headless `
+    --bridge-pipe "<checkpoint-driver-state-pipe>" `
+    --bridge-dll "<exact-build-xar_ck3_bridge.dll>" `
+    --bridge-injector "<exact-build-xar_ck3_bridge_injector.exe>" `
+    native-auto-run --turns 40 --timeout 7200 --readiness-timeout 300 `
+    --cold-start-checkpoint
+  ```
+
+  旧 production artifact 直接作为 speed-1 baseline，不重复消耗一次 CK3 长跑。候选若在 40 turns 内没有至少 6 个
+  `timeline_policy=remote_enemy_route`，结论是“未命中/inconclusive”，不是 GREEN 或 capability RED；可从其最新 checkpoint
+  继续同一隔离 A/B。命中后逐项重算：`requested_horizon_days` 必须仍为 `1`，action 必须恰好一次
+  `set-speed-3 -> resume-map -> pause-map`，最终 `paused=true`，且实际 `elapsed_days` 逐条记录，不能由 fixture 或 speed 数值
+  假定。首次生产切换门槛是：speed-3 的最大实际跨度不得超过同一 production 段 speed-1 已观察到的 3 日上界；每个起始帧
+  均通过完整 player/war projection 与 full-route-disjoint 重放；after frame 能看见任何新 route/contact/battle 并令下一片回到
+  speed 1；没有 player route、combat、retreat、Assault 或 exact route-contact transaction 使用 speed 3；游戏日/现实小时相对
+  baseline `207` 至少提高 `2x`；周期 checkpoint、source clone hash 与 managed cleanup 全绿。任一项失败就保持正式长跑旧策略，
+  保留 report/driver history 后再校准，不用 bounded fixture 冒充 speed-3 调度实证。
 - `first-blocker.json` 以 first-write-wins 保存当前失败尝试，而不是事后取上一条成功 turn；它包含 plan、selected step、action
   result、before/after paused binding、事件/互动/WarID/ArmyID 摘要与最后 durable
   checkpoint。它表示 runner 看到的第一个停止点；bound exhaustion 是 harness incomplete，不能自动升级为 capability RED。真正改

@@ -232,7 +232,13 @@ MAXIMUM_FRAME_BYTES = 1024 * 1024
 DEFAULT_PIPE_NAME = r"\\.\pipe\xar_ck3_bridge_mcp"
 _ACTION_CAPABILITY_PREFIX = "game.command."
 _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
-    {"set-speed-5", "resume-map", "pause-map"}
+    {
+        "set-speed-1",
+        "set-speed-3",
+        "set-speed-5",
+        "resume-map",
+        "pause-map",
+    }
 )
 _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-1", "resume-map", "pause-map"}
@@ -8365,7 +8371,11 @@ class NativeHeadlessGameplayDriver:
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
-        timeline_speed = 1 if horizon_days == 1 else 5
+        timeline_speed, timeline_policy = _life_advance_timeline_policy(
+            starting,
+            horizon_days=horizon_days,
+            exact_one_day=exact_one_day,
+        )
         speed_step = f"set-speed-{timeline_speed}"
         if speed_step not in self.capabilities()["action_steps"]:
             raise BridgeUnavailableError(
@@ -8497,6 +8507,9 @@ class NativeHeadlessGameplayDriver:
             "starting_date_raw": starting_date_raw,
             "ending_date_raw": ending_date_raw,
             "elapsed_days": max(0, (ending_date_raw - starting_date_raw) // 24),
+            "requested_horizon_days": horizon_days,
+            "timeline_speed": timeline_speed,
+            "timeline_policy": timeline_policy,
             "progress_status": progress_status,
             "war_progress_before": _war_progress_summary(starting),
             "war_progress_after": _war_progress_summary(current),
@@ -9819,6 +9832,286 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
         if isinstance(wars, list) and bool(wars)
         else _NATIVE_WAR_ADVANCE_MAX_DAYS
     )
+
+
+def _life_advance_timeline_policy(
+    snapshot: dict[str, object],
+    *,
+    horizon_days: int,
+    exact_one_day: bool,
+) -> tuple[int, str]:
+    """Choose wall-clock speed while retaining paused tactical sampling.
+
+    CK3 still executes the same native daily movement/contact chain at every
+    public timeline speed.  Speed one therefore remains reserved for slices
+    whose correctness depends on a player route, combat/retreat, an Assault,
+    a hostile route intersecting any player army, or the exact one-day contact
+    transaction.  Complete enemy routes that are wholly disjoint from every
+    known-stationary controllable army may use speed three while retaining the
+    one-day requested horizon and the same paused re-observation.  Route-free
+    bounded slices retain speed five.
+    """
+    if exact_one_day:
+        return 1, "exact_one_day_contact"
+    if horizon_days != 1:
+        return 5, "bounded_non_tactical"
+
+    player_armies = snapshot.get("player_armies")
+    players = (
+        player_armies if isinstance(player_armies, list) else []
+    )
+    for army in players:
+        if not isinstance(army, dict) or army.get("controllable") is not True:
+            continue
+        if _army_in_combat_or_retreat(army) or _army_has_active_route(army):
+            return 1, "player_tactical"
+
+    if _player_assault_in_progress(snapshot):
+        return 1, "player_assault"
+
+    enemy_routes: list[dict[str, object]] = []
+    wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        enemies = war.get("enemy_armies")
+        for enemy in enemies if isinstance(enemies, list) else []:
+            if not isinstance(enemy, dict) or _army_is_retreating(enemy):
+                continue
+            if _army_has_active_route(enemy):
+                enemy_routes.append(enemy)
+
+    if _remote_enemy_routes_speed_three_ready(snapshot, enemy_routes):
+        return 3, "remote_enemy_route"
+    return 1, "enemy_route_imminent_or_unknown"
+
+
+def _remote_enemy_routes_speed_three_ready(
+    snapshot: dict[str, object],
+    enemy_routes: list[dict[str, object]],
+) -> bool:
+    """Require complete, disjoint player/enemy route state for speed three."""
+    if (
+        snapshot.get("army_routes_supported") is not True
+        or snapshot.get("war_objective_assault_supported") is not True
+        or not enemy_routes
+        or not all(
+            _army_has_auditable_route(army) for army in enemy_routes
+        )
+    ):
+        return False
+
+    player_armies = snapshot.get("player_armies")
+    if not isinstance(player_armies, list) or not player_armies:
+        return False
+    player_by_id: dict[int, dict[str, object]] = {}
+    player_provinces: set[int] = set()
+    for army in player_armies:
+        if not isinstance(army, dict) or army.get("controllable") is not True:
+            return False
+        army_id = army.get("army_id")
+        province_id = army.get("current_province_id")
+        if (
+            not _positive_native_id(army_id)
+            or not _positive_native_id(province_id)
+            or not _army_route_projection_complete(army)
+            or not _army_is_known_stationary(army)
+            or _army_in_combat_or_retreat(army)
+            or _army_has_active_route(army)
+        ):
+            return False
+        player_by_id[int(army_id)] = army
+        player_provinces.add(int(province_id))
+    if len(player_by_id) != len(player_armies):
+        return False
+
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list) or not wars:
+        return False
+    observed_enemy_routes: set[int] = set()
+    enemy_projections: dict[int, tuple[object, ...]] = {}
+    for war in wars:
+        if not isinstance(war, dict):
+            return False
+        allied = war.get("allied_armies")
+        enemies = war.get("enemy_armies")
+        if not isinstance(allied, list) or not isinstance(enemies, list):
+            return False
+        war_player_ids: set[int] = set()
+        for ally in allied:
+            if not isinstance(ally, dict):
+                return False
+            if ally.get("controllable") is not True:
+                continue
+            ally_id = ally.get("army_id")
+            ally_province = ally.get("current_province_id")
+            if (
+                not _positive_native_id(ally_id)
+                or not _positive_native_id(ally_province)
+                or int(ally_id) not in player_by_id
+                or int(ally_id) in war_player_ids
+                or _army_tactical_projection(ally)
+                != _army_tactical_projection(player_by_id[int(ally_id)])
+            ):
+                return False
+            war_player_ids.add(int(ally_id))
+        if war_player_ids != set(player_by_id):
+            return False
+
+        war_enemy_ids: set[int] = set()
+        for enemy in enemies:
+            if not isinstance(enemy, dict):
+                return False
+            if _army_is_retreating(enemy):
+                continue
+            enemy_id = enemy.get("army_id")
+            enemy_province = enemy.get("current_province_id")
+            if (
+                not _positive_native_id(enemy_id)
+                or not _positive_native_id(enemy_province)
+                or not _army_route_projection_complete(enemy)
+                or int(enemy_id) in war_enemy_ids
+                or int(enemy_province) in player_provinces
+            ):
+                return False
+            war_enemy_ids.add(int(enemy_id))
+            projection = _army_tactical_projection(enemy)
+            prior_projection = enemy_projections.setdefault(
+                int(enemy_id), projection
+            )
+            if prior_projection != projection:
+                return False
+            if not _army_has_active_route(enemy):
+                continue
+            if not _army_has_auditable_route(enemy):
+                return False
+            route = enemy["route_province_ids"]
+            if any(
+                int(province_id) in player_provinces
+                for province_id in route
+            ):
+                return False
+            observed_enemy_routes.add(int(enemy_id))
+    return observed_enemy_routes == {
+        int(army["army_id"]) for army in enemy_routes
+    }
+
+
+def _army_has_active_route(army: dict[str, object]) -> bool:
+    target = army.get("move_target_province_id")
+    route = army.get("route_province_ids")
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    return bool(
+        _positive_native_id(target)
+        or isinstance(route, list)
+        and bool(route)
+        or isinstance(state, str)
+        and state.casefold() == "moving"
+        or state_code == 7
+    )
+
+
+def _army_has_auditable_route(army: dict[str, object]) -> bool:
+    target = army.get("move_target_province_id")
+    route = army.get("route_province_ids")
+    return bool(
+        _positive_native_id(target)
+        and isinstance(route, list)
+        and bool(route)
+        and all(_positive_native_id(province_id) for province_id in route)
+        and route[-1] == target
+    )
+
+
+def _army_route_projection_complete(army: dict[str, object]) -> bool:
+    if "move_target_province_id" not in army:
+        return False
+    target = army.get("move_target_province_id")
+    route = army.get("route_province_ids")
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    known_state = bool(
+        isinstance(state, str)
+        and state.casefold()
+        in {"regular", "combat", "sieging", "gathering", "moving"}
+        or not isinstance(state, str)
+        and isinstance(state_code, int)
+        and not isinstance(state_code, bool)
+        and state_code in {1, 2, 3, 5, 7}
+    )
+    return bool(
+        (target is None or _positive_native_id(target))
+        and isinstance(route, list)
+        and all(_positive_native_id(province_id) for province_id in route)
+        and known_state
+    )
+
+
+def _army_tactical_projection(
+    army: dict[str, object],
+) -> tuple[object, ...]:
+    route = army.get("route_province_ids")
+    state = army.get("army_state")
+    return (
+        army.get("army_id"),
+        army.get("current_province_id"),
+        army.get("move_target_province_id"),
+        tuple(route) if isinstance(route, list) else None,
+        state.casefold() if isinstance(state, str) else None,
+        army.get("army_state_code"),
+        army.get("in_combat"),
+        army.get("retreating"),
+        army.get("controllable"),
+    )
+
+
+def _army_is_known_stationary(army: dict[str, object]) -> bool:
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    return bool(
+        isinstance(state, str)
+        and state.casefold() in {"regular", "sieging"}
+        or not isinstance(state, str)
+        and isinstance(state_code, int)
+        and not isinstance(state_code, bool)
+        and state_code in {1, 3}
+    )
+
+
+def _army_is_retreating(army: dict[str, object]) -> bool:
+    state = army.get("army_state")
+    return bool(
+        army.get("retreating") is True
+        or isinstance(state, str)
+        and state.casefold() == "retreating"
+        or army.get("army_state_code") == 6
+    )
+
+
+def _player_assault_in_progress(snapshot: dict[str, object]) -> bool:
+    if snapshot.get("war_objective_assault_supported") is not True:
+        return False
+    wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        states = war.get("objective_province_states")
+        for state in states if isinstance(states, list) else []:
+            active_siege = (
+                state.get("active_siege")
+                if isinstance(state, dict)
+                and state.get("siege_observable") is True
+                else None
+            )
+            if (
+                isinstance(active_siege, dict)
+                and active_siege.get("player_army_besieging") is True
+                and active_siege.get("assault_observable") is True
+                and active_siege.get("assault_in_progress") is True
+            ):
+                return True
+    return False
 
 
 def _active_war_progress_signature(

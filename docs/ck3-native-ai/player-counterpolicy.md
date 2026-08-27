@@ -148,11 +148,78 @@ stateDiagram-v2
 ```
 
 - [inference][counter-policy] 任一玩家或相关敌军存在 tactical route、或我方 Assault active 时，观察用
-  life-advance 应为一日 paused-to-paused；其余推进也不得无观察地跨过下一个 7 / 14 日 milestone。
+  life-advance 应保持一日 **requested horizon**；其余推进也不得无观察地跨过下一个 7 / 14 日 milestone。
+  requested horizon 与 timeline speed 是两个不同参数，异步暂停后的实际跨度必须按 action 的 start/end/elapsed
+  和更新 paused state 验证，不能把 speed 1 冒充严格一日。
 - [inference][counter-policy] 上述一日采样用于重新获得 running 帧不会提供的完整 route，不表示原生 AI 每日
   重算 target。
 - [inference][counter-policy] planner 自己的 move-deferred `7/14/30` backoff、same-province stale contact
   计数和原生 target cadence 是三个不同机制，不得共用语义标签。
+
+### 自适应时间线速度
+
+[live-confirmed] 2026-08-27 当前正式恢复段提供了提速必要性证据：从 `restore history=2170` 到
+`history=2575` 共执行 `154` 次 speed-1 与 `5` 次 speed-5 `life-advance`；其中 `97` 次属于“全部玩家军
+stationary、至少一支敌军 moving、敌军 current/target/完整 remaining route 均不与玩家 current province 相交”的
+远端敌军路线场景，
+累计只推进 `213` 游戏日。该 97 次的实际跨度为 `3 x 1`、`72 x 2`、`22 x 3` 日，已经不是严格逐日。
+独立 checkpoint wall-time 样本还显示：恢复段早期 speed-5 约 `1918` 游戏日/现实小时，后续连续 speed-1 约
+`207` 游戏日/现实小时；这是约 `9.25x` 的真实吞吐差，不是理论优化。
+
+[inference][counter-policy] 因而时间线速度采用以下词典序，不再把“任意敌军有 route”一律等同于 speed 1：
+
+1. exact route-contact 一日 transaction、任一 controllable player route、active combat、retreat 或玩家 Assault：
+   `speed=1`，保留既有 identity/route/battle/assault 后置验证；
+2. `army-routes` 与 Assault 观测均可用；top-level 玩家军集合、每场战争的 controllable allied 集合及其位置完全一致；
+   所有玩家军均为已知 stationary `regular/sieging`；至少一支敌军有完整可审计 route；每场战争的 allied/enemy 数组
+   完整；并且所有非撤退敌军的 current、target 与**完整 remaining route 的每个 vertex**都不等于任一玩家 current
+   province：保持一日 requested horizon，但用 `speed=3`，暂停后重读全部 route、combat、retreat 与 siege state；
+3. 任一敌军 current/target/完整 route 与玩家 current 相交，或玩家 state、route、Assault、allied/enemy 投影有任一
+   缺失/不一致：`speed=1`；深层 endpoint 指向玩家也属于相交，不能只检查 first hop；
+4. active war 中没有 tactical route/Assault/combat/retreat：沿既有七日 horizon 使用 `speed=5`；和平沿既有三十日
+   horizon 使用 `speed=5`。
+
+```mermaid
+flowchart TD
+    P["[counter-policy] paused life-advance"] --> X{"exact contact transaction<br/>player route / combat / retreat / Assault?"}
+    X -->|yes| S1["speed 1<br/>one-day requested horizon"]
+    X -->|no| R{"存在 active enemy route？"}
+    R -->|no| S5["speed 5<br/>war 7d / peace 30d horizon"]
+    R -->|yes| E{"全部 active enemy route 完整？<br/>player/war 投影一致？"}
+    E -->|no / unknown| S1
+    E -->|yes| I{"enemy current / target / full route<br/>与任一 stationary player current 相交？"}
+    I -->|yes or unknown| S1
+    I -->|no| S3["speed 3<br/>one-day requested horizon"]
+    S1 --> V["paused postcondition<br/>按实际 elapsed 重读战术状态"]
+    S3 --> V
+    S5 --> V
+    O["[unknown] speed-3 active-war overshoot envelope"] -. "live A/B 后校准；不放宽关键 transaction" .-> S3
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class O unknown;
+```
+
+[live-confirmed + counter-policy] 当前 production 尾帧是新门的反例，不得为了眼前提速把深层 endpoint 漏掉。
+`history=2575` 的 after snapshot 中，玩家主军 `33554797` 在 Province `5598` stationary siege，另外五支玩家军在
+`2619` stationary；敌军 `117440838` 位于 `496`，完整 target/route 为
+`5598 / [5565,5566,5567,5568,5576,5577,753,5684,5683,5596,5597,5598]`。其 endpoint 最终指向玩家，
+另一敌军 `83886265` 已在 `702` siege、route 为空。把这个真实 paused shape 输入新选择器，结果必须是
+`horizon=1`、`speed=1`、`timeline_policy=enemy_route_imminent_or_unknown`；这已由对应 production-shape fixture
+锁定。新分支实际解除的是同一 artifact 已出现的 `97` 个 full-route-disjoint 帧及未来同类帧，不是这个确有来敌
+终点的尾帧。在获得 isolated active-war speed-3 elapsed 分布前，不声称它严格停在一个日界，也不把 speed 3 扩展到
+上述 speed-1 关键分支。
+
+[live-confirmed + counter-policy] `history=2421` 的 after snapshot（也是 `history=2424` advance 的 before shape）是
+真实命中例：六支玩家军仍分别 stationary 于 `5598 / 2619`；敌军 `83886265` 位于 `5740`，target/remaining route
+为 `701 / [5739,5733,5734,5735,5731,5732,701]`，另一敌军 `117440838` gathering 于 `496` 且 route 为空。
+全部敌军 current/target/route vertex 都与两个玩家 current province 不相交；同一 paused shape 的 fixture 因而返回
+`requested_horizon_days=1`、`timeline_speed=3`、`timeline_policy=remote_enemy_route`。原 production action 仍是旧策略的
+speed 1，实际推进两日；fixture 只证明 selector 与 paused 后置字段，不把合成的 speed-3 elapsed 当成实机调度证据。
+
+[unknown] 已发布 exact route-contact horizon 能为“stationary subject + target=current province”构造敌军完整 timed
+route，并给出一日 contact-free 关系；但 production action surface 目前只对已 committed player route 发布 proof-bound
+advance，而且 speed-3 异步暂停的最大 overshoot 尚未闭合。因此，若要继续加速这个 endpoint 最终指向玩家的具体帧，
+下一入口应是先用隔离 A/B 冻结 speed-3 elapsed envelope，再以 timed arrival 与该 envelope 的明确余量授权；不能用 route
+长度或 first hop 代替 ETA，也不能把现有 speed-1 exact transaction 直接改成 speed 3。
 
 ## M hostile × N player route matrix
 

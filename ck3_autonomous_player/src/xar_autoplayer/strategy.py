@@ -4688,11 +4688,6 @@ def choose_one_life_turn(
             for province_id in exact_objective_province_ids
             if province_id in siege_objective_province_ids
         ]
-        threatened_exact_siege = bool(
-            stationary_threats
-            and army_state == "sieging"
-            and current_province_id in siege_objective_province_ids
-        )
         if (
             route_preview_required
             and isinstance(army_id, int)
@@ -4700,9 +4695,10 @@ def choose_one_life_turn(
             and route_exact_candidates
         ):
             route_rejections: list[dict[str, object]] = []
-            safe_route_candidates: list[
-                tuple[int, int, int, dict[str, object]]
-            ] = []
+            # The exact set is already ranked by observable siege quality.
+            # Stop at its first fully safe route instead of globally scanning
+            # every objective for the shortest path.  This is not a fixed cap:
+            # rejected candidates still fall through to the rest of the set.
             for objective_rank, province_id in enumerate(route_exact_candidates):
                 if province_id in blocked_province_ids:
                     route_rejections.append(
@@ -4732,14 +4728,7 @@ def choose_one_life_turn(
                         "status": "arrived",
                         "target_province_id": province_id,
                     }
-                    if not threatened_exact_siege:
-                        break
-                    safe_route_candidates.append(
-                        (0, objective_rank, province_id, selected_route_audit)
-                    )
-                    preview_selected_target = None
-                    selected_route_audit = None
-                    continue
+                    break
                 preview = _fresh_move_route_preview(
                     rows,
                     army_id=army_id,
@@ -4903,34 +4892,22 @@ def choose_one_life_turn(
                     blocked_province_ids.add(province_id)
                     continue
                 preview_selected_target = province_id
-                selected_route_audit = audit
-                if not threatened_exact_siege:
-                    break
-                safe_route_candidates.append(
-                    (
-                        len(audit.get("route_province_ids", [])),
-                        objective_rank,
-                        province_id,
-                        audit,
-                    )
-                )
-                preview_selected_target = None
-                selected_route_audit = None
-            if threatened_exact_siege and safe_route_candidates:
-                (
-                    route_hops,
-                    objective_rank,
-                    preview_selected_target,
-                    selected_route_audit,
-                ) = min(safe_route_candidates, key=lambda candidate: candidate[:2])
                 selected_route_audit = {
-                    **selected_route_audit,
+                    **audit,
                     "selection": {
-                        "policy": "shortest_safe_route_then_objective_rank",
-                        "route_hops": route_hops,
+                        "policy": "first_safe_ranked_exact_objective",
+                        "route_hops": len(
+                            audit.get("route_province_ids", [])
+                        ),
                         "objective_rank": objective_rank,
+                        "evaluated_candidate_count": objective_rank + 1,
+                        "unevaluated_candidate_count": max(
+                            0,
+                            len(route_exact_candidates) - objective_rank - 1,
+                        ),
                     },
                 }
+                break
             if preview_selected_target is None:
                 return {
                     "policy": "one-life-turn-v1",
