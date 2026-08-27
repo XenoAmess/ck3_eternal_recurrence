@@ -133,6 +133,21 @@ _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
         ),
     },
 }
+_DEGRADED_MARRIAGE_REJECT_ONLY_ALLOWLIST = {
+    "arrange_marriage_interaction": {
+        "classification": "marriage_special_reject_only",
+        "domain": "marriage_alliance",
+        "source": "common/character_interactions/00_marriage_interactions.txt",
+        "source_sha256": (
+            "681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219"
+        ),
+        "required_send_option_count": 6,
+        "known_decline_effects": [
+            "marriage_interaction.0011",
+            "secondary_actor:player_declined_marriage:5y",
+        ],
+    },
+}
 
 
 def _expanded_command_rows(
@@ -725,6 +740,92 @@ def _pending_interaction_evidence_gaps(
     return gaps
 
 
+def _arrange_marriage_reject_contract_gaps(
+    context: dict[str, object],
+) -> list[str]:
+    """Match only the exact direct, zero-option marriage blocker shape."""
+
+    gaps: list[str] = []
+    roles = context.get("roles")
+    if not isinstance(roles, dict):
+        return ["marriage_roles_unavailable"]
+    for field in (
+        "actor_character_id",
+        "recipient_character_id",
+        "secondary_actor_character_id",
+        "secondary_recipient_character_id",
+    ):
+        value = roles.get(field)
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            gaps.append(f"marriage_{field}_unavailable")
+    if roles.get("intermediary_character_id") != -1:
+        gaps.append("marriage_direct_recipient_route_required")
+
+    routing = context.get("routing")
+    if not (
+        isinstance(routing, dict)
+        and routing.get("kind") == 0
+        and routing.get("current_responder_role") == "recipient"
+        and routing.get("reply_execution_channel") == "recipient"
+        and routing.get("local_route") is True
+        and routing.get("auto_accept_notification") is False
+        and routing.get("played_character_id")
+        == roles.get("recipient_character_id")
+    ):
+        gaps.append("marriage_direct_local_recipient_route_mismatch")
+
+    deadline = context.get("deadline")
+    if not (
+        isinstance(deadline, dict)
+        and deadline.get("age_days") == 0
+        and deadline.get("expiration_days") == 60
+        and deadline.get("remaining_days") == 60
+        and deadline.get("expiry_boundary_status") == "not_reached"
+    ):
+        gaps.append("marriage_same_day_deadline_shape_mismatch")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and terms.get("special_data_present") is True
+        and isinstance(special, dict)
+        and special.get("status") == "unavailable"
+        and special.get("value") is None
+        and special.get("reason") == "special_interaction_subtype_opaque"
+    ):
+        gaps.append("marriage_special_payload_shape_mismatch")
+
+    send_options = context.get("send_options")
+    rows = send_options.get("rows") if isinstance(send_options, dict) else None
+    if not (
+        isinstance(send_options, dict)
+        and send_options.get("exclusive") is False
+        and send_options.get("definition_count") == 6
+        and send_options.get("context_count") == 6
+        and isinstance(rows, list)
+        and len(rows) == 6
+        and all(
+            isinstance(row, dict)
+            and row.get("native_index") == index
+            and row.get("selected") is False
+            for index, row in enumerate(rows)
+        )
+    ):
+        gaps.append("marriage_zero_option_vector_mismatch")
+
+    legality = context.get("legality")
+    acknowledge = legality.get("acknowledge") if isinstance(legality, dict) else None
+    if not (
+        isinstance(acknowledge, dict)
+        and acknowledge.get("status") == "available"
+        and acknowledge.get("allowed") is False
+        and acknowledge.get("reason") == "normal_reply_channel"
+    ):
+        gaps.append("marriage_normal_reply_channel_mismatch")
+    return gaps
+
+
 def _special_war_snapshot_binding(
     context: dict[str, object],
     active_wars: list[dict[str, object]],
@@ -861,10 +962,22 @@ def _degraded_pending_interaction_decision(
         if isinstance(definition_key, str)
         else None
     )
+    marriage_allowlist_evidence = (
+        _DEGRADED_MARRIAGE_REJECT_ONLY_ALLOWLIST.get(definition_key)
+        if isinstance(definition_key, str)
+        else None
+    )
+    marriage_contract_gaps = (
+        _arrange_marriage_reject_contract_gaps(context)
+        if isinstance(marriage_allowlist_evidence, dict)
+        else []
+    )
     if evidence_gaps:
         classification = "evidence_invalid"
     elif special_status == "available":
         classification = "known_war_exit"
+    elif isinstance(marriage_allowlist_evidence, dict):
+        classification = "known_marriage_special"
     elif (
         special_status == "unavailable"
         and special_reason == "special_war_binding_not_applicable"
@@ -887,8 +1000,17 @@ def _degraded_pending_interaction_decision(
         if classification == "known_war_exit"
         else None
     )
+    classification_evidence = (
+        marriage_allowlist_evidence
+        if classification == "known_marriage_special"
+        else definition_allowlist_evidence
+    )
     decision: dict[str, object] = {
-        "rule_id": "ordinary-reject-unique-accept-v1",
+        "rule_id": (
+            "arrange-marriage-reject-only-v1"
+            if classification == "known_marriage_special"
+            else "ordinary-reject-unique-accept-v1"
+        ),
         "mode": "degraded_blocker_removal",
         "native_ai_reference": (
             "CK3-1.19.0.6 inbound reply tree: intermediary then recipient "
@@ -910,15 +1032,20 @@ def _degraded_pending_interaction_decision(
         "special_war_binding": summary.get("special_war_binding"),
         "special_war_snapshot_binding": special_binding_audit,
         "definition_classification": {
-            "policy": "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1",
+            "policy": (
+                "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1"
+                if classification == "known_marriage_special"
+                else "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1"
+            ),
             "definition_key": definition_key,
-            "allowlisted": isinstance(definition_allowlist_evidence, dict),
+            "allowlisted": isinstance(classification_evidence, dict),
             "evidence": (
-                dict(definition_allowlist_evidence)
-                if isinstance(definition_allowlist_evidence, dict)
+                dict(classification_evidence)
+                if isinstance(classification_evidence, dict)
                 else None
             ),
         },
+        "marriage_contract_gaps": marriage_contract_gaps,
         "missing_semantics": summary.get("missing_semantics"),
         "evidence_gaps": evidence_gaps,
         "candidate_replies": candidates,
@@ -927,11 +1054,21 @@ def _degraded_pending_interaction_decision(
         "selected_step": None,
         "blocked_reasons": [],
         "deterministic_rule": (
-            "for an exact same-frame request whose definition is explicitly "
-            "allowlisted as ordinary non-war and nonreligious, reject when "
-            "native reject is legal and executable; accept only when reject, "
-            "block, and acknowledge are each natively illegal and accept is "
-            "the sole legal executable reply; otherwise submit nothing"
+            (
+                "for an exact same-frame arrange_marriage_interaction with a "
+                "direct local recipient, complete marriage roles, same-day "
+                "deadline, opaque marriage special payload, and six unselected "
+                "send options, reject only when native reject is legal and "
+                "executable; never fall through to unique accept"
+            )
+            if classification == "known_marriage_special"
+            else (
+                "for an exact same-frame request whose definition is explicitly "
+                "allowlisted as ordinary non-war and nonreligious, reject when "
+                "native reject is legal and executable; accept only when reject, "
+                "block, and acknowledge are each natively illegal and accept is "
+                "the sole legal executable reply; otherwise submit nothing"
+            )
         ),
     }
     blocked_reasons = decision["blocked_reasons"]
@@ -948,6 +1085,21 @@ def _degraded_pending_interaction_decision(
         ):
             blocked_reasons.append("special_war_snapshot_binding_mismatch")
         blocked_reasons.append("special_outcome_terms_unavailable")
+        return {"summary": summary, "decision": decision}
+    if classification == "known_marriage_special":
+        if marriage_contract_gaps:
+            blocked_reasons.extend(marriage_contract_gaps)
+            return {"summary": summary, "decision": decision}
+        reject = by_action["reject"]
+        if reject["native_legal"] is not True:
+            blocked_reasons.append("marriage_reject_not_native_legal")
+            return {"summary": summary, "decision": decision}
+        decision["recommended_action"] = "reject"
+        if reject["action_reachable"] is True:
+            decision["selected_action"] = "reject"
+            decision["selected_step"] = reject["step"]
+        else:
+            blocked_reasons.append("legal_marriage_reject_command_unavailable")
         return {"summary": summary, "decision": decision}
     if classification == "definition_unclassified":
         blocked_reasons.append(
@@ -1010,11 +1162,19 @@ def _degraded_pending_interaction_plan(
     selected_step = decision.get("selected_step")
     selected_action = decision.get("selected_action")
     if selected_action == "reject":
-        phase = "pending_character_interaction_degraded_reject"
-        reason = (
-            "reject this exact ordinary non-war request: native reject is "
-            "same-frame legal and the reject command is executable"
-        )
+        if decision.get("classification") == "known_marriage_special":
+            phase = "pending_arrange_marriage_reject_only"
+            reason = (
+                "reject this exact direct zero-option marriage proposal: "
+                "native reject is same-frame legal and executable, while "
+                "accept lacks a secondary-pair semantic postcondition"
+            )
+        else:
+            phase = "pending_character_interaction_degraded_reject"
+            reason = (
+                "reject this exact ordinary non-war request: native reject is "
+                "same-frame legal and the reject command is executable"
+            )
     elif selected_action == "accept":
         phase = "pending_character_interaction_degraded_unique_accept"
         reason = (

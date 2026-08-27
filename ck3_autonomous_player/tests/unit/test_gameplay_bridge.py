@@ -161,6 +161,76 @@ def _pending_context_result(
     }
 
 
+def _arrange_marriage_context_result(
+    *,
+    legality: dict[str, dict[str, object]] | None = None,
+    secondary_actor_character_id: int = 38_993,
+    secondary_recipient_character_id: int = 38_293,
+    intermediary_character_id: int = -1,
+    selected_option_index: int | None = None,
+) -> dict[str, object]:
+    if legality is None:
+        legality = {
+            action: {"status": "available", "allowed": True, "reason": None}
+            for action in ("accept", "reject", "block")
+        }
+        legality["acknowledge"] = {
+            "status": "available",
+            "allowed": False,
+            "reason": "normal_reply_channel",
+        }
+    result = _pending_context_result(
+        pending_id=-2_013_265_918,
+        revision=7,
+        native_revision=6,
+        date_raw=53_211_504,
+        definition_key="arrange_marriage_interaction",
+        actor_character_id=30_287,
+        recipient_character_id=29_829,
+        legality=legality,
+        special_data_present=True,
+        special_war_binding={
+            "status": "unavailable",
+            "value": None,
+            "reason": "special_interaction_subtype_opaque",
+        },
+    )
+    context = result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    roles = context["roles"]
+    assert isinstance(roles, dict)
+    roles.update(
+        {
+            "secondary_actor_character_id": secondary_actor_character_id,
+            "secondary_recipient_character_id": (
+                secondary_recipient_character_id
+            ),
+            "intermediary_character_id": intermediary_character_id,
+        }
+    )
+    context["deadline"] = {
+        "age_days": 0,
+        "expiration_days": 60,
+        "remaining_days": 60,
+        "expiry_boundary_status": "not_reached",
+    }
+    context["send_options"] = {
+        "exclusive": False,
+        "definition_count": 6,
+        "context_count": 6,
+        "rows": [
+            {
+                "native_index": index,
+                "selected": index == selected_option_index,
+                "is_shown": index == 1,
+                "is_valid": index in {1, 2},
+            }
+            for index in range(6)
+        ],
+    }
+    return result
+
+
 def _plan_for_pending_context(
     context_result: dict[str, object],
     *,
@@ -3799,6 +3869,154 @@ class GameplayBridgeTests(unittest.TestCase):
                 },
             },
         )
+
+    def test_planner_rejects_exact_direct_zero_option_marriage_pending(
+        self,
+    ) -> None:
+        plan = _plan_for_pending_context(
+            _arrange_marriage_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "pending_arrange_marriage_reject_only")
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "arrange-marriage-reject-only-v1")
+        self.assertEqual(decision["classification"], "known_marriage_special")
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertEqual(decision["marriage_contract_gaps"], [])
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertEqual(
+            decision["definition_classification"],
+            {
+                "policy": (
+                    "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1"
+                ),
+                "definition_key": "arrange_marriage_interaction",
+                "allowlisted": True,
+                "evidence": {
+                    "classification": "marriage_special_reject_only",
+                    "domain": "marriage_alliance",
+                    "source": (
+                        "common/character_interactions/"
+                        "00_marriage_interactions.txt"
+                    ),
+                    "source_sha256": (
+                        "681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E8"
+                        "6173F5AC6DE219"
+                    ),
+                    "required_send_option_count": 6,
+                    "known_decline_effects": [
+                        "marriage_interaction.0011",
+                        "secondary_actor:player_declined_marriage:5y",
+                    ],
+                },
+            },
+        )
+
+    def test_marriage_reject_only_never_falls_through_to_unique_accept(
+        self,
+    ) -> None:
+        legality = {
+            "accept": {"status": "available", "allowed": True, "reason": None},
+            "reject": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "block": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "normal_reply_channel",
+            },
+        }
+        plan = _plan_for_pending_context(
+            _arrange_marriage_context_result(legality=legality),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_blocked"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertIsNone(plan["decision"]["selected_action"])
+        self.assertIn(
+            "marriage_reject_not_native_legal",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_marriage_reject_only_requires_complete_direct_roles(self) -> None:
+        for result, expected_gap in (
+            (
+                _arrange_marriage_context_result(
+                    secondary_actor_character_id=-1
+                ),
+                "marriage_secondary_actor_character_id_unavailable",
+            ),
+            (
+                _arrange_marriage_context_result(intermediary_character_id=41_001),
+                "marriage_direct_recipient_route_required",
+            ),
+        ):
+            with self.subTest(expected_gap=expected_gap):
+                plan = _plan_for_pending_context(
+                    result,
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertEqual(
+                    plan["decision"]["classification"],
+                    "known_marriage_special",
+                )
+                self.assertIn(
+                    expected_gap, plan["decision"]["marriage_contract_gaps"]
+                )
+
+    def test_marriage_reject_only_blocks_selected_send_option(self) -> None:
+        plan = _plan_for_pending_context(
+            _arrange_marriage_context_result(selected_option_index=1),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "marriage_zero_option_vector_mismatch",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_enforce_demands_precedes_marriage_reject_only(self) -> None:
+        plan = _plan_for_pending_context(
+            _arrange_marriage_context_result(),
+            action_steps=(
+                "reject-pending-character-interaction",
+                "enforce-demands-88",
+            ),
+            active_wars=[_war(allied_armies=[], enemy_armies=[], score=100)],
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
+        self.assertNotIn("decision", plan)
 
     def test_planner_never_accepts_because_reject_command_is_missing(self) -> None:
         plan = _plan_for_pending_context(
