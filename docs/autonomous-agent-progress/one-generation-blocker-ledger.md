@@ -39,6 +39,8 @@
 | GEN-013 | B1→B3 | 长跑 query/history 复制与持久化写放大 | 真实冻结 state 为 79,517,587 bytes；旧 threatened-siege 规划同帧执行 167 条查询，用户观测 121 条查询约 26 分钟。`a8ff95f` first-safe、`7cb0b75` 只读批量持久化及 `79b8d2a → e0688c7 → 9ff04ae` transcript/history 去复制已完成同 `A8DD...AD76CF` checkpoint live A/B；最终 12-turn 运行段 `24.684s`，query 约 `0.050–0.068s`，2 checkpoints 与 cleanup 全绿 | B1 已满足：动作/失败/checkpoint/close durable 合同不变，life copy `9→1→0`、planning `1→0`、termination `3→0` 并有 live A/B。剩余 life 约 3.6–4.6s 只在新实测证明影响 G1 时再施工 | 2026-08-28 B1 resolved；query path production-live；剩余 native life latency B3 |
 | GEN-014 | B1 | `pause-map` ACK 后未在原窗口观察到 paused | 正式 `9ff04ae` run `20260827T163217Z-one-generation-ace7cbcf` 在 `85/86` turns、42 gameplay 与 14 checkpoints 后停止；pre-action 为 `date_raw=53210712 / paused=true`，错误为 `native life-advance did not observe the paused map`，cleanup 全绿。该路径已绕过 GEN-012 的 public CAS，因此是 ACK 后的新形状，不是旧 revision starvation。失败 checkpoint `F15D383B...35559` 已冻结；同 checkpoint 未修改重放两次推进均 GREEN 至 `53210760 / 79B71103...85F2`，证明非日期确定性故障 | composite pause owner 在原 10 秒绝对 deadline 内：第一次 ACK 后观察 1 秒；同 bridge generation、episode、map-ready、speed/event owner 仍 running 时只补交一次幂等 `pause-map`；仍只接受真实 paused snapshot，不重置 deadline、不改 direct primitive/query。聚焦回归通过后从 `79B71103...85F2` cold revalidate 并形成更新 checkpoint | blocker-removal static-ready；production revalidation pending |
 
+| GEN-015 | B1 | timeline 控制状态已生效但 semantic snapshot 未到 consumer | `0ceb7d8` 正式 run 在新增 25 gameplay/8 checkpoints 后，`resume-map` ACK 后未观察到 running；游戏日志确认 CK3 已从 paused 变为 running。随后从有效 `53211480 / FBC40774...D9E9C` 冷重放，首个 life 已推进一日，pause ACK 为 `submitted -> already_paused`，日志确认 CK3 已 paused，但 Python 最终仍是 `paused=false`。两轮 cleanup 全绿、角色 `29829` 存活 | exact bridge 只在 `already_paused/already_running` 时绕过去重强制发布 fresh snapshot；composite resume 在原 10 秒 deadline、同 owner 下最多补交一次；pause/resume 最终仍只接受真实 state frame。配套 compact persistence 只改 JSON 编码热路径，fresh DLL `50227D28...831F2` 已通过 37/37 CTest，仍需 cold live 重验 | blocker-removal static-ready；production revalidation pending |
+
 ## Degraded heuristic 纪律
 
 - 每个相关策略仍须先完成对应 CK3 原生 AI 树与 exact-build 证据账本；不得先猜策略、事后补文档。
@@ -318,3 +320,34 @@
   revision/date/speed/paused；第二次 request 自身失败也保留第一次 ACK。
   当前聚焦 `12 passed, 141 deselected, 10 subtests passed`、完整 driver `153 passed, 128 subtests passed`、全 unit
   `1344 passed, 2 skipped, 908 subtests passed`，独立复审 PASS；live cold revalidation 完成前维持 `static-ready / B1 open`。
+
+## 2026-08-28 01:19：GEN-015 timeline state publication
+
+- `0ceb7d8` 先从 `53210760 / 79B71103...85F2` 完成 production revalidation：`12/12` turns、6 gameplay、2 checkpoints，
+  每次只推进一日并回到 paused；cleanup 全绿。最新 checkpoint 当时为 `53210904 / 367967CD...C3221`。六次 pause 均只提交一次，
+  因而这是一般路径 live GREEN，不声称命中第二次 retry。
+- 随后的正式 run `20260827T171107Z-one-generation-ee8ac4b9` 从该点完成 `51/52` turns、25 gameplay 与 8 checkpoints，
+  然后在 `date_raw=53211504` 的 paused pre-action frame 后报 `native life-advance did not observe the running map`。报告 SHA-256
+  `52CED5F755F529AA96A358603397E24B800F134779575718272D80049E4C8419`，blocker SHA-256
+  `C9BFA9E66006046DF76CE85FB9ECBE80D50145937A53C01DEF7963E06A782114`；角色 `29829` 存活，cleanup 全绿。游戏日志在失败窗口内
+  记录 `paused=true -> paused=false`，证明 resume 已由 CK3 应用。
+- profile 上的最后 checkpoint `date_raw=53211480 / FBC4077473BD48A76F500D6485950F0DBD7841E9AA71AADD67A70044C3AD9E9C`
+  与 driver-state history index `3038` 完全匹配。`3039..3042` 是 checkpoint 后尾，cold restore 会截断；runner 的旧 seed fallback 是
+  opaque auto-turn 的保守分类，不是 checkpoint 损坏。
+- 未修改 `0ceb7d8` 从该 anchor 的独立 cold replay 成功恢复同一角色/episode，并把首个 life 从 `53211480` 推进到 `53211504`；随后
+  pause ACK 为 `submitted -> already_paused`，游戏日志确认 `paused=false -> paused=true`，但 Python 最终仍停在
+  `native_revision=5 / paused=false`。replay blocker SHA-256 为
+  `D49E84C10A686C69C59491419526F091D2CAC530653042B4DF4DB4274C2002CC1`，cleanup 全绿。这证明 GEN-014 的一次 retry 尚不能修补已由
+  bridge 去重的 consumer state frame，也把正式 resume 与 replay pause 统一为 GEN-015。
+- exact-build `PublishSnapshot` 在内部 `previous_snapshot == fresh snapshot` 时去重，且该 equality 没有 consumer adoption ACK。
+  最小修复只在 exact handler 返回 `already_paused/already_running` 时清掉 previous 后执行现有 fresh publish；composite resume 与 pause
+  对称地在原 10 秒 deadline、同 PID/generation/episode/map/speed/event owner 内最多补交一次。两边最终仍必须观察真实 state frame，
+  不信 ACK，不扩展其它 action 或协议。
+- 用户要求继续压低每游戏日耗时。冻结 80.7 MB production driver-state 的独立基准表明：旧 barrier 中位数 `0.944s`，其中
+  `deepcopy=0.544s`；在锁内直接编码 compact JSON bytes 后为 `0.234s`，状态文件缩小约 `52.1%`，单日预计节省 `0.710s`。
+  该改动不变更 schema/version/API/恢复语义，已有独立全 unit 与并发审查 PASS；仍须移植到当前 HEAD 并做 fresh-DLL live A/B。
+- 01:48 static gate 已闭合：GEN-015 与 compact persistence 的两个独立审阅均 PASS；全量 Python
+  `1350 passed, 2 skipped, 908 subtests passed`。fresh Release `xar-native-gen015-20260828T0145Z` 完成 `37/37` CTest 与
+  `ck3_11906.hpp` dependency gate；DLL/injector SHA-256 为 `50227D28...831F2` / `2F6CEB43...35B5C`。因此实现为
+  `static-ready`，但在该 fresh DLL 从 `53211480 / FBC40774...D9E9C` 命中真实 frame/retry 前，GEN-015 继续保持 B1 open，
+  不写 production-live。
