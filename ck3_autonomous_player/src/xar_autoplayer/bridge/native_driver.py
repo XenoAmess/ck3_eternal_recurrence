@@ -324,6 +324,10 @@ class NativeProtocolState:
         self._last_error: dict[str, object] | None = None
         self._semantic_snapshot: dict[str, object] | None = None
         self._command_results: dict[str, dict[str, object]] = {}
+        self._rejected_state_snapshot_count = 0
+        self._last_rejected_state_snapshot: dict[str, object] | None = None
+        self._snapshot_publish_diagnostic_count = 0
+        self._last_snapshot_publish_diagnostic: dict[str, object] | None = None
 
     def ingest(self, frame: dict[str, object]) -> str:
         if not isinstance(frame, dict):
@@ -367,7 +371,24 @@ class NativeProtocolState:
                     raise ValueError("native bridge pong is malformed")
                 self._last_pong = dict(frame)
             elif frame_type == "state_snapshot":
-                snapshot = _semantic_snapshot_from_frame(frame)
+                try:
+                    snapshot = _semantic_snapshot_from_frame(frame)
+                except ValueError as error:
+                    state = frame.get("state")
+                    state_summary = state if isinstance(state, dict) else {}
+                    self._rejected_state_snapshot_count += 1
+                    self._last_rejected_state_snapshot = {
+                        "snapshot_id": frame.get("snapshot_id"),
+                        "revision": frame.get("revision"),
+                        "date_raw": state_summary.get("date_raw"),
+                        "speed": state_summary.get("speed"),
+                        "paused": state_summary.get("paused"),
+                        "map_ready": state_summary.get("map_ready"),
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                    }
+                    self._condition.notify_all()
+                    return "state_snapshot_rejected"
                 # Heartbeat-adjacent publishers may repeat the most recent
                 # semantic frame.  Repeated bytes are liveness, not a new game
                 # revision, so wait_for_change must keep waiting.
@@ -379,6 +400,30 @@ class NativeProtocolState:
                 if not isinstance(request_id, str) or not request_id:
                     raise ValueError("native bridge command_result is malformed")
                 self._command_results[request_id] = dict(frame)
+            elif frame_type == "snapshot_publish_diagnostic":
+                request_id = frame.get("request_id")
+                phase = frame.get("phase")
+                status = frame.get("status")
+                revision = frame.get("revision")
+                payload_bytes = frame.get("payload_bytes")
+                if (
+                    not isinstance(request_id, str)
+                    or not request_id
+                    or phase not in {"begin", "end"}
+                    or not isinstance(status, str)
+                    or not status
+                    or isinstance(revision, bool)
+                    or not isinstance(revision, int)
+                    or revision < 0
+                    or isinstance(payload_bytes, bool)
+                    or not isinstance(payload_bytes, int)
+                    or payload_bytes < 0
+                ):
+                    raise ValueError(
+                        "native snapshot_publish_diagnostic is malformed"
+                    )
+                self._snapshot_publish_diagnostic_count += 1
+                self._last_snapshot_publish_diagnostic = dict(frame)
             elif frame_type == "error":
                 self._last_error = dict(frame)
             else:
@@ -518,6 +563,22 @@ class NativeProtocolState:
             "last_pong": pong,
             "last_error": dict(self._last_error) if self._last_error else None,
             "semantic_state_available": self._semantic_snapshot is not None,
+            "rejected_state_snapshot_count": (
+                self._rejected_state_snapshot_count
+            ),
+            "last_rejected_state_snapshot": (
+                dict(self._last_rejected_state_snapshot)
+                if self._last_rejected_state_snapshot
+                else None
+            ),
+            "snapshot_publish_diagnostic_count": (
+                self._snapshot_publish_diagnostic_count
+            ),
+            "last_snapshot_publish_diagnostic": (
+                dict(self._last_snapshot_publish_diagnostic)
+                if self._last_snapshot_publish_diagnostic
+                else None
+            ),
         }
 
 
@@ -8716,7 +8777,9 @@ class NativeHeadlessGameplayDriver:
                 f"last_native_revision={current.get('native_revision')}, "
                 f"last_date_raw={current.get('date_raw')}, "
                 f"last_speed={current.get('speed')}, "
-                f"last_paused={current.get('paused')}"
+                f"last_paused={current.get('paused')}, "
+                "state_frame_rejections="
+                f"{_state_frame_rejection_summary(current)}"
             )
         return current
 
@@ -8802,7 +8865,9 @@ class NativeHeadlessGameplayDriver:
                 f"last_native_revision={current.get('native_revision')}, "
                 f"last_date_raw={current.get('date_raw')}, "
                 f"last_speed={current.get('speed')}, "
-                f"last_paused={current.get('paused')}"
+                f"last_paused={current.get('paused')}, "
+                "state_frame_rejections="
+                f"{_state_frame_rejection_summary(current)}"
             )
         return current
 
@@ -10702,6 +10767,24 @@ def _retryable_life_advance_timeline_owner(
 def _timeline_ack_status(result: dict[str, object]) -> str:
     status = result.get("status")
     return status if isinstance(status, str) and status else "missing"
+
+
+def _state_frame_rejection_summary(snapshot: dict[str, object]) -> object:
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(diagnostics, dict):
+        return None
+    return {
+        "rejected_count": diagnostics.get(
+            "rejected_state_snapshot_count"
+        ),
+        "last_rejected": diagnostics.get("last_rejected_state_snapshot"),
+        "publish_diagnostic_count": diagnostics.get(
+            "snapshot_publish_diagnostic_count"
+        ),
+        "last_publish": diagnostics.get(
+            "last_snapshot_publish_diagnostic"
+        ),
+    }
 
 
 def _event_instance_id(snapshot: dict[str, object]) -> object:

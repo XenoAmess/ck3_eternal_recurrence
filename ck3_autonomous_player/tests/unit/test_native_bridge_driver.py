@@ -712,6 +712,73 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(disconnected["snapshot"])
         self.assertEqual(disconnected["action_steps"], [])
 
+    def test_rejected_state_snapshot_records_delivery_diagnostics_and_recovers(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(_hello("game.state.snapshot"))
+        endpoint.publish(_snapshot(1, date_raw=53_211_480, paused=False))
+        endpoint.publish(
+            {
+                "type": "snapshot_publish_diagnostic",
+                "protocol_version": 1,
+                "request_id": "pause-fixture",
+                "phase": "begin",
+                "status": "begin",
+                "revision": 1,
+                "payload_bytes": 0,
+            }
+        )
+        malformed = _snapshot(2, date_raw=53_211_504, paused=True)
+        malformed["state"]["active_wars"] = {}  # type: ignore[index]
+        endpoint.publish(malformed)
+        endpoint.publish(
+            {
+                "type": "snapshot_publish_diagnostic",
+                "protocol_version": 1,
+                "request_id": "pause-fixture",
+                "phase": "end",
+                "status": "written",
+                "revision": 2,
+                "payload_bytes": 42_000,
+            }
+        )
+
+        stale = driver.take_internal_semantic_snapshot()
+        diagnostics = stale["diagnostics"]
+        self.assertEqual(stale["native_revision"], 1)
+        self.assertEqual(diagnostics["rejected_state_snapshot_count"], 1)
+        self.assertEqual(
+            diagnostics["last_rejected_state_snapshot"],
+            {
+                "snapshot_id": "native:2",
+                "revision": 2,
+                "date_raw": 53_211_504,
+                "speed": 1,
+                "paused": True,
+                "map_ready": True,
+                "error_type": "ValueError",
+                "error": "native active_wars must be an array",
+            },
+        )
+        self.assertEqual(diagnostics["snapshot_publish_diagnostic_count"], 2)
+        self.assertEqual(
+            diagnostics["last_snapshot_publish_diagnostic"]["status"],
+            "written",
+        )
+
+        endpoint.publish(_snapshot(3, date_raw=53_211_504, paused=True))
+        recovered = driver.take_internal_semantic_snapshot()
+        self.assertEqual(recovered["native_revision"], 3)
+        self.assertTrue(recovered["paused"])
+        self.assertEqual(
+            recovered["diagnostics"]["rejected_state_snapshot_count"], 1
+        )
+
     def test_split_army_half_step_parser_is_exact(self) -> None:
         self.assertEqual(split_army_half_step(1), "split-army-half-1")
         self.assertEqual(
@@ -6806,9 +6873,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "enforce-demands-405", driver.capabilities()["action_steps"]
         )
 
-    def test_native_war_primary_fields_reject_malformed_values(self) -> None:
+    def test_native_war_primary_fields_record_malformed_values(self) -> None:
         endpoint = FakeEndpoint()
-        NativeHeadlessGameplayDriver(
+        driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
             endpoint=endpoint,
         )
@@ -6823,10 +6890,20 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ):
             with self.subTest(field=field):
                 war = {**_war(), field: value}
-                with self.assertRaises(ValueError):
-                    endpoint.publish(
-                        _snapshot(revision, active_wars=[war])
-                    )
+                endpoint.publish(_snapshot(revision, active_wars=[war]))
+                diagnostics = driver.diagnostics()
+                self.assertEqual(
+                    diagnostics["rejected_state_snapshot_count"],
+                    revision - 44,
+                )
+                self.assertEqual(
+                    diagnostics["last_rejected_state_snapshot"]["revision"],
+                    revision,
+                )
+                self.assertIn(
+                    field,
+                    diagnostics["last_rejected_state_snapshot"]["error"],
+                )
 
     def test_native_declaration_query_expands_and_starts_war(self) -> None:
         endpoint = FakeEndpoint()

@@ -148,6 +148,12 @@ struct CheckpointSubmission {
   std::string_view save_name;
 };
 
+struct SnapshotPublishDiagnostics {
+  std::string_view status = "not_attempted";
+  std::uint64_t revision = 0;
+  std::size_t payload_bytes = 0;
+};
+
 std::string HelloFrame(const xar::game::GameAdapter &game) {
   const auto &descriptor = game.descriptor();
   std::string result =
@@ -1629,6 +1635,25 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
   return result;
 }
 
+std::string SnapshotPublishDiagnosticFrame(
+    std::string_view request_id, std::string_view phase,
+    const SnapshotPublishDiagnostics &diagnostics) {
+  std::string result =
+      "{\"type\":\"snapshot_publish_diagnostic\","
+      "\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"phase\":";
+  AppendJsonString(result, phase);
+  result += ",\"status\":";
+  AppendJsonString(result, diagnostics.status);
+  result += ",\"revision\":";
+  result += Number(diagnostics.revision);
+  result += ",\"payload_bytes\":";
+  result += Number(diagnostics.payload_bytes);
+  result += '}';
+  return result;
+}
+
 std::string CommandResultFrame(std::string_view request_id,
                                std::string_view step, bool ok,
                                std::string_view status) {
@@ -2633,12 +2658,24 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
                      const CheckpointSubmission &checkpoint,
                      std::uint64_t &published_checkpoint_sequence,
                      WarEntryApplicationMainMailboxWorkerLifetime
-                         *mailbox_lifetime = nullptr) {
+                         *mailbox_lifetime = nullptr,
+                     SnapshotPublishDiagnostics *diagnostics = nullptr) {
+  const auto record = [diagnostics](std::string_view status,
+                                    std::uint64_t published_revision,
+                                    std::size_t payload_bytes) {
+    if (diagnostics != nullptr) {
+      diagnostics->status = status;
+      diagnostics->revision = published_revision;
+      diagnostics->payload_bytes = payload_bytes;
+    }
+  };
   if (!bindings.supports_snapshot()) {
+    record("unsupported", revision, 0);
     return true;
   }
   xar::game::Snapshot snapshot{};
   if (!xar::game::ReadSnapshot(bindings, snapshot)) {
+    record("read_failed", revision, 0);
     return true;
   }
   if (mailbox_lifetime != nullptr) {
@@ -2646,13 +2683,36 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
   }
   if (previous.has_value() && previous.value() == snapshot &&
       published_checkpoint_sequence == checkpoint.sequence) {
+    record("deduplicated", revision, 0);
     return true;
   }
   ++revision;
+  const auto frame = StateSnapshotFrame(snapshot, revision, checkpoint);
   previous = snapshot;
   published_checkpoint_sequence = checkpoint.sequence;
+  const bool written = xar::bridge::WriteFrame(pipe, frame);
+  record(written ? "written" : "write_failed", revision, frame.size());
+  return written;
+}
+
+bool PublishTimelineSnapshotWithDiagnostics(
+    HANDLE pipe, std::string_view request_id,
+    const xar::game::GameAdapter &bindings,
+    std::optional<xar::game::Snapshot> &previous,
+    std::uint64_t &revision, const CheckpointSubmission &checkpoint,
+    std::uint64_t &published_checkpoint_sequence) {
+  const SnapshotPublishDiagnostics begin{"begin", revision, 0};
+  if (!xar::bridge::WriteFrame(
+          pipe, SnapshotPublishDiagnosticFrame(request_id, "begin", begin))) {
+    return false;
+  }
+  SnapshotPublishDiagnostics completed{};
+  if (!PublishSnapshot(pipe, bindings, previous, revision, checkpoint,
+                       published_checkpoint_sequence, nullptr, &completed)) {
+    return false;
+  }
   return xar::bridge::WriteFrame(
-      pipe, StateSnapshotFrame(snapshot, revision, checkpoint));
+      pipe, SnapshotPublishDiagnosticFrame(request_id, "end", completed));
 }
 
 bool JsonStringField(std::string_view json, std::string_view key,
@@ -2862,9 +2922,9 @@ void RunConnectedSession(
               if (result == xar::game::PauseSubmitResult::already_paused) {
                 previous_snapshot.reset();
               }
-              connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision, checkpoint_submission,
-                                          published_checkpoint_sequence);
+              connected = PublishTimelineSnapshotWithDiagnostics(
+                  pipe, request_id, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
             }
           }
         } else if (step == "resume-map") {
@@ -2887,9 +2947,9 @@ void RunConnectedSession(
               if (result == xar::game::ResumeSubmitResult::already_running) {
                 previous_snapshot.reset();
               }
-              connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                          state_revision, checkpoint_submission,
-                                          published_checkpoint_sequence);
+              connected = PublishTimelineSnapshotWithDiagnostics(
+                  pipe, request_id, game, previous_snapshot, state_revision,
+                  checkpoint_submission, published_checkpoint_sequence);
             }
           }
         } else if (step == "save-checkpoint") {
