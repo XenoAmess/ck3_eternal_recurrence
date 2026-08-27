@@ -85,16 +85,16 @@
   `1DE73B16...8249C3`。这只升级这些特定 backing rows，不覆盖 visual icon、trait remove、其它 stress 分支或 scheme。该 vector
   不含资源/关系 delta、完整性信号或 effect execution order，不得冒充 full preview。
 - [static-confirmed] [army-controller.md](army-controller.md) 记录战争 stance、目标候选和评分、重算节拍、
-  `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例。
+  `CAISubunitStack` 分派状态机、围城/追击/战斗/撤退切换边界，以及战争 `16777290` 的双敌军实例；并新增
+  CUnit raw kind `0/1`、CFleet→CArmy→canonical CUnit 链与原生 move/contact tactical identity gate。
 - [static-confirmed + production blocker live] [army-contact-resolution.md](army-contact-resolution.md) 把原生 AI 的目标/避战门连接到
   normal daily movement，并闭合“全军移动后按 queue 接触”、省份 full-CUnitID 数值序 opponent、已有战斗优先、
   多战斗 tie-break、新战斗 participant 顺序与 `initiator_is_defender` 攻守极性；public speed 1..5 不改变这条逐 native-day
-  movement/contact 链。最新六支可控军正式帧又证明 geometric stationary threat 把敌军 `134` 日后的 route vertex
-  错当成当前危险；随后 live replay 也证明 wire/schema 虽能表达空 route，exact-build reader 的 stationary
-  `target=current` 路径仍会在 interval projection 前因 move-mode/origin 前置返回 `route_unavailable`。最小 counter-policy
-  不再发第二条 query，而是复用成功 moving horizon 已发布的完整 hostile timelines，按原生闭区间语义重投影同帧 stationary
-  holds，再与全军条件取 conjunction；该方案为 static-ready、live replay pending，不需要新增 native ABI。异步 pause 各速
-  overshoot envelope 与非 daily placement 仍为 unknown。
+  movement/contact 链。共享 hostile timeline 已 production-live 解除原 GEN-018；随后正式 run 又实见一个旧 reader 投影为
+  stationary 的 CUnit 与 embarked 主体连续 59 日逐省同步，并因 186 次失败 preview 浪费 `572.765s`。exact-build 结构闭合其
+  CFleet carrier 形状：raw kind `1` 不通过原生 move/contact gate，只有 raw kind `0` 且 CArmy backlink 回到同一 full CUnitID
+  才能进入 tactical ArmySnapshot。该 reader 过滤与首次拒绝即停止 target scan 已 static-ready，具体 live ID 对仍待 cold replay。
+  非 daily placement 的完整全序仍为 unknown。
 - [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
   application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
   `join_existing` 与 multiple-compatible 实机分支仍待闭合。

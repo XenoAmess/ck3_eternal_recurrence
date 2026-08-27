@@ -45,9 +45,12 @@
 - `objective_province_states`: 与 `war_objective_province_ids` 同序的 additive 省份状态；下述四个 capability 分域公布，未知 build、partial adapter、过渡帧或超出共享预算时保持空数组/不可观测，不能把 unknown 当成零
 - `enemy_primary_default_raise_province_id`: 对方 primary 角色的原生默认集结省；无法解析时为 `null`。它不是解码出的 war goal、首都或真实行军目标；当前只为诊断与旧 adapter 兼容而发布，不是 planner 的自动目标
 - `player_relative_war_score`: 相对玩家视角的整数战争分
-- `allied_armies` / `enemy_armies`: 当前能从原生对象读取的军队数组
+- `allied_armies` / `enemy_armies`: 当前能从原生对象读取的 **canonical tactical army** 数组；只发布
+  `CUnit+0x18 raw-kind == 0`，且 `CUnit+0x178 → generation-valid CArmy → CArmy+0x124` 回到同一完整
+  CUnitID 的行。raw-kind `1` 的 CFleet carrier 不接受 army move/contact，不能作为另一支 stationary 军队发布
 
-顶层 `player_armies` 保留玩家仍在场的可控军队。它不能只从 `active_wars` 临时推导：战争结束后的下一帧必须还能看见残留军队，planner 才能发出解散命令。
+顶层 `player_armies` 保留玩家仍在场且通过同一 canonical tactical identity gate 的可控军队。它不能只从
+`active_wars` 临时推导：战争结束后的下一帧必须还能看见残留 canonical 军队，planner 才能发出解散命令。
 
 ### Exact 目标省状态
 
@@ -79,12 +82,14 @@
 - `fort_level` 是 plain `int32`，零是合法值。它和占领状态都是 Province 直接标量 getter，可在 running snapshot 发布。
 - `garrison_size` 与 `besieging_strength` 都是 plain 当前兵数，不使用 fixed-point scale；前者来自 Province wrapper `0x220E710`，后者来自 `0x220E580`。后者正是原生 `CSiege.GetSiegeMenBalance` 的进攻方分子，可用于判断“围城军少于守军/进度停滞”。这两个 getter 会进入可变 Holding/CUnit 子图，因此只在 paused snapshot 可观测。
 - paused 行中 `siege_observable=true, active_siege=null` 明确表示 `Province+0x790 == -1`，即当前没有围城；`siege_observable=false` 才表示未读取或解析失败。running snapshot 不进入 CSiege storage，固定保持 `siege_observable=false`。
-- active siege 必须依次通过完整 `SiegeID` storage roundtrip、`CSiege+0x08` full-ID、原生 alive gate 和 `CSiege+0x200 == Province*` 回指；任一失败都不发布部分 siege。`CSiege+0x208` 是内部 `CArmyID`，只有与本帧 generation-valid `CUnit+0x178` **唯一**匹配时，才映射为公开 `ArmySnapshot.army_id`；零个或多个匹配均保持 `null`。任一匹配属于玩家仍可令 `player_army_besieging=true`。
+- active siege 必须依次通过完整 `SiegeID` storage roundtrip、`CSiege+0x08` full-ID、原生 alive gate 和 `CSiege+0x200 == Province*` 回指；任一失败都不发布部分 siege。`CSiege+0x208` 是内部 `CArmyID`，只有与本帧已通过 raw-kind/backlink gate 的 canonical CUnit **唯一**匹配时，才映射为公开 `ArmySnapshot.army_id`；零个或多个匹配均保持 `null`。任一匹配属于玩家仍可令 `player_army_besieging=true`。
 - `progress_fraction` 是 CK3 的 0..1 CFixedPoint 比例，`raw=100000` 才是 100%，不是 UI 百分数 100。current/total work 与它共用 `{raw,scale:100000}` 表示，但工作量本身不能重命名成兵数或天数。比例越界或工作量为负时整个 active siege 被抑制。
 - `days_left=0` 合法；原生 `INT_MAX` 表示失效、停滞或没有每日进度，桥接为 `null`，绝不发布成 2147483647 天。
 - rich state 使用全 snapshot 共享的 256 行预算：暂停时 heartbeat 仍每 250 ms 运行，不能让最多 4096 个目标省各自反复调用多组引擎 getter。按战争原子发布；一场战争的完整列表放不下时，该场 `objective_province_states=[]`，不发布截断前缀。fixture 构造 257 个完整郡首府单独钉死该边界，并覆盖目标树 4096 上限、running/paused 分界、无围城与 unavailable 区分、ID generation、alive、Province 回指、非法进度、停滞天数和内部军队 ID 歧义。
 
-军队 canonical 字段为：
+ArmySnapshot 的纳入门先于下列字段读取：raw-kind `0`、`CUnit+0x178` 的完整 CArmyID 可解析，且
+`CArmy+0x124` backlink 等于当前完整 CUnitID。`GetUnitState=regular` 不替代该门；raw-kind `1` 的 CFleet carrier
+可能与 embarked canonical CUnit 同省移动但没有自己的 route，必须整行排除。通过后军队 canonical 字段为：
 
 - `army_id`, `owner_character_id`
 - `soldiers`: 非负整数；当前构建若尚未稳定解析兵力偏移，允许为 `null`
@@ -387,7 +392,7 @@ OCR、截图或键鼠；每次时间推进后的决策帧都重新暂停。
 ## Known limitations
 
 - `CSiege` 是 Province 全局对象；若多场 active war 共享同一目标省，当前 snapshot 不能证明该围城归属哪一场战争。
-- 多军 planner 每轮仍只为一支军队选择一个动作，尚未形成围城目标分配与协同调度的完整闭环；但时间推进门槛会审计全部活动路线与全部 stationary `regular/sieging` 驻地威胁，并优先处理不安全路线和受威胁驻军，不再由 strongest 军队单独放行时间。
+- 多军 planner 每轮仍只为一支军队选择一个动作，尚未形成围城目标分配与协同调度的完整闭环；但时间推进门槛会审计全部 canonical tactical 活动路线与全部 stationary `regular/sieging` 驻地威胁，并优先处理不安全路线和受威胁驻军，不再由 strongest 军队单独放行时间。CFleet carrier 不进入该集合。
 - `_stable_tactical_war` 固定优先 exact attacker、primary leader 与稳定 `war_id`，不会因首战目标已全占或另一战正在失分而动态切换；尚未形成完整 multi-war 闭环。
 - 当前能力可以读出围城是否真实推进，并已具备受限的 split/merge 原子命令；但没有野战编成/胜率、可靠补员或
   雇佣评估，Assault 也尚无当前现场的完整安全验收，因此仍不能保证完成 115–217 天级围城。所有 exact 目标都被
@@ -410,7 +415,7 @@ outcome 与完整条款的 pending interaction 一律不自动接受或拒绝，
    primary 身份本身 unknown 也按此 fail closed，只有明确的非 primary 盟军战争不触发该退出门。
 4. 玩家是进攻方、本方 primary war leader 且存在 exact `war_objective_province_ids`：从战争刚开始的 0 分起围攻 exact 目标。rich fort/garrison 可观测时按 `fort_level, garrison_size, native DFS tie-break` 优先选择更易目标；capability 缺失、值 unknown 或同值时保留 native DFS 顺序。这是有意的策略层重排，不改变 snapshot 的契约顺序。paused 状态先预览完整原生路线，再按上面的硬冲突审计；普通规划不安全才预览下一目标，受威胁 exact 围城撤离则先收齐同日/同 origin 的全部候选，再选 hop 最短、rank 稳定的安全路线。所有 exact 路线都不安全时保持暂停，绝不偷用 legacy fallback；恢复 advisory 命中的旧 target+route 组合也视为不可选。
 5. 没有 safe exact 目标且没有 exact combat forecast 时，保持暂停，或仅执行已有 exact-safe 的 hold / rendezvous；禁止按 `soldiers` 选择最大可见敌军、追逐其 current province，也禁止把 legacy `enemy_primary_default_raise_province_id` 当作自动目标。
-6. 军队已经在 exact 目标省或已有仍安全的 accepted/submitted move intent：只有全部可控军与全部非撤退敌军的完整 M × N route audit、全部 stationary `regular/sieging` 驻地威胁审计都安全，才允许 `life-advance`。任一玩家/敌军 tactical route、任一可控军 combat/retreat 或 active Assault 都强制一日 paused-to-paused slice；其余 active-war slice 最多 7 日，不得无观察跨过 7/14 日 target milestone。unsafe route 优先于普通目标推进；安全 active Assault 也不能越过全局门槛。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。
+6. 军队已经在 exact 目标省或已有仍安全的 accepted/submitted move intent：只有全部 canonical tactical 可控军与全部 canonical tactical 非撤退敌军的完整 M × N route audit、全部 stationary `regular/sieging` 驻地威胁审计都安全，才允许 `life-advance`。任一玩家/敌军 tactical route、任一可控军 combat/retreat 或 active Assault 都强制一日 paused-to-paused slice；其余 active-war slice 最多 7 日，不得无观察跨过 7/14 日 target milestone。unsafe route 优先于普通目标推进；安全 active Assault 也不能越过全局门槛。running snapshot 先暂停再读完整路线；敌情变化后每次推进前重新审计，不把上一次 preview 当永久通行证。任一 threatened subject 的首次 native preview 若在 route construction 前因 move-mode/state gate deferred，保留 exact rejection stage 并停止其余目标扫描。
 7. 战争消失但玩家军队仍在场：逐支执行 `disband-army-<army_id>`。
 
 Typed MCP 工具为 `ck3_get_war_state`、`ck3_query_declarable_wars`、`ck3_declare_war`、`ck3_raise_troops_default`、`ck3_move_army`、`ck3_enforce_demands` 和 `ck3_disband_army`。通用 `ck3_plan_turn` / `ck3_auto_turn` 使用同一份状态和 step，不另建旁路策略。纯 native 缺少任何 capability 时明确返回 unsupported；Python 不会回落到最小化窗口的视觉点击。

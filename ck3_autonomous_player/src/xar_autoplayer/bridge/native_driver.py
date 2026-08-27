@@ -278,15 +278,14 @@ _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES = frozenset(
         MOVE_ARMY_CAPABILITY,
     }
 )
-_ARMY_MOVE_DEFERRED_ERRORS = frozenset(
-    {
-        # Kept for protocol-v1 bridges built before the native rejection
-        # stages were split.
-        "CK3 army cannot move to the destination",
-        "CK3 army has no move mode for the destination",
-        "CK3 army state rejects movement",
-    }
-)
+_ARMY_MOVE_DEFERRED_ERROR_STAGES = {
+    # Kept for protocol-v1 bridges built before the native rejection stages
+    # were split.
+    "CK3 army cannot move to the destination": "legacy_unclassified",
+    "CK3 army has no move mode for the destination": "move_mode_unavailable",
+    "CK3 army state rejects movement": "army_state_rejected",
+}
+_ARMY_MOVE_DEFERRED_ERRORS = frozenset(_ARMY_MOVE_DEFERRED_ERROR_STAGES)
 
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
@@ -5415,6 +5414,12 @@ class NativeHeadlessGameplayDriver:
                     "route_preview": {
                         "status": "deferred",
                         "reason": "army_not_move_ready",
+                        "native_rejection_stage": (
+                            _ARMY_MOVE_DEFERRED_ERROR_STAGES[
+                                error.native_error
+                            ]
+                        ),
+                        "native_error": error.native_error,
                         "army_id": army_id,
                         "origin_province_id": origin_province_id,
                         "target_province_id": province_id,

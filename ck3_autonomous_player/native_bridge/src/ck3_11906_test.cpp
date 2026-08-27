@@ -4127,6 +4127,27 @@ int main() {
   if (snapshot.active_wars[0].objective_province_states.size() != 3) {
     return Fail("exact war objectives omitted Province state rows");
   }
+  Store(g_player_army, 0x18, std::int32_t{1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.player_armies.empty() || snapshot.active_wars.size() != 1 ||
+      !snapshot.active_wars[0].allied_armies.empty() ||
+      snapshot.active_wars[0].enemy_armies.size() != 1) {
+    return Fail("CFleet carrier CUnit leaked into tactical army snapshots");
+  }
+  Store(g_player_army, 0x18, std::int32_t{0});
+  Store(g_player_internal_army, 0x124, third_army_id);
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      !snapshot.player_armies.empty() || snapshot.active_wars.size() != 1 ||
+      !snapshot.active_wars[0].allied_armies.empty() ||
+      snapshot.active_wars[0].enemy_armies.size() != 1) {
+    return Fail("non-canonical CUnit-to-CArmy backlink was published");
+  }
+  Store(g_player_internal_army, 0x124, player_army_id);
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.player_armies.size() != 1 ||
+      snapshot.player_armies[0].army_id != player_army_id) {
+    return Fail("canonical tactical army did not recover after fixture restore");
+  }
   const auto &running_objective_state =
       snapshot.active_wars[0].objective_province_states[0];
   if (!running_objective_state.occupation_observable ||
@@ -6115,11 +6136,11 @@ int main() {
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars[0]
               .objective_province_states[0]
-              .besieging_army_id != -1 ||
+              .besieging_army_id != player_army_id ||
       !snapshot.active_wars[0]
            .objective_province_states[0]
            .player_army_besieging) {
-    return Fail("ambiguous CArmy-to-CUnit join selected an arbitrary unit");
+    return Fail("non-canonical CArmy-to-CUnit join polluted siege identity");
   }
   Store(g_enemy_army, 0x178, enemy_internal_army_id);
 

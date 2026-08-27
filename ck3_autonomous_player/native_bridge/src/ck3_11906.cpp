@@ -337,6 +337,7 @@ constexpr std::size_t kLandedTitleSuccessionIdsOffset = 0x278;
 constexpr std::int32_t kBaronyTitleTier = 1;
 constexpr std::int32_t kCountyTitleTier = 2;
 constexpr std::size_t kArmyIdOffset = 0x10;
+constexpr std::size_t kUnitKindRawOffset = 0x18;
 constexpr std::size_t kArmyCurrentProvinceOffset = 0x20;
 constexpr std::size_t kArmyTargetProvinceOffset = 0x30;
 constexpr std::size_t kUnitPathProvinceInfosOffset = 0x38;
@@ -3759,6 +3760,29 @@ struct ResolvedArmySnapshot {
   ArmySnapshot snapshot{};
 };
 
+void *ResolveStoredComponent(void **storage_slot, std::int32_t component_id,
+                             std::size_t component_id_offset) noexcept;
+
+bool IsCanonicalOrderableArmyUnit(const Bindings &bindings, void *unit,
+                                  std::int32_t public_cunit_id) noexcept {
+  // CUnit kind 0 is the direct CArmy-linked/orderable representation. Kind 1
+  // is a CFleet carrier CUnit; native movement and contact gates reject it and
+  // its +0x178 field must not be interpreted as an independently orderable
+  // army. Close the direct CUnit -> CArmy -> canonical CUnit backlink before
+  // publishing either side to tactical policy.
+  if (LoadAt<std::int32_t>(unit, kUnitKindRawOffset) != 0) {
+    return false;
+  }
+  const auto native_carmy_id =
+      LoadAt<std::int32_t>(unit, kUnitArmyIdOffset);
+  void *const native_carmy = ResolveStoredComponent(
+      bindings.army_internal_storage_slot, native_carmy_id,
+      kInternalArmyIdOffset);
+  return native_carmy != nullptr &&
+         LoadAt<std::int32_t>(native_carmy,
+                              kInternalArmyUnitIdOffset) == public_cunit_id;
+}
+
 std::vector<ResolvedArmySnapshot>
 ReadArmies(const Bindings &bindings, void *game_state,
            std::int32_t played_character_id,
@@ -3790,6 +3814,9 @@ ReadArmies(const Bindings &bindings, void *game_state,
         LoadAt<std::int32_t>(army, kArmyIdOffset);
     if ((static_cast<std::uint32_t>(army_id) & 0x00FFFFFFU) !=
         static_cast<std::uint32_t>(index)) {
+      continue;
+    }
+    if (!IsCanonicalOrderableArmyUnit(bindings, army, army_id)) {
       continue;
     }
 

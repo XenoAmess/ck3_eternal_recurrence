@@ -12,10 +12,10 @@ gameplay 能力，
 - CK3 版本：`1.19.0.6`；
 - `Crusader Kings III/binaries/ck3.exe` SHA-256：
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
-- 盘点日期：2026-08-26；
+- 盘点日期：2026-08-28；
 - 本轮 P1 施工起始代码基线：`2d93a54`；
-- 当前持续实机 checkpoint：日期 `53177976`，SHA-256
-  `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。
+- 当前持续实机 checkpoint：日期 `53213688`，SHA-256
+  `B60348DA223585995B5E1CF1A022180D0F3D89CAD6E4094F66DA107C608324F1`。
 
 现状可以概括为：
 
@@ -35,7 +35,10 @@ gameplay 能力，
 5. P1 整体仍在进行中：`join_existing`/multiple-compatible、assigned reinforcement timeline/join、
    Monte Carlo、no-normal/residual/assignment-reopened terminal fixtures 与主动接战策略仍不可用；terminal normal live 已完成，
    normal/no-normal、cleanup、rescan 和 AI re-entry exact-build 静态树已闭合，不能再用 ResultID 缺失猜 terminal kind；
-6. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
+6. 最新正式一代 run 又推进 38 日后暴露 CFleet carrier 被误投影为独立 ArmySnapshot：该 row 与 embarked 主体连续
+   59 日逐省同步，却触发 186 次失败 preview。CUnit raw kind、CFleet→CArmy→canonical CUnit 与原生 move/contact gate
+   已 static-confirmed；canonical tactical reader 过滤和首次拒绝即停止扫描已 static-ready，cold replay pending；
+7. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
 
 安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
 理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
@@ -123,7 +126,7 @@ flowchart LR
 | 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | application-main typed result 已在当前合法 `claim_cb` target production-live；它不是战斗胜率或战争效用。完整 forecast/cost/exit 缺失时 planner 以 `NO_DECLARE` 继续时间而不宣战。 |
 | 战争总览 | WarID、攻守、主对手、leader、目标 titles/provinces、相对战分、敌我/盟军 | 多项 live-confirmed；没有完整参战承诺、补给、财政、全部 score 成因与战争全局机会成本。 |
 | 目标与围城 | 占领、fort、garrison、besieger、进度、days left、breach、assault 状态/日进度/伤亡 | 基础围城 live-confirmed；assault 动作与完整 outcome 仍需实机矩阵。 |
-| 军队与路线 | ArmyID、owner、province、route、move target、state、combat/retreat、controllable | 大部分 live-confirmed。没有补给/损耗、兵种组成常驻快照、军队 commander policy、embark、raid、站位或多 war assignment。 |
+| 军队与路线 | canonical tactical ArmyID、owner、province、route、move target、state、combat/retreat、controllable | 大部分 live-confirmed。raw-kind `0` direct-CArmy-linked 与 raw-kind `1` CFleet carrier 的 exact gate 已 static-confirmed，reader 过滤 static-ready/live replay pending。没有补给/损耗、兵种组成常驻快照、军队 commander policy、通用 embark/raid、站位或多 war assignment。 |
 | 路线接触 | subject/全部 active-war hostile 的 exact arrival timeline；下一日 vertex/opposing-edge 冲突 | production live accepted；当前 fixture 的 ETA `53178264` 与首个真实 contact 帧相等。 |
 | 军力 | current/max soldiers、原生 AI base power 聚合 | 三个 ArmyID paused live accepted；明确不是胜率。 |
 | 假设接战 v2 | regiment effective stats/counter、knights、commander、terrain、crossing、holding、width | native query 已实现，paused live acceptance pending。 |
@@ -212,6 +215,10 @@ DLL template 本身当成随时可执行动作。
   `A57FF20DCAD39DF79DAB6A9418054C36B0F5489C5D8B5E9E880CE899AE89DF9C`。新增 full-CombatID query 的完整动作重跑又读到
   `CombatID=335544325` 从 main/12 进入 pursuit/0、winner=defender，双方 stored-order IDs 不变；artifact SHA
   `21D58737126CA4ED8B0B49DB7749EA4701F3BA6F94A8B8493698F8737E5784FA`，source save SHA 不变且 cleanup proven。
+- 一代正式 run `20260827T201247Z-one-generation-c1cdfbc7` 从共享 hostile timeline 修复后又推进 38 日；其
+  report/first-blocker SHA 为 `C011A2B...226 / 1BF4F666...A87`。CUnit `150995278` 与 embarked `33554818`
+  在 59 日内逐省同步、随后前者触发 186 次失败 preview；这项真实 B1 已把 tactical identity 施工收窄到 raw-kind/CFleet
+  过滤，尚待从最新 checkpoint cold replay 升级为 production-live。
 
 尚未闭合：
 
@@ -337,7 +344,8 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 ### P2：把当前战争打到合法终局
 
-- 原生 AI 树：补齐 army-controller 的 supply/attrition/embark/merge/rally/assault 决策，并完成 termination 的 terms、
+- 原生 AI 树：CUnit/CFleet/canonical movement subject gate 已闭合；继续补齐 army-controller 的
+  supply/attrition/embark policy/merge/rally/assault 决策，并完成 termination 的 terms、
   acceptance 与何时退出树。
 - 观测：ordinary white-peace 的 pending subtype + WarID + primary-side 绑定已 production-live；这不闭合
   victory/defeat、special outcome terms、structured terms 或 semantic decision。继续补完整 score breakdown/ticking、所有

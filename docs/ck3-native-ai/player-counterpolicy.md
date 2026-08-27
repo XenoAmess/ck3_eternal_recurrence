@@ -30,7 +30,8 @@
 
 - [inference][counter-policy] 对 moving 军队，正整数 target、完整正整数 route、规范化后的最后一跳等于 target
   才构成可审计 observation；缺字段、route 为空或 endpoint/target 不一致时保持暂停。
-- [inference][counter-policy] stationary 军队可以把 current province 作为明确的 `hold` 位置，但不能伪造一条空
+- [inference][counter-policy] 只有通过 raw-kind `0` 与 CUnit→CArmy→canonical CUnit backlink 门的 tactical army，
+  才能在 route 为空时把 current province 解释为明确 `hold`；CFleet carrier 不进入 stationary 集合，也不能伪造空
   route 的 endpoint assignment。
 - [unknown] 当前 schema 没有语义明确的 exact combat prediction ratio；所以本文的主动接战分支在当前版本
   必须失败关闭。
@@ -95,8 +96,8 @@ flowchart TD
 
 1. [inference][counter-policy] **Evidence gate**：任何 moving 状态、target 或 route 子域不完整时，禁止
    life-advance、split、merge 与主动接战；先恢复 paused exact observation。
-2. [inference][counter-policy] **Global emergency**：先处理 unsafe active route，再处理受汇聚威胁的
-   stationary `regular/sieging` 军队；一支安全军队不能替另一支危险军队放行时间。
+2. [inference][counter-policy] **Global emergency**：先处理 unsafe active route，再处理已通过 canonical tactical identity
+   门且受汇聚威胁的 stationary `regular/sieging` 军队；一支安全军队不能替另一支危险军队放行时间。
 3. [inference][counter-policy] **Combat / retreat**：不向该军发送 CK3 不可接受或语义未知的新命令；其他军队
    仍需全局审计，之后才允许一个 bounded paused-to-paused slice。
 4. [inference][counter-policy] **Cohesion**：多个玩家 stack 必须各自拥有 durable goal、全敌交叉安全和明确
@@ -330,10 +331,10 @@ completion/current/previous 相等门禁约束。最小施工改为：
 派生，不冒充 stationary ArmyID 自己取得了 subject-bound native proof；没有 exact combat forecast 时也不把 contact 改写成
 “可以打”。
 
-[static-ready, live replay pending] 共享 hostile timeline 的随后一日 postcondition 尚待从 durable checkpoint fresh replay；
-在此之前不能标 production-live。未来出现“所有军队都 stationary、没有任何 committed moving proof 可作为现有 advance
-token”的真实 blocker 时，再依据实证决定是否扩展 stationary-bound advance；本轮不得为未发生形状新增 multi-subject API
-或另一套时间命令。
+[production-live loop] 共享 hostile timeline 已由 `e619219` cold canary 完成 `12/12` turns、4 次一日推进、2 个
+checkpoint 与 cleanup GREEN；正式 run 随后又连续推进 38 日。因此 GEN-018 的时间维度丢失已经关闭。正式 run 新暴露的
+不是“所有军队都 stationary”，而是一个表面 stationary、实际与 embarked 主体连续同省移动的 non-orderable CUnit；它不能
+继续套用独立 hold 模型。
 
 ```mermaid
 flowchart TD
@@ -358,6 +359,35 @@ flowchart TD
     V["[unknown] future all-stationary advance shape"] -. "[unknown] only if a real blocker appears" .-> D
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,V unknown;
+```
+
+### 2026-08-28 CFleet carrier：从 tactical set 源头排除
+
+[live-confirmed] `date_raw=53213736` 时，CUnit `150995278` 与 `33554818` 同在 Province `951`；后者继续沿
+`[8672,5696,5709,704,5715]` 航海，前者仍被旧 reader 显示为 `regular / target=null / route=[]`。回看 history 可见两者
+连续 59 个游戏日逐省同步。对前者提交的 186 个 route previews 均为 `army_not_move_ready`，合计 `572.765s`。
+完整 artifact/hash 与 raw-kind/CFleet 原生树见 [army-contact-resolution.md](army-contact-resolution.md)。
+
+[counter-policy] tactical army 集合必须先服从原生 movement/contact identity gate：只接受 raw-kind `0`，再闭合
+`CUnit+0x178 → generation-valid CArmy → CArmy+0x124 == 当前完整 CUnitID`。raw-kind `1` 的 CFleet carrier 是运输表示，
+不是第二支 stationary army；它既不参加 M × N stationary threat，也不接受 route preview。无需把 canonical 主军的 horizon
+“转授”给 carrier，因为 carrier 根本不进入独立战术主体集合。
+
+[counter-policy] 仍保留成本止损：若某个真正进入 tactical set 的 threatened CUnit 在同一 paused revision 第一次 preview
+就被原生 move-mode/state gate 拒绝，立即保留 exact rejection stage 并停止其余 target 枚举，返回窄观测 blocker；不得再用
+不同目标重复测试同一 subject 的 orderability。该止损本身不授权推进时间或接战。
+
+```mermaid
+flowchart TD
+    U["[static-confirmed] CUnit row"] --> K{"raw-kind == 0?"}
+    K -->|no / CFleet-linked| X["[counter-policy] exclude from tactical set"]
+    K -->|yes| C{"CArmy full ID valid<br/>and +0x124 backlink matches?"}
+    C -->|no| X
+    C -->|yes| P["[counter-policy] publish ArmySnapshot"]
+    P --> T["[counter-policy] route / stationary threat audit"]
+    T --> D{"first native preview deferred?"}
+    D -->|yes| B["[counter-policy] preserve rejection stage<br/>stop target scan"]
+    D -->|no| A["[counter-policy] continue normal route policy"]
 ```
 
 ## Cohesion、Split 与 Merge

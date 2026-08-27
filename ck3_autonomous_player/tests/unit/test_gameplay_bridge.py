@@ -2431,9 +2431,17 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("life-advance",),
         )
         self.assertEqual(
-            deferred["phase"], "native_war_no_safe_exact_route"
+            deferred["phase"],
+            "native_war_move_readiness_observation_required",
         )
         self.assertIsNone(deferred["selected_step"])
+        self.assertEqual(
+            deferred["required_step"], "query-native-army-move-readiness"
+        )
+        self.assertEqual(len(deferred["route_rejections"]), 2)
+        self.assertEqual(
+            deferred["route_rejections"][-1]["target_province_id"], 2510
+        )
 
     def test_production_shape_187_objectives_stops_after_first_safe_preview(
         self,

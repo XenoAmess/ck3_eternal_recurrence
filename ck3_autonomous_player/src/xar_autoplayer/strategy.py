@@ -4967,9 +4967,36 @@ def choose_one_life_turn(
                     isinstance(preview, dict)
                     and preview.get("status") == "deferred"
                 ):
+                    if stationary_threats:
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": (
+                                    "deferred_while_stationary_province_threatened"
+                                ),
+                            }
+                        )
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": (
+                                "native_war_move_readiness_observation_required"
+                            ),
+                            "selected_step": None,
+                            "required_step": (
+                                "query-native-army-move-readiness"
+                            ),
+                            "reason": (
+                                "the same-frame native preview rejected this "
+                                "canonical threatened CUnit before route "
+                                "construction; target enumeration cannot "
+                                "change the subject's move readiness"
+                            ),
+                            "route_preview": preview,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
                     if (
                         active_route_unsafe
-                        or stationary_threats
                         or isinstance(exact_siege_rejection, dict)
                     ):
                         route_rejections.append(
@@ -4978,8 +5005,6 @@ def choose_one_life_turn(
                                 "status": (
                                     "deferred_while_active_route_unsafe"
                                     if active_route_unsafe
-                                    else "deferred_while_stationary_province_threatened"
-                                    if stationary_threats
                                     else "deferred_while_exact_siege_rejected"
                                 ),
                             }

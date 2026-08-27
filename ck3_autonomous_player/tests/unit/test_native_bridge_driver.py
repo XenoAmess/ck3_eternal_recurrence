@@ -6909,6 +6909,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["status"], "deferred")
         self.assertEqual(result["route_preview"]["status"], "deferred")
         self.assertEqual(
+            result["route_preview"]["native_rejection_stage"],
+            "army_state_rejected",
+        )
+        self.assertEqual(
+            result["route_preview"]["native_error"],
+            "CK3 army state rejects movement",
+        )
+        self.assertEqual(
             result["route_preview"]["previewed_date_raw"], 53_171_400
         )
 

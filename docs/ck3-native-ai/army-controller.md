@@ -40,6 +40,36 @@
 | [static-confirmed] | 同省分支 | 目标省等于当前省时转入 `0x191B080`/`0x1873100` 一带的 local-objective helpers。 |
 | [unknown] | local-objective helper | helpers 的精确分工尚未闭合，可能涉及 siege、wait、support 或其它原地任务；现阶段不得把任一 helper 命名为 exact “start siege”。 |
 
+### CUnit、CFleet 与 canonical movement subject
+
+- [static-confirmed] CUnit `+0x18` 是 raw kind。raw `0` 使用 `+0x178` 的 CArmyID；raw `1` 使用
+  `+0x17C` 的 CFleetID。`0x2246EC0` 分别沿这两条路径取关联 CArmy。
+- [static-confirmed] CFleet storage 为 `module+0x57BFDE0`，RTTI/vtable 为 `0x54A3488 / 0x43075A8`；
+  `CFleet+0x18` 回链 public carrier CUnit，`CFleet+0x1C` 连接 CArmy，CArmy `+0x124` 再给出
+  canonical/orderable CUnit。`0x22492A0` 直接消费这组字段。
+- [static-confirmed] player move validator `0x2248860` 与 contact queue `0x220BB88` 一带均拒绝 raw kind 非零的
+  CUnit。故 AI controller/tactical planner 的独立移动主体必须是 raw-kind `0` 且
+  `CUnit+0x178 → CArmy → CArmy+0x124` 回到同一完整 CUnitID；CFleet-linked carrier 不是另一个 stationary stack。
+- [live-confirmed + inference] 正式长跑中 `150995278` 与 embarked canonical row `33554818` 连续 59 日逐省同步，
+  但旧 snapshot 把前者误投影为 `regular/no route` 并做了 186 次失败 preview。具体 ID 对的 raw-kind/CFleet 关系仍待
+  cold replay 直接闭环；完整 artifact 与边界见 [army-contact-resolution.md](army-contact-resolution.md)。
+- [unknown] raw kind 的正式枚举符号名、其它可能值与完整舰队创建/销毁树尚未恢复；这些 unknown 不改变 raw `1`
+  已由 exact movement/contact gate 排除的结论，也不构成本次 G1 blocker-removal 的前置。
+
+```mermaid
+flowchart TD
+    U["[static-confirmed] CUnit"] --> K{"raw kind +0x18"}
+    K -->|0| A["+0x178 → CArmy"]
+    A --> C{"CArmy+0x124 == full CUnitID?"}
+    C -->|yes| O["canonical/orderable movement subject"]
+    C -->|no| X["exclude from tactical army set"]
+    K -->|1| F["+0x17C → CFleet<br/>+0x1C → CArmy → +0x124 canonical CUnit"]
+    F --> X
+    N["[unknown] formal enum names / other kinds"] -.-> K
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class N unknown;
+```
+
 ## 第一层：war stance 选择
 
 - [static-confirmed] 原版 `_ai_war_stances.info` 明确说明：stance 先按 AI 所在 side 与相对 power

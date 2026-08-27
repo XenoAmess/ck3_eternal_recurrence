@@ -424,6 +424,49 @@ flowchart TD
   `CArmy+0x124 → CUnit` 与其当前 Province，再 tail-jump `0x2208320`。它还有多个 callsites；本页不把这些
   event-driven callsites 的相对调度顺序冒充 normal daily queue order。
 
+## 2026-08-28 live correction：CFleet carrier 不是独立战术军队
+
+- [live-confirmed] `e619219` canary 已证明共享 hostile timeline 能正确跨过原 `8658` frame；正式 run
+  `20260827T201247Z-one-generation-c1cdfbc7` 又从同一 episode 推进 38 个游戏日到
+  `date_raw=53213736`。report SHA-256 为
+  `C011A2B624FF5EF4333F4FD1AE51A0BA6B942A4C47A99E1D912635C5405DD226`，first-blocker SHA-256 为
+  `1BF4F6668B4D4396B174504DF791315366349DA8B395B72807866D573A735A87`；角色仍活、checkpoint 可恢复、cleanup 全绿。
+- [live-confirmed] CUnit `150995278` 自 `53212320` 起与 CUnit `33554818` 连续 **59 个游戏日**逐省同步，经过
+  `8651 → 1038 → 1037 → 8658 → 1017 → 942 → 1111 → 8665 → 947 → 8668 → 950 → 951`。
+  同期 `33554818` 是 `embarked` 且拥有 committed route；旧 reader 却把 `150995278` 投影成
+  `regular / target=null / route=[]`。最终 planner 对后者做了 186 次 preview，全部 `army_not_move_ready`，合计
+  `572.765s`。这不是 186 条真实路线均不可走，而是同一个非 orderable CUnit 被错当成独立 ArmySnapshot。
+- [static-confirmed] CUnit `+0x18` 是 raw kind。`0` 经 `CUnit+0x178 → CArmy`；`1` 经
+  `CUnit+0x17C → CFleet`。CFleet storage 是 `module+0x57BFDE0`，RTTI/vtable 为
+  `0x54A3488 / 0x43075A8`；`CFleet+0x18` 回链 carrier CUnit，`CFleet+0x1C` 连接 CArmy，后者
+  `+0x124` 给出 canonical/orderable CUnit。`0x2246EC0` 与 `0x22492A0` 分别闭合这两条解析路径。
+- [static-confirmed] `CanArmyUseMoveMode` (`0x2248860`) 与原生 contact queue (`0x220BB88` 一带) 都要求
+  `CUnit+0x18 == 0`。`GetUnitState` (`0x0C7AAB0`) 却会对 kind `1` 盲读 `+0x178`，所以旧投影的
+  `regular` 不能证明它可独立移动或参与接触。raw kind 的正式枚举符号名尚未恢复，文档只使用
+  `raw-kind 0 direct-CArmy-linked` 与 `raw-kind 1 CFleet-linked`。
+- [inference] artifact 尚未直接发布 raw kind，因此“`150995278` 是 kind `1` carrier、canonical CUnit 为
+  `33554818`”仍需 cold replay 的 paused snapshot 结果闭环；59 日同步轨迹与 exact-build 结构使其成为当前最强解释，
+  但在 live 复验前不升级为该具体 ID 对的 live-confirmed 关系。
+- [static-ready] snapshot reader 现只发布 raw-kind `0`，并要求
+  `CUnit+0x178 → generation-valid CArmy → CArmy+0x124 == 当前完整 CUnitID`；kind `1` 与 backlink 不闭合的行均不进入
+  `player_armies/allied_armies/enemy_armies`。fixture 已覆盖 raw-kind `1`、错误 backlink 与恢复后的 canonical row。
+  Python 同时保留 exact preview rejection stage，并在受威胁主体首次原生拒绝后停止后续 target 枚举。
+
+```mermaid
+flowchart TD
+    U["[static-confirmed] stored CUnit"] --> K{"[static-confirmed] raw kind +0x18"}
+    K -->|0| A["[static-confirmed] +0x178 → CArmy"]
+    A --> B{"[static-confirmed] CArmy+0x124<br/>== current full CUnitID?"}
+    B -->|yes| P["[counter-policy] publish tactical ArmySnapshot"]
+    B -->|no| X["[counter-policy] exclude row"]
+    K -->|1| F["[static-confirmed] +0x17C → CFleet<br/>+0x1C → CArmy → canonical CUnit"]
+    F --> X
+    L["[live-confirmed] 150995278 co-moves 59 days<br/>186 previews rejected"] -. "[inference] expected kind 1" .-> F
+    G["[unknown] other raw kinds / formal enum names"] -.-> X
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class G unknown;
+```
+
 ## 已闭合结论与剩余 unknown
 
 | 主题 | 状态 | 结论 / 缺口 |
@@ -438,7 +481,7 @@ flowchart TD
 | 攻守方向 | [static-confirmed] | 由 holding 关系计算 `initiator_is_defender`；true 是 initiator side1 defender，绝非 initiator attacker。 |
 | manager stored order 来源 | [unknown] | 已证它传播为同日 initiator tie-break，但未闭合该表由创建、ID、分区或其它生命周期规则如何维护。 |
 | non-daily placement 全序 | [unknown] | script/event placement、传送、撤退结束及 wrapper 多 callsite 尚未闭合统一相对顺序。 |
-| raw gate 正式语义 | [unknown] | `CUnit+0x18` 与全局 gate 的正式字段/枚举名未闭合；`CArmy+0x5C gathering_count`、`CCombat+0x704 finalized`、BattleResult `+0x28 ready` 的消费语义已静态闭合。 |
+| CUnit raw kind / tactical identity | [static-confirmed + names unknown] | raw `0` 是 direct-CArmy-linked、可进入 move/contact gate；raw `1` 是 CFleet-linked carrier，经 CFleet 回到 CArmy/canonical CUnit。正式枚举名与其它 kind 值仍未知。`CArmy+0x5C gathering_count`、`CCombat+0x704 finalized`、BattleResult `+0x28 ready` 的消费语义已静态闭合。 |
 | 外交谓词完整业务名 | [unknown] | `0x2900470`、`0x2900710`、`0x290CD60` 的调用方向与 bool 消费已闭合，复杂多战争/第三方关系语义名仍未知。 |
 
 ```mermaid
