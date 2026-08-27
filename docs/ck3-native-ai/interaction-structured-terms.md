@@ -480,10 +480,16 @@ structured terms 完成：
 
 - ordinary non-war 的分类必须同时满足 exact same-frame/full-generation identity、完整 roles/routing/deadline/legality、
   `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit exact key`，并命中 exact-build 显式非战争非宗教
-  allowlist。当前只有 `spar_with_knight_interaction`：原版 `00_tradition_interactions.txt` 完整文件 SHA-256
+  allowlist。当前有两个逐 definition 冻结的 exact key。`spar_with_knight_interaction` 使用原版
+  `00_tradition_interactions.txt` 完整文件 SHA-256
   `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`，其第 1–200 行完整 block 明确 popup/pause、双方不在
   战争、accept 只启动 `FATALITY=no` bout，且没有 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或
   `on_decline` 字段。
+  `pay_ransom_interaction` 使用 `00_prison_interactions.txt` 完整文件 SHA-256
+  `3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`；它是普通 prison-ransom、非宗教、非
+  war-special payload，但 `war_sensitive=true`。当前 fallback 仍不消费尚未结构化的 option/payment、囚犯价值或战争杠杆，并会
+  确定性拒绝一个 native-legal reject；具体原生树、10 年 refusal flag 与 production 首阻塞见
+  [events-and-interactions.md](events-and-interactions.md#pay_ransom_interaction战后长跑首个真实-ordinary-pending)。
   `invite_to_activity_interaction` 因同 key 可覆盖 `activity_wedding`、当前 bridge 又没有 activity subtype，已明确移出 allowlist；前述
   special-war 三项**不是**通用 ordinary classifier。其它 definition 必须 `definition_unclassified` fail-closed，等待 typed classification
   或逐项 exact-definition 审计；不在本 fallback 中扩展宗教域；

@@ -3649,6 +3649,101 @@ class GameplayBridgeTests(unittest.TestCase):
             ["accept", "reject", "block", "acknowledge"],
         )
 
+    def test_planner_rejects_exact_build_pay_ransom_pending(self) -> None:
+        context_result = _pending_context_result(
+            pending_id=855_638_016,
+            revision=8,
+            native_revision=7,
+            date_raw=53_178_336,
+            definition_key="pay_ransom_interaction",
+            actor_character_id=30_629,
+            recipient_character_id=29_829,
+            legality={
+                "accept": {"status": "available", "allowed": True, "reason": None},
+                "reject": {"status": "available", "allowed": True, "reason": None},
+                "block": {"status": "available", "allowed": True, "reason": None},
+                "acknowledge": {
+                    "status": "available",
+                    "allowed": False,
+                    "reason": "normal_reply_channel",
+                },
+            },
+        )
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        roles = context["roles"]
+        assert isinstance(roles, dict)
+        roles["secondary_recipient_character_id"] = 34_250
+        context["send_options"] = {
+            "exclusive": False,
+            "definition_count": 8,
+            "context_count": 8,
+            "rows": [
+                {
+                    "native_index": index,
+                    "selected": index == 2,
+                    "canonical_flag_status": "unavailable",
+                }
+                for index in range(8)
+            ],
+        }
+
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_reject"
+        )
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        self.assertEqual(
+            plan["pending_character_interaction"]["roles"],
+            {
+                "actor_character_id": 30_629,
+                "recipient_character_id": 29_829,
+                "secondary_actor_character_id": -1,
+                "secondary_recipient_character_id": 34_250,
+                "intermediary_character_id": -1,
+            },
+        )
+        self.assertTrue(
+            plan["pending_character_interaction"]["send_options"]["rows"][2][
+                "selected"
+            ]
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["classification"], "ordinary_non_war")
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertEqual(
+            decision["definition_classification"],
+            {
+                "policy": "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1",
+                "definition_key": "pay_ransom_interaction",
+                "allowlisted": True,
+                "evidence": {
+                    "classification": "ordinary_non_war_nonreligious",
+                    "domain": "prison_ransom",
+                    "war_sensitive": True,
+                    "source": (
+                        "common/character_interactions/"
+                        "00_prison_interactions.txt"
+                    ),
+                    "source_sha256": (
+                        "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64A"
+                        "A8243AA0C658F22B"
+                    ),
+                },
+            },
+        )
+
     def test_planner_never_accepts_because_reject_command_is_missing(self) -> None:
         plan = _plan_for_pending_context(
             _pending_context_result(
@@ -3731,6 +3826,7 @@ class GameplayBridgeTests(unittest.TestCase):
             "demand_conversion_interaction",
             "fixture_nonreligious_interaction",
             "invite_to_activity_interaction",
+            "ransom_me_interaction",
         ):
             with self.subTest(definition_key=definition_key):
                 plan = _plan_for_pending_context(

@@ -445,6 +445,96 @@ flowchart TD
     class U,E unknown;
 ```
 
+### `pay_ransom_interaction`：战后长跑首个真实 ordinary pending
+
+[static-confirmed] 本小节只绑定原版
+`game/common/character_interactions/00_prison_interactions.txt`（完整文件 SHA-256
+`3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`）第 2366–3462 行的完整
+`pay_ransom_interaction` definition。它属于 `interaction_category_prison`，没有 `special_interaction`、`target_type`，完整
+block 也没有 `faith`、`religion`、`doctrine`、`tenet`、`piety` 或 holy-order 输入；因此它可以精确归类为
+**ordinary non-war-resolution / nonreligious**，但不是“完全与战争无关”：接收分、发起权重与防骚扰门会读取双方当前战争状态。
+本文把这一点记为 `war_sensitive=true`，不能由此扩表到任何其它 `ransom*`、`prison*` 或名字相近的互动。
+
+原版角色与效果方向已经由 definition 和 scripted effect 双重闭合：
+
+- [static-confirmed] redirect（第 2373–2380 行）先把原 target 保存为 `secondary_recipient`，再把其 `imprisoner`
+  保存为 `recipient`；`on_accept` 第 2427–2450 行随后明确保存
+  `prisoner=secondary_recipient`、`imprisoner=recipient`、`payer=actor`。所以 inbound 到玩家时是“AI actor/payer 向玩家
+  jailer 付款，请求释放第三人 prisoner”，不是玩家替来信者付款。
+- [static-confirmed] 八个 authored send option 依次覆盖 extortionate full/current gold、normal full/current gold、favor、
+  influence、herd 与 hook（第 2723–2929 行）。接受事件 `char_interaction.0140` 最终调用
+  `ransom_interaction_effect`；原版 `common/scripted_effects/00_prison_effects.txt`（SHA-256
+  `F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66`）第 163–172 行令 `payer` 向
+  `imprisoner` 支付 full ransom，第 225 行释放 `prisoner`。其它 option 会改为 current gold、favor、influence、herd 或
+  hook，并可能触发 haggler、stress、clan-unity 与 struggle 副作用。
+- [static-confirmed] `on_decline` 第 2705–2721 行不付款、不调用释放 effect；当 `recipient` 是人类时，它给该
+  `secondary_recipient` 写入持续 10 年的 `character_ransom_refused_by_player`，再向 actor 发送
+  `char_interaction.0141`。对应事件文件
+  `events/interaction_events/character_interaction_events.txt` SHA-256 为
+  `D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150`。
+
+[static-confirmed] 接收方原生 `ai_accept`（第 2944–3092 行）以 `0` 为 base：full gold `+50`；符合半额与非贪婪门的
+current gold `+25`；同 realm favor `+50`；prisoner 是 rival `-55`、nemesis `-300`；payer、prisoner 或其 liege 命中相关
+战争关系时 `-300`；hook `+100`，intimidated/cowed `+40/+100`，influence/herd 各 `+25`。strong hook 另走
+`auto_accept`。发起方原生 `ai_will_do`（第 3105–3461 行）则先经过 tier frequency、`gold >= 25`、prison quick target，
+再按付款方式、囚犯关押时长、primary heir、亲属/朋友/爱人、compassion/greed、性格、house unity 与 struggle 调权；不给任何
+有效交换、囚犯处于 prison-break contract、或人类 jailer 正在战争/已有 10 年 refused flag 时会归零。前者回答 AI jailer 是否接受，
+后者回答 AI payer 是否主动发起，不能混成一份分数。
+
+```mermaid
+flowchart TD
+    T["[static-confirmed] AI payer 枚举 prison target"] --> P{"[static-confirmed] gold / tier / quick target / relationship gates"}
+    P -->|权重为 0| N["[static-confirmed] 不发起"]
+    P -->|权重大于 0| O["[static-confirmed] 选择/组合 8 个 nonexclusive send-option rows"]
+    O --> R{"[static-confirmed] recipient 是 AI？"}
+    R -->|是| A["[static-confirmed] ai_accept：付款、关系、战争、hook、dread 等"]
+    A -->|接受或 strong-hook auto_accept| E["[static-confirmed] payer 交付条款；prisoner 获释"]
+    A -->|拒绝| D["[static-confirmed] on_decline"]
+    R -->|否，玩家 jailer| Q["[live-confirmed] 建立 recipient pending；等待玩家 reply"]
+    Q --> C{"[counter-policy] typed terms / 囚犯战略价值完整？"}
+    C -.->|否| F["[policy-design] exact-key degraded reject；继续一代人"]
+    C -->|是| U["[unknown] 按赎金、杠杆与长期效用选择"]
+    F --> D
+    D --> X["[static-confirmed] 不付款、不释放；人类拒绝写 10 年 flag"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+接收方的 exact-build reply 分支必须与发起权重分开阅读：
+
+```mermaid
+flowchart TD
+    C["[static-confirmed] finalized pay_ransom context"] --> H{"[static-confirmed] selected hook 且 actor 有 strong hook？"}
+    H -->|是| A["[static-confirmed] auto_accept → on_accept"]
+    H -->|否且 recipient 是 AI| R["[static-confirmed] 0x2C44320 求 definition ai_accept raw"]
+    R --> O["[static-confirmed] 0x2C43B40 组合 mode-1 outer final"]
+    O --> Y{"[static-confirmed] final status"}
+    Y -->|0/1| A
+    Y -->|2| D["[static-confirmed] on_decline"]
+    Y -. "其它 status 尚未闭合" .-> U["[unknown] preserve unavailable/unknown"]
+    O -. "0x2C43220 seam 业务名尚未闭合" .-> S["[unknown] hard-coded/special seam"]
+    H -->|否且 recipient 是 human| P["[static-confirmed] 建立 pending；由 exact reply legality 约束玩家"]
+    P --> N["[counter-policy] ai_accept 只作反事实参考，不冒充玩家 authority"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,S unknown;
+```
+
+[production-live observation] 正常交互桌面的 run
+`20260827T073041Z-one-generation-d144ac34` 从和平 checkpoint 冷恢复后，于 `date_raw=53178336` 读到 full pending ID
+`855638016`：actor/payer `30629`、recipient/player jailer `29829`、secondary recipient/prisoner `34250`，local responder 为
+recipient；active wars/armies 均为空，`special_data_present=false`、special-war binding 为 not-applicable，accept/reject/block
+均由 native legality 判为 true，ACK 为 false。bridge 还读到 8 个 native option row 和 selected native index `2`；它与 stock
+authored 顺序一致，但 canonical numeric-flag→string mapping 尚未闭合，所以本轮 policy 不把该 index 当作已发布的 `gold` 条款，
+也不据此接受。report SHA-256
+`7CA023D562ACDEB7D92EE415C5A32CA9A32B7832525897220C6881D741630826`；first-blocker SHA-256
+`0175B0296265E61D5500D3BFF030BD114E57B4F1DC3458F99C63ADE3015C6519`。
+
+[policy-design] 为解除这个已经实际阻断一代长跑的 pending，只允许将 exact key `pay_ransom_interaction` 连同上述完整文件
+hash 加入现有 ordinary allowlist，并继续使用 `ordinary-reject-unique-accept-v1` 的 reject-first 分支。它不会接受、block、按前缀
+扩表或宣称原生等价；拒绝造成的 10 年 flag、放弃潜在金币/人情、以及未评估囚犯的战争杠杆均作为 B2 策略质量债保留。替换入口是
+发布 canonical selected option、实际 ransom 数值、囚犯关系/继承/战争价值与结构化 effect 后，实现 interaction-specific utility，
+不是把更多未知互动继续塞进 reject-first。
+
 ### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
 
 [implementation-confirmed / static-ready / live=false] 原生 reply 树、四路 legality 与 exact-build pending identity 已先按上文
@@ -454,11 +544,13 @@ flowchart TD
    四路 legality 与 special-war classification。stale、unavailable、sender/actor 或 responder identity 不一致均不提交 reply。
 2. auto-accept notification 仍只走既有 enum-4 ACK，不进入本 fallback。
 3. `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit key` 只证明“未命中特殊战争 payload”，**不能**
-   证明任意 stock definition 都是普通非战争、非宗教互动。fallback 还必须命中 exact-build 显式 allowlist；当前唯一条目是
-   `spar_with_knight_interaction`，依据 `common/character_interactions/00_tradition_interactions.txt`（完整文件 SHA-256
+   证明任意 stock definition 都是普通非战争、非宗教互动。fallback 还必须命中 exact-build 显式 allowlist；当前只有两个逐定义审计的
+   exact key。`spar_with_knight_interaction` 依据 `common/character_interactions/00_tradition_interactions.txt`（完整文件 SHA-256
    `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`）第 1–200 行完整 definition：第 1–13 行固定
    common/popup/pause，第 49–50 行要求双方均不在战争，第 75–97 行 accept 只启动 `FATALITY=no` 的 bout，第 100–138 行是
    `ai_accept`；完整 block 不含 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或 `on_decline`。
+   `pay_ransom_interaction` 则只依据上一小节冻结的 `00_prison_interactions.txt` 完整 definition 与 SHA，分类为
+   `domain=prison_ransom, war_sensitive=true`；当前 fallback 不消费它尚未结构化的 option/payment/prisoner utility。
    `invite_to_activity_interaction` 已移出 allowlist，因为同 key 可承载 `activity_wedding`，而当前 bridge 不发布 activity subtype。
    其它 stock、mod、仅名字看似 ordinary 的 definition 一律
    `definition_unclassified` fail-closed；以后只能由同样的 exact-definition 审计或 bridge 发布的 typed classification 扩表，不借此探索
@@ -495,7 +587,7 @@ structured exchange/effect、target payload identity、campaign utility，以及
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
-| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility 与 stock reply live；stale query 不复用；自然 stock/intermediary notification 仍待 live | notification ACK 为 fixture-live；allowlist-scoped degraded reply 为 static-ready/live=false；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
+| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility 与 stock reply live；stale query 不复用；自然 stock/intermediary notification 仍待 live | notification ACK 为 fixture-live；allowlist-scoped degraded reply 为 static-ready/live=false；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
 
 [live-confirmed fixture-scoped] 2026-08-27 的 current-event Attempt4 在 seed PID `22976` 与 fresh-cold PID `43140`
 中保持完整 instance `17`、date `53175816`、canonical key `xar_event_window_live_fixture.1` 与逐字节相同 fixture；三条
@@ -516,7 +608,7 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 每项的完整结构化效果与长期效用；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
-`spar_with_knight_interaction` 使用上述 reject-first fallback；“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
+`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用上述 reject-first fallback；“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
 definition 与 known/opaque special 均停在 observation dependency。generic recipient notification 的 fixture-scoped
 query→ACK 已闭合；下一步完成 ordinary reject/unique-accept 的 production 生命周期实机，再补 intermediary/自然 stock notification
 与结构化条款观测并替换为真实效用选择。不得退回默认接受，reject 命令缺失也不得触发 accept。

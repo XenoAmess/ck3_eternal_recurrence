@@ -122,6 +122,15 @@ _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
             "E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3"
         ),
     },
+    "pay_ransom_interaction": {
+        "classification": "ordinary_non_war_nonreligious",
+        "domain": "prison_ransom",
+        "war_sensitive": True,
+        "source": "common/character_interactions/00_prison_interactions.txt",
+        "source_sha256": (
+            "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B"
+        ),
+    },
 }
 
 
