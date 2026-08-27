@@ -12,8 +12,9 @@
   或原生 `PowerRatio` 都不能替代这一门。
 - [policy-design] 若同一对手已经多次无法战胜，而兵力构成、盟友承诺、财政、地形入口与目标战争负担没有发生
   实质变化，则把该敌人标成 `UNSOLVED_TARGET`；不再用重复攻击“重新试一次”。
-- [static-confirmed] 当前 exact-build bridge 还不具备完整模拟输入，故按此策略当前正常结果应是禁止主动宣战；
-  这不是模拟器给出低胜率，而是关键证据缺失后的 fail-closed。原生确定性 ratio 与真实随机结算分别见
+- [implementation-confirmed / production-live] 当前 exact-build bridge 还不具备完整模拟输入，故当前正常结果是禁止主动宣战，
+  但不再让整代 runner 停住：有 native `life-advance` 时返回可审计的 `NO_DECLARE` 并推进一个原生有界 interval；只有推进动作也
+  不可达时才保持 blocked。这不是模拟器给出低胜率，而是关键证据缺失后的最小 continuation policy。原生确定性 ratio 与真实随机结算分别见
   [combat-prediction.md](combat-prediction.md) 和 [battle-simulation.md](battle-simulation.md)。
 
 ## 修复前差异与当前硬门
@@ -26,9 +27,10 @@
   combat forecast 字段。
 - [static-confirmed] 修复前策略只要找到了上述偏好项且对应 `declare-war-*` step 可执行，就直接返回
   `phase=native_war_declaration`；没有原版的 actual/max power ratio 门，也没有胜率或 expected utility 门。
-- [static-confirmed] 当前策略仍可用上述排序挑出一条**仅供诊断**的合法声明，但固定返回
-  `phase=native_war_entry_evidence_required`、`selected_step=None`，并列出缺失的战斗模拟、forecast 与战争进入评估
-  capability；即使 action surface 已公开对应 `declare-war-*`，planner 也不会自动提交。
+- [implementation-confirmed] 当前策略仍可用上述排序挑出一条**仅供诊断**的合法声明，并完整列出缺失的 participant arrival、
+  combat forecast、campaign cost、exit assessment 与 calibrated utility。存在 `life-advance` 时固定返回
+  `phase=native_war_entry_no_declare`、`decision.outcome=NO_DECLARE` 与 `selected_step=life-advance`；即使 action surface 已公开对应
+  `declare-war-*`，planner 也不会自动提交。没有 `life-advance` 时才返回 `native_war_entry_evidence_required/selected_step=None`。
 - [static-confirmed] native query 不可用时的 legacy `war-declare-palermo` 视觉旁路也受同一硬门约束；命令仍可供
   人工兼容和已开始历史使用，但 planner 不再把“Palermo / low-cost”名称当作可赢性证据。
 - [static-confirmed] 原版 AI 至少使用双方估算军力、盟友/overlord、目标现有战争、人格、hostage 与 CB score，
@@ -199,8 +201,10 @@ stateDiagram-v2
 - [static-confirmed] 选中 row 会进入 `war_entry_expected_utility.native_power_component`，发布 native total margin、
   conservative self-power margin、双向 network 风险和同一 risk key。`eu_lower_raw` 仍为 `null`，因为不同量纲的
   title/gold/time/character loss 系数尚未校准；该 `null` 明确表示**总 EU 尚未计算**，而不是 power 观测缺失。
-- [static-confirmed] 当前生产策略仍以 `native_war_entry_evidence_required` 与 `selected_step=None` 收口；回归测试同时
-  给出可执行 `declare-war-*`，确认合法 command 不能绕过该门。返回结果要求真实 production v3 capability
+- [implementation-confirmed] 当前生产策略以 `war-entry-minimal-defer-v1` 收口：有 `life-advance` 时明确记录
+  `automatic_declaration_enabled=false`、`native_ai_equivalent=false`、`semantic_optimal=false`、缺失 components 与
+  `advance_contract=native_life_advance`，然后选择 `NO_DECLARE → life-advance`；没有推进 primitive 时才 blocked。回归测试同时
+  给出可执行 `declare-war-*`，确认合法 command 不能绕过该门。完整自动宣战仍要求真实 production v3 capability
   `game.command.query-combat-simulation-inputs-v3-N`、`game.forecast.combat-monte-carlo-v1` 与 war-entry assessment。
 - [static-confirmed] `query-war-entry-assessments-v1` 的 exact ABI/contract、独立 native reader/serializer、双原生采样
   fixture、golden payload 与 source-contract 已离线闭合；paused live 验收结论以
@@ -216,11 +220,22 @@ stateDiagram-v2
 - [static-confirmed] 按 [combat-simulation-inputs.md](combat-simulation-inputs.md) 的当前能力边界，最小门启用后会把
   所有主动战争 fail closed；等观察与模拟输入逐项闭合后再解锁，而不是为保持“能自动宣战”绕过门。
 
+[production-live] run `20260827T072606Z-one-generation-659914ab` 及其冷恢复续跑已经消费当前 exact declaration
+`29097-11-0 / claim_cb / title 2121` 的 native power assessment：actor base `5,481,600,000`、network
+`+9,441,500,000`、total `14,923,100,000`；target base `11,304,000,000`、adjustment `-11,304,000,000`、
+final `0`，distance/actual ratio raw 均为 `0`。其余五类输入仍缺，故 plan 明确选择 `NO_DECLARE`，没有调用同 surface 上的
+`declare-war-*`；截至 run `20260827T074626Z-one-generation-c36229f0` 已在和平态连续完成 11 次相同证据链查询和 8 次
+`NO_DECLARE` gameplay advance，并持续保存 checkpoint。首个 artifact report SHA-256
+`C5E25F461827AB7266B59A8D3EE53A832918128EB4799625991839C6C6D08022`，后者 SHA-256
+`95D96BC1479F5B460F2683F694A099AF01490523FFA74D86AE087C5BF4B9EF8E`。这只证明“不宣战也能继续游戏”的
+production-live loop；`eu_lower_raw` 仍为 `null`，不能升级为智能 war-entry completion。
+
 ## 验收矩阵
 
 | 场景 | 预期结果 |
 |---|---|
-| [static-confirmed] 有 native declaration，但 payload 无 power/forecast/cost/exit | `native_war_entry_evidence_required`；`selected_step=None` |
+| [implementation-confirmed / production-live] 有 native declaration，有/无 power component 但 forecast/cost/exit 不完整，且 `life-advance` 可达 | 保留完整缺口与诊断 payload；`NO_DECLARE`；`selected_step=life-advance`；绝不提交宣战 |
+| [implementation-confirmed] 同上但 `life-advance` 也不可达 | `native_war_entry_evidence_required`；`selected_step=None` |
 | [static-confirmed] 首选 target 有 power 且 `actor_base < target_total`，另有未评估合法 target | 同帧查询下一 target；不宣战 |
 | [static-confirmed] 多个同帧 target assessments | 按 conservative margin、native ratio 与 network 风险排序；不把 ratio 写成胜率 |
 | [static-confirmed] history assessment 的 native revision/date/actor 不同 | 丢弃该 row，不参与风险序或 EU projection |

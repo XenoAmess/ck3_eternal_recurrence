@@ -1307,12 +1307,10 @@ flowchart TD
 
 #### `offer-white-peace-<WarID>` native 已闭合、Python 冻结的发送 ABI
 
-[static-confirmed] `game.command.offer-white-peace-N` / `offer-white-peace-<full-generation WarID>` 的机械
-context/validator/queue ABI 已闭合，exact native adapter 也会公布这个机械 capability；但本文当前只授权
-只读 terms 施工。在上述 decision-critical structured terms 进入同 paused revision 的 live wire 前，
-Python `action_steps` 不得出现白和或投降 literal，`ck3_execute_step` 对二者的直接调用也必须在发送 native
-frame 前以 `requires structured_terms_v2 and campaign decision readiness` fail closed。下列 contract 是
-native 写口的冻结与 fixture 账本，不是当前 planner/MCP 动作授权。
+[production-live narrow / general surface still frozen] `game.command.offer-white-peace-N` /
+`offer-white-peace-<full-generation WarID>` 的机械 context/validator/queue ABI 已闭合。下文 GEN-004 现只授权并已实机执行一条
+primary-attacker `claim_cb` counter-policy；其它 CB、defender、hostage、surrender 与通用 v2 仍保持冻结，不能把这个窄 live 结果
+扩写成完整 planner/MCP 动作授权。
 
 exact contract：
 
@@ -1384,7 +1382,7 @@ game.command.query-war-termination-options-N
 
 ## GEN-004 owner 允许的最窄 `claim_cb` 白和 counter-policy（2026-08-27）
 
-> [counter-policy / static-ready] 本节只覆盖解除当前一代人 run blocker 的最小写策略。它建立在本文已经冻结的原生
+> [counter-policy / production-live narrow] 本节只覆盖解除当前一代人 run blocker 的最小写策略。它建立在本文已经冻结的原生
 > interaction/context、AI response 与 `claim_cb` outcome 树之后，但**不是原生 AI 等价实现，也不是完整 exit-policy v2**。
 > 本节按日期取代上文“必须等待完整 dynamic v2/campaign forecast 才广告 white-peace literal”的旧施工冻结；原生事实、完整
 > v2 schema 和质量债均不被删改。surrender 仍冻结。
@@ -1445,16 +1443,32 @@ bridge PID、connection generation、episode、played CharacterID、paused 且 d
 ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一次让 AI 处理；history 持久化后在 restore 中仍以 24 raw/day、
 30 日=`720` raw 抑制同 WarID 重复，`+719` 阻断、`+720` 才重开提议门。
 
-### production6b 当前证据与 live 边界
+### production normal-desktop 证据与 live 边界
 
-- [live-confirmed, old fields only] 当前 paused 角色 `29829`、WarID `16777290`、玩家 attacker/primary、最新战分 `37`、
-  target `[2388]`。旧帧曾见战争时长 `436` 与 WP validator/available=true；这些值仍必须由 fresh frame 重查。
-- [not live] 当前 production6b artifact 没有新 `recipient_response`，也从未发出 claim terms v1 query。历史 acceptance
-  `+12.7912` 不能替代 final evaluator；文档曾 live-confirmed 的 strong claim 也不能跨帧当作 planner machine input。
-- [static forecast] 配套新 DLL 的预期 turn 是 T1 options → T2 same-frame v1 → T3 offer；若仍 pending，T4
-  `life-advance`。只有后续 WarID 消失才进入 disband/save/continue；否则 720 raw 内恢复军事 OODA而不重提。
-- 固定 G1 handoff 的 source `480f287` + 旧 DLL 继续作为独立 legacy 组合。新 strict source 与旧 DLL 不兼容，不能混配或
-  静默复用旧 canary clone；首次验收必须另建 new-source/new-DLL canary，在此之前不得称新字段 live。
+- [production-live primitive] normal-desktop run `20260827T071014Z-one-generation-b49cef53` 在 source `51fe8cf`、角色
+  `29829`、full WarID `16777290` 上按 T1 options → T2 same-frame claim terms v1 → T3 offer 执行。white peace 的 final
+  response raw=`0`、`would_accept_now=true`；native queue 返回 submitted，typed action 只诚实报告
+  `war_termination_result.status=submitted_pending`，因为命令后同 WarID 仍在。它随后推进 9 个游戏日，仍未把 ACK 冒充 applied。
+  report 为 106,461 bytes、SHA-256
+  `3A0C22A609CE237A5EC47702BF3B289836D13641943D1C7BDC838B12BEE1F5AC`。
+- [production-live loop] 下一次冷恢复 run `20260827T071421Z-one-generation-5cf36539` 从 `date_raw=53178192`
+  恢复；第一次 `life-advance` 到 `53178216` 时 old WarID 消失，随后原生 `disband-army-83886341` 成功，after snapshot 为
+  `active_wars=[]、player_armies=[]`。原版 `_character_interactions.info` 的 `ai_min_reply_days=4 / ai_max_reply_days=9` 与
+  exact manager 的逐日 age/queue 路径已经先冻结；本次第十个日推进应用结果与该异步窗口一致，因此无需改 submission ABI 或伪造
+  response pump。report SHA-256
+  `E7BC0CC716B945D07B5842EFDD7B74D008EBD89DE492250EB7F1818F7DC612BA`。
+- [production-live durability] 修复 continuation 后，run `20260827T072606Z-one-generation-659914ab` 再次从战争仍在的
+  `53178192` checkpoint 冷恢复：turn 1 观察 WarID 消失，turn 2 解散 ArmyID，turn 3 立即保存
+  `phase=native_postwar_checkpoint`。该和平 checkpoint 为 67,214,440 bytes、date `53178216`、history `430`、SHA-256
+  `A5649EE2FE93E459C22C2CE6E564AEA81DA14CB18470EA66EEC7F3C0AE249E3E`；随后 runner 继续和平期
+  `NO_DECLARE`，最终仍可恢复。report SHA-256
+  `C5E25F461827AB7266B59A8D3EE53A832918128EB4799625991839C6C6D08022`。
+- [implementation-confirmed] 一次 pending offer 后必须同日推进一次；此后同 WarID 在 720 raw 冷却期间跳过重复 termination
+  options/terms/offer query，恢复 ordinary military OODA。`+719` 不重提，`+720` 才重新获得查询/提议资格；WarID 先消失则直接
+  进入 residual-army disband 与战后保存。
+- 以上只把当前 `claim_cb` primary-attacker 的“观察 → 白和提交 → 异步应用 → 解散 → 保存/冷恢复”升级为
+  production-live loop。完整 dynamic v2、其它 CB、投降、作为防守方、多战争/hostage、付款/声望/战俘实际 delta 与高质量 continue-vs-exit
+  效用仍未完成。
 
 完整 v2/campaign 替换口仍是：逐人 actual resources、truce、PoW/hostage、resolved title/vassal operations、finance、双方可动员
 兵力与补员、encounter distribution、围城/增援 ETA、人格/文化/其它战争等原生输入，再比较 continue/white peace/surrender 的

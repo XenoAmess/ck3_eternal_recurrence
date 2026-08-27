@@ -529,15 +529,31 @@ authored 顺序一致，但 canonical numeric-flag→string mapping 尚未闭合
 `7CA023D562ACDEB7D92EE415C5A32CA9A32B7832525897220C6881D741630826`；first-blocker SHA-256
 `0175B0296265E61D5500D3BFF030BD114E57B4F1DC3458F99C63ADE3015C6519`。
 
-[policy-design] 为解除这个已经实际阻断一代长跑的 pending，只允许将 exact key `pay_ransom_interaction` 连同上述完整文件
-hash 加入现有 ordinary allowlist，并继续使用 `ordinary-reject-unique-accept-v1` 的 reject-first 分支。它不会接受、block、按前缀
-扩表或宣称原生等价；拒绝造成的 10 年 flag、放弃潜在金币/人情、以及未评估囚犯的战争杠杆均作为 B2 策略质量债保留。替换入口是
+[implementation-confirmed / production-live narrow] 为解除这个已经实际阻断一代长跑的 pending，只允许将 exact key
+`pay_ransom_interaction` 连同上述完整文件 hash 加入现有 ordinary allowlist，并继续使用
+`ordinary-reject-unique-accept-v1`。本次 live frame 中 reject 与 accept 都合法，故 reject-first 确定性选择 reject；没有 accept、block、
+按前缀扩表或宣称原生等价。通用规则未来仍只会在 reject/block/ACK 都被 native 明确判为非法且 accept 成为唯一合法、可执行回复时
+走 unique-accept；这不是本次赎金语义已完成。拒绝造成的 10 年 flag、放弃潜在金币/人情、以及未评估囚犯的战争杠杆均作为 B2
+策略质量债保留。替换入口是
 发布 canonical selected option、实际 ransom 数值、囚犯关系/继承/战争价值与结构化 effect 后，实现 interaction-specific utility，
 不是把更多未知互动继续塞进 reject-first。
 
+[production-live loop] commit `5c85824c7819d4c46b30d1b1b8be3b4c3c9a0f89` 的 run
+`20260827T074626Z-one-generation-c36229f0` 从 `date_raw=53178312` 和平 checkpoint 冷恢复。turn 3 的 `NO_DECLARE`
+推进到 `53178336` 后复现同一 full pending ID `855638016`；turn 4 完成 typed query，turn 5 在同帧选择
+`reject-pending-character-interaction`。native result 为 `status=rejected`、instance/sender 精确匹配 `855638016/30629`，
+`remaining_pending_character_interaction=null`；before 的 pending 在 after snapshot 中确实消失，runner 记录
+`pending_interaction_changed`，不是把 command ACK 当结果。随后继续七次 `NO_DECLARE` 时间推进，到 `date_raw=53178504`，共
+20/20 turns 成功并写出 8 份 checkpoint；最后一份为 67,259,046 bytes、history `469`、SHA-256
+`454FEABFE2FDDE3D241778029A84E231B44250CE07A2E8D057C9909B4D5F2FFA`。run 只因人为 turn bound 以
+`run_bound_exhausted` 收口，cleanup proven 且 CK3 进程归零。report SHA-256
+`95D96BC1479F5B460F2683F694A099AF01490523FFA74D86AE087C5BF4B9EF8E`；first-blocker（仅 bound）SHA-256
+`13500FC7C1221859A5F9D03C26193748EF9DD4D4D645C0CF6FC086DC8F1D5351`。这把 exact `pay_ransom` reject 生命周期升级为
+production-live loop，不升级 `spar_with_knight`、unique-accept、其它 definition 或赎金 semantic utility。
+
 ### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
 
-[implementation-confirmed / static-ready / live=false] 原生 reply 树、四路 legality 与 exact-build pending identity 已先按上文
+[implementation-confirmed / pay-ransom production-live / other allowlisted branches live=false] 原生 reply 树、四路 legality与 exact-build pending identity 已先按上文
 冻结；在此基础上，`strategy.py` 采用 `ordinary-reject-unique-accept-v1` 解除一代人长跑中的普通 pending blocker：
 
 1. 只消费同一 paused snapshot 的完整 pending ID、public/native revision、date、stable key、五 roles、local responder、deadline、
@@ -568,7 +584,7 @@ hash 加入现有 ordinary allowlist，并继续使用 `ordinary-reject-unique-a
    四个候选的 native legality/action reachability、rule ID、recommended/selected action 与 blocked reasons；明确记录
    `native_ai_equivalent=false`、`semantic_optimal=false`、policy `semantic_decision_ready=false`。
 
-[implementation-confirmed / static-ready / live=false] strict runner 另把 pending mirror 加入 before/after semantic digest；只有出现
+[implementation-confirmed / pay-ransom production-live] strict runner 另把 pending mirror 加入 before/after semantic digest；只有出现
 `pending_interaction_changed`，且 reply result 的 typed status 与 accept/reject/ACK step 对应、old full instance/sender 与 before 一致、
 `remaining_pending_character_interaction` 与 after snapshot 一致并且不再是旧 ID，才把该 turn 计作 visible gameplay、dirty state 并触发
 tail/periodic checkpoint。compact result 保留有界的 `interaction_result` 与 remaining pending identity；缺 typed postcondition 会在本 turn
@@ -587,7 +603,7 @@ structured exchange/effect、target payload identity、campaign utility，以及
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
-| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility 与 stock reply live；stale query 不复用；自然 stock/intermediary notification 仍待 live | notification ACK 为 fixture-live；allowlist-scoped degraded reply 为 static-ready/live=false；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
+| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` reject 已 production-live loop；notification ACK 为 fixture-live；`spar`、unique-accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
 
 [live-confirmed fixture-scoped] 2026-08-27 的 current-event Attempt4 在 seed PID `22976` 与 fresh-cold PID `43140`
 中保持完整 instance `17`、date `53175816`、canonical key `xar_event_window_live_fixture.1` 与逐字节相同 fixture；三条
@@ -608,9 +624,10 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 每项的完整结构化效果与长期效用；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
-`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用上述 reject-first fallback；“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
+`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用上述 reject-first fallback；其中后者的真实 reject→旧 full ID 消失→继续
+推进/checkpoint 已 production-live。“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
 definition 与 known/opaque special 均停在 observation dependency。generic recipient notification 的 fixture-scoped
-query→ACK 已闭合；下一步完成 ordinary reject/unique-accept 的 production 生命周期实机，再补 intermediary/自然 stock notification
+query→ACK 已闭合；下一步补 `spar`、unique-accept、intermediary/自然 stock notification
 与结构化条款观测并替换为真实效用选择。不得退回默认接受，reject 命令缺失也不得触发 accept。
 
 [live-confirmed] 2026-08-26 的非宗教 `claim_cb` white-peace fixture 在 seed PID `93972` 中生成普通 pending，

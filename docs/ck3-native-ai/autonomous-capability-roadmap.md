@@ -117,10 +117,10 @@ flowchart LR
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
 | 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel 与有损 typed indicators | instance/数量/提交已有 live；Attempt4 又以 generic 非宗教 fixture 闭合 seed/checkpoint/fresh-cold current-window query、canonical key、presentation/cancel 与 empty-indicator surface；后继 fixture 实读 `trait/add brave`、`stress/increase` 与 `death/played_character` backing rows。`ActiveEvent+0x00` root token、`+0x18/+0x24` named vector 与 type `4` CharacterID payload identity 已 static-ready，但尚未接 wire/live，所有非 Character payload 继续 unavailable。planner 有 query 时不再由 authored 数量合成 enabled 选项；stock、其余 indicator 分支/视觉图标、selection lifecycle、full effect/scopes 未闭合，`semantic_decision_ready=false`，多个合法选项时明确停住而非默认第一项。 |
-| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；同 revision 的 subtype + WarID + primary-side 绑定也已 production-live，`ordinary_white_peace_binding_live_ready=true`。planner 已先查同帧 typed context 并停止默认接受。generic recipient notification 的 discovery/双 typed query/固定 ACK/旧 full ID 消失已用非宗教 definition-only fixture 完成 fresh-cold live，`notification_ack_fixture_live_ready=true`；该 playset 不是 stock/production-only。victory/defeat、special outcome terms、structured terms/effect、typed target payload、自然 stock 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
+| 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；同 revision 的 subtype + WarID + primary-side 绑定也已 production-live。exact `pay_ransom_interaction` 又完成 cold restore→typed query→native reject→旧 full ID 消失→时间推进/checkpoint 的 production-live loop；它仍是 non-optimal reject-first，不是赎金语义完成。generic recipient notification 的固定 ACK 仅为非宗教 fixture-live。victory/defeat、special outcome terms、structured terms/effect、typed target payload、`spar`/unique-accept、自然 stock notification 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
-| 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | exact native reader/策略接线已有；application-main typed result 仍需实机闭合，且它不是战斗胜率或战争效用。 |
+| 战争入口评估 | actor/target 原生 strategic power、network contribution、ratio、distance | application-main typed result 已在当前合法 `claim_cb` target production-live；它不是战斗胜率或战争效用。完整 forecast/cost/exit 缺失时 planner 以 `NO_DECLARE` 继续时间而不宣战。 |
 | 战争总览 | WarID、攻守、主对手、leader、目标 titles/provinces、相对战分、敌我/盟军 | 多项 live-confirmed；没有完整参战承诺、补给、财政、全部 score 成因与战争全局机会成本。 |
 | 目标与围城 | 占领、fort、garrison、besieger、进度、days left、breach、assault 状态/日进度/伤亡 | 基础围城 live-confirmed；assault 动作与完整 outcome 仍需实机矩阵。 |
 | 军队与路线 | ArmyID、owner、province、route、move target、state、combat/retreat、controllable | 大部分 live-confirmed。没有补给/损耗、兵种组成常驻快照、军队 commander policy、embark、raid、站位或多 war assignment。 |
@@ -133,7 +133,7 @@ flowchart LR
 | 主动撤退控制 | selected identity、CombatID/Province/side、full-side/owner-subset affected order、三项 flag、native legality/四类 reason；planner-selected target 的 exact route preview、一次性 battle-bound token、player move command 与按完整旧 CombatID 的 lifecycle query | legality progression [live-confirmed] day 0/14 false→day 15/16 true，SHA `FB521B39...BCF40`；full-side route/state 与 `main/12 → pursuit/0` 已 live，SHA `21D58737...784FA`；owner-subset 又只移除 CUnit `357`、保留 `33554657` 与原 CombatID，SHA `7780B619...01F9`。`battle_retreat_ready=true`；generic war AI policy/cadence/destination score 保持 `unknown`。 |
 | 增援分配 v1 | AI CUnit→coordinator→subunit→parent identity、asking/assigned、request power、assignment Province、native stored order、route/ETA 与 present-time CombatID projection | [live-confirmed partial] CUnit `357` 的 paused stable query 已 live；owner-subset retreat 后又实见 mismatch→独立 CArmy/stack membership reopen（SHA `4AFE99B8...EE248`）。当前两军夹具令留战 parent 退化为 singleton，原生连续 30 日清 asking，故 assigned+aligned ETA/rejoin 需三同侧 CUnit 夹具，`battle_reinforcement_ready=false`。 |
 | 战斗终局 v1 | passive terminal/warscore journals；prior CombatID、old Province/result removal、typed current subject 与 residual/retreat/assignment successor | [live-confirmed normal] `CombatID=335544325` 第 33 日 `normal_result`，old ID 全局/Province 双删除、battle row `2135850` Q100000、玩家 `subject_retreating`；artifact SHA `61D0D912...56FDB1`。query/service/MCP production-live；no-normal/residual/assignment-reopened 尚缺，故 aggregate `battle_terminal_ready=false`。 |
-| 战争终止 | 三种 outcome 的 legality/AI acceptance、score/duration/CB；claim-CB disposition | termination options 已 live；claim terms getter/destructor live pending；完整 exit terms v2 因已复现的 loaded-effect preview 崩溃而 production disabled。 |
+| 战争终止 | 三种 outcome 的 legality/AI acceptance/final response、score/duration/CB；claim-CB disposition | 当前 primary-attacker `claim_cb` 已完成 options→v1 claim terms→white-peace submit→AI 异步应用→WarID 消失→解散→保存/冷恢复的 production-live loop。其它 CB/角色、surrender、完整 exit terms v2 与实际 delta 仍未闭合。 |
 | 一代结算 | final score、record、blessing/refusal、contract progress、commit serial | 最小化窗口死亡 snapshot 已 live-confirmed；自然死亡完整 episode 终验仍待完成。 |
 
 ### Native 动作与 MCP surface
@@ -154,8 +154,8 @@ DLL template 本身当成随时可执行动作。
 
 重要限制：
 
-- `surrender-war-N` 与 `offer-white-peace-N` 虽有 native typed command，Python/MCP 因 structured exit terms 与
-  campaign-decision readiness 未闭合而明确冻结；
+- `offer-white-peace-N` 只对当前 GEN-004 primary-attacker `claim_cb` 最窄 counter-policy 解冻并 production-live；
+  `surrender-war-N`、其它 CB/角色、人质组合与通用 structured exit/campaign policy 仍冻结；
 - combat v2/v3 可返回输入，不等于已有胜率，也没有授权主动接战；
 - MCP 提供 typed snapshot、planner、auto-turn、save/restore、event、marriage、declaration、army move、assault、
   disband、enforce、combat query 与 termination query；split/merge、route preview/contact 等仍主要经
@@ -169,8 +169,8 @@ DLL template 本身当成随时可执行动作。
 - 先建立 checkpoint；死亡时结算并写少量跨局 achievement memory；
 - 活跃事件优先处理；支持 current-window query 的 backend 先恢复严格同帧 materialized options，仅在恰好一个 shown+enabled row 时按 authored native index 做 forced presentation choice。零个或多个候选因 effect preview/semantic policy 未就绪而停住，不再默认第一项；不支持新 query 的旧 backend 保留兼容路径；
 - 当前角色无配偶时查询婚姻并提交第一个合法候选，等待 spouse/betrothed 后置关系；
-- 宣战前会读取原生 strategic power 并比较目标，但因 participant ETA、combat forecast、campaign cost、exit outcome 与
-  校准效用缺失，正确地停在 `native_war_entry_evidence_required`；
+- 宣战前会读取原生 strategic power 并比较目标；participant ETA、combat forecast、campaign cost、exit outcome 与校准效用缺失时
+  选择可审计的 `NO_DECLARE → life-advance`，绝不调用可见的 declare literal，也不再因此停住整代；
 - 对已经存在的战争可集结、比较 objectives/enemy endpoints、preview 路线、审计所有军队 route、执行 route-contact
   horizon、移动、追击、围城、按一日预算 Start/Stop Assault，并处理 split/merge 恢复；
 - 当前 planner 的 in-combat continuing branch 已实现并由单元测试证明 query battle-control→bounded one-day advance→同一
@@ -464,19 +464,19 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 |---:|---|---|---|
 | 0 | actual contact / route timing | create-new + cold restore `live-loop`；join/multi 分支与策略接线 pending | 预测 ordered participants 与真实接战帧一致。 |
 | 1 | combat / reinforcement / retreat | ongoing identity/ledger + planner hold + full-side/owner-subset retreat + normal terminal `live-loop`；reinforcement assignment query live，assigned+ETA/join、forecast、terminal 余下三分支与总 controller pending，P1 进行中 | 四类战斗策略与真实结果闭环。 |
-| 2 | active war / siege / termination | `live-loop` 部分；ordinary white-peace special binding production-live，victory/defeat 与 outcome terms 未闭合 | 任意 checkpoint 自主打到合法终局并处理战后。 |
-| 3 | events / notifications / interactions | typed pending/ACK/ordinary white-peace binding `live-primitive`；current-window identity/presentation/cancel/empty-indicator `fixture-live`；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
+| 2 | active war / siege / termination | `live-loop` 部分；当前 `claim_cb` 已 white peace→WarID 消失→解散→保存/冷恢复；victory/defeat、其它 CB 与完整 outcome terms 未闭合 | 任意 checkpoint 自主打到合法终局并处理战后。 |
+| 3 | events / notifications / interactions | exact `pay_ransom` reject 为 `live-loop`；typed pending/ordinary white-peace binding 为 `live-primitive`，notification ACK/current-window 为 fixture-live；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
 | 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
 | 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
 | 6 | army composition / supply / mercenary；holy order 暂缓 | 常规军备 `research`/partial input；holy order `owner-deferred` | 先完成非宗教和平备战、动员、补给、战争、复员闭环。 |
-| 7 | war entry / CB / ally / multi-war / holy war | tree `research`，策略 blocked | 能比较普通与圣战候选并自主选择宣战或不战；宗教输入保持战争所需最小集。 |
+| 7 | war entry / CB / ally / multi-war / holy war | tree + native power production-live；不完整证据下 `NO_DECLARE` continuation live，智能宣战仍 blocked | 能比较普通与圣战候选并自主选择宣战或不战；宗教输入保持战争所需最小集。 |
 | 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果；如合法性或接受度依赖信仰，只调用原生最小判定。 |
 | 9 | children / education / dynasty | `visual-narrow` | 多子女教育与王朝资源规划。 |
 | 10 | succession / titles / laws | `visual-narrow` | 预测并缓解 partition，普通 campaign 跨继承。 |
 | 11 | diplomacy / relations | interaction ID-only `implemented` | 通用外交组合改善可测关系/战略位置。 |
 | 12 | vassals / contracts / factions / rebellions | `absent` | 预防并处理强派系，两种结果路线。 |
 | 13 | schemes / hooks / secrets | `absent` | hostile/personal scheme 与风险反馈闭环。 |
-| 14 | prisoners / crime / tyranny | `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
+| 14 | prisoners / crime / tyranny | inbound `pay_ransom` exact reject `live-loop`；通用囚犯/犯罪/tyranny policy 仍 `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
 | 15 | health / stress / fertility | `absent` | 疾病、高压和继承风险联合管理。 |
 | 16 | culture / innovations；faith 暂缓 | culture/innovations `absent`；faith `owner-deferred` | 先闭合文化/创新长期项目；圣战归战争域窄例外，收到明确许可后再做宗教完整 OODA。 |
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |

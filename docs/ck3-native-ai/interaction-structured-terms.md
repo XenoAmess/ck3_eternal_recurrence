@@ -474,7 +474,7 @@ white peace 对 generic terms 的价值与局限：
 
 ### 9.1 首轮玩家 inbound fallback 与债务边界
 
-[implementation-confirmed / static-ready / live=false] 在本篇先闭合原生 `ai_accept` 输入树、human responder 不适用边界、四路
+[implementation-confirmed / pay-ransom reject production-live / remaining branches live=false] 在本篇先闭合原生 `ai_accept` 输入树、human responder 不适用边界、四路
 reply legality 与 special-war typed binding 后，首轮一代人策略允许采用最小 `ordinary-reject-unique-accept-v1`，而不等待所有
 structured terms 完成：
 
@@ -510,6 +510,11 @@ runner 的动作后置门还要求 before/after pending semantic digest 真正�
 step 对应并引用 before 的 old full ID/sender，bounded `remaining_pending_character_interaction` 必须与 after mirror 相等且不再引用旧 ID。
 只有这组条件同时成立，reply 才计入 visible gameplay/dirty checkpoint；裸 command ACK、revision 变化或 result 字段缺失都会停在
 `pending_interaction_lifecycle_postcondition_failed`。
+
+[production-live] run `20260827T074626Z-one-generation-c36229f0` 已对 exact `pay_ransom_interaction` 取得
+typed `rejected` result，old full ID `855638016` 从 after snapshot 消失，并在后续时间推进后保存新的 durable checkpoint；report
+SHA-256 为 `95D96BC1479F5B460F2683F694A099AF01490523FFA74D86AE087C5BF4B9EF8E`。它验证 reject lifecycle 和
+runner postcondition，不补齐赎金 option、金额、囚犯价值或 effect preview，也不升级 unique-accept。
 
 未采用的原生输入与质量债：interaction-specific target/exchange/effect、完整 campaign utility、intermediary/recipient raw/final
 acceptance，以及 war-exit 的 resource/claim/truce/prisoner/hostage dynamic terms。后续以 typed terms + 按类型效用 policy 替换该规则；

@@ -21,7 +21,7 @@ flowchart LR
 
 - 当前 exact build：CK3 `1.19.0.6`。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：helper `1fd0a94`，GEN-004 core `51fe8cf`。
+- 本页盘点日期：2026-08-27；实现与验收合同盘点基线：聚合 runtime `5c85824`。
 - 能力明细以
   [`autonomous-capability-roadmap.md`](../ck3-native-ai/autonomous-capability-roadmap.md) 为施工账本，
   以 [`docs/ck3-native-ai/README.md`](../ck3-native-ai/README.md) 为原生 AI 证据索引。
@@ -54,12 +54,13 @@ flowchart LR
 操作跨过 blocker。当前账本见 [`one-generation-blocker-ledger.md`](one-generation-blocker-ledger.md)。首次一代 GREEN 后，
 再用重复 run、更多 seed 与原生决策树逐步替换这些降级策略。
 
-当前 normal-desktop 启动入口与严格判定见
-[`one-generation-canary-handoff.md`](one-generation-canary-handoff.md)：单一 helper 支持两个互不混配的 profile——默认
-`legacy` 固定 `480f287 + 旧 DLL/injector`，`claim-cb-white-peace` 固定 `51fe8cf + 新 DLL/injector`；两者共用已冻结的
-production6b checkpoint、driver state、pipe 与 `20 / 21600 / 300 / 3` bounds。两套 canonical dry-run 都已验证 identity、no target
-与 CK3=0；当前 sandbox 的 claim Execute 被 normal-desktop host guard 正确拒绝。尚未发生正常桌面 Execute，20-turn 存活即使通过
-完整 sidecar/cleanup 校验也只算 bounded canary，绝不冒充 G1。
+normal-desktop 启动合同与历史双 profile handoff 见
+[`one-generation-canary-handoff.md`](one-generation-canary-handoff.md)。当前 `xenoa / WinSta0\\Default` 已连续完成 strict runner、窄
+`claim_cb` 白和、`pay_ransom` 回复、`NO_DECLARE` 续跑与 checkpoint 冷恢复，旧 sandbox desktop 不再是当前 blocker。最新 run
+`20260827T074858Z-one-generation-0e20ca35` 从 `date_raw=53178504` 推进至 `53179800`，完成 `100/100` turns、`49` visible
+gameplay turns 与 `5` durable checkpoints；最终 CharacterID `29829` 仍存活，因人工 turn bound 正确输出 `bounded_incomplete`。
+report SHA-256 为 `784B6D17AC7F6C220C5E234914E03FA2539CD801E29FAC4F5C2ED4A91D8E827C`，最终 checkpoint SHA-256 为
+`71F23BB9F735AE118E4580AE62A9B3CE4C22AEB2AF22A91447A0484FCE38C1BF`。这证明 runner 已 production-live 且可恢复，仍绝不冒充 G1。
 
 原生 AI 研究前置保持不变：遇到相关玩法，先冻结并落盘 exact-build 原版决策树、输入和 unknown 分支；完成这一步后，我方不必立刻复制
 整棵树，可以选择足以继续游戏的最小实现。原生树中尚未采用的输入/分支必须作为可追踪能力债记录，后续以 production outcome
@@ -79,16 +80,19 @@ production6b checkpoint、driver state、pipe 与 `20 / 21600 / 300 / 3` bounds�
 | active retreat | `production-live loop`（full-side 与 owner-subset） | 读取 day-15 legality，绑定目标路线 token，执行玩家军队撤退并验证旧 CombatID/双方后置状态。 | 不代表已闭合原生 AI 的通用撤退目的地评分或所有战斗策略。 |
 | reinforcement assignment observation | `production-live primitive` | 读取 asking、AI parent stored order、route 和 active CombatID；见过 owner-subset 后 membership reopen。 | assigned+aligned ETA、真实 join 和改派动作仍未完成。 |
 | battle terminal | `production-live primitive/loop`（normal 分支） | 通过 journals/query 识别 normal terminal、旧 CombatID 删除、战分和玩家 retreat。 | no-normal、residual、assignment-reopened 分支尚未 live，aggregate readiness 仍为 false。 |
-| 窄 `claim_cb` white-peace termination | `static-ready` | 逐 option 读取 typed final recipient response；同一 paused frame 按 options → v1 claim terms → literal offer，fresh 重审后仅以旧 full WarID 消失记 `applied`，否则记 `submitted_pending` 并按 720 `date_raw` cooldown；跨战争 100% enforce 永远优先。 | 尚未正常桌面 live；不是完整 v2/campaign 战争退出，不支持其它 CB、holy war 或 surrender。旧 DLL 缺 `recipient_response`，会被新 strict schema 有意拒绝，不能与新源码混用。 |
-| pending character interaction | typed query `production-live primitive`；单键 degraded reply `static-ready` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；仅 exact-build allowlist 的 `spar_with_knight_interaction` 可按 same-frame reject-first / unique-accept 规则解除阻塞，并验证旧 full ID 推进；100% enforce-demands 始终优先。 | 该 fallback 不是通用 ordinary 分类、原生等价或高智商语义策略；stock reject/unique-accept 尚未 production live，typed definition/subtype、war-special 与 structured terms/effects 仍缺。 |
+| 窄 `claim_cb` white-peace termination | `production-live loop` | 当前 primary-attacker 场景已按 options → v1 claim terms → literal offer 提交，AI 异步响应后旧 WarID 消失；残军解散、即时 checkpoint、冷恢复与继续推进均已实走。 | 不是完整 v2/campaign 战争退出；其它 CB/角色、holy war、surrender、victory/defeat 与完整 outcome utility 仍未闭合。 |
+| pending character interaction | typed query `production-live primitive`；`pay_ransom` degraded reply `production-live loop` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；exact `pay_ransom_interaction` 已完成 typed query→reject→旧 full ID 消失→时间推进/checkpoint，100% enforce-demands 始终优先。 | reject-first 不是赎金语义最优或原生等价；`spar`/unique-accept、其它 stock definition、intermediary/notification live 与 structured terms/effects 仍缺。 |
 | auto-accept notification ACK | `fixture-live` | 非宗教 definition-only fixture 中完成 query/query/ACK/旧 full ID 消失。 | 不是 stock/production-only 语义证据，自然 stock 与 intermediary 仍待验。 |
 | campaign root 与 loaded feature manifest | `production-live primitive` | 读取玩家主头衔/tier、capital、liege、government/rules，以及当前进程 feature registry/runtime keys。 | 开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
 | 婚姻关系与最小候选动作 | `implemented`，部分结果 live | 读取配偶/婚约关系，枚举合法 CharacterID 候选并提交、等待关系结果。 | 当前仍可能选择首个候选，不是智能婚姻策略。 |
 | 一代结算 | `production-live primitive` | 读取死亡结算 snapshot、分数/纪录/契约进度并可从 immutable seed 开新 episode。 | 自然死亡完整 episode 与普通 campaign 跨继承仍未完成。 |
-| 一代人严格 runner | `static-ready` | 复用纯原生 owner，从归档的 exact cold seed 持续 OODA；周期保存，并对首个 blocker 或匹配初始角色的 scored death settlement 输出独立 artifact；固定 production6b 的非破坏 canary handoff 已通过真实 dry-run 与独立审查。 | 尚未在 `xenoa / WinSta0\\Default` 跑出 20-turn live canary 或自然死亡完整 episode；G1 仍未取得。 |
+| 一代人严格 runner | `production-live loop` | 复用纯原生 owner，从归档的 exact cold seed 持续 OODA；最新正常桌面 run 完成 `100/100` turns、`49` gameplay 与 `5` durable checkpoints，并在 cleanup 后留下可冷恢复的 `53179800` anchor。 | CharacterID `29829` 仍存活，未生成 terminal settlement；人工 bound 只算 `bounded_incomplete`，G1 仍未取得。 |
 
 已有 managed war run 的已记录量化里程碑为 `210/210` 成功回合、78 个可见 gameplay 回合和 75 个游戏日；这是既有战争
 checkpoint 的稳定性证据，不是全游戏覆盖率。
+
+最新 strict one-generation continuation 的量化里程碑为 `100/100` 成功回合、49 个可见 gameplay 回合、5 个 durable checkpoints，
+`date_raw 53178504→53179800`；cleanup 全绿但角色仍存活，因此它只提升 runner/readiness 证据，不提升 G1。
 
 production6b 还带有一个明确的 G2 债务：`episode-seed.json` 指向另一 state，而复制体内没有配套
 `xar_episode_seed.ck3`。它不影响当前固定 checkpoint 的单寿命 G1 canary/死亡结算，但会阻塞之后的
@@ -144,8 +148,8 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 ### P2：从既有战争打到合法终局
 
 - 补 score breakdown/ticking、occupation、participants、盟友 ETA、财政 runway、补给/损耗、完整 objective 与 exit terms。
-- GEN-004 的最窄 `claim_cb` white-peace 已 `static-ready`；先在 normal desktop 验证 final response、options → v1 terms → offer 与
-  applied/pending 后置结果，再以 production outcome 替换未采用的 v2/campaign 输入。
+- GEN-004 的最窄 `claim_cb` white-peace 已在 normal desktop 完成 final response、options → v1 terms → offer、AI 异步应用、
+  WarID 消失、残军解散、保存与冷恢复；继续以 production outcome 扩其它 CB/角色及未采用的 v2/campaign 输入。
 - 实机验收 raise、assault start/stop、disband、enforce；继续扩展其它 CB 的 white peace 与独立 surrender surface。
 - 增加 call ally、rally、embark、reassignment、mercenary 等动作和后置状态。
 - 从 active-war checkpoint 无人工输入走到 victory/white peace/surrender，处理战后、保存并冷恢复。
@@ -218,14 +222,15 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 
 截至 2026-08-27，最近的施工队列是：
 
-1. Attempt4 已冻结为 fixture-scoped GREEN；保持今天的演示手册、artifact 与日报/周报可复核；
-2. 继续补事件非空 typed indicators、stable scopes、完整 structured effects 与资源/关系后置观测，随后闭合有授权的
-   selection/lifecycle；
-3. 为多选事件建立长期效用策略并做 stock/nonreligious 50-key 长跑；
-4. 回到 P1 的 assigned reinforcement/join、terminal 剩余分支与可校准 forecast；
-5. 完成 P2 既有战争终局，再从和平状态闭合智能宣战；
-6. 依次扩展 P4–P10 的通用玩法域，同时持续维护 F0；
-7. 用 P11 汇总为长期智能与整局验收。
+1. 从 `date_raw=53179800` 的 durable checkpoint 冷恢复，以 `50000 / 604800 / 300 / 3` bounds 继续同一 CharacterID `29829`
+   的全寿命 strict run；
+2. 若仅耗尽 turn/wall bound 且 checkpoint/cleanup 全绿，直接从最新恢复点续跑；若出现真实 B0/B1，保留 artifact，先更新对应
+   exact-build 原生树，再做最小合法 blocker-removal；
+3. 直到生成匹配本 episode 的自然死亡 `terminal-settlement.json`，且 settlement、score、record persistence、cross-run record、
+   零继承人 gameplay 与 cleanup 全部 GREEN，才标记 G1；
+4. G1 后处理 `GEN-009` episode seed 债务并重复一轮取得 G2；
+5. 完整 effects、reinforcement/join、terminal 剩余分支、forecast、智能宣战及 P4–P10 通用玩法域若未成为真实 blocker，继续按
+   B2/B3 账本排序，不抢占首次 G1。
 
 真实 run 出现更高优先级的观测阻点时，可以调整相邻工作包，但不得通过重复返回 `unknown/unavailable` 代替补观测口。
 
