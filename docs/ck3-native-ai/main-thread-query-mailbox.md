@@ -202,6 +202,54 @@ the fresh native revision as audit data although this exact handler does not
 consume it. Direct planner/user primitives, every query, and every other
 action retain their existing revision gates.
 
+The later production run
+`20260827T163217Z-one-generation-ace7cbcf` closed a narrower remaining timing
+edge. It completed `85/86` turns, including `42` gameplay advances and `14`
+verified checkpoints, before one speed-one `life-advance` stopped with
+`native life-advance did not observe the paused map`. Its pre-action frame was
+still a real paused snapshot at `date_raw=53210712`; cleanup was GREEN. The
+exact `pause-map` handler returns `submitted` after placing the idempotent
+pause command on CK3's queue, while the immediate `PublishSnapshot` may still
+read the running state. The 250 ms heartbeat publisher is responsible for the
+later `paused=true` postcondition. This RED therefore proves that the shared
+10-second submit-plus-observe deadline can expire after an accepted request;
+it does not prove whether CK3 applied the queued pause just after that bound.
+
+An immutable copy of the checkpoint (`F15D383B...35559`) and failure artifact
+(`A0BD8C79...A484`) was retained. A clean unmodified `9ff04ae` cold replay from
+that exact checkpoint did not reproduce the timeout: two consecutive
+speed-one advances reached `date_raw=53210760`, returned paused, wrote
+checkpoint `79B71103...85F2`, and cleaned up normally. The failure is therefore
+an observed intermittent pause-application/publication timing edge, not a
+deterministic world-date branch; the artifact cannot distinguish which side
+delayed. The minimum counter-policy keeps the same 10-second absolute
+deadline and real paused-frame proof. After the first ACK it observes for one
+second; if the latest frame is still running under the same bridge generation,
+episode and map-ready owner, it may submit exactly one more idempotent
+`pause-map`. The second native call also fresh-reads CK3, so an
+`already_paused` result prompts the bridge's immediate snapshot publication.
+There is no third request, the deadline is not reset, and no command ACK is
+promoted to state. Direct primitives and all other actions remain unchanged.
+Failure evidence retains the first/second native ACK statuses, attempted
+request count, and the final revision/date/speed/paused tuple; a second-request
+timeout is wrapped without discarding the first ACK.
+
+```mermaid
+flowchart TD
+    R["[counter-policy] running life-advance reached its horizon"] --> S["submit one idempotent pause-map"]
+    S --> A{"ACK within command timeout?"}
+    A -- no --> E["blocker: command result unavailable"]
+    A -- yes --> P{"real paused snapshot within 1 second?"}
+    P -- yes --> G["accept paused postcondition"]
+    P -- no --> O{"same running pause owner?"}
+    O -- yes --> S2["submit one final idempotent pause-map"]
+    O -- no --> B["blocker: owner changed"]
+    S2 --> V{"real paused snapshot before original deadline?"}
+    V -- yes --> G
+    V -- no --> F["blocker: paused map not observed"]
+    A -. "[unknown] CK3 application-main or publication delay" .-> P
+```
+
 Combat-v3 binds the caller's positive `expected_revision`, the complete last
 published paused snapshot, and its full-generation encounter IDs before
 submission. Its executor re-reads that snapshot on application-main, requires

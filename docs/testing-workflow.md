@@ -376,6 +376,27 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   speed 1；没有 player route、combat、retreat、Assault 或 exact route-contact transaction 使用 speed 3；游戏日/现实小时相对
   baseline `207` 至少提高 `2x`；周期 checkpoint、source clone hash 与 managed cleanup 全绿。任一项失败就保持正式长跑旧策略，
   保留 report/driver history 后再校准，不用 bounded fixture 冒充 speed-3 调度实证。
+- 2026-08-28 使用同一个 immutable `date_raw=53209560` checkpoint（SHA-256
+  `A8DD4034C32856B8D1E05D6B834BBBF3C51AA74DA038BB22A0CA23A998AD76CF`）完成三轮 clean-runtime live A/B，专门区分
+  Python transcript/history 复制成本与 native `life-advance` 本身。只比较每轮 runner 已进入 turn loop 后的运行段，不把 cold launch
+  或一次 12-turn 样本外推成长跑稳定吞吐：
+
+  | runtime | 运行段 | query 首 / 尾 | life-advance 首 / 尾 |
+  |---|---:|---:|---:|
+  | `79b8d2a` | `48.134s` | `3.398s / 2.579s` | `5.065s / 4.600s` |
+  | `e0688c7` | `44.875s` | `3.317s / 2.516s` | `4.583s / 4.111s` |
+  | `9ff04ae` | `24.684s` | 约 `0.050s / 0.068s` | `4.569s / 3.643s` |
+
+  最终 `9ff04ae` 轮为 `12/12` turns、`6` gameplay、`6` queries、`2` checkpoints；每个 gameplay turn 都是
+  `timeline_policy=player_tactical / speed=1 / elapsed_days=1`，每次动作后 `paused=true`，managed cleanup 全绿。最终 checkpoint
+  为 `date_raw=53209704`、SHA-256 `39379D0224788198FECCCA82DA4B7B7257DB7E1AEE6B3750F62AA845E312678A`，driver-state
+  SHA-256 记录为 `D47DAA...BDA`。因此这三轮证明 query/history 热路径可在真实 CK3 loop 中降本，却没有命中
+  `remote_enemy_route`，不能用来把 speed 3 升为 production-live；相同玩家 12-hop route 与敌军追尾仍应选择 speed 1。
+
+  对应的确定性 instrumentation 必须和 live wall-time 一起保留：life history 完整复制 `9 → 1 → 0`；planning transcript
+  复制 `1 → 0`，局部计时约 `600.637ms → 5.813ms`；termination query 内部复制 `3 → 0`，局部计时约
+  `1815.527ms → 1.852ms`。最新全 unit 为 `1341 passed, 2 skipped, 900 subtests passed`，独立审查 `PASS`。
+  query 已降到几十毫秒不等于 native life 已免费：最新首/尾 life 仍为 `4.569s / 3.643s`，后续优化必须由新的实测拆分证明必要性。
 - `first-blocker.json` 以 first-write-wins 保存当前失败尝试，而不是事后取上一条成功 turn；它包含 plan、selected step、action
   result、before/after paused binding、事件/互动/WarID/ArmyID 摘要与最后 durable
   checkpoint。它表示 runner 看到的第一个停止点；bound exhaustion 是 harness incomplete，不能自动升级为 capability RED。真正改
@@ -415,6 +436,24 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   记一个真实 ACK，并在同一剩余 deadline 内等待真实 paused 后置帧。不得外推到 direct primitive、query、其它 action 或旧 plan。
   单元测试只授予 static-ready；必须从最新显式 checkpoint SHA `578B0289...5C38` cold restore 实机越过超时边界并再产出合格
   checkpoint，才能关闭该 blocker。
+- 2026-08-28 的后继正式 run `20260827T163217Z-one-generation-ace7cbcf` 暴露了不同的 post-ACK 形状：`85/86` turns、
+  42 gameplay 与 14 checkpoints 后，composite 已提交不受 public revision gate 约束的 `pause-map`，但原 10 秒窗口没有观察到
+  `paused=true`。report/blocker SHA-256 分别为 `49D2A8BB...B50808` / `A0BD8C79...A484`，cleanup 全绿。它不能改写成 GEN-012
+  复发，也不能在缺失 ACK status/窗口帧时断言 queue drop。
+- opaque `service.auto_turn()` 的通用 invalidation 会把 first-blocker 回绑本轮 immutable seed，但本例另有确定物理证据：history
+  `2960` 是成功 `save-checkpoint`，其后只有成功只读 query 与失败 life，无新 save；磁盘 `xar_checkpoint.ck3` 为
+  `date_raw=53210712 / F15D383B...35559` 并匹配 driver metadata。把该 checkpoint 与 driver state `D272510F...FA323` 复制到新
+  state 后，cold restore 会验证 history anchor 并截断失败 tail。未修改 `9ff04ae` 的独立 4-turn 重放随后两次 life 均 GREEN，生成
+  更新 checkpoint `date_raw=53210760 / 79B71103...85F2`；这证明原错误是瞬时故障，但不撤销 RED。
+- GEN-014 的最小回归合同是在原绝对 deadline 内最多两个 pause 请求：第一次 ACK 后只观察 1 秒；latest observed frame 仍是同 bridge
+  generation、episode、map-ready、speed/event 的 running owner 时，才补交一次 exact handler 已证明幂等的 `pause-map`；随后只以
+  真实 paused snapshot 成功。没有第三次、不重置 deadline，owner 漂移直接失败；失败 evidence 保留每次 ACK status 与第二次
+  request 错误，direct primitive/query 完全不变。确定性测试必须
+  覆盖一发成功、第二发成功、两发仍 running、owner 漂移、non-revision error 与原 GEN-012 路径；live gate 必须从
+  `79B71103...85F2` cold restore 越过同类 slice 并保存更新 checkpoint。
+  当前 blocker-removal 的 focused 测试为 `12 passed, 10 subtests passed`，完整 native driver 为
+  `153 passed, 128 subtests passed`，全 unit 为 `1344 passed, 2 skipped, 908 subtests passed`，独立复审 PASS；这些只授予
+  `static-ready`，不能替代上述 live gate。
 - 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
   66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中

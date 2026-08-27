@@ -264,6 +264,7 @@ _NATIVE_SIEGE_ADVANCE_MAX_DAYS = 7
 _NATIVE_ASSAULT_ADVANCE_MAX_DAYS = 1
 _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS = 1
 _NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS = 1
+_LIFE_ADVANCE_PAUSE_RETRY_SECONDS = 1.0
 _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
     "CK3 battle-control state changed during query"
 )
@@ -8639,17 +8640,61 @@ class NativeHeadlessGameplayDriver:
             internal_semantic_snapshot=True,
         )
         actions.append({"step": "pause-map", "result": result})
+        pause_attempt_count = 1
+        pause_ack_statuses = [_pause_ack_status(result)]
         remaining = max(0.0, deadline - time.monotonic())
-        paused = self._wait_for_life_advance_snapshot(
+        current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
             lambda candidate: candidate.get("paused") is True,
-            timeout_seconds=remaining,
+            timeout_seconds=min(
+                remaining, _LIFE_ADVANCE_PAUSE_RETRY_SECONDS
+            ),
         )
-        if paused.get("paused") is not True:
+        if current.get("paused") is True:
+            return current
+
+        retry_suppressed = None
+        if not _retryable_life_advance_pause_owner(snapshot, current):
+            retry_suppressed = "owner_changed"
+        else:
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                pause_attempt_count = 2
+                try:
+                    result = self._execute_primitive_step(
+                        "pause-map",
+                        expected_revision=None,
+                        timeout_seconds=remaining,
+                        internal_semantic_snapshot=True,
+                    )
+                except (BridgeUnavailableError, UnsupportedStepError) as error:
+                    raise BridgeUnavailableError(
+                        "native life-advance second pause-map request failed; "
+                        f"pause_attempts={pause_attempt_count}, "
+                        f"pause_ack_statuses={pause_ack_statuses}, "
+                        f"second_error={type(error).__name__}: {error}"
+                    ) from error
+                actions.append({"step": "pause-map", "result": result})
+                pause_ack_statuses.append(_pause_ack_status(result))
+                remaining = max(0.0, deadline - time.monotonic())
+                current = self._wait_for_life_advance_snapshot(
+                    self.take_internal_semantic_snapshot(),
+                    lambda candidate: candidate.get("paused") is True,
+                    timeout_seconds=remaining,
+                )
+        if current.get("paused") is not True:
             raise BridgeUnavailableError(
-                "native life-advance did not observe the paused map"
+                "native life-advance did not observe the paused map; "
+                f"pause_attempts={pause_attempt_count}, "
+                f"pause_ack_statuses={pause_ack_statuses}, "
+                f"retry_suppressed={retry_suppressed}, "
+                f"last_revision={current.get('revision')}, "
+                f"last_native_revision={current.get('native_revision')}, "
+                f"last_date_raw={current.get('date_raw')}, "
+                f"last_speed={current.get('speed')}, "
+                f"last_paused={current.get('paused')}"
             )
-        return paused
+        return current
 
     def _execute_composite_primitive(
         self,
@@ -10497,6 +10542,36 @@ def _retryable_life_advance_change(
         and refreshed.get("paused") == previous.get("paused")
         and refreshed.get("speed") == previous.get("speed")
     )
+
+
+def _retryable_life_advance_pause_owner(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Keep one idempotent pause retry bound to the same running episode."""
+    previous_diagnostics = previous.get("diagnostics")
+    refreshed_diagnostics = refreshed.get("diagnostics")
+    if not isinstance(previous_diagnostics, dict) or not isinstance(
+        refreshed_diagnostics, dict
+    ):
+        return False
+    return bool(
+        refreshed.get("map_ready") is True
+        and refreshed.get("paused") is False
+        and refreshed.get("one_life_terminal_reason") is None
+        and previous.get("episode_character_id")
+        == refreshed.get("episode_character_id")
+        and previous.get("episode_run_id") == refreshed.get("episode_run_id")
+        and previous_diagnostics.get("connection_generation")
+        == refreshed_diagnostics.get("connection_generation")
+        and previous_diagnostics.get("bridge_pid")
+        == refreshed_diagnostics.get("bridge_pid")
+        and _retryable_life_advance_change(previous, refreshed)
+    )
+
+
+def _pause_ack_status(result: dict[str, object]) -> str:
+    status = result.get("status")
+    return status if isinstance(status, str) and status else "missing"
 
 
 def _event_instance_id(snapshot: dict[str, object]) -> object:

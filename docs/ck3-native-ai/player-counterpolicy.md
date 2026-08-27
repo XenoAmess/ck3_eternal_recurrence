@@ -221,6 +221,33 @@ advance，而且 speed-3 异步暂停的最大 overshoot 尚未闭合。因此�
 下一入口应是先用隔离 A/B 冻结 speed-3 elapsed envelope，再以 timed arrival 与该 envelope 的明确余量授权；不能用 route
 长度或 first hop 代替 ETA，也不能把现有 speed-1 exact transaction 直接改成 speed 3。
 
+### 2026-08-28 同 checkpoint live A/B：查询提速已闭合，speed 3 仍未命中
+
+[live-confirmed] 三轮 A/B 都从 `date_raw=53209560`、SHA-256
+`A8DD4034C32856B8D1E05D6B834BBBF3C51AA74DA038BB22A0CA23A998AD76CF` 的同一 checkpoint 起跑，只替换 Python
+snapshot/transcript 复制实现，不改变上述时间线选择词典序。运行段依次为：
+
+| runtime | 运行段 | query 首 / 尾 | life-advance 首 / 尾 |
+|---|---:|---:|---:|
+| `79b8d2a` | `48.134s` | `3.398s / 2.579s` | `5.065s / 4.600s` |
+| `e0688c7` | `44.875s` | `3.317s / 2.516s` | `4.583s / 4.111s` |
+| `9ff04ae` | `24.684s` | 约 `0.050s / 0.068s` | `4.569s / 3.643s` |
+
+[implementation-confirmed] life history 完整复制从 `9 → 1 → 0`；planning transcript 从 `1 → 0`，局部耗时约
+`600.637ms → 5.813ms`；termination query 内部从 `3 → 0`，局部耗时约 `1815.527ms → 1.852ms`。完整数据、
+durable/cleanup 合同与验证矩阵见 [testing-workflow.md](../testing-workflow.md)。这些变化解释 query 的数量级下降；它们没有修改
+原生路线、敌军风险或 speed selector，也不证明 life-advance 剩余的 3.6–4.6 秒成本已经消失。
+
+[live-confirmed + counter-policy] 最新 `9ff04ae` 轮完成 `12/12` turns，其中 `6` gameplay、`6` queries、`2` checkpoints。
+六次 gameplay 全部命中 `timeline_policy=player_tactical`：玩家仍有已提交的 12-hop route，敌军仍在追尾；selector 因而六次都用
+`speed=1`，各推进 `1` 游戏日并回到 `paused=true`。最终 checkpoint 为 `date_raw=53209704`、SHA-256
+`39379D0224788198FECCCA82DA4B7B7257DB7E1AEE6B3750F62AA845E312678A`，cleanup 全绿。这是真实的 speed-1 安全回退
+production evidence，不是 speed-3 live evidence。
+
+[unknown] speed 3 的 production gate 仍未满足：本轮没有任何 `remote_enemy_route` 起始帧，因此没有实际 speed-3
+`elapsed_days`、overshoot 或 after-frame contact envelope。下一轮应继续正常 G1，而不是人为取消玩家路线或避开追尾来制造样本；
+只有战局自然进入完整 route-disjoint 帧时，才按既有 gate 执行 speed 3 并记录真实 paused post-state。
+
 ## M hostile × N player route matrix
 
 - [live-confirmed] 同一 current province 的敌军可以有不同 endpoint：战争 `16777290` 中 `357` 和

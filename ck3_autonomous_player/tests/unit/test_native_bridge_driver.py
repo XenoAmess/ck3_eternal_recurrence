@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import os
@@ -9875,7 +9876,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "protocol_version": 1,
                     "request_id": frame["request_id"],
                     "ok": True,
-                    "result": {"step": "pause-map", "accepted": True},
+                    "result": {
+                        "step": "pause-map",
+                        "accepted": True,
+                        "status": "submitted",
+                    },
                 }
             )
             endpoint.publish(
@@ -10129,45 +10134,70 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         execute.assert_called_once()
 
-    def test_pause_life_advance_does_not_resubmit_after_ack_without_pause(
+    def test_pause_life_advance_retries_once_after_ack_without_pause(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
             endpoint=endpoint,
-            command_timeout_seconds=0.5,
+            command_timeout_seconds=2.5,
         )
         endpoint.publish(
             _hello("game.state.snapshot", "game.command.pause-map")
         )
         endpoint.publish(_snapshot(1, speed=5, paused=False))
         observed = driver.take_snapshot()
+        submissions = 0
 
         def answer(frame: dict[str, object]) -> None:
+            nonlocal submissions
             if frame.get("type") != "execute_step":
                 return
+            submissions += 1
             endpoint.publish(
                 {
                     "type": "command_result",
                     "protocol_version": 1,
                     "request_id": frame["request_id"],
                     "ok": True,
-                    "result": {"step": "pause-map", "accepted": True},
+                    "result": {
+                        "step": "pause-map",
+                        "accepted": True,
+                        "status": (
+                            "submitted"
+                            if submissions == 1
+                            else "already_paused"
+                        ),
+                    },
                 }
             )
+            if submissions == 2:
+                endpoint.publish(_snapshot(2, speed=5, paused=True))
 
         endpoint.send_hook = answer
         actions: list[dict[str, object]] = []
-        with mock.patch(
-            "xar_autoplayer.bridge.native_driver.time.monotonic",
-            side_effect=(100.0, 100.1, 101.0, 101.0, 101.0),
+        running = driver.take_internal_semantic_snapshot()
+        waits = 0
+
+        def wait_then_observe_pause(
+            snapshot: dict[str, object],
+            predicate: object,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            nonlocal waits
+            waits += 1
+            if waits == 1:
+                return running
+            return driver.take_internal_semantic_snapshot()
+
+        with mock.patch.object(
+            driver,
+            "_wait_for_life_advance_snapshot",
+            side_effect=wait_then_observe_pause,
         ):
-            with self.assertRaisesRegex(
-                BridgeUnavailableError,
-                "did not observe the paused map",
-            ):
-                driver._pause_life_advance(observed, actions)
+            paused = driver._pause_life_advance(observed, actions)
         pause_frames = [
             frame
             for frame in endpoint.frames
@@ -10175,8 +10205,207 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             and frame.get("step") == "pause-map"
         ]
 
-        self.assertEqual(len(pause_frames), 1)
-        self.assertEqual([action["step"] for action in actions], ["pause-map"])
+        self.assertTrue(paused["paused"])
+        self.assertEqual(len(pause_frames), 2)
+        self.assertEqual(
+            [action["step"] for action in actions],
+            ["pause-map", "pause-map"],
+        )
+        self.assertEqual(
+            [action["result"]["status"] for action in actions],
+            ["submitted", "already_paused"],
+        )
+
+    def test_pause_life_advance_retries_at_most_once_within_deadline(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=2.5,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(_snapshot(1, speed=5, paused=False))
+        observed = driver.take_snapshot()
+        current_time = 100.0
+
+        def monotonic() -> float:
+            return current_time
+
+        def wait_without_pause(
+            snapshot: dict[str, object],
+            predicate: object,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            nonlocal current_time
+            current_time += timeout_seconds
+            return snapshot
+
+        with (
+            mock.patch(
+                "xar_autoplayer.bridge.native_driver.time.monotonic",
+                side_effect=monotonic,
+            ),
+            mock.patch.object(
+                driver,
+                "_execute_primitive_step",
+                return_value={
+                    "step": "pause-map",
+                    "accepted": True,
+                    "status": "submitted",
+                },
+            ) as execute,
+            mock.patch.object(
+                driver,
+                "_wait_for_life_advance_snapshot",
+                side_effect=wait_without_pause,
+            ) as wait,
+        ):
+            actions: list[dict[str, object]] = []
+            with self.assertRaisesRegex(
+                BridgeUnavailableError,
+                "pause_attempts=2",
+            ):
+                driver._pause_life_advance(observed, actions)
+
+        self.assertEqual(execute.call_count, 2)
+        self.assertEqual(wait.call_count, 2)
+        self.assertEqual(
+            [call.kwargs["timeout_seconds"] for call in wait.call_args_list],
+            [1.0, 1.5],
+        )
+        self.assertEqual(len(actions), 2)
+
+    def test_pause_life_advance_does_not_retry_after_owner_change(self) -> None:
+        cases = (
+            (
+                "connection_generation",
+                lambda snapshot: snapshot["diagnostics"].__setitem__(
+                    "connection_generation",
+                    int(snapshot["diagnostics"]["connection_generation"]) + 1,
+                ),
+            ),
+            (
+                "bridge_pid",
+                lambda snapshot: snapshot["diagnostics"].__setitem__(
+                    "bridge_pid",
+                    int(snapshot["diagnostics"]["bridge_pid"]) + 1,
+                ),
+            ),
+            (
+                "episode_character_id",
+                lambda snapshot: snapshot.__setitem__(
+                    "episode_character_id",
+                    int(snapshot.get("episode_character_id") or 0) + 1,
+                ),
+            ),
+            (
+                "episode_run_id",
+                lambda snapshot: snapshot.__setitem__(
+                    "episode_run_id", "different-run"
+                ),
+            ),
+            (
+                "map_ready",
+                lambda snapshot: snapshot.__setitem__("map_ready", False),
+            ),
+            (
+                "speed",
+                lambda snapshot: snapshot.__setitem__("speed", 4),
+            ),
+            (
+                "active_event",
+                lambda snapshot: snapshot.__setitem__(
+                    "active_event", {"instance_id": 99}
+                ),
+            ),
+            (
+                "terminal",
+                lambda snapshot: snapshot.__setitem__(
+                    "one_life_terminal_reason", "death"
+                ),
+            ),
+        )
+        for name, mutate in cases:
+            with self.subTest(owner_change=name):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                )
+                endpoint.publish(
+                    _hello("game.state.snapshot", "game.command.pause-map")
+                )
+                endpoint.publish(_snapshot(1, speed=5, paused=False))
+                observed = driver.take_snapshot()
+                changed = copy.deepcopy(observed)
+                mutate(changed)
+
+                with (
+                    mock.patch.object(
+                        driver,
+                        "_execute_primitive_step",
+                        return_value={
+                            "step": "pause-map",
+                            "accepted": True,
+                            "status": "submitted",
+                        },
+                    ) as execute,
+                    mock.patch.object(
+                        driver,
+                        "_wait_for_life_advance_snapshot",
+                        return_value=changed,
+                    ),
+                ):
+                    with self.assertRaisesRegex(
+                        BridgeUnavailableError,
+                        "retry_suppressed=owner_changed",
+                    ):
+                        driver._pause_life_advance(observed, [])
+
+                execute.assert_called_once()
+
+    def test_pause_life_advance_preserves_first_ack_when_retry_fails(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello("game.state.snapshot", "game.command.pause-map")
+        )
+        endpoint.publish(_snapshot(1, speed=5, paused=False))
+        observed = driver.take_snapshot()
+        with (
+            mock.patch.object(
+                driver,
+                "_execute_primitive_step",
+                side_effect=(
+                    {
+                        "step": "pause-map",
+                        "accepted": True,
+                        "status": "submitted",
+                    },
+                    BridgeUnavailableError("second ACK timed out"),
+                ),
+            ),
+            mock.patch.object(
+                driver,
+                "_wait_for_life_advance_snapshot",
+                return_value=observed,
+            ),
+        ):
+            with self.assertRaisesRegex(
+                BridgeUnavailableError,
+                "pause_ack_statuses=\\['submitted'\\].*second ACK timed out",
+            ):
+                driver._pause_life_advance(observed, [])
 
     def test_pause_life_advance_records_real_already_paused_request(self) -> None:
         endpoint = FakeEndpoint()
