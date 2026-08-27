@@ -12072,15 +12072,74 @@ def _unavoidable_contact_transition_postcondition(
     if _army_retreating(subject):
         return {**base, "postcondition": "retreat_observed"}
 
-    def hostile_intent_by_id(
+    contact_horizon = proof.get("contact_horizon")
+    subject_route = (
+        contact_horizon.get("subject_route")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    conflicts = (
+        contact_horizon.get("conflicts")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    contact_province_id = (
+        subject_route.get("current_province_id")
+        if isinstance(subject_route, dict)
+        else None
+    )
+    conflict_hostile_ids = {
+        int(conflict["hostile_army_id"])
+        for conflict in (conflicts if isinstance(conflicts, list) else [])
+        if isinstance(conflict, dict)
+        and conflict.get("kind") == "same_province"
+        and conflict.get("province_id") == contact_province_id
+        and _positive_native_id(conflict.get("hostile_army_id"))
+    }
+
+    def hostile_rows_by_id(
         snapshot: dict[str, object],
-    ) -> dict[int, tuple[object, ...]]:
+    ) -> dict[int, dict[str, object]]:
         wars = snapshot.get("active_wars")
         rows = enemy_armies_from_wars(
             [war for war in wars if isinstance(war, dict)]
             if isinstance(wars, list)
             else []
         )
+        return {
+            int(army["army_id"]): army
+            for army in rows
+            if _positive_native_id(army.get("army_id"))
+        }
+
+    starting_hostile_rows = hostile_rows_by_id(starting)
+    ending_hostile_rows = hostile_rows_by_id(ending)
+    starting_subject = _army_by_id(starting, subject_army_id)
+    entered_contact_province_ids = [
+        hostile_army_id
+        for hostile_army_id in sorted(conflict_hostile_ids)
+        if isinstance(starting_subject, dict)
+        and _positive_native_id(contact_province_id)
+        and starting_subject.get("current_province_id") == contact_province_id
+        and subject.get("current_province_id") == contact_province_id
+        and isinstance(starting_hostile_rows.get(hostile_army_id), dict)
+        and isinstance(ending_hostile_rows.get(hostile_army_id), dict)
+        and starting_hostile_rows[hostile_army_id].get("current_province_id")
+        != contact_province_id
+        and ending_hostile_rows[hostile_army_id].get("current_province_id")
+        == contact_province_id
+    ]
+    if entered_contact_province_ids:
+        return {
+            **base,
+            "postcondition": "hostile_entered_contact_province",
+            "contact_province_id": contact_province_id,
+            "changed_hostile_army_ids": entered_contact_province_ids,
+        }
+
+    def hostile_intent_by_id(
+        snapshot: dict[str, object],
+    ) -> dict[int, tuple[object, ...]]:
         return {
             int(army["army_id"]): (
                 army.get("move_target_province_id"),
@@ -12092,17 +12151,16 @@ def _unavoidable_contact_transition_postcondition(
                 army.get("in_combat"),
                 army.get("retreating"),
             )
-            for army in rows
-            if _positive_native_id(army.get("army_id"))
+            for army in hostile_rows_by_id(snapshot).values()
         }
 
     starting_hostiles = hostile_intent_by_id(starting)
     ending_hostiles = hostile_intent_by_id(ending)
     changed_hostile_ids = [
-        int(hostile_army_id)
-        for hostile_army_id in hostile_army_ids
-        if ending_hostiles.get(int(hostile_army_id))
-        != starting_hostiles.get(int(hostile_army_id))
+        hostile_army_id
+        for hostile_army_id in sorted(conflict_hostile_ids)
+        if ending_hostiles.get(hostile_army_id)
+        != starting_hostiles.get(hostile_army_id)
     ]
     if changed_hostile_ids:
         return {

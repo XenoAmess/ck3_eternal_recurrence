@@ -31,6 +31,7 @@ from xar_autoplayer.bridge.native_driver import (
     _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
     _native_unobservable_started_assaults,
+    _unavoidable_contact_transition_postcondition,
 )
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
@@ -6658,6 +6659,179 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "active_combat_observed",
         )
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
+    def test_unavoidable_contact_observes_conflict_hostile_entering_province(
+        self,
+    ) -> None:
+        start_date = 53_216_424
+        contact_province_id = 5692
+        player = _army(
+            101,
+            province_id=contact_province_id,
+            move_target_province_id=3610,
+            army_state="moving",
+            route_province_ids=[8672, 3610],
+        )
+        conflict_enemy = _army(
+            31,
+            province_id=5693,
+            controllable=False,
+            move_target_province_id=contact_province_id,
+            army_state="moving",
+            route_province_ids=[contact_province_id],
+        )
+        remote_enemy = _army(
+            41,
+            province_id=1111,
+            controllable=False,
+            move_target_province_id=contact_province_id,
+            army_state="moving",
+            route_province_ids=[8665, contact_province_id],
+        )
+
+        def semantic_snapshot(
+            *,
+            date_raw: int,
+            subject: dict[str, object] = player,
+            local_enemy: dict[str, object] = conflict_enemy,
+            other_enemy: dict[str, object] = remote_enemy,
+        ) -> dict[str, object]:
+            return {
+                "paused": True,
+                "date_raw": date_raw,
+                "played_character_alive": True,
+                "one_life_terminal": False,
+                "active_wars": [
+                    _war(
+                        allied_armies=[subject],
+                        enemy_armies=[local_enemy, other_enemy],
+                        war_objective_province_ids=[3610],
+                    )
+                ],
+                "player_armies": [subject],
+            }
+
+        proof = {
+            "subject_army_id": 101,
+            "hostile_army_ids": [31, 41],
+            "contact_horizon": {
+                "subject_route": {
+                    "current_province_id": contact_province_id,
+                },
+                "conflicts": [
+                    {
+                        "kind": "same_province",
+                        "hostile_army_id": 31,
+                        "province_id": contact_province_id,
+                    }
+                ],
+            },
+        }
+        starting = semantic_snapshot(date_raw=start_date)
+        entered_enemy = {
+            **conflict_enemy,
+            "current_province_id": contact_province_id,
+        }
+        ending = semantic_snapshot(
+            date_raw=start_date + 24,
+            local_enemy=entered_enemy,
+        )
+
+        observed = _unavoidable_contact_transition_postcondition(
+            starting,
+            ending,
+            proof=proof,
+        )
+        self.assertIsNotNone(observed)
+        assert observed is not None
+        self.assertEqual(
+            observed["postcondition"],
+            "hostile_entered_contact_province",
+        )
+        self.assertEqual(observed["contact_province_id"], contact_province_id)
+        self.assertEqual(observed["changed_hostile_army_ids"], [31])
+
+        already_present = semantic_snapshot(
+            date_raw=start_date,
+            local_enemy=entered_enemy,
+        )
+        with self.subTest("same hostile cannot satisfy entry twice"):
+            self.assertIsNone(
+                _unavoidable_contact_transition_postcondition(
+                    already_present,
+                    ending,
+                    proof=proof,
+                )
+            )
+
+        remote_entered = {
+            **remote_enemy,
+            "current_province_id": contact_province_id,
+        }
+        with self.subTest("non-conflict hostile cannot mask missing contact"):
+            self.assertIsNone(
+                _unavoidable_contact_transition_postcondition(
+                    starting,
+                    semantic_snapshot(
+                        date_raw=start_date + 24,
+                        other_enemy=remote_entered,
+                    ),
+                    proof=proof,
+                )
+            )
+
+        remote_rerouted = {
+            **remote_enemy,
+            "move_target_province_id": 8665,
+            "route_province_ids": [8665],
+        }
+        with self.subTest("remote hostile reroute cannot mask missing contact"):
+            self.assertIsNone(
+                _unavoidable_contact_transition_postcondition(
+                    starting,
+                    semantic_snapshot(
+                        date_raw=start_date + 24,
+                        other_enemy=remote_rerouted,
+                    ),
+                    proof=proof,
+                )
+            )
+
+        conflict_rerouted = {
+            **conflict_enemy,
+            "move_target_province_id": 5693,
+            "route_province_ids": [5693],
+        }
+        with self.subTest("conflict hostile reroute invalidates the proof"):
+            changed = _unavoidable_contact_transition_postcondition(
+                starting,
+                semantic_snapshot(
+                    date_raw=start_date + 24,
+                    local_enemy=conflict_rerouted,
+                ),
+                proof=proof,
+            )
+            self.assertIsNotNone(changed)
+            assert changed is not None
+            self.assertEqual(changed["postcondition"], "hostile_intent_changed")
+            self.assertEqual(changed["changed_hostile_army_ids"], [31])
+
+        subject_left = {
+            **player,
+            "current_province_id": 8672,
+        }
+        with self.subTest("subject must remain in the proved contact province"):
+            self.assertIsNone(
+                _unavoidable_contact_transition_postcondition(
+                    starting,
+                    semantic_snapshot(
+                        date_raw=start_date + 24,
+                        subject=subject_left,
+                        local_enemy=entered_enemy,
+                    ),
+                    proof=proof,
+                )
+            )
 
     def test_moving_contact_proof_covers_stationary_army_exact_day(
         self,

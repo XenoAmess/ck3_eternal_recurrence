@@ -393,6 +393,35 @@ flowchart TD
     class F unknown;
 ```
 
+### 2026-08-28 端点实机修正：敌军已入省但战斗尚未初始化
+
+- [production-live] `b5865f3` 的冷恢复 canary
+  `20260827T225828Z-one-generation-e74fb9df` 已证明窄分支不会再枚举 185 个目标：它从
+  `53216400` 安全推进到 `53216424`，重新取得 fresh exact horizon，再只推进到
+  `53216448`。runner 随后因未观测到 combat、retreat、war/episode transition 或
+  hostile state change 而主动 RED；cleanup 全绿。`report.json` SHA-256 为
+  `0CAA13221A470D71496ACE49B6C1C43E0260F002C13ACAB510C05F64EF06791E`，
+  `first-blocker.json` SHA-256 为
+  `A4EE8434F37293F8C96F9DB1C69C7CEF8866EBCC4CB45EB3EDE440F01F62925A`。
+- [production-live] RED 前的最后一条 fresh query 绑定 `date_raw=53216424`、snapshot
+  `native:7`、revision `8` / native revision `7`；唯一冲突仍为
+  `same_province(117440838,5692,[53216448,53216448])`。失败 command 的 ending semantic
+  snapshot 没有写入 report 或 driver history，因此当前 artifact 不能断言敌军在末帧已经进入
+  `5692`，也不能把闭区间 ETA 端点本身冒充已发生接触。
+- [static-ready] 后置验证的实际代码缺口是：原比较包含 move target、route、army state、combat
+  与 retreat，却没有验证 proof 中的 conflict hostile 是否从异省实际进入 contact Province。
+  最小修正只接受更强的直接观测：subject 起止均留在 proof Province；被同一 proof conflict
+  点名的 hostile 起点不在该省、终点已在该省；终点仍 paused 且日期不超过 exact one-day
+  envelope。该结果记为 `hostile_entered_contact_province`，日期推进或 ACK 本身仍不算成功。
+- [static-ready] 通用 `hostile_intent_changed` 只比较本次 proof 的 conflict hostile IDs；远处敌军
+  的普通改道不能替本地接触完成后置验证。旧 proof 仍绑定 date、snapshot、revision、native
+  revision、connection generation、episode 与完整 hostile scope；一天结束后必须重新查询，
+  同一敌军已经在 contact Province 时也不能第二次满足“新进入”条件。
+- [pending-live] 必须从同一 `53216400` checkpoint 冷恢复复测。若末帧直接给出
+  `hostile_entered_contact_province` 或真实 CombatID，现有 battle-control OODA 接管；若仍无直接
+  状态变化，则继续保留 RED，并优先把 ending semantic snapshot/war progress 写入失败 artifact
+  后再判断是否需要 exact daily-tick final-stage hook。
+
 ## 与 GUI 战斗预测严格分离
 
 ```mermaid
