@@ -229,8 +229,11 @@ flowchart TD
     OK["[static-confirmed] province/candidate 可通过 ratio 门"]
     NO["[static-confirmed] candidate 被 ratio 门拒绝"]
     A{"[static-confirmed] ratio < 0.625?"}
-    ALT["[static-confirmed] 尝试更好的 adjacency/path"]
-    DIRECT["[static-confirmed] 不因 bad adjacency 另找路"]
+    ALT["[static-confirmed] 在原路线成本 +180 内<br/>尝试更好的 adjacency/path"]
+    ALTV{"[static-confirmed] 替代 path 构造且成本门通过?"}
+    ALTOK["[static-confirmed] 采用替代 path"]
+    ORIG["[static-confirmed] 采用原 path"]
+    PV{"[static-confirmed] ratio > selected 0.50 / 0.40?"}
     H{"[static-confirmed] 当前 already asking?"}
     H0{"[static-confirmed] ratio < 0.66?"}
     H1{"[static-confirmed] ratio < 0.75?"}
@@ -238,10 +241,12 @@ flowchart TD
     STOP["[static-confirmed] asking-for-help bit = 0"]
     Q{"[static-confirmed] ratio <= 0.45?"}
     F{"[static-confirmed] elsewhere strength > fixed(0.25 * current)<br/>或附近存在更优防守位置?"}
-    RET["[static-confirmed] caller 进入 active retreat path"]
+    RET["[static-confirmed] caller 进入 pre-contact<br/>retreat / reassignment path"]
+    SF["[inference] return code 2<br/>stand-and-fight"]
+    CD["[static-confirmed] code 2 最多保持 30 日<br/>随后 45 日 cooldown bookkeeping"]
     STAY["[static-confirmed] 不由该复合门撤退"]
     MODE["[unknown] normal/desperate 的完整上游触发条件"]
-    GUARD["[unknown] special-state / stand-and-fight<br/>枚举与 cooldown 的完整业务名"]
+    GUARD["[unknown] special-state 的完整业务名<br/>及所有 helper 早退条件"]
 
     P -->|"[static-confirmed] engagement callsites"| D
     D -->|"[static-confirmed] normal selected"| N
@@ -252,7 +257,12 @@ flowchart TD
     V -->|"[static-confirmed] no"| NO
     P -->|"[static-confirmed] path callsite 0x191A4C1"| A
     A -->|"[static-confirmed] yes"| ALT
-    A -->|"[static-confirmed] no; equality here"| DIRECT
+    ALT --> ALTV
+    ALTV -->|"[static-confirmed] yes"| ALTOK
+    ALTV -->|"[static-confirmed] no"| PV
+    PV -->|"[static-confirmed] yes; equality fails"| ORIG
+    PV -->|"[static-confirmed] no"| NO
+    A -->|"[static-confirmed] no; equality here"| ORIG
     P -->|"[static-confirmed] help callsite 0x1873003"| H
     H -->|"[static-confirmed] no"| H0
     H -->|"[static-confirmed] yes"| H1
@@ -263,10 +273,11 @@ flowchart TD
     P -->|"[static-confirmed] retreat callsite 0x184B3A4"| Q
     Q -->|"[static-confirmed] yes; equality included"| F
     Q -->|"[static-confirmed] no"| STAY
-    F -->|"[static-confirmed] yes, subject to special-state gates"| RET
-    F -->|"[static-confirmed] no"| STAY
+    F -->|"[static-confirmed] yes"| RET
+    F -->|"[static-confirmed] no; equality stays"| SF
+    SF --> CD
     MODE -. "[unknown] selects one threshold upstream" .-> D
-    GUARD -. "[unknown] may change retreat enum path" .-> RET
+    GUARD -. "[unknown] may return regular/no-change before ratio branch" .-> STAY
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class MODE,GUARD unknown;
@@ -283,6 +294,15 @@ flowchart TD
   `ratio > selected threshold`。等于 `0.5` 或 `0.4` 时不通过该门。
 - [static-confirmed] `0x191A4C6` 读取 `AVOID_BAD_ADJACENCY_COMBAT_PREDICTION_RATIO=0.625`；
   `ratio < 0.625` 才进入寻找替代路径的分支，`ratio >= 0.625` 不因这个门另找路。
+- [static-confirmed] `0x191A4D8..0x191A668` 在低于 `0.625` 时以原路线成本加
+  `AVOID_BAD_ADJACENCY_MAX_PATHFIND_EXTRA_COST=180.0` 建立替代 pathfinder 上限，`0x191A687` 再调用
+  `0x23C33D0` 构造替代 route。替代 route 构造成功且附加成本门通过时，`0x191A6B5` 采用它；若构造失败或
+  超过成本门，`0x191A6BE..0x191A6CA` 回到 coordinator-like `+0x88` 的 normal/desperate 阈值：只有
+  `ratio > 0.50/0.40` 才保留原路线，等于或低于阈值时拒绝 candidate。`ratio >=0.625` 则在
+  `0x191A4D2 -> 0x191A6CC` 直接保留原路线。
+- [static-confirmed] 这条 `bad adjacency` 分支只证明原生会为**目标前的坏邻接**寻找成本受限的替代 path；它
+  不是我方 `route-contact-horizon` 的整条路线、双向 edge 与逐日 arrival 碰撞矩阵。不能把“原生没换 adjacency”
+  写成“整条路线没有未来接触”。
 - [static-confirmed] ratio 门只是候选验证的一部分；通过它不等于一定移动或一定接战，路径有效性、order 状态
   和其它候选筛选仍可否决。
 
@@ -314,10 +334,64 @@ flowchart TD
   `elsewhere > fixed(0.25 * current)`；相等时继续检查地形，而不是立即以“别处兵力”理由撤退。
 - [static-confirmed] 若兵力条件未通过，`0x184B526` 开始用 `0x19151B0/0x1915160` 检查更优防守候选；
   原版 define 把搜索距离冻结为 `RETREAT_TO_BETTER_TERRAIN_DISTANCE=2`。
-- [static-confirmed] helper 返回值 `0` 时，caller 在 `0x184B016` 进入 active retreat handling；返回值
-  `1/2` 走另外两条路径。
-- [unknown] 三个返回枚举的正式名称、special state、`STAND_AND_FIGHT_DAYS=30` 的完整进入/退出条件与
-  cooldown 组合尚未全部闭合。因此实现 counter-policy 时只能依赖已证的复合必要条件，不能给枚举强行命名。
+- [static-confirmed] 满足“低 ratio + elsewhere strength 严格大于 `0.25 * current`”或“低 ratio + 两省内
+  防守候选严格优于当前位置”时，helper 返回 `0`；caller `0x184B016..0x184B14E` 随后取得新的防守目标并重置
+  subunit assignment。这是接战前 unit-stack 的战略退让/重派，不是 active `CCombat` 的第 15 日 retreat command。
+- [static-confirmed] 若 `ratio <=0.45`，但 elsewhere strength 不严格越过 `0.25` 且附近没有严格更优防守点，
+  `0x184B566` 返回 code `2`。唯一 caller `0x184AFDB..0x184B018` 对 code `2` 递增 unit-stack `+0x7C`，并按
+  `STAND_AND_FIGHT_DAYS=30` 保持/退出该分支；原版 define 同时冻结退出后的
+  `STAND_AND_FIGHT_COOLDOWN_DAYS=45` bookkeeping。
+- [inference] 原版 define 注释把该状态描述为留在可防守位置等待对方接触，且 `30/45` 与 caller 的两组计数
+  完全对应，因此 code `2` 的最强解释是 stand-and-fight：最多保持 30 日，随后恢复普通 order 并进入 45 日
+  cooldown。raw code 的正式枚举名尚未恢复，故不把这个关联升级成 static ABI，也不据此实现 active-battle action。
+- [static-confirmed] helper 返回 `1` 或由前置 special-state guard 早退时不进入上述退让或 stand-and-fight
+  mutation。三个 raw code 的正式 C++ 枚举符号名、所有 guard 的业务名与完整状态对象生命周期仍 unknown；本文只
+  冻结已经由 caller 和原版 define 双重支持的行为极性。
+
+### 2026-08-28 production blocker：接触早于任何 exact objective route 的首跳
+
+- [production-live] 一代长跑 `20260827T221605Z-one-generation-f02c81cb` 在 paused
+  `date_raw=53216424`、snapshot `native:382` 遇到 `native_war_no_safe_exact_route`。报告 SHA-256 为
+  `231FAF47A6F6F4B29EE5F508D36F50D0B6EAF0DED426614E051C274C9963A924`，`first-blocker.json` SHA-256 为
+  `4B93EE56EC680C130F1D28351598E2D5AB842C5EBA75A2B0CFE3967756AADED4`；角色 `29829` 存活、cleanup 全绿，
+  durable checkpoint 为 `date_raw=53216400 / history=3661 / 26298014...4383`。
+- [production-live] 玩家 canonical CUnit `33554818` 位于 Province `5692`。其已提交 target `3610` 的 fresh
+  subject timeline 要到 `53216688` 才完成首跳 `8672`；敌 CUnit `117440838` 却在 `53216448`，即下一日闭区间
+  末端到达 `5692`。history `3666` 因而返回 `one_day_contact_free=false` 与一条 exact
+  `same_province(117440838,5692,[53216448,53216448])`。敌 `83886265` 又在 `53216472` 到达同省，故若首场
+  combat 建立，它是下一日可能加入的动态 participant，而不是可忽略的远方兵力。
+- [production-live] planner 随后完成 `185` 个其余 exact objective preview + horizon；全部 route 的首跳都是
+  `8672`、首个 arrival 都是 `53216688`，并且全部 horizon 都先在 `53216448` 命中同一个
+  `117440838@5692` same-province conflict。远方敌 `117440646` 的反向 route 还与这些路线的
+  `8672 -> 951 -> 950 -> 8668 -> 947 -> 8665` 走廊产生 vertex/opposite-edge 交叉，但它不是下一日阻塞的根因。
+- [counter-policy] 该帧的最小解除不需要新增 native API，也不需要先算胜率：在当前合法 exact-objective
+  action set 中，敌军到达比玩家任何首跳早 `240` raw hours（10 游戏日），所以 strength/forecast 不能改变“下一个
+  日界会接触”。复用现有 timed horizon，允许一个 bounded one-day **contact-transition**，随后只接受两种 paused
+  后置结果：同一 subject 出现真实 `CombatID`/actual-contact scope，或 hostile intent 已变化且重新取得 fresh horizon。
+  ACK 或日期推进本身不算成功；若仍无上述后置状态则继续 hold/block。
+- [counter-policy] 只有接触仍可避免、或必须在多个可行接战方案之间选优时，strength/forecast 才重新成为前置。
+  现有 `query-army-strengths-v1` 可在同 revision 给 `current/max/base power`，v3 combat-input query 可给 regiment、
+  commander、terrain、crossing、holding defender 与零-roll advantage；但 direct `0x19186E0` ratio 仍因 mode/flag/lane
+  与 worker 调用边界未闭合而未发布，`monte_carlo_ready` 也仍为 false。不得把 base-power share、人数或 v3 raw
+  observation 冒充原生 ratio/胜率。对本帧下一步而言，这些缺口不改变 contact-transition；对战后撤退/增援质量则
+  继续由真实 battle frame、逐日 participant requery 与既有 active-retreat gate 处理。
+
+```mermaid
+flowchart TD
+    P["[production-live] paused 53216424<br/>33554818 current 5692"] --> S["[production-live] any of 185 objective routes<br/>first arrival 8672 @ 53216688"]
+    P --> E["[production-live] hostile 117440838<br/>arrives 5692 @ 53216448"]
+    E --> C{"[counter-policy] hostile overlap occurs<br/>before subject can leave current Province?"}
+    S --> C
+    C -->|yes| A["[counter-policy] one-day contact-transition"]
+    A --> V{"[counter-policy] paused postcondition"}
+    V -->|same subject has real CombatID| B["existing battle controller"]
+    V -->|hostile intent changed| H["fresh route/contact horizon"]
+    V -->|neither| X["hold / blocker; do not trust ACK"]
+    F["[unknown] exact AI ratio / calibrated forecast"] -. "decision-irrelevant for this unavoidable day" .-> A
+    F -. "required again for avoidable contact quality" .-> H
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class F unknown;
+```
 
 ## 与 GUI 战斗预测严格分离
 
@@ -420,6 +494,18 @@ Get-FileHash 'Crusader Kings III\binaries\ck3.exe' -Algorithm SHA256
 
 & 'tools\.venv\Scripts\python.exe' `
   'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
+  0x1919CE0 --size 0xA20
+
+& 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
+  0x184AF50 --size 0x650
+
+& 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\find_xrefs.py' `
+  0x1919CE0 0x184AF50 0x184B170
+
+& 'tools\.venv\Scripts\python.exe' `
+  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
   0x27BD9E0 --size 0xD0
 
 & 'tools\.venv\Scripts\python.exe' `
@@ -449,8 +535,9 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' `
 | `0x1919917..0x1919A2E` | 无 hostile 返回 `1.0`；正常路径执行占比除法 |
 | `0x1873027..0x187303E` | 求援 `0.66/0.75` 滞回与 strict `<` |
 | `0x1919C69..0x1919C89` | ratio 与 dynamic threshold 的 strict `>` |
-| `0x191A4C1..0x191A6CA` | bad-adjacency `0.625` 与最终 strict `>` |
-| `0x184B3A4..0x184B548` | 撤退 `<=0.45`、别处兵力与更好防守地形复合门 |
+| `0x191A4C1..0x191A6CA` | bad-adjacency `0.625`、额外 path cost `180`、替代 route 与原 route 的最终 strict `>` fallback |
+| `0x184AFDB..0x184B018` | return code `2` 的 30/45 日计数与退出/cooldown caller；stand-and-fight 名称仍为 inference |
+| `0x184B3A4..0x184B566` | 撤退 `<=0.45`、别处兵力、更好防守地形及无退路时 code `2` 分支 |
 
 ## 未闭合清单
 
@@ -461,7 +548,9 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' `
 - [unknown] levy、MAA、骑士、将领、补给、terrain、counter、advantage 与各种 modifier 对主 power qword 的
   exact 展开式、clamp 与舍入顺序。
 - [unknown] normal/desperate 的完整上游触发条件，及接战 candidate 通过 ratio 门后的全部排序/否决条件。
-- [unknown] retreat helper 返回枚举、stand-and-fight/cooldown 的全部状态转移名称和条件。
+- [unknown] retreat helper 三个 raw code 的正式 C++ 枚举名、special-state 早退业务名与完整状态对象生命周期；
+  code `0` pre-contact retreat/reassignment 与 code `2` 的 30/45 日 caller bookkeeping 已静态闭合，code `2` 到
+  stand-and-fight 名称的映射仍为 inference。
 - [unknown] 从 paused bridge worker 直接调用 predictor 的线程所有权、临时 allocator 生命周期、锁和重入边界。
 - [unknown] AI ratio 与真实战斗结果之间的经验校准函数；在校准前它必须始终命名为 `ratio`，绝不能输出为
   `probability`。
