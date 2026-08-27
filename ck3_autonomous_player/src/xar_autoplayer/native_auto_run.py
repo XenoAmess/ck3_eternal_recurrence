@@ -460,7 +460,11 @@ def native_auto_run(
                 if turn_class == "checkpoint"
                 else "postcondition_observation"
             )
-            after_snapshot = service.snapshot()
+            after_snapshot = (
+                service.snapshot()
+                if step == "save-checkpoint"
+                else _runner_semantic_snapshot(driver)
+            )
             terminal_pending = bool(
                 after_snapshot.get("one_life_terminal") is True
                 or isinstance(
@@ -1042,9 +1046,10 @@ def _wait_for_readiness(
             capabilities = driver.capabilities()
             diagnostics = capabilities.get("diagnostics")
             _raise_fatal_diagnostics(diagnostics)
-            snapshot = driver.take_snapshot()
-            # take_snapshot may bind a cold checkpoint identity; capabilities
-            # must be read again so the gate observes that committed binding.
+            snapshot = _runner_semantic_snapshot(driver)
+            # The internal semantic read may bind a cold checkpoint identity;
+            # capabilities must be read again so the gate observes that
+            # committed binding without copying transcript evidence.
             capabilities = driver.capabilities()
             ready, reason, observation = _readiness_observation(
                 capabilities,
@@ -1214,6 +1219,18 @@ def _readiness_observation(
         if not passed:
             return False, reason, observation
     return True, "ready", observation
+
+
+def _runner_semantic_snapshot(
+    driver: NativeHeadlessGameplayDriver,
+) -> dict[str, object]:
+    """Use the native runner's lean frame while preserving driver fallbacks."""
+    reader = getattr(
+        driver, "take_internal_semantic_snapshot", None
+    )
+    if callable(reader):
+        return reader()
+    return driver.take_snapshot()
 
 
 def _raise_fatal_diagnostics(diagnostics: object) -> None:

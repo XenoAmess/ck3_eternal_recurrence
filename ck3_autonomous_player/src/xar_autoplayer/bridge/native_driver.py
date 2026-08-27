@@ -868,14 +868,49 @@ class NativeHeadlessGameplayDriver:
                     action_steps.add(order_step)
                     composite_action_steps.append(order_step)
                     active_retreat_token_ready = True
-        if (
-            QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities
-            and _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES <= action_steps
-            and isinstance(current_snapshot, dict)
-        ):
-            proof_steps = _fresh_route_contact_advance_steps(
-                current_snapshot, self._history_snapshot()
-            )
+        proof_steps: set[str] = set()
+        white_peace_steps: set[str] = set()
+        # These helpers only read history.  Evaluate them while holding the
+        # owning lock so capability projection neither deep-copies the full
+        # transcript nor exposes the internal list outside this critical
+        # section.
+        with self._history_lock:
+            if (
+                QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
+                in bridge_capabilities
+                and _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES <= action_steps
+                and isinstance(current_snapshot, dict)
+            ):
+                proof_steps = _fresh_route_contact_advance_steps(
+                    current_snapshot, self._command_history
+                )
+            if (
+                isinstance(current_snapshot, dict)
+                and {
+                    QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+                    QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
+                    OFFER_WHITE_PEACE_CAPABILITY,
+                }
+                <= bridge_capabilities
+            ):
+                for war in current_snapshot.get("active_wars", []):
+                    if not isinstance(war, dict) or not _positive_native_id(
+                        war.get("war_id")
+                    ):
+                        continue
+                    war_id = int(war["war_id"])
+                    ready, _, _ = _claim_cb_white_peace_readiness(
+                        current_snapshot, war_id
+                    )
+                    cooldown = _white_peace_proposal_cooldown(
+                        self._command_history,
+                        war_id=war_id,
+                        current_date_raw=current_snapshot.get("date_raw"),
+                        episode_run_id=current_snapshot.get("episode_run_id"),
+                    )
+                    if ready and cooldown is None:
+                        white_peace_steps.add(offer_white_peace_step(war_id))
+        if proof_steps:
             action_steps.update(proof_steps)
             composite_action_steps.extend(sorted(proof_steps))
         if (
@@ -899,32 +934,7 @@ class NativeHeadlessGameplayDriver:
         # Owner-authorized minimal claim_cb counter-policy.  This is narrower
         # than the frozen native/v2 exit tree: only a same-frame, recipient-
         # accepted, claim-preserving white peace can become a literal action.
-        if (
-            isinstance(current_snapshot, dict)
-            and {
-                QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
-                QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
-                OFFER_WHITE_PEACE_CAPABILITY,
-            }
-            <= bridge_capabilities
-        ):
-            for war in current_snapshot.get("active_wars", []):
-                if not isinstance(war, dict) or not _positive_native_id(
-                    war.get("war_id")
-                ):
-                    continue
-                war_id = int(war["war_id"])
-                ready, _, _ = _claim_cb_white_peace_readiness(
-                    current_snapshot, war_id
-                )
-                cooldown = _white_peace_proposal_cooldown(
-                    self._history_snapshot(),
-                    war_id=war_id,
-                    current_date_raw=current_snapshot.get("date_raw"),
-                    episode_run_id=current_snapshot.get("episode_run_id"),
-                )
-                if ready and cooldown is None:
-                    action_steps.add(offer_white_peace_step(war_id))
+        action_steps.update(white_peace_steps)
         terminal_reason = (
             current_snapshot.get("one_life_terminal_reason")
             if isinstance(current_snapshot, dict)
@@ -1093,12 +1103,17 @@ class NativeHeadlessGameplayDriver:
         result["transport_fatal_error"] = self._transport_error()
         return result
 
-    def take_snapshot(self) -> dict[str, object]:
+    def take_internal_semantic_snapshot(self) -> dict[str, object]:
+        """Read a runner-internal semantic frame without transcript evidence."""
         transport_error = self._transport_error()
         if transport_error is not None:
             raise BridgeUnavailableError(transport_error)
         snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
         self._observe_arrange_marriage_outcome(snapshot)
+        return snapshot
+
+    def take_snapshot(self) -> dict[str, object]:
+        snapshot = self.take_internal_semantic_snapshot()
         with self._driver_state_lock:
             rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
             rollback_war_failure = (
@@ -2176,7 +2191,9 @@ class NativeHeadlessGameplayDriver:
             # is being assembled; that is an internal readiness transition,
             # not permission to accept an already-stale paused-map request.
             try:
-                life_advance_starting = self.take_snapshot()
+                life_advance_starting = (
+                    self.take_internal_semantic_snapshot()
+                )
             except UnsupportedStepError:
                 # Preserve the ordinary unsupported-composite result below
                 # when this bridge never advertised snapshot state.
@@ -3589,10 +3606,15 @@ class NativeHeadlessGameplayDriver:
         required_capability: str | None = None,
         request_fields: dict[str, object] | None = None,
         timeout_seconds: float | None = None,
+        lean_timeline_snapshot: bool = False,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
-        capabilities = self.capabilities()
+        capabilities = (
+            self.state.capabilities()
+            if lean_timeline_snapshot
+            else self.capabilities()
+        )
         if required_capability is None:
             if step not in capabilities["action_steps"]:
                 raise UnsupportedStepError(
@@ -3605,7 +3627,11 @@ class NativeHeadlessGameplayDriver:
                 "native DLL does not advertise required capability "
                 f"{required_capability}"
             )
-        snapshot = self.take_snapshot()
+        snapshot = (
+            self.take_internal_semantic_snapshot()
+            if lean_timeline_snapshot
+            else self.take_snapshot()
+        )
         revision = int(snapshot["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
@@ -8288,7 +8314,7 @@ class NativeHeadlessGameplayDriver:
     def _execute_route_contact_horizon_advance(
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
-        starting = self.take_snapshot()
+        starting = self.take_internal_semantic_snapshot()
         starting_revision = int(starting["revision"])
         if expected_revision is None:
             raise BridgeUnavailableError(
@@ -8324,10 +8350,10 @@ class NativeHeadlessGameplayDriver:
         starting = (
             copy.deepcopy(starting_snapshot)
             if starting_snapshot is not None
-            else self.take_snapshot()
+            else self.take_internal_semantic_snapshot()
         )
         if starting.get("map_ready") is not True:
-            starting = self._wait_for_snapshot(
+            starting = self._wait_for_life_advance_snapshot(
                 starting,
                 lambda snapshot: snapshot.get("map_ready") is True,
                 timeout_seconds=self.life_advance_timeout_seconds,
@@ -8353,7 +8379,7 @@ class NativeHeadlessGameplayDriver:
                 # starts from a fresh native snapshot.  A date tick can race
                 # the caller's prior observation, so refresh once rather than
                 # rejecting the whole composite before it begins.
-                starting = self.take_snapshot()
+                starting = self.take_internal_semantic_snapshot()
                 starting_revision = int(starting["revision"])
                 if starting.get("active_event") is not None:
                     raise BridgeUnavailableError(
@@ -8399,8 +8425,8 @@ class NativeHeadlessGameplayDriver:
             speed_step, starting
         )
         actions.append({"step": speed_step, "result": speed_result})
-        current = self._wait_for_snapshot(
-            self.take_snapshot(),
+        current = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
             lambda snapshot: snapshot.get("speed") == timeline_speed,
             timeout_seconds=self.command_timeout_seconds,
         )
@@ -8414,8 +8440,8 @@ class NativeHeadlessGameplayDriver:
             "resume-map", current
         )
         actions.append({"step": "resume-map", "result": resume_result})
-        current = self._wait_for_snapshot(
-            self.take_snapshot(),
+        current = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
             lambda snapshot: snapshot.get("paused") is False,
             timeout_seconds=self.command_timeout_seconds,
         )
@@ -8433,7 +8459,7 @@ class NativeHeadlessGameplayDriver:
             remaining = progress_deadline - time.monotonic()
             if remaining <= 0:
                 break
-            current = self.wait_for_change(
+            current = self._wait_for_life_advance_change(
                 int(current["revision"]),
                 timeout_seconds=remaining,
             )
@@ -8487,8 +8513,8 @@ class NativeHeadlessGameplayDriver:
                 ordinary_events.append(
                     _native_ordinary_event(active_event, option_number)
                 )
-                current = self._wait_for_snapshot(
-                    self.take_snapshot(),
+                current = self._wait_for_life_advance_snapshot(
+                    self.take_internal_semantic_snapshot(),
                     lambda snapshot: _event_instance_id(snapshot)
                     != event_instance_id,
                     timeout_seconds=self.command_timeout_seconds,
@@ -8541,7 +8567,7 @@ class NativeHeadlessGameplayDriver:
         if snapshot.get("paused") is True:
             return snapshot
         deadline = time.monotonic() + self.command_timeout_seconds
-        current = self.take_snapshot()
+        current = self.take_internal_semantic_snapshot()
         if current.get("paused") is True:
             return current
         remaining = deadline - time.monotonic()
@@ -8560,11 +8586,12 @@ class NativeHeadlessGameplayDriver:
             "pause-map",
             expected_revision=None,
             timeout_seconds=remaining,
+            lean_timeline_snapshot=True,
         )
         actions.append({"step": "pause-map", "result": result})
         remaining = max(0.0, deadline - time.monotonic())
-        paused = self._wait_for_snapshot(
-            self.take_snapshot(),
+        paused = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
             lambda candidate: candidate.get("paused") is True,
             timeout_seconds=remaining,
         )
@@ -8584,17 +8611,49 @@ class NativeHeadlessGameplayDriver:
             return self._execute_primitive_step(
                 step,
                 expected_revision=int(observed_snapshot["revision"]),
+                lean_timeline_snapshot=True,
             )
         except BridgeUnavailableError as error:
             if "native gameplay revision mismatch" not in str(error):
                 raise
-            refreshed = self.take_snapshot()
+            refreshed = self.take_internal_semantic_snapshot()
             if not _retryable_life_advance_change(observed_snapshot, refreshed):
                 raise
             return self._execute_primitive_step(
                 step,
                 expected_revision=int(refreshed["revision"]),
+                lean_timeline_snapshot=True,
             )
+
+    def _wait_for_life_advance_snapshot(
+        self,
+        snapshot: dict[str, object],
+        predicate: Callable[[dict[str, object]], bool],
+        *,
+        timeout_seconds: float,
+    ) -> dict[str, object]:
+        """Wait for a semantic frame without materializing transcript evidence."""
+        deadline = time.monotonic() + timeout_seconds
+        current = snapshot
+        while not predicate(current):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return current
+            current = self._wait_for_life_advance_change(
+                int(current["revision"]), timeout_seconds=remaining
+            )
+        return current
+
+    def _wait_for_life_advance_change(
+        self, after_revision: int, *, timeout_seconds: float
+    ) -> dict[str, object]:
+        """Private lean counterpart of wait_for_change for a timeline slice."""
+        _validate_revision(after_revision, "after_revision")
+        timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
+        if not self.state.capabilities()["snapshot"]:
+            return self.take_internal_semantic_snapshot()
+        self.state.wait_for_public_change(after_revision, timeout)
+        return self.take_internal_semantic_snapshot()
 
     def _wait_for_snapshot(
         self,

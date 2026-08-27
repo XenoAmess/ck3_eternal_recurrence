@@ -8763,6 +8763,101 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["elapsed_days"], 1)
         self.assertTrue(result["paused"])
 
+    def test_life_advance_bounds_full_history_copies_with_large_transcript(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
+                "game.command.set-speed-5",
+            )
+        )
+        route_army = _army(
+            501,
+            province_id=10,
+            move_target_province_id=20,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[20],
+        )
+        endpoint.publish(_snapshot(1, player_armies=[route_army]))
+        with driver._history_lock:
+            driver._command_history = [
+                {
+                    "index": index,
+                    "command": f"query-frozen-history-{index}",
+                    "ok": True,
+                    "result": {
+                        "values": list(range(256)),
+                        "label": f"frozen-history-{index}",
+                    },
+                }
+                for index in range(1, 4097)
+            ]
+        internal = driver.take_internal_semantic_snapshot()
+        public = driver.take_snapshot()
+        self.assertNotIn("native_command_history", internal)
+        self.assertEqual(len(public["native_command_history"]), 4096)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-1":
+                endpoint.publish(
+                    _snapshot(2, speed=1, player_armies=[route_army])
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        3,
+                        date_raw=53_171_424,
+                        speed=1,
+                        paused=False,
+                        player_armies=[route_army],
+                    )
+                )
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        4,
+                        date_raw=53_171_424,
+                        speed=1,
+                        player_armies=[route_army],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        with mock.patch.object(
+            driver,
+            "_history_snapshot",
+            wraps=driver._history_snapshot,
+        ) as history_snapshot:
+            result = driver.execute_step("life-advance")
+
+        self.assertTrue(result["paused"])
+        self.assertEqual(result["timeline_speed"], 1)
+        self.assertEqual(history_snapshot.call_count, 1)
+
     def test_paused_life_advance_rejects_stale_revision_before_resume(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -9589,7 +9684,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
         endpoint.publish(_snapshot(1))
-        original_take_snapshot = driver.take_snapshot
+        original_take_snapshot = (
+            driver.take_internal_semantic_snapshot
+        )
         calls = 0
 
         def racing_snapshot() -> dict[str, object]:
@@ -9599,7 +9696,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 endpoint.publish(_snapshot(2, date_raw=53_171_424))
             return original_take_snapshot()
 
-        driver.take_snapshot = racing_snapshot  # type: ignore[method-assign]
+        driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
+            racing_snapshot
+        )
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -9658,7 +9757,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
         )
         observed = driver.take_snapshot()
-        original_take_snapshot = driver.take_snapshot
+        original_take_snapshot = (
+            driver.take_internal_semantic_snapshot
+        )
         calls = 0
 
         def auto_pausing_snapshot() -> dict[str, object]:
@@ -9676,7 +9777,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             return original_take_snapshot()
 
-        driver.take_snapshot = auto_pausing_snapshot  # type: ignore[method-assign]
+        driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
+            auto_pausing_snapshot
+        )
         actions: list[dict[str, object]] = []
         paused = driver._pause_life_advance(observed, actions)
 
@@ -9705,7 +9808,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
         )
         observed = driver.take_snapshot()
-        original_take_snapshot = driver.take_snapshot
+        original_take_snapshot = (
+            driver.take_internal_semantic_snapshot
+        )
         calls = 0
 
         def racing_snapshot() -> dict[str, object]:
@@ -9722,7 +9827,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             return original_take_snapshot()
 
-        driver.take_snapshot = racing_snapshot  # type: ignore[method-assign]
+        driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
+            racing_snapshot
+        )
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -9780,7 +9887,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     )
                 )
                 observed = driver.take_snapshot()
-                original_take_snapshot = driver.take_snapshot
+                original_take_snapshot = (
+                    driver.take_internal_semantic_snapshot
+                )
                 calls = 0
 
                 def drifting_snapshot() -> dict[str, object]:
@@ -9802,7 +9911,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         )
                     return original_take_snapshot()
 
-                driver.take_snapshot = drifting_snapshot  # type: ignore[method-assign]
+                driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
+                    drifting_snapshot
+                )
 
                 def answer(frame: dict[str, object]) -> None:
                     if frame.get("type") != "execute_step":
@@ -9866,7 +9977,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _snapshot(1, date_raw=53_171_400, speed=5, paused=False)
         )
         observed = driver.take_snapshot()
-        original_take_snapshot = driver.take_snapshot
+        original_take_snapshot = (
+            driver.take_internal_semantic_snapshot
+        )
         calls = 0
 
         def repeatedly_racing_snapshot() -> dict[str, object]:
@@ -9884,7 +9997,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             return original_take_snapshot()
 
-        driver.take_snapshot = repeatedly_racing_snapshot  # type: ignore[method-assign]
+        driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
+            repeatedly_racing_snapshot
+        )
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -10039,7 +10154,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         endpoint.publish(_snapshot(1, speed=5, paused=False))
         observed = driver.take_snapshot()
-        original_take_snapshot = driver.take_snapshot
+        original_take_snapshot = (
+            driver.take_internal_semantic_snapshot
+        )
         calls = 0
 
         def auto_pause_during_sender_refresh() -> dict[str, object]:
@@ -10049,7 +10166,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 endpoint.publish(_snapshot(2, speed=5, paused=True))
             return original_take_snapshot()
 
-        driver.take_snapshot = (  # type: ignore[method-assign]
+        driver.take_internal_semantic_snapshot = (  # type: ignore[method-assign]
             auto_pause_during_sender_refresh
         )
 
