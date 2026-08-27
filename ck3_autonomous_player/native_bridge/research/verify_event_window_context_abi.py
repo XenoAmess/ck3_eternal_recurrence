@@ -20,6 +20,16 @@ DEFAULT_MAILBOX = HERE.parent / "src" / "event_window_context_v1_mailbox.cpp"
 DEFAULT_SERIALIZER = HERE.parent / "src" / "event_window_context_v1_serializer.cpp"
 DEFAULT_BINDINGS = HERE.parent / "src" / "ck3_11906.cpp"
 DEFAULT_BRIDGE = HERE.parent / "src" / "bridge.cpp"
+DEFAULT_EVENT_HEADER = (
+    HERE.parent / "include" / "xar_bridge" / "event_window_context_v1.hpp"
+)
+DEFAULT_WIRE_CONTRACT = (
+    HERE.parents[1]
+    / "src"
+    / "xar_autoplayer"
+    / "bridge"
+    / "event_window_context_contract.py"
+)
 
 
 def integer(value: object) -> int:
@@ -64,6 +74,10 @@ def main() -> int:
     parser.add_argument("--serializer", type=Path, default=DEFAULT_SERIALIZER)
     parser.add_argument("--bindings", type=Path, default=DEFAULT_BINDINGS)
     parser.add_argument("--bridge", type=Path, default=DEFAULT_BRIDGE)
+    parser.add_argument("--event-header", type=Path, default=DEFAULT_EVENT_HEADER)
+    parser.add_argument(
+        "--wire-contract", type=Path, default=DEFAULT_WIRE_CONTRACT
+    )
     arguments = parser.parse_args()
 
     executable = arguments.exe.resolve()
@@ -283,8 +297,10 @@ def main() -> int:
     named_identity = active_scope.get("named_key_identity", {})
     type_identity = active_scope.get("generic_type_identity", {})
     character_identity = active_scope.get("character_payload_identity", {})
+    production_scope_wire = active_scope.get("production_wire", {})
     if not (
-        active_scope.get("evidence_status") == "static-confirmed-not-live"
+        active_scope.get("evidence_status")
+        == "static-confirmed-production-wire-not-live"
         and "ActiveEvent+0x00" in active_scope.get("embedding", "")
         and "0x168-byte EventTargetScope" in active_scope.get("embedding", "")
         and root_scope.get("type_index")
@@ -302,14 +318,28 @@ def main() -> int:
         and named_scope.get("row_stride") == "0x18"
         and named_scope.get("row_name_identifier")
         == (
-            "+0x00 int32 script-identifier ID; +0x04 remains "
-            "opaque and is not published"
+            "+0x00 full signed int32 generation-bearing script-identifier "
+            "ID; preserve the complete value including negative IDs; +0x04 "
+            "remains opaque and is not published"
         )
         and named_scope.get("row_target")
         == "+0x08 inline 0x10-byte generic event-target token"
         and named_identity.get("table_getter_rva") == "0x3B971A0"
         and named_identity.get("lookup_only_rva") == "0x3B97020"
         and named_identity.get("id_to_entry_rva") == "0x3B97090"
+        and named_identity.get("id_to_entry_signature")
+        == (
+            "const std::string* (void* script_identifier_table, "
+            "int32 identifier)"
+        )
+        and "table+0x3C" in named_identity.get("id_to_entry_layout", "")
+        and "index*0x20" in named_identity.get("id_to_entry_layout", "")
+        and named_identity.get("id_to_entry_fallback")
+        == "module+0x585F218; reject before copying"
+        and "complete signed int32 generation ID"
+        in named_identity.get("read_rule", "")
+        and "exact full-ID/string round-trip"
+        in named_identity.get("read_rule", "")
         and type_identity.get("registry_getter_rva") == "0x33C52B0"
         and type_identity.get("registry_address") == "module+0x4FFE290"
         and type_identity.get("registry_layout")
@@ -320,24 +350,88 @@ def main() -> int:
         and type_identity.get("stable_name_identifier")
         == "entry+0x00 int32 identifier"
         and type_identity.get("stable_name_resolver_rva") == "0x3B58970"
-        and "module+0x5000AB0" in type_identity.get("fallback", "")
+        and type_identity.get("registry_fallback_entry_rva") == "0x5000AB0"
+        and "type_index >= count"
+        in type_identity.get("registry_fallback_entry_role", "")
+        and "never enter it"
+        in type_identity.get("registry_fallback_entry_role", "")
+        and type_identity.get("resolver_name_fallback_rva") == "0x585F058"
+        and type_identity.get("binding_expected_pointer")
+        == (
+            "Bindings::generic_value_type_name_fallback = "
+            "module+0x585F058"
+        )
+        and type_identity.get("resolver_fallback_rejection")
+        == (
+            "Reject native_name == "
+            "bindings.generic_value_type_name_fallback before copying or "
+            "publishing the type key"
+        )
+        and "module+0x5000AB0 registry fallback row"
+        in type_identity.get("read_rule", "")
+        and "kGenericValueTypeNameFallbackRva = 0x585F058"
+        in type_identity.get("read_rule", "")
+        and "distinct fallbacks and must never be aliased"
+        in type_identity.get("read_rule", "")
         and character_identity.get("status")
         == "static-confirmed-only-not-current-event-live"
         and character_identity.get("type_index") == 4
         and character_identity.get("payload")
         == "+0x08 zero-extended full-generation int32 CharacterID"
         and active_scope.get("noncharacter_payload_identity", "").startswith(
-            "unavailable"
+            "Production wire publishes"
         )
-        and active_scope.get("production_wire")
+        and production_scope_wire.get("status")
+        == "implemented-static-not-live"
+        and production_scope_wire.get("static_ready") is True
+        and production_scope_wire.get("live_ready") is False
+        and production_scope_wire.get("query")
+        == "game.command.query-current-event-window-context-v1"
+        and production_scope_wire.get("root_scope_fields")
+        == [
+            "status",
+            "raw_type_index",
+            "type_key",
+            "subtype",
+            "typed_identity",
+        ]
+        and production_scope_wire.get("saved_scope_fields")
+        == ["name", "name_identifier", "scope"]
+        and production_scope_wire.get("name_identifier_wire")
+        == {
+            "type": "full signed int32 generation ID",
+            "minimum": -(2**31),
+            "maximum": 2**31 - 1,
+            "round_trip": (
+                "preserve and compare the complete signed value, including "
+                "negative generation-bearing IDs; process-local only"
+            ),
+        }
+        and production_scope_wire.get("character_typed_identity_fields")
+        == ["status", "kind", "character_id"]
+        and production_scope_wire.get("noncharacter_typed_identity_fields")
+        == ["status", "reason"]
+        and production_scope_wire.get("noncharacter_reason")
+        == "generic_scope_payload_identity_not_closed"
+        and production_scope_wire.get("readiness")
+        == {
+            "root_scope_ready": True,
+            "saved_scopes_ready": True,
+            "effect_preview_ready": False,
+            "semantic_decision_ready": False,
+        }
+        and production_scope_wire.get("process_local_only")
+        == ["saved_scopes[].name_identifier"]
+        and production_scope_wire.get("forbidden_fields")
+        == ["raw_16_bytes_hex", "raw_payload", "engine_pointer"]
+        and active_scope.get("live_validation")
         == (
-            "not implemented; current root_scope and saved_scopes remain "
-            "explicitly unavailable"
+            "not performed; no paused current-event root or named-scope "
+            "artifact exists"
         )
-        and active_scope.get("live_validation") == "not performed"
         and active_scope.get("semantic_decision_ready") is False
     ):
-        failures.append("contract: ActiveEvent scope static ABI drifted")
+        failures.append("contract: ActiveEvent scope static/wire ABI drifted")
 
     source_contracts = {
         "reader": (
@@ -354,6 +448,17 @@ def main() -> int:
                 "kEventDataAuthoredOptionDataOffset",
                 "kEventDataAuthoredOptionCapacityOffset",
                 "kEventDataAuthoredOptionCountOffset",
+                "kEventScopeRootOffset = 0x00",
+                "kEventScopeNamedDataOffset = 0x18",
+                "kEventScopeNamedCapacityOffset = 0x20",
+                "kEventScopeNamedCountOffset = 0x24",
+                "kEventScopeNamedRowStride = 0x18",
+                "kEventScopeNamedRowIdentifierOffset = 0x00",
+                "kEventScopeNamedRowTokenOffset = 0x08",
+                "kEventScopeTokenPayloadOffset = 0x08",
+                "kGenericValueTypeRegistryEntryStride = 0x50",
+                "kCharacterScopeTypeIndex = 4",
+                "generic_scope_payload_identity_not_closed",
                 "kEventOptionDefinitionIsCancelOffset",
                 "kIdlerFromOwnerOffset",
                 "bindings.ingame_interface_idler_vtable",
@@ -383,7 +488,29 @@ def main() -> int:
                 "ReadMatchingWindow(bindings, identity_before.event_data",
                 "ReadNativeString",
                 "identity_after != identity_before",
+                "registry != bindings.expected_generic_value_type_registry",
+                "bindings.resolve_generic_value_type_name(identifier)",
+                "ResolveCharacterScopeIdentity",
+                (
+                    "raw_payload != "
+                    "static_cast<std::uint64_t>(raw_character_id)"
+                ),
+                (
+                    "LoadAt<std::int32_t>(character, kCharacterIdOffset) "
+                    "== character_id"
+                ),
+                "bindings.resolve_script_identifier_name(table, identifier)",
+                "native_name == bindings.script_identifier_name_fallback",
+                "roundtrip_identifier != identifier",
+                "ReadEventScopeInventory(bindings, identity_before.active_event",
+                "ReadEventScopeInventory(bindings, identity_after.active_event",
+                "scope_after != scope_before",
+                "SetUnavailable(output, \"event_scope_changed\")",
+                "candidate.root_scope = std::move(scope_before.root_scope)",
+                "candidate.saved_scopes = std::move(scope_before.saved_scopes)",
                 "candidate.event_definition_identity_ready = true",
+                "candidate.root_scope_ready = true",
+                "candidate.saved_scopes_ready = true",
                 "candidate.effect_indicators_ready = true",
             ),
         ),
@@ -396,6 +523,10 @@ def main() -> int:
                 "snapshot.active_event_instance_id",
                 "ReadEventWindowContextV1(",
                 "event_definition_identity_ready",
+                "query->result.root_scope.has_value()",
+                "query->result.saved_scopes.empty()",
+                "query->result.root_scope_ready",
+                "query->result.saved_scopes_ready",
                 "effect_indicators_ready",
             ),
         ),
@@ -406,6 +537,16 @@ def main() -> int:
                 "indicator_subset_has_no_completeness_signal",
                 "resource_deltas",
                 "relationship_deltas",
+                "AppendScope",
+                "ValidSavedScopes",
+                "raw_type_index",
+                "type_key",
+                "subtype",
+                "typed_identity",
+                "name_identifier",
+                "generic_scope_payload_identity_not_closed",
+                "root_scope_ready",
+                "saved_scopes_ready",
                 "effect_indicators_ready",
                 "semantic_decision_ready",
             ),
@@ -419,12 +560,60 @@ def main() -> int:
                 "kSchemeTypeFallbackSlotRva = 0x570CB58",
                 "kHashStableKeyRva = 0x3B8B000",
                 "kLookupSchemeTypeRva = 0x0A48C70",
+                "kGetGenericValueTypeRegistryRva = 0x33C52B0",
+                "kGenericValueTypeRegistryRva = 0x4FFE290",
+                "kResolveGenericValueTypeNameRva = 0x3B58970",
+                "kGenericValueTypeNameFallbackRva = 0x585F058",
+                "kResolveScriptIdentifierNameRva = 0x3B97090",
+                "kScriptIdentifierNameFallbackRva = 0x585F218",
                 "result.scheme_type_primary_vtable",
                 "result.trait_database_slot",
                 "result.scheme_type_database_slot",
                 "result.scheme_type_fallback_slot",
                 "result.hash_stable_key",
                 "result.lookup_scheme_type",
+                "result.expected_generic_value_type_registry",
+                "result.generic_value_type_name_fallback",
+                "result.script_identifier_name_fallback",
+                "module + kGenericValueTypeNameFallbackRva",
+                "result.get_generic_value_type_registry",
+                "result.resolve_generic_value_type_name",
+                "result.resolve_script_identifier_name",
+            ),
+        ),
+        "event_header": (
+            arguments.event_header,
+            (
+                "struct EventScopeTypedIdentityV1",
+                "std::optional<std::int32_t> character_id",
+                "struct EventScopeV1",
+                "std::uint16_t raw_type_index",
+                "std::uint16_t subtype",
+                "struct EventSavedScopeV1",
+                "std::int32_t name_identifier",
+                "std::optional<EventScopeV1> root_scope",
+                "std::vector<EventSavedScopeV1> saved_scopes",
+                "bool root_scope_ready",
+                "bool saved_scopes_ready",
+            ),
+        ),
+        "wire_contract": (
+            arguments.wire_contract,
+            (
+                '"root_scope_ready"',
+                '"saved_scopes_ready"',
+                '"raw_type_index"',
+                '"type_key"',
+                '"subtype"',
+                '"typed_identity"',
+                '"name_identifier"',
+                '"generic_scope_payload_identity_not_closed"',
+                "_event_scope(frame[\"root_scope\"]",
+                "current event saved_scopes must be a bounded list",
+                '"root_scope_ready": True',
+                '"saved_scopes_ready": True',
+                "frame[\"root_scope\"] is not None",
+                "frame[\"saved_scopes\"] is not None",
             ),
         ),
         "bridge": (
@@ -458,9 +647,114 @@ def main() -> int:
         "traverse_loaded_effect",
         "kDataCancelOptionIndexOffset",
         "option.native_option_index == cancel_index",
+        "bindings.resolve_event_target_object",
+        "bindings.is_event_target_valid",
     ):
         if forbidden in reader_source:
             failures.append(f"reader: forbidden executor token {forbidden!r}")
+
+    def reader_region(begin: str, end: str) -> str:
+        start = reader_source.find(begin)
+        stop = reader_source.find(end, start + len(begin))
+        return "" if start < 0 or stop < 0 else reader_source[start:stop]
+
+    generic_type_region = reader_region(
+        "bool ReadGenericValueTypeKey", "bool ResolveCharacterScopeIdentity"
+    )
+    character_region = reader_region(
+        "bool ResolveCharacterScopeIdentity", "bool ReadEventScopeToken"
+    )
+    target_region = reader_region(
+        "bool ReadEventScopeToken", "bool ReadSavedScopeName"
+    )
+    saved_name_region = reader_region(
+        "bool ReadSavedScopeName", "bool ReadEventScopeInventory"
+    )
+    generic_bounds_index = generic_type_region.find(
+        "type_index >= static_cast<std::uint32_t>(count)"
+    )
+    generic_entry_index = generic_type_region.find("const auto entry_offset")
+    generic_resolve_index = generic_type_region.find(
+        "bindings.resolve_generic_value_type_name(identifier)"
+    )
+    if not (
+        "resolve_generic_value_type_name" in generic_type_region
+        and "native_name != bindings.generic_value_type_name_fallback"
+        in generic_type_region
+        and 0 <= generic_bounds_index < generic_entry_index
+        and generic_entry_index < generic_resolve_index
+        and "resolve_script_identifier_name" not in generic_type_region
+        and "lookup_script_identifier_id" not in generic_type_region
+    ):
+        failures.append("reader: generic target type-name domain drifted")
+
+    bindings_source = arguments.bindings.resolve().read_text(encoding="utf-8")
+    if "kGenericValueTypeNameFallbackRva = 0x5000AB0" in bindings_source:
+        failures.append(
+            "bindings: registry fallback entry aliased as resolver string"
+        )
+    if not (
+        "resolve_script_identifier_name" in saved_name_region
+        and "lookup_script_identifier_id" in saved_name_region
+        and "script_identifier_name_fallback" in saved_name_region
+        and "resolve_script_identifier_name(table, identifier)"
+        in saved_name_region
+        and "roundtrip_identifier != identifier" in saved_name_region
+        and "identifier < 0" not in saved_name_region
+        and "resolve_generic_value_type_name" not in saved_name_region
+    ):
+        failures.append("reader: named script-identifier domain drifted")
+    if not (
+        "kEventScopeTokenPayloadOffset" in character_region
+        and "kEventScopeTokenPayloadOffset" not in target_region
+        and "ResolveCharacterScopeIdentity" in target_region
+        and "output.raw_type_index == kCharacterScopeTypeIndex"
+        in target_region
+    ):
+        failures.append("reader: character-only scope payload boundary drifted")
+
+    scope_wire_sources: dict[str, str] = {}
+    for label, path in (
+        ("event_header", arguments.event_header),
+        ("serializer", arguments.serializer),
+        ("wire_contract", arguments.wire_contract),
+    ):
+        source = path.resolve().read_text(encoding="utf-8")
+        scope_wire_sources[label] = source
+        for forbidden in ("raw_16_bytes_hex", "raw_payload", "engine_pointer"):
+            if forbidden in source:
+                failures.append(
+                    f"{label}: forbidden scope wire token {forbidden!r}"
+                )
+
+    serializer_source = scope_wire_sources["serializer"]
+    if (
+        "scope.name_identifier < 0" in serializer_source
+        or "saved.name_identifier < 0" in serializer_source
+    ):
+        failures.append(
+            "serializer: name_identifier must preserve full signed int32"
+        )
+
+    wire_contract_source = scope_wire_sources["wire_contract"]
+    saved_wire_start = wire_contract_source.find(
+        'saved["name_identifier"]'
+    )
+    saved_wire_stop = wire_contract_source.find(
+        "if name in saved_names", saved_wire_start
+    )
+    saved_wire_region = (
+        ""
+        if saved_wire_start < 0 or saved_wire_stop < 0
+        else wire_contract_source[saved_wire_start:saved_wire_stop]
+    )
+    if not (
+        "-(2**31)" in saved_wire_region
+        and "2**31 - 1" in saved_wire_region
+    ):
+        failures.append(
+            "wire_contract: name_identifier signed-int32 range drifted"
+        )
 
     locator = contract["locator_chain"]
     query_contract = contract["production_query"]
@@ -487,7 +781,8 @@ def main() -> int:
             "current_event_scope_noncharacter_payload_identity_static_ready"
         )
         is False
-        and readiness.get("current_event_scope_wire_ready") is False
+        and readiness.get("current_event_scope_product_static_ready") is True
+        and readiness.get("current_event_scope_wire_ready") is True
         and readiness.get("current_event_scope_live_ready") is False
         and readiness.get("stable_scopes_ready") is False
         and readiness.get("semantic_decision_ready") is False
@@ -504,6 +799,24 @@ def main() -> int:
         failures.append("contract: published event definition fields drifted")
     if published_identity & set(query_contract["explicitly_unavailable"]):
         failures.append("contract: published event identity remains unavailable")
+    published_scopes = query_contract.get("published_scope_fields", {})
+    if not (
+        published_scopes.get("root_scope")
+        == [
+            "status",
+            "raw_type_index",
+            "type_key",
+            "subtype",
+            "typed_identity",
+        ]
+        and published_scopes.get("saved_scope")
+        == ["name", "name_identifier", "scope"]
+        and published_scopes.get("readiness")
+        == ["root_scope_ready", "saved_scopes_ready"]
+        and query_contract.get("explicitly_unavailable")
+        == ["full_effect_preview"]
+    ):
+        failures.append("contract: published scope wire fields drifted")
     published_options = set(query_contract["published_option_fields"])
     required_indicator_fields = {
         "effect_indicators",
@@ -619,10 +932,17 @@ def main() -> int:
         typed_context.get("status")
         == (
             "definition_identity_presentation_and_bounded_nonempty_effect_"
-            "indicator_surface_fixture_live"
+            "indicator_surface_fixture_live_plus_current_event_scope_wire_"
+            "static"
         )
         and "Attempt4" in typed_context.get("live_scope", "")
         and "nonempty Attempt1" in typed_context.get("live_scope", "")
+        and "Production current-event-window-context-v1" in typed_context.get(
+            "static_scope_wire", ""
+        )
+        and "no paused scope artifact" in typed_context.get(
+            "static_scope_wire", ""
+        )
         and "remaining nonempty" in typed_context.get(
             "remaining_live_scope", ""
         )
@@ -639,7 +959,8 @@ def main() -> int:
     print(
         f"PASS spans={len(function_spans) + len(additional_spans)} "
         "pdata=1 exact_build=1 read_only=1 "
-        "source_contract=1 fixture_live=1 scope_static=1 scope_live=0"
+        "source_contract=1 fixture_live=1 scope_static=1 scope_wire=1 "
+        "scope_live=0"
     )
     return 0
 

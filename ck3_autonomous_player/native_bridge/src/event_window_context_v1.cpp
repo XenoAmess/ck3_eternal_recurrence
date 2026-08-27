@@ -23,6 +23,25 @@ constexpr std::size_t kEventDataDefinitionKeyOffset = 0x10;
 constexpr std::size_t kEventDataAuthoredOptionDataOffset = 0x1B0;
 constexpr std::size_t kEventDataAuthoredOptionCapacityOffset = 0x1B8;
 constexpr std::size_t kEventDataAuthoredOptionCountOffset = 0x1BC;
+constexpr std::size_t kEventScopeRootOffset = 0x00;
+constexpr std::size_t kEventScopeNamedDataOffset = 0x18;
+constexpr std::size_t kEventScopeNamedCapacityOffset = 0x20;
+constexpr std::size_t kEventScopeNamedCountOffset = 0x24;
+constexpr std::size_t kEventScopeTokenTypeIndexOffset = 0x00;
+constexpr std::size_t kEventScopeTokenSubtypeOffset = 0x02;
+constexpr std::size_t kEventScopeTokenPayloadOffset = 0x08;
+constexpr std::size_t kEventScopeNamedRowStride = 0x18;
+constexpr std::size_t kEventScopeNamedRowIdentifierOffset = 0x00;
+constexpr std::size_t kEventScopeNamedRowTokenOffset = 0x08;
+constexpr std::size_t kGenericValueTypeRegistryDataOffset = 0x00;
+constexpr std::size_t kGenericValueTypeRegistryCountOffset = 0x0C;
+constexpr std::size_t kGenericValueTypeRegistryEntryStride = 0x50;
+constexpr std::size_t kGenericValueTypeRegistryEntryIdentifierOffset = 0x00;
+constexpr std::size_t kComponentStorageSlotsOffset = 0x20;
+constexpr std::size_t kComponentStorageCapacityOffset = 0x2C;
+constexpr std::size_t kComponentStorageSlotStride = 0x10;
+constexpr std::size_t kComponentStorageSlotObjectOffset = 0x08;
+constexpr std::size_t kCharacterIdOffset = 0x18;
 constexpr std::size_t kEventOptionDefinitionIsCancelOffset = 0x47A;
 constexpr std::size_t kManagerFromIdlerOffset = 0x28;
 constexpr std::size_t kManagerWindowDataOffset = 0x10;
@@ -58,7 +77,14 @@ constexpr std::size_t kMaximumWindows = 32;
 constexpr std::size_t kMaximumOptions = 64;
 constexpr std::size_t kMaximumEffectIndicators = 128;
 constexpr std::size_t kMaximumTraitDefinitions = 4'096;
+constexpr std::size_t kMaximumSavedScopes = 1'024;
+constexpr std::int32_t kMaximumGenericValueTypes = 65'536;
+constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::size_t kMaximumStringBytes = 16'384;
+constexpr std::uint16_t kCharacterScopeTypeIndex = 4;
+constexpr std::string_view kCharacterScopeTypeKey = "character";
+constexpr std::string_view kGenericScopeIdentityUnavailableReason =
+    "generic_scope_payload_identity_not_closed";
 
 template <typename T>
 T LoadAt(const void *base, std::size_t offset) noexcept {
@@ -172,6 +198,248 @@ bool ValidVector(std::int32_t count, std::int32_t capacity,
   return count >= 0 && capacity >= count &&
          capacity <= static_cast<std::int32_t>(maximum) &&
          (count == 0 || data != nullptr);
+}
+
+struct NativeStringView32 {
+  const char *data = nullptr;
+  std::int32_t size = 0;
+  std::int32_t padding = 0;
+};
+
+struct EventScopeInventoryV1 {
+  game::EventScopeV1 root_scope;
+  std::vector<game::EventSavedScopeV1> saved_scopes;
+
+  friend bool operator==(const EventScopeInventoryV1 &,
+                         const EventScopeInventoryV1 &) = default;
+};
+
+bool ReadGenericValueTypeKey(const Bindings &bindings,
+                             void *registry,
+                             std::uint16_t type_index,
+                             std::string &type_key) {
+  type_key.clear();
+  if (registry == nullptr ||
+      registry != bindings.expected_generic_value_type_registry ||
+      bindings.resolve_generic_value_type_name == nullptr ||
+      type_index == 0) {
+    return false;
+  }
+  void *const entries =
+      LoadAt<void *>(registry, kGenericValueTypeRegistryDataOffset);
+  const auto count = LoadAt<std::int32_t>(
+      registry, kGenericValueTypeRegistryCountOffset);
+  if (entries == nullptr || count <= 0 || count > kMaximumGenericValueTypes ||
+      type_index >= static_cast<std::uint32_t>(count)) {
+    return false;
+  }
+  const auto entry_offset =
+      static_cast<std::size_t>(type_index) *
+      kGenericValueTypeRegistryEntryStride;
+  const auto identifier = LoadAt<std::int32_t>(
+      entries, entry_offset + kGenericValueTypeRegistryEntryIdentifierOffset);
+  const std::string *const native_name =
+      bindings.resolve_generic_value_type_name(identifier);
+  return native_name != nullptr &&
+         native_name != bindings.generic_value_type_name_fallback &&
+         ReadNativeString(native_name, type_key, true, true);
+}
+
+bool ResolveCharacterScopeIdentity(const Bindings &bindings,
+                                   const void *token,
+                                   std::int32_t &character_id) noexcept {
+  character_id = -1;
+  if (bindings.character_storage_slot == nullptr || token == nullptr) {
+    return false;
+  }
+  const auto raw_payload = LoadAt<std::uint64_t>(
+      token, kEventScopeTokenPayloadOffset);
+  const auto raw_character_id = static_cast<std::uint32_t>(raw_payload);
+  character_id = static_cast<std::int32_t>(raw_character_id);
+  if (raw_payload != static_cast<std::uint64_t>(raw_character_id) ||
+      character_id <= 0) {
+    return false;
+  }
+  void *const storage = *bindings.character_storage_slot;
+  if (storage == nullptr) {
+    return false;
+  }
+  void *const slots =
+      LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity = LoadAt<std::int32_t>(
+      storage, kComponentStorageCapacityOffset);
+  const auto index = raw_character_id & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentSlots ||
+      index >= static_cast<std::uint32_t>(capacity)) {
+    return false;
+  }
+  const auto slot_offset =
+      static_cast<std::size_t>(index) * kComponentStorageSlotStride +
+      kComponentStorageSlotObjectOffset;
+  void *const character = LoadAt<void *>(slots, slot_offset);
+  return character != nullptr &&
+         LoadAt<std::int32_t>(character, kCharacterIdOffset) == character_id;
+}
+
+bool ReadEventScopeToken(const Bindings &bindings, void *registry,
+                         const void *token, game::EventScopeV1 &output) {
+  output = {};
+  if (token == nullptr) {
+    return false;
+  }
+  output.raw_type_index = LoadAt<std::uint16_t>(
+      token, kEventScopeTokenTypeIndexOffset);
+  output.subtype =
+      LoadAt<std::uint16_t>(token, kEventScopeTokenSubtypeOffset);
+  if (!ReadGenericValueTypeKey(bindings, registry, output.raw_type_index,
+                               output.type_key)) {
+    return false;
+  }
+  if (output.raw_type_index == kCharacterScopeTypeIndex) {
+    if (output.type_key != kCharacterScopeTypeKey) {
+      return false;
+    }
+    std::int32_t character_id = -1;
+    if (!ResolveCharacterScopeIdentity(bindings, token, character_id)) {
+      return false;
+    }
+    output.typed_identity.available = true;
+    output.typed_identity.character_id = character_id;
+    output.typed_identity.unavailable_reason.clear();
+    return true;
+  }
+  if (output.type_key == kCharacterScopeTypeKey) {
+    return false;
+  }
+  output.typed_identity.available = false;
+  output.typed_identity.character_id.reset();
+  output.typed_identity.unavailable_reason.assign(
+      kGenericScopeIdentityUnavailableReason);
+  return true;
+}
+
+bool ReadSavedScopeName(const Bindings &bindings, void *table,
+                        std::int32_t identifier, std::string &output) {
+  output.clear();
+  if (table == nullptr ||
+      bindings.resolve_script_identifier_name == nullptr ||
+      bindings.lookup_script_identifier_id == nullptr) {
+    return false;
+  }
+  const std::string *const native_name =
+      bindings.resolve_script_identifier_name(table, identifier);
+  if (native_name == nullptr ||
+      native_name == bindings.script_identifier_name_fallback ||
+      !ReadNativeString(native_name, output, true, true) ||
+      output.size() >
+          static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max())) {
+    output.clear();
+    return false;
+  }
+  const NativeStringView32 view{
+      output.data(), static_cast<std::int32_t>(output.size()), 0};
+  std::int32_t roundtrip_identifier = -1;
+  if (bindings.lookup_script_identifier_id(
+          table, &roundtrip_identifier, &view) == nullptr ||
+      roundtrip_identifier != identifier) {
+    output.clear();
+    return false;
+  }
+  return true;
+}
+
+bool ReadEventScopeInventory(const Bindings &bindings,
+                             const void *active_event,
+                             EventScopeInventoryV1 &output,
+                             std::string_view &failure_reason) {
+  output = {};
+  failure_reason = "event_scope_layout_invalid";
+  if (active_event == nullptr ||
+      bindings.get_generic_value_type_registry == nullptr ||
+      bindings.expected_generic_value_type_registry == nullptr ||
+      bindings.generic_value_type_name_fallback == nullptr ||
+      bindings.resolve_generic_value_type_name == nullptr ||
+      bindings.get_script_identifier_table == nullptr ||
+      bindings.lookup_script_identifier_id == nullptr ||
+      bindings.resolve_script_identifier_name == nullptr ||
+      bindings.script_identifier_name_fallback == nullptr ||
+      bindings.character_storage_slot == nullptr) {
+    failure_reason = "unsupported_build";
+    return false;
+  }
+  void *const registry = bindings.get_generic_value_type_registry();
+  if (registry == nullptr ||
+      registry != bindings.expected_generic_value_type_registry) {
+    failure_reason = "event_scope_type_registry_invalid";
+    return false;
+  }
+  if (!ReadEventScopeToken(
+          bindings, registry,
+          static_cast<const std::byte *>(active_event) +
+              kEventScopeRootOffset,
+          output.root_scope)) {
+    failure_reason = "event_root_scope_invalid";
+    return false;
+  }
+  void *const rows =
+      LoadAt<void *>(active_event, kEventScopeNamedDataOffset);
+  const auto capacity = LoadAt<std::int32_t>(
+      active_event, kEventScopeNamedCapacityOffset);
+  const auto count =
+      LoadAt<std::int32_t>(active_event, kEventScopeNamedCountOffset);
+  if (!ValidVector(count, capacity, kMaximumSavedScopes, rows)) {
+    failure_reason = "event_saved_scope_vector_invalid";
+    return false;
+  }
+  void *const identifier_table = bindings.get_script_identifier_table();
+  if (identifier_table == nullptr) {
+    failure_reason = "event_saved_scope_name_invalid";
+    return false;
+  }
+  try {
+    output.saved_scopes.reserve(static_cast<std::size_t>(count));
+  } catch (...) {
+    failure_reason = "event_saved_scope_vector_invalid";
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto *const row =
+        static_cast<const std::byte *>(rows) +
+        static_cast<std::size_t>(index) * kEventScopeNamedRowStride;
+    game::EventSavedScopeV1 saved{};
+    saved.name_identifier = LoadAt<std::int32_t>(
+        row, kEventScopeNamedRowIdentifierOffset);
+    if (!ReadSavedScopeName(bindings, identifier_table,
+                            saved.name_identifier, saved.name)) {
+      failure_reason = "event_saved_scope_name_invalid";
+      return false;
+    }
+    const bool duplicate_name = std::any_of(
+        output.saved_scopes.begin(), output.saved_scopes.end(),
+        [&saved](const game::EventSavedScopeV1 &existing) {
+          return existing.name_identifier == saved.name_identifier ||
+                 existing.name == saved.name;
+        });
+    if (duplicate_name) {
+      failure_reason = "event_saved_scope_name_invalid";
+      return false;
+    }
+    if (!ReadEventScopeToken(
+            bindings, registry,
+            row + kEventScopeNamedRowTokenOffset, saved.scope)) {
+      failure_reason = "event_saved_scope_invalid";
+      return false;
+    }
+    try {
+      output.saved_scopes.push_back(std::move(saved));
+    } catch (...) {
+      failure_reason = "event_saved_scope_vector_invalid";
+      return false;
+    }
+  }
+  failure_reason = {};
+  return true;
 }
 
 void ReadTraitIndicatorIdentity(const Bindings &bindings, const void *payload,
@@ -487,7 +755,16 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
         bindings.scheme_type_database_slot == nullptr ||
         bindings.scheme_type_fallback_slot == nullptr ||
         bindings.hash_stable_key == nullptr ||
-        bindings.lookup_scheme_type == nullptr) {
+        bindings.lookup_scheme_type == nullptr ||
+        bindings.character_storage_slot == nullptr ||
+        bindings.expected_generic_value_type_registry == nullptr ||
+        bindings.generic_value_type_name_fallback == nullptr ||
+        bindings.script_identifier_name_fallback == nullptr ||
+        bindings.get_script_identifier_table == nullptr ||
+        bindings.lookup_script_identifier_id == nullptr ||
+        bindings.get_generic_value_type_registry == nullptr ||
+        bindings.resolve_generic_value_type_name == nullptr ||
+        bindings.resolve_script_identifier_name == nullptr) {
       SetUnavailable(output, "unsupported_build");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
@@ -503,6 +780,13 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     if (!ReadEventDefinitionIdentity(bindings, expected_event_instance_id,
                                      identity_before)) {
       SetUnavailable(output, "event_definition_identity_unavailable");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    EventScopeInventoryV1 scope_before{};
+    std::string_view scope_failure_reason{};
+    if (!ReadEventScopeInventory(bindings, identity_before.active_event,
+                                 scope_before, scope_failure_reason)) {
+      SetUnavailable(output, scope_failure_reason);
       return game::ReadEventWindowContextResultV1::unavailable;
     }
     void *const owner = *bindings.jomini_state_slot;
@@ -554,6 +838,16 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
       SetUnavailable(output, "event_definition_identity_changed");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
+    EventScopeInventoryV1 scope_after{};
+    if (!ReadEventScopeInventory(bindings, identity_after.active_event,
+                                 scope_after, scope_failure_reason)) {
+      SetUnavailable(output, scope_failure_reason);
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    if (scope_after != scope_before) {
+      SetUnavailable(output, "event_scope_changed");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
     game::Snapshot after{};
     if (!ReadSnapshot(bindings, after) || after != before) {
       SetUnavailable(output, "state_changed");
@@ -565,7 +859,11 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
         std::move(identity_before.event_definition_key);
     candidate.calculated_event_id = identity_before.calculated_event_id;
     candidate.runtime_stats_ordinal = identity_before.runtime_stats_ordinal;
+    candidate.root_scope = std::move(scope_before.root_scope);
+    candidate.saved_scopes = std::move(scope_before.saved_scopes);
     candidate.event_definition_identity_ready = true;
+    candidate.root_scope_ready = true;
+    candidate.saved_scopes_ready = true;
     candidate.option_presentation_ready = true;
     candidate.effect_indicators_ready = true;
     candidate.effect_preview_ready = false;

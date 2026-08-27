@@ -65,6 +65,12 @@ class _NativeAutoRunHarness:
         self.heartbeat_date_raw = self.date_raw
         self.heartbeat_lag_capability_reads = 0
         self.terminal = False
+        self.active_event_id = (
+            900
+            if self.actions
+            and self.actions[0] in {"event", "event_no_delta"}
+            else None
+        )
         self.history: list[dict[str, object]] = []
         self.ready_snapshot_observed = False
         self.driver: _FakeNativeDriver | None = None
@@ -172,7 +178,14 @@ class _NativeAutoRunHarness:
             "one_life_terminal_reason": (
                 "played_character_dead" if self.terminal else None
             ),
-            "active_event": None,
+            "active_event": (
+                {
+                    "instance_id": self.active_event_id,
+                    "option_count": 2,
+                }
+                if self.active_event_id is not None
+                else None
+            ),
             "active_wars": [],
             "player_armies": [],
             "native_command_history": copy.deepcopy(self.history),
@@ -243,17 +256,46 @@ class _NativeAutoRunHarness:
                 "ending_date_raw": self.date_raw,
                 "elapsed_days": self.date_raw - starting_date_raw,
             }
+        elif action in {"event", "event_no_delta"}:
+            step = "select-event-option-1"
+            old_event_id = self.active_event_id
+            if old_event_id is None:
+                raise AssertionError("event action lacks an active event")
+            if action == "event":
+                self.active_event_id = None
+                self.native_revision += 1
+                self.public_revision += 1
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+                "progress_status": "postcondition",
+                "event_selection": {
+                    "status": "event_instance_advanced",
+                    "postcondition_verified": True,
+                    "old_event_instance_id": old_event_id,
+                    "new_event_instance_id": self.active_event_id,
+                    "selected_option_number": 1,
+                    "selected_native_option_index": 0,
+                },
+            }
         else:
             raise AssertionError(f"unsupported fake action {action!r}")
 
         self._append_history(step, result)
+        plan: dict[str, object] = {
+            "phase": "fixture",
+            "selected_step": step,
+        }
+        if step.startswith("select-event-option-"):
+            plan["event_decision"] = {
+                "policy": "shown-enabled-death-cancel-native-order-v1",
+                "selected_native_option_index": 0,
+            }
         return {
             "status": "executed",
             "selected_step": step,
-            "plan": {
-                "phase": "fixture",
-                "selected_step": step,
-            },
+            "plan": plan,
             "result": copy.deepcopy(result),
         }
 
@@ -590,6 +632,38 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             report["auto_run"]["turns"][0]["evidence"],
             ["no_semantic_delta"],
+        )
+
+    def test_event_turn_requires_and_records_full_instance_progress(self) -> None:
+        report, _harness = self._run(["event"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["selected_step"], "select-event-option-1")
+        self.assertIn("event_changed", turn["evidence"])
+        self.assertEqual(
+            turn["plan"]["event_decision"]["policy"],
+            "shown-enabled-death-cancel-native-order-v1",
+        )
+        self.assertEqual(
+            turn["result"]["event_selection"]["status"],
+            "event_instance_advanced",
+        )
+        self.assertEqual(
+            turn["result"]["event_selection"]["old_event_instance_id"],
+            900,
+        )
+        self.assertIsNone(
+            turn["result"]["event_selection"]["new_event_instance_id"]
+        )
+
+    def test_event_ack_without_full_instance_progress_stops_the_run(self) -> None:
+        report, _harness = self._run(["event_no_delta"])
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertIn(
+            "old-instance lifecycle postcondition", str(report["error"])
         )
 
     def test_turn_limit_materializes_visible_tail_checkpoint(self) -> None:

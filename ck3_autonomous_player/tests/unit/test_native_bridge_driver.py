@@ -3102,9 +3102,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "result": {"accepted": True},
                     }
                 )
+                endpoint.publish(_snapshot(24))
 
         endpoint.send_hook = answer
-        driver.execute_step(
+        result = driver.execute_step(
             "select-event-option-3",
             expected_revision=int(snapshot["revision"]),
         )
@@ -3115,6 +3116,172 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(command["step"], "select-event-option-3")
         self.assertEqual(command["expected_revision"], 23)
+        self.assertEqual(
+            result["event_selection"]["status"], "event_instance_advanced"
+        )
+        self.assertEqual(
+            result["event_selection"]["old_event_instance_id"], 419
+        )
+        self.assertIsNone(
+            result["event_selection"]["new_event_instance_id"]
+        )
+        self.assertEqual(
+            result["event_selection"]["selected_native_option_index"], 2
+        )
+        self.assertEqual(result["progress_status"], "postcondition")
+
+    def test_event_selection_accepts_a_chained_new_full_instance(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-event",
+                "game.command.select-event-option-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(31, active_event={"instance_id": 500, "option_count": 2})
+        )
+        starting = driver.take_snapshot()
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"accepted": True},
+                }
+            )
+            endpoint.publish(
+                _snapshot(
+                    32,
+                    active_event={"instance_id": 501, "option_count": 1},
+                )
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(
+            "select-event-option-2",
+            expected_revision=int(starting["revision"]),
+        )
+
+        self.assertEqual(
+            result["event_selection"]["new_event_instance_id"], 501
+        )
+        self.assertEqual(result["active_event"]["instance_id"], 501)
+
+    def test_event_selection_rejects_ack_without_instance_progress(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.02,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-event",
+                "game.command.select-event-option-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(41, active_event={"instance_id": 600, "option_count": 2})
+        )
+        starting = driver.take_snapshot()
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") == "execute_step":
+                endpoint.publish(
+                    {
+                        "type": "command_result",
+                        "protocol_version": 1,
+                        "request_id": frame["request_id"],
+                        "ok": True,
+                        "result": {"accepted": True},
+                    }
+                )
+
+        endpoint.send_hook = answer
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "ACK did not advance"
+        ):
+            driver.execute_step(
+                "select-event-option-1",
+                expected_revision=int(starting["revision"]),
+            )
+
+    def test_event_selection_preflight_rejects_without_sending(self) -> None:
+        for label, snapshot, step, stale_revision in (
+            (
+                "unpaused",
+                _snapshot(
+                    51,
+                    paused=False,
+                    active_event={"instance_id": 700, "option_count": 2},
+                ),
+                "select-event-option-1",
+                False,
+            ),
+            ("no-event", _snapshot(52), "select-event-option-1", False),
+            (
+                "out-of-range",
+                _snapshot(
+                    53,
+                    active_event={"instance_id": 701, "option_count": 1},
+                ),
+                "select-event-option-2",
+                False,
+            ),
+            (
+                "stale-revision",
+                _snapshot(
+                    54,
+                    active_event={"instance_id": 702, "option_count": 1},
+                ),
+                "select-event-option-1",
+                True,
+            ),
+        ):
+            with self.subTest(label=label):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                    command_timeout_seconds=0.02,
+                )
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.state.active-event",
+                        "game.command.select-event-option-N",
+                    )
+                )
+                endpoint.publish(snapshot)
+                current_revision = int(driver.take_snapshot()["revision"])
+                with self.assertRaises(BridgeUnavailableError):
+                    driver.execute_step(
+                        step,
+                        expected_revision=(
+                            current_revision - 1
+                            if stale_revision
+                            else current_revision
+                        ),
+                    )
+                self.assertFalse(
+                    any(
+                        frame.get("type") == "execute_step"
+                        for frame in endpoint.frames
+                    )
+                )
 
     def test_pending_character_interaction_routes_native_reply(self) -> None:
         endpoint = FakeEndpoint()

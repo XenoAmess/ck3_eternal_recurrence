@@ -7,7 +7,7 @@
   "read_only": true,
   "live_validated": true,
   "live_validated_scope": "generic nonreligious definition/localization fixtures with the production native bridge: current full instance and canonical definition identity, process-local numeric metadata, materialized presentation/cancel, empty indicator controls, and the exact trait/add brave, stress/increase affected=false critical=false, and death/played_character backing rows across seed checkpoint and fresh cold reload",
-  "not_live_validated_scope": "stock event coverage, trait remove, other stress branches, scheme/unknown nonempty rows, visual icon rendering, event-window lifecycle removal after selection, current-event root/named scope values and all saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice; the root/named layout and type-4 CharacterID decoder are static-only",
+  "not_live_validated_scope": "stock event coverage, trait remove, other stress branches, scheme/unknown nonempty rows, visual icon rendering, event-window lifecycle removal after selection, production current-event root/named scope values and all saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice; the root/named layout, type-4 CharacterID decoder and product scope wire are static-only",
   "game_process_started": true,
   "scope": "generic nonreligious current event-window presentation context",
   "owner_deferred_domains": [
@@ -473,12 +473,12 @@
     "EventData_authored_option_vector": "+0x1B0 data, +0x1B8 capacity, +0x1BC int32 count; entries are CEventOption* in authored zero-based order",
     "EventData_source_location": "+0x240 object; duplicate validator resolves the new and previous source-location strings for the second and third formatter arguments",
     "identity_query_rule": "Copy +0x08/+0x0C/+0x10 only after the complete ActiveEvent instance ID is matched; validate MSVC string bounds and repeat the ActiveEvent/EventData pointer plus numeric/string observation before returning. +0x08/+0x0C must remain stable only within that loaded-process observation; only +0x10 is the cross-process definition identity. Never publish the EventData pointer.",
-    "root_scope_stable_identity": "ActiveEvent+0x00 root generic-event-target layout and kind-4 CharacterID payload identity are static-confirmed, but the current-event root has not been read in a paused live artifact and non-character payload decoders remain unavailable; no stable root scope is published",
-    "saved_scope_stable_identities": "unknown",
+    "root_scope_stable_identity": "ActiveEvent+0x00 root generic-event-target layout, stable type key and kind-4 generation-validated CharacterID payload identity are published by the production wire and static-tested, but the current-event root has not been read in a paused live artifact; non-character payload identity remains explicitly unavailable",
+    "saved_scope_stable_identities": "Production wire statically publishes the complete bounded named-row inventory as canonical script name, process-local name_identifier, stable target type key/subtype and CharacterID only for type 4; it has not been read in a paused live artifact and name_identifier is never a cross-process identity",
     "GetScope": "GUI callback RVA 0x16D0990 resolves data+0x00 through EventManager and returns the live ActiveEvent pointer; it does not publish a stable cross-process scope identity."
   },
   "ActiveEventScope": {
-    "evidence_status": "static-confirmed-not-live",
+    "evidence_status": "static-confirmed-production-wire-not-live",
     "domain": "generic nonreligious event-target context; no faith, doctrine, tenet, fervor, conversion, reformation, holy-war or holy-order semantics were inspected",
     "embedding": "ActiveEvent+0x00 is an inline 0x168-byte EventTargetScope zero-offset base. ActiveEvent default construction calls RVA 0x81F190 with the original rcx; its copy/relocation path calls RVA 0x3358EF0 with the original destination/source; ActiveEvent serialization passes the unadjusted ActiveEvent pointer as r8 to RVA 0x20D8330. EventTargetScope construction initializes through +0x166 and ActiveEvent-specific construction resumes at +0x168.",
     "root_generic_target": {
@@ -491,7 +491,7 @@
       "header": "EventTargetScope+0x18 data pointer, +0x20 int32 capacity, +0x24 signed int32 count, +0x28 allocator pointer",
       "serializer_gate": "0x20D8407 compares dword [scope+0x24] with zero; 0x20D840D passes scope+0x18 to RVA 0x2539DA0",
       "row_stride": "0x18",
-      "row_name_identifier": "+0x00 int32 script-identifier ID; +0x04 remains opaque and is not published",
+      "row_name_identifier": "+0x00 full signed int32 generation-bearing script-identifier ID; preserve the complete value including negative IDs; +0x04 remains opaque and is not published",
       "row_target": "+0x08 inline 0x10-byte generic event-target token",
       "row_loop_proof": "RVA 0x253BD00 loads vector data at header+0x00 and signed count at header+0x0C, computes end=data+count*0x18, resolves row+0x00 through 0x3B971A0/0x3B97090, passes row+0x08 to generic serializer 0x81D880 and advances by 0x18. RVA 0x335A370 independently copies rows in 0x18-byte units."
     },
@@ -499,7 +499,10 @@
       "table_getter_rva": "0x3B971A0",
       "lookup_only_rva": "0x3B97020",
       "id_to_entry_rva": "0x3B97090",
-      "read_rule": "Resolve only a bounded nonempty key using the established lookup-only script-identifier table path and require an exact ID/string round-trip; never intern or accept the resolver fallback."
+      "id_to_entry_signature": "const std::string* (void* script_identifier_table, int32 identifier)",
+      "id_to_entry_layout": "mask identifier to low 24 bits, bound against table+0x3C signed count, return *(table+0x30)+index*0x20 where the row begins with an MSVC string",
+      "id_to_entry_fallback": "module+0x585F218; reject before copying",
+      "read_rule": "Resolve the complete signed int32 generation ID, including negative values, to a bounded nonempty key using the established lookup-only script-identifier table path and require an exact full-ID/string round-trip; never intern or accept the resolver fallback."
     },
     "generic_type_identity": {
       "registry_getter_rva": "0x33C52B0",
@@ -508,8 +511,12 @@
       "stable_name_identifier": "entry+0x00 int32 identifier",
       "stable_name_resolver_rva": "0x3B58970",
       "proof": "RVA 0x2011438 reads the token's uint16 type index, applies the same registry count/0x50-stride lookup, reads entry+0x00 and calls 0x3B58970",
-      "fallback": "module+0x5000AB0 out-of-range registry fallback; reject rather than publish",
-      "read_rule": "Require nonzero in-range type index, a nonfallback registry entry and a bounded nonempty stable type key. A stable type key does not make its payload identity known."
+      "registry_fallback_entry_rva": "0x5000AB0",
+      "registry_fallback_entry_role": "RVA 0x2011400 consumer selects this 0x50-byte registry fallback entry only when type_index is outside the signed registry count; the production reader must reject type_index >= count before computing an entry address and therefore never enter it",
+      "resolver_name_fallback_rva": "0x585F058",
+      "binding_expected_pointer": "Bindings::generic_value_type_name_fallback = module+0x585F058",
+      "resolver_fallback_rejection": "Reject native_name == bindings.generic_value_type_name_fallback before copying or publishing the type key",
+      "read_rule": "Require nonzero type index, the exact module+0x4FFE290 registry, positive bounded signed count and type_index < count before computing index*0x50. This bounds gate prevents entry into the consumer's module+0x5000AB0 registry fallback row. Resolve the in-range entry identifier through 0x3B58970, require kGenericValueTypeNameFallbackRva = 0x585F058 and Bindings::generic_value_type_name_fallback = module+0x585F058, then reject that returned native_name. The 0x5000AB0 registry row and 0x585F058 resolver string are distinct fallbacks and must never be aliased. A stable type key does not make its payload identity known."
     },
     "character_payload_identity": {
       "status": "static-confirmed-only-not-current-event-live",
@@ -520,10 +527,58 @@
       "read_rule": "Generation-resolve through Character storage and require CCharacter+0x18 to repeat the complete ID. Do not require the character resolver's later gameplay-liveness tail when only stable identity is requested.",
       "boundary": "This proves how to decode a type-4 token if one is observed; no paused current-event artifact has yet shown a root or named type-4 token."
     },
-    "noncharacter_payload_identity": "unavailable; publish at most the stable type key with typed payload identity unavailable until that exact type receives its own decoder",
-    "atomic_read_rule": "Only after matching the complete current ActiveEvent instance ID, copy root and bounded named rows in the existing application-main owning-thread callback; repeat ActiveEvent/EventData/instance identity around the copy and retain no engine pointer.",
-    "production_wire": "not implemented; current root_scope and saved_scopes remain explicitly unavailable",
-    "live_validation": "not performed",
+    "noncharacter_payload_identity": "Production wire publishes raw_type_index, subtype and stable type_key, then typed_identity={status:unavailable,reason:generic_scope_payload_identity_not_closed}; it never reads or publishes the +0x08 payload until that exact type receives its own decoder",
+    "atomic_read_rule": "Only after matching the complete current ActiveEvent instance ID, copy root and bounded named rows in the existing application-main owning-thread callback; repeat the owned root/named inventory plus ActiveEvent/EventData/instance identity around the window copy and retain no engine pointer or raw payload in the DTO/mailbox result.",
+    "production_wire": {
+      "status": "implemented-static-not-live",
+      "static_ready": true,
+      "live_ready": false,
+      "query": "game.command.query-current-event-window-context-v1",
+      "root_scope_fields": [
+        "status",
+        "raw_type_index",
+        "type_key",
+        "subtype",
+        "typed_identity"
+      ],
+      "saved_scope_fields": [
+        "name",
+        "name_identifier",
+        "scope"
+      ],
+      "name_identifier_wire": {
+        "type": "full signed int32 generation ID",
+        "minimum": -2147483648,
+        "maximum": 2147483647,
+        "round_trip": "preserve and compare the complete signed value, including negative generation-bearing IDs; process-local only"
+      },
+      "character_typed_identity_fields": [
+        "status",
+        "kind",
+        "character_id"
+      ],
+      "noncharacter_typed_identity_fields": [
+        "status",
+        "reason"
+      ],
+      "noncharacter_reason": "generic_scope_payload_identity_not_closed",
+      "readiness": {
+        "root_scope_ready": true,
+        "saved_scopes_ready": true,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "unavailable_frame": "root_scope=null, saved_scopes=null and both scope readiness fields false",
+      "process_local_only": [
+        "saved_scopes[].name_identifier"
+      ],
+      "forbidden_fields": [
+        "raw_16_bytes_hex",
+        "raw_payload",
+        "engine_pointer"
+      ]
+    },
+    "live_validation": "not performed; no paused current-event root or named-scope artifact exists",
     "semantic_decision_ready": false
   },
   "CEventWindowData": {
@@ -576,9 +631,9 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "definition_identity_presentation_and_bounded_nonempty_effect_indicator_surface_fixture_live",
+    "status": "definition_identity_presentation_and_bounded_nonempty_effect_indicator_surface_fixture_live_plus_current_event_scope_wire_static",
     "live_scope": "Attempt4 generic nonreligious fixture: full instance and canonical key, process-local numeric metadata, materialized presentation/cancel and empty typed-indicator rows; nonempty Attempt1: exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows",
-    "static_scope_candidate": "ActiveEvent+0x00 inline EventTargetScope root token plus +0x18/+0x24 bounded named-target vector; type-4 CharacterID payload identity is static-only, every non-character payload remains unavailable",
+    "static_scope_wire": "Production current-event-window-context-v1 now copies ActiveEvent+0x00 root plus the complete +0x18/+0x24 bounded named-target inventory on application-main, publishes stable names/type keys and generation-valid type-4 CharacterIDs, marks every non-character typed payload unavailable and double-observes the owned inventory; no paused scope artifact exists",
     "remaining_live_scope": "stock events, remaining nonempty indicator branches and visual icons, fallback-positive path, selection lifecycle, current-event root/named scopes, all saved scopes, complete effects and semantic choice",
     "top_level": [
       "revision",
@@ -606,9 +661,9 @@
       "resource_deltas_unavailable",
       "relationship_deltas_unavailable"
     ],
-    "nullable_until_reverse_closed": [
-      "root_scope",
-      "saved_scopes"
+    "scope_readiness": [
+      "root_scope_ready",
+      "saved_scopes_ready"
     ],
     "published_definition_identity": [
       "event_definition_key",
@@ -630,7 +685,8 @@
     "current_event_scope_layout_static_ready": true,
     "current_event_scope_character_payload_identity_static_ready": true,
     "current_event_scope_noncharacter_payload_identity_static_ready": false,
-    "current_event_scope_wire_ready": false,
+    "current_event_scope_product_static_ready": true,
+    "current_event_scope_wire_ready": true,
     "current_event_scope_live_ready": false,
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
@@ -763,7 +819,7 @@
     "Do not call trigger, name, preview or effect functions from a worker thread.",
     "Do not call loaded-effect executor RVA 0x3380410 for preview.",
     "Do not retain engine-owned pointers after the owning-thread snapshot.",
-    "Do not infer a stable event key from an ActiveEvent pointer: copy and validate EventData+0x10 through the exact +0x1B0 definition path and publish no pointer. Current-event root/named scope layout is static-only, its production wire/live evidence is absent, and every non-character payload identity remains unavailable.",
+    "Do not infer a stable event key from an ActiveEvent pointer: copy and validate EventData+0x10 through the exact +0x1B0 definition path and publish no pointer. Current-event root/named scope layout and production wire are static-ready but not paused-live, and every non-character payload identity remains unavailable.",
     "Do not call an event option executor from current-event-window-context-v1; it is a read-only application-main copy only."
   ],
   "production_query": {
@@ -786,7 +842,10 @@
       "bounded vectors and strings; every option owner backpointer equals the matched inline data",
       "every materialized native option index maps in range through the bounded EventData+0x1B0 authored vector to a non-null CEventOption whose +0x47A is_cancel_option byte is canonical 0/1; CEventWindowData+0x2C timeout is ignored for cancel",
       "each OptionEffectItem vector has bounded count/capacity and 0x18 stride; only its active kind payload is interpreted",
-      "trait payload round-trips through unique loaded Trait DB pointer/native-ID/key identity; scheme payload round-trips through the already-loaded scheme DB hash lookup, exact vtable and non-fallback identity"
+      "trait payload round-trips through unique loaded Trait DB pointer/native-ID/key identity; scheme payload round-trips through the already-loaded scheme DB hash lookup, exact vtable and non-fallback identity",
+      "generic target type getter must return exact module+0x4FFE290; each nonzero type index is bounded through its 0x50-stride registry and copied through the distinct 0x3B58970 stable-name domain",
+      "root and every named target are copied twice around the window observation; type 4 requires a zero-extended positive CharacterID and full-generation Character storage round-trip, while every other payload remains unread and typed unavailable",
+      "named vector count/capacity is bounded; each canonical name rejects the 0x585F218 fallback and round-trips its full int32 script identifier through the separate 0x3B97090/0x3B97020 script-name domain"
     ],
     "published_option_fields": [
       "rendered_index",
@@ -807,14 +866,30 @@
       "calculated_event_id",
       "runtime_stats_ordinal"
     ],
+    "published_scope_fields": {
+      "root_scope": [
+        "status",
+        "raw_type_index",
+        "type_key",
+        "subtype",
+        "typed_identity"
+      ],
+      "saved_scope": [
+        "name",
+        "name_identifier",
+        "scope"
+      ],
+      "readiness": [
+        "root_scope_ready",
+        "saved_scopes_ready"
+      ]
+    },
     "explicitly_unavailable": [
-      "root_scope",
-      "saved_scopes",
       "full_effect_preview"
     ],
     "live_acceptance": {
       "completed": "Attempt4 fixture-scoped seed/checkpoint/fresh-cold validation binds the full instance, canonical key, per-process numeric metadata, materialized visible UI and empty typed-indicator surface; nonempty Attempt1 additionally binds the exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows; adjacent cold queries are identical except query_sequence and no option is selected",
-      "remaining": "wire and paused-live validate the static-only current-event root/named scope candidate while keeping all non-character payload identities unavailable; validate remaining nonempty indicator branches and visual icons; then use a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
+      "remaining": "paused-live validate the static-ready current-event root/named production wire while keeping all non-character payload identities unavailable; validate remaining nonempty indicator branches and visual icons; then use a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
     }
   }
 }

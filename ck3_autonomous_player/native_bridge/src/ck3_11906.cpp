@@ -256,6 +256,12 @@ constexpr std::uintptr_t kGetScriptIdentifierTableRva = 0x3B971A0;
 // Locks the script-identifier table, calls lookup-only RVA 0x3B96D40, then
 // unlocks. Unlike RVA 0x3B96E50 it never inserts a missing name.
 constexpr std::uintptr_t kLookupScriptIdentifierIdRva = 0x3B97020;
+constexpr std::uintptr_t kGetGenericValueTypeRegistryRva = 0x33C52B0;
+constexpr std::uintptr_t kGenericValueTypeRegistryRva = 0x4FFE290;
+constexpr std::uintptr_t kResolveGenericValueTypeNameRva = 0x3B58970;
+constexpr std::uintptr_t kGenericValueTypeNameFallbackRva = 0x585F058;
+constexpr std::uintptr_t kResolveScriptIdentifierNameRva = 0x3B97090;
+constexpr std::uintptr_t kScriptIdentifierNameFallbackRva = 0x585F218;
 constexpr std::uintptr_t kIsEventTargetValidRva = 0x3329B00;
 constexpr std::uintptr_t kResolveEventTargetObjectRva = 0x33299E0;
 constexpr std::uintptr_t kIsCharacterHostileRva = 0x2900470;
@@ -6094,6 +6100,14 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kSchemeTypeDatabaseSlotRva);
   result.scheme_type_fallback_slot =
       reinterpret_cast<void **>(module + kSchemeTypeFallbackSlotRva);
+  result.expected_generic_value_type_registry =
+      reinterpret_cast<void *>(module + kGenericValueTypeRegistryRva);
+  result.generic_value_type_name_fallback =
+      reinterpret_cast<const std::string *>(
+          module + kGenericValueTypeNameFallbackRva);
+  result.script_identifier_name_fallback =
+      reinterpret_cast<const std::string *>(
+          module + kScriptIdentifierNameFallbackRva);
   result.global_variable_container_accessor_slot =
       reinterpret_cast<GetGlobalVariableContainer *>(
           module + kGlobalVariableContainerAccessorSlotRva);
@@ -6397,6 +6411,15 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.lookup_script_identifier_id =
       reinterpret_cast<LookupScriptIdentifierId>(
           module + kLookupScriptIdentifierIdRva);
+  result.get_generic_value_type_registry =
+      reinterpret_cast<GetGenericValueTypeRegistry>(
+          module + kGetGenericValueTypeRegistryRva);
+  result.resolve_generic_value_type_name =
+      reinterpret_cast<ResolveGenericValueTypeName>(
+          module + kResolveGenericValueTypeNameRva);
+  result.resolve_script_identifier_name =
+      reinterpret_cast<ResolveScriptIdentifierName>(
+          module + kResolveScriptIdentifierNameRva);
   result.is_event_target_valid = reinterpret_cast<IsEventTargetValid>(
       module + kIsEventTargetValidRva);
   result.resolve_event_target_object =

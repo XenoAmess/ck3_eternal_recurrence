@@ -47,11 +47,21 @@ _OPTION_FIELDS = {
 }
 _READINESS_FIELDS = {
     "event_definition_identity_ready",
+    "root_scope_ready",
+    "saved_scopes_ready",
     "option_presentation_ready",
     "effect_indicators_ready",
     "effect_preview_ready",
     "semantic_decision_ready",
 }
+_SCOPE_FIELDS = {
+    "status",
+    "raw_type_index",
+    "type_key",
+    "subtype",
+    "typed_identity",
+}
+_SAVED_SCOPE_FIELDS = {"name", "name_identifier", "scope"}
 
 _EFFECT_INDICATOR_COVERAGE = (
     "played-character-event-icon-indicators-1.19.0.6-v1"
@@ -197,6 +207,50 @@ def _effect_indicator(value: Any, label: str) -> None:
     raise ValueError(f"{label}.kind is invalid")
 
 
+def _event_scope(value: Any, label: str) -> None:
+    scope = _exact_object(value, _SCOPE_FIELDS, label)
+    if scope["status"] != "available":
+        raise ValueError(f"{label}.status is invalid")
+    raw_type_index = _int(
+        scope["raw_type_index"],
+        f"{label}.raw_type_index",
+        1,
+        2**16 - 1,
+    )
+    type_key = _stable_key(scope["type_key"], f"{label}.type_key")
+    _int(scope["subtype"], f"{label}.subtype", 0, 2**16 - 1)
+    identity = scope["typed_identity"]
+    if raw_type_index == 4:
+        if type_key != "character":
+            raise ValueError(f"{label} character type key drifted")
+        identity = _exact_object(
+            identity,
+            {"status", "kind", "character_id"},
+            f"{label}.typed_identity",
+        )
+        if identity["status"] != "available" or identity["kind"] != "character":
+            raise ValueError(f"{label}.typed_identity is invalid")
+        _int(
+            identity["character_id"],
+            f"{label}.typed_identity.character_id",
+            1,
+            2**31 - 1,
+        )
+        return
+    if type_key == "character":
+        raise ValueError(f"{label} aliases the character type index")
+    identity = _exact_object(
+        identity,
+        {"status", "reason"},
+        f"{label}.typed_identity",
+    )
+    if identity != {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed",
+    }:
+        raise ValueError(f"{label}.typed_identity exceeds closed coverage")
+
+
 def normalize_current_event_window_context_v1(
     value: Any,
     *,
@@ -242,8 +296,6 @@ def normalize_current_event_window_context_v1(
         0,
         32,
     )
-    if frame["root_scope"] is not None or frame["saved_scopes"] is not None:
-        raise ValueError("unclosed event scopes must remain null")
     readiness = _exact_object(
         frame["readiness"], _READINESS_FIELDS, "event readiness"
     )
@@ -273,6 +325,8 @@ def normalize_current_event_window_context_v1(
             frame["event_definition_key"] is not None
             or frame["calculated_event_id"] is not None
             or frame["runtime_stats_ordinal"] is not None
+            or frame["root_scope"] is not None
+            or frame["saved_scopes"] is not None
             or frame["options"] is not None
             or any(readiness.values())
         ):
@@ -308,8 +362,38 @@ def normalize_current_event_window_context_v1(
         -(2**31),
         2**31 - 1,
     )
+    _event_scope(frame["root_scope"], "current event root_scope")
+    saved_scopes = frame["saved_scopes"]
+    if not isinstance(saved_scopes, list) or len(saved_scopes) > 1_024:
+        raise ValueError("current event saved_scopes must be a bounded list")
+    saved_names: set[str] = set()
+    saved_identifiers: set[int] = set()
+    for index, raw_saved in enumerate(saved_scopes):
+        saved = _exact_object(
+            raw_saved,
+            _SAVED_SCOPE_FIELDS,
+            f"current event saved scope {index}",
+        )
+        name = _stable_key(
+            saved["name"], f"current event saved scope {index}.name"
+        )
+        identifier = _int(
+            saved["name_identifier"],
+            f"current event saved scope {index}.name_identifier",
+            -(2**31),
+            2**31 - 1,
+        )
+        if name in saved_names or identifier in saved_identifiers:
+            raise ValueError("current event saved scope names are not unique")
+        saved_names.add(name)
+        saved_identifiers.add(identifier)
+        _event_scope(
+            saved["scope"], f"current event saved scope {index}.scope"
+        )
     if readiness != {
         "event_definition_identity_ready": True,
+        "root_scope_ready": True,
+        "saved_scopes_ready": True,
         "option_presentation_ready": True,
         "effect_indicators_ready": True,
         "effect_preview_ready": False,

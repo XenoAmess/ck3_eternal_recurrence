@@ -36,6 +36,7 @@ from .event_contract import (
     choose_event_option_number,
     event_option_step,
     normalize_active_event,
+    parse_event_option_step,
 )
 from .declaration_contract import (
     DECLARE_WAR_CAPABILITY,
@@ -2155,6 +2156,13 @@ class NativeHeadlessGameplayDriver:
                         f"expected {expected_revision}, current "
                         f"{current_revision}"
                     )
+        event_option_number = parse_event_option_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith("select-event-option-")
+            and event_option_number is None
+        ):
+            raise UnsupportedStepError("malformed event option step")
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -2452,6 +2460,12 @@ class NativeHeadlessGameplayDriver:
                 )
             return self.query_current_event_window_context_v1(
                 event_id,
+                expected_revision=expected_revision,
+            )
+        if event_option_number is not None:
+            return self._execute_event_option_step(
+                step,
+                option_number=event_option_number,
                 expected_revision=expected_revision,
             )
         if war_entry_targets is not None:
@@ -3735,6 +3749,121 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             self._episode_seed = dict(seed)
         return seed
+
+    def _execute_event_option_step(
+        self,
+        step: str,
+        *,
+        option_number: int,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Submit one event option and require the old full instance to move."""
+
+        starting = self.take_snapshot()
+        if starting.get("map_ready") is not True:
+            raise BridgeUnavailableError(
+                "native event selection requires a map-ready snapshot"
+            )
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native event selection requires a paused snapshot"
+            )
+        active_event = starting.get("active_event")
+        event_instance_id = (
+            active_event.get("instance_id")
+            if isinstance(active_event, dict)
+            else None
+        )
+        option_count = (
+            active_event.get("option_count")
+            if isinstance(active_event, dict)
+            else None
+        )
+        if (
+            isinstance(event_instance_id, bool)
+            or not isinstance(event_instance_id, int)
+            or not 1 <= event_instance_id <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "CK3 has no positive full active event ID"
+            )
+        if (
+            isinstance(option_count, bool)
+            or not isinstance(option_count, int)
+            or option_count < 1
+            or not 1 <= option_number <= option_count
+        ):
+            raise BridgeUnavailableError(
+                "selected native event option is outside the active event"
+            )
+        starting_diagnostics = starting.get("diagnostics")
+        starting_connection_generation = (
+            starting_diagnostics.get("connection_generation")
+            if isinstance(starting_diagnostics, dict)
+            else None
+        )
+        starting_bridge_pid = (
+            starting_diagnostics.get("bridge_pid")
+            if isinstance(starting_diagnostics, dict)
+            else None
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=(
+                expected_revision
+                if expected_revision is not None
+                else int(starting["revision"])
+            ),
+        )
+        changed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: _event_instance_id(snapshot)
+            != event_instance_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if _event_instance_id(changed) == event_instance_id:
+            raise BridgeUnavailableError(
+                "native event selection ACK did not advance the old full event instance"
+            )
+        changed_diagnostics = changed.get("diagnostics")
+        if not (
+            changed.get("episode_run_id") == starting.get("episode_run_id")
+            and isinstance(changed_diagnostics, dict)
+            and changed_diagnostics.get("connection_generation")
+            == starting_connection_generation
+            and changed_diagnostics.get("bridge_pid") == starting_bridge_pid
+        ):
+            raise BridgeUnavailableError(
+                "native event selection crossed its bridge or episode binding"
+            )
+        if changed.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native event selection postcondition is not paused"
+            )
+        new_event_instance_id = _event_instance_id(changed)
+        return {
+            **result,
+            "progress_status": "postcondition",
+            "event_selection": {
+                "status": "event_instance_advanced",
+                "postcondition_verified": True,
+                "old_event_instance_id": event_instance_id,
+                "new_event_instance_id": new_event_instance_id,
+                "selected_option_number": option_number,
+                "selected_native_option_index": option_number - 1,
+                "starting_snapshot_id": starting.get("snapshot_id"),
+                "starting_revision": starting.get("revision"),
+                "ending_snapshot_id": changed.get("snapshot_id"),
+                "ending_revision": changed.get("revision"),
+                "episode_run_id": changed.get("episode_run_id"),
+                "connection_generation": starting_connection_generation,
+                "bridge_pid": starting_bridge_pid,
+            },
+            "active_event": changed.get("active_event"),
+            "paused": True,
+            "snapshot_id": changed["snapshot_id"],
+            "revision": changed["revision"],
+        }
 
     def _execute_pending_character_interaction_reply(
         self, step: str, *, expected_revision: int | None

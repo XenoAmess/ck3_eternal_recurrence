@@ -196,6 +196,11 @@ using GetGlobalVariableContainer = void *(*)();
 using GetScriptIdentifierTable = void *(*)();
 using LookupScriptIdentifierId = std::int32_t *(*)(
     void *table, std::int32_t *output, const void *string_view);
+using GetGenericValueTypeRegistry = void *(*)();
+using ResolveGenericValueTypeName = const std::string *(*)(
+    std::int32_t identifier);
+using ResolveScriptIdentifierName = const std::string *(*)(
+    void *table, std::int32_t identifier);
 using IsEventTargetValid = bool (*)(const void *event_target);
 using ResolveEventTargetObject = void *(*)(const void *event_target);
 using IsCharacterHostile = bool (*)(void *left_character,
@@ -281,6 +286,9 @@ struct Bindings {
   void **trait_database_slot = nullptr;
   void **scheme_type_database_slot = nullptr;
   void **scheme_type_fallback_slot = nullptr;
+  void *expected_generic_value_type_registry = nullptr;
+  const std::string *generic_value_type_name_fallback = nullptr;
+  const std::string *script_identifier_name_fallback = nullptr;
   GetGlobalVariableContainer *global_variable_container_accessor_slot =
       nullptr;
   void *valid_casus_belli_configuration_scratch = nullptr;
@@ -422,6 +430,9 @@ struct Bindings {
       nullptr;
   GetScriptIdentifierTable get_script_identifier_table = nullptr;
   LookupScriptIdentifierId lookup_script_identifier_id = nullptr;
+  GetGenericValueTypeRegistry get_generic_value_type_registry = nullptr;
+  ResolveGenericValueTypeName resolve_generic_value_type_name = nullptr;
+  ResolveScriptIdentifierName resolve_script_identifier_name = nullptr;
   IsEventTargetValid is_event_target_valid = nullptr;
   ResolveEventTargetObject resolve_event_target_object = nullptr;
   IsCharacterHostile is_character_hostile = nullptr;

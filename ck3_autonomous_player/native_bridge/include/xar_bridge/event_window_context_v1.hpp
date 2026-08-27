@@ -52,6 +52,34 @@ struct EventWindowOptionV1 {
                          const EventWindowOptionV1 &) = default;
 };
 
+struct EventScopeTypedIdentityV1 {
+  bool available = false;
+  std::optional<std::int32_t> character_id;
+  std::string unavailable_reason;
+
+  friend bool operator==(const EventScopeTypedIdentityV1 &,
+                         const EventScopeTypedIdentityV1 &) = default;
+};
+
+struct EventScopeV1 {
+  std::uint16_t raw_type_index = 0;
+  std::string type_key;
+  std::uint16_t subtype = 0;
+  EventScopeTypedIdentityV1 typed_identity;
+
+  friend bool operator==(const EventScopeV1 &, const EventScopeV1 &) =
+      default;
+};
+
+struct EventSavedScopeV1 {
+  std::string name;
+  std::int32_t name_identifier = -1;
+  EventScopeV1 scope;
+
+  friend bool operator==(const EventSavedScopeV1 &,
+                         const EventSavedScopeV1 &) = default;
+};
+
 struct EventWindowContextV1 {
   EventWindowContextStatusV1 status =
       EventWindowContextStatusV1::unavailable;
@@ -63,8 +91,12 @@ struct EventWindowContextV1 {
   std::string event_definition_key;
   std::optional<std::int32_t> calculated_event_id;
   std::optional<std::int32_t> runtime_stats_ordinal;
+  std::optional<EventScopeV1> root_scope;
+  std::vector<EventSavedScopeV1> saved_scopes;
   std::vector<EventWindowOptionV1> options;
   bool event_definition_identity_ready = false;
+  bool root_scope_ready = false;
+  bool saved_scopes_ready = false;
   bool option_presentation_ready = false;
   bool effect_indicators_ready = false;
   bool effect_preview_ready = false;

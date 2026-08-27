@@ -234,6 +234,36 @@ flowchart TD
 可见文本、直接/延迟效果、资源变化、关系、战争、继承和风险，再按当前 campaign objective 评分；原生 `ai_chance` 只能作为
 缺少更强语义时的先验，不能直接照抄成玩家决策。
 
+### 我方首轮 blocker-removal policy（不等价于原生 selector）
+
+[implementation-confirmed / static-ready / live=false] 所有者在 2026-08-27 再次确认：上述原生树仍是施工前置，但完成梳理后
+可以先交付最小实现并记账，不要求立即照搬全部原生分支。当前 `semantic_decision_ready=false` 且有多个候选时，
+`strategy.py` 的 typed-event 分支采用 `shown-enabled-death-cancel-native-order-v1`：
+
+1. 输入只能来自同一 paused snapshot、完整 event instance 已匹配、`current-event-window-context-v1` 严格校验通过的
+   `shown=true && enabled=true` materialized rows；不得从 snapshot `option_count` 合成 `enabled=true` 候选，也不得走 OCR。
+2. 若候选中同时存在“明确带 `death/played_character` indicator”与“不带该明确 indicator”的行，排除前者。indicator 是有损
+   子集，缺少 death row 只表示“没有明确观察到”，不构成安全或完整 effects 证明；若全部候选都明确死亡，仍保留全部候选，
+   不让强制事件永久阻塞一代人流程。
+3. 在余下候选中，若同时存在 non-cancel 与 cancel，优先 non-cancel；`is_cancel_option` 不是“无效果”证明，因此这里只是首轮
+   continuation heuristic，不是收益结论。
+4. 对最终候选按 authored `native_option_index` 升序选择第一项。该规则与原生默认 `ai_chance=1` 的 authored-order 先验有关，
+   但没有读取实际 `ai_will_select/ai_chance`、RNG draw 或 campaign utility，因此明确标记
+   `native_ai_equivalent=false`、`semantic_optimal=false`。
+5. 每次计划记录原始 eligible indices、明确 death/cancel indices、两项过滤是否生效、最终候选、选中 native/rendered index、
+   缺失语义输入与 deterministic rule；目标是先解除整局 blocker，而不是声称完成高质量事件效用决策。
+
+当前记账中的未采用原生输入/分支包括：mode/required-trigger/exclusive/fallback 的 authored evaluator 状态（候选合法性由已
+materialize GUI rows替代）、实际 `ai_will_select/ai_chance`、positive-weight interval、全非正 uniform 分支与 RNG draw。质量债还包括
+完整 effect preview、资源/关系/角色/战争/头衔 delta，以及 campaign objective utility。对应替换入口是继续扩充同一只读 context，
+待 `semantic_decision_ready=true` 后由真正的语义 policy 覆盖本 fallback，而不是修改 fallback 冒充完整。
+
+[implementation-confirmed / static-ready / live=false] `native_driver.py` 已把直接 event step 从通用 ACK 路径提升为生命周期动作：
+提交前要求 fresh map-ready、paused、正的 full int32 event instance 与 option range；提交后旧 full instance 必须消失或变为新
+instance，且 bridge PID、connection generation、episode binding 不变、结束帧仍 paused。结果发布 old/new ID、native index 与
+before/after revision；ACK、仅 revision 增长或 option-count 变化都不算成功。`native_auto_run.py` 另要求 artifact 同时出现
+`event_changed` 与 `event_selection.status=event_instance_advanced`。该实现已有离线回归，尚未在真实 CK3 fixture 上验收。
+
 ## 原生 AI 的主动人物互动树
 
 ### 调度、目标与选项组合
@@ -536,8 +566,9 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
    exact native index 后，观察旧 instance 消失/变更，并核对预期资源或角色 delta。
 5. [production pending live] 分别验收 accept、reject、block（有合法 fixture 时）和 auto-accept acknowledge；每次都验证原
    pending ID 推进以及关键游戏状态后置条件，ACK 本身不算成功。
-6. [campaign OODA] 连续处理多个不同类别的通用事件/互动，任何语义缺失都返回 typed observation dependency；不得退回 OCR、
-   鼠标、前台窗口或“默认点第一个/默认接受”。宗教专项 fixture 在 owner 解除暂缓前不进入矩阵。
+6. [campaign OODA] 连续处理多个不同类别的通用事件/互动；语义缺失时必须返回 typed observation dependency，或使用本篇明确
+   定义、完整记账且有生命周期后置验证的 blocker-removal fallback。不得退回 OCR、鼠标、前台窗口或未记录的“默认点第一个/
+   默认接受”。宗教专项 fixture 在 owner 解除暂缓前不进入矩阵。
 
 ## 当前 exact 下一入口
 
@@ -547,12 +578,13 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   `CEffectDescriptionVisitorInterface` derived visitor 或 engine-owned structured tooltip model 中会保留
   resource/relationship delta、target identity 与 completeness 的输出，不能扩义 `OptionEffectItem`。
 - [unknown] `CEventOption+0x3E8/+0x3E9` 的业务字段名/subtype；timeout-index `-1/-2`
-  sentinel 区别；保存 scopes 的 engine identity。stable event definition identity 已由 current-local-event getter、duplicate
+  sentinel 区别。stable event definition identity 已由 current-local-event getter、duplicate
   validator 与 application-main 双观察接入 wire；generic Attempt2 因旧 cancel ABI mismatch 为 RED，Attempt4 已对修正版
   canonical identity、presentation/cancel 与 empty-indicator surface 完成 fixture-scoped paused live。后继 Attempt1 又对特定的
   `trait/add brave`、`stress/increase affected=false/critical=false` 与 death backing rows 完成 fixture-scoped live；trait remove、
-  其它 stress 分支、视觉 icon、stock events、scheme nonempty、fallback-positive、selection lifecycle、保存 scopes 与完整 effects
-  仍待闭合。
+  其它 stress 分支、视觉 icon、stock events、scheme nonempty、fallback-positive 与完整 effects 仍待闭合。root/named Character
+  scopes 已按 [`current-event-scopes.md`](current-event-scopes.md) 达到 production wire/static-ready，paused live 仍 false；event
+  selection lifecycle 已离线 static-ready，但真实 fixture 的 old-instance postcondition 仍待 live。
 - [static-confirmed] AI selector、默认权重、全非正权重时的 uniform 分支、normalization、同权重区间和该调用点 RNG draw 已闭合；
   后续不再重复逆向这些分支，直接作为 opponent-model fixture 输入。
 - [live-confirmed] pending object 的 stable definition key/hash、五 roles、send-option selection、route、deadline 与四路

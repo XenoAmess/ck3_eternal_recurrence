@@ -92,6 +92,9 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         !query->result.event_definition_key.empty() &&
         query->result.calculated_event_id.has_value() &&
         query->result.runtime_stats_ordinal.has_value() &&
+        query->result.root_scope.has_value() &&
+        query->result.root_scope_ready &&
+        query->result.saved_scopes_ready &&
         query->result.option_presentation_ready &&
         query->result.effect_indicators_ready &&
         !query->result.effect_preview_ready &&
@@ -106,6 +109,10 @@ bool ExecuteEventWindowContextMailboxQueryV1(
         query->result.event_definition_key.empty() &&
         !query->result.calculated_event_id.has_value() &&
         !query->result.runtime_stats_ordinal.has_value() &&
+        !query->result.root_scope.has_value() &&
+        query->result.saved_scopes.empty() &&
+        !query->result.root_scope_ready &&
+        !query->result.saved_scopes_ready &&
         !query->result.option_presentation_ready &&
         !query->result.effect_indicators_ready &&
         !query->result.effect_preview_ready &&

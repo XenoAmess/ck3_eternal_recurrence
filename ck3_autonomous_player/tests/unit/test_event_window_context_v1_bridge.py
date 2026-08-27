@@ -23,6 +23,36 @@ DATE_RAW = 741_221
 EVENT_DEFINITION_KEY = "xar_test.0001"
 CALCULATED_EVENT_ID = -712_345
 RUNTIME_STATS_ORDINAL = 37
+CHARACTER_ID = 42
+SAVED_ROOT_NAME_IDENTIFIER = -2_130_706_232
+
+
+def _scope(
+    *,
+    raw_type_index: int = 4,
+    type_key: str = "character",
+    subtype: int = 0,
+    character_id: int | None = CHARACTER_ID,
+) -> dict[str, object]:
+    identity: dict[str, object]
+    if character_id is not None:
+        identity = {
+            "status": "available",
+            "kind": "character",
+            "character_id": character_id,
+        }
+    else:
+        identity = {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed",
+        }
+    return {
+        "status": "available",
+        "raw_type_index": raw_type_index,
+        "type_key": type_key,
+        "subtype": subtype,
+        "typed_identity": identity,
+    }
 
 
 def _indicator_rows() -> list[dict[str, object]]:
@@ -71,8 +101,24 @@ def _frame(status: str = "available") -> dict[str, object]:
         "runtime_stats_ordinal": (
             RUNTIME_STATS_ORDINAL if available else None
         ),
-        "root_scope": None,
-        "saved_scopes": None,
+        "root_scope": _scope() if available else None,
+        "saved_scopes": [
+            {
+                "name": "xar_scope_root_control",
+                "name_identifier": SAVED_ROOT_NAME_IDENTIFIER,
+                "scope": _scope(subtype=2),
+            },
+            {
+                "name": "province_control",
+                "name_identifier": 201,
+                "scope": _scope(
+                    raw_type_index=3,
+                    type_key="province",
+                    subtype=1,
+                    character_id=None,
+                ),
+            },
+        ] if available else None,
         "options": [
             {
                 "rendered_index": 0,
@@ -101,6 +147,8 @@ def _frame(status: str = "available") -> dict[str, object]:
         ] if available else None,
         "readiness": {
             "event_definition_identity_ready": available,
+            "root_scope_ready": available,
+            "saved_scopes_ready": available,
             "option_presentation_ready": available,
             "effect_indicators_ready": available,
             "effect_preview_ready": False,
@@ -221,6 +269,118 @@ class EventWindowContractTests(unittest.TestCase):
         self.assertEqual(
             normalized["runtime_stats_ordinal"], RUNTIME_STATS_ORDINAL
         )
+        self.assertEqual(
+            normalized["root_scope"]["typed_identity"]["character_id"],
+            CHARACTER_ID,
+        )
+        self.assertEqual(
+            normalized["saved_scopes"][1]["scope"]["typed_identity"],
+            {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed",
+            },
+        )
+
+    def test_root_and_saved_scope_inventory_is_strict(self) -> None:
+        normalized = normalize_current_event_window_context_v1(
+            _frame(),
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertTrue(normalized["readiness"]["root_scope_ready"])
+        self.assertTrue(normalized["readiness"]["saved_scopes_ready"])
+        self.assertEqual(
+            normalized["saved_scopes"][0]["name"],
+            "xar_scope_root_control",
+        )
+        self.assertEqual(
+            normalized["saved_scopes"][0]["name_identifier"],
+            SAVED_ROOT_NAME_IDENTIFIER,
+        )
+
+        mutations: list[dict[str, object]] = []
+        missing_root = _frame()
+        missing_root["root_scope"] = None
+        mutations.append(missing_root)
+        wrong_character_index = _frame()
+        wrong_character_index["root_scope"]["raw_type_index"] = 3
+        mutations.append(wrong_character_index)
+        stale_character = _frame()
+        stale_character["root_scope"]["typed_identity"]["character_id"] = 0
+        mutations.append(stale_character)
+        fabricated_noncharacter = _frame()
+        fabricated_noncharacter["saved_scopes"][1]["scope"][
+            "typed_identity"
+        ] = {
+            "status": "available",
+            "kind": "character",
+            "character_id": CHARACTER_ID,
+        }
+        mutations.append(fabricated_noncharacter)
+        duplicate_name = _frame()
+        duplicate_name["saved_scopes"][1]["name"] = duplicate_name[
+            "saved_scopes"
+        ][0]["name"]
+        mutations.append(duplicate_name)
+        duplicate_identifier = _frame()
+        duplicate_identifier["saved_scopes"][1][
+            "name_identifier"
+        ] = duplicate_identifier["saved_scopes"][0]["name_identifier"]
+        mutations.append(duplicate_identifier)
+        below_signed_int32 = _frame()
+        below_signed_int32["saved_scopes"][0]["name_identifier"] = -(
+            2**31
+        ) - 1
+        mutations.append(below_signed_int32)
+        oversized = _frame()
+        oversized["saved_scopes"] = [
+            copy.deepcopy(oversized["saved_scopes"][0])
+            for _ in range(1_025)
+        ]
+        mutations.append(oversized)
+        unready = _frame()
+        unready["readiness"]["saved_scopes_ready"] = False
+        mutations.append(unready)
+
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize_current_event_window_context_v1(
+                        mutation,
+                        expected_event_instance_id=EVENT_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
+    def test_unavailable_scope_inventory_remains_null_and_unready(self) -> None:
+        unavailable = _frame("unavailable")
+        normalized = normalize_current_event_window_context_v1(
+            unavailable,
+            expected_event_instance_id=EVENT_ID,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertIsNone(normalized["root_scope"])
+        self.assertIsNone(normalized["saved_scopes"])
+        self.assertFalse(normalized["readiness"]["root_scope_ready"])
+        self.assertFalse(normalized["readiness"]["saved_scopes_ready"])
+
+        leaked_root = _frame("unavailable")
+        leaked_root["root_scope"] = _scope()
+        leaked_saved = _frame("unavailable")
+        leaked_saved["saved_scopes"] = []
+        falsely_ready = _frame("unavailable")
+        falsely_ready["readiness"]["root_scope_ready"] = True
+        for mutation in (leaked_root, leaked_saved, falsely_ready):
+            with self.subTest(mutation=mutation):
+                with self.assertRaises(ValueError):
+                    normalize_current_event_window_context_v1(
+                        mutation,
+                        expected_event_instance_id=EVENT_ID,
+                        expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
 
     def test_multiple_authored_cancel_flags_are_preserved(self) -> None:
         original = _frame()
@@ -514,51 +674,165 @@ class EventWindowContractTests(unittest.TestCase):
         )
         self.assertFalse(plan["active_event"]["semantic_optimal"])
 
-    def test_planner_blocks_zero_or_multiple_enabled_materialized_rows(
+    def test_planner_blocks_zero_enabled_materialized_rows(self) -> None:
+        zero = _frame()
+        plan = choose_one_life_turn(
+            [_query_history(zero)],
+            snapshot=_snapshot(),
+            action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP},
+        )
+        self.assertEqual(
+            plan["phase"], "active_event_semantic_evidence_required"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["active_event"]["enabled_materialized_option_count"], 0
+        )
+
+    def test_planner_degraded_choice_avoids_explicit_death_then_cancel(
         self,
     ) -> None:
-        zero = _frame()
-        multiple = _frame()
-        multiple["options"][0]["enabled"] = True
-        second = copy.deepcopy(multiple["options"][0])
-        second.update(
+        frame = _frame()
+        death = frame["options"][0]
+        death.update(
+            {
+                "native_option_index": 1,
+                "enabled": True,
+                "cancel": False,
+            }
+        )
+        cancel = copy.deepcopy(death)
+        cancel.update(
             {
                 "rendered_index": 1,
+                "native_option_index": 4,
+                "cancel": True,
+            }
+        )
+        cancel["effect_indicators"]["rows"] = []
+        ordinary = copy.deepcopy(cancel)
+        ordinary.update(
+            {
+                "rendered_index": 2,
                 "native_option_index": 7,
                 "cancel": False,
             }
         )
-        multiple["options"].append(second)
+        frame["options"].extend((cancel, ordinary))
 
-        for frame, expected_count in ((zero, 0), (multiple, 2)):
-            with self.subTest(expected_count=expected_count):
-                plan = choose_one_life_turn(
-                    [_query_history(frame)],
-                    snapshot=_snapshot(),
-                    action_steps={
-                        QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
-                        "select-event-option-4",
-                        "select-event-option-8",
-                    },
-                )
-                self.assertEqual(
-                    plan["phase"],
-                    "active_event_semantic_evidence_required",
-                )
-                self.assertIsNone(plan["selected_step"])
-                self.assertEqual(
-                    plan["active_event"][
-                        "enabled_materialized_option_count"
-                    ],
-                    expected_count,
-                )
-                self.assertEqual(
-                    plan["required_capabilities"],
-                    [
-                        "game.state.current-event-window-effect-preview",
-                        "game.policy.current-event-semantic-decision",
-                    ],
-                )
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=_snapshot(),
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-2",
+                "select-event-option-5",
+                "select-event-option-8",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_degraded_minimal_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-8")
+        decision = plan["event_decision"]
+        self.assertEqual(
+            decision["eligible_native_option_indices"], [1, 4, 7]
+        )
+        self.assertEqual(
+            decision["explicit_player_death_native_option_indices"], [1]
+        )
+        self.assertTrue(decision["death_avoidance_applied"])
+        self.assertTrue(decision["cancel_deprioritization_applied"])
+        self.assertEqual(
+            decision["final_candidate_native_option_indices"], [7]
+        )
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_optimal"])
+
+    def test_planner_degraded_choice_uses_lowest_native_not_rendered_index(
+        self,
+    ) -> None:
+        frame = _frame()
+        first = frame["options"][0]
+        first.update(
+            {
+                "native_option_index": 7,
+                "enabled": True,
+                "cancel": False,
+            }
+        )
+        first["effect_indicators"]["rows"] = []
+        second = copy.deepcopy(first)
+        second.update({"rendered_index": 1, "native_option_index": 2})
+        frame["options"].append(second)
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=_snapshot(),
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-3",
+                "select-event-option-8",
+            },
+        )
+
+        self.assertEqual(plan["selected_step"], "select-event-option-3")
+        self.assertEqual(
+            plan["event_decision"]["selected_rendered_index"], 1
+        )
+
+    def test_planner_degraded_choice_is_bounded_when_all_options_mean_death(
+        self,
+    ) -> None:
+        frame = _frame()
+        first = frame["options"][0]
+        first.update(
+            {
+                "native_option_index": 3,
+                "enabled": True,
+                "cancel": False,
+            }
+        )
+        second = copy.deepcopy(first)
+        second.update({"rendered_index": 1, "native_option_index": 1})
+        frame["options"].append(second)
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=_snapshot(),
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-2",
+                "select-event-option-4",
+            },
+        )
+
+        self.assertEqual(plan["selected_step"], "select-event-option-2")
+        decision = plan["event_decision"]
+        self.assertFalse(decision["death_avoidance_applied"])
+        self.assertEqual(
+            decision["final_candidate_native_option_indices"], [1, 3]
+        )
+
+    def test_planner_degraded_choice_never_substitutes_an_unadvertised_step(
+        self,
+    ) -> None:
+        frame = _frame()
+        frame["options"][0]["enabled"] = True
+        second = copy.deepcopy(frame["options"][0])
+        second.update({"rendered_index": 1, "native_option_index": 7})
+        frame["options"].append(second)
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=_snapshot(),
+            action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP},
+        )
+
+        self.assertEqual(
+            plan["phase"], "active_event_degraded_choice_unsupported"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["required_step"], "select-event-option-4")
 
     def test_same_frame_unavailable_does_not_repeat_query(self) -> None:
         plan = choose_one_life_turn(

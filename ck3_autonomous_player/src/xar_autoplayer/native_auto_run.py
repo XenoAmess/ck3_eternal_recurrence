@@ -15,6 +15,7 @@ import threading
 import time
 
 from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
+from .bridge.event_contract import parse_event_option_step
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
 from .bridge.war_contract import is_life_advance_step
@@ -238,6 +239,25 @@ def native_auto_run(
             )
             after = _compact_binding(driver.capabilities(), after_snapshot)
             evidence = _semantic_delta(before, after_snapshot, after)
+            if parse_event_option_step(step) is not None:
+                result = outcome.get("result")
+                selection = (
+                    result.get("event_selection")
+                    if isinstance(result, dict)
+                    else None
+                )
+                if not (
+                    "event_changed" in evidence
+                    and isinstance(selection, dict)
+                    and selection.get("status")
+                    == "event_instance_advanced"
+                    and selection.get("postcondition_verified") is True
+                    and selection.get("old_event_instance_id")
+                    != selection.get("new_event_instance_id")
+                ):
+                    raise AgentError(
+                        "native event selection lacks an old-instance lifecycle postcondition"
+                    )
             counts[turn_class] += 1
             if turn_class == "gameplay" and evidence:
                 visible_gameplay_turns += 1
@@ -856,6 +876,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "army_id",
         "target_province_id",
         "event_instance_id",
+        "event_decision",
     )
     return {key: plan.get(key) for key in keys if key in plan}
 
@@ -880,6 +901,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "terminal_kind",
         "settlement_status",
         "checkpoint",
+        "event_selection",
     )
     return {key: result.get(key) for key in keys if key in result}
 

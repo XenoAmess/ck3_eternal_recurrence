@@ -14,6 +14,7 @@ from .event_contract import (
     choose_event_option_number,
     event_option_step,
     normalize_active_event,
+    parse_event_option_step,
 )
 from .declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
@@ -256,10 +257,31 @@ class GameplayBridgeService:
                 "snapshot_id": planned.get("snapshot_id"),
                 "revision": planned.get("revision"),
             }
-        result = self.execute_step(
-            selected_step,
-            expected_revision=int(planned["revision"]),
+        planned_event = (
+            plan.get("active_event") if isinstance(plan, dict) else None
         )
+        planned_event_id = (
+            planned_event.get("instance_id")
+            if isinstance(planned_event, dict)
+            else None
+        )
+        event_option_number = parse_event_option_step(selected_step)
+        if (
+            event_option_number is not None
+            and isinstance(planned_event_id, int)
+            and not isinstance(planned_event_id, bool)
+            and 1 <= planned_event_id <= 2**31 - 1
+        ):
+            result = self.select_event_option(
+                event_option_number,
+                event_instance_id=planned_event_id,
+                expected_revision=int(planned["revision"]),
+            )
+        else:
+            result = self.execute_step(
+                selected_step,
+                expected_revision=int(planned["revision"]),
+            )
         return {
             "status": "executed",
             "selected_step": selected_step,
@@ -357,14 +379,14 @@ class GameplayBridgeService:
         event_instance_id: int | None = None,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
-        """Select one rendered event option by its 1-based number."""
+        """Select one authored native option by its public 1-based number."""
         step = event_option_step(option_number)
         if event_instance_id is not None and (
             isinstance(event_instance_id, bool)
             or not isinstance(event_instance_id, int)
-            or event_instance_id < 0
+            or not 1 <= event_instance_id <= 2**31 - 1
         ):
-            raise ValueError("event_instance_id must be a non-negative integer")
+            raise ValueError("event_instance_id must be a positive full int32")
 
         snapshot = self.snapshot()
         active_event = normalize_active_event(

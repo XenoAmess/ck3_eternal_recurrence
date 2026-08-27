@@ -479,6 +479,109 @@ def _same_frame_event_window_context(
     return None
 
 
+def _has_explicit_played_character_death_indicator(
+    option: dict[str, object],
+) -> bool:
+    """Return true only for the narrow death signal the live wire exposes."""
+
+    indicators = option.get("effect_indicators")
+    rows = indicators.get("rows") if isinstance(indicators, dict) else None
+    return bool(
+        isinstance(rows, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("kind") == "death"
+            and row.get("subject") == "played_character"
+            for row in rows
+        )
+    )
+
+
+def _degraded_event_option_decision(
+    eligible_options: list[dict[str, object]],
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Choose a bounded event fallback and return its complete audit record.
+
+    The caller supplies only same-frame, materialized ``shown && enabled``
+    rows.  Missing lossy indicators are never interpreted as proof of safety.
+    """
+
+    if not eligible_options:
+        raise ValueError("degraded event choice requires an eligible option")
+    ordered = sorted(
+        eligible_options, key=lambda option: int(option["native_option_index"])
+    )
+    explicit_death = [
+        option
+        for option in ordered
+        if _has_explicit_played_character_death_indicator(option)
+    ]
+    without_explicit_death = [
+        option
+        for option in ordered
+        if not _has_explicit_played_character_death_indicator(option)
+    ]
+    death_avoidance_applied = bool(explicit_death and without_explicit_death)
+    after_death_filter = (
+        without_explicit_death if death_avoidance_applied else ordered
+    )
+    non_cancel = [
+        option
+        for option in after_death_filter
+        if option.get("cancel") is not True
+    ]
+    cancel_deprioritization_applied = bool(
+        non_cancel and len(non_cancel) != len(after_death_filter)
+    )
+    final_candidates = non_cancel if non_cancel else after_death_filter
+    selected = final_candidates[0]
+    native_index = int(selected["native_option_index"])
+    decision = {
+        "policy": "shown-enabled-death-cancel-native-order-v1",
+        "mode": (
+            "forced_presentation"
+            if len(ordered) == 1
+            else "degraded_blocker_removal"
+        ),
+        "native_ai_reference": "CK3-1.19.0.6 selector RVA 0x33E71B0",
+        "native_ai_equivalent": False,
+        "semantic_optimal": False,
+        "semantic_decision_ready": False,
+        "eligible_native_option_indices": [
+            int(option["native_option_index"]) for option in ordered
+        ],
+        "explicit_player_death_native_option_indices": [
+            int(option["native_option_index"]) for option in explicit_death
+        ],
+        "cancel_native_option_indices": [
+            int(option["native_option_index"])
+            for option in ordered
+            if option.get("cancel") is True
+        ],
+        "death_avoidance_applied": death_avoidance_applied,
+        "cancel_deprioritization_applied": cancel_deprioritization_applied,
+        "final_candidate_native_option_indices": [
+            int(option["native_option_index"])
+            for option in final_candidates
+        ],
+        "selected_native_option_index": native_index,
+        "selected_rendered_index": selected.get("rendered_index"),
+        "missing_semantic_inputs": [
+            "complete_effect_preview",
+            "resource_deltas",
+            "relationship_deltas",
+            "native_ai_option_weights",
+            "campaign_utility_score",
+        ],
+        "deterministic_rule": (
+            "avoid an explicitly indicated played-character death when an "
+            "alternative exists; then prefer a non-cancel option when one "
+            "exists; then choose the lowest authored native index"
+        ),
+    }
+    return selected, decision
+
+
 def _battle_control_query_records(
     rows: list[dict[str, object]],
     *,
@@ -1550,8 +1653,10 @@ def choose_one_life_turn(
                 }
             )
 
-            if not semantic_ready and len(eligible_options) == 1:
-                option = eligible_options[0]
+            if not semantic_ready and eligible_options:
+                option, event_decision = _degraded_event_option_decision(
+                    eligible_options
+                )
                 native_index = option["native_option_index"]
                 assert isinstance(native_index, int)
                 option_number = native_index + 1
@@ -1565,31 +1670,50 @@ def choose_one_life_turn(
                             "rendered_index"
                         ),
                         "semantic_optimal": False,
+                        "degraded_decision": event_decision,
                     }
                 )
                 if exact_step in available_steps:
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": "active_event_forced_presentation_choice",
-                        "selected_step": exact_step,
-                        "reason": (
+                    if len(eligible_options) == 1:
+                        phase = "active_event_forced_presentation_choice"
+                        reason = (
                             "forced presentation choice: exactly one "
                             "materialized option is shown and enabled; this "
                             "is not a semantic optimum"
-                        ),
+                        )
+                    else:
+                        phase = "active_event_degraded_minimal_choice"
+                        reason = (
+                            "semantic inputs are incomplete; choose a "
+                            "same-frame shown+enabled option with the "
+                            "audited death/cancel/native-order fallback so "
+                            "the campaign can continue; this is not the "
+                            "native selector or a semantic optimum"
+                        )
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": phase,
+                        "selected_step": exact_step,
+                        "reason": reason,
                         "active_event": event_summary,
+                        "event_decision": event_decision,
                     }
                 return {
                     "policy": "one-life-turn-v1",
-                    "phase": "active_event_forced_choice_unsupported",
+                    "phase": (
+                        "active_event_forced_choice_unsupported"
+                        if len(eligible_options) == 1
+                        else "active_event_degraded_choice_unsupported"
+                    ),
                     "selected_step": None,
                     "required_step": exact_step,
                     "reason": (
-                        "the only shown and enabled native event option is "
-                        f"authored index {native_index}, but the backend did "
-                        f"not advertise {exact_step}"
+                        "the selected same-frame shown and enabled native "
+                        f"event option is authored index {native_index}, but "
+                        f"the backend did not advertise {exact_step}"
                     ),
                     "active_event": event_summary,
+                    "event_decision": event_decision,
                 }
 
             if semantic_ready:
@@ -1603,11 +1727,7 @@ def choose_one_life_turn(
                     "effect preview or a semantic policy is required"
                 )
             else:
-                reason = (
-                    "multiple materialized event options are shown and "
-                    "enabled; effect preview and a semantic policy are "
-                    "required instead of choosing the first option"
-                )
+                reason = "event semantic choice could not produce a candidate"
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "active_event_semantic_evidence_required",

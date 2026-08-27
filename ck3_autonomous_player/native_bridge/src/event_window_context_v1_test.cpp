@@ -8,12 +8,18 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <map>
+#include <string>
 
 namespace {
 
 constexpr std::int32_t kEventId = 0x01000029;
 constexpr std::int32_t kCalculatedEventId = 812'449;
 constexpr std::int32_t kRuntimeStatsOrdinal = 37;
+constexpr std::int32_t kCharacterId = 42;
+constexpr std::int32_t kCharacterTypeNameIdentifier = -2'130'706'328;
+constexpr std::int32_t kSavedRootNameIdentifier = -2'130'706'232;
+constexpr std::int32_t kStaleSavedRootNameIdentifier = -2'113'929'016;
 constexpr std::uint64_t kRevision = 17;
 void *g_local_player = nullptr;
 void *g_active_event = nullptr;
@@ -22,6 +28,13 @@ void *g_secondary_event_definition = nullptr;
 void *g_scheme_type_database = nullptr;
 void *g_scheme_type = nullptr;
 void *g_scheme_type_fallback = nullptr;
+void *g_generic_value_type_registry = nullptr;
+void *g_script_identifier_table = nullptr;
+const std::string *g_generic_value_type_name_fallback = nullptr;
+const std::string *g_script_identifier_fallback = nullptr;
+std::map<std::int32_t, const std::string *> g_generic_value_type_names;
+std::map<std::int32_t, const std::string *> g_script_identifier_names;
+std::map<std::int32_t, std::string_view> g_script_identifier_text;
 
 enum class EventIdentityDrift {
   none,
@@ -31,6 +44,7 @@ enum class EventIdentityDrift {
   runtime_stats_ordinal,
   definition_key,
   instance_id,
+  scope_subtype,
 };
 
 EventIdentityDrift g_event_identity_drift = EventIdentityDrift::none;
@@ -54,6 +68,19 @@ void StoreInlineString(void *object, const char *value) {
   Store<std::uint64_t>(object, 0x18, 15);
 }
 
+template <std::size_t Size>
+void StoreHeapString(void *object, std::array<char, Size> &backing,
+                     const char *value) {
+  const auto size = std::strlen(value);
+  if (size >= backing.size()) {
+    return;
+  }
+  std::memcpy(backing.data(), value, size);
+  Store<const char *>(object, 0x00, backing.data());
+  Store<std::uint64_t>(object, 0x10, size);
+  Store<std::uint64_t>(object, 0x18, backing.size() - 1);
+}
+
 void *GetLocalPlayer(void *) { return g_local_player; }
 std::int32_t HashStableKey(void *context, const char *data,
                            std::uint32_t size) {
@@ -74,6 +101,55 @@ void *LookupSchemeType(void *database, std::int32_t hash) {
                                        sizeof(key) - 1)
              ? g_scheme_type
              : g_scheme_type_fallback;
+}
+void *GetGenericValueTypeRegistry() {
+  return g_generic_value_type_registry;
+}
+const std::string *ResolveGenericValueTypeName(std::int32_t identifier) {
+  const auto found = g_generic_value_type_names.find(identifier);
+  return found == g_generic_value_type_names.end()
+             ? g_generic_value_type_name_fallback
+             : found->second;
+}
+void *GetScriptIdentifierTable() { return g_script_identifier_table; }
+const std::string *ResolveScriptIdentifierName(void *table,
+                                               std::int32_t identifier) {
+  if (table != g_script_identifier_table) {
+    return g_script_identifier_fallback;
+  }
+  const auto index = static_cast<std::uint32_t>(identifier) & 0x00FFFFFFU;
+  for (const auto &[candidate_identifier, candidate_name] :
+       g_script_identifier_names) {
+    if ((static_cast<std::uint32_t>(candidate_identifier) & 0x00FFFFFFU) ==
+        index) {
+      return candidate_name;
+    }
+  }
+  return g_script_identifier_fallback;
+}
+struct NativeStringView32 {
+  const char *data = nullptr;
+  std::int32_t size = 0;
+  std::int32_t padding = 0;
+};
+std::int32_t *LookupScriptIdentifierId(void *table, std::int32_t *output,
+                                      const void *raw_view) {
+  if (table != g_script_identifier_table || output == nullptr ||
+      raw_view == nullptr) {
+    return nullptr;
+  }
+  const auto &view = *static_cast<const NativeStringView32 *>(raw_view);
+  if (view.data == nullptr || view.size <= 0 || view.padding != 0) {
+    return nullptr;
+  }
+  const std::string_view name(view.data, static_cast<std::size_t>(view.size));
+  for (const auto &[identifier, candidate] : g_script_identifier_text) {
+    if (candidate == name) {
+      *output = identifier;
+      return output;
+    }
+  }
+  return nullptr;
 }
 void *GetCurrentEvent(void *) {
   ++g_current_event_calls;
@@ -102,6 +178,9 @@ void *GetCurrentEvent(void *) {
     }
     case EventIdentityDrift::instance_id:
       Store<std::int32_t>(g_active_event, 0x1BC, kEventId + 1);
+      break;
+    case EventIdentityDrift::scope_subtype:
+      Store<std::uint16_t>(g_active_event, 0x02, 1);
       break;
     case EventIdentityDrift::none:
       break;
@@ -136,11 +215,27 @@ struct Fixture {
   std::array<std::byte, 0x20> scheme_type_database{};
   std::array<std::byte, 0x60> murder_scheme_type{};
   std::array<std::byte, 0x60> scheme_type_fallback{};
+  std::array<std::byte, 0x20> generic_value_type_registry{};
+  std::array<std::byte, 5 * 0x50> generic_value_type_entries{};
+  std::array<std::byte, 0x10> script_identifier_table{};
+  std::array<std::byte, 0x20> generic_province_name{};
+  std::array<std::byte, 0x20> generic_character_name{};
+  std::array<std::byte, 0x20> generic_value_type_name_fallback{};
+  std::array<std::byte, 0x20> saved_root_name{};
+  std::array<char, 64> saved_root_name_backing{};
+  std::array<std::byte, 0x20> saved_province_name{};
+  std::array<char, 32> saved_province_name_backing{};
+  std::array<std::byte, 0x20> script_identifier_fallback{};
+  std::array<std::byte, 0x40> character_storage{};
+  std::array<std::byte, 64 * 0x10> character_slots{};
+  std::array<std::byte, 0x40> character{};
+  std::array<std::byte, 2 * 0x18> saved_scope_rows{};
   void *game_state_pointer = game_state.data();
   void *jomini_pointer = jomini.data();
   void *trait_database_pointer = trait_database.data();
   void *scheme_type_database_pointer = scheme_type_database.data();
   void *scheme_type_fallback_pointer = scheme_type_fallback.data();
+  void *character_storage_pointer = character_storage.data();
   xar::ck3_11906::Bindings bindings{};
 
   Fixture() {
@@ -151,6 +246,40 @@ struct Fixture {
     g_scheme_type_database = scheme_type_database.data();
     g_scheme_type = murder_scheme_type.data();
     g_scheme_type_fallback = scheme_type_fallback.data();
+    g_generic_value_type_registry = generic_value_type_registry.data();
+    g_script_identifier_table = script_identifier_table.data();
+    StoreInlineString(generic_province_name.data(), "province");
+    StoreInlineString(generic_character_name.data(), "character");
+    StoreInlineString(generic_value_type_name_fallback.data(), "fallback");
+    StoreHeapString(saved_root_name.data(), saved_root_name_backing,
+                    "xar_scope_root_control");
+    StoreHeapString(saved_province_name.data(), saved_province_name_backing,
+                    "province_control");
+    StoreInlineString(script_identifier_fallback.data(), "fallback");
+    g_script_identifier_fallback =
+        reinterpret_cast<const std::string *>(
+            script_identifier_fallback.data());
+    g_generic_value_type_name_fallback =
+        reinterpret_cast<const std::string *>(
+            generic_value_type_name_fallback.data());
+    g_generic_value_type_names.clear();
+    g_generic_value_type_names.emplace(
+        103, reinterpret_cast<const std::string *>(
+                 generic_province_name.data()));
+    g_generic_value_type_names.emplace(
+        kCharacterTypeNameIdentifier,
+        reinterpret_cast<const std::string *>(generic_character_name.data()));
+    g_script_identifier_names.clear();
+    g_script_identifier_names.emplace(
+        kSavedRootNameIdentifier,
+        reinterpret_cast<const std::string *>(saved_root_name.data()));
+    g_script_identifier_names.emplace(
+        201,
+        reinterpret_cast<const std::string *>(saved_province_name.data()));
+    g_script_identifier_text.clear();
+    g_script_identifier_text.emplace(kSavedRootNameIdentifier,
+                                     "xar_scope_root_control");
+    g_script_identifier_text.emplace(201, "province_control");
     g_event_identity_drift = EventIdentityDrift::none;
     g_current_event_calls = 0;
     Store<std::int32_t>(game_state.data(), 0x08, 741221);
@@ -163,6 +292,22 @@ struct Fixture {
     Store<std::int32_t>(local_player.data(), 0x70, 0);
     Store<void *>(active_event.data(), 0x1B0, event_definition.data());
     Store<std::int32_t>(active_event.data(), 0x1BC, kEventId);
+    Store<std::uint16_t>(active_event.data(), 0x00, 4);
+    Store<std::uint16_t>(active_event.data(), 0x02, 0);
+    Store<std::int64_t>(active_event.data(), 0x08, kCharacterId);
+    Store<void *>(active_event.data(), 0x18, saved_scope_rows.data());
+    Store<std::int32_t>(active_event.data(), 0x20, 2);
+    Store<std::int32_t>(active_event.data(), 0x24, 2);
+    Store<std::int32_t>(saved_scope_rows.data(), 0x00,
+                        kSavedRootNameIdentifier);
+    Store<std::uint16_t>(saved_scope_rows.data(), 0x08, 4);
+    Store<std::uint16_t>(saved_scope_rows.data(), 0x0A, 2);
+    Store<std::int64_t>(saved_scope_rows.data(), 0x10, kCharacterId);
+    Store<std::int32_t>(saved_scope_rows.data() + 0x18, 0x00, 201);
+    Store<std::uint16_t>(saved_scope_rows.data() + 0x18, 0x08, 3);
+    Store<std::uint16_t>(saved_scope_rows.data() + 0x18, 0x0A, 1);
+    Store<std::int64_t>(saved_scope_rows.data() + 0x18, 0x10,
+                        0x123456789LL);
     Store<void *>(secondary_active_event.data(), 0x1B0,
                   event_definition.data());
     Store<std::int32_t>(secondary_active_event.data(), 0x1BC, kEventId);
@@ -185,6 +330,19 @@ struct Fixture {
                       "xar_test.0001");
     Store<std::int32_t>(secondary_event_definition.data(), 0x1BC, 4);
 
+    Store<void *>(generic_value_type_registry.data(), 0x00,
+                  generic_value_type_entries.data());
+    Store<std::int32_t>(generic_value_type_registry.data(), 0x0C, 5);
+    Store<std::int32_t>(generic_value_type_entries.data() + 3 * 0x50, 0x00,
+                        103);
+    Store<std::int32_t>(generic_value_type_entries.data() + 4 * 0x50, 0x00,
+                        kCharacterTypeNameIdentifier);
+    Store<void *>(character_storage.data(), 0x20, character_slots.data());
+    Store<std::int32_t>(character_storage.data(), 0x2C, 64);
+    Store<void *>(character_slots.data() + kCharacterId * 0x10, 0x08,
+                  character.data());
+    Store<std::int32_t>(character.data(), 0x18, kCharacterId);
+
     trait_definitions[0] = brave_trait.data();
     trait_definitions[1] = calm_trait.data();
     Store<void *>(trait_database.data(), 0x68, trait_definitions.data());
@@ -206,8 +364,25 @@ struct Fixture {
     bindings.trait_database_slot = &trait_database_pointer;
     bindings.scheme_type_database_slot = &scheme_type_database_pointer;
     bindings.scheme_type_fallback_slot = &scheme_type_fallback_pointer;
+    bindings.character_storage_slot = &character_storage_pointer;
+    bindings.expected_generic_value_type_registry =
+        generic_value_type_registry.data();
+    bindings.generic_value_type_name_fallback =
+        reinterpret_cast<const std::string *>(
+            generic_value_type_name_fallback.data());
+    bindings.script_identifier_name_fallback =
+        reinterpret_cast<const std::string *>(
+            script_identifier_fallback.data());
     bindings.hash_stable_key = &HashStableKey;
     bindings.lookup_scheme_type = &LookupSchemeType;
+    bindings.get_script_identifier_table = &GetScriptIdentifierTable;
+    bindings.lookup_script_identifier_id = &LookupScriptIdentifierId;
+    bindings.get_generic_value_type_registry =
+        &GetGenericValueTypeRegistry;
+    bindings.resolve_generic_value_type_name =
+        &ResolveGenericValueTypeName;
+    bindings.resolve_script_identifier_name =
+        &ResolveScriptIdentifierName;
     Store<std::uintptr_t>(murder_scheme_type.data(), 0,
                           bindings.scheme_type_primary_vtable);
     StoreInlineString(murder_scheme_type.data() + 0x18, "murder");
@@ -305,6 +480,29 @@ bool TestReader() {
       output.event_definition_key != "xar_test.0001" ||
       output.calculated_event_id != kCalculatedEventId ||
       output.runtime_stats_ordinal != kRuntimeStatsOrdinal ||
+      !output.root_scope_ready || !output.saved_scopes_ready ||
+      !output.root_scope.has_value() ||
+      output.root_scope->raw_type_index != 4 ||
+      output.root_scope->type_key != "character" ||
+      output.root_scope->subtype != 0 ||
+      !output.root_scope->typed_identity.available ||
+      output.root_scope->typed_identity.character_id != kCharacterId ||
+      !output.root_scope->typed_identity.unavailable_reason.empty() ||
+      output.saved_scopes.size() != 2 ||
+      output.saved_scopes[0].name != "xar_scope_root_control" ||
+      output.saved_scopes[0].name_identifier != kSavedRootNameIdentifier ||
+      output.saved_scopes[0].scope.subtype != 2 ||
+      output.saved_scopes[0].scope.typed_identity.character_id !=
+          kCharacterId ||
+      output.saved_scopes[1].name != "province_control" ||
+      output.saved_scopes[1].name_identifier != 201 ||
+      output.saved_scopes[1].scope.raw_type_index != 3 ||
+      output.saved_scopes[1].scope.type_key != "province" ||
+      output.saved_scopes[1].scope.subtype != 1 ||
+      output.saved_scopes[1].scope.typed_identity.available ||
+      output.saved_scopes[1].scope.typed_identity.character_id.has_value() ||
+      output.saved_scopes[1].scope.typed_identity.unavailable_reason !=
+          "generic_scope_payload_identity_not_closed" ||
       !output.effect_indicators_ready || output.effect_preview_ready ||
       output.semantic_decision_ready || output.options.size() != 1 ||
       output.options[0].rendered_index != 0 ||
@@ -314,6 +512,13 @@ bool TestReader() {
       output.options[0].resolved_name != "Wait" ||
       output.options[0].unavailable_reason != "Not today" ||
       output.options[0].effect_indicators.size() != 5) {
+    std::cerr << "initial reader mismatch: status="
+              << static_cast<int>(output.status) << " reason="
+              << output.unavailable_reason << " root_ready="
+              << output.root_scope_ready << " saved_ready="
+              << output.saved_scopes_ready << " saved_count="
+              << output.saved_scopes.size() << " option_count="
+              << output.options.size() << '\n';
     return false;
   }
   const auto &indicators = output.options[0].effect_indicators;
@@ -360,6 +565,110 @@ bool TestReader() {
 }
 
 bool TestReaderProductionGates() {
+  {
+    Fixture fixture;
+    fixture.bindings.expected_generic_value_type_registry =
+        fixture.script_identifier_table.data();
+    if (!ExpectUnavailable(fixture, "event_scope_type_registry_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    g_generic_value_type_names[kCharacterTypeNameIdentifier] =
+        g_generic_value_type_name_fallback;
+    if (!ExpectUnavailable(fixture, "event_root_scope_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint16_t>(fixture.active_event.data(), 0x00, 0);
+    if (!ExpectUnavailable(fixture, "event_root_scope_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint16_t>(fixture.active_event.data(), 0x00, 5);
+    if (!ExpectUnavailable(fixture, "event_root_scope_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.character.data(), 0x18, kCharacterId + 1);
+    if (!ExpectUnavailable(fixture, "event_root_scope_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint64_t>(fixture.active_event.data(), 0x08,
+                         (std::uint64_t{1} << 32U) |
+                             static_cast<std::uint32_t>(kCharacterId));
+    if (!ExpectUnavailable(fixture, "event_root_scope_invalid")) {
+      return false;
+    }
+  }
+  for (const auto [count, capacity] :
+       std::array<std::array<std::int32_t, 2>, 3>{
+           std::array<std::int32_t, 2>{-1, 2},
+           std::array<std::int32_t, 2>{2, 1},
+           std::array<std::int32_t, 2>{2, 1'025}}) {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.active_event.data(), 0x24, count);
+    Store<std::int32_t>(fixture.active_event.data(), 0x20, capacity);
+    if (!ExpectUnavailable(fixture, "event_saved_scope_vector_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.saved_scope_rows.data() + 0x18, 0x00,
+                        kSavedRootNameIdentifier);
+    if (!ExpectUnavailable(fixture, "event_saved_scope_name_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    g_script_identifier_names[201] =
+        g_script_identifier_names[kSavedRootNameIdentifier];
+    g_script_identifier_text[201] = "xar_scope_root_control";
+    if (!ExpectUnavailable(fixture, "event_saved_scope_name_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.saved_scope_rows.data(), 0x00,
+                        kStaleSavedRootNameIdentifier);
+    if (!ExpectUnavailable(fixture, "event_saved_scope_name_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.saved_scope_rows.data() + 0x18, 0x00, 202);
+    if (!ExpectUnavailable(fixture, "event_saved_scope_name_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    Store<std::uint16_t>(fixture.saved_scope_rows.data() + 0x18, 0x08, 5);
+    if (!ExpectUnavailable(fixture, "event_saved_scope_invalid")) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
+    g_event_identity_drift = EventIdentityDrift::scope_subtype;
+    if (!ExpectUnavailable(fixture, "event_scope_changed")) {
+      return false;
+    }
+  }
   {
     Fixture fixture;
     fixture.windows[1] = fixture.secondary_window.data();
@@ -682,6 +991,8 @@ bool TestMailbox() {
          query.executor_invocations == 1 &&
          query.result.status ==
              xar::game::EventWindowContextStatusV1::available &&
+         query.result.root_scope_ready &&
+         query.result.saved_scopes_ready &&
          query.result.effect_indicators_ready &&
          !query.result.effect_preview_ready &&
          !query.result.semantic_decision_ready;
