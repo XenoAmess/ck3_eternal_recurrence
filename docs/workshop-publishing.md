@@ -218,3 +218,21 @@ GitHub raw URL。CDN 基址与最终顺序见 `workshop/ox_here_screenshots.md`�
 `601cde2d39365230e226b71c6c22220000cd6230ec42fe19b1009f1f377681ae`；`ox_here-v1.0.1.zip` 为
 701,751 字节、SHA-256 `4611c13c7165841a7de204c4bc11a51e119496217a3b97f94d310fed195aef8a`。item-ID sidecar 只保留作
 fresh-cache 验证证据，不替换公开 Release 中的 canonical manifest。
+
+## Ox Here 1.0.2 更新上传
+
+2026-08-27 对同一 item `3790635143` 更新实测：上传表单本身是独立顶层窗口 `Paradox Mods Uploader`；自动化
+必须先把该窗口置前台，第一下落在未激活窗口上的点击不能冒充按钮已提交。描述框也必须从控件本身回读后再上传，
+不能用“剪贴板内容仍等于源文件”证明粘贴成功。本轮控件回读确认 1.0.2 BBCode 后，launcher 日志记录
+`Publishing mod succeeded` 于 `2026-08-26T23:34:27.173Z`。
+
+远端描述与 canonical BBCode 的唯一差别是 Steam 去掉末尾 LF；逐字符核验应先只规范化 CR/LF 尾部，正文任何
+其他差异仍判失败。新内容 manifest 为 `3437769564720236444`，API 与本机 ACF 的 size/time/manifest 三元组一致。
+强制下载前把旧 numeric leaf 完整移动到已验证的临时备份路径，不删除；从空路径下载后，1.0.2 sidecar 对 22/22
+文件 strict GREEN。
+
+launcher 再次向上传 staging 的内层 descriptor 注入了 item ID。成功截图和日志落盘后立即关闭 launcher、重建
+formal staging，并把外层 descriptor 的 `path` 恢复为仓库开发目录。1.0.2 clean deliverables 与公开 Release 的
+SHA-256 分别为 manifest
+`c8dbb6dabc44964ddf9f44a71872f8daaa55d95994a438537662f1b1786f37ad`、ZIP
+`2eaacbafbb56ea863cf68b8761d9196fcaae2f514ec992c6dd083707b54c18fd`；item-ID sidecar 仍不得上传为正式资产。

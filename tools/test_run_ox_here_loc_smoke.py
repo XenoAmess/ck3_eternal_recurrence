@@ -17,6 +17,12 @@ import run_ox_here_loc_smoke as smoke
 
 
 class LocalizationContractTests(unittest.TestCase):
+    def test_frontend_version_roi_covers_multiline_locale_footers(self) -> None:
+        left, top, right, bottom = smoke.FRONTEND_VERSION_REGION
+        self.assertLessEqual(left, 0.72)
+        self.assertLessEqual(top, 0.88)
+        self.assertEqual((right, bottom), (1.0, 1.0))
+
     def test_language_matrix_is_exact_and_complete(self) -> None:
         self.assertEqual(
             [spec.key for spec in smoke.LANGUAGES],
@@ -152,6 +158,45 @@ class DescriptorNormalizationTests(unittest.TestCase):
 
 
 class SurfaceEvidenceTests(unittest.TestCase):
+    def test_decisions_panel_retries_a_consumed_first_click(self) -> None:
+        language = smoke.LANGUAGE_BY_KEY["l_english"]
+        localizations = smoke.localization_matrix(smoke.CANONICAL_SOURCE)[
+            language.key
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary)
+            stream = mock.Mock()
+            with (
+                mock.patch.object(smoke.acceptance, "deliberate_click") as click,
+                mock.patch.object(smoke.acceptance.pyautogui, "moveTo"),
+                mock.patch.object(smoke.acceptance.pyautogui, "scroll"),
+                mock.patch.object(
+                    smoke.acceptance,
+                    "wait_for_ocr_text",
+                    side_effect=[
+                        acceptance.RunnerError("first click was consumed"),
+                        (100, 200),
+                    ],
+                ),
+                mock.patch.object(
+                    smoke,
+                    "capture_surface",
+                    side_effect=acceptance.RunnerError("stop after open proof"),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    acceptance.RunnerError, "stop after open proof"
+                ):
+                    smoke.exercise_product_surfaces(
+                        language,
+                        localizations,
+                        stream,
+                        artifacts,
+                    )
+        self.assertEqual(click.call_count, 2)
+        self.assertIn("(1)", click.call_args_list[0].args[1])
+        self.assertIn("(2)", click.call_args_list[1].args[1])
+
     def test_raw_key_rejection_does_not_reject_the_english_title(self) -> None:
         self.assertEqual(smoke.unresolved_product_keys(["Ox Here!"]), [])
         hits = smoke.unresolved_product_keys(

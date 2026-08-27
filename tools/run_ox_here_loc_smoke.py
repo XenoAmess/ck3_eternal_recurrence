@@ -40,8 +40,12 @@ EXPECTED_GAME_VERSION = "1.19.0.6"
 STEAM_APP_ID = "1158310"
 POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_S = 300
+DECISIONS_OPEN_ATTEMPTS = 3
+DECISIONS_OPEN_TIMEOUT_S = 8
 GAMEPLAY_TIMEOUT_S = 240
-FRONTEND_VERSION_REGION = (0.82, 0.93, 1.00, 1.00)
+# Polish adds a separate community-localization version row and moves CK3's
+# own version line above the single-row position used by the other locales.
+FRONTEND_VERSION_REGION = (0.72, 0.88, 1.00, 1.00)
 OPTION_RESPONSE_REGION = (0.30, 0.34, 0.62, 0.60)
 OPTION_RESPONSE_MIN_CHANGED_FRACTION = 0.001
 PRODUCT_OUTER = "ox_here_loc_smoke.mod"
@@ -828,18 +832,33 @@ def exercise_product_surfaces(
 ) -> dict[str, object]:
     width, height = acceptance.pyautogui.size()
     decisions_tab = (int(width * 0.987), int(height * 0.367))
-    acceptance.deliberate_click(decisions_tab, "native Decisions HUD tab")
-    acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
-    acceptance.pyautogui.scroll(20)
-    anchor = acceptance.wait_for_ocr_text(
-        language.anchor,
-        acceptance.FULL_SCREEN_REGION,
-        20,
-        artifacts,
-        "03_decisions_anchor_timeout.png",
-        contains=False,
-        stable_hits=1,
-    )
+    anchor: tuple[int, int] | None = None
+    last_error: BaseException | None = None
+    for attempt in range(1, DECISIONS_OPEN_ATTEMPTS + 1):
+        acceptance.deliberate_click(
+            decisions_tab,
+            f"native Decisions HUD tab ({attempt})",
+        )
+        acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
+        acceptance.pyautogui.scroll(20)
+        try:
+            anchor = acceptance.wait_for_ocr_text(
+                language.anchor,
+                acceptance.FULL_SCREEN_REGION,
+                DECISIONS_OPEN_TIMEOUT_S,
+                artifacts,
+                f"03_decisions_anchor_attempt_{attempt}_timeout.png",
+                contains=False,
+                stable_hits=1,
+            )
+            break
+        except acceptance.RunnerError as error:
+            last_error = error
+    if anchor is None:
+        raise acceptance.RunnerError(
+            "native Decisions panel did not expose the locale anchor after "
+            f"{DECISIONS_OPEN_ATTEMPTS} attempts: {last_error}"
+        )
     panel, panel_rows = capture_surface(
         artifacts / "03_native_decisions.png", language.key, "native_decisions"
     )
@@ -929,7 +948,6 @@ def exercise_product_surfaces(
     acceptance.deliberate_click(
         final_confirm, "production decision final confirm geometry"
     )
-    stream.wait(DELIVERY_MARKER, 40)
     time.sleep(1.2)
     event, event_rows = capture_surface(
         artifacts / "07_native_arrival_event.png",
@@ -942,6 +960,7 @@ def exercise_product_surfaces(
             "arrival event did not materially replace decision confirmation: "
             f"{confirmation_to_event:.6f}"
         )
+    stream.wait(DELIVERY_MARKER, 40)
     return {
         "decision_locator": locator,
         "active_language_proof": active_language_proof,

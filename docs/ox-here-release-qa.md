@@ -1,4 +1,64 @@
-# Ox Here 1.0.1 Release QA
+# Ox Here Release QA
+
+## 1.0.2 Tooltip-Fix Publication (2026-08-27)
+
+`1.0.2` fixes the real CK3 `1.19.0.6` regression found after the original publication: both native decision-option
+hovers could render raw `ox_here_*_tooltip` keys. CK3 derives those keys from each multichoice `value`, so the release
+adds `ox_here_recruit_tooltip` and `ox_here_decline_tooltip` in all nine localization files. Their values reuse the
+already reviewed option descriptions; no new MiniMax translation call or unsupported native-speaker claim was needed.
+
+Release identity and package evidence:
+
+- commit `e1d1079e23a12d9095605dd7f6dbb985e92a865c`, annotated tag `ox-here-v1.0.2`;
+- formal 22-file manifest SHA-256
+  `c8dbb6dabc44964ddf9f44a71872f8daaa55d95994a438537662f1b1786f37ad`;
+- deterministic ZIP SHA-256
+  `2eaacbafbb56ea863cf68b8761d9196fcaae2f514ec992c6dd083707b54c18fd`;
+- item-ID sidecar SHA-256
+  `374dd0f01aa27650408818ad2c7625ffb2d9fa142b119309c145f8e8f9533d88`, used only for strict Workshop-cache
+  verification;
+- tag CI run `33022680540` GREEN at the same commit;
+- public GitHub release:
+  `https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/ox-here-v1.0.2`, containing exactly the formal
+  manifest (4,026 bytes) and ZIP (701,928 bytes), with matching GitHub digests and independent download hashes. The
+  sidecar is not a release asset.
+
+The Steam-started launcher logged the update as started at `2026-08-26T23:34:19.292Z` and succeeded at
+`2026-08-26T23:34:27.173Z`. The public item remains `3790635143` and exposes content manifest
+`3437769564720236444`, `file_size: 717564`, public visibility and version `1.0.2`. The API description equals
+`workshop/ox_here_description.bbcode` after ignoring only Steam's removal of the final LF. The 640x640 thumbnail and
+all four media-strip JPEGs remain byte-identical to their repository assets.
+
+The old cache was moved intact, not deleted, to
+`C:\Users\xenoa\AppData\Local\Temp\ox_here_workshop_cache_backups\3790635143_manifest_7196545944095046595_20260827_0738`.
+Steam then installed the new item into an absent numeric leaf. The fresh cache passed the sidecar's strict 22/22
+inventory/hash verification, and `appworkshop_1158310.acf` independently recorded the same manifest, size and update
+time. After upload, the formal staging was rebuilt without `remote_file_id`; the user-directory outer descriptor was
+restored to `Z:/ck3_mod_rewrite/ox_here` with the canonical item ID retained.
+
+Real CK3 evidence is deliberately proportional to this small fix:
+
+- the original `1.0.1` English smoke is retained as an honest product RED: report SHA-256
+  `e552553f6e2c11687566a28c81f8d87dcd6b659d1f73fd8b34a14002da3e3b1d` showed the raw recruit tooltip key;
+- the `1.0.2` source functional run at
+  `C:\Users\xenoa\AppData\Local\Temp\ox_here_v102_functional_source_attempt1` is GREEN and passes decline-zero,
+  exactly-one delivery, identity/Prowess, Knight/Champion, affair/secret, orientation-independent Seduce and zero
+  salary;
+- English, French, German, Polish, Japanese, Spanish, Simplified Chinese and Russian fresh-cache cells are GREEN. Each
+  used a fresh CK3 process, displayed both option tooltips and the arrival event, recorded READY/PASS exactly once,
+  rejected raw keys on every captured surface, kept source/runtime trees unchanged and left protected player storage
+  unchanged;
+- Korean also rendered both localized tooltips and the complete arrival event. The event explicitly says the named
+  character came in response to the just-used decision and is now the player's courtier and Knight, with no raw key,
+  truncation or overflow. Its external delivery observer did not emit the redundant PASS marker, so that cell remains
+  honestly RED rather than being relabelled. Per the owner's lightweight closeout direction, no further Korean harness
+  work is a release blocker.
+
+The live matrix exposed two reusable runner facts, now covered by focused tests: CK3 can consume the first Decisions-HUD
+click, so the window is retried until the locale anchor is visible; and Polish adds a separate localization-version row,
+moving the CK3 build label above the one-line footer ROI. The focused runner suite is 25/25 GREEN after those changes.
+
+## 1.0.1 Historical Release Record
 
 This document records the evidence boundary for the standalone `ox_here` CK3 mod. It is a release checklist, not a claim
 that every gate below has the same validation strength.

@@ -563,6 +563,17 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 GUI state + `ExecuteConsoleCommand` 可以在进游戏后自动执行控制台命令（打标记、设变量、触发事件）。注意：窗口必须注册；`ExecuteConsoleCommand` 在 state 的 on_start 里可用性未完全验证（本项目后来改用真实链路测试，最终定型为上文的全自动验收 runner）。
 
+## Ox Here 多语言原生 UI smoke
+
+`tools/run_ox_here_loc_smoke.py` 的 Workshop 模式先用 sidecar 严格验证 numeric cache leaf，再只在一次性 userdir
+副本中移除 launcher 注入的 descriptor ID。每个语言必须使用新的 CK3 进程，并依次保留决议列表、详情、拒绝
+tooltip、招募 tooltip、二阶段确认和到庭事件截图；每张画面自动拒绝 raw `ox_here_*` key。
+
+2026-08-27 实机发现两个不能写死成单次坐标/单行 footer 的 harness 事实：CK3 偶尔会吞掉第一次 Decisions HUD
+点击，所以必须以语言专属 ASCII anchor 的真实出现确认窗口已打开并有限重试；波兰语额外显示社区翻译版本行，会把
+CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，到庭事件已经可见而外部 scripted-GUI observer
+未打 marker 时，保留 RED 与截图即可；不要把展示事件、代码合同或人工画面审核重写成 marker GREEN。
+
 ## 排障心法
 
 1. **先分清"没加载/没注册"与"加载了但没触发"**——CK3 大量失败是静默的
