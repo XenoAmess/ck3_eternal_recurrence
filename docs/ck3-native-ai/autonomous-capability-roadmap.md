@@ -116,7 +116,7 @@ flowchart LR
 |---|---|---|
 | 会话与时间 | `date_raw`、速度、暂停、local player、`map_ready` | exact-build live-confirmed；可在最小化窗口推进和重新暂停。 |
 | 玩家角色 | CharacterID、存活、配偶/婚约 CharacterID 列表 | native 实现；只覆盖身份与关系结果，不含属性、资源、头衔、继承、健康、压力、教育、生活方式或意见。 |
-| 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel 与有损 typed indicators | instance/数量/提交已有 live；Attempt4 又以 generic 非宗教 fixture 闭合 seed/checkpoint/fresh-cold current-window query、canonical key、presentation/cancel 与 empty-indicator surface。planner 有 query 时不再由 authored 数量合成 enabled 选项；stock/非空 indicators、selection lifecycle、full effect/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
+| 事件 | 当前 instance/ authored 数量；exact current-window query 发布 materialized shown/enabled、rendered/native index、name/reason、fallback/cancel 与有损 typed indicators | instance/数量/提交已有 live；Attempt4 又以 generic 非宗教 fixture 闭合 seed/checkpoint/fresh-cold current-window query、canonical key、presentation/cancel 与 empty-indicator surface；后继 fixture 实读 `trait/add brave`、`stress/increase` 与 `death/played_character` backing rows。planner 有 query 时不再由 authored 数量合成 enabled 选项；stock、其余 indicator 分支/视觉图标、selection lifecycle、full effect/scopes 未闭合，多个合法选项时明确停住而非默认第一项。 |
 | 角色互动 | instance、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality | 普通 white-peace recipient pending 已跨 checkpoint production live 双查询；同 revision 的 subtype + WarID + primary-side 绑定也已 production-live，`ordinary_white_peace_binding_live_ready=true`。planner 已先查同帧 typed context 并停止默认接受。generic recipient notification 的 discovery/双 typed query/固定 ACK/旧 full ID 消失已用非宗教 definition-only fixture 完成 fresh-cold live，`notification_ack_fixture_live_ready=true`；该 playset 不是 stock/production-only。victory/defeat、special outcome terms、structured terms/effect、typed target payload、自然 stock 与 intermediary live 仍缺，故 semantic decision 仍为 false。 |
 | 婚姻 | 当前配偶/婚约；合法 arrange-marriage CharacterID 候选 | 只知道“可提交”，不知道年龄、属性、继承、联盟、声望、遗传、接受度或近亲风险；策略选择最小/首个候选。 |
 | 宣战候选 | target、CB key/index、configuration、claimant、target titles | C++ core 与 typed contract 已有；完整 bridge/live 宣战闭环仍未收口。 |
@@ -357,8 +357,9 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
   权重与玩家效用。
 - 观测：current-window v1 已发布每项 materialized shown/enabled、rendered/native index、resolved name/reason 与
   fallback/cancel；Attempt4 已对 generic 非宗教 fixture 闭合 canonical identity、presentation/cancel 与 empty-indicator
-  surface 的 seed/checkpoint/fresh-cold live。继续补 stock/nonempty indicator/selection lifecycle、event chain、scope actors、主要
-  效果 preview 与资源/关系/健康风险。互动发布 type、条款、sender/recipient、acceptance 和 deadline。不能只返回 option
+  surface 的 seed/checkpoint/fresh-cold live，后继 fixture 又实读了 trait-add、stress-increase 与 death backing rows。继续补
+  stock、其余 indicator 分支/视觉图标、selection lifecycle、event chain、scope actors、主要效果 preview 与资源/关系/健康风险。
+  互动发布 type、条款、sender/recipient、acceptance 和 deadline。不能只返回 option
   count，也不能把当前 unavailable effect preview 当作完成。
 - 动作：保留 index submit，但绑定同一 event/interaction identity；覆盖多页事件、letter、toast、自动接受与需答复请求。
 - 策略：依据当前长期计划为每个选项评分，处理不确定效果、角色关系与后续链；禁止默认第一项或一律接受互动。

@@ -76,8 +76,9 @@ checkpoint 的稳定性证据，不是全游戏覆盖率。
   full instance `17`、canonical key 和三条 materialized option 一致，native index `3` 真实 `cancel=true`，cold 双查询严格
   相等。artifact SHA-256 为 `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`。
 - 因此 current-window read-only query、definition identity、presentation/cancel 与 empty-indicator surface 升级为
-  `fixture-live`。`readiness.semantic_decision_ready` 仍为 false；stock events、非空 indicator kinds、selection lifecycle、
-  scopes 与完整 effects 仍未完成。
+  `fixture-live`。后继非空 fixture 又实读了 `trait/add brave`、`stress/increase`（`affected=false`、
+  `critical=false`）与 `death/played_character` backing rows。`readiness.semantic_decision_ready` 仍为 false；stock
+  events、其余 indicator 分支与视觉图标、selection lifecycle、scopes 与完整 effects 仍未完成。
 
 ## 还没有完成的主要能力
 

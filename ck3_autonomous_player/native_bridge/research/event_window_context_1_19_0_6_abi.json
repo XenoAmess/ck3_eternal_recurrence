@@ -6,8 +6,8 @@
   "evidence_kind": "offline_exact_build_static_analysis_plus_fixture_scoped_paused_live_validation",
   "read_only": true,
   "live_validated": true,
-  "live_validated_scope": "generic nonreligious definition/localization fixture with the production native bridge: current full instance and canonical definition identity, process-local numeric metadata, materialized presentation/cancel, and empty typed-indicator subsets across seed checkpoint and fresh cold reload",
-  "not_live_validated_scope": "stock event coverage, nonempty trait/stress/death/scheme/unknown indicator rows, event-window lifecycle removal after selection, stable root/saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice",
+  "live_validated_scope": "generic nonreligious definition/localization fixtures with the production native bridge: current full instance and canonical definition identity, process-local numeric metadata, materialized presentation/cancel, empty indicator controls, and the exact trait/add brave, stress/increase affected=false critical=false, and death/played_character backing rows across seed checkpoint and fresh cold reload",
+  "not_live_validated_scope": "stock event coverage, trait remove, other stress branches, scheme/unknown nonempty rows, visual icon rendering, event-window lifecycle removal after selection, stable root/saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice",
   "game_process_started": true,
   "scope": "generic nonreligious current event-window presentation context",
   "owner_deferred_domains": [
@@ -394,9 +394,9 @@
     "raw_context_mode_business_semantics": "unknown"
   },
   "typed_context_proposal": {
-    "status": "definition_identity_presentation_and_empty_effect_indicator_surface_fixture_live",
-    "live_scope": "Attempt4 generic nonreligious fixture: full instance and canonical key, process-local numeric metadata, materialized presentation/cancel and empty typed-indicator rows",
-    "remaining_live_scope": "stock events, nonempty indicator kinds, fallback-positive path, selection lifecycle, stable scopes, complete effects and semantic choice",
+    "status": "definition_identity_presentation_and_bounded_nonempty_effect_indicator_surface_fixture_live",
+    "live_scope": "Attempt4 generic nonreligious fixture: full instance and canonical key, process-local numeric metadata, materialized presentation/cancel and empty typed-indicator rows; nonempty Attempt1: exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows",
+    "remaining_live_scope": "stock events, remaining nonempty indicator branches and visual icons, fallback-positive path, selection lifecycle, stable scopes, complete effects and semantic choice",
     "top_level": [
       "revision",
       "availability",
@@ -450,6 +450,7 @@
     "bridge_query_ready": true,
     "current_event_window_context_fixture_live_ready": true,
     "empty_effect_indicator_surface_live_ready": true,
+    "bounded_nonempty_effect_indicator_rows_live_ready": true,
     "nonempty_effect_indicator_kinds_live_ready": false,
     "event_window_lifecycle_live_ready": false,
     "semantic_decision_ready": false,
@@ -503,6 +504,68 @@
     "cold_context_sha256": "6975511D543E3B11953E376AC0CBF256325C3E907123D7F40D42A04BC5FB880A",
     "adjacent_cold_frames_equal": true,
     "fixture_bytes_equal_across_stages": true,
+    "no_event_option_selected": true,
+    "managed_process_cleanup": true,
+    "nonce_root_removed": true,
+    "no_ck3_processes_after": true
+  },
+  "bounded_nonempty_effect_indicator_live_validation": {
+    "date": "2026-08-27",
+    "evidence_classification": "fixture-scoped-live-confirmed",
+    "runner": "native_bridge/research/run_current_event_nonempty_effect_indicators_live_acceptance.py",
+    "artifact_path": "C:/Users/xenoa/AppData/Local/Temp/xar-current-event-nonempty-indicators-attempt1.json",
+    "artifact_size": 136947,
+    "artifact_sha256": "1DE73B16CBD90FE05112D60A7F09274E95FE1BAC8D18D79C2AF8A8A2BC8249C3",
+    "elapsed_seconds": 155.762,
+    "implementation_commit": "06bde70d63af209f23feaeb290a57431de59be57",
+    "frozen_source_commit": "cea30a067b1e112596d70532b98fa068b2102ebf",
+    "production_bridge_dll_sha256": "52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0",
+    "injector_sha256": "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF",
+    "wrapper_size": 17299,
+    "wrapper_sha256": "05563518839C6D715AB93E936E73E252A2724EAC92D31418F9E7C695D9DC7638",
+    "source_save_sha256_before_and_after": "5BA2136911EAD0CAF1F7D2F3DE02EAFBD8039861C46F01F35F698B3B5CFFFC5F",
+    "checkpoint_sha256": "9E846D2B6ADFA3417D99B3544AA48D189BD2D53ED211AE1A5C8384397C7D5B88",
+    "checkpoint_size": 66594169,
+    "seed_bridge_pid": 23632,
+    "cold_bridge_pid": 35364,
+    "date_raw": 53175816,
+    "full_event_instance_id": 17,
+    "canonical_event_definition_key": "xar_event_indicator_live_fixture.1",
+    "seed_calculated_event_id": 4350001,
+    "cold_calculated_event_id": 4360001,
+    "seed_runtime_stats_ordinal": 6763,
+    "cold_runtime_stats_ordinal": 6773,
+    "materialized_native_option_indices": [
+      0,
+      1,
+      3
+    ],
+    "effect_indicator_coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
+    "effect_indicator_rows_per_option": [
+      0,
+      1,
+      2
+    ],
+    "exact_nonempty_rows": [
+      "trait/add brave native_id=64",
+      "stress/increase magnitude=unavailable affected_by_trait=false critical=false",
+      "death/played_character direction=not_applicable"
+    ],
+    "seed_commands": [
+      "query-current-event-window-context-v1",
+      "save-checkpoint"
+    ],
+    "cold_commands": [
+      "query-current-event-window-context-v1",
+      "query-current-event-window-context-v1"
+    ],
+    "cold_context_sha256": "ECD3CEB38CECE12FF10CD43DF52EBF45731D142AEF390BDBE0120E70B21F5ED9",
+    "adjacent_cold_frames_equal": true,
+    "fixture_bytes_equal_across_stages": true,
+    "full_effect_set_claimed": false,
+    "effect_preview_ready": false,
+    "semantic_decision_ready": false,
+    "visual_gui_icon_render_verified": false,
     "no_event_option_selected": true,
     "managed_process_cleanup": true,
     "nonce_root_removed": true,
@@ -562,8 +625,8 @@
       "full_effect_preview"
     ],
     "live_acceptance": {
-      "completed": "Attempt4 fixture-scoped seed/checkpoint/fresh-cold validation binds the full instance, canonical key, per-process numeric metadata, materialized visible UI and empty typed-indicator surface; adjacent cold queries are identical except query_sequence and no option is selected",
-      "remaining": "validate nonempty indicator kinds and a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
+      "completed": "Attempt4 fixture-scoped seed/checkpoint/fresh-cold validation binds the full instance, canonical key, per-process numeric metadata, materialized visible UI and empty typed-indicator surface; nonempty Attempt1 additionally binds the exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows; adjacent cold queries are identical except query_sequence and no option is selected",
+      "remaining": "validate remaining nonempty indicator branches and visual icons, plus a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
     }
   }
 }

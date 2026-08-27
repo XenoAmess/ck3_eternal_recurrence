@@ -325,6 +325,8 @@ def main() -> int:
         and readiness.get("current_event_window_context_fixture_live_ready")
         is True
         and readiness.get("empty_effect_indicator_surface_live_ready") is True
+        and readiness.get("bounded_nonempty_effect_indicator_rows_live_ready")
+        is True
         and readiness.get("nonempty_effect_indicator_kinds_live_ready") is False
         and readiness.get("event_window_lifecycle_live_ready") is False
         and readiness.get("semantic_decision_ready") is False
@@ -356,22 +358,76 @@ def main() -> int:
         and live.get("no_ck3_processes_after") is True
     ):
         failures.append("contract: Attempt4 fixture-live evidence drifted")
+    bounded_nonempty = contract.get(
+        "bounded_nonempty_effect_indicator_live_validation", {}
+    )
+    if not (
+        bounded_nonempty.get("evidence_classification")
+        == "fixture-scoped-live-confirmed"
+        and bounded_nonempty.get("artifact_size") == 136947
+        and bounded_nonempty.get("artifact_sha256")
+        == "1DE73B16CBD90FE05112D60A7F09274E95FE1BAC8D18D79C2AF8A8A2BC8249C3"
+        and bounded_nonempty.get("implementation_commit")
+        == "06bde70d63af209f23feaeb290a57431de59be57"
+        and bounded_nonempty.get("frozen_source_commit")
+        == "cea30a067b1e112596d70532b98fa068b2102ebf"
+        and bounded_nonempty.get("wrapper_size") == 17299
+        and bounded_nonempty.get("wrapper_sha256")
+        == "05563518839C6D715AB93E936E73E252A2724EAC92D31418F9E7C695D9DC7638"
+        and bounded_nonempty.get("seed_bridge_pid") == 23632
+        and bounded_nonempty.get("cold_bridge_pid") == 35364
+        and bounded_nonempty.get("full_event_instance_id") == 17
+        and bounded_nonempty.get("canonical_event_definition_key")
+        == "xar_event_indicator_live_fixture.1"
+        and signed_int32(bounded_nonempty.get("seed_calculated_event_id"))
+        and signed_int32(bounded_nonempty.get("cold_calculated_event_id"))
+        and signed_int32(bounded_nonempty.get("seed_runtime_stats_ordinal"))
+        and signed_int32(bounded_nonempty.get("cold_runtime_stats_ordinal"))
+        and bounded_nonempty.get("materialized_native_option_indices")
+        == [0, 1, 3]
+        and bounded_nonempty.get("effect_indicator_rows_per_option")
+        == [0, 1, 2]
+        and bounded_nonempty.get("exact_nonempty_rows")
+        == [
+            "trait/add brave native_id=64",
+            (
+                "stress/increase magnitude=unavailable "
+                "affected_by_trait=false critical=false"
+            ),
+            "death/played_character direction=not_applicable",
+        ]
+        and bounded_nonempty.get("adjacent_cold_frames_equal") is True
+        and bounded_nonempty.get("fixture_bytes_equal_across_stages") is True
+        and bounded_nonempty.get("full_effect_set_claimed") is False
+        and bounded_nonempty.get("effect_preview_ready") is False
+        and bounded_nonempty.get("semantic_decision_ready") is False
+        and bounded_nonempty.get("visual_gui_icon_render_verified") is False
+        and bounded_nonempty.get("no_event_option_selected") is True
+        and bounded_nonempty.get("managed_process_cleanup") is True
+        and bounded_nonempty.get("nonce_root_removed") is True
+        and bounded_nonempty.get("no_ck3_processes_after") is True
+    ):
+        failures.append(
+            "contract: bounded nonempty fixture-live evidence drifted"
+        )
     live_acceptance = query_contract.get("live_acceptance", {})
     if not (
         isinstance(live_acceptance, dict)
         and "Attempt4" in live_acceptance.get("completed", "")
-        and "nonempty indicator" in live_acceptance.get("remaining", "")
+        and "nonempty Attempt1" in live_acceptance.get("completed", "")
+        and "remaining nonempty" in live_acceptance.get("remaining", "")
     ):
         failures.append("contract: live acceptance boundary drifted")
     typed_context = contract.get("typed_context_proposal", {})
     if not (
         typed_context.get("status")
         == (
-            "definition_identity_presentation_and_empty_effect_indicator_"
-            "surface_fixture_live"
+            "definition_identity_presentation_and_bounded_nonempty_effect_"
+            "indicator_surface_fixture_live"
         )
         and "Attempt4" in typed_context.get("live_scope", "")
-        and "nonempty indicator" in typed_context.get(
+        and "nonempty Attempt1" in typed_context.get("live_scope", "")
+        and "remaining nonempty" in typed_context.get(
             "remaining_live_scope", ""
         )
         and "semantic choice" in typed_context.get(

@@ -319,15 +319,18 @@ available context 只把实际物化且 `shown=true && enabled=true` 的 rows �
 - C++ fixture / source contract 必须覆盖 stable accessor root、非零 EventManager offset、idler/window vtable、完整 event ID、零/一/多匹配、manager 与 option vector 的非法 count/capacity、owner backpointer、MSVC string size/capacity、非法 bool byte、rendered/native index 不同、由 authored `CEventOption+0x47A` 读取的单/多 cancel、disabled reason 与 fallback；definition identity 还须覆盖空/越界/畸形 key、ActiveEvent/EventData pointer 漂移、calculated ID/runtime ordinal/key 漂移与 stale instance，并断言 owning-thread fixed mailbox 之外不解引用 engine pointer。
 - Attempt4 已在 paused generic nonreligious fixture 中完成两次相邻 same-revision typed query：完整 instance ID、definition
   identity、option 顺序、enabled/name/reason/cancel/fallback、空 indicator rows 与完整 frame 一致；EXE/DLL/injector bytes
-  固定且没有执行 option action。下一 live gate 是非空 indicator kinds 与另行授权的 selection/lifecycle 后置状态。
+  固定且没有执行 option action。后继非空 fixture 又命中 trait-add、stress-increase 与 death backing rows；下一 live gate
+  是其余 indicator 分支/视觉图标、stable scopes 与另行授权的 selection/lifecycle 后置状态。
 
 Attempt2 因旧 DLL 把 timeout index 错当 cancel 而成为 immutable capability RED；Attempt3 又因 runner 错把
 process/playset-local calculated ID/runtime ordinal 当跨进程 identity 而成为 immutable harness RED。2026-08-27 Attempt4
 已使用修正合同整体 GREEN：artifact SHA-256
 `690EB5EA188B0903281E5F5DFDA343DA795117EE0FB1C83C3FCDC7F572170B7B`。因此
 `event_definition_identity_wire_ready=true`、`bridge_query_static_ready=true`、`bridge_query_ready=true`，并在明确的
-fixture 范围内 `live_validated=true`。非空 indicator kinds、stock event、lifecycle、scope identity、完整 preview 与
-semantic decision 不在该 live 范围内；本轮也没有进行宗教专用事件探索。
+fixture 范围内 `live_validated=true`。后继非空 fixture 的证据另见
+[`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md)；stock event、
+其余 indicator 分支/视觉图标、lifecycle、scope identity、完整 preview 与 semantic decision 仍不在 live 范围内；本轮也没有
+进行宗教专用事件探索。
 
 ## Evidence / unknown 账本
 
@@ -339,7 +342,7 @@ semantic decision 不在该 live 范围内；本轮也没有进行宗教专用�
 | data lifetime | 静态确认 | manager same-tick keep-alive/remove/compact |
 | data instance ID | 静态确认 | data ctor `0x16CA380`；setup `0x16CADC0` |
 | shown/enabled/name/reason/native index/fallback | 静态确认 | `SetupOptions` 与 `CEventOptionItem` ABI |
-| effect indicator kind/flags/payload | 静态确认；空 surface fixture-live | visitor/append、GUI getters/accessors 与 [`event-effect-indicators.md`](event-effect-indicators.md)；Attempt4 三条 option 均实读 available/精确 coverage/empty rows，非空 kinds 待 live |
+| effect indicator kind/flags/payload | 静态确认；空 surface 与有界非空 rows fixture-live | visitor/append、GUI getters/accessors 与 [`event-effect-indicators.md`](event-effect-indicators.md)；Attempt4 三条 option 均实读 available/精确 coverage/empty rows，后继 fixture 实读 trait-add、stress-increase 与 death backing rows；其余 branches/视觉图标待 live |
 | native `SetupOptions` / AI selector 树 | 静态确认 | existing event-option exact-build contract |
 | stable global root → idler | 静态确认 | native accessor `0xAA43C0..0xAA440A`；`module+0x570F7B8 → owner+0x10` dynamic-cast；ctor vtable write |
 | frontend collision exclusion | fixture-scoped 实机确认 | Attempt4 通过 in-game accessor + exact idler/window vtable + complete current event ID 唯一命中；不读取 `0xE30E78` root |

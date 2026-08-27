@@ -13,8 +13,8 @@
   calculated ID/runtime ordinal 当作跨进程稳定 identity。该 RED 不得改写，但它已给出修正验收合同的直接实证。
 - **[live-confirmed fixture-scoped GREEN]** Attempt4 复用同一 `cea30a0...` production source 与 fresh DLL/injector，
   在 seed/checkpoint/fresh-cold 两个独立 CK3 进程中通过全部 gate。它闭合 current-window query 的完整 instance、canonical
-  key、进程局部数值、物化 presentation/cancel 与**空 typed-indicator surface**；没有闭合 stock event、非空 indicator kind、
-  lifecycle、scope、完整 effect preview 或 semantic choice。
+  key、进程局部数值、物化 presentation/cancel 与**空 typed-indicator surface**；Attempt4 自身没有闭合 stock event、非空
+  indicator kind、lifecycle、scope、完整 effect preview 或 semantic choice。非空 rows 的后继证据见本文末链接。
 - [static-confirmed] runner：
   [`run_current_event_window_context_live_acceptance.py`](../../ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py)。
 - [static-confirmed] focused unit：
@@ -274,8 +274,8 @@ $env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\
 runner 仍会先验证 commit、EXE/save/fixture/DLL/injector、source cleanliness 与最长路径，任一漂移都在启动 CK3 前 RED。
 
 Attempt4 已满足 artifact `ok=true`、全部 harness check、truthful readiness、managed process cleanup 与 nonce-root removal，故本专题
-更新为 `[live-confirmed fixture-scoped]`。stable root/saved scopes、非空 indicator kinds、完整 structured effect preview、
-event-window lifecycle 与 semantic event decision 仍然没有完成。
+更新为 `[live-confirmed fixture-scoped]`。Attempt4 自身仍只闭合空 surface；stable root/saved scopes、完整 structured effect
+preview、event-window lifecycle 与 semantic event decision 仍然没有完成。
 
 其中“非空 indicator kinds”的后继已另行冻结并实机完成在
 [`current-event-nonempty-effect-indicators-live-fixture.md`](current-event-nonempty-effect-indicators-live-fixture.md)：它复用本文
