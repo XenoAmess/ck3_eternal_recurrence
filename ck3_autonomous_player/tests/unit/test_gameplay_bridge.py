@@ -2015,6 +2015,73 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertNotEqual(plan.get("selected_step"), advance_step)
         self.assertNotEqual(plan.get("selected_step"), "life-advance")
 
+    def test_unavoidable_current_province_contact_skips_candidate_sweep(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            move_target_province_id=2585,
+            army_state="moving",
+            route_province_ids=[31, 2585],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=31,
+            controllable=False,
+            move_target_province_id=20,
+            army_state="moving",
+            route_province_ids=[20],
+        )
+        advance_step = advance_route_contact_horizon_step(11, 2585, (21,))
+        proof = _route_contact_row(
+            1,
+            origin=20,
+            target=2585,
+            date_raw=24_000,
+            route=[31, 2585],
+            hostile_ids=(21,),
+            contact_free=False,
+        )
+        horizon = proof["result"]["route_contact_horizon"]
+        horizon["subject_route"]["arrival_date_raws"] = [24_264, 24_312]
+        horizon["conflicts"][0]["province_id"] = 20
+        horizon["hostile_routes"][0].update(
+            {
+                "current_province_id": 31,
+                "effective_origin_province_id": 20,
+                "route_province_ids": [20],
+                "arrival_date_raws": [24_024],
+            }
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[proof],
+            objectives=[2585, 2510],
+            steps=(
+                advance_step,
+                "preview-move-army-11-to-2510",
+                "life-advance",
+            ),
+            route_contact_horizon_supported=True,
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_unavoidable_contact_transition"
+        )
+        self.assertEqual(plan["selected_step"], advance_step)
+        self.assertEqual(
+            plan["route_audit"]["status"],
+            "unavoidable_current_province_contact",
+        )
+
     def test_single_subject_proof_cannot_advance_another_unsafe_army(
         self,
     ) -> None:

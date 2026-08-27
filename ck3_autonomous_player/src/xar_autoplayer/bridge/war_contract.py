@@ -866,6 +866,62 @@ def stationary_province_contact_free_in_horizon(
     return True
 
 
+def unavoidable_current_province_contact_in_horizon(
+    value: object,
+) -> bool:
+    """Recognize the narrow one-day contact transition that rerouting cannot beat.
+
+    This is deliberately stricter than ``one_day_contact_free is False``.  It
+    only accepts a moving subject whose first timed arrival is after the closed
+    one-day window and whose complete conflict set consists of same-Province
+    overlaps at the subject's current Province.  In that shape a new target
+    cannot move the army off its already committed edge before contact.
+    """
+    if not isinstance(value, dict):
+        return False
+    if (
+        value.get("status") != "available"
+        or value.get("one_day_contact_free") is not False
+    ):
+        return False
+    subject_route = value.get("subject_route")
+    conflicts = value.get("conflicts")
+    horizon_end = value.get("horizon_end_date_raw")
+    if (
+        not isinstance(subject_route, dict)
+        or not isinstance(conflicts, list)
+        or not conflicts
+        or isinstance(horizon_end, bool)
+        or not isinstance(horizon_end, int)
+    ):
+        return False
+    current_province_id = subject_route.get("current_province_id")
+    route = subject_route.get("route_province_ids")
+    arrivals = subject_route.get("arrival_date_raws")
+    if (
+        isinstance(current_province_id, bool)
+        or not isinstance(current_province_id, int)
+        or current_province_id <= 0
+        or not isinstance(route, list)
+        or not route
+        or not isinstance(arrivals, list)
+        or len(arrivals) != len(route)
+        or isinstance(arrivals[0], bool)
+        or not isinstance(arrivals[0], int)
+        or arrivals[0] <= horizon_end
+    ):
+        return False
+    return all(
+        isinstance(conflict, dict)
+        and conflict.get("kind") == "same_province"
+        and conflict.get("province_id") == current_province_id
+        and isinstance(conflict.get("overlap_start_date_raw"), int)
+        and not isinstance(conflict.get("overlap_start_date_raw"), bool)
+        and conflict["overlap_start_date_raw"] <= horizon_end
+        for conflict in conflicts
+    )
+
+
 def player_armies_from_state(
     active_wars: Iterable[dict[str, object]],
     explicit_player_armies: object,

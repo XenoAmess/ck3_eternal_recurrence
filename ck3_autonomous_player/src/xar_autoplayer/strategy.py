@@ -72,6 +72,7 @@ from .bridge.war_contract import (
     stationary_province_contact_free_in_horizon,
     start_assault_step,
     stop_assault_step,
+    unavoidable_current_province_contact_in_horizon,
     war_objective_province_ids,
 )
 from .environment import write_json_atomic
@@ -4830,6 +4831,125 @@ def choose_one_life_turn(
                             "required_step": advance_step,
                             "reason": "the exact route is contact-free for one day but this backend cannot advance it",
                             "route_audit": passive_route_audit,
+                        }
+                    if (
+                        isinstance(contact_horizon, dict)
+                        and unavoidable_current_province_contact_in_horizon(
+                            contact_horizon
+                        )
+                    ):
+                        unavoidable_audit = {
+                            **passive_route_audit,
+                            "status": "unavoidable_current_province_contact",
+                            "contact_horizon": contact_horizon,
+                        }
+                        other_unsafe_armies = [
+                            candidate
+                            for candidate in unsafe_armies
+                            if candidate.get("army_id") != army_id
+                        ]
+                        stationary_contact_horizons: list[
+                            dict[str, object]
+                        ] = []
+                        uncovered_stationary_armies: list[
+                            dict[str, object]
+                        ] = []
+                        for candidate in sorted(
+                            threatened_stationary_armies,
+                            key=lambda row: _native_int(row.get("army_id"))
+                            or 2**31,
+                        ):
+                            candidate_id = _native_int(
+                                candidate.get("army_id")
+                            )
+                            candidate_province_id = _native_int(
+                                candidate.get("current_province_id")
+                            )
+                            if (
+                                candidate_id is None
+                                or candidate_province_id is None
+                            ):
+                                uncovered_stationary_armies.append(candidate)
+                                continue
+                            try:
+                                stationary_contact_free = (
+                                    stationary_province_contact_free_in_horizon(
+                                        contact_horizon,
+                                        candidate_province_id,
+                                    )
+                                )
+                            except ValueError:
+                                stationary_contact_free = False
+                            if stationary_contact_free:
+                                stationary_contact_horizons.append(
+                                    {
+                                        "army_id": candidate_id,
+                                        "current_province_id": (
+                                            candidate_province_id
+                                        ),
+                                        "proof_subject_army_id": army_id,
+                                        "horizon_start_date_raw": (
+                                            contact_horizon.get(
+                                                "horizon_start_date_raw"
+                                            )
+                                        ),
+                                        "horizon_end_date_raw": (
+                                            contact_horizon.get(
+                                                "horizon_end_date_raw"
+                                            )
+                                        ),
+                                        "one_day_contact_free": True,
+                                    }
+                                )
+                            else:
+                                uncovered_stationary_armies.append(candidate)
+                        other_combat_retreat_armies = [
+                            candidate
+                            for candidate in combat_retreat_armies
+                            if candidate.get("army_id") != army_id
+                        ]
+                        if (
+                            other_unsafe_armies
+                            or uncovered_stationary_armies
+                            or other_combat_retreat_armies
+                        ):
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_route_contact_horizon_global_blocked",
+                                "selected_step": None,
+                                "required_step": "complete-global-route-contact-horizon",
+                                "reason": "the unavoidable subject contact cannot authorize time while another controllable army remains unsafe or threatened",
+                                "route_audit": unavoidable_audit,
+                                "other_unsafe_armies": other_unsafe_armies,
+                                "threatened_stationary_armies": uncovered_stationary_armies,
+                                "stationary_contact_horizons": stationary_contact_horizons,
+                                "combat_retreat_armies": other_combat_retreat_armies,
+                                "active_wars": war_summary,
+                            }
+                        advance_step = advance_route_contact_horizon_step(
+                            army_id,
+                            observed_route_target,
+                            route_threat_enemy_ids,
+                        )
+                        if advance_step in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_unavoidable_contact_transition",
+                                "selected_step": advance_step,
+                                "reason": "the fresh exact timeline proves every next-day conflict is at the subject's current Province and its committed edge cannot complete before contact; advance exactly one day, then re-observe combat or changed hostile intent",
+                                "route_audit": unavoidable_audit,
+                                "stationary_contact_horizons": stationary_contact_horizons,
+                                "move_intent": observed_intent,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_unavoidable_contact_transition_unsupported",
+                            "selected_step": None,
+                            "required_step": advance_step,
+                            "reason": "the exact next-day current-Province contact is unavoidable, but no proof-bound one-day transition is available",
+                            "route_audit": unavoidable_audit,
+                            "active_wars": war_summary,
                         }
                     blocked_province_ids.add(observed_route_target)
                 elif "life-advance" in available_steps:

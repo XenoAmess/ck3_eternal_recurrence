@@ -225,6 +225,7 @@ from .war_contract import (
     split_army_half_step,
     start_assault_step,
     stop_assault_step,
+    unavoidable_current_province_contact_in_horizon,
     war_objective_province_ids,
 )
 
@@ -8473,18 +8474,33 @@ class NativeHeadlessGameplayDriver:
                 f"expected {expected_revision}, current {starting_revision}"
             )
         with self._history_lock:
-            proof_is_fresh = step in _fresh_route_contact_advance_steps(
+            proof = _fresh_route_contact_advance_proofs(
                 starting, self._command_history
-            )
-        if not proof_is_fresh:
+            ).get(step)
+        if not isinstance(proof, dict):
             raise BridgeUnavailableError(
                 "route-contact one-day advance proof is stale or incomplete"
             )
-        return self._execute_life_advance(
+        result = self._execute_life_advance(
             expected_revision=expected_revision,
             exact_one_day=True,
             result_step=step,
         )
+        if proof.get("proof_kind") != "unavoidable_current_province_contact":
+            return result
+        ending = self.take_internal_semantic_snapshot()
+        postcondition = _unavoidable_contact_transition_postcondition(
+            starting,
+            ending,
+            proof=proof,
+        )
+        if postcondition is None:
+            raise BridgeUnavailableError(
+                "the proof-bound unavoidable contact day advanced, but no "
+                "combat, retreat, war/episode transition, or hostile state "
+                "change was observed"
+            )
+        return {**result, "contact_transition": postcondition}
 
     def _execute_life_advance(
         self,
@@ -11870,12 +11886,20 @@ def _fresh_route_contact_advance_steps(
     snapshot: dict[str, object],
     history: list[dict[str, object]],
 ) -> set[str]:
-    """Return one-shot advances backed by a true proof on this exact frame."""
+    """Return one-shot advances backed by a fresh exact-frame proof."""
+    return set(_fresh_route_contact_advance_proofs(snapshot, history))
+
+
+def _fresh_route_contact_advance_proofs(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    """Bind each exact-day step to its contact-free or unavoidable proof."""
     if snapshot.get("paused") is not True:
-        return set()
+        return {}
     hostiles = _route_contact_hostile_ids(snapshot)
     if not 0 < len(hostiles) <= 64:
-        return set()
+        return {}
     diagnostics = snapshot.get("diagnostics")
     connection_generation = (
         diagnostics.get("connection_generation")
@@ -11891,9 +11915,9 @@ def _fresh_route_contact_advance_steps(
         or not isinstance(native_revision, int)
         or native_revision <= 0
     ):
-        return set()
+        return {}
 
-    advances: set[str] = set()
+    advances: dict[str, dict[str, object]] = {}
     seen_queries: set[tuple[int, int, tuple[int, ...]]] = set()
     scoped_history = _native_history_after_latest_restore(history)
     for row in reversed(scoped_history):
@@ -11929,6 +11953,15 @@ def _fresh_route_contact_advance_steps(
         )
         snapshot_route = _canonical_remaining_route(subject)
         proof_route = _canonical_timed_route(subject_route)
+        proof_kind = (
+            "contact_free"
+            if normalized_horizon.get("one_day_contact_free") is True
+            else "unavoidable_current_province_contact"
+            if unavoidable_current_province_contact_in_horizon(
+                normalized_horizon
+            )
+            else None
+        )
         if not (
             isinstance(subject, dict)
             and subject.get("controllable") is True
@@ -11941,7 +11974,7 @@ def _fresh_route_contact_advance_steps(
             and subject_route.get("current_province_id")
             == subject.get("current_province_id")
             and normalized_horizon.get("status") == "available"
-            and normalized_horizon.get("one_day_contact_free") is True
+            and proof_kind is not None
             and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
             and result.get("queried_revision") == snapshot.get("revision")
             and result.get("queried_native_revision") == native_revision
@@ -11956,12 +11989,128 @@ def _fresh_route_contact_advance_steps(
             )
         ):
             continue
-        advances.add(
-            advance_route_contact_horizon_step(
-                subject_army_id, target_province_id, hostiles
-            )
+        step = advance_route_contact_horizon_step(
+            subject_army_id, target_province_id, hostiles
         )
+        advances[step] = {
+            "proof_kind": proof_kind,
+            "subject_army_id": subject_army_id,
+            "target_province_id": target_province_id,
+            "hostile_army_ids": list(hostiles),
+            "contact_horizon": normalized_horizon,
+        }
     return advances
+
+
+def _unavoidable_contact_transition_postcondition(
+    starting: dict[str, object],
+    ending: dict[str, object],
+    *,
+    proof: dict[str, object],
+) -> dict[str, object] | None:
+    """Require an observed game-state transition after the exact contact day."""
+    subject_army_id = proof.get("subject_army_id")
+    hostile_army_ids = proof.get("hostile_army_ids")
+    if (
+        isinstance(subject_army_id, bool)
+        or not isinstance(subject_army_id, int)
+        or subject_army_id <= 0
+        or not isinstance(hostile_army_ids, list)
+        or any(not _positive_native_id(value) for value in hostile_army_ids)
+        or ending.get("paused") is not True
+    ):
+        return None
+    starting_date_raw = starting.get("date_raw")
+    ending_date_raw = ending.get("date_raw")
+    if (
+        isinstance(starting_date_raw, bool)
+        or not isinstance(starting_date_raw, int)
+        or isinstance(ending_date_raw, bool)
+        or not isinstance(ending_date_raw, int)
+        or not starting_date_raw <= ending_date_raw <= starting_date_raw + 24
+    ):
+        return None
+
+    base = {
+        "status": "observed",
+        "proof_kind": "unavoidable_current_province_contact",
+        "subject_army_id": subject_army_id,
+        "starting_date_raw": starting_date_raw,
+        "ending_date_raw": ending_date_raw,
+    }
+    if (
+        ending.get("one_life_terminal") is True
+        or ending.get("played_character_alive") is False
+    ):
+        return {**base, "postcondition": "episode_terminal"}
+
+    starting_wars = starting.get("active_wars")
+    ending_wars = ending.get("active_wars")
+    starting_war_ids = {
+        int(war["war_id"])
+        for war in (starting_wars if isinstance(starting_wars, list) else [])
+        if isinstance(war, dict) and _positive_native_id(war.get("war_id"))
+    }
+    ending_war_ids = {
+        int(war["war_id"])
+        for war in (ending_wars if isinstance(ending_wars, list) else [])
+        if isinstance(war, dict) and _positive_native_id(war.get("war_id"))
+    }
+    if ending_war_ids != starting_war_ids:
+        return {
+            **base,
+            "postcondition": "active_war_set_changed",
+            "starting_war_ids": sorted(starting_war_ids),
+            "ending_war_ids": sorted(ending_war_ids),
+        }
+
+    subject = _army_by_id(ending, subject_army_id)
+    if not isinstance(subject, dict):
+        return {**base, "postcondition": "subject_army_removed"}
+    if _army_in_active_combat(subject):
+        return {**base, "postcondition": "active_combat_observed"}
+    if _army_retreating(subject):
+        return {**base, "postcondition": "retreat_observed"}
+
+    def hostile_intent_by_id(
+        snapshot: dict[str, object],
+    ) -> dict[int, tuple[object, ...]]:
+        wars = snapshot.get("active_wars")
+        rows = enemy_armies_from_wars(
+            [war for war in wars if isinstance(war, dict)]
+            if isinstance(wars, list)
+            else []
+        )
+        return {
+            int(army["army_id"]): (
+                army.get("move_target_province_id"),
+                tuple(army["route_province_ids"])
+                if isinstance(army.get("route_province_ids"), list)
+                else None,
+                army.get("army_state"),
+                army.get("army_state_code"),
+                army.get("in_combat"),
+                army.get("retreating"),
+            )
+            for army in rows
+            if _positive_native_id(army.get("army_id"))
+        }
+
+    starting_hostiles = hostile_intent_by_id(starting)
+    ending_hostiles = hostile_intent_by_id(ending)
+    changed_hostile_ids = [
+        int(hostile_army_id)
+        for hostile_army_id in hostile_army_ids
+        if ending_hostiles.get(int(hostile_army_id))
+        != starting_hostiles.get(int(hostile_army_id))
+    ]
+    if changed_hostile_ids:
+        return {
+            **base,
+            "postcondition": "hostile_intent_changed",
+            "changed_hostile_army_ids": changed_hostile_ids,
+        }
+    return None
 
 
 def _canonical_remaining_route(army: object) -> list[int] | None:

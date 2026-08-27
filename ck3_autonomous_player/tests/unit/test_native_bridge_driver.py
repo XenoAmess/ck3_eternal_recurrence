@@ -6476,6 +6476,189 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertTrue(result["paused"])
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
 
+    def test_unavoidable_contact_proof_observes_combat_after_exact_day(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+            life_advance_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+                "game.command.set-speed-1",
+                "game.command.resume-map",
+                "game.command.pause-map",
+            )
+        )
+        start_date = 53_216_424
+        player = _army(
+            101,
+            province_id=5692,
+            move_target_province_id=3610,
+            army_state="moving",
+            route_province_ids=[8672, 3610],
+        )
+        enemy = _army(
+            31,
+            province_id=5693,
+            controllable=False,
+            move_target_province_id=5692,
+            army_state="moving",
+            route_province_ids=[5692],
+        )
+        war = _war(
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[3610],
+        )
+        combat_player = {
+            **player,
+            "in_combat": True,
+            "army_state": "combat",
+            "army_state_code": 2,
+            "move_target_province_id": None,
+            "route_province_ids": [],
+        }
+        combat_enemy = {
+            **enemy,
+            "current_province_id": 5692,
+            "in_combat": True,
+            "army_state": "combat",
+            "army_state_code": 2,
+            "move_target_province_id": None,
+            "route_province_ids": [],
+        }
+        combat_war = _war(
+            allied_armies=[combat_player],
+            enemy_armies=[combat_enemy],
+            war_objective_province_ids=[3610],
+        )
+
+        def publish_snapshot(
+            revision: int,
+            *,
+            paused: bool,
+            date_raw: int,
+            speed: int,
+            combat: bool = False,
+        ) -> None:
+            endpoint.publish(
+                _snapshot(
+                    revision,
+                    paused=paused,
+                    date_raw=date_raw,
+                    speed=speed,
+                    active_wars=[combat_war if combat else war],
+                    player_armies=[combat_player if combat else player],
+                )
+            )
+
+        publish_snapshot(40, paused=True, date_raw=start_date, speed=5)
+        query_step = query_route_contact_horizon_step(101, 3610, (31,))
+        advance_step = advance_route_contact_horizon_step(101, 3610, (31,))
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            result: dict[str, object] = {"step": step, "accepted": True}
+            if step == query_step:
+                result.update(
+                    {
+                        "status": "available",
+                        "query_sequence": 1,
+                        "snapshot_revision": 40,
+                        "route_contact_horizon": {
+                            "status": "available",
+                            "date_raw": start_date,
+                            "snapshot_revision": 40,
+                            "subject_army_id": 101,
+                            "target_province_id": 3610,
+                            "hostile_army_ids": [31],
+                            "subject_route": {
+                                "timeline_observable": True,
+                                "army_id": 101,
+                                "current_province_id": 5692,
+                                "effective_origin_province_id": 8672,
+                                "route_province_ids": [8672, 3610],
+                                "arrival_date_raws": [
+                                    start_date + 264,
+                                    start_date + 504,
+                                ],
+                            },
+                            "hostile_routes": [
+                                {
+                                    "timeline_observable": True,
+                                    "army_id": 31,
+                                    "current_province_id": 5693,
+                                    "effective_origin_province_id": 5692,
+                                    "route_province_ids": [5692],
+                                    "arrival_date_raws": [start_date + 24],
+                                }
+                            ],
+                            "horizon_start_date_raw": start_date,
+                            "horizon_end_date_raw": start_date + 24,
+                            "one_day_contact_free": False,
+                            "conflicts": [
+                                {
+                                    "kind": "same_province",
+                                    "hostile_army_id": 31,
+                                    "province_id": 5692,
+                                    "overlap_start_date_raw": start_date + 24,
+                                    "overlap_end_date_raw": start_date + 24,
+                                }
+                            ],
+                        },
+                    }
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+            if step == "set-speed-1":
+                publish_snapshot(41, paused=True, date_raw=start_date, speed=1)
+            elif step == "resume-map":
+                publish_snapshot(
+                    42,
+                    paused=False,
+                    date_raw=start_date + 24,
+                    speed=1,
+                )
+            elif step == "pause-map":
+                publish_snapshot(
+                    43,
+                    paused=True,
+                    date_raw=start_date + 24,
+                    speed=1,
+                    combat=True,
+                )
+
+        endpoint.send_hook = answer
+        driver.execute_step(query_step)
+        self.assertIn(advance_step, driver.capabilities()["action_steps"])
+        revision = int(driver.take_snapshot()["revision"])
+        result = driver.execute_step(advance_step, expected_revision=revision)
+
+        self.assertEqual(result["ending_date_raw"], start_date + 24)
+        self.assertEqual(result["timeline_speed"], 1)
+        self.assertEqual(
+            result["contact_transition"]["postcondition"],
+            "active_combat_observed",
+        )
+        self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
     def test_moving_contact_proof_covers_stationary_army_exact_day(
         self,
     ) -> None:

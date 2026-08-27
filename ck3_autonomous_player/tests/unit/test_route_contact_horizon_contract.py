@@ -18,6 +18,7 @@ from xar_autoplayer.bridge.war_contract import (
     parse_query_route_contact_horizon_step,
     query_route_contact_horizon_step,
     stationary_province_contact_free_in_horizon,
+    unavoidable_current_province_contact_in_horizon,
 )
 from xar_autoplayer.bridge.native_driver import _action_steps
 
@@ -222,6 +223,59 @@ class RouteContactHorizonContractTests(unittest.TestCase):
                 expected_date_raw=53_176_176,
                 expected_snapshot_revision=2**32 + 7,
             )
+
+    def test_unavoidable_contact_requires_current_province_and_late_departure(
+        self,
+    ) -> None:
+        payload = _payload(contact_free=False)
+        payload["subject_route"]["arrival_date_raws"] = [
+            53_176_440,
+            53_176_488,
+            53_176_536,
+        ]
+        payload["conflicts"][0]["province_id"] = 2603
+        normalized = normalize_route_contact_horizon(
+            payload,
+            expected_subject_army_id=11,
+            expected_target_province_id=2585,
+            expected_hostile_army_ids=(31, 41),
+            expected_date_raw=53_176_176,
+            expected_snapshot_revision=2**32 + 7,
+        )
+        self.assertTrue(
+            unavoidable_current_province_contact_in_horizon(normalized)
+        )
+
+        early_departure = copy.deepcopy(normalized)
+        early_departure["subject_route"]["arrival_date_raws"][0] = (
+            early_departure["horizon_end_date_raw"]
+        )
+        self.assertFalse(
+            unavoidable_current_province_contact_in_horizon(early_departure)
+        )
+
+        other_province = copy.deepcopy(normalized)
+        other_province["conflicts"][0]["province_id"] = 2604
+        self.assertFalse(
+            unavoidable_current_province_contact_in_horizon(other_province)
+        )
+
+        mixed_conflict = copy.deepcopy(normalized)
+        mixed_conflict["conflicts"].append(
+            {
+                "kind": "opposing_edge",
+                "hostile_army_id": 31,
+                "subject_from_province_id": 2603,
+                "subject_to_province_id": 2604,
+                "hostile_from_province_id": 2604,
+                "hostile_to_province_id": 2603,
+                "overlap_start_date_raw": 53_176_200,
+                "overlap_end_date_raw": 53_176_200,
+            }
+        )
+        self.assertFalse(
+            unavoidable_current_province_contact_in_horizon(mixed_conflict)
+        )
 
     def test_driver_expands_only_complete_nonretreating_hostile_scope(self) -> None:
         player = {
