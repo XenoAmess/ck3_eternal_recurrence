@@ -198,6 +198,9 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `docs/ck3-native-ai/README.md` 研究并更新对应的原生决策树：冻结游戏版本与 EXE SHA，优先读取原版
   AI 数据和 exact-build 调用链，必要时只读实机互证；同步维护 Mermaid 逻辑图并把未闭合分支画成虚线
   `unknown`。原生树及证据边界落盘后，才允许设计或修改我方 counter-policy；禁止先猜行为、后补文档。
+- 上述“原生 AI 研究优先”是施工前置和输入账本，**不是要求照抄原生实现**。原生树落盘后，为尽快解除整局游玩 blocker，
+  可以先交付最小、确定、可验证的策略；必须把未采用的原生输入/分支、质量差距和替换入口记入对应专题或
+  `docs/autonomous-agent-progress/one-generation-blocker-ledger.md`，再依据 production outcome 持续校准。
 - 原生树已经证明“某数据参与决策”、但当前 bridge/MCP 尚未发布该数据时，必须把补观测口列为策略工作的
   最高优先级依赖：先补只读查询和版本绑定 fixture，再实现依赖它的自动动作。文档中的 `unknown` 是逆向账本，
   不是停止采集数据的终态。

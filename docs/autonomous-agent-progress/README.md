@@ -8,6 +8,7 @@
 ## 导航
 
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
+- [2026-W35 一代人自治 blocker / 能力债账本](one-generation-blocker-ledger.md)
 - [日/周计划会制度与模板](meetings/README.md)
 - [2026-08-27 早会（补录）](meetings/daily/2026-08-27.md)
 - [2026-W35 周计划会（补录）](meetings/weekly/2026-W35.md)
