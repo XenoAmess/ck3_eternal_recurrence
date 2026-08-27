@@ -9,7 +9,7 @@ Minimal manifest (UTF-8 JSON)::
 
     {
       "format_version": 1,
-      "voice": "Microsoft David Desktop",
+      "voice": "en-GB-SoniaNeural",
       "chapters": [
         {
           "id": "opening",
@@ -77,9 +77,11 @@ Minimal manifest (UTF-8 JSON)::
       ]
     }
 
-Every chapter is narrated with Windows SAPI.  Its shot length is the greater of
-the narration duration plus tail padding and ``min_duration_seconds``.  A short
-video source is extended by cloning its final frame; narration is never cut.
+Every chapter is narrated with the online Microsoft Edge text-to-speech service
+through ``edge-tts``.  The default voice is ``en-GB-SoniaNeural``.  Its shot
+length is the greater of the narration duration plus tail padding and
+``min_duration_seconds``.  A short video source is extended by cloning its final
+frame; narration is never cut.
 Chinese narration translations are split at semantic punctuation, wrapped by
 measured font width, divided into short timed ASS cues, and burned into each
 segment.  The final MP4 is H.264/yuv420p plus 48 kHz stereo AAC.  A sibling
@@ -95,6 +97,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import importlib.metadata
 import json
 import math
 import os
@@ -114,9 +117,22 @@ except ImportError as exc:  # handled with a repository-specific hint in main()
 else:
     PIL_IMPORT_ERROR = None
 
+try:
+    import edge_tts
+except ImportError as exc:  # handled with a repository-specific hint in build()
+    edge_tts = None  # type: ignore[assignment]
+    EDGE_TTS_IMPORT_ERROR: Exception | None = exc
+    EDGE_TTS_VERSION: str | None = None
+else:
+    EDGE_TTS_IMPORT_ERROR = None
+    try:
+        EDGE_TTS_VERSION = importlib.metadata.version("edge-tts")
+    except importlib.metadata.PackageNotFoundError:
+        EDGE_TTS_VERSION = "unknown"
+
 
 FORMAT_VERSION = 1
-BUILD_FORMAT_VERSION = 3
+BUILD_FORMAT_VERSION = 4
 WIDTH = 2560
 HEIGHT = 1440
 DEFAULT_FPS = 30
@@ -124,6 +140,11 @@ DEFAULT_MIN_DURATION = 3.0
 DEFAULT_TAIL_PADDING = 0.75
 DEFAULT_CRF = 18
 DEFAULT_PRESET = "medium"
+EDGE_TTS_PROVIDER = "edge-tts"
+DEFAULT_EDGE_TTS_VOICE = "en-GB-SoniaNeural"
+EDGE_TTS_RATE = "+0%"
+EDGE_TTS_VOLUME = "+0%"
+EDGE_TTS_PITCH = "+0Hz"
 ALLOWED_TYPES = {"title_card", "still", "video_clip", "evidence_card"}
 SUBTITLE_FONT_NAME = "Microsoft YaHei UI"
 SUBTITLE_FONT_SIZE = 42
@@ -187,6 +208,9 @@ class Chapter:
     narration_path: Path | None = None
     narration_duration_seconds: float | None = None
     voice: str | None = None
+    tts_provider: str | None = None
+    tts_provider_version: str | None = None
+    tts_settings: dict[str, str] | None = None
     shot_duration_seconds: float | None = None
     encoded_duration_seconds: float | None = None
     segment_path: Path | None = None
@@ -668,126 +692,216 @@ def preflight_video_sources(chapters: list[Chapter], ffprobe: Path) -> None:
             )
 
 
-def write_sapi_helper(path: Path) -> None:
-    script = r'''param(
-    [Parameter(Mandatory=$true)][string]$TextPath,
-    [Parameter(Mandatory=$true)][string]$OutputPath,
-    [string]$VoiceName = ""
-)
-$ErrorActionPreference = "Stop"
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-Add-Type -AssemblyName System.Speech
-$synth = New-Object System.Speech.Synthesis.SpeechSynthesizer
-try {
-    $installed = @($synth.GetInstalledVoices() | Where-Object { $_.Enabled })
-    if ($installed.Count -eq 0) {
-        throw "Windows SAPI has no enabled voices"
-    }
-    if ($VoiceName) {
-        $selected = $installed | Where-Object { $_.VoiceInfo.Name -eq $VoiceName } | Select-Object -First 1
-        if (-not $selected) {
-            $available = ($installed | ForEach-Object { $_.VoiceInfo.Name }) -join ", "
-            throw "Requested SAPI voice '$VoiceName' was not found. Available: $available"
-        }
-    } else {
-        $selected = $installed | Where-Object { $_.VoiceInfo.Culture.Name -like "en-*" } | Select-Object -First 1
-        if (-not $selected) {
-            $available = ($installed | ForEach-Object { "$($_.VoiceInfo.Name) [$($_.VoiceInfo.Culture.Name)]" }) -join ", "
-            throw "No enabled English SAPI voice was found. Available: $available"
-        }
-    }
-    $text = [System.IO.File]::ReadAllText($TextPath, [System.Text.Encoding]::UTF8)
-    if ([string]::IsNullOrWhiteSpace($text)) {
-        throw "Narration text is empty"
-    }
-    $synth.SelectVoice($selected.VoiceInfo.Name)
-    $synth.SetOutputToWaveFile($OutputPath)
-    $synth.Speak($text)
-    $synth.SetOutputToNull()
-    Write-Output $selected.VoiceInfo.Name
-}
-finally {
-    $synth.Dispose()
-}
-'''
-    path.write_text(script, encoding="utf-8-sig")
+def resolve_requested_voice(
+    cli_voice: str | None, manifest: dict[str, Any]
+) -> str:
+    if cli_voice is not None and cli_voice.strip():
+        return cli_voice.strip()
+    raw_voice = manifest.get("voice", DEFAULT_EDGE_TTS_VOICE)
+    if raw_voice is None:
+        return DEFAULT_EDGE_TTS_VOICE
+    if not isinstance(raw_voice, str):
+        raise ShowcaseError("manifest 'voice' must be a string when present")
+    return raw_voice.strip() or DEFAULT_EDGE_TTS_VOICE
+
+
+def _cached_edge_tts_metadata(
+    media_path: Path,
+    metadata_path: Path,
+    *,
+    fingerprint: str,
+) -> dict[str, Any] | None:
+    if not media_path.is_file() or not metadata_path.is_file():
+        return None
+    try:
+        candidate = _load_json(metadata_path, "cached Edge TTS metadata")
+    except ShowcaseError:
+        return None
+    if (
+        isinstance(candidate, dict)
+        and candidate.get("fingerprint") == fingerprint
+        and candidate.get("media_sha256") == _sha256(media_path)
+        and candidate.get("provider") == EDGE_TTS_PROVIDER
+        and isinstance(candidate.get("provider_version"), str)
+        and isinstance(candidate.get("voice"), str)
+        and isinstance(candidate.get("settings"), dict)
+    ):
+        return candidate
+    return None
+
+
+def _narration_duration(payload: dict[str, Any], path: Path) -> float:
+    audio_streams = [
+        row
+        for row in payload.get("streams", [])
+        if isinstance(row, dict) and row.get("codec_type") == "audio"
+    ]
+    if not audio_streams:
+        raise ShowcaseError(f"narration media has no audio stream: {path}")
+    codec = audio_streams[0].get("codec_name")
+    if codec != "mp3":
+        raise ShowcaseError(
+            f"narration media codec is {codec!r}, expected 'mp3': {path}"
+        )
+    return _duration_from_probe(payload, path)
+
+
+def _commit_edge_tts_cache(
+    temporary_media: Path,
+    media_path: Path,
+    metadata_path: Path,
+    metadata: dict[str, Any],
+) -> None:
+    staged_metadata = metadata_path.with_name(
+        f".{metadata_path.name}.{os.getpid()}.staged"
+    )
+    rollback_media = media_path.with_name(
+        f".{media_path.name}.{os.getpid()}.rollback"
+    )
+    if staged_metadata.exists() or rollback_media.exists():
+        raise ShowcaseError(
+            "stale Edge TTS cache transaction file exists; remove it before retrying: "
+            f"{staged_metadata if staged_metadata.exists() else rollback_media}"
+        )
+
+    _atomic_json(staged_metadata, metadata)
+    old_media_saved = False
+    new_media_installed = False
+    committed = False
+    try:
+        if media_path.exists():
+            os.replace(media_path, rollback_media)
+            old_media_saved = True
+        os.replace(temporary_media, media_path)
+        new_media_installed = True
+        os.replace(staged_metadata, metadata_path)
+        committed = True
+    except BaseException:
+        if old_media_saved and rollback_media.exists():
+            os.replace(rollback_media, media_path)
+        elif new_media_installed and media_path.exists():
+            media_path.unlink()
+        raise
+    finally:
+        if staged_metadata.exists():
+            try:
+                staged_metadata.unlink()
+            except OSError:
+                pass
+        if committed and rollback_media.exists():
+            try:
+                rollback_media.unlink()
+            except OSError:
+                pass
 
 
 def synthesize_narration(
     chapter: Chapter,
     chapter_directory: Path,
     *,
-    powershell: Path,
-    helper: Path,
     requested_voice: str,
     ffprobe: Path,
     force: bool,
 ) -> None:
     text_path = chapter_directory / "narration.en.txt"
-    wave_path = chapter_directory / "narration.en.wav"
-    metadata_path = chapter_directory / "narration.sapi.json"
+    media_path = chapter_directory / "narration.en.mp3"
+    metadata_path = chapter_directory / "narration.edge-tts.json"
     text_path.write_text(chapter.narration_en + "\n", encoding="utf-8")
+    settings = {
+        "rate": EDGE_TTS_RATE,
+        "volume": EDGE_TTS_VOLUME,
+        "pitch": EDGE_TTS_PITCH,
+    }
+    provider_version = EDGE_TTS_VERSION or "unknown"
     fingerprint = _json_fingerprint(
         {
             "format": 1,
+            "provider": EDGE_TTS_PROVIDER,
+            "provider_version": provider_version,
             "narration_en": chapter.narration_en,
             "requested_voice": requested_voice,
+            "settings": settings,
         }
     )
 
     metadata: dict[str, Any] | None = None
-    if not force and wave_path.is_file() and metadata_path.is_file():
-        candidate = _load_json(metadata_path, "cached SAPI metadata")
-        if (
-            isinstance(candidate, dict)
-            and candidate.get("fingerprint") == fingerprint
-            and candidate.get("wave_sha256") == _sha256(wave_path)
-            and isinstance(candidate.get("voice"), str)
-        ):
-            metadata = candidate
+    duration: float | None = None
+    if not force:
+        metadata = _cached_edge_tts_metadata(
+            media_path,
+            metadata_path,
+            fingerprint=fingerprint,
+        )
+        if metadata is not None:
+            try:
+                duration = _narration_duration(
+                    probe_media(ffprobe, media_path), media_path
+                )
+            except ShowcaseError:
+                metadata = None
 
     if metadata is None:
-        if wave_path.exists():
-            wave_path.unlink()
-        result = run_checked(
-            [
-                powershell,
-                "-NoLogo",
-                "-NoProfile",
-                "-NonInteractive",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                helper,
-                "-TextPath",
-                text_path,
-                "-OutputPath",
-                wave_path,
-                "-VoiceName",
-                requested_voice,
-            ],
-            cwd=chapter_directory,
-            action=f"synthesizing narration for chapter '{chapter.chapter_id}'",
+        temporary = chapter_directory / (
+            f".narration.en.{os.getpid()}.partial.mp3"
         )
-        if not wave_path.is_file() or wave_path.stat().st_size == 0:
-            raise ShowcaseError(
-                f"SAPI did not create narration WAV for chapter '{chapter.chapter_id}'"
+        if temporary.exists():
+            temporary.unlink()
+        try:
+            if edge_tts is None:
+                raise ShowcaseError(
+                    "edge-tts is required for narration synthesis; install "
+                    "tools\\requirements.txt"
+                )
+            communicator = edge_tts.Communicate(
+                chapter.narration_en,
+                requested_voice,
+                rate=EDGE_TTS_RATE,
+                volume=EDGE_TTS_VOLUME,
+                pitch=EDGE_TTS_PITCH,
             )
-        voice_lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
-        voice = voice_lines[-1] if voice_lines else requested_voice
-        metadata = {
-            "format_version": 1,
-            "fingerprint": fingerprint,
-            "voice": voice,
-            "wave_sha256": _sha256(wave_path),
-        }
-        _atomic_json(metadata_path, metadata)
+            communicator.save_sync(str(temporary))
+            if not temporary.is_file() or temporary.stat().st_size == 0:
+                raise ShowcaseError(
+                    "Edge TTS did not create narration MP3 for chapter "
+                    f"'{chapter.chapter_id}'"
+                )
+            duration = _narration_duration(
+                probe_media(ffprobe, temporary), temporary
+            )
+            metadata = {
+                "format_version": 1,
+                "fingerprint": fingerprint,
+                "provider": EDGE_TTS_PROVIDER,
+                "provider_version": provider_version,
+                "voice": requested_voice,
+                "settings": settings,
+                "media_sha256": _sha256(temporary),
+            }
+            _commit_edge_tts_cache(
+                temporary,
+                media_path,
+                metadata_path,
+                metadata,
+            )
+        except ShowcaseError:
+            raise
+        except Exception as exc:
+            raise ShowcaseError(
+                "Edge TTS narration synthesis failed for chapter "
+                f"'{chapter.chapter_id}' with voice '{requested_voice}': {exc}"
+            ) from exc
+        finally:
+            if temporary.exists():
+                temporary.unlink()
 
-    payload = probe_media(ffprobe, wave_path)
-    duration = _duration_from_probe(payload, wave_path)
-    chapter.narration_path = wave_path
+    if duration is None:
+        duration = _narration_duration(probe_media(ffprobe, media_path), media_path)
+    chapter.narration_path = media_path
     chapter.narration_duration_seconds = duration
     chapter.voice = str(metadata["voice"])
+    chapter.tts_provider = str(metadata["provider"])
+    chapter.tts_provider_version = str(metadata["provider_version"])
+    chapter.tts_settings = dict(metadata["settings"])
     chapter.shot_duration_seconds = max(
         chapter.min_duration_seconds, duration + chapter.tail_padding_seconds
     )
@@ -1813,6 +1927,10 @@ def write_sidecar(
                     for source in chapter.sources
                 ],
                 "narration": {
+                    "provider": chapter.tts_provider,
+                    "provider_version": chapter.tts_provider_version,
+                    "voice": chapter.voice,
+                    "settings": chapter.tts_settings,
                     "path": str(chapter.narration_path),
                     "sha256": _sha256(chapter.narration_path) if chapter.narration_path else None,
                     "text_sha256": hashlib.sha256(
@@ -1917,7 +2035,13 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--work-dir", required=True, type=Path, help="reusable build/cache directory")
     result.add_argument("--ffmpeg", help="explicit ffmpeg executable")
     result.add_argument("--ffprobe", help="explicit ffprobe executable")
-    result.add_argument("--voice", help="override the manifest Windows SAPI voice")
+    result.add_argument(
+        "--voice",
+        help=(
+            "override the manifest Edge TTS voice short name "
+            f"(default: {DEFAULT_EDGE_TTS_VOICE})"
+        ),
+    )
     result.add_argument("--fps", type=_positive_integer, default=DEFAULT_FPS)
     result.add_argument("--crf", type=_crf, default=DEFAULT_CRF)
     result.add_argument("--preset", default=DEFAULT_PRESET, help="libx264 preset")
@@ -1936,6 +2060,11 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
             "Pillow is required. Use tools\\.venv\\Scripts\\python.exe or install "
             "tools\\requirements-static.txt"
         ) from PIL_IMPORT_ERROR
+    if EDGE_TTS_IMPORT_ERROR is not None:
+        raise ShowcaseError(
+            "edge-tts is required. Use tools\\.venv\\Scripts\\python.exe or install "
+            "tools\\requirements.txt"
+        ) from EDGE_TTS_IMPORT_ERROR
     manifest_path = args.manifest.expanduser().resolve()
     output = args.output.expanduser().resolve()
     work_directory = args.work_dir.expanduser().resolve()
@@ -1946,10 +2075,10 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
     manifest, chapters = load_manifest(manifest_path)
     ffmpeg = find_program(args.ffmpeg, "ffmpeg")
     ffprobe = find_program(args.ffprobe, "ffprobe", sibling_of=ffmpeg)
-    powershell = find_program(None, "powershell")
     fonts = find_fonts()
     preflight_video_sources(chapters, ffprobe)
     prepare_subtitle_layouts(chapters, fonts)
+    requested_voice = resolve_requested_voice(args.voice, manifest)
     if args.validate_only:
         classifications = sorted({chapter.classification for chapter in chapters})
         print(
@@ -1962,14 +2091,6 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
     manifest_hash = _sha256(manifest_path)
     build_directory = work_directory / f"showcase-{manifest_hash[:16].lower()}"
     build_directory.mkdir(parents=True, exist_ok=True)
-    helper = build_directory / "sapi_narration.ps1"
-    write_sapi_helper(helper)
-    requested_voice = args.voice
-    if requested_voice is None:
-        raw_voice = manifest.get("voice", "")
-        if not isinstance(raw_voice, str):
-            raise ShowcaseError("manifest 'voice' must be a string when present")
-        requested_voice = raw_voice.strip()
 
     for chapter in chapters:
         chapter_directory = build_directory / f"{chapter.index:03d}-{_safe_slug(chapter.chapter_id)}"
@@ -1977,8 +2098,6 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
         synthesize_narration(
             chapter,
             chapter_directory,
-            powershell=powershell,
-            helper=helper,
             requested_voice=requested_voice,
             ffprobe=ffprobe,
             force=args.force,

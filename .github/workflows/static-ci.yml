@@ -35,6 +35,8 @@ jobs:
         run: python tools/test_build_ox_here_release.py
       - name: Test MiniMax localization caller
         run: python tools/test_translate_localization_minimax.py
+      - name: Test full-agent showcase builder
+        run: python tools/test_build_full_agent_showcase.py
       - name: Validate generated and static content
         run: python tools/validate_static.py
       - name: Validate Vivhite standalone content
