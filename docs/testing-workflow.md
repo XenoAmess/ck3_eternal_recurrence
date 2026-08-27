@@ -371,9 +371,13 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   中作为人工重新冻结并逐字节验证的 cold seed，driver history 必须回退到其 `1996` anchor，不能把失败分支的尾部 history
   当成已持久进度。
 - 此类 revision turnover 的回归合同是有界重新观测：一般 planner 必须 re-plan；只有 composite owner 能证明某阶段可安全重入时
-  才允许内部重试，并必须验证目标后置状态。当前最小例外只属于 `life-advance` 的暂停收尾：刷新帧若已暂停就采用真实帧；若仍
-  running 且现有事件/速度语义未漂移，只允许一次 fresh-revision `pause-map`；其它漂移或再次竞争继续失败。单元测试只授予
-  static-ready；必须从上述 cold seed 真实越过同类边界并再产出合格 checkpoint，才能恢复 production-live 声明。
+  才允许内部重试，并必须验证目标后置状态。首个最小例外只给 `life-advance` 暂停收尾一次 fresh-revision `pause-map`；它已在
+  `20260827T112207Z-one-generation-3c7aa5e2` 越过旧边界并形成 17 个新 checkpoint，但随后由 production artifact 证明连续
+  running revision 仍可在同一暂停窗口耗尽一次重试（`expected 183, current 185`）。因此更新后的最小合同仍只属于
+  `pause-map`：在既有 command timeout 内反复读取 fresh frame；已暂停就采用真实帧且不伪造 action，仍 running 就用该帧提交，
+  revision 再变化则继续收敛，成功提交只记录一次并等待 paused 后置状态。不得把该循环外推到 query、其它 primitive 或旧 plan。
+  单元测试只授予 static-ready；必须从最新 SHA `AE73EFE1...75B42` cold checkpoint 实机越过同类边界并再产出合格 checkpoint，
+  才能恢复 production-live 声明。
 - 2026-08-26 default-OFF 实机连续执行 12 次成功的战时 `life-advance`，但自动 planner 没有选择 checkpoint；最后的
   66,426,917-byte 存档是控制器显式提交，不能倒推为周期存档成功。原因是 active-war 分支在通用
   `periodic_checkpoint` 统计之前早返回。因此生产 owner 另行只累计 `life-advance`/`economic-event-cycle` 中

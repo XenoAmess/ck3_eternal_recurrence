@@ -3572,6 +3572,7 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None = None,
         required_capability: str | None = None,
         request_fields: dict[str, object] | None = None,
+        timeout_seconds: float | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -3619,8 +3620,13 @@ class NativeHeadlessGameplayDriver:
                 )
             request.update(request_fields)
         self.endpoint.send(request)
+        command_timeout_seconds = (
+            self.command_timeout_seconds
+            if timeout_seconds is None
+            else _positive_seconds(timeout_seconds, "timeout_seconds")
+        )
         frame = self.state.wait_for_command_result(
-            request_id, self.command_timeout_seconds
+            request_id, command_timeout_seconds
         )
         if frame is None:
             raise BridgeUnavailableError(
@@ -8511,26 +8517,46 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if snapshot.get("paused") is True:
             return snapshot
-        try:
-            result = self._execute_composite_primitive("pause-map", snapshot)
-        except BridgeUnavailableError as error:
-            if "native gameplay revision mismatch" not in str(error):
-                raise
-            # A timeline tick can auto-pause the map (most notably when an
-            # event opens) between the progress observation and pause-map's
-            # pre-submit revision check.  Adopt that fresh, already-satisfied
-            # postcondition without forging a pause action.  A still-running
-            # frame remains an error; _execute_composite_primitive has already
-            # used its one bounded retry for a harmless running-state race.
-            refreshed = self.take_snapshot()
-            if refreshed.get("paused") is not True:
-                raise
-            return refreshed
+        deadline = time.monotonic() + self.command_timeout_seconds
+        current = snapshot
+        while current.get("paused") is not True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeUnavailableError(
+                    "native life-advance pause-map revision convergence "
+                    "timed out"
+                )
+            try:
+                result = self._execute_primitive_step(
+                    "pause-map",
+                    expected_revision=int(current["revision"]),
+                    timeout_seconds=remaining,
+                )
+            except BridgeUnavailableError as error:
+                if "native gameplay revision mismatch" not in str(error):
+                    raise
+                # pause-map is the idempotent postcondition of this bounded
+                # timeline transaction.  CK3 can publish several running
+                # frames between observation and the primitive's pre-submit
+                # revision check.  Keep adopting the real fresh frame until
+                # the existing command deadline, but never extend this rule
+                # to another primitive or record an action that was not sent.
+                current = self.take_snapshot()
+                if current.get("paused") is True:
+                    return current
+                if time.monotonic() >= deadline:
+                    raise BridgeUnavailableError(
+                        "native life-advance pause-map revision convergence "
+                        "timed out"
+                    ) from error
+                continue
+            break
         actions.append({"step": "pause-map", "result": result})
+        remaining = max(0.0, deadline - time.monotonic())
         paused = self._wait_for_snapshot(
             self.take_snapshot(),
             lambda candidate: candidate.get("paused") is True,
-            timeout_seconds=self.command_timeout_seconds,
+            timeout_seconds=remaining,
         )
         if paused.get("paused") is not True:
             raise BridgeUnavailableError(

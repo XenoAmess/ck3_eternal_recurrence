@@ -161,6 +161,27 @@ verify its intended postcondition. The production artifact does not preserve
 the full `159` and `160` frames, so it does not prove which normalized field
 changed or which internal primitive first observed the turnover.
 
+A second production continuation,
+`20260827T112207Z-one-generation-3c7aa5e2`, proved that the first one-retry
+consumer rule was necessary but insufficient. It crossed the old boundary,
+completed `106/107` turns and wrote 17 newer checkpoints, then stopped with
+`expected 183, current 185`. The last query began from a paused public
+revision `180`; CK3's debug log subsequently records real simulation work at
+19:42:08--19:42:11, before the blocker at 19:42:13. The failure therefore
+occurred after resume while the bounded composite was trying to regain the
+paused postcondition. The artifact does not retain the internal refreshed
+frames, so it cannot distinguish an active-event change from a speed change;
+neither may be asserted.
+
+This observed failure is the necessity boundary for the next consumer fix.
+Only `life-advance`'s `pause-map` phase may converge across more than one
+fresh running revision, and only until the existing command timeout expires.
+Every iteration must re-read the current frame before submission. An
+already-paused frame is the real postcondition and is adopted without a
+synthetic action; a successful submit is recorded exactly once and must still
+be followed by a paused observation. No other primitive, typed query,
+planner action, or old plan receives a generic retry.
+
 Combat-v3 binds the caller's positive `expected_revision`, the complete last
 published paused snapshot, and its full-generation encounter IDs before
 submission. Its executor re-reads that snapshot on application-main, requires

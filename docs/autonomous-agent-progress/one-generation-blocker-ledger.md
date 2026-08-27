@@ -35,7 +35,7 @@
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
-| GEN-012 | B1 | `life-advance` 部分复合执行期间发生 revision turnover | 正式长跑在第 97 回合以 `expected 159, current 160` 停止；此前 `96` 回合、`44` gameplay 与 `14` checkpoints 成功，session、mailbox、观测与 cleanup 均正常。错误发生在 opaque composite 返回前，不能用旧 plan 跨 revision 继续，也不能归因于 CK3 AI policy | 只让 composite owner 对可证明安全重入的暂停收尾做有界 fresh-frame 收口，不放宽 typed query same-frame gate；单测后从 `1D6A...F443D` cold seed 实机越过边界并保存新 checkpoint | blocker-removal static-ready；production revalidation pending |
+| GEN-012 | B1 | `life-advance` 暂停收尾期间连续 revision turnover | 首个一次重试修复已在正式续跑中越过旧 `159→160` 边界并形成 17 个新 checkpoint，但第 107 回合又以 `expected 183, current 185` 停止；日志证明 CK3 已 resume 并执行引擎帧，仍属 composite pause 阶段的真实 production race，不是 CK3 AI policy | 只让 composite owner 在既有 command timeout 内令 `pause-map` 对 fresh running frames 收敛，采用真实 paused 帧且最多记录一次成功提交；不放宽 typed query/其它 primitive/旧 plan。单测后从 `AE73...5B42` cold checkpoint 续跑 | 更新 blocker-removal static-ready；production revalidation pending |
 
 ## Degraded heuristic 纪律
 
@@ -193,3 +193,31 @@
   `32 passed, 13 subtests passed`，`test_gameplay_bridge.py` 为 `169 passed, 35 subtests passed`。全 unit suite 除临时 worktree
   `safe.directory` 外为 `1307 passed, 2 skipped`；带进程局部 Git 配置重跑环境套件为 `54 passed, 1 skipped, 7 subtests passed`。
   独立只读审阅 PASS；尚未据此声称 production-live。
+
+## 2026-08-27 19:47：GEN-012 连续 running revision 实证
+
+- `aff784d` 的正式续跑 `20260827T112207Z-one-generation-3c7aa5e2` 已越过旧 `159→160` blocker，共完成
+  `106/107` turns、`53` gameplay turns、`52` visible gameplay turns 与 `17` checkpoints，角色 `29829` 和 episode
+  `native-29829-ee172aa720db` 均保持存活。第 107 回合随后在 opaque `life-advance` 中停止：
+  `native gameplay revision mismatch: expected 183, current 185`；无 terminal，cleanup 全绿。
+- 权威 `report.json` 为 `495,998` bytes、SHA-256
+  `BC10E3DEA91392C2B25B3661231A858E81B1C9B79615865985CE59BBDBF42DB4`；`first-blocker.json` 为 `3,968`
+  bytes、SHA-256 `8FC4B4074F9B42AA14F0911740813146F3F68DAB21E1081D6738E9901B45028B`。driver state 尾部为：
+  history `2119` checkpoint 成功，`2120` query 在 paused public revision `180` 成功，`2121` `life-advance` 无 result 并失败。
+- CK3 debug log 在 19:42:08--19:42:11 记录真实 scheme/effect/army/migration simulation ticks，blocker 发生于
+  19:42:13.207；故障不在入口或首个 set-speed 之前，而是 resume 后令 map 重回 paused 的提交窗口。artifact 未保存内部 refresh
+  frame，不能进一步声称是 event 还是 speed 字段变化。
+- 最新可信物理恢复点为 `date_raw=53198376`、history `2119`、size `73,968,716`、SHA-256
+  `AE73EFE1CC099BDB5BC474F500442723A55D8AC0FB2348172DC88E84A9C75B42`；`xar_checkpoint.ck3`、`last_save.ck3`、
+  `autosave.ck3` 三者逐字节一致，失败尾部未再次保存。后续从该 anchor 冷恢复，不能采用 report 的保守 immutable-seed fallback。
+- 必要性证据只支持一个最小增量：`_pause_life_advance` 在既有 command timeout 内持续以 fresh running revision 提交
+  `pause-map`，直到观察到 paused 或超时；已 paused 的帧直接采用且不伪造 action，成功提交最多记一次。不得扩为 service 通用重试，
+  不得削弱 query same-frame gate，也不改变 planner、战争、事件或其它原生 AI 决策树。预期收益是解除已复现的长跑 B1，并让同一
+  episode 从最新 checkpoint 继续；没有证据支持其它防御性扩张。
+- 更新 blocker-removal 已 static-ready：循环仅存在于 `_pause_life_advance`，每次 pre-submit mismatch 读取 fresh frame，并把同一
+  绝对 deadline 的剩余预算传给 command-result 与 paused-postcondition 等待；ACK 后立即退出提交循环，只记录一个真实 action。
+  自动暂停、连续两次 running race、event/speed drift、deadline 零提交、非 revision 错误直抛和 ACK 后不重提均有回归。
+  聚焦为 `8 passed, 2 subtests passed`，完整 driver 为 `126 passed, 102 subtests passed`，auto-run 为
+  `32 passed, 13 subtests passed`，gameplay bridge 为 `169 passed, 35 subtests passed`；全 unit suite 为
+  `1316 passed, 2 skipped, 882 subtests passed`。`py_compile` 与 `git diff --check` GREEN，独立只读审阅 PASS；在从
+  `AE73...5B42` cold restore 实机越过并保存更新 checkpoint 前仍不得关闭 `GEN-012`。
