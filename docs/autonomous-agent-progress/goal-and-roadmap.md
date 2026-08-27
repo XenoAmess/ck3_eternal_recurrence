@@ -226,8 +226,10 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    的全寿命 strict run；
 2. 若仅耗尽 turn/wall bound 且 checkpoint/cleanup 全绿，直接从最新恢复点续跑；若出现真实 B0/B1，保留 artifact，先更新对应
    exact-build 原生树，再做最小合法 blocker-removal；
-3. 直到生成匹配本 episode 的自然死亡 `terminal-settlement.json`，且 settlement、score、record persistence、cross-run record、
-   零继承人 gameplay 与 cleanup 全部 GREEN，才标记 G1；
+3. 直到生成匹配本 episode 的自然死亡 `terminal-settlement.json`，并确认 `death-terminal` 已等到琉焰卿 Mod 发布
+   `ready=true`、`commit_serial=1`、source CharacterID 匹配的 committed settlement；该文件
+   `one_life_settlement.final_score` 是权威“人生分数”，必须与顶层 `score`、`recorded_episode.score` 完全一致，且必要 record
+   persistence、零继承人 gameplay 与 cleanup 全部 GREEN，才标记 G1；
 4. G1 后处理 `GEN-009` episode seed 债务并重复一轮取得 G2；
 5. 完整 effects、reinforcement/join、terminal 剩余分支、forecast、智能宣战及 P4–P10 通用玩法域若未成为真实 blocker，继续按
    B2/B3 账本排序，不抢占首次 G1。

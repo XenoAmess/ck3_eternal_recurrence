@@ -29,7 +29,7 @@
 | GEN-003 | B1/B2 | pending character interaction | 原生 inbound reply 树已冻结；exact allowlist 现为 `spar_with_knight_interaction` 与 war-sensitive `pay_ransom_interaction`。后者已 production-live 完成 typed query→reject→旧 full ID 消失→继续推进/checkpoint；unknown/宗教/其它 stock definition 仍 fail-closed，100% enforce 优先与 war-special 门不变 | 继续由长跑首个真实 key 驱动逐定义审计；补 `spar`/unique-accept/intermediary/notification live，并以 typed terms + utility 替换 reject-first | `pay_ransom` reject loop live；通用语义 B2 |
 | GEN-004 | B1 | 已有战争到终局 | 当前 `claim_cb` primary-attacker 已 production-live 完成 options→claim terms v1→white-peace submit；AI 异步回复后 WarID 消失，残军解散，立即保存和平 checkpoint 并冷恢复继续。720 raw cooldown 期间不重复查询/提议。它不是原生等价或完整 v2 | 保留本切片；由下一次实际战争扩 victory/defeat、其它 CB/角色、多战争与完整 outcome utility | narrow production-live loop；通用终战 B2/B1 待场景 |
 | GEN-005 | B2 | 非战争长期治理 | 经济、内阁、生活方式、家庭等大多不是通用 native semantic policy | 不出现强制 UI 时允许时间推进；出现阻塞则提升为 B1 并补最小动作 | 记账观察 |
-| GEN-006 | B1 | 自然死亡与结算 | strict runner 现只接受本次执行且 source CharacterID/score/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`，并输出独立 terminal sidecar；最新 100-turn run 中 CharacterID `29829` 仍存活、`terminal=null`，自然完整 episode 尚未发生 | production 长跑观测玩家自然死亡，生成匹配 CharacterID `29829` 的 `terminal-settlement.json` 并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；自然 episode live 待执行 |
+| GEN-006 | B1 | 自然死亡与结算 | strict runner 在死亡后继续等待琉焰卿 Mod 的 committed settlement 与必要 record persistence；只接受本次执行且 `ready=true`、`commit_serial=1`、source CharacterID/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`。`terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，并须等于顶层 `score` 与 `recorded_episode.score`。最新 100-turn run 中 CharacterID `29829` 仍存活、`terminal=null`，自然完整 episode 尚未发生 | production 长跑观测玩家自然死亡，生成匹配 CharacterID `29829` 且三处人生分数一致的 `terminal-settlement.json`，并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；自然 episode live 待执行 |
 | GEN-007 | B2/B3 | 战斗质量 | reinforcement assigned/join、异常 terminal 与 forecast 未全闭合 | 若不阻塞当前 run 先记录；真实卡住或导致无法结束战争时提升为 B1 | 记账观察 |
 | GEN-008 | B0（环境） | 执行会话曾无法启动 CK3 live acceptance | 旧 `CodexSandboxOffline / WinSta0\\CodexSandboxDesktop-*` 启动崩溃仍作为历史环境 RED 保留；当前宿主已是 `xenoa / console session 1 / WinSta0\\Default`，连续完成 white-peace、冷恢复、pending reply 与长跑，证明不再是当前 blocker | 无；未来环境切回隔离 desktop 时按相同 host guard 拒绝，不改 gameplay source 掩盖 | 2026-08-27 resolved |
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
@@ -61,8 +61,10 @@
 - `native_auto_run` 新增向后兼容的 `completion_contract=one_generation`；原 bounded 合同保留。strict 模式冻结初始
   episode CharacterID/run/date，要求 exact v2 cold checkpoint，检查每个 before/after binding，并沿用已验证的三次 eligible advance
   checkpoint cadence。
-- 唯一成功终点是本次实际执行的 `death-terminal`：terminal reason、完整 settlement、source CharacterID、score、record
-  persistence、cross-run recorded episode、零继承人 gameplay 与 cleanup 必须全部吻合。启动帧已有 terminal、裸 terminal status、
+- 唯一成功终点是本次实际执行的 `death-terminal`：检测到死亡后仍须等到琉焰卿 Mod 发布 `ready=true`、`commit_serial=1`、
+  source CharacterID 匹配的完整 settlement，并在新纪录场景等到 record persistence。其
+  `terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，必须与文件顶层 `score`、
+  `recorded_episode.score` 完全一致；零继承人 gameplay 与 cleanup 也必须吻合。启动帧已有 terminal、裸 terminal status、
   `strategy-review`、`settlement_unavailable` 或上限耗尽均不能 GREEN。
 - `native-one-generation` 会先归档固定 seed checkpoint 与匹配 driver state，再原子写 `report.json`；失败写
   `first-blocker.json`，成功写 `terminal-settlement.json`。blocker 以 first-write-wins 保留当前失败尝试的 plan、动作、result、

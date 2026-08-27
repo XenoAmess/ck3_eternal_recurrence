@@ -262,9 +262,13 @@ paused map、episode identity 与 main-thread mailbox 全部就绪后有界执�
 
 `native-one-generation` 复用同一 production owner，但采用严格的一代人完成合同并始终从 exact v2 cold checkpoint 开始。它在
 任何 gameplay action 前把 checkpoint 与匹配的 driver state 复制到
-`<state-dir>/runs/<utc>-one-generation-<nonce>/seed/`，随后持续运行到首个 blocker 或本次真实执行的 `death-terminal`。只有初始
-角色/run identity 始终不变、出现可见日期推进、结算 `source_character_id` 与初始角色一致、分数与完整 settlement/cross-run
-record 一致、没有继承人 gameplay，且 CK3 进程树完成回收时才返回 `ok=true`。达到 turn/wall 上限只会得到
+`<state-dir>/runs/<utc>-one-generation-<nonce>/seed/`，随后持续运行到首个 blocker 或本次真实执行的 `death-terminal`。检测到角色死亡后，
+`death-terminal` 仍会等待琉焰卿 Mod 发布已提交的 settlement：`ready=true`、`commit_serial=1` 且
+`source_character_id` 匹配本 episode；若本次写入新纪录，还必须等对应 `tutorial.txt` 位稳定落盘。默认 settlement 等待窗口为 30 秒，
+未就绪、来源不匹配或必要纪录未落盘只会形成 blocker，不能判定结算完成。`terminal-settlement.json.one_life_settlement.final_score`
+是琉焰卿给出的“人生分数”，必须与该文件顶层 `score` 及 `recorded_episode.score` 完全一致。只有初始角色/run identity 始终不变、
+出现可见日期推进、上述 committed settlement、人生分数与 cross-run record 全部吻合、没有继承人 gameplay，且 CK3 进程树完成回收时
+才返回 `ok=true`。达到 turn/wall 上限只会得到
 `bounded_incomplete`；可保存的尾部仍会 checkpoint，但绝不冒充一代完成。最终 `report.json` 总是保留完整 turns/checkpoints；失败另写
 `first-blocker.json`，成功另写 `terminal-settlement.json`。默认每 3 个已验证 eligible advance 保存一次；这里计的是动作次数，
 不是游戏日。当前和平 `life-advance` 通常以约 30 天为一个 horizon，因此默认大致形成季度级恢复点，并避免角色在第一份周期
