@@ -16,7 +16,11 @@ from pathlib import Path
 import threading
 import time
 
-from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
+from .bridge.driver import (
+    BridgeUnavailableError,
+    StepPostconditionError,
+    UnsupportedStepError,
+)
 from .bridge.event_contract import parse_event_option_step
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.pending_character_interaction_context_contract import (
@@ -215,7 +219,7 @@ def native_auto_run(
             "before": copy.deepcopy(before),
             "plan": copy.deepcopy(attempt.get("plan")),
             "selected_step": attempt.get("selected_step"),
-            "result": _compact_step_result(attempt.get("result")),
+            "result": _compact_failure_step_result(attempt.get("result")),
             "after": copy.deepcopy(after),
             "active_context": copy.deepcopy(
                 after.get("active_context")
@@ -819,6 +823,15 @@ def native_auto_run(
         status = "operator_stop"
         primary_error = "KeyboardInterrupt: operator requested stop"
     except BaseException as error:
+        if isinstance(error, StepPostconditionError) and isinstance(
+            current_attempt, dict
+        ):
+            if isinstance(error.plan, dict):
+                current_attempt["plan"] = copy.deepcopy(error.plan)
+            if isinstance(error.selected_step, str) and error.selected_step:
+                current_attempt["selected_step"] = error.selected_step
+            if isinstance(error.step_result, dict):
+                current_attempt["result"] = copy.deepcopy(error.step_result)
         session_exited = session_done.is_set()
         failure_stage = (
             "session"
@@ -2056,6 +2069,28 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
             if isinstance(action, dict)
             else None
         )
+    return compact
+
+
+def _compact_failure_step_result(result: object) -> dict[str, object] | None:
+    """Retain the one failed action's bounded postcondition evidence."""
+    compact = _compact_step_result(result)
+    if compact is None or not isinstance(result, dict):
+        return compact
+    for key in (
+        "ending_date",
+        "requested_horizon_days",
+        "timeline_speed",
+        "timeline_policy",
+        "war_progress_after",
+        "actions",
+        "native_revision",
+    ):
+        if key in result:
+            compact[key] = copy.deepcopy(result[key])
+    for key, value in result.items():
+        if isinstance(key, str) and key.startswith("contact_"):
+            compact[key] = copy.deepcopy(value)
     return compact
 
 

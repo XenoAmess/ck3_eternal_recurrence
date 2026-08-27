@@ -393,7 +393,7 @@ flowchart TD
     class F unknown;
 ```
 
-### 2026-08-28 端点实机修正：敌军已入省但战斗尚未初始化
+### 2026-08-28 端点实机修正：日期已跨日但当日结算尚未完整发布
 
 - [production-live] `b5865f3` 的冷恢复 canary
   `20260827T225828Z-one-generation-e74fb9df` 已证明窄分支不会再枚举 185 个目标：它从
@@ -421,6 +421,25 @@ flowchart TD
   `hostile_entered_contact_province` 或真实 CombatID，现有 battle-control OODA 接管；若仍无直接
   状态变化，则继续保留 RED，并优先把 ending semantic snapshot/war progress 写入失败 artifact
   后再判断是否需要 exact daily-tick final-stage hook。
+- [production-live] 上述 hostile-entry 修正随 `9b7d254` 再次从相同 checkpoint 冷恢复；run
+  `20260827T231856Z-one-generation-2318df2a` 仍在 `53216448` 给出同一后置 RED。其
+  `report.json` SHA-256 为
+  `5E67925F38D85D068131914254495603480156F4FCB2F7ED899313471DA4A079`，
+  `first-blocker.json` SHA-256 为
+  `F495A83251BD346C96481668C6E007C5C90D753D0121492E59146FEB4536B7EED`。
+  因此“最后已发布帧中敌军已经进入 `5692`”的假设被实机否定；闭区间 endpoint 只证明预测边界，
+  不能证明 movement/contact lifecycle 已完成。
+- [static-confirmed] exact-build 日循环先在 stage 1 写入新 `date_raw`，随后 stage 2 才运行当日
+  managers/tasks，最后进入 `CDailyTickCommand` final stage `RVA 0x26D3E80`。当前 Python
+  exact-day 事务一看到日期增加就请求暂停，故它可能在新日期的较早阶段取得 paused frame；这与两次
+  `53216448` RED 一致，但还不是对某个具体 CK3 task 顺序的动态证明。
+- [static-ready] 最小观测修复不新增 native API，也不再推进游戏时间：首个 paused 后置状态仍为空时，
+  只提交一次幂等 `pause-map`。GEN-015 exact DLL 的 `already_paused` 分支会清空缓存并强制重新
+  `ReadSnapshot`/发布状态；Python 只接受同 date、speed、episode、local player、bridge PID 与
+  connection generation，且 public/native revision 都严格增长的新帧，再重跑原后置条件。若仍为空，
+  action 保持 RED；失败 history 与 `first-blocker` 同时保留 ending date、完整 `war_progress_after`、
+  refresh ACK/revision 和 action 列表。该方案仅修正实际出现的 stale/early projection，不宣称
+  `53216448` 必然已经形成战斗。
 
 ## 与 GUI 战斗预测严格分离
 

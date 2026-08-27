@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
     CallbackGameplayDriver,
+    StepPostconditionError,
     UnsupportedStepError,
 )
 from xar_autoplayer.bridge.native_driver import (
@@ -6659,6 +6660,221 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "active_combat_observed",
         )
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
+    def test_unavoidable_contact_forces_one_same_date_paused_refresh(
+        self,
+    ) -> None:
+        start_date = 53_216_424
+        player = _army(
+            101,
+            province_id=5692,
+            move_target_province_id=3610,
+            army_state="moving",
+            route_province_ids=[8672, 3610],
+        )
+        enemy = _army(
+            31,
+            province_id=5693,
+            controllable=False,
+            move_target_province_id=5692,
+            army_state="moving",
+            route_province_ids=[5692],
+        )
+        war = _war(
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[3610],
+        )
+        combat_player = {
+            **player,
+            "in_combat": True,
+            "army_state": "combat",
+            "army_state_code": 2,
+            "move_target_province_id": None,
+            "route_province_ids": [],
+        }
+        combat_enemy = {
+            **enemy,
+            "current_province_id": 5692,
+            "in_combat": True,
+            "army_state": "combat",
+            "army_state_code": 2,
+            "move_target_province_id": None,
+            "route_province_ids": [],
+        }
+        combat_war = _war(
+            allied_armies=[combat_player],
+            enemy_armies=[combat_enemy],
+            war_objective_province_ids=[3610],
+        )
+        advance_step = advance_route_contact_horizon_step(101, 3610, (31,))
+        proof = {
+            "proof_kind": "unavoidable_current_province_contact",
+            "subject_army_id": 101,
+            "target_province_id": 3610,
+            "hostile_army_ids": [31],
+            "contact_horizon": {
+                "subject_route": {
+                    "current_province_id": 5692,
+                },
+                "conflicts": [
+                    {
+                        "kind": "same_province",
+                        "hostile_army_id": 31,
+                        "province_id": 5692,
+                    }
+                ],
+            },
+        }
+
+        for refreshed_combat in (True, False):
+            with self.subTest(refreshed_combat=refreshed_combat):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                    command_timeout_seconds=0.2,
+                    life_advance_timeout_seconds=0.2,
+                )
+                endpoint.publish(
+                    _hello(
+                        "game.state.snapshot",
+                        "game.state.war-objectives",
+                        "game.state.army-routes",
+                        "game.command.query-route-contact-horizon-v1-N",
+                        "game.command.set-speed-1",
+                        "game.command.resume-map",
+                        "game.command.pause-map",
+                    )
+                )
+
+                def publish_snapshot(
+                    revision: int,
+                    *,
+                    date_raw: int,
+                    combat: bool = False,
+                ) -> None:
+                    endpoint.publish(
+                        _snapshot(
+                            revision,
+                            paused=True,
+                            date_raw=date_raw,
+                            speed=1,
+                            active_wars=[combat_war if combat else war],
+                            player_armies=[combat_player if combat else player],
+                        )
+                    )
+
+                publish_snapshot(40, date_raw=start_date)
+                expected_revision = int(driver.take_snapshot()["revision"])
+
+                def fake_life_advance(**_kwargs: object) -> dict[str, object]:
+                    publish_snapshot(41, date_raw=start_date + 24)
+                    return {
+                        "step": advance_step,
+                        "backend_id": "native-headless",
+                        "source": "native-composite",
+                        "starting_date": {"date_raw": start_date},
+                        "ending_date": {"date_raw": start_date + 24},
+                        "starting_date_raw": start_date,
+                        "ending_date_raw": start_date + 24,
+                        "elapsed_days": 1,
+                        "requested_horizon_days": 1,
+                        "timeline_speed": 1,
+                        "timeline_policy": "exact_one_day_contact",
+                        "progress_status": "postcondition",
+                        "war_progress_before": {},
+                        "war_progress_after": {},
+                        "ordinary_events": [],
+                        "event_resolution": "none",
+                        "actions": [],
+                        "paused": True,
+                        "active_event": None,
+                        "final_screen": "map_hud",
+                        "snapshot_id": "native:41",
+                        "revision": 41,
+                    }
+
+                def answer(frame: dict[str, object]) -> None:
+                    if (
+                        frame.get("type") != "execute_step"
+                        or frame.get("step") != "pause-map"
+                    ):
+                        return
+                    endpoint.publish(
+                        {
+                            "type": "command_result",
+                            "protocol_version": 1,
+                            "request_id": frame["request_id"],
+                            "ok": True,
+                            "result": {
+                                "step": "pause-map",
+                                "accepted": True,
+                                "status": "already_paused",
+                            },
+                        }
+                    )
+                    publish_snapshot(
+                        42,
+                        date_raw=start_date + 24,
+                        combat=refreshed_combat,
+                    )
+
+                endpoint.send_hook = answer
+                with (
+                    mock.patch(
+                        "xar_autoplayer.bridge.native_driver."
+                        "_fresh_route_contact_advance_proofs",
+                        return_value={advance_step: proof},
+                    ),
+                    mock.patch.object(
+                        driver,
+                        "_execute_life_advance",
+                        side_effect=fake_life_advance,
+                    ),
+                ):
+                    if refreshed_combat:
+                        result = driver.execute_step(
+                            advance_step,
+                            expected_revision=expected_revision,
+                        )
+                        self.assertEqual(
+                            result["contact_transition"]["postcondition"],
+                            "active_combat_observed",
+                        )
+                        self.assertEqual(
+                            result["contact_refresh"]["ack_status"],
+                            "already_paused",
+                        )
+                        self.assertEqual(result["ending_date_raw"], start_date + 24)
+                        self.assertEqual(result["war_progress_after"]["date_raw"], start_date + 24)
+                    else:
+                        with self.assertRaises(StepPostconditionError):
+                            driver.execute_step(
+                                advance_step,
+                                expected_revision=expected_revision,
+                            )
+                        history = driver._history_snapshot()
+                        self.assertFalse(history[-1]["ok"])
+                        failed_result = history[-1]["result"]
+                        self.assertEqual(
+                            failed_result["contact_refresh"]["ack_status"],
+                            "already_paused",
+                        )
+                        self.assertEqual(
+                            failed_result["ending_date_raw"], start_date + 24
+                        )
+                        self.assertEqual(
+                            failed_result["war_progress_after"]["date_raw"],
+                            start_date + 24,
+                        )
+                pause_frames = [
+                    frame
+                    for frame in endpoint.frames
+                    if frame.get("type") == "execute_step"
+                    and frame.get("step") == "pause-map"
+                ]
+                self.assertEqual(len(pause_frames), 1)
 
     def test_unavoidable_contact_observes_conflict_hostile_entering_province(
         self,

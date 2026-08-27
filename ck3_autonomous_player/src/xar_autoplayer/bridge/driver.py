@@ -20,6 +20,22 @@ class BridgeUnavailableError(RuntimeError):
     """The selected game bridge is not connected to a live CK3 session."""
 
 
+class StepPostconditionError(BridgeUnavailableError):
+    """A submitted gameplay step failed its observed-state postcondition."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        step_result: dict[str, object],
+        selected_step: str,
+    ) -> None:
+        super().__init__(message)
+        self.step_result = step_result
+        self.selected_step = selected_step
+        self.plan: dict[str, object] | None = None
+
+
 class UnsupportedStepError(RuntimeError):
     """A backend does not yet implement this gameplay step."""
 

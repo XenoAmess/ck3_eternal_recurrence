@@ -7,6 +7,7 @@ import copy
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
+    StepPostconditionError,
     UnsupportedStepError,
 )
 from .event_contract import (
@@ -297,22 +298,31 @@ class GameplayBridgeService:
             else None
         )
         event_option_number = parse_event_option_step(selected_step)
-        if (
-            event_option_number is not None
-            and isinstance(planned_event_id, int)
-            and not isinstance(planned_event_id, bool)
-            and 1 <= planned_event_id <= 2**31 - 1
-        ):
-            result = self.select_event_option(
-                event_option_number,
-                event_instance_id=planned_event_id,
-                expected_revision=int(planned["revision"]),
-            )
-        else:
-            result = self.execute_step(
-                selected_step,
-                expected_revision=int(planned["revision"]),
-            )
+        try:
+            if (
+                event_option_number is not None
+                and isinstance(planned_event_id, int)
+                and not isinstance(planned_event_id, bool)
+                and 1 <= planned_event_id <= 2**31 - 1
+            ):
+                result = self.select_event_option(
+                    event_option_number,
+                    event_instance_id=planned_event_id,
+                    expected_revision=int(planned["revision"]),
+                )
+            else:
+                result = self.execute_step(
+                    selected_step,
+                    expected_revision=int(planned["revision"]),
+                )
+        except StepPostconditionError as error:
+            # The action already changed CK3 before its final postcondition
+            # failed. Preserve the planner context on the typed Python
+            # exception so the runner can report that factual partial result
+            # without changing the bridge protocol or treating it as success.
+            error.selected_step = selected_step
+            error.plan = copy.deepcopy(plan)
+            raise
         return {
             "status": "executed",
             "selected_step": selected_step,

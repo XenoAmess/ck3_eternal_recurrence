@@ -29,6 +29,7 @@ from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
     HybridGameplayDriver,
+    StepPostconditionError,
     UnsupportedStepError,
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
@@ -2268,6 +2269,11 @@ class NativeHeadlessGameplayDriver:
             self._record_command(
                 step,
                 ok=False,
+                result=(
+                    error.step_result
+                    if isinstance(error, StepPostconditionError)
+                    else None
+                ),
                 error=f"{type(error).__name__}: {error}",
             )
             raise
@@ -8495,11 +8501,108 @@ class NativeHeadlessGameplayDriver:
             proof=proof,
         )
         if postcondition is None:
-            raise BridgeUnavailableError(
-                "the proof-bound unavoidable contact day advanced, but no "
-                "combat, retreat, war/episode transition, or hostile state "
-                "change was observed"
+            result = _retarget_timeline_step_result(result, ending)
+            refresh_deadline = time.monotonic() + self.command_timeout_seconds
+            refresh_from_revision = ending.get("revision")
+            refresh_from_native_revision = ending.get("native_revision")
+            refresh: dict[str, object] = {
+                "attempted": True,
+                "ack_status": None,
+                "from_snapshot_id": ending.get("snapshot_id"),
+                "from_revision": refresh_from_revision,
+                "from_native_revision": refresh_from_native_revision,
+                "to_snapshot_id": None,
+                "to_revision": None,
+                "to_native_revision": None,
+                "date_raw": ending.get("date_raw"),
+            }
+            result["contact_refresh"] = refresh
+            if not (
+                ending.get("map_ready") is True
+                and ending.get("paused") is True
+            ):
+                raise StepPostconditionError(
+                    "the proof-bound unavoidable contact day ended without "
+                    "a paused map eligible for one same-date refresh",
+                    step_result=result,
+                    selected_step=step,
+                )
+            try:
+                remaining = refresh_deadline - time.monotonic()
+                if remaining <= 0:
+                    raise BridgeUnavailableError(
+                        "same-date unavoidable-contact refresh timed out "
+                        "before pause-map submission"
+                    )
+                refresh_result = self._execute_primitive_step(
+                    "pause-map",
+                    expected_revision=None,
+                    timeout_seconds=remaining,
+                    internal_semantic_snapshot=True,
+                )
+                result["actions"] = [
+                    *copy.deepcopy(
+                        result.get("actions")
+                        if isinstance(result.get("actions"), list)
+                        else []
+                    ),
+                    {"step": "pause-map", "result": refresh_result},
+                ]
+                refresh["ack_status"] = _timeline_ack_status(refresh_result)
+                if refresh["ack_status"] != "already_paused":
+                    raise BridgeUnavailableError(
+                        "same-date unavoidable-contact refresh expected an "
+                        "already_paused ACK, got "
+                        f"{refresh['ack_status']}"
+                    )
+                remaining = max(0.0, refresh_deadline - time.monotonic())
+                refreshed = self._wait_for_life_advance_snapshot(
+                    ending,
+                    lambda candidate: _newer_native_contact_refresh_frame(
+                        ending, candidate
+                    ),
+                    timeout_seconds=remaining,
+                )
+                refresh.update(
+                    {
+                        "to_snapshot_id": refreshed.get("snapshot_id"),
+                        "to_revision": refreshed.get("revision"),
+                        "to_native_revision": refreshed.get(
+                            "native_revision"
+                        ),
+                    }
+                )
+                result = _retarget_timeline_step_result(result, refreshed)
+                result["contact_refresh"] = refresh
+                if not _same_paused_contact_refresh_owner(ending, refreshed):
+                    raise BridgeUnavailableError(
+                        "same-date unavoidable-contact refresh did not "
+                        "publish a newer frame for the same paused timeline "
+                        "owner"
+                    )
+            except (BridgeUnavailableError, UnsupportedStepError) as error:
+                raise StepPostconditionError(
+                    str(error),
+                    step_result=result,
+                    selected_step=step,
+                ) from error
+            ending = refreshed
+            postcondition = _unavoidable_contact_transition_postcondition(
+                starting,
+                ending,
+                proof=proof,
             )
+            if postcondition is None:
+                raise StepPostconditionError(
+                    "the proof-bound unavoidable contact day advanced and "
+                    "published one same-date refresh, but no combat, retreat, "
+                    "war/episode transition, or hostile state change was "
+                    "observed; refreshed_revision="
+                    f"{ending.get('revision')}, refreshed_native_revision="
+                    f"{ending.get('native_revision')}",
+                    step_result=result,
+                    selected_step=step,
+                )
         return {**result, "contact_transition": postcondition}
 
     def _execute_life_advance(
@@ -10718,6 +10821,85 @@ def _war_progress_armies(
             and not isinstance(row.get("army_id"), bool)
             else 2**31 - 1
         ),
+    )
+
+
+def _retarget_timeline_step_result(
+    result: dict[str, object], snapshot: dict[str, object]
+) -> dict[str, object]:
+    """Bind timeline result evidence to the semantic frame it describes."""
+    updated = copy.deepcopy(result)
+    ending_date_raw = _date_raw(snapshot, "timeline result ending snapshot")
+    starting_date_raw = updated.get("starting_date_raw")
+    updated.update(
+        {
+            "ending_date": {"date_raw": ending_date_raw},
+            "ending_date_raw": ending_date_raw,
+            "elapsed_days": (
+                max(0, (ending_date_raw - starting_date_raw) // 24)
+                if isinstance(starting_date_raw, int)
+                and not isinstance(starting_date_raw, bool)
+                else updated.get("elapsed_days")
+            ),
+            "war_progress_after": _war_progress_summary(snapshot),
+            "paused": snapshot.get("paused") is True,
+            "active_event": snapshot.get("active_event"),
+            "final_screen": (
+                "map_hud" if snapshot.get("paused") is True else None
+            ),
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+        }
+    )
+    return updated
+
+
+def _newer_native_contact_refresh_frame(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Require both endpoint and native snapshot revisions to move forward."""
+
+    def newer(value: object, prior: object) -> bool:
+        return bool(
+            isinstance(value, int)
+            and not isinstance(value, bool)
+            and isinstance(prior, int)
+            and not isinstance(prior, bool)
+            and value > prior
+        )
+
+    return newer(refreshed.get("revision"), previous.get("revision")) and newer(
+        refreshed.get("native_revision"), previous.get("native_revision")
+    )
+
+
+def _same_paused_contact_refresh_owner(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Keep the forced refresh on the exact same paused gameplay endpoint."""
+    previous_diagnostics = previous.get("diagnostics")
+    refreshed_diagnostics = refreshed.get("diagnostics")
+    if not isinstance(previous_diagnostics, dict) or not isinstance(
+        refreshed_diagnostics, dict
+    ):
+        return False
+    return bool(
+        _newer_native_contact_refresh_frame(previous, refreshed)
+        and refreshed.get("map_ready") is True
+        and refreshed.get("paused") is True
+        and refreshed.get("date_raw") == previous.get("date_raw")
+        and refreshed.get("speed") == previous.get("speed")
+        and refreshed.get("active_event") == previous.get("active_event")
+        and refreshed.get("episode_character_id")
+        == previous.get("episode_character_id")
+        and refreshed.get("episode_run_id") == previous.get("episode_run_id")
+        and refreshed.get("local_player_id")
+        == previous.get("local_player_id")
+        and refreshed_diagnostics.get("connection_generation")
+        == previous_diagnostics.get("connection_generation")
+        and refreshed_diagnostics.get("bridge_pid")
+        == previous_diagnostics.get("bridge_pid")
     )
 
 

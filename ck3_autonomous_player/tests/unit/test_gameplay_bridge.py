@@ -17,6 +17,7 @@ from xar_autoplayer.bridge.driver import (
     CallbackGameplayDriver,
     DevelopmentReportDriver,
     HybridGameplayDriver,
+    StepPostconditionError,
     UnsupportedStepError,
 )
 from xar_autoplayer.bridge.service import (
@@ -8622,6 +8623,41 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(result["status"], "executed")
         self.assertEqual(result["selected_step"], "save-checkpoint")
         self.assertEqual(calls, [("save-checkpoint", 11)])
+
+    def test_service_auto_turn_binds_plan_to_postcondition_failure(self) -> None:
+        partial_result = {
+            "step": "save-checkpoint",
+            "ending_date_raw": 53_216_448,
+            "snapshot_id": "native:9",
+            "revision": 10,
+        }
+        failure = StepPostconditionError(
+            "fixture postcondition failed",
+            step_result=partial_result,
+            selected_step="driver-placeholder",
+        )
+
+        def fail_postcondition(
+            _step: str, _revision: int | None
+        ) -> dict[str, object]:
+            raise failure
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(11),
+            execute=fail_postcondition,
+            action_steps=("save-checkpoint",),
+        )
+
+        with self.assertRaises(StepPostconditionError) as observed:
+            GameplayBridgeService(driver).auto_turn()
+
+        self.assertIs(observed.exception, failure)
+        self.assertEqual(failure.selected_step, "save-checkpoint")
+        self.assertIsInstance(failure.plan, dict)
+        assert failure.plan is not None
+        self.assertEqual(failure.plan["selected_step"], "save-checkpoint")
+        self.assertEqual(failure.step_result, partial_result)
 
     def test_service_auto_turn_ends_native_one_life_on_player_death(self) -> None:
         calls: list[tuple[str, int | None]] = []

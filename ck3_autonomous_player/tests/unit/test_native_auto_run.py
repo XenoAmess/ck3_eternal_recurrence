@@ -17,6 +17,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
+from xar_autoplayer.bridge.driver import StepPostconditionError  # noqa: E402
 from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
@@ -275,6 +276,61 @@ class _NativeAutoRunHarness:
         if action == "opaque_checkpoint_failure":
             self.save_checkpoint(expected_revision=self.public_revision)
             raise OSError("fixture opaque checkpoint execution failed")
+        if action == "opaque_postcondition_failure":
+            step = "advance-route-contact-horizon-v1-101-to-3610-h-1-31"
+            starting_date_raw = self.date_raw
+            self.date_raw += 24
+            self.native_revision += 2
+            self.public_revision += 2
+            self.heartbeat_date_raw = self.date_raw
+            result = {
+                "step": step,
+                "source": "native-composite",
+                "progress_status": "postcondition",
+                "starting_date_raw": starting_date_raw,
+                "ending_date": {"date_raw": self.date_raw},
+                "ending_date_raw": self.date_raw,
+                "elapsed_days": 1,
+                "requested_horizon_days": 1,
+                "timeline_speed": 1,
+                "timeline_policy": "exact_one_day_contact",
+                "war_progress_after": {
+                    "date_raw": self.date_raw,
+                    "wars": [{"war_id": 88, "player_relative_war_score": 7}],
+                },
+                "actions": [
+                    {
+                        "step": "pause-map",
+                        "result": {
+                            "step": "pause-map",
+                            "accepted": True,
+                            "status": "already_paused",
+                        },
+                    }
+                ],
+                "paused": True,
+                "final_screen": "map_hud",
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+                "native_revision": self.native_revision,
+                "contact_refresh": {
+                    "status": "fresh_snapshot_observed",
+                    "ack_status": "already_paused",
+                    "starting_native_revision": self.native_revision - 1,
+                    "ending_native_revision": self.native_revision,
+                },
+            }
+            failure = StepPostconditionError(
+                "fixture contact postcondition failed",
+                step_result=result,
+                selected_step=step,
+            )
+            failure.plan = {
+                "phase": "native_war_unavoidable_contact_transition",
+                "selected_step": step,
+                "reason": "fixture unavoidable contact day",
+            }
+            raise failure
 
         if action in {"query", "query_change"}:
             step = "query-declarable-wars"
@@ -1328,6 +1384,45 @@ class NativeAutoRunTests(unittest.TestCase):
             blocker["checkpoint_recovery_invalidation_reason"],
             "opaque_auto_turn_may_have_submitted_checkpoint",
         )
+        self.assertFalse(blocker["recoverable_from_checkpoint"])
+        self.assertIsNone(blocker["last_durable_checkpoint"])
+
+    def test_opaque_postcondition_failure_preserves_partial_step_result(
+        self,
+    ) -> None:
+        report, _harness = self._run(
+            ["opaque_postcondition_failure"],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["auto_run"]["attempted_turns"], 1)
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["stage"], "opaque_auto_turn")
+        self.assertEqual(blocker["kind"], "opaque_auto_turn_failed")
+        self.assertEqual(
+            blocker["plan"]["phase"],
+            "native_war_unavoidable_contact_transition",
+        )
+        self.assertEqual(
+            blocker["selected_step"],
+            "advance-route-contact-horizon-v1-101-to-3610-h-1-31",
+        )
+        result = blocker["result"]
+        self.assertEqual(result["ending_date"], {"date_raw": 53_171_424})
+        self.assertEqual(result["ending_date_raw"], 53_171_424)
+        self.assertEqual(result["snapshot_id"], "native:3")
+        self.assertEqual(result["revision"], 103)
+        self.assertEqual(result["native_revision"], 3)
+        self.assertEqual(result["war_progress_after"]["date_raw"], 53_171_424)
+        self.assertEqual(
+            result["actions"][-1]["result"]["status"], "already_paused"
+        )
+        self.assertEqual(
+            result["contact_refresh"]["status"], "fresh_snapshot_observed"
+        )
+        self.assertTrue(blocker["checkpoint_recovery_invalidated"])
         self.assertFalse(blocker["recoverable_from_checkpoint"])
         self.assertIsNone(blocker["last_durable_checkpoint"])
 
