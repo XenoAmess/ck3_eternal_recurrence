@@ -472,6 +472,43 @@ white peace 对 generic terms 的价值与局限：
   且任何其它 subtype 仍不能从裸 pointer、notification 文本或目标缺失推断 WarID；
 - 原生 total raw 会包含 owner-deferred opaque 节点。可以调用原生总分，但不能谎称 breakdown 已完整结构化。
 
+### 9.1 首轮玩家 inbound fallback 与债务边界
+
+[implementation-confirmed / static-ready / live=false] 在本篇先闭合原生 `ai_accept` 输入树、human responder 不适用边界、四路
+reply legality 与 special-war typed binding 后，首轮一代人策略允许采用最小 `ordinary-reject-unique-accept-v1`，而不等待所有
+structured terms 完成：
+
+- ordinary non-war 的分类必须同时满足 exact same-frame/full-generation identity、完整 roles/routing/deadline/legality、
+  `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit exact key`，并命中 exact-build 显式非战争非宗教
+  allowlist。当前只有 `spar_with_knight_interaction`：原版 `00_tradition_interactions.txt` 完整文件 SHA-256
+  `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`，其第 1–200 行完整 block 明确 popup/pause、双方不在
+  战争、accept 只启动 `FATALITY=no` bout，且没有 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或
+  `on_decline` 字段。
+  `invite_to_activity_interaction` 因同 key 可覆盖 `activity_wedding`、当前 bridge 又没有 activity subtype，已明确移出 allowlist；前述
+  special-war 三项**不是**通用 ordinary classifier。其它 definition 必须 `definition_unclassified` fail-closed，等待 typed classification
+  或逐项 exact-definition 审计；不在本 fallback 中扩展宗教域；
+- reject 原生合法且 reject action reachable 时确定性拒绝。reject action 不可达时 blocked，不能因为 accept action 恰好存在就接受；
+- accept 只在 reject、block、acknowledge 都由 native legality 明确判为非法，且 accept 是唯一合法并可执行的回复时使用；
+- stale、legality unknown、identity mismatch、opaque special 或没有可执行合法 channel 均不提交；notification 保持 ACK-only；
+- known war-exit 只记录 exact subtype/outcome/WarID/primary roles/revision 与 active-war row 互证；在
+  `special_outcome_terms_ready=false` 时继续 blocked，绝不把绑定本身扩义为应接受或应拒绝。
+- active war 与 pending 并存时，100% war-score `enforce-demands` 检查无条件先于 allowlisted degraded reply；pending plan 只暂存到该
+  优先级检查之后，不能提前 accept/reject。
+
+plan 与 strict-run artifact 保存 full ID/key/roles/deadline/legality/special binding、definition classification evidence、缺失语义、全部
+reply candidates、action
+reachability、rule ID 与 recommended/selected action。fallback 永远标记 `native_ai_equivalent=false`、`semantic_optimal=false`、policy
+`semantic_decision_ready=false`；context 报告的 readiness 另栏原样保留，不能由 fallback 升级。
+
+runner 的动作后置门还要求 before/after pending semantic digest 真正变化；typed `interaction_result.status` 必须与 accept/reject/ACK
+step 对应并引用 before 的 old full ID/sender，bounded `remaining_pending_character_interaction` 必须与 after mirror 相等且不再引用旧 ID。
+只有这组条件同时成立，reply 才计入 visible gameplay/dirty checkpoint；裸 command ACK、revision 变化或 result 字段缺失都会停在
+`pending_interaction_lifecycle_postcondition_failed`。
+
+未采用的原生输入与质量债：interaction-specific target/exchange/effect、完整 campaign utility、intermediary/recipient raw/final
+acceptance，以及 war-exit 的 resource/claim/truce/prisoner/hostage dynamic terms。后续以 typed terms + 按类型效用 policy 替换该规则；
+不得把 reject-first 逐步堆叠成一个假装完整的语义模型。
+
 ## 10. Production readiness gates
 
 任何 generic terms 查询进入 production 前至少满足：
@@ -540,7 +577,8 @@ white peace 对 generic terms 的价值与局限：
    的 WarID/primary leaders 互证；不提交 reply；
 4. outbound AI fixture 在完整 context 生命周期内同时发布 intermediary raw、recipient raw、
    outer mode-1 status；inbound human pending 明确标记 acceptance `not_applicable`；
-5. 只有 generic 与 special 两部分均 ready，才允许 white-peace 策略做接受/拒绝动作并验证状态转换。
+5. 只有 generic 与 special 两部分均 ready，才允许 white-peace 策略做接受/拒绝动作并验证状态转换；首轮 ordinary
+   reject-first fallback 不适用于这三个 war-exit subtype。
 
 ## 12. Unknown 账本
 

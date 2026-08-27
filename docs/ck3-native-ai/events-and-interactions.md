@@ -445,6 +445,48 @@ flowchart TD
     class U,E unknown;
 ```
 
+### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
+
+[implementation-confirmed / static-ready / live=false] 原生 reply 树、四路 legality 与 exact-build pending identity 已先按上文
+冻结；在此基础上，`strategy.py` 采用 `ordinary-reject-unique-accept-v1` 解除一代人长跑中的普通 pending blocker：
+
+1. 只消费同一 paused snapshot 的完整 pending ID、public/native revision、date、stable key、五 roles、local responder、deadline、
+   四路 legality 与 special-war classification。stale、unavailable、sender/actor 或 responder identity 不一致均不提交 reply。
+2. auto-accept notification 仍只走既有 enum-4 ACK，不进入本 fallback。
+3. `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit key` 只证明“未命中特殊战争 payload”，**不能**
+   证明任意 stock definition 都是普通非战争、非宗教互动。fallback 还必须命中 exact-build 显式 allowlist；当前唯一条目是
+   `spar_with_knight_interaction`，依据 `common/character_interactions/00_tradition_interactions.txt`（完整文件 SHA-256
+   `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`）第 1–200 行完整 definition：第 1–13 行固定
+   common/popup/pause，第 49–50 行要求双方均不在战争，第 75–97 行 accept 只启动 `FATALITY=no` 的 bout，第 100–138 行是
+   `ai_accept`；完整 block 不含 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或 `on_decline`。
+   `invite_to_activity_interaction` 已移出 allowlist，因为同 key 可承载 `activity_wedding`，而当前 bridge 不发布 activity subtype。
+   其它 stock、mod、仅名字看似 ordinary 的 definition 一律
+   `definition_unclassified` fail-closed；以后只能由同样的 exact-definition 审计或 bridge 发布的 typed classification 扩表，不借此探索
+   通用宗教域。
+4. allowlisted ordinary definition 中，`reject.status=available && allowed=true` 且 reject step 可执行就确定性拒绝；reject 原生合法但
+   命令缺失时保持 blocked，绝不因此改走 accept。
+5. accept 只在 reject 被原生明确判为非法、accept 是合法且可执行、block/acknowledge 也都被原生明确判为非法时使用。legality
+   unavailable、第二个合法 channel 或 action 不可达都保持 blocked。
+6. 三个 known war-exit subtype 即使已发布 exact special kind、absolute outcome、WarID、双方 primary war role 与同 revision
+   active-war 互证，也因完整 dynamic outcome terms 尚未就绪而保持 blocked；opaque/mismatch special 同样不猜。
+7. active war 与任意 pending 同帧存在时，先完成 100% war-score `enforce-demands` 优先级检查；无论 pending 是否命中 ordinary allowlist，
+   都不能提前 accept/reject。只有没有可执行/必须阻塞的 100% enforce action 时，才返回暂存的 pending plan。
+8. 每次 plan（以及 strict runner 的 compact artifact）保留 full ID/key/roles/deadline/legality/special binding、definition classification
+   evidence、frame binding、缺失语义、
+   四个候选的 native legality/action reachability、rule ID、recommended/selected action 与 blocked reasons；明确记录
+   `native_ai_equivalent=false`、`semantic_optimal=false`、policy `semantic_decision_ready=false`。
+
+[implementation-confirmed / static-ready / live=false] strict runner 另把 pending mirror 加入 before/after semantic digest；只有出现
+`pending_interaction_changed`，且 reply result 的 typed status 与 accept/reject/ACK step 对应、old full instance/sender 与 before 一致、
+`remaining_pending_character_interaction` 与 after snapshot 一致并且不再是旧 ID，才把该 turn 计作 visible gameplay、dirty state 并触发
+tail/periodic checkpoint。compact result 保留有界的 `interaction_result` 与 remaining pending identity；缺 typed postcondition 会在本 turn
+写入 history 前以 `pending_interaction_lifecycle_postcondition_failed` 停止。
+
+这是保守的玩家 counter-policy，不是把接收方原生 `ai_accept` 套在人类 responder 上。尚未采用的原生输入/质量分支包括完整
+structured exchange/effect、target payload identity、campaign utility，以及 intermediary/recipient AI raw/final acceptance；替换入口
+仍是补齐同一个 typed context 后实现按类型的语义效用策略。war-exit 的替换入口是完整 special outcome terms，而不是仅凭 WarID、
+战分或 interaction key 自动接受/拒绝。
+
 ## 当前 bridge/MCP 的真实缺口
 
 | 子域 | 当前已发布 | 仍缺的决策事实 | readiness |
@@ -453,7 +495,7 @@ flowchart TD
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；普通 recipient pending 已完成 production paused cold-reload 双查询，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；accept/reject primitive 仍有 ID 推进后置条件 | intermediary live、generic target payload identity、structured terms/cost/effect preview；当前 terms 必须 typed unavailable | `interaction_typed_query_wired=true`，`ordinary_interaction_live_ready=true`，`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
-| current planner | 对普通 pending 先查同 snapshot/revision/full ID 的 typed context；active war 中仍先执行 100% enforce-demands 优先级，再查询互动；auto-accept notification 只走固定 ACK，generic recipient notification channel 已 fixture-scoped live | v1 structured terms 与 semantic policy 未 ready 时不再默认 accept/reject；stale query 不复用；自然 stock/intermediary notification 仍待 live | 机械 notification 清理已有 production native bridge 实机闭环，但语义回复策略仍未完成，不得称为高智商闭环 |
+| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；degraded reply 只对 exact-build allowlist 中的 `spar_with_knight_interaction` 启用，任何未分类 definition fail-closed；known/opaque war-special 继续 fail-closed；active war 同帧时 100% enforce-demands 无条件先于该 fallback | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility 与 stock reply live；stale query 不复用；自然 stock/intermediary notification 仍待 live | notification ACK 为 fixture-live；allowlist-scoped degraded reply 为 static-ready/live=false；`interaction_semantic_decision_ready` 仍为 false，不得称为通用 ordinary、原生等价或高智商闭环 |
 
 [live-confirmed fixture-scoped] 2026-08-27 的 current-event Attempt4 在 seed PID `22976` 与 fresh-cold PID `43140`
 中保持完整 instance `17`、date `53175816`、canonical key `xar_event_window_live_fixture.1` 与逐字节相同 fixture；三条
@@ -473,10 +515,11 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 这里的缺口已经直接阻断通用 OODA：事件一弹出，agent 已能确认 definition identity、实际显示项与 enabled 状态，但仍不知道
 每项的完整结构化效果与长期效用；
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复，但 target payload 和结构化条款仍不足以做高质量取舍。
-普通 recipient pending 的 paused live 双查询已经闭合，planner 也已改为先查询同帧 typed context，并在
-`interaction_semantic_decision_ready=false` 时停在明确的 observation dependency。generic recipient notification 的
-fixture-scoped query→ACK 已闭合；下一步补 intermediary/自然 stock notification live 与结构化条款观测，再实现真实效用选择。
-不得退回默认第一项或默认接受。
+普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
+`spar_with_knight_interaction` 使用上述 reject-first fallback；“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它
+definition 与 known/opaque special 均停在 observation dependency。generic recipient notification 的 fixture-scoped
+query→ACK 已闭合；下一步完成 ordinary reject/unique-accept 的 production 生命周期实机，再补 intermediary/自然 stock notification
+与结构化条款观测并替换为真实效用选择。不得退回默认接受，reject 命令缺失也不得触发 accept。
 
 [live-confirmed] 2026-08-26 的非宗教 `claim_cb` white-peace fixture 在 seed PID `93972` 中生成普通 pending，
 保存 66,579,686-byte checkpoint（SHA

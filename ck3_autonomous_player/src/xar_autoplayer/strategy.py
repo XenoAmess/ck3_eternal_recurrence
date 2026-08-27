@@ -89,6 +89,37 @@ _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _NATIVE_ENEMY_TARGET_MILESTONES_DAYS = (7, 14)
+_ACCEPT_PENDING_CHARACTER_INTERACTION_STEP = (
+    "accept-pending-character-interaction"
+)
+_REJECT_PENDING_CHARACTER_INTERACTION_STEP = (
+    "reject-pending-character-interaction"
+)
+_BLOCK_PENDING_CHARACTER_INTERACTION_STEP = (
+    "block-pending-character-interaction"
+)
+_PENDING_REPLY_STEPS = {
+    "accept": _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP,
+    "reject": _REJECT_PENDING_CHARACTER_INTERACTION_STEP,
+    "block": _BLOCK_PENDING_CHARACTER_INTERACTION_STEP,
+    "acknowledge": ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+}
+_KNOWN_WAR_EXIT_INTERACTION_KEYS = {
+    "end_war_attacker_victory_interaction",
+    "end_war_attacker_white_peace_interaction",
+    "end_war_attacker_defeat_interaction",
+}
+_DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
+    "spar_with_knight_interaction": {
+        "classification": "ordinary_non_war_nonreligious",
+        "source": (
+            "common/character_interactions/00_tradition_interactions.txt"
+        ),
+        "source_sha256": (
+            "E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3"
+        ),
+    },
+}
 
 
 def _expanded_command_rows(
@@ -399,6 +430,622 @@ def _same_frame_pending_interaction_context(
             continue
         return context
     return None
+
+
+def _pending_interaction_missing_semantics(
+    context: dict[str, object],
+) -> list[str]:
+    """Describe semantic debt without upgrading any readiness flag."""
+
+    missing: list[str] = []
+
+    def add(value: object) -> None:
+        if isinstance(value, str) and value and value not in missing:
+            missing.append(value)
+
+    readiness = context.get("readiness")
+    if isinstance(readiness, dict):
+        reasons = readiness.get("not_ready_reasons")
+        if isinstance(reasons, list):
+            for reason in reasons:
+                add(reason)
+
+    target = context.get("target")
+    if (
+        isinstance(target, dict)
+        and target.get("present") is True
+        and target.get("typed_identity_status") != "available"
+    ):
+        reason = target.get("typed_identity_reason")
+        add(
+            "target_typed_identity:"
+            + (reason if isinstance(reason, str) and reason else "unavailable")
+        )
+
+    terms = context.get("terms")
+    if isinstance(terms, dict):
+        for key in (
+            "structured_exchanges",
+            "structured_effect_preview",
+            "recipient_ai_acceptance_score",
+            "recipient_ai_final_decision",
+        ):
+            item = terms.get(key)
+            if isinstance(item, dict) and item.get("status") != "available":
+                reason = item.get("reason")
+                add(
+                    f"terms.{key}:"
+                    + (
+                        reason
+                        if isinstance(reason, str) and reason
+                        else "unavailable"
+                    )
+                )
+    return missing
+
+
+def _pending_interaction_summary(
+    pending: dict[str, object],
+    context: dict[str, object] | None,
+    snapshot: dict[str, object] | None,
+) -> dict[str, object]:
+    """Keep every decision-bearing pending field in the turn artifact."""
+
+    summary: dict[str, object] = {
+        "instance_id": pending.get("instance_id"),
+        "sender_character_id": pending.get("sender_character_id"),
+        "auto_accept_notification": pending.get("auto_accept_notification"),
+    }
+    if not isinstance(context, dict):
+        return summary
+
+    definition = context.get("definition")
+    roles = context.get("roles")
+    routing = context.get("routing")
+    deadline = context.get("deadline")
+    legality = context.get("legality")
+    terms = context.get("terms")
+    readiness = context.get("readiness")
+    special_war_binding = (
+        terms.get("special_war_binding") if isinstance(terms, dict) else None
+    )
+    summary.update(
+        {
+            "context_status": context.get("status"),
+            "context_reason": context.get("reason"),
+            "frame_binding": {
+                "snapshot_id": (
+                    snapshot.get("snapshot_id")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+                "public_revision": (
+                    snapshot.get("revision")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+                "native_revision": context.get("snapshot_revision"),
+                "date_raw": context.get("date_raw"),
+                "pending_interaction_id": context.get(
+                    "pending_interaction_id"
+                ),
+            },
+            "definition": dict(definition) if isinstance(definition, dict) else None,
+            "interaction_key": (
+                definition.get("canonical_key")
+                if isinstance(definition, dict)
+                else None
+            ),
+            "roles": dict(roles) if isinstance(roles, dict) else None,
+            "routing": dict(routing) if isinstance(routing, dict) else None,
+            "current_responder_role": (
+                routing.get("current_responder_role")
+                if isinstance(routing, dict)
+                else None
+            ),
+            "deadline": dict(deadline) if isinstance(deadline, dict) else None,
+            "reply_legality": (
+                {
+                    key: dict(value) if isinstance(value, dict) else value
+                    for key, value in legality.items()
+                }
+                if isinstance(legality, dict)
+                else None
+            ),
+            "special_data_present": (
+                terms.get("special_data_present")
+                if isinstance(terms, dict)
+                else None
+            ),
+            "special_war_binding": (
+                {
+                    **special_war_binding,
+                    "value": (
+                        dict(special_war_binding["value"])
+                        if isinstance(special_war_binding.get("value"), dict)
+                        else special_war_binding.get("value")
+                    ),
+                }
+                if isinstance(special_war_binding, dict)
+                else None
+            ),
+            "send_options": (
+                context.get("send_options")
+                if isinstance(context.get("send_options"), dict)
+                else None
+            ),
+            "context_semantic_decision_ready": (
+                readiness.get("interaction_semantic_decision_ready")
+                if isinstance(readiness, dict)
+                else None
+            ),
+            "not_ready_reasons": (
+                list(readiness.get("not_ready_reasons", []))
+                if isinstance(readiness, dict)
+                and isinstance(readiness.get("not_ready_reasons"), list)
+                else []
+            ),
+            "missing_semantics": _pending_interaction_missing_semantics(context),
+        }
+    )
+    return summary
+
+
+def _pending_interaction_evidence_gaps(
+    pending: dict[str, object],
+    context: dict[str, object],
+    snapshot: dict[str, object],
+) -> list[str]:
+    """Reject incomplete or cross-identity observations before policy use."""
+
+    gaps: list[str] = []
+    if not (
+        snapshot.get("paused") is True
+        and isinstance(snapshot.get("snapshot_id"), str)
+        and bool(snapshot.get("snapshot_id"))
+        and isinstance(snapshot.get("revision"), int)
+        and not isinstance(snapshot.get("revision"), bool)
+        and isinstance(snapshot.get("native_revision"), int)
+        and not isinstance(snapshot.get("native_revision"), bool)
+        and snapshot.get("native_revision") == context.get("snapshot_revision")
+        and isinstance(snapshot.get("date_raw"), int)
+        and not isinstance(snapshot.get("date_raw"), bool)
+        and snapshot.get("date_raw") == context.get("date_raw")
+    ):
+        gaps.append("same_paused_frame_binding_unavailable")
+    if context.get("status") != "available":
+        gaps.append("context_not_available")
+    pending_id = pending.get("instance_id")
+    if (
+        isinstance(pending_id, bool)
+        or not isinstance(pending_id, int)
+        or pending_id <= 0
+        or context.get("pending_interaction_id") != pending_id
+    ):
+        gaps.append("pending_full_identity_mismatch")
+
+    definition = context.get("definition")
+    key = definition.get("canonical_key") if isinstance(definition, dict) else None
+    if not isinstance(key, str) or not key:
+        gaps.append("stable_definition_key_unavailable")
+
+    roles = context.get("roles")
+    role_fields = (
+        "actor_character_id",
+        "recipient_character_id",
+        "secondary_actor_character_id",
+        "secondary_recipient_character_id",
+        "intermediary_character_id",
+    )
+    if not (
+        isinstance(roles, dict)
+        and all(
+            isinstance(roles.get(field), int)
+            and not isinstance(roles.get(field), bool)
+            for field in role_fields
+        )
+        and isinstance(roles.get("actor_character_id"), int)
+        and int(roles["actor_character_id"]) > 0
+        and isinstance(roles.get("recipient_character_id"), int)
+        and int(roles["recipient_character_id"]) > 0
+    ):
+        gaps.append("complete_roles_unavailable")
+    elif pending.get("sender_character_id") != roles.get("actor_character_id"):
+        gaps.append("snapshot_sender_actor_mismatch")
+
+    routing = context.get("routing")
+    if not isinstance(routing, dict):
+        gaps.append("routing_unavailable")
+    else:
+        responder_role = routing.get("current_responder_role")
+        responder_id = (
+            roles.get(f"{responder_role}_character_id")
+            if isinstance(roles, dict)
+            and responder_role in {"recipient", "intermediary"}
+            else None
+        )
+        if not (
+            routing.get("local_route") is True
+            and routing.get("auto_accept_notification") is False
+            and responder_id == routing.get("played_character_id")
+        ):
+            gaps.append("local_responder_identity_mismatch")
+
+    deadline = context.get("deadline")
+    if not (
+        isinstance(deadline, dict)
+        and all(
+            isinstance(deadline.get(field), int)
+            and not isinstance(deadline.get(field), bool)
+            for field in ("age_days", "expiration_days", "remaining_days")
+        )
+        and isinstance(deadline.get("expiry_boundary_status"), str)
+    ):
+        gaps.append("deadline_unavailable")
+
+    legality = context.get("legality")
+    if not isinstance(legality, dict):
+        gaps.append("reply_legality_unavailable")
+    else:
+        for action in ("accept", "reject", "block", "acknowledge"):
+            item = legality.get(action)
+            if not (
+                isinstance(item, dict)
+                and item.get("status") == "available"
+                and isinstance(item.get("allowed"), bool)
+            ):
+                gaps.append(f"{action}_legality_unavailable")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and isinstance(terms.get("special_data_present"), bool)
+        and isinstance(special, dict)
+        and special.get("status") in {"available", "unavailable"}
+    ):
+        gaps.append("special_war_classification_unavailable")
+    return gaps
+
+
+def _special_war_snapshot_binding(
+    context: dict[str, object],
+    active_wars: list[dict[str, object]],
+) -> dict[str, object]:
+    """Audit the typed special binding against this same snapshot's war row."""
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    binding = special.get("value") if isinstance(special, dict) else None
+    roles = context.get("roles")
+    routing = context.get("routing")
+    war_id = binding.get("war_id") if isinstance(binding, dict) else None
+    matching_wars = [war for war in active_wars if war.get("war_id") == war_id]
+    responder_role = (
+        routing.get("current_responder_role")
+        if isinstance(routing, dict)
+        else None
+    )
+    responder_war_role = (
+        binding.get(f"{responder_role}_war_role")
+        if isinstance(binding, dict) and responder_role in {"actor", "recipient"}
+        else None
+    )
+    expected_player_side = {
+        "primary_attacker": "attacker",
+        "primary_defender": "defender",
+    }.get(responder_war_role)
+    other_role = "actor" if responder_role == "recipient" else "recipient"
+    expected_opponent_id = (
+        roles.get(f"{other_role}_character_id")
+        if isinstance(roles, dict) and responder_role in {"actor", "recipient"}
+        else None
+    )
+    role_matched = any(
+        war.get("player_side") == expected_player_side
+        and war.get("player_is_primary_war_leader") is True
+        and war.get("primary_opponent_character_id") == expected_opponent_id
+        for war in matching_wars
+    )
+    return {
+        "snapshot_revision": context.get("snapshot_revision"),
+        "date_raw": context.get("date_raw"),
+        "war_id": war_id,
+        "special_interaction_kind": (
+            binding.get("special_interaction_kind")
+            if isinstance(binding, dict)
+            else None
+        ),
+        "absolute_outcome": (
+            binding.get("absolute_outcome")
+            if isinstance(binding, dict)
+            else None
+        ),
+        "actor_war_role": (
+            binding.get("actor_war_role")
+            if isinstance(binding, dict)
+            else None
+        ),
+        "recipient_war_role": (
+            binding.get("recipient_war_role")
+            if isinstance(binding, dict)
+            else None
+        ),
+        "current_responder_role": responder_role,
+        "snapshot_active_war_ids": [war.get("war_id") for war in active_wars],
+        "active_war_id_match": bool(matching_wars),
+        "active_war_roles_match": role_matched,
+        "same_frame_bound": True,
+    }
+
+
+def _degraded_pending_interaction_decision(
+    pending: dict[str, object],
+    context: dict[str, object],
+    *,
+    snapshot: dict[str, object],
+    active_wars: list[dict[str, object]],
+    available_steps: set[str],
+) -> dict[str, object]:
+    """Choose only the narrow, auditable reply needed to unblock a run.
+
+    Native AI inputs remain an opponent-model reference.  This fallback is a
+    player policy: reject ordinary requests when that exact reply is legal;
+    accept only when native legality proves every other reply illegal.
+    """
+
+    summary = _pending_interaction_summary(pending, context, snapshot)
+    legality = context.get("legality")
+    candidates: list[dict[str, object]] = []
+    for action in ("accept", "reject", "block", "acknowledge"):
+        item = legality.get(action) if isinstance(legality, dict) else None
+        step = _PENDING_REPLY_STEPS[action]
+        candidates.append(
+            {
+                "action": action,
+                "step": step,
+                "legality_status": (
+                    item.get("status") if isinstance(item, dict) else None
+                ),
+                "allowed": (
+                    item.get("allowed") if isinstance(item, dict) else None
+                ),
+                "legality_reason": (
+                    item.get("reason") if isinstance(item, dict) else None
+                ),
+                "native_legal": bool(
+                    isinstance(item, dict)
+                    and item.get("status") == "available"
+                    and item.get("allowed") is True
+                ),
+                "action_reachable": step in available_steps,
+            }
+        )
+
+    by_action = {str(row["action"]): row for row in candidates}
+    evidence_gaps = _pending_interaction_evidence_gaps(
+        pending, context, snapshot
+    )
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    special_status = special.get("status") if isinstance(special, dict) else None
+    special_reason = special.get("reason") if isinstance(special, dict) else None
+    definition = context.get("definition")
+    definition_key = (
+        definition.get("canonical_key")
+        if isinstance(definition, dict)
+        else None
+    )
+    special_present = (
+        terms.get("special_data_present") if isinstance(terms, dict) else None
+    )
+    definition_allowlist_evidence = (
+        _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST.get(definition_key)
+        if isinstance(definition_key, str)
+        else None
+    )
+    if evidence_gaps:
+        classification = "evidence_invalid"
+    elif special_status == "available":
+        classification = "known_war_exit"
+    elif (
+        special_status == "unavailable"
+        and special_reason == "special_war_binding_not_applicable"
+        and special_present is False
+        and definition_key not in _KNOWN_WAR_EXIT_INTERACTION_KEYS
+        and isinstance(definition_allowlist_evidence, dict)
+    ):
+        classification = "ordinary_non_war"
+    elif (
+        special_status == "unavailable"
+        and special_reason == "special_war_binding_not_applicable"
+        and special_present is False
+    ):
+        classification = "definition_unclassified"
+    else:
+        classification = "unclassified_or_special"
+
+    special_binding_audit = (
+        _special_war_snapshot_binding(context, active_wars)
+        if classification == "known_war_exit"
+        else None
+    )
+    decision: dict[str, object] = {
+        "rule_id": "ordinary-reject-unique-accept-v1",
+        "mode": "degraded_blocker_removal",
+        "native_ai_reference": (
+            "CK3-1.19.0.6 inbound reply tree: intermediary then recipient "
+            "ai_accept; human responder uses exact native reply legality"
+        ),
+        "native_ai_equivalent": False,
+        "semantic_optimal": False,
+        "semantic_decision_ready": False,
+        "context_semantic_decision_ready": summary.get(
+            "context_semantic_decision_ready"
+        ),
+        "classification": classification,
+        "frame_binding": summary.get("frame_binding"),
+        "pending_interaction_id": summary.get("instance_id"),
+        "interaction_key": summary.get("interaction_key"),
+        "roles": summary.get("roles"),
+        "deadline": summary.get("deadline"),
+        "reply_legality": summary.get("reply_legality"),
+        "special_war_binding": summary.get("special_war_binding"),
+        "special_war_snapshot_binding": special_binding_audit,
+        "definition_classification": {
+            "policy": "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1",
+            "definition_key": definition_key,
+            "allowlisted": isinstance(definition_allowlist_evidence, dict),
+            "evidence": (
+                dict(definition_allowlist_evidence)
+                if isinstance(definition_allowlist_evidence, dict)
+                else None
+            ),
+        },
+        "missing_semantics": summary.get("missing_semantics"),
+        "evidence_gaps": evidence_gaps,
+        "candidate_replies": candidates,
+        "recommended_action": None,
+        "selected_action": None,
+        "selected_step": None,
+        "blocked_reasons": [],
+        "deterministic_rule": (
+            "for an exact same-frame request whose definition is explicitly "
+            "allowlisted as ordinary non-war and nonreligious, reject when "
+            "native reject is legal and executable; accept only when reject, "
+            "block, and acknowledge are each natively illegal and accept is "
+            "the sole legal executable reply; otherwise submit nothing"
+        ),
+    }
+    blocked_reasons = decision["blocked_reasons"]
+    assert isinstance(blocked_reasons, list)
+
+    if classification == "evidence_invalid":
+        blocked_reasons.extend(evidence_gaps)
+        return {"summary": summary, "decision": decision}
+    if classification == "known_war_exit":
+        if not (
+            isinstance(special_binding_audit, dict)
+            and special_binding_audit.get("active_war_id_match") is True
+            and special_binding_audit.get("active_war_roles_match") is True
+        ):
+            blocked_reasons.append("special_war_snapshot_binding_mismatch")
+        blocked_reasons.append("special_outcome_terms_unavailable")
+        return {"summary": summary, "decision": decision}
+    if classification == "definition_unclassified":
+        blocked_reasons.append(
+            "interaction_definition_not_explicitly_classified_"
+            "nonwar_nonreligious"
+        )
+        return {"summary": summary, "decision": decision}
+    if classification != "ordinary_non_war":
+        blocked_reasons.append("interaction_war_or_special_semantics_unclassified")
+        return {"summary": summary, "decision": decision}
+
+    reject = by_action["reject"]
+    if reject["native_legal"] is True:
+        decision["recommended_action"] = "reject"
+        if reject["action_reachable"] is True:
+            decision["selected_action"] = "reject"
+            decision["selected_step"] = reject["step"]
+        else:
+            blocked_reasons.append("legal_reject_command_unavailable")
+        return {"summary": summary, "decision": decision}
+
+    reject_proven_illegal = (
+        reject["legality_status"] == "available" and reject["allowed"] is False
+    )
+    accept = by_action["accept"]
+    other_replies_proven_illegal = all(
+        by_action[action]["legality_status"] == "available"
+        and by_action[action]["allowed"] is False
+        for action in ("block", "acknowledge")
+    )
+    if (
+        reject_proven_illegal
+        and accept["native_legal"] is True
+        and other_replies_proven_illegal
+    ):
+        decision["recommended_action"] = "accept"
+        if accept["action_reachable"] is True:
+            decision["selected_action"] = "accept"
+            decision["selected_step"] = accept["step"]
+        else:
+            blocked_reasons.append("unique_legal_accept_command_unavailable")
+        return {"summary": summary, "decision": decision}
+
+    if not reject_proven_illegal:
+        blocked_reasons.append("reject_not_proven_illegal")
+    if accept["native_legal"] is not True:
+        blocked_reasons.append("accept_not_legal")
+    if not other_replies_proven_illegal:
+        blocked_reasons.append("accept_not_unique_legal_reply")
+    return {"summary": summary, "decision": decision}
+
+
+def _degraded_pending_interaction_plan(
+    result: dict[str, object],
+) -> dict[str, object]:
+    summary = result["summary"]
+    decision = result["decision"]
+    assert isinstance(summary, dict)
+    assert isinstance(decision, dict)
+    selected_step = decision.get("selected_step")
+    selected_action = decision.get("selected_action")
+    if selected_action == "reject":
+        phase = "pending_character_interaction_degraded_reject"
+        reason = (
+            "reject this exact ordinary non-war request: native reject is "
+            "same-frame legal and the reject command is executable"
+        )
+    elif selected_action == "accept":
+        phase = "pending_character_interaction_degraded_unique_accept"
+        reason = (
+            "accept this exact ordinary non-war request only because native "
+            "legality proves reject, block, and acknowledge illegal, leaving "
+            "accept as the sole executable legal reply"
+        )
+    else:
+        phase = (
+            "pending_war_interaction_evidence_required"
+            if decision.get("classification") == "known_war_exit"
+            else "pending_character_interaction_degraded_blocked"
+        )
+        reasons = decision.get("blocked_reasons")
+        reason = (
+            "pending interaction degraded policy submitted no reply: "
+            + ", ".join(str(item) for item in reasons)
+            if isinstance(reasons, list) and reasons
+            else "pending interaction has no proven executable degraded reply"
+        )
+    plan: dict[str, object] = {
+        "policy": "one-life-turn-v1",
+        "phase": phase,
+        "selected_step": selected_step,
+        "reason": reason,
+        "pending_character_interaction": summary,
+        "decision": decision,
+    }
+    if selected_step is None:
+        recommended_action = decision.get("recommended_action")
+        recommended = (
+            _PENDING_REPLY_STEPS.get(str(recommended_action))
+            if isinstance(recommended_action, str)
+            else None
+        )
+        if isinstance(recommended, str):
+            plan["required_step"] = recommended
+        if decision.get("classification") == "known_war_exit":
+            plan["required_capabilities"] = [
+                "game.state.pending-character-interaction-special-outcome-terms",
+                "game.policy.pending-character-interaction-war-outcome-decision",
+            ]
+        elif decision.get("classification") != "ordinary_non_war":
+            plan["required_capabilities"] = [
+                "game.state.pending-character-interaction-structured-terms",
+                "game.policy.pending-character-interaction-semantic-decision",
+            ]
+    return plan
 
 
 def _same_frame_event_window_context(
@@ -1834,7 +2481,7 @@ def choose_one_life_turn(
             ),
             "pending_character_interaction": notification_summary,
         }
-    pending_war_interaction: dict[str, object] | None = None
+    pending_war_interaction_plan: dict[str, object] | None = None
     if (
         isinstance(pending_interaction, dict)
         and pending_interaction.get("auto_accept_notification") is False
@@ -1843,92 +2490,86 @@ def choose_one_life_turn(
             rows,
             snapshot if isinstance(snapshot, dict) else None,
         )
-        summary = {
-            "instance_id": pending_interaction.get("instance_id"),
-            "sender_character_id": pending_interaction.get(
-                "sender_character_id"
-            ),
-        }
-        if isinstance(typed_context, dict):
-            definition = typed_context.get("definition")
-            routing = typed_context.get("routing")
-            readiness = typed_context.get("readiness")
-            summary.update(
-                {
-                    "context_status": typed_context.get("status"),
-                    "context_reason": typed_context.get("reason"),
-                    "interaction_key": (
-                        definition.get("canonical_key")
-                        if isinstance(definition, dict)
-                        else None
-                    ),
-                    "current_responder_role": (
-                        routing.get("current_responder_role")
-                        if isinstance(routing, dict)
-                        else None
-                    ),
-                    "reply_legality": typed_context.get("legality"),
-                    "semantic_decision_ready": (
-                        readiness.get("interaction_semantic_decision_ready")
-                        if isinstance(readiness, dict)
-                        else False
-                    ),
-                    "not_ready_reasons": (
-                        readiness.get("not_ready_reasons")
-                        if isinstance(readiness, dict)
-                        else []
-                    ),
-                }
-            )
-        if active_wars:
-            # Defer the query/response until after the enforce-demands
-            # priority check.  The typed v1 context still lacks the related
-            # WarID, outcome and structured terms.
-            pending_war_interaction = summary
-        elif typed_context is None and (
+        summary = _pending_interaction_summary(
+            pending_interaction,
+            typed_context,
+            snapshot if isinstance(snapshot, dict) else None,
+        )
+        if typed_context is None and (
             QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
             in available_steps
         ):
-            return {
+            query_plan = {
                 "policy": "one-life-turn-v1",
-                "phase": "pending_character_interaction_query",
+                "phase": (
+                    "pending_war_interaction_query"
+                    if active_wars
+                    else "pending_character_interaction_query"
+                ),
                 "selected_step": (
                     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
                 ),
                 "reason": (
                     "observe the pending interaction's exact type, roles, "
                     "routing, deadline and reply legality before deciding"
-                ),
-                "pending_character_interaction": summary,
-            }
-        else:
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "pending_character_interaction_evidence_required",
-                "selected_step": None,
-                **(
-                    {
-                        "required_step": (
-                            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
-                        )
-                    }
-                    if typed_context is None
-                    else {}
-                ),
-                "required_capabilities": [
-                    "game.state.pending-character-interaction-structured-terms",
-                    "game.policy.pending-character-interaction-semantic-decision",
-                ],
-                "reason": (
-                    "the pending interaction has no same-frame typed context"
-                    if typed_context is None
+                    if not active_wars
                     else (
-                        "the typed interaction context is observational only; "
-                        "structured terms and a semantic reply policy are not ready"
+                        "observe the pending interaction after the enforce-"
+                        "demands priority check and before any war reply"
                     )
                 ),
                 "pending_character_interaction": summary,
             }
+            if active_wars:
+                pending_war_interaction_plan = query_plan
+            else:
+                return query_plan
+        elif typed_context is None:
+            blocked_plan = {
+                "policy": "one-life-turn-v1",
+                "phase": (
+                    "pending_war_interaction_evidence_required"
+                    if active_wars
+                    else "pending_character_interaction_evidence_required"
+                ),
+                "selected_step": None,
+                "required_step": (
+                    QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+                ),
+                "required_capabilities": [
+                    "game.state.pending-character-interaction-structured-terms",
+                    "game.policy.pending-character-interaction-semantic-decision",
+                    *(
+                        ["game.command.query-war-termination-options-N"]
+                        if active_wars
+                        else []
+                    ),
+                ],
+                "reason": "the pending interaction has no same-frame typed context",
+                "pending_character_interaction": summary,
+            }
+            if active_wars:
+                pending_war_interaction_plan = blocked_plan
+            else:
+                return blocked_plan
+        else:
+            assert isinstance(snapshot, dict)
+            degraded = _degraded_pending_interaction_decision(
+                pending_interaction,
+                typed_context,
+                snapshot=snapshot,
+                active_wars=active_wars,
+                available_steps=available_steps,
+            )
+            degraded_plan = _degraded_pending_interaction_plan(degraded)
+            if active_wars:
+                # Every pending reply waits behind the active-war 100%
+                # enforce-demands check.  Definition classification cannot
+                # pre-empt a terminal war action merely because the request
+                # itself is independently non-war.
+                pending_war_interaction_plan = degraded_plan
+            else:
+                return degraded_plan
     player_armies = (
         [army for army in snapshot.get("player_armies", []) if isinstance(army, dict)]
         if isinstance(snapshot, dict)
@@ -2331,38 +2972,9 @@ def choose_one_life_turn(
                     "assault_lifecycles": latched_unobservable_assaults,
                     "active_wars": war_summary,
                 }
-        if pending_war_interaction is not None:
-            if (
-                "context_status" not in pending_war_interaction
-                and QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
-                in available_steps
-            ):
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "pending_war_interaction_query",
-                    "selected_step": (
-                        QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
-                    ),
-                    "reason": (
-                        "observe the pending interaction after the enforce-demands "
-                        "priority check and before any war reply"
-                    ),
-                    "pending_character_interaction": pending_war_interaction,
-                    "active_wars": war_summary,
-                }
+        if pending_war_interaction_plan is not None:
             return {
-                "policy": "one-life-turn-v1",
-                "phase": "pending_war_interaction_evidence_required",
-                "selected_step": None,
-                "required_capabilities": [
-                    "game.state.pending-character-interaction-structured-terms",
-                    "game.command.query-war-termination-options-N",
-                ],
-                "reason": (
-                    "an active war has a pending interaction without a semantic "
-                    "WarID/outcome/terms binding; do not accept or reject it"
-                ),
-                "pending_character_interaction": pending_war_interaction,
+                **pending_war_interaction_plan,
                 "active_wars": war_summary,
             }
         if not controlled_armies:

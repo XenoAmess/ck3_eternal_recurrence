@@ -26,12 +26,13 @@
 |---|---|---|---|---|---|
 | GEN-001 | B0 | 一代人 supervised runner | 已在现有纯原生 owner 上实现严格 `one_generation` 合同与 artifact wrapper：固定 cold seed 归档、无人输入循环、可调周期 checkpoint、first-blocker、死亡结算与 cleanup gates 均已 `static-ready`；没有另造 gameplay loop | 在正常交互桌面用最终 clean source/new prepared state 跑 20-turn canary，再启动长跑并由首个真实 blocker 排序 | static-ready；production live 待 `GEN-008` |
 | GEN-002 | B1 | 当前事件有多个合法选项 | current-window identity/presentation 与有限 indicator 已 live；scope wire 已 static-ready；完整效果与 semantic readiness 仍不足。现已实现只吃 same-frame shown+enabled 的可审计 fallback，并把直接动作升级为旧 full instance 必须推进 | 正常交互桌面完成 scope query 与多选事件 degraded selection live；artifact 验证候选账本、预期 native index、旧 instance 推进、paused/episode/cleanup | static-ready；live 待 `GEN-008` A/B |
-| GEN-003 | B1/B2 | pending character interaction | ordinary white peace typed primitive 与 notification ACK 已有；其它 stock terms/effects 不完整 | 对必须答复的合法互动提供按类型的最小 accept/decline/ack policy，并验证旧 full ID 消失 | 未开始 |
+| GEN-003 | B1/B2 | pending character interaction | 原生 inbound reply 树已冻结；notification 保持 ACK-only；`ordinary-reject-unique-accept-v1` 仅对 exact-build 明确 allowlist 的 `spar_with_knight_interaction` 启用，未知/宗教/其它 stock definition fail-closed；active war 并存时 100% enforce-demands 无条件优先；known/opaque war-special 继续阻塞 | 正常交互桌面实测 allowlisted reject 与 unique-accept 各一次，验证 plan 分类/候选账本、旧 full ID 消失、结果状态与 cleanup；随后发布 typed definition/subtype classification、terms 与 utility，替换单键 fallback | static-ready；production live 待 `GEN-008` |
 | GEN-004 | B1 | 已有战争到终局 | 移动、围城、接敌、战斗 hold/retreat 与 normal terminal 较成熟，但完整 victory/white-peace/surrender 路径未闭合 | 当前 run 遇战时至少有一个合法终局路径、战后解散/保存/继续 | 未开始 |
 | GEN-005 | B2 | 非战争长期治理 | 经济、内阁、生活方式、家庭等大多不是通用 native semantic policy | 不出现强制 UI 时允许时间推进；出现阻塞则提升为 B1 并补最小动作 | 记账观察 |
 | GEN-006 | B1 | 自然死亡与结算 | strict runner 现只接受本次执行且 source CharacterID/score/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`，并输出独立 terminal sidecar；自然完整 episode 尚未实机发生 | production 长跑观测玩家自然死亡，生成 `terminal-settlement.json` 并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；自然 episode live 待执行 |
 | GEN-007 | B2/B3 | 战斗质量 | reinforcement assigned/join、异常 terminal 与 forecast 未全闭合 | 若不阻塞当前 run 先记录；真实卡住或导致无法结束战争时提升为 B1 | 记账观察 |
 | GEN-008 | B0（环境） | 当前执行会话无法启动 CK3 live acceptance | 相同 exact EXE/save/runner 在 `CodexSandboxOffline`、`WinSta0\\CodexSandboxDesktop-*` 中于启动期固定崩溃 `ck3+0x1DABD89`；当日既有 live GREEN 均来自 `xenoa` 的普通交互环境。事件 scope query 从未执行，因此不能判为 capability RED | 在 `xenoa` 正常交互 PowerShell / `WinSta0\\Default` 原样复跑 a860702 default-off acceptance，完成同命令 A/B；在此之前继续可离线的 blocker-removal，不改 native 逻辑掩盖环境差异 | 外部 A/B 待执行 |
+| GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 
 ## Degraded heuristic 纪律
 
@@ -75,3 +76,34 @@
   seed 证明从当前 map-ready recovery anchor 到死亡的一代过程，不把 seed 之前的出生/即位历史算成本次 Agent 游玩。
 - orchestration 复用既有 planner/driver，没有新增策略候选或评分，因此本包不派生新的原生 AI 树。首次 live blocker 若要求修改事件、
   互动、战争或其它策略，仍先更新对应 exact-build 原生专题，再允许最小实现并记账。
+
+## 2026-08-27 12:51：GEN-003 ordinary reply static-ready
+
+- 施工前置复核了 `events-and-interactions.md` 与 `interaction-structured-terms.md` 已冻结的 exact-build pending/reply 树：主动
+  `ai_will_do`、AI responder `ai_accept` 与 human pending reply 是不同模型；accept/reject/block/ACK legality 必须独立读取。
+- `strategy.py` 现只对 exact same-frame/full-ID、角色/路由/deadline/legality 完整，且命中 exact-build 单键 allowlist
+  `spar_with_knight_interaction` 的 request 启用 `ordinary-reject-unique-accept-v1`。`special_war_binding_not_applicable` 与
+  `special_data_present=false` 不再冒充通用 ordinary 证据；未知 stock、mod、宗教 definition 均 `definition_unclassified` fail-closed。
+  allowlist 证据是原版 `00_tradition_interactions.txt` 完整文件 SHA-256
+  `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3` 及第 1–200 行完整 definition：双方不在战争、accept
+  仅启动 non-lethal bout，且没有 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或 `on_decline` 字段。
+  `invite_to_activity_interaction`
+  因可承载 `activity_wedding` 而被移出 allowlist；bridge 未发布 subtype 时不得猜。reject 原生合法却 action 不可达时保持
+  blocked，不会改走 accept；accept 只在其它三路都被原生明确判为非法且自身唯一合法可执行时使用。notification 的 ACK 路径未改。
+- active war 与 allowlisted ordinary pending 并存时，planner 只暂存 pending plan，必须先检查 100% war-score enforce-demands；回归
+  fixture 已覆盖 40% 后返回 reject 与 100% 时优先 `enforce-demands-88`，不再允许 pending 提前 return。
+- plan 与 strict runner 已有 compact-plan 字段共同保留 full ID/key/roles/deadline/legality/special binding、frame binding、缺失语义、
+  四路候选/action reachability、rule ID、recommended/selected action 与 blocked reasons。策略继续声明
+  `native_ai_equivalent=false`、`semantic_optimal=false`、`semantic_decision_ready=false`。
+- strict runner 已把 pending mirror 加入 semantic delta，并新增 reply lifecycle gate：typed status/old full ID/sender、remaining pending 与
+  after snapshot 必须全部匹配，才产生 `pending_interaction_changed` visible gameplay、dirty state 与尾部 checkpoint。compact result 保留
+  有界 lifecycle 字段；缺失 typed postcondition 直接以 `pending_interaction_lifecycle_postcondition_failed` 停止。
+- 三个 known war-exit subtype 额外审计 exact outcome/WarID/primary roles/revision 和当前 active-war row；即使 binding 完全吻合，
+  `special_outcome_terms_ready=false` 仍强制 blocked。opaque、mismatch、stale、unknown legality、identity mismatch 与无可执行 channel
+  同样不提交。
+- 未采用/质量债：按 interaction 类型的 target/exchange/effect 与 campaign utility、intermediary/recipient AI raw/final acceptance，
+  以及 war-exit 的 resource/claim/truce/prisoner/hostage dynamic terms。下一替换入口仍是补 typed semantics，不把 reject-first 冒充
+  高智商或原生等价策略。
+- 验证：本次优先级/allowlist 阻断修复后，`test_gameplay_bridge.py` 为 `161 passed, 31 subtests passed`；GEN-003 六文件聚焦
+  聚合为 `251 passed, 68 subtests passed`。修改 Python 文件经项目虚拟环境 `py_compile` 通过，相关差异经 `git diff --check` 通过。
+- 本阶段只达到 static-ready；production reject/unique-accept 的旧 full pending ID 推进与实际结果仍待正常交互桌面验收。

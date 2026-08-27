@@ -56,7 +56,34 @@ def _pending_context_result(
     revision: int,
     native_revision: int,
     date_raw: int,
+    definition_key: str = "spar_with_knight_interaction",
+    actor_character_id: int = 501,
+    recipient_character_id: int = 707,
+    legality: dict[str, dict[str, object]] | None = None,
+    special_data_present: bool = False,
+    special_war_binding: dict[str, object] | None = None,
 ) -> dict[str, object]:
+    if legality is None:
+        legality = {
+            "accept": {"status": "available", "allowed": True, "reason": None},
+            "reject": {"status": "available", "allowed": True, "reason": None},
+            "block": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "ordinary_interaction_not_notification",
+            },
+        }
+    if special_war_binding is None:
+        special_war_binding = {
+            "status": "unavailable",
+            "value": None,
+            "reason": "special_war_binding_not_applicable",
+        }
     return {
         "step": "query-pending-character-interaction-context-v1",
         "accepted": True,
@@ -72,16 +99,55 @@ def _pending_context_result(
             "date_raw": date_raw,
             "pending_interaction_id": pending_id,
             "definition": {
-                "canonical_key": "fixture_nonreligious_interaction",
+                "canonical_key": definition_key,
+                "deterministic_key_hash": 12345,
+                "runtime_ordinal": 17,
+            },
+            "roles": {
+                "actor_character_id": actor_character_id,
+                "recipient_character_id": recipient_character_id,
+                "secondary_actor_character_id": -1,
+                "secondary_recipient_character_id": -1,
+                "intermediary_character_id": -1,
             },
             "routing": {
+                "kind": 0,
+                "played_character_id": recipient_character_id,
                 "current_responder_role": "recipient",
+                "reply_execution_channel": "recipient",
+                "local_route": True,
+                "auto_accept_notification": False,
             },
-            "legality": {
-                "accept": {"status": "available", "allowed": True},
-                "reject": {"status": "available", "allowed": True},
-                "block": {"status": "available", "allowed": False},
-                "acknowledge": {"status": "available", "allowed": False},
+            "deadline": {
+                "age_days": 2,
+                "expiration_days": 60,
+                "remaining_days": 58,
+                "expiry_boundary_status": "not_reached",
+            },
+            "legality": legality,
+            "terms": {
+                "special_data_present": special_data_present,
+                "special_war_binding": special_war_binding,
+                "structured_exchanges": {
+                    "status": "unavailable",
+                    "value": None,
+                    "reason": "structured_exchanges_unavailable",
+                },
+                "structured_effect_preview": {
+                    "status": "unavailable",
+                    "value": None,
+                    "reason": "structured_effect_preview_unavailable",
+                },
+                "recipient_ai_acceptance_score": {
+                    "status": "unavailable",
+                    "value": None,
+                    "reason": "human_responder_not_applicable",
+                },
+                "recipient_ai_final_decision": {
+                    "status": "unavailable",
+                    "value": None,
+                    "reason": "human_responder_not_applicable",
+                },
             },
             "readiness": {
                 "generic_costs_ready": True,
@@ -93,6 +159,54 @@ def _pending_context_result(
             },
         },
     }
+
+
+def _plan_for_pending_context(
+    context_result: dict[str, object],
+    *,
+    action_steps: tuple[str, ...],
+    active_wars: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
+    context = context_result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    roles = context.get("roles")
+    assert isinstance(roles, dict)
+    pending_id = context["pending_interaction_id"]
+    revision = context_result["queried_revision"]
+    native_revision = context_result["queried_native_revision"]
+    date_raw = context["date_raw"]
+    history = [
+        {
+            "command": "query-pending-character-interaction-context-v1",
+            "ok": True,
+            "result": context_result,
+        }
+    ]
+    driver = CallbackGameplayDriver(
+        backend_id="native-headless",
+        snapshot=lambda: {
+            **_snapshot(int(revision), history),
+            "paused": True,
+            "native_revision": native_revision,
+            "date_raw": date_raw,
+            "pending_character_interaction": {
+                "instance_id": pending_id,
+                "sender_character_id": roles["actor_character_id"],
+                "auto_accept_notification": False,
+            },
+            **(
+                {
+                    "active_wars": active_wars,
+                    "player_armies": [],
+                }
+                if active_wars is not None
+                else {}
+            ),
+        },
+        execute=lambda _step, _revision: {},
+        action_steps=action_steps,
+    )
+    return GameplayBridgeService(driver).plan_turn()["plan"]
 
 
 def _army(
@@ -3334,33 +3448,14 @@ class GameplayBridgeTests(unittest.TestCase):
             "acknowledge-pending-character-interaction",
         )
 
-    def test_planner_does_not_default_accept_after_typed_observation(self) -> None:
-        history = [
-            {
-                "command": "query-pending-character-interaction-context-v1",
-                "ok": True,
-                "result": _pending_context_result(
-                    pending_id=72,
-                    revision=6,
-                    native_revision=41,
-                    date_raw=53_175_816,
-                ),
-            }
-        ]
-        driver = CallbackGameplayDriver(
-            backend_id="native-headless",
-            snapshot=lambda: {
-                **_snapshot(6, history),
-                "paused": True,
-                "native_revision": 41,
-                "date_raw": 53_175_816,
-                "pending_character_interaction": {
-                    "instance_id": 72,
-                    "sender_character_id": 501,
-                    "auto_accept_notification": False,
-                },
-            },
-            execute=lambda _step, _revision: {},
+    def test_planner_rejects_ordinary_pending_after_typed_observation(self) -> None:
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+            ),
             action_steps=(
                 "query-pending-character-interaction-context-v1",
                 "accept-pending-character-interaction",
@@ -3368,19 +3463,423 @@ class GameplayBridgeTests(unittest.TestCase):
             ),
         )
 
-        plan = GameplayBridgeService(driver).plan_turn()["plan"]
-
         self.assertEqual(
-            plan["phase"], "pending_character_interaction_evidence_required"
+            plan["phase"], "pending_character_interaction_degraded_reject"
         )
-        self.assertIsNone(plan["selected_step"])
-        self.assertNotIn("required_step", plan)
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
         self.assertEqual(
             plan["pending_character_interaction"]["interaction_key"],
-            "fixture_nonreligious_interaction",
+            "spar_with_knight_interaction",
         )
         self.assertFalse(
-            plan["pending_character_interaction"]["semantic_decision_ready"]
+            plan["pending_character_interaction"][
+                "context_semantic_decision_ready"
+            ]
+        )
+        self.assertEqual(
+            plan["pending_character_interaction"]["instance_id"], 72
+        )
+        self.assertEqual(
+            plan["pending_character_interaction"]["roles"][
+                "recipient_character_id"
+            ],
+            707,
+        )
+        self.assertEqual(
+            plan["pending_character_interaction"]["deadline"]["remaining_days"],
+            58,
+        )
+        self.assertEqual(
+            plan["pending_character_interaction"]["special_war_binding"][
+                "reason"
+            ],
+            "special_war_binding_not_applicable",
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "ordinary-reject-unique-accept-v1")
+        self.assertEqual(decision["classification"], "ordinary_non_war")
+        self.assertEqual(
+            decision["definition_classification"],
+            {
+                "policy": "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1",
+                "definition_key": "spar_with_knight_interaction",
+                "allowlisted": True,
+                "evidence": {
+                    "classification": "ordinary_non_war_nonreligious",
+                    "source": (
+                        "common/character_interactions/"
+                        "00_tradition_interactions.txt"
+                    ),
+                    "source_sha256": (
+                        "E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE4"
+                        "83E351D829391E3"
+                    ),
+                },
+            },
+        )
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_decision_ready"])
+        self.assertIn(
+            "structured_effect_preview_unavailable",
+            decision["missing_semantics"],
+        )
+        self.assertEqual(
+            [row["action"] for row in decision["candidate_replies"]],
+            ["accept", "reject", "block", "acknowledge"],
+        )
+
+    def test_planner_never_accepts_because_reject_command_is_missing(self) -> None:
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+            ),
+            action_steps=("accept-pending-character-interaction",),
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_blocked"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["required_step"], "reject-pending-character-interaction"
+        )
+        self.assertEqual(plan["decision"]["recommended_action"], "reject")
+        self.assertIsNone(plan["decision"]["selected_action"])
+        self.assertIn(
+            "legal_reject_command_unavailable",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_allowlisted_pending_replies_after_nonterminal_active_war_checks(
+        self,
+    ) -> None:
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+            ),
+            action_steps=(
+                "reject-pending-character-interaction",
+                "enforce-demands-88",
+                "raise-troops-default",
+            ),
+            active_wars=[
+                _war(allied_armies=[], enemy_armies=[], score=40)
+            ],
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_reject"
+        )
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        self.assertEqual(plan["decision"]["classification"], "ordinary_non_war")
+
+    def test_enforce_demands_precedes_allowlisted_ordinary_pending(self) -> None:
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+            ),
+            action_steps=(
+                "reject-pending-character-interaction",
+                "enforce-demands-88",
+            ),
+            active_wars=[
+                _war(allied_armies=[], enemy_armies=[], score=100)
+            ],
+        )
+
+        self.assertEqual(plan["phase"], "native_war_enforce_demands")
+        self.assertEqual(plan["selected_step"], "enforce-demands-88")
+        self.assertNotIn("decision", plan)
+
+    def test_nonallowlisted_definitions_fail_closed_without_special_data(
+        self,
+    ) -> None:
+        for definition_key in (
+            "blackmail_interaction",
+            "demand_conversion_interaction",
+            "fixture_nonreligious_interaction",
+            "invite_to_activity_interaction",
+        ):
+            with self.subTest(definition_key=definition_key):
+                plan = _plan_for_pending_context(
+                    _pending_context_result(
+                        pending_id=72,
+                        revision=6,
+                        native_revision=41,
+                        date_raw=53_175_816,
+                        definition_key=definition_key,
+                    ),
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                )
+
+                self.assertIsNone(plan["selected_step"])
+                self.assertEqual(
+                    plan["decision"]["classification"],
+                    "definition_unclassified",
+                )
+                self.assertFalse(
+                    plan["decision"]["definition_classification"][
+                        "allowlisted"
+                    ]
+                )
+                self.assertIn(
+                    "interaction_definition_not_explicitly_classified_"
+                    "nonwar_nonreligious",
+                    plan["decision"]["blocked_reasons"],
+                )
+
+    def test_planner_accepts_only_the_unique_legal_ordinary_reply(self) -> None:
+        legality = {
+            "accept": {"status": "available", "allowed": True, "reason": None},
+            "reject": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "block": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "ordinary_interaction_not_notification",
+            },
+        }
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+                legality=legality,
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"],
+            "pending_character_interaction_degraded_unique_accept",
+        )
+        self.assertEqual(
+            plan["selected_step"], "accept-pending-character-interaction"
+        )
+        self.assertEqual(plan["decision"]["selected_action"], "accept")
+
+    def test_planner_blocks_accept_when_block_is_also_native_legal(self) -> None:
+        legality = {
+            "accept": {"status": "available", "allowed": True, "reason": None},
+            "reject": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "block": {"status": "available", "allowed": True, "reason": None},
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "ordinary_interaction_not_notification",
+            },
+        }
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+                legality=legality,
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "block-pending-character-interaction",
+            ),
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIsNone(plan["decision"]["selected_action"])
+        self.assertIn(
+            "accept_not_unique_legal_reply",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_blocks_unclassified_special_interaction(self) -> None:
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+                definition_key="fixture_opaque_special_interaction",
+                special_data_present=True,
+                special_war_binding={
+                    "status": "unavailable",
+                    "value": None,
+                    "reason": "special_interaction_subtype_opaque",
+                },
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_blocked"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["decision"]["classification"], "unclassified_or_special"
+        )
+        self.assertIn(
+            "interaction_war_or_special_semantics_unclassified",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_blocks_same_frame_responder_identity_mismatch(self) -> None:
+        context_result = _pending_context_result(
+            pending_id=72,
+            revision=6,
+            native_revision=41,
+            date_raw=53_175_816,
+        )
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        routing = context["routing"]
+        assert isinstance(routing, dict)
+        routing["played_character_id"] = 999
+
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["decision"]["classification"], "evidence_invalid")
+        self.assertIn(
+            "local_responder_identity_mismatch",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_keeps_bound_known_war_exit_blocked_without_terms(self) -> None:
+        special_binding = {
+            "status": "available",
+            "value": {
+                "special_interaction_kind": "end_war_white_peace_interaction",
+                "absolute_outcome": "white_peace",
+                "war_id": 88,
+                "actor_war_role": "primary_attacker",
+                "recipient_war_role": "primary_defender",
+                "binding_source": "native_common_war_relation",
+            },
+            "reason": None,
+        }
+        war = {
+            **_war(
+                allied_armies=[],
+                enemy_armies=[],
+                player_side="defender",
+            ),
+            "primary_opponent_character_id": 501,
+        }
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+                definition_key="end_war_attacker_white_peace_interaction",
+                special_data_present=True,
+                special_war_binding=special_binding,
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "raise-troops-default",
+            ),
+            active_wars=[war],
+        )
+
+        self.assertEqual(plan["phase"], "pending_war_interaction_evidence_required")
+        self.assertIsNone(plan["selected_step"])
+        decision = plan["decision"]
+        self.assertEqual(decision["classification"], "known_war_exit")
+        self.assertIn(
+            "special_outcome_terms_unavailable", decision["blocked_reasons"]
+        )
+        self.assertNotIn(
+            "special_war_snapshot_binding_mismatch",
+            decision["blocked_reasons"],
+        )
+        binding = decision["special_war_snapshot_binding"]
+        self.assertEqual(binding["war_id"], 88)
+        self.assertEqual(binding["snapshot_revision"], 41)
+        self.assertEqual(binding["recipient_war_role"], "primary_defender")
+        self.assertTrue(binding["active_war_id_match"])
+        self.assertTrue(binding["active_war_roles_match"])
+
+    def test_planner_blocks_known_war_exit_on_snapshot_role_mismatch(self) -> None:
+        special_binding = {
+            "status": "available",
+            "value": {
+                "special_interaction_kind": "end_war_white_peace_interaction",
+                "absolute_outcome": "white_peace",
+                "war_id": 88,
+                "actor_war_role": "primary_attacker",
+                "recipient_war_role": "primary_defender",
+                "binding_source": "native_common_war_relation",
+            },
+            "reason": None,
+        }
+        mismatched_war = {
+            **_war(allied_armies=[], enemy_armies=[], player_side="attacker"),
+            "primary_opponent_character_id": 501,
+        }
+        plan = _plan_for_pending_context(
+            _pending_context_result(
+                pending_id=72,
+                revision=6,
+                native_revision=41,
+                date_raw=53_175_816,
+                definition_key="end_war_attacker_white_peace_interaction",
+                special_data_present=True,
+                special_war_binding=special_binding,
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "raise-troops-default",
+            ),
+            active_wars=[mismatched_war],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "special_war_snapshot_binding_mismatch",
+            plan["decision"]["blocked_reasons"],
         )
 
     def test_planner_requeries_stale_pending_context_identity(self) -> None:

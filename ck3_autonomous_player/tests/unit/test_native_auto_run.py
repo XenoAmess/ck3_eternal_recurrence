@@ -79,6 +79,16 @@ class _NativeAutoRunHarness:
             and self.actions[0] in {"event", "event_no_delta"}
             else None
         )
+        self.pending_character_interaction = (
+            {
+                "instance_id": 72,
+                "sender_character_id": 501,
+                "auto_accept_notification": False,
+                "source": "native",
+            }
+            if any(action.startswith("reply_") for action in self.actions)
+            else None
+        )
         self.history: list[dict[str, object]] = []
         self.ready_snapshot_observed = False
         self.driver: _FakeNativeDriver | None = None
@@ -205,6 +215,9 @@ class _NativeAutoRunHarness:
                 if self.active_event_id is not None
                 else None
             ),
+            "pending_character_interaction": copy.deepcopy(
+                self.pending_character_interaction
+            ),
             "active_wars": [],
             "player_armies": [],
             "native_command_history": copy.deepcopy(self.history),
@@ -317,6 +330,48 @@ class _NativeAutoRunHarness:
                 },
             }
         elif action in {
+            "reply_reject",
+            "reply_reject_next",
+            "reply_missing_typed_postcondition",
+        }:
+            step = "reject-pending-character-interaction"
+            old_pending = copy.deepcopy(self.pending_character_interaction)
+            if not isinstance(old_pending, dict):
+                raise AssertionError("reply action lacks a pending interaction")
+            self.pending_character_interaction = (
+                {
+                    "instance_id": 73,
+                    "sender_character_id": 502,
+                    "auto_accept_notification": False,
+                    "source": "native",
+                }
+                if action == "reply_reject_next"
+                else None
+            )
+            self.native_revision += 1
+            self.public_revision += 1
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+            }
+            if action != "reply_missing_typed_postcondition":
+                result.update(
+                    {
+                        "interaction_result": {
+                            "status": "rejected",
+                            "instance_id": old_pending["instance_id"],
+                            "sender_character_id": old_pending[
+                                "sender_character_id"
+                            ],
+                            "ignored_unbounded_field": "not copied",
+                        },
+                        "remaining_pending_character_interaction": (
+                            copy.deepcopy(self.pending_character_interaction)
+                        ),
+                    }
+                )
+        elif action in {
             "death_terminal",
             "death_terminal_source_mismatch",
             "death_terminal_score_mismatch",
@@ -392,6 +447,23 @@ class _NativeAutoRunHarness:
             plan["event_decision"] = {
                 "policy": "shown-enabled-death-cancel-native-order-v1",
                 "selected_native_option_index": 0,
+            }
+        if step in {
+            "accept-pending-character-interaction",
+            "reject-pending-character-interaction",
+            "acknowledge-pending-character-interaction",
+        }:
+            plan["pending_character_interaction"] = {
+                "instance_id": 72,
+                "interaction_key": "fixture_nonreligious_interaction",
+                "roles": {
+                    "actor_character_id": 501,
+                    "recipient_character_id": 707,
+                },
+            }
+            plan["decision"] = {
+                "rule_id": "ordinary-reject-unique-accept-v1",
+                "selected_action": "reject",
             }
         return {
             "status": "executed",
@@ -845,6 +917,99 @@ class NativeAutoRunTests(unittest.TestCase):
             900,
         )
         self.assertEqual(report["auto_run"]["attempted_turns"], 1)
+        self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_pending_reply_records_lifecycle_evidence_and_tail_checkpoint(
+        self,
+    ) -> None:
+        report, harness = self._run(["reply_reject"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        self.assertEqual(report["auto_run"]["counts"]["gameplay"], 1)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(
+            turn["selected_step"], "reject-pending-character-interaction"
+        )
+        self.assertIn("pending_interaction_changed", turn["evidence"])
+        self.assertEqual(
+            turn["plan"]["decision"]["rule_id"],
+            "ordinary-reject-unique-accept-v1",
+        )
+        self.assertEqual(
+            turn["before"]["active_context"]["pending_character_interaction"][
+                "instance_id"
+            ],
+            72,
+        )
+        self.assertIsNone(
+            turn["after"]["active_context"]["pending_character_interaction"]
+        )
+        self.assertEqual(
+            turn["result"]["interaction_result"],
+            {
+                "status": "rejected",
+                "instance_id": 72,
+                "sender_character_id": 501,
+            },
+        )
+        self.assertIsNone(
+            turn["result"]["remaining_pending_character_interaction"]
+        )
+        self.assertEqual(report["auto_run"]["counts"]["checkpoint"], 1)
+        self.assertEqual(len(report["checkpoints"]), 1)
+        self.assertEqual(
+            report["checkpoints"][0]["phase"], "final_checkpoint"
+        )
+        self.assertEqual(harness.events.count("save_checkpoint"), 1)
+
+    def test_pending_reply_compacts_the_next_pending_identity(self) -> None:
+        report, _harness = self._run(["reply_reject_next"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        result = report["auto_run"]["turns"][0]["result"]
+        self.assertEqual(
+            result["remaining_pending_character_interaction"],
+            {
+                "instance_id": 73,
+                "sender_character_id": 502,
+                "auto_accept_notification": False,
+                "source": "native",
+            },
+        )
+
+    def test_pending_reply_without_typed_postcondition_stops_the_run(self) -> None:
+        report, _harness = self._run(
+            ["reply_missing_typed_postcondition"]
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertIn("old-instance lifecycle", str(report["error"]))
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["turn_index"], 1)
+        self.assertEqual(blocker["stage"], "postcondition")
+        self.assertEqual(
+            blocker["kind"],
+            "pending_interaction_lifecycle_postcondition_failed",
+        )
+        self.assertEqual(
+            blocker["before"]["active_context"][
+                "pending_character_interaction"
+            ]["instance_id"],
+            72,
+        )
+        self.assertIsNone(
+            blocker["after"]["active_context"][
+                "pending_character_interaction"
+            ]
+        )
+        self.assertEqual(
+            blocker["result"]["step"],
+            "reject-pending-character-interaction",
+        )
+        self.assertNotIn("interaction_result", blocker["result"])
         self.assertEqual(report["auto_run"]["turns"], [])
 
     def test_session_exit_during_readiness_is_classified_as_session_exit(self) -> None:

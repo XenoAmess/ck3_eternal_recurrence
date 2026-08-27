@@ -52,6 +52,11 @@ _TERMINAL_STEPS = frozenset({"death-terminal", "strategy-review"})
 _RECOVERY_STEPS = frozenset(
     {"restore-checkpoint", "start-next-episode"}
 )
+_PENDING_INTERACTION_REPLY_STATUSES = {
+    "accept-pending-character-interaction": "accepted",
+    "reject-pending-character-interaction": "rejected",
+    "acknowledge-pending-character-interaction": "acknowledged",
+}
 
 
 def native_auto_run(
@@ -490,6 +495,29 @@ def native_auto_run(
                     )
                     raise AgentError(
                         "native event selection lacks an old-instance lifecycle postcondition"
+                    )
+            if step in _PENDING_INTERACTION_REPLY_STATUSES:
+                result = outcome.get("result")
+                if not _pending_interaction_lifecycle_verified(
+                    step,
+                    result,
+                    before=before,
+                    after_snapshot=after_snapshot,
+                    evidence=evidence,
+                ):
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind=(
+                            "pending_interaction_lifecycle_postcondition_failed"
+                        ),
+                        message=(
+                            "native pending-interaction reply lacks a typed "
+                            "old-instance lifecycle postcondition"
+                        ),
+                    )
+                    raise AgentError(
+                        "native pending-interaction reply lacks a typed "
+                        "old-instance lifecycle postcondition"
                     )
             counts[turn_class] += 1
             if turn_class == "gameplay" and evidence:
@@ -1378,6 +1406,9 @@ def _compact_binding(
         },
         "_semantic": {
             "active_event": snapshot.get("active_event"),
+            "pending_character_interaction": snapshot.get(
+                "pending_character_interaction"
+            ),
             "active_wars": snapshot.get("active_wars"),
             "player_armies": snapshot.get("player_armies"),
             "played_character": snapshot.get("played_character"),
@@ -1413,6 +1444,9 @@ def _active_context_summary(snapshot: dict[str, object]) -> dict[str, object]:
                 key: pending.get(key)
                 for key in (
                     "instance_id",
+                    "sender_character_id",
+                    "auto_accept_notification",
+                    "source",
                     "kind",
                     "deadline_date_raw",
                     "response_ready",
@@ -1584,6 +1618,10 @@ def _semantic_delta(
         before_semantic = {}
     comparisons = (
         ("active_event", "event_changed"),
+        (
+            "pending_character_interaction",
+            "pending_interaction_changed",
+        ),
         ("active_wars", "war_changed"),
         ("player_armies", "army_changed"),
         ("played_character", "played_character_changed"),
@@ -1596,6 +1634,64 @@ def _semantic_delta(
         ):
             evidence.append(label)
     return evidence
+
+
+def _pending_interaction_lifecycle_verified(
+    step: str,
+    result: object,
+    *,
+    before: dict[str, object],
+    after_snapshot: dict[str, object],
+    evidence: list[str],
+) -> bool:
+    """Require the typed reply result and the same old full-ID transition."""
+
+    expected_status = _PENDING_INTERACTION_REPLY_STATUSES.get(step)
+    if expected_status is None or not isinstance(result, dict):
+        return False
+    before_semantic = before.get("_semantic")
+    before_pending = (
+        before_semantic.get("pending_character_interaction")
+        if isinstance(before_semantic, dict)
+        else None
+    )
+    interaction_result = result.get("interaction_result")
+    remaining_present = "remaining_pending_character_interaction" in result
+    remaining = result.get("remaining_pending_character_interaction")
+    after_pending = after_snapshot.get("pending_character_interaction")
+    old_instance_id = (
+        before_pending.get("instance_id")
+        if isinstance(before_pending, dict)
+        else None
+    )
+    old_sender_id = (
+        before_pending.get("sender_character_id")
+        if isinstance(before_pending, dict)
+        else None
+    )
+    remaining_instance_id = (
+        remaining.get("instance_id") if isinstance(remaining, dict) else None
+    )
+    after_instance_id = (
+        after_pending.get("instance_id")
+        if isinstance(after_pending, dict)
+        else None
+    )
+    return bool(
+        "pending_interaction_changed" in evidence
+        and isinstance(old_instance_id, int)
+        and not isinstance(old_instance_id, bool)
+        and old_instance_id > 0
+        and isinstance(interaction_result, dict)
+        and interaction_result.get("status") == expected_status
+        and interaction_result.get("instance_id") == old_instance_id
+        and interaction_result.get("sender_character_id") == old_sender_id
+        and remaining_present
+        and (remaining is None or isinstance(remaining, dict))
+        and remaining_instance_id != old_instance_id
+        and after_instance_id != old_instance_id
+        and _semantic_digest(remaining) == _semantic_digest(after_pending)
+    )
 
 
 def _same_native_frame(
@@ -1700,7 +1796,39 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "checkpoint",
         "event_selection",
     )
-    return {key: result.get(key) for key in keys if key in result}
+    compact = {key: result.get(key) for key in keys if key in result}
+    if "interaction_result" in result:
+        interaction = result.get("interaction_result")
+        compact["interaction_result"] = (
+            {
+                key: interaction.get(key)
+                for key in (
+                    "status",
+                    "instance_id",
+                    "sender_character_id",
+                )
+                if key in interaction
+            }
+            if isinstance(interaction, dict)
+            else None
+        )
+    if "remaining_pending_character_interaction" in result:
+        remaining = result.get("remaining_pending_character_interaction")
+        compact["remaining_pending_character_interaction"] = (
+            {
+                key: remaining.get(key)
+                for key in (
+                    "instance_id",
+                    "sender_character_id",
+                    "auto_accept_notification",
+                    "source",
+                )
+                if key in remaining
+            }
+            if isinstance(remaining, dict)
+            else None
+        )
+    return compact
 
 
 def _public_binding(binding: dict[str, object]) -> dict[str, object]:
