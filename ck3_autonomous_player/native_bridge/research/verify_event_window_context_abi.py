@@ -159,6 +159,186 @@ def main() -> int:
             f"bytes=0x{actual_length:X} SHA256={actual_sha}"
         )
 
+    expected_scope_spans = {
+        "ActiveEvent_default_constructor": (
+            0x2707F60,
+            0x2707FD8,
+            "387C833D2D134CFC89CA6258F4F158B4B3A6372D28799F502B71B32D92B51331",
+        ),
+        "ActiveEvent_copy_or_relocation_path": (
+            0x2707E50,
+            0x2707F55,
+            "4A541021F8227E03006D1699D15DA0769B0D28763D503CF2BAD92EF2B80E594A",
+        ),
+        "ActiveEvent_serializer": (
+            0x2350640,
+            0x235082B,
+            "0B7910443CA157A79B16A885782C6A69FAC80A471288F869FF3A7ADEFD23AC4A",
+        ),
+        "EventTargetScope_constructor": (
+            0x81F190,
+            0x81F24A,
+            "E119B49AA2F41C1E491435E90877DEB8F0DF42906226AAC2977F51A561443FA7",
+        ),
+        "EventTargetScope_copy_constructor_path": (
+            0x3358EF0,
+            0x3358FC9,
+            "3F3D5AAACCAC5C72C0C9A194E3B39F4CC0B38350DA8AF8F029B6C2F61C51A0E3",
+        ),
+        "EventTargetScope_copy_assignment_path": (
+            0x3359030,
+            0x33590CE,
+            "4E82B1166529FE5376859DEBD00D0166700255BC87A7F531B4C6EE97A1C4D4C9",
+        ),
+        "EventTargetScope_serializer": (
+            0x20D8330,
+            0x20D84C0,
+            "3A36FF4554A2B6BA2B9E02DA5252C8F0C6E5231F4F92A8CBA5932E3AFE65A428",
+        ),
+        "EventTargetScope_named_vector_serializer_wrapper": (
+            0x2539DA0,
+            0x2539DF8,
+            "985F396569F9FEEDCCC8DCD85A15FB36A834156E48354F3AB69E1BEBE90B777E",
+        ),
+        "EventTargetScope_named_row_serializer": (
+            0x253BD00,
+            0x253BE92,
+            "8E407B2889993C0DDBC994EA40905FF221A168D62BF57A273C56EAF352EACA39",
+        ),
+        "EventTargetScope_named_vector_copy": (
+            0x335A370,
+            0x335A4EE,
+            "5D8570E0C3268732AC8A1A666D4C800DB39DD305E498AE9B1297160B11572613",
+        ),
+        "generic_event_target_serializer": (
+            0x81D880,
+            0x81DA06,
+            "B267CA32133ED15FE47468572C4B561E2A121B280BBEF8D653F56E4158CD1E6D",
+        ),
+        "generic_event_target_type_registry_getter": (
+            0x33C52B0,
+            0x33C535B,
+            "8B7E4C67B9E772BBB75F303D7EE2444DBBF261D412FD0DCC97C99FC0C7297507",
+        ),
+        "generic_event_target_type_name_consumer": (
+            0x2011400,
+            0x2011623,
+            "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B",
+        ),
+        "generic_event_target_type_name_resolver": (
+            0x3B58970,
+            0x3B58A94,
+            "54E7EAF6CE4CEDBD229DA3D63C69C8691E9291EECE17F07AE1F1C75C2DA9FAB4",
+        ),
+        "script_identifier_table_getter": (
+            0x3B971A0,
+            0x3B97273,
+            "A8A82597116A8C4E4A77A143AD3A581B12E6678F5E8E6839D02F234AB260329C",
+        ),
+        "script_identifier_lookup_only": (
+            0x3B97020,
+            0x3B9708D,
+            "5AD84C93E642050B4397F1DF278A8163C0AEB41E187A648D6FB7EA39A38C55FE",
+        ),
+        "script_identifier_id_to_entry": (
+            0x3B97090,
+            0x3B9719F,
+            "723937CA06967EDF2A3757AD5EE8C3453C3E13E10A97F9135847C85BA8944A11",
+        ),
+        "generic_event_target_object_resolver": (
+            0x33299E0,
+            0x3329A37,
+            "CDC09A1F335F7F80C8966325B1B7B3A07AACCD0FF36048BBD7D8F34ABD2D1036",
+        ),
+        "character_event_target_object_resolver": (
+            0x201AD30,
+            0x201ADB2,
+            "092646A8272A7E2926D3865A6AF301AAEEC8A004932F1BF60AE6EA40C9DC19E7",
+        ),
+    }
+    scope_span_rows: dict[str, dict[str, object]] = {}
+    for span in function_spans:
+        name = span["name"]
+        if name in expected_scope_spans:
+            if name in scope_span_rows:
+                failures.append(f"contract: duplicate scope span {name}")
+            scope_span_rows[name] = span
+    for name, (expected_start, expected_end, expected_sha) in (
+        expected_scope_spans.items()
+    ):
+        span = scope_span_rows.get(name)
+        if span is None:
+            failures.append(f"contract: missing scope span {name}")
+            continue
+        if (
+            integer(span["start_rva"]) != expected_start
+            or integer(span["end_rva"]) != expected_end
+            or span["sha256"].upper() != expected_sha
+        ):
+            failures.append(f"contract: scope span {name} drifted")
+
+    active_scope = contract.get("ActiveEventScope", {})
+    root_scope = active_scope.get("root_generic_target", {})
+    named_scope = active_scope.get("named_target_vector", {})
+    named_identity = active_scope.get("named_key_identity", {})
+    type_identity = active_scope.get("generic_type_identity", {})
+    character_identity = active_scope.get("character_payload_identity", {})
+    if not (
+        active_scope.get("evidence_status") == "static-confirmed-not-live"
+        and "ActiveEvent+0x00" in active_scope.get("embedding", "")
+        and "0x168-byte EventTargetScope" in active_scope.get("embedding", "")
+        and root_scope.get("type_index")
+        == "+0x00 uint16 generic type-registry index; zero is absent"
+        and root_scope.get("payload")
+        == (
+            "+0x08 type-specific 8-byte payload; never publish it as a "
+            "pointer or universal component ID"
+        )
+        and named_scope.get("header")
+        == (
+            "EventTargetScope+0x18 data pointer, +0x20 int32 capacity, "
+            "+0x24 signed int32 count, +0x28 allocator pointer"
+        )
+        and named_scope.get("row_stride") == "0x18"
+        and named_scope.get("row_name_identifier")
+        == (
+            "+0x00 int32 script-identifier ID; +0x04 remains "
+            "opaque and is not published"
+        )
+        and named_scope.get("row_target")
+        == "+0x08 inline 0x10-byte generic event-target token"
+        and named_identity.get("table_getter_rva") == "0x3B971A0"
+        and named_identity.get("lookup_only_rva") == "0x3B97020"
+        and named_identity.get("id_to_entry_rva") == "0x3B97090"
+        and type_identity.get("registry_getter_rva") == "0x33C52B0"
+        and type_identity.get("registry_address") == "module+0x4FFE290"
+        and type_identity.get("registry_layout")
+        == (
+            "+0x00 data pointer, +0x0C signed int32 count, entry stride "
+            "0x50"
+        )
+        and type_identity.get("stable_name_identifier")
+        == "entry+0x00 int32 identifier"
+        and type_identity.get("stable_name_resolver_rva") == "0x3B58970"
+        and "module+0x5000AB0" in type_identity.get("fallback", "")
+        and character_identity.get("status")
+        == "static-confirmed-only-not-current-event-live"
+        and character_identity.get("type_index") == 4
+        and character_identity.get("payload")
+        == "+0x08 zero-extended full-generation int32 CharacterID"
+        and active_scope.get("noncharacter_payload_identity", "").startswith(
+            "unavailable"
+        )
+        and active_scope.get("production_wire")
+        == (
+            "not implemented; current root_scope and saved_scopes remain "
+            "explicitly unavailable"
+        )
+        and active_scope.get("live_validation") == "not performed"
+        and active_scope.get("semantic_decision_ready") is False
+    ):
+        failures.append("contract: ActiveEvent scope static ABI drifted")
+
     source_contracts = {
         "reader": (
             arguments.reader,
@@ -297,6 +477,22 @@ def main() -> int:
         failures.append("contract: event definition identity wire is not ready")
     if not readiness["effect_indicator_wire_ready"]:
         failures.append("contract: effect indicator wire is not ready")
+    if not (
+        readiness.get("current_event_scope_layout_static_ready") is True
+        and readiness.get(
+            "current_event_scope_character_payload_identity_static_ready"
+        )
+        is True
+        and readiness.get(
+            "current_event_scope_noncharacter_payload_identity_static_ready"
+        )
+        is False
+        and readiness.get("current_event_scope_wire_ready") is False
+        and readiness.get("current_event_scope_live_ready") is False
+        and readiness.get("stable_scopes_ready") is False
+        and readiness.get("semantic_decision_ready") is False
+    ):
+        failures.append("contract: current-event scope readiness drifted")
     published_identity = set(
         query_contract.get("published_event_definition_fields", [])
     )
@@ -443,7 +639,7 @@ def main() -> int:
     print(
         f"PASS spans={len(function_spans) + len(additional_spans)} "
         "pdata=1 exact_build=1 read_only=1 "
-        "source_contract=1 fixture_live=1"
+        "source_contract=1 fixture_live=1 scope_static=1 scope_live=0"
     )
     return 0
 

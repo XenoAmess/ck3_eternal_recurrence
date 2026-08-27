@@ -7,7 +7,7 @@
   "read_only": true,
   "live_validated": true,
   "live_validated_scope": "generic nonreligious definition/localization fixtures with the production native bridge: current full instance and canonical definition identity, process-local numeric metadata, materialized presentation/cancel, empty indicator controls, and the exact trait/add brave, stress/increase affected=false critical=false, and death/played_character backing rows across seed checkpoint and fresh cold reload",
-  "not_live_validated_scope": "stock event coverage, trait remove, other stress branches, scheme/unknown nonempty rows, visual icon rendering, event-window lifecycle removal after selection, stable root/saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice",
+  "not_live_validated_scope": "stock event coverage, trait remove, other stress branches, scheme/unknown nonempty rows, visual icon rendering, event-window lifecycle removal after selection, current-event root/named scope values and all saved scopes, complete structured effect preview, resource/relationship deltas and semantic option choice; the root/named layout and type-4 CharacterID decoder are static-only",
   "game_process_started": true,
   "scope": "generic nonreligious current event-window presentation context",
   "owner_deferred_domains": [
@@ -144,6 +144,139 @@
         "end_rva": "0x2706C2D",
         "byte_length": "0x15D",
         "sha256": "4AAF5D5EE7438AFD1786185DD49F9D669957EB4268607261ECB272CCC3C9D71A"
+      },
+      {
+        "name": "ActiveEvent_default_constructor",
+        "start_rva": "0x2707F60",
+        "end_rva": "0x2707FD8",
+        "byte_length": "0x78",
+        "sha256": "387C833D2D134CFC89CA6258F4F158B4B3A6372D28799F502B71B32D92B51331"
+      },
+      {
+        "name": "ActiveEvent_copy_or_relocation_path",
+        "start_rva": "0x2707E50",
+        "end_rva": "0x2707F55",
+        "byte_length": "0x105",
+        "sha256": "4A541021F8227E03006D1699D15DA0769B0D28763D503CF2BAD92EF2B80E594A"
+      },
+      {
+        "name": "ActiveEvent_serializer",
+        "start_rva": "0x2350640",
+        "end_rva": "0x235082B",
+        "byte_length": "0x1EB",
+        "sha256": "0B7910443CA157A79B16A885782C6A69FAC80A471288F869FF3A7ADEFD23AC4A"
+      },
+      {
+        "name": "EventTargetScope_constructor",
+        "start_rva": "0x81F190",
+        "end_rva": "0x81F24A",
+        "byte_length": "0xBA",
+        "sha256": "E119B49AA2F41C1E491435E90877DEB8F0DF42906226AAC2977F51A561443FA7"
+      },
+      {
+        "name": "EventTargetScope_copy_constructor_path",
+        "start_rva": "0x3358EF0",
+        "end_rva": "0x3358FC9",
+        "byte_length": "0xD9",
+        "sha256": "3F3D5AAACCAC5C72C0C9A194E3B39F4CC0B38350DA8AF8F029B6C2F61C51A0E3"
+      },
+      {
+        "name": "EventTargetScope_copy_assignment_path",
+        "start_rva": "0x3359030",
+        "end_rva": "0x33590CE",
+        "byte_length": "0x9E",
+        "sha256": "4E82B1166529FE5376859DEBD00D0166700255BC87A7F531B4C6EE97A1C4D4C9"
+      },
+      {
+        "name": "EventTargetScope_serializer",
+        "start_rva": "0x20D8330",
+        "end_rva": "0x20D84C0",
+        "byte_length": "0x190",
+        "sha256": "3A36FF4554A2B6BA2B9E02DA5252C8F0C6E5231F4F92A8CBA5932E3AFE65A428"
+      },
+      {
+        "name": "EventTargetScope_named_vector_serializer_wrapper",
+        "start_rva": "0x2539DA0",
+        "end_rva": "0x2539DF8",
+        "byte_length": "0x58",
+        "sha256": "985F396569F9FEEDCCC8DCD85A15FB36A834156E48354F3AB69E1BEBE90B777E"
+      },
+      {
+        "name": "EventTargetScope_named_row_serializer",
+        "start_rva": "0x253BD00",
+        "end_rva": "0x253BE92",
+        "byte_length": "0x192",
+        "sha256": "8E407B2889993C0DDBC994EA40905FF221A168D62BF57A273C56EAF352EACA39"
+      },
+      {
+        "name": "EventTargetScope_named_vector_copy",
+        "start_rva": "0x335A370",
+        "end_rva": "0x335A4EE",
+        "byte_length": "0x17E",
+        "sha256": "5D8570E0C3268732AC8A1A666D4C800DB39DD305E498AE9B1297160B11572613"
+      },
+      {
+        "name": "generic_event_target_serializer",
+        "start_rva": "0x81D880",
+        "end_rva": "0x81DA06",
+        "byte_length": "0x186",
+        "sha256": "B267CA32133ED15FE47468572C4B561E2A121B280BBEF8D653F56E4158CD1E6D"
+      },
+      {
+        "name": "generic_event_target_type_registry_getter",
+        "start_rva": "0x33C52B0",
+        "end_rva": "0x33C535B",
+        "byte_length": "0xAB",
+        "sha256": "8B7E4C67B9E772BBB75F303D7EE2444DBBF261D412FD0DCC97C99FC0C7297507"
+      },
+      {
+        "name": "generic_event_target_type_name_consumer",
+        "start_rva": "0x2011400",
+        "end_rva": "0x2011623",
+        "byte_length": "0x223",
+        "sha256": "55AC17937B11658E17C4884A9FD027FFA32BCD3B04EBC16B9D98F24BD9ECB02B"
+      },
+      {
+        "name": "generic_event_target_type_name_resolver",
+        "start_rva": "0x3B58970",
+        "end_rva": "0x3B58A94",
+        "byte_length": "0x124",
+        "sha256": "54E7EAF6CE4CEDBD229DA3D63C69C8691E9291EECE17F07AE1F1C75C2DA9FAB4"
+      },
+      {
+        "name": "script_identifier_table_getter",
+        "start_rva": "0x3B971A0",
+        "end_rva": "0x3B97273",
+        "byte_length": "0xD3",
+        "sha256": "A8A82597116A8C4E4A77A143AD3A581B12E6678F5E8E6839D02F234AB260329C"
+      },
+      {
+        "name": "script_identifier_lookup_only",
+        "start_rva": "0x3B97020",
+        "end_rva": "0x3B9708D",
+        "byte_length": "0x6D",
+        "sha256": "5AD84C93E642050B4397F1DF278A8163C0AEB41E187A648D6FB7EA39A38C55FE"
+      },
+      {
+        "name": "script_identifier_id_to_entry",
+        "start_rva": "0x3B97090",
+        "end_rva": "0x3B9719F",
+        "byte_length": "0x10F",
+        "sha256": "723937CA06967EDF2A3757AD5EE8C3453C3E13E10A97F9135847C85BA8944A11"
+      },
+      {
+        "name": "generic_event_target_object_resolver",
+        "start_rva": "0x33299E0",
+        "end_rva": "0x3329A37",
+        "byte_length": "0x57",
+        "sha256": "CDC09A1F335F7F80C8966325B1B7B3A07AACCD0FF36048BBD7D8F34ABD2D1036"
+      },
+      {
+        "name": "character_event_target_object_resolver",
+        "start_rva": "0x201AD30",
+        "end_rva": "0x201ADB2",
+        "byte_length": "0x82",
+        "sha256": "092646A8272A7E2926D3865A6AF301AAEEC8A004932F1BF60AE6EA40C9DC19E7"
       },
       {
         "name": "EventData_duplicate_calculated_id_validator",
@@ -340,9 +473,58 @@
     "EventData_authored_option_vector": "+0x1B0 data, +0x1B8 capacity, +0x1BC int32 count; entries are CEventOption* in authored zero-based order",
     "EventData_source_location": "+0x240 object; duplicate validator resolves the new and previous source-location strings for the second and third formatter arguments",
     "identity_query_rule": "Copy +0x08/+0x0C/+0x10 only after the complete ActiveEvent instance ID is matched; validate MSVC string bounds and repeat the ActiveEvent/EventData pointer plus numeric/string observation before returning. +0x08/+0x0C must remain stable only within that loaded-process observation; only +0x10 is the cross-process definition identity. Never publish the EventData pointer.",
-    "root_scope_stable_identity": "unknown",
+    "root_scope_stable_identity": "ActiveEvent+0x00 root generic-event-target layout and kind-4 CharacterID payload identity are static-confirmed, but the current-event root has not been read in a paused live artifact and non-character payload decoders remain unavailable; no stable root scope is published",
     "saved_scope_stable_identities": "unknown",
     "GetScope": "GUI callback RVA 0x16D0990 resolves data+0x00 through EventManager and returns the live ActiveEvent pointer; it does not publish a stable cross-process scope identity."
+  },
+  "ActiveEventScope": {
+    "evidence_status": "static-confirmed-not-live",
+    "domain": "generic nonreligious event-target context; no faith, doctrine, tenet, fervor, conversion, reformation, holy-war or holy-order semantics were inspected",
+    "embedding": "ActiveEvent+0x00 is an inline 0x168-byte EventTargetScope zero-offset base. ActiveEvent default construction calls RVA 0x81F190 with the original rcx; its copy/relocation path calls RVA 0x3358EF0 with the original destination/source; ActiveEvent serialization passes the unadjusted ActiveEvent pointer as r8 to RVA 0x20D8330. EventTargetScope construction initializes through +0x166 and ActiveEvent-specific construction resumes at +0x168.",
+    "root_generic_target": {
+      "layout": "ActiveEvent/EventTargetScope+0x00 is a 0x10-byte generic event-target token",
+      "type_index": "+0x00 uint16 generic type-registry index; zero is absent",
+      "payload": "+0x08 type-specific 8-byte payload; never publish it as a pointer or universal component ID",
+      "serializer_proof": "EventTargetScope serializer 0x20D83AE..0x20D83C0 passes the unadjusted scope pointer through RVA 0x81D880; that serializer dereferences the pointer and reads the uint16 at +0x00"
+    },
+    "named_target_vector": {
+      "header": "EventTargetScope+0x18 data pointer, +0x20 int32 capacity, +0x24 signed int32 count, +0x28 allocator pointer",
+      "serializer_gate": "0x20D8407 compares dword [scope+0x24] with zero; 0x20D840D passes scope+0x18 to RVA 0x2539DA0",
+      "row_stride": "0x18",
+      "row_name_identifier": "+0x00 int32 script-identifier ID; +0x04 remains opaque and is not published",
+      "row_target": "+0x08 inline 0x10-byte generic event-target token",
+      "row_loop_proof": "RVA 0x253BD00 loads vector data at header+0x00 and signed count at header+0x0C, computes end=data+count*0x18, resolves row+0x00 through 0x3B971A0/0x3B97090, passes row+0x08 to generic serializer 0x81D880 and advances by 0x18. RVA 0x335A370 independently copies rows in 0x18-byte units."
+    },
+    "named_key_identity": {
+      "table_getter_rva": "0x3B971A0",
+      "lookup_only_rva": "0x3B97020",
+      "id_to_entry_rva": "0x3B97090",
+      "read_rule": "Resolve only a bounded nonempty key using the established lookup-only script-identifier table path and require an exact ID/string round-trip; never intern or accept the resolver fallback."
+    },
+    "generic_type_identity": {
+      "registry_getter_rva": "0x33C52B0",
+      "registry_address": "module+0x4FFE290",
+      "registry_layout": "+0x00 data pointer, +0x0C signed int32 count, entry stride 0x50",
+      "stable_name_identifier": "entry+0x00 int32 identifier",
+      "stable_name_resolver_rva": "0x3B58970",
+      "proof": "RVA 0x2011438 reads the token's uint16 type index, applies the same registry count/0x50-stride lookup, reads entry+0x00 and calls 0x3B58970",
+      "fallback": "module+0x5000AB0 out-of-range registry fallback; reject rather than publish",
+      "read_rule": "Require nonzero in-range type index, a nonfallback registry entry and a bounded nonempty stable type key. A stable type key does not make its payload identity known."
+    },
+    "character_payload_identity": {
+      "status": "static-confirmed-only-not-current-event-live",
+      "type_index": 4,
+      "payload": "+0x08 zero-extended full-generation int32 CharacterID",
+      "exact_resolvers": "generic dispatcher RVA 0x33299E0 and character resolver RVA 0x201AD30",
+      "cross_contracts": "combat_phase_event_trace_v1_abi.json event_target_scope.root and ck3_1_19_0_6_anchors.json EventTargetLayout",
+      "read_rule": "Generation-resolve through Character storage and require CCharacter+0x18 to repeat the complete ID. Do not require the character resolver's later gameplay-liveness tail when only stable identity is requested.",
+      "boundary": "This proves how to decode a type-4 token if one is observed; no paused current-event artifact has yet shown a root or named type-4 token."
+    },
+    "noncharacter_payload_identity": "unavailable; publish at most the stable type key with typed payload identity unavailable until that exact type receives its own decoder",
+    "atomic_read_rule": "Only after matching the complete current ActiveEvent instance ID, copy root and bounded named rows in the existing application-main owning-thread callback; repeat ActiveEvent/EventData/instance identity around the copy and retain no engine pointer.",
+    "production_wire": "not implemented; current root_scope and saved_scopes remain explicitly unavailable",
+    "live_validation": "not performed",
+    "semantic_decision_ready": false
   },
   "CEventWindowData": {
     "active_event_instance_id": "+0x00 uint32",
@@ -396,7 +578,8 @@
   "typed_context_proposal": {
     "status": "definition_identity_presentation_and_bounded_nonempty_effect_indicator_surface_fixture_live",
     "live_scope": "Attempt4 generic nonreligious fixture: full instance and canonical key, process-local numeric metadata, materialized presentation/cancel and empty typed-indicator rows; nonempty Attempt1: exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows",
-    "remaining_live_scope": "stock events, remaining nonempty indicator branches and visual icons, fallback-positive path, selection lifecycle, stable scopes, complete effects and semantic choice",
+    "static_scope_candidate": "ActiveEvent+0x00 inline EventTargetScope root token plus +0x18/+0x24 bounded named-target vector; type-4 CharacterID payload identity is static-only, every non-character payload remains unavailable",
+    "remaining_live_scope": "stock events, remaining nonempty indicator branches and visual icons, fallback-positive path, selection lifecycle, current-event root/named scopes, all saved scopes, complete effects and semantic choice",
     "top_level": [
       "revision",
       "availability",
@@ -444,6 +627,11 @@
     "stable_event_definition_key_static_ready": true,
     "stable_event_definition_key_published": true,
     "event_definition_identity_wire_ready": true,
+    "current_event_scope_layout_static_ready": true,
+    "current_event_scope_character_payload_identity_static_ready": true,
+    "current_event_scope_noncharacter_payload_identity_static_ready": false,
+    "current_event_scope_wire_ready": false,
+    "current_event_scope_live_ready": false,
     "stable_scopes_ready": false,
     "full_effect_preview_ready": false,
     "bridge_query_static_ready": true,
@@ -575,7 +763,7 @@
     "Do not call trigger, name, preview or effect functions from a worker thread.",
     "Do not call loaded-effect executor RVA 0x3380410 for preview.",
     "Do not retain engine-owned pointers after the owning-thread snapshot.",
-    "Do not infer a stable event key from an ActiveEvent pointer: copy and validate EventData+0x10 through the exact +0x1B0 definition path and publish no pointer. Stable scope IDs remain unknown.",
+    "Do not infer a stable event key from an ActiveEvent pointer: copy and validate EventData+0x10 through the exact +0x1B0 definition path and publish no pointer. Current-event root/named scope layout is static-only, its production wire/live evidence is absent, and every non-character payload identity remains unavailable.",
     "Do not call an event option executor from current-event-window-context-v1; it is a read-only application-main copy only."
   ],
   "production_query": {
@@ -626,7 +814,7 @@
     ],
     "live_acceptance": {
       "completed": "Attempt4 fixture-scoped seed/checkpoint/fresh-cold validation binds the full instance, canonical key, per-process numeric metadata, materialized visible UI and empty typed-indicator surface; nonempty Attempt1 additionally binds the exact trait/add brave, stress/increase affected=false critical=false and death/played_character backing rows; adjacent cold queries are identical except query_sequence and no option is selected",
-      "remaining": "validate remaining nonempty indicator branches and visual icons, plus a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
+      "remaining": "wire and paused-live validate the static-only current-event root/named scope candidate while keeping all non-character payload identities unavailable; validate remaining nonempty indicator branches and visual icons; then use a separately authorized selection/lifecycle fixture whose old full instance disappears and whose gameplay postcondition is observed"
     }
   }
 }

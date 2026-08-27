@@ -184,6 +184,12 @@ payload、visitor 的八个 exact effect identifier、trait/scheme 稳定身份�
 
 `CEventWindowData.GetScope` 的 GUI property registration 位于 `0x2B8010` 附近，回调 trampoline 为 `0x16D6890`，实际 resolver `0x16D0990..0x16D0A36` 使用 `data+0x00` 经 EventManager 找回 live `ActiveEvent*` 并返回它。它证明窗口上下文能回到精确 active event，但返回的是进程内活对象指针，不是稳定 root-scope ID。
 
+后续 exact-build 静态逆向已经进一步闭合 `ActiveEvent+0x00` zero-offset `EventTargetScope`、root generic token 与
+`+0x18/+0x24` named-target vector；完整布局、`.pdata` 哈希、stable name/type key 链和 type `4` CharacterID
+decoder 见 [`current-event-scopes.md`](current-event-scopes.md)。该进展只把 scope 从“无入口”升级为
+**static-ready candidate**：production query 尚未读取这些字段，也没有 current-event paused live artifact；非 Character
+payload identity 与其它 saved-scope 容器仍未解码。
+
 当前边界：
 
 - current event instance ID：**静态确认**，`ActiveEvent+0x1BC == CEventWindowData+0x00`。
@@ -191,7 +197,10 @@ payload、visitor 的八个 exact effect identifier、trait/scheme 稳定身份�
   `EventData+0x10` 是 canonical namespaced MSVC string，`+0x08 int32` 是 calculated event ID，`+0x0C int32`
   是另行观察到的 runtime statistics ordinal，不能互相替代。Attempt3 进一步实证两个数值都随 process/playset 的
   loaded definition table 改变；它们只能用于同一加载进程内的双观察，不能充当跨进程 definition identity。
-- stable root scope identity：**unknown**。
+- current-event root/named scope layout：**静态确认、未 live**。只有 type `4` CharacterID payload identity 有静态
+  decoder；当前 `root_scope` wire 仍 explicit unavailable，所有非 Character payload 不解码。
+- stable current-event root/named scope identity：**未完成**；须先接入 owning-thread bounded copy，再做非宗教
+  seed/checkpoint/fresh-cold paused fixture。
 - stable saved-scope identities：**unknown**。
 - event deadline/days remaining 的稳定 typed ABI：**unknown**。
 
@@ -348,6 +357,7 @@ fixture 范围内 `live_validated=true`。后继非空 fixture 的证据另见
 | frontend collision exclusion | fixture-scoped 实机确认 | Attempt4 通过 in-game accessor + exact idler/window vtable + complete current event ID 唯一命中；不读取 `0xE30E78` root |
 | per-frame/callsite capture | 非 production 依赖 | `0xAA72B0` / `0xAA8233` / `0xAA4070` 只保留诊断用途 |
 | stable event definition identity | fixture-scoped 实机确认 | getter `0x2706AD0..0x2706C2D` + duplicate validator `0x33D4DA0..0x33D5082`；Attempt4 跨进程绑定 canonical key，两个 process-local int32 各自在同进程双观察内稳定 |
-| stable root/saved scopes | unknown | 从 ActiveEvent scope serialization/GUI binding 继续追，而非暴露指针 |
+| current-event root/named scope | 布局与 Character payload identity 静态确认；wire/live 未完成 | [`current-event-scopes.md`](current-event-scopes.md)；在 owning-thread bounded copy 后补非宗教 paused fixture，非 Character payload 保持 unavailable |
+| 其它 saved scopes | unknown | 继续追 `EventTargetScope` 其它容器到稳定业务 identity 的映射，不暴露指针 |
 | full structured effect preview | unknown | indicator payload 已闭合，但 resource/relation 与 completeness output 未闭合 |
 | production bridge query | fixture-scoped live | `current-event-window-context-v1` fixed mailbox；[generic fixture runner](current-event-window-context-live-fixture.md) Attempt4 seed/checkpoint/fresh-cold GREEN；完整 effect preview 与 semantic choice 仍 unavailable |
