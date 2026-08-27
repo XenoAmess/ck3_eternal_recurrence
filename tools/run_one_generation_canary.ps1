@@ -1,5 +1,7 @@
 [CmdletBinding()]
 param(
+    [ValidateSet("legacy", "claim-cb-white-peace")]
+    [string]$Profile = "legacy",
     [string]$RepoRoot,
     [string]$SourceState,
     [string]$TargetState,
@@ -13,23 +15,43 @@ param(
     [double]$TimeoutSeconds = 21600,
     [double]$ReadinessTimeoutSeconds = 300,
     [int]$CheckpointEveryAdvances = 3,
-    [string]$ExpectedRepoRevision = "480f287489eb91efd65f94ec07bc39f681960bd0",
-    [long]$ExpectedCheckpointSize = 67118175,
-    [string]$ExpectedCheckpointSha256 = "12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D",
-    [string]$ExpectedDriverStateSha256 = "3C3BBFECDC6941B17B1CC946CEDA1011ABF3DD673AD511B1BFB764FC20E955A9",
-    [string]$ExpectedBridgeDllSha256 = "A2B78F371A16A87B2A911E1E832C07A5701E2E7B3C42FA046006A41C233702DF",
-    [string]$ExpectedBridgeInjectorSha256 = "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF"
+    [string]$ExpectedRepoRevision,
+    [long]$ExpectedCheckpointSize,
+    [string]$ExpectedCheckpointSha256,
+    [string]$ExpectedDriverStateSha256,
+    [string]$ExpectedBridgeDllSha256,
+    [string]$ExpectedBridgeInjectorSha256
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+$Profile = $Profile.ToLowerInvariant()
+$CanonicalProfiles = [ordered]@{
+    "legacy" = [ordered]@{
+        repo_revision = "480f287489eb91efd65f94ec07bc39f681960bd0"
+        bridge_dll_sha256 = "A2B78F371A16A87B2A911E1E832C07A5701E2E7B3C42FA046006A41C233702DF"
+        bridge_injector_sha256 = "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF"
+        bridge_dll_relative_path = "ck3_autonomous_player\native_bridge\.build-event-scopes-a860702-msvc\xar_ck3_bridge.dll"
+        bridge_injector_relative_path = "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe"
+    }
+    "claim-cb-white-peace" = [ordered]@{
+        repo_revision = "51fe8cf6cb55de5ca01db4ed215e0abff52213a6"
+        bridge_dll_sha256 = "F52203F2395819CCB7A37153DBD36AB9CC6F6E168F4B44D179D3979ABF939D7B"
+        bridge_injector_sha256 = "8A46DE3BFBF567E34BA99E61AEFA7F59DA248C4AE89791BB74E12820B4380B99"
+        bridge_dll_relative_path = "ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge.dll"
+        bridge_injector_relative_path = "ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge_injector.exe"
+    }
+}
+$CanonicalProfile = $CanonicalProfiles[$Profile]
 $CanonicalCheckpointSize = 67118175L
-$CanonicalRepoRevision = "480f287489eb91efd65f94ec07bc39f681960bd0"
+$CanonicalRepoRevision = [string]$CanonicalProfile.repo_revision
 $CanonicalCheckpointSha256 = "12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D"
 $CanonicalDriverStateSha256 = "3C3BBFECDC6941B17B1CC946CEDA1011ABF3DD673AD511B1BFB764FC20E955A9"
-$CanonicalBridgeDllSha256 = "A2B78F371A16A87B2A911E1E832C07A5701E2E7B3C42FA046006A41C233702DF"
-$CanonicalBridgeInjectorSha256 = "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF"
+$CanonicalBridgeDllSha256 = [string]$CanonicalProfile.bridge_dll_sha256
+$CanonicalBridgeInjectorSha256 = [string]$CanonicalProfile.bridge_injector_sha256
+$DefaultBridgeDllRelativePath = [string]$CanonicalProfile.bridge_dll_relative_path
+$DefaultBridgeInjectorRelativePath = [string]$CanonicalProfile.bridge_injector_relative_path
 $ExpectedPipe = "\\.\pipe\xar_ck3_restore_exact2_7aff1d0"
 $ExpectedCharacterId = 29829
 $ExpectedEpisodeRunId = "native-29829-ee172aa720db"
@@ -37,6 +59,25 @@ $ExpectedDateRaw = 53177976
 $ExpectedHistoryIndex = 402
 $ExpectedInteractiveUser = "xenoa"
 $ExpectedDesktop = "WinSta0\Default"
+
+if (-not $PSBoundParameters.ContainsKey("ExpectedRepoRevision")) {
+    $ExpectedRepoRevision = $CanonicalRepoRevision
+}
+if (-not $PSBoundParameters.ContainsKey("ExpectedCheckpointSize")) {
+    $ExpectedCheckpointSize = $CanonicalCheckpointSize
+}
+if (-not $PSBoundParameters.ContainsKey("ExpectedCheckpointSha256")) {
+    $ExpectedCheckpointSha256 = $CanonicalCheckpointSha256
+}
+if (-not $PSBoundParameters.ContainsKey("ExpectedDriverStateSha256")) {
+    $ExpectedDriverStateSha256 = $CanonicalDriverStateSha256
+}
+if (-not $PSBoundParameters.ContainsKey("ExpectedBridgeDllSha256")) {
+    $ExpectedBridgeDllSha256 = $CanonicalBridgeDllSha256
+}
+if (-not $PSBoundParameters.ContainsKey("ExpectedBridgeInjectorSha256")) {
+    $ExpectedBridgeInjectorSha256 = $CanonicalBridgeInjectorSha256
+}
 
 function Resolve-FullPath {
     param(
@@ -357,7 +398,7 @@ if ([string]::IsNullOrWhiteSpace($BridgeDll)) {
     if (-not [string]::IsNullOrWhiteSpace($env:XAR_CK3_BRIDGE_DLL)) {
         $BridgeDll = $env:XAR_CK3_BRIDGE_DLL
     } else {
-        $BridgeDll = Join-Path $RepoRoot "ck3_autonomous_player\native_bridge\.build-event-scopes-a860702-msvc\xar_ck3_bridge.dll"
+        $BridgeDll = Join-Path $RepoRoot $DefaultBridgeDllRelativePath
     }
 }
 $BridgeDll = Resolve-FullPath -Path $BridgeDll -BasePath $RepoRoot
@@ -366,7 +407,7 @@ if ([string]::IsNullOrWhiteSpace($BridgeInjector)) {
     if (-not [string]::IsNullOrWhiteSpace($env:XAR_CK3_BRIDGE_INJECTOR)) {
         $BridgeInjector = $env:XAR_CK3_BRIDGE_INJECTOR
     } else {
-        $BridgeInjector = Join-Path $RepoRoot "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe"
+        $BridgeInjector = Join-Path $RepoRoot $DefaultBridgeInjectorRelativePath
     }
 }
 $BridgeInjector = Resolve-FullPath -Path $BridgeInjector -BasePath $RepoRoot
@@ -406,7 +447,7 @@ if ($Execute -and (
     $ExpectedBridgeDllSha256.ToUpperInvariant() -ne $CanonicalBridgeDllSha256 -or
     $ExpectedBridgeInjectorSha256.ToUpperInvariant() -ne $CanonicalBridgeInjectorSha256
 )) {
-    throw "Execute requires the canonical production6b checkpoint and bridge identities"
+    throw "Execute requires the canonical production6b checkpoint and '$Profile' profile identities"
 }
 
 $agentPath = Join-Path $RepoRoot "ck3_autonomous_player\agent.py"
@@ -527,6 +568,7 @@ $canaryArguments = @(
 $plan = [ordered]@{
     format_version = 1
     kind = "ck3_one_generation_20_turn_canary_handoff"
+    profile = $Profile
     mode = $(if ($Execute) { "execute" } else { "dry_run" })
     repo_root = $RepoRoot
     git_revision = $gitRevision
@@ -856,6 +898,7 @@ if ($canary.exit_code -eq 0 -and
 $summary = [ordered]@{
     format_version = 1
     kind = "ck3_one_generation_20_turn_canary_handoff_result"
+    profile = $Profile
     target_state = $TargetState
     git_revision = $gitRevision
     copy_exit_code = $copyExitCode

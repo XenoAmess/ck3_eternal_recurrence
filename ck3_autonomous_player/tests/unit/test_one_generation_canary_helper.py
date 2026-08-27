@@ -36,6 +36,8 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         self.assertIn("Test-ArtifactBinding", source)
         self.assertIn("stdout_report_matches_persisted", source)
         self.assertIn("post_canary_ck3_process_count", source)
+        self.assertIn('[ValidateSet("legacy", "claim-cb-white-peace")]', source)
+        self.assertIn("51fe8cf6cb55de5ca01db4ed215e0abff52213a6", source)
         self.assertIn(
             "12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D",
             source,
@@ -46,6 +48,14 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         )
         self.assertIn(
             "1618840EC108F688B3EBECC6D7F8963038BA64C8D4A3E10DDE2E29E3F443B4DF",
+            source,
+        )
+        self.assertIn(
+            "F52203F2395819CCB7A37153DBD36AB9CC6F6E168F4B44D179D3979ABF939D7B",
+            source,
+        )
+        self.assertIn(
+            "8A46DE3BFBF567E34BA99E61AEFA7F59DA248C4AE89791BB74E12820B4380B99",
             source,
         )
 
@@ -105,6 +115,7 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             )
 
             plan = json.loads(result.stdout)
+            self.assertEqual(plan["profile"], "legacy")
             self.assertEqual(plan["mode"], "dry_run")
             self.assertEqual(plan["source_driver_state"]["pipe"], PIPE)
             self.assertEqual(plan["execute_host_required"]["user"], "xenoa")
@@ -117,6 +128,91 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             self.assertIn(
                 "bounded_incomplete",
                 plan["strict_canary_contract"]["alive_at_bound"],
+            )
+            self.assertFalse(target.exists())
+
+    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    def test_claim_white_peace_profile_dry_run_records_identity_without_target(
+        self,
+    ) -> None:
+        powershell = shutil.which("powershell.exe")
+        self.assertIsNotNone(powershell)
+        with tempfile.TemporaryDirectory(prefix="xar-claim-canary-plan-") as temporary:
+            root = Path(temporary)
+            source_state, checkpoint = self._make_source_state(root)
+            driver_state = source_state / "native-session" / "driver-state.json"
+            game_dir = self._make_game_dir(root)
+            fixture_repo = root / "repo"
+            agent = fixture_repo / "ck3_autonomous_player" / "agent.py"
+            agent.parent.mkdir(parents=True)
+            agent.write_text("# fixture agent\n", encoding="utf-8")
+            build_dir = (
+                fixture_repo
+                / "ck3_autonomous_player"
+                / "native_bridge"
+                / "build-claim-white-peace-51fe8cf-msvc"
+            )
+            build_dir.mkdir(parents=True)
+            dll = build_dir / "xar_ck3_bridge.dll"
+            injector = build_dir / "xar_ck3_bridge_injector.exe"
+            dll.write_bytes(b"fixture claim white peace dll")
+            injector.write_bytes(b"fixture claim white peace injector")
+            target = root / "fresh-target"
+            environment = os.environ.copy()
+            environment.pop("XAR_CK3_BRIDGE_DLL", None)
+            environment.pop("XAR_CK3_BRIDGE_INJECTOR", None)
+
+            result = subprocess.run(
+                [
+                    powershell,
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    str(HELPER),
+                    "-Profile",
+                    "claim-cb-white-peace",
+                    "-RepoRoot",
+                    str(fixture_repo),
+                    "-SourceState",
+                    str(source_state),
+                    "-TargetState",
+                    str(target),
+                    "-GameDir",
+                    str(game_dir),
+                    "-PythonPath",
+                    sys.executable,
+                    "-ExpectedRepoRevision",
+                    "a" * 40,
+                    "-ExpectedCheckpointSize",
+                    str(checkpoint.stat().st_size),
+                    "-ExpectedCheckpointSha256",
+                    self._sha256(checkpoint),
+                    "-ExpectedDriverStateSha256",
+                    self._sha256(driver_state),
+                    "-ExpectedBridgeDllSha256",
+                    self._sha256(dll),
+                    "-ExpectedBridgeInjectorSha256",
+                    self._sha256(injector),
+                    "-SkipRepositoryCheck",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                env=environment,
+            )
+
+            plan = json.loads(result.stdout)
+            self.assertEqual(plan["profile"], "claim-cb-white-peace")
+            self.assertEqual(plan["mode"], "dry_run")
+            self.assertEqual(plan["bridge_dll"]["path"], str(dll.resolve()))
+            self.assertEqual(plan["bridge_dll"]["sha256"], self._sha256(dll))
+            self.assertEqual(
+                plan["bridge_injector"]["path"], str(injector.resolve())
+            )
+            self.assertEqual(
+                plan["bridge_injector"]["sha256"], self._sha256(injector)
             )
             self.assertFalse(target.exists())
 
@@ -323,6 +419,34 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("fixed canary bounds", result.stderr)
+
+    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    def test_claim_white_peace_execute_rejects_noncanonical_identity(self) -> None:
+        powershell = shutil.which("powershell.exe")
+        self.assertIsNotNone(powershell)
+        result = subprocess.run(
+            [
+                powershell,
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(HELPER),
+                "-Profile",
+                "claim-cb-white-peace",
+                "-RepoRoot",
+                str(REPO_ROOT),
+                "-Execute",
+                "-ExpectedBridgeDllSha256",
+                "A2B78F371A16A87B2A911E1E832C07A5701E2E7B3C42FA046006A41C233702DF",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("'claim-cb-white-peace' profile identities", result.stderr)
 
     @staticmethod
     def _sha256(path: Path) -> str:
