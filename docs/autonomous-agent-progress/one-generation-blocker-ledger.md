@@ -24,18 +24,18 @@
 
 | ID | 等级 | 场景 | 当前事实 | 最小解除条件 | 状态 |
 |---|---|---|---|---|---|
-| GEN-001 | B0 | 一代人 supervised runner | strict `one_generation` 合同已在正常交互桌面多次 production-live：cold seed、无人输入循环、周期 checkpoint、first-blocker 与 cleanup 均实走；最新 100-turn run 完成 `100/100`、`49` gameplay 与 `5` durable checkpoints，只因 bound 收口并留下可冷恢复的 `53179800` anchor。自然死亡 settlement 尚未发生 | 从最新 checkpoint 进入全寿命长跑；只把真实 B0/B1 提升施工，直到同 episode 自然死亡并生成匹配 `terminal-settlement.json` | runner production-live；G1 未完成 |
+| GEN-001 | B0 | 一代人 supervised runner | strict `one_generation` 合同已在正常交互桌面多次 production-live：cold seed、无人输入循环、周期 checkpoint、first-blocker 与 cleanup 均实走。当前 `8efa23f` 正式全寿命 run 已越过 `GEN-012`；21:05 持久 history 推导 `186` successful / `109` gameplay turns 与 `25` checkpoints，最后 durable anchor 为 `53203800 / A75EF923...AA3A4`。角色仍存活、run 继续 | 继续当前 run；只把真实 B0/B1 提升施工，直到同 episode 自然死亡、等到琉焰卿 committed scoring 并生成匹配 `terminal-settlement.json` | runner production-live；formal longrun in progress；G1 未完成 |
 | GEN-002 | B1 | 当前事件有多个合法选项 | current-window identity/presentation 与有限 indicator 已 live；scope wire 已 static-ready；完整效果与 semantic readiness 仍不足。现已实现只吃 same-frame shown+enabled 的可审计 fallback，并把直接动作升级为旧 full instance 必须推进 | 场景出现或专项验收时在正常交互桌面完成 scope query 与多选事件 degraded selection live；artifact 验证候选账本、预期 native index、旧 instance 推进、paused/episode/cleanup | static-ready；场景 live pending，`GEN-008` 已解除 |
 | GEN-003 | B1/B2 | pending character interaction | 原生 inbound reply 树已冻结；exact allowlist 现为 `spar_with_knight_interaction` 与 war-sensitive `pay_ransom_interaction`。后者已 production-live 完成 typed query→reject→旧 full ID 消失→继续推进/checkpoint；unknown/宗教/其它 stock definition 仍 fail-closed，100% enforce 优先与 war-special 门不变 | 继续由长跑首个真实 key 驱动逐定义审计；补 `spar`/unique-accept/intermediary/notification live，并以 typed terms + utility 替换 reject-first | `pay_ransom` reject loop live；通用语义 B2 |
 | GEN-004 | B1 | 已有战争到终局 | 当前 `claim_cb` primary-attacker 已 production-live 完成 options→claim terms v1→white-peace submit；AI 异步回复后 WarID 消失，残军解散，立即保存和平 checkpoint 并冷恢复继续。720 raw cooldown 期间不重复查询/提议。它不是原生等价或完整 v2 | 保留本切片；由下一次实际战争扩 victory/defeat、其它 CB/角色、多战争与完整 outcome utility | narrow production-live loop；通用终战 B2/B1 待场景 |
 | GEN-005 | B2 | 非战争长期治理 | 经济、内阁、生活方式、家庭等大多不是通用 native semantic policy | 不出现强制 UI 时允许时间推进；出现阻塞则提升为 B1 并补最小动作 | 记账观察 |
-| GEN-006 | B1 | 自然死亡与结算 | strict runner 在死亡后继续等待琉焰卿 Mod 的 committed settlement 与必要 record persistence；只接受本次执行且 `ready=true`、`commit_serial=1`、source CharacterID/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`。`terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，并须等于顶层 `score` 与 `recorded_episode.score`。最新 100-turn run 中 CharacterID `29829` 仍存活、`terminal=null`，自然完整 episode 尚未发生 | production 长跑观测玩家自然死亡，生成匹配 CharacterID `29829` 且三处人生分数一致的 `terminal-settlement.json`，并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；自然 episode live 待执行 |
+| GEN-006 | B1 | 自然死亡与结算 | strict runner 在死亡后继续等待琉焰卿 Mod 的 committed settlement 与必要 record persistence；只接受本次执行且 `ready=true`、`commit_serial=1`、source CharacterID/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`。`terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，并须等于顶层 `score` 与 `recorded_episode.score`。当前正式 run 中 CharacterID `29829` 仍存活、terminal absent，自然完整 episode 尚未发生 | production 长跑观测玩家自然死亡，继续等待 committed scoring，生成匹配 CharacterID `29829` 且三处人生分数一致的 `terminal-settlement.json`，并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；正式 run 中等待自然 terminal |
 | GEN-007 | B2/B3 | 战斗质量 | reinforcement assigned/join、异常 terminal 与 forecast 未全闭合 | 若不阻塞当前 run 先记录；真实卡住或导致无法结束战争时提升为 B1 | 记账观察 |
 | GEN-008 | B0（环境） | 执行会话曾无法启动 CK3 live acceptance | 旧 `CodexSandboxOffline / WinSta0\\CodexSandboxDesktop-*` 启动崩溃仍作为历史环境 RED 保留；当前宿主已是 `xenoa / console session 1 / WinSta0\\Default`，连续完成 white-peace、冷恢复、pending reply 与长跑，证明不再是当前 blocker | 无；未来环境切回隔离 desktop 时按相同 host guard 拒绝，不改 gameplay source 掩盖 | 2026-08-27 resolved |
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
-| GEN-012 | B1 | `life-advance` 暂停收尾被连续 public revision 饿死 | timeout 收敛修复已 production-live 完成 47 回合和 7 个新 checkpoint，随后 speed-five frame stream 在完整 10 秒内持续变化并超时。exact DLL `51fe8cf` 证明 native `pause-map` 不消费 expected revision，而是 fresh-read 后幂等提交；Python 冗余预检才是 blocker | 只让 composite owner 的内部 pause 跳过 Python public-revision equality，一次提交、一次 ACK、同 deadline 验证 paused；direct primitive/query/其它 action 不变。单测后从 `578B...5C38` cold checkpoint 续跑 | blocker-removal static-ready；production revalidation pending |
+| GEN-012 | B1 | `life-advance` 暂停收尾被连续 public revision 饿死 | `aff784d` 与 `3bd8934` 分别实证一次 fresh retry 仍可 race、public-CAS convergence 可在 speed-five 帧流中饥饿；exact DLL `51fe8cf` 证明 native `pause-map` 自己 fresh-read 并幂等提交。`8efa23f` 仅让 composite owner 绕过该冗余 public gate；正式 run 已从 `578B...5C38` cold restore 跨过旧超时并持续到 `history=2380/date=53203800`，保存 25 个新 checkpoint | 已满足：一次请求、一次 ACK、同 deadline 验证 paused；direct primitive/query/其它 action 保持原 gate。保留两轮 immutable RED，后续只在同故障复发时重开 | 2026-08-27 resolved；blocker-removal production-live |
 
 ## Degraded heuristic 纪律
 
@@ -246,3 +246,29 @@
   `128 passed, 102 subtests passed`，auto-run + gameplay bridge 为 `201 passed, 48 subtests passed`；全 unit suite 为
   `1318 passed, 2 skipped, 882 subtests passed`。`py_compile` 与 `git diff --check` GREEN；仍须从 `578B...5C38` cold restore
   实机越过该 10 秒边界并形成更新 checkpoint，才能关闭 `GEN-012`。
+
+## 2026-08-27 21:05：`8efa23f` production revalidation 与正式长跑续行
+
+- `origin/master` 与干净主线 HEAD 均为 `8efa23f18c23dee0aff05b5606eb70de7bd6ca34`。本轮已推送链完整包含：
+  `7a89c58` production continuation、`4b82d5b` 必要性与成本规则、`e23abe2` 两日 battle-hold 反例、`0848d61` 最窄
+  correlated two-day 接纳、`726a1c0` committed life-score 合同、`75c67d2` 首次 revision blocker 文档，以及依真实长跑递进的
+  `aff784d`、`3bd8934`、`8efa23f` 三个 pause 修复。没有为理论风险扩张 scope。
+- `aff784d` attempt `20260827T112207Z-one-generation-3c7aa5e2` 的 immutable RED 是 `106/107` turns、`53` gameplay、
+  `17` checkpoints 后 `expected 183, current 185`；report/blocker SHA 为 `BC10E3DE...DBF42DB4` / `8FC4B407...B45028B`，
+  最新可信恢复点 `history=2119 / date_raw=53198376 / 73,968,716 bytes / AE73EFE1...C75B42`。
+- `3bd8934` attempt `20260827T115837Z-one-generation-9bed68f0` 的 immutable RED 是 `47/48` turns、`23` gameplay、
+  `7` checkpoints 后 10 秒 convergence timeout；report/blocker SHA 为 `FF8D78C5...55A470A2` / `6DDD926C...2149C97`，
+  最新显式恢复点 `history=2169 / date_raw=53199144 / 74,009,701 bytes / 578B0289...5C38`。两轮角色 `29829`、episode
+  `native-29829-ee172aa720db` 均未改变、无 terminal、cleanup 全绿；它们是已解除 blocker 的历史证据，不得删除或改写成 GREEN。
+- 正式 run `20260827T122055Z-one-generation-aebccf6f` 使用干净 runtime `8efa23f` 与 exact DLL `51fe8cf`，从
+  `578B0289...5C38` cold restore，按 `--max-turns 50000 --timeout 604800 --readiness-timeout 300
+  --checkpoint-every-advances 3` 运行。`history=2176 / date_raw=53199504` 已越过旧 10 秒边界，随后 checkpoint 持续成功；
+  `GEN-012` 因此从 static-ready 升为 blocker-removal `production-live` 并关闭。
+- 21:05 只读快照的最后 durable checkpoint 为 `history=2380 / date_raw=53203800 / 75,195,047 bytes / SHA-256
+  A75EF923D369E9E86DDCC20C6B59E9F104F03E2462C98E3FEF62BB197E0AA3A4`，之后 `history=2382` 又成功 life-advance 至
+  `53203848`。从 restore 后 command history 推导当前 `186` successful / `109` gameplay turns 与 `25` checkpoints；runner 的
+  `report.json` 尚未 finalize，故最终计数以后续报告为准。角色仍存活，terminal/blocker absent，runner/CK3 正在运行，尚无 cleanup
+  或 G1 结论。
+- 自然死亡后不能立即结算：必须继续等待琉焰卿 Mod 发布本次 `ready=true / commit_serial=1` committed settlement，并把
+  `terminal-settlement.json.one_life_settlement.final_score` 记录为“人生分数”。它须与顶层 `score`、
+  `recorded_episode.score` 严格相等，且 record persistence、cross-run record、零继承人 gameplay 与 cleanup 全绿，才能标 G1。
