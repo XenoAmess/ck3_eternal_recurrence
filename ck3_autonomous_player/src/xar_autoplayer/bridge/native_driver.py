@@ -4876,6 +4876,8 @@ class NativeHeadlessGameplayDriver:
         internal_read_only_query = bool(
             termination_query_war_id is not None
             or termination_terms_query_war_id is not None
+            or parse_preview_move_army_step(step) is not None
+            or parse_query_route_contact_horizon_step(step) is not None
         )
         starting = (
             self.take_internal_semantic_snapshot()
@@ -5305,7 +5307,9 @@ class NativeHeadlessGameplayDriver:
                     "native route-contact horizon lacks a native revision"
                 )
             result = self._execute_primitive_step(
-                step, expected_revision=selected_revision
+                step,
+                expected_revision=selected_revision,
+                internal_semantic_snapshot=True,
             )
             if (
                 set(result)
@@ -5346,7 +5350,7 @@ class NativeHeadlessGameplayDriver:
                 )
             except ValueError as error:
                 raise BridgeUnavailableError(str(error)) from error
-            current = self.take_snapshot()
+            current = self.take_internal_semantic_snapshot()
             if not _same_paused_native_frame(starting, current):
                 raise BridgeUnavailableError(
                     "native route-contact horizon crossed a snapshot revision"
@@ -5395,12 +5399,14 @@ class NativeHeadlessGameplayDriver:
             )
             try:
                 result = self._execute_primitive_step(
-                    step, expected_revision=selected_revision
+                    step,
+                    expected_revision=selected_revision,
+                    internal_semantic_snapshot=True,
                 )
             except _NativeCommandRejectedError as error:
                 if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
                     raise
-                current = self.take_snapshot()
+                current = self.take_internal_semantic_snapshot()
                 return {
                     "step": step,
                     "accepted": False,
@@ -8461,9 +8467,11 @@ class NativeHeadlessGameplayDriver:
                 "route-contact one-day advance revision mismatch: "
                 f"expected {expected_revision}, current {starting_revision}"
             )
-        if step not in _fresh_route_contact_advance_steps(
-            starting, self._history_snapshot()
-        ):
+        with self._history_lock:
+            proof_is_fresh = step in _fresh_route_contact_advance_steps(
+                starting, self._command_history
+            )
+        if not proof_is_fresh:
             raise BridgeUnavailableError(
                 "route-contact one-day advance proof is stale or incomplete"
             )

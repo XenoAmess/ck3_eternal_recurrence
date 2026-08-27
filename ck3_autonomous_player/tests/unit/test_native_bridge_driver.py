@@ -5972,7 +5972,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
 
         endpoint.send_hook = answer
-        result = driver.execute_step("preview-move-army-101-to-2585")
+        with mock.patch.object(
+            driver,
+            "take_snapshot",
+            side_effect=AssertionError(
+                "read-only route preview must not copy command history"
+            ),
+        ):
+            result = driver.execute_step("preview-move-army-101-to-2585")
 
         self.assertEqual(result["route_preview"]["origin_province_id"], 11)
         self.assertEqual(
@@ -6278,7 +6285,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
 
         endpoint.send_hook = answer
-        result = driver.execute_step(step)
+        with mock.patch.object(
+            driver,
+            "take_snapshot",
+            side_effect=AssertionError(
+                "read-only contact query must not copy command history"
+            ),
+        ):
+            result = driver.execute_step(step)
         self.assertTrue(
             result["route_contact_horizon"]["one_day_contact_free"]
         )
@@ -6443,9 +6457,16 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIn(advance_step, driver.capabilities()["action_steps"])
         revision = int(driver.take_snapshot()["revision"])
 
-        result = driver.execute_step(
-            advance_step, expected_revision=revision
-        )
+        with mock.patch.object(
+            driver,
+            "_history_snapshot",
+            side_effect=AssertionError(
+                "contact proof validation must not copy command history"
+            ),
+        ):
+            result = driver.execute_step(
+                advance_step, expected_revision=revision
+            )
 
         self.assertEqual(result["starting_date_raw"], start_date)
         self.assertEqual(result["ending_date_raw"], start_date + 24)
