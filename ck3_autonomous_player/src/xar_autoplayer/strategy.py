@@ -1484,20 +1484,44 @@ def _battle_control_ledger_fingerprint(
 
 
 def _battle_control_transition(
-    before: dict[str, object], after: dict[str, object]
+    before: dict[str, object],
+    after: dict[str, object],
+    advance_result: dict[str, object] | None,
 ) -> dict[str, object]:
     """Classify one bounded post-advance battle observation."""
     subject = int(after["subject_public_cunit_id"])
     before_combat_id = int(before["combat_id"])
     after_combat_id = int(after["combat_id"])
+    before_date = int(before["observed_date_raw"])
+    after_date = int(after["observed_date_raw"])
+    advance_start = (
+        _native_int(advance_result.get("starting_date_raw"))
+        if isinstance(advance_result, dict)
+        else None
+    )
+    advance_end = (
+        _native_int(advance_result.get("ending_date_raw"))
+        if isinstance(advance_result, dict)
+        else None
+    )
+    advance_elapsed = (
+        _native_int(advance_result.get("elapsed_days"))
+        if isinstance(advance_result, dict)
+        else None
+    )
+    observed_date_delta = after_date - before_date
     common = {
         "subject_army_id": subject,
         "before_combat_id": before_combat_id,
         "after_combat_id": after_combat_id,
         "before_snapshot_revision": int(before["snapshot_revision"]),
         "after_snapshot_revision": int(after["snapshot_revision"]),
-        "before_date_raw": int(before["observed_date_raw"]),
-        "after_date_raw": int(after["observed_date_raw"]),
+        "before_date_raw": before_date,
+        "after_date_raw": after_date,
+        "observed_date_delta_raw": observed_date_delta,
+        "advance_starting_date_raw": advance_start,
+        "advance_ending_date_raw": advance_end,
+        "advance_elapsed_days": advance_elapsed,
         "before_phase": before["phase"],
         "before_phase_day": int(before["phase_day"]),
         "after_phase": after["phase"],
@@ -1525,19 +1549,64 @@ def _battle_control_transition(
 
     before_revision = int(before["snapshot_revision"])
     after_revision = int(after["snapshot_revision"])
-    before_date = int(before["observed_date_raw"])
-    after_date = int(after["observed_date_raw"])
     if after_revision <= before_revision:
         return {
             **common,
             "status": "invalid",
             "reason": "the post-advance native revision did not increase",
         }
-    if not before_date <= after_date <= before_date + 24:
+    if (
+        not isinstance(advance_result, dict)
+        or advance_result.get("step") != "life-advance"
+        or advance_start is None
+        or advance_end is None
+        or advance_elapsed is None
+    ):
         return {
             **common,
             "status": "invalid",
-            "reason": "the battle observation exceeded the one-day bound",
+            "reason": (
+                "the bounded battle advance did not report an exact "
+                "life-advance start/end/elapsed result"
+            ),
+        }
+    if advance_start != before_date or advance_end != after_date:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "the bounded battle advance result does not match the "
+                "observed battle dates"
+            ),
+        }
+    if observed_date_delta <= 0 or observed_date_delta % 24 != 0:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "the observed battle date delta is not a positive whole "
+                "game day"
+            ),
+        }
+    actual_elapsed_days = observed_date_delta // 24
+    common["actual_elapsed_days"] = actual_elapsed_days
+    if advance_elapsed != actual_elapsed_days:
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "the bounded battle advance elapsed_days does not match "
+                "its exact date delta"
+            ),
+        }
+    if actual_elapsed_days not in (1, 2):
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "the battle observation exceeded the proven two-day "
+                "pause-settle envelope"
+            ),
         }
 
     before_phase = int(before["phase_raw"])
@@ -1547,9 +1616,11 @@ def _battle_control_transition(
     phase_path_legal = False
     pursuit_reopened_to_main = False
     if after_phase == before_phase:
-        phase_path_legal = before_day <= after_day <= before_day + 1
+        phase_path_legal = (
+            before_day <= after_day <= before_day + actual_elapsed_days
+        )
     elif after_phase == before_phase + 1:
-        phase_path_legal = 0 <= after_day <= 1
+        phase_path_legal = 0 <= after_day <= actual_elapsed_days
     elif (
         before_phase == 2
         and after_phase == 1
@@ -1560,7 +1631,9 @@ def _battle_control_transition(
         # participant joins.  The live/native tree proves the winner reset;
         # treating this as an ordinary phase regression would freeze a real
         # ongoing battle.
-        phase_path_legal = 0 <= after_day <= before_day + 1
+        phase_path_legal = (
+            0 <= after_day <= before_day + actual_elapsed_days
+        )
         pursuit_reopened_to_main = True
     if not phase_path_legal:
         return {
@@ -1666,6 +1739,11 @@ def _battle_control_turn_state(
     ]
     latest_advance = advance_positions[-1] if advance_positions else 0
     previous_advance = advance_positions[-2] if len(advance_positions) > 1 else 0
+    latest_advance_result = (
+        _effective_command_result(scoped[latest_advance - 1])
+        if latest_advance
+        else None
+    )
     relevant_rows = scoped[previous_advance:]
     current_frames, records = _current_battle_control_frames(
         relevant_rows,
@@ -1794,7 +1872,7 @@ def _battle_control_turn_state(
         if not isinstance(before_record, dict):
             continue
         transition = _battle_control_transition(
-            before_record["frame"], frame
+            before_record["frame"], frame, latest_advance_result
         )
         if transition.get("status") == "invalid":
             return {

@@ -432,7 +432,12 @@ def _battle_query_row(
     }
 
 
-def _battle_advance_row(index: int) -> dict[str, object]:
+def _battle_advance_row(
+    index: int,
+    *,
+    ending_date_raw: int = DATE_RAW + 24,
+    elapsed_days: int = 1,
+) -> dict[str, object]:
     return {
         "index": index,
         "command": "life-advance",
@@ -440,8 +445,8 @@ def _battle_advance_row(index: int) -> dict[str, object]:
         "result": {
             "step": "life-advance",
             "starting_date_raw": DATE_RAW,
-            "ending_date_raw": DATE_RAW + 24,
-            "elapsed_days": 1,
+            "ending_date_raw": ending_date_raw,
+            "elapsed_days": elapsed_days,
             "paused": True,
         },
     }
@@ -538,12 +543,12 @@ def _planner_battle_snapshot(
     return snapshot
 
 
-def _next_battle_frame() -> dict[str, object]:
+def _next_battle_frame(*, elapsed_days: int = 1) -> dict[str, object]:
     frame = _battle_frame()
-    frame["snapshot_revision"] = NATIVE_REVISION + 1
-    frame["observed_date_raw"] = DATE_RAW + 24
-    frame["phase_day"] = int(frame["phase_day"]) + 1
-    frame["legality"]["elapsed_whole_days"] = 1
+    frame["snapshot_revision"] = NATIVE_REVISION + elapsed_days
+    frame["observed_date_raw"] = DATE_RAW + 24 * elapsed_days
+    frame["phase_day"] = int(frame["phase_day"]) + elapsed_days
+    frame["legality"]["elapsed_whole_days"] = elapsed_days
     return frame
 
 
@@ -654,6 +659,90 @@ class BattleControlStrategyTests(unittest.TestCase):
         )
         self.assertTrue(
             plan["battle_transitions"][0]["phase_day_changed"]
+        )
+
+    def test_correlated_two_day_pause_overshoot_unlocks_next_slice(
+        self,
+    ) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=2)
+        history = [
+            _battle_query_row(1, before),
+            _battle_advance_row(
+                2,
+                ending_date_raw=DATE_RAW + 48,
+                elapsed_days=2,
+            ),
+            _battle_query_row(3, after),
+        ]
+
+        plan = self.plan(history, frame=after)
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        transition = plan["battle_transitions"][0]
+        self.assertEqual(transition["status"], "same_combat_advanced")
+        self.assertEqual(transition["observed_date_delta_raw"], 48)
+        self.assertEqual(transition["advance_elapsed_days"], 2)
+        self.assertEqual(transition["actual_elapsed_days"], 2)
+
+    def test_two_day_overshoot_cannot_skip_three_phase_days(self) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=2)
+        after["phase_day"] = int(before["phase_day"]) + 3
+        history = [
+            _battle_query_row(1, before),
+            _battle_advance_row(
+                2,
+                ending_date_raw=DATE_RAW + 48,
+                elapsed_days=2,
+            ),
+            _battle_query_row(3, after),
+        ]
+
+        plan = self.plan(history, frame=after)
+
+        self.assertEqual(plan["phase"], "native_war_battle_transition_invalid")
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn("skipped", plan["battle_transition"]["reason"])
+
+    def test_two_day_frame_rejects_one_day_action_report(self) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=2)
+        history = [
+            _battle_query_row(1, before),
+            _battle_advance_row(2),
+            _battle_query_row(3, after),
+        ]
+
+        plan = self.plan(history, frame=after)
+
+        self.assertEqual(plan["phase"], "native_war_battle_transition_invalid")
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "does not match the observed battle dates",
+            plan["battle_transition"]["reason"],
+        )
+
+    def test_three_day_pause_overshoot_stays_blocked(self) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=3)
+        history = [
+            _battle_query_row(1, before),
+            _battle_advance_row(
+                2,
+                ending_date_raw=DATE_RAW + 72,
+                elapsed_days=3,
+            ),
+            _battle_query_row(3, after),
+        ]
+
+        plan = self.plan(history, frame=after)
+
+        self.assertEqual(plan["phase"], "native_war_battle_transition_invalid")
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "two-day pause-settle envelope",
+            plan["battle_transition"]["reason"],
         )
 
     def test_same_phase_day_exact_ledger_delta_unlocks_next_slice(self) -> None:
