@@ -408,6 +408,32 @@ def _query_pair(
     }
 
 
+def _refresh_paused_query_snapshot(
+    service: GameplayBridgeService,
+    prior: dict[str, object],
+) -> dict[str, object]:
+    """Refresh the public revision after rich queries on one paused frame."""
+    refreshed = service.snapshot()
+    prior_revision = _integer(prior.get("revision"))
+    refreshed_revision = _integer(refreshed.get("revision"))
+    if (
+        refreshed.get("map_ready") is not True
+        or refreshed.get("paused") is not True
+        or prior_revision is None
+        or refreshed_revision is None
+        or refreshed_revision < prior_revision
+        or refreshed.get("date_raw") != prior.get("date_raw")
+        or refreshed.get("episode_character_id")
+        != prior.get("episode_character_id")
+        or refreshed.get("episode_run_id") != prior.get("episode_run_id")
+        or _connection_generation(refreshed) != _connection_generation(prior)
+    ):
+        raise RuntimeError(
+            "paused query refresh crossed the battle arm frame"
+        )
+    return refreshed
+
+
 def _normalize_battle_frame(value: object) -> object:
     """Remove transport/query binding metadata while retaining battle state."""
     if isinstance(value, dict):
@@ -2463,11 +2489,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                         raise RuntimeError(
                             "pre-arm battle frame lacks a positive combat_id"
                         )
+                    terminal_cursor_snapshot = _refresh_paused_query_snapshot(
+                        service, starting_public
+                    )
                     terminal_cursor = _terminal_cursor_pair(
                         service,
                         combat_id=combat_id,
                         subject_army_id=int(args.subject_army_id),
-                        snapshot=starting_public,
+                        snapshot=terminal_cursor_snapshot,
                     )
                     if terminal_cursor.get("ok") is not True:
                         raise RuntimeError(

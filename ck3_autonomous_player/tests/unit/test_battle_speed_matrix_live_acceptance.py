@@ -816,6 +816,27 @@ class _FakeTerminalService:
         }
 
 
+class _FakeRefreshService:
+    def __init__(self, snapshot: dict[str, object]) -> None:
+        self.refreshed = copy.deepcopy(snapshot)
+
+    def snapshot(self) -> dict[str, object]:
+        return copy.deepcopy(self.refreshed)
+
+
+def test_terminal_cursor_refreshes_revision_without_crossing_frame() -> None:
+    prior = _snapshot(revision=10)
+    refreshed = _snapshot(revision=12)
+    service = _FakeRefreshService(refreshed)
+    assert HARNESS._refresh_paused_query_snapshot(service, prior) == refreshed
+
+    service.refreshed["date_raw"] = int(prior["date_raw"]) + 24
+    with pytest.raises(
+        RuntimeError, match="paused query refresh crossed the battle arm frame"
+    ):
+        HARNESS._refresh_paused_query_snapshot(service, prior)
+
+
 def test_terminal_cursor_excludes_old_same_combat_event_after_restore() -> None:
     service = _FakeTerminalService(
         _terminal_frame(requested_cursor=None, event_sequence=7)
