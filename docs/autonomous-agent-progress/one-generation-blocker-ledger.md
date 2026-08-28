@@ -24,22 +24,30 @@
 
 | ID | 等级 | 场景 | 当前事实 | 最小解除条件 | 状态 |
 |---|---|---|---|---|---|
-| GEN-001 | B0 | 一代人 supervised runner | strict `one_generation` 合同已在正常交互桌面多次 production-live：cold seed、无人输入循环、周期 checkpoint、first-blocker 与 cleanup 均实走。正式 `9ff04ae` 又完成 42 gameplay/14 checkpoints 后命中 GEN-014；RED 已冻结，随后未修改 cold replay 将可恢复点推进至 `date_raw=53210760 / 79B71103...85F2`。它仍是同一 CharacterID `29829` / episode 的中间 anchor，不是 terminal | live revalidate GEN-014 后从最新 anchor 恢复正式 G1；只把真实 B0/B1 提升施工，直到同 episode 自然死亡、等到琉焰卿 committed scoring 并生成匹配 `terminal-settlement.json` | runner production-live；GEN-014 blocker-removal static-ready；G1 未完成 |
+| GEN-001 | B0 | 一代人 supervised runner | strict `one_generation` 合同已在正常交互桌面多次 production-live。最新 `4a7d7ce` formal run 从 `53216400` 穿过 GEN-022，以 `380/381` successful turns 在独立 GEN-023 finalize RED；最新 durable checkpoint `53220288 / history=4087 / C8C2926F...67D5`。CharacterID `29829` / episode 不变且存活，cleanup 全绿、CK3 已退出 | 修复 GEN-023 后从最新 durable checkpoint 冷恢复；继续只提升真实 B0/B1，直到自然死亡、琉焰卿 committed scoring 与匹配 `terminal-settlement.json` | runner production-live；GEN-022 resolved；GEN-023 B1 open；G1 未完成 |
 | GEN-002 | B1 | 当前事件有多个合法选项 | current-window identity/presentation 与有限 indicator 已 live；scope wire 已 static-ready；完整效果与 semantic readiness 仍不足。现已实现只吃 same-frame shown+enabled 的可审计 fallback，并把直接动作升级为旧 full instance 必须推进 | 场景出现或专项验收时在正常交互桌面完成 scope query 与多选事件 degraded selection live；artifact 验证候选账本、预期 native index、旧 instance 推进、paused/episode/cleanup | static-ready；场景 live pending，`GEN-008` 已解除 |
-| GEN-003 | B1/B2 | pending character interaction | 原生 inbound reply 树已冻结；exact allowlist 现为 `spar_with_knight_interaction` 与 war-sensitive `pay_ransom_interaction`。后者已 production-live 完成 typed query→reject→旧 full ID 消失→继续推进/checkpoint；unknown/宗教/其它 stock definition 仍 fail-closed，100% enforce 优先与 war-special 门不变 | 继续由长跑首个真实 key 驱动逐定义审计；补 `spar`/unique-accept/intermediary/notification live，并以 typed terms + utility 替换 reject-first | `pay_ransom` reject loop live；通用语义 B2 |
+| GEN-003 | B1/B2 | pending character interaction | 原生 inbound reply 树已冻结；signed int32 full ID 已 production-live，`pay_ransom` 与 definition-bound `arrange_marriage_interaction` 均已完成 typed query→reject→旧 full ID 消失/变 null→继续推进。婚姻分支只匹配 direct recipient、完整四角色、无 intermediary、六 option 全未选与 reject legality；unknown/宗教/其它 special 仍 fail-closed，100% enforce 优先与 war-special 门不变 | 继续由长跑首个真实 key 驱动逐定义审计；补 `spar`/unique-accept/intermediary/notification live，并以 typed terms + utility 替换 reject-first；婚姻后续补发送时 acceptance 与 secondary pair/alliance 结果 | 两条 exact reject loop production-live；通用语义与婚姻最优性 B2 |
 | GEN-004 | B1 | 已有战争到终局 | 当前 `claim_cb` primary-attacker 已 production-live 完成 options→claim terms v1→white-peace submit；AI 异步回复后 WarID 消失，残军解散，立即保存和平 checkpoint 并冷恢复继续。720 raw cooldown 期间不重复查询/提议。它不是原生等价或完整 v2 | 保留本切片；由下一次实际战争扩 victory/defeat、其它 CB/角色、多战争与完整 outcome utility | narrow production-live loop；通用终战 B2/B1 待场景 |
 | GEN-005 | B2 | 非战争长期治理 | 经济、内阁、生活方式、家庭等大多不是通用 native semantic policy | 不出现强制 UI 时允许时间推进；出现阻塞则提升为 B1 并补最小动作 | 记账观察 |
-| GEN-006 | B1 | 自然死亡与结算 | strict runner 在死亡后继续等待琉焰卿 Mod 的 committed settlement 与必要 record persistence；只接受本次执行且 `ready=true`、`commit_serial=1`、source CharacterID/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`。`terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，并须等于顶层 `score` 与 `recorded_episode.score`。08-28 最新可恢复帧已到 `53210760`，仍无匹配 terminal/committed settlement，自然完整 episode 尚未发生 | production 长跑观测玩家自然死亡，继续等待 committed scoring，生成匹配 CharacterID `29829` 且三处人生分数一致的 `terminal-settlement.json`，并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；正式 run 中等待自然 terminal |
-| GEN-007 | B2/B3 | 战斗质量 | reinforcement assigned/join、异常 terminal 与 forecast 未全闭合 | 若不阻塞当前 run 先记录；真实卡住或导致无法结束战争时提升为 B1 | 记账观察 |
+| GEN-006 | B1 | 自然死亡与结算 | strict runner 在死亡后继续等待琉焰卿 Mod 的 committed settlement 与必要 record persistence；只接受本次执行且 `ready=true`、`commit_serial=1`、source CharacterID/settlement/cross-run record/no-heir/cleanup 全部匹配的 `death-terminal`。`terminal-settlement.json.one_life_settlement.final_score` 是权威“人生分数”，并须等于顶层 `score` 与 `recorded_episode.score`。08-28 最新 formal run 已 finalize，checkpoint 到 `53220288`，角色仍活且没有匹配 terminal/committed settlement | 解除 GEN-023 后继续 production 长跑；观测自然死亡，等待 committed scoring，生成匹配 CharacterID `29829` 且三处人生分数一致的 `terminal-settlement.json`，并以全部 qualification gates GREEN 正常终止 | aggregate static-ready；等待 GEN-023 continuation 与自然 terminal |
+| GEN-007 | B2/B3 | 战斗质量与吞吐 | ordinary active combat 已用 exact-build decision-epoch sentinel 在 production selector 运行 speed 3；不再逐日暂停/RQ。全军 watch 的 terminal primitive 已实机证明 speed 5 到真实终点时零中间暂停、零 running rich query、零过冲。reinforcement assigned/join、异常 terminal、forecast 与双 `4x` crush 样本仍未全闭合 | G1 立即使用普通战 speed 3；player-won pursuit 已具 production selector，但须等真实胜局复验。双 `4x` crush 只在真实 qualifying checkpoint 做 `1,5,5,1`，不再把未出现样本阻断长跑 | ordinary speed-3 production-live loop；full-watch speed-5 terminal production-live primitive；crush selector live pending |
 | GEN-008 | B0（环境） | 执行会话曾无法启动 CK3 live acceptance | 旧 `CodexSandboxOffline / WinSta0\\CodexSandboxDesktop-*` 启动崩溃仍作为历史环境 RED 保留；当前宿主已是 `xenoa / console session 1 / WinSta0\\Default`，连续完成 white-peace、冷恢复、pending reply 与长跑，证明不再是当前 blocker | 无；未来环境切回隔离 desktop 时按相同 host guard 拒绝，不改 gameplay source 掩盖 | 2026-08-27 resolved |
 | GEN-009 | B1（仅 G2） | 死亡后启动下一代 | production6b 的 `episode-seed.json` 指向另一 state，复制体内没有配套 `profile/save games/xar_episode_seed.ck3`；非空旧 metadata 还会阻止自动重建。strict G1 不执行继承人 gameplay，因此不影响单寿命 canary/死亡结算 | 跨代前复制并逐字节验证被引用 seed（63,874,889 bytes，SHA `46A753F02AAE87299AD9658DA898F5938C1103B251E1EF56AD29FE38E9EAF53D`）到新 state，或明确清理旧 metadata 后从受管路径重新建立；随后实测 `start-next-episode` | G1 非阻塞债务；G2 前必须处理 |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
 | GEN-012 | B1 | `life-advance` 暂停收尾被连续 public revision 饿死 | `aff784d` 与 `3bd8934` 分别实证一次 fresh retry 仍可 race、public-CAS convergence 可在 speed-five 帧流中饥饿；exact DLL `51fe8cf` 证明 native `pause-map` 自己 fresh-read 并幂等提交。`8efa23f` 仅让 composite owner 绕过该冗余 public gate；正式 run 已从 `578B...5C38` cold restore 跨过旧超时并持续到 `history=2380/date=53203800`，保存 25 个新 checkpoint | 已满足：一次请求、一次 ACK、同 deadline 验证 paused；direct primitive/query/其它 action 保持原 gate。保留两轮 immutable RED，后续只在同故障复发时重开 | 2026-08-27 resolved；blocker-removal production-live |
 | GEN-013 | B1→B3 | 长跑 query/history 复制与持久化写放大 | 真实冻结 state 为 79,517,587 bytes；旧 threatened-siege 规划同帧执行 167 条查询，用户观测 121 条查询约 26 分钟。`a8ff95f` first-safe、`7cb0b75` 只读批量持久化及 `79b8d2a → e0688c7 → 9ff04ae` transcript/history 去复制已完成同 `A8DD...AD76CF` checkpoint live A/B；最终 12-turn 运行段 `24.684s`，query 约 `0.050–0.068s`，2 checkpoints 与 cleanup 全绿 | B1 已满足：动作/失败/checkpoint/close durable 合同不变，life copy `9→1→0`、planning `1→0`、termination `3→0` 并有 live A/B。剩余 life 约 3.6–4.6s 只在新实测证明影响 G1 时再施工 | 2026-08-28 B1 resolved；query path production-live；剩余 native life latency B3 |
-| GEN-014 | B1 | `pause-map` ACK 后未在原窗口观察到 paused | 正式 `9ff04ae` run `20260827T163217Z-one-generation-ace7cbcf` 在 `85/86` turns、42 gameplay 与 14 checkpoints 后停止；pre-action 为 `date_raw=53210712 / paused=true`，错误为 `native life-advance did not observe the paused map`，cleanup 全绿。该路径已绕过 GEN-012 的 public CAS，因此是 ACK 后的新形状，不是旧 revision starvation。失败 checkpoint `F15D383B...35559` 已冻结；同 checkpoint 未修改重放两次推进均 GREEN 至 `53210760 / 79B71103...85F2`，证明非日期确定性故障 | composite pause owner 在原 10 秒绝对 deadline 内：第一次 ACK 后观察 1 秒；同 bridge generation、episode、map-ready、speed/event owner 仍 running 时只补交一次幂等 `pause-map`；仍只接受真实 paused snapshot，不重置 deadline、不改 direct primitive/query。聚焦回归通过后从 `79B71103...85F2` cold revalidate 并形成更新 checkpoint | blocker-removal static-ready；production revalidation pending |
+| GEN-014 | B1→B3 | `pause-map` ACK 后未在原窗口观察到 paused | 原 RED 与 `F15D383B...35559` 已冻结；bounded retry 实现后从 `53210760 / 79B71103...85F2` 完成 `12/12` cold revalidation、6 gameplay、2 checkpoints、cleanup 全绿，推进到 `53210904 / 367967CD...C3221`。六次 pause 均一次成功，未命中第二次 retry 分支；后续长跑继续跨过该日期 | 当前 blocker 已解除；仅在同故障真实复发或命中 retry 分支时补 live 覆盖，不为未发生形状阻断 G1 | 2026-08-28 resolved；一般路径 production-live；rare retry B3 live pending |
 
-| GEN-015 | B1 | timeline 控制状态已生效但 semantic snapshot 未到 consumer | `0ceb7d8` 正式 run 在新增 25 gameplay/8 checkpoints 后，`resume-map` ACK 后未观察到 running；游戏日志确认 CK3 已从 paused 变为 running。随后从有效 `53211480 / FBC40774...D9E9C` 冷重放，首个 life 已推进一日，pause ACK 为 `submitted -> already_paused`，日志确认 CK3 已 paused，但 Python 最终仍是 `paused=false`。两轮 cleanup 全绿、角色 `29829` 存活 | exact bridge 只在 `already_paused/already_running` 时绕过去重强制发布 fresh snapshot；composite resume 在原 10 秒 deadline、同 owner 下最多补交一次；pause/resume 最终仍只接受真实 state frame。配套 compact persistence 只改 JSON 编码热路径，fresh DLL `50227D28...831F2` 已通过 37/37 CTest，仍需 cold live 重验 | blocker-removal static-ready；production revalidation pending |
+| GEN-015 | B1 | timeline 控制状态已生效但 semantic snapshot 未到 consumer | 原 resume/pause RED 已冻结。`f1230f6` 将 publish/delivery rejection 暴露到 consumer；fresh diagnostic 实见 8 个 state frame 被拒，最终原因是 pending full ID 被错误当作非负整数而非 signed int32，不是 CK3 未切换 timeline。`cf98648` 修复后从同一 `53211480 / FBC40774...D9E9C` cold replay 成功跨过 life 与 fresh snapshot，随后 `c21c096` canary 连续推进并保存新 checkpoint | 已满足：fresh frame 必须到达 consumer，pause/resume 仍只信真实 semantic state；保留 delivery diagnostic，后续只在相同拒收复发时重开 | 2026-08-28 resolved；state delivery production-live |
+| GEN-016 | B1 | pending full ID 的 signed int32 被 consumer 判 malformed | diagnostic run `20260827T181439Z-one-generation-a991f39a` 保留 8 个 rejected state frames；`cf98648` 将除 `-1` sentinel 外的完整 signed int32 全域贯通 Python/C++ query、reply、ACK、planner 与 lifecycle。fresh live 后实见 `instance_id=-2013265918`，typed query available 且无 malformed frame | 同一负 ID 在 snapshot、typed query、reply lifecycle 中逐字保持；`-1` 仍唯一 invalid sentinel | 2026-08-28 resolved；production-live primitive/loop |
+| GEN-017 | B1→B2 | `arrange_marriage_interaction` 被 opaque special 分类阻断 | `cf98648` live query 证明 exact stock AI→玩家请求：ID `-2013265918`、四角色齐、无 intermediary、六 option 全未选、accept/reject/block 合法。按 exact-build 原生树，`c21c096` 只为该窄合同增加 reject-only；canary 已 query→reject→旧 full ID 为 null→继续 5 个 visible gameplay，并产生 2 checkpoints/cleanup GREEN | B1 已满足；后续若婚姻质量成为真实问题，再补发送时 `ai_accept`、secondary pair/alliance outcome 并替换 reject-only，不先扩完整婚姻系统 | 2026-08-28 blocker-removal production-live；婚姻效用 B2 |
+| GEN-018 | B1 | 一支军队有 contact-free horizon，但另一支可控驻军仍被威胁 | `1048a45` live 证明 stationary `target=current` 在 native reader 返回 `route_unavailable`；`e619219` 改为复用同一 fresh moving horizon 的完整 hostile timelines，按原生闭区间重投影 hold。`12/12` canary 跨过旧帧，正式 run 随后又连续推进 38 日 | 已满足：保留 subject-bound moving proof；stationary row 只使用同 snapshot 完整 hostile timelines；全军 conjunction 后仅推进一日并 paused 重读 | 2026-08-28 resolved；blocker-removal production-live |
+| GEN-019 | B1 | CFleet carrier 被误投影为独立 tactical army | 正式 run 中 `150995278` 与 embarked canonical `33554818` 连续 59 日逐省同步；旧 reader 把前者投影为 `regular/empty route`，触发 186 次 `army_not_move_ready` preview、耗时 `572.765s`。exact-build 原生链确认 raw-kind `1` 经 CFleet 间接回到 CArmy 且被 move/contact gate 拒绝 | `ReadArmies` 只发布 raw-kind `0`、有效 `CUnit+0x178 → CArmy` 且 `CArmy+0x124` self-backlink 的 row；fresh canary 中 carrier 出现/preview 均为零，canonical row 保留并推进 | 2026-08-28 resolved；`816442e` production-live |
+| GEN-020 | B1 | 所有 exact objective route 都在玩家首跳前发生当前省接触 | `53216424` 的 185 条 route 都先在 `53216448` 与 `117440838@5692` point overlap；`b5865f3` exact-day live 到 endpoint 后仍无 combat/retreat/war transition | 只有全部 conflict 都是不可避免 current-Province point overlap 时才推进一个 exact day，并要求真实 strong transition | 原 planner blocker 已绕过；endpoint postcondition live RED，转 GEN-022 |
+| GEN-021 | B1 diagnostic | 预测 conflict hostile 是否已实际进入接触省 | `9b7d254` 增加 proof hostile 实际入省后置条件，但同 checkpoint live 仍无入省；闭区间 ETA 不能冒充 movement/contact 已结算 | 保留 RED；改为读取同日 fresh semantic endpoint，不再猜敌军已经入省 | 诊断假设已被 live 否定；由 GEN-022 接管 |
+| GEN-022 | B1 | 日期到达 prediction endpoint，但 movement/contact lifecycle 尚未形成 strong transition | `76cae78` same-date refresh 已 live：revision 前进但双方仍 moving、非 combat/retreat；`4a7d7ce` 只允许一个严格相邻日 follow-up。formal run `20260828T000753Z-one-generation-a09470a0` 已穿过该 gate 并继续至 `53220312` 的独立 GEN-023 | point-overlap marker 后最多再推进一日；只接受 terminal、war set change、subject removed、active combat 或 retreat；无强状态即 RED，禁止第三日 | 2026-08-28 resolved for continuation；`4a7d7ce` production-live loop |
+| GEN-023 | B1 | contact-free exact route 缺 required advance literal | 在 `53220312`，ArmyID `117440751→3610` 的 exact horizon 已证明 `53220312→53220336` contact-free，但 backend 未广告 required advance literal；错误原文 `the exact route is contact-free for one day but this backend cannot advance it` | 最小修复 capability/subject-scope 映射，使该已证明安全一日的 subject 获得正确 advance literal；从 `53220288 / C8C2926F...67D5` 冷恢复验证 | 2026-08-28 live B1；修复 pending |
 
 ## Degraded heuristic 纪律
 
@@ -351,3 +359,171 @@
   `ck3_11906.hpp` dependency gate；DLL/injector SHA-256 为 `50227D28...831F2` / `2F6CEB43...35B5C`。因此实现为
   `static-ready`，但在该 fresh DLL 从 `53211480 / FBC40774...D9E9C` 命中真实 frame/retry 前，GEN-015 继续保持 B1 open，
   不写 production-live。
+
+## 2026-08-28 03:23：GEN-015/016/017 实机解除并恢复正式长跑
+
+- 战斗速度研究以独立提交 `5f8687a` 覆盖 `1/2/3/4/5` 全档：五档都执行同一 CK3 逐日 movement/contact/combat
+  计算链，高倍速只压缩外部观测/决策窗口。该专题仍是 `static-confirmed / live pending`，没有借静态矩阵宣称 speed 2–5
+  已进入 production selector。
+- `f1230f6` diagnostic run：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-delivery-diag-f1230f6-state\runs\20260827T181439Z-one-generation-a991f39a\report.json`
+  （SHA-256 `A6827430C6B37D1BFA7F11F08E10831B92023C34F53F489C8F803EE87E52A3AB`）记录 8 个到达 native driver、
+  却被 consumer 拒绝的 state frames。最后帧仍显示游戏在 `date_raw=53211600 / speed=1 / paused=false` 运行；具体拒绝原因为
+  `native pending_character_interaction is malformed`。这把 GEN-015 从笼统 timeline 丢帧收窄为 pending ID 消费合同，不把 ACK
+  或游戏日志单独当成功。
+- `cf98648` 把 pending `instance_id` 改回 exact wire 的完整 signed int32：`-1` 是唯一 invalid sentinel，零和其它负数均为
+  结构合法。全量 Python 为 `1352 passed, 2 skipped, 913 subtests passed`；fresh native build 为 `37/37` CTest，DLL SHA-256
+  `67B7231B55FB55788D1069C984589B91ABC0D25F8540B7E42FF7BFC4703CB535`。fresh live report：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-signed-pending-cf98648-state\runs\20260827T184232Z-one-generation-25fe58db\report.json`
+  （SHA-256 `0D2BBFA638ED2BEC3F27D754DE5B64AE931F2627D4EB51FBC3F03EF125CC77D0`）已真实读到
+  `instance_id=-2013265918`，typed pending query 为 available，未再产生 malformed state frame。该 run 随后因尚未分类的
+  `arrange_marriage_interaction` 正确 fail-closed；`first-blocker.json` SHA-256
+  `A8DF58EBF6AB25EDF633BFA6596A33ECBB8B6901E9A156F8A79FF5A6951F64D3`，cleanup 全绿。
+- exact-build 婚姻原生树确认该请求是 stock AI→本地玩家的 marriage special，而不是 war payload。当前观测缺少发送时
+  `ai_accept` raw/breakdown、secondary pair 与 alliance 后置语义；因此 `c21c096` 没有扩通用婚姻策略，只对本次实见合同提供
+  definition-bound reject-only：direct recipient、四角色完整、无 intermediary、六 option 全未选、reject 原生合法且命令可达。
+  拒绝会留下五年 `player_declined_marriage`，所以明确是 G1 blocker-removal，不声称原生等价或语义最优。
+- `c21c096` canary：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260827T191804Z-one-generation-8c116e3e\report.json`
+  （SHA-256 `3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973`）为 `12/12` turns，负 ID typed
+  query→reject submitted→旧 full ID 为 null，并继续取得 5 个 visible gameplay；2 个 checkpoint 均成功，最终为
+  `date_raw=53211576 / SHA-256 EEBE541E5C6CA8372E95F294FA3C93B9E7A423D8E8281EE7E0FE9BC4CFB0B57B`，CharacterID
+  `29829` 仍活且 cleanup 全绿。结果是 `bounded_incomplete`，只证明三个 blocker 已跨过，不是 G1。
+- 正式 run `20260827T192055Z-one-generation-1d8c0f50` 已从上述 EEBE checkpoint 归档 immutable seed 后，以
+  `--max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3` 启动。当前 report 仅为
+  `status=seed_archived / outcome=in_progress / finalized=false`；不得提前填写最终 turns、cleanup、terminal 或人生分数。只有
+  CharacterID `29829` 自然死亡后继续等到琉焰卿 committed settlement，三处人生分数与全部 qualification gates 一致，才标 G1。
+
+## 2026-08-28 03:26：GEN-018 多军队全局 contact horizon
+
+- 上一节记录的正式 run 已于 `2026-08-28 03:25`（Asia/Shanghai）finalize；不能继续称为 in progress。report：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260827T192055Z-one-generation-1d8c0f50\report.json`，
+  SHA-256 `FC7D4E5069C84A4D10A3E5359A387C3F9BD5CD422FFE20D45ACCEB0ADDD4DF90`；`first-blocker.json` SHA-256
+  `AB9FDD76D0251070F1A12AAE8CAE51C2CB23B0CA675EF229DF42724C35500AB0`。
+- run 为 `104/105` successful turns：54 query、50 gameplay，其中 49 个 visible gameplay；16 个 periodic checkpoint 全部成功。
+  最后 durable checkpoint 为 `date_raw=53212728 / history=3172 / SHA-256
+  ED3675867A2780CCD0FD9B77AE80E3BDDFC40EEA47879224914470001732E2A7`，`recoverable_from_checkpoint=true`。
+  CharacterID `29829` 仍活、settlement 为 `not_terminal`，managed cleanup 全绿。
+- blocker 是 planning phase `native_war_route_contact_horizon_global_blocked`，要求
+  `complete-global-route-contact-horizon`。ArmyID `33554818` 虽已有到 Province `5715` 的一日安全 contact horizon，但 ArmyID
+  `150995278` 仍作为 Province `8658` 的可控 regular 驻军被判 threatened；后者不在战斗/撤退、无 route，且 move target
+  不可观测。planner 没有选择动作，因此这是新的真实 B1，不是 bound、cleanup 或婚姻回归。
+- 下一施工必须先按 exact-build 原生 AI 账本闭合该多军队/驻军分支，再做解除当前 blocker 的最小可验证动作；不因本次失败
+  扩展无实证的安全门禁。修复后从 ED367586 checkpoint 继续同一角色/episode，G1 与人生分数仍未完成。
+
+## 2026-08-28 05:11：GEN-018 live 关闭与 GEN-019 canonical tactical identity
+
+- `1048a45` 的第一次 cold replay 没有伪造成功：subject `150995278 → current province` 的 exact native query 明确返回
+  `route_unavailable`。`e619219` 因此只复用同 snapshot、fresh moving horizon 已经发布的完整 hostile timelines，按同一闭区间
+  规则重投影 stationary hold。canary
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260827T201025Z-one-generation-03f57fda`
+  为 `12/12`、4 gameplay、2 checkpoints；report / bound SHA-256
+  `95B33802F9F3DAD4673CEF7B5F9408175FFC0468946EDB6696A947F98133E9CB / 5150DF839DE30C80B86D8513874608B5D815604A1418D0995CB446F5230B2783`，
+  cleanup GREEN。随后正式 run 又推进 38 日，GEN-018 关闭。
+- 正式 run
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260827T201247Z-one-generation-c1cdfbc7`
+  为 `301/302` successful turns、77 query、224 gameplay、38 visible gameplay、12 checkpoints、`940.429s`；report /
+  blocker SHA-256 为
+  `C011A2B624FF5EF4333F4FD1AE51A0BA6B942A4C47A99E1D912635C5405DD226 / 1BF4F6668B4D4396B174504DF791315366349DA8B395B72807866D573A735A87`。
+  最新 durable checkpoint 是 `date_raw=53213688 / history=3308 / b60348da223585995b5e1cf1a022180d0f3d89cad6e4094f66da107c608324f1`；
+  角色存活、cleanup GREEN。
+- GEN-019 的行为证据：`150995278` 自 `53212320` 起与 `33554818` 连续 59 日沿
+  `8651→1038→1037→8658→1017→942→1111→8665→947→8668→950→951` 同步；只有 `33554818` 收到 move，前者
+  route 始终为空。随后正好 186 次 preview 全为 `army_not_move_ready`，总计 `572.765s`。这不是 186 条真实候选路线，而是同一
+  non-orderable carrier 的扫描放大。
+- exact-build `ck3.exe` SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原生链：CUnit raw-kind `0` 用
+  `+0x178 → CArmy`，raw-kind `1` 用 `+0x17C → CFleet → +0x1C CArmy`；CArmy `+0x124` 给出 canonical CUnit。
+  `CanArmyUseMoveMode` 与 contact queue 明确拒绝 kind 非零；`GetUnitState` 不检查 kind，故 `regular` 不能证明可下令。正式枚举名
+  仍未知，文档只使用 raw-kind 描述。
+- `816442e` 只发布 raw-kind `0`、generation-valid CArmy 且 self-backlink 的 tactical row；不扩通用 fleet/attachment schema。
+  全量 Python `1374 passed, 2 skipped, 915 subtests passed`，fresh native `37/37`；DLL SHA-256
+  `E66E923530833160DC256F3E2E66B9D7E0DB42F26CD310F4C774DD3A02818573`。独立只读复核确认 raw-kind/CFleet/backlink
+  与原生 move/contact gate 一致。
+- fresh cold canary
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260827T210853Z-one-generation-19717952`
+  为 `12/12` turns、7 query、5 gameplay、2 checkpoints，推进到 `53213808`；report / bound SHA-256
+  `7BB967D2ED60E7003A7FF6037AA10E923BA4EF8F0D74047C238286B2982B1AC5 / 7A7C6BD63D437D95EFEFA85DEA7A3B453CDC089A283C3C98C1CB21552D96C233`。
+  history `3309..3323` 对 `150995278` 的出现/preview 都是 0，`33554818` 仍完成两次 proof-bound advance；最终 checkpoint
+  `467CB119404AAB2FA401DE95DBE17600A3E269B444D68CBCD7A1D48B8D50A441`，paused、map-ready、角色存活与 cleanup 全绿。
+  结果是可恢复 `bounded_incomplete`，不是 G1；下一步从该 anchor 继续直到自然死亡与琉焰卿 committed 人生分数。
+
+## 2026-08-28 08:28：GEN-020→023 unavoidable-contact endpoint
+
+- formal run `20260827T221605Z-one-generation-f02c81cb` 为 `676/677` successful turns、296 gameplay、
+  110 visible gameplay、36 checkpoints；report / first-blocker SHA-256 为
+  `231FAF47A6F6F4B29EE5F508D36F50D0B6EAF0DED426614E051C274C9963A924 /`
+  `4B93EE56EC680C130F1D28351598E2D5AB842C5EBA75A2B0CFE3967756AADED4`。durable checkpoint 为
+  `date_raw=53216400 / history=3661 / 26298014ACAD7E121FEE6618D5AE4AFFC1A52B6B6ED988A51B3E6D5DB8AA4383`；
+  角色 `29829` 存活、cleanup GREEN。`53216424` 的 subject `33554818@5692` 要到 `53216688` 才完成首跳，而敌军
+  `117440838` 在 `53216448` 到达 `5692`；全部 185 条 objective route 都先命中这个 point overlap。
+- `0ec7e2f` 先冻结 exact-build 原生树与反制边界；`b5865f3` 只实现 proof-bound unavoidable exact-day。live
+  `20260827T225828Z-one-generation-e74fb9df` 精确 `53216400→53216424→53216448` 后仍无 strong transition，
+  report / blocker SHA-256 为
+  `0CAA13221A470D71496ACE49B6C1C43E0260F002C13ACAB510C05F64EF06791E /`
+  `A4EE8434F37293F8C96F9DB1C69C7CEF8866EBCC4CB45EB3EDE440F01F62925A`。
+- `9b7d254` 加入 conflict hostile 实际入省观测；live `20260827T231856Z-one-generation-2318df2a` 仍 RED，
+  report / blocker SHA-256 为
+  `5E67925F38D85D068131914254495603480156F4FCB2F7ED899313471DA4A079 /`
+  `F495A83251BD346C96481668C6E007C5C90D753D0121492E59146FEB4536B7EED`。这否定了“最后已发布帧里敌军已经进入 5692”；
+  ETA 闭区间 endpoint 只是预测边界。
+- `76cae78` 增加一次幂等 same-date paused refresh 与完整失败 evidence。formal run
+  `20260827T234150Z-one-generation-46069983` 的 refresh ACK 为 `already_paused`，public/native revision
+  `10/9→11/10`；refresh 后 subject 仍 `33554818@5692` moving、hostile 仍 `117440838@5693` moving，双方均非
+  combat/retreat。report / blocker SHA-256 为
+  `4D21FD1662906C094544E80D15B840B7B31BB745EF8F1F9DBDD974054B64085C /`
+  `39CA98290B6B595800CB51FD7D67045DDBD4B7D69C5DF0B6BC8E0309D0BDDE66`，cleanup GREEN。这排除了只因 stale cache
+  漏看已发生接触。
+- `4a7d7ce` 的 strict follow-up 只接受所有 conflict 都恰落在
+  `horizon_end == ending_date == starting_date + 24` 的 point overlap，并且 subject 首跳晚于该端点；marker 绑定 episode、
+  subject 与相邻日期。第二日只接受 episode terminal、active-war set change、subject removed、active combat 或 retreat。
+  enemy ID/Province/intent 变化不能冒充成功；仍无强状态就记录 `exhausted_without_strong_transition` 并禁止第三日。独立复审
+  找到并修复 Province drift 绕过第三日限制。相关回归 `376 passed / 191 subtests`、driver
+  `165 passed / 141 subtests`、全量 `1394 passed, 2 skipped, 928 subtests passed`。
+- production revalidation 路径：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260828T000753Z-one-generation-a09470a0`。
+  它从上述冻结 checkpoint 穿过 GEN-022，并在独立 GEN-023 finalize RED；因此 GEN-022 blocker-removal 保持
+  `production-live loop / resolved for continuation`。最终为 `380/381` successful turns，counts
+  `query=211 / gameplay=169 / checkpoint=54 / recovery=0 / terminal=1`，166 visible gameplay，elapsed `810.217s`。
+  report / first-blocker SHA-256 为
+  `AFEECF331F298F73F41D62A4CA78AE1C69C5BD09850EF4E692394645FDA12809 /`
+  `52C46EA6AA0335A7A7086021EC5B3FD1BF2AC373AFE1673C9B8E8659C0AAAD50`。
+- 最新 durable checkpoint 为 `date_raw=53220288 / history=4087 / size=79345233 / SHA-256
+  C8C2926F63451725ABE9C496B7966B5C3971FD0B06CC5223B832A657176567D5`。CharacterID `29829`、episode
+  `native-29829-ee172aa720db` 不变且角色存活；cleanup 全绿、CK3 已退出。163 个推进日对应 `12.07 游戏日/分钟`，
+  推进事务约 `4.555 秒/日`，不是每游戏日 30 秒。
+- GEN-023 发生在 `53220312`：ArmyID `117440751→3610` 的 exact horizon 已证明
+  `53220312→53220336` contact-free，但 backend 没有广告 required advance literal；错误原文为
+  `the exact route is contact-free for one day but this backend cannot advance it`。最小解除只修 capability/subject-scope 映射，
+  然后从 `53220288` 冷恢复，不扩路线质量或新安全门禁。
+- 同期五档速度研究提交 `3c2a9c7`：1/2/3 ongoing parity 是 research harness live GREEN；1–5 核心 terminal 一致，
+  但 strict warscore parity 因同档漂移保持 RED-inconclusive。当前交叉路线只把 speed 2 作为下一 research A/B 候选；
+  production selector 继续 speed 1。G1、terminal 与琉焰卿人生分数仍未完成。
+
+## 2026-08-28 12:47：GEN-007 ordinary speed 3 production-live 与零中间暂停
+
+- `f4ddc3d / 42a813d / dcf7f16 / 289c85f / 42601a5` 把 exact-build battle decision sentinel 接入正式
+  selector，并将 watch 集合扩为全部 6 支可控 canonical army。普通 active combat 默认 speed 3；sentinel 只在 watched army
+  identity/route/move-target/CombatID/retreat、ordered roster、decision phase/winner、原生暂停、terminal、45 日 deadline 或异常变化时
+  回到 paused planner，不再按游戏日暂停或执行 running rich query。
+- production artifact：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-full-watch-production-56eac58-state\runs\20260828T043404Z-one-generation-ce48a71c\report.json`，
+  SHA-256 `30C247B6C470BB1B867D90456282A25B6D30CC85E49C805263A2427AB32A7CEC`。从 immutable
+  `53195952 / 08964AFA6D6CD56C6F7ACB9B24A79E30FC7C125936FD88E6635E4008B6203686` 恢复后 `3/3` turns；正式 planner
+  选择 speed 3，全 6 army watch 从 `53195952→53196048` 连续推进 4 日到 terminal，`intermediate/external pause=0/0`、
+  running rich query `0`、overshoot `0`，wrapper/observed terminal 与 cleanup 全绿。`turn_limit` 只是显式 3-turn canary bound。
+- full-watch terminal speed-5 primitive：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-full-watch-terminal-speed5first-56eac58.json`，SHA-256
+  `AE8D8EC25B4CF38BB864212099F9F9251C0BD37E0362BE22EE60B45C60DEFEF4`。同一冻结 seed 的 `[5,1]` 两臂都在
+  `53196048` 得到相同 outcome core `F5FC814BA7088AB34D4A36F1071FFF0C5528F32C7809E59110F46FEEF6B2C38B`，均为零中间/外部暂停、
+  零 running rich query、零过冲；speed 5 `2.000491s`，speed 1 `10.030168s`，约 `5.01×`。该 seed 是玩家败退 pursuit，
+  只证明全监视 terminal primitive，不冒充 player-won pursuit 或双 `4x` crush selector 证据。
+- sparse decision epoch 已把非 terminal 的下次 native stop 从固定逐日改为绝对日 gate：同帧 legality 明确 `too_early` 时取所有
+  subject 的最早合法日，否则最多 45 日；普通战从 maneuver 预计约 3 个原生决策停点，从 main 约 2 个，从 pursuit 约 1 个。
+  decided/crush terminal mode 忽略普通 phase/winner 漂移，目标合同就是直接 5 速跑到首个真实语义终点，零中间暂停。
+- 失败证据未删除：早期 production arm 因 full-watch command 长度与 idle army 非正 direct target 分别 RED；最终只将
+  `ProvinceID <= 0` 的 direct target 规范为 absent，并把 sentinel step 上限按 64 IDs 精确放宽为 795 bytes。fresh native
+  `39/39` CTest；主线 Python `1402 tests / 3 skipped / 948 subtests` 全绿。
+- GEN-007 因而不再把 speed 1 当正式默认，也不把 speed 2 当目标档。尚未自然出现的 player-won pursuit 与双 `4x` checkpoint
+  保持 live-pending；下一场满足条件时做最小 `1,5,5,1` 冻结矩阵并校准 selector，但它们不抢占当前 G1。正式长跑从
+  `53224848 / E317CB7F...C2EE` 继续；CharacterID `29829` 自然死亡后仍必须等待琉焰卿 committed 算分，再记录人生分数并结算。

@@ -1,6 +1,6 @@
 # 战斗决策时点与零中途暂停 cruise
 
-状态：**native daily sentinel 与 decision speed-3 production-live；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
+状态：**native daily sentinel、完整全军 watch 与普通 decision speed-3 已 production-live；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -146,7 +146,7 @@ Python/strategy 集成不能只看 ACK：
 | 身份 | connection generation、episode、played character、armed speed `5`、watched CUnit set 与 pre-arm binding 一致 |
 | 日期算术 | `start_date_raw` 等于 pre-arm battle date；`trigger-start = completed_daily_ticks * 24`；`last_date_raw = trigger_date_raw` |
 | absolute bound | `trigger_date_raw <= target_date_raw`；date fallback 时严格相等；`signed_delta` 与上述日期算术一致 |
-| native pause | 最终 snapshot `paused=true`、`map_ready=true`、observed date 等于 trigger date；`overshoot_days=0`；pause wrapper called/observed 均为 true |
+| native pause | 最终 snapshot `paused=true`、`map_ready=true`、observed date 等于 trigger date；`overshoot_days=0`。普通 semantic stop 要求 wrapper called/observed 均为 true；`native_pause` 要求 CK3 已自行暂停、`intermediate_pause_count=1 / wrapper_called=false / observed=true`，不能伪称零暂停 |
 | 零中途外部干预 | arm 与 native stop 之间 `external_pause_request_count=0`、`paused_rich_query_count=0`；heartbeat/轻量 status read 不冒充 RQ |
 | stop 原因 | 只允许 terminal/finalized/removal、已声明的 route/contact/reopen/retreat/roster/army/native-auto-pause、absolute date 或 infrastructure RED；未知原因不继续 resume |
 | terminal | pre-arm journal cursor 后存在同 CombatID event；journal exact terminal date 等于 trigger date；winner/Result/wipe/ordered sides/removal 可验证；只在 stop 后查询一次 rich terminal frame |
@@ -193,8 +193,10 @@ paused/managed emergency-cleanup 的事实，不能伪造 `pause_wrapper_called=
 [implementation-confirmed] `strategy.choose_one_life_turn` 现已消费显式 `battle_speed_readiness`，而不是把 DLL capability
 或 composite 存在误当 live 结论。三个 gate 缺失时都按 `false` 处理：
 
-- `decision_sentinel_live_ready=true` 且 `battle-decision-epoch-advance` 可执行时，完整全局战术审计后的 active combat
-  默认选择 speed 3、`+45d` absolute fallback 的 decision epoch；
+- `decision_sentinel_live_ready=true` 且 base composite `battle-decision-epoch-advance` 可执行时，完整全局战术审计后的
+  active combat 默认选择 speed 3。实际 step 编码为 `battle-decision-epoch-advance-to-<date_raw>`：若同帧所有相关撤退
+  legality 中存在 `legal_now=false`、唯一 reason 为 `too_early` 的合法日门，则取最早
+  `earliest_day_gate_date_raw`；否则使用 `+45d` absolute fallback。这样只在首个可撤退日多停一次，不回到逐日暂停；
 - speed 5 要求 `terminal_sentinel_live_ready=true`、`battle-terminal-cruise` 可执行，并且每个 distinct CombatID 都通过
   `battle_terminal_cruise_policy.production_ready`；`pursuit_cleanup` 在玩家 side 已获胜时不再等待
   `overwhelming_matrix_live_ready`，`double_dominance_hold` 与 `opponent_fighting_pool_exhausted` 仍必须等该 gate；
@@ -203,17 +205,67 @@ paused/managed emergency-cleanup 的事实，不能伪造 `pause_wrapper_called=
   后只有 cursor 后的新 event 同时证明原 CombatID、terminal date 与 attacker/defender outcome，才能接受 terminal transition；
 - 任一 gate、composite、完整 watch set 或 cursor 缺失，selector 保留旧 `life-advance` speed-1 路径。
 
-多日 transition 的放宽只识别两个 composite literal，并严格要求 `progress_status=postcondition`、零 intermediate/external
-pause、零 rich query、零 overshoot、无 managed cleanup、`trigger_date_raw - starting_date_raw = completed_daily_ticks * 24`、
-顶层与 nested sentinel 字段一致。普通
+多日 transition 的放宽只识别参数化 decision composite、其旧 `+45d` 兼容 literal 与 terminal composite，并严格要求
+`progress_status=postcondition`、零 external pause、零 rich query、零 overshoot、无 managed cleanup、
+`trigger_date_raw - starting_date_raw = completed_daily_ticks * 24`、顶层与 nested sentinel 字段一致。普通 semantic stop
+继续要求零 intermediate pause；只有 reasons 含 `native_pause` 时严格接受 CK3 自己产生的一次 pause，并要求 wrapper 未被调用。普通
 `life-advance` 的三日结果仍是 RED。`GameplayBridgeService` 只透传 driver capabilities 中可选的 readiness map；当前 live
 矩阵未决定某个字段时不得填写 `true`。
 
+## 2026-08-28 完整全军 watch 与稀疏暂停收口
+
+### Production speed 3
+
+`dcf7f16` 先把 tactical arm 的 `step` 上限从通用 128 bytes 精确放宽到 64 个 public CUnitID 的 795 bytes；`type` 与
+`request_id` 仍保持 128 bytes。第一次真实六军 arm 随后没有被当成成功：空闲 regular CUnit `33554818` 的
+`CUnit+0x30` 为非空 direct-target pointer，但目标 row 的 ProvinceID 非正数；其 paused semantic route/target 都为空。旧
+fingerprint 把这项合法 idle/no-target 表示误判为 unavailable。`42601a5`（原分支 `56eac58`）只把该字段归一化为 absent，
+完整六军集合不删减。
+
+最终 production canary：
+
+- report：`C:\Users\xenoa\AppData\Local\Temp\xar-full-watch-production-56eac58-state\runs\20260828T043404Z-one-generation-ce48a71c\report.json`；
+- SHA-256：`30C247B6C470BB1B867D90456282A25B6D30CC85E49C805263A2427AB32A7CEC`；
+- immutable seed：`date_raw=53195952`，checkpoint SHA-256
+  `08964AFA6D6CD56C6F7ACB9B24A79E30FC7C125936FD88E6635E4008B6203686`；
+- planner 自行选择 production `battle-decision-epoch-advance` / speed 3，watch 精确为
+  `[33554797,33554818,67109252,83886358,117440751,218103933]`；
+- 一次 resume 从 `53195952` 跑到 exact terminal `53196048`，4 daily ticks，零 intermediate pause、零 external pause、
+  零运行中 rich query、零 overshoot；最终 wrapper pause/observation 与 cleanup/tree-gone 全绿。
+
+报告整体是批准的三 turn 人为边界 `turn_limit / bounded_incomplete`，不是 capability RED。最终 live DLL / injector SHA-256
+分别为 `6B2D8D80CB75005A377BD7B5B0C57C278B8DB97303779F9FE44742557775F7F4` 与
+`63C08C2C03E90FCC3266BC86A17DB969DFDEC4B3A8BF9C560E7B6848BFC33225`；native CTest `39/39`。
+
+### Full-watch speed 5 terminal primitive
+
+最终 artifact：`C:\Users\xenoa\AppData\Local\Temp\xar-full-watch-terminal-speed5first-56eac58.json`，SHA-256
+`AE8D8EC25B4CF38BB864212099F9F9251C0BD37E0362BE22EE60B45C60DEFEF4`。逆序 `[5,1]` 两臂都从同一 checkpoint、完整
+六军 watch 跑到 `53196048`；terminal outcome core 都为
+`F5FC814BA7088AB34D4A36F1071FFF0C5528F32C7809E59110F46FEEF6B2C38B`。speed 5 running wall
+`2.000491s`，speed 1 为 `10.030168s`；两者均零 intermediate/external pause、零 running rich query、零 overshoot，cleanup
+全绿。
+
+该 seed 是**玩家败局 pursuit**，因此只把完整全军 speed-5 terminal primitive 升为 production-live，不把它冒充玩家获胜
+`pursuit_cleanup` selector canary，更不能替代双重 `4x` overwhelming matrix。先前 `[1,5]` harness 的第二臂发生
+`revision mismatch expected 20/current 21`，失败 artifact
+`C:\Users\xenoa\AppData\Local\Temp\xar-full-watch-terminal-1v5-56eac58.json`（SHA-256 `3C1236E1...3EB1`）继续保留；
+逆序 fresh run 才是通过证据。
+
+### 不逐日暂停的实际预算
+
+当前 decision mode 不观察纯 date、phase-day、casualty ledger 或逐日 strength 自然变化。稳定战斗从 maneuver 开始通常只需
+约三次原生停点（main、winner/pursuit、terminal），从 main 开始约两次，从 pursuit 开始一次；若撤退首个合法日与这些停点
+不同日，最多再增加一次精准 day-gate stop。增援、route/contact、retreat、roster、reopen 或原生事件仍会在发生当天暂停并重判，
+这是策略输入真实失效，不算恢复逐日轮询。
+
 ## Readiness
 
-本页 Python selector 已达到 `implementation-confirmed`，native/live gate 仍由各自 artifact 决定。它没有宣称 speed 3
-decision epoch 或 speed 5 crush 已 production-live；readiness map 默认全 false，因此静态接线本身不会改变正式长跑速度。
+本页 ordinary decision speed-3 selector、native sentinel 与完整全军 watch 已达到 `production-live loop`；参数化 day-gate 与
+`native_pause` consumer 为 `static-ready`，仍待对应 day-15 / 真实原生自动暂停 live artifact。完整全军 speed-5 terminal primitive
+为 `production-live primitive`。
 
-升级顺序固定为：native sentinel build/tests -> speed 1/3/5 same-day live -> 第一份双重 `4x` checkpoint -> `1,5,5,1`
-零中途暂停矩阵 -> production selector。完整 Monte Carlo、通用 reinforcement forecast 与更低碾压阈值都是后续质量升级，
-不得再阻塞这条已由用户明确要求、且有现实吞吐证据的 G1 路径。
+玩家已获胜 `pursuit_cleanup` selector 已 implementation-confirmed，但仍待一份 qualifying offensive-war checkpoint 的真实
+production selector canary。双重 `4x` 与 opponent-pool-exhausted 继续等待 overwhelming checkpoint 的 `[1,5,5,1]` 平衡矩阵，
+`overwhelming_matrix_live_ready` 仍为 false。完整 Monte Carlo、通用 reinforcement forecast 与更低碾压阈值都是后续质量升级，
+不得阻塞当前已由 live 证据支持的 speed-3 G1 路径。
