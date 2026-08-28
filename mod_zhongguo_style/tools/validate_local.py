@@ -337,7 +337,11 @@ def check_runtime_invariants() -> None:
         if assignment_at >= 0 and calibration_at > assignment_at
         else ""
     )
-    for counter in ("zg361_wild_dog_n", "zg361_rabbit_n"):
+    for counter in (
+        "zg361_wild_dog_n",
+        "zg361_rabbit_n",
+        "zg361_scoreboard_slot_cursor",
+    ):
         if f"set_variable = {{ name = {counter} value = 0 }}" not in calibration_preflight:
             err(
                 "visible calibration event must pre-initialize tooltip-read counter "

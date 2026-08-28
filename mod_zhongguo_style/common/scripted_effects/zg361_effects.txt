@@ -78,9 +78,10 @@ zg361_run_review_effect = {
 		zg361_rank_cohort_effect = yes
 		zg361_assign_pending_grades_effect = yes
 		# 玩家校准事件的选项 tooltip 会预求值结算 effect；先跨日落盘其条件变量，
-		# 避免尚不存在的野犬/白兔计数触发 unset-scope 错误风暴。
+		# 避免尚不存在的野犬/白兔计数与榜位游标触发 unset-scope 错误风暴。
 		set_variable = { name = zg361_wild_dog_n value = 0 }
 		set_variable = { name = zg361_rabbit_n value = 0 }
+		set_variable = { name = zg361_scoreboard_slot_cursor value = 0 }
 
 		# 3. 快照（全体可考核封臣，含新人；在奖惩落账前更新，避免奖励计入明年成长）
 		every_vassal = {
