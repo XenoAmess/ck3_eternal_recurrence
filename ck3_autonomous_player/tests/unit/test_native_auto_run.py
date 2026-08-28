@@ -891,6 +891,28 @@ class NativeAutoRunTests(unittest.TestCase):
                 route_contact_timeline_speed=4,
             )
 
+    def test_compact_success_keeps_route_speed_ab_evidence(self) -> None:
+        compact = native_auto_run_module._compact_step_result(
+            {
+                "step": "advance-route-contact-horizon-v1-101-to-20-h-1-31",
+                "starting_date_raw": 53_220_360,
+                "ending_date_raw": 53_220_384,
+                "elapsed_days": 1,
+                "requested_horizon_days": 1,
+                "timeline_speed": 3,
+                "timeline_policy": "exact_one_day_contact_free_speed_3",
+                "paused": True,
+            }
+        )
+
+        self.assertIsNotNone(compact)
+        self.assertEqual(compact["requested_horizon_days"], 1)
+        self.assertEqual(compact["timeline_speed"], 3)
+        self.assertEqual(
+            compact["timeline_policy"],
+            "exact_one_day_contact_free_speed_3",
+        )
+
     def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
         stderr = io.StringIO()
         with mock.patch.object(
