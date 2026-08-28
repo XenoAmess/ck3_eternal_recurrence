@@ -1,6 +1,6 @@
 # 战斗决策时点与零中途暂停 cruise
 
-状态：**native daily sentinel、完整全军 watch 与普通 decision speed-3 已 production-live；phase/winner 粗停点合并与运行中 dominance invalidation 为 research；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
+状态：**native daily sentinel、完整全军 watch 与普通 decision speed-3 已 production-live；phase/winner 粗停点已合并为 implementation-confirmed / fresh live pending；运行中 dominance invalidation 为 research；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -33,8 +33,8 @@
    `0200B0302937CE6DA90D648FEE9C226E248101DC34D86B4FBA831611C2190321`。
 3. **真正的重新判定点不是“日期变了一天”，而是旧决定的输入失效。** 对预先选定 `hold-to-terminal` 的战斗，只有军队/
    CombatID、路线/接触、撤退、双方 roster、终局/删除、原生自动暂停或 sentinel 基础设施状态变化才要求停表。单纯
-   `maneuver -> main -> pursuit` 和 winner 写入不推翻“继续到终局”。当前 terminal mode 已忽略二者；普通 speed-3
-   decision mode 仍会为二者暂停，是下一项可直接删除的粗粒度开销，不是 CK3 计算要求。
+   `maneuver -> main -> pursuit` 和 winner 写入不推翻“继续到终局”。terminal mode 早已忽略二者；普通 speed-3
+   decision mode 现也已在代码中删除这两个停表条件，但 fresh DLL 的长跑实机证据尚待产生。
 4. **第一版不等待完整 Monte Carlo。** 当前 `monte_carlo_ready=false`，但这不妨碍先用同一 paused frame 的两项真实指标
    筛选 research candidate：玩家侧 `derived_current_fighting_raw` 和 `side_strength_raw` 都至少为对侧 `4x`。这只是一个
    可实测的操作性“碾压”定义，不声称 99.5% 胜率；production 必须再经过 overwhelming checkpoint 的平衡矩阵。
@@ -74,11 +74,11 @@ flowchart LR
 
 ## 暂停压缩 v2 预研：trigger bit 到真实策略变化
 
-### 当前 16 个 trigger 的逐项账本
+### 16 个 trigger 的逐项账本
 
-[implementation-confirmed] `tactical_daily_sentinel_v1.cpp` 当前在 daily final-stage original 完整返回后读取下表字段。
-`decision_epoch` 会把 phase 与 winner 也作为 stop；`terminal_or_sentinel` 已忽略这两个粗变化。表中“v2 处理”是本轮
-research 结论，不表示代码已经修改。
+[implementation-confirmed] `tactical_daily_sentinel_v1.cpp` 在 daily final-stage original 完整返回后读取下表字段。
+`decision_epoch` 与 `terminal_or_sentinel` 现均不再因 phase 或 winner 单独停表；旧 trigger bit 仍保留在 wire 枚举中以维持兼容，
+但当前 hook 不再发出它们。
 
 | bit / reason | exact-build 读取与当前触发 | 是否会推翻已提交的 `hold` | v2 最小处理 |
 |---|---|---|---|
@@ -88,7 +88,7 @@ research 结论，不表示代码已经修改。
 | `3 combat_transition` | watched `CArmy+0x128` CombatID 改变 | 是：接敌、加入、离战或换战 | 保留；若同时 terminal，按 terminal 优先分派 |
 | `4 retreat_transition` | watched `CUnit+0x170` retreat boolean 改变 | 是：军队可控状态与路线语义改变 | 保留；若同时 terminal，只停一次 |
 | `5 combat_unavailable` | pre-arm CombatID 不再 strict resolve | 是：通常是 finalizer/removal | 保留，并与 bit 8 合成同一个 terminal stop |
-| `6 combat_phase_changed` | `CCombat+0x6B0` 改变；仅 decision mode | **否（当前 hold policy）**：maneuver/main/pursuit 都无“继续战斗”动作 | v2 不再单独停；只保留终止后遥测 |
+| `6 combat_phase_changed` | wire 保留；当前 hook 不再发出 | **否（当前 hold policy）**：maneuver/main/pursuit 都无“继续战斗”动作 | 已实现；不再单独停 |
 | `7 combat_roster_changed` | 两侧 ordered ArmyID count/hash 改变 | 是：真实 join/leave 会改变当前判断；也覆盖 pursuit reopen | 保留；当日停一次并 RQ |
 | `8 combat_terminal` | finalized byte 改变，或 CombatID 已删除 | 是：需要 terminal journal 和后继军队状态 | 保留；这是正常最终暂停，不算中途暂停 |
 | `9 date_sequence_failure` | 不是严格连续 `+24` | primitive 失效 | 保留为 infrastructure RED；不自动 resume |
@@ -96,7 +96,7 @@ research 结论，不表示代码已经修改。
 | `11 pause_not_observed` | wrapper 缺失、异常或 paused readback 仍 false | primitive 失效 | 保留为 infrastructure RED |
 | `12 original_unavailable` | detour original/trampoline 不可用 | primitive 失效 | 保留为 infrastructure RED |
 | `13 native_pause` | original 返回后 Jomini 已经 paused | 是：CK3 event/death 等外部硬暂停拥有优先级 | 保留；不再调用 wrapper，不把它记成零中停样本 |
-| `14 combat_winner_changed` | `CCombat+0x6E0` 从 `-1` 写成 side；仅 decision mode | **否（当前 hold policy）**：pursuit 自动结算，玩家也已无 voluntary-retreat 动作 | v2 不再单独停；roster 变化仍会抓住 pursuit→main reopen |
+| `14 combat_winner_changed` | wire 保留；当前 hook 不再发出 | **否（当前 hold policy）**：pursuit 自动结算，玩家也已无 voluntary-retreat 动作 | 已实现；roster 变化仍会抓住 pursuit→main reopen |
 | `15 evaluation_failure` | final-stage bounded read fault | primitive 失效 | 保留为 infrastructure RED |
 
 [live-confirmed] 完整六军 production canary 的最终一天同时给出
@@ -104,14 +104,22 @@ research 结论，不表示代码已经修改。
 必须先按语义优先级合并，而不是每个 bit 各开一轮 RQ。该 report SHA-256 为
 `30C247B6C470BB1B867D90456282A25B6D30CC85E49C805263A2427AB32A7CEC`。
 
-v2 的 stop 分派顺序冻结为：
+[live-confirmed baseline] 在同一 `main day 12` checkpoint 上，speed 1 与 speed 3 都连跑 14 个游戏日到
+`pursuit day 0`，唯一停表 reason 是同日 phase+winner；中途/外部 pause、running rich query 与 overshoot 全为零。
+speed 1 用时 `32.002s`，speed 3 用时 `11.248s`，约 `2.85x`。该停点后 planner 没有新动作，因此它是可直接
+合并的固定开销，不是战斗计算需求。artifact `xar-sentinel-decision-speed1v3-45d-mainline.json`，
+SHA-256 `AD9B62AA...578E`。
+
+v2 以及后续 guarded mode 的 stop 分派顺序冻结为：
 
 1. infrastructure RED（bits `9/10/11/12/15`）：停止本臂，走现有 managed failure cleanup；
 2. `native_pause`：直接交给 event/death/interaction 的现有优先级；
 3. terminal group（bits `5/8`，并吸收同日 `3/4`）：只做 cursor-bound terminal journal RQ；
-4. tactical invalidation（bits `1/2/3/4/7`）：只做一次 paused battle/route RQ 与 replan；
-5. absolute date（bit `0`）：到 gate/bound 后只做一次 RQ；
-6. phase/winner（bits `6/14`）：对明确预提交的 hold 不再触发 pause。
+4. tactical invalidation（bits `1/2/3/4/7`）：只做一次 paused battle/route replan round；
+5. dominance invalidation（guarded mode 的独立 reason）：只在 identity/roster/terminal 仍稳定时判定；若同日已有前四级
+   reason，只暂停一次并由更高优先级解释，不能拿已变化的 roster 计算假 dominance RED；
+6. absolute date（bit `0`）：到 gate/bound 后只做一次 RQ；
+7. phase/winner（bits `6/14`）：wire 枚举保留，但对明确预提交的 hold 不再触发 pause。
 
 ### 为什么普通 speed 3 可以合并 phase 与 winner
 
@@ -140,7 +148,7 @@ retreat/route/event 动作时，它 arm 以后唯一提交的动作就是 hold�
 - 当前帧已经 legal 且选择 hold，或四个 retreat gate 中除日期外已有结构性拒绝时，稳定战斗只在 terminal 停一次；
 - roster、route/contact、retreat、外部硬暂停或异常仍在实际发生当日停，不把它们删除来制造“零暂停”数字。
 
-这项合并对**当前 hold policy**不需要新的 native 字段。未来若 planner 真正实现 continue/reinforce/retreat forecast，并且该
+这项合并已实现，对**当前 hold policy**不需要新的 native 字段。未来若 planner 真正实现 continue/reinforce/retreat forecast，并且该
 forecast 会在 roster 不变时跨阈值，届时必须新增与那个实际策略完全同构的只读 invalidation 判据；不能继续拿 phase/winner
 充当预测替身，也不在真实需求出现前扩张通用 Monte Carlo。
 
@@ -170,7 +178,9 @@ forecast 会在 roster 不变时跨阈值，届时必须新增与那个实际策
 `derived_current_fighting_raw` 和 `side_strength_raw`，却不会触发现有 bit。这不阻塞已决定的玩家胜局 pursuit；项目所有者要求
 预研的最小补口只作用于 `double_dominance_hold`，不拖慢普通 speed-3 战斗：
 
-1. arm 时为每个 qualifying CombatID 冻结玩家 side index、candidate kind、multiplier=`4` 和四个 admission raw；
+1. guarded arm 必须是独立 `battle-overwhelming-terminal-cruise` / speed 5 / `combat_count>0` 合同，绝不能落入
+   `committed_route` 的 `combat_count=0` scope；native 从完整 watched CUnit→CArmy membership 推导玩家 side，重新执行
+   eligibility，并在内部定长数组冻结 candidate kind、multiplier=`4` 和四个 admission raw；
 2. 每个 daily final-stage stable boundary 先确认 `CCombat+0x705 == 0`；按两个 side 的 levy/MAA entry headers 对
    `entry+0x18 current_fighting_raw` 做 checked int64 求和，得到**当日伤害后** current raw；
 3. 同一边界调用已静态闭合为 synchronous read-only leaf 的 `0x23CC340(CCombatSide*)`，取得双方
@@ -178,7 +188,8 @@ forecast 会在 roster 不变时跨阈值，届时必须新增与那个实际策
 4. 用无浮点、溢出安全的交叉乘法复核两项 `player >= 4 * opponent`。任一项失效即置新的
    `combat_dominance_invalidated` reason，在**同一 native day**调用现有 pause wrapper；
 5. stop status 只保存触发日的四个 raw、candidate kind 和 multiplier，运行中不写逐日日志、不做 mailbox RQ、不持久化每日帧；
-6. post-stop 做一次 rich RQ 复现阈值失效后才重判。若 rich RQ 不复现，记 sentinel false-positive RED，不直接 resume。
+6. post-stop 只做一次 paused replan round；触发 CombatID 不重复查询，每个实际需要重判的 distinct CombatID 最多一次
+   rich RQ。若触发项不能复现阈值失效，记 sentinel false-positive RED，不直接 resume。
 
 `pursuit_cleanup` 不运行 dominance read：winner 已锁定，真实 join 会先改变 roster 并可重开 main。对
 `opponent_fighting_pool_exhausted`，第一轮 matrix 可继续依赖 roster/terminal；只有实机出现同 roster 的 opponent pool 回升才把
@@ -204,7 +215,7 @@ game-days/s；若双遍历吃掉 speed-5 收益，优化入口是把 current sum
 flowchart TD
     Q["[production-live] paused exact battle RQ"] --> H{"当前动作已明确为 hold？"}
     H -->|否| A["先执行当前 retreat / route / event 决定"]
-    H -->|是；普通战| S3["[research] speed 3 hold sentinel\n忽略 phase / winner"]
+    H -->|是；普通战| S3["[implementation-confirmed] speed 3 hold sentinel\n忽略 phase / winner; fresh live pending"]
     H -->|是；全部 CombatID qualifying| C{"candidate kind"}
     C -->|玩家已胜 pursuit| S5["[implementation-confirmed] speed 5 terminal sentinel"]
     C -->|double 4x| D["[research] arm daily dominance floor"]
@@ -225,17 +236,22 @@ flowchart TD
 
 ## 最小代码入口、离线测试与同 checkpoint 五档实机矩阵
 
-### 最小代码入口（本轮未修改）
+### 最小代码入口
 
-1. `native_bridge/src/tactical_daily_sentinel_v1.cpp`：在明确 hold 的 decision arm 中不再设置
-   `combat_phase_changed/combat_winner_changed`；保留现有 terminal、roster、army 与 infrastructure reads。
-2. 同文件的 `CombatFingerprintV1` / armed payload：只对 double-`4x` terminal arm 增加 side/candidate binding 与上节
-   post-damage dominance read；header/`bridge.cpp` 增加一个 trigger reason 和触发日 raw readback。
-3. `src/xar_autoplayer/bridge/native_driver.py`：扩展 canonical reason/schema 校验，仍要求同 generation、tick/date、零超调和
-   pause ownership；不能因 phase/winner 被忽略而放宽其它 postcondition。
-4. `src/xar_autoplayer/strategy.py`：把 ordinary arm 理由改为 hold-invalidating epoch，按上文优先级把同日多 bit 合成一次 RQ；
-   terminal cursor 规则保持不变。
-5. `simulation/battle_terminal_cruise_policy.py`：保留当前 candidate/research/production 三层；只把 candidate kind 和
+1. [implementation-confirmed] `native_bridge/src/tactical_daily_sentinel_v1.cpp`：明确 hold 的 decision arm 已不再设置
+   `combat_phase_changed/combat_winner_changed`；现有 terminal、roster、army 与 infrastructure reads 全部保留。
+2. [research design] 保持已 live 的 `terminal_or_sentinel` 不变；为 double-`4x` 新增显式 guarded mode 和
+   `battle-overwhelming-terminal-cruise` composite，并增加独立 feature marker，防止新 Python 把旧 DLL 误当成 dominance guard。
+   native 必须从完整 watched CUnit membership 自己推导 player side 并重做 eligibility，再于内部定长数组冻结 candidate
+   kind、multiplier=`4`、四个 admission raw 与 guard-enabled；外部只新增 feature marker、guarded mode/composite、
+   `guard_count` 与首个触发 CombatID/side/multiplier/四 raw，不把全世界军队、每日帧或 64 行大 step 塞入 schema。
+3. [research design] native status 只增加 `dominance_guard_count`、一个 `combat_dominance_invalidated` reason，以及触发时首个
+   确定顺序 CombatID/side/multiplier/四 raw；未触发时用 canonical `0/-1`。无需新 mailbox、每日 rich query 或大列表 wire。
+4. `src/xar_autoplayer/bridge/native_driver.py`：将 guarded mode 与旧 terminal mode 分开做 canonical schema/postcondition 校验，仍要求同
+   generation、tick/date、零超调和 pause ownership；不能因 phase/winner 被忽略而放宽其它 postcondition。
+5. `src/xar_autoplayer/strategy.py`：ordinary arm 已改为 hold-invalidating epoch；后续只有所有 distinct CombatID 通过、完整全军
+   watch/cursor 齐全且至少一个 candidate 为 double-`4x` 时才选 guarded composite。pursuit-only 继续走已 live 的旧 terminal composite。
+6. `simulation/battle_terminal_cruise_policy.py`：保留当前 candidate/research/production 三层；只把 candidate kind 和
    dominance guard admission 明确传给 native arm，不把 `4x` 写成胜率。
 
 最低成本实现可以直接收窄现有 `decision_epoch` 的 bits `6/14`，因为 production 只在 paused planner 已选择 hold 后 arm；
@@ -247,8 +263,8 @@ flowchart TD
   retreat、CombatID 删除和 absolute date 仍逐项在正确日触发；多个终局 bits 只产生一次 wrapper call；
 - dominance fixture：两项都维持 `>=4x` 时不触发；current 或 strength 任一首次跌破即同日触发并记录四 raw；pursuit candidate
   不执行 dominance walk；read fault 仍为 abnormal；
-- Python：ordinary speed 3 只接受完整 watch/有效 target；同日 terminal 多 bit 只请求一次 journal；dominance stop 只请求一次
-  fresh RQ；`native_pause` 不被伪造成 wrapper pause；
+- Python：ordinary speed 3 只接受完整 watch/有效 target；同日 terminal 多 bit 只请求一次 journal；dominance stop 只启动一次
+  paused replan round，触发 CombatID 不重复查且每个需要重判的 distinct CombatID 最多一次 RQ；`native_pause` 不被伪造成 wrapper pause；
 - 性能 fixture：分别记录无 dominance 的 ordinary hook 与 double-`4x` hook 的 evaluation distribution，禁止通过每日日志或
   paused mailbox query 取得数据。
 
@@ -296,7 +312,8 @@ RED-inconclusive。它们证明统一 harness 与五档 native-day 运行，不�
 - **production-live primitive**：败局 pursuit seed 的 speed-5 terminal arm，`[5,1]` 同 checkpoint 核心 outcome 一致，
   speed 5 `2.000491s` 对 speed 1 `10.030168s`，零 intermediate/external pause、零 running RQ、零 overshoot；
 - **implementation-confirmed / live pending**：玩家已胜 pursuit selector；
-- **research**：普通 hold arm 忽略 phase/winner、double-`4x` daily dominance invalidation，以及上面三套五档 matrix。
+- **implementation-confirmed / fresh live pending**：普通 hold arm 忽略 phase/winner；
+- **research**：double-`4x` daily dominance invalidation，以及上面三套五档 matrix。
 
 这些 research 项都不是当前 defensive-war B1 的前置条件；最小代码和 live 矩阵应在长跑恢复到可控战斗帧后施工，不再回退
 到“每天暂停一次”来等待随机样本。
@@ -404,9 +421,10 @@ paused/managed emergency-cleanup 的事实，不能伪造 `pause_wrapper_called=
 
 ### B. Overwhelming admission
 
-冻结第一帧同时满足双重 `4x` 的真实 paused checkpoint，平衡顺序最小为 `1,5,5,1`：
+冻结第一帧同时满足双重 `4x` 的真实 paused checkpoint，准入顺序固定为完整十臂
+`1,2,3,4,5,5,4,3,2,1`；`[1,5,5,1]` 只能作为其中的吞吐子投影：
 
-- 四臂从 size/SHA/date/history/episode 全同的 immutable checkpoint 恢复；
+- 十臂都从 size/SHA/date/history/episode 全同的 immutable checkpoint 恢复；
 - speed-1 baseline 也采用 terminal sentinel，避免“逐日暂停 baseline”改变干预语义；
 - speed-5 两臂 `external_intermediate_pause_count=0`；若 roster/route semantic trigger，记为正确 replan 样本而不是
   zero-pause crush 样本；
@@ -485,18 +503,19 @@ fingerprint 把这项合法 idle/no-target 表示误判为 unavailable。`42601a
 
 ### 不逐日暂停的实际预算
 
-当前 decision mode 不观察纯 date、phase-day、casualty ledger 或逐日 strength 自然变化。稳定战斗从 maneuver 开始通常只需
-约三次原生停点（main、winner/pursuit、terminal），从 main 开始约两次，从 pursuit 开始一次；若撤退首个合法日与这些停点
-不同日，最多再增加一次精准 day-gate stop。增援、route/contact、retreat、roster、reopen 或原生事件仍会在发生当天暂停并重判，
+当前 decision mode 不观察纯 date、phase-day、phase、winner、casualty ledger 或逐日 strength 自然变化。稳定战斗从 maneuver 开始通常只需
+撤退首个合法日（若它早于终局）与 terminal 两类原生停点；已经过 day gate 且选择 hold 的稳定帧可直达 terminal。增援、route/contact、
+retreat、roster、reopen 或原生事件仍会在发生当天暂停并重判，
 这是策略输入真实失效，不算恢复逐日轮询。
 
 ## Readiness
 
-本页 ordinary decision speed-3 selector、native sentinel 与完整全军 watch 已达到 `production-live loop`；参数化 day-gate 与
-`native_pause` consumer 为 `static-ready`，仍待对应 day-15 / 真实原生自动暂停 live artifact。完整全军 speed-5 terminal primitive
+本页 ordinary decision speed-3 selector、native sentinel 与完整全军 watch 已达到 `production-live loop`；phase/winner 粗停点合并为
+`implementation-confirmed / fresh live pending`。参数化 day-gate 与 `native_pause` consumer 为 `static-ready`，仍待对应 day-15 / 真实原生自动暂停 live artifact。完整全军 speed-5 terminal primitive
 为 `production-live primitive`。
 
 玩家已获胜 `pursuit_cleanup` selector 已 implementation-confirmed，但仍待一份 qualifying offensive-war checkpoint 的真实
-production selector canary。双重 `4x` 与 opponent-pool-exhausted 继续等待 overwhelming checkpoint 的 `[1,5,5,1]` 平衡矩阵，
+production selector canary。双重 `4x` 与 opponent-pool-exhausted 继续等待 overwhelming checkpoint 的完整
+`1,2,3,4,5,5,4,3,2,1` 平衡矩阵，
 `overwhelming_matrix_live_ready` 仍为 false。完整 Monte Carlo、通用 reinforcement forecast 与更低碾压阈值都是后续质量升级，
 不得阻塞当前已由 live 证据支持的 speed-3 G1 路径。

@@ -114,6 +114,7 @@ from .settlement_contract import (
 )
 from .war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
     QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
     army_strength_query_status,
@@ -126,6 +127,7 @@ from .war_contract import (
     normalize_army_strengths,
     offer_white_peace_step,
     parse_battle_decision_epoch_advance_step,
+    parse_committed_route_sentinel_advance_step,
     player_armies_from_state,
     query_war_termination_options_step,
     query_war_termination_terms_step,
@@ -218,6 +220,12 @@ class GameplayBridgeService:
                 parse_battle_decision_epoch_advance_step(selected_step)
                 is not None
                 and BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
+            ):
+                routable_steps.add(str(selected_step))
+            if (
+                parse_committed_route_sentinel_advance_step(selected_step)
+                is not None
+                and COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP in available_steps
             ):
                 routable_steps.add(str(selected_step))
             return {
@@ -341,14 +349,12 @@ class GameplayBridgeService:
                     selected_step,
                     expected_revision=int(planned["revision"]),
                 )
-        except (
-            StepPostconditionError,
-            PreSubmissionRevisionMismatchError,
-        ) as error:
-            # Preserve the exact planner context.  StepPostconditionError means
-            # the action changed CK3; PreSubmissionRevisionMismatchError means
-            # the driver proved that no request was sent.  The production
-            # runner uses the distinction before deciding whether to replan.
+        except BridgeUnavailableError as error:
+            # Preserve the exact planner context for every bridge failure.
+            # The concrete exception type remains the sole authority on
+            # whether a request was sent; plan attachment only proves which
+            # step was selected, allowing a non-save failure to retain the
+            # previous durable checkpoint.
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
             raise

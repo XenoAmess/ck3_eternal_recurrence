@@ -12,9 +12,12 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer.bridge.war_contract import (
     QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
     advance_route_contact_horizon_step,
+    committed_route_sentinel_advance_step,
+    is_life_advance_step,
     is_native_war_step,
     normalize_route_contact_horizon,
     parse_advance_route_contact_horizon_step,
+    parse_committed_route_sentinel_advance_step,
     parse_query_route_contact_horizon_step,
     query_route_contact_horizon_step,
     stationary_province_contact_free_in_horizon,
@@ -76,6 +79,34 @@ def _payload(*, contact_free: bool = True) -> dict[str, object]:
 
 
 class RouteContactHorizonContractTests(unittest.TestCase):
+    def test_committed_route_sentinel_step_binds_subject_target_and_date(
+        self,
+    ) -> None:
+        step = committed_route_sentinel_advance_step(
+            201_326_874, 2635, 53_257_080
+        )
+        self.assertEqual(
+            step,
+            "committed-route-sentinel-advance-army-201326874-"
+            "to-2635-until-53257080",
+        )
+        self.assertEqual(
+            parse_committed_route_sentinel_advance_step(step),
+            (201_326_874, 2635, 53_257_080),
+        )
+        self.assertTrue(is_life_advance_step(step))
+        for malformed in (
+            "committed-route-sentinel-advance-army-0-to-2635-until-53257080",
+            "committed-route-sentinel-advance-army-11-to-0-until-53257080",
+            "committed-route-sentinel-advance-army-11-to-2635-until-0",
+            "committed-route-sentinel-advance-army-11-to-2635-until-053257080",
+            "committed-route-sentinel-advance-army-11-to-2635",
+        ):
+            with self.subTest(malformed=malformed):
+                self.assertIsNone(
+                    parse_committed_route_sentinel_advance_step(malformed)
+                )
+
     def test_step_is_canonical_sorted_and_generation_bound(self) -> None:
         step = query_route_contact_horizon_step(11, 2585, [41, 31, 41])
         self.assertEqual(

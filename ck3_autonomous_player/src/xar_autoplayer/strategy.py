@@ -56,6 +56,7 @@ from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
+    committed_route_sentinel_advance_step,
     controllable_armies,
     disband_army_step,
     enemy_primary_default_raise_province_ids,
@@ -67,6 +68,7 @@ from .bridge.war_contract import (
     offer_white_peace_step,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
+    parse_committed_route_sentinel_advance_step,
     parse_move_army_step,
     parse_preview_move_army_step,
     parse_query_route_contact_horizon_step,
@@ -106,6 +108,9 @@ _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
+_COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
+    "committed-route-sentinel-advance"
+)
 _BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAX_WATCH_ARMIES = 64
@@ -1730,10 +1735,14 @@ def _battle_sentinel_advance_validation(
         return None
     step = advance_result.get("step")
     decision_target = parse_battle_decision_epoch_advance_step(step)
+    committed_route_request = parse_committed_route_sentinel_advance_step(
+        step
+    )
     expected = (
         (3, "decision_epoch")
         if decision_target is not None
         or step == _BATTLE_DECISION_EPOCH_ADVANCE_STEP
+        or committed_route_request is not None
         else (5, "terminal_or_sentinel")
         if step == _BATTLE_TERMINAL_CRUISE_STEP
         else None
@@ -1741,6 +1750,11 @@ def _battle_sentinel_advance_validation(
     if expected is None:
         return None
     expected_speed, expected_mode = expected
+    requested_scope = (
+        "committed_route"
+        if committed_route_request is not None
+        else "active_battle"
+    )
     sentinel = advance_result.get("tactical_daily_sentinel")
     start = _native_int(advance_result.get("starting_date_raw"))
     target = _native_int(advance_result.get("target_date_raw"))
@@ -1769,6 +1783,20 @@ def _battle_sentinel_advance_validation(
         if isinstance(sentinel, dict)
         else None
     )
+    sentinel_scope = advance_result.get("sentinel_scope")
+    combat_scope_valid = bool(
+        (
+            requested_scope == "active_battle"
+            and sentinel_scope == "active_battle"
+            and (combat_count or 0) > 0
+        )
+        or (
+            requested_scope == "committed_route"
+            and sentinel_scope == "committed_route"
+            and combat_count == 0
+            and expected_mode == "decision_epoch"
+        )
+    )
     errors: list[str] = []
     if not (
         isinstance(watch, list)
@@ -1795,6 +1823,8 @@ def _battle_sentinel_advance_validation(
         and (
             target == decision_target
             if decision_target is not None
+            else target == committed_route_request[2]
+            if committed_route_request is not None
             else target
             == start + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
         )
@@ -1816,8 +1846,7 @@ def _battle_sentinel_advance_validation(
         and sentinel.get("speed") == expected_speed
         and sentinel.get("mode") == expected_mode
         and sentinel.get("army_count") == len(watch or [])
-        and combat_count is not None
-        and combat_count > 0
+        and combat_scope_valid
         and trigger_flags is not None
         and trigger_flags > 0
         and isinstance(reasons, list)
@@ -1867,6 +1896,8 @@ def _battle_sentinel_advance_validation(
         terminal_flag != ("combat_terminal" in (reasons or []))
     ):
         errors.append("terminal_flag_disagrees")
+    if sentinel_scope == "committed_route" and terminal_flag is not False:
+        errors.append("route_scope_claimed_combat_terminal")
     cleanup = advance_result.get("managed_failure_cleanup")
     if not (
         advance_result.get("progress_status") == "postcondition"
@@ -1878,6 +1909,7 @@ def _battle_sentinel_advance_validation(
         )
         and advance_result.get("timeline_policy") == expected_mode
         and advance_result.get("sentinel_mode") == expected_mode
+        and sentinel_scope == requested_scope
         and advance_result.get("stop_kind")
         == ("terminal" if terminal_flag is True else "decision_epoch")
         and advance_result.get("terminal_reached") is terminal_flag
@@ -1913,6 +1945,7 @@ def _battle_sentinel_advance_validation(
         "step": step,
         "actual_elapsed_days": elapsed,
         "terminal_observed": terminal_flag,
+        "sentinel_scope": sentinel_scope,
         "watch_army_ids": list(watch) if isinstance(watch, list) else None,
     }
 
@@ -3187,6 +3220,7 @@ def choose_one_life_turn(
         )
         for name in (
             "decision_sentinel_live_ready",
+            "committed_route_sentinel_canary_ready",
             "terminal_sentinel_live_ready",
             "overwhelming_matrix_live_ready",
         )
@@ -4993,9 +5027,9 @@ def choose_one_life_turn(
                     "selected_step": decision_step,
                     "reason": (
                         "the global tactical audit passed; run at speed 3 "
-                        "until the native decision-epoch sentinel observes a "
-                        "phase, winner, roster, route, contact, retreat, "
-                        "terminal, native-pause, or absolute-bound change"
+                        "until the native hold-invalidation sentinel observes "
+                        "an army, roster, route, contact, retreat, terminal, "
+                        "native-pause, or absolute-bound change"
                     ),
                     "timeline_policy": "battle_decision_epoch_speed_3",
                     "timeline_speed": 3,
@@ -5645,6 +5679,105 @@ def choose_one_life_turn(
                         "required_step": "game.state.army-routes",
                         "reason": "the accepted move has no complete passive route yet; do not advance into an unaudited path",
                         "route_audit": passive_route_audit,
+                        "active_wars": war_summary,
+                    }
+                committed_route = pursuit_army.get("route_province_ids")
+                route_watch_ids = [
+                    candidate_id
+                    for candidate in controlled_armies
+                    if (
+                        candidate_id := _native_int(
+                            candidate.get("army_id")
+                        )
+                    )
+                    is not None
+                    and candidate_id > 0
+                ]
+                complete_route_watch_set = bool(
+                    route_watch_ids
+                    and len(route_watch_ids) == len(controlled_armies)
+                    and len(route_watch_ids) == len(set(route_watch_ids))
+                    and len(route_watch_ids)
+                    <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
+                )
+                route_sentinel_start_date_raw = (
+                    _native_int(snapshot.get("date_raw"))
+                    if isinstance(snapshot, dict)
+                    else None
+                )
+                if (
+                    battle_speed_gates[
+                        "committed_route_sentinel_canary_ready"
+                    ]
+                    and _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
+                    in available_steps
+                    and complete_route_watch_set
+                    and isinstance(snapshot, dict)
+                    and snapshot.get("paused") is True
+                    and snapshot.get("map_ready") is True
+                    and raw_active_event is None
+                    and pending_interaction is None
+                    and not combat_retreat_armies
+                    and not active_assaults
+                    and isinstance(observed_route_target, int)
+                    and observed_route_target > 0
+                    and isinstance(committed_route, list)
+                    and bool(committed_route)
+                    and all(
+                        isinstance(province_id, int)
+                        and not isinstance(province_id, bool)
+                        and province_id > 0
+                        for province_id in committed_route
+                    )
+                    and committed_route[-1] == observed_route_target
+                    and (
+                        _army_tactical_state(pursuit_army) == "moving"
+                        or _native_int(
+                            pursuit_army.get("army_state_code")
+                        )
+                        == 7
+                    )
+                    and route_sentinel_start_date_raw is not None
+                ):
+                    route_target_date_raw = (
+                        route_sentinel_start_date_raw
+                        + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+                    )
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": (
+                            "native_war_committed_route_sentinel_progress"
+                        ),
+                        "selected_step": (
+                            committed_route_sentinel_advance_step(
+                                int(army_id),
+                                observed_route_target,
+                                route_target_date_raw,
+                            )
+                        ),
+                        "reason": (
+                            "the complete controllable watch set has an "
+                            "already committed nonempty route; run at speed "
+                            "3 without Python daily polling until the native "
+                            "sentinel observes route-target change, CombatID "
+                            "contact, retreat, army loss, native pause, or "
+                            "the absolute date bound"
+                        ),
+                        "timeline_policy": (
+                            "war_committed_route_sentinel_speed_3"
+                        ),
+                        "timeline_speed": 3,
+                        "sentinel_mode": "decision_epoch",
+                        "sentinel_scope": "committed_route",
+                        "absolute_target_date_raw": route_target_date_raw,
+                        "watch_army_ids": sorted(route_watch_ids),
+                        "route_subject_army_id": army_id,
+                        "route_target_province_id": observed_route_target,
+                        "route_audit": passive_route_audit,
+                        "move_intent": observed_intent,
+                        "hostile_route_change_detection": (
+                            "not_watched_until_combat_id_transition"
+                        ),
                         "active_wars": war_summary,
                     }
                 if passive_route_audit["status"] == "unsafe":

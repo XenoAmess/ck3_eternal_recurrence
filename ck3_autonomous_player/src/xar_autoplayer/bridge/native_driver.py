@@ -166,6 +166,8 @@ from .war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX,
     BATTLE_SENTINEL_ADVANCE_STEPS,
     BATTLE_TERMINAL_CRUISE_STEP,
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX,
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
     MERGE_ARMIES_CAPABILITY,
@@ -210,6 +212,7 @@ from .war_contract import (
     offer_white_peace_step,
     parse_disband_army_step,
     parse_battle_decision_epoch_advance_step,
+    parse_committed_route_sentinel_advance_step,
     parse_enforce_demands_step,
     parse_merge_armies_step,
     parse_move_army_step,
@@ -298,6 +301,9 @@ _BATTLE_SENTINEL_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
 _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
+    # Route-scope admission is a distinct canary contract.  An instance may
+    # explicitly opt in, but the production-default capability stays closed.
+    "committed_route_sentinel_canary_ready": False,
     "terminal_sentinel_live_ready": True,
     # The native stop envelope is live, but no overwhelming active-battle
     # checkpoint has yet passed the required balanced speed matrix.  Strategy
@@ -814,6 +820,7 @@ class NativeHeadlessGameplayDriver:
             DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
         ),
         allow_route_contact_high_speed_ab: bool = False,
+        allow_committed_route_sentinel_canary: bool = False,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -836,6 +843,9 @@ class NativeHeadlessGameplayDriver:
             )
         self.allow_route_contact_high_speed_ab = (
             allow_route_contact_high_speed_ab is True
+        )
+        self.allow_committed_route_sentinel_canary = (
+            allow_committed_route_sentinel_canary is True
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -1006,6 +1016,11 @@ class NativeHeadlessGameplayDriver:
                 composite_action_steps.append(
                     BATTLE_DECISION_EPOCH_ADVANCE_STEP
                 )
+                if self.allow_committed_route_sentinel_canary:
+                    action_steps.add(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP)
+                    composite_action_steps.append(
+                        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
+                    )
             if "set-speed-5" in action_steps:
                 action_steps.add(BATTLE_TERMINAL_CRUISE_STEP)
                 composite_action_steps.append(BATTLE_TERMINAL_CRUISE_STEP)
@@ -1131,7 +1146,12 @@ class NativeHeadlessGameplayDriver:
             **result,
             "action_steps": sorted(action_steps),
             "composite_action_steps": composite_action_steps,
-            "battle_speed_readiness": dict(_BATTLE_SPEED_READINESS),
+            "battle_speed_readiness": {
+                **_BATTLE_SPEED_READINESS,
+                "committed_route_sentinel_canary_ready": (
+                    self.allow_committed_route_sentinel_canary
+                ),
+            },
             "checkpoint_materialization": {
                 "configured": self.save_dir is not None,
                 "save_dir": str(self.save_dir) if self.save_dir is not None else None,
@@ -2390,10 +2410,14 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         life_advance_starting: dict[str, object] | None = None
         decision_epoch_target = parse_battle_decision_epoch_advance_step(step)
+        committed_route_request = (
+            parse_committed_route_sentinel_advance_step(step)
+        )
         if (
             step == "life-advance"
             or step in BATTLE_SENTINEL_ADVANCE_STEPS
             or decision_epoch_target is not None
+            or committed_route_request is not None
         ):
             # Bind the caller's revision before capability projection.  A
             # loading -> map_ready snapshot can arrive while capabilities()
@@ -2493,6 +2517,16 @@ class NativeHeadlessGameplayDriver:
         ):
             raise UnsupportedStepError(
                 "malformed battle decision-epoch target step"
+            )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX
+            )
+            and committed_route_request is None
+        ):
+            raise UnsupportedStepError(
+                "malformed committed-route sentinel step"
             )
         if (
             isinstance(step, str)
@@ -2879,9 +2913,12 @@ class NativeHeadlessGameplayDriver:
         if (
             step in BATTLE_SENTINEL_ADVANCE_STEPS
             or decision_epoch_target is not None
+            or committed_route_request is not None
         ):
             required_composite = (
-                BATTLE_DECISION_EPOCH_ADVANCE_STEP
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
+                if committed_route_request is not None
+                else BATTLE_DECISION_EPOCH_ADVANCE_STEP
                 if decision_epoch_target is not None
                 else step
             )
@@ -2895,6 +2932,12 @@ class NativeHeadlessGameplayDriver:
                 step,
                 expected_revision=expected_revision,
                 starting_snapshot=life_advance_starting,
+                requested_scope=(
+                    "committed_route"
+                    if committed_route_request is not None
+                    else "active_battle"
+                ),
+                requested_route=committed_route_request,
             )
         if step in capabilities.get("composite_action_steps", []):
             if step == "life-advance":
@@ -8811,8 +8854,10 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
         starting_snapshot: dict[str, object] | None = None,
+        requested_scope: str = "active_battle",
+        requested_route: tuple[int, int, int] | None = None,
     ) -> dict[str, object]:
-        """Run one native-paused battle tranche without Python polling.
+        """Run one explicitly scoped tactical tranche without Python polling.
 
         The application-main sentinel owns every intermediate daily boundary.
         Python submits exactly one resume and observes only ordinary state
@@ -8822,14 +8867,36 @@ class NativeHeadlessGameplayDriver:
         requested_decision_target = (
             parse_battle_decision_epoch_advance_step(step)
         )
-        if (
+        parsed_route_request = parse_committed_route_sentinel_advance_step(
+            step
+        )
+        if parsed_route_request is not None:
+            if (
+                requested_scope != "committed_route"
+                or requested_route != parsed_route_request
+            ):
+                raise UnsupportedStepError(
+                    "committed-route sentinel request scope is inconsistent"
+                )
+            speed = 3
+            wire_mode = "decision"
+            status_mode = "decision_epoch"
+        elif (
             step == BATTLE_DECISION_EPOCH_ADVANCE_STEP
             or requested_decision_target is not None
         ):
+            if requested_scope != "active_battle" or requested_route is not None:
+                raise UnsupportedStepError(
+                    "battle decision sentinel request scope is inconsistent"
+                )
             speed = 3
             wire_mode = "decision"
             status_mode = "decision_epoch"
         elif step == BATTLE_TERMINAL_CRUISE_STEP:
+            if requested_scope != "active_battle" or requested_route is not None:
+                raise UnsupportedStepError(
+                    "battle terminal sentinel request scope is inconsistent"
+                )
             speed = 5
             wire_mode = "terminal"
             status_mode = "terminal_or_sentinel"
@@ -8869,6 +8936,42 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native {step} requires the complete controllable ArmyID set"
             )
+        active_combat_at_start = _battle_sentinel_has_active_combat(
+            starting, watch_army_ids
+        )
+        active_retreat_at_start = _battle_sentinel_has_active_retreat(
+            starting, watch_army_ids
+        )
+        if requested_scope == "active_battle":
+            if not active_combat_at_start:
+                raise BridgeUnavailableError(
+                    f"native {step} active-battle scope requires active combat"
+                )
+        elif requested_scope == "committed_route":
+            if parsed_route_request is None:
+                raise UnsupportedStepError(
+                    "committed-route sentinel lacks its typed request"
+                )
+            if active_combat_at_start or active_retreat_at_start:
+                raise BridgeUnavailableError(
+                    f"native {step} committed-route scope rejects any watched "
+                    "active combat or retreat"
+                )
+            if not _battle_sentinel_matches_committed_route(
+                starting,
+                watch_army_ids,
+                subject_army_id=parsed_route_request[0],
+                target_province_id=parsed_route_request[1],
+            ):
+                raise BridgeUnavailableError(
+                    f"native {step} does not match the requested subject's "
+                    "complete nonempty committed route"
+                )
+        else:
+            raise UnsupportedStepError(
+                f"native {step} has unknown sentinel scope {requested_scope!r}"
+            )
+        sentinel_scope = requested_scope
         bridge_capabilities = set(
             _string_list(
                 self.state.capabilities().get("bridge_capabilities")
@@ -8887,7 +8990,9 @@ class NativeHeadlessGameplayDriver:
             starting_date_raw + _BATTLE_SENTINEL_FALLBACK_DAYS * 24
         )
         target_date_raw = (
-            requested_decision_target
+            parsed_route_request[2]
+            if parsed_route_request is not None
+            else requested_decision_target
             if requested_decision_target is not None
             else fallback_target_date_raw
         )
@@ -8948,6 +9053,7 @@ class NativeHeadlessGameplayDriver:
                 speed=speed,
                 mode=status_mode,
                 watch_army_ids=watch_army_ids,
+                sentinel_scope=sentinel_scope,
             )
 
             resume_result = self._execute_primitive_step(
@@ -9016,6 +9122,7 @@ class NativeHeadlessGameplayDriver:
                 target_date_raw=target_date_raw,
                 speed=speed,
                 status_mode=status_mode,
+                sentinel_scope=sentinel_scope,
                 watch_army_ids=watch_army_ids,
                 arm_status=arm_status,
                 sentinel_status=sentinel_status,
@@ -9057,6 +9164,7 @@ class NativeHeadlessGameplayDriver:
                 target_date_raw=target_date_raw,
                 speed=speed,
                 status_mode=status_mode,
+                sentinel_scope=sentinel_scope,
                 watch_army_ids=watch_army_ids,
                 arm_status=arm_status,
                 sentinel_status=sentinel_status,
@@ -10523,12 +10631,129 @@ def _battle_sentinel_watch_army_ids(
             isinstance(army_id, bool)
             or not isinstance(army_id, int)
             or not 0 < army_id <= 2**31 - 1
+            or army_id in army_ids
         ):
             return None
         army_ids.add(army_id)
     if not 0 < len(army_ids) <= _BATTLE_SENTINEL_MAXIMUM_ARMIES:
         return None
     return tuple(sorted(army_ids))
+
+
+def _battle_sentinel_has_active_combat(
+    snapshot: object, watch_army_ids: tuple[int, ...]
+) -> bool:
+    """Return whether the complete watched set contains active combat."""
+    if not isinstance(snapshot, dict):
+        return False
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return False
+    watched = set(watch_army_ids)
+    for army in armies:
+        if not isinstance(army, dict) or army.get("controllable") is not True:
+            continue
+        if army.get("army_id") not in watched:
+            continue
+        named_state = army.get("army_state")
+        state_code = army.get("army_state_code")
+        combat_id = army.get("combat_id")
+        if (
+            (
+                isinstance(named_state, str)
+                and named_state.casefold() == "combat"
+            )
+            or state_code == 2
+            or army.get("in_combat") is True
+            or (
+                isinstance(combat_id, int)
+                and not isinstance(combat_id, bool)
+                and combat_id > 0
+            )
+        ):
+            return True
+    return False
+
+
+def _battle_sentinel_matches_committed_route(
+    snapshot: object,
+    watch_army_ids: tuple[int, ...],
+    *,
+    subject_army_id: int,
+    target_province_id: int,
+) -> bool:
+    """Match the typed subject/target against that subject's exact route."""
+    if not isinstance(snapshot, dict):
+        return False
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return False
+    watched = set(watch_army_ids)
+    matches = 0
+    for army in armies:
+        if not isinstance(army, dict) or army.get("controllable") is not True:
+            continue
+        if army.get("army_id") not in watched:
+            continue
+        if army.get("army_id") != subject_army_id:
+            continue
+        matches += 1
+        target = army.get("move_target_province_id")
+        route = army.get("route_province_ids")
+        named_state = army.get("army_state")
+        state_code = army.get("army_state_code")
+        if (
+            isinstance(target, int)
+            and not isinstance(target, bool)
+            and target == target_province_id
+            and isinstance(route, list)
+            and bool(route)
+            and all(
+                isinstance(province_id, int)
+                and not isinstance(province_id, bool)
+                and province_id > 0
+                for province_id in route
+            )
+            and route[-1] == target
+            and (
+                (
+                    isinstance(named_state, str)
+                    and named_state.casefold() == "moving"
+                )
+                or state_code == 7
+            )
+        ):
+            continue
+        return False
+    return matches == 1
+
+
+def _battle_sentinel_has_active_retreat(
+    snapshot: object, watch_army_ids: tuple[int, ...]
+) -> bool:
+    """Return whether any completely watched controllable army retreats."""
+    if not isinstance(snapshot, dict):
+        return False
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return False
+    watched = set(watch_army_ids)
+    for army in armies:
+        if not isinstance(army, dict) or army.get("controllable") is not True:
+            continue
+        if army.get("army_id") not in watched:
+            continue
+        named_state = army.get("army_state")
+        if (
+            army.get("retreating") is True
+            or (
+                isinstance(named_state, str)
+                and named_state.casefold() == "retreating"
+            )
+            or army.get("army_state_code") == 6
+        ):
+            return True
+    return False
 
 
 def _normalize_tactical_daily_sentinel_status(
@@ -10650,7 +10875,17 @@ def _validate_tactical_daily_sentinel_arm(
     speed: int,
     mode: str,
     watch_army_ids: tuple[int, ...],
+    sentinel_scope: str,
 ) -> None:
+    combat_count = status.get("combat_count")
+    combat_scope_valid = bool(
+        isinstance(combat_count, int)
+        and not isinstance(combat_count, bool)
+        and (
+            (sentinel_scope == "active_battle" and combat_count > 0)
+            or (sentinel_scope == "committed_route" and combat_count == 0)
+        )
+    )
     if not (
         result.get("step") == arm_step
         and result.get("accepted") is True
@@ -10665,8 +10900,7 @@ def _validate_tactical_daily_sentinel_arm(
         and status.get("speed") == speed
         and status.get("mode") == mode
         and status.get("army_count") == len(watch_army_ids)
-        and isinstance(status.get("combat_count"), int)
-        and int(status["combat_count"]) > 0
+        and combat_scope_valid
         and status.get("completed_daily_ticks") == 0
         and status.get("intermediate_pause_count") == 0
         and status.get("trigger_flags") == 0
@@ -10754,6 +10988,7 @@ def _battle_sentinel_step_result(
     target_date_raw: int,
     speed: int,
     status_mode: str,
+    sentinel_scope: str,
     watch_army_ids: tuple[int, ...],
     arm_status: dict[str, object] | None,
     sentinel_status: dict[str, object] | None,
@@ -10800,6 +11035,7 @@ def _battle_sentinel_step_result(
         "timeline_speed": speed,
         "timeline_policy": status_mode,
         "sentinel_mode": status_mode,
+        "sentinel_scope": sentinel_scope,
         "watch_army_ids": list(watch_army_ids),
         "progress_status": progress_status,
         "stop_kind": (

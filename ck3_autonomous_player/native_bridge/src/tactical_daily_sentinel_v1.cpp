@@ -771,11 +771,6 @@ void ProcessTacticalDailySentinelAfterTickV1() noexcept {
                          tactical_daily_trigger_combat_terminal;
         continue;
       }
-      if (g_payload.request.mode ==
-              TacticalDailySentinelModeV1::decision_epoch &&
-          current.phase != g_payload.combats[index].phase) {
-        trigger_flags |= tactical_daily_trigger_combat_phase_changed;
-      }
       if (current.attacker_count != g_payload.combats[index].attacker_count ||
           current.defender_count != g_payload.combats[index].defender_count ||
           current.ordered_roster_hash !=
@@ -784,14 +779,8 @@ void ProcessTacticalDailySentinelAfterTickV1() noexcept {
       }
       const bool terminal_changed =
           current.finalized != g_payload.combats[index].finalized;
-      const bool winner_changed =
-          current.winner != g_payload.combats[index].winner;
       if (terminal_changed) {
         trigger_flags |= tactical_daily_trigger_combat_terminal;
-      } else if (g_payload.request.mode ==
-                     TacticalDailySentinelModeV1::decision_epoch &&
-                 winner_changed) {
-        trigger_flags |= tactical_daily_trigger_combat_winner_changed;
       }
     }
     if (observed_date >= g_payload.request.target_date_raw) {

@@ -96,6 +96,7 @@ def native_auto_run(
         DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
     ),
     allow_route_contact_high_speed_ab: bool = False,
+    allow_committed_route_sentinel_canary: bool = False,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -310,6 +311,9 @@ def native_auto_run(
             route_contact_timeline_speed=route_contact_speed,
             allow_route_contact_high_speed_ab=(
                 allow_route_contact_high_speed_ab
+            ),
+            allow_committed_route_sentinel_canary=(
+                allow_committed_route_sentinel_canary
             ),
         )
         service = GameplayBridgeService(driver)
@@ -907,13 +911,16 @@ def native_auto_run(
         primary_error = "KeyboardInterrupt: operator requested stop"
     except BaseException as error:
         if isinstance(current_attempt, dict):
-            if isinstance(
-                error, (StepPostconditionError, PreSubmissionRevisionMismatchError)
-            ):
-                if isinstance(error.plan, dict):
-                    current_attempt["plan"] = copy.deepcopy(error.plan)
-                if isinstance(error.selected_step, str) and error.selected_step:
-                    current_attempt["selected_step"] = error.selected_step
+            if isinstance(error, BridgeUnavailableError):
+                error_plan = getattr(error, "plan", None)
+                error_selected_step = getattr(error, "selected_step", None)
+                if isinstance(error_plan, dict):
+                    current_attempt["plan"] = copy.deepcopy(error_plan)
+                if (
+                    isinstance(error_selected_step, str)
+                    and error_selected_step
+                ):
+                    current_attempt["selected_step"] = error_selected_step
             if isinstance(error, StepPostconditionError) and isinstance(
                 error.step_result, dict
             ):
@@ -1098,6 +1105,9 @@ def native_auto_run(
             "route_contact_timeline_speed": route_contact_speed,
             "allow_route_contact_high_speed_ab": (
                 allow_route_contact_high_speed_ab is True
+            ),
+            "allow_committed_route_sentinel_canary": (
+                allow_committed_route_sentinel_canary is True
             ),
         },
         "identity": _identity(config, readiness, spec),
@@ -2070,8 +2080,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "timeline_speed",
         "timeline_policy",
         "sentinel_mode",
+        "sentinel_scope",
         "absolute_target_date_raw",
         "watch_army_ids",
+        "route_subject_army_id",
+        "route_target_province_id",
         "terminal_journal_cursors",
         "battle_terminal_cruise_assessments",
     )
@@ -2095,6 +2108,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "timeline_speed",
         "timeline_policy",
         "sentinel_mode",
+        "sentinel_scope",
         "watch_army_ids",
         "stop_kind",
         "terminal_reached",

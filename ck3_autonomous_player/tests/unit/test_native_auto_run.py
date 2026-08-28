@@ -18,6 +18,7 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
 from xar_autoplayer.bridge.driver import (  # noqa: E402
+    BridgeUnavailableError,
     PreSubmissionRevisionMismatchError,
     StepPostconditionError,
 )
@@ -125,11 +126,15 @@ class _NativeAutoRunHarness:
         save_dir: Path,
         route_contact_timeline_speed: int,
         allow_route_contact_high_speed_ab: bool,
+        allow_committed_route_sentinel_canary: bool,
     ) -> "_FakeNativeDriver":
         self.events.append("driver_init")
         self.route_contact_timeline_speed = route_contact_timeline_speed
         self.allow_route_contact_high_speed_ab = (
             allow_route_contact_high_speed_ab
+        )
+        self.allow_committed_route_sentinel_canary = (
+            allow_committed_route_sentinel_canary
         )
         self.driver = _FakeNativeDriver(
             self,
@@ -285,6 +290,18 @@ class _NativeAutoRunHarness:
         if action == "opaque_checkpoint_failure":
             self.save_checkpoint(expected_revision=self.public_revision)
             raise OSError("fixture opaque checkpoint execution failed")
+        if action == "opaque_known_noncheckpoint_bridge_failure":
+            failure = BridgeUnavailableError("fixture native query rejected")
+            failure.plan = {
+                "phase": "native_war_route_contact_horizon",
+                "selected_step": (
+                    "query-route-contact-horizon-v1-101-to-3610-h-1-31"
+                ),
+            }
+            failure.selected_step = (
+                "query-route-contact-horizon-v1-101-to-3610-h-1-31"
+            )
+            raise failure
         if action == "opaque_pre_submission_revision_mismatch":
             self.actions.insert(0, action)
             failure = PreSubmissionRevisionMismatchError(
@@ -804,6 +821,7 @@ class NativeAutoRunTests(unittest.TestCase):
         checkpoint_every_eligible_advances: int = 3,
         session_exits_immediately: bool = False,
         fail_save_checkpoint: bool = False,
+        allow_committed_route_sentinel_canary: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
@@ -855,6 +873,9 @@ class NativeAutoRunTests(unittest.TestCase):
                     completion_contract == "one_generation"
                 ),
                 completion_contract=completion_contract,
+                allow_committed_route_sentinel_canary=(
+                    allow_committed_route_sentinel_canary
+                ),
             )
         return report, harness
 
@@ -882,6 +903,7 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(args.cold_start_checkpoint)
         self.assertEqual(args.route_contact_speed, 3)
         self.assertFalse(args.allow_route_contact_high_speed_ab)
+        self.assertFalse(args.allow_committed_route_sentinel_canary)
 
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
@@ -898,6 +920,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 "--route-contact-speed",
                 "5",
                 "--allow-route-contact-high-speed-ab",
+                "--allow-committed-route-sentinel-canary",
             ]
         )
 
@@ -907,6 +930,7 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(args.checkpoint_every_advances, 180)
         self.assertEqual(args.route_contact_speed, 5)
         self.assertTrue(args.allow_route_contact_high_speed_ab)
+        self.assertTrue(args.allow_committed_route_sentinel_canary)
 
     def test_high_speed_route_contact_arm_requires_explicit_ab_admission(
         self,
@@ -922,6 +946,17 @@ class NativeAutoRunTests(unittest.TestCase):
                 native_bridge=self.config,
                 route_contact_timeline_speed=4,
             )
+
+    def test_committed_route_sentinel_canary_requires_explicit_run_flag(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["query"], allow_committed_route_sentinel_canary=True
+        )
+        self.assertTrue(
+            report["bounds"]["allow_committed_route_sentinel_canary"]
+        )
+        self.assertTrue(harness.allow_committed_route_sentinel_canary)
 
     def test_compact_success_keeps_route_speed_ab_evidence(self) -> None:
         compact = native_auto_run_module._compact_step_result(
@@ -1068,7 +1103,11 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             report["bounds"]["allow_route_contact_high_speed_ab"]
         )
+        self.assertFalse(
+            report["bounds"]["allow_committed_route_sentinel_canary"]
+        )
         self.assertEqual(harness.route_contact_timeline_speed, 3)
+        self.assertFalse(harness.allow_committed_route_sentinel_canary)
         auto_run = report["auto_run"]
         self.assertEqual(auto_run["visible_gameplay_turns"], 3)
         self.assertEqual(
@@ -1590,6 +1629,34 @@ class NativeAutoRunTests(unittest.TestCase):
             blocker["last_durable_checkpoint"], report["checkpoints"][-1]
         )
 
+    def test_known_noncheckpoint_bridge_failure_keeps_latest_checkpoint(
+        self,
+    ) -> None:
+        report, _harness = self._run(
+            [
+                "query",
+                "advance",
+                "advance",
+                "advance",
+                "opaque_known_noncheckpoint_bridge_failure",
+            ],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(len(report["checkpoints"]), 1)
+        blocker = report["first_blocker"]
+        self.assertEqual(
+            blocker["selected_step"],
+            "query-route-contact-horizon-v1-101-to-3610-h-1-31",
+        )
+        self.assertEqual(blocker["error_type"], "BridgeUnavailableError")
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(
+            blocker["last_durable_checkpoint"], report["checkpoints"][-1]
+        )
+
     def test_pre_submission_revision_race_refreshes_before_and_replans(self) -> None:
         report, harness = self._run(["revision_race_then_query"])
 
@@ -1922,6 +1989,7 @@ class NativeAutoRunTests(unittest.TestCase):
                     cold_start_checkpoint=False,
                     route_contact_timeline_speed=3,
                     allow_route_contact_high_speed_ab=False,
+                    allow_committed_route_sentinel_canary=False,
                 )
 
 

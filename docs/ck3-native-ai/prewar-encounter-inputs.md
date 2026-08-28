@@ -385,6 +385,13 @@ readiness 为真。
   为 `CUnit+0x168`，speed 优先取正值 `CUnit+0x190`，否则经 `0x2247B40` 重算，再做 signed Q100000
   fixed division。tick path `0x2247D3C..0x2247D94` 同样每 tick 把该 speed 加到 `+0x168`，到达当前边 raw cost
   后扣 cost 并 pop row，独立印证 progress/speed 字段语义。
+- [static-confirmed] 共享 active front 的窄边界不能因 `progress==0` 就放宽整路 helper：`0x2247320`
+  仍无条件读 `+0x190`，非正时调 `0x2247B40`；两者均为零时，它把 x64 零扩展的
+  `0x00000000FFFFFFFF` 从累计 duration 中扣除。这不是 status，可产生负值或错误偏小值，必须拒绝。
+- [static-confirmed] `0x22475E0(CUnit*, out, route_index)` 是已有 exact 首边 helper。index `0` 扣
+  `CUnit+0x168` progress；同介质边调 `0x2246EC0/0x2247180` 并在除法前检查零 divisor，跨介质边
+  继续使用 fixed `100000`；它不读 `+0x190`、不调 `0x2247B40`。因此只有在“共享 front、progress=0、
+  cached/recalculated current-edge speed 均为 0”的该窄边界，才能以它取得精确首边。
 - [static-confirmed] `0x2947A60` 的精确换算为
   `days = trunc_toward_zero((q >= 0 ? q + 50000 : q - 50000) / 100000)`，然后
   `arrival.raw = base_date.raw + days * 24`。即最近整数日、恰好半日时远离零；合法非负 duration 等价于
@@ -399,6 +406,20 @@ readiness 为真。
 - [live-confirmed] `0x2247320` 与速度 helper 的生产调用边界固定在 paused application-main mailbox：同 revision
   generation preflight 之后、owner `MovePath` 析构之前同步调用；不允许从 worker thread 直调。该边界已经由
   active-war route-contact replay 验收。
+- [live-confirmed] 正式 run `20260828T064918Z-one-generation-38aa5830` 在 `date_raw=53256000`
+  命中上述边界：hostile CUnit `167772577` 在前一日从 Province `4578` 按 route
+  `8648 -> 1034 -> 2644 -> 2645 -> 2635` 前进；新 paused frame 已到 `8648`、进入 embarked，
+  remaining route 为 `1034 -> 2644 -> 2645 -> 2635`，但共享首边处 progress/cache/recalc 形成零速窗口，
+  原 reader 返回 `timeline_unavailable`。report / first-blocker SHA-256 为
+  `F8F834A33DFA8859A62872335B10E07B3E827DF80040CE22C148F891C4FE9D1A` /
+  `E409EC428046A106C7E79E871E4C01379DEC0CFCE5AE919D6D6B0471C1C19A9B`；最新可恢复 checkpoint 为
+  `53256000 / EE6D1B3703733FA827164ACDD26015C0F337257A2AE3850B5619088A0ED06D85`。
+- [implementation-confirmed] 生产 reader 现在仅对该窄边界分流：先用 `0x22475E0` 取首边并发布首个
+  arrival；route count `1` 直接完成；count `>1` 则以首 Province 为 origin、首边 duration 为 base，把真实
+  active pointer array 从 index `1` 开始的 shallow tail 交还 `0x2247320`。tail 首 row 若仍重复 active front，或
+  `progress>0` 但 current-edge speed 为零，继续 `timeline_unavailable`；不将这项 fallback 扩展到未发生的形状。
+- [counter-policy] 上一帧 ETA 不得代替新帧 exact proof。本次 hostile 同时发生 `4578 -> 8648`、
+  `regular -> embarked` 和 route pop，已使旧 revision 的 speed/progress/occupancy 绑定失效；suffix 文本仍对得上也不能复用。
 - [static-confirmed] normal daily arrival tie 已由 [army-contact-resolution.md](army-contact-resolution.md) 静态闭合：
   `0x27F9B50` 的 unit-manager stored order 传播到 tail-appended CArmy contact queue；所有 movement 完成后，
   `0x27C0E90` 才按 queue order 处理。target `CProvince+0x748/+0x754` 又由 `0x220BAA0` 按 unsigned
@@ -484,7 +505,10 @@ flowchart TD
     S --> J
     T --> W["[S] CWarDeclaration -> CWar targeted_titles<br/>identity proof"]
     W --> O["[S] landed-title hierarchy -> objective Provinces<br/>live pending"]
-    U --> Q["[S] 0x2247320 per-prefix Q100000 duration<br/>首边 progress correction"]
+    U --> Z{"[S] shared front + progress/cache/recalc<br/>是否恰为零边界？"}
+    Z -->|否| Q["[S] 0x2247320 per-prefix Q100000 duration<br/>首边 progress correction"]
+    Z -->|是| E["[S] 0x22475E0 精确首边<br/>index-1 shallow tail 回交 0x2247320"]
+    E --> A
     O --> Q
     Q --> A["[L] nearest-day, then date raw + days*24<br/>active-war reader live accepted"]
     A --> SDO["[S] normal daily manager order → deferred queue<br/>Province full-CUnitID numeric opponent order"]

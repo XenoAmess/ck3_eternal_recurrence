@@ -50,6 +50,12 @@ BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX = (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP + "-to-"
 )
+COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
+    "committed-route-sentinel-advance"
+)
+COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX = (
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP + "-army-"
+)
 BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 BATTLE_SENTINEL_ADVANCE_STEPS = frozenset(
     {
@@ -1485,6 +1491,66 @@ def parse_battle_decision_epoch_advance_step(step: object) -> int | None:
     return target_date_raw if 0 < target_date_raw <= 2**63 - 1 else None
 
 
+def committed_route_sentinel_advance_step(
+    subject_army_id: int,
+    target_province_id: int,
+    target_date_raw: int,
+) -> str:
+    for name, value, maximum in (
+        ("subject_army_id", subject_army_id, 2**31 - 1),
+        ("target_province_id", target_province_id, 2**31 - 1),
+        ("target_date_raw", target_date_raw, 2**63 - 1),
+    ):
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or not 0 < value <= maximum
+        ):
+            raise ValueError(f"{name} must be a positive signed integer")
+    return (
+        f"{COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX}"
+        f"{subject_army_id}-to-{target_province_id}-until-{target_date_raw}"
+    )
+
+
+def parse_committed_route_sentinel_advance_step(
+    step: object,
+) -> tuple[int, int, int] | None:
+    if not isinstance(step, str) or not step.startswith(
+        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX
+    ):
+        return None
+    payload = step.removeprefix(
+        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX
+    )
+    subject_text, to_separator, remainder = payload.partition("-to-")
+    target_text, until_separator, date_text = remainder.partition("-until-")
+    if (
+        not to_separator
+        or not until_separator
+        or not subject_text.isascii()
+        or not subject_text.isdigit()
+        or subject_text.startswith("0")
+        or not target_text.isascii()
+        or not target_text.isdigit()
+        or target_text.startswith("0")
+        or not date_text.isascii()
+        or not date_text.isdigit()
+        or date_text.startswith("0")
+    ):
+        return None
+    subject_army_id = int(subject_text)
+    target_province_id = int(target_text)
+    target_date_raw = int(date_text)
+    if (
+        not 0 < subject_army_id <= 2**31 - 1
+        or not 0 < target_province_id <= 2**31 - 1
+        or not 0 < target_date_raw <= 2**63 - 1
+    ):
+        return None
+    return subject_army_id, target_province_id, target_date_raw
+
+
 def is_life_advance_step(step: object) -> bool:
     return bool(
         step == "life-advance"
@@ -1493,6 +1559,7 @@ def is_life_advance_step(step: object) -> bool:
             and step in BATTLE_SENTINEL_ADVANCE_STEPS
         )
         or parse_battle_decision_epoch_advance_step(step) is not None
+        or parse_committed_route_sentinel_advance_step(step) is not None
         or parse_advance_route_contact_horizon_step(step) is not None
     )
 

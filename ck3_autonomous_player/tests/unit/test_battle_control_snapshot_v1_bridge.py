@@ -32,8 +32,12 @@ from xar_autoplayer.bridge.native_driver import (
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.war_contract import (
     battle_decision_epoch_advance_step,
+    committed_route_sentinel_advance_step,
 )
-from xar_autoplayer.strategy import choose_one_life_turn
+from xar_autoplayer.strategy import (
+    _battle_sentinel_advance_validation,
+    choose_one_life_turn,
+)
 
 
 SUBJECT = 83_886_341
@@ -1411,6 +1415,7 @@ def _sentinel_advance_row(
             "requested_horizon_days": (target - DATE_RAW) // 24,
             "timeline_speed": speed,
             "timeline_policy": mode,
+            "sentinel_scope": "active_battle",
             "progress_status": "postcondition",
             "sentinel_mode": mode,
             "watch_army_ids": watched,
@@ -1459,6 +1464,38 @@ def _sentinel_advance_row(
 
 
 class BattleSentinelStrategyTests(unittest.TestCase):
+    def test_route_result_scope_must_match_typed_route_request(self) -> None:
+        route_step = committed_route_sentinel_advance_step(
+            SUBJECT, 2635, DATE_RAW + 45 * 24
+        )
+        row = _sentinel_advance_row(1, step=route_step)
+        result = row["result"]
+        assert isinstance(result, dict)
+        result["sentinel_scope"] = "committed_route"
+        armed = result["armed_tactical_daily_sentinel"]
+        sentinel = result["tactical_daily_sentinel"]
+        assert isinstance(armed, dict)
+        assert isinstance(sentinel, dict)
+        armed["combat_count"] = 0
+        sentinel["combat_count"] = 0
+        result["trigger_reasons"] = ["route_target_changed"]
+        sentinel["trigger_flags"] = 1 << 2
+        sentinel["trigger_reasons"] = ["route_target_changed"]
+
+        valid = _battle_sentinel_advance_validation(result)
+        self.assertIsInstance(valid, dict)
+        assert isinstance(valid, dict)
+        self.assertTrue(valid["valid"])
+        self.assertEqual(valid["sentinel_scope"], "committed_route")
+
+        mismatched = copy.deepcopy(result)
+        mismatched["sentinel_scope"] = "active_battle"
+        invalid = _battle_sentinel_advance_validation(mismatched)
+        self.assertIsInstance(invalid, dict)
+        assert isinstance(invalid, dict)
+        self.assertFalse(invalid["valid"])
+        self.assertIn("sentinel_completion_invalid", invalid["errors"])
+
     def _plan(
         self,
         history: list[dict[str, object]],
@@ -1518,6 +1555,9 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertEqual(plan["sentinel_mode"], "decision_epoch")
         self.assertEqual(plan["absolute_target_date_raw"], DATE_RAW + 45 * 24)
         self.assertEqual(plan["watch_army_ids"], [SUBJECT])
+        self.assertIn("hold-invalidation", plan["reason"])
+        self.assertNotIn("phase", plan["reason"])
+        self.assertNotIn("winner", plan["reason"])
 
     def test_decision_epoch_targets_earliest_exact_retreat_gate(self) -> None:
         first = _battle_frame()

@@ -168,6 +168,11 @@ std::array<std::byte, 0x10> g_preview_move_route_info_2{};
 std::array<std::byte, 0x10> g_enemy_move_route_info_0{};
 std::array<void *, 1> g_enemy_move_path{};
 std::array<void *, 3> g_preview_move_path{};
+std::array<std::byte, 0x10> g_boundary_move_route_info_0{};
+std::array<std::byte, 0x10> g_boundary_move_route_info_1{};
+std::array<std::byte, 0x10> g_boundary_move_route_info_2{};
+std::array<std::byte, 0x10> g_boundary_move_route_info_3{};
+std::array<void *, 4> g_boundary_move_path{};
 std::array<std::byte, 0x40> g_ai_coordinator_storage{};
 std::array<std::byte, 0x20> g_ai_coordinator_slots{};
 std::array<std::byte, 0x70> g_ai_coordinator{};
@@ -185,6 +190,7 @@ void *g_ai_coordinator_storage_pointer = nullptr;
 void *g_ai_coordinator_fallback_pointer = nullptr;
 std::int32_t g_route_edge_duration_calls = 0;
 bool g_route_edge_duration_drift = false;
+std::int64_t g_route_edge_duration_raw = 150'000;
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
@@ -319,6 +325,7 @@ std::int32_t g_route_duration_calls = 0;
 bool g_route_duration_prefix_zeroed = true;
 bool g_route_duration_failure = false;
 bool g_route_duration_late_zero_speed_accumulation = false;
+bool g_route_duration_zero_current_edge_correction = false;
 std::int64_t g_route_land_speed_raw = 100'000;
 std::int64_t g_route_naval_speed_raw = 100'000;
 std::int64_t g_route_current_edge_speed_raw = 100'000;
@@ -1491,7 +1498,9 @@ std::int64_t *FixtureReadRouteTravelDuration(
   if (count <= 0 || count > 4'096 ||
       (province_infos != g_preview_move_path.data() &&
        province_infos != g_player_move_path.data() &&
-       province_infos != g_enemy_move_path.data())) {
+       province_infos != g_enemy_move_path.data() &&
+       province_infos != g_boundary_move_path.data() &&
+       province_infos != g_boundary_move_path.data() + 1)) {
     return nullptr;
   }
   if (g_route_duration_failure) {
@@ -1504,6 +1513,22 @@ std::int64_t *FixtureReadRouteTravelDuration(
   } else {
     *output = static_cast<std::int64_t>(count) * 100'000;
   }
+  if (g_route_duration_zero_current_edge_correction &&
+      LoadBytes<std::int64_t>(unit, 0x190) == 0 &&
+      g_route_current_edge_speed_raw == 0) {
+    void *const active_infos = LoadBytes<void *>(unit, 0x38);
+    const auto active_count = LoadBytes<std::int32_t>(unit, 0x44);
+    void *const proposed_front = LoadBytes<void *>(province_infos, 0);
+    void *const active_front =
+        active_count > 0 && active_infos != nullptr
+            ? LoadBytes<void *>(active_infos, 0)
+            : nullptr;
+    if (proposed_front != nullptr && active_front != nullptr &&
+        LoadBytes<std::int32_t>(proposed_front, 0) ==
+            LoadBytes<std::int32_t>(active_front, 0)) {
+      *output -= 0xFFFF'FFFFLL;
+    }
+  }
   return output;
 }
 
@@ -1513,7 +1538,7 @@ std::int64_t *FixtureReadRouteEdgeDuration(
   if (unit != g_player_army.data() || output == nullptr || route_index != 0) {
     return nullptr;
   }
-  *output = 150'000 +
+  *output = g_route_edge_duration_raw +
             (g_route_edge_duration_drift
                  ? static_cast<std::int64_t>(g_route_edge_duration_calls)
                  : 0);
@@ -7093,6 +7118,132 @@ int main() {
     return Fail(
         "active route-contact timeline did not preserve the committed path");
   }
+
+  // 0x2247320 cannot represent the exact Province boundary where progress,
+  // cached speed, and recalculated current-edge speed are all zero: despite
+  // zero progress it subtracts the zero-extended 0xffffffff failure value.
+  // Model the four-row committed suffix from the production blocker.  The
+  // adapter must read its first edge through 0x22475E0, then give only the
+  // non-shared-front tail to the full-route helper.
+  Store(g_boundary_move_route_info_0, 0x00, std::int32_t{4});
+  Store(g_boundary_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_boundary_move_route_info_2, 0x00, std::int32_t{3});
+  Store(g_boundary_move_route_info_3, 0x00, std::int32_t{2});
+  for (auto *const info : {g_boundary_move_route_info_0.data(),
+                           g_boundary_move_route_info_1.data(),
+                           g_boundary_move_route_info_2.data(),
+                           g_boundary_move_route_info_3.data()}) {
+    StoreBytes(info, 0x09, std::uint8_t{1});
+    StoreBytes(info, 0x0B, std::uint8_t{0});
+  }
+  g_boundary_move_path = {g_boundary_move_route_info_0.data(),
+                          g_boundary_move_route_info_1.data(),
+                          g_boundary_move_route_info_2.data(),
+                          g_boundary_move_route_info_3.data()};
+  Store(g_player_army, 0x38,
+        static_cast<void *>(g_boundary_move_path.data()));
+  Store(g_player_army, 0x40, std::int32_t{4});
+  Store(g_player_army, 0x44, std::int32_t{4});
+  Store(g_player_army, 0x168, std::int64_t{0});
+  Store(g_player_army, 0x190, std::int64_t{0});
+  g_route_current_edge_speed_raw = 0;
+  g_route_edge_duration_raw = 50'000;
+  g_route_duration_zero_current_edge_correction = true;
+  route_contact_request.target_province_id = 2;
+
+  std::array<std::byte, 0x130> boundary_full_prefix{};
+  Store(boundary_full_prefix, 0x00,
+        static_cast<void *>(g_boundary_move_path.data()));
+  Store(boundary_full_prefix, 0x0C, std::int32_t{4});
+  std::int64_t boundary_full_duration = 0;
+  g_route_duration_calls = 0;
+  if (FixtureReadRouteTravelDuration(
+          g_player_army.data(), &boundary_full_duration,
+          boundary_full_prefix.data(), g_player_province.data()) !=
+          &boundary_full_duration ||
+      boundary_full_duration != 400'000 - 0xFFFF'FFFFLL ||
+      g_route_duration_calls != 1) {
+    return Fail("route fixture did not model zero-speed correction sentinel");
+  }
+
+  g_route_duration_calls = 0;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      !route_contact.one_day_contact_free ||
+      route_contact.subject_route.route_province_ids !=
+          std::vector<std::int32_t>{4, 5, 3, 2} ||
+      route_contact.subject_route.arrival_date_raws !=
+          std::vector<std::int32_t>{43'823'128, 43'823'152,
+                                    43'823'176, 43'823'200} ||
+      g_route_edge_duration_calls != 1 || g_route_duration_calls != 3) {
+    return Fail("zero-progress boundary did not use edge-plus-tail timeline");
+  }
+
+  // A one-row committed route needs only the exact first-edge helper.
+  Store(g_player_army, 0x40, std::int32_t{1});
+  Store(g_player_army, 0x44, std::int32_t{1});
+  route_contact_request.target_province_id = 4;
+  g_route_duration_calls = 0;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      route_contact.subject_route.route_province_ids !=
+          std::vector<std::int32_t>{4} ||
+      route_contact.subject_route.arrival_date_raws !=
+          std::vector<std::int32_t>{43'823'128} ||
+      g_route_edge_duration_calls != 1 || g_route_duration_calls != 0) {
+    return Fail("one-edge zero-progress boundary invoked its absent tail");
+  }
+
+  // Do not disguise an active suffix whose second row repeats the current
+  // front as a non-shared tail.  It remains unavailable.
+  Store(g_boundary_move_route_info_1, 0x00, std::int32_t{4});
+  Store(g_player_army, 0x40, std::int32_t{2});
+  Store(g_player_army, 0x44, std::int32_t{2});
+  g_route_duration_calls = 0;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      g_route_duration_calls != 0) {
+    return Fail("repeated active front was treated as a non-shared tail");
+  }
+
+  // Once any distance has been travelled, zero current-edge speed is a real
+  // timing ambiguity.  The boundary fallback must remain closed.
+  Store(g_boundary_move_route_info_1, 0x00, std::int32_t{5});
+  Store(g_player_army, 0x40, std::int32_t{4});
+  Store(g_player_army, 0x44, std::int32_t{4});
+  Store(g_player_army, 0x168, std::int64_t{1});
+  route_contact_request.target_province_id = 2;
+  g_route_duration_calls = 0;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      g_route_edge_duration_calls != 0 || g_route_duration_calls != 0) {
+    return Fail("progressed route accepted a zero current-edge speed");
+  }
+
+  Store(g_player_army, 0x38,
+        static_cast<void *>(g_player_move_path.data()));
+  Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
+  Store(g_player_army, 0x168, std::int64_t{0});
+  Store(g_player_army, 0x190, std::int64_t{100'000});
+  g_route_current_edge_speed_raw = 100'000;
+  g_route_edge_duration_raw = 150'000;
+  g_route_duration_zero_current_edge_correction = false;
+  route_contact_request.target_province_id = 3;
 
   // The native duration helper silently skips an unresolvable adjacency.
   // Reject the complete route before making any timing ABI call, including

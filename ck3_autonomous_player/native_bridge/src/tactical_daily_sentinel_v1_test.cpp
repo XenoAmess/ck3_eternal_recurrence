@@ -376,6 +376,7 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
   {
     WorldFixture world;
     world.AddCombat();
+    pause_calls = 0;
     if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
         ArmTacticalDailySentinelV1(Request(3, 1'120)) !=
             TacticalDailySentinelArmStatusV1::armed) {
@@ -387,14 +388,17 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
     ProcessTacticalDailySentinelAfterTickV1();
     const auto status = ReadTacticalDailySentinelStatusV1();
     if (status.combat_count != 1 ||
-        (status.trigger_flags & tactical_daily_trigger_combat_phase_changed) ==
-            0) {
+        status.state != TacticalDailySentinelStateV1::armed ||
+        status.trigger_flags != tactical_daily_trigger_none ||
+        status.completed_daily_ticks != 1 || status.pause_wrapper_called ||
+        status.pause_observed || pause_calls != 0) {
       return false;
     }
   }
   {
     WorldFixture world;
     world.AddCombat();
+    pause_calls = 0;
     if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
         ArmTacticalDailySentinelV1(Request(4, 1'120)) !=
             TacticalDailySentinelArmStatusV1::armed) {
@@ -407,14 +411,40 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
     std::memcpy(world.combat.data() + 0x20 + 0x1C, &count, sizeof(count));
     ProcessTacticalDailySentinelAfterTickV1();
     const auto status = ReadTacticalDailySentinelStatusV1();
-    if ((status.trigger_flags & tactical_daily_trigger_combat_roster_changed) ==
-        0) {
+    if (status.state != TacticalDailySentinelStateV1::triggered ||
+        status.trigger_flags != tactical_daily_trigger_combat_roster_changed ||
+        !status.pause_wrapper_called || !status.pause_observed ||
+        status.terminal_observed || pause_calls != 1) {
       return false;
     }
   }
   {
     WorldFixture world;
     world.AddCombat();
+    pause_calls = 0;
+    if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
+        ArmTacticalDailySentinelV1(Request(3, 1'120)) !=
+            TacticalDailySentinelArmStatusV1::armed) {
+      return false;
+    }
+    Store(world.jomini, 0x20, std::uint8_t{0});
+    world.AdvanceDate();
+    Store(world.combat, 0x6B0, std::int32_t{2});
+    Store(world.combat, 0x6E0, std::int32_t{1});
+    Store(world.combat, 0x704, std::uint8_t{1});
+    ProcessTacticalDailySentinelAfterTickV1();
+    const auto status = ReadTacticalDailySentinelStatusV1();
+    if (status.state != TacticalDailySentinelStateV1::triggered ||
+        status.trigger_flags != tactical_daily_trigger_combat_terminal ||
+        !status.pause_wrapper_called || !status.pause_observed ||
+        !status.terminal_observed || pause_calls != 1) {
+      return false;
+    }
+  }
+  {
+    WorldFixture world;
+    world.AddCombat();
+    pause_calls = 0;
     if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
         ArmTacticalDailySentinelV1(Request(5, 1'120)) !=
             TacticalDailySentinelArmStatusV1::armed) {
@@ -422,17 +452,27 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
     }
     Store(world.jomini, 0x20, std::uint8_t{0});
     world.AdvanceDate();
+    Store(world.internal_army, 0x128, std::int32_t{-1});
+    Store(world.unit, 0x170, std::int32_t{1});
     world.combats.Set(1, nullptr);
     ProcessTacticalDailySentinelAfterTickV1();
     const auto status = ReadTacticalDailySentinelStatusV1();
-    if ((status.trigger_flags & tactical_daily_trigger_combat_terminal) == 0 ||
-        status.state != TacticalDailySentinelStateV1::triggered) {
+    constexpr std::uint32_t terminal_group =
+        tactical_daily_trigger_combat_transition |
+        tactical_daily_trigger_retreat_transition |
+        tactical_daily_trigger_combat_unavailable |
+        tactical_daily_trigger_combat_terminal;
+    if (status.trigger_flags != terminal_group ||
+        status.state != TacticalDailySentinelStateV1::triggered ||
+        !status.pause_wrapper_called || !status.pause_observed ||
+        !status.terminal_observed || pause_calls != 1) {
       return false;
     }
   }
   {
     WorldFixture world;
     world.AddCombat();
+    pause_calls = 0;
     if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
         ArmTacticalDailySentinelV1(Request(3, 1'120)) !=
             TacticalDailySentinelArmStatusV1::armed) {
@@ -443,10 +483,10 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
     Store(world.combat, 0x6E0, std::int32_t{1});
     ProcessTacticalDailySentinelAfterTickV1();
     const auto status = ReadTacticalDailySentinelStatusV1();
-    if (status.trigger_flags !=
-            tactical_daily_trigger_combat_winner_changed ||
-        status.state != TacticalDailySentinelStateV1::triggered ||
-        status.terminal_observed) {
+    if (status.state != TacticalDailySentinelStateV1::armed ||
+        status.trigger_flags != tactical_daily_trigger_none ||
+        status.completed_daily_ticks != 1 || status.pause_wrapper_called ||
+        status.pause_observed || status.terminal_observed || pause_calls != 0) {
       return false;
     }
   }

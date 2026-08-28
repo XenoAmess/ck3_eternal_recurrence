@@ -36,8 +36,10 @@ from xar_autoplayer.bridge.settlement_contract import (
 )
 from xar_autoplayer.bridge.war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
+    committed_route_sentinel_advance_step,
     normalize_active_wars,
     query_route_contact_horizon_step,
     war_objective_province_ids,
@@ -968,6 +970,7 @@ def _native_war_plan(
     assault_supported: bool = False,
     rollback_war_failure: dict[str, object] | None = None,
     rollback_war_failures: list[dict[str, object]] | None = None,
+    battle_speed_readiness: dict[str, object] | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -976,6 +979,7 @@ def _native_war_plan(
         snapshot=lambda: {
             **_snapshot(90),
             "paused": paused,
+            "map_ready": True,
             "army_routes_supported": (
                 route_field_present
                 if army_routes_supported is None
@@ -1028,6 +1032,12 @@ def _native_war_plan(
         execute=lambda _step, _revision: {},
         action_steps=steps,
     )
+    if isinstance(battle_speed_readiness, dict):
+        base_capabilities = driver.capabilities
+        driver.capabilities = lambda: {
+            **base_capabilities(),
+            "battle_speed_readiness": dict(battle_speed_readiness),
+        }
     return GameplayBridgeService(driver).plan_turn()["plan"]
 
 
@@ -2047,6 +2057,95 @@ class GameplayBridgeTests(unittest.TestCase):
             proven["phase"], "native_war_route_contact_horizon_progress"
         )
         self.assertEqual(proven["selected_step"], advance_step)
+
+    def test_intersecting_committed_route_uses_speed_three_native_sentinel(
+        self,
+    ) -> None:
+        date_raw = 53_256_000
+        player = _army(
+            201_326_874,
+            soldiers=4_100,
+            province_id=8753,
+            controllable=True,
+            move_target_province_id=2635,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2626, 2627, 2633, 2634, 2635],
+        )
+        enemy = _army(
+            167_772_577,
+            soldiers=3_300,
+            province_id=8648,
+            controllable=False,
+            move_target_province_id=2635,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[1034, 2644, 2645, 2635],
+        )
+        query_step = query_route_contact_horizon_step(
+            201_326_874, 2635, (167_772_577,)
+        )
+        target_date_raw = date_raw + 45 * 24
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            steps=(
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+                query_step,
+                "life-advance",
+            ),
+            route_contact_horizon_supported=True,
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True,
+                "committed_route_sentinel_canary_ready": True,
+                "terminal_sentinel_live_ready": False,
+                "overwhelming_matrix_live_ready": False,
+            },
+        )
+
+        self.assertEqual(
+            plan["phase"],
+            "native_war_committed_route_sentinel_progress",
+        )
+        self.assertEqual(
+            plan["selected_step"],
+            committed_route_sentinel_advance_step(
+                201_326_874, 2635, target_date_raw
+            ),
+        )
+        self.assertNotEqual(plan["selected_step"], query_step)
+        self.assertEqual(plan["timeline_speed"], 3)
+        self.assertEqual(plan["sentinel_scope"], "committed_route")
+        self.assertEqual(plan["watch_army_ids"], [201_326_874])
+        self.assertEqual(
+            plan["hostile_route_change_detection"],
+            "not_watched_until_combat_id_transition",
+        )
+
+        default_closed = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            steps=(
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+                query_step,
+                "life-advance",
+            ),
+            route_contact_horizon_supported=True,
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True,
+                "committed_route_sentinel_canary_ready": False,
+                "terminal_sentinel_live_ready": True,
+                "overwhelming_matrix_live_ready": False,
+            },
+        )
+        self.assertEqual(
+            default_closed["phase"], "native_war_route_contact_horizon"
+        )
+        self.assertEqual(default_closed["selected_step"], query_step)
 
     def test_contact_horizon_false_never_authorizes_time(self) -> None:
         player = _army(
@@ -8944,10 +9043,16 @@ class GameplayBridgeTests(unittest.TestCase):
             action_steps=("save-checkpoint",),
         )
 
-        with self.assertRaises(BridgeUnavailableError):
+        with self.assertRaises(BridgeUnavailableError) as observed:
             GameplayBridgeService(driver).auto_turn()
 
         self.assertEqual(calls, [("save-checkpoint", 517)])
+        self.assertEqual(observed.exception.selected_step, "save-checkpoint")
+        self.assertIsInstance(observed.exception.plan, dict)
+        assert observed.exception.plan is not None
+        self.assertEqual(
+            observed.exception.plan["selected_step"], "save-checkpoint"
+        )
 
     def test_service_auto_turn_binds_plan_to_postcondition_failure(self) -> None:
         partial_result = {

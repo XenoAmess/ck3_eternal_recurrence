@@ -344,6 +344,7 @@ constexpr std::size_t kUnitPathProvinceInfosOffset = 0x38;
 constexpr std::size_t kUnitPathProvinceInfoCapacityOffset = 0x40;
 constexpr std::size_t kUnitPathProvinceInfoCountOffset = 0x44;
 constexpr std::size_t kUnitPathProvinceIdOffset = 0x00;
+constexpr std::size_t kUnitCurrentEdgeProgressOffset = 0x168;
 constexpr std::size_t kUnitRetreatStateOffset = 0x170;
 constexpr std::size_t kUnitCachedCurrentEdgeSpeedOffset = 0x190;
 constexpr std::size_t kArmyOwnerCharacterIdOffset = 0x174;
@@ -7666,16 +7667,34 @@ bool CurrentEdgeSpeedIsPositive(const Bindings &bindings, void *unit,
          current_edge_speed > 0;
 }
 
-bool ValidateRouteTimingInputs(const Bindings &bindings, void *game_state,
-                               void *unit, const void *path_storage,
-                               void *origin_province) noexcept {
+bool IsZeroProgressCurrentEdgeSpeedBoundary(
+    const Bindings &bindings, void *unit,
+    const void *path_storage) noexcept {
+  bool shares_active_front = false;
+  if (!PathSharesActiveRouteFront(unit, path_storage,
+                                  shares_active_front) ||
+      !shares_active_front ||
+      LoadAt<std::int64_t>(unit, kUnitCurrentEdgeProgressOffset) != 0 ||
+      LoadAt<std::int64_t>(unit, kUnitCachedCurrentEdgeSpeedOffset) != 0 ||
+      bindings.read_unit_current_edge_speed == nullptr) {
+    return false;
+  }
+  std::int64_t recalculated_speed = -1;
+  return bindings.read_unit_current_edge_speed(
+             unit, &recalculated_speed) == &recalculated_speed &&
+         recalculated_speed == 0;
+}
+
+bool ValidateRouteEdgeTimingInputs(const Bindings &bindings,
+                                   void *game_state, void *unit,
+                                   const void *path_storage,
+                                   void *origin_province) noexcept {
   NativeMovePathPrefix path{};
   std::int64_t land_speed = 0;
   std::int64_t naval_speed = 0;
   if (game_state == nullptr || unit == nullptr || origin_province == nullptr ||
       !ReadPathHeader(path_storage, path) || path.count <= 0 ||
-      !ReadRouteTravelSpeeds(bindings, unit, land_speed, naval_speed) ||
-      !CurrentEdgeSpeedIsPositive(bindings, unit, path_storage)) {
+      !ReadRouteTravelSpeeds(bindings, unit, land_speed, naval_speed)) {
     return false;
   }
 
@@ -7739,6 +7758,14 @@ bool ValidateRouteTimingInputs(const Bindings &bindings, void *game_state,
     source_info = destination_info;
   }
   return true;
+}
+
+bool ValidateRouteTimingInputs(const Bindings &bindings, void *game_state,
+                               void *unit, const void *path_storage,
+                               void *origin_province) noexcept {
+  return ValidateRouteEdgeTimingInputs(bindings, game_state, unit,
+                                       path_storage, origin_province) &&
+         CurrentEdgeSpeedIsPositive(bindings, unit, path_storage);
 }
 
 bool ProjectPathTimeline(
@@ -7854,6 +7881,100 @@ bool ReadFirstActiveEdgeDuration(const Bindings &bindings, void *game_state,
   return read;
 }
 
+bool ReadFirstActiveEdgeDurationAtZeroProgress(
+    const Bindings &bindings, void *game_state, void *unit,
+    void *current_province, const void *path_storage,
+    std::int32_t expected_front_province_id,
+    std::int64_t &duration_raw) noexcept {
+  duration_raw = -1;
+  NativeMovePathPrefix active{};
+  if (bindings.read_route_edge_duration == nullptr ||
+      !ReadPathHeader(path_storage, active) || active.count <= 0 ||
+      !IsZeroProgressCurrentEdgeSpeedBoundary(bindings, unit,
+                                              path_storage) ||
+      !ValidateRouteEdgeTimingInputs(bindings, game_state, unit,
+                                     path_storage, current_province)) {
+    return false;
+  }
+  void *const first_info = LoadAt<void *>(active.province_infos, 0);
+  if (first_info == nullptr ||
+      LoadAt<std::int32_t>(first_info, kUnitPathProvinceIdOffset) !=
+          expected_front_province_id ||
+      ResolveProvince(game_state, expected_front_province_id) == nullptr) {
+    return false;
+  }
+  return bindings.read_route_edge_duration(unit, &duration_raw, 0) ==
+             &duration_raw &&
+         duration_raw >= 0 &&
+         duration_raw != kRouteDurationFailureSentinel &&
+         duration_raw <= kMaximumProjectedRouteDurationRaw;
+}
+
+bool ProjectZeroProgressActiveRouteBoundary(
+    const Bindings &bindings, void *game_state, void *unit,
+    const void *path_storage, void *current_province,
+    std::int32_t date_raw, std::vector<std::int32_t> &province_ids,
+    std::vector<std::int32_t> &arrival_date_raws) noexcept {
+  province_ids.clear();
+  arrival_date_raws.clear();
+  NativeMovePathPrefix active{};
+  if (!ReadPathHeader(path_storage, active) || active.count <= 0) {
+    return false;
+  }
+  void *const first_info = LoadAt<void *>(active.province_infos, 0);
+  if (first_info == nullptr) {
+    return false;
+  }
+  const auto first_province_id =
+      LoadAt<std::int32_t>(first_info, kUnitPathProvinceIdOffset);
+  void *const first_province = ResolveProvince(game_state, first_province_id);
+  std::int64_t first_edge_duration_raw = -1;
+  std::int32_t first_arrival_date_raw = 0;
+  if (first_province == nullptr ||
+      !ReadFirstActiveEdgeDurationAtZeroProgress(
+          bindings, game_state, unit, current_province, path_storage,
+          first_province_id, first_edge_duration_raw) ||
+      !RouteDurationToDate(date_raw, first_edge_duration_raw,
+                           first_arrival_date_raw)) {
+    return false;
+  }
+  province_ids.push_back(first_province_id);
+  arrival_date_raws.push_back(first_arrival_date_raw);
+  if (active.count == 1) {
+    return true;
+  }
+
+  auto *const tail_infos =
+      static_cast<std::byte *>(active.province_infos) + sizeof(void *);
+  void *const tail_front_info = LoadAt<void *>(tail_infos, 0);
+  if (tail_front_info == nullptr ||
+      LoadAt<std::int32_t>(tail_front_info,
+                           kUnitPathProvinceIdOffset) == first_province_id) {
+    province_ids.clear();
+    arrival_date_raws.clear();
+    return false;
+  }
+  std::array<std::byte, 0x130> tail{};
+  const auto tail_count = active.count - 1;
+  StoreAt(tail.data(), 0x00, static_cast<void *>(tail_infos));
+  StoreAt(tail.data(), 0x08, tail_count);
+  StoreAt(tail.data(), 0x0C, tail_count);
+  std::vector<std::int32_t> tail_ids;
+  std::vector<std::int32_t> tail_arrivals;
+  if (!ProjectPathTimeline(bindings, game_state, unit, tail.data(),
+                           first_province, date_raw,
+                           first_edge_duration_raw, tail_ids,
+                           tail_arrivals)) {
+    province_ids.clear();
+    arrival_date_raws.clear();
+    return false;
+  }
+  province_ids.insert(province_ids.end(), tail_ids.begin(), tail_ids.end());
+  arrival_date_raws.insert(arrival_date_raws.end(), tail_arrivals.begin(),
+                           tail_arrivals.end());
+  return province_ids.size() == arrival_date_raws.size();
+}
+
 const ArmySnapshot *FindArmySnapshot(const Snapshot &snapshot,
                                      std::int32_t army_id) noexcept {
   for (const auto &army : snapshot.player_armies) {
@@ -7934,10 +8055,17 @@ bool BuildActiveRouteTimeline(const Bindings &bindings, void *game_state,
   output.effective_origin_province_id = snapshot.route_province_ids.front();
   const auto *const path_storage =
       static_cast<const std::byte *>(unit) + kUnitPathProvinceInfosOffset;
-  if (!ProjectPathTimeline(bindings, game_state, unit, path_storage,
-                           current_province, date_raw, 0,
-                           output.route_province_ids,
-                           output.arrival_date_raws) ||
+  const bool projected =
+      IsZeroProgressCurrentEdgeSpeedBoundary(bindings, unit, path_storage)
+          ? ProjectZeroProgressActiveRouteBoundary(
+                bindings, game_state, unit, path_storage, current_province,
+                date_raw, output.route_province_ids,
+                output.arrival_date_raws)
+          : ProjectPathTimeline(bindings, game_state, unit, path_storage,
+                                current_province, date_raw, 0,
+                                output.route_province_ids,
+                                output.arrival_date_raws);
+  if (!projected ||
       output.route_province_ids != snapshot.route_province_ids) {
     output.route_province_ids.clear();
     output.arrival_date_raws.clear();
@@ -8251,6 +8379,7 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
       bindings.read_unit_naval_route_speed == nullptr ||
       bindings.read_unit_current_edge_speed == nullptr ||
       bindings.read_route_travel_duration == nullptr ||
+      bindings.read_route_edge_duration == nullptr ||
       request.subject_army_id <= 0 || request.target_province_id <= 0 ||
       request.hostile_army_ids.empty() ||
       request.hostile_army_ids.size() > 64 ||

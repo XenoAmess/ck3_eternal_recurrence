@@ -435,8 +435,23 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - `xar_checkpoint.ck3` 是原位覆盖。保存命令开始提交后、完整 post-snapshot/hash/history 验证前失败时，core 必须撤销同路径旧
   metadata 的 `recoverable` 声明；readiness preflight 在提交前失败则保留旧恢复点。`native-one-generation` 对前一种失败只能回落到
   run 开始前归档在 `seed/` 的 immutable checkpoint + driver state。
-- `service.auto_turn()` 是不透明的 plan+execute 组合调用；中途异常无法证明 planner 尚未选择并提交 checkpoint，因此同样撤销 live
-  path 并回落 immutable seed。只有 typed outcome 完整返回后，runner 才按实际 step 解除这项保守假设。
+- `service.auto_turn()` 的 plan+execute 在普通异常返回前仍是不透明的：若 selected step 未知，或已知为 `save-checkpoint` 但提交状态
+  未闭合，继续撤销 live path。若 typed exception 已携带明确 non-save step，则 canonical checkpoint 不可能被该 step 覆盖，保留上一
+  durable anchor；`StepPostconditionError` 的 gameplay 尾部在 cold restore 时由 history anchor 截断。
+- `GameplayBridgeService` 必须把已选 plan/step 附在所有 `BridgeUnavailableError` 子类上；这不改变异常类型，也不声称命令是否发送，
+  只让 runner 可靠区分“明确 non-save step”与“step 未知”。例如 route timeline query 返回 unavailable 时，报告仍须保留原
+  parameterized query literal，并以最新 checkpoint 为恢复点；不能因 plan 丢失回落 immutable seed。
+- 2026-08-28 formal run `20260828T061802Z-one-generation-9d1b52c5` 实测了一种更窄的零提交形状：planner 基于 public revision
+  `517` 选择 `query-war-entry-assessments-v1-1-29097`，执行入口 fresh snapshot 为 `518`，revision gate 位于 request sequence
+  分配和 `endpoint.send()` 之前。该路径必须抛 `PreSubmissionRevisionMismatchError` 并保留 plan/selected step。runner 只允许一次：
+  重新等 readiness、更新本轮 before、重验同一 episode，再运行完整 fresh planner；不得把旧 step 直接换绑新 revision。第二次仍
+  mismatch 就停止，但仍保留上一 durable checkpoint，即使旧计划恰好是 save，因为 typed gate 已证明没有提交。成功 turn 在 artifact
+  记录 `pre_submission_revision_replans=1`；普通 `BridgeUnavailableError` 不重试。
+- committed-route multi-day canary 只通过显式 `--allow-committed-route-sentinel-canary` 广告。计划 step 必须是
+  `committed-route-sentinel-advance-army-<subject>-to-<target>-until-<date>`；driver 逐项对拍 scope/subject/target/bound、
+  完整无重复 controllable watch、零 active combat/retreat，并要求 arm `combat_count=0`。结果 scope 必须仍为
+  `committed_route`，从 resume 到 native stop 之间必须零 external pause/RQ/overshoot。首次 cold continuation GREEN 前，默认
+  production readiness 保持 false；原 active-battle parameterized step 仍强制 `combat_count>0`。
 - 2026-08-27 正式全寿命续跑 `20260827T104548Z-one-generation-5eb950f7` 在第 97 回合命中真实 harness B1：此前
   `96/97` turns 成功，包含 `44` 个 gameplay turns 与 `14` 个 checkpoints；CharacterID `29829` 仍存活，cleanup 全绿。
   `first-blocker.json` 报告 `native gameplay revision mismatch: expected 159, current 160`，SHA-256

@@ -393,9 +393,63 @@ flowchart TD
     class L,H unknown;
 ```
 
-[counter-policy] 当前 native request 只发布 `[start,start+24]`；所以不能把一份 contact-free proof 复用成两日或更多日。
-减少逐日 paused query 的后续最小入口是扩成多日 timed horizon，或在 application-main 增加 contact/date sentinel。
-在其中之一 live 前，本次 P0 先用 speed 3 降低每个已证明安全日的 wall time，而不伪造 multi-day 证据。
+[counter-policy] 当前 native route-horizon request 只发布 `[start,start+24]`；所以不能把一份 contact-free proof
+复用成两日或更多日。原 exact-day 路径继续作为无 sentinel 或无已承诺 route 时的回退；下节的 application-main
+committed-route sentinel 是独立 multi-day 合同，不声称重用或放宽该一日 proof。
+
+### 2026-08-28 G1 停点压缩：已承诺 route 由 native sentinel 托管
+
+[static-confirmed] normal daily 的全部 movement placement 和 contact queue 在 final daily stage 前已完成。新接触成功后
+`0x2208320/0x2303CF0` 已把新 full CombatID 写入 `CArmy+0x128`；因此在 final-stage original 返回后读该字段，
+能在**同一 native day**观察到 contact transition。高速时不需要让 Python 抢在下一日前轮询，也不存在可以
+插入“已到达但尚未接触”的中间决策点。
+
+[implementation-confirmed] 已有 `tactical_daily_sentinel_v1` arm 只要求完整 watch 集合非空；它从 watched
+public CUnit 的 `CArmy+0x128` 派生 pre-arm CombatID 集。所有 watched army 当前均无战斗时，`combat_count=0`
+是合法原生 arm，而不是 capability 失败。Python 现显式区分两个 scope：
+
+| scope | arm 约束 | 用途 |
+|---|---|---|
+| `active_battle` | `combat_count > 0` | 原普通 speed-3 战斗 hold |
+| `committed_route` | decision mode 且 `combat_count == 0` | 已提交、非空、末点等于 move target 的行军 route |
+
+[counter-policy] planner 只在 paused/map-ready、无 event/pending interaction、无 active combat/retreat/Assault、
+独立 `committed_route_sentinel_canary_ready=true`，并能将**全部** controllable public CUnitID 完整放入 `1..64` watch
+时选该 scope。计划必须指定一支确切 subject；该 subject 自己必须是 controllable moving/embarked CUnit，拥有完整非空 route，
+且 route 末点精确等于请求 target。其它 sibling 的 route 不能替代 subject，也不能靠起始 snapshot 推测 scope。
+
+显式命令合同为
+`committed-route-sentinel-advance-army-<subject>-to-<province>-until-<date_raw>`：literal 同时携带 scope、subject、target
+与 bound；driver 必须逐项对拍，并要求 watch 集合中 `combat_count=0`、无 active retreat。原
+`battle-decision-epoch-advance-to-*` 只接受 `active_battle` 且 `combat_count>0`，两条入口不能静默互换。首次当前 episode
+cold continuation 只通过显式 canary 开关广告新 readiness；GREEN 前普通 production 默认保持 false。两者均以 speed 3
+一次 resume，absolute bound 最多为 `+45d`。
+
+运行中不做 external pause 或 rich route/battle query；仅在以下边界由 native final stage 当日停表：
+
+- watched CUnit/CArmy generation/backlink 失效；
+- direct route target 改变（包括到达后清除或新命令）；
+- CombatID 改变（接触、参战或换战）；
+- retreat 改变、CK3 原生已暂停、基础设施异常或 absolute date 到界。
+
+[counter-policy] 该最小策略**不直接观察 hostile route retarget**。它表达的决定是“继续 CK3 已经接受的
+route，如真正接触则在当日停下转入 battle OODA”，不是“预测期间所有敌军改道并主动避战”。后者仍是
+route/forecast 质量债，不能被本 scope 冒充完成。当前代码与 fixture 已闭合三日后 route-target+CombatID 同日停表、
+单次 resume、零 external pause/RQ；显式 scope/subject/target 入口的真实 cold continuation 未跑前状态为
+`implementation-confirmed / live pending`。
+
+```mermaid
+flowchart TD
+    P["[counter-policy] paused、完整 controllable watch<br/>显式 subject / target / committed_route"] --> A["[implementation-confirmed] arm route sentinel<br/>combat_count=0; speed 3; +45d"]
+    A --> D{"[static-confirmed] 每个 native day<br/>movement -> contact -> final stage"}
+    D -->|route/army/retreat 不变<br/>未建立 CombatID| D
+    D -->|CombatID 或 route target 当日改变| S["[implementation-confirmed] native pause<br/>一次 paused replan"]
+    D -->|native auto-pause / date / infra| S
+    H["[unknown] hostile 未接触时的 retarget forecast"] -. "[unknown] 不在当前 watch 中" .-> D
+    L["[unknown] current route cold continuation"] -. "[unknown] fresh live acceptance" .-> S
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class H,L unknown;
+```
 
 ## `0x2208320`：同省接触 resolver
 
