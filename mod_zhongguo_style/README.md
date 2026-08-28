@@ -38,4 +38,6 @@
   `remote_file_id` 只允许存在于用户目录外层 `.mod`，永不进仓库；
 - 实机验收走未来 `tools/run_zhongguo_acceptance.py`（一次性 `-userdir`，不读写真实工坊缓存）。
 
-当前状态：**规划完成，待一期施工**。版本 0.1.0（骨架）。
+当前状态：**一期核心循环代码静态完成**（年度考核 tick、KPI、30/60/10 排名、三档奖惩、
+末位淘汰 AI 裁决、玩家事件、九语言本地化），未经实机验证；静态校验
+`py mod_zhongguo_style/tools/validate_local.py` GREEN。版本 0.1.0。

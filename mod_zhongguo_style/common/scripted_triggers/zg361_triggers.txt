@@ -1,0 +1,23 @@
+﻿# ZhongGuo 361 Style — scripted triggers
+
+# 考核执行者：天朝制独立统治者
+zg361_is_celestial_liege_trigger = {
+	government_has_flag = government_is_celestial
+	is_independent_ruler = yes
+	is_landed = yes
+	is_alive = yes
+}
+
+# 被考核对象：在任官员（原版 is_governor scripted trigger，天朝制 administrative=yes 满足其判定）
+zg361_is_reviewable_vassal_trigger = {
+	is_governor = yes
+	is_alive = yes
+}
+
+# 本周期淘汰候选人：连续 3.25 且本周期仍 3.25（用于玩家领主事件内重新推导名单）
+zg361_is_elimination_candidate_trigger = {
+	zg361_is_reviewable_vassal_trigger = yes
+	has_character_modifier = zg361_grade_325
+	has_variable = zg361_streak_bottom
+	var:zg361_streak_bottom >= 2
+}

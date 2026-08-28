@@ -342,3 +342,33 @@ CI 接入（test / --check / dispatch 构建 / `zhongguo-361-v*` tag release）�
 - 项目结构一节加入 `mod_zhongguo_style/` 条目；
 - 构建/测试命令清单在一期管线落地后同步；
 - 新踩的 Paradox 脚本坑当场沉淀 `docs/grammar/pitfalls.md`（症状/原因/解法三栏）。
+
+---
+
+## 13. 一期实施偏差记录（2026-08-28 静态施工，未经实机）
+
+一期代码已落地（仅 `mod_zhongguo_style/` 内，未经实机验证）。相对上文计划的偏差：
+
+1. **玩家领主淘汰处置改为批量三选**（依律处置/全部降岗/网开一面，zg361.5），
+   放弃逐人事件——跨事件传 scope 无安全机制（名单 list 不跨链存活），逐人细化移至二期
+   （用 character_interaction 原生 recipient scope 实现）。
+2. **玩家封臣"掀桌起兵"出口暂缓**（需 faction/战争 effect 核实），一期 zg361.6 只给
+   最后申诉/散尽家财/认命致仕三个出口。
+3. **派系红线未进 KPI**：`is_in_faction` 触发器未在本体文件中找到可靠形态，一期红线只含
+   与领主交战、重罪特质、年满 60。派系维度随二期价值观双轨一起做。
+4. **merit 增量快照用品级（merit_level）而非原始 currency**：原始 merit 未证实可按值读取；
+   品级差 ×10 夹 ±20 进 KPI。
+5. **AI 裁决的随机性**用"15% 概率宽宥 −40 分"实现（integer_range 在 vanilla script_values
+   无先例，不用）。
+6. **好感入 KPI 用分档 if 链**（±5/±10/±20），不做精确线性读取。
+7. **降岗暂不动契约义务等级**（contract obligation 操作留二期），一期降岗 =
+   merit 大额扣减 + `zg361_demoted` modifier + PIP 重置。
+8. **退休年龄用平铺 `age >= 60`**，未接 `tgp_is_above_retirement_age_trigger`
+   （该触发器依赖 celestial_retirement_law  realm law，二期再接）。
+9. 事件文案暂不打印各档人数（跨链 scope 变量在 loc 中打印未核实），数字表现留三期 GUI 面板。
+10. 新增"首年试用期"语义：无 merit 快照的官员当年只记不评（顺带解决中途任命/旧存档引入问题）。
+
+一期交付物：游戏规则 ×3、KPI/阈值/裁决分 script values、排名与结算 effects、
+年度 on_action 钩子、6 modifier、6 opinion modifier、6 事件、九语言本地化（zh+en 创作，
+7 语言英文占位）、本目录静态校验器 `tools/validate_local.py`（当前 GREEN）。
+实机验收由所有者另行安排。

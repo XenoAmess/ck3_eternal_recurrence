@@ -1,0 +1,262 @@
+﻿# ZhongGuo 361 Style — script values
+# 一期调平衡唯一入口：KPI 公式、分档阈值、奖惩常量、AI 淘汰裁决权重全在本文件。
+
+# ============================================================
+# 可调常量
+# ============================================================
+
+zg361_min_cohort_value = 3					# 考核池小于该人数时不排名（全员 3.5 都不评，只快照）
+
+zg361_perf_bonus_treasury_value = 100		# 3.75 绩效奖金（国库）
+
+zg361_nomination_score_bonus_value = 30		# 3.75 晋升提名：任命 candidate_score 变量加成
+zg361_promotion_score_bonus_value = 80		# 连续两次 3.75 晋升通道：candidate_score 变量大额加成
+
+zg361_appeal_influence_cost_value = 150		# 玩家封臣常规申诉花费（翻案概率 30% 写死在事件里）
+
+zg361_final_appeal_influence_cost_value = 200	# 末位淘汰最后申诉花费（改判概率 40% 写死在事件里）
+zg361_wealth_bribe_gold_value = 300			# 散尽家财改判降岗的花费
+
+zg361_kpi_striving_bonus_value = 10			# 玩家封臣"奋发"：明年 KPI 加成
+zg361_kpi_slacking_malus_value = 10			# 玩家封臣"摆烂"：明年 KPI 减成
+
+# ============================================================
+# KPI 公式（root = 被考核封臣）
+# ============================================================
+
+zg361_kpi_value = {
+	value = 0
+
+	# 产出：总督效率（-50~+50）× 2
+	add = {
+		value = governor_efficiency_presented
+		multiply = 2
+	}
+
+	# 职级匹配：贤能品级 × 8
+	add = {
+		value = merit_level
+		multiply = 8
+	}
+
+	# 成长：品级较上次考核的增减（±10/级，夹在 ±20）
+	if = {
+		limit = { has_variable = zg361_prev_merit_level }
+		add = {
+			value = merit_level
+			subtract = var:zg361_prev_merit_level
+			multiply = 10
+			min = -20
+			max = 20
+		}
+	}
+
+	# 上级评价：领主对封臣好感分档
+	if = {
+		limit = { liege = { opinion = { target = root value >= 50 } } }
+		add = 10
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value >= 20 } } }
+		add = 5
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value <= -50 } } }
+		add = -20
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value <= -20 } } }
+		add = -10
+	}
+
+	# 价值观红线
+	if = {
+		limit = { is_at_war_with_liege = yes }
+		add = -60
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = murderer
+				has_trait = cannibal
+				has_trait = witch
+				has_trait = deviant
+			}
+		}
+		add = -30
+	}
+	if = {
+		limit = { age >= 60 }
+		add = -15
+	}
+
+	# 玩家封臣自主 flag（上年事件选择）
+	if = {
+		limit = { has_variable = zg361_striving }
+		add = zg361_kpi_striving_bonus_value
+	}
+	if = {
+		limit = { has_variable = zg361_slacking }
+		add = {
+			value = 0
+			subtract = zg361_kpi_slacking_malus_value
+		}
+	}
+}
+
+# ============================================================
+# 分档阈值（root = 领主；读取领主变量 zg361_cohort_n）
+# ============================================================
+
+# 头部名额：cohort × 30%，四舍五入，至少 1
+zg361_top_slots_value = {
+	value = 0
+	add = var:zg361_cohort_n
+	multiply = 0.3
+	round = yes
+	min = 1
+}
+
+# 末位名额：按游戏规则；刚性模式 cohort >= 5 保底 1
+zg361_bottom_slots_value = {
+	value = 0
+	if = {
+		limit = { has_game_rule = zg361_ratio_relaxed }
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.05
+			floor = yes
+		}
+	}
+	else_if = {
+		limit = { has_game_rule = zg361_ratio_strict }
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.1
+			floor = yes
+		}
+	}
+	if = {
+		limit = {
+			has_game_rule = zg361_ratio_strict
+			var:zg361_cohort_n >= 5
+		}
+		min = 1
+	}
+}
+
+# ============================================================
+# AI 末位淘汰裁决分（root = 被淘汰封臣；基础 100，越高越倾向夺爵）
+# 权重表见 docs/zhongguo-361-plan.md 第 5 节
+# ============================================================
+
+zg361_ai_purge_score_value = {
+	value = 100
+
+	# 好感因子（皇帝对封臣）
+	if = {
+		limit = { liege = { opinion = { target = root value <= -50 } } }
+		add = 120
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value <= -20 } } }
+		add = 60
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value <= 0 } } }
+		add = 20
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value >= 50 } } }
+		add = -100
+	}
+	else_if = {
+		limit = { liege = { opinion = { target = root value >= 20 } } }
+		add = -40
+	}
+
+	# 能力因子
+	if = {
+		limit = { merit_level <= 1 }
+		add = 40
+	}
+	else_if = {
+		limit = { merit_level <= 3 }
+		add = 20
+	}
+	else_if = {
+		limit = { merit_level >= 6 }
+		add = -60
+	}
+	if = {
+		limit = { has_variable = zg361_efficiency }
+		if = {
+			limit = { var:zg361_efficiency < -10 }
+			add = 30
+		}
+		else_if = {
+			limit = { var:zg361_efficiency > 20 }
+			add = -40
+		}
+	}
+
+	# 忠诚因子
+	if = {
+		limit = { is_at_war_with_liege = yes }
+		add = 80
+	}
+	if = {
+		limit = { liege = { has_relation_rival = root } }
+		add = 40
+	}
+
+	# 年龄潜力
+	if = {
+		limit = { age < 30 }
+		add = -20
+	}
+
+	# 皇帝性格因子
+	if = {
+		limit = {
+			liege = {
+				OR = {
+					has_trait = sadistic
+					has_trait = deceitful
+					has_trait = ambitious
+					has_trait = arbitrary
+					has_trait = callous
+				}
+			}
+		}
+		add = 30
+	}
+	if = {
+		limit = {
+			liege = {
+				OR = {
+					has_trait = compassionate
+					has_trait = forgiving
+					has_trait = trusting
+				}
+			}
+		}
+		add = -40
+	}
+
+	# 财政因子：皇帝国库为负
+	if = {
+		limit = { liege = { treasury < 0 } }
+		add = 30
+	}
+
+	# 连续因子
+	if = {
+		limit = { var:zg361_streak_bottom >= 4 }
+		add = 150
+	}
+	else_if = {
+		limit = { var:zg361_streak_bottom = 3 }
+		add = 80
+	}
+}

@@ -1,0 +1,175 @@
+﻿namespace = zg361
+
+# ============================================================
+# 玩家领主：年度考核季总览
+# ============================================================
+zg361.1 = {
+	type = character_event
+	theme = crown
+	title = zg361.1.t
+	desc = zg361.1.desc
+
+	option = {
+		name = zg361.1.a
+	}
+}
+
+# ============================================================
+# 玩家封臣：考核结果三连
+# ============================================================
+zg361.2 = {
+	type = character_event
+	theme = vassal
+	title = zg361.2.t
+	desc = zg361.2.desc
+
+	option = {
+		name = zg361.2.a
+	}
+}
+
+zg361.3 = {
+	type = character_event
+	theme = vassal
+	title = zg361.3.t
+	desc = zg361.3.desc
+
+	option = {
+		name = zg361.3.a
+	}
+}
+
+# 3.25：玩家封臣的抉择
+zg361.4 = {
+	type = character_event
+	theme = vassal
+	title = zg361.4.t
+	desc = zg361.4.desc
+
+	option = { # 认命
+		name = zg361.4.a
+		add_stress = minor_stress_loss
+	}
+
+	option = { # 申诉（花费影响力，三成翻案）
+		name = zg361.4.b
+		trigger = { influence >= 150 }
+		change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+		random = {
+			chance = 30
+			set_variable = { name = zg361_appeal_won value = 1 }
+		}
+		if = {
+			limit = { has_variable = zg361_appeal_won }
+			remove_variable = zg361_appeal_won
+			remove_character_modifier = zg361_grade_325
+			remove_character_modifier = zg361_pip
+			set_variable = { name = zg361_streak_bottom value = 0 }
+			zg361_grade_35_apply_effect = yes
+			debug_log = "ZG361: player appeal won, regraded to 3.5"
+		}
+		else = {
+			liege = { add_opinion = { modifier = zg361_annoyed target = root } }
+			debug_log = "ZG361: player appeal rejected"
+		}
+	}
+
+	option = { # 摆烂
+		name = zg361.4.c
+		add_stress = medium_stress_loss
+		set_variable = { name = zg361_slacking value = 1 }
+	}
+
+	option = { # 奋发
+		name = zg361.4.d
+		add_stress = minor_stress_gain
+		set_variable = { name = zg361_striving value = 1 }
+	}
+}
+
+# ============================================================
+# 玩家领主：末位淘汰名单
+# ============================================================
+zg361.5 = {
+	type = character_event
+	theme = crown
+	title = zg361.5.t
+	desc = zg361.5.desc
+
+	option = { # 依律处置：复用 AI 裁决逻辑
+		name = zg361.5.a
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			zg361_ai_elimination_effect = yes
+		}
+	}
+
+	option = { # 法外开恩：全部降岗留用
+		name = zg361.5.b
+		add_prestige = { value = 0 subtract = 100 }
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			zg361_eliminate_demote_effect = yes
+		}
+	}
+
+	option = { # 网开一面：streak < 3 者 PIP 延期，其余降岗
+		name = zg361.5.c
+		add_prestige = { value = 0 subtract = 50 }
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			add_opinion = { modifier = zg361_merciful target = liege }
+			if = {
+				limit = { var:zg361_streak_bottom < 3 }
+				zg361_eliminate_extend_effect = yes
+			}
+			else = {
+				zg361_eliminate_demote_effect = yes
+			}
+		}
+	}
+}
+
+# ============================================================
+# 玩家封臣：被 AI 皇帝列入末位淘汰的最后窗口
+# ============================================================
+zg361.6 = {
+	type = character_event
+	theme = vassal
+	title = zg361.6.t
+	desc = zg361.6.desc
+
+	option = { # 最后申诉：四成改判降岗，失败则夺爵
+		name = zg361.6.a
+		trigger = { influence >= 200 }
+		change_influence = { value = 0 subtract = zg361_final_appeal_influence_cost_value }
+		random = {
+			chance = 40
+			set_variable = { name = zg361_appeal_won value = 1 }
+		}
+		if = {
+			limit = { has_variable = zg361_appeal_won }
+			remove_variable = zg361_appeal_won
+			zg361_eliminate_demote_effect = yes
+			debug_log = "ZG361: final appeal won, demoted instead of purged"
+		}
+		else = {
+			zg361_eliminate_purge_effect = yes
+			debug_log = "ZG361: final appeal rejected, purged"
+		}
+	}
+
+	option = { # 散尽家财：改判降岗留用
+		name = zg361.6.b
+		trigger = { gold >= 300 }
+		add_gold = { value = 0 subtract = zg361_wealth_bribe_gold_value }
+		zg361_eliminate_demote_effect = yes
+		debug_log = "ZG361: bribe accepted, demoted instead of purged"
+	}
+
+	option = { # 认命致仕：体面退场，保住贤能
+		name = zg361.6.c
+		force_step_down_landed_titles = yes
+		debug_log = "ZG361: player accepted honorable retirement"
+	}
+}

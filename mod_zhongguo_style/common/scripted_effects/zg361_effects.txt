@@ -1,0 +1,346 @@
+﻿# ZhongGuo 361 Style — scripted effects
+# 年度考核主链：打分 → 排名 → 快照 → 分档结算 → 末位淘汰 → 玩家通知
+
+# ============================================================
+# 年度入口（root = 领主，由 yearly_playable_pulse 挂载）
+# ============================================================
+
+zg361_annual_review_effect = {
+	if = {
+		limit = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+		}
+		if = {
+			limit = { has_game_rule = zg361_freq_three_year }
+			if = {
+				limit = { NOT = { has_variable = zg361_review_counter } }
+				set_variable = { name = zg361_review_counter value = 1 }
+			}
+			else = {
+				change_variable = { name = zg361_review_counter add = 1 }
+			}
+			if = {
+				limit = { var:zg361_review_counter >= 3 }
+				set_variable = { name = zg361_review_counter value = 0 }
+				zg361_run_review_effect = yes
+			}
+		}
+		else = {
+			zg361_run_review_effect = yes
+		}
+	}
+}
+
+# ============================================================
+# 考核主流程（root = 领主）
+# ============================================================
+
+zg361_run_review_effect = {
+	debug_log = "ZG361: annual review tick"
+
+	# 1. 打分 + 建考核池（无快照的新官只记不评）
+	every_vassal = {
+		limit = { zg361_is_reviewable_vassal_trigger = yes }
+		if = {
+			limit = { has_variable = zg361_prev_merit_level }
+			zg361_compute_kpi_effect = yes
+			add_to_list = zg361_cohort
+		}
+		else = {
+			debug_log = "ZG361: governor without snapshot exempt this cycle"
+		}
+	}
+	set_variable = { name = zg361_cohort_n value = list_size:zg361_cohort }
+
+	# 2. 排名（考核池 >= 3 人才启动强制分布）
+	if = {
+		limit = { var:zg361_cohort_n >= zg361_min_cohort_value }
+		zg361_rank_cohort_effect = yes
+	}
+
+	# 3. 快照（全体可考核封臣，含新人；在奖惩落账前更新，避免奖励计入明年成长）
+	every_vassal = {
+		limit = { zg361_is_reviewable_vassal_trigger = yes }
+		set_variable = { name = zg361_prev_merit_level value = merit_level }
+		remove_variable = zg361_slacking
+		remove_variable = zg361_striving
+	}
+
+	# 4. 分档结算 + 末位淘汰
+	if = {
+		limit = { var:zg361_cohort_n >= zg361_min_cohort_value }
+		set_variable = { name = zg361_eliminate_n value = 0 }
+		every_in_list = {
+			list = zg361_cohort
+			zg361_apply_grade_effect = yes
+		}
+		zg361_process_elimination_effect = yes
+		# 5. 玩家领主总览事件（仅真正排名时）
+		if = {
+			limit = { is_ai = no }
+			trigger_event = { id = zg361.1 days = 1 }
+		}
+	}
+	else = {
+		debug_log = "ZG361: cohort below minimum, ranking skipped"
+	}
+}
+
+# ============================================================
+# KPI 计算（root = 封臣）
+# ============================================================
+
+zg361_compute_kpi_effect = {
+	set_variable = { name = zg361_kpi value = zg361_kpi_value }
+	set_variable = { name = zg361_efficiency value = governor_efficiency_presented }
+	# 连击计数初始化（幂等）
+	if = {
+		limit = { NOT = { has_variable = zg361_streak_top } }
+		set_variable = { name = zg361_streak_top value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_streak_bottom } }
+		set_variable = { name = zg361_streak_bottom value = 0 }
+	}
+}
+
+# ============================================================
+# 排名（root = 领主；名次 = 1 + 严格更高分人数，并列同档）
+# ============================================================
+
+zg361_rank_cohort_effect = {
+	every_in_list = {
+		list = zg361_cohort
+		save_scope_as = zg361_ranked
+		scope:zg361_ranked = {
+			set_variable = { name = zg361_rank value = 1 }
+		}
+		every_in_list = {
+			list = zg361_cohort
+			limit = {
+				NOT = { this = scope:zg361_ranked }
+				var:zg361_kpi > scope:zg361_ranked.var:zg361_kpi
+			}
+			scope:zg361_ranked = {
+				change_variable = { name = zg361_rank add = 1 }
+			}
+		}
+	}
+	# 阈值落在领主变量上：头部名额 / 末位名次线
+	set_variable = { name = zg361_top_cut value = zg361_top_slots_value }
+	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	set_variable = {
+		name = zg361_bottom_cut
+		value = {
+			value = var:zg361_cohort_n
+			subtract = var:zg361_bottom_slots
+		}
+	}
+}
+
+# ============================================================
+# 分档判定与结算（root = 封臣）
+# ============================================================
+
+zg361_apply_grade_effect = {
+	# 清理上一周期结果
+	remove_character_modifier = zg361_grade_375
+	remove_character_modifier = zg361_grade_35
+	remove_character_modifier = zg361_grade_325
+	remove_character_modifier = zg361_pip
+
+	if = {
+		limit = { var:zg361_rank <= liege.var:zg361_top_cut }
+		zg361_grade_375_apply_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_rank > liege.var:zg361_bottom_cut }
+		zg361_grade_325_apply_effect = yes
+	}
+	else = {
+		zg361_grade_35_apply_effect = yes
+	}
+}
+
+zg361_grade_375_apply_effect = {
+	add_character_modifier = { modifier = zg361_grade_375 years = 1 }
+	change_merit = major_merit_gain
+	add_treasury = zg361_perf_bonus_treasury_value
+	change_variable = { name = merit_civilian_career_score_bonus add = zg361_nomination_score_bonus_value }
+	liege = {
+		add_opinion = { modifier = zg361_favored target = root }
+	}
+	set_variable = { name = zg361_streak_bottom value = 0 }
+	change_variable = { name = zg361_streak_top add = 1 }
+	# 连续两次 3.75 → 晋升通道
+	if = {
+		limit = { var:zg361_streak_top >= 2 }
+		add_character_modifier = { modifier = zg361_promotion_track years = 2 }
+		change_variable = { name = merit_civilian_career_score_bonus add = zg361_promotion_score_bonus_value }
+		set_variable = { name = zg361_streak_top value = 0 }
+		debug_log = "ZG361: promotion track opened"
+	}
+	if = {
+		limit = { is_ai = no }
+		trigger_event = { id = zg361.2 days = 1 }
+	}
+}
+
+zg361_grade_35_apply_effect = {
+	add_character_modifier = { modifier = zg361_grade_35 years = 1 }
+	change_merit = minor_merit_gain
+	set_variable = { name = zg361_streak_top value = 0 }
+	set_variable = { name = zg361_streak_bottom value = 0 }
+	if = {
+		limit = { is_ai = no }
+		trigger_event = { id = zg361.3 days = 1 }
+	}
+}
+
+zg361_grade_325_apply_effect = {
+	add_character_modifier = { modifier = zg361_grade_325 years = 1 }
+	add_character_modifier = { modifier = zg361_pip years = 1 }
+	change_merit = medium_merit_loss
+	liege = {
+		add_opinion = { modifier = zg361_poor_review target = root }
+	}
+	set_variable = { name = zg361_streak_top value = 0 }
+	change_variable = { name = zg361_streak_bottom add = 1 }
+	if = {
+		limit = { var:zg361_streak_bottom >= 2 }
+		liege = {
+			change_variable = { name = zg361_eliminate_n add = 1 }
+		}
+	}
+	if = {
+		limit = { is_ai = no }
+		trigger_event = { id = zg361.4 days = 1 }
+	}
+}
+
+# ============================================================
+# 末位淘汰处理（root = 领主，在分档结算之后调用）
+# ============================================================
+
+zg361_process_elimination_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_eliminate_n
+			var:zg361_eliminate_n >= 1
+		}
+		if = {
+			limit = { is_ai = yes }
+			# AI 皇帝：静默裁决；玩家封臣给最后机会事件
+			every_vassal = {
+				limit = { zg361_is_elimination_candidate_trigger = yes }
+				if = {
+					limit = { is_ai = no }
+					trigger_event = { id = zg361.6 days = 2 }
+				}
+				else = {
+					zg361_ai_elimination_effect = yes
+				}
+			}
+		}
+		else = {
+			# 玩家皇帝：弹末位淘汰处置事件（总览 zg361.1 之后）
+			trigger_event = { id = zg361.5 days = 2 }
+		}
+	}
+}
+
+# ============================================================
+# AI 淘汰裁决（root = 被淘汰封臣）
+# ============================================================
+
+zg361_ai_elimination_effect = {
+	set_variable = { name = zg361_purge_score value = zg361_ai_purge_score_value }
+	# 随机宽宥：皇帝心情不错
+	random = {
+		chance = 15
+		change_variable = { name = zg361_purge_score add = -40 }
+	}
+	if = {
+		limit = {
+			age >= 60
+			liege = { opinion = { target = root value >= 0 } }
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		limit = {
+			house = {
+				OR = {
+					is_powerful_family = yes
+					is_dominant_family = yes
+				}
+			}
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 200 }
+		zg361_eliminate_purge_effect = yes
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 120 }
+		if = {
+			limit = { merit_level >= 5 }
+			zg361_eliminate_demote_effect = yes
+		}
+		else = {
+			zg361_eliminate_stepdown_effect = yes
+		}
+	}
+	else_if = {
+		limit = { var:zg361_purge_score >= 60 }
+		zg361_eliminate_demote_effect = yes
+	}
+	else = {
+		if = {
+			limit = {
+				liege = { opinion = { target = root value >= 30 } }
+				var:zg361_streak_bottom < 3
+			}
+			zg361_eliminate_extend_effect = yes
+		}
+		else = {
+			zg361_eliminate_demote_effect = yes
+		}
+	}
+}
+
+# ============================================================
+# 四种处置（root = 被淘汰封臣）
+# ============================================================
+
+# 免费夺爵：合法理由（考绩不佳 opinion 带 revoke_title_reason），无暴政
+zg361_eliminate_purge_effect = {
+	debug_log = "ZG361: elimination -> purge (title stripped)"
+	change_merit = massive_merit_loss
+	add_opinion = { modifier = zg361_purged target = liege }
+	force_step_down_landed_titles = yes
+}
+
+# 强制致仕：体面退场
+zg361_eliminate_stepdown_effect = {
+	debug_log = "ZG361: elimination -> forced retirement"
+	add_opinion = { modifier = zg361_forced_retire target = liege }
+	force_step_down_landed_titles = yes
+}
+
+# 降岗留用：merit 扣减 + 降岗 modifier + PIP 重置
+zg361_eliminate_demote_effect = {
+	debug_log = "ZG361: elimination -> demoted but retained"
+	change_merit = major_merit_loss
+	add_character_modifier = { modifier = zg361_demoted years = 1 }
+	add_character_modifier = { modifier = zg361_pip years = 1 }
+	set_variable = { name = zg361_streak_bottom value = 0 }
+}
+
+# 再留一年：仅 PIP 延期（连击保留）
+zg361_eliminate_extend_effect = {
+	debug_log = "ZG361: elimination -> PIP extended"
+	add_character_modifier = { modifier = zg361_pip years = 1 }
+}
