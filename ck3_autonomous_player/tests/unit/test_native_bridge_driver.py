@@ -12845,6 +12845,31 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertNotIn(BATTLE_DECISION_EPOCH_ADVANCE_STEP, steps)
         self.assertIn(BATTLE_TERMINAL_CRUISE_STEP, steps)
 
+    def test_battle_speed_readiness_keeps_speed_five_crush_closed(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name, endpoint=endpoint
+        )
+        endpoint.publish(_hello("game.state.snapshot"))
+        endpoint.publish(_snapshot())
+
+        readiness = driver.capabilities()["battle_speed_readiness"]
+
+        self.assertEqual(
+            readiness,
+            {
+                "decision_sentinel_live_ready": True,
+                "terminal_sentinel_live_ready": True,
+                "overwhelming_matrix_live_ready": False,
+            },
+        )
+        self.assertFalse(
+            readiness["terminal_sentinel_live_ready"]
+            and readiness["overwhelming_matrix_live_ready"]
+        )
+
     def test_decision_epoch_composite_uses_full_watch_set_and_no_pause(
         self,
     ) -> None:

@@ -293,6 +293,14 @@ _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES = frozenset(
 )
 _BATTLE_SENTINEL_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
+_BATTLE_SPEED_READINESS = {
+    "decision_sentinel_live_ready": True,
+    "terminal_sentinel_live_ready": True,
+    # The native stop envelope is live, but no overwhelming active-battle
+    # checkpoint has yet passed the required balanced speed matrix.  Strategy
+    # therefore keeps the speed-five crush selector closed.
+    "overwhelming_matrix_live_ready": False,
+}
 _TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS = (
     "date_deadline",
     "army_unavailable",
@@ -1120,6 +1128,7 @@ class NativeHeadlessGameplayDriver:
             **result,
             "action_steps": sorted(action_steps),
             "composite_action_steps": composite_action_steps,
+            "battle_speed_readiness": dict(_BATTLE_SPEED_READINESS),
             "checkpoint_materialization": {
                 "configured": self.save_dir is not None,
                 "save_dir": str(self.save_dir) if self.save_dir is not None else None,
