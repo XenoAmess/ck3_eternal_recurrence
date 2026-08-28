@@ -159,6 +159,34 @@ def collect_referenced_keys() -> dict[str, set[str]]:
                 if sub == "modifiers":
                     refs["plain"].add(f"{m.group(1)}_desc")
 
+    for f in (MOD_ROOT / "common" / "decisions").glob("*.txt"):
+        text = strip_comments_and_strings(read_text(f))
+        for m in re.finditer(r"^(zg361\w*)\s*=\s*\{", text, re.M):
+            refs["plain"].add(m.group(1))
+            refs["plain"].add(f"{m.group(1)}_desc")
+            refs["plain"].add(f"{m.group(1)}_confirm")
+
+    for f in (MOD_ROOT / "common" / "character_interactions").glob("*.txt"):
+        text = strip_comments_and_strings(read_text(f))
+        for m in re.finditer(r"^(zg361\w*)\s*=\s*\{", text, re.M):
+            refs["plain"].add(m.group(1))
+            refs["plain"].add(f"{m.group(1)}_desc")
+
+    for f in (MOD_ROOT / "common" / "decision_group_types").glob("*.txt"):
+        text = strip_comments_and_strings(read_text(f))
+        for m in re.finditer(r"^(zg361\w*)\s*=\s*\{", text, re.M):
+            refs["plain"].add(f"decision_group_type_{m.group(1)}")
+
+    for f in (MOD_ROOT / "common" / "activities" / "activity_types").glob("*.txt"):
+        text = strip_comments_and_strings(read_text(f))
+        for m in re.finditer(r"^(activity_zg361\w*)\s*=\s*\{", text, re.M):
+            key = m.group(1)
+            refs["plain"].add(key)
+            for suffix in ("_desc", "_selection_tooltip", "_conclusion_desc", "_host_desc", "_guest_desc"):
+                refs["plain"].add(f"{key}{suffix}")
+        for m in re.finditer(r"desc\s*=\s*(zg361\w+)", text):
+            refs["plain"].add(m.group(1))
+
     ev = MOD_ROOT / "events" / "zg361_events.txt"
     if ev.is_file():
         text = strip_comments_and_strings(read_text(ev))

@@ -1,0 +1,108 @@
+﻿# ZhongGuo 361 Style — decisions
+# 末位比例三决议 + 立即开榜。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
+
+# 立即开展绩效考核（提前开榜）
+zg361_review_now_decision = {
+	decision_group_type = zg361
+	ai_check_interval = 0
+	cooldown = { years = 1 }
+
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+	}
+	is_valid = {
+		any_vassal = {
+			count >= 3
+			zg361_is_reviewable_vassal_trigger = yes
+		}
+	}
+	is_valid_showing_failures_only = {
+		any_vassal = {
+			count >= 3
+			zg361_is_reviewable_vassal_trigger = yes
+		}
+	}
+
+	cost = { prestige = 150 }
+
+	# 决议 effect 会被 UI 预评估：只发延迟载体事件，重活在事件 immediate 里做
+	effect = {
+		trigger_event = { id = zg361.20 days = 1 }
+	}
+}
+
+# 末位比例：刚性 361（10%）
+zg361_ratio_strict_decision = {
+	decision_group_type = zg361
+	ai_check_interval = 0
+	cooldown = { years = 1 }
+
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		OR = {
+			NOT = { has_variable = zg361_ratio_override }
+			NOT = { var:zg361_ratio_override = 10 }
+		}
+	}
+	is_valid = { prestige >= 75 }
+	is_valid_showing_failures_only = { prestige >= 75 }
+
+	cost = { prestige = 75 }
+
+	effect = {
+		set_variable = { name = zg361_ratio_override value = 10 }
+		debug_log = "ZG361: liege set bottom ratio override to strict (10%)"
+	}
+}
+
+# 末位比例：松绑（5%）
+zg361_ratio_relaxed_decision = {
+	decision_group_type = zg361
+	ai_check_interval = 0
+	cooldown = { years = 1 }
+
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		OR = {
+			NOT = { has_variable = zg361_ratio_override }
+			NOT = { var:zg361_ratio_override = 5 }
+		}
+	}
+	is_valid = { prestige >= 75 }
+	is_valid_showing_failures_only = { prestige >= 75 }
+
+	cost = { prestige = 75 }
+
+	effect = {
+		set_variable = { name = zg361_ratio_override value = 5 }
+		debug_log = "ZG361: liege set bottom ratio override to relaxed (5%)"
+	}
+}
+
+# 末位比例：放养（0%）
+zg361_ratio_off_decision = {
+	decision_group_type = zg361
+	ai_check_interval = 0
+	cooldown = { years = 1 }
+
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		OR = {
+			NOT = { has_variable = zg361_ratio_override }
+			NOT = { var:zg361_ratio_override = 0 }
+		}
+	}
+	is_valid = { prestige >= 75 }
+	is_valid_showing_failures_only = { prestige >= 75 }
+
+	cost = { prestige = 75 }
+
+	effect = {
+		set_variable = { name = zg361_ratio_override value = 0 }
+		debug_log = "ZG361: liege set bottom ratio override to off (0%)"
+	}
+}

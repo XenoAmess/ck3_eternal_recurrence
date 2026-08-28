@@ -38,6 +38,7 @@
   `remote_file_id` 只允许存在于用户目录外层 `.mod`，永不进仓库；
 - 实机验收走未来 `tools/run_zhongguo_acceptance.py`（一次性 `-userdir`，不读写真实工坊缓存）。
 
-当前状态：**一期核心循环代码静态完成**（年度考核 tick、KPI、30/60/10 排名、三档奖惩、
-末位淘汰 AI 裁决、玩家事件、九语言本地化），未经实机验证；静态校验
-`py mod_zhongguo_style/tools/validate_local.py` GREEN。版本 0.1.0。
+当前状态：**一期核心循环 + 二期博弈层 + 三期活动代码全部静态完成**（年度考核 tick、KPI、
+30/60/10 排名、校准会议、三档奖惩、末位淘汰 AI 裁决与逐人互动、六个角色互动、
+价值观双轨事件、末位比例决议、京察大计活动、九语言本地化），未经实机验证；静态校验
+`py mod_zhongguo_style/tools/validate_local.py` GREEN。版本 0.2.0。

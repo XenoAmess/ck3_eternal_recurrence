@@ -1,0 +1,7 @@
+﻿# ZhongGuo 361 Style — decision group type
+# 原生 Decisions 面板自动消费本组（无需改 window_decisions.gui）；sort_order 避让 ox_here 的 155
+
+zg361 = {
+	sort_order = 156
+	gui_tags = { big_button }
+}

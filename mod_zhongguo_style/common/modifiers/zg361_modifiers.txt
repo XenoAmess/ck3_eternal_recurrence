@@ -31,11 +31,12 @@ zg361_pip = {
 	monthly_prestige = -0.25
 }
 
-# 降岗留用
+# 降岗留用（含减俸 50%，直接砍俸禄预算分成，不动契约义务等级）
 zg361_demoted = {
 	icon = icon_merit_02
 	monthly_prestige = -0.25
 	vassal_opinion = -5
+	monthly_treasury_from_salary_budget_mult = -0.5
 }
 
 # 晋升通道（连续两次 3.75）

@@ -1,5 +1,5 @@
 ﻿# ZhongGuo 361 Style — scripted effects
-# 年度考核主链：打分 → 排名 → 快照 → 分档结算 → 末位淘汰 → 玩家通知
+# 主链：打分 → 排名 → 待定分档 →（玩家：校准会议）→ 结算 → 末位淘汰 → 价值观双轨
 
 # ============================================================
 # 年度入口（root = 领主，由 yearly_playable_pulse 挂载）
@@ -53,47 +53,73 @@ zg361_run_review_effect = {
 	}
 	set_variable = { name = zg361_cohort_n value = list_size:zg361_cohort }
 
-	# 2. 排名（考核池 >= 3 人才启动强制分布）
+	# 2. 排名 + 待定分档（考核池 >= 3 人才启动强制分布）
 	if = {
 		limit = { var:zg361_cohort_n >= zg361_min_cohort_value }
 		zg361_rank_cohort_effect = yes
-	}
+		zg361_assign_pending_grades_effect = yes
 
-	# 3. 快照（全体可考核封臣，含新人；在奖惩落账前更新，避免奖励计入明年成长）
-	every_vassal = {
-		limit = { zg361_is_reviewable_vassal_trigger = yes }
-		set_variable = { name = zg361_prev_merit_level value = merit_level }
-		remove_variable = zg361_slacking
-		remove_variable = zg361_striving
-	}
-
-	# 4. 分档结算 + 末位淘汰
-	if = {
-		limit = { var:zg361_cohort_n >= zg361_min_cohort_value }
-		set_variable = { name = zg361_eliminate_n value = 0 }
-		every_in_list = {
-			list = zg361_cohort
-			zg361_apply_grade_effect = yes
+		# 3. 快照（全体可考核封臣，含新人；在奖惩落账前更新，避免奖励计入明年成长）
+		every_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes }
+			set_variable = { name = zg361_prev_merit_level value = merit_level }
+			remove_variable = zg361_slacking
+			remove_variable = zg361_striving
+			remove_variable = zg361_recommended
+			remove_variable = zg361_slandered
+			remove_variable = zg361_slander_backfire
 		}
-		zg361_process_elimination_effect = yes
-		# 5. 玩家领主总览事件（仅真正排名时）
+
+		# 4. AI 直接结算；玩家进校准会议
 		if = {
-			limit = { is_ai = no }
-			trigger_event = { id = zg361.1 days = 1 }
+			limit = { is_ai = yes }
+			zg361_apply_pending_grades_effect = yes
+		}
+		else = {
+			trigger_event = { id = zg361.10 days = 1 }
 		}
 	}
 	else = {
 		debug_log = "ZG361: cohort below minimum, ranking skipped"
+		# 小考核池也要更新快照
+		every_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes }
+			set_variable = { name = zg361_prev_merit_level value = merit_level }
+			remove_variable = zg361_slacking
+			remove_variable = zg361_striving
+			remove_variable = zg361_recommended
+			remove_variable = zg361_slandered
+			remove_variable = zg361_slander_backfire
+		}
 	}
 }
 
 # ============================================================
-# KPI 计算（root = 封臣）
+# KPI / 价值观分 / 分类（root = 封臣）
 # ============================================================
 
 zg361_compute_kpi_effect = {
 	set_variable = { name = zg361_kpi value = zg361_kpi_value }
 	set_variable = { name = zg361_efficiency value = governor_efficiency_presented }
+	set_variable = { name = zg361_values value = zg361_values_score_value }
+	# 价值观分类：1 = 野狗（高业绩低价值观），2 = 小白兔（低业绩高价值观）
+	if = {
+		limit = {
+			var:zg361_kpi >= 50
+			var:zg361_values <= -20
+		}
+		set_variable = { name = zg361_class value = 1 }
+	}
+	else_if = {
+		limit = {
+			var:zg361_kpi <= 0
+			var:zg361_values >= 20
+		}
+		set_variable = { name = zg361_class value = 2 }
+	}
+	else = {
+		set_variable = { name = zg361_class value = 0 }
+	}
 	# 连击计数初始化（幂等）
 	if = {
 		limit = { NOT = { has_variable = zg361_streak_top } }
@@ -127,8 +153,9 @@ zg361_rank_cohort_effect = {
 			}
 		}
 	}
-	# 阈值落在领主变量上：头部名额 / 末位名次线
+	# 阈值落领主变量：头部名额 / 末位名额 / 两条边界名次线
 	set_variable = { name = zg361_top_cut value = zg361_top_slots_value }
+	set_variable = { name = zg361_top_cut_next value = { value = var:zg361_top_cut add = 1 } }
 	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
 	set_variable = {
 		name = zg361_bottom_cut
@@ -137,10 +164,136 @@ zg361_rank_cohort_effect = {
 			subtract = var:zg361_bottom_slots
 		}
 	}
+	set_variable = { name = zg361_bottom_cut_next value = { value = var:zg361_bottom_cut add = 1 } }
 }
 
 # ============================================================
-# 分档判定与结算（root = 封臣）
+# 待定分档（root = 领主；写 var:zg361_pending_grade：3/2/1，校准后再结算）
+# ============================================================
+
+zg361_assign_pending_grades_effect = {
+	set_variable = { name = zg361_pending_375_n value = 0 }
+	set_variable = { name = zg361_pending_35_n value = 0 }
+	set_variable = { name = zg361_pending_325_n value = 0 }
+	every_in_list = {
+		list = zg361_cohort
+		if = {
+			limit = { var:zg361_rank <= root.var:zg361_top_cut }
+			set_variable = { name = zg361_pending_grade value = 3 }
+			root = { change_variable = { name = zg361_pending_375_n add = 1 } }
+		}
+		else_if = {
+			limit = { var:zg361_rank > root.var:zg361_bottom_cut }
+			set_variable = { name = zg361_pending_grade value = 1 }
+			root = { change_variable = { name = zg361_pending_325_n add = 1 } }
+		}
+		else = {
+			set_variable = { name = zg361_pending_grade value = 2 }
+			root = { change_variable = { name = zg361_pending_35_n add = 1 } }
+		}
+	}
+}
+
+# ============================================================
+# 绩效校准（root = 玩家领主；由 zg361.10 校准会议选项调用）
+# 抬人：末名 3.75 ↔ 头名 3.5 互换；踩人：末名 3.5 → 3.25，原头名 3.25 获救
+# 每次动手 25% 曝光风险：全考核池对皇帝 -10（考核黑幕）
+# ============================================================
+
+zg361_calibrate_promote_effect = {
+	every_vassal = {
+		limit = {
+			has_variable = zg361_pending_grade
+			var:zg361_pending_grade = 3
+			var:zg361_rank = root.var:zg361_top_cut
+		}
+		set_variable = { name = zg361_pending_grade value = 2 }
+	}
+	every_vassal = {
+		limit = {
+			has_variable = zg361_pending_grade
+			var:zg361_pending_grade = 2
+			var:zg361_rank = root.var:zg361_top_cut_next
+		}
+		set_variable = { name = zg361_pending_grade value = 3 }
+	}
+	zg361_calibrate_exposure_effect = yes
+	debug_log = "ZG361: calibration promote used"
+}
+
+zg361_calibrate_demote_effect = {
+	every_vassal = {
+		limit = {
+			has_variable = zg361_pending_grade
+			var:zg361_pending_grade = 2
+			var:zg361_rank = root.var:zg361_bottom_cut
+		}
+		set_variable = { name = zg361_pending_grade value = 1 }
+	}
+	if = {
+		limit = { var:zg361_bottom_slots >= 1 }
+		every_vassal = {
+			limit = {
+				has_variable = zg361_pending_grade
+				var:zg361_pending_grade = 1
+				var:zg361_rank = root.var:zg361_bottom_cut_next
+			}
+			set_variable = { name = zg361_pending_grade value = 2 }
+		}
+	}
+	zg361_calibrate_exposure_effect = yes
+	debug_log = "ZG361: calibration demote used"
+}
+
+zg361_calibrate_exposure_effect = {
+	random = {
+		chance = 25
+		every_vassal = {
+			limit = { has_variable = zg361_pending_grade }
+			add_opinion = { modifier = zg361_rigged target = root }
+		}
+		debug_log = "ZG361: calibration exposed, court outraged"
+	}
+}
+
+# ============================================================
+# 结算（root = 领主；AI 在 tick 内直接调用，玩家在准奏后由事件选项调用）
+# ============================================================
+
+zg361_apply_pending_grades_effect = {
+	set_variable = { name = zg361_last_375_n value = 0 }
+	set_variable = { name = zg361_last_35_n value = 0 }
+	set_variable = { name = zg361_last_325_n value = 0 }
+	set_variable = { name = zg361_eliminate_n value = 0 }
+	set_variable = { name = zg361_wild_dog_n value = 0 }
+	set_variable = { name = zg361_rabbit_n value = 0 }
+
+	every_vassal = {
+		limit = { has_variable = zg361_pending_grade }
+		zg361_apply_grade_effect = yes
+	}
+
+	zg361_process_elimination_effect = yes
+
+	if = {
+		limit = { is_ai = no }
+		trigger_event = { id = zg361.1 days = 1 }
+	}
+	# 价值观双轨：有野狗或小白兔才弹
+	if = {
+		limit = {
+			is_ai = no
+			OR = {
+				var:zg361_wild_dog_n >= 1
+				var:zg361_rabbit_n >= 1
+			}
+		}
+		trigger_event = { id = zg361.30 days = 3 }
+	}
+}
+
+# ============================================================
+# 分档结算（root = 封臣）
 # ============================================================
 
 zg361_apply_grade_effect = {
@@ -151,15 +304,32 @@ zg361_apply_grade_effect = {
 	remove_character_modifier = zg361_pip
 
 	if = {
-		limit = { var:zg361_rank <= liege.var:zg361_top_cut }
+		limit = { var:zg361_pending_grade = 3 }
 		zg361_grade_375_apply_effect = yes
 	}
 	else_if = {
-		limit = { var:zg361_rank > liege.var:zg361_bottom_cut }
+		limit = { var:zg361_pending_grade = 1 }
 		zg361_grade_325_apply_effect = yes
 	}
 	else = {
 		zg361_grade_35_apply_effect = yes
+	}
+	remove_variable = zg361_pending_grade
+
+	# 价值观分类计数（领主变量）
+	if = {
+		limit = {
+			has_variable = zg361_class
+			var:zg361_class = 1
+		}
+		liege = { change_variable = { name = zg361_wild_dog_n add = 1 } }
+	}
+	if = {
+		limit = {
+			has_variable = zg361_class
+			var:zg361_class = 2
+		}
+		liege = { change_variable = { name = zg361_rabbit_n add = 1 } }
 	}
 }
 
@@ -177,6 +347,7 @@ zg361_grade_375_apply_effect = {
 	}
 	liege = {
 		add_opinion = { modifier = zg361_favored target = root }
+		change_variable = { name = zg361_last_375_n add = 1 }
 	}
 	set_variable = { name = zg361_streak_bottom value = 0 }
 	change_variable = { name = zg361_streak_top add = 1 }
@@ -203,6 +374,9 @@ zg361_grade_375_apply_effect = {
 zg361_grade_35_apply_effect = {
 	add_character_modifier = { modifier = zg361_grade_35 years = 1 }
 	change_merit = minor_merit_gain
+	liege = {
+		change_variable = { name = zg361_last_35_n add = 1 }
+	}
 	set_variable = { name = zg361_streak_top value = 0 }
 	set_variable = { name = zg361_streak_bottom value = 0 }
 	if = {
@@ -217,6 +391,7 @@ zg361_grade_325_apply_effect = {
 	change_merit = medium_merit_loss
 	liege = {
 		add_opinion = { modifier = zg361_poor_review target = root }
+		change_variable = { name = zg361_last_325_n add = 1 }
 	}
 	set_variable = { name = zg361_streak_top value = 0 }
 	change_variable = { name = zg361_streak_bottom add = 1 }
@@ -233,7 +408,7 @@ zg361_grade_325_apply_effect = {
 }
 
 # ============================================================
-# 末位淘汰处理（root = 领主，在分档结算之后调用）
+# 末位淘汰处理（root = 领主，在结算之后调用）
 # ============================================================
 
 zg361_process_elimination_effect = {
@@ -368,7 +543,7 @@ zg361_eliminate_stepdown_effect = {
 	force_step_down_landed_titles = yes
 }
 
-# 降岗留用：merit 扣减 + 降岗 modifier + PIP 重置
+# 降岗留用：merit 扣减 + 降岗 modifier（含减俸 50%）+ PIP 重置
 zg361_eliminate_demote_effect = {
 	debug_log = "ZG361: elimination -> demoted but retained"
 	change_merit = major_merit_loss

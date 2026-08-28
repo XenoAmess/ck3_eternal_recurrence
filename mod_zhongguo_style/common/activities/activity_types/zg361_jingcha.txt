@@ -1,0 +1,167 @@
+﻿# ZhongGuo 361 Style — 京察大计活动
+# 最小可行骨架：首都单阶段集会，全体在任封臣为客；落幕时立即开榜（跑一次完整考核）。
+# 天朝制 replace_gold_cost_by_treasury 会自动把 gold 成本转为国库支出。
+# AI 不主动举办（ai_will_do = 0）：AI 的考核由年度 tick 覆盖，本活动是玩家体验项。
+
+activity_zg361_jingcha = {
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		is_adult = yes
+	}
+
+	can_start_showing_failures_only = {
+		NOT = { is_activity_type_on_cooldown = activity_zg361_jingcha }
+		is_available = yes
+		age >= 16
+		any_vassal = {
+			count >= 3
+			zg361_is_reviewable_vassal_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:host = {
+			is_alive = yes
+			is_imprisoned = no
+			NOT = { is_incapable = yes }
+		}
+	}
+
+	on_invalidated = {
+		scope:host = {
+			trigger_event = activity_system.0330
+		}
+		every_attending_character = {
+			limit = { this != scope:host }
+			trigger_event = activity_system.0331
+		}
+	}
+
+	province_filter = capital
+	ai_province_filter = capital
+
+	max_province_icons = 1
+	allow_zero_guest_invites = no
+	open_invite = yes
+
+	province_description = {
+		desc = zg361_jingcha_province_desc
+	}
+
+	province_score = {
+		add = 10
+	}
+
+	cost = {
+		gold = {
+			value = 150
+		}
+	}
+
+	ui_predicted_cost = {
+		gold = {
+			value = 150
+		}
+	}
+
+	cooldown = { years = 3 }
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		zg361_jingcha_phase = {
+			is_predefined = yes
+			location_source = pickable
+
+			ai_will_do = {
+				value = 30
+			}
+
+			on_phase_active = {
+				if = {
+					limit = { this = scope:host }
+					scope:activity = { progress_activity_phase_after = { months = 1 } }
+				}
+			}
+		}
+	}
+
+	on_start = {
+		debug_log = "ZG361: jingcha assembly started"
+	}
+
+	on_complete = {
+		# 京察落幕：立即开榜
+		scope:host = {
+			zg361_run_review_effect = yes
+		}
+		every_attending_character = {
+			limit = { this != scope:host }
+			change_merit = miniscule_merit_gain
+			add_opinion = { modifier = zg361_jingcha_attended target = scope:host }
+		}
+		debug_log = "ZG361: jingcha assembly concluded"
+	}
+
+	###################
+	# AI VALUES
+	###################
+
+	ai_will_do = {
+		value = 0
+	}
+
+	ai_check_interval = 60
+
+	ai_will_select_province = {
+		value = 10
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+
+	host_intents = {
+		default = reduce_stress_intent
+		intents = { reduce_stress_intent befriend_attendee_intent }
+	}
+
+	guest_intents = {
+		intents = { reduce_stress_intent befriend_attendee_intent }
+		default = reduce_stress_intent
+	}
+
+	can_be_activity_guest = {
+		zg361_is_reviewable_vassal_trigger = yes
+		age >= 16
+		is_available = yes
+		top_liege = scope:host
+	}
+
+	guest_invite_rules = {
+		defaults = {
+			1 = activity_invite_rule_vassals
+		}
+	}
+
+	max_guests = 40
+
+	guest_join_chance = {
+		base = 80
+		base_activity_modifier = yes
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+
+	###################
+	# GRAPHICS
+	###################
+
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/tgp_rice_fields.dds"
+		environment = "environment_travel_bridge"
+		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
+	}
+}

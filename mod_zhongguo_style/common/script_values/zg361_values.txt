@@ -1,11 +1,24 @@
 ﻿# ZhongGuo 361 Style — script values
-# 一期调平衡唯一入口：KPI 公式、分档阈值、奖惩常量、AI 淘汰裁决权重全在本文件。
+# 调平衡唯一入口：KPI 公式、分档阈值、奖惩常量、价值观分、AI 淘汰裁决权重全在本文件。
 
 # ============================================================
 # 可调常量
 # ============================================================
 
-zg361_min_cohort_value = 3					# 考核池小于该人数时不排名（全员 3.5 都不评，只快照）
+zg361_min_cohort_value = 3					# 考核池小于该人数时不排名（全员不评，只快照）
+
+zg361_nomination_score_bonus_value = 30		# 3.75 晋升提名：任命 candidate_score 变量加成
+zg361_promotion_score_bonus_value = 80		# 连续两次 3.75 晋升通道：candidate_score 变量大额加成
+
+zg361_appeal_influence_cost_value = 150		# 申诉互动花费影响力
+zg361_final_appeal_influence_cost_value = 200	# 末位淘汰最后申诉花费（事件内概率写死 40%）
+zg361_wealth_bribe_gold_value = 300			# 散尽家财改判降岗的花费
+
+zg361_kpi_striving_bonus_value = 10			# 玩家封臣"奋发"：下期 KPI 加成
+zg361_kpi_slacking_malus_value = 10			# 玩家封臣"摆烂"：下期 KPI 减成
+zg361_kpi_recommended_bonus_value = 10		# 被举荐：下期 KPI 加成
+zg361_kpi_slandered_malus_value = 15		# 被攻讦：下期 KPI 减成
+zg361_kpi_slander_backfire_malus_value = 15	# 攻讦失败反噬：下期 KPI 减成
 
 # 3.75 绩效奖金（国库，按贤能品级缩放：60 + 品级×15）
 zg361_perf_bonus_scaled_value = {
@@ -15,17 +28,6 @@ zg361_perf_bonus_scaled_value = {
 		multiply = 15
 	}
 }
-
-zg361_nomination_score_bonus_value = 30		# 3.75 晋升提名：任命 candidate_score 变量加成
-zg361_promotion_score_bonus_value = 80		# 连续两次 3.75 晋升通道：candidate_score 变量大额加成
-
-zg361_appeal_influence_cost_value = 150		# 玩家封臣常规申诉花费（翻案概率 30% 写死在事件里）
-
-zg361_final_appeal_influence_cost_value = 200	# 末位淘汰最后申诉花费（改判概率 40% 写死在事件里）
-zg361_wealth_bribe_gold_value = 300			# 散尽家财改判降岗的花费
-
-zg361_kpi_striving_bonus_value = 10			# 玩家封臣"奋发"：明年 KPI 加成
-zg361_kpi_slacking_malus_value = 10			# 玩家封臣"摆烂"：明年 KPI 减成
 
 # ============================================================
 # KPI 公式（root = 被考核封臣）
@@ -82,6 +84,10 @@ zg361_kpi_value = {
 		add = -60
 	}
 	if = {
+		limit = { exists = joined_faction }
+		add = -25
+	}
+	if = {
 		limit = {
 			OR = {
 				has_trait = murderer
@@ -97,7 +103,7 @@ zg361_kpi_value = {
 		add = -15
 	}
 
-	# 玩家封臣自主 flag（上年事件选择）
+	# 人际博弈（上期事件/互动结果，年度快照时清除）
 	if = {
 		limit = { has_variable = zg361_striving }
 		add = zg361_kpi_striving_bonus_value
@@ -108,6 +114,93 @@ zg361_kpi_value = {
 			value = 0
 			subtract = zg361_kpi_slacking_malus_value
 		}
+	}
+	if = {
+		limit = { has_variable = zg361_recommended }
+		add = zg361_kpi_recommended_bonus_value
+	}
+	if = {
+		limit = { has_variable = zg361_slandered }
+		add = {
+			value = 0
+			subtract = zg361_kpi_slandered_malus_value
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_slander_backfire }
+		add = {
+			value = 0
+			subtract = zg361_kpi_slander_backfire_malus_value
+		}
+	}
+}
+
+# ============================================================
+# 价值观分（root = 被考核封臣；双轨制第二轨）
+# ============================================================
+
+zg361_values_score_value = {
+	value = 0
+
+	# 忠诚：封臣对领主好感
+	if = {
+		limit = { opinion = { target = liege value >= 50 } }
+		add = 20
+	}
+	else_if = {
+		limit = { opinion = { target = liege value >= 20 } }
+		add = 10
+	}
+	else_if = {
+		limit = { opinion = { target = liege value <= -50 } }
+		add = -30
+	}
+	else_if = {
+		limit = { opinion = { target = liege value <= -20 } }
+		add = -15
+	}
+
+	# 品性
+	if = {
+		limit = {
+			OR = {
+				has_trait = honest
+				has_trait = trusting
+				has_trait = loyal
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = deceitful
+				has_trait = arbitrary
+				has_trait = callous
+			}
+		}
+		add = -10
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = murderer
+				has_trait = cannibal
+				has_trait = witch
+				has_trait = deviant
+			}
+		}
+		add = -30
+	}
+
+	# 行为红线
+	if = {
+		limit = { is_at_war_with_liege = yes }
+		add = -50
+	}
+	if = {
+		limit = { exists = joined_faction }
+		add = -20
 	}
 }
 
@@ -124,10 +217,46 @@ zg361_top_slots_value = {
 	min = 1
 }
 
-# 末位名额：按游戏规则；刚性模式 cohort >= 5 保底 1
+# 末位名额：领主决议覆盖 > 游戏规则；刚性模式 cohort >= 5 保底 1
 zg361_bottom_slots_value = {
 	value = 0
+
+	# 领主决议覆盖（比例决议写入 var:zg361_ratio_override：10/5/0）
 	if = {
+		limit = {
+			has_variable = zg361_ratio_override
+			var:zg361_ratio_override = 0
+		}
+		value = 0
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ratio_override
+			var:zg361_ratio_override = 5
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.05
+			floor = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_ratio_override
+			var:zg361_ratio_override = 10
+		}
+		add = {
+			value = var:zg361_cohort_n
+			multiply = 0.1
+			floor = yes
+		}
+		if = {
+			limit = { var:zg361_cohort_n >= 5 }
+			min = 1
+		}
+	}
+	# 游戏规则兜底
+	else_if = {
 		limit = { has_game_rule = zg361_ratio_relaxed }
 		add = {
 			value = var:zg361_cohort_n
@@ -142,13 +271,10 @@ zg361_bottom_slots_value = {
 			multiply = 0.1
 			floor = yes
 		}
-	}
-	if = {
-		limit = {
-			has_game_rule = zg361_ratio_strict
-			var:zg361_cohort_n >= 5
+		if = {
+			limit = { var:zg361_cohort_n >= 5 }
+			min = 1
 		}
-		min = 1
 	}
 }
 
@@ -210,6 +336,10 @@ zg361_ai_purge_score_value = {
 	# 忠诚因子
 	if = {
 		limit = { is_at_war_with_liege = yes }
+		add = 80
+	}
+	if = {
+		limit = { exists = joined_faction }
 		add = 80
 	}
 	if = {
