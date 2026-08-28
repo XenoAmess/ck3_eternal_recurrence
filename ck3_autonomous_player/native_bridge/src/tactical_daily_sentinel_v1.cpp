@@ -279,6 +279,18 @@ bool ParseCanonicalPositive(std::string_view token,
          parsed.ptr == token.data() + token.size() && output > 0;
 }
 
+bool ParseCanonicalPositive(std::string_view token,
+                            std::uint64_t &output) noexcept {
+  output = 0;
+  if (token.empty() || token.front() < '1' || token.front() > '9') {
+    return false;
+  }
+  const auto parsed =
+      std::from_chars(token.data(), token.data() + token.size(), output);
+  return parsed.ec == std::errc{} &&
+         parsed.ptr == token.data() + token.size() && output > 0;
+}
+
 bool InitializeRuntime(const Bindings &bindings, TacticalSetPausedV1 set_paused,
                        TacticalDailyOriginalV1 original) noexcept {
   if (!bindings.enabled || bindings.game_state_slot == nullptr ||
@@ -545,6 +557,15 @@ bool ParseTacticalDailySentinelArmStepV1(
   return true;
 }
 
+bool ParseTacticalDailySentinelCancelStepV1(
+    std::string_view step, std::uint64_t &generation) noexcept {
+  generation = 0;
+  return step.starts_with(kTacticalDailySentinelCancelPrefixV1) &&
+         ParseCanonicalPositive(
+             step.substr(kTacticalDailySentinelCancelPrefixV1.size()),
+             generation);
+}
+
 TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
     const TacticalDailySentinelArmRequestV1 &request) noexcept {
   if (!g_runtime_available.load(std::memory_order_acquire)) {
@@ -661,6 +682,41 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
   g_status.state.store(TacticalDailySentinelStateV1::armed,
                        std::memory_order_release);
   return TacticalDailySentinelArmStatusV1::armed;
+}
+
+TacticalDailySentinelCancelStatusV1 CancelTacticalDailySentinelV1(
+    std::uint64_t expected_generation) noexcept {
+  using Result = TacticalDailySentinelCancelStatusV1;
+  if (!g_runtime_available.load(std::memory_order_acquire)) {
+    return Result::unavailable;
+  }
+  if (expected_generation == 0) {
+    return Result::invalid_request;
+  }
+  if (g_status.generation.load(std::memory_order_acquire) !=
+      expected_generation) {
+    return Result::generation_mismatch;
+  }
+  if (g_status.state.load(std::memory_order_acquire) !=
+      TacticalDailySentinelStateV1::armed) {
+    return Result::not_armed;
+  }
+  const bool paused = g_payload.jomini_state != nullptr &&
+                      FaultBoundary([&]() noexcept {
+                        return LoadAt<std::uint8_t>(
+                                   g_payload.jomini_state,
+                                   kJominiPausedOffset) != 0;
+                      });
+  if (!paused) {
+    return Result::requires_paused;
+  }
+  auto expected_state = TacticalDailySentinelStateV1::armed;
+  if (!g_status.state.compare_exchange_strong(
+          expected_state, TacticalDailySentinelStateV1::idle,
+          std::memory_order_acq_rel, std::memory_order_acquire)) {
+    return Result::not_armed;
+  }
+  return Result::canceled;
 }
 
 TacticalDailySentinelStatusV1 ReadTacticalDailySentinelStatusV1() noexcept {

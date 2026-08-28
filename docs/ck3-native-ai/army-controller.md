@@ -497,16 +497,23 @@ flowchart LR
   最迟只会在七日 deadline 后被 Python 发现，因此该 canary 是 bounded sparse-pause probe，不是 exact war-terminal watch，
   也不得据此广告 production readiness。
 - [live-confirmed] canary `20260828T092300Z-one-generation-90d3cf79` 连续完成 `20` 个 speed-3、七日
-  stationary hold，全部由 `date_deadline` 同日停表，成功臂平均 `6.012s`。第 `21` 臂没有观察到语义 invalidation，却在固定
-  `30s` Python wait 内只从 `53266944` 推进到 `53267040`（四日），随后以
-  `timed out before a native sentinel pause` 失败；managed pause cleanup 与进程树回收均 GREEN。report SHA-256
-  `FFFD1158CA25C6F3D2D324C3BC0BAA307D3810D909EDEBE47845952A5E224425`，first-blocker SHA-256
-  `6AF1556A295ACCD2F52D84F9C0C0F710BC98F5D8407DDB0F209120C572EE6E4D`。这是 stationary 长臂 wait envelope
-  不足的真实 harness 故障，不是战争状态或 sentinel stop 语义失败。
-- [implementation-confirmed] 只把 typed stationary `1..7` 日臂的 pause wait 扩为有界 empirical envelope：最慢样本为
-  `30s / 4日 = 7.5s/日`，按“请求日数 + 一日 settle margin”计算，并与用户配置的基础 timeout 取较大值；因此默认
-  `30s`、七日请求得到 `60s` 上限。active-battle、committed-route 与普通短命令继续使用原 timeout。扩窗不放宽最终
-  paused、sentinel status、零 overshoot 或 fresh post-stop scope 验证；到期仍执行原 managed cleanup。
+  stationary hold，全部由 `date_deadline` 同日停表，成功臂平均 `6.012s`。第 `21` 臂在固定 `30s` wait 内停于
+  `53267040`。随后 `20260828T094742Z-one-generation-71e3b7c1` 从同一 durable anchor 重跑：前两臂 GREEN，第三臂即使把
+  wait 扩到 `60s` 仍停在**同一个** `53267040`；该 compact artifact 只证明放大等待不产生进展。专门保留 full driver-state 的
+  `20260828T095310Z-one-generation-e8cec411` 才直接显示 `active_event instance_id=47`、八个选项、公开 `paused=false`，而
+  sentinel 仍是 `armed / completed_daily_ticks=0 / pause_observed=false`；其 report / first-blocker SHA-256 分别为
+  `5514AE3520D210DB5703DC4847F096E400B7703200476AB693BC22B68A960881` /
+  `8C6A264B27744FEA72C85652DAB7EB857B5D0E857E5A9674125A28BA208C4FCA`。两组证据合起来推翻“七日 wait envelope
+  不足”的归因：玩家事件在 daily final-stage hook 之前形成阻塞边界，时间不会因继续等待而推进。第二次 report SHA-256
+  `A8CAB8611E776884EBCFD74E396B61A8931B12AD56D0D7872FC4D2E4D65D1970`，first-blocker SHA-256
+  `2CFA68010F441C8802D3C8D143A3771ED5B44FBCFF640BBAC3B8061741A11523`。
+- [implementation-confirmed] 因此撤销 stationary 专用 `60s` 扩窗并恢复共享 `30s`。composite 把 `active_event` 与
+  `pending_character_interaction` 当作 player-decision boundary：若公开帧未暂停则只显式提交一次 `pause-map`，取得可操作的
+  paused frame 后再提交
+  generation-bound `research-cancel-tactical-daily-sentinel-v1-generation-<generation>`。原生端只在 paused map、同一仍 armed
+  generation 上把状态 CAS 为 `idle`，保留原 generation/date/speed/watch/tick 元数据供 status query 证明；generation 不匹配、
+  未暂停或已非 armed 都拒绝。只有 status 回读同一 generation 的 `idle` 且 decision identity 在 fresh paused snapshot 稳定，
+  composite 才返回事件策略；native fixture 还要求下一次 arm 使用 `generation+1` 成功，不能遗留 `already_armed`。
 
 ```mermaid
 flowchart TD

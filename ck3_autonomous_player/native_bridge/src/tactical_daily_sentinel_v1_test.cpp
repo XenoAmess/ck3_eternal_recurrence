@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <string>
 
 namespace {
@@ -169,6 +170,7 @@ Request(std::int32_t speed, std::int32_t target = 1'072) {
 bool TestParser() {
   using namespace xar::ck3_11906;
   TacticalDailySentinelArmRequestV1 parsed{};
+  std::uint64_t cancel_generation = 0;
   if (!ParseTacticalDailySentinelArmStepV1(
           "research-arm-tactical-daily-sentinel-v1-1000-to-1072-speed-3-a-2-1-"
           "2",
@@ -210,7 +212,21 @@ bool TestParser() {
       parsed.army_ids[63] != 1'000'000'063) {
     return false;
   }
-  return !ParseTacticalDailySentinelArmStepV1(
+  return ParseTacticalDailySentinelCancelStepV1(
+             "research-cancel-tactical-daily-sentinel-v1-generation-"
+             "18446744073709551615",
+             cancel_generation) &&
+         cancel_generation == std::numeric_limits<std::uint64_t>::max() &&
+         !ParseTacticalDailySentinelCancelStepV1(
+             "research-cancel-tactical-daily-sentinel-v1-generation-01",
+             cancel_generation) &&
+         !ParseTacticalDailySentinelCancelStepV1(
+             "research-cancel-tactical-daily-sentinel-v1-generation-0",
+             cancel_generation) &&
+         !ParseTacticalDailySentinelCancelStepV1(
+             "research-cancel-tactical-daily-sentinel-v1-generation-1-x",
+             cancel_generation) &&
+         !ParseTacticalDailySentinelArmStepV1(
              "research-arm-tactical-daily-sentinel-v1-1000-to-1072-speed-6-a-1-"
              "1",
              parsed) &&
@@ -226,6 +242,59 @@ bool TestParser() {
              "research-arm-tactical-daily-sentinel-v1-1000-to-1072-speed-5-"
              "mode-unknown-a-1-1",
              parsed);
+}
+
+bool TestGenerationBoundPausedCancelDisarmsAndAllowsNextArm() {
+  using namespace xar::ck3_11906;
+  WorldFixture world;
+  if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
+      ArmTacticalDailySentinelV1(Request(3)) !=
+          TacticalDailySentinelArmStatusV1::armed) {
+    return false;
+  }
+  const auto armed = ReadTacticalDailySentinelStatusV1();
+  if (armed.state != TacticalDailySentinelStateV1::armed ||
+      armed.generation != 1) {
+    return false;
+  }
+
+  Store(world.jomini, 0x20, std::uint8_t{0});
+  if (CancelTacticalDailySentinelV1(armed.generation) !=
+          TacticalDailySentinelCancelStatusV1::requires_paused ||
+      ReadTacticalDailySentinelStatusV1().state !=
+          TacticalDailySentinelStateV1::armed) {
+    return false;
+  }
+  Store(world.jomini, 0x20, std::uint8_t{1});
+  if (CancelTacticalDailySentinelV1(armed.generation + 1) !=
+          TacticalDailySentinelCancelStatusV1::generation_mismatch ||
+      ReadTacticalDailySentinelStatusV1().state !=
+          TacticalDailySentinelStateV1::armed ||
+      CancelTacticalDailySentinelV1(armed.generation) !=
+          TacticalDailySentinelCancelStatusV1::canceled) {
+    return false;
+  }
+  const auto canceled = ReadTacticalDailySentinelStatusV1();
+  if (canceled.state != TacticalDailySentinelStateV1::idle ||
+      canceled.generation != armed.generation ||
+      canceled.starting_date_raw != armed.starting_date_raw ||
+      canceled.target_date_raw != armed.target_date_raw ||
+      canceled.last_observed_date_raw != armed.last_observed_date_raw ||
+      canceled.speed != armed.speed || canceled.mode != armed.mode ||
+      canceled.army_count != armed.army_count ||
+      canceled.combat_count != armed.combat_count ||
+      canceled.completed_daily_ticks != 0 || canceled.trigger_flags != 0 ||
+      CancelTacticalDailySentinelV1(armed.generation) !=
+          TacticalDailySentinelCancelStatusV1::not_armed) {
+    return false;
+  }
+  if (ArmTacticalDailySentinelV1(Request(5)) !=
+      TacticalDailySentinelArmStatusV1::armed) {
+    return false;
+  }
+  const auto rearmed = ReadTacticalDailySentinelStatusV1();
+  return rearmed.state == TacticalDailySentinelStateV1::armed &&
+         rearmed.generation == armed.generation + 1 && rearmed.speed == 5;
 }
 
 bool TestPausedRearmReplacesStaleArm() {
@@ -630,6 +699,10 @@ int main() {
   }
   if (!TestPausedRearmReplacesStaleArm()) {
     std::cerr << "tactical daily sentinel paused rearm fixture failed\n";
+    return 1;
+  }
+  if (!TestGenerationBoundPausedCancelDisarmsAndAllowsNextArm()) {
+    std::cerr << "tactical daily sentinel cancel fixture failed\n";
     return 1;
   }
   if (!TestAllFiveSpeedsExactDeadline()) {

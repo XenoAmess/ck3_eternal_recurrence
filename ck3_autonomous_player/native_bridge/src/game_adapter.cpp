@@ -372,8 +372,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   }
   if (capability.empty()) {
     ck3_11906::TacticalDailySentinelArmRequestV1 request{};
+    std::uint64_t cancel_generation = 0;
     if (ck3_11906::ParseTacticalDailySentinelArmStepV1(step, request)) {
       capability = ck3_11906::kTacticalDailySentinelCapabilityV1;
+    } else if (ck3_11906::ParseTacticalDailySentinelCancelStepV1(
+                   step, cancel_generation)) {
+      capability = ck3_11906::kTacticalDailySentinelCancelCapabilityV1;
     } else if (step == ck3_11906::kTacticalDailySentinelStatusStepV1) {
       capability = ck3_11906::kTacticalDailySentinelStatusCapabilityV1;
     }

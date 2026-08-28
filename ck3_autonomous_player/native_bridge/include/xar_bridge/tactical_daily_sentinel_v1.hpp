@@ -16,10 +16,14 @@ inline constexpr std::string_view kTacticalDailySentinelCapabilityV1 =
     "game.command.research-arm-tactical-daily-sentinel-v1-N";
 inline constexpr std::string_view kTacticalDailySentinelStatusCapabilityV1 =
     "game.command.research-query-tactical-daily-sentinel-v1";
+inline constexpr std::string_view kTacticalDailySentinelCancelCapabilityV1 =
+    "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N";
 inline constexpr std::string_view kTacticalDailySentinelStatusStepV1 =
     "research-query-tactical-daily-sentinel-v1";
 inline constexpr std::string_view kTacticalDailySentinelArmPrefixV1 =
     "research-arm-tactical-daily-sentinel-v1-";
+inline constexpr std::string_view kTacticalDailySentinelCancelPrefixV1 =
+    "research-cancel-tactical-daily-sentinel-v1-generation-";
 
 inline constexpr std::uintptr_t kDailyTickFinalStageRvaV1 = 0x26D3E80;
 inline constexpr std::uintptr_t kSetPausedWrapperRvaV1 = 0x346B910;
@@ -78,6 +82,15 @@ enum class TacticalDailySentinelArmStatusV1 : std::uint32_t {
   unavailable = 7,
 };
 
+enum class TacticalDailySentinelCancelStatusV1 : std::uint32_t {
+  canceled = 0,
+  invalid_request = 1,
+  requires_paused = 2,
+  generation_mismatch = 3,
+  not_armed = 4,
+  unavailable = 5,
+};
+
 struct TacticalDailySentinelArmRequestV1 {
   std::int32_t starting_date_raw = 0;
   std::int32_t target_date_raw = 0;
@@ -121,8 +134,14 @@ struct TacticalDailySentinelStatusV1 {
 bool ParseTacticalDailySentinelArmStepV1(
     std::string_view step, TacticalDailySentinelArmRequestV1 &request) noexcept;
 
+bool ParseTacticalDailySentinelCancelStepV1(
+    std::string_view step, std::uint64_t &generation) noexcept;
+
 TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
     const TacticalDailySentinelArmRequestV1 &request) noexcept;
+
+TacticalDailySentinelCancelStatusV1 CancelTacticalDailySentinelV1(
+    std::uint64_t expected_generation) noexcept;
 
 TacticalDailySentinelStatusV1 ReadTacticalDailySentinelStatusV1() noexcept;
 

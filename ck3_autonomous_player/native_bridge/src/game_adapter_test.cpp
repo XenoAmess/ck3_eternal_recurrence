@@ -466,7 +466,13 @@ int main() {
           "research-arm-tactical-daily-sentinel-v1-53178264-to-"
           "53178336-speed-5-mode-terminal-a-1-83886341") ||
       !exact_adapter->supports_step(
+          "research-cancel-tactical-daily-sentinel-v1-generation-42") ||
+      !exact_adapter->supports_step(
           "research-query-tactical-daily-sentinel-v1") ||
+      exact_adapter->supports_step(
+          "research-cancel-tactical-daily-sentinel-v1-generation-042") ||
+      exact_adapter->supports_step(
+          "research-cancel-tactical-daily-sentinel-v1-generation-0") ||
       exact_adapter->supports_step(
           "research-arm-tactical-daily-sentinel-v1-53178264-to-"
           "53178336-speed-6-mode-terminal-a-1-83886341") ||

@@ -3020,6 +3020,7 @@ void RunConnectedSession(
         } else {
           xar::ck3_11906::TacticalDailySentinelArmRequestV1
               tactical_sentinel_request{};
+          std::uint64_t tactical_sentinel_cancel_generation = 0;
           if (xar::ck3_11906::ParseTacticalDailySentinelArmStepV1(
                   step, tactical_sentinel_request)) {
             const auto result =
@@ -3049,6 +3050,32 @@ void RunConnectedSession(
                 error = "tactical daily sentinel combat is unavailable";
               } else if (result == ArmStatus::already_armed) {
                 error = "tactical daily sentinel is already armed";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          } else if (xar::ck3_11906::ParseTacticalDailySentinelCancelStepV1(
+                         step, tactical_sentinel_cancel_generation)) {
+            const auto result =
+                xar::ck3_11906::CancelTacticalDailySentinelV1(
+                    tactical_sentinel_cancel_generation);
+            using CancelStatus = xar::ck3_11906::
+                TacticalDailySentinelCancelStatusV1;
+            if (result == CancelStatus::canceled) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, true,
+                                           "canceled"));
+            } else {
+              std::string_view error =
+                  "tactical daily sentinel cancel is unavailable";
+              if (result == CancelStatus::invalid_request) {
+                error = "invalid tactical daily sentinel cancel request";
+              } else if (result == CancelStatus::requires_paused) {
+                error = "tactical daily sentinel cancel requires a paused map";
+              } else if (result == CancelStatus::generation_mismatch) {
+                error = "tactical daily sentinel cancel generation mismatch";
+              } else if (result == CancelStatus::not_armed) {
+                error = "tactical daily sentinel cancel requires an armed generation";
               }
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(request_id, step, false, error));
