@@ -77,3 +77,10 @@ zg361_jingcha_attended = {
 	years = 2
 	decaying = yes
 }
+
+# 抗命不办京察：直属上司对主办义务人
+zg361_refused_jingcha = {
+	opinion = -20
+	years = 3
+	decaying = yes
+}

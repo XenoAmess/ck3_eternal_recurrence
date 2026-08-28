@@ -1,0 +1,148 @@
+﻿namespace = zga_acceptance
+
+# Optional exact-build AI coverage. The initializer only schedules this event
+# when it finds a non-independent celestial liege with at least three direct
+# reviewable governors. As an event, root is that liege (not the player emperor).
+zga_acceptance.1 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = yes
+				is_independent_ruler = no
+				highest_held_title_tier >= tier_duchy
+				zg361_is_celestial_liege_trigger = yes
+				any_vassal = {
+					zg361_is_reviewable_vassal_trigger = yes
+					count >= 3
+				}
+			}
+			every_vassal = {
+				limit = { zg361_is_reviewable_vassal_trigger = yes }
+				remove_variable = zg361_prev_merit_level
+			}
+			zg361_run_review_effect = yes
+			set_variable = { name = zga_ai_missing_snapshot_n value = 0 }
+			every_vassal = {
+				limit = {
+					zg361_is_reviewable_vassal_trigger = yes
+					NOT = { has_variable = zg361_prev_merit_level }
+				}
+				root = {
+					change_variable = { name = zga_ai_missing_snapshot_n add = 1 }
+				}
+			}
+			if = {
+				limit = { var:zga_ai_missing_snapshot_n = 0 }
+				debug_log = "ZGA: TEST PASS ai_non_independent_newcomer_snapshot"
+			}
+			else = { debug_log = "ZGA: TEST FAIL ai_non_independent_newcomer_snapshot" }
+
+			set_variable = { name = zga_ai_serial_before_duplicate value = var:zg361_review_serial }
+			zg361_run_review_effect = yes
+			if = {
+				limit = { var:zg361_review_serial = var:zga_ai_serial_before_duplicate }
+				debug_log = "ZGA: TEST PASS settled_review_same_year_idempotent"
+			}
+			else = { debug_log = "ZGA: TEST FAIL settled_review_same_year_idempotent" }
+			remove_variable = zga_ai_serial_before_duplicate
+			if = {
+				limit = { has_variable = zg361_sb_m_01_char }
+				debug_log = "ZGA: DATA ai_non_independent_scoreboard_row 01"
+			}
+			if = {
+				limit = { has_variable = zg361_sb_m_02_char }
+				debug_log = "ZGA: DATA ai_non_independent_scoreboard_row 02"
+			}
+			if = {
+				limit = { has_variable = zg361_sb_m_03_char }
+				debug_log = "ZGA: DATA ai_non_independent_scoreboard_row 03"
+			}
+			if = {
+				limit = {
+					has_variable = zg361_sb_m_01_char
+					has_variable = zg361_sb_m_02_char
+					has_variable = zg361_sb_m_03_char
+					var:zg361_scoreboard_managed_n >= 3
+					var:zg361_scoreboard_managed_n = var:zg361_cohort_n
+				}
+				debug_log = "ZGA: TEST PASS ai_non_independent_full_review"
+			}
+			else = { debug_log = "ZGA: TEST FAIL ai_non_independent_full_review" }
+		}
+		else = { debug_log = "ZGA: TEST FAIL ai_non_independent_review_entry" }
+	}
+}
+
+# Runs after set_player_character has committed, so the reviewer is genuinely AI
+# and the marked direct official is genuinely the human player when production
+# zg361_apply_grade_effect decides whether to schedule a personal result event.
+zga_acceptance.2 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		random_vassal = {
+			limit = {
+				has_character_flag = zga_personal_result_target
+				is_ai = no
+			}
+			save_scope_as = zga_personal_result_target
+			remove_character_flag = zga_personal_result_target
+		}
+		if = {
+			limit = {
+				is_ai = yes
+			exists = scope:zga_personal_result_target
+				scope:zga_personal_result_target = {
+					liege = root
+				}
+			}
+			# Fixture-only next-cycle precondition: this reviewer already settled
+			# earlier in the same date. Only the yearly gate is advanced here.
+			remove_variable = zg361_last_settled_year
+			zg361_run_review_effect = yes
+			if = {
+				limit = {
+						scope:zga_personal_result_target = {
+							is_ai = no
+							has_variable = zg361_last_grade
+							var:zg361_last_grade = 1
+							zg361_is_current_liege_review_record_trigger = yes
+							has_character_modifier = zg361_grade_325
+							has_character_modifier = zg361_pip
+							NOT = { has_variable = zg361_skipped_jingcha_superior }
+							NOT = { has_variable = zg361_skipped_jingcha_year }
+						}
+					}
+					debug_log = "ZGA: TEST PASS superior_assigned_player_grade"
+					debug_log = "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior"
+			}
+			else = { debug_log = "ZGA: TEST FAIL superior_assigned_player_grade" }
+		}
+		else = { debug_log = "ZGA: TEST FAIL superior_review_state_after_switch" }
+	}
+}
+
+# Scheduled by the fixture's Jingcha acceptance decision. It only supplies the
+# external precondition (switch request); the product still computes, assigns,
+# snapshots and presents the superior's real grade.
+zga_acceptance.3 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = zga_player_review_verified
+				NOT = { has_character_flag = zga_personal_result_pending }
+			}
+			add_character_flag = zga_personal_result_pending
+			debug_log = "ZGA: TEST PASS personal_result_switch_scheduled"
+		}
+		else = { debug_log = "ZGA: TEST FAIL personal_result_switch_schedule" }
+	}
+}

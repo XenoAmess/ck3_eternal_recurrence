@@ -1,0 +1,30 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+zg361_org_high_trust = {
+	direct_vassal_opinion = 5
+	monthly_prestige = 0.2
+}
+
+zg361_org_admin_overload = {
+	stewardship = -1
+	stress_gain_mult = 0.1
+}
+
+zg361_org_burnout_crisis = {
+	diplomacy = -1
+	stress_gain_mult = 0.25
+}
+
+zg361_org_delivery_stable = {
+	stewardship = 1
+	monthly_prestige = 0.1
+}
+
+zg361_org_tech_debt_crisis = {
+	stewardship = -1
+	learning = -1
+}
+
+zg361_org_talent_healthy = {
+	diplomacy = 1
+	stress_gain_mult = -0.05
+}

@@ -1,0 +1,5463 @@
+﻿# GENERATED FILE — edit tools/gen_zhongguo_acceptance_cases.py
+# External fixture assertions only; every state transition under test lives in the product.
+
+zga_verify_361_mechanism_batch_effect = {
+	debug_log = "ZGA: MECHANISM BATCH BEGIN 361"
+	zg361_adopt_reference_charter_effect = yes
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_001_choice
+			var:zg361_mechanism_001_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 001"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 001" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_002_choice
+			var:zg361_mechanism_002_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 002"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 002" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_003_choice
+			var:zg361_mechanism_003_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 003"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 003" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_004_choice
+			var:zg361_mechanism_004_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 004"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 004" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_005_choice
+			var:zg361_mechanism_005_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 005"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 005" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_006_choice
+			var:zg361_mechanism_006_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 006"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 006" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_007_choice
+			var:zg361_mechanism_007_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 007"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 007" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_008_choice
+			var:zg361_mechanism_008_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 008"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 008" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_009_choice
+			var:zg361_mechanism_009_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 009"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 009" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_010_choice
+			var:zg361_mechanism_010_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 010"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 010" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_011_choice
+			var:zg361_mechanism_011_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 011"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 011" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_012_choice
+			var:zg361_mechanism_012_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 012"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 012" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_013_choice
+			var:zg361_mechanism_013_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 013"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 013" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_014_choice
+			var:zg361_mechanism_014_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 014"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 014" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_015_choice
+			var:zg361_mechanism_015_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 015"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 015" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_016_choice
+			var:zg361_mechanism_016_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 016"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 016" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_017_choice
+			var:zg361_mechanism_017_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 017"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 017" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_018_choice
+			var:zg361_mechanism_018_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 018"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 018" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_019_choice
+			var:zg361_mechanism_019_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 019"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 019" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_020_choice
+			var:zg361_mechanism_020_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 020"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 020" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_021_choice
+			var:zg361_mechanism_021_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 021"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 021" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_022_choice
+			var:zg361_mechanism_022_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 022"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 022" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_023_choice
+			var:zg361_mechanism_023_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 023"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 023" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_024_choice
+			var:zg361_mechanism_024_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 024"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 024" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_025_choice
+			var:zg361_mechanism_025_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 025"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 025" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_026_choice
+			var:zg361_mechanism_026_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 026"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 026" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_027_choice
+			var:zg361_mechanism_027_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 027"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 027" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_028_choice
+			var:zg361_mechanism_028_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 028"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 028" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_029_choice
+			var:zg361_mechanism_029_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 029"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 029" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_030_choice
+			var:zg361_mechanism_030_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 030"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 030" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_031_choice
+			var:zg361_mechanism_031_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 031"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 031" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_032_choice
+			var:zg361_mechanism_032_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 032"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 032" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_033_choice
+			var:zg361_mechanism_033_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 033"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 033" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_034_choice
+			var:zg361_mechanism_034_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 034"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 034" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_035_choice
+			var:zg361_mechanism_035_choice = 2
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 035"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 035" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_036_choice
+			var:zg361_mechanism_036_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 036"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 036" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_037_choice
+			var:zg361_mechanism_037_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 037"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 037" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_038_choice
+			var:zg361_mechanism_038_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 038"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 038" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_039_choice
+			var:zg361_mechanism_039_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 039"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 039" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_040_choice
+			var:zg361_mechanism_040_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 040"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 040" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_041_choice
+			var:zg361_mechanism_041_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 041"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 041" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_042_choice
+			var:zg361_mechanism_042_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 042"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 042" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_043_choice
+			var:zg361_mechanism_043_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 043"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 043" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_044_choice
+			var:zg361_mechanism_044_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 044"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 044" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_045_choice
+			var:zg361_mechanism_045_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 045"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 045" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_046_choice
+			var:zg361_mechanism_046_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 046"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 046" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_047_choice
+			var:zg361_mechanism_047_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 047"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 047" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_048_choice
+			var:zg361_mechanism_048_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 048"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 048" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_049_choice
+			var:zg361_mechanism_049_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 049"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 049" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_050_choice
+			var:zg361_mechanism_050_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 050"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 050" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_051_choice
+			var:zg361_mechanism_051_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 051"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 051" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_052_choice
+			var:zg361_mechanism_052_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 052"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 052" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_053_choice
+			var:zg361_mechanism_053_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 053"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 053" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_054_choice
+			var:zg361_mechanism_054_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 054"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 054" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_055_choice
+			var:zg361_mechanism_055_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 055"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 055" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_056_choice
+			var:zg361_mechanism_056_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 056"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 056" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_057_choice
+			var:zg361_mechanism_057_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 057"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 057" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_058_choice
+			var:zg361_mechanism_058_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 058"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 058" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_059_choice
+			var:zg361_mechanism_059_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 059"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 059" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_060_choice
+			var:zg361_mechanism_060_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 060"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 060" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_061_choice
+			var:zg361_mechanism_061_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 061"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 061" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_062_choice
+			var:zg361_mechanism_062_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 062"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 062" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_063_choice
+			var:zg361_mechanism_063_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 063"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 063" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_064_choice
+			var:zg361_mechanism_064_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 064"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 064" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_065_choice
+			var:zg361_mechanism_065_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 065"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 065" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_066_choice
+			var:zg361_mechanism_066_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 066"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 066" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_067_choice
+			var:zg361_mechanism_067_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 067"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 067" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_068_choice
+			var:zg361_mechanism_068_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 068"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 068" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_069_choice
+			var:zg361_mechanism_069_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 069"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 069" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_070_choice
+			var:zg361_mechanism_070_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 070"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 070" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_071_choice
+			var:zg361_mechanism_071_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 071"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 071" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_072_choice
+			var:zg361_mechanism_072_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 072"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 072" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_073_choice
+			var:zg361_mechanism_073_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 073"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 073" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_074_choice
+			var:zg361_mechanism_074_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 074"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 074" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_075_choice
+			var:zg361_mechanism_075_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 075"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 075" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_076_choice
+			var:zg361_mechanism_076_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 076"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 076" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_077_choice
+			var:zg361_mechanism_077_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 077"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 077" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_078_choice
+			var:zg361_mechanism_078_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 078"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 078" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_079_choice
+			var:zg361_mechanism_079_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 079"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 079" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_080_choice
+			var:zg361_mechanism_080_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 080"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 080" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_081_choice
+			var:zg361_mechanism_081_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 081"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 081" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_082_choice
+			var:zg361_mechanism_082_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 082"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 082" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_083_choice
+			var:zg361_mechanism_083_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 083"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 083" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_084_choice
+			var:zg361_mechanism_084_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 084"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 084" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_085_choice
+			var:zg361_mechanism_085_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 085"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 085" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_086_choice
+			var:zg361_mechanism_086_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 086"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 086" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_087_choice
+			var:zg361_mechanism_087_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 087"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 087" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_088_choice
+			var:zg361_mechanism_088_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 088"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 088" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_089_choice
+			var:zg361_mechanism_089_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 089"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 089" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_090_choice
+			var:zg361_mechanism_090_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 090"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 090" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_091_choice
+			var:zg361_mechanism_091_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 091"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 091" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_092_choice
+			var:zg361_mechanism_092_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 092"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 092" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_093_choice
+			var:zg361_mechanism_093_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 093"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 093" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_094_choice
+			var:zg361_mechanism_094_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 094"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 094" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_095_choice
+			var:zg361_mechanism_095_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 095"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 095" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_096_choice
+			var:zg361_mechanism_096_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 096"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 096" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_097_choice
+			var:zg361_mechanism_097_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 097"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 097" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_098_choice
+			var:zg361_mechanism_098_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 098"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 098" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_099_choice
+			var:zg361_mechanism_099_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 099"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 099" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_100_choice
+			var:zg361_mechanism_100_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 100"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 100" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_101_choice
+			var:zg361_mechanism_101_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 101"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 101" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_102_choice
+			var:zg361_mechanism_102_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 102"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 102" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_103_choice
+			var:zg361_mechanism_103_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 103"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 103" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_104_choice
+			var:zg361_mechanism_104_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 104"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 104" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_105_choice
+			var:zg361_mechanism_105_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 105"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 105" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_106_choice
+			var:zg361_mechanism_106_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 106"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 106" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_107_choice
+			var:zg361_mechanism_107_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 107"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 107" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_108_choice
+			var:zg361_mechanism_108_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 108"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 108" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_109_choice
+			var:zg361_mechanism_109_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 109"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 109" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_110_choice
+			var:zg361_mechanism_110_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 110"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 110" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_111_choice
+			var:zg361_mechanism_111_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 111"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 111" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_112_choice
+			var:zg361_mechanism_112_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 112"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 112" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_113_choice
+			var:zg361_mechanism_113_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 113"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 113" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_114_choice
+			var:zg361_mechanism_114_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 114"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 114" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_115_choice
+			var:zg361_mechanism_115_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 115"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 115" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_116_choice
+			var:zg361_mechanism_116_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 116"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 116" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_117_choice
+			var:zg361_mechanism_117_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 117"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 117" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_118_choice
+			var:zg361_mechanism_118_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 118"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 118" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_119_choice
+			var:zg361_mechanism_119_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 119"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 119" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_120_choice
+			var:zg361_mechanism_120_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 120"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 120" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_121_choice
+			var:zg361_mechanism_121_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 121"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 121" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_122_choice
+			var:zg361_mechanism_122_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 122"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 122" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_123_choice
+			var:zg361_mechanism_123_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 123"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 123" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_124_choice
+			var:zg361_mechanism_124_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 124"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 124" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_125_choice
+			var:zg361_mechanism_125_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 125"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 125" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_126_choice
+			var:zg361_mechanism_126_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 126"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 126" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_127_choice
+			var:zg361_mechanism_127_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 127"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 127" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_128_choice
+			var:zg361_mechanism_128_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 128"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 128" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_129_choice
+			var:zg361_mechanism_129_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 129"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 129" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_130_choice
+			var:zg361_mechanism_130_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 130"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 130" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_131_choice
+			var:zg361_mechanism_131_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 131"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 131" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_132_choice
+			var:zg361_mechanism_132_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 132"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 132" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_133_choice
+			var:zg361_mechanism_133_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 133"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 133" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_134_choice
+			var:zg361_mechanism_134_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 134"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 134" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_135_choice
+			var:zg361_mechanism_135_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 135"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 135" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_136_choice
+			var:zg361_mechanism_136_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 136"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 136" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_137_choice
+			var:zg361_mechanism_137_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 137"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 137" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_138_choice
+			var:zg361_mechanism_138_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 138"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 138" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_139_choice
+			var:zg361_mechanism_139_choice = 2
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 139"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 139" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_140_choice
+			var:zg361_mechanism_140_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 140"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 140" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_141_choice
+			var:zg361_mechanism_141_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 141"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 141" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_142_choice
+			var:zg361_mechanism_142_choice = 2
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 142"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 142" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_143_choice
+			var:zg361_mechanism_143_choice = 2
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 143"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 143" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_144_choice
+			var:zg361_mechanism_144_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 144"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 144" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_145_choice
+			var:zg361_mechanism_145_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 145"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 145" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_146_choice
+			var:zg361_mechanism_146_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 146"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 146" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_147_choice
+			var:zg361_mechanism_147_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 147"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 147" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_148_choice
+			var:zg361_mechanism_148_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 148"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 148" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_149_choice
+			var:zg361_mechanism_149_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 149"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 149" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_150_choice
+			var:zg361_mechanism_150_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 150"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 150" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_151_choice
+			var:zg361_mechanism_151_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 151"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 151" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_152_choice
+			var:zg361_mechanism_152_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 152"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 152" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_153_choice
+			var:zg361_mechanism_153_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 153"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 153" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_154_choice
+			var:zg361_mechanism_154_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 154"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 154" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_155_choice
+			var:zg361_mechanism_155_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 155"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 155" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_156_choice
+			var:zg361_mechanism_156_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 156"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 156" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_157_choice
+			var:zg361_mechanism_157_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 157"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 157" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_158_choice
+			var:zg361_mechanism_158_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 158"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 158" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_159_choice
+			var:zg361_mechanism_159_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 159"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 159" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_160_choice
+			var:zg361_mechanism_160_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 160"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 160" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_161_choice
+			var:zg361_mechanism_161_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 161"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 161" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_162_choice
+			var:zg361_mechanism_162_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 162"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 162" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_163_choice
+			var:zg361_mechanism_163_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 163"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 163" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_164_choice
+			var:zg361_mechanism_164_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 164"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 164" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_165_choice
+			var:zg361_mechanism_165_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 165"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 165" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_166_choice
+			var:zg361_mechanism_166_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 166"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 166" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_167_choice
+			var:zg361_mechanism_167_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 167"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 167" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_168_choice
+			var:zg361_mechanism_168_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 168"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 168" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_169_choice
+			var:zg361_mechanism_169_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 169"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 169" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_170_choice
+			var:zg361_mechanism_170_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 170"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 170" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_171_choice
+			var:zg361_mechanism_171_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 171"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 171" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_172_choice
+			var:zg361_mechanism_172_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 172"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 172" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_173_choice
+			var:zg361_mechanism_173_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 173"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 173" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_174_choice
+			var:zg361_mechanism_174_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 174"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 174" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_175_choice
+			var:zg361_mechanism_175_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 175"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 175" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_176_choice
+			var:zg361_mechanism_176_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 176"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 176" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_177_choice
+			var:zg361_mechanism_177_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 177"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 177" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_178_choice
+			var:zg361_mechanism_178_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 178"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 178" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_179_choice
+			var:zg361_mechanism_179_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 179"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 179" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_180_choice
+			var:zg361_mechanism_180_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 180"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 180" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_181_choice
+			var:zg361_mechanism_181_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 181"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 181" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_182_choice
+			var:zg361_mechanism_182_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 182"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 182" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_183_choice
+			var:zg361_mechanism_183_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 183"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 183" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_184_choice
+			var:zg361_mechanism_184_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 184"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 184" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_185_choice
+			var:zg361_mechanism_185_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 185"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 185" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_186_choice
+			var:zg361_mechanism_186_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 186"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 186" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_187_choice
+			var:zg361_mechanism_187_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 187"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 187" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_188_choice
+			var:zg361_mechanism_188_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 188"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 188" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_189_choice
+			var:zg361_mechanism_189_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 189"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 189" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_190_choice
+			var:zg361_mechanism_190_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 190"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 190" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_191_choice
+			var:zg361_mechanism_191_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 191"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 191" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_192_choice
+			var:zg361_mechanism_192_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 192"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 192" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_193_choice
+			var:zg361_mechanism_193_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 193"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 193" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_194_choice
+			var:zg361_mechanism_194_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 194"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 194" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_195_choice
+			var:zg361_mechanism_195_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 195"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 195" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_196_choice
+			var:zg361_mechanism_196_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 196"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 196" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_197_choice
+			var:zg361_mechanism_197_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 197"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 197" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_198_choice
+			var:zg361_mechanism_198_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 198"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 198" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_199_choice
+			var:zg361_mechanism_199_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 199"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 199" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_200_choice
+			var:zg361_mechanism_200_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 200"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 200" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_201_choice
+			var:zg361_mechanism_201_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 201"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 201" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_202_choice
+			var:zg361_mechanism_202_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 202"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 202" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_203_choice
+			var:zg361_mechanism_203_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 203"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 203" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_204_choice
+			var:zg361_mechanism_204_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 204"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 204" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_205_choice
+			var:zg361_mechanism_205_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 205"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 205" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_206_choice
+			var:zg361_mechanism_206_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 206"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 206" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_207_choice
+			var:zg361_mechanism_207_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 207"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 207" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_208_choice
+			var:zg361_mechanism_208_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 208"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 208" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_209_choice
+			var:zg361_mechanism_209_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 209"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 209" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_210_choice
+			var:zg361_mechanism_210_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 210"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 210" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_211_choice
+			var:zg361_mechanism_211_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 211"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 211" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_212_choice
+			var:zg361_mechanism_212_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 212"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 212" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_213_choice
+			var:zg361_mechanism_213_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 213"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 213" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_214_choice
+			var:zg361_mechanism_214_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 214"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 214" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_215_choice
+			var:zg361_mechanism_215_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 215"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 215" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_216_choice
+			var:zg361_mechanism_216_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 216"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 216" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_217_choice
+			var:zg361_mechanism_217_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 217"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 217" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_218_choice
+			var:zg361_mechanism_218_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 218"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 218" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_219_choice
+			var:zg361_mechanism_219_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 219"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 219" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_220_choice
+			var:zg361_mechanism_220_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 220"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 220" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_221_choice
+			var:zg361_mechanism_221_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 221"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 221" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_222_choice
+			var:zg361_mechanism_222_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 222"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 222" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_223_choice
+			var:zg361_mechanism_223_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 223"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 223" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_224_choice
+			var:zg361_mechanism_224_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 224"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 224" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_225_choice
+			var:zg361_mechanism_225_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 225"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 225" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_226_choice
+			var:zg361_mechanism_226_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 226"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 226" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_227_choice
+			var:zg361_mechanism_227_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 227"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 227" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_228_choice
+			var:zg361_mechanism_228_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 228"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 228" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_229_choice
+			var:zg361_mechanism_229_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 229"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 229" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_230_choice
+			var:zg361_mechanism_230_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 230"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 230" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_231_choice
+			var:zg361_mechanism_231_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 231"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 231" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_232_choice
+			var:zg361_mechanism_232_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 232"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 232" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_233_choice
+			var:zg361_mechanism_233_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 233"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 233" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_234_choice
+			var:zg361_mechanism_234_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 234"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 234" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_235_choice
+			var:zg361_mechanism_235_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 235"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 235" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_236_choice
+			var:zg361_mechanism_236_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 236"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 236" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_237_choice
+			var:zg361_mechanism_237_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 237"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 237" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_238_choice
+			var:zg361_mechanism_238_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 238"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 238" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_239_choice
+			var:zg361_mechanism_239_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 239"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 239" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_240_choice
+			var:zg361_mechanism_240_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 240"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 240" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_241_choice
+			var:zg361_mechanism_241_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 241"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 241" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_242_choice
+			var:zg361_mechanism_242_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 242"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 242" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_243_choice
+			var:zg361_mechanism_243_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 243"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 243" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_244_choice
+			var:zg361_mechanism_244_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 244"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 244" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_245_choice
+			var:zg361_mechanism_245_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 245"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 245" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_246_choice
+			var:zg361_mechanism_246_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 246"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 246" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_247_choice
+			var:zg361_mechanism_247_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 247"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 247" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_248_choice
+			var:zg361_mechanism_248_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 248"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 248" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_249_choice
+			var:zg361_mechanism_249_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 249"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 249" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_250_choice
+			var:zg361_mechanism_250_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 250"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 250" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_251_choice
+			var:zg361_mechanism_251_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 251"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 251" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_252_choice
+			var:zg361_mechanism_252_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 252"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 252" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_253_choice
+			var:zg361_mechanism_253_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 253"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 253" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_254_choice
+			var:zg361_mechanism_254_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 254"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 254" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_255_choice
+			var:zg361_mechanism_255_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 255"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 255" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_256_choice
+			var:zg361_mechanism_256_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 256"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 256" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_257_choice
+			var:zg361_mechanism_257_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 257"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 257" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_258_choice
+			var:zg361_mechanism_258_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 258"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 258" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_259_choice
+			var:zg361_mechanism_259_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 259"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 259" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_260_choice
+			var:zg361_mechanism_260_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 260"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 260" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_261_choice
+			var:zg361_mechanism_261_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 261"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 261" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_262_choice
+			var:zg361_mechanism_262_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 262"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 262" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_263_choice
+			var:zg361_mechanism_263_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 263"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 263" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_264_choice
+			var:zg361_mechanism_264_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 264"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 264" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_265_choice
+			var:zg361_mechanism_265_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 265"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 265" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_266_choice
+			var:zg361_mechanism_266_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 266"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 266" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_267_choice
+			var:zg361_mechanism_267_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 267"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 267" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_268_choice
+			var:zg361_mechanism_268_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 268"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 268" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_269_choice
+			var:zg361_mechanism_269_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 269"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 269" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_270_choice
+			var:zg361_mechanism_270_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 270"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 270" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_271_choice
+			var:zg361_mechanism_271_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 271"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 271" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_272_choice
+			var:zg361_mechanism_272_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 272"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 272" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_273_choice
+			var:zg361_mechanism_273_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 273"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 273" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_274_choice
+			var:zg361_mechanism_274_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 274"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 274" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_275_choice
+			var:zg361_mechanism_275_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 275"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 275" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_276_choice
+			var:zg361_mechanism_276_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 276"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 276" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_277_choice
+			var:zg361_mechanism_277_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 277"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 277" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_278_choice
+			var:zg361_mechanism_278_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 278"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 278" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_279_choice
+			var:zg361_mechanism_279_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 279"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 279" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_280_choice
+			var:zg361_mechanism_280_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 280"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 280" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_281_choice
+			var:zg361_mechanism_281_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 281"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 281" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_282_choice
+			var:zg361_mechanism_282_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 282"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 282" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_283_choice
+			var:zg361_mechanism_283_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 283"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 283" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_284_choice
+			var:zg361_mechanism_284_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 284"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 284" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_285_choice
+			var:zg361_mechanism_285_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 285"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 285" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_286_choice
+			var:zg361_mechanism_286_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 286"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 286" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_287_choice
+			var:zg361_mechanism_287_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 287"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 287" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_288_choice
+			var:zg361_mechanism_288_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 288"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 288" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_289_choice
+			var:zg361_mechanism_289_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 289"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 289" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_290_choice
+			var:zg361_mechanism_290_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 290"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 290" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_291_choice
+			var:zg361_mechanism_291_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 291"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 291" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_292_choice
+			var:zg361_mechanism_292_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 292"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 292" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_293_choice
+			var:zg361_mechanism_293_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 293"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 293" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_294_choice
+			var:zg361_mechanism_294_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 294"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 294" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_295_choice
+			var:zg361_mechanism_295_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 295"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 295" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_296_choice
+			var:zg361_mechanism_296_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 296"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 296" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_297_choice
+			var:zg361_mechanism_297_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 297"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 297" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_298_choice
+			var:zg361_mechanism_298_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 298"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 298" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_299_choice
+			var:zg361_mechanism_299_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 299"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 299" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_300_choice
+			var:zg361_mechanism_300_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 300"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 300" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_301_choice
+			var:zg361_mechanism_301_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 301"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 301" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_302_choice
+			var:zg361_mechanism_302_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 302"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 302" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_303_choice
+			var:zg361_mechanism_303_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 303"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 303" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_304_choice
+			var:zg361_mechanism_304_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 304"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 304" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_305_choice
+			var:zg361_mechanism_305_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 305"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 305" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_306_choice
+			var:zg361_mechanism_306_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 306"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 306" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_307_choice
+			var:zg361_mechanism_307_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 307"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 307" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_308_choice
+			var:zg361_mechanism_308_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 308"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 308" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_309_choice
+			var:zg361_mechanism_309_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 309"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 309" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_310_choice
+			var:zg361_mechanism_310_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 310"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 310" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_311_choice
+			var:zg361_mechanism_311_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 311"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 311" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_312_choice
+			var:zg361_mechanism_312_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 312"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 312" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_313_choice
+			var:zg361_mechanism_313_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 313"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 313" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_314_choice
+			var:zg361_mechanism_314_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 314"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 314" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_315_choice
+			var:zg361_mechanism_315_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 315"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 315" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_316_choice
+			var:zg361_mechanism_316_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 316"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 316" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_317_choice
+			var:zg361_mechanism_317_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 317"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 317" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_318_choice
+			var:zg361_mechanism_318_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 318"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 318" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_319_choice
+			var:zg361_mechanism_319_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 319"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 319" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_320_choice
+			var:zg361_mechanism_320_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 320"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 320" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_321_choice
+			var:zg361_mechanism_321_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 321"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 321" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_322_choice
+			var:zg361_mechanism_322_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 322"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 322" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_323_choice
+			var:zg361_mechanism_323_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 323"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 323" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_324_choice
+			var:zg361_mechanism_324_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 324"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 324" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_325_choice
+			var:zg361_mechanism_325_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 325"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 325" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_326_choice
+			var:zg361_mechanism_326_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 326"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 326" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_327_choice
+			var:zg361_mechanism_327_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 327"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 327" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_328_choice
+			var:zg361_mechanism_328_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 328"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 328" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_329_choice
+			var:zg361_mechanism_329_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 329"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 329" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_330_choice
+			var:zg361_mechanism_330_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 330"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 330" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_331_choice
+			var:zg361_mechanism_331_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 331"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 331" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_332_choice
+			var:zg361_mechanism_332_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 332"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 332" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_333_choice
+			var:zg361_mechanism_333_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 333"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 333" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_334_choice
+			var:zg361_mechanism_334_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 334"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 334" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_335_choice
+			var:zg361_mechanism_335_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 335"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 335" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_336_choice
+			var:zg361_mechanism_336_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 336"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 336" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_337_choice
+			var:zg361_mechanism_337_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 337"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 337" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_338_choice
+			var:zg361_mechanism_338_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 338"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 338" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_339_choice
+			var:zg361_mechanism_339_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 339"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 339" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_340_choice
+			var:zg361_mechanism_340_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 340"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 340" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_341_choice
+			var:zg361_mechanism_341_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 341"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 341" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_342_choice
+			var:zg361_mechanism_342_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 342"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 342" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_343_choice
+			var:zg361_mechanism_343_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 343"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 343" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_344_choice
+			var:zg361_mechanism_344_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 344"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 344" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_345_choice
+			var:zg361_mechanism_345_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 345"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 345" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_346_choice
+			var:zg361_mechanism_346_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 346"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 346" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_347_choice
+			var:zg361_mechanism_347_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 347"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 347" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_348_choice
+			var:zg361_mechanism_348_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 348"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 348" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_349_choice
+			var:zg361_mechanism_349_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 349"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 349" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_350_choice
+			var:zg361_mechanism_350_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 350"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 350" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_351_choice
+			var:zg361_mechanism_351_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 351"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 351" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_352_choice
+			var:zg361_mechanism_352_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 352"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 352" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_353_choice
+			var:zg361_mechanism_353_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 353"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 353" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_354_choice
+			var:zg361_mechanism_354_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 354"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 354" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_355_choice
+			var:zg361_mechanism_355_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 355"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 355" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_356_choice
+			var:zg361_mechanism_356_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 356"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 356" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_357_choice
+			var:zg361_mechanism_357_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 357"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 357" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_358_choice
+			var:zg361_mechanism_358_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 358"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 358" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_359_choice
+			var:zg361_mechanism_359_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 359"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 359" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_360_choice
+			var:zg361_mechanism_360_choice = 3
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 360"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 360" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_361_choice
+			var:zg361_mechanism_361_choice = 1
+		}
+		debug_log = "ZGA: MECHANISM CASE PASS 361"
+	}
+	else = { debug_log = "ZGA: MECHANISM CASE FAIL 361" }
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_configured_n
+			var:zg361_mechanism_configured_n = 361
+			has_variable = zg361_mechanism_checksum
+			var:zg361_mechanism_checksum = 76792
+			has_variable = zg361_org_evidence
+			var:zg361_org_evidence = 260
+			has_variable = zg361_org_trust
+			var:zg361_org_trust = 347
+			has_variable = zg361_org_admin_load
+			var:zg361_org_admin_load = 355
+			has_variable = zg361_org_appeal_risk
+			var:zg361_org_appeal_risk = -110
+			has_variable = zg361_org_delivery
+			var:zg361_org_delivery = -23
+			has_variable = zg361_org_stability
+			var:zg361_org_stability = 85
+			has_variable = zg361_org_tech_debt
+			var:zg361_org_tech_debt = -62
+			has_variable = zg361_org_data_quality
+			var:zg361_org_data_quality = 106
+			has_variable = zg361_org_burnout
+			var:zg361_org_burnout = -53
+			has_variable = zg361_org_talent
+			var:zg361_org_talent = 277
+			has_variable = zg361_org_hc_pressure
+			var:zg361_org_hc_pressure = -13
+			has_variable = zg361_org_pay_debt
+			var:zg361_org_pay_debt = -99
+			has_variable = zg361_org_policy_debt
+			var:zg361_org_policy_debt = 94
+			has_variable = zg361_org_budget_pressure
+			var:zg361_org_budget_pressure = 185
+		}
+		debug_log = "ZGA: MECHANISM LEDGER PASS"
+	}
+	else = { debug_log = "ZGA: MECHANISM LEDGER FAIL" }
+
+	# Reapplying the turnkey charter must be a complete no-op.
+	zg361_adopt_reference_charter_effect = yes
+	if = {
+		limit = {
+			has_variable = zg361_mechanism_configured_n
+			var:zg361_mechanism_configured_n = 361
+			has_variable = zg361_mechanism_checksum
+			var:zg361_mechanism_checksum = 76792
+			has_variable = zg361_org_evidence
+			var:zg361_org_evidence = 260
+			has_variable = zg361_org_trust
+			var:zg361_org_trust = 347
+			has_variable = zg361_org_admin_load
+			var:zg361_org_admin_load = 355
+			has_variable = zg361_org_appeal_risk
+			var:zg361_org_appeal_risk = -110
+			has_variable = zg361_org_delivery
+			var:zg361_org_delivery = -23
+			has_variable = zg361_org_stability
+			var:zg361_org_stability = 85
+			has_variable = zg361_org_tech_debt
+			var:zg361_org_tech_debt = -62
+			has_variable = zg361_org_data_quality
+			var:zg361_org_data_quality = 106
+			has_variable = zg361_org_burnout
+			var:zg361_org_burnout = -53
+			has_variable = zg361_org_talent
+			var:zg361_org_talent = 277
+			has_variable = zg361_org_hc_pressure
+			var:zg361_org_hc_pressure = -13
+			has_variable = zg361_org_pay_debt
+			var:zg361_org_pay_debt = -99
+			has_variable = zg361_org_policy_debt
+			var:zg361_org_policy_debt = 94
+			has_variable = zg361_org_budget_pressure
+			var:zg361_org_budget_pressure = 185
+		}
+		debug_log = "ZGA: MECHANISM IDEMPOTENCE PASS"
+	}
+	else = { debug_log = "ZGA: MECHANISM IDEMPOTENCE FAIL" }
+	debug_log = "ZGA: MECHANISM BATCH DONE 361"
+}
+
+zga_verify_fixed_scoreboard_slots_effect = {
+	set_variable = { name = zga_board_rows value = 0 }
+	set_variable = { name = zga_board_valid_rows value = 0 }
+	set_variable = { name = zga_board_375 value = 0 }
+	set_variable = { name = zga_board_35 value = 0 }
+	set_variable = { name = zga_board_325 value = 0 }
+	if = {
+		limit = { has_variable = zg361_sb_m_01_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 01"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_01_kpi
+				has_variable = zg361_sb_m_01_rank
+				has_variable = zg361_sb_m_01_values
+				has_variable = zg361_sb_m_01_grade
+				has_variable = zg361_sb_m_01_streak
+				var:zg361_sb_m_01_rank = 1
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_01_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 01"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_01_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 01"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_01_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 01"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_02_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 02"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_02_kpi
+				has_variable = zg361_sb_m_02_rank
+				has_variable = zg361_sb_m_02_values
+				has_variable = zg361_sb_m_02_grade
+				has_variable = zg361_sb_m_02_streak
+				var:zg361_sb_m_02_rank = 2
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_02_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 02"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_02_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 02"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_02_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 02"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_03_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 03"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_03_kpi
+				has_variable = zg361_sb_m_03_rank
+				has_variable = zg361_sb_m_03_values
+				has_variable = zg361_sb_m_03_grade
+				has_variable = zg361_sb_m_03_streak
+				var:zg361_sb_m_03_rank = 3
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_03_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 03"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_03_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 03"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_03_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 03"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_04_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 04"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_04_kpi
+				has_variable = zg361_sb_m_04_rank
+				has_variable = zg361_sb_m_04_values
+				has_variable = zg361_sb_m_04_grade
+				has_variable = zg361_sb_m_04_streak
+				var:zg361_sb_m_04_rank = 4
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_04_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 04"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_04_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 04"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_04_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 04"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_05_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 05"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_05_kpi
+				has_variable = zg361_sb_m_05_rank
+				has_variable = zg361_sb_m_05_values
+				has_variable = zg361_sb_m_05_grade
+				has_variable = zg361_sb_m_05_streak
+				var:zg361_sb_m_05_rank = 5
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_05_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 05"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_05_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 05"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_05_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 05"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_06_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 06"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_06_kpi
+				has_variable = zg361_sb_m_06_rank
+				has_variable = zg361_sb_m_06_values
+				has_variable = zg361_sb_m_06_grade
+				has_variable = zg361_sb_m_06_streak
+				var:zg361_sb_m_06_rank = 6
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_06_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 06"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_06_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 06"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_06_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 06"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_07_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 07"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_07_kpi
+				has_variable = zg361_sb_m_07_rank
+				has_variable = zg361_sb_m_07_values
+				has_variable = zg361_sb_m_07_grade
+				has_variable = zg361_sb_m_07_streak
+				var:zg361_sb_m_07_rank = 7
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_07_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 07"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_07_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 07"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_07_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 07"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_08_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 08"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_08_kpi
+				has_variable = zg361_sb_m_08_rank
+				has_variable = zg361_sb_m_08_values
+				has_variable = zg361_sb_m_08_grade
+				has_variable = zg361_sb_m_08_streak
+				var:zg361_sb_m_08_rank = 8
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_08_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 08"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_08_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 08"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_08_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 08"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_09_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 09"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_09_kpi
+				has_variable = zg361_sb_m_09_rank
+				has_variable = zg361_sb_m_09_values
+				has_variable = zg361_sb_m_09_grade
+				has_variable = zg361_sb_m_09_streak
+				var:zg361_sb_m_09_rank = 9
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_09_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 09"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_09_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 09"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_09_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 09"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_10_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 10"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_10_kpi
+				has_variable = zg361_sb_m_10_rank
+				has_variable = zg361_sb_m_10_values
+				has_variable = zg361_sb_m_10_grade
+				has_variable = zg361_sb_m_10_streak
+				var:zg361_sb_m_10_rank = 10
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_10_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 10"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_10_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 10"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_10_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 10"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_11_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 11"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_11_kpi
+				has_variable = zg361_sb_m_11_rank
+				has_variable = zg361_sb_m_11_values
+				has_variable = zg361_sb_m_11_grade
+				has_variable = zg361_sb_m_11_streak
+				var:zg361_sb_m_11_rank = 11
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_11_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 11"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_11_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 11"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_11_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 11"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_12_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 12"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_12_kpi
+				has_variable = zg361_sb_m_12_rank
+				has_variable = zg361_sb_m_12_values
+				has_variable = zg361_sb_m_12_grade
+				has_variable = zg361_sb_m_12_streak
+				var:zg361_sb_m_12_rank = 12
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_12_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 12"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_12_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 12"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_12_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 12"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_13_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 13"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_13_kpi
+				has_variable = zg361_sb_m_13_rank
+				has_variable = zg361_sb_m_13_values
+				has_variable = zg361_sb_m_13_grade
+				has_variable = zg361_sb_m_13_streak
+				var:zg361_sb_m_13_rank = 13
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_13_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 13"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_13_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 13"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_13_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 13"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_14_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 14"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_14_kpi
+				has_variable = zg361_sb_m_14_rank
+				has_variable = zg361_sb_m_14_values
+				has_variable = zg361_sb_m_14_grade
+				has_variable = zg361_sb_m_14_streak
+				var:zg361_sb_m_14_rank = 14
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_14_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 14"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_14_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 14"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_14_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 14"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_15_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 15"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_15_kpi
+				has_variable = zg361_sb_m_15_rank
+				has_variable = zg361_sb_m_15_values
+				has_variable = zg361_sb_m_15_grade
+				has_variable = zg361_sb_m_15_streak
+				var:zg361_sb_m_15_rank = 15
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_15_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 15"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_15_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 15"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_15_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 15"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_16_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 16"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_16_kpi
+				has_variable = zg361_sb_m_16_rank
+				has_variable = zg361_sb_m_16_values
+				has_variable = zg361_sb_m_16_grade
+				has_variable = zg361_sb_m_16_streak
+				var:zg361_sb_m_16_rank = 16
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_16_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 16"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_16_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 16"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_16_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 16"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_17_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 17"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_17_kpi
+				has_variable = zg361_sb_m_17_rank
+				has_variable = zg361_sb_m_17_values
+				has_variable = zg361_sb_m_17_grade
+				has_variable = zg361_sb_m_17_streak
+				var:zg361_sb_m_17_rank = 17
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_17_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 17"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_17_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 17"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_17_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 17"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_18_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 18"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_18_kpi
+				has_variable = zg361_sb_m_18_rank
+				has_variable = zg361_sb_m_18_values
+				has_variable = zg361_sb_m_18_grade
+				has_variable = zg361_sb_m_18_streak
+				var:zg361_sb_m_18_rank = 18
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_18_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 18"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_18_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 18"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_18_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 18"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_19_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 19"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_19_kpi
+				has_variable = zg361_sb_m_19_rank
+				has_variable = zg361_sb_m_19_values
+				has_variable = zg361_sb_m_19_grade
+				has_variable = zg361_sb_m_19_streak
+				var:zg361_sb_m_19_rank = 19
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_19_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 19"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_19_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 19"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_19_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 19"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_20_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 20"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_20_kpi
+				has_variable = zg361_sb_m_20_rank
+				has_variable = zg361_sb_m_20_values
+				has_variable = zg361_sb_m_20_grade
+				has_variable = zg361_sb_m_20_streak
+				var:zg361_sb_m_20_rank = 20
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_20_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 20"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_20_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 20"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_20_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 20"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_21_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 21"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_21_kpi
+				has_variable = zg361_sb_m_21_rank
+				has_variable = zg361_sb_m_21_values
+				has_variable = zg361_sb_m_21_grade
+				has_variable = zg361_sb_m_21_streak
+				var:zg361_sb_m_21_rank = 21
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_21_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 21"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_21_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 21"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_21_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 21"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_22_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 22"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_22_kpi
+				has_variable = zg361_sb_m_22_rank
+				has_variable = zg361_sb_m_22_values
+				has_variable = zg361_sb_m_22_grade
+				has_variable = zg361_sb_m_22_streak
+				var:zg361_sb_m_22_rank = 22
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_22_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 22"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_22_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 22"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_22_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 22"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_23_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 23"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_23_kpi
+				has_variable = zg361_sb_m_23_rank
+				has_variable = zg361_sb_m_23_values
+				has_variable = zg361_sb_m_23_grade
+				has_variable = zg361_sb_m_23_streak
+				var:zg361_sb_m_23_rank = 23
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_23_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 23"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_23_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 23"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_23_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 23"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_24_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 24"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_24_kpi
+				has_variable = zg361_sb_m_24_rank
+				has_variable = zg361_sb_m_24_values
+				has_variable = zg361_sb_m_24_grade
+				has_variable = zg361_sb_m_24_streak
+				var:zg361_sb_m_24_rank = 24
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_24_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 24"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_24_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 24"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_24_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 24"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_25_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 25"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_25_kpi
+				has_variable = zg361_sb_m_25_rank
+				has_variable = zg361_sb_m_25_values
+				has_variable = zg361_sb_m_25_grade
+				has_variable = zg361_sb_m_25_streak
+				var:zg361_sb_m_25_rank = 25
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_25_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 25"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_25_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 25"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_25_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 25"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_26_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 26"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_26_kpi
+				has_variable = zg361_sb_m_26_rank
+				has_variable = zg361_sb_m_26_values
+				has_variable = zg361_sb_m_26_grade
+				has_variable = zg361_sb_m_26_streak
+				var:zg361_sb_m_26_rank = 26
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_26_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 26"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_26_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 26"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_26_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 26"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_27_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 27"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_27_kpi
+				has_variable = zg361_sb_m_27_rank
+				has_variable = zg361_sb_m_27_values
+				has_variable = zg361_sb_m_27_grade
+				has_variable = zg361_sb_m_27_streak
+				var:zg361_sb_m_27_rank = 27
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_27_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 27"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_27_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 27"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_27_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 27"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_28_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 28"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_28_kpi
+				has_variable = zg361_sb_m_28_rank
+				has_variable = zg361_sb_m_28_values
+				has_variable = zg361_sb_m_28_grade
+				has_variable = zg361_sb_m_28_streak
+				var:zg361_sb_m_28_rank = 28
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_28_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 28"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_28_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 28"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_28_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 28"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_29_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 29"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_29_kpi
+				has_variable = zg361_sb_m_29_rank
+				has_variable = zg361_sb_m_29_values
+				has_variable = zg361_sb_m_29_grade
+				has_variable = zg361_sb_m_29_streak
+				var:zg361_sb_m_29_rank = 29
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_29_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 29"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_29_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 29"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_29_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 29"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_30_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 30"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_30_kpi
+				has_variable = zg361_sb_m_30_rank
+				has_variable = zg361_sb_m_30_values
+				has_variable = zg361_sb_m_30_grade
+				has_variable = zg361_sb_m_30_streak
+				var:zg361_sb_m_30_rank = 30
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_30_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 30"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_30_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 30"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_30_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 30"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_31_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 31"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_31_kpi
+				has_variable = zg361_sb_m_31_rank
+				has_variable = zg361_sb_m_31_values
+				has_variable = zg361_sb_m_31_grade
+				has_variable = zg361_sb_m_31_streak
+				var:zg361_sb_m_31_rank = 31
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_31_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 31"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_31_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 31"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_31_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 31"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_32_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 32"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_32_kpi
+				has_variable = zg361_sb_m_32_rank
+				has_variable = zg361_sb_m_32_values
+				has_variable = zg361_sb_m_32_grade
+				has_variable = zg361_sb_m_32_streak
+				var:zg361_sb_m_32_rank = 32
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_32_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 32"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_32_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 32"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_32_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 32"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_33_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 33"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_33_kpi
+				has_variable = zg361_sb_m_33_rank
+				has_variable = zg361_sb_m_33_values
+				has_variable = zg361_sb_m_33_grade
+				has_variable = zg361_sb_m_33_streak
+				var:zg361_sb_m_33_rank = 33
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_33_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 33"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_33_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 33"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_33_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 33"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_34_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 34"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_34_kpi
+				has_variable = zg361_sb_m_34_rank
+				has_variable = zg361_sb_m_34_values
+				has_variable = zg361_sb_m_34_grade
+				has_variable = zg361_sb_m_34_streak
+				var:zg361_sb_m_34_rank = 34
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_34_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 34"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_34_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 34"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_34_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 34"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_35_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 35"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_35_kpi
+				has_variable = zg361_sb_m_35_rank
+				has_variable = zg361_sb_m_35_values
+				has_variable = zg361_sb_m_35_grade
+				has_variable = zg361_sb_m_35_streak
+				var:zg361_sb_m_35_rank = 35
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_35_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 35"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_35_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 35"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_35_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 35"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_36_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 36"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_36_kpi
+				has_variable = zg361_sb_m_36_rank
+				has_variable = zg361_sb_m_36_values
+				has_variable = zg361_sb_m_36_grade
+				has_variable = zg361_sb_m_36_streak
+				var:zg361_sb_m_36_rank = 36
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_36_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 36"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_36_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 36"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_36_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 36"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_37_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 37"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_37_kpi
+				has_variable = zg361_sb_m_37_rank
+				has_variable = zg361_sb_m_37_values
+				has_variable = zg361_sb_m_37_grade
+				has_variable = zg361_sb_m_37_streak
+				var:zg361_sb_m_37_rank = 37
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_37_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 37"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_37_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 37"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_37_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 37"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_38_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 38"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_38_kpi
+				has_variable = zg361_sb_m_38_rank
+				has_variable = zg361_sb_m_38_values
+				has_variable = zg361_sb_m_38_grade
+				has_variable = zg361_sb_m_38_streak
+				var:zg361_sb_m_38_rank = 38
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_38_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 38"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_38_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 38"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_38_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 38"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_39_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 39"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_39_kpi
+				has_variable = zg361_sb_m_39_rank
+				has_variable = zg361_sb_m_39_values
+				has_variable = zg361_sb_m_39_grade
+				has_variable = zg361_sb_m_39_streak
+				var:zg361_sb_m_39_rank = 39
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_39_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 39"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_39_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 39"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_39_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 39"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_40_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 40"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_40_kpi
+				has_variable = zg361_sb_m_40_rank
+				has_variable = zg361_sb_m_40_values
+				has_variable = zg361_sb_m_40_grade
+				has_variable = zg361_sb_m_40_streak
+				var:zg361_sb_m_40_rank = 40
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_40_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 40"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_40_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 40"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_40_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 40"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_41_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 41"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_41_kpi
+				has_variable = zg361_sb_m_41_rank
+				has_variable = zg361_sb_m_41_values
+				has_variable = zg361_sb_m_41_grade
+				has_variable = zg361_sb_m_41_streak
+				var:zg361_sb_m_41_rank = 41
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_41_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 41"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_41_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 41"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_41_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 41"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_42_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 42"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_42_kpi
+				has_variable = zg361_sb_m_42_rank
+				has_variable = zg361_sb_m_42_values
+				has_variable = zg361_sb_m_42_grade
+				has_variable = zg361_sb_m_42_streak
+				var:zg361_sb_m_42_rank = 42
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_42_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 42"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_42_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 42"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_42_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 42"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_43_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 43"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_43_kpi
+				has_variable = zg361_sb_m_43_rank
+				has_variable = zg361_sb_m_43_values
+				has_variable = zg361_sb_m_43_grade
+				has_variable = zg361_sb_m_43_streak
+				var:zg361_sb_m_43_rank = 43
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_43_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 43"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_43_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 43"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_43_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 43"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_44_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 44"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_44_kpi
+				has_variable = zg361_sb_m_44_rank
+				has_variable = zg361_sb_m_44_values
+				has_variable = zg361_sb_m_44_grade
+				has_variable = zg361_sb_m_44_streak
+				var:zg361_sb_m_44_rank = 44
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_44_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 44"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_44_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 44"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_44_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 44"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_45_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 45"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_45_kpi
+				has_variable = zg361_sb_m_45_rank
+				has_variable = zg361_sb_m_45_values
+				has_variable = zg361_sb_m_45_grade
+				has_variable = zg361_sb_m_45_streak
+				var:zg361_sb_m_45_rank = 45
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_45_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 45"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_45_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 45"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_45_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 45"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_46_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 46"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_46_kpi
+				has_variable = zg361_sb_m_46_rank
+				has_variable = zg361_sb_m_46_values
+				has_variable = zg361_sb_m_46_grade
+				has_variable = zg361_sb_m_46_streak
+				var:zg361_sb_m_46_rank = 46
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_46_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 46"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_46_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 46"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_46_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 46"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_47_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 47"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_47_kpi
+				has_variable = zg361_sb_m_47_rank
+				has_variable = zg361_sb_m_47_values
+				has_variable = zg361_sb_m_47_grade
+				has_variable = zg361_sb_m_47_streak
+				var:zg361_sb_m_47_rank = 47
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_47_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 47"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_47_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 47"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_47_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 47"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_48_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 48"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_48_kpi
+				has_variable = zg361_sb_m_48_rank
+				has_variable = zg361_sb_m_48_values
+				has_variable = zg361_sb_m_48_grade
+				has_variable = zg361_sb_m_48_streak
+				var:zg361_sb_m_48_rank = 48
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_48_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 48"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_48_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 48"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_48_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 48"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_49_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 49"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_49_kpi
+				has_variable = zg361_sb_m_49_rank
+				has_variable = zg361_sb_m_49_values
+				has_variable = zg361_sb_m_49_grade
+				has_variable = zg361_sb_m_49_streak
+				var:zg361_sb_m_49_rank = 49
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_49_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 49"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_49_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 49"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_49_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 49"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_50_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 50"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_50_kpi
+				has_variable = zg361_sb_m_50_rank
+				has_variable = zg361_sb_m_50_values
+				has_variable = zg361_sb_m_50_grade
+				has_variable = zg361_sb_m_50_streak
+				var:zg361_sb_m_50_rank = 50
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_50_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 50"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_50_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 50"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_50_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 50"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_51_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 51"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_51_kpi
+				has_variable = zg361_sb_m_51_rank
+				has_variable = zg361_sb_m_51_values
+				has_variable = zg361_sb_m_51_grade
+				has_variable = zg361_sb_m_51_streak
+				var:zg361_sb_m_51_rank = 51
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_51_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 51"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_51_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 51"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_51_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 51"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_52_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 52"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_52_kpi
+				has_variable = zg361_sb_m_52_rank
+				has_variable = zg361_sb_m_52_values
+				has_variable = zg361_sb_m_52_grade
+				has_variable = zg361_sb_m_52_streak
+				var:zg361_sb_m_52_rank = 52
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_52_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 52"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_52_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 52"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_52_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 52"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_53_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 53"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_53_kpi
+				has_variable = zg361_sb_m_53_rank
+				has_variable = zg361_sb_m_53_values
+				has_variable = zg361_sb_m_53_grade
+				has_variable = zg361_sb_m_53_streak
+				var:zg361_sb_m_53_rank = 53
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_53_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 53"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_53_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 53"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_53_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 53"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_54_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 54"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_54_kpi
+				has_variable = zg361_sb_m_54_rank
+				has_variable = zg361_sb_m_54_values
+				has_variable = zg361_sb_m_54_grade
+				has_variable = zg361_sb_m_54_streak
+				var:zg361_sb_m_54_rank = 54
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_54_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 54"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_54_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 54"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_54_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 54"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_55_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 55"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_55_kpi
+				has_variable = zg361_sb_m_55_rank
+				has_variable = zg361_sb_m_55_values
+				has_variable = zg361_sb_m_55_grade
+				has_variable = zg361_sb_m_55_streak
+				var:zg361_sb_m_55_rank = 55
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_55_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 55"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_55_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 55"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_55_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 55"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_56_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 56"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_56_kpi
+				has_variable = zg361_sb_m_56_rank
+				has_variable = zg361_sb_m_56_values
+				has_variable = zg361_sb_m_56_grade
+				has_variable = zg361_sb_m_56_streak
+				var:zg361_sb_m_56_rank = 56
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_56_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 56"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_56_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 56"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_56_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 56"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_57_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 57"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_57_kpi
+				has_variable = zg361_sb_m_57_rank
+				has_variable = zg361_sb_m_57_values
+				has_variable = zg361_sb_m_57_grade
+				has_variable = zg361_sb_m_57_streak
+				var:zg361_sb_m_57_rank = 57
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_57_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 57"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_57_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 57"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_57_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 57"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_58_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 58"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_58_kpi
+				has_variable = zg361_sb_m_58_rank
+				has_variable = zg361_sb_m_58_values
+				has_variable = zg361_sb_m_58_grade
+				has_variable = zg361_sb_m_58_streak
+				var:zg361_sb_m_58_rank = 58
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_58_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 58"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_58_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 58"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_58_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 58"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_59_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 59"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_59_kpi
+				has_variable = zg361_sb_m_59_rank
+				has_variable = zg361_sb_m_59_values
+				has_variable = zg361_sb_m_59_grade
+				has_variable = zg361_sb_m_59_streak
+				var:zg361_sb_m_59_rank = 59
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_59_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 59"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_59_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 59"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_59_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 59"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_60_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 60"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_60_kpi
+				has_variable = zg361_sb_m_60_rank
+				has_variable = zg361_sb_m_60_values
+				has_variable = zg361_sb_m_60_grade
+				has_variable = zg361_sb_m_60_streak
+				var:zg361_sb_m_60_rank = 60
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_60_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 60"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_60_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 60"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_60_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 60"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_61_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 61"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_61_kpi
+				has_variable = zg361_sb_m_61_rank
+				has_variable = zg361_sb_m_61_values
+				has_variable = zg361_sb_m_61_grade
+				has_variable = zg361_sb_m_61_streak
+				var:zg361_sb_m_61_rank = 61
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_61_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 61"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_61_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 61"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_61_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 61"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_62_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 62"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_62_kpi
+				has_variable = zg361_sb_m_62_rank
+				has_variable = zg361_sb_m_62_values
+				has_variable = zg361_sb_m_62_grade
+				has_variable = zg361_sb_m_62_streak
+				var:zg361_sb_m_62_rank = 62
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_62_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 62"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_62_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 62"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_62_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 62"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_63_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 63"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_63_kpi
+				has_variable = zg361_sb_m_63_rank
+				has_variable = zg361_sb_m_63_values
+				has_variable = zg361_sb_m_63_grade
+				has_variable = zg361_sb_m_63_streak
+				var:zg361_sb_m_63_rank = 63
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_63_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 63"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_63_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 63"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_63_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 63"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_64_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 64"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_64_kpi
+				has_variable = zg361_sb_m_64_rank
+				has_variable = zg361_sb_m_64_values
+				has_variable = zg361_sb_m_64_grade
+				has_variable = zg361_sb_m_64_streak
+				var:zg361_sb_m_64_rank = 64
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_64_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 64"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_64_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 64"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_64_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 64"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_65_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 65"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_65_kpi
+				has_variable = zg361_sb_m_65_rank
+				has_variable = zg361_sb_m_65_values
+				has_variable = zg361_sb_m_65_grade
+				has_variable = zg361_sb_m_65_streak
+				var:zg361_sb_m_65_rank = 65
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_65_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 65"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_65_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 65"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_65_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 65"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_66_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 66"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_66_kpi
+				has_variable = zg361_sb_m_66_rank
+				has_variable = zg361_sb_m_66_values
+				has_variable = zg361_sb_m_66_grade
+				has_variable = zg361_sb_m_66_streak
+				var:zg361_sb_m_66_rank = 66
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_66_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 66"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_66_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 66"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_66_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 66"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_67_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 67"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_67_kpi
+				has_variable = zg361_sb_m_67_rank
+				has_variable = zg361_sb_m_67_values
+				has_variable = zg361_sb_m_67_grade
+				has_variable = zg361_sb_m_67_streak
+				var:zg361_sb_m_67_rank = 67
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_67_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 67"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_67_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 67"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_67_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 67"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_68_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 68"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_68_kpi
+				has_variable = zg361_sb_m_68_rank
+				has_variable = zg361_sb_m_68_values
+				has_variable = zg361_sb_m_68_grade
+				has_variable = zg361_sb_m_68_streak
+				var:zg361_sb_m_68_rank = 68
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_68_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 68"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_68_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 68"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_68_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 68"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_69_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 69"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_69_kpi
+				has_variable = zg361_sb_m_69_rank
+				has_variable = zg361_sb_m_69_values
+				has_variable = zg361_sb_m_69_grade
+				has_variable = zg361_sb_m_69_streak
+				var:zg361_sb_m_69_rank = 69
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_69_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 69"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_69_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 69"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_69_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 69"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_70_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 70"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_70_kpi
+				has_variable = zg361_sb_m_70_rank
+				has_variable = zg361_sb_m_70_values
+				has_variable = zg361_sb_m_70_grade
+				has_variable = zg361_sb_m_70_streak
+				var:zg361_sb_m_70_rank = 70
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_70_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 70"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_70_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 70"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_70_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 70"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_71_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 71"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_71_kpi
+				has_variable = zg361_sb_m_71_rank
+				has_variable = zg361_sb_m_71_values
+				has_variable = zg361_sb_m_71_grade
+				has_variable = zg361_sb_m_71_streak
+				var:zg361_sb_m_71_rank = 71
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_71_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 71"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_71_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 71"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_71_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 71"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_72_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 72"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_72_kpi
+				has_variable = zg361_sb_m_72_rank
+				has_variable = zg361_sb_m_72_values
+				has_variable = zg361_sb_m_72_grade
+				has_variable = zg361_sb_m_72_streak
+				var:zg361_sb_m_72_rank = 72
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_72_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 72"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_72_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 72"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_72_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 72"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_73_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 73"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_73_kpi
+				has_variable = zg361_sb_m_73_rank
+				has_variable = zg361_sb_m_73_values
+				has_variable = zg361_sb_m_73_grade
+				has_variable = zg361_sb_m_73_streak
+				var:zg361_sb_m_73_rank = 73
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_73_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 73"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_73_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 73"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_73_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 73"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_74_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 74"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_74_kpi
+				has_variable = zg361_sb_m_74_rank
+				has_variable = zg361_sb_m_74_values
+				has_variable = zg361_sb_m_74_grade
+				has_variable = zg361_sb_m_74_streak
+				var:zg361_sb_m_74_rank = 74
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_74_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 74"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_74_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 74"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_74_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 74"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_75_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 75"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_75_kpi
+				has_variable = zg361_sb_m_75_rank
+				has_variable = zg361_sb_m_75_values
+				has_variable = zg361_sb_m_75_grade
+				has_variable = zg361_sb_m_75_streak
+				var:zg361_sb_m_75_rank = 75
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_75_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 75"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_75_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 75"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_75_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 75"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_76_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 76"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_76_kpi
+				has_variable = zg361_sb_m_76_rank
+				has_variable = zg361_sb_m_76_values
+				has_variable = zg361_sb_m_76_grade
+				has_variable = zg361_sb_m_76_streak
+				var:zg361_sb_m_76_rank = 76
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_76_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 76"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_76_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 76"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_76_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 76"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_77_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 77"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_77_kpi
+				has_variable = zg361_sb_m_77_rank
+				has_variable = zg361_sb_m_77_values
+				has_variable = zg361_sb_m_77_grade
+				has_variable = zg361_sb_m_77_streak
+				var:zg361_sb_m_77_rank = 77
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_77_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 77"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_77_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 77"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_77_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 77"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_78_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 78"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_78_kpi
+				has_variable = zg361_sb_m_78_rank
+				has_variable = zg361_sb_m_78_values
+				has_variable = zg361_sb_m_78_grade
+				has_variable = zg361_sb_m_78_streak
+				var:zg361_sb_m_78_rank = 78
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_78_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 78"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_78_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 78"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_78_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 78"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_79_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 79"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_79_kpi
+				has_variable = zg361_sb_m_79_rank
+				has_variable = zg361_sb_m_79_values
+				has_variable = zg361_sb_m_79_grade
+				has_variable = zg361_sb_m_79_streak
+				var:zg361_sb_m_79_rank = 79
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_79_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 79"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_79_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 79"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_79_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 79"
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_sb_m_80_char }
+		change_variable = { name = zga_board_rows add = 1 }
+		debug_log = "ZGA: DATA player_scoreboard_row 80"
+		if = {
+			limit = {
+				has_variable = zg361_sb_m_80_kpi
+				has_variable = zg361_sb_m_80_rank
+				has_variable = zg361_sb_m_80_values
+				has_variable = zg361_sb_m_80_grade
+				has_variable = zg361_sb_m_80_streak
+				var:zg361_sb_m_80_rank = 80
+			}
+			change_variable = { name = zga_board_valid_rows add = 1 }
+		}
+		if = {
+			limit = { var:zg361_sb_m_80_grade = 3.75 }
+			change_variable = { name = zga_board_375 add = 1 }
+			debug_log = "ZGA: DATA player_grade_375 80"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_80_grade = 3.5 }
+			change_variable = { name = zga_board_35 add = 1 }
+			debug_log = "ZGA: DATA player_grade_35 80"
+		}
+		else_if = {
+			limit = { var:zg361_sb_m_80_grade = 3.25 }
+			change_variable = { name = zga_board_325 add = 1 }
+			debug_log = "ZGA: DATA player_grade_325 80"
+		}
+	}
+}

@@ -1,0 +1,73 @@
+﻿namespace = zg361
+
+# ============================================================
+# 玩家主办者：定期京察召集令（半强制）
+# ============================================================
+zg361.40 = {
+	type = character_event
+	theme = crown
+	title = zg361.40.t
+	desc = zg361.40.desc
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		zg361_is_celestial_liege_trigger = yes
+		has_variable = zg361_jingcha_pending
+	}
+	on_trigger_fail = {
+		remove_variable = zg361_jingcha_pending
+	}
+
+	option = { # 法定默认：进入免费活动规划器
+		name = zg361.40.a
+		custom_tooltip = zg361.40.a.tt
+		trigger_event = { id = zg361.41 days = 300 }
+		open_view_data = {
+			view = activity_list_detail_host_window
+			data = activity_type:activity_zg361_jingcha
+			player = root
+		}
+	}
+
+	option = { # 明确抗命：立即记录制度后果
+		name = zg361.40.b
+		custom_tooltip = zg361.40.b.tt
+		zg361_refuse_jingcha_effect = yes
+	}
+}
+
+# 承诺后的隐藏履责截止点。活动 on_complete 会提前清除 pending，使本事件不再触发。
+zg361.41 = {
+	type = character_event
+	theme = crown
+	hidden = yes
+	title = zg361.41.t
+	desc = zg361.41.desc
+	trigger = {
+		has_variable = zg361_jingcha_pending
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				is_imprisoned = no
+				NOT = { is_incapable = yes }
+				any_vassal = {
+					count >= 3
+					zg361_is_reviewable_vassal_trigger = yes
+				}
+			}
+			zg361_refuse_jingcha_effect = yes
+		}
+		else = {
+			# 制度关闭、降阶、失能或班子不足时撤销义务，不惩罚。
+			remove_variable = zg361_jingcha_pending
+		}
+	}
+
+	option = {
+		name = zg361.41.a
+	}
+}

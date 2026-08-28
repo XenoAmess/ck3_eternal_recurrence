@@ -1,16 +1,18 @@
 ﻿# ZhongGuo 361 Style — 京察大计活动
-# 最小可行骨架：首都单阶段集会，全体在任封臣为客；落幕时立即开榜（跑一次完整考核）。
-# 天朝制 replace_gold_cost_by_treasury 会自动把 gold 成本转为国库支出。
-# AI 不主动举办（ai_will_do = 0）：AI 的考核由年度 tick 覆盖，本活动是玩家体验项。
+# 免费的治所单阶段集会：直属在任官员为客，落幕时立即开榜。
+# 仅天朝制公爵及以上可举办；定期召集令见 zg361_jingcha_mandate_effects.txt。
+# AI 不走活动 UI：它们由同一年度 dispatch 视为默认履责并后台结算。
 
 activity_zg361_jingcha = {
 	is_shown = {
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
+		has_variable = zg361_jingcha_pending
 		is_adult = yes
 	}
 
 	can_start_showing_failures_only = {
+		has_variable = zg361_jingcha_pending
 		NOT = { is_activity_type_on_cooldown = activity_zg361_jingcha }
 		is_available = yes
 		age >= 16
@@ -22,6 +24,8 @@ activity_zg361_jingcha = {
 
 	is_valid = {
 		scope:host = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
 			is_alive = yes
 			is_imprisoned = no
 			NOT = { is_incapable = yes }
@@ -29,12 +33,37 @@ activity_zg361_jingcha = {
 	}
 
 	on_invalidated = {
-		scope:host = {
-			trigger_event = activity_system.0330
+		# 手动取消或因参战中止不能抹掉法定履责：只在主办者死亡、失能、
+		# 被囚或已不再具备主持资格时豁免本期义务。
+		if = {
+			limit = {
+				scope:host = {
+					OR = {
+						is_alive = no
+						is_incapable = yes
+						is_imprisoned = yes
+						NOT = { zg361_is_celestial_liege_trigger = yes }
+					}
+				}
+			}
+			scope:host = { remove_variable = zg361_jingcha_pending }
+			# 与原版活动一致：主办者失能时播放专用取消事件。
+			if = {
+				limit = { scope:host = { is_incapable = yes } }
+				scope:activity = {
+					activity_type = { save_scope_as = activity_type }
+				}
+				scope:host = {
+					trigger_event = activity_system.0330
+				}
+				every_attending_character = {
+					limit = { this != scope:host }
+					trigger_event = activity_system.0331
+				}
+			}
 		}
-		every_attending_character = {
-			limit = { this != scope:host }
-			trigger_event = activity_system.0331
+		else = {
+			debug_log = "ZG361: cancelled jingcha remains due before mandate deadline"
 		}
 	}
 
@@ -54,18 +83,19 @@ activity_zg361_jingcha = {
 	}
 
 	cost = {
-		gold = {
-			value = 150
+		treasury = {
+			value = 0
 		}
 	}
 
 	ui_predicted_cost = {
-		gold = {
-			value = 150
+		treasury = {
+			value = 0
 		}
 	}
 
-	cooldown = { years = 3 }
+	# pending 门槛把活动锁在周期召集令内；此处另防取消后立刻重开。
+	cooldown = { days = 30 }
 
 	###################
 	# PHASES
@@ -94,16 +124,27 @@ activity_zg361_jingcha = {
 	}
 
 	on_complete = {
-		# 京察落幕：立即开榜
-		scope:host = {
-			zg361_run_review_effect = yes
+		# activity_type on_complete 以每名参与角色为 this 各执行一次；整个
+		# 履责、考核和参会奖励必须只由 host 那一帧结算。
+		if = {
+			limit = { this = scope:host }
+			# 只有活动真正落幕才算履责；单纯打开/关闭规划器不算。
+			scope:host = {
+				remove_variable = zg361_jingcha_pending
+				zg361_run_review_effect = yes
+			}
+			scope:activity = {
+				every_attending_character = {
+					limit = { this != scope:host }
+					if = {
+						limit = { government_has_flag = government_has_merit }
+						change_merit = miniscule_merit_gain
+					}
+					add_opinion = { modifier = zg361_jingcha_attended target = scope:host }
+				}
+			}
+			debug_log = "ZG361: jingcha assembly concluded"
 		}
-		every_attending_character = {
-			limit = { this != scope:host }
-			change_merit = miniscule_merit_gain
-			add_opinion = { modifier = zg361_jingcha_attended target = scope:host }
-		}
-		debug_log = "ZG361: jingcha assembly concluded"
 	}
 
 	###################
@@ -138,7 +179,7 @@ activity_zg361_jingcha = {
 		zg361_is_reviewable_vassal_trigger = yes
 		age >= 16
 		is_available = yes
-		top_liege = scope:host
+		liege = scope:host
 	}
 
 	guest_invite_rules = {

@@ -4,6 +4,9 @@
 # 立即开展绩效考核（提前开榜）
 zg361_review_now_decision = {
 	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
 	ai_check_interval = 0
 	cooldown = { years = 1 }
 
@@ -12,12 +15,22 @@ zg361_review_now_decision = {
 		has_game_rule = zg361_on
 	}
 	is_valid = {
+		NOT = { has_character_flag = zg361_review_in_progress }
+		trigger_if = {
+			limit = { has_variable = zg361_last_settled_year }
+			NOT = { var:zg361_last_settled_year = current_year }
+		}
 		any_vassal = {
 			count >= 3
 			zg361_is_reviewable_vassal_trigger = yes
 		}
 	}
 	is_valid_showing_failures_only = {
+		NOT = { has_character_flag = zg361_review_in_progress }
+		trigger_if = {
+			limit = { has_variable = zg361_last_settled_year }
+			NOT = { var:zg361_last_settled_year = current_year }
+		}
 		any_vassal = {
 			count >= 3
 			zg361_is_reviewable_vassal_trigger = yes
@@ -26,23 +39,26 @@ zg361_review_now_decision = {
 
 	cost = { prestige = 150 }
 
-	# 决议 effect 会被 UI 预评估：只发延迟载体事件，重活在事件 immediate 里做
+	# 决议 effect 会被 UI 预评估：这里只写一次性旗标，由注册 GUI 在真实点击后消费。
 	effect = {
-		trigger_event = { id = zg361.20 days = 1 }
+		add_character_flag = zg361_review_now_pending
 	}
 }
 
 # 末位比例：刚性 361（10%）
 zg361_ratio_strict_decision = {
 	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
 	ai_check_interval = 0
 	cooldown = { years = 1 }
 
 	is_shown = {
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
-		OR = {
-			NOT = { has_variable = zg361_ratio_override }
+		trigger_if = {
+			limit = { has_variable = zg361_ratio_override }
 			NOT = { var:zg361_ratio_override = 10 }
 		}
 	}
@@ -60,14 +76,17 @@ zg361_ratio_strict_decision = {
 # 末位比例：松绑（5%）
 zg361_ratio_relaxed_decision = {
 	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
 	ai_check_interval = 0
 	cooldown = { years = 1 }
 
 	is_shown = {
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
-		OR = {
-			NOT = { has_variable = zg361_ratio_override }
+		trigger_if = {
+			limit = { has_variable = zg361_ratio_override }
 			NOT = { var:zg361_ratio_override = 5 }
 		}
 	}
@@ -85,14 +104,17 @@ zg361_ratio_relaxed_decision = {
 # 末位比例：放养（0%）
 zg361_ratio_off_decision = {
 	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
 	ai_check_interval = 0
 	cooldown = { years = 1 }
 
 	is_shown = {
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
-		OR = {
-			NOT = { has_variable = zg361_ratio_override }
+		trigger_if = {
+			limit = { has_variable = zg361_ratio_override }
 			NOT = { var:zg361_ratio_override = 0 }
 		}
 	}

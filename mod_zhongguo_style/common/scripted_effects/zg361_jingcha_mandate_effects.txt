@@ -1,0 +1,106 @@
+﻿# ZhongGuo 361 Style — 定期京察召集令
+# root = yearly_playable_pulse 当前角色。玩家走半强制活动弹窗；AI 默认履责。
+
+# 替代旧 zg361_annual_review_effect 的 on_action 入口，保留原有存档计数变量。
+zg361_jingcha_annual_dispatch_effect = {
+	if = {
+		limit = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+		}
+		if = {
+			limit = { has_game_rule = zg361_freq_three_year }
+			if = {
+				limit = { NOT = { has_variable = zg361_review_counter } }
+				set_variable = { name = zg361_review_counter value = 1 }
+			}
+			else = {
+				change_variable = { name = zg361_review_counter add = 1 }
+			}
+			if = {
+				limit = { var:zg361_review_counter >= 3 }
+				set_variable = { name = zg361_review_counter value = 0 }
+				zg361_issue_jingcha_mandate_effect = yes
+			}
+		}
+		else = {
+			zg361_issue_jingcha_mandate_effect = yes
+		}
+	}
+}
+
+# 玩家且可正常规划活动时发召集令；其余情形静默跑官僚考核。
+# 低于 3 人的直属班子本就不足以开榜，不强迫举办空会。
+zg361_issue_jingcha_mandate_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			is_adult = yes
+			is_imprisoned = no
+			NOT = { is_incapable = yes }
+			any_vassal = {
+				count >= 3
+				zg361_is_reviewable_vassal_trigger = yes
+			}
+		}
+		set_variable = { name = zg361_jingcha_pending value = 1 }
+		set_variable = { name = zg361_jingcha_mandate_year value = current_year }
+		if = {
+			limit = { exists = liege }
+			set_variable = { name = zg361_jingcha_mandate_superior value = liege }
+			if = {
+				limit = { liege = { zg361_is_celestial_liege_trigger = yes } }
+				set_variable = { name = zg361_jingcha_mandate_reviewer value = liege }
+			}
+			else = { remove_variable = zg361_jingcha_mandate_reviewer }
+		}
+		else = {
+			remove_variable = zg361_jingcha_mandate_superior
+			remove_variable = zg361_jingcha_mandate_reviewer
+		}
+		trigger_event = { id = zg361.40 days = 1 }
+		debug_log = "ZG361: periodic jingcha mandate issued to player"
+	}
+	else_if = {
+		limit = { is_ai = yes }
+		zg361_run_review_effect = yes
+		debug_log = "ZG361: AI jingcha duty resolved by background review"
+	}
+	else = {
+		# 玩家未成年、失能、在押或班子少于 3 人时豁免集会，但仍刷新官僚快照。
+		zg361_run_review_effect = yes
+		debug_log = "ZG361: player jingcha assembly excused; background review only"
+	}
+}
+
+# 玩家明确拒办，或承诺后 300 日仍未办完时调用。
+# 有上司：上司对本人降好感；只有具备 361 考核资格的原上司才会留下单次 KPI 失察标记。
+# 无上司：只扣制度威信，不设置标记，也不伪造自我考核。
+zg361_refuse_jingcha_effect = {
+	remove_variable = zg361_jingcha_pending
+	if = {
+		limit = { has_variable = zg361_jingcha_mandate_superior }
+		var:zg361_jingcha_mandate_superior = {
+			add_opinion = { modifier = zg361_refused_jingcha target = prev }
+		}
+		if = {
+			limit = { has_variable = zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_superior value = var:zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_year value = var:zg361_jingcha_mandate_year }
+			debug_log = "ZG361: jingcha refused; eligible superior opinion and next-review KPI penalty recorded"
+		}
+		else = {
+			debug_log = "ZG361: jingcha refused; ineligible superior opinion penalty recorded without orphan KPI marker"
+		}
+	}
+	else = {
+		add_prestige = {
+			value = 0
+			subtract = zg361_independent_refusal_prestige_cost_value
+		}
+		debug_log = "ZG361: independent top liege refused jingcha; prestige penalty only"
+	}
+	remove_variable = zg361_jingcha_mandate_superior
+	remove_variable = zg361_jingcha_mandate_reviewer
+	remove_variable = zg361_jingcha_mandate_year
+}

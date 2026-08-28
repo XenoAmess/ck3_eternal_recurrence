@@ -1,0 +1,16 @@
+﻿# Invisible bridge keeps test effects outside decision tooltip simulation.
+window = {
+	name = "zga_bridge_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { 0 0 }
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+
+	state = { name = _show using = Animation_FadeIn_Quick }
+	state = { name = _hide using = Animation_FadeOut_Quick }
+	state = { name = "zga_initialize" trigger_when = "[GetScriptedGui('zga_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zga_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "zga_prepare_player_review" trigger_when = "[GetScriptedGui('zga_prepare_player_review_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zga_prepare_player_review_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "zga_verify_player_review" trigger_when = "[GetScriptedGui('zga_verify_player_review_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zga_verify_player_review_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "zga_personal_result" trigger_when = "[GetScriptedGui('zga_personal_result_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zga_personal_result_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+}

@@ -15,11 +15,10 @@ zg361_appeal_interaction = {
 	auto_accept = no
 
 	is_shown = {
-		scope:actor = {
-			OR = {
-				has_character_modifier = zg361_grade_325
-				has_character_modifier = zg361_pip
-			}
+		has_game_rule = zg361_on
+	scope:actor = {
+			has_character_modifier = zg361_grade_325
+			zg361_is_current_liege_review_record_trigger = yes
 			liege = scope:recipient
 		}
 		scope:recipient = {
@@ -42,7 +41,10 @@ zg361_appeal_interaction = {
 		}
 		modifier = {
 			add = 15
-			scope:actor = { merit_level >= 5 }
+			scope:actor = {
+				government_has_flag = government_has_merit
+				merit_level >= 5
+			}
 		}
 		modifier = {
 			add = -100
@@ -51,24 +53,12 @@ zg361_appeal_interaction = {
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:actor = {
 			change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
 			# 翻案：改判 3.5
-			remove_character_modifier = zg361_grade_325
-			remove_character_modifier = zg361_pip
-			set_variable = { name = zg361_streak_bottom value = 0 }
-			zg361_grade_35_apply_effect = yes
-			# 领主侧计数修正
-			liege = {
-				if = {
-					limit = { has_variable = zg361_last_325_n }
-					change_variable = { name = zg361_last_325_n add = -1 }
-					change_variable = { name = zg361_last_35_n add = 1 }
-				}
-			}
+			zg361_appeal_regrade_to_35_effect = yes
 			debug_log = "ZG361: appeal accepted, regraded to 3.5"
 		}
 	}
@@ -94,6 +84,7 @@ zg361_review_talk_interaction = {
 	auto_accept = yes
 
 	is_shown = {
+		has_game_rule = zg361_on
 		scope:actor = {
 			zg361_is_celestial_liege_trigger = yes
 		}
@@ -108,7 +99,6 @@ zg361_review_talk_interaction = {
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:recipient = {
@@ -132,18 +122,18 @@ zg361_recommend_interaction = {
 	auto_accept = yes
 
 	is_shown = {
+		has_game_rule = zg361_on
 		scope:actor = {
 			zg361_is_reviewable_vassal_trigger = yes
 		}
 		scope:recipient = {
 			zg361_is_reviewable_vassal_trigger = yes
 			NOT = { this = scope:actor }
-			top_liege ?= scope:actor.top_liege
+			liege = scope:actor.liege
 		}
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:recipient = {
@@ -168,18 +158,18 @@ zg361_slander_interaction = {
 	auto_accept = yes
 
 	is_shown = {
+		has_game_rule = zg361_on
 		scope:actor = {
 			zg361_is_reviewable_vassal_trigger = yes
 		}
 		scope:recipient = {
 			zg361_is_reviewable_vassal_trigger = yes
 			NOT = { this = scope:actor }
-			top_liege ?= scope:actor.top_liege
+			liege = scope:actor.liege
 		}
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:actor = {
@@ -229,7 +219,6 @@ zg361_purge_interaction = {
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:recipient = {
@@ -261,7 +250,6 @@ zg361_force_retire_interaction = {
 	}
 
 	ai_will_do = { base = 0 }
-	ai_frequency_by_tier = { }
 
 	on_accept = {
 		scope:recipient = {

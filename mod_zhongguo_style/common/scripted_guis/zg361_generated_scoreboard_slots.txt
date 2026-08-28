@@ -1,0 +1,800 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_sb_m_01_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_01_char }
+}
+
+zg361_sb_m_02_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_02_char }
+}
+
+zg361_sb_m_03_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_03_char }
+}
+
+zg361_sb_m_04_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_04_char }
+}
+
+zg361_sb_m_05_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_05_char }
+}
+
+zg361_sb_m_06_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_06_char }
+}
+
+zg361_sb_m_07_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_07_char }
+}
+
+zg361_sb_m_08_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_08_char }
+}
+
+zg361_sb_m_09_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_09_char }
+}
+
+zg361_sb_m_10_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_10_char }
+}
+
+zg361_sb_m_11_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_11_char }
+}
+
+zg361_sb_m_12_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_12_char }
+}
+
+zg361_sb_m_13_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_13_char }
+}
+
+zg361_sb_m_14_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_14_char }
+}
+
+zg361_sb_m_15_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_15_char }
+}
+
+zg361_sb_m_16_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_16_char }
+}
+
+zg361_sb_m_17_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_17_char }
+}
+
+zg361_sb_m_18_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_18_char }
+}
+
+zg361_sb_m_19_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_19_char }
+}
+
+zg361_sb_m_20_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_20_char }
+}
+
+zg361_sb_m_21_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_21_char }
+}
+
+zg361_sb_m_22_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_22_char }
+}
+
+zg361_sb_m_23_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_23_char }
+}
+
+zg361_sb_m_24_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_24_char }
+}
+
+zg361_sb_m_25_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_25_char }
+}
+
+zg361_sb_m_26_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_26_char }
+}
+
+zg361_sb_m_27_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_27_char }
+}
+
+zg361_sb_m_28_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_28_char }
+}
+
+zg361_sb_m_29_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_29_char }
+}
+
+zg361_sb_m_30_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_30_char }
+}
+
+zg361_sb_m_31_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_31_char }
+}
+
+zg361_sb_m_32_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_32_char }
+}
+
+zg361_sb_m_33_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_33_char }
+}
+
+zg361_sb_m_34_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_34_char }
+}
+
+zg361_sb_m_35_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_35_char }
+}
+
+zg361_sb_m_36_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_36_char }
+}
+
+zg361_sb_m_37_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_37_char }
+}
+
+zg361_sb_m_38_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_38_char }
+}
+
+zg361_sb_m_39_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_39_char }
+}
+
+zg361_sb_m_40_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_40_char }
+}
+
+zg361_sb_m_41_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_41_char }
+}
+
+zg361_sb_m_42_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_42_char }
+}
+
+zg361_sb_m_43_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_43_char }
+}
+
+zg361_sb_m_44_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_44_char }
+}
+
+zg361_sb_m_45_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_45_char }
+}
+
+zg361_sb_m_46_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_46_char }
+}
+
+zg361_sb_m_47_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_47_char }
+}
+
+zg361_sb_m_48_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_48_char }
+}
+
+zg361_sb_m_49_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_49_char }
+}
+
+zg361_sb_m_50_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_50_char }
+}
+
+zg361_sb_m_51_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_51_char }
+}
+
+zg361_sb_m_52_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_52_char }
+}
+
+zg361_sb_m_53_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_53_char }
+}
+
+zg361_sb_m_54_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_54_char }
+}
+
+zg361_sb_m_55_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_55_char }
+}
+
+zg361_sb_m_56_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_56_char }
+}
+
+zg361_sb_m_57_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_57_char }
+}
+
+zg361_sb_m_58_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_58_char }
+}
+
+zg361_sb_m_59_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_59_char }
+}
+
+zg361_sb_m_60_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_60_char }
+}
+
+zg361_sb_m_61_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_61_char }
+}
+
+zg361_sb_m_62_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_62_char }
+}
+
+zg361_sb_m_63_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_63_char }
+}
+
+zg361_sb_m_64_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_64_char }
+}
+
+zg361_sb_m_65_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_65_char }
+}
+
+zg361_sb_m_66_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_66_char }
+}
+
+zg361_sb_m_67_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_67_char }
+}
+
+zg361_sb_m_68_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_68_char }
+}
+
+zg361_sb_m_69_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_69_char }
+}
+
+zg361_sb_m_70_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_70_char }
+}
+
+zg361_sb_m_71_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_71_char }
+}
+
+zg361_sb_m_72_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_72_char }
+}
+
+zg361_sb_m_73_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_73_char }
+}
+
+zg361_sb_m_74_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_74_char }
+}
+
+zg361_sb_m_75_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_75_char }
+}
+
+zg361_sb_m_76_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_76_char }
+}
+
+zg361_sb_m_77_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_77_char }
+}
+
+zg361_sb_m_78_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_78_char }
+}
+
+zg361_sb_m_79_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_79_char }
+}
+
+zg361_sb_m_80_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_80_char }
+}
+
+zg361_sb_r_01_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_01_char }
+}
+
+zg361_sb_r_02_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_02_char }
+}
+
+zg361_sb_r_03_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_03_char }
+}
+
+zg361_sb_r_04_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_04_char }
+}
+
+zg361_sb_r_05_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_05_char }
+}
+
+zg361_sb_r_06_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_06_char }
+}
+
+zg361_sb_r_07_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_07_char }
+}
+
+zg361_sb_r_08_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_08_char }
+}
+
+zg361_sb_r_09_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_09_char }
+}
+
+zg361_sb_r_10_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_10_char }
+}
+
+zg361_sb_r_11_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_11_char }
+}
+
+zg361_sb_r_12_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_12_char }
+}
+
+zg361_sb_r_13_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_13_char }
+}
+
+zg361_sb_r_14_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_14_char }
+}
+
+zg361_sb_r_15_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_15_char }
+}
+
+zg361_sb_r_16_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_16_char }
+}
+
+zg361_sb_r_17_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_17_char }
+}
+
+zg361_sb_r_18_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_18_char }
+}
+
+zg361_sb_r_19_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_19_char }
+}
+
+zg361_sb_r_20_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_20_char }
+}
+
+zg361_sb_r_21_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_21_char }
+}
+
+zg361_sb_r_22_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_22_char }
+}
+
+zg361_sb_r_23_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_23_char }
+}
+
+zg361_sb_r_24_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_24_char }
+}
+
+zg361_sb_r_25_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_25_char }
+}
+
+zg361_sb_r_26_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_26_char }
+}
+
+zg361_sb_r_27_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_27_char }
+}
+
+zg361_sb_r_28_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_28_char }
+}
+
+zg361_sb_r_29_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_29_char }
+}
+
+zg361_sb_r_30_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_30_char }
+}
+
+zg361_sb_r_31_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_31_char }
+}
+
+zg361_sb_r_32_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_32_char }
+}
+
+zg361_sb_r_33_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_33_char }
+}
+
+zg361_sb_r_34_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_34_char }
+}
+
+zg361_sb_r_35_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_35_char }
+}
+
+zg361_sb_r_36_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_36_char }
+}
+
+zg361_sb_r_37_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_37_char }
+}
+
+zg361_sb_r_38_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_38_char }
+}
+
+zg361_sb_r_39_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_39_char }
+}
+
+zg361_sb_r_40_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_40_char }
+}
+
+zg361_sb_r_41_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_41_char }
+}
+
+zg361_sb_r_42_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_42_char }
+}
+
+zg361_sb_r_43_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_43_char }
+}
+
+zg361_sb_r_44_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_44_char }
+}
+
+zg361_sb_r_45_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_45_char }
+}
+
+zg361_sb_r_46_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_46_char }
+}
+
+zg361_sb_r_47_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_47_char }
+}
+
+zg361_sb_r_48_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_48_char }
+}
+
+zg361_sb_r_49_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_49_char }
+}
+
+zg361_sb_r_50_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_50_char }
+}
+
+zg361_sb_r_51_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_51_char }
+}
+
+zg361_sb_r_52_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_52_char }
+}
+
+zg361_sb_r_53_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_53_char }
+}
+
+zg361_sb_r_54_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_54_char }
+}
+
+zg361_sb_r_55_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_55_char }
+}
+
+zg361_sb_r_56_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_56_char }
+}
+
+zg361_sb_r_57_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_57_char }
+}
+
+zg361_sb_r_58_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_58_char }
+}
+
+zg361_sb_r_59_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_59_char }
+}
+
+zg361_sb_r_60_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_60_char }
+}
+
+zg361_sb_r_61_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_61_char }
+}
+
+zg361_sb_r_62_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_62_char }
+}
+
+zg361_sb_r_63_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_63_char }
+}
+
+zg361_sb_r_64_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_64_char }
+}
+
+zg361_sb_r_65_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_65_char }
+}
+
+zg361_sb_r_66_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_66_char }
+}
+
+zg361_sb_r_67_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_67_char }
+}
+
+zg361_sb_r_68_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_68_char }
+}
+
+zg361_sb_r_69_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_69_char }
+}
+
+zg361_sb_r_70_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_70_char }
+}
+
+zg361_sb_r_71_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_71_char }
+}
+
+zg361_sb_r_72_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_72_char }
+}
+
+zg361_sb_r_73_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_73_char }
+}
+
+zg361_sb_r_74_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_74_char }
+}
+
+zg361_sb_r_75_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_75_char }
+}
+
+zg361_sb_r_76_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_76_char }
+}
+
+zg361_sb_r_77_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_77_char }
+}
+
+zg361_sb_r_78_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_78_char }
+}
+
+zg361_sb_r_79_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_79_char }
+}
+
+zg361_sb_r_80_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_80_char }
+}

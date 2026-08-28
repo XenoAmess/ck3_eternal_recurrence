@@ -29,6 +29,9 @@ zg361.2 = {
 	theme = vassal
 	title = zg361.2.t
 	desc = zg361.2.desc
+	trigger = {
+		has_character_modifier = zg361_grade_375
+	}
 
 	option = {
 		name = zg361.2.a
@@ -40,6 +43,9 @@ zg361.3 = {
 	theme = vassal
 	title = zg361.3.t
 	desc = zg361.3.desc
+	trigger = {
+		has_character_modifier = zg361_grade_35
+	}
 
 	option = {
 		name = zg361.3.a
@@ -52,6 +58,9 @@ zg361.4 = {
 	theme = vassal
 	title = zg361.4.t
 	desc = zg361.4.desc
+	trigger = {
+		has_character_modifier = zg361_grade_325
+	}
 
 	option = { # 认命
 		name = zg361.4.a
@@ -60,7 +69,10 @@ zg361.4 = {
 
 	option = { # 申诉（花费影响力，三成翻案；想要正式复核走互动）
 		name = zg361.4.b
-		trigger = { influence >= 150 }
+		trigger = {
+			influence >= 150
+			zg361_is_current_liege_review_record_trigger = yes
+		}
 		change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
 		random = {
 			chance = 30
@@ -69,10 +81,7 @@ zg361.4 = {
 		if = {
 			limit = { has_variable = zg361_appeal_won }
 			remove_variable = zg361_appeal_won
-			remove_character_modifier = zg361_grade_325
-			remove_character_modifier = zg361_pip
-			set_variable = { name = zg361_streak_bottom value = 0 }
-			zg361_grade_35_apply_effect = yes
+			zg361_appeal_regrade_to_35_effect = yes
 			debug_log = "ZG361: player appeal won, regraded to 3.5"
 		}
 		else = {
@@ -155,6 +164,9 @@ zg361.6 = {
 	theme = vassal
 	title = zg361.6.t
 	desc = zg361.6.desc
+	trigger = {
+		zg361_is_elimination_candidate_trigger = yes
+	}
 
 	option = { # 最后申诉：四成改判降岗，失败则夺爵
 		name = zg361.6.a
@@ -179,7 +191,7 @@ zg361.6 = {
 	option = { # 散尽家财：改判降岗留用
 		name = zg361.6.b
 		trigger = { gold >= 300 }
-		add_gold = { value = 0 subtract = zg361_wealth_bribe_gold_value }
+		remove_short_term_gold = zg361_wealth_bribe_gold_value
 		zg361_eliminate_demote_effect = yes
 		debug_log = "ZG361: bribe accepted, demoted instead of purged"
 	}
@@ -209,7 +221,6 @@ zg361.10 = {
 	theme = crown
 	title = zg361.10.t
 	desc = zg361.10.desc
-
 	immediate = {
 		save_scope_value_as = { name = zg361_n_375 value = var:zg361_pending_375_n }
 		save_scope_value_as = { name = zg361_n_35 value = var:zg361_pending_35_n }
@@ -229,6 +240,7 @@ zg361.10 = {
 
 	option = { # 踩一个人：末名 3.5 打进 3.25
 		name = zg361.10.c
+		trigger = { var:zg361_bottom_slots >= 1 }
 		zg361_calibrate_demote_effect = yes
 		trigger_event = zg361.12
 	}
@@ -261,25 +273,6 @@ zg361.12 = {
 }
 
 # ============================================================
-# 隐藏载体：决议「立即开展绩效考核」的延迟执行（root = 领主）
-# ============================================================
-zg361.20 = {
-	type = character_event
-	theme = crown
-	hide_window = yes
-	title = zg361.20.t
-	desc = zg361.20.desc
-
-	immediate = {
-		zg361_run_review_effect = yes
-	}
-
-	option = {
-		name = zg361.20.a
-	}
-}
-
-# ============================================================
 # 玩家领主：野狗与小白兔（价值观双轨）
 # ============================================================
 zg361.30 = {
@@ -287,6 +280,10 @@ zg361.30 = {
 	theme = crown
 	title = zg361.30.t
 	desc = zg361.30.desc
+	trigger = {
+		has_game_rule = zg361_on
+		zg361_is_celestial_liege_trigger = yes
+	}
 
 	immediate = {
 		save_scope_value_as = { name = zg361_n_dog value = var:zg361_wild_dog_n }
@@ -297,6 +294,7 @@ zg361.30 = {
 		name = zg361.30.a
 		every_vassal = {
 			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
 				has_variable = zg361_class
 				var:zg361_class = 2
 			}
@@ -309,17 +307,22 @@ zg361.30 = {
 		add_prestige = 50
 		every_vassal = {
 			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
 				has_variable = zg361_class
 				var:zg361_class = 1
 			}
-			change_merit = major_merit_loss
+			if = {
+				limit = { government_has_flag = government_has_merit }
+				change_merit = major_merit_loss
+			}
 			add_character_modifier = { modifier = zg361_pip years = 1 }
 			liege = {
-				add_opinion = { modifier = zg361_poor_review target = root }
+				add_opinion = { modifier = zg361_poor_review target = prev }
 			}
 		}
 		every_vassal = {
 			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
 				has_variable = zg361_class
 				var:zg361_class = 2
 			}

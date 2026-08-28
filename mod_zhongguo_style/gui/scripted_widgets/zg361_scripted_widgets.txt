@@ -1,0 +1,3 @@
+﻿gui/zg361_scoreboard.gui = zg361_scoreboard_window
+gui/zg361_decision_bridge.gui = zg361_decision_bridge_window
+gui/zg361_mechanism_bridge.gui = zg361_mechanism_bridge_window

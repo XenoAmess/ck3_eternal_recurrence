@@ -7,6 +7,6 @@ yearly_playable_pulse = {
 
 zg361_annual_review_on_action = {
 	effect = {
-		zg361_annual_review_effect = yes
+		zg361_jingcha_annual_dispatch_effect = yes
 	}
 }

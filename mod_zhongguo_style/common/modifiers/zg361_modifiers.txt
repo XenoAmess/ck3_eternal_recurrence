@@ -22,6 +22,7 @@ zg361_grade_325 = {
 	liege_opinion = -20
 	monthly_merit_mult = -0.5
 	monthly_prestige = -0.5
+	monthly_treasury_from_salary_budget_mult = -0.25
 }
 
 # 绩效改进计划（PIP）

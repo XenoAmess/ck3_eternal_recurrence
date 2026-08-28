@@ -1,44 +1,98 @@
-# 天朝特色361制封臣绩效考核（ZhongGuo 361 Style）
+# 天朝特色361制官员绩效考核（ZhongGuo 361 Style）
 
-独立 CK3 mod：把阿里式 "361" 绩效考核制度（头部 30% = 3.75 / 中间 60% = 3.5 / 尾部 10% = 3.25，
-横向排名、强制分布、末位淘汰）落到**天朝制（celestial_government）**统治者与其封臣（在任官员）头上。
+这是一个 CK3 1.19.0.6 独立 mod：把“头部 30% = 3.75、中间 60% = 3.5、尾部 10% = 3.25”的
+361 强制分布考核，嵌入天朝制的逐级官僚体系。
 
-每年考核季，皇帝对全体封臣打分排名：
+一句话：在这里，打下江山只是入职；真正决定你能不能过年的，是上司有没有给你背 C。
 
-- **3.75 超出预期**：大额贤能、绩效奖金、晋升提名（写入原版任命 candidate_score 通道），
-  连续两次进入晋升通道；
-- **3.5 符合预期**：正常履职，小额奖励与一句"继续努力"；
-- **3.25 待改进**：贤能扣减、降薪、进入绩效改进计划（PIP），**连续两次触发末位淘汰**——
-  免费夺爵（带合法理由）/ 强制致仕 / 降岗留用，由领主按好感、能力、家族势力、派系状态裁决。
+## 权威范围
 
-玩家可以当考核别人的皇帝，也可以当被 AI 皇帝考核的封臣——被打 3.25 时可以认命、申诉、
-摆烂或奋发。
+- 所有在任、在世的**天朝制公爵及以上领主**都是考核者，不要求独立；每人只考核自己的直属官员。
+- 天朝总督不分爵位均可受评；所有直属**伯爵和男爵**也明确纳入。
+- 伯爵和男爵**只被考核，不能考核别人**。公爵及以上角色可同时在上司榜中受评、并管理自己的下属榜。
+- 本 mod 是 AGENTS.md 默认“AI 不得触发”规则的**第二个所有者授权例外**：AI 天朝制公爵及以上也执行完整考核、奖惩和末位处置。
 
-## AI 适用性（已获所有者授权例外）
+## 现有玩法
 
-本 mod 是 AGENTS.md "一切内容只对玩家生效" 默认约束的**第二个已授权例外**（首个为 ox_here）：
+考核按属地总督效率、贤能品级与成长、上级评价、忠诚/罪行/派系、玩家选择等计算 KPI，
+横向排名后强制分档：
 
-- AI 天朝制统治者每年自动执行完整考核并静默结算全部奖惩，**包括末位淘汰与免费夺爵**（激进策略，
-  裁决权重见 `docs/zhongguo-361-plan.md` 第 5 节）；
-- 考核相关事件只投递给玩家（玩家领主的校准/淘汰决策事件、玩家封臣的结果通知事件）；
-- 该授权仅限本 mod 的考核系统，不得外推。
+- **3.75 超出预期**：贤能奖励、地方国库奖金、原版任命候选分加成；连续两次进入晋升通道。
+- **3.5 符合预期**：小额贤能奖励，连击归零。
+- **3.25 待改进**：地方国库罚没、个人金币扣减与一年俸禄下调，并进入 PIP；连续两次后进入末位淘汰。
 
-## 文档
+末位处置包括免费夺爵、强制致仕、降岗留用和再留一年。玩家封臣可申诉、认命、摆烂或奋发；
+玩家领主可在公示前校准边界名单。申诉改判会同步退回本次固定财政罚没并修正榜头统计。
 
-- **详细设计计划**：`docs/zhongguo-361-plan.md`（机制映射、KPI 公式、排名算法、AI 淘汰权重、
-  三期路线图、验收标准）
+一轮绩效季大致是：确定直属参评名单 → 计算并冻结 KPI / 价值观证据 → 横向排队 → 校准边界 →
+按 30/60/10 公示 3.75 / 3.5 / 3.25 → 奖金、罚没、PIP、晋升与末位处置 → 把结果镜像进上司榜和个人榜。
+同一领主同一年只能结算一次，旧榜按轮次冻结，不会因官员调任或下次考核而漂移。
 
-## 工程规范
+## 京察与考核榜
 
-- 命名空间：脚本一律 `zg361_` 前缀，事件 `namespace = zg361`（`zg361.1` 起），验收夹具前缀 `zg361a_`；
-- 所有脚本/本地化文件 **UTF-8 BOM**；`descriptor.mod` 与本 README 无 BOM；
-- 本地化日常只写简体中文与英文，其余 7 语言英文占位保持可加载；发布级翻译另走
-  `docs/localization-workflow.md`（MiniMax 流程）；
-- 正式发布只使用未来 `tools/build_mod_zhongguo_style_release.py` 生成的 staging，禁止直接上传本目录；
-  `remote_file_id` 只允许存在于用户目录外层 `.mod`，永不进仓库；
-- 实机验收走未来 `tools/run_zhongguo_acceptance.py`（一次性 `-userdir`，不读写真实工坊缓存）。
+- 京察是**免费、定期弹出的半强制活动**。玩家公爵及以上到期默认应举办；拒办会降低直属上司好感，并成为上司下次考核你时的一次性重大 KPI 扣分理由。
+- 独立最高领主没有上司，拒办时只承担制度威信后果，不伪造“自己考核自己”。
+- AI 领主默认履责，用后台考核结算，不走活动 UI。
+- 每次结算在淘汰前发布持久榜单。右上角“考核榜”面板展示名次、人物/官职、KPI、价值观分、档位、连续次数和 PIP/晋升状态。
+- 公爵及以上玩家可切换“我考核的官员”与“我所在的受评队列”两个视角；被 AI 领主考核的玩家也可看到所属完整公示榜。
+- 主持考核时收到的是“你主持的考核”汇总；本人被上司考核时收到独立的“上司考定”告身，直接写明上司、个人档位、KPI 与同组名次。
 
-当前状态：**一期核心循环 + 二期博弈层 + 三期活动代码全部静态完成**（年度考核 tick、KPI、
-30/60/10 排名、校准会议、三档奖惩、末位淘汰 AI 裁决与逐人互动、六个角色互动、
-价值观双轨事件、末位比例决议、京察大计活动、九语言本地化），未经实机验证；静态校验
-`py mod_zhongguo_style/tools/validate_local.py` GREEN。版本 0.2.0。
+## 不只是三个数字：361 条制度选择
+
+完整清单不是把 361 个互联网热词贴到事件标题上。开发树为编号 001–361 的每项制度都提供独立的玩家政策卡、
+A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考核逐次抛出一张未配置政策卡，另有用于快速开局的
+“下一项制度”与参考宪章决议。
+
+它们覆盖 OKR/KPI、背靠背互评、校准会、PIP、末位、晋升包、HC/编制、薪酬倒挂、向上管理、跨部门抢功、
+技术债、数据指标、加班与会议、招聘和外包、内部活水、重组、需求治理、绩效申诉，以及最终的《三六一绩效宪章》。
+选择会共同改变 14 本组织账：证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、
+人才、HC 压力、薪酬债、制度债和预算压力；这些账再回流到团队与管理者 KPI，所以“流程拉满”与“业务交付”
+并不总能同时最大化。
+
+完整设计见 `docs/361-expansion-options.md`；逐号实现入口、AI 路径和验收波次见
+`docs/361-mechanism-implementation-manifest.md` 与机器可读的 `docs/361-mechanism-manifest.json`。
+
+## 安装与兼容性
+
+- 需要 CK3 1.19.0.6，并依赖该版本的天朝制内容；推荐新开局、单人游戏。
+- 手动安装时，将本目录注册为独立 mod；正式发布后应优先订阅 Steam Workshop 版本。
+- 本 mod 新增自己的 `zg361_` / `zg361m` 命名空间，不主动覆盖原版文件。其他 mod 若定义同名键、替换相同
+  scripted widget，或重写相同年度 on_action 链，仍可能冲突。
+- 伯爵和男爵只受评；只有天朝制公爵及以上领主主持考核。宗教系统不在本 mod 的机制范围内。
+
+## 当前交付状态
+
+版本 0.3.0 是发布候选开发线。361 个编号目前均达到 `static-ready`：生成代码、玩家入口、AI 入口、状态变化和
+静态合同齐备；这不等于 361 项已经逐号通过 CK3 实机。最终发布口径必须以四轮合批实机报告、确定性 release
+manifest 和新鲜 Workshop 缓存复验为准，历史报告不得替代当前候选证据。
+
+## 工程与测试
+
+- 详细机制与历史偏差：`docs/zhongguo-361-plan.md`
+- 361 条权威清单：`docs/361-expansion-options.md`
+- 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
+- 历史实机报告（只代表当时快照）：`docs/testing-report-2026-08-29.md`
+- 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`
+- 隔离 CK3 实机验收：`& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"`
+- release builder 单元测试：`py tools/test_build_mod_zhongguo_style_release.py`
+- release 可复现检查：`py tools/build_mod_zhongguo_style_release.py --check`
+- 正式构建：在干净、已提交且带 `zhongguo-361-v<版本>` tag 的候选上运行
+  `py tools/build_mod_zhongguo_style_release.py --release`
+
+正式上传只能使用 `dist/mod_zhongguo_style/` staging，禁止直接上传开发树。该投影仅包含
+`descriptor.mod`、`thumbnail.png` 与 `common/events/gfx/gui/localization` 运行文件；README、docs、tools、
+fixture、原始素材和过程 artifact 均不进入 Workshop 内容包。`remote_file_id` 只能留在用户目录外层 `.mod`，
+仓库、正式 staging 和正式 ZIP 都必须为零。
+
+工坊文案草稿与逐项发布签核分别在 `workshop/description.bbcode` 和 `docs/release-checklist.md`。
+
+脚本、GUI 和 YML 必须为 UTF-8 BOM；日常只创作/审阅简中与英文，其他七语言暂用英文占位。
+AI 授权仅限本 mod 的 361 考核系统，不得外推。
+
+## English summary
+
+ZhongGuo 361 Style turns Chinese internet-company performance culture into a CK3 celestial-government game loop.
+Every eligible duke-or-higher ruler reviews direct officials; counts and barons are reviewees only. Reviews freeze a ranked
+30/60/10 board, apply 3.75/3.5/3.25 consequences, drive PIP, promotion, compensation and headcount politics, and let the
+player navigate 361 individually tracked policy dilemmas. Simplified Chinese is the primary presentation; English is fully
+authored, while the remaining seven localization trees require release-grade editorial review before publication.
