@@ -413,17 +413,16 @@ public CUnit 的 `CArmy+0x128` 派生 pre-arm CombatID 集。所有 watched army
 | `active_battle` | `combat_count > 0` | 原普通 speed-3 战斗 hold |
 | `committed_route` | decision mode 且 `combat_count == 0` | 已提交、非空、末点等于 move target 的行军 route |
 
-[counter-policy] planner 只在 paused/map-ready、无 event/pending interaction、无 active combat/retreat/Assault、
-独立 `committed_route_sentinel_canary_ready=true`，并能将**全部** controllable public CUnitID 完整放入 `1..64` watch
+[production-live counter-policy] planner 只在 paused/map-ready、无 event/pending interaction、无 active combat/retreat/Assault、
+独立 `committed_route_sentinel_live_ready=true`，并能将**全部** controllable public CUnitID 完整放入 `1..64` watch
 时选该 scope。计划必须指定一支确切 subject；该 subject 自己必须是 controllable moving/embarked CUnit，拥有完整非空 route，
 且 route 末点精确等于请求 target。其它 sibling 的 route 不能替代 subject，也不能靠起始 snapshot 推测 scope。
 
 显式命令合同为
 `committed-route-sentinel-advance-army-<subject>-to-<province>-until-<date_raw>`：literal 同时携带 scope、subject、target
 与 bound；driver 必须逐项对拍，并要求 watch 集合中 `combat_count=0`、无 active retreat。原
-`battle-decision-epoch-advance-to-*` 只接受 `active_battle` 且 `combat_count>0`，两条入口不能静默互换。首次当前 episode
-cold continuation 只通过显式 canary 开关广告新 readiness；GREEN 前普通 production 默认保持 false。两者均以 speed 3
-一次 resume，absolute bound 最多为 `+45d`。
+`battle-decision-epoch-advance-to-*` 只接受 `active_battle` 且 `combat_count>0`，两条入口不能静默互换。当前 production 默认
+广告 route composite 与 live readiness；两者均以 speed 3 一次 resume，absolute bound 最多为 `+45d`。
 
 运行中不做 external pause 或 rich route/battle query；仅在以下边界由 native final stage 当日停表：
 
@@ -434,9 +433,16 @@ cold continuation 只通过显式 canary 开关广告新 readiness；GREEN 前�
 
 [counter-policy] 该最小策略**不直接观察 hostile route retarget**。它表达的决定是“继续 CK3 已经接受的
 route，如真正接触则在当日停下转入 battle OODA”，不是“预测期间所有敌军改道并主动避战”。后者仍是
-route/forecast 质量债，不能被本 scope 冒充完成。当前代码与 fixture 已闭合三日后 route-target+CombatID 同日停表、
-单次 resume、零 external pause/RQ；显式 scope/subject/target 入口的真实 cold continuation 未跑前状态为
-`implementation-confirmed / live pending`。
+route/forecast 质量债，不能被本 scope 冒充完成。
+
+[production-live loop] 从 `53256000 / EE6D1B37...06D85` cold continuation 的 run
+`20260828T080926Z-one-generation-9e0ac8cb` 连续选择 5 个显式 route arm，分别推进 `6/9/10/11/8` 日，共 44 日；每臂
+`external_pause_count=0`、`external_rich_query_count=0`、`intermediate_pause_count=0`、`overshoot_days=0`。前四臂只在
+真实 route target 变化当日停；第五臂在 `53257056` 同日记录 `route_target_changed + combat_transition`，下一 turn 立即进入
+exact battle-control query。随后普通 speed-3 battle arm 连跑 `15+24` 日到 terminal，同样零中停/RQ/过冲。report SHA-256
+`713348FCA67C44A1D83A94FC9D5B42184C0B894CD2B5151AE3CFEAF8F4178F73`；`20/20` turns、3 checkpoints、cleanup
+全绿，最新 checkpoint `53258328 / history=5207 / 5AFCE04F...8960`。这把显式 route scope 与 phase/winner 停点压缩一起升为
+production-live；不证明 hostile 未接触 retarget forecast。
 
 ```mermaid
 flowchart TD
@@ -446,9 +452,9 @@ flowchart TD
     D -->|CombatID 或 route target 当日改变| S["[implementation-confirmed] native pause<br/>一次 paused replan"]
     D -->|native auto-pause / date / infra| S
     H["[unknown] hostile 未接触时的 retarget forecast"] -. "[unknown] 不在当前 watch 中" .-> D
-    L["[unknown] current route cold continuation"] -. "[unknown] fresh live acceptance" .-> S
+    L["[production-live] current route cold continuation<br/>44d / 5 arms / zero running RQ"] --> S
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class H,L unknown;
+    class H unknown;
 ```
 
 ## `0x2208320`：同省接触 resolver

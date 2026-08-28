@@ -204,14 +204,6 @@ def parser() -> argparse.ArgumentParser:
             "do not require this research flag"
         ),
     )
-    native_auto_run_parser.add_argument(
-        "--allow-committed-route-sentinel-canary",
-        action="store_true",
-        help=(
-            "explicitly admit the research-only speed-3 committed-route "
-            "sentinel; production default remains disabled"
-        ),
-    )
     one_generation_parser = commands.add_parser(
         "native-one-generation",
         help=(
@@ -259,14 +251,6 @@ def parser() -> argparse.ArgumentParser:
         help=(
             "admit explicit speed 4..5 route-contact A/B arms; speed 1..3 "
             "do not require this research flag"
-        ),
-    )
-    one_generation_parser.add_argument(
-        "--allow-committed-route-sentinel-canary",
-        action="store_true",
-        help=(
-            "explicitly admit the research-only speed-3 committed-route "
-            "sentinel; production default remains disabled"
         ),
     )
     commands.add_parser(
@@ -427,9 +411,6 @@ def main(argv: list[str] | None = None) -> int:
                 allow_route_contact_high_speed_ab=(
                     args.allow_route_contact_high_speed_ab
                 ),
-                allow_committed_route_sentinel_canary=(
-                    args.allow_committed_route_sentinel_canary
-                ),
             )
         elif args.command == "native-one-generation":
             from .one_generation_run import native_one_generation_run
@@ -445,9 +426,6 @@ def main(argv: list[str] | None = None) -> int:
                 route_contact_timeline_speed=args.route_contact_speed,
                 allow_route_contact_high_speed_ab=(
                     args.allow_route_contact_high_speed_ab
-                ),
-                allow_committed_route_sentinel_canary=(
-                    args.allow_committed_route_sentinel_canary
                 ),
             )
         elif args.command == "strategy-review":

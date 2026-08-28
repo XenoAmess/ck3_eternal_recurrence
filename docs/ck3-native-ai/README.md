@@ -100,10 +100,11 @@
   stationary 的 CUnit 与 embarked 主体连续 59 日逐省同步，并因 186 次失败 preview 浪费 `572.765s`。exact-build 结构闭合其
   CFleet carrier 形状：raw kind `1` 不通过原生 move/contact gate，只有 raw kind `0` 且 CArmy backlink 回到同一 full CUnitID
   才能进入 tactical ArmySnapshot。该 reader 过滤与首次拒绝即停止 target scan 已 static-ready，具体 live ID 对仍待 cold replay。
-  已承诺 route 的 speed-3 application-main sentinel 已 implementation-confirmed：独立 canonical step 显式绑定
+  已承诺 route 的 speed-3 application-main sentinel 已 production-live：独立 canonical step 显式绑定
   `committed_route` scope、subject、target 与 bound，完整 controllable watch 在 route target、CombatID/contact、retreat、
-  army identity、native pause 或 `+45d` 边界当日停表，不再每日 query/pause；独立 canary readiness 默认关闭，fresh cold
-  continuation 待验收。hostile 未接触时的 retarget forecast 与非 daily placement 完整全序仍为 unknown。
+  army identity、native pause 或 `+45d` 边界当日停表，不再每日 query/pause。current G1 cold continuation 的 5 个 arm
+  共推进 44 日且全部零 running RQ/中停/过冲，接触同日转入 battle OODA；hostile 未接触时的 retarget forecast 与非 daily
+  placement 完整全序仍为 unknown。
 - [live-confirmed] [actual-contact-scope.md](actual-contact-scope.md) 把同一链冻结为机器可读 ABI/fixture 与
   application-main 只读 query；已完成真实 contact date、CombatID、两侧 stored order、combat-v3 复用和战中冷恢复对照，
   `join_existing` 与 multiple-compatible 实机分支仍待闭合。
@@ -128,7 +129,7 @@
 - [static-confirmed + production-live primitives / further live pending] [battle-speed-control.md](battle-speed-control.md) 证明 public speed `1..5`
   不改变逐 native-day 的 movement/contact/combat 计算，只改变外部介入时间；冻结五档在行军、接触、交战、围城、
   突击、撤退和追击中的准入/退出矩阵。普通战 speed 3、contact-free exact-day route speed 3 与 full-watch terminal
-  primitive 已 live；phase/winner 粗停点合并与 committed-route multi-day sentinel 已实现、fresh live 待验收。speed 4 及
+  primitive 已 live；phase/winner 粗停点合并与 committed-route multi-day sentinel 也已由当前 G1 cold continuation 实机闭合。speed 4 及
   double-`4x` guarded speed 5 仍保持 research。
 - [production-live loop + implementation-confirmed] [battle-decision-epoch-cruise.md](battle-decision-epoch-cruise.md)
   把普通 hold 的真实 invalidation 与 phase/winner 粗变化分开，记录完整全军 speed-3 sentinel 与 speed-5 terminal

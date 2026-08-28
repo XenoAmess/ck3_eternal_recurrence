@@ -3,9 +3,9 @@
   "schema_version": 1,
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "readiness": "static-ready",
-  "research_only": true,
-  "production_selector_enabled": false,
+  "readiness": "production-live-partial",
+  "research_only": false,
+  "production_selector_enabled": true,
   "daily_hook": {
     "final_stage_rva": "0x26D3E80",
     "resume_rva": "0x26D3E8F",
@@ -119,10 +119,27 @@
       "checkpoint unchanged and managed cleanup green"
     ]
   },
+  "production_admission": {
+    "ordinary_active_battle_speed_3": "production-live",
+    "committed_route_speed_3": "production-live",
+    "full_watch_terminal_speed_5_primitive": "production-live",
+    "speed_4": "research",
+    "double_4x_crush_speed_5": "research",
+    "current_g1_evidence": {
+      "run_id": "20260828T080926Z-one-generation-9e0ac8cb",
+      "report_sha256": "713348FCA67C44A1D83A94FC9D5B42184C0B894CD2B5151AE3CFEAF8F4178F73",
+      "committed_route_arms": 5,
+      "committed_route_days": 44,
+      "active_battle_arms": 2,
+      "active_battle_days": 39,
+      "intermediate_pause_count": 0,
+      "external_rich_query_count": 0,
+      "overshoot_days": 0
+    }
+  },
   "unsupported_claims": [
-    "No live CK3 sentinel arm has been accepted yet.",
-    "No production speed selector was changed.",
     "The sentinel does not compute retreat legality, reinforcement ETA, forecast, or dominance while running.",
+    "Speed 4 and double-4x crush speed 5 are not production-admitted.",
     "The armed speed is a requested experiment binding; final semantic readback must prove the actual speed."
   ]
 }

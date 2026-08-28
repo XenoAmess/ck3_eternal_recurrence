@@ -447,11 +447,13 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   重新等 readiness、更新本轮 before、重验同一 episode，再运行完整 fresh planner；不得把旧 step 直接换绑新 revision。第二次仍
   mismatch 就停止，但仍保留上一 durable checkpoint，即使旧计划恰好是 save，因为 typed gate 已证明没有提交。成功 turn 在 artifact
   记录 `pre_submission_revision_replans=1`；普通 `BridgeUnavailableError` 不重试。
-- committed-route multi-day canary 只通过显式 `--allow-committed-route-sentinel-canary` 广告。计划 step 必须是
+- committed-route multi-day production composite 只在 `committed_route_sentinel_live_ready=true` 时广告。计划 step 必须是
   `committed-route-sentinel-advance-army-<subject>-to-<target>-until-<date>`；driver 逐项对拍 scope/subject/target/bound、
   完整无重复 controllable watch、零 active combat/retreat，并要求 arm `combat_count=0`。结果 scope 必须仍为
-  `committed_route`，从 resume 到 native stop 之间必须零 external pause/RQ/overshoot。首次 cold continuation GREEN 前，默认
-  production readiness 保持 false；原 active-battle parameterized step 仍强制 `combat_count>0`。
+  `committed_route`，从 resume 到 native stop 之间必须零 external pause/RQ/overshoot。原 active-battle parameterized step 仍强制
+  `combat_count>0`，不能与 route scope 互换。当前 production 默认已由 cold continuation
+  `20260828T080926Z-one-generation-9e0ac8cb` 验收：5 臂共 44 日，接触同日停表，全部零 external/intermediate pause、零
+  running rich query 与零 overshoot；任何改变该 native stop envelope 或显式绑定合同的后续实现都须重新做 cold live 验收。
 - 2026-08-27 正式全寿命续跑 `20260827T104548Z-one-generation-5eb950f7` 在第 97 回合命中真实 harness B1：此前
   `96/97` turns 成功，包含 `44` 个 gameplay turns 与 `14` 个 checkpoints；CharacterID `29829` 仍存活，cleanup 全绿。
   `first-blocker.json` 报告 `native gameplay revision mismatch: expected 159, current 160`，SHA-256

@@ -3220,7 +3220,7 @@ def choose_one_life_turn(
         )
         for name in (
             "decision_sentinel_live_ready",
-            "committed_route_sentinel_canary_ready",
+            "committed_route_sentinel_live_ready",
             "terminal_sentinel_live_ready",
             "overwhelming_matrix_live_ready",
         )
@@ -5707,7 +5707,7 @@ def choose_one_life_turn(
                 )
                 if (
                     battle_speed_gates[
-                        "committed_route_sentinel_canary_ready"
+                        "committed_route_sentinel_live_ready"
                     ]
                     and _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
                     in available_steps

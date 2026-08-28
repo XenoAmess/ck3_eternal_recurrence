@@ -301,9 +301,7 @@ _BATTLE_SENTINEL_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
 _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
-    # Route-scope admission is a distinct canary contract.  An instance may
-    # explicitly opt in, but the production-default capability stays closed.
-    "committed_route_sentinel_canary_ready": False,
+    "committed_route_sentinel_live_ready": True,
     "terminal_sentinel_live_ready": True,
     # The native stop envelope is live, but no overwhelming active-battle
     # checkpoint has yet passed the required balanced speed matrix.  Strategy
@@ -820,7 +818,6 @@ class NativeHeadlessGameplayDriver:
             DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
         ),
         allow_route_contact_high_speed_ab: bool = False,
-        allow_committed_route_sentinel_canary: bool = False,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -843,9 +840,6 @@ class NativeHeadlessGameplayDriver:
             )
         self.allow_route_contact_high_speed_ab = (
             allow_route_contact_high_speed_ab is True
-        )
-        self.allow_committed_route_sentinel_canary = (
-            allow_committed_route_sentinel_canary is True
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -1016,11 +1010,10 @@ class NativeHeadlessGameplayDriver:
                 composite_action_steps.append(
                     BATTLE_DECISION_EPOCH_ADVANCE_STEP
                 )
-                if self.allow_committed_route_sentinel_canary:
-                    action_steps.add(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP)
-                    composite_action_steps.append(
-                        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
-                    )
+                action_steps.add(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP)
+                composite_action_steps.append(
+                    COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
+                )
             if "set-speed-5" in action_steps:
                 action_steps.add(BATTLE_TERMINAL_CRUISE_STEP)
                 composite_action_steps.append(BATTLE_TERMINAL_CRUISE_STEP)
@@ -1146,12 +1139,7 @@ class NativeHeadlessGameplayDriver:
             **result,
             "action_steps": sorted(action_steps),
             "composite_action_steps": composite_action_steps,
-            "battle_speed_readiness": {
-                **_BATTLE_SPEED_READINESS,
-                "committed_route_sentinel_canary_ready": (
-                    self.allow_committed_route_sentinel_canary
-                ),
-            },
+            "battle_speed_readiness": dict(_BATTLE_SPEED_READINESS),
             "checkpoint_materialization": {
                 "configured": self.save_dir is not None,
                 "save_dir": str(self.save_dir) if self.save_dir is not None else None,

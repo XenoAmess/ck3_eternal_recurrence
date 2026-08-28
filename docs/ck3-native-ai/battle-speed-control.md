@@ -1,6 +1,6 @@
 # 战斗推进速度与暂停边界
 
-状态：**exact-build same-day sentinel、完整全军 watch 与普通战 speed-3 production-live / phase-winner 粗停点合并 implementation-confirmed / 单日 contact-free route speed-3 production-live / committed-route sentinel implementation-confirmed、fresh canary pending / full-watch speed-5 terminal primitive live / 玩家胜局 pursuit selector canary 与双重 `4x` matrix 待完成**
+状态：**exact-build same-day sentinel、完整全军 watch、普通战 speed-3 与 phase-winner 停点合并 production-live / 单日 contact-free route speed-3 production-live / committed-route speed-3 sentinel production-live / full-watch speed-5 terminal primitive live / 玩家胜局 pursuit selector canary 与双重 `4x` matrix 待完成**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -29,7 +29,8 @@
    sentinel 的 production full-watch canary 又一次 resume 连跑 4 日、零 intermediate/external pause、零 running rich query
    与零 overshoot 后在 exact terminal 停住；因此 ordinary combat selector 已开放 speed 3。最新同 checkpoint 的
    main-day-12 对照又证明 speed 1/3 均连跑 14 日到 pursuit，唯一停表原因是同日 phase+winner，且没有任何新动作；
-   该粗停点已从当前 hook 删除，fresh DLL live 待长跑复验。
+   该粗停点已从当前 hook 删除。随后当前 G1 cold continuation 的 speed-3 battle arms 连跑 `15+24` 日到 terminal，
+   没有 phase/winner-only stop，零 external/intermediate pause、零 running RQ、零 overshoot，已完成 fresh live 复验。
 3. **4/5 速不能靠 Python 轮询逐日兜底。** 4 速只有 `0.8 heartbeat/day`；5 速是负载相关的无节流档，现实侧
    没有有限的“下一日反应窗口”。战中 4/5 速必须由 CK3 application-main 的同日 sentinel/deadline guard 停住。
 4. **“兵力悬殊”不能只由人数比证明。** exact-build 原生 power share、soldier ratio 与
@@ -48,11 +49,12 @@
 7. **G1 的 route 吞吐现分成 exact-day 回退和已承诺 route 原生托管两层。**
    `one_day_contact_free=true` 且全军 proof conjunction 成立时，原 production runner 仍可用 speed 3 严格执行
    `start+24`；`unavoidable_current_province_contact` 仍固定 speed 1 并验证 contact transition。
-   [implementation-confirmed / live pending] 对 CK3 已经接受的完整非空 route，新 committed-route scope 使用显式
-   subject/target/bound 命令、独立 canary readiness 与完整
+   [production-live] 对 CK3 已经接受的完整非空 route，新 committed-route scope 使用显式
+   subject/target/bound 命令、独立 live readiness 与完整
    controllable CUnit watch、speed 3 与 application-main daily sentinel，在 route target、CombatID/contact、retreat、army identity、
    native pause 或 `+45d` 边界当日停表，不再每日 route query/pause。它不直接预测 hostile retarget；真正接触
-   仍会因 CombatID 变化当日停下。
+   仍会因 CombatID 变化当日停下。当前 G1 cold continuation 以 5 个 arm 推进 44 日，第五臂在接触同日停下，所有 arm
+   均为零 external/intermediate pause、零 running RQ 与零 overshoot。
 8. **和平 speed-5 的 30 日请求必须兑现 30 日 horizon，不能在第一日自行收口。** [live-confirmed performance RED]
    G1 从 `date_raw=53224848 / E317CB7F...C2EE` 续跑时已经无 active war，planner 请求 30 日、speed 5；旧
    `_life_advance_progressed` 却在起始 war signature 为空时把任意 `date_raw > start` 当成完成，实际退化为每游戏日
@@ -132,7 +134,7 @@ sentinel 复杂度。
 
 | 阶段 | 1 速 | 2 速 | 3 速 | 4 速 | 5 速 | 必须 RQ 的边界与漏过风险 |
 |---|---|---|---|---|---|---|
-| 远距离行军，离最早接触日 `C` 足够远 | `HB`；`RQ <= min(7, C-G1)` 日；无需逐日暂停 | 显式对照 | exact-day proof 已 production-live；committed-route native sentinel 已实现、fresh live pending | 仅 research native date/contact guard | 仅 research route/target 完整且 native guard | route/target/current Province、敌军 endpoint epoch 或 earliest contact 改变。committed-route scope 只保证真正 contact 当日停，不提前观测 hostile retarget |
+| 远距离行军，离最早接触日 `C` 足够远 | `HB`；`RQ <= min(7, C-G1)` 日；无需逐日暂停 | 显式对照 | exact-day proof 与 committed-route native sentinel 均已 production-live | 仅 research native date/contact guard | 仅 research route/target 完整且 native guard | route/target/current Province、敌军 endpoint epoch 或 earliest contact 改变。committed-route scope 只保证真正 contact 当日停，不提前观测 hostile retarget |
 | 接敌 guard 区 `date >= C-Gs` | 当前回 1 速并做 paused one-day contact transaction | 外部 stop envelope 未绿前降 1；未来可由 contact sentinel 保持 2 | 降 1；只有同 tick contact sentinel live 后才保持 3 | 禁止外部轮询；必须 native contact sentinel | 禁止外部轮询；必须 native contact sentinel | 同一 native day 先 movement 后 contact，不能在“抵达”和“接敌”之间插手；晚一日可能已经建战/入旧战 |
 | maneuver 与 main、elapsed `<15` | 异常/无 sentinel 回退 | 可作对照 | production 默认：decision sentinel；只在 semantic epoch 或首个 retreat day gate 停 | 仅 crush research | 仅 crush research | 参战者加入、pursuit 重开、事件/人物风险、提前终局。漏过会用旧 roster/forecast 继续跑 |
 | main、elapsed `>=15`，撤退已可能合法 | RQ 后预先决定 hold/retreat | 可作对照 | production 默认：decision sentinel；hold 后不逐日停 | 只准 crush research + native sentinel | 只准 crush research + native sentinel | retreat legality、forecast invalidation、roster/identity/route、人物事件。phase/winner 单独变化不再重付一次事务；参数化 target 保证首次合法日不会被跨过 |
@@ -152,7 +154,7 @@ sentinel 复杂度。
 | 发现 date、`in_combat`/`retreating`，并在 roster/identity/route/contact/retreat/terminal epoch 同日暂停；phase/winner 只读、不单独停 | **可做 A/B** | **production-live** | application-main daily sentinel 已 live，不依赖 heartbeat 轮询 |
 | running 状态下完成完整 participant/ledger/撤退/forecast 判定 | **当前不可** | **当前不可** | rich battle-control mailbox 明确要求 paused owner-verified frame |
 | 在已证明“本 tranche 没有玩家决策”的自动阶段连续推进 | **可行对照** | **production-live** | CK3 自己每日计算；sentinel 只在 semantic epoch/deadline 停住 |
-| 保证恰好在某个游戏日、接触前或 day-15 停止 | exact-day primitive live | exact-day primitive live；day-15 parameterized consumer static-ready | 使用 application-main native target，不依赖 heartbeat 或异步外部 pause |
+| 保证恰好在某个游戏日、接触前或 day-15 停止 | exact-day primitive live | exact-day primitive live；day-15 parameterized consumer 已由 current-episode arm production-live | 使用 application-main native target，不依赖 heartbeat 或异步外部 pause |
 
 因此“2/3 速实时判定”不是让 Python 在地图运行时遍历完整 `CCombat`，而是：running-safe sentinel 负责廉价发现
 变化，native stop 或 pause request 负责停表，然后只在真正的决策 epoch 做一次 RQ。production 默认已提升为 3 速；2 速只保留
@@ -240,8 +242,9 @@ speed 5 的“直到终局或真实决策点”合同：成功终局臂必须 `i
 query 固定返回 mode、arm/start/target/last/trigger date、speed、tick/army/combat 数、stop flags/reasons、signed target delta、
 `overshoot_days`、`intermediate_pause_count`、pause-wrapper/paused readback、`terminal_observed` 与 `abnormal`。首个 live admission
 仍须先以 speed 1 证明 post hook 每日恰好一次、delta=24、wrapper 单次暂停与最终 paused 同日，再扩展五档 `+1/+3` 日矩阵。
-该 primitive 目前是 static-ready，不是 production-live；正常战争的首个生产候选下限是 speed 3，speed 4/5 只有各自 live
-zero-overshoot/同 seed parity gate 通过后才可入 selector。
+该历史准入已经完成：普通战争的 production floor 是 speed 3；committed route 和 active battle 均已有零中停 live arms，
+full-watch terminal speed 5 也已有独立 live primitive。speed 4 与 double-`4x` crush speed 5 仍须各自通过
+zero-overshoot/同 seed parity gate 后才可入 selector，不能由这些较窄 GREEN 外推。
 
 ```mermaid
 flowchart TD
@@ -530,20 +533,20 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
 `decision_epoch` 不再为 phase/winner 置位。army generation/backlink、route target、CombatID、retreat、ordered roster、
 finalized/removal、native auto-pause、absolute date 与基础设施异常仍保留；同日多个 terminal reason 仍只调用一次 pause wrapper。
 
-这一改动不扩大 speed-5 crush 准入，也不把 phase/winner 枚举从 wire 删除。它的状态为
-`implementation-confirmed / fresh live pending`；在新 DLL 的 cold continuation 产生稳定 hold-to-terminal artifact 前，原有
-speed-3 production-live 证据仍按旧 trigger 包络解读。
+这一改动不扩大 speed-5 crush 准入，也不把 phase/winner 枚举从 wire 删除。新 DLL 的 current-episode cold continuation
+已用 `15+24` 日两个 speed-3 arm 直达 terminal，且无 phase/winner-only stop；状态升为 `production-live loop`。
 
 ## Readiness 边界
 
 本页把以下结论提升为 `production-live`：五档都执行同一逐日 native 计算；contact-free exact-day route 默认 speed 3；普通 active
-combat 默认 speed-3 decision sentinel；完整 controllable CUnit watch 可跨多日并在 semantic epoch exact-stop。已承诺 route 复用同一
-sentinel 且允许 route scope `combat_count=0` 为 `implementation-confirmed / fresh live pending`，尚不冒充 production-live。最终 production
+combat 默认 speed-3 decision sentinel；完整 controllable CUnit watch 可跨多日并在 semantic epoch exact-stop。已承诺 route 使用
+独立显式 scope/subject/target/bound composite，允许 route scope `combat_count=0`，并已在当前 G1 cold continuation 连续运行 44 日。
+最终 production
 artifact 与 hash 见 [battle-decision-epoch-cruise.md](battle-decision-epoch-cruise.md)。
 
 完整全军 speed-5 terminal primitive 也已 live：同一败局 pursuit seed 的 `[5,1]` 两臂 exact terminal core 相同，speed 5
 约 `2.00s`、speed 1 约 `10.03s`，均零 intermediate/external pause、零 running rich query 与零 overshoot。它不授权败局
 selector，也不替代玩家胜局 pursuit canary 或双重 `4x` matrix。
 
-仍为 `static-ready` / pending 的边界：参数化 day-15 gate 尚缺 live replay；`native_pause` Python consumer 尚缺真实事件样本；
+仍为 `static-ready` / pending 的边界：`native_pause` Python consumer 尚缺真实事件样本；
 玩家获胜 pursuit selector 尚缺 qualifying offensive checkpoint；speed 4 与双重 `4x` speed-5 crush 均保持 research。

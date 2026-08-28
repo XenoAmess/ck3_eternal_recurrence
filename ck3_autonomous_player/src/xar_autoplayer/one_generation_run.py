@@ -47,7 +47,6 @@ def native_one_generation_run(
         DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
     ),
     allow_route_contact_high_speed_ab: bool = False,
-    allow_committed_route_sentinel_canary: bool = False,
 ) -> dict[str, object]:
     """Run until this episode's scored death settlement or the first blocker."""
     if isinstance(max_turns, bool) or not isinstance(max_turns, int) or max_turns < 1:
@@ -102,9 +101,6 @@ def native_one_generation_run(
             "allow_route_contact_high_speed_ab": (
                 allow_route_contact_high_speed_ab is True
             ),
-            "allow_committed_route_sentinel_canary": (
-                allow_committed_route_sentinel_canary is True
-            ),
         },
         "status": "starting",
         "outcome": "in_progress",
@@ -143,9 +139,6 @@ def native_one_generation_run(
             route_contact_timeline_speed=route_contact_timeline_speed,
             allow_route_contact_high_speed_ab=(
                 allow_route_contact_high_speed_ab
-            ),
-            allow_committed_route_sentinel_canary=(
-                allow_committed_route_sentinel_canary
             ),
         )
         core_report = core

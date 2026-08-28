@@ -2099,7 +2099,7 @@ class GameplayBridgeTests(unittest.TestCase):
             route_contact_horizon_supported=True,
             battle_speed_readiness={
                 "decision_sentinel_live_ready": True,
-                "committed_route_sentinel_canary_ready": True,
+                "committed_route_sentinel_live_ready": True,
                 "terminal_sentinel_live_ready": False,
                 "overwhelming_matrix_live_ready": False,
             },
@@ -2137,7 +2137,7 @@ class GameplayBridgeTests(unittest.TestCase):
             route_contact_horizon_supported=True,
             battle_speed_readiness={
                 "decision_sentinel_live_ready": True,
-                "committed_route_sentinel_canary_ready": False,
+                "committed_route_sentinel_live_ready": False,
                 "terminal_sentinel_live_ready": True,
                 "overwhelming_matrix_live_ready": False,
             },

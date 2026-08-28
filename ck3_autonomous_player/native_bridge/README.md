@@ -418,11 +418,14 @@ route/combat fingerprints.  `decision` stops on ordinary tactical decision
 epochs; `terminal` deliberately crosses phase and winner-only transitions so
 an admitted overwhelming battle can run without intermediate external pauses.
 The status result records the armed/stop dates and speed, trigger reasons,
-overshoot, intermediate pauses, terminal observation and abnormal state.  This
-is static-ready only: no live arm or production speed selector is admitted yet.
-In terminal mode, a crush candidate additionally requires a cursor-bound
-passive terminal-journal event on the same day and equal core terminal outcomes
-across the restored speed arms; a date fallback is not terminal admission.
+overshoot, intermediate pauses, terminal observation and abnormal state.  The
+same exact-build primitive is production-live through narrowly admitted upper
+layer composites: ordinary active battle at speed 3, committed route at speed
+3, and a full-watch terminal speed-5 primitive.  This does not admit speed 4 or
+double-4x crush selection.  In terminal mode, a crush candidate additionally
+requires a cursor-bound passive terminal-journal event on the same day and
+equal core terminal outcomes across the restored speed arms; a date fallback
+is not terminal admission.
 
 `main_thread_query_mailbox_v1` now exposes one deliberately typed execution
 boundary for `query-war-entry-assessments-v1`; it is not a generic native-call,

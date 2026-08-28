@@ -96,7 +96,6 @@ def native_auto_run(
         DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
     ),
     allow_route_contact_high_speed_ab: bool = False,
-    allow_committed_route_sentinel_canary: bool = False,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -311,9 +310,6 @@ def native_auto_run(
             route_contact_timeline_speed=route_contact_speed,
             allow_route_contact_high_speed_ab=(
                 allow_route_contact_high_speed_ab
-            ),
-            allow_committed_route_sentinel_canary=(
-                allow_committed_route_sentinel_canary
             ),
         )
         service = GameplayBridgeService(driver)
@@ -1105,9 +1101,6 @@ def native_auto_run(
             "route_contact_timeline_speed": route_contact_speed,
             "allow_route_contact_high_speed_ab": (
                 allow_route_contact_high_speed_ab is True
-            ),
-            "allow_committed_route_sentinel_canary": (
-                allow_committed_route_sentinel_canary is True
             ),
         },
         "identity": _identity(config, readiness, spec),

@@ -13019,7 +13019,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         steps = driver.capabilities()["action_steps"]
         self.assertIn(BATTLE_DECISION_EPOCH_ADVANCE_STEP, steps)
         self.assertIn(BATTLE_TERMINAL_CRUISE_STEP, steps)
-        self.assertNotIn(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, steps)
+        self.assertIn(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, steps)
         self.assertNotIn(
             "research-arm-tactical-daily-sentinel-v1-N", steps
         )
@@ -13064,7 +13064,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             readiness,
             {
                 "decision_sentinel_live_ready": True,
-                "committed_route_sentinel_canary_ready": False,
+                "committed_route_sentinel_live_ready": True,
                 "terminal_sentinel_live_ready": True,
                 "overwhelming_matrix_live_ready": False,
             },
@@ -13226,7 +13226,6 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             endpoint=endpoint,
             command_timeout_seconds=0.1,
             life_advance_timeout_seconds=0.1,
-            allow_committed_route_sentinel_canary=True,
         )
         endpoint.publish(
             _hello(
@@ -13265,7 +13264,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertTrue(
             capabilities["battle_speed_readiness"][
-                "committed_route_sentinel_canary_ready"
+                "committed_route_sentinel_live_ready"
             ]
         )
         arm_status = _tactical_sentinel_status(
@@ -13453,7 +13452,6 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 driver = NativeHeadlessGameplayDriver(
                     endpoint.pipe_name,
                     endpoint=endpoint,
-                    allow_committed_route_sentinel_canary=True,
                 )
                 endpoint.publish(
                     _hello(

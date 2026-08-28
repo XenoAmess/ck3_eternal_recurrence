@@ -1,6 +1,6 @@
 # 战斗决策时点与零中途暂停 cruise
 
-状态：**native daily sentinel、完整全军 watch 与普通 decision speed-3 已 production-live；phase/winner 粗停点已合并为 implementation-confirmed / fresh live pending；运行中 dominance invalidation 为 research；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
+状态：**native daily sentinel、完整全军 watch、普通 decision speed-3 与 phase/winner 粗停点合并已 production-live；运行中 dominance invalidation 为 research；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -110,6 +110,12 @@ speed 1 用时 `32.002s`，speed 3 用时 `11.248s`，约 `2.85x`。该停点后
 合并的固定开销，不是战斗计算需求。artifact `xar-sentinel-decision-speed1v3-45d-mainline.json`，
 SHA-256 `AD9B62AA...578E`。
 
+[production-live] current G1 cold continuation `20260828T080926Z-one-generation-9e0ac8cb` 在 contact 当日进入 active battle；
+第一个 speed-3 arm 从 `53257056` 连跑 15 日，仅因预提交的 `date_deadline` 停；paused RQ 后第二个 arm 再连跑 24 日，
+仅因 `combat_transition + combat_unavailable + combat_terminal` 停。两个 arm 都是零 external/intermediate pause、零 running RQ、
+零 overshoot，没有 phase/winner-only stop。report SHA-256
+`713348FCA67C44A1D83A94FC9D5B42184C0B894CD2B5151AE3CFEAF8F4178F73`。
+
 v2 以及后续 guarded mode 的 stop 分派顺序冻结为：
 
 1. infrastructure RED（bits `9/10/11/12/15`）：停止本臂，走现有 managed failure cleanup；
@@ -215,7 +221,7 @@ game-days/s；若双遍历吃掉 speed-5 收益，优化入口是把 current sum
 flowchart TD
     Q["[production-live] paused exact battle RQ"] --> H{"当前动作已明确为 hold？"}
     H -->|否| A["先执行当前 retreat / route / event 决定"]
-    H -->|是；普通战| S3["[implementation-confirmed] speed 3 hold sentinel\n忽略 phase / winner; fresh live pending"]
+    H -->|是；普通战| S3["[production-live] speed 3 hold sentinel\n忽略 phase / winner"]
     H -->|是；全部 CombatID qualifying| C{"candidate kind"}
     C -->|玩家已胜 pursuit| S5["[implementation-confirmed] speed 5 terminal sentinel"]
     C -->|double 4x| D["[research] arm daily dominance floor"]
@@ -228,7 +234,7 @@ flowchart TD
     T -->|terminal / removal| J["最终 pause + cursor-bound journal"]
     T -->|native auto-pause| E["event / death 优先处理"]
     U["[unknown] 通用 continue-vs-retreat forecast\n尚无 production policy"] -. "真实 blocker 出现后才补" .-> R
-    M["[unknown] qualifying double-4x checkpoint\n1/2/3/4/5 matrix 尚未运行"] -. "live gate" .-> D
+    M["[unknown] qualifying double-4x checkpoint\n1,2,3,4,5,5,4,3,2,1 matrix 尚未运行"] -. "live gate" .-> D
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,M unknown;
@@ -312,7 +318,7 @@ RED-inconclusive。它们证明统一 harness 与五档 native-day 运行，不�
 - **production-live primitive**：败局 pursuit seed 的 speed-5 terminal arm，`[5,1]` 同 checkpoint 核心 outcome 一致，
   speed 5 `2.000491s` 对 speed 1 `10.030168s`，零 intermediate/external pause、零 running RQ、零 overshoot；
 - **implementation-confirmed / live pending**：玩家已胜 pursuit selector；
-- **implementation-confirmed / fresh live pending**：普通 hold arm 忽略 phase/winner；
+- **production-live loop**：普通 hold arm 忽略 phase/winner；current-episode `15+24` 日两臂已到 terminal；
 - **research**：double-`4x` daily dominance invalidation，以及上面三套五档 matrix。
 
 这些 research 项都不是当前 defensive-war B1 的前置条件；最小代码和 live 矩阵应在长跑恢复到可控战斗帧后施工，不再回退
@@ -510,8 +516,8 @@ retreat、roster、reopen 或原生事件仍会在发生当天暂停并重判，
 
 ## Readiness
 
-本页 ordinary decision speed-3 selector、native sentinel 与完整全军 watch 已达到 `production-live loop`；phase/winner 粗停点合并为
-`implementation-confirmed / fresh live pending`。参数化 day-gate 与 `native_pause` consumer 为 `static-ready`，仍待对应 day-15 / 真实原生自动暂停 live artifact。完整全军 speed-5 terminal primitive
+本页 ordinary decision speed-3 selector、native sentinel、完整全军 watch 与 phase/winner 粗停点合并已达到
+`production-live loop`。参数化 day-gate 已由 current-episode 15 日臂 live；`native_pause` consumer 仍为 `static-ready`，等待真实原生自动暂停 artifact。完整全军 speed-5 terminal primitive
 为 `production-live primitive`。
 
 玩家已获胜 `pursuit_cleanup` selector 已 implementation-confirmed，但仍待一份 qualifying offensive-war checkpoint 的真实
