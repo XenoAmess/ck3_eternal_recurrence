@@ -95,7 +95,7 @@ The score is not the verdict. It is merely the ammunition you bring into calibra
 ## 01:39–02:14 · 强制分布：不是问有没有C，是问C姓什么
 
 *FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT*  
-状态：`placeholder` / `PLACEHOLDER · RANKING CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · 23 PERSONS / 7-16-0; CLEAN BOUNDARY RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -124,7 +124,7 @@ A small team may have no bottom quota; a large team has a boundary. You are not 
 ## 02:14–02:51 · 校准会：用最礼貌的语气，讨论最不礼貌的名额
 
 *CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS*  
-状态：`placeholder` / `PLACEHOLDER · CALIBRATION CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · THREE REAL CALIBRATION CHOICES; CLEAN CONTINUOUS RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -182,7 +182,7 @@ Managing up is not a simple opinion button. Time spent making work visible is ti
 ## 03:31–04:07 · 京察：活动免费，不办的代价比较贵
 
 *JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP*  
-状态：`placeholder` / `PLACEHOLDER · JINGCHA CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · JINGCHA MANDATE AND REFUSAL ENTRY; CLEAN CONSEQUENCE RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -211,7 +211,7 @@ That reason is bound to the superior who issued it; a new boss cannot consume an
 ## 04:07–04:43 · 考核榜与告身：终于有人告诉你到底排第几
 
 *SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK*  
-状态：`placeholder` / `PLACEHOLDER · SCOREBOARD GUI CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · MANAGED SCOREBOARD; CLEAN RECEIPT AND COCKPIT RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -240,7 +240,7 @@ Old boards do not drift after transfers or later reviews. A past 3.25 stays in t
 ## 04:43–05:19 · 3.25不是表情包：国库、金币、俸禄一起有感觉
 
 *3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT*  
-状态：`placeholder` / `PLACEHOLDER · REWARD/PENALTY CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · 3.25 RECEIPT AND THREE-ACCOUNT PENALTY; CLEAN APPEAL LEDGER RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -356,7 +356,7 @@ Credit theft raises visibility but builds trust debt. Blame may protect a score 
 ## 07:08–07:44 · 绩效申诉：不是掀桌，是要求把桌上的账重新加一遍
 
 *PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT*  
-状态：`placeholder` / `PLACEHOLDER · APPEAL CAPTURE PENDING`
+状态：`captured` / `FIXTURE-LIVE STILL · APPEAL ENTRY ON A 3.25 RECEIPT; CLEAN REVERSAL RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 

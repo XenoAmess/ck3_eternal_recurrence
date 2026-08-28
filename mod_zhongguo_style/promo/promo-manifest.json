@@ -104,19 +104,34 @@
     },
     {
       "id": "03-forced-distribution",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "强制分布：不是问有没有C，是问C姓什么",
       "title_en": "FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT",
       "status": {
-        "zh": "待录排名与配额实机",
-        "en": "PLACEHOLDER · RANKING CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：23人、7/16/0 分布；完整末位边界连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · 23 PERSONS / 7-16-0; CLEAN BOUNDARY RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": ["forced_distribution"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/08_scoreboard_panel_raw.png",
+        "label": "GREEN acceptance fixture: managed scoreboard, 23-person cohort"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: managed-scoreboard counts"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-03-DISTRIBUTION",
-        "shot": "同一考核组至少十人，录唯一名次、3.75/3.5/3.25分档、末位配额及边界两人的前后对比。"
+        "exclude_ck3_loading": true,
+        "shot": "来自最终 GREEN 验收夹具的 23 人考核榜静帧，显示唯一名次与 7/16/0 分档。该轮全是首轮保护样本，未展示 3.25 边界；干净连续排名录像仍待录。"
       },
       "cues": [
         {
@@ -135,19 +150,34 @@
     },
     {
       "id": "04-calibration",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "校准会：用最礼貌的语气，讨论最不礼貌的名额",
       "title_en": "CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS",
       "status": {
-        "zh": "待录校准选择实机",
-        "en": "PLACEHOLDER · CALIBRATION CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：校准会三条真选项；人物与代价的干净连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · THREE REAL CALIBRATION CHOICES; CLEAN CONTINUOUS RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": ["calibration"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/06_calibration_event.png",
+        "label": "GREEN acceptance fixture: calibration event"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: calibration and published scoreboard"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-04-CALIBRATION",
-        "shot": "录自动排名、公示前校准窗口、保护边界官员与将另一人压入3.25的选择，以及曝光/威信/好感代价。"
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具中的真实校准会静帧，展示公示前的直接发布、保护与下压三条选择。边界人物、代价与结算的干净连续录屏仍待录。"
       },
       "cues": [
         {
@@ -197,19 +227,34 @@
     },
     {
       "id": "06-jingcha",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "京察：活动免费，不办的代价比较贵",
       "title_en": "JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP",
       "status": {
-        "zh": "待录京察活动实机",
-        "en": "PLACEHOLDER · JINGCHA CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：定期京察强制弹窗及拒办入口；完整拒办后果连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · JINGCHA MANDATE AND REFUSAL ENTRY; CLEAN CONSEQUENCE RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": ["jingcha"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/09_jingcha_mandate_event.png",
+        "label": "GREEN acceptance fixture: semi-mandatory Jingcha event"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: free planner, refusal opinion, and KPI -50"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-06-JINGCHA",
-        "shot": "录定期京察弹窗、默认举办路径、明确不花钱、拒绝选项，以及拒办后直属上司好感和下一轮KPI重大扣分理由。"
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的定期京察弹窗静帧，显示默认举办和拒办入口。报告验证其免费举办、拒办直属上司好感及下轮 KPI -50；同一因果链干净连续录像仍待录。"
       },
       "cues": [
         {
@@ -228,19 +273,34 @@
     },
     {
       "id": "07-scoreboard-receipt",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "考核榜与告身：终于有人告诉你到底排第几",
       "title_en": "SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK",
       "status": {
-        "zh": "待录考核榜GUI实机",
-        "en": "PLACEHOLDER · SCOREBOARD GUI CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：所辖官员考核榜；本人告身与制度驾驶舱的干净录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · MANAGED SCOREBOARD; CLEAN RECEIPT AND COCKPIT RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": ["scoreboard"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/08_scoreboard_panel_raw.png",
+        "label": "GREEN acceptance fixture: real managed scoreboard GUI"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: scoreboard GUI OCR and frozen rows"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-07-SCOREBOARD",
-        "shot": "录右上角考核榜三页：我主持的榜、上司给我的结果、制度驾驶舱；特写个人档位、KPI、名次、连续次数与PIP/晋升状态。"
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的所辖官员考核榜静帧，显示年度、人数、3.75/3.5/3.25 配额、名次、KPI、价值观、绩效和连续次数。其余两页干净录屏仍待录。"
       },
       "cues": [
         {
@@ -259,19 +319,34 @@
     },
     {
       "id": "08-money-and-grade",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "3.25不是表情包：国库、金币、俸禄一起有感觉",
       "title_en": "3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT",
       "status": {
-        "zh": "待录奖惩对账实机",
-        "en": "PLACEHOLDER · REWARD/PENALTY CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：上司给出3.25、三重扣款与一年俸禄削减；申诉改判后的对账连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · 3.25 RECEIPT AND THREE-ACCOUNT PENALTY; CLEAN APPEAL LEDGER RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": [],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/10_superior_result.png",
+        "label": "GREEN acceptance fixture: superior-assigned 3.25 receipt"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: exact 50 treasury / 25 gold / 60 merit penalty and refund"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-08-MONEY",
-        "shot": "同屏记录结算前后地方国库、个人金币、俸禄/merit与modifier；分别展示3.75、3.5、3.25，并保存精确罚没回执。"
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的上司 3.25 告身静帧，直接写明地方国库扣50、个人金币扣25及一年俸禄削减。报告验证 merit 60 和一次性精确退款；干净前后对账录像仍待录。"
       },
       "cues": [
         {
@@ -383,19 +458,34 @@
     },
     {
       "id": "12-appeal",
-      "type": "placeholder_card",
-      "material_status": "placeholder",
+      "type": "still",
+      "material_status": "captured",
       "title_zh": "绩效申诉：不是掀桌，是要求把桌上的账重新加一遍",
       "title_en": "PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT",
       "status": {
-        "zh": "待录申诉闭环实机",
-        "en": "PLACEHOLDER · APPEAL CAPTURE PENDING",
-        "classification": "placeholder-gameplay-pending"
+        "zh": "验收夹具实机静帧：3.25 告身内的申诉入口；改判、退款与修榜的干净连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · APPEAL ENTRY ON A 3.25 RECEIPT; CLEAN REVERSAL RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
       },
       "topics": ["appeal"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/10_superior_result.png",
+        "label": "GREEN acceptance fixture: visible appeal entry on 3.25 receipt"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: exact refund and stale-appeal idempotence"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
       "capture": {
         "id": "CAP-12-APPEAL",
-        "shot": "录玩家收到3.25后发起申诉、证据复核、维持与改判两路；改判同步退款、修榜，并展示申诉不加重和反报复观察。"
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的 3.25 告身静帧，清晰显示申诉按钮。报告验证改判精确退款、停止未来俸禄削减及重复申诉幂等；改判界面与修榜的干净连续录像仍待录。"
       },
       "cues": [
         {

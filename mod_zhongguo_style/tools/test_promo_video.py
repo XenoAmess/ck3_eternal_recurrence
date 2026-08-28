@@ -20,6 +20,7 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 
 import build_promo_video as promo  # noqa: E402
 import export_promo_script as exporter  # noqa: E402
+import import_promo_acceptance_stills as acceptance_importer  # noqa: E402
 import validate_promo_video as validator  # noqa: E402
 
 
@@ -28,11 +29,26 @@ SMOKE_MANIFEST = PROJECT_DIRECTORY / "promo" / "smoke-manifest.json"
 GENERATED_SCRIPT = PROJECT_DIRECTORY / "promo" / "script.md"
 
 
+def _absolute_sources(payload: dict) -> dict:
+    """Keep copied manifest tests focused on their intended invariant."""
+    for chapter in payload["chapters"]:
+        for key in ("source", "evidence_sources"):
+            value = chapter.get(key)
+            records = value if isinstance(value, list) else [value]
+            for record in records:
+                if not isinstance(record, dict) or "path" not in record:
+                    continue
+                record["path"] = str(
+                    (FULL_MANIFEST.parent / record["path"]).resolve()
+                )
+    return payload
+
+
 class PromoManifestTests(unittest.TestCase):
     def test_full_manifest_has_required_scope_topics_and_duration_guard(self) -> None:
         manifest, chapters = promo.load_manifest(FULL_MANIFEST)
         self.assertEqual(17, len(chapters))
-        self.assertEqual(14, manifest["_placeholder_count"])
+        self.assertEqual(8, manifest["_placeholder_count"])
         self.assertLess(manifest["_estimated_duration_seconds"], 12 * 60)
         self.assertEqual("title_card", chapters[0].promo_type)
         self.assertEqual("generated", chapters[0].material_status)
@@ -56,7 +72,9 @@ class PromoManifestTests(unittest.TestCase):
         self.assertIn("不是宣传成片", chapters[0].narration_en)
 
     def test_voice_is_exact_and_long_script_is_rejected(self) -> None:
-        original = json.loads(FULL_MANIFEST.read_text(encoding="utf-8"))
+        original = _absolute_sources(
+            json.loads(FULL_MANIFEST.read_text(encoding="utf-8"))
+        )
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             wrong_voice = dict(original)
@@ -78,7 +96,9 @@ class PromoManifestTests(unittest.TestCase):
                 promo.load_manifest(too_long_path)
 
     def test_missing_topic_cannot_be_hidden_behind_a_tag(self) -> None:
-        original = json.loads(FULL_MANIFEST.read_text(encoding="utf-8"))
+        original = _absolute_sources(
+            json.loads(FULL_MANIFEST.read_text(encoding="utf-8"))
+        )
         for chapter in original["chapters"]:
             for cue in chapter["cues"]:
                 cue["zh"] = cue["zh"].replace("强制分布", "配额分派")
@@ -136,6 +156,57 @@ class SubtitleAndRenderTests(unittest.TestCase):
             with promo.shared.Image.open(destination) as image:
                 self.assertEqual((promo.WIDTH, promo.HEIGHT), image.size)
                 self.assertEqual("RGB", image.mode)
+
+    def test_fixture_live_stills_keep_explicit_partial_classification(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        imported = [
+            chapter
+            for chapter in chapters
+            if chapter.classification == "fixture-live-still-partial"
+        ]
+        self.assertEqual(
+            {
+                "03-forced-distribution",
+                "04-calibration",
+                "06-jingcha",
+                "07-scoreboard-receipt",
+                "08-money-and-grade",
+                "12-appeal",
+            },
+            {chapter.chapter_id for chapter in imported},
+        )
+        for chapter in imported:
+            self.assertEqual("still", chapter.promo_type)
+            self.assertEqual("captured", chapter.material_status)
+            self.assertIn("CLEAN", chapter.status_en)
+            self.assertGreaterEqual(len(chapter.sources), 3)
+
+
+class AcceptanceStillImportTests(unittest.TestCase):
+    def test_green_import_is_append_only_and_records_copy_hashes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "green-run"
+            source.mkdir()
+            (source / "cell").mkdir()
+            report = {"result": "GREEN", "cell": {"result": "GREEN"}}
+            (source / "report.json").write_text(json.dumps(report), encoding="utf-8")
+            (source / "evidence-index.json").write_text("{}", encoding="utf-8")
+            for relative in acceptance_importer.RUN_FILES:
+                path = source / relative
+                if path.exists():
+                    continue
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(relative.encode("utf-8"))
+            destination = root / "promo-import"
+            index = acceptance_importer.import_run(
+                artifact=source, destination=destination
+            )
+            payload = json.loads(index.read_text(encoding="utf-8"))
+            self.assertEqual("fixture-live acceptance stills; not a clean promotional recording", payload["classification"])
+            self.assertEqual(len(acceptance_importer.RUN_FILES), len(payload["files"]))
+            with self.assertRaisesRegex(acceptance_importer.ImportError, "already exists"):
+                acceptance_importer.import_run(artifact=source, destination=destination)
 
 
 class BuildAndValidationTests(unittest.TestCase):

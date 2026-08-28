@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "result": "GREEN",
+  "artifact_root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\runs\\zga_20260829_061314_ea5f04ad",
+  "git_head": "bc241c64181b8defe2de6e6d38dadc6c6664b9a3",
+  "scoped_git_status": [
+    "?? mod_zhongguo_style/docs/testing-report-2026-08-29.md"
+  ],
+  "files": [
+    {
+      "path": "cell/01_main_menu.png",
+      "bytes": 1334716,
+      "sha256": "cec0e3f2719d272d303ccd085f36588b3330cbd0bcad0ac7bacafac2d48419e6"
+    },
+    {
+      "path": "cell/01_main_menu_parser_ready.png",
+      "bytes": 1334521,
+      "sha256": "dc7d1e5e969f12bad8f6accbd898beef85d50446967e55837876b6b2daafb46b"
+    },
+    {
+      "path": "cell/02_bookmark.png",
+      "bytes": 3678781,
+      "sha256": "5c20bb8239d6b9fd0d15f62b699025e75ba1151ab24ff70467872133fa5b11b9"
+    },
+    {
+      "path": "cell/02_main_menu_database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/02_main_menu_error.log",
+      "bytes": 6440,
+      "sha256": "50177a949b6b6c43d7a600aba24e411d1bdf229a00fb39a259ac5b096dfd17f6"
+    },
+    {
+      "path": "cell/02_main_menu_game.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/02_main_menu_gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/03_ruler_selected.png",
+      "bytes": 4521642,
+      "sha256": "fafa6388851d0fd47652231ade44b9ceae1bf7e55aaf2552943b4d1aa074c92c"
+    },
+    {
+      "path": "cell/03_start_enabled.png",
+      "bytes": 4517265,
+      "sha256": "44508cab01a6eda97eb322fd9d78bbcc0cb26794e1b6a0f2d180d3e37fa21b09"
+    },
+    {
+      "path": "cell/04_gameplay_hud.png",
+      "bytes": 6154511,
+      "sha256": "9c37a56d7594868ffba9a90354a6e06a8b4ef5226e6ee0eb84cbf0c360d46c06"
+    },
+    {
+      "path": "cell/04_standard_1066_start_already_paused.png",
+      "bytes": 5271011,
+      "sha256": "28be885683e1d7ea3fb063b1363ca7822f675d8136df54a2d8601aaa4d2d0879"
+    },
+    {
+      "path": "cell/04_start_accepted.png",
+      "bytes": 6129330,
+      "sha256": "3b5141893cf9ec96b59e4ec842ffb9e5968b131fc019bc1a09876d5cc91ff80e"
+    },
+    {
+      "path": "cell/05_fixture_initialize_confirm.png",
+      "bytes": 4657220,
+      "sha256": "9d402a151ea1302d8276e4a3fab407c7827f0942699d4c69dcb5a6b3a28d5460"
+    },
+    {
+      "path": "cell/05_fixture_initialize_decision.png",
+      "bytes": 4955725,
+      "sha256": "437d4b28da8edd5af5641bbd66ae0a7f30c38e17c4da24844bec70a4ffb7b90d"
+    },
+    {
+      "path": "cell/05_fixture_initialize_decisions_tooltip.png",
+      "bytes": 5281105,
+      "sha256": "da24733430177a1d5f1b909d508f1880035e241830a738f2ace0024a261d7d38"
+    },
+    {
+      "path": "cell/05_song_emperor_already_paused.png",
+      "bytes": 4866204,
+      "sha256": "43fb2f7294a72eae108c12f8077bfea97266545945a192138a939b517c2be72b"
+    },
+    {
+      "path": "cell/06_calibration_direct_publication.png",
+      "bytes": 4691393,
+      "sha256": "2b6f4b6066f225b61b6eb2eab6cf7eeef4b4f10093049c6535d2a218e3c026d5"
+    },
+    {
+      "path": "cell/06_calibration_event.png",
+      "bytes": 4693773,
+      "sha256": "8e1813d538be9f95736d9f07eb88b7bcb719320d421eb37dfbcfce649bd65aab"
+    },
+    {
+      "path": "cell/06_decisions_drawer_before_calibration.png",
+      "bytes": 4864095,
+      "sha256": "a57a64bd9a4ab21b204d31f61d5e1791f59160ef71e5eb0ed4f41cc1af98b92e"
+    },
+    {
+      "path": "cell/07_decisions_drawer_before_close.png",
+      "bytes": 4876090,
+      "sha256": "918d756855c7c83b46844ea715fa8d4af209b4e8634df6ffefd477c5f0468fd4"
+    },
+    {
+      "path": "cell/07_result_summary.png",
+      "bytes": 4770705,
+      "sha256": "b020a11ea9e8e10db7aaace83dff11bbde05cb9b2af6a64b3aa9ce55d92b2f7d"
+    },
+    {
+      "path": "cell/07_scoreboard_button.png",
+      "bytes": 4874899,
+      "sha256": "b604dc309cb52d913c85c1fcc2d78f7cf943f36203573ed9d667a214dc204748"
+    },
+    {
+      "path": "cell/08_scoreboard_panel.png",
+      "bytes": 3226301,
+      "sha256": "bb45518330ea20399d0b73f6776c72ac5da6f3ebdf1e2c84dc6643430ad9aca3"
+    },
+    {
+      "path": "cell/08_scoreboard_panel_crop.png",
+      "bytes": 3226301,
+      "sha256": "bb45518330ea20399d0b73f6776c72ac5da6f3ebdf1e2c84dc6643430ad9aca3"
+    },
+    {
+      "path": "cell/08_scoreboard_panel_ocr.json",
+      "bytes": 12035,
+      "sha256": "029eb76d4acfcbef28b76967256d460718789344d113dc0d409b16b785d03eab"
+    },
+    {
+      "path": "cell/08_scoreboard_panel_raw.png",
+      "bytes": 3225633,
+      "sha256": "4b1d7157d3b999f2041bd840dbdec841b94e7b60f9aef7aa8fd99011b0337ee7"
+    },
+    {
+      "path": "cell/08_scoreboard_title.png",
+      "bytes": 3222457,
+      "sha256": "ae21031e942b570d47c5a0dc9f8956bf3c01990f7d76df4e404a8461dd19d18e"
+    },
+    {
+      "path": "cell/09_jingcha_activity_detail.png",
+      "bytes": 4605050,
+      "sha256": "c34f54b69898f8bf5a630226b86dfb185cf3acc2052faa0183d7f771e10123c1"
+    },
+    {
+      "path": "cell/09_jingcha_exit_confirm_button.png",
+      "bytes": 4866894,
+      "sha256": "628b113eb8f8b140f09e0016b9678f0ef75de77621a7d0bee43acf2785025876"
+    },
+    {
+      "path": "cell/09_jingcha_exit_confirmation.png",
+      "bytes": 4888751,
+      "sha256": "17d2f14d9ebafc221c38e4cb57a9b53406d7c015ff366d6162166a5466686069"
+    },
+    {
+      "path": "cell/09_jingcha_exit_planner.png",
+      "bytes": 5148613,
+      "sha256": "57e44d79df0705e5e68372827110266b34ede7c8bfbf5f4583c33e1d7bf39375"
+    },
+    {
+      "path": "cell/09_jingcha_host_option.png",
+      "bytes": 4668791,
+      "sha256": "e0e62b5d8a1e1e19bbaf0353117c18d0602907d048351c2554b58da629add423"
+    },
+    {
+      "path": "cell/09_jingcha_mandate_confirm.png",
+      "bytes": 4660678,
+      "sha256": "11252d97d6643e35d4963a281a465956a135ffdb22198a43638cbcbd0d13fd31"
+    },
+    {
+      "path": "cell/09_jingcha_mandate_decision.png",
+      "bytes": 4880105,
+      "sha256": "85179da240a3e7b02e045b8164b4a8394bed43ff327c7eea1a7f926536bbe59c"
+    },
+    {
+      "path": "cell/09_jingcha_mandate_event.png",
+      "bytes": 4668292,
+      "sha256": "9f7bb4ee382677c035d6256da3d5c113959e2026b3a1ef59fce33d22ae53cb06"
+    },
+    {
+      "path": "cell/09_jingcha_planner.png",
+      "bytes": 5015040,
+      "sha256": "d4e3e3bdaf88e5817f42dc89f5663e85459a49eb67eeba66fd5b31a22ffe3cca"
+    },
+    {
+      "path": "cell/09_jingcha_planner_crop.png",
+      "bytes": 5015040,
+      "sha256": "d4e3e3bdaf88e5817f42dc89f5663e85459a49eb67eeba66fd5b31a22ffe3cca"
+    },
+    {
+      "path": "cell/09_jingcha_planner_ocr.json",
+      "bytes": 12796,
+      "sha256": "b1be6af8c0d6a9da7a0cff8e81f6b7c0b73923143bcdd4bb1700aafccdca47d7"
+    },
+    {
+      "path": "cell/09_jingcha_scoreboard_after_escape.png",
+      "bytes": 3227667,
+      "sha256": "9bc6321564c93268813df36aa5782a2e767a24b1d5bf09de331e4096f9afe345"
+    },
+    {
+      "path": "cell/09_jingcha_scoreboard_closed.png",
+      "bytes": 4870158,
+      "sha256": "687cf4cfe299a590252dd3bdbbe2022fe410d48173140dc8a590805ed1b17743"
+    },
+    {
+      "path": "cell/10_runtime_database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/10_runtime_error.log",
+      "bytes": 8436,
+      "sha256": "4261e189f7c6914409b97cdacae30a384661178ce3dbc3157f3669c342bc3464"
+    },
+    {
+      "path": "cell/10_runtime_game.log",
+      "bytes": 496,
+      "sha256": "0191e121060910db1d2f76cd1d418e3c428248c900b4372dc1801c069e9af9b9"
+    },
+    {
+      "path": "cell/10_runtime_gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/10_superior_result.png",
+      "bytes": 5045492,
+      "sha256": "93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f"
+    },
+    {
+      "path": "cell/10_superior_result_crop.png",
+      "bytes": 5045492,
+      "sha256": "93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f"
+    },
+    {
+      "path": "cell/10_superior_result_ocr.json",
+      "bytes": 6885,
+      "sha256": "9346244da97a7dd07e11c32727cb6624e2393c2226683d000e49c79ab532f124"
+    },
+    {
+      "path": "cell/10_superior_result_title.png",
+      "bytes": 5126618,
+      "sha256": "f117fb9e2edfa8df7fb9f166a5a6faee43a947adb2536de98e488005291445d3"
+    },
+    {
+      "path": "cell/11_shutdown_database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/11_shutdown_error.log",
+      "bytes": 8436,
+      "sha256": "4261e189f7c6914409b97cdacae30a384661178ce3dbc3157f3669c342bc3464"
+    },
+    {
+      "path": "cell/11_shutdown_game.log",
+      "bytes": 496,
+      "sha256": "0191e121060910db1d2f76cd1d418e3c428248c900b4372dc1801c069e9af9b9"
+    },
+    {
+      "path": "cell/11_shutdown_gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/bargain_zg361_result_summary_speed_5_stalled.png",
+      "bytes": 4769154,
+      "sha256": "eda9e94fcff55004919487b9e411d97cfd957e0cf6bc16d551478264dcf200cf"
+    },
+    {
+      "path": "cell/final_code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_debug.log",
+      "bytes": 1091002,
+      "sha256": "7bfd053cf21823d01e61331c9e856df85b3339dfa0967485097f2f78f2df9857"
+    },
+    {
+      "path": "cell/final_dedicated_server.log",
+      "bytes": 471,
+      "sha256": "48d3f3b8516fb731c37912dec824efaa5d0dbc93f3b5404bfe8b97fcdfac8462"
+    },
+    {
+      "path": "cell/final_error.log",
+      "bytes": 8436,
+      "sha256": "4261e189f7c6914409b97cdacae30a384661178ce3dbc3157f3669c342bc3464"
+    },
+    {
+      "path": "cell/final_game.log",
+      "bytes": 496,
+      "sha256": "0191e121060910db1d2f76cd1d418e3c428248c900b4372dc1801c069e9af9b9"
+    },
+    {
+      "path": "cell/final_gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_message.log",
+      "bytes": 4096,
+      "sha256": "c859ef53940ab6ca357d570cf1f8d80fbf9e1ff229c88f24e8aa334a19092657"
+    },
+    {
+      "path": "cell/final_multiplayer.log",
+      "bytes": 4096,
+      "sha256": "0e2c739657f0e8a506ee9e6d92360fa961145eab216bd8d58e42432168227322"
+    },
+    {
+      "path": "cell/final_pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_setup.log",
+      "bytes": 36864,
+      "sha256": "ba4c1cff2e95a882ffa4e73d003a3fbafce88fd0e1234b1cce1a6ad5c43de21b"
+    },
+    {
+      "path": "cell/final_system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/final_text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cell/report.json",
+      "bytes": 206221,
+      "sha256": "7dac8a697583f33cef26a80f808f3bec81b8b00d4c6bc6c69cd5e47a28bd5e67"
+    },
+    {
+      "path": "cell/timeout_03_ruler_selected.png",
+      "bytes": 4464654,
+      "sha256": "61584a5978c4f3630b987bd7531652b0600fecbcf757323ac2e5ccd7232b0d49"
+    },
+    {
+      "path": "report.json",
+      "bytes": 208730,
+      "sha256": "dccf8b87d990ba3ed3074fae3391e5004e6cd8b07a5c80750bc344e7f9024c25"
+    }
+  ]
+}
