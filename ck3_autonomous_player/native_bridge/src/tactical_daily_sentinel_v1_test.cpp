@@ -39,13 +39,19 @@ struct ComponentStorageFixture {
 };
 
 struct WorldFixture {
+  static constexpr std::int32_t kSecondPublicCunitId = 0x02000002;
+  static constexpr std::int32_t kSecondInternalArmyId = 0x03000002;
+
   std::array<std::byte, 0x100> game_state{};
   std::array<std::byte, 0x100> jomini{};
   std::array<std::byte, 0x100> player{};
   std::array<std::byte, 0x220> unit{};
+  std::array<std::byte, 0x220> second_unit{};
   std::array<std::byte, 0x180> internal_army{};
+  std::array<std::byte, 0x180> second_internal_army{};
   std::array<std::byte, 0x20> province_a{};
   std::array<std::byte, 0x20> province_b{};
+  std::array<std::byte, 0x20> no_direct_target{};
   std::array<std::byte, 0x800> combat{};
   std::array<std::int32_t, 4> attacker_ids{1, 0, 0, 0};
   std::array<std::int32_t, 4> defender_ids{2, 0, 0, 0};
@@ -106,6 +112,19 @@ struct WorldFixture {
     std::memcpy(attacker_side + 0xB8, &combat_pointer, sizeof(combat_pointer));
     std::memcpy(defender_side + 0xB8, &combat_pointer, sizeof(combat_pointer));
     combats.Set(1, combat.data());
+  }
+
+  void AddIdleRegularArmyWithNonPositiveDirectTarget() {
+    Store(second_unit, 0x10, kSecondPublicCunitId);
+    Store(second_unit, 0x18, std::int32_t{0});
+    Store(second_unit, 0x30, static_cast<void *>(no_direct_target.data()));
+    Store(second_unit, 0x170, std::int32_t{0});
+    Store(second_unit, 0x178, kSecondInternalArmyId);
+    Store(second_internal_army, 0x10, kSecondInternalArmyId);
+    Store(second_internal_army, 0x124, kSecondPublicCunitId);
+    Store(second_internal_army, 0x128, std::int32_t{-1});
+    units.Set(kSecondPublicCunitId, second_unit.data());
+    internal_armies.Set(kSecondInternalArmyId, second_internal_army.data());
   }
 
   void AdvanceDate() {
@@ -270,6 +289,31 @@ bool TestZeroPlayerIdIsValid() {
   return InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) &&
          ArmTacticalDailySentinelV1(Request(3)) ==
              TacticalDailySentinelArmStatusV1::armed;
+}
+
+bool TestNonPositiveDirectTargetIsAbsentInFullWatch() {
+  using namespace xar::ck3_11906;
+  WorldFixture world;
+  world.AddIdleRegularArmyWithNonPositiveDirectTarget();
+  auto request = Request(3, 1'120);
+  request.army_count = 2;
+  request.army_ids[1] = WorldFixture::kSecondPublicCunitId;
+  if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
+      ArmTacticalDailySentinelV1(request) !=
+          TacticalDailySentinelArmStatusV1::armed) {
+    return false;
+  }
+  auto status = ReadTacticalDailySentinelStatusV1();
+  if (status.army_count != 2 || status.combat_count != 0) {
+    return false;
+  }
+  Store(world.jomini, 0x20, std::uint8_t{0});
+  world.AdvanceDate();
+  ProcessTacticalDailySentinelAfterTickV1();
+  status = ReadTacticalDailySentinelStatusV1();
+  return status.state == TacticalDailySentinelStateV1::armed &&
+         status.completed_daily_ticks == 1 &&
+         status.trigger_flags == tactical_daily_trigger_none;
 }
 
 bool TestArmReportsMissingCombatPrecisely() {
@@ -554,6 +598,10 @@ int main() {
   }
   if (!TestZeroPlayerIdIsValid()) {
     std::cerr << "tactical daily sentinel zero player-id fixture failed\n";
+    return 1;
+  }
+  if (!TestNonPositiveDirectTargetIsAbsentInFullWatch()) {
+    std::cerr << "tactical daily sentinel idle direct-target fixture failed\n";
     return 1;
   }
   if (!TestArmReportsMissingCombatPrecisely()) {

@@ -25,6 +25,11 @@
     "status_capability": "game.command.research-query-tactical-daily-sentinel-v1",
     "status_step": "research-query-tactical-daily-sentinel-v1"
   },
+  "army_fingerprint": {
+    "identity": "generation-valid public CUnitID -> CUnit+0x178 CArmyID -> CArmy+0x124 same public CUnitID",
+    "combat_membership": "CArmy+0x128 is either canonical -1 absence or a positive CCombatID captured for strict combat fingerprinting",
+    "direct_target_boundary": "CUnit+0x30 is an independent direct-target pointer, not the semantic remaining-route projection; a non-null row whose +0x10 ProvinceID is non-positive is the observed idle/no-target representation and normalizes to absent"
+  },
   "modes": {
     "decision_epoch": {
       "arm_token": "decision",
@@ -92,6 +97,7 @@
     "route, contact, retreat, phase, roster, terminal, and missing-component epochs",
     "terminal mode crosses ordinary phase and winner changes without pausing",
     "native auto-pause is surfaced as a decision epoch",
+    "a complete multi-CUnit watch admits an idle regular CUnit whose non-null +0x30 row carries no positive ProvinceID and whose semantic route is empty",
     "a paused re-arm replaces a stale armed experiment generation",
     "an evaluator memory fault remains abnormal even after a tactical trigger",
     "skipped date fails closed",

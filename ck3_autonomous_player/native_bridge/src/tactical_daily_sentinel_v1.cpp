@@ -177,7 +177,11 @@ bool ReadArmyFingerprint(const Bindings &bindings, std::int32_t army_id,
     output.move_target_province_id =
         LoadAt<std::int32_t>(move_target, kProvinceIdOffset);
     if (output.move_target_province_id <= 0) {
-      return false;
+      // A regular idle CUnit can retain a non-null direct-target slot whose
+      // pointed row has no positive ProvinceID.  The authoritative paused
+      // route projection is empty in that state, so fingerprint it as no
+      // direct target instead of rejecting the complete watched army set.
+      output.move_target_province_id = -1;
     }
   } else {
     output.move_target_province_id = -1;
