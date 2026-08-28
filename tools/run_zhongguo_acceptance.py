@@ -85,10 +85,133 @@ SOURCE_ONLY_RUNTIME_ROOTS = {
     "tools",
     "workshop",
 }
+PROMO_POLICY_CARDS = (
+    (1, "演示政策卡 #001", "KPI 分项证据单", "建立分项证据单"),
+    (7, "演示政策卡 #007", "背靠背 360 邀评", "只邀请有真实协作"),
+    (20, "演示政策卡 #020", "晋升包与跨部门答辩", "用冻结治理成果"),
+    (22, "演示政策卡 #022", "软 HC / 编制预算", "按团队成果"),
+    (26, "演示政策卡 #026", "真实贡献 / 上司可见度双账", "分别冻结真实贡献"),
+    (361, "演示政策卡 #361", "三六一绩效宪章", "锁定证据公平"),
+)
 
 
 def log(message: str) -> None:
     acceptance.log(f"zg361: {message}")
+
+
+class PromoRecorder:
+    """Append-only desktop recorder started only after CK3 gameplay is visible."""
+
+    def __init__(self, artifact_dir: Path):
+        self.artifact_dir = artifact_dir
+        self.raw_dir = artifact_dir / "raw"
+        self.raw_path = self.raw_dir / "zg361-promo-live-full-take-01.mkv"
+        self.log_path = self.raw_dir / "ffmpeg-take-01.log"
+        self.timeline_path = artifact_dir / "capture-timeline.json"
+        self.process: subprocess.Popen[bytes] | None = None
+        self.log_handle = None
+        self.started_monotonic: float | None = None
+        self.started_at_utc: str | None = None
+        self.marks: list[dict[str, object]] = []
+
+    def start(self) -> None:
+        ffmpeg = shutil.which("ffmpeg")
+        if not ffmpeg:
+            raise acceptance.RunnerError("ffmpeg is required for --promo-capture")
+        self.raw_dir.mkdir(parents=True)
+        if self.raw_path.exists() or self.log_path.exists() or self.timeline_path.exists():
+            raise acceptance.RunnerError(
+                f"promo capture output already exists: {self.artifact_dir}"
+            )
+        self.log_handle = self.log_path.open("wb")
+        command = [
+            ffmpeg,
+            "-hide_banner",
+            "-f",
+            "gdigrab",
+            "-framerate",
+            "30",
+            "-draw_mouse",
+            "1",
+            "-i",
+            "desktop",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "ultrafast",
+            "-crf",
+            "18",
+            "-pix_fmt",
+            "yuv420p",
+            "-an",
+            str(self.raw_path),
+        ]
+        self.process = subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stdout=self.log_handle,
+            stderr=subprocess.STDOUT,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        self.started_monotonic = time.monotonic()
+        self.started_at_utc = datetime.now(timezone.utc).isoformat()
+        time.sleep(1.5)
+        if self.process.poll() is not None:
+            raise acceptance.RunnerError(
+                f"promo recorder exited during startup; inspect {self.log_path}"
+            )
+        self.mark("recording_started_after_gameplay_hud")
+
+    def mark(self, label: str) -> None:
+        if self.started_monotonic is None:
+            return
+        self.marks.append(
+            {
+                "label": label,
+                "seconds": round(time.monotonic() - self.started_monotonic, 3),
+            }
+        )
+
+    def hold(self, seconds: float = 2.5) -> None:
+        if self.process is not None:
+            time.sleep(seconds)
+
+    def stop(self) -> dict[str, object]:
+        if self.process is None:
+            return {}
+        self.mark("recording_stop_requested")
+        if self.process.stdin:
+            try:
+                self.process.stdin.write(b"q\n")
+                self.process.stdin.flush()
+            except OSError:
+                pass
+        try:
+            returncode = self.process.wait(timeout=30)
+        except subprocess.TimeoutExpired:
+            self.process.terminate()
+            returncode = self.process.wait(timeout=10)
+        if self.log_handle:
+            self.log_handle.close()
+            self.log_handle = None
+        if returncode != 0 or not self.raw_path.is_file() or self.raw_path.stat().st_size == 0:
+            raise acceptance.RunnerError(
+                f"promo recorder failed with exit {returncode}; inspect {self.log_path}"
+            )
+        payload = {
+            "schema": 1,
+            "started_at_utc": self.started_at_utc,
+            "exclude_ck3_loading": True,
+            "source_kind": "real CK3 1.19.0.6 desktop capture after gameplay HUD",
+            "raw_path": str(self.raw_path),
+            "raw_bytes": self.raw_path.stat().st_size,
+            "raw_sha256": isolated.sha256_file(self.raw_path),
+            "ffmpeg_log": str(self.log_path),
+            "marks": self.marks,
+        }
+        write_json(self.timeline_path, payload)
+        self.process = None
+        return payload
 
 
 def write_json(path: Path, payload: dict[str, object]) -> None:
@@ -818,7 +941,9 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
     acceptance.ensure_game_paused(artifacts, "05_song_emperor")
 
 
-def choose_direct_publication(stream: MarkerStream, artifacts: Path) -> None:
+def choose_direct_publication(
+    stream: MarkerStream, artifacts: Path, recorder: PromoRecorder | None = None
+) -> None:
     acceptance.focus_ck3()
     image = acceptance.ImageGrab.grab()
     if acceptance.find_ocr_text(
@@ -840,6 +965,9 @@ def choose_direct_publication(stream: MarkerStream, artifacts: Path) -> None:
         contains=True,
         stable_hits=1,
     )
+    if recorder:
+        recorder.mark("calibration_event_visible")
+        recorder.hold()
     option = acceptance.wait_for_ocr_text(
         "名单无误",
         acceptance.FULL_SCREEN_REGION,
@@ -857,7 +985,9 @@ def choose_direct_publication(stream: MarkerStream, artifacts: Path) -> None:
     stream.validate()
 
 
-def capture_scoreboard_gui(artifacts: Path) -> dict[str, object]:
+def capture_scoreboard_gui(
+    artifacts: Path, recorder: PromoRecorder | None = None
+) -> dict[str, object]:
     # Settlement schedules the summary one game-day after calibration. Dismiss it
     # before opening the board so a late event cannot cover the GUI evidence.
     acceptance.focus_ck3()
@@ -926,6 +1056,40 @@ def capture_scoreboard_gui(artifacts: Path) -> dict[str, object]:
         artifacts,
         "08_scoreboard_panel",
     )
+    cockpit_artifact = None
+    if recorder:
+        recorder.mark("managed_scoreboard_visible")
+        recorder.hold()
+        cockpit = acceptance.wait_for_ocr_text(
+            "制度驾驶舱",
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            "08_scoreboard_cockpit_tab.png",
+            stable_hits=1,
+        )
+        acceptance.deliberate_click(cockpit, "production policy-cockpit tab")
+        acceptance.wait_for_ocr_tokens(
+            ("361 制度账本", "证据质量", "组织信任", "预算压力"),
+            ("zg361_", "localize", "error"),
+            acceptance.FULL_SCREEN_REGION,
+            20,
+            artifacts,
+            "08_scoreboard_cockpit",
+        )
+        cockpit_artifact = "08_scoreboard_cockpit.png"
+        recorder.mark("policy_cockpit_visible")
+        recorder.hold(3.0)
+        managed = acceptance.wait_for_ocr_text(
+            "所辖官员",
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            "08_scoreboard_managed_tab_return.png",
+            stable_hits=1,
+        )
+        acceptance.deliberate_click(managed, "return to managed scoreboard tab")
+        recorder.hold(1.0)
     return {
         "button_ocr": True,
         "managed_panel_ocr": True,
@@ -933,6 +1097,7 @@ def capture_scoreboard_gui(artifacts: Path) -> dict[str, object]:
         "panel_artifact": "08_scoreboard_panel.png",
         "panel_ocr_artifact": "08_scoreboard_panel_ocr.json",
         "normalized_ocr": rendered_text,
+        "cockpit_artifact": cockpit_artifact,
     }
 
 
@@ -967,7 +1132,9 @@ def close_scoreboard_panel(artifacts: Path, stem: str) -> None:
 
 
 def capture_jingcha_planner(
-    stream: MarkerStream, artifacts: Path
+    stream: MarkerStream,
+    artifacts: Path,
+    recorder: PromoRecorder | None = None,
 ) -> dict[str, object]:
     close_scoreboard_panel(artifacts, "09_jingcha")
     confirm = isolated.open_decision_detail(
@@ -997,6 +1164,9 @@ def capture_jingcha_planner(
         contains=True,
         stable_hits=1,
     )
+    if recorder:
+        recorder.mark("jingcha_mandate_visible")
+        recorder.hold()
     host_option = acceptance.wait_for_ocr_text(
         "依例举办京察",
         acceptance.FULL_SCREEN_REGION,
@@ -1023,6 +1193,9 @@ def capture_jingcha_planner(
         artifacts,
         "09_jingcha_planner",
     )
+    if recorder:
+        recorder.mark("free_jingcha_planner_visible")
+        recorder.hold(3.0)
     exit_planner = acceptance.wait_for_ocr_text(
         "退出活动规划",
         acceptance.FULL_SCREEN_REGION,
@@ -1069,7 +1242,9 @@ def capture_jingcha_planner(
 
 
 def capture_superior_assigned_result(
-    stream: MarkerStream, artifacts: Path
+    stream: MarkerStream,
+    artifacts: Path,
+    recorder: PromoRecorder | None = None,
 ) -> dict[str, object]:
     # The external fixture schedules only the player-character switch. The
     # former player then becomes the real AI superior and invokes the product
@@ -1121,6 +1296,9 @@ def capture_superior_assigned_result(
             "the refusal-reason probe must reach the real 3.25 result branch; "
             f"OCR rendered {grades[0]}"
         )
+    if recorder:
+        recorder.mark("superior_assigned_325_visible")
+        recorder.hold(3.5)
     return {
         "real_superior_review_path": True,
         "rendered_grade": grades[0],
@@ -1131,12 +1309,137 @@ def capture_superior_assigned_result(
     }
 
 
-def run_scenario(stream: MarkerStream, artifacts: Path) -> dict[str, object]:
+def capture_received_scoreboard(
+    artifacts: Path, recorder: PromoRecorder
+) -> dict[str, object]:
+    # The manager-facing result summary (zg361.1) has a passive "知道了"
+    # close button.  The real subordinate-facing 3.25 result (zg361.4) instead
+    # requires one of four responses.  Choose the side-effect-minimal acceptance
+    # branch so the modal closes without opening an appeal or another event.
+    result_option = acceptance.wait_for_ocr_text(
+        "认命",
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "11_superior_result_accept_option.png",
+        contains=True,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(result_option, "accept real 3.25 result")
+    deadline = time.time() + 8
+    last_image = None
+    while time.time() < deadline:
+        last_image = acceptance.ImageGrab.grab()
+        if acceptance.find_ocr_text(
+            last_image, "上司考定", acceptance.FULL_SCREEN_REGION, contains=True
+        ) is None:
+            last_image.save(artifacts / "11_superior_result_accepted.png")
+            break
+        time.sleep(acceptance.POLL_INTERVAL_S)
+    else:
+        if last_image is not None:
+            last_image.save(artifacts / "timeout_11_superior_result_accept.png")
+        raise acceptance.RunnerError("real 3.25 result response was not accepted")
+    isolated.wait_for_gameplay_hud(artifacts)
+    button = acceptance.wait_for_ocr_text(
+        "考核榜",
+        acceptance.FULL_SCREEN_REGION,
+        20,
+        artifacts,
+        "11_received_scoreboard_button.png",
+        contains=True,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(button, "open received performance board")
+    rendered_text = acceptance.wait_for_ocr_tokens(
+        ("天朝官员考核榜", "本人所属考核单元", "3.25"),
+        ("zg361_", "localize", "error"),
+        acceptance.FULL_SCREEN_REGION,
+        20,
+        artifacts,
+        "11_received_scoreboard",
+    )
+    recorder.mark("received_scoreboard_with_325_visible")
+    recorder.hold(3.0)
+    close_scoreboard_panel(artifacts, "11_received")
+    return {
+        "received_panel_artifact": "11_received_scoreboard.png",
+        "normalized_ocr": rendered_text,
+    }
+
+
+def capture_policy_cards(
+    artifacts: Path, recorder: PromoRecorder
+) -> list[dict[str, object]]:
+    captured: list[dict[str, object]] = []
+    for mechanism_id, decision_title, event_title, option_text in PROMO_POLICY_CARDS:
+        stem = f"12_policy_{mechanism_id:03d}"
+        confirm = isolated.open_decision_detail(
+            decision_title,
+            "打开此卡",
+            artifacts,
+            stem,
+        )
+        acceptance.click_until_text_disappears(
+            confirm,
+            "打开此卡",
+            acceptance.FULL_SCREEN_REGION,
+            artifacts,
+            attempts=2,
+        )
+        acceptance.wait_for_ocr_text(
+            event_title,
+            acceptance.FULL_SCREEN_REGION,
+            20,
+            artifacts,
+            f"{stem}_event.png",
+            contains=True,
+            stable_hits=1,
+        )
+        recorder.mark(f"policy_card_{mechanism_id:03d}_visible")
+        recorder.hold(2.5)
+        option = acceptance.wait_for_ocr_text(
+            option_text,
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            f"{stem}_option.png",
+            contains=True,
+            stable_hits=1,
+        )
+        acceptance.deliberate_click(option, f"close policy card {mechanism_id:03d}")
+        isolated.wait_for_gameplay_hud(artifacts)
+        captured.append(
+            {
+                "mechanism_id": mechanism_id,
+                "event_artifact": f"{stem}_event.png",
+            }
+        )
+    return captured
+
+
+def run_scenario(
+    stream: MarkerStream,
+    artifacts: Path,
+    recorder: PromoRecorder | None = None,
+) -> dict[str, object]:
     initialize_fixture(stream, artifacts)
-    choose_direct_publication(stream, artifacts)
-    gui_evidence = capture_scoreboard_gui(artifacts)
-    jingcha_evidence = capture_jingcha_planner(stream, artifacts)
-    personal_result_evidence = capture_superior_assigned_result(stream, artifacts)
+    if recorder:
+        recorder.start()
+        recorder.hold(2.0)
+    choose_direct_publication(stream, artifacts, recorder)
+    gui_evidence = capture_scoreboard_gui(artifacts, recorder)
+    jingcha_evidence = capture_jingcha_planner(stream, artifacts, recorder)
+    personal_result_evidence = capture_superior_assigned_result(
+        stream, artifacts, recorder
+    )
+    received_evidence = None
+    policy_cards: list[dict[str, object]] = []
+    if recorder:
+        received_evidence = capture_received_scoreboard(artifacts, recorder)
+        policy_cards = capture_policy_cards(artifacts, recorder)
+        recorder.mark("all_requested_product_screens_captured")
+        recorder.hold(2.0)
     counts = stream.counts()
     return {
         "standard_lobby_start": True,
@@ -1183,6 +1486,8 @@ def run_scenario(stream: MarkerStream, artifacts: Path) -> dict[str, object]:
             "consumed_by_original_superior_once": True,
         },
         "superior_assigned_player_result": personal_result_evidence,
+        "promo_received_scoreboard": received_evidence,
+        "promo_policy_cards": policy_cards,
     }
 
 
@@ -1194,7 +1499,12 @@ def copy_logs(userdir: Path, artifacts: Path) -> None:
         shutil.copy2(path, artifacts / f"final_{path.name}")
 
 
-def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, object]:
+def run_cell(
+    artifacts: Path,
+    userdir: Path,
+    keep_userdir: bool,
+    promo_capture: bool = False,
+) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -1218,6 +1528,8 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
     stream = MarkerStream(userdir / "logs" / "debug.log")
     pid_path = artifacts / "ck3.pid"
     watchdog_pid = None
+    recorder = PromoRecorder(artifacts / "promo") if promo_capture else None
+    recorder_evidence: dict[str, object] = {}
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -1247,7 +1559,7 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_standard_1066_start")
-        evidence = run_scenario(stream, artifacts)
+        evidence = run_scenario(stream, artifacts, recorder)
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
@@ -1271,6 +1583,13 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
         except Exception:
             pass
     finally:
+        if recorder is not None and recorder.process is not None:
+            try:
+                recorder_evidence = recorder.stop()
+            except Exception as error:
+                result = "RED"
+                reason = f"promo recorder stop failed: {error}"
+                error_reason = f"{error_reason}; {reason}" if error_reason else reason
         if process is not None:
             try:
                 acceptance.stop_ck3_process(
@@ -1372,6 +1691,7 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
             dict.fromkeys(observed_engine_warnings)
         ),
         "scenario_evidence": evidence,
+        "promo_capture": recorder_evidence,
         "isolated_userdir_path": str(userdir),
         "userdir_removed_after_run": userdir_removed,
         "process_watchdog_pid": watchdog_pid,
@@ -1392,6 +1712,7 @@ def main(
     artifacts_dir: str | None = None,
     keep_userdir: bool = True,
     preflight_only: bool = False,
+    promo_capture: bool = False,
 ) -> int:
     preflight()
     if preflight_only:
@@ -1416,7 +1737,9 @@ def main(
     isolated.ensure_test_paths_safe((artifacts, userdir), steam_root, workshop_roots)
     protected_before = isolated.protected_snapshot(steam_root)
     artifacts.mkdir()
-    report = run_cell(artifacts / "cell", userdir, keep_userdir)
+    report = run_cell(
+        artifacts / "cell", userdir, keep_userdir, promo_capture=promo_capture
+    )
     result = report["result"]
     error_reason = report["error_reason"]
     protected_unchanged = False
@@ -1463,6 +1786,11 @@ if __name__ == "__main__":
         help="delete the isolated userdir after GREEN; default preserves all process material",
     )
     parser.add_argument("--preflight", action="store_true", help="do not launch CK3")
+    parser.add_argument(
+        "--promo-capture",
+        action="store_true",
+        help="record an append-only post-loading gameplay take and extra product UI",
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -1470,6 +1798,7 @@ if __name__ == "__main__":
                 artifacts_dir=arguments.artifacts_dir,
                 keep_userdir=not arguments.discard_userdir,
                 preflight_only=arguments.preflight,
+                promo_capture=arguments.promo_capture,
             )
         )
     except acceptance.RunnerError as error:

@@ -60,3 +60,85 @@ zga_jingcha_planner_decision = {
 	ai_check_interval = 0
 	ai_potential = { always = no }
 }
+
+# Promo-only carriers. They expose real product policy cards after the normal
+# acceptance scenario has switched the human player to its reviewed official.
+# The fixture supplies only the carrier; titles, choices, and consequences are
+# the shipped zg361m events/effects.
+zga_promo_policy_001_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 101
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.1 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_007_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 102
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.7 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_020_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 103
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.20 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_022_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 104
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.22 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_026_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 105
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.26 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_361_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 106
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { is_ai = no has_character_flag = zga_personal_result_target }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.361 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
