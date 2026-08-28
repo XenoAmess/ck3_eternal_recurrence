@@ -1,0 +1,536 @@
+{
+  "format_version": 1,
+  "kind": "zg361_chinese_first_promo",
+  "project_status": "draft_animatic_until_all_live_captures_are_green",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "primary_language": "zh-CN",
+  "subtitle_languages": ["zh-CN", "en"],
+  "skip_ck3_loading_opening": true,
+  "duration_limit_seconds": 1200,
+  "minimum_chapter_seconds": 4,
+  "narration_padding_seconds": 0.8,
+  "asset_policy": "append-only content-addressed work files; never delete raw captures, cue audio, subtitles, segments, or prior takes",
+  "chapters": [
+    {
+      "id": "00-cold-open",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "欢迎来到天朝大厂：你的封地，也有绩效季",
+      "title_en": "WELCOME TO THE IMPERIAL MEGACORP: YOUR FIEF HAS REVIEW SEASON",
+      "status": {
+        "zh": "宣传片草案",
+        "en": "PROMO DRAFT",
+        "classification": "draft-generated"
+      },
+      "topics": [],
+      "body_zh": ["中文主叙事", "中英双语字幕", "实机镜头从正题开始"],
+      "body_en": ["Chinese-first narration", "Chinese and English subtitles", "Gameplay opens on the feature, never CK3 loading"],
+      "cues": [
+        {
+          "zh": "如果你以为当上公爵，工作就是喝茶、联姻、等继承，那只能说明你还没收到本季度绩效通知。",
+          "en": "If you thought becoming a duke meant tea, marriage, and waiting for inheritance, you clearly have not received this quarter's review notice."
+        },
+        {
+          "zh": "这里是《天朝特色361制官员绩效考核》：把互联网大厂最熟悉的焦虑，塞进最适合背锅的封建官场。",
+          "en": "This is ZhongGuo 361 Style: familiar megacorp anxiety, translated into the feudal bureaucracy best equipped to pass the blame."
+        },
+        {
+          "zh": "没有启动器，没有读条，没有先看三十秒地图发呆。镜头一开，直接问你：今年这个C，准备让谁背？",
+          "en": "No launcher and no loading screen. We open on the only question that matters: who is carrying this year's bottom rating?"
+        }
+      ]
+    },
+    {
+      "id": "01-who-rates-whom",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "谁给谁打分：公爵以上都是经理，伯爵男爵只能被卷",
+      "title_en": "WHO RATES WHOM: DUKES AND ABOVE MANAGE; COUNTS AND BARONS GET MANAGED",
+      "status": {
+        "zh": "待录天朝层级实机",
+        "en": "PLACEHOLDER · HIERARCHY CAPTURE PENDING",
+        "classification": "placeholder-fixture-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-01-HIERARCHY",
+        "shot": "打开一名天朝制公爵角色页与直属封臣列表；切到伯爵角色，展示前者可主持考核、后者只有被考核告身。"
+      },
+      "cues": [
+        {
+          "zh": "规则先说清：所有天朝制公爵及以上领主，都要给自己的直属官员做考核，不只皇帝。",
+          "en": "First, the reporting line: every celestial-government duke or higher rates their own direct officials, not just the emperor."
+        },
+        {
+          "zh": "伯爵和男爵也别高兴太早。他们不能考核别人，但会被上司考核；没有打分权，不代表没有被打分权。",
+          "en": "Counts and barons cannot rate anyone, but their superior still rates them. No management authority does not mean freedom from management."
+        },
+        {
+          "zh": "于是玩家既可能是台上念名单的领导，也可能下一秒收到上司告身：您好，您今年符合预期，意思是别想涨薪。",
+          "en": "So the player may read the list as a manager, then receive a superior's notice: meets expectations, which is corporate for do not ask about a raise."
+        }
+      ]
+    },
+    {
+      "id": "02-okr-kpi",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "OKR负责抬头看路，KPI负责低头看刀",
+      "title_en": "OKR LOOKS AT THE HORIZON; KPI CHECKS THE BLADE",
+      "status": {
+        "zh": "待录目标与证据实机",
+        "en": "PLACEHOLDER · OKR/KPI CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["okr_kpi"],
+      "capture": {
+        "id": "CAP-02-OKR-KPI",
+        "shot": "录目标责任书或政策卡、KPI分项提示、两名官员因总督效率/贤能/忠诚/罪行与任务证据得到不同分数。"
+      },
+      "cues": [
+        {
+          "zh": "这不是把KPI三个字贴在总督效率上就收工。系统把业绩、贤能、成长、忠诚、罪行、派系和管理信号拆成证据。",
+          "en": "This is not a KPI label pasted onto governor efficiency. Delivery, merit, growth, loyalty, crime, factions, and management signals become evidence."
+        },
+        {
+          "zh": "OKR决定你宣称要改变什么，KPI记录你真的交付了什么。挑战目标失败，可以留下探索价值；保守目标全绿，也可能只是把门槛埋进地板。",
+          "en": "OKR states what you meant to change; KPI records what actually shipped. A failed stretch goal may teach, while an easy green target may hide the bar underground."
+        },
+        {
+          "zh": "最要命的是，分数不是结论，只是你进入校准会时能带上桌的弹药。数据很客观，解释数据的人更客观。",
+          "en": "The score is not the verdict. It is merely the ammunition you bring into calibration. Data is objective; the person interpreting it is somehow even more objective."
+        }
+      ]
+    },
+    {
+      "id": "03-forced-distribution",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "强制分布：不是问有没有C，是问C姓什么",
+      "title_en": "FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT",
+      "status": {
+        "zh": "待录排名与配额实机",
+        "en": "PLACEHOLDER · RANKING CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["forced_distribution"],
+      "capture": {
+        "id": "CAP-03-DISTRIBUTION",
+        "shot": "同一考核组至少十人，录唯一名次、3.75/3.5/3.25分档、末位配额及边界两人的前后对比。"
+      },
+      "cues": [
+        {
+          "zh": "361的灵魂是强制分布：少数3.75，多数3.5，末位3.25。大家都完成目标，也不妨碍有人必须解释自己为什么不够优秀。",
+          "en": "The soul of 361 is forced distribution: a few 3.75s, most 3.5s, and a bottom 3.25. Everyone may deliver, yet someone must explain why they were not excellent enough."
+        },
+        {
+          "zh": "排名采用固定序位，平分也不会全员并列第一、集体冲进3.75。毕竟真正的大厂从不允许数学破坏组织目标。",
+          "en": "Ranks use a stable unique order. A tie cannot make everyone number one and flood 3.75, because mathematics must never obstruct an organizational target."
+        },
+        {
+          "zh": "小团队可能没有末位名额；大团队则要面对边界。你不是在挑坏人，你是在决定哪位好人今年看起来最像坏人。",
+          "en": "A small team may have no bottom quota; a large team has a boundary. You are not selecting a bad official, only the good official who looks most expendable this year."
+        }
+      ]
+    },
+    {
+      "id": "04-calibration",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "校准会：用最礼貌的语气，讨论最不礼貌的名额",
+      "title_en": "CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS",
+      "status": {
+        "zh": "待录校准选择实机",
+        "en": "PLACEHOLDER · CALIBRATION CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["calibration"],
+      "capture": {
+        "id": "CAP-04-CALIBRATION",
+        "shot": "录自动排名、公示前校准窗口、保护边界官员与将另一人压入3.25的选择，以及曝光/威信/好感代价。"
+      },
+      "cues": [
+        {
+          "zh": "自动排名之后、正式发榜之前，玩家可以进入校准。这里不是改一个数字，而是把配额、证据、人情和政敌放进同一口锅。",
+          "en": "After automatic ranking and before publication comes calibration, where quota, evidence, favors, and political enemies all enter the same pot."
+        },
+        {
+          "zh": "你可以保一个边界同僚，也可以为了凑C把另一个人踩下去；每次动手脚都留下理由、受益者和潜在曝光。",
+          "en": "You may protect one boundary colleague or push another down to fill the bottom slot. Every move records its reason, beneficiary, and exposure risk."
+        },
+        {
+          "zh": "校准真正有趣的地方，是它把抽象制度变成具体关系：今天你护的人，明天可能替你说话；今天你背的锅，明年会长出利息。",
+          "en": "Calibration turns policy into relationships. The person you protect may defend you tomorrow; the blame you accept today compounds by next year."
+        }
+      ]
+    },
+    {
+      "id": "05-peer-review-politics",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "背靠背互评：当面哥俩好，匿名一星少不了",
+      "title_en": "BACK-TO-BACK PEER REVIEW: FRIENDS IN PUBLIC, ONE STAR IN PRIVATE",
+      "status": {
+        "zh": "待录互评与向上管理实机",
+        "en": "PLACEHOLDER · PEER POLITICS CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["peer_review", "upward_management"],
+      "capture": {
+        "id": "CAP-05-PEER-POLITICS",
+        "shot": "录背靠背邀评/举荐/攻讦交互、贡献与可见度差异，并让同一人选择做实事或向上汇报。"
+      },
+      "cues": [
+        {
+          "zh": "背靠背互评把同僚关系变成匿名战场。你可以真诚举荐、谨慎保留，也可以写出那句经典评价：合作意识仍有提升空间。",
+          "en": "Back-to-back peer review turns collegial relations into an anonymous arena: endorse, hedge, or write the classic line that collaboration still has room to grow."
+        },
+        {
+          "zh": "互评不是随机加减分。利益冲突、共同项目、评价可信度和后来被事实打脸，都会回头结算。造谣可以赢一季，也可能输掉三年。",
+          "en": "Peer review is not random score noise. Conflicts, shared projects, reviewer credibility, and later facts all settle the account. A lie may win one season and lose three years."
+        },
+        {
+          "zh": "向上管理也不是纯好感按钮。你花时间让上司看见成果，就少一点时间做成果；完全不汇报，又会发现功劳自动进入最会讲故事的人名下。",
+          "en": "Managing up is not a simple opinion button. Time spent making work visible is time not doing it, yet silence lets the best storyteller inherit the credit."
+        }
+      ]
+    },
+    {
+      "id": "06-jingcha",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "京察：活动免费，不办的代价比较贵",
+      "title_en": "JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP",
+      "status": {
+        "zh": "待录京察活动实机",
+        "en": "PLACEHOLDER · JINGCHA CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["jingcha"],
+      "capture": {
+        "id": "CAP-06-JINGCHA",
+        "shot": "录定期京察弹窗、默认举办路径、明确不花钱、拒绝选项，以及拒办后直属上司好感和下一轮KPI重大扣分理由。"
+      },
+      "cues": [
+        {
+          "zh": "京察是定期弹出的半强制活动，举办本身不花钱。系统默认你应该办，因为评价下属不是领导的兴趣爱好，是岗位说明书。",
+          "en": "Jingcha is a periodic semi-mandatory activity and costs nothing to hold. Reviewing subordinates is not a leadership hobby; it is the job description."
+        },
+        {
+          "zh": "玩家当然可以说不。自由一直都在，只是你的直属上司也会自由地降低好感，并把拒办写进下一次绩效理由。",
+          "en": "The player may refuse. Freedom remains, while the direct superior remains free to lose opinion and record refusal as a major reason in the next review."
+        },
+        {
+          "zh": "而且这笔账绑定发令上司，不会换个老板就被陌生人捡去扣分。坏消息有责任人，好消息是流程终于有责任人。",
+          "en": "That reason is bound to the superior who issued it; a new boss cannot consume an old refusal. The bad news has an owner, which is also the good news."
+        }
+      ]
+    },
+    {
+      "id": "07-scoreboard-receipt",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "考核榜与告身：终于有人告诉你到底排第几",
+      "title_en": "SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK",
+      "status": {
+        "zh": "待录考核榜GUI实机",
+        "en": "PLACEHOLDER · SCOREBOARD GUI CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["scoreboard"],
+      "capture": {
+        "id": "CAP-07-SCOREBOARD",
+        "shot": "录右上角考核榜三页：我主持的榜、上司给我的结果、制度驾驶舱；特写个人档位、KPI、名次、连续次数与PIP/晋升状态。"
+      },
+      "cues": [
+        {
+          "zh": "考核榜不是一条转瞬即逝的通知。每轮榜单冻结人物、官职、KPI、价值观分、名次、档位、连续次数和后续状态。",
+          "en": "The scoreboard is not a disposable toast. Each cycle freezes the official, office, KPI, values, rank, grade, streak, and follow-up state."
+        },
+        {
+          "zh": "你主持考核时看整张团队榜；你被上司考核时收到独立告身，直接写明上司是谁、你拿多少分、同组第几、绩效几档。",
+          "en": "Managers see the full team board. When your superior rates you, a separate receipt names the superior, your score, cohort rank, and grade."
+        },
+        {
+          "zh": "旧榜不会因为人员调动或下轮打分偷偷漂移。过去的3.25会忠诚地留在过去，像一张永远不会自动撤回的群聊截图。",
+          "en": "Old boards do not drift after transfers or later reviews. A past 3.25 stays in the past, like a group-chat screenshot that never unsends itself."
+        }
+      ]
+    },
+    {
+      "id": "08-money-and-grade",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "3.25不是表情包：国库、金币、俸禄一起有感觉",
+      "title_en": "3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT",
+      "status": {
+        "zh": "待录奖惩对账实机",
+        "en": "PLACEHOLDER · REWARD/PENALTY CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-08-MONEY",
+        "shot": "同屏记录结算前后地方国库、个人金币、俸禄/merit与modifier；分别展示3.75、3.5、3.25，并保存精确罚没回执。"
+      },
+      "cues": [
+        {
+          "zh": "档位必须落到资源上才有手感。3.75进入晋升和奖励通道，3.5保住正常节奏，3.25则启动真正的改进成本。",
+          "en": "Grades need resource consequences. A 3.75 opens reward and promotion lanes, 3.5 keeps the normal cadence, and 3.25 starts a real improvement cost."
+        },
+        {
+          "zh": "3.25同时影响地方国库、个人金币和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算和你钱包都要参加复盘。",
+          "en": "A 3.25 hits the local treasury, personal gold, and one year of salary. Shared accountability means both the team budget and your wallet attend the retrospective."
+        },
+        {
+          "zh": "罚没会保存精确金额和本轮编号。如果申诉改判，退的是这一次实际扣的钱，不是系统心情好随手发一张代金券。",
+          "en": "The penalty records exact amounts and review serial. A successful appeal refunds what this cycle actually took, not a goodwill coupon invented afterward."
+        }
+      ]
+    },
+    {
+      "id": "09-pip-bottom",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "PIP与末位：给你改进机会，也给上司腾椅子的机会",
+      "title_en": "PIP AND THE BOTTOM: A CHANCE TO IMPROVE, AND A CHANCE TO FREE YOUR CHAIR",
+      "status": {
+        "zh": "待录PIP与末位处置实机",
+        "en": "PLACEHOLDER · PIP/BOTTOM CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["pip", "bottom_elimination"],
+      "capture": {
+        "id": "CAP-09-PIP-BOTTOM",
+        "shot": "录首次3.25进入PIP、目标/支持选择、下轮改善与失败对照；再录连续两次后夺爵、致仕、降岗、留观四类末位处置。"
+      },
+      "cues": [
+        {
+          "zh": "第一次3.25进入PIP，也就是绩效改进计划。它不是必败倒计时：目标、期限、支持预算和中期检查都能改变结果。",
+          "en": "The first 3.25 enters PIP, a performance improvement plan. It is not a scripted death clock: goals, support, deadlines, and midpoints can change the result."
+        },
+        {
+          "zh": "经理可以给资源，也可以只给指标不给资源；后者省下眼前成本，却会把支持缺位记到经理自己的组织绩效。",
+          "en": "A manager may fund support or provide targets without resources. The latter saves money now, but missing support returns in the manager's own performance."
+        },
+        {
+          "zh": "连续两次末位才进入淘汰阶梯：夺爵、致仕、降岗留用或再观察。所谓毕业答辩，有人毕业，有人的岗位毕业。",
+          "en": "Two consecutive bottom ratings enter the exit ladder: title removal, retirement, demotion, or another year. In the final review, someone graduates; sometimes the position graduates without them."
+        }
+      ]
+    },
+    {
+      "id": "10-promotion-hc",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "晋升包与HC：你证明自己配得上，组织证明它没有坑",
+      "title_en": "PROMOTION PACKET AND HEADCOUNT: YOU PROVE MERIT; THE ORG PROVES A SLOT EXISTS",
+      "status": {
+        "zh": "待录晋升与编制实机",
+        "en": "PLACEHOLDER · PROMOTION/HC CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["promotion_packet", "hc"],
+      "capture": {
+        "id": "CAP-10-PROMOTION-HC",
+        "shot": "录高绩效官员形成晋升包、跨部门答辩、成功/延期；再录软HC余额、增编答辩、冻结与岗位空缺。"
+      },
+      "cues": [
+        {
+          "zh": "高绩效不会自动升官，而是生成晋升包：历史结果、能力证据、跨部门贡献和风险说明，一样不少地拿去答辩。",
+          "en": "High performance does not auto-promote. It creates a promotion packet: results, capability evidence, cross-team contribution, and risks for a real defense."
+        },
+        {
+          "zh": "然后轮到HC，也就是headcount编制。你可以完全够格，岗位也可以完全不存在；个人优秀与组织没坑，是两套独立条件。",
+          "en": "Then comes HC, the headcount slot. You may be fully qualified while the job fully does not exist; personal excellence and organizational vacancy are separate conditions."
+        },
+        {
+          "zh": "经理能申请增编、冻结名额、内部转岗或继续让现团队加班填坑。每个选择都影响预算、士气、交付和下一次经理考核。",
+          "en": "Managers may request headcount, freeze a slot, transfer internally, or keep filling the gap with overtime. Each choice changes budget, morale, delivery, and their next review."
+        }
+      ]
+    },
+    {
+      "id": "11-credit-and-dependencies",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "跨部门抢功：项目成功了，突然每个人都是核心贡献者",
+      "title_en": "CROSS-TEAM CREDIT: THE PROJECT SHIPPED, SO EVERYONE WAS APPARENTLY ESSENTIAL",
+      "status": {
+        "zh": "待录成果账本实机",
+        "en": "PLACEHOLDER · CREDIT LEDGER CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["credit_claims"],
+      "capture": {
+        "id": "CAP-11-CREDIT",
+        "shot": "录跨部门成果/依赖账本、贡献与可见度双账、抢功/甩锅选择及仲裁结果；至少一组真实贡献低但汇报强的对照。"
+      },
+      "cues": [
+        {
+          "zh": "跨部门项目有两本账：谁真正贡献，谁被组织看见。它们可以重合，也可以像年会节目和实际工作一样毫无关系。",
+          "en": "Cross-team work keeps two ledgers: actual contribution and organizational visibility. They may overlap, or relate like the annual gala and actual delivery."
+        },
+        {
+          "zh": "当成果落地，官员可以认领credit、共享功劳、抢功或把延期甩给依赖方。系统冻结项目、责任和时间线，不靠随机事件凭空判案。",
+          "en": "When work ships, officials may claim credit, share it, steal it, or blame a dependency. Project, responsibility, and timeline are frozen instead of invented by a random event."
+        },
+        {
+          "zh": "抢功成功会提高可见度，却积累信任债；甩锅短期保分，证据翻案后则同时损失协作与评价可信度。故事讲得好，也要经得起回放。",
+          "en": "Credit theft raises visibility but builds trust debt. Blame may protect a score until evidence reverses it and damages collaboration plus reviewer credibility. The story must survive replay."
+        }
+      ]
+    },
+    {
+      "id": "12-appeal",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "绩效申诉：不是掀桌，是要求把桌上的账重新加一遍",
+      "title_en": "PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT",
+      "status": {
+        "zh": "待录申诉闭环实机",
+        "en": "PLACEHOLDER · APPEAL CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["appeal"],
+      "capture": {
+        "id": "CAP-12-APPEAL",
+        "shot": "录玩家收到3.25后发起申诉、证据复核、维持与改判两路；改判同步退款、修榜，并展示申诉不加重和反报复观察。"
+      },
+      "cues": [
+        {
+          "zh": "被打3.25后，玩家可以认命、摆烂、奋发，也可以正式申诉。申诉消耗政治资源，但要求复核证据、程序和配额边界。",
+          "en": "After a 3.25, the player may accept, disengage, improve, or file a formal appeal. Appeal costs political capital but rechecks evidence, procedure, and quota boundaries."
+        },
+        {
+          "zh": "改判会同步修正榜单、连续次数和精确罚没；复核只能维持或减轻原处理，不能因为你敢申诉就顺手再加一刀。",
+          "en": "A reversal updates the scoreboard, streak, and exact penalty. Review may maintain or reduce the decision; it cannot punish you merely for appealing."
+        },
+        {
+          "zh": "如果发现新的独立造假，要另开新案、重新举证。程序正义不是让坏人免疫，而是禁止领导在原工单里偷偷追加需求。",
+          "en": "Independent new fraud requires a new case and evidence. Due process does not grant immunity; it stops a manager from quietly adding scope to the original ticket."
+        }
+      ]
+    },
+    {
+      "id": "13-361-policy-cards",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "不只一个考核季：361张政策卡把组织慢慢养成怪物",
+      "title_en": "BEYOND ONE REVIEW: 361 POLICY CARDS GROW AN ORGANIZATION OVER TIME",
+      "status": {
+        "zh": "待录政策卡与驾驶舱实机",
+        "en": "PLACEHOLDER · POLICY DECK CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-13-POLICY-DECK",
+        "shot": "录连续政策卡选择、制度驾驶舱14项组织账本和年度批处理；快速展示多张不同机制，不逐张弹完361张。"
+      },
+      "cues": [
+        {
+          "zh": "核心考核之外，还有整整361张机制卡。它们不是361个孤立弹窗，而是围绕证据、信任、交付、稳定、人才、HC和倦怠共享账本。",
+          "en": "Beyond the core review are 361 mechanism cards. They are not 361 disconnected pop-ups; they share ledgers for evidence, trust, delivery, stability, talent, HC, and burnout."
+        },
+        {
+          "zh": "玩家每次在真实取舍里选方向：严控流程还是相信团队，短期交付还是偿还技术债，冻结编制还是承认目标必须缩水。",
+          "en": "Each card asks for a real tradeoff: control or trust, near-term delivery or technical debt, frozen headcount or an honest reduction in scope."
+        },
+        {
+          "zh": "AI经理按性格和组织气候批量处理，玩家只在值得决策时被打断。目标不是每天收三百六十一封邮件，而是十年后发现制度已经长成你的形状。",
+          "en": "AI managers batch decisions through personality and climate; players are interrupted only for meaningful choices. The goal is not 361 daily emails, but an institution shaped by ten years of decisions."
+        }
+      ]
+    },
+    {
+      "id": "14-core-loop",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "一轮完整玩法：定目标、交证据、互评、校准、发榜、申诉、兑现",
+      "title_en": "THE FULL LOOP: TARGETS, EVIDENCE, PEERS, CALIBRATION, BOARD, APPEAL, CONSEQUENCE",
+      "status": {
+        "zh": "待录完整同轮实机",
+        "en": "PLACEHOLDER · SAME-CYCLE LOOP CAPTURE PENDING",
+        "classification": "placeholder-live-loop-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-14-FULL-LOOP",
+        "shot": "用同一存档同一考核轮串起目标、证据、背靠背、校准、榜单、个人告身、3.25处罚、申诉退款或PIP后续；保留连续录像与同run证据。"
+      },
+      "cues": [
+        {
+          "zh": "真正的核心不是任何一个热词，而是一整轮因果链：年初定目标，中途积证据，同僚背靠背，经理校准，正式发榜。",
+          "en": "The core is not any buzzword but one causal loop: set targets, accumulate evidence, collect peer review, calibrate, and publish the board."
+        },
+        {
+          "zh": "然后奖励、罚没、晋升、PIP、末位和申诉继续改变人物关系与组织资源；下轮考核会读取这些后果，而不是世界刷新后集体失忆。",
+          "en": "Rewards, penalties, promotion, PIP, bottom action, and appeal then reshape relationships and resources. The next cycle reads those consequences instead of forgetting them."
+        },
+        {
+          "zh": "所以你做的不是一份古代人力资源表格。你是在经营一个会记仇、会抢功、会画饼，也偶尔真的能把事情做成的天朝大厂。",
+          "en": "You are not managing an ancient HR spreadsheet. You are running an imperial megacorp that remembers grudges, steals credit, sells dreams, and occasionally ships something."
+        }
+      ]
+    },
+    {
+      "id": "15-honest-boundary",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "先看证据，再喊牛：宣传片也要过绩效",
+      "title_en": "EVIDENCE BEFORE HYPE: EVEN THE PROMO HAS A PERFORMANCE REVIEW",
+      "status": {
+        "zh": "草案边界",
+        "en": "DRAFT BOUNDARY",
+        "classification": "draft-honest-boundary"
+      },
+      "topics": [],
+      "body_zh": ["占位镜头不算实机", "同轮素材绑定同一证据", "最终成片必须短于20分钟"],
+      "body_en": ["Placeholders are not live evidence", "Same-cycle footage binds to the same run", "Final duration must remain under twenty minutes"],
+      "cues": [
+        {
+          "zh": "现在这份工程首先是一版可调整的宣传脚本和占位分镜。画面写着待实录，就是真的待实录，不拿漂亮卡片冒充CK3已经跑通。",
+          "en": "This project begins as an editable script and placeholder animatic. If a frame says capture pending, it is pending; a polished card is never passed off as live CK3."
+        },
+        {
+          "zh": "正式版会把每个核心镜头绑定到同一轮实机证据，检查时长、编码、字幕安全区、中文配音和开场无读条。",
+          "en": "The final cut will bind core shots to same-cycle evidence and validate duration, codecs, subtitle safety, Chinese narration, and an opening without loading."
+        },
+        {
+          "zh": "毕竟一个讲绩效的mod，如果宣传片自己没有验收、没有证据、还偷偷超时二十分钟，那它拿3.25一点也不冤。",
+          "en": "A performance mod whose own promo lacks acceptance, evidence, or the twenty-minute limit would deserve its 3.25."
+        }
+      ]
+    },
+    {
+      "id": "16-finale",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "来吧，给天下打分——然后等天下给你打分",
+      "title_en": "RATE THE REALM—THEN WAIT FOR THE REALM TO RATE YOU",
+      "status": {
+        "zh": "结尾卡草案",
+        "en": "DRAFT FINALE",
+        "classification": "draft-generated"
+      },
+      "topics": [],
+      "body_zh": ["管理下属", "接受上司考核", "让制度后果跨年累积"],
+      "body_en": ["Manage subordinates", "Face your superior's review", "Let institutional consequences compound"],
+      "cues": [
+        {
+          "zh": "你可以做一个证据充分、愿意护人的好领导，也可以把所有人卷到只剩漂亮报表；两条路都能走，只是账会一直记着。",
+          "en": "You may lead with evidence and protection, or grind everyone down until only beautiful reports remain. Both paths exist, and the ledger remembers both."
+        },
+        {
+          "zh": "《天朝特色361制官员绩效考核》：请开始管理你的直属官员，并准备好在上司面前解释，为什么你的管理方式符合预期。",
+          "en": "ZhongGuo 361 Style: begin managing your direct officials, then prepare to explain to your superior why your management style meets expectations."
+        },
+        {
+          "zh": "祝各位年年3.75。至于名额够不够——这不是我的问题，这是下一场校准会的议题。",
+          "en": "May you earn 3.75 every year. Whether the quota allows it is not my problem; that belongs to the next calibration meeting."
+        }
+      ]
+    }
+  ]
+}

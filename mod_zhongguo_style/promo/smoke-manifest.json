@@ -1,0 +1,56 @@
+{
+  "format_version": 1,
+  "kind": "zg361_chinese_first_promo",
+  "project_status": "pipeline_smoke_only_not_a_promo_candidate",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "primary_language": "zh-CN",
+  "subtitle_languages": ["zh-CN", "en"],
+  "skip_ck3_loading_opening": true,
+  "duration_limit_seconds": 1200,
+  "asset_policy": "append-only smoke artifacts",
+  "chapters": [
+    {
+      "id": "pipeline-smoke",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "361宣传片流水线测试",
+      "title_en": "ZHONGGUO 361 PROMO PIPELINE SMOKE TEST",
+      "status": {
+        "zh": "不是正式成片",
+        "en": "PIPELINE TEST · NOT FINAL",
+        "classification": "static-smoke-test"
+      },
+      "topics": [
+        "forced_distribution",
+        "calibration",
+        "peer_review",
+        "pip",
+        "bottom_elimination",
+        "promotion_packet",
+        "hc",
+        "okr_kpi",
+        "upward_management",
+        "credit_claims",
+        "appeal",
+        "jingcha",
+        "scoreboard"
+      ],
+      "body_zh": ["中文配音", "双语字幕", "FFmpeg媒体前置"],
+      "body_en": ["Chinese narration", "Bilingual subtitles", "FFmpeg media preflight"],
+      "cues": [
+        {
+          "zh": "强制分布、校准、背靠背、PIP与末位，只用于测试字幕和配音管线。",
+          "en": "Forced distribution, calibration, back-to-back review, PIP, and bottom rating test the subtitle and narration pipeline."
+        },
+        {
+          "zh": "晋升包、HC、OKR、KPI、向上管理和抢功，继续参加媒体前置检查。",
+          "en": "Promotion packet, headcount, OKR, KPI, managing up, and credit claims continue the media preflight."
+        },
+        {
+          "zh": "申诉、京察与考核榜检查完毕；这是流水线测试，不是宣传成片。",
+          "en": "Appeal, Jingcha, and scoreboard checks complete; this is a pipeline test, not the final promo."
+        }
+      ]
+    }
+  ]
+}
