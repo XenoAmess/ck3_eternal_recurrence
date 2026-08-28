@@ -241,6 +241,58 @@ flowchart TD
     class L,R unknown;
 ```
 
+### 2026-08-28 正式长跑帧：第二条几何安全 active route 被 capability gate 丢失
+
+[live-confirmed] 正式一代长跑在 paused `snapshot_id=native:578`、service revision `579`、native revision
+`578`、`date_raw=53220312` 暴露了另一个多军团 blocker。run 位于
+`C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/runs/20260828T000753Z-one-generation-a09470a0/`；
+`report.json` SHA-256 为 `AFEECF331F298F73F41D62A4CA78AE1C69C5BD09850EF4E692394645FDA12809`，
+`first-blocker.json` SHA-256 为 `52C46EA6AA0335A7A7086021EC5B3FD1BF2AC373AFE1673C9B8E8659C0AAAD50`。
+这不是 CK3 原生查询、hostile scope 或 action capability 缺失：同一 DLL、同一 session 已连续为 Army
+`83886358` 执行 proof-bound 一日推进；本帧对新 subject Army `117440751` 的 query 也已成功返回 fresh
+`one_day_contact_free=true` 及完整六敌军 timed routes。
+
+- [live-confirmed] Army `117440751` 位于 Province `2619`，active route 为
+  `8651 -> 1109 -> ... -> 3610`。该 route 与六敌军的 current/target/route envelope 相交，故 planner 正确要求
+  fresh timed horizon；其窗口 `[53220312,53220336]` 无实际 timed conflict。
+- [live-confirmed] 另一支 Army `83886358` 已抵达 Province `8651`，仍以 `embarked` 状态沿
+  `1109 -> 3553 -> ... -> 3610` 前进。多个 hostile 的 future target/route 确实包含其 current Province
+  `8651`，但最早 arrival `53220408` 晚于 horizon end `53220336`，所以 closed-interval timed occupancy 证明
+  它本日仍安全；`8651` 之后的 remaining route 再与六敌军通过 current/target/shared-next-hop/route-vertex/
+  opposite-edge 几何审计互斥。它就是既有全局审计中的 geometric-safe moving row，而非 stationary row。
+- [implementation-confirmed] planner 已把 `83886358` 排除在 `other_unsafe_armies` 外，但 driver 的动态
+  `_route_contact_advance_scope_isolated` 只接受“subject + 其余全部 stationary”。所以同一 fresh proof 能被 planner
+  消费，却没有被投影为 composite action step，最终产生
+  `native_war_route_contact_horizon_progress_unsupported`。缺口位于我方 capability advertisement 的多 subject 映射，
+  不是原生 AI 决策树新增输入，也不需要 bridge ABI 或额外 native query。
+
+[counter-policy] 最小修复是把既有 conjunction 如实落到动态 capability gate：subject 继续必须有 fresh、同帧、
+完整 hostile-scope timed proof；每一条其它 active player route 必须结构完整，并以该 proof 中同一组 hostile routes
+先验证其 current Province 的 closed-interval occupancy 在一日窗口内无接触，再通过与 planner 相同的 conservative
+remaining-route geometric audit；stationary row 继续使用同一 closed-interval occupancy 投影。任一其它
+moving route 有 current/target/route/shared-next-hop/opposite-edge 冲突，或任一 shape 不完整，仍不得广告一日推进。
+执行后仍只推进一个 native day，并重读全部军队。该修复不会把一支 Army 的 timed subject proof冒充为另一支的 timed
+proof；它只恢复文档和 planner 已定义的“fresh timed subject + 其它 geometric-safe rows”全局 conjunction。
+
+```mermaid
+flowchart TD
+    F["[live-confirmed] native:578 fresh horizon<br/>subject 117440751 contact-free"] --> H["[live-confirmed] complete six-hostile<br/>same-frame timed routes"]
+    P["[live-confirmed] sibling 83886358<br/>current 8651; active remaining route"] --> O{"[counter-policy] current Province closed-interval<br/>occupancy is timed-safe for this day?"}
+    H --> O
+    O -->|yes| G{"[counter-policy] remaining route shape complete<br/>and geometric audit against H is safe?"}
+    O -->|no / unavailable| B
+    G -->|yes| C{"[counter-policy] every other controllable row<br/>stationary timed-safe or moving geometric-safe?"}
+    G -->|no / unavailable| B["[counter-policy] do not advertise advance"]
+    F --> C
+    C -->|yes| A["[counter-policy] advertise existing proof-bound<br/>one-day advance for subject"]
+    C -->|no| B
+    A --> R["[counter-policy] paused re-read all ArmyIDs,<br/>routes, combat and retreat"]
+    N["[static-confirmed] no new native input,<br/>ABI, or AI branch"] --> C
+    L["[unknown] fixed adapter replay"] -. "[unknown] production acceptance pending" .-> A
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class L unknown;
+```
+
 ## `0x2208320`：同省接触 resolver
 
 ### 入口与前置门

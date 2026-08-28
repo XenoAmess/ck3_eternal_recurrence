@@ -7455,7 +7455,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             )
 
-    def test_moving_contact_proof_covers_stationary_army_exact_day(
+    def test_moving_contact_proof_covers_other_safe_armies_exact_day(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -7595,6 +7595,54 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertIn(
             advance_step,
             _fresh_route_contact_advance_steps(snapshot, [moving_proof]),
+        )
+        safe_moving_snapshot = copy.deepcopy(snapshot)
+        safe_moving = next(
+            army
+            for army in safe_moving_snapshot["player_armies"]
+            if army["army_id"] == 202
+        )
+        safe_moving.update(
+            {
+                "current_province_id": 22,
+                "move_target_province_id": 27,
+                "army_state": "embarked",
+                "army_state_code": 4,
+                "route_province_ids": [26, 27],
+            }
+        )
+        self.assertIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                safe_moving_snapshot, [moving_proof]
+            ),
+        )
+        current_province_threat = copy.deepcopy(moving_proof)
+        current_province_threat["result"]["route_contact_horizon"][
+            "hostile_routes"
+        ][0]["arrival_date_raws"] = [
+            start_date + 12,
+            start_date + 24,
+            start_date + 72,
+            start_date + 96,
+        ]
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                safe_moving_snapshot, [current_province_threat]
+            ),
+        )
+        unsafe_moving_snapshot = copy.deepcopy(safe_moving_snapshot)
+        next(
+            army
+            for army in unsafe_moving_snapshot["player_armies"]
+            if army["army_id"] == 202
+        )["route_province_ids"] = [25, 26, 27]
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                unsafe_moving_snapshot, [moving_proof]
+            ),
         )
         gathering_snapshot = copy.deepcopy(snapshot)
         next(

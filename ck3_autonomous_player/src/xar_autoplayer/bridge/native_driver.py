@@ -12710,10 +12710,20 @@ def _route_contact_advance_scope_isolated(
         if _army_in_combat_or_retreat(army):
             return False
         route = _canonical_remaining_route(army)
+        target_province_id = army.get("move_target_province_id")
+        if route and _positive_native_id(target_province_id):
+            if not (
+                route[-1] == target_province_id
+                and _active_route_is_geometrically_safe_in_horizon(
+                    army, contact_horizon
+                )
+            ):
+                return False
+            continue
         if (
             route is None
             or "move_target_province_id" not in army
-            or army.get("move_target_province_id") is not None
+            or target_province_id is not None
             or route
             or not _army_is_known_stationary(army)
         ):
@@ -12728,6 +12738,83 @@ def _route_contact_advance_scope_isolated(
         except ValueError:
             return False
         if not contact_free:
+            return False
+    return True
+
+
+def _active_route_is_geometrically_safe_in_horizon(
+    army: dict[str, object],
+    contact_horizon: dict[str, object],
+) -> bool:
+    """Audit a non-subject active route against the proof's hostile scope."""
+    route = _canonical_remaining_route(army)
+    current_province_id = army.get("current_province_id")
+    target_province_id = army.get("move_target_province_id")
+    state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    known_active_state = bool(
+        isinstance(state, str)
+        and state.casefold() in {"regular", "sieging", "moving", "embarked"}
+        or not isinstance(state, str)
+        and isinstance(state_code, int)
+        and not isinstance(state_code, bool)
+        and state_code in {1, 3, 4, 7}
+    )
+    if not (
+        known_active_state
+        and route
+        and _positive_native_id(current_province_id)
+        and _positive_native_id(target_province_id)
+        and route[-1] == target_province_id
+    ):
+        return False
+    try:
+        current_province_contact_free = (
+            stationary_province_contact_free_in_horizon(
+                contact_horizon, int(current_province_id)
+            )
+        )
+    except ValueError:
+        return False
+    if not current_province_contact_free:
+        return False
+    hostile_routes = contact_horizon.get("hostile_routes")
+    hostile_ids = contact_horizon.get("hostile_army_ids")
+    if not (
+        isinstance(hostile_routes, list)
+        and isinstance(hostile_ids, list)
+        and len(hostile_routes) == len(hostile_ids)
+        and hostile_routes
+    ):
+        return False
+
+    route_provinces = set(route)
+    route_edges = set(zip(route, route[1:]))
+    for hostile_route in hostile_routes:
+        if not isinstance(hostile_route, dict):
+            return False
+        hostile_current = hostile_route.get("current_province_id")
+        hostile_remaining = _canonical_timed_route(hostile_route)
+        if not (
+            _positive_native_id(hostile_current)
+            and isinstance(hostile_remaining, list)
+        ):
+            return False
+        if hostile_current in route_provinces:
+            return False
+        if not hostile_remaining:
+            continue
+        if (
+            hostile_remaining[-1] in route_provinces
+            or hostile_remaining[0] == route[0]
+            or route_provinces.intersection(hostile_remaining)
+        ):
+            return False
+        hostile_edges = set(zip(hostile_remaining, hostile_remaining[1:]))
+        if any(
+            (destination, origin) in hostile_edges
+            for origin, destination in route_edges
+        ):
             return False
     return True
 
