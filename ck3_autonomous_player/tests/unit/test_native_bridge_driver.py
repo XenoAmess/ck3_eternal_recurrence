@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
     CallbackGameplayDriver,
+    PreSubmissionRevisionMismatchError,
     StepPostconditionError,
     UnsupportedStepError,
 )
@@ -11022,7 +11023,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(_snapshot(2, date_raw=53_171_424))
 
         with self.assertRaisesRegex(
-            BridgeUnavailableError, "life-advance revision mismatch"
+            PreSubmissionRevisionMismatchError,
+            "life-advance revision mismatch",
         ):
             driver.execute_step(
                 "life-advance", expected_revision=stale_revision
@@ -12807,7 +12809,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         current = driver.take_snapshot()
 
         with self.assertRaisesRegex(
-            BridgeUnavailableError,
+            PreSubmissionRevisionMismatchError,
             "native gameplay revision mismatch",
         ):
             driver.execute_step(

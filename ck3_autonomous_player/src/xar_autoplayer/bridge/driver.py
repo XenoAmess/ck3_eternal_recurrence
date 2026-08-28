@@ -20,6 +20,16 @@ class BridgeUnavailableError(RuntimeError):
     """The selected game bridge is not connected to a live CK3 session."""
 
 
+class PreSubmissionRevisionMismatchError(BridgeUnavailableError):
+    """A planned revision changed before any gameplay request was submitted."""
+
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+        self.selected_step: str | None = None
+        self.plan: dict[str, object] | None = None
+        self.replan_count = 0
+
+
 class StepPostconditionError(BridgeUnavailableError):
     """A submitted gameplay step failed its observed-state postcondition."""
 

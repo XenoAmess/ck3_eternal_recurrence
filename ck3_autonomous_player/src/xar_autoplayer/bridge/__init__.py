@@ -3,6 +3,7 @@
 from .driver import (
     BridgeGameplayStepExecutor,
     BridgeUnavailableError,
+    PreSubmissionRevisionMismatchError,
     CallbackGameplayDriver,
     DevelopmentReportDriver,
     GameplayBridgeDriver,
@@ -51,6 +52,7 @@ from .session_driver import DevelopmentSessionDriver
 
 __all__ = [
     "BridgeUnavailableError",
+    "PreSubmissionRevisionMismatchError",
     "BridgeGameplayStepExecutor",
     "CallbackGameplayDriver",
     "DataModGameplayDriver",

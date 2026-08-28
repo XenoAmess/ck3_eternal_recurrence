@@ -14,10 +14,12 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import (
+    BridgeUnavailableError,
     BridgeGameplayStepExecutor,
     CallbackGameplayDriver,
     DevelopmentReportDriver,
     HybridGameplayDriver,
+    PreSubmissionRevisionMismatchError,
     StepPostconditionError,
     UnsupportedStepError,
 )
@@ -8893,6 +8895,59 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(result["status"], "executed")
         self.assertEqual(result["selected_step"], "save-checkpoint")
         self.assertEqual(calls, [("save-checkpoint", 11)])
+
+    def test_service_auto_turn_binds_pre_submission_revision_context(
+        self,
+    ) -> None:
+        calls: list[tuple[str, int | None]] = []
+
+        def execute(
+            step: str, revision: int | None
+        ) -> dict[str, object]:
+            calls.append((step, revision))
+            raise PreSubmissionRevisionMismatchError(
+                "native gameplay revision mismatch: expected 517, current 518"
+            )
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(517),
+            execute=execute,
+            action_steps=("save-checkpoint",),
+        )
+
+        with self.assertRaises(PreSubmissionRevisionMismatchError) as observed:
+            GameplayBridgeService(driver).auto_turn()
+
+        self.assertEqual(calls, [("save-checkpoint", 517)])
+        self.assertEqual(observed.exception.replan_count, 0)
+        self.assertEqual(observed.exception.selected_step, "save-checkpoint")
+        self.assertIsInstance(observed.exception.plan, dict)
+        assert observed.exception.plan is not None
+        self.assertEqual(
+            observed.exception.plan["selected_step"], "save-checkpoint"
+        )
+
+    def test_service_auto_turn_does_not_retry_unknown_bridge_failure(self) -> None:
+        calls: list[tuple[str, int | None]] = []
+
+        def execute(
+            step: str, revision: int | None
+        ) -> dict[str, object]:
+            calls.append((step, revision))
+            raise BridgeUnavailableError("fixture transport failed")
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(517),
+            execute=execute,
+            action_steps=("save-checkpoint",),
+        )
+
+        with self.assertRaises(BridgeUnavailableError):
+            GameplayBridgeService(driver).auto_turn()
+
+        self.assertEqual(calls, [("save-checkpoint", 517)])
 
     def test_service_auto_turn_binds_plan_to_postcondition_failure(self) -> None:
         partial_result = {

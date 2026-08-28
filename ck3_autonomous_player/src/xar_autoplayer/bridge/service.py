@@ -7,6 +7,7 @@ import copy
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
+    PreSubmissionRevisionMismatchError,
     StepPostconditionError,
     UnsupportedStepError,
 )
@@ -340,11 +341,14 @@ class GameplayBridgeService:
                     selected_step,
                     expected_revision=int(planned["revision"]),
                 )
-        except StepPostconditionError as error:
-            # The action already changed CK3 before its final postcondition
-            # failed. Preserve the planner context on the typed Python
-            # exception so the runner can report that factual partial result
-            # without changing the bridge protocol or treating it as success.
+        except (
+            StepPostconditionError,
+            PreSubmissionRevisionMismatchError,
+        ) as error:
+            # Preserve the exact planner context.  StepPostconditionError means
+            # the action changed CK3; PreSubmissionRevisionMismatchError means
+            # the driver proved that no request was sent.  The production
+            # runner uses the distinction before deciding whether to replan.
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
             raise

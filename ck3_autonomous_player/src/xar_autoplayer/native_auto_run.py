@@ -18,6 +18,7 @@ import time
 
 from .bridge.driver import (
     BridgeUnavailableError,
+    PreSubmissionRevisionMismatchError,
     StepPostconditionError,
     UnsupportedStepError,
 )
@@ -191,12 +192,22 @@ def native_auto_run(
         attempt = current_attempt if isinstance(current_attempt, dict) else {}
         before = attempt.get("before")
         after = attempt.get("after")
-        checkpoint_invalidation_reason = {
-            "checkpoint": "checkpoint_submit_not_fully_verified",
-            "opaque_auto_turn": (
+        attempt_stage = attempt.get("stage")
+        selected_step = attempt.get("selected_step")
+        checkpoint_invalidation_reason = None
+        if attempt_stage == "checkpoint":
+            checkpoint_invalidation_reason = (
+                "checkpoint_submit_not_fully_verified"
+            )
+        elif attempt_stage == "opaque_auto_turn" and (
+            not isinstance(selected_step, str)
+            or selected_step == "save-checkpoint"
+        ):
+            checkpoint_invalidation_reason = (
                 "opaque_auto_turn_may_have_submitted_checkpoint"
-            ),
-        }.get(attempt.get("stage"))
+            )
+        if isinstance(error, PreSubmissionRevisionMismatchError):
+            checkpoint_invalidation_reason = None
         checkpoint_recovery_invalidated = (
             checkpoint_invalidation_reason is not None
         )
@@ -394,7 +405,59 @@ def native_auto_run(
             # occurred after a planner-selected save already overwrote the
             # canonical checkpoint path.
             current_attempt["stage"] = "opaque_auto_turn"
-            outcome = service.auto_turn()
+            pre_submission_revision_replans = 0
+            while True:
+                try:
+                    outcome = service.auto_turn()
+                    break
+                except PreSubmissionRevisionMismatchError as error:
+                    if isinstance(error.plan, dict):
+                        current_attempt["plan"] = copy.deepcopy(error.plan)
+                    if (
+                        isinstance(error.selected_step, str)
+                        and error.selected_step
+                    ):
+                        current_attempt["selected_step"] = error.selected_step
+                    if pre_submission_revision_replans >= 1:
+                        error.replan_count = pre_submission_revision_replans
+                        raise
+                    pre_submission_revision_replans += 1
+                    current_attempt["stage"] = "revision_replan_readiness"
+                    remaining = run_deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise AgentError(
+                            "native-auto-run gameplay timeout expired during "
+                            "revision replan"
+                        )
+                    before = _wait_for_readiness(
+                        driver,
+                        session_done=session_done,
+                        session_state=session_state,
+                        timeout_seconds=min(readiness_timeout, remaining),
+                        stable_seconds=0.0,
+                        poll_interval_seconds=poll_seconds,
+                        cold_start_checkpoint=False,
+                        allow_terminal=True,
+                    )
+                    current_attempt["before"] = _public_binding(before)
+                    if completion_contract == "one_generation":
+                        try:
+                            _verify_one_generation_binding(
+                                before, initial_episode
+                            )
+                        except AgentError as binding_error:
+                            same_episode_binding = False
+                            capture_first_failure(
+                                stage="readiness",
+                                kind="identity_violation",
+                                message=str(binding_error),
+                                error=binding_error,
+                            )
+                            raise
+                    current_attempt["stage"] = "opaque_auto_turn"
+            outcome["pre_submission_revision_replans"] = (
+                pre_submission_revision_replans
+            )
             outcome_status = outcome.get("status")
             plan = outcome.get("plan")
             selected_step = outcome.get("selected_step")
@@ -843,14 +906,17 @@ def native_auto_run(
         status = "operator_stop"
         primary_error = "KeyboardInterrupt: operator requested stop"
     except BaseException as error:
-        if isinstance(error, StepPostconditionError) and isinstance(
-            current_attempt, dict
-        ):
-            if isinstance(error.plan, dict):
-                current_attempt["plan"] = copy.deepcopy(error.plan)
-            if isinstance(error.selected_step, str) and error.selected_step:
-                current_attempt["selected_step"] = error.selected_step
-            if isinstance(error.step_result, dict):
+        if isinstance(current_attempt, dict):
+            if isinstance(
+                error, (StepPostconditionError, PreSubmissionRevisionMismatchError)
+            ):
+                if isinstance(error.plan, dict):
+                    current_attempt["plan"] = copy.deepcopy(error.plan)
+                if isinstance(error.selected_step, str) and error.selected_step:
+                    current_attempt["selected_step"] = error.selected_step
+            if isinstance(error, StepPostconditionError) and isinstance(
+                error.step_result, dict
+            ):
                 current_attempt["result"] = copy.deepcopy(error.step_result)
         session_exited = session_done.is_set()
         failure_stage = (
@@ -1962,6 +2028,9 @@ def _turn_record(
         "class": turn_class,
         "ok": outcome.get("status") in {"executed", "terminal"},
         "status": outcome.get("status"),
+        "pre_submission_revision_replans": outcome.get(
+            "pre_submission_revision_replans", 0
+        ),
         "selected_step": outcome.get("selected_step") or (
             plan.get("selected_step") if isinstance(plan, dict) else None
         ),

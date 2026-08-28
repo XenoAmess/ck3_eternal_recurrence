@@ -17,7 +17,10 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
 from xar_autoplayer import cli  # noqa: E402
-from xar_autoplayer.bridge.driver import StepPostconditionError  # noqa: E402
+from xar_autoplayer.bridge.driver import (  # noqa: E402
+    PreSubmissionRevisionMismatchError,
+    StepPostconditionError,
+)
 from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
@@ -282,6 +285,35 @@ class _NativeAutoRunHarness:
         if action == "opaque_checkpoint_failure":
             self.save_checkpoint(expected_revision=self.public_revision)
             raise OSError("fixture opaque checkpoint execution failed")
+        if action == "opaque_pre_submission_revision_mismatch":
+            self.actions.insert(0, action)
+            failure = PreSubmissionRevisionMismatchError(
+                "native gameplay revision mismatch: expected 517, current 518"
+            )
+            failure.plan = {
+                "phase": "native_war_entry_assessment",
+                "selected_step": "query-war-entry-assessments-v1-1-29097",
+            }
+            failure.selected_step = (
+                "query-war-entry-assessments-v1-1-29097"
+            )
+            failure.replan_count = 1
+            raise failure
+        if action == "revision_race_then_query":
+            self.native_revision += 1
+            self.public_revision += 1
+            self.actions.insert(0, "query")
+            failure = PreSubmissionRevisionMismatchError(
+                "native gameplay revision mismatch: expected 101, current 102"
+            )
+            failure.plan = {
+                "phase": "native_war_entry_assessment",
+                "selected_step": "query-war-entry-assessments-v1-1-29097",
+            }
+            failure.selected_step = (
+                "query-war-entry-assessments-v1-1-29097"
+            )
+            raise failure
         if action == "opaque_postcondition_failure":
             step = "advance-route-contact-horizon-v1-101-to-3610-h-1-31"
             starting_date_raw = self.date_raw
@@ -1527,6 +1559,55 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(blocker["recoverable_from_checkpoint"])
         self.assertIsNone(blocker["last_durable_checkpoint"])
 
+    def test_pre_submission_revision_race_keeps_latest_durable_checkpoint(
+        self,
+    ) -> None:
+        report, _harness = self._run(
+            [
+                "query",
+                "advance",
+                "advance",
+                "advance",
+                "opaque_pre_submission_revision_mismatch",
+            ],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(len(report["checkpoints"]), 1)
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["stage"], "opaque_auto_turn")
+        self.assertEqual(
+            blocker["selected_step"],
+            "query-war-entry-assessments-v1-1-29097",
+        )
+        self.assertEqual(
+            blocker["error_type"], "PreSubmissionRevisionMismatchError"
+        )
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(
+            blocker["last_durable_checkpoint"], report["checkpoints"][-1]
+        )
+
+    def test_pre_submission_revision_race_refreshes_before_and_replans(self) -> None:
+        report, harness = self._run(["revision_race_then_query"])
+
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertIsNone(report["error"])
+        self.assertEqual(report["auto_run"]["successful_turns"], 1)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["class"], "query")
+        self.assertEqual(turn["pre_submission_revision_replans"], 1)
+        self.assertEqual(turn["selected_step"], "query-declarable-wars")
+        self.assertEqual(turn["evidence"], ["same_frame_query"])
+        self.assertEqual(turn["before"]["revision"], 102)
+        self.assertEqual(turn["after"]["revision"], 102)
+        self.assertEqual(
+            [event for event in harness.events if event.startswith("auto_turn:")],
+            ["auto_turn:revision_race_then_query", "auto_turn:query"],
+        )
+
     def test_opaque_postcondition_failure_preserves_partial_step_result(
         self,
     ) -> None:
@@ -1562,9 +1643,11 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             result["contact_refresh"]["status"], "fresh_snapshot_observed"
         )
-        self.assertTrue(blocker["checkpoint_recovery_invalidated"])
-        self.assertFalse(blocker["recoverable_from_checkpoint"])
-        self.assertIsNone(blocker["last_durable_checkpoint"])
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(
+            blocker["last_durable_checkpoint"], report["fixed_seed"]
+        )
 
     def test_compact_failure_context_preserves_pending_interaction_identity(self) -> None:
         context = native_auto_run_module._active_context_summary(

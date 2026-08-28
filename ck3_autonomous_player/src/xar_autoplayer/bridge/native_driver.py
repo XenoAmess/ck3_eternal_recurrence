@@ -29,6 +29,7 @@ from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
     HybridGameplayDriver,
+    PreSubmissionRevisionMismatchError,
     StepPostconditionError,
     UnsupportedStepError,
 )
@@ -2413,7 +2414,7 @@ class NativeHeadlessGameplayDriver:
                 _validate_revision(expected_revision, "expected_revision")
                 current_revision = int(life_advance_starting["revision"])
                 if expected_revision != current_revision:
-                    raise BridgeUnavailableError(
+                    raise PreSubmissionRevisionMismatchError(
                         f"native {step} revision mismatch: "
                         f"expected {expected_revision}, current "
                         f"{current_revision}"
@@ -3912,7 +3913,7 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != revision:
-                raise BridgeUnavailableError(
+                raise PreSubmissionRevisionMismatchError(
                     "native gameplay revision mismatch: "
                     f"expected {expected_revision}, current {revision}"
                 )
@@ -7891,7 +7892,7 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != starting_revision:
-                raise BridgeUnavailableError(
+                raise PreSubmissionRevisionMismatchError(
                     "native gameplay revision mismatch: "
                     f"expected {expected_revision}, current {starting_revision}"
                 )
@@ -8059,7 +8060,7 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != starting_revision:
-                raise BridgeUnavailableError(
+                raise PreSubmissionRevisionMismatchError(
                     "native gameplay revision mismatch: "
                     f"expected {expected_revision}, current {starting_revision}"
                 )
@@ -8202,7 +8203,7 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != snapshot["revision"]:
-                raise BridgeUnavailableError(
+                raise PreSubmissionRevisionMismatchError(
                     "native gameplay revision mismatch: "
                     f"expected {expected_revision}, current {snapshot['revision']}"
                 )
@@ -8619,7 +8620,7 @@ class NativeHeadlessGameplayDriver:
             )
         _validate_revision(expected_revision, "expected_revision")
         if expected_revision != starting_revision:
-            raise BridgeUnavailableError(
+            raise PreSubmissionRevisionMismatchError(
                 "route-contact one-day advance revision mismatch: "
                 f"expected {expected_revision}, current {starting_revision}"
             )
@@ -8846,7 +8847,7 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != starting_revision:
-                raise BridgeUnavailableError(
+                raise PreSubmissionRevisionMismatchError(
                     f"native {step} revision mismatch: expected "
                     f"{expected_revision}, current {starting_revision}"
                 )
@@ -9106,7 +9107,7 @@ class NativeHeadlessGameplayDriver:
                 and expected_revision != starting_revision
             ):
                 if exact_one_day or starting.get("paused") is True:
-                    raise BridgeUnavailableError(
+                    raise PreSubmissionRevisionMismatchError(
                         "native life-advance revision mismatch: "
                         f"expected {expected_revision}, current "
                         f"{starting_revision}"
