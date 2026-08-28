@@ -1473,3 +1473,22 @@ ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一�
 完整 v2/campaign 替换口仍是：逐人 actual resources、truce、PoW/hostage、resolved title/vassal operations、finance、双方可动员
 兵力与补员、encounter distribution、围城/增援 ETA、人格/文化/其它战争等原生输入，再比较 continue/white peace/surrender 的
 风险调整效用。本最小包只提供 deterministic blocker removal；production outcome 必须回写本专题用于后续校准。
+
+## 2026-08-28 primary-defender B1：context 极性先于 terms / forecast
+
+- [production-blocker-live] run `20260828T053149Z-one-generation-9ace0939` 在 WarID `100663382`、
+  `naval_expansion_cb`、玩家 `29829` 为 primary defender、day `0`、score `0` 的暂停帧完成两次 termination query；
+  report SHA-256 `433A661EABBE554626A6936D0711012C711CFD87E36AC7E78BC882FB2B7D82C5`，blocker SHA-256
+  `1C74C447EC1982BE80CD026EE3CAD62F92A3828C01C4B77720F9E5960BEEF24A`。
+- [static-confirmed] 本文上面已经闭合 `0xC569F0` 的参数是 `player_victory`，不是 absolute attacker result；
+  所以 surrender 必须恒传 `false`，victory 必须恒传 `true`，玩家 side 的反转由函数内部完成。
+- [static-confirmed] source `88dba0a` 却按 side 传
+  `surrender=!player_is_attacker`、`victory=player_is_attacker`。玩家为 defender 时，两行 context 因而互换。
+- [production-blocker-live] 该帧 JSON `victory` 的 validator=true、raw=`-99`、auto=true、final accept=true，
+  正是“defender 提交 player defeat / attacker victory，AI primary attacker auto-accept”的 fingerprint；JSON
+  `surrender` 的 validator=false、raw=`-99`、auto=false则是 player victory / attacker defeat context。white peace
+  使用独立 index `3`，不受该互换影响。
+- [counter-policy input] 修正极性并增加 score-0 primary-defender golden 以前，这两行是 invalid machine input；
+  不得先用 dynamic terms 或 campaign forecast 包装错误 label。普通新防守战的继续作战也不消费这些完整退出输入；
+  集结、stance、共同 wargoal 与最小 continuation 树见
+  [primary-defensive-war-response.md](primary-defensive-war-response.md)。
