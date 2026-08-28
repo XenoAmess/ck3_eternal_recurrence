@@ -198,6 +198,17 @@ flowchart TD
     O["[static-confirmed] native preliminary top 10<br/>then final pathfinding"] -->|"[inference] bounded-final-evaluation precedent;<br/>not claimed as identical ranking"| P
 ```
 
+### 2026-08-28 production 反例：全局战分骤降不等于当前省战败
+
+- [production-live] 同一正式长跑在 history `5739` 的 `53263584 → 53263632` 切片中，战争
+  `33554565` 的玩家相对战分由 `50` 降至 `16`；玩家军 `201326874` 始终为 `regular@2635`，且当前省
+  `local_enemy_ids=[]`。旧 `_recent_war_tactics` 只看战分降幅达到 `20`，仍把 Province `2635` 记入 90 日
+  defeat cooldown，导致下一轮错误拒绝当前目标。该切片只证明远处 occupation / objective 等全局分项可以改变战分，
+  不证明玩家军在 `2635` 发生本地接触或战败。
+- [counter-policy / static-ready] 战分骤降仍可作为本地战败的辅助信号，但只有同一 before-frame 的玩家当前省存在
+  至少一支 generation-valid、非撤退 hostile army 时，才把该敌军与当前省绑定到 collision cooldown。若本地敌军集合为空，
+  战分变化只更新全局战争判断，不得制造当前省/当前 objective 的本地禁区；真实同省敌军加战分骤降仍保持原 90 日冷却。
+
 ### 敌军目标 power 曲线
 
 - [static-confirmed] `IDEAL_ENEMY_POWER_TO_TARGET=0.5`，因此

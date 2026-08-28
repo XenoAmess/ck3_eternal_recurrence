@@ -10,6 +10,7 @@ from .bridge.event_contract import (
     choose_event_option_number,
     event_option_step,
     normalize_active_event,
+    parse_event_option_step,
 )
 from .bridge.declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
@@ -71,6 +72,7 @@ from .bridge.war_contract import (
     parse_committed_route_sentinel_advance_step,
     parse_move_army_step,
     parse_preview_move_army_step,
+    parse_query_war_termination_options_step,
     parse_query_route_contact_horizon_step,
     parse_split_army_half_step,
     parse_start_assault_step,
@@ -84,6 +86,8 @@ from .bridge.war_contract import (
     stop_assault_step,
     unavoidable_current_province_contact_in_horizon,
     war_objective_province_ids,
+    war_termination_active_war_signature,
+    war_termination_negative_query_signature,
 )
 from .environment import write_json_atomic
 from .errors import AgentError
@@ -107,6 +111,7 @@ _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
+_NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
     "committed-route-sentinel-advance"
@@ -3038,17 +3043,12 @@ def _same_frame_termination_row(
     )
 
 
-def _claim_cb_white_peace_base_ready(
-    snapshot: dict[str, object],
+def _claim_cb_white_peace_candidate(
     war: dict[str, object],
     options: object,
 ) -> bool:
-    war_id = war.get("war_id")
-    if not isinstance(war_id, int) or isinstance(war_id, bool):
+    if not isinstance(options, dict):
         return False
-    if not _same_frame_termination_row(snapshot, options, war_id):
-        return False
-    assert isinstance(options, dict)
     score = war.get("player_relative_war_score")
     duration = options.get("war_duration_days")
     casus_belli = options.get("active_casus_belli_identity")
@@ -3064,8 +3064,7 @@ def _claim_cb_white_peace_base_ready(
         else None
     )
     return bool(
-        snapshot.get("paused") is True
-        and war.get("player_side") == "attacker"
+        war.get("player_side") == "attacker"
         and war.get("player_is_primary_war_leader") is True
         and options.get("player_side") == "attacker"
         and options.get("player_is_primary_war_leader") is True
@@ -3090,6 +3089,192 @@ def _claim_cb_white_peace_base_ready(
         and response.get("status") == "available"
         and response.get("would_accept_now") is True
     )
+
+
+def _claim_cb_white_peace_base_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    war_id = war.get("war_id")
+    return bool(
+        isinstance(war_id, int)
+        and not isinstance(war_id, bool)
+        and snapshot.get("paused") is True
+        and _same_frame_termination_row(snapshot, options, war_id)
+        and _claim_cb_white_peace_candidate(war, options)
+    )
+
+
+def _claim_cb_white_peace_duration_gate_raw(
+    war: dict[str, object], options: object
+) -> int | None:
+    """Return time until the known 365-day claim_cb legality boundary."""
+    if not isinstance(options, dict):
+        return None
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 <= score < 100
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and 0 <= duration < 365
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == "claim_cb"
+        and options.get("cb_allows_white_peace") is True
+    ):
+        return None
+    return max(1, 365 - duration) * 24
+
+
+def _termination_negative_reuse_barrier(step: str | None) -> bool:
+    return bool(
+        parse_event_option_step(step) is not None
+        or step
+        in {
+            "resolve-current-event",
+            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+            QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
+            ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
+            _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP,
+            _REJECT_PENDING_CHARACTER_INTERACTION_STEP,
+            _BLOCK_PENDING_CHARACTER_INTERACTION_STEP,
+            "death-terminal",
+            "start-next-episode",
+        }
+    )
+
+
+def _negative_war_termination_reuse(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    war: dict[str, object],
+) -> dict[str, object] | None:
+    """Reuse only a proven negative query classification for under 7 days."""
+    if (
+        snapshot.get("paused") is not True
+        or snapshot.get("one_life_terminal_reason") is not None
+        or isinstance(snapshot.get("active_event"), dict)
+        or isinstance(snapshot.get("pending_character_interaction"), dict)
+    ):
+        return None
+    played_character = snapshot.get("played_character")
+    if not (
+        isinstance(played_character, dict)
+        and played_character.get("alive") is True
+    ):
+        return None
+    current_character_id = _native_int(
+        played_character.get("character_id")
+    )
+    current_date_raw = _native_int(snapshot.get("date_raw"))
+    current_episode_run_id = snapshot.get("episode_run_id")
+    diagnostics = snapshot.get("diagnostics")
+    current_connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    active_war_signature = war_termination_active_war_signature(active_wars)
+    war_id = _native_int(war.get("war_id"))
+    if (
+        current_character_id is None
+        or current_date_raw is None
+        or not isinstance(current_episode_run_id, str)
+        or not current_episode_run_id
+        or current_connection_generation is None
+        or active_war_signature is None
+        or war_id is None
+    ):
+        return None
+
+    for row in reversed(_history_after_latest_restore(commands)):
+        step = _effective_command(row)
+        if _termination_negative_reuse_barrier(step):
+            return None
+        queried_war_id = parse_query_war_termination_options_step(step)
+        if queried_war_id != war_id:
+            continue
+        if row.get("ok") is not True:
+            return None
+        result = _effective_command_result(row)
+        context = (
+            result.get("termination_query_context")
+            if isinstance(result, dict)
+            else None
+        )
+        options = (
+            result.get("war_termination_options")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(result, dict)
+            and result.get("step") == step
+            and result.get("accepted") is True
+            and result.get("status") == "available"
+            and isinstance(context, dict)
+            and context.get("schema_version") == 1
+            and context.get("active_war_signature")
+            == active_war_signature
+            and context.get("queried_episode_run_id")
+            == current_episode_run_id
+            and context.get("queried_connection_generation")
+            == current_connection_generation
+            and context.get("queried_character_id")
+            == current_character_id
+        ):
+            return None
+        queried_date_raw = _native_int(context.get("queried_date_raw"))
+        query_signature = war_termination_negative_query_signature(options)
+        if (
+            queried_date_raw is None
+            or query_signature is None
+            or context.get("negative_decision_signature")
+            != query_signature
+            or query_signature.get("war_id") != war_id
+            or context.get("queried_war_duration_days")
+            != (
+                options.get("war_duration_days")
+                if isinstance(options, dict)
+                else None
+            )
+        ):
+            return None
+        elapsed_raw = current_date_raw - queried_date_raw
+        lease_raw = _NEGATIVE_WAR_TERMINATION_REUSE_RAW
+        duration_gate_raw = _claim_cb_white_peace_duration_gate_raw(
+            war, options
+        )
+        if duration_gate_raw is not None:
+            lease_raw = min(lease_raw, duration_gate_raw)
+        if not 0 <= elapsed_raw < lease_raw:
+            return None
+        # Positive candidates are always current-frame-only.  In particular,
+        # never turn a historical options row into a terms query or action.
+        if _claim_cb_white_peace_candidate(war, options):
+            return None
+        return {
+            "status": "negative_assessment_reused",
+            "war_id": war_id,
+            "queried_date_raw": queried_date_raw,
+            "age_raw": elapsed_raw,
+            "age_game_days": elapsed_raw // 24,
+            "expires_date_raw": queried_date_raw + lease_raw,
+            "query_sequence": result.get("query_sequence"),
+        }
+    return None
 
 
 def _claim_cb_white_peace_terms_ready(
@@ -4270,6 +4455,28 @@ def choose_one_life_turn(
                 continue
             options = termination_by_war_id.get(war_id)
             if not isinstance(options, dict):
+                negative_reuse = _negative_war_termination_reuse(
+                    rows,
+                    snapshot,
+                    active_wars=active_wars,
+                    war=war,
+                )
+                if isinstance(negative_reuse, dict):
+                    summary = next(
+                        (
+                            row
+                            for row in war_summary
+                            if row.get("war_id") == war_id
+                        ),
+                        None,
+                    )
+                    if isinstance(summary, dict):
+                        # This is lease provenance only.  Historical option
+                        # payloads never re-enter the current war summary.
+                        summary["war_termination_negative_reuse"] = dict(
+                            negative_reuse
+                        )
+                    continue
                 query_step = query_war_termination_options_step(war_id)
                 if query_step in available_steps:
                     return {
@@ -5013,6 +5220,7 @@ def choose_one_life_turn(
                 }
             if (
                 battle_speed_gates["decision_sentinel_live_ready"]
+                and not active_assaults
                 and sentinel_watch_ready
                 and _BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
                 and start_date_raw is not None
@@ -9441,6 +9649,7 @@ def _recent_war_tactics(
             if isinstance(enemy, dict)
             and _native_int(enemy.get("army_id")) is not None
             and enemy.get("current_province_id") == province
+            and _army_tactical_state(enemy) != "retreating"
         }
         after_enemies = after_war.get("enemy_armies") if after_war else None
         after_enemy_ids = {
@@ -9499,6 +9708,7 @@ def _recent_war_tactics(
             before_score is not None
             and after_score is not None
             and before_score - after_score >= _NATIVE_DEFEAT_SCORE_DROP
+            and local_enemy_ids
         ):
             block(local_enemy_ids, province, after_date)
 

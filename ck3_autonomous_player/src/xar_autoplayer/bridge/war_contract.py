@@ -211,6 +211,145 @@ def normalize_active_wars(value: object) -> list[dict[str, object]]:
     return result
 
 
+def war_termination_active_war_signature(
+    value: object,
+) -> list[dict[str, object]] | None:
+    """Return stable planner inputs for a bounded negative-query lease.
+
+    The signature deliberately excludes daily tactical state and any duration
+    counter: those values advance while the seven-day lease is useful.  A
+    full-generation WarID binds the active CB for the lifetime of that war;
+    the CB itself is recorded separately in the query signature below.
+    """
+    if not isinstance(value, list):
+        return None
+    signature: list[dict[str, object]] = []
+    for war in value:
+        if not isinstance(war, dict):
+            return None
+        war_id = war.get("war_id")
+        score = war.get("player_relative_war_score")
+        player_side = war.get("player_side")
+        is_primary = war.get("player_is_primary_war_leader")
+        opponent_id = war.get("primary_opponent_character_id")
+        target_ids = war.get("targeted_title_ids")
+        if (
+            isinstance(war_id, bool)
+            or not isinstance(war_id, int)
+            or war_id <= 0
+            or isinstance(score, bool)
+            or not isinstance(score, int)
+            or player_side not in {"attacker", "defender"}
+            or (
+                is_primary is not None
+                and not isinstance(is_primary, bool)
+            )
+            or (
+                opponent_id is not None
+                and (
+                    isinstance(opponent_id, bool)
+                    or not isinstance(opponent_id, int)
+                    or opponent_id < 0
+                )
+            )
+            or not isinstance(target_ids, list)
+            or any(
+                isinstance(target_id, bool)
+                or not isinstance(target_id, int)
+                or target_id < 0
+                for target_id in target_ids
+            )
+        ):
+            return None
+        signature.append(
+            {
+                "war_id": war_id,
+                "player_side": player_side,
+                "player_is_primary_war_leader": is_primary,
+                "primary_opponent_character_id": opponent_id,
+                "player_relative_war_score": score,
+                "targeted_title_ids": list(target_ids),
+            }
+        )
+    return sorted(signature, key=lambda row: int(row["war_id"]))
+
+
+def war_termination_negative_query_signature(
+    options: object,
+) -> dict[str, object] | None:
+    """Canonicalize the exact inputs used to classify a negative query.
+
+    ``war_duration_days`` is provenance rather than an equality key.  The
+    seven-day expiry bounds all date-dependent legality, while including a
+    monotonically increasing duration here would defeat reuse after one day.
+    """
+    if not isinstance(options, dict):
+        return None
+    option_rows = options.get("options")
+    if not isinstance(option_rows, dict):
+        return None
+    option_signature: dict[str, object] = {}
+    for name in ("surrender", "white_peace", "victory"):
+        option = option_rows.get(name)
+        response = (
+            option.get("recipient_response")
+            if isinstance(option, dict)
+            else None
+        )
+        if not isinstance(option, dict) or not isinstance(response, dict):
+            return None
+        option_signature[name] = {
+            "outcome": option.get("outcome"),
+            "hostage_variant": option.get("hostage_variant"),
+            "context_constructed": option.get("context_constructed"),
+            "native_validator_passed": option.get(
+                "native_validator_passed"
+            ),
+            "available": option.get("available"),
+            "recipient_response": {
+                "status": response.get("status"),
+                "decision_status_raw": response.get(
+                    "decision_status_raw"
+                ),
+                "would_accept_now": response.get("would_accept_now"),
+            },
+        }
+    active_cb = options.get("active_casus_belli_identity")
+    score_breakdown = options.get("war_score_breakdown")
+    if active_cb is not None and not isinstance(active_cb, dict):
+        return None
+    if score_breakdown is not None and not isinstance(score_breakdown, dict):
+        return None
+    return {
+        "war_id": options.get("war_id"),
+        "player_side": options.get("player_side"),
+        "player_is_primary_war_leader": options.get(
+            "player_is_primary_war_leader"
+        ),
+        "player_relative_war_score": options.get(
+            "player_relative_war_score"
+        ),
+        "absolute_war_scores_observable": options.get(
+            "absolute_war_scores_observable"
+        ),
+        "attacker_war_score": options.get("attacker_war_score"),
+        "defender_war_score": options.get("defender_war_score"),
+        "war_score_breakdown": (
+            dict(score_breakdown)
+            if isinstance(score_breakdown, dict)
+            else None
+        ),
+        "active_casus_belli_present": options.get(
+            "active_casus_belli_present"
+        ),
+        "active_casus_belli_identity": (
+            dict(active_cb) if isinstance(active_cb, dict) else None
+        ),
+        "cb_allows_white_peace": options.get("cb_allows_white_peace"),
+        "options": option_signature,
+    }
+
+
 def normalize_objective_province_states(
     value: object,
     *,

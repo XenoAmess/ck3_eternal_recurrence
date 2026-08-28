@@ -254,6 +254,26 @@ flowchart TD
   siege 或 termination acceptance 复核门。
 - [counter-policy] 使用滞回：只有候选结果相对当前策略超过明确安全裕量才切换，避免白和/继续反复振荡。
 
+### 2026-08-28 production 反例：负终止评估按原生 7 日节拍复用
+
+- [production-live] 正式一代长跑 `ca52af74` 在战争仍活动、终止条件没有变化时，于每个新 paused 日期重复执行
+  `query-war-termination-options-<WarID>`，随后只推进一日。查询本身没有选出退出动作，却把普通军事推进压回
+  “一日推进 → 一次 rich query”的循环；这是已发生的 G1 吞吐 blocker，不是假设性优化。
+- [static-confirmed] exact build 的普通 `UPDATE_TARGETS_TICK` 为 7 游戏日；这不能证明原生终止 interaction 也恰好
+  使用同一 timer，但为我方“没有新退出候选时最多延后 7 日复核”提供了已有运营节拍。该复用只减少重复只读查询，
+  不改变白和/投降的合法性、效用或提交门。
+- [counter-policy / static-ready] 只有 fresh termination-options 查询已经得出“本轮没有可选择退出动作”时，才记录
+  一个最长 7 游戏日的负评估。键至少包含完整 active-war set、每个 full-generation `WarID`、玩家 side / primary
+  身份、玩家相对战分、active CB identity，以及当前窄规则已经消费的白和许可、context/validator、hostage 与 typed
+  recipient response；可见时也记录战分 breakdown。`war_duration_days` 只作查询 provenance/租约到期依据，不作逐日相等键，
+  否则它每天递增会令复用立即失效；租约通常最长 7 日，但 attacker-primary `claim_cb` 在 365 日以前查询时，必须把到期日
+  clamp 到“查询日 + 距第 365 日的剩余天数”，两者取较早值，到达该已知合法性门当天 fresh 重查。活动战争集合、任一稳定键
+  输入、事件、pending interaction、角色/episode/connection、死亡或 terminal 状态一旦变化立即失效；第 7 日边界同样必须
+  fresh 重查。
+- [counter-policy / static-ready] 复用的唯一效果是跳过本轮 termination rich query 并继续普通军事 OODA。旧 options
+  不投影进当前 war summary，也不得用于查询 terms、广告或执行白和/投降；任何曾经出现正的 actionable candidate 的结果
+  都不进入负缓存。这样 stale positive 永远不能授权写动作。
+
 ## 当前战争的结论
 
 - [live-confirmed] 当前玩家是本战争的进攻方，`player_is_primary_war_leader=true`；2026-08-25 的 paused typed query

@@ -9224,6 +9224,38 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "query-war-termination-options-16777290",
         )
         self.assertEqual(queried["query_sequence"], 9)
+        query_context = queried["termination_query_context"]
+        self.assertEqual(query_context["schema_version"], 1)
+        self.assertEqual(query_context["queried_date_raw"], 53_171_400)
+        self.assertEqual(query_context["queried_character_id"], 707)
+        self.assertEqual(
+            query_context["queried_episode_run_id"],
+            queried["queried_episode_run_id"],
+        )
+        self.assertEqual(
+            query_context["queried_connection_generation"],
+            queried["queried_connection_generation"],
+        )
+        self.assertEqual(
+            query_context["active_war_signature"],
+            [
+                {
+                    "war_id": war_id,
+                    "player_side": "attacker",
+                    "player_is_primary_war_leader": True,
+                    "primary_opponent_character_id": 808,
+                    "player_relative_war_score": 41,
+                    "targeted_title_ids": [],
+                }
+            ],
+        )
+        self.assertEqual(
+            query_context["negative_decision_signature"][
+                "active_casus_belli_identity"
+            ],
+            {"database_index": 0, "canonical_key": "claim_cb"},
+        )
+        self.assertEqual(query_context["queried_war_duration_days"], 203)
         self.assertFalse(
             queried["war_termination_options"]["options"]["surrender"][
                 "terms_observable"

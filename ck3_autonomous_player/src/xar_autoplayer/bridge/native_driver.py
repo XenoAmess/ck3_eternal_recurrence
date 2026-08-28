@@ -237,6 +237,8 @@ from .war_contract import (
     stop_assault_step,
     unavoidable_current_province_contact_in_horizon,
     war_objective_province_ids,
+    war_termination_active_war_signature,
+    war_termination_negative_query_signature,
 )
 
 
@@ -7756,6 +7758,42 @@ class NativeHeadlessGameplayDriver:
                 "connection_generation": connection_generation,
                 "episode_run_id": starting.get("episode_run_id"),
             }
+            active_war_signature = war_termination_active_war_signature(
+                starting.get("active_wars")
+            )
+            negative_decision_signature = (
+                war_termination_negative_query_signature(options)
+            )
+            played_character = starting.get("played_character")
+            queried_character_id = (
+                played_character.get("character_id")
+                if isinstance(played_character, dict)
+                else None
+            )
+            if (
+                active_war_signature is None
+                or negative_decision_signature is None
+            ):
+                raise BridgeUnavailableError(
+                    "native war-termination query lacks a reusable exact "
+                    "decision signature"
+                )
+            termination_query_context = {
+                "schema_version": 1,
+                "queried_date_raw": starting.get("date_raw"),
+                "queried_connection_generation": connection_generation,
+                "queried_episode_run_id": starting.get("episode_run_id"),
+                "queried_character_id": queried_character_id,
+                "active_war_signature": active_war_signature,
+                "negative_decision_signature": (
+                    negative_decision_signature
+                ),
+                # Duration is provenance only.  It must not invalidate a
+                # seven-day lease merely because one game day elapsed.
+                "queried_war_duration_days": options.get(
+                    "war_duration_days"
+                ),
+            }
             with self._driver_state_lock:
                 self._war_termination_options[war_id] = {
                     "options": copy.deepcopy(options),
@@ -7769,6 +7807,9 @@ class NativeHeadlessGameplayDriver:
                 "queried_snapshot_id": starting.get("snapshot_id"),
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": starting.get("native_revision"),
+                "queried_connection_generation": connection_generation,
+                "queried_episode_run_id": starting.get("episode_run_id"),
+                "termination_query_context": termination_query_context,
             }
 
         option_name = (

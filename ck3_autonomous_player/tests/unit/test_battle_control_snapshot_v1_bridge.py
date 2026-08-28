@@ -1559,6 +1559,82 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertNotIn("phase", plan["reason"])
         self.assertNotIn("winner", plan["reason"])
 
+    def test_active_assault_disables_ordinary_battle_decision_sentinel(self) -> None:
+        frame = _battle_frame()
+        snapshot = _planner_battle_snapshot(frame=frame)
+        assaulting = {
+            "army_id": 117_440_751,
+            "owner_character_id": 29_829,
+            "soldiers": 650,
+            "current_province_id": 2600,
+            "move_target_province_id": None,
+            "controllable": True,
+            "in_combat": False,
+            "retreating": False,
+            "army_state": "sieging",
+            "army_state_code": 3,
+            "route_province_ids": [],
+        }
+        snapshot["player_armies"].append(assaulting)
+        snapshot["active_wars"][0]["allied_armies"].append(assaulting)
+        snapshot["active_wars"][0]["war_objective_province_ids"] = [2600]
+        snapshot["active_wars"][0]["objective_province_states"] = [
+            {
+                "province_id": 2600,
+                "occupation_observable": True,
+                "is_occupied": False,
+                "occupying_character_id": None,
+                "fort_level": 2,
+                "garrison_size": 500,
+                "besieging_strength": 650,
+                "siege_observable": True,
+                "active_siege": {
+                    "siege_id": 901,
+                    "besieging_army_id": 117_440_751,
+                    "player_army_besieging": True,
+                    "progress_fraction": {"raw": 25_000, "scale": 100_000},
+                    "current_work": {"raw": 2_500_000, "scale": 100_000},
+                    "total_work": {"raw": 10_000_000, "scale": 100_000},
+                    "remaining_work": {"raw": 7_500_000, "scale": 100_000},
+                    "days_left": 12,
+                    "assault_observable": True,
+                    "breach_level": 1,
+                    "assault_in_progress": True,
+                    "can_start_assault": False,
+                    "can_stop_assault": True,
+                    "assault_daily_progress": {
+                        "raw": 340_000,
+                        "scale": 100_000,
+                    },
+                    "assault_daily_casualties": 16,
+                },
+            }
+        ]
+        snapshot["war_objective_garrison_supported"] = True
+        snapshot["war_objective_siege_progress_supported"] = True
+        snapshot["war_objective_assault_supported"] = True
+        sentinel_step = battle_decision_epoch_advance_step(
+            DATE_RAW + 45 * 24
+        )
+
+        plan = choose_one_life_turn(
+            [_battle_query_row(1, frame)],
+            snapshot=snapshot,
+            action_steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True
+            },
+        )
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertNotEqual(plan["selected_step"], sentinel_step)
+        self.assertEqual(
+            plan["phase"], "native_war_global_battle_control_progress"
+        )
+
     def test_decision_epoch_targets_earliest_exact_retreat_gate(self) -> None:
         first = _battle_frame()
         first["side_flags"]["allow_early_retreat"] = False

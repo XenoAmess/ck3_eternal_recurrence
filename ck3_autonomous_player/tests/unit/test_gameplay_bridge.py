@@ -42,11 +42,16 @@ from xar_autoplayer.bridge.war_contract import (
     committed_route_sentinel_advance_step,
     normalize_active_wars,
     query_route_contact_horizon_step,
+    query_war_termination_options_step,
     war_objective_province_ids,
+    war_termination_active_war_signature,
+    war_termination_negative_query_signature,
 )
 from xar_autoplayer.strategy import (
     _audit_war_route,
     _enemy_endpoint_epochs,
+    _negative_war_termination_reuse,
+    _recent_war_tactics,
     choose_one_life_turn,
     record_one_life_episode,
 )
@@ -677,6 +682,117 @@ def _ready_white_peace_snapshot(
         else []
     )
     return snapshot
+
+
+def _termination_reuse_snapshot(
+    *,
+    date_raw: int = 53_177_976,
+    wars: list[dict[str, object]] | None = None,
+    history: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
+    player = _army(
+        11,
+        soldiers=900,
+        province_id=20,
+        controllable=True,
+        move_target_province_id=77,
+        army_state="moving",
+        route_province_ids=[77],
+    )
+    active_wars = wars or [
+        _war(
+            war_id=88,
+            allied_armies=[player],
+            enemy_armies=[],
+            score=17,
+            war_objective_province_ids=[77],
+            targeted_title_ids=[2_388],
+        )
+    ]
+    return {
+        **_snapshot(12),
+        "paused": True,
+        "map_ready": True,
+        "native_revision": 12,
+        "date_raw": date_raw,
+        "episode_run_id": "native-29829-reuse",
+        "diagnostics": {"connection_generation": 3},
+        "played_character": {"character_id": 29_829, "alive": True},
+        "active_wars": active_wars,
+        "player_armies": [player],
+        "army_routes_supported": True,
+        "move_route_preview_supported": True,
+        "route_contact_horizon_supported": False,
+        "war_termination_options": [],
+        "native_command_history": history or [],
+    }
+
+
+def _termination_query_row(
+    index: int,
+    snapshot: dict[str, object],
+    *,
+    war_id: int = 88,
+    options: dict[str, object] | None = None,
+    decorated: bool = False,
+) -> dict[str, object]:
+    query_options = copy.deepcopy(
+        options if options is not None else _termination_options(war_id)
+    )
+    active_signature = war_termination_active_war_signature(
+        snapshot["active_wars"]
+    )
+    decision_signature = war_termination_negative_query_signature(
+        query_options
+    )
+    assert active_signature is not None
+    assert decision_signature is not None
+    step = query_war_termination_options_step(war_id)
+    result: dict[str, object] = {
+        "step": step,
+        "accepted": True,
+        "status": "available",
+        "query_sequence": index,
+        "war_termination_options": query_options,
+        "queried_snapshot_id": snapshot["snapshot_id"],
+        "queried_revision": snapshot["revision"],
+        "queried_native_revision": snapshot["native_revision"],
+        "queried_connection_generation": snapshot["diagnostics"][
+            "connection_generation"
+        ],
+        "queried_episode_run_id": snapshot["episode_run_id"],
+        "termination_query_context": {
+            "schema_version": 1,
+            "queried_date_raw": snapshot["date_raw"],
+            "queried_connection_generation": snapshot["diagnostics"][
+                "connection_generation"
+            ],
+            "queried_episode_run_id": snapshot["episode_run_id"],
+            "queried_character_id": snapshot["played_character"][
+                "character_id"
+            ],
+            "active_war_signature": active_signature,
+            "negative_decision_signature": decision_signature,
+            "queried_war_duration_days": query_options[
+                "war_duration_days"
+            ],
+        },
+    }
+    command = step
+    if decorated:
+        command = "auto-turn"
+        result.update(
+            {
+                "requested_step": "auto-turn",
+                "auto_turn": {"selected_step": step},
+            }
+        )
+    return {
+        "index": index,
+        "command": command,
+        "ok": True,
+        "result": result,
+    }
 
 
 def _termination_exit_terms_v2() -> dict[str, object]:
@@ -7655,6 +7771,62 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "move-army-11-to-77")
         self.assertEqual(plan["pursuit"]["objective_kind"], "siege")
 
+    def test_global_score_drop_needs_local_nonretreating_enemy_to_block(self) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2635,
+            controllable=True,
+            army_state="regular",
+        )
+        local_enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2635,
+            controllable=False,
+            army_state="regular",
+        )
+        retreating_enemy = {
+            **local_enemy,
+            "army_state": "retreating",
+            "army_state_code": 6,
+            "retreating": True,
+        }
+
+        for label, enemies, expected_blocked in (
+            ("remote_score_change", [], False),
+            ("local_contact", [local_enemy], True),
+            ("retreating_local", [retreating_enemy], False),
+        ):
+            with self.subTest(label=label):
+                before = _war_progress(
+                    53_263_584,
+                    player=player,
+                    enemies=enemies,
+                    score=50,
+                )
+                after = _war_progress(
+                    53_263_632,
+                    player=player,
+                    enemies=enemies,
+                    score=16,
+                )
+                tactics = _recent_war_tactics(
+                    [_advance_row(1, before, after)],
+                    {"date_raw": 53_263_632},
+                    army_id=11,
+                    war_id=88,
+                )
+
+                self.assertEqual(
+                    2635 in tactics["blocked_province_ids"],
+                    expected_blocked,
+                )
+                self.assertEqual(
+                    21 in tactics["blocked_enemy_ids"],
+                    expected_blocked,
+                )
+
     def test_large_war_score_defeat_blacklists_collision_for_ninety_days(self) -> None:
         player = _army(11, soldiers=900, province_id=41, controllable=True)
         enemy = _army(21, soldiers=800, province_id=41, controllable=False)
@@ -8131,6 +8303,285 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             plan["selected_step"], "query-war-termination-options-88"
         )
+
+    def test_negative_termination_query_is_reused_for_less_than_seven_days(
+        self,
+    ) -> None:
+        queried = _termination_reuse_snapshot()
+        history = [_termination_query_row(1, queried, decorated=True)]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=history,
+        )
+        current["active_wars"][0]["war_duration_days"] = 204
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=current,
+            action_steps=(
+                "query-war-termination-options-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertNotEqual(
+            plan.get("selected_step"),
+            "query-war-termination-options-88",
+        )
+        reuse = plan["active_wars"][0][
+            "war_termination_negative_reuse"
+        ]
+        self.assertEqual(reuse["status"], "negative_assessment_reused")
+        self.assertEqual(reuse["age_game_days"], 1)
+        self.assertNotIn(
+            "war_termination_options", plan["active_wars"][0]
+        )
+
+    def test_negative_termination_query_requeries_on_day_seven(self) -> None:
+        queried = _termination_reuse_snapshot()
+        history = [_termination_query_row(1, queried)]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 7 * 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=history,
+        )
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=current,
+            action_steps=(
+                "query-war-termination-options-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_termination_query")
+        self.assertEqual(
+            plan["selected_step"], "query-war-termination-options-88"
+        )
+
+    def test_claim_cb_negative_lease_clamps_to_day_365_gate(self) -> None:
+        steps = ("query-war-termination-options-88", "life-advance")
+        for queried_duration, elapsed_days, expected_query in (
+            (364, 1, True),
+            (363, 1, False),
+            (363, 2, True),
+        ):
+            with self.subTest(
+                queried_duration=queried_duration,
+                elapsed_days=elapsed_days,
+            ):
+                queried = _termination_reuse_snapshot()
+                queried["active_wars"][0][
+                    "player_relative_war_score"
+                ] = 37
+                options = _termination_options(
+                    score=37,
+                    claim_cb_ready=True,
+                    war_duration_days=queried_duration,
+                )
+                history = [
+                    _termination_query_row(1, queried, options=options)
+                ]
+                current = _termination_reuse_snapshot(
+                    date_raw=(
+                        int(queried["date_raw"]) + elapsed_days * 24
+                    ),
+                    wars=copy.deepcopy(queried["active_wars"]),
+                    history=history,
+                )
+                current["active_wars"][0]["war_duration_days"] = (
+                    queried_duration + elapsed_days
+                )
+
+                plan = choose_one_life_turn(
+                    history, snapshot=current, action_steps=steps
+                )
+
+                self.assertEqual(
+                    plan.get("selected_step")
+                    == "query-war-termination-options-88",
+                    expected_query,
+                )
+                if not expected_query:
+                    self.assertEqual(
+                        plan["active_wars"][0][
+                            "war_termination_negative_reuse"
+                        ]["expires_date_raw"],
+                        int(queried["date_raw"]) + 2 * 24,
+                    )
+
+    def test_negative_termination_reuse_invalidates_every_bound_epoch(
+        self,
+    ) -> None:
+        queried = _termination_reuse_snapshot()
+        base_row = _termination_query_row(1, queried)
+
+        def current() -> dict[str, object]:
+            return _termination_reuse_snapshot(
+                date_raw=int(queried["date_raw"]) + 24,
+                wars=copy.deepcopy(queried["active_wars"]),
+                history=[copy.deepcopy(base_row)],
+            )
+
+        cases: list[tuple[str, dict[str, object], list[dict[str, object]]]] = []
+        score_changed = current()
+        score_changed["active_wars"][0]["player_relative_war_score"] = 18
+        cases.append(("score", score_changed, [copy.deepcopy(base_row)]))
+        side_changed = current()
+        side_changed["active_wars"][0]["player_side"] = "defender"
+        cases.append(("side", side_changed, [copy.deepcopy(base_row)]))
+        role_changed = current()
+        role_changed["active_wars"][0][
+            "player_is_primary_war_leader"
+        ] = False
+        cases.append(("primary_role", role_changed, [copy.deepcopy(base_row)]))
+        cb_changed = current()
+        cb_rows = [copy.deepcopy(base_row)]
+        cb_rows[0]["result"]["war_termination_options"][
+            "active_casus_belli_identity"
+        ] = {"database_index": 22, "canonical_key": "holy_war_cb"}
+        cases.append(("cb_identity", cb_changed, cb_rows))
+        option_changed = current()
+        option_rows = [copy.deepcopy(base_row)]
+        option_rows[0]["result"]["war_termination_options"]["options"][
+            "white_peace"
+        ]["recipient_response"]["would_accept_now"] = True
+        cases.append(("option_shape", option_changed, option_rows))
+        war_set_changed = current()
+        extra_war = copy.deepcopy(war_set_changed["active_wars"][0])
+        extra_war["war_id"] = 99
+        war_set_changed["active_wars"].append(extra_war)
+        cases.append(("war_set", war_set_changed, [copy.deepcopy(base_row)]))
+        episode_changed = current()
+        episode_changed["episode_run_id"] = "native-29829-other"
+        cases.append(("episode", episode_changed, [copy.deepcopy(base_row)]))
+        connection_changed = current()
+        connection_changed["diagnostics"]["connection_generation"] = 4
+        cases.append(
+            ("connection", connection_changed, [copy.deepcopy(base_row)])
+        )
+        character_changed = current()
+        character_changed["played_character"]["character_id"] = 29_830
+        cases.append(
+            ("character", character_changed, [copy.deepcopy(base_row)])
+        )
+        dead = current()
+        dead["played_character"]["alive"] = False
+        cases.append(("death", dead, [copy.deepcopy(base_row)]))
+        terminal = current()
+        terminal["one_life_terminal_reason"] = "played_character_dead"
+        cases.append(("terminal", terminal, [copy.deepcopy(base_row)]))
+        for label, command in (
+            ("event", "select-event-option-1"),
+            (
+                "pending_interaction",
+                "query-pending-character-interaction-context-v1",
+            ),
+        ):
+            snapshot = current()
+            rows = [
+                copy.deepcopy(base_row),
+                {"index": 2, "command": command, "ok": True, "result": {}},
+            ]
+            cases.append((label, snapshot, rows))
+
+        for label, snapshot, rows in cases:
+            with self.subTest(label=label):
+                reuse = _negative_war_termination_reuse(
+                    rows,
+                    snapshot,
+                    active_wars=snapshot["active_wars"],
+                    war=snapshot["active_wars"][0],
+                )
+                self.assertIsNone(reuse)
+
+    def test_negative_termination_reuse_is_independent_per_active_war(
+        self,
+    ) -> None:
+        initial = _termination_reuse_snapshot()
+        second_war = copy.deepcopy(initial["active_wars"][0])
+        second_war["war_id"] = 99
+        second_war["targeted_title_ids"] = [2_399]
+        queried = _termination_reuse_snapshot(
+            wars=[copy.deepcopy(initial["active_wars"][0]), second_war]
+        )
+        both_rows = [
+            _termination_query_row(1, queried, war_id=88),
+            _termination_query_row(
+                2, queried, war_id=99, options=_termination_options(99)
+            ),
+        ]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=both_rows,
+        )
+        steps = (
+            "query-war-termination-options-88",
+            "query-war-termination-options-99",
+            "life-advance",
+        )
+
+        all_reused = choose_one_life_turn(
+            both_rows, snapshot=current, action_steps=steps
+        )
+        self.assertNotIn(
+            all_reused.get("selected_step"),
+            {
+                "query-war-termination-options-88",
+                "query-war-termination-options-99",
+            },
+        )
+        self.assertTrue(
+            all(
+                "war_termination_negative_reuse" in war
+                for war in all_reused["active_wars"]
+            )
+        )
+
+        only_first = choose_one_life_turn(
+            both_rows[:1], snapshot=current, action_steps=steps
+        )
+        self.assertEqual(
+            only_first["selected_step"],
+            "query-war-termination-options-99",
+        )
+
+    def test_historical_positive_termination_result_only_triggers_fresh_query(
+        self,
+    ) -> None:
+        queried = _termination_reuse_snapshot()
+        queried["active_wars"][0]["player_relative_war_score"] = 37
+        positive = _termination_options(
+            score=37,
+            claim_cb_ready=True,
+            war_duration_days=436,
+        )
+        history = [_termination_query_row(1, queried, options=positive)]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=history,
+        )
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=current,
+            action_steps=(
+                "query-war-termination-options-88",
+                "query-war-termination-terms-v1-88",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_termination_query")
+        self.assertEqual(
+            plan["selected_step"], "query-war-termination-options-88"
+        )
+        self.assertNotEqual(plan["selected_step"], "offer-white-peace-88")
 
     def test_claim_cb_white_peace_planner_queries_terms_then_offers(self) -> None:
         without_terms = _ready_white_peace_snapshot(include_terms=False)
