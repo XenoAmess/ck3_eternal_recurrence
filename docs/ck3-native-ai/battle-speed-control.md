@@ -536,6 +536,37 @@ finalized/removal、native auto-pause、absolute date 与基础设施异常仍�
 这一改动不扩大 speed-5 crush 准入，也不把 phase/winner 枚举从 wire 删除。新 DLL 的 current-episode cold continuation
 已用 `15+24` 日两个 speed-3 arm 直达 terminal，且无 phase/winner-only stop；状态升为 `production-live loop`。
 
+## 2026-08-28 正式长跑暂停成本与后续零暂停合同
+
+[production-live baseline] formal run `20260828T082919Z-one-generation-ca52af74` 在 221 个游戏日内用了
+148 次 `life-advance`：其中 135 次是一日 arm（79 次 speed 1、56 次 speed 3），合计耗时 `282.959s`，占整次
+`479.335s` 的约 `59.0%`；49 个每三次 advance 的 checkpoint 间隙另占 `94.502s`。337 次 termination query
+直接墙钟只有 `8.899s`，但占成功 turn 的 `69.5%`。因此当前 P0 是把 stationary/retreat 等状态合成原生多日 tranche，
+同时减少 pause、barrier、planner/history 与 checkpoint 次数；没有证据支持继续优化 CK3 daily hook 本身。
+
+[research contract] ordinary-war sparse-pause 的后续顺序为：
+
+1. 当前 stationary objective 先用 speed 3、最长 7 日、完整 controllable CUnit watch；真实接触由 subject CombatID
+   同一原生日停表。现有 hook 不 exact-watch 新 WarID、warscore、objective/occupation 或 hostile retarget，因此 v1 必须明确
+   `maximum_omitted_state_detection_lag_days=7`，不能写成 active-war-set exact。
+2. negative termination assessment 最多复用 7 日，并在已知 `claim_cb` 第 365 日门槛提前到期；formal 基线理论下限由
+   337 次降至约 80 次，live canary 门暂定 `<=90`。历史 positive 只触发 fresh query，永不授权旧动作。
+3. 下一项低成本施工是 player retreat speed-3 hold；之后才处理多军路线 anchor/mixed tactical hold、passive siege semantic
+   sentinel 与 distinct-CombatID rich-query 去重。Assault 保持逐日，直到有真实 casualty/strength/threat native guard。
+
+[research contract] `single-admission crush-to-real-terminal speed5 v1` 只承诺一个 distinct active CombatID（允许同 CombatID
+多支玩家 CUnit）。paused admission 必须同帧绑定 canonical battle-control frame、完整玩家 CUnit watch、无 event/pending/
+Assault/passive siege，并同时满足玩家侧 `derived_current_fighting_raw >= 4x` 与 `side_strength_raw >= 4x`；该 `4x` 只是
+hold 候选分类，不冒充胜率证明。resume 后不得做 external pause、intermediate rich query 或 heartbeat 决策；native loop 继续
+watch identity/backlink、route target、CombatID、retreat、ordered roster、finalized/removal、native pause、deadline 与基础设施。
+成功只接受同 CombatID 的真实 terminal journal，要求零 external/intermediate pause、零 running rich query、零 overshoot；
+roster/join、route、retreat、reopen、native pause 或 deadline 都只产生一次 paused fresh replan，不算 crush 成功。
+
+生产准入仍缺 qualifying double-`4x` immutable checkpoint。首次出现候选时只冻结 checkpoint；随后按
+`1,2,3,4,5,5,4,3,2,1` 至少一轮镜像矩阵核对 exact terminal core、每臂真实 terminal、玩家获胜、cleanup 与 speed-5
+相对 speed-1 至少 `3x`。现有五档终局矩阵证明 speed 5 的核心 terminal primitive 与约 `6.087x` 吞吐，但其 seed 是劣势局，
+不能据此打开 `overwhelming_matrix_live_ready`。多个 distinct CombatID 只能重复 arm 到各自首个终局，除非另做 terminal quorum v2。
+
 ## Readiness 边界
 
 本页把以下结论提升为 `production-live`：五档都执行同一逐日 native 计算；contact-free exact-day route 默认 speed 3；普通 active
