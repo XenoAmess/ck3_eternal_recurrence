@@ -12144,7 +12144,8 @@ def _fresh_route_contact_advance_proofs(
     ):
         return {}
 
-    advances: dict[str, dict[str, object]] = {}
+    candidate_proofs: dict[str, dict[str, object]] = {}
+    proofs_by_subject: dict[int, dict[str, object]] = {}
     seen_queries: set[tuple[int, int, tuple[int, ...]]] = set()
     scoped_history = _native_history_after_latest_restore(history)
     for row in reversed(scoped_history):
@@ -12209,11 +12210,6 @@ def _fresh_route_contact_advance_proofs(
             == connection_generation
             and result.get("queried_episode_run_id")
             == snapshot.get("episode_run_id")
-            and _route_contact_advance_scope_isolated(
-                snapshot,
-                subject_army_id=subject_army_id,
-                contact_horizon=normalized_horizon,
-            )
         ):
             continue
         step = advance_route_contact_horizon_step(
@@ -12226,7 +12222,27 @@ def _fresh_route_contact_advance_proofs(
             "hostile_army_ids": list(hostiles),
             "contact_horizon": normalized_horizon,
         }
+        candidate_proofs[step] = advance_proof
+        proofs_by_subject[subject_army_id] = advance_proof
+
+    advances: dict[str, dict[str, object]] = {}
+    for step, advance_proof in candidate_proofs.items():
+        subject_army_id = int(advance_proof["subject_army_id"])
+        proof_kind = advance_proof.get("proof_kind")
+        normalized_horizon = advance_proof["contact_horizon"]
+        if not isinstance(normalized_horizon, dict) or not (
+            _route_contact_advance_scope_isolated(
+                snapshot,
+                subject_army_id=subject_army_id,
+                contact_horizon=normalized_horizon,
+                subject_proofs=proofs_by_subject,
+            )
+        ):
+            continue
         if proof_kind == "unavoidable_current_province_contact":
+            subject_route = normalized_horizon.get("subject_route")
+            if not isinstance(subject_route, dict):
+                continue
             contact_province_id = subject_route.get("current_province_id")
             if _predicted_contact_followup_exhausted(
                 snapshot,
@@ -12696,6 +12712,7 @@ def _route_contact_advance_scope_isolated(
     *,
     subject_army_id: int,
     contact_horizon: dict[str, object],
+    subject_proofs: dict[int, dict[str, object]] | None = None,
 ) -> bool:
     """Fail closed when one subject proof would advance another risky army."""
     armies = snapshot.get("player_armies")
@@ -12712,14 +12729,26 @@ def _route_contact_advance_scope_isolated(
         route = _canonical_remaining_route(army)
         target_province_id = army.get("move_target_province_id")
         if route and _positive_native_id(target_province_id):
-            if not (
+            if (
                 route[-1] == target_province_id
                 and _active_route_is_geometrically_safe_in_horizon(
                     army, contact_horizon
                 )
             ):
-                return False
-            continue
+                continue
+            sibling_proof = (
+                subject_proofs.get(int(army_id))
+                if isinstance(subject_proofs, dict)
+                and _positive_native_id(army_id)
+                else None
+            )
+            if _contact_free_sibling_proof_matches_conjunction(
+                sibling_proof,
+                army=army,
+                reference_horizon=contact_horizon,
+            ):
+                continue
+            return False
         if (
             route is None
             or "move_target_province_id" not in army
@@ -12740,6 +12769,36 @@ def _route_contact_advance_scope_isolated(
         if not contact_free:
             return False
     return True
+
+
+def _contact_free_sibling_proof_matches_conjunction(
+    proof: object,
+    *,
+    army: dict[str, object],
+    reference_horizon: dict[str, object],
+) -> bool:
+    if not isinstance(proof, dict) or proof.get("proof_kind") != "contact_free":
+        return False
+    horizon = proof.get("contact_horizon")
+    if not isinstance(horizon, dict):
+        return False
+    return bool(
+        proof.get("subject_army_id") == army.get("army_id")
+        and proof.get("target_province_id")
+        == army.get("move_target_province_id")
+        and horizon.get("one_day_contact_free") is True
+        and horizon.get("date_raw") == reference_horizon.get("date_raw")
+        and horizon.get("snapshot_revision")
+        == reference_horizon.get("snapshot_revision")
+        and horizon.get("horizon_start_date_raw")
+        == reference_horizon.get("horizon_start_date_raw")
+        and horizon.get("horizon_end_date_raw")
+        == reference_horizon.get("horizon_end_date_raw")
+        and horizon.get("hostile_army_ids")
+        == reference_horizon.get("hostile_army_ids")
+        and horizon.get("hostile_routes")
+        == reference_horizon.get("hostile_routes")
+    )
 
 
 def _active_route_is_geometrically_safe_in_horizon(

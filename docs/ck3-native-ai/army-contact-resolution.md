@@ -293,6 +293,62 @@ flowchart TD
     class L unknown;
 ```
 
+### 2026-08-28 续跑帧：closed endpoint 要求逐 moving subject 的同帧 proof
+
+[production-live primitive] commit `b4a1cc4` 的 cold replay 已穿过上一帧，并把同一 episode 从
+`53220312` 连续推进到 `53220384`；最新 durable checkpoint 为 `date_raw=53220360`、history `4104`、
+SHA-256 `94FBEFF444F18303CAE9BF369EA33AA26DA704ADB759402F480DAD8EB77B26AAA`。这把“其它 active route 的
+current Province timed occupancy + remaining-route geometry”从 static-ready 升为 production-live primitive。
+
+[live-confirmed] 同一 replay 在 paused `snapshot_id=native:18`、service revision `19`、native revision `18`、
+`date_raw=53220384` 暴露下一层真实 blocker。run 位于
+`C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/runs/20260828T003711Z-one-generation-0e6e6129/`；
+`report.json` SHA-256 为 `389E11D53B1592FCF6F12931A5B343BB83AD6C0A9B5E52715F99E5F3EBA005FE`，
+`first-blocker.json` SHA-256 为 `2E16865AC0EDC77F8BDDE2E606A20C2364AF00C0F957E567F9CAC6F31B4182D6`。
+
+- [live-confirmed] moving subject Army `117440751` 的 target 已变为 `744`；其 fresh exact horizon
+  `[53220384,53220408]` 为 `one_day_contact_free=true`，且 route/hostile scope/frame binding 完整。
+- [live-confirmed] moving sibling Army `83886358` 仍在 Province `8651`，active target `3610`、remaining route
+  `1109 -> ... -> 3610`。hostile `167772266` 的同帧 arrival 恰为 `53220408`，等于 closed horizon end；所以
+  把 sibling current Province 当作整日 hold 的派生检查必须判 unsafe。`b4a1cc4` 的拒绝是正确边界，不得改成
+  open interval 或用 remaining-route disjoint 覆盖 current occupancy。
+- [implementation-confirmed] planner 仍只消费 `117440751` 的 subject proof，随后期待其 advance step；它没有在
+  sibling 的派生 current-occupancy 失败时请求 sibling 自己的 active-route timeline。driver 因而正确不广告，planner
+  却误报为 backend unsupported。这仍是我方多 subject proof orchestration 缺口；原生 AI 树、exact-build query ABI
+  与 hostile observation 没有新增输入。
+
+[counter-policy] 最小闭合改为同一 paused frame 的逐 moving-army conjunction。先保留主 subject 的 fresh proof；对每支
+其它 active moving army，若“current Province closed-interval timed-safe + remaining route geometric-safe”已经由该 proof
+证明，则无需重复 query。否则 planner 必须先提交该 sibling 自己现有的
+`query-route-contact-horizon-v1-<army>-to-<target>-...`；不得直接 block，也不得猜测其离省时刻。driver 只有在每支 moving
+row 满足以下二者之一时才广告任一全局 exact-day advance：
+
+1. 可由候选 subject proof 完整证明 current timed-safe 且 remaining route geometric-safe；或
+2. 拥有同一 snapshot/date/native revision/connection/episode、相同完整 hostile scope、且与当前 ArmyID/current/target/
+   remaining route 严格一致的 fresh `one_day_contact_free=true` subject proof。
+
+任一 sibling proof 缺失、stale、hostile scope 不同、route/target/current 不匹配，或明确返回 timed conflict，都继续拒绝。
+多份 proof 只共同授权**一个**全局 native day；执行后全部失效并重读所有军队。若 sibling 自己的 proof 显示 unavoidable
+current contact，则后续必须以该 subject 的既有严格 contact-transition 合同处理，不能借另一支军的 contact-free proof 放行。
+
+```mermaid
+flowchart TD
+    M["[live-confirmed] main 117440751 proof<br/>one-day contact-free"] --> S{"[counter-policy] each other moving row<br/>derivably safe from M?"}
+    S -->|yes| C["[counter-policy] row joins conjunction"]
+    S -->|no / closed-end current threat| Q["[counter-policy] query sibling's own<br/>existing route-contact horizon"]
+    Q --> F{"[counter-policy] fresh same-frame proof,<br/>same hostile scope/route, contact-free?"}
+    F -->|yes| C
+    F -->|missing / stale / mismatch / conflict| B["[counter-policy] do not advertise advance"]
+    C --> A{"[counter-policy] every moving + stationary<br/>controllable row covered?"}
+    A -->|yes| D["[counter-policy] advertise one global<br/>proof-bound native day"]
+    A -->|no| B
+    D --> R["[counter-policy] invalidate proof set;<br/>paused re-read every army"]
+    N["[static-confirmed] no new native ABI<br/>or original-AI input"] --> Q
+    L["[unknown] multi-proof replay"] -. "[unknown] production acceptance pending" .-> D
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class L unknown;
+```
+
 ## `0x2208320`：同省接触 resolver
 
 ### 入口与前置门

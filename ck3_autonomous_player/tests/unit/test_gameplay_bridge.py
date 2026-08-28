@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import importlib.util
 from pathlib import Path
@@ -2083,7 +2084,7 @@ class GameplayBridgeTests(unittest.TestCase):
             "unavoidable_current_province_contact",
         )
 
-    def test_single_subject_proof_cannot_advance_another_unsafe_army(
+    def test_moving_sibling_requires_own_fresh_contact_horizon(
         self,
     ) -> None:
         primary = _army(
@@ -2114,32 +2115,148 @@ class GameplayBridgeTests(unittest.TestCase):
             route_province_ids=[31, 2585],
         )
         advance_step = advance_route_contact_horizon_step(11, 2585, (21,))
+        sibling_query = query_route_contact_horizon_step(
+            12, 2585, (21,)
+        )
+        sibling_advance = advance_route_contact_horizon_step(
+            12, 2585, (21,)
+        )
+        primary_proof = _route_contact_row(
+            1,
+            origin=20,
+            target=2585,
+            date_raw=24_000,
+            route=[31, 2585],
+            hostile_ids=(21,),
+            contact_free=True,
+        )
         plan = _native_war_plan(
             player=primary,
             players=[primary, secondary],
             enemies=[enemy],
             score=0,
             date_raw=24_000,
-            history=[
-                _route_contact_row(
-                    1,
-                    origin=20,
-                    target=2585,
-                    date_raw=24_000,
-                    route=[31, 2585],
-                    hostile_ids=(21,),
-                    contact_free=True,
-                )
-            ],
-            steps=(advance_step, "life-advance"),
+            history=[primary_proof],
+            steps=(sibling_query, advance_step, "life-advance"),
             route_contact_horizon_supported=True,
         )
 
         self.assertEqual(
             plan["phase"],
-            "native_war_route_contact_horizon_global_blocked",
+            "native_war_sibling_route_contact_horizon",
         )
-        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["selected_step"], sibling_query)
+
+        sibling_proof = _route_contact_row(
+            2,
+            army_id=12,
+            origin=22,
+            target=2585,
+            date_raw=24_000,
+            route=[31, 2585],
+            hostile_ids=(21,),
+            contact_free=True,
+        )
+        proven = _native_war_plan(
+            player=primary,
+            players=[primary, secondary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[primary_proof, sibling_proof],
+            steps=(sibling_query, advance_step, sibling_advance),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            proven["phase"], "native_war_route_contact_horizon_progress"
+        )
+        self.assertEqual(proven["selected_step"], advance_step)
+
+        unavailable = {
+            "index": 2,
+            "command": sibling_query,
+            "ok": False,
+            "error": "fixture route unavailable",
+        }
+        blocked = _native_war_plan(
+            player=primary,
+            players=[primary, secondary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[primary_proof, unavailable],
+            steps=(sibling_query, advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            blocked["phase"],
+            "native_war_sibling_route_contact_horizon_unavailable",
+        )
+        self.assertIsNone(blocked["selected_step"])
+
+        malformed_success = copy.deepcopy(sibling_proof)
+        malformed_success["result"]["route_contact_horizon"][
+            "subject_route"
+        ]["route_province_ids"] = [32, 2585]
+        malformed = _native_war_plan(
+            player=primary,
+            players=[primary, secondary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[primary_proof, malformed_success],
+            steps=(sibling_query, advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            malformed["phase"],
+            "native_war_sibling_route_contact_horizon_unavailable",
+        )
+        self.assertIsNone(malformed["selected_step"])
+        self.assertNotEqual(malformed.get("selected_step"), sibling_query)
+
+        unavoidable_proof = _route_contact_row(
+            2,
+            army_id=12,
+            origin=22,
+            target=2585,
+            date_raw=24_000,
+            route=[31, 2585],
+            hostile_ids=(21,),
+            contact_free=False,
+        )
+        unavoidable_horizon = unavoidable_proof["result"][
+            "route_contact_horizon"
+        ]
+        unavoidable_horizon["subject_route"]["arrival_date_raws"] = [
+            24_048,
+            24_072,
+        ]
+        unavoidable_horizon["conflicts"][0]["province_id"] = 22
+        unavoidable_horizon["hostile_routes"][0].update(
+            {
+                "current_province_id": 99,
+                "effective_origin_province_id": 22,
+                "route_province_ids": [22],
+                "arrival_date_raws": [24_024],
+            }
+        )
+        transition = _native_war_plan(
+            player=primary,
+            players=[primary, secondary],
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[primary_proof, unavoidable_proof],
+            steps=(sibling_query, sibling_advance, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            transition["phase"],
+            "native_war_unavoidable_contact_transition",
+        )
+        self.assertEqual(transition["selected_step"], sibling_advance)
+        self.assertNotEqual(transition["selected_step"], advance_step)
 
     def test_moving_proof_hostile_timelines_cover_stationary_army(
         self,

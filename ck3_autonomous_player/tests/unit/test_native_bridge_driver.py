@@ -7632,6 +7632,196 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 safe_moving_snapshot, [current_province_threat]
             ),
         )
+        sibling_query = query_route_contact_horizon_step(202, 27, hostiles)
+        sibling_advance = advance_route_contact_horizon_step(
+            202, 27, hostiles
+        )
+        sibling_proof = proof_row(
+            2,
+            step=sibling_query,
+            subject_id=202,
+            current=22,
+            target=27,
+            route=[26, 27],
+            arrivals=[start_date + 12, start_date + 48],
+        )
+        sibling_proof["result"]["route_contact_horizon"][
+            "hostile_routes"
+        ] = copy.deepcopy(
+            current_province_threat["result"]["route_contact_horizon"][
+                "hostile_routes"
+            ]
+        )
+        conjunction_steps = _fresh_route_contact_advance_steps(
+            safe_moving_snapshot,
+            [current_province_threat, sibling_proof],
+        )
+        self.assertIn(advance_step, conjunction_steps)
+        self.assertIn(sibling_advance, conjunction_steps)
+
+        stale_sibling = copy.deepcopy(sibling_proof)
+        stale_horizon = stale_sibling["result"]["route_contact_horizon"]
+        stale_horizon["date_raw"] = start_date - 24
+        stale_horizon["horizon_start_date_raw"] = start_date - 24
+        stale_horizon["horizon_end_date_raw"] = start_date
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                safe_moving_snapshot,
+                [current_province_threat, stale_sibling],
+            ),
+        )
+        wrong_scope_sibling = copy.deepcopy(sibling_proof)
+        wrong_scope_sibling["command"] = (
+            "query-route-contact-horizon-v1-202-to-27-h-2-31-41"
+        )
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                safe_moving_snapshot,
+                [current_province_threat, wrong_scope_sibling],
+            ),
+        )
+        wrong_route_sibling = copy.deepcopy(sibling_proof)
+        wrong_route_sibling["result"]["route_contact_horizon"][
+            "subject_route"
+        ]["route_province_ids"] = [28, 27]
+        self.assertNotIn(
+            advance_step,
+            _fresh_route_contact_advance_steps(
+                safe_moving_snapshot,
+                [current_province_threat, wrong_route_sibling],
+            ),
+        )
+
+        unavoidable_sibling = copy.deepcopy(sibling_proof)
+        unavoidable_horizon = unavoidable_sibling["result"][
+            "route_contact_horizon"
+        ]
+        unavoidable_horizon["subject_route"]["arrival_date_raws"] = [
+            start_date + 48,
+            start_date + 72,
+        ]
+        unavoidable_horizon["one_day_contact_free"] = False
+        unavoidable_horizon["conflicts"] = [
+            {
+                "kind": "same_province",
+                "hostile_army_id": 31,
+                "province_id": 22,
+                "overlap_start_date_raw": start_date + 24,
+                "overlap_end_date_raw": start_date + 24,
+            }
+        ]
+        unavoidable_steps = _fresh_route_contact_advance_steps(
+            safe_moving_snapshot,
+            [current_province_threat, unavoidable_sibling],
+        )
+        self.assertNotIn(advance_step, unavoidable_steps)
+        self.assertIn(sibling_advance, unavoidable_steps)
+        unavoidable_proofs = _fresh_route_contact_advance_proofs(
+            safe_moving_snapshot,
+            [current_province_threat, unavoidable_sibling],
+        )
+        sibling_transition_proof = unavoidable_proofs[sibling_advance]
+        self.assertEqual(
+            sibling_transition_proof["subject_army_id"], 202
+        )
+        main_combat_ending = copy.deepcopy(safe_moving_snapshot)
+        main_combat_ending["date_raw"] = start_date + 24
+        next(
+            army
+            for army in main_combat_ending["player_armies"]
+            if army["army_id"] == 101
+        ).update(
+            {
+                "in_combat": True,
+                "army_state": "combat",
+                "army_state_code": 2,
+            }
+        )
+        self.assertIsNone(
+            _unavoidable_contact_transition_postcondition(
+                safe_moving_snapshot,
+                main_combat_ending,
+                proof=sibling_transition_proof,
+            )
+        )
+        sibling_combat_ending = copy.deepcopy(safe_moving_snapshot)
+        sibling_combat_ending["date_raw"] = start_date + 24
+        next(
+            army
+            for army in sibling_combat_ending["player_armies"]
+            if army["army_id"] == 202
+        ).update(
+            {
+                "in_combat": True,
+                "army_state": "combat",
+                "army_state_code": 2,
+            }
+        )
+        sibling_postcondition = _unavoidable_contact_transition_postcondition(
+            safe_moving_snapshot,
+            sibling_combat_ending,
+            proof=sibling_transition_proof,
+        )
+        self.assertIsNotNone(sibling_postcondition)
+        assert sibling_postcondition is not None
+        self.assertEqual(sibling_postcondition["subject_army_id"], 202)
+        self.assertEqual(
+            sibling_postcondition["postcondition"], "active_combat_observed"
+        )
+
+        double_unavoidable_snapshot = copy.deepcopy(safe_moving_snapshot)
+        double_unavoidable_snapshot["player_armies"].append(
+            _army(
+                303,
+                province_id=23,
+                move_target_province_id=28,
+                army_state="moving",
+                army_state_code=7,
+                route_province_ids=[29, 28],
+            )
+        )
+        third_query = query_route_contact_horizon_step(303, 28, hostiles)
+        third_advance = advance_route_contact_horizon_step(303, 28, hostiles)
+        third_unavoidable = proof_row(
+            3,
+            step=third_query,
+            subject_id=303,
+            current=23,
+            target=28,
+            route=[29, 28],
+            arrivals=[start_date + 48, start_date + 72],
+        )
+        third_horizon = third_unavoidable["result"][
+            "route_contact_horizon"
+        ]
+        third_horizon["hostile_routes"] = copy.deepcopy(
+            current_province_threat["result"]["route_contact_horizon"][
+                "hostile_routes"
+            ]
+        )
+        third_horizon["one_day_contact_free"] = False
+        third_horizon["conflicts"] = [
+            {
+                "kind": "same_province",
+                "hostile_army_id": 31,
+                "province_id": 23,
+                "overlap_start_date_raw": start_date + 12,
+                "overlap_end_date_raw": start_date + 12,
+            }
+        ]
+        double_unavoidable_steps = _fresh_route_contact_advance_steps(
+            double_unavoidable_snapshot,
+            [
+                current_province_threat,
+                unavoidable_sibling,
+                third_unavoidable,
+            ],
+        )
+        self.assertNotIn(advance_step, double_unavoidable_steps)
+        self.assertNotIn(sibling_advance, double_unavoidable_steps)
+        self.assertNotIn(third_advance, double_unavoidable_steps)
         unsafe_moving_snapshot = copy.deepcopy(safe_moving_snapshot)
         next(
             army

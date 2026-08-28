@@ -4727,10 +4727,80 @@ def choose_one_life_turn(
                             "status": "safe_one_day_contact_horizon",
                             "contact_horizon": contact_horizon,
                         }
+                        moving_conjunction = (
+                            _moving_route_contact_horizon_conjunction(
+                                rows,
+                                snapshot,
+                                controlled_armies=controlled_armies,
+                                subject_army_id=army_id,
+                                subject_contact_horizon=contact_horizon,
+                                hostile_army_ids=route_threat_enemy_ids,
+                                enemies=route_threat_enemies,
+                            )
+                        )
+                        missing_moving = moving_conjunction["missing"]
+                        if missing_moving:
+                            missing = missing_moving[0]
+                            sibling_query_step = missing.get("query_step")
+                            if (
+                                isinstance(sibling_query_step, str)
+                                and sibling_query_step in available_steps
+                            ):
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_sibling_route_contact_horizon",
+                                    "selected_step": sibling_query_step,
+                                    "reason": "the main route proof cannot cover another moving army's closed current-Province occupancy; query that sibling's own exact one-day timeline before advancing global time",
+                                    "route_audit": passive_route_audit,
+                                    "moving_contact_horizons": moving_conjunction,
+                                    "active_wars": war_summary,
+                                }
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_sibling_route_contact_horizon_unsupported",
+                                "selected_step": None,
+                                "required_step": sibling_query_step,
+                                "reason": "another moving army requires its own exact one-day contact horizon, but the current backend does not advertise that query",
+                                "route_audit": passive_route_audit,
+                                "moving_contact_horizons": moving_conjunction,
+                                "active_wars": war_summary,
+                            }
+                        if moving_conjunction["unavailable"]:
+                            unavailable = moving_conjunction["unavailable"][0]
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_sibling_route_contact_horizon_unavailable",
+                                "selected_step": None,
+                                "required_step": unavailable.get("query_step"),
+                                "reason": "the sibling's own route-contact query was already attempted in this unchanged frame but did not yield a usable exact proof; keep time paused without resubmitting it",
+                                "route_audit": passive_route_audit,
+                                "moving_contact_horizons": moving_conjunction,
+                                "active_wars": war_summary,
+                            }
+                        if moving_conjunction["conflicting"]:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_sibling_route_contact_horizon_conflict",
+                                "selected_step": None,
+                                "required_step": "safe-exact-war-route",
+                                "reason": "a sibling moving army has a malformed route or a fresh timed conflict that is not the narrow unavoidable current-Province transition",
+                                "route_audit": passive_route_audit,
+                                "moving_contact_horizons": moving_conjunction,
+                                "active_wars": war_summary,
+                            }
+                        proven_moving_ids = {
+                            _native_int(candidate.get("army_id"))
+                            for candidate in (
+                                moving_conjunction["covered"]
+                                + moving_conjunction["unavoidable"]
+                            )
+                        }
                         other_unsafe_armies = [
                             candidate
                             for candidate in unsafe_armies
                             if candidate.get("army_id") != army_id
+                            and _native_int(candidate.get("army_id"))
+                            not in proven_moving_ids
                         ]
                         stationary_contact_horizons: list[
                             dict[str, object]
@@ -4808,6 +4878,59 @@ def choose_one_life_turn(
                                 "stationary_contact_horizons": stationary_contact_horizons,
                                 "active_wars": war_summary,
                             }
+                        unavoidable_siblings = moving_conjunction[
+                            "unavoidable"
+                        ]
+                        if unavoidable_siblings:
+                            if len(unavoidable_siblings) != 1:
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_sibling_unavoidable_contact_global_blocked",
+                                    "selected_step": None,
+                                    "required_step": "single-proof-bound-unavoidable-contact-transition",
+                                    "reason": "more than one moving sibling has an unavoidable current-Province contact in the same day; one subject proof cannot verify all resulting transitions",
+                                    "route_audit": passive_route_audit,
+                                    "moving_contact_horizons": moving_conjunction,
+                                    "active_wars": war_summary,
+                                }
+                            unavoidable_sibling = unavoidable_siblings[0]
+                            sibling_advance_step = unavoidable_sibling.get(
+                                "advance_step"
+                            )
+                            sibling_audit = {
+                                "army_id": unavoidable_sibling.get("army_id"),
+                                "status": "unavoidable_current_province_contact",
+                                "target_province_id": unavoidable_sibling.get(
+                                    "target_province_id"
+                                ),
+                                "contact_horizon": unavoidable_sibling.get(
+                                    "contact_horizon"
+                                ),
+                            }
+                            if (
+                                isinstance(sibling_advance_step, str)
+                                and sibling_advance_step in available_steps
+                            ):
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_unavoidable_contact_transition",
+                                    "selected_step": sibling_advance_step,
+                                    "reason": "the sibling's own fresh timeline proves an unavoidable closed-end current-Province contact while every other moving route is contact-free; use that subject's strict one-day contact transition",
+                                    "route_audit": sibling_audit,
+                                    "stationary_contact_horizons": stationary_contact_horizons,
+                                    "moving_contact_horizons": moving_conjunction,
+                                    "active_wars": war_summary,
+                                }
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_unavoidable_contact_transition_unsupported",
+                                "selected_step": None,
+                                "required_step": sibling_advance_step,
+                                "reason": "the sibling has its own unavoidable current-Province proof, but the multi-proof capability conjunction does not advertise that strict transition",
+                                "route_audit": sibling_audit,
+                                "moving_contact_horizons": moving_conjunction,
+                                "active_wars": war_summary,
+                            }
                         advance_step = advance_route_contact_horizon_step(
                             army_id,
                             observed_route_target,
@@ -4821,6 +4944,7 @@ def choose_one_life_turn(
                                 "reason": "the exact native timeline proves the intersecting active route contact-free for the next day",
                                 "route_audit": passive_route_audit,
                                 "stationary_contact_horizons": stationary_contact_horizons,
+                                "moving_contact_horizons": moving_conjunction,
                                 "move_intent": observed_intent,
                                 "active_wars": war_summary,
                             }
@@ -7782,6 +7906,188 @@ def _fresh_route_contact_horizon(
         ):
             continue
         return dict(horizon)
+    return None
+
+
+def _moving_route_contact_horizon_conjunction(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    controlled_armies: list[dict[str, object]],
+    subject_army_id: int,
+    subject_contact_horizon: dict[str, object],
+    hostile_army_ids: tuple[int, ...],
+    enemies: list[dict[str, object]],
+) -> dict[str, list[dict[str, object]]]:
+    """Classify every non-subject active route for one global native day."""
+    result: dict[str, list[dict[str, object]]] = {
+        "covered": [],
+        "missing": [],
+        "unavailable": [],
+        "unavoidable": [],
+        "conflicting": [],
+    }
+    for army in sorted(
+        controlled_armies,
+        key=lambda row: _native_int(row.get("army_id")) or 2**31,
+    ):
+        army_id = _native_int(army.get("army_id"))
+        if army_id is None or army_id == subject_army_id:
+            continue
+        target_province_id = _native_int(
+            army.get("move_target_province_id")
+        )
+        current_province_id = _native_int(army.get("current_province_id"))
+        route = _normalized_remaining_route(army)
+        if target_province_id is None and route == []:
+            continue
+        if not (
+            target_province_id is not None
+            and target_province_id > 0
+            and current_province_id is not None
+            and current_province_id > 0
+            and route
+            and route[-1] == target_province_id
+            and _army_tactical_state(army)
+            not in {"combat", "retreating", "gathering"}
+        ):
+            result["conflicting"].append(
+                {
+                    "army_id": army_id,
+                    "status": "active_route_shape_unavailable",
+                }
+            )
+            continue
+        try:
+            current_contact_free = (
+                stationary_province_contact_free_in_horizon(
+                    subject_contact_horizon, current_province_id
+                )
+            )
+        except ValueError:
+            current_contact_free = False
+        geometric_audit = _audit_war_route(
+            army.get("route_province_ids"),
+            origin_province_id=current_province_id,
+            target_province_id=target_province_id,
+            enemies=enemies,
+        )
+        if current_contact_free and geometric_audit.get("status") == "safe":
+            result["covered"].append(
+                {
+                    "army_id": army_id,
+                    "target_province_id": target_province_id,
+                    "status": "derived_current_and_route_safe",
+                    "proof_subject_army_id": subject_army_id,
+                }
+            )
+            continue
+
+        query_step = query_route_contact_horizon_step(
+            army_id, target_province_id, hostile_army_ids
+        )
+        own_horizon = _fresh_route_contact_horizon(
+            commands,
+            snapshot,
+            army_id=army_id,
+            origin_province_id=current_province_id,
+            target_province_id=target_province_id,
+            hostile_army_ids=hostile_army_ids,
+            route_province_ids=army.get("route_province_ids"),
+        )
+        evidence = {
+            "army_id": army_id,
+            "current_province_id": current_province_id,
+            "target_province_id": target_province_id,
+            "query_step": query_step,
+            "geometric_audit": geometric_audit,
+            "derived_current_contact_free": current_contact_free,
+        }
+        if own_horizon is None:
+            attempted = _current_frame_route_contact_query_failure(
+                commands, snapshot, query_step
+            )
+            result["unavailable" if attempted else "missing"].append(
+                {
+                    **evidence,
+                    "status": (
+                        "fresh_subject_query_unavailable"
+                        if attempted
+                        else "fresh_subject_query_required"
+                    ),
+                    **({"attempt": attempted} if attempted else {}),
+                }
+            )
+            continue
+        if own_horizon.get("one_day_contact_free") is True:
+            result["covered"].append(
+                {
+                    **evidence,
+                    "status": "fresh_subject_contact_free",
+                    "contact_horizon": own_horizon,
+                }
+            )
+            continue
+        if unavoidable_current_province_contact_in_horizon(own_horizon):
+            result["unavoidable"].append(
+                {
+                    **evidence,
+                    "status": "unavoidable_current_province_contact",
+                    "advance_step": advance_route_contact_horizon_step(
+                        army_id, target_province_id, hostile_army_ids
+                    ),
+                    "contact_horizon": own_horizon,
+                }
+            )
+            continue
+        result["conflicting"].append(
+            {
+                **evidence,
+                "status": "fresh_subject_timed_conflict",
+                "contact_horizon": own_horizon,
+            }
+        )
+    return result
+
+
+def _current_frame_route_contact_query_failure(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    query_step: str,
+) -> dict[str, object] | None:
+    """Return a surviving failed/unusable query without creating a loop."""
+    for row in reversed(_history_after_latest_restore(commands)):
+        command = _effective_command(row)
+        if command == query_step:
+            result = _effective_command_result(row)
+            exact_frame = bool(
+                isinstance(result, dict)
+                and result.get("queried_snapshot_id")
+                == snapshot.get("snapshot_id")
+                and result.get("queried_revision")
+                == snapshot.get("revision")
+                and result.get("queried_native_revision")
+                == snapshot.get("native_revision")
+            )
+            if row.get("ok") is False or exact_frame:
+                return {
+                    "history_index": row.get("index"),
+                    "ok": row.get("ok"),
+                    "error": row.get("error"),
+                    "status": (
+                        result.get("status")
+                        if isinstance(result, dict)
+                        else None
+                    ),
+                }
+            return None
+        if (
+            is_life_advance_step(command)
+            or parse_move_army_step(command) is not None
+            or parse_merge_armies_step(command) is not None
+            or parse_split_army_half_step(command) is not None
+        ):
+            return None
     return None
 
 
