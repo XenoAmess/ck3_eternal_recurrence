@@ -167,15 +167,28 @@ bool TestParser() {
       parsed.speed != 5 || parsed.army_count != 1 || parsed.army_ids[0] != 1) {
     return false;
   }
-  std::string maximum =
-      "research-arm-tactical-daily-sentinel-v1-1000-to-1072-speed-5-mode-"
-      "terminal-a-64";
-  for (std::int32_t army_id = 1; army_id <= 64; ++army_id) {
-    maximum += '-';
-    maximum += std::to_string(army_id);
+  const auto long_arm_step = [](std::size_t army_count) {
+    std::string step{kTacticalDailySentinelArmPrefixV1};
+    step += "2000000000-to-2000001080-speed-5-mode-terminal-a-";
+    step += std::to_string(army_count);
+    for (std::size_t index = 0; index < army_count; ++index) {
+      step += '-';
+      step += std::to_string(1'000'000'000U + index);
+    }
+    return step;
+  };
+  const auto six_armies = long_arm_step(6U);
+  if (six_armies.size() <= 128U ||
+      !ParseTacticalDailySentinelArmStepV1(six_armies, parsed) ||
+      parsed.army_count != 6 || parsed.army_ids[5] != 1'000'000'005) {
+    return false;
   }
+  const auto maximum =
+      long_arm_step(kTacticalDailySentinelMaximumArmiesV1);
   if (!ParseTacticalDailySentinelArmStepV1(maximum, parsed) ||
-      parsed.army_count != 64 || parsed.army_ids[63] != 64) {
+      maximum.size() != kTacticalDailySentinelMaximumArmStepBytesV1 ||
+      parsed.army_count != 64 ||
+      parsed.army_ids[63] != 1'000'000'063) {
     return false;
   }
   return !ParseTacticalDailySentinelArmStepV1(

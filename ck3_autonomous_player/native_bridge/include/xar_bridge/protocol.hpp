@@ -11,6 +11,7 @@ namespace xar::bridge {
 
 inline constexpr std::uint32_t kProtocolVersion = 1;
 inline constexpr std::uint32_t kMaximumFrameBytes = 1024U * 1024U;
+inline constexpr std::size_t kMaximumControlStringBytes = 128U;
 
 enum class ReadStatus {
   none,
@@ -29,6 +30,13 @@ struct ReadResult {
 // UTF-8 JSON document. It deliberately is not MCP: the external daemon owns
 // MCP and translates its typed tools to this small process-local protocol.
 bool WriteFrame(HANDLE pipe, std::string_view payload) noexcept;
+
+// Reads one compact, unescaped JSON string field with a caller-supplied bound.
+// Bridge control fields use kMaximumControlStringBytes; gameplay steps may use
+// a larger protocol-specific bound without widening request_id or type.
+bool JsonStringField(std::string_view json, std::string_view key,
+                     std::string &output,
+                     std::size_t maximum_bytes) noexcept;
 
 // Non-blocking probe. A complete frame is consumed only when all of its bytes
 // are already available in the pipe.

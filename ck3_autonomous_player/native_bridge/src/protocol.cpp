@@ -72,6 +72,30 @@ bool WriteFrame(HANDLE pipe, std::string_view payload) noexcept {
          WriteAll(pipe, payload.data(), payload.size());
 }
 
+bool JsonStringField(std::string_view json, std::string_view key,
+                     std::string &output,
+                     std::size_t maximum_bytes) noexcept {
+  std::string needle = "\"";
+  needle += key;
+  needle += "\":\"";
+  const std::size_t begin = json.find(needle);
+  if (begin == std::string_view::npos) {
+    return false;
+  }
+  const std::size_t value_begin = begin + needle.size();
+  const std::size_t end = json.find('"', value_begin);
+  if (end == std::string_view::npos || end == value_begin ||
+      end - value_begin > maximum_bytes) {
+    return false;
+  }
+  const auto value = json.substr(value_begin, end - value_begin);
+  if (value.find('\\') != std::string_view::npos) {
+    return false;
+  }
+  output.assign(value);
+  return true;
+}
+
 ReadResult TryReadFrame(HANDLE pipe) noexcept {
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
     return {ReadStatus::closed, {}, ERROR_INVALID_HANDLE};

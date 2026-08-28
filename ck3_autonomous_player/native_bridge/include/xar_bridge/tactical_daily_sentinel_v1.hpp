@@ -27,6 +27,12 @@ inline constexpr std::size_t kDailyTickFinalStagePatchBytesV1 = 15;
 inline constexpr std::size_t kTacticalDailySentinelAbsoluteJumpBytesV1 = 14;
 inline constexpr std::size_t kTacticalDailySentinelMaximumArmiesV1 = 64;
 inline constexpr std::size_t kTacticalDailySentinelMaximumCombatsV1 = 64;
+// Longest canonical arm step: two positive int32 dates, speed, terminal mode,
+// a two-digit count, and 64 positive int32 ArmyIDs including delimiters.
+inline constexpr std::size_t kTacticalDailySentinelMaximumArmStepBytesV1 =
+    kTacticalDailySentinelArmPrefixV1.size() + 10U + 4U + 10U + 7U + 1U +
+    6U + 8U + 3U + 2U +
+    kTacticalDailySentinelMaximumArmiesV1 * (1U + 10U);
 
 enum TacticalDailySentinelTriggerV1 : std::uint32_t {
   tactical_daily_trigger_none = 0,

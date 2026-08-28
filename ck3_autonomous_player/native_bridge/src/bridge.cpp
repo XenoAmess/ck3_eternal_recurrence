@@ -2844,31 +2844,9 @@ bool PublishTimelineSnapshotWithDiagnostics(
       pipe, SnapshotPublishDiagnosticFrame(request_id, "end", completed));
 }
 
-bool JsonStringField(std::string_view json, std::string_view key,
-                     std::string &output) {
-  std::string needle = "\"";
-  needle += key;
-  needle += "\":\"";
-  const std::size_t begin = json.find(needle);
-  if (begin == std::string_view::npos) {
-    return false;
-  }
-  const std::size_t value_begin = begin + needle.size();
-  const std::size_t end = json.find('"', value_begin);
-  if (end == std::string_view::npos || end == value_begin ||
-      end - value_begin > 128U) {
-    return false;
-  }
-  const auto value = json.substr(value_begin, end - value_begin);
-  if (value.find('\\') != std::string_view::npos) {
-    return false;
-  }
-  output.assign(value);
-  return true;
-}
-
 bool IsSimpleRequestId(std::string_view value) noexcept {
-  if (value.empty() || value.size() > 128U) {
+  if (value.empty() ||
+      value.size() > xar::bridge::kMaximumControlStringBytes) {
     return false;
   }
   for (const char character : value) {
@@ -3008,8 +2986,13 @@ void RunConnectedSession(
     if (incoming.status == xar::bridge::ReadStatus::frame) {
       std::string type;
       std::string request_id;
-      if (JsonStringField(incoming.payload, "type", type) && type == "ping" &&
-          JsonStringField(incoming.payload, "request_id", request_id) &&
+      if (xar::bridge::JsonStringField(
+              incoming.payload, "type", type,
+              xar::bridge::kMaximumControlStringBytes) &&
+          type == "ping" &&
+          xar::bridge::JsonStringField(
+              incoming.payload, "request_id", request_id,
+              xar::bridge::kMaximumControlStringBytes) &&
           IsSimpleRequestId(request_id)) {
         std::string pong =
             "{\"type\":\"pong\",\"protocol_version\":1,\"request_id\":\"";
@@ -3019,10 +3002,14 @@ void RunConnectedSession(
         pong += "}";
         connected = xar::bridge::WriteFrame(pipe, pong);
       } else if (type == "execute_step" &&
-                 JsonStringField(incoming.payload, "request_id", request_id) &&
+                 xar::bridge::JsonStringField(
+                     incoming.payload, "request_id", request_id,
+                     xar::bridge::kMaximumControlStringBytes) &&
                  IsSimpleRequestId(request_id)) {
         std::string step;
-        if (!JsonStringField(incoming.payload, "step", step)) {
+        if (!xar::bridge::JsonStringField(
+                incoming.payload, "step", step,
+                xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1)) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));

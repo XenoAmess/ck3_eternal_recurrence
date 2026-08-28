@@ -146,6 +146,20 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_bridge_protocol_test
+    src/protocol_test.cpp
+  )
+  target_include_directories(xar_bridge_protocol_test PRIVATE include)
+  target_link_libraries(xar_bridge_protocol_test PRIVATE xar_bridge_protocol)
+  if(MSVC)
+    target_compile_options(xar_bridge_protocol_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_protocol
+    COMMAND xar_bridge_protocol_test
+  )
+
   add_executable(xar_ck3_event_window_context_v1_serializer_test
     src/event_window_context_v1_serializer.cpp
     src/event_window_context_v1_serializer_test.cpp
