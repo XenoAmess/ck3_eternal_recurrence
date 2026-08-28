@@ -837,6 +837,39 @@ def test_terminal_cursor_refreshes_revision_without_crossing_frame() -> None:
         HARNESS._refresh_paused_query_snapshot(service, prior)
 
 
+class _FakeRestoreService:
+    def __init__(self) -> None:
+        self.restore_calls: list[int] = []
+        self.wait_calls: list[tuple[int, float]] = []
+
+    def snapshot(self) -> dict[str, object]:
+        return _snapshot(revision=31)
+
+    def wait_for_change(
+        self, after_revision: int, *, timeout_seconds: float
+    ) -> dict[str, object]:
+        self.wait_calls.append((after_revision, timeout_seconds))
+        return _snapshot(revision=32)
+
+    def restore_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
+        self.restore_calls.append(expected_revision)
+        if len(self.restore_calls) == 1:
+            raise HARNESS.BridgeUnavailableError(
+                "native gameplay revision mismatch: expected 31, current 32"
+            )
+        return {"accepted": True, "status": "restored"}
+
+
+def test_restore_retries_one_pre_submit_revision_race() -> None:
+    service = _FakeRestoreService()
+    assert HARNESS._restore_checkpoint_with_revision_retry(service) == {
+        "accepted": True,
+        "status": "restored",
+    }
+    assert service.restore_calls == [31, 32]
+    assert service.wait_calls == [(31, 2.0)]
+
+
 def test_terminal_cursor_excludes_old_same_combat_event_after_restore() -> None:
     service = _FakeTerminalService(
         _terminal_frame(requested_cursor=None, event_sequence=7)

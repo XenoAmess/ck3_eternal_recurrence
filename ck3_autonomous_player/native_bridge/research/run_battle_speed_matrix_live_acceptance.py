@@ -38,6 +38,7 @@ from typing import Callable
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
 
+from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
@@ -432,6 +433,44 @@ def _refresh_paused_query_snapshot(
             "paused query refresh crossed the battle arm frame"
         )
     return refreshed
+
+
+def _restore_checkpoint_with_revision_retry(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Retry one pre-submit paused revision race during matrix restore."""
+    current = service.snapshot()
+    revision = _integer(current.get("revision"))
+    if (
+        revision is None
+        or current.get("map_ready") is not True
+        or current.get("paused") is not True
+    ):
+        raise RuntimeError(
+            "checkpoint restore requires a paused, map-ready revision"
+        )
+    try:
+        return service.restore_checkpoint(expected_revision=revision)
+    except BridgeUnavailableError as error:
+        if "native gameplay revision mismatch" not in str(error):
+            raise
+    refreshed = service.wait_for_change(revision, timeout_seconds=2.0)
+    refreshed_revision = _integer(refreshed.get("revision"))
+    if (
+        refreshed_revision is None
+        or refreshed_revision <= revision
+        or refreshed.get("map_ready") is not True
+        or refreshed.get("paused") is not True
+        or refreshed.get("date_raw") != current.get("date_raw")
+        or refreshed.get("episode_character_id")
+        != current.get("episode_character_id")
+        or refreshed.get("episode_run_id") != current.get("episode_run_id")
+        or _connection_generation(refreshed) != _connection_generation(current)
+    ):
+        raise RuntimeError(
+            "checkpoint restore revision refresh crossed the paused frame"
+        )
+    return service.restore_checkpoint(expected_revision=refreshed_revision)
 
 
 def _normalize_battle_frame(value: object) -> object:
@@ -2416,10 +2455,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 and sample_index > 1
             ):
                 restore_started_ns = time.perf_counter_ns()
-                current = service.snapshot()
-                restore = service.restore_checkpoint(
-                    expected_revision=int(current["revision"])
-                )
+                restore = _restore_checkpoint_with_revision_retry(service)
                 restore_readiness = _wait_for_readiness(
                     driver,
                     session_done=session_done,
