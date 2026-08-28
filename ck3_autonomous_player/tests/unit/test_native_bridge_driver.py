@@ -28,10 +28,13 @@ from xar_autoplayer.bridge.native_driver import (
     ConfiguredHybridFallbackDriver,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+    _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
     _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
     _native_unobservable_started_assaults,
+    _predicted_contact_boundary_postcondition,
+    _predicted_contact_followup_exhausted,
     _unavoidable_contact_transition_postcondition,
 )
 from xar_autoplayer.bridge.settlement_contract import (
@@ -6542,7 +6545,6 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             enemy_armies=[combat_enemy],
             war_objective_province_ids=[3610],
         )
-
         def publish_snapshot(
             revision: int,
             *,
@@ -6707,6 +6709,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             enemy_armies=[combat_enemy],
             war_objective_province_ids=[3610],
         )
+        entered_enemy = {
+            **enemy,
+            "current_province_id": 5692,
+        }
+        entered_war = _war(
+            allied_armies=[player],
+            enemy_armies=[entered_enemy],
+            war_objective_province_ids=[3610],
+        )
         advance_step = advance_route_contact_horizon_step(101, 3610, (31,))
         proof = {
             "proof_kind": "unavoidable_current_province_contact",
@@ -6714,21 +6725,31 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "target_province_id": 3610,
             "hostile_army_ids": [31],
             "contact_horizon": {
+                "horizon_start_date_raw": start_date,
+                "horizon_end_date_raw": start_date + 24,
                 "subject_route": {
+                    "army_id": 101,
                     "current_province_id": 5692,
+                    "route_province_ids": [8672, 3610],
+                    "arrival_date_raws": [
+                        start_date + 264,
+                        start_date + 504,
+                    ],
                 },
                 "conflicts": [
                     {
                         "kind": "same_province",
                         "hostile_army_id": 31,
                         "province_id": 5692,
+                        "overlap_start_date_raw": start_date + 24,
+                        "overlap_end_date_raw": start_date + 24,
                     }
                 ],
             },
         }
 
-        for refreshed_combat in (True, False):
-            with self.subTest(refreshed_combat=refreshed_combat):
+        for outcome in ("strict_combat", "boundary", "strict_enemy_entry"):
+            with self.subTest(outcome=outcome):
                 endpoint = FakeEndpoint()
                 driver = NativeHeadlessGameplayDriver(
                     endpoint.pipe_name,
@@ -6753,6 +6774,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     *,
                     date_raw: int,
                     combat: bool = False,
+                    enemy_entered: bool = False,
                 ) -> None:
                     endpoint.publish(
                         _snapshot(
@@ -6760,16 +6782,37 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             paused=True,
                             date_raw=date_raw,
                             speed=1,
-                            active_wars=[combat_war if combat else war],
+                            played_character={"character_id": 29829, "alive": True},
+                            active_wars=[
+                                combat_war
+                                if combat
+                                else entered_war
+                                if enemy_entered
+                                else war
+                            ],
                             player_armies=[combat_player if combat else player],
                         )
                     )
 
                 publish_snapshot(40, date_raw=start_date)
                 expected_revision = int(driver.take_snapshot()["revision"])
+                case_proof = copy.deepcopy(proof)
+                if outcome != "boundary":
+                    case_proof["strict_endpoint_followup"] = True
+                    case_proof["prior_contact_boundary"] = {
+                        "status": "predicted_only",
+                        "postcondition": "predicted_contact_boundary_reached",
+                        "contact_observed": False,
+                        "contact_province_id": 5692,
+                        "ending_date_raw": start_date,
+                    }
 
                 def fake_life_advance(**_kwargs: object) -> dict[str, object]:
-                    publish_snapshot(41, date_raw=start_date + 24)
+                    publish_snapshot(
+                        41,
+                        date_raw=start_date + 24,
+                        enemy_entered=outcome == "strict_enemy_entry",
+                    )
                     return {
                         "step": advance_step,
                         "backend_id": "native-headless",
@@ -6817,7 +6860,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     publish_snapshot(
                         42,
                         date_raw=start_date + 24,
-                        combat=refreshed_combat,
+                        combat=outcome == "strict_combat",
+                        enemy_entered=outcome == "strict_enemy_entry",
                     )
 
                 endpoint.send_hook = answer
@@ -6825,7 +6869,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     mock.patch(
                         "xar_autoplayer.bridge.native_driver."
                         "_fresh_route_contact_advance_proofs",
-                        return_value={advance_step: proof},
+                        return_value={advance_step: case_proof},
                     ),
                     mock.patch.object(
                         driver,
@@ -6833,7 +6877,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         side_effect=fake_life_advance,
                     ),
                 ):
-                    if refreshed_combat:
+                    if outcome == "strict_combat":
                         result = driver.execute_step(
                             advance_step,
                             expected_revision=expected_revision,
@@ -6848,6 +6892,36 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         )
                         self.assertEqual(result["ending_date_raw"], start_date + 24)
                         self.assertEqual(result["war_progress_after"]["date_raw"], start_date + 24)
+                    elif outcome == "boundary":
+                        result = driver.execute_step(
+                            advance_step,
+                            expected_revision=expected_revision,
+                        )
+                        self.assertEqual(
+                            result["contact_transition"]["status"],
+                            "predicted_only",
+                        )
+                        self.assertEqual(
+                            result["contact_transition"]["postcondition"],
+                            "predicted_contact_boundary_reached",
+                        )
+                        self.assertFalse(
+                            result["contact_transition"]["contact_observed"]
+                        )
+                        history = driver._history_snapshot()
+                        self.assertTrue(history[-1]["ok"])
+                        recorded_result = history[-1]["result"]
+                        self.assertEqual(
+                            recorded_result["contact_refresh"]["ack_status"],
+                            "already_paused",
+                        )
+                        self.assertEqual(
+                            recorded_result["ending_date_raw"], start_date + 24
+                        )
+                        self.assertEqual(
+                            recorded_result["war_progress_after"]["date_raw"],
+                            start_date + 24,
+                        )
                     else:
                         with self.assertRaises(StepPostconditionError):
                             driver.execute_step(
@@ -6861,12 +6935,39 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             failed_result["contact_refresh"]["ack_status"],
                             "already_paused",
                         )
+                        self.assertNotIn("contact_transition", failed_result)
                         self.assertEqual(
-                            failed_result["ending_date_raw"], start_date + 24
+                            failed_result["contact_followup"]["status"],
+                            "exhausted_without_strong_transition",
                         )
+                        current = driver.take_snapshot()
+                        self.assertTrue(
+                            _predicted_contact_followup_exhausted(
+                                current,
+                                history,
+                                subject_army_id=101,
+                                contact_province_id=5692,
+                            )
+                        )
+                        drifted = copy.deepcopy(current)
+                        drifted["player_armies"][0][
+                            "current_province_id"
+                        ] = 5700
                         self.assertEqual(
-                            failed_result["war_progress_after"]["date_raw"],
-                            start_date + 24,
+                            failed_result["contact_followup"][
+                                "contact_province_id"
+                            ],
+                            5692,
+                        )
+                        self.assertTrue(
+                            _predicted_contact_followup_exhausted(
+                                drifted,
+                                history,
+                                subject_army_id=101,
+                                contact_province_id=5700,
+                            ),
+                            "a province drift after strict RED must not grant "
+                            "a third exact day",
                         )
                 pause_frames = [
                     frame
@@ -6875,6 +6976,311 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     and frame.get("step") == "pause-map"
                 ]
                 self.assertEqual(len(pause_frames), 1)
+
+    def test_predicted_contact_boundary_requires_exact_endpoint_only(
+        self,
+    ) -> None:
+        start_date = 53_216_424
+        end_date = start_date + 24
+        contact_province_id = 5692
+        subject = _army(
+            101,
+            province_id=contact_province_id,
+            move_target_province_id=3610,
+            army_state="moving",
+            route_province_ids=[8672, 3610],
+        )
+        enemy = _army(
+            31,
+            province_id=5693,
+            controllable=False,
+            move_target_province_id=contact_province_id,
+            army_state="moving",
+            route_province_ids=[contact_province_id],
+        )
+        war = _war(
+            allied_armies=[subject],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[3610],
+        )
+
+        def semantic_snapshot(date_raw: int) -> dict[str, object]:
+            return {
+                "map_ready": True,
+                "paused": True,
+                "date_raw": date_raw,
+                "episode_character_id": 29829,
+                "episode_run_id": "native-29829-endpoint",
+                "local_player_id": 29829,
+                "diagnostics": {
+                    "connection_generation": 7,
+                    "bridge_pid": 4242,
+                },
+                "played_character_alive": True,
+                "one_life_terminal": False,
+                "active_wars": [war],
+                "player_armies": [subject],
+            }
+
+        proof: dict[str, object] = {
+            "proof_kind": "unavoidable_current_province_contact",
+            "subject_army_id": 101,
+            "target_province_id": 3610,
+            "hostile_army_ids": [31],
+            "contact_horizon": {
+                "horizon_start_date_raw": start_date,
+                "horizon_end_date_raw": end_date,
+                "subject_route": {
+                    "current_province_id": contact_province_id,
+                    "arrival_date_raws": [start_date + 264, start_date + 504],
+                },
+                "conflicts": [
+                    {
+                        "kind": "same_province",
+                        "hostile_army_id": 31,
+                        "province_id": contact_province_id,
+                        "overlap_start_date_raw": end_date,
+                        "overlap_end_date_raw": end_date,
+                    }
+                ],
+            },
+        }
+        starting = semantic_snapshot(start_date)
+        ending = semantic_snapshot(end_date)
+        marker = _predicted_contact_boundary_postcondition(
+            starting,
+            ending,
+            proof=proof,
+        )
+        self.assertIsNotNone(marker)
+        assert marker is not None
+        self.assertEqual(marker["status"], "predicted_only")
+        self.assertEqual(
+            marker["postcondition"], "predicted_contact_boundary_reached"
+        )
+        self.assertFalse(marker["contact_observed"])
+        self.assertEqual(marker["conflict_hostile_army_ids"], [31])
+
+        mid_window = copy.deepcopy(proof)
+        mid_window["contact_horizon"]["conflicts"][0][
+            "overlap_start_date_raw"
+        ] = start_date
+        with self.subTest("mid-window overlap is not an endpoint marker"):
+            self.assertIsNone(
+                _predicted_contact_boundary_postcondition(
+                    starting,
+                    ending,
+                    proof=mid_window,
+                )
+            )
+
+        arrival_at_boundary = copy.deepcopy(proof)
+        arrival_at_boundary["contact_horizon"]["subject_route"][
+            "arrival_date_raws"
+        ][0] = end_date
+        with self.subTest("subject must remain committed beyond the boundary"):
+            self.assertIsNone(
+                _predicted_contact_boundary_postcondition(
+                    starting,
+                    ending,
+                    proof=arrival_at_boundary,
+                )
+            )
+
+        rerouted_ending = copy.deepcopy(ending)
+        rerouted_ending["player_armies"][0]["route_province_ids"] = [8672, 999]
+        with self.subTest("subject route change cannot masquerade as boundary"):
+            self.assertIsNone(
+                _predicted_contact_boundary_postcondition(
+                    starting,
+                    rerouted_ending,
+                    proof=proof,
+                )
+            )
+
+        combat_starting = copy.deepcopy(starting)
+        combat_starting["player_armies"][0]["in_combat"] = True
+        with self.subTest("existing subject combat is not a prediction marker"):
+            self.assertIsNone(
+                _predicted_contact_boundary_postcondition(
+                    combat_starting,
+                    ending,
+                    proof=proof,
+                )
+            )
+
+        foreign_ending = copy.deepcopy(ending)
+        foreign_ending["diagnostics"]["bridge_pid"] = 9999
+        with self.subTest("timeline owner must remain identical"):
+            self.assertIsNone(
+                _predicted_contact_boundary_postcondition(
+                    starting,
+                    foreign_ending,
+                    proof=proof,
+                )
+            )
+
+    def test_endpoint_marker_binds_strict_followup_across_restore_history(
+        self,
+    ) -> None:
+        start_date = 53_216_448
+        end_date = start_date + 24
+        contact_province_id = 5692
+        episode_run_id = "native-29829-endpoint"
+        subject = _army(
+            101,
+            province_id=contact_province_id,
+            move_target_province_id=3610,
+            army_state="moving",
+            route_province_ids=[8672, 3610],
+        )
+        prior_enemy = _army(
+            31,
+            province_id=contact_province_id,
+            controllable=False,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        next_enemy = _army(
+            41,
+            province_id=5693,
+            controllable=False,
+            move_target_province_id=contact_province_id,
+            army_state="moving",
+            route_province_ids=[contact_province_id],
+        )
+        snapshot: dict[str, object] = {
+            "paused": True,
+            "date_raw": start_date,
+            "snapshot_id": "native:51",
+            "revision": 52,
+            "native_revision": 51,
+            "episode_run_id": episode_run_id,
+            "diagnostics": {
+                "connection_generation": 7,
+                "bridge_pid": 4242,
+            },
+            "active_wars": [
+                _war(
+                    allied_armies=[subject],
+                    enemy_armies=[prior_enemy, next_enemy],
+                    war_objective_province_ids=[3610],
+                )
+            ],
+            "player_armies": [subject],
+        }
+        hostiles = (31, 41)
+        query_step = query_route_contact_horizon_step(101, 3610, hostiles)
+        advance_step = advance_route_contact_horizon_step(101, 3610, hostiles)
+        marker_step = advance_route_contact_horizon_step(101, 3610, (31,))
+        marker = {
+            "status": "predicted_only",
+            "proof_kind": "unavoidable_current_province_contact",
+            "postcondition": "predicted_contact_boundary_reached",
+            "contact_observed": False,
+            "episode_run_id": episode_run_id,
+            "subject_army_id": 101,
+            "contact_province_id": contact_province_id,
+            "conflict_hostile_army_ids": [31],
+            "starting_date_raw": start_date - 24,
+            "ending_date_raw": start_date,
+        }
+        marker_row = {
+            "index": 1,
+            "command": marker_step,
+            "ok": True,
+            "result": {
+                "step": marker_step,
+                "starting_date_raw": start_date - 24,
+                "ending_date_raw": start_date,
+                "contact_transition": marker,
+            },
+        }
+        query_row = {
+            "index": 4,
+            "command": query_step,
+            "ok": True,
+            "result": {
+                "step": query_step,
+                "accepted": True,
+                "status": "available",
+                "route_contact_horizon": {
+                    "status": "available",
+                    "date_raw": start_date,
+                    "snapshot_revision": 51,
+                    "subject_army_id": 101,
+                    "target_province_id": 3610,
+                    "hostile_army_ids": list(hostiles),
+                    "subject_route": {
+                        "timeline_observable": True,
+                        "army_id": 101,
+                        "current_province_id": contact_province_id,
+                        "effective_origin_province_id": 8672,
+                        "route_province_ids": [8672, 3610],
+                        "arrival_date_raws": [start_date + 240, start_date + 480],
+                    },
+                    "hostile_routes": [
+                        {
+                            "timeline_observable": True,
+                            "army_id": 31,
+                            "current_province_id": contact_province_id,
+                            "effective_origin_province_id": contact_province_id,
+                            "route_province_ids": [],
+                            "arrival_date_raws": [],
+                        },
+                        {
+                            "timeline_observable": True,
+                            "army_id": 41,
+                            "current_province_id": 5693,
+                            "effective_origin_province_id": contact_province_id,
+                            "route_province_ids": [contact_province_id],
+                            "arrival_date_raws": [end_date],
+                        },
+                    ],
+                    "horizon_start_date_raw": start_date,
+                    "horizon_end_date_raw": end_date,
+                    "one_day_contact_free": False,
+                    "conflicts": [
+                        {
+                            "kind": "same_province",
+                            "hostile_army_id": 41,
+                            "province_id": contact_province_id,
+                            "overlap_start_date_raw": end_date,
+                            "overlap_end_date_raw": end_date,
+                        }
+                    ],
+                },
+                "queried_snapshot_id": snapshot["snapshot_id"],
+                "queried_revision": snapshot["revision"],
+                "queried_native_revision": snapshot["native_revision"],
+                "queried_connection_generation": 7,
+                "queried_episode_run_id": episode_run_id,
+            },
+        }
+        history = [
+            marker_row,
+            {"index": 2, "command": "save-checkpoint", "ok": True},
+            {"index": 3, "command": "restore-checkpoint", "ok": True},
+            query_row,
+        ]
+        proofs = _fresh_route_contact_advance_proofs(snapshot, history)
+        self.assertTrue(proofs[advance_step]["strict_endpoint_followup"])
+        self.assertEqual(
+            proofs[advance_step]["prior_contact_boundary"], marker
+        )
+
+        intervening_advance = {
+            "index": 4,
+            "command": "life-advance",
+            "ok": True,
+            "result": {"step": "life-advance", "ending_date_raw": start_date},
+        }
+        invalidated_history = [*history[:-1], intervening_advance, query_row]
+        proofs = _fresh_route_contact_advance_proofs(
+            snapshot,
+            invalidated_history,
+        )
+        self.assertNotIn("strict_endpoint_followup", proofs[advance_step])
 
     def test_unavoidable_contact_observes_conflict_hostile_entering_province(
         self,

@@ -440,6 +440,25 @@ flowchart TD
   action 保持 RED；失败 history 与 `first-blocker` 同时保留 ending date、完整 `war_progress_after`、
   refresh ACK/revision 和 action 列表。该方案仅修正实际出现的 stale/early projection，不宣称
   `53216448` 必然已经形成战斗。
+- [production-live] `76cae78` 的正式 `50000 turns / 604800 seconds` run
+  `20260827T234150Z-one-generation-46069983` 已执行上述刷新：第二个幂等 pause 返回
+  `already_paused`，同日 frame 从 public/native revision `10/9` 严格增长到 `11/10`，owner 与
+  episode 均未漂移；刷新后的 `war_progress_after` 仍显示 subject `33554818@5692` moving、
+  hostile `117440838@5693` moving，双方均非 combat/retreat。run 因而继续诚实 RED，cleanup 全绿；
+  `report.json` SHA-256 为
+  `4D21FD1662906C094544E80D15B840B7B31BB745EF8F1F9DBDD974054B64085C`，
+  `first-blocker.json` SHA-256 为
+  `39CA98290B6B595800CB51FD7D67045DDBD4B7D69C5DF0B6BC8E0309D0BDDE66`。
+  这排除了“只因 endpoint 缓存陈旧而漏看已发生接触”，并把缺口收窄为闭区间 prediction boundary
+  早于实际 movement/contact state 落盘。
+- [static-ready] 下一步只允许一次相邻日 follow-up：首日必须是所有 conflict 都恰好落在
+  `horizon_end == ending_date == starting_date + 24` 的 point overlap，subject 在起止帧均留在同一
+  contact Province 且首跳晚于该端点；marker 绑定 episode、subject、Province 与相邻日期。第二日
+  只能接受 episode terminal、active-war set change、subject army removed、active combat 或 retreat。
+  `83886265` 在 `53216472` 入省或任何 hostile intent/位置变化均不能冒充成功；到该日仍无强状态就
+  必须 RED，禁止第三日。完整 Python 回归为 `1394 passed, 2 skipped, 928 subtests passed`；其中
+  province drift、敌军 ID 替换、跨 restore marker 与第二敌只入省的负例都已覆盖，实机续行前不写
+  production-live。
 
 ## 与 GUI 战斗预测严格分离
 

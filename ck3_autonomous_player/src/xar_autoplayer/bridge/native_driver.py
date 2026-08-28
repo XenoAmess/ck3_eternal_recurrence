@@ -8494,14 +8494,31 @@ class NativeHeadlessGameplayDriver:
         )
         if proof.get("proof_kind") != "unavoidable_current_province_contact":
             return result
+        strict_endpoint_followup = proof.get("strict_endpoint_followup") is True
         ending = self.take_internal_semantic_snapshot()
         postcondition = _unavoidable_contact_transition_postcondition(
             starting,
             ending,
             proof=proof,
+            strong_only=strict_endpoint_followup,
         )
         if postcondition is None:
             result = _retarget_timeline_step_result(result, ending)
+            prior_boundary = proof.get("prior_contact_boundary")
+            if strict_endpoint_followup and isinstance(prior_boundary, dict):
+                result["contact_followup"] = {
+                    "status": "pending_strong_transition",
+                    "episode_run_id": starting.get("episode_run_id"),
+                    "subject_army_id": proof.get("subject_army_id"),
+                    "contact_province_id": prior_boundary.get(
+                        "contact_province_id"
+                    ),
+                    "starting_date_raw": starting.get("date_raw"),
+                    "ending_date_raw": ending.get("date_raw"),
+                    "prior_boundary_ending_date_raw": prior_boundary.get(
+                        "ending_date_raw"
+                    ),
+                }
             refresh_deadline = time.monotonic() + self.command_timeout_seconds
             refresh_from_revision = ending.get("revision")
             refresh_from_native_revision = ending.get("native_revision")
@@ -8591,18 +8608,46 @@ class NativeHeadlessGameplayDriver:
                 starting,
                 ending,
                 proof=proof,
+                strong_only=strict_endpoint_followup,
             )
             if postcondition is None:
+                postcondition = (
+                    None
+                    if strict_endpoint_followup
+                    else _predicted_contact_boundary_postcondition(
+                        starting,
+                        ending,
+                        proof=proof,
+                    )
+                )
+            if postcondition is None:
+                transition_requirement = (
+                    "episode, war, subject-army, combat, or retreat transition"
+                    if strict_endpoint_followup
+                    else "combat, retreat, war/episode transition, or hostile "
+                    "state change"
+                )
+                if strict_endpoint_followup:
+                    contact_followup = result.get("contact_followup")
+                    if isinstance(contact_followup, dict):
+                        contact_followup["status"] = (
+                            "exhausted_without_strong_transition"
+                        )
+                        contact_followup["ending_date_raw"] = ending.get(
+                            "date_raw"
+                        )
                 raise StepPostconditionError(
                     "the proof-bound unavoidable contact day advanced and "
-                    "published one same-date refresh, but no combat, retreat, "
-                    "war/episode transition, or hostile state change was "
-                    "observed; refreshed_revision="
+                    "published one same-date refresh, but the required "
+                    "transition was not observed; required_transition="
+                    f"{transition_requirement}; refreshed_revision="
                     f"{ending.get('revision')}, refreshed_native_revision="
                     f"{ending.get('native_revision')}",
                     step_result=result,
                     selected_step=step,
                 )
+        if postcondition is not None and strict_endpoint_followup:
+            result.pop("contact_followup", None)
         return {**result, "contact_transition": postcondition}
 
     def _execute_life_advance(
@@ -12174,14 +12219,134 @@ def _fresh_route_contact_advance_proofs(
         step = advance_route_contact_horizon_step(
             subject_army_id, target_province_id, hostiles
         )
-        advances[step] = {
+        advance_proof: dict[str, object] = {
             "proof_kind": proof_kind,
             "subject_army_id": subject_army_id,
             "target_province_id": target_province_id,
             "hostile_army_ids": list(hostiles),
             "contact_horizon": normalized_horizon,
         }
+        if proof_kind == "unavoidable_current_province_contact":
+            contact_province_id = subject_route.get("current_province_id")
+            if _predicted_contact_followup_exhausted(
+                snapshot,
+                history,
+                subject_army_id=subject_army_id,
+                contact_province_id=contact_province_id,
+            ):
+                continue
+            prior_boundary = _adjacent_predicted_contact_boundary(
+                snapshot,
+                history,
+                subject_army_id=subject_army_id,
+                contact_province_id=contact_province_id,
+            )
+            if prior_boundary is not None:
+                advance_proof.update(
+                    {
+                        "strict_endpoint_followup": True,
+                        "prior_contact_boundary": prior_boundary,
+                    }
+                )
+        advances[step] = advance_proof
     return advances
+
+
+def _adjacent_predicted_contact_boundary(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+    *,
+    subject_army_id: int,
+    contact_province_id: object,
+) -> dict[str, object] | None:
+    """Bind the next exact day to the latest surviving endpoint marker."""
+    date_raw = snapshot.get("date_raw")
+    episode_run_id = snapshot.get("episode_run_id")
+    if (
+        isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or not isinstance(episode_run_id, str)
+        or not episode_run_id
+        or not _positive_native_id(contact_province_id)
+    ):
+        return None
+
+    # Use the complete surviving branch, not the post-restore slice.  A
+    # checkpoint taken after the boundary preserves its marker when restore
+    # truncates history to the checkpoint history_index; hiding everything
+    # before the restore row would incorrectly grant another boundary day.
+    for row in reversed(history):
+        command, result = _effective_native_history_entry(row)
+        if not is_life_advance_step(command):
+            continue
+        if row.get("ok") is not True or not isinstance(result, dict):
+            return None
+        parsed = parse_advance_route_contact_horizon_step(command)
+        transition = result.get("contact_transition")
+        if parsed is None or not isinstance(transition, dict):
+            return None
+        command_subject_id, _target_province_id, _hostile_army_ids = parsed
+        if not (
+            command_subject_id == subject_army_id
+            and transition.get("status") == "predicted_only"
+            and transition.get("postcondition")
+            == "predicted_contact_boundary_reached"
+            and transition.get("contact_observed") is False
+            and transition.get("proof_kind")
+            == "unavoidable_current_province_contact"
+            and transition.get("episode_run_id") == episode_run_id
+            and transition.get("subject_army_id") == subject_army_id
+            and transition.get("contact_province_id") == contact_province_id
+            and transition.get("ending_date_raw") == date_raw
+            and result.get("ending_date_raw") == date_raw
+        ):
+            return None
+        return copy.deepcopy(transition)
+    return None
+
+
+def _predicted_contact_followup_exhausted(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+    *,
+    subject_army_id: int,
+    contact_province_id: object,
+) -> bool:
+    """Refuse a third exact day after a strict follow-up ended RED."""
+    date_raw = snapshot.get("date_raw")
+    episode_run_id = snapshot.get("episode_run_id")
+    if (
+        isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or not isinstance(episode_run_id, str)
+        or not episode_run_id
+    ):
+        return False
+    for row in reversed(history):
+        command, result = _effective_native_history_entry(row)
+        if not is_life_advance_step(command):
+            continue
+        parsed = parse_advance_route_contact_horizon_step(command)
+        followup = (
+            result.get("contact_followup")
+            if isinstance(result, dict)
+            else None
+        )
+        return bool(
+            row.get("ok") is False
+            and parsed is not None
+            and parsed[0] == subject_army_id
+            and isinstance(followup, dict)
+            and followup.get("status")
+            in {
+                "pending_strong_transition",
+                "exhausted_without_strong_transition",
+            }
+            and followup.get("episode_run_id") == episode_run_id
+            and followup.get("subject_army_id") == subject_army_id
+            and followup.get("ending_date_raw") == date_raw
+        )
+    return False
 
 
 def _unavoidable_contact_transition_postcondition(
@@ -12189,6 +12354,7 @@ def _unavoidable_contact_transition_postcondition(
     ending: dict[str, object],
     *,
     proof: dict[str, object],
+    strong_only: bool = False,
 ) -> dict[str, object] | None:
     """Require an observed game-state transition after the exact contact day."""
     subject_army_id = proof.get("subject_army_id")
@@ -12253,6 +12419,8 @@ def _unavoidable_contact_transition_postcondition(
         return {**base, "postcondition": "active_combat_observed"}
     if _army_retreating(subject):
         return {**base, "postcondition": "retreat_observed"}
+    if strong_only:
+        return None
 
     contact_horizon = proof.get("contact_horizon")
     subject_route = (
@@ -12351,6 +12519,145 @@ def _unavoidable_contact_transition_postcondition(
             "changed_hostile_army_ids": changed_hostile_ids,
         }
     return None
+
+
+def _predicted_contact_boundary_postcondition(
+    starting: dict[str, object],
+    ending: dict[str, object],
+    *,
+    proof: dict[str, object],
+) -> dict[str, object] | None:
+    """Record one conservative closed-endpoint prediction without claiming contact."""
+    if proof.get("strict_endpoint_followup") is True:
+        return None
+    subject_army_id = proof.get("subject_army_id")
+    contact_horizon = proof.get("contact_horizon")
+    subject_route = (
+        contact_horizon.get("subject_route")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    conflicts = (
+        contact_horizon.get("conflicts")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    starting_date_raw = starting.get("date_raw")
+    ending_date_raw = ending.get("date_raw")
+    horizon_start_date_raw = (
+        contact_horizon.get("horizon_start_date_raw")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    horizon_end_date_raw = (
+        contact_horizon.get("horizon_end_date_raw")
+        if isinstance(contact_horizon, dict)
+        else None
+    )
+    contact_province_id = (
+        subject_route.get("current_province_id")
+        if isinstance(subject_route, dict)
+        else None
+    )
+    subject_arrival_date_raws = (
+        subject_route.get("arrival_date_raws")
+        if isinstance(subject_route, dict)
+        else None
+    )
+    episode_run_id = starting.get("episode_run_id")
+    starting_diagnostics = starting.get("diagnostics")
+    ending_diagnostics = ending.get("diagnostics")
+    starting_episode_character_id = starting.get("episode_character_id")
+    if (
+        not _positive_native_id(subject_army_id)
+        or not _positive_native_id(contact_province_id)
+        or not isinstance(episode_run_id, str)
+        or not episode_run_id
+        or ending.get("episode_run_id") != episode_run_id
+        or starting.get("map_ready") is not True
+        or starting.get("paused") is not True
+        or ending.get("map_ready") is not True
+        or ending.get("paused") is not True
+        or not _positive_native_id(starting_episode_character_id)
+        or ending.get("episode_character_id") != starting_episode_character_id
+        or starting.get("local_player_id") != ending.get("local_player_id")
+        or not isinstance(starting_diagnostics, dict)
+        or not isinstance(ending_diagnostics, dict)
+        or not _positive_native_id(starting_diagnostics.get("bridge_pid"))
+        or isinstance(
+            starting_diagnostics.get("connection_generation"), bool
+        )
+        or not isinstance(
+            starting_diagnostics.get("connection_generation"), int
+        )
+        or starting_diagnostics.get("connection_generation") <= 0
+        or starting_diagnostics.get("connection_generation")
+        != ending_diagnostics.get("connection_generation")
+        or starting_diagnostics.get("bridge_pid")
+        != ending_diagnostics.get("bridge_pid")
+        or isinstance(starting_date_raw, bool)
+        or not isinstance(starting_date_raw, int)
+        or ending_date_raw != starting_date_raw + 24
+        or horizon_start_date_raw != starting_date_raw
+        or horizon_end_date_raw != ending_date_raw
+        or not isinstance(conflicts, list)
+        or not conflicts
+        or not isinstance(subject_arrival_date_raws, list)
+        or not subject_arrival_date_raws
+        or isinstance(subject_arrival_date_raws[0], bool)
+        or not isinstance(subject_arrival_date_raws[0], int)
+        or subject_arrival_date_raws[0] <= horizon_end_date_raw
+    ):
+        return None
+    starting_subject = _army_by_id(starting, int(subject_army_id))
+    ending_subject = _army_by_id(ending, int(subject_army_id))
+    starting_remaining_route = _canonical_remaining_route(starting_subject)
+    ending_remaining_route = _canonical_remaining_route(ending_subject)
+    if not (
+        isinstance(starting_subject, dict)
+        and isinstance(ending_subject, dict)
+        and starting_subject.get("controllable") is True
+        and ending_subject.get("controllable") is True
+        and starting_subject.get("current_province_id") == contact_province_id
+        and ending_subject.get("current_province_id") == contact_province_id
+        and starting_subject.get("move_target_province_id")
+        == ending_subject.get("move_target_province_id")
+        and starting_subject.get("move_target_province_id")
+        == proof.get("target_province_id")
+        and isinstance(starting_remaining_route, list)
+        and bool(starting_remaining_route)
+        and ending_remaining_route == starting_remaining_route
+        and not _army_in_active_combat(starting_subject)
+        and not _army_retreating(starting_subject)
+        and not _army_in_active_combat(ending_subject)
+        and not _army_retreating(ending_subject)
+    ):
+        return None
+    if not all(
+        isinstance(conflict, dict)
+        and conflict.get("kind") == "same_province"
+        and conflict.get("province_id") == contact_province_id
+        and _positive_native_id(conflict.get("hostile_army_id"))
+        and conflict.get("overlap_start_date_raw") == ending_date_raw
+        and conflict.get("overlap_end_date_raw") == ending_date_raw
+        for conflict in conflicts
+    ):
+        return None
+    conflict_hostile_army_ids = sorted(
+        {int(conflict["hostile_army_id"]) for conflict in conflicts}
+    )
+    return {
+        "status": "predicted_only",
+        "proof_kind": "unavoidable_current_province_contact",
+        "postcondition": "predicted_contact_boundary_reached",
+        "contact_observed": False,
+        "episode_run_id": episode_run_id,
+        "subject_army_id": int(subject_army_id),
+        "contact_province_id": int(contact_province_id),
+        "conflict_hostile_army_ids": conflict_hostile_army_ids,
+        "starting_date_raw": starting_date_raw,
+        "ending_date_raw": ending_date_raw,
+    }
 
 
 def _canonical_remaining_route(army: object) -> list[int] | None:
