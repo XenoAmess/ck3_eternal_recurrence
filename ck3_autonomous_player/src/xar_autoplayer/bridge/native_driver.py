@@ -247,6 +247,7 @@ _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(
 _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-1", "resume-map", "pause-map"}
 )
+DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED = 3
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 _EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
 _EPISODE_SEED_METADATA_FILENAME = "episode-seed.json"
@@ -757,6 +758,10 @@ class NativeHeadlessGameplayDriver:
         restore_poll_interval_seconds: float = 0.05,
         settlement_timeout_seconds: float = 30.0,
         settlement_poll_interval_seconds: float = 0.05,
+        route_contact_timeline_speed: int = (
+            DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
+        ),
+        allow_route_contact_high_speed_ab: bool = False,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -764,6 +769,21 @@ class NativeHeadlessGameplayDriver:
         )
         self.life_advance_timeout_seconds = _positive_seconds(
             life_advance_timeout_seconds, "life_advance_timeout_seconds"
+        )
+        self.route_contact_timeline_speed = _timeline_speed(
+            route_contact_timeline_speed,
+            "route_contact_timeline_speed",
+        )
+        if (
+            self.route_contact_timeline_speed > 3
+            and allow_route_contact_high_speed_ab is not True
+        ):
+            raise ValueError(
+                "route_contact_timeline_speed 4..5 requires "
+                "allow_route_contact_high_speed_ab=True"
+            )
+        self.allow_route_contact_high_speed_ab = (
+            allow_route_contact_high_speed_ab is True
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -8487,9 +8507,19 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "route-contact one-day advance proof is stale or incomplete"
             )
+        proof_kind = proof.get("proof_kind")
+        preferred_timeline_speed = (
+            self.route_contact_timeline_speed
+            if proof_kind == "contact_free"
+            else 1
+        )
         result = self._execute_life_advance(
             expected_revision=expected_revision,
             exact_one_day=True,
+            exact_one_day_proof_kind=(
+                str(proof_kind) if isinstance(proof_kind, str) else None
+            ),
+            exact_one_day_preferred_speed=preferred_timeline_speed,
             result_step=step,
         )
         if proof.get("proof_kind") != "unavoidable_current_province_contact":
@@ -8655,6 +8685,8 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
         exact_one_day: bool = False,
+        exact_one_day_proof_kind: str | None = None,
+        exact_one_day_preferred_speed: int = 1,
         result_step: str = "life-advance",
         starting_snapshot: dict[str, object] | None = None,
     ) -> dict[str, object]:
@@ -8728,10 +8760,16 @@ class NativeHeadlessGameplayDriver:
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
+        primitive_steps = set(
+            _string_list(self.state.capabilities().get("action_steps"))
+        )
         timeline_speed, timeline_policy = _life_advance_timeline_policy(
             starting,
             horizon_days=horizon_days,
             exact_one_day=exact_one_day,
+            exact_one_day_proof_kind=exact_one_day_proof_kind,
+            exact_one_day_preferred_speed=exact_one_day_preferred_speed,
+            available_action_steps=primitive_steps,
         )
         speed_step = f"set-speed-{timeline_speed}"
         if speed_step not in self.capabilities()["action_steps"]:
@@ -10370,20 +10408,27 @@ def _life_advance_timeline_policy(
     *,
     horizon_days: int,
     exact_one_day: bool,
+    exact_one_day_proof_kind: str | None = None,
+    exact_one_day_preferred_speed: int = 1,
+    available_action_steps: set[str] | None = None,
 ) -> tuple[int, str]:
     """Choose wall-clock speed while retaining paused tactical sampling.
 
     CK3 still executes the same native daily movement/contact chain at every
-    public timeline speed.  Speed one therefore remains reserved for slices
-    whose correctness depends on a player route, combat/retreat, an Assault,
-    a hostile route intersecting any player army, or the exact one-day contact
-    transaction.  Complete enemy routes that are wholly disjoint from every
-    known-stationary controllable army may use speed three while retaining the
-    one-day requested horizon and the same paused re-observation.  Route-free
-    bounded slices retain speed five.
+    public timeline speed.  A proof-bound contact-free day may therefore use
+    the configured speed-1..5 A/B arm while retaining the exact same +24
+    postcondition.  A known unavoidable endpoint remains speed one because it
+    must observe the contact transition itself.  Complete enemy routes that
+    are wholly disjoint from every known-stationary controllable army may use
+    speed three while retaining the one-day requested horizon and the same
+    paused re-observation.  Route-free bounded slices retain speed five.
     """
     if exact_one_day:
-        return 1, "exact_one_day_contact"
+        return _exact_route_contact_timeline_policy(
+            proof_kind=exact_one_day_proof_kind,
+            preferred_speed=exact_one_day_preferred_speed,
+            available_action_steps=available_action_steps,
+        )
     if horizon_days != 1:
         return 5, "bounded_non_tactical"
 
@@ -10415,6 +10460,41 @@ def _life_advance_timeline_policy(
     if _remote_enemy_routes_speed_three_ready(snapshot, enemy_routes):
         return 3, "remote_enemy_route"
     return 1, "enemy_route_imminent_or_unknown"
+
+
+def _exact_route_contact_timeline_policy(
+    *,
+    proof_kind: str | None,
+    preferred_speed: int,
+    available_action_steps: set[str] | None,
+) -> tuple[int, str]:
+    """Select an exact-day route arm without weakening its +24 contract.
+
+    Speed three is the production candidate.  Speeds four and five are
+    only constructible when the driver itself was created with the explicit
+    high-speed A/B admission; this pure selector merely consumes that already
+    validated preference.  Old bridges that do not advertise the requested
+    public speed retain a deterministic speed-one fallback.
+    """
+    selected_proof_kind = (
+        proof_kind if isinstance(proof_kind, str) else "unknown"
+    )
+    if selected_proof_kind != "contact_free":
+        return 1, "exact_one_day_unavoidable_contact"
+    requested = _timeline_speed(
+        preferred_speed, "exact_one_day_preferred_speed"
+    )
+    steps = (
+        available_action_steps
+        if isinstance(available_action_steps, set)
+        else set()
+    )
+    if f"set-speed-{requested}" in steps:
+        return requested, f"exact_one_day_contact_free_speed_{requested}"
+    return (
+        1,
+        f"exact_one_day_contact_free_speed_{requested}_fallback_speed_1",
+    )
 
 
 def _remote_enemy_routes_speed_three_ready(
@@ -13878,6 +13958,17 @@ def _positive_seconds(value: object, name: str) -> float:
     ):
         raise ValueError(f"{name} must be finite and positive")
     return float(value)
+
+
+def _timeline_speed(value: object, name: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value < 1
+        or value > 5
+    ):
+        raise ValueError(f"{name} must be an integer from 1 through 5")
+    return value
 
 
 def _validate_pipe_name(value: object) -> str:

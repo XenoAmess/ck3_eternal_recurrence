@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import uuid
 
+from .bridge.native_driver import DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
 from .environment import (
     EnvironmentSpec,
     ensure_state_path_safe,
@@ -42,6 +43,10 @@ def native_one_generation_run(
         ONE_GENERATION_CHECKPOINT_CADENCE
     ),
     native_bridge: NativeBridgeLaunchConfig | None = None,
+    route_contact_timeline_speed: int = (
+        DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
+    ),
+    allow_route_contact_high_speed_ab: bool = False,
 ) -> dict[str, object]:
     """Run until this episode's scored death settlement or the first blocker."""
     if isinstance(max_turns, bool) or not isinstance(max_turns, int) or max_turns < 1:
@@ -92,6 +97,10 @@ def native_one_generation_run(
             "checkpoint_every_eligible_advances": (
                 checkpoint_every_eligible_advances
             ),
+            "route_contact_timeline_speed": route_contact_timeline_speed,
+            "allow_route_contact_high_speed_ab": (
+                allow_route_contact_high_speed_ab is True
+            ),
         },
         "status": "starting",
         "outcome": "in_progress",
@@ -127,6 +136,10 @@ def native_one_generation_run(
                 checkpoint_every_eligible_advances
             ),
             completion_contract="one_generation",
+            route_contact_timeline_speed=route_contact_timeline_speed,
+            allow_route_contact_high_speed_ab=(
+                allow_route_contact_high_speed_ab
+            ),
         )
         core_report = core
         _rebind_invalidated_checkpoint_to_seed_archive(

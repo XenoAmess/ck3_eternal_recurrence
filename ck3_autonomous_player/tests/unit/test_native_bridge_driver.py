@@ -26,8 +26,10 @@ from xar_autoplayer.bridge.driver import (
 )
 from xar_autoplayer.bridge.native_driver import (
     ConfiguredHybridFallbackDriver,
+    DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+    _exact_route_contact_timeline_policy,
     _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
     _is_deferred_read_only_history_step,
@@ -6331,6 +6333,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.army-routes",
                 "game.command.query-route-contact-horizon-v1-N",
                 "game.command.set-speed-1",
+                "game.command.set-speed-3",
                 "game.command.resume-map",
                 "game.command.pause-map",
             )
@@ -6438,23 +6441,23 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": result,
                 }
             )
-            if step == "set-speed-1":
+            if step == "set-speed-3":
                 publish_snapshot(
-                    41, paused=True, date_raw=start_date, speed=1
+                    41, paused=True, date_raw=start_date, speed=3
                 )
             elif step == "resume-map":
                 publish_snapshot(
                     42,
                     paused=False,
                     date_raw=start_date + 24,
-                    speed=1,
+                    speed=3,
                 )
             elif step == "pause-map":
                 publish_snapshot(
                     43,
                     paused=True,
                     date_raw=start_date + 24,
-                    speed=1,
+                    speed=3,
                 )
 
         endpoint.send_hook = answer
@@ -6476,10 +6479,69 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["starting_date_raw"], start_date)
         self.assertEqual(result["ending_date_raw"], start_date + 24)
         self.assertEqual(result["elapsed_days"], 1)
-        self.assertEqual(result["timeline_speed"], 1)
-        self.assertEqual(result["timeline_policy"], "exact_one_day_contact")
+        self.assertEqual(
+            result["timeline_speed"], DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
+        )
+        self.assertEqual(
+            result["timeline_policy"],
+            "exact_one_day_contact_free_speed_3",
+        )
         self.assertTrue(result["paused"])
         self.assertNotIn(advance_step, driver.capabilities()["action_steps"])
+
+    def test_exact_contact_selector_represents_all_five_speed_arms(self) -> None:
+        all_speed_steps = {f"set-speed-{speed}" for speed in range(1, 6)}
+        for speed in range(1, 6):
+            with self.subTest(speed=speed):
+                self.assertEqual(
+                    _exact_route_contact_timeline_policy(
+                        proof_kind="contact_free",
+                        preferred_speed=speed,
+                        available_action_steps=all_speed_steps,
+                    ),
+                    (speed, f"exact_one_day_contact_free_speed_{speed}"),
+                )
+
+        self.assertEqual(
+            _exact_route_contact_timeline_policy(
+                proof_kind="unavoidable_current_province_contact",
+                preferred_speed=5,
+                available_action_steps=all_speed_steps,
+            ),
+            (1, "exact_one_day_unavoidable_contact"),
+        )
+        self.assertEqual(
+            _exact_route_contact_timeline_policy(
+                proof_kind="contact_free",
+                preferred_speed=4,
+                available_action_steps={"set-speed-1"},
+            ),
+            (
+                1,
+                "exact_one_day_contact_free_speed_4_fallback_speed_1",
+            ),
+        )
+
+    def test_high_speed_route_contact_arm_requires_explicit_admission(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        with self.assertRaisesRegex(ValueError, "requires.*high_speed_ab"):
+            NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                route_contact_timeline_speed=4,
+            )
+
+        admitted_endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            admitted_endpoint.pipe_name,
+            endpoint=admitted_endpoint,
+            route_contact_timeline_speed=5,
+            allow_route_contact_high_speed_ab=True,
+        )
+        self.assertEqual(driver.route_contact_timeline_speed, 5)
+        driver.close()
 
     def test_unavoidable_contact_proof_observes_combat_after_exact_day(
         self,
@@ -6658,6 +6720,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["ending_date_raw"], start_date + 24)
         self.assertEqual(result["timeline_speed"], 1)
         self.assertEqual(
+            result["timeline_policy"],
+            "exact_one_day_unavoidable_contact",
+        )
+        self.assertEqual(
             result["contact_transition"]["postcondition"],
             "active_combat_observed",
         )
@@ -6824,7 +6890,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "elapsed_days": 1,
                         "requested_horizon_days": 1,
                         "timeline_speed": 1,
-                        "timeline_policy": "exact_one_day_contact",
+                        "timeline_policy": (
+                            "exact_one_day_unavoidable_contact"
+                        ),
                         "progress_status": "postcondition",
                         "war_progress_before": {},
                         "war_progress_after": {},

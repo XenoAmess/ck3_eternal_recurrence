@@ -105,6 +105,8 @@ class NativeOneGenerationRunTests(unittest.TestCase):
             native_bridge=self.config,
             checkpoint_every_eligible_advances=180,
             completion_contract="one_generation",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
         )
         return report
 
@@ -351,6 +353,8 @@ class NativeOneGenerationRunTests(unittest.TestCase):
                     timeout_seconds=604800,
                     readiness_timeout_seconds=300,
                     checkpoint_every_eligible_advances=3,
+                    route_contact_timeline_speed=3,
+                    allow_route_contact_high_speed_ab=False,
                 )
                 self.assertIn(f'"ok": {str(ok).lower()}', stdout.getvalue())
 

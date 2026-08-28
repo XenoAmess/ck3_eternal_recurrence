@@ -22,7 +22,10 @@ from .bridge.driver import (
     UnsupportedStepError,
 )
 from .bridge.event_contract import parse_event_option_step
-from .bridge.native_driver import NativeHeadlessGameplayDriver
+from .bridge.native_driver import (
+    DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
+    NativeHeadlessGameplayDriver,
+)
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
@@ -83,6 +86,10 @@ def native_auto_run(
         CHECKPOINT_EVERY_ELIGIBLE_ADVANCES
     ),
     completion_contract: str = "bounded",
+    route_contact_timeline_speed: int = (
+        DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
+    ),
+    allow_route_contact_high_speed_ab: bool = False,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -99,6 +106,10 @@ def native_auto_run(
     checkpoint_cadence = _positive_integer(
         checkpoint_every_eligible_advances,
         "checkpoint_every_eligible_advances",
+    )
+    route_contact_speed = _route_contact_speed(
+        route_contact_timeline_speed,
+        allow_high_speed_ab=allow_route_contact_high_speed_ab,
     )
     if completion_contract not in {"bounded", "one_generation"}:
         raise AgentError(
@@ -280,6 +291,10 @@ def native_auto_run(
             config.pipe_name,
             state_dir=spec.state_dir,
             save_dir=spec.profile_dir / "save games",
+            route_contact_timeline_speed=route_contact_speed,
+            allow_route_contact_high_speed_ab=(
+                allow_route_contact_high_speed_ab
+            ),
         )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
@@ -1009,6 +1024,10 @@ def native_auto_run(
             "max_wall_seconds": timeout,
             "readiness_timeout_seconds": readiness_timeout,
             "checkpoint_every_eligible_advances": checkpoint_cadence,
+            "route_contact_timeline_speed": route_contact_speed,
+            "allow_route_contact_high_speed_ab": (
+                allow_route_contact_high_speed_ab is True
+            ),
         },
         "identity": _identity(config, readiness, spec),
         "readiness": _public_binding(readiness) if readiness is not None else None,
@@ -2417,6 +2436,26 @@ def _sha256_file(path: Path) -> str:
 def _positive_integer(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise AgentError(f"{name} must be a positive integer")
+    return value
+
+
+def _route_contact_speed(
+    value: object, *, allow_high_speed_ab: bool
+) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value < 1
+        or value > 5
+    ):
+        raise AgentError(
+            "route_contact_timeline_speed must be an integer from 1 through 5"
+        )
+    if value > 3 and allow_high_speed_ab is not True:
+        raise AgentError(
+            "route_contact_timeline_speed 4..5 is a targeted A/B arm; "
+            "set allow_route_contact_high_speed_ab=True explicitly"
+        )
     return value
 
 

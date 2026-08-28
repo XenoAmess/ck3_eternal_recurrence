@@ -1,6 +1,6 @@
 # 战斗推进速度与暂停边界
 
-状态：**1/2/3 ongoing parity live GREEN / five-speed terminal strict parity RED-inconclusive / production selector unchanged**
+状态：**1/2/3 ongoing parity live GREEN / five-speed terminal strict parity RED-inconclusive / contact-free route speed-3 implementation-ready, targeted live A/B pending**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -40,6 +40,12 @@
    phase/day、winner、Result/wipe、ordered sides 与 removal 全部相同；只有 battle warscore 漂移。1/2/3 在同档两次间
    也漂移；合并前一轮第三样本后 4/5 同样出现同档不同值。因此当前证据证明“不能归因速度”，不能把 RED 写成
    高速少算，也不能把去掉 warscore 后的全等冒充严格 GREEN。
+7. **当前 G1 的直接吞吐修复不是把未知接敌日盲跑成多日，而是给现有 exact-day proof 换档。**
+   [implementation-confirmed] `one_day_contact_free=true` 且全军 proof conjunction 成立时，production runner 默认选择
+   speed 3，并继续要求最终 paused date 严格为 `start+24`；若 proof 是
+   `unavoidable_current_province_contact`，仍固定 speed 1 并验证 contact transition。speed 1–5 都有同一 selector arm，
+   其中 speed 4–5 只在显式 `--allow-route-contact-high-speed-ab` 下准入 targeted A/B，speed 1/2 保留显式对照。
+   该改动尚待当前 checkpoint 的五档配对实机，不能提前写成 production-live。
 
 按 defines 计算，连续 15 个纯原生日的理论时间是：1 速 `30s`、2 速 `15s`、3 速 `7.5s`、4 速
 `3s`、5 速负载相关。若一次“游戏日”事务现实里接近半分钟，主要成本来自 pause、paused rich query、Python
@@ -54,15 +60,16 @@ Bridge heartbeat 名义周期是 250 ms；表中 heartbeat 数量只用于比较
 | 速度 | defines 秒/游戏日 | 名义 heartbeat/日 | Python 在下一日界前的名义窗口 | 当前 composite selector | 战争定位 |
 |---:|---:|---:|---:|---|---|
 | 1 | `2.0s` | `8` | `2.0s` | tactical route/combat/retreat/Assault | 最宽外部反应窗；决策边界与未知状态回退档 |
-| 2 | `1.0s` | `4` | `1.0s` | 尚不自动选择；原生命令已支持 | 第一档 battle A/B；目标是取代大部分 1 速自动阶段 |
+| 2 | `1.0s` | `4` | `1.0s` | contact-free exact route 默认；battle 尚未自动选择 | 第一档 route/battle A/B；目标是取代大部分 1 速自动阶段 |
 | 3 | `0.5s` | `2` | `0.5s` | 已用于完整且远离玩家的敌军路线 | 第二档 battle A/B；只在 speed-2 envelope 闭合后晋级 |
 | 4 | `0.2s` | `0.8` | 小于一个 heartbeat | 尚不自动选择；原生命令已支持 | 只能配 native deadline/sentinel；检验它是否有独立于 5 速的价值 |
 | 5 | `0.0s` | 负载相关 | 无有限上界 | route-free bounded slice | 和平、无路线战争、普通围城；战斗只准 crush + native sentinel |
 
 [implementation-confirmed] exact adapter 和 wire 已经发布 `set-speed-1..5`，`SubmitSetSpeed` 也接受完整
-`1..5` 并写 native `0..4`；不需要为 2/4 速新增 ABI。当前 Python `_life_advance_timeline_policy` 只自动选择
-`1/3/5`，而 controllable combat/retreat 的 horizon 固定为一日并选择 speed 1。2/4 速 A/B 只需最小 selector/harness
-接线，不能把“命令存在”写成战斗策略已经 live。
+`1..5` 并写 native `0..4`；不需要为 2/4 速新增 ABI。当前 Python selector 对普通 bounded slice 使用既有
+`1/3/5`，对 proof-bound contact-free exact day 默认 speed 3；controllable combat/retreat、Assault、未知 player route
+和 unavoidable contact 仍选择 speed 1。speed 3–5 的 exact-route selector arm 需要显式 high-speed A/B 准入，不能把
+“命令存在”或 research arm 写成战斗策略已经 live。
 
 ## 采样词汇与 guard
 
@@ -385,6 +392,45 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
 `insufficient_matched_elapsed`，不能误报为计算不等价；相同 elapsed/final date 而 normalized frame 不同才记
 `mismatch`。完整 session 仍由 managed cleanup 验证进程树退出。
 
+### 当前 route-contact speed-1..5 targeted A/B
+
+[implementation-confirmed] 正式 runner 新增 `--route-contact-speed {1,2,3,4,5}`。默认值为 `3`；speed `4..5`
+还必须显式给出 `--allow-route-contact-high-speed-ab`，避免把 research arm 混入默认 G1。selector 只在 fresh
+`contact_free` exact-day proof 上消费该档位；unavoidable contact、普通 combat/retreat、Assault 与未知 route
+不受参数影响，继续 speed 1。若目标 bridge 没有广告所选 `set-speed-N`，同一 proof 自动回退 speed 1 并在
+`timeline_policy` 中留下 `fallback_speed_1`，不会把 ACK 当成提速成功。
+
+同一 checkpoint 的两个隔离 state 分别运行：
+
+```powershell
+& '<python>' 'ck3_autonomous_player/agent.py' `
+  --state-dir <speed-1-state> --game-dir <CK3-game-dir> `
+  --bridge-mode native-headless --bridge-pipe <speed-1-pipe> `
+  --bridge-dll <exact-build-dll> --bridge-injector <injector> `
+  native-one-generation --max-turns 80 --timeout 1800 `
+  --readiness-timeout 300 --checkpoint-every-advances 3 `
+  --route-contact-speed 1
+
+& '<python>' 'ck3_autonomous_player/agent.py' `
+  --state-dir <speed-3-state> --game-dir <CK3-game-dir> `
+  --bridge-mode native-headless --bridge-pipe <speed-3-pipe> `
+  --bridge-dll <exact-build-dll> --bridge-injector <injector> `
+  native-one-generation --max-turns 80 --timeout 1800 `
+  --readiness-timeout 300 --checkpoint-every-advances 3 `
+  --route-contact-speed 3
+```
+
+两臂必须从 size/SHA/date/history/episode 全同的 checkpoint 开始。最小 GREEN 条件是：两臂都至少完成 10 个
+`contact_free` proof-bound advances；每笔 `elapsed_days=1`、`ending_date_raw=starting_date_raw+24`、最终 paused，
+没有 contact/route/postcondition blocker；speed-1 的 `timeline_policy=exact_one_day_contact_free_speed_1`，speed-3 为
+`...speed_3`；同一 native date 的 ArmyID/current/target/remaining-route 与 hostile scope 投影等价；cleanup 全绿。
+吞吐只比较这些配对 advance 的端到端 wall time，speed 3 的中位数至少应快 `2x`。若任一 speed-3 笔超调、状态不等价
+或触发 fallback，就维持 speed 1；不能用其它查询/冷启动时间稀释该结果。
+
+当前 native proof 的 `horizon_end_date_raw` 固定为 `start+24`，proof 执行后也强制全部失效。因此这次修复没有假装
+支持 route 多日 tranche：要去掉逐日暂停，下一项必须先发布多日 timed-horizon 或 native contact/date sentinel，并重新做
+同 checkpoint parity；把一日 proof 重复使用两次没有证据基础。
+
 ### A. 五档 stop envelope
 
 1. 选一个无事件、无接触、无人物风险的 immutable checkpoint；在同一个恢复 episode 内交错轮换速度
@@ -424,6 +470,7 @@ ongoing parity，以及五档 terminal 核心结果一致/strict warscore inconc
 分布、running-safe tactical sentinel、native same-day stop、跨 phase/roster epoch 的多日 parity、可归因的五档 warscore
 分布或 speed-4/5 crush artifact。因此：
 
-- 当前 production 战中仍按一日 horizon、speed 1、paused RQ 工作；
+- 当前 production combat/retreat 仍按一日 horizon、speed 1、paused RQ 工作；proof-bound contact-free route 的
+  speed-3 selector 已 implementation-ready，但必须先过上述当前 checkpoint 配对，才能标 production-live；
 - speed 2/3 已是受控三日 tranche 的实证研究候选；下一步是 native sentinel 与更多决策 epoch，而不是再次重复同一 seed；
 - speed 4/5 战斗保持 research，不得写为 production-live。

@@ -186,6 +186,24 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="launch and bind the exact v2 xar_checkpoint save",
     )
+    native_auto_run_parser.add_argument(
+        "--route-contact-speed",
+        type=int,
+        choices=(1, 2, 3, 4, 5),
+        default=3,
+        help=(
+            "timeline speed for proof-bound contact-free one-day route "
+            "slices (default: 3)"
+        ),
+    )
+    native_auto_run_parser.add_argument(
+        "--allow-route-contact-high-speed-ab",
+        action="store_true",
+        help=(
+            "admit explicit speed 4..5 route-contact A/B arms; speed 1..3 "
+            "do not require this research flag"
+        ),
+    )
     one_generation_parser = commands.add_parser(
         "native-one-generation",
         help=(
@@ -215,6 +233,24 @@ def parser() -> argparse.ArgumentParser:
         help=(
             "eligible verified advances between durable checkpoints "
             f"(default: {ONE_GENERATION_CHECKPOINT_CADENCE})"
+        ),
+    )
+    one_generation_parser.add_argument(
+        "--route-contact-speed",
+        type=int,
+        choices=(1, 2, 3, 4, 5),
+        default=3,
+        help=(
+            "timeline speed for proof-bound contact-free one-day route "
+            "slices (default: 3)"
+        ),
+    )
+    one_generation_parser.add_argument(
+        "--allow-route-contact-high-speed-ab",
+        action="store_true",
+        help=(
+            "admit explicit speed 4..5 route-contact A/B arms; speed 1..3 "
+            "do not require this research flag"
         ),
     )
     commands.add_parser(
@@ -371,6 +407,10 @@ def main(argv: list[str] | None = None) -> int:
                 timeout_seconds=args.timeout,
                 readiness_timeout_seconds=args.readiness_timeout,
                 cold_start_checkpoint=args.cold_start_checkpoint,
+                route_contact_timeline_speed=args.route_contact_speed,
+                allow_route_contact_high_speed_ab=(
+                    args.allow_route_contact_high_speed_ab
+                ),
             )
         elif args.command == "native-one-generation":
             from .one_generation_run import native_one_generation_run
@@ -382,6 +422,10 @@ def main(argv: list[str] | None = None) -> int:
                 readiness_timeout_seconds=args.readiness_timeout,
                 checkpoint_every_eligible_advances=(
                     args.checkpoint_every_advances
+                ),
+                route_contact_timeline_speed=args.route_contact_speed,
+                allow_route_contact_high_speed_ab=(
+                    args.allow_route_contact_high_speed_ab
                 ),
             )
         elif args.command == "strategy-review":

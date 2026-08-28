@@ -252,7 +252,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
 `native-auto-run` 是单进程 ownership 入口：它先建立 named pipe，再启动受管 CK3，会在 exact-build、默认关闭启动探针、
@@ -268,7 +268,10 @@ paused map、episode identity 与 main-thread mailbox 全部就绪后有界执�
 未就绪、来源不匹配或必要纪录未落盘只会形成 blocker，不能判定结算完成。`terminal-settlement.json.one_life_settlement.final_score`
 是琉焰卿给出的“人生分数”，必须与该文件顶层 `score` 及 `recorded_episode.score` 完全一致。只有初始角色/run identity 始终不变、
 出现可见日期推进、上述 committed settlement、人生分数与 cross-run record 全部吻合、没有继承人 gameplay，且 CK3 进程树完成回收时
-才返回 `ok=true`。达到 turn/wall 上限只会得到
+才返回 `ok=true`。proof-bound `one_day_contact_free` route slice 默认使用 `--route-contact-speed 3`，仍逐笔要求 paused 且严格
+`+24`；不可避免的 contact endpoint 不受该参数影响，固定 speed 1。`1..5` 都可用于同 checkpoint targeted A/B；
+speed `4..5` 还必须显式附加 `--allow-route-contact-high-speed-ab`，它们在 native same-day sentinel live 前不是默认
+production 档。达到 turn/wall 上限只会得到
 `bounded_incomplete`；可保存的尾部仍会 checkpoint，但绝不冒充一代完成。最终 `report.json` 总是保留完整 turns/checkpoints；失败另写
 `first-blocker.json`，成功另写 `terminal-settlement.json`。默认每 3 个已验证 eligible advance 保存一次；这里计的是动作次数，
 不是游戏日。当前和平 `life-advance` 通常以约 30 天为一个 horizon，因此默认大致形成季度级恢复点，并避免角色在第一份周期

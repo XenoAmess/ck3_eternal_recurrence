@@ -120,8 +120,14 @@ class _NativeAutoRunHarness:
         *,
         state_dir: Path,
         save_dir: Path,
+        route_contact_timeline_speed: int,
+        allow_route_contact_high_speed_ab: bool,
     ) -> "_FakeNativeDriver":
         self.events.append("driver_init")
+        self.route_contact_timeline_speed = route_contact_timeline_speed
+        self.allow_route_contact_high_speed_ab = (
+            allow_route_contact_high_speed_ab
+        )
         self.driver = _FakeNativeDriver(
             self,
             pipe_name=pipe_name,
@@ -842,6 +848,8 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(args.timeout, 19)
         self.assertEqual(args.readiness_timeout, 3)
         self.assertTrue(args.cold_start_checkpoint)
+        self.assertEqual(args.route_contact_speed, 3)
+        self.assertFalse(args.allow_route_contact_high_speed_ab)
 
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
@@ -855,6 +863,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 "7200",
                 "--checkpoint-every-advances",
                 "180",
+                "--route-contact-speed",
+                "5",
+                "--allow-route-contact-high-speed-ab",
             ]
         )
 
@@ -862,6 +873,23 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(args.max_turns, 50000)
         self.assertEqual(args.timeout, 7200)
         self.assertEqual(args.checkpoint_every_advances, 180)
+        self.assertEqual(args.route_contact_speed, 5)
+        self.assertTrue(args.allow_route_contact_high_speed_ab)
+
+    def test_high_speed_route_contact_arm_requires_explicit_ab_admission(
+        self,
+    ) -> None:
+        with self.assertRaisesRegex(
+            AgentError, "targeted A/B arm"
+        ):
+            native_auto_run_module.native_auto_run(
+                self.spec,
+                turn_count=1,
+                timeout_seconds=1,
+                readiness_timeout_seconds=1,
+                native_bridge=self.config,
+                route_contact_timeline_speed=4,
+            )
 
     def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
         stderr = io.StringIO()
@@ -897,6 +925,11 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(report["ok"], report.get("error"))
         self.assertEqual(report["status"], "turn_limit")
         self.assertEqual(report["outcome"], "qualified")
+        self.assertEqual(report["bounds"]["route_contact_timeline_speed"], 3)
+        self.assertFalse(
+            report["bounds"]["allow_route_contact_high_speed_ab"]
+        )
+        self.assertEqual(harness.route_contact_timeline_speed, 3)
         auto_run = report["auto_run"]
         self.assertEqual(auto_run["visible_gameplay_turns"], 3)
         self.assertEqual(
@@ -1697,6 +1730,8 @@ class NativeAutoRunTests(unittest.TestCase):
                     timeout_seconds=21600,
                     readiness_timeout_seconds=300,
                     cold_start_checkpoint=False,
+                    route_contact_timeline_speed=3,
+                    allow_route_contact_high_speed_ab=False,
                 )
 
 

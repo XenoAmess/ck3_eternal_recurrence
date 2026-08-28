@@ -349,6 +349,54 @@ flowchart TD
     class L unknown;
 ```
 
+### 2026-08-28 G1 吞吐修复：proof-kind 自适应时间线速度
+
+[static-confirmed] public speed `1..5` 不改变本页已经冻结的 native daily movement/contact 顺序；
+[live-confirmed] active-battle stop-envelope 的十笔平衡小样本又在当前机器上得到五档全部精确 `+24`、零观察/停稳
+超调，其中 speed 3 的平均端到端耗时为 `1.252s`、speed 2 为 `1.740s`、speed 1 为 `3.221s`。artifact 为
+`C:/Users/xenoa/AppData/Local/Temp/xar-smx-stop-ae8-20260828-01/artifacts/stop-envelope-active-battle-1to5.json`，
+SHA-256 `0B6818DA2630786A31EE28729694CA911A27781C9E8A60F1955B4F07F0DE6FEA`。这不证明 route parity，
+结合用户对 G1 wall time 的明确优先级，当前默认 candidate 取 speed 3，speed 1/2 保留同 checkpoint 对照；无需新增 native ABI。
+
+[implementation-confirmed] driver 现在按 fresh proof kind 选档：
+
+| paused proof / slice | 速度 | 准入 |
+|---|---:|---|
+| fresh global conjunction，selected proof 为 `contact_free` | 默认 `3` | 继续强制 `ending=start+24`、paused readback 与 proof 一次性消费；待当前 checkpoint live A/B |
+| `unavoidable_current_province_contact` | `1` | 必须观察 active combat/retreat/war/episode 或严格 endpoint follow-up，不接受配置提速 |
+| contact-free targeted research arm | `1..5` | `--route-contact-speed N`；`4..5` 另需 `--allow-route-contact-high-speed-ab` |
+| 所选 `set-speed-N` 未发布 | `1` | typed policy 明记 `fallback_speed_1` |
+| 无 fresh proof / sibling conjunction 不完整 | 不推进 | 维持既有拒绝，不因提速修改 proof gate |
+
+该 selector 把 1/2/3/4/5 全部纳入同一可比较事务，production candidate 默认从 1 升到 3；speed 2 保留显式
+对照/回退档，speed 4/5 仍是显式 high-speed A/B，
+不是 contact sentinel 或 production-live。multi-army proof conjunction、closed endpoint 与执行后全 proof 失效的语义完全不变。
+
+```mermaid
+flowchart TD
+    P["[counter-policy] fresh exact-day proof conjunction"] --> K{"proof kind?"}
+    K -->|unavoidable endpoint| S1["[counter-policy] speed 1<br/>verify contact transition"]
+    K -->|contact-free| C{"requested arm admitted<br/>and set-speed-N advertised?"}
+    C -->|default G1 arm| S2["[counter-policy] speed 3<br/>targeted live A/B pending"]
+    C -->|explicit comparison| SLOW["[counter-policy] speed 1 / 2 arm"]
+    C -->|explicit research admission| SX["[counter-policy] speed 4 / 5 arm"]
+    C -->|missing primitive| F["[counter-policy] speed 1 fallback"]
+    S1 --> V["[counter-policy] paused + exact +24 postcondition"]
+    S2 --> V
+    SLOW --> V
+    SX --> V
+    F --> V
+    V --> I["[counter-policy] invalidate all proofs;<br/>re-read every ArmyID"]
+    L["[unknown] current route checkpoint speed-1/2 parity"] -. "[unknown] targeted live A/B" .-> S2
+    H["[unknown] same-day native sentinel for high-speed production"] -. "[unknown] required" .-> SX
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class L,H unknown;
+```
+
+[counter-policy] 当前 native request 只发布 `[start,start+24]`；所以不能把一份 contact-free proof 复用成两日或更多日。
+减少逐日 paused query 的后续最小入口是扩成多日 timed horizon，或在 application-main 增加 contact/date sentinel。
+在其中之一 live 前，本次 P0 先用 speed 3 降低每个已证明安全日的 wall time，而不伪造 multi-day 证据。
+
 ## `0x2208320`：同省接触 resolver
 
 ### 入口与前置门
