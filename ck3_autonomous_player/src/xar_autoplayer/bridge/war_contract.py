@@ -46,6 +46,14 @@ WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY = (
 )
 WAR_OBJECTIVE_ASSAULT_CAPABILITY = "game.state.war-objective-assault"
 RAISE_TROOPS_STEP = "raise-troops-default"
+BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
+BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
+BATTLE_SENTINEL_ADVANCE_STEPS = frozenset(
+    {
+        BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+        BATTLE_TERMINAL_CRUISE_STEP,
+    }
+)
 
 CK3_FIXED_POINT_SCALE = 100_000
 MAX_ARMY_STRENGTH_REQUEST_IDS = 64
@@ -1447,8 +1455,13 @@ def parse_advance_route_contact_horizon_step(
 
 
 def is_life_advance_step(step: object) -> bool:
-    return step == "life-advance" or (
-        parse_advance_route_contact_horizon_step(step) is not None
+    return bool(
+        step == "life-advance"
+        or (
+            isinstance(step, str)
+            and step in BATTLE_SENTINEL_ADVANCE_STEPS
+        )
+        or parse_advance_route_contact_horizon_step(step) is not None
     )
 
 

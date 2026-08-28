@@ -161,6 +161,9 @@ from .active_combat_retreat_contract import (
 )
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+    BATTLE_SENTINEL_ADVANCE_STEPS,
+    BATTLE_TERMINAL_CRUISE_STEP,
     DISBAND_ARMY_CAPABILITY,
     ENFORCE_DEMANDS_CAPABILITY,
     MERGE_ARMIES_CAPABILITY,
@@ -270,6 +273,44 @@ _NATIVE_ASSAULT_ADVANCE_MAX_DAYS = 1
 _NATIVE_ACTIVE_ROUTE_ADVANCE_MAX_DAYS = 1
 _NATIVE_COMBAT_RETREAT_ADVANCE_MAX_DAYS = 1
 _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS = 1.0
+_TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY = (
+    "game.command.research-arm-tactical-daily-sentinel-v1-N"
+)
+_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY = (
+    "game.command.research-query-tactical-daily-sentinel-v1"
+)
+_TACTICAL_DAILY_SENTINEL_STATUS_STEP = (
+    "research-query-tactical-daily-sentinel-v1"
+)
+_TACTICAL_DAILY_SENTINEL_ARM_PREFIX = (
+    "research-arm-tactical-daily-sentinel-v1-"
+)
+_TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES = frozenset(
+    {
+        _TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY,
+        _TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY,
+    }
+)
+_BATTLE_SENTINEL_FALLBACK_DAYS = 45
+_BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
+_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS = (
+    "date_deadline",
+    "army_unavailable",
+    "route_target_changed",
+    "combat_transition",
+    "retreat_transition",
+    "combat_unavailable",
+    "combat_phase_changed",
+    "combat_roster_changed",
+    "combat_terminal",
+    "date_sequence_failure",
+    "world_identity_changed",
+    "pause_not_observed",
+    "original_unavailable",
+    "native_pause",
+    "combat_winner_changed",
+    "evaluation_failure",
+)
 _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
     "CK3 battle-control state changed during query"
 )
@@ -883,6 +924,14 @@ class NativeHeadlessGameplayDriver:
         transport_error = self._transport_error()
         diagnostics["transport_fatal_error"] = transport_error
         action_steps = set(_string_list(result.get("action_steps")))
+        # The native arm capability is a parameterized protocol template,
+        # never a directly executable action literal.  Only the two bounded
+        # Python composites below materialize a concrete arm command.
+        action_steps.discard(
+            _TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY.removeprefix(
+                _ACTION_CAPABILITY_PREFIX
+            )
+        )
         bridge_capabilities = set(
             _string_list(result.get("bridge_capabilities"))
         )
@@ -925,6 +974,30 @@ class NativeHeadlessGameplayDriver:
             if result.get("snapshot") is True
             else None
         )
+        sentinel_watch_army_ids = _battle_sentinel_watch_army_ids(
+            current_snapshot
+        )
+        if (
+            result.get("snapshot") is True
+            and result.get("wait_for_change") is True
+            and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
+            <= bridge_capabilities
+            and isinstance(current_snapshot, dict)
+            and current_snapshot.get("paused") is True
+            and current_snapshot.get("map_ready") is True
+            and current_snapshot.get("active_event") is None
+            and current_snapshot.get("pending_character_interaction") is None
+            and sentinel_watch_army_ids is not None
+            and {"resume-map", "pause-map"} <= action_steps
+        ):
+            if "set-speed-3" in action_steps:
+                action_steps.add(BATTLE_DECISION_EPOCH_ADVANCE_STEP)
+                composite_action_steps.append(
+                    BATTLE_DECISION_EPOCH_ADVANCE_STEP
+                )
+            if "set-speed-5" in action_steps:
+                action_steps.add(BATTLE_TERMINAL_CRUISE_STEP)
+                composite_action_steps.append(BATTLE_TERMINAL_CRUISE_STEP)
         active_retreat_composition_supported = bool(
             _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES
             <= bridge_capabilities
@@ -2304,7 +2377,7 @@ class NativeHeadlessGameplayDriver:
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         life_advance_starting: dict[str, object] | None = None
-        if step == "life-advance":
+        if step == "life-advance" or step in BATTLE_SENTINEL_ADVANCE_STEPS:
             # Bind the caller's revision before capability projection.  A
             # loading -> map_ready snapshot can arrive while capabilities()
             # is being assembled; that is an internal readiness transition,
@@ -2325,7 +2398,7 @@ class NativeHeadlessGameplayDriver:
                 current_revision = int(life_advance_starting["revision"])
                 if expected_revision != current_revision:
                     raise BridgeUnavailableError(
-                        "native life-advance revision mismatch: "
+                        f"native {step} revision mismatch: "
                         f"expected {expected_revision}, current "
                         f"{current_revision}"
                     )
@@ -2777,6 +2850,16 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_route_contact_horizon_advance(
                 step, expected_revision=expected_revision
+            )
+        if step in BATTLE_SENTINEL_ADVANCE_STEPS:
+            if step not in capabilities.get("composite_action_steps", []):
+                raise UnsupportedStepError(
+                    f"native tactical sentinel cannot execute {step}"
+                )
+            return self._execute_battle_sentinel_advance(
+                step,
+                expected_revision=expected_revision,
+                starting_snapshot=life_advance_starting,
             )
         if step in capabilities.get("composite_action_steps", []):
             if step == "life-advance":
@@ -8687,6 +8770,254 @@ class NativeHeadlessGameplayDriver:
             result.pop("contact_followup", None)
         return {**result, "contact_transition": postcondition}
 
+    def _execute_battle_sentinel_advance(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+        starting_snapshot: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        """Run one native-paused battle tranche without Python polling.
+
+        The application-main sentinel owns every intermediate daily boundary.
+        Python submits exactly one resume and observes only ordinary state
+        frames until the sentinel has paused CK3.  ``pause-map`` is reserved
+        for failed-transaction cleanup.
+        """
+        if step == BATTLE_DECISION_EPOCH_ADVANCE_STEP:
+            speed = 3
+            wire_mode = "decision"
+            status_mode = "decision_epoch"
+        elif step == BATTLE_TERMINAL_CRUISE_STEP:
+            speed = 5
+            wire_mode = "terminal"
+            status_mode = "terminal_or_sentinel"
+        else:
+            raise UnsupportedStepError(
+                f"unknown battle sentinel composite {step}"
+            )
+
+        starting = (
+            copy.deepcopy(starting_snapshot)
+            if starting_snapshot is not None
+            else self.take_internal_semantic_snapshot()
+        )
+        starting_revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != starting_revision:
+                raise BridgeUnavailableError(
+                    f"native {step} revision mismatch: expected "
+                    f"{expected_revision}, current {starting_revision}"
+                )
+        if not (
+            starting.get("map_ready") is True
+            and starting.get("paused") is True
+        ):
+            raise BridgeUnavailableError(
+                f"native {step} requires a paused, map-ready frame"
+            )
+        if starting.get("active_event") is not None or starting.get(
+            "pending_character_interaction"
+        ) is not None:
+            raise BridgeUnavailableError(
+                f"native {step} cannot bypass a pending player decision"
+            )
+        watch_army_ids = _battle_sentinel_watch_army_ids(starting)
+        if watch_army_ids is None:
+            raise BridgeUnavailableError(
+                f"native {step} requires the complete controllable ArmyID set"
+            )
+        bridge_capabilities = set(
+            _string_list(
+                self.state.capabilities().get("bridge_capabilities")
+            )
+        )
+        if not (
+            _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
+            <= bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "native DLL lacks the exact tactical sentinel arm/status pair"
+            )
+
+        starting_date_raw = _date_raw(starting, f"{step} starting snapshot")
+        target_date_raw = (
+            starting_date_raw + _BATTLE_SENTINEL_FALLBACK_DAYS * 24
+        )
+        arm_step = (
+            f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}"
+            f"{starting_date_raw}-to-{target_date_raw}-speed-{speed}-"
+            f"mode-{wire_mode}-a-{len(watch_army_ids)}-"
+            + "-".join(str(army_id) for army_id in watch_army_ids)
+        )
+        actions: list[dict[str, object]] = []
+        current = starting
+        arm_status: dict[str, object] | None = None
+        sentinel_status: dict[str, object] | None = None
+        cleanup_error: str | None = None
+        try:
+            speed_step = f"set-speed-{speed}"
+            speed_result = self._execute_composite_primitive(
+                speed_step, current
+            )
+            actions.append({"step": speed_step, "result": speed_result})
+            current = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(),
+                lambda snapshot: snapshot.get("speed") == speed,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            if current.get("speed") != speed:
+                raise BridgeUnavailableError(
+                    f"native {step} did not observe speed {speed}"
+                )
+
+            arm_result = self._execute_primitive_step(
+                arm_step,
+                expected_revision=None,
+                required_capability=(
+                    _TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY
+                ),
+                internal_semantic_snapshot=True,
+            )
+            actions.append({"step": arm_step, "result": arm_result})
+            arm_status = _normalize_tactical_daily_sentinel_status(
+                arm_result.get("tactical_daily_sentinel")
+            )
+            _validate_tactical_daily_sentinel_arm(
+                arm_result,
+                arm_status,
+                arm_step=arm_step,
+                starting_date_raw=starting_date_raw,
+                target_date_raw=target_date_raw,
+                speed=speed,
+                mode=status_mode,
+                watch_army_ids=watch_army_ids,
+            )
+
+            resume_result = self._execute_primitive_step(
+                "resume-map",
+                expected_revision=None,
+                internal_semantic_snapshot=True,
+            )
+            actions.append({"step": "resume-map", "result": resume_result})
+
+            def running_or_native_stop(
+                snapshot: dict[str, object],
+            ) -> bool:
+                date_raw = snapshot.get("date_raw")
+                return bool(
+                    snapshot.get("paused") is False
+                    or (
+                        snapshot.get("paused") is True
+                        and isinstance(date_raw, int)
+                        and not isinstance(date_raw, bool)
+                        and date_raw > starting_date_raw
+                    )
+                )
+
+            current = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(),
+                running_or_native_stop,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            if not running_or_native_stop(current):
+                raise BridgeUnavailableError(
+                    f"native {step} single resume reached neither a running "
+                    "frame nor a native sentinel stop"
+                )
+            if current.get("paused") is not True:
+                current = self._wait_for_life_advance_snapshot(
+                    current,
+                    lambda snapshot: snapshot.get("paused") is True,
+                    timeout_seconds=self.life_advance_timeout_seconds,
+                )
+            if current.get("paused") is not True:
+                raise BridgeUnavailableError(
+                    f"native {step} timed out before a native sentinel pause"
+                )
+
+            status_result = self._execute_primitive_step(
+                _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                expected_revision=None,
+                required_capability=(
+                    _TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY
+                ),
+                internal_semantic_snapshot=True,
+            )
+            actions.append(
+                {
+                    "step": _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                    "result": status_result,
+                }
+            )
+            sentinel_status = _normalize_tactical_daily_sentinel_status(
+                status_result.get("tactical_daily_sentinel")
+            )
+            result = _battle_sentinel_step_result(
+                step=step,
+                starting=starting,
+                ending=current,
+                target_date_raw=target_date_raw,
+                speed=speed,
+                status_mode=status_mode,
+                watch_army_ids=watch_army_ids,
+                arm_status=arm_status,
+                sentinel_status=sentinel_status,
+                actions=actions,
+                progress_status="postcondition_pending",
+                cleanup_error=None,
+            )
+            _validate_tactical_daily_sentinel_stop(
+                sentinel_status,
+                arm_status=arm_status,
+                starting_date_raw=starting_date_raw,
+                target_date_raw=target_date_raw,
+                ending_date_raw=int(result["ending_date_raw"]),
+                elapsed_days=int(result["elapsed_days"]),
+                speed=speed,
+                mode=status_mode,
+                watch_army_ids=watch_army_ids,
+            )
+            result["progress_status"] = "postcondition"
+            return result
+        except Exception as error:
+            try:
+                current = self.take_internal_semantic_snapshot()
+                if current.get("paused") is not True:
+                    cleanup_actions: list[dict[str, object]] = []
+                    current = self._pause_life_advance(
+                        current, cleanup_actions
+                    )
+                    for action in cleanup_actions:
+                        actions.append(
+                            {**action, "purpose": "managed_failure_cleanup"}
+                        )
+            except Exception as cleanup:
+                cleanup_error = f"{type(cleanup).__name__}: {cleanup}"
+            result = _battle_sentinel_step_result(
+                step=step,
+                starting=starting,
+                ending=current,
+                target_date_raw=target_date_raw,
+                speed=speed,
+                status_mode=status_mode,
+                watch_army_ids=watch_army_ids,
+                arm_status=arm_status,
+                sentinel_status=sentinel_status,
+                actions=actions,
+                progress_status="postcondition_failed",
+                cleanup_error=cleanup_error,
+            )
+            message = f"native {step} postcondition failed: {error}"
+            if cleanup_error is not None:
+                message += f"; managed cleanup failed: {cleanup_error}"
+            raise StepPostconditionError(
+                message,
+                step_result=result,
+                selected_step=step,
+            ) from error
+
     def _execute_life_advance(
         self,
         *,
@@ -10105,6 +10436,340 @@ def _date_raw(snapshot: dict[str, object], name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise BridgeUnavailableError(f"native {name} lacks date_raw")
     return value
+
+
+def _battle_sentinel_watch_army_ids(
+    snapshot: object,
+) -> tuple[int, ...] | None:
+    """Return the complete stable controllable public-CUnit watch set."""
+    if not isinstance(snapshot, dict):
+        return None
+    armies = snapshot.get("player_armies")
+    if not isinstance(armies, list):
+        return None
+    army_ids: set[int] = set()
+    for army in armies:
+        if not isinstance(army, dict):
+            return None
+        if army.get("controllable") is not True:
+            continue
+        army_id = army.get("army_id")
+        if (
+            isinstance(army_id, bool)
+            or not isinstance(army_id, int)
+            or not 0 < army_id <= 2**31 - 1
+        ):
+            return None
+        army_ids.add(army_id)
+    if not 0 < len(army_ids) <= _BATTLE_SENTINEL_MAXIMUM_ARMIES:
+        return None
+    return tuple(sorted(army_ids))
+
+
+def _normalize_tactical_daily_sentinel_status(
+    value: object,
+) -> dict[str, object]:
+    keys = {
+        "state",
+        "generation",
+        "starting_date_raw",
+        "target_date_raw",
+        "last_observed_date_raw",
+        "trigger_date_raw",
+        "speed",
+        "mode",
+        "army_count",
+        "combat_count",
+        "completed_daily_ticks",
+        "intermediate_pause_count",
+        "trigger_flags",
+        "trigger_reasons",
+        "signed_date_delta_from_target_raw",
+        "overshoot_days",
+        "pause_wrapper_called",
+        "pause_observed",
+        "terminal_observed",
+        "abnormal",
+    }
+    if not isinstance(value, dict) or set(value) != keys:
+        raise ValueError("tactical daily sentinel status schema is malformed")
+    state = value.get("state")
+    if state not in {"idle", "armed", "triggered", "failed", "unavailable"}:
+        raise ValueError("tactical daily sentinel state is malformed")
+    mode = value.get("mode")
+    if mode not in {"decision_epoch", "terminal_or_sentinel"}:
+        raise ValueError("tactical daily sentinel mode is malformed")
+    nonnegative_fields = (
+        "generation",
+        "starting_date_raw",
+        "target_date_raw",
+        "last_observed_date_raw",
+        "trigger_date_raw",
+        "army_count",
+        "combat_count",
+        "completed_daily_ticks",
+        "intermediate_pause_count",
+        "trigger_flags",
+    )
+    for field in nonnegative_fields:
+        field_value = value.get(field)
+        if (
+            isinstance(field_value, bool)
+            or not isinstance(field_value, int)
+            or field_value < 0
+        ):
+            raise ValueError(
+                f"tactical daily sentinel {field} is malformed"
+            )
+    speed = value.get("speed")
+    if (
+        isinstance(speed, bool)
+        or not isinstance(speed, int)
+        or speed not in {1, 2, 3, 4, 5}
+    ):
+        raise ValueError("tactical daily sentinel speed is malformed")
+    signed_delta = value.get("signed_date_delta_from_target_raw")
+    overshoot_days = value.get("overshoot_days")
+    if (
+        isinstance(signed_delta, bool)
+        or not isinstance(signed_delta, int)
+        or isinstance(overshoot_days, bool)
+        or not isinstance(overshoot_days, int)
+        or overshoot_days < -1
+    ):
+        raise ValueError("tactical daily sentinel date delta is malformed")
+    for field in (
+        "pause_wrapper_called",
+        "pause_observed",
+        "terminal_observed",
+        "abnormal",
+    ):
+        if not isinstance(value.get(field), bool):
+            raise ValueError(
+                f"tactical daily sentinel {field} is malformed"
+            )
+    trigger_flags = int(value["trigger_flags"])
+    if trigger_flags >= 1 << len(_TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS):
+        raise ValueError("tactical daily sentinel has unknown trigger flags")
+    expected_reasons = [
+        reason
+        for index, reason in enumerate(
+            _TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS
+        )
+        if trigger_flags & (1 << index)
+    ]
+    if value.get("trigger_reasons") != expected_reasons:
+        raise ValueError(
+            "tactical daily sentinel trigger reasons disagree with flags"
+        )
+    if value.get("terminal_observed") is not (
+        "combat_terminal" in expected_reasons
+    ):
+        raise ValueError(
+            "tactical daily sentinel terminal flag disagrees with reasons"
+        )
+    if value.get("abnormal") is not (state == "failed"):
+        raise ValueError(
+            "tactical daily sentinel abnormal flag disagrees with state"
+        )
+    return copy.deepcopy(value)
+
+
+def _validate_tactical_daily_sentinel_arm(
+    result: dict[str, object],
+    status: dict[str, object],
+    *,
+    arm_step: str,
+    starting_date_raw: int,
+    target_date_raw: int,
+    speed: int,
+    mode: str,
+    watch_army_ids: tuple[int, ...],
+) -> None:
+    if not (
+        result.get("step") == arm_step
+        and result.get("accepted") is True
+        and result.get("status") == "available"
+        and status.get("state") == "armed"
+        and isinstance(status.get("generation"), int)
+        and int(status["generation"]) > 0
+        and status.get("starting_date_raw") == starting_date_raw
+        and status.get("target_date_raw") == target_date_raw
+        and status.get("last_observed_date_raw") == starting_date_raw
+        and status.get("trigger_date_raw") == 0
+        and status.get("speed") == speed
+        and status.get("mode") == mode
+        and status.get("army_count") == len(watch_army_ids)
+        and isinstance(status.get("combat_count"), int)
+        and int(status["combat_count"]) > 0
+        and status.get("completed_daily_ticks") == 0
+        and status.get("intermediate_pause_count") == 0
+        and status.get("trigger_flags") == 0
+        and status.get("trigger_reasons") == []
+        and status.get("signed_date_delta_from_target_raw") == 0
+        and status.get("overshoot_days") == -1
+        and status.get("pause_wrapper_called") is False
+        and status.get("pause_observed") is False
+        and status.get("terminal_observed") is False
+        and status.get("abnormal") is False
+    ):
+        raise BridgeUnavailableError(
+            "native tactical sentinel arm acknowledgement is inconsistent"
+        )
+
+
+def _validate_tactical_daily_sentinel_stop(
+    status: dict[str, object],
+    *,
+    arm_status: dict[str, object],
+    starting_date_raw: int,
+    target_date_raw: int,
+    ending_date_raw: int,
+    elapsed_days: int,
+    speed: int,
+    mode: str,
+    watch_army_ids: tuple[int, ...],
+) -> None:
+    trigger_reasons = status.get("trigger_reasons")
+    raw_delta = ending_date_raw - starting_date_raw
+    expected_signed_delta = ending_date_raw - target_date_raw
+    if not (
+        status.get("state") == "triggered"
+        and status.get("abnormal") is False
+        and status.get("generation") == arm_status.get("generation")
+        and status.get("starting_date_raw") == starting_date_raw
+        and status.get("target_date_raw") == target_date_raw
+        and status.get("last_observed_date_raw") == ending_date_raw
+        and status.get("trigger_date_raw") == ending_date_raw
+        and status.get("speed") == speed
+        and status.get("mode") == mode
+        and status.get("army_count") == len(watch_army_ids)
+        and status.get("combat_count") == arm_status.get("combat_count")
+        and isinstance(trigger_reasons, list)
+        and bool(trigger_reasons)
+        and status.get("trigger_flags") != 0
+        and status.get("pause_observed") is True
+        and status.get("signed_date_delta_from_target_raw")
+        == expected_signed_delta
+        and status.get("overshoot_days") == 0
+        and raw_delta > 0
+        and raw_delta % 24 == 0
+        and elapsed_days == raw_delta // 24
+        and status.get("completed_daily_ticks") == elapsed_days
+    ):
+        raise BridgeUnavailableError(
+            "native tactical sentinel stop failed its generation/date/tick "
+            "postcondition"
+        )
+    deadline_reason = "date_deadline" in trigger_reasons
+    if deadline_reason is not (ending_date_raw == target_date_raw):
+        raise BridgeUnavailableError(
+            "native tactical sentinel deadline reason disagrees with dates"
+        )
+
+
+def _battle_sentinel_step_result(
+    *,
+    step: str,
+    starting: dict[str, object],
+    ending: dict[str, object],
+    target_date_raw: int,
+    speed: int,
+    status_mode: str,
+    watch_army_ids: tuple[int, ...],
+    arm_status: dict[str, object] | None,
+    sentinel_status: dict[str, object] | None,
+    actions: list[dict[str, object]],
+    progress_status: str,
+    cleanup_error: str | None,
+) -> dict[str, object]:
+    starting_date_raw = _date_raw(starting, f"{step} starting snapshot")
+    ending_date_raw = _date_raw(ending, f"{step} ending snapshot")
+    raw_delta = ending_date_raw - starting_date_raw
+    elapsed_days = (
+        raw_delta // 24 if raw_delta >= 0 and raw_delta % 24 == 0 else 0
+    )
+    cleanup_actions = [
+        action
+        for action in actions
+        if action.get("purpose") == "managed_failure_cleanup"
+    ]
+    terminal_observed = bool(
+        isinstance(sentinel_status, dict)
+        and sentinel_status.get("terminal_observed") is True
+    )
+    trigger_reasons = (
+        copy.deepcopy(sentinel_status.get("trigger_reasons"))
+        if isinstance(sentinel_status, dict)
+        else []
+    )
+    return {
+        "step": step,
+        "backend_id": "native-headless",
+        "source": "native-tactical-daily-sentinel-composite",
+        "starting_date": {"date_raw": starting_date_raw},
+        "ending_date": {"date_raw": ending_date_raw},
+        "starting_date_raw": starting_date_raw,
+        "target_date_raw": target_date_raw,
+        "ending_date_raw": ending_date_raw,
+        "elapsed_days": elapsed_days,
+        "requested_horizon_days": _BATTLE_SENTINEL_FALLBACK_DAYS,
+        "timeline_speed": speed,
+        "timeline_policy": status_mode,
+        "sentinel_mode": status_mode,
+        "watch_army_ids": list(watch_army_ids),
+        "progress_status": progress_status,
+        "stop_kind": (
+            "terminal" if terminal_observed else "decision_epoch"
+        ),
+        "terminal_reached": terminal_observed,
+        "trigger_reasons": trigger_reasons,
+        "sentinel_generation": (
+            sentinel_status.get("generation")
+            if isinstance(sentinel_status, dict)
+            else arm_status.get("generation")
+            if isinstance(arm_status, dict)
+            else None
+        ),
+        "completed_daily_ticks": (
+            sentinel_status.get("completed_daily_ticks")
+            if isinstance(sentinel_status, dict)
+            else None
+        ),
+        "intermediate_pause_count": (
+            sentinel_status.get("intermediate_pause_count")
+            if isinstance(sentinel_status, dict)
+            else None
+        ),
+        "overshoot_days": (
+            sentinel_status.get("overshoot_days")
+            if isinstance(sentinel_status, dict)
+            else None
+        ),
+        "zero_intermediate_pause": bool(
+            isinstance(sentinel_status, dict)
+            and sentinel_status.get("intermediate_pause_count") == 0
+        ),
+        "armed_tactical_daily_sentinel": copy.deepcopy(arm_status),
+        "tactical_daily_sentinel": copy.deepcopy(sentinel_status),
+        "war_progress_before": _war_progress_summary(starting),
+        "war_progress_after": _war_progress_summary(ending),
+        "actions": copy.deepcopy(actions),
+        "external_pause_count": len(cleanup_actions),
+        "external_rich_query_count": 0,
+        "managed_failure_cleanup": {
+            "attempted": bool(cleanup_actions),
+            "error": cleanup_error,
+        },
+        "paused": ending.get("paused") is True,
+        "active_event": copy.deepcopy(ending.get("active_event")),
+        "final_screen": (
+            "map_hud" if ending.get("paused") is True else None
+        ),
+        "snapshot_id": ending.get("snapshot_id"),
+        "revision": ending.get("revision"),
+        "native_revision": ending.get("native_revision"),
+    }
 
 
 def _life_advance_progressed(
