@@ -29,6 +29,8 @@ from xar_autoplayer.bridge.native_driver import (
     DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
     MinimizedRejectingVisualDriver,
     NativeHeadlessGameplayDriver,
+    _active_siege_progress_states,
+    _compact_war_progress_history_in_place,
     _exact_route_contact_timeline_policy,
     _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
@@ -38,6 +40,7 @@ from xar_autoplayer.bridge.native_driver import (
     _predicted_contact_boundary_postcondition,
     _predicted_contact_followup_exhausted,
     _unavoidable_contact_transition_postcondition,
+    _war_progress_summary,
 )
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
@@ -2799,6 +2802,215 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             _is_deferred_read_only_history_step("move-army-101-to-2585")
         )
 
+    def test_war_progress_summary_keeps_only_active_siege_state_detail(
+        self,
+    ) -> None:
+        active = _objective_state(
+            2585,
+            active_siege=_active_siege(current_work_raw=2_500_000),
+        )
+        inactive = _objective_state(2586, active_siege=None)
+        occupied = _objective_state(
+            2587,
+            occupant=707,
+            active_siege=None,
+        )
+        summary = _war_progress_summary(
+            {
+                "date_raw": 53_171_400,
+                "active_wars": [
+                    {
+                        "war_id": 88,
+                        "player_relative_war_score": 10,
+                        "war_objective_province_ids": [2585, 2586, 2587],
+                        "objective_province_states": [
+                            inactive,
+                            active,
+                            occupied,
+                        ],
+                        "allied_armies": [],
+                        "enemy_armies": [],
+                    }
+                ],
+            }
+        )
+
+        war = summary["wars"][0]
+        self.assertEqual(
+            war["war_objective_province_ids"], [2585, 2586, 2587]
+        )
+        self.assertEqual(
+            [
+                row["province_id"]
+                for row in war["objective_province_states"]
+            ],
+            [2585],
+        )
+        self.assertEqual(
+            war["objective_province_states"][0]["active_siege"][
+                "current_work"
+            ]["raw"],
+            2_500_000,
+        )
+        self.assertIsNot(
+            war["objective_province_states"][0], active
+        )
+        self.assertEqual(_active_siege_progress_states(None), [])
+
+    def test_legacy_progress_compaction_has_deterministic_size_bound(
+        self,
+    ) -> None:
+        inactive = [
+            _objective_state(province_id, active_siege=None)
+            for province_id in range(1, 201)
+        ]
+        active = _objective_state(
+            2585,
+            active_siege=_active_siege(current_work_raw=3_200_000),
+        )
+        history = []
+        for index in range(1, 33):
+            progress = {
+                "date_raw": 53_171_400 + index * 24,
+                "wars": [
+                    {
+                        "war_id": 88,
+                        "war_objective_province_ids": [
+                            *range(1, 201),
+                            2585,
+                        ],
+                        "objective_province_states": [*inactive, active],
+                        "player_armies": [],
+                        "enemy_armies": [],
+                    }
+                ],
+            }
+            history.append(
+                {
+                    "index": index,
+                    "command": "life-advance",
+                    "ok": True,
+                    "result": {
+                        "step": "life-advance",
+                        "war_progress_before": copy.deepcopy(progress),
+                        "war_progress_after": copy.deepcopy(progress),
+                    },
+                }
+            )
+        before = len(
+            json.dumps(
+                history, ensure_ascii=False, separators=(",", ":")
+            ).encode("utf-8")
+        )
+
+        removed = _compact_war_progress_history_in_place(history)
+        after = len(
+            json.dumps(
+                history, ensure_ascii=False, separators=(",", ":")
+            ).encode("utf-8")
+        )
+
+        self.assertEqual(removed, 32 * 2 * 200)
+        self.assertLess(after, before // 8)
+        compact_war = history[-1]["result"]["war_progress_after"][
+            "wars"
+        ][0]
+        self.assertEqual(
+            len(compact_war["war_objective_province_ids"]), 201
+        )
+        self.assertEqual(
+            [
+                row["province_id"]
+                for row in compact_war["objective_province_states"]
+            ],
+            [2585],
+        )
+
+    def test_same_pid_restore_compacts_legacy_progress_before_next_barrier(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            endpoint.publish(
+                _snapshot(
+                    1,
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            driver.take_snapshot()
+            legacy_states = [
+                _objective_state(province_id, active_siege=None)
+                for province_id in range(1, 201)
+            ]
+            legacy_states.append(
+                _objective_state(
+                    2585,
+                    active_siege=_active_siege(
+                        current_work_raw=2_500_000
+                    ),
+                )
+            )
+            progress = {
+                "date_raw": 53_171_400,
+                "wars": [
+                    {
+                        "war_id": 88,
+                        "war_objective_province_ids": [
+                            *range(1, 201),
+                            2585,
+                        ],
+                        "objective_province_states": legacy_states,
+                        "player_armies": [],
+                        "enemy_armies": [],
+                    }
+                ],
+            }
+            driver._record_command(
+                "life-advance",
+                ok=True,
+                result={
+                    "step": "life-advance",
+                    "war_progress_before": copy.deepcopy(progress),
+                    "war_progress_after": copy.deepcopy(progress),
+                },
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            legacy_size = state_path.stat().st_size
+            driver.close()
+
+            restored_endpoint = FakeEndpoint(endpoint.pipe_name)
+            restored = NativeHeadlessGameplayDriver(
+                restored_endpoint.pipe_name,
+                endpoint=restored_endpoint,
+                state_dir=state_dir,
+            )
+            restored_endpoint.publish(
+                _hello("game.state.snapshot", "game.state.played-character")
+            )
+            compact_size = state_path.stat().st_size
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            states = persisted["command_history"][-1]["result"][
+                "war_progress_after"
+            ]["wars"][0]["objective_province_states"]
+
+            self.assertEqual([row["province_id"] for row in states], [2585])
+            self.assertLess(compact_size, legacy_size // 5)
+            self.assertTrue(
+                restored.capabilities()["native_session_control"][
+                    "driver_state_restored"
+                ]
+            )
+            restored.close()
+
     def test_successful_read_only_history_batches_until_action_barrier(
         self,
     ) -> None:
@@ -2828,30 +3040,42 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "preview-active-combat-retreat-v1-101-to-2585",
             ]
 
-            for step in read_only_steps:
-                driver._record_command(
-                    step,
-                    ok=True,
-                    result={"step": step, "status": "available"},
+            with mock.patch.object(
+                driver,
+                "_encode_driver_state_locked",
+                wraps=driver._encode_driver_state_locked,
+            ) as encode_state, mock.patch(
+                "xar_autoplayer.bridge.native_driver.write_bytes_atomic",
+                wraps=write_bytes_atomic,
+            ) as write_state:
+                for step in read_only_steps:
+                    driver._record_command(
+                        step,
+                        ok=True,
+                        result={"step": step, "status": "available"},
+                    )
+                    self.assertEqual(state_path.read_bytes(), baseline)
+
+                self.assertEqual(encode_state.call_count, 0)
+                self.assertEqual(write_state.call_count, 0)
+                self.assertTrue(driver._driver_state_dirty)
+                self.assertEqual(
+                    [
+                        row["command"]
+                        for row in driver.take_snapshot()[
+                            "native_command_history"
+                        ]
+                    ],
+                    read_only_steps,
                 )
-                self.assertEqual(state_path.read_bytes(), baseline)
 
-            self.assertTrue(driver._driver_state_dirty)
-            self.assertEqual(
-                [
-                    row["command"]
-                    for row in driver.take_snapshot()[
-                        "native_command_history"
-                    ]
-                ],
-                read_only_steps,
-            )
-
-            driver._record_command(
-                "life-advance",
-                ok=True,
-                result={"step": "life-advance", "elapsed_days": 1},
-            )
+                driver._record_command(
+                    "life-advance",
+                    ok=True,
+                    result={"step": "life-advance", "elapsed_days": 1},
+                )
+                self.assertEqual(encode_state.call_count, 1)
+                self.assertEqual(write_state.call_count, 1)
 
             persisted = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(

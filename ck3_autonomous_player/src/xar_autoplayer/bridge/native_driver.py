@@ -3629,6 +3629,13 @@ class NativeHeadlessGameplayDriver:
                     or not isinstance(row.get("ok"), bool)
                 ):
                     raise ValueError("driver state command history is malformed")
+            # Historical timeline rows only need objective-state detail for
+            # an actually active siege.  Older builds copied every objective
+            # province (often hundreds of empty rows) into both sides of
+            # every advance.  Compact that legacy payload as it is restored
+            # so the first barrier on an existing long episode immediately
+            # sheds the accumulated fixed cost as well.
+            _compact_war_progress_history_in_place(history)
             last_checkpoint = payload.get("last_checkpoint")
             if last_checkpoint is not None and not isinstance(
                 last_checkpoint, dict
@@ -10887,12 +10894,15 @@ def _war_progress_summary(snapshot: dict[str, object]) -> dict[str, object]:
                 "war_objective_province_ids": list(
                     war.get("war_objective_province_ids", [])
                 ),
-                "objective_province_states": copy.deepcopy(
-                    war.get("objective_province_states", [])
-                    if isinstance(
-                        war.get("objective_province_states"), list
+                # Historical strategy only reads objective-state detail for
+                # active-siege work/loss and stall observations.  Objective
+                # identity stays complete in war_objective_province_ids;
+                # copying every inactive province here made a 4,563-row
+                # production driver state grow to 93.96 MB.
+                "objective_province_states": (
+                    _active_siege_progress_states(
+                        war.get("objective_province_states")
                     )
-                    else []
                 ),
                 "enemy_primary_default_raise_province_id": war.get(
                     "enemy_primary_default_raise_province_id"
@@ -10906,6 +10916,45 @@ def _war_progress_summary(snapshot: dict[str, object]) -> dict[str, object]:
             }
         )
     return {"date_raw": snapshot.get("date_raw"), "wars": result}
+
+
+def _active_siege_progress_states(value: object) -> list[dict[str, object]]:
+    """Copy only objective rows that can affect historical siege decisions."""
+    return [
+        copy.deepcopy(state)
+        for state in (value if isinstance(value, list) else ())
+        if isinstance(state, dict)
+        and isinstance(state.get("active_siege"), dict)
+    ]
+
+
+def _compact_war_progress_history_in_place(
+    history: list[dict[str, object]],
+) -> int:
+    """Remove legacy inactive objective rows; return the number removed."""
+    removed = 0
+    for row in history:
+        result = row.get("result") if isinstance(row, dict) else None
+        if not isinstance(result, dict):
+            continue
+        for name in ("war_progress_before", "war_progress_after"):
+            summary = result.get(name)
+            wars = summary.get("wars") if isinstance(summary, dict) else None
+            for war in wars if isinstance(wars, list) else ():
+                if not isinstance(war, dict):
+                    continue
+                states = war.get("objective_province_states")
+                if not isinstance(states, list):
+                    continue
+                active = [
+                    state
+                    for state in states
+                    if isinstance(state, dict)
+                    and isinstance(state.get("active_siege"), dict)
+                ]
+                removed += len(states) - len(active)
+                war["objective_province_states"] = active
+    return removed
 
 
 def _war_progress_armies(

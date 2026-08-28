@@ -409,6 +409,29 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   command、任意失败、其它 driver-state 状态迁移或正常 driver close 必须同步冲刷完整 suffix。这样动作 ACK 返回前仍把其前置
   query/preview 与动作一起持久化，`save-checkpoint` 的 v2 history anchor、managed restore 的 pre-relaunch marker 与失败 artifact
   合同均不变；硬崩最多遗失末尾成功只读 suffix，恢复后必须重新查询，不能把遗失 cache 当成 gameplay 进度。
+- 2026-08-28 对 immutable seed
+  `20260828T003711Z-one-generation-0e6e6129/seed/driver-state.json`（SHA-256
+  `26AB2BF062E5605560087B428E6D131985D076EEE3172E9D42BD898F51D0CE27`，`79,884,717` bytes，checkpoint history
+  anchor `4087`、含其后 deferred query suffix 共 `4096` rows）的
+  逐字段剖析确认另一项动作 barrier 固定成本：旧 `_war_progress_summary` 在每次 timeline advance 的 before/after 中复制一场战争的
+  全部 objective province state；该局典型是 `187` 行，其中 `172` 行未占领、无 active siege 且 besieging strength 为零。历史策略
+  实际只从这些 state 读取 active siege 的 work/progress、besieging strength 与 assault 状态；完整目标身份已经独立保存在
+  `war_objective_province_ids`，军队、路线、war score 与日期也各有字段。新投影因此只持久化带 `active_siege` 对象的 state，同时保留
+  完整目标 ID 和全部其它 tactical 字段；读取 v2 旧状态时原位执行同一幂等压缩，使既有长跑在第一次 barrier 就获得收益，不必重开
+  episode。冻结 artifact 的确定性重放删除 `312,650` 个 inactive historical rows，编码结果为 `16,818,672` bytes
+  （减少 `78.946%`）；同一进程重复 compact JSON 编码的中位数由 `0.4133s` 降至 `0.1034s`，同卷 atomic replace write
+  由 `0.0626s` 降至 `0.0064s`，所以每个动作 barrier 的可重复 Python 固定成本至少减少约 `0.366s`。确定性单测还要求
+  active-siege work 原值、完整 objective ID、history index/command 顺序与 same-PID restore 全部不变；这项优化不裁剪当前 paused rich
+  snapshot，也不改变 checkpoint cadence、存档 SHA-256 或恢复语义。
+- 冻结 history 上把两次完整 `choose_one_life_turn`、一条 deferred route query record 和随后一条 route advance action barrier 合在同一
+  端到端 Python A/B，七次中位数由 `0.4936s` 降至 `0.1343s`（减少 `0.3593s`）。每次样本都严格是 `1` 次 encode + `1` 次
+  atomic write：成功 query 本身 `0` 次，advance 将 query suffix 一并冲刷；当前 production route path 也使用 internal semantic snapshot，
+  没有 public full-history deepcopy。单测锁定这个调用数，因此没有证据支持再拆 WAL、降低 checkpoint 频率或改变恢复合同。
+- 同一 seed/date 的 speed 1–5 production-path matrix 也排除了另一条错误优化方向：除 speed-3 第一次 route query 的一次性
+  `2.9461s` 冷异常外，该 run 后续同类 query 为 `0.0731s` / `0.0662s`，所有其它有效 runs 都在 `0.0487–0.1015s`；完整
+  `choose_one_life_turn` 在 `4096` rows 上中位约 `0.010s`，capability projection 约 `0.00018s`，fresh proof scan 约
+  `0.00030s`。因此不得为这个单次异常重构 query/proof/planner；matrix 中 exact +1-day turn 的 speed 1/2/3/4/5 实测分别为
+  `3.1841s` / `2.2505s` / `2.1723s` / `1.8114s` / `1.3805s`，需要优先消除的是每个 advance 都会支付的持久化固定成本。
 - `xar_checkpoint.ck3` 是原位覆盖。保存命令开始提交后、完整 post-snapshot/hash/history 验证前失败时，core 必须撤销同路径旧
   metadata 的 `recoverable` 声明；readiness preflight 在提交前失败则保留旧恢复点。`native-one-generation` 对前一种失败只能回落到
   run 开始前归档在 `seed/` 的 immutable checkpoint + driver state。
