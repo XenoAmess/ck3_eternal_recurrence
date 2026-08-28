@@ -62,13 +62,17 @@
    live rerun pending] 修复后和平运行帧第 1–29 日都不完成，第 30 日才按 horizon 完成；active event、one-life terminal、
    pending interaction 变化、新建/变化的 active war、既有 threat 与 route/war horizon 仍可提前形成语义边界。CK3 原生
    auto-pause 在 composite 自己提交收尾 pause **之前**单独记录，因此可以提前结束，又不会把我方 pause 误认成原生事件。
-9. **七日 stationary sentinel 需要独立的有界 wait envelope。** [live-confirmed harness RED] run
-   `20260828T092300Z-one-generation-90d3cf79` 先连续完成 `20` 个 speed-3 七日臂，平均 `6.012s`；第 `21` 臂在固定
-   `30s` wait 内只推进四日，sentinel 仍 armed、没有 stop reason，managed cleanup 与 tree-gone GREEN。report SHA-256
-   `FFFD1158CA25C6F3D2D324C3BC0BAA307D3810D909EDEBE47845952A5E224425`。这直接证明固定 `30s` 不是七日臂的可靠
-   wall envelope；它不否定前二十臂的 same-day deadline/零 overshoot 语义。[implementation-confirmed] 只对 typed stationary
-   `1..7` 日臂按已观测最慢 `7.5s/日` 加一日 settle margin，默认七日 wait 上限为 `60s`；普通 battle、committed-route
-   与短命令 timeout 不扩大。超时、最终 paused/status、post-stop scope 与 cleanup 验证保持原样。
+9. **重复同日停滞是 player-decision boundary，不是 wait envelope。** [live-confirmed harness RED]
+   `20260828T092300Z-one-generation-90d3cf79` 的第 `21` 臂在 `30s` wait 后停于 `53267040`；从同一 anchor 运行的
+   `20260828T094742Z-one-generation-71e3b7c1` 第三臂即使等待 `60s` 仍恰好停于 `53267040`；该 compact artifact 只证明
+   同日复现。专门保留 full driver-state 的 `20260828T095310Z-one-generation-e8cec411` 才直接显示
+   `active_event instance_id=47`、八个选项、`paused=false`，sentinel 则仍 `armed / 0 ticks / pause_observed=false`；report /
+   first-blocker SHA-256 为 `5514AE3520D210DB5703DC4847F096E400B7703200476AB693BC22B68A960881` /
+   `8C6A264B27744FEA72C85652DAB7EB857B5D0E857E5A9674125A28BA208C4FCA`。事件在
+   final-stage hook 之前阻塞了日更，继续放大 timeout 没有收益，因此撤销 stationary 专用 `60s`，恢复共享 `30s`。
+   [implementation-confirmed] composite 现在先识别 event/interaction；仅在未暂停时显式暂停一次，再按 exact generation 调原生 cancel。只有
+   cancel ACK、status 回读同 generation `idle`、fresh paused decision identity 三者一致才返回策略层。这样事件选择获得
+   `paused=true`，同时后续 arm 不会撞上遗留 armed generation。此路径不改变战争进入、继续、退兵、议和或结束意愿。
 
 按 defines 计算，连续 15 个纯原生日的理论时间是：1 速 `30s`、2 速 `15s`、3 速 `7.5s`、4 速
 `3s`、5 速负载相关。若一次“游戏日”事务现实里接近半分钟，主要成本来自 pause、paused rich query、Python

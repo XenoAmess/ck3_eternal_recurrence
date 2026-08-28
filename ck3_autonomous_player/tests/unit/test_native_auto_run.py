@@ -403,6 +403,7 @@ class _NativeAutoRunHarness:
             "lagged_advance",
             "slow_advance",
             "terminal_advance",
+            "advance_to_event",
             "no_delta_advance",
             "identity_change",
         }:
@@ -413,6 +414,7 @@ class _NativeAutoRunHarness:
                 "lagged_advance",
                 "slow_advance",
                 "terminal_advance",
+                "advance_to_event",
                 "identity_change",
             }:
                 if action == "slow_advance":
@@ -426,6 +428,8 @@ class _NativeAutoRunHarness:
                     self.heartbeat_date_raw = self.date_raw
                 if action == "terminal_advance":
                     self.terminal = True
+                if action == "advance_to_event":
+                    self.active_event_id = 900
                 if action == "identity_change":
                     self.episode_character_id = 708
             result = {
@@ -489,6 +493,7 @@ class _NativeAutoRunHarness:
             if action != "reply_missing_typed_postcondition":
                 result.update(
                     {
+                        "paused": True,
                         "interaction_result": {
                             "status": "rejected",
                             "instance_id": old_pending["instance_id"],
@@ -1325,7 +1330,13 @@ class NativeAutoRunTests(unittest.TestCase):
     def test_pending_reply_compacts_the_next_pending_identity(self) -> None:
         report, _harness = self._run(["reply_reject_next"])
 
-        self.assertTrue(report["ok"], report.get("error"))
+        self.assertFalse(report["ok"])
+        self.assertEqual(
+            report["status"], "turn_limit_player_decision_pending"
+        )
+        self.assertTrue(
+            report["auto_run"]["checkpoint_deferred_for_player_decision"]
+        )
         result = report["auto_run"]["turns"][0]["result"]
         self.assertEqual(
             result["remaining_pending_character_interaction"],
@@ -1851,6 +1862,43 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             report["auto_run"]["eligible_advances_since_checkpoint"], 3
         )
+
+    def test_modal_third_advance_defers_checkpoint_until_event_reply(self) -> None:
+        report, harness = self._run(
+            ["advance", "advance", "advance_to_event", "event"]
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(len(report["checkpoints"]), 1)
+        self.assertEqual(report["checkpoints"][0]["phase"], "periodic_checkpoint")
+        self.assertGreater(
+            harness.events.index("save_checkpoint"),
+            harness.events.index("auto_turn:event"),
+        )
+        self.assertFalse(
+            report["auto_run"]["checkpoint_deferred_for_player_decision"]
+        )
+
+    def test_turn_limit_on_modal_keeps_previous_durable_anchor(self) -> None:
+        report, harness = self._run(
+            ["advance", "advance", "advance_to_event"],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(
+            report["status"], "turn_limit_player_decision_pending"
+        )
+        self.assertEqual(report["checkpoints"], [])
+        self.assertNotIn("save_checkpoint", harness.events)
+        self.assertTrue(
+            report["auto_run"]["checkpoint_deferred_for_player_decision"]
+        )
+        blocker = report["first_blocker"]
+        self.assertEqual(blocker["kind"], "player_decision_checkpoint_deferred")
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(blocker["last_durable_checkpoint"], report["fixed_seed"])
 
     def test_one_generation_requires_matching_scored_death_terminal(self) -> None:
         report, harness = self._run(

@@ -172,6 +172,7 @@ def native_auto_run(
     visible_gameplay_turns = 0
     date_advanced = False
     terminal_pending = False
+    modal_decision_pending = False
     terminal_proof: dict[str, object] | None = None
     initial_episode: dict[str, object] | None = None
     same_episode_binding = True
@@ -565,6 +566,7 @@ def native_auto_run(
                     after_snapshot.get("one_life_terminal_reason"), str
                 )
             )
+            modal_decision_pending = _player_decision_pending(after_snapshot)
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
@@ -749,6 +751,7 @@ def native_auto_run(
                 eligible_since_checkpoint
                 >= checkpoint_cadence
                 and not terminal_pending
+                and not modal_decision_pending
             ):
                 checkpoint_binding = _public_binding(after)
                 current_attempt = {
@@ -814,6 +817,8 @@ def native_auto_run(
             status = (
                 "turn_limit_terminal_pending"
                 if terminal_pending
+                else "turn_limit_player_decision_pending"
+                if modal_decision_pending
                 else "turn_limit"
             )
 
@@ -1121,6 +1126,10 @@ def native_auto_run(
             "visible_gameplay_turns": visible_gameplay_turns,
             "eligible_advances_since_checkpoint": eligible_since_checkpoint,
             "dirty_gameplay_since_checkpoint": dirty_gameplay_since_checkpoint,
+            "checkpoint_deferred_for_player_decision": bool(
+                modal_decision_pending
+                and dirty_gameplay_since_checkpoint
+            ),
             "turns": turns,
         },
         "checkpoints": checkpoints,
@@ -1687,6 +1696,8 @@ def _first_blocker_report(
         stage, kind = "bound", "run_bound_exhausted"
     elif status == "turn_limit_terminal_pending":
         stage, kind = "postcondition", "terminal_finalization_pending"
+    elif status == "turn_limit_player_decision_pending":
+        stage, kind = "bound", "player_decision_checkpoint_deferred"
     elif status == "terminal_preexisting":
         stage, kind = "readiness", "preexisting_terminal"
     elif status == "terminal_non_death_step":
@@ -1715,6 +1726,10 @@ def _first_blocker_report(
             "turn_limit": "run bound ended before the player death settlement",
             "turn_limit_terminal_pending": (
                 "run bound ended on a terminal frame before death settlement"
+            ),
+            "turn_limit_player_decision_pending": (
+                "run bound ended on a modal player decision; checkpoint was "
+                "deferred and the previous durable anchor was retained"
             ),
             "terminal_non_death_step": (
                 "a non-death terminal planner step ended the loop"
@@ -1860,6 +1875,8 @@ def _pending_interaction_lifecycle_verified(
         and remaining_instance_id != old_instance_id
         and after_instance_id != old_instance_id
         and _semantic_digest(remaining) == _semantic_digest(after_pending)
+        and result.get("paused") is True
+        and after_snapshot.get("paused") is True
     )
 
 
@@ -2126,7 +2143,10 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "zero_intermediate_pause",
         "armed_tactical_daily_sentinel",
         "tactical_daily_sentinel",
+        "player_decision_boundary",
+        "player_decision_boundary_cancel",
         "external_pause_count",
+        "player_decision_boundary_pause_count",
         "external_rich_query_count",
         "managed_failure_cleanup",
         "war_objective_hold_request",
@@ -2139,10 +2159,15 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "war_progress_after",
         "actions",
         "paused",
+        "active_event",
+        "pending_character_interaction",
         "final_screen",
         "snapshot_id",
         "revision",
         "native_revision",
+        "bridge_pid",
+        "connection_generation",
+        "played_character_id",
         "query_sequence",
         "snapshot_revision",
         "queried_snapshot_id",
@@ -2153,6 +2178,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "terminal_kind",
         "terminal_reason",
         "episode_character_id",
+        "episode_run_id",
         "settlement_status",
         "settlement_unavailable",
         "score",
@@ -2282,6 +2308,18 @@ def _eligible_advance(
         and evidence
         and isinstance(result, dict)
         and result.get("progress_status") == "postcondition"
+    )
+
+
+def _player_decision_pending(snapshot: object) -> bool:
+    return bool(
+        isinstance(snapshot, dict)
+        and (
+            isinstance(snapshot.get("active_event"), dict)
+            or isinstance(
+                snapshot.get("pending_character_interaction"), dict
+            )
+        )
     )
 
 

@@ -290,11 +290,17 @@ _TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY = (
 _TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY = (
     "game.command.research-query-tactical-daily-sentinel-v1"
 )
+_TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY = (
+    "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"
+)
 _TACTICAL_DAILY_SENTINEL_STATUS_STEP = (
     "research-query-tactical-daily-sentinel-v1"
 )
 _TACTICAL_DAILY_SENTINEL_ARM_PREFIX = (
     "research-arm-tactical-daily-sentinel-v1-"
+)
+_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX = (
+    "research-cancel-tactical-daily-sentinel-v1-generation-"
 )
 _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES = frozenset(
     {
@@ -304,11 +310,6 @@ _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES = frozenset(
 )
 _BATTLE_SENTINEL_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
-# One live stationary arm advanced only four game days during the previous
-# fixed 30-second wait.  Keep this scope bounded while allowing its full
-# seven-day lease plus one observed-day of pause/readback margin.
-_STATIONARY_OBJECTIVE_HOLD_EMPIRICAL_SECONDS_PER_DAY = 7.5
-_STATIONARY_OBJECTIVE_HOLD_SETTLE_MARGIN_DAYS = 1
 _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
     "committed_route_sentinel_live_ready": True,
@@ -4347,11 +4348,16 @@ class NativeHeadlessGameplayDriver:
         changed = self._wait_for_snapshot(
             self.take_snapshot(),
             lambda snapshot: (
-                not isinstance(
-                    snapshot.get("pending_character_interaction"), dict
+                snapshot.get("paused") is True
+                and (
+                    not isinstance(
+                        snapshot.get("pending_character_interaction"), dict
+                    )
+                    or snapshot["pending_character_interaction"].get(
+                        "instance_id"
+                    )
+                    != instance_id
                 )
-                or snapshot["pending_character_interaction"].get("instance_id")
-                != instance_id
             ),
             timeout_seconds=self.command_timeout_seconds,
         )
@@ -4362,6 +4368,10 @@ class NativeHeadlessGameplayDriver:
         ):
             raise BridgeUnavailableError(
                 "native character interaction reply did not advance the pending request"
+            )
+        if changed.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native character interaction reply postcondition is not paused"
             )
         if acknowledging:
             interaction_status = "acknowledged"
@@ -4377,6 +4387,7 @@ class NativeHeadlessGameplayDriver:
                 "sender_character_id": pending.get("sender_character_id"),
             },
             "remaining_pending_character_interaction": remaining,
+            "paused": True,
             "snapshot_id": changed["snapshot_id"],
             "revision": changed["revision"],
         }
@@ -9137,14 +9148,6 @@ class NativeHeadlessGameplayDriver:
                 f"{maximum_horizon_days} whole days after the bound "
                 "starting frame"
             )
-        requested_horizon_days = target_delta_raw // 24
-        sentinel_pause_wait_timeout_seconds = (
-            _battle_sentinel_pause_wait_timeout_seconds(
-                self.life_advance_timeout_seconds,
-                sentinel_scope=sentinel_scope,
-                requested_horizon_days=requested_horizon_days,
-            )
-        )
         arm_step = (
             f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}"
             f"{starting_date_raw}-to-{target_date_raw}-speed-{speed}-"
@@ -9155,6 +9158,8 @@ class NativeHeadlessGameplayDriver:
         current = starting
         arm_status: dict[str, object] | None = None
         sentinel_status: dict[str, object] | None = None
+        player_decision_boundary: dict[str, object] | None = None
+        player_decision_boundary_cancel: dict[str, object] | None = None
         cleanup_error: str | None = None
         try:
             speed_step = f"set-speed-{speed}"
@@ -9230,17 +9235,120 @@ class NativeHeadlessGameplayDriver:
             if current.get("paused") is not True:
                 current = self._wait_for_life_advance_snapshot(
                     current,
-                    lambda snapshot: snapshot.get("paused") is True,
-                    timeout_seconds=(
-                        sentinel_pause_wait_timeout_seconds
+                    lambda snapshot: bool(
+                        snapshot.get("paused") is True
+                        or _battle_sentinel_player_decision_boundary(snapshot)
+                        is not None
                     ),
+                    timeout_seconds=self.life_advance_timeout_seconds,
                 )
+            observed_boundary = (
+                _battle_sentinel_player_decision_boundary(current)
+            )
+            new_decision_boundary = bool(
+                observed_boundary is not None
+                and _battle_sentinel_player_decision_is_new(
+                    starting, current
+                )
+            )
+            running_boundary = (
+                observed_boundary
+                if new_decision_boundary
+                and current.get("paused") is not True
+                else None
+            )
+            if (
+                new_decision_boundary
+                and current.get("paused") is True
+            ):
+                player_decision_boundary = observed_boundary
+            if current.get("paused") is not True:
+                before_pause_inspection = current
+                boundary_pause_actions: list[dict[str, object]] = []
+                paused_inspection = self._pause_life_advance(
+                    current, boundary_pause_actions
+                )
+                inspected_boundary = (
+                    _battle_sentinel_player_decision_boundary(
+                        paused_inspection
+                    )
+                )
+                boundary_confirmed = bool(
+                    len(boundary_pause_actions) == 1
+                    and inspected_boundary is not None
+                    and _fresh_battle_sentinel_player_decision_boundary(
+                        before_pause_inspection,
+                        paused_inspection,
+                        expected_boundary=running_boundary,
+                    )
+                    and _battle_sentinel_player_decision_is_new(
+                        starting, paused_inspection
+                    )
+                )
+                purpose = (
+                    "player_decision_boundary_stabilization"
+                    if boundary_confirmed
+                    else "managed_failure_cleanup"
+                )
+                for action in boundary_pause_actions:
+                    actions.append({**action, "purpose": purpose})
+                current = paused_inspection
+                if boundary_confirmed:
+                    player_decision_boundary = inspected_boundary
+                elif running_boundary is not None:
+                    raise BridgeUnavailableError(
+                        "native tactical sentinel player-decision boundary "
+                        "did not stabilize on one fresh paused frame"
+                    )
+                else:
+                    raise BridgeUnavailableError(
+                        f"native {step} timed out before a native sentinel "
+                        "pause"
+                    )
             if current.get("paused") is not True:
                 raise BridgeUnavailableError(
-                    f"native {step} timed out after "
-                    f"{sentinel_pause_wait_timeout_seconds:g}s before a "
-                    "native sentinel pause"
+                    f"native {step} timed out before a native sentinel pause"
                 )
+
+            if player_decision_boundary is not None:
+                generation = arm_status.get("generation")
+                if (
+                    isinstance(generation, bool)
+                    or not isinstance(generation, int)
+                    or generation <= 0
+                ):
+                    raise BridgeUnavailableError(
+                        "native tactical sentinel boundary lacks an armed "
+                        "generation"
+                    )
+                cancel_step = (
+                    f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}{generation}"
+                )
+                cancel_result = self._execute_primitive_step(
+                    cancel_step,
+                    expected_revision=None,
+                    required_capability=(
+                        _TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY
+                    ),
+                    internal_semantic_snapshot=True,
+                )
+                actions.append(
+                    {"step": cancel_step, "result": cancel_result}
+                )
+                if not (
+                    cancel_result.get("step") == cancel_step
+                    and cancel_result.get("accepted") is True
+                    and cancel_result.get("status") == "canceled"
+                ):
+                    raise BridgeUnavailableError(
+                        "native tactical sentinel boundary cancel was not "
+                        "accepted"
+                    )
+                player_decision_boundary_cancel = {
+                    "step": cancel_step,
+                    "status": "canceled",
+                    "generation": generation,
+                }
 
             status_result = self._execute_primitive_step(
                 _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
@@ -9270,6 +9378,21 @@ class NativeHeadlessGameplayDriver:
                     "native tactical sentinel lacks a fresh stable paused "
                     "post-stop snapshot"
                 )
+            post_stop_decision_boundary = (
+                _battle_sentinel_player_decision_boundary(
+                    post_stop_snapshot
+                )
+            )
+            if player_decision_boundary is not None:
+                if not _same_battle_sentinel_player_decision_boundary(
+                    player_decision_boundary,
+                    post_stop_decision_boundary,
+                ):
+                    raise BridgeUnavailableError(
+                        "native tactical sentinel player-decision boundary "
+                        "changed before its stable paused snapshot"
+                    )
+                player_decision_boundary = post_stop_decision_boundary
             objective_hold_post_stop = (
                 _battle_sentinel_stationary_objective_hold_state(
                     post_stop_snapshot,
@@ -9309,18 +9432,39 @@ class NativeHeadlessGameplayDriver:
                 objective_hold_request=parsed_objective_hold_request,
                 objective_hold_admission=hold_admission,
                 objective_hold_post_stop=objective_hold_post_stop,
+                player_decision_boundary=player_decision_boundary,
+                player_decision_boundary_cancel=(
+                    player_decision_boundary_cancel
+                ),
             )
-            _validate_tactical_daily_sentinel_stop(
-                sentinel_status,
-                arm_status=arm_status,
-                starting_date_raw=starting_date_raw,
-                target_date_raw=target_date_raw,
-                ending_date_raw=int(result["ending_date_raw"]),
-                elapsed_days=int(result["elapsed_days"]),
-                speed=speed,
-                mode=status_mode,
-                watch_army_ids=watch_army_ids,
-            )
+            if player_decision_boundary is not None:
+                _validate_tactical_daily_sentinel_decision_boundary(
+                    sentinel_status,
+                    arm_status=arm_status,
+                    starting_date_raw=starting_date_raw,
+                    target_date_raw=target_date_raw,
+                    ending_date_raw=int(result["ending_date_raw"]),
+                    elapsed_days=int(result["elapsed_days"]),
+                    speed=speed,
+                    mode=status_mode,
+                    watch_army_ids=watch_army_ids,
+                    player_decision_boundary=player_decision_boundary,
+                    player_decision_boundary_cancel=(
+                        player_decision_boundary_cancel
+                    ),
+                )
+            else:
+                _validate_tactical_daily_sentinel_stop(
+                    sentinel_status,
+                    arm_status=arm_status,
+                    starting_date_raw=starting_date_raw,
+                    target_date_raw=target_date_raw,
+                    ending_date_raw=int(result["ending_date_raw"]),
+                    elapsed_days=int(result["elapsed_days"]),
+                    speed=speed,
+                    mode=status_mode,
+                    watch_army_ids=watch_army_ids,
+                )
             result["progress_status"] = "postcondition"
             return result
         except Exception as error:
@@ -9354,6 +9498,10 @@ class NativeHeadlessGameplayDriver:
                 objective_hold_request=parsed_objective_hold_request,
                 objective_hold_admission=hold_admission,
                 objective_hold_post_stop=None,
+                player_decision_boundary=player_decision_boundary,
+                player_decision_boundary_cancel=(
+                    player_decision_boundary_cancel
+                ),
             )
             message = f"native {step} postcondition failed: {error}"
             if cleanup_error is not None:
@@ -10911,30 +11059,158 @@ def _battle_sentinel_matches_committed_route(
     return matches == 1
 
 
-def _battle_sentinel_pause_wait_timeout_seconds(
-    base_timeout_seconds: float,
-    *,
-    sentinel_scope: str,
-    requested_horizon_days: int,
-) -> float:
-    """Return the bounded wall wait for one already-armed sentinel.
+def _battle_sentinel_player_decision_boundary(
+    snapshot: object,
+) -> dict[str, object] | None:
+    if not isinstance(snapshot, dict):
+        return None
+    binding = _battle_sentinel_frame_binding(snapshot)
+    active_event = snapshot.get("active_event")
+    if isinstance(active_event, dict):
+        return {
+            **binding,
+            "kind": "active_event",
+            "instance_id": active_event.get("instance_id"),
+            "option_count": active_event.get("option_count"),
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+        }
+    pending = snapshot.get("pending_character_interaction")
+    if isinstance(pending, dict):
+        return {
+            **binding,
+            "kind": "pending_character_interaction",
+            "instance_id": pending.get("instance_id"),
+            "sender_character_id": pending.get("sender_character_id"),
+            "auto_accept_notification": pending.get(
+                "auto_accept_notification"
+            ),
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+        }
+    return None
 
-    Only the seven-day stationary scope has live evidence that the shared
-    30-second base can expire before its native deadline: one degraded arm
-    advanced four days in 30 seconds.  At 7.5 seconds/day, the requested
-    horizon plus one day of pause/readback margin is 60 seconds at the
-    maximum seven-day lease.  Other sentinel scopes retain the caller's base
-    timeout unchanged.
-    """
-    if sentinel_scope != "stationary_objective_hold":
-        return base_timeout_seconds
-    return max(
-        base_timeout_seconds,
-        _STATIONARY_OBJECTIVE_HOLD_EMPIRICAL_SECONDS_PER_DAY
-        * (
-            requested_horizon_days
-            + _STATIONARY_OBJECTIVE_HOLD_SETTLE_MARGIN_DAYS
+
+def _battle_sentinel_frame_binding(
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    diagnostics = snapshot.get("diagnostics")
+    played_character = snapshot.get("played_character")
+    return {
+        "observed_date_raw": snapshot.get("date_raw"),
+        "bridge_pid": (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, dict)
+            else None
         ),
+        "connection_generation": (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        ),
+        "episode_character_id": snapshot.get("episode_character_id"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "played_character_id": (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        ),
+    }
+
+
+def _same_battle_sentinel_player_decision_boundary(
+    before: object,
+    after: object,
+) -> bool:
+    binding_fields = (
+        "observed_date_raw",
+        "bridge_pid",
+        "connection_generation",
+        "episode_character_id",
+        "episode_run_id",
+        "played_character_id",
+    )
+    return bool(
+        isinstance(before, dict)
+        and isinstance(after, dict)
+        and before.get("kind") == after.get("kind")
+        and before.get("instance_id") == after.get("instance_id")
+        and all(before.get(field) == after.get(field) for field in binding_fields)
+    )
+
+
+def _battle_sentinel_player_decision_is_new(
+    starting: dict[str, object],
+    current: dict[str, object],
+) -> bool:
+    starting_boundary = _battle_sentinel_player_decision_boundary(starting)
+    current_boundary = _battle_sentinel_player_decision_boundary(current)
+    starting_revision = starting.get("revision")
+    current_revision = current.get("revision")
+    starting_binding = _battle_sentinel_frame_binding(starting)
+    current_binding = _battle_sentinel_frame_binding(current)
+    owner_fields = (
+        "bridge_pid",
+        "connection_generation",
+        "episode_character_id",
+        "episode_run_id",
+        "played_character_id",
+    )
+    return bool(
+        current_boundary is not None
+        and (
+            starting_boundary is None
+            or not _same_battle_sentinel_player_decision_boundary(
+                starting_boundary, current_boundary
+            )
+        )
+        and isinstance(starting_revision, int)
+        and not isinstance(starting_revision, bool)
+        and isinstance(current_revision, int)
+        and not isinstance(current_revision, bool)
+        and current_revision > starting_revision
+        and all(
+            starting_binding.get(field) == current_binding.get(field)
+            for field in owner_fields
+        )
+    )
+
+
+def _fresh_battle_sentinel_player_decision_boundary(
+    before_pause: dict[str, object],
+    after_pause: dict[str, object],
+    *,
+    expected_boundary: dict[str, object] | None,
+) -> bool:
+    before_revision = before_pause.get("revision")
+    after_revision = after_pause.get("revision")
+    before_native_revision = before_pause.get("native_revision")
+    after_native_revision = after_pause.get("native_revision")
+    boundary = _battle_sentinel_player_decision_boundary(after_pause)
+    return bool(
+        after_pause.get("paused") is True
+        and after_pause.get("map_ready") is True
+        and isinstance(before_revision, int)
+        and not isinstance(before_revision, bool)
+        and isinstance(after_revision, int)
+        and not isinstance(after_revision, bool)
+        and after_revision > before_revision
+        and isinstance(before_native_revision, int)
+        and not isinstance(before_native_revision, bool)
+        and isinstance(after_native_revision, int)
+        and not isinstance(after_native_revision, bool)
+        and after_native_revision >= before_native_revision
+        and _battle_sentinel_frame_binding(before_pause)
+        == _battle_sentinel_frame_binding(after_pause)
+        and boundary is not None
+        and (
+            expected_boundary is None
+            or _same_battle_sentinel_player_decision_boundary(
+                expected_boundary, boundary
+            )
+        )
     )
 
 
@@ -11381,6 +11657,81 @@ def _validate_tactical_daily_sentinel_stop(
         )
 
 
+def _validate_tactical_daily_sentinel_decision_boundary(
+    status: dict[str, object],
+    *,
+    arm_status: dict[str, object],
+    starting_date_raw: int,
+    target_date_raw: int,
+    ending_date_raw: int,
+    elapsed_days: int,
+    speed: int,
+    mode: str,
+    watch_army_ids: tuple[int, ...],
+    player_decision_boundary: dict[str, object],
+    player_decision_boundary_cancel: dict[str, object] | None,
+) -> None:
+    """Validate a real player decision that pre-empted the daily hook.
+
+    CK3 can materialize a blocking event before the sentinel's final daily
+    callback.  The game date then stops while the public paused bit remains
+    false.  This contract accepts only that observable boundary and an exact
+    generation-bound cancel proven by an idle status; it does not synthesize
+    a native trigger or relax the ordinary final-stage checks.
+    """
+
+    raw_delta = ending_date_raw - starting_date_raw
+    completed_ticks = status.get("completed_daily_ticks")
+    last_observed_date_raw = status.get("last_observed_date_raw")
+    if not (
+        player_decision_boundary.get("kind")
+        in {"active_event", "pending_character_interaction"}
+        and player_decision_boundary.get("instance_id") is not None
+        and player_decision_boundary.get("observed_date_raw")
+        == ending_date_raw
+        and status.get("state") == "idle"
+        and status.get("abnormal") is False
+        and status.get("generation") == arm_status.get("generation")
+        and status.get("starting_date_raw") == starting_date_raw
+        and status.get("target_date_raw") == target_date_raw
+        and status.get("speed") == speed
+        and status.get("mode") == mode
+        and status.get("army_count") == len(watch_army_ids)
+        and status.get("combat_count") == arm_status.get("combat_count")
+        and isinstance(completed_ticks, int)
+        and not isinstance(completed_ticks, bool)
+        and 0 <= completed_ticks <= elapsed_days
+        and last_observed_date_raw
+        == starting_date_raw + completed_ticks * 24
+        and status.get("trigger_date_raw") == 0
+        and status.get("intermediate_pause_count") == 0
+        and status.get("trigger_flags") == 0
+        and status.get("trigger_reasons") == []
+        and status.get("signed_date_delta_from_target_raw") == 0
+        and status.get("overshoot_days") == -1
+        and status.get("pause_wrapper_called") is False
+        and status.get("pause_observed") is False
+        and status.get("terminal_observed") is False
+        and raw_delta >= 0
+        and raw_delta % 24 == 0
+        and elapsed_days == raw_delta // 24
+        and ending_date_raw <= target_date_raw
+        and player_decision_boundary_cancel
+        == {
+            "step": (
+                f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
+                f"{arm_status.get('generation')}"
+            ),
+            "status": "canceled",
+            "generation": arm_status.get("generation"),
+        }
+    ):
+        raise BridgeUnavailableError(
+            "native tactical sentinel player-decision boundary failed its "
+            "generation/date/status postcondition"
+        )
+
+
 def _battle_sentinel_step_result(
     *,
     step: str,
@@ -11399,6 +11750,8 @@ def _battle_sentinel_step_result(
     objective_hold_request: tuple[int, int, int, int] | None,
     objective_hold_admission: dict[str, object] | None,
     objective_hold_post_stop: dict[str, object] | None,
+    player_decision_boundary: dict[str, object] | None,
+    player_decision_boundary_cancel: dict[str, object] | None,
 ) -> dict[str, object]:
     starting_date_raw = _date_raw(starting, f"{step} starting snapshot")
     ending_date_raw = _date_raw(ending, f"{step} ending snapshot")
@@ -11411,6 +11764,12 @@ def _battle_sentinel_step_result(
         for action in actions
         if action.get("purpose") == "managed_failure_cleanup"
     ]
+    decision_boundary_pause_actions = [
+        action
+        for action in actions
+        if action.get("purpose")
+        == "player_decision_boundary_stabilization"
+    ]
     terminal_observed = bool(
         isinstance(sentinel_status, dict)
         and sentinel_status.get("terminal_observed") is True
@@ -11420,6 +11779,8 @@ def _battle_sentinel_step_result(
         if isinstance(sentinel_status, dict)
         else []
     )
+    diagnostics = ending.get("diagnostics")
+    played_character = ending.get("played_character")
     result: dict[str, object] = {
         "step": step,
         "backend_id": "native-headless",
@@ -11443,7 +11804,11 @@ def _battle_sentinel_step_result(
         "watch_army_ids": list(watch_army_ids),
         "progress_status": progress_status,
         "stop_kind": (
-            "terminal" if terminal_observed else "decision_epoch"
+            "player_decision"
+            if player_decision_boundary is not None
+            else "terminal"
+            if terminal_observed
+            else "decision_epoch"
         ),
         "terminal_reached": terminal_observed,
         "trigger_reasons": trigger_reasons,
@@ -11475,10 +11840,21 @@ def _battle_sentinel_step_result(
         ),
         "armed_tactical_daily_sentinel": copy.deepcopy(arm_status),
         "tactical_daily_sentinel": copy.deepcopy(sentinel_status),
+        "player_decision_boundary": copy.deepcopy(
+            player_decision_boundary
+        ),
+        "player_decision_boundary_cancel": copy.deepcopy(
+            player_decision_boundary_cancel
+        ),
         "war_progress_before": _war_progress_summary(starting),
         "war_progress_after": _war_progress_summary(ending),
         "actions": copy.deepcopy(actions),
-        "external_pause_count": len(cleanup_actions),
+        "external_pause_count": (
+            len(cleanup_actions) + len(decision_boundary_pause_actions)
+        ),
+        "player_decision_boundary_pause_count": len(
+            decision_boundary_pause_actions
+        ),
         "external_rich_query_count": 0,
         "managed_failure_cleanup": {
             "attempted": bool(cleanup_actions),
@@ -11486,12 +11862,36 @@ def _battle_sentinel_step_result(
         },
         "paused": ending.get("paused") is True,
         "active_event": copy.deepcopy(ending.get("active_event")),
+        "pending_character_interaction": copy.deepcopy(
+            ending.get("pending_character_interaction")
+        ),
         "final_screen": (
-            "map_hud" if ending.get("paused") is True else None
+            "map_hud"
+            if ending.get("paused") is True
+            and ending.get("active_event") is None
+            and ending.get("pending_character_interaction") is None
+            else None
         ),
         "snapshot_id": ending.get("snapshot_id"),
         "revision": ending.get("revision"),
         "native_revision": ending.get("native_revision"),
+        "bridge_pid": (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, dict)
+            else None
+        ),
+        "connection_generation": (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        ),
+        "episode_character_id": ending.get("episode_character_id"),
+        "episode_run_id": ending.get("episode_run_id"),
+        "played_character_id": (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        ),
     }
     if objective_hold_request is not None:
         result["war_objective_hold_request"] = {

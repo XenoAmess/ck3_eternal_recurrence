@@ -1771,6 +1771,16 @@ def _battle_sentinel_advance_validation(
         if committed_route_request is not None
         else "active_battle"
     )
+    if advance_result.get("player_decision_boundary") is not None:
+        return _battle_sentinel_player_decision_validation(
+            advance_result,
+            expected_speed=expected_speed,
+            expected_mode=expected_mode,
+            requested_scope=requested_scope,
+            decision_target=decision_target,
+            committed_route_request=committed_route_request,
+            objective_hold_request=objective_hold_request,
+        )
     sentinel = advance_result.get("tactical_daily_sentinel")
     start = _native_int(advance_result.get("starting_date_raw"))
     target = _native_int(advance_result.get("target_date_raw"))
@@ -2029,6 +2039,280 @@ def _battle_sentinel_advance_validation(
         "terminal_observed": terminal_flag,
         "sentinel_scope": sentinel_scope,
         "watch_army_ids": list(watch) if isinstance(watch, list) else None,
+    }
+
+
+def _battle_sentinel_player_decision_validation(
+    advance_result: dict[str, object],
+    *,
+    expected_speed: int | None,
+    expected_mode: str,
+    requested_scope: str,
+    decision_target: int | None,
+    committed_route_request: tuple[int, int, int] | None,
+    objective_hold_request: tuple[int, int, int, int] | None,
+) -> dict[str, object]:
+    """Validate a real player decision that pre-empted native final-stage."""
+
+    step = advance_result.get("step")
+    boundary = advance_result.get("player_decision_boundary")
+    cancel = advance_result.get("player_decision_boundary_cancel")
+    sentinel = advance_result.get("tactical_daily_sentinel")
+    armed = advance_result.get("armed_tactical_daily_sentinel")
+    start = _native_int(advance_result.get("starting_date_raw"))
+    target = _native_int(advance_result.get("target_date_raw"))
+    end = _native_int(advance_result.get("ending_date_raw"))
+    elapsed = _native_int(advance_result.get("elapsed_days"))
+    watch = advance_result.get("watch_army_ids")
+    ticks = (
+        _native_int(sentinel.get("completed_daily_ticks"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    maximum_horizon_days = (
+        7
+        if objective_hold_request is not None
+        else _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+    )
+    expected_target = (
+        decision_target
+        if decision_target is not None
+        else objective_hold_request[3]
+        if objective_hold_request is not None
+        else committed_route_request[2]
+        if committed_route_request is not None
+        else (
+            start + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+            if start is not None
+            else None
+        )
+    )
+    errors: list[str] = []
+    if not (
+        isinstance(watch, list)
+        and 0 < len(watch) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
+        and all(
+            _native_int(item) is not None
+            and 0 < int(item) <= 2**31 - 1
+            for item in watch
+        )
+        and len(set(watch)) == len(watch)
+    ):
+        errors.append("watch_set_invalid")
+    if not (
+        start is not None
+        and target is not None
+        and end is not None
+        and elapsed is not None
+        and ticks is not None
+        and target == expected_target
+        and 1 <= (target - start) // 24 <= maximum_horizon_days
+        and (target - start) % 24 == 0
+        and start + elapsed * 24 == end
+        and 0 <= elapsed
+        and end <= target
+        and 0 <= ticks <= elapsed
+    ):
+        errors.append("decision_boundary_date_reconciliation_failed")
+
+    kind = boundary.get("kind") if isinstance(boundary, dict) else None
+    active_event = advance_result.get("active_event")
+    pending = advance_result.get("pending_character_interaction")
+    decision_identity_matches = bool(
+        isinstance(boundary, dict)
+        and boundary.get("instance_id") is not None
+        and boundary.get("observed_date_raw") == end
+        and boundary.get("snapshot_id") == advance_result.get("snapshot_id")
+        and boundary.get("revision") == advance_result.get("revision")
+        and boundary.get("native_revision")
+        == advance_result.get("native_revision")
+        and boundary.get("bridge_pid") == advance_result.get("bridge_pid")
+        and boundary.get("connection_generation")
+        == advance_result.get("connection_generation")
+        and boundary.get("episode_character_id")
+        == advance_result.get("episode_character_id")
+        and boundary.get("episode_run_id")
+        == advance_result.get("episode_run_id")
+        and boundary.get("played_character_id")
+        == advance_result.get("played_character_id")
+        and (
+            (
+                kind == "active_event"
+                and isinstance(active_event, dict)
+                and active_event.get("instance_id")
+                == boundary.get("instance_id")
+            )
+            or (
+                kind == "pending_character_interaction"
+                and isinstance(pending, dict)
+                and pending.get("instance_id")
+                == boundary.get("instance_id")
+            )
+        )
+    )
+    if not decision_identity_matches:
+        errors.append("player_decision_boundary_identity_invalid")
+
+    combat_count = (
+        _native_int(sentinel.get("combat_count"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    combat_scope_valid = bool(
+        (requested_scope == "active_battle" and (combat_count or 0) > 0)
+        or (
+            requested_scope
+            in {"committed_route", "stationary_objective_hold"}
+            and combat_count == 0
+        )
+    )
+    if not (
+        isinstance(sentinel, dict)
+        and sentinel.get("state") == "idle"
+        and sentinel.get("abnormal") is False
+        and isinstance(armed, dict)
+        and armed.get("state") == "armed"
+        and sentinel.get("generation") == armed.get("generation")
+        and sentinel.get("starting_date_raw") == start
+        and sentinel.get("target_date_raw") == target
+        and sentinel.get("speed") == expected_speed
+        and sentinel.get("mode") == expected_mode
+        and sentinel.get("army_count") == len(watch or [])
+        and combat_scope_valid
+        and sentinel.get("last_observed_date_raw")
+        == (start + ticks * 24 if start is not None and ticks is not None else None)
+        and sentinel.get("trigger_date_raw") == 0
+        and sentinel.get("intermediate_pause_count") == 0
+        and sentinel.get("trigger_flags") == 0
+        and sentinel.get("trigger_reasons") == []
+        and sentinel.get("signed_date_delta_from_target_raw") == 0
+        and sentinel.get("overshoot_days") == -1
+        and sentinel.get("pause_wrapper_called") is False
+        and sentinel.get("pause_observed") is False
+        and sentinel.get("terminal_observed") is False
+        and armed.get("generation") == sentinel.get("generation")
+        and armed.get("starting_date_raw") == start
+        and armed.get("target_date_raw") == target
+        and armed.get("last_observed_date_raw") == start
+        and armed.get("trigger_date_raw") == 0
+        and armed.get("speed") == expected_speed
+        and armed.get("mode") == expected_mode
+        and armed.get("army_count") == len(watch or [])
+        and armed.get("combat_count") == combat_count
+        and armed.get("completed_daily_ticks") == 0
+        and armed.get("intermediate_pause_count") == 0
+        and armed.get("trigger_flags") == 0
+        and armed.get("trigger_reasons") == []
+        and armed.get("signed_date_delta_from_target_raw") == 0
+        and armed.get("overshoot_days") == -1
+        and armed.get("pause_wrapper_called") is False
+        and armed.get("pause_observed") is False
+        and armed.get("terminal_observed") is False
+        and armed.get("abnormal") is False
+        and cancel
+        == {
+            "step": (
+                "research-cancel-tactical-daily-sentinel-v1-generation-"
+                f"{armed.get('generation')}"
+            ),
+            "status": "canceled",
+            "generation": armed.get("generation"),
+        }
+    ):
+        errors.append("decision_boundary_sentinel_status_invalid")
+
+    boundary_pause_count = _native_int(
+        advance_result.get("player_decision_boundary_pause_count")
+    )
+    cleanup = advance_result.get("managed_failure_cleanup")
+    if not (
+        advance_result.get("progress_status") == "postcondition"
+        and advance_result.get("requested_horizon_days")
+        == (
+            (target - start) // 24
+            if target is not None and start is not None
+            else None
+        )
+        and advance_result.get("timeline_speed") == expected_speed
+        and advance_result.get("timeline_policy") == expected_mode
+        and advance_result.get("sentinel_mode") == expected_mode
+        and advance_result.get("sentinel_scope") == requested_scope
+        and advance_result.get("stop_kind") == "player_decision"
+        and advance_result.get("terminal_reached") is False
+        and advance_result.get("trigger_reasons") == []
+        and advance_result.get("sentinel_generation")
+        == sentinel.get("generation")
+        and advance_result.get("completed_daily_ticks") == ticks
+        and advance_result.get("intermediate_pause_count") == 0
+        and advance_result.get("overshoot_days") == -1
+        and advance_result.get("zero_intermediate_pause") is True
+        and boundary_pause_count is not None
+        and boundary_pause_count in {0, 1}
+        and advance_result.get("external_pause_count")
+        == boundary_pause_count
+        and advance_result.get("external_rich_query_count") == 0
+        and advance_result.get("paused") is True
+        and isinstance(cleanup, dict)
+        and cleanup.get("attempted") is False
+        and cleanup.get("error") is None
+    ):
+        errors.append("decision_boundary_composite_completion_invalid")
+
+    if objective_hold_request is not None:
+        request = advance_result.get("war_objective_hold_request")
+        admission = advance_result.get("war_objective_hold_admission")
+        post_stop = advance_result.get("war_objective_hold_post_stop")
+        if request != {
+            "sentinel_scope": "stationary_objective_hold",
+            "war_id": objective_hold_request[0],
+            "subject_army_id": objective_hold_request[1],
+            "objective_province_id": objective_hold_request[2],
+            "target_date_raw": objective_hold_request[3],
+        }:
+            errors.append("objective_hold_request_binding_failed")
+        if not (
+            isinstance(admission, dict)
+            and admission.get("status") == "matched"
+            and admission.get("war_id") == objective_hold_request[0]
+            and admission.get("subject_army_id")
+            == objective_hold_request[1]
+            and admission.get("objective_province_id")
+            == objective_hold_request[2]
+            and admission.get("watch_army_ids") == watch
+        ):
+            errors.append("objective_hold_admission_binding_failed")
+        if not (
+            isinstance(post_stop, dict)
+            and post_stop.get("status") == "invalidated"
+            and post_stop.get("reason") == "pending_player_decision"
+            and post_stop.get("war_id") == objective_hold_request[0]
+            and post_stop.get("subject_army_id")
+            == objective_hold_request[1]
+            and post_stop.get("objective_province_id")
+            == objective_hold_request[2]
+            and post_stop.get("watch_army_ids") == watch
+        ):
+            errors.append("objective_hold_decision_boundary_revalidation_failed")
+        if not (
+            advance_result.get("exact_war_terminal_watch") is False
+            and advance_result.get("exact_active_war_set_watch") is False
+            and advance_result.get(
+                "maximum_omitted_state_detection_lag_days"
+            )
+            == 7
+        ):
+            errors.append("objective_hold_watch_boundary_misreported")
+
+    return {
+        "valid": not errors,
+        "errors": errors,
+        "step": step,
+        "actual_elapsed_days": elapsed,
+        "terminal_observed": False,
+        "sentinel_scope": requested_scope,
+        "watch_army_ids": list(watch) if isinstance(watch, list) else None,
+        "stop_kind": "player_decision",
+        "player_decision_kind": kind,
     }
 
 
