@@ -59,7 +59,12 @@ READINESS_STABLE_SECONDS = 0.5
 READINESS_POLL_SECONDS = 0.05
 SESSION_TIMEOUT_GRACE_SECONDS = 90.0
 _ELIGIBLE_ADVANCE_STEPS = frozenset(
-    {"life-advance", "economic-event-cycle"}
+    {
+        "life-advance",
+        "economic-event-cycle",
+        "battle-decision-epoch-advance",
+        "battle-terminal-cruise",
+    }
 )
 _TERMINAL_STEPS = frozenset({"death-terminal", "strategy-review"})
 _RECOVERY_STEPS = frozenset(
@@ -1993,6 +1998,13 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "active_event",
         "pending_character_interaction",
         "cross_run_plan_used",
+        "timeline_speed",
+        "timeline_policy",
+        "sentinel_mode",
+        "absolute_target_date_raw",
+        "watch_army_ids",
+        "terminal_journal_cursors",
+        "battle_terminal_cruise_assessments",
     )
     return {key: plan.get(key) for key in keys if key in plan}
 
@@ -2007,15 +2019,41 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "source",
         "progress_status",
         "starting_date_raw",
+        "target_date_raw",
         "ending_date_raw",
         "elapsed_days",
         "requested_horizon_days",
         "timeline_speed",
         "timeline_policy",
+        "sentinel_mode",
+        "watch_army_ids",
+        "stop_kind",
+        "terminal_reached",
+        "trigger_reasons",
+        "sentinel_generation",
+        "completed_daily_ticks",
+        "intermediate_pause_count",
+        "overshoot_days",
+        "zero_intermediate_pause",
+        "armed_tactical_daily_sentinel",
+        "tactical_daily_sentinel",
+        "external_pause_count",
+        "external_rich_query_count",
+        "managed_failure_cleanup",
+        "war_progress_before",
+        "war_progress_after",
+        "actions",
         "paused",
         "final_screen",
         "snapshot_id",
         "revision",
+        "native_revision",
+        "query_sequence",
+        "snapshot_revision",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "battle_terminal_transition",
         "terminal",
         "terminal_kind",
         "terminal_reason",

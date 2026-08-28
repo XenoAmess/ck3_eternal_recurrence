@@ -25,6 +25,10 @@ from xar_autoplayer.bridge.service import (
     GameplayBridgeService,
     _route_plan_to_available_step,
 )
+from xar_autoplayer.bridge.battle_terminal_transition_contract import (
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+    query_battle_terminal_transition_v1_step,
+)
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
@@ -1024,6 +1028,47 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_plan_turn_passes_battle_readiness_and_routes_dynamic_journal_query(
+        self,
+    ) -> None:
+        readiness = {
+            "decision_sentinel_live_ready": True,
+            "terminal_sentinel_live_ready": False,
+            "overwhelming_matrix_live_ready": False,
+        }
+        terminal_step = query_battle_terminal_transition_v1_step(
+            335_544_325, 101, 40
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(7),
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance",),
+        )
+        driver.capabilities = lambda: {
+            **CallbackGameplayDriver.capabilities(driver),
+            "bridge_capabilities": [
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+            ],
+            "battle_speed_readiness": readiness,
+        }
+        planned = {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_terminal_journal_query",
+            "selected_step": terminal_step,
+        }
+
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=planned,
+        ) as choose:
+            result = GameplayBridgeService(driver).plan_turn()
+
+        self.assertEqual(result["plan"]["selected_step"], terminal_step)
+        self.assertEqual(
+            choose.call_args.kwargs["battle_speed_readiness"], readiness
+        )
+
     def test_irreversible_war_steps_never_fallback_to_life_advance(self) -> None:
         for step in (
             "declare-war-808-17-0",

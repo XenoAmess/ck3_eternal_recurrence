@@ -23,6 +23,12 @@ from .bridge.battle_control_contract import (
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
 )
+from .bridge.battle_terminal_transition_contract import (
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+    normalize_battle_terminal_transition_v1,
+    parse_query_battle_terminal_transition_v1_step,
+    query_battle_terminal_transition_v1_step,
+)
 from .bridge.war_entry_contract import (
     FIXED_POINT_SCALE as WAR_ENTRY_FIXED_POINT_SCALE,
     normalize_war_entry_assessments,
@@ -78,6 +84,9 @@ from .bridge.war_contract import (
 from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
+from .simulation.battle_terminal_cruise_policy import (
+    assess_battle_terminal_cruise,
+)
 
 
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
@@ -94,6 +103,10 @@ _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
+_BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
+_BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
+_BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS = 45
+_BATTLE_SENTINEL_MAX_WATCH_ARMIES = 64
 _NATIVE_ENEMY_TARGET_MILESTONES_DAYS = (7, 14)
 _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP = (
     "accept-pending-character-interaction"
@@ -1573,6 +1586,524 @@ def _current_battle_control_frames(
     return current, records
 
 
+def _battle_terminal_transition_query_records(
+    rows: list[dict[str, object]],
+    *,
+    position_offset: int = 0,
+) -> list[dict[str, object]]:
+    """Recover strict journal queries with their paused-frame bindings."""
+
+    records: list[dict[str, object]] = []
+    for position, row in enumerate(rows, start=position_offset + 1):
+        request = parse_query_battle_terminal_transition_v1_step(
+            _effective_command(row)
+        )
+        if request is None or row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        if not isinstance(result, dict):
+            continue
+        queried_revision = _native_int(result.get("queried_revision"))
+        queried_native_revision = _native_int(
+            result.get("queried_native_revision")
+        )
+        queried_snapshot_id = result.get("queried_snapshot_id")
+        query_sequence = _native_int(result.get("query_sequence"))
+        frame = result.get("battle_terminal_transition")
+        if not (
+            result.get("step") == _effective_command(row)
+            and result.get("accepted") is True
+            and result.get("status") in {"available", "unavailable"}
+            and queried_revision is not None
+            and queried_revision >= 0
+            and queried_native_revision is not None
+            and queried_native_revision > 0
+            and isinstance(queried_snapshot_id, str)
+            and bool(queried_snapshot_id)
+            and query_sequence is not None
+            and query_sequence > 0
+            and isinstance(frame, dict)
+            and result.get("snapshot_revision")
+            == queried_native_revision
+        ):
+            continue
+        observed_date_raw = _native_int(frame.get("observed_date_raw"))
+        if observed_date_raw is None:
+            continue
+        combat_id, subject, cursor = request
+        try:
+            normalized = normalize_battle_terminal_transition_v1(
+                frame,
+                expected_prior_combat_id=combat_id,
+                expected_subject_public_cunit_id=subject,
+                expected_after_terminal_sequence=cursor,
+                expected_observed_date_raw=observed_date_raw,
+                expected_snapshot_revision=queried_native_revision,
+            )
+        except ValueError:
+            continue
+        if normalized.get("status") != result.get("status"):
+            continue
+        records.append(
+            {
+                "position": position,
+                "combat_id": combat_id,
+                "subject_army_id": subject,
+                "after_terminal_sequence": cursor,
+                "queried_snapshot_id": queried_snapshot_id,
+                "queried_revision": queried_revision,
+                "queried_native_revision": queried_native_revision,
+                "query_sequence": query_sequence,
+                "frame": normalized,
+            }
+        )
+    return records
+
+
+def _current_battle_terminal_cursor(
+    records: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    combat_id: int,
+    subject_army_id: int,
+) -> dict[str, object] | None:
+    """Return a positive pre-arm journal cursor from this exact frame."""
+
+    snapshot_id = snapshot.get("snapshot_id")
+    revision = _native_int(snapshot.get("revision"))
+    native_revision = _native_int(snapshot.get("native_revision"))
+    date_raw = _native_int(snapshot.get("date_raw"))
+    candidates: list[dict[str, object]] = []
+    for record in records:
+        frame = record.get("frame")
+        journal = frame.get("terminal_journal") if isinstance(frame, dict) else None
+        prior = frame.get("prior") if isinstance(frame, dict) else None
+        latest_sequence = (
+            _native_int(journal.get("latest_sequence"))
+            if isinstance(journal, dict)
+            else None
+        )
+        if (
+            record.get("combat_id") == combat_id
+            and record.get("subject_army_id") == subject_army_id
+            and record.get("after_terminal_sequence") is None
+            and record.get("queried_snapshot_id") == snapshot_id
+            and record.get("queried_revision") == revision
+            and record.get("queried_native_revision") == native_revision
+            and isinstance(frame, dict)
+            and frame.get("status") == "available"
+            and frame.get("battle_terminal_transition_ready") is True
+            and frame.get("observed_date_raw") == date_raw
+            and isinstance(journal, dict)
+            and journal.get("requested_after_sequence") is None
+            and journal.get("event_status") == "not_observed"
+            and journal.get("event_sequence") is None
+            and latest_sequence is not None
+            and latest_sequence > 0
+            and isinstance(prior, dict)
+            and prior.get("combat_id") == combat_id
+            and prior.get("terminal_kind") == "active_not_terminal"
+        ):
+            candidates.append(
+                {
+                    "position": record.get("position"),
+                    "combat_id": combat_id,
+                    "subject_army_id": subject_army_id,
+                    "after_terminal_sequence": latest_sequence,
+                }
+            )
+    return candidates[-1] if candidates else None
+
+
+def _is_battle_timeline_advance_step(step: object) -> bool:
+    return is_life_advance_step(step) or step in {
+        _BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+        _BATTLE_TERMINAL_CRUISE_STEP,
+    }
+
+
+def _battle_sentinel_advance_validation(
+    advance_result: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Validate the complete native-stop envelope for a composite advance."""
+
+    if not isinstance(advance_result, dict):
+        return None
+    step = advance_result.get("step")
+    expected = {
+        _BATTLE_DECISION_EPOCH_ADVANCE_STEP: (3, "decision_epoch"),
+        _BATTLE_TERMINAL_CRUISE_STEP: (5, "terminal_or_sentinel"),
+    }.get(step)
+    if expected is None:
+        return None
+    expected_speed, expected_mode = expected
+    sentinel = advance_result.get("tactical_daily_sentinel")
+    start = _native_int(advance_result.get("starting_date_raw"))
+    target = _native_int(advance_result.get("target_date_raw"))
+    end = _native_int(advance_result.get("ending_date_raw"))
+    elapsed = _native_int(advance_result.get("elapsed_days"))
+    watch = advance_result.get("watch_army_ids")
+    armed = advance_result.get("armed_tactical_daily_sentinel")
+    reasons = sentinel.get("trigger_reasons") if isinstance(sentinel, dict) else None
+    ticks = (
+        _native_int(sentinel.get("completed_daily_ticks"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    generation = (
+        _native_int(sentinel.get("generation"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    trigger_flags = (
+        _native_int(sentinel.get("trigger_flags"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    combat_count = (
+        _native_int(sentinel.get("combat_count"))
+        if isinstance(sentinel, dict)
+        else None
+    )
+    errors: list[str] = []
+    if not (
+        isinstance(watch, list)
+        and 0 < len(watch) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
+        and all(
+            _native_int(item) is not None
+            and 0 < int(item) <= 2**31 - 1
+            for item in watch
+        )
+        and len(set(watch)) == len(watch)
+    ):
+        errors.append("watch_set_invalid")
+    if not (
+        start is not None
+        and target is not None
+        and end is not None
+        and elapsed is not None
+        and ticks is not None
+        and elapsed > 0
+        and target
+        == start + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+        and start + elapsed * 24 == end
+        and start + ticks * 24 == end
+        and elapsed == ticks
+        and end <= target
+    ):
+        errors.append("date_tick_reconciliation_failed")
+    if not (
+        isinstance(sentinel, dict)
+        and sentinel.get("state") == "triggered"
+        and generation is not None
+        and generation > 0
+        and sentinel.get("starting_date_raw") == start
+        and sentinel.get("target_date_raw") == target
+        and sentinel.get("last_observed_date_raw") == end
+        and sentinel.get("trigger_date_raw") == end
+        and sentinel.get("speed") == expected_speed
+        and sentinel.get("mode") == expected_mode
+        and sentinel.get("army_count") == len(watch or [])
+        and combat_count is not None
+        and combat_count > 0
+        and trigger_flags is not None
+        and trigger_flags > 0
+        and isinstance(reasons, list)
+        and bool(reasons)
+        and all(isinstance(reason, str) and reason for reason in reasons)
+        and sentinel.get("signed_date_delta_from_target_raw")
+        == (end - target if end is not None and target is not None else None)
+        and sentinel.get("overshoot_days") == 0
+        and sentinel.get("intermediate_pause_count") == 0
+        and sentinel.get("pause_observed") is True
+        and sentinel.get("abnormal") is False
+        and advance_result.get("timeline_speed") == expected_speed
+        and advance_result.get("paused") is True
+    ):
+        errors.append("sentinel_completion_invalid")
+    if not (
+        isinstance(armed, dict)
+        and armed.get("state") == "armed"
+        and armed.get("generation") == generation
+        and armed.get("starting_date_raw") == start
+        and armed.get("target_date_raw") == target
+        and armed.get("last_observed_date_raw") == start
+        and armed.get("trigger_date_raw") == 0
+        and armed.get("speed") == expected_speed
+        and armed.get("mode") == expected_mode
+        and armed.get("army_count") == len(watch or [])
+        and armed.get("combat_count") == combat_count
+        and armed.get("completed_daily_ticks") == 0
+        and armed.get("intermediate_pause_count") == 0
+        and armed.get("trigger_flags") == 0
+        and armed.get("trigger_reasons") == []
+        and armed.get("signed_date_delta_from_target_raw") == 0
+        and armed.get("overshoot_days") == -1
+        and armed.get("pause_wrapper_called") is False
+        and armed.get("pause_observed") is False
+        and armed.get("terminal_observed") is False
+        and armed.get("abnormal") is False
+    ):
+        errors.append("sentinel_arm_invalid")
+    terminal_flag = (
+        sentinel.get("terminal_observed")
+        if isinstance(sentinel, dict)
+        else None
+    )
+    if not isinstance(terminal_flag, bool) or (
+        terminal_flag != ("combat_terminal" in (reasons or []))
+    ):
+        errors.append("terminal_flag_disagrees")
+    cleanup = advance_result.get("managed_failure_cleanup")
+    if not (
+        advance_result.get("progress_status") == "postcondition"
+        and advance_result.get("requested_horizon_days")
+        == _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+        and advance_result.get("timeline_policy") == expected_mode
+        and advance_result.get("sentinel_mode") == expected_mode
+        and advance_result.get("stop_kind")
+        == ("terminal" if terminal_flag is True else "decision_epoch")
+        and advance_result.get("terminal_reached") is terminal_flag
+        and advance_result.get("trigger_reasons") == reasons
+        and isinstance(sentinel, dict)
+        and advance_result.get("sentinel_generation")
+        == sentinel.get("generation")
+        and advance_result.get("completed_daily_ticks") == ticks
+        and advance_result.get("intermediate_pause_count") == 0
+        and advance_result.get("overshoot_days") == 0
+        and advance_result.get("zero_intermediate_pause") is True
+        and advance_result.get("external_pause_count") == 0
+        and advance_result.get("external_rich_query_count") == 0
+        and isinstance(cleanup, dict)
+        and cleanup.get("attempted") is False
+        and cleanup.get("error") is None
+    ):
+        errors.append("composite_completion_invalid")
+    if isinstance(reasons, list) and (
+        ("date_deadline" in reasons) is not (end == target)
+    ):
+        errors.append("deadline_reason_disagrees")
+    if (
+        isinstance(reasons, list)
+        and "native_pause" not in reasons
+        and isinstance(sentinel, dict)
+        and sentinel.get("pause_wrapper_called") is not True
+    ):
+        errors.append("pause_wrapper_not_called")
+    return {
+        "valid": not errors,
+        "errors": errors,
+        "step": step,
+        "actual_elapsed_days": elapsed,
+        "terminal_observed": terminal_flag,
+        "watch_army_ids": list(watch) if isinstance(watch, list) else None,
+    }
+
+
+def _cursor_bound_terminal_transition(
+    rows: list[dict[str, object]],
+    *,
+    previous_advance_position: int,
+    advance_position: int,
+    before_record: dict[str, object],
+    snapshot: dict[str, object],
+    advance_result: dict[str, object] | None,
+) -> dict[str, object]:
+    """Require a pre-arm cursor and its exact post-stop terminal event."""
+
+    before = before_record.get("frame")
+    if not isinstance(before, dict):
+        return {
+            "status": "invalid",
+            "reason": "the terminal cruise lacks a normalized pre-arm frame",
+        }
+    combat_id = int(before["combat_id"])
+    transition_subject = int(before["subject_public_cunit_id"])
+    sentinel_validation = _battle_sentinel_advance_validation(advance_result)
+    if not (
+        isinstance(sentinel_validation, dict)
+        and sentinel_validation.get("valid") is True
+        and sentinel_validation.get("step") == _BATTLE_TERMINAL_CRUISE_STEP
+        and sentinel_validation.get("terminal_observed") is True
+    ):
+        return {
+            "status": "invalid",
+            "reason": (
+                "the subject left combat after a terminal cruise without a "
+                "complete native terminal sentinel result"
+            ),
+            "sentinel_validation": sentinel_validation,
+        }
+
+    records = _battle_terminal_transition_query_records(rows)
+    pre_cursor_records: list[dict[str, object]] = []
+    for record in records:
+        frame = record.get("frame")
+        journal = frame.get("terminal_journal") if isinstance(frame, dict) else None
+        prior = frame.get("prior") if isinstance(frame, dict) else None
+        latest = (
+            _native_int(journal.get("latest_sequence"))
+            if isinstance(journal, dict)
+            else None
+        )
+        if (
+            previous_advance_position < int(record["position"])
+            < advance_position
+            and record.get("combat_id") == combat_id
+            and record.get("after_terminal_sequence") is None
+            and record.get("queried_snapshot_id")
+            == before_record.get("queried_snapshot_id")
+            and record.get("queried_revision")
+            == before_record.get("queried_revision")
+            and record.get("queried_native_revision")
+            == before_record.get("queried_native_revision")
+            and isinstance(frame, dict)
+            and frame.get("status") == "available"
+            and frame.get("observed_date_raw")
+            == before.get("observed_date_raw")
+            and isinstance(journal, dict)
+            and journal.get("requested_after_sequence") is None
+            and journal.get("event_status") == "not_observed"
+            and journal.get("event_sequence") is None
+            and latest is not None
+            and latest > 0
+            and isinstance(prior, dict)
+            and prior.get("combat_id") == combat_id
+            and prior.get("terminal_kind") == "active_not_terminal"
+        ):
+            pre_cursor_records.append(
+                {**record, "frozen_after_terminal_sequence": latest}
+            )
+    if not pre_cursor_records:
+        return {
+            "status": "invalid",
+            "reason": (
+                "the terminal cruise was not bound to a positive pre-arm "
+                "terminal journal cursor"
+            ),
+        }
+    cursor_record = min(
+        pre_cursor_records,
+        key=lambda record: (
+            int(record["subject_army_id"]),
+            -int(record["position"]),
+        ),
+    )
+    cursor = int(cursor_record["frozen_after_terminal_sequence"])
+    journal_subject = int(cursor_record["subject_army_id"])
+    query_step = query_battle_terminal_transition_v1_step(
+        combat_id, journal_subject, cursor
+    )
+    current_snapshot_id = snapshot.get("snapshot_id")
+    current_revision = _native_int(snapshot.get("revision"))
+    current_native_revision = _native_int(snapshot.get("native_revision"))
+    current_date = _native_int(snapshot.get("date_raw"))
+    matching = [
+        record
+        for record in records
+        if int(record["position"]) > advance_position
+        and record.get("combat_id") == combat_id
+        and record.get("subject_army_id") == journal_subject
+        and record.get("after_terminal_sequence") == cursor
+        and record.get("queried_snapshot_id") == current_snapshot_id
+        and record.get("queried_revision") == current_revision
+        and record.get("queried_native_revision") == current_native_revision
+        and isinstance(record.get("frame"), dict)
+        and record["frame"].get("observed_date_raw") == current_date
+    ]
+    if not matching:
+        attempted = any(
+            int(position) > advance_position
+            and _effective_command(row) == query_step
+            for position, row in enumerate(rows, start=1)
+        )
+        return {
+            "status": "invalid" if attempted else "query_required",
+            "reason": (
+                "the cursor-bound terminal query was attempted but did not "
+                "produce a valid current-frame result"
+                if attempted
+                else "query the terminal journal after the native stop"
+            ),
+            "step": query_step,
+            "combat_id": combat_id,
+            "subject_army_id": journal_subject,
+            "transition_subject_army_id": transition_subject,
+            "after_terminal_sequence": cursor,
+        }
+
+    terminal = matching[-1]["frame"]
+    journal = terminal.get("terminal_journal")
+    prior = terminal.get("prior")
+    event_sequence = (
+        _native_int(journal.get("event_sequence"))
+        if isinstance(journal, dict)
+        else None
+    )
+    winner_raw = (
+        _native_int(prior.get("winner_raw"))
+        if isinstance(prior, dict)
+        else None
+    )
+    terminal_date = (
+        _native_int(prior.get("terminal_date_raw"))
+        if isinstance(prior, dict)
+        else None
+    )
+    expected_terminal_date = (
+        _native_int(advance_result.get("ending_date_raw"))
+        if isinstance(advance_result, dict)
+        else None
+    )
+    if not (
+        terminal.get("status") == "available"
+        and terminal.get("battle_terminal_transition_ready") is True
+        and terminal.get("prior_combat_id") == combat_id
+        and terminal.get("subject_public_cunit_id") == journal_subject
+        and isinstance(journal, dict)
+        and journal.get("requested_after_sequence") == cursor
+        and journal.get("event_status") == "observed"
+        and event_sequence is not None
+        and event_sequence > cursor
+        and isinstance(prior, dict)
+        and prior.get("combat_id") == combat_id
+        and prior.get("terminal_kind")
+        in {"normal_result", "no_normal_result"}
+        and terminal_date == expected_terminal_date
+        and winner_raw in {0, 1}
+    ):
+        return {
+            "status": "invalid",
+            "reason": (
+                "the post-stop journal does not prove the same CombatID, "
+                "cursor, terminal date, and native winner outcome"
+            ),
+            "step": query_step,
+        }
+    return {
+        "status": "terminal_journal_observed",
+        "subject_army_id": transition_subject,
+        "journal_subject_army_id": journal_subject,
+        "before_combat_id": combat_id,
+        "terminal_date_raw": terminal_date,
+        "terminal_journal_sequence": event_sequence,
+        "after_terminal_sequence": cursor,
+        "outcome": {
+            "terminal_kind": prior.get("terminal_kind"),
+            "winner_side": "attacker" if winner_raw == 0 else "defender",
+            "winner_raw": winner_raw,
+            "battle_result_id": prior.get("battle_result_id"),
+            "wipe": prior.get("wipe_raw"),
+        },
+        "successor": terminal.get("successor"),
+        "removal": terminal.get("removal"),
+        "reason": (
+            "a cursor-bound terminal journal event proves the same CombatID "
+            "and native outcome at the sentinel stop date"
+        ),
+    }
+
+
 def _battle_control_ledger_fingerprint(
     frame: dict[str, object],
 ) -> tuple[object, ...]:
@@ -1676,6 +2207,7 @@ def _battle_control_transition(
         if isinstance(advance_result, dict)
         else None
     )
+    sentinel_validation = _battle_sentinel_advance_validation(advance_result)
     observed_date_delta = after_date - before_date
     common = {
         "subject_army_id": subject,
@@ -1722,20 +2254,30 @@ def _battle_control_transition(
             "status": "invalid",
             "reason": "the post-advance native revision did not increase",
         }
-    if (
-        not isinstance(advance_result, dict)
-        or advance_result.get("step") != "life-advance"
-        or advance_start is None
-        or advance_end is None
-        or advance_elapsed is None
-    ):
+    if not isinstance(advance_result, dict) or (
+        advance_result.get("step") != "life-advance"
+        and sentinel_validation is None
+    ) or advance_start is None or advance_end is None or advance_elapsed is None:
         return {
             **common,
             "status": "invalid",
             "reason": (
                 "the bounded battle advance did not report an exact "
-                "life-advance start/end/elapsed result"
+                "life-advance or native-sentinel start/end/elapsed result"
             ),
+        }
+    if (
+        isinstance(sentinel_validation, dict)
+        and sentinel_validation.get("valid") is not True
+    ):
+        return {
+            **common,
+            "status": "invalid",
+            "reason": (
+                "the native battle sentinel result is incomplete, overshot, "
+                "or failed exact date/tick reconciliation"
+            ),
+            "sentinel_validation": sentinel_validation,
         }
     if advance_start != before_date or advance_end != after_date:
         return {
@@ -1766,7 +2308,7 @@ def _battle_control_transition(
                 "its exact date delta"
             ),
         }
-    if actual_elapsed_days not in (1, 2):
+    if sentinel_validation is None and actual_elapsed_days not in (1, 2):
         return {
             **common,
             "status": "invalid",
@@ -1902,7 +2444,7 @@ def _battle_control_turn_state(
         position
         for position, row in enumerate(scoped, start=1)
         if row.get("ok") is True
-        and is_life_advance_step(_effective_command(row))
+        and _is_battle_timeline_advance_step(_effective_command(row))
     ]
     latest_advance = advance_positions[-1] if advance_positions else 0
     previous_advance = advance_positions[-2] if len(advance_positions) > 1 else 0
@@ -1911,6 +2453,25 @@ def _battle_control_turn_state(
         if latest_advance
         else None
     )
+    latest_sentinel_validation = _battle_sentinel_advance_validation(
+        latest_advance_result
+    )
+    if (
+        isinstance(latest_sentinel_validation, dict)
+        and latest_sentinel_validation.get("valid") is not True
+    ):
+        return {
+            "status": "transition_invalid",
+            "transition": {
+                "status": "invalid",
+                "reason": (
+                    "the native battle sentinel result is incomplete, "
+                    "overshot, or failed exact date/tick reconciliation"
+                ),
+                "sentinel_validation": latest_sentinel_validation,
+            },
+            "frame": None,
+        }
     relevant_rows = scoped[previous_advance:]
     current_frames, records = _current_battle_control_frames(
         relevant_rows,
@@ -1960,24 +2521,51 @@ def _battle_control_turn_state(
             else None
         )
         before = record["frame"]
-        recognized.append(
-            {
-                "status": "left_combat",
-                "subject_army_id": subject,
-                "before_combat_id": before.get("combat_id"),
-                "before_snapshot_revision": before.get(
-                    "snapshot_revision"
-                ),
-                "before_phase": before.get("phase"),
-                "before_phase_day": before.get("phase_day"),
-                "observed_army_state": observed_state or "absent",
-                "reason": (
-                    "the post-advance semantic army state explicitly shows "
-                    "that the queried subject left active combat; this is a "
-                    "terminal/removal discriminant and does not infer a winner"
-                ),
-            }
-        )
+        if (
+            isinstance(latest_advance_result, dict)
+            and latest_advance_result.get("step")
+            == _BATTLE_TERMINAL_CRUISE_STEP
+        ):
+            terminal = _cursor_bound_terminal_transition(
+                scoped,
+                previous_advance_position=previous_advance,
+                advance_position=latest_advance,
+                before_record=record,
+                snapshot=snapshot,
+                advance_result=latest_advance_result,
+            )
+            if terminal.get("status") == "query_required":
+                return {
+                    **terminal,
+                    "status": "terminal_query_required",
+                }
+            if terminal.get("status") == "invalid":
+                return {
+                    "status": "transition_invalid",
+                    "transition": terminal,
+                    "frame": _battle_control_frame_summary(before),
+                }
+            recognized.append(terminal)
+        else:
+            recognized.append(
+                {
+                    "status": "left_combat",
+                    "subject_army_id": subject,
+                    "before_combat_id": before.get("combat_id"),
+                    "before_snapshot_revision": before.get(
+                        "snapshot_revision"
+                    ),
+                    "before_phase": before.get("phase"),
+                    "before_phase_day": before.get("phase_day"),
+                    "observed_army_state": observed_state or "absent",
+                    "reason": (
+                        "the post-advance semantic army state explicitly "
+                        "shows that the queried subject left active combat; "
+                        "this is a terminal/removal discriminant and does "
+                        "not infer a winner"
+                    ),
+                }
+            )
         recognized_subjects.add(subject)
     if recognized:
         remove_positions = {
@@ -2030,6 +2618,49 @@ def _battle_control_turn_state(
             frame.get("finalized") is True
             or frame.get("phase") == "done"
         ):
+            before_record = pre_advance.get(subject)
+            if (
+                isinstance(latest_advance_result, dict)
+                and latest_advance_result.get("step")
+                == _BATTLE_TERMINAL_CRUISE_STEP
+            ):
+                if not isinstance(before_record, dict):
+                    return {
+                        "status": "transition_invalid",
+                        "transition": {
+                            "status": "invalid",
+                            "reason": (
+                                "the finalized terminal-cruise frame lacks "
+                                "its pre-arm CombatID observation"
+                            ),
+                        },
+                        "frame": _battle_control_frame_summary(frame),
+                    }
+                terminal = _cursor_bound_terminal_transition(
+                    scoped,
+                    previous_advance_position=previous_advance,
+                    advance_position=latest_advance,
+                    before_record=before_record,
+                    snapshot=snapshot,
+                    advance_result=latest_advance_result,
+                )
+                if terminal.get("status") == "query_required":
+                    return {
+                        **terminal,
+                        "status": "terminal_query_required",
+                    }
+                if terminal.get("status") == "invalid":
+                    return {
+                        "status": "transition_invalid",
+                        "transition": terminal,
+                        "frame": _battle_control_frame_summary(frame),
+                    }
+                return {
+                    "status": "terminal_observed",
+                    "subject_army_id": subject,
+                    "transition": terminal,
+                    "frame": _battle_control_frame_summary(frame),
+                }
             return {
                 "status": "terminal_observed",
                 "subject_army_id": subject,
@@ -2048,7 +2679,33 @@ def _battle_control_turn_state(
                 "frame": _battle_control_frame_summary(frame),
             }
         if transition.get("status") == "combat_replaced":
-            recognized.append(transition)
+            if (
+                isinstance(latest_sentinel_validation, dict)
+                and latest_sentinel_validation.get("step")
+                == _BATTLE_TERMINAL_CRUISE_STEP
+            ):
+                terminal = _cursor_bound_terminal_transition(
+                    scoped,
+                    previous_advance_position=previous_advance,
+                    advance_position=latest_advance,
+                    before_record=pre_advance[subject],
+                    snapshot=snapshot,
+                    advance_result=latest_advance_result,
+                )
+                if terminal.get("status") == "query_required":
+                    return {
+                        **terminal,
+                        "status": "terminal_query_required",
+                    }
+                if terminal.get("status") == "invalid":
+                    return {
+                        "status": "transition_invalid",
+                        "transition": terminal,
+                        "frame": _battle_control_frame_summary(frame),
+                    }
+                recognized.append(terminal)
+            else:
+                recognized.append(transition)
             replaced_subjects.add(subject)
         else:
             transitions.append(transition)
@@ -2078,6 +2735,9 @@ def _battle_control_turn_state(
         "evidence": [
             _battle_control_frame_summary(current_frames[subject]["frame"])
             for subject in active_subjects
+        ],
+        "full_frames": [
+            current_frames[subject]["frame"] for subject in active_subjects
         ],
         "transitions": transitions,
     }
@@ -2486,6 +3146,7 @@ def choose_one_life_turn(
     action_steps: Iterable[str] | None = None,
     bridge_capabilities: Iterable[str] | None = None,
     next_run_plan: dict[str, object] | None = None,
+    battle_speed_readiness: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose one useful, inspectable action for the current life.
 
@@ -2501,6 +3162,17 @@ def choose_one_life_turn(
         capability
         for capability in (bridge_capabilities or ())
         if isinstance(capability, str) and capability
+    }
+    battle_speed_gates = {
+        name: bool(
+            isinstance(battle_speed_readiness, dict)
+            and battle_speed_readiness.get(name) is True
+        )
+        for name in (
+            "decision_sentinel_live_ready",
+            "terminal_sentinel_live_ready",
+            "overwhelming_matrix_live_ready",
+        )
     }
     cross_run_focus = _cross_run_focus(next_run_plan)
     played_character = (
@@ -3092,6 +3764,7 @@ def choose_one_life_turn(
             action_steps=available_steps,
             bridge_capabilities=available_capabilities,
             next_run_plan=next_run_plan,
+            battle_speed_readiness=battle_speed_gates,
         )
         nested_transitions = continued.get("battle_transitions")
         return {
@@ -3174,6 +3847,42 @@ def choose_one_life_turn(
                 "subject_army_id"
             ),
         }
+    if battle_control_status == "terminal_query_required":
+        terminal_step = battle_control_state.get("step")
+        if (
+            isinstance(terminal_step, str)
+            and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+            in available_capabilities
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_battle_terminal_journal_query",
+                "selected_step": terminal_step,
+                "reason": (
+                    "read the cursor-bound terminal journal after the native "
+                    "terminal stop before accepting the CombatID outcome"
+                ),
+                "battle_subject_army_id": battle_control_state.get(
+                    "subject_army_id"
+                ),
+                "battle_combat_id": battle_control_state.get("combat_id"),
+                "after_terminal_sequence": battle_control_state.get(
+                    "after_terminal_sequence"
+                ),
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_terminal_journal_query_unsupported",
+            "selected_step": None,
+            "required_step": terminal_step,
+            "required_capability": (
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+            ),
+            "reason": (
+                "the terminal cruise stopped, but its cursor-bound CombatID "
+                "outcome cannot be queried"
+            ),
+        }
     if battle_control_status == "transition_invalid":
         return {
             "policy": "one-life-turn-v1",
@@ -3188,6 +3897,15 @@ def choose_one_life_turn(
             "battle_control_frame": battle_control_state.get("frame"),
         }
     if battle_control_status == "terminal_observed":
+        terminal_transition = battle_control_state.get("transition")
+        if not isinstance(terminal_transition, dict):
+            terminal_transition = {
+                "status": "terminal_observed",
+                "subject_army_id": battle_control_state.get(
+                    "subject_army_id"
+                ),
+                "outcome": None,
+            }
         if "life-advance" in available_steps:
             return {
                 "policy": "one-life-turn-v1",
@@ -3199,13 +3917,8 @@ def choose_one_life_turn(
                     "one day so CK3 can remove the completed combat, then "
                     "observe the subject again"
                 ),
-                "battle_transition": {
-                    "status": "terminal_observed",
-                    "subject_army_id": battle_control_state.get(
-                        "subject_army_id"
-                    ),
-                    "outcome": None,
-                },
+                "battle_transition": terminal_transition,
+                "battle_transitions": [terminal_transition],
                 "battle_control_frame": battle_control_state.get("frame"),
             }
         return {
@@ -4039,6 +4752,212 @@ def choose_one_life_turn(
                 }
                 for army in combat_armies
             ]
+            watch_army_ids = sorted(
+                army_id
+                for army in controlled_armies
+                if (army_id := _native_int(army.get("army_id"))) is not None
+                and army_id > 0
+            )
+            sentinel_watch_ready = bool(
+                watch_army_ids
+                and len(watch_army_ids)
+                <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
+                and len(watch_army_ids) == len(set(watch_army_ids))
+            )
+            start_date_raw = (
+                _native_int(snapshot.get("date_raw"))
+                if isinstance(snapshot, dict)
+                else None
+            )
+            target_date_raw = (
+                start_date_raw
+                + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+                if start_date_raw is not None
+                else None
+            )
+            full_frames = battle_control_state.get("full_frames")
+            distinct_frames: dict[int, dict[str, object]] = {}
+            for frame in full_frames if isinstance(full_frames, list) else []:
+                combat_id = (
+                    _native_int(frame.get("combat_id"))
+                    if isinstance(frame, dict)
+                    else None
+                )
+                subject = (
+                    _native_int(frame.get("subject_public_cunit_id"))
+                    if isinstance(frame, dict)
+                    else None
+                )
+                if combat_id is None or combat_id <= 0 or subject is None:
+                    continue
+                incumbent = distinct_frames.get(combat_id)
+                incumbent_subject = (
+                    _native_int(incumbent.get("subject_public_cunit_id"))
+                    if isinstance(incumbent, dict)
+                    else None
+                )
+                if incumbent_subject is None or subject < incumbent_subject:
+                    distinct_frames[combat_id] = frame
+
+            terminal_assessments = [
+                assess_battle_terminal_cruise(
+                    frame,
+                    paused=(
+                        snapshot.get("paused")
+                        if isinstance(snapshot, dict)
+                        else None
+                    ),
+                    map_ready=(
+                        snapshot.get("map_ready")
+                        if isinstance(snapshot, dict)
+                        else None
+                    ),
+                    active_event_present=raw_active_event is not None,
+                    pending_interaction_present=(
+                        pending_interaction is not None
+                    ),
+                    all_controllable_army_ids=watch_army_ids,
+                    watched_army_ids=watch_army_ids,
+                    absolute_target_date_raw=target_date_raw,
+                    speed_5_available=(
+                        _BATTLE_TERMINAL_CRUISE_STEP in available_steps
+                    ),
+                    terminal_sentinel_implemented=(
+                        sentinel_watch_ready
+                        and _BATTLE_TERMINAL_CRUISE_STEP in available_steps
+                    ),
+                    terminal_sentinel_live_ready=battle_speed_gates[
+                        "terminal_sentinel_live_ready"
+                    ],
+                    overwhelming_matrix_live_ready=battle_speed_gates[
+                        "overwhelming_matrix_live_ready"
+                    ],
+                )
+                for _, frame in sorted(distinct_frames.items())
+            ]
+            terminal_all_of_ready = bool(
+                distinct_frames
+                and len(terminal_assessments) == len(distinct_frames)
+                and all(
+                    assessment.get("production_ready") is True
+                    for assessment in terminal_assessments
+                )
+            )
+            terminal_cursor_rows = _battle_terminal_transition_query_records(
+                _history_after_latest_restore(rows)
+            )
+            terminal_cursors: list[dict[str, object]] = []
+            if terminal_all_of_ready and isinstance(snapshot, dict):
+                for combat_id, frame in sorted(distinct_frames.items()):
+                    subject = int(frame["subject_public_cunit_id"])
+                    cursor = _current_battle_terminal_cursor(
+                        terminal_cursor_rows,
+                        snapshot,
+                        combat_id=combat_id,
+                        subject_army_id=subject,
+                    )
+                    if cursor is not None:
+                        terminal_cursors.append(cursor)
+                        continue
+                    current_query_attempted = any(
+                        record.get("combat_id") == combat_id
+                        and record.get("subject_army_id") == subject
+                        and record.get("after_terminal_sequence") is None
+                        and record.get("queried_snapshot_id")
+                        == snapshot.get("snapshot_id")
+                        and record.get("queried_revision")
+                        == snapshot.get("revision")
+                        and record.get("queried_native_revision")
+                        == snapshot.get("native_revision")
+                        for record in terminal_cursor_rows
+                    )
+                    if (
+                        not current_query_attempted
+                        and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                        in available_capabilities
+                    ):
+                        cursor_step = query_battle_terminal_transition_v1_step(
+                            combat_id, subject
+                        )
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_battle_terminal_cursor_query",
+                            "selected_step": cursor_step,
+                            "reason": (
+                                "freeze the current terminal-journal sequence "
+                                "for every qualifying CombatID before the "
+                                "zero-intermediate-pause terminal cruise"
+                            ),
+                            "battle_combat_id": combat_id,
+                            "battle_subject_army_id": subject,
+                            "watch_army_ids": watch_army_ids,
+                            "battle_terminal_cruise_assessments": (
+                                terminal_assessments
+                            ),
+                        }
+                    terminal_all_of_ready = False
+                    break
+            if (
+                terminal_all_of_ready
+                and len(terminal_cursors) == len(distinct_frames)
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_global_battle_terminal_cruise",
+                    "selected_step": _BATTLE_TERMINAL_CRUISE_STEP,
+                    "reason": (
+                        "every distinct active CombatID passed the production "
+                        "terminal-cruise policy; run at speed 5 until the "
+                        "native terminal or semantic sentinel stops once"
+                    ),
+                    "timeline_policy": "battle_terminal_cruise_speed_5",
+                    "timeline_speed": 5,
+                    "sentinel_mode": "terminal_or_sentinel",
+                    "absolute_target_date_raw": target_date_raw,
+                    "watch_army_ids": watch_army_ids,
+                    "terminal_journal_cursors": terminal_cursors,
+                    "combat_retreat_armies": tactical_states,
+                    "battle_control_frames": battle_control_state.get(
+                        "evidence", []
+                    ),
+                    "battle_transitions": battle_control_state.get(
+                        "transitions", []
+                    ),
+                    "battle_terminal_cruise_assessments": (
+                        terminal_assessments
+                    ),
+                    "active_wars": war_summary,
+                }
+            if (
+                battle_speed_gates["decision_sentinel_live_ready"]
+                and sentinel_watch_ready
+                and _BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
+                and start_date_raw is not None
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_global_battle_decision_epoch",
+                    "selected_step": _BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+                    "reason": (
+                        "the global tactical audit passed; run at speed 3 "
+                        "until the native decision-epoch sentinel observes a "
+                        "phase, winner, roster, route, contact, retreat, "
+                        "terminal, native-pause, or absolute-bound change"
+                    ),
+                    "timeline_policy": "battle_decision_epoch_speed_3",
+                    "timeline_speed": 3,
+                    "sentinel_mode": "decision_epoch",
+                    "absolute_target_date_raw": target_date_raw,
+                    "watch_army_ids": watch_army_ids,
+                    "combat_retreat_armies": tactical_states,
+                    "battle_control_frames": battle_control_state.get(
+                        "evidence", []
+                    ),
+                    "battle_transitions": battle_control_state.get(
+                        "transitions", []
+                    ),
+                    "active_wars": war_summary,
+                }
             if "life-advance" in available_steps:
                 return {
                     "policy": "one-life-turn-v1",

@@ -913,6 +913,91 @@ class NativeAutoRunTests(unittest.TestCase):
             "exact_one_day_contact_free_speed_3",
         )
 
+    def test_compact_success_keeps_native_battle_sentinel_evidence(self) -> None:
+        sentinel = {
+            "state": "triggered",
+            "generation": 7,
+            "starting_date_raw": 53_220_360,
+            "target_date_raw": 53_221_440,
+            "last_observed_date_raw": 53_220_480,
+            "trigger_date_raw": 53_220_480,
+            "speed": 3,
+            "mode": "decision_epoch",
+            "army_count": 2,
+            "combat_count": 1,
+            "completed_daily_ticks": 5,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 64,
+            "trigger_reasons": ["combat_phase_changed"],
+            "signed_date_delta_from_target_raw": -960,
+            "overshoot_days": 0,
+            "pause_wrapper_called": True,
+            "pause_observed": True,
+            "terminal_observed": False,
+            "abnormal": False,
+        }
+        compact = native_auto_run_module._compact_step_result(
+            {
+                "step": "battle-decision-epoch-advance",
+                "starting_date_raw": 53_220_360,
+                "target_date_raw": 53_221_440,
+                "ending_date_raw": 53_220_480,
+                "elapsed_days": 5,
+                "timeline_speed": 3,
+                "sentinel_mode": "decision_epoch",
+                "watch_army_ids": [101, 202],
+                "stop_kind": "decision_epoch",
+                "completed_daily_ticks": 5,
+                "intermediate_pause_count": 0,
+                "overshoot_days": 0,
+                "zero_intermediate_pause": True,
+                "tactical_daily_sentinel": sentinel,
+                "external_pause_count": 0,
+                "external_rich_query_count": 0,
+                "managed_failure_cleanup": False,
+                "paused": True,
+            }
+        )
+
+        self.assertIsNotNone(compact)
+        self.assertEqual(compact["target_date_raw"], 53_221_440)
+        self.assertEqual(compact["watch_army_ids"], [101, 202])
+        self.assertEqual(compact["tactical_daily_sentinel"], sentinel)
+        self.assertTrue(compact["zero_intermediate_pause"])
+
+    def test_compact_success_keeps_terminal_journal_cursor_binding(self) -> None:
+        transition = {
+            "status": "observed",
+            "query_sequence": 19,
+            "event_sequence": 20,
+            "combat_id": 8801,
+            "subject_army_id": 101,
+            "event_kind": "normal_terminal",
+            "terminal_date_raw": 53_220_480,
+            "winner_side_raw": 1,
+        }
+        compact = native_auto_run_module._compact_step_result(
+            {
+                "step": "query-battle-terminal-transition-v1-8801-101-19",
+                "status": "accepted",
+                "accepted": True,
+                "query_sequence": 19,
+                "snapshot_revision": 402,
+                "queried_snapshot_id": "snap-402",
+                "queried_revision": 402,
+                "queried_native_revision": 990,
+                "battle_terminal_transition": transition,
+            }
+        )
+
+        self.assertIsNotNone(compact)
+        self.assertEqual(compact["query_sequence"], 19)
+        self.assertEqual(compact["snapshot_revision"], 402)
+        self.assertEqual(compact["queried_snapshot_id"], "snap-402")
+        self.assertEqual(compact["queried_revision"], 402)
+        self.assertEqual(compact["queried_native_revision"], 990)
+        self.assertEqual(compact["battle_terminal_transition"], transition)
+
     def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
         stderr = io.StringIO()
         with mock.patch.object(

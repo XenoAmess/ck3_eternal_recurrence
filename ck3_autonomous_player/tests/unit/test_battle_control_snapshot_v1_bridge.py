@@ -16,6 +16,10 @@ from xar_autoplayer.bridge.battle_control_contract import (
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
 )
+from xar_autoplayer.bridge.battle_terminal_transition_contract import (
+    QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+    query_battle_terminal_transition_v1_step,
+)
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
     UnsupportedStepError,
@@ -499,6 +503,7 @@ def _planner_battle_snapshot(
         "source": "native-headless",
         "date_raw": date_raw,
         "paused": True,
+        "map_ready": True,
         "phase": "map_hud",
         "history": [],
         "played_character": {
@@ -952,6 +957,915 @@ class BattleControlStrategyTests(unittest.TestCase):
         self.assertEqual(
             plan["battle_transitions"][0]["status"], "combat_replaced"
         )
+
+
+DECISION_SENTINEL_STEP = "battle-decision-epoch-advance"
+TERMINAL_SENTINEL_STEP = "battle-terminal-cruise"
+_ALL_BATTLE_SPEED_GATES = {
+    "decision_sentinel_live_ready": True,
+    "terminal_sentinel_live_ready": True,
+    "overwhelming_matrix_live_ready": True,
+}
+
+
+def _crushing_battle_frame() -> dict[str, object]:
+    frame = _battle_frame()
+    attacker = frame["attacker"]
+    levy = attacker["levy_entries"][0]
+    levy.update(
+        {
+            "starting_raw": 12_000_000_000,
+            "current_fighting_raw": 10_000_000_000,
+            "soft_casualties_raw": 500_000_000,
+            "hard_casualties_raw": 1_500_000_000,
+            "entry_strength_raw": 300_000,
+        }
+    )
+    attacker.update(
+        {
+            "stored_current_fighting_raw": 10_000_000_000,
+            "stored_levy_current_fighting_raw": 10_000_000_000,
+            "derived_current_fighting_raw": 10_000_000_000,
+            "derived_soft_casualties_raw": 500_000_000,
+            "derived_main_fighting_entry_hard_casualties_raw": (
+                1_500_000_000
+            ),
+            "participant_hard_total_raw": 1_500_000_000,
+            "side_strength_raw": 300_000,
+        }
+    )
+    attacker["participant_hard_ledger"][0][
+        "hard_casualties_raw"
+    ] = 1_500_000_000
+    return frame
+
+
+def _pursuit_battle_frame() -> dict[str, object]:
+    frame = _battle_frame()
+    frame.update(
+        {
+            "phase": "pursuit",
+            "phase_raw": 2,
+            "phase_day": 0,
+            "winner_side": "attacker",
+            "winner_raw": 0,
+        }
+    )
+    frame["legality"].update(
+        {
+            "native_boolean": False,
+            "phase": "pursuit",
+            "phase_raw": 2,
+            "legal_now": False,
+            "reason_codes_in_native_order": ["pursuit_or_done"],
+            "native_reason_keys_in_native_order": [
+                "COMBAT_NO_RETREAT_PURSUIT"
+            ],
+        }
+    )
+    return frame
+
+
+def _rebind_battle_frame(
+    frame: dict[str, object],
+    *,
+    subject: int,
+    native_subject: int,
+    combat_id: int,
+    province_id: int,
+) -> dict[str, object]:
+    rebound = copy.deepcopy(frame)
+    rebound.update(
+        {
+            "subject_public_cunit_id": subject,
+            "subject_native_carmy_id": native_subject,
+            "combat_id": combat_id,
+            "province_id": province_id,
+            "selected_public_cunit_id": subject,
+            "selected_native_carmy_id": native_subject,
+            "combat_province_id": province_id,
+            "affected_public_cunit_ids_in_stored_order": [subject],
+        }
+    )
+    attacker = rebound["attacker"]
+    attacker_army = attacker["ordered_armies"][0]
+    attacker_army.update(
+        {
+            "native_carmy_id": native_subject,
+            "public_cunit_id": subject,
+            "combat_backlink_id": combat_id,
+        }
+    )
+    for entry in [
+        *attacker["levy_entries"],
+        *attacker["men_at_arms_entries"],
+    ]:
+        entry["native_carmy_id"] = native_subject
+        entry["public_cunit_id"] = subject
+    for defender_army in rebound["defender"]["ordered_armies"]:
+        defender_army["combat_backlink_id"] = combat_id
+    return rebound
+
+
+def _multi_battle_snapshot(
+    frames: list[dict[str, object]],
+    *,
+    extra_idle_army_id: int | None = None,
+) -> dict[str, object]:
+    snapshot = _planner_battle_snapshot(frame=frames[0])
+    player_armies = [
+        {
+            "army_id": int(frame["subject_public_cunit_id"]),
+            "owner_character_id": 29_829,
+            "soldiers": 40_000,
+            "current_province_id": int(frame["province_id"]),
+            "move_target_province_id": None,
+            "controllable": True,
+            "in_combat": True,
+            "army_state": "combat",
+            "army_state_code": 2,
+        }
+        for frame in frames
+    ]
+    if extra_idle_army_id is not None:
+        player_armies.append(
+            {
+                "army_id": extra_idle_army_id,
+                "owner_character_id": 29_829,
+                "soldiers": 1_000,
+                "current_province_id": 9999,
+                "move_target_province_id": None,
+                "controllable": True,
+                "in_combat": False,
+                "army_state": "regular",
+                "army_state_code": 0,
+            }
+        )
+    snapshot["player_armies"] = player_armies
+    snapshot["active_wars"][0]["allied_armies"] = player_armies
+    return snapshot
+
+
+def _active_terminal_transition_frame(
+    battle: dict[str, object],
+    *,
+    latest_sequence: int = 40,
+) -> dict[str, object]:
+    combat_id = int(battle["combat_id"])
+    subject = int(battle["subject_public_cunit_id"])
+    attacker_ids = [
+        int(row["public_cunit_id"])
+        for row in battle["attacker"]["ordered_armies"]
+    ]
+    defender_ids = [
+        int(row["public_cunit_id"])
+        for row in battle["defender"]["ordered_armies"]
+    ]
+    return {
+        "schema_version": 1,
+        "contract_stage": "production_exact_battle_terminal_transition",
+        "status": "available",
+        "unavailable_reason": None,
+        "battle_terminal_transition_ready": True,
+        "snapshot_revision": battle["snapshot_revision"],
+        "observed_date_raw": battle["observed_date_raw"],
+        "prior_combat_id": combat_id,
+        "subject_public_cunit_id": subject,
+        "terminal_journal": {
+            "requested_after_sequence": None,
+            "oldest_available_sequence": 1,
+            "latest_sequence": latest_sequence,
+            "event_sequence": None,
+            "event_status": "not_observed",
+        },
+        "prior": {
+            "combat_id": combat_id,
+            "terminal_kind": "active_not_terminal",
+            "terminal_date_raw": None,
+            "suppress_normal_result_envelopes": None,
+            "phase_raw": battle["phase_raw"],
+            "phase_day": battle["phase_day"],
+            "winner_raw": battle["winner_raw"],
+            "finalized_before": False,
+            "daily_guard_raw": 0,
+            "province_id": battle["province_id"],
+            "battle_result_id": battle["battle_result_id"],
+            "wipe_raw": None,
+            "attacker_primary_participant_character_id": battle[
+                "attacker"
+            ]["primary_participant_character_id"],
+            "defender_primary_participant_character_id": battle[
+                "defender"
+            ]["primary_participant_character_id"],
+            "attacker_public_cunit_ids_in_stored_order": attacker_ids,
+            "defender_public_cunit_ids_in_stored_order": defender_ids,
+            "battle_warscore": {
+                "status": "unavailable",
+                "war_id": None,
+                "war_battle_row_index": None,
+                "value_raw_q100000": None,
+                "winner_is_war_attacker": None,
+                "combat_side0_is_war_attacker": None,
+                "attacker_relative_delta_raw_q100000": None,
+            },
+        },
+        "removal": {
+            "prior_combat_strictly_resolves": True,
+            "prior_province_strictly_resolves": True,
+            "prior_province_contains_prior_combat_id": True,
+            "result_strictly_resolves": None,
+            "result_relevant_player_count": None,
+        },
+        "subject": {
+            "exists": True,
+            "current_province_id": battle["province_id"],
+            "native_carmy_id": battle["subject_native_carmy_id"],
+            "combat_backlink_id": combat_id,
+            "active_combat_id": combat_id,
+            "movement_or_retreat_state_raw": 0,
+            "move_target_province_id": None,
+            "route_province_ids_in_stored_order": [],
+            "ai_membership_status": "none",
+            "coordinator_id": None,
+            "unit_stack_stored_index": None,
+            "subunit_stored_index": None,
+            "blocked_by_active_combat": True,
+        },
+        "successor": {
+            "state": "unavailable",
+            "matching_combat_ids_in_native_order": [],
+            "selected_successor_combat_id": None,
+            "participant_overlap_public_cunit_ids_in_prior_order": [],
+        },
+    }
+
+
+def _terminal_cursor_query_row(
+    index: int,
+    battle: dict[str, object],
+    *,
+    latest_sequence: int = 40,
+) -> dict[str, object]:
+    combat_id = int(battle["combat_id"])
+    subject = int(battle["subject_public_cunit_id"])
+    step = query_battle_terminal_transition_v1_step(combat_id, subject)
+    frame = _active_terminal_transition_frame(
+        battle, latest_sequence=latest_sequence
+    )
+    return {
+        "index": index,
+        "command": step,
+        "ok": True,
+        "result": {
+            "step": step,
+            "accepted": True,
+            "status": "available",
+            "query_sequence": index,
+            "snapshot_revision": battle["snapshot_revision"],
+            "battle_terminal_transition": frame,
+            "queried_snapshot_id": f"native:{battle['snapshot_revision']}",
+            "queried_revision": battle["snapshot_revision"],
+            "queried_native_revision": battle["snapshot_revision"],
+        },
+    }
+
+
+def _observed_terminal_transition_frame(
+    battle: dict[str, object],
+    *,
+    cursor: int,
+    observed_date_raw: int,
+    snapshot_revision: int,
+) -> dict[str, object]:
+    frame = _active_terminal_transition_frame(
+        battle, latest_sequence=cursor
+    )
+    frame.update(
+        {
+            "snapshot_revision": snapshot_revision,
+            "observed_date_raw": observed_date_raw,
+        }
+    )
+    frame["terminal_journal"] = {
+        "requested_after_sequence": cursor,
+        "oldest_available_sequence": 1,
+        "latest_sequence": cursor + 1,
+        "event_sequence": cursor + 1,
+        "event_status": "observed",
+    }
+    frame["prior"].update(
+        {
+            "terminal_kind": "normal_result",
+            "terminal_date_raw": observed_date_raw,
+            "suppress_normal_result_envelopes": False,
+            "phase_raw": 3,
+            "phase_day": 0,
+            "winner_raw": 0,
+            "battle_warscore": {
+                "status": "not_recorded_by_native",
+                "war_id": None,
+                "war_battle_row_index": None,
+                "value_raw_q100000": None,
+                "winner_is_war_attacker": None,
+                "combat_side0_is_war_attacker": None,
+                "attacker_relative_delta_raw_q100000": None,
+            },
+        }
+    )
+    frame["removal"] = {
+        "prior_combat_strictly_resolves": False,
+        "prior_province_strictly_resolves": True,
+        "prior_province_contains_prior_combat_id": False,
+        "result_strictly_resolves": None,
+        "result_relevant_player_count": None,
+    }
+    frame["subject"].update(
+        {
+            "combat_backlink_id": None,
+            "active_combat_id": None,
+            "movement_or_retreat_state_raw": 0,
+            "ai_membership_status": "none",
+            "coordinator_id": None,
+            "unit_stack_stored_index": None,
+            "subunit_stored_index": None,
+            "blocked_by_active_combat": False,
+        }
+    )
+    frame["successor"] = {
+        "state": "no_successor",
+        "matching_combat_ids_in_native_order": [],
+        "selected_successor_combat_id": None,
+        "participant_overlap_public_cunit_ids_in_prior_order": [],
+    }
+    return frame
+
+
+def _observed_terminal_query_row(
+    index: int,
+    battle: dict[str, object],
+    *,
+    cursor: int,
+    observed_date_raw: int,
+    snapshot_revision: int,
+) -> dict[str, object]:
+    combat_id = int(battle["combat_id"])
+    subject = int(battle["subject_public_cunit_id"])
+    step = query_battle_terminal_transition_v1_step(
+        combat_id, subject, cursor
+    )
+    frame = _observed_terminal_transition_frame(
+        battle,
+        cursor=cursor,
+        observed_date_raw=observed_date_raw,
+        snapshot_revision=snapshot_revision,
+    )
+    return {
+        "index": index,
+        "command": step,
+        "ok": True,
+        "result": {
+            "step": step,
+            "accepted": True,
+            "status": "available",
+            "query_sequence": index,
+            "snapshot_revision": snapshot_revision,
+            "battle_terminal_transition": frame,
+            "queried_snapshot_id": f"native:{snapshot_revision}",
+            "queried_revision": snapshot_revision,
+            "queried_native_revision": snapshot_revision,
+        },
+    }
+
+
+def _sentinel_advance_row(
+    index: int,
+    *,
+    step: str = DECISION_SENTINEL_STEP,
+    elapsed_days: int = 5,
+    watch_army_ids: list[int] | None = None,
+    terminal: bool = False,
+) -> dict[str, object]:
+    speed = 5 if step == TERMINAL_SENTINEL_STEP else 3
+    mode = (
+        "terminal_or_sentinel"
+        if step == TERMINAL_SENTINEL_STEP
+        else "decision_epoch"
+    )
+    target = DATE_RAW + 45 * 24
+    ending = DATE_RAW + elapsed_days * 24
+    watched = list(watch_army_ids or [SUBJECT])
+    reasons = ["combat_terminal" if terminal else "combat_phase_changed"]
+    armed = {
+        "state": "armed",
+        "generation": 7,
+        "starting_date_raw": DATE_RAW,
+        "target_date_raw": target,
+        "last_observed_date_raw": DATE_RAW,
+        "trigger_date_raw": 0,
+        "speed": speed,
+        "mode": mode,
+        "army_count": len(watched),
+        "combat_count": 1,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": False,
+        "pause_observed": False,
+        "terminal_observed": False,
+        "abnormal": False,
+    }
+    return {
+        "index": index,
+        "command": step,
+        "ok": True,
+        "result": {
+            "step": step,
+            "starting_date_raw": DATE_RAW,
+            "target_date_raw": target,
+            "ending_date_raw": ending,
+            "elapsed_days": elapsed_days,
+            "requested_horizon_days": 45,
+            "timeline_speed": speed,
+            "timeline_policy": mode,
+            "progress_status": "postcondition",
+            "sentinel_mode": mode,
+            "watch_army_ids": watched,
+            "stop_kind": "terminal" if terminal else "decision_epoch",
+            "terminal_reached": terminal,
+            "trigger_reasons": reasons,
+            "sentinel_generation": 7,
+            "completed_daily_ticks": elapsed_days,
+            "intermediate_pause_count": 0,
+            "overshoot_days": 0,
+            "zero_intermediate_pause": True,
+            "external_pause_count": 0,
+            "external_rich_query_count": 0,
+            "managed_failure_cleanup": {
+                "attempted": False,
+                "error": None,
+            },
+            "paused": True,
+            "armed_tactical_daily_sentinel": armed,
+            "tactical_daily_sentinel": {
+                "state": "triggered",
+                "generation": 7,
+                "starting_date_raw": DATE_RAW,
+                "target_date_raw": target,
+                "last_observed_date_raw": ending,
+                "trigger_date_raw": ending,
+                "speed": speed,
+                "mode": mode,
+                "army_count": len(watched),
+                "combat_count": 1,
+                "completed_daily_ticks": elapsed_days,
+                "intermediate_pause_count": 0,
+                "trigger_flags": 256 if terminal else 64,
+                "trigger_reasons": reasons,
+                "signed_date_delta_from_target_raw": ending - target,
+                "overshoot_days": 0,
+                "pause_wrapper_called": True,
+                "pause_observed": True,
+                "terminal_observed": terminal,
+                "abnormal": False,
+            },
+        },
+    }
+
+
+class BattleSentinelStrategyTests(unittest.TestCase):
+    def _plan(
+        self,
+        history: list[dict[str, object]],
+        frame: dict[str, object],
+        *,
+        steps: tuple[str, ...],
+        readiness: dict[str, object] | None,
+    ) -> dict[str, object]:
+        return choose_one_life_turn(
+            history,
+            snapshot=_planner_battle_snapshot(frame=frame),
+            action_steps=steps,
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=readiness,
+        )
+
+    def test_missing_composite_or_live_gate_falls_back_to_speed_one(self) -> None:
+        frame = _battle_frame()
+        history = [_battle_query_row(1, frame)]
+        for label, steps, readiness in (
+            (
+                "missing-composite",
+                (STEP, "life-advance"),
+                _ALL_BATTLE_SPEED_GATES,
+            ),
+            (
+                "missing-live-gate",
+                (STEP, "life-advance", DECISION_SENTINEL_STEP),
+                None,
+            ),
+        ):
+            with self.subTest(label=label):
+                plan = self._plan(
+                    history, frame, steps=steps, readiness=readiness
+                )
+                self.assertEqual(plan["selected_step"], "life-advance")
+                self.assertEqual(
+                    plan["phase"], "native_war_global_battle_control_progress"
+                )
+
+    def test_live_decision_epoch_defaults_active_combat_to_speed_three(self) -> None:
+        frame = _battle_frame()
+        plan = self._plan(
+            [_battle_query_row(1, frame)],
+            frame,
+            steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            readiness={"decision_sentinel_live_ready": True},
+        )
+
+        self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(plan["timeline_speed"], 3)
+        self.assertEqual(plan["sentinel_mode"], "decision_epoch")
+        self.assertEqual(plan["absolute_target_date_raw"], DATE_RAW + 45 * 24)
+        self.assertEqual(plan["watch_army_ids"], [SUBJECT])
+
+    def test_double_four_x_and_decided_pursuit_select_speed_five(self) -> None:
+        for label, frame in (
+            ("double-four-x", _crushing_battle_frame()),
+            ("decided-pursuit", _pursuit_battle_frame()),
+        ):
+            with self.subTest(label=label):
+                history = [
+                    _battle_query_row(1, frame),
+                    _terminal_cursor_query_row(2, frame),
+                ]
+                plan = self._plan(
+                    history,
+                    frame,
+                    steps=(
+                        STEP,
+                        "life-advance",
+                        DECISION_SENTINEL_STEP,
+                        TERMINAL_SENTINEL_STEP,
+                    ),
+                    readiness=_ALL_BATTLE_SPEED_GATES,
+                )
+                self.assertEqual(plan["selected_step"], TERMINAL_SENTINEL_STEP)
+                self.assertEqual(plan["timeline_speed"], 5)
+                self.assertEqual(plan["sentinel_mode"], "terminal_or_sentinel")
+                self.assertEqual(
+                    plan["terminal_journal_cursors"][0][
+                        "after_terminal_sequence"
+                    ],
+                    40,
+                )
+
+    def test_terminal_cruise_first_freezes_cursor(self) -> None:
+        frame = _crushing_battle_frame()
+        plan = self._plan(
+            [_battle_query_row(1, frame)],
+            frame,
+            steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_battle_terminal_cursor_query"
+        )
+        self.assertEqual(
+            plan["selected_step"],
+            query_battle_terminal_transition_v1_step(
+                int(frame["combat_id"]), SUBJECT
+            ),
+        )
+
+    def test_multiple_combats_are_all_of_and_watch_every_controllable_army(
+        self,
+    ) -> None:
+        first = _crushing_battle_frame()
+        second = _rebind_battle_frame(
+            _battle_frame(),
+            subject=117_440_751,
+            native_subject=404,
+            combat_id=335_544_326,
+            province_id=2587,
+        )
+        snapshot = _multi_battle_snapshot(
+            [first, second], extra_idle_army_id=444
+        )
+        steps = (
+            STEP,
+            query_battle_control_snapshot_v1_step(117_440_751),
+            "life-advance",
+            DECISION_SENTINEL_STEP,
+            TERMINAL_SENTINEL_STEP,
+        )
+        history = [
+            _battle_query_row(1, first),
+            _terminal_cursor_query_row(2, first),
+            _battle_query_row(3, second),
+            _terminal_cursor_query_row(4, second),
+        ]
+        mixed = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps=steps,
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        self.assertEqual(mixed["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(mixed["watch_army_ids"], [444, SUBJECT, 117_440_751])
+
+        second_crush = _rebind_battle_frame(
+            _crushing_battle_frame(),
+            subject=117_440_751,
+            native_subject=404,
+            combat_id=335_544_326,
+            province_id=2587,
+        )
+        snapshot = _multi_battle_snapshot(
+            [first, second_crush], extra_idle_army_id=444
+        )
+        all_crush = choose_one_life_turn(
+            [
+                _battle_query_row(1, first),
+                _terminal_cursor_query_row(2, first),
+                _battle_query_row(3, second_crush),
+                _terminal_cursor_query_row(4, second_crush),
+            ],
+            snapshot=snapshot,
+            action_steps=steps,
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        self.assertEqual(all_crush["selected_step"], TERMINAL_SENTINEL_STEP)
+        self.assertEqual(
+            all_crush["watch_army_ids"], [444, SUBJECT, 117_440_751]
+        )
+        self.assertEqual(len(all_crush["terminal_journal_cursors"]), 2)
+
+    def test_valid_multiday_sentinel_unlocks_but_wrong_status_is_rejected(
+        self,
+    ) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=5)
+        good = _sentinel_advance_row(2)
+        history = [
+            _battle_query_row(1, before),
+            good,
+            _battle_query_row(3, after),
+        ]
+        plan = self._plan(
+            history,
+            after,
+            steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(
+            plan["battle_transitions"][0]["actual_elapsed_days"], 5
+        )
+
+        bad = copy.deepcopy(good)
+        bad["result"]["tactical_daily_sentinel"]["state"] = "armed"
+        rejected = self._plan(
+            [
+                _battle_query_row(1, before),
+                bad,
+                _battle_query_row(3, after),
+            ],
+            after,
+            steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            readiness={"decision_sentinel_live_ready": True},
+        )
+        self.assertEqual(
+            rejected["phase"], "native_war_battle_transition_invalid"
+        )
+        self.assertIsNone(rejected["selected_step"])
+        self.assertIn(
+            "sentinel_completion_invalid",
+            rejected["battle_transition"]["sentinel_validation"]["errors"],
+        )
+
+    def test_terminal_stop_requires_cursor_bound_same_combat_outcome(self) -> None:
+        before = _crushing_battle_frame()
+        ending = DATE_RAW + 5 * 24
+        after_revision = NATIVE_REVISION + 5
+        after = _planner_battle_snapshot(
+            frame=None, army_state="regular"
+        )
+        after.update(
+            {
+                "snapshot_id": f"native:{after_revision}",
+                "revision": after_revision,
+                "native_revision": after_revision,
+                "date_raw": ending,
+            }
+        )
+        terminal_advance = _sentinel_advance_row(
+            3,
+            step=TERMINAL_SENTINEL_STEP,
+            terminal=True,
+        )
+        history = [
+            _battle_query_row(1, before),
+            _terminal_cursor_query_row(2, before),
+            terminal_advance,
+        ]
+        query = choose_one_life_turn(
+            history,
+            snapshot=after,
+            action_steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        expected_query = query_battle_terminal_transition_v1_step(
+            int(before["combat_id"]), SUBJECT, 40
+        )
+        self.assertEqual(
+            query["phase"], "native_war_battle_terminal_journal_query"
+        )
+        self.assertEqual(query["selected_step"], expected_query)
+
+        accepted = choose_one_life_turn(
+            [
+                *history,
+                _observed_terminal_query_row(
+                    4,
+                    before,
+                    cursor=40,
+                    observed_date_raw=ending,
+                    snapshot_revision=after_revision,
+                ),
+            ],
+            snapshot=after,
+            action_steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        terminal = next(
+            transition
+            for transition in accepted["battle_transitions"]
+            if transition.get("status") == "terminal_journal_observed"
+        )
+        self.assertEqual(terminal["before_combat_id"], before["combat_id"])
+        self.assertEqual(terminal["after_terminal_sequence"], 40)
+        self.assertEqual(terminal["terminal_journal_sequence"], 41)
+        self.assertEqual(terminal["outcome"]["winner_side"], "attacker")
+
+    def test_finalized_terminal_cruise_records_journal_outcome_before_cleanup(
+        self,
+    ) -> None:
+        before = _crushing_battle_frame()
+        after = _next_battle_frame(elapsed_days=5)
+        after["finalized"] = True
+        ending = int(after["observed_date_raw"])
+        after_revision = int(after["snapshot_revision"])
+        history = [
+            _battle_query_row(1, before),
+            _terminal_cursor_query_row(2, before),
+            _sentinel_advance_row(
+                3,
+                step=TERMINAL_SENTINEL_STEP,
+                terminal=True,
+            ),
+            _battle_query_row(4, after),
+            _observed_terminal_query_row(
+                5,
+                before,
+                cursor=40,
+                observed_date_raw=ending,
+                snapshot_revision=after_revision,
+            ),
+        ]
+
+        plan = self._plan(
+            history,
+            after,
+            steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        self.assertEqual(plan["phase"], "native_war_battle_terminal_cleanup")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["battle_transition"]["status"],
+            "terminal_journal_observed",
+        )
+        self.assertEqual(
+            plan["battle_transition"]["outcome"]["winner_side"],
+            "attacker",
+        )
+
+    def test_one_cursor_proves_each_controlled_subject_in_same_combat(
+        self,
+    ) -> None:
+        first = _crushing_battle_frame()
+        second_subject = 117_440_751
+        second = _rebind_battle_frame(
+            _crushing_battle_frame(),
+            subject=second_subject,
+            native_subject=404,
+            combat_id=int(first["combat_id"]),
+            province_id=int(first["province_id"]),
+        )
+        ending = DATE_RAW + 5 * 24
+        after_revision = NATIVE_REVISION + 5
+        after = _planner_battle_snapshot(frame=None, army_state="regular")
+        after.update(
+            {
+                "snapshot_id": f"native:{after_revision}",
+                "revision": after_revision,
+                "native_revision": after_revision,
+                "date_raw": ending,
+            }
+        )
+        history = [
+            _battle_query_row(1, first),
+            _terminal_cursor_query_row(2, first),
+            _battle_query_row(3, second),
+            _sentinel_advance_row(
+                4,
+                step=TERMINAL_SENTINEL_STEP,
+                terminal=True,
+                watch_army_ids=[SUBJECT, second_subject],
+            ),
+            _observed_terminal_query_row(
+                5,
+                first,
+                cursor=40,
+                observed_date_raw=ending,
+                snapshot_revision=after_revision,
+            ),
+        ]
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=after,
+            action_steps=(
+                STEP,
+                query_battle_control_snapshot_v1_step(second_subject),
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        terminal = [
+            transition
+            for transition in plan["battle_transitions"]
+            if transition.get("status") == "terminal_journal_observed"
+        ]
+        self.assertEqual(
+            {row["subject_army_id"] for row in terminal},
+            {SUBJECT, second_subject},
+        )
+        self.assertEqual(
+            {row["journal_subject_army_id"] for row in terminal},
+            {SUBJECT},
+        )
+        self.assertEqual(
+            {row["before_combat_id"] for row in terminal},
+            {first["combat_id"]},
+        )
+
+
 class BattleControlSnapshotV1ContractTests(unittest.TestCase):
     def normalize(self, value: object) -> dict[str, object]:
         return normalize_battle_control_snapshot_v1(

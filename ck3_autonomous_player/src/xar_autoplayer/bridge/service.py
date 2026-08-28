@@ -64,6 +64,7 @@ from .battle_transition_contract import (
 from .battle_terminal_transition_contract import (
     QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
     normalize_battle_terminal_transition_v1,
+    parse_query_battle_terminal_transition_v1_step,
     query_battle_terminal_transition_v1_step,
 )
 from .battle_reinforcement_assignment_contract import (
@@ -157,6 +158,16 @@ class GameplayBridgeService:
         )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
+        bridge_capabilities = (
+            capabilities.get("bridge_capabilities")
+            if isinstance(capabilities.get("bridge_capabilities"), list)
+            else []
+        )
+        battle_speed_readiness = (
+            capabilities.get("battle_speed_readiness")
+            if isinstance(capabilities.get("battle_speed_readiness"), dict)
+            else None
+        )
         cross_run_plan = None
         state_dir = self._strategy_state_dir()
         if state_dir is not None:
@@ -183,22 +194,28 @@ class GameplayBridgeService:
                 history,
                 snapshot=planning_snapshot,
                 action_steps=available_steps,
-                bridge_capabilities=(
-                    capabilities.get("bridge_capabilities")
-                    if isinstance(
-                        capabilities.get("bridge_capabilities"), list
-                    )
-                    else ()
-                ),
+                bridge_capabilities=bridge_capabilities,
                 next_run_plan=cross_run_plan,
+                battle_speed_readiness=battle_speed_readiness,
             )
             if cross_run_plan is not None:
                 plan = {**plan, "cross_run_plan_used": cross_run_plan}
+            routable_steps = set(available_steps)
+            selected_step = plan.get("selected_step")
+            if (
+                parse_query_battle_terminal_transition_v1_step(
+                    selected_step
+                )
+                is not None
+                and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ):
+                routable_steps.add(str(selected_step))
             return {
                 "snapshot_id": planning_snapshot["snapshot_id"],
                 "revision": planning_snapshot["revision"],
                 "plan": _route_plan_to_available_step(
-                    plan, available_steps
+                    plan, routable_steps
                 ),
             }
 

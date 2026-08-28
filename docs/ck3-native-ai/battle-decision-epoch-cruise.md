@@ -186,10 +186,30 @@ paused/managed emergency-cleanup 的事实，不能伪造 `pause_wrapper_called=
 校准；若 qualifying battle 首次出现 roster 不变但优势崩塌/错误 hold，保留 artifact，并把 daily dominance-floor stop
 作为最小修复，不回退到永久逐日暂停。
 
+## Production selector 接线（2026-08-28）
+
+[implementation-confirmed] `strategy.choose_one_life_turn` 现已消费显式 `battle_speed_readiness`，而不是把 DLL capability
+或 composite 存在误当 live 结论。三个 gate 缺失时都按 `false` 处理：
+
+- `decision_sentinel_live_ready=true` 且 `battle-decision-epoch-advance` 可执行时，完整全局战术审计后的 active combat
+  默认选择 speed 3、`+45d` absolute fallback 的 decision epoch；
+- speed 5 另要求 `terminal_sentinel_live_ready=true`、`overwhelming_matrix_live_ready=true`、
+  `battle-terminal-cruise` 可执行，并且每个 distinct CombatID 都通过 `battle_terminal_cruise_policy.production_ready`；
+- watched IDs 是当前全部 controllable player CUnitIDs，包括同一时刻未参战的其它玩家军；不能只看当前 battle subject；
+- 每个获准的 terminal CombatID 先在同一 paused revision 做一次 journal query，冻结正数 `latest_sequence`。native stop
+  后只有 cursor 后的新 event 同时证明原 CombatID、terminal date 与 attacker/defender outcome，才能接受 terminal transition；
+- 任一 gate、composite、完整 watch set 或 cursor 缺失，selector 保留旧 `life-advance` speed-1 路径。
+
+多日 transition 的放宽只识别两个 composite literal，并严格要求 `progress_status=postcondition`、零 intermediate/external
+pause、零 rich query、零 overshoot、无 managed cleanup、`trigger_date_raw - starting_date_raw = completed_daily_ticks * 24`、
+顶层与 nested sentinel 字段一致。普通
+`life-advance` 的三日结果仍是 RED。`GameplayBridgeService` 只透传 driver capabilities 中可选的 readiness map；当前 live
+矩阵未决定某个字段时不得填写 `true`。
+
 ## Readiness
 
-本页与 Python 合同当前只达到 `static-ready research policy`：它证明了不依赖逐日暂停的最小决策边界，并把候选、可跑、
-production 三层分开。它没有宣称 5 速 crush 已 production-live。
+本页 Python selector 已达到 `implementation-confirmed`，native/live gate 仍由各自 artifact 决定。它没有宣称 speed 3
+decision epoch 或 speed 5 crush 已 production-live；readiness map 默认全 false，因此静态接线本身不会改变正式长跑速度。
 
 升级顺序固定为：native sentinel build/tests -> speed 1/3/5 same-day live -> 第一份双重 `4x` checkpoint -> `1,5,5,1`
 零中途暂停矩阵 -> production selector。完整 Monte Carlo、通用 reinforcement forecast 与更低碾压阈值都是后续质量升级，
