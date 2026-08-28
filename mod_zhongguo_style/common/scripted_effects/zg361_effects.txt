@@ -166,8 +166,15 @@ zg361_apply_grade_effect = {
 zg361_grade_375_apply_effect = {
 	add_character_modifier = { modifier = zg361_grade_375 years = 1 }
 	change_merit = major_merit_gain
-	add_treasury = zg361_perf_bonus_treasury_value
-	change_variable = { name = merit_civilian_career_score_bonus add = zg361_nomination_score_bonus_value }
+	add_treasury = zg361_perf_bonus_scaled_value
+	# 晋升提名：文官/武将分开写入原版任命 candidate_score 变量
+	if = {
+		limit = { vassal_contract_has_flag = celestial_military_appointment }
+		change_variable = { name = merit_military_career_score_bonus add = zg361_nomination_score_bonus_value }
+	}
+	else = {
+		change_variable = { name = merit_civilian_career_score_bonus add = zg361_nomination_score_bonus_value }
+	}
 	liege = {
 		add_opinion = { modifier = zg361_favored target = root }
 	}
@@ -177,7 +184,13 @@ zg361_grade_375_apply_effect = {
 	if = {
 		limit = { var:zg361_streak_top >= 2 }
 		add_character_modifier = { modifier = zg361_promotion_track years = 2 }
-		change_variable = { name = merit_civilian_career_score_bonus add = zg361_promotion_score_bonus_value }
+		if = {
+			limit = { vassal_contract_has_flag = celestial_military_appointment }
+			change_variable = { name = merit_military_career_score_bonus add = zg361_promotion_score_bonus_value }
+		}
+		else = {
+			change_variable = { name = merit_civilian_career_score_bonus add = zg361_promotion_score_bonus_value }
+		}
 		set_variable = { name = zg361_streak_top value = 0 }
 		debug_log = "ZG361: promotion track opened"
 	}
@@ -256,6 +269,24 @@ zg361_process_elimination_effect = {
 
 zg361_ai_elimination_effect = {
 	set_variable = { name = zg361_purge_score value = zg361_ai_purge_score_value }
+	liege = { save_temporary_scope_as = zg361_liege }
+	# 军力对比：封臣兵力 > 皇帝 20% → 投鼠忌器（-50）
+	if = {
+		limit = {
+			current_military_strength > { value = scope:zg361_liege.current_military_strength multiply = 0.2 }
+		}
+		change_variable = { name = zg361_purge_score add = -50 }
+	}
+	# 皇帝直辖未满 → 夺爵回血动机（+20）
+	if = {
+		limit = { scope:zg361_liege = { domain_size < domain_limit } }
+		change_variable = { name = zg361_purge_score add = 20 }
+	}
+	# 淘汰者中也垫底（当年名次最后）→ +50
+	if = {
+		limit = { var:zg361_rank >= scope:zg361_liege.var:zg361_cohort_n }
+		change_variable = { name = zg361_purge_score add = 50 }
+	}
 	# 随机宽宥：皇帝心情不错
 	random = {
 		chance = 15
@@ -276,6 +307,13 @@ zg361_ai_elimination_effect = {
 					is_dominant_family = yes
 				}
 			}
+		}
+		zg361_eliminate_stepdown_effect = yes
+	}
+	else_if = {
+		# 封臣兵力已达皇帝一半：硬夺必反，给个体面
+		limit = {
+			current_military_strength > { value = scope:zg361_liege.current_military_strength multiply = 0.5 }
 		}
 		zg361_eliminate_stepdown_effect = yes
 	}

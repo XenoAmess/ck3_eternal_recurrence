@@ -7,7 +7,14 @@
 
 zg361_min_cohort_value = 3					# 考核池小于该人数时不排名（全员 3.5 都不评，只快照）
 
-zg361_perf_bonus_treasury_value = 100		# 3.75 绩效奖金（国库）
+# 3.75 绩效奖金（国库，按贤能品级缩放：60 + 品级×15）
+zg361_perf_bonus_scaled_value = {
+	value = 60
+	add = {
+		value = merit_level
+		multiply = 15
+	}
+}
 
 zg361_nomination_score_bonus_value = 30		# 3.75 晋升提名：任命 candidate_score 变量加成
 zg361_promotion_score_bonus_value = 80		# 连续两次 3.75 晋升通道：candidate_score 变量大额加成

@@ -368,6 +368,20 @@ CI 接入（test / --check / dispatch 构建 / `zhongguo-361-v*` tag release）�
 9. 事件文案暂不打印各档人数（跨链 scope 变量在 loc 中打印未核实），数字表现留三期 GUI 面板。
 10. 新增"首年试用期"语义：无 merit 快照的官员当年只记不评（顺带解决中途任命/旧存档引入问题）。
 
+### 13.1 查漏补缺闭环（2026-08-28 第二轮自审）
+
+首轮实施后对照 §4/§5 重新逐条核对，补齐以下遗漏：
+
+- AI 裁决分补上**军力对比**（封臣兵力 > 皇帝 20% → −50；> 50% → 处置强制锁致仕）、
+  **皇帝直辖未满**（+20 夺爵回血动机）、**淘汰者垫底**（名次 = cohort 末位 → +50）三个因子，
+  均以 effect 层已验证语法实现（saved-scope 点读 `current_military_strength`、`domain_size < domain_limit`、
+  跨 scope 变量比较）。
+- 3.75 晋升提名与连续 3.75 晋升加成**按文官/武将分写** `merit_civilian_career_score_bonus` /
+  `merit_military_career_score_bonus`（以 `vassal_contract_has_flag = celestial_military_appointment` 判别）。
+- 绩效奖金从固定 100 改为**按贤能品级缩放**（60 + 品级×15），贴合"按俸禄档位缩放"的设计意图。
+- 皇帝性格因子采用 sadistic/deceitful/ambitious/arbitrary/callous 与 compassionate/forgiving/trusting；
+  lunatic/possessed 未纳入（未在本体 00_traits.txt 直接命中形态，保守舍弃）。
+
 一期交付物：游戏规则 ×3、KPI/阈值/裁决分 script values、排名与结算 effects、
 年度 on_action 钩子、6 modifier、6 opinion modifier、6 事件、九语言本地化（zh+en 创作，
 7 语言英文占位）、本目录静态校验器 `tools/validate_local.py`（当前 GREEN）。
