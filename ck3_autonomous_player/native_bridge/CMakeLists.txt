@@ -895,6 +895,20 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
+  add_executable(xar_ck3_war_termination_same_frame_source_contract_test
+    src/war_termination_same_frame_source_contract_test.cpp
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_war_termination_same_frame_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_war_termination_same_frame_source_contract
+    COMMAND xar_ck3_war_termination_same_frame_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+  )
+
   add_executable(xar_ck3_war_entry_assessments_v1_mailbox_test
     src/main_thread_query_mailbox_v1.cpp
     src/war_entry_assessments_v1.cpp

@@ -1063,6 +1063,39 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(compact["queried_native_revision"], 990)
         self.assertEqual(compact["battle_terminal_transition"], transition)
 
+    def test_compact_failure_keeps_bounded_war_query_mismatch(self) -> None:
+        mismatch = {
+            "stage": "starting_snapshot",
+            "requested_war_id": 83_886_203,
+            "snapshot_binding": {
+                "snapshot_id": "native:25",
+                "revision": 26,
+                "native_revision": 25,
+                "connection_generation": 1,
+                "episode_run_id": "episode-29829",
+            },
+            "identity_diff": {
+                "player_relative_war_score": {
+                    "query": -34,
+                    "active_war": -35,
+                }
+            },
+        }
+        compact = native_auto_run_module._compact_step_result(
+            {
+                "step": "query-war-termination-options-83886203",
+                "status": "postcondition_failed",
+                "accepted": True,
+                "query_sequence": 7,
+                "war_termination_query_mismatch": mismatch,
+                "war_termination_options": {"intentionally": "omitted"},
+            }
+        )
+
+        self.assertIsNotNone(compact)
+        self.assertEqual(compact["war_termination_query_mismatch"], mismatch)
+        self.assertNotIn("war_termination_options", compact)
+
     def test_non_native_cli_is_rejected_before_configuration_or_run(self) -> None:
         stderr = io.StringIO()
         with mock.patch.object(

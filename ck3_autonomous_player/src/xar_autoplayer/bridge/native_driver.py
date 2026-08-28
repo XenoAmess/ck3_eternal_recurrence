@@ -385,6 +385,13 @@ _ARMY_MOVE_DEFERRED_ERROR_STAGES = {
     "CK3 army state rejects movement": "army_state_rejected",
 }
 _ARMY_MOVE_DEFERRED_ERRORS = frozenset(_ARMY_MOVE_DEFERRED_ERROR_STAGES)
+_WAR_TERMINATION_REVISION_RETRY_ERRORS = frozenset(
+    {
+        "war-termination snapshot revision is stale",
+        "war-termination admission snapshot changed; retry after heartbeat",
+        "war-termination completion snapshot changed; retry after heartbeat",
+    }
+)
 
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
@@ -7838,11 +7845,24 @@ class NativeHeadlessGameplayDriver:
             )
 
         if query_war_id is not None:
-            result = self._execute_primitive_step(
-                step,
-                expected_revision=selected_revision,
-                internal_semantic_snapshot=True,
-            )
+            try:
+                result = self._execute_primitive_step(
+                    step,
+                    expected_revision=selected_revision,
+                    internal_semantic_snapshot=True,
+                )
+            except _NativeCommandRejectedError as error:
+                if error.native_error not in (
+                    _WAR_TERMINATION_REVISION_RETRY_ERRORS
+                ):
+                    raise
+                refreshed = self.take_internal_semantic_snapshot()
+                if _same_paused_native_frame(starting, refreshed):
+                    raise
+                raise PreSubmissionRevisionMismatchError(
+                    "native war-termination query observed a newer native "
+                    "snapshot before performing its read-only query"
+                ) from error
             if (
                 set(result)
                 != {
@@ -7860,11 +7880,6 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native war-termination query returned a malformed status"
                 )
-            options = normalize_war_termination_options(
-                result.get("war_termination_options"),
-                expected_war_id=war_id,
-            )
-            _require_termination_options_match_war(options, war)
             query_sequence = result.get("query_sequence")
             if (
                 isinstance(query_sequence, bool)
@@ -7874,6 +7889,27 @@ class NativeHeadlessGameplayDriver:
             ):
                 raise BridgeUnavailableError(
                     "native war-termination query lacks query_sequence"
+                )
+            options = normalize_war_termination_options(
+                result.get("war_termination_options"),
+                expected_war_id=war_id,
+            )
+            identity_diff = _termination_options_war_identity_diff(
+                options, war
+            )
+            if identity_diff:
+                raise StepPostconditionError(
+                    "native war-termination query does not match the active "
+                    "war row",
+                    step_result=_war_termination_query_mismatch_result(
+                        step=step,
+                        stage="starting_snapshot",
+                        requested_war_id=war_id,
+                        query_sequence=query_sequence,
+                        snapshot=starting,
+                        identity_diff=identity_diff,
+                    ),
+                    selected_step=step,
                 )
             current = self.take_internal_semantic_snapshot()
             if not _same_paused_native_frame(starting, current):
@@ -7885,7 +7921,23 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native war-termination query returned after the war ended"
                 )
-            _require_termination_options_match_war(options, current_war)
+            identity_diff = _termination_options_war_identity_diff(
+                options, current_war
+            )
+            if identity_diff:
+                raise StepPostconditionError(
+                    "native war-termination query does not match the active "
+                    "war row",
+                    step_result=_war_termination_query_mismatch_result(
+                        step=step,
+                        stage="post_query_snapshot",
+                        requested_war_id=war_id,
+                        query_sequence=query_sequence,
+                        snapshot=current,
+                        identity_diff=identity_diff,
+                    ),
+                    selected_step=step,
+                )
             diagnostics = starting.get("diagnostics")
             connection_generation = (
                 diagnostics.get("connection_generation")
@@ -15232,19 +15284,57 @@ def _assault_siege_observation(
     return matches[0] if len(matches) == 1 else None
 
 
-def _require_termination_options_match_war(
+def _termination_options_war_identity_diff(
     options: dict[str, object], war: dict[str, object]
-) -> None:
+) -> dict[str, dict[str, object]]:
     fields = (
         "war_id",
         "player_side",
         "player_is_primary_war_leader",
         "player_relative_war_score",
     )
-    if any(options.get(field) != war.get(field) for field in fields):
-        raise BridgeUnavailableError(
-            "native war-termination query does not match the active war row"
-        )
+    return {
+        field: {
+            "query": options.get(field),
+            "active_war": war.get(field),
+        }
+        for field in fields
+        if options.get(field) != war.get(field)
+    }
+
+
+def _war_termination_query_mismatch_result(
+    *,
+    step: str,
+    stage: str,
+    requested_war_id: int,
+    query_sequence: int,
+    snapshot: dict[str, object],
+    identity_diff: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    diagnostics = snapshot.get("diagnostics")
+    return {
+        "step": step,
+        "status": "postcondition_failed",
+        "accepted": True,
+        "query_sequence": query_sequence,
+        "war_termination_query_mismatch": {
+            "stage": stage,
+            "requested_war_id": requested_war_id,
+            "snapshot_binding": {
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": snapshot.get("revision"),
+                "native_revision": snapshot.get("native_revision"),
+                "connection_generation": (
+                    diagnostics.get("connection_generation")
+                    if isinstance(diagnostics, dict)
+                    else None
+                ),
+                "episode_run_id": snapshot.get("episode_run_id"),
+            },
+            "identity_diff": copy.deepcopy(identity_diff),
+        },
+    }
 
 
 def _same_paused_native_frame(

@@ -9475,6 +9475,160 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             ],
         )
 
+    def test_war_termination_query_replans_only_after_fresh_native_frame(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(40, active_wars=[_war(war_id=war_id, score=41)])
+        )
+        selected_revision = int(driver.take_snapshot()["revision"])
+
+        def changed_answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                _snapshot(41, active_wars=[_war(war_id=war_id, score=42)])
+            )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": False,
+                    "error": (
+                        "war-termination completion snapshot changed; "
+                        "retry after heartbeat"
+                    ),
+                }
+            )
+
+        endpoint.send_hook = changed_answer
+        with self.assertRaises(PreSubmissionRevisionMismatchError):
+            driver.execute_step(
+                f"query-war-termination-options-{war_id}",
+                expected_revision=selected_revision,
+            )
+        request = next(
+            frame
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        )
+        self.assertEqual(request["expected_revision"], 40)
+        history = driver.take_snapshot()["native_command_history"]
+        self.assertFalse(history[-1]["ok"])
+        self.assertNotIn("result", history[-1])
+        self.assertEqual(driver.take_snapshot()["war_termination_options"], [])
+
+        endpoint.send_hook = lambda frame: endpoint.publish(
+            {
+                "type": "command_result",
+                "protocol_version": 1,
+                "request_id": frame["request_id"],
+                "ok": False,
+                "error": "war-termination snapshot revision is stale",
+            }
+        )
+        current_revision = int(driver.take_snapshot()["revision"])
+        with self.assertRaises(BridgeUnavailableError) as raised:
+            driver.execute_step(
+                f"query-war-termination-options-{war_id}",
+                expected_revision=current_revision,
+            )
+        self.assertNotIsInstance(
+            raised.exception, PreSubmissionRevisionMismatchError
+        )
+
+    def test_war_termination_query_identity_mismatch_is_bounded_hard_red(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(40, active_wars=[_war(war_id=war_id, score=41)])
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 9,
+                        "war_termination_options": _termination_options(
+                            war_id, score=42
+                        ),
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        selected_revision = int(driver.take_snapshot()["revision"])
+        with self.assertRaises(StepPostconditionError) as raised:
+            driver.execute_step(
+                f"query-war-termination-options-{war_id}",
+                expected_revision=selected_revision,
+            )
+        mismatch = raised.exception.step_result[
+            "war_termination_query_mismatch"
+        ]
+        self.assertEqual(mismatch["stage"], "starting_snapshot")
+        self.assertEqual(mismatch["requested_war_id"], war_id)
+        self.assertEqual(
+            mismatch["identity_diff"],
+            {
+                "player_relative_war_score": {
+                    "query": 42,
+                    "active_war": 41,
+                }
+            },
+        )
+        self.assertEqual(
+            set(mismatch["snapshot_binding"]),
+            {
+                "snapshot_id",
+                "revision",
+                "native_revision",
+                "connection_generation",
+                "episode_run_id",
+            },
+        )
+        history_result = driver.take_snapshot()["native_command_history"][-1][
+            "result"
+        ]
+        self.assertEqual(history_result, raised.exception.step_result)
+        self.assertEqual(driver.take_snapshot()["war_termination_options"], [])
+
     def test_partial_termination_capabilities_never_advertise_an_action(
         self,
     ) -> None:

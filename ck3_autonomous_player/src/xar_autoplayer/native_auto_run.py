@@ -2173,6 +2173,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "queried_snapshot_id",
         "queried_revision",
         "queried_native_revision",
+        "war_termination_query_mismatch",
         "battle_terminal_transition",
         "terminal",
         "terminal_kind",

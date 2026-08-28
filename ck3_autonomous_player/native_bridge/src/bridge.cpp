@@ -4250,39 +4250,116 @@ void RunConnectedSession(
                           "invalid query-war-termination-options-<war_id> "
                           "step"));
           } else {
-            xar::game::WarTerminationOptionsSnapshot options{};
-            const auto query_result = xar::game::ReadWarTerminationOptions(
-                game, war_id.value(), options);
-            if (query_result ==
-                xar::game::ReadWarTerminationOptionsResult::available) {
-              ++war_termination_query_sequence;
+            std::uint64_t expected_revision = 0;
+            if (!xar::ck3_11906::
+                    ParseCampaignRootContextExpectedRevisionV1(
+                        incoming.payload, expected_revision)) {
               connected = xar::bridge::WriteFrame(
-                  pipe, WarTerminationOptionsResultFrame(
-                            request_id, step,
-                            war_termination_query_sequence, options));
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war-termination expected revision is malformed"));
+            } else if (expected_revision != state_revision) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war-termination snapshot revision is stale"));
+            } else if (!previous_snapshot.has_value() ||
+                       state_revision == 0) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "war-termination admission snapshot is "
+                            "unavailable"));
             } else {
-              std::string_view error =
-                  "CK3 war-termination query is unavailable";
-              if (query_result ==
-                  xar::game::ReadWarTerminationOptionsResult::
-                      requires_paused) {
-                error = "CK3 war-termination query requires a paused map";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationOptionsResult::
-                             no_played_character) {
-                error = "no living played CK3 character";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationOptionsResult::
-                             war_not_found) {
-                error = "CK3 war was not found";
-              } else if (query_result ==
-                         xar::game::ReadWarTerminationOptionsResult::
-                             player_not_participant) {
-                error = "played CK3 character is not a war participant";
+              xar::game::Snapshot admission_snapshot{};
+              if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war-termination admission snapshot read "
+                              "failed"));
+              } else if (admission_snapshot != previous_snapshot.value()) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "war-termination admission snapshot changed; "
+                                "retry after heartbeat"));
+                }
+              } else if (!admission_snapshot.paused ||
+                         !admission_snapshot.map_ready ||
+                         !admission_snapshot.has_played_character ||
+                         !admission_snapshot.played_character_alive) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "war-termination query requires a ready paused "
+                              "living player snapshot"));
+              } else {
+                xar::game::WarTerminationOptionsSnapshot options{};
+                const auto query_result =
+                    xar::game::ReadWarTerminationOptions(
+                        game, war_id.value(), options);
+                xar::game::Snapshot completion_snapshot{};
+                if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "war-termination completion snapshot read "
+                                "failed"));
+                } else if (completion_snapshot != admission_snapshot) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                  if (connected) {
+                    connected = xar::bridge::WriteFrame(
+                        pipe, CommandResultFrame(
+                                  request_id, step, false,
+                                  "war-termination completion snapshot "
+                                  "changed; retry after heartbeat"));
+                  }
+                } else if (
+                    query_result ==
+                    xar::game::ReadWarTerminationOptionsResult::available) {
+                  const auto next_query_sequence =
+                      war_termination_query_sequence + 1;
+                  connected = xar::bridge::WriteFrame(
+                      pipe, WarTerminationOptionsResultFrame(
+                                request_id, step, next_query_sequence,
+                                options));
+                  if (connected) {
+                    war_termination_query_sequence = next_query_sequence;
+                  }
+                } else {
+                  std::string_view error =
+                      "CK3 war-termination query is unavailable";
+                  if (query_result ==
+                      xar::game::ReadWarTerminationOptionsResult::
+                          requires_paused) {
+                    error =
+                        "CK3 war-termination query requires a paused map";
+                  } else if (query_result ==
+                             xar::game::ReadWarTerminationOptionsResult::
+                                 no_played_character) {
+                    error = "no living played CK3 character";
+                  } else if (query_result ==
+                             xar::game::ReadWarTerminationOptionsResult::
+                                 war_not_found) {
+                    error = "CK3 war was not found";
+                  } else if (query_result ==
+                             xar::game::ReadWarTerminationOptionsResult::
+                                 player_not_participant) {
+                    error =
+                        "played CK3 character is not a war participant";
+                  }
+                  connected = xar::bridge::WriteFrame(
+                      pipe,
+                      CommandResultFrame(request_id, step, false, error));
+                }
               }
-              connected = xar::bridge::WriteFrame(
-                  pipe,
-                  CommandResultFrame(request_id, step, false, error));
             }
           }
         } else if (step.starts_with(
