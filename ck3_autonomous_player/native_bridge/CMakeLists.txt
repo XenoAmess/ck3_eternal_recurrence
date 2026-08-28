@@ -892,6 +892,7 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/war_entry_assessments_v1_golden.json
       ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/war-declaration.md
       "${CMAKE_CURRENT_SOURCE_DIR}/../../Crusader Kings III/binaries/ck3.exe"
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
   )
 
   add_executable(xar_ck3_war_entry_assessments_v1_mailbox_test

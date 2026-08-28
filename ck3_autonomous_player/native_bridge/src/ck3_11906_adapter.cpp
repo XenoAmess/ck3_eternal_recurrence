@@ -159,6 +159,12 @@ public:
       std::vector<DeclarableWarSnapshot> &output) const noexcept override {
     return ck3_11906::ReadDeclarableWars(bindings_, output);
   }
+  ReadDeclarableWarsResult read_declarable_wars_for_target(
+      std::int32_t target_character_id,
+      std::vector<DeclarableWarSnapshot> &output) const noexcept override {
+    return ck3_11906::ReadDeclarableWarsForTarget(
+        bindings_, target_character_id, output);
+  }
   DeclareWarResult submit_declare_war(
       const DeclarableWarSnapshot &declaration) const noexcept override {
     return ck3_11906::SubmitDeclareWar(bindings_, declaration);

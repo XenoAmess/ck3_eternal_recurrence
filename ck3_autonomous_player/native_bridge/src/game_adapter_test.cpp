@@ -116,6 +116,19 @@ public:
       std::vector<xar::game::DeclarableWarSnapshot> &) const noexcept override {
     return false;
   }
+  xar::game::ReadDeclarableWarsResult read_declarable_wars_for_target(
+      std::int32_t target_character_id,
+      std::vector<xar::game::DeclarableWarSnapshot> &) const noexcept override {
+    last_declarable_wars_target_ = target_character_id;
+    ++declarable_wars_for_target_calls_;
+    return xar::game::ReadDeclarableWarsResult::unavailable;
+  }
+  std::int32_t last_declarable_wars_target() const noexcept {
+    return last_declarable_wars_target_;
+  }
+  std::size_t declarable_wars_for_target_calls() const noexcept {
+    return declarable_wars_for_target_calls_;
+  }
   xar::game::DeclareWarResult submit_declare_war(
       const xar::game::DeclarableWarSnapshot &) const noexcept override {
     return xar::game::DeclareWarResult::unavailable;
@@ -178,6 +191,8 @@ public:
 private:
   const AdapterDescriptor &descriptor_;
   bool enabled_;
+  mutable std::int32_t last_declarable_wars_target_ = -1;
+  mutable std::size_t declarable_wars_for_target_calls_ = 0;
 };
 
 std::unique_ptr<GameAdapter>
@@ -525,6 +540,14 @@ int main() {
   }
 
   StubAdapter partial(kFutureDescriptor, true);
+  std::vector<xar::game::DeclarableWarSnapshot> target_declarations;
+  if (xar::game::ReadDeclarableWarsForTarget(
+          partial, 29097, target_declarations) !=
+          xar::game::ReadDeclarableWarsResult::unavailable ||
+      partial.last_declarable_wars_target() != 29097 ||
+      partial.declarable_wars_for_target_calls() != 1) {
+    return Fail("target-scoped declaration read did not dispatch through adapter");
+  }
   if (!partial.supports("game.state.snapshot") ||
       !partial.supports("game.command.pause-map") ||
       partial.supports("game.state.war-primary-opponent") ||
@@ -595,6 +618,7 @@ int main() {
 
   std::cout << "PASS: known_descriptor=1 adapter_capability_set=1 "
                "unknown_build_unsupported=1 future_adapter_registry=1 "
-               "empty_registry=1 combat_v3_mailbox_gate=1\n";
+               "empty_registry=1 combat_v3_mailbox_gate=1 "
+               "target_declaration_dispatch=1\n";
   return 0;
 }

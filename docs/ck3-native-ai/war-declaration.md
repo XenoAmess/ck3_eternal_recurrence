@@ -250,8 +250,17 @@ flowchart LR
   的权威来源是同 sample 的 builder `State16+0x00`，由 exact-build ABI/source-contract 另行锁定。
 - [bridge-design] 顶层绑定 `snapshot_revision`、`date_raw`、`actor_character_id`、请求 ID、readiness 与 exact-build
   provenance（游戏版本、EXE SHA、两个 RVA、power leaf、scale）。worker 在提交前从同一个 paused expected snapshot
-  读取一次完整 `declarable_wars` 并冻结有序 target 集；application-main callback 的 before/middle/after 三次
-  frame capture 各自 fresh `ReadSnapshot`，且必须逐字段等于该 expected snapshot。三次 capture 不重复全局宣战扫描。
+  只调用现有 exact-build `ReadDeclarableWarsForTarget` 复核请求的唯一 target，并冻结该 target 当前仍合法的声明行；
+  application-main callback 的 before/middle/after 三次 frame capture 各自 fresh `ReadSnapshot`，且必须逐字段等于该
+  expected snapshot。该收窄不缓存旧合法性、不改变 same-frame 门，也不改变策略 cadence；成本从
+  `O(all character slots × enabled CB types)` 降为 `O(enabled CB types)`。
+- [live-verified] 2026-08-28 正式 G1 run 在和平帧暴露旧全局复核热点：显式 `query-declarable-wars` 在截至 history
+  `4749` 的整段历史中只有 6 次，但 `query-war-entry-assessments-v1-1-29097` 已累计 573 次。`debug.log` 在
+  `13:00:15–13:08:53` 形成 77 组与 assessment 一一对应的 `allowed_against_character` 错误 burst，每组 12 条、
+  平均间隔 `6.816s`（中位 `6s`）；同期每轮只推进一个游戏日。旧 `bridge.cpp` 在单目标请求前调用全局
+  `ReadDeclarableWars`，而 `ck3_11906.cpp` 又对每个 character slot 遍历全部 enabled CB，正好解释该成本与无
+  faith/culture 角色产生的日志。修复后的 target-only 路径目前为 `static-ready`，仍待同 checkpoint 冷启 live A/B，
+  不把代码/CTest 冒充实机加速倍数。
 - [live-verified] `main_thread_required` 是 reader 的强制回调门，不只是 provenance 标签。exact-build SDL
   `PeekMessageW` 返回边界 `0x3CE4222` 已实证处于 application/startup-main 的 HandlePdxEvents TLS 链；production
   mailbox 只允许 `ExecuteWarEntryAssessmentMailboxQueryV1`，每个 pump 最多一个请求。硬门是初始化 global、稳定 TLS

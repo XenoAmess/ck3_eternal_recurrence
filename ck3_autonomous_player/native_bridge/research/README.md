@@ -1379,11 +1379,12 @@ signatures and 23 vtable prefixes. It did not start, attach to or inject CK3.
 This build advertises only the canonical single-target
 `game.command.query-war-entry-assessments-v1-N` contract. The mailbox admits
 only `ExecuteWarEntryAssessmentMailboxQueryV1`, at most one request per pump.
-The worker performs one fresh same-paused-snapshot declaration scan and freezes
-that scope. Reader before/middle/after callbacks each perform a fresh complete
-snapshot equality check; resolver, network and assessment rows are sampled
-twice. RNG owner TID remains diagnostic only. An available typed live result
-is still pending, and this boundary does not authorize generic effects or
+The worker performs one fresh same-paused-snapshot declaration scan for the
+single requested target and freezes that scope. It does not enumerate every
+character in storage. Reader before/middle/after callbacks each perform a
+fresh complete snapshot equality check; resolver, network and assessment rows
+are sampled twice. RNG owner TID remains diagnostic only. An available typed
+live result is still pending, and this boundary does not authorize generic effects or
 combat phase evaluators.
 
 Production4 then ran one official-MCP single-target live query while paused.

@@ -179,8 +179,8 @@
     "acceptance": "one_target_war_entry_query_returns_complete_available_payload_and_executed_requests_increments_once"
   },
   "war_entry_frame_binding": {
-    "worker_pre_submit": "fresh ReadSnapshot equals the last published paused expected snapshot, then one full ReadDeclarableWars freezes the ordered unique target set",
-    "application_main_capture": "before middle and after callbacks each call fresh ReadSnapshot and require exact expected snapshot equality; they return the frozen declaration set without another global scan",
+    "worker_pre_submit": "fresh ReadSnapshot equals the last published paused expected snapshot, then ReadDeclarableWarsForTarget freezes only the requested target's current declaration rows",
+    "application_main_capture": "before middle and after callbacks each call fresh ReadSnapshot and require exact expected snapshot equality; they return the frozen requested-target declaration set without another declaration scan",
     "production_target_count": 1,
     "maximum_requests_per_pump": 1
   },

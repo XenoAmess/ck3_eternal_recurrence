@@ -165,7 +165,7 @@ bool Sha256Upper(std::string_view input, std::string &output) {
 } // namespace
 
 int main(int argc, char **argv) {
-  if (argc != 8) {
+  if (argc != 9) {
     return 1;
   }
   const auto header = ReadFile(argv[1]);
@@ -175,8 +175,10 @@ int main(int argc, char **argv) {
   const auto fixture = ReadFile(argv[5]);
   const auto documentation = ReadFile(argv[6]);
   const auto executable = ReadFile(argv[7]);
+  const auto bridge = ReadFile(argv[8]);
   if (header.empty() || reader.empty() || serializer.empty() || abi.empty() ||
-      fixture.empty() || documentation.empty() || executable.empty()) {
+      fixture.empty() || documentation.empty() || executable.empty() ||
+      bridge.empty()) {
     return 2;
   }
 
@@ -393,6 +395,7 @@ int main(int argc, char **argv) {
       "AI-only",
       "main_thread_gate",
       "worker_dispatch",
+      "requested target only",
       "same_query_double_sample",
       "no_pointer_cache_across_frame",
       "no partial rows, null fields, soldier fallback or ratio fallback",
@@ -449,6 +452,20 @@ int main(int argc, char **argv) {
   });
   if (!ContainsAll(documentation, required_documentation)) {
     return 9;
+  }
+
+  constexpr auto required_bridge = std::to_array<std::string_view>({
+      "target_character_ids.size() !=",
+      "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
+      "xar::game::ReadDeclarableWarsForTarget(",
+      "game, target_character_ids.front(),",
+      "xar::game::ReadDeclarableWarsResult::available",
+  });
+  if (!ContainsAll(bridge, required_bridge) ||
+      Contains(bridge,
+               "ReadDeclarableWars(\n"
+               "                           game, current_declarations)")) {
+    return 12;
   }
 
   std::string digest;

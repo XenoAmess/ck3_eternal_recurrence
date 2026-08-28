@@ -94,9 +94,9 @@
   "read_only_lifecycle": {
     "main_thread_required": true,
     "main_thread_gate": "application_main_thread_war_entry_v1 requires initialized TLS global, stable TLS context with marker +0x20 == 1, stable current thread id, paused Jomini state, stable game state and date; RNG owner is diagnostic provenance only",
-    "worker_dispatch": "named-pipe worker preloads exactly one target and submits only ExecuteWarEntryAssessmentMailboxQueryV1 through the typed application-main mailbox",
-    "declaration_scope": "one full declarable-war enumeration is frozen on the worker from the same paused expected snapshot before submit; application-main frame captures do not repeat the global enumeration",
-    "frame_capture": "reader before, middle and after callbacks each perform a fresh native ReadSnapshot on the application-main thread and require exact equality with the expected snapshot before returning the frozen ordered declaration set",
+    "worker_dispatch": "named-pipe worker preloads exactly one target, revalidates declarations for that requested target only, and submits only ExecuteWarEntryAssessmentMailboxQueryV1 through the typed application-main mailbox",
+    "declaration_scope": "the worker re-evaluates declarable wars for the requested target only from the same paused expected snapshot before submit; this preserves same-frame legality while changing cost from O(all characters x enabled CB types) to O(enabled CB types)",
+    "frame_capture": "reader before, middle and after callbacks each perform a fresh native ReadSnapshot on the application-main thread and require exact equality with the expected snapshot before returning the frozen requested-target declaration set",
     "permitted_executor": "ExecuteWarEntryAssessmentMailboxQueryV1 only; maximum one request per pump and one target per production request",
     "paused_required": true,
     "same_revision_required": true,

@@ -7650,10 +7650,12 @@ int main() {
     return Fail("stop-assault ignored the full SiegeID generation");
   }
 
+  g_casus_belli_evaluation_calls = 0;
   std::vector<xar::ck3_11906::DeclarableWarSnapshot> declarations;
   if (xar::ck3_11906::ReadDeclarableWarsForTarget(
           bindings, enemy_character_id, declarations) !=
           xar::ck3_11906::ReadDeclarableWarsResult::available ||
+      g_casus_belli_evaluation_calls != 2 ||
       declarations.size() != 3 ||
       declarations[0].target_character_id != enemy_character_id ||
       declarations[0].casus_belli_index != 0 ||
@@ -7673,7 +7675,7 @@ int main() {
       declarations[2].claimant_character_id != -1 ||
       declarations[2].target_title_ids !=
           (std::vector<std::int32_t>{201, 202})) {
-    return Fail("target-scoped native CB enumeration did not match UI rules");
+    return Fail("target-scoped native CB enumeration did not stay at one CB database pass");
   }
   std::vector<xar::ck3_11906::DeclarableWarSnapshot> global_declarations;
   if (!xar::ck3_11906::ReadDeclarableWars(bindings,

@@ -77,6 +77,9 @@ public:
   submit_stop_assault(std::int32_t siege_id) const noexcept = 0;
   virtual bool read_declarable_wars(
       std::vector<DeclarableWarSnapshot> &output) const noexcept = 0;
+  virtual ReadDeclarableWarsResult read_declarable_wars_for_target(
+      std::int32_t target_character_id,
+      std::vector<DeclarableWarSnapshot> &output) const noexcept = 0;
   virtual DeclareWarResult
   submit_declare_war(const DeclarableWarSnapshot &declaration) const
       noexcept = 0;
@@ -211,6 +214,11 @@ inline bool ReadDeclarableWars(
     const GameAdapter &game,
     std::vector<DeclarableWarSnapshot> &output) noexcept {
   return game.read_declarable_wars(output);
+}
+inline ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
+    const GameAdapter &game, std::int32_t target_character_id,
+    std::vector<DeclarableWarSnapshot> &output) noexcept {
+  return game.read_declarable_wars_for_target(target_character_id, output);
 }
 inline DeclareWarResult
 SubmitDeclareWar(const GameAdapter &game,

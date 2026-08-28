@@ -3847,8 +3847,10 @@ void RunConnectedSession(
                   pipe, CommandResultFrame(
                             request_id, step, false,
                             "war-entry snapshot changed; retry after heartbeat"));
-            } else if (!xar::game::ReadDeclarableWars(
-                           game, current_declarations)) {
+            } else if (xar::game::ReadDeclarableWarsForTarget(
+                           game, target_character_ids.front(),
+                           current_declarations) !=
+                       xar::game::ReadDeclarableWarsResult::available) {
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
