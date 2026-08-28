@@ -49,7 +49,8 @@ class PromoManifestTests(unittest.TestCase):
         manifest, chapters = promo.load_manifest(FULL_MANIFEST)
         self.assertEqual(17, len(chapters))
         self.assertEqual(8, manifest["_placeholder_count"])
-        self.assertLess(manifest["_estimated_duration_seconds"], 12 * 60)
+        self.assertGreater(manifest["_estimated_duration_seconds"], 7 * 60)
+        self.assertLess(manifest["_estimated_duration_seconds"], 9 * 60)
         self.assertEqual("title_card", chapters[0].promo_type)
         self.assertEqual("generated", chapters[0].material_status)
         topics = {topic for chapter in chapters for topic in chapter.promo_topics}
@@ -59,8 +60,11 @@ class PromoManifestTests(unittest.TestCase):
             "所有天朝制公爵及以上",
             "伯爵和男爵",
             "地方国库、个人金币和一年俸禄",
-            "默认你应该办",
+            "京察定期弹出、半强制，而且免费",
             "直接写明上司是谁、你拿多少分、同组第几、绩效几档",
+            "361 张逐项政策卡",
+            "17 类后果 profile",
+            "14 本组织账",
         ):
             self.assertIn(phrase, corpus)
 
@@ -110,6 +114,25 @@ class PromoManifestTests(unittest.TestCase):
             path.write_text(json.dumps(original, ensure_ascii=False), encoding="utf-8")
             with self.assertRaisesRegex(promo.PromoError, "lacks Chinese script keyword"):
                 promo.load_manifest(path)
+
+    def test_361_copy_distinguishes_policy_cards_from_absent_subsystems(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        corpus = " ".join(chapter.narration_en for chapter in chapters)
+        for phrase in (
+            "361 张逐项政策卡",
+            "17 类后果 profile",
+            "14 本组织账",
+            "不是独立招聘模拟器",
+            "不是一套带项目编号的项目管理器",
+        ):
+            self.assertIn(phrase, corpus)
+        for unsupported_claim in (
+            "形成晋升包",
+            "跨部门答辩",
+            "目标、期限、支持预算和中期检查",
+            "冻结项目、责任和时间线",
+        ):
+            self.assertNotIn(unsupported_claim, corpus)
 
 
 class SubtitleAndRenderTests(unittest.TestCase):

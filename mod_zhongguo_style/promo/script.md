@@ -3,16 +3,16 @@
 # 361 宣传片中文配音与英文字幕审阅稿
 
 权威输入：`promo-manifest.json`。中文是 Xiaoxiao 配音和主字幕；每条英文与同一中文 cue 同时显示。
-离线估算总时长：`10:11`；硬上限 `<20:00`。
+离线估算总时长：`07:03`；硬上限 `<20:00`。
 
-## 00:00–00:31 · 欢迎来到天朝大厂：你的封地，也有绩效季
+## 00:00–00:13 · 欢迎来到天朝大厂：你的封地，也有绩效季
 
-*WELCOME TO THE IMPERIAL MEGACORP: YOUR FIEF HAS REVIEW SEASON*  
+*WELCOME TO THE IMPERIAL MEGACORP: YOUR FIEF HAS REVIEW SEASON*<br>
 状态：`generated` / `PROMO DRAFT`
 
 **1. 中文配音 / 主字幕**
 
-如果你以为当上公爵，工作就是喝茶、联姻、等继承，那只能说明你还没收到本季度绩效通知。
+当上公爵还没来得及喝茶，绩效通知先到了。
 
 **English subtitle**
 
@@ -20,23 +20,15 @@ If you thought becoming a duke meant tea, marriage, and waiting for inheritance,
 
 **2. 中文配音 / 主字幕**
 
-这里是《天朝特色361制官员绩效考核》：把互联网大厂最熟悉的焦虑，塞进最适合背锅的封建官场。
+《天朝特色361制》：不用读条，直接开会。今年这个 C，准备让谁背？
 
 **English subtitle**
 
-This is ZhongGuo 361 Style: familiar megacorp anxiety, translated into the feudal bureaucracy best equipped to pass the blame.
+ZhongGuo 361 Style: no loading screen, straight to the meeting. Who is carrying this year's bottom rating?
 
-**3. 中文配音 / 主字幕**
+## 00:13–00:42 · 谁给谁打分：公爵以上都是经理，伯爵男爵只能被卷
 
-没有启动器，没有读条，没有先看三十秒地图发呆。镜头一开，直接问你：今年这个C，准备让谁背？
-
-**English subtitle**
-
-No launcher and no loading screen. We open on the only question that matters: who is carrying this year's bottom rating?
-
-## 00:31–01:02 · 谁给谁打分：公爵以上都是经理，伯爵男爵只能被卷
-
-*WHO RATES WHOM: DUKES AND ABOVE MANAGE; COUNTS AND BARONS GET MANAGED*  
+*WHO RATES WHOM: DUKES AND ABOVE MANAGE; COUNTS AND BARONS GET MANAGED*<br>
 状态：`placeholder` / `PLACEHOLDER · HIERARCHY CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
@@ -57,49 +49,41 @@ Counts and barons cannot rate anyone, but their superior still rates them. No ma
 
 **3. 中文配音 / 主字幕**
 
-于是玩家既可能是台上念名单的领导，也可能下一秒收到上司告身：您好，您今年符合预期，意思是别想涨薪。
+所以你既能主持名单，也可能下一秒收到上司告身：符合预期，翻译一下就是别问涨薪。
 
 **English subtitle**
 
-So the player may read the list as a manager, then receive a superior's notice: meets expectations, which is corporate for do not ask about a raise.
+You can host the list, then receive your superior's receipt: meets expectations, corporate for do not ask about a raise.
 
-## 01:02–01:39 · OKR负责抬头看路，KPI负责低头看刀
+## 00:42–01:01 · OKR负责抬头看路，KPI负责低头看刀
 
-*OKR LOOKS AT THE HORIZON; KPI CHECKS THE BLADE*  
+*OKR LOOKS AT THE HORIZON; KPI CHECKS THE BLADE*<br>
 状态：`placeholder` / `PLACEHOLDER · OKR/KPI CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-这不是把KPI三个字贴在总督效率上就收工。系统把业绩、贤能、成长、忠诚、罪行、派系和管理信号拆成证据。
+KPI 不只看效率：贤能成长、上司评价、派系罪行、上轮京察和人情，都会入账。
 
 **English subtitle**
 
-This is not a KPI label pasted onto governor efficiency. Delivery, merit, growth, loyalty, crime, factions, and management signals become evidence.
+KPI is not just governor efficiency: merit, growth, superior opinion, factions, crimes, and last cycle's Jingcha record all enter the score.
 
 **2. 中文配音 / 主字幕**
 
-OKR决定你宣称要改变什么，KPI记录你真的交付了什么。挑战目标失败，可以留下探索价值；保守目标全绿，也可能只是把门槛埋进地板。
+OKR 和 KPI 在这里先是一张政策卡：你决定组织怎样记账；分数到了校准会，才变成能上桌的弹药。
 
 **English subtitle**
 
-OKR states what you meant to change; KPI records what actually shipped. A failed stretch goal may teach, while an easy green target may hide the bar underground.
+Here OKR and KPI begin as a policy card: you decide how the organization keeps score; at calibration, that score becomes ammunition.
 
-**3. 中文配音 / 主字幕**
+## 01:01–01:33 · 强制分布：不是问有没有C，是问C姓什么
 
-最要命的是，分数不是结论，只是你进入校准会时能带上桌的弹药。数据很客观，解释数据的人更客观。
-
-**English subtitle**
-
-The score is not the verdict. It is merely the ammunition you bring into calibration. Data is objective; the person interpreting it is somehow even more objective.
-
-## 01:39–02:14 · 强制分布：不是问有没有C，是问C姓什么
-
-*FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT*  
+*FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · 23 PERSONS / 7-16-0; CLEAN BOUNDARY RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-361的灵魂是强制分布：少数3.75，多数3.5，末位3.25。大家都完成目标，也不妨碍有人必须解释自己为什么不够优秀。
+361 的灵魂是强制分布：少数 3.75，多数 3.5，末位 3.25。大家都努力，也不妨碍有人必须背 C。
 
 **English subtitle**
 
@@ -115,20 +99,20 @@ Ranks use a stable unique order. A tie cannot make everyone number one and flood
 
 **3. 中文配音 / 主字幕**
 
-小团队可能没有末位名额；大团队则要面对边界。你不是在挑坏人，你是在决定哪位好人今年看起来最像坏人。
+当前这张 23 人榜是首轮新人保护样本，所以 7/16/0；常规老员工队列才会拍到真正的 3.25 边界。
 
 **English subtitle**
 
-A small team may have no bottom quota; a large team has a boundary. You are not selecting a bad official, only the good official who looks most expendable this year.
+This 23-person board is a first-review newcomer-protection sample, hence 7/16/0; a regular veteran cohort shows the real 3.25 boundary.
 
-## 02:14–02:51 · 校准会：用最礼貌的语气，讨论最不礼貌的名额
+## 01:33–01:51 · 校准会：用最礼貌的语气，讨论最不礼貌的名额
 
-*CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS*  
+*CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · THREE REAL CALIBRATION CHOICES; CLEAN CONTINUOUS RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-自动排名之后、正式发榜之前，玩家可以进入校准。这里不是改一个数字，而是把配额、证据、人情和政敌放进同一口锅。
+自动排名后、发榜前，玩家可以校准：直接公示，或在两个分档边界交换两个人。
 
 **English subtitle**
 
@@ -136,57 +120,41 @@ After automatic ranking and before publication comes calibration, where quota, e
 
 **2. 中文配音 / 主字幕**
 
-你可以保一个边界同僚，也可以为了凑C把另一个人踩下去；每次动手脚都留下理由、受益者和潜在曝光。
+你能抬末名 3.75，或把末名 3.5 压进 3.25；每次动笔有 25% 概率被全员看成考核黑幕。
 
 **English subtitle**
 
-You may protect one boundary colleague or push another down to fill the bottom slot. Every move records its reason, beneficiary, and exposure risk.
+You can lift the last 3.75 or push the last 3.5 into 3.25; each pen stroke has a 25% chance of becoming a review scandal.
 
-**3. 中文配音 / 主字幕**
+## 01:51–02:12 · 背靠背这张卡，先从同侪的人情账开始
 
-校准真正有趣的地方，是它把抽象制度变成具体关系：今天你护的人，明天可能替你说话；今天你背的锅，明年会长出利息。
-
-**English subtitle**
-
-Calibration turns policy into relationships. The person you protect may defend you tomorrow; the blame you accept today compounds by next year.
-
-## 02:51–03:31 · 背靠背互评：当面哥俩好，匿名一星少不了
-
-*BACK-TO-BACK PEER REVIEW: FRIENDS IN PUBLIC, ONE STAR IN PRIVATE*  
+*BACK-TO-BACK, STARTING WITH A PEER FAVOUR LEDGER*<br>
 状态：`placeholder` / `PLACEHOLDER · PEER POLITICS CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-背靠背互评把同僚关系变成匿名战场。你可以真诚举荐、谨慎保留，也可以写出那句经典评价：合作意识仍有提升空间。
+背靠背不是一套匿名小作文系统；它先是一张政策卡，外加一笔更封建的人情账。
 
 **English subtitle**
 
-Back-to-back peer review turns collegial relations into an anonymous arena: endorse, hedge, or write the classic line that collaboration still has room to grow.
+Back-to-back is not an anonymous essay system here; it begins as a policy card plus a much more feudal favour ledger.
 
 **2. 中文配音 / 主字幕**
 
-互评不是随机加减分。利益冲突、共同项目、评价可信度和后来被事实打脸，都会回头结算。造谣可以赢一季，也可能输掉三年。
+举荐同僚，下期 KPI 加 10；攻讦同僚，七成让他减 15，三成自己社死。向上管理？先学会把人情写进分数。
 
 **English subtitle**
 
-Peer review is not random score noise. Conflicts, shared projects, reviewer credibility, and later facts all settle the account. A lie may win one season and lose three years.
+Recommend a peer for +10 next review; slander one for a 70% chance of -15 and a 30% chance of embarrassing yourself. Managing up starts by putting favours into the score.
 
-**3. 中文配音 / 主字幕**
+## 02:12–02:41 · 京察：活动免费，不办的代价比较贵
 
-向上管理也不是纯好感按钮。你花时间让上司看见成果，就少一点时间做成果；完全不汇报，又会发现功劳自动进入最会讲故事的人名下。
-
-**English subtitle**
-
-Managing up is not a simple opinion button. Time spent making work visible is time not doing it, yet silence lets the best storyteller inherit the credit.
-
-## 03:31–04:07 · 京察：活动免费，不办的代价比较贵
-
-*JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP*  
+*JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · JINGCHA MANDATE AND REFUSAL ENTRY; CLEAN CONSEQUENCE RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-京察是定期弹出的半强制活动，举办本身不花钱。系统默认你应该办，因为评价下属不是领导的兴趣爱好，是岗位说明书。
+京察定期弹出、半强制，而且免费。评价下属不是领导的兴趣爱好，是岗位说明书。
 
 **English subtitle**
 
@@ -202,20 +170,20 @@ The player may refuse. Freedom remains, while the direct superior remains free t
 
 **3. 中文配音 / 主字幕**
 
-而且这笔账绑定发令上司，不会换个老板就被陌生人捡去扣分。坏消息有责任人，好消息是流程终于有责任人。
+这笔账绑定发令上司：换个老板，陌生人不能捡走旧理由扣你分。流程终于有责任人。
 
 **English subtitle**
 
-That reason is bound to the superior who issued it; a new boss cannot consume an old refusal. The bad news has an owner, which is also the good news.
+The reason is bound to its issuing superior: a new boss cannot pick up an old excuse to dock your score. The process finally has an owner.
 
-## 04:07–04:43 · 考核榜与告身：终于有人告诉你到底排第几
+## 02:41–03:13 · 考核榜与告身：终于有人告诉你到底排第几
 
-*SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK*  
+*SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · MANAGED SCOREBOARD; CLEAN RECEIPT AND COCKPIT RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-考核榜不是一条转瞬即逝的通知。每轮榜单冻结人物、官职、KPI、价值观分、名次、档位、连续次数和后续状态。
+考核榜不是闪一下就没的通知。每轮冻结人物、官职、KPI、价值观、名次、档位、连续次数和状态。
 
 **English subtitle**
 
@@ -231,20 +199,20 @@ Managers see the full team board. When your superior rates you, a separate recei
 
 **3. 中文配音 / 主字幕**
 
-旧榜不会因为人员调动或下轮打分偷偷漂移。过去的3.25会忠诚地留在过去，像一张永远不会自动撤回的群聊截图。
+旧榜不会被调任或下一轮偷偷改写。过去的 3.25，像群聊截图一样，永远不会自动撤回。
 
 **English subtitle**
 
-Old boards do not drift after transfers or later reviews. A past 3.25 stays in the past, like a group-chat screenshot that never unsends itself.
+Old boards do not drift after transfers or later reviews. A past 3.25 stays like a group-chat screenshot that never unsends itself.
 
-## 04:43–05:19 · 3.25不是表情包：国库、金币、俸禄一起有感觉
+## 03:13–03:45 · 3.25不是表情包：国库、金币、俸禄一起有感觉
 
-*3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT*  
+*3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · 3.25 RECEIPT AND THREE-ACCOUNT PENALTY; CLEAN APPEAL LEDGER RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-档位必须落到资源上才有手感。3.75进入晋升和奖励通道，3.5保住正常节奏，3.25则启动真正的改进成本。
+档位必须落到资源上才有手感：3.75 进奖励和晋升通道，3.5 保住节奏，3.25 才开始真疼。
 
 **English subtitle**
 
@@ -260,115 +228,91 @@ A 3.25 hits the local treasury, personal gold, and one year of salary. Shared ac
 
 **3. 中文配音 / 主字幕**
 
-罚没会保存精确金额和本轮编号。如果申诉改判，退的是这一次实际扣的钱，不是系统心情好随手发一张代金券。
+罚没保存精确金额和本轮编号；翻案退的是这次实际扣的钱，不是系统心情好发代金券。
 
 **English subtitle**
 
-The penalty records exact amounts and review serial. A successful appeal refunds what this cycle actually took, not a goodwill coupon invented afterward.
+The penalty records exact amounts and the review serial; a reversal refunds what this cycle took, not a goodwill coupon.
 
-## 05:19–05:54 · PIP与末位：给你改进机会，也给上司腾椅子的机会
+## 03:45–04:02 · PIP与末位：给你改进机会，也给上司腾椅子的机会
 
-*PIP AND THE BOTTOM: A CHANCE TO IMPROVE, AND A CHANCE TO FREE YOUR CHAIR*  
+*PIP AND THE BOTTOM: A CHANCE TO IMPROVE, AND A CHANCE TO FREE YOUR CHAIR*<br>
 状态：`placeholder` / `PLACEHOLDER · PIP/BOTTOM CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-第一次3.25进入PIP，也就是绩效改进计划。它不是必败倒计时：目标、期限、支持预算和中期检查都能改变结果。
+第一次 3.25 会挂上 PIP：一张一年期红牌，不是自动处决倒计时。
 
 **English subtitle**
 
-The first 3.25 enters PIP, a performance improvement plan. It is not a scripted death clock: goals, support, deadlines, and midpoints can change the result.
+The first 3.25 applies PIP: a one-year red card, not an automatic execution clock.
 
 **2. 中文配音 / 主字幕**
 
-经理可以给资源，也可以只给指标不给资源；后者省下眼前成本，却会把支持缺位记到经理自己的组织绩效。
-
-**English subtitle**
-
-A manager may fund support or provide targets without resources. The latter saves money now, but missing support returns in the manager's own performance.
-
-**3. 中文配音 / 主字幕**
-
-连续两次末位才进入淘汰阶梯：夺爵、致仕、降岗留用或再观察。所谓毕业答辩，有人毕业，有人的岗位毕业。
+连续两次末位才进淘汰阶梯：夺爵、致仕、降岗留用或再观察。有人毕业，有人的岗位毕业。
 
 **English subtitle**
 
 Two consecutive bottom ratings enter the exit ladder: title removal, retirement, demotion, or another year. In the final review, someone graduates; sometimes the position graduates without them.
 
-## 05:54–06:30 · 晋升包与HC：你证明自己配得上，组织证明它没有坑
+## 04:02–04:22 · 晋升包与HC：它们是政策卡，不是许愿池
 
-*PROMOTION PACKET AND HEADCOUNT: YOU PROVE MERIT; THE ORG PROVES A SLOT EXISTS*  
+*PROMOTION PACKET AND HEADCOUNT: POLICY CARDS, NOT A WISH ENGINE*<br>
 状态：`placeholder` / `PLACEHOLDER · PROMOTION/HC CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-高绩效不会自动升官，而是生成晋升包：历史结果、能力证据、跨部门贡献和风险说明，一样不少地拿去答辩。
+连续两次 3.75，真实会开晋升通道并提高原版任命候选分。晋升包，是 361 卡组里的一种治理选择。
 
 **English subtitle**
 
-High performance does not auto-promote. It creates a promotion packet: results, capability evidence, cross-team contribution, and risks for a real defense.
+Two consecutive 3.75 ratings open the real promotion track and raise native appointment candidate score. A promotion packet is a governance choice in the 361 deck.
 
 **2. 中文配音 / 主字幕**
 
-然后轮到HC，也就是headcount编制。你可以完全够格，岗位也可以完全不存在；个人优秀与组织没坑，是两套独立条件。
+HC 在当前版本是组织账与政策取舍，不是独立招聘模拟器：它会改变压力、预算和后续 KPI。
 
 **English subtitle**
 
-Then comes HC, the headcount slot. You may be fully qualified while the job fully does not exist; personal excellence and organizational vacancy are separate conditions.
+HC, or headcount, is currently an organizational ledger and policy tradeoff, not a separate hiring simulator: it changes pressure, budget, and later KPI.
 
-**3. 中文配音 / 主字幕**
+## 04:22–04:43 · 跨部门抢功：先把它写进制度，而不是编一个项目管理器
 
-经理能申请增编、冻结名额、内部转岗或继续让现团队加班填坑。每个选择都影响预算、士气、交付和下一次经理考核。
-
-**English subtitle**
-
-Managers may request headcount, freeze a slot, transfer internally, or keep filling the gap with overtime. Each choice changes budget, morale, delivery, and their next review.
-
-## 06:30–07:08 · 跨部门抢功：项目成功了，突然每个人都是核心贡献者
-
-*CROSS-TEAM CREDIT: THE PROJECT SHIPPED, SO EVERYONE WAS APPARENTLY ESSENTIAL*  
+*CROSS-TEAM CREDIT: WRITE THE RULE, NOT A FICTIONAL PROJECT MANAGER*<br>
 状态：`placeholder` / `PLACEHOLDER · CREDIT LEDGER CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-跨部门项目有两本账：谁真正贡献，谁被组织看见。它们可以重合，也可以像年会节目和实际工作一样毫无关系。
+抢功、甩锅、可见度，已经写进 361 的制度题库；但当前不是一套带项目编号的项目管理器。
 
 **English subtitle**
 
-Cross-team work keeps two ledgers: actual contribution and organizational visibility. They may overlap, or relate like the annual gala and actual delivery.
+Credit theft, blame, and visibility are in the 361 policy catalogue, but this is not a project manager with project IDs.
 
 **2. 中文配音 / 主字幕**
 
-当成果落地，官员可以认领credit、共享功劳、抢功或把延期甩给依赖方。系统冻结项目、责任和时间线，不靠随机事件凭空判案。
+你选择治理方向，账本结算证据、互信和交付；真正能直接害同僚掉分的，是举荐与攻讦互动。
 
 **English subtitle**
 
-When work ships, officials may claim credit, share it, steal it, or blame a dependency. Project, responsibility, and timeline are frozen instead of invented by a random event.
+You choose a governance direction, then ledgers settle evidence, trust, and delivery; the direct peer-score tools are recommendation and slander.
 
-**3. 中文配音 / 主字幕**
+## 04:43–05:10 · 绩效申诉：不是掀桌，是要求把桌上的账重新加一遍
 
-抢功成功会提高可见度，却积累信任债；甩锅短期保分，证据翻案后则同时损失协作与评价可信度。故事讲得好，也要经得起回放。
-
-**English subtitle**
-
-Credit theft raises visibility but builds trust debt. Blame may protect a score until evidence reverses it and damages collaboration plus reviewer credibility. The story must survive replay.
-
-## 07:08–07:44 · 绩效申诉：不是掀桌，是要求把桌上的账重新加一遍
-
-*PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT*  
+*PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · APPEAL ENTRY ON A 3.25 RECEIPT; CLEAN REVERSAL RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-被打3.25后，玩家可以认命、摆烂、奋发，也可以正式申诉。申诉消耗政治资源，但要求复核证据、程序和配额边界。
+被打 3.25 后，玩家能认命、摆烂、奋发，或者花影响力申诉。它不是掀桌，是请求上司改判。
 
 **English subtitle**
 
-After a 3.25, the player may accept, disengage, improve, or file a formal appeal. Appeal costs political capital but rechecks evidence, procedure, and quota boundaries.
+After a 3.25, the player may accept, disengage, improve, or spend influence to appeal. It is not flipping the table; it asks the superior to regrade.
 
 **2. 中文配音 / 主字幕**
 
-改判会同步修正榜单、连续次数和精确罚没；复核只能维持或减轻原处理，不能因为你敢申诉就顺手再加一刀。
+改判会修正档位、连续次数、PIP 和精确罚没；申诉不会让原处理凭空加重。
 
 **English subtitle**
 
@@ -376,107 +320,99 @@ A reversal updates the scoreboard, streak, and exact penalty. Review may maintai
 
 **3. 中文配音 / 主字幕**
 
-如果发现新的独立造假，要另开新案、重新举证。程序正义不是让坏人免疫，而是禁止领导在原工单里偷偷追加需求。
+报告已实机对账：退款只退这次实际扣的钱，重复申诉也不会二次发奖金。算盘终于没有闹鬼。
 
 **English subtitle**
 
-Independent new fraud requires a new case and evidence. Due process does not grant immunity; it stops a manager from quietly adding scope to the original ticket.
+The live report reconciles exact refunds: only this cycle's deduction returns, and a repeat appeal cannot print another reward. The abacus is finally not haunted.
 
-## 07:44–08:25 · 不只一个考核季：361张政策卡把组织慢慢养成怪物
+## 05:10–05:44 · 不只一个考核季：361张政策卡把组织慢慢养成怪物
 
-*BEYOND ONE REVIEW: 361 POLICY CARDS GROW AN ORGANIZATION OVER TIME*  
+*BEYOND ONE REVIEW: 361 POLICY CARDS GROW AN ORGANIZATION OVER TIME*<br>
 状态：`placeholder` / `PLACEHOLDER · POLICY DECK CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-核心考核之外，还有整整361张机制卡。它们不是361个孤立弹窗，而是围绕证据、信任、交付、稳定、人才、HC和倦怠共享账本。
+核心考核之外有 361 张逐项政策卡：每张有 A/B/C、持久选择状态，后果收进 14 本组织账。
 
 **English subtitle**
 
-Beyond the core review are 361 mechanism cards. They are not 361 disconnected pop-ups; they share ledgers for evidence, trust, delivery, stability, talent, HC, and burnout.
+Beyond core review are 361 individually numbered policy cards: each has A/B/C, persistent choice state, and consequences flowing into 14 organizational ledgers.
 
 **2. 中文配音 / 主字幕**
 
-玩家每次在真实取舍里选方向：严控流程还是相信团队，短期交付还是偿还技术债，冻结编制还是承认目标必须缩水。
+它们共享 17 类后果 profile，不是假装 361 套独立小游戏：证据、互信、交付、稳定、人才、HC 压力和倦怠会一起变。
 
 **English subtitle**
 
-Each card asks for a real tradeoff: control or trust, near-term delivery or technical debt, frozen headcount or an honest reduction in scope.
+They share 17 consequence profiles, not 361 pretend mini-games: evidence, trust, delivery, stability, talent, HC pressure, and burnout move together.
 
 **3. 中文配音 / 主字幕**
 
-AI经理按性格和组织气候批量处理，玩家只在值得决策时被打断。目标不是每天收三百六十一封邮件，而是十年后发现制度已经长成你的形状。
+玩家每轮通常只遇一张；AI 按性格与预算压力，每轮后台批量处理十二张。不是 361 封邮件，是 361 次制度偏好。
 
 **English subtitle**
 
-AI managers batch decisions through personality and climate; players are interrupted only for meaningful choices. The goal is not 361 daily emails, but an institution shaped by ten years of decisions.
+Players normally see one per review; AI batches twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences.
 
-## 08:25–09:03 · 一轮完整玩法：定目标、交证据、互评、校准、发榜、申诉、兑现
+## 05:44–06:12 · 一轮真实玩法：京察、KPI、校准、发榜、兑现
 
-*THE FULL LOOP: TARGETS, EVIDENCE, PEERS, CALIBRATION, BOARD, APPEAL, CONSEQUENCE*  
+*THE LIVE LOOP: JINGCHA, KPI, CALIBRATION, BOARD, CONSEQUENCE*<br>
 状态：`placeholder` / `PLACEHOLDER · SAME-CYCLE LOOP CAPTURE PENDING`
 
 **1. 中文配音 / 主字幕**
 
-真正的核心不是任何一个热词，而是一整轮因果链：年初定目标，中途积证据，同僚背靠背，经理校准，正式发榜。
+真正跑通的闭环是：京察一到，KPI 开算；直属名单横排，校准可动，榜单正式发出。
 
 **English subtitle**
 
-The core is not any buzzword but one causal loop: set targets, accumulate evidence, collect peer review, calibrate, and publish the board.
+The live loop is this: Jingcha arrives, KPI calculates, direct officials rank, calibration may intervene, and the board publishes.
 
 **2. 中文配音 / 主字幕**
 
-然后奖励、罚没、晋升、PIP、末位和申诉继续改变人物关系与组织资源；下轮考核会读取这些后果，而不是世界刷新后集体失忆。
+奖励、罚没、晋升通道、PIP、末位和申诉随即兑现；上轮档位、连击、人情和制度账，会回到下一轮继续算。
 
 **English subtitle**
 
-Rewards, penalties, promotion, PIP, bottom action, and appeal then reshape relationships and resources. The next cycle reads those consequences instead of forgetting them.
+Rewards, penalties, promotion track, PIP, bottom action, and appeal land immediately; last grades, streaks, favours, and policy ledgers return next review.
 
 **3. 中文配音 / 主字幕**
 
-所以你做的不是一份古代人力资源表格。你是在经营一个会记仇、会抢功、会画饼，也偶尔真的能把事情做成的天朝大厂。
+你管的不是古代人力资源表格，是一套会记分、记仇、也记账的天朝大厂。
 
 **English subtitle**
 
-You are not managing an ancient HR spreadsheet. You are running an imperial megacorp that remembers grudges, steals credit, sells dreams, and occasionally ships something.
+This is not an ancient HR sheet. It is an imperial megacorp that keeps scores, grudges, and ledgers.
 
-## 09:03–09:38 · 先看证据，再喊牛：宣传片也要过绩效
+## 06:12–06:32 · 先看证据，再喊牛：宣传片也要过绩效
 
-*EVIDENCE BEFORE HYPE: EVEN THE PROMO HAS A PERFORMANCE REVIEW*  
+*EVIDENCE BEFORE HYPE: EVEN THE PROMO HAS A PERFORMANCE REVIEW*<br>
 状态：`generated` / `DRAFT BOUNDARY`
 
 **1. 中文配音 / 主字幕**
 
-现在这份工程首先是一版可调整的宣传脚本和占位分镜。画面写着待实录，就是真的待实录，不拿漂亮卡片冒充CK3已经跑通。
+这是可调整的脚本和占位分镜。待实录就是真的待实录，漂亮卡片不冒充 CK3 已跑通。
 
 **English subtitle**
 
-This project begins as an editable script and placeholder animatic. If a frame says capture pending, it is pending; a polished card is never passed off as live CK3.
+This is an editable script and placeholder animatic. Pending capture means pending; a polished card never impersonates live CK3.
 
 **2. 中文配音 / 主字幕**
 
-正式版会把每个核心镜头绑定到同一轮实机证据，检查时长、编码、字幕安全区、中文配音和开场无读条。
+正式版会验时长、编码、字幕安全区、中文配音和无读条开场。宣传片自己不过验收，拿 3.25 也不冤。
 
 **English subtitle**
 
-The final cut will bind core shots to same-cycle evidence and validate duration, codecs, subtitle safety, Chinese narration, and an opening without loading.
+The final cut validates duration, codecs, subtitle safety, Chinese narration, and no-loading opening. A promo that fails review deserves its 3.25.
 
-**3. 中文配音 / 主字幕**
+## 06:32–07:03 · 来吧，给天下打分——然后等天下给你打分
 
-毕竟一个讲绩效的mod，如果宣传片自己没有验收、没有证据、还偷偷超时二十分钟，那它拿3.25一点也不冤。
-
-**English subtitle**
-
-A performance mod whose own promo lacks acceptance, evidence, or the twenty-minute limit would deserve its 3.25.
-
-## 09:38–10:11 · 来吧，给天下打分——然后等天下给你打分
-
-*RATE THE REALM—THEN WAIT FOR THE REALM TO RATE YOU*  
+*RATE THE REALM—THEN WAIT FOR THE REALM TO RATE YOU*<br>
 状态：`generated` / `DRAFT FINALE`
 
 **1. 中文配音 / 主字幕**
 
-你可以做一个证据充分、愿意护人的好领导，也可以把所有人卷到只剩漂亮报表；两条路都能走，只是账会一直记着。
+你可以做证据充分、愿意护人的领导，也可以把所有人卷到只剩漂亮报表；选择和账都会留下。
 
 **English subtitle**
 
@@ -492,7 +428,7 @@ ZhongGuo 361 Style: begin managing your direct officials, then prepare to explai
 
 **3. 中文配音 / 主字幕**
 
-祝各位年年3.75。至于名额够不够——这不是我的问题，这是下一场校准会的议题。
+祝各位年年 3.75。至于名额够不够——这不是我的问题，是下一场校准会的议题。
 
 **English subtitle**
 

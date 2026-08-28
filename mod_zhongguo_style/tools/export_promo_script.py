@@ -40,7 +40,7 @@ def render(manifest_path: Path) -> str:
             [
                 f"## {_timecode(cursor)}–{_timecode(end)} · {chapter.title_zh}",
                 "",
-                f"*{chapter.title_en}*  ",
+                f"*{chapter.title_en}*<br>",
                 f"状态：`{chapter.material_status}` / `{chapter.status_en}`",
                 "",
             ]

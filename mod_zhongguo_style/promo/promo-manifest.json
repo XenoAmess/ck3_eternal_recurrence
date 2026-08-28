@@ -8,7 +8,7 @@
   "skip_ck3_loading_opening": true,
   "duration_limit_seconds": 1200,
   "minimum_chapter_seconds": 4,
-  "narration_padding_seconds": 0.8,
+  "narration_padding_seconds": 1.2,
   "asset_policy": "append-only content-addressed work files; never delete raw captures, cue audio, subtitles, segments, or prior takes",
   "chapters": [
     {
@@ -27,16 +27,12 @@
       "body_en": ["Chinese-first narration", "Chinese and English subtitles", "Gameplay opens on the feature, never CK3 loading"],
       "cues": [
         {
-          "zh": "如果你以为当上公爵，工作就是喝茶、联姻、等继承，那只能说明你还没收到本季度绩效通知。",
+          "zh": "当上公爵还没来得及喝茶，绩效通知先到了。",
           "en": "If you thought becoming a duke meant tea, marriage, and waiting for inheritance, you clearly have not received this quarter's review notice."
         },
         {
-          "zh": "这里是《天朝特色361制官员绩效考核》：把互联网大厂最熟悉的焦虑，塞进最适合背锅的封建官场。",
-          "en": "This is ZhongGuo 361 Style: familiar megacorp anxiety, translated into the feudal bureaucracy best equipped to pass the blame."
-        },
-        {
-          "zh": "没有启动器，没有读条，没有先看三十秒地图发呆。镜头一开，直接问你：今年这个C，准备让谁背？",
-          "en": "No launcher and no loading screen. We open on the only question that matters: who is carrying this year's bottom rating?"
+          "zh": "《天朝特色361制》：不用读条，直接开会。今年这个 C，准备让谁背？",
+          "en": "ZhongGuo 361 Style: no loading screen, straight to the meeting. Who is carrying this year's bottom rating?"
         }
       ]
     },
@@ -54,7 +50,7 @@
       "topics": [],
       "capture": {
         "id": "CAP-01-HIERARCHY",
-        "shot": "打开一名天朝制公爵角色页与直属封臣列表；切到伯爵角色，展示前者可主持考核、后者只有被考核告身。"
+        "shot": "同一存档依次打开天朝制公爵、伯爵、男爵角色页与直属关系；展示公爵的考核入口，以及伯爵/男爵只能收到上司告身。"
       },
       "cues": [
         {
@@ -66,8 +62,8 @@
           "en": "Counts and barons cannot rate anyone, but their superior still rates them. No management authority does not mean freedom from management."
         },
         {
-          "zh": "于是玩家既可能是台上念名单的领导，也可能下一秒收到上司告身：您好，您今年符合预期，意思是别想涨薪。",
-          "en": "So the player may read the list as a manager, then receive a superior's notice: meets expectations, which is corporate for do not ask about a raise."
+          "zh": "所以你既能主持名单，也可能下一秒收到上司告身：符合预期，翻译一下就是别问涨薪。",
+          "en": "You can host the list, then receive your superior's receipt: meets expectations, corporate for do not ask about a raise."
         }
       ]
     },
@@ -78,27 +74,23 @@
       "title_zh": "OKR负责抬头看路，KPI负责低头看刀",
       "title_en": "OKR LOOKS AT THE HORIZON; KPI CHECKS THE BLADE",
       "status": {
-        "zh": "待录目标与证据实机",
+        "zh": "待录 KPI、政策卡与证据列实机",
         "en": "PLACEHOLDER · OKR/KPI CAPTURE PENDING",
         "classification": "placeholder-gameplay-pending"
       },
       "topics": ["okr_kpi"],
       "capture": {
         "id": "CAP-02-OKR-KPI",
-        "shot": "录目标责任书或政策卡、KPI分项提示、两名官员因总督效率/贤能/忠诚/罪行与任务证据得到不同分数。"
+        "shot": "录考核榜的 KPI/价值观列、两名官员的总督效率或贤能成长差异，再展示 #001 与 #002 政策卡的 A/B/C。不得把政策卡录成独立目标管理器。"
       },
       "cues": [
         {
-          "zh": "这不是把KPI三个字贴在总督效率上就收工。系统把业绩、贤能、成长、忠诚、罪行、派系和管理信号拆成证据。",
-          "en": "This is not a KPI label pasted onto governor efficiency. Delivery, merit, growth, loyalty, crime, factions, and management signals become evidence."
+          "zh": "KPI 不只看效率：贤能成长、上司评价、派系罪行、上轮京察和人情，都会入账。",
+          "en": "KPI is not just governor efficiency: merit, growth, superior opinion, factions, crimes, and last cycle's Jingcha record all enter the score."
         },
         {
-          "zh": "OKR决定你宣称要改变什么，KPI记录你真的交付了什么。挑战目标失败，可以留下探索价值；保守目标全绿，也可能只是把门槛埋进地板。",
-          "en": "OKR states what you meant to change; KPI records what actually shipped. A failed stretch goal may teach, while an easy green target may hide the bar underground."
-        },
-        {
-          "zh": "最要命的是，分数不是结论，只是你进入校准会时能带上桌的弹药。数据很客观，解释数据的人更客观。",
-          "en": "The score is not the verdict. It is merely the ammunition you bring into calibration. Data is objective; the person interpreting it is somehow even more objective."
+          "zh": "OKR 和 KPI 在这里先是一张政策卡：你决定组织怎样记账；分数到了校准会，才变成能上桌的弹药。",
+          "en": "Here OKR and KPI begin as a policy card: you decide how the organization keeps score; at calibration, that score becomes ammunition."
         }
       ]
     },
@@ -135,7 +127,7 @@
       },
       "cues": [
         {
-          "zh": "361的灵魂是强制分布：少数3.75，多数3.5，末位3.25。大家都完成目标，也不妨碍有人必须解释自己为什么不够优秀。",
+          "zh": "361 的灵魂是强制分布：少数 3.75，多数 3.5，末位 3.25。大家都努力，也不妨碍有人必须背 C。",
           "en": "The soul of 361 is forced distribution: a few 3.75s, most 3.5s, and a bottom 3.25. Everyone may deliver, yet someone must explain why they were not excellent enough."
         },
         {
@@ -143,8 +135,8 @@
           "en": "Ranks use a stable unique order. A tie cannot make everyone number one and flood 3.75, because mathematics must never obstruct an organizational target."
         },
         {
-          "zh": "小团队可能没有末位名额；大团队则要面对边界。你不是在挑坏人，你是在决定哪位好人今年看起来最像坏人。",
-          "en": "A small team may have no bottom quota; a large team has a boundary. You are not selecting a bad official, only the good official who looks most expendable this year."
+          "zh": "当前这张 23 人榜是首轮新人保护样本，所以 7/16/0；常规老员工队列才会拍到真正的 3.25 边界。",
+          "en": "This 23-person board is a first-review newcomer-protection sample, hence 7/16/0; a regular veteran cohort shows the real 3.25 boundary."
         }
       ]
     },
@@ -181,16 +173,12 @@
       },
       "cues": [
         {
-          "zh": "自动排名之后、正式发榜之前，玩家可以进入校准。这里不是改一个数字，而是把配额、证据、人情和政敌放进同一口锅。",
+          "zh": "自动排名后、发榜前，玩家可以校准：直接公示，或在两个分档边界交换两个人。",
           "en": "After automatic ranking and before publication comes calibration, where quota, evidence, favors, and political enemies all enter the same pot."
         },
         {
-          "zh": "你可以保一个边界同僚，也可以为了凑C把另一个人踩下去；每次动手脚都留下理由、受益者和潜在曝光。",
-          "en": "You may protect one boundary colleague or push another down to fill the bottom slot. Every move records its reason, beneficiary, and exposure risk."
-        },
-        {
-          "zh": "校准真正有趣的地方，是它把抽象制度变成具体关系：今天你护的人，明天可能替你说话；今天你背的锅，明年会长出利息。",
-          "en": "Calibration turns policy into relationships. The person you protect may defend you tomorrow; the blame you accept today compounds by next year."
+          "zh": "你能抬末名 3.75，或把末名 3.5 压进 3.25；每次动笔有 25% 概率被全员看成考核黑幕。",
+          "en": "You can lift the last 3.75 or push the last 3.5 into 3.25; each pen stroke has a 25% chance of becoming a review scandal."
         }
       ]
     },
@@ -198,8 +186,8 @@
       "id": "05-peer-review-politics",
       "type": "placeholder_card",
       "material_status": "placeholder",
-      "title_zh": "背靠背互评：当面哥俩好，匿名一星少不了",
-      "title_en": "BACK-TO-BACK PEER REVIEW: FRIENDS IN PUBLIC, ONE STAR IN PRIVATE",
+      "title_zh": "背靠背这张卡，先从同侪的人情账开始",
+      "title_en": "BACK-TO-BACK, STARTING WITH A PEER FAVOUR LEDGER",
       "status": {
         "zh": "待录互评与向上管理实机",
         "en": "PLACEHOLDER · PEER POLITICS CAPTURE PENDING",
@@ -208,20 +196,16 @@
       "topics": ["peer_review", "upward_management"],
       "capture": {
         "id": "CAP-05-PEER-POLITICS",
-        "shot": "录背靠背邀评/举荐/攻讦交互、贡献与可见度差异，并让同一人选择做实事或向上汇报。"
+        "shot": "录同级封臣的举荐与攻讦互动、冷却和资源成本；结算后录目标的下一期 KPI 加10或减15。可附 #007 背靠背政策卡，不得制造匿名评分或项目 UI。"
       },
       "cues": [
         {
-          "zh": "背靠背互评把同僚关系变成匿名战场。你可以真诚举荐、谨慎保留，也可以写出那句经典评价：合作意识仍有提升空间。",
-          "en": "Back-to-back peer review turns collegial relations into an anonymous arena: endorse, hedge, or write the classic line that collaboration still has room to grow."
+          "zh": "背靠背不是一套匿名小作文系统；它先是一张政策卡，外加一笔更封建的人情账。",
+          "en": "Back-to-back is not an anonymous essay system here; it begins as a policy card plus a much more feudal favour ledger."
         },
         {
-          "zh": "互评不是随机加减分。利益冲突、共同项目、评价可信度和后来被事实打脸，都会回头结算。造谣可以赢一季，也可能输掉三年。",
-          "en": "Peer review is not random score noise. Conflicts, shared projects, reviewer credibility, and later facts all settle the account. A lie may win one season and lose three years."
-        },
-        {
-          "zh": "向上管理也不是纯好感按钮。你花时间让上司看见成果，就少一点时间做成果；完全不汇报，又会发现功劳自动进入最会讲故事的人名下。",
-          "en": "Managing up is not a simple opinion button. Time spent making work visible is time not doing it, yet silence lets the best storyteller inherit the credit."
+          "zh": "举荐同僚，下期 KPI 加 10；攻讦同僚，七成让他减 15，三成自己社死。向上管理？先学会把人情写进分数。",
+          "en": "Recommend a peer for +10 next review; slander one for a 70% chance of -15 and a 30% chance of embarrassing yourself. Managing up starts by putting favours into the score."
         }
       ]
     },
@@ -258,7 +242,7 @@
       },
       "cues": [
         {
-          "zh": "京察是定期弹出的半强制活动，举办本身不花钱。系统默认你应该办，因为评价下属不是领导的兴趣爱好，是岗位说明书。",
+          "zh": "京察定期弹出、半强制，而且免费。评价下属不是领导的兴趣爱好，是岗位说明书。",
           "en": "Jingcha is a periodic semi-mandatory activity and costs nothing to hold. Reviewing subordinates is not a leadership hobby; it is the job description."
         },
         {
@@ -266,8 +250,8 @@
           "en": "The player may refuse. Freedom remains, while the direct superior remains free to lose opinion and record refusal as a major reason in the next review."
         },
         {
-          "zh": "而且这笔账绑定发令上司，不会换个老板就被陌生人捡去扣分。坏消息有责任人，好消息是流程终于有责任人。",
-          "en": "That reason is bound to the superior who issued it; a new boss cannot consume an old refusal. The bad news has an owner, which is also the good news."
+          "zh": "这笔账绑定发令上司：换个老板，陌生人不能捡走旧理由扣你分。流程终于有责任人。",
+          "en": "The reason is bound to its issuing superior: a new boss cannot pick up an old excuse to dock your score. The process finally has an owner."
         }
       ]
     },
@@ -304,7 +288,7 @@
       },
       "cues": [
         {
-          "zh": "考核榜不是一条转瞬即逝的通知。每轮榜单冻结人物、官职、KPI、价值观分、名次、档位、连续次数和后续状态。",
+          "zh": "考核榜不是闪一下就没的通知。每轮冻结人物、官职、KPI、价值观、名次、档位、连续次数和状态。",
           "en": "The scoreboard is not a disposable toast. Each cycle freezes the official, office, KPI, values, rank, grade, streak, and follow-up state."
         },
         {
@@ -312,8 +296,8 @@
           "en": "Managers see the full team board. When your superior rates you, a separate receipt names the superior, your score, cohort rank, and grade."
         },
         {
-          "zh": "旧榜不会因为人员调动或下轮打分偷偷漂移。过去的3.25会忠诚地留在过去，像一张永远不会自动撤回的群聊截图。",
-          "en": "Old boards do not drift after transfers or later reviews. A past 3.25 stays in the past, like a group-chat screenshot that never unsends itself."
+          "zh": "旧榜不会被调任或下一轮偷偷改写。过去的 3.25，像群聊截图一样，永远不会自动撤回。",
+          "en": "Old boards do not drift after transfers or later reviews. A past 3.25 stays like a group-chat screenshot that never unsends itself."
         }
       ]
     },
@@ -350,7 +334,7 @@
       },
       "cues": [
         {
-          "zh": "档位必须落到资源上才有手感。3.75进入晋升和奖励通道，3.5保住正常节奏，3.25则启动真正的改进成本。",
+          "zh": "档位必须落到资源上才有手感：3.75 进奖励和晋升通道，3.5 保住节奏，3.25 才开始真疼。",
           "en": "Grades need resource consequences. A 3.75 opens reward and promotion lanes, 3.5 keeps the normal cadence, and 3.25 starts a real improvement cost."
         },
         {
@@ -358,8 +342,8 @@
           "en": "A 3.25 hits the local treasury, personal gold, and one year of salary. Shared accountability means both the team budget and your wallet attend the retrospective."
         },
         {
-          "zh": "罚没会保存精确金额和本轮编号。如果申诉改判，退的是这一次实际扣的钱，不是系统心情好随手发一张代金券。",
-          "en": "The penalty records exact amounts and review serial. A successful appeal refunds what this cycle actually took, not a goodwill coupon invented afterward."
+          "zh": "罚没保存精确金额和本轮编号；翻案退的是这次实际扣的钱，不是系统心情好发代金券。",
+          "en": "The penalty records exact amounts and the review serial; a reversal refunds what this cycle took, not a goodwill coupon."
         }
       ]
     },
@@ -377,19 +361,15 @@
       "topics": ["pip", "bottom_elimination"],
       "capture": {
         "id": "CAP-09-PIP-BOTTOM",
-        "shot": "录首次3.25进入PIP、目标/支持选择、下轮改善与失败对照；再录连续两次后夺爵、致仕、降岗、留观四类末位处置。"
+        "shot": "录首次 3.25 告身与 PIP modifier；再录连续两次 3.25 后的末位名单、逐人夺爵/致仕互动及批量降岗/再观察选择。不得伪造 PIP 任务、支持预算或中期检查 UI。"
       },
       "cues": [
         {
-          "zh": "第一次3.25进入PIP，也就是绩效改进计划。它不是必败倒计时：目标、期限、支持预算和中期检查都能改变结果。",
-          "en": "The first 3.25 enters PIP, a performance improvement plan. It is not a scripted death clock: goals, support, deadlines, and midpoints can change the result."
+          "zh": "第一次 3.25 会挂上 PIP：一张一年期红牌，不是自动处决倒计时。",
+          "en": "The first 3.25 applies PIP: a one-year red card, not an automatic execution clock."
         },
         {
-          "zh": "经理可以给资源，也可以只给指标不给资源；后者省下眼前成本，却会把支持缺位记到经理自己的组织绩效。",
-          "en": "A manager may fund support or provide targets without resources. The latter saves money now, but missing support returns in the manager's own performance."
-        },
-        {
-          "zh": "连续两次末位才进入淘汰阶梯：夺爵、致仕、降岗留用或再观察。所谓毕业答辩，有人毕业，有人的岗位毕业。",
+          "zh": "连续两次末位才进淘汰阶梯：夺爵、致仕、降岗留用或再观察。有人毕业，有人的岗位毕业。",
           "en": "Two consecutive bottom ratings enter the exit ladder: title removal, retirement, demotion, or another year. In the final review, someone graduates; sometimes the position graduates without them."
         }
       ]
@@ -398,30 +378,26 @@
       "id": "10-promotion-hc",
       "type": "placeholder_card",
       "material_status": "placeholder",
-      "title_zh": "晋升包与HC：你证明自己配得上，组织证明它没有坑",
-      "title_en": "PROMOTION PACKET AND HEADCOUNT: YOU PROVE MERIT; THE ORG PROVES A SLOT EXISTS",
+      "title_zh": "晋升包与HC：它们是政策卡，不是许愿池",
+      "title_en": "PROMOTION PACKET AND HEADCOUNT: POLICY CARDS, NOT A WISH ENGINE",
       "status": {
-        "zh": "待录晋升与编制实机",
+        "zh": "待录晋升通道、政策卡与组织账实机",
         "en": "PLACEHOLDER · PROMOTION/HC CAPTURE PENDING",
         "classification": "placeholder-gameplay-pending"
       },
       "topics": ["promotion_packet", "hc"],
       "capture": {
         "id": "CAP-10-PROMOTION-HC",
-        "shot": "录高绩效官员形成晋升包、跨部门答辩、成功/延期；再录软HC余额、增编答辩、冻结与岗位空缺。"
+        "shot": "录连续两次 3.75 的晋升通道 modifier/任命候选加成，再展示 #020、#022 的 A/B/C 政策卡和驾驶舱 HC 压力。不得制造岗位空缺、答辩或增编 UI。"
       },
       "cues": [
         {
-          "zh": "高绩效不会自动升官，而是生成晋升包：历史结果、能力证据、跨部门贡献和风险说明，一样不少地拿去答辩。",
-          "en": "High performance does not auto-promote. It creates a promotion packet: results, capability evidence, cross-team contribution, and risks for a real defense."
+          "zh": "连续两次 3.75，真实会开晋升通道并提高原版任命候选分。晋升包，是 361 卡组里的一种治理选择。",
+          "en": "Two consecutive 3.75 ratings open the real promotion track and raise native appointment candidate score. A promotion packet is a governance choice in the 361 deck."
         },
         {
-          "zh": "然后轮到HC，也就是headcount编制。你可以完全够格，岗位也可以完全不存在；个人优秀与组织没坑，是两套独立条件。",
-          "en": "Then comes HC, the headcount slot. You may be fully qualified while the job fully does not exist; personal excellence and organizational vacancy are separate conditions."
-        },
-        {
-          "zh": "经理能申请增编、冻结名额、内部转岗或继续让现团队加班填坑。每个选择都影响预算、士气、交付和下一次经理考核。",
-          "en": "Managers may request headcount, freeze a slot, transfer internally, or keep filling the gap with overtime. Each choice changes budget, morale, delivery, and their next review."
+          "zh": "HC 在当前版本是组织账与政策取舍，不是独立招聘模拟器：它会改变压力、预算和后续 KPI。",
+          "en": "HC, or headcount, is currently an organizational ledger and policy tradeoff, not a separate hiring simulator: it changes pressure, budget, and later KPI."
         }
       ]
     },
@@ -429,30 +405,26 @@
       "id": "11-credit-and-dependencies",
       "type": "placeholder_card",
       "material_status": "placeholder",
-      "title_zh": "跨部门抢功：项目成功了，突然每个人都是核心贡献者",
-      "title_en": "CROSS-TEAM CREDIT: THE PROJECT SHIPPED, SO EVERYONE WAS APPARENTLY ESSENTIAL",
+      "title_zh": "跨部门抢功：先把它写进制度，而不是编一个项目管理器",
+      "title_en": "CROSS-TEAM CREDIT: WRITE THE RULE, NOT A FICTIONAL PROJECT MANAGER",
       "status": {
-        "zh": "待录成果账本实机",
+        "zh": "待录抢功政策卡与同侪互动实机",
         "en": "PLACEHOLDER · CREDIT LEDGER CAPTURE PENDING",
         "classification": "placeholder-gameplay-pending"
       },
       "topics": ["credit_claims"],
       "capture": {
         "id": "CAP-11-CREDIT",
-        "shot": "录跨部门成果/依赖账本、贡献与可见度双账、抢功/甩锅选择及仲裁结果；至少一组真实贡献低但汇报强的对照。"
+        "shot": "展示 #026 与 #028 政策卡、驾驶舱证据/互信账，以及同侪举荐/攻讦互动。不得制造项目 ID、依赖时间线、贡献/可见度双账或仲裁 UI。"
       },
       "cues": [
         {
-          "zh": "跨部门项目有两本账：谁真正贡献，谁被组织看见。它们可以重合，也可以像年会节目和实际工作一样毫无关系。",
-          "en": "Cross-team work keeps two ledgers: actual contribution and organizational visibility. They may overlap, or relate like the annual gala and actual delivery."
+          "zh": "抢功、甩锅、可见度，已经写进 361 的制度题库；但当前不是一套带项目编号的项目管理器。",
+          "en": "Credit theft, blame, and visibility are in the 361 policy catalogue, but this is not a project manager with project IDs."
         },
         {
-          "zh": "当成果落地，官员可以认领credit、共享功劳、抢功或把延期甩给依赖方。系统冻结项目、责任和时间线，不靠随机事件凭空判案。",
-          "en": "When work ships, officials may claim credit, share it, steal it, or blame a dependency. Project, responsibility, and timeline are frozen instead of invented by a random event."
-        },
-        {
-          "zh": "抢功成功会提高可见度，却积累信任债；甩锅短期保分，证据翻案后则同时损失协作与评价可信度。故事讲得好，也要经得起回放。",
-          "en": "Credit theft raises visibility but builds trust debt. Blame may protect a score until evidence reverses it and damages collaboration plus reviewer credibility. The story must survive replay."
+          "zh": "你选择治理方向，账本结算证据、互信和交付；真正能直接害同僚掉分的，是举荐与攻讦互动。",
+          "en": "You choose a governance direction, then ledgers settle evidence, trust, and delivery; the direct peer-score tools are recommendation and slander."
         }
       ]
     },
@@ -489,16 +461,16 @@
       },
       "cues": [
         {
-          "zh": "被打3.25后，玩家可以认命、摆烂、奋发，也可以正式申诉。申诉消耗政治资源，但要求复核证据、程序和配额边界。",
-          "en": "After a 3.25, the player may accept, disengage, improve, or file a formal appeal. Appeal costs political capital but rechecks evidence, procedure, and quota boundaries."
+          "zh": "被打 3.25 后，玩家能认命、摆烂、奋发，或者花影响力申诉。它不是掀桌，是请求上司改判。",
+          "en": "After a 3.25, the player may accept, disengage, improve, or spend influence to appeal. It is not flipping the table; it asks the superior to regrade."
         },
         {
-          "zh": "改判会同步修正榜单、连续次数和精确罚没；复核只能维持或减轻原处理，不能因为你敢申诉就顺手再加一刀。",
+          "zh": "改判会修正档位、连续次数、PIP 和精确罚没；申诉不会让原处理凭空加重。",
           "en": "A reversal updates the scoreboard, streak, and exact penalty. Review may maintain or reduce the decision; it cannot punish you merely for appealing."
         },
         {
-          "zh": "如果发现新的独立造假，要另开新案、重新举证。程序正义不是让坏人免疫，而是禁止领导在原工单里偷偷追加需求。",
-          "en": "Independent new fraud requires a new case and evidence. Due process does not grant immunity; it stops a manager from quietly adding scope to the original ticket."
+          "zh": "报告已实机对账：退款只退这次实际扣的钱，重复申诉也不会二次发奖金。算盘终于没有闹鬼。",
+          "en": "The live report reconciles exact refunds: only this cycle's deduction returns, and a repeat appeal cannot print another reward. The abacus is finally not haunted."
         }
       ]
     },
@@ -516,20 +488,20 @@
       "topics": [],
       "capture": {
         "id": "CAP-13-POLICY-DECK",
-        "shot": "录连续政策卡选择、制度驾驶舱14项组织账本和年度批处理；快速展示多张不同机制，不逐张弹完361张。"
+        "shot": "一次集中录 #002、#007、#015、#020、#026、#035 六张不同编号政策卡的 A/B/C，再打开制度驾驶舱的 14 本账。可显示 AI 每轮批量处理十二张的代码/证据卡，但不得伪装为逐张真人录屏。"
       },
       "cues": [
         {
-          "zh": "核心考核之外，还有整整361张机制卡。它们不是361个孤立弹窗，而是围绕证据、信任、交付、稳定、人才、HC和倦怠共享账本。",
-          "en": "Beyond the core review are 361 mechanism cards. They are not 361 disconnected pop-ups; they share ledgers for evidence, trust, delivery, stability, talent, HC, and burnout."
+          "zh": "核心考核之外有 361 张逐项政策卡：每张有 A/B/C、持久选择状态，后果收进 14 本组织账。",
+          "en": "Beyond core review are 361 individually numbered policy cards: each has A/B/C, persistent choice state, and consequences flowing into 14 organizational ledgers."
         },
         {
-          "zh": "玩家每次在真实取舍里选方向：严控流程还是相信团队，短期交付还是偿还技术债，冻结编制还是承认目标必须缩水。",
-          "en": "Each card asks for a real tradeoff: control or trust, near-term delivery or technical debt, frozen headcount or an honest reduction in scope."
+          "zh": "它们共享 17 类后果 profile，不是假装 361 套独立小游戏：证据、互信、交付、稳定、人才、HC 压力和倦怠会一起变。",
+          "en": "They share 17 consequence profiles, not 361 pretend mini-games: evidence, trust, delivery, stability, talent, HC pressure, and burnout move together."
         },
         {
-          "zh": "AI经理按性格和组织气候批量处理，玩家只在值得决策时被打断。目标不是每天收三百六十一封邮件，而是十年后发现制度已经长成你的形状。",
-          "en": "AI managers batch decisions through personality and climate; players are interrupted only for meaningful choices. The goal is not 361 daily emails, but an institution shaped by ten years of decisions."
+          "zh": "玩家每轮通常只遇一张；AI 按性格与预算压力，每轮后台批量处理十二张。不是 361 封邮件，是 361 次制度偏好。",
+          "en": "Players normally see one per review; AI batches twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences."
         }
       ]
     },
@@ -537,8 +509,8 @@
       "id": "14-core-loop",
       "type": "placeholder_card",
       "material_status": "placeholder",
-      "title_zh": "一轮完整玩法：定目标、交证据、互评、校准、发榜、申诉、兑现",
-      "title_en": "THE FULL LOOP: TARGETS, EVIDENCE, PEERS, CALIBRATION, BOARD, APPEAL, CONSEQUENCE",
+      "title_zh": "一轮真实玩法：京察、KPI、校准、发榜、兑现",
+      "title_en": "THE LIVE LOOP: JINGCHA, KPI, CALIBRATION, BOARD, CONSEQUENCE",
       "status": {
         "zh": "待录完整同轮实机",
         "en": "PLACEHOLDER · SAME-CYCLE LOOP CAPTURE PENDING",
@@ -547,20 +519,20 @@
       "topics": [],
       "capture": {
         "id": "CAP-14-FULL-LOOP",
-        "shot": "用同一存档同一考核轮串起目标、证据、背靠背、校准、榜单、个人告身、3.25处罚、申诉退款或PIP后续；保留连续录像与同run证据。"
+        "shot": "同一存档、同一 review serial 连续录：京察/立即考核入口、KPI 排名、校准、发布榜、个人告身、3.25 三账处罚，以及申诉或 PIP 的后果。政策卡可作为独立蒙太奇，不得拼成虚构的目标—项目—互评闭环。"
       },
       "cues": [
         {
-          "zh": "真正的核心不是任何一个热词，而是一整轮因果链：年初定目标，中途积证据，同僚背靠背，经理校准，正式发榜。",
-          "en": "The core is not any buzzword but one causal loop: set targets, accumulate evidence, collect peer review, calibrate, and publish the board."
+          "zh": "真正跑通的闭环是：京察一到，KPI 开算；直属名单横排，校准可动，榜单正式发出。",
+          "en": "The live loop is this: Jingcha arrives, KPI calculates, direct officials rank, calibration may intervene, and the board publishes."
         },
         {
-          "zh": "然后奖励、罚没、晋升、PIP、末位和申诉继续改变人物关系与组织资源；下轮考核会读取这些后果，而不是世界刷新后集体失忆。",
-          "en": "Rewards, penalties, promotion, PIP, bottom action, and appeal then reshape relationships and resources. The next cycle reads those consequences instead of forgetting them."
+          "zh": "奖励、罚没、晋升通道、PIP、末位和申诉随即兑现；上轮档位、连击、人情和制度账，会回到下一轮继续算。",
+          "en": "Rewards, penalties, promotion track, PIP, bottom action, and appeal land immediately; last grades, streaks, favours, and policy ledgers return next review."
         },
         {
-          "zh": "所以你做的不是一份古代人力资源表格。你是在经营一个会记仇、会抢功、会画饼，也偶尔真的能把事情做成的天朝大厂。",
-          "en": "You are not managing an ancient HR spreadsheet. You are running an imperial megacorp that remembers grudges, steals credit, sells dreams, and occasionally ships something."
+          "zh": "你管的不是古代人力资源表格，是一套会记分、记仇、也记账的天朝大厂。",
+          "en": "This is not an ancient HR sheet. It is an imperial megacorp that keeps scores, grudges, and ledgers."
         }
       ]
     },
@@ -580,16 +552,12 @@
       "body_en": ["Placeholders are not live evidence", "Same-cycle footage binds to the same run", "Final duration must remain under twenty minutes"],
       "cues": [
         {
-          "zh": "现在这份工程首先是一版可调整的宣传脚本和占位分镜。画面写着待实录，就是真的待实录，不拿漂亮卡片冒充CK3已经跑通。",
-          "en": "This project begins as an editable script and placeholder animatic. If a frame says capture pending, it is pending; a polished card is never passed off as live CK3."
+          "zh": "这是可调整的脚本和占位分镜。待实录就是真的待实录，漂亮卡片不冒充 CK3 已跑通。",
+          "en": "This is an editable script and placeholder animatic. Pending capture means pending; a polished card never impersonates live CK3."
         },
         {
-          "zh": "正式版会把每个核心镜头绑定到同一轮实机证据，检查时长、编码、字幕安全区、中文配音和开场无读条。",
-          "en": "The final cut will bind core shots to same-cycle evidence and validate duration, codecs, subtitle safety, Chinese narration, and an opening without loading."
-        },
-        {
-          "zh": "毕竟一个讲绩效的mod，如果宣传片自己没有验收、没有证据、还偷偷超时二十分钟，那它拿3.25一点也不冤。",
-          "en": "A performance mod whose own promo lacks acceptance, evidence, or the twenty-minute limit would deserve its 3.25."
+          "zh": "正式版会验时长、编码、字幕安全区、中文配音和无读条开场。宣传片自己不过验收，拿 3.25 也不冤。",
+          "en": "The final cut validates duration, codecs, subtitle safety, Chinese narration, and no-loading opening. A promo that fails review deserves its 3.25."
         }
       ]
     },
@@ -605,11 +573,11 @@
         "classification": "draft-generated"
       },
       "topics": [],
-      "body_zh": ["管理下属", "接受上司考核", "让制度后果跨年累积"],
-      "body_en": ["Manage subordinates", "Face your superior's review", "Let institutional consequences compound"],
+      "body_zh": ["管理下属", "接受上司考核", "让上轮结果继续算账"],
+      "body_en": ["Manage subordinates", "Face your superior's review", "Let last-cycle results keep accounting"],
       "cues": [
         {
-          "zh": "你可以做一个证据充分、愿意护人的好领导，也可以把所有人卷到只剩漂亮报表；两条路都能走，只是账会一直记着。",
+          "zh": "你可以做证据充分、愿意护人的领导，也可以把所有人卷到只剩漂亮报表；选择和账都会留下。",
           "en": "You may lead with evidence and protection, or grind everyone down until only beautiful reports remain. Both paths exist, and the ledger remembers both."
         },
         {
@@ -617,7 +585,7 @@
           "en": "ZhongGuo 361 Style: begin managing your direct officials, then prepare to explain to your superior why your management style meets expectations."
         },
         {
-          "zh": "祝各位年年3.75。至于名额够不够——这不是我的问题，这是下一场校准会的议题。",
+          "zh": "祝各位年年 3.75。至于名额够不够——这不是我的问题，是下一场校准会的议题。",
           "en": "May you earn 3.75 every year. Whether the quota allows it is not my problem; that belongs to the next calibration meeting."
         }
       ]

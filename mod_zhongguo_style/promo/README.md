@@ -1,7 +1,7 @@
 # 361 宣传视频工程
 
 这里保存《天朝特色 361 制官员绩效考核》的宣传片脚本、分镜、实机素材需求和可复现合成入口。当前状态是
-**可渲染的占位 animatic 工程**，不是正式成片；`promo-manifest.json` 中 14 个实机章节仍明确标为
+**可渲染的占位 animatic 工程**，不是正式成片；`promo-manifest.json` 中 8 个待补实机章节仍明确标为
 `placeholder`，画面会强制显示“占位镜头·尚未实录”。
 
 ## 成片合同
@@ -9,7 +9,7 @@
 - 面向中文观众，简体中文是唯一旁白和主要视觉层级；英文是画面内副字幕。
 - Edge TTS 固定 `edge-tts==7.2.8` 与 `zh-CN-XiaoxiaoNeural`。
 - 简中、英文字幕必须同一 cue 同时出现，并按实际字体像素宽度限制在安全区内。
-- 成片必须短于 20 分钟。当前全稿离线保守估算约 `611.5s`（约 10:11）；实际时长以逐 cue MP3 的
+- 成片必须短于 20 分钟。当前全稿离线保守估算约 `423s`（约 7:03）；实际时长以逐 cue MP3 的
   `ffprobe` 结果为准，超过 `1200s` 会在编码前直接 RED。
 - 片头直接进入 mod 概念和玩法，禁止 CK3 启动器、启动 loading 与存档 loading 入镜。
 - title card 是生成素材；其余内容只允许使用明确占位卡或已有实机素材。占位卡绝不算实机证据。
@@ -21,7 +21,7 @@
 |---|---|
 | `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
 | `storyboard.md` | 约 10–12 分钟的剪辑结构与节奏说明 |
-| `shot-list.md` | 14 组 CK3 实机素材的录制动作、证据要求与推荐文件名 |
+| `shot-list.md` | 一次集中实录的 7 个 capture pack、证据要求与不可夸张的产品边界 |
 | `smoke-manifest.json` | 很短的媒体流水线测试；内容明确声明“不是正式成片” |
 | `../tools/build_promo_video.py` | TTS、双语 ASS、画面合成、章节拼接与 sidecar |
 | `../tools/validate_promo_video.py` | 草案/正式门禁、媒体规格、时长、语言、哈希与抽帧检查 |
@@ -70,13 +70,13 @@ smoke 只能证明中文配音、双语字幕和媒体流水线能工作，不�
 
 ## 替换占位镜头
 
-1. 按 `shot-list.md` 录制，原始录像直接放进一个新建的 `artifacts/zg361/promo/captures/<run-id>/raw/`
+1. 按 `shot-list.md` 的 7 个 capture pack 集中录制，原始录像直接放进一个新建的 `artifacts/zg361/promo/captures/<run-id>/raw/`
    目录；不要剪掉或覆盖原文件。
 2. 另存裁切版到同一 run 的 `selects/`。剪掉 CK3 loading，但保留原始长录像。
 3. 在对应章节把 `type` 从 `placeholder_card` 改为 `video_clip`（或确有必要时 `still`），把
    `material_status` 改为 `captured`，增加 `source`、`start_seconds`、`end_seconds`，并在
    `capture` 中写 `"exclude_ck3_loading": true`。
-4. 同一因果链的镜头必须来自同一 acceptance run；在 `evidence_sources` 中登记该 run 的报告或 sidecar。
+4. 核心因果链的镜头必须来自同一 acceptance run；在 `evidence_sources` 中登记该 run 的报告或 sidecar。政策卡 montage 不得拼成虚构的项目/招聘/目标管理闭环。
 5. 先跑 `--validate-only`，再渲染一个新的 `--take-id`。配音稿或 take 改变后会生成新指纹文件，旧文件不会覆盖。
 
 ## 过程素材保留
