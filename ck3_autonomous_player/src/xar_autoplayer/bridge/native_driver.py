@@ -214,7 +214,9 @@ from .war_contract import (
     offer_white_peace_step,
     parse_disband_army_step,
     parse_battle_decision_epoch_advance_step,
+    parse_committed_route_sentinel_advance_speed,
     parse_committed_route_sentinel_advance_step,
+    parse_war_objective_hold_sentinel_advance_speed,
     parse_war_objective_hold_sentinel_advance_step,
     parse_enforce_demands_step,
     parse_merge_armies_step,
@@ -314,12 +316,35 @@ _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
     "committed_route_sentinel_live_ready": True,
     "stationary_objective_hold_sentinel_canary_ready": False,
+    "committed_route_sentinel_speed_4_live_ready": False,
+    "committed_route_sentinel_speed_5_live_ready": False,
+    "stationary_objective_hold_sentinel_speed_4_live_ready": False,
+    "stationary_objective_hold_sentinel_speed_5_live_ready": False,
     "terminal_sentinel_live_ready": True,
     # The native stop envelope is live, but no overwhelming active-battle
     # checkpoint has yet passed the required balanced speed matrix.  Strategy
     # therefore keeps the speed-five crush selector closed.
     "overwhelming_matrix_live_ready": False,
 }
+
+
+def _noncombat_sentinel_scope_speed_live_ready(
+    sentinel_scope: str,
+    speed: int,
+) -> bool:
+    if speed <= 3:
+        return True
+    prefix = {
+        "committed_route": "committed_route_sentinel",
+        "stationary_objective_hold": "stationary_objective_hold_sentinel",
+    }.get(sentinel_scope)
+    return bool(
+        prefix is not None
+        and _BATTLE_SPEED_READINESS.get(
+            f"{prefix}_speed_{speed}_live_ready"
+        )
+        is True
+    )
 _TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS = (
     "date_deadline",
     "army_unavailable",
@@ -846,6 +871,16 @@ class NativeHeadlessGameplayDriver:
         if (
             self.route_contact_timeline_speed > 3
             and allow_route_contact_high_speed_ab is not True
+            and not any(
+                _noncombat_sentinel_scope_speed_live_ready(
+                    scope,
+                    self.route_contact_timeline_speed,
+                )
+                for scope in (
+                    "committed_route",
+                    "stationary_objective_hold",
+                )
+            )
         ):
             raise ValueError(
                 "route_contact_timeline_speed 4..5 requires "
@@ -1026,17 +1061,43 @@ class NativeHeadlessGameplayDriver:
                 composite_action_steps.append(
                     BATTLE_DECISION_EPOCH_ADVANCE_STEP
                 )
+            noncombat_sentinel_speed_step = (
+                f"set-speed-{self.route_contact_timeline_speed}"
+            )
+            high_speed_ab = self.allow_route_contact_high_speed_ab
+            committed_route_speed_ready = bool(
+                high_speed_ab
+                or _noncombat_sentinel_scope_speed_live_ready(
+                    "committed_route",
+                    self.route_contact_timeline_speed,
+                )
+            )
+            objective_hold_speed_ready = bool(
+                high_speed_ab
+                or _noncombat_sentinel_scope_speed_live_ready(
+                    "stationary_objective_hold",
+                    self.route_contact_timeline_speed,
+                )
+            )
+            if (
+                noncombat_sentinel_speed_step in action_steps
+                and committed_route_speed_ready
+            ):
                 action_steps.add(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP)
                 composite_action_steps.append(
                     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
                 )
-                if self.allow_stationary_objective_hold_sentinel_canary:
-                    action_steps.add(
-                        WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
-                    )
-                    composite_action_steps.append(
-                        WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
-                    )
+            if (
+                noncombat_sentinel_speed_step in action_steps
+                and objective_hold_speed_ready
+                and self.allow_stationary_objective_hold_sentinel_canary
+            ):
+                action_steps.add(
+                    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
+                )
+                composite_action_steps.append(
+                    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
+                )
             if "set-speed-5" in action_steps:
                 action_steps.add(BATTLE_TERMINAL_CRUISE_STEP)
                 composite_action_steps.append(BATTLE_TERMINAL_CRUISE_STEP)
@@ -1166,6 +1227,12 @@ class NativeHeadlessGameplayDriver:
                 **_BATTLE_SPEED_READINESS,
                 "stationary_objective_hold_sentinel_canary_ready": (
                     self.allow_stationary_objective_hold_sentinel_canary
+                ),
+                "noncombat_sentinel_timeline_speed": (
+                    self.route_contact_timeline_speed
+                ),
+                "noncombat_sentinel_high_speed_ab": (
+                    self.allow_route_contact_high_speed_ab
                 ),
             },
             "checkpoint_materialization": {
@@ -8957,8 +9024,14 @@ class NativeHeadlessGameplayDriver:
         parsed_route_request = parse_committed_route_sentinel_advance_step(
             step
         )
+        parsed_route_speed = parse_committed_route_sentinel_advance_speed(
+            step
+        )
         parsed_objective_hold_request = (
             parse_war_objective_hold_sentinel_advance_step(step)
+        )
+        parsed_objective_hold_speed = (
+            parse_war_objective_hold_sentinel_advance_speed(step)
         )
         if parsed_objective_hold_request is not None:
             if (
@@ -8970,7 +9043,11 @@ class NativeHeadlessGameplayDriver:
                 raise UnsupportedStepError(
                     "war-objective hold sentinel request scope is inconsistent"
                 )
-            speed = 3
+            if parsed_objective_hold_speed is None:
+                raise UnsupportedStepError(
+                    "war-objective hold sentinel speed binding is malformed"
+                )
+            speed = parsed_objective_hold_speed
             wire_mode = "decision"
             status_mode = "decision_epoch"
         elif parsed_route_request is not None:
@@ -8982,7 +9059,11 @@ class NativeHeadlessGameplayDriver:
                 raise UnsupportedStepError(
                     "committed-route sentinel request scope is inconsistent"
                 )
-            speed = 3
+            if parsed_route_speed is None:
+                raise UnsupportedStepError(
+                    "committed-route sentinel speed binding is malformed"
+                )
+            speed = parsed_route_speed
             wire_mode = "decision"
             status_mode = "decision_epoch"
         elif (
@@ -9107,6 +9188,26 @@ class NativeHeadlessGameplayDriver:
                 f"native {step} has unknown sentinel scope {requested_scope!r}"
             )
         sentinel_scope = requested_scope
+        if requested_scope in {
+            "committed_route",
+            "stationary_objective_hold",
+        }:
+            if speed != self.route_contact_timeline_speed:
+                raise UnsupportedStepError(
+                    f"native {step} speed {speed} does not match configured "
+                    f"noncombat sentinel speed {self.route_contact_timeline_speed}"
+                )
+            if not (
+                self.allow_route_contact_high_speed_ab
+                or _noncombat_sentinel_scope_speed_live_ready(
+                    requested_scope,
+                    speed,
+                )
+            ):
+                raise UnsupportedStepError(
+                    f"native {step} speed {speed} lacks an explicit A/B or "
+                    "scope-specific live gate"
+                )
         bridge_capabilities = set(
             _string_list(
                 self.state.capabilities().get("bridge_capabilities")

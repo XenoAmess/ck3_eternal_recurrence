@@ -41,6 +41,7 @@ from xar_autoplayer.bridge.war_contract import (
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
+    parse_committed_route_sentinel_advance_step,
     war_objective_hold_sentinel_advance_step,
     normalize_active_wars,
     query_route_contact_horizon_step,
@@ -2281,6 +2282,108 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(default_closed["selected_step"], query_step)
 
+    def test_committed_route_speed_five_is_policy_neutral_and_gated(
+        self,
+    ) -> None:
+        date_raw = 53_256_000
+        player = _army(
+            201_326_874,
+            soldiers=4_100,
+            province_id=8753,
+            controllable=True,
+            move_target_province_id=2635,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2626, 2627, 2633, 2634, 2635],
+        )
+        enemy = _army(
+            167_772_577,
+            soldiers=3_300,
+            province_id=8648,
+            controllable=False,
+            move_target_province_id=2635,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[1034, 2644, 2645, 2635],
+        )
+        target_date_raw = date_raw + 45 * 24
+        base_readiness = {
+            "committed_route_sentinel_live_ready": True,
+            "noncombat_sentinel_timeline_speed": 5,
+            "noncombat_sentinel_high_speed_ab": False,
+            "committed_route_sentinel_speed_5_live_ready": False,
+        }
+
+        guarded = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            steps=(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness=base_readiness,
+        )
+        self.assertEqual(guarded["timeline_speed"], 3)
+        guarded_step = guarded["selected_step"]
+        self.assertEqual(
+            guarded_step,
+            committed_route_sentinel_advance_step(
+                201_326_874, 2635, target_date_raw
+            ),
+        )
+        self.assertFalse(guarded["research_high_speed_ab"])
+
+        for label, readiness in (
+            (
+                "explicit-ab",
+                {**base_readiness, "noncombat_sentinel_high_speed_ab": True},
+            ),
+            (
+                "scope-live",
+                {
+                    **base_readiness,
+                    "committed_route_sentinel_speed_5_live_ready": True,
+                },
+            ),
+        ):
+            with self.subTest(label=label):
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[enemy],
+                    score=0,
+                    date_raw=date_raw,
+                    steps=(
+                        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+                        "life-advance",
+                    ),
+                    battle_speed_readiness=readiness,
+                )
+                self.assertEqual(plan["timeline_speed"], 5)
+                self.assertEqual(
+                    plan["selected_step"],
+                    committed_route_sentinel_advance_step(
+                        201_326_874,
+                        2635,
+                        target_date_raw,
+                        timeline_speed=5,
+                    ),
+                )
+                self.assertEqual(
+                    plan["research_high_speed_ab"], label == "explicit-ab"
+                )
+                self.assertEqual(
+                    parse_committed_route_sentinel_advance_step(
+                        plan["selected_step"]
+                    ),
+                    parse_committed_route_sentinel_advance_step(guarded_step),
+                )
+                self.assertEqual(
+                    plan["sentinel_scope"], guarded["sentinel_scope"]
+                )
+                self.assertEqual(
+                    plan["absolute_target_date_raw"],
+                    guarded["absolute_target_date_raw"],
+                )
+
     def test_stationary_objective_hold_canary_routes_typed_speed_three_step(
         self,
     ) -> None:
@@ -2375,6 +2478,69 @@ class GameplayBridgeTests(unittest.TestCase):
                 88, 201_326_874, 2_635, target_date_raw
             ),
         )
+
+    def test_stationary_speed_five_does_not_inherit_route_live_gate(self) -> None:
+        date_raw = 53_256_000
+        target_date_raw = date_raw + 7 * 24
+        player = _army(
+            501,
+            soldiers=4_100,
+            province_id=2_635,
+            controllable=True,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        readiness = {
+            "stationary_objective_hold_sentinel_canary_ready": True,
+            "noncombat_sentinel_timeline_speed": 5,
+            "noncombat_sentinel_high_speed_ab": False,
+            "committed_route_sentinel_speed_5_live_ready": True,
+            "stationary_objective_hold_sentinel_speed_5_live_ready": False,
+        }
+        guarded = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            steps=(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(guarded["timeline_speed"], 3)
+        self.assertEqual(
+            guarded["selected_step"],
+            war_objective_hold_sentinel_advance_step(
+                88, 501, 2_635, target_date_raw
+            ),
+        )
+
+        ab_plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            steps=(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness={
+                **readiness,
+                "noncombat_sentinel_high_speed_ab": True,
+            },
+        )
+        self.assertEqual(ab_plan["timeline_speed"], 5)
+        self.assertEqual(
+            ab_plan["selected_step"],
+            war_objective_hold_sentinel_advance_step(
+                88,
+                501,
+                2_635,
+                target_date_raw,
+                timeline_speed=5,
+            ),
+        )
+        self.assertTrue(ab_plan["research_high_speed_ab"])
 
     def test_stationary_objective_hold_respects_existing_query_lease_expiry(
         self,

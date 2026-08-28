@@ -1559,6 +1559,43 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertFalse(invalid["valid"])
         self.assertIn("sentinel_completion_invalid", invalid["errors"])
 
+    def test_route_result_speed_must_match_typed_speed_five_binding(self) -> None:
+        route_step = committed_route_sentinel_advance_step(
+            SUBJECT,
+            2635,
+            DATE_RAW + 45 * 24,
+            timeline_speed=5,
+        )
+        row = _sentinel_advance_row(1, step=route_step)
+        result = row["result"]
+        assert isinstance(result, dict)
+        result["sentinel_scope"] = "committed_route"
+        result["timeline_speed"] = 5
+        armed = result["armed_tactical_daily_sentinel"]
+        sentinel = result["tactical_daily_sentinel"]
+        assert isinstance(armed, dict)
+        assert isinstance(sentinel, dict)
+        armed["speed"] = 5
+        armed["combat_count"] = 0
+        sentinel["speed"] = 5
+        sentinel["combat_count"] = 0
+        result["trigger_reasons"] = ["route_target_changed"]
+        sentinel["trigger_flags"] = 1 << 2
+        sentinel["trigger_reasons"] = ["route_target_changed"]
+
+        valid = _battle_sentinel_advance_validation(result)
+        self.assertIsInstance(valid, dict)
+        assert isinstance(valid, dict)
+        self.assertTrue(valid["valid"], valid["errors"])
+
+        mismatched = copy.deepcopy(result)
+        mismatched["timeline_speed"] = 3
+        invalid = _battle_sentinel_advance_validation(mismatched)
+        self.assertIsInstance(invalid, dict)
+        assert isinstance(invalid, dict)
+        self.assertFalse(invalid["valid"])
+        self.assertIn("sentinel_completion_invalid", invalid["errors"])
+
     def _plan(
         self,
         history: list[dict[str, object]],

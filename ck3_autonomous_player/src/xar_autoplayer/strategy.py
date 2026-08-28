@@ -70,7 +70,9 @@ from .bridge.war_contract import (
     offer_white_peace_step,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
+    parse_committed_route_sentinel_advance_speed,
     parse_committed_route_sentinel_advance_step,
+    parse_war_objective_hold_sentinel_advance_speed,
     parse_war_objective_hold_sentinel_advance_step,
     parse_move_army_step,
     parse_preview_move_army_step,
@@ -1748,15 +1750,21 @@ def _battle_sentinel_advance_validation(
     committed_route_request = parse_committed_route_sentinel_advance_step(
         step
     )
+    committed_route_speed = parse_committed_route_sentinel_advance_speed(step)
     objective_hold_request = (
         parse_war_objective_hold_sentinel_advance_step(step)
     )
+    objective_hold_speed = (
+        parse_war_objective_hold_sentinel_advance_speed(step)
+    )
     expected = (
-        (3, "decision_epoch")
+        (committed_route_speed, "decision_epoch")
+        if committed_route_request is not None
+        else (objective_hold_speed, "decision_epoch")
+        if objective_hold_request is not None
+        else (3, "decision_epoch")
         if decision_target is not None
         or step == _BATTLE_DECISION_EPOCH_ADVANCE_STEP
-        or committed_route_request is not None
-        or objective_hold_request is not None
         else (5, "terminal_or_sentinel")
         if step == _BATTLE_TERMINAL_CRUISE_STEP
         else None
@@ -3800,10 +3808,24 @@ def choose_one_life_turn(
             "decision_sentinel_live_ready",
             "committed_route_sentinel_live_ready",
             "stationary_objective_hold_sentinel_canary_ready",
+            "committed_route_sentinel_speed_4_live_ready",
+            "committed_route_sentinel_speed_5_live_ready",
+            "stationary_objective_hold_sentinel_speed_4_live_ready",
+            "stationary_objective_hold_sentinel_speed_5_live_ready",
             "terminal_sentinel_live_ready",
             "overwhelming_matrix_live_ready",
         )
     }
+    committed_route_sentinel_speed = _noncombat_sentinel_timeline_speed(
+        battle_speed_readiness,
+        sentinel_scope="committed_route",
+    )
+    stationary_objective_hold_sentinel_speed = (
+        _noncombat_sentinel_timeline_speed(
+            battle_speed_readiness,
+            sentinel_scope="stationary_objective_hold",
+        )
+    )
     cross_run_focus = _cross_run_focus(next_run_plan)
     played_character = (
         snapshot.get("played_character")
@@ -5436,17 +5458,32 @@ def choose_one_life_turn(
                     int(objective_hold_candidate["subject_army_id"]),
                     int(objective_hold_candidate["objective_province_id"]),
                     objective_hold_target_date_raw,
+                    timeline_speed=(
+                        stationary_objective_hold_sentinel_speed
+                    ),
                 ),
                 "reason": (
                     "every player army is regular, idle and stationary, and "
                     "the bound controllable subject is holding an explicit "
-                    "active-war objective; run the explicit speed-3 canary "
+                    "active-war objective; run the explicit speed-"
+                    f"{stationary_objective_hold_sentinel_speed} canary "
                     "for at most seven days without Python daily pauses"
                 ),
                 "timeline_policy": (
-                    "war_stationary_objective_hold_canary_speed_3"
+                    "war_stationary_objective_hold_canary_speed_"
+                    f"{stationary_objective_hold_sentinel_speed}"
                 ),
-                "timeline_speed": 3,
+                "timeline_speed": (
+                    stationary_objective_hold_sentinel_speed
+                ),
+                "research_high_speed_ab": bool(
+                    stationary_objective_hold_sentinel_speed > 3
+                    and isinstance(battle_speed_readiness, dict)
+                    and battle_speed_readiness.get(
+                        "noncombat_sentinel_high_speed_ab"
+                    )
+                    is True
+                ),
                 "sentinel_mode": "decision_epoch",
                 "sentinel_scope": "stationary_objective_hold",
                 "absolute_target_date_raw": objective_hold_target_date_raw,
@@ -6438,20 +6475,33 @@ def choose_one_life_turn(
                                 int(army_id),
                                 observed_route_target,
                                 route_target_date_raw,
+                                timeline_speed=(
+                                    committed_route_sentinel_speed
+                                ),
                             )
                         ),
                         "reason": (
                             "the complete controllable watch set has an "
                             "already committed nonempty route; run at speed "
-                            "3 without Python daily polling until the native "
+                            f"{committed_route_sentinel_speed} without Python "
+                            "daily polling until the native "
                             "sentinel observes route-target change, CombatID "
                             "contact, retreat, army loss, native pause, or "
                             "the absolute date bound"
                         ),
                         "timeline_policy": (
-                            "war_committed_route_sentinel_speed_3"
+                            "war_committed_route_sentinel_speed_"
+                            f"{committed_route_sentinel_speed}"
                         ),
-                        "timeline_speed": 3,
+                        "timeline_speed": committed_route_sentinel_speed,
+                        "research_high_speed_ab": bool(
+                            committed_route_sentinel_speed > 3
+                            and isinstance(battle_speed_readiness, dict)
+                            and battle_speed_readiness.get(
+                                "noncombat_sentinel_high_speed_ab"
+                            )
+                            is True
+                        ),
                         "sentinel_mode": "decision_epoch",
                         "sentinel_scope": "committed_route",
                         "absolute_target_date_raw": route_target_date_raw,
@@ -8737,6 +8787,47 @@ def _review_all_player_assaults(
 
 def _native_int(value: object) -> int | None:
     return value if isinstance(value, int) and not isinstance(value, bool) else None
+
+
+def _noncombat_sentinel_timeline_speed(
+    readiness: dict[str, object] | None,
+    *,
+    sentinel_scope: str,
+) -> int:
+    """Select one explicitly configured and admitted noncombat speed.
+
+    Production remains speed 3 until the requested scope has its own live
+    matrix.  The shared research flag is the only pre-live route to speed
+    4/5, so one scope cannot accidentally inherit another scope's evidence.
+    """
+    configured = (
+        _native_int(readiness.get("noncombat_sentinel_timeline_speed"))
+        if isinstance(readiness, dict)
+        else None
+    )
+    if configured not in {1, 2, 3, 4, 5}:
+        return 3
+    if configured <= 3:
+        return configured
+    if (
+        isinstance(readiness, dict)
+        and readiness.get("noncombat_sentinel_high_speed_ab") is True
+    ):
+        return configured
+    readiness_prefix = {
+        "committed_route": "committed_route_sentinel",
+        "stationary_objective_hold": "stationary_objective_hold_sentinel",
+    }.get(sentinel_scope)
+    if (
+        readiness_prefix is not None
+        and isinstance(readiness, dict)
+        and readiness.get(
+            f"{readiness_prefix}_speed_{configured}_live_ready"
+        )
+        is True
+    ):
+        return configured
+    return 3
 
 
 def _army_tactical_state(army: dict[str, object]) -> str | None:

@@ -17,6 +17,7 @@ from xar_autoplayer.bridge.war_contract import (
     is_native_war_step,
     normalize_route_contact_horizon,
     parse_advance_route_contact_horizon_step,
+    parse_committed_route_sentinel_advance_speed,
     parse_committed_route_sentinel_advance_step,
     parse_query_route_contact_horizon_step,
     query_route_contact_horizon_step,
@@ -94,6 +95,9 @@ class RouteContactHorizonContractTests(unittest.TestCase):
             parse_committed_route_sentinel_advance_step(step),
             (201_326_874, 2635, 53_257_080),
         )
+        self.assertEqual(
+            parse_committed_route_sentinel_advance_speed(step), 3
+        )
         self.assertTrue(is_life_advance_step(step))
         for malformed in (
             "committed-route-sentinel-advance-army-0-to-2635-until-53257080",
@@ -101,11 +105,42 @@ class RouteContactHorizonContractTests(unittest.TestCase):
             "committed-route-sentinel-advance-army-11-to-2635-until-0",
             "committed-route-sentinel-advance-army-11-to-2635-until-053257080",
             "committed-route-sentinel-advance-army-11-to-2635",
+            "committed-route-sentinel-advance-army-11-to-2635-until-53257080-speed-3",
+            "committed-route-sentinel-advance-army-11-to-2635-until-53257080-speed-6",
         ):
             with self.subTest(malformed=malformed):
                 self.assertIsNone(
                     parse_committed_route_sentinel_advance_step(malformed)
                 )
+
+    def test_committed_route_sentinel_explicitly_binds_ab_speed(self) -> None:
+        for speed in (1, 2, 4, 5):
+            with self.subTest(speed=speed):
+                step = committed_route_sentinel_advance_step(
+                    201_326_874,
+                    2635,
+                    53_257_080,
+                    timeline_speed=speed,
+                )
+                self.assertTrue(step.endswith(f"-speed-{speed}"))
+                self.assertEqual(
+                    parse_committed_route_sentinel_advance_step(step),
+                    (201_326_874, 2635, 53_257_080),
+                )
+                self.assertEqual(
+                    parse_committed_route_sentinel_advance_speed(step), speed
+                )
+                self.assertTrue(is_life_advance_step(step))
+
+        for speed in (0, 6, True):
+            with self.subTest(speed=speed):
+                with self.assertRaises(ValueError):
+                    committed_route_sentinel_advance_step(
+                        201_326_874,
+                        2635,
+                        53_257_080,
+                        timeline_speed=speed,
+                    )
 
     def test_step_is_canonical_sorted_and_generation_bound(self) -> None:
         step = query_route_contact_horizon_step(11, 2585, [41, 31, 41])

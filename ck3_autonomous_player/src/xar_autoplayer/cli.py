@@ -192,24 +192,25 @@ def parser() -> argparse.ArgumentParser:
         choices=(1, 2, 3, 4, 5),
         default=3,
         help=(
-            "timeline speed for proof-bound contact-free one-day route "
-            "slices (default: 3)"
+            "timeline speed for proof-bound one-day route slices and "
+            "committed-route/stationary-objective native sentinels "
+            "(default: 3)"
         ),
     )
     native_auto_run_parser.add_argument(
         "--allow-route-contact-high-speed-ab",
         action="store_true",
         help=(
-            "admit explicit speed 4..5 route-contact A/B arms; speed 1..3 "
-            "do not require this research flag"
+            "admit explicit speed 4..5 route/contact and stationary-objective "
+            "sentinel A/B arms; speed 1..3 do not require this research flag"
         ),
     )
     native_auto_run_parser.add_argument(
         "--allow-stationary-objective-hold-sentinel-canary",
         action="store_true",
         help=(
-            "advertise the bounded seven-day speed-3 stationary objective-"
-            "hold sentinel canary; disabled by default"
+            "advertise the bounded seven-day stationary objective-hold "
+            "sentinel canary at --route-contact-speed; disabled by default"
         ),
     )
     one_generation_parser = commands.add_parser(
@@ -249,24 +250,25 @@ def parser() -> argparse.ArgumentParser:
         choices=(1, 2, 3, 4, 5),
         default=3,
         help=(
-            "timeline speed for proof-bound contact-free one-day route "
-            "slices (default: 3)"
+            "timeline speed for proof-bound one-day route slices and "
+            "committed-route/stationary-objective native sentinels "
+            "(default: 3)"
         ),
     )
     one_generation_parser.add_argument(
         "--allow-route-contact-high-speed-ab",
         action="store_true",
         help=(
-            "admit explicit speed 4..5 route-contact A/B arms; speed 1..3 "
-            "do not require this research flag"
+            "admit explicit speed 4..5 route/contact and stationary-objective "
+            "sentinel A/B arms; speed 1..3 do not require this research flag"
         ),
     )
     one_generation_parser.add_argument(
         "--allow-stationary-objective-hold-sentinel-canary",
         action="store_true",
         help=(
-            "advertise the bounded seven-day speed-3 stationary objective-"
-            "hold sentinel canary; disabled by default"
+            "advertise the bounded seven-day stationary objective-hold "
+            "sentinel canary at --route-contact-speed; disabled by default"
         ),
     )
     commands.add_parser(

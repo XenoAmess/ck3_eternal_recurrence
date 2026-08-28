@@ -1640,6 +1640,8 @@ def committed_route_sentinel_advance_step(
     subject_army_id: int,
     target_province_id: int,
     target_date_raw: int,
+    *,
+    timeline_speed: int = 3,
 ) -> str:
     for name, value, maximum in (
         ("subject_army_id", subject_army_id, 2**31 - 1),
@@ -1652,15 +1654,31 @@ def committed_route_sentinel_advance_step(
             or not 0 < value <= maximum
         ):
             raise ValueError(f"{name} must be a positive signed integer")
+    speed_suffix = _war_sentinel_speed_suffix(timeline_speed)
     return (
         f"{COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX}"
         f"{subject_army_id}-to-{target_province_id}-until-{target_date_raw}"
+        f"{speed_suffix}"
     )
 
 
 def parse_committed_route_sentinel_advance_step(
     step: object,
 ) -> tuple[int, int, int] | None:
+    parsed = _parse_committed_route_sentinel_advance_step(step)
+    return parsed[:3] if parsed is not None else None
+
+
+def parse_committed_route_sentinel_advance_speed(
+    step: object,
+) -> int | None:
+    parsed = _parse_committed_route_sentinel_advance_step(step)
+    return parsed[3] if parsed is not None else None
+
+
+def _parse_committed_route_sentinel_advance_step(
+    step: object,
+) -> tuple[int, int, int, int] | None:
     if not isinstance(step, str) or not step.startswith(
         COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX
     ):
@@ -1669,7 +1687,11 @@ def parse_committed_route_sentinel_advance_step(
         COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX
     )
     subject_text, to_separator, remainder = payload.partition("-to-")
-    target_text, until_separator, date_text = remainder.partition("-until-")
+    target_text, until_separator, date_payload = remainder.partition("-until-")
+    parsed_date = _parse_war_sentinel_date_and_speed(date_payload)
+    date_text, timeline_speed = (
+        parsed_date if parsed_date is not None else ("", 0)
+    )
     if (
         not to_separator
         or not until_separator
@@ -1693,7 +1715,12 @@ def parse_committed_route_sentinel_advance_step(
         or not 0 < target_date_raw <= 2**63 - 1
     ):
         return None
-    return subject_army_id, target_province_id, target_date_raw
+    return (
+        subject_army_id,
+        target_province_id,
+        target_date_raw,
+        timeline_speed,
+    )
 
 
 def war_objective_hold_sentinel_advance_step(
@@ -1701,6 +1728,8 @@ def war_objective_hold_sentinel_advance_step(
     subject_army_id: int,
     objective_province_id: int,
     target_date_raw: int,
+    *,
+    timeline_speed: int = 3,
 ) -> str:
     for name, value, maximum in (
         ("war_id", war_id, 2**31 - 1),
@@ -1714,16 +1743,31 @@ def war_objective_hold_sentinel_advance_step(
             or not 0 < value <= maximum
         ):
             raise ValueError(f"{name} must be a positive signed integer")
+    speed_suffix = _war_sentinel_speed_suffix(timeline_speed)
     return (
         f"{WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX}{war_id}"
         f"-army-{subject_army_id}-at-{objective_province_id}"
-        f"-until-{target_date_raw}"
+        f"-until-{target_date_raw}{speed_suffix}"
     )
 
 
 def parse_war_objective_hold_sentinel_advance_step(
     step: object,
 ) -> tuple[int, int, int, int] | None:
+    parsed = _parse_war_objective_hold_sentinel_advance_step(step)
+    return parsed[:4] if parsed is not None else None
+
+
+def parse_war_objective_hold_sentinel_advance_speed(
+    step: object,
+) -> int | None:
+    parsed = _parse_war_objective_hold_sentinel_advance_step(step)
+    return parsed[4] if parsed is not None else None
+
+
+def _parse_war_objective_hold_sentinel_advance_step(
+    step: object,
+) -> tuple[int, int, int, int, int] | None:
     if not isinstance(step, str) or not step.startswith(
         WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX
     ):
@@ -1733,7 +1777,11 @@ def parse_war_objective_hold_sentinel_advance_step(
     )
     war_text, army_separator, remainder = payload.partition("-army-")
     subject_text, objective_separator, remainder = remainder.partition("-at-")
-    objective_text, date_separator, date_text = remainder.partition("-until-")
+    objective_text, date_separator, date_payload = remainder.partition("-until-")
+    parsed_date = _parse_war_sentinel_date_and_speed(date_payload)
+    date_text, timeline_speed = (
+        parsed_date if parsed_date is not None else ("", 0)
+    )
     tokens = (war_text, subject_text, objective_text, date_text)
     if (
         not army_separator
@@ -1762,7 +1810,31 @@ def parse_war_objective_hold_sentinel_advance_step(
         subject_army_id,
         objective_province_id,
         target_date_raw,
+        timeline_speed,
     )
+
+
+def _war_sentinel_speed_suffix(timeline_speed: object) -> str:
+    if (
+        isinstance(timeline_speed, bool)
+        or not isinstance(timeline_speed, int)
+        or timeline_speed not in {1, 2, 3, 4, 5}
+    ):
+        raise ValueError("timeline_speed must be an integer from 1 through 5")
+    return "" if timeline_speed == 3 else f"-speed-{timeline_speed}"
+
+
+def _parse_war_sentinel_date_and_speed(
+    payload: str,
+) -> tuple[str, int] | None:
+    date_text, speed_separator, speed_text = payload.partition("-speed-")
+    if not speed_separator:
+        return date_text, 3
+    # Speed 3 has one canonical spelling: the legacy unsuffixed production
+    # literal.  Other speeds are explicit A/B bindings in the step itself.
+    if speed_text not in {"1", "2", "4", "5"}:
+        return None
+    return date_text, int(speed_text)
 
 
 def is_life_advance_step(step: object) -> bool:
