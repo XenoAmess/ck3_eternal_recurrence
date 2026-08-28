@@ -403,6 +403,27 @@ store, draws RNG or re-enters the bridge on CK3's native call stack.  Production
 advertisement remains forbidden until a managed live same-Combat drain and the
 full mutable feedback bundle both pass.
 
+Research-only capabilities
+`game.command.research-arm-tactical-daily-sentinel-v1-N` and
+`game.command.research-query-tactical-daily-sentinel-v1` expose the exact-build
+daily tactical sentinel.  While paused, arm it with
+`research-arm-tactical-daily-sentinel-v1-<start>-to-<target>-speed-<1..5>-mode-<decision|terminal>-a-<count>-<ArmyID...>`,
+after setting the matching speed, then resume exactly once.  A later paused
+frame is accepted as the native stop even when no intermediate running frame
+was published; the harness must never re-resume an already-triggered arm.  A
+new paused arm may replace a stale armed experiment after RED recovery.  The
+post-day hook calls CK3's original
+final-stage function exactly once before checking the absolute date and bounded
+route/combat fingerprints.  `decision` stops on ordinary tactical decision
+epochs; `terminal` deliberately crosses phase and winner-only transitions so
+an admitted overwhelming battle can run without intermediate external pauses.
+The status result records the armed/stop dates and speed, trigger reasons,
+overshoot, intermediate pauses, terminal observation and abnormal state.  This
+is static-ready only: no live arm or production speed selector is admitted yet.
+In terminal mode, a crush candidate additionally requires a cursor-bound
+passive terminal-journal event on the same day and equal core terminal outcomes
+across the restored speed arms; a date fallback is not terminal admission.
+
 `main_thread_query_mailbox_v1` now exposes one deliberately typed execution
 boundary for `query-war-entry-assessments-v1`; it is not a generic native-call,
 effect, phase-query or simulation-main executor.  The exact SDL Windows pump

@@ -8,7 +8,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::array<std::string_view, 61> kCapabilities{
+constexpr std::array<std::string_view, 63> kCapabilities{
     "game.state.snapshot",
     "game.state.xar-one-life-settlement",
     "game.state.map-ready",
@@ -32,6 +32,8 @@ constexpr std::array<std::string_view, 61> kCapabilities{
     "game.command.set-speed-3",
     "game.command.set-speed-4",
     "game.command.set-speed-5",
+    "game.command.research-arm-tactical-daily-sentinel-v1-N",
+    "game.command.research-query-tactical-daily-sentinel-v1",
     "game.command.select-event-option-N",
     "game.command.save-checkpoint",
     "game.command.accept-pending-character-interaction",

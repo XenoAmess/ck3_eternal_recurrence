@@ -63,6 +63,7 @@ class _FakeTimelineDriver:
         step: str,
         *,
         expected_revision: int | None,
+        required_capability: str | None = None,
         timeout_seconds: float,
         internal_semantic_snapshot: bool,
     ) -> dict[str, object]:
@@ -144,6 +145,126 @@ class _FakeTerminalDriver(_FakeTimelineDriver):
         return changed
 
 
+class _FakeSentinelDriver(_FakeTimelineDriver):
+    def __init__(self) -> None:
+        super().__init__()
+        self.snapshot = _battle_snapshot()
+        self.armed: dict[str, object] | None = None
+
+    def _execute_primitive_step(
+        self,
+        step: str,
+        *,
+        expected_revision: int | None,
+        required_capability: str | None = None,
+        timeout_seconds: float,
+        internal_semantic_snapshot: bool,
+    ) -> dict[str, object]:
+        if step.startswith("research-arm-tactical-daily-sentinel-v1-"):
+            assert required_capability == HARNESS.TACTICAL_SENTINEL_ARM_CAPABILITY
+            self.steps.append(step)
+            tokens = step.split("-")
+            army_marker = tokens.index("a")
+            army_count = int(tokens[army_marker + 1])
+            assert len(tokens[army_marker + 2 :]) == army_count
+            self.armed = {
+                "state": "armed",
+                "generation": 1,
+                "starting_date_raw": 1000,
+                "target_date_raw": 1072,
+                "last_observed_date_raw": 1000,
+                "trigger_date_raw": 0,
+                "speed": 5,
+                "mode": "terminal_or_sentinel",
+                "army_count": army_count,
+                "combat_count": 1,
+                "completed_daily_ticks": 0,
+                "intermediate_pause_count": 0,
+                "trigger_flags": 0,
+                "trigger_reasons": [],
+                "signed_date_delta_from_target_raw": 0,
+                "overshoot_days": -1,
+                "pause_wrapper_called": False,
+                "pause_observed": False,
+                "terminal_observed": False,
+                "abnormal": False,
+            }
+            return {
+                "accepted": True,
+                "status": "available",
+                "tactical_daily_sentinel": copy.deepcopy(self.armed),
+            }
+        if step == HARNESS.TACTICAL_SENTINEL_STATUS_STEP:
+            assert required_capability == HARNESS.TACTICAL_SENTINEL_STATUS_CAPABILITY
+            assert self.armed is not None
+            self.steps.append(step)
+            return {
+                "accepted": True,
+                "status": "available",
+                "tactical_daily_sentinel": copy.deepcopy(self.armed),
+            }
+        return super()._execute_primitive_step(
+            step,
+            expected_revision=expected_revision,
+            required_capability=required_capability,
+            timeout_seconds=timeout_seconds,
+            internal_semantic_snapshot=internal_semantic_snapshot,
+        )
+
+    def _wait_for_life_advance_snapshot(
+        self,
+        snapshot: dict[str, object],
+        predicate: object,
+        *,
+        timeout_seconds: float,
+    ) -> dict[str, object]:
+        assert callable(predicate)
+        if predicate(self.snapshot):
+            return copy.deepcopy(self.snapshot)
+        self._trigger_terminal()
+        return copy.deepcopy(self.snapshot)
+
+    def _trigger_terminal(self) -> None:
+        assert self.armed is not None
+        self.snapshot["date_raw"] = 1024
+        self.snapshot["paused"] = True
+        self.snapshot["revision"] = int(self.snapshot["revision"]) + 1
+        self.snapshot["player_armies"][0]["in_combat"] = False
+        self.armed.update(
+            {
+                "state": "triggered",
+                "last_observed_date_raw": 1024,
+                "trigger_date_raw": 1024,
+                "completed_daily_ticks": 1,
+                "trigger_flags": 256,
+                "trigger_reasons": ["combat_terminal"],
+                "signed_date_delta_from_target_raw": -48,
+                "overshoot_days": 0,
+                "pause_wrapper_called": True,
+                "pause_observed": True,
+                "terminal_observed": True,
+            }
+        )
+
+
+class _FakeLostRunningSentinelDriver(_FakeSentinelDriver):
+    def _wait_for_life_advance_snapshot(
+        self,
+        snapshot: dict[str, object],
+        predicate: object,
+        *,
+        timeout_seconds: float,
+    ) -> dict[str, object]:
+        assert timeout_seconds > 0
+        assert callable(predicate)
+        if self.armed is not None and self.snapshot.get("paused") is False:
+            self._trigger_terminal()
+            return copy.deepcopy(self.snapshot)
+        return super()._wait_for_life_advance_snapshot(
+            snapshot, predicate, timeout_seconds=timeout_seconds
+        )
+
+
 def test_balanced_five_speed_schedule_is_the_approved_matrix() -> None:
     schedule = HARNESS._balanced_speed_schedule((1, 2, 3, 4, 5), 6)
     assert schedule == [1, 2, 3, 4, 5, 5, 4, 3, 2, 1] * 3
@@ -177,6 +298,12 @@ def test_terminal_accepts_all_five_but_ongoing_battle_refuses_four_and_five() ->
         "battle-parity", (1, 2, 3), samples_per_speed=6, target_days=1
     )
     HARNESS._validate_speed_request(
+        "sentinel-envelope",
+        (1, 2, 3, 4, 5),
+        samples_per_speed=1,
+        target_days=3,
+    )
+    HARNESS._validate_speed_request(
         "terminal-parity",
         (1, 2, 3, 4, 5),
         samples_per_speed=1,
@@ -187,6 +314,10 @@ def test_terminal_accepts_all_five_but_ongoing_battle_refuses_four_and_five() ->
     with pytest.raises(ValueError, match="same-day"):
         HARNESS._validate_speed_request(
             "battle-parity", (1, 4, 5), samples_per_speed=1, target_days=1
+        )
+    with pytest.raises(ValueError, match="speed 1 plus"):
+        HARNESS._validate_speed_request(
+            "sentinel-envelope", (1,), samples_per_speed=1, target_days=1
         )
     with pytest.raises(ValueError, match="speed 1 plus"):
         HARNESS._validate_speed_request(
@@ -285,6 +416,170 @@ def test_terminal_slice_runs_speed_five_until_subject_leaves_and_pauses() -> Non
     assert postconditions["checks"]["final_subject_left_combat"] is True
     assert postconditions["metrics"]["terminal_observed_elapsed_days"] == 2
     assert postconditions["ok"] is True
+
+
+def test_sentinel_slice_stops_natively_without_intermediate_external_pause() -> None:
+    driver = _FakeSentinelDriver()
+    starting = driver.take_internal_semantic_snapshot()
+    result = HARNESS._run_sentinel_slice(
+        driver,
+        starting,
+        subject_army_id=83_886_341,
+        speed=5,
+        target_days=3,
+        sentinel_mode="terminal",
+        timeout_seconds=5.0,
+    )
+    final = driver.take_internal_semantic_snapshot()
+    postconditions = HARNESS._sentinel_slice_postconditions(
+        result, starting=starting, final=final
+    )
+
+    assert driver.steps == [
+        "set-speed-5",
+        (
+            "research-arm-tactical-daily-sentinel-v1-"
+            "1000-to-1072-speed-5-mode-terminal-a-1-83886341"
+        ),
+        "resume-map",
+        HARNESS.TACTICAL_SENTINEL_STATUS_STEP,
+    ]
+    assert result["emergency_pause_action"] is None
+    assert result["final_paused_date_raw"] == 1024
+    assert postconditions["metrics"]["intermediate_pause_count"] == 0
+    assert postconditions["metrics"]["terminal_observed"] is True
+    assert postconditions["metrics"]["native_overshoot_days"] == 0
+    assert postconditions["ok"] is True
+
+
+def test_sentinel_resume_is_never_retried_when_running_frame_is_missed() -> None:
+    driver = _FakeLostRunningSentinelDriver()
+    starting = driver.take_internal_semantic_snapshot()
+    result = HARNESS._run_sentinel_slice(
+        driver,
+        starting,
+        subject_army_id=83_886_341,
+        speed=5,
+        target_days=3,
+        sentinel_mode="terminal",
+        timeout_seconds=5.0,
+    )
+    final = driver.take_internal_semantic_snapshot()
+    postconditions = HARNESS._sentinel_slice_postconditions(
+        result, starting=starting, final=final
+    )
+
+    assert driver.steps.count("resume-map") == 1
+    assert result["resume_action"]["running_observed"] is False
+    assert result["emergency_pause_action"] is None
+    assert postconditions["checks"]["resume_submitted_exactly_once"] is True
+    assert postconditions["ok"] is True
+
+
+def test_sentinel_arm_literal_watches_the_complete_requested_army_set() -> None:
+    driver = _FakeSentinelDriver()
+    starting = driver.take_internal_semantic_snapshot()
+    result = HARNESS._run_sentinel_slice(
+        driver,
+        starting,
+        subject_army_id=357,
+        sentinel_army_ids=(357, 33_554_657),
+        speed=5,
+        target_days=3,
+        sentinel_mode="terminal",
+        timeout_seconds=5.0,
+    )
+    final = driver.take_internal_semantic_snapshot()
+    postconditions = HARNESS._sentinel_slice_postconditions(
+        result, starting=starting, final=final
+    )
+
+    assert result["sentinel_army_ids"] == [357, 33_554_657]
+    assert result["arm_step"].endswith("-a-2-357-33554657")
+    assert result["arm_result"]["tactical_daily_sentinel"]["army_count"] == 2
+    assert postconditions["checks"]["arm_binding_acknowledged"] is True
+    assert postconditions["ok"] is True
+
+
+def test_sentinel_army_set_validation_is_bounded_and_subject_bound() -> None:
+    assert HARNESS._normalize_sentinel_army_ids(357, None) == (357,)
+    assert HARNESS._normalize_sentinel_army_ids(
+        357, [357, 33_554_657]
+    ) == (357, 33_554_657)
+    with pytest.raises(ValueError, match="include --subject-army-id"):
+        HARNESS._normalize_sentinel_army_ids(357, [33_554_657])
+    with pytest.raises(ValueError, match="duplicates"):
+        HARNESS._normalize_sentinel_army_ids(357, [357, 357])
+    with pytest.raises(ValueError, match="at most 64"):
+        HARNESS._normalize_sentinel_army_ids(1, list(range(1, 66)))
+
+
+def _sentinel_summary_row(
+    speed: int,
+    *,
+    terminal_observed: bool,
+    journal_available: bool,
+) -> dict[str, object]:
+    row: dict[str, object] = {
+        "requested_speed": speed,
+        "operational_ok": True,
+        "metrics": {
+            "native_trigger_reasons": (
+                ["combat_terminal"]
+                if terminal_observed
+                else ["date_deadline"]
+            ),
+            "native_overshoot_days": 0,
+            "intermediate_pause_count": 0,
+            "terminal_observed": terminal_observed,
+            "abnormal": False,
+        },
+        "sentinel": {
+            "mode": "terminal",
+            "before_normalized_frame_sha256": "SAME-START",
+            "zero_external_pause_or_rich_query_between_resume_and_stop": True,
+        },
+        "terminal": {"status": "not_observed"},
+    }
+    if journal_available:
+        row["terminal"] = {
+            "status": "available",
+            "pause_lag_days": 0,
+            "outcome_without_battle_warscore_sha256": "SAME-CORE-OUTCOME",
+        }
+    return row
+
+
+def test_terminal_sentinel_date_fallback_cannot_pass_crush_gate() -> None:
+    rows = [
+        _sentinel_summary_row(
+            speed, terminal_observed=False, journal_available=False
+        )
+        for speed in (1, 5)
+    ]
+    summary = HARNESS._summarize_sentinel_envelope(rows, (1, 5))
+
+    assert summary["all_arms_operational"] is True
+    assert summary["terminal_outcome_parity_passed"] is False
+    assert summary["by_speed"]["5"]["crush_terminal_gate_passed"] is False
+    assert summary["speed5_candidate_gate_passed"] is False
+    assert summary["ok"] is False
+
+
+def test_terminal_sentinel_requires_cursor_bound_same_day_outcome_parity() -> None:
+    rows = [
+        _sentinel_summary_row(
+            speed, terminal_observed=True, journal_available=True
+        )
+        for speed in (1, 5)
+    ]
+    summary = HARNESS._summarize_sentinel_envelope(rows, (1, 5))
+
+    assert summary["terminal_outcome_parity_passed"] is True
+    assert summary["by_speed"]["1"]["crush_terminal_gate_passed"] is True
+    assert summary["by_speed"]["5"]["crush_terminal_gate_passed"] is True
+    assert summary["speed5_candidate_gate_passed"] is True
+    assert summary["ok"] is True
 
 
 def test_terminal_max_days_red_still_proves_pause() -> None:

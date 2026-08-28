@@ -268,6 +268,10 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v3-N") ||
       !Contains(known.capabilities,
+                "game.command.research-arm-tactical-daily-sentinel-v1-N") ||
+      !Contains(known.capabilities,
+                "game.command.research-query-tactical-daily-sentinel-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-war-termination-options-N") ||
       !Contains(known.capabilities,
                 "game.command.query-war-termination-terms-v1-N") ||
@@ -443,6 +447,17 @@ int main() {
           "query-current-event-window-context-v1") ||
       !exact_adapter->supports_step(
           "acknowledge-pending-character-interaction") ||
+      !exact_adapter->supports_step(
+          "research-arm-tactical-daily-sentinel-v1-53178264-to-"
+          "53178336-speed-5-mode-terminal-a-1-83886341") ||
+      !exact_adapter->supports_step(
+          "research-query-tactical-daily-sentinel-v1") ||
+      exact_adapter->supports_step(
+          "research-arm-tactical-daily-sentinel-v1-53178264-to-"
+          "53178336-speed-6-mode-terminal-a-1-83886341") ||
+      exact_adapter->supports_step(
+          "research-arm-tactical-daily-sentinel-v1-53178264-to-"
+          "53178335-speed-5-mode-terminal-a-1-83886341") ||
       !exact_adapter->supports_step(
           "query-route-contact-horizon-v1-16777217-to-3-h-2-16777218-33554433") ||
       exact_adapter->supports_step(

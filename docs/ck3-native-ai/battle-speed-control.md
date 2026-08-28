@@ -1,6 +1,6 @@
 # 战斗推进速度与暂停边界
 
-状态：**1/2/3 ongoing parity live GREEN / five-speed terminal strict parity RED-inconclusive / contact-free route speed-3 implementation-ready, targeted live A/B pending**
+状态：**exact-build same-day sentinel static-ready / contact-free route speed-3 production-live / 1/2/3 ongoing parity live GREEN / five-speed terminal strict parity RED-inconclusive / battle production selector unchanged**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -183,9 +183,10 @@ tranche 得到实际收益；不需要等 4/5 速设施全部完成才开始优�
 `1.25` 个游戏日，5 速无现实日长上界，而 rich query 又要求 paused。预期收益是把每游戏日的暂停/查询/持久化
 合并成每个真实决策 epoch 一次。
 
-1. running-safe `battle_tactical_sentinel_v1`：date、subject CombatID、phase/day、winner/finalized、participant
-   roster epoch/hash、retreat earliest/legal、最早 reinforcement/contact ETA、event/terminal/reopen bit；它由
-   application-main 的 daily journal/atomic mirror 发布，不让 250 ms worker 遍历完整可变战斗图。
+1. running-safe `tactical_daily_sentinel_v1` 最小切片：date、subject CUnit/CArmy generation-valid backlink、move target、
+   CombatID、retreat state，以及 active Combat 的 phase/day、winner/finalized、双方 ordered ArmyID roster count/hash；
+   application-main daily hook 只读这个有界图，不让 250 ms worker 遍历完整可变战斗图。retreat legality、forecast 与
+   reinforcement ETA 仍由停表后的 paused rich query 提供，不能冒充已经进入 sentinel。
 2. `run-until-date-or-sentinel`：设置 absolute date 与 sentinel epoch，在每个原生日更后的稳定边界检查，满足任一
    条件即暂停。ACK 只证明提交，最终仍要求 paused state、actual date delta 与 RQ 后置验证。
 
@@ -202,12 +203,30 @@ tranche 得到实际收益；不需要等 4/5 速设施全部完成才开始优�
 `0x346B910(jomini, true, armed_player_id)`。`0x346B850` 是 core，`0x346B910` 还处理状态差异、pause timestamp 与
 解暂停 gates；不得裸写 paused 字段。
 
-现有 PeekMessage rich mailbox 不能直接充当 running sentinel：running pump 会撤销 paused ownership proof。施工时应在
-连续两个 paused pump epoch 后，把 owner TID、TLS context/marker、player id、start/target date、CombatID 与 terminal
-cursor 复制进独立 immutable arm state；daily hook 只读固定内存/atomics 和既有 terminal journal，不分配、不运行 rich
-query。TID/TLS 不匹配、journal gap 或日钩计数异常只记录 infrastructure failure 并停用本臂，不得宣称 zero overshoot。
-首个 live admission 必须先用 speed 1 证明 post hook 每日恰好一次、delta=24、owner/TLS 一致、wrapper 单次暂停与最终
-paused 同日，再扩展五档 `+1/+3` 日矩阵。该 primitive 目前仍是 static-ready 施工入口，不是 production-live 能力。
+现有 PeekMessage rich mailbox 不能直接充当 running sentinel：running pump 会撤销 paused ownership proof。
+[implementation-confirmed] 当前 vertical slice 在 suspended startup 安装 final-stage detour；arm 只允许 paused map，复制
+player id、start/absolute-target date、requested speed/mode 与最多 64 个 subject ArmyID 的有界 fingerprint。hook 本身只会由
+原生 daily final stage 在 application-main 调用，先执行 original 一次，再做固定内存/atomic 判定；它不分配、不运行 rich
+query。命中后调用原生 pause wrapper，并同时记录 final paused readback。既有 passive terminal journal/cursor 保持独立，
+只在停表后用于终局结果互证。
+
+研究命令是：
+
+```text
+research-arm-tactical-daily-sentinel-v1-<start>-to-<absolute-target>-speed-<1..5>-mode-<decision|terminal>-a-<count>-<ArmyID...>
+research-query-tactical-daily-sentinel-v1
+```
+
+`decision` 在 route target、contact/CombatID、retreat、phase、roster、winner/finalized、army/combat removal、native auto-pause
+或 absolute date 变化时停；`terminal` 即 `terminal_or_sentinel`，忽略普通 phase 与 winner 推进，允许 maneuver/main/pursuit
+连续通过，只在 roster/retreat/reopen/真正 finalized/removal、native auto-pause、absolute date 或异常时停。后者正是碾压战
+speed 5 的“直到终局或真实决策点”合同：成功终局臂必须 `intermediate_pause_count=0`，不能把最终 sentinel pause 算作中途暂停。
+
+query 固定返回 mode、arm/start/target/last/trigger date、speed、tick/army/combat 数、stop flags/reasons、signed target delta、
+`overshoot_days`、`intermediate_pause_count`、pause-wrapper/paused readback、`terminal_observed` 与 `abnormal`。首个 live admission
+仍须先以 speed 1 证明 post hook 每日恰好一次、delta=24、wrapper 单次暂停与最终 paused 同日，再扩展五档 `+1/+3` 日矩阵。
+该 primitive 目前是 static-ready，不是 production-live；正常战争的首个生产候选下限是 speed 3，speed 4/5 只有各自 live
+zero-overshoot/同 seed parity gate 通过后才可入 selector。
 
 ```mermaid
 flowchart TD
@@ -236,10 +255,34 @@ flowchart TD
 
 [implementation-confirmed] 独立研究入口
 `ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py`
-已经把五档 stop envelope、已接战逐日 parity 与五档 terminal parity 做成可执行矩阵；它直接复用现有 exact-build timeline primitive 和
+已经把五档 stop envelope、same-day sentinel envelope、已接战逐日 parity 与五档 terminal parity 做成可执行矩阵；它直接复用现有 exact-build timeline primitive 和
 managed native-session cleanup，不调用 `life-advance`，也不改 `_life_advance_timeline_policy` 或 production selector。
 五档 active-battle stop envelope、1/2/3 ongoing parity 与五档 terminal matrix 均已有下文 live artifact；严格证据边界
 分别按 GREEN、RED-inconclusive 与未授权生产使用记录。
+
+sentinel 五档串行 A/B 从同一 immutable active-battle checkpoint 运行；每臂只做 pre-arm RQ，随后
+`set speed -> arm -> resume -> native stop -> status query/post-stop RQ`，resume 与 native stop 之间不提交外部 pause 或 rich query：
+resume 只提交一次；即使 bridge 没来得及发布 running frame 而直接看到更晚日期的 paused frame，也不得对已经触发的 arm 再次
+resume。RED 恢复后允许在 paused 状态用新 generation 替换仍为 armed 的旧实验。
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
+  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
+  --bridge-pipe <unique-pipe> --bridge-dll <sentinel-build-dll> `
+  --bridge-injector <injector> --output <sentinel-1to5.json> `
+  --cold-start-checkpoint --mode sentinel-envelope `
+  --sentinel-mode decision --subject-army-id <ArmyID> `
+  --sentinel-army-ids <subject-and-other-watched-ArmyIDs...> `
+  --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 3
+```
+
+`--sentinel-army-ids` 默认只监视 subject；同侧存在多支参战军时必须把完整 watch set 显式传入（最多 64 支，去重且必须包含
+subject），这样任一 CUnit/CArmy backlink、路线、接战或撤退变化都会在同一日停表。
+
+碾压战把 `--sentinel-mode terminal` 与足够远但有界的 `--target-days` 配对。只有 stop reason 是 terminal、
+`terminal_observed=true`、`intermediate_pause_count=0`、`abnormal=false`、`overshoot_days=0`，并由 passive terminal journal
+在同一日以 pre-arm cursor 核对结果、且各冷恢复速度臂的非 warscore 核心 outcome 一致的样本，才能算“零中途暂停直到终局”；
+date fallback 或 roster/retreat/reopen stop 是诚实的 sentinel stop，但 crush candidate gate 必须为 RED，不能算完整直跑终局。
 
 矩阵使用升序/降序平衡顺序。默认每档六个样本时，完整顺序严格为：
 
@@ -466,8 +509,9 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
 primitive，但 composite battle selector 尚未使用。
 
 已有 speed-2/4 的 active-battle 一日 stop sample、当前机器上的五档零超调小样本、1/2/3 的一日与三日严格
-ongoing parity，以及五档 terminal 核心结果一致/strict warscore inconclusive artifact。但仍没有每档足够大的 `E_s`
-分布、running-safe tactical sentinel、native same-day stop、跨 phase/roster epoch 的多日 parity、可归因的五档 warscore
+ongoing parity，以及五档 terminal 核心结果一致/strict warscore inconclusive artifact。running-safe tactical sentinel 与
+native same-day stop 已完成 exact-build 代码、研究 API、五档确定性 fixture 和矩阵入口，但尚未实机。因此仍没有每档足够大的 `E_s`
+分布、sentinel same-day live artifact、跨 phase/roster epoch 的多日 parity、可归因的五档 warscore
 分布或 speed-4/5 crush artifact。因此：
 
 - 当前 production combat/retreat 仍按一日 horizon、speed 1、paused RQ 工作；proof-bound contact-free route 的

@@ -18,6 +18,7 @@
 #include "xar_bridge/startup_particle2_consumer_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
+#include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -62,6 +63,8 @@ static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_v1{};
+static xar::ck3_11906::TacticalDailySentinelDetourStateV1
+    g_tactical_daily_sentinel_v1{};
 static xar::bridge::StartupParticle2NullGuardV1State
     g_startup_particle2_null_guard_v1{};
 static xar::bridge::StartupParticle2ConsumerGuardV1State
@@ -1676,6 +1679,132 @@ std::string CommandResultFrame(std::string_view request_id,
   return result;
 }
 
+std::string_view TacticalDailySentinelStateName(
+    xar::ck3_11906::TacticalDailySentinelStateV1 state) noexcept {
+  using State = xar::ck3_11906::TacticalDailySentinelStateV1;
+  switch (state) {
+  case State::idle:
+    return "idle";
+  case State::armed:
+    return "armed";
+  case State::triggered:
+    return "triggered";
+  case State::failed:
+    return "failed";
+  case State::unavailable:
+  default:
+    return "unavailable";
+  }
+}
+
+std::string_view TacticalDailySentinelModeName(
+    xar::ck3_11906::TacticalDailySentinelModeV1 mode) noexcept {
+  using Mode = xar::ck3_11906::TacticalDailySentinelModeV1;
+  return mode == Mode::terminal_or_sentinel ? "terminal_or_sentinel"
+                                             : "decision_epoch";
+}
+
+void AppendTacticalDailySentinelTriggerReasons(
+    std::string &result, std::uint32_t flags) {
+  using namespace xar::ck3_11906;
+  struct Entry {
+    std::uint32_t flag;
+    std::string_view name;
+  };
+  constexpr std::array<Entry, 16> entries{{
+      {tactical_daily_trigger_date_deadline, "date_deadline"},
+      {tactical_daily_trigger_army_unavailable, "army_unavailable"},
+      {tactical_daily_trigger_route_target_changed,
+       "route_target_changed"},
+      {tactical_daily_trigger_combat_transition, "combat_transition"},
+      {tactical_daily_trigger_retreat_transition, "retreat_transition"},
+      {tactical_daily_trigger_combat_unavailable, "combat_unavailable"},
+      {tactical_daily_trigger_combat_phase_changed,
+       "combat_phase_changed"},
+      {tactical_daily_trigger_combat_roster_changed,
+       "combat_roster_changed"},
+      {tactical_daily_trigger_combat_terminal, "combat_terminal"},
+      {tactical_daily_trigger_date_sequence_failure,
+       "date_sequence_failure"},
+      {tactical_daily_trigger_world_identity_changed,
+       "world_identity_changed"},
+      {tactical_daily_trigger_pause_not_observed, "pause_not_observed"},
+      {tactical_daily_trigger_original_unavailable,
+       "original_unavailable"},
+      {tactical_daily_trigger_native_pause, "native_pause"},
+      {tactical_daily_trigger_combat_winner_changed,
+       "combat_winner_changed"},
+      {tactical_daily_trigger_evaluation_failure, "evaluation_failure"},
+  }};
+  result += '[';
+  bool first = true;
+  for (const auto &entry : entries) {
+    if ((flags & entry.flag) == 0) {
+      continue;
+    }
+    if (!first) {
+      result += ',';
+    }
+    AppendJsonString(result, entry.name);
+    first = false;
+  }
+  result += ']';
+}
+
+std::string TacticalDailySentinelResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_11906::TacticalDailySentinelStatusV1 &status) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\","
+            "\"tactical_daily_sentinel\":{\"state\":";
+  AppendJsonString(result, TacticalDailySentinelStateName(status.state));
+  result += ",\"generation\":";
+  result += Number(status.generation);
+  result += ",\"starting_date_raw\":";
+  result += SignedNumber(status.starting_date_raw);
+  result += ",\"target_date_raw\":";
+  result += SignedNumber(status.target_date_raw);
+  result += ",\"last_observed_date_raw\":";
+  result += SignedNumber(status.last_observed_date_raw);
+  result += ",\"trigger_date_raw\":";
+  result += SignedNumber(status.trigger_date_raw);
+  result += ",\"speed\":";
+  result += SignedNumber(status.speed);
+  result += ",\"mode\":";
+  AppendJsonString(result, TacticalDailySentinelModeName(status.mode));
+  result += ",\"army_count\":";
+  result += Number(status.army_count);
+  result += ",\"combat_count\":";
+  result += Number(status.combat_count);
+  result += ",\"completed_daily_ticks\":";
+  result += Number(status.completed_daily_ticks);
+  result += ",\"intermediate_pause_count\":";
+  result += Number(status.intermediate_pause_count);
+  result += ",\"trigger_flags\":";
+  result += Number(status.trigger_flags);
+  result += ",\"trigger_reasons\":";
+  AppendTacticalDailySentinelTriggerReasons(result, status.trigger_flags);
+  result += ",\"signed_date_delta_from_target_raw\":";
+  result += SignedNumber(status.signed_date_delta_from_target_raw);
+  result += ",\"overshoot_days\":";
+  result += SignedNumber(status.overshoot_days);
+  result += ",\"pause_wrapper_called\":";
+  result += status.pause_wrapper_called ? "true" : "false";
+  result += ",\"pause_observed\":";
+  result += status.pause_observed ? "true" : "false";
+  result += ",\"terminal_observed\":";
+  result += status.terminal_observed ? "true" : "false";
+  result += ",\"abnormal\":";
+  result += status.abnormal ? "true" : "false";
+  result += "}}}";
+  return result;
+}
+
 std::string RoutePreviewResultFrame(
     std::string_view request_id, std::string_view step,
     const xar::game::PreviewMoveArmyResult &preview) {
@@ -2901,7 +3030,50 @@ void RunConnectedSession(
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "unsupported native gameplay step"));
-        } else if (step == "pause-map") {
+        } else {
+          xar::ck3_11906::TacticalDailySentinelArmRequestV1
+              tactical_sentinel_request{};
+          if (xar::ck3_11906::ParseTacticalDailySentinelArmStepV1(
+                  step, tactical_sentinel_request)) {
+            const auto result =
+                xar::ck3_11906::ArmTacticalDailySentinelV1(
+                    tactical_sentinel_request);
+            if (result == xar::ck3_11906::
+                              TacticalDailySentinelArmStatusV1::armed) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, TacticalDailySentinelResultFrame(
+                            request_id, step,
+                            xar::ck3_11906::
+                                ReadTacticalDailySentinelStatusV1()));
+            } else {
+              std::string_view error =
+                  "tactical daily sentinel is unavailable";
+              using ArmStatus = xar::ck3_11906::
+                  TacticalDailySentinelArmStatusV1;
+              if (result == ArmStatus::invalid_request) {
+                error = "invalid tactical daily sentinel request";
+              } else if (result == ArmStatus::requires_paused) {
+                error = "tactical daily sentinel requires a paused map";
+              } else if (result == ArmStatus::starting_date_mismatch) {
+                error = "tactical daily sentinel starting date mismatch";
+              } else if (result == ArmStatus::army_unavailable) {
+                error = "tactical daily sentinel army is unavailable";
+              } else if (result == ArmStatus::combat_unavailable) {
+                error = "tactical daily sentinel combat is unavailable";
+              } else if (result == ArmStatus::already_armed) {
+                error = "tactical daily sentinel is already armed";
+              }
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          } else if (step == xar::ck3_11906::
+                                      kTacticalDailySentinelStatusStepV1) {
+            connected = xar::bridge::WriteFrame(
+                pipe, TacticalDailySentinelResultFrame(
+                          request_id, step,
+                          xar::ck3_11906::
+                              ReadTacticalDailySentinelStatusV1()));
+          } else if (step == "pause-map") {
           const auto result = xar::game::SubmitPauseMap(game);
           if (result == xar::game::PauseSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
@@ -2927,7 +3099,7 @@ void RunConnectedSession(
                   checkpoint_submission, published_checkpoint_sequence);
             }
           }
-        } else if (step == "resume-map") {
+          } else if (step == "resume-map") {
           const auto result = xar::game::SubmitResumeMap(game);
           if (result == xar::game::ResumeSubmitResult::unavailable) {
             connected = xar::bridge::WriteFrame(
@@ -2952,7 +3124,7 @@ void RunConnectedSession(
                   checkpoint_submission, published_checkpoint_sequence);
             }
           }
-        } else if (step == "save-checkpoint") {
+          } else if (step == "save-checkpoint") {
           const auto result = xar::game::SubmitSaveCheckpoint(game);
           if (result.status ==
               xar::game::SaveCheckpointStatus::submitted) {
@@ -5443,6 +5615,7 @@ void RunConnectedSession(
                                          "unsupported native gameplay step"));
           }
         }
+        }
       }
     }
     WaitForSingleObject(g_stop_event, 10);
@@ -5532,14 +5705,26 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!game->enabled()) {
     return TRUE;
   }
+  const auto exact_bindings = xar::ck3_11906::BindCurrentProcess(true);
+  xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1
+      tactical_sentinel_environment{};
+  tactical_sentinel_environment.exact_build_admitted = true;
+  tactical_sentinel_environment.primary_thread_suspended_proven = true;
+  tactical_sentinel_environment.module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  tactical_sentinel_environment.bindings = exact_bindings;
+  if (!xar::ck3_11906::InstallTacticalDailySentinelV1(
+          g_tactical_daily_sentinel_v1,
+          tactical_sentinel_environment)) {
+    return FALSE;
+  }
   xar::ck3_11906::BattleTerminalJournalInstallEnvironmentV1
       battle_terminal_environment{};
   battle_terminal_environment.exact_build_admitted = true;
   battle_terminal_environment.primary_thread_suspended_proven = true;
   battle_terminal_environment.module_base =
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  battle_terminal_environment.bindings =
-      xar::ck3_11906::BindCurrentProcess(true);
+  battle_terminal_environment.bindings = exact_bindings;
   if (!xar::ck3_11906::InstallBattleTerminalJournalV1(
           g_battle_terminal_journal_v1,
           battle_terminal_environment)) {

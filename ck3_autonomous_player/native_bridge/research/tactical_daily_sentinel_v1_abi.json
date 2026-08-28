@@ -1,0 +1,122 @@
+{
+  "schema": "xar.ck3.tactical_daily_sentinel_v1.abi",
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "readiness": "static-ready",
+  "research_only": true,
+  "production_selector_enabled": false,
+  "daily_hook": {
+    "final_stage_rva": "0x26D3E80",
+    "resume_rva": "0x26D3E8F",
+    "patch_bytes": 15,
+    "prologue_hex": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20",
+    "ordering": "call original exactly once, then evaluate the bounded armed state",
+    "owner_thread": "application-main by native daily-stage call provenance"
+  },
+  "pause_wrapper": {
+    "rva": "0x346B910",
+    "signature": "void(jomini_state*, bool paused, int32 player_id)",
+    "postcondition": "Jomini+0x20 paused byte is nonzero on the same daily boundary"
+  },
+  "commands": {
+    "arm_capability": "game.command.research-arm-tactical-daily-sentinel-v1-N",
+    "arm_step": "research-arm-tactical-daily-sentinel-v1-<start>-to-<target>-speed-<1..5>-mode-<decision|terminal>-a-<count>-<ArmyID...>",
+    "status_capability": "game.command.research-query-tactical-daily-sentinel-v1",
+    "status_step": "research-query-tactical-daily-sentinel-v1"
+  },
+  "modes": {
+    "decision_epoch": {
+      "arm_token": "decision",
+      "stops_on": [
+        "absolute_date",
+        "army_missing",
+        "route_target_change",
+        "combat_transition",
+        "retreat_transition",
+        "phase_change",
+        "ordered_roster_change",
+        "winner_change",
+        "finalized_change",
+        "combat_removal",
+        "native_pause",
+        "infrastructure_failure"
+      ]
+    },
+    "terminal_or_sentinel": {
+      "arm_token": "terminal",
+      "ignores": [
+        "ordinary_phase_change",
+        "winner_change_without_finalization",
+        "phase_day_increment"
+      ],
+      "stops_on": [
+        "absolute_date",
+        "army_missing",
+        "route_target_change",
+        "combat_transition_or_reopen",
+        "retreat_transition",
+        "ordered_roster_change",
+        "finalized_or_combat_removal",
+        "native_pause",
+        "infrastructure_failure"
+      ],
+      "crush_success_proof": "terminal_observed && intermediate_pause_count == 0 && !abnormal && overshoot_days == 0 && cursor_bound_same_day_terminal_journal && cross_speed_core_outcome_parity"
+    }
+  },
+  "status_fields": [
+    "state",
+    "generation",
+    "starting_date_raw",
+    "target_date_raw",
+    "last_observed_date_raw",
+    "trigger_date_raw",
+    "speed",
+    "mode",
+    "army_count",
+    "combat_count",
+    "completed_daily_ticks",
+    "intermediate_pause_count",
+    "trigger_flags",
+    "trigger_reasons",
+    "signed_date_delta_from_target_raw",
+    "overshoot_days",
+    "pause_wrapper_called",
+    "pause_observed",
+    "terminal_observed",
+    "abnormal"
+  ],
+  "offline_acceptance": [
+    "canonical arm parser and rejection vectors",
+    "speeds 1 through 5 hit an exact +3 day deadline with zero overshoot",
+    "route, contact, retreat, phase, roster, terminal, and missing-component epochs",
+    "terminal mode crosses ordinary phase and winner changes without pausing",
+    "native auto-pause is surfaced as a decision epoch",
+    "a paused re-arm replaces a stale armed experiment generation",
+    "an evaluator memory fault remains abnormal even after a tactical trigger",
+    "skipped date fails closed",
+    "exact 15-byte anchor and absolute detour patch"
+  ],
+  "live_admission": {
+    "schedule": "1,2,3,4,5,5,4,3,2,1",
+    "production_floor_candidate": 3,
+    "speed_4_and_5": "admit only after their same-seed zero-overshoot and outcome parity gates",
+    "required": [
+      "same immutable checkpoint per arm",
+      "the harness arm literal contains the complete explicit watched ArmyID set (1..64, unique, including subject)",
+      "paused pre-arm rich frame",
+      "no external pause or rich query between resume and native stop",
+      "exactly one resume submission per arm even when the running frame is not observed",
+      "status mode, dates, speed, reason, overshoot, intermediate pauses, terminal and abnormal proof",
+      "paused post-stop rich frame",
+      "passive terminal journal for terminal outcomes",
+      "checkpoint unchanged and managed cleanup green"
+    ]
+  },
+  "unsupported_claims": [
+    "No live CK3 sentinel arm has been accepted yet.",
+    "No production speed selector was changed.",
+    "The sentinel does not compute retreat legality, reinforcement ETA, forecast, or dominance while running.",
+    "The armed speed is a requested experiment binding; final semantic readback must prove the actual speed."
+  ]
+}

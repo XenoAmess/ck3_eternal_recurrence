@@ -2,6 +2,7 @@
 
 #include "xar_bridge/war_entry_assessments_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
+#include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
@@ -367,6 +368,14 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       capability = "game.command.query-combat-simulation-inputs-v3-N";
     } else if (ParseCombatSimulationInputsStep(step, request)) {
       capability = "game.command.query-combat-simulation-inputs-v2-N";
+    }
+  }
+  if (capability.empty()) {
+    ck3_11906::TacticalDailySentinelArmRequestV1 request{};
+    if (ck3_11906::ParseTacticalDailySentinelArmStepV1(step, request)) {
+      capability = ck3_11906::kTacticalDailySentinelCapabilityV1;
+    } else if (step == ck3_11906::kTacticalDailySentinelStatusStepV1) {
+      capability = ck3_11906::kTacticalDailySentinelStatusCapabilityV1;
     }
   }
   if (capability.empty() &&

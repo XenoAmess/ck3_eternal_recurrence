@@ -8,9 +8,12 @@ than trusting command ACKs, and leaves event/interaction resolution to the
 caller.
 
 ``stop-envelope`` samples all five speeds in one recovered episode.
-``battle-parity`` restores the immutable checkpoint before every arm and is
-limited to speeds 1/2/3 until an application-main same-day battle sentinel is
-implemented and wired into this harness.
+``sentinel-envelope`` restores the immutable checkpoint for every arm, then
+uses the exact-build application-main daily sentinel to stop at an absolute
+date or a tactical epoch without any external pause/query in between.
+``battle-parity`` retains the legacy external-stop comparison and therefore
+stays limited to speeds 1/2/3.  Use ``sentinel-envelope`` for application-main
+same-day stops at speeds 4/5.
 
 ``terminal-parity`` also restores before every arm, but admits all five speeds
 because it binds comparison to the passive exact-build terminal journal rather
@@ -52,7 +55,21 @@ PURE_NATIVE_MODE = "native-headless"
 RAW_HOURS_PER_DAY = 24
 ALL_SPEEDS = (1, 2, 3, 4, 5)
 EXTERNAL_BATTLE_SPEEDS = (1, 2, 3)
-MATRIX_MODES = ("stop-envelope", "battle-parity", "terminal-parity")
+MATRIX_MODES = (
+    "stop-envelope",
+    "sentinel-envelope",
+    "battle-parity",
+    "terminal-parity",
+)
+SENTINEL_MODES = ("decision", "terminal")
+TACTICAL_SENTINEL_ARM_CAPABILITY = (
+    "game.command.research-arm-tactical-daily-sentinel-v1-N"
+)
+TACTICAL_SENTINEL_STATUS_CAPABILITY = (
+    "game.command.research-query-tactical-daily-sentinel-v1"
+)
+TACTICAL_SENTINEL_STATUS_STEP = "research-query-tactical-daily-sentinel-v1"
+TACTICAL_SENTINEL_MAX_ARMIES = 64
 STOP_ENVELOPE_SCENARIOS = ("neutral", "active-battle")
 MAX_TIMELINE_COMMAND_ATTEMPTS = 2
 METADATA_KEYS = frozenset(
@@ -88,9 +105,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--speeds", type=int, nargs="+", default=list(ALL_SPEEDS))
     parser.add_argument("--samples-per-speed", type=int, default=6)
     parser.add_argument("--target-days", type=int, default=1)
+    parser.add_argument(
+        "--sentinel-mode", choices=SENTINEL_MODES, default="decision"
+    )
     parser.add_argument("--terminal-max-days", type=int, default=45)
     parser.add_argument("--terminal-max-pause-lag-days", type=int, default=1)
     parser.add_argument("--subject-army-id", type=int)
+    parser.add_argument("--sentinel-army-ids", type=int, nargs="+")
     parser.add_argument("--timeout", type=float, default=7200.0)
     parser.add_argument("--readiness-timeout", type=float, default=180.0)
     parser.add_argument("--slice-timeout", type=float, default=90.0)
@@ -158,11 +179,11 @@ def _validate_speed_request(
     ]
     if mode == "battle-parity" and unsupported:
         raise ValueError(
-            "battle-parity speeds 4/5 require an application-main same-day "
-            "run-until-date-or-battle-sentinel primitive; external Python "
-            f"polling is intentionally refused (requested={unsupported})"
+            "battle-parity is the external-stop mode; speeds 4/5 must use "
+            "the application-main same-day sentinel-envelope instead "
+            f"(requested={unsupported})"
         )
-    if mode in {"battle-parity", "terminal-parity"} and (
+    if mode in {"sentinel-envelope", "battle-parity", "terminal-parity"} and (
         1 not in speeds or len(speeds) < 2
     ):
         raise ValueError(
@@ -193,6 +214,38 @@ def _balanced_speed_schedule(
             schedule.append(speed)
             counts[speed] += 1
     return schedule
+
+
+def _normalize_sentinel_army_ids(
+    subject_army_id: int,
+    requested_army_ids: list[int] | tuple[int, ...] | None,
+) -> tuple[int, ...]:
+    army_ids = (
+        tuple(requested_army_ids)
+        if requested_army_ids is not None
+        else (subject_army_id,)
+    )
+    if not army_ids:
+        raise ValueError("--sentinel-army-ids must not be empty")
+    if len(army_ids) > TACTICAL_SENTINEL_MAX_ARMIES:
+        raise ValueError(
+            "--sentinel-army-ids accepts at most "
+            f"{TACTICAL_SENTINEL_MAX_ARMIES} armies"
+        )
+    if any(
+        not isinstance(army_id, int)
+        or isinstance(army_id, bool)
+        or army_id <= 0
+        for army_id in army_ids
+    ):
+        raise ValueError("--sentinel-army-ids must contain positive ArmyIDs")
+    if len(set(army_ids)) != len(army_ids):
+        raise ValueError("--sentinel-army-ids must not contain duplicates")
+    if subject_army_id not in army_ids:
+        raise ValueError(
+            "--sentinel-army-ids must include --subject-army-id"
+        )
+    return army_ids
 
 
 def _integer(value: object) -> int | None:
@@ -784,6 +837,222 @@ def _run_timeline_slice(
     }
 
 
+def _run_sentinel_slice(
+    driver: NativeHeadlessGameplayDriver,
+    starting: dict[str, object],
+    *,
+    subject_army_id: int,
+    speed: int,
+    target_days: int,
+    sentinel_mode: str,
+    timeout_seconds: float,
+    sentinel_army_ids: tuple[int, ...] | None = None,
+) -> dict[str, object]:
+    """Run until the in-process daily sentinel pauses at a real epoch.
+
+    No external pause or rich query is submitted between resume and the
+    observed native stop.  The emergency pause path exists only to recover a
+    RED/timeout sample for managed cleanup and is reported separately.
+    """
+    if starting.get("paused") is not True or starting.get("map_ready") is not True:
+        raise RuntimeError("sentinel slice requires a paused, map-ready snapshot")
+    if sentinel_mode not in SENTINEL_MODES:
+        raise RuntimeError(f"invalid sentinel mode {sentinel_mode!r}")
+    starting_date_raw = _date_raw(starting)
+    target_date_raw = starting_date_raw + target_days * RAW_HOURS_PER_DAY
+    armed_army_ids = _normalize_sentinel_army_ids(
+        subject_army_id, sentinel_army_ids
+    )
+    armed_army_suffix = "-".join(str(army_id) for army_id in armed_army_ids)
+    arm_step = (
+        "research-arm-tactical-daily-sentinel-v1-"
+        f"{starting_date_raw}-to-{target_date_raw}-speed-{speed}-"
+        f"mode-{sentinel_mode}-a-{len(armed_army_ids)}-{armed_army_suffix}"
+    )
+    slice_started_ns = time.perf_counter_ns()
+    deadline = time.monotonic() + timeout_seconds
+    current = starting
+    speed_action: dict[str, object] | None = None
+    resume_action: dict[str, object] | None = None
+    arm_result: dict[str, object] | None = None
+    status_result: dict[str, object] | None = None
+    emergency_pause_action: dict[str, object] | None = None
+    native_stop_observed_ns: int | None = None
+    run_error: str | None = None
+    try:
+        current, speed_action = _submit_and_observe(
+            driver,
+            f"set-speed-{speed}",
+            current,
+            lambda snapshot: snapshot.get("speed") == speed,
+            timeout_seconds=max(0.001, deadline - time.monotonic()),
+        )
+        arm_result = driver._execute_primitive_step(
+            arm_step,
+            expected_revision=None,
+            required_capability=TACTICAL_SENTINEL_ARM_CAPABILITY,
+            timeout_seconds=max(0.001, deadline - time.monotonic()),
+            internal_semantic_snapshot=True,
+        )
+        current, resume_action = _submit_sentinel_resume_once(
+            driver,
+            current,
+            starting_date_raw=starting_date_raw,
+            timeout_seconds=max(0.001, deadline - time.monotonic()),
+        )
+        if current.get("paused") is not True:
+            current = driver._wait_for_life_advance_snapshot(
+                current,
+                lambda snapshot: snapshot.get("paused") is True,
+                timeout_seconds=max(0.001, deadline - time.monotonic()),
+            )
+            native_stop_observed_ns = time.perf_counter_ns()
+        else:
+            native_stop_observed_ns = _integer(resume_action.get("observed_ns"))
+        if current.get("paused") is not True:
+            raise RuntimeError("sentinel deadline elapsed without a native pause")
+        while True:
+            status_result = driver._execute_primitive_step(
+                TACTICAL_SENTINEL_STATUS_STEP,
+                expected_revision=None,
+                required_capability=TACTICAL_SENTINEL_STATUS_CAPABILITY,
+                timeout_seconds=max(0.001, deadline - time.monotonic()),
+                internal_semantic_snapshot=True,
+            )
+            status = _sentinel_status(
+                {"sentinel_status_result": status_result}
+            )
+            if isinstance(status, dict) and status.get("state") in {
+                "triggered",
+                "failed",
+            }:
+                break
+            if time.monotonic() >= deadline:
+                raise RuntimeError(
+                    "native pause was observed before terminal sentinel status"
+                )
+            time.sleep(0.01)
+    except BaseException as error:
+        run_error = f"{type(error).__name__}: {error}"
+    finally:
+        try:
+            current = driver.take_internal_semantic_snapshot()
+            if current.get("paused") is not True:
+                command_timeout = getattr(driver, "command_timeout_seconds", 15.0)
+                if (
+                    not isinstance(command_timeout, (int, float))
+                    or command_timeout <= 0
+                ):
+                    command_timeout = 15.0
+                current, emergency_pause_action = _submit_and_observe(
+                    driver,
+                    "pause-map",
+                    current,
+                    lambda snapshot: snapshot.get("paused") is True,
+                    timeout_seconds=max(5.0, min(float(command_timeout), 30.0)),
+                )
+        except BaseException as error:
+            detail = f"{type(error).__name__}: {error}"
+            run_error = detail if run_error is None else f"{run_error}; {detail}"
+            try:
+                current = driver.take_internal_semantic_snapshot()
+            except BaseException:
+                pass
+    final_observed_ns = time.perf_counter_ns()
+    return {
+        "requested_speed": speed,
+        "requested_days": target_days,
+        "sentinel_mode": sentinel_mode,
+        "sentinel_army_ids": list(armed_army_ids),
+        "starting_date_raw": starting_date_raw,
+        "target_date_raw": target_date_raw,
+        "final_paused_date_raw": _integer(current.get("date_raw")),
+        "slice_started_ns": slice_started_ns,
+        "native_stop_observed_ns": native_stop_observed_ns,
+        "final_observed_ns": final_observed_ns,
+        "speed_action": speed_action,
+        "arm_step": arm_step,
+        "arm_result": arm_result,
+        "resume_action": resume_action,
+        "sentinel_status_result": status_result,
+        "emergency_pause_action": emergency_pause_action,
+        "error": run_error,
+        "starting": _compact_snapshot(starting, subject_army_id),
+        "final": _compact_snapshot(current, subject_army_id),
+    }
+
+
+def _submit_sentinel_resume_once(
+    driver: NativeHeadlessGameplayDriver,
+    current: dict[str, object],
+    *,
+    starting_date_raw: int,
+    timeout_seconds: float,
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Resume one armed sentinel exactly once.
+
+    A fast arm may run and pause again before the bridge publishes a running
+    frame.  That paused frame is success, not permission to submit a second
+    resume against an already-triggered sentinel.
+    """
+    if current.get("paused") is not True:
+        raise RuntimeError("armed sentinel resume requires a paused snapshot")
+    deadline = time.monotonic() + timeout_seconds
+    submit_ns = time.perf_counter_ns()
+    result = driver._execute_primitive_step(
+        "resume-map",
+        expected_revision=None,
+        timeout_seconds=max(0.001, deadline - time.monotonic()),
+        internal_semantic_snapshot=True,
+    )
+    ack_ns = time.perf_counter_ns()
+
+    def running_or_native_stop(snapshot: dict[str, object]) -> bool:
+        date_raw = _integer(snapshot.get("date_raw"))
+        return bool(
+            snapshot.get("paused") is False
+            or (
+                snapshot.get("paused") is True
+                and date_raw is not None
+                and date_raw > starting_date_raw
+            )
+        )
+
+    observed = driver._wait_for_life_advance_snapshot(
+        driver.take_internal_semantic_snapshot(),
+        running_or_native_stop,
+        timeout_seconds=max(0.001, deadline - time.monotonic()),
+    )
+    observed_ns = time.perf_counter_ns()
+    if not running_or_native_stop(observed):
+        raise RuntimeError(
+            "single sentinel resume reached neither running nor a native stop; "
+            f"date_raw={observed.get('date_raw')}, "
+            f"paused={observed.get('paused')}"
+        )
+    running_observed = observed.get("paused") is False
+    attempt = {
+        "attempt": 1,
+        "submit_ns": submit_ns,
+        "ack_ns": ack_ns,
+        "observed_ns": observed_ns,
+        "ack_wall_ms": round((ack_ns - submit_ns) / 1_000_000.0, 3),
+        "observe_wall_ms": round((observed_ns - ack_ns) / 1_000_000.0, 3),
+        "result": result,
+        "postcondition": True,
+        "running_observed": running_observed,
+    }
+    return observed, {
+        "step": "resume-map",
+        "already_satisfied": False,
+        "attempts": [attempt],
+        "submit_ns": submit_ns,
+        "ack_ns": ack_ns,
+        "observed_ns": observed_ns,
+        "running_observed": running_observed,
+    }
+
+
 def _run_terminal_slice(
     driver: NativeHeadlessGameplayDriver,
     starting: dict[str, object],
@@ -1018,6 +1287,207 @@ def _slice_postconditions(
     return {"checks": checks, "ok": all(checks.values()), "metrics": metrics}
 
 
+def _sentinel_status(
+    slice_result: dict[str, object], key: str = "sentinel_status_result"
+) -> dict[str, object] | None:
+    envelope = slice_result.get(key)
+    if not isinstance(envelope, dict):
+        return None
+    status = envelope.get("tactical_daily_sentinel")
+    return status if isinstance(status, dict) else None
+
+
+def _sentinel_slice_postconditions(
+    slice_result: dict[str, object],
+    *,
+    starting: dict[str, object],
+    final: dict[str, object],
+) -> dict[str, object]:
+    status = _sentinel_status(slice_result)
+    armed = _sentinel_status(slice_result, "arm_result")
+    start = _integer(slice_result.get("starting_date_raw"))
+    final_date = _integer(slice_result.get("final_paused_date_raw"))
+    raw_delta = (
+        final_date - start if start is not None and final_date is not None else None
+    )
+    elapsed_days = (
+        raw_delta // RAW_HOURS_PER_DAY
+        if raw_delta is not None
+        and raw_delta >= 0
+        and raw_delta % RAW_HOURS_PER_DAY == 0
+        else None
+    )
+    started_ns = _integer(slice_result.get("slice_started_ns"))
+    native_stop_ns = _integer(slice_result.get("native_stop_observed_ns"))
+    final_ns = _integer(slice_result.get("final_observed_ns"))
+    resume = slice_result.get("resume_action")
+    resume_observed_ns = (
+        _integer(resume.get("observed_ns")) if isinstance(resume, dict) else None
+    )
+    resume_ack_ns = (
+        _integer(resume.get("ack_ns")) if isinstance(resume, dict) else None
+    )
+    resume_running_observed = bool(
+        isinstance(resume, dict) and resume.get("running_observed") is True
+    )
+    resume_reference_ns = (
+        resume_observed_ns if resume_running_observed else resume_ack_ns
+    )
+    running_wall_ms = (
+        (native_stop_ns - resume_reference_ns) / 1_000_000.0
+        if native_stop_ns is not None and resume_reference_ns is not None
+        else None
+    )
+    total_wall_ms = (
+        (final_ns - started_ns) / 1_000_000.0
+        if final_ns is not None and started_ns is not None
+        else None
+    )
+    reasons = status.get("trigger_reasons") if isinstance(status, dict) else None
+    expected_mode = (
+        "terminal_or_sentinel"
+        if slice_result.get("sentinel_mode") == "terminal"
+        else "decision_epoch"
+    )
+    starting_episode = _episode_identity(starting)
+    final_episode = _episode_identity(final)
+    checks = {
+        "no_error": slice_result.get("error") is None,
+        "arm_binding_acknowledged": (
+            isinstance(armed, dict)
+            and armed.get("state") == "armed"
+            and armed.get("starting_date_raw") == start
+            and armed.get("target_date_raw")
+            == slice_result.get("target_date_raw")
+            and armed.get("speed") == slice_result.get("requested_speed")
+            and armed.get("mode") == expected_mode
+            and armed.get("army_count")
+            == len(slice_result.get("sentinel_army_ids", []))
+            and isinstance(armed.get("generation"), int)
+            and armed["generation"] > 0
+        ),
+        "native_status_triggered": (
+            isinstance(status, dict) and status.get("state") == "triggered"
+        ),
+        "native_mode_matches": (
+            isinstance(status, dict) and status.get("mode") == expected_mode
+        ),
+        "native_speed_matches": (
+            isinstance(status, dict)
+            and status.get("speed") == slice_result.get("requested_speed")
+        ),
+        "native_trigger_reason_present": (
+            isinstance(reasons, list)
+            and bool(reasons)
+            and all(isinstance(reason, str) and reason for reason in reasons)
+        ),
+        "native_zero_overshoot": (
+            isinstance(status, dict) and status.get("overshoot_days") == 0
+        ),
+        "native_pause_observed": (
+            isinstance(status, dict) and status.get("pause_observed") is True
+        ),
+        "native_not_abnormal": (
+            isinstance(status, dict) and status.get("abnormal") is False
+        ),
+        "intermediate_pause_count_recorded": (
+            isinstance(status, dict)
+            and isinstance(status.get("intermediate_pause_count"), int)
+            and status["intermediate_pause_count"] >= 0
+        ),
+        "native_tick_count_positive": (
+            isinstance(status, dict)
+            and isinstance(status.get("completed_daily_ticks"), int)
+            and status["completed_daily_ticks"] > 0
+        ),
+        "native_trigger_date_matches_final": (
+            isinstance(status, dict)
+            and status.get("trigger_date_raw") == final_date
+            and status.get("last_observed_date_raw") == final_date
+        ),
+        "native_generation_matches_arm": (
+            isinstance(status, dict)
+            and isinstance(armed, dict)
+            and status.get("generation") == armed.get("generation")
+        ),
+        "native_target_delta_matches_dates": (
+            isinstance(status, dict)
+            and isinstance(status.get("trigger_date_raw"), int)
+            and isinstance(status.get("target_date_raw"), int)
+            and status.get("signed_date_delta_from_target_raw")
+            == status["trigger_date_raw"] - status["target_date_raw"]
+        ),
+        "no_emergency_external_pause": (
+            slice_result.get("emergency_pause_action") is None
+        ),
+        "resume_submitted_exactly_once": (
+            isinstance(resume, dict)
+            and isinstance(resume.get("attempts"), list)
+            and len(resume["attempts"]) == 1
+        ),
+        "final_paused": final.get("paused") is True,
+        "final_map_ready": final.get("map_ready") is True,
+        "final_date_matches_readback": _integer(final.get("date_raw")) == final_date,
+        "requested_speed_observed": (
+            final.get("speed") == slice_result.get("requested_speed")
+        ),
+        "same_episode": (
+            starting_episode[0] is not None
+            and starting_episode[1] is not None
+            and starting_episode == final_episode
+        ),
+        "same_connection_generation": (
+            _connection_generation(starting) is not None
+            and _connection_generation(starting) == _connection_generation(final)
+        ),
+        "raw_delta_integral_days": elapsed_days is not None,
+    }
+    metrics = {
+        "raw_delta": raw_delta,
+        "elapsed_days": elapsed_days,
+        "native_trigger_flags": (
+            status.get("trigger_flags") if isinstance(status, dict) else None
+        ),
+        "native_trigger_reasons": reasons,
+        "native_overshoot_days": (
+            status.get("overshoot_days") if isinstance(status, dict) else None
+        ),
+        "completed_daily_ticks": (
+            status.get("completed_daily_ticks")
+            if isinstance(status, dict)
+            else None
+        ),
+        "intermediate_pause_count": (
+            status.get("intermediate_pause_count")
+            if isinstance(status, dict)
+            else None
+        ),
+        "terminal_observed": (
+            status.get("terminal_observed")
+            if isinstance(status, dict)
+            else None
+        ),
+        "abnormal": (
+            status.get("abnormal") if isinstance(status, dict) else None
+        ),
+        "running_transition_observed": resume_running_observed,
+        "running_wall_ms": (
+            round(running_wall_ms, 3) if running_wall_ms is not None else None
+        ),
+        "total_wall_ms": (
+            round(total_wall_ms, 3) if total_wall_ms is not None else None
+        ),
+        "game_days_per_running_second": (
+            round(elapsed_days / (running_wall_ms / 1000.0), 6)
+            if elapsed_days is not None
+            and running_wall_ms is not None
+            and running_wall_ms > 0
+            else None
+        ),
+    }
+    return {"checks": checks, "ok": all(checks.values()), "metrics": metrics}
+
+
 def _derive_terminal_metrics(
     slice_result: dict[str, object],
 ) -> dict[str, object]:
@@ -1175,6 +1645,125 @@ def _terminal_date_within_slice_bound(
     )
 
 
+def _terminal_evidence_for_paused_stop(
+    service: GameplayBridgeService,
+    *,
+    combat_id: int,
+    subject_army_id: int,
+    terminal_cursor: dict[str, object],
+    final_public: dict[str, object],
+    before_query: dict[str, object] | None,
+    raw_slice: dict[str, object],
+    maximum_pause_lag_days: int,
+    require_same_day_pause: bool,
+) -> tuple[dict[str, object], bool]:
+    terminal_outcome = _terminal_outcome_pair(
+        service,
+        combat_id=combat_id,
+        subject_army_id=subject_army_id,
+        after_terminal_sequence=terminal_cursor.get("cursor"),
+        snapshot=final_public,
+    )
+    projection = terminal_outcome.get("projection")
+    battle_warscore = (
+        projection.get("battle_warscore")
+        if isinstance(projection, dict)
+        else None
+    )
+    battle_warscore_value_raw = (
+        _integer(battle_warscore.get("value_raw_q100000"))
+        if isinstance(battle_warscore, dict)
+        else None
+    )
+    terminal_date_raw = (
+        _integer(projection.get("terminal_date_raw"))
+        if isinstance(projection, dict)
+        else None
+    )
+    starting_date_raw = _integer(raw_slice.get("starting_date_raw"))
+    bound_date_raw = _integer(raw_slice.get("terminal_bound_date_raw"))
+    if bound_date_raw is None:
+        bound_date_raw = _integer(raw_slice.get("target_date_raw"))
+    terminal_within_bound = bool(
+        terminal_date_raw is not None
+        and starting_date_raw is not None
+        and bound_date_raw is not None
+        and starting_date_raw <= terminal_date_raw <= bound_date_raw
+    )
+    final_paused_date_raw = _integer(raw_slice.get("final_paused_date_raw"))
+    pause_lag_raw = (
+        final_paused_date_raw - terminal_date_raw
+        if final_paused_date_raw is not None and terminal_date_raw is not None
+        else None
+    )
+    pause_lag_integral = bool(
+        pause_lag_raw is not None
+        and pause_lag_raw >= 0
+        and pause_lag_raw % RAW_HOURS_PER_DAY == 0
+    )
+    pause_lag_days = (
+        pause_lag_raw // RAW_HOURS_PER_DAY
+        if pause_lag_integral and pause_lag_raw is not None
+        else None
+    )
+    admitted_lag = 0 if require_same_day_pause else maximum_pause_lag_days
+    pause_lag_ok = bool(
+        pause_lag_days is not None and pause_lag_days <= admitted_lag
+    )
+    external_observed_date_raw = _integer(
+        raw_slice.get("first_terminal_observed_date_raw")
+    )
+    external_observation_lag_raw = (
+        external_observed_date_raw - terminal_date_raw
+        if external_observed_date_raw is not None and terminal_date_raw is not None
+        else None
+    )
+    external_observation_lag_days = (
+        external_observation_lag_raw / RAW_HOURS_PER_DAY
+        if external_observation_lag_raw is not None
+        else None
+    )
+    evidence = {
+        "status": (
+            "available" if terminal_outcome.get("ok") is True else "unavailable"
+        ),
+        "combat_id": combat_id,
+        "before_query": before_query,
+        "before_normalized_frame_sha256": (
+            before_query.get("normalized_frame_sha256")
+            if isinstance(before_query, dict)
+            else None
+        ),
+        "journal_cursor": terminal_cursor,
+        "outcome_query": terminal_outcome,
+        "normalized_outcome_sha256": terminal_outcome.get(
+            "normalized_outcome_sha256"
+        ),
+        "outcome_without_battle_warscore_sha256": terminal_outcome.get(
+            "outcome_without_battle_warscore_sha256"
+        ),
+        "battle_warscore_value_raw_q100000": battle_warscore_value_raw,
+        "terminal_date_raw": terminal_date_raw,
+        "terminal_within_bound": terminal_within_bound,
+        "external_observation_lag_days": (
+            round(external_observation_lag_days, 6)
+            if external_observation_lag_days is not None
+            else None
+        ),
+        "pause_lag_days": pause_lag_days,
+        "pause_lag_integral_days": pause_lag_integral,
+        "pause_lag_within_bound": pause_lag_ok,
+        "same_day_pause_required": require_same_day_pause,
+        "max_pause_lag_days": admitted_lag,
+    }
+    ok = bool(
+        terminal_outcome.get("ok") is True
+        and terminal_within_bound
+        and pause_lag_ok
+    )
+    return evidence, ok
+
+
 def _summarize_stop_envelope(
     rows: list[dict[str, object]], speeds: tuple[int, ...]
 ) -> dict[str, object]:
@@ -1204,6 +1793,192 @@ def _summarize_stop_envelope(
     return {
         "by_speed": by_speed,
         "ok": bool(rows) and all(row.get("operational_ok") is True for row in rows),
+    }
+
+
+def _summarize_sentinel_envelope(
+    rows: list[dict[str, object]], speeds: tuple[int, ...]
+) -> dict[str, object]:
+    by_speed: dict[str, object] = {}
+    observed_modes = {
+        str(row["sentinel"].get("mode"))
+        for row in rows
+        if isinstance(row.get("sentinel"), dict)
+        and isinstance(row["sentinel"].get("mode"), str)
+    }
+    mode = next(iter(observed_modes)) if len(observed_modes) == 1 else "mixed"
+    terminal_mode = mode == "terminal"
+    terminal_core_hashes = sorted(
+        {
+            str(row["terminal"].get("outcome_without_battle_warscore_sha256"))
+            for row in rows
+            if row.get("operational_ok") is True
+            and isinstance(row.get("terminal"), dict)
+            and isinstance(
+                row["terminal"].get(
+                    "outcome_without_battle_warscore_sha256"
+                ),
+                str,
+            )
+        }
+    )
+    starting_frame_hashes = sorted(
+        {
+            str(row["sentinel"].get("before_normalized_frame_sha256"))
+            for row in rows
+            if row.get("operational_ok") is True
+            and isinstance(row.get("sentinel"), dict)
+            and isinstance(
+                row["sentinel"].get("before_normalized_frame_sha256"), str
+            )
+        }
+    )
+    terminal_outcome_parity = bool(
+        terminal_mode
+        and rows
+        and len(terminal_core_hashes) == 1
+        and len(starting_frame_hashes) == 1
+        and all(
+            isinstance(row.get("terminal"), dict)
+            and row["terminal"].get("status") == "available"
+            and isinstance(
+                row["terminal"].get(
+                    "outcome_without_battle_warscore_sha256"
+                ),
+                str,
+            )
+            for row in rows
+        )
+    )
+    for speed in speeds:
+        samples = [row for row in rows if row.get("requested_speed") == speed]
+        valid = [row for row in samples if row.get("operational_ok") is True]
+        reasons = sorted(
+            {
+                str(reason)
+                for row in valid
+                if isinstance(row.get("metrics"), dict)
+                for reason in (
+                    row["metrics"].get("native_trigger_reasons") or []
+                )
+                if isinstance(reason, str)
+            }
+        )
+        overshoots = [
+            row["metrics"].get("native_overshoot_days")
+            for row in valid
+            if isinstance(row.get("metrics"), dict)
+            and isinstance(row["metrics"].get("native_overshoot_days"), int)
+        ]
+        intermediate_pauses = [
+            row["metrics"].get("intermediate_pause_count")
+            for row in valid
+            if isinstance(row.get("metrics"), dict)
+            and isinstance(row["metrics"].get("intermediate_pause_count"), int)
+        ]
+        terminal_samples = sum(
+            1
+            for row in valid
+            if isinstance(row.get("metrics"), dict)
+            and row["metrics"].get("terminal_observed") is True
+        )
+        abnormal_samples = sum(
+            1
+            for row in samples
+            if isinstance(row.get("metrics"), dict)
+            and row["metrics"].get("abnormal") is True
+        )
+        terminal_journal_samples = sum(
+            1
+            for row in valid
+            if isinstance(row.get("terminal"), dict)
+            and row["terminal"].get("status") == "available"
+            and row["terminal"].get("pause_lag_days") == 0
+        )
+        zero_external_samples = sum(
+            1
+            for row in valid
+            if isinstance(row.get("sentinel"), dict)
+            and row["sentinel"].get(
+                "zero_external_pause_or_rich_query_between_resume_and_stop"
+            )
+            is True
+        )
+        admitted = bool(samples) and len(valid) == len(samples)
+        exact_stop_gate = bool(
+            admitted
+            and len(overshoots) == len(samples)
+            and max(overshoots, default=1) == 0
+            and len(intermediate_pauses) == len(samples)
+            and max(intermediate_pauses, default=1) == 0
+            and abnormal_samples == 0
+            and zero_external_samples == len(samples)
+        )
+        crush_terminal_gate = bool(
+            exact_stop_gate
+            and terminal_samples == len(samples)
+            and terminal_journal_samples == len(samples)
+            and terminal_outcome_parity
+        )
+        by_speed[str(speed)] = {
+            "sample_count": len(samples),
+            "valid_sample_count": len(valid),
+            "trigger_reasons": reasons,
+            "maximum_native_overshoot_days": (
+                max(overshoots) if overshoots else None
+            ),
+            "maximum_intermediate_pause_count": (
+                max(intermediate_pauses) if intermediate_pauses else None
+            ),
+            "terminal_sample_count": terminal_samples,
+            "terminal_journal_sample_count": terminal_journal_samples,
+            "abnormal_sample_count": abnormal_samples,
+            "zero_external_pause_sample_count": zero_external_samples,
+            "zero_external_pause_between_resume_and_stop": (
+                admitted and zero_external_samples == len(samples)
+            ),
+            "exact_stop_gate_passed": exact_stop_gate,
+            "crush_terminal_gate_passed": crush_terminal_gate,
+            "candidate_gate_passed": (
+                crush_terminal_gate if terminal_mode else exact_stop_gate
+            ),
+        }
+    speed3 = by_speed.get("3")
+    all_arms_operational = bool(rows) and all(
+        row.get("operational_ok") is True for row in rows
+    )
+    all_requested_candidate_gates = bool(rows) and all(
+        isinstance(by_speed.get(str(speed)), dict)
+        and by_speed[str(speed)].get("candidate_gate_passed") is True
+        for speed in speeds
+    )
+    return {
+        "by_speed": by_speed,
+        "sentinel_mode": mode,
+        "terminal_outcome_without_battle_warscore_sha256": (
+            terminal_core_hashes
+        ),
+        "terminal_outcome_parity_passed": terminal_outcome_parity,
+        "starting_frame_sha256": starting_frame_hashes,
+        "production_floor_candidate": 3,
+        "speed3_floor_gate_passed": (
+            isinstance(speed3, dict)
+            and speed3.get("candidate_gate_passed") is True
+        ),
+        "speed4_candidate_gate_passed": (
+            isinstance(by_speed.get("4"), dict)
+            and by_speed["4"].get("candidate_gate_passed") is True
+        ),
+        "speed5_candidate_gate_passed": (
+            isinstance(by_speed.get("5"), dict)
+            and by_speed["5"].get("candidate_gate_passed") is True
+        ),
+        "production_selector_changed": False,
+        "all_arms_operational": all_arms_operational,
+        "all_requested_candidate_gates_passed": (
+            all_requested_candidate_gates
+        ),
+        "ok": all_arms_operational and all_requested_candidate_gates,
     }
 
 
@@ -1578,18 +2353,42 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "resume-map",
             "pause-map",
         }
-        if args.mode in {"battle-parity", "terminal-parity"}:
+        if args.mode in {
+            "sentinel-envelope",
+            "battle-parity",
+            "terminal-parity",
+        }:
             required_steps.add("restore-checkpoint")
         missing_steps = sorted(required_steps - action_steps)
         if missing_steps:
             raise RuntimeError(
                 f"native bridge lacks matrix primitives: {missing_steps}"
             )
+        if args.mode == "sentinel-envelope":
+            bridge_capabilities = set(
+                service.capabilities().get("bridge_capabilities", [])
+            )
+            missing_sentinel = sorted(
+                {
+                    TACTICAL_SENTINEL_ARM_CAPABILITY,
+                    TACTICAL_SENTINEL_STATUS_CAPABILITY,
+                }
+                - bridge_capabilities
+            )
+            if missing_sentinel:
+                raise RuntimeError(
+                    "native bridge lacks tactical sentinel primitives: "
+                    f"{missing_sentinel}"
+                )
 
         for sample_index, speed in enumerate(schedule, start=1):
             restore: dict[str, object] | None = None
             restore_wall_ms = 0.0
-            if args.mode in {"battle-parity", "terminal-parity"} and sample_index > 1:
+            if (
+                args.mode
+                in {"sentinel-envelope", "battle-parity", "terminal-parity"}
+                and sample_index > 1
+            ):
                 restore_started_ns = time.perf_counter_ns()
                 current = service.snapshot()
                 restore = service.restore_checkpoint(
@@ -1637,14 +2436,21 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             before_query: dict[str, object] | None = None
             terminal_cursor: dict[str, object] | None = None
             combat_id: int | None = None
-            if args.mode in {"battle-parity", "terminal-parity"}:
+            if args.mode in {
+                "sentinel-envelope",
+                "battle-parity",
+                "terminal-parity",
+            }:
                 starting_public = service.snapshot()
                 before_query = _query_pair(
                     service, int(args.subject_army_id), starting_public
                 )
                 if before_query.get("ok") is not True:
                     raise RuntimeError("repeated pre-arm battle frames differ")
-                if args.mode == "terminal-parity":
+                if args.mode == "terminal-parity" or (
+                    args.mode == "sentinel-envelope"
+                    and args.sentinel_mode == "terminal"
+                ):
                     before_frame = before_query["first"].get(
                         "battle_control_snapshot"
                     )
@@ -1678,6 +2484,17 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                     terminal_max_days=args.terminal_max_days,
                     timeout_seconds=float(args.slice_timeout),
                 )
+            elif args.mode == "sentinel-envelope":
+                raw_slice = _run_sentinel_slice(
+                    driver,
+                    starting_internal,
+                    subject_army_id=int(args.subject_army_id),
+                    speed=speed,
+                    target_days=args.target_days,
+                    sentinel_mode=args.sentinel_mode,
+                    sentinel_army_ids=tuple(args.sentinel_army_ids),
+                    timeout_seconds=float(args.slice_timeout),
+                )
             else:
                 raw_slice = _run_timeline_slice(
                     driver,
@@ -1691,6 +2508,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 postconditions = _terminal_slice_postconditions(
                     raw_slice,
                     subject_army_id=int(args.subject_army_id),
+                    starting=starting_internal,
+                    final=final_internal,
+                )
+            elif args.mode == "sentinel-envelope":
+                postconditions = _sentinel_slice_postconditions(
+                    raw_slice,
                     starting=starting_internal,
                     final=final_internal,
                 )
@@ -1744,6 +2567,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                         "speed_action",
                         "resume_action",
                         "pause_action",
+                        "arm_step",
+                        "arm_result",
+                        "sentinel_status_result",
+                        "emergency_pause_action",
                         "interrupt_reason",
                         "error",
                     )
@@ -1771,7 +2598,82 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 else None
             )
 
-            if args.mode == "battle-parity":
+            if args.mode == "sentinel-envelope":
+                final_public = service.snapshot()
+                sentinel_status = _sentinel_status(raw_slice)
+                after_query: dict[str, object] | None = None
+                after_subject = _subject(final_public, args.subject_army_id)
+                sentinel_battle_status = "subject_left_combat"
+                if (
+                    isinstance(after_subject, dict)
+                    and after_subject.get("controllable") is True
+                    and after_subject.get("in_combat") is True
+                ):
+                    after_query = _query_pair(
+                        service, int(args.subject_army_id), final_public
+                    )
+                    sentinel_battle_status = (
+                        "available" if after_query.get("ok") is True else "unstable"
+                    )
+                row["sentinel"] = {
+                    "mode": args.sentinel_mode,
+                    "status": sentinel_status,
+                    "battle_status": sentinel_battle_status,
+                    "before_query": before_query,
+                    "after_query": after_query,
+                    "before_normalized_frame_sha256": (
+                        before_query.get("normalized_frame_sha256")
+                        if isinstance(before_query, dict)
+                        else None
+                    ),
+                    "after_normalized_frame_sha256": (
+                        after_query.get("normalized_frame_sha256")
+                        if isinstance(after_query, dict)
+                        else None
+                    ),
+                    "zero_external_pause_or_rich_query_between_resume_and_stop": (
+                        raw_slice.get("emergency_pause_action") is None
+                    ),
+                }
+                if args.sentinel_mode == "terminal":
+                    if combat_id is None or terminal_cursor is None:
+                        raise RuntimeError(
+                            "terminal sentinel lost its pre-arm journal bindings"
+                        )
+                    row["terminal"] = {
+                        "status": "not_observed",
+                        "combat_id": combat_id,
+                        "before_query": before_query,
+                        "before_normalized_frame_sha256": (
+                            before_query.get("normalized_frame_sha256")
+                            if isinstance(before_query, dict)
+                            else None
+                        ),
+                        "journal_cursor": terminal_cursor,
+                    }
+                    if (
+                        isinstance(sentinel_status, dict)
+                        and sentinel_status.get("terminal_observed") is True
+                    ):
+                        terminal_evidence, terminal_evidence_ok = (
+                            _terminal_evidence_for_paused_stop(
+                                service,
+                                combat_id=combat_id,
+                                subject_army_id=int(args.subject_army_id),
+                                terminal_cursor=terminal_cursor,
+                                final_public=final_public,
+                                before_query=before_query,
+                                raw_slice=raw_slice,
+                                maximum_pause_lag_days=0,
+                                require_same_day_pause=True,
+                            )
+                        )
+                        row["terminal"] = terminal_evidence
+                        row["operational_ok"] = bool(
+                            row["operational_ok"] is True
+                            and terminal_evidence_ok
+                        )
+            elif args.mode == "battle-parity":
                 after_query: dict[str, object] | None = None
                 final_public = service.snapshot()
                 after_subject = _subject(final_public, args.subject_army_id)
@@ -1811,112 +2713,24 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 if combat_id is None or terminal_cursor is None:
                     raise RuntimeError("terminal arm lost its pre-arm bindings")
                 final_public = service.snapshot()
-                terminal_outcome = _terminal_outcome_pair(
-                    service,
-                    combat_id=combat_id,
-                    subject_army_id=int(args.subject_army_id),
-                    after_terminal_sequence=terminal_cursor.get("cursor"),
-                    snapshot=final_public,
+                terminal_evidence, terminal_evidence_ok = (
+                    _terminal_evidence_for_paused_stop(
+                        service,
+                        combat_id=combat_id,
+                        subject_army_id=int(args.subject_army_id),
+                        terminal_cursor=terminal_cursor,
+                        final_public=final_public,
+                        before_query=before_query,
+                        raw_slice=raw_slice,
+                        maximum_pause_lag_days=(
+                            args.terminal_max_pause_lag_days
+                        ),
+                        require_same_day_pause=False,
+                    )
                 )
-                projection = terminal_outcome.get("projection")
-                battle_warscore = (
-                    projection.get("battle_warscore")
-                    if isinstance(projection, dict)
-                    else None
-                )
-                battle_warscore_value_raw = (
-                    _integer(battle_warscore.get("value_raw_q100000"))
-                    if isinstance(battle_warscore, dict)
-                    else None
-                )
-                terminal_date_raw = (
-                    _integer(projection.get("terminal_date_raw"))
-                    if isinstance(projection, dict)
-                    else None
-                )
-                terminal_within_bound = _terminal_date_within_slice_bound(
-                    raw_slice, terminal_date_raw
-                )
-                final_paused_date_raw = _integer(
-                    raw_slice.get("final_paused_date_raw")
-                )
-                pause_lag_raw = (
-                    final_paused_date_raw - terminal_date_raw
-                    if final_paused_date_raw is not None
-                    and terminal_date_raw is not None
-                    else None
-                )
-                pause_lag_integral = bool(
-                    pause_lag_raw is not None
-                    and pause_lag_raw >= 0
-                    and pause_lag_raw % RAW_HOURS_PER_DAY == 0
-                )
-                pause_lag_days = (
-                    pause_lag_raw // RAW_HOURS_PER_DAY
-                    if pause_lag_integral and pause_lag_raw is not None
-                    else None
-                )
-                pause_lag_ok = bool(
-                    pause_lag_days is not None
-                    and pause_lag_days <= args.terminal_max_pause_lag_days
-                )
-                external_observed_date_raw = _integer(
-                    raw_slice.get("first_terminal_observed_date_raw")
-                )
-                external_observation_lag_raw = (
-                    external_observed_date_raw - terminal_date_raw
-                    if external_observed_date_raw is not None
-                    and terminal_date_raw is not None
-                    else None
-                )
-                external_observation_lag_days = (
-                    external_observation_lag_raw / RAW_HOURS_PER_DAY
-                    if external_observation_lag_raw is not None
-                    else None
-                )
-                row["terminal"] = {
-                    "status": (
-                        "available"
-                        if terminal_outcome.get("ok") is True
-                        else "unavailable"
-                    ),
-                    "combat_id": combat_id,
-                    "before_query": before_query,
-                    "before_normalized_frame_sha256": (
-                        before_query.get("normalized_frame_sha256")
-                        if isinstance(before_query, dict)
-                        else None
-                    ),
-                    "journal_cursor": terminal_cursor,
-                    "outcome_query": terminal_outcome,
-                    "normalized_outcome_sha256": terminal_outcome.get(
-                        "normalized_outcome_sha256"
-                    ),
-                    "outcome_without_battle_warscore_sha256": (
-                        terminal_outcome.get(
-                            "outcome_without_battle_warscore_sha256"
-                        )
-                    ),
-                    "battle_warscore_value_raw_q100000": (
-                        battle_warscore_value_raw
-                    ),
-                    "terminal_date_raw": terminal_date_raw,
-                    "terminal_within_bound": terminal_within_bound,
-                    "external_observation_lag_days": (
-                        round(external_observation_lag_days, 6)
-                        if external_observation_lag_days is not None
-                        else None
-                    ),
-                    "pause_lag_days": pause_lag_days,
-                    "pause_lag_integral_days": pause_lag_integral,
-                    "pause_lag_within_bound": pause_lag_ok,
-                    "max_pause_lag_days": args.terminal_max_pause_lag_days,
-                }
+                row["terminal"] = terminal_evidence
                 row["operational_ok"] = bool(
-                    row["operational_ok"] is True
-                    and terminal_outcome.get("ok") is True
-                    and terminal_within_bound
-                    and pause_lag_ok
+                    row["operational_ok"] is True and terminal_evidence_ok
                 )
             rows.append(row)
     except BaseException as error:
@@ -1953,6 +2767,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         )
     if args.mode == "stop-envelope":
         summary = _summarize_stop_envelope(rows, speeds)
+    elif args.mode == "sentinel-envelope":
+        summary = _summarize_sentinel_envelope(rows, speeds)
     elif args.mode == "battle-parity":
         summary = _summarize_battle_parity(rows, speeds)
     else:
@@ -1983,10 +2799,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "speeds": list(speeds),
         "samples_per_speed": args.samples_per_speed,
         "target_days": args.target_days,
+        "sentinel_mode": args.sentinel_mode,
         "terminal_max_days": args.terminal_max_days,
         "terminal_max_pause_lag_days": args.terminal_max_pause_lag_days,
         "schedule": schedule,
         "subject_army_id": args.subject_army_id,
+        "sentinel_army_ids": args.sentinel_army_ids,
         "load_kind": "cold_checkpoint",
         "checkpoint": {
             "before": checkpoint_before,
@@ -2030,22 +2848,36 @@ def main() -> int:
             "--cold-start-checkpoint is required so every matrix uses an "
             "immutable managed seed"
         )
-    if (
-        args.mode in {"battle-parity", "terminal-parity"}
-        and args.stop_envelope_scenario != "neutral"
-    ):
+    if args.mode != "stop-envelope" and args.stop_envelope_scenario != "neutral":
         raise SystemExit(
             "--stop-envelope-scenario applies only to stop-envelope"
         )
     subject_required = bool(
-        args.mode in {"battle-parity", "terminal-parity"}
+        args.mode in {"sentinel-envelope", "battle-parity", "terminal-parity"}
         or args.stop_envelope_scenario == "active-battle"
     )
     if subject_required and args.subject_army_id is None:
         raise SystemExit(
-            "--subject-army-id is required for parity modes and "
+            "--subject-army-id is required for sentinel/parity modes and "
             "active-battle stop-envelope"
         )
+    if args.mode != "sentinel-envelope" and args.sentinel_mode != "decision":
+        raise SystemExit(
+            "--sentinel-mode applies only to sentinel-envelope"
+        )
+    if args.mode != "sentinel-envelope" and args.sentinel_army_ids is not None:
+        raise SystemExit(
+            "--sentinel-army-ids applies only to sentinel-envelope"
+        )
+    if args.mode == "sentinel-envelope":
+        try:
+            args.sentinel_army_ids = list(
+                _normalize_sentinel_army_ids(
+                    int(args.subject_army_id), args.sentinel_army_ids
+                )
+            )
+        except ValueError as error:
+            raise SystemExit(str(error)) from error
     for name in ("timeout", "readiness_timeout", "slice_timeout"):
         if getattr(args, name) <= 0:
             raise SystemExit(f"--{name.replace('_', '-')} must be positive")
