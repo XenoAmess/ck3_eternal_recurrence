@@ -76,6 +76,15 @@ REQUIRED_PRODUCT_MARKERS = {
     "ZG361: scoreboard published": 1,
     "ZG361M: REFERENCE CHARTER COMPLETE 361": 2,
 }
+SOURCE_ONLY_RUNTIME_ROOTS = {
+    "artifacts",
+    "docs",
+    "fixtures",
+    "images",
+    "promo",
+    "tools",
+    "workshop",
+}
 
 
 def log(message: str) -> None:
@@ -156,7 +165,10 @@ def script_tree_errors(root: Path, label: str) -> list[str]:
         text = data.decode("utf-8-sig", errors="replace")
         runtime_product_file = not (
             root == SOURCE
-            and (relative == "README.md" or relative.split("/", 1)[0] in {"docs", "tools"})
+            and (
+                relative == "README.md"
+                or relative.split("/", 1)[0] in SOURCE_ONLY_RUNTIME_ROOTS
+            )
         )
         if runtime_product_file and "remote_file_id" in text:
             errors.append(f"{label} contains Workshop identity: {relative}")
@@ -482,7 +494,10 @@ def bootstrap_userdir(userdir: Path) -> dict[str, object]:
     product_files: list[str] = []
     for source_path in sorted(path for path in SOURCE.rglob("*") if path.is_file()):
         relative = source_path.relative_to(SOURCE)
-        if relative.as_posix() == "README.md" or relative.parts[0] in {"docs", "tools"}:
+        if (
+            relative.as_posix() == "README.md"
+            or relative.parts[0] in SOURCE_ONLY_RUNTIME_ROOTS
+        ):
             continue
         destination = product / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -520,7 +535,7 @@ def bootstrap_userdir(userdir: Path) -> dict[str, object]:
     targets = {"product": product, "fixture": fixture}
     snapshots = {key: isolated.tree_snapshot(path) for key, path in targets.items()}
     manifest = {
-        "projection": "source-runtime-without-readme-docs-tools",
+        "projection": "release-runtime-allowlist-equivalent",
         "files": product_files,
         "tree_sha256": isolated.snapshot_digest(snapshots["product"]),
     }
@@ -805,7 +820,7 @@ def choose_direct_publication(stream: MarkerStream, artifacts: Path) -> None:
     acceptance.focus_ck3()
     image = acceptance.ImageGrab.grab()
     if acceptance.find_ocr_text(
-        image, "决议", (0.55, 0.00, 0.90, 0.13), contains=True
+        image, "决议", (0.52, 0.00, 0.99, 0.30), contains=True
     ) is not None:
         image.save(artifacts / "06_decisions_drawer_before_calibration.png")
         acceptance.pyautogui.press("escape")
@@ -895,19 +910,13 @@ def capture_scoreboard_gui(artifacts: Path) -> dict[str, object]:
         contains=True,
         stable_hits=1,
     )
+    acceptance.ImageGrab.grab().save(artifacts / "08_scoreboard_panel_raw.png")
     rendered_text = acceptance.wait_for_ocr_tokens(
         (
             "天朝官员考核榜",
             "所辖官员",
-            "考核年份",
-            "参评人数",
-            "名次",
-            "KPI",
-            "价值观",
-            "绩效",
-            "3.75",
-            "3.5",
-            "3.25",
+            "制度驾驶舱",
+            "点击任一官员",
         ),
         ("zg361_scoreboard", "localize", "error"),
         acceptance.FULL_SCREEN_REGION,

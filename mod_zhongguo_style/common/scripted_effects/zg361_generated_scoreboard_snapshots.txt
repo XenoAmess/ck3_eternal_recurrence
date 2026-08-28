@@ -973,7 +973,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 	save_temporary_scope_as = zg361_scoreboard_snapshot_entry
 	root = {
 		if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 1 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 1 }
 			set_variable = { name = zg361_sb_m_01_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_01_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_01_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -998,7 +998,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 2 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 2 }
 			set_variable = { name = zg361_sb_m_02_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_02_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_02_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1023,7 +1023,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 3 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 3 }
 			set_variable = { name = zg361_sb_m_03_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_03_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_03_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1048,7 +1048,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 4 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 4 }
 			set_variable = { name = zg361_sb_m_04_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_04_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_04_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1073,7 +1073,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 5 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 5 }
 			set_variable = { name = zg361_sb_m_05_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_05_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_05_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1098,7 +1098,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 6 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 6 }
 			set_variable = { name = zg361_sb_m_06_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_06_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_06_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1123,7 +1123,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 7 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 7 }
 			set_variable = { name = zg361_sb_m_07_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_07_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_07_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1148,7 +1148,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 8 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 8 }
 			set_variable = { name = zg361_sb_m_08_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_08_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_08_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1173,7 +1173,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 9 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 9 }
 			set_variable = { name = zg361_sb_m_09_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_09_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_09_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1198,7 +1198,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 10 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 10 }
 			set_variable = { name = zg361_sb_m_10_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_10_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_10_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1223,7 +1223,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 11 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 11 }
 			set_variable = { name = zg361_sb_m_11_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_11_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_11_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1248,7 +1248,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 12 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 12 }
 			set_variable = { name = zg361_sb_m_12_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_12_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_12_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1273,7 +1273,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 13 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 13 }
 			set_variable = { name = zg361_sb_m_13_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_13_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_13_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1298,7 +1298,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 14 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 14 }
 			set_variable = { name = zg361_sb_m_14_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_14_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_14_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1323,7 +1323,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 15 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 15 }
 			set_variable = { name = zg361_sb_m_15_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_15_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_15_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1348,7 +1348,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 16 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 16 }
 			set_variable = { name = zg361_sb_m_16_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_16_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_16_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1373,7 +1373,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 17 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 17 }
 			set_variable = { name = zg361_sb_m_17_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_17_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_17_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1398,7 +1398,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 18 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 18 }
 			set_variable = { name = zg361_sb_m_18_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_18_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_18_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1423,7 +1423,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 19 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 19 }
 			set_variable = { name = zg361_sb_m_19_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_19_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_19_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1448,7 +1448,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 20 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 20 }
 			set_variable = { name = zg361_sb_m_20_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_20_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_20_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1473,7 +1473,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 21 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 21 }
 			set_variable = { name = zg361_sb_m_21_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_21_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_21_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1498,7 +1498,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 22 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 22 }
 			set_variable = { name = zg361_sb_m_22_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_22_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_22_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1523,7 +1523,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 23 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 23 }
 			set_variable = { name = zg361_sb_m_23_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_23_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_23_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1548,7 +1548,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 24 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 24 }
 			set_variable = { name = zg361_sb_m_24_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_24_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_24_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1573,7 +1573,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 25 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 25 }
 			set_variable = { name = zg361_sb_m_25_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_25_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_25_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1598,7 +1598,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 26 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 26 }
 			set_variable = { name = zg361_sb_m_26_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_26_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_26_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1623,7 +1623,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 27 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 27 }
 			set_variable = { name = zg361_sb_m_27_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_27_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_27_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1648,7 +1648,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 28 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 28 }
 			set_variable = { name = zg361_sb_m_28_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_28_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_28_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1673,7 +1673,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 29 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 29 }
 			set_variable = { name = zg361_sb_m_29_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_29_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_29_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1698,7 +1698,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 30 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 30 }
 			set_variable = { name = zg361_sb_m_30_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_30_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_30_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1723,7 +1723,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 31 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 31 }
 			set_variable = { name = zg361_sb_m_31_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_31_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_31_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1748,7 +1748,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 32 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 32 }
 			set_variable = { name = zg361_sb_m_32_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_32_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_32_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1773,7 +1773,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 33 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 33 }
 			set_variable = { name = zg361_sb_m_33_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_33_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_33_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1798,7 +1798,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 34 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 34 }
 			set_variable = { name = zg361_sb_m_34_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_34_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_34_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1823,7 +1823,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 35 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 35 }
 			set_variable = { name = zg361_sb_m_35_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_35_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_35_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1848,7 +1848,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 36 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 36 }
 			set_variable = { name = zg361_sb_m_36_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_36_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_36_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1873,7 +1873,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 37 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 37 }
 			set_variable = { name = zg361_sb_m_37_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_37_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_37_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1898,7 +1898,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 38 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 38 }
 			set_variable = { name = zg361_sb_m_38_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_38_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_38_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1923,7 +1923,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 39 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 39 }
 			set_variable = { name = zg361_sb_m_39_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_39_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_39_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1948,7 +1948,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 40 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 40 }
 			set_variable = { name = zg361_sb_m_40_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_40_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_40_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1973,7 +1973,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 41 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 41 }
 			set_variable = { name = zg361_sb_m_41_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_41_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_41_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -1998,7 +1998,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 42 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 42 }
 			set_variable = { name = zg361_sb_m_42_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_42_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_42_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2023,7 +2023,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 43 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 43 }
 			set_variable = { name = zg361_sb_m_43_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_43_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_43_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2048,7 +2048,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 44 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 44 }
 			set_variable = { name = zg361_sb_m_44_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_44_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_44_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2073,7 +2073,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 45 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 45 }
 			set_variable = { name = zg361_sb_m_45_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_45_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_45_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2098,7 +2098,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 46 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 46 }
 			set_variable = { name = zg361_sb_m_46_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_46_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_46_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2123,7 +2123,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 47 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 47 }
 			set_variable = { name = zg361_sb_m_47_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_47_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_47_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2148,7 +2148,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 48 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 48 }
 			set_variable = { name = zg361_sb_m_48_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_48_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_48_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2173,7 +2173,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 49 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 49 }
 			set_variable = { name = zg361_sb_m_49_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_49_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_49_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2198,7 +2198,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 50 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 50 }
 			set_variable = { name = zg361_sb_m_50_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_50_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_50_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2223,7 +2223,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 51 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 51 }
 			set_variable = { name = zg361_sb_m_51_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_51_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_51_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2248,7 +2248,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 52 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 52 }
 			set_variable = { name = zg361_sb_m_52_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_52_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_52_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2273,7 +2273,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 53 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 53 }
 			set_variable = { name = zg361_sb_m_53_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_53_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_53_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2298,7 +2298,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 54 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 54 }
 			set_variable = { name = zg361_sb_m_54_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_54_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_54_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2323,7 +2323,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 55 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 55 }
 			set_variable = { name = zg361_sb_m_55_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_55_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_55_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2348,7 +2348,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 56 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 56 }
 			set_variable = { name = zg361_sb_m_56_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_56_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_56_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2373,7 +2373,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 57 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 57 }
 			set_variable = { name = zg361_sb_m_57_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_57_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_57_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2398,7 +2398,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 58 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 58 }
 			set_variable = { name = zg361_sb_m_58_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_58_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_58_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2423,7 +2423,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 59 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 59 }
 			set_variable = { name = zg361_sb_m_59_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_59_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_59_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2448,7 +2448,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 60 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 60 }
 			set_variable = { name = zg361_sb_m_60_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_60_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_60_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2473,7 +2473,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 61 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 61 }
 			set_variable = { name = zg361_sb_m_61_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_61_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_61_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2498,7 +2498,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 62 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 62 }
 			set_variable = { name = zg361_sb_m_62_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_62_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_62_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2523,7 +2523,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 63 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 63 }
 			set_variable = { name = zg361_sb_m_63_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_63_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_63_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2548,7 +2548,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 64 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 64 }
 			set_variable = { name = zg361_sb_m_64_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_64_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_64_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2573,7 +2573,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 65 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 65 }
 			set_variable = { name = zg361_sb_m_65_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_65_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_65_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2598,7 +2598,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 66 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 66 }
 			set_variable = { name = zg361_sb_m_66_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_66_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_66_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2623,7 +2623,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 67 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 67 }
 			set_variable = { name = zg361_sb_m_67_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_67_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_67_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2648,7 +2648,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 68 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 68 }
 			set_variable = { name = zg361_sb_m_68_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_68_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_68_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2673,7 +2673,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 69 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 69 }
 			set_variable = { name = zg361_sb_m_69_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_69_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_69_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2698,7 +2698,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 70 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 70 }
 			set_variable = { name = zg361_sb_m_70_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_70_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_70_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2723,7 +2723,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 71 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 71 }
 			set_variable = { name = zg361_sb_m_71_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_71_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_71_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2748,7 +2748,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 72 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 72 }
 			set_variable = { name = zg361_sb_m_72_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_72_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_72_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2773,7 +2773,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 73 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 73 }
 			set_variable = { name = zg361_sb_m_73_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_73_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_73_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2798,7 +2798,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 74 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 74 }
 			set_variable = { name = zg361_sb_m_74_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_74_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_74_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2823,7 +2823,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 75 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 75 }
 			set_variable = { name = zg361_sb_m_75_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_75_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_75_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2848,7 +2848,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 76 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 76 }
 			set_variable = { name = zg361_sb_m_76_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_76_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_76_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2873,7 +2873,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 77 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 77 }
 			set_variable = { name = zg361_sb_m_77_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_77_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_77_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2898,7 +2898,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 78 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 78 }
 			set_variable = { name = zg361_sb_m_78_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_78_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_78_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2923,7 +2923,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 79 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 79 }
 			set_variable = { name = zg361_sb_m_79_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_79_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_79_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }
@@ -2948,7 +2948,7 @@ zg361_write_managed_scoreboard_slot_effect = {
 			}
 		}
 		else_if = {
-			limit = { var:zg361_scoreboard_slot_cursor = 80 }
+			limit = { has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = 80 }
 			set_variable = { name = zg361_sb_m_80_char value = scope:zg361_scoreboard_snapshot_entry }
 			set_variable = { name = zg361_sb_m_80_kpi value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }
 			set_variable = { name = zg361_sb_m_80_rank value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }

@@ -30,6 +30,13 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertNotIn("GetList('zg361_scoreboard_managed')", gui)
         self.assertNotIn("Character.MakeScope.Var('zg361_kpi')", gui)
         self.assertNotIn("Character.MakeScope.Var('zg361_rank')", gui)
+        self.assertEqual(
+            effects.count(
+                "limit = { has_variable = zg361_scoreboard_slot_cursor "
+                "var:zg361_scoreboard_slot_cursor ="
+            ),
+            SLOT_COUNT,
+        )
 
     def test_checked_in_projection_is_current(self) -> None:
         stale = [
