@@ -107,6 +107,7 @@ class NativeOneGenerationRunTests(unittest.TestCase):
             completion_contract="one_generation",
             route_contact_timeline_speed=3,
             allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
         )
         return report
 
@@ -355,6 +356,7 @@ class NativeOneGenerationRunTests(unittest.TestCase):
                     checkpoint_every_eligible_advances=3,
                     route_contact_timeline_speed=3,
                     allow_route_contact_high_speed_ab=False,
+                    allow_stationary_objective_hold_sentinel_canary=False,
                 )
                 self.assertIn(f'"ok": {str(ok).lower()}', stdout.getvalue())
 

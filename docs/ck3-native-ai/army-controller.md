@@ -472,6 +472,48 @@ flowchart LR
 6. [unknown] 下一次刷新是否一定把 `357` 改指 `2604` 无法由当前证据保证，因为可见性、即时 invalidation、
    objective block、其它候选和 final pathfinding 都可能改变结果。
 
+## 原地战争目标的七日观察窗与我方稀疏暂停
+
+- [static-confirmed] 原生 controller 对 idle stack 的普通 target retry 是 `UPDATE_TARGETS_TICK=7` 日；目标省等于
+  当前省时进入 local-objective helpers，而不是构造一条移动路线。这个周期给出了“至多七日后重新观察”的自然上界，
+  但没有证明七日内战争、占领或 local objective 状态不会变化。
+- [production-live] 只读 artifact `ca52af74` 中，`135` 个逐日 arm 占总墙钟约 `59%`；同一长跑的 checkpoint
+  节拍还会在每三次 advance 后触发。把合格的 stationary hold 合并为七日 tranche，预计同时减少逐日 arm 和约
+  `49` 个由这些 advance 诱发的 checkpoint，但这是本 canary 的待实测收益，不冒充已经实现的 wall-clock 结果。
+- [live-confirmed] 同一只读证据中有两次新 WarID 只在外部 paused frame 才进入 active-war set。现有 CUnit watch
+  能保证真实接触形成 CombatID 时同日停，却不能 exact-watch 新战争加入；因此 active-war-set 变化仍属于下面的
+  七日 bounded blind spot。
+- [unknown] 当前 exact build 尚未闭合一条可由现有 decision sentinel 同日监听的 active-war set（包括新 WarID 加入）、WarID、战争分数、战争终结、
+  objective membership、occupation、current province 或 local-objective state 原生字段链。尤其不能把
+  `CUnit` 仍然 idle/stationary 推断成 active-war set 未变、战争仍 active、目标仍属于该战争或占领状态不变。
+- [counter-policy] 因此首版 stationary-objective-hold 只允许显式 canary：在一致 paused snapshot 中要求完整玩家可控军
+  watch、无 event/interaction、无玩家 combat/retreat/active siege/assault，所有玩家军都是 regular idle stationary，
+  且显式 subject 当前位于显式 active WarID 的显式 objective province。缺失的 deep objective-state rows 不单独阻断：
+  regular/idle 全军观测负责排除玩家 siege/assault，已发布的 active-siege row 仍作为矛盾证据拒绝。它以 speed 3 最多推进
+  `1..7` 日，并把所有现存 termination negative-reuse lease 的最早 expiry 作为更近 deadline，复用现有 native decision
+  sentinel 对 CUnit identity、move target、CombatID、retreat、native pause 与 deadline 的监听。
+- [counter-policy] typed step 必须同时绑定 WarID、subject CUnitID、objective ProvinceID 与 date bound；driver 在 arm 前
+  逐项对拍，并在 stop 后取得 fresh paused snapshot 重新观测同一绑定。任何 omitted war/objective/occupation/state 变化
+  最迟只会在七日 deadline 后被 Python 发现，因此该 canary 是 bounded sparse-pause probe，不是 exact war-terminal watch，
+  也不得据此广告 production readiness。
+
+```mermaid
+flowchart TD
+    I["[static-confirmed] idle stack at current target province"] --> T["[static-confirmed] local-objective helpers<br/>normal target retry <= 7 days"]
+    T -. "[unknown] war / occupation / objective / local-state invalidation timing" .-> U["[unknown] omitted native state changes"]
+    P["[counter-policy] fresh paused snapshot<br/>complete controllable watch + all regular idle stationary"] --> G{"[counter-policy] explicit active WarID + subject at explicit objective<br/>no event/interaction/combat/retreat/siege/assault?"}
+    G -->|no| H["hold / ordinary paused OODA"]
+    G -->|yes; explicit canary only| A["arm speed-3 native sentinel<br/>lease 1..7 days"]
+    A --> S{"watched CUnit identity / move target / CombatID / retreat<br/>native pause or deadline?"}
+    S -->|yes| R["same-day native stop for watched transition"]
+    S -->|deadline| R
+    R --> F["[counter-policy] fresh paused snapshot<br/>revalidate WarID / subject / objective / bound / scope"]
+    U -. "[unknown] no exact native watch; detection may lag <= 7 days" .-> F
+    F --> O["resume full war OODA; never claim exact war terminal"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ## 对我方 planner 的策略指导
 
 - [inference] 决策时优先读取敌军 `route[0]` 与 endpoint，而不只读 current province；current 相同但

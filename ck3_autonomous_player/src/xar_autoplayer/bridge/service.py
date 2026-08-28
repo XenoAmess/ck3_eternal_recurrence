@@ -115,6 +115,7 @@ from .settlement_contract import (
 from .war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
     QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
     army_strength_query_status,
@@ -128,6 +129,7 @@ from .war_contract import (
     offer_white_peace_step,
     parse_battle_decision_epoch_advance_step,
     parse_committed_route_sentinel_advance_step,
+    parse_war_objective_hold_sentinel_advance_step,
     player_armies_from_state,
     query_war_termination_options_step,
     query_war_termination_terms_step,
@@ -226,6 +228,13 @@ class GameplayBridgeService:
                 parse_committed_route_sentinel_advance_step(selected_step)
                 is not None
                 and COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP in available_steps
+            ):
+                routable_steps.add(str(selected_step))
+            if (
+                parse_war_objective_hold_sentinel_advance_step(selected_step)
+                is not None
+                and WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
+                in available_steps
             ):
                 routable_steps.add(str(selected_step))
             return {

@@ -58,6 +58,7 @@ from .bridge.war_contract import (
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
+    war_objective_hold_sentinel_advance_step,
     controllable_armies,
     disband_army_step,
     enemy_primary_default_raise_province_ids,
@@ -70,6 +71,7 @@ from .bridge.war_contract import (
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
     parse_committed_route_sentinel_advance_step,
+    parse_war_objective_hold_sentinel_advance_step,
     parse_move_army_step,
     parse_preview_move_army_step,
     parse_query_war_termination_options_step,
@@ -115,6 +117,9 @@ _NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
     "committed-route-sentinel-advance"
+)
+_WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
+    "war-objective-hold-sentinel-advance"
 )
 _BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS = 45
@@ -1743,11 +1748,15 @@ def _battle_sentinel_advance_validation(
     committed_route_request = parse_committed_route_sentinel_advance_step(
         step
     )
+    objective_hold_request = (
+        parse_war_objective_hold_sentinel_advance_step(step)
+    )
     expected = (
         (3, "decision_epoch")
         if decision_target is not None
         or step == _BATTLE_DECISION_EPOCH_ADVANCE_STEP
         or committed_route_request is not None
+        or objective_hold_request is not None
         else (5, "terminal_or_sentinel")
         if step == _BATTLE_TERMINAL_CRUISE_STEP
         else None
@@ -1756,7 +1765,9 @@ def _battle_sentinel_advance_validation(
         return None
     expected_speed, expected_mode = expected
     requested_scope = (
-        "committed_route"
+        "stationary_objective_hold"
+        if objective_hold_request is not None
+        else "committed_route"
         if committed_route_request is not None
         else "active_battle"
     )
@@ -1801,6 +1812,12 @@ def _battle_sentinel_advance_validation(
             and combat_count == 0
             and expected_mode == "decision_epoch"
         )
+        or (
+            requested_scope == "stationary_objective_hold"
+            and sentinel_scope == "stationary_objective_hold"
+            and combat_count == 0
+            and expected_mode == "decision_epoch"
+        )
     )
     errors: list[str] = []
     if not (
@@ -1823,11 +1840,17 @@ def _battle_sentinel_advance_validation(
         and elapsed > 0
         and 1
         <= (target - start) // 24
-        <= _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+        <= (
+            7
+            if objective_hold_request is not None
+            else _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+        )
         and (target - start) % 24 == 0
         and (
             target == decision_target
             if decision_target is not None
+            else target == objective_hold_request[3]
+            if objective_hold_request is not None
             else target == committed_route_request[2]
             if committed_route_request is not None
             else target
@@ -1901,8 +1924,62 @@ def _battle_sentinel_advance_validation(
         terminal_flag != ("combat_terminal" in (reasons or []))
     ):
         errors.append("terminal_flag_disagrees")
-    if sentinel_scope == "committed_route" and terminal_flag is not False:
-        errors.append("route_scope_claimed_combat_terminal")
+    if (
+        sentinel_scope
+        in {"committed_route", "stationary_objective_hold"}
+        and terminal_flag is not False
+    ):
+        errors.append("noncombat_scope_claimed_combat_terminal")
+    if objective_hold_request is not None:
+        request = advance_result.get("war_objective_hold_request")
+        admission = advance_result.get("war_objective_hold_admission")
+        post_stop = advance_result.get("war_objective_hold_post_stop")
+        expected_request = {
+            "sentinel_scope": "stationary_objective_hold",
+            "war_id": objective_hold_request[0],
+            "subject_army_id": objective_hold_request[1],
+            "objective_province_id": objective_hold_request[2],
+            "target_date_raw": objective_hold_request[3],
+        }
+        if request != expected_request:
+            errors.append("objective_hold_request_binding_failed")
+        if not (
+            isinstance(admission, dict)
+            and admission.get("status") == "matched"
+            and admission.get("sentinel_scope")
+            == "stationary_objective_hold"
+            and admission.get("war_id") == objective_hold_request[0]
+            and admission.get("subject_army_id")
+            == objective_hold_request[1]
+            and admission.get("objective_province_id")
+            == objective_hold_request[2]
+            and admission.get("watch_army_ids") == watch
+        ):
+            errors.append("objective_hold_admission_binding_failed")
+        if not (
+            isinstance(post_stop, dict)
+            and post_stop.get("status") in {"matched", "invalidated"}
+            and post_stop.get("sentinel_scope")
+            == "stationary_objective_hold"
+            and post_stop.get("war_id") == objective_hold_request[0]
+            and post_stop.get("subject_army_id")
+            == objective_hold_request[1]
+            and post_stop.get("objective_province_id")
+            == objective_hold_request[2]
+            and post_stop.get("watch_army_ids") == watch
+            and post_stop.get("exact_war_terminal_watch") is False
+            and post_stop.get("exact_active_war_set_watch") is False
+        ):
+            errors.append("objective_hold_post_stop_binding_failed")
+        if not (
+            advance_result.get("exact_war_terminal_watch") is False
+            and advance_result.get("exact_active_war_set_watch") is False
+            and advance_result.get(
+                "maximum_omitted_state_detection_lag_days"
+            )
+            == 7
+        ):
+            errors.append("objective_hold_watch_boundary_misreported")
     cleanup = advance_result.get("managed_failure_cleanup")
     if not (
         advance_result.get("progress_status") == "postcondition"
@@ -3406,6 +3483,7 @@ def choose_one_life_turn(
         for name in (
             "decision_sentinel_live_ready",
             "committed_route_sentinel_live_ready",
+            "stationary_objective_hold_sentinel_canary_ready",
             "terminal_sentinel_live_ready",
             "overwhelming_matrix_live_ready",
         )
@@ -3794,6 +3872,9 @@ def choose_one_life_turn(
             ),
             "player_relative_war_score": war.get(
                 "player_relative_war_score"
+            ),
+            "war_termination_negative_reuse": war.get(
+                "war_termination_negative_reuse"
             ),
         }
         for war in active_wars
@@ -4995,6 +5076,86 @@ def choose_one_life_turn(
                 "reason": "an active assault failed its one-day safety review but no exact Stop Assault action is eligible",
                 "assault_state": unsafe_assault,
                 "assault_states": active_assaults,
+                "active_wars": war_summary,
+            }
+        objective_hold_candidate = (
+            _stationary_objective_hold_candidate(
+                snapshot,
+                active_wars=active_wars,
+                player_armies=player_armies,
+            )
+            if (
+                battle_speed_gates[
+                    "stationary_objective_hold_sentinel_canary_ready"
+                ]
+                and _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
+                in available_steps
+                and isinstance(snapshot, dict)
+            )
+            else None
+        )
+        objective_hold_start_date_raw = (
+            _native_int(snapshot.get("date_raw"))
+            if isinstance(snapshot, dict)
+            else None
+        )
+        objective_hold_target_date_raw = (
+            _stationary_objective_hold_target_date_raw(
+                objective_hold_start_date_raw,
+                war_summary,
+            )
+            if objective_hold_start_date_raw is not None
+            else None
+        )
+        if (
+            isinstance(objective_hold_candidate, dict)
+            and objective_hold_start_date_raw is not None
+            and objective_hold_target_date_raw is not None
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_stationary_objective_hold_sentinel_canary",
+                "selected_step": war_objective_hold_sentinel_advance_step(
+                    int(objective_hold_candidate["war_id"]),
+                    int(objective_hold_candidate["subject_army_id"]),
+                    int(objective_hold_candidate["objective_province_id"]),
+                    objective_hold_target_date_raw,
+                ),
+                "reason": (
+                    "every player army is regular, idle and stationary, and "
+                    "the bound controllable subject is holding an explicit "
+                    "active-war objective; run the explicit speed-3 canary "
+                    "for at most seven days without Python daily pauses"
+                ),
+                "timeline_policy": (
+                    "war_stationary_objective_hold_canary_speed_3"
+                ),
+                "timeline_speed": 3,
+                "sentinel_mode": "decision_epoch",
+                "sentinel_scope": "stationary_objective_hold",
+                "absolute_target_date_raw": objective_hold_target_date_raw,
+                "watch_army_ids": objective_hold_candidate[
+                    "watch_army_ids"
+                ],
+                "war_id": objective_hold_candidate["war_id"],
+                "subject_army_id": objective_hold_candidate[
+                    "subject_army_id"
+                ],
+                "objective_province_id": objective_hold_candidate[
+                    "objective_province_id"
+                ],
+                "exact_war_terminal_watch": False,
+                "exact_active_war_set_watch": False,
+                "maximum_omitted_state_detection_lag_days": 7,
+                "omitted_native_watch_fields": [
+                    "active_war_set",
+                    "war_id",
+                    "war_score",
+                    "objective_membership",
+                    "occupation",
+                    "current_province",
+                    "army_state",
+                ],
                 "active_wars": war_summary,
             }
         if combat_armies and not unsafe_armies and not threatened_stationary_armies:
@@ -8274,6 +8435,126 @@ def _army_tactical_state(army: dict[str, object]) -> str | None:
     if army.get("in_combat") is True:
         return "combat"
     return None
+
+
+def _stationary_objective_hold_candidate(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    player_armies: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Select a strictly observed canary scope for a seven-day idle hold."""
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and player_armies
+    ):
+        return None
+    army_by_id: dict[int, dict[str, object]] = {}
+    watch_ids: list[int] = []
+    for army in player_armies:
+        army_id = _native_int(army.get("army_id"))
+        named_state = army.get("army_state")
+        state_code = _native_int(army.get("army_state_code"))
+        regular = bool(
+            (
+                isinstance(named_state, str)
+                and named_state.casefold() == "regular"
+            )
+            or (named_state is None and state_code == 1)
+        )
+        route = army.get("route_province_ids")
+        current = _native_int(army.get("current_province_id"))
+        if (
+            army_id is None
+            or army_id <= 0
+            or army_id in army_by_id
+            or not regular
+            or current is None
+            or current <= 0
+            or army.get("move_target_province_id") is not None
+            or not isinstance(route, list)
+            or route
+            or army.get("in_combat") is True
+            or army.get("retreating") is True
+        ):
+            return None
+        army_by_id[army_id] = army
+        if army.get("controllable") is True:
+            watch_ids.append(army_id)
+    if not (
+        watch_ids
+        and len(watch_ids) == len(set(watch_ids))
+        and len(watch_ids) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
+    ):
+        return None
+
+    # Deep objective rows are an optional corroborating source, not an
+    # admission prerequisite: the live snapshot can publish an exact
+    # objective ID while omitting objective_province_states.  A published
+    # player siege still invalidates the hold, while the all-army regular
+    # state above independently excludes an unreported player siege/assault.
+    for war in active_wars:
+        states = war.get("objective_province_states")
+        if not isinstance(states, list):
+            continue
+        for state in states:
+            if not isinstance(state, dict):
+                continue
+            active_siege = state.get("active_siege")
+            if (
+                isinstance(active_siege, dict)
+                and active_siege.get("player_army_besieging") is True
+            ):
+                return None
+
+    for war in sorted(
+        active_wars,
+        key=lambda row: _native_int(row.get("war_id")) or 2**31,
+    ):
+        war_id = _native_int(war.get("war_id"))
+        objectives = war.get("war_objective_province_ids")
+        if war_id is None or war_id <= 0 or not isinstance(objectives, list):
+            continue
+        for objective in objectives:
+            objective_id = _native_int(objective)
+            if objective_id is None or objective_id <= 0:
+                continue
+            matching_subjects = sorted(
+                army_id
+                for army_id in watch_ids
+                if _native_int(
+                    army_by_id[army_id].get("current_province_id")
+                )
+                == objective_id
+            )
+            if matching_subjects:
+                return {
+                    "war_id": war_id,
+                    "subject_army_id": matching_subjects[0],
+                    "objective_province_id": objective_id,
+                    "watch_army_ids": sorted(watch_ids),
+                }
+    return None
+
+
+def _stationary_objective_hold_target_date_raw(
+    starting_date_raw: int,
+    war_summary: list[dict[str, object]],
+) -> int | None:
+    """Bound a hold by both its seven-day lease and reused query leases."""
+    target = starting_date_raw + 7 * 24
+    for war in war_summary:
+        reuse = war.get("war_termination_negative_reuse")
+        if not isinstance(reuse, dict):
+            continue
+        expires = _native_int(reuse.get("expires_date_raw"))
+        if expires is None:
+            continue
+        target = min(target, expires)
+    return target if target > starting_date_raw else None
 
 
 def _stationary_province_threats(

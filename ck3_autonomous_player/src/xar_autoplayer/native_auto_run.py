@@ -96,6 +96,7 @@ def native_auto_run(
         DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
     ),
     allow_route_contact_high_speed_ab: bool = False,
+    allow_stationary_objective_hold_sentinel_canary: bool = False,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -310,6 +311,9 @@ def native_auto_run(
             route_contact_timeline_speed=route_contact_speed,
             allow_route_contact_high_speed_ab=(
                 allow_route_contact_high_speed_ab
+            ),
+            allow_stationary_objective_hold_sentinel_canary=(
+                allow_stationary_objective_hold_sentinel_canary
             ),
         )
         service = GameplayBridgeService(driver)
@@ -1101,6 +1105,9 @@ def native_auto_run(
             "route_contact_timeline_speed": route_contact_speed,
             "allow_route_contact_high_speed_ab": (
                 allow_route_contact_high_speed_ab is True
+            ),
+            "allow_stationary_objective_hold_sentinel_canary": (
+                allow_stationary_objective_hold_sentinel_canary is True
             ),
         },
         "identity": _identity(config, readiness, spec),
@@ -2078,6 +2085,12 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "watch_army_ids",
         "route_subject_army_id",
         "route_target_province_id",
+        "subject_army_id",
+        "objective_province_id",
+        "exact_war_terminal_watch",
+        "exact_active_war_set_watch",
+        "maximum_omitted_state_detection_lag_days",
+        "omitted_native_watch_fields",
         "terminal_journal_cursors",
         "battle_terminal_cruise_assessments",
     )
@@ -2116,6 +2129,12 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "external_pause_count",
         "external_rich_query_count",
         "managed_failure_cleanup",
+        "war_objective_hold_request",
+        "war_objective_hold_admission",
+        "war_objective_hold_post_stop",
+        "exact_war_terminal_watch",
+        "exact_active_war_set_watch",
+        "maximum_omitted_state_detection_lag_days",
         "war_progress_before",
         "war_progress_after",
         "actions",

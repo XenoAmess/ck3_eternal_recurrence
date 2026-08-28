@@ -126,11 +126,15 @@ class _NativeAutoRunHarness:
         save_dir: Path,
         route_contact_timeline_speed: int,
         allow_route_contact_high_speed_ab: bool,
+        allow_stationary_objective_hold_sentinel_canary: bool,
     ) -> "_FakeNativeDriver":
         self.events.append("driver_init")
         self.route_contact_timeline_speed = route_contact_timeline_speed
         self.allow_route_contact_high_speed_ab = (
             allow_route_contact_high_speed_ab
+        )
+        self.allow_stationary_objective_hold_sentinel_canary = (
+            allow_stationary_objective_hold_sentinel_canary
         )
         self.driver = _FakeNativeDriver(
             self,
@@ -817,6 +821,7 @@ class NativeAutoRunTests(unittest.TestCase):
         checkpoint_every_eligible_advances: int = 3,
         session_exits_immediately: bool = False,
         fail_save_checkpoint: bool = False,
+        allow_stationary_objective_hold_sentinel_canary: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
@@ -868,6 +873,9 @@ class NativeAutoRunTests(unittest.TestCase):
                     completion_contract == "one_generation"
                 ),
                 completion_contract=completion_contract,
+                allow_stationary_objective_hold_sentinel_canary=(
+                    allow_stationary_objective_hold_sentinel_canary
+                ),
             )
         return report, harness
 
@@ -895,6 +903,9 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(args.cold_start_checkpoint)
         self.assertEqual(args.route_contact_speed, 3)
         self.assertFalse(args.allow_route_contact_high_speed_ab)
+        self.assertFalse(
+            args.allow_stationary_objective_hold_sentinel_canary
+        )
 
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
@@ -911,6 +922,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 "--route-contact-speed",
                 "5",
                 "--allow-route-contact-high-speed-ab",
+                "--allow-stationary-objective-hold-sentinel-canary",
             ]
         )
 
@@ -920,6 +932,9 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(args.checkpoint_every_advances, 180)
         self.assertEqual(args.route_contact_speed, 5)
         self.assertTrue(args.allow_route_contact_high_speed_ab)
+        self.assertTrue(
+            args.allow_stationary_objective_hold_sentinel_canary
+        )
 
     def test_high_speed_route_contact_arm_requires_explicit_ab_admission(
         self,
@@ -1081,7 +1096,15 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             report["bounds"]["allow_route_contact_high_speed_ab"]
         )
+        self.assertFalse(
+            report["bounds"][
+                "allow_stationary_objective_hold_sentinel_canary"
+            ]
+        )
         self.assertEqual(harness.route_contact_timeline_speed, 3)
+        self.assertFalse(
+            harness.allow_stationary_objective_hold_sentinel_canary
+        )
         auto_run = report["auto_run"]
         self.assertEqual(auto_run["visible_gameplay_turns"], 3)
         self.assertEqual(
@@ -1148,6 +1171,23 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertLess(events.index("session_stop"), events.index("session_return"))
         self.assertLess(events.index("session_return"), events.index("driver_close"))
         self.assertTrue(report["cleanup"]["ok"])
+
+    def test_explicit_objective_hold_canary_flag_reaches_driver_and_report(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["advance"],
+            allow_stationary_objective_hold_sentinel_canary=True,
+        )
+
+        self.assertTrue(
+            report["bounds"][
+                "allow_stationary_objective_hold_sentinel_canary"
+            ]
+        )
+        self.assertTrue(
+            harness.allow_stationary_objective_hold_sentinel_canary
+        )
 
     def test_blocked_planner_returns_failed_report(self) -> None:
         report, _harness = self._run(["blocked"])
@@ -1963,6 +2003,7 @@ class NativeAutoRunTests(unittest.TestCase):
                     cold_start_checkpoint=False,
                     route_contact_timeline_speed=3,
                     allow_route_contact_high_speed_ab=False,
+                    allow_stationary_objective_hold_sentinel_canary=False,
                 )
 
 

@@ -33,6 +33,7 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.war_contract import (
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
+    war_objective_hold_sentinel_advance_step,
 )
 from xar_autoplayer.strategy import (
     _battle_sentinel_advance_validation,
@@ -1464,6 +1465,68 @@ def _sentinel_advance_row(
 
 
 class BattleSentinelStrategyTests(unittest.TestCase):
+    def test_objective_hold_result_reconciles_typed_scope_and_fresh_post_stop(
+        self,
+    ) -> None:
+        target = DATE_RAW + 7 * 24
+        step = war_objective_hold_sentinel_advance_step(
+            61, SUBJECT, 2_635, target
+        )
+        row = _sentinel_advance_row(
+            1, step=step, elapsed_days=7, target_date_raw=target
+        )
+        result = row["result"]
+        assert isinstance(result, dict)
+        result["sentinel_scope"] = "stationary_objective_hold"
+        armed = result["armed_tactical_daily_sentinel"]
+        sentinel = result["tactical_daily_sentinel"]
+        assert isinstance(armed, dict)
+        assert isinstance(sentinel, dict)
+        armed["combat_count"] = 0
+        sentinel["combat_count"] = 0
+        result["trigger_reasons"] = ["date_deadline"]
+        sentinel["trigger_flags"] = 1
+        sentinel["trigger_reasons"] = ["date_deadline"]
+        binding = {
+            "status": "matched",
+            "reason": None,
+            "sentinel_scope": "stationary_objective_hold",
+            "war_id": 61,
+            "subject_army_id": SUBJECT,
+            "objective_province_id": 2_635,
+            "watch_army_ids": [SUBJECT],
+            "exact_war_terminal_watch": False,
+            "exact_active_war_set_watch": False,
+        }
+        result["war_objective_hold_request"] = {
+            "sentinel_scope": "stationary_objective_hold",
+            "war_id": 61,
+            "subject_army_id": SUBJECT,
+            "objective_province_id": 2_635,
+            "target_date_raw": target,
+        }
+        result["war_objective_hold_admission"] = dict(binding)
+        result["war_objective_hold_post_stop"] = dict(binding)
+        result["exact_war_terminal_watch"] = False
+        result["exact_active_war_set_watch"] = False
+        result["maximum_omitted_state_detection_lag_days"] = 7
+
+        valid = _battle_sentinel_advance_validation(result)
+        self.assertIsInstance(valid, dict)
+        assert isinstance(valid, dict)
+        self.assertTrue(valid["valid"], valid["errors"])
+        self.assertEqual(valid["sentinel_scope"], "stationary_objective_hold")
+
+        mismatched = copy.deepcopy(result)
+        mismatched["war_objective_hold_post_stop"]["war_id"] = 62
+        invalid = _battle_sentinel_advance_validation(mismatched)
+        self.assertIsInstance(invalid, dict)
+        assert isinstance(invalid, dict)
+        self.assertFalse(invalid["valid"])
+        self.assertIn(
+            "objective_hold_post_stop_binding_failed", invalid["errors"]
+        )
+
     def test_route_result_scope_must_match_typed_route_request(self) -> None:
         route_step = committed_route_sentinel_advance_step(
             SUBJECT, 2635, DATE_RAW + 45 * 24

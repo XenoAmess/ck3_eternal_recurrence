@@ -56,6 +56,12 @@ COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
 COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX = (
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP + "-army-"
 )
+WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
+    "war-objective-hold-sentinel-advance"
+)
+WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX = (
+    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP + "-war-"
+)
 BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 BATTLE_SENTINEL_ADVANCE_STEPS = frozenset(
     {
@@ -1690,6 +1696,75 @@ def parse_committed_route_sentinel_advance_step(
     return subject_army_id, target_province_id, target_date_raw
 
 
+def war_objective_hold_sentinel_advance_step(
+    war_id: int,
+    subject_army_id: int,
+    objective_province_id: int,
+    target_date_raw: int,
+) -> str:
+    for name, value, maximum in (
+        ("war_id", war_id, 2**31 - 1),
+        ("subject_army_id", subject_army_id, 2**31 - 1),
+        ("objective_province_id", objective_province_id, 2**31 - 1),
+        ("target_date_raw", target_date_raw, 2**63 - 1),
+    ):
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or not 0 < value <= maximum
+        ):
+            raise ValueError(f"{name} must be a positive signed integer")
+    return (
+        f"{WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX}{war_id}"
+        f"-army-{subject_army_id}-at-{objective_province_id}"
+        f"-until-{target_date_raw}"
+    )
+
+
+def parse_war_objective_hold_sentinel_advance_step(
+    step: object,
+) -> tuple[int, int, int, int] | None:
+    if not isinstance(step, str) or not step.startswith(
+        WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX
+    ):
+        return None
+    payload = step.removeprefix(
+        WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX
+    )
+    war_text, army_separator, remainder = payload.partition("-army-")
+    subject_text, objective_separator, remainder = remainder.partition("-at-")
+    objective_text, date_separator, date_text = remainder.partition("-until-")
+    tokens = (war_text, subject_text, objective_text, date_text)
+    if (
+        not army_separator
+        or not objective_separator
+        or not date_separator
+        or any(
+            not token.isascii()
+            or not token.isdigit()
+            or token.startswith("0")
+            for token in tokens
+        )
+    ):
+        return None
+    war_id, subject_army_id, objective_province_id, target_date_raw = (
+        int(token) for token in tokens
+    )
+    if (
+        not 0 < war_id <= 2**31 - 1
+        or not 0 < subject_army_id <= 2**31 - 1
+        or not 0 < objective_province_id <= 2**31 - 1
+        or not 0 < target_date_raw <= 2**63 - 1
+    ):
+        return None
+    return (
+        war_id,
+        subject_army_id,
+        objective_province_id,
+        target_date_raw,
+    )
+
+
 def is_life_advance_step(step: object) -> bool:
     return bool(
         step == "life-advance"
@@ -1699,6 +1774,7 @@ def is_life_advance_step(step: object) -> bool:
         )
         or parse_battle_decision_epoch_advance_step(step) is not None
         or parse_committed_route_sentinel_advance_step(step) is not None
+        or parse_war_objective_hold_sentinel_advance_step(step) is not None
         or parse_advance_route_contact_horizon_step(step) is not None
     )
 

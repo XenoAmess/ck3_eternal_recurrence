@@ -37,9 +37,11 @@ from xar_autoplayer.bridge.settlement_contract import (
 from xar_autoplayer.bridge.war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+    WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
     committed_route_sentinel_advance_step,
+    war_objective_hold_sentinel_advance_step,
     normalize_active_wars,
     query_route_contact_horizon_step,
     query_war_termination_options_step,
@@ -1087,6 +1089,8 @@ def _native_war_plan(
     rollback_war_failure: dict[str, object] | None = None,
     rollback_war_failures: list[dict[str, object]] | None = None,
     battle_speed_readiness: dict[str, object] | None = None,
+    negative_reuse_expires_date_raw: int | None = None,
+    additional_wars: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1128,20 +1132,34 @@ def _native_war_plan(
                 else {}
             ),
             "active_wars": [
-                _war(
-                    allied_armies=controlled,
-                    enemy_armies=enemies,
-                    score=score,
-                    enemy_primary_default_raise_province_id=fallback,
-                    war_objective_province_ids=(
-                        list(objectives)
-                        if objectives is not None
-                        else [objective]
-                        if objective is not None
-                        else []
+                {
+                    **_war(
+                        allied_armies=controlled,
+                        enemy_armies=enemies,
+                        score=score,
+                        enemy_primary_default_raise_province_id=fallback,
+                        war_objective_province_ids=(
+                            list(objectives)
+                            if objectives is not None
+                            else [objective]
+                            if objective is not None
+                            else []
+                        ),
+                        objective_province_states=objective_states,
                     ),
-                    objective_province_states=objective_states,
-                )
+                    **(
+                        {
+                            "war_termination_negative_reuse": {
+                                "expires_date_raw": (
+                                    negative_reuse_expires_date_raw
+                                )
+                            }
+                        }
+                        if negative_reuse_expires_date_raw is not None
+                        else {}
+                    ),
+                },
+                *(additional_wars or []),
             ],
             "player_armies": controlled,
         },
@@ -2262,6 +2280,184 @@ class GameplayBridgeTests(unittest.TestCase):
             default_closed["phase"], "native_war_route_contact_horizon"
         )
         self.assertEqual(default_closed["selected_step"], query_step)
+
+    def test_stationary_objective_hold_canary_routes_typed_speed_three_step(
+        self,
+    ) -> None:
+        date_raw = 53_256_000
+        player = _army(
+            201_326_874,
+            soldiers=4_100,
+            province_id=2_635,
+            controllable=True,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        target_date_raw = date_raw + 7 * 24
+        other_war_without_objective_states = _war(
+            war_id=77,
+            allied_armies=[player],
+            enemy_armies=[],
+            score=10,
+            war_objective_province_ids=[2_631],
+            objective_province_states=[],
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            additional_wars=[other_war_without_objective_states],
+            occupation_supported=True,
+            siege_progress_supported=True,
+            steps=(
+                WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+                "life-advance",
+            ),
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True,
+                "committed_route_sentinel_live_ready": True,
+                "stationary_objective_hold_sentinel_canary_ready": True,
+                "terminal_sentinel_live_ready": True,
+                "overwhelming_matrix_live_ready": False,
+            },
+        )
+
+        self.assertEqual(
+            plan["phase"],
+            "native_war_stationary_objective_hold_sentinel_canary",
+        )
+        self.assertEqual(
+            plan["selected_step"],
+            war_objective_hold_sentinel_advance_step(
+                88, 201_326_874, 2_635, target_date_raw
+            ),
+        )
+        self.assertEqual(plan["sentinel_scope"], "stationary_objective_hold")
+        self.assertEqual(plan["timeline_speed"], 3)
+        self.assertEqual(plan["watch_army_ids"], [201_326_874])
+        self.assertFalse(plan["exact_war_terminal_watch"])
+        self.assertFalse(plan["exact_active_war_set_watch"])
+        self.assertEqual(plan["maximum_omitted_state_detection_lag_days"], 7)
+
+        default_closed = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            additional_wars=[other_war_without_objective_states],
+            occupation_supported=True,
+            siege_progress_supported=True,
+            steps=(
+                WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+                "life-advance",
+            ),
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True,
+                "committed_route_sentinel_live_ready": True,
+                "stationary_objective_hold_sentinel_canary_ready": False,
+                "terminal_sentinel_live_ready": True,
+                "overwhelming_matrix_live_ready": False,
+            },
+        )
+        self.assertNotEqual(
+            default_closed["phase"],
+            "native_war_stationary_objective_hold_sentinel_canary",
+        )
+        self.assertNotEqual(
+            default_closed.get("selected_step"),
+            war_objective_hold_sentinel_advance_step(
+                88, 201_326_874, 2_635, target_date_raw
+            ),
+        )
+
+    def test_stationary_objective_hold_respects_existing_query_lease_expiry(
+        self,
+    ) -> None:
+        date_raw = 53_256_000
+        player = _army(
+            501,
+            soldiers=4_100,
+            province_id=2_635,
+            controllable=True,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        readiness = {
+            "decision_sentinel_live_ready": True,
+            "committed_route_sentinel_live_ready": True,
+            "stationary_objective_hold_sentinel_canary_ready": True,
+            "terminal_sentinel_live_ready": True,
+            "overwhelming_matrix_live_ready": False,
+        }
+        age_six_plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            negative_reuse_expires_date_raw=date_raw + 24,
+            steps=(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            age_six_plan["selected_step"],
+            war_objective_hold_sentinel_advance_step(
+                88, 501, 2_635, date_raw + 24
+            ),
+        )
+
+        later_reuse = {
+            **_war(
+                war_id=89,
+                allied_armies=[player],
+                enemy_armies=[],
+                score=10,
+                war_objective_province_ids=[2_631],
+                objective_province_states=[],
+            ),
+            "war_termination_negative_reuse": {
+                "expires_date_raw": date_raw + 5 * 24
+            },
+        }
+        earlier_reuse = {
+            **_war(
+                war_id=90,
+                allied_armies=[player],
+                enemy_armies=[],
+                score=10,
+                war_objective_province_ids=[2_632],
+                objective_province_states=[],
+            ),
+            "war_termination_negative_reuse": {
+                "expires_date_raw": date_raw + 2 * 24
+            },
+        }
+        earliest_plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=30,
+            date_raw=date_raw,
+            objective=2_635,
+            objective_states=[],
+            negative_reuse_expires_date_raw=date_raw + 6 * 24,
+            additional_wars=[later_reuse, earlier_reuse],
+            steps=(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            earliest_plan["selected_step"],
+            war_objective_hold_sentinel_advance_step(
+                88, 501, 2_635, date_raw + 2 * 24
+            ),
+        )
 
     def test_contact_horizon_false_never_authorizes_time(self) -> None:
         player = _army(
