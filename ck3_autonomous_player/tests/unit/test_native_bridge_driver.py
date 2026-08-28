@@ -14459,6 +14459,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     **arm_status,
                     "state": "idle",
                 }
+                query_statuses = [arm_status, idle_status]
 
                 def answer(frame: dict[str, object]) -> None:
                     if frame.get("type") != "execute_step":
@@ -14483,7 +14484,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     elif step == "research-query-tactical-daily-sentinel-v1":
                         result.update(
                             status="available",
-                            tactical_daily_sentinel=idle_status,
+                            tactical_daily_sentinel=query_statuses.pop(0),
                         )
                     endpoint.publish(
                         {
@@ -14566,14 +14567,20 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "research-cancel-tactical-daily-sentinel-v1-generation-42",
                     wire_steps,
                 )
-                self.assertLess(
-                    wire_steps.index(
-                        "research-cancel-tactical-daily-sentinel-v1-generation-42"
-                    ),
-                    wire_steps.index(
-                        "research-query-tactical-daily-sentinel-v1"
-                    ),
+                query_positions = [
+                    index
+                    for index, wire_step in enumerate(wire_steps)
+                    if wire_step
+                    == "research-query-tactical-daily-sentinel-v1"
+                ]
+                self.assertEqual(len(query_positions), 2)
+                cancel_position = wire_steps.index(
+                    "research-cancel-tactical-daily-sentinel-v1-generation-42"
                 )
+                self.assertLess(
+                    query_positions[0], cancel_position
+                )
+                self.assertLess(cancel_position, query_positions[1])
                 self.assertEqual(result["stop_kind"], "player_decision")
                 self.assertEqual(result["tactical_daily_sentinel"]["state"], "idle")
                 self.assertEqual(result["external_pause_count"], expected_pause_count)
@@ -14597,6 +14604,211 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 validation = _battle_sentinel_advance_validation(result)
                 self.assertIsNotNone(validation)
                 self.assertTrue(validation["valid"], validation["errors"])
+
+    def test_player_decision_at_deadline_preserves_triggered_native_stop(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+            life_advance_timeout_seconds=0.1,
+            allow_stationary_objective_hold_sentinel_canary=True,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.set-speed-3",
+                "game.command.resume-map",
+                "game.command.pause-map",
+                "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+                "game.command.research-query-tactical-daily-sentinel-v1",
+            )
+        )
+        start = 53_278_584
+        target = 53_278_752
+        played = {"character_id": 707, "alive": True}
+        player = _army(
+            201_326_874,
+            province_id=2_635,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        war = _war(
+            33_554_565,
+            allied_armies=[player],
+            war_objective_province_ids=[2_635],
+            objective_province_states=[],
+        )
+        event = {"instance_id": 51, "option_count": 1}
+        endpoint.publish(
+            _snapshot(
+                1,
+                date_raw=start,
+                played_character=played,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        arm_status = _tactical_sentinel_status(
+            state="armed",
+            generation=50,
+            starting_date_raw=start,
+            target_date_raw=target,
+            observed_date_raw=start,
+            speed=3,
+            mode="decision_epoch",
+            army_count=1,
+            combat_count=0,
+        )
+        triggered_status = _tactical_sentinel_status(
+            state="triggered",
+            generation=50,
+            starting_date_raw=start,
+            target_date_raw=target,
+            observed_date_raw=target,
+            speed=3,
+            mode="decision_epoch",
+            army_count=1,
+            combat_count=0,
+            completed_daily_ticks=7,
+            trigger_flags=1,
+            trigger_reasons=["date_deadline"],
+            overshoot_days=0,
+            pause_wrapper_called=True,
+            pause_observed=True,
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            result: dict[str, object] = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+            }
+            if step.startswith(
+                "research-arm-tactical-daily-sentinel-v1-"
+            ):
+                result.update(
+                    status="available",
+                    tactical_daily_sentinel=arm_status,
+                )
+            elif step == "research-query-tactical-daily-sentinel-v1":
+                result.update(
+                    status="available",
+                    tactical_daily_sentinel=triggered_status,
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+            if step == "set-speed-3":
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        date_raw=start,
+                        speed=3,
+                        played_character=played,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        3,
+                        date_raw=target,
+                        speed=3,
+                        paused=True,
+                        active_event=event,
+                        played_character=played,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        requested_step = war_objective_hold_sentinel_advance_step(
+            33_554_565,
+            201_326_874,
+            2_635,
+            target,
+        )
+        result = driver.execute_step(requested_step)
+        wire_steps = [
+            str(frame["step"])
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(
+            wire_steps.count("research-query-tactical-daily-sentinel-v1"),
+            1,
+        )
+        self.assertFalse(
+            any(
+                step.startswith(
+                    "research-cancel-tactical-daily-sentinel-v1-generation-"
+                )
+                for step in wire_steps
+            )
+        )
+        self.assertEqual(result["stop_kind"], "player_decision")
+        self.assertEqual(result["active_event"]["instance_id"], 51)
+        self.assertEqual(result["tactical_daily_sentinel"], triggered_status)
+        self.assertIsNone(result["player_decision_boundary_cancel"])
+        self.assertEqual(result["trigger_reasons"], ["date_deadline"])
+        self.assertEqual(result["overshoot_days"], 0)
+        self.assertEqual(result["external_pause_count"], 0)
+        self.assertEqual(
+            result["war_objective_hold_post_stop"]["status"],
+            "invalidated",
+        )
+        self.assertEqual(
+            result["war_objective_hold_post_stop"]["reason"],
+            "pending_player_decision",
+        )
+        validation = _battle_sentinel_advance_validation(result)
+        self.assertIsNotNone(validation)
+        self.assertTrue(validation["valid"], validation["errors"])
+        idle_without_cancel = copy.deepcopy(result)
+        idle_without_cancel["tactical_daily_sentinel"] = {
+            **arm_status,
+            "state": "idle",
+        }
+        failed_status = copy.deepcopy(result)
+        failed_status["tactical_daily_sentinel"]["state"] = "failed"
+        failed_status["tactical_daily_sentinel"]["abnormal"] = True
+        triggered_with_cancel = copy.deepcopy(result)
+        triggered_with_cancel["player_decision_boundary_cancel"] = {
+            "step": (
+                "research-cancel-tactical-daily-sentinel-v1-generation-50"
+            ),
+            "status": "canceled",
+            "generation": 50,
+        }
+        for label, candidate in (
+            ("idle-without-cancel", idle_without_cancel),
+            ("failed", failed_status),
+            ("triggered-with-cancel", triggered_with_cancel),
+        ):
+            with self.subTest(label=label):
+                invalid = _battle_sentinel_advance_validation(candidate)
+                self.assertIsNotNone(invalid)
+                self.assertFalse(invalid["valid"])
+                self.assertIn(
+                    "decision_boundary_sentinel_status_invalid",
+                    invalid["errors"],
+                )
 
     def test_failed_sentinel_transaction_uses_managed_pause_cleanup(
         self,

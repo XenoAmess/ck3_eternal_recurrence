@@ -2166,7 +2166,27 @@ def _battle_sentinel_player_decision_validation(
             and combat_count == 0
         )
     )
-    if not (
+    triggered_native_stop_valid = False
+    if isinstance(sentinel, dict) and sentinel.get("state") == "triggered":
+        # Reuse the complete native-stop contract; only decision precedence
+        # intentionally changes the public stop kind.
+        ordinary_result = dict(advance_result)
+        ordinary_result["player_decision_boundary"] = None
+        ordinary_result["stop_kind"] = (
+            "terminal"
+            if sentinel.get("terminal_observed") is True
+            else "decision_epoch"
+        )
+        ordinary_validation = _battle_sentinel_advance_validation(
+            ordinary_result
+        )
+        triggered_native_stop_valid = bool(
+            isinstance(ordinary_validation, dict)
+            and ordinary_validation.get("valid") is True
+            and cancel is None
+        )
+
+    canceled_armed_status_valid = bool(
         isinstance(sentinel, dict)
         and sentinel.get("state") == "idle"
         and sentinel.get("abnormal") is False
@@ -2218,11 +2238,30 @@ def _battle_sentinel_player_decision_validation(
             "status": "canceled",
             "generation": armed.get("generation"),
         }
-    ):
+    )
+    if not (triggered_native_stop_valid or canceled_armed_status_valid):
         errors.append("decision_boundary_sentinel_status_invalid")
 
     boundary_pause_count = _native_int(
         advance_result.get("player_decision_boundary_pause_count")
+    )
+    sentinel_completion_valid = bool(
+        (
+            triggered_native_stop_valid
+            and boundary_pause_count == 0
+            and advance_result.get("external_pause_count") == 0
+        )
+        or (
+            canceled_armed_status_valid
+            and advance_result.get("terminal_reached") is False
+            and advance_result.get("trigger_reasons") == []
+            and advance_result.get("intermediate_pause_count") == 0
+            and advance_result.get("overshoot_days") == -1
+            and advance_result.get("zero_intermediate_pause") is True
+            and boundary_pause_count in {0, 1}
+            and advance_result.get("external_pause_count")
+            == boundary_pause_count
+        )
     )
     cleanup = advance_result.get("managed_failure_cleanup")
     if not (
@@ -2238,18 +2277,11 @@ def _battle_sentinel_player_decision_validation(
         and advance_result.get("sentinel_mode") == expected_mode
         and advance_result.get("sentinel_scope") == requested_scope
         and advance_result.get("stop_kind") == "player_decision"
-        and advance_result.get("terminal_reached") is False
-        and advance_result.get("trigger_reasons") == []
         and advance_result.get("sentinel_generation")
         == sentinel.get("generation")
         and advance_result.get("completed_daily_ticks") == ticks
-        and advance_result.get("intermediate_pause_count") == 0
-        and advance_result.get("overshoot_days") == -1
-        and advance_result.get("zero_intermediate_pause") is True
         and boundary_pause_count is not None
-        and boundary_pause_count in {0, 1}
-        and advance_result.get("external_pause_count")
-        == boundary_pause_count
+        and sentinel_completion_valid
         and advance_result.get("external_rich_query_count") == 0
         and advance_result.get("paused") is True
         and isinstance(cleanup, dict)

@@ -9310,6 +9310,26 @@ class NativeHeadlessGameplayDriver:
                     f"native {step} timed out before a native sentinel pause"
                 )
 
+            def query_tactical_daily_sentinel() -> dict[str, object]:
+                status_result = self._execute_primitive_step(
+                    _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                    expected_revision=None,
+                    required_capability=(
+                        _TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY
+                    ),
+                    internal_semantic_snapshot=True,
+                )
+                actions.append(
+                    {
+                        "step": _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                        "result": status_result,
+                    }
+                )
+                return _normalize_tactical_daily_sentinel_status(
+                    status_result.get("tactical_daily_sentinel")
+                )
+
+            sentinel_status = query_tactical_daily_sentinel()
             if player_decision_boundary is not None:
                 generation = arm_status.get("generation")
                 if (
@@ -9321,52 +9341,48 @@ class NativeHeadlessGameplayDriver:
                         "native tactical sentinel boundary lacks an armed "
                         "generation"
                     )
-                cancel_step = (
-                    f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}{generation}"
-                )
-                cancel_result = self._execute_primitive_step(
-                    cancel_step,
-                    expected_revision=None,
-                    required_capability=(
-                        _TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY
-                    ),
-                    internal_semantic_snapshot=True,
-                )
-                actions.append(
-                    {"step": cancel_step, "result": cancel_result}
-                )
-                if not (
-                    cancel_result.get("step") == cancel_step
-                    and cancel_result.get("accepted") is True
-                    and cancel_result.get("status") == "canceled"
-                ):
-                    raise BridgeUnavailableError(
-                        "native tactical sentinel boundary cancel was not "
-                        "accepted"
+                sentinel_state = sentinel_status.get("state")
+                if sentinel_state == "armed":
+                    if sentinel_status.get("generation") != generation:
+                        raise BridgeUnavailableError(
+                            "native tactical sentinel boundary armed a "
+                            "different generation"
+                        )
+                    cancel_step = (
+                        f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
+                        f"{generation}"
                     )
-                player_decision_boundary_cancel = {
-                    "step": cancel_step,
-                    "status": "canceled",
-                    "generation": generation,
-                }
-
-            status_result = self._execute_primitive_step(
-                _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
-                expected_revision=None,
-                required_capability=(
-                    _TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY
-                ),
-                internal_semantic_snapshot=True,
-            )
-            actions.append(
-                {
-                    "step": _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
-                    "result": status_result,
-                }
-            )
-            sentinel_status = _normalize_tactical_daily_sentinel_status(
-                status_result.get("tactical_daily_sentinel")
-            )
+                    cancel_result = self._execute_primitive_step(
+                        cancel_step,
+                        expected_revision=None,
+                        required_capability=(
+                            _TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY
+                        ),
+                        internal_semantic_snapshot=True,
+                    )
+                    actions.append(
+                        {"step": cancel_step, "result": cancel_result}
+                    )
+                    if not (
+                        cancel_result.get("step") == cancel_step
+                        and cancel_result.get("accepted") is True
+                        and cancel_result.get("status") == "canceled"
+                    ):
+                        raise BridgeUnavailableError(
+                            "native tactical sentinel boundary cancel was "
+                            "not accepted"
+                        )
+                    player_decision_boundary_cancel = {
+                        "step": cancel_step,
+                        "status": "canceled",
+                        "generation": generation,
+                    }
+                    sentinel_status = query_tactical_daily_sentinel()
+                elif sentinel_state != "triggered":
+                    raise BridgeUnavailableError(
+                        "native tactical sentinel player-decision boundary "
+                        "is neither armed nor normally triggered"
+                    )
             post_stop_snapshot = self.take_internal_semantic_snapshot()
             if not (
                 post_stop_snapshot.get("paused") is True
@@ -11671,13 +11687,14 @@ def _validate_tactical_daily_sentinel_decision_boundary(
     player_decision_boundary: dict[str, object],
     player_decision_boundary_cancel: dict[str, object] | None,
 ) -> None:
-    """Validate a real player decision that pre-empted the daily hook.
+    """Validate a real player decision at the daily-sentinel boundary.
 
     CK3 can materialize a blocking event before the sentinel's final daily
     callback.  The game date then stops while the public paused bit remains
-    false.  This contract accepts only that observable boundary and an exact
-    generation-bound cancel proven by an idle status; it does not synthesize
-    a native trigger or relax the ordinary final-stage checks.
+    false.  That path requires an exact generation-bound cancel proven by an
+    idle status.  When the event and the native deadline land on the same
+    daily callback, the ordinary native stop is already complete and must be
+    retained without attempting to cancel it.
     """
 
     raw_delta = ending_date_raw - starting_date_raw
@@ -11689,7 +11706,35 @@ def _validate_tactical_daily_sentinel_decision_boundary(
         and player_decision_boundary.get("instance_id") is not None
         and player_decision_boundary.get("observed_date_raw")
         == ending_date_raw
-        and status.get("state") == "idle"
+        and raw_delta >= 0
+        and raw_delta % 24 == 0
+        and elapsed_days == raw_delta // 24
+        and ending_date_raw <= target_date_raw
+    ):
+        raise BridgeUnavailableError(
+            "native tactical sentinel player-decision boundary failed its "
+            "identity/date postcondition"
+        )
+    if status.get("state") == "triggered":
+        if player_decision_boundary_cancel is not None:
+            raise BridgeUnavailableError(
+                "normally triggered tactical sentinel was unexpectedly "
+                "canceled at a player-decision boundary"
+            )
+        _validate_tactical_daily_sentinel_stop(
+            status,
+            arm_status=arm_status,
+            starting_date_raw=starting_date_raw,
+            target_date_raw=target_date_raw,
+            ending_date_raw=ending_date_raw,
+            elapsed_days=elapsed_days,
+            speed=speed,
+            mode=mode,
+            watch_army_ids=watch_army_ids,
+        )
+        return
+    if not (
+        status.get("state") == "idle"
         and status.get("abnormal") is False
         and status.get("generation") == arm_status.get("generation")
         and status.get("starting_date_raw") == starting_date_raw
@@ -11712,10 +11757,6 @@ def _validate_tactical_daily_sentinel_decision_boundary(
         and status.get("pause_wrapper_called") is False
         and status.get("pause_observed") is False
         and status.get("terminal_observed") is False
-        and raw_delta >= 0
-        and raw_delta % 24 == 0
-        and elapsed_days == raw_delta // 24
-        and ending_date_raw <= target_date_raw
         and player_decision_boundary_cancel
         == {
             "step": (
