@@ -34,9 +34,10 @@ def assess_battle_terminal_cruise(
     ``candidate_ready`` answers only whether the current battle decision can
     be pre-committed as hold-to-terminal. ``research_run_ready`` additionally
     requires a complete native watch set and an implemented sentinel.
-    ``production_ready`` additionally requires sentinel live evidence and an
-    overwhelming-checkpoint matrix.  The three levels are intentionally
-    distinct.
+    ``production_ready`` additionally requires sentinel live evidence.
+    Dominance-based candidates also require an overwhelming-checkpoint
+    matrix; a player-won pursuit is already outcome-locked and does not.
+    The three levels are intentionally distinct.
     """
 
     if (
@@ -96,8 +97,11 @@ def assess_battle_terminal_cruise(
 
         if phase in {"maneuver", "main"} and winner != "none":
             candidate_blockers.append("preterminal_winner_state_changed")
-        elif phase == "pursuit" and winner not in {"attacker", "defender"}:
-            candidate_blockers.append("pursuit_winner_unavailable")
+        elif phase == "pursuit":
+            if winner not in {"attacker", "defender"}:
+                candidate_blockers.append("pursuit_winner_unavailable")
+            elif player_role is not None and winner != player_role:
+                candidate_blockers.append("pursuit_player_not_winner")
 
         if player_role is not None and opponent_role is not None:
             player_side = frame.get(player_role)
@@ -190,9 +194,16 @@ def assess_battle_terminal_cruise(
     candidate_ready = not candidate_blockers
     research_run_ready = candidate_ready and not run_blockers
 
+    overwhelming_matrix_required = candidate_kind in {
+        "double_dominance_hold",
+        "opponent_fighting_pool_exhausted",
+    }
     if terminal_sentinel_live_ready is not True:
         production_blockers.append("terminal_sentinel_live_matrix_pending")
-    if overwhelming_matrix_live_ready is not True:
+    if (
+        overwhelming_matrix_required
+        and overwhelming_matrix_live_ready is not True
+    ):
         production_blockers.append("overwhelming_checkpoint_matrix_pending")
     production_ready = research_run_ready and not production_blockers
 
@@ -202,6 +213,7 @@ def assess_battle_terminal_cruise(
         "research_run_ready": research_run_ready,
         "production_ready": production_ready,
         "candidate_kind": candidate_kind,
+        "overwhelming_matrix_required": overwhelming_matrix_required,
         "selected_action": (
             "run_speed_5_until_terminal_or_sentinel"
             if research_run_ready

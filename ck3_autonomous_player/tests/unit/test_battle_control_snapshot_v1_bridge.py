@@ -966,6 +966,16 @@ _ALL_BATTLE_SPEED_GATES = {
     "terminal_sentinel_live_ready": True,
     "overwhelming_matrix_live_ready": True,
 }
+_TERMINAL_ONLY_BATTLE_SPEED_GATES = {
+    "decision_sentinel_live_ready": False,
+    "terminal_sentinel_live_ready": True,
+    "overwhelming_matrix_live_ready": False,
+}
+_BATTLE_SPEED_GATES_WITHOUT_OVERWHELMING = {
+    "decision_sentinel_live_ready": True,
+    "terminal_sentinel_live_ready": True,
+    "overwhelming_matrix_live_ready": False,
+}
 
 
 def _crushing_battle_frame() -> dict[str, object]:
@@ -1493,10 +1503,20 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertEqual(plan["absolute_target_date_raw"], DATE_RAW + 45 * 24)
         self.assertEqual(plan["watch_army_ids"], [SUBJECT])
 
-    def test_double_four_x_and_decided_pursuit_select_speed_five(self) -> None:
-        for label, frame in (
-            ("double-four-x", _crushing_battle_frame()),
-            ("decided-pursuit", _pursuit_battle_frame()),
+    def test_double_four_x_and_player_won_pursuit_select_speed_five(
+        self,
+    ) -> None:
+        for label, frame, readiness in (
+            (
+                "double-four-x",
+                _crushing_battle_frame(),
+                _ALL_BATTLE_SPEED_GATES,
+            ),
+            (
+                "player-won-pursuit",
+                _pursuit_battle_frame(),
+                _TERMINAL_ONLY_BATTLE_SPEED_GATES,
+            ),
         ):
             with self.subTest(label=label):
                 history = [
@@ -1512,7 +1532,7 @@ class BattleSentinelStrategyTests(unittest.TestCase):
                         DECISION_SENTINEL_STEP,
                         TERMINAL_SENTINEL_STEP,
                     ),
-                    readiness=_ALL_BATTLE_SPEED_GATES,
+                    readiness=readiness,
                 )
                 self.assertEqual(plan["selected_step"], TERMINAL_SENTINEL_STEP)
                 self.assertEqual(plan["timeline_speed"], 5)
@@ -1524,8 +1544,43 @@ class BattleSentinelStrategyTests(unittest.TestCase):
                     40,
                 )
 
+    def test_terminal_only_gate_does_not_admit_dominance_or_bad_pursuit(
+        self,
+    ) -> None:
+        losing_pursuit = _pursuit_battle_frame()
+        losing_pursuit.update(
+            {"winner_side": "defender", "winner_raw": 1}
+        )
+        undecided_pursuit = _pursuit_battle_frame()
+        undecided_pursuit.update(
+            {"winner_side": "none", "winner_raw": -1}
+        )
+        for label, frame in (
+            ("double-four-x", _crushing_battle_frame()),
+            ("player-lost-pursuit", losing_pursuit),
+            ("undecided-pursuit", undecided_pursuit),
+        ):
+            with self.subTest(label=label):
+                plan = self._plan(
+                    [
+                        _battle_query_row(1, frame),
+                        _terminal_cursor_query_row(2, frame),
+                    ],
+                    frame,
+                    steps=(
+                        STEP,
+                        "life-advance",
+                        DECISION_SENTINEL_STEP,
+                        TERMINAL_SENTINEL_STEP,
+                    ),
+                    readiness=_BATTLE_SPEED_GATES_WITHOUT_OVERWHELMING,
+                )
+
+                self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+                self.assertEqual(plan["timeline_speed"], 3)
+
     def test_terminal_cruise_first_freezes_cursor(self) -> None:
-        frame = _crushing_battle_frame()
+        frame = _pursuit_battle_frame()
         plan = self._plan(
             [_battle_query_row(1, frame)],
             frame,
@@ -1535,7 +1590,7 @@ class BattleSentinelStrategyTests(unittest.TestCase):
                 DECISION_SENTINEL_STEP,
                 TERMINAL_SENTINEL_STEP,
             ),
-            readiness=_ALL_BATTLE_SPEED_GATES,
+            readiness=_TERMINAL_ONLY_BATTLE_SPEED_GATES,
         )
 
         self.assertEqual(
@@ -1616,6 +1671,45 @@ class BattleSentinelStrategyTests(unittest.TestCase):
             all_crush["watch_army_ids"], [444, SUBJECT, 117_440_751]
         )
         self.assertEqual(len(all_crush["terminal_journal_cursors"]), 2)
+
+    def test_terminal_only_won_pursuits_keep_all_of_full_watch_and_cursors(
+        self,
+    ) -> None:
+        first = _pursuit_battle_frame()
+        second = _rebind_battle_frame(
+            _pursuit_battle_frame(),
+            subject=117_440_751,
+            native_subject=404,
+            combat_id=335_544_326,
+            province_id=2587,
+        )
+        snapshot = _multi_battle_snapshot(
+            [first, second], extra_idle_army_id=444
+        )
+        plan = choose_one_life_turn(
+            [
+                _battle_query_row(1, first),
+                _terminal_cursor_query_row(2, first),
+                _battle_query_row(3, second),
+                _terminal_cursor_query_row(4, second),
+            ],
+            snapshot=snapshot,
+            action_steps=(
+                STEP,
+                query_battle_control_snapshot_v1_step(117_440_751),
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            bridge_capabilities=(
+                QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
+            ),
+            battle_speed_readiness=_TERMINAL_ONLY_BATTLE_SPEED_GATES,
+        )
+
+        self.assertEqual(plan["selected_step"], TERMINAL_SENTINEL_STEP)
+        self.assertEqual(plan["watch_army_ids"], [444, SUBJECT, 117_440_751])
+        self.assertEqual(len(plan["terminal_journal_cursors"]), 2)
 
     def test_valid_multiday_sentinel_unlocks_but_wrong_status_is_rejected(
         self,

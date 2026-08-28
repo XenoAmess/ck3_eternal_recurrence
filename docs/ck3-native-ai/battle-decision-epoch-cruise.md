@@ -1,6 +1,6 @@
 # 战斗决策时点与零中途暂停 cruise
 
-状态：**counter-policy + research contract static-ready；native daily sentinel 与 overwhelming checkpoint live 待合并/验收**
+状态：**native daily sentinel 与 decision speed-3 production-live；玩家已获胜 pursuit 的 candidate-specific selector 已接线、production canary 待跑；双重 `4x` 的 overwhelming checkpoint matrix 尚缺**
 
 冻结构建：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
@@ -79,10 +79,10 @@ flowchart LR
 | 撤退合法性、affected owner subset | production paused query 已有 | 非 crush 时重判/撤退；crush gate 选择 hold |
 | passive terminal journal、exact terminal date/result/warscore | production live 已有 | native stop 后做一次终局 RQ，不用外部轮询推断终局日 |
 | public speed 1..5 | production primitive 已有 | arm 后直接用 5 速 |
-| daily final-stage hook + native pause wrapper | exact-build static 入口已闭合；独立 sentinel vertical slice 待合并/live | 5 速无外部反应窗，故这是零中途暂停的唯一硬依赖 |
+| daily final-stage hook + native pause wrapper | exact-build production-live；decision/terminal sentinel matrix 已过 | 5 速无外部反应窗，故这是零中途暂停的唯一硬依赖 |
 | 完整未来 reinforcement ETA | 未完成 | **不阻塞正确停表**：真实 join 会改变 roster 并触发 sentinel；只影响能否提前预测本臂会不会中途停 |
 | full Monte Carlo / calibrated win probability | unavailable | **不阻塞第一轮 empirical gate**；影响风险分类质量，不影响五档每日计算或 terminal detection |
-| overwhelming live checkpoint | 尚缺 | 阻塞 production admission；下一场满足双重 `4x` 的 paused frame 应立即冻结为矩阵 seed |
+| overwhelming live checkpoint | 尚缺 | 只阻塞双重 `4x` / opponent-pool-exhausted 的 production admission；不阻塞结果已经锁定的玩家获胜 pursuit |
 
 ## 最小 eligibility gate
 
@@ -92,11 +92,13 @@ flowchart LR
 
 - `candidate_ready`：当前 battle-control frame 能预先选择 hold-to-terminal；
 - `research_run_ready`：另有完整 watch set、speed 5 与 terminal sentinel primitive，可运行 A/B；
-- `production_ready`：另有 sentinel live matrix 与 overwhelming checkpoint matrix，才允许正式 selector 使用。
+- `production_ready`：所有 candidate 都要求 sentinel live；双重 `4x` 与 opponent-pool-exhausted 另要求 overwhelming
+  checkpoint matrix，玩家已获胜的 pursuit 不再等待该矩阵。
 
 候选规则按优先顺序为：
 
-1. pursuit 且 winner 已明确：结果已定，直接 cruise 到 finalizer，不要求比例；
+1. pursuit 且 winner 已明确为玩家所在 side：玩家胜局已锁定，直接 cruise 到 finalizer，不要求比例；败局或 winner
+   未定均不进入第一版 speed-5 production candidate；
 2. maneuver/main 且对侧 current fighting 已为零、我方仍大于零：terminal imminent；
 3. maneuver/main、winner 尚未写入，且我方 `derived_current_fighting_raw >= 4 * enemy`，同时
    `side_strength_raw >= 4 * enemy`：`double_dominance_hold`。
@@ -193,8 +195,9 @@ paused/managed emergency-cleanup 的事实，不能伪造 `pause_wrapper_called=
 
 - `decision_sentinel_live_ready=true` 且 `battle-decision-epoch-advance` 可执行时，完整全局战术审计后的 active combat
   默认选择 speed 3、`+45d` absolute fallback 的 decision epoch；
-- speed 5 另要求 `terminal_sentinel_live_ready=true`、`overwhelming_matrix_live_ready=true`、
-  `battle-terminal-cruise` 可执行，并且每个 distinct CombatID 都通过 `battle_terminal_cruise_policy.production_ready`；
+- speed 5 要求 `terminal_sentinel_live_ready=true`、`battle-terminal-cruise` 可执行，并且每个 distinct CombatID 都通过
+  `battle_terminal_cruise_policy.production_ready`；`pursuit_cleanup` 在玩家 side 已获胜时不再等待
+  `overwhelming_matrix_live_ready`，`double_dominance_hold` 与 `opponent_fighting_pool_exhausted` 仍必须等该 gate；
 - watched IDs 是当前全部 controllable player CUnitIDs，包括同一时刻未参战的其它玩家军；不能只看当前 battle subject；
 - 每个获准的 terminal CombatID 先在同一 paused revision 做一次 journal query，冻结正数 `latest_sequence`。native stop
   后只有 cursor 后的新 event 同时证明原 CombatID、terminal date 与 attacker/defender outcome，才能接受 terminal transition；

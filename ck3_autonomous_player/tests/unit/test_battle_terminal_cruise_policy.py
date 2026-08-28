@@ -108,11 +108,11 @@ def test_player_defender_polarity_is_respected() -> None:
     assert result["opponent_current_fighting_raw"] == 100
 
 
-def test_pursuit_cleanup_needs_no_dominance_ratio() -> None:
+def test_player_won_pursuit_cleanup_needs_no_dominance_ratio() -> None:
     result = _assess(
         _frame(
             phase="pursuit",
-            winner="defender",
+            winner="attacker",
             player_current=1,
             opponent_current=1000,
             player_strength=1,
@@ -124,6 +124,27 @@ def test_pursuit_cleanup_needs_no_dominance_ratio() -> None:
     assert result["candidate_kind"] == "pursuit_cleanup"
     assert result["current_fighting_ratio_floor_met"] is None
     assert result["side_strength_ratio_floor_met"] is None
+    assert result["overwhelming_matrix_required"] is False
+
+
+@pytest.mark.parametrize(
+    ("player_side_index", "winner"),
+    [(0, "defender"), (1, "attacker")],
+)
+def test_pursuit_player_loss_is_not_a_cruise_candidate(
+    player_side_index: int, winner: str
+) -> None:
+    result = _assess(
+        _frame(
+            phase="pursuit",
+            winner=winner,
+            player_side_index=player_side_index,
+        )
+    )
+
+    assert result["candidate_ready"] is False
+    assert result["candidate_kind"] is None
+    assert "pursuit_player_not_winner" in result["candidate_blockers"]
 
 
 def test_exhausted_opponent_is_terminal_imminent_without_ratio() -> None:
@@ -138,6 +159,7 @@ def test_exhausted_opponent_is_terminal_imminent_without_ratio() -> None:
 
     assert result["candidate_ready"] is True
     assert result["candidate_kind"] == "opponent_fighting_pool_exhausted"
+    assert result["overwhelming_matrix_required"] is True
 
 
 @pytest.mark.parametrize(
@@ -176,17 +198,42 @@ def test_prearm_and_native_run_requirements_are_explicit(
     assert result["selected_action"] is None
 
 
-def test_production_requires_both_live_matrices() -> None:
-    one_missing = _assess(
+def test_player_won_pursuit_production_requires_only_terminal_live() -> None:
+    frame = _frame(phase="pursuit", winner="attacker")
+    missing = _assess(frame)
+    terminal_live = _assess(frame, terminal_sentinel_live_ready=True)
+
+    assert missing["production_ready"] is False
+    assert missing["production_blockers"] == [
+        "terminal_sentinel_live_matrix_pending"
+    ]
+    assert terminal_live["production_ready"] is True
+    assert terminal_live["production_blockers"] == []
+
+
+@pytest.mark.parametrize(
+    "frame",
+    [
         _frame(),
-        terminal_sentinel_live_ready=True,
-    )
+        _frame(
+            player_current=1,
+            opponent_current=0,
+            player_strength=1,
+            opponent_strength=0,
+        ),
+    ],
+)
+def test_dominance_candidates_production_require_both_live_matrices(
+    frame: dict[str, object],
+) -> None:
+    one_missing = _assess(frame, terminal_sentinel_live_ready=True)
     ready = _assess(
-        _frame(),
+        frame,
         terminal_sentinel_live_ready=True,
         overwhelming_matrix_live_ready=True,
     )
 
+    assert one_missing["overwhelming_matrix_required"] is True
     assert one_missing["production_ready"] is False
     assert one_missing["production_blockers"] == [
         "overwhelming_checkpoint_matrix_pending"
