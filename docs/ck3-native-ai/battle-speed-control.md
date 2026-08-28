@@ -48,6 +48,13 @@
    `unavoidable_current_province_contact`，仍固定 speed 1 并验证 contact transition。speed 1–5 都有同一 selector arm，
    其中 speed 4–5 只在显式 `--allow-route-contact-high-speed-ab` 下准入 targeted A/B，speed 1/2 保留显式对照。
    当前 checkpoint 的五档 exact-day 配对已经全绿，contact-free route speed 3 为 production-live。
+8. **和平 speed-5 的 30 日请求必须兑现 30 日 horizon，不能在第一日自行收口。** [live-confirmed performance RED]
+   G1 从 `date_raw=53224848 / E317CB7F...C2EE` 续跑时已经无 active war，planner 请求 30 日、speed 5；旧
+   `_life_advance_progressed` 却在起始 war signature 为空时把任意 `date_raw > start` 当成完成，实际退化为每游戏日
+   pause、完整 planner 与 CB 重枚举。这是当前生产续跑直接复现的吞吐故障，不是理论性边界。[implementation-confirmed;
+   live rerun pending] 修复后和平运行帧第 1–29 日都不完成，第 30 日才按 horizon 完成；active event、one-life terminal、
+   pending interaction 变化、新建/变化的 active war、既有 threat 与 route/war horizon 仍可提前形成语义边界。CK3 原生
+   auto-pause 在 composite 自己提交收尾 pause **之前**单独记录，因此可以提前结束，又不会把我方 pause 误认成原生事件。
 
 按 defines 计算，连续 15 个纯原生日的理论时间是：1 速 `30s`、2 速 `15s`、3 速 `7.5s`、4 速
 `3s`、5 速负载相关。若一次“游戏日”事务现实里接近半分钟，主要成本来自 pause、paused rich query、Python

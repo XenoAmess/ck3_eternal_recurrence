@@ -36,6 +36,7 @@ from xar_autoplayer.bridge.native_driver import (
     _fresh_route_contact_advance_steps,
     _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
+    _life_advance_progressed,
     _native_unobservable_started_assaults,
     _normalize_tactical_daily_sentinel_status,
     _predicted_contact_boundary_postcondition,
@@ -676,12 +677,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         expected_speed: int,
         horizon_days: int,
         actual_elapsed_days: int | None = None,
+        native_auto_pause: bool = False,
     ) -> tuple[dict[str, object], list[str]]:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
             endpoint=endpoint,
-            life_advance_timeout_seconds=0.1,
+            life_advance_timeout_seconds=(1.0 if native_auto_pause else 0.1),
         )
         endpoint.publish(
             _hello(
@@ -717,6 +719,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
 
         publish(1, date_raw=start_date, speed=3, paused=True)
+        delayed_publishers: list[threading.Timer] = []
 
         def answer(frame: dict[str, object]) -> None:
             if frame.get("type") != "execute_step":
@@ -745,12 +748,27 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     speed=expected_speed,
                     paused=False,
                 )
-                publish(
-                    4,
-                    date_raw=start_date + elapsed_days * 24,
-                    speed=expected_speed,
-                    paused=False,
-                )
+                if native_auto_pause:
+                    timer = threading.Timer(
+                        0.02,
+                        publish,
+                        kwargs={
+                            "revision": 4,
+                            "date_raw": start_date + elapsed_days * 24,
+                            "speed": expected_speed,
+                            "paused": True,
+                        },
+                    )
+                    timer.daemon = True
+                    delayed_publishers.append(timer)
+                    timer.start()
+                else:
+                    publish(
+                        4,
+                        date_raw=start_date + elapsed_days * 24,
+                        speed=expected_speed,
+                        paused=False,
+                    )
             elif step == "pause-map":
                 publish(
                     5,
@@ -760,7 +778,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
 
         endpoint.send_hook = answer
-        result = driver.execute_step("life-advance")
+        try:
+            result = driver.execute_step("life-advance")
+        finally:
+            for publisher in delayed_publishers:
+                publisher.join(timeout=1.0)
         steps = [
             str(frame["step"])
             for frame in endpoint.frames
@@ -1584,6 +1606,178 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(_life_advance_horizon_days(snapshot), 1)
         siege["assault_in_progress"] = False
         self.assertEqual(_life_advance_horizon_days(snapshot), 7)
+
+    def test_peacetime_life_advance_requires_full_thirty_day_horizon(
+        self,
+    ) -> None:
+        start_date = 53_224_848
+        starting = {
+            "date_raw": start_date,
+            "paused": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "active_wars": [],
+            "player_armies": [],
+        }
+
+        self.assertEqual(_life_advance_horizon_days(starting), 30)
+        for elapsed_days in range(1, 30):
+            with self.subTest(elapsed_days=elapsed_days):
+                running = {
+                    **copy.deepcopy(starting),
+                    "date_raw": start_date + elapsed_days * 24,
+                    "paused": False,
+                }
+                self.assertFalse(
+                    _life_advance_progressed(running, starting)
+                )
+
+        horizon = {
+            **copy.deepcopy(starting),
+            "date_raw": start_date + 30 * 24,
+            "paused": False,
+        }
+        self.assertTrue(_life_advance_progressed(horizon, starting))
+
+    def test_life_advance_stops_for_pre_horizon_semantic_changes(
+        self,
+    ) -> None:
+        start_date = 53_224_848
+        starting = {
+            "date_raw": start_date,
+            "paused": True,
+            "active_event": None,
+            "one_life_terminal_reason": None,
+            "pending_character_interaction": None,
+            "active_wars": [],
+            "player_armies": [],
+        }
+        cases = {
+            "active_event": {
+                "active_event": {"instance_id": "event:41"},
+            },
+            "one_life_terminal": {
+                "one_life_terminal_reason": "played_character_dead",
+            },
+            "pending_interaction": {
+                "pending_character_interaction": {"instance_id": 91},
+            },
+            "new_active_war": {
+                "active_wars": [_war(91)],
+            },
+        }
+
+        for name, change in cases.items():
+            with self.subTest(change=name):
+                running = {
+                    **copy.deepcopy(starting),
+                    **copy.deepcopy(change),
+                    "date_raw": start_date + 24,
+                    "paused": False,
+                }
+                self.assertTrue(
+                    _life_advance_progressed(running, starting)
+                )
+
+    def test_life_advance_route_and_active_war_horizons_do_not_regress(
+        self,
+    ) -> None:
+        start_date = 53_224_848
+        moving = _army(
+            101,
+            province_id=2598,
+            move_target_province_id=2596,
+            route_province_ids=[2596],
+            army_state="moving",
+        )
+        peaceful_route = {
+            "date_raw": start_date,
+            "paused": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "active_wars": [],
+            "player_armies": [moving],
+        }
+        peaceful_route_day_one = {
+            **copy.deepcopy(peaceful_route),
+            "date_raw": start_date + 24,
+            "paused": False,
+        }
+        self.assertEqual(_life_advance_horizon_days(peaceful_route), 1)
+        self.assertTrue(
+            _life_advance_progressed(
+                peaceful_route_day_one, peaceful_route
+            )
+        )
+
+        stationary = _army(
+            202,
+            province_id=2585,
+            route_province_ids=[],
+            army_state="regular",
+        )
+        war = _war(92, allied_armies=[stationary])
+        active_war = {
+            "date_raw": start_date,
+            "paused": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "active_wars": [war],
+            "player_armies": [stationary],
+        }
+        active_war_day_one = {
+            **copy.deepcopy(active_war),
+            "date_raw": start_date + 24,
+            "paused": False,
+        }
+        active_war_day_seven = {
+            **copy.deepcopy(active_war),
+            "date_raw": start_date + 7 * 24,
+            "paused": False,
+        }
+        self.assertEqual(_life_advance_horizon_days(active_war), 7)
+        self.assertFalse(
+            _life_advance_progressed(active_war_day_one, active_war)
+        )
+        self.assertTrue(
+            _life_advance_progressed(active_war_day_seven, active_war)
+        )
+
+        changed_war = copy.deepcopy(active_war_day_one)
+        changed_war["active_wars"][0]["player_relative_war_score"] = 13
+        self.assertTrue(_life_advance_progressed(changed_war, active_war))
+
+        routed_war = copy.deepcopy(active_war)
+        routed_war["player_armies"] = [moving]
+        routed_war["active_wars"][0]["allied_armies"] = [moving]
+        routed_war_day_one = {
+            **copy.deepcopy(routed_war),
+            "date_raw": start_date + 24,
+            "paused": False,
+        }
+        self.assertEqual(_life_advance_horizon_days(routed_war), 1)
+        self.assertTrue(
+            _life_advance_progressed(routed_war_day_one, routed_war)
+        )
+
+    def test_peacetime_life_advance_accepts_native_auto_pause_without_pause_map(
+        self,
+    ) -> None:
+        result, steps = self._run_life_advance_speed_fixture(
+            active_wars=[],
+            player_armies=[],
+            expected_speed=5,
+            horizon_days=30,
+            actual_elapsed_days=1,
+            native_auto_pause=True,
+        )
+
+        self.assertEqual(steps, ["set-speed-5", "resume-map"])
+        self.assertEqual(result["requested_horizon_days"], 30)
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["timeline_speed"], 5)
+        self.assertEqual(result["progress_status"], "postcondition")
+        self.assertTrue(result["paused"])
 
     def test_active_route_one_day_slice_uses_speed_one(self) -> None:
         player = _army(

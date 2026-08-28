@@ -9190,11 +9190,14 @@ class NativeHeadlessGameplayDriver:
         current = self._resume_life_advance(current, actions)
 
         progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
-        while not _life_advance_progressed(
+        horizon_days_override = 1 if exact_one_day else None
+        native_pause_observed = current.get("paused") is True
+        semantic_progress_observed = _life_advance_progressed(
             current,
             starting,
-            horizon_days_override=(1 if exact_one_day else None),
-        ):
+            horizon_days_override=horizon_days_override,
+        )
+        while not native_pause_observed and not semantic_progress_observed:
             remaining = progress_deadline - time.monotonic()
             if remaining <= 0:
                 break
@@ -9202,13 +9205,20 @@ class NativeHeadlessGameplayDriver:
                 int(current["revision"]),
                 timeout_seconds=remaining,
             )
+            # This observation happens before the composite submits its own
+            # cleanup pause.  A paused frame here is therefore CK3's native
+            # auto-pause and is a legitimate early timeline boundary.
+            native_pause_observed = current.get("paused") is True
+            semantic_progress_observed = _life_advance_progressed(
+                current,
+                starting,
+                horizon_days_override=horizon_days_override,
+            )
 
-        current = self._pause_life_advance(current, actions)
-        reached_progress_postcondition = _life_advance_progressed(
-            current,
-            starting,
-            horizon_days_override=(1 if exact_one_day else None),
+        reached_progress_postcondition = (
+            native_pause_observed or semantic_progress_observed
         )
+        current = self._pause_life_advance(current, actions)
         if not reached_progress_postcondition:
             current_date_raw = _date_raw(
                 current, "active-war bounded ending snapshot"
@@ -10855,6 +10865,10 @@ def _life_advance_progressed(
         return True
     if isinstance(snapshot.get("one_life_terminal_reason"), str):
         return True
+    if snapshot.get("pending_character_interaction") != starting_snapshot.get(
+        "pending_character_interaction"
+    ):
+        return True
     starting_date_raw = _date_raw(
         starting_snapshot, "life-advance starting snapshot"
     )
@@ -10863,11 +10877,7 @@ def _life_advance_progressed(
         current_date_raw, int
     ):
         return False
-    starting_war_progress = _active_war_progress_signature(
-        starting_snapshot
-    )
-    if not starting_war_progress:
-        return current_date_raw > starting_date_raw
+    starting_war_progress = _active_war_progress_signature(starting_snapshot)
     if _active_war_progress_signature(snapshot) != starting_war_progress:
         return True
     starting_threats = set(
