@@ -27,6 +27,7 @@ from xar_autoplayer.bridge.driver import (
 )
 from xar_autoplayer.bridge.native_driver import (
     _battle_sentinel_has_active_retreat,
+    _battle_sentinel_pause_wait_timeout_seconds,
     ConfiguredHybridFallbackDriver,
     DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
     MinimizedRejectingVisualDriver,
@@ -13482,7 +13483,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             endpoint.pipe_name,
             endpoint=endpoint,
             command_timeout_seconds=0.1,
-            life_advance_timeout_seconds=0.1,
+            life_advance_timeout_seconds=30.0,
             allow_stationary_objective_hold_sentinel_canary=True,
         )
         endpoint.publish(
@@ -13592,9 +13593,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 endpoint.publish(
                     _snapshot(
                         3,
-                        date_raw=target,
+                        date_raw=start + 4 * 24,
                         speed=3,
-                        paused=True,
+                        paused=False,
                         active_wars=wars,
                         player_armies=[player],
                     )
@@ -13604,10 +13605,42 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         requested_step = war_objective_hold_sentinel_advance_step(
             33_554_527, 201_326_874, 2_635, target
         )
-        result = driver.execute_step(
-            requested_step,
-            expected_revision=int(driver.take_snapshot()["revision"]),
-        )
+        original_wait = driver._wait_for_life_advance_snapshot
+        observed_wait_timeouts: list[float] = []
+
+        def complete_during_extended_wait(
+            snapshot: dict[str, object],
+            predicate,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            observed_wait_timeouts.append(timeout_seconds)
+            if timeout_seconds == 60.0 and snapshot.get("paused") is False:
+                endpoint.publish(
+                    _snapshot(
+                        4,
+                        date_raw=target,
+                        speed=3,
+                        paused=True,
+                        active_wars=wars,
+                        player_armies=[player],
+                    )
+                )
+            return original_wait(
+                snapshot,
+                predicate,
+                timeout_seconds=timeout_seconds,
+            )
+
+        with mock.patch.object(
+            driver,
+            "_wait_for_life_advance_snapshot",
+            side_effect=complete_during_extended_wait,
+        ):
+            result = driver.execute_step(
+                requested_step,
+                expected_revision=int(driver.take_snapshot()["revision"]),
+            )
         wire_steps = [
             str(frame["step"])
             for frame in endpoint.frames
@@ -13615,6 +13648,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ]
         self.assertEqual(wire_steps.count("resume-map"), 1)
         self.assertNotIn("pause-map", wire_steps)
+        self.assertIn(60.0, observed_wait_timeouts)
         self.assertEqual(result["sentinel_scope"], "stationary_objective_hold")
         self.assertEqual(result["elapsed_days"], 7)
         self.assertEqual(result["completed_daily_ticks"], 7)
@@ -13643,6 +13677,189 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(
             result["maximum_omitted_state_detection_lag_days"], 7
         )
+
+    def test_stationary_wait_extension_does_not_expand_battle_or_route(
+        self,
+    ) -> None:
+        self.assertEqual(
+            _battle_sentinel_pause_wait_timeout_seconds(
+                30.0,
+                sentinel_scope="stationary_objective_hold",
+                requested_horizon_days=7,
+            ),
+            60.0,
+        )
+        for scope in ("active_battle", "committed_route"):
+            with self.subTest(scope=scope):
+                self.assertEqual(
+                    _battle_sentinel_pause_wait_timeout_seconds(
+                        30.0,
+                        sentinel_scope=scope,
+                        requested_horizon_days=45,
+                    ),
+                    30.0,
+                )
+
+    def test_stationary_extended_wait_timeout_still_runs_managed_cleanup(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.05,
+            life_advance_timeout_seconds=30.0,
+            allow_stationary_objective_hold_sentinel_canary=True,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.set-speed-3",
+                "game.command.resume-map",
+                "game.command.pause-map",
+                "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                "game.command.research-query-tactical-daily-sentinel-v1",
+            )
+        )
+        start = 53_256_000
+        target = start + 7 * 24
+        player = _army(
+            501,
+            province_id=2_635,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        war = _war(
+            61,
+            allied_armies=[player],
+            war_objective_province_ids=[2_635],
+            objective_province_states=[],
+        )
+        endpoint.publish(
+            _snapshot(
+                1,
+                date_raw=start,
+                active_wars=[war],
+                player_armies=[player],
+            )
+        )
+        arm_status = _tactical_sentinel_status(
+            state="armed",
+            generation=24,
+            starting_date_raw=start,
+            target_date_raw=target,
+            observed_date_raw=start,
+            speed=3,
+            mode="decision_epoch",
+            army_count=1,
+            combat_count=0,
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            result: dict[str, object] = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+            }
+            if step.startswith(
+                "research-arm-tactical-daily-sentinel-v1-"
+            ):
+                result.update(
+                    status="available",
+                    tactical_daily_sentinel=arm_status,
+                )
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+            if step == "set-speed-3":
+                endpoint.publish(
+                    _snapshot(
+                        2,
+                        date_raw=start,
+                        speed=3,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "resume-map":
+                endpoint.publish(
+                    _snapshot(
+                        3,
+                        date_raw=start + 4 * 24,
+                        speed=3,
+                        paused=False,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        4,
+                        date_raw=start + 4 * 24,
+                        speed=3,
+                        paused=True,
+                        active_wars=[war],
+                        player_armies=[player],
+                    )
+                )
+
+        endpoint.send_hook = answer
+        original_wait = driver._wait_for_life_advance_snapshot
+        observed_wait_timeouts: list[float] = []
+
+        def expire_extended_wait(
+            snapshot: dict[str, object],
+            predicate,
+            *,
+            timeout_seconds: float,
+        ) -> dict[str, object]:
+            observed_wait_timeouts.append(timeout_seconds)
+            if timeout_seconds == 60.0:
+                return snapshot
+            return original_wait(
+                snapshot,
+                predicate,
+                timeout_seconds=timeout_seconds,
+            )
+
+        requested_step = war_objective_hold_sentinel_advance_step(
+            61, 501, 2_635, target
+        )
+        with mock.patch.object(
+            driver,
+            "_wait_for_life_advance_snapshot",
+            side_effect=expire_extended_wait,
+        ), self.assertRaisesRegex(
+            StepPostconditionError,
+            "timed out after 60s before a native sentinel pause",
+        ) as raised:
+            driver.execute_step(requested_step)
+
+        wire_steps = [
+            str(frame["step"])
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertIn(60.0, observed_wait_timeouts)
+        self.assertEqual(wire_steps.count("resume-map"), 1)
+        self.assertEqual(wire_steps.count("pause-map"), 1)
+        failure = raised.exception.step_result
+        self.assertEqual(failure["progress_status"], "postcondition_failed")
+        self.assertEqual(failure["ending_date_raw"], start + 4 * 24)
+        self.assertEqual(failure["external_pause_count"], 1)
+        self.assertTrue(failure["managed_failure_cleanup"]["attempted"])
+        self.assertIsNone(failure["managed_failure_cleanup"]["error"])
 
     def test_stationary_objective_hold_rejects_wrong_binding_or_busy_army(
         self,

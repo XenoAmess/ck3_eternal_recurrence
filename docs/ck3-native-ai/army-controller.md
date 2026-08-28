@@ -496,6 +496,17 @@ flowchart LR
   逐项对拍，并在 stop 后取得 fresh paused snapshot 重新观测同一绑定。任何 omitted war/objective/occupation/state 变化
   最迟只会在七日 deadline 后被 Python 发现，因此该 canary 是 bounded sparse-pause probe，不是 exact war-terminal watch，
   也不得据此广告 production readiness。
+- [live-confirmed] canary `20260828T092300Z-one-generation-90d3cf79` 连续完成 `20` 个 speed-3、七日
+  stationary hold，全部由 `date_deadline` 同日停表，成功臂平均 `6.012s`。第 `21` 臂没有观察到语义 invalidation，却在固定
+  `30s` Python wait 内只从 `53266944` 推进到 `53267040`（四日），随后以
+  `timed out before a native sentinel pause` 失败；managed pause cleanup 与进程树回收均 GREEN。report SHA-256
+  `FFFD1158CA25C6F3D2D324C3BC0BAA307D3810D909EDEBE47845952A5E224425`，first-blocker SHA-256
+  `6AF1556A295ACCD2F52D84F9C0C0F710BC98F5D8407DDB0F209120C572EE6E4D`。这是 stationary 长臂 wait envelope
+  不足的真实 harness 故障，不是战争状态或 sentinel stop 语义失败。
+- [implementation-confirmed] 只把 typed stationary `1..7` 日臂的 pause wait 扩为有界 empirical envelope：最慢样本为
+  `30s / 4日 = 7.5s/日`，按“请求日数 + 一日 settle margin”计算，并与用户配置的基础 timeout 取较大值；因此默认
+  `30s`、七日请求得到 `60s` 上限。active-battle、committed-route 与普通短命令继续使用原 timeout。扩窗不放宽最终
+  paused、sentinel status、零 overshoot 或 fresh post-stop scope 验证；到期仍执行原 managed cleanup。
 
 ```mermaid
 flowchart TD

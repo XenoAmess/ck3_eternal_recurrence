@@ -62,6 +62,13 @@
    live rerun pending] 修复后和平运行帧第 1–29 日都不完成，第 30 日才按 horizon 完成；active event、one-life terminal、
    pending interaction 变化、新建/变化的 active war、既有 threat 与 route/war horizon 仍可提前形成语义边界。CK3 原生
    auto-pause 在 composite 自己提交收尾 pause **之前**单独记录，因此可以提前结束，又不会把我方 pause 误认成原生事件。
+9. **七日 stationary sentinel 需要独立的有界 wait envelope。** [live-confirmed harness RED] run
+   `20260828T092300Z-one-generation-90d3cf79` 先连续完成 `20` 个 speed-3 七日臂，平均 `6.012s`；第 `21` 臂在固定
+   `30s` wait 内只推进四日，sentinel 仍 armed、没有 stop reason，managed cleanup 与 tree-gone GREEN。report SHA-256
+   `FFFD1158CA25C6F3D2D324C3BC0BAA307D3810D909EDEBE47845952A5E224425`。这直接证明固定 `30s` 不是七日臂的可靠
+   wall envelope；它不否定前二十臂的 same-day deadline/零 overshoot 语义。[implementation-confirmed] 只对 typed stationary
+   `1..7` 日臂按已观测最慢 `7.5s/日` 加一日 settle margin，默认七日 wait 上限为 `60s`；普通 battle、committed-route
+   与短命令 timeout 不扩大。超时、最终 paused/status、post-stop scope 与 cleanup 验证保持原样。
 
 按 defines 计算，连续 15 个纯原生日的理论时间是：1 速 `30s`、2 速 `15s`、3 速 `7.5s`、4 速
 `3s`、5 速负载相关。若一次“游戏日”事务现实里接近半分钟，主要成本来自 pause、paused rich query、Python

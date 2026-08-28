@@ -304,6 +304,11 @@ _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES = frozenset(
 )
 _BATTLE_SENTINEL_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
+# One live stationary arm advanced only four game days during the previous
+# fixed 30-second wait.  Keep this scope bounded while allowing its full
+# seven-day lease plus one observed-day of pause/readback margin.
+_STATIONARY_OBJECTIVE_HOLD_EMPIRICAL_SECONDS_PER_DAY = 7.5
+_STATIONARY_OBJECTIVE_HOLD_SETTLE_MARGIN_DAYS = 1
 _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
     "committed_route_sentinel_live_ready": True,
@@ -9132,6 +9137,14 @@ class NativeHeadlessGameplayDriver:
                 f"{maximum_horizon_days} whole days after the bound "
                 "starting frame"
             )
+        requested_horizon_days = target_delta_raw // 24
+        sentinel_pause_wait_timeout_seconds = (
+            _battle_sentinel_pause_wait_timeout_seconds(
+                self.life_advance_timeout_seconds,
+                sentinel_scope=sentinel_scope,
+                requested_horizon_days=requested_horizon_days,
+            )
+        )
         arm_step = (
             f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}"
             f"{starting_date_raw}-to-{target_date_raw}-speed-{speed}-"
@@ -9218,11 +9231,15 @@ class NativeHeadlessGameplayDriver:
                 current = self._wait_for_life_advance_snapshot(
                     current,
                     lambda snapshot: snapshot.get("paused") is True,
-                    timeout_seconds=self.life_advance_timeout_seconds,
+                    timeout_seconds=(
+                        sentinel_pause_wait_timeout_seconds
+                    ),
                 )
             if current.get("paused") is not True:
                 raise BridgeUnavailableError(
-                    f"native {step} timed out before a native sentinel pause"
+                    f"native {step} timed out after "
+                    f"{sentinel_pause_wait_timeout_seconds:g}s before a "
+                    "native sentinel pause"
                 )
 
             status_result = self._execute_primitive_step(
@@ -10892,6 +10909,33 @@ def _battle_sentinel_matches_committed_route(
             continue
         return False
     return matches == 1
+
+
+def _battle_sentinel_pause_wait_timeout_seconds(
+    base_timeout_seconds: float,
+    *,
+    sentinel_scope: str,
+    requested_horizon_days: int,
+) -> float:
+    """Return the bounded wall wait for one already-armed sentinel.
+
+    Only the seven-day stationary scope has live evidence that the shared
+    30-second base can expire before its native deadline: one degraded arm
+    advanced four days in 30 seconds.  At 7.5 seconds/day, the requested
+    horizon plus one day of pause/readback margin is 60 seconds at the
+    maximum seven-day lease.  Other sentinel scopes retain the caller's base
+    timeout unchanged.
+    """
+    if sentinel_scope != "stationary_objective_hold":
+        return base_timeout_seconds
+    return max(
+        base_timeout_seconds,
+        _STATIONARY_OBJECTIVE_HOLD_EMPIRICAL_SECONDS_PER_DAY
+        * (
+            requested_horizon_days
+            + _STATIONARY_OBJECTIVE_HOLD_SETTLE_MARGIN_DAYS
+        ),
+    )
 
 
 def _battle_sentinel_stationary_objective_hold_state(
