@@ -391,6 +391,8 @@ def fixture_source_errors() -> list[str]:
         "newcomer_first_review_protected",
         "pending_review_idempotent",
         "newcomer_first_review_result_without_325",
+        "personal_result_target_selected_from_prior_tail",
+        "order_by = var:zg361_rank",
         "settled_review_same_year_idempotent",
         "jingcha_refusal_superior_opinion_and_kpi_minus_50",
         "refusal_reason_consumed_once_by_original_superior",
@@ -1076,6 +1078,9 @@ def capture_superior_assigned_result(
         artifacts, "zg361_personal_switch", require_progress=True
     )
     stream.wait("ZGA: TEST PASS personal_result_switch_scheduled", 30)
+    stream.wait(
+        "ZGA: TEST PASS personal_result_target_selected_from_prior_tail", 30
+    )
     stream.wait(
         "ZGA: TEST PASS jingcha_refusal_superior_opinion_and_kpi_minus_50", 30
     )
