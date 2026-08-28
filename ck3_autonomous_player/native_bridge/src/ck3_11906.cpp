@@ -12398,12 +12398,12 @@ ReadWarTerminationOptionsResult ReadWarTerminationOptions(
   if (!output.player_is_primary_war_leader) {
     return ReadWarTerminationOptionsResult::available;
   }
-  // 0xC569F0's boolean is an absolute outcome, not "concede own side":
-  // true = attacker victory, false = attacker defeat.
-  if (!EvaluateWarResolutionContext(bindings, war, !player_is_attacker,
-                                    output.surrender) ||
-      !EvaluateWarResolutionContext(bindings, war, player_is_attacker,
-                                    output.victory)) {
+  // 0xC569F0's boolean is named player_victory by the exact UI caller.  It is
+  // relative to the character constructing the interaction context, not an
+  // absolute attacker-victory bit: surrender is always false and victory is
+  // always true for either side of the war.
+  if (!EvaluateWarResolutionContext(bindings, war, false, output.surrender) ||
+      !EvaluateWarResolutionContext(bindings, war, true, output.victory)) {
     output = {};
     return ReadWarTerminationOptionsResult::unavailable;
   }
@@ -12884,8 +12884,9 @@ SurrenderWarResult SubmitSurrenderWar(const Bindings &bindings,
       context) {
     return SurrenderWarResult::unavailable;
   }
-  bindings.construct_war_resolution_interaction_context(
-      context, war, player_is_primary_defender);
+  // The exact UI names this argument player_victory.  Surrender always
+  // constructs the player's defeat context, regardless of absolute war side.
+  bindings.construct_war_resolution_interaction_context(context, war, false);
   if (LoadAt<void *>(context, kCharacterInteractionSpecialDataOffset) ==
       nullptr) {
     bindings.destroy_character_interaction_context(context);
@@ -13111,8 +13112,9 @@ EnforceDemandsResult SubmitEnforceDemands(const Bindings &bindings,
       context) {
     return EnforceDemandsResult::unavailable;
   }
-  bindings.construct_war_resolution_interaction_context(context, war,
-                                                        player_is_primary_attacker);
+  // The exact UI names this argument player_victory.  Enforcing demands always
+  // constructs the player's victory context, regardless of absolute war side.
+  bindings.construct_war_resolution_interaction_context(context, war, true);
   if (!bindings.validate_character_interaction_context(context, nullptr)) {
     bindings.destroy_character_interaction_context(context);
     return EnforceDemandsResult::validation_failed;

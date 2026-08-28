@@ -292,13 +292,18 @@ flowchart TD
 - [counter-policy] 因此目前既不能报可信胜率，也不能据此断言敌人“绝对打不过”。正确状态是：
   `war_winnability = unavailable`，禁止主动接战；终止 query 的当前值已经取得，下一步优先补条款、战斗输入与 campaign forecast，
   再在继续/白和/投降之间比较。
-- [static-confirmed] 当前 planner 会在每个玩家为 defender 的 war summary 中显式发布
-  `war_exit_assessment.status=unavailable` 及所缺 capability；它不会把 unknown 自动变成投降，100% 可执行胜利
-  与尚无可控军时的一次防御性 raise 也不会被该诊断遮挡。
-- [static-confirmed] 当前执行顺序进一步固定为：100% enforce 优先；主防守方无军时允许一次
-  `raise-troops-default`；有可控军后若终止条款、接受态度和 campaign forecast 仍缺失，则返回
-  `defensive_war_exit_evidence_required` / `selected_step=None`。明确的非 primary 盟军战争不触发自动退出门；
-  primary 身份不可观测时按未知 fail closed，不能擅自当成无权退出的盟军战争。
+- [static-confirmed] planner 仍会在玩家为 defender 的 war summary 中显式发布
+  `war_exit_assessment.status=unavailable` 及退出决策所缺 capability；该诊断只禁止未经证明的白和或投降，
+  不再阻塞普通军事 continue。它不会把 unknown 自动变成投降，100% 可执行胜利与尚无可控军时的一次
+  `raise-troops-default` 也不会被该诊断遮挡。
+- [static-confirmed] 当前执行顺序固定为：100% enforce 优先；主防守方无军时允许一次
+  `raise-troops-default`；明确 `player_is_primary_war_leader=true` 且已有可控军时继续现有 route / tactical OODA，
+  只有真正选择退出动作才要求对应条款、接受态度和 campaign forecast。明确的非 primary 盟军战争不触发自动退出门；
+  primary 身份不可观测时返回 `defensive_war_primary_identity_required`，不能擅自当成已知主防守方或盟军战争。
+- [production-blocker-live] `WarID=100663382` 在 day 0 / score 0、玩家 primary defender、ArmyID `100663369`
+  已进入 gathering 后，被旧 `defensive_war_exit_evidence_required` 自锁；原生树证明完整三结果条款与 campaign forecast
+  不是普通 continue 的输入。该实例与极性错误的冻结证据、最小继续门见
+  [primary-defensive-war-response.md](primary-defensive-war-response.md)。
 - [counter-policy] 若这套宣战门在战争开始前就存在，由于可赢性不可证明，本次自动宣战应当被阻止。这个结论与现在是否立刻投降是两回事。
 
 ### 当前实例 decision matrix

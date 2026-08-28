@@ -389,6 +389,7 @@ bool g_war_resolution_attacker_victory = false;
 bool g_war_resolution_context_available = true;
 std::int32_t g_war_resolution_construct_calls = 0;
 std::array<bool, 4> g_war_resolution_absolute_outcomes{};
+std::int32_t g_war_score_result = 37;
 std::int32_t g_character_claim_read_calls = 0;
 std::int32_t g_character_claim_destroy_calls = 0;
 bool g_character_claim_title_mismatch = false;
@@ -656,7 +657,7 @@ bool FixtureContainsWarParticipant(void *container,
 }
 
 std::int32_t FixtureGetWarScore(void *war, void *context) {
-  return war == g_war.data() && context == nullptr ? 37 : 0;
+  return war == g_war.data() && context == nullptr ? g_war_score_result : 0;
 }
 
 std::int32_t FixtureGetImprisonmentWarScore(void *war, void *context) {
@@ -8002,6 +8003,7 @@ int main() {
   Store(g_defender_participant, 0x08, played_character_id);
   Store(g_war, 0x288, enemy_character_id);
   Store(g_war, 0x28C, played_character_id);
+  g_war_score_result = 0;
   g_war_resolution_construct_calls = 0;
   g_white_peace_construct_calls = 0;
   if (xar::ck3_11906::ReadWarTerminationOptions(
@@ -8009,21 +8011,27 @@ int main() {
           xar::ck3_11906::ReadWarTerminationOptionsResult::available ||
       termination_options.player_side !=
           xar::ck3_11906::PlayerWarSide::defender ||
-      termination_options.player_relative_war_score != -37 ||
+      termination_options.player_relative_war_score != 0 ||
+      termination_options.attacker_war_score != 0 ||
+      termination_options.defender_war_score != 0 ||
       termination_options.surrender.outcome != "attacker_victory" ||
       !termination_options.surrender.context_constructed ||
       !termination_options.surrender.ai_acceptance_observable ||
-      termination_options.surrender.ai_acceptance.raw != 3'700'000 ||
+      termination_options.surrender.ai_acceptance.raw != 10'000'000 ||
+      !termination_options.surrender.recipient_response.observable ||
+      !termination_options.surrender.recipient_response.would_accept_now ||
       termination_options.victory.outcome != "attacker_defeat" ||
       !termination_options.victory.context_constructed ||
       !termination_options.victory.ai_acceptance_observable ||
-      termination_options.victory.ai_acceptance.raw != 10'000'000 ||
+      termination_options.victory.ai_acceptance.raw != 3'700'000 ||
+      termination_options.victory.recipient_response.observable ||
       g_war_resolution_construct_calls != 2 ||
-      !g_war_resolution_absolute_outcomes[0] ||
-      g_war_resolution_absolute_outcomes[1] ||
+      g_war_resolution_absolute_outcomes[0] ||
+      !g_war_resolution_absolute_outcomes[1] ||
       g_white_peace_construct_calls != 1) {
-    return Fail("war-termination query reversed defender outcomes");
+    return Fail("war-termination query changed player-relative contexts");
   }
+  g_war_score_result = 37;
   Store(g_attacker_participant, 0x08, played_character_id);
   Store(g_defender_participant, 0x08, enemy_character_id);
   Store(g_war, 0x288, played_character_id);
@@ -8667,6 +8675,33 @@ int main() {
       g_interaction_destroy_calls != 2) {
     return Fail("enforce-demands did not use native war-context queue lifecycle");
   }
+
+  // The war-resolution context boolean is player-relative for both sides.
+  // A primary defender must still surrender with false and enforce with true.
+  Store(g_attacker_participant, 0x08, enemy_character_id);
+  Store(g_defender_participant, 0x08, played_character_id);
+  Store(g_war, 0x288, enemy_character_id);
+  Store(g_war, 0x28C, played_character_id);
+  g_expected_command = ExpectedCommand::surrender_war;
+  g_war_resolution_attacker_victory = true;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitSurrenderWar(bindings, active_war_id) !=
+          xar::ck3_11906::SurrenderWarResult::submitted ||
+      g_war_resolution_attacker_victory || !g_submit_called) {
+    return Fail("primary defender surrender did not construct player defeat");
+  }
+  g_expected_command = ExpectedCommand::enforce_demands;
+  g_war_resolution_attacker_victory = false;
+  g_submit_called = false;
+  if (xar::ck3_11906::SubmitEnforceDemands(bindings, active_war_id) !=
+          xar::ck3_11906::EnforceDemandsResult::submitted ||
+      !g_war_resolution_attacker_victory || !g_submit_called) {
+    return Fail("primary defender enforce did not construct player victory");
+  }
+  Store(g_attacker_participant, 0x08, played_character_id);
+  Store(g_defender_participant, 0x08, enemy_character_id);
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
 
   Store(jomini_state, 0x20, std::uint8_t{1});
   g_expected_command = ExpectedCommand::pause;

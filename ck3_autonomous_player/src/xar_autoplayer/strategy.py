@@ -4356,30 +4356,25 @@ def choose_one_life_turn(
                 "reason": "the active war cannot continue until this backend can raise troops",
                 "active_wars": war_summary,
             }
-        primary_defensive_wars = [
+        unknown_primary_identity_defensive_wars = [
             summary
             for summary in war_summary
             if summary.get("player_side") == "defender"
-            and summary.get("player_is_primary_war_leader") is not False
+            and summary.get("player_is_primary_war_leader") is None
         ]
-        if primary_defensive_wars:
+        if unknown_primary_identity_defensive_wars:
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "defensive_war_exit_evidence_required",
+                "phase": "defensive_war_primary_identity_required",
                 "selected_step": None,
-                "required_capabilities": [
-                    "game.command.query-war-termination-options-N",
-                    "game.forecast.campaign-outcomes-v1",
-                ],
+                "required_capabilities": ["game.state.active-wars"],
                 "reason": (
-                    "a primary defensive war requires complete victory, white-"
-                    "peace, and surrender terms plus opponent acceptance and a "
-                    "campaign forecast before more time or army orders are issued"
+                    "the defensive war's primary-leader identity must be "
+                    "observable before issuing further army or time commands"
                 ),
-                "defensive_wars": primary_defensive_wars,
+                "defensive_wars": unknown_primary_identity_defensive_wars,
                 "active_wars": war_summary,
             }
-
         army_routes_supported = bool(
             isinstance(snapshot, dict)
             and snapshot.get("army_routes_supported") is True
