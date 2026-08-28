@@ -269,10 +269,13 @@ paused map、episode identity 与 main-thread mailbox 全部就绪后有界执�
 是琉焰卿给出的“人生分数”，必须与该文件顶层 `score` 及 `recorded_episode.score` 完全一致。只有初始角色/run identity 始终不变、
 出现可见日期推进、上述 committed settlement、人生分数与 cross-run record 全部吻合、没有继承人 gameplay，且 CK3 进程树完成回收时
 才返回 `ok=true`。`--route-contact-speed 3` 同时控制 proof-bound `one_day_contact_free` route slice、已承诺 route 与
-stationary-objective native sentinel；不可避免的 contact endpoint 不受该参数影响，固定 speed 1。`1..5` 都可用于同 checkpoint
-targeted A/B；speed `4..5` 还必须显式附加 `--allow-route-contact-high-speed-ab`，且 stationary scope 仍须另加
-`--allow-stationary-objective-hold-sentinel-canary`。高速度会写进 typed scope/subject/target/bound step，production 默认在各 scope
-完成 live matrix 前保持 speed 3。达到 turn/wall 上限只会得到
+stationary-objective native sentinel；不可避免的 contact endpoint 不受该参数影响，固定 speed 1。speed-3 stationary objective hold
+已经 production-live，默认无需额外开关；旧 `--allow-stationary-objective-hold-sentinel-canary` 仅作命令行兼容，不再控制准入。
+该 sentinel 只能替换普通 planner 已经为同一 tactical WarID、同一可控军与同一首选 objective 选出的 `life-advance`，不能先扫描
+其他战争或目标抢占原决策。`1..5` 都可用于同 checkpoint targeted A/B；speed `4..5` 仍必须显式附加
+`--allow-route-contact-high-speed-ab`。高速度会写进 typed scope/subject/target/bound step；scope-specific live readiness 只授权对应
+sentinel，不能外溢到另一 sentinel scope 或 proof-bound route-contact transaction。production 默认在各 scope 完成 live matrix 前保持
+speed 3。达到 turn/wall 上限只会得到
 `bounded_incomplete`；可保存的尾部仍会 checkpoint，但绝不冒充一代完成。最终 `report.json` 总是保留完整 turns/checkpoints；失败另写
 `first-blocker.json`，成功另写 `terminal-settlement.json`。默认每 3 个已验证 eligible advance 保存一次；这里计的是动作次数，
 不是游戏日。当前和平 `life-advance` 通常以约 30 天为一个 horizon，因此默认大致形成季度级恢复点，并避免角色在第一份周期

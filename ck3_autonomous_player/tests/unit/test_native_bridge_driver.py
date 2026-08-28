@@ -18,6 +18,8 @@ import uuid
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+import xar_autoplayer.bridge.native_driver as native_driver_module
+
 from xar_autoplayer.bridge.driver import (
     BridgeUnavailableError,
     CallbackGameplayDriver,
@@ -7071,7 +7073,85 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             allow_route_contact_high_speed_ab=True,
         )
         self.assertEqual(driver.route_contact_timeline_speed, 5)
+        self.assertEqual(driver.route_contact_effective_timeline_speed, 5)
         driver.close()
+
+    def test_scope_live_speed_never_leaks_to_other_scope_or_route_contact(
+        self,
+    ) -> None:
+        capabilities = (
+            "game.state.snapshot",
+            "game.command.set-speed-3",
+            "game.command.set-speed-5",
+            "game.command.resume-map",
+            "game.command.pause-map",
+            "game.command.research-arm-tactical-daily-sentinel-v1-N",
+            "game.command.research-query-tactical-daily-sentinel-v1",
+        )
+        player = _army(
+            501,
+            province_id=2_635,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        war = _war(
+            allied_armies=[player],
+            war_objective_province_ids=[2_635],
+            objective_province_states=[],
+        )
+        for scope, expected, rejected in (
+            (
+                "committed_route",
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+                WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+            ),
+            (
+                "stationary_objective_hold",
+                WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            ),
+        ):
+            with self.subTest(scope=scope), mock.patch.dict(
+                native_driver_module._BATTLE_SPEED_READINESS,
+                {
+                    "committed_route_sentinel_speed_5_live_ready": (
+                        scope == "committed_route"
+                    ),
+                    "stationary_objective_hold_sentinel_speed_5_live_ready": (
+                        scope == "stationary_objective_hold"
+                    ),
+                },
+            ):
+                endpoint = FakeEndpoint()
+                driver = NativeHeadlessGameplayDriver(
+                    endpoint.pipe_name,
+                    endpoint=endpoint,
+                    route_contact_timeline_speed=5,
+                )
+                endpoint.publish(_hello(*capabilities))
+                endpoint.publish(
+                    _snapshot(active_wars=[war], player_armies=[player])
+                )
+
+                projected = driver.capabilities()
+                self.assertIn(expected, projected["action_steps"])
+                self.assertNotIn(rejected, projected["action_steps"])
+                self.assertEqual(
+                    driver.route_contact_effective_timeline_speed, 3
+                )
+                self.assertEqual(
+                    projected["battle_speed_readiness"][
+                        "route_contact_effective_timeline_speed"
+                    ],
+                    3,
+                )
+                self.assertFalse(
+                    projected["battle_speed_readiness"][
+                        "noncombat_sentinel_high_speed_ab"
+                    ]
+                )
+                driver.close()
 
     def test_unavoidable_contact_proof_observes_combat_after_exact_day(
         self,
@@ -13148,14 +13228,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             {
                 "decision_sentinel_live_ready": True,
                 "committed_route_sentinel_live_ready": True,
-                "stationary_objective_hold_sentinel_canary_ready": False,
+                "stationary_objective_hold_sentinel_live_ready": True,
+                "stationary_objective_hold_sentinel_canary_ready": True,
                 "committed_route_sentinel_speed_4_live_ready": False,
                 "committed_route_sentinel_speed_5_live_ready": False,
                 "stationary_objective_hold_sentinel_speed_4_live_ready": False,
                 "stationary_objective_hold_sentinel_speed_5_live_ready": False,
                 "terminal_sentinel_live_ready": True,
                 "overwhelming_matrix_live_ready": False,
+                "stationary_objective_hold_legacy_canary_flag_requested": False,
                 "noncombat_sentinel_timeline_speed": 3,
+                "route_contact_effective_timeline_speed": 3,
                 "noncombat_sentinel_high_speed_ab": False,
             },
         )
@@ -13526,7 +13609,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 expected_revision=int(driver.take_snapshot()["revision"]),
             )
 
-    def test_stationary_objective_hold_requires_explicit_canary_admission(
+    def test_stationary_objective_hold_is_default_production_with_legacy_flag(
         self,
     ) -> None:
         capabilities = (
@@ -13557,13 +13640,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.publish(_hello(*capabilities))
         endpoint.publish(_snapshot(active_wars=[war], player_armies=[player]))
         projected = driver.capabilities()
-        self.assertNotIn(
+        self.assertIn(
             WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
             projected["action_steps"],
         )
+        self.assertTrue(
+            projected["battle_speed_readiness"][
+                "stationary_objective_hold_sentinel_live_ready"
+            ]
+        )
         self.assertFalse(
             projected["battle_speed_readiness"][
-                "stationary_objective_hold_sentinel_canary_ready"
+                "stationary_objective_hold_legacy_canary_flag_requested"
             ]
         )
 
@@ -13585,6 +13673,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "stationary_objective_hold_sentinel_canary_ready"
             ]
         )
+        self.assertTrue(
+            projected["battle_speed_readiness"][
+                "stationary_objective_hold_legacy_canary_flag_requested"
+            ]
+        )
 
     def test_stationary_objective_hold_runs_seven_days_without_polling(
         self,
@@ -13595,7 +13688,6 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             endpoint=endpoint,
             command_timeout_seconds=0.1,
             life_advance_timeout_seconds=0.1,
-            allow_stationary_objective_hold_sentinel_canary=True,
         )
         endpoint.publish(
             _hello(

@@ -315,7 +315,10 @@ _BATTLE_SENTINEL_MAXIMUM_ARMIES = 64
 _BATTLE_SPEED_READINESS = {
     "decision_sentinel_live_ready": True,
     "committed_route_sentinel_live_ready": True,
-    "stationary_objective_hold_sentinel_canary_ready": False,
+    "stationary_objective_hold_sentinel_live_ready": True,
+    # Deprecated compatibility alias. Production readiness no longer depends
+    # on the old CLI canary flag.
+    "stationary_objective_hold_sentinel_canary_ready": True,
     "committed_route_sentinel_speed_4_live_ready": False,
     "committed_route_sentinel_speed_5_live_ready": False,
     "stationary_objective_hold_sentinel_speed_4_live_ready": False,
@@ -889,6 +892,17 @@ class NativeHeadlessGameplayDriver:
         self.allow_route_contact_high_speed_ab = (
             allow_route_contact_high_speed_ab is True
         )
+        # Scope-specific sentinel readiness may admit its own requested speed,
+        # but it must never leak that admission into the exact route-contact
+        # transaction. Route-contact speed 4/5 remains explicit-A/B only.
+        self.route_contact_effective_timeline_speed = (
+            self.route_contact_timeline_speed
+            if (
+                self.route_contact_timeline_speed <= 3
+                or self.allow_route_contact_high_speed_ab
+            )
+            else 3
+        )
         self.allow_stationary_objective_hold_sentinel_canary = (
             allow_stationary_objective_hold_sentinel_canary is True
         )
@@ -1090,7 +1104,6 @@ class NativeHeadlessGameplayDriver:
             if (
                 noncombat_sentinel_speed_step in action_steps
                 and objective_hold_speed_ready
-                and self.allow_stationary_objective_hold_sentinel_canary
             ):
                 action_steps.add(
                     WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
@@ -1225,11 +1238,14 @@ class NativeHeadlessGameplayDriver:
             "composite_action_steps": composite_action_steps,
             "battle_speed_readiness": {
                 **_BATTLE_SPEED_READINESS,
-                "stationary_objective_hold_sentinel_canary_ready": (
+                "stationary_objective_hold_legacy_canary_flag_requested": (
                     self.allow_stationary_objective_hold_sentinel_canary
                 ),
                 "noncombat_sentinel_timeline_speed": (
                     self.route_contact_timeline_speed
+                ),
+                "route_contact_effective_timeline_speed": (
+                    self.route_contact_effective_timeline_speed
                 ),
                 "noncombat_sentinel_high_speed_ab": (
                     self.allow_route_contact_high_speed_ab
@@ -8830,7 +8846,7 @@ class NativeHeadlessGameplayDriver:
             )
         proof_kind = proof.get("proof_kind")
         preferred_timeline_speed = (
-            self.route_contact_timeline_speed
+            self.route_contact_effective_timeline_speed
             if proof_kind == "contact_free"
             else 1
         )
@@ -9165,11 +9181,6 @@ class NativeHeadlessGameplayDriver:
             if parsed_objective_hold_request is None:
                 raise UnsupportedStepError(
                     "war-objective hold sentinel lacks its typed request"
-                )
-            if not self.allow_stationary_objective_hold_sentinel_canary:
-                raise UnsupportedStepError(
-                    "war-objective hold sentinel requires explicit canary "
-                    "admission"
                 )
             hold_admission = _battle_sentinel_stationary_objective_hold_state(
                 starting,

@@ -3807,6 +3807,7 @@ def choose_one_life_turn(
         for name in (
             "decision_sentinel_live_ready",
             "committed_route_sentinel_live_ready",
+            "stationary_objective_hold_sentinel_live_ready",
             "stationary_objective_hold_sentinel_canary_ready",
             "committed_route_sentinel_speed_4_live_ready",
             "committed_route_sentinel_speed_5_live_ready",
@@ -5414,101 +5415,6 @@ def choose_one_life_turn(
                 "reason": "an active assault failed its one-day safety review but no exact Stop Assault action is eligible",
                 "assault_state": unsafe_assault,
                 "assault_states": active_assaults,
-                "active_wars": war_summary,
-            }
-        objective_hold_candidate = (
-            _stationary_objective_hold_candidate(
-                snapshot,
-                active_wars=active_wars,
-                player_armies=player_armies,
-            )
-            if (
-                battle_speed_gates[
-                    "stationary_objective_hold_sentinel_canary_ready"
-                ]
-                and _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
-                in available_steps
-                and isinstance(snapshot, dict)
-            )
-            else None
-        )
-        objective_hold_start_date_raw = (
-            _native_int(snapshot.get("date_raw"))
-            if isinstance(snapshot, dict)
-            else None
-        )
-        objective_hold_target_date_raw = (
-            _stationary_objective_hold_target_date_raw(
-                objective_hold_start_date_raw,
-                war_summary,
-            )
-            if objective_hold_start_date_raw is not None
-            else None
-        )
-        if (
-            isinstance(objective_hold_candidate, dict)
-            and objective_hold_start_date_raw is not None
-            and objective_hold_target_date_raw is not None
-        ):
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "native_war_stationary_objective_hold_sentinel_canary",
-                "selected_step": war_objective_hold_sentinel_advance_step(
-                    int(objective_hold_candidate["war_id"]),
-                    int(objective_hold_candidate["subject_army_id"]),
-                    int(objective_hold_candidate["objective_province_id"]),
-                    objective_hold_target_date_raw,
-                    timeline_speed=(
-                        stationary_objective_hold_sentinel_speed
-                    ),
-                ),
-                "reason": (
-                    "every player army is regular, idle and stationary, and "
-                    "the bound controllable subject is holding an explicit "
-                    "active-war objective; run the explicit speed-"
-                    f"{stationary_objective_hold_sentinel_speed} canary "
-                    "for at most seven days without Python daily pauses"
-                ),
-                "timeline_policy": (
-                    "war_stationary_objective_hold_canary_speed_"
-                    f"{stationary_objective_hold_sentinel_speed}"
-                ),
-                "timeline_speed": (
-                    stationary_objective_hold_sentinel_speed
-                ),
-                "research_high_speed_ab": bool(
-                    stationary_objective_hold_sentinel_speed > 3
-                    and isinstance(battle_speed_readiness, dict)
-                    and battle_speed_readiness.get(
-                        "noncombat_sentinel_high_speed_ab"
-                    )
-                    is True
-                ),
-                "sentinel_mode": "decision_epoch",
-                "sentinel_scope": "stationary_objective_hold",
-                "absolute_target_date_raw": objective_hold_target_date_raw,
-                "watch_army_ids": objective_hold_candidate[
-                    "watch_army_ids"
-                ],
-                "war_id": objective_hold_candidate["war_id"],
-                "subject_army_id": objective_hold_candidate[
-                    "subject_army_id"
-                ],
-                "objective_province_id": objective_hold_candidate[
-                    "objective_province_id"
-                ],
-                "exact_war_terminal_watch": False,
-                "exact_active_war_set_watch": False,
-                "maximum_omitted_state_detection_lag_days": 7,
-                "omitted_native_watch_fields": [
-                    "active_war_set",
-                    "war_id",
-                    "war_score",
-                    "objective_membership",
-                    "occupation",
-                    "current_province",
-                    "army_state",
-                ],
                 "active_wars": war_summary,
             }
         if combat_armies and not unsafe_armies and not threatened_stationary_armies:
@@ -7519,7 +7425,7 @@ def choose_one_life_turn(
                     pursuit_army.get("move_target_province_id"),
                 }:
                     if "life-advance" in available_steps:
-                        return {
+                        baseline_plan = {
                             "policy": "one-life-turn-v1",
                             "phase": "native_war_pursuit_progress",
                             "selected_step": "life-advance",
@@ -7531,6 +7437,44 @@ def choose_one_life_turn(
                             "pursuit": pursuit,
                             "active_wars": war_summary,
                         }
+                        sentinel_plan = (
+                            _stationary_objective_hold_sentinel_substitution(
+                                baseline_plan,
+                                snapshot=(
+                                    snapshot
+                                    if isinstance(snapshot, dict)
+                                    else {}
+                                ),
+                                active_wars=active_wars,
+                                player_armies=player_armies,
+                                war_summary=war_summary,
+                                enabled=bool(
+                                    battle_speed_gates[
+                                        "stationary_objective_hold_sentinel_live_ready"
+                                    ]
+                                    or battle_speed_gates[
+                                        "stationary_objective_hold_sentinel_canary_ready"
+                                    ]
+                                ),
+                                action_available=(
+                                    _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP
+                                    in available_steps
+                                ),
+                                timeline_speed=(
+                                    stationary_objective_hold_sentinel_speed
+                                ),
+                                high_speed_ab=bool(
+                                    isinstance(
+                                        battle_speed_readiness, dict
+                                    )
+                                    and battle_speed_readiness.get(
+                                        "noncombat_sentinel_high_speed_ab"
+                                    )
+                                    is True
+                                ),
+                            )
+                        )
+                        return sentinel_plan or baseline_plan
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_pursuit_progress_unsupported",
@@ -8844,13 +8788,59 @@ def _army_tactical_state(army: dict[str, object]) -> str | None:
     return None
 
 
-def _stationary_objective_hold_candidate(
+def _stationary_objective_hold_sentinel_substitution(
+    baseline_plan: dict[str, object],
     snapshot: dict[str, object],
     *,
     active_wars: list[dict[str, object]],
     player_armies: list[dict[str, object]],
+    war_summary: list[dict[str, object]],
+    enabled: bool,
+    action_available: bool,
+    timeline_speed: int,
+    high_speed_ab: bool,
 ) -> dict[str, object] | None:
-    """Select a strictly observed canary scope for a seven-day idle hold."""
+    """Replace one already-selected stationary ``life-advance`` action.
+
+    This helper is intentionally downstream of the ordinary war planner.  It
+    receives the baseline decision, then proves that its exact tactical WarID,
+    controllable subject and preferred objective are the same binding that the
+    native sentinel will watch.  It never searches a second war or chooses a
+    different objective merely because that objective happens to be occupied.
+    """
+    pursuit = baseline_plan.get("pursuit")
+    if not (
+        enabled
+        and action_available
+        and baseline_plan.get("phase") == "native_war_pursuit_progress"
+        and baseline_plan.get("selected_step") == "life-advance"
+        and isinstance(pursuit, dict)
+        and pursuit.get("target_source") == "war_objective_province"
+        and pursuit.get("objective_kind") == "siege"
+    ):
+        return None
+    war_id = _native_int(pursuit.get("war_id"))
+    subject_army_id = _native_int(pursuit.get("army_id"))
+    objective_province_id = _native_int(
+        pursuit.get("target_province_id")
+    )
+    if (
+        war_id is None
+        or war_id <= 0
+        or subject_army_id is None
+        or subject_army_id <= 0
+        or objective_province_id is None
+        or objective_province_id <= 0
+    ):
+        return None
+    tactical_war = _stable_tactical_war(active_wars)
+    if not (
+        isinstance(tactical_war, dict)
+        and _native_int(tactical_war.get("war_id")) == war_id
+        and objective_province_id
+        in war_objective_province_ids([tactical_war])
+    ):
+        return None
     if not (
         snapshot.get("paused") is True
         and snapshot.get("map_ready") is True
@@ -8897,6 +8887,15 @@ def _stationary_objective_hold_candidate(
         and len(watch_ids) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
     ):
         return None
+    subject = army_by_id.get(subject_army_id)
+    if not (
+        isinstance(subject, dict)
+        and subject.get("controllable") is True
+        and _native_int(subject.get("current_province_id"))
+        == objective_province_id
+        and subject.get("move_target_province_id") is None
+    ):
+        return None
 
     # Deep objective rows are an optional corroborating source, not an
     # admission prerequisite: the live snapshot can publish an exact
@@ -8917,34 +8916,69 @@ def _stationary_objective_hold_candidate(
             ):
                 return None
 
-    for war in sorted(
-        active_wars,
-        key=lambda row: _native_int(row.get("war_id")) or 2**31,
-    ):
-        war_id = _native_int(war.get("war_id"))
-        objectives = war.get("war_objective_province_ids")
-        if war_id is None or war_id <= 0 or not isinstance(objectives, list):
-            continue
-        for objective in objectives:
-            objective_id = _native_int(objective)
-            if objective_id is None or objective_id <= 0:
-                continue
-            matching_subjects = sorted(
-                army_id
-                for army_id in watch_ids
-                if _native_int(
-                    army_by_id[army_id].get("current_province_id")
-                )
-                == objective_id
-            )
-            if matching_subjects:
-                return {
-                    "war_id": war_id,
-                    "subject_army_id": matching_subjects[0],
-                    "objective_province_id": objective_id,
-                    "watch_army_ids": sorted(watch_ids),
-                }
-    return None
+    start_date_raw = _native_int(snapshot.get("date_raw"))
+    target_date_raw = (
+        _stationary_objective_hold_target_date_raw(
+            start_date_raw,
+            war_summary,
+        )
+        if start_date_raw is not None
+        else None
+    )
+    if target_date_raw is None:
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_stationary_objective_hold_sentinel",
+        "selected_step": war_objective_hold_sentinel_advance_step(
+            war_id,
+            subject_army_id,
+            objective_province_id,
+            target_date_raw,
+            timeline_speed=timeline_speed,
+        ),
+        "reason": (
+            "the ordinary planner already selected life-advance for this "
+            f"same WarID, subject and preferred objective; use its speed-"
+            f"{timeline_speed} native sentinel as a seven-day execution-only "
+            "substitute without changing the war or target decision"
+        ),
+        "timeline_policy": (
+            f"war_stationary_objective_hold_speed_{timeline_speed}"
+        ),
+        "timeline_speed": timeline_speed,
+        "research_high_speed_ab": bool(
+            timeline_speed > 3 and high_speed_ab
+        ),
+        "sentinel_mode": "decision_epoch",
+        "sentinel_scope": "stationary_objective_hold",
+        "absolute_target_date_raw": target_date_raw,
+        "watch_army_ids": sorted(watch_ids),
+        "war_id": war_id,
+        "subject_army_id": subject_army_id,
+        "objective_province_id": objective_province_id,
+        "baseline_decision": {
+            "phase": baseline_plan["phase"],
+            "selected_step": baseline_plan["selected_step"],
+            "war_id": war_id,
+            "subject_army_id": subject_army_id,
+            "objective_province_id": objective_province_id,
+        },
+        "exact_war_terminal_watch": False,
+        "exact_active_war_set_watch": False,
+        "maximum_omitted_state_detection_lag_days": 7,
+        "omitted_native_watch_fields": [
+            "active_war_set",
+            "war_id",
+            "war_score",
+            "objective_membership",
+            "occupation",
+            "current_province",
+            "army_state",
+        ],
+        "pursuit": dict(pursuit),
+        "active_wars": war_summary,
+    }
 
 
 def _stationary_objective_hold_target_date_raw(

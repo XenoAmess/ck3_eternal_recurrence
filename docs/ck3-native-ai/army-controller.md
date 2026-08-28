@@ -486,7 +486,7 @@ flowchart LR
 - [unknown] 当前 exact build 尚未闭合一条可由现有 decision sentinel 同日监听的 active-war set（包括新 WarID 加入）、WarID、战争分数、战争终结、
   objective membership、occupation、current province 或 local-objective state 原生字段链。尤其不能把
   `CUnit` 仍然 idle/stationary 推断成 active-war set 未变、战争仍 active、目标仍属于该战争或占领状态不变。
-- [counter-policy] 因此首版 stationary-objective-hold 只允许显式 canary：在一致 paused snapshot 中要求完整玩家可控军
+- [counter-policy] stationary-objective-hold 的准入保持原 canary 的窄合同：在一致 paused snapshot 中要求完整玩家可控军
   watch、无 event/interaction、无玩家 combat/retreat/active siege/assault，所有玩家军都是 regular idle stationary，
   且显式 subject 当前位于显式 active WarID 的显式 objective province。缺失的 deep objective-state rows 不单独阻断：
   regular/idle 全军观测负责排除玩家 siege/assault，已发布的 active-siege row 仍作为矛盾证据拒绝。它以 speed 3 最多推进
@@ -494,8 +494,8 @@ flowchart LR
   sentinel 对 CUnit identity、move target、CombatID、retreat、native pause 与 deadline 的监听。
 - [counter-policy] typed step 必须同时绑定 WarID、subject CUnitID、objective ProvinceID 与 date bound；driver 在 arm 前
   逐项对拍，并在 stop 后取得 fresh paused snapshot 重新观测同一绑定。任何 omitted war/objective/occupation/state 变化
-  最迟只会在七日 deadline 后被 Python 发现，因此该 canary 是 bounded sparse-pause probe，不是 exact war-terminal watch，
-  也不得据此广告 production readiness。
+  最迟只会在七日 deadline 后被 Python 发现，因此它是 bounded sparse-pause production primitive，不是 exact war-terminal
+  watch；planner 与报告仍必须诚实保留 `maximum_omitted_state_detection_lag_days=7`。
 - [live-confirmed] canary `20260828T092300Z-one-generation-90d3cf79` 连续完成 `20` 个 speed-3、七日
   stationary hold，全部由 `date_deadline` 同日停表，成功臂平均 `6.012s`。第 `21` 臂在固定 `30s` wait 内停于
   `53267040`。随后 `20260828T094742Z-one-generation-71e3b7c1` 从同一 durable anchor 重跑：前两臂 GREEN，第三臂即使把
@@ -514,6 +514,16 @@ flowchart LR
   generation 上把状态 CAS 为 `idle`，保留原 generation/date/speed/watch/tick 元数据供 status query 证明；generation 不匹配、
   未暂停或已非 armed 都拒绝。只有 status 回读同一 generation 的 `idle` 且 decision identity 在 fresh paused snapshot 稳定，
   composite 才返回事件策略；native fixture 还要求下一次 arm 使用 `generation+1` 成功，不能遗留 `already_armed`。
+- [production-live] 修复后的正式 continuation `20260828T103924Z-one-generation-6421f80c` 在未改变战争策略输入的前提下完成
+  `100/100` turns：`75` query、`25` gameplay、`24` 个 stationary speed-3 advance 与 `8` 个 durable checkpoint，cleanup GREEN。
+  第 `12` turn 在 `date_raw=53267040` 再次遇到 `active_event instance_id=47`，composite 以独立 player-decision boundary 返回，
+  随后的 event query/selection 成功并继续完成余下 stationary arms；没有遗留 `already_armed`。报告 SHA-256 为
+  `DC66418A874B41909D43E79DD8AF7BCB525786888B0AF1D246270AF80C732C1C`。完整 turn-loop 稳态为 `165` 游戏日 /
+  `156.566s = 63.232 d/min`，超过 hard gate `60 d/min`；因此 speed 3 从显式 canary 晋级为默认 production。旧 CLI canary flag
+  只保留兼容，不再参与准入；speed 4/5 仍须各自的 research A/B 与 live matrix。
+- [counter-policy] production selector 只能在普通 planner 已经选出同一 tactical WarID、同一首选 objective、同一可控 subject，且
+  原动作明确为当前位置 `life-advance` 后替换执行方式。它不再提前扫描 active wars；较小 WarID 的另一战争、另一目标或恰好占位都
+  不能抢占原 planner 的主攻/参战选择。speed 4/5 live bit 亦严格按 sentinel scope 隔离，不能授权另一 scope 或 route-contact。
 
 ```mermaid
 flowchart TD
@@ -521,7 +531,7 @@ flowchart TD
     T -. "[unknown] war / occupation / objective / local-state invalidation timing" .-> U["[unknown] omitted native state changes"]
     P["[counter-policy] fresh paused snapshot<br/>complete controllable watch + all regular idle stationary"] --> G{"[counter-policy] explicit active WarID + subject at explicit objective<br/>no event/interaction/combat/retreat/siege/assault?"}
     G -->|no| H["hold / ordinary paused OODA"]
-    G -->|yes; explicit canary only| A["arm speed-3 native sentinel<br/>lease 1..7 days"]
+    G -->|yes; production speed 3| A["arm speed-3 native sentinel<br/>lease 1..7 days"]
     A --> S{"watched CUnit identity / move target / CombatID / retreat<br/>native pause or deadline?"}
     S -->|yes| R["same-day native stop for watched transition"]
     S -->|deadline| R

@@ -209,8 +209,9 @@ def parser() -> argparse.ArgumentParser:
         "--allow-stationary-objective-hold-sentinel-canary",
         action="store_true",
         help=(
-            "advertise the bounded seven-day stationary objective-hold "
-            "sentinel canary at --route-contact-speed; disabled by default"
+            "deprecated compatibility flag; the bounded seven-day speed-3 "
+            "stationary objective-hold sentinel is production-enabled by "
+            "default"
         ),
     )
     one_generation_parser = commands.add_parser(
@@ -267,8 +268,9 @@ def parser() -> argparse.ArgumentParser:
         "--allow-stationary-objective-hold-sentinel-canary",
         action="store_true",
         help=(
-            "advertise the bounded seven-day stationary objective-hold "
-            "sentinel canary at --route-contact-speed; disabled by default"
+            "deprecated compatibility flag; the bounded seven-day speed-3 "
+            "stationary objective-hold sentinel is production-enabled by "
+            "default"
         ),
     )
     commands.add_parser(

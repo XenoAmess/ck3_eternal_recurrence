@@ -594,10 +594,10 @@ roster/join、route、retreat、reopen、native pause 或 deadline 都只产生�
 xar-throughput-report <run>/report.json
 ```
 
-正式 hard gate 改为**稳态 successful-turn span `>=60 d/min`**，即从第一个成功 turn 开始到最后一个成功 turn 完成的区间，
-每游戏日预算 `1.000s`；`120 d/min` 仍是 stretch，对应 `0.500s/day`。startup、最后成功 turn 后的失败/finalization tail 与
-cleanup 继续逐项报告，但不混入 sustained gate。全 run 数字保留为运营诊断，不能用重复冷启动把稳定运行能力判 RED，也不能删掉
-启动或失败尾来冒充整局墙钟。
+正式 hard gate 是**完整 turn-loop 稳态 `>=60 d/min`**：从第一条 recorded turn 开始到最后一条 recorded turn 完成，保留所有
+query/gameplay 执行、planner/inter-turn gap 与 checkpoint-following gap；每游戏日预算 `1.000s`。`120 d/min` 仍是 stretch，
+对应 `0.500s/day`。startup、最后 turn 后的 finalization tail 与 cleanup 继续逐项报告，但不混入 sustained gate。分析器只读 report，
+不选择动作，也不改变宣战、参战、续战、投降、议和或终战合同；不得通过改变战争意愿换吞吐。
 
 现有同 checkpoint 33 日 terminal 矩阵 speed 3/4/5 分别约 `70.45 / 110.84 / 157.30 d/min`，说明 speed 3 理论上能过
 60 hard gate，但留给 query/planner/checkpoint 的空间很小；speed 5 仍是唯一已经表现出达到 120 stretch 的速度档，因而继续作为
@@ -613,6 +613,15 @@ cleanup 继续逐项报告，但不混入 sustained gate。全 run 数字保留�
 与 cleanup 后为 `33.836 d/min`。第 21 臂在 30 秒内只走 4 日并由 managed cleanup 收回，故它不进入成功吞吐分母；最新 durable
 anchor 为 `date_raw=53266608 / SHA-256 1FADF1C0...B86B34D`。
 
+[production-live promotion] 修复 player-decision boundary 后，正式 continuation
+`20260828T103924Z-one-generation-6421f80c`（report SHA-256
+`DC66418A874B41909D43E79DD8AF7BCB525786888B0AF1D246270AF80C732C1C`）完成 `100/100` turns：`75` query、`25` gameplay、
+`24` 个 stationary speed-3 advance、`8` 个 checkpoint，cleanup GREEN。第 `12` turn 在 `date_raw=53267040` 捕获同一
+`active_event instance_id=47`，完成 generation-bound cancel、事件 query/selection 后继续余下 arms。该 run 推进 `165` 游戏日，
+完整 turn-loop 稳态 `156.566s = 63.232 d/min`，hard `60` GREEN、stretch `120` 未达；advance-only 为 `73.993 d/min`，不能拿来
+替代 turn-loop gate。由此 stationary speed 3 晋级默认 production，旧 canary CLI flag 只保留兼容且不再控制准入；speed 4/5
+仍保持 research gate。
+
 [inference, requires live matrix] 若只按现有 terminal speed ratio 替换上述成功 span 内的 advance 时间、保留 query/checkpoint/
 planner 开销不变，speed 4 约为 `93 d/min`，可增加 hard-gate 余量但未达 stretch；speed 5 约为 `124 d/min`，才有望达到
 120 stretch。该投影只用于决定下一实验优先级，不授权生产；下一矩阵因此直接以 speed 5 为首要 candidate，同时保留
@@ -625,13 +634,17 @@ false。每个 scope 分别从同一 immutable checkpoint 执行平衡顺序 `1,
 - 优化严格 policy-neutral：各档使用同一 policy inputs、宣战/继续战争/退兵/投降/议和/结束决定和 outcome contract；唯一自变量是
   native timeline speed 与由此减少的墙钟、暂停、重复查询/规划/调度开销。禁止降低宣战或战争意愿、提高投降/议和意愿、回避战争来
   换吞吐；typed-step 回归必须证明 subject、target/objective 与 absolute bound 在各速度档完全相同；
+- stationary sentinel 必须在普通 planner 已经完成 tactical WarID、首选 objective 与 subject 选择，并确定当前位置动作应为
+  `life-advance` 后才可作执行层替身；它不得提前遍历任一其他 active war，也不得把“恰好站在另一个目标上”升级成新的主攻或参战选择；
 - typed step 同时绑定 scope、subject、target/objective、absolute bound 与 speed；完整 controllable CUnit watch 不变；
+- speed 4/5 readiness 按 `committed_route` 与 `stationary_objective_hold` 分 scope；任一 scope 的 live bit 不得授权另一 scope，亦不得
+  授权 proof-bound route-contact。route-contact 4/5 仍只接受显式 A/B，未授权时即使某 sentinel scope 已 live 也固定回落 speed 3；
 - 一次 paused admission 后只提交一次 resume；running 期间 `external_pause_count=0`、`external_rich_query_count=0`，
   `intermediate_pause_count=0`；
 - route target、CombatID/contact、retreat、army identity、native pause 或 deadline 在同一 native day 停表，
   `overshoot_days=0`，随后 fresh paused replan；
 - stationary v1 仍诚实保留 active-war-set/WarID/warscore/objective/occupation 等字段最多 7 日的检测滞后；高速不改变该边界；
-- hard gate 看完整 successful-turn span 的游戏日/墙钟，并同时记录整段 one-generation 全 run 结果。只有对应 scope 的矩阵与
+- hard gate 看完整 turn-loop steady-state 的游戏日/墙钟，并同时记录整段 one-generation 全 run 结果。只有对应 scope 的矩阵与
   cleanup GREEN、稳态 `>=60 d/min`，才允许把该 scope 的 speed-5 readiness 设为 true；是否达到 `>=120 d/min` 单独标为
   stretch，不得把 stretch 失败写成 hard RED。
 
@@ -639,7 +652,7 @@ false。每个 scope 分别从同一 immutable checkpoint 执行平衡顺序 `1,
 flowchart TD
     R["[production-live] ca52af74 wall-time report"] --> B["[counter-policy] startup/query/advance/checkpoint/cleanup budget"]
     B --> H{"sustained hard target >=60 d/min?"}
-    H -->|speed 3 live: 62.53, thin margin| N3["production default remains 3"]
+    H -->|speed 3 live: 63.23, thin margin| N3["production default remains 3"]
     H -->|speed 4 projected: about 93| A4["[research] balanced scope matrix"]
     H -->|speed 5 projected: about 124| A5["[research] balanced scope matrix"]
     A4 --> G{"same-day stop, zero pause/RQ/overshoot, cleanup GREEN?"}
@@ -652,14 +665,15 @@ flowchart TD
     class U unknown;
 ```
 
-该施工仍优先于 player-retreat speed-3：stationary speed 3 虽刚过 hard gate，但余量只有约 `4.2%`；第 21 臂的同日停滞已由
+该施工仍优先于 player-retreat speed-3：stationary speed 3 虽已 production-live，但最新 turn-loop 余量只有约 `5.4%`；第 21 臂的同日停滞已由
 player-decision boundary 单独解释，不能再当作扩大 wait 或升速的性能证据。speed 5 的必要性来自成功窗口中 `89.50%` 的墙钟确实耗在
 native advance，以及既有 speed ratio 对 stretch 的直接投影；retreat 后续应复用同一速度绑定与矩阵合同，而不是另造轮询器。
 
 ## Readiness 边界
 
 本页把以下结论提升为 `production-live`：五档都执行同一逐日 native 计算；contact-free exact-day route 默认 speed 3；普通 active
-combat 默认 speed-3 decision sentinel；完整 controllable CUnit watch 可跨多日并在 semantic epoch exact-stop。已承诺 route 使用
+combat 默认 speed-3 decision sentinel；stationary-objective speed 3 默认 production；完整 controllable CUnit watch 可跨多日并在
+semantic epoch exact-stop。已承诺 route 使用
 独立显式 scope/subject/target/bound composite，允许 route scope `combat_count=0`，并已在当前 G1 cold continuation 连续运行 44 日。
 最终 production
 artifact 与 hash 见 [battle-decision-epoch-cruise.md](battle-decision-epoch-cruise.md)。

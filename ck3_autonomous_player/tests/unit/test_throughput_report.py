@@ -78,15 +78,15 @@ class ThroughputReportTests(unittest.TestCase):
         self.assertEqual(result["wall_seconds"], 21.1)
         self.assertAlmostEqual(result["actual_days_per_minute"], 22.749, places=3)
         self.assertAlmostEqual(
-            result["successful_turn_span_days_per_minute"],
+            result["turn_loop_steady_state_days_per_minute"],
             52.747,
             places=3,
         )
         decomposition = result["decomposition"]
         self.assertEqual(decomposition["startup_seconds"], 10.0)
-        self.assertEqual(decomposition["successful_turn_span_seconds"], 9.1)
+        self.assertEqual(decomposition["turn_loop_steady_state_seconds"], 9.1)
         self.assertEqual(
-            decomposition["post_last_success_to_report_finish_seconds"],
+            decomposition["post_last_turn_to_report_finish_seconds"],
             2.0,
         )
         self.assertEqual(decomposition["query"], {"count": 1, "seconds": 1.0})
@@ -105,7 +105,22 @@ class ThroughputReportTests(unittest.TestCase):
         self.assertEqual(result["targets"]["hard"]["days_per_minute"], 60.0)
         self.assertEqual(
             result["targets"]["hard"]["measurement_scope"],
-            "successful_turn_span",
+            "turn_loop_steady_state",
+        )
+        self.assertTrue(result["policy_neutrality"]["read_only_report_analysis"])
+        self.assertFalse(
+            result["policy_neutrality"]["changes_gameplay_decisions"]
+        )
+        self.assertEqual(
+            result["policy_neutrality"]["war_contracts_unchanged"],
+            [
+                "entry",
+                "participation",
+                "continuation",
+                "surrender",
+                "peace",
+                "termination",
+            ],
         )
         self.assertEqual(
             result["targets"]["stretch"]["days_per_minute"], 120.0
@@ -116,7 +131,7 @@ class ThroughputReportTests(unittest.TestCase):
             ]
         )
 
-    def test_hard_gate_uses_successful_turn_span_not_full_run(self) -> None:
+    def test_hard_gate_uses_complete_turn_loop_not_full_run(self) -> None:
         report = _report()
         report["finished_at"] = "2026-08-28T00:01:40+00:00"
         report["elapsed_seconds"] = 100.0
@@ -126,7 +141,7 @@ class ThroughputReportTests(unittest.TestCase):
 
         result = analyze_one_generation_throughput(report)
 
-        self.assertEqual(result["successful_turn_span_days_per_minute"], 60.0)
+        self.assertEqual(result["turn_loop_steady_state_days_per_minute"], 60.0)
         self.assertTrue(result["targets"]["hard"]["target_met"])
         self.assertFalse(
             result["targets"]["hard"]["full_run_diagnostic"]["target_met"]
