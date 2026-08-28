@@ -30,6 +30,9 @@ from xar_autoplayer.bridge.native_driver import (
     _action_steps,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.war_contract import (
+    battle_decision_epoch_advance_step,
+)
 from xar_autoplayer.strategy import choose_one_life_turn
 
 
@@ -1354,6 +1357,8 @@ def _sentinel_advance_row(
     elapsed_days: int = 5,
     watch_army_ids: list[int] | None = None,
     terminal: bool = False,
+    native_pause: bool = False,
+    target_date_raw: int | None = None,
 ) -> dict[str, object]:
     speed = 5 if step == TERMINAL_SENTINEL_STEP else 3
     mode = (
@@ -1361,10 +1366,16 @@ def _sentinel_advance_row(
         if step == TERMINAL_SENTINEL_STEP
         else "decision_epoch"
     )
-    target = DATE_RAW + 45 * 24
+    target = target_date_raw or DATE_RAW + 45 * 24
     ending = DATE_RAW + elapsed_days * 24
     watched = list(watch_army_ids or [SUBJECT])
-    reasons = ["combat_terminal" if terminal else "combat_phase_changed"]
+    reasons = [
+        "combat_terminal"
+        if terminal
+        else "native_pause"
+        if native_pause
+        else "combat_phase_changed"
+    ]
     armed = {
         "state": "armed",
         "generation": 7,
@@ -1397,7 +1408,7 @@ def _sentinel_advance_row(
             "target_date_raw": target,
             "ending_date_raw": ending,
             "elapsed_days": elapsed_days,
-            "requested_horizon_days": 45,
+            "requested_horizon_days": (target - DATE_RAW) // 24,
             "timeline_speed": speed,
             "timeline_policy": mode,
             "progress_status": "postcondition",
@@ -1408,9 +1419,9 @@ def _sentinel_advance_row(
             "trigger_reasons": reasons,
             "sentinel_generation": 7,
             "completed_daily_ticks": elapsed_days,
-            "intermediate_pause_count": 0,
+            "intermediate_pause_count": 1 if native_pause else 0,
             "overshoot_days": 0,
-            "zero_intermediate_pause": True,
+            "zero_intermediate_pause": not native_pause,
             "external_pause_count": 0,
             "external_rich_query_count": 0,
             "managed_failure_cleanup": {
@@ -1431,12 +1442,14 @@ def _sentinel_advance_row(
                 "army_count": len(watched),
                 "combat_count": 1,
                 "completed_daily_ticks": elapsed_days,
-                "intermediate_pause_count": 0,
-                "trigger_flags": 256 if terminal else 64,
+                "intermediate_pause_count": 1 if native_pause else 0,
+                "trigger_flags": (
+                    256 if terminal else 1 << 13 if native_pause else 64
+                ),
                 "trigger_reasons": reasons,
                 "signed_date_delta_from_target_raw": ending - target,
                 "overshoot_days": 0,
-                "pause_wrapper_called": True,
+                "pause_wrapper_called": not native_pause,
                 "pause_observed": True,
                 "terminal_observed": terminal,
                 "abnormal": False,
@@ -1497,11 +1510,103 @@ class BattleSentinelStrategyTests(unittest.TestCase):
             readiness={"decision_sentinel_live_ready": True},
         )
 
-        self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(
+            plan["selected_step"],
+            battle_decision_epoch_advance_step(DATE_RAW + 45 * 24),
+        )
         self.assertEqual(plan["timeline_speed"], 3)
         self.assertEqual(plan["sentinel_mode"], "decision_epoch")
         self.assertEqual(plan["absolute_target_date_raw"], DATE_RAW + 45 * 24)
         self.assertEqual(plan["watch_army_ids"], [SUBJECT])
+
+    def test_decision_epoch_targets_earliest_exact_retreat_gate(self) -> None:
+        first = _battle_frame()
+        first["side_flags"]["allow_early_retreat"] = False
+        first["legality"].update(
+            {
+                "native_boolean": False,
+                "legal_now": False,
+                "reason_codes_in_native_order": ["too_early"],
+                "native_reason_keys_in_native_order": [
+                    "COMBAT_NO_RETREAT_TOO_EARLY"
+                ],
+            }
+        )
+        second = _rebind_battle_frame(
+            _battle_frame(),
+            subject=117_440_751,
+            native_subject=404,
+            combat_id=335_544_326,
+            province_id=2587,
+        )
+        second["side_flags"]["allow_early_retreat"] = False
+        second["legality"].update(
+            {
+                "native_boolean": False,
+                "retreat_elapsed_baseline_date_raw": DATE_RAW - 5 * 24,
+                "elapsed_whole_days": 5,
+                "legal_now": False,
+                "reason_codes_in_native_order": ["too_early"],
+                "native_reason_keys_in_native_order": [
+                    "COMBAT_NO_RETREAT_TOO_EARLY"
+                ],
+                "earliest_day_gate_date_raw": DATE_RAW + 10 * 24,
+            }
+        )
+        snapshot = _multi_battle_snapshot([first, second])
+        plan = choose_one_life_turn(
+            [_battle_query_row(1, first), _battle_query_row(2, second)],
+            snapshot=snapshot,
+            action_steps=(
+                STEP,
+                query_battle_control_snapshot_v1_step(117_440_751),
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+            ),
+            battle_speed_readiness={
+                "decision_sentinel_live_ready": True
+            },
+        )
+
+        expected_target = DATE_RAW + 10 * 24
+        self.assertEqual(
+            plan["selected_step"],
+            battle_decision_epoch_advance_step(expected_target),
+        )
+        self.assertEqual(plan["absolute_target_date_raw"], expected_target)
+
+    def test_terminal_cruise_never_clamps_to_retreat_gate(self) -> None:
+        frame = _crushing_battle_frame()
+        frame["side_flags"]["allow_early_retreat"] = False
+        frame["legality"].update(
+            {
+                "native_boolean": False,
+                "legal_now": False,
+                "reason_codes_in_native_order": ["too_early"],
+                "native_reason_keys_in_native_order": [
+                    "COMBAT_NO_RETREAT_TOO_EARLY"
+                ],
+            }
+        )
+        plan = self._plan(
+            [
+                _battle_query_row(1, frame),
+                _terminal_cursor_query_row(2, frame),
+            ],
+            frame,
+            steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        self.assertEqual(plan["selected_step"], TERMINAL_SENTINEL_STEP)
+        self.assertEqual(
+            plan["absolute_target_date_raw"], DATE_RAW + 45 * 24
+        )
 
     def test_double_four_x_and_player_won_pursuit_select_speed_five(
         self,
@@ -1576,7 +1681,12 @@ class BattleSentinelStrategyTests(unittest.TestCase):
                     readiness=_BATTLE_SPEED_GATES_WITHOUT_OVERWHELMING,
                 )
 
-                self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+                self.assertEqual(
+                    plan["selected_step"],
+                    battle_decision_epoch_advance_step(
+                        DATE_RAW + 45 * 24
+                    ),
+                )
                 self.assertEqual(plan["timeline_speed"], 3)
 
     def test_terminal_cruise_first_freezes_cursor(self) -> None:
@@ -1639,7 +1749,10 @@ class BattleSentinelStrategyTests(unittest.TestCase):
             ),
             battle_speed_readiness=_ALL_BATTLE_SPEED_GATES,
         )
-        self.assertEqual(mixed["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(
+            mixed["selected_step"],
+            battle_decision_epoch_advance_step(DATE_RAW + 45 * 24),
+        )
         self.assertEqual(mixed["watch_army_ids"], [444, SUBJECT, 117_440_751])
 
         second_crush = _rebind_battle_frame(
@@ -1728,7 +1841,12 @@ class BattleSentinelStrategyTests(unittest.TestCase):
             steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
             readiness={"decision_sentinel_live_ready": True},
         )
-        self.assertEqual(plan["selected_step"], DECISION_SENTINEL_STEP)
+        self.assertEqual(
+            plan["selected_step"],
+            battle_decision_epoch_advance_step(
+                DATE_RAW + 5 * 24 + 45 * 24
+            ),
+        )
         self.assertEqual(
             plan["battle_transitions"][0]["actual_elapsed_days"], 5
         )
@@ -1752,6 +1870,55 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertIn(
             "sentinel_completion_invalid",
             rejected["battle_transition"]["sentinel_validation"]["errors"],
+        )
+
+    def test_native_pause_stop_is_a_valid_decision_epoch(self) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=1)
+        plan = self._plan(
+            [
+                _battle_query_row(1, before),
+                _sentinel_advance_row(2, elapsed_days=1, native_pause=True),
+                _battle_query_row(3, after),
+            ],
+            after,
+            steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            readiness={"decision_sentinel_live_ready": True},
+        )
+
+        self.assertEqual(
+            plan["selected_step"],
+            battle_decision_epoch_advance_step(
+                DATE_RAW + 24 + 45 * 24
+            ),
+        )
+
+    def test_parameterized_decision_target_reconciles_result_dates(self) -> None:
+        before = _battle_frame()
+        after = _next_battle_frame(elapsed_days=5)
+        target = DATE_RAW + 15 * 24
+        dynamic_step = battle_decision_epoch_advance_step(target)
+        plan = self._plan(
+            [
+                _battle_query_row(1, before),
+                _sentinel_advance_row(
+                    2,
+                    step=dynamic_step,
+                    elapsed_days=5,
+                    target_date_raw=target,
+                ),
+                _battle_query_row(3, after),
+            ],
+            after,
+            steps=(STEP, "life-advance", DECISION_SENTINEL_STEP),
+            readiness={"decision_sentinel_live_ready": True},
+        )
+
+        self.assertEqual(
+            plan["selected_step"],
+            battle_decision_epoch_advance_step(
+                DATE_RAW + 5 * 24 + 45 * 24
+            ),
         )
 
     def test_terminal_stop_requires_cursor_bound_same_combat_outcome(self) -> None:

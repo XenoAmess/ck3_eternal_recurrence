@@ -55,6 +55,7 @@ from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
     RAISE_TROOPS_STEP,
     advance_route_contact_horizon_step,
+    battle_decision_epoch_advance_step,
     controllable_armies,
     disband_army_step,
     enemy_primary_default_raise_province_ids,
@@ -65,6 +66,7 @@ from .bridge.war_contract import (
     move_army_step,
     offer_white_peace_step,
     parse_merge_armies_step,
+    parse_battle_decision_epoch_advance_step,
     parse_move_army_step,
     parse_preview_move_army_step,
     parse_query_route_contact_horizon_step,
@@ -1716,10 +1718,7 @@ def _current_battle_terminal_cursor(
 
 
 def _is_battle_timeline_advance_step(step: object) -> bool:
-    return is_life_advance_step(step) or step in {
-        _BATTLE_DECISION_EPOCH_ADVANCE_STEP,
-        _BATTLE_TERMINAL_CRUISE_STEP,
-    }
+    return is_life_advance_step(step)
 
 
 def _battle_sentinel_advance_validation(
@@ -1730,10 +1729,15 @@ def _battle_sentinel_advance_validation(
     if not isinstance(advance_result, dict):
         return None
     step = advance_result.get("step")
-    expected = {
-        _BATTLE_DECISION_EPOCH_ADVANCE_STEP: (3, "decision_epoch"),
-        _BATTLE_TERMINAL_CRUISE_STEP: (5, "terminal_or_sentinel"),
-    }.get(step)
+    decision_target = parse_battle_decision_epoch_advance_step(step)
+    expected = (
+        (3, "decision_epoch")
+        if decision_target is not None
+        or step == _BATTLE_DECISION_EPOCH_ADVANCE_STEP
+        else (5, "terminal_or_sentinel")
+        if step == _BATTLE_TERMINAL_CRUISE_STEP
+        else None
+    )
     if expected is None:
         return None
     expected_speed, expected_mode = expected
@@ -1784,8 +1788,16 @@ def _battle_sentinel_advance_validation(
         and elapsed is not None
         and ticks is not None
         and elapsed > 0
-        and target
-        == start + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+        and 1
+        <= (target - start) // 24
+        <= _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+        and (target - start) % 24 == 0
+        and (
+            target == decision_target
+            if decision_target is not None
+            else target
+            == start + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+        )
         and start + elapsed * 24 == end
         and start + ticks * 24 == end
         and elapsed == ticks
@@ -1814,7 +1826,8 @@ def _battle_sentinel_advance_validation(
         and sentinel.get("signed_date_delta_from_target_raw")
         == (end - target if end is not None and target is not None else None)
         and sentinel.get("overshoot_days") == 0
-        and sentinel.get("intermediate_pause_count") == 0
+        and sentinel.get("intermediate_pause_count")
+        == (1 if "native_pause" in (reasons or []) else 0)
         and sentinel.get("pause_observed") is True
         and sentinel.get("abnormal") is False
         and advance_result.get("timeline_speed") == expected_speed
@@ -1858,7 +1871,11 @@ def _battle_sentinel_advance_validation(
     if not (
         advance_result.get("progress_status") == "postcondition"
         and advance_result.get("requested_horizon_days")
-        == _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS
+        == (
+            (target - start) // 24
+            if target is not None and start is not None
+            else None
+        )
         and advance_result.get("timeline_policy") == expected_mode
         and advance_result.get("sentinel_mode") == expected_mode
         and advance_result.get("stop_kind")
@@ -1869,9 +1886,11 @@ def _battle_sentinel_advance_validation(
         and advance_result.get("sentinel_generation")
         == sentinel.get("generation")
         and advance_result.get("completed_daily_ticks") == ticks
-        and advance_result.get("intermediate_pause_count") == 0
+        and advance_result.get("intermediate_pause_count")
+        == (1 if "native_pause" in (reasons or []) else 0)
         and advance_result.get("overshoot_days") == 0
-        and advance_result.get("zero_intermediate_pause") is True
+        and advance_result.get("zero_intermediate_pause")
+        is ("native_pause" not in (reasons or []))
         and advance_result.get("external_pause_count") == 0
         and advance_result.get("external_rich_query_count") == 0
         and isinstance(cleanup, dict)
@@ -1883,11 +1902,9 @@ def _battle_sentinel_advance_validation(
         ("date_deadline" in reasons) is not (end == target)
     ):
         errors.append("deadline_reason_disagrees")
-    if (
-        isinstance(reasons, list)
-        and "native_pause" not in reasons
-        and isinstance(sentinel, dict)
-        and sentinel.get("pause_wrapper_called") is not True
+    if isinstance(reasons, list) and isinstance(sentinel, dict) and (
+        sentinel.get("pause_wrapper_called")
+        is not ("native_pause" not in reasons)
     ):
         errors.append("pause_wrapper_not_called")
     return {
@@ -4769,13 +4786,50 @@ def choose_one_life_turn(
                 if isinstance(snapshot, dict)
                 else None
             )
-            target_date_raw = (
+            fallback_target_date_raw = (
                 start_date_raw
                 + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
                 if start_date_raw is not None
                 else None
             )
             full_frames = battle_control_state.get("full_frames")
+            decision_gate_dates: list[int] = []
+            if start_date_raw is not None:
+                for frame in (
+                    full_frames if isinstance(full_frames, list) else []
+                ):
+                    legality = (
+                        frame.get("legality")
+                        if isinstance(frame, dict)
+                        else None
+                    )
+                    gate_date_raw = (
+                        _native_int(
+                            legality.get("earliest_day_gate_date_raw")
+                        )
+                        if isinstance(legality, dict)
+                        else None
+                    )
+                    if (
+                        isinstance(frame, dict)
+                        and frame.get("observed_date_raw") == start_date_raw
+                        and isinstance(legality, dict)
+                        and legality.get("status") == "available"
+                        and legality.get("legal_now") is False
+                        and legality.get("reason_codes_in_native_order")
+                        == ["too_early"]
+                        and gate_date_raw is not None
+                        and start_date_raw < gate_date_raw
+                        <= start_date_raw
+                        + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
+                        and (gate_date_raw - start_date_raw) % 24 == 0
+                    ):
+                        decision_gate_dates.append(gate_date_raw)
+            decision_target_date_raw = (
+                min(decision_gate_dates)
+                if decision_gate_dates
+                else fallback_target_date_raw
+            )
             distinct_frames: dict[int, dict[str, object]] = {}
             for frame in full_frames if isinstance(full_frames, list) else []:
                 combat_id = (
@@ -4818,7 +4872,7 @@ def choose_one_life_turn(
                     ),
                     all_controllable_army_ids=watch_army_ids,
                     watched_army_ids=watch_army_ids,
-                    absolute_target_date_raw=target_date_raw,
+                    absolute_target_date_raw=fallback_target_date_raw,
                     speed_5_available=(
                         _BATTLE_TERMINAL_CRUISE_STEP in available_steps
                     ),
@@ -4913,7 +4967,7 @@ def choose_one_life_turn(
                     "timeline_policy": "battle_terminal_cruise_speed_5",
                     "timeline_speed": 5,
                     "sentinel_mode": "terminal_or_sentinel",
-                    "absolute_target_date_raw": target_date_raw,
+                    "absolute_target_date_raw": fallback_target_date_raw,
                     "watch_army_ids": watch_army_ids,
                     "terminal_journal_cursors": terminal_cursors,
                     "combat_retreat_armies": tactical_states,
@@ -4933,11 +4987,15 @@ def choose_one_life_turn(
                 and sentinel_watch_ready
                 and _BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
                 and start_date_raw is not None
+                and decision_target_date_raw is not None
             ):
+                decision_step = battle_decision_epoch_advance_step(
+                    decision_target_date_raw
+                )
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "native_war_global_battle_decision_epoch",
-                    "selected_step": _BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+                    "selected_step": decision_step,
                     "reason": (
                         "the global tactical audit passed; run at speed 3 "
                         "until the native decision-epoch sentinel observes a "
@@ -4947,7 +5005,7 @@ def choose_one_life_turn(
                     "timeline_policy": "battle_decision_epoch_speed_3",
                     "timeline_speed": 3,
                     "sentinel_mode": "decision_epoch",
-                    "absolute_target_date_raw": target_date_raw,
+                    "absolute_target_date_raw": decision_target_date_raw,
                     "watch_army_ids": watch_army_ids,
                     "combat_retreat_armies": tactical_states,
                     "battle_control_frames": battle_control_state.get(

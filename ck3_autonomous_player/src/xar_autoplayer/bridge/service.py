@@ -112,6 +112,7 @@ from .settlement_contract import (
     settlement_ready_for_episode,
 )
 from .war_contract import (
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
     army_strength_query_status,
@@ -123,6 +124,7 @@ from .war_contract import (
     normalize_army_strength_request_ids,
     normalize_army_strengths,
     offer_white_peace_step,
+    parse_battle_decision_epoch_advance_step,
     player_armies_from_state,
     query_war_termination_options_step,
     query_war_termination_terms_step,
@@ -209,6 +211,12 @@ class GameplayBridgeService:
                 is not None
                 and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
                 in bridge_capabilities
+            ):
+                routable_steps.add(str(selected_step))
+            if (
+                parse_battle_decision_epoch_advance_step(selected_step)
+                is not None
+                and BATTLE_DECISION_EPOCH_ADVANCE_STEP in available_steps
             ):
                 routable_steps.add(str(selected_step))
             return {

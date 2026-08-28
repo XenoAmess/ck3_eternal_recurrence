@@ -33,7 +33,9 @@ from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
 from xar_autoplayer.bridge.war_contract import (
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     advance_route_contact_horizon_step,
+    battle_decision_epoch_advance_step,
     normalize_active_wars,
     query_route_contact_horizon_step,
     war_objective_province_ids,
@@ -1068,6 +1070,31 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             choose.call_args.kwargs["battle_speed_readiness"], readiness
         )
+
+    def test_plan_turn_routes_parameterized_decision_epoch_target(self) -> None:
+        selected = battle_decision_epoch_advance_step(53_179_344)
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(7),
+            execute=lambda _step, _revision: {},
+            action_steps=(
+                "life-advance",
+                BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+            ),
+        )
+        planned = {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_global_battle_decision_epoch",
+            "selected_step": selected,
+        }
+
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=planned,
+        ):
+            result = GameplayBridgeService(driver).plan_turn()
+
+        self.assertEqual(result["plan"]["selected_step"], selected)
 
     def test_irreversible_war_steps_never_fallback_to_life_advance(self) -> None:
         for step in (

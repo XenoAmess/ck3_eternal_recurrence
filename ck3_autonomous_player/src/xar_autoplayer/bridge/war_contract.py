@@ -47,6 +47,9 @@ WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY = (
 WAR_OBJECTIVE_ASSAULT_CAPABILITY = "game.state.war-objective-assault"
 RAISE_TROOPS_STEP = "raise-troops-default"
 BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
+BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX = (
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP + "-to-"
+)
 BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 BATTLE_SENTINEL_ADVANCE_STEPS = frozenset(
     {
@@ -1454,6 +1457,34 @@ def parse_advance_route_contact_horizon_step(
     return parse_query_route_contact_horizon_step(query)
 
 
+def battle_decision_epoch_advance_step(target_date_raw: int) -> str:
+    if (
+        isinstance(target_date_raw, bool)
+        or not isinstance(target_date_raw, int)
+        or not 0 < target_date_raw <= 2**63 - 1
+    ):
+        raise ValueError("target_date_raw must be a positive signed int64")
+    return f"{BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX}{target_date_raw}"
+
+
+def parse_battle_decision_epoch_advance_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith(
+        BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX
+    ):
+        return None
+    target_text = step.removeprefix(
+        BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX
+    )
+    if (
+        not target_text.isascii()
+        or not target_text.isdigit()
+        or target_text.startswith("0")
+    ):
+        return None
+    target_date_raw = int(target_text)
+    return target_date_raw if 0 < target_date_raw <= 2**63 - 1 else None
+
+
 def is_life_advance_step(step: object) -> bool:
     return bool(
         step == "life-advance"
@@ -1461,6 +1492,7 @@ def is_life_advance_step(step: object) -> bool:
             isinstance(step, str)
             and step in BATTLE_SENTINEL_ADVANCE_STEPS
         )
+        or parse_battle_decision_epoch_advance_step(step) is not None
         or parse_advance_route_contact_horizon_step(step) is not None
     )
 

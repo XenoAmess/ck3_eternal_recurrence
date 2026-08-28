@@ -51,10 +51,12 @@ from xar_autoplayer.bridge.war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     BATTLE_TERMINAL_CRUISE_STEP,
     advance_route_contact_horizon_step,
+    battle_decision_epoch_advance_step,
     is_life_advance_step,
     is_native_war_step,
     merge_armies_step,
     parse_merge_armies_step,
+    parse_battle_decision_epoch_advance_step,
     parse_start_assault_step,
     parse_stop_assault_step,
     parse_split_army_half_step,
@@ -12892,7 +12894,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
         start = 53_171_400
-        target = start + 45 * 24
+        target = start + 15 * 24
         players = [
             _army(502, in_combat=True),
             _army(501, in_combat=True),
@@ -12982,7 +12984,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         endpoint.send_hook = answer
         result = driver.execute_step(
-            BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+            battle_decision_epoch_advance_step(target),
             expected_revision=int(driver.take_snapshot()["revision"]),
         )
         wire_steps = [
@@ -13007,6 +13009,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["watch_army_ids"], [501, 502])
         self.assertEqual(result["elapsed_days"], 2)
         self.assertEqual(result["completed_daily_ticks"], 2)
+        self.assertEqual(result["target_date_raw"], target)
+        self.assertEqual(result["requested_horizon_days"], 15)
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertEqual(result["external_pause_count"], 0)
 
@@ -13069,6 +13073,121 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 with self.assertRaises(BridgeUnavailableError):
                     _validate_tactical_daily_sentinel_stop(
                         normalized,
+                        arm_status=arm,
+                        starting_date_raw=start,
+                        target_date_raw=target,
+                        ending_date_raw=ending,
+                        elapsed_days=1,
+                        speed=3,
+                        mode="decision_epoch",
+                        watch_army_ids=(501,),
+                    )
+
+    def test_decision_epoch_target_must_be_one_to_forty_five_whole_days(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name, endpoint=endpoint
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.set-speed-3",
+                "game.command.resume-map",
+                "game.command.pause-map",
+                "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                "game.command.research-query-tactical-daily-sentinel-v1",
+            )
+        )
+        start = 53_171_400
+        player = _army(501, in_combat=True)
+        endpoint.publish(
+            _snapshot(
+                date_raw=start,
+                active_wars=[_war(allied_armies=[player])],
+                player_armies=[player],
+            )
+        )
+
+        for target in (start, start + 24 + 1, start + 46 * 24):
+            with self.subTest(target=target):
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError, "1..45 whole days"
+                ):
+                    driver.execute_step(
+                        battle_decision_epoch_advance_step(target)
+                    )
+        with self.assertRaisesRegex(
+            UnsupportedStepError, "malformed battle decision-epoch"
+        ):
+            driver.execute_step(
+                BATTLE_DECISION_EPOCH_ADVANCE_STEP + "-to-not-a-date"
+            )
+        self.assertIsNone(
+            parse_battle_decision_epoch_advance_step(
+                BATTLE_DECISION_EPOCH_ADVANCE_STEP + "-to-053171424"
+            )
+        )
+
+    def test_tactical_sentinel_stop_accepts_exact_native_pause_shape(
+        self,
+    ) -> None:
+        start = 53_171_400
+        target = start + 45 * 24
+        ending = start + 24
+        arm = _normalize_tactical_daily_sentinel_status(
+            _tactical_sentinel_status(
+                state="armed",
+                generation=10,
+                starting_date_raw=start,
+                target_date_raw=target,
+                observed_date_raw=start,
+                speed=3,
+                mode="decision_epoch",
+                army_count=1,
+            )
+        )
+        native_pause = _tactical_sentinel_status(
+            state="triggered",
+            generation=10,
+            starting_date_raw=start,
+            target_date_raw=target,
+            observed_date_raw=ending,
+            speed=3,
+            mode="decision_epoch",
+            army_count=1,
+            completed_daily_ticks=1,
+            intermediate_pause_count=1,
+            trigger_flags=1 << 13,
+            trigger_reasons=["native_pause"],
+            overshoot_days=0,
+            pause_wrapper_called=False,
+            pause_observed=True,
+        )
+        normalized = _normalize_tactical_daily_sentinel_status(native_pause)
+        _validate_tactical_daily_sentinel_stop(
+            normalized,
+            arm_status=arm,
+            starting_date_raw=start,
+            target_date_raw=target,
+            ending_date_raw=ending,
+            elapsed_days=1,
+            speed=3,
+            mode="decision_epoch",
+            watch_army_ids=(501,),
+        )
+
+        for label, candidate in (
+            ("wrong-count", {**native_pause, "intermediate_pause_count": 0}),
+            ("wrong-wrapper", {**native_pause, "pause_wrapper_called": True}),
+        ):
+            with self.subTest(label=label):
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError, "pause ownership"
+                ):
+                    _validate_tactical_daily_sentinel_stop(
+                        _normalize_tactical_daily_sentinel_status(candidate),
                         arm_status=arm,
                         starting_date_raw=start,
                         target_date_raw=target,

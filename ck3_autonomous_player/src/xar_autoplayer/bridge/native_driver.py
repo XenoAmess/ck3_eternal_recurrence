@@ -162,6 +162,7 @@ from .active_combat_retreat_contract import (
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
+    BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX,
     BATTLE_SENTINEL_ADVANCE_STEPS,
     BATTLE_TERMINAL_CRUISE_STEP,
     DISBAND_ARMY_CAPABILITY,
@@ -207,6 +208,7 @@ from .war_contract import (
     normalize_war_termination_terms,
     offer_white_peace_step,
     parse_disband_army_step,
+    parse_battle_decision_epoch_advance_step,
     parse_enforce_demands_step,
     parse_merge_armies_step,
     parse_move_army_step,
@@ -2386,7 +2388,12 @@ class NativeHeadlessGameplayDriver:
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         life_advance_starting: dict[str, object] | None = None
-        if step == "life-advance" or step in BATTLE_SENTINEL_ADVANCE_STEPS:
+        decision_epoch_target = parse_battle_decision_epoch_advance_step(step)
+        if (
+            step == "life-advance"
+            or step in BATTLE_SENTINEL_ADVANCE_STEPS
+            or decision_epoch_target is not None
+        ):
             # Bind the caller's revision before capability projection.  A
             # loading -> map_ready snapshot can arrive while capabilities()
             # is being assembled; that is an internal readiness transition,
@@ -2478,6 +2485,14 @@ class NativeHeadlessGameplayDriver:
         active_retreat_preview = (
             parse_preview_active_combat_retreat_v1_step(step)
         )
+        if (
+            isinstance(step, str)
+            and step.startswith(BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX)
+            and decision_epoch_target is None
+        ):
+            raise UnsupportedStepError(
+                "malformed battle decision-epoch target step"
+            )
         if (
             isinstance(step, str)
             and step.startswith(PREVIEW_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX)
@@ -2860,8 +2875,18 @@ class NativeHeadlessGameplayDriver:
             return self._execute_route_contact_horizon_advance(
                 step, expected_revision=expected_revision
             )
-        if step in BATTLE_SENTINEL_ADVANCE_STEPS:
-            if step not in capabilities.get("composite_action_steps", []):
+        if (
+            step in BATTLE_SENTINEL_ADVANCE_STEPS
+            or decision_epoch_target is not None
+        ):
+            required_composite = (
+                BATTLE_DECISION_EPOCH_ADVANCE_STEP
+                if decision_epoch_target is not None
+                else step
+            )
+            if required_composite not in capabilities.get(
+                "composite_action_steps", []
+            ):
                 raise UnsupportedStepError(
                     f"native tactical sentinel cannot execute {step}"
                 )
@@ -8793,7 +8818,13 @@ class NativeHeadlessGameplayDriver:
         frames until the sentinel has paused CK3.  ``pause-map`` is reserved
         for failed-transaction cleanup.
         """
-        if step == BATTLE_DECISION_EPOCH_ADVANCE_STEP:
+        requested_decision_target = (
+            parse_battle_decision_epoch_advance_step(step)
+        )
+        if (
+            step == BATTLE_DECISION_EPOCH_ADVANCE_STEP
+            or requested_decision_target is not None
+        ):
             speed = 3
             wire_mode = "decision"
             status_mode = "decision_epoch"
@@ -8851,9 +8882,23 @@ class NativeHeadlessGameplayDriver:
             )
 
         starting_date_raw = _date_raw(starting, f"{step} starting snapshot")
-        target_date_raw = (
+        fallback_target_date_raw = (
             starting_date_raw + _BATTLE_SENTINEL_FALLBACK_DAYS * 24
         )
+        target_date_raw = (
+            requested_decision_target
+            if requested_decision_target is not None
+            else fallback_target_date_raw
+        )
+        target_delta_raw = target_date_raw - starting_date_raw
+        if not (
+            24 <= target_delta_raw <= _BATTLE_SENTINEL_FALLBACK_DAYS * 24
+            and target_delta_raw % 24 == 0
+        ):
+            raise BridgeUnavailableError(
+                "native battle decision-epoch target must be 1..45 whole "
+                "days after the bound starting frame"
+            )
         arm_step = (
             f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}"
             f"{starting_date_raw}-to-{target_date_raw}-speed-{speed}-"
@@ -10675,6 +10720,19 @@ def _validate_tactical_daily_sentinel_stop(
         raise BridgeUnavailableError(
             "native tactical sentinel deadline reason disagrees with dates"
         )
+    native_pause = "native_pause" in trigger_reasons
+    expected_intermediate_pause_count = 1 if native_pause else 0
+    expected_pause_wrapper_called = not native_pause
+    if not (
+        status.get("intermediate_pause_count")
+        == expected_intermediate_pause_count
+        and status.get("pause_wrapper_called")
+        is expected_pause_wrapper_called
+    ):
+        raise BridgeUnavailableError(
+            "native tactical sentinel pause ownership disagrees with its "
+            "trigger reasons"
+        )
 
 
 def _battle_sentinel_step_result(
@@ -10722,7 +10780,12 @@ def _battle_sentinel_step_result(
         "target_date_raw": target_date_raw,
         "ending_date_raw": ending_date_raw,
         "elapsed_days": elapsed_days,
-        "requested_horizon_days": _BATTLE_SENTINEL_FALLBACK_DAYS,
+        "requested_horizon_days": (
+            (target_date_raw - starting_date_raw) // 24
+            if target_date_raw > starting_date_raw
+            and (target_date_raw - starting_date_raw) % 24 == 0
+            else None
+        ),
         "timeline_speed": speed,
         "timeline_policy": status_mode,
         "sentinel_mode": status_mode,
