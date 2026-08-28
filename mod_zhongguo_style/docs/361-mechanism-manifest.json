@@ -2,6 +2,13 @@
   "schema": 1,
   "mechanism_count": 361,
   "source": "docs/361-expansion-options.md",
+  "acceptance": {
+    "scope": "reference choice for every mechanism executed in one real CK3 fixture batch",
+    "report": "docs/testing-report-2026-08-29.md",
+    "run_id": "zga_20260829_061314_ea5f04ad",
+    "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
+    "claim_boundary": "fixture-live does not mean all 1083 A/B/C branches were manually clicked"
+  },
   "generated_files": [
     "common/decisions/zg361_mechanism_decisions.txt",
     "common/modifiers/zg361_generated_mechanism_modifiers.txt",
@@ -65,7 +72,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 2,
@@ -111,7 +118,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 3,
@@ -157,7 +164,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 4,
@@ -203,7 +210,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 5,
@@ -249,7 +256,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 6,
@@ -295,7 +302,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 7,
@@ -341,7 +348,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 8,
@@ -387,7 +394,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 9,
@@ -433,7 +440,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 10,
@@ -479,7 +486,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 11,
@@ -525,7 +532,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 12,
@@ -571,7 +578,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 13,
@@ -617,7 +624,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 14,
@@ -663,7 +670,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 15,
@@ -709,7 +716,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 16,
@@ -755,7 +762,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 17,
@@ -801,7 +808,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 18,
@@ -847,7 +854,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 19,
@@ -893,7 +900,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 20,
@@ -939,7 +946,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 21,
@@ -984,7 +991,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 22,
@@ -1030,7 +1037,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 23,
@@ -1076,7 +1083,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 24,
@@ -1122,7 +1129,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 25,
@@ -1168,7 +1175,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 26,
@@ -1214,7 +1221,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 27,
@@ -1260,7 +1267,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 28,
@@ -1306,7 +1313,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 29,
@@ -1351,7 +1358,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 30,
@@ -1397,7 +1404,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 31,
@@ -1443,7 +1450,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 32,
@@ -1489,7 +1496,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 33,
@@ -1535,7 +1542,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 34,
@@ -1581,7 +1588,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 35,
@@ -1627,7 +1634,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 36,
@@ -1673,7 +1680,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 37,
@@ -1719,7 +1726,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 38,
@@ -1765,7 +1772,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 39,
@@ -1811,7 +1818,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 40,
@@ -1857,7 +1864,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 41,
@@ -1903,7 +1910,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 42,
@@ -1949,7 +1956,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 43,
@@ -1995,7 +2002,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 44,
@@ -2041,7 +2048,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 45,
@@ -2087,7 +2094,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 46,
@@ -2133,7 +2140,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 47,
@@ -2179,7 +2186,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 48,
@@ -2225,7 +2232,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 49,
@@ -2271,7 +2278,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 50,
@@ -2317,7 +2324,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 51,
@@ -2363,7 +2370,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 52,
@@ -2409,7 +2416,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 53,
@@ -2455,7 +2462,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 54,
@@ -2501,7 +2508,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 55,
@@ -2547,7 +2554,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 56,
@@ -2593,7 +2600,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 57,
@@ -2638,7 +2645,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 58,
@@ -2684,7 +2691,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 59,
@@ -2730,7 +2737,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 60,
@@ -2776,7 +2783,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 61,
@@ -2822,7 +2829,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 62,
@@ -2868,7 +2875,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 63,
@@ -2914,7 +2921,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 64,
@@ -2960,7 +2967,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 65,
@@ -3006,7 +3013,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 66,
@@ -3052,7 +3059,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 67,
@@ -3098,7 +3105,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 68,
@@ -3144,7 +3151,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 69,
@@ -3190,7 +3197,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 70,
@@ -3236,7 +3243,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 71,
@@ -3282,7 +3289,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 72,
@@ -3328,7 +3335,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 73,
@@ -3374,7 +3381,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 74,
@@ -3419,7 +3426,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 75,
@@ -3464,7 +3471,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 76,
@@ -3510,7 +3517,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 77,
@@ -3556,7 +3563,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 78,
@@ -3601,7 +3608,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 79,
@@ -3647,7 +3654,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 80,
@@ -3692,7 +3699,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 81,
@@ -3738,7 +3745,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 82,
@@ -3783,7 +3790,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 83,
@@ -3828,7 +3835,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 84,
@@ -3873,7 +3880,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 85,
@@ -3918,7 +3925,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 86,
@@ -3963,7 +3970,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 87,
@@ -4008,7 +4015,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 88,
@@ -4053,7 +4060,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 89,
@@ -4099,7 +4106,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 90,
@@ -4144,7 +4151,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 91,
@@ -4189,7 +4196,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 92,
@@ -4235,7 +4242,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 93,
@@ -4281,7 +4288,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 94,
@@ -4327,7 +4334,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 95,
@@ -4373,7 +4380,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 96,
@@ -4419,7 +4426,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 97,
@@ -4465,7 +4472,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 98,
@@ -4511,7 +4518,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 99,
@@ -4557,7 +4564,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 100,
@@ -4603,7 +4610,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 101,
@@ -4649,7 +4656,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 102,
@@ -4695,7 +4702,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 103,
@@ -4741,7 +4748,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 104,
@@ -4787,7 +4794,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 105,
@@ -4833,7 +4840,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 106,
@@ -4879,7 +4886,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 107,
@@ -4925,7 +4932,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 108,
@@ -4971,7 +4978,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 109,
@@ -5017,7 +5024,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 110,
@@ -5063,7 +5070,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 111,
@@ -5109,7 +5116,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 112,
@@ -5155,7 +5162,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 113,
@@ -5201,7 +5208,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 114,
@@ -5247,7 +5254,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 115,
@@ -5293,7 +5300,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 116,
@@ -5339,7 +5346,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 117,
@@ -5385,7 +5392,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 118,
@@ -5431,7 +5438,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 119,
@@ -5477,7 +5484,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 120,
@@ -5523,7 +5530,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 121,
@@ -5569,7 +5576,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 122,
@@ -5615,7 +5622,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 123,
@@ -5661,7 +5668,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 124,
@@ -5707,7 +5714,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 125,
@@ -5753,7 +5760,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 126,
@@ -5799,7 +5806,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 127,
@@ -5845,7 +5852,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 128,
@@ -5891,7 +5898,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 129,
@@ -5937,7 +5944,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 130,
@@ -5983,7 +5990,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 131,
@@ -6029,7 +6036,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 132,
@@ -6075,7 +6082,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 133,
@@ -6121,7 +6128,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 134,
@@ -6167,7 +6174,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 135,
@@ -6213,7 +6220,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 136,
@@ -6259,7 +6266,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 137,
@@ -6305,7 +6312,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 138,
@@ -6351,7 +6358,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 139,
@@ -6397,7 +6404,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 140,
@@ -6443,7 +6450,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 141,
@@ -6489,7 +6496,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 142,
@@ -6535,7 +6542,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 143,
@@ -6581,7 +6588,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 144,
@@ -6627,7 +6634,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 145,
@@ -6673,7 +6680,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 146,
@@ -6719,7 +6726,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 147,
@@ -6765,7 +6772,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 148,
@@ -6811,7 +6818,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 149,
@@ -6856,7 +6863,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 150,
@@ -6901,7 +6908,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 151,
@@ -6947,7 +6954,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 152,
@@ -6993,7 +7000,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 153,
@@ -7039,7 +7046,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 154,
@@ -7085,7 +7092,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 155,
@@ -7131,7 +7138,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 156,
@@ -7177,7 +7184,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 157,
@@ -7223,7 +7230,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 158,
@@ -7269,7 +7276,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 159,
@@ -7315,7 +7322,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 160,
@@ -7361,7 +7368,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 161,
@@ -7407,7 +7414,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 162,
@@ -7453,7 +7460,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 163,
@@ -7499,7 +7506,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 164,
@@ -7545,7 +7552,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 165,
@@ -7591,7 +7598,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 166,
@@ -7637,7 +7644,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 167,
@@ -7683,7 +7690,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 168,
@@ -7729,7 +7736,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 169,
@@ -7775,7 +7782,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 170,
@@ -7821,7 +7828,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 171,
@@ -7867,7 +7874,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 172,
@@ -7913,7 +7920,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 173,
@@ -7959,7 +7966,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 174,
@@ -8005,7 +8012,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 175,
@@ -8051,7 +8058,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 176,
@@ -8097,7 +8104,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 177,
@@ -8143,7 +8150,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 178,
@@ -8189,7 +8196,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 179,
@@ -8235,7 +8242,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 180,
@@ -8281,7 +8288,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 181,
@@ -8327,7 +8334,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 182,
@@ -8373,7 +8380,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 183,
@@ -8419,7 +8426,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 184,
@@ -8465,7 +8472,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 185,
@@ -8511,7 +8518,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 186,
@@ -8557,7 +8564,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 187,
@@ -8603,7 +8610,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 188,
@@ -8649,7 +8656,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 189,
@@ -8695,7 +8702,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 190,
@@ -8741,7 +8748,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 191,
@@ -8787,7 +8794,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 192,
@@ -8833,7 +8840,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 193,
@@ -8878,7 +8885,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 194,
@@ -8924,7 +8931,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 195,
@@ -8970,7 +8977,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 196,
@@ -9016,7 +9023,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 197,
@@ -9062,7 +9069,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 198,
@@ -9108,7 +9115,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 199,
@@ -9154,7 +9161,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 200,
@@ -9200,7 +9207,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 201,
@@ -9246,7 +9253,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 202,
@@ -9292,7 +9299,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 203,
@@ -9338,7 +9345,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 204,
@@ -9384,7 +9391,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 1,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 205,
@@ -9430,7 +9437,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 206,
@@ -9476,7 +9483,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 207,
@@ -9522,7 +9529,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 208,
@@ -9568,7 +9575,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 209,
@@ -9613,7 +9620,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 210,
@@ -9659,7 +9666,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 211,
@@ -9705,7 +9712,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 212,
@@ -9751,7 +9758,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 213,
@@ -9797,7 +9804,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 214,
@@ -9843,7 +9850,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 215,
@@ -9889,7 +9896,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 216,
@@ -9935,7 +9942,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 217,
@@ -9981,7 +9988,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 218,
@@ -10027,7 +10034,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 219,
@@ -10073,7 +10080,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 220,
@@ -10119,7 +10126,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 221,
@@ -10165,7 +10172,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 222,
@@ -10211,7 +10218,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 223,
@@ -10257,7 +10264,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 224,
@@ -10303,7 +10310,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 225,
@@ -10349,7 +10356,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 226,
@@ -10395,7 +10402,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 227,
@@ -10441,7 +10448,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 228,
@@ -10487,7 +10494,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 229,
@@ -10532,7 +10539,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 230,
@@ -10577,7 +10584,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 231,
@@ -10622,7 +10629,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 232,
@@ -10667,7 +10674,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 233,
@@ -10712,7 +10719,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 234,
@@ -10757,7 +10764,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 235,
@@ -10802,7 +10809,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 236,
@@ -10847,7 +10854,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 237,
@@ -10892,7 +10899,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 238,
@@ -10937,7 +10944,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 239,
@@ -10983,7 +10990,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 240,
@@ -11028,7 +11035,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 241,
@@ -11074,7 +11081,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 242,
@@ -11120,7 +11127,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 243,
@@ -11166,7 +11173,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 244,
@@ -11212,7 +11219,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 245,
@@ -11258,7 +11265,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 246,
@@ -11303,7 +11310,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 247,
@@ -11349,7 +11356,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 248,
@@ -11395,7 +11402,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 249,
@@ -11441,7 +11448,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 250,
@@ -11487,7 +11494,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 251,
@@ -11533,7 +11540,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 252,
@@ -11579,7 +11586,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 253,
@@ -11625,7 +11632,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 254,
@@ -11671,7 +11678,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 255,
@@ -11717,7 +11724,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 256,
@@ -11763,7 +11770,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 257,
@@ -11809,7 +11816,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 258,
@@ -11855,7 +11862,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 259,
@@ -11901,7 +11908,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 260,
@@ -11947,7 +11954,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 261,
@@ -11993,7 +12000,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 262,
@@ -12039,7 +12046,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 263,
@@ -12085,7 +12092,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 264,
@@ -12131,7 +12138,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 265,
@@ -12177,7 +12184,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 266,
@@ -12223,7 +12230,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 267,
@@ -12269,7 +12276,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 268,
@@ -12315,7 +12322,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 269,
@@ -12361,7 +12368,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 270,
@@ -12407,7 +12414,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 271,
@@ -12453,7 +12460,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 272,
@@ -12499,7 +12506,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 273,
@@ -12545,7 +12552,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 274,
@@ -12590,7 +12597,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 275,
@@ -12636,7 +12643,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 276,
@@ -12682,7 +12689,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 277,
@@ -12728,7 +12735,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 278,
@@ -12773,7 +12780,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 279,
@@ -12818,7 +12825,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 280,
@@ -12863,7 +12870,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 281,
@@ -12908,7 +12915,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 282,
@@ -12953,7 +12960,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 283,
@@ -12998,7 +13005,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 284,
@@ -13043,7 +13050,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 285,
@@ -13088,7 +13095,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 286,
@@ -13133,7 +13140,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 287,
@@ -13179,7 +13186,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 288,
@@ -13224,7 +13231,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 289,
@@ -13269,7 +13276,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 290,
@@ -13314,7 +13321,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 291,
@@ -13359,7 +13366,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 292,
@@ -13404,7 +13411,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 293,
@@ -13449,7 +13456,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 294,
@@ -13494,7 +13501,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 295,
@@ -13539,7 +13546,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 296,
@@ -13584,7 +13591,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 297,
@@ -13629,7 +13636,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 298,
@@ -13674,7 +13681,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 299,
@@ -13719,7 +13726,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 300,
@@ -13764,7 +13771,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 301,
@@ -13810,7 +13817,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 302,
@@ -13856,7 +13863,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 303,
@@ -13902,7 +13909,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 304,
@@ -13948,7 +13955,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 305,
@@ -13994,7 +14001,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 306,
@@ -14040,7 +14047,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 307,
@@ -14086,7 +14093,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 308,
@@ -14132,7 +14139,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 309,
@@ -14178,7 +14185,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 310,
@@ -14224,7 +14231,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 311,
@@ -14270,7 +14277,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 312,
@@ -14316,7 +14323,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 313,
@@ -14362,7 +14369,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 314,
@@ -14407,7 +14414,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 315,
@@ -14453,7 +14460,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 316,
@@ -14498,7 +14505,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 317,
@@ -14544,7 +14551,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 318,
@@ -14590,7 +14597,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 319,
@@ -14636,7 +14643,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 320,
@@ -14681,7 +14688,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 321,
@@ -14727,7 +14734,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 322,
@@ -14773,7 +14780,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 323,
@@ -14819,7 +14826,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 324,
@@ -14865,7 +14872,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 325,
@@ -14911,7 +14918,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 326,
@@ -14957,7 +14964,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 327,
@@ -15003,7 +15010,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 328,
@@ -15049,7 +15056,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 329,
@@ -15095,7 +15102,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 330,
@@ -15141,7 +15148,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 331,
@@ -15187,7 +15194,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 332,
@@ -15233,7 +15240,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 333,
@@ -15279,7 +15286,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 2,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 334,
@@ -15325,7 +15332,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 335,
@@ -15371,7 +15378,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 336,
@@ -15417,7 +15424,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 337,
@@ -15463,7 +15470,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 338,
@@ -15509,7 +15516,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 339,
@@ -15554,7 +15561,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 340,
@@ -15600,7 +15607,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 341,
@@ -15646,7 +15653,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 342,
@@ -15692,7 +15699,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 343,
@@ -15738,7 +15745,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 344,
@@ -15784,7 +15791,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 345,
@@ -15830,7 +15837,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 346,
@@ -15876,7 +15883,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 347,
@@ -15922,7 +15929,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 348,
@@ -15968,7 +15975,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 349,
@@ -16014,7 +16021,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 350,
@@ -16059,7 +16066,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 351,
@@ -16105,7 +16112,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 352,
@@ -16151,7 +16158,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 353,
@@ -16197,7 +16204,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 354,
@@ -16243,7 +16250,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 3,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 355,
@@ -16289,7 +16296,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 356,
@@ -16335,7 +16342,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 357,
@@ -16381,7 +16388,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 358,
@@ -16427,7 +16434,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 359,
@@ -16473,7 +16480,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 360,
@@ -16519,7 +16526,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     },
     {
       "id": 361,
@@ -16565,7 +16572,7 @@
       "player_path": "annual review card or next-policy decision",
       "ai_path": "twelve-card annual background batch",
       "live_wave": 4,
-      "status": "static-ready"
+      "status": "fixture-live"
     }
   ]
 }

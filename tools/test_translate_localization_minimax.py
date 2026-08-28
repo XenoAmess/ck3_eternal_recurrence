@@ -159,7 +159,7 @@ class CandidateExtractionTests(unittest.TestCase):
                 '{"first":"Uno","second":"Dos","extra":"Tres"}',
                 "response key set differs",
             ),
-            ('{"first":"Uno","second":2}', "non-string translation value"),
+            ('{"first":"Uno","second":2}', "non-string translation values"),
             ('["Uno", "Dos"]', "response JSON is not an object"),
             ("not JSON", "not one strict JSON object"),
             ("   ", "response content is empty or not text"),
@@ -230,6 +230,16 @@ class ProtectedTokenTests(unittest.TestCase):
         with self.assertRaisesRegex(minimax.TranslationError, "explicit token 'Ox Here'"):
             minimax.assert_protected_tokens(self.SOURCE, candidate, ("Ox Here",))
 
+    def test_explicit_term_may_be_introduced_when_source_did_not_contain_it(self):
+        source = {"line": "A formal improvement plan begins."}
+        candidate = {"line": "A formal PIP improvement plan begins."}
+        minimax.assert_protected_tokens(source, candidate, ("PIP",))
+
+    def test_explicit_term_may_be_repeated_to_follow_reference_wording(self):
+        source = {"line": "Strict, relaxed, or hybrid 361"}
+        candidate = {"line": "Strict 361 / relaxed 361 / hybrid 361"}
+        minimax.assert_protected_tokens(source, candidate, ("361",))
+
     def test_balanced_icu_plural_and_select_blocks_are_verbatim_tokens(self):
         plural = "{count, plural, =0 {none} one {one ox} other {{count} oxen}}"
         select = "{gender, select, male {He arrived} female {She arrived} other {They arrived}}"
@@ -264,6 +274,16 @@ class TargetParsingTests(unittest.TestCase):
                 minimax.argparse.ArgumentTypeError, "target must be key=Display Name"
             ):
                 minimax.parse_target(value)
+
+
+class PromptContractTests(unittest.TestCase):
+    def test_prompt_forbids_nested_or_non_string_values(self):
+        prompt = minimax.make_prompt(
+            "English", (), "German", "fixture", {"line": "Text"}, ()
+        )
+        self.assertIn("Every JSON value MUST be one string", prompt)
+        self.assertIn("Never return nested objects", prompt)
+        self.assertIn('{"key_one":"translated text"', prompt)
 
 
 class RequestContractTests(unittest.TestCase):

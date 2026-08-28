@@ -141,8 +141,13 @@ def extract_candidate(content: str, keys: tuple[str, ...]) -> dict[str, str]:
         missing = sorted(set(keys) - set(candidate))
         extra = sorted(set(candidate) - set(keys))
         raise TranslationError(f"response key set differs (missing={missing}, extra={extra})")
-    if not all(isinstance(value, str) for value in candidate.values()):
-        raise TranslationError("response contains a non-string translation value")
+    non_string = sorted(
+        key for key, value in candidate.items() if not isinstance(value, str)
+    )
+    if non_string:
+        raise TranslationError(
+            f"response contains non-string translation values: {non_string}"
+        )
     return {key: candidate[key] for key in keys}
 
 
@@ -160,9 +165,9 @@ def assert_protected_tokens(
         for token in explicit:
             expected_count = source_value.count(token)
             actual_count = candidate[key].count(token)
-            if actual_count != expected_count:
+            if expected_count and actual_count < expected_count:
                 errors.append(
-                    f"{key}: explicit token {token!r} count {actual_count} != {expected_count}"
+                    f"{key}: explicit token {token!r} count {actual_count} < {expected_count}"
                 )
     if errors:
         raise TranslationError("protected-token mismatch: " + "; ".join(errors))
@@ -200,6 +205,9 @@ Requirements:
 2. Preserve meaning, tone, concise game-interface style, punctuation intent, and wordplay where practical.
 3. Preserve every protected token exactly, including its spelling and occurrence count.
 4. Do not output Markdown, reasoning, commentary, code, or a second JSON object.
+5. Every JSON value MUST be one string. Never return nested objects, arrays, numbers, booleans, or null.
+
+Required output shape (using the real input keys): {{"key_one":"translated text","key_two":"translated text"}}
 
 Protected tokens:
 {json.dumps(protected, ensure_ascii=False)}

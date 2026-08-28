@@ -105,7 +105,15 @@ class MechanismGenerationTests(unittest.TestCase):
         self.assertEqual({item["live_wave"] for item in manifest["items"]}, {1, 2, 3, 4})
         for item in manifest["items"]:
             self.assertEqual(len(item["implementation"]["choice_effects"]), 3)
-            self.assertEqual(item["status"], "static-ready")
+            self.assertEqual(item["status"], "fixture-live")
+        self.assertEqual(
+            manifest["acceptance"]["run_id"],
+            "zga_20260829_061314_ea5f04ad",
+        )
+        self.assertIn(
+            "1083",
+            manifest["acceptance"]["claim_boundary"],
+        )
 
     def test_checked_in_projection_is_current(self) -> None:
         stale = [

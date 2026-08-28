@@ -485,12 +485,13 @@ def render_bridge_gui() -> bytes:
     return script_text(body)
 
 
-def render_localization(mechanisms: list[Mechanism], language: str) -> bytes:
+def localization_values(
+    mechanisms: list[Mechanism], language: str
+) -> dict[str, str]:
     is_chinese = language == "simp_chinese"
     is_english = language == "english"
     # Release translation replaces these structurally valid English placeholders
     # in the other seven languages.
-    lines = [f"l_{language}:"]
     common = {
         "zg361_next_mechanism_decision": "召开下一项制度评审" if is_chinese else "Review the Next Performance Policy",
         "zg361_next_mechanism_decision_desc": "从尚未定案的 361 机制中提取下一项，作出会进入组织账本的真实选择。" if is_chinese else "Open the next unresolved item in the 361 policy catalogue and make a choice that enters the organizational ledger.",
@@ -539,8 +540,7 @@ def render_localization(mechanisms: list[Mechanism], language: str) -> bytes:
         "zg361_org_talent_healthy_desc": "明星、接班人和普通人都还有路可走。" if is_chinese else "Stars, successors, and steady contributors can all see a path forward.",
     }
     common.update(modifier_loc)
-    for key, value in common.items():
-        lines.append(loc_line(key, value))
+    values = dict(common)
 
     for mechanism in mechanisms:
         if is_chinese:
@@ -562,15 +562,75 @@ def render_localization(mechanisms: list[Mechanism], language: str) -> bytes:
             option_a = mechanism.option_a_en
             option_b = mechanism.option_b_en
             option_c = "Defer it and record explicit policy debt"
-        lines.extend(
-            [
-                loc_line(f"zg361m.{mechanism.id}.t", title),
-                loc_line(f"zg361m.{mechanism.id}.desc", desc),
-                loc_line(f"zg361m.{mechanism.id}.a", option_a),
-                loc_line(f"zg361m.{mechanism.id}.b", option_b),
-                loc_line(f"zg361m.{mechanism.id}.c", option_c),
-            ]
+        values.update(
+            {
+                f"zg361m.{mechanism.id}.t": title,
+                f"zg361m.{mechanism.id}.desc": desc,
+                f"zg361m.{mechanism.id}.a": option_a,
+                f"zg361m.{mechanism.id}.b": option_b,
+                f"zg361m.{mechanism.id}.c": option_c,
+            }
         )
+    return values
+
+
+RELEASE_TRANSLATION_LANGUAGES = {
+    "french",
+    "german",
+    "japanese",
+    "korean",
+    "polish",
+    "russian",
+    "spanish",
+}
+
+
+def release_translation_source_sha256(mechanisms: list[Mechanism]) -> str:
+    payload = {
+        "english": localization_values(mechanisms, "english"),
+        "simp_chinese": localization_values(mechanisms, "simp_chinese"),
+    }
+    return hashlib.sha256(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def load_release_translation(
+    mechanisms: list[Mechanism], language: str, expected_keys: tuple[str, ...]
+) -> dict[str, str] | None:
+    path = MOD_ROOT / "tools" / "mechanism_translations" / f"{language}.json"
+    if not path.is_file():
+        return None
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or payload.get("schema") != 1:
+        raise ValueError(f"invalid release translation schema: {path}")
+    if payload.get("language") != language:
+        raise ValueError(f"release translation language mismatch: {path}")
+    expected_digest = release_translation_source_sha256(mechanisms)
+    if payload.get("source_sha256") != expected_digest:
+        raise ValueError(f"stale release translation source hash: {path}")
+    translations = payload.get("translations")
+    if not isinstance(translations, dict):
+        raise ValueError(f"release translation values must be an object: {path}")
+    if tuple(translations) != expected_keys:
+        missing = sorted(set(expected_keys) - set(translations))
+        extra = sorted(set(translations) - set(expected_keys))
+        raise ValueError(
+            f"release translation key/order mismatch: {path}; missing={missing} extra={extra}"
+        )
+    if not all(isinstance(value, str) and value for value in translations.values()):
+        raise ValueError(f"release translation contains empty/non-string value: {path}")
+    return translations
+
+
+def render_localization(mechanisms: list[Mechanism], language: str) -> bytes:
+    values = localization_values(mechanisms, language)
+    if language in RELEASE_TRANSLATION_LANGUAGES:
+        translated = load_release_translation(mechanisms, language, tuple(values))
+        if translated is not None:
+            values = translated
+    lines = [f"l_{language}:"]
+    lines.extend(loc_line(key, value) for key, value in values.items())
     return BOM + ("\n".join(lines) + "\n").encode("utf-8")
 
 
@@ -631,13 +691,20 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
                 "player_path": "annual review card or next-policy decision",
                 "ai_path": "twelve-card annual background batch",
                 "live_wave": wave_for(mechanism.id),
-                "status": "static-ready",
+                "status": "fixture-live",
             }
         )
     return {
         "schema": 1,
         "mechanism_count": MECHANISM_COUNT,
         "source": "docs/361-expansion-options.md",
+        "acceptance": {
+            "scope": "reference choice for every mechanism executed in one real CK3 fixture batch",
+            "report": "docs/testing-report-2026-08-29.md",
+            "run_id": "zga_20260829_061314_ea5f04ad",
+            "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
+            "claim_boundary": "fixture-live does not mean all 1083 A/B/C branches were manually clicked",
+        },
         "generated_files": [],
         "items": items,
     }
@@ -649,8 +716,9 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
         "",
         "> GENERATED FILE — edit the numbered design document or reviewed choice JSON.",
         "",
-        "状态口径：本表当前 `static-ready` 只表示生成代码、玩家入口、AI 入口、状态变化和静态合同齐备；",
-        "不表示 fixture-live、CK3 实机或发布验收已经通过。实机报告必须逐号回链本表。",
+        "状态口径：本表当前 `fixture-live` 表示 361 项各自的参考路线已在同一次真实 CK3 夹具批次中逐号执行，",
+        "并验证唯一状态与组织账后果；它不表示 1083 个 A/B/C 分支都经过人工 UI 点选。证据见",
+        "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`。",
         "",
         "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 实机波次 | 状态 |",
         "|---:|---|---|---|---|---|---|---:|---|",
@@ -659,7 +727,7 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
         lines.append(
             f"| {mechanism.id:03d} | {mechanism.title_cn} | {mechanism.group_code} | "
             f"{mechanism.priority} | `{mechanism.profile}` | `zg361m.{mechanism.id}` | "
-            f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | static-ready |"
+            f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | fixture-live |"
         )
     digest = hashlib.sha256(
         json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")

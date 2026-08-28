@@ -1,5 +1,7 @@
 # 天朝特色361制官员绩效考核（ZhongGuo 361 Style）
 
+![天朝特色 361 制主视觉](thumbnail.png)
+
 这是一个 CK3 1.19.0.6 独立 mod：把“头部 30% = 3.75、中间 60% = 3.5、尾部 10% = 3.25”的
 361 强制分布考核，嵌入天朝制的逐级官僚体系。
 
@@ -52,6 +54,19 @@ A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考�
 完整设计见 `docs/361-expansion-options.md`；逐号实现入口、AI 路径和验收波次见
 `docs/361-mechanism-implementation-manifest.md` 与机器可读的 `docs/361-mechanism-manifest.json`。
 
+## 实机画面
+
+| 绩效校准会 | 冻结考核名单 |
+|---|---|
+| ![绩效校准会](workshop/media/01_calibration_meeting.jpg) | ![冻结考核名单](workshop/media/02_review_cohort_frozen.jpg) |
+| 天朝官员考核榜 | 半强制京察 |
+| ![天朝官员考核榜](workshop/media/03_scoreboard.jpg) | ![京察之期](workshop/media/04_jingcha_mandate.jpg) |
+| 免费京察活动 | 上司考定 3.25 |
+| ![免费京察活动](workshop/media/05_free_jingcha_activity.jpg) | ![上司考定 3.25](workshop/media/06_superior_325_result.jpg) |
+
+这些 JPEG 是最终 GREEN 实机证据 PNG 的确定性裁切；无损原图、失败 attempt、日志和完整一次性 userdir 均保留在
+验收 artifact。来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`。
+
 ## 安装与兼容性
 
 - 需要 CK3 1.19.0.6，并依赖该版本的天朝制内容；推荐新开局、单人游戏。
@@ -62,16 +77,17 @@ A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考�
 
 ## 当前交付状态
 
-版本 0.3.0 是发布候选开发线。361 个编号目前均达到 `static-ready`：生成代码、玩家入口、AI 入口、状态变化和
-静态合同齐备；这不等于 361 项已经逐号通过 CK3 实机。最终发布口径必须以四轮合批实机报告、确定性 release
-manifest 和新鲜 Workshop 缓存复验为准，历史报告不得替代当前候选证据。
+版本 0.3.0 是发布候选开发线。361 个编号目前均达到 `fixture-live`：在一次真实 CK3 1.19.0.6 批次中，
+每项机制的参考路线都逐号执行并验证了唯一状态、14 本组织账与幂等性；这不冒充 1083 个 A/B/C 分支都做过
+人工 UI 点选。同次实机还覆盖了非独立 AI 天朝公爵、首轮新人、考核榜、免费京察、拒办扣分、3.25 三账户
+处分与申诉退款。发布仍需完成多语言、正式 staging、Workshop 新鲜缓存复验和宣传成片。
 
 ## 工程与测试
 
 - 详细机制与历史偏差：`docs/zhongguo-361-plan.md`
 - 361 条权威清单：`docs/361-expansion-options.md`
 - 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
-- 历史实机报告（只代表当时快照）：`docs/testing-report-2026-08-29.md`
+- 当前批量实机报告与证据边界：`docs/testing-report-2026-08-29.md`
 - 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`
 - 隔离 CK3 实机验收：`& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"`
 - release builder 单元测试：`py tools/test_build_mod_zhongguo_style_release.py`
