@@ -10,8 +10,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
 DECISIONS = FIXTURE / "common" / "decisions" / "zga_decisions.txt"
+MODIFIERS = FIXTURE / "common" / "modifiers" / "zga_modifiers.txt"
 EFFECTS = FIXTURE / "common" / "scripted_effects" / "zga_effects.txt"
 EVENTS = FIXTURE / "events" / "zga_events.txt"
+SIMP_CHINESE = FIXTURE / "localization" / "simp_chinese" / "zga_l_simp_chinese.yml"
+ENGLISH = FIXTURE / "localization" / "english" / "zga_l_english.yml"
 BOM = b"\xef\xbb\xbf"
 POLICY_CHAIN = (
     (6, 1, 7),
@@ -94,8 +97,21 @@ def main() -> int:
         bom_text(path)
 
     decisions = bom_text(DECISIONS)
+    modifiers = bom_text(MODIFIERS)
     effects = bom_text(EFFECTS)
     events = bom_text(EVENTS)
+    simp_chinese = bom_text(SIMP_CHINESE)
+    english = bom_text(ENGLISH)
+
+    health_guard = top_level_block(
+        modifiers, "zga_acceptance_recording_health_guard"
+    )
+    assert modifiers.count("zga_acceptance_recording_health_guard = {") == 1
+    assert "icon = health_positive" in health_guard
+    assert "health = 10" in health_guard
+    for localization in (simp_chinese, english):
+        assert "zga_acceptance_recording_health_guard:0" in localization
+        assert "zga_acceptance_recording_health_guard_desc:0" in localization
 
     decision_ids = re.findall(r"(?m)^(zga_[a-z0-9_]+_decision)\s*=", decisions)
     assert decision_ids == [
@@ -122,6 +138,26 @@ def main() -> int:
     personal = top_level_block(effects, "zga_personal_result_effect")
     verify_board = top_level_block(effects, "zga_verify_player_review_effect")
     assert "character:han_8052" in initialize
+    assert len(
+        re.findall(
+            r"(?m)^\s*modifier = zga_acceptance_recording_health_guard\s*$",
+            initialize,
+        )
+    ) == 1
+    assert initialize.count("days = 120") == 1
+    assert initialize.count("ZGA: TEST PASS recording_health_guard_applied") == 1
+    assert initialize.index(
+        "modifier = zga_acceptance_recording_health_guard"
+    ) < initialize.index("set_player_character = scope:zga_song_emperor")
+    assert personal.count(
+        "remove_character_modifier = zga_acceptance_recording_health_guard"
+    ) == 1
+    assert personal.count(
+        "ZGA: TEST PASS recording_health_guard_removed_before_switch"
+    ) == 1
+    assert personal.index(
+        "remove_character_modifier = zga_acceptance_recording_health_guard"
+    ) < personal.index("set_player_character = scope:zga_personal_result_target")
     candidate_ids = tuple(row[0] for row in HISTORICAL_CANDIDATES)
     assessor_ids = tuple(row[0] for row in PROMO_ASSESSOR_CANDIDATES)
     candidate_calls = tuple(

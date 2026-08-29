@@ -155,6 +155,7 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST DONE zg361",
     "ZGA: TEST PASS historical_song_direct_whitelist_complete",
     "ZGA: TEST PASS generated_city_officials_excluded_from_provenance",
+    "ZGA: TEST PASS recording_health_guard_applied",
 )
 REQUIRED_LATE_FIXTURE_MARKERS = (
     "ZGA: TEST PASS personal_result_target_selected_from_prior_historical_assessor_tail",
@@ -163,6 +164,7 @@ REQUIRED_LATE_FIXTURE_MARKERS = (
     "ZGA: TEST PASS personal_result_target_projected_bottom_two",
     "ZGA: TEST PASS post_baseline_newcomer_prepared",
     "ZGA: TEST PASS post_baseline_newcomer_protected_from_325",
+    "ZGA: TEST PASS recording_health_guard_removed_before_switch",
 )
 REQUIRED_PRODUCT_MARKERS = {
     "ZG361: annual review tick": 2,
@@ -1210,6 +1212,7 @@ def fixture_source_errors() -> list[str]:
     required = (
         "descriptor.mod",
         "common/decisions/zga_decisions.txt",
+        "common/modifiers/zga_modifiers.txt",
         "common/scripted_effects/zga_effects.txt",
         "common/scripted_effects/zga_generated_361_cases.txt",
         "common/scripted_guis/zga_guis.txt",
@@ -1232,6 +1235,7 @@ def fixture_source_errors() -> list[str]:
     )
     fixture_events = FIXTURE_SOURCE / "events" / "zga_events.txt"
     fixture_decisions = FIXTURE_SOURCE / "common" / "decisions" / "zga_decisions.txt"
+    fixture_modifiers = FIXTURE_SOURCE / "common" / "modifiers" / "zga_modifiers.txt"
     scenario_text = text + (
         generated_cases.read_text(encoding="utf-8-sig")
         if generated_cases.is_file()
@@ -1243,6 +1247,10 @@ def fixture_source_errors() -> list[str]:
     ) + (
         fixture_decisions.read_text(encoding="utf-8-sig")
         if fixture_decisions.is_file()
+        else ""
+    ) + (
+        fixture_modifiers.read_text(encoding="utf-8-sig")
+        if fixture_modifiers.is_file()
         else ""
     )
     for token in (
@@ -1307,6 +1315,10 @@ def fixture_source_errors() -> list[str]:
         "ai_small_cohort_candidate_unavailable",
         "ai_small_cohort_neutral_settlement",
         "ai_small_cohort_same_year_idempotent",
+        "zga_acceptance_recording_health_guard",
+        "recording_health_guard_applied",
+        "recording_health_guard_removed_before_switch",
+        "days = 120",
     ):
         if token not in scenario_text:
             errors.append(f"fixture scenario contract missing {token}")

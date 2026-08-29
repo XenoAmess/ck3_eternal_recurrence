@@ -169,6 +169,20 @@ zga_initialize_effect = {
 			add_character_flag = zga_initialized
 			add_character_flag = zga_prepare_player_review
 			set_variable = { name = zg361_ratio_override value = 10 }
+			# Zhao Shu begins 1066 with effective health near 0.5 in exact-build
+			# vanilla history. Keep the real historical subject alive only long
+			# enough for this isolated D+90 recording, with automatic expiry.
+			add_character_modifier = {
+				modifier = zga_acceptance_recording_health_guard
+				days = 120
+			}
+			if = {
+				limit = {
+					has_character_modifier = zga_acceptance_recording_health_guard
+				}
+				debug_log = "ZGA: TEST PASS recording_health_guard_applied"
+			}
+			else = { debug_log = "ZGA: TEST FAIL recording_health_guard_applied" }
 		}
 		set_player_character = scope:zga_song_emperor
 		debug_log = "ZGA: TEST PASS switched_to_song_emperor"
@@ -910,6 +924,20 @@ zga_personal_result_effect = {
 				debug_log = "ZGA: TEST PASS post_baseline_newcomer_prepared"
 			}
 			else = { debug_log = "ZGA: TEST FAIL post_baseline_newcomer_precondition" }
+			# The guard belongs only to the isolated recording timeline. Remove it
+			# in the same effect before control leaves the historical Song emperor.
+			scope:zga_reviewing_superior = {
+				remove_character_modifier = zga_acceptance_recording_health_guard
+				if = {
+					limit = {
+						NOT = {
+							has_character_modifier = zga_acceptance_recording_health_guard
+						}
+					}
+					debug_log = "ZGA: TEST PASS recording_health_guard_removed_before_switch"
+				}
+				else = { debug_log = "ZGA: TEST FAIL recording_health_guard_removed_before_switch" }
+			}
 			set_player_character = scope:zga_personal_result_target
 			scope:zga_reviewing_superior = {
 				trigger_event = { id = zga_acceptance.2 days = 0 }

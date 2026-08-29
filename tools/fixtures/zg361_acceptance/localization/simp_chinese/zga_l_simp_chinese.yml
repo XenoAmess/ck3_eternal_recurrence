@@ -1,4 +1,6 @@
 ﻿l_simp_chinese:
+ zga_acceptance_recording_health_guard:0 "御医监护（隔离验收）"
+ zga_acceptance_recording_health_guard_desc:0 "仅在外部实机验收夹具中维持宋英宗完成连续录制；切换角色前移除，正式模组不包含此修正。"
  decision_group_type_zga_acceptance:0 "361制实机验收"
  zga_promo_policy_001_decision:0 "演示政策卡 #001"
  zga_promo_policy_007_decision:0 "演示政策卡 #007"

@@ -1,0 +1,4 @@
+﻿zga_acceptance_recording_health_guard = {
+	icon = health_positive
+	health = 10
+}

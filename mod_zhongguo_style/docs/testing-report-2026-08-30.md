@@ -77,9 +77,17 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**：personal-switch sidecar 保留 `option_count`；只有 MCP 证明事件恰好一个选项、视觉分类又排除继承屏并找到强选项几何时，才在同一 event instance、同一日期和 fresh revision 上依次提交 `pause-map` 与 typed `select_event_option(1)`，并要求旧 instance 变化、日期不变且仍暂停。多选事件不走原生盲选；目标 marker 在操作前后继续 pump，“上司考定”标题也继续受保护。定向回归已覆盖本次 centered letter 布局、`paused = false → pause → native option 1 → instance change`，下一步只做一次完整合批实机。
 
-## 6. 环境与证据边界
+## 6. 第七次完整 attempt：史实赵曙自然死亡
+
+第七次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0556_current_f8955f3_mcp` 第七次实机证实宋帝 23 人首轮分布在结算前后均为 `7 / 14 / 2`：日志为 `bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_actual_bottom_rows = 2`，且 `bootstrap_first_review_strict_7_14_2` 与 `bootstrap_first_review_result_7_14_2` 均 PASS。361/361 机制账本、幂等性、史实 cohort、AI 非独立天朝公爵考核、考核榜 GUI、京察及免费规划器也再次通过。
+
+该 attempt 在 D+90 中止于真实继承屏，而不是 361 产品 RED。保留截图 `cell/10_personal_switch_wait_04_interruption_blocked_succession.png` 和 OCR sidecar 证明：赵曙于 1066-11-16、34 岁时死于心脏衰竭，界面要求继续扮演继承人赵项；runner 按宣传片“连续使用真实指定角色”的合同拒绝自动改演继承人。原版精确构建历史把 `han_8052` 设为 `health = 2`，同时赋予 `depressed_1`、`physique_bad_2`、`possessed_genetic` 三个各 `health = -0.5` 的特质，起局有效健康约为 `0.5`；原版 `DIE_HEALTH_TRESHOLD = 3.0`，因此在约百日的片场时间线上死亡不是可忽略的小概率噪声。
+
+针对性修复只进入外部隔离夹具，状态为 **static-ready**：初始化真实赵曙时添加 `health = 10`、持续 120 天的本地化“御医监护（隔离验收）”角色修正；在切换至史实受考官员之前的同一 effect 帧显式移除，并分别要求 `recording_health_guard_applied` 与 `recording_health_guard_removed_before_switch` PASS。120 天到期提供异常路径兜底；正式产品树和 release staging 均不包含该文件，史实角色、姓名、头衔与 cohort 不变，也没有使用永生特质或继承人续演来伪造宣传素材。定向夹具合同、runner 合同、Python 编译和启动 wiring 回归均已 GREEN；下一步只跑一次完整合批实机。
+
+## 7. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已六次实机复现；项目诊断在第六次 attempt 再次归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25` 及本人榜均已 live-confirmed；六张修正标题后的政策卡、单选信件 MCP 恢复和正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已七次实机复现；项目诊断在第六、七次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察、拒办处罚和新人保护均已 live-confirmed；D+90 单选信件 MCP 恢复、“上司考定”本人 `3.25`、本人榜、六张修正标题后的政策卡及正式宣传素材仍等待带限时健康夹具的下一次完整 GREEN。
