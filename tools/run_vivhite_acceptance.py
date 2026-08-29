@@ -699,18 +699,21 @@ def ensure_decisions_panel(artifacts: Path, stem: str) -> None:
     image = acceptance.ImageGrab.grab()
     header_region = (0.55, 0.00, 0.90, 0.13)
     if acceptance.find_ocr_text(image, "决议", header_region, contains=True) is None:
-        tab = (int(width * 0.987), int(height * 0.367))
-        acceptance.pyautogui.moveTo(*tab, duration=0.2)
+        # The right-rail row is character-dependent: switching from the lobby
+        # ruler to a landed emperor inserts additional native tabs, so a fixed
+        # y-coordinate can hit Factions instead of Decisions. CK3 1.19.0.6
+        # binds the native decision_window shortcut to F8; use that stable
+        # semantic entry point and prove the drawer header actually appeared.
+        acceptance.pyautogui.press("f8")
         acceptance.wait_for_ocr_text(
             "决议",
-            acceptance.FULL_SCREEN_REGION,
+            header_region,
             10,
             artifacts,
-            f"{stem}_decisions_tooltip.png",
+            f"{stem}_decisions_panel.png",
             contains=True,
-            stable_hits=1,
+            stable_hits=2,
         )
-        acceptance.deliberate_click(tab, "native Decisions HUD tab")
     acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
     acceptance.pyautogui.scroll(20)
     time.sleep(0.6)

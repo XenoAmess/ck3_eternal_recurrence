@@ -184,6 +184,18 @@ def main() -> int:
     sys.path.insert(0, str(ROOT / "tools"))
     import run_zhongguo_acceptance as capture
 
+    shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
+    for token in (
+        'acceptance.pyautogui.press("f8")',
+        'f"{stem}_decisions_panel.png"',
+        "header_region",
+        "stable_hits=2",
+    ):
+        assert token in shared_open_drawer, token
+    assert "0.987" not in shared_open_drawer
+    assert "0.367" not in shared_open_drawer
+    assert "native Decisions HUD tab" not in shared_open_drawer
+
     assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
     assert capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID == "han_5253"
     assert capture.PROMO_CLEAN_SPANS == (
