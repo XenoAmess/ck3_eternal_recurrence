@@ -321,6 +321,29 @@ class ReviewRegressionTests(unittest.TestCase):
                 re.S,
             ),
         )
+        assignment = re.search(
+            r"zg361_assign_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
+            effects,
+            re.M | re.S,
+        )
+        self.assertIsNotNone(assignment)
+        assignment_body = assignment.group("body") if assignment else ""
+        zero_based_gate = (
+            "root.var:zg361_bottom_cursor < root.var:zg361_bottom_slots"
+        )
+        bottom_increment = (
+            "root = { change_variable = { name = zg361_bottom_cursor add = 1 } }"
+        )
+        self.assertIn(zero_based_gate, assignment_body)
+        self.assertIn(bottom_increment, assignment_body)
+        self.assertLess(
+            assignment_body.index(zero_based_gate),
+            assignment_body.index(bottom_increment),
+        )
+        self.assertNotIn(
+            "zg361_bottom_cursor <= root.var:zg361_bottom_slots",
+            assignment_body,
+        )
         settlement = re.search(
             r"zg361_apply_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
             effects,

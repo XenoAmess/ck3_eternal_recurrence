@@ -269,9 +269,10 @@ zg361_assign_pending_grades_effect = {
 		limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
 		# rank 数字越大越靠后；ordered_in_list 默认按值从大到小。
 		order_by = var:zg361_rank
-		root = { change_variable = { name = zg361_bottom_cursor add = 1 } }
 		if = {
-			limit = { root.var:zg361_bottom_cursor <= root.var:zg361_bottom_slots }
+			# CK3 实机证明“先 +1，再用 <= script-value 名额”会在名额 2
+			# 时只选中 1 人。改用零基游标先判 <，再统一递增。
+			limit = { root.var:zg361_bottom_cursor < root.var:zg361_bottom_slots }
 			if = {
 				limit = { var:zg361_pending_grade = 3 }
 				root = { change_variable = { name = zg361_pending_375_n add = -1 } }
@@ -282,6 +283,7 @@ zg361_assign_pending_grades_effect = {
 			set_variable = { name = zg361_pending_grade value = 1 }
 			root = { change_variable = { name = zg361_pending_325_n add = 1 } }
 		}
+		root = { change_variable = { name = zg361_bottom_cursor add = 1 } }
 	}
 	remove_variable = zg361_bottom_cursor
 }

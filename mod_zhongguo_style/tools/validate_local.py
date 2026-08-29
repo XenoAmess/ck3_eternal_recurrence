@@ -503,6 +503,19 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("3.25 bottom-slot assignment must skip first-cycle newcomers")
+    bottom_assignment = assignment_body.group("body") if assignment_body else ""
+    zero_based_gate = (
+        "root.var:zg361_bottom_cursor < root.var:zg361_bottom_slots"
+    )
+    bottom_increment = (
+        "root = { change_variable = { name = zg361_bottom_cursor add = 1 } }"
+    )
+    if zero_based_gate not in bottom_assignment or bottom_increment not in bottom_assignment:
+        err("bottom slots must use a zero-based cursor with a strict pre-increment gate")
+    elif bottom_assignment.index(zero_based_gate) > bottom_assignment.index(bottom_increment):
+        err("bottom-slot cursor must be compared before it is incremented")
+    if "zg361_bottom_cursor <= root.var:zg361_bottom_slots" in bottom_assignment:
+        err("one-based <= bottom-slot cursor reintroduces the 2-slots-to-1-row bug")
     newcomer_assignment_at = effects.find("zg361_assign_pending_grades_effect = yes")
     newcomer_calibration_at = effects.find(
         "trigger_event = { id = zg361.10", newcomer_assignment_at
