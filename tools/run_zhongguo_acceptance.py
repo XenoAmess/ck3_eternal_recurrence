@@ -158,6 +158,17 @@ PROMO_POLICY_CARDS = (
 )
 PROMO_INTERRUPTION_MAX_DISMISSALS = 3
 PROMO_INTERRUPTION_DEFAULT_OBSERVE_S = 1.0
+PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS = (
+    # The punitive alternative forces every "little white rabbit" to step
+    # down, mutating the real 23-person cohort before historical target
+    # selection.  The retention option closes the ordinary product event
+    # without manufacturing or removing a promo subject.
+    ("野狗与小白兔", "宽严相济"),
+)
+# CK3 character-event titles occupy this left-half lane.  The bottom-right
+# pause reason may repeat the title of an event hidden behind another modal;
+# it must never satisfy a "target event is visibly on top" assertion.
+PROMO_EVENT_TITLE_REGION = (0.18, 0.16, 0.48, 0.32)
 # The generated 180x44 toggle is anchored immediately left of CK3's 50-unit
 # right HUD rail.  Constrain positive OCR to this normalized lane so the old
 # detached {-205,165} placement cannot accidentally satisfy live acceptance.
@@ -1702,9 +1713,15 @@ def choose_direct_publication(
         artifacts, "zg361_calibration", require_progress=True
     )
     log("advanced the live date for the one-day production calibration event")
+    settle_promo_interruptions(
+        artifacts,
+        "06_calibration_preemption",
+        observation_s=20.0,
+        stop_event_title="绩效校准会议",
+    )
     acceptance.wait_for_ocr_text(
         "绩效校准会议",
-        acceptance.FULL_SCREEN_REGION,
+        PROMO_EVENT_TITLE_REGION,
         60,
         artifacts,
         "06_calibration_event.png",
@@ -2109,24 +2126,37 @@ def capture_scoreboard_gui(
     # before opening the board so a late event cannot cover the GUI evidence.
     acceptance.focus_ck3()
     image = acceptance.ImageGrab.grab()
-    result_option = acceptance.find_ocr_text(
-        image, "知道了", acceptance.FULL_SCREEN_REGION, contains=True
+    result_title = acceptance.find_ocr_text(
+        image, "你主持的考核", PROMO_EVENT_TITLE_REGION, contains=True
     )
-    if result_option is None:
+    if result_title is None:
         acceptance.set_speed_five_and_unpause(
             artifacts, "zg361_result_summary", require_progress=False
         )
-        result_option = acceptance.wait_for_ocr_text(
-            "知道了",
-            acceptance.FULL_SCREEN_REGION,
-            30,
+        settle_promo_interruptions(
             artifacts,
-            "07_result_summary.png",
-            contains=True,
-            stable_hits=1,
+            "07_result_summary_preemption",
+            observation_s=30.0,
+            stop_event_title="你主持的考核",
         )
-    else:
-        image.save(artifacts / "07_result_summary.png")
+    acceptance.wait_for_ocr_text(
+        "你主持的考核",
+        PROMO_EVENT_TITLE_REGION,
+        15,
+        artifacts,
+        "07_result_summary.png",
+        contains=True,
+        stable_hits=1,
+    )
+    result_option = acceptance.wait_for_ocr_text(
+        "知道了",
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "07_result_summary_option.png",
+        contains=True,
+        stable_hits=1,
+    )
     acceptance.deliberate_click(result_option, "production review result summary")
     time.sleep(0.8)
 
@@ -2362,9 +2392,15 @@ def capture_jingcha_planner(
         raise acceptance.RunnerError(
             "Jingcha mandate marker must occur exactly once"
         )
+    jingcha_interruptions = settle_promo_interruptions(
+        artifacts,
+        "09_jingcha_mandate_preemption",
+        observation_s=20.0,
+        stop_event_title="京察之期",
+    )
     acceptance.wait_for_ocr_text(
         "京察之期",
-        acceptance.FULL_SCREEN_REGION,
+        PROMO_EVENT_TITLE_REGION,
         20,
         artifacts,
         "09_jingcha_mandate_event.png",
@@ -2461,6 +2497,7 @@ def capture_jingcha_planner(
         "planner_artifact": "09_jingcha_planner.png",
         "planner_ocr_artifact": "09_jingcha_planner_ocr.json",
         "host_pause_gate": host_pause_evidence,
+        "preempting_product_events_dismissed": jingcha_interruptions,
         "normalized_ocr": rendered_text,
     }
 
@@ -2501,9 +2538,15 @@ def capture_superior_assigned_result(
         raise acceptance.RunnerError(
             "superior-assigned player grade marker must occur exactly once"
         )
+    superior_interruptions = settle_promo_interruptions(
+        artifacts,
+        "10_superior_result_preemption",
+        observation_s=20.0,
+        stop_event_title="上司考定",
+    )
     acceptance.wait_for_ocr_text(
         "上司考定",
-        acceptance.FULL_SCREEN_REGION,
+        PROMO_EVENT_TITLE_REGION,
         30,
         artifacts,
         "10_superior_result_title.png",
@@ -2548,6 +2591,7 @@ def capture_superior_assigned_result(
         "clean_policy_chain_scheduled_marker_count": stream.count(
             "ZGA: TEST PASS clean_policy_chain_scheduled"
         ),
+        "preempting_product_events_dismissed": superior_interruptions,
         "rendered_grade": grades[0],
         "title_artifact": "10_superior_result_title.png",
         "panel_artifact": "10_superior_result.png",
@@ -2670,8 +2714,12 @@ def promo_event_modal_evidence(
         # CK3 character-event titles occupy the left half of the classic
         # modal. The centered performance-board and cockpit headings must not
         # satisfy this test even though they also have long explanatory text.
-        0.18 <= item["center"][0] / width < 0.48
-        and 0.16 <= item["center"][1] / height <= 0.32
+        PROMO_EVENT_TITLE_REGION[0]
+        <= item["center"][0] / width
+        < PROMO_EVENT_TITLE_REGION[2]
+        and PROMO_EVENT_TITLE_REGION[1]
+        <= item["center"][1] / height
+        <= PROMO_EVENT_TITLE_REGION[3]
         and (item["bbox"][2] - item["bbox"][0]) / width >= 0.055
         for item in items
     )
@@ -2682,6 +2730,53 @@ def promo_event_modal_evidence(
         for item in items
     )
     return title and narrative
+
+
+def promo_event_title_evidence(
+    items: list[dict[str, object]],
+    width: int,
+    height: int,
+    expected_title: str,
+) -> bool:
+    """Prove the expected event title is visibly on top, not in pause text."""
+
+    expected = _normalize_promo_visible_text(expected_title)
+    return bool(expected) and any(
+        PROMO_EVENT_TITLE_REGION[0]
+        <= item["center"][0] / width
+        <= PROMO_EVENT_TITLE_REGION[2]
+        and PROMO_EVENT_TITLE_REGION[1]
+        <= item["center"][1] / height
+        <= PROMO_EVENT_TITLE_REGION[3]
+        and expected
+        in _normalize_promo_visible_text(str(item.get("text", "")))
+        for item in items
+    )
+
+
+def promo_preferred_product_event_option(
+    items: list[dict[str, object]],
+    width: int,
+    height: int,
+) -> tuple[str | None, dict[str, object] | None]:
+    """Select an explicitly non-destructive option for a known product event."""
+
+    for event_title, option_text in PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS:
+        if not promo_event_title_evidence(items, width, height, event_title):
+            continue
+        expected = _normalize_promo_visible_text(option_text)
+        matches = [
+            item
+            for item in items
+            if 0.18 <= item["center"][0] / width <= 0.75
+            and 0.55 <= item["center"][1] / height <= 0.85
+            and expected
+            in _normalize_promo_visible_text(str(item.get("text", "")))
+        ]
+        if len(matches) != 1:
+            return event_title, None
+        return event_title, matches[0]
+    return None, None
 
 
 def promo_product_event_overlay_evidence(
@@ -2725,6 +2820,7 @@ def settle_promo_interruptions(
     *,
     observation_s: float = PROMO_INTERRUPTION_DEFAULT_OBSERVE_S,
     max_dismissals: int = PROMO_INTERRUPTION_MAX_DISMISSALS,
+    stop_event_title: str | None = None,
 ) -> list[dict[str, object]]:
     """Conservatively settle bounded native events in the promo fixture only.
 
@@ -2744,10 +2840,37 @@ def settle_promo_interruptions(
             image, acceptance.FULL_SCREEN_REGION
         )
         width, height = image.size
+        if stop_event_title and promo_event_title_evidence(
+            items, width, height, stop_event_title
+        ):
+            image.save(artifacts / f"{stem}_target_event_visible.png")
+            return dismissed
 
+        preferred_event, preferred_selected = promo_preferred_product_event_option(
+            items, width, height
+        )
         lower, selected = acceptance.select_stall_recovery(
             items, image, allow_succession=False
         )
+        if preferred_event is not None:
+            if preferred_selected is None:
+                diagnostic = f"{stem}_known_event_safe_option_missing"
+                acceptance.mark_recovery_items(items, lower, None)
+                acceptance.write_recovery_bundle(
+                    image, items, artifacts, diagnostic
+                )
+                _write_promo_interruption_decision(
+                    artifacts,
+                    diagnostic,
+                    status="blocked_known_event_safe_option_missing",
+                    kind=preferred_event,
+                    selected=None,
+                )
+                raise acceptance.RunnerError(
+                    "known promo product event lacks its non-destructive option: "
+                    f"{preferred_event}"
+                )
+            selected = preferred_selected
         succession_lower: list[dict[str, object]] = []
         succession = None
         if selected is None:
@@ -2882,9 +3005,15 @@ def capture_policy_cards(
             f"ZGA: TEST PASS clean_policy_{mechanism_id:03d}_dispatched"
         )
         stream.wait(dispatch_marker, 30)
+        settle_promo_interruptions(
+            artifacts,
+            f"{stem}_preemption",
+            observation_s=20.0,
+            stop_event_title=event_title,
+        )
         acceptance.wait_for_ocr_text(
             event_title,
-            acceptance.FULL_SCREEN_REGION,
+            PROMO_EVENT_TITLE_REGION,
             20,
             artifacts,
             f"{stem}_event.png",

@@ -79,8 +79,9 @@ def main() -> int:
     )
     assert 'cockpit_tokens = ("361 制度账本", "证据质量", "组织信任", "预算压力")' in scoreboard_body
     assert "except acceptance.RunnerError:" in scoreboard_body
-    assert scoreboard_body.index("cockpit_tokens") < scoreboard_body.index(
-        "settle_promo_interruptions"
+    cockpit_index = scoreboard_body.index("cockpit_tokens")
+    assert cockpit_index < scoreboard_body.index(
+        "settle_promo_interruptions", cockpit_index
     )
     assert '"08_scoreboard_cockpit_recovered"' in scoreboard_body
 
@@ -436,10 +437,57 @@ def main() -> int:
     ]
     assert not capture.promo_event_modal_evidence(clean_cockpit, 2560, 1440)
     native_event = clean_board + [
-        {"center": [720, 318], "bbox": [575, 301, 865, 335]},
+        {
+            "text": "京察之期",
+            "center": [720, 318],
+            "bbox": [575, 301, 865, 335],
+        },
         {"center": [904, 470], "bbox": [624, 459, 1184, 482]},
     ]
     assert capture.promo_event_modal_evidence(native_event, 2560, 1440)
+    assert capture.promo_event_title_evidence(
+        native_event, 2560, 1440, "京察之期"
+    )
+    pause_reason_only = [
+        {
+            "text": "野狗与小白兔",
+            "center": [828, 401],
+            "bbox": [700, 385, 956, 417],
+        },
+        {
+            "text": "因京察之期事件暂停",
+            "center": [2109, 1354],
+            "bbox": [2000, 1340, 2218, 1368],
+        },
+    ]
+    assert not capture.promo_event_title_evidence(
+        pause_reason_only, 2560, 1440, "京察之期"
+    )
+    known_product_event = [
+        {
+            "text": "野狗与小白兔",
+            "center": [828, 401],
+            "bbox": [700, 385, 956, 417],
+        },
+        {
+            "text": "宽严相济：野狗留用观察，小白兔好言安抚。",
+            "center": [930, 989],
+            "bbox": [700, 975, 1160, 1003],
+        },
+        {
+            "text": "严惩野狗、劝退小白兔。",
+            "center": [930, 1043],
+            "bbox": [700, 1029, 1160, 1057],
+        },
+    ]
+    preferred_title, preferred_option = (
+        capture.promo_preferred_product_event_option(
+            known_product_event, 2560, 1440
+        )
+    )
+    assert preferred_title == "野狗与小白兔"
+    assert preferred_option is not None
+    assert preferred_option["text"].startswith("宽严相济")
     assert capture.promo_product_event_overlay_evidence(
         "free_jingcha_planner", native_event, 2560, 1440
     )
@@ -482,6 +530,8 @@ def main() -> int:
     assert policies is not None
     policy_body = policies.group(0)
     assert "settle_promo_interruptions" in policy_body
+    assert "stop_event_title=event_title" in policy_body
+    assert "PROMO_EVENT_TITLE_REGION" in policy_body
     assert "acceptance.ensure_game_paused" in policy_body
     assert "open_decision_detail" not in policy_body
     assert "clean_policy_{mechanism_id:03d}_dispatched" in policy_body
@@ -497,6 +547,8 @@ def main() -> int:
     assert "clean_jingcha_dispatch_scheduled" in jingcha_body
     assert "clean_jingcha_dispatched" in jingcha_body
     assert "acceptance.read_hud_game_date" in jingcha_body
+    assert 'stop_event_title="京察之期"' in jingcha_body
+    assert "PROMO_EVENT_TITLE_REGION" in jingcha_body
     assert "pause_after_jingcha_host_click" in jingcha_body
     assert jingcha_body.index(
         'acceptance.deliberate_click(host_option, "production host Jingcha option")'
@@ -518,6 +570,15 @@ def main() -> int:
     ):
         assert token in host_pause, token
     assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 2
+
+    interruption = inspect.getsource(capture.settle_promo_interruptions)
+    assert "stop_event_title: str | None = None" in interruption
+    assert "promo_event_title_evidence" in interruption
+    assert interruption.index("promo_event_title_evidence") < interruption.index(
+        "acceptance.select_stall_recovery"
+    )
+    assert "promo_preferred_product_event_option" in interruption
+    assert "blocked_known_event_safe_option_missing" in interruption
 
     personal = re.search(
         r"def capture_superior_assigned_result\(.*?(?=^def )", runner, re.M | re.S
