@@ -29,6 +29,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 | `../tools/build_promo_video.py` | TTS、双语 ASS、画面合成、章节拼接与 sidecar |
 | `../tools/validate_promo_video.py` | 草案/正式门禁、媒体规格、时长、语言、哈希与抽帧检查 |
 | `../tools/prepare_promo_release_manifest.py` | GREEN 集中实录 → 外部零占位正式 manifest + provenance；拒绝 RED、缺 mark、哈希漂移和覆盖旧输出 |
+| `../tools/prepare_promo_visual_audit.py` | 正式 manifest → 全部实机章节的全屏 RGB24 抽帧、RapidOCR、SHA 绑定和明确 `PENDING` 的未签核 spec |
 | `../tools/audit_promo_visuals.py` | 正式 manifest 的独立画面门禁：历史角色来源、全屏 PNG/OCR、测试 UI 禁词、逐章覆盖、人工签核与 SHA 复验 |
 
 ## 无联网静态前置
@@ -87,7 +88,17 @@ $release = "$capture\release\zg361-promo-release-manifest.json"
   --artifact-root $capture `
   --output $release
 
-$auditSpec = "$capture\release\promo-visual-audit-spec.json" # 按下节 schema 建立并绑定全屏 OCR/PNG 与历史角色来源
+$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
+  --release-manifest $release `
+  --output-dir $auditEvidence `
+  --sampling-interval-seconds 1.0
+
+# 这里必须暂停自动流水线：逐章以 1× 完整观看，并检查每张 still。生成器只会产出 PENDING，绝不代签 GREEN。
+$pendingSpec = "$auditEvidence\promo-visual-audit-spec.PENDING.json"
+$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
+# 人工审阅后，把 PENDING spec 另存为 $auditSpec，并填写真实 reviewer、带时区 reviewed_at_utc、
+# 全部 captured chapter id 与四项 true attestation；原 PENDING 文件和所有证据保持不动。
 $auditReport = "$capture\release\promo-visual-audit-report.json"
 & tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
   --spec $auditSpec `
@@ -134,10 +145,28 @@ $videoRoot = "$capture\release\video-$stamp"
 
 `prepare_promo_release_manifest.py` 证明一次 CK3 验收与素材哈希成立，但 **GREEN 验收录像不自动是 GREEN 宣传素材**。
 投影完成后、调用正式媒体验证和渲染前，必须为该外部 manifest 建立一份
-`zg361_promo_visual_audit_spec` JSON，并运行独立门禁：
+`zg361_promo_visual_audit_spec` JSON，并运行独立门禁。先让 producer 在新的外部目录提取证据：
 
 ```powershell
-$auditSpec = "$capture\release\promo-visual-audit-spec.json"
+$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
+  --release-manifest $release `
+  --output-dir $auditEvidence `
+  --sampling-interval-seconds 1.0
+```
+
+producer 会按 source SHA 与精确时间戳合并重叠章节的相同帧，以 manifest 中每段 `start_seconds` / `end_seconds`
+为端点建立不超过 1 秒的确定性采样序列；PNG 由与 consumer 相同的 FFmpeg 全屏 `rgb24` 解码结果写出，OCR
+JSON 由现有 RapidOCR 生成并绑定 PNG SHA。角色 `subject_id`、history ID、显示名和 role 映射只从 manifest 的
+`real_character_provenance` 派生。输出目录可在仓库外任意指定，且默认拒绝覆盖；失败留下的半成品也应保留，重试时
+另开目录。
+
+生成结果固定叫 `promo-visual-audit-spec.PENDING.json`，其中 reviewer 明示未审、章节列表为空、四项 attestation
+全部为 false；因此直接交给 audit 只会得到 RED。审阅者必须以 1× 完整观看全部 captured clip、检查每张 still，
+再把 PENDING 文件**另存**为新的 SIGNED spec，填入真实签核信息。之后才运行：
+
+```powershell
+$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
 $auditReport = "$capture\release\promo-visual-audit-report.json"
 
 & tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
@@ -162,7 +191,8 @@ spec 使用绝对路径和声明的 `bytes` / `sha256`，至少包含：
   中的原 PNG 本身。每条证据声明 `[0,0,width,height]` 全屏 OCR 区域、源素材 SHA、章节 ID、角色 subject ID
   和视频时间戳。审计器会用 ffprobe 核对真实视频、分辨率和时长，再用 ffmpeg 从该 raw 的同一时间戳自行解码
   RGB 帧，并要求它与提交 PNG 逐像素一致；不能拿旧截图或另造干净图顶替。OCR JSON 根必须为对象，包含
-  `image_sha256` 绑定该 PNG，并在 `items` / `results` / `ocr` 之一保存识别数组。
+  `image_sha256` 绑定该 PNG，并在 `items` / `results` / `ocr` 之一保存识别数组。正常流程由
+  `prepare_promo_visual_audit.py` 自动产出这些记录，不再手工抄路径或哈希。
 - `manual_signoff`：逐章完整播放后的签核人、带时区时间、manifest SHA、全部实机章节，以及四项 true 证明：
   `historical_characters_only`、`fixture_test_ui_absent`、`full_clip_reviewed`、
   `no_crop_mask_or_redaction`。
