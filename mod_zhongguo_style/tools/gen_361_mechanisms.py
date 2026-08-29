@@ -29,7 +29,12 @@ def script_text(body: str) -> bytes:
 
 
 def yml_escape(text: str) -> str:
-    return text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+    # CK3 localization interprets a single literal ``\n`` sequence as a line
+    # break. Escape all other backslashes while preserving that engine token.
+    return r"\n".join(
+        part.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
+        for part in text.split(r"\n")
+    )
 
 
 def loc_line(key: str, value: str) -> str:
@@ -216,33 +221,32 @@ def render_effects(mechanisms: list[Mechanism]) -> bytes:
             "\tremove_character_modifier = zg361_org_delivery_stable",
             "\tremove_character_modifier = zg361_org_tech_debt_crisis",
             "\tremove_character_modifier = zg361_org_talent_healthy",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_trust >= 20 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_high_trust years = 1 }",
-            "\t}",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_admin_load >= 35 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_admin_overload years = 1 }",
-            "\t}",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_burnout >= 20 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_burnout_crisis years = 1 }",
-            "\t}",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_stability >= 20 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_delivery_stable years = 1 }",
-            "\t}",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_tech_debt >= 20 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_tech_debt_crisis years = 1 }",
-            "\t}",
-            "\tif = {",
-            "\t\tlimit = { var:zg361_org_talent >= 20 }",
-            "\t\tadd_character_modifier = { modifier = zg361_org_talent_healthy years = 1 }",
-            "\t}",
-            "}",
         ]
     )
+    for ledger, threshold, modifier in (
+        ("trust", 20, "zg361_org_high_trust"),
+        ("admin_load", 35, "zg361_org_admin_overload"),
+        ("burnout", 20, "zg361_org_burnout_crisis"),
+        ("stability", 20, "zg361_org_delivery_stable"),
+        ("tech_debt", 20, "zg361_org_tech_debt_crisis"),
+        ("talent", 20, "zg361_org_talent_healthy"),
+    ):
+        variable = f"zg361_org_{ledger}"
+        lines.extend(
+            [
+                "\tif = {",
+                "\t\tlimit = {",
+                "\t\t\ttrigger_if = {",
+                f"\t\t\t\tlimit = {{ has_variable = {variable} }}",
+                f"\t\t\t\tvar:{variable} >= {threshold}",
+                "\t\t\t}",
+                "\t\t\ttrigger_else = { always = no }",
+                "\t\t}",
+                f"\t\tadd_character_modifier = {{ modifier = {modifier} years = 1 }}",
+                "\t}",
+            ]
+        )
+    lines.append("}")
     return script_text("\n".join(lines))
 
 
@@ -630,7 +634,21 @@ def render_localization(mechanisms: list[Mechanism], language: str) -> bytes:
         if translated is not None:
             values = translated
     lines = [f"l_{language}:"]
-    lines.extend(loc_line(key, value) for key, value in values.items())
+    for key, value in values.items():
+        # A leading ASCII # starts CK3 localization formatting and swallowed
+        # the visible mechanism number. Keep translation source hashes stable,
+        # but render a language-appropriate literal prefix into the game yml.
+        if key.startswith("zg361m.") and key.endswith(".t"):
+            event_id = key.removeprefix("zg361m.").removesuffix(".t")
+            raw_prefix = f"#{int(event_id):03d}"
+            if value.startswith(raw_prefix):
+                safe_prefix = (
+                    f"第{int(event_id):03d}号"
+                    if language == "simp_chinese"
+                    else f"No.{int(event_id):03d}"
+                )
+                value = safe_prefix + value[len(raw_prefix) :]
+        lines.append(loc_line(key, value))
     return BOM + ("\n".join(lines) + "\n").encode("utf-8")
 
 

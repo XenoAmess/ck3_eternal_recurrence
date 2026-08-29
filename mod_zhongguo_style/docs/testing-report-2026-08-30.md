@@ -54,9 +54,22 @@
 
 当前最小修复为 **static-ready**：点击前只强制验证 ACK 已提交，且 event identity、`date_raw` 和角色未变，`speed`/`paused` 仅记录不作阻塞；点击后要求 event instance 已变化且仍在同一 `date_raw`，仅在需要时条件提交 `pause-map`，随后要求连续三帧冻结。每一阶段均先写 sidecar 再进入下一步，避免下次 RED 再丢失失败 loop observations。
 
-## 4. 环境与证据边界
+## 4. 第五次完整 attempt：产品链已到政策卡，标题 OCR 假 RED
+
+第五次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0445_current_859d811_mcp` 第五次实机证实宋帝 23 人严格分布为 `7 / 14 / 2`。同局还通过：361/361 机制账本及幂等性、史实角色来源、AI 非独立天朝公爵考核、考核榜安全区与右窗阻塞、管理/本人页、制度驾驶舱、标题 X 与背景关闭、史实榜单行跳转、京察强制弹窗与免费活动规划、D+90 静默暂停恢复、拒办处罚、新人保护，以及“上司考定”明示本人 `3.25`。点击“认命”后的同日冻结、本人的 3.25 榜单和本人页重复点击也首次实机通过，上一轮的 modal pause blocker 已闭合。
+
+该 attempt 的唯一 runner 终止点在第一张政策卡。卡片已经于 1066-12-28 正常置顶并稳定停留至少 21 秒；`clean_policy_001_dispatched` 恰好一次，`clean_policy_007_dispatched` 仍为零。前置门用规范化标题匹配已经认出“KPI 分项证据单”并保存 `12_policy_001_preemption_target_event_visible.png`，紧接着的重复门却用原始字符串包含匹配等待 `KPI 分项证据单`；RapidOCR 稳定返回不含空格的 `KPI分项证据单`，因此把肉眼可见的产品卡误判为 RED。该次未进入政策卡关闭前的 MCP speed-one gate，所以没有政策卡 active-event instance 的持久化原生 sidecar，不能为它补写推测 ID。
+
+同一实机画面和日志还给出两项必须在下次启动前合批修复的直接证据：
+
+- 测试夹具直接向新切换的史实领主触发 `zg361m.1`，没有复刻产品 dispatcher 的组织账初始化；同时产品 `zg361_refresh_org_climate_effect` 的六个阈值仍裸读变量。事件 option tooltip 会独立预演同级 effect，不提交前一个 choice effect 内的初始化，结果六个 `zg361_org_*` 变量各报错 4,240 次，共 25,440 条。修复既在首张 clean carrier 前初始化，也在产品生成器中以 `trigger_if + has_variable` 保护六个阈值；后者保证任何合法 fresh 入口都不会依赖夹具兜底。
+- 政策标题以 ASCII `#001` 开头，被 CK3 当成本地化格式标记吞掉；中文描述中的 `\n` 又被生成器二次转义为 `\\n`，画面遂显示字面量。生成投影现将中文编号写为“第001号”、其余语言写为 `No.001`，并只保留 CK3 所需的单反斜杠换行 token。
+
+runner 现直接复用已经通过规范化匹配的政策卡截图，不再追加较弱的原始空格 OCR；三个问题均已有定向回归并通过，状态为 **static-ready**。下一步只运行一次新的完整合批实机，不再重复前四轮已闭合的代码审计。
+
+## 5. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已四次实机复现；项目诊断归零、史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护以及“上司考定”本人 `3.25` 均已 live-confirmed；本人榜、六张政策卡和正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已五次实机复现；项目诊断归零曾在第二至第四次 attempt 成立，第五次因政策卡 fresh tooltip 的六个账本变量回归为 RED，现有针对性修复仍待下一轮实机确认。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25` 及本人榜均已 live-confirmed；六张政策卡、零项目诊断和正式宣传素材仍等待下一次完整 GREEN。

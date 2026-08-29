@@ -1296,6 +1296,7 @@ def fixture_source_errors() -> list[str]:
         "clean_policy_026_dispatched",
         "clean_policy_361_dispatched",
         "clean_policy_chain_completed",
+        "zg361_init_org_ledger_effect = yes",
         "trigger_event = { id = zga_acceptance.5 days = 10 }",
         "trigger_event = { id = zga_acceptance.3 days = 90 }",
         "trigger_event = { id = zga_acceptance.12 days = 1 }",
@@ -4404,15 +4405,21 @@ def capture_policy_cards(
             observation_s=20.0,
             stop_event_title=event_title,
         )
-        acceptance.wait_for_ocr_text(
-            event_title,
-            PROMO_EVENT_TITLE_REGION,
-            20,
-            artifacts,
-            f"{stem}_event.png",
-            contains=True,
-            stable_hits=1,
+        # settle_promo_interruptions has already matched this exact title with
+        # promo_event_title_evidence(), whose normalization deliberately
+        # ignores OCR spacing/punctuation drift (for example KPI分项 vs
+        # KPI 分项). Reuse that freshly validated frame instead of performing a
+        # weaker, raw-string OCR wait that can turn a visible card into a RED.
+        validated_event_artifact = (
+            artifacts / f"{stem}_preemption_target_event_visible.png"
         )
+        event_artifact = artifacts / f"{stem}_event.png"
+        if not validated_event_artifact.is_file():
+            raise acceptance.RunnerError(
+                "normalized policy-title gate did not save its validated frame: "
+                f"{validated_event_artifact}"
+            )
+        shutil.copy2(validated_event_artifact, event_artifact)
         recorder.mark(f"policy_card_{mechanism_id:03d}_visible")
         recorder.clean_hold(
             f"policy_card_{mechanism_id:03d}", artifacts, 2.5

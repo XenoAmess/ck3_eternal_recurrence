@@ -465,7 +465,7 @@ LANGUAGE_PROMPT_SUFFIX = {
         "인상, never a promotion or 승급. In #263, temporary loan means temporary secondment: "
         "use exactly the meaning 임시 파견을 무기한 연장하고, 프로젝트 종료 후에야 소속을 "
         "결정한다; never 차관 or 책임자를 정한다. In #283, the promotion has happened but its pay has not "
-        "caught up; write #283 · 무급 승진의 급여 반영 기한 or an equally explicit natural "
+        "caught up; write No.283 · 무급 승진의 급여 반영 기한 or an equally explicit natural "
         "Korean title, never 무승급."
     ),
     "russian": (
@@ -564,7 +564,7 @@ LANGUAGE_PROMPT_SUFFIX = {
         "rozwojowa, skip-level review as przegląd przez przełożonego wyższego szczebla, and SLA as "
         "umowa o poziomie usług; do not retain the English spelling. Translate Stay Interview as "
         "rozmowa retencyjna without an English parenthetical. In #283, promotion always means the "
-        "career advancement awans, never a sales promotion or promocja. Preserve the #283 title number."
+        "career advancement awans, never a sales promotion or promocja. Preserve the No.283 title number."
     ),
     "spanish": (
         " Never copy Chinese reference fragments or leave English source phrases untranslated. "
@@ -1062,8 +1062,10 @@ def targeted_quality_errors(key: str, value: str, language: str) -> list[str]:
             errors.append(f"{key}: does not naturally express that the rating is not guaranteed")
         if key == "zg361m.200.b" and "제한 없는 재정의" in value:
             errors.append(f"{key}: mistranslates unrestricted overrides as unlimited redefinitions")
-        if key == "zg361m.130.t" and "#130" not in value:
-            errors.append(f"{key}: drops the policy number #130")
+        if key == "zg361m.130.t" and not any(
+            prefix in value for prefix in ("#130", "No.130")
+        ):
+            errors.append(f"{key}: drops the policy number 130")
         if key == "zg361m.263.b":
             if (
                 "파견" not in value
@@ -1075,8 +1077,8 @@ def targeted_quality_errors(key: str, value: str, language: str) -> list[str]:
                     f"{key}: does not preserve temporary secondment and team affiliation"
                 )
         if key == "zg361m.283.t":
-            if "#283" not in value:
-                errors.append(f"{key}: drops the policy number #283")
+            if not any(prefix in value for prefix in ("#283", "No.283")):
+                errors.append(f"{key}: drops the policy number 283")
             if "승진" not in value or re.search(r"(?:무급|무보수|급여\s*(?:없|미지급))", value) is None:
                 errors.append(f"{key}: does not express an unpaid or title-only promotion")
             if re.search(r"(?:기한|시한|마감)", value) is None:
@@ -1120,8 +1122,10 @@ def targeted_quality_errors(key: str, value: str, language: str) -> list[str]:
             errors.append(f"{key}: reduces superior ownership of the list to mere supervision")
         if key == "zg361m.315.a" and "podwójnym kredytem" in folded:
             errors.append(f"{key}: mistranslates dual performance credit as financial credit")
-        if key == "zg361m.283.t" and "#283" not in value:
-            errors.append(f"{key}: drops the policy number #283")
+        if key == "zg361m.283.t" and not any(
+            prefix in value for prefix in ("#283", "No.283")
+        ):
+            errors.append(f"{key}: drops the policy number 283")
         if key == "zg361m.283.a":
             if "awan" not in folded or "promocj" in folded:
                 errors.append(f"{key}: does not express career advancement as awans")

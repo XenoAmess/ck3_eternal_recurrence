@@ -368,6 +368,9 @@ zga_acceptance.6 = {
 				zg361_is_celestial_liege_trigger = yes
 				NOT = { has_variable = zg361_mechanism_001_choice }
 			}
+			# Mirror the production dispatcher prerequisite before directly opening
+			# a shipped card on this freshly selected historical subject.
+			zg361_init_org_ledger_effect = yes
 			trigger_event = { id = zga_acceptance.7 days = 1 }
 			debug_log = "ZGA: TEST PASS clean_policy_001_dispatched"
 			trigger_event = zg361m.1

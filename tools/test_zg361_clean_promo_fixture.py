@@ -228,6 +228,11 @@ def main() -> int:
         product = f"trigger_event = zg361m.{mechanism_id}"
         assert marker in body
         assert product in body
+        if mechanism_id == 1:
+            init = "zg361_init_org_ledger_effect = yes"
+            assert body.count(init) == 1
+            assert body.index(init) < body.index(marker)
+            assert body.index(init) < body.index(product)
         if successor_id is not None:
             successor = f"trigger_event = {{ id = zga_acceptance.{successor_id} days = 1 }}"
             assert successor in body

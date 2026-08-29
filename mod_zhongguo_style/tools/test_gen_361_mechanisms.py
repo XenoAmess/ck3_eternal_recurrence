@@ -184,6 +184,74 @@ class MechanismGenerationTests(unittest.TestCase):
                 )
                 self.assertIn(f"ZG361M: CASE {mechanism.id:03d}", effects)
 
+    def test_org_climate_thresholds_do_not_read_unset_ledgers(self) -> None:
+        effect_path = (
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_mechanism_effects.txt"
+        )
+        effects = self.rendered[effect_path].decode("utf-8-sig")
+        climate = effects.split("zg361_refresh_org_climate_effect = {", 1)[1]
+        expected = (
+            ("trust", 20, "zg361_org_high_trust"),
+            ("admin_load", 35, "zg361_org_admin_overload"),
+            ("burnout", 20, "zg361_org_burnout_crisis"),
+            ("stability", 20, "zg361_org_delivery_stable"),
+            ("tech_debt", 20, "zg361_org_tech_debt_crisis"),
+            ("talent", 20, "zg361_org_talent_healthy"),
+        )
+        for ledger, threshold, modifier in expected:
+            variable = f"zg361_org_{ledger}"
+            guarded = (
+                "\tif = {\n"
+                "\t\tlimit = {\n"
+                "\t\t\ttrigger_if = {\n"
+                f"\t\t\t\tlimit = {{ has_variable = {variable} }}\n"
+                f"\t\t\t\tvar:{variable} >= {threshold}\n"
+                "\t\t\t}\n"
+                "\t\t\ttrigger_else = { always = no }\n"
+                "\t\t}\n"
+                f"\t\tadd_character_modifier = {{ modifier = {modifier} years = 1 }}\n"
+                "\t}"
+            )
+            with self.subTest(ledger=ledger):
+                self.assertIn(guarded, climate)
+                self.assertNotIn(
+                    f"\t\tlimit = {{ var:{variable} >= {threshold} }}", climate
+                )
+
+    def test_policy_localization_renders_ids_and_line_breaks_literally(self) -> None:
+        chinese_path = (
+            MOD_ROOT
+            / "localization"
+            / "simp_chinese"
+            / "zg361_mechanisms_l_simp_chinese.yml"
+        )
+        english_path = (
+            MOD_ROOT
+            / "localization"
+            / "english"
+            / "zg361_mechanisms_l_english.yml"
+        )
+        chinese = self.rendered[chinese_path].decode("utf-8-sig")
+        english = self.rendered[english_path].decode("utf-8-sig")
+        self.assertIn('zg361m.1.t:0 "第001号 · KPI 分项证据单"', chinese)
+        self.assertIn('zg361m.1.t:0 "No.001 · Itemized KPI Evidence Sheet"', english)
+        self.assertIn(r"／P0】\n\n决策：", chinese)
+        self.assertNotIn(r"\\n", chinese)
+        for path, rendered in self.rendered.items():
+            if path.name.startswith("zg361_mechanisms_l_"):
+                text = rendered.decode("utf-8-sig")
+                title_lines = [
+                    line
+                    for line in text.splitlines()
+                    if line.startswith(" zg361m.") and ".t:0 " in line
+                ]
+                with self.subTest(language=path.parent.name):
+                    self.assertEqual(len(title_lines), 361)
+                    self.assertFalse(any(':0 "#' in line for line in title_lines))
+
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"
         manifest = json.loads(self.rendered[manifest_path].decode("utf-8"))

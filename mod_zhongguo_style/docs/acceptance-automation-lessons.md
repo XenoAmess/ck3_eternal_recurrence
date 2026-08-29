@@ -106,7 +106,14 @@
 - 每轮报告要区分 `product GREEN / harness RED / promo not started`。相机脚本 RED 不能写成“361 机制失败”。
 - 同一小状态的失败最多做有界回退；每条回退都必须有独立 ACK 和 `attempts[]` 记录，不能用无限重试掩盖不确定性。
 
-## 8. 新经验的落盘模板
+## 8. 政策卡标题、tooltip 与本地化投影
+
+- 同一可见标题只能有一套权威匹配语义。RapidOCR 可能把 Latin/CJK 边界空格折叠，例如把 `KPI 分项证据单` 读成 `KPI分项证据单`；既然前置门已用 NFKC、大小写及标点/空白归一化确认并保存截图，后续步骤应复用这份强证据，不得再追加原始字符串包含匹配制造假 RED。
+- 外部 fixture 直接打开产品事件时，必须先复刻正式 dispatcher 的初始化前置条件。但这不能代替产品自身的 fresh-scope 安全性：CK3 在构建事件 option tooltip 时会分别预演同级 scripted effect，不保证提交前一个 effect 内的 `set_variable`。因此“choice effect 先初始化、refresh effect 再读取”在画面打开时仍会读 unset；数值比较必须自身放在 `trigger_if + has_variable` 的求值门内。
+- CK3 localization 行首 ASCII `#` 是格式语法，不是可靠的可见编号。政策标题的权威数据可以继续保留 `#NNN` 作为稳定语义编号，但生成到游戏 yml 时，简中必须投影为“第NNN号”，其他语言投影为 `No.NNN`。
+- CK3 yml 中单个字面 `\n` 才表示换行。生成器若先得到 `\n` token、随后又统一双写所有反斜杠，游戏会把 `\\n` 直接画在正文中。正确做法是先按有意的 `\n` token 分段，只转义各段中的其他反斜杠和引号，再以单反斜杠 token 拼回。
+
+## 9. 新经验的落盘模板
 
 后续每次新增条目至少记录：
 

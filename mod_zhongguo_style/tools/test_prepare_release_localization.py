@@ -1033,12 +1033,15 @@ class ReleaseLocalizationTests(unittest.TestCase):
 
         accepted = (
             ("korean", "zg361m.130.t", "#130 · 저성과자를 다른 팀으로 떠넘기기"),
+            ("korean", "zg361m.130.t", "No.130 · 저성과자를 다른 팀으로 떠넘기기"),
             (
                 "korean",
                 "zg361m.263.b",
                 "임시 파견을 무기한 연장하고 프로젝트가 끝난 뒤에야 소속을 결정한다",
             ),
             ("korean", "zg361m.283.t", "#283 · 무급 승진의 급여 반영 기한"),
+            ("korean", "zg361m.283.t", "No.283 · 무급 승진의 급여 반영 기한"),
+            ("polish", "zg361m.283.t", "No.283 · Termin wyrównania płacy po awansie"),
             (
                 "polish",
                 "zg361m.283.a",

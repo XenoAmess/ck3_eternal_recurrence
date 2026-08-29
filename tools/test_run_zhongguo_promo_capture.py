@@ -1358,6 +1358,16 @@ def main() -> int:
     assert capture.promo_event_title_evidence(
         native_event, 2560, 1440, "京察之期"
     )
+    spaceless_latin_cjk_title = [
+        {
+            "text": "KPI分项证据单",
+            "center": [865, 400],
+            "bbox": [700, 385, 1030, 417],
+        }
+    ]
+    assert capture.promo_event_title_evidence(
+        spaceless_latin_cjk_title, 2560, 1440, "KPI 分项证据单"
+    )
     pause_reason_only = [
         {
             "text": "野狗与小白兔",
@@ -1441,7 +1451,10 @@ def main() -> int:
     policy_body = policies.group(0)
     assert "settle_promo_interruptions" in policy_body
     assert "stop_event_title=event_title" in policy_body
-    assert "PROMO_EVENT_TITLE_REGION" in policy_body
+    assert 'acceptance.wait_for_ocr_text(\n            event_title,' not in policy_body
+    assert 'f"{stem}_preemption_target_event_visible.png"' in policy_body
+    assert 'f"{stem}_event.png"' in policy_body
+    assert "shutil.copy2(validated_event_artifact, event_artifact)" in policy_body
     assert "acceptance.ensure_game_paused" in policy_body
     assert "open_decision_detail" not in policy_body
     assert "clean_policy_{mechanism_id:03d}_dispatched" in policy_body
