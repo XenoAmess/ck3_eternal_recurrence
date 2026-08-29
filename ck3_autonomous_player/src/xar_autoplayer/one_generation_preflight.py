@@ -22,7 +22,7 @@ from .native_session import (
     NATIVE_SESSION_QUEUE_DIRNAME,
     validate_cold_start_checkpoint_for_pipe,
 )
-from .runtime import utc_now
+from .runtime import utc_now, validate_native_bridge_pipe_name
 
 
 def native_one_generation_preflight(
@@ -70,6 +70,7 @@ def native_one_generation_preflight(
     write_json_atomic(report_path, report)
 
     try:
+        validate_native_bridge_pipe_name(pipe_name)
         _validate_expectations(
             expected_character_id=expected_character_id,
             expected_episode_run_id=expected_episode_run_id,

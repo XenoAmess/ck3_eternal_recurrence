@@ -219,6 +219,23 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
         )
         self.assertEqual(persisted, report)
 
+    def test_invalid_pipe_name_is_a_persisted_red(self) -> None:
+        report = native_one_generation_preflight(
+            self.spec,
+            pipe_name="not-a-named-pipe",
+            expected_character_id=self.character_id,
+            expected_episode_run_id=self.episode_run_id,
+            expected_checkpoint_sha256=self.checkpoint_sha256,
+            expected_driver_state_sha256=self.driver_sha256,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertIn("native bridge pipe must be", report["error"])
+        persisted = json.loads(
+            Path(report["report_path"]).read_text(encoding="utf-8")
+        )
+        self.assertEqual(persisted, report)
+
     def test_cli_dispatch_and_exit_code_follow_preflight_report(self) -> None:
         for ok, expected_code in ((True, 0), (False, 1)):
             with self.subTest(ok=ok):

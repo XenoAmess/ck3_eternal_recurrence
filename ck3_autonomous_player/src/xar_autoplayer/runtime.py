@@ -210,7 +210,23 @@ def validate_native_bridge_launch_config(
         raise AgentError(
             "native bridge mode must be native-headless or hybrid-fallback"
         )
-    pipe_name = config.pipe_name
+    pipe_name = validate_native_bridge_pipe_name(config.pipe_name)
+    dll_path = Path(config.dll_path).resolve()
+    injector_path = Path(config.injector_path).resolve()
+    if not dll_path.is_file():
+        raise AgentError(f"native bridge DLL is missing: {dll_path}")
+    if not injector_path.is_file():
+        raise AgentError(f"native bridge injector is missing: {injector_path}")
+    return NativeBridgeLaunchConfig(
+        mode=config.mode,
+        pipe_name=pipe_name,
+        dll_path=dll_path,
+        injector_path=injector_path,
+    )
+
+
+def validate_native_bridge_pipe_name(pipe_name: str) -> str:
+    """Validate the shared named-pipe identity without requiring binaries."""
     pipe_prefix = "\\\\.\\pipe\\"
     if (
         not isinstance(pipe_name, str)
@@ -225,18 +241,7 @@ def validate_native_bridge_launch_config(
             "native bridge pipe must be a non-empty \\\\.\\pipe\\ name "
             "shorter than 256 characters"
         )
-    dll_path = Path(config.dll_path).resolve()
-    injector_path = Path(config.injector_path).resolve()
-    if not dll_path.is_file():
-        raise AgentError(f"native bridge DLL is missing: {dll_path}")
-    if not injector_path.is_file():
-        raise AgentError(f"native bridge injector is missing: {injector_path}")
-    return NativeBridgeLaunchConfig(
-        mode=config.mode,
-        pipe_name=pipe_name,
-        dll_path=dll_path,
-        injector_path=injector_path,
-    )
+    return pipe_name
 
 
 def native_bridge_launch_config_from_environment(
