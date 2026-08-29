@@ -1706,6 +1706,32 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
     acceptance.ensure_game_paused(artifacts, "05_song_emperor")
 
 
+def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object]:
+    """Return the inherited bookmark camera to the historical Song capital."""
+
+    acceptance.focus_ck3()
+    before = acceptance.ImageGrab.grab()
+    before.save(artifacts / "05_promo_camera_before_home.png")
+    # Exact-build hud.gui binds the native go-to-capital action; the default
+    # keyboard binding is Home.  This changes presentation only and runs after
+    # the fixture drawer is closed but before the append-only recorder starts.
+    acceptance.pyautogui.press("home")
+    time.sleep(2.0)
+    after = acceptance.ImageGrab.grab()
+    after.save(artifacts / "05_promo_camera_after_home.png")
+    evidence = {
+        "schema_version": 1,
+        "native_action": "go_to_capital",
+        "default_key": "home",
+        "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
+        "expected_realm_title": "h_china",
+        "before_artifact": "05_promo_camera_before_home.png",
+        "after_artifact": "05_promo_camera_after_home.png",
+    }
+    write_json(artifacts / "05_promo_camera_recenter.json", evidence)
+    return evidence
+
+
 def choose_direct_publication(
     stream: MarkerStream, artifacts: Path, recorder: PromoRecorder | None = None
 ) -> None:
@@ -2410,10 +2436,14 @@ def pause_after_jingcha_host_click(
 ) -> dict[str, object]:
     """Stop the restored speed-five clock before the delayed switch can race."""
 
-    # The mandate event interrupted a running speed-five timeline. Closing its
-    # host option restores that running state, so send the pause key before any
-    # planner OCR. Activity UI can cover CK3's rendered "paused" label; prove
-    # the freeze from three consecutive HUD dates instead of relying on it.
+    # The mandate event interrupted a running timeline.  The option click has a
+    # short transition during which a keyboard event can be swallowed, so give
+    # the event window one bounded render interval before sending Space.  The
+    # caller has already armed speed one; even a missed pause therefore cannot
+    # consume the fixture's D+30 carrier during the OCR fallback.  Activity UI
+    # can cover CK3's rendered "paused" label, so prove the freeze from three
+    # consecutive HUD dates instead of relying on it.
+    time.sleep(0.35)
     acceptance.pyautogui.press("space")
 
     def date_freeze_probe(label: str) -> tuple[bool, list[int], object]:
@@ -2458,6 +2488,7 @@ def pause_after_jingcha_host_click(
     paused_image.save(artifacts / "09_jingcha_host_immediate_pause_verified.png")
     paused_day = observations[-1]
     due_day = mandate_day + JINGCHA_PERSONAL_SWITCH_DELAY_DAYS
+    pause_delta_days = paused_day - mandate_day
     stream.pump()
     personal_switch_marker_count = stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER)
     evidence = {
@@ -2466,13 +2497,19 @@ def pause_after_jingcha_host_click(
         "mandate_day_ordinal": mandate_day,
         "personal_switch_due_day_ordinal": due_day,
         "paused_day_ordinal": paused_day,
+        "pause_delta_days": pause_delta_days,
+        "paused_within_two_days": 0 <= pause_delta_days <= 2,
         "pause_method": pause_method,
         "date_observations": observations,
         "last_three_dates_identical": frozen,
         "date_before_due": paused_day < due_day,
         "personal_switch_marker_count": personal_switch_marker_count,
     }
-    if personal_switch_marker_count != 0 or paused_day >= due_day:
+    if (
+        personal_switch_marker_count != 0
+        or paused_day >= due_day
+        or not 0 <= pause_delta_days <= 2
+    ):
         evidence["result"] = "RED"
     write_json(artifacts / "09_jingcha_host_immediate_pause_gate.json", evidence)
     if personal_switch_marker_count != 0:
@@ -2483,6 +2520,11 @@ def pause_after_jingcha_host_click(
         raise acceptance.RunnerError(
             "Jingcha host pause reached or crossed the delayed personal-switch due date: "
             f"paused={paused_day}, due={due_day}"
+        )
+    if not 0 <= pause_delta_days <= 2:
+        raise acceptance.RunnerError(
+            "Jingcha host was not paused within two game days after the option "
+            f"transition: mandate={mandate_day}, paused={paused_day}"
         )
     return evidence
 
@@ -2577,10 +2619,12 @@ def capture_jingcha_planner(
             "Jingcha mandate HUD date is unreadable before accepting the host option"
         )
     mandate_day = mandate_date[0]
+    # Event options use Shift+number shortcuts, leaving the plain number keys
+    # available for native timeline speeds.  Arm speed one before closing the
+    # modal so its restored clock cannot outrun the post-click pause proof.
+    acceptance.pyautogui.press("1")
+    time.sleep(0.35)
     acceptance.deliberate_click(host_option, "production host Jingcha option")
-    host_pause_evidence = pause_after_jingcha_host_click(
-        stream, artifacts, mandate_day
-    )
     plan_button = acceptance.wait_for_ocr_text(
         "规划京察大计",
         acceptance.FULL_SCREEN_REGION,
@@ -2588,6 +2632,9 @@ def capture_jingcha_planner(
         artifacts,
         "09_jingcha_activity_detail.png",
         stable_hits=1,
+    )
+    host_pause_evidence = pause_after_jingcha_host_click(
+        stream, artifacts, mandate_day
     )
     acceptance.deliberate_click(plan_button, "production plan Jingcha activity button")
     rendered_text = acceptance.wait_for_ocr_tokens(
@@ -3294,11 +3341,13 @@ def run_scenario(
     recorder: PromoRecorder | None = None,
 ) -> dict[str, object]:
     initialize_fixture(stream, artifacts)
+    promo_camera_evidence = None
     if recorder:
         # The one visible fixture decision is allowed only before recording.
         # Close its native drawer and prove a clean HUD before FFmpeg starts;
         # subsequent fixture coordination is hidden and time-delayed.
         close_native_decisions_panel(artifacts, "05_promo_pre_record")
+        promo_camera_evidence = recenter_promo_camera_on_player_capital(artifacts)
         assert_promo_frame_clean(
             artifacts,
             "05_promo_pre_record_clean_hud",
@@ -3333,6 +3382,7 @@ def run_scenario(
     )
     return {
         "standard_lobby_start": True,
+        "promo_camera_recenter": promo_camera_evidence,
         "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
         "reviewed_official_history_id": reviewed_history_id,
         "real_character_provenance": (

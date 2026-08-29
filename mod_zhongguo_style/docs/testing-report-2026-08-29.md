@@ -182,3 +182,15 @@ py mod_zhongguo_style/tools/validate_local.py
 修复分四层：关闭主持结果后立即发 Space，并以 HUD 日期连续冻结证明在打开任何右窗前已经停表；夹具专用京察 carrier 改为 D+10，产品京察周期完全不变；校准、主持结果、京察、上司考定和六张政策卡全部成为 protected target，错相位出现只能 RED，绝不交给通用选项排序；通用事件每次关闭后也改用 HUD 日期冻结门，并让专门的京察推进循环在 D+10 途中安全处理其他正式事件。新增可执行 FakeDesktop 状态机同时覆盖普通事件 → “野狗与小白兔”安全选项 → 京察停手、错相位京察硬阻塞以及两次日期冻结 sidecar，不再只检查源码 token。
 
 永久证据：根报告 `FE41F66483016D45CDD1DFE831D76D7EBF96ECEEC2E613CB866E7770D9509570`，证据索引 `5A4ACE8A8E2B65345C50E71923D59F4F2A7EDE2FE52746FCD174568D90BAD10C`，原始 MKV `E33F1D992214A6743887398839DA66DE8EA714B027887A4A8A0279686E2F73A3`，录制时间线 `5AEAFE065C3C97CA37F1F8EC6BFC0D7478B6DA1B571960A2C76CE276EF013F97`。被压住的京察帧、下一张“神道教巫”帧和暂停超时帧分别为 `238FADE01F649206F9C1050BD5ADBAB6728494768E0E7D5D8D826A11091EBC5D`、`06CD8A6C92C93BC157D3F7BFDF44DE2B8149802533FE9C6FB2F40E6CC4383AE9`、`CAAB5A606B27D6F97F5A128FF2BA0A341C67CC4AC6110163ADE0EA496D1FB62D`；三者均只作 RED 诊断，禁止进入宣传片或 Workshop 图。
+
+## 14. 第十七次候选：京察转场吞键与 D+30 竞态
+
+`promo/captures/zga_20260829_184810_8c8e16b` 使用已推送提交 `8c8e16b`。本轮再次在一次 CK3 启动内通过 361/361 参考路线、幂等性、历史 cohort、非独立天朝公爵后台考核、三档分布、首年保护、四重处分/申诉与拒办扣分；考核榜右侧安全入口、所辖/驾驶舱双 tab、标题栏 X、模态背景、历史人物行“青徐观察使，卢士宗”→原版人物页→原版 X→重开榜单也全部实点成功。四个已封存 clean span（校准会、历史榜单、制度驾驶舱、京察召集令）的端点与二次确认 OCR 均没有测试决议、测试标签或原生 Decisions 抽屉；榜单可见八人全在 21 人历史白名单内，两名生成坊正没有入镜。
+
+最终仍由 harness 判 **RED**。京察举办日为 1066-09-27（ordinal `389359`），个人结果载体正确安排在 D+30（`389389`），并未提前触发。`依例举办京察` 的 option 同时打开原生活动详情；旧 runner 在 mouse-up 后、`open_view_data` 异步转场尚未完成时立即盲按 Space，这次按键被吞。日期证据随后为 `389364 → 389386 → 389391`：第一次已前进 5 日，第二次累计 27 日，等慢 OCR 探针决定点击 timeline 时已经累计 32 日。D+30 carrier 因而正常切换到历史韩纲 `han_6547` 并生成真实“上司考定 3.25”；后三次日期冻结是该结果事件自动暂停，不是 host pause 成功。gate 正确拒绝了 `personal_switch_marker_count = 1`，没有把竞态冒充通过。
+
+针对这次实证，验收编排改成：在京察事件仍置顶时先按裸 `1` 将恢复速度降到一速；点击举办后先等“规划京察大计”出现，精确证明 event→activity-detail 转场完成；再留 `0.35s` 稳定帧并按 Space，最后用 HUD 日期证明必须在 D 当日或最迟 D+2 冻结，且 D+30 marker 仍为零。若 Space 仍被吞，一速下日期探针最多前进一日，timeline fallback 仍会在 D+30 前暂停。可执行 FakeDesktop 覆盖了这条吞键回退，而不只扫描源码 token。原版 1.19.0.6 的依据也已冻结：`game/gui/hud.gui` 中 `speed_1` 绑定 `SetGameSpeed(0)`；`game/gui/shared/event_windows.gui` 明确事件选项为 `Shift+number`，所以裸 `1` 不会误点第一项。产品京察的 300 日期限、强制性、费用和考核周期均未改变。
+
+画面审计还发现赵曙已切换成功，但地图仍继承标准书签罗伯特视角、停在印度。下一轮会在关闭唯一测试决议抽屉后、FFmpeg 启动前调用原生 `go_to_capital` 默认 Home 快捷键，并保存移动前后全屏图；最终正式素材仍必须来自整轮 GREEN，且只允许真实历史角色、零测试决议/测试事件/测试标签。第十七次的四段干净素材只作草稿参考，整条 RED MKV 不签入正式 manifest。
+
+永久证据：根报告 `D38561FDE54028C55CEDA1E4C00B15A0F2CA155D6D10C96384AC76DBC725BE1D`，证据索引 `E8812C606841047E49DA0243F600DF61ACCBE34D95AC96CDFA066BFB7A8C2E45`，原始 MKV `42612248D4B6AEB61D9F17A91448E40C6B307426102C242953509E235D93D61A`，录制时间线 `BFE4BD6F160B10432A41798D1836627E1B1016C6F061491B68311A62734841FF`，竞态 gate `622D2A843AE0EE33C0F2BD0952BF0762B9D83AC5596FF312CCBDF5D1C00B481A`。历史榜单、卢士宗原版人物页和三层叠窗失败终帧分别为 `6F78E895C7B5ADA9AA09BBE7D8E4C5CE701FC7BECC7AF65812C63B9A17523507`、`42B82428DCBE64D95BBCB8F4AE8A55031DF0291C0D8816DEB6AA405413A368A4`、`E156A3035A7C0E1A7B5CEBE61F305FE78C0AA0A99E7B4F90118536C210E0C7EB`；完整 `_userdir` 与所有失败过程素材继续保留。

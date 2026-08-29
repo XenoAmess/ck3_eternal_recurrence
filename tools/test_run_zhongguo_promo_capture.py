@@ -34,9 +34,13 @@ def main() -> int:
     body = scenario.group(0)
     assert body.index("initialize_fixture") < body.index("recorder.start()")
     assert body.index("close_native_decisions_panel") < body.index("recorder.start()")
+    assert body.index("recenter_promo_camera_on_player_capital") < body.index(
+        "recorder.start()"
+    )
     assert body.index("assert_promo_frame_clean") < body.index("recorder.start()")
     for token in (
         '"reviewed_official_history_id": reviewed_history_id',
+        '"promo_camera_recenter": promo_camera_evidence',
         '"fixture_constructor_counts": constructor_counts',
         '"historical_subjects_manufactured_by_fixture": bool(',
         '"test_decisions_visible_inside_clean_spans": 0 if recorder else None',
@@ -46,6 +50,7 @@ def main() -> int:
         '"persisted_choices_verified": bool(',
     ):
         assert token in body, token
+
     for token in (
         '"-f",\n            "gdigrab"',
         '"zg361-promo-live-full-take-01.mkv"',
@@ -222,6 +227,18 @@ def main() -> int:
 
     sys.path.insert(0, str(ROOT / "tools"))
     import run_zhongguo_acceptance as capture
+
+    camera_recenter = inspect.getsource(
+        capture.recenter_promo_camera_on_player_capital
+    )
+    for token in (
+        'acceptance.pyautogui.press("home")',
+        '"native_action": "go_to_capital"',
+        '"expected_realm_title": "h_china"',
+        '"05_promo_camera_before_home.png"',
+        '"05_promo_camera_after_home.png"',
+    ):
+        assert token in camera_recenter, token
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (
@@ -572,16 +589,28 @@ def main() -> int:
     assert 'stop_event_title="京察之期"' in jingcha_body
     assert "PROMO_EVENT_TITLE_REGION" in jingcha_body
     assert "pause_after_jingcha_host_click" in jingcha_body
+    assert 'acceptance.pyautogui.press("1")' in jingcha_body
+    assert jingcha_body.index(
+        'acceptance.pyautogui.press("1")'
+    ) < jingcha_body.index(
+        'acceptance.deliberate_click(host_option, "production host Jingcha option")'
+    )
     assert jingcha_body.index(
         'acceptance.deliberate_click(host_option, "production host Jingcha option")'
+    ) < jingcha_body.index(
+        "plan_button = acceptance.wait_for_ocr_text"
+    )
+    assert jingcha_body.index(
+        "plan_button = acceptance.wait_for_ocr_text"
     ) < jingcha_body.index("pause_after_jingcha_host_click")
     assert jingcha_body.index("pause_after_jingcha_host_click") < jingcha_body.index(
-        "plan_button = acceptance.wait_for_ocr_text"
+        'acceptance.deliberate_click(plan_button, "production plan Jingcha activity button")'
     )
 
     host_pause = inspect.getsource(capture.pause_after_jingcha_host_click)
     for token in (
         'acceptance.pyautogui.press("space")',
+        "time.sleep(0.35)",
         "acceptance.read_hud_game_date",
         "date_freeze_probe",
         "len(set(observations[-3:])) == 1",
@@ -590,6 +619,7 @@ def main() -> int:
         "PERSONAL_SWITCH_SCHEDULED_MARKER",
         "paused_day >= due_day",
         '"date_before_due": paused_day < due_day',
+        '"paused_within_two_days": 0 <= pause_delta_days <= 2',
         '"last_three_dates_identical": frozen',
         '"09_jingcha_host_immediate_pause_gate.json"',
     ):
@@ -653,6 +683,65 @@ def main() -> int:
         assert frozen["pause_method"] == "timeline_click"
         assert frozen["date_observations"] == [100, 101, 102, 103, 103, 103, 103, 103]
         assert (artifacts / "mock_chain_date_freeze_gate.json").is_file()
+
+    class NoPersonalSwitchStream:
+        def pump(self) -> None:
+            return None
+
+        def count(self, marker: str) -> int:
+            assert marker == capture.PERSONAL_SWITCH_SCHEDULED_MARKER
+            return 0
+
+    # Model the real failure mode: Space is swallowed by the post-option
+    # transition, but the caller has armed speed one, so the first probe moves
+    # by only one day and the native timeline fallback still pauses before D+30.
+    slow_then_frozen = iter((1000, 1000, 1001, 1001, 1001, 1001, 1001, 1001))
+    action_order: list[tuple[str, object]] = []
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        with (
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=[FakeImage() for _ in range(8)],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "read_hud_game_date",
+                side_effect=lambda _image: (next(slow_then_frozen), (0, 0)),
+            ),
+            mock.patch.object(
+                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+            ),
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "press",
+                side_effect=lambda key: action_order.append(("press", key)),
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "deliberate_click",
+                side_effect=lambda _point, label: action_order.append(("click", label)),
+            ) as click,
+            mock.patch.object(
+                capture.time,
+                "sleep",
+                side_effect=lambda seconds: action_order.append(("sleep", seconds)),
+            ),
+        ):
+            pause_gate = capture.pause_after_jingcha_host_click(
+                NoPersonalSwitchStream(), artifacts, mandate_day=1000
+            )
+        click.assert_called_once()
+        assert action_order[0] == ("sleep", 0.35)
+        assert action_order[1] == ("press", "space")
+        assert pause_gate["result"] == "GREEN"
+        assert pause_gate["personal_switch_due_day_ordinal"] == 1030
+        assert pause_gate["paused_day_ordinal"] == 1001
+        assert pause_gate["pause_delta_days"] == 1
+        assert pause_gate["paused_within_two_days"] is True
+        assert pause_gate["personal_switch_marker_count"] == 0
+        assert (artifacts / "09_jingcha_host_immediate_pause_gate.json").is_file()
 
     def event_item(
         text: str, center: tuple[int, int], width: int = 500
