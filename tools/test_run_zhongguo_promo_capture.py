@@ -268,6 +268,15 @@ def main() -> int:
         assert token in arm_source, token
     assert 'snapshot.get("paused") is True' not in arm_source
     assert "while time.monotonic()" not in arm_source
+    identity_source = inspect.getsource(capture.query_event_definition_identity)
+    for token in (
+        "query_current_event_window_context_v1",
+        "expected_revision=revision",
+        'query.get("status") == "available"',
+        'readiness.get("event_definition_identity_ready") is True',
+        '"event_definition_key": event_definition_key',
+    ):
+        assert token in identity_source, token
     pause_source = inspect.getsource(capture.pause_after_promo_event_click)
     for token in (
         "transition_deadline = time.monotonic() + 0.75",
@@ -277,8 +286,7 @@ def main() -> int:
         'service.execute_step("pause-map")',
         'pause_submission.get("status") == "submitted"',
         'all(item["date_raw"] == pre_date for item in tail)',
-        "query_current_event_window_context_v1",
-        'readiness.get("event_definition_identity_ready") is True',
+        "query_event_definition_identity",
         "instance_transitioned or definition_transitioned",
     ):
         assert token in pause_source, token
@@ -507,6 +515,28 @@ def main() -> int:
         assert chained["transition_failure"] is None
         assert chained_service.query_calls == [(9, 12)]
         assert chained_service.steps == []
+
+    with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
+        capture.time, "monotonic", side_effect=advancing_clock()
+    ), mock.patch.object(capture.time, "sleep", return_value=None):
+        policy_successor_service = SameInstanceDefinitionTransitionService(
+            "zg361m.22"
+        )
+        policy_successor = capture.pause_after_promo_event_click(
+            policy_successor_service,
+            Path(temp_dir),
+            pre_click,
+            stem="mock_policy_020_same_instance_policy_022",
+            expected_predecessor_event_key="zg361m.20",
+        )
+        assert policy_successor["result"] == "GREEN"
+        assert policy_successor["instance_transition_seen_same_date"] is False
+        assert policy_successor["definition_transition_seen_same_date"] is True
+        assert policy_successor["event_transition_identity_method"] == (
+            "event_definition_key"
+        )
+        assert policy_successor["observed_successor_event_key"] == "zg361m.22"
+        assert policy_successor_service.query_calls == [(9, 12)]
 
     with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
         capture.time, "monotonic", side_effect=advancing_clock()
@@ -1581,6 +1611,10 @@ def main() -> int:
     policy_body = policies.group(0)
     assert "settle_promo_interruptions" in policy_body
     assert "stop_event_title=event_title" in policy_body
+    assert (
+        'stop_event_definition_key=f"zg361m.{mechanism_id}"' in policy_body
+    )
+    assert "native_event_service=timeline_service" in policy_body
     assert 'acceptance.wait_for_ocr_text(\n            event_title,' not in policy_body
     assert 'f"{stem}_preemption_target_event_visible.png"' in policy_body
     assert 'f"{stem}_event.png"' in policy_body
@@ -1680,6 +1714,7 @@ def main() -> int:
 
     interruption = inspect.getsource(capture.settle_promo_interruptions)
     assert "stop_event_title: str | None = None" in interruption
+    assert "stop_event_definition_key: str | None = None" in interruption
     assert "promo_event_title_evidence" in interruption
     assert interruption.index("promo_event_title_evidence") < interruption.index(
         "acceptance.select_stall_recovery"
@@ -1690,6 +1725,17 @@ def main() -> int:
     assert "blocked_protected_target_event" in interruption
     assert "ensure_hud_date_frozen" in interruption
     assert "acceptance.ensure_game_paused" not in interruption
+    for token in (
+        "query_event_definition_identity",
+        'status="blocked_event_definition_identity_unavailable"',
+        '"identity_method": "event_definition_key"',
+        "native_visual_identity_candidate",
+        "arm_native_speed_one",
+        "pause_after_promo_event_click",
+        '"native_mcp_definition_identity_visual_click"',
+        '"repeated_visual_option_after_definition_transition"',
+    ):
+        assert token in interruption, token
 
     pause_by_date = inspect.getsource(capture.ensure_hud_date_frozen)
     for token in (
@@ -1871,6 +1917,307 @@ def main() -> int:
     def write_fake_bundle(image, items, artifacts, stem):
         image.save(artifacts / f"{stem}.png")
         return 0.0
+
+    policy_020_ocr_items = event_frame(
+        "第020号普升包与跨部门答辩",
+        (
+            ("用底账证明真实贡献", (930, 934)),
+            ("这季度先不碰，登记制度债", (936, 1043)),
+        ),
+    )
+    assert capture.promo_event_modal_evidence(
+        policy_020_ocr_items, 2560, 1440
+    )
+    assert not capture.promo_event_title_evidence(
+        policy_020_ocr_items,
+        2560,
+        1440,
+        "晋升包与跨部门答辩",
+    )
+
+    class DefinitionTargetService:
+        def __init__(self, *, available: bool) -> None:
+            self.available = available
+            self.query_calls: list[tuple[int, int]] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": 40,
+                "native_revision": 39,
+                "date_raw": 53146848,
+                "paused": True,
+                "speed": 1,
+                "active_event": {"instance_id": 9, "option_count": 3},
+                "played_character": {"character_id": 77},
+            }
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            self.query_calls.append((event_instance_id, expected_revision))
+            if not self.available:
+                return {
+                    "status": "unavailable",
+                    "current_event_window_context": {
+                        "event_definition_key": None,
+                        "readiness": {
+                            "event_definition_identity_ready": False
+                        },
+                    },
+                }
+            return {
+                "status": "available",
+                "current_event_window_context": {
+                    "event_definition_key": "zg361m.20",
+                    "readiness": {"event_definition_identity_ready": True},
+                },
+            }
+
+    policy_020_image = FakeDesktopImage(policy_020_ocr_items)
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        target_service = DefinitionTargetService(available=True)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                return_value=policy_020_image,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            target_dismissed = capture.settle_promo_interruptions(
+                artifacts,
+                "mock_policy_020_ocr_drift",
+                observation_s=0.0,
+                stop_event_title="晋升包与跨部门答辩",
+                stop_event_definition_key="zg361m.20",
+                native_event_service=target_service,
+            )
+        click.assert_not_called()
+        assert target_dismissed == []
+        assert target_service.query_calls == [(9, 40)]
+        assert (
+            artifacts / "mock_policy_020_ocr_drift_target_event_visible.png"
+        ).is_file()
+        target_gate = json.loads(
+            (
+                artifacts
+                / "mock_policy_020_ocr_drift_target_event_identity_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert target_gate["result"] == "GREEN"
+        assert target_gate["visual_title_match"] is False
+        assert target_gate["expected_event_definition_key"] == "zg361m.20"
+        assert target_gate["observed_event_definition_key"] == "zg361m.20"
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        unavailable_service = DefinitionTargetService(available=False)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                return_value=policy_020_image,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            try:
+                capture.settle_promo_interruptions(
+                    artifacts,
+                    "mock_policy_020_identity_unavailable",
+                    observation_s=0.0,
+                    stop_event_title="晋升包与跨部门答辩",
+                    stop_event_definition_key="zg361m.20",
+                    native_event_service=unavailable_service,
+                )
+            except capture.acceptance.RunnerError as exc:
+                assert "could not identify the expected promo event" in str(exc)
+            else:
+                raise AssertionError("unavailable event identity did not fail closed")
+        click.assert_not_called()
+        assert unavailable_service.query_calls == [(9, 40)]
+        unavailable_gate = json.loads(
+            (
+                artifacts
+                / "mock_policy_020_identity_unavailable_event_definition_identity_unavailable_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert unavailable_gate["result"] == "RED"
+        unavailable_decision = json.loads(
+            (
+                artifacts
+                / "mock_policy_020_identity_unavailable_event_definition_identity_unavailable_decision.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert unavailable_decision["status"] == (
+            "blocked_event_definition_identity_unavailable"
+        )
+
+    class NativeVisualDefinitionService:
+        def __init__(self) -> None:
+            self.revision = 50
+            self.speed = 5
+            self.paused = False
+            self.definition_key = "vanilla.100"
+            self.query_calls: list[tuple[int, int, str]] = []
+            self.steps: list[str] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "native_revision": self.revision,
+                "date_raw": 53146848,
+                "paused": self.paused,
+                "speed": self.speed,
+                "active_event": {"instance_id": 9, "option_count": 2},
+                "played_character": {"character_id": 77},
+            }
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            assert step == "set-speed-1"
+            self.steps.append(step)
+            self.speed = 1
+            self.revision += 1
+            return {"step": step, "accepted": True, "status": "submitted"}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            self.query_calls.append(
+                (event_instance_id, expected_revision, self.definition_key)
+            )
+            return {
+                "status": "available",
+                "current_event_window_context": {
+                    "event_definition_key": self.definition_key,
+                    "readiness": {"event_definition_identity_ready": True},
+                },
+            }
+
+        def select_visual_option(self) -> None:
+            assert self.definition_key == "vanilla.100"
+            self.definition_key = "vanilla.101"
+            self.paused = True
+            self.revision += 1
+
+    repeated_option = "这季度先不碰，登记制度债"
+    predecessor_items = event_frame(
+        "例行预算来函",
+        ((repeated_option, (936, 1043)),),
+    )
+    successor_items = event_frame(
+        "下一封例行预算来函",
+        ((repeated_option, (936, 1043)),),
+    )
+
+    class NativeVisualDesktop:
+        def __init__(self, service: NativeVisualDefinitionService) -> None:
+            self.service = service
+            self.successor_frame_returned = False
+            self.clicks: list[tuple[int, int]] = []
+
+        def grab(self) -> FakeDesktopImage:
+            if self.service.definition_key == "vanilla.100":
+                return FakeDesktopImage([dict(item) for item in predecessor_items])
+            if not self.successor_frame_returned:
+                self.successor_frame_returned = True
+                return FakeDesktopImage([dict(item) for item in successor_items])
+            return FakeDesktopImage([])
+
+        def click(self, point: tuple[int, int], _label: str) -> None:
+            assert point == (936, 1043)
+            self.clicks.append(point)
+            self.service.select_visual_option()
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        visual_service = NativeVisualDefinitionService()
+        visual_desktop = NativeVisualDesktop(visual_service)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=visual_desktop.grab,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "deliberate_click",
+                side_effect=visual_desktop.click,
+            ),
+            mock.patch.object(
+                capture.time, "monotonic", side_effect=advancing_clock()
+            ),
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            native_visual_dismissed = capture.settle_promo_interruptions(
+                artifacts,
+                "mock_native_visual_same_option",
+                observation_s=0.0,
+                stop_event_title="晋升包与跨部门答辩",
+                stop_event_definition_key="zg361m.20",
+                native_event_service=visual_service,
+            )
+        assert visual_desktop.clicks == [(936, 1043)]
+        assert visual_service.steps == ["set-speed-1"]
+        assert len(native_visual_dismissed) == 1
+        native_visual_row = native_visual_dismissed[0]
+        assert native_visual_row["selection_method"] == (
+            "native_mcp_definition_identity_visual_click"
+        )
+        assert native_visual_row[
+            "repeated_visual_option_after_definition_transition"
+        ] is True
+        native_visual_gate = native_visual_row["native_selection_evidence"]
+        assert native_visual_gate["result"] == "GREEN"
+        assert native_visual_gate["instance_transition_seen_same_date"] is False
+        assert native_visual_gate["definition_transition_seen_same_date"] is True
+        assert native_visual_gate["observed_successor_event_key"] == "vanilla.101"
+        assert visual_service.query_calls == [
+            (9, 50, "vanilla.100"),
+            (9, 51, "vanilla.100"),
+            (9, 52, "vanilla.101"),
+        ]
 
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)

@@ -3454,6 +3454,52 @@ def _personal_switch_native_snapshot(
     }
 
 
+def query_event_definition_identity(
+    service: GameplayBridgeService,
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    """Resolve one snapshot-bound canonical event definition through MCP."""
+
+    observation = _personal_switch_native_snapshot(snapshot)
+    event_instance_id = observation["active_event_instance_id"]
+    revision = snapshot.get("revision")
+    if isinstance(event_instance_id, bool) or not isinstance(
+        event_instance_id, int
+    ):
+        raise acceptance.RunnerError(
+            "native event-definition query lacks an active event instance"
+        )
+    if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0:
+        raise acceptance.RunnerError(
+            "native event-definition query lacks a public revision"
+        )
+    query = service.query_current_event_window_context_v1(
+        event_instance_id,
+        expected_revision=revision,
+    )
+    context = query.get("current_event_window_context")
+    readiness = context.get("readiness") if isinstance(context, dict) else None
+    event_definition_key = (
+        context.get("event_definition_key") if isinstance(context, dict) else None
+    )
+    if not (
+        query.get("status") == "available"
+        and isinstance(readiness, dict)
+        and readiness.get("event_definition_identity_ready") is True
+        and isinstance(event_definition_key, str)
+        and event_definition_key
+    ):
+        raise acceptance.RunnerError(
+            "event-window MCP did not publish canonical definition identity"
+        )
+    return {
+        "event_instance_id": event_instance_id,
+        "snapshot_revision": revision,
+        "event_definition_key": event_definition_key,
+        "query": query,
+    }
+
+
 def select_single_option_interruption_native(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -4063,36 +4109,11 @@ def pause_after_promo_event_click(
     # successful pause alone are not event identity.
     if frozen and post_event_id == pre_event and isinstance(post_event_id, int):
         try:
-            paused_revision = paused_snapshot.get("revision")
-            if isinstance(paused_revision, bool) or not isinstance(
-                paused_revision, int
-            ):
-                raise acceptance.RunnerError(
-                    "paused event snapshot lacks a public revision"
-                )
-            definition_query = service.query_current_event_window_context_v1(
-                post_event_id,
-                expected_revision=paused_revision,
+            definition_identity = query_event_definition_identity(
+                service, paused_snapshot
             )
-            context = definition_query.get("current_event_window_context")
-            readiness = (
-                context.get("readiness") if isinstance(context, dict) else None
-            )
-            observed_key = (
-                context.get("event_definition_key")
-                if isinstance(context, dict)
-                else None
-            )
-            if not (
-                definition_query.get("status") == "available"
-                and isinstance(readiness, dict)
-                and readiness.get("event_definition_identity_ready") is True
-                and isinstance(observed_key, str)
-                and observed_key
-            ):
-                raise acceptance.RunnerError(
-                    "event-window MCP did not publish canonical definition identity"
-                )
+            definition_query = definition_identity["query"]
+            observed_key = definition_identity["event_definition_key"]
             observed_successor_event_key = observed_key
             definition_transitioned = (
                 observed_key != expected_predecessor_event_key
@@ -4402,6 +4423,7 @@ def _write_promo_interruption_decision(
     kind: str | None,
     selected: dict[str, object] | None,
     native_active_event_instance_id: int | None = None,
+    native_event_definition_key: str | None = None,
     selection_method: str | None = None,
 ) -> None:
     write_json(
@@ -4415,6 +4437,7 @@ def _write_promo_interruption_decision(
             "selected_center": selected.get("center") if selected else None,
             "allow_succession": False,
             "native_active_event_instance_id": native_active_event_instance_id,
+            "native_event_definition_key": native_event_definition_key,
             "selection_method": selection_method,
         },
     )
@@ -4427,6 +4450,7 @@ def settle_promo_interruptions(
     observation_s: float = PROMO_INTERRUPTION_DEFAULT_OBSERVE_S,
     max_dismissals: int = PROMO_INTERRUPTION_MAX_DISMISSALS,
     stop_event_title: str | None = None,
+    stop_event_definition_key: str | None = None,
     native_event_service: GameplayBridgeService | None = None,
     native_active_event_instance_id: int | None = None,
     native_active_event_option_count: int | None = None,
@@ -4440,6 +4464,13 @@ def settle_promo_interruptions(
     """
     if max_dismissals < 1:
         raise ValueError("max_dismissals must be positive")
+    if stop_event_definition_key is not None:
+        if not stop_event_definition_key.strip():
+            raise ValueError("stop_event_definition_key must be non-empty")
+        if native_event_service is None:
+            raise ValueError(
+                "stop_event_definition_key requires native_event_service"
+            )
     deadline = time.monotonic() + max(0.0, observation_s)
     dismissed: list[dict[str, object]] = []
     while True:
@@ -4449,10 +4480,108 @@ def settle_promo_interruptions(
             image, acceptance.FULL_SCREEN_REGION
         )
         width, height = image.size
-        if stop_event_title and promo_event_title_evidence(
-            items, width, height, stop_event_title
+        event_modal_visible = promo_event_modal_evidence(items, width, height)
+        visual_stop_match = bool(
+            stop_event_title
+            and promo_event_title_evidence(items, width, height, stop_event_title)
+        )
+        native_identity: dict[str, object] | None = None
+        native_identity_error: str | None = None
+        if native_event_service is not None and (
+            event_modal_visible or visual_stop_match
+        ):
+            try:
+                native_identity = query_event_definition_identity(
+                    native_event_service,
+                    native_event_service.snapshot(),
+                )
+            except Exception as error:
+                native_identity_error = f"{type(error).__name__}: {error}"
+                if stop_event_definition_key is not None:
+                    diagnostic = f"{stem}_event_definition_identity_unavailable"
+                    acceptance.mark_recovery_items(items, [], None)
+                    acceptance.write_recovery_bundle(
+                        image, items, artifacts, diagnostic
+                    )
+                    _write_promo_interruption_decision(
+                        artifacts,
+                        diagnostic,
+                        status="blocked_event_definition_identity_unavailable",
+                        kind=None,
+                        selected=None,
+                        selection_method="native_mcp_event_definition",
+                    )
+                    write_json(
+                        artifacts / f"{diagnostic}_gate.json",
+                        {
+                            "schema_version": 1,
+                            "result": "RED",
+                            "expected_event_definition_key": (
+                                stop_event_definition_key
+                            ),
+                            "error": native_identity_error,
+                        },
+                    )
+                    raise acceptance.RunnerError(
+                        "native MCP could not identify the expected promo event"
+                    ) from error
+
+        observed_definition_key = (
+            native_identity.get("event_definition_key")
+            if native_identity is not None
+            else None
+        )
+        native_stop_match = (
+            event_modal_visible
+            and stop_event_definition_key is not None
+            and observed_definition_key == stop_event_definition_key
+        )
+        if stop_event_definition_key is not None and visual_stop_match and not (
+            native_stop_match
+        ):
+            diagnostic = f"{stem}_event_definition_identity_mismatch"
+            acceptance.mark_recovery_items(items, [], None)
+            acceptance.write_recovery_bundle(image, items, artifacts, diagnostic)
+            _write_promo_interruption_decision(
+                artifacts,
+                diagnostic,
+                status="blocked_event_definition_identity_mismatch",
+                kind=stop_event_title,
+                selected=None,
+                native_active_event_instance_id=(
+                    native_identity.get("event_instance_id")
+                    if native_identity is not None
+                    else None
+                ),
+                native_event_definition_key=(
+                    observed_definition_key
+                    if isinstance(observed_definition_key, str)
+                    else None
+                ),
+                selection_method="native_mcp_event_definition",
+            )
+            raise acceptance.RunnerError(
+                "visible promo target did not match its canonical event definition"
+            )
+        if native_stop_match or (
+            stop_event_definition_key is None and visual_stop_match
         ):
             image.save(artifacts / f"{stem}_target_event_visible.png")
+            if native_stop_match:
+                write_json(
+                    artifacts / f"{stem}_target_event_identity_gate.json",
+                    {
+                        "schema_version": 1,
+                        "result": "GREEN",
+                        "identity_method": "event_definition_key",
+                        "visual_title_match": visual_stop_match,
+                        "expected_event_definition_key": (
+                            stop_event_definition_key
+                        ),
+                        "observed_event_definition_key": observed_definition_key,
+                        "identity": native_identity,
+                    },
+                )
             return dismissed
         protected_title = next(
             (
@@ -4463,7 +4592,14 @@ def settle_promo_interruptions(
             ),
             None,
         )
-        if protected_title is not None:
+        protected_definition_key = (
+            observed_definition_key
+            if observed_definition_key
+            in {f"zg361m.{mechanism_id}" for mechanism_id, *_ in PROMO_POLICY_CARDS}
+            and observed_definition_key != stop_event_definition_key
+            else None
+        )
+        if protected_title is not None or protected_definition_key is not None:
             diagnostic = f"{stem}_protected_target_event"
             acceptance.mark_recovery_items(items, [], None)
             acceptance.write_recovery_bundle(image, items, artifacts, diagnostic)
@@ -4471,12 +4607,31 @@ def settle_promo_interruptions(
                 artifacts,
                 diagnostic,
                 status="blocked_protected_target_event",
-                kind=protected_title,
+                kind=(
+                    protected_title
+                    if protected_title is not None
+                    else str(protected_definition_key)
+                ),
                 selected=None,
+                native_active_event_instance_id=(
+                    native_identity.get("event_instance_id")
+                    if native_identity is not None
+                    else None
+                ),
+                native_event_definition_key=(
+                    protected_definition_key
+                    if isinstance(protected_definition_key, str)
+                    else None
+                ),
+                selection_method=(
+                    "native_mcp_event_definition"
+                    if protected_definition_key is not None
+                    else None
+                ),
             )
             raise acceptance.RunnerError(
                 "protected promo target surfaced outside its capture step: "
-                f"{protected_title}"
+                f"{protected_title or protected_definition_key}"
             )
 
         preferred_event, preferred_selected = promo_preferred_product_event_option(
@@ -4544,8 +4699,15 @@ def settle_promo_interruptions(
             and native_active_event_option_count == 1
             and kind is not None
         )
+        native_visual_identity_candidate = (
+            native_event_service is not None
+            and event_modal_visible
+            and native_identity is not None
+            and not native_single_option_candidate
+            and kind is not None
+        )
         if (
-            not promo_event_modal_evidence(items, width, height)
+            not event_modal_visible
             and not native_single_option_candidate
         ):
             remaining = deadline - time.monotonic()
@@ -4581,6 +4743,49 @@ def settle_promo_interruptions(
                 f"promo interruption exceeded {max_dismissals} bounded dismissals"
             )
 
+        native_visual_speed_gate: dict[str, object] | None = None
+        if native_visual_identity_candidate:
+            native_visual_speed_gate = arm_native_speed_one(
+                native_event_service,
+                artifacts,
+                stem=f"{diagnostic}_native_visual",
+            )
+            refreshed_identity = query_event_definition_identity(
+                native_event_service,
+                native_visual_speed_gate["snapshot"],
+            )
+            if (
+                refreshed_identity["event_instance_id"]
+                != native_identity["event_instance_id"]
+                or refreshed_identity["event_definition_key"]
+                != native_identity["event_definition_key"]
+            ):
+                write_json(
+                    artifacts / f"{diagnostic}_native_visual_identity_gate.json",
+                    {
+                        "schema_version": 1,
+                        "result": "RED",
+                        "failure_reason": (
+                            "event identity changed while arming speed one"
+                        ),
+                        "initial_identity": native_identity,
+                        "refreshed_identity": refreshed_identity,
+                    },
+                )
+                raise acceptance.RunnerError(
+                    "promo interruption changed while binding its native identity"
+                )
+            native_identity = refreshed_identity
+
+        selection_method = (
+            "native_mcp_single_option"
+            if native_single_option_candidate
+            else (
+                "native_mcp_definition_identity_visual_click"
+                if native_visual_identity_candidate
+                else "visual_click"
+            )
+        )
         _write_promo_interruption_decision(
             artifacts,
             diagnostic,
@@ -4590,13 +4795,20 @@ def settle_promo_interruptions(
             native_active_event_instance_id=(
                 native_active_event_instance_id
                 if native_single_option_candidate
+                else (
+                    native_identity.get("event_instance_id")
+                    if native_visual_identity_candidate
+                    and native_identity is not None
+                    else None
+                )
+            ),
+            native_event_definition_key=(
+                native_identity.get("event_definition_key")
+                if native_visual_identity_candidate
+                and native_identity is not None
                 else None
             ),
-            selection_method=(
-                "native_mcp_single_option"
-                if native_single_option_candidate
-                else "visual_click"
-            ),
+            selection_method=selection_method,
         )
         native_selection_evidence = None
         if native_single_option_candidate:
@@ -4613,6 +4825,54 @@ def settle_promo_interruptions(
             )
         selected_text = selected["text"]
         selected_center = selected["center"]
+        if native_visual_identity_candidate:
+            native_selection_evidence = pause_after_promo_event_click(
+                native_event_service,
+                artifacts,
+                native_visual_speed_gate["snapshot"],
+                stem=f"{diagnostic}_native_visual",
+                expected_predecessor_event_key=str(
+                    native_identity["event_definition_key"]
+                ),
+            )
+            native_selection_evidence["speed_one_submission"] = (
+                native_visual_speed_gate["submission"]
+            )
+            native_selection_evidence["speed_one_observations"] = (
+                native_visual_speed_gate["observations"]
+            )
+            after = acceptance.ImageGrab.grab()
+            after_items = acceptance.ocr_box_results(
+                after, acceptance.FULL_SCREEN_REGION
+            )
+            repeated_visual_option = any(
+                item["text"] == selected_text
+                and abs(item["center"][0] - selected_center[0]) <= 30
+                and abs(item["center"][1] - selected_center[1]) <= 20
+                for item in after_items
+            )
+            after.save(artifacts / f"{diagnostic}_dismissed.png")
+            dismissed.append(
+                {
+                    "kind": kind,
+                    "selected_text": selected_text,
+                    "selected_center": selected_center,
+                    "diagnostic_stem": diagnostic,
+                    "selection_method": selection_method,
+                    "native_active_event_instance_id": native_identity.get(
+                        "event_instance_id"
+                    ),
+                    "native_event_definition_key": native_identity.get(
+                        "event_definition_key"
+                    ),
+                    "repeated_visual_option_after_definition_transition": (
+                        repeated_visual_option
+                    ),
+                    "native_selection_evidence": native_selection_evidence,
+                }
+            )
+            deadline = time.monotonic() + max(0.0, observation_s)
+            continue
         close_deadline = time.monotonic() + 8
         while time.monotonic() < close_deadline:
             time.sleep(acceptance.POLL_INTERVAL_S)
@@ -4634,11 +4894,7 @@ def settle_promo_interruptions(
                         "selected_text": selected_text,
                         "selected_center": selected_center,
                         "diagnostic_stem": diagnostic,
-                        "selection_method": (
-                            "native_mcp_single_option"
-                            if native_single_option_candidate
-                            else "visual_click"
-                        ),
+                        "selection_method": selection_method,
                         "native_active_event_instance_id": (
                             native_active_event_instance_id
                             if native_single_option_candidate
@@ -4699,12 +4955,13 @@ def capture_policy_cards(
             f"{stem}_preemption",
             observation_s=20.0,
             stop_event_title=event_title,
+            stop_event_definition_key=f"zg361m.{mechanism_id}",
+            native_event_service=timeline_service,
         )
-        # settle_promo_interruptions has already matched this exact title with
-        # promo_event_title_evidence(), whose normalization deliberately
-        # ignores OCR spacing/punctuation drift (for example KPI分项 vs
-        # KPI 分项). Reuse that freshly validated frame instead of performing a
-        # weaker, raw-string OCR wait that can turn a visible card into a RED.
+        # settle_promo_interruptions has already bound this visible modal to the
+        # expected canonical zg361m.N definition through the native MCP. Reuse
+        # that validated frame instead of performing a weaker OCR-only wait
+        # that can turn a visible card into a RED (for example 晋升 -> 普升).
         validated_event_artifact = (
             artifacts / f"{stem}_preemption_target_event_visible.png"
         )

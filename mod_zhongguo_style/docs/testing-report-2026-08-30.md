@@ -93,9 +93,19 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**：保留原 instance-ID 快路径；同 ID 时只在同日冻结后调用现成 `current_event_window_context_v1` MCP，并要求 canonical `event_definition_key` 从调用方声明的前序键（政策卡为 `zg361m.N`，个人告身为 `zg361.4`）发生变化。query unavailable、定义未变、日期漂移或角色变化仍 RED；通用 revision、option_count、OCR 和“已经暂停”都不能代替身份。下一张政策卡前的有界 interruption 处理会对真实 `zg361.6` 明确选择“掀桌起兵”：它保留史实角色和头衔，但会真实建立独立派系；随机申诉、夺爵与致仕不用于连续片场。定向回归已覆盖同 ID 的 `zg361m.1 → zg361.6` GREEN、同 ID 同定义 RED、原 ID 变化路径和日期漂移 RED；下一步仍只跑一局完整合批实机。
 
-## 8. 环境与证据边界
+## 8. 第九次完整 attempt：#020 已切到 #022，共用选项文字制造假 RED
+
+第九次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0651_current_cdda2f5_mcp` 第九次实机取得宋帝 23 人严格 `7 / 14 / 2`：`bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_bottom_slots = 2`、`bootstrap_actual_bottom_rows = 2`，结算前后两道严格 marker 均 PASS。361/361 机制账本与幂等性、AI 非独立天朝公爵考核、考核榜按钮和完整 GUI 阻塞矩阵、制度驾驶舱、京察强制弹窗与免费规划器、D+90、拒办处罚、新人保护、史实上司告身中的本人 `3.25` 以及本人所属考核榜也都再次通过；`project_diagnostics = []`。政策卡 #001、#007 已完成可见捕获和真实选项提交，#020 也已真实显示。
+
+本局最终仍为 **harness RED**，但产品转场已经成功。`12_policy_020_preemption_interruption_01.png` 显示 1066-12-31 的第020号《晋升包与跨部门答辩》；RapidOCR 把标题中的“晋”误读为“普”，旧的 OCR stop gate 因而没有认出预期目标，并误把 #020 当成普通中断点击 C“这季度先不碰，登记制度债”。`final_debug.log` 随即记录 `ZG361M: CASE 020 CHOICE C APPLIED` 与唯一一次 `clean_policy_022_dispatched`；`timeout_12_policy_020_preemption_interruption_01.png` 和 `fatal_state.png` 已在 1067-01-01 明确显示第022号《软 HC / 编制预算》。所以 #020 并未卡住，产品也没有漏派发 #022。
+
+旧关闭门只比较被点选项的 OCR 文本和屏幕坐标。全部政策卡的 C 选项本来就共用“这季度先不碰，登记制度债”，#020 与 #022 又使用同一按钮位置，因此后继卡仍命中该启发式，8 秒后被误报为“选项未消失”。这段失败 artifact 没有保存点击前后的 event-window MCP snapshot；decision sidecar 中的 `native_active_event_instance_id = null` 只表示该调用没有接入 native service，不能据此声称原生桥当时观测到了空事件，也不能事后推断 instance 是否复用。
+
+针对性修复现为 **static-ready**：政策 preemption 调用会把预期 canonical key `zg361m.N` 与原生 service 一并传入；runner 用当前 snapshot 的 active instance 和 public revision 调用 `current_event_window_context_v1`。只有顶层可见 modal 的 canonical key 等于目标 key 才保存目标帧并停止清理，MCP unavailable、identity readiness 不足或视觉标题与 canonical 身份冲突均 fail-closed。真正需要清理的中断会先原生降至一速，再以同日 instance/definition 转场和连续冻结为权威后置门；重复选项文字只保留为诊断，不再决定成功。定向回归覆盖本局真实 OCR“第020号普升包与跨部门答辩”、目标零点击、MCP unavailable RED、同 ID `zg361m.20 → zg361m.22`、同文同位后继和 revision 绑定；Python 编译、宣传 runner 合同测试、`git diff --check` 与 exact-build promo preflight 均 GREEN。下一步只运行一次新的完整合批实机，不重复审计此前已闭合链路。
+
+## 9. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已八次实机复现；项目诊断在第六至八次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜和政策卡第001号均已 live-confirmed；同窗 event-definition MCP 转场、其余五张政策卡及正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已九次实机复现；项目诊断在第六至九次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜及政策卡 #001/#007/#020 均已 live-confirmed；政策 preemption 的 canonical-key 目标门、其余政策卡与正式宣传素材仍等待下一次完整 GREEN。
