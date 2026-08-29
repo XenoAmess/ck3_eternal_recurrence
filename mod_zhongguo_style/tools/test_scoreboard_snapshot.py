@@ -15,6 +15,7 @@ from gen_scoreboard_snapshot import (
     TOGGLE_POSITION,
     TOGGLE_SIZE,
     outputs,
+    row_gui,
 )
 
 
@@ -200,6 +201,22 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 re.S,
             ),
         )
+
+    def test_row_content_cannot_intercept_the_character_button(self) -> None:
+        # The whole row is the button.  Every rendered leaf must pass pointer
+        # input through to it; otherwise clicking the visible name/KPI/grade
+        # only shows a tooltip and never executes DefaultOnCharacterClick.
+        row = row_gui("m", 1)
+        interactive_leaves = [
+            line
+            for line in row
+            if "text_single = {" in line or "portrait_head_small = {" in line
+        ]
+        self.assertEqual(len(interactive_leaves), 12)
+        for line in interactive_leaves:
+            self.assertIn("alwaystransparent = yes", line)
+        portrait = next(line for line in interactive_leaves if "portrait_head_small" in line)
+        self.assertIn('blockoverride "portrait_button"', portrait)
 
 
 def _calibrate_demote_fixture(rows: list[dict[str, int | bool]]) -> bool:
