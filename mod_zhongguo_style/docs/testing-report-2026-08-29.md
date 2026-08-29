@@ -247,3 +247,13 @@ py mod_zhongguo_style/tools/validate_local.py
 - runner 没有相机专用短探针和阶段化结果账本，十几秒的 UI 定位问题被绑在完整启动链上。
 
 从此禁止用下一次全量候选调试相机。新增 `--promo-camera-probe`：只运行到赵曙切换、关闭测试决议抽屉、执行 `V → 查找头衔 → 汴州 → 右键定位`，反证查找窗关闭、中央地图变化率达到 `0.18`，再对最终 HUD 执行真实角色 / 零测试 UI 视觉门；它不会启动 FFmpeg，也不把未执行的后半玩法冒充 GREEN。只有短探针通过，才允许恢复一次 361/361 + GUI + 宣传采集全链。今后玩法验收与片场验收分别记账：前者的已签证据不会被后者失败抹掉，后者也不得借前者通过冒充成片就绪。
+
+## 20. 第一条相机短探针：CK3 冷启动未到主菜单
+
+`runs/zga_camera_20260829_2035_982c7fa` 是新流程的第一条 `--promo-camera-probe`，使用已推送提交 `982c7fa`。它在 300 秒主菜单门处 **RED**，但没有执行 fixture 初始化、相机定位、361 后半链或 FFmpeg：`fixture_markers=[]`、`scenario_evidence={}`、`promo_capture={}`。因此这不是第二十二次完整候选，也没有为“汴州路径能否工作”提供任何正反证据。
+
+日志显示 CK3 进程与 exact-build EXE 正常启动，GUI/数据库初始化持续到 20:38:50，并于 20:39:11 进入 `Start loading of history`；runner 在 20:40:40 达到既有 300 秒硬门时，仍未得到主菜单或 mount-order 输出。超时帧只捕获到前台 Chrome，说明当时没有可被 `focus_ck3` 提升并识别的主菜单窗口；不能据此猜测产品或标题查找器故障。进程由 watchdog 完整回收，源树、投影树与受保护用户存储均未变化，完整一次性 userdir（包括本轮 shader cache）保留。
+
+本轮只允许一次同提交的短探针重试：上轮已完成大部分冷加载与 shader cache 建立，重试仍只跑相机前置，不恢复完整合批。若相同“未到主菜单”条件再次出现，就停止启动并单独处理 CK3 启动环境；不得把启动 RED 变成连续盲跑。
+
+永久证据：根报告 `E7A9D788A2BFF14210646A1930F6E93B6EBF2EC8D1B19B86F369CE5F62F179F4`，证据索引 `D7C9512C1E3035274CC239FC26027AA3786E011B0AF8823CE017DD52F8CAAF53`，超时 / 失败现场帧（同一字节）`ED374DA57E950DA0C93DAE54BDE1C42A20D926F09395FB6DA8CFD063A63A6A64`，最终 debug log `1C9FF1C1CF763CF8ED5C6FC9B49CE7D61D8D7454A522A03A3E33D42F8B9EDEC8`。完整 artifact 与 `_userdir` 均继续保留。
