@@ -1535,15 +1535,112 @@ def main() -> int:
 
     switch_advance = inspect.getsource(capture.advance_to_personal_switch)
     for token in (
-        "timeout_s: float = 90.0",
-        '"zg361_personal_switch", require_progress=True',
+        "timeout_s: float = PERSONAL_SWITCH_WAIT_TIMEOUT_S",
         "PERSONAL_SWITCH_SCHEDULED_MARKER",
         "settle_promo_interruptions",
         'stop_event_title="上司考定"',
-        "zg361_personal_switch_resume_",
+        "resume_personal_switch_timeline_native",
+        '"silent_pause"',
+        '"10_personal_switch_timeline_gate.json"',
+        'active_event_id is None',
         "time.monotonic() + timeout_s",
     ):
         assert token in switch_advance, token
+    assert capture.PERSONAL_SWITCH_WAIT_TIMEOUT_S == 240.0
+
+    class NativeTimelineService:
+        def __init__(self) -> None:
+            self.speed = 1
+            self.paused = True
+            self.date_raw = 100
+            self.steps: list[str] = []
+
+        def snapshot(self) -> dict[str, object]:
+            if not self.paused:
+                self.date_raw += 1
+            return {
+                "revision": len(self.steps) + self.date_raw,
+                "native_revision": len(self.steps) + self.date_raw,
+                "date_raw": self.date_raw,
+                "paused": self.paused,
+                "speed": self.speed,
+                "active_event": None,
+            }
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            self.steps.append(step)
+            if step == "set-speed-5":
+                self.speed = 5
+            elif step == "resume-map":
+                self.paused = False
+            else:
+                raise AssertionError(step)
+            return {"step": step, "accepted": True}
+
+    timeline_service = NativeTimelineService()
+    native_resume = capture.resume_personal_switch_timeline_native(
+        timeline_service, reason="silent_pause", timeout_s=1.0
+    )
+    assert timeline_service.steps == ["set-speed-5", "resume-map"]
+    assert native_resume["result"] == "GREEN"
+    assert native_resume["reason"] == "silent_pause"
+    assert native_resume["resumed_date_raw"] > native_resume["starting_date_raw"]
+
+    class PersonalSwitchStream:
+        marker_ready = False
+
+        def pump(self) -> None:
+            return None
+
+        def count(self, marker: str) -> int:
+            assert marker == capture.PERSONAL_SWITCH_SCHEDULED_MARKER
+            return int(self.marker_ready)
+
+    personal_stream = PersonalSwitchStream()
+    resume_reasons: list[str] = []
+
+    def fake_native_resume(_service, *, reason, timeout_s=10.0):
+        del timeout_s
+        resume_reasons.append(reason)
+        if reason == "silent_pause":
+            personal_stream.marker_ready = True
+        return {"reason": reason, "result": "GREEN"}
+
+    paused_snapshot = {
+        "revision": 1,
+        "native_revision": 1,
+        "date_raw": 100,
+        "paused": True,
+        "speed": 5,
+        "active_event": None,
+    }
+    fake_service = SimpleNamespace(snapshot=lambda: paused_snapshot)
+    with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
+        capture,
+        "resume_personal_switch_timeline_native",
+        side_effect=fake_native_resume,
+    ), mock.patch.object(
+        capture,
+        "settle_promo_interruptions",
+        return_value=[],
+    ), mock.patch.object(capture.time, "monotonic", return_value=0.0):
+        recovered = capture.advance_to_personal_switch(
+            personal_stream,
+            Path(temp_dir),
+            timeline_service=fake_service,
+            due_day_ordinal=190,
+            timeout_s=1.0,
+        )
+        assert recovered == []
+        assert resume_reasons == ["initial_post_jingcha_resume", "silent_pause"]
+        gate = json.loads(
+            (Path(temp_dir) / "10_personal_switch_timeline_gate.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert gate["result"] == "GREEN"
+        assert gate["due_day_ordinal"] == 190
+        assert gate["marker_count"] == 1
 
     decisions = bom_text(FIXTURE / "common" / "decisions" / "zga_decisions.txt")
     found = tuple(

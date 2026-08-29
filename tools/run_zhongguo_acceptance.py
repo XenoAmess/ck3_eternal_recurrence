@@ -242,6 +242,7 @@ CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
 CHARACTER_WINDOW_CLOSE_BUTTON = (0.2891, 0.0181)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
 JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 90
+PERSONAL_SWITCH_WAIT_TIMEOUT_S = 240.0
 PERSONAL_SWITCH_SCHEDULED_MARKER = (
     "ZGA: TEST PASS personal_result_switch_scheduled"
 )
@@ -3413,22 +3414,131 @@ def capture_jingcha_planner(
     }
 
 
+def _personal_switch_native_snapshot(
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    active_event = snapshot.get("active_event")
+    active_event_id = (
+        active_event.get("instance_id") if isinstance(active_event, dict) else None
+    )
+    return {
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "paused": snapshot.get("paused"),
+        "speed": snapshot.get("speed"),
+        "active_event_instance_id": active_event_id,
+    }
+
+
+def resume_personal_switch_timeline_native(
+    service: GameplayBridgeService,
+    *,
+    reason: str,
+    timeout_s: float = 10.0,
+) -> dict[str, object]:
+    """Use the connected native MCP to resume speed five and prove one tick."""
+
+    starting = service.snapshot()
+    starting_raw = starting.get("date_raw")
+    if not isinstance(starting_raw, int) or isinstance(starting_raw, bool):
+        raise acceptance.RunnerError(
+            "native personal-switch timeline snapshot lacks date_raw"
+        )
+    observations = [_personal_switch_native_snapshot(starting)]
+    submissions: list[dict[str, object]] = []
+    current = starting
+
+    if current.get("speed") != 5:
+        submissions.append(
+            {"step": "set-speed-5", "result": service.execute_step("set-speed-5")}
+        )
+        speed_deadline = time.monotonic() + 5.0
+        while time.monotonic() < speed_deadline:
+            current = service.snapshot()
+            observations.append(_personal_switch_native_snapshot(current))
+            if current.get("speed") == 5:
+                break
+            time.sleep(0.05)
+        if current.get("speed") != 5:
+            raise acceptance.RunnerError(
+                "native MCP did not observe speed five for personal-switch wait"
+            )
+
+    if current.get("paused") is True:
+        submissions.append(
+            {"step": "resume-map", "result": service.execute_step("resume-map")}
+        )
+    elif current.get("paused") is not False:
+        raise acceptance.RunnerError(
+            "native personal-switch timeline snapshot lacks paused state"
+        )
+
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        current = service.snapshot()
+        observations.append(_personal_switch_native_snapshot(current))
+        current_raw = current.get("date_raw")
+        if (
+            current.get("paused") is False
+            and current.get("speed") == 5
+            and isinstance(current_raw, int)
+            and not isinstance(current_raw, bool)
+            and current_raw != starting_raw
+        ):
+            return {
+                "reason": reason,
+                "result": "GREEN",
+                "starting_date_raw": starting_raw,
+                "resumed_date_raw": current_raw,
+                "submissions": submissions,
+                "observations": observations,
+            }
+        time.sleep(0.05)
+    raise acceptance.RunnerError(
+        "native MCP did not resume and advance the personal-switch timeline"
+    )
+
+
 def advance_to_personal_switch(
     stream: MarkerStream,
     artifacts: Path,
-    timeout_s: float = 90.0,
+    *,
+    timeline_service: GameplayBridgeService,
+    due_day_ordinal: int,
+    timeout_s: float = PERSONAL_SWITCH_WAIT_TIMEOUT_S,
 ) -> list[dict[str, object]]:
-    """Advance the delayed fixture carrier without letting queued events stall it."""
+    """Advance the D+90 carrier and recover modal or silent native pauses."""
 
-    acceptance.set_speed_five_and_unpause(
-        artifacts, "zg361_personal_switch", require_progress=True
-    )
+    native_resumes = [
+        resume_personal_switch_timeline_native(
+            timeline_service, reason="initial_post_jingcha_resume"
+        )
+    ]
+    native_observations: list[dict[str, object]] = []
     deadline = time.monotonic() + timeout_s
     interruptions: list[dict[str, object]] = []
     recovery_round = 0
+
+    def write_timeline_evidence(result: str) -> None:
+        write_json(
+            artifacts / "10_personal_switch_timeline_gate.json",
+            {
+                "schema_version": 1,
+                "result": result,
+                "due_day_ordinal": due_day_ordinal,
+                "timeout_seconds": timeout_s,
+                "marker_count": stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER),
+                "interruption_count": len(interruptions),
+                "native_resumes": native_resumes,
+                "native_observations": native_observations,
+            },
+        )
+
     while time.monotonic() < deadline:
         stream.pump()
         if stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER):
+            write_timeline_evidence("GREEN")
             return interruptions
         recovery_round += 1
         recovered = settle_promo_interruptions(
@@ -3439,13 +3549,34 @@ def advance_to_personal_switch(
         )
         if recovered:
             interruptions.extend(recovered)
-            acceptance.set_speed_five_and_unpause(
-                artifacts,
-                f"zg361_personal_switch_resume_{recovery_round:02d}",
-                require_progress=True,
+
+        # A hidden carrier can publish the target while the interruption OCR is
+        # observing the screen. Never resume through that newly-arrived event.
+        stream.pump()
+        if stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER):
+            write_timeline_evidence("GREEN")
+            return interruptions
+
+        snapshot = timeline_service.snapshot()
+        observed = _personal_switch_native_snapshot(snapshot)
+        if not native_observations or observed != native_observations[-1]:
+            native_observations.append(observed)
+        active_event_id = observed["active_event_instance_id"]
+        if (
+            (snapshot.get("paused") is True or snapshot.get("speed") != 5)
+            and active_event_id is None
+        ):
+            native_resumes.append(
+                resume_personal_switch_timeline_native(
+                    timeline_service,
+                    reason=(
+                        "dismissed_interruption" if recovered else "silent_pause"
+                    ),
+                )
             )
         else:
             time.sleep(0.2)
+    write_timeline_evidence("RED")
     raise acceptance.RunnerError(
         "fixture personal-result switch did not arrive after the delayed "
         "post-Jingcha timeline advance"
@@ -3456,11 +3587,19 @@ def capture_superior_assigned_result(
     stream: MarkerStream,
     artifacts: Path,
     recorder: PromoRecorder | None = None,
+    *,
+    timeline_service: GameplayBridgeService,
+    personal_switch_due_day_ordinal: int,
 ) -> dict[str, object]:
     # The external fixture schedules only the player-character switch. The
     # former player then becomes the real AI superior and invokes the product
     # review, grade, snapshot and result-event chain.
-    switch_interruptions = advance_to_personal_switch(stream, artifacts)
+    switch_interruptions = advance_to_personal_switch(
+        stream,
+        artifacts,
+        timeline_service=timeline_service,
+        due_day_ordinal=personal_switch_due_day_ordinal,
+    )
     stream.wait(HISTORICAL_TARGET_DATA_MARKER_PREFIX, 30)
     stream.wait(HISTORICAL_TARGET_PASS_MARKER, 30)
     reviewed_history_id = resolved_historical_personal_result_target(stream)
@@ -4086,7 +4225,13 @@ def run_scenario(
         pause_service=title_navigation_service,
     )
     personal_result_evidence = capture_superior_assigned_result(
-        stream, artifacts, recorder
+        stream,
+        artifacts,
+        recorder,
+        timeline_service=title_navigation_service,
+        personal_switch_due_day_ordinal=int(
+            jingcha_evidence["host_pause_gate"]["personal_switch_due_day_ordinal"]
+        ),
     )
     received_evidence = None
     policy_cards: list[dict[str, object]] = []
