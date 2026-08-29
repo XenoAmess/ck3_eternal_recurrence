@@ -1721,7 +1721,9 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
         )
         difference = ImageChops.difference(left.crop(box), right.crop(box))
         sample = difference.resize((160, 90)).convert("RGB")
-        changed = sum(1 for pixel in sample.getdata() if max(pixel) > 20)
+        changed = sum(
+            1 for pixel in sample.get_flattened_data() if max(pixel) > 20
+        )
         return round(changed / (160 * 90), 6)
 
     acceptance.focus_ck3()
@@ -1738,15 +1740,43 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
     method = "shortcut_home"
 
     if shortcut_change < 0.18:
-        # Exact-build hud.gui places the 30x30 native More button at this point
-        # inside the bottom-right timeline widget. Clicking its own rendered
-        # "转到首都" item invokes OnGoToPlayerCapital without debug commands or
-        # any fixture-facing UI. This all happens before recording starts.
+        # Exact-build hud.gui places the 30x30 native More button inside the
+        # bottom-right timeline widget. GUI units are scaled by the isolated
+        # profile's 1.30 factor, so verify its rendered "更多……" tooltip before
+        # clicking; the previous unscaled coordinate landed on the date/play
+        # control and correctly caused an early RED.
         width, height = acceptance.pyautogui.size()
-        more_point = (
-            int(width * (1981 / 2560)),
-            int(height * (1422 / 1440)),
+        more_candidates = (
+            (int(width * (1807 / 2560)), int(height * (1417 / 1440))),
+            (int(width * (1792 / 2560)), int(height * (1417 / 1440))),
+            (int(width * (1822 / 2560)), int(height * (1417 / 1440))),
+            (int(width * (1777 / 2560)), int(height * (1417 / 1440))),
+            (int(width * (1837 / 2560)), int(height * (1417 / 1440))),
         )
+        more_point = None
+        for candidate in more_candidates:
+            acceptance.focus_ck3()
+            acceptance.pyautogui.moveTo(*candidate, duration=0.2)
+            time.sleep(0.65)
+            tooltip_image = acceptance.ImageGrab.grab()
+            if acceptance.find_ocr_text(
+                tooltip_image,
+                "更多",
+                acceptance.FULL_SCREEN_REGION,
+                contains=True,
+            ) is not None:
+                more_point = candidate
+                tooltip_image.save(
+                    artifacts / "05_promo_camera_more_button_tooltip.png"
+                )
+                break
+        if more_point is None:
+            tooltip_image.save(
+                artifacts / "timeout_05_promo_camera_more_button_tooltip.png"
+            )
+            raise acceptance.RunnerError(
+                "native HUD More button tooltip could not be located"
+            )
         acceptance.deliberate_click(more_point, "native HUD More button")
         capital_button = acceptance.wait_for_ocr_text(
             "转到首都",

@@ -236,6 +236,9 @@ def main() -> int:
     for token in (
         'acceptance.pyautogui.press("home")',
         "ImageChops.difference",
+        '"更多"',
+        '"05_promo_camera_more_button_tooltip.png"',
+        '"native HUD More button tooltip could not be located"',
         'acceptance.deliberate_click(more_point, "native HUD More button")',
         '"转到首都"',
         '"native_more_menu"',
@@ -259,12 +262,16 @@ def main() -> int:
             mock.patch.object(
                 capture.acceptance.ImageGrab,
                 "grab",
-                side_effect=(unchanged, unchanged.copy(), moved),
+                side_effect=(unchanged, unchanged.copy(), unchanged.copy(), moved),
             ),
             mock.patch.object(
                 capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
             ),
             mock.patch.object(capture.acceptance.pyautogui, "press") as press,
+            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
+            mock.patch.object(
+                capture.acceptance, "find_ocr_text", return_value=(1807, 1417)
+            ),
             mock.patch.object(
                 capture.acceptance, "wait_for_ocr_text", return_value=(1010, 910)
             ),
@@ -273,8 +280,9 @@ def main() -> int:
         ):
             camera_gate = capture.recenter_promo_camera_on_player_capital(artifacts)
         press.assert_called_once_with("home")
+        move.assert_called_once_with(1807, 1417, duration=0.2)
         assert click.call_args_list == [
-            mock.call((1981, 1422), "native HUD More button"),
+            mock.call((1807, 1417), "native HUD More button"),
             mock.call((1010, 910), "native go-to-player-capital menu item"),
         ]
         assert camera_gate["result"] == "GREEN"

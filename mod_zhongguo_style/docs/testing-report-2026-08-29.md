@@ -206,3 +206,13 @@ py mod_zhongguo_style/tools/validate_local.py
 本轮还推翻了 Home 镜头假设：`before_home` 与 `after_home` 都停在印度半岛，构图、中心和缩放没有变化；旧 sidecar 只有动作意图，没有 result，不能证明回宋。下一轮改为先尝试快捷键并计算中央地图视觉变化；若变化不足，点击 exact-build 原生 HUD 的“更多 → 转到首都”，最终变化仍不足则在 FFmpeg 启动前直接 RED。四段已取证 clean span 的 begin/end 全屏帧及 Decisions 抽屉二次确认均无测试决议、测试标签或 fixture 文案，可见榜单八人全部在历史白名单；但背景仍在印度，且驾驶舱尾帧出现 Steam 好友通知，因此整轮只保留作诊断，绝不进入正式宣传 manifest。正式成片继续要求史实赵曙与史实公爵及以上连续主角，伯爵只作被考核对象，画面中测试决议/夹具 UI/工程标签为零。
 
 永久证据：根报告 `26AEFA67D43F3A9E2A030E4A89D51C44360C7C296B0E6B53A2948DC59488406F`，证据索引 `B0D3744B89FBA757ECEE4AAB5CEB7DB42E3C5456BC90B3A4F009365F427A1CAC`，原始 MKV `E0CB08B78562A236B0F94060813413EF7A9670903AF77DA195DEEA65EFC3B82F`，录制时间线 `9929920FABFF286A8D82DEFF931701632C6C0A88B83A57A56304703DE091F917`，暂停 gate `E274C9D9BEB44277720B17E3DC623B8AF9864AFB72B8CFBCF227C636B86832A5`。无效 Home 前/后帧分别为 `E199D0638A9B2F0732B1DA6D093E80CA8DDD4A1D00C178C4FA6C96024F809455` / `9AF2311707D825A5B990B74872A330016F91300E0FA3A6020AD3473B7640B258`；历史人物页与三层叠窗失败终帧分别为 `73F0EA66D1C64CD8DF631A76770BA9C9006D06AD198A4E577762E3E04E68811A` / `A9A46C818B64E0920293864425CB0A575245A200B672963D19F0D72C8B06AC19`。完整 artifact、raw MKV、日志和 `_userdir` 均保留。
+
+## 16. 第十九次候选：录制前宋境镜头门按预期快速 RED
+
+`runs/zga_20260829_194248_54bbec29` 使用提交 `da29613` 的 release-equivalent 产品投影。精确版本、标准 1066 开局、赵曙 `han_8052`、21/23 史实名册、非独立天朝制公爵考核、四重处分/申诉、校准 C 与 361/361 机制账本、幂等性均已通过。唯一测试决议已经关闭，随后 Home 再次被视觉差异门判为无效；这证明新增门没有复述动作意图，而是真能拒绝未移动的印度镜头。
+
+本轮在 FFmpeg 启动前按设计快速 **RED**，没有产生新的 raw MKV 或任何可误用的宣传 clean span。失败是 exact-build GUI 坐标换算错误：原版 `hud.gui` 的 timeline widget 使用 GUI unit，而隔离档为 1.30 UI scale；把未缩放的 `(1981,1422)` 当作“更多”按钮，实际点中了日期/播放区域。日期前进一天并正常弹出正式产品“绩效校准会议”，而“转到首都”菜单当然没有出现，runner 在 8 秒后停止并完整回收 CK3。产品事件正常出现不构成产品 RED，错误只在录制前镜头编排。
+
+修复不再盲点推算坐标：按 1.30 scale 得到首选 `(1807,1417)`，并在点击前必须先悬停、由 OCR 看见原生“更多……”tooltip；左右各两档候选只允许 hover，不会改变游戏状态。只有 tooltip 被证实后才能点击，再由 OCR 定位“转到首都”，最后仍须通过中央地图大幅变化门。这样坐标偏差只会在点击前 RED，不再误触时间轴。
+
+永久证据：根报告 `6E8E6601AEC73F6CDC22BA1E600B9C70CF4709DB902DB7496F1B3CB146E7DD91`，证据索引 `B8E0824645BD767B283E48AAEC81D45052AA056732E63F64E4C02B27F06EF56E`，无效 Home 前/后帧 `71A6E98CF22A07EF6B5A42D262EF5A09890425D41B812EB916D04241F73F16F1` / `8843B1A5CD151BC13370FFFAC8694F9142AC3834C5AF63DA718FB1CB6EEB41A0`，误点后校准会超时帧 `6EC9E28784207304C51C4061DFA83A4FF99A7983ED7E8FFD23FA75EF3775CD6B`，最终现场 `9113B75EF9D479355EBB549317C7B67FF58CFDF7251657CB29F6D8AE3C7E1672`。隔离 `_userdir` 与全部日志保留。
