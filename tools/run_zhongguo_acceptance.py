@@ -1742,6 +1742,19 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
 
     title_header = None
     title_result = None
+    ime_v_mode_recovery_used = False
+    ime_mode_restored = False
+
+    def restore_title_shortcut_input_mode() -> None:
+        nonlocal ime_mode_restored
+        if not ime_v_mode_recovery_used or ime_mode_restored:
+            return
+        acceptance.focus_ck3()
+        acceptance.pyautogui.press("shift")
+        time.sleep(0.3)
+        ime_mode_restored = True
+        log("restored the pre-probe Microsoft Pinyin input mode")
+
     if shortcut_change < 0.18:
         # Exact-build live attempts 20 and 21 proved Home was a no-op and that
         # the transient HUD flyout supplied no observable click ACK. They could
@@ -1753,15 +1766,55 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
         title_region = (0.70, 0.07, 0.98, 0.90)
         acceptance.focus_ck3()
         acceptance.pyautogui.press("v")
-        title_header = acceptance.wait_for_ocr_text(
-            "查找头衔",
-            title_region,
-            8,
-            artifacts,
-            "05_promo_title_finder_open.png",
-            contains=True,
-            stable_hits=1,
-        )
+        try:
+            title_header = acceptance.wait_for_ocr_text(
+                "查找头衔",
+                title_region,
+                2,
+                artifacts,
+                "05_promo_title_finder_open.png",
+                contains=True,
+                stable_hits=1,
+            )
+        except acceptance.RunnerError as initial_shortcut_error:
+            # The first dedicated live probe showed Microsoft's Chinese IME
+            # consuming bare V as its "V-mode input" command. Only recover
+            # when that exact overlay is visible; any other failure stays RED.
+            ime_probe = acceptance.ImageGrab.grab()
+            ime_items = acceptance.ocr_results(
+                ime_probe, acceptance.FULL_SCREEN_REGION
+            )
+            ime_v_mode_visible = any(
+                "V模式输入" in text.upper() for text, _, _, _ in ime_items
+            )
+            if not ime_v_mode_visible:
+                ime_probe.save(
+                    artifacts / "05_promo_title_shortcut_unexplained.png"
+                )
+                raise acceptance.RunnerError(
+                    "native title shortcut produced neither the finder nor "
+                    "the observed Microsoft Pinyin V-mode overlay"
+                ) from initial_shortcut_error
+            ime_probe.save(artifacts / "05_promo_title_shortcut_ime_v_mode.png")
+            acceptance.pyautogui.press("escape")
+            time.sleep(0.3)
+            acceptance.pyautogui.press("shift")
+            time.sleep(0.3)
+            ime_v_mode_recovery_used = True
+            acceptance.pyautogui.press("v")
+            try:
+                title_header = acceptance.wait_for_ocr_text(
+                    "查找头衔",
+                    title_region,
+                    8,
+                    artifacts,
+                    "05_promo_title_finder_open.png",
+                    contains=True,
+                    stable_hits=1,
+                )
+            except BaseException:
+                restore_title_shortcut_input_mode()
+                raise
         screen_width, screen_height = acceptance.pyautogui.size()
         reference_scale = screen_height / 1440
         search_point = (
@@ -1819,6 +1872,7 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
                 stable_hits = 0
             time.sleep(acceptance.POLL_INTERVAL_S)
         if title_result is None:
+            restore_title_shortcut_input_mode()
             if result_image is not None:
                 result_image.save(
                     artifacts / "timeout_05_promo_title_finder_bianzhou.png"
@@ -1883,12 +1937,16 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
                 contains=True,
             ) is not None
             if finder_visible:
+                restore_title_shortcut_input_mode()
                 after.save(
                     artifacts / "timeout_05_promo_title_finder_close.png"
                 )
                 raise acceptance.RunnerError(
                     "native title finder remained visible after recenter"
                 )
+        restore_title_shortcut_input_mode()
+        if ime_mode_restored:
+            after = acceptance.ImageGrab.grab()
         method = "native_title_finder_bianzhou"
     else:
         after = shortcut_after
@@ -1912,6 +1970,8 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
         "resolved_title_key": "c_bianzhou" if title_result is not None else None,
         "title_header_point": list(title_header) if title_header else None,
         "title_result_point": list(title_result) if title_result else None,
+        "ime_v_mode_recovery_used": ime_v_mode_recovery_used,
+        "ime_mode_restored": ime_mode_restored,
         "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
         "expected_realm_title": "h_china",
         "before_artifact": "05_promo_camera_before_home.png",

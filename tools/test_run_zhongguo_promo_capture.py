@@ -238,6 +238,9 @@ def main() -> int:
         "ImageChops.difference",
         'acceptance.pyautogui.press("v")',
         '"查找头衔"',
+        '"V模式输入"',
+        '"05_promo_title_shortcut_ime_v_mode.png"',
+        'restore_title_shortcut_input_mode()',
         '"汴州"',
         '"c_bianzhou"',
         'acceptance.deliberate_click(search_point, "native title search field")',
@@ -272,7 +275,9 @@ def main() -> int:
                     unchanged.copy(),
                     unchanged.copy(),
                     unchanged.copy(),
+                    unchanged.copy(),
                     moved,
+                    moved.copy(),
                     moved.copy(),
                 ),
             ),
@@ -290,12 +295,21 @@ def main() -> int:
                 side_effect=((2150, 220), None),
             ),
             mock.patch.object(
-                capture.acceptance, "wait_for_ocr_text", return_value=(2150, 220)
+                capture.acceptance,
+                "wait_for_ocr_text",
+                side_effect=(
+                    capture.acceptance.RunnerError("initial V consumed by IME"),
+                    (2150, 220),
+                ),
             ),
             mock.patch.object(
                 capture.acceptance,
                 "ocr_results",
-                return_value=(("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
+                side_effect=(
+                    (("V模式输入。支持多种格式", 0.99, (2400, 1280), (0, 0, 1, 1)),),
+                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
+                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
+                ),
             ),
             mock.patch.object(capture.acceptance, "deliberate_click") as click,
             mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
@@ -307,6 +321,10 @@ def main() -> int:
             mock.call("home"),
             mock.call("v"),
             mock.call("escape"),
+            mock.call("shift"),
+            mock.call("v"),
+            mock.call("escape"),
+            mock.call("shift"),
         ]
         assert move.call_args_list == [
             mock.call(2100, 345, duration=0.2),
@@ -328,6 +346,8 @@ def main() -> int:
         assert camera_gate["result"] == "GREEN"
         assert camera_gate["method"] == "native_title_finder_bianzhou"
         assert camera_gate["resolved_title_key"] == "c_bianzhou"
+        assert camera_gate["ime_v_mode_recovery_used"] is True
+        assert camera_gate["ime_mode_restored"] is True
         assert camera_gate["shortcut_visual_change_fraction"] == 0.0
         assert camera_gate["final_visual_change_fraction"] >= 0.99
         assert (artifacts / "05_promo_camera_recenter.json").is_file()

@@ -257,3 +257,13 @@ py mod_zhongguo_style/tools/validate_local.py
 本轮只允许一次同提交的短探针重试：上轮已完成大部分冷加载与 shader cache 建立，重试仍只跑相机前置，不恢复完整合批。若相同“未到主菜单”条件再次出现，就停止启动并单独处理 CK3 启动环境；不得把启动 RED 变成连续盲跑。
 
 永久证据：根报告 `E7A9D788A2BFF14210646A1930F6E93B6EBF2EC8D1B19B86F369CE5F62F179F4`，证据索引 `D7C9512C1E3035274CC239FC26027AA3786E011B0AF8823CE017DD52F8CAAF53`，超时 / 失败现场帧（同一字节）`ED374DA57E950DA0C93DAE54BDE1C42A20D926F09395FB6DA8CFD063A63A6A64`，最终 debug log `1C9FF1C1CF763CF8ED5C6FC9B49CE7D61D8D7454A522A03A3E33D42F8B9EDEC8`。完整 artifact 与 `_userdir` 均继续保留。
+
+## 21. 第二条相机短探针：`V` 被微软拼音的 V 模式消费
+
+`runs/zga_camera_retry_20260829_2048_5bc23c9` 使用提交 `5bc23c9`。暖启动在约 2 分 20 秒到达主菜单，标准 1066 大厅、史实赵曙 `han_8052` 切换、历史直属名单、生成坊正排除、非独立天朝制公爵后台考核及 361/361 参考路线与幂等性均再次通过；测试决议抽屉随后由原生标题栏 X 关闭。Home 依旧没有把印度镜头移回宋境，短探针按计划进入独立标题查找步骤。
+
+本轮在 `V` 后没有出现“查找头衔”，失败帧却给出了唯一、可复现的根因：右下角出现微软拼音候选窗，OCR 完整读出“V模式输入。支持多种格式……”；也就是说，裸 `V` 被当前中文 IME 消费，CK3 根本没有收到 `find_title_shortcut`。这与原生窗口、标题数据、赵曙或产品 mod 无关。runner 在 8 秒门安全 RED，`scenario_evidence={}`、`promo_capture={}`，没有启动 FFmpeg，也没有把该帧签入宣传素材。
+
+修复只处理已经实证的输入冲突：第一次 `V` 后先在全屏 OCR 中要求出现“查找头衔”或精确“V模式输入”二者之一；只有后者出现时才按 Escape 清掉组合输入、按 Shift 临时切到英文模式、再次发送 `V`。其余任何无响应继续直接 RED，不盲目切换输入法。标题查找流程完成或中途失败时都把 Shift 状态恢复，并在相机 sidecar 记录 `ime_v_mode_recovery_used` / `ime_mode_restored`。可执行桌面替身已覆盖“首个 V 被 IME 消费 → 恢复 → 汴州唯一结果 → 右键 → 关闭 finder → 恢复 IME → 地图变化”全序列。
+
+永久证据：根报告 `6523D55F9D052BA6B61774BB602911D6089D149A9A50E39C78C3671D0857807E`，证据索引 `FE0319452D7B5C62EEB4E8169CDE972A4575F82B7BAAA3C2CD9B58411ED16130`；Home 前/后帧 `3B96B23A1F4C7D534ACCAFCDAC39CDFB4C2559CC17BDC8772954512D490B6347` / `91EC585A2A9AB18F000EF17664E46B94CE06F3057FCA118E8444BC7A7B6E2CAE`，微软拼音 V 模式失败帧 `913E070BCF60A33E1F9BD9FAE1F1BDC795D76E09CB8DA63CB3B07129ADE010A8`，最终现场 `B0850237BB5564F38759954D183911FA4BA242E9208892E1E5A98A0A2C7CA86D`。完整 artifact 与 `_userdir` 均继续保留。
