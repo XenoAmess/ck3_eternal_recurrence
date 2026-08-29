@@ -12,9 +12,6 @@ import tempfile
 from types import SimpleNamespace
 from unittest import mock
 
-from PIL import Image
-
-
 ROOT = Path(__file__).resolve().parent.parent
 RUNNER = ROOT / "tools" / "run_zhongguo_acceptance.py"
 FIXTURE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
@@ -37,13 +34,13 @@ def main() -> int:
     body = scenario.group(0)
     assert body.index("initialize_fixture") < body.index("recorder.start()")
     assert body.index("close_native_decisions_panel") < body.index("recorder.start()")
-    assert body.index("recenter_promo_camera_on_player_capital") < body.index(
+    assert body.index("run_native_title_navigation_matrix") < body.index(
         "recorder.start()"
     )
     assert body.index("assert_promo_frame_clean") < body.index("recorder.start()")
     for token in (
         '"reviewed_official_history_id": reviewed_history_id',
-        '"promo_camera_recenter": promo_camera_evidence',
+        '"title_navigation_mcp_matrix": title_navigation_evidence',
         '"fixture_constructor_counts": constructor_counts',
         '"historical_subjects_manufactured_by_fixture": bool(',
         '"test_decisions_visible_inside_clean_spans": 0 if recorder else None',
@@ -258,58 +255,43 @@ def main() -> int:
         in quoted_errors
     ), quoted_errors
 
-    camera_recenter = inspect.getsource(
-        capture.recenter_promo_camera_on_player_capital
+    title_navigation = inspect.getsource(
+        capture.run_native_title_navigation_matrix
     )
     for token in (
-        'acceptance.pyautogui.press("home")',
-        "ImageChops.difference",
+        "title_navigation_live._run_navigation_sequence(service)",
+        "title_navigation_live._known_call(",
+        'label="final_bianzhou_before_ffmpeg"',
+        "title_navigation_live.COUNTY_TITLE_KEY",
+        'allowed_statuses={"centered", "already_centered"}',
+        '"target_write_blocked"',
+        '"typed_matrix_payload_sha256"',
+        '"typed_unknown_error_hash"',
+        '"zero_visual_or_input_fallback"',
+        '"inhibit_positive_explicitly_skipped"',
+        '"ffmpeg_started": False',
+        '"hkl_scope": "other_existing_gui_operations_only"',
+        '"05_title_navigation_mcp_matrix.json"',
+    ):
+        assert token in title_navigation, token
+    for forbidden in (
+        "ImageChops",
+        "ImageGrab",
+        "pyautogui",
+        "pyperclip",
+        "clipboard",
+        "find_ocr_text",
+        "wait_for_ocr_text",
+        "ocr_results",
         "force_ck3_english_keyboard_layout",
-        '"keyboard_layout_policy": "keep_us_english_for_desktop_automation"',
-        '"navigation_path_status": "temporary_ocr_compatibility"',
-        '"mcp_capability_implemented": False',
-        'acceptance.pyautogui.press("v")',
-        '"查找头衔"',
-        '"V模式输入"',
-        '"05_promo_title_shortcut_no_finder.png"',
-        '"native_more_find_title"',
-        'stable_hits=3',
-        '"row_hover_ack"',
-        '"05_promo_camera_more_button_tooltip',
-        '"汴州"',
-        '"c_bianzhou"',
-        '"开封"',
-        '"b_kaifeng"',
-        'acceptance.deliberate_click(search_point, "native title search field")',
-        'acceptance.pyautogui.hotkey("ctrl", "v")',
-        'acceptance.pyautogui.mouseDown(button="right")',
-        '"attempts": attempts',
-        '"shortcut_visual_change_fraction"',
-        '"action_visual_change_fraction"',
-        '"final_visual_change_fraction"',
-        '"minimum_visual_change_fraction": 0.18',
-        '"native Song title recenter produced no material final map movement"',
-        '"native_action": (',
-        'else "find_title_right_click"',
-        '"expected_realm_title": "h_china"',
-        '"05_promo_camera_before_home.png"',
-        '"05_promo_camera_after_home.png"',
+        "deliberate_click",
     ):
-        assert token in camera_recenter, token
-    assert 'acceptance.pyautogui.press("shift")' not in camera_recenter
-    assert re.search(
-        r"if ime_v_mode_visible:\s+acceptance\.pyautogui\.press\(\"escape\"\)",
-        camera_recenter,
-    )
-    assert "Moving out is sufficient to dismiss CK3's transient More" in camera_recenter
-    for earlier, later in (
-        ("stable_hits=3", "moveTo(*title_row, duration=0)"),
-        ("moveTo(*title_row, duration=0)", "hover_image = acceptance.ImageGrab.grab()"),
-        ("hover_image = acceptance.ImageGrab.grab()", "row_survived_move = ("),
-        ("if not row_survived_move:", 'mouseDown(button="left")'),
-        ('mouseDown(button="left")', "header = wait_for_title_header("),
-    ):
-        assert camera_recenter.index(earlier) < camera_recenter.index(later)
+        assert forbidden not in title_navigation, forbidden
+    assert not hasattr(capture, "recenter_promo_camera_on_player_capital")
+    assert "temporary_ocr_compatibility" not in runner
+    assert "promo_camera_more_menu_find_title" not in runner
+    assert "pyperclip" not in runner
+    assert "ImageChops" not in runner
 
     keyboard_layout = inspect.getsource(capture.force_ck3_english_keyboard_layout)
     for token in (
@@ -445,431 +427,397 @@ def main() -> int:
         assert already_english_user32.PostMessageW.calls == []
 
     with tempfile.TemporaryDirectory() as temporary:
-        artifacts = Path(temporary)
-        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
-        moved = Image.new("RGB", (2560, 1440), (180, 90, 40))
-        layout_gate = {
-            "result": "GREEN",
-            "after_hkl": "0x04090409",
-            "after_langid": "0409",
-            "left_in_english": True,
-            "restore_requested": False,
-            "restore_performed": False,
-        }
-        with (
-            mock.patch.object(capture.acceptance, "focus_ck3"),
-            mock.patch.object(
-                capture,
-                "force_ck3_english_keyboard_layout",
-                return_value=layout_gate,
-            ) as force_english,
-            mock.patch.object(
-                capture.acceptance.ImageGrab,
-                "grab",
-                side_effect=(
-                    unchanged,
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    moved,
-                    moved.copy(),
-                    moved.copy(),
-                    moved.copy(),
-                ),
-            ),
-            mock.patch.object(
-                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
-            ),
-            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
-            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
-            mock.patch.object(capture.acceptance.pyautogui, "hotkey") as hotkey,
-            mock.patch.object(capture.acceptance.pyautogui, "mouseDown") as mouse_down,
-            mock.patch.object(capture.acceptance.pyautogui, "mouseUp") as mouse_up,
-            mock.patch.object(
-                capture.acceptance,
-                "find_ocr_text",
-                side_effect=((2150, 220), None, None),
-            ),
-            mock.patch.object(
-                capture.acceptance,
-                "wait_for_ocr_text",
-                return_value=(2150, 220),
-            ),
-            mock.patch.object(
-                capture.acceptance,
-                "ocr_results",
-                side_effect=(
-                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
-                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
-                ),
-            ),
-            mock.patch.object(capture.acceptance, "deliberate_click") as click,
-            mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
-            mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
-            mock.patch.object(capture.time, "sleep"),
-        ):
-            camera_gate = capture.recenter_promo_camera_on_player_capital(
-                artifacts, layout_gate
-            )
-        assert press.call_args_list == [
-            mock.call("home"),
-            mock.call("v"),
-            mock.call("escape"),
-        ]
-        assert move.call_args_list == [
-            mock.call(2100, 345, duration=0.2),
-            mock.call(1280, 720, duration=0.1),
-        ]
-        assert click.call_args_list == [
-            mock.call((2150, 220), "native title search field"),
-        ]
-        assert hotkey.call_args_list == [
-            mock.call("ctrl", "a"),
-            mock.call("ctrl", "v"),
-        ]
-        assert clipboard_copy.call_args_list == [
-            mock.call("汴州"),
-            mock.call("preserved"),
-        ]
-        mouse_down.assert_called_once_with(button="right")
-        mouse_up.assert_called_once_with(button="right")
-        assert force_english.call_args_list == [
-            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
-            mock.call(artifacts, "05_promo_keyboard_layout_final"),
-        ]
-        assert camera_gate["result"] == "GREEN"
-        assert camera_gate["method"] == "english_shortcut_v_c_bianzhou"
-        assert camera_gate["entry_method"] == "english_shortcut_v"
-        assert camera_gate["resolved_title_key"] == "c_bianzhou"
-        assert camera_gate["ime_v_mode_recovery_used"] is False
-        assert camera_gate["ime_mode_restored"] is False
-        assert camera_gate["finder_close_ack"] is True
-        assert camera_gate["shortcut_visual_change_fraction"] == 0.0
-        assert camera_gate["action_visual_change_fraction"] >= 0.99
-        assert camera_gate["final_visual_change_fraction"] >= 0.99
-        assert camera_gate["keyboard_layout"]["after_langid"] == "0409"
-        assert camera_gate["keyboard_layout"]["restore_performed"] is False
-        assert [row["state"] for row in camera_gate["attempts"]] == [
-            "home",
-            "open_title_finder",
-            "resolve_title",
-            "title_action",
-            "close_title_finder",
-        ]
-        assert (artifacts / "05_promo_camera_recenter.json").is_file()
+        temporary_root = Path(temporary)
+        dll = temporary_root / "bridge.dll"
+        injector = temporary_root / "injector.exe"
+        dll.write_bytes(b"zg361-title-navigation-dll")
+        injector.write_bytes(b"zg361-title-navigation-injector")
+        explicit_pipe = (
+            capture.NATIVE_TITLE_PIPE_PREFIX + "1" * 32
+        )
+        native_config = capture.resolve_native_bridge_config(
+            dll, injector, explicit_pipe
+        )
+        assert native_config.mode == "native-headless"
+        assert native_config.pipe_name == explicit_pipe
+        assert native_config.dll_path == dll.resolve()
+        assert native_config.injector_path == injector.resolve()
+        bridge_identity = capture.native_bridge_preflight_identity(
+            native_config
+        )
+        assert bridge_identity["dll_sha256"] == capture.isolated.sha256_file(dll)
+        assert bridge_identity["injector_sha256"] == (
+            capture.isolated.sha256_file(injector)
+        )
+        assert bridge_identity["visual_fallback"] is False
+        generated_pipe_config = capture.resolve_native_bridge_config(
+            dll, injector, None
+        )
+        assert re.fullmatch(
+            re.escape(capture.NATIVE_TITLE_PIPE_PREFIX) + r"[0-9a-f]{32}",
+            generated_pipe_config.pipe_name,
+        )
 
-    # One CK3 session must survive a shortcut-level failure and use the
-    # already-attested native More -> Find Title path without touching Shift.
-    with tempfile.TemporaryDirectory() as temporary:
-        artifacts = Path(temporary)
-        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
-        moved = Image.new("RGB", (2560, 1440), (180, 90, 40))
-        layout_gate = {
-            "result": "GREEN",
-            "after_hkl": "0x04090409",
-            "after_langid": "0409",
-            "left_in_english": True,
-            "restore_requested": False,
-            "restore_performed": False,
-        }
-        with (
-            mock.patch.object(capture.acceptance, "focus_ck3"),
-            mock.patch.object(
-                capture,
-                "force_ck3_english_keyboard_layout",
-                return_value=layout_gate,
-            ) as force_english,
-            mock.patch.object(
-                capture.acceptance.ImageGrab,
-                "grab",
-                side_effect=(
-                    unchanged,
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    unchanged.copy(),
-                    moved,
-                    moved.copy(),
-                    moved.copy(),
-                    moved.copy(),
+        for bad_args, expected_error in (
+            ((dll, None, explicit_pipe), "must be supplied together"),
+            ((dll, injector, r"\\.\pipe\shared"), "run-unique"),
+            (
+                (
+                    temporary_root / "missing.dll",
+                    temporary_root / "missing.exe",
+                    explicit_pipe,
                 ),
-            ) as grab,
-            mock.patch.object(
-                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+                "configuration is invalid",
             ),
-            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
-            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
-            mock.patch.object(
-                capture.acceptance.pyautogui,
-                "position",
-                return_value=(1820, 1176),
-            ),
-            mock.patch.object(capture.acceptance.pyautogui, "hotkey") as hotkey,
-            mock.patch.object(capture.acceptance.pyautogui, "mouseDown") as mouse_down,
-            mock.patch.object(capture.acceptance.pyautogui, "mouseUp") as mouse_up,
-            mock.patch.object(
-                capture.acceptance,
-                "find_ocr_text",
-                side_effect=(
-                    (1807, 1417),
-                    (1820, 1176),
-                    (2150, 220),
-                    None,
-                    None,
-                ),
-            ) as find_ocr,
-            mock.patch.object(
-                capture.acceptance,
-                "wait_for_ocr_text",
-                side_effect=(
-                    capture.acceptance.RunnerError("V produced no finder"),
-                    (1820, 1176),
-                    (2150, 220),
-                ),
-            ) as wait_ocr,
-            mock.patch.object(
-                capture.acceptance,
-                "ocr_results",
-                side_effect=(
-                    (),
-                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
-                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
-                ),
-            ) as ocr,
-            mock.patch.object(capture.acceptance, "deliberate_click") as click,
-            mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
-            mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
-            mock.patch.object(capture.time, "sleep"),
-        ):
-            camera_gate = capture.recenter_promo_camera_on_player_capital(
-                artifacts, layout_gate
-            )
-        assert press.call_args_list == [
-            mock.call("home"),
-            mock.call("v"),
-            mock.call("escape"),
-        ]
-        assert all(call != mock.call("shift") for call in press.call_args_list)
-        assert move.call_args_list == [
-            mock.call(1807, 1417, duration=0.2),
-            mock.call(1820, 1176, duration=0),
-            mock.call(2100, 345, duration=0.2),
-            mock.call(1280, 720, duration=0.1),
-        ]
-        assert click.call_args_list == [
-            mock.call((1807, 1417), "native HUD More button"),
-            mock.call((2150, 220), "native title search field"),
-        ]
-        assert hotkey.call_args_list == [
-            mock.call("ctrl", "a"),
-            mock.call("ctrl", "v"),
-        ]
-        assert clipboard_copy.call_args_list == [
-            mock.call("汴州"),
-            mock.call("preserved"),
-        ]
-        assert mouse_down.call_args_list == [
-            mock.call(button="left"),
-            mock.call(button="right"),
-        ]
-        assert mouse_up.call_args_list == [
-            mock.call(button="left"),
-            mock.call(button="right"),
-        ]
-        assert force_english.call_args_list == [
-            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
-            mock.call(artifacts, "05_promo_keyboard_layout_recheck"),
-            mock.call(artifacts, "05_promo_keyboard_layout_final"),
-        ]
-        assert camera_gate["result"] == "GREEN"
-        assert camera_gate["method"] == "native_more_find_title_c_bianzhou"
-        assert camera_gate["entry_method"] == "native_more_find_title"
-        assert camera_gate["attempts"][1]["entry_ack"] is False
-        assert camera_gate["attempts"][2]["entry_ack"] is True
-        assert camera_gate["attempts"][2]["row_hover_ack"] is True
-        assert camera_gate["attempts"][2]["title_row"] == [1820, 1176]
-        assert camera_gate["title_search_point"] == [2150, 220]
-        assert grab.call_count == 12
-        assert find_ocr.call_count == 5
-        assert wait_ocr.call_count == 3
-        assert ocr.call_count == 3
-        menu_wait = wait_ocr.call_args_list[1]
-        assert menu_wait.args[:5] == (
-            "查找头衔",
-            (0.62, 0.68, 0.90, 0.99),
-            5,
-            artifacts,
-            "05_promo_camera_more_menu_find_title.png",
-        )
-        assert menu_wait.kwargs == {"contains": True, "stable_hits": 3}
-        hover_find = find_ocr.call_args_list[1]
-        assert hover_find.args[1:3] == (
-            "查找头衔",
-            (0.62, 0.68, 0.90, 0.99),
-        )
-        assert hover_find.kwargs == {"contains": True}
-        persisted_camera_gate = json.loads(
-            (artifacts / "05_promo_camera_recenter.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        assert persisted_camera_gate == camera_gate
-        assert camera_gate["navigation_path_status"] == (
-            "temporary_ocr_compatibility"
-        )
-        assert camera_gate["formal_mcp_contract"] == (
-            "docs/ck3-native-title-map-navigation-contract.md"
-        )
-        assert camera_gate["mcp_capability_implemented"] is False
-        assert (
-            artifacts / "05_promo_camera_more_menu_find_title_hover.png"
-        ).is_file()
-
-    # If moving from More to the OCR row dismisses the transient flyout, both
-    # bounded attempts must leave explicit RED evidence without ever pressing
-    # the stale row coordinate.
-    with tempfile.TemporaryDirectory() as temporary:
-        artifacts = Path(temporary)
-        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
-        layout_gate = {
-            "result": "GREEN",
-            "after_hkl": "0x04090409",
-            "after_langid": "0409",
-            "left_in_english": True,
-            "restore_requested": False,
-            "restore_performed": False,
-        }
-        with (
-            mock.patch.object(capture.acceptance, "focus_ck3"),
-            mock.patch.object(
-                capture,
-                "force_ck3_english_keyboard_layout",
-                return_value=layout_gate,
-            ) as force_english,
-            mock.patch.object(
-                capture.acceptance.ImageGrab,
-                "grab",
-                side_effect=tuple(unchanged.copy() for _ in range(7)),
-            ) as grab,
-            mock.patch.object(
-                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
-            ),
-            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
-            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
-            mock.patch.object(
-                capture.acceptance.pyautogui,
-                "position",
-                side_effect=((1820, 1176), (1819, 1164)),
-            ) as position,
-            mock.patch.object(
-                capture.acceptance.pyautogui, "click"
-            ) as raw_click,
-            mock.patch.object(
-                capture.acceptance.pyautogui, "mouseDown"
-            ) as mouse_down,
-            mock.patch.object(
-                capture.acceptance.pyautogui, "mouseUp"
-            ) as mouse_up,
-            mock.patch.object(
-                capture.acceptance,
-                "find_ocr_text",
-                side_effect=((1807, 1417), None, (1807, 1417), None),
-            ) as find_ocr,
-            mock.patch.object(
-                capture.acceptance,
-                "wait_for_ocr_text",
-                side_effect=(
-                    capture.acceptance.RunnerError("V produced no finder"),
-                    (1820, 1176),
-                    (1819, 1164),
-                ),
-            ) as wait_ocr,
-            mock.patch.object(
-                capture.acceptance,
-                "ocr_results",
-                side_effect=((),),
-            ) as ocr,
-            mock.patch.object(capture.acceptance, "deliberate_click") as click,
-            mock.patch.object(capture.time, "sleep"),
         ):
             try:
-                capture.recenter_promo_camera_on_player_capital(
-                    artifacts, layout_gate
+                capture.resolve_native_bridge_config(*bad_args)
+            except capture.acceptance.RunnerError as error:
+                assert expected_error in str(error)
+            else:
+                raise AssertionError(
+                    f"invalid native bridge config was accepted: {bad_args!r}"
+                )
+
+        hybrid = capture.NativeBridgeLaunchConfig(
+            mode="hybrid-fallback",
+            pipe_name=explicit_pipe,
+            dll_path=dll,
+            injector_path=injector,
+        )
+        with mock.patch.object(
+            capture,
+            "native_bridge_launch_config_from_environment",
+            return_value=hybrid,
+        ):
+            try:
+                capture.resolve_native_bridge_config(
+                    None, None, explicit_pipe
                 )
             except capture.acceptance.RunnerError as error:
-                hover_failure_error = error
+                assert "native-headless" in str(error)
             else:
-                raise AssertionError("two vanished More rows did not fail closed")
+                raise AssertionError("hybrid fallback bridge was accepted")
+        with mock.patch.object(
+            capture,
+            "native_bridge_launch_config_from_environment",
+            side_effect=RuntimeError("bad environment fixture"),
+        ):
+            try:
+                capture.resolve_native_bridge_config(
+                    None, None, explicit_pipe
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "native bridge environment is invalid" in str(error)
+            else:
+                raise AssertionError("bad bridge environment escaped RunnerError")
 
-        assert "entry paths exhausted" in str(hover_failure_error)
-        assert press.call_args_list == [mock.call("home"), mock.call("v")]
-        assert move.call_args_list == [
-            mock.call(1807, 1417, duration=0.2),
-            mock.call(1820, 1176, duration=0),
-            mock.call(1280, 720, duration=0.1),
-            mock.call(1807, 1417, duration=0.2),
-            mock.call(1819, 1164, duration=0),
-            mock.call(1280, 720, duration=0.1),
-        ]
-        assert click.call_args_list == [
-            mock.call((1807, 1417), "native HUD More button"),
-            mock.call((1807, 1417), "native HUD More button"),
-        ]
-        raw_click.assert_not_called()
-        mouse_down.assert_not_called()
-        mouse_up.assert_not_called()
-        assert position.call_count == 2
-        assert grab.call_count == 7
-        assert find_ocr.call_count == 4
-        assert wait_ocr.call_count == 3
-        assert ocr.call_count == 1
-        assert force_english.call_args_list == [
-            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
-            mock.call(artifacts, "05_promo_keyboard_layout_recheck"),
-        ]
+        binding = {
+            "snapshot_id": "native:9",
+            "revision": 9,
+            "native_revision": 9,
+            "date_raw": 777,
+            "episode_run_id": "episode-zg361",
+            "connection_generation": 4,
+        }
+        camera = {
+            "target_write_blocked": False,
+            "settled": True,
+            "current_state": [1.0] * 6,
+            "target_state": [1.0] * 6,
+        }
 
-        persisted_failure = json.loads(
-            (artifacts / "05_promo_camera_recenter.json").read_text(
-                encoding="utf-8"
-            )
+        def typed_row(
+            title_key: str, payload_hash: str
+        ) -> dict[str, object]:
+            return {
+                "ok": True,
+                "title_key": title_key,
+                "typed_service_payload": {
+                    "status": "already_centered",
+                    "camera_center": dict(camera),
+                },
+                "typed_service_payload_sha256": payload_hash,
+                "camera_transition": {
+                    "before": dict(camera),
+                    "after": dict(camera),
+                },
+            }
+
+        known = typed_row(
+            capture.title_navigation_live.DISPLACEMENT_TITLE_KEY, "A" * 64
         )
-        assert persisted_failure["result"] == "RED"
-        hover_failures = [
-            row
-            for row in persisted_failure["attempts"]
-            if row.get("method") == "native_more_menu"
-            and "row_hover_ack" in row
+        integrity = typed_row(
+            capture.title_navigation_live.BARONY_TITLE_KEY, "B" * 64
+        )
+        final = typed_row(
+            capture.title_navigation_live.COUNTY_TITLE_KEY, "C" * 64
+        )
+        shared_sequence = {
+            "ok": True,
+            "session_binding": binding,
+            "known_steps": [known],
+            "unknown_step": {
+                "ok": True,
+                "title_key": capture.title_navigation_live.UNKNOWN_TITLE_KEY,
+                "typed_error_sha256": "D" * 64,
+                "integrity_probe": integrity,
+            },
+            "checks": {"shared_contract": True},
+        }
+        capabilities = {
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": 4321,
+                "connection_generation": 4,
+            }
+        }
+
+        class MatrixService:
+            def capabilities(self) -> dict[str, object]:
+                return capabilities
+
+        service = MatrixService()
+
+        def forbidden_fallback(*_args: object, **_kwargs: object) -> None:
+            raise AssertionError("visual/input fallback was invoked")
+
+        matrix_artifacts = temporary_root / "matrix"
+        matrix_artifacts.mkdir()
+        with (
+            mock.patch.object(
+                capture,
+                "native_title_navigation_readiness",
+                return_value={"ok": True, "binding": binding},
+            ) as readiness,
+            mock.patch.object(
+                capture.title_navigation_live,
+                "_exact_binary_proof",
+                return_value={"ok": True, "checks": {"fixture": True}},
+            ),
+            mock.patch.object(
+                capture.title_navigation_live,
+                "_run_navigation_sequence",
+                return_value=shared_sequence,
+            ) as shared_matrix,
+            mock.patch.object(
+                capture.title_navigation_live,
+                "_known_call",
+                return_value=final,
+            ) as final_call,
+            mock.patch.object(
+                capture.acceptance,
+                "find_ocr_text",
+                side_effect=forbidden_fallback,
+            ) as find_ocr,
+            mock.patch.object(
+                capture.acceptance,
+                "wait_for_ocr_text",
+                side_effect=forbidden_fallback,
+            ) as wait_ocr,
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_results",
+                side_effect=forbidden_fallback,
+            ) as ocr_results,
+            mock.patch.object(
+                capture.acceptance,
+                "deliberate_click",
+                side_effect=forbidden_fallback,
+            ) as click,
+            mock.patch.object(
+                capture.acceptance,
+                "focus_ck3",
+                side_effect=forbidden_fallback,
+            ) as focus,
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=forbidden_fallback,
+            ) as grab,
+            mock.patch.object(
+                capture,
+                "force_ck3_english_keyboard_layout",
+                side_effect=forbidden_fallback,
+            ) as force_layout,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "press",
+                side_effect=forbidden_fallback,
+            ) as press,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "hotkey",
+                side_effect=forbidden_fallback,
+            ) as hotkey,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "moveTo",
+                side_effect=forbidden_fallback,
+            ) as move,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "click",
+                side_effect=forbidden_fallback,
+            ) as raw_click,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "mouseDown",
+                side_effect=forbidden_fallback,
+            ) as mouse_down,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "mouseUp",
+                side_effect=forbidden_fallback,
+            ) as mouse_up,
+        ):
+            matrix = capture.run_native_title_navigation_matrix(
+                service,
+                matrix_artifacts,
+                tracked_ck3_pid=4321,
+                native_bridge=native_config,
+                preflight_bridge_identity=bridge_identity,
+            )
+
+        assert matrix["result"] == "GREEN"
+        assert matrix["mcp_tool"] == "ck3_center_map_on_landed_title_v1"
+        assert matrix["tracked_full_acceptance_pid"] == 4321
+        assert matrix["successful_typed_call_count"] == 3
+        assert matrix["successful_target_write_blocked_values"] == [
+            False,
+            False,
+            False,
         ]
-        assert [row["attempt_number"] for row in hover_failures] == [1, 2]
-        assert all(row["row_hover_ack"] is False for row in hover_failures)
-        assert all(row["entry_ack"] is False for row in hover_failures)
-        assert [row["hover_title_row"] for row in hover_failures] == [None, None]
-        assert (
-            artifacts / "05_promo_camera_more_menu_find_title_hover.png"
-        ).is_file()
-        assert (
-            artifacts
-            / "05_promo_camera_more_menu_find_title_hover_retry_2.png"
-        ).is_file()
-        assert (
-            artifacts / "05_promo_camera_more_button_tooltip_retry_2.png"
-        ).is_file()
+        assert matrix["interaction_audit"]["all_zero"] is True
+        assert matrix["interaction_audit"]["fallbacks_enabled"] is False
+        assert all(
+            value == 0
+            for value in matrix["interaction_audit"]["counters"].values()
+        )
+        assert matrix["inhibit_positive"]["status"] == "skipped"
+        assert matrix["inhibit_positive"]["executed"] is False
+        assert matrix["inhibit_positive"]["live_claim"] is False
+        assert matrix["ffmpeg_started"] is False
+        assert re.fullmatch(
+            r"[0-9A-F]{64}", matrix["typed_matrix_payload_sha256"]
+        )
+        persisted = json.loads(
+            (
+                matrix_artifacts / "05_title_navigation_mcp_matrix.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert persisted == matrix
+        readiness.assert_called_once_with(service, tracked_ck3_pid=4321)
+        shared_matrix.assert_called_once_with(service)
+        assert final_call.call_args.kwargs["title_key"] == "c_bianzhou"
+        assert final_call.call_args.kwargs["allowed_statuses"] == {
+            "centered",
+            "already_centered",
+        }
+        for forbidden_mock in (
+            find_ocr,
+            wait_ocr,
+            ocr_results,
+            click,
+            focus,
+            grab,
+            force_layout,
+            press,
+            hotkey,
+            move,
+            raw_click,
+            mouse_down,
+            mouse_up,
+        ):
+            forbidden_mock.assert_not_called()
+
+        launch_artifacts = temporary_root / "launch-wiring"
+        steam_root = temporary_root / "steam"
+        steam_root.mkdir()
+        runtime_identity = {"native_bridge_runtime": bridge_identity}
+        with (
+            mock.patch.object(
+                capture, "preflight", return_value=runtime_identity
+            ) as preflight,
+            mock.patch.object(
+                capture.terminal,
+                "steam_userdata_root",
+                return_value=steam_root,
+            ),
+            mock.patch.object(
+                capture.isolated,
+                "steam_workshop_app_roots",
+                return_value=[],
+            ),
+            mock.patch.object(
+                capture.isolated, "registered_workshop_targets"
+            ),
+            mock.patch.object(capture.isolated, "ensure_test_paths_safe"),
+            mock.patch.object(
+                capture.isolated, "protected_snapshot", return_value={}
+            ),
+            mock.patch.object(capture.isolated, "verify_protected_storage"),
+            mock.patch.object(capture, "write_evidence_index"),
+            mock.patch.object(
+                capture,
+                "run_cell",
+                return_value={"result": "GREEN", "error_reason": None},
+            ) as run_cell,
+        ):
+            assert (
+                capture.main(
+                    artifacts_dir=str(launch_artifacts),
+                    keep_userdir=True,
+                    bridge_dll=str(dll),
+                    bridge_injector=str(injector),
+                    bridge_pipe=explicit_pipe,
+                )
+                == 0
+            )
+        selected = preflight.call_args.kwargs["native_bridge"]
+        assert selected == native_config
+        expected_state = launch_artifacts.with_name(
+            launch_artifacts.name + "_native_state"
+        )
+        expected_profile = expected_state / "profile"
+        assert run_cell.call_args.args == (
+            launch_artifacts / "cell",
+            expected_profile,
+            True,
+        )
+        assert run_cell.call_args.kwargs["state_dir"] == expected_state
+        assert run_cell.call_args.kwargs["native_bridge"] == native_config
 
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (
         "if promo_camera_probe:",
-        'close_native_decisions_panel(artifacts, "05_promo_pre_record")',
+        '"05_title_navigation_probe_preflight"',
         "force_ck3_english_keyboard_layout(artifacts)",
-        "recenter_promo_camera_on_player_capital(",
+        "run_native_title_navigation_matrix(",
         '"probe_only": True',
         '"ffmpeg_started": False',
         'result == "GREEN" and not promo_camera_probe',
+        "spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)",
+        "spec.profile_dir.resolve() != userdir",
+        "exclusive_launch_lock(spec.game_exe)",
+        'exclusive_state_lock(spec.state_dir, "zhongguo-361-acceptance")',
+        "NativeHeadlessGameplayDriver(",
+        "native_bridge.pipe_name",
+        "command_timeout_seconds=NATIVE_TITLE_COMMAND_TIMEOUT_S",
+        "launch_native_ck3(",
+        "native_bridge=native_bridge",
+        "verify_prepared_profile=False",
+        "stop_tracked(",
+        '"native_launch_sequence": "suspended_inject_resume"',
     ):
         assert token in camera_probe_cell, token
+    for retired in (
+        "acceptance.launch_ck3_process",
+        "acceptance.start_process_watchdog",
+        "acceptance.stop_ck3_process",
+        "recenter_promo_camera_on_player_capital",
+    ):
+        assert retired not in camera_probe_cell, retired
     try:
         capture.main(
             preflight_only=True,

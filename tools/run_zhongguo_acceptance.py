@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 import ctypes
 from ctypes import wintypes
 from datetime import datetime, timezone
@@ -20,9 +21,6 @@ import unicodedata
 import uuid
 from pathlib import Path
 
-from PIL import ImageChops
-import pyperclip
-
 import run_acceptance as acceptance
 import build_mod_zhongguo_style_release as release
 import run_terminal_acceptance as terminal
@@ -32,6 +30,28 @@ import run_vivhite_acceptance as isolated
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "mod_zhongguo_style"
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
+AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player" / "src"
+TITLE_NAVIGATION_RESEARCH = (
+    ROOT / "ck3_autonomous_player" / "native_bridge" / "research"
+)
+for import_root in (AUTOPLAYER_SOURCE, TITLE_NAVIGATION_RESEARCH):
+    if str(import_root) not in sys.path:
+        sys.path.insert(0, str(import_root))
+
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.environment import make_spec
+from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
+from xar_autoplayer.runtime import (
+    NativeBridgeLaunchConfig,
+    launch as launch_native_ck3,
+    native_bridge_launch_config_from_environment,
+    stop_tracked,
+    validate_native_bridge_launch_config,
+)
+
+import run_title_map_navigation_v1_live_acceptance as title_navigation_live
+
 PROMO_TOOLS_DIRECTORY = SOURCE / "tools"
 if str(PROMO_TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(PROMO_TOOLS_DIRECTORY))
@@ -45,6 +65,10 @@ EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
+NATIVE_BRIDGE_MODE = "native-headless"
+NATIVE_TITLE_COMMAND_TIMEOUT_S = 30.0
+NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
+NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
 EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
 EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS = tuple(
     real_characters.REVIEWED_OFFICIAL_CONTRACT
@@ -1384,8 +1408,93 @@ def verified_workshop_runtime(
     }
 
 
+def resolve_native_bridge_config(
+    bridge_dll: str | Path | None,
+    bridge_injector: str | Path | None,
+    bridge_pipe: str | None,
+) -> NativeBridgeLaunchConfig:
+    """Select one explicit pure-native bridge and one run-unique pipe."""
+
+    selected_pipe = bridge_pipe or f"{NATIVE_TITLE_PIPE_PREFIX}{uuid.uuid4().hex}"
+    if re.fullmatch(
+        re.escape(NATIVE_TITLE_PIPE_PREFIX) + r"[0-9a-f]{32}", selected_pipe
+    ) is None:
+        raise acceptance.RunnerError(
+            "--bridge-pipe must be a run-unique "
+            r"\\.\pipe\xar_ck3_bridge_zg361_<32 lowercase hex> name"
+        )
+    if bool(bridge_dll) != bool(bridge_injector):
+        raise acceptance.RunnerError(
+            "--bridge-dll and --bridge-injector must be supplied together"
+        )
+    if bridge_dll and bridge_injector:
+        candidate = NativeBridgeLaunchConfig(
+            mode=NATIVE_BRIDGE_MODE,
+            pipe_name=selected_pipe,
+            dll_path=Path(bridge_dll).expanduser().resolve(),
+            injector_path=Path(bridge_injector).expanduser().resolve(),
+        )
+    else:
+        try:
+            inherited = native_bridge_launch_config_from_environment()
+        except Exception as error:
+            raise acceptance.RunnerError(
+                f"native bridge environment is invalid: {error}"
+            ) from error
+        if inherited is None:
+            raise acceptance.RunnerError(
+                "native title navigation requires --bridge-dll and "
+                "--bridge-injector (or the existing XAR native-bridge environment)"
+            )
+        candidate = NativeBridgeLaunchConfig(
+            mode=inherited.mode,
+            pipe_name=selected_pipe,
+            dll_path=inherited.dll_path,
+            injector_path=inherited.injector_path,
+        )
+    try:
+        selected = validate_native_bridge_launch_config(candidate)
+    except Exception as error:
+        raise acceptance.RunnerError(
+            f"native bridge launch configuration is invalid: {error}"
+        ) from error
+    if selected.mode != NATIVE_BRIDGE_MODE:
+        raise acceptance.RunnerError(
+            "ZhongGuo acceptance requires native-headless mode with no visual fallback"
+        )
+    return selected
+
+
+def native_bridge_preflight_identity(
+    config: NativeBridgeLaunchConfig,
+) -> dict[str, object]:
+    """Freeze the exact injection artifacts selected before CK3 starts."""
+
+    if not config.dll_path.is_file():
+        raise acceptance.RunnerError(
+            f"native bridge DLL is missing: {config.dll_path}"
+        )
+    if not config.injector_path.is_file():
+        raise acceptance.RunnerError(
+            f"native bridge injector is missing: {config.injector_path}"
+        )
+    return {
+        "mode": config.mode,
+        "pipe_name": config.pipe_name,
+        "pipe_unique_to_run": True,
+        "dll_path": str(config.dll_path),
+        "dll_sha256": isolated.sha256_file(config.dll_path),
+        "injector_path": str(config.injector_path),
+        "injector_sha256": isolated.sha256_file(config.injector_path),
+        "command_timeout_seconds": NATIVE_TITLE_COMMAND_TIMEOUT_S,
+        "visual_fallback": False,
+    }
+
+
 def preflight(
-    runtime_source: Path = SOURCE, workshop_manifest: Path | None = None
+    runtime_source: Path = SOURCE,
+    workshop_manifest: Path | None = None,
+    native_bridge: NativeBridgeLaunchConfig | None = None,
 ) -> dict[str, object]:
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
@@ -1400,7 +1509,17 @@ def preflight(
         "workshop_manifest_git_sha": None,
         "workshop_manifest_git_tag": None,
         "verified_file_count": None,
+        "native_bridge_runtime": None,
     }
+    if native_bridge is None:
+        errors.append("native title-navigation bridge configuration is missing")
+    else:
+        try:
+            runtime_identity["native_bridge_runtime"] = (
+                native_bridge_preflight_identity(native_bridge)
+            )
+        except acceptance.RunnerError as error:
+            errors.append(str(error))
     if runtime_source == SOURCE.resolve():
         if workshop_manifest is not None:
             errors.append(
@@ -1412,8 +1531,8 @@ def preflight(
         )
     else:
         try:
-            runtime_identity = verified_workshop_runtime(
-                runtime_source, workshop_manifest
+            runtime_identity.update(
+                verified_workshop_runtime(runtime_source, workshop_manifest)
             )
         except acceptance.RunnerError as error:
             errors.append(str(error))
@@ -1906,632 +2025,326 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
     acceptance.ensure_game_paused(artifacts, "05_song_emperor")
 
 
-def recenter_promo_camera_on_player_capital(
-    artifacts: Path,
-    keyboard_layout_evidence: dict[str, object] | None = None,
+def native_title_navigation_readiness(
+    service: GameplayBridgeService,
+    *,
+    tracked_ck3_pid: int,
+    timeout_s: float = NATIVE_TITLE_READINESS_TIMEOUT_S,
 ) -> dict[str, object]:
-    """Return the inherited bookmark camera to Song with observable native ACKs."""
+    """Wait for one exact-build, paused, map-ready native bridge binding."""
 
-    def map_change_fraction(left, right) -> float:
-        width, height = left.size
-        box = (
-            int(width * 0.20),
-            int(height * 0.08),
-            int(width * 0.72),
-            int(height * 0.88),
+    deadline = time.monotonic() + timeout_s
+    last_error = "native bridge did not publish readiness"
+    while time.monotonic() < deadline:
+        try:
+            capabilities = service.capabilities()
+            snapshot = service.snapshot()
+            diagnostics_value = capabilities.get("diagnostics")
+            diagnostics = (
+                diagnostics_value if isinstance(diagnostics_value, dict) else {}
+            )
+            snapshot_diagnostics_value = snapshot.get("diagnostics")
+            snapshot_diagnostics = (
+                snapshot_diagnostics_value
+                if isinstance(snapshot_diagnostics_value, dict)
+                else {}
+            )
+            hello_value = diagnostics.get("hello")
+            hello = hello_value if isinstance(hello_value, dict) else {}
+            connection_generation = diagnostics.get("connection_generation")
+            capability = title_navigation_live._capability_proof(capabilities)
+            binding = title_navigation_live._snapshot_binding(snapshot)
+            checks = {
+                "native_headless_mode": capabilities.get("mode")
+                == NATIVE_BRIDGE_MODE,
+                "native_headless_backend": capabilities.get("backend_id")
+                == NATIVE_BRIDGE_MODE,
+                "visual_fallback_disabled": capabilities.get("visual_fallback")
+                is False,
+                "transport_ready": capabilities.get("transport_ready") is True,
+                "snapshot_available": capabilities.get("snapshot") is True,
+                "connected": diagnostics.get("connected") is True,
+                "semantic_state_available": diagnostics.get(
+                    "semantic_state_available"
+                )
+                is True,
+                "tracked_ck3_pid_matches_bridge": diagnostics.get("bridge_pid")
+                == tracked_ck3_pid,
+                "positive_connection_generation": isinstance(
+                    connection_generation, int
+                )
+                and not isinstance(connection_generation, bool)
+                and connection_generation > 0,
+                "snapshot_transport_binding_matches": (
+                    snapshot_diagnostics.get("bridge_pid")
+                    == diagnostics.get("bridge_pid")
+                    and snapshot_diagnostics.get("connection_generation")
+                    == connection_generation
+                ),
+                "exact_game_version": hello.get("expected_ck3_version")
+                == EXPECTED_GAME_VERSION,
+                "exact_executable_sha256": str(
+                    hello.get("expected_ck3_sha256", "")
+                ).lower()
+                == EXPECTED_EXE_SHA256,
+                "exact_build_adapter_ready": hello.get("ck3_build_match") is True
+                and hello.get("game_adapter_status") == "ready",
+                "title_navigation_capability": capability.get("ok") is True,
+                "paused": snapshot.get("paused") is True,
+                "map_ready": snapshot.get("map_ready") is True,
+                "played_character_present": isinstance(
+                    snapshot.get("played_character"), dict
+                ),
+            }
+            if all(checks.values()):
+                return {
+                    "checks": checks,
+                    "ok": True,
+                    "capability_proof": capability,
+                    "binding": binding,
+                    "snapshot": title_navigation_live._snapshot_evidence(snapshot),
+                }
+            last_error = ", ".join(
+                key for key, value in checks.items() if not value
+            )
+        except Exception as error:
+            last_error = f"{type(error).__name__}: {error}"
+        time.sleep(0.1)
+    raise acceptance.RunnerError(
+        "native title-navigation readiness timed out: " + last_error
+    )
+
+
+def run_native_title_navigation_matrix(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    tracked_ck3_pid: int,
+    native_bridge: NativeBridgeLaunchConfig,
+    preflight_bridge_identity: dict[str, object],
+) -> dict[str, object]:
+    """Run the shared typed title matrix before FFmpeg starts."""
+
+    evidence_path = artifacts / "05_title_navigation_mcp_matrix.json"
+    interaction_audit = title_navigation_live._interaction_audit()
+    inhibit_report = title_navigation_live._inhibit_negative_report()
+    partial: dict[str, object] = {}
+    try:
+        readiness = native_title_navigation_readiness(
+            service, tracked_ck3_pid=tracked_ck3_pid
         )
-        difference = ImageChops.difference(left.crop(box), right.crop(box))
-        sample = difference.resize((160, 90)).convert("RGB")
-        changed = sum(
-            1 for pixel in sample.get_flattened_data() if max(pixel) > 20
+        capabilities_before = service.capabilities()
+        observed_bridge_identity = native_bridge_preflight_identity(native_bridge)
+        exact_binary = title_navigation_live._exact_binary_proof(
+            capabilities_before,
+            managed_executable_sha256=isolated.sha256_file(acceptance.CK3_EXE),
+            production_dll_sha256=str(
+                observed_bridge_identity["dll_sha256"]
+            ),
+            expected_production_dll_sha256=str(
+                preflight_bridge_identity["dll_sha256"]
+            ),
+            injector_sha256=str(
+                observed_bridge_identity["injector_sha256"]
+            ),
+            expected_injector_sha256=str(
+                preflight_bridge_identity["injector_sha256"]
+            ),
         )
-        return round(changed / (160 * 90), 6)
+        bridge_identity_checks = {
+            "mode_stable": observed_bridge_identity["mode"]
+            == preflight_bridge_identity.get("mode")
+            == NATIVE_BRIDGE_MODE,
+            "pipe_stable": observed_bridge_identity["pipe_name"]
+            == preflight_bridge_identity.get("pipe_name")
+            == native_bridge.pipe_name,
+            "dll_path_stable": observed_bridge_identity["dll_path"]
+            == preflight_bridge_identity.get("dll_path"),
+            "dll_hash_stable": observed_bridge_identity["dll_sha256"]
+            == preflight_bridge_identity.get("dll_sha256"),
+            "injector_path_stable": observed_bridge_identity["injector_path"]
+            == preflight_bridge_identity.get("injector_path"),
+            "injector_hash_stable": observed_bridge_identity["injector_sha256"]
+            == preflight_bridge_identity.get("injector_sha256"),
+            "visual_fallback_disabled": observed_bridge_identity[
+                "visual_fallback"
+            ]
+            is False,
+        }
+        if not all(bridge_identity_checks.values()):
+            raise acceptance.RunnerError(
+                "native bridge DLL/injector/pipe identity drifted after preflight"
+            )
+        if exact_binary.get("ok") is not True:
+            raise acceptance.RunnerError(
+                "exact EXE/DLL/injector proof failed before title navigation"
+            )
 
-    attempts: list[dict[str, object]] = []
-    title_region = (0.70, 0.07, 0.98, 0.90)
-    title_header = None
-    title_result = None
-    title_search_point = None
-    method = None
-    entry_method = None
-    search_query = None
-    resolved_title_key = None
-    shortcut_change = 0.0
-    action_change = 0.0
-    final_change = 0.0
-    finder_close_ack = False
-    before = None
-    after = None
-    evidence_path = artifacts / "05_promo_camera_recenter.json"
+        sequence = title_navigation_live._run_navigation_sequence(service)
+        partial["shared_sequence"] = sequence
+        if sequence.get("ok") is not True:
+            raise acceptance.RunnerError(
+                "shared native title-navigation matrix returned RED"
+            )
+        session_binding = sequence.get("session_binding")
+        if not isinstance(session_binding, dict):
+            raise acceptance.RunnerError(
+                "shared title-navigation matrix omitted its full binding"
+            )
+        unknown_step = sequence.get("unknown_step")
+        if not isinstance(unknown_step, dict):
+            raise acceptance.RunnerError(
+                "shared title-navigation matrix omitted its typed unknown-title step"
+            )
+        integrity_probe = unknown_step.get("integrity_probe")
+        if not isinstance(integrity_probe, dict):
+            raise acceptance.RunnerError(
+                "shared title-navigation matrix omitted its integrity probe"
+            )
+        stable_camera = (
+            integrity_probe.get("camera_transition", {}).get("after")
+            if isinstance(integrity_probe.get("camera_transition"), dict)
+            else None
+        )
+        if not isinstance(stable_camera, dict):
+            raise acceptance.RunnerError(
+                "post-unknown integrity probe omitted typed camera state"
+            )
 
-    def camera_evidence(result: str, error: str | None = None) -> dict[str, object]:
-        payload: dict[str, object] = {
-            "schema_version": 2,
-            "result": result,
-            "native_action": (
-                "go_to_capital_shortcut"
-                if method == "shortcut_home"
-                else "find_title_right_click"
+        final_bianzhou = title_navigation_live._known_call(
+            service,
+            label="final_bianzhou_before_ffmpeg",
+            title_key=title_navigation_live.COUNTY_TITLE_KEY,
+            session_binding=session_binding,
+            allowed_statuses={"centered", "already_centered"},
+            camera_before=stable_camera,
+            camera_before_source=(
+                "shared_sequence.unknown_step.integrity_probe."
+                "camera_transition.after"
             ),
-            "default_key": "home",
-            "method": method,
-            "entry_method": entry_method,
-            "shortcut_visual_change_fraction": shortcut_change,
-            "action_visual_change_fraction": action_change,
-            "final_visual_change_fraction": final_change,
-            "minimum_visual_change_fraction": 0.18,
-            "search_query": search_query,
-            "resolved_title_key": resolved_title_key,
-            "title_header_point": list(title_header) if title_header else None,
-            "title_search_point": (
-                list(title_search_point) if title_search_point else None
+        )
+        partial["final_bianzhou"] = final_bianzhou
+        if final_bianzhou.get("ok") is not True:
+            raise acceptance.RunnerError(
+                "final c_bianzhou native camera postcondition returned RED"
+            )
+
+        capabilities_after = service.capabilities()
+        same_process = title_navigation_live._same_process_proof(
+            capabilities_before, capabilities_after
+        )
+        same_process_checks = dict(same_process.get("checks", {}))
+        same_process_checks["bridge_pid_matches_full_acceptance_pid"] = (
+            same_process.get("bridge_pid") == tracked_ck3_pid
+        )
+        same_process["checks"] = same_process_checks
+        same_process["ok"] = all(same_process_checks.values())
+
+        known_results = [
+            row
+            for row in sequence.get("known_steps", [])
+            if isinstance(row, dict)
+        ]
+        known_results.append(integrity_probe)
+        known_results.append(final_bianzhou)
+        camera_write_states = [
+            row.get("typed_service_payload", {})
+            .get("camera_center", {})
+            .get("target_write_blocked")
+            for row in known_results
+        ]
+        typed_payload_hashes = [
+            row.get("typed_service_payload_sha256") for row in known_results
+        ]
+        typed_error_hash = unknown_step.get("typed_error_sha256")
+        checks = {
+            "readiness": readiness.get("ok") is True,
+            "exact_binary": exact_binary.get("ok") is True,
+            "bridge_identity_stable": all(bridge_identity_checks.values()),
+            "shared_matrix": sequence.get("ok") is True,
+            "final_bianzhou": final_bianzhou.get("ok") is True
+            and final_bianzhou.get("title_key")
+            == title_navigation_live.COUNTY_TITLE_KEY,
+            "same_tracked_process": same_process.get("ok") is True,
+            "all_successful_target_writes_unblocked": bool(camera_write_states)
+            and all(value is False for value in camera_write_states),
+            "all_successful_payload_hashes_present": bool(typed_payload_hashes)
+            and all(isinstance(value, str) for value in typed_payload_hashes),
+            "typed_unknown_error_hash_present": isinstance(
+                typed_error_hash, str
             ),
-            "title_result_point": list(title_result) if title_result else None,
-            "finder_close_ack": finder_close_ack,
-            "keyboard_layout_policy": "keep_us_english_for_desktop_automation",
-            "keyboard_layout": keyboard_layout_evidence,
-            "navigation_path_status": "temporary_ocr_compatibility",
+            "zero_visual_or_input_fallback": interaction_audit.get("all_zero")
+            is True
+            and interaction_audit.get("fallbacks_enabled") is False,
+            "inhibit_positive_explicitly_skipped": (
+                inhibit_report.get("status") == "skipped"
+                and inhibit_report.get("executed") is False
+                and inhibit_report.get("live_claim") is False
+                and inhibit_report.get("process_memory_modified") is False
+            ),
+            "ffmpeg_not_started": True,
+        }
+        evidence: dict[str, object] = {
+            "schema_version": 1,
+            "result": "GREEN" if all(checks.values()) else "RED",
+            "navigation_path_status": "native_mcp_fixture_live",
+            "mcp_tool": "ck3_center_map_on_landed_title_v1",
+            "mcp_capability_implemented": True,
             "formal_mcp_contract": (
                 "docs/ck3-native-title-map-navigation-contract.md"
             ),
-            "mcp_capability_implemented": False,
-            "ime_v_mode_recovery_used": False,
-            "ime_mode_restored": False,
-            "attempts": attempts,
-            "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
-            "expected_realm_title": "h_china",
-            "before_artifact": "05_promo_camera_before_home.png",
-            "after_artifact": "05_promo_camera_after_home.png",
+            "tracked_full_acceptance_pid": tracked_ck3_pid,
+            "native_bridge_runtime": observed_bridge_identity,
+            "readiness": readiness,
+            "exact_binary_proof": exact_binary,
+            "bridge_identity_checks": bridge_identity_checks,
+            "shared_sequence": sequence,
+            "final_bianzhou": final_bianzhou,
+            "same_process_proof": same_process,
+            "capabilities_before": capabilities_before,
+            "capabilities_after": capabilities_after,
+            "successful_typed_payload_hashes": typed_payload_hashes,
+            "typed_unknown_error_hash": typed_error_hash,
+            "successful_target_write_blocked_values": camera_write_states,
+            "successful_typed_call_count": len(known_results),
+            "interaction_audit": interaction_audit,
+            "inhibit_positive": inhibit_report,
+            "ffmpeg_started": False,
+            "hkl_scope": "other_existing_gui_operations_only",
+            "checks": checks,
         }
-        if error is not None:
-            payload["error"] = error
-        return payload
-
-    def wait_for_title_header(stem: str, timeout_s: float):
-        return acceptance.wait_for_ocr_text(
-            "查找头衔",
-            title_region,
-            timeout_s,
-            artifacts,
-            stem,
-            contains=True,
-            stable_hits=1,
+        evidence["typed_matrix_payload_sha256"] = (
+            title_navigation_live._canonical_json_sha256(evidence)
         )
-
-    def open_title_finder_from_more_menu(attempt_number: int):
-        screen_width, screen_height = acceptance.pyautogui.size()
-        artifact_suffix = "" if attempt_number == 1 else f"_retry_{attempt_number}"
-        more_candidates = (
-            (
-                int(screen_width * (1807 / 2560)),
-                int(screen_height * (1417 / 1440)),
-            ),
-            (
-                int(screen_width * (1792 / 2560)),
-                int(screen_height * (1417 / 1440)),
-            ),
-            (
-                int(screen_width * (1822 / 2560)),
-                int(screen_height * (1417 / 1440)),
-            ),
-            (
-                int(screen_width * (1777 / 2560)),
-                int(screen_height * (1417 / 1440)),
-            ),
-            (
-                int(screen_width * (1837 / 2560)),
-                int(screen_height * (1417 / 1440)),
-            ),
-        )
-        more_point = None
-        tooltip_image = None
-        for candidate in more_candidates:
-            acceptance.focus_ck3()
-            acceptance.pyautogui.moveTo(*candidate, duration=0.2)
-            time.sleep(0.65)
-            tooltip_image = acceptance.ImageGrab.grab()
-            if acceptance.find_ocr_text(
-                tooltip_image,
-                "更多",
-                acceptance.FULL_SCREEN_REGION,
-                contains=True,
-            ) is not None:
-                more_point = candidate
-                tooltip_image.save(
-                    artifacts
-                    / f"05_promo_camera_more_button_tooltip{artifact_suffix}.png"
-                )
-                break
-        if more_point is None:
-            if tooltip_image is not None:
-                tooltip_image.save(
-                    artifacts
-                    / f"timeout_05_promo_camera_more_button_tooltip{artifact_suffix}.png"
-                )
-            attempts.append(
-                {
-                    "state": "open_title_finder",
-                    "method": "native_more_menu",
-                    "attempt_number": attempt_number,
-                    "entry_ack": False,
-                    "error": "More tooltip not found",
-                }
-            )
-            return None
-        acceptance.deliberate_click(more_point, "native HUD More button")
-        title_row_artifact = (
-            f"05_promo_camera_more_menu_find_title{artifact_suffix}.png"
-        )
-        try:
-            title_row = acceptance.wait_for_ocr_text(
-                "查找头衔",
-                (0.62, 0.68, 0.90, 0.99),
-                5,
-                artifacts,
-                title_row_artifact,
-                contains=True,
-                stable_hits=3,
-            )
-        except acceptance.RunnerError as error:
-            attempts.append(
-                {
-                    "state": "open_title_finder",
-                    "method": "native_more_menu",
-                    "attempt_number": attempt_number,
-                    "more_point": list(more_point),
-                    "entry_ack": False,
-                    "error": str(error),
-                }
-            )
-            return None
-
-        # The More flyout owns a _mouse_hierarchy_leave state.  A row being
-        # OCR-visible before pointer movement does not prove that it survived
-        # the movement.  Move once, keep the cursor stationary, then require
-        # the same row to remain visible at the cursor before sending a press.
-        acceptance.pyautogui.moveTo(*title_row, duration=0)
-        time.sleep(0.35)
-        hover_image = acceptance.ImageGrab.grab()
-        hover_image.save(
-            artifacts
-            / f"05_promo_camera_more_menu_find_title_hover{artifact_suffix}.png"
-        )
-        hover_title_row = acceptance.find_ocr_text(
-            hover_image,
-            "查找头衔",
-            (0.62, 0.68, 0.90, 0.99),
-            contains=True,
-        )
-        cursor_position = acceptance.pyautogui.position()
-        cursor_point = (int(cursor_position[0]), int(cursor_position[1]))
-        row_survived_move = (
-            hover_title_row is not None
-            and abs(hover_title_row[0] - title_row[0]) <= 15
-            and abs(hover_title_row[1] - title_row[1]) <= 15
-            and abs(cursor_point[0] - title_row[0]) <= 3
-            and abs(cursor_point[1] - title_row[1]) <= 3
-        )
-        if not row_survived_move:
-            attempts.append(
-                {
-                    "state": "open_title_finder",
-                    "method": "native_more_menu",
-                    "attempt_number": attempt_number,
-                    "more_point": list(more_point),
-                    "title_row": list(title_row),
-                    "hover_title_row": (
-                        list(hover_title_row) if hover_title_row else None
-                    ),
-                    "cursor_point": list(cursor_point),
-                    "row_hover_ack": False,
-                    "entry_ack": False,
-                    "error": "title row did not survive pointer placement",
-                }
-            )
-            return None
-
-        acceptance.pyautogui.mouseDown(button="left")
-        try:
-            time.sleep(0.15)
-        finally:
-            acceptance.pyautogui.mouseUp(button="left")
-        log(
-            "clicked native Find Title row without moving from verified "
-            f"hover point {cursor_point}"
-        )
-        try:
-            header = wait_for_title_header(
-                f"05_promo_title_finder_open_from_more{artifact_suffix}.png", 5
-            )
-        except acceptance.RunnerError as error:
-            attempts.append(
-                {
-                    "state": "open_title_finder",
-                    "method": "native_more_menu",
-                    "attempt_number": attempt_number,
-                    "more_point": list(more_point),
-                    "title_row": list(title_row),
-                    "hover_title_row": list(hover_title_row),
-                    "cursor_point": list(cursor_point),
-                    "row_hover_ack": True,
-                    "entry_ack": False,
-                    "error": str(error),
-                }
-            )
-            return None
-        attempts.append(
-            {
-                "state": "open_title_finder",
-                "method": "native_more_menu",
-                "attempt_number": attempt_number,
-                "more_point": list(more_point),
-                "title_row": list(title_row),
-                "hover_title_row": list(hover_title_row),
-                "cursor_point": list(cursor_point),
-                "row_hover_ack": True,
-                "entry_ack": True,
-            }
-        )
-        return header
-
-    def resolve_title_result(
-        query: str,
-        title_key: str,
-        search_point: tuple[int, int],
-        minimum_result_y: int,
-    ):
-        acceptance.deliberate_click(search_point, "native title search field")
-        acceptance.pyautogui.hotkey("ctrl", "a")
-        pyperclip.copy(query)
-        acceptance.pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.5)
-        result_deadline = time.monotonic() + 8
-        last_result = None
-        stable_hits = 0
-        result_image = None
-        while time.monotonic() < result_deadline:
-            acceptance.focus_ck3()
-            result_image = acceptance.ImageGrab.grab()
-            candidates = [
-                center
-                for text, _, center, _ in acceptance.ocr_results(
-                    result_image, title_region
-                )
-                if query in text and center[1] >= minimum_result_y
-            ]
-            current_result = (
-                min(candidates, key=lambda point: point[1])
-                if candidates
-                else None
-            )
-            if current_result is not None:
-                if (
-                    last_result is not None
-                    and abs(current_result[0] - last_result[0]) <= 15
-                    and abs(current_result[1] - last_result[1]) <= 15
-                ):
-                    stable_hits += 1
-                else:
-                    stable_hits = 1
-                last_result = current_result
-                if stable_hits >= 2:
-                    result_image.save(
-                        artifacts / f"05_promo_title_finder_{title_key}.png"
-                    )
-                    attempts.append(
-                        {
-                            "state": "resolve_title",
-                            "query": query,
-                            "title_key": title_key,
-                            "result_ack": True,
-                            "result_point": list(current_result),
-                        }
-                    )
-                    return current_result
-            else:
-                last_result = None
-                stable_hits = 0
-            time.sleep(acceptance.POLL_INTERVAL_S)
-        if result_image is not None:
-            result_image.save(
-                artifacts / f"timeout_05_promo_title_finder_{title_key}.png"
-            )
-        attempts.append(
-            {
-                "state": "resolve_title",
-                "query": query,
-                "title_key": title_key,
-                "result_ack": False,
-            }
-        )
-        return None
-
-    try:
-        # The lobby gate may have run minutes earlier and Windows input state is
-        # per window/thread. Re-attest immediately before the first camera key;
-        # never treat a prior 0409 snapshot as a transferable guarantee.
-        prior_keyboard_layout_evidence = (
-            dict(keyboard_layout_evidence) if keyboard_layout_evidence else None
-        )
-        keyboard_layout_evidence = dict(
-            force_ck3_english_keyboard_layout(
-                artifacts, "05_promo_keyboard_layout_before_camera"
-            )
-        )
-        keyboard_layout_evidence["prior_gate"] = prior_keyboard_layout_evidence
-        if keyboard_layout_evidence.get("after_langid") != "0409":
-            raise acceptance.RunnerError(
-                "promo camera started without CK3 layout attestation 0409"
-            )
-
-        acceptance.focus_ck3()
-        before = acceptance.ImageGrab.grab()
-        before.save(artifacts / "05_promo_camera_before_home.png")
-        acceptance.pyautogui.press("home")
-        time.sleep(2.0)
-        shortcut_after = acceptance.ImageGrab.grab()
-        shortcut_after.save(artifacts / "05_promo_camera_after_home_shortcut.png")
-        shortcut_change = map_change_fraction(before, shortcut_after)
-        attempts.append(
-            {
-                "state": "home",
-                "method": "shortcut_home",
-                "map_delta": shortcut_change,
-                "action_ack": shortcut_change >= 0.18,
-            }
-        )
-        if shortcut_change >= 0.18:
-            after = shortcut_after
-            method = "shortcut_home"
-            action_change = shortcut_change
-            finder_close_ack = True
-        else:
-            # The exact target thread is already attested as 0409. A visible
-            # finder header is still required; sending V is never itself ACK.
-            acceptance.focus_ck3()
-            acceptance.pyautogui.press("v")
-            try:
-                title_header = wait_for_title_header(
-                    "05_promo_title_finder_open_from_v.png", 5
-                )
-                entry_method = "english_shortcut_v"
-                attempts.append(
-                    {
-                        "state": "open_title_finder",
-                        "method": entry_method,
-                        "entry_ack": True,
-                    }
-                )
-            except acceptance.RunnerError as shortcut_error:
-                shortcut_failure = acceptance.ImageGrab.grab()
-                ime_v_mode_visible = any(
-                    "V模式输入" in text.upper()
-                    for text, _, _, _ in acceptance.ocr_results(
-                        shortcut_failure, acceptance.FULL_SCREEN_REGION
-                    )
-                )
-                shortcut_failure.save(
-                    artifacts / "05_promo_title_shortcut_no_finder.png"
-                )
-                attempts.append(
-                    {
-                        "state": "open_title_finder",
-                        "method": "english_shortcut_v",
-                        "entry_ack": False,
-                        "ime_v_mode_visible": ime_v_mode_visible,
-                        "error": str(shortcut_error),
-                    }
-                )
-                # Escape is safe only when OCR proved an IME composition layer.
-                # On a clean CK3 map it opens the game menu and would obstruct
-                # the native More fallback we are about to use.
-                if ime_v_mode_visible:
-                    acceptance.pyautogui.press("escape")
-                    time.sleep(0.3)
-                prior_layout_gate = dict(keyboard_layout_evidence)
-                keyboard_layout_evidence = dict(
-                    force_ck3_english_keyboard_layout(
-                        artifacts, "05_promo_keyboard_layout_recheck"
-                    )
-                )
-                keyboard_layout_evidence["prior_gate"] = prior_layout_gate
-                for more_attempt in (1, 2):
-                    title_header = open_title_finder_from_more_menu(more_attempt)
-                    if title_header is not None:
-                        entry_method = "native_more_find_title"
-                        break
-                    acceptance.pyautogui.moveTo(
-                        round(acceptance.pyautogui.size()[0] * 0.50),
-                        round(acceptance.pyautogui.size()[1] * 0.50),
-                        duration=0.1,
-                    )
-                    # Moving out is sufficient to dismiss CK3's transient More
-                    # flyout. Escape on a clean map would open the pause menu.
-                    time.sleep(0.3)
-            if title_header is None:
-                raise acceptance.RunnerError(
-                    "native title finder entry paths exhausted under English layout"
-                )
-
-            screen_width, screen_height = acceptance.pyautogui.size()
-            reference_scale = screen_height / 1440
-            # On CK3 1.19.0.6 the same localized text is rendered both as the
-            # panel heading and as the empty input's placeholder. OCR normally
-            # returns the lower placeholder (y~=226 at 2560x1440). The old
-            # unconditional +65 then clicked empty panel space at y~=291 and
-            # silently stole focus from the already-active input. Normalize
-            # either OCR match to the native field baseline instead.
-            search_field_reference_y = round(screen_height * (226 / 1440))
-            if abs(title_header[1] - search_field_reference_y) <= round(
-                35 * reference_scale
-            ):
-                search_y = title_header[1]
-            else:
-                search_y = title_header[1] + round(49 * reference_scale)
-            search_point = (title_header[0], search_y)
-            title_search_point = search_point
-            minimum_result_y = search_point[1] + round(70 * reference_scale)
-            prior_clipboard = pyperclip.paste()
-            moved_image = None
-            resolved_any_result = False
-            try:
-                for query, title_key in (
-                    ("汴州", "c_bianzhou"),
-                    ("开封", "b_kaifeng"),
-                ):
-                    candidate = resolve_title_result(
-                        query, title_key, search_point, minimum_result_y
-                    )
-                    if candidate is None:
-                        continue
-                    resolved_any_result = True
-                    action_before = acceptance.ImageGrab.grab()
-                    action_before.save(
-                        artifacts
-                        / f"05_promo_camera_before_{title_key}_right_click.png"
-                    )
-                    acceptance.focus_ck3()
-                    acceptance.pyautogui.moveTo(*candidate, duration=0.2)
-                    time.sleep(0.35)
-                    acceptance.pyautogui.mouseDown(button="right")
-                    time.sleep(0.15)
-                    acceptance.pyautogui.mouseUp(button="right")
-                    log(f"right-clicked native {title_key} result at {candidate}")
-                    time.sleep(2.0)
-                    action_after = acceptance.ImageGrab.grab()
-                    action_after.save(
-                        artifacts
-                        / f"05_promo_camera_after_{title_key}_right_click.png"
-                    )
-                    candidate_change = map_change_fraction(
-                        action_before, action_after
-                    )
-                    attempts.append(
-                        {
-                            "state": "title_action",
-                            "query": query,
-                            "title_key": title_key,
-                            "result_point": list(candidate),
-                            "map_delta": candidate_change,
-                            "action_ack": candidate_change >= 0.18,
-                        }
-                    )
-                    if candidate_change >= 0.18:
-                        search_query = query
-                        resolved_title_key = title_key
-                        title_result = candidate
-                        action_change = candidate_change
-                        moved_image = action_after
-                        break
-                if moved_image is None:
-                    if not resolved_any_result:
-                        raise acceptance.RunnerError(
-                            "title finder input/results did not resolve Bianzhou or Kaifeng"
-                        )
-                    raise acceptance.RunnerError(
-                        "Bianzhou and Kaifeng title actions produced no map movement ACK"
-                    )
-            finally:
-                pyperclip.copy(prior_clipboard)
-
-            finder_visible = acceptance.find_ocr_text(
-                moved_image,
-                "查找头衔",
-                title_region,
-                contains=True,
-            ) is not None
-            close_attempts = 0
-            after = moved_image
-            while finder_visible and close_attempts < 2:
-                acceptance.pyautogui.moveTo(
-                    round(screen_width * 0.50),
-                    round(screen_height * 0.50),
-                    duration=0.1,
-                )
-                acceptance.pyautogui.press("escape")
-                close_attempts += 1
-                time.sleep(0.8)
-                after = acceptance.ImageGrab.grab()
-                finder_visible = acceptance.find_ocr_text(
-                    after,
-                    "查找头衔",
-                    title_region,
-                    contains=True,
-                ) is not None
-            if not finder_visible:
-                time.sleep(0.4)
-                after = acceptance.ImageGrab.grab()
-                finder_visible = acceptance.find_ocr_text(
-                    after,
-                    "查找头衔",
-                    title_region,
-                    contains=True,
-                ) is not None
-            if finder_visible:
-                title_close = (
-                    title_header[0] + round(210 * reference_scale),
-                    title_header[1],
-                )
-                acceptance.deliberate_click(title_close, "native title finder X")
-                time.sleep(0.8)
-                after = acceptance.ImageGrab.grab()
-                finder_visible = acceptance.find_ocr_text(
-                    after,
-                    "查找头衔",
-                    title_region,
-                    contains=True,
-                ) is not None
-                if not finder_visible:
-                    time.sleep(0.4)
-                    after = acceptance.ImageGrab.grab()
-                    finder_visible = acceptance.find_ocr_text(
-                        after,
-                        "查找头衔",
-                        title_region,
-                        contains=True,
-                    ) is not None
-            finder_close_ack = not finder_visible
-            attempts.append(
-                {
-                    "state": "close_title_finder",
-                    "close_attempts": close_attempts,
-                    "required_absent_hits": 2,
-                    "cleanup_ack": finder_close_ack,
-                }
-            )
-            if not finder_close_ack:
-                after.save(artifacts / "timeout_05_promo_title_finder_close.png")
-                raise acceptance.RunnerError(
-                    "native title finder remained visible after recenter"
-                )
-            prior_layout_gate = dict(keyboard_layout_evidence)
-            keyboard_layout_evidence = dict(
-                force_ck3_english_keyboard_layout(
-                    artifacts, "05_promo_keyboard_layout_final"
-                )
-            )
-            keyboard_layout_evidence["prior_gate"] = prior_layout_gate
-            after = acceptance.ImageGrab.grab()
-            method = f"{entry_method}_{resolved_title_key}"
-
-        after.save(artifacts / "05_promo_camera_after_home.png")
-        final_change = map_change_fraction(before, after)
-        if final_change < 0.18:
-            raise acceptance.RunnerError(
-                "native Song title recenter produced no material final map movement"
-            )
-        evidence = camera_evidence("GREEN")
         write_json(evidence_path, evidence)
+        if evidence["result"] != "GREEN":
+            raise acceptance.RunnerError(
+                "native MCP title-navigation evidence gate returned RED"
+            )
         return evidence
     except BaseException as error:
-        write_json(
-            evidence_path,
-            camera_evidence("RED", str(error) or type(error).__name__),
+        failed: dict[str, object] = {
+            "schema_version": 1,
+            "result": "RED",
+            "error": f"{type(error).__name__}: {error}",
+            "navigation_path_status": "native_mcp_fixture_live",
+            "mcp_tool": "ck3_center_map_on_landed_title_v1",
+            "mcp_capability_implemented": True,
+            "tracked_full_acceptance_pid": tracked_ck3_pid,
+            "native_bridge_runtime": preflight_bridge_identity,
+            "partial": partial,
+            "interaction_audit": interaction_audit,
+            "inhibit_positive": inhibit_report,
+            "ffmpeg_started": False,
+        }
+        failed["typed_matrix_payload_sha256"] = (
+            title_navigation_live._canonical_json_sha256(failed)
         )
+        write_json(evidence_path, failed)
         if isinstance(error, acceptance.RunnerError):
             raise
         raise acceptance.RunnerError(
-            f"promo camera state machine failed: {error}"
+            f"native MCP title-navigation matrix failed: {error}"
         ) from error
 
 
@@ -4143,18 +3956,25 @@ def run_scenario(
     stream: MarkerStream,
     artifacts: Path,
     recorder: PromoRecorder | None = None,
-    keyboard_layout_evidence: dict[str, object] | None = None,
+    *,
+    title_navigation_service: GameplayBridgeService,
+    tracked_ck3_pid: int,
+    native_bridge: NativeBridgeLaunchConfig,
+    preflight_bridge_identity: dict[str, object],
 ) -> dict[str, object]:
     initialize_fixture(stream, artifacts)
-    promo_camera_evidence = None
+    # The fixture decision belongs only to setup.  Close it before the shared
+    # native matrix so every full acceptance proves title navigation in the
+    # same tracked CK3 PID; promo capture cannot start FFmpeg before this gate.
+    close_native_decisions_panel(artifacts, "05_title_navigation_preflight")
+    title_navigation_evidence = run_native_title_navigation_matrix(
+        title_navigation_service,
+        artifacts,
+        tracked_ck3_pid=tracked_ck3_pid,
+        native_bridge=native_bridge,
+        preflight_bridge_identity=preflight_bridge_identity,
+    )
     if recorder:
-        # The one visible fixture decision is allowed only before recording.
-        # Close its native drawer and prove a clean HUD before FFmpeg starts;
-        # subsequent fixture coordination is hidden and time-delayed.
-        close_native_decisions_panel(artifacts, "05_promo_pre_record")
-        promo_camera_evidence = recenter_promo_camera_on_player_capital(
-            artifacts, keyboard_layout_evidence
-        )
         assert_promo_frame_clean(
             artifacts,
             "05_promo_pre_record_clean_hud",
@@ -4189,7 +4009,7 @@ def run_scenario(
     )
     return {
         "standard_lobby_start": True,
-        "promo_camera_recenter": promo_camera_evidence,
+        "title_navigation_mcp_matrix": title_navigation_evidence,
         "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
         "reviewed_official_history_id": reviewed_history_id,
         "real_character_provenance": (
@@ -4304,6 +4124,9 @@ def run_cell(
     artifacts: Path,
     userdir: Path,
     keep_userdir: bool,
+    *,
+    state_dir: Path,
+    native_bridge: NativeBridgeLaunchConfig,
     promo_capture: bool = False,
     promo_camera_probe: bool = False,
     runtime_source: Path = SOURCE,
@@ -4312,14 +4135,31 @@ def run_cell(
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
+    state_dir.mkdir(parents=True)
     userdir.mkdir(parents=True)
     runtime_source = Path(runtime_source).resolve()
+    state_dir = Path(state_dir).resolve()
+    userdir = Path(userdir).resolve()
     runtime_identity = dict(runtime_identity or {})
+    bridge_identity = runtime_identity.get("native_bridge_runtime")
     source_before = isolated.tree_snapshot(SOURCE)
     runtime_source_before = isolated.tree_snapshot(runtime_source)
     acceptance.configure_runtime_userdir(userdir)
     bootstrap = bootstrap_userdir(userdir, runtime_source)
+    spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)
+    if spec.profile_dir.resolve() != userdir:
+        raise acceptance.RunnerError(
+            "canonical native runtime profile differs from the bootstrapped userdir"
+        )
+    if not isinstance(bridge_identity, dict):
+        raise acceptance.RunnerError(
+            "preflight native bridge identity is missing from runtime evidence"
+        )
+
     process = None
+    session_handle = None
+    native_driver: NativeHeadlessGameplayDriver | None = None
+    lock_stack = ExitStack()
     result = "RED"
     error_reason = None
     evidence: dict[str, object] = {}
@@ -4334,8 +4174,11 @@ def run_cell(
     source_unchanged = False
     runtime_source_unchanged = False
     stream = MarkerStream(userdir / "logs" / "debug.log")
-    pid_path = artifacts / "ck3.pid"
     watchdog_pid = None
+    tracked_ck3_pid = None
+    native_cleanup: dict[str, object] = {}
+    driver_closed = False
+    locks_released = False
     recorder = PromoRecorder(artifacts / "promo") if promo_capture else None
     recorder_evidence: dict[str, object] = {}
     keyboard_layout_evidence: dict[str, object] = {}
@@ -4344,10 +4187,30 @@ def run_cell(
             raise acceptance.RunnerError(
                 f"CK3 executable SHA-256 drifted before launch: {executable_before}"
             )
-        watchdog_pid = acceptance.start_process_watchdog(pid_path)
-        process = acceptance.launch_ck3_process(False)
-        pid_path.write_text(str(process.pid), encoding="ascii")
-        log(f"launched tracked CK3 PID {process.pid}")
+        lock_stack.enter_context(exclusive_launch_lock(spec.game_exe))
+        lock_stack.enter_context(
+            exclusive_state_lock(spec.state_dir, "zhongguo-361-acceptance")
+        )
+        native_driver = NativeHeadlessGameplayDriver(
+            native_bridge.pipe_name,
+            state_dir=spec.state_dir,
+            save_dir=spec.profile_dir / "save games",
+            command_timeout_seconds=NATIVE_TITLE_COMMAND_TIMEOUT_S,
+        )
+        title_navigation_service = GameplayBridgeService(native_driver)
+        session_handle = launch_native_ck3(
+            spec,
+            native_bridge=native_bridge,
+            verify_prepared_profile=False,
+        )
+        process = session_handle.process
+        watchdog_pid = session_handle.watchdog_pid
+        tracked_ck3_pid = process.pid
+        acceptance.ACTIVE_CK3_PID = process.pid
+        log(
+            "launched suspended/injected/resumed tracked CK3 "
+            f"PID {process.pid} on {native_bridge.pipe_name}"
+        )
         acceptance.wait_for_ocr_text(
             "新游戏",
             acceptance.MAIN_MENU_REGION,
@@ -4371,9 +4234,15 @@ def run_cell(
         keyboard_layout_evidence = force_ck3_english_keyboard_layout(artifacts)
         if promo_camera_probe:
             initialize_fixture(stream, artifacts)
-            close_native_decisions_panel(artifacts, "05_promo_pre_record")
-            camera_evidence = recenter_promo_camera_on_player_capital(
-                artifacts, keyboard_layout_evidence
+            close_native_decisions_panel(
+                artifacts, "05_title_navigation_probe_preflight"
+            )
+            title_navigation_evidence = run_native_title_navigation_matrix(
+                title_navigation_service,
+                artifacts,
+                tracked_ck3_pid=tracked_ck3_pid,
+                native_bridge=native_bridge,
+                preflight_bridge_identity=bridge_identity,
             )
             clean_evidence = assert_promo_frame_clean(
                 artifacts,
@@ -4386,13 +4255,19 @@ def run_cell(
                 "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
                 "expected_realm_title": "h_china",
                 "keyboard_layout": keyboard_layout_evidence,
-                "promo_camera_recenter": camera_evidence,
-                "post_recenter_frame_clean": clean_evidence,
+                "title_navigation_mcp_matrix": title_navigation_evidence,
+                "post_navigation_frame_clean": clean_evidence,
                 "ffmpeg_started": False,
             }
         else:
             evidence = run_scenario(
-                stream, artifacts, recorder, keyboard_layout_evidence
+                stream,
+                artifacts,
+                recorder,
+                title_navigation_service=title_navigation_service,
+                tracked_ck3_pid=tracked_ck3_pid,
+                native_bridge=native_bridge,
+                preflight_bridge_identity=bridge_identity,
             )
             evidence["keyboard_layout"] = keyboard_layout_evidence
         new_diagnostics, new_warnings = project_diagnostics(
@@ -4410,7 +4285,9 @@ def run_cell(
     except BaseException as error:
         error_reason = str(error) or type(error).__name__
         log(f"FATAL {error}")
-        if isinstance(error, Exception) and not isinstance(error, acceptance.RunnerError):
+        if isinstance(error, Exception) and not isinstance(
+            error, acceptance.RunnerError
+        ):
             traceback.print_exc()
         try:
             acceptance.focus_ck3()
@@ -4424,16 +4301,47 @@ def run_cell(
             except Exception as error:
                 result = "RED"
                 reason = f"promo recorder stop failed: {error}"
-                error_reason = f"{error_reason}; {reason}" if error_reason else reason
-        if process is not None:
-            try:
-                acceptance.stop_ck3_process(
-                    process, pid_path, require_running=result == "GREEN"
+                error_reason = (
+                    f"{error_reason}; {reason}" if error_reason else reason
                 )
+        if session_handle is not None:
+            try:
+                native_cleanup = stop_tracked(
+                    session_handle, require_running=result == "GREEN"
+                )
+                if (
+                    native_cleanup.get("cleanup_proven") is not True
+                    or native_cleanup.get("contract_errors")
+                ):
+                    raise acceptance.RunnerError(
+                        "canonical native cleanup proof returned RED"
+                    )
             except Exception as error:
                 result = "RED"
-                reason = f"controlled stop failed: {error}"
-                error_reason = f"{error_reason}; {reason}" if error_reason else reason
+                reason = f"controlled native stop failed: {error}"
+                error_reason = (
+                    f"{error_reason}; {reason}" if error_reason else reason
+                )
+        acceptance.ACTIVE_CK3_PID = None
+        if native_driver is not None:
+            try:
+                native_driver.close()
+                driver_closed = True
+            except Exception as error:
+                result = "RED"
+                reason = f"native driver close failed: {error}"
+                error_reason = (
+                    f"{error_reason}; {reason}" if error_reason else reason
+                )
+        try:
+            lock_stack.close()
+            locks_released = True
+        except Exception as error:
+            result = "RED"
+            reason = f"native runtime lock release failed: {error}"
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
         try:
             if result == "GREEN" and not promo_camera_probe:
                 stream.validate(final=True)
@@ -4442,7 +4350,9 @@ def run_cell(
         except BaseException as error:
             result = "RED"
             reason = str(error) or type(error).__name__
-            error_reason = f"{error_reason}; {reason}" if error_reason else reason
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
         try:
             version_after = isolated.installed_game_version()
             executable_after = isolated.sha256_file(acceptance.CK3_EXE)
@@ -4458,7 +4368,9 @@ def run_cell(
         except BaseException as error:
             result = "RED"
             reason = str(error) or type(error).__name__
-            error_reason = f"{error_reason}; {reason}" if error_reason else reason
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
         try:
             new_diagnostics, new_warnings = project_diagnostics(
                 userdir, artifacts, "11_shutdown"
@@ -4471,7 +4383,9 @@ def run_cell(
         except BaseException as error:
             result = "RED"
             reason = str(error) or type(error).__name__
-            error_reason = f"{error_reason}; {reason}" if error_reason else reason
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
         try:
             runtime_unchanged = True
             for key, target in bootstrap["targets"].items():
@@ -4483,26 +4397,36 @@ def run_cell(
             runtime_source_unchanged = (
                 isolated.tree_snapshot(runtime_source) == runtime_source_before
             )
-            if not runtime_unchanged or not source_unchanged or not runtime_source_unchanged:
+            if (
+                not runtime_unchanged
+                or not source_unchanged
+                or not runtime_source_unchanged
+            ):
                 raise acceptance.RunnerError("CK3 rewrote a runtime or source tree")
         except BaseException as error:
             result = "RED"
             reason = str(error) or type(error).__name__
-            error_reason = f"{error_reason}; {reason}" if error_reason else reason
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
 
+    state_dir_removed = False
     userdir_removed = False
     if result == "GREEN" and not keep_userdir:
         try:
-            shutil.rmtree(userdir)
+            shutil.rmtree(state_dir)
+            state_dir_removed = not state_dir.exists()
             userdir_removed = not userdir.exists()
-            if not userdir_removed:
-                raise OSError(f"userdir still exists: {userdir}")
+            if not state_dir_removed or not userdir_removed:
+                raise OSError(f"native state directory still exists: {state_dir}")
         except Exception as error:
             result = "RED"
-            reason = f"userdir cleanup failed: {error}"
-            error_reason = f"{error_reason}; {reason}" if error_reason else reason
-    elif userdir.exists():
-        log(f"retained userdir at {userdir}")
+            reason = f"native state cleanup failed: {error}"
+            error_reason = (
+                f"{error_reason}; {reason}" if error_reason else reason
+            )
+    elif state_dir.exists():
+        log(f"retained native state and userdir at {state_dir}")
 
     report = {
         "schema_version": 1,
@@ -4516,6 +4440,13 @@ def run_cell(
         "ck3_executable_after_sha256": executable_after,
         "debug_mode": False,
         "isolated_userdir": True,
+        "canonical_native_runtime": True,
+        "native_launch_sequence": "suspended_inject_resume",
+        "native_bridge_pipe": native_bridge.pipe_name,
+        "native_title_command_timeout_seconds": (
+            NATIVE_TITLE_COMMAND_TIMEOUT_S
+        ),
+        "tracked_full_acceptance_pid": tracked_ck3_pid,
         "promo_camera_probe_only": promo_camera_probe,
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
@@ -4533,9 +4464,15 @@ def run_cell(
         ),
         "scenario_evidence": evidence,
         "promo_capture": recorder_evidence,
+        "isolated_state_dir_path": str(state_dir),
         "isolated_userdir_path": str(userdir),
+        "state_dir_profile_matches_userdir": spec.profile_dir.resolve() == userdir,
+        "state_dir_removed_after_run": state_dir_removed,
         "userdir_removed_after_run": userdir_removed,
         "process_watchdog_pid": watchdog_pid,
+        "native_cleanup": native_cleanup,
+        "native_driver_closed": driver_closed,
+        "native_runtime_locks_released": locks_released,
         "environment": {
             "platform": platform.platform(),
             "python": sys.version.split()[0],
@@ -4557,6 +4494,9 @@ def main(
     promo_camera_probe: bool = False,
     workshop_cache_source: str | None = None,
     workshop_manifest: str | None = None,
+    bridge_dll: str | None = None,
+    bridge_injector: str | None = None,
+    bridge_pipe: str | None = None,
 ) -> int:
     if promo_capture and promo_camera_probe:
         raise acceptance.RunnerError(
@@ -4572,7 +4512,12 @@ def main(
         if workshop_manifest
         else None
     )
-    runtime_identity = preflight(runtime_source, manifest_path)
+    native_bridge = resolve_native_bridge_config(
+        bridge_dll, bridge_injector, bridge_pipe
+    )
+    runtime_identity = preflight(
+        runtime_source, manifest_path, native_bridge=native_bridge
+    )
     if preflight_only:
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
         return 0
@@ -4588,17 +4533,22 @@ def main(
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         RUNS_ROOT.mkdir(parents=True, exist_ok=True)
         artifacts = RUNS_ROOT / f"zga_{stamp}_{uuid.uuid4().hex[:8]}"
-    userdir = artifacts.with_name(artifacts.name + "_userdir")
+    state_dir = artifacts.with_name(artifacts.name + "_native_state")
+    userdir = state_dir / "profile"
     steam_root = terminal.steam_userdata_root()
     workshop_roots = isolated.steam_workshop_app_roots(steam_root)
     isolated.registered_workshop_targets(workshop_roots)
-    isolated.ensure_test_paths_safe((artifacts, userdir), steam_root, workshop_roots)
+    isolated.ensure_test_paths_safe(
+        (artifacts, state_dir, userdir), steam_root, workshop_roots
+    )
     protected_before = isolated.protected_snapshot(steam_root)
     artifacts.mkdir()
     report = run_cell(
         artifacts / "cell",
         userdir,
         keep_userdir,
+        state_dir=state_dir,
+        native_bridge=native_bridge,
         promo_capture=promo_capture,
         promo_camera_probe=promo_camera_probe,
         runtime_source=runtime_source,
@@ -4668,6 +4618,21 @@ if __name__ == "__main__":
         "--workshop-manifest",
         help="formal ID-bearing release manifest used to verify --workshop-cache-source",
     )
+    parser.add_argument(
+        "--bridge-dll",
+        help="exact-build production native bridge DLL (or use XAR bridge env)",
+    )
+    parser.add_argument(
+        "--bridge-injector",
+        help="exact-build suspended-process injector (paired with --bridge-dll)",
+    )
+    parser.add_argument(
+        "--bridge-pipe",
+        help=(
+            r"optional run-unique \\.\pipe\xar_ck3_bridge_zg361_<32 hex> name; "
+            "a fresh nonce is generated by default"
+        ),
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -4679,6 +4644,9 @@ if __name__ == "__main__":
                 promo_camera_probe=arguments.promo_camera_probe,
                 workshop_cache_source=arguments.workshop_cache_source,
                 workshop_manifest=arguments.workshop_manifest,
+                bridge_dll=arguments.bridge_dll,
+                bridge_injector=arguments.bridge_injector,
+                bridge_pipe=arguments.bridge_pipe,
             )
         )
     except acceptance.RunnerError as error:

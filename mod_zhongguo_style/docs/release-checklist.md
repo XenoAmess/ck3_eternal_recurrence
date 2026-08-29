@@ -58,11 +58,14 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 
 ## 3. CK3 合批实机验收
 
-只使用一次性 `-userdir` 与外部 fixture。正式基线采用**一次 CK3 启动跑完 361 条参考路线与共享核心链**；仅在日志、截图或
-断言出现明确 RED 时定向重跑失败场景，不再人为拆成四次启动。失败 attempt、日志、存档和截图必须原样保留，不能被 GREEN
-覆盖。
+只使用一次性 `-userdir` 与外部 fixture。正式发布总共只安排**两次 CK3 启动**：上传前一次 `--promo-capture`
+在同一 PID 中跑完 361 条参考路线、共享核心链、MCP 头衔导航矩阵和宣传录制；上传后从 fresh Workshop cache
+再跑一次 production smoke。仅在日志、截图或断言出现明确 RED 时定向重跑失败场景，不人为追加独立相机启动。
+失败 attempt、日志、存档和截图必须原样保留，不能被 GREEN 覆盖。
 
-桌面输入、OCR、GUI scale、相机与片场清理的可复用规则见 `docs/acceptance-automation-lessons.md`。自动化期间 CK3 输入线程必须精确签为 US English HKL `0x04090409` 并保持英文；不得把 Shift、候选层消失或已发送快捷键当成 ACK。
+桌面输入、OCR、GUI scale 与片场清理的可复用规则见 `docs/acceptance-automation-lessons.md`。现有产品 GUI 自动化期间
+CK3 输入线程仍必须精确签为 US English HKL `0x04090409` 并保持英文；该 HKL 不参与头衔导航，也不得把 Shift、
+候选层消失或已发送快捷键当成相机 ACK。
 
 头衔定位不再使用 OCR、快捷键、剪贴板或鼠标驱动瞬态“查找头衔”窗口。冻结构建必须先由 exact-build MCP
 `ck3_center_map_on_landed_title_v1(title_key="c_bianzhou", expected_revision=<revision>)` 解析稳定 title key，并在
@@ -70,17 +73,25 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 `anchor_kind=title_bounds_center`、`settled=true`、`target_write_blocked=false`，且 current/target state 与期望中心、
 zoom 和冻结的 paused/date/player/episode binding 一致；命令 dispatch 或菜单消失都不算 ACK。
 
-正式 `--promo-capture` 前，在同一提交上运行一次 **MCP-backed** 相机集成探针。它只验证史实赵曙、
-`c_bianzhou` 与 `b_kaifeng`、重复 already-centered、未知 key 的 typed RED、最终干净 HUD 和零测试 UI；不启动
-FFmpeg，也不冒充 361 全链：
+正式门直接嵌入同一次 `--promo-capture` 会话：runner 以唯一 pipe 执行 suspended → inject → resume，复用同一个
+`NativeHeadlessGameplayDriver` / `GameplayBridgeService` 与受管 CK3 PID；在 `recorder.start()` 之前运行
+`c_guangzhou → c_bianzhou → c_guangzhou → b_kaifeng → b_kaifeng → unknown → b_kaifeng → final c_bianzhou`
+typed 矩阵。报告必须保存完整 binding、每次 typed payload/error 的 SHA-256、DLL/injector/EXE 身份、同 PID/connection
+generation、全部成功调用的 `target_write_blocked=false` 和 OCR/像素判断/窗口激活/键盘/鼠标/剪贴板六类零 fallback 计数。
+生产没有安全可逆的 inhibit 控制时，正例必须明确写 `skipped`、`executed=false`、`live_claim=false`，不得改进程内存伪造。
+
+上传前正式命令（`--bridge-pipe` 默认自动生成本次运行唯一 nonce，不应复用固定 pipe）：
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py `
-  --promo-camera-probe
+  --promo-capture `
+  --bridge-dll <exact-build-production-bridge.dll> `
+  --bridge-injector <exact-build-injector.exe>
 ```
 
-只有报告明确证明全程没有为头衔定位调用 OCR/键盘/鼠标/剪贴板，且 MCP settled postcondition 全部 GREEN，才允许
-启动完整宣传合批。旧 OCR 相机 attempt 只保留为历史过程素材，不再构成本版本的可接受路径或验收前置。
+`--promo-camera-probe` 只是在上述正式会话 RED 后用于定向诊断的可选模式；它不启动 FFmpeg、不冒充 361 全链、
+不构成正式发布前置，也不计入正常两次启动预算。旧 OCR 相机 attempt 只保留为历史过程素材，不再构成本版本的
+可接受路径或验收前置。
 
 - [ ] 兼容 smoke 一次整批运行完成 361/361 配置投影：每个编号的 BEGIN/PASS 遥测恰好出现一次，0 duplicate，0 missing；14 本组织账与选择状态均通过。该项本身不代表领域机制完成。
 - [ ] 最终报告与公开文案把 `361/361` 严格限定为参考政策配置、唯一选择状态、14 本共享账、校验和与幂等 smoke；38 个下一版本领域状态机可以继续标为 `not-implemented` / `partial`，且不计入 0.3.0 缺陷或发布阻点。
@@ -196,7 +207,9 @@ py tools/verify_zhongguo_workshop_cache.py `
 & "tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py `
   --artifacts-dir <new-immutable-artifact-root> `
   --workshop-cache-source <fresh-workshop-cache> `
-  --workshop-manifest <id-bearing-manifest>
+  --workshop-manifest <id-bearing-manifest> `
+  --bridge-dll <exact-build-production-bridge.dll> `
+  --bridge-injector <exact-build-injector.exe>
 ```
 
 该模式会在启动 CK3 前再次执行逐文件 Workshop manifest 核验，并要求缓存叶目录名等于新 item ID、sidecar

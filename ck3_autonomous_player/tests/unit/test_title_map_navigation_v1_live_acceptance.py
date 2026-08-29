@@ -154,6 +154,7 @@ class _FakeService:
         self.dispatch_sequence = 0
         self.command_title_keys: list[str] = []
         self.history: list[dict[str, object]] = []
+        self.events: list[tuple[object, ...]] = []
 
     def _drifted(self) -> bool:
         return bool(
@@ -162,6 +163,7 @@ class _FakeService:
         )
 
     def snapshot(self) -> dict[str, object]:
+        self.events.append(("snapshot", len(self.command_title_keys)))
         binding = _binding()
         if self._drifted():
             binding["snapshot_id"] = "native:28"
@@ -189,6 +191,7 @@ class _FakeService:
     ) -> dict[str, object]:
         if expected_revision != PUBLIC_REVISION:
             raise AssertionError("runner did not reuse frozen public revision")
+        self.events.append(("command", title_key, expected_revision))
         self.command_title_keys.append(title_key)
         if title_key == HARNESS.UNKNOWN_TITLE_KEY:
             if self.mutate_on_unknown:
@@ -281,6 +284,22 @@ class TitleMapNavigationV1LiveAcceptanceTests(unittest.TestCase):
         self.assertEqual(
             service.command_title_keys,
             list(HARNESS._EXPECTED_COMMAND_KEYS),
+        )
+        command_event_indexes = [
+            index
+            for index, event in enumerate(service.events)
+            if event[0] == "command"
+        ]
+        self.assertEqual(len(command_event_indexes), 7)
+        self.assertGreaterEqual(
+            sum(event[0] == "snapshot" for event in service.events), 14
+        )
+        self.assertTrue(
+            all(
+                index > 0 and service.events[index - 1][0] == "snapshot"
+                for index in command_event_indexes
+            ),
+            service.events,
         )
         self.assertEqual(
             [
