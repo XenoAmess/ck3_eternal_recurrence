@@ -70,8 +70,29 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
             "utf-8-sig"
         )
-        self.assertIn("max = 80", product_effects)
-        self.assertIn("var:zg361_scoreboard_managed_shown_n > 80", product_effects)
+        self.assertRegex(
+            product_effects,
+            re.compile(
+                r"name\s*=\s*zg361_scoreboard_managed_shown_n\s+"
+                r"value\s*=\s*\{\s*value\s*=\s*var:zg361_cohort_n\s+"
+                r"max\s*=\s*80\s*\}",
+                re.S,
+            ),
+        )
+        self.assertRegex(
+            product_effects,
+            re.compile(
+                r"ordered_in_list\s*=\s*\{.*?"
+                r"list\s*=\s*zg361_scoreboard_candidates.*?"
+                r"max\s*=\s*\{\s*"
+                r"value\s*=\s*list_size:zg361_scoreboard_candidates\s+"
+                r"max\s*=\s*80\s*\}",
+                re.S,
+            ),
+        )
+        self.assertNotIn(
+            "var:zg361_scoreboard_managed_shown_n > 80", product_effects
+        )
         for source in ("managed", "received"):
             shown = f"zg361_scoreboard_{source}_shown_n"
             total = f"zg361_scoreboard_{source}_n"

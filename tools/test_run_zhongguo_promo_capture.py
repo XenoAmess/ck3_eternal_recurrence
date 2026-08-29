@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import inspect
 import re
 import sys
 
@@ -113,6 +114,29 @@ def main() -> int:
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom
     assert not (left <= 0.846 <= right and top <= 0.173 <= bottom)
+
+    validator = inspect.getsource(capture.MarkerStream.validate)
+    assert re.search(
+        r"if final:\s+self\.validate_small_cohort_probe\(\)", validator
+    )
+    small_probe = object.__new__(capture.MarkerStream)
+    small_probe.lines = []
+    try:
+        small_probe.validate_small_cohort_probe()
+    except capture.acceptance.RunnerError as error:
+        assert "either scheduled or explicitly unavailable" in str(error)
+    else:
+        raise AssertionError("missing late small-cohort marker must fail")
+    small_probe.lines = [
+        "ZGA: TEST INFO ai_small_cohort_candidate_unavailable"
+    ]
+    small_probe.validate_small_cohort_probe()
+    small_probe.lines = [
+        "ZGA: TEST INFO ai_small_cohort_review_scheduled",
+        "ZGA: TEST PASS ai_small_cohort_neutral_settlement",
+        "ZGA: TEST PASS ai_small_cohort_same_year_idempotent",
+    ]
+    small_probe.validate_small_cohort_probe()
 
     # A clean score row occupies the same classic x/y lane as an event option.
     # Without a narrative body it must never be treated as dismissible UI.

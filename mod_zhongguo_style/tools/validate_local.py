@@ -359,13 +359,33 @@ def check_runtime_invariants() -> None:
     for token in (
         "zg361_clear_scoreboard_m_slots_effect", "zg361_write_managed_scoreboard_slot_effect",
         "zg361_copy_received_scoreboard_slots_effect", "zg361_sb_m_01_char", "zg361_sb_r_01_char",
-        "zg361_publish_scoreboard_effect", "max = 80",
+        "zg361_publish_scoreboard_effect",
         "zg361_scoreboard_managed_shown_n", "zg361_scoreboard_received_shown_n",
         "zg361_sb_m_01_title", "zg361_sb_m_01_promotion", "zg361_sb_m_01_pip",
         "gui/zg361_scoreboard.gui = zg361_scoreboard_window",
     ):
         if token not in effects and token not in snapshot_effects and token not in registrations:
             err(f"scoreboard data/registration contract missing token: {token}")
+    if not re.search(
+        r"name\s*=\s*zg361_scoreboard_managed_shown_n\s+"
+        r"value\s*=\s*\{\s*value\s*=\s*var:zg361_cohort_n\s+"
+        r"max\s*=\s*80\s*\}",
+        effects,
+        re.S,
+    ):
+        err("scoreboard shown count must clamp in one tooltip-safe assignment")
+    if not re.search(
+        r"ordered_in_list\s*=\s*\{.*?"
+        r"list\s*=\s*zg361_scoreboard_candidates.*?"
+        r"max\s*=\s*\{\s*"
+        r"value\s*=\s*list_size:zg361_scoreboard_candidates\s+"
+        r"max\s*=\s*80\s*\}",
+        effects,
+        re.S,
+    ):
+        err("scoreboard ordered list must cap against its live list size")
+    if "var:zg361_scoreboard_managed_shown_n > 80" in effects:
+        err("scoreboard tooltip must not read a variable just written in the same effect")
     if len(re.findall(r"zg361_sb_[mr]_\d{2}_available_gui\s*=\s*\{", slot_guis)) != 160:
         err("immutable scoreboard must expose exactly 80 managed and 80 received slot predicates")
     for source in ("managed", "received"):

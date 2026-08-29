@@ -210,7 +210,7 @@ zg361_compute_kpi_effect = {
 }
 
 # ============================================================
-# 排名（root = 领主；名次 = 1 + 严格更高分人数，并列同档）
+# 排名（root = 领主；按 KPI 降序写稳定唯一名次）
 # ============================================================
 
 zg361_rank_cohort_effect = {
@@ -765,7 +765,7 @@ zg361_apply_receipted_appeal_regrade_effect = {
 
 # ============================================================
 # 考核榜快照（root = 领主；在淘汰动作前调用）
-# variable_list 是 CK3 原生 GUI 可迭代的数据模型；按 KPI 降序即按既有 rank 升序。
+# 候选只在发布瞬间用临时列表排序；GUI 读取的是 80 个固定冻结槽，不读取人物活值。
 # 榜单挂在评定领主 scope；若本轮含玩家封臣，则向该玩家镜像同一份公示快照。
 # ============================================================
 
@@ -775,10 +775,14 @@ zg361_publish_scoreboard_effect = {
 	set_variable = { name = zg361_scoreboard_managed_owner value = root }
 	set_variable = { name = zg361_scoreboard_managed_year value = current_year }
 	set_variable = { name = zg361_scoreboard_managed_n value = var:zg361_cohort_n }
-	set_variable = { name = zg361_scoreboard_managed_shown_n value = var:zg361_cohort_n }
-	if = {
-		limit = { var:zg361_scoreboard_managed_shown_n > 80 }
-		set_variable = { name = zg361_scoreboard_managed_shown_n value = 80 }
+	# 事件选项 tooltip 会预演 effect，却不会提交前一条 set_variable。把上限
+	# 直接折进同一次赋值，禁止在预演中读取“刚写入”的 shown_n。
+	set_variable = {
+		name = zg361_scoreboard_managed_shown_n
+		value = {
+			value = var:zg361_cohort_n
+			max = 80
+		}
 	}
 	set_variable = { name = zg361_scoreboard_managed_375_n value = var:zg361_last_375_n }
 	set_variable = { name = zg361_scoreboard_managed_35_n value = var:zg361_last_35_n }
@@ -800,7 +804,12 @@ zg361_publish_scoreboard_effect = {
 		list = zg361_scoreboard_candidates
 		order_by = var:zg361_kpi
 		# 固定槽只保存前 80 名；表头另存 shown/full，绝不把截断列表冒充全员。
-		max = 80
+		# tooltip 预演不提交前面的 add_to_list；动态取 min(list_size, 80)，
+		# 避免空预演列表与正常少于 80 人队列触发 range-bounds error。
+		max = {
+			value = list_size:zg361_scoreboard_candidates
+			max = 80
+		}
 		root = { change_variable = { name = zg361_scoreboard_slot_cursor add = 1 } }
 		zg361_write_managed_scoreboard_slot_effect = yes
 	}

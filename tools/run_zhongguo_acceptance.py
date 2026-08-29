@@ -1011,6 +1011,14 @@ class MarkerStream:
                 raise acceptance.RunnerError(
                     "scheduled AI non-independent probe emitted fewer than 3 rows"
                 )
+        # The natural 1–2-person probe is deliberately scheduled only after the
+        # manager board and the player's superior-assigned result are frozen.
+        # The mid-run validation immediately after direct publication therefore
+        # cannot demand its terminal marker; final validation remains strict.
+        if final:
+            self.validate_small_cohort_probe()
+
+    def validate_small_cohort_probe(self) -> None:
         small_scheduled = self.count("ZGA: TEST INFO ai_small_cohort_review_scheduled")
         small_unavailable = self.count(
             "ZGA: TEST INFO ai_small_cohort_candidate_unavailable"

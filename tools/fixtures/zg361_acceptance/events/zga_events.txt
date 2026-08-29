@@ -180,9 +180,9 @@ zga_acceptance.3 = {
 	}
 }
 
-# Optional exact-build small-cohort probe. It executes only when initialization
-# found a real non-independent celestial duke+ with exactly one or two direct
-# reviewable officials; no titles or relationships are manufactured by fixture.
+# Optional exact-build small-cohort probe. It executes only when the post-board
+# probe finds a real non-independent celestial duke+ with exactly one or two
+# direct reviewable officials; no titles or relationships are manufactured.
 zga_acceptance.4 = {
 	type = character_event
 	hidden = yes

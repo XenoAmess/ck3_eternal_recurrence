@@ -36,13 +36,13 @@
 | 晋升门票 | 任命继承 `candidate_score`；原版已预留变量通道 `var:merit_civilian_career_score_bonus` / `merit_military_career_score_bonus`，**mod 写入即被原版任命排序消费**，零侵入 | `common/succession_appointment/celestial_governor.txt:116-124`；清空逻辑 `title_on_actions.txt:2213` |
 | 末位淘汰 | `governor_removal_interaction` / `force_governor_removal_interaction` / `revoke_title_interaction`（低效率还降低夺爵影响力成本）；opinion modifier 支持 `revoke_title_reason = yes` 提供合法夺爵理由 | `common/character_interactions/06_ep3_interactions.txt:6180/6687`；`00_revoke_title_interaction.txt:327` |
 | 年度考核 tick | `yearly_playable_pulse`（每个 count+ 角色每年生日触发一次，root=本人），用 `on_actions = { 自定义钩子 }` 无侵入挂载（本仓库既定模式） | `common/on_action/yearly_on_actions.txt:840`；扩展规范 `_on_actions.info:102-117` |
-| 横向排名 | 原版无封臣百分位排名，但**科举殿试排名模式**可直接复用：每个封臣数"分数 ≥ 自己的同侪数量"→ 名次，再除 cohort 总数 → 百分位 | `common/scripted_effects/tgp_imperial_examination_scripted_effects.txt:1986`（`exam_grab_entrant_position_effect`） |
+| 横向排名 | 原版科举殿试提供排序参考；本 mod 最终采用 `ordered_in_list` 按 KPI 降序写稳定唯一名次，再以明确头档/末档名额线性分档 | `common/scripted_effects/tgp_imperial_examination_scripted_effects.txt:1986`（原型参考）；当前权威实现见 `zg361_rank_cohort_effect` |
 | 校准会议 | Hold Court 式"决议 + 事件链"成熟可行；三期可升级为 activity（模板 = `imperial_examination` 殿试：cohort 管理 / 排名 / 分档奖励全套） | `common/activities/activity_types/imperial_examination.txt` |
 | 价值观双轨 | 好感度 + 罪行特质 + 派系成员状态，输入齐全 | — |
 | 治理任务 KPI | 原版 task contracts（治理任务）本就是"领导下达的 KPI"，完成/失败自带 merit 奖惩，可作为考核输入 | `common/task_contracts/tgp_admin_contracts.txt` |
 | 中文风味 | 简中原版已就位：天朝制 / 贤能品级 / 一品~九品 / 总督效率 / 国库 / 吏部尚书 | `localization/simp_chinese/dlc/tgp/tgp_china_government_l_simp_chinese.yml` |
 
-**可行性结论**：排名为中等工作量（手写百分位，O(N²) 但年度 × 直接封臣 < 50 无性能之忧）；
+**可行性结论**：排名为中等工作量（当前实现为一次引擎排序 + 线性分档，不做 O(N²) 同侪两两比较）；
 活动为三期可选项；其余全部为 Easy。无 Hard 项。
 
 ## 4. 核心设计（一期主体）
@@ -89,32 +89,29 @@ merit_level 分布，再敲定上表权重（探针走 debug_log `ZG361:` 标记
 每年考核 tick（root = 领主）：
 
 ```
-# 1. 建 cohort 并打分
+# 1. 建 cohort 并打分（新人正常入榜，只豁免首轮 3.25）
 every_vassal = {
-    limit = { is_governor = yes 非新人保护 }
+    limit = { 直属、有地、在世、合法受评官员 }
     set_variable KPI → var:zg361_kpi
     add_to_list = zg361_cohort
 }
 cohort_n = list_size:zg361_cohort  → 存领主 var:zg361_cohort_n
 
-# 2. 百分位（对 cohort 内每人）
-every_in_list zg361_cohort → root_vassal:
-    every_in_list zg361_cohort → peer:
-        limit = { peer.var:zg361_kpi >= root_vassal.var:zg361_kpi }
-        add_to_list = zg361_rank_list
-    rank = list_size:zg361_rank_list          # 并列同名次，符合直觉
-    percentile = rank / cohort_n
+# 2. 稳定唯一名次
+ordered_in_list zg361_cohort（KPI 降序）:
+    rank_cursor += 1
+    official.rank = rank_cursor               # 同 KPI 按稳定名单顺序打破并列
 
 # 3. 分档
-percentile <= 0.30 → 3.75
-percentile >  (1 - 末位比例) → 3.25（新人保护豁免；豁免者自动升入 3.5，末位顺延给下一名）
-其余 → 3.5
+top_slots = round(cohort_n × 30%)，至少 1
+bottom_slots = floor(cohort_n × 末位比例)，刚性模式 cohort_n >= 5 时至少 1
+rank <= top_slots → 3.75；其余先置 3.5
+再按 rank 从后向前，只在非新人中取 bottom_slots 人 → 3.25
 ```
 
 - 末位比例由游戏规则/决议提供：刚性 10% / 松绑 5% / 放养 0%。
 - 只有一至两人的直属考核池仍按 KPI 稳定排名，但因没有足够同侪，不进入强制分布、校准与互评；全员按 3.5 走正常结算、榜单、告身和年度幂等链。0 人才不结算。
-- 同分并列：用 `>=` 计数 → 并列者同名次，可能使 3.75 略超 30%、3.25 名额被并列挤占——
-  这正是"校准会议"要解决的戏剧张力，不视为 bug。
+- 同分不再膨胀档位：稳定名单顺序写唯一名次，头档精确占位；末位从最差的非新人向前取人，老员工不足时允许新人首轮的 3.25 配额缺额。
 
 ### 4.4 分档结果与奖惩
 
@@ -331,12 +328,12 @@ CI 接入（test / --check / dispatch 构建 / `zhongguo-361-v*` tag release）�
 
 1. **KPI 权重需数值摸底**：`governor_efficiency_presented` 在天朝封臣上的实际分布未知，
    一期第一步先做分布探针再定权重（验收 runner 可复用该探针）。
-2. **排名 O(N²)**：年度 × 直接封臣（通常 < 50）无虞；cohort 异常膨胀时加 `max` 截断保护。
+2. **排名规模**：实现使用一次引擎排序与线性分档，不再做 O(N²) 同侪两两比较；公示快照完整记录总人数，但 GUI 固定冻结并展示前 80 名。
 3. **激进 AI 淘汰的次生风险**：AI 天朝制公爵及以上领主频繁夺爵可能扰动原版王朝循环催化剂平衡
    （任命低贤能官员已有催化剂）；一期实机观察后再决定是否加全局冷却。
 4. **merit 快照边界**：任命/死亡跨年边界用“无快照 → 首轮增长项按零处理、正常入榜但免 3.25”兜底；第一次京察也必须给每名直属官员送达绩效。
 5. **大臣（吏部尚书等）是否进 cohort**：一期不含；二期评估其头衔结构后决定。
-6. **并列名次的档位膨胀**：视为校准会议戏剧张力素材，不修复。
+6. **同分稳定顺序**：同 KPI 由名单内部稳定顺序打破并列，避免档位膨胀；这是一致性规则，不把同分者额外塞入头档。
 
 ## 12. AGENTS.md 联动（施工时同步）
 
@@ -417,13 +414,12 @@ CI 接入（test / --check / dispatch 构建 / `zhongguo-361-v*` tag release）�
 - 静态校验器扩展：decisions / character_interactions / decision_group_types / activities 的
   loc key 覆盖检查；当前 GREEN。
 
-**本期仍存的已知边界**：
+**当时记录的边界（现由 §14 与独立测试报告覆盖）**：
 
-1. 考核榜 GUI 已实现：持久 `variable_list` 可直接由 `GetPlayer.MakeScope.GetList(...)` 向 Jomini GUI 提供角色 data context。
-   面板现有“我管理的榜”/“我受评的榜”双视角，并在淘汰前冻结公示名单。
-2. 校准抬/踩对**并列同档者**整批互换（设计上接受为戏剧张力）。
-3. 活动未经实机：`window_characters` 与 travel 细节省略，实机验收时重点看活动窗口表现。
-4. 发布管线（构建器/CI/工坊）在仓库根目录，属于其他工作流范围，待所有者另行安排。
+1. 考核榜已从早期 `variable_list` 方案改成 80+80 个固定冻结槽，保留“我管理的榜”/“我受评的榜”双视角，避免旧榜读取人物后续活值。
+2. 校准抬/踩只交换各一名真实候选；踩人路径先冻结 3.5 与 3.25 两端，缺一则整次无动作，不再整批改写同档者。
+3. 免费京察规划器、退出规划不算完成、拒办好感与下一次 KPI 扣分均已进入实机合批链；长期 300 日自然等待仍是明确未扩大声称的边界。
+4. 发布构建、静态 CI、首次工坊上传与新鲜缓存复验管线均已落地；当前发布状态以发布签核表为准。
 
 一期交付物：游戏规则 ×3、KPI/阈值/裁决分 script values、排名与结算 effects、
 年度 on_action 钩子、6 modifier、6 opinion modifier、6 事件、九语言本地化（zh+en 创作，
