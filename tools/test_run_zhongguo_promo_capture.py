@@ -125,7 +125,10 @@ def main() -> int:
     import run_zhongguo_acceptance as capture
 
     assert capture.SCOREBOARD_BUTTON_REGION == (0.86, 0.05, 0.985, 0.16)
-    assert capture.DECISIONS_CLOSE_BUTTON == (0.769, 0.050)
+    assert capture.DECISIONS_CLOSE_BUTTON == (0.961, 0.064)
+    close_x, close_y = capture.DECISIONS_CLOSE_BUTTON
+    assert round(close_x * 2560) == 2460
+    assert round(close_y * 1440) == 92
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom
     assert not (left <= 0.846 <= right and top <= 0.173 <= bottom)

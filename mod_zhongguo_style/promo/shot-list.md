@@ -52,10 +52,12 @@ runner 捕获，不得继续写进正式 manifest 或旁白角标**。六张图�
 ## 录制动作与口径
 
 1. 原始录像必须在 gameplay HUD 后启动；timeline 须写 `exclude_ck3_loading=true`，正式 clip 的起点不得早于 `recording_started_after_gameplay_hud`。
-2. 连续镜头只描述真实链：校准、发榜、驾驶舱、京察、告身和本人榜。政策卡可以作旁支蒙太奇，但不能拼成不存在的目标—项目—互评流水线。
-3. 制度驾驶舱只展示已配置的组织账；不把账本字段称为独立 HC/项目/人才系统。
-4. 每张政策卡静帧必须来自同一 GREEN run，露出真实编号、题目与 A/B/C；正式 manifest 对原图、报告、timeline 和原始 MKV 全部锁 bytes/SHA-256。
-5. 失败 take、随机事件遮挡、OCR 与 recorder 日志都保留；只有根报告、cell 报告和 evidence index 同时 GREEN 的 run 才能投影正式 manifest。
+2. 正式画面中的玩家与受评者必须是书签/世界里的真实历史角色；素材 notes 记录 bookmark、character id 与画面角色，不用测试临时角色冒充。
+3. 连续镜头只描述真实链：校准、发榜、驾驶舱、京察、告身和本人榜。政策卡可以作旁支蒙太奇，但不能拼成不存在的目标—项目—互评流水线。
+4. 最终时间线逐段排除“361制实机验收”、`ZGA`、验收规划器、演示触发器等 fixture/test-only 决议与控件；含污染的验收片段只能留作过程证据，不得裁字、打码或遮罩后入片。
+5. 制度驾驶舱只展示已配置的组织账；不把账本字段称为独立 HC/项目/人才系统。
+6. 每张政策卡静帧必须来自同一 GREEN run，露出真实编号、题目与 A/B/C；正式 manifest 对原图、报告、timeline 和原始 MKV 全部锁 bytes/SHA-256。
+7. 失败 take、随机事件遮挡、OCR 与 recorder 日志都保留；只有根报告、cell 报告和 evidence index 同时 GREEN 的 run 才能投影正式 manifest。
 
 ## 目录、保留与 notes
 
@@ -82,4 +84,5 @@ Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<run-name>\
 - 旁白声称的数值、角色与后果在画面或绑定的同一 run 报告中可核验。
 - 对政策卡只声称：独立编号、A/B/C、持久选择、共享 profile/账本与 KPI 回流；不声称独立 HC、项目、OKR 或 PIP 子系统。
 - 核心连续片段不跨 run 拼成假闭环；同一原始 MKV 的 marks 明确写进 provenance。
+- 每个入片实机段都记录真实历史角色 provenance，并通过 test-only UI 污染扫描与人工抽帧复核；验收 GREEN 不自动等于宣传画面 GREEN。
 - 正式 build 前 placeholder 必须全部消失：有实录的变成带证据的 `video_clip`/`still`，没有独立实录的变成明确生成边界卡；然后才运行 `--stage release`。

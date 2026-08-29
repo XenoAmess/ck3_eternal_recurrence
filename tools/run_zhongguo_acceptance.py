@@ -104,8 +104,10 @@ PROMO_INTERRUPTION_DEFAULT_OBSERVE_S = 1.0
 SCOREBOARD_BUTTON_REGION = (0.86, 0.05, 0.985, 0.16)
 DECISIONS_HEADER_REGION = (0.55, 0.00, 0.90, 0.13)
 # CK3 acceptance is pinned to 2560x1440 and the isolated profile's UI scale.
-# This normalized point is the native Decisions drawer's title-bar X.
-DECISIONS_CLOSE_BUTTON = (0.769, 0.050)
+# This normalized point is the native Decisions drawer's title-bar X.  The
+# drawer is flush with the right HUD rail, so its close glyph sits near the
+# screen's right edge (2460, 92 in the pinned 2560x1440 acceptance profile).
+DECISIONS_CLOSE_BUTTON = (0.961, 0.064)
 
 
 def log(message: str) -> None:
