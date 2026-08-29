@@ -242,6 +242,8 @@ def main() -> int:
         'acceptance.deliberate_click(more_point, "native HUD More button")',
         '"转到首都"',
         '"native_more_menu"',
+        "_mouse_hierarchy_leave",
+        "acceptance.pyautogui.click(*capital_button)",
         '"shortcut_visual_change_fraction"',
         '"final_visual_change_fraction"',
         '"minimum_visual_change_fraction": 0.18',
@@ -269,6 +271,7 @@ def main() -> int:
             ),
             mock.patch.object(capture.acceptance.pyautogui, "press") as press,
             mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
+            mock.patch.object(capture.acceptance.pyautogui, "click") as instant_click,
             mock.patch.object(
                 capture.acceptance, "find_ocr_text", return_value=(1807, 1417)
             ),
@@ -283,8 +286,8 @@ def main() -> int:
         move.assert_called_once_with(1807, 1417, duration=0.2)
         assert click.call_args_list == [
             mock.call((1807, 1417), "native HUD More button"),
-            mock.call((1010, 910), "native go-to-player-capital menu item"),
         ]
+        instant_click.assert_called_once_with(1010, 910)
         assert camera_gate["result"] == "GREEN"
         assert camera_gate["method"] == "native_more_menu"
         assert camera_gate["shortcut_visual_change_fraction"] == 0.0

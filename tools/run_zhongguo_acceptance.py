@@ -1787,9 +1787,13 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
             contains=True,
             stable_hits=1,
         )
-        acceptance.deliberate_click(
-            capital_button, "native go-to-player-capital menu item"
-        )
+        # This flyout has a _mouse_hierarchy_leave auto-close state. The shared
+        # deliberate_click helper's animated move and hover dwell can close the
+        # menu before mouse-down, leaving a harmless map click. Jump directly
+        # to the already OCR-proven row and click in one input operation.
+        acceptance.focus_ck3()
+        acceptance.pyautogui.click(*capital_button)
+        log(f"clicked native go-to-player-capital menu item at {capital_button}")
         time.sleep(2.0)
         after = acceptance.ImageGrab.grab()
         method = "native_more_menu"
