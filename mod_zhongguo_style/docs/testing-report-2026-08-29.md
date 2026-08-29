@@ -267,3 +267,13 @@ py mod_zhongguo_style/tools/validate_local.py
 修复只处理已经实证的输入冲突：第一次 `V` 后先在全屏 OCR 中要求出现“查找头衔”或精确“V模式输入”二者之一；只有后者出现时才按 Escape 清掉组合输入、按 Shift 临时切到英文模式、再次发送 `V`。其余任何无响应继续直接 RED，不盲目切换输入法。标题查找流程完成或中途失败时都把 Shift 状态恢复，并在相机 sidecar 记录 `ime_v_mode_recovery_used` / `ime_mode_restored`。可执行桌面替身已覆盖“首个 V 被 IME 消费 → 恢复 → 汴州唯一结果 → 右键 → 关闭 finder → 恢复 IME → 地图变化”全序列。
 
 永久证据：根报告 `6523D55F9D052BA6B61774BB602911D6089D149A9A50E39C78C3671D0857807E`，证据索引 `FE0319452D7B5C62EEB4E8169CDE972A4575F82B7BAAA3C2CD9B58411ED16130`；Home 前/后帧 `3B96B23A1F4C7D534ACCAFCDAC39CDFB4C2559CC17BDC8772954512D490B6347` / `91EC585A2A9AB18F000EF17664E46B94CE06F3057FCA118E8444BC7A7B6E2CAE`，微软拼音 V 模式失败帧 `913E070BCF60A33E1F9BD9FAE1F1BDC795D76E09CB8DA63CB3B07129ADE010A8`，最终现场 `B0850237BB5564F38759954D183911FA4BA242E9208892E1E5A98A0A2C7CA86D`。完整 artifact 与 `_userdir` 均继续保留。
+
+## 22. 第三条相机短探针：Shift 清掉候选层，但没有证明英文布局或 CK3 收键
+
+`runs/zga_camera_ime_20260829_2100_3b8c7d5` 使用已推送提交 `3b8c7d5`。本轮暖启动、标准 1066 大厅、赵曙 `han_8052` 切换、历史直属名单、生成坊正排除、非独立天朝制公爵后台考核，以及 361/361 参考路线和幂等性均再次通过；测试决议抽屉在片场步骤前由原生控制关闭，FFmpeg 没有启动。
+
+首个 `V` 再次稳定出现微软拼音“V模式输入”。旧修复随后发送 Escape、Shift 和第二个 `V`：候选层确实消失，但右侧“查找头衔”始终没有出现，8 秒后短探针 **RED**。这次证据推翻了“按过 Shift 就等于已切到英文输入”的假设：Shift 只改变微软拼音内部中/英模式，runner 当时既没有读取 CK3 前台窗口线程的 HKL，也没有任何应用层 ACK 能证明第二个 `V` 送达 CK3。候选层消失不能代替这两个证明。
+
+项目所有者随后明确要求自动化期间一直保持英文输入法，不在结束后切回中文。新 gate 因而改为：锁定 CK3 前台 PID 和焦点窗口线程，确认 US English HKL `0x04090409` 已安装，向焦点窗口 post `WM_INPUTLANGCHANGEREQUEST`，轮询 `GetKeyboardLayout(input_thread_id)` 直到完整值精确等于 `0x04090409`，并保持该布局；没有精确 ACK 就不发送字母快捷键。`V` 仍须由右侧“查找头衔”标题单独 ACK。若快捷键没有 ACK，同一个 CK3 进程改走已经在第二十/二十一次候选实机定位的“更多 → 查找头衔”鼠标入口，不再因为一个小失败重启整链。完整经验已沉淀到 `docs/acceptance-automation-lessons.md`。
+
+永久证据：根报告 `6BC276410F391BC57A2501FE954D20C55D2D57917F7A837DAE8B815A3F6F3BBE`，证据索引 `75DE18954B0A4454F93D448C4CBC56423D6A97902A8A2CA75F7054D2D62BCD5E`；Home 前帧 `E9E082DBEBDDD64CB9AB4C7D47B5FAF365F6D7E938DAA26F2C1516D97E2E6545`，微软拼音 V 模式帧 `E7202E1DDAB74FCC0A5A8D6500FAB6F5E938D5862CBD17A436552651792FD6C6`，Shift 后 finder 超时帧 `1C5DDA8886837EA6DFAD20691D06EA4864C7CD5D8FC7E2D65483F16753F75DB9`，最终现场 `E61F4B20EB10D2FD7939A25EED97B712D2E20B06B767E06504D2FE7A1D15E0F4`。完整 artifact 与 `_userdir` 均继续保留。

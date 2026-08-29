@@ -58,6 +58,8 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 断言出现明确 RED 时定向重跑失败场景，不再人为拆成四次启动。失败 attempt、日志、存档和截图必须原样保留，不能被 GREEN
 覆盖。
 
+桌面输入、OCR、GUI scale、相机与片场清理的可复用规则见 `docs/acceptance-automation-lessons.md`。自动化期间 CK3 输入线程必须精确签为 US English HKL `0x04090409` 并保持英文；不得把 Shift、候选层消失或已发送快捷键当成 ACK。
+
 宣传合批不得承担相机调试。正式 `--promo-capture` 前，先在同一提交上运行一次只到史实赵曙、汴州定位、查找窗关闭与零测试 UI 门的短探针；它不启动 FFmpeg，也不冒充 361 全链：
 
 ```powershell

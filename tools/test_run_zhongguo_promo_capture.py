@@ -9,6 +9,7 @@ import json
 import re
 import sys
 import tempfile
+from types import SimpleNamespace
 from unittest import mock
 
 from PIL import Image
@@ -236,23 +237,27 @@ def main() -> int:
     for token in (
         'acceptance.pyautogui.press("home")',
         "ImageChops.difference",
+        "force_ck3_english_keyboard_layout",
+        '"keyboard_layout_policy": "keep_us_english_for_desktop_automation"',
         'acceptance.pyautogui.press("v")',
         '"查找头衔"',
         '"V模式输入"',
-        '"05_promo_title_shortcut_ime_v_mode.png"',
-        'restore_title_shortcut_input_mode()',
+        '"05_promo_title_shortcut_no_finder.png"',
+        '"native_more_find_title"',
+        '"05_promo_camera_more_button_tooltip',
         '"汴州"',
         '"c_bianzhou"',
+        '"开封"',
+        '"b_kaifeng"',
         'acceptance.deliberate_click(search_point, "native title search field")',
         'acceptance.pyautogui.hotkey("ctrl", "v")',
         'acceptance.pyautogui.mouseDown(button="right")',
-        '"native_title_finder_bianzhou"',
-        '"05_promo_title_finder_bianzhou.png"',
-        '"native title finder could not resolve the Bianzhou result row"',
+        '"attempts": attempts',
         '"shortcut_visual_change_fraction"',
+        '"action_visual_change_fraction"',
         '"final_visual_change_fraction"',
         '"minimum_visual_change_fraction": 0.18',
-        '"native Bianzhou title recenter produced no material map movement"',
+        '"native Song title recenter produced no material final map movement"',
         '"native_action": (',
         'else "find_title_right_click"',
         '"expected_realm_title": "h_china"',
@@ -260,13 +265,165 @@ def main() -> int:
         '"05_promo_camera_after_home.png"',
     ):
         assert token in camera_recenter, token
+    assert 'acceptance.pyautogui.press("shift")' not in camera_recenter
+    assert re.search(
+        r"if ime_v_mode_visible:\s+acceptance\.pyautogui\.press\(\"escape\"\)",
+        camera_recenter,
+    )
+    assert "Moving out is sufficient to dismiss CK3's transient More" in camera_recenter
+
+    keyboard_layout = inspect.getsource(capture.force_ck3_english_keyboard_layout)
+    for token in (
+        "GetGUIThreadInfo",
+        "GetKeyboardLayout",
+        "GetKeyboardLayoutList",
+        "PostMessageW",
+        "WM_INPUTLANGCHANGEREQUEST",
+        "WINDOWS_ENGLISH_US_HKL",
+        '"after_langid"',
+        '"restore_requested": False',
+        '"restore_performed": False',
+        '"left_in_english"',
+        '"CK3 lost foreground while changing its keyboard layout"',
+    ):
+        assert token in keyboard_layout, token
+
+    class FakeWin32Call:
+        def __init__(self, implementation):
+            self.implementation = implementation
+            self.calls = []
+            self.argtypes = None
+            self.restype = None
+
+        def __call__(self, *args):
+            self.calls.append(args)
+            return self.implementation(*args)
+
+    keyboard_values = iter((0x08040804, 0x04090409))
+
+    def fake_gui_thread_info(_thread_id, info_pointer):
+        info_pointer._obj.hwndFocus = 222
+        return 1
+
+    fake_user32 = SimpleNamespace(
+        GetGUIThreadInfo=FakeWin32Call(fake_gui_thread_info),
+        GetKeyboardLayout=FakeWin32Call(lambda _thread_id: next(keyboard_values)),
+        PostMessageW=FakeWin32Call(lambda *_args: 1),
+    )
+    with tempfile.TemporaryDirectory() as temporary:
+        layout_artifacts = Path(temporary)
+        with (
+            mock.patch.object(capture.os, "name", "nt"),
+            mock.patch.object(capture.acceptance, "focus_ck3", return_value=True),
+            mock.patch.object(
+                capture.acceptance.win32gui,
+                "GetForegroundWindow",
+                return_value=111,
+            ),
+            mock.patch.object(
+                capture.acceptance.win32gui,
+                "GetWindowText",
+                return_value="Crusader Kings III",
+            ),
+            mock.patch.object(
+                capture.acceptance.win32process,
+                "GetWindowThreadProcessId",
+                side_effect=lambda hwnd: (10, 999) if hwnd == 111 else (11, 999),
+            ),
+            mock.patch.object(capture.acceptance, "ACTIVE_CK3_PID", 999),
+            mock.patch.object(
+                capture.acceptance.win32api,
+                "GetKeyboardLayoutList",
+                return_value=[0x04090409, 0x08040804],
+            ),
+            mock.patch.object(
+                capture.ctypes,
+                "windll",
+                SimpleNamespace(user32=fake_user32),
+            ),
+        ):
+            layout_gate = capture.force_ck3_english_keyboard_layout(
+                layout_artifacts, "layout_state_machine"
+            )
+        assert layout_gate["result"] == "GREEN"
+        assert layout_gate["before_hkl"] == "0x08040804"
+        assert layout_gate["after_hkl"] == "0x04090409"
+        assert layout_gate["input_window_handle"] == 222
+        assert layout_gate["input_thread_id"] == 11
+        assert layout_gate["message_posted"] is True
+        assert layout_gate["restore_requested"] is False
+        assert layout_gate["restore_performed"] is False
+        assert layout_gate["left_in_english"] is True
+        assert fake_user32.PostMessageW.calls == [
+            (222, capture.WM_INPUTLANGCHANGEREQUEST, 0, 0x04090409)
+        ]
+        assert (layout_artifacts / "layout_state_machine.json").is_file()
+
+    already_english_user32 = SimpleNamespace(
+        GetGUIThreadInfo=FakeWin32Call(fake_gui_thread_info),
+        GetKeyboardLayout=FakeWin32Call(lambda _thread_id: 0x04090409),
+        PostMessageW=FakeWin32Call(lambda *_args: 1),
+    )
+    with tempfile.TemporaryDirectory() as temporary:
+        layout_artifacts = Path(temporary)
+        with (
+            mock.patch.object(capture.os, "name", "nt"),
+            mock.patch.object(capture.acceptance, "focus_ck3", return_value=True),
+            mock.patch.object(
+                capture.acceptance.win32gui,
+                "GetForegroundWindow",
+                return_value=111,
+            ),
+            mock.patch.object(
+                capture.acceptance.win32gui,
+                "GetWindowText",
+                return_value="Crusader Kings III",
+            ),
+            mock.patch.object(
+                capture.acceptance.win32process,
+                "GetWindowThreadProcessId",
+                side_effect=lambda hwnd: (10, 999) if hwnd == 111 else (11, 999),
+            ),
+            mock.patch.object(capture.acceptance, "ACTIVE_CK3_PID", 999),
+            mock.patch.object(
+                capture.acceptance.win32api,
+                "GetKeyboardLayoutList",
+                return_value=[0x04090409, 0x08040804],
+            ),
+            mock.patch.object(
+                capture.ctypes,
+                "windll",
+                SimpleNamespace(user32=already_english_user32),
+            ),
+        ):
+            already_english_gate = capture.force_ck3_english_keyboard_layout(
+                layout_artifacts, "already_english"
+            )
+        assert already_english_gate["result"] == "GREEN"
+        assert already_english_gate["before_hkl"] == "0x04090409"
+        assert already_english_gate["after_hkl"] == "0x04090409"
+        assert already_english_gate["message_posted"] is None
+        assert already_english_user32.PostMessageW.calls == []
 
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
         unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
         moved = Image.new("RGB", (2560, 1440), (180, 90, 40))
+        layout_gate = {
+            "result": "GREEN",
+            "after_hkl": "0x04090409",
+            "after_langid": "0409",
+            "left_in_english": True,
+            "restore_requested": False,
+            "restore_performed": False,
+        }
         with (
             mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture,
+                "force_ck3_english_keyboard_layout",
+                return_value=layout_gate,
+            ) as force_english,
             mock.patch.object(
                 capture.acceptance.ImageGrab,
                 "grab",
@@ -277,6 +434,7 @@ def main() -> int:
                     unchanged.copy(),
                     unchanged.copy(),
                     moved,
+                    moved.copy(),
                     moved.copy(),
                     moved.copy(),
                 ),
@@ -292,21 +450,17 @@ def main() -> int:
             mock.patch.object(
                 capture.acceptance,
                 "find_ocr_text",
-                side_effect=((2150, 220), None),
+                side_effect=((2150, 220), None, None),
             ),
             mock.patch.object(
                 capture.acceptance,
                 "wait_for_ocr_text",
-                side_effect=(
-                    capture.acceptance.RunnerError("initial V consumed by IME"),
-                    (2150, 220),
-                ),
+                return_value=(2150, 220),
             ),
             mock.patch.object(
                 capture.acceptance,
                 "ocr_results",
                 side_effect=(
-                    (("V模式输入。支持多种格式", 0.99, (2400, 1280), (0, 0, 1, 1)),),
                     (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
                     (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
                 ),
@@ -316,15 +470,13 @@ def main() -> int:
             mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
             mock.patch.object(capture.time, "sleep"),
         ):
-            camera_gate = capture.recenter_promo_camera_on_player_capital(artifacts)
+            camera_gate = capture.recenter_promo_camera_on_player_capital(
+                artifacts, layout_gate
+            )
         assert press.call_args_list == [
             mock.call("home"),
             mock.call("v"),
             mock.call("escape"),
-            mock.call("shift"),
-            mock.call("v"),
-            mock.call("escape"),
-            mock.call("shift"),
         ]
         assert move.call_args_list == [
             mock.call(2100, 345, duration=0.2),
@@ -343,20 +495,153 @@ def main() -> int:
         ]
         mouse_down.assert_called_once_with(button="right")
         mouse_up.assert_called_once_with(button="right")
+        assert force_english.call_args_list == [
+            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
+            mock.call(artifacts, "05_promo_keyboard_layout_final"),
+        ]
         assert camera_gate["result"] == "GREEN"
-        assert camera_gate["method"] == "native_title_finder_bianzhou"
+        assert camera_gate["method"] == "english_shortcut_v_c_bianzhou"
+        assert camera_gate["entry_method"] == "english_shortcut_v"
         assert camera_gate["resolved_title_key"] == "c_bianzhou"
-        assert camera_gate["ime_v_mode_recovery_used"] is True
-        assert camera_gate["ime_mode_restored"] is True
+        assert camera_gate["ime_v_mode_recovery_used"] is False
+        assert camera_gate["ime_mode_restored"] is False
+        assert camera_gate["finder_close_ack"] is True
         assert camera_gate["shortcut_visual_change_fraction"] == 0.0
+        assert camera_gate["action_visual_change_fraction"] >= 0.99
         assert camera_gate["final_visual_change_fraction"] >= 0.99
+        assert camera_gate["keyboard_layout"]["after_langid"] == "0409"
+        assert camera_gate["keyboard_layout"]["restore_performed"] is False
+        assert [row["state"] for row in camera_gate["attempts"]] == [
+            "home",
+            "open_title_finder",
+            "resolve_title",
+            "title_action",
+            "close_title_finder",
+        ]
         assert (artifacts / "05_promo_camera_recenter.json").is_file()
+
+    # One CK3 session must survive a shortcut-level failure and use the
+    # already-attested native More -> Find Title path without touching Shift.
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
+        moved = Image.new("RGB", (2560, 1440), (180, 90, 40))
+        layout_gate = {
+            "result": "GREEN",
+            "after_hkl": "0x04090409",
+            "after_langid": "0409",
+            "left_in_english": True,
+            "restore_requested": False,
+            "restore_performed": False,
+        }
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture,
+                "force_ck3_english_keyboard_layout",
+                return_value=layout_gate,
+            ) as force_english,
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=(
+                    unchanged,
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    moved,
+                    moved.copy(),
+                    moved.copy(),
+                    moved.copy(),
+                ),
+            ),
+            mock.patch.object(
+                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+            ),
+            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
+            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
+            mock.patch.object(capture.acceptance.pyautogui, "click") as native_click,
+            mock.patch.object(capture.acceptance.pyautogui, "hotkey") as hotkey,
+            mock.patch.object(capture.acceptance.pyautogui, "mouseDown") as mouse_down,
+            mock.patch.object(capture.acceptance.pyautogui, "mouseUp") as mouse_up,
+            mock.patch.object(
+                capture.acceptance,
+                "find_ocr_text",
+                side_effect=((1807, 1417), (2150, 220), None, None),
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "wait_for_ocr_text",
+                side_effect=(
+                    capture.acceptance.RunnerError("V produced no finder"),
+                    (1820, 1176),
+                    (2150, 220),
+                ),
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_results",
+                side_effect=(
+                    (),
+                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
+                    (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
+                ),
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
+            mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            camera_gate = capture.recenter_promo_camera_on_player_capital(
+                artifacts, layout_gate
+            )
+        assert press.call_args_list == [
+            mock.call("home"),
+            mock.call("v"),
+            mock.call("escape"),
+        ]
+        assert all(call != mock.call("shift") for call in press.call_args_list)
+        assert move.call_args_list == [
+            mock.call(1807, 1417, duration=0.2),
+            mock.call(2100, 345, duration=0.2),
+            mock.call(1280, 720, duration=0.1),
+        ]
+        assert click.call_args_list == [
+            mock.call((1807, 1417), "native HUD More button"),
+            mock.call((2150, 285), "native title search field"),
+        ]
+        native_click.assert_called_once_with(1820, 1176)
+        assert hotkey.call_args_list == [
+            mock.call("ctrl", "a"),
+            mock.call("ctrl", "v"),
+        ]
+        assert clipboard_copy.call_args_list == [
+            mock.call("汴州"),
+            mock.call("preserved"),
+        ]
+        mouse_down.assert_called_once_with(button="right")
+        mouse_up.assert_called_once_with(button="right")
+        assert force_english.call_args_list == [
+            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
+            mock.call(artifacts, "05_promo_keyboard_layout_recheck"),
+            mock.call(artifacts, "05_promo_keyboard_layout_final"),
+        ]
+        assert camera_gate["result"] == "GREEN"
+        assert camera_gate["method"] == "native_more_find_title_c_bianzhou"
+        assert camera_gate["entry_method"] == "native_more_find_title"
+        assert camera_gate["attempts"][1]["entry_ack"] is False
+        assert camera_gate["attempts"][2]["entry_ack"] is True
+        assert camera_gate["attempts"][2]["title_row"] == [1820, 1176]
 
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (
         "if promo_camera_probe:",
         'close_native_decisions_panel(artifacts, "05_promo_pre_record")',
-        "recenter_promo_camera_on_player_capital(artifacts)",
+        "force_ck3_english_keyboard_layout(artifacts)",
+        "recenter_promo_camera_on_player_capital(",
         '"probe_only": True',
         '"ffmpeg_started": False',
         'result == "GREEN" and not promo_camera_probe',

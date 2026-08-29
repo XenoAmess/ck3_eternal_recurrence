@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+from ctypes import wintypes
 from datetime import datetime, timezone
 import json
 import os
@@ -207,6 +209,10 @@ JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 90
 PERSONAL_SWITCH_SCHEDULED_MARKER = (
     "ZGA: TEST PASS personal_result_switch_scheduled"
 )
+WINDOWS_ENGLISH_US_KLID = "00000409"
+WINDOWS_ENGLISH_US_LANGID = 0x0409
+WINDOWS_ENGLISH_US_HKL = 0x04090409
+WM_INPUTLANGCHANGEREQUEST = 0x0050
 
 
 def log(message: str) -> None:
@@ -401,6 +407,197 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def _format_keyboard_layout(value: int) -> str:
+    return f"0x{value:08x}"
+
+
+def force_ck3_english_keyboard_layout(
+    artifacts: Path, stem: str = "04_ck3_keyboard_layout"
+) -> dict[str, object]:
+    """Put CK3's own UI thread on US English and deliberately leave it there."""
+
+    output = artifacts / f"{stem}.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "policy": "keep_us_english_for_desktop_automation",
+        "requested_klid": WINDOWS_ENGLISH_US_KLID,
+        "requested_langid": f"{WINDOWS_ENGLISH_US_LANGID:04x}",
+        "restore_requested": False,
+        "restore_performed": False,
+        "poll_observations": [],
+    }
+    try:
+        if os.name != "nt":
+            raise acceptance.RunnerError(
+                "CK3 keyboard-layout attestation requires Windows"
+            )
+        if not acceptance.focus_ck3():
+            raise acceptance.RunnerError(
+                "CK3 could not be focused for keyboard-layout attestation"
+            )
+        hwnd = acceptance.win32gui.GetForegroundWindow()
+        thread_id, pid = acceptance.win32process.GetWindowThreadProcessId(hwnd)
+        title = acceptance.win32gui.GetWindowText(hwnd)
+        evidence.update(
+            {
+                "window_handle": int(hwnd),
+                "window_title": title,
+                "target_thread_id": int(thread_id),
+                "target_pid": int(pid),
+                "tracked_ck3_pid": acceptance.ACTIVE_CK3_PID,
+            }
+        )
+        if "Crusader Kings" not in title:
+            raise acceptance.RunnerError(
+                f"keyboard-layout target is not CK3: {title!r}"
+            )
+        if acceptance.ACTIVE_CK3_PID is not None and pid != acceptance.ACTIVE_CK3_PID:
+            raise acceptance.RunnerError(
+                "keyboard-layout target PID does not match the tracked CK3 process"
+            )
+
+        class GuiThreadInfo(ctypes.Structure):
+            _fields_ = [
+                ("cbSize", wintypes.DWORD),
+                ("flags", wintypes.DWORD),
+                ("hwndActive", wintypes.HWND),
+                ("hwndFocus", wintypes.HWND),
+                ("hwndCapture", wintypes.HWND),
+                ("hwndMenuOwner", wintypes.HWND),
+                ("hwndMoveSize", wintypes.HWND),
+                ("hwndCaret", wintypes.HWND),
+                ("rcCaret", wintypes.RECT),
+            ]
+
+        user32 = ctypes.windll.user32
+        user32.GetGUIThreadInfo.argtypes = [
+            wintypes.DWORD,
+            ctypes.POINTER(GuiThreadInfo),
+        ]
+        user32.GetGUIThreadInfo.restype = wintypes.BOOL
+        user32.GetKeyboardLayout.argtypes = [wintypes.DWORD]
+        user32.GetKeyboardLayout.restype = ctypes.c_void_p
+        user32.PostMessageW.argtypes = [
+            wintypes.HWND,
+            wintypes.UINT,
+            wintypes.WPARAM,
+            wintypes.LPARAM,
+        ]
+        user32.PostMessageW.restype = wintypes.BOOL
+
+        gui_info = GuiThreadInfo()
+        gui_info.cbSize = ctypes.sizeof(GuiThreadInfo)
+        input_hwnd = hwnd
+        input_thread_id = thread_id
+        input_pid = pid
+        if user32.GetGUIThreadInfo(thread_id, ctypes.byref(gui_info)):
+            focus_hwnd = int(gui_info.hwndFocus or 0)
+            if focus_hwnd:
+                focus_thread_id, focus_pid = (
+                    acceptance.win32process.GetWindowThreadProcessId(focus_hwnd)
+                )
+                if focus_pid == pid:
+                    input_hwnd = focus_hwnd
+                    input_thread_id = focus_thread_id
+                    input_pid = focus_pid
+        evidence.update(
+            {
+                "input_window_handle": int(input_hwnd),
+                "input_thread_id": int(input_thread_id),
+                "input_pid": int(input_pid),
+            }
+        )
+
+        before_hkl = int(user32.GetKeyboardLayout(input_thread_id) or 0)
+        evidence.update(
+            {
+                "before_hkl": _format_keyboard_layout(before_hkl),
+                "before_langid": f"{before_hkl & 0xFFFF:04x}",
+            }
+        )
+        installed_hkls = [
+            int(value) for value in acceptance.win32api.GetKeyboardLayoutList()
+        ]
+        evidence["installed_hkls"] = [
+            _format_keyboard_layout(value) for value in installed_hkls
+        ]
+        if WINDOWS_ENGLISH_US_HKL not in installed_hkls:
+            raise acceptance.RunnerError(
+                "US English HKL 0x04090409 is not installed"
+            )
+        message_posted: bool | None = None
+        requested_hkl = WINDOWS_ENGLISH_US_HKL
+        if before_hkl != WINDOWS_ENGLISH_US_HKL:
+            # The layout is already installed. Address CK3's window directly;
+            # activating the runner's own thread would not prove that the game
+            # receives subsequent shortcuts under the same layout.
+            message_posted = bool(
+                user32.PostMessageW(
+                    input_hwnd,
+                    WM_INPUTLANGCHANGEREQUEST,
+                    0,
+                    requested_hkl,
+                )
+            )
+        evidence.update(
+            {
+                "requested_hkl": _format_keyboard_layout(requested_hkl),
+                "message_posted": message_posted,
+                "message_delivery_claimed": False,
+            }
+        )
+
+        deadline = time.monotonic() + 2.0
+        after_hkl = before_hkl
+        observations: list[dict[str, object]] = []
+        while True:
+            after_hkl = int(user32.GetKeyboardLayout(input_thread_id) or 0)
+            observations.append(
+                {
+                    "elapsed_ms": round(max(0.0, 2.0 - (deadline - time.monotonic())) * 1000),
+                    "hkl": _format_keyboard_layout(after_hkl),
+                    "langid": f"{after_hkl & 0xFFFF:04x}",
+                }
+            )
+            if after_hkl == WINDOWS_ENGLISH_US_HKL:
+                break
+            if time.monotonic() >= deadline:
+                break
+            time.sleep(0.1)
+        evidence["poll_observations"] = observations
+        evidence.update(
+            {
+                "after_hkl": _format_keyboard_layout(after_hkl),
+                "after_langid": f"{after_hkl & 0xFFFF:04x}",
+                "left_in_english": after_hkl == WINDOWS_ENGLISH_US_HKL,
+            }
+        )
+        if not evidence["left_in_english"]:
+            raise acceptance.RunnerError(
+                "CK3 window thread did not attest US English layout 0409"
+            )
+        if acceptance.win32gui.GetForegroundWindow() != hwnd:
+            raise acceptance.RunnerError(
+                "CK3 lost foreground while changing its keyboard layout"
+            )
+        evidence["result"] = "GREEN"
+        write_json(output, evidence)
+        log(
+            "left CK3 keyboard layout on US English "
+            f"({_format_keyboard_layout(after_hkl)})"
+        )
+        return evidence
+    except BaseException as error:
+        evidence["error"] = str(error) or type(error).__name__
+        write_json(output, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"CK3 keyboard-layout attestation failed: {error}"
+        ) from error
 
 
 def _paradox_top_level_block(text: str, key: str) -> str:
@@ -1709,8 +1906,11 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
     acceptance.ensure_game_paused(artifacts, "05_song_emperor")
 
 
-def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object]:
-    """Return the inherited bookmark camera to the historical Song capital."""
+def recenter_promo_camera_on_player_capital(
+    artifacts: Path,
+    keyboard_layout_evidence: dict[str, object] | None = None,
+) -> dict[str, object]:
+    """Return the inherited bookmark camera to Song with observable native ACKs."""
 
     def map_change_fraction(left, right) -> float:
         width, height = left.size
@@ -1727,116 +1927,198 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
         )
         return round(changed / (160 * 90), 6)
 
-    acceptance.focus_ck3()
-    before = acceptance.ImageGrab.grab()
-    before.save(artifacts / "05_promo_camera_before_home.png")
-    # Try the configured shortcut first, then verify the map actually moved.
-    # The sixth live candidate proved that a sent Home key can be a no-op in
-    # this isolated profile, so intent alone is not accepted as evidence.
-    acceptance.pyautogui.press("home")
-    time.sleep(2.0)
-    shortcut_after = acceptance.ImageGrab.grab()
-    shortcut_after.save(artifacts / "05_promo_camera_after_home.png")
-    shortcut_change = map_change_fraction(before, shortcut_after)
-    method = "shortcut_home"
-
+    attempts: list[dict[str, object]] = []
+    title_region = (0.70, 0.07, 0.98, 0.90)
     title_header = None
     title_result = None
-    ime_v_mode_recovery_used = False
-    ime_mode_restored = False
+    method = None
+    entry_method = None
+    search_query = None
+    resolved_title_key = None
+    shortcut_change = 0.0
+    action_change = 0.0
+    final_change = 0.0
+    finder_close_ack = False
+    before = None
+    after = None
+    evidence_path = artifacts / "05_promo_camera_recenter.json"
 
-    def restore_title_shortcut_input_mode() -> None:
-        nonlocal ime_mode_restored
-        if not ime_v_mode_recovery_used or ime_mode_restored:
-            return
-        acceptance.focus_ck3()
-        acceptance.pyautogui.press("shift")
-        time.sleep(0.3)
-        ime_mode_restored = True
-        log("restored the pre-probe Microsoft Pinyin input mode")
+    def camera_evidence(result: str, error: str | None = None) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "schema_version": 2,
+            "result": result,
+            "native_action": (
+                "go_to_capital_shortcut"
+                if method == "shortcut_home"
+                else "find_title_right_click"
+            ),
+            "default_key": "home",
+            "method": method,
+            "entry_method": entry_method,
+            "shortcut_visual_change_fraction": shortcut_change,
+            "action_visual_change_fraction": action_change,
+            "final_visual_change_fraction": final_change,
+            "minimum_visual_change_fraction": 0.18,
+            "search_query": search_query,
+            "resolved_title_key": resolved_title_key,
+            "title_header_point": list(title_header) if title_header else None,
+            "title_result_point": list(title_result) if title_result else None,
+            "finder_close_ack": finder_close_ack,
+            "keyboard_layout_policy": "keep_us_english_for_desktop_automation",
+            "keyboard_layout": keyboard_layout_evidence,
+            "ime_v_mode_recovery_used": False,
+            "ime_mode_restored": False,
+            "attempts": attempts,
+            "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
+            "expected_realm_title": "h_china",
+            "before_artifact": "05_promo_camera_before_home.png",
+            "after_artifact": "05_promo_camera_after_home.png",
+        }
+        if error is not None:
+            payload["error"] = error
+        return payload
 
-    if shortcut_change < 0.18:
-        # Exact-build live attempts 20 and 21 proved Home was a no-op and that
-        # the transient HUD flyout supplied no observable click ACK. They could
-        # not distinguish a hierarchy-leave close from a player-capital no-op,
-        # so stop speculating about that path. Use the native title finder:
-        # its c_bianzhou result has an explicit DefaultOnCoatOfArmsRightClick
-        # handler, so the selected destination and the resulting map motion are
-        # both independently observable before FFmpeg is allowed to start.
-        title_region = (0.70, 0.07, 0.98, 0.90)
-        acceptance.focus_ck3()
-        acceptance.pyautogui.press("v")
+    def wait_for_title_header(stem: str, timeout_s: float):
+        return acceptance.wait_for_ocr_text(
+            "查找头衔",
+            title_region,
+            timeout_s,
+            artifacts,
+            stem,
+            contains=True,
+            stable_hits=1,
+        )
+
+    def open_title_finder_from_more_menu(attempt_number: int):
+        screen_width, screen_height = acceptance.pyautogui.size()
+        artifact_suffix = "" if attempt_number == 1 else f"_retry_{attempt_number}"
+        more_candidates = (
+            (
+                int(screen_width * (1807 / 2560)),
+                int(screen_height * (1417 / 1440)),
+            ),
+            (
+                int(screen_width * (1792 / 2560)),
+                int(screen_height * (1417 / 1440)),
+            ),
+            (
+                int(screen_width * (1822 / 2560)),
+                int(screen_height * (1417 / 1440)),
+            ),
+            (
+                int(screen_width * (1777 / 2560)),
+                int(screen_height * (1417 / 1440)),
+            ),
+            (
+                int(screen_width * (1837 / 2560)),
+                int(screen_height * (1417 / 1440)),
+            ),
+        )
+        more_point = None
+        tooltip_image = None
+        for candidate in more_candidates:
+            acceptance.focus_ck3()
+            acceptance.pyautogui.moveTo(*candidate, duration=0.2)
+            time.sleep(0.65)
+            tooltip_image = acceptance.ImageGrab.grab()
+            if acceptance.find_ocr_text(
+                tooltip_image,
+                "更多",
+                acceptance.FULL_SCREEN_REGION,
+                contains=True,
+            ) is not None:
+                more_point = candidate
+                tooltip_image.save(
+                    artifacts
+                    / f"05_promo_camera_more_button_tooltip{artifact_suffix}.png"
+                )
+                break
+        if more_point is None:
+            if tooltip_image is not None:
+                tooltip_image.save(
+                    artifacts
+                    / f"timeout_05_promo_camera_more_button_tooltip{artifact_suffix}.png"
+                )
+            attempts.append(
+                {
+                    "state": "open_title_finder",
+                    "method": "native_more_menu",
+                    "attempt_number": attempt_number,
+                    "entry_ack": False,
+                    "error": "More tooltip not found",
+                }
+            )
+            return None
+        acceptance.deliberate_click(more_point, "native HUD More button")
         try:
-            title_header = acceptance.wait_for_ocr_text(
+            title_row = acceptance.wait_for_ocr_text(
                 "查找头衔",
-                title_region,
-                2,
+                (0.62, 0.68, 0.90, 0.99),
+                5,
                 artifacts,
-                "05_promo_title_finder_open.png",
+                f"05_promo_camera_more_menu_find_title{artifact_suffix}.png",
                 contains=True,
                 stable_hits=1,
             )
-        except acceptance.RunnerError as initial_shortcut_error:
-            # The first dedicated live probe showed Microsoft's Chinese IME
-            # consuming bare V as its "V-mode input" command. Only recover
-            # when that exact overlay is visible; any other failure stays RED.
-            ime_probe = acceptance.ImageGrab.grab()
-            ime_items = acceptance.ocr_results(
-                ime_probe, acceptance.FULL_SCREEN_REGION
+        except acceptance.RunnerError as error:
+            attempts.append(
+                {
+                    "state": "open_title_finder",
+                    "method": "native_more_menu",
+                    "attempt_number": attempt_number,
+                    "more_point": list(more_point),
+                    "entry_ack": False,
+                    "error": str(error),
+                }
             )
-            ime_v_mode_visible = any(
-                "V模式输入" in text.upper() for text, _, _, _ in ime_items
+            return None
+        acceptance.focus_ck3()
+        acceptance.pyautogui.click(*title_row)
+        try:
+            header = wait_for_title_header(
+                f"05_promo_title_finder_open_from_more{artifact_suffix}.png", 5
             )
-            if not ime_v_mode_visible:
-                ime_probe.save(
-                    artifacts / "05_promo_title_shortcut_unexplained.png"
-                )
-                raise acceptance.RunnerError(
-                    "native title shortcut produced neither the finder nor "
-                    "the observed Microsoft Pinyin V-mode overlay"
-                ) from initial_shortcut_error
-            ime_probe.save(artifacts / "05_promo_title_shortcut_ime_v_mode.png")
-            acceptance.pyautogui.press("escape")
-            time.sleep(0.3)
-            acceptance.pyautogui.press("shift")
-            time.sleep(0.3)
-            ime_v_mode_recovery_used = True
-            acceptance.pyautogui.press("v")
-            try:
-                title_header = acceptance.wait_for_ocr_text(
-                    "查找头衔",
-                    title_region,
-                    8,
-                    artifacts,
-                    "05_promo_title_finder_open.png",
-                    contains=True,
-                    stable_hits=1,
-                )
-            except BaseException:
-                restore_title_shortcut_input_mode()
-                raise
-        screen_width, screen_height = acceptance.pyautogui.size()
-        reference_scale = screen_height / 1440
-        search_point = (
-            title_header[0],
-            title_header[1] + round(65 * reference_scale),
+        except acceptance.RunnerError as error:
+            attempts.append(
+                {
+                    "state": "open_title_finder",
+                    "method": "native_more_menu",
+                    "attempt_number": attempt_number,
+                    "more_point": list(more_point),
+                    "title_row": list(title_row),
+                    "entry_ack": False,
+                    "error": str(error),
+                }
+            )
+            return None
+        attempts.append(
+            {
+                "state": "open_title_finder",
+                "method": "native_more_menu",
+                "attempt_number": attempt_number,
+                "more_point": list(more_point),
+                "title_row": list(title_row),
+                "entry_ack": True,
+            }
         )
+        return header
+
+    def resolve_title_result(
+        query: str,
+        title_key: str,
+        search_point: tuple[int, int],
+        minimum_result_y: int,
+    ):
         acceptance.deliberate_click(search_point, "native title search field")
         acceptance.pyautogui.hotkey("ctrl", "a")
-        prior_clipboard = pyperclip.paste()
-        try:
-            pyperclip.copy("汴州")
-            acceptance.pyautogui.hotkey("ctrl", "v")
-            time.sleep(0.5)
-        finally:
-            pyperclip.copy(prior_clipboard)
-
-        result_deadline = time.time() + 8
-        minimum_result_y = title_header[1] + round(90 * reference_scale)
+        pyperclip.copy(query)
+        acceptance.pyautogui.hotkey("ctrl", "v")
+        time.sleep(0.5)
+        result_deadline = time.monotonic() + 8
         last_result = None
         stable_hits = 0
         result_image = None
-        while time.time() < result_deadline:
+        while time.monotonic() < result_deadline:
             acceptance.focus_ck3()
             result_image = acceptance.ImageGrab.grab()
             candidates = [
@@ -1844,7 +2126,7 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
                 for text, _, center, _ in acceptance.ocr_results(
                     result_image, title_region
                 )
-                if "汴州" in text and center[1] >= minimum_result_y
+                if query in text and center[1] >= minimum_result_y
             ]
             current_result = (
                 min(candidates, key=lambda point: point[1])
@@ -1862,127 +2144,307 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
                     stable_hits = 1
                 last_result = current_result
                 if stable_hits >= 2:
-                    title_result = current_result
                     result_image.save(
-                        artifacts / "05_promo_title_finder_bianzhou.png"
+                        artifacts / f"05_promo_title_finder_{title_key}.png"
                     )
-                    break
+                    attempts.append(
+                        {
+                            "state": "resolve_title",
+                            "query": query,
+                            "title_key": title_key,
+                            "result_ack": True,
+                            "result_point": list(current_result),
+                        }
+                    )
+                    return current_result
             else:
                 last_result = None
                 stable_hits = 0
             time.sleep(acceptance.POLL_INTERVAL_S)
-        if title_result is None:
-            restore_title_shortcut_input_mode()
-            if result_image is not None:
-                result_image.save(
-                    artifacts / "timeout_05_promo_title_finder_bianzhou.png"
-                )
+        if result_image is not None:
+            result_image.save(
+                artifacts / f"timeout_05_promo_title_finder_{title_key}.png"
+            )
+        attempts.append(
+            {
+                "state": "resolve_title",
+                "query": query,
+                "title_key": title_key,
+                "result_ack": False,
+            }
+        )
+        return None
+
+    try:
+        # The lobby gate may have run minutes earlier and Windows input state is
+        # per window/thread. Re-attest immediately before the first camera key;
+        # never treat a prior 0409 snapshot as a transferable guarantee.
+        prior_keyboard_layout_evidence = (
+            dict(keyboard_layout_evidence) if keyboard_layout_evidence else None
+        )
+        keyboard_layout_evidence = dict(
+            force_ck3_english_keyboard_layout(
+                artifacts, "05_promo_keyboard_layout_before_camera"
+            )
+        )
+        keyboard_layout_evidence["prior_gate"] = prior_keyboard_layout_evidence
+        if keyboard_layout_evidence.get("after_langid") != "0409":
             raise acceptance.RunnerError(
-                "native title finder could not resolve the Bianzhou result row"
+                "promo camera started without CK3 layout attestation 0409"
             )
 
         acceptance.focus_ck3()
-        acceptance.pyautogui.moveTo(*title_result, duration=0.2)
-        time.sleep(0.35)
-        acceptance.pyautogui.mouseDown(button="right")
-        time.sleep(0.15)
-        acceptance.pyautogui.mouseUp(button="right")
-        log(f"right-clicked native Bianzhou title result at {title_result}")
+        before = acceptance.ImageGrab.grab()
+        before.save(artifacts / "05_promo_camera_before_home.png")
+        acceptance.pyautogui.press("home")
         time.sleep(2.0)
-        after_title_action = acceptance.ImageGrab.grab()
-        after_title_action.save(
-            artifacts / "05_promo_camera_after_bianzhou_right_click.png"
+        shortcut_after = acceptance.ImageGrab.grab()
+        shortcut_after.save(artifacts / "05_promo_camera_after_home_shortcut.png")
+        shortcut_change = map_change_fraction(before, shortcut_after)
+        attempts.append(
+            {
+                "state": "home",
+                "method": "shortcut_home",
+                "map_delta": shortcut_change,
+                "action_ack": shortcut_change >= 0.18,
+            }
         )
-        finder_visible = acceptance.find_ocr_text(
-            after_title_action,
-            "查找头衔",
-            title_region,
-            contains=True,
-        ) is not None
-        after = after_title_action
-        close_attempts = 0
-        while finder_visible and close_attempts < 2:
-            # Move off the result row first so a title tooltip cannot consume
-            # Escape. Re-read the header after every attempt instead of
-            # assuming that a sent close shortcut was accepted.
-            acceptance.pyautogui.moveTo(
-                round(screen_width * 0.50),
-                round(screen_height * 0.50),
-                duration=0.1,
-            )
-            acceptance.pyautogui.press("escape")
-            close_attempts += 1
-            time.sleep(0.8)
-            after = acceptance.ImageGrab.grab()
-            finder_visible = acceptance.find_ocr_text(
-                after,
-                "查找头衔",
-                title_region,
-                contains=True,
-            ) is not None
-        if finder_visible:
-            # The inherited header close button sits about 210 reference
-            # pixels to the right of the centered header text at this scale.
-            title_close = (
-                title_header[0] + round(210 * reference_scale),
-                title_header[1],
-            )
-            acceptance.deliberate_click(title_close, "native title finder X")
-            time.sleep(0.8)
-            after = acceptance.ImageGrab.grab()
-            finder_visible = acceptance.find_ocr_text(
-                after,
-                "查找头衔",
-                title_region,
-                contains=True,
-            ) is not None
-            if finder_visible:
-                restore_title_shortcut_input_mode()
-                after.save(
-                    artifacts / "timeout_05_promo_title_finder_close.png"
+        if shortcut_change >= 0.18:
+            after = shortcut_after
+            method = "shortcut_home"
+            action_change = shortcut_change
+            finder_close_ack = True
+        else:
+            # The exact target thread is already attested as 0409. A visible
+            # finder header is still required; sending V is never itself ACK.
+            acceptance.focus_ck3()
+            acceptance.pyautogui.press("v")
+            try:
+                title_header = wait_for_title_header(
+                    "05_promo_title_finder_open_from_v.png", 5
                 )
+                entry_method = "english_shortcut_v"
+                attempts.append(
+                    {
+                        "state": "open_title_finder",
+                        "method": entry_method,
+                        "entry_ack": True,
+                    }
+                )
+            except acceptance.RunnerError as shortcut_error:
+                shortcut_failure = acceptance.ImageGrab.grab()
+                ime_v_mode_visible = any(
+                    "V模式输入" in text.upper()
+                    for text, _, _, _ in acceptance.ocr_results(
+                        shortcut_failure, acceptance.FULL_SCREEN_REGION
+                    )
+                )
+                shortcut_failure.save(
+                    artifacts / "05_promo_title_shortcut_no_finder.png"
+                )
+                attempts.append(
+                    {
+                        "state": "open_title_finder",
+                        "method": "english_shortcut_v",
+                        "entry_ack": False,
+                        "ime_v_mode_visible": ime_v_mode_visible,
+                        "error": str(shortcut_error),
+                    }
+                )
+                # Escape is safe only when OCR proved an IME composition layer.
+                # On a clean CK3 map it opens the game menu and would obstruct
+                # the native More fallback we are about to use.
+                if ime_v_mode_visible:
+                    acceptance.pyautogui.press("escape")
+                    time.sleep(0.3)
+                prior_layout_gate = dict(keyboard_layout_evidence)
+                keyboard_layout_evidence = dict(
+                    force_ck3_english_keyboard_layout(
+                        artifacts, "05_promo_keyboard_layout_recheck"
+                    )
+                )
+                keyboard_layout_evidence["prior_gate"] = prior_layout_gate
+                for more_attempt in (1, 2):
+                    title_header = open_title_finder_from_more_menu(more_attempt)
+                    if title_header is not None:
+                        entry_method = "native_more_find_title"
+                        break
+                    acceptance.pyautogui.moveTo(
+                        round(acceptance.pyautogui.size()[0] * 0.50),
+                        round(acceptance.pyautogui.size()[1] * 0.50),
+                        duration=0.1,
+                    )
+                    # Moving out is sufficient to dismiss CK3's transient More
+                    # flyout. Escape on a clean map would open the pause menu.
+                    time.sleep(0.3)
+            if title_header is None:
+                raise acceptance.RunnerError(
+                    "native title finder entry paths exhausted under English layout"
+                )
+
+            screen_width, screen_height = acceptance.pyautogui.size()
+            reference_scale = screen_height / 1440
+            search_point = (
+                title_header[0],
+                title_header[1] + round(65 * reference_scale),
+            )
+            minimum_result_y = title_header[1] + round(90 * reference_scale)
+            prior_clipboard = pyperclip.paste()
+            moved_image = None
+            try:
+                for query, title_key in (
+                    ("汴州", "c_bianzhou"),
+                    ("开封", "b_kaifeng"),
+                ):
+                    candidate = resolve_title_result(
+                        query, title_key, search_point, minimum_result_y
+                    )
+                    if candidate is None:
+                        continue
+                    action_before = acceptance.ImageGrab.grab()
+                    action_before.save(
+                        artifacts
+                        / f"05_promo_camera_before_{title_key}_right_click.png"
+                    )
+                    acceptance.focus_ck3()
+                    acceptance.pyautogui.moveTo(*candidate, duration=0.2)
+                    time.sleep(0.35)
+                    acceptance.pyautogui.mouseDown(button="right")
+                    time.sleep(0.15)
+                    acceptance.pyautogui.mouseUp(button="right")
+                    log(f"right-clicked native {title_key} result at {candidate}")
+                    time.sleep(2.0)
+                    action_after = acceptance.ImageGrab.grab()
+                    action_after.save(
+                        artifacts
+                        / f"05_promo_camera_after_{title_key}_right_click.png"
+                    )
+                    candidate_change = map_change_fraction(
+                        action_before, action_after
+                    )
+                    attempts.append(
+                        {
+                            "state": "title_action",
+                            "query": query,
+                            "title_key": title_key,
+                            "result_point": list(candidate),
+                            "map_delta": candidate_change,
+                            "action_ack": candidate_change >= 0.18,
+                        }
+                    )
+                    if candidate_change >= 0.18:
+                        search_query = query
+                        resolved_title_key = title_key
+                        title_result = candidate
+                        action_change = candidate_change
+                        moved_image = action_after
+                        break
+                if moved_image is None:
+                    raise acceptance.RunnerError(
+                        "Bianzhou and Kaifeng title actions produced no map movement ACK"
+                    )
+            finally:
+                pyperclip.copy(prior_clipboard)
+
+            finder_visible = acceptance.find_ocr_text(
+                moved_image,
+                "查找头衔",
+                title_region,
+                contains=True,
+            ) is not None
+            close_attempts = 0
+            after = moved_image
+            while finder_visible and close_attempts < 2:
+                acceptance.pyautogui.moveTo(
+                    round(screen_width * 0.50),
+                    round(screen_height * 0.50),
+                    duration=0.1,
+                )
+                acceptance.pyautogui.press("escape")
+                close_attempts += 1
+                time.sleep(0.8)
+                after = acceptance.ImageGrab.grab()
+                finder_visible = acceptance.find_ocr_text(
+                    after,
+                    "查找头衔",
+                    title_region,
+                    contains=True,
+                ) is not None
+            if not finder_visible:
+                time.sleep(0.4)
+                after = acceptance.ImageGrab.grab()
+                finder_visible = acceptance.find_ocr_text(
+                    after,
+                    "查找头衔",
+                    title_region,
+                    contains=True,
+                ) is not None
+            if finder_visible:
+                title_close = (
+                    title_header[0] + round(210 * reference_scale),
+                    title_header[1],
+                )
+                acceptance.deliberate_click(title_close, "native title finder X")
+                time.sleep(0.8)
+                after = acceptance.ImageGrab.grab()
+                finder_visible = acceptance.find_ocr_text(
+                    after,
+                    "查找头衔",
+                    title_region,
+                    contains=True,
+                ) is not None
+                if not finder_visible:
+                    time.sleep(0.4)
+                    after = acceptance.ImageGrab.grab()
+                    finder_visible = acceptance.find_ocr_text(
+                        after,
+                        "查找头衔",
+                        title_region,
+                        contains=True,
+                    ) is not None
+            finder_close_ack = not finder_visible
+            attempts.append(
+                {
+                    "state": "close_title_finder",
+                    "close_attempts": close_attempts,
+                    "required_absent_hits": 2,
+                    "cleanup_ack": finder_close_ack,
+                }
+            )
+            if not finder_close_ack:
+                after.save(artifacts / "timeout_05_promo_title_finder_close.png")
                 raise acceptance.RunnerError(
                     "native title finder remained visible after recenter"
                 )
-        restore_title_shortcut_input_mode()
-        if ime_mode_restored:
+            prior_layout_gate = dict(keyboard_layout_evidence)
+            keyboard_layout_evidence = dict(
+                force_ck3_english_keyboard_layout(
+                    artifacts, "05_promo_keyboard_layout_final"
+                )
+            )
+            keyboard_layout_evidence["prior_gate"] = prior_layout_gate
             after = acceptance.ImageGrab.grab()
-        method = "native_title_finder_bianzhou"
-    else:
-        after = shortcut_after
+            method = f"{entry_method}_{resolved_title_key}"
 
-    after.save(artifacts / "05_promo_camera_after_home.png")
-    final_change = map_change_fraction(before, after)
-    evidence = {
-        "schema_version": 1,
-        "result": "GREEN" if final_change >= 0.18 else "RED",
-        "native_action": (
-            "go_to_capital_shortcut"
-            if method == "shortcut_home"
-            else "find_title_right_click"
-        ),
-        "default_key": "home",
-        "method": method,
-        "shortcut_visual_change_fraction": shortcut_change,
-        "final_visual_change_fraction": final_change,
-        "minimum_visual_change_fraction": 0.18,
-        "search_query": "汴州" if title_header is not None else None,
-        "resolved_title_key": "c_bianzhou" if title_result is not None else None,
-        "title_header_point": list(title_header) if title_header else None,
-        "title_result_point": list(title_result) if title_result else None,
-        "ime_v_mode_recovery_used": ime_v_mode_recovery_used,
-        "ime_mode_restored": ime_mode_restored,
-        "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
-        "expected_realm_title": "h_china",
-        "before_artifact": "05_promo_camera_before_home.png",
-        "after_artifact": "05_promo_camera_after_home.png",
-    }
-    write_json(artifacts / "05_promo_camera_recenter.json", evidence)
-    if evidence["result"] != "GREEN":
-        raise acceptance.RunnerError(
-            "native Bianzhou title recenter produced no material map movement"
+        after.save(artifacts / "05_promo_camera_after_home.png")
+        final_change = map_change_fraction(before, after)
+        if final_change < 0.18:
+            raise acceptance.RunnerError(
+                "native Song title recenter produced no material final map movement"
+            )
+        evidence = camera_evidence("GREEN")
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        write_json(
+            evidence_path,
+            camera_evidence("RED", str(error) or type(error).__name__),
         )
-    return evidence
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"promo camera state machine failed: {error}"
+        ) from error
 
 
 def choose_direct_publication(
@@ -3593,6 +4055,7 @@ def run_scenario(
     stream: MarkerStream,
     artifacts: Path,
     recorder: PromoRecorder | None = None,
+    keyboard_layout_evidence: dict[str, object] | None = None,
 ) -> dict[str, object]:
     initialize_fixture(stream, artifacts)
     promo_camera_evidence = None
@@ -3601,7 +4064,9 @@ def run_scenario(
         # Close its native drawer and prove a clean HUD before FFmpeg starts;
         # subsequent fixture coordination is hidden and time-delayed.
         close_native_decisions_panel(artifacts, "05_promo_pre_record")
-        promo_camera_evidence = recenter_promo_camera_on_player_capital(artifacts)
+        promo_camera_evidence = recenter_promo_camera_on_player_capital(
+            artifacts, keyboard_layout_evidence
+        )
         assert_promo_frame_clean(
             artifacts,
             "05_promo_pre_record_clean_hud",
@@ -3785,6 +4250,7 @@ def run_cell(
     watchdog_pid = None
     recorder = PromoRecorder(artifacts / "promo") if promo_capture else None
     recorder_evidence: dict[str, object] = {}
+    keyboard_layout_evidence: dict[str, object] = {}
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
@@ -3814,10 +4280,13 @@ def run_cell(
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_standard_1066_start")
+        keyboard_layout_evidence = force_ck3_english_keyboard_layout(artifacts)
         if promo_camera_probe:
             initialize_fixture(stream, artifacts)
             close_native_decisions_panel(artifacts, "05_promo_pre_record")
-            camera_evidence = recenter_promo_camera_on_player_capital(artifacts)
+            camera_evidence = recenter_promo_camera_on_player_capital(
+                artifacts, keyboard_layout_evidence
+            )
             clean_evidence = assert_promo_frame_clean(
                 artifacts,
                 "05_promo_pre_record_clean_hud",
@@ -3828,12 +4297,16 @@ def run_cell(
                 "probe_only": True,
                 "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
                 "expected_realm_title": "h_china",
+                "keyboard_layout": keyboard_layout_evidence,
                 "promo_camera_recenter": camera_evidence,
                 "post_recenter_frame_clean": clean_evidence,
                 "ffmpeg_started": False,
             }
         else:
-            evidence = run_scenario(stream, artifacts, recorder)
+            evidence = run_scenario(
+                stream, artifacts, recorder, keyboard_layout_evidence
+            )
+            evidence["keyboard_layout"] = keyboard_layout_evidence
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
