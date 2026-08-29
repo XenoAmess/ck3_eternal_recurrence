@@ -86,6 +86,7 @@
 - `zga_20260829_061314_ea5f04ad`：修复上述两项后完整 GREEN。
 - `promo/captures/zga_20260829_121900_bf0f86c`：当前发布候选首次正式录制在主菜单日志门禁即 RED；CK3 明确报告遗留变量 `zg361_bottom_cut_next` 只写未读，故没有进入玩法、也没有启动录屏。根报告 SHA-256 为 `79E064661023D0FAF9CBD9F69E43A0B4F94237C134B7CBA4F59ED267CF5498EF`，证据索引为 `0DFC67C841233158758DFC2D0944FEC763B8B1E1BF01EBF48A5219E594BBFFE1`。排名实现已经改用末位名额游标，修复删除了连同 `zg361_bottom_cut` 在内的两处过时死写，并在静态门禁中禁止其回归；该 attempt 只证明 RED 与修复动机，不可作玩法签核或宣传素材。
 - `promo/captures/zga_20260829_123304_28ad33b6`：361/361、AI 非独立公爵、新人保护、校准 C、3.25 四重处分与申诉、主榜结算已过，但仍为 RED。其一是 harness 在个人告身流程尚未开始时，提前要求后置小队列探针的终态；`final_debug.log` 中 `TEST DONE = 1` 而个人切换与小队列两类 marker 均为 0。其二是真实产品 tooltip 预演暴露 `shown_n` 未设置错误三类各 543 次，并有 2 次 `ordered_in_list max` 大于列表的范围错误。修复把小队列严格断言推迟到 final 阶段，并采用单次 clamp / 动态列表上限；没有伪造 unavailable marker，也没有放宽最终门禁。根报告 SHA-256 为 `0DED40A40CA4126AB44B90851F28FE0F950F16036084AB3E3E8036F5D07C6B1C`，证据索引为 `BCBF307520AED47F63FF95448E2E57FE5B4F65464E5161AC63820F350FD0FED1`；该 attempt 同样不可作发布签核或宣传素材。
+- `promo/captures/zga_20260829_124857_7af8fc88`：修复后的 tooltip 三类错误与 `max > list` 均为 0，项目归因诊断为 0；右侧原生“决议和大型工程”抽屉打开时，`07_scoreboard_hidden_by_right_panel.png` 证明考核榜按钮没有覆盖抽屉。随后单次 Escape 只消除了决议行 tooltip、没有关闭抽屉，runner 仍在原生抽屉打开时等待按钮重现并超时，属于 GUI 驱动 harness RED。修复先移开 tooltip，再以 Escape + 连续两帧消失确认关闭，必要时点击原生标题栏 X 并再次确认；产品的 `IsRightWindowOpen` 门禁不作放宽。根报告 SHA-256 为 `B70CF76CF1AC31093D4823777CF8E491BD27D0290A42EF23D7C197D13C32B91B`，证据索引为 `D17011FACF16D18BEB7A1881D3390AF0A27E9B88FAA541C47BA27974157572C7`；录屏和失败现场均保留，仍不可作完整发布签核。
 
 这些目录及其对应 `_userdir` 均未删除，不能用最终 GREEN 覆盖失败历史。
 

@@ -56,11 +56,25 @@ def main() -> int:
     ):
         assert token in scoreboard_body, token
     assert scoreboard_body.index("isolated.ensure_decisions_panel") < scoreboard_body.index(
-        'acceptance.pyautogui.press("escape")'
+        "close_native_decisions_panel"
     )
-    assert scoreboard_body.index('acceptance.pyautogui.press("escape")') < scoreboard_body.index(
+    assert scoreboard_body.index("close_native_decisions_panel") < scoreboard_body.index(
         '"07_scoreboard_button.png"'
     )
+
+    close_drawer = re.search(
+        r"def close_native_decisions_panel\(.*?(?=^def )", runner, re.M | re.S
+    )
+    assert close_drawer is not None
+    close_body = close_drawer.group(0)
+    for token in (
+        'acceptance.pyautogui.press("escape")',
+        "DECISIONS_CLOSE_BUTTON",
+        "native Decisions title-bar close button",
+        "absent_hits >= 2",
+        'return "title_bar_close"',
+    ):
+        assert token in close_body, token
 
     received = re.search(
         r"def capture_received_scoreboard\(.*?(?=^def )", runner, re.M | re.S
@@ -111,6 +125,7 @@ def main() -> int:
     import run_zhongguo_acceptance as capture
 
     assert capture.SCOREBOARD_BUTTON_REGION == (0.86, 0.05, 0.985, 0.16)
+    assert capture.DECISIONS_CLOSE_BUTTON == (0.769, 0.050)
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom
     assert not (left <= 0.846 <= right and top <= 0.173 <= bottom)

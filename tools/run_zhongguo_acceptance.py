@@ -102,6 +102,10 @@ PROMO_INTERRUPTION_DEFAULT_OBSERVE_S = 1.0
 # right HUD rail.  Constrain positive OCR to this normalized lane so the old
 # detached {-205,165} placement cannot accidentally satisfy live acceptance.
 SCOREBOARD_BUTTON_REGION = (0.86, 0.05, 0.985, 0.16)
+DECISIONS_HEADER_REGION = (0.55, 0.00, 0.90, 0.13)
+# CK3 acceptance is pinned to 2560x1440 and the isolated profile's UI scale.
+# This normalized point is the native Decisions drawer's title-bar X.
+DECISIONS_CLOSE_BUTTON = (0.769, 0.050)
 
 
 def log(message: str) -> None:
@@ -1140,6 +1144,60 @@ def choose_direct_publication(
     stream.validate()
 
 
+def close_native_decisions_panel(artifacts: Path, stem: str) -> str:
+    """Close the native drawer and prove it is gone before seeking our HUD button."""
+
+    def wait_until_closed(
+        timeout_s: float, success_artifact: str, failure_artifact: str
+    ) -> bool:
+        deadline = time.monotonic() + timeout_s
+        absent_hits = 0
+        last_image = None
+        while time.monotonic() < deadline:
+            acceptance.focus_ck3()
+            last_image = acceptance.ImageGrab.grab()
+            visible = acceptance.find_ocr_text(
+                last_image, "决议", DECISIONS_HEADER_REGION, contains=True
+            )
+            absent_hits = absent_hits + 1 if visible is None else 0
+            if absent_hits >= 2:
+                last_image.save(artifacts / success_artifact)
+                return True
+            time.sleep(acceptance.POLL_INTERVAL_S)
+        if last_image is not None:
+            last_image.save(artifacts / failure_artifact)
+        return False
+
+    acceptance.focus_ck3()
+    width, height = acceptance.pyautogui.size()
+    # An open decision-row tooltip can consume the first Escape while leaving
+    # the right drawer untouched. Move away before exercising that close path.
+    acceptance.pyautogui.moveTo(int(width * 0.50), int(height * 0.50), duration=0.2)
+    time.sleep(0.5)
+    acceptance.pyautogui.press("escape")
+    if wait_until_closed(
+        2.5,
+        f"{stem}_closed_by_escape.png",
+        f"{stem}_escape_left_drawer_open.png",
+    ):
+        return "escape"
+
+    close_point = (
+        int(width * DECISIONS_CLOSE_BUTTON[0]),
+        int(height * DECISIONS_CLOSE_BUTTON[1]),
+    )
+    acceptance.deliberate_click(close_point, "native Decisions title-bar close button")
+    if wait_until_closed(
+        5.0,
+        f"{stem}_closed_by_title_button.png",
+        f"red_{stem}_drawer_still_open.png",
+    ):
+        return "title_bar_close"
+    raise acceptance.RunnerError(
+        "native Decisions drawer remained open after Escape and its title-bar close button"
+    )
+
+
 def capture_scoreboard_gui(
     artifacts: Path, recorder: PromoRecorder | None = None
 ) -> dict[str, object]:
@@ -1175,7 +1233,7 @@ def capture_scoreboard_gui(
     acceptance.focus_ck3()
     image = acceptance.ImageGrab.grab()
     if acceptance.find_ocr_text(
-        image, "决议", (0.55, 0.00, 0.90, 0.13), contains=True
+        image, "决议", DECISIONS_HEADER_REGION, contains=True
     ) is None:
         image.save(artifacts / "timeout_07_scoreboard_right_panel_gate.png")
         raise acceptance.RunnerError(
@@ -1189,8 +1247,9 @@ def capture_scoreboard_gui(
             "performance-board HUD toggle overlaps a native right-side panel"
         )
     image.save(artifacts / "07_scoreboard_hidden_by_right_panel.png")
-    acceptance.pyautogui.press("escape")
-    time.sleep(0.8)
+    right_panel_close_method = close_native_decisions_panel(
+        artifacts, "07_scoreboard_right_panel"
+    )
     button = acceptance.wait_for_ocr_text(
         "考核榜",
         SCOREBOARD_BUTTON_REGION,
@@ -1268,6 +1327,7 @@ def capture_scoreboard_gui(
         "right_panel_suppression_ocr": True,
         "managed_panel_ocr": True,
         "right_panel_suppression_artifact": "07_scoreboard_hidden_by_right_panel.png",
+        "right_panel_close_method": right_panel_close_method,
         "button_artifact": "07_scoreboard_button.png",
         "button_center_px": list(button),
         "button_center_normalized": button_center_normalized,
