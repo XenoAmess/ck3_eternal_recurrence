@@ -229,18 +229,10 @@ zg361_rank_cohort_effect = {
 		}
 	}
 	remove_variable = zg361_rank_cursor
-	# 阈值落领主变量：头部名额 / 末位名额 / 两条边界名次线
+	# 阈值落领主变量：头部名额、末位名额与头部边界后一名。
 	set_variable = { name = zg361_top_cut value = zg361_top_slots_value }
 	set_variable = { name = zg361_top_cut_next value = { value = var:zg361_top_cut add = 1 } }
 	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
-	set_variable = {
-		name = zg361_bottom_cut
-		value = {
-			value = var:zg361_cohort_n
-			subtract = var:zg361_bottom_slots
-		}
-	}
-	set_variable = { name = zg361_bottom_cut_next value = { value = var:zg361_bottom_cut add = 1 } }
 }
 
 # ============================================================

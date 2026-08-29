@@ -638,6 +638,8 @@ def check_runtime_invariants() -> None:
         "zg361_jingcha_last_excused_year",
         "zg361_jingcha_last_refused_year",
         "zg361_last_review_year",
+        "zg361_bottom_cut",
+        "zg361_bottom_cut_next",
     ):
         if obsolete in activity or obsolete in mandate_effects or obsolete in effects:
             err(f"unused CK3 telemetry variable must not be written: {obsolete}")
