@@ -84,9 +84,10 @@ zga_initialize_effect = {
 						change_variable = { name = zga_historical_direct_candidate_n add = 1 }
 					}
 				}
-				# Guarantee that the first product pass exercises its newcomer branch.
+				# Reproduce a fresh install: no product snapshot exists yet, but these
+				# are incumbent officials, not 23 simultaneous new hires.
 				remove_variable = zg361_prev_merit_level
-				add_character_flag = zga_was_newcomer
+				add_character_flag = zga_was_bootstrap_incumbent
 			}
 		}
 		if = {
@@ -277,6 +278,13 @@ zga_verify_penalty_and_appeal_effect = {
 # first the all-newcomer cohort (must no-op), then a mixed fixture precondition
 # with one protected newcomer plus one real grade-2/grade-1 exchange pair.
 zga_verify_calibration_c_regressions_effect = {
+	# Build an explicit synthetic all-newcomer precondition for this isolated
+	# calibration regression. The visible first product review remains a strict
+	# 7/14/2 bootstrap cohort and is restored after the probe.
+	every_vassal = {
+		limit = { zg361_is_current_liege_review_record_trigger = yes }
+		add_character_flag = zg361_newcomer_this_cycle
+	}
 	set_variable = { name = zga_all_new_35_before value = var:zg361_pending_35_n }
 	set_variable = { name = zga_all_new_325_before value = var:zg361_pending_325_n }
 	zg361_calibrate_demote_effect = yes
@@ -302,7 +310,7 @@ zga_verify_calibration_c_regressions_effect = {
 			NOT = { zg361_can_calibrate_demote_trigger = yes }
 			var:zg361_pending_35_n = var:zga_all_new_35_before
 			var:zg361_pending_325_n = var:zga_all_new_325_before
-			var:zga_all_new_325_actual = 0
+			var:zga_all_new_325_actual = var:zga_all_new_325_before
 			var:zga_all_new_protected_actual = var:zg361_cohort_n
 		}
 		debug_log = "ZGA: TEST PASS calibration_c_all_newcomer_noop"
@@ -421,8 +429,8 @@ zga_verify_calibration_c_regressions_effect = {
 		}
 		else = { debug_log = "ZGA: TEST FAIL calibration_c_mixed_precondition" }
 
-		# Restore the all-newcomer production roster for the visible calibration
-		# event and its existing direct-publication acceptance path.
+		# Restore the original strict bootstrap grades. Newcomer flags are removed
+		# from the whole real roster below before the visible calibration event.
 		scope:zga_mixed_protected_newcomer = {
 			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
 			remove_variable = zga_original_pending_grade
@@ -430,15 +438,17 @@ zga_verify_calibration_c_regressions_effect = {
 		scope:zga_mixed_demote_target = {
 			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
 			remove_variable = zga_original_pending_grade
-			add_character_flag = zg361_newcomer_this_cycle
 		}
 		scope:zga_mixed_rescue_target = {
 			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
 			remove_variable = zga_original_pending_grade
-			add_character_flag = zg361_newcomer_this_cycle
 		}
 	}
 	else = { debug_log = "ZGA: TEST FAIL calibration_c_mixed_targets_unavailable" }
+	every_vassal = {
+		limit = { zg361_is_current_liege_review_record_trigger = yes }
+		remove_character_flag = zg361_newcomer_this_cycle
+	}
 	remove_variable = zga_all_new_35_before
 	remove_variable = zga_all_new_325_before
 	remove_variable = zga_all_new_325_actual
@@ -475,13 +485,13 @@ zga_prepare_player_review_effect = {
 	# fixture only verifies each resulting variable and the aggregate ledgers.
 	zga_verify_361_mechanism_batch_effect = yes
 
-	# First real product invocation: every direct official is a newcomer. The
-	# product must still rank the entire cohort and queue calibration, while
-	# protecting every newcomer from 3.25 and writing next-cycle snapshots.
+	# First real product invocation on a fresh install: all 23 direct officials
+	# lack a mod snapshot, but they are incumbent baseline staff. The product must
+	# rank everyone, enforce strict 361 as 7/14/2, and write next-cycle snapshots.
 	zg361_run_review_effect = yes
 	set_variable = { name = zga_missing_snapshot_n value = 0 }
 	set_variable = { name = zga_reviewable_n value = 0 }
-	set_variable = { name = zga_newcomer_bottom_n value = 0 }
+	set_variable = { name = zga_bootstrap_bottom_n value = 0 }
 	set_variable = { name = zga_pending_grade_n value = 0 }
 	every_vassal = {
 		limit = { zg361_is_reviewable_vassal_trigger = yes }
@@ -496,11 +506,11 @@ zga_prepare_player_review_effect = {
 		}
 		if = {
 			limit = {
-				has_character_flag = zga_was_newcomer
+				has_character_flag = zga_was_bootstrap_incumbent
 				has_variable = zg361_pending_grade
 				var:zg361_pending_grade = 1
 			}
-			root = { change_variable = { name = zga_newcomer_bottom_n add = 1 } }
+			root = { change_variable = { name = zga_bootstrap_bottom_n add = 1 } }
 		}
 	}
 	set_variable = { name = zga_pending_grade_sum value = var:zg361_pending_375_n }
@@ -513,21 +523,25 @@ zga_prepare_player_review_effect = {
 			var:zg361_cohort_n = var:zga_reviewable_n
 			var:zga_pending_grade_n = var:zga_reviewable_n
 			var:zga_pending_grade_sum = var:zga_reviewable_n
-			var:zga_newcomer_bottom_n = 0
-			var:zg361_pending_325_n = 0
+			var:zga_bootstrap_bottom_n = var:zg361_pending_325_n
+			var:zg361_pending_375_n = 7
+			var:zg361_pending_35_n = 14
+			var:zg361_pending_325_n = 2
+			var:zg361_bottom_slots = 2
+			NOT = { has_character_flag = zg361_review_baseline_initialized }
 			NOT = { has_variable = zg361_sb_m_01_char }
 		}
-		debug_log = "ZGA: TEST PASS newcomer_snapshot_prepared_by_product"
-		debug_log = "ZGA: TEST PASS newcomer_first_review_protected"
+		debug_log = "ZGA: TEST PASS bootstrap_snapshot_prepared_by_product"
+		debug_log = "ZGA: TEST PASS bootstrap_first_review_strict_7_14_2"
 		debug_log = "ZGA: TEST PASS player_calibration_pending"
 	}
 	else = {
-		debug_log = "ZGA: TEST FAIL newcomer_snapshot_prepared_by_product"
-		debug_log = "ZGA: TEST FAIL newcomer_first_review_protected"
+		debug_log = "ZGA: TEST FAIL bootstrap_snapshot_prepared_by_product"
+		debug_log = "ZGA: TEST FAIL bootstrap_first_review_strict_7_14_2"
 		debug_log = "ZGA: TEST FAIL player_calibration_pending"
 	}
 	remove_variable = zga_missing_snapshot_n
-	remove_variable = zga_newcomer_bottom_n
+	remove_variable = zga_bootstrap_bottom_n
 	remove_variable = zga_pending_grade_n
 	remove_variable = zga_pending_grade_sum
 	zga_verify_calibration_c_regressions_effect = yes
@@ -590,33 +604,37 @@ zga_verify_player_review_effect = {
 	}
 	else = { debug_log = "ZGA: TEST FAIL three_grade_counts" }
 
-	set_variable = { name = zga_newcomer_result_n value = 0 }
-	set_variable = { name = zga_newcomer_325_n value = 0 }
+	set_variable = { name = zga_bootstrap_result_n value = 0 }
+	set_variable = { name = zga_bootstrap_325_n value = 0 }
 	every_vassal = {
-		limit = { has_character_flag = zga_was_newcomer }
+		limit = { has_character_flag = zga_was_bootstrap_incumbent }
 		if = {
 			limit = { has_variable = zg361_last_grade }
-			root = { change_variable = { name = zga_newcomer_result_n add = 1 } }
+			root = { change_variable = { name = zga_bootstrap_result_n add = 1 } }
 		}
 		if = {
 			limit = {
 				has_variable = zg361_last_grade
 				var:zg361_last_grade = 1
 			}
-			root = { change_variable = { name = zga_newcomer_325_n add = 1 } }
+			root = { change_variable = { name = zga_bootstrap_325_n add = 1 } }
 		}
-		remove_character_flag = zga_was_newcomer
+		remove_character_flag = zga_was_bootstrap_incumbent
 	}
 	if = {
 		limit = {
-			var:zga_newcomer_result_n = var:zga_reviewable_n
-			var:zga_newcomer_325_n = 0
+			var:zga_bootstrap_result_n = var:zga_reviewable_n
+			var:zga_bootstrap_325_n = 2
+			var:zg361_last_375_n = 7
+			var:zg361_last_35_n = 14
+			var:zg361_last_325_n = 2
+			has_character_flag = zg361_review_baseline_initialized
 		}
-		debug_log = "ZGA: TEST PASS newcomer_first_review_result_without_325"
+		debug_log = "ZGA: TEST PASS bootstrap_first_review_result_7_14_2"
 	}
-	else = { debug_log = "ZGA: TEST FAIL newcomer_first_review_result_without_325" }
-	remove_variable = zga_newcomer_result_n
-	remove_variable = zga_newcomer_325_n
+	else = { debug_log = "ZGA: TEST FAIL bootstrap_first_review_result_7_14_2" }
+	remove_variable = zga_bootstrap_result_n
+	remove_variable = zga_bootstrap_325_n
 
 	if = {
 		limit = { NOT = { has_character_flag = zga_clean_jingcha_dispatch_scheduled } }
@@ -832,6 +850,34 @@ zga_personal_result_effect = {
 			}
 			else = { debug_log = "ZGA: TEST FAIL personal_result_target_not_projected_bottom_two" }
 			remove_variable = zga_projected_at_or_below_target_n
+			# Exercise a genuine post-baseline newcomer without weakening the
+			# reviewed player's bottom result: take the next-worst prior official,
+			# remove only its snapshot, and let production protect it next cycle.
+			ordered_vassal = {
+				limit = {
+					is_alive = yes
+					zg361_is_reviewable_vassal_trigger = yes
+					zg361_is_current_liege_review_record_trigger = yes
+					has_variable = zg361_prev_merit_level
+					NOT = { this = scope:zga_personal_result_target }
+				}
+				order_by = var:zg361_rank
+				position = 0
+				remove_variable = zg361_prev_merit_level
+				add_character_flag = zga_actual_newcomer_probe
+			}
+			if = {
+				limit = {
+					has_character_flag = zg361_review_baseline_initialized
+					any_vassal = {
+						has_character_flag = zga_actual_newcomer_probe
+						NOT = { has_variable = zg361_prev_merit_level }
+						count = 1
+					}
+				}
+				debug_log = "ZGA: TEST PASS post_baseline_newcomer_prepared"
+			}
+			else = { debug_log = "ZGA: TEST FAIL post_baseline_newcomer_precondition" }
 			set_player_character = scope:zga_personal_result_target
 			scope:zga_reviewing_superior = {
 				trigger_event = { id = zga_acceptance.2 days = 0 }

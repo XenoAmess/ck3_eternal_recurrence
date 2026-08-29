@@ -49,12 +49,17 @@ zg361_run_review_effect = {
 		add_character_flag = zg361_review_in_progress
 		debug_log = "ZG361: annual review tick"
 
-	# 1. 打分 + 建考核池。无快照的新官也必须在首次京察得到结果，
-	# 但本轮受试用期保护：可得 3.75/3.5，不得成为强制分布的 3.25。
+	# 1. 打分 + 建考核池。系统首次建账时，全体在任官员都是基线存量，
+	# 不能因为没有模组快照就被误判为“新官”而掏空 3.25 配额。
+	# 只有本领主已经完成过至少一轮考核后，新出现且无快照的官员才享受
+	# 一次试用期保护：仍入榜，可得 3.75/3.5，但不成为本轮 3.25。
 	every_vassal = {
 		limit = { zg361_is_reviewable_vassal_trigger = yes }
 		if = {
-			limit = { NOT = { has_variable = zg361_prev_merit_level } }
+			limit = {
+				NOT = { has_variable = zg361_prev_merit_level }
+				root = { has_character_flag = zg361_review_baseline_initialized }
+			}
 			add_character_flag = zg361_newcomer_this_cycle
 			debug_log = "ZG361: newcomer enters first review with 3.25 protection"
 		}
@@ -385,6 +390,9 @@ zg361_calibrate_exposure_effect = {
 zg361_apply_pending_grades_effect = {
 	# 本轮一旦进入结算就冻结年度；任何第二入口只能在下一自然年创建新轮次。
 	set_variable = { name = zg361_last_settled_year value = current_year }
+	# 只有真实完成一次结算后，后续无快照官员才有资格被识别为新官。
+	# 这条持久基线把“模组首次启用”与“后来新入职”明确分开。
+	add_character_flag = zg361_review_baseline_initialized
 	set_variable = { name = zg361_last_375_n value = 0 }
 	set_variable = { name = zg361_last_35_n value = 0 }
 	set_variable = { name = zg361_last_325_n value = 0 }

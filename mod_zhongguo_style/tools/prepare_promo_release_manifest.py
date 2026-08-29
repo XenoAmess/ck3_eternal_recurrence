@@ -918,9 +918,9 @@ def project_manifest(
         bundle,
         capture_id="CAP-RELEASE-MANAGED-SCOREBOARD",
         label="clean managed-scoreboard excerpt",
-        zh_status="干净实机：新人保护考核榜",
-        en_status="CLEAN CAPTURE · NEWCOMER-PROTECTED SCOREBOARD",
-        shot="只使用 managed scoreboard 的独立干净区间；7/16/0 明示为新人保护样本。",
+        zh_status="干净实机：刚性 361 考核榜",
+        en_status="CLEAN CAPTURE · STRICT 361 SCOREBOARD",
+        shot="只使用 managed scoreboard 的独立干净区间；23 人的 7/14/2 与真实 3.25 边界必须可见。",
         clean_span="managed_scoreboard",
     )
     _set_video(

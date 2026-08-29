@@ -15,7 +15,7 @@
  zga_promo_policy_026_decision_confirm:0 "打开此卡"
  zga_promo_policy_361_decision_confirm:0 "打开此卡"
  zga_initialize_decision:0 "开始361制实机验收"
- zga_initialize_decision_desc:0 "从标准1066大厅人物切换至宋英宗，先走真实新人快照，再触发真实考核、校准、公示与考核榜。"
+ zga_initialize_decision_desc:0 "从标准1066大厅人物切换至宋英宗，先走首次建账的刚性361，再触发真实考核、校准、公示与考核榜。"
  zga_initialize_decision_tooltip:0 "初始化隔离的361制验收场景"
  zga_initialize_decision_confirm:0 "切换至宋帝并开考"
  zga_personal_result_decision:0 "验收上司给我的绩效"

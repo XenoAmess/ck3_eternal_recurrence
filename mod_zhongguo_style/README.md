@@ -71,7 +71,7 @@ PIP 案卷、HC 槽、晋升包、贡献争议、事故时间线等 38 个领域
 
 | 绩效校准会 | 冻结考核名单 |
 |---|---|
-| ![绩效校准会](workshop/media/01_calibration_meeting.jpg) | ![冻结考核名单：首轮新人保护样本](workshop/media/02_review_cohort_frozen.jpg) |
+| ![绩效校准会](workshop/media/01_calibration_meeting.jpg) | ![冻结考核名单：刚性 361 的 7/14/2 分布](workshop/media/02_review_cohort_frozen.jpg) |
 | 天朝官员考核榜 | 半强制京察 |
 | ![天朝官员考核榜](workshop/media/03_scoreboard.jpg) | ![京察之期](workshop/media/04_jingcha_mandate.jpg) |
 | 免费京察活动 | 上司考定 3.25 |

@@ -47,7 +47,7 @@ same report/index/timeline/MKV provenance contract as the final video.
 Recommended captions (Chinese first) are:
 
 1. `校准会：名单就在你手里，锅也在 / Calibration: the list—and the liability—is yours`
-2. `首轮新人保护样本：7 个 3.75、16 个 3.5、0 个 3.25 / First-review protection sample: 7 / 16 / 0`
+2. `刚性 361：23 人分成 7 个 3.75、14 个 3.5、2 个 3.25 / Strict 361: 23 officials become 7 / 14 / 2`
 3. `考核榜：排名、KPI、价值观与档位全部上墙 / Scoreboard: rank, KPI, values and rating—on the wall`
 4. `京察之期：免费，但不办会写进你的下一份考核 / Jingcha: free, but skipping it follows you into review`
 5. `京察活动：原版活动界面里，费用明确为“无花费” / Jingcha activity: the native activity UI explicitly shows “no cost”`

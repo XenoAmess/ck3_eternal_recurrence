@@ -468,8 +468,9 @@ def check_runtime_invariants() -> None:
                 f"before its delayed trigger: {counter}"
             )
 
-    # New officials still enter their first real cohort and receive a rank/result,
-    # but the bottom-slot pass must exclude them for exactly that cycle.
+    # A fresh-install bootstrap must not classify every incumbent as a newcomer.
+    # Only a reviewer with a completed product baseline may protect a no-snapshot
+    # official; that official still enters the cohort and receives a result.
     if not re.search(
         r"every_vassal\s*=\s*\{\s*limit\s*=\s*\{\s*"
         r"zg361_is_reviewable_vassal_trigger\s*=\s*yes\s*\}.*?"
@@ -480,6 +481,15 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("new officials must enter their first cohort before snapshot initialization")
+    if not re.search(
+        r"NOT\s*=\s*\{\s*has_variable\s*=\s*zg361_prev_merit_level\s*\}.*?"
+        r"root\s*=\s*\{\s*has_character_flag\s*=\s*"
+        r"zg361_review_baseline_initialized\s*\}.*?"
+        r"add_character_flag\s*=\s*zg361_newcomer_this_cycle",
+        effects,
+        re.S,
+    ):
+        err("newcomer protection must require a previously settled reviewer baseline")
     assignment_body = re.search(
         r"zg361_assign_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
         effects,
@@ -514,6 +524,11 @@ def check_runtime_invariants() -> None:
         settlement_body.group("body") if settlement_body else "",
     ):
         err("newcomer protection flag must clear only when the pending grade settles")
+    if settlement_body is None or (
+        "add_character_flag = zg361_review_baseline_initialized"
+        not in settlement_body.group("body")
+    ):
+        err("a completed settlement must initialize the reviewer's newcomer baseline")
 
     for token in (
         "zg361_can_calibrate_demote_trigger = yes",

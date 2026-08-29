@@ -136,8 +136,8 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST PASS non_independent_celestial_liege_entry",
     "ZGA: TEST PASS switched_to_song_emperor",
     "ZGA: TEST PASS player_song_review_entry",
-    "ZGA: TEST PASS newcomer_snapshot_prepared_by_product",
-    "ZGA: TEST PASS newcomer_first_review_protected",
+    "ZGA: TEST PASS bootstrap_snapshot_prepared_by_product",
+    "ZGA: TEST PASS bootstrap_first_review_strict_7_14_2",
     "ZGA: TEST PASS player_calibration_pending",
     "ZGA: TEST PASS calibration_c_all_newcomer_noop",
     "ZGA: TEST PASS calibration_c_mixed_newcomer_atomic_swap",
@@ -151,7 +151,7 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: MECHANISM BATCH DONE 361",
     "ZGA: TEST PASS scoreboard_header_and_rows",
     "ZGA: TEST PASS three_grade_counts",
-    "ZGA: TEST PASS newcomer_first_review_result_without_325",
+    "ZGA: TEST PASS bootstrap_first_review_result_7_14_2",
     "ZGA: TEST DONE zg361",
     "ZGA: TEST PASS historical_song_direct_whitelist_complete",
     "ZGA: TEST PASS generated_city_officials_excluded_from_provenance",
@@ -161,6 +161,8 @@ REQUIRED_LATE_FIXTURE_MARKERS = (
     "ZGA: TEST PASS personal_result_target_can_assess_others",
     HISTORICAL_TARGET_PASS_MARKER,
     "ZGA: TEST PASS personal_result_target_projected_bottom_two",
+    "ZGA: TEST PASS post_baseline_newcomer_prepared",
+    "ZGA: TEST PASS post_baseline_newcomer_protected_from_325",
 )
 REQUIRED_PRODUCT_MARKERS = {
     "ZG361: annual review tick": 2,
@@ -1254,9 +1256,11 @@ def fixture_source_errors() -> list[str]:
         "grade_325_fourfold_penalty",
         "appeal_exact_fixed_refund_and_salary_stop",
         "appeal_refund_idempotent",
-        "newcomer_first_review_protected",
+        "bootstrap_first_review_strict_7_14_2",
         "pending_review_idempotent",
-        "newcomer_first_review_result_without_325",
+        "bootstrap_first_review_result_7_14_2",
+        "post_baseline_newcomer_prepared",
+        "post_baseline_newcomer_protected_from_325",
         "calibration_c_all_newcomer_noop",
         "calibration_c_mixed_newcomer_atomic_swap",
         "var:zga_all_new_protected_actual = var:zg361_cohort_n",
@@ -1902,7 +1906,7 @@ class MarkerStream:
             )
         if scheduled:
             for marker in (
-                "ZGA: TEST PASS ai_non_independent_newcomer_snapshot",
+                "ZGA: TEST PASS ai_non_independent_baseline_snapshot",
                 "ZGA: TEST PASS ai_non_independent_full_review",
                 "ZGA: TEST PASS settled_review_same_year_idempotent",
             ):
@@ -4132,7 +4136,8 @@ def run_scenario(
         "independence_required_for_review_entry": False,
         "non_independent_celestial_liege_entry": True,
         "direct_governor_cohort_at_least_three": True,
-        "newcomer_first_review_ranked_and_protected_from_325": True,
+        "bootstrap_first_review_strict_distribution": "23 => 7 / 14 / 2",
+        "post_baseline_newcomer_ranked_and_protected_from_325": True,
         "calibration_c_all_newcomer_noop": True,
         "calibration_c_mixed_newcomer_atomic_swap": True,
         "pending_and_settled_review_idempotence": True,

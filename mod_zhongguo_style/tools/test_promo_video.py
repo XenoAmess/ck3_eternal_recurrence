@@ -208,7 +208,6 @@ class SubtitleAndRenderTests(unittest.TestCase):
         ]
         self.assertEqual(
             {
-                "03-forced-distribution",
                 "04-calibration",
                 "06-jingcha",
                 "07-scoreboard-receipt",
@@ -222,6 +221,16 @@ class SubtitleAndRenderTests(unittest.TestCase):
             self.assertEqual("captured", chapter.material_status)
             self.assertIn("CLEAN", chapter.status_en)
             self.assertGreaterEqual(len(chapter.sources), 3)
+
+        rejected_distribution = next(
+            chapter for chapter in chapters if chapter.chapter_id == "03-forced-distribution"
+        )
+        self.assertEqual(
+            "fixture-live-red-recapture-required",
+            rejected_distribution.classification,
+        )
+        self.assertIn("RED", rejected_distribution.status_en)
+        self.assertIn("RECAPTURED", rejected_distribution.status_en)
 
     def test_video_shot_duration_covers_the_complete_mark_interval(self) -> None:
         _manifest, chapters = promo.load_manifest(FULL_MANIFEST)

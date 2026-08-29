@@ -101,9 +101,9 @@
       "title_zh": "强制分布：不是问有没有C，是问C姓什么",
       "title_en": "FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT",
       "status": {
-        "zh": "验收夹具实机静帧：23人、7/16/0 分布；完整末位边界连续录屏仍待录",
-        "en": "FIXTURE-LIVE STILL · 23 PERSONS / 7-16-0; CLEAN BOUNDARY RECORDING STILL PENDING",
-        "classification": "fixture-live-still-partial"
+        "zh": "目标实机镜头：23人、7/14/2 刚性分布；旧 7/16/0 静帧已判 RED，等待当前候选重录",
+        "en": "TARGET LIVE SHOT · 23 PERSONS / 7-14-2; THE OLD 7-16-0 STILL IS RED AND MUST BE RECAPTURED",
+        "classification": "fixture-live-red-recapture-required"
       },
       "topics": ["forced_distribution"],
       "source": {
@@ -123,7 +123,7 @@
       "capture": {
         "id": "CAP-03-DISTRIBUTION",
         "exclude_ck3_loading": true,
-        "shot": "来自最终 GREEN 验收夹具的 23 人考核榜静帧，显示唯一名次与 7/16/0 分档。该轮全是首轮保护样本，未展示 3.25 边界；干净连续排名录像仍待录。"
+        "shot": "只接受当前候选整批 GREEN 中的 23 人考核榜：唯一名次与 7/14/2 分档必须同时可见；旧 7/16/0 画面仅保留作 RED 过程证据。"
       },
       "cues": [
         {
@@ -135,8 +135,8 @@
           "en": "Ranks use a stable unique order. A tie cannot make everyone number one and flood 3.75, because mathematics must never obstruct an organizational target."
         },
         {
-          "zh": "当前这张 23 人榜是首轮新人保护样本，所以 7/16/0；常规老员工队列才会拍到真正的 3.25 边界。",
-          "en": "This 23-person board is a first-review newcomer-protection sample, hence 7/16/0; a regular veteran cohort shows the real 3.25 boundary."
+          "zh": "23 个人，七个 3.75、十四个 3.5、两个 3.25。系统第一次建账也不许全员冒充新人：这个 C，今天必须有人背。",
+          "en": "Twenty-three officials: seven at 3.75, fourteen at 3.5, and two at 3.25. Initial setup is no excuse for making everyone a newcomer; someone must own the C today."
         }
       ]
     },

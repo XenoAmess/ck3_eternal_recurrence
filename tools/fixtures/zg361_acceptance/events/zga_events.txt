@@ -36,9 +36,9 @@ zga_acceptance.1 = {
 			}
 			if = {
 				limit = { var:zga_ai_missing_snapshot_n = 0 }
-				debug_log = "ZGA: TEST PASS ai_non_independent_newcomer_snapshot"
+				debug_log = "ZGA: TEST PASS ai_non_independent_baseline_snapshot"
 			}
-			else = { debug_log = "ZGA: TEST FAIL ai_non_independent_newcomer_snapshot" }
+			else = { debug_log = "ZGA: TEST FAIL ai_non_independent_baseline_snapshot" }
 
 			set_variable = { name = zga_ai_serial_before_duplicate value = var:zg361_review_serial }
 			zg361_run_review_effect = yes
@@ -120,6 +120,27 @@ zga_acceptance.2 = {
 			# earlier in the same date. Only the yearly gate is advanced here.
 			remove_variable = zg361_last_settled_year
 			zg361_run_review_effect = yes
+			set_variable = { name = zga_actual_newcomer_valid_n value = 0 }
+			every_vassal = {
+				limit = { has_character_flag = zga_actual_newcomer_probe }
+				if = {
+					limit = {
+						has_variable = zg361_prev_merit_level
+						has_variable = zg361_last_grade
+						NOT = { var:zg361_last_grade = 1 }
+						zg361_is_current_liege_review_record_trigger = yes
+						NOT = { has_character_flag = zg361_newcomer_this_cycle }
+					}
+					root = { change_variable = { name = zga_actual_newcomer_valid_n add = 1 } }
+				}
+				remove_character_flag = zga_actual_newcomer_probe
+			}
+			if = {
+				limit = { var:zga_actual_newcomer_valid_n = 1 }
+				debug_log = "ZGA: TEST PASS post_baseline_newcomer_protected_from_325"
+			}
+			else = { debug_log = "ZGA: TEST FAIL post_baseline_newcomer_not_protected" }
+			remove_variable = zga_actual_newcomer_valid_n
 			if = {
 				limit = {
 					scope:zga_personal_result_target = {

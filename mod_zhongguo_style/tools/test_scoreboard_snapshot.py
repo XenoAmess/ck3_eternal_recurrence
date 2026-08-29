@@ -311,12 +311,26 @@ class ReviewRegressionTests(unittest.TestCase):
             "remove_character_flag = zg361_newcomer_this_cycle",
             effects[assignment_at:calibration_at],
         )
+        self.assertRegex(
+            effects,
+            re.compile(
+                r"NOT\s*=\s*\{\s*has_variable\s*=\s*zg361_prev_merit_level\s*\}.*?"
+                r"root\s*=\s*\{\s*has_character_flag\s*=\s*"
+                r"zg361_review_baseline_initialized\s*\}.*?"
+                r"add_character_flag\s*=\s*zg361_newcomer_this_cycle",
+                re.S,
+            ),
+        )
         settlement = re.search(
             r"zg361_apply_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
             effects,
             re.M | re.S,
         )
         self.assertIsNotNone(settlement)
+        self.assertIn(
+            "add_character_flag = zg361_review_baseline_initialized",
+            settlement.group("body") if settlement else "",
+        )
         self.assertRegex(
             settlement.group("body") if settlement else "",
             re.compile(

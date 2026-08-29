@@ -15,7 +15,7 @@
  zga_promo_policy_026_decision_confirm:0 "Open this card"
  zga_promo_policy_361_decision_confirm:0 "Open this card"
  zga_initialize_decision:0 "Start ZhongGuo 361 live acceptance"
- zga_initialize_decision_desc:0 "Switch from the standard 1066 lobby character to Emperor Yingzong of Song, exercise the real newcomer snapshot, and start a real performance review."
+ zga_initialize_decision_desc:0 "Switch from the standard 1066 lobby character to Emperor Yingzong of Song, exercise strict 361 during baseline initialization, and start a real performance review."
  zga_initialize_decision_tooltip:0 "Initialize the isolated 361 acceptance scenario"
  zga_initialize_decision_confirm:0 "Switch to Song and begin review"
  zga_personal_result_decision:0 "Verify My Superior's Rating"
