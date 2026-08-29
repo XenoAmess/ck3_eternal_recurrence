@@ -553,6 +553,8 @@ def check_runtime_invariants() -> None:
     for token in (
         "zg361_issue_jingcha_mandate_effect",
         "is_ai = no",
+        "has_variable = zg361_jingcha_pending",
+        'debug_log = "ZG361: existing jingcha mandate remains pending; duplicate issuance skipped"',
         "trigger_event = { id = zg361.40",
         "zg361_refuse_jingcha_effect",
         "set_variable = { name = zg361_skipped_jingcha_superior value = var:zg361_jingcha_mandate_reviewer }",

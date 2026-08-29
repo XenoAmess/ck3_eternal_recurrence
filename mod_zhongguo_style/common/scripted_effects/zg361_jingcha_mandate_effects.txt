@@ -35,6 +35,14 @@ zg361_issue_jingcha_mandate_effect = {
 	if = {
 		limit = {
 			is_ai = no
+			has_variable = zg361_jingcha_pending
+		}
+		# 同一份履责义务尚未结清时，不得再叠发召集令；否则新弹窗会压住已打开的原生活动规划器。
+		debug_log = "ZG361: existing jingcha mandate remains pending; duplicate issuance skipped"
+	}
+	else_if = {
+		limit = {
+			is_ai = no
 			is_adult = yes
 			is_imprisoned = no
 			NOT = { is_incapable = yes }
