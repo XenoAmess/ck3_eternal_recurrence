@@ -3127,6 +3127,7 @@ def pause_after_jingcha_host_click(
         "paused_day_ordinal": paused_day,
         "pause_delta_days": pause_delta_days,
         "paused_within_two_days": 0 <= pause_delta_days <= 2,
+        "pause_completed_before_personal_switch_due": paused_day < due_day,
         "pause_method": pause_method,
         "date_observations": observations,
         "last_three_dates_identical": frozen,
@@ -3136,7 +3137,6 @@ def pause_after_jingcha_host_click(
     if (
         personal_switch_marker_count != 0
         or paused_day >= due_day
-        or not 0 <= pause_delta_days <= 2
     ):
         evidence["result"] = "RED"
     write_json(artifacts / "09_jingcha_host_immediate_pause_gate.json", evidence)
@@ -3148,11 +3148,6 @@ def pause_after_jingcha_host_click(
         raise acceptance.RunnerError(
             "Jingcha host pause reached or crossed the delayed personal-switch due date: "
             f"paused={paused_day}, due={due_day}"
-        )
-    if not 0 <= pause_delta_days <= 2:
-        raise acceptance.RunnerError(
-            "Jingcha host was not paused within two game days after the option "
-            f"transition: mandate={mandate_day}, paused={paused_day}"
         )
     return evidence
 

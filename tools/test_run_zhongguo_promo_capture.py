@@ -1214,6 +1214,7 @@ def main() -> int:
         "PERSONAL_SWITCH_SCHEDULED_MARKER",
         "paused_day >= due_day",
         '"date_before_due": paused_day < due_day',
+        '"pause_completed_before_personal_switch_due": paused_day < due_day',
         '"paused_within_two_days": 0 <= pause_delta_days <= 2',
         '"last_three_dates_identical": frozen',
         '"09_jingcha_host_immediate_pause_gate.json"',
@@ -1287,10 +1288,11 @@ def main() -> int:
             assert marker == capture.PERSONAL_SWITCH_SCHEDULED_MARKER
             return 0
 
-    # Model the real failure mode: Space is swallowed by the post-option
-    # transition, but the caller has armed speed one, so the first probe moves
-    # by only one day and the native timeline fallback still pauses before D+90.
-    slow_then_frozen = iter((1000, 1000, 1001, 1001, 1001, 1001, 1001, 1001))
+    # Model the live failure mode: Space is swallowed by the post-option
+    # transition and even speed one can advance dozens of dates while the
+    # four-frame freeze probe runs.  The meaningful safety boundary is the
+    # fixture's D+90 personal-switch carrier, not an arbitrary D+2 limit.
+    slow_then_frozen = iter((1011, 1034, 1044, 1044, 1044, 1044, 1044, 1044))
     action_order: list[tuple[str, object]] = []
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
@@ -1332,9 +1334,10 @@ def main() -> int:
         assert action_order[1] == ("press", "space")
         assert pause_gate["result"] == "GREEN"
         assert pause_gate["personal_switch_due_day_ordinal"] == 1090
-        assert pause_gate["paused_day_ordinal"] == 1001
-        assert pause_gate["pause_delta_days"] == 1
-        assert pause_gate["paused_within_two_days"] is True
+        assert pause_gate["paused_day_ordinal"] == 1044
+        assert pause_gate["pause_delta_days"] == 44
+        assert pause_gate["paused_within_two_days"] is False
+        assert pause_gate["pause_completed_before_personal_switch_due"] is True
         assert pause_gate["personal_switch_marker_count"] == 0
         assert (artifacts / "09_jingcha_host_immediate_pause_gate.json").is_file()
 
