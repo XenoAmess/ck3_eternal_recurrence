@@ -59,22 +59,38 @@ def _refresh_index_records(root: Path, *paths: Path) -> None:
     _write_json(index_path, index)
 
 
-def _make_capture(root: Path, *, result: str = "GREEN") -> Path:
+def _make_capture(
+    root: Path,
+    *,
+    result: str = "GREEN",
+    reviewed_history_id: str = "han_5253",
+) -> Path:
+    reviewed = prepare.real_characters.reviewed_official(reviewed_history_id)
     history = root / "pinned-game" / "history" / "characters" / "han.txt"
     history.parent.mkdir(parents=True)
     history.write_text(
-        "han_5253 = {\n\tname = Jujian\n}\n"
+        f"{reviewed_history_id} = {{\n\tname = ReviewedOfficial\n}}\n"
         "han_8052 = {\n\tname = Shu\n}\n",
         encoding="utf-8",
     )
     title_history = root / "pinned-game" / "history" / "titles" / "e_china.txt"
     title_history.parent.mkdir(parents=True)
+    intermediate_liege = ""
+    if reviewed["liege_title_id"] != "h_china":
+        intermediate_liege = (
+            f"{reviewed['liege_title_id']} = {{\n"
+            f"\t{reviewed['liege_holder_date']} = {{ holder = "
+            f"{reviewed['liege_holder_id']} }}\n"
+            "}\n"
+        )
     title_history.write_text(
         "h_china = {\n"
         "\t1063.4.30 = { holder = han_8052 }\n"
         "}\n"
-        "k_hunan = {\n"
-        "\t1066.1.1 = { holder = han_5253 liege = h_china }\n"
+        + intermediate_liege
+        + f"{reviewed['title_id']} = {{\n"
+        f"\t{reviewed['holder_date']} = {{ holder = {reviewed_history_id} "
+        f"liege = {reviewed['liege_title_id']} }}\n"
         "}\n",
         encoding="utf-8",
     )
@@ -176,9 +192,9 @@ def _make_capture(root: Path, *, result: str = "GREEN") -> Path:
                     "history_source": _record(history),
                 },
                 {
-                    "history_id": "han_5253",
-                    "display_name": "吕居简",
-                    "roles": ["reviewed_official", "hunan_governor"],
+                    "history_id": reviewed_history_id,
+                    "display_name": reviewed["display_name"],
+                    "roles": reviewed["roles"],
                     "origin": "ck3_history_database",
                     "temporary_or_generated": False,
                     "history_source": _record(history),
@@ -187,8 +203,18 @@ def _make_capture(root: Path, *, result: str = "GREEN") -> Path:
             "title_history_source": _record(title_history),
             "title_history_assertions": {
                 "h_china_holder_at_start": "han_8052",
-                "k_hunan_holder_at_start": "han_5253",
-                "k_hunan_liege_at_start": "h_china",
+                "reviewed_official_title_at_start": reviewed["title_id"],
+                "reviewed_official_holder_at_start": reviewed_history_id,
+                "reviewed_official_holder_date": reviewed["holder_date"],
+                "reviewed_official_title_liege_at_start": reviewed[
+                    "liege_title_id"
+                ],
+                "reviewed_official_direct_liege_holder_at_start": reviewed[
+                    "liege_holder_id"
+                ],
+                "reviewed_official_direct_liege_holder_date": reviewed[
+                    "liege_holder_date"
+                ],
             },
         },
     }
@@ -201,6 +227,13 @@ def _make_capture(root: Path, *, result: str = "GREEN") -> Path:
             "result": result,
             "promo_capture": copy.deepcopy(timeline),
             "scenario_evidence": {
+                "reviewed_official_history_id": reviewed_history_id,
+                "superior_assigned_player_result": {
+                    "reviewed_official_history_id": reviewed_history_id,
+                },
+                "real_character_runtime_attestation": {
+                    "reviewed_official_history_id": reviewed_history_id,
+                },
                 "promo_received_scoreboard": {
                     "received_panel_artifact": "11_received_scoreboard.png"
                 },
@@ -508,7 +541,7 @@ class PromoReleaseProjectionTests(unittest.TestCase):
             _write_json(report_path, report)
             _refresh_index_records(missing, timeline_path, report_path)
             with self.assertRaisesRegex(
-                prepare.PrepareError, "exactly han_8052 and han_5253"
+                prepare.PrepareError, "exactly Zhao Shu and one resolved"
             ):
                 prepare.project_manifest(artifact_root=missing)
 
@@ -522,6 +555,55 @@ class PromoReleaseProjectionTests(unittest.TestCase):
             _refresh_index_records(drift, report_path)
             with self.assertRaisesRegex(prepare.PrepareError, "does not match"):
                 prepare.project_manifest(artifact_root=drift)
+
+            scenario_drift = _make_capture(root / "scenario-subject-drift")
+            report_path = scenario_drift / "report.json"
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            report["cell"]["scenario_evidence"][
+                "reviewed_official_history_id"
+            ] = "han_6875"
+            _write_json(report_path, report)
+            _refresh_index_records(scenario_drift, report_path)
+            with self.assertRaisesRegex(
+                prepare.PrepareError, "exact reviewed official"
+            ):
+                prepare.project_manifest(artifact_root=scenario_drift)
+
+    def test_real_character_provenance_accepts_one_resolved_duke_plus_tail(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            capture = _make_capture(
+                Path(temporary) / "dynamic-real-character",
+                reviewed_history_id="han_6875",
+            )
+            manifest, _provenance = prepare.project_manifest(artifact_root=capture)
+            real = manifest["release_manifest_provenance"][
+                "real_character_provenance"
+            ]
+            self.assertEqual(
+                ["han_8052", "han_6875"],
+                [row["history_id"] for row in real["subjects"]],
+            )
+            self.assertEqual("唐介", real["subjects"][1]["display_name"])
+            self.assertEqual(
+                "k_hedong",
+                real["title_history_assertions"][
+                    "reviewed_official_title_at_start"
+                ],
+            )
+            self.assertEqual(
+                "h_china",
+                real["title_history_assertions"][
+                    "reviewed_official_title_liege_at_start"
+                ],
+            )
+
+    def test_assessed_only_historical_count_cannot_be_promo_manager_subject(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaisesRegex(ValueError, "outside the frozen allowlist"):
+                _make_capture(
+                    Path(temporary) / "assessed-only-count",
+                    reviewed_history_id="han_7247",
+                )
 
     def test_write_is_append_only_and_records_manifest_hash(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -27,6 +27,12 @@ import run_vivhite_acceptance as isolated
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "mod_zhongguo_style"
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
+PROMO_TOOLS_DIRECTORY = SOURCE / "tools"
+if str(PROMO_TOOLS_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(PROMO_TOOLS_DIRECTORY))
+
+import promo_real_character_contract as real_characters
+
 # CK3 writes into its -userdir. Keep both the evidence bundle and complete
 # writable profile durable but outside the repository/protected real profile.
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "zg361" / "runs"
@@ -34,41 +40,15 @@ EXPECTED_GAME_VERSION = "1.19.0.6"
 EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
-EXPECTED_PLAYER_HISTORY_ID = "han_8052"
-EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID = "han_5253"
-PROMO_HISTORY_CHARACTERS = (
-    {
-        "subject_id": "song_emperor_zhao_shu",
-        "history_id": EXPECTED_PLAYER_HISTORY_ID,
-        "display_name": "赵曙",
-        "roles": ["manager", "emperor"],
-        "origin": "ck3_history_database",
-        "temporary_or_generated": False,
-        "expected_runtime_contract": {
-            "is_player": True,
-            "is_ai": False,
-            "has_h_china": True,
-            "independent": True,
-        },
-    },
-    {
-        "subject_id": "hunan_governor_lu_jujian",
-        "history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
-        "display_name": "吕居简",
-        "roles": ["reviewed_official", "hunan_governor"],
-        "origin": "ck3_history_database",
-        "temporary_or_generated": False,
-        "historical_title": "k_hunan",
-        "historical_liege_title": "h_china",
-        "selection": "exact_fixed_no_fallback",
-        "expected_runtime_contract": {
-            "pre_switch_ai": True,
-            "post_switch_player": True,
-            "direct_liege_runtime": True,
-            "current_review_record_runtime": True,
-        },
-    },
+EXPECTED_PLAYER_HISTORY_ID = real_characters.MANAGER_HISTORY_ID
+EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS = tuple(
+    real_characters.REVIEWED_OFFICIAL_CONTRACT
 )
+EXPECTED_HISTORICAL_COHORT_HISTORY_IDS = tuple(
+    real_characters.HISTORICAL_COHORT_CONTRACT
+)
+HISTORICAL_TARGET_DATA_MARKER_PREFIX = real_characters.TARGET_DATA_MARKER_PREFIX
+HISTORICAL_TARGET_PASS_MARKER = real_characters.TARGET_PASS_MARKER
 PROMO_CLEAN_SPANS = (
     "calibration",
     "managed_scoreboard",
@@ -144,6 +124,12 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST PASS three_grade_counts",
     "ZGA: TEST PASS newcomer_first_review_result_without_325",
     "ZGA: TEST DONE zg361",
+    "ZGA: TEST PASS historical_song_direct_whitelist_complete",
+    "ZGA: TEST PASS generated_city_officials_excluded_from_provenance",
+    "ZGA: TEST PASS personal_result_target_selected_from_prior_historical_assessor_tail",
+    "ZGA: TEST PASS personal_result_target_can_assess_others",
+    HISTORICAL_TARGET_PASS_MARKER,
+    "ZGA: TEST PASS personal_result_target_projected_bottom_two",
 )
 REQUIRED_PRODUCT_MARKERS = {
     "ZG361: annual review tick": 2,
@@ -194,6 +180,10 @@ CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
 # product-native title-bar control directly.
 CHARACTER_WINDOW_CLOSE_BUTTON = (0.2891, 0.0181)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
+JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 2
+PERSONAL_SWITCH_SCHEDULED_MARKER = (
+    "ZGA: TEST PASS personal_result_switch_scheduled"
+)
 
 
 def log(message: str) -> None:
@@ -215,7 +205,22 @@ class PromoRecorder:
         self.started_at_utc: str | None = None
         self.marks: list[dict[str, object]] = []
         self.clean_frame_gates: dict[str, dict[str, object]] = {}
-        self.real_character_provenance = promo_real_character_provenance()
+        self.reviewed_official_history_id: str | None = None
+        self.real_character_provenance: dict[str, object] | None = None
+
+    def resolve_reviewed_subject(self, history_id: str) -> None:
+        """Freeze the one runtime-selected historical subject for this take."""
+
+        if (
+            self.reviewed_official_history_id is not None
+            and self.reviewed_official_history_id != history_id
+        ):
+            raise acceptance.RunnerError(
+                "promo recorder received conflicting reviewed subjects: "
+                f"{self.reviewed_official_history_id} and {history_id}"
+            )
+        self.real_character_provenance = promo_real_character_provenance(history_id)
+        self.reviewed_official_history_id = history_id
 
     def start(self) -> None:
         ffmpeg = shutil.which("ffmpeg")
@@ -359,6 +364,10 @@ class PromoRecorder:
             raise acceptance.RunnerError(
                 "promo capture is missing clean spans: " + ", ".join(missing_clean_spans)
             )
+        if self.real_character_provenance is None:
+            raise acceptance.RunnerError(
+                "promo capture completed without resolving its historical reviewed subject"
+            )
         return payload
 
 
@@ -426,8 +435,10 @@ def fixture_constructor_counts() -> dict[str, int]:
     }
 
 
-def promo_real_character_provenance() -> dict[str, object]:
-    """Bind the clean take to two canonical vanilla 1066 history characters."""
+def promo_real_character_provenance(
+    reviewed_history_id: str,
+) -> dict[str, object]:
+    """Bind a take to Zhao Shu and one resolved, hard-allowed real official."""
 
     history_path = ROOT / "Crusader Kings III" / "game" / "history" / "characters" / "han.txt"
     title_history_path = (
@@ -435,8 +446,41 @@ def promo_real_character_provenance() -> dict[str, object]:
     )
     history_text = history_path.read_text(encoding="utf-8-sig")
     title_history_text = title_history_path.read_text(encoding="utf-8-sig")
+    try:
+        manager = real_characters.manager()
+        reviewed = real_characters.reviewed_official(reviewed_history_id)
+    except ValueError as exc:
+        raise acceptance.RunnerError(str(exc)) from exc
+    manager.update(
+        {
+            "origin": "ck3_history_database",
+            "temporary_or_generated": False,
+            "expected_runtime_contract": {
+                "is_player": True,
+                "is_ai": False,
+                "has_h_china": True,
+                "independent": True,
+            },
+        }
+    )
+    reviewed.update(
+        {
+            "origin": "ck3_history_database",
+            "temporary_or_generated": False,
+            "historical_title": reviewed["title_id"],
+            "historical_liege_title": reviewed["liege_title_id"],
+            "selection": "runtime_lowest_ranked_historical_duke_plus_from_hard_allowlist",
+            "expected_runtime_contract": {
+                "pre_switch_ai": True,
+                "post_switch_player": True,
+                "direct_liege_runtime": True,
+                "current_review_record_runtime": True,
+                "lowest_prior_rank_within_historical_duke_plus_allowlist": True,
+            },
+        }
+    )
     records = []
-    for subject in PROMO_HISTORY_CHARACTERS:
+    for subject in (manager, reviewed):
         history_id = str(subject["history_id"])
         _paradox_top_level_block(history_text, history_id)
         records.append(
@@ -451,7 +495,6 @@ def promo_real_character_provenance() -> dict[str, object]:
         )
 
     china_block = _paradox_top_level_block(title_history_text, "h_china")
-    hunan_block = _paradox_top_level_block(title_history_text, "k_hunan")
     if re.search(
         r"1063\.4\.30\s*=\s*\{[^}]*holder\s*=\s*han_8052",
         china_block,
@@ -460,14 +503,44 @@ def promo_real_character_provenance() -> dict[str, object]:
         raise acceptance.RunnerError(
             "vanilla h_china history does not bind han_8052 at the 1066 start"
         )
+    reviewed_title = str(reviewed["title_id"])
+    reviewed_holder_date = str(reviewed["holder_date"])
+    reviewed_liege_title = str(reviewed["liege_title_id"])
+    reviewed_liege_holder_id = str(reviewed["liege_holder_id"])
+    reviewed_liege_holder_date = str(reviewed["liege_holder_date"])
+    reviewed_title_block = _paradox_top_level_block(
+        title_history_text, reviewed_title
+    )
     if re.search(
-        r"1066\.1\.1\s*=\s*\{[^}]*holder\s*=\s*han_5253"
-        r"[^}]*liege\s*=\s*h_china",
-        hunan_block,
+        rf"{re.escape(reviewed_holder_date)}\s*=\s*\{{"
+        rf"[^}}]*holder\s*=\s*{re.escape(reviewed_history_id)}",
+        reviewed_title_block,
         re.S,
     ) is None:
         raise acceptance.RunnerError(
-            "vanilla k_hunan history does not bind han_5253 under h_china"
+            f"vanilla {reviewed_title} history does not bind "
+            f"{reviewed_history_id} on {reviewed_holder_date}"
+        )
+    if re.search(
+        rf"\bliege\s*=\s*{re.escape(reviewed_liege_title)}\b",
+        reviewed_title_block,
+    ) is None:
+        raise acceptance.RunnerError(
+            f"vanilla {reviewed_title} history does not bind its holder under "
+            f"{reviewed_liege_title}"
+        )
+    reviewed_liege_block = _paradox_top_level_block(
+        title_history_text, reviewed_liege_title
+    )
+    if re.search(
+        rf"{re.escape(reviewed_liege_holder_date)}\s*=\s*\{{"
+        rf"[^}}]*holder\s*=\s*{re.escape(reviewed_liege_holder_id)}",
+        reviewed_liege_block,
+        re.S,
+    ) is None:
+        raise acceptance.RunnerError(
+            f"vanilla {reviewed_liege_title} history does not bind direct liege "
+            f"holder {reviewed_liege_holder_id} on {reviewed_liege_holder_date}"
         )
     constructor_counts = fixture_constructor_counts()
     if any(constructor_counts.values()):
@@ -476,7 +549,7 @@ def promo_real_character_provenance() -> dict[str, object]:
         )
     return {
         "schema_version": 1,
-        "bookmark": {"id": "1066_song", "start_date": "1066.9.15"},
+        "bookmark": dict(real_characters.BOOKMARK),
         "subjects": records,
         "title_history_source": {
             "path": str(title_history_path.resolve()),
@@ -485,8 +558,12 @@ def promo_real_character_provenance() -> dict[str, object]:
         },
         "title_history_assertions": {
             "h_china_holder_at_start": "han_8052",
-            "k_hunan_holder_at_start": "han_5253",
-            "k_hunan_liege_at_start": "h_china",
+            "reviewed_official_title_at_start": reviewed_title,
+            "reviewed_official_holder_at_start": reviewed_history_id,
+            "reviewed_official_holder_date": reviewed_holder_date,
+            "reviewed_official_title_liege_at_start": reviewed_liege_title,
+            "reviewed_official_direct_liege_holder_at_start": reviewed_liege_holder_id,
+            "reviewed_official_direct_liege_holder_date": reviewed_liege_holder_date,
         },
         "fixture_constructor_counts": constructor_counts,
         "fixture_state_kind": "fixture_preconditioned_real_characters",
@@ -497,8 +574,11 @@ def promo_real_character_provenance() -> dict[str, object]:
         },
         "native_drawer_close_required_before_first_clean_span": True,
         "selection_contract": (
-            "han_8052 is the historical Song emperor; han_5253 is his historical "
-            "1066 Hunan direct vassal and the fixed reviewed player"
+            "han_8052 is the historical Song emperor; the fixture selected exactly "
+            f"{reviewed_history_id} as the lowest-prior-ranked eligible official "
+            "inside the frozen 18-person historical duke+ allowlist; three "
+            "historical counts are assessed-only, and two generated city officials "
+            "in the 23-person runtime cohort are never eligible for promo identity"
         ),
     }
 
@@ -560,7 +640,10 @@ def assert_promo_frame_clean(
             if _normalize_promo_visible_text(token) in normalized
         ]
         drawer_hits, header_ocr = _promo_decisions_header_hits(items, width, height)
-        if forbidden_hits or drawer_hits:
+        product_event_overlay = promo_product_event_overlay_evidence(
+            label, items, width, height
+        )
+        if forbidden_hits or drawer_hits or product_event_overlay:
             write_json(
                 artifacts / f"red_{sample_stem}.json",
                 {
@@ -571,13 +654,17 @@ def assert_promo_frame_clean(
                     "sample_index": sample_index,
                     "forbidden_hits": forbidden_hits,
                     "decisions_header_hits": drawer_hits,
+                    "product_event_overlay": product_event_overlay,
                     "normalized_ocr": normalized,
                     "normalized_decisions_header_ocr": header_ocr,
                 },
             )
             raise acceptance.RunnerError(
                 f"promo clean frame {label}/{phase} contains fixture/test UI or "
-                f"the Decisions drawer: forbidden={forbidden_hits}, drawer={drawer_hits}"
+                "the Decisions drawer, or overlays the free Jingcha planner with "
+                "a product event: "
+                f"forbidden={forbidden_hits}, drawer={drawer_hits}, "
+                f"product_event_overlay={product_event_overlay}"
             )
         image_path = artifacts / f"{sample_stem}.png"
         ocr_path = artifacts / f"{sample_stem}_ocr.json"
@@ -932,8 +1019,14 @@ def fixture_source_errors() -> list[str]:
         "zga_original_pending_grade",
         "var:zga_mixed_35_actual = var:zga_mixed_35_actual_before",
         "var:zga_mixed_325_actual = var:zga_mixed_325_actual_before",
-        "character:han_5253",
-        "historical_personal_result_target_han_5253",
+        "zga_mark_historical_song_direct_candidate_effect",
+        "historical_song_direct_whitelist_complete",
+        "generated_city_officials_excluded_from_provenance",
+        "personal_result_target_selected_from_prior_historical_assessor_tail",
+        "personal_result_target_can_assess_others",
+        "personal_result_target_projected_bottom_two",
+        HISTORICAL_TARGET_DATA_MARKER_PREFIX,
+        HISTORICAL_TARGET_PASS_MARKER,
         "clean_jingcha_dispatch_scheduled",
         "clean_jingcha_dispatched",
         "clean_policy_chain_scheduled",
@@ -956,9 +1049,40 @@ def fixture_source_errors() -> list[str]:
     ):
         if token not in scenario_text:
             errors.append(f"fixture scenario contract missing {token}")
-    if scenario_text.count("NOT = { this = character:han_5253 }") < 2:
+    expected_historical_ids = set(EXPECTED_HISTORICAL_COHORT_HISTORY_IDS)
+    expected_target_ids = set(EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS)
+    marked_historical_id_rows = re.findall(
+        r"character:(han_\d+)\s*=\s*\{\s*"
+        r"zga_mark_historical_song_direct_candidate_effect\s*=\s*yes\s*\}",
+        text,
+    )
+    marked_historical_ids = set(marked_historical_id_rows)
+    data_marker_id_rows = re.findall(
+        re.escape(HISTORICAL_TARGET_DATA_MARKER_PREFIX) + r"(han_\d+)\b",
+        text,
+    )
+    data_marker_ids = set(data_marker_id_rows)
+    if (
+        marked_historical_ids != expected_historical_ids
+        or len(marked_historical_id_rows) != len(expected_historical_ids)
+    ):
         errors.append(
-            "fixture must reserve han_5253 from both optional AI reviewer probes"
+            "fixture historical candidate marks drifted from the frozen 21-person "
+            f"allowlist: missing={sorted(expected_historical_ids - marked_historical_ids)}, "
+            f"extra={sorted(marked_historical_ids - expected_historical_ids)}"
+        )
+    if (
+        data_marker_ids != expected_target_ids
+        or len(data_marker_id_rows) != len(expected_target_ids)
+    ):
+        errors.append(
+            "fixture historical target DATA branches drifted from the frozen "
+            f"18-person duke+ allowlist: missing={sorted(expected_target_ids - data_marker_ids)}, "
+            f"extra={sorted(data_marker_ids - expected_target_ids)}"
+        )
+    if text.count(f'debug_log = "{HISTORICAL_TARGET_PASS_MARKER}"') != 1:
+        errors.append(
+            "fixture must emit exactly one generic historical target PASS branch"
         )
     for token in (
         "create_character",
@@ -1472,6 +1596,32 @@ class MarkerStream:
                     raise acceptance.RunnerError(
                         f"scheduled AI small-cohort probe missing {marker}"
                     )
+
+
+def resolved_historical_personal_result_target(stream: MarkerStream) -> str:
+    """Parse one exact target marker and enforce the frozen historical set."""
+
+    stream.pump()
+    pattern = re.compile(
+        re.escape(HISTORICAL_TARGET_DATA_MARKER_PREFIX) + r"(han_\d+)\b"
+    )
+    matches = [
+        match.group(1)
+        for line in stream.lines
+        if (match := pattern.search(line)) is not None
+    ]
+    if len(matches) != 1:
+        raise acceptance.RunnerError(
+            "historical personal-result target marker must resolve exactly once; "
+            f"found={matches!r}"
+        )
+    history_id = matches[0]
+    if history_id not in real_characters.REVIEWED_OFFICIAL_CONTRACT:
+        raise acceptance.RunnerError(
+            "historical personal-result target is outside the frozen 1066 Song "
+            f"allowlist: {history_id}"
+        )
+    return history_id
 
 
 def project_diagnostics(
@@ -2144,6 +2294,53 @@ def close_scoreboard_panel(artifacts: Path, stem: str) -> None:
     raise acceptance.RunnerError("scoreboard modal did not close")
 
 
+def pause_after_jingcha_host_click(
+    stream: MarkerStream,
+    artifacts: Path,
+    mandate_day: int,
+) -> dict[str, object]:
+    """Stop the restored speed-five clock before the delayed switch can race."""
+
+    # The mandate event interrupted a running speed-five timeline. Closing its
+    # host option restores that running state, so send the pause key before any
+    # planner OCR or transition wait can consume the fixture's two-day margin.
+    acceptance.pyautogui.press("space")
+    acceptance.ensure_game_paused(artifacts, "09_jingcha_host_immediate")
+    paused_image = acceptance.ImageGrab.grab()
+    paused_image.save(artifacts / "09_jingcha_host_immediate_pause_verified.png")
+    paused_date = acceptance.read_hud_game_date(paused_image)
+    if paused_date is None:
+        raise acceptance.RunnerError(
+            "Jingcha host pause was visible but its HUD date was unreadable"
+        )
+    paused_day = paused_date[0]
+    due_day = mandate_day + JINGCHA_PERSONAL_SWITCH_DELAY_DAYS
+    stream.pump()
+    personal_switch_marker_count = stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER)
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "mandate_day_ordinal": mandate_day,
+        "personal_switch_due_day_ordinal": due_day,
+        "paused_day_ordinal": paused_day,
+        "date_before_due": paused_day < due_day,
+        "personal_switch_marker_count": personal_switch_marker_count,
+    }
+    if personal_switch_marker_count != 0 or paused_day >= due_day:
+        evidence["result"] = "RED"
+    write_json(artifacts / "09_jingcha_host_immediate_pause_gate.json", evidence)
+    if personal_switch_marker_count != 0:
+        raise acceptance.RunnerError(
+            "personal-result switch raced the immediate Jingcha host pause"
+        )
+    if paused_day >= due_day:
+        raise acceptance.RunnerError(
+            "Jingcha host pause reached or crossed the delayed personal-switch due date: "
+            f"paused={paused_day}, due={due_day}"
+        )
+    return evidence
+
+
 def capture_jingcha_planner(
     stream: MarkerStream,
     artifacts: Path,
@@ -2180,7 +2377,16 @@ def capture_jingcha_planner(
         "09_jingcha_host_option.png",
         stable_hits=1,
     )
+    mandate_date = acceptance.read_hud_game_date()
+    if mandate_date is None:
+        raise acceptance.RunnerError(
+            "Jingcha mandate HUD date is unreadable before accepting the host option"
+        )
+    mandate_day = mandate_date[0]
     acceptance.deliberate_click(host_option, "production host Jingcha option")
+    host_pause_evidence = pause_after_jingcha_host_click(
+        stream, artifacts, mandate_day
+    )
     plan_button = acceptance.wait_for_ocr_text(
         "规划京察大计",
         acceptance.FULL_SCREEN_REGION,
@@ -2249,6 +2455,7 @@ def capture_jingcha_planner(
         "unrelated_vanilla_activity_catalog_allowed": True,
         "planner_artifact": "09_jingcha_planner.png",
         "planner_ocr_artifact": "09_jingcha_planner_ocr.json",
+        "host_pause_gate": host_pause_evidence,
         "normalized_ocr": rendered_text,
     }
 
@@ -2265,8 +2472,17 @@ def capture_superior_assigned_result(
         artifacts, "zg361_personal_switch", require_progress=True
     )
     stream.wait("ZGA: TEST PASS personal_result_switch_scheduled", 30)
+    stream.wait(HISTORICAL_TARGET_DATA_MARKER_PREFIX, 30)
+    stream.wait(HISTORICAL_TARGET_PASS_MARKER, 30)
+    reviewed_history_id = resolved_historical_personal_result_target(stream)
+    if stream.count(HISTORICAL_TARGET_PASS_MARKER) != 1:
+        raise acceptance.RunnerError(
+            "historical personal-result target PASS marker must occur exactly once"
+        )
+    if recorder:
+        recorder.resolve_reviewed_subject(reviewed_history_id)
     stream.wait(
-        "ZGA: TEST PASS historical_personal_result_target_han_5253", 30
+        "ZGA: TEST PASS personal_result_target_projected_bottom_two", 30
     )
     stream.wait(
         "ZGA: TEST PASS jingcha_refusal_superior_opinion_and_kpi_minus_50", 30
@@ -2314,9 +2530,15 @@ def capture_superior_assigned_result(
         recorder.clean_hold("superior_assigned_325", artifacts, 3.5)
     return {
         "real_superior_review_path": True,
-        "reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
-        "fixed_historical_target_marker_count": stream.count(
-            "ZGA: TEST PASS historical_personal_result_target_han_5253"
+        "reviewed_official_history_id": reviewed_history_id,
+        "historical_target_data_marker_count": stream.count(
+            HISTORICAL_TARGET_DATA_MARKER_PREFIX
+        ),
+        "historical_target_pass_marker_count": stream.count(
+            HISTORICAL_TARGET_PASS_MARKER
+        ),
+        "projected_bottom_two_marker_count": stream.count(
+            "ZGA: TEST PASS personal_result_target_projected_bottom_two"
         ),
         "clean_policy_chain_scheduled_marker_count": stream.count(
             "ZGA: TEST PASS clean_policy_chain_scheduled"
@@ -2455,6 +2677,19 @@ def promo_event_modal_evidence(
         for item in items
     )
     return title and narrative
+
+
+def promo_product_event_overlay_evidence(
+    label: str,
+    items: list[dict[str, object]],
+    width: int,
+    height: int,
+) -> bool:
+    """Reject event-shaped UI over the otherwise clean native planner span."""
+
+    return label == "free_jingcha_planner" and promo_event_modal_evidence(
+        items, width, height
+    )
 
 
 def _write_promo_interruption_decision(
@@ -2742,14 +2977,17 @@ def run_scenario(
         )
         for mechanism_id, *_ in PROMO_POLICY_CARDS
     }
+    reviewed_history_id = str(
+        personal_result_evidence["reviewed_official_history_id"]
+    )
     return {
         "standard_lobby_start": True,
         "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
-        "reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
+        "reviewed_official_history_id": reviewed_history_id,
         "real_character_provenance": (
             recorder.real_character_provenance
             if recorder
-            else promo_real_character_provenance()
+            else promo_real_character_provenance(reviewed_history_id)
         ),
         "fixture_constructor_counts": constructor_counts,
         "historical_subjects_manufactured_by_fixture": bool(
@@ -2764,10 +3002,17 @@ def run_scenario(
             "song_emperor_player_switch_marker_count": stream.count(
                 "ZGA: TEST PASS switched_to_song_emperor"
             ),
-            "han_5253_fixed_target_marker_count": stream.count(
-                "ZGA: TEST PASS historical_personal_result_target_han_5253"
+            "reviewed_official_history_id": reviewed_history_id,
+            "historical_target_data_marker_count": stream.count(
+                HISTORICAL_TARGET_DATA_MARKER_PREFIX
             ),
-            "han_5253_superior_grade_marker_count": stream.count(
+            "historical_target_pass_marker_count": stream.count(
+                HISTORICAL_TARGET_PASS_MARKER
+            ),
+            "projected_bottom_two_marker_count": stream.count(
+                "ZGA: TEST PASS personal_result_target_projected_bottom_two"
+            ),
+            "resolved_subject_superior_grade_marker_count": stream.count(
                 "ZGA: TEST PASS superior_assigned_player_grade"
             ),
         },

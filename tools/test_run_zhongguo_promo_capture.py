@@ -33,7 +33,7 @@ def main() -> int:
     assert body.index("close_native_decisions_panel") < body.index("recorder.start()")
     assert body.index("assert_promo_frame_clean") < body.index("recorder.start()")
     for token in (
-        '"reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID',
+        '"reviewed_official_history_id": reviewed_history_id',
         '"fixture_constructor_counts": constructor_counts',
         '"historical_subjects_manufactured_by_fixture": bool(',
         '"test_decisions_visible_inside_clean_spans": 0 if recorder else None',
@@ -251,7 +251,13 @@ def main() -> int:
     )
 
     assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
-    assert capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID == "han_5253"
+    assert len(capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS) == 18
+    assert len(capture.EXPECTED_HISTORICAL_COHORT_HISTORY_IDS) == 21
+    assert "han_5253" in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS
+    assert "han_6875" in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS
+    assert "han_7247" in capture.EXPECTED_HISTORICAL_COHORT_HISTORY_IDS
+    assert "han_7247" not in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS
+    assert "han_6821" not in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS
     assert capture.PROMO_CLEAN_SPANS == (
         "calibration",
         "managed_scoreboard",
@@ -267,7 +273,7 @@ def main() -> int:
         "policy_card_026",
         "policy_card_361",
     )
-    provenance = capture.promo_real_character_provenance()
+    provenance = capture.promo_real_character_provenance("han_5253")
     assert [row["history_id"] for row in provenance["subjects"]] == [
         "han_8052",
         "han_5253",
@@ -293,15 +299,76 @@ def main() -> int:
     }
     assert provenance["title_history_assertions"] == {
         "h_china_holder_at_start": "han_8052",
-        "k_hunan_holder_at_start": "han_5253",
-        "k_hunan_liege_at_start": "h_china",
+        "reviewed_official_title_at_start": "k_hunan",
+        "reviewed_official_holder_at_start": "han_5253",
+        "reviewed_official_holder_date": "1066.1.1",
+        "reviewed_official_title_liege_at_start": "h_china",
+        "reviewed_official_direct_liege_holder_at_start": "han_8052",
+        "reviewed_official_direct_liege_holder_date": "1063.4.30",
     }
+    for history_id in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS:
+        candidate_provenance = capture.promo_real_character_provenance(history_id)
+        assert [
+            row["history_id"] for row in candidate_provenance["subjects"]
+        ] == ["han_8052", history_id]
+    dynamic_provenance = capture.promo_real_character_provenance("han_6875")
+    assert [row["history_id"] for row in dynamic_provenance["subjects"]] == [
+        "han_8052",
+        "han_6875",
+    ]
+    assert dynamic_provenance["subjects"][1]["display_name"] == "唐介"
+    assert dynamic_provenance["subjects"][1]["selection"] == (
+        "runtime_lowest_ranked_historical_duke_plus_from_hard_allowlist"
+    )
+    assert dynamic_provenance["title_history_assertions"][
+        "reviewed_official_title_liege_at_start"
+    ] == "h_china"
+    for rejected_id in ("han_7247", "han_999999999"):
+        try:
+            capture.promo_real_character_provenance(rejected_id)
+        except capture.acceptance.RunnerError as error:
+            assert "outside the frozen allowlist" in str(error)
+        else:
+            raise AssertionError("assessed-only or unknown history id must fail provenance")
+
+    class StaticMarkerStream:
+        def __init__(self, lines: list[str]):
+            self.lines = lines
+
+        def pump(self) -> None:
+            return None
+
+    marker_stream = StaticMarkerStream(
+        ["fixture.cpp: ZGA: DATA historical_personal_result_target han_6875"]
+    )
+    assert (
+        capture.resolved_historical_personal_result_target(marker_stream)
+        == "han_6875"
+    )
+    for rejected_lines in (
+        ["ZGA: DATA historical_personal_result_target han_7247"],
+        ["ZGA: DATA historical_personal_result_target han_999999999"],
+        [
+            "ZGA: DATA historical_personal_result_target han_6875",
+            "ZGA: DATA historical_personal_result_target han_5253",
+        ],
+    ):
+        try:
+            capture.resolved_historical_personal_result_target(
+                StaticMarkerStream(rejected_lines)
+            )
+        except capture.acceptance.RunnerError:
+            pass
+        else:
+            raise AssertionError("invalid or ambiguous historical marker must fail")
     assert capture.fixture_source_errors() == []
     assert "test_zg361_clean_promo_fixture.py" in inspect.getsource(capture.preflight)
 
     clean_frame = inspect.getsource(capture.assert_promo_frame_clean)
     assert "drawer_absence_consecutive_samples" in clean_frame
     assert "_promo_decisions_header_hits" in clean_frame
+    assert "promo_product_event_overlay_evidence" in clean_frame
+    assert '"product_event_overlay": product_event_overlay' in clean_frame
     assert 'for token in ("决议", "Decisions")' in inspect.getsource(
         capture._promo_decisions_header_hits
     )
@@ -365,6 +432,15 @@ def main() -> int:
         {"center": [904, 470], "bbox": [624, 459, 1184, 482]},
     ]
     assert capture.promo_event_modal_evidence(native_event, 2560, 1440)
+    assert capture.promo_product_event_overlay_evidence(
+        "free_jingcha_planner", native_event, 2560, 1440
+    )
+    assert not capture.promo_product_event_overlay_evidence(
+        "free_jingcha_planner", clean_board, 2560, 1440
+    )
+    assert not capture.promo_product_event_overlay_evidence(
+        "managed_scoreboard", native_event, 2560, 1440
+    )
 
     representative_rows = native_event + [
         {
@@ -412,15 +488,42 @@ def main() -> int:
     assert "open_decision_detail" not in jingcha_body
     assert "clean_jingcha_dispatch_scheduled" in jingcha_body
     assert "clean_jingcha_dispatched" in jingcha_body
+    assert "acceptance.read_hud_game_date" in jingcha_body
+    assert "pause_after_jingcha_host_click" in jingcha_body
+    assert jingcha_body.index(
+        'acceptance.deliberate_click(host_option, "production host Jingcha option")'
+    ) < jingcha_body.index("pause_after_jingcha_host_click")
+    assert jingcha_body.index("pause_after_jingcha_host_click") < jingcha_body.index(
+        "plan_button = acceptance.wait_for_ocr_text"
+    )
+
+    host_pause = inspect.getsource(capture.pause_after_jingcha_host_click)
+    for token in (
+        'acceptance.pyautogui.press("space")',
+        "acceptance.ensure_game_paused",
+        "acceptance.read_hud_game_date",
+        "stream.pump()",
+        "PERSONAL_SWITCH_SCHEDULED_MARKER",
+        "paused_day >= due_day",
+        '"date_before_due": paused_day < due_day',
+        '"09_jingcha_host_immediate_pause_gate.json"',
+    ):
+        assert token in host_pause, token
+    assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 2
 
     personal = re.search(
         r"def capture_superior_assigned_result\(.*?(?=^def )", runner, re.M | re.S
     )
     assert personal is not None
     personal_body = personal.group(0)
-    assert "personal_result_target_selected_from_prior_tail" not in personal_body
-    assert "historical_personal_result_target_han_5253" in personal_body
+    assert "resolved_historical_personal_result_target" in personal_body
+    assert "HISTORICAL_TARGET_DATA_MARKER_PREFIX" in personal_body
+    assert "HISTORICAL_TARGET_PASS_MARKER" in personal_body
+    assert "recorder.resolve_reviewed_subject" in personal_body
+    assert "personal_result_target_projected_bottom_two" in personal_body
     assert "clean_policy_chain_scheduled" in personal_body
+    assert '"zg361_personal_switch", require_progress=True' in personal_body
+    assert 'if grades[0] != "3.25"' in personal_body
 
     decisions = bom_text(FIXTURE / "common" / "decisions" / "zga_decisions.txt")
     found = tuple(

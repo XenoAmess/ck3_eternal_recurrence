@@ -31,6 +31,7 @@ if str(TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIRECTORY))
 
 import build_promo_video as promo  # noqa: E402
+import promo_real_character_contract as real_characters  # noqa: E402
 
 
 POLICY_IDS = (1, 7, 20, 22, 26, 361)
@@ -44,16 +45,6 @@ CLEAN_SPAN_IDS = (
     "received_scoreboard_with_325",
     *(f"policy_card_{mechanism_id:03d}" for mechanism_id in POLICY_IDS),
 )
-REAL_CHARACTER_CONTRACT = {
-    "han_8052": {
-        "display_name": "赵曙",
-        "roles": {"manager", "emperor"},
-    },
-    "han_5253": {
-        "display_name": "吕居简",
-        "roles": {"reviewed_official", "hunan_governor"},
-    },
-}
 REQUIRED_MARKS = (
     "recording_started_after_gameplay_hud",
     *(mark for span_id in CLEAN_SPAN_IDS for mark in (
@@ -425,16 +416,21 @@ def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(rows, list):
         raise PrepareError("real_character_provenance.subjects must be an array")
     subjects: dict[str, dict[str, Any]] = {}
+    reviewed_history_ids: list[str] = []
     for index, subject in enumerate(rows):
         context = f"real_character_provenance.subjects[{index}]"
         if not isinstance(subject, dict):
             raise PrepareError(f"{context} must be an object")
         history_id = subject.get("history_id")
-        expected = REAL_CHARACTER_CONTRACT.get(history_id)
-        if expected is None:
+        if history_id == real_characters.MANAGER_HISTORY_ID:
+            expected = real_characters.manager()
+        elif history_id in real_characters.REVIEWED_OFFICIAL_CONTRACT:
+            expected = real_characters.reviewed_official(str(history_id))
+            reviewed_history_ids.append(str(history_id))
+        else:
             raise PrepareError(
-                f"{context}.history_id must be one of "
-                + ", ".join(REAL_CHARACTER_CONTRACT)
+                f"{context}.history_id is outside the frozen manager/reviewed "
+                f"historical allowlist: {history_id!r}"
             )
         if history_id in subjects:
             raise PrepareError(f"real_character_provenance repeats {history_id}")
@@ -446,7 +442,7 @@ def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
         if (
             not isinstance(roles, list)
             or any(not isinstance(role, str) for role in roles)
-            or set(roles) != expected["roles"]
+            or set(roles) != set(expected["roles"])
             or len(roles) != len(set(roles))
         ):
             raise PrepareError(
@@ -471,13 +467,18 @@ def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
             "temporary_or_generated": False,
             "history_source": history_source,
         }
-    if set(subjects) != set(REAL_CHARACTER_CONTRACT):
-        missing = sorted(set(REAL_CHARACTER_CONTRACT) - set(subjects))
+    if (
+        len(subjects) != 2
+        or real_characters.MANAGER_HISTORY_ID not in subjects
+        or len(reviewed_history_ids) != 1
+    ):
         raise PrepareError(
-            "real_character_provenance must bind exactly han_8052 and han_5253; "
-            f"missing={missing!r}"
+            "real_character_provenance must bind exactly Zhao Shu and one resolved "
+            "reviewed official from the frozen historical allowlist"
         )
-    expected_bookmark = {"id": "1066_song", "start_date": "1066.9.15"}
+    reviewed_history_id = reviewed_history_ids[0]
+    reviewed_contract = real_characters.reviewed_official(reviewed_history_id)
+    expected_bookmark = dict(real_characters.BOOKMARK)
     if raw.get("bookmark") != expected_bookmark:
         raise PrepareError(
             "real_character_provenance.bookmark must bind the 1066 Song start"
@@ -493,24 +494,57 @@ def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
             f"CK3 title history source is not UTF-8: {title_history_path}"
         ) from exc
     china_block = _paradox_top_level_block(title_text, "h_china")
-    hunan_block = _paradox_top_level_block(title_text, "k_hunan")
     if re.search(
         r"1063\.4\.30\s*=\s*\{[^}]*holder\s*=\s*han_8052",
         china_block,
         re.S,
     ) is None:
         raise PrepareError("h_china history does not bind han_8052 at the 1066 start")
+    reviewed_title = str(reviewed_contract["title_id"])
+    reviewed_holder_date = str(reviewed_contract["holder_date"])
+    reviewed_liege_title = str(reviewed_contract["liege_title_id"])
+    reviewed_liege_holder_id = str(reviewed_contract["liege_holder_id"])
+    reviewed_liege_holder_date = str(reviewed_contract["liege_holder_date"])
+    reviewed_title_block = _paradox_top_level_block(title_text, reviewed_title)
     if re.search(
-        r"1066\.1\.1\s*=\s*\{[^}]*holder\s*=\s*han_5253"
-        r"[^}]*liege\s*=\s*h_china",
-        hunan_block,
+        rf"{re.escape(reviewed_holder_date)}\s*=\s*\{{"
+        rf"[^}}]*holder\s*=\s*{re.escape(reviewed_history_id)}",
+        reviewed_title_block,
         re.S,
     ) is None:
-        raise PrepareError("k_hunan history does not bind han_5253 under h_china")
+        raise PrepareError(
+            f"{reviewed_title} history does not bind {reviewed_history_id} "
+            f"on {reviewed_holder_date}"
+        )
+    if re.search(
+        rf"\bliege\s*=\s*{re.escape(reviewed_liege_title)}\b",
+        reviewed_title_block,
+    ) is None:
+        raise PrepareError(
+            f"{reviewed_title} history does not bind its holder under "
+            f"{reviewed_liege_title}"
+        )
+    reviewed_liege_block = _paradox_top_level_block(
+        title_text, reviewed_liege_title
+    )
+    if re.search(
+        rf"{re.escape(reviewed_liege_holder_date)}\s*=\s*\{{"
+        rf"[^}}]*holder\s*=\s*{re.escape(reviewed_liege_holder_id)}",
+        reviewed_liege_block,
+        re.S,
+    ) is None:
+        raise PrepareError(
+            f"{reviewed_liege_title} history does not bind direct liege holder "
+            f"{reviewed_liege_holder_id} on {reviewed_liege_holder_date}"
+        )
     title_assertions = {
         "h_china_holder_at_start": "han_8052",
-        "k_hunan_holder_at_start": "han_5253",
-        "k_hunan_liege_at_start": "h_china",
+        "reviewed_official_title_at_start": reviewed_title,
+        "reviewed_official_holder_at_start": reviewed_history_id,
+        "reviewed_official_holder_date": reviewed_holder_date,
+        "reviewed_official_title_liege_at_start": reviewed_liege_title,
+        "reviewed_official_direct_liege_holder_at_start": reviewed_liege_holder_id,
+        "reviewed_official_direct_liege_holder_date": reviewed_liege_holder_date,
     }
     if raw.get("title_history_assertions") != title_assertions:
         raise PrepareError(
@@ -520,7 +554,10 @@ def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "bookmark": expected_bookmark,
-        "subjects": [subjects[history_id] for history_id in REAL_CHARACTER_CONTRACT],
+        "subjects": [
+            subjects[real_characters.MANAGER_HISTORY_ID],
+            subjects[reviewed_history_id],
+        ],
         "title_history_source": title_history_source,
         "title_history_assertions": title_assertions,
     }
@@ -621,6 +658,31 @@ def _capture_bundle(artifact_root: Path) -> dict[str, Any]:
     scenario = cell.get("scenario_evidence")
     if not isinstance(scenario, dict):
         raise PrepareError("GREEN report lacks scenario_evidence")
+    reviewed_subjects = [
+        row
+        for row in real_characters["subjects"]
+        if "reviewed_official" in row["roles"]
+    ]
+    if len(reviewed_subjects) != 1:
+        raise PrepareError(
+            "verified real-character provenance does not contain exactly one reviewed official"
+        )
+    reviewed_history_id = reviewed_subjects[0]["history_id"]
+    personal_result = scenario.get("superior_assigned_player_result")
+    runtime_attestation = scenario.get("real_character_runtime_attestation")
+    if (
+        scenario.get("reviewed_official_history_id") != reviewed_history_id
+        or not isinstance(personal_result, dict)
+        or personal_result.get("reviewed_official_history_id")
+        != reviewed_history_id
+        or not isinstance(runtime_attestation, dict)
+        or runtime_attestation.get("reviewed_official_history_id")
+        != reviewed_history_id
+    ):
+        raise PrepareError(
+            "GREEN report scenario, personal-result evidence, and runtime attestation "
+            "must all bind the timeline's exact reviewed official"
+        )
     if not isinstance(scenario.get("promo_received_scoreboard"), dict):
         raise PrepareError("GREEN report lacks the received-scoreboard promo evidence")
     policy_rows = scenario.get("promo_policy_cards")

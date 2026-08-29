@@ -84,22 +84,35 @@ zga_acceptance.2 = {
 	hidden = yes
 
 	immediate = {
-		# Re-resolve the canonical history ID after set_player_character rather
-		# than rediscovering an anonymous marked vassal.
-		character:han_5253 = { save_scope_as = zga_personal_result_target }
+		# Re-resolve the one hard-whitelisted, flagged tail after the player
+		# switch. The count assertion prevents an anonymous or ambiguous fallback.
+		set_variable = { name = zga_personal_result_target_n value = 0 }
+		every_vassal = {
+			limit = {
+				is_ai = no
+				has_character_flag = zga_personal_result_target
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_historical_song_direct_candidate
+			}
+			root = { change_variable = { name = zga_personal_result_target_n add = 1 } }
+			save_scope_as = zga_personal_result_target
+		}
 		if = {
 			limit = {
 				is_ai = yes
 				has_title = title:h_china
+				var:zga_personal_result_target_n = 1
 				exists = scope:zga_personal_result_target
 				scope:zga_personal_result_target = {
-					this = character:han_5253
 					has_character_flag = zga_personal_result_target
 					has_character_flag = zga_reserved_historical_personal_result_target
+					has_character_flag = zga_historical_song_direct_candidate
+					zg361_is_celestial_liege_trigger = yes
 					is_ai = no
 					liege = root
 				}
 			}
+			remove_variable = zga_personal_result_target_n
 			scope:zga_personal_result_target = {
 				remove_character_flag = zga_personal_result_target
 			}
@@ -163,7 +176,10 @@ zga_acceptance.2 = {
 				debug_log = "ZGA: TEST INFO ai_small_cohort_candidate_unavailable"
 			}
 		}
-		else = { debug_log = "ZGA: TEST FAIL superior_review_state_after_switch" }
+		else = {
+			remove_variable = zga_personal_result_target_n
+			debug_log = "ZGA: TEST FAIL superior_review_state_after_switch"
+		}
 	}
 }
 
@@ -320,7 +336,8 @@ zga_acceptance.6 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+						has_character_flag = zga_historical_song_direct_candidate
+						zg361_is_celestial_liege_trigger = yes
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -343,7 +360,7 @@ zga_acceptance.7 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -367,7 +384,7 @@ zga_acceptance.8 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -391,7 +408,7 @@ zga_acceptance.9 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -415,7 +432,7 @@ zga_acceptance.10 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -439,7 +456,7 @@ zga_acceptance.11 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_reserved_historical_personal_result_target
 				has_character_flag = zga_clean_policy_chain_subject
 				has_game_rule = zg361_on
@@ -469,7 +486,7 @@ zga_acceptance.12 = {
 		if = {
 			limit = {
 				is_ai = no
-				this = character:han_5253
+				has_character_flag = zga_historical_song_direct_candidate
 				has_character_flag = zga_clean_policy_completion_pending
 				has_variable = zg361_mechanism_001_choice
 				has_variable = zg361_mechanism_007_choice

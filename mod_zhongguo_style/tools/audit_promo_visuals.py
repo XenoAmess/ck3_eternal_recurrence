@@ -30,6 +30,8 @@ from typing import Any, Sequence
 
 from PIL import Image
 
+import promo_real_character_contract as real_characters
+
 
 SCHEMA_VERSION = 1
 SPEC_KIND = "zg361_promo_visual_audit_spec"
@@ -455,6 +457,7 @@ def _manifest_real_character_provenance(
     }
     by_history_id: dict[str, dict[str, Any]] = {}
     normalized_rows: list[dict[str, Any]] = []
+    reviewed_history_ids: list[str] = []
     for index, raw_subject in enumerate(rows):
         context = (
             "release manifest real_character_provenance.subjects"
@@ -465,6 +468,16 @@ def _manifest_real_character_provenance(
         history_id = _identifier(
             raw_subject.get("history_id"), f"{context}.history_id"
         )
+        if history_id == real_characters.MANAGER_HISTORY_ID:
+            expected = real_characters.manager()
+        elif history_id in real_characters.REVIEWED_OFFICIAL_CONTRACT:
+            expected = real_characters.reviewed_official(history_id)
+            reviewed_history_ids.append(history_id)
+        else:
+            raise AuditError(
+                f"{context}.history_id is outside the frozen historical allowlist: "
+                f"{history_id!r}"
+            )
         if history_id in by_history_id:
             raise AuditError(
                 "release manifest real_character_provenance repeats "
@@ -478,6 +491,14 @@ def _manifest_real_character_provenance(
                 raw_subject.get("roles"), f"{context}.roles", identifiers=True
             )
         )
+        if display_name != expected["display_name"]:
+            raise AuditError(
+                f"{context}.display_name must be {expected['display_name']!r}"
+            )
+        if set(roles) != set(expected["roles"]):
+            raise AuditError(
+                f"{context}.roles must be exactly {sorted(expected['roles'])!r}"
+            )
         if raw_subject.get("origin") != "ck3_history_database":
             raise AuditError(f"{context}.origin must be 'ck3_history_database'")
         if raw_subject.get("temporary_or_generated") is not False:
@@ -499,6 +520,19 @@ def _manifest_real_character_provenance(
         }
         by_history_id[history_id] = normalized
         normalized_rows.append(normalized)
+    if (
+        len(by_history_id) != 2
+        or real_characters.MANAGER_HISTORY_ID not in by_history_id
+        or len(reviewed_history_ids) != 1
+    ):
+        raise AuditError(
+            "release manifest real_character_provenance must contain exactly "
+            "Zhao Shu and one resolved reviewed official from the frozen allowlist"
+        )
+    if normalized_bookmark != real_characters.BOOKMARK:
+        raise AuditError(
+            "release manifest real_character_provenance must bind the 1066 Song bookmark"
+        )
     return by_history_id, {
         "schema_version": 1,
         "bookmark": normalized_bookmark,

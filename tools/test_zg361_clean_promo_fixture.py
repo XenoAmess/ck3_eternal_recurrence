@@ -21,6 +21,30 @@ POLICY_CHAIN = (
     (10, 26, 11),
     (11, 361, 12),
 )
+HISTORICAL_CANDIDATES = (
+    ("han_6875", "k_hedong", "唐介"),
+    ("han_6747", "k_jiangxi", "赵承亮"),
+    ("han_6442", "k_shannan", "曾公亮"),
+    ("han_5253", "k_hunan", "吕居简"),
+    ("han_6680", "k_xichuan", "程瑜"),
+    ("han_6071", "k_xingyuan", "陈贯"),
+    ("han_6762", "k_dongchuan", "范纯诚"),
+    ("han_90011", "k_kuizhou", "张诜"),
+    ("han_6444", "k_lingnan", "石待用"),
+    ("han_6162", "k_lingxi", "杨完"),
+    ("han_6465", "k_jiangdong", "王端"),
+    ("han_6963", "k_liangzhe", "蔡襄"),
+    ("han_6547", "k_fujian", "韩纲"),
+    ("han_6443", "k_huainan", "梁适"),
+    ("han_20000", "k_qingxu", "卢士宗"),
+    ("han_6774", "k_hebei", "晁宗恪"),
+    ("han_50001", "k_guannei", "李参"),
+    ("han_6318", "k_henan", "赵从诲"),
+    ("han_7247", "c_shanzhou", "陆琪"),
+    ("han_6928", "c_bozhou", "施辩"),
+    ("han_6927", "c_yingzhou", "吴中复"),
+)
+PROMO_ASSESSOR_CANDIDATES = HISTORICAL_CANDIDATES[:18]
 
 
 def bom_text(path: Path) -> str:
@@ -98,22 +122,81 @@ def main() -> int:
     personal = top_level_block(effects, "zga_personal_result_effect")
     verify_board = top_level_block(effects, "zga_verify_player_review_effect")
     assert "character:han_8052" in initialize
-    assert "character:han_5253" in initialize
-    assert initialize.count("NOT = { this = character:han_5253 }") == 2
-    assert "character:han_5253 = { save_scope_as = zga_personal_result_target }" in personal
-    assert "ordered_vassal" not in personal
+    candidate_ids = tuple(row[0] for row in HISTORICAL_CANDIDATES)
+    assessor_ids = tuple(row[0] for row in PROMO_ASSESSOR_CANDIDATES)
+    candidate_calls = tuple(
+        re.findall(
+            r"character:(han_[0-9]+)\s*=\s*\{\s*"
+            r"zga_mark_historical_song_direct_candidate_effect\s*=\s*yes\s*\}",
+            initialize,
+        )
+    )
+    assert candidate_calls == candidate_ids
+    assert len(candidate_ids) == len(set(candidate_ids)) == 21
+    assert len({row[1] for row in HISTORICAL_CANDIDATES}) == 21
+    assert all(row[2] for row in HISTORICAL_CANDIDATES)
+    assert "ZGA: TEST PASS historical_song_direct_whitelist_complete" in initialize
+    assert "ZGA: TEST PASS generated_city_officials_excluded_from_provenance" in initialize
+    assert "ZGA: TEST FAIL historical_song_direct_whitelist_incomplete" in initialize
+    assert "ordered_vassal" in personal
+    assert "order_by = var:zg361_rank" in personal
+    assert "has_character_flag = zga_historical_song_direct_candidate" in personal
+    assert personal.count("zg361_is_celestial_liege_trigger = yes") >= 3
+    assert "var:zg361_rank = root.var:zg361_cohort_n" not in personal
+    assert "var:zg361_rank > scope:zga_personal_result_target.var:zg361_rank" in personal
     assert "liege = root" in personal
     assert "zg361_is_current_liege_review_record_trigger = yes" in personal
-    assert "ZGA: TEST PASS historical_personal_result_target_han_5253" in personal
-    assert "ZGA: TEST FAIL historical_personal_result_target_han_5253" in personal
+    assert (
+        "ZGA: TEST PASS personal_result_target_selected_from_prior_historical_assessor_tail"
+        in personal
+    )
+    assert "ZGA: TEST PASS personal_result_target_can_assess_others" in personal
+    assert personal.count(
+        'debug_log = "ZGA: TEST PASS historical_personal_result_target"'
+    ) == 1
+    assert personal.count(
+        'debug_log = "ZGA: TEST FAIL historical_personal_result_target"'
+    ) == 1
+    data_ids = tuple(
+        re.findall(
+            r'ZGA: DATA historical_personal_result_target (han_[0-9]+)"', personal
+        )
+    )
+    assert data_ids == assessor_ids
+    for history_id in assessor_ids:
+        assert f"limit = {{ this = character:{history_id} }}" in personal
+        assert personal.count(
+            f'ZGA: DATA historical_personal_result_target {history_id}"'
+        ) == 1
+    for history_id in candidate_ids[18:]:
+        assert f"ZGA: DATA historical_personal_result_target {history_id}" not in personal
+    assert personal.index(
+        'ZGA: TEST PASS historical_personal_result_target"'
+    ) > personal.rindex("ZGA: DATA historical_personal_result_target ")
+    for variable in ("zg361_rank", "zg361_pending_grade", "zg361_last_grade"):
+        assert f"set_variable = {{ name = {variable}" not in personal
+    assert (
+        "zg361_kpi_value <= scope:zga_personal_result_target.zg361_kpi_value"
+        in personal
+    )
+    assert personal.count(
+        "ZGA: TEST PASS personal_result_target_projected_bottom_two"
+    ) == 1
+    assert personal.count(
+        "ZGA: TEST FAIL personal_result_target_not_projected_bottom_two"
+    ) == 1
     for identifier in (1, 7, 20, 22, 26, 361):
-        assert f"NOT = {{ has_variable = zg361_mechanism_{identifier:03d}_choice }}" in personal
+        assert f"remove_variable = zg361_mechanism_{identifier:03d}_choice" in personal
 
     assert "trigger_event = { id = zga_acceptance.5 days = 2 }" in verify_board
     assert "ZGA: TEST PASS clean_jingcha_dispatch_scheduled" in verify_board
 
     personal_settlement = top_level_block(events, "zga_acceptance.2")
-    assert "character:han_5253 = { save_scope_as = zga_personal_result_target }" in personal_settlement
+    assert "every_vassal" in personal_settlement
+    assert "var:zga_personal_result_target_n = 1" in personal_settlement
+    assert "has_character_flag = zga_historical_song_direct_candidate" in personal_settlement
+    assert "zg361_is_celestial_liege_trigger = yes" in personal_settlement
+    assert "character:han_5253 = { save_scope_as = zga_personal_result_target }" not in personal_settlement
     assert "random_vassal" in personal_settlement  # optional real small-cohort probe remains
     assert "trigger_event = { id = zga_acceptance.6 days = 2 }" in personal_settlement
     assert "ZGA: TEST PASS clean_policy_chain_scheduled" in personal_settlement
@@ -130,7 +213,8 @@ def main() -> int:
     for carrier_id, mechanism_id, successor_id in POLICY_CHAIN:
         body = top_level_block(events, f"zga_acceptance.{carrier_id}")
         assert "hidden = yes" in body
-        assert "this = character:han_5253" in body
+        assert "has_character_flag = zga_historical_song_direct_candidate" in body
+        assert "this = character:han_5253" not in body
         assert "has_character_flag = zga_clean_policy_chain_subject" in body
         if previous_mechanism_id is not None:
             assert (
@@ -155,7 +239,8 @@ def main() -> int:
 
     completion = top_level_block(events, "zga_acceptance.12")
     assert "hidden = yes" in completion
-    assert "this = character:han_5253" in completion
+    assert "has_character_flag = zga_historical_song_direct_candidate" in completion
+    assert "this = character:han_5253" not in completion
     assert "has_character_flag = zga_clean_policy_completion_pending" in completion
     for identifier in (1, 7, 20, 22, 26, 361):
         assert f"has_variable = zg361_mechanism_{identifier:03d}_choice" in completion
