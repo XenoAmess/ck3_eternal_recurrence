@@ -21,7 +21,7 @@ zg361_review_now_decision = {
 			NOT = { var:zg361_last_settled_year = current_year }
 		}
 		any_vassal = {
-			count >= 3
+			count >= 1
 			zg361_is_reviewable_vassal_trigger = yes
 		}
 	}
@@ -32,7 +32,7 @@ zg361_review_now_decision = {
 			NOT = { var:zg361_last_settled_year = current_year }
 		}
 		any_vassal = {
-			count >= 3
+			count >= 1
 			zg361_is_reviewable_vassal_trigger = yes
 		}
 	}

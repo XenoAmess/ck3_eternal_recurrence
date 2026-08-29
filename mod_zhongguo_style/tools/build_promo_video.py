@@ -218,23 +218,46 @@ def _source_record(
     default_label: str,
     role: str,
 ) -> shared.SourceRecord:
+    declared_sha256: str | None = None
+    declared_bytes: int | None = None
     if isinstance(value, str):
         raw_path = value
         label = default_label
     elif isinstance(value, dict):
         raw_path = _required_string(value, "path", context)
         label = _optional_string(value, "label", default_label) or default_label
+        if "sha256" in value:
+            declared_sha256 = _required_string(value, "sha256", context).upper()
+            if not re.fullmatch(r"[0-9A-F]{64}", declared_sha256):
+                raise PromoError(f"{context}.sha256 must be 64 hexadecimal characters")
+        if "bytes" in value:
+            raw_bytes = value["bytes"]
+            if isinstance(raw_bytes, bool) or not isinstance(raw_bytes, int) or raw_bytes < 0:
+                raise PromoError(f"{context}.bytes must be a non-negative integer")
+            declared_bytes = raw_bytes
     else:
         raise PromoError(f"{context} must be a path string or object")
     path = _resolve_path(raw_path, manifest_directory)
     if not path.is_file():
         raise PromoError(f"required promo material was not found: {context}: {path}")
+    actual_bytes = path.stat().st_size
+    actual_sha256 = shared._sha256(path)
+    if declared_bytes is not None and declared_bytes != actual_bytes:
+        raise PromoError(
+            f"{context}.bytes does not match {path}: declared {declared_bytes}, "
+            f"actual {actual_bytes}"
+        )
+    if declared_sha256 is not None and declared_sha256 != actual_sha256.upper():
+        raise PromoError(
+            f"{context}.sha256 does not match {path}: declared {declared_sha256}, "
+            f"actual {actual_sha256}"
+        )
     return shared.SourceRecord(
         path=path,
         label=label,
         role=role,
-        bytes=path.stat().st_size,
-        sha256=shared._sha256(path),
+        bytes=actual_bytes,
+        sha256=actual_sha256,
     )
 
 
@@ -287,6 +310,49 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[shared.Chapter]]:
         DEFAULT_TAIL_PADDING_SECONDS,
         "manifest",
     )
+
+    release_provenance = payload.get("release_manifest_provenance")
+    if release_provenance is not None:
+        if not isinstance(release_provenance, dict):
+            raise PromoError("manifest.release_manifest_provenance must be an object")
+        if release_provenance.get("schema_version") != 1:
+            raise PromoError("release_manifest_provenance.schema_version must be 1")
+        if release_provenance.get("capture_result") != "GREEN":
+            raise PromoError("release_manifest_provenance.capture_result must be GREEN")
+        artifact_root_value = _required_string(
+            release_provenance,
+            "capture_artifact_root",
+            "release_manifest_provenance",
+        )
+        artifact_root = Path(
+            os.path.expandvars(os.path.expanduser(artifact_root_value))
+        )
+        if not artifact_root.is_absolute() or not artifact_root.is_dir():
+            raise PromoError(
+                "release_manifest_provenance.capture_artifact_root must be an "
+                "existing absolute directory"
+            )
+        for key in (
+            "base_manifest",
+            "capture_report",
+            "capture_timeline",
+            "evidence_index",
+            "raw_capture",
+        ):
+            if key not in release_provenance:
+                raise PromoError(f"release_manifest_provenance.{key} is required")
+            _source_record(
+                release_provenance[key],
+                manifest_directory=manifest_directory,
+                context=f"release_manifest_provenance.{key}",
+                default_label=f"Release provenance {key}",
+                role="provenance",
+            )
+        if release_provenance.get("policy_card_ids") != [1, 7, 20, 22, 26, 361]:
+            raise PromoError(
+                "release_manifest_provenance.policy_card_ids must be "
+                "[1, 7, 20, 22, 26, 361]"
+            )
 
     chapters: list[shared.Chapter] = []
     seen_ids: set[str] = set()
@@ -797,10 +863,23 @@ def synthesize_chapter(
         "pitch": EDGE_TTS_PITCH,
     }
     chapter.promo_cue_durations = cue_durations
-    chapter.shot_duration_seconds = max(
-        chapter.min_duration_seconds,
-        aggregate_duration + chapter.tail_padding_seconds,
+    chapter.shot_duration_seconds = _required_shot_duration(
+        chapter, narration_duration_seconds=aggregate_duration
     )
+
+
+def _required_shot_duration(
+    chapter: shared.Chapter, *, narration_duration_seconds: float
+) -> float:
+    """Keep every explicitly marked video interval visible in the final cut."""
+
+    duration = max(
+        chapter.min_duration_seconds,
+        narration_duration_seconds + chapter.tail_padding_seconds,
+    )
+    if chapter.promo_type == "video_clip" and chapter.end_seconds is not None:
+        duration = max(duration, chapter.end_seconds - chapter.start_seconds)
+    return duration
 
 
 def _classification_color(classification: str) -> tuple[int, int, int]:

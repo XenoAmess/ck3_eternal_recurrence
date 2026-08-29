@@ -59,7 +59,8 @@ class PromoManifestTests(unittest.TestCase):
         for phrase in (
             "所有天朝制公爵及以上",
             "伯爵和男爵",
-            "地方国库、个人金币和一年俸禄",
+            "头部 30% 得 3.75、中间 60% 得 3.5、尾部 10% 得 3.25",
+            "地方国库、个人金币、贤能和一年俸禄",
             "京察定期弹出、半强制，而且免费",
             "直接写明上司是谁、你拿多少分、同组第几、绩效几档",
             "361 张逐项政策卡",
@@ -203,6 +204,21 @@ class SubtitleAndRenderTests(unittest.TestCase):
             self.assertEqual("captured", chapter.material_status)
             self.assertIn("CLEAN", chapter.status_en)
             self.assertGreaterEqual(len(chapter.sources), 3)
+
+    def test_video_shot_duration_covers_the_complete_mark_interval(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        chapter = chapters[0]
+        chapter.promo_type = "video_clip"
+        chapter.start_seconds = 80.0
+        chapter.end_seconds = 131.0
+        chapter.min_duration_seconds = 4.0
+        chapter.tail_padding_seconds = 1.2
+
+        duration = promo._required_shot_duration(
+            chapter, narration_duration_seconds=27.0
+        )
+
+        self.assertEqual(51.0, duration)
 
 
 class AcceptanceStillImportTests(unittest.TestCase):

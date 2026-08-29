@@ -2991,6 +2991,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_01_values
 				has_variable = zg361_sb_m_01_grade
 				has_variable = zg361_sb_m_01_streak
+				has_variable = zg361_sb_m_01_title
+				has_variable = zg361_sb_m_01_promotion
+				has_variable = zg361_sb_m_01_pip
 				var:zg361_sb_m_01_rank = 1
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3022,6 +3025,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_02_values
 				has_variable = zg361_sb_m_02_grade
 				has_variable = zg361_sb_m_02_streak
+				has_variable = zg361_sb_m_02_title
+				has_variable = zg361_sb_m_02_promotion
+				has_variable = zg361_sb_m_02_pip
 				var:zg361_sb_m_02_rank = 2
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3053,6 +3059,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_03_values
 				has_variable = zg361_sb_m_03_grade
 				has_variable = zg361_sb_m_03_streak
+				has_variable = zg361_sb_m_03_title
+				has_variable = zg361_sb_m_03_promotion
+				has_variable = zg361_sb_m_03_pip
 				var:zg361_sb_m_03_rank = 3
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3084,6 +3093,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_04_values
 				has_variable = zg361_sb_m_04_grade
 				has_variable = zg361_sb_m_04_streak
+				has_variable = zg361_sb_m_04_title
+				has_variable = zg361_sb_m_04_promotion
+				has_variable = zg361_sb_m_04_pip
 				var:zg361_sb_m_04_rank = 4
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3115,6 +3127,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_05_values
 				has_variable = zg361_sb_m_05_grade
 				has_variable = zg361_sb_m_05_streak
+				has_variable = zg361_sb_m_05_title
+				has_variable = zg361_sb_m_05_promotion
+				has_variable = zg361_sb_m_05_pip
 				var:zg361_sb_m_05_rank = 5
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3146,6 +3161,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_06_values
 				has_variable = zg361_sb_m_06_grade
 				has_variable = zg361_sb_m_06_streak
+				has_variable = zg361_sb_m_06_title
+				has_variable = zg361_sb_m_06_promotion
+				has_variable = zg361_sb_m_06_pip
 				var:zg361_sb_m_06_rank = 6
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3177,6 +3195,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_07_values
 				has_variable = zg361_sb_m_07_grade
 				has_variable = zg361_sb_m_07_streak
+				has_variable = zg361_sb_m_07_title
+				has_variable = zg361_sb_m_07_promotion
+				has_variable = zg361_sb_m_07_pip
 				var:zg361_sb_m_07_rank = 7
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3208,6 +3229,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_08_values
 				has_variable = zg361_sb_m_08_grade
 				has_variable = zg361_sb_m_08_streak
+				has_variable = zg361_sb_m_08_title
+				has_variable = zg361_sb_m_08_promotion
+				has_variable = zg361_sb_m_08_pip
 				var:zg361_sb_m_08_rank = 8
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3239,6 +3263,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_09_values
 				has_variable = zg361_sb_m_09_grade
 				has_variable = zg361_sb_m_09_streak
+				has_variable = zg361_sb_m_09_title
+				has_variable = zg361_sb_m_09_promotion
+				has_variable = zg361_sb_m_09_pip
 				var:zg361_sb_m_09_rank = 9
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3270,6 +3297,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_10_values
 				has_variable = zg361_sb_m_10_grade
 				has_variable = zg361_sb_m_10_streak
+				has_variable = zg361_sb_m_10_title
+				has_variable = zg361_sb_m_10_promotion
+				has_variable = zg361_sb_m_10_pip
 				var:zg361_sb_m_10_rank = 10
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3301,6 +3331,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_11_values
 				has_variable = zg361_sb_m_11_grade
 				has_variable = zg361_sb_m_11_streak
+				has_variable = zg361_sb_m_11_title
+				has_variable = zg361_sb_m_11_promotion
+				has_variable = zg361_sb_m_11_pip
 				var:zg361_sb_m_11_rank = 11
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3332,6 +3365,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_12_values
 				has_variable = zg361_sb_m_12_grade
 				has_variable = zg361_sb_m_12_streak
+				has_variable = zg361_sb_m_12_title
+				has_variable = zg361_sb_m_12_promotion
+				has_variable = zg361_sb_m_12_pip
 				var:zg361_sb_m_12_rank = 12
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3363,6 +3399,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_13_values
 				has_variable = zg361_sb_m_13_grade
 				has_variable = zg361_sb_m_13_streak
+				has_variable = zg361_sb_m_13_title
+				has_variable = zg361_sb_m_13_promotion
+				has_variable = zg361_sb_m_13_pip
 				var:zg361_sb_m_13_rank = 13
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3394,6 +3433,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_14_values
 				has_variable = zg361_sb_m_14_grade
 				has_variable = zg361_sb_m_14_streak
+				has_variable = zg361_sb_m_14_title
+				has_variable = zg361_sb_m_14_promotion
+				has_variable = zg361_sb_m_14_pip
 				var:zg361_sb_m_14_rank = 14
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3425,6 +3467,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_15_values
 				has_variable = zg361_sb_m_15_grade
 				has_variable = zg361_sb_m_15_streak
+				has_variable = zg361_sb_m_15_title
+				has_variable = zg361_sb_m_15_promotion
+				has_variable = zg361_sb_m_15_pip
 				var:zg361_sb_m_15_rank = 15
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3456,6 +3501,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_16_values
 				has_variable = zg361_sb_m_16_grade
 				has_variable = zg361_sb_m_16_streak
+				has_variable = zg361_sb_m_16_title
+				has_variable = zg361_sb_m_16_promotion
+				has_variable = zg361_sb_m_16_pip
 				var:zg361_sb_m_16_rank = 16
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3487,6 +3535,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_17_values
 				has_variable = zg361_sb_m_17_grade
 				has_variable = zg361_sb_m_17_streak
+				has_variable = zg361_sb_m_17_title
+				has_variable = zg361_sb_m_17_promotion
+				has_variable = zg361_sb_m_17_pip
 				var:zg361_sb_m_17_rank = 17
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3518,6 +3569,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_18_values
 				has_variable = zg361_sb_m_18_grade
 				has_variable = zg361_sb_m_18_streak
+				has_variable = zg361_sb_m_18_title
+				has_variable = zg361_sb_m_18_promotion
+				has_variable = zg361_sb_m_18_pip
 				var:zg361_sb_m_18_rank = 18
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3549,6 +3603,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_19_values
 				has_variable = zg361_sb_m_19_grade
 				has_variable = zg361_sb_m_19_streak
+				has_variable = zg361_sb_m_19_title
+				has_variable = zg361_sb_m_19_promotion
+				has_variable = zg361_sb_m_19_pip
 				var:zg361_sb_m_19_rank = 19
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3580,6 +3637,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_20_values
 				has_variable = zg361_sb_m_20_grade
 				has_variable = zg361_sb_m_20_streak
+				has_variable = zg361_sb_m_20_title
+				has_variable = zg361_sb_m_20_promotion
+				has_variable = zg361_sb_m_20_pip
 				var:zg361_sb_m_20_rank = 20
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3611,6 +3671,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_21_values
 				has_variable = zg361_sb_m_21_grade
 				has_variable = zg361_sb_m_21_streak
+				has_variable = zg361_sb_m_21_title
+				has_variable = zg361_sb_m_21_promotion
+				has_variable = zg361_sb_m_21_pip
 				var:zg361_sb_m_21_rank = 21
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3642,6 +3705,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_22_values
 				has_variable = zg361_sb_m_22_grade
 				has_variable = zg361_sb_m_22_streak
+				has_variable = zg361_sb_m_22_title
+				has_variable = zg361_sb_m_22_promotion
+				has_variable = zg361_sb_m_22_pip
 				var:zg361_sb_m_22_rank = 22
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3673,6 +3739,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_23_values
 				has_variable = zg361_sb_m_23_grade
 				has_variable = zg361_sb_m_23_streak
+				has_variable = zg361_sb_m_23_title
+				has_variable = zg361_sb_m_23_promotion
+				has_variable = zg361_sb_m_23_pip
 				var:zg361_sb_m_23_rank = 23
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3704,6 +3773,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_24_values
 				has_variable = zg361_sb_m_24_grade
 				has_variable = zg361_sb_m_24_streak
+				has_variable = zg361_sb_m_24_title
+				has_variable = zg361_sb_m_24_promotion
+				has_variable = zg361_sb_m_24_pip
 				var:zg361_sb_m_24_rank = 24
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3735,6 +3807,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_25_values
 				has_variable = zg361_sb_m_25_grade
 				has_variable = zg361_sb_m_25_streak
+				has_variable = zg361_sb_m_25_title
+				has_variable = zg361_sb_m_25_promotion
+				has_variable = zg361_sb_m_25_pip
 				var:zg361_sb_m_25_rank = 25
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3766,6 +3841,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_26_values
 				has_variable = zg361_sb_m_26_grade
 				has_variable = zg361_sb_m_26_streak
+				has_variable = zg361_sb_m_26_title
+				has_variable = zg361_sb_m_26_promotion
+				has_variable = zg361_sb_m_26_pip
 				var:zg361_sb_m_26_rank = 26
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3797,6 +3875,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_27_values
 				has_variable = zg361_sb_m_27_grade
 				has_variable = zg361_sb_m_27_streak
+				has_variable = zg361_sb_m_27_title
+				has_variable = zg361_sb_m_27_promotion
+				has_variable = zg361_sb_m_27_pip
 				var:zg361_sb_m_27_rank = 27
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3828,6 +3909,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_28_values
 				has_variable = zg361_sb_m_28_grade
 				has_variable = zg361_sb_m_28_streak
+				has_variable = zg361_sb_m_28_title
+				has_variable = zg361_sb_m_28_promotion
+				has_variable = zg361_sb_m_28_pip
 				var:zg361_sb_m_28_rank = 28
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3859,6 +3943,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_29_values
 				has_variable = zg361_sb_m_29_grade
 				has_variable = zg361_sb_m_29_streak
+				has_variable = zg361_sb_m_29_title
+				has_variable = zg361_sb_m_29_promotion
+				has_variable = zg361_sb_m_29_pip
 				var:zg361_sb_m_29_rank = 29
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3890,6 +3977,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_30_values
 				has_variable = zg361_sb_m_30_grade
 				has_variable = zg361_sb_m_30_streak
+				has_variable = zg361_sb_m_30_title
+				has_variable = zg361_sb_m_30_promotion
+				has_variable = zg361_sb_m_30_pip
 				var:zg361_sb_m_30_rank = 30
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3921,6 +4011,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_31_values
 				has_variable = zg361_sb_m_31_grade
 				has_variable = zg361_sb_m_31_streak
+				has_variable = zg361_sb_m_31_title
+				has_variable = zg361_sb_m_31_promotion
+				has_variable = zg361_sb_m_31_pip
 				var:zg361_sb_m_31_rank = 31
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3952,6 +4045,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_32_values
 				has_variable = zg361_sb_m_32_grade
 				has_variable = zg361_sb_m_32_streak
+				has_variable = zg361_sb_m_32_title
+				has_variable = zg361_sb_m_32_promotion
+				has_variable = zg361_sb_m_32_pip
 				var:zg361_sb_m_32_rank = 32
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -3983,6 +4079,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_33_values
 				has_variable = zg361_sb_m_33_grade
 				has_variable = zg361_sb_m_33_streak
+				has_variable = zg361_sb_m_33_title
+				has_variable = zg361_sb_m_33_promotion
+				has_variable = zg361_sb_m_33_pip
 				var:zg361_sb_m_33_rank = 33
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4014,6 +4113,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_34_values
 				has_variable = zg361_sb_m_34_grade
 				has_variable = zg361_sb_m_34_streak
+				has_variable = zg361_sb_m_34_title
+				has_variable = zg361_sb_m_34_promotion
+				has_variable = zg361_sb_m_34_pip
 				var:zg361_sb_m_34_rank = 34
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4045,6 +4147,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_35_values
 				has_variable = zg361_sb_m_35_grade
 				has_variable = zg361_sb_m_35_streak
+				has_variable = zg361_sb_m_35_title
+				has_variable = zg361_sb_m_35_promotion
+				has_variable = zg361_sb_m_35_pip
 				var:zg361_sb_m_35_rank = 35
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4076,6 +4181,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_36_values
 				has_variable = zg361_sb_m_36_grade
 				has_variable = zg361_sb_m_36_streak
+				has_variable = zg361_sb_m_36_title
+				has_variable = zg361_sb_m_36_promotion
+				has_variable = zg361_sb_m_36_pip
 				var:zg361_sb_m_36_rank = 36
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4107,6 +4215,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_37_values
 				has_variable = zg361_sb_m_37_grade
 				has_variable = zg361_sb_m_37_streak
+				has_variable = zg361_sb_m_37_title
+				has_variable = zg361_sb_m_37_promotion
+				has_variable = zg361_sb_m_37_pip
 				var:zg361_sb_m_37_rank = 37
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4138,6 +4249,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_38_values
 				has_variable = zg361_sb_m_38_grade
 				has_variable = zg361_sb_m_38_streak
+				has_variable = zg361_sb_m_38_title
+				has_variable = zg361_sb_m_38_promotion
+				has_variable = zg361_sb_m_38_pip
 				var:zg361_sb_m_38_rank = 38
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4169,6 +4283,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_39_values
 				has_variable = zg361_sb_m_39_grade
 				has_variable = zg361_sb_m_39_streak
+				has_variable = zg361_sb_m_39_title
+				has_variable = zg361_sb_m_39_promotion
+				has_variable = zg361_sb_m_39_pip
 				var:zg361_sb_m_39_rank = 39
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4200,6 +4317,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_40_values
 				has_variable = zg361_sb_m_40_grade
 				has_variable = zg361_sb_m_40_streak
+				has_variable = zg361_sb_m_40_title
+				has_variable = zg361_sb_m_40_promotion
+				has_variable = zg361_sb_m_40_pip
 				var:zg361_sb_m_40_rank = 40
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4231,6 +4351,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_41_values
 				has_variable = zg361_sb_m_41_grade
 				has_variable = zg361_sb_m_41_streak
+				has_variable = zg361_sb_m_41_title
+				has_variable = zg361_sb_m_41_promotion
+				has_variable = zg361_sb_m_41_pip
 				var:zg361_sb_m_41_rank = 41
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4262,6 +4385,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_42_values
 				has_variable = zg361_sb_m_42_grade
 				has_variable = zg361_sb_m_42_streak
+				has_variable = zg361_sb_m_42_title
+				has_variable = zg361_sb_m_42_promotion
+				has_variable = zg361_sb_m_42_pip
 				var:zg361_sb_m_42_rank = 42
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4293,6 +4419,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_43_values
 				has_variable = zg361_sb_m_43_grade
 				has_variable = zg361_sb_m_43_streak
+				has_variable = zg361_sb_m_43_title
+				has_variable = zg361_sb_m_43_promotion
+				has_variable = zg361_sb_m_43_pip
 				var:zg361_sb_m_43_rank = 43
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4324,6 +4453,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_44_values
 				has_variable = zg361_sb_m_44_grade
 				has_variable = zg361_sb_m_44_streak
+				has_variable = zg361_sb_m_44_title
+				has_variable = zg361_sb_m_44_promotion
+				has_variable = zg361_sb_m_44_pip
 				var:zg361_sb_m_44_rank = 44
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4355,6 +4487,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_45_values
 				has_variable = zg361_sb_m_45_grade
 				has_variable = zg361_sb_m_45_streak
+				has_variable = zg361_sb_m_45_title
+				has_variable = zg361_sb_m_45_promotion
+				has_variable = zg361_sb_m_45_pip
 				var:zg361_sb_m_45_rank = 45
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4386,6 +4521,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_46_values
 				has_variable = zg361_sb_m_46_grade
 				has_variable = zg361_sb_m_46_streak
+				has_variable = zg361_sb_m_46_title
+				has_variable = zg361_sb_m_46_promotion
+				has_variable = zg361_sb_m_46_pip
 				var:zg361_sb_m_46_rank = 46
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4417,6 +4555,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_47_values
 				has_variable = zg361_sb_m_47_grade
 				has_variable = zg361_sb_m_47_streak
+				has_variable = zg361_sb_m_47_title
+				has_variable = zg361_sb_m_47_promotion
+				has_variable = zg361_sb_m_47_pip
 				var:zg361_sb_m_47_rank = 47
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4448,6 +4589,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_48_values
 				has_variable = zg361_sb_m_48_grade
 				has_variable = zg361_sb_m_48_streak
+				has_variable = zg361_sb_m_48_title
+				has_variable = zg361_sb_m_48_promotion
+				has_variable = zg361_sb_m_48_pip
 				var:zg361_sb_m_48_rank = 48
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4479,6 +4623,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_49_values
 				has_variable = zg361_sb_m_49_grade
 				has_variable = zg361_sb_m_49_streak
+				has_variable = zg361_sb_m_49_title
+				has_variable = zg361_sb_m_49_promotion
+				has_variable = zg361_sb_m_49_pip
 				var:zg361_sb_m_49_rank = 49
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4510,6 +4657,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_50_values
 				has_variable = zg361_sb_m_50_grade
 				has_variable = zg361_sb_m_50_streak
+				has_variable = zg361_sb_m_50_title
+				has_variable = zg361_sb_m_50_promotion
+				has_variable = zg361_sb_m_50_pip
 				var:zg361_sb_m_50_rank = 50
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4541,6 +4691,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_51_values
 				has_variable = zg361_sb_m_51_grade
 				has_variable = zg361_sb_m_51_streak
+				has_variable = zg361_sb_m_51_title
+				has_variable = zg361_sb_m_51_promotion
+				has_variable = zg361_sb_m_51_pip
 				var:zg361_sb_m_51_rank = 51
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4572,6 +4725,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_52_values
 				has_variable = zg361_sb_m_52_grade
 				has_variable = zg361_sb_m_52_streak
+				has_variable = zg361_sb_m_52_title
+				has_variable = zg361_sb_m_52_promotion
+				has_variable = zg361_sb_m_52_pip
 				var:zg361_sb_m_52_rank = 52
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4603,6 +4759,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_53_values
 				has_variable = zg361_sb_m_53_grade
 				has_variable = zg361_sb_m_53_streak
+				has_variable = zg361_sb_m_53_title
+				has_variable = zg361_sb_m_53_promotion
+				has_variable = zg361_sb_m_53_pip
 				var:zg361_sb_m_53_rank = 53
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4634,6 +4793,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_54_values
 				has_variable = zg361_sb_m_54_grade
 				has_variable = zg361_sb_m_54_streak
+				has_variable = zg361_sb_m_54_title
+				has_variable = zg361_sb_m_54_promotion
+				has_variable = zg361_sb_m_54_pip
 				var:zg361_sb_m_54_rank = 54
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4665,6 +4827,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_55_values
 				has_variable = zg361_sb_m_55_grade
 				has_variable = zg361_sb_m_55_streak
+				has_variable = zg361_sb_m_55_title
+				has_variable = zg361_sb_m_55_promotion
+				has_variable = zg361_sb_m_55_pip
 				var:zg361_sb_m_55_rank = 55
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4696,6 +4861,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_56_values
 				has_variable = zg361_sb_m_56_grade
 				has_variable = zg361_sb_m_56_streak
+				has_variable = zg361_sb_m_56_title
+				has_variable = zg361_sb_m_56_promotion
+				has_variable = zg361_sb_m_56_pip
 				var:zg361_sb_m_56_rank = 56
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4727,6 +4895,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_57_values
 				has_variable = zg361_sb_m_57_grade
 				has_variable = zg361_sb_m_57_streak
+				has_variable = zg361_sb_m_57_title
+				has_variable = zg361_sb_m_57_promotion
+				has_variable = zg361_sb_m_57_pip
 				var:zg361_sb_m_57_rank = 57
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4758,6 +4929,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_58_values
 				has_variable = zg361_sb_m_58_grade
 				has_variable = zg361_sb_m_58_streak
+				has_variable = zg361_sb_m_58_title
+				has_variable = zg361_sb_m_58_promotion
+				has_variable = zg361_sb_m_58_pip
 				var:zg361_sb_m_58_rank = 58
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4789,6 +4963,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_59_values
 				has_variable = zg361_sb_m_59_grade
 				has_variable = zg361_sb_m_59_streak
+				has_variable = zg361_sb_m_59_title
+				has_variable = zg361_sb_m_59_promotion
+				has_variable = zg361_sb_m_59_pip
 				var:zg361_sb_m_59_rank = 59
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4820,6 +4997,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_60_values
 				has_variable = zg361_sb_m_60_grade
 				has_variable = zg361_sb_m_60_streak
+				has_variable = zg361_sb_m_60_title
+				has_variable = zg361_sb_m_60_promotion
+				has_variable = zg361_sb_m_60_pip
 				var:zg361_sb_m_60_rank = 60
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4851,6 +5031,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_61_values
 				has_variable = zg361_sb_m_61_grade
 				has_variable = zg361_sb_m_61_streak
+				has_variable = zg361_sb_m_61_title
+				has_variable = zg361_sb_m_61_promotion
+				has_variable = zg361_sb_m_61_pip
 				var:zg361_sb_m_61_rank = 61
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4882,6 +5065,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_62_values
 				has_variable = zg361_sb_m_62_grade
 				has_variable = zg361_sb_m_62_streak
+				has_variable = zg361_sb_m_62_title
+				has_variable = zg361_sb_m_62_promotion
+				has_variable = zg361_sb_m_62_pip
 				var:zg361_sb_m_62_rank = 62
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4913,6 +5099,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_63_values
 				has_variable = zg361_sb_m_63_grade
 				has_variable = zg361_sb_m_63_streak
+				has_variable = zg361_sb_m_63_title
+				has_variable = zg361_sb_m_63_promotion
+				has_variable = zg361_sb_m_63_pip
 				var:zg361_sb_m_63_rank = 63
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4944,6 +5133,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_64_values
 				has_variable = zg361_sb_m_64_grade
 				has_variable = zg361_sb_m_64_streak
+				has_variable = zg361_sb_m_64_title
+				has_variable = zg361_sb_m_64_promotion
+				has_variable = zg361_sb_m_64_pip
 				var:zg361_sb_m_64_rank = 64
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -4975,6 +5167,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_65_values
 				has_variable = zg361_sb_m_65_grade
 				has_variable = zg361_sb_m_65_streak
+				has_variable = zg361_sb_m_65_title
+				has_variable = zg361_sb_m_65_promotion
+				has_variable = zg361_sb_m_65_pip
 				var:zg361_sb_m_65_rank = 65
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5006,6 +5201,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_66_values
 				has_variable = zg361_sb_m_66_grade
 				has_variable = zg361_sb_m_66_streak
+				has_variable = zg361_sb_m_66_title
+				has_variable = zg361_sb_m_66_promotion
+				has_variable = zg361_sb_m_66_pip
 				var:zg361_sb_m_66_rank = 66
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5037,6 +5235,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_67_values
 				has_variable = zg361_sb_m_67_grade
 				has_variable = zg361_sb_m_67_streak
+				has_variable = zg361_sb_m_67_title
+				has_variable = zg361_sb_m_67_promotion
+				has_variable = zg361_sb_m_67_pip
 				var:zg361_sb_m_67_rank = 67
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5068,6 +5269,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_68_values
 				has_variable = zg361_sb_m_68_grade
 				has_variable = zg361_sb_m_68_streak
+				has_variable = zg361_sb_m_68_title
+				has_variable = zg361_sb_m_68_promotion
+				has_variable = zg361_sb_m_68_pip
 				var:zg361_sb_m_68_rank = 68
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5099,6 +5303,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_69_values
 				has_variable = zg361_sb_m_69_grade
 				has_variable = zg361_sb_m_69_streak
+				has_variable = zg361_sb_m_69_title
+				has_variable = zg361_sb_m_69_promotion
+				has_variable = zg361_sb_m_69_pip
 				var:zg361_sb_m_69_rank = 69
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5130,6 +5337,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_70_values
 				has_variable = zg361_sb_m_70_grade
 				has_variable = zg361_sb_m_70_streak
+				has_variable = zg361_sb_m_70_title
+				has_variable = zg361_sb_m_70_promotion
+				has_variable = zg361_sb_m_70_pip
 				var:zg361_sb_m_70_rank = 70
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5161,6 +5371,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_71_values
 				has_variable = zg361_sb_m_71_grade
 				has_variable = zg361_sb_m_71_streak
+				has_variable = zg361_sb_m_71_title
+				has_variable = zg361_sb_m_71_promotion
+				has_variable = zg361_sb_m_71_pip
 				var:zg361_sb_m_71_rank = 71
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5192,6 +5405,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_72_values
 				has_variable = zg361_sb_m_72_grade
 				has_variable = zg361_sb_m_72_streak
+				has_variable = zg361_sb_m_72_title
+				has_variable = zg361_sb_m_72_promotion
+				has_variable = zg361_sb_m_72_pip
 				var:zg361_sb_m_72_rank = 72
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5223,6 +5439,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_73_values
 				has_variable = zg361_sb_m_73_grade
 				has_variable = zg361_sb_m_73_streak
+				has_variable = zg361_sb_m_73_title
+				has_variable = zg361_sb_m_73_promotion
+				has_variable = zg361_sb_m_73_pip
 				var:zg361_sb_m_73_rank = 73
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5254,6 +5473,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_74_values
 				has_variable = zg361_sb_m_74_grade
 				has_variable = zg361_sb_m_74_streak
+				has_variable = zg361_sb_m_74_title
+				has_variable = zg361_sb_m_74_promotion
+				has_variable = zg361_sb_m_74_pip
 				var:zg361_sb_m_74_rank = 74
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5285,6 +5507,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_75_values
 				has_variable = zg361_sb_m_75_grade
 				has_variable = zg361_sb_m_75_streak
+				has_variable = zg361_sb_m_75_title
+				has_variable = zg361_sb_m_75_promotion
+				has_variable = zg361_sb_m_75_pip
 				var:zg361_sb_m_75_rank = 75
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5316,6 +5541,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_76_values
 				has_variable = zg361_sb_m_76_grade
 				has_variable = zg361_sb_m_76_streak
+				has_variable = zg361_sb_m_76_title
+				has_variable = zg361_sb_m_76_promotion
+				has_variable = zg361_sb_m_76_pip
 				var:zg361_sb_m_76_rank = 76
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5347,6 +5575,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_77_values
 				has_variable = zg361_sb_m_77_grade
 				has_variable = zg361_sb_m_77_streak
+				has_variable = zg361_sb_m_77_title
+				has_variable = zg361_sb_m_77_promotion
+				has_variable = zg361_sb_m_77_pip
 				var:zg361_sb_m_77_rank = 77
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5378,6 +5609,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_78_values
 				has_variable = zg361_sb_m_78_grade
 				has_variable = zg361_sb_m_78_streak
+				has_variable = zg361_sb_m_78_title
+				has_variable = zg361_sb_m_78_promotion
+				has_variable = zg361_sb_m_78_pip
 				var:zg361_sb_m_78_rank = 78
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5409,6 +5643,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_79_values
 				has_variable = zg361_sb_m_79_grade
 				has_variable = zg361_sb_m_79_streak
+				has_variable = zg361_sb_m_79_title
+				has_variable = zg361_sb_m_79_promotion
+				has_variable = zg361_sb_m_79_pip
 				var:zg361_sb_m_79_rank = 79
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }
@@ -5440,6 +5677,9 @@ zga_verify_fixed_scoreboard_slots_effect = {
 				has_variable = zg361_sb_m_80_values
 				has_variable = zg361_sb_m_80_grade
 				has_variable = zg361_sb_m_80_streak
+				has_variable = zg361_sb_m_80_title
+				has_variable = zg361_sb_m_80_promotion
+				has_variable = zg361_sb_m_80_pip
 				var:zg361_sb_m_80_rank = 80
 			}
 			change_variable = { name = zga_board_valid_rows add = 1 }

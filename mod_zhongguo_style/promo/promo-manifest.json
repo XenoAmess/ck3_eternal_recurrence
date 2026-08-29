@@ -127,8 +127,8 @@
       },
       "cues": [
         {
-          "zh": "361 的灵魂是强制分布：少数 3.75，多数 3.5，末位 3.25。大家都努力，也不妨碍有人必须背 C。",
-          "en": "The soul of 361 is forced distribution: a few 3.75s, most 3.5s, and a bottom 3.25. Everyone may deliver, yet someone must explain why they were not excellent enough."
+          "zh": "361 的灵魂是强制分布：常规成熟大组按头部 30% 得 3.75、中间 60% 得 3.5、尾部 10% 得 3.25。大家都努力，也不妨碍有人必须背 C。",
+          "en": "The soul of 361 is forced distribution: a regular mature cohort assigns 3.75 to the top 30%, 3.5 to the middle 60%, and 3.25 to the bottom 10%. Everyone may deliver, yet someone must explain why they were not excellent enough."
         },
         {
           "zh": "排名采用固定序位，平分也不会全员并列第一、集体冲进3.75。毕竟真正的大厂从不允许数学破坏组织目标。",
@@ -174,7 +174,7 @@
       "cues": [
         {
           "zh": "自动排名后、发榜前，玩家可以校准：直接公示，或在两个分档边界交换两个人。",
-          "en": "After automatic ranking and before publication comes calibration, where quota, evidence, favors, and political enemies all enter the same pot."
+          "en": "After automatic ranking and before publication, the player may calibrate: publish the board as-is, or swap two officials across one of the grade boundaries."
         },
         {
           "zh": "你能抬末名 3.75，或把末名 3.5 压进 3.25；每次动笔有 25% 概率被全员看成考核黑幕。",
@@ -296,8 +296,8 @@
           "en": "Managers see the full team board. When your superior rates you, a separate receipt names the superior, your score, cohort rank, and grade."
         },
         {
-          "zh": "旧榜不会被调任或下一轮偷偷改写。过去的 3.25，像群聊截图一样，永远不会自动撤回。",
-          "en": "Old boards do not drift after transfers or later reviews. A past 3.25 stays like a group-chat screenshot that never unsends itself."
+          "zh": "最近一期榜单会冻结到下一次发榜，调任不会偷偷改写当期名单；下一轮则用一份新快照整体替换，不拿旧榜行现场重算。",
+          "en": "The latest board stays frozen until the next publication, so transfers cannot rewrite that cycle. The next review replaces it with a new snapshot instead of recalculating old rows in place."
         }
       ]
     },
@@ -305,11 +305,11 @@
       "id": "08-money-and-grade",
       "type": "still",
       "material_status": "captured",
-      "title_zh": "3.25不是表情包：国库、金币、俸禄一起有感觉",
-      "title_en": "3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT",
+      "title_zh": "3.25不是表情包：国库、金币、贤能、俸禄一起有感觉",
+      "title_en": "3.25 IS NOT A MEME: TREASURY, GOLD, MERIT, AND SALARY ALL FEEL IT",
       "status": {
-        "zh": "验收夹具实机静帧：上司给出3.25、三重扣款与一年俸禄削减；申诉改判后的对账连续录屏仍待录",
-        "en": "FIXTURE-LIVE STILL · 3.25 RECEIPT AND THREE-ACCOUNT PENALTY; CLEAN APPEAL LEDGER RECORDING STILL PENDING",
+        "zh": "验收夹具实机静帧：上司给出3.25、国库/金币/贤能扣减与一年俸禄削减；申诉改判后的对账连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · 3.25 RECEIPT AND FOURFOLD CONSEQUENCE; CLEAN APPEAL LEDGER RECORDING STILL PENDING",
         "classification": "fixture-live-still-partial"
       },
       "topics": [],
@@ -330,7 +330,7 @@
       "capture": {
         "id": "CAP-08-MONEY",
         "exclude_ck3_loading": true,
-        "shot": "最终 GREEN 验收夹具的上司 3.25 告身静帧，直接写明地方国库扣50、个人金币扣25及一年俸禄削减。报告验证 merit 60 和一次性精确退款；干净前后对账录像仍待录。"
+        "shot": "当前导入夹具静帧直接显示地方国库（若有）扣50、个人金币扣25与有俸禄时削减一年俸禄；贤能扣60和俸禄削减25%的精确数值由同 run 报告验证。正式候选必须改用完成四重精确文案迁移后的新 GREEN capture，不以旧帧冒充四项都直接可见。"
       },
       "cues": [
         {
@@ -338,8 +338,8 @@
           "en": "Grades need resource consequences. A 3.75 opens reward and promotion lanes, 3.5 keeps the normal cadence, and 3.25 starts a real improvement cost."
         },
         {
-          "zh": "3.25同时影响地方国库、个人金币和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算和你钱包都要参加复盘。",
-          "en": "A 3.25 hits the local treasury, personal gold, and one year of salary. Shared accountability means both the team budget and your wallet attend the retrospective."
+          "zh": "3.25同时影响地方国库、个人金币、贤能和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算、仕途和你钱包都要参加复盘。",
+          "en": "A 3.25 hits the local treasury, personal gold, merit, and one year of salary. Shared accountability means the team budget, your career, and your wallet all attend the retrospective."
         },
         {
           "zh": "罚没保存精确金额和本轮编号；翻案退的是这次实际扣的钱，不是系统心情好发代金券。",
@@ -488,7 +488,7 @@
       "topics": [],
       "capture": {
         "id": "CAP-13-POLICY-DECK",
-        "shot": "一次集中录 #002、#007、#015、#020、#026、#035 六张不同编号政策卡的 A/B/C，再打开制度驾驶舱的 14 本账。可显示 AI 每轮批量处理十二张的代码/证据卡，但不得伪装为逐张真人录屏。"
+        "shot": "一次集中录 #001、#007、#020、#022、#026、#361 六张不同编号政策卡的 A/B/C，再打开制度驾驶舱的 14 本账。可显示 AI 每轮通常后台批量处理最多十二张的代码/证据卡，但不得伪装为逐张真人录屏。"
       },
       "cues": [
         {
@@ -500,8 +500,8 @@
           "en": "They share 17 consequence profiles, not 361 pretend mini-games: evidence, trust, delivery, stability, talent, HC pressure, and burnout move together."
         },
         {
-          "zh": "玩家每轮通常只遇一张；AI 按性格与预算压力，每轮后台批量处理十二张。不是 361 封邮件，是 361 次制度偏好。",
-          "en": "Players normally see one per review; AI batches twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences."
+          "zh": "玩家每轮通常只遇一张；AI 按性格与预算压力，每轮通常在后台批量处理最多十二张。不是 361 封邮件，是 361 次制度偏好。",
+          "en": "Players normally see one per review; AI usually batches up to twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences."
         }
       ]
     },
@@ -519,7 +519,7 @@
       "topics": [],
       "capture": {
         "id": "CAP-14-FULL-LOOP",
-        "shot": "同一存档、同一 review serial 连续录：京察/立即考核入口、KPI 排名、校准、发布榜、个人告身、3.25 三账处罚，以及申诉或 PIP 的后果。政策卡可作为独立蒙太奇，不得拼成虚构的目标—项目—互评闭环。"
+        "shot": "同一存档、同一 review serial 连续录：京察/立即考核入口、KPI 排名、校准、发布榜、个人告身、3.25 的国库/金币/贤能/俸禄四重处分，以及申诉或 PIP 的后果。政策卡可作为独立蒙太奇，不得拼成虚构的目标—项目—互评闭环。"
       },
       "cues": [
         {

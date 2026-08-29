@@ -700,6 +700,7 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
         "source": "docs/361-expansion-options.md",
         "acceptance": {
             "scope": "reference choice for every mechanism executed in one real CK3 fixture batch",
+            "logical_group_semantics": "live_wave is a coverage grouping inside that single CK3 run, not a separate game launch",
             "report": "docs/testing-report-2026-08-29.md",
             "run_id": "zga_20260829_061314_ea5f04ad",
             "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
@@ -720,7 +721,7 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
         "并验证唯一状态与组织账后果；它不表示 1083 个 A/B/C 分支都经过人工 UI 点选。证据见",
         "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`。",
         "",
-        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 实机波次 | 状态 |",
+        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 状态 |",
         "|---:|---|---|---|---|---|---|---:|---|",
     ]
     for mechanism in mechanisms:

@@ -100,6 +100,40 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
         result += separator + f'remote_file_id="{item_id}"'.encode("ascii")
         return result + (separator if final_newline else b"")
 
+    @staticmethod
+    def write_localization_audit(source: Path) -> Path:
+        def records(paths: tuple[str, ...]) -> list[dict[str, object]]:
+            result: list[dict[str, object]] = []
+            for relative in paths:
+                path = source / PurePosixPath(relative).relative_to(release.PRODUCT_ID)
+                if not path.is_file():
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(codecs.BOM_UTF8 + b'l_fixture:\n key:0 "Value"\n')
+                result.append(
+                    {
+                        "path": relative,
+                        "size": path.stat().st_size,
+                        "sha256": release.sha256_file(path),
+                    }
+                )
+            return result
+
+        payload = {
+            "format_version": release.LOCALIZATION_AUDIT_FORMAT_VERSION,
+            "product_id": release.PRODUCT_ID,
+            "result": "GREEN",
+            "checks": list(release.LOCALIZATION_AUDIT_CHECKS),
+            "source_files": records(release.LOCALIZATION_AUDIT_SOURCE_PATHS),
+            "target_files": records(release.LOCALIZATION_AUDIT_TARGET_PATHS),
+        }
+        path = source / release.LOCALIZATION_AUDIT_RELATIVE_PATH
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        return path
+
     def test_projection_is_deterministic_and_excludes_every_source_only_tree(self):
         with self.fixture() as (root, source):
             first = self.build(root, source, parent="first")
@@ -226,8 +260,14 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "extra:"):
                 release.verify_manifest(staging, manifest)
 
+            self.write_localization_audit(source)
+
             def clean_git(*args, **_kwargs):
-                return "" if args[0] == "status" else "zhongguo-361-v0.3.0"
+                if args[0] == "status":
+                    return ""
+                if args[0] == "cat-file":
+                    return "tag"
+                return "zhongguo-361-v0.3.0"
 
             with mock.patch.object(release, "DEFAULT_SOURCE", source), mock.patch.object(
                 release, "git_sha", return_value=REVISION
@@ -239,6 +279,46 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
             ), mock.patch.object(release, "git_output", return_value="dirty"):
                 with self.assertRaisesRegex(ValueError, "clean worktree"):
                     release.release_identity(source)
+
+            def lightweight_git(*args, **_kwargs):
+                if args[0] == "status":
+                    return ""
+                if args[0] == "cat-file":
+                    return "commit"
+                return "zhongguo-361-v0.3.0"
+
+            with mock.patch.object(release, "DEFAULT_SOURCE", source), mock.patch.object(
+                release, "git_sha", return_value=REVISION
+            ), mock.patch.object(release, "git_output", side_effect=lightweight_git):
+                with self.assertRaisesRegex(ValueError, "annotated tag"):
+                    release.release_identity(source)
+
+    def test_formal_localization_audit_requires_exact_current_4_plus_14_inventory(self):
+        with self.fixture() as (_, source):
+            with self.assertRaisesRegex(ValueError, "requires localization audit report"):
+                release.verify_release_localization_audit(source)
+
+            report = self.write_localization_audit(source)
+            payload = release.verify_release_localization_audit(source)
+            self.assertEqual(4, len(payload["source_files"]))
+            self.assertEqual(14, len(payload["target_files"]))
+
+            target = (
+                source
+                / PurePosixPath(release.LOCALIZATION_AUDIT_TARGET_PATHS[0]).relative_to(
+                    release.PRODUCT_ID
+                )
+            )
+            target.write_bytes(target.read_bytes() + b"# stale\n")
+            with self.assertRaisesRegex(ValueError, "audit is stale"):
+                release.verify_release_localization_audit(source)
+
+            self.write_localization_audit(source)
+            document = json.loads(report.read_text(encoding="utf-8"))
+            document["target_files"] = document["target_files"][:-1]
+            report.write_text(json.dumps(document), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "exactly cover 14"):
+                release.verify_release_localization_audit(source)
 
 
 if __name__ == "__main__":

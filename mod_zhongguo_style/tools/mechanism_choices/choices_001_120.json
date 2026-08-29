@@ -118,8 +118,8 @@
   },
   "14": {
     "title_en": "Performance Appeal Dossier",
-    "option_a_cn": "按错误类型收冻结证据，先沟通再独立复核，并逐项登记重校准与三账本退款，承担案卷工时。",
-    "option_a_en": "Collect frozen evidence by error type, require discussion before independent review, and reconcile recalibration and all three refunds item by item.",
+    "option_a_cn": "按错误类型收冻结证据，先沟通再独立复核，并逐项登记重校准、三笔即时退款与俸禄止扣，承担案卷工时。",
+    "option_a_en": "Collect frozen evidence by error type, require discussion before independent review, and reconcile recalibration, all three immediate refunds, and the salary-cut termination item by item.",
     "option_b_cn": "由原上司当场驳回或凭印象快速改档，立刻止争，却可能二次处罚、错退钱并坐实利益冲突。",
     "option_b_en": "Let the original superior reject or revise the rating on the spot, ending the dispute quickly while risking duplicate penalties, bad refunds, and confirmed conflicts.",
     "profile": "governance",
@@ -153,9 +153,9 @@
     "reference_choice": "a"
   },
   "18": {
-    "title_en": "Personal Record and Three-Ledger Settlement",
-    "option_a_cn": "结算时冻结档位、名次、上司、理由及国库、个人金币、俸禄三账，逐笔标记支付和退款状态。",
-    "option_a_en": "Freeze rating, rank, superior, reasons, and treasury, personal-gold, and stipend ledgers at settlement, marking each payment and refund separately.",
+    "title_en": "Personal Record and Fourfold Settlement",
+    "option_a_cn": "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。",
+    "option_a_en": "Freeze rating, rank, superior, reasons, the three immediate treasury, personal-gold, and merit charges, and the one-year salary cut at settlement, marking every payment, refund, and termination separately.",
     "option_b_cn": "按打开告身时的现值合并扣缴并即时展示，流程更短，却会因换上司、余额变化或重开而错算重算。",
     "option_b_en": "Combine charges from live values when the record is opened and display them immediately, shortening the flow while risking errors after superior or balance changes and repeated opens.",
     "profile": "assessment",

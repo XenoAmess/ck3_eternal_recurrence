@@ -168,9 +168,9 @@ zga_verify_penalty_and_appeal_effect = {
 					has_variable = zg361_last_merit_penalty_paid
 					var:zg361_last_merit_penalty_paid = medium_merit_value
 				}
-				debug_log = "ZGA: TEST PASS grade_325_three_account_penalty"
+				debug_log = "ZGA: TEST PASS grade_325_fourfold_penalty"
 			}
-			else = { debug_log = "ZGA: TEST FAIL grade_325_three_account_penalty" }
+			else = { debug_log = "ZGA: TEST FAIL grade_325_fourfold_penalty" }
 
 			zg361_appeal_regrade_to_35_effect = yes
 			set_variable = {
@@ -213,6 +213,182 @@ zga_verify_penalty_and_appeal_effect = {
 		debug_log = "ZGA: TEST PASS receipt_probe_completed"
 	}
 	else = { debug_log = "ZGA: TEST FAIL receipt_probe_target_unavailable" }
+}
+
+# Exercise calibration C against the real product effect twice in one launch:
+# first the all-newcomer cohort (must no-op), then a mixed fixture precondition
+# with one protected newcomer plus one real grade-2/grade-1 exchange pair.
+zga_verify_calibration_c_regressions_effect = {
+	set_variable = { name = zga_all_new_35_before value = var:zg361_pending_35_n }
+	set_variable = { name = zga_all_new_325_before value = var:zg361_pending_325_n }
+	zg361_calibrate_demote_effect = yes
+	set_variable = { name = zga_all_new_325_actual value = 0 }
+	set_variable = { name = zga_all_new_protected_actual value = 0 }
+	every_vassal = {
+		limit = {
+			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_pending_grade
+			var:zg361_pending_grade = 1
+		}
+		root = { change_variable = { name = zga_all_new_325_actual add = 1 } }
+	}
+	every_vassal = {
+		limit = {
+			zg361_is_current_liege_review_record_trigger = yes
+			has_character_flag = zg361_newcomer_this_cycle
+		}
+		root = { change_variable = { name = zga_all_new_protected_actual add = 1 } }
+	}
+	if = {
+		limit = {
+			NOT = { zg361_can_calibrate_demote_trigger = yes }
+			var:zg361_pending_35_n = var:zga_all_new_35_before
+			var:zg361_pending_325_n = var:zga_all_new_325_before
+			var:zga_all_new_325_actual = 0
+			var:zga_all_new_protected_actual = var:zg361_cohort_n
+		}
+		debug_log = "ZGA: TEST PASS calibration_c_all_newcomer_noop"
+	}
+	else = { debug_log = "ZGA: TEST FAIL calibration_c_all_newcomer_noop" }
+
+	ordered_vassal = {
+		limit = {
+			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_pending_grade
+			has_character_flag = zg361_newcomer_this_cycle
+		}
+		order_by = var:zg361_rank
+		position = 0
+		save_scope_as = zga_mixed_protected_newcomer
+	}
+	ordered_vassal = {
+		limit = {
+			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_pending_grade
+			has_character_flag = zg361_newcomer_this_cycle
+		}
+		order_by = var:zg361_rank
+		position = 1
+		save_scope_as = zga_mixed_demote_target
+	}
+	ordered_vassal = {
+		limit = {
+			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_pending_grade
+			has_character_flag = zg361_newcomer_this_cycle
+		}
+		order_by = var:zg361_rank
+		position = 2
+		save_scope_as = zga_mixed_rescue_target
+	}
+	if = {
+		limit = {
+			exists = scope:zga_mixed_protected_newcomer
+			exists = scope:zga_mixed_demote_target
+			exists = scope:zga_mixed_rescue_target
+		}
+		scope:zga_mixed_protected_newcomer = {
+			set_variable = { name = zga_original_pending_grade value = var:zg361_pending_grade }
+			set_variable = { name = zg361_pending_grade value = 2 }
+		}
+		scope:zga_mixed_demote_target = {
+			set_variable = { name = zga_original_pending_grade value = var:zg361_pending_grade }
+			set_variable = { name = zg361_pending_grade value = 2 }
+			remove_character_flag = zg361_newcomer_this_cycle
+		}
+		scope:zga_mixed_rescue_target = {
+			set_variable = { name = zga_original_pending_grade value = var:zg361_pending_grade }
+			remove_character_flag = zg361_newcomer_this_cycle
+			set_variable = { name = zg361_pending_grade value = 1 }
+		}
+		set_variable = { name = zga_mixed_35_actual_before value = 0 }
+		set_variable = { name = zga_mixed_325_actual_before value = 0 }
+		every_vassal = {
+			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
+				has_variable = zg361_pending_grade
+				var:zg361_pending_grade = 2
+			}
+			root = { change_variable = { name = zga_mixed_35_actual_before add = 1 } }
+		}
+		every_vassal = {
+			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
+				has_variable = zg361_pending_grade
+				var:zg361_pending_grade = 1
+			}
+			root = { change_variable = { name = zga_mixed_325_actual_before add = 1 } }
+		}
+		if = {
+			limit = { zg361_can_calibrate_demote_trigger = yes }
+			zg361_calibrate_demote_effect = yes
+			set_variable = { name = zga_mixed_35_actual value = 0 }
+			set_variable = { name = zga_mixed_325_actual value = 0 }
+			every_vassal = {
+				limit = {
+					zg361_is_current_liege_review_record_trigger = yes
+					has_variable = zg361_pending_grade
+					var:zg361_pending_grade = 2
+				}
+				root = { change_variable = { name = zga_mixed_35_actual add = 1 } }
+			}
+			every_vassal = {
+				limit = {
+					zg361_is_current_liege_review_record_trigger = yes
+					has_variable = zg361_pending_grade
+					var:zg361_pending_grade = 1
+				}
+				root = { change_variable = { name = zga_mixed_325_actual add = 1 } }
+			}
+			if = {
+				limit = {
+					scope:zga_mixed_protected_newcomer = {
+						has_character_flag = zg361_newcomer_this_cycle
+						var:zg361_pending_grade = 2
+					}
+					scope:zga_mixed_demote_target = {
+						NOT = { has_character_flag = zg361_newcomer_this_cycle }
+						var:zg361_pending_grade = 1
+					}
+					scope:zga_mixed_rescue_target = {
+						NOT = { has_character_flag = zg361_newcomer_this_cycle }
+						var:zg361_pending_grade = 2
+					}
+					var:zga_mixed_35_actual = var:zga_mixed_35_actual_before
+					var:zga_mixed_325_actual = var:zga_mixed_325_actual_before
+				}
+				debug_log = "ZGA: TEST PASS calibration_c_mixed_newcomer_atomic_swap"
+			}
+			else = { debug_log = "ZGA: TEST FAIL calibration_c_mixed_newcomer_atomic_swap" }
+		}
+		else = { debug_log = "ZGA: TEST FAIL calibration_c_mixed_precondition" }
+
+		# Restore the all-newcomer production roster for the visible calibration
+		# event and its existing direct-publication acceptance path.
+		scope:zga_mixed_protected_newcomer = {
+			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
+			remove_variable = zga_original_pending_grade
+		}
+		scope:zga_mixed_demote_target = {
+			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
+			remove_variable = zga_original_pending_grade
+			add_character_flag = zg361_newcomer_this_cycle
+		}
+		scope:zga_mixed_rescue_target = {
+			set_variable = { name = zg361_pending_grade value = var:zga_original_pending_grade }
+			remove_variable = zga_original_pending_grade
+			add_character_flag = zg361_newcomer_this_cycle
+		}
+	}
+	else = { debug_log = "ZGA: TEST FAIL calibration_c_mixed_targets_unavailable" }
+	remove_variable = zga_all_new_35_before
+	remove_variable = zga_all_new_325_before
+	remove_variable = zga_all_new_325_actual
+	remove_variable = zga_all_new_protected_actual
+	remove_variable = zga_mixed_35_actual_before
+	remove_variable = zga_mixed_325_actual_before
+	remove_variable = zga_mixed_35_actual
+	remove_variable = zga_mixed_325_actual
 }
 
 zga_prepare_player_review_effect = {
@@ -296,6 +472,7 @@ zga_prepare_player_review_effect = {
 	remove_variable = zga_newcomer_bottom_n
 	remove_variable = zga_pending_grade_n
 	remove_variable = zga_pending_grade_sum
+	zga_verify_calibration_c_regressions_effect = yes
 
 	# A duplicate entry while calibration is pending must be a complete no-op.
 	set_variable = { name = zga_review_serial_before_duplicate value = var:zg361_review_serial }
@@ -332,11 +509,13 @@ zga_verify_player_review_effect = {
 			has_variable = zg361_scoreboard_managed_year
 			var:zg361_scoreboard_managed_year > 1000
 			has_variable = zg361_scoreboard_managed_n
+			has_variable = zg361_scoreboard_managed_shown_n
 			has_variable = zg361_scoreboard_managed_375_n
 			has_variable = zg361_scoreboard_managed_35_n
 			has_variable = zg361_scoreboard_managed_325_n
-			var:zga_board_rows = var:zg361_scoreboard_managed_n
-			var:zga_board_valid_rows = var:zg361_scoreboard_managed_n
+			var:zga_board_rows = var:zg361_scoreboard_managed_shown_n
+			var:zga_board_valid_rows = var:zg361_scoreboard_managed_shown_n
+			var:zg361_scoreboard_managed_shown_n <= var:zg361_scoreboard_managed_n
 			var:zg361_scoreboard_managed_n = var:zg361_cohort_n
 		}
 		debug_log = "ZGA: TEST PASS scoreboard_header_and_rows"

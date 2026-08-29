@@ -61,6 +61,22 @@ WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 THUMBNAIL_DIMENSIONS = (640, 640)
 THUMBNAIL_SIZE_LIMIT = 1_000_000
+LOCALIZATION_AUDIT_FORMAT_VERSION = 1
+LOCALIZATION_AUDIT_RELATIVE_PATH = PurePosixPath(
+    "docs/release-localization-audit.json"
+)
+LOCALIZATION_AUDIT_CHECKS = (
+    "key_order",
+    "protected_tokens",
+    "quality",
+    "no_english_placeholders",
+    "target_script",
+)
+LOCALIZATION_FAMILIES = ("zg361", "zg361_mechanisms")
+LOCALIZATION_SOURCE_LANGUAGES = ("english", "simp_chinese")
+LOCALIZATION_TARGET_LANGUAGES = tuple(
+    sorted(REQUIRED_LOCALIZATION_LANGUAGES - set(LOCALIZATION_SOURCE_LANGUAGES))
+)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -316,6 +332,112 @@ def _require_full_revision(revision: str | None) -> str:
     return revision
 
 
+def _localization_paths(languages: tuple[str, ...]) -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            f"{PRODUCT_ID}/localization/{language}/{family}_l_{language}.yml"
+            for language in languages
+            for family in LOCALIZATION_FAMILIES
+        )
+    )
+
+
+LOCALIZATION_AUDIT_SOURCE_PATHS = _localization_paths(
+    LOCALIZATION_SOURCE_LANGUAGES
+)
+LOCALIZATION_AUDIT_TARGET_PATHS = _localization_paths(
+    LOCALIZATION_TARGET_LANGUAGES
+)
+
+
+def _verify_localization_audit_entries(
+    source: Path,
+    entries: object,
+    expected_paths: tuple[str, ...],
+    label: str,
+) -> None:
+    if not isinstance(entries, list):
+        raise ValueError(f"release localization audit {label} must be a list")
+    paths: list[str] = []
+    for entry in entries:
+        if (
+            not isinstance(entry, dict)
+            or set(entry) != {"path", "sha256", "size"}
+            or not isinstance(entry["path"], str)
+            or not isinstance(entry["size"], int)
+            or isinstance(entry["size"], bool)
+            or entry["size"] < 0
+            or not isinstance(entry["sha256"], str)
+            or re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]) is None
+        ):
+            raise ValueError(
+                f"release localization audit contains an invalid {label} entry"
+            )
+        paths.append(entry["path"])
+    if tuple(paths) != expected_paths:
+        raise ValueError(
+            f"release localization audit {label} inventory must exactly cover "
+            f"{len(expected_paths)} sorted canonical files"
+        )
+    for entry in entries:
+        relative = PurePosixPath(entry["path"]).relative_to(PRODUCT_ID)
+        path = source / relative
+        if not path.is_file():
+            raise ValueError(
+                f"release localization audit references missing file: {entry['path']}"
+            )
+        if path.stat().st_size != entry["size"] or sha256_file(path) != entry["sha256"]:
+            raise ValueError(
+                f"release localization audit is stale for: {entry['path']}"
+            )
+
+
+def verify_release_localization_audit(source: Path) -> dict[str, object]:
+    """Require a current GREEN audit covering all release translation files."""
+    source = Path(source).resolve()
+    path = source / LOCALIZATION_AUDIT_RELATIVE_PATH
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as error:
+        raise ValueError(
+            f"formal release requires localization audit report: "
+            f"{LOCALIZATION_AUDIT_RELATIVE_PATH.as_posix()}"
+        ) from error
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError(f"release localization audit is not valid UTF-8 JSON: {error}") from error
+    required = {
+        "checks",
+        "format_version",
+        "product_id",
+        "result",
+        "source_files",
+        "target_files",
+    }
+    if not isinstance(payload, dict) or set(payload) != required:
+        raise ValueError("release localization audit fields mismatch")
+    if (
+        type(payload["format_version"]) is not int
+        or payload["format_version"] != LOCALIZATION_AUDIT_FORMAT_VERSION
+        or payload["product_id"] != PRODUCT_ID
+        or payload["result"] != "GREEN"
+        or payload["checks"] != list(LOCALIZATION_AUDIT_CHECKS)
+    ):
+        raise ValueError("release localization audit identity/check set mismatch")
+    _verify_localization_audit_entries(
+        source,
+        payload["source_files"],
+        LOCALIZATION_AUDIT_SOURCE_PATHS,
+        "source_files",
+    )
+    _verify_localization_audit_entries(
+        source,
+        payload["target_files"],
+        LOCALIZATION_AUDIT_TARGET_PATHS,
+        "target_files",
+    )
+    return payload
+
+
 def release_identity(source: Path) -> dict[str, str]:
     source = Path(source).resolve()
     if source != DEFAULT_SOURCE.resolve():
@@ -327,6 +449,9 @@ def release_identity(source: Path) -> dict[str, str]:
     tag = product_tag(version)
     if tag not in set(git_output("tag", "--points-at", "HEAD").splitlines()):
         raise ValueError(f"release build requires tag {tag} on HEAD")
+    if git_output("cat-file", "-t", f"refs/tags/{tag}") != "tag":
+        raise ValueError(f"release build requires annotated tag {tag}")
+    verify_release_localization_audit(source)
     return {"mod_version": version, "git_tag": tag, "git_sha": revision}
 
 
@@ -618,7 +743,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--check", action="store_true", help="prove two builds byte reproducible")
-    modes.add_argument("--release", action="store_true", help="require a clean matching release tag")
+    modes.add_argument(
+        "--release",
+        action="store_true",
+        help=(
+            "require a clean matching annotated tag and current GREEN "
+            "release-localization audit"
+        ),
+    )
     modes.add_argument("--verify", type=Path, help="directory to verify")
     parser.add_argument("--manifest", type=Path, help="manifest used by --verify")
     parser.add_argument(

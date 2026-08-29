@@ -16,6 +16,42 @@ zg361_is_reviewable_vassal_trigger = {
 	liege = { zg361_is_celestial_liege_trigger = yes }
 }
 
+# 京察合法来宾：命令签发、活动开办与逾期追责必须共用这一口径。
+# 直属关系由调用处的 any_vassal / scope:host 约束，这里只定义人物资格。
+zg361_is_jingcha_eligible_guest_trigger = {
+	zg361_is_reviewable_vassal_trigger = yes
+	age >= 16
+	is_available = yes
+	is_imprisoned = no
+}
+
+# “踩一个人”只能在真实存在一名非新人 3.5 与一名 3.25 时开放。
+# 这样校准永远是等额交换，不会凭空制造末位，也不会击穿新人保护。
+zg361_can_calibrate_demote_trigger = {
+	any_vassal = {
+		zg361_is_current_liege_review_record_trigger = yes
+		has_variable = zg361_pending_grade
+		var:zg361_pending_grade = 2
+		NOT = { has_character_flag = zg361_newcomer_this_cycle }
+	}
+	any_vassal = {
+		zg361_is_current_liege_review_record_trigger = yes
+		has_variable = zg361_pending_grade
+		var:zg361_pending_grade = 1
+	}
+}
+
+# 背靠背互评只有在本直属考核单元达到强制分布门槛时才有下期 KPI 意义。
+zg361_has_ranked_peer_cohort_trigger = {
+	zg361_is_reviewable_vassal_trigger = yes
+	liege = {
+		any_vassal = {
+			count >= 3
+			zg361_is_reviewable_vassal_trigger = yes
+		}
+	}
+}
+
 # 本周期淘汰候选人：连续 3.25 且本周期仍 3.25（用于玩家领主事件内重新推导名单）
 # 必须仍属于做出该记录的直属领主，且记录来自该领主的最新考核轮次。
 zg361_is_current_liege_review_record_trigger = {

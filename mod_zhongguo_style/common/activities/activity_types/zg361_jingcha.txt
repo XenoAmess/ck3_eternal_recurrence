@@ -17,8 +17,8 @@ activity_zg361_jingcha = {
 		is_available = yes
 		age >= 16
 		any_vassal = {
-			count >= 3
-			zg361_is_reviewable_vassal_trigger = yes
+			count >= 1
+			zg361_is_jingcha_eligible_guest_trigger = yes
 		}
 	}
 
@@ -46,7 +46,17 @@ activity_zg361_jingcha = {
 					}
 				}
 			}
-			scope:host = { remove_variable = zg361_jingcha_pending }
+			scope:host = {
+				if = {
+					limit = {
+						is_alive = yes
+						has_game_rule = zg361_on
+						zg361_is_celestial_liege_trigger = yes
+					}
+					zg361_excuse_jingcha_assembly_effect = yes
+				}
+				else = { zg361_clear_jingcha_mandate_effect = yes }
+			}
 			# 与原版活动一致：主办者失能时播放专用取消事件。
 			if = {
 				limit = { scope:host = { is_incapable = yes } }
@@ -130,7 +140,7 @@ activity_zg361_jingcha = {
 			limit = { this = scope:host }
 			# 只有活动真正落幕才算履责；单纯打开/关闭规划器不算。
 			scope:host = {
-				remove_variable = zg361_jingcha_pending
+				zg361_clear_jingcha_mandate_effect = yes
 				zg361_run_review_effect = yes
 			}
 			scope:activity = {
@@ -176,9 +186,7 @@ activity_zg361_jingcha = {
 	}
 
 	can_be_activity_guest = {
-		zg361_is_reviewable_vassal_trigger = yes
-		age >= 16
-		is_available = yes
+		zg361_is_jingcha_eligible_guest_trigger = yes
 		liege = scope:host
 	}
 

@@ -24,7 +24,9 @@ jobs:
       - name: Install static dependencies
         run: python -m pip install -r tools/requirements-static.txt
       - name: Compile Python tools
-        run: python -m compileall -q tools
+        run: |
+          python -m compileall -q tools
+          python -m compileall -q mod_zhongguo_style/tools
       - name: Test succession GUI projection contract
         run: python tools/test_gen_no_heir_gui.py
       - name: Test release manifest verification
@@ -34,7 +36,38 @@ jobs:
       - name: Test Ox Here release tooling
         run: python tools/test_build_ox_here_release.py
       - name: Test ZhongGuo 361 release tooling
-        run: python tools/test_build_mod_zhongguo_style_release.py
+        run: |
+          python tools/test_build_mod_zhongguo_style_release.py
+          python tools/test_verify_zhongguo_workshop_cache.py
+      - name: Test ZhongGuo 361 generators and acceptance contracts
+        run: |
+          python mod_zhongguo_style/tools/test_gen_361_mechanisms.py
+          python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
+          python tools/test_gen_zhongguo_acceptance_cases.py
+          python tools/test_run_zhongguo_promo_capture.py
+          python tools/test_run_zhongguo_workshop_acceptance.py
+      - name: Test ZhongGuo 361 release localization
+        run: python mod_zhongguo_style/tools/test_prepare_release_localization.py
+      - name: Verify ZhongGuo 361 generated and static content
+        run: |
+          python mod_zhongguo_style/tools/gen_361_mechanisms.py --check
+          python mod_zhongguo_style/tools/gen_scoreboard_snapshot.py --check
+          python mod_zhongguo_style/tools/validate_local.py
+      - name: Verify ZhongGuo 361 release localization audit
+        run: |
+          python mod_zhongguo_style/tools/prepare_release_localization.py audit --write-report mod_zhongguo_style/docs/release-localization-audit.json
+          git ls-files --error-unmatch mod_zhongguo_style/docs/release-localization-audit.json
+          git diff --exit-code -- mod_zhongguo_style/docs/release-localization-audit.json
+      - name: Verify ZhongGuo 361 thumbnail and Workshop media
+        run: |
+          python mod_zhongguo_style/tools/compose_thumbnail.py --check
+          python mod_zhongguo_style/tools/test_compose_workshop_media.py
+          python mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
+      - name: Test and validate ZhongGuo 361 promo project
+        run: |
+          python mod_zhongguo_style/tools/test_promo_video.py
+          python mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
+          python mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
       - name: Test MiniMax localization caller
         run: python tools/test_translate_localization_minimax.py
       - name: Test full-agent showcase builder

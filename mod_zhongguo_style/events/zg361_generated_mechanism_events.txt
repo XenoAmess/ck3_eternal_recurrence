@@ -834,7 +834,7 @@ zg361m.17 = {
 	}
 }
 
-# 018 个人告身与三账本清算单
+# 018 个人告身与四重后果清算单
 zg361m.18 = {
 	type = character_event
 	theme = crown

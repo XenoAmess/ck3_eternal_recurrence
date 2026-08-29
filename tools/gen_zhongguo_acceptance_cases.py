@@ -17,6 +17,7 @@ from zg361_mechanism_data import LEDGERS, load_mechanisms, mechanism_deltas  # n
 
 
 BOM = b"\xef\xbb\xbf"
+SCOREBOARD_SLOT_COUNT = 80
 OUTPUT = (
     FIXTURE_ROOT
     / "common"
@@ -120,7 +121,7 @@ def render_scoreboard_verifier() -> list[str]:
         "\tset_variable = { name = zga_board_35 value = 0 }",
         "\tset_variable = { name = zga_board_325 value = 0 }",
     ]
-    for slot in range(1, 81):
+    for slot in range(1, SCOREBOARD_SLOT_COUNT + 1):
         stem = f"zg361_sb_m_{slot:02d}"
         lines.extend(
             (
@@ -135,6 +136,9 @@ def render_scoreboard_verifier() -> list[str]:
                 f"\t\t\t\thas_variable = {stem}_values",
                 f"\t\t\t\thas_variable = {stem}_grade",
                 f"\t\t\t\thas_variable = {stem}_streak",
+                f"\t\t\t\thas_variable = {stem}_title",
+                f"\t\t\t\thas_variable = {stem}_promotion",
+                f"\t\t\t\thas_variable = {stem}_pip",
                 f"\t\t\t\tvar:{stem}_rank = {slot}",
                 "\t\t\t}",
                 "\t\t\tchange_variable = { name = zga_board_valid_rows add = 1 }",
@@ -181,11 +185,11 @@ def main(argv: list[str] | None = None) -> int:
         if not OUTPUT.is_file() or OUTPUT.read_bytes() != expected:
             print(f"RED: stale generated fixture: {OUTPUT.relative_to(ROOT)}")
             return 1
-        print("GREEN: checked 361 live cases and 80 fixed scoreboard slots")
+        print(f"GREEN: checked 361 live cases and {SCOREBOARD_SLOT_COUNT} fixed scoreboard slots")
         return 0
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_bytes(expected)
-    print("GREEN: generated 361 live cases and 80 fixed scoreboard slots")
+    print(f"GREEN: generated 361 live cases and {SCOREBOARD_SLOT_COUNT} fixed scoreboard slots")
     return 0
 
 

@@ -5,7 +5,7 @@
 # 可调常量
 # ============================================================
 
-zg361_min_cohort_value = 3					# 考核池小于该人数时不排名（全员不评，只快照）
+zg361_min_cohort_value = 3					# 小于该人数不启用强制分布/校准；1–2 人仍排名并全员结算 3.5
 
 zg361_nomination_score_bonus_value = 30		# 3.75 晋升提名：任命 candidate_score 变量加成
 zg361_promotion_score_bonus_value = 80		# 连续两次 3.75 晋升通道：candidate_score 变量大额加成
@@ -14,7 +14,7 @@ zg361_appeal_influence_cost_value = 150		# 申诉互动花费影响力
 zg361_final_appeal_influence_cost_value = 200	# 末位淘汰最后申诉花费（事件内概率写死 40%）
 zg361_wealth_bribe_gold_value = 300			# 散尽家财改判降岗的花费
 
-# 3.25 双账本处分：地方国库罚没 + 个人金币扣减；申诉改判时原数退回。
+# 3.25 四重后果中的即时三账：地方国库、个人金币与贤能；申诉改判时按实退回。
 zg361_perf_treasury_penalty_value = 50
 zg361_perf_gold_penalty_value = 25
 

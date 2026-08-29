@@ -4,6 +4,7 @@
   "source": "docs/361-expansion-options.md",
   "acceptance": {
     "scope": "reference choice for every mechanism executed in one real CK3 fixture batch",
+    "logical_group_semantics": "live_wave is a coverage grouping inside that single CK3 run, not a separate game launch",
     "report": "docs/testing-report-2026-08-29.md",
     "run_id": "zga_20260829_061314_ea5f04ad",
     "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
@@ -815,8 +816,8 @@
       "group": "C",
       "group_title": "申诉、PIP 与末位退出",
       "priority": "P0",
-      "title_cn": "个人告身与三账本清算单",
-      "title_en": "Personal Record and Three-Ledger Settlement",
+      "title_cn": "个人告身与四重后果清算单",
+      "title_en": "Personal Record and Fourfold Settlement",
       "profile": "assessment",
       "reference_choice": "a",
       "implementation": {

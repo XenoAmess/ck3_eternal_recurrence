@@ -15,7 +15,7 @@ zg361.40 = {
 		has_variable = zg361_jingcha_pending
 	}
 	on_trigger_fail = {
-		remove_variable = zg361_jingcha_pending
+		zg361_clear_jingcha_mandate_effect = yes
 	}
 
 	option = { # 法定默认：进入免费活动规划器
@@ -55,15 +55,23 @@ zg361.41 = {
 				is_imprisoned = no
 				NOT = { is_incapable = yes }
 				any_vassal = {
-					count >= 3
-					zg361_is_reviewable_vassal_trigger = yes
+					count >= 1
+					zg361_is_jingcha_eligible_guest_trigger = yes
 				}
 			}
 			zg361_refuse_jingcha_effect = yes
 		}
+		else_if = {
+			limit = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+			}
+			# 仍有考核资格但已无法合法集会：豁免活动，不漏掉本轮考核。
+			zg361_excuse_jingcha_assembly_effect = yes
+		}
 		else = {
-			# 制度关闭、降阶、失能或班子不足时撤销义务，不惩罚。
-			remove_variable = zg361_jingcha_pending
+			# 制度关闭、死亡、降阶或改制时不再考核，只清理旧召集令。
+			zg361_clear_jingcha_mandate_effect = yes
 		}
 	}
 

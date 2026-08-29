@@ -18,6 +18,7 @@ import uuid
 from pathlib import Path
 
 import run_acceptance as acceptance
+import build_mod_zhongguo_style_release as release
 import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
 
@@ -57,8 +58,10 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST PASS newcomer_snapshot_prepared_by_product",
     "ZGA: TEST PASS newcomer_first_review_protected",
     "ZGA: TEST PASS player_calibration_pending",
+    "ZGA: TEST PASS calibration_c_all_newcomer_noop",
+    "ZGA: TEST PASS calibration_c_mixed_newcomer_atomic_swap",
     "ZGA: TEST PASS pending_review_idempotent",
-    "ZGA: TEST PASS grade_325_three_account_penalty",
+    "ZGA: TEST PASS grade_325_fourfold_penalty",
     "ZGA: TEST PASS appeal_exact_fixed_refund_and_salary_stop",
     "ZGA: TEST PASS appeal_refund_idempotent",
     "ZGA: MECHANISM BATCH BEGIN 361",
@@ -93,6 +96,12 @@ PROMO_POLICY_CARDS = (
     (26, "演示政策卡 #026", "真实贡献 / 上司可见度双账", "分别冻结真实贡献"),
     (361, "演示政策卡 #361", "三六一绩效宪章", "锁定证据公平"),
 )
+PROMO_INTERRUPTION_MAX_DISMISSALS = 3
+PROMO_INTERRUPTION_DEFAULT_OBSERVE_S = 1.0
+# The generated 180x44 toggle is anchored immediately left of CK3's 50-unit
+# right HUD rail.  Constrain positive OCR to this normalized lane so the old
+# detached {-205,165} placement cannot accidentally satisfy live acceptance.
+SCOREBOARD_BUTTON_REGION = (0.86, 0.05, 0.985, 0.16)
 
 
 def log(message: str) -> None:
@@ -363,6 +372,10 @@ def product_source_errors() -> list[str]:
     for token in (
         "zg361_run_review_effect = {",
         'debug_log = "ZG361: annual review tick"',
+        "limit = { var:zg361_cohort_n >= 1 }",
+        "name = zg361_pending_35_n value = var:zg361_cohort_n",
+        "name = zg361_pending_grade value = 2",
+        'debug_log = "ZG361: small cohort bypassed forced distribution and settled at 3.5"',
         "zg361_publish_scoreboard_effect = yes",
         "zg361_clear_scoreboard_m_slots_effect = yes",
         "zg361_write_managed_scoreboard_slot_effect = yes",
@@ -370,6 +383,10 @@ def product_source_errors() -> list[str]:
         "zg361_scoreboard_managed_375_n",
         "zg361_scoreboard_managed_35_n",
         "zg361_scoreboard_managed_325_n",
+        "zg361_scoreboard_managed_shown_n",
+        "zg361_sb_m_01_title",
+        "zg361_sb_m_01_promotion",
+        "zg361_sb_m_01_pip",
         "zg361_copy_received_scoreboard_slots_effect = yes",
     ):
         if token not in scoreboard_effects_text:
@@ -432,6 +449,11 @@ def product_source_errors() -> list[str]:
     gui_text = gui.read_text(encoding="utf-8-sig") if gui.is_file() else ""
     for token in (
         'name = "zg361_scoreboard_toggle"',
+        'position = { -60 90 }',
+        "Not(IsRightWindowOpen)",
+        "Not(IsGameViewOpen('outliner'))",
+        "Not(IsPauseMenuShown)",
+        "IsDefaultGUIMode",
         'name = "zg361_scoreboard_panel"',
         "zg361_sb_m_01_kpi",
         "zg361_scoreboard_tab_managed",
@@ -508,26 +530,128 @@ def fixture_source_errors() -> list[str]:
         "set_variable = { name = zg361_jingcha_pending value = 1 }",
         "trigger_event = zg361.40",
         "jingcha_mandate_issued",
-        "grade_325_three_account_penalty",
+        "grade_325_fourfold_penalty",
         "appeal_exact_fixed_refund_and_salary_stop",
         "appeal_refund_idempotent",
         "newcomer_first_review_protected",
         "pending_review_idempotent",
         "newcomer_first_review_result_without_325",
+        "calibration_c_all_newcomer_noop",
+        "calibration_c_mixed_newcomer_atomic_swap",
+        "var:zga_all_new_protected_actual = var:zg361_cohort_n",
+        "zga_original_pending_grade",
+        "var:zga_mixed_35_actual = var:zga_mixed_35_actual_before",
+        "var:zga_mixed_325_actual = var:zga_mixed_325_actual_before",
         "personal_result_target_selected_from_prior_tail",
         "order_by = var:zg361_rank",
         "settled_review_same_year_idempotent",
         "jingcha_refusal_superior_opinion_and_kpi_minus_50",
         "refusal_reason_consumed_once_by_original_superior",
+        "ai_small_cohort_review_scheduled",
+        "ai_small_cohort_candidate_unavailable",
+        "ai_small_cohort_neutral_settlement",
+        "ai_small_cohort_same_year_idempotent",
     ):
         if token not in scenario_text:
             errors.append(f"fixture scenario contract missing {token}")
     return errors
 
 
-def preflight() -> None:
+def verified_workshop_runtime(
+    runtime_source: Path, workshop_manifest: Path
+) -> dict[str, object]:
+    """Verify a real Workshop cache leaf against the tagged release sidecar."""
+
+    runtime_source = Path(runtime_source).expanduser().resolve()
+    workshop_manifest = Path(workshop_manifest).expanduser().resolve()
+    if not runtime_source.is_dir():
+        raise acceptance.RunnerError(
+            f"Workshop runtime source directory missing: {runtime_source}"
+        )
+    if not workshop_manifest.is_file():
+        raise acceptance.RunnerError(
+            f"Workshop verification manifest missing: {workshop_manifest}"
+        )
+    try:
+        count = release.verify_manifest(
+            runtime_source, workshop_manifest, workshop_cache=True
+        )
+        payload = json.loads(workshop_manifest.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        raise acceptance.RunnerError(
+            f"Workshop runtime manifest verification failed: {error}"
+        ) from error
+    item_id = str(payload["workshop_item_id"])
+    if runtime_source.name != item_id:
+        raise acceptance.RunnerError(
+            "Workshop runtime source must be the numeric cache leaf matching "
+            f"the manifest item ID: {runtime_source.name!r} != {item_id!r}"
+        )
+    steam_root = terminal.steam_userdata_root()
+    app_roots = [
+        path.resolve() for path in isolated.steam_workshop_app_roots(steam_root)
+    ]
+    isolated.validate_workshop_target(runtime_source, app_roots)
+    try:
+        head = git_text("rev-parse", "HEAD")
+    except (OSError, subprocess.SubprocessError) as error:
+        raise acceptance.RunnerError(
+            f"cannot bind Workshop cache to Git HEAD: {error}"
+        ) from error
+    if payload["git_sha"] != head:
+        raise acceptance.RunnerError(
+            f"Workshop manifest Git SHA {payload['git_sha']} does not match HEAD {head}"
+        )
+    if payload["git_tag"] != release.product_tag(str(payload["mod_version"])):
+        raise acceptance.RunnerError(
+            "Workshop manifest is not bound to the formal product tag"
+        )
+    return {
+        "verified_workshop_cache": True,
+        "runtime_source_kind": "verified_workshop_cache",
+        "runtime_source_path": str(runtime_source),
+        "workshop_item_id": item_id,
+        "workshop_manifest_path": str(workshop_manifest),
+        "workshop_manifest_sha256": isolated.sha256_file(workshop_manifest),
+        "workshop_manifest_git_sha": payload["git_sha"],
+        "workshop_manifest_git_tag": payload["git_tag"],
+        "verified_file_count": count,
+    }
+
+
+def preflight(
+    runtime_source: Path = SOURCE, workshop_manifest: Path | None = None
+) -> dict[str, object]:
     errors = fixture_source_errors()
     errors.extend(product_source_errors())
+    runtime_source = Path(runtime_source).expanduser().resolve()
+    runtime_identity: dict[str, object] = {
+        "verified_workshop_cache": False,
+        "runtime_source_kind": "canonical_development_projection",
+        "runtime_source_path": str(SOURCE.resolve()),
+        "workshop_item_id": None,
+        "workshop_manifest_path": None,
+        "workshop_manifest_sha256": None,
+        "workshop_manifest_git_sha": None,
+        "workshop_manifest_git_tag": None,
+        "verified_file_count": None,
+    }
+    if runtime_source == SOURCE.resolve():
+        if workshop_manifest is not None:
+            errors.append(
+                "--workshop-manifest requires --workshop-cache-source"
+            )
+    elif workshop_manifest is None:
+        errors.append(
+            "a non-canonical runtime source requires --workshop-manifest"
+        )
+    else:
+        try:
+            runtime_identity = verified_workshop_runtime(
+                runtime_source, workshop_manifest
+            )
+        except acceptance.RunnerError as error:
+            errors.append(str(error))
     fixture_generation = subprocess.run(
         [sys.executable, str(ROOT / "tools" / "gen_zhongguo_acceptance_cases.py"), "--check"],
         cwd=ROOT,
@@ -588,6 +712,7 @@ def preflight() -> None:
         f"preflight passed: CK3={EXPECTED_GAME_VERSION}, "
         f"exe_sha256={EXPECTED_EXE_SHA256}, desktop={width}x{height}"
     )
+    return runtime_identity
 
 
 def render_presets() -> str:
@@ -604,7 +729,10 @@ def render_presets() -> str:
     )
 
 
-def bootstrap_userdir(userdir: Path) -> dict[str, object]:
+def bootstrap_userdir(
+    userdir: Path, product_source: Path = SOURCE
+) -> dict[str, object]:
+    product_source = Path(product_source).resolve()
     for path in (
         userdir / "mod",
         userdir / "mod-content",
@@ -617,8 +745,10 @@ def bootstrap_userdir(userdir: Path) -> dict[str, object]:
     product = userdir / "mod-content" / "zhongguo_361"
     product.mkdir(parents=True)
     product_files: list[str] = []
-    for source_path in sorted(path for path in SOURCE.rglob("*") if path.is_file()):
-        relative = source_path.relative_to(SOURCE)
+    for source_path in sorted(
+        path for path in product_source.rglob("*") if path.is_file()
+    ):
+        relative = source_path.relative_to(product_source)
         if (
             relative.as_posix() == "README.md"
             or relative.parts[0] in SOURCE_ONLY_RUNTIME_ROOTS
@@ -881,6 +1011,23 @@ class MarkerStream:
                 raise acceptance.RunnerError(
                     "scheduled AI non-independent probe emitted fewer than 3 rows"
                 )
+        small_scheduled = self.count("ZGA: TEST INFO ai_small_cohort_review_scheduled")
+        small_unavailable = self.count(
+            "ZGA: TEST INFO ai_small_cohort_candidate_unavailable"
+        )
+        if small_scheduled + small_unavailable != 1:
+            raise acceptance.RunnerError(
+                "AI small-cohort probe must be either scheduled or explicitly unavailable"
+            )
+        if small_scheduled:
+            for marker in (
+                "ZGA: TEST PASS ai_small_cohort_neutral_settlement",
+                "ZGA: TEST PASS ai_small_cohort_same_year_idempotent",
+            ):
+                if self.count(marker) != 1:
+                    raise acceptance.RunnerError(
+                        f"scheduled AI small-cohort probe missing {marker}"
+                    )
 
 
 def project_diagnostics(
@@ -935,7 +1082,7 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
         artifacts,
         attempts=2,
     )
-    for marker in REQUIRED_FIXTURE_MARKERS[:9]:
+    for marker in REQUIRED_FIXTURE_MARKERS[:13]:
         stream.wait(marker, 30)
     isolated.wait_for_gameplay_hud(artifacts)
     acceptance.ensure_game_paused(artifacts, "05_song_emperor")
@@ -1013,25 +1160,43 @@ def capture_scoreboard_gui(
     acceptance.deliberate_click(result_option, "production review result summary")
     time.sleep(0.8)
 
-    # The initialization decision can leave the native Decisions drawer behind
-    # the event stack. Close it only when OCR proves that drawer is still open.
+    # Deliberately hold the native Decisions drawer open and prove that the
+    # additive HUD toggle is suppressed.  The old layout rendered the 180x44
+    # button on top of this drawer, hiding decision content and stealing input.
+    isolated.ensure_decisions_panel(artifacts, "07_scoreboard_overlay_gate")
     acceptance.focus_ck3()
     image = acceptance.ImageGrab.grab()
     if acceptance.find_ocr_text(
         image, "决议", (0.55, 0.00, 0.90, 0.13), contains=True
+    ) is None:
+        image.save(artifacts / "timeout_07_scoreboard_right_panel_gate.png")
+        raise acceptance.RunnerError(
+            "native Decisions drawer was not open for scoreboard overlay gate"
+        )
+    if acceptance.find_ocr_text(
+        image, "考核榜", acceptance.FULL_SCREEN_REGION, contains=False
     ) is not None:
-        image.save(artifacts / "07_decisions_drawer_before_close.png")
-        acceptance.pyautogui.press("escape")
-        time.sleep(0.8)
+        image.save(artifacts / "red_07_scoreboard_overlays_right_panel.png")
+        raise acceptance.RunnerError(
+            "performance-board HUD toggle overlaps a native right-side panel"
+        )
+    image.save(artifacts / "07_scoreboard_hidden_by_right_panel.png")
+    acceptance.pyautogui.press("escape")
+    time.sleep(0.8)
     button = acceptance.wait_for_ocr_text(
         "考核榜",
-        acceptance.FULL_SCREEN_REGION,
+        SCOREBOARD_BUTTON_REGION,
         20,
         artifacts,
         "07_scoreboard_button.png",
         contains=True,
         stable_hits=1,
     )
+    screen_width, screen_height = acceptance.pyautogui.size()
+    button_center_normalized = [
+        round(button[0] / screen_width, 4),
+        round(button[1] / screen_height, 4),
+    ]
     acceptance.deliberate_click(button, "production performance-board button")
     acceptance.wait_for_ocr_text(
         "天朝官员考核榜",
@@ -1092,8 +1257,13 @@ def capture_scoreboard_gui(
         recorder.hold(1.0)
     return {
         "button_ocr": True,
+        "right_panel_suppression_ocr": True,
         "managed_panel_ocr": True,
+        "right_panel_suppression_artifact": "07_scoreboard_hidden_by_right_panel.png",
         "button_artifact": "07_scoreboard_button.png",
+        "button_center_px": list(button),
+        "button_center_normalized": button_center_normalized,
+        "button_expected_region": list(SCOREBOARD_BUTTON_REGION),
         "panel_artifact": "08_scoreboard_panel.png",
         "panel_ocr_artifact": "08_scoreboard_panel_ocr.json",
         "normalized_ocr": rendered_text,
@@ -1341,9 +1511,14 @@ def capture_received_scoreboard(
             last_image.save(artifacts / "timeout_11_superior_result_accept.png")
         raise acceptance.RunnerError("real 3.25 result response was not accepted")
     isolated.wait_for_gameplay_hud(artifacts)
+    # The result event resumes the speed that was active before it appeared.
+    # Pause immediately so unrelated court events cannot grow over the
+    # scoreboard while the promo recorder holds a clean shot.
+    acceptance.ensure_game_paused(artifacts, "11_received_result")
+    settle_promo_interruptions(artifacts, "11_received_before_board")
     button = acceptance.wait_for_ocr_text(
         "考核榜",
-        acceptance.FULL_SCREEN_REGION,
+        SCOREBOARD_BUTTON_REGION,
         20,
         artifacts,
         "11_received_scoreboard_button.png",
@@ -1351,6 +1526,14 @@ def capture_received_scoreboard(
         stable_hits=1,
     )
     acceptance.deliberate_click(button, "open received performance board")
+    # A native event can already be queued while the result event is closing.
+    # Observe again after the board opens so a late event is dismissed while
+    # the intended board remains underneath it.
+    settle_promo_interruptions(
+        artifacts,
+        "11_received_after_board_open",
+        observation_s=2.5,
+    )
     rendered_text = acceptance.wait_for_ocr_tokens(
         ("天朝官员考核榜", "本人所属考核单元", "3.25"),
         ("zg361_", "localize", "error"),
@@ -1361,11 +1544,205 @@ def capture_received_scoreboard(
     )
     recorder.mark("received_scoreboard_with_325_visible")
     recorder.hold(3.0)
+    settle_promo_interruptions(artifacts, "11_received_before_close")
     close_scoreboard_panel(artifacts, "11_received")
+    settle_promo_interruptions(artifacts, "11_received_after_close")
+    acceptance.ensure_game_paused(artifacts, "11_received_policy_setup")
     return {
         "received_panel_artifact": "11_received_scoreboard.png",
         "normalized_ocr": rendered_text,
     }
+
+
+def promo_event_modal_evidence(
+    items: list[dict[str, object]], width: int, height: int
+) -> bool:
+    """Require both a title and narrative body before treating UI as an event.
+
+    The performance board itself has lower rows in the same lane as classic
+    event options.  Requiring a wide narrative line in the event body keeps the
+    generic option ranker from ever clicking an ordinary board row.
+    """
+    title = any(
+        0.18 <= item["center"][0] / width <= 0.76
+        and 0.10 <= item["center"][1] / height <= 0.36
+        and (item["bbox"][2] - item["bbox"][0]) / width >= 0.055
+        for item in items
+    )
+    narrative = any(
+        0.20 <= item["center"][0] / width <= 0.76
+        and 0.27 <= item["center"][1] / height <= 0.58
+        and (item["bbox"][2] - item["bbox"][0]) / width >= 0.10
+        for item in items
+    )
+    return title and narrative
+
+
+def _write_promo_interruption_decision(
+    artifacts: Path,
+    stem: str,
+    *,
+    status: str,
+    kind: str | None,
+    selected: dict[str, object] | None,
+) -> None:
+    write_json(
+        artifacts / f"{stem}_decision.json",
+        {
+            "schema_version": 1,
+            "scope": "promo_fixture_only",
+            "status": status,
+            "recovery_kind": kind,
+            "selected_text": selected.get("text") if selected else None,
+            "selected_center": selected.get("center") if selected else None,
+            "allow_succession": False,
+        },
+    )
+
+
+def settle_promo_interruptions(
+    artifacts: Path,
+    stem: str,
+    *,
+    observation_s: float = PROMO_INTERRUPTION_DEFAULT_OBSERVE_S,
+    max_dismissals: int = PROMO_INTERRUPTION_MAX_DISMISSALS,
+) -> list[dict[str, object]]:
+    """Conservatively settle bounded native events in the promo fixture only.
+
+    Every actual or rejected recovery gets a full screenshot, OCR JSON,
+    annotated candidate image, and decision sidecar.  Succession is always
+    blocked.  Event-like UI without a strongly classified option is an
+    immediate RED; non-event UI is merely observed and never clicked.
+    """
+    if max_dismissals < 1:
+        raise ValueError("max_dismissals must be positive")
+    deadline = time.monotonic() + max(0.0, observation_s)
+    dismissed: list[dict[str, object]] = []
+    while True:
+        acceptance.focus_ck3()
+        image = acceptance.ImageGrab.grab()
+        items = acceptance.ocr_box_results(
+            image, acceptance.FULL_SCREEN_REGION
+        )
+        width, height = image.size
+
+        lower, selected = acceptance.select_stall_recovery(
+            items, image, allow_succession=False
+        )
+        succession_lower: list[dict[str, object]] = []
+        succession = None
+        if selected is None:
+            succession_lower, succession = acceptance.select_stall_recovery(
+                items, image, allow_succession=True
+            )
+        if (
+            succession is not None
+            and succession.get("layout_fallback") == "succession_continue"
+        ):
+            diagnostic = f"{stem}_interruption_blocked_succession"
+            acceptance.mark_recovery_items(
+                items, succession_lower, None
+            )
+            acceptance.write_recovery_bundle(
+                image, items, artifacts, diagnostic
+            )
+            _write_promo_interruption_decision(
+                artifacts,
+                diagnostic,
+                status="blocked_succession",
+                kind="succession_continue",
+                selected=None,
+            )
+            raise acceptance.RunnerError(
+                "promo interruption is succession; automatic continuation is forbidden"
+            )
+
+        if not promo_event_modal_evidence(items, width, height):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return dismissed
+            time.sleep(min(acceptance.POLL_INTERVAL_S, remaining))
+            continue
+
+        kind = (
+            acceptance.quick_recovery_kind(items, selected, width, height)
+            if selected is not None
+            else None
+        )
+        ordinal = len(dismissed) + 1
+        diagnostic = f"{stem}_interruption_{ordinal:02d}"
+        acceptance.mark_recovery_items(items, lower, selected)
+        acceptance.write_recovery_bundle(image, items, artifacts, diagnostic)
+        if selected is None or kind is None:
+            _write_promo_interruption_decision(
+                artifacts,
+                diagnostic,
+                status="blocked_unknown_modal",
+                kind=kind,
+                selected=selected,
+            )
+            raise acceptance.RunnerError(
+                "promo interruption looks like an event but has no safe option; "
+                f"inspect {diagnostic}.png"
+            )
+        if len(dismissed) >= max_dismissals:
+            _write_promo_interruption_decision(
+                artifacts,
+                diagnostic,
+                status="blocked_dismissal_limit",
+                kind=kind,
+                selected=selected,
+            )
+            raise acceptance.RunnerError(
+                f"promo interruption exceeded {max_dismissals} bounded dismissals"
+            )
+
+        _write_promo_interruption_decision(
+            artifacts,
+            diagnostic,
+            status="selected_safe_event_option",
+            kind=kind,
+            selected=selected,
+        )
+        acceptance.deliberate_click(
+            tuple(selected["center"]),
+            f"promo fixture interruption {kind}: {selected['text']!r}",
+        )
+        selected_text = selected["text"]
+        selected_center = selected["center"]
+        close_deadline = time.monotonic() + 8
+        while time.monotonic() < close_deadline:
+            time.sleep(acceptance.POLL_INTERVAL_S)
+            after = acceptance.ImageGrab.grab()
+            after_items = acceptance.ocr_box_results(
+                after, acceptance.FULL_SCREEN_REGION
+            )
+            still_visible = any(
+                item["text"] == selected_text
+                and abs(item["center"][0] - selected_center[0]) <= 30
+                and abs(item["center"][1] - selected_center[1]) <= 20
+                for item in after_items
+            )
+            if not still_visible:
+                after.save(artifacts / f"{diagnostic}_dismissed.png")
+                dismissed.append(
+                    {
+                        "kind": kind,
+                        "selected_text": selected_text,
+                        "selected_center": selected_center,
+                        "diagnostic_stem": diagnostic,
+                    }
+                )
+                acceptance.ensure_game_paused(
+                    artifacts, f"{diagnostic}_dismissed"
+                )
+                deadline = time.monotonic() + max(0.0, observation_s)
+                break
+        else:
+            after.save(artifacts / f"timeout_{diagnostic}.png")
+            raise acceptance.RunnerError(
+                f"promo interruption option did not disappear: {diagnostic}"
+            )
 
 
 def capture_policy_cards(
@@ -1374,6 +1751,8 @@ def capture_policy_cards(
     captured: list[dict[str, object]] = []
     for mechanism_id, decision_title, event_title, option_text in PROMO_POLICY_CARDS:
         stem = f"12_policy_{mechanism_id:03d}"
+        settle_promo_interruptions(artifacts, f"{stem}_preflight")
+        acceptance.ensure_game_paused(artifacts, f"{stem}_preflight")
         confirm = isolated.open_decision_detail(
             decision_title,
             "打开此卡",
@@ -1409,6 +1788,7 @@ def capture_policy_cards(
         )
         acceptance.deliberate_click(option, f"close policy card {mechanism_id:03d}")
         isolated.wait_for_gameplay_hud(artifacts)
+        acceptance.ensure_game_paused(artifacts, f"{stem}_closed")
         captured.append(
             {
                 "mechanism_id": mechanism_id,
@@ -1451,6 +1831,8 @@ def run_scenario(
         "non_independent_celestial_liege_entry": True,
         "direct_governor_cohort_at_least_three": True,
         "newcomer_first_review_ranked_and_protected_from_325": True,
+        "calibration_c_all_newcomer_noop": True,
+        "calibration_c_mixed_newcomer_atomic_swap": True,
         "pending_and_settled_review_idempotence": True,
         "grade_325_fixed_penalty_receipts_and_appeal_refund": True,
         "salary_penalty_contract": "one-year -25%; appeal stops future reduction; elapsed salary is not backdated",
@@ -1478,6 +1860,12 @@ def run_scenario(
         "ai_non_independent_probe_unavailable": bool(
             stream.count("ZGA: TEST INFO ai_non_independent_review_candidate_unavailable")
         ),
+        "ai_small_cohort_neutral_settlement": bool(
+            stream.count("ZGA: TEST PASS ai_small_cohort_neutral_settlement")
+        ),
+        "ai_small_cohort_probe_unavailable": bool(
+            stream.count("ZGA: TEST INFO ai_small_cohort_candidate_unavailable")
+        ),
         "scoreboard_gui": gui_evidence,
         "jingcha_planner": jingcha_evidence,
         "jingcha_refusal": {
@@ -1504,14 +1892,19 @@ def run_cell(
     userdir: Path,
     keep_userdir: bool,
     promo_capture: bool = False,
+    runtime_source: Path = SOURCE,
+    runtime_identity: dict[str, object] | None = None,
 ) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
     userdir.mkdir(parents=True)
+    runtime_source = Path(runtime_source).resolve()
+    runtime_identity = dict(runtime_identity or {})
     source_before = isolated.tree_snapshot(SOURCE)
+    runtime_source_before = isolated.tree_snapshot(runtime_source)
     acceptance.configure_runtime_userdir(userdir)
-    bootstrap = bootstrap_userdir(userdir)
+    bootstrap = bootstrap_userdir(userdir, runtime_source)
     process = None
     result = "RED"
     error_reason = None
@@ -1525,6 +1918,7 @@ def run_cell(
     runtime_after: dict[str, str] = {}
     runtime_unchanged = False
     source_unchanged = False
+    runtime_source_unchanged = False
     stream = MarkerStream(userdir / "logs" / "debug.log")
     pid_path = artifacts / "ck3.pid"
     watchdog_pid = None
@@ -1645,7 +2039,10 @@ def run_cell(
                 if snapshot != bootstrap["tree_snapshots"][key]:
                     runtime_unchanged = False
             source_unchanged = isolated.tree_snapshot(SOURCE) == source_before
-            if not runtime_unchanged or not source_unchanged:
+            runtime_source_unchanged = (
+                isolated.tree_snapshot(runtime_source) == runtime_source_before
+            )
+            if not runtime_unchanged or not source_unchanged or not runtime_source_unchanged:
                 raise acceptance.RunnerError("CK3 rewrote a runtime or source tree")
         except BaseException as error:
             result = "RED"
@@ -1685,6 +2082,8 @@ def run_cell(
         "runtime_tree_after_sha256": runtime_after,
         "runtime_trees_unchanged": runtime_unchanged,
         "source_tree_unchanged": source_unchanged,
+        "runtime_source_tree_unchanged": runtime_source_unchanged,
+        **runtime_identity,
         "fixture_markers": stream.lines,
         "project_diagnostics": list(dict.fromkeys(diagnostics)),
         "observed_nonblocking_engine_warnings": list(
@@ -1713,8 +2112,20 @@ def main(
     keep_userdir: bool = True,
     preflight_only: bool = False,
     promo_capture: bool = False,
+    workshop_cache_source: str | None = None,
+    workshop_manifest: str | None = None,
 ) -> int:
-    preflight()
+    runtime_source = (
+        Path(workshop_cache_source).expanduser().resolve()
+        if workshop_cache_source
+        else SOURCE.resolve()
+    )
+    manifest_path = (
+        Path(workshop_manifest).expanduser().resolve()
+        if workshop_manifest
+        else None
+    )
+    runtime_identity = preflight(runtime_source, manifest_path)
     if preflight_only:
         print("ZHONGGUO 361 ACCEPTANCE PREFLIGHT: GREEN")
         return 0
@@ -1738,7 +2149,12 @@ def main(
     protected_before = isolated.protected_snapshot(steam_root)
     artifacts.mkdir()
     report = run_cell(
-        artifacts / "cell", userdir, keep_userdir, promo_capture=promo_capture
+        artifacts / "cell",
+        userdir,
+        keep_userdir,
+        promo_capture=promo_capture,
+        runtime_source=runtime_source,
+        runtime_identity=runtime_identity,
     )
     result = report["result"]
     error_reason = report["error_reason"]
@@ -1791,6 +2207,14 @@ if __name__ == "__main__":
         action="store_true",
         help="record an append-only post-loading gameplay take and extra product UI",
     )
+    parser.add_argument(
+        "--workshop-cache-source",
+        help="verified fresh CK3 Workshop cache leaf used instead of the development source",
+    )
+    parser.add_argument(
+        "--workshop-manifest",
+        help="formal ID-bearing release manifest used to verify --workshop-cache-source",
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -1799,6 +2223,8 @@ if __name__ == "__main__":
                 keep_userdir=not arguments.discard_userdir,
                 preflight_only=arguments.preflight,
                 promo_capture=arguments.promo_capture,
+                workshop_cache_source=arguments.workshop_cache_source,
+                workshop_manifest=arguments.workshop_manifest,
             )
         )
     except acceptance.RunnerError as error:

@@ -124,7 +124,7 @@ zg361_recommend_interaction = {
 	is_shown = {
 		has_game_rule = zg361_on
 		scope:actor = {
-			zg361_is_reviewable_vassal_trigger = yes
+			zg361_has_ranked_peer_cohort_trigger = yes
 		}
 		scope:recipient = {
 			zg361_is_reviewable_vassal_trigger = yes
@@ -160,7 +160,7 @@ zg361_slander_interaction = {
 	is_shown = {
 		has_game_rule = zg361_on
 		scope:actor = {
-			zg361_is_reviewable_vassal_trigger = yes
+			zg361_has_ranked_peer_cohort_trigger = yes
 		}
 		scope:recipient = {
 			zg361_is_reviewable_vassal_trigger = yes

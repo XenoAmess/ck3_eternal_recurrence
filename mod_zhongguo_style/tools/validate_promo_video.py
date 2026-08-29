@@ -34,6 +34,48 @@ def _read_json(path: Path, label: str) -> dict[str, Any]:
     return payload
 
 
+def _validate_release_source_records(chapters: list[promo.shared.Chapter]) -> None:
+    """Require immutable, absolute source records in a release manifest.
+
+    Draft manifests deliberately keep repository-relative paths convenient for
+    authors.  A captured release manifest lives beside preserved process
+    artifacts, so every referenced visual/evidence file must instead carry an
+    absolute path plus the exact byte count and SHA-256 checked by the loader.
+    """
+
+    for chapter in chapters:
+        records: list[tuple[str, Any]] = []
+        if "source" in chapter.raw:
+            records.append(("source", chapter.raw["source"]))
+        for index, record in enumerate(chapter.raw.get("evidence_sources", [])):
+            records.append((f"evidence_sources[{index}]", record))
+        for label, record in records:
+            context = f"chapter {chapter.chapter_id} {label}"
+            if not isinstance(record, dict):
+                raise ValidationError(
+                    f"release {context} must be an object with path/bytes/sha256"
+                )
+            raw_path = record.get("path")
+            if not isinstance(raw_path, str) or not Path(
+                os.path.expandvars(os.path.expanduser(raw_path))
+            ).is_absolute():
+                raise ValidationError(f"release {context} path must be absolute")
+            raw_bytes = record.get("bytes")
+            if isinstance(raw_bytes, bool) or not isinstance(raw_bytes, int) or raw_bytes < 0:
+                raise ValidationError(
+                    f"release {context} must declare a non-negative byte count"
+                )
+            raw_sha256 = record.get("sha256")
+            if (
+                not isinstance(raw_sha256, str)
+                or len(raw_sha256) != 64
+                or any(character not in "0123456789abcdefABCDEF" for character in raw_sha256)
+            ):
+                raise ValidationError(
+                    f"release {context} must declare a 64-character SHA-256"
+                )
+
+
 def validate_project(
     manifest_path: Path, *, stage: str
 ) -> tuple[dict[str, Any], list[promo.shared.Chapter]]:
@@ -67,6 +109,10 @@ def validate_project(
             "release validation requires project_status='captured_release_candidate'"
         )
     if stage == "release":
+        if not isinstance(manifest.get("release_manifest_provenance"), dict):
+            raise ValidationError(
+                "release validation requires GREEN capture projection provenance"
+            )
         missing_live = [
             chapter.chapter_id
             for chapter in chapters
@@ -78,6 +124,7 @@ def validate_project(
                 "release chapters without captured live material: "
                 + ", ".join(missing_live)
             )
+        _validate_release_source_records(chapters)
 
     capture_ids = [
         chapter.raw["capture"]["id"]

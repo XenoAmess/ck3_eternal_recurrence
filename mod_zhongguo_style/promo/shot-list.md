@@ -2,7 +2,7 @@
 
 本清单替代早期的 14 段“每个互联网热词各拍一个子系统”的分镜要求。旧的原始录像、验收静帧、导入副本、失败 take 和原清单所指向的目录都保留，不移动、不删除；只是正式成片不再把尚未实现的独立 OKR、PIP、HC 或项目管理器拍出来。
 
-正式片的事实核心是：逐级考核、KPI 与强制分布、校准、免费京察、冻结考核榜、3.25 三账处分、申诉、PIP/末位，以及 **361 个逐项政策卡 + 持久选择状态 + 17 类后果 profile + 14 本组织账**。
+正式片的事实核心是：逐级考核、KPI 与强制分布、校准、免费京察、冻结考核榜、3.25 的国库/金币/贤能/俸禄四重处分、申诉、PIP/末位，以及 **361 个逐项政策卡 + 持久选择状态 + 17 类后果 profile + 14 本组织账**。
 
 ## 已保留的夹具实机静帧
 
@@ -14,54 +14,72 @@
 | 23 人考核榜 `7/16/0` | 唯一名次、榜单字段、首轮新人保护 | 常规 3.25 配额边界；该轮无 3.25 |
 | 校准会 | 直接公示、抬 3.75 边界、压 3.25 边界三个真实选项 | 命名人物、理由档案、受益者档案 |
 | 京察弹窗/规划器 | 半强制、免费、拒办入口 | 300 日逾期的连续录屏 |
-| 上司 3.25 告身 | 上司、KPI、名次、国库/金币/俸禄后果与申诉入口 | 画面直接显示贤能 -60 或退款前后数值 |
+| 上司 3.25 告身 | 上司、KPI、名次、国库/金币/贤能/俸禄四重后果与申诉入口 | 画面直接显示贤能 -60 或退款前后数值 |
 
-## 这一次要录的 7 个 capture pack
+## 自动集中实录的实际覆盖
 
-同一存档、固定语言/分辨率/UI 缩放，一次启动内完成。可在同一次录制中创建多个 take；素材按 pack 分目录，不覆盖旧文件。
+`tools/run_zhongguo_acceptance.py --promo-capture` 在真实 gameplay HUD 出现后才启动一个连续 FFmpeg 录制，
+同一 run 同时保存屏幕、timeline mark、验收报告、evidence index 与静帧。正式 manifest 只认下面这些实际产物：
 
-| Pack | 对应章节 | 必须拍到的真实 UI | 绝不能假装存在的 UI | 建议 select 时长 |
-|---|---|---|---|---:|
-| `CAP-A-HIERARCHY` | 01 | 同一直属链中的天朝公爵、伯爵、男爵；公爵有考核入口，伯爵/男爵只能收到上司考定 | “伯爵主持考核”或未构造的层级结论 | 20–35s |
-| `CAP-B-KPI-CARDS` | 02 | 考核榜 KPI/价值观列；两名官员可读的效率/贤能差异；#001、#002 的 A/B/C 政策卡 | 独立 OKR 面板、目标进度条、探索目标结算 | 30–45s |
-| `CAP-C-DISTRIBUTION-CALIBRATION` | 03–04 | 至少 10 名含老员工的常规队列、可见 3.75/3.5/3.25、唯一名次；校准的三种真实选择；一次黑幕风险说明 | 记录理由/受益者的案卷、可任意指定人选的校准器 | 45–70s |
-| `CAP-D-PEER-SIGNALS` | 05 | 同级封臣“举荐”与“攻讦”互动、冷却/成本；下一次 KPI 的 `+10` 或 `-15`；攻讦命中/反噬可分开 take | 匿名问卷、自由文字评语、共同项目评分、评价者信誉模型 | 30–50s |
-| `CAP-E-SCOREBOARD-LOOP` | 06–09、12、14 | 京察弹窗与免费规划；所辖官员/本人所属/制度驾驶舱三 tab；个人告身；3.25 后 PIP；申诉改判或拒绝的实际结果 | “同一镜头证明三年长期 PIP”；没有录到的退款画面 | 70–110s |
-| `CAP-F-POLICY-DECK` | 10–11、13 | #002、#007、#015、#020、#026、#035 六张不同编号卡及 A/B/C；制度驾驶舱 14 本账；若可见，AI 每轮 12 张后台批处理的证据卡 | HC 职位空缺、晋升答辩、项目 ID、依赖图、贡献/可见度双账、仲裁系统 | 45–75s |
-| `CAP-G-CORE-RECEIPTS` | 08、09、12、14 | 同一 review serial 的 KPI/排名→校准→榜单→告身→三账处罚；尽量再录申诉导致的精确退款 | 年初目标→项目执行→匿名互评的虚构闭环 | 60–100s |
+| 实际 mark / 静帧 | 正式章节 | 可以声称 | 不能借此声称 |
+|---|---|---|---|
+| `calibration_event_visible` | 04 | 真实校准会三选项 | 命名人物档案、任意点名器 |
+| `managed_scoreboard_visible` → `policy_cockpit_visible` | 03 | 新人保护 `7/16/0` 榜、唯一名次、驾驶舱 | 常规老员工队列一定出现 3.25 |
+| `jingcha_mandate_visible` → `free_jingcha_planner_visible` | 06、14 | 半强制弹窗与免费规划器 | 300 日逾期连续录像 |
+| `superior_assigned_325_visible` | 08、12、14 | 上司 3.25 告身、国库/金币/贤能/俸禄四重后果、申诉入口 | 画面直接展示退款前后或一年 PIP |
+| `received_scoreboard_with_325_visible` | 07、14 | 本人所属考核单元、KPI/位次/3.25 | 独立三年长期闭环 |
+| `12_policy_001_event.png` | 02 | 实际 #001 KPI 分项证据单政策卡 | 独立 OKR 目标管理器 |
+| `12_policy_007_event.png` | 05 | 实际 #007 背靠背 360 邀评政策卡 | 举荐/攻讦互动已单独录屏 |
+| `12_policy_020_event.png` | 10 | 实际 #020 晋升包政策卡 | 晋升通道 modifier 已单独录屏 |
+| `12_policy_022_event.png` | 10b | 实际 #022 软 HC / 编制预算政策卡 | 招聘、岗位空缺或增编模拟器 |
+| `12_policy_026_event.png` | 11 | 实际 #026 贡献/可见度政策卡 | 项目 ID、双账仲裁 UI |
+| `12_policy_361_event.png` | 13 | 实际 #361 绩效宪章政策卡 | 361 张都逐张录过 |
 
-`CAP-C` 与 `CAP-G` 是核心因果证据。无法在一个存档中拍到申诉改判时，可以保留当前 GREEN 报告作为屏幕上的“报告已验证”小字，但旁白不得说画面正在展示退款。
+实际捕获编号固定为 **#001/#007/#020/#022/#026/#361**；旧计划中的 **#002/#015/#035 没有被本次
+runner 捕获，不得继续写进正式 manifest 或旁白角标**。六张图共同证明编号、A/B/C 卡面与题材跨度；361/361、
+17 profiles、14 ledgers 的覆盖结论由同一 GREEN 报告绑定，不把六张样卡冒充 361 张逐张真人操作。
+
+## 没有独立实录的章节
+
+下列内容不阻止生成零占位正式候选，但必须显示 `GENERATED EVIDENCE/BOUNDARY`，不能标 `CLEAN CAPTURE`、
+`FIXTURE-LIVE` 或 `captured`：
+
+- 公爵—伯爵—男爵同框的层级镜头；报告只绑定公爵及以上考核入口合同。
+- 举荐/攻讦互动本身；#007 只是一张真实政策卡。
+- 一年 PIP 与连续两次 3.25 的末位处置过程；当前连续录像只到首次 3.25。
+- 申诉改判的退款前后连续画面；可展示真实申诉入口，并明确说精确退款由同 run 报告验证。
 
 ## 录制动作与口径
 
-1. 开始每段原始录像后静止两秒；结束操作后再静止两秒。任何 CK3 启动、主菜单、读档 loading 只能留在 `raw/`，不得进入 `selects/`。
-2. `CAP-A` 只在实际构造出伯爵与男爵样本后拍；否则继续保留占位，不能用静态合同代替实机层级画面。
-3. `CAP-C` 的 3.25 必须来自非新人常规考核队列。现有 `7/16/0` 静帧可以作为“新人保护”反例。
-4. `CAP-D` 的“攻讦七成命中、三成反噬”是脚本常数；一次录制只需拍到实际结果，不得剪两次结果伪装同一次操作。
-5. `CAP-E` 的制度驾驶舱只展示已配置的组织账；不把账本字段称为独立 HC/项目/人才系统。
-6. `CAP-F` 每张卡要露出编号、主题、A/B/C 至少两个选项和明确代价；字幕同步写明“政策卡，后果汇入共享账本”。
-7. `CAP-G` 只描述真实闭环：京察/立即考核 → KPI → 排名 → 校准 → 榜单 → 告身 → 奖惩/PIP/申诉。政策卡可以在旁支蒙太奇出现，但不能拼成不存在的目标—项目—互评流水线。
+1. 原始录像必须在 gameplay HUD 后启动；timeline 须写 `exclude_ck3_loading=true`，正式 clip 的起点不得早于 `recording_started_after_gameplay_hud`。
+2. 连续镜头只描述真实链：校准、发榜、驾驶舱、京察、告身和本人榜。政策卡可以作旁支蒙太奇，但不能拼成不存在的目标—项目—互评流水线。
+3. 制度驾驶舱只展示已配置的组织账；不把账本字段称为独立 HC/项目/人才系统。
+4. 每张政策卡静帧必须来自同一 GREEN run，露出真实编号、题目与 A/B/C；正式 manifest 对原图、报告、timeline 和原始 MKV 全部锁 bytes/SHA-256。
+5. 失败 take、随机事件遮挡、OCR 与 recorder 日志都保留；只有根报告、cell 报告和 evidence index 同时 GREEN 的 run 才能投影正式 manifest。
 
 ## 目录、保留与 notes
 
-每次集中录制都新建目录：
+每次集中录制都新建目录。正式 manifest 与 provenance 也保存在这个外部 run 下，不回写仓库内作者版 manifest：
 
 ```text
-artifacts/zg361/promo/captures/<YYYYMMDD-HHMMSS>-<run-name>/
-├─ raw/                 # 原始长录像；永不裁切覆盖
-├─ selects/             # 从 raw 派生的剪辑选择版
-├─ stills/              # PNG 无损关键帧
-├─ evidence/            # acceptance 报告、debug 摘录、hash、sidecar
-├─ notes/               # pack、时间码、角色/serial、可用性和口误
-└─ qa/                  # 合成后的新抽帧目录
+Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<run-name>\
+├─ report.json
+├─ evidence-index.json
+├─ cell\
+│  ├─ promo\
+│  │  ├─ capture-timeline.json
+│  │  └─ raw\                         # 原始长录像与 FFmpeg 日志；永不覆盖
+│  ├─ 10_superior_result.png
+│  └─ 12_policy_<001...361>_event.png # 六张实际政策卡无损静帧
+└─ release\                            # 外部 manifest、provenance、成片、QA 与 sidecar
 ```
 
 每个 `notes/CAP-*.json` 至少记录：CK3 版本、mod commit、游戏日期、review serial、角色 id、原始文件 SHA-256、select 的起止时间、是否排除 loading、与哪个报告绑定、已知瑕疵。原始素材、旧 take 与失败 attempt 始终保留。
 
 ## 入片门槛
 
-- 视觉素材有原始录像、select、hash 与 notes；select 不含 CK3 loading。
+- 视觉素材有原始录像、timeline marks、hash 与报告；任何 clip 不含 CK3 loading。
 - 旁白声称的数值、角色与后果在画面或绑定的同一 run 报告中可核验。
 - 对政策卡只声称：独立编号、A/B/C、持久选择、共享 profile/账本与 KPI 回流；不声称独立 HC、项目、OKR 或 PIP 子系统。
-- `CAP-C`、`CAP-G` 不跨 run 拼成假闭环。
-- 正式 build 前所有 placeholder 都替换为带证据来源的 `video_clip` 或 `still`；然后才运行 `--stage release`。
+- 核心连续片段不跨 run 拼成假闭环；同一原始 MKV 的 marks 明确写进 provenance。
+- 正式 build 前 placeholder 必须全部消失：有实录的变成带证据的 `video_clip`/`still`，没有独立实录的变成明确生成边界卡；然后才运行 `--stage release`。

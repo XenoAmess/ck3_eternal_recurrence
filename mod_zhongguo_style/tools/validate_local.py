@@ -264,6 +264,9 @@ def check_runtime_invariants() -> None:
         MOD_ROOT / "common" / "scripted_effects" / "zg361_jingcha_mandate_effects.txt"
     )
     mandate_events = read_text(MOD_ROOT / "events" / "zg361_jingcha_events.txt")
+    interactions = read_text(
+        MOD_ROOT / "common" / "character_interactions" / "zg361_interactions.txt"
+    )
     values = read_text(MOD_ROOT / "common" / "script_values" / "zg361_values.txt")
 
     for event_file in sorted((MOD_ROOT / "events").glob("*.txt")):
@@ -278,6 +281,60 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("reviewing lieges must be celestial rulers of duchy tier or above")
+
+    # A sub-three roster is exempt from forced distribution and calibration,
+    # not from performance review itself. One or two officials must receive a
+    # stable rank and neutral 3.5 through the normal settlement/publication path;
+    # only an empty roster may leave without a settled year.
+    review_effect = re.search(
+        r"zg361_run_review_effect\s*=\s*\{(?P<body>.*?)^\}",
+        effects,
+        re.M | re.S,
+    )
+    review_body = review_effect.group("body") if review_effect else ""
+    small_cohort = re.search(
+        r"limit\s*=\s*\{\s*var:zg361_cohort_n\s*>=\s*1\s*\}"
+        r"(?P<body>.*?)"
+        r'debug_log\s*=\s*"ZG361: small cohort bypassed forced distribution and settled at 3\.5"'
+        r"\s*zg361_apply_pending_grades_effect\s*=\s*yes",
+        review_body,
+        re.S,
+    )
+    if small_cohort is None:
+        err("one-to-two-person cohorts must reach the normal 3.5 settlement path")
+    else:
+        small_body = small_cohort.group("body")
+        for token in (
+            "zg361_rank_cohort_effect = yes",
+            "name = zg361_last_reviewer value = root",
+            "name = zg361_last_review_serial value = root.var:zg361_review_serial",
+            "name = zg361_pending_grade value = 2",
+            "name = zg361_pending_375_n value = 0",
+            "name = zg361_pending_35_n value = var:zg361_cohort_n",
+            "name = zg361_pending_325_n value = 0",
+        ):
+            if token not in small_body:
+                err(f"small-cohort neutral settlement contract missing token: {token}")
+        if "trigger_event = { id = zg361.10" in small_body:
+            err("small cohorts must bypass the forced-distribution calibration event")
+    if not re.search(
+        r'else\s*=\s*\{\s*debug_log\s*=\s*"ZG361: empty cohort, review skipped"'
+        r"\s*remove_character_flag\s*=\s*zg361_review_in_progress\s*\}",
+        review_body,
+        re.S,
+    ):
+        err("only an empty cohort may leave the review unsettled")
+
+    review_now = re.search(
+        r"zg361_review_now_decision\s*=\s*\{(?P<body>.*?)^\}",
+        decisions,
+        re.M | re.S,
+    )
+    review_now_body = review_now.group("body") if review_now else ""
+    if len(re.findall(r"any_vassal\s*=\s*\{\s*count\s*>=\s*1", review_now_body)) != 2:
+        err("review-now decision must accept one or more direct reviewable officials")
+    if re.search(r"any_vassal\s*=\s*\{\s*count\s*>=\s*3", review_now_body):
+        err("review-now decision must not exclude one-to-two-person cohorts")
 
     if "trigger_event = { id = zg361.20" in decisions:
         err("review decision must not trigger its event from tooltip-simulated effect")
@@ -302,13 +359,24 @@ def check_runtime_invariants() -> None:
     for token in (
         "zg361_clear_scoreboard_m_slots_effect", "zg361_write_managed_scoreboard_slot_effect",
         "zg361_copy_received_scoreboard_slots_effect", "zg361_sb_m_01_char", "zg361_sb_r_01_char",
-        "zg361_publish_scoreboard_effect", "max = list_size:zg361_scoreboard_candidates",
+        "zg361_publish_scoreboard_effect", "max = 80",
+        "zg361_scoreboard_managed_shown_n", "zg361_scoreboard_received_shown_n",
+        "zg361_sb_m_01_title", "zg361_sb_m_01_promotion", "zg361_sb_m_01_pip",
         "gui/zg361_scoreboard.gui = zg361_scoreboard_window",
     ):
         if token not in effects and token not in snapshot_effects and token not in registrations:
             err(f"scoreboard data/registration contract missing token: {token}")
-    if slot_guis.count("_available_gui = {") != 160:
+    if len(re.findall(r"zg361_sb_[mr]_\d{2}_available_gui\s*=\s*\{", slot_guis)) != 160:
         err("immutable scoreboard must expose exactly 80 managed and 80 received slot predicates")
+    for source in ("managed", "received"):
+        shown_available = f"zg361_scoreboard_{source}_shown_available_gui"
+        if shown_available not in slot_guis:
+            err(f"scoreboard shown/full compatibility predicate missing: {shown_available}")
+        if (
+            f"Not(GetScriptedGui('{shown_available}').IsShown" not in scoreboard_gui
+            or f"Var('zg361_scoreboard_{source}_n').GetValue" not in scoreboard_gui
+        ):
+            err(f"legacy scoreboard total fallback missing for {source} tab")
     if "GetList('zg361_scoreboard_managed')" in scoreboard_gui or "GetList('zg361_scoreboard_received')" in scoreboard_gui:
         err("scoreboard GUI must not read live character variable lists")
     for live_field in (
@@ -316,6 +384,9 @@ def check_runtime_invariants() -> None:
         "Character.MakeScope.Var('zg361_kpi')",
         "Character.MakeScope.Var('zg361_values')",
         "Character.MakeScope.Var('zg361_last_grade')",
+        "Character.GetPrimaryTitle",
+        "GetScriptedGui('zg361_scoreboard_promotion_gui')",
+        "GetScriptedGui('zg361_scoreboard_pip_gui')",
     ):
         if live_field in scoreboard_gui:
             err(f"scoreboard snapshot must not read live field: {live_field}")
@@ -328,6 +399,23 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("scoreboard modal close button must support the native Escape shortcut")
+    if 'position = { -60 90 }' not in scoreboard_gui:
+        err("scoreboard HUD toggle must align immediately left of the native main-tab rail")
+    toggle_match = re.search(
+        r'name\s*=\s*"zg361_scoreboard_toggle"(?P<body>.*?)^\s*\}',
+        scoreboard_gui,
+        re.M | re.S,
+    )
+    toggle_body = toggle_match.group("body") if toggle_match else ""
+    for gate in (
+        "Not(IsPauseMenuShown)",
+        "IsDefaultGUIMode",
+        "Not(IsRightWindowOpen)",
+        "Not(IsGameViewOpen('outliner'))",
+        "Not(IsGameViewOpen('barbershop'))",
+    ):
+        if gate not in toggle_body:
+            err(f"scoreboard HUD toggle is missing native-overlay gate: {gate}")
     if len(re.findall(r"has_variable\s*=\s*merit_(?:military|civilian)_career_score_bonus", effects)) != 4:
         err("native appointment score variables must be initialized before change_variable")
     assignment_at = effects.find("zg361_assign_pending_grades_effect = yes")
@@ -373,15 +461,39 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("3.25 bottom-slot assignment must skip first-cycle newcomers")
-    newcomer_snapshot_at = effects.find("# 3. 快照")
     newcomer_assignment_at = effects.find("zg361_assign_pending_grades_effect = yes")
-    newcomer_cleanup_at = effects.find(
-        "remove_character_flag = zg361_newcomer_this_cycle", newcomer_snapshot_at
+    newcomer_calibration_at = effects.find(
+        "trigger_event = { id = zg361.10", newcomer_assignment_at
     )
-    if not (
-        0 <= newcomer_assignment_at < newcomer_snapshot_at < newcomer_cleanup_at
+    if newcomer_assignment_at < 0 or newcomer_calibration_at < 0:
+        err("ranked player review must reach the delayed calibration event")
+    elif "remove_character_flag = zg361_newcomer_this_cycle" in effects[
+        newcomer_assignment_at:newcomer_calibration_at
+    ]:
+        err("newcomer protection flag must survive the whole calibration window")
+    settlement_body = re.search(
+        r"zg361_apply_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
+        effects,
+        re.M | re.S,
+    )
+    if settlement_body is None or not re.search(
+        r"zg361_apply_grade_effect\s*=\s*yes\s*"
+        r"remove_character_flag\s*=\s*zg361_newcomer_this_cycle",
+        settlement_body.group("body") if settlement_body else "",
     ):
-        err("newcomer protection flag must survive until pending grades are assigned")
+        err("newcomer protection flag must clear only when the pending grade settles")
+
+    for token in (
+        "zg361_can_calibrate_demote_trigger = yes",
+        "save_temporary_scope_as = zg361_calibration_demote_target",
+        "save_temporary_scope_as = zg361_calibration_rescue_target",
+        "NOT = { has_character_flag = zg361_newcomer_this_cycle }",
+        "scope:zg361_calibration_rescue_target = {",
+        "scope:zg361_calibration_demote_target = {",
+        'debug_log = "ZG361: calibration demote atomic grade swap used"',
+    ):
+        if token not in effects and token not in events:
+            err(f"atomic newcomer-safe calibration C contract missing token: {token}")
 
     # Appeal settlement is a one-shot receipt reversal. It refunds the exact
     # fixed penalties, stops the future salary modifier, then clears ownership.
@@ -420,6 +532,29 @@ def check_runtime_invariants() -> None:
     ):
         if token not in mandate_effects:
             err(f"jingcha mandate/refusal contract missing token: {token}")
+    if "zg361_is_jingcha_eligible_guest_trigger = {" not in triggers:
+        err("Jingcha must define one shared legal-guest predicate")
+    for label, body in (
+        ("mandate", mandate_effects),
+        ("activity", activity),
+        ("deadline", mandate_events),
+    ):
+        if "zg361_is_jingcha_eligible_guest_trigger = yes" not in body:
+            err(f"Jingcha {label} must use the shared legal-guest predicate")
+        if not re.search(
+            r"any_vassal\s*=\s*\{\s*count\s*>=\s*1\s*"
+            r"zg361_is_jingcha_eligible_guest_trigger\s*=\s*yes",
+            body,
+            re.S,
+        ):
+            err(f"Jingcha {label} must remain available to a one-official cohort")
+    if mandate_effects.count(
+        "set_variable = { name = zg361_jingcha_pending value = 1 }"
+    ) != 1:
+        err(
+            "Jingcha mandate must create exactly one pending obligation, inside the "
+            "one-or-more eligible guest branch; zero guests remain excused"
+        )
     for token in (
         "data = activity_type:activity_zg361_jingcha",
         "trigger_event = { id = zg361.41 days = 300 }",
@@ -431,8 +566,37 @@ def check_runtime_invariants() -> None:
         err("jingcha activity must declare zero Treasury cost in both runtime and predicted cost")
     if re.search(r"\bgold\s*=", activity):
         err("jingcha activity must not charge personal gold")
-    if "remove_variable = zg361_jingcha_pending" not in activity:
-        err("jingcha completion must clear its pending obligation")
+    if "zg361_clear_jingcha_mandate_effect = yes" not in activity:
+        err("jingcha completion must clear its full mandate lifecycle state")
+    for token in (
+        "zg361_clear_jingcha_mandate_effect = {",
+        "zg361_excuse_jingcha_assembly_effect = {",
+        "jingcha assembly excused; official review still resolved",
+    ):
+        if token not in mandate_effects:
+            err(f"jingcha lifecycle cleanup contract missing token: {token}")
+    if "zg361_excuse_jingcha_assembly_effect = yes" not in mandate_events:
+        err("jingcha deadline must resolve the review when assembly becomes impossible")
+    refusal_body = mandate_effects.split("zg361_refuse_jingcha_effect = {", 1)[-1].split(
+        "zg361_clear_jingcha_mandate_effect = {", 1
+    )[0]
+    if (
+        "has_variable = zg361_jingcha_mandate_superior" not in refusal_body
+        or refusal_body.rfind("zg361_clear_jingcha_mandate_effect = yes")
+        < refusal_body.find("has_variable = zg361_jingcha_mandate_superior")
+    ):
+        err("jingcha refusal must consume saved superior metadata before clearing it")
+    cleanup_body = mandate_effects.split(
+        "zg361_clear_jingcha_mandate_effect = {", 1
+    )[-1].split("zg361_excuse_jingcha_assembly_effect = {", 1)[0]
+    for variable in (
+        "zg361_jingcha_pending",
+        "zg361_jingcha_mandate_superior",
+        "zg361_jingcha_mandate_reviewer",
+        "zg361_jingcha_mandate_year",
+    ):
+        if f"remove_variable = {variable}" not in cleanup_body:
+            err(f"jingcha lifecycle cleanup omits {variable}")
     if "zg361_jingcha_phase = {" not in activity:
         err("jingcha activity must use its own localized phase key")
     phase_icon = (
@@ -493,6 +657,9 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("skipped-jingcha marker must be consumed immediately after its KPI is calculated")
+
+    if interactions.count("zg361_has_ranked_peer_cohort_trigger = yes") != 2:
+        err("recommendation and slander must both be disabled below the three-person cohort threshold")
 
     chinese = read_text(
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"

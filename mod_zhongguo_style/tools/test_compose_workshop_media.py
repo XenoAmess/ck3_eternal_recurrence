@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+"""Offline contracts for deterministic ZhongGuo Workshop media projections."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+
+from PIL import Image, ImageDraw
+
+
+TOOLS_DIRECTORY = Path(__file__).resolve().parent
+if str(TOOLS_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(TOOLS_DIRECTORY))
+
+import compose_workshop_media as media  # noqa: E402
+import prepare_promo_release_manifest as prepare  # noqa: E402
+
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _write_json(path: Path, payload: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _write_test_capture(path: Path, mechanism_id: int) -> None:
+    image = Image.new(
+        "RGB",
+        media.EXPECTED_SIZE,
+        (30 + mechanism_id % 120, 50, 80),
+    )
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((420, 280, 1609, 874), outline=(240, 210, 120), width=12)
+    draw.rectangle((500, 360, 1500, 780), fill=(60, 70, 90))
+    draw.text((560, 420), f"TEST POLICY #{mechanism_id:03d}", fill="white")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, format="PNG")
+
+
+def _make_green_capture(root: Path, *, result: str = "GREEN") -> Path:
+    raw = root / "cell" / "promo" / "raw" / "zg361-promo-live-test.mkv"
+    raw.parent.mkdir(parents=True)
+    raw.write_bytes(b"synthetic media bytes for Workshop projection test")
+    for mechanism_id in prepare.POLICY_IDS:
+        path = root / "cell" / f"12_policy_{mechanism_id:03d}_event.png"
+        if mechanism_id in {1, 361}:
+            _write_test_capture(path, mechanism_id)
+        else:
+            path.write_bytes(f"indexed policy {mechanism_id:03d}".encode("ascii"))
+    (root / "cell" / "10_superior_result.png").write_bytes(
+        b"indexed superior receipt"
+    )
+
+    marks = [
+        {"label": label, "seconds": float(index * 10 + 1)}
+        for index, label in enumerate(prepare.REQUIRED_MARKS)
+    ]
+    timeline = {
+        "schema": 1,
+        "exclude_ck3_loading": True,
+        "source_kind": "real CK3 1.19.0.6 desktop capture after gameplay HUD",
+        "raw_path": str(raw.resolve()),
+        "raw_bytes": raw.stat().st_size,
+        "raw_sha256": _sha(raw),
+        "marks": marks,
+    }
+    timeline_path = root / "cell" / "promo" / "capture-timeline.json"
+    _write_json(timeline_path, timeline)
+    report = {
+        "schema_version": 1,
+        "result": result,
+        "cell": {
+            "result": result,
+            "promo_capture": copy.deepcopy(timeline),
+            "scenario_evidence": {
+                "promo_received_scoreboard": {
+                    "received_panel_artifact": "11_received_scoreboard.png"
+                },
+                "promo_policy_cards": [
+                    {
+                        "mechanism_id": mechanism_id,
+                        "event_artifact": f"12_policy_{mechanism_id:03d}_event.png",
+                    }
+                    for mechanism_id in prepare.POLICY_IDS
+                ],
+            },
+        },
+    }
+    report_path = root / "report.json"
+    _write_json(report_path, report)
+    indexed_paths = [
+        report_path,
+        timeline_path,
+        raw,
+        root / "cell" / "10_superior_result.png",
+        *[
+            root / "cell" / f"12_policy_{mechanism_id:03d}_event.png"
+            for mechanism_id in prepare.POLICY_IDS
+        ],
+    ]
+    _write_json(
+        root / "evidence-index.json",
+        {
+            "schema_version": 1,
+            "result": result,
+            "artifact_root": str(root.resolve()),
+            "files": [
+                {
+                    "path": path.relative_to(root).as_posix(),
+                    "bytes": path.stat().st_size,
+                    "sha256": _sha(path),
+                }
+                for path in indexed_paths
+            ],
+        },
+    )
+    return root
+
+
+class WorkshopMediaTests(unittest.TestCase):
+    def test_policy_recipes_are_exactly_release_slots_seven_and_eight(self) -> None:
+        self.assertEqual(
+            [1, 361],
+            [recipe.mechanism_id for recipe in media.POLICY_CARD_RECIPES],
+        )
+        self.assertEqual(
+            [
+                "07_policy_001_kpi_evidence.jpg",
+                "08_policy_361_charter.jpg",
+            ],
+            [recipe.output for recipe in media.POLICY_CARD_RECIPES],
+        )
+        self.assertTrue(
+            all(recipe.crop == (420, 280, 1610, 875) for recipe in media.POLICY_CARD_RECIPES)
+        )
+        with self.assertRaisesRegex(ValueError, "requires a policy-card lock"):
+            media.selected_projections(None, policy_cards_only=True)
+
+    def test_green_capture_lock_renders_two_deterministic_sub_2mb_jpegs(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            capture = _make_green_capture(root / "green-capture")
+            lock = root / "release" / "media-policy-lock.json"
+            payload = media.create_policy_lock(capture, lock)
+            projections = media.load_policy_lock(lock, artifact_root=capture)
+
+            self.assertEqual("GREEN", payload["result"])
+            self.assertEqual([1, 361], payload["policy_ids"])
+            self.assertEqual(2, len(projections))
+            self.assertTrue(
+                all(0 < row["bytes"] < media.MAX_BYTES for row in payload["projections"])
+            )
+            self.assertEqual(8, len(media.PROJECTIONS + projections))
+            self.assertEqual(
+                projections,
+                media.selected_projections(
+                    lock, artifact_root=capture, policy_cards_only=True
+                ),
+            )
+
+            output = root / "projected"
+            first = media.render(
+                capture, output, check=False, projections=projections
+            )
+            checked = media.render(
+                capture, output, check=True, projections=projections
+            )
+            tracked = media.verify_tracked_outputs(
+                output, projections=projections
+            )
+            self.assertEqual(first, checked)
+            self.assertEqual(first, tracked)
+            self.assertTrue(all(row["bytes"] < media.MAX_BYTES for row in tracked))
+
+            # Same provenance is idempotent; a different lock may not overwrite it.
+            self.assertEqual(payload, media.create_policy_lock(capture, lock))
+            changed = json.loads(lock.read_text(encoding="utf-8"))
+            changed["report_sha256"] = "0" * 64
+            lock.write_text(json.dumps(changed), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "refusing to overwrite"):
+                media.create_policy_lock(capture, lock)
+
+    def test_red_capture_cannot_create_a_policy_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            capture = _make_green_capture(root / "red-capture", result="RED")
+            lock = root / "release" / "media-policy-lock.json"
+            with self.assertRaisesRegex(ValueError, "not a valid GREEN capture"):
+                media.create_policy_lock(capture, lock)
+            self.assertFalse(lock.exists())
+
+    def test_policy_lock_is_bound_to_one_artifact_and_exact_recipes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            capture = _make_green_capture(root / "green-capture")
+            lock = root / "release" / "media-policy-lock.json"
+            media.create_policy_lock(capture, lock)
+            with self.assertRaisesRegex(ValueError, "different capture artifact"):
+                media.load_policy_lock(lock, artifact_root=root / "other-capture")
+
+            payload = json.loads(lock.read_text(encoding="utf-8"))
+            payload["projections"][0]["output"] = "07_not_the_release_slot.jpg"
+            bad = root / "bad-lock.json"
+            _write_json(bad, payload)
+            with self.assertRaisesRegex(ValueError, "output mismatch"):
+                media.load_policy_lock(bad)
+
+            payload = json.loads(lock.read_text(encoding="utf-8"))
+            payload["report_sha256"] = "0" * 64
+            bad_provenance = root / "bad-provenance-lock.json"
+            _write_json(bad_provenance, payload)
+            with self.assertRaisesRegex(ValueError, "no longer matches"):
+                media.load_policy_lock(
+                    bad_provenance, artifact_root=capture
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()

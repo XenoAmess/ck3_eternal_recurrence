@@ -12,7 +12,7 @@ import argparse
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, __version__ as PILLOW_VERSION
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -22,6 +22,7 @@ THUMBNAIL = MOD_ROOT / "thumbnail.png"
 EXPECTED_SOURCE_SIZE = (1254, 1254)
 THUMBNAIL_SIZE = (640, 640)
 MAX_THUMBNAIL_BYTES = 1_000_000
+EXPECTED_PILLOW_VERSION = "12.3.0"
 
 
 def find_font(*, bold: bool) -> Path:
@@ -44,6 +45,11 @@ def png_bytes(image: Image.Image) -> bytes:
 
 
 def render() -> tuple[bytes, bytes]:
+    if PILLOW_VERSION != EXPECTED_PILLOW_VERSION:
+        raise ValueError(
+            "thumbnail projection requires Pillow "
+            f"{EXPECTED_PILLOW_VERSION}, got {PILLOW_VERSION}; use tools/.venv"
+        )
     with Image.open(SOURCE) as opened:
         if opened.size != EXPECTED_SOURCE_SIZE:
             raise ValueError(

@@ -3,7 +3,7 @@
 # 361 宣传片中文配音与英文字幕审阅稿
 
 权威输入：`promo-manifest.json`。中文是 Xiaoxiao 配音和主字幕；每条英文与同一中文 cue 同时显示。
-离线估算总时长：`07:03`；硬上限 `<20:00`。
+离线估算总时长：`07:12`；硬上限 `<20:00`。
 
 ## 00:00–00:13 · 欢迎来到天朝大厂：你的封地，也有绩效季
 
@@ -76,18 +76,18 @@ OKR 和 KPI 在这里先是一张政策卡：你决定组织怎样记账；分�
 
 Here OKR and KPI begin as a policy card: you decide how the organization keeps score; at calibration, that score becomes ammunition.
 
-## 01:01–01:33 · 强制分布：不是问有没有C，是问C姓什么
+## 01:01–01:37 · 强制分布：不是问有没有C，是问C姓什么
 
 *FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · 23 PERSONS / 7-16-0; CLEAN BOUNDARY RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
-361 的灵魂是强制分布：少数 3.75，多数 3.5，末位 3.25。大家都努力，也不妨碍有人必须背 C。
+361 的灵魂是强制分布：常规成熟大组按头部 30% 得 3.75、中间 60% 得 3.5、尾部 10% 得 3.25。大家都努力，也不妨碍有人必须背 C。
 
 **English subtitle**
 
-The soul of 361 is forced distribution: a few 3.75s, most 3.5s, and a bottom 3.25. Everyone may deliver, yet someone must explain why they were not excellent enough.
+The soul of 361 is forced distribution: a regular mature cohort assigns 3.75 to the top 30%, 3.5 to the middle 60%, and 3.25 to the bottom 10%. Everyone may deliver, yet someone must explain why they were not excellent enough.
 
 **2. 中文配音 / 主字幕**
 
@@ -105,7 +105,7 @@ Ranks use a stable unique order. A tie cannot make everyone number one and flood
 
 This 23-person board is a first-review newcomer-protection sample, hence 7/16/0; a regular veteran cohort shows the real 3.25 boundary.
 
-## 01:33–01:51 · 校准会：用最礼貌的语气，讨论最不礼貌的名额
+## 01:37–01:55 · 校准会：用最礼貌的语气，讨论最不礼貌的名额
 
 *CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · THREE REAL CALIBRATION CHOICES; CLEAN CONTINUOUS RECORDING STILL PENDING`
@@ -116,7 +116,7 @@ This 23-person board is a first-review newcomer-protection sample, hence 7/16/0;
 
 **English subtitle**
 
-After automatic ranking and before publication comes calibration, where quota, evidence, favors, and political enemies all enter the same pot.
+After automatic ranking and before publication, the player may calibrate: publish the board as-is, or swap two officials across one of the grade boundaries.
 
 **2. 中文配音 / 主字幕**
 
@@ -126,7 +126,7 @@ After automatic ranking and before publication comes calibration, where quota, e
 
 You can lift the last 3.75 or push the last 3.5 into 3.25; each pen stroke has a 25% chance of becoming a review scandal.
 
-## 01:51–02:12 · 背靠背这张卡，先从同侪的人情账开始
+## 01:55–02:15 · 背靠背这张卡，先从同侪的人情账开始
 
 *BACK-TO-BACK, STARTING WITH A PEER FAVOUR LEDGER*<br>
 状态：`placeholder` / `PLACEHOLDER · PEER POLITICS CAPTURE PENDING`
@@ -147,7 +147,7 @@ Back-to-back is not an anonymous essay system here; it begins as a policy card p
 
 Recommend a peer for +10 next review; slander one for a 70% chance of -15 and a 30% chance of embarrassing yourself. Managing up starts by putting favours into the score.
 
-## 02:12–02:41 · 京察：活动免费，不办的代价比较贵
+## 02:15–02:45 · 京察：活动免费，不办的代价比较贵
 
 *JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · JINGCHA MANDATE AND REFUSAL ENTRY; CLEAN CONSEQUENCE RECORDING STILL PENDING`
@@ -176,7 +176,7 @@ The player may refuse. Freedom remains, while the direct superior remains free t
 
 The reason is bound to its issuing superior: a new boss cannot pick up an old excuse to dock your score. The process finally has an owner.
 
-## 02:41–03:13 · 考核榜与告身：终于有人告诉你到底排第几
+## 02:45–03:21 · 考核榜与告身：终于有人告诉你到底排第几
 
 *SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · MANAGED SCOREBOARD; CLEAN RECEIPT AND COCKPIT RECORDING STILL PENDING`
@@ -199,16 +199,16 @@ Managers see the full team board. When your superior rates you, a separate recei
 
 **3. 中文配音 / 主字幕**
 
-旧榜不会被调任或下一轮偷偷改写。过去的 3.25，像群聊截图一样，永远不会自动撤回。
+最近一期榜单会冻结到下一次发榜，调任不会偷偷改写当期名单；下一轮则用一份新快照整体替换，不拿旧榜行现场重算。
 
 **English subtitle**
 
-Old boards do not drift after transfers or later reviews. A past 3.25 stays like a group-chat screenshot that never unsends itself.
+The latest board stays frozen until the next publication, so transfers cannot rewrite that cycle. The next review replaces it with a new snapshot instead of recalculating old rows in place.
 
-## 03:13–03:45 · 3.25不是表情包：国库、金币、俸禄一起有感觉
+## 03:21–03:53 · 3.25不是表情包：国库、金币、贤能、俸禄一起有感觉
 
-*3.25 IS NOT A MEME: TREASURY, GOLD, AND SALARY ALL FEEL IT*<br>
-状态：`captured` / `FIXTURE-LIVE STILL · 3.25 RECEIPT AND THREE-ACCOUNT PENALTY; CLEAN APPEAL LEDGER RECORDING STILL PENDING`
+*3.25 IS NOT A MEME: TREASURY, GOLD, MERIT, AND SALARY ALL FEEL IT*<br>
+状态：`captured` / `FIXTURE-LIVE STILL · 3.25 RECEIPT AND FOURFOLD CONSEQUENCE; CLEAN APPEAL LEDGER RECORDING STILL PENDING`
 
 **1. 中文配音 / 主字幕**
 
@@ -220,11 +220,11 @@ Grades need resource consequences. A 3.75 opens reward and promotion lanes, 3.5 
 
 **2. 中文配音 / 主字幕**
 
-3.25同时影响地方国库、个人金币和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算和你钱包都要参加复盘。
+3.25同时影响地方国库、个人金币、贤能和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算、仕途和你钱包都要参加复盘。
 
 **English subtitle**
 
-A 3.25 hits the local treasury, personal gold, and one year of salary. Shared accountability means both the team budget and your wallet attend the retrospective.
+A 3.25 hits the local treasury, personal gold, merit, and one year of salary. Shared accountability means the team budget, your career, and your wallet all attend the retrospective.
 
 **3. 中文配音 / 主字幕**
 
@@ -234,7 +234,7 @@ A 3.25 hits the local treasury, personal gold, and one year of salary. Shared ac
 
 The penalty records exact amounts and the review serial; a reversal refunds what this cycle took, not a goodwill coupon.
 
-## 03:45–04:02 · PIP与末位：给你改进机会，也给上司腾椅子的机会
+## 03:53–04:10 · PIP与末位：给你改进机会，也给上司腾椅子的机会
 
 *PIP AND THE BOTTOM: A CHANCE TO IMPROVE, AND A CHANCE TO FREE YOUR CHAIR*<br>
 状态：`placeholder` / `PLACEHOLDER · PIP/BOTTOM CAPTURE PENDING`
@@ -255,7 +255,7 @@ The first 3.25 applies PIP: a one-year red card, not an automatic execution cloc
 
 Two consecutive bottom ratings enter the exit ladder: title removal, retirement, demotion, or another year. In the final review, someone graduates; sometimes the position graduates without them.
 
-## 04:02–04:22 · 晋升包与HC：它们是政策卡，不是许愿池
+## 04:10–04:31 · 晋升包与HC：它们是政策卡，不是许愿池
 
 *PROMOTION PACKET AND HEADCOUNT: POLICY CARDS, NOT A WISH ENGINE*<br>
 状态：`placeholder` / `PLACEHOLDER · PROMOTION/HC CAPTURE PENDING`
@@ -276,7 +276,7 @@ HC 在当前版本是组织账与政策取舍，不是独立招聘模拟器：�
 
 HC, or headcount, is currently an organizational ledger and policy tradeoff, not a separate hiring simulator: it changes pressure, budget, and later KPI.
 
-## 04:22–04:43 · 跨部门抢功：先把它写进制度，而不是编一个项目管理器
+## 04:31–04:51 · 跨部门抢功：先把它写进制度，而不是编一个项目管理器
 
 *CROSS-TEAM CREDIT: WRITE THE RULE, NOT A FICTIONAL PROJECT MANAGER*<br>
 状态：`placeholder` / `PLACEHOLDER · CREDIT LEDGER CAPTURE PENDING`
@@ -297,7 +297,7 @@ Credit theft, blame, and visibility are in the 361 policy catalogue, but this is
 
 You choose a governance direction, then ledgers settle evidence, trust, and delivery; the direct peer-score tools are recommendation and slander.
 
-## 04:43–05:10 · 绩效申诉：不是掀桌，是要求把桌上的账重新加一遍
+## 04:51–05:19 · 绩效申诉：不是掀桌，是要求把桌上的账重新加一遍
 
 *PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT*<br>
 状态：`captured` / `FIXTURE-LIVE STILL · APPEAL ENTRY ON A 3.25 RECEIPT; CLEAN REVERSAL RECORDING STILL PENDING`
@@ -326,7 +326,7 @@ A reversal updates the scoreboard, streak, and exact penalty. Review may maintai
 
 The live report reconciles exact refunds: only this cycle's deduction returns, and a repeat appeal cannot print another reward. The abacus is finally not haunted.
 
-## 05:10–05:44 · 不只一个考核季：361张政策卡把组织慢慢养成怪物
+## 05:19–05:54 · 不只一个考核季：361张政策卡把组织慢慢养成怪物
 
 *BEYOND ONE REVIEW: 361 POLICY CARDS GROW AN ORGANIZATION OVER TIME*<br>
 状态：`placeholder` / `PLACEHOLDER · POLICY DECK CAPTURE PENDING`
@@ -349,13 +349,13 @@ They share 17 consequence profiles, not 361 pretend mini-games: evidence, trust,
 
 **3. 中文配音 / 主字幕**
 
-玩家每轮通常只遇一张；AI 按性格与预算压力，每轮后台批量处理十二张。不是 361 封邮件，是 361 次制度偏好。
+玩家每轮通常只遇一张；AI 按性格与预算压力，每轮通常在后台批量处理最多十二张。不是 361 封邮件，是 361 次制度偏好。
 
 **English subtitle**
 
-Players normally see one per review; AI batches twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences.
+Players normally see one per review; AI usually batches up to twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences.
 
-## 05:44–06:12 · 一轮真实玩法：京察、KPI、校准、发榜、兑现
+## 05:54–06:21 · 一轮真实玩法：京察、KPI、校准、发榜、兑现
 
 *THE LIVE LOOP: JINGCHA, KPI, CALIBRATION, BOARD, CONSEQUENCE*<br>
 状态：`placeholder` / `PLACEHOLDER · SAME-CYCLE LOOP CAPTURE PENDING`
@@ -384,7 +384,7 @@ Rewards, penalties, promotion track, PIP, bottom action, and appeal land immedia
 
 This is not an ancient HR sheet. It is an imperial megacorp that keeps scores, grudges, and ledgers.
 
-## 06:12–06:32 · 先看证据，再喊牛：宣传片也要过绩效
+## 06:21–06:41 · 先看证据，再喊牛：宣传片也要过绩效
 
 *EVIDENCE BEFORE HYPE: EVEN THE PROMO HAS A PERFORMANCE REVIEW*<br>
 状态：`generated` / `DRAFT BOUNDARY`
@@ -405,7 +405,7 @@ This is an editable script and placeholder animatic. Pending capture means pendi
 
 The final cut validates duration, codecs, subtitle safety, Chinese narration, and no-loading opening. A promo that fails review deserves its 3.25.
 
-## 06:32–07:03 · 来吧，给天下打分——然后等天下给你打分
+## 06:41–07:12 · 来吧，给天下打分——然后等天下给你打分
 
 *RATE THE REALM—THEN WAIT FOR THE REALM TO RATE YOU*<br>
 状态：`generated` / `DRAFT FINALE`

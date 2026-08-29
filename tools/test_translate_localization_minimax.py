@@ -197,6 +197,35 @@ class ProtectedTokenTests(unittest.TestCase):
         }
         minimax.assert_protected_tokens(self.SOURCE, candidate, ("Ox Here",))
 
+    def test_raw_ck3_quote_escape_normalization_is_source_gated(self):
+        source = {
+            "raw": 'Call them \\"wild dogs\\".',
+            "ordinary": 'The source has an ordinary "quoted" phrase.',
+        }
+        candidate = {
+            "raw": 'Nenne sie "wilde Hunde".',
+            "ordinary": 'Das Ziel hat eine gewöhnliche "zitierte" Wendung.',
+        }
+        normalized = minimax.normalize_raw_ck3_quote_escapes(source, candidate)
+        self.assertEqual('Nenne sie \\"wilde Hunde\\".', normalized["raw"])
+        self.assertEqual(candidate["ordinary"], normalized["ordinary"])
+        minimax.assert_protected_tokens({"raw": source["raw"]}, {"raw": normalized["raw"]})
+
+    def test_raw_ck3_quote_escape_normalization_still_rejects_extra_quotes(self):
+        source = {"line": 'Call them \\"wild dogs\\".'}
+        candidate = {"line": 'Nenne sie "wilde" "Hunde".'}
+        normalized = minimax.normalize_raw_ck3_quote_escapes(source, candidate)
+        with self.assertRaisesRegex(minimax.TranslationError, "protected-token mismatch"):
+            minimax.assert_protected_tokens(source, normalized)
+
+    def test_candidate_cannot_add_unescaped_ascii_quotes(self):
+        source = {"line": "Rename unfinished work phase one complete"}
+        candidate = {"line": 'Unfertige Arbeit in "Phase eins abgeschlossen" umbenennen'}
+        with self.assertRaisesRegex(
+            minimax.TranslationError, "unescaped ASCII quote count 2 != 0"
+        ):
+            minimax.assert_protected_tokens(source, candidate)
+
     def test_any_automatic_placeholder_drift_is_rejected(self):
         baseline = {
             "event": self.SOURCE["event"],
@@ -305,6 +334,7 @@ class RequestContractTests(unittest.TestCase):
         response.__enter__.return_value = response
         response.read.return_value = json.dumps(envelope, ensure_ascii=False).encode("utf-8")
 
+        captured: list[tuple[int, bytes]] = []
         with mock.patch.object(minimax.request, "urlopen", return_value=response) as urlopen:
             result = minimax.request_candidate(
                 "french",
@@ -314,9 +344,11 @@ class RequestContractTests(unittest.TestCase):
                 "test-only-api-key",
                 4321,
                 ("Ox Here",),
+                lambda attempt, payload: captured.append((attempt, payload)),
             )
 
         self.assertEqual(("french", translated), result)
+        self.assertEqual([(1, response.read.return_value)], captured)
         urlopen.assert_called_once()
         req = urlopen.call_args.args[0]
         self.assertEqual(180, urlopen.call_args.kwargs["timeout"])
@@ -330,6 +362,38 @@ class RequestContractTests(unittest.TestCase):
             {"model", "max_completion_tokens", "temperature", "thinking", "messages"},
             set(body),
         )
+
+    def test_request_normalizes_json_quotes_back_to_raw_ck3_escapes(self):
+        source = {"line": 'Call them \\"wild dogs\\".'}
+        decoded_model_value = {"line": 'Nenne sie "wilde Hunde".'}
+        envelope = {
+            "base_resp": {"status_code": 0},
+            "input_sensitive": False,
+            "output_sensitive": False,
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {
+                        "content": json.dumps(decoded_model_value, ensure_ascii=False)
+                    },
+                }
+            ],
+        }
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = json.dumps(envelope, ensure_ascii=False).encode("utf-8")
+
+        with mock.patch.object(minimax.request, "urlopen", return_value=response):
+            result = minimax.request_candidate(
+                "german",
+                "German",
+                "minimal prompt",
+                source,
+                "test-only-api-key",
+                4321,
+            )
+
+        self.assertEqual(("german", {"line": 'Nenne sie \\"wilde Hunde\\".'}), result)
 
     def test_transport_read_failures_retry_then_raise_controlled_error(self):
         failures = (

@@ -11,9 +11,21 @@ import sys
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 SLOT_COUNT = 80
+TOGGLE_SIZE = (180, 44)
+TOGGLE_POSITION = (-60, 90)
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py\n"
-FIELDS = ("char", "kpi", "rank", "values", "grade", "streak")
+FIELDS = (
+    "char",
+    "title",
+    "kpi",
+    "rank",
+    "values",
+    "grade",
+    "streak",
+    "promotion",
+    "pip",
+)
 
 
 def encoded(body: str) -> bytes:
@@ -27,7 +39,7 @@ def var(prefix: str, slot: int, field: str) -> str:
 def render_effects() -> bytes:
     lines: list[str] = [
         "# Fixed slots freeze values on the viewing character. Character references remain clickable,",
-        "# but KPI/rank/values/grade/streak never read the official's later live variables.",
+        "# but title/KPI/rank/values/grade/streak/status never read later live state.",
         "",
     ]
     for prefix in ("m", "r"):
@@ -52,11 +64,14 @@ def render_effects() -> bytes:
                 f"\t\t{keyword} = {{",
                 f"\t\t\tlimit = {{ has_variable = zg361_scoreboard_slot_cursor var:zg361_scoreboard_slot_cursor = {slot} }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'char')} value = scope:zg361_scoreboard_snapshot_entry }}",
+                f"\t\t\tset_variable = {{ name = {var('m', slot, 'title')} value = scope:zg361_scoreboard_snapshot_entry.primary_title }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'kpi')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_kpi }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'rank')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_rank }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'values')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_values }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = 3.5 }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = 0 }}",
+                f"\t\t\tset_variable = {{ name = {var('m', slot, 'promotion')} value = 0 }}",
+                f"\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = 0 }}",
                 "\t\t\tif = {",
                 "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry.var:zg361_last_grade = 3 }",
                 f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = 3.75 }}",
@@ -72,6 +87,14 @@ def render_effects() -> bytes:
                 "\t\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_variable = zg361_streak_bottom } }",
                 f"\t\t\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = scope:zg361_scoreboard_snapshot_entry.var:zg361_streak_bottom }}",
                 "\t\t\t\t}",
+                "\t\t\t}",
+                "\t\t\tif = {",
+                "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_character_modifier = zg361_promotion_track } }",
+                f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'promotion')} value = 1 }}",
+                "\t\t\t}",
+                "\t\t\tif = {",
+                "\t\t\t\tlimit = { scope:zg361_scoreboard_snapshot_entry = { has_character_modifier = zg361_pip } }",
+                f"\t\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = 1 }}",
                 "\t\t\t}",
                 "\t\t}",
             ]
@@ -115,6 +138,7 @@ def render_effects() -> bytes:
                 f"\t\t\tlimit = {{ has_variable = {var('m', slot, 'char')} var:{var('m', slot, 'char')} = scope:zg361_scoreboard_regraded_entry }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = 3.5 }}",
                 f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = 0 }}",
+                f"\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = 0 }}",
                 "\t\t}",
             ]
         )
@@ -131,6 +155,7 @@ def render_effects() -> bytes:
                 f"\t\t\t\tlimit = {{ has_variable = {var('r', slot, 'char')} var:{var('r', slot, 'char')} = scope:zg361_scoreboard_regraded_entry }}",
                 f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'grade')} value = 3.5 }}",
                 f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'streak')} value = 0 }}",
+                f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'pip')} value = 0 }}",
                 "\t\t\t}",
             ]
         )
@@ -140,6 +165,16 @@ def render_effects() -> bytes:
 
 def render_scripted_guis() -> bytes:
     lines: list[str] = []
+    for source in ("managed", "received"):
+        lines.extend(
+            [
+                f"zg361_scoreboard_{source}_shown_available_gui = {{",
+                "\tscope = character",
+                f"\tis_shown = {{ has_variable = zg361_scoreboard_{source}_shown_n }}",
+                "}",
+                "",
+            ]
+        )
     for prefix in ("m", "r"):
         for slot in range(1, SLOT_COUNT + 1):
             lines.extend(
@@ -149,6 +184,21 @@ def render_scripted_guis() -> bytes:
                     f"\tis_shown = {{ has_variable = {var(prefix, slot, 'char')} }}",
                     "}",
                     "",
+                    f"zg361_sb_{prefix}_{slot:02d}_title_available_gui = {{",
+                    "\tscope = character",
+                    f"\tis_shown = {{ has_variable = {var(prefix, slot, 'title')} }}",
+                    "}",
+                    "",
+                    f"zg361_sb_{prefix}_{slot:02d}_promotion_gui = {{",
+                    "\tscope = character",
+                    f"\tis_shown = {{ has_variable = {var(prefix, slot, 'promotion')} var:{var(prefix, slot, 'promotion')} = 1 }}",
+                    "}",
+                    "",
+                    f"zg361_sb_{prefix}_{slot:02d}_pip_gui = {{",
+                    "\tscope = character",
+                    f"\tis_shown = {{ has_variable = {var(prefix, slot, 'pip')} var:{var(prefix, slot, 'pip')} = 1 }}",
+                    "}",
+                    "",
                 ]
             )
     return encoded("\n".join(lines))
@@ -156,6 +206,9 @@ def render_scripted_guis() -> bytes:
 
 def row_gui(prefix: str, slot: int) -> list[str]:
     available = f"zg361_sb_{prefix}_{slot:02d}_available_gui"
+    title_available = f"zg361_sb_{prefix}_{slot:02d}_title_available_gui"
+    promotion = f"zg361_sb_{prefix}_{slot:02d}_promotion_gui"
+    pip = f"zg361_sb_{prefix}_{slot:02d}_pip_gui"
     slot_var = lambda field: var(prefix, slot, field)
     return [
         "button_tertiary = {",
@@ -182,7 +235,8 @@ def row_gui(prefix: str, slot: int) -> list[str]:
         "\t\tvbox = {",
         "\t\t\tmin_width = 285 max_width = 285 layoutpolicy_vertical = expanding spacing = 1",
         "\t\t\ttext_single = { layoutpolicy_horizontal = expanding text = \"[Character.GetUINameNotMeNoTooltip]\" tooltip = \"[Character.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline using = Font_Size_Medium fontsize_min = 12 autoresize = no }",
-        "\t\t\ttext_single = { layoutpolicy_horizontal = expanding text = \"[Character.GetPrimaryTitle.GetNameNoTierNoTooltip]\" default_format = \"#weak\" align = nobaseline using = Font_Size_Small fontsize_min = 10 autoresize = no }",
+        f"\t\t\ttext_single = {{ visible = \"[GetScriptedGui('{title_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" datacontext = \"[GetPlayer.MakeScope.Var('{slot_var('title')}').Title]\" layoutpolicy_horizontal = expanding text = \"[Title.GetNameNoTierNoTooltip]\" default_format = \"#weak\" align = nobaseline using = Font_Size_Small fontsize_min = 10 autoresize = no }}",
+        f"\t\t\ttext_single = {{ visible = \"[Not(GetScriptedGui('{title_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" layoutpolicy_horizontal = expanding text = \"zg361_scoreboard_dash\" default_format = \"#weak\" align = nobaseline using = Font_Size_Small fontsize_min = 10 autoresize = no }}",
         "\t\t}",
         f"\t\ttext_single = {{ min_width = 90 max_width = 90 text = \"[GetPlayer.MakeScope.Var('{slot_var('kpi')}').GetValue|1]\" default_format = \"#high\" align = center|nobaseline using = Font_Size_Medium }}",
         f"\t\ttext_single = {{ min_width = 90 max_width = 90 text = \"[GetPlayer.MakeScope.Var('{slot_var('values')}').GetValue|0]\" default_format = \"#high\" align = center|nobaseline using = Font_Size_Medium }}",
@@ -190,9 +244,9 @@ def row_gui(prefix: str, slot: int) -> list[str]:
         f"\t\ttext_single = {{ min_width = 95 max_width = 95 text = \"[GetPlayer.MakeScope.Var('{slot_var('streak')}').GetValue|0]\" align = center|nobaseline using = Font_Size_Medium }}",
         "\t\tvbox = {",
         "\t\t\tmin_width = 130 max_width = 130 layoutpolicy_vertical = expanding",
-        "\t\t\ttext_single = { visible = \"[GetScriptedGui('zg361_scoreboard_promotion_gui').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]\" text = \"zg361_scoreboard_status_promotion\" align = center|nobaseline using = Font_Size_Small }",
-        "\t\t\ttext_single = { visible = \"[GetScriptedGui('zg361_scoreboard_pip_gui').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]\" text = \"zg361_scoreboard_status_pip\" align = center|nobaseline using = Font_Size_Small }",
-        "\t\t\ttext_single = { visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_promotion_gui').IsShown(GuiScope.SetRoot(Character.MakeScope).End)), Not(GetScriptedGui('zg361_scoreboard_pip_gui').IsShown(GuiScope.SetRoot(Character.MakeScope).End)))]\" text = \"zg361_scoreboard_dash\" default_format = \"#weak\" align = center|nobaseline using = Font_Size_Small }",
+        f"\t\t\ttext_single = {{ visible = \"[GetScriptedGui('{promotion}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_status_promotion\" align = center|nobaseline using = Font_Size_Small }}",
+        f"\t\t\ttext_single = {{ visible = \"[GetScriptedGui('{pip}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_status_pip\" align = center|nobaseline using = Font_Size_Small }}",
+        f"\t\t\ttext_single = {{ visible = \"[And(Not(GetScriptedGui('{promotion}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), Not(GetScriptedGui('{pip}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]\" text = \"zg361_scoreboard_dash\" default_format = \"#weak\" align = center|nobaseline using = Font_Size_Small }}",
         "\t\t}",
         "\t}",
         "}",
@@ -202,6 +256,7 @@ def row_gui(prefix: str, slot: int) -> list[str]:
 def tab_gui(prefix: str) -> list[str]:
     managed = prefix == "m"
     source = "managed" if managed else "received"
+    shown_available = f"zg361_scoreboard_{source}_shown_available_gui"
     availability = (
         "zg361_scoreboard_managed_available_gui"
         if managed
@@ -232,7 +287,8 @@ def tab_gui(prefix: str) -> list[str]:
             "\t\ttext_single = { text = \"zg361_scoreboard_year\" default_format = \"#weak\" align = nobaseline }",
             f"\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_year').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
             "\t\ttext_single = { text = \"zg361_scoreboard_total\" default_format = \"#weak\" align = nobaseline }",
-            f"\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+            f"\t\ttext_single = {{ visible = \"[GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" raw_text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+            f"\t\ttext_single = {{ visible = \"[Not(GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
             "\t\texpand = {}",
         ]
     )
@@ -312,6 +368,13 @@ def ledger_tab_gui() -> list[str]:
 
 
 def render_gui() -> bytes:
+    toggle_width, toggle_height = TOGGLE_SIZE
+    toggle_x, toggle_y = TOGGLE_POSITION
+    toggle_hud_gate = (
+        "[And(And(And(And(Not(IsPauseMenuShown), IsDefaultGUIMode), "
+        "Not(IsRightWindowOpen)), Not(IsGameViewOpen('outliner'))), "
+        "Not(IsGameViewOpen('barbershop')))]"
+    )
     lines: list[str] = [
         "types ZG361ScoreboardTypes",
         "{",
@@ -333,9 +396,10 @@ def render_gui() -> bytes:
         "\tsize = { 100% 100% } layer = middle",
         "\tvisible = \"[GetPlayer.IsValid]\" alwaystransparent = yes",
         "\twidget = {",
-        "\t\tname = \"zg361_scoreboard_toggle\" size = { 180 44 } parentanchor = top|right position = { -205 165 }",
-        "\t\tbutton_standard = { size = { 180 44 } visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }",
-        "\t\tbutton_standard = { size = { 180 44 } visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }",
+        f"\t\tname = \"zg361_scoreboard_toggle\" size = {{ {toggle_width} {toggle_height} }} parentanchor = top|right position = {{ {toggle_x} {toggle_y} }}",
+        f"\t\tvisible = \"{toggle_hud_gate}\" using = Animation_ShowHide_Quick",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
         "\t}",
         "\twidget = {",
         "\t\tname = \"zg361_scoreboard_modal\" size = { 100% 100% }",

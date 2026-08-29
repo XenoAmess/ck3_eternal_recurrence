@@ -6,7 +6,7 @@
 并验证唯一状态与组织账后果；它不表示 1083 个 A/B/C 分支都经过人工 UI 点选。证据见
 `docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`。
 
-| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 实机波次 | 状态 |
+| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 状态 |
 |---:|---|---|---|---|---|---|---:|---|
 | 001 | KPI 分项证据单 | A | P0 | `assessment` | `zg361m.1` | `zg361_mechanism_001_ai_effect` | 1 | fixture-live |
 | 002 | 年度目标责任书：OKR 方向 + KPI 结果 | A | P0 | `assessment` | `zg361m.2` | `zg361_mechanism_002_ai_effect` | 1 | fixture-live |
@@ -25,7 +25,7 @@
 | 015 | PIP 改进任务书 | C | P0 | `pip` | `zg361m.15` | `zg361_mechanism_015_ai_effect` | 1 | fixture-live |
 | 016 | PIP 支持预算与“只给指标不给资源” | C | P1 | `pip` | `zg361m.16` | `zg361_mechanism_016_ai_effect` | 1 | fixture-live |
 | 017 | 末位处置阶梯 | C | P0 | `pip` | `zg361m.17` | `zg361_mechanism_017_ai_effect` | 1 | fixture-live |
-| 018 | 个人告身与三账本清算单 | C | P0 | `assessment` | `zg361m.18` | `zg361_mechanism_018_ai_effect` | 1 | fixture-live |
+| 018 | 个人告身与四重后果清算单 | C | P0 | `assessment` | `zg361m.18` | `zg361_mechanism_018_ai_effect` | 1 | fixture-live |
 | 019 | 晋升资格门槛 | D | P0 | `promotion` | `zg361m.19` | `zg361_mechanism_019_ai_effect` | 2 | fixture-live |
 | 020 | 晋升包与跨部门答辩 | D | P1 | `promotion` | `zg361m.20` | `zg361_mechanism_020_ai_effect` | 2 | fixture-live |
 | 021 | 奖金—调薪矩阵 | D | P1 | `compensation` | `zg361m.21` | `zg361_mechanism_021_ai_effect` | 2 | fixture-live |
@@ -370,4 +370,4 @@
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | fixture-live |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | fixture-live |
 
-Manifest semantic SHA-256: `b64a5377943c718e317d6b07d3114b2639bfe3e02340605c188ba3d0d930d24a`
+Manifest semantic SHA-256: `6c9e69084113f2884ed694a4dc8e4fc4962024e8a36baee17e71e93f9a9f5c95`

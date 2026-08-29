@@ -21,7 +21,11 @@
 
 - **3.75 超出预期**：贤能奖励、地方国库奖金、原版任命候选分加成；连续两次进入晋升通道。
 - **3.5 符合预期**：小额贤能奖励，连击归零。
-- **3.25 待改进**：地方国库罚没、个人金币扣减与一年俸禄下调，并进入 PIP；连续两次后进入末位淘汰。
+- **3.25 待改进**：地方国库 -50（有国库时）、个人金币 -25、贤能 -60（有贤能制时）、一年俸禄 -25%（有俸禄时），并进入 PIP；连续两次后进入末位淘汰。
+
+常规成熟队列按 30/60/10 执行；首轮新人受 3.25 保护；只有一至两人的直属小组仍会稳定排名、全员按 3.5 正常结算，
+只是不会硬凑强制分布、校准或末位，因此个别榜单会依法缺档，
+不会为了让比例好看而把新人或两人小组硬塞进末位。
 
 末位处置包括免费夺爵、强制致仕、降岗留用和再留一年。玩家封臣可申诉、认命、摆烂或奋发；
 玩家领主可在公示前校准边界名单。申诉改判会同步退回本次固定财政罚没并修正榜头统计。
@@ -32,11 +36,12 @@
 
 ## 京察与考核榜
 
-- 京察是**免费、定期弹出的半强制活动**。玩家公爵及以上到期默认应举办；拒办会降低直属上司好感，并成为上司下次考核你时的一次性重大 KPI 扣分理由。
+- 京察是**免费、定期弹出的半强制活动**。玩家天朝制公爵及以上只要有至少一名合法直属官员，到期就默认应举办；1–2 人小组也不豁免。拒办会降低直属上司好感，并成为上司下次考核你时的一次性重大 KPI 扣分理由；若签发后因失能、在押或来宾归零而无法合法集会，只豁免活动，官员考核仍会结算。
 - 独立最高领主没有上司，拒办时只承担制度威信后果，不伪造“自己考核自己”。
 - AI 领主默认履责，用后台考核结算，不走活动 UI。
 - 每次结算在淘汰前发布持久榜单。右上角“考核榜”面板展示名次、人物/官职、KPI、价值观分、档位、连续次数和 PIP/晋升状态。
-- 公爵及以上玩家可切换“我考核的官员”与“我所在的受评队列”两个视角；被 AI 领主考核的玩家也可看到所属完整公示榜。
+- 公爵及以上玩家可切换“我考核的官员”与“我所在的受评队列”两个视角；被 AI 领主考核的玩家也可看到所属公示榜。
+  极端超大队列保留完整分档统计，面板展示前 80 名，并在表头明确写出“显示人数 / 总人数”。
 - 主持考核时收到的是“你主持的考核”汇总；本人被上司考核时收到独立的“上司考定”告身，直接写明上司、个人档位、KPI 与同组名次。
 
 ## 不只是三个数字：361 条制度选择
@@ -47,25 +52,25 @@ A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考�
 
 它们覆盖 OKR/KPI、背靠背互评、校准会、PIP、末位、晋升包、HC/编制、薪酬倒挂、向上管理、跨部门抢功、
 技术债、数据指标、加班与会议、招聘和外包、内部活水、重组、需求治理、绩效申诉，以及最终的《三六一绩效宪章》。
-选择会共同改变 14 本组织账：证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、
-人才、HC 压力、薪酬债、制度债和预算压力；这些账再回流到团队与管理者 KPI，所以“流程拉满”与“业务交付”
-并不总能同时最大化。
+361 张卡共用 17 类后果 profile，而不是伪装成 361 套互不相干的小游戏。选择会共同改变 14 本组织账：
+证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、人才、HC 压力、薪酬债、
+制度债和预算压力；这些账再回流到团队与管理者 KPI，所以“流程拉满”与“业务交付”并不总能同时最大化。
 
-完整设计见 `docs/361-expansion-options.md`；逐号实现入口、AI 路径和验收波次见
+完整设计见 `docs/361-expansion-options.md`；逐号实现入口、AI 路径和同批逻辑覆盖组见
 `docs/361-mechanism-implementation-manifest.md` 与机器可读的 `docs/361-mechanism-manifest.json`。
 
 ## 实机画面
 
 | 绩效校准会 | 冻结考核名单 |
 |---|---|
-| ![绩效校准会](workshop/media/01_calibration_meeting.jpg) | ![冻结考核名单](workshop/media/02_review_cohort_frozen.jpg) |
+| ![绩效校准会](workshop/media/01_calibration_meeting.jpg) | ![冻结考核名单：首轮新人保护样本](workshop/media/02_review_cohort_frozen.jpg) |
 | 天朝官员考核榜 | 半强制京察 |
 | ![天朝官员考核榜](workshop/media/03_scoreboard.jpg) | ![京察之期](workshop/media/04_jingcha_mandate.jpg) |
 | 免费京察活动 | 上司考定 3.25 |
 | ![免费京察活动](workshop/media/05_free_jingcha_activity.jpg) | ![上司考定 3.25](workshop/media/06_superior_325_result.jpg) |
 
-这些 JPEG 是最终 GREEN 实机证据 PNG 的确定性裁切；无损原图、失败 attempt、日志和完整一次性 userdir 均保留在
-验收 artifact。来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`。
+当前六张 JPEG 是首轮整批 GREEN 实机证据 PNG 的确定性裁切；无损原图、失败 attempt、日志和完整一次性 userdir 均保留在
+验收 artifact。正式候选采用的最终批次与替换图会另行锁定，来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`。
 
 ## 安装与兼容性
 
@@ -79,8 +84,9 @@ A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考�
 
 版本 0.3.0 是发布候选开发线。361 个编号目前均达到 `fixture-live`：在一次真实 CK3 1.19.0.6 批次中，
 每项机制的参考路线都逐号执行并验证了唯一状态、14 本组织账与幂等性；这不冒充 1083 个 A/B/C 分支都做过
-人工 UI 点选。同次实机还覆盖了非独立 AI 天朝公爵、首轮新人、考核榜、免费京察、拒办扣分、3.25 三账户
-处分与申诉退款。发布仍需完成多语言、正式 staging、Workshop 新鲜缓存复验和宣传成片。
+人工 UI 点选。同次实机还覆盖了非独立 AI 天朝公爵、首轮新人、考核榜、免费京察、拒办扣分、3.25 四重处分
+与申诉退款。0.3.0 的九语言发布译文已经准备并通过自动化检查与独立抽检；其中七种非中英译文不冒充完整的母语审校签字。
+发布仍需完成正式 staging、Workshop 新鲜缓存复验，以及中文主叙事、中英双语字幕、短于 20 分钟的宣传成片验收。
 
 ## 工程与测试
 
@@ -98,11 +104,12 @@ A/B/C 路线、AI 决策入口、持久选择变量和组织后果；正常考�
 正式上传只能使用 `dist/mod_zhongguo_style/` staging，禁止直接上传开发树。该投影仅包含
 `descriptor.mod`、`thumbnail.png` 与 `common/events/gfx/gui/localization` 运行文件；README、docs、tools、
 fixture、原始素材和过程 artifact 均不进入 Workshop 内容包。`remote_file_id` 只能留在用户目录外层 `.mod`，
-仓库、正式 staging 和正式 ZIP 都必须为零。
+仓库、正式 staging 和正式 ZIP 都不得包含该字段。
 
 工坊文案草稿与逐项发布签核分别在 `workshop/description.bbcode` 和 `docs/release-checklist.md`。
 
-脚本、GUI 和 YML 必须为 UTF-8 BOM；日常只创作/审阅简中与英文，其他七语言暂用英文占位。
+脚本、GUI 和 YML 必须为 UTF-8 BOM。发布版包含简体中文、英语、法语、德语、日语、韩语、波兰语、俄语和西班牙语；
+简中与英文为逐条创作/审阅文本，其余七语是按发布流程生成并经自动化检查与独立抽检的发布译文，不等同于完整母语审校签字。
 AI 授权仅限本 mod 的 361 考核系统，不得外推。
 
 ## English summary
@@ -110,5 +117,6 @@ AI 授权仅限本 mod 的 361 考核系统，不得外推。
 ZhongGuo 361 Style turns Chinese internet-company performance culture into a CK3 celestial-government game loop.
 Every eligible duke-or-higher ruler reviews direct officials; counts and barons are reviewees only. Reviews freeze a ranked
 30/60/10 board, apply 3.75/3.5/3.25 consequences, drive PIP, promotion, compensation and headcount politics, and let the
-player navigate 361 individually tracked policy dilemmas. Simplified Chinese is the primary presentation; English is fully
-authored, while the remaining seven localization trees require release-grade editorial review before publication.
+player navigate 361 individually tracked policy dilemmas. Simplified Chinese is the primary presentation and English is fully
+authored. Release localizations are included for all nine supported languages; the other seven are machine-assisted and passed
+automated checks plus an independent stratified review, but they are not represented as full native-speaker sign-off.

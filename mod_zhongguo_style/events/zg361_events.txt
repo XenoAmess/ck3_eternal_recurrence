@@ -240,7 +240,7 @@ zg361.10 = {
 
 	option = { # 踩一个人：末名 3.5 打进 3.25
 		name = zg361.10.c
-		trigger = { var:zg361_bottom_slots >= 1 }
+		trigger = { zg361_can_calibrate_demote_trigger = yes }
 		zg361_calibrate_demote_effect = yes
 		trigger_event = zg361.12
 	}

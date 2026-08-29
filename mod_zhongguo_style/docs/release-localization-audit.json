@@ -1,0 +1,106 @@
+{
+  "format_version": 1,
+  "product_id": "mod_zhongguo_style",
+  "result": "GREEN",
+  "checks": [
+    "key_order",
+    "protected_tokens",
+    "quality",
+    "no_english_placeholders",
+    "target_script"
+  ],
+  "source_files": [
+    {
+      "path": "mod_zhongguo_style/localization/english/zg361_l_english.yml",
+      "size": 15185,
+      "sha256": "cc3f13f6f89b2e4e7b289da7758f64c24dbd2fa97917d73c3e8a3a24c3da0c5e"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/english/zg361_mechanisms_l_english.yml",
+      "size": 233803,
+      "sha256": "d665268dc5f27c7d35652364f26eba8025ff63e48a06051835d230aedd61b7c7"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
+      "size": 13462,
+      "sha256": "8086b5b52eb4d4b4f742fe7178bd385fd74ed15a019ca47dc7a789b6d415f8b4"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
+      "size": 247996,
+      "sha256": "1fbf6b7681ab1e504c137fea274c26c216664a75975abec54c00f6b9178a2e3f"
+    }
+  ],
+  "target_files": [
+    {
+      "path": "mod_zhongguo_style/localization/french/zg361_l_french.yml",
+      "size": 17356,
+      "sha256": "0e89de8e92dc636c151a7b7f52deddefe020b26f1687334e4f2296cd36f7d9fe"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/french/zg361_mechanisms_l_french.yml",
+      "size": 293954,
+      "sha256": "e98a987da6f90a40ababacaf31fea0d9d3cf21ceaa7d244b9871b100a6cbc287"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/german/zg361_l_german.yml",
+      "size": 17262,
+      "sha256": "b82e35816300b9e78506c964ef20ba6ad5ed4df736550c6764012941e2cc39b2"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/german/zg361_mechanisms_l_german.yml",
+      "size": 278231,
+      "sha256": "6f990f0a6f62e04317d10b66469d501f704463b25f0636f5ef0752c67aad9d65"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/japanese/zg361_l_japanese.yml",
+      "size": 16768,
+      "sha256": "5a2eb3cbf8a32789283af6dd1e95fc4892939ea12dd1e863ffaaa7d04cbf1516"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/japanese/zg361_mechanisms_l_japanese.yml",
+      "size": 271716,
+      "sha256": "c6eb55cde132f092179cce0a85b24a89b438d3845d891cc82f8c767b9d4cf26f"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/korean/zg361_l_korean.yml",
+      "size": 16320,
+      "sha256": "65ada46bf853b0e13fc6b60fdaefe765c47f1b1f920304b962830da67cfdd7f1"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/korean/zg361_mechanisms_l_korean.yml",
+      "size": 263616,
+      "sha256": "6505c2c69ad02ce75a0bc104c5d25ae71c332e88960f16892b342c98d8878b79"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/polish/zg361_l_polish.yml",
+      "size": 16205,
+      "sha256": "e8fd1ed8228a08d6cb6b13410beab842df684b2ce12fe1b277fc4f09ee549094"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/polish/zg361_mechanisms_l_polish.yml",
+      "size": 261911,
+      "sha256": "d72f885bb4928dbd224f34aae1d1c8db908927e8738b7af3eeb0f1d6a9b032b7"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/russian/zg361_l_russian.yml",
+      "size": 23968,
+      "sha256": "b2c6987ad633488c15a7639cbb77f7ec60bc99f0ba1b3b7d61142935fa1f4a5e"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/russian/zg361_mechanisms_l_russian.yml",
+      "size": 443937,
+      "sha256": "b7e4c8e8d43f9fcdfc3cad9d809486c5a887ee28be9ea6d6da1f29d450f4e7c6"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/spanish/zg361_l_spanish.yml",
+      "size": 16622,
+      "sha256": "3f367878e66735a2b1ad95303aa45492c5693e40139a92f06fd1d768224b6422"
+    },
+    {
+      "path": "mod_zhongguo_style/localization/spanish/zg361_mechanisms_l_spanish.yml",
+      "size": 284432,
+      "sha256": "749446425ec20b196f37fc635c52cb23e17b69f5646a5757397f6a60f3d011a6"
+    }
+  ]
+}

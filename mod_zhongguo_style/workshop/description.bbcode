@@ -5,6 +5,7 @@
 
 把中国互联网公司的 361 绩效文化，翻译成 CK3 天朝官场玩法：30% 的 3.75、60% 的 3.5、10% 的 3.25；
 有强制分布、背靠背互评、校准会、PIP、末位、晋升包、HC/编制、OKR/KPI、向上管理、跨部门抢功和绩效申诉。
+常规成熟队列执行 30/60/10；首轮新人受 3.25 保护；只有一至两人的直属小组仍会稳定排名、全员按 3.5 正常结算，只是不启用强制分布、校准或末位，因此个别榜单会依法缺档。
 
 Version 0.3.0 · CK3 1.19.0.6
 
@@ -16,7 +17,7 @@ Version 0.3.0 · CK3 1.19.0.6
 [list]
 [*]所有在任、在世的[b]天朝制公爵及以上领主[/b]都能考核自己的直属官员，不要求独立。
 [*]天朝总督、直属伯爵和男爵都可受评；伯爵和男爵不能考核别人。
-[*]公爵及以上一边给下属打绩效，一边等上司给自己打绩效。AI 天朝领主也会后台完成整套考核。
+[*]公爵及以上一边给下属打绩效，一边等上司给自己打绩效。AI 天朝制公爵及以上也会后台完成整套考核；这是本项目由所有者明确授权的第二个 AI 例外。
 [/list]
 
 [h1]一轮绩效季[/h1]
@@ -30,7 +31,7 @@ Version 0.3.0 · CK3 1.19.0.6
 [/list]
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/180f8065fd9c02a199549d56bbc74a4b3f0d3d7a/mod_zhongguo_style/workshop/media/02_review_cohort_frozen.jpg[/img]
-[i]名单冻结：3.75、3.5、3.25，先别急着开香槟 / Cohort frozen: 3.75, 3.5, 3.25—hold the champagne[/i]
+[i]首轮新人保护样本：7 个 3.75、16 个 3.5、0 个 3.25 / First-review protection sample: 7 / 16 / 0[/i]
 
 [h1]3.75、3.5 与 3.25[/h1]
 
@@ -41,16 +42,16 @@ Version 0.3.0 · CK3 1.19.0.6
 小额贤能奖励，优秀连击归零，并收获一句“继续保持”。
 
 [b]3.25 · 待改进[/b]
-地方国库罚没、个人金币扣减、一年俸禄下调并进入 PIP；连续两轮可能免费夺爵、强制致仕、降岗留用，或再留一年。
+地方国库 -50（有国库时）、个人金币 -25、贤能 -60（有贤能制时）、一年俸禄 -25%（有俸禄时），并进入 PIP；连续两轮可能免费夺爵、强制致仕、降岗留用，或再留一年。
 申诉若改判，会按本轮案卷退回固定罚没并修正榜单统计。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/180f8065fd9c02a199549d56bbc74a4b3f0d3d7a/mod_zhongguo_style/workshop/media/06_superior_325_result.jpg[/img]
-[i]上司考定：3.25，KPI、名次与三重后果一次讲清 / Superior's rating: 3.25, with KPI, rank and consequences[/i]
+[i]上司考定：画面明示 3.25、KPI 与名次；四重后果由同轮实机对账核验 / Superior result: 3.25, KPI and rank on screen; fourfold consequences verified in the same run[/i]
 
 [h1]京察：免费，但不是可有可无[/h1]
 
-京察是定期弹出的免费、半强制活动。玩家公爵及以上默认必须举办；拒办会降低直属上司好感，并成为上司下一轮
-给你扣 KPI 的一次性重大理由。独立最高领主没有上司，不会出现自己拒办、自己给自己打 C 的行为艺术，但仍要承担制度威信后果。
+京察是定期弹出的免费、半强制活动。玩家天朝制公爵及以上只要有至少一名合法直属官员就必须举办，1–2 人小组也不豁免；拒办会降低直属上司好感，并成为上司下一轮
+给你扣 KPI 的一次性重大理由。签发后若因失能、在押或来宾归零而无法合法集会，只豁免活动，不漏掉官员考核。独立最高领主没有上司，不会出现自己拒办、自己给自己打 C 的行为艺术，但仍要承担制度威信后果。
 AI 默认履责并后台结算，不占用活动 UI。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/180f8065fd9c02a199549d56bbc74a4b3f0d3d7a/mod_zhongguo_style/workshop/media/04_jingcha_mandate.jpg[/img]
@@ -73,8 +74,9 @@ AI 默认履责并后台结算，不占用活动 UI。
 [*][b]制度终局[/b]：目标棘轮、截止日套利、事实/配额分离、翻案守恒、经理拒绝硬背 C 与《三六一绩效宪章》。
 [/list]
 
-所有选择共同推动 14 本组织账：证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、人才、
-HC 压力、薪酬债、制度债和预算压力，并回流到团队和管理者 KPI。流程越厚不一定交付越快，今晚在线不一定明天稳定。
+361 张卡共用 17 类后果 profile，而不是假装成 361 套独立小游戏。所有选择共同推动 14 本组织账：证据可信、互信、
+行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、人才、HC 压力、薪酬债、制度债和预算压力，并回流到
+团队和管理者 KPI。流程越厚不一定交付越快，今晚在线不一定明天稳定。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/180f8065fd9c02a199549d56bbc74a4b3f0d3d7a/mod_zhongguo_style/workshop/media/01_calibration_meeting.jpg[/img]
 [i]校准会：名单就在你手里，锅也在 / Calibration: the list—and the liability—is yours[/i]
@@ -94,7 +96,11 @@ HC 压力、薪酬债、制度债和预算压力，并回流到团队和管理�
 
 [h1]语言 / Languages[/h1]
 
-简体中文为主要创作语言；English localization included.
+包含简体中文、English、Français、Deutsch、日本語、한국어、Polski、Русский、Español 九种发布本地化。简中为主要创作语言，英文为完整原创；其余七语经自动化检查与独立抽检，不等同于完整母语审校签字，欢迎纠错。
+
+[h1]实机证据边界[/h1]
+
+一次 CK3 1.19.0.6 GREEN 合批已让 001–361 每号参考路线在真实引擎中逐号执行，并核对持久状态、14 本组织账与幂等性。这里的 361/361 不冒充 1,083 个 A/B/C 分支都做过人工 UI 点选；自然等待 300 日、跨三年存读档和逐爵位画面矩阵也不在该次实测范围内。
 
 [h1]English Summary[/h1]
 
