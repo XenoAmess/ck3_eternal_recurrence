@@ -319,10 +319,10 @@ zga_acceptance.5 = {
 			debug_log = "ZGA: TEST PASS jingcha_mandate_issued"
 			debug_log = "ZGA: TEST PASS clean_jingcha_dispatched"
 			trigger_event = zg361.40
-			# Fixture choreography only: leave a same-year D+30 buffer for the
+			# Fixture choreography only: leave a same-year D+90 buffer for the
 			# native activity detail and a rendered date-freeze proof. Product
 			# Jingcha timing is not changed by this delayed test carrier.
-			trigger_event = { id = zga_acceptance.3 days = 30 }
+			trigger_event = { id = zga_acceptance.3 days = 90 }
 		}
 		else = { debug_log = "ZGA: TEST FAIL clean_jingcha_dispatch" }
 	}

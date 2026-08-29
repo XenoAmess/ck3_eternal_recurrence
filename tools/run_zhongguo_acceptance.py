@@ -18,6 +18,8 @@ import unicodedata
 import uuid
 from pathlib import Path
 
+from PIL import ImageChops
+
 import run_acceptance as acceptance
 import build_mod_zhongguo_style_release as release
 import run_terminal_acceptance as terminal
@@ -200,7 +202,7 @@ CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
 # product-native title-bar control directly.
 CHARACTER_WINDOW_CLOSE_BUTTON = (0.2891, 0.0181)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
-JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 30
+JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 90
 PERSONAL_SWITCH_SCHEDULED_MARKER = (
     "ZGA: TEST PASS personal_result_switch_scheduled"
 )
@@ -1058,7 +1060,7 @@ def fixture_source_errors() -> list[str]:
         "clean_policy_361_dispatched",
         "clean_policy_chain_completed",
         "trigger_event = { id = zga_acceptance.5 days = 10 }",
-        "trigger_event = { id = zga_acceptance.3 days = 30 }",
+        "trigger_event = { id = zga_acceptance.3 days = 90 }",
         "trigger_event = { id = zga_acceptance.12 days = 1 }",
         "settled_review_same_year_idempotent",
         "jingcha_refusal_superior_opinion_and_kpi_minus_50",
@@ -1709,26 +1711,82 @@ def initialize_fixture(stream: MarkerStream, artifacts: Path) -> None:
 def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object]:
     """Return the inherited bookmark camera to the historical Song capital."""
 
+    def map_change_fraction(left, right) -> float:
+        width, height = left.size
+        box = (
+            int(width * 0.06),
+            int(height * 0.06),
+            int(width * 0.86),
+            int(height * 0.88),
+        )
+        difference = ImageChops.difference(left.crop(box), right.crop(box))
+        sample = difference.resize((160, 90)).convert("RGB")
+        changed = sum(1 for pixel in sample.getdata() if max(pixel) > 20)
+        return round(changed / (160 * 90), 6)
+
     acceptance.focus_ck3()
     before = acceptance.ImageGrab.grab()
     before.save(artifacts / "05_promo_camera_before_home.png")
-    # Exact-build hud.gui binds the native go-to-capital action; the default
-    # keyboard binding is Home.  This changes presentation only and runs after
-    # the fixture drawer is closed but before the append-only recorder starts.
+    # Try the configured shortcut first, then verify the map actually moved.
+    # The sixth live candidate proved that a sent Home key can be a no-op in
+    # this isolated profile, so intent alone is not accepted as evidence.
     acceptance.pyautogui.press("home")
     time.sleep(2.0)
-    after = acceptance.ImageGrab.grab()
+    shortcut_after = acceptance.ImageGrab.grab()
+    shortcut_after.save(artifacts / "05_promo_camera_after_home.png")
+    shortcut_change = map_change_fraction(before, shortcut_after)
+    method = "shortcut_home"
+
+    if shortcut_change < 0.18:
+        # Exact-build hud.gui places the 30x30 native More button at this point
+        # inside the bottom-right timeline widget. Clicking its own rendered
+        # "转到首都" item invokes OnGoToPlayerCapital without debug commands or
+        # any fixture-facing UI. This all happens before recording starts.
+        width, height = acceptance.pyautogui.size()
+        more_point = (
+            int(width * (1981 / 2560)),
+            int(height * (1422 / 1440)),
+        )
+        acceptance.deliberate_click(more_point, "native HUD More button")
+        capital_button = acceptance.wait_for_ocr_text(
+            "转到首都",
+            acceptance.FULL_SCREEN_REGION,
+            8,
+            artifacts,
+            "05_promo_camera_more_menu.png",
+            contains=True,
+            stable_hits=1,
+        )
+        acceptance.deliberate_click(
+            capital_button, "native go-to-player-capital menu item"
+        )
+        time.sleep(2.0)
+        after = acceptance.ImageGrab.grab()
+        method = "native_more_menu"
+    else:
+        after = shortcut_after
+
     after.save(artifacts / "05_promo_camera_after_home.png")
+    final_change = map_change_fraction(before, after)
     evidence = {
         "schema_version": 1,
+        "result": "GREEN" if final_change >= 0.18 else "RED",
         "native_action": "go_to_capital",
         "default_key": "home",
+        "method": method,
+        "shortcut_visual_change_fraction": shortcut_change,
+        "final_visual_change_fraction": final_change,
+        "minimum_visual_change_fraction": 0.18,
         "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
         "expected_realm_title": "h_china",
         "before_artifact": "05_promo_camera_before_home.png",
         "after_artifact": "05_promo_camera_after_home.png",
     }
     write_json(artifacts / "05_promo_camera_recenter.json", evidence)
+    if evidence["result"] != "GREEN":
+        raise acceptance.RunnerError(
+            "native capital recenter produced no material map movement"
+        )
     return evidence
 
 
@@ -2439,8 +2497,9 @@ def pause_after_jingcha_host_click(
     # The mandate event interrupted a running timeline.  The option click has a
     # short transition during which a keyboard event can be swallowed, so give
     # the event window one bounded render interval before sending Space.  The
-    # caller has already armed speed one; even a missed pause therefore cannot
-    # consume the fixture's D+30 carrier during the OCR fallback.  Activity UI
+    # caller has already armed speed one; even if that best-effort key is not
+    # retained across the event transition, the fixture's same-year D+90
+    # carrier leaves the bounded date proof room to recover. Activity UI
     # can cover CK3's rendered "paused" label, so prove the freeze from three
     # consecutive HUD dates instead of relying on it.
     time.sleep(0.35)
@@ -2625,6 +2684,9 @@ def capture_jingcha_planner(
     acceptance.pyautogui.press("1")
     time.sleep(0.35)
     acceptance.deliberate_click(host_option, "production host Jingcha option")
+    host_pause_evidence = pause_after_jingcha_host_click(
+        stream, artifacts, mandate_day
+    )
     plan_button = acceptance.wait_for_ocr_text(
         "规划京察大计",
         acceptance.FULL_SCREEN_REGION,
@@ -2632,9 +2694,6 @@ def capture_jingcha_planner(
         artifacts,
         "09_jingcha_activity_detail.png",
         stable_hits=1,
-    )
-    host_pause_evidence = pause_after_jingcha_host_click(
-        stream, artifacts, mandate_day
     )
     acceptance.deliberate_click(plan_button, "production plan Jingcha activity button")
     rendered_text = acceptance.wait_for_ocr_tokens(

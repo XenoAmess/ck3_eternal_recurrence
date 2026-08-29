@@ -11,6 +11,8 @@ import sys
 import tempfile
 from unittest import mock
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNNER = ROOT / "tools" / "run_zhongguo_acceptance.py"
@@ -233,12 +235,53 @@ def main() -> int:
     )
     for token in (
         'acceptance.pyautogui.press("home")',
+        "ImageChops.difference",
+        'acceptance.deliberate_click(more_point, "native HUD More button")',
+        '"转到首都"',
+        '"native_more_menu"',
+        '"shortcut_visual_change_fraction"',
+        '"final_visual_change_fraction"',
+        '"minimum_visual_change_fraction": 0.18',
+        '"native capital recenter produced no material map movement"',
         '"native_action": "go_to_capital"',
         '"expected_realm_title": "h_china"',
         '"05_promo_camera_before_home.png"',
         '"05_promo_camera_after_home.png"',
     ):
         assert token in camera_recenter, token
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
+        moved = Image.new("RGB", (2560, 1440), (180, 90, 40))
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=(unchanged, unchanged.copy(), moved),
+            ),
+            mock.patch.object(
+                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+            ),
+            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
+            mock.patch.object(
+                capture.acceptance, "wait_for_ocr_text", return_value=(1010, 910)
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            camera_gate = capture.recenter_promo_camera_on_player_capital(artifacts)
+        press.assert_called_once_with("home")
+        assert click.call_args_list == [
+            mock.call((1981, 1422), "native HUD More button"),
+            mock.call((1010, 910), "native go-to-player-capital menu item"),
+        ]
+        assert camera_gate["result"] == "GREEN"
+        assert camera_gate["method"] == "native_more_menu"
+        assert camera_gate["shortcut_visual_change_fraction"] == 0.0
+        assert camera_gate["final_visual_change_fraction"] >= 0.99
+        assert (artifacts / "05_promo_camera_recenter.json").is_file()
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (
@@ -597,13 +640,13 @@ def main() -> int:
     )
     assert jingcha_body.index(
         'acceptance.deliberate_click(host_option, "production host Jingcha option")'
-    ) < jingcha_body.index(
+    ) < jingcha_body.index("pause_after_jingcha_host_click")
+    assert jingcha_body.index("pause_after_jingcha_host_click") < jingcha_body.index(
         "plan_button = acceptance.wait_for_ocr_text"
     )
     assert jingcha_body.index(
         "plan_button = acceptance.wait_for_ocr_text"
-    ) < jingcha_body.index("pause_after_jingcha_host_click")
-    assert jingcha_body.index("pause_after_jingcha_host_click") < jingcha_body.index(
+    ) < jingcha_body.index(
         'acceptance.deliberate_click(plan_button, "production plan Jingcha activity button")'
     )
 
@@ -625,7 +668,7 @@ def main() -> int:
     ):
         assert token in host_pause, token
     assert "acceptance.ensure_game_paused" not in host_pause
-    assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 30
+    assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 90
 
     interruption = inspect.getsource(capture.settle_promo_interruptions)
     assert "stop_event_title: str | None = None" in interruption
@@ -694,7 +737,7 @@ def main() -> int:
 
     # Model the real failure mode: Space is swallowed by the post-option
     # transition, but the caller has armed speed one, so the first probe moves
-    # by only one day and the native timeline fallback still pauses before D+30.
+    # by only one day and the native timeline fallback still pauses before D+90.
     slow_then_frozen = iter((1000, 1000, 1001, 1001, 1001, 1001, 1001, 1001))
     action_order: list[tuple[str, object]] = []
     with tempfile.TemporaryDirectory() as temporary:
@@ -736,7 +779,7 @@ def main() -> int:
         assert action_order[0] == ("sleep", 0.35)
         assert action_order[1] == ("press", "space")
         assert pause_gate["result"] == "GREEN"
-        assert pause_gate["personal_switch_due_day_ordinal"] == 1030
+        assert pause_gate["personal_switch_due_day_ordinal"] == 1090
         assert pause_gate["paused_day_ordinal"] == 1001
         assert pause_gate["pause_delta_days"] == 1
         assert pause_gate["paused_within_two_days"] is True
