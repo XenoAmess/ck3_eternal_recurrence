@@ -66,8 +66,8 @@ def _title(title_key: str) -> dict[str, object]:
             "tier_key": "county",
             "anchor_kind": "title_bounds_center",
             "capital_province_id": 9_822,
-            "bounds_extent": [1_600, -1_000, 1_674, -895],
-            "map_x_adjustment": 5,
+            "bounds_extent": [1_632, -947, 1_632, -947],
+            "map_x_adjustment": 0,
         }
     if title_key == HARNESS.BARONY_TITLE_KEY:
         return {
@@ -325,7 +325,7 @@ class TitleMapNavigationV1LiveAcceptanceTests(unittest.TestCase):
             len(result["raw_native_driver_history_delta"]), 7
         )
 
-    def test_county_and_barony_may_share_center_but_are_distinct_titles(
+    def test_county_and_barony_may_share_bounds_but_are_distinct_titles(
         self,
     ) -> None:
         result = HARNESS._run_navigation_sequence(_FakeService())
@@ -337,11 +337,13 @@ class TitleMapNavigationV1LiveAcceptanceTests(unittest.TestCase):
             barony["camera_center"]["expected_position_xyz"],
         )
         self.assertNotEqual(county["title"]["title_id"], barony["title"]["title_id"])
-        self.assertNotEqual(
+        self.assertEqual(
             county["title"]["bounds_extent"],
             barony["title"]["bounds_extent"],
         )
-        self.assertTrue(result["known_title_checks"]["distinct_title_bounds"])
+        self.assertFalse(result["known_title_checks"]["distinct_title_bounds"])
+        self.assertTrue(result["checks"]["known_title_identity"])
+        self.assertTrue(result["ok"])
 
     def test_wrong_unknown_code_is_not_a_typed_missing_title_red(self) -> None:
         result = HARNESS._run_navigation_sequence(

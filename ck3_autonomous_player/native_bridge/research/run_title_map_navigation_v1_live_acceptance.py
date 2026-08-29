@@ -710,6 +710,20 @@ def _run_navigation_sequence(
             .get("expected_position_xyz")
         ),
     }
+    # CK3 1.19.0.6 can resolve a county and its capital barony to distinct
+    # title objects while exposing the same recursive bounds and final camera
+    # center.  Identity is therefore proven by stable key/tier/title_id; the
+    # intervening Guangzhou displacement proves that both typed calls really
+    # dispatched.  Keep the bounds relation as evidence, not as an identity
+    # precondition.
+    required_identity_checks = (
+        "displacement_key_and_tier",
+        "county_key_and_tier",
+        "barony_key_and_tier",
+        "distinct_title_ids",
+        "displacement_differs_from_county_camera",
+        "displacement_differs_from_barony_camera",
+    )
     steps = [
         initial_displacement,
         county,
@@ -748,7 +762,9 @@ def _run_navigation_sequence(
             and repeat_barony.get("typed_service_payload", {}).get("status")
             == "already_centered"
         ),
-        "known_title_identity": all(known_title_checks.values()),
+        "known_title_identity": all(
+            known_title_checks[name] for name in required_identity_checks
+        ),
         "unknown_title_typed_red_and_camera_unchanged": unknown.get("ok")
         is True,
         "all_known_steps_valid": all(row.get("ok") is True for row in steps),
