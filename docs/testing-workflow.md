@@ -342,6 +342,14 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   session 已持有的锁，也不得先关 pipe 后等待 CK3。initial readiness 要在同一 PID/generation 上同时闭合 exact-build hello、
   default-OFF containment/recorder、paused map、存活 episode character 与同日期 main-thread mailbox；cold checkpoint 还要闭合
   `driver_state_restore_kind=cold_checkpoint`、`episode_binding_state=active_resumed` 且无 candidate rejection。
+- 正式一代续跑前先执行 `native-one-generation-preflight`。这是严格的 no-launch/no-desktop 检查，不需要 DLL 或 injector，也不会调用
+  OCR、输入、窗口或 CK3 launch 路径；但全局 `--bridge-pipe` 仍必须是合法 Windows named pipe。命令行必须显式 pin
+  `--expected-character-id`、`--expected-episode-run-id`、`--expected-checkpoint-sha256` 与
+  `--expected-driver-state-sha256`。检查顺序是：双源 CK3 进程清单为空、prepared profile 全量 verify、v2 checkpoint 绑定、
+  同 pipe 的真实 native driver consumer 全量解析、四项 pin 精确相等。driver preflight 与 live `_read_driver_state()` 共用
+  `load_native_driver_state_for_resume()`，因此不能用只检查 anchor 的轻量 parser 绕过缺失 `bridge_pid` 或历史中段损坏。
+  无论结果如何都原子落盘 `state/preflights/<run-id>/report.json`；GREEN/RED/argparse 退出码分别为 `0/1/2`。这个 artifact
+  只资格化“可从指定恢复点开始下一次正式运行”，不启动 CK3，不能替代 live readiness、自然死亡或 committed settlement。
 - 完整一代验收使用独立 `native-one-generation`，不得把 `native-auto-run` 的 bounded `turn_limit` GREEN 当成替代。该入口始终要求
   pipe 名与 v2 cold checkpoint driver state 完全一致，在首个 gameplay action 前把 checkpoint 和 driver state 复制到本次
   `state/runs/<run-id>/seed/`。默认每 3 个 verified eligible advance checkpoint；这是动作次数，不是游戏日，和平

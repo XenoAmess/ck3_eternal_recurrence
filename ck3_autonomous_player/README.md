@@ -252,6 +252,7 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
+& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --game-dir <CK3-dir> --bridge-mode disabled --bridge-pipe '<checkpoint-driver-state-pipe>' native-one-generation-preflight --expected-character-id <CharacterID> --expected-episode-run-id <episode-run-id> --expected-checkpoint-sha256 <checkpoint-sha256> --expected-driver-state-sha256 <driver-state-sha256>
 & "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
@@ -259,6 +260,13 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 paused map、episode identity 与 main-thread mailbox 全部就绪后有界执行 planner。查询与玩法回合分账；每三个确实返回
 `postcondition` 且产生语义变化的推进回合自动物化并核验 checkpoint，回合上限结束时也保存尚未落盘的可见进度。
 `--cold-start-checkpoint` 要求 `--state-dir` 中的 v2 checkpoint anchor 与同一 pipe 名完全匹配；不恢复现有 checkpoint 时省略它。
+
+`native-one-generation-preflight` 是正式续跑前的零启动检查：它不加载 DLL/injector、不创建 CK3、不做 OCR、键鼠或窗口操作，
+但仍以双源进程清单证明 CK3 当前为空，重放 prepared profile，并用 `native-one-generation` 的 v2 checkpoint validator、实际
+native driver state consumer 与 named-pipe 合同核对恢复点。CharacterID、episode、checkpoint SHA-256 和 driver-state SHA-256
+四项 pin 都是必填，避免把“任意可解析恢复点”误报为目标续跑入口。每次执行无论 GREEN/RED 都写
+`<state-dir>/preflights/<run-id>/report.json`；GREEN 返回 `0`，合同/内容 RED 返回 `1`，命令行缺参返回 `2`。该 artifact 只证明
+恢复前置条件，不启动游戏，也不证明自然死亡、committed settlement 或 G1 完成。
 
 `native-one-generation` 复用同一 production owner，但采用严格的一代人完成合同并始终从 exact v2 cold checkpoint 开始。它在
 任何 gameplay action 前把 checkpoint 与匹配的 driver state 复制到

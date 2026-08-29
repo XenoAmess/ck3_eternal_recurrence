@@ -1,6 +1,6 @@
 # G1 一代人全寿命 production 续跑交接（2026-08-28）
 
-更新时间：**2026-08-28 19:53（Asia/Shanghai）**
+更新时间：**2026-08-29 22:40（Asia/Shanghai；新增零启动恢复前检，G1 仍未完成）**
 
 这是一份可执行交接，不是 G1 完成声明。当前角色 `29829` 仍然存活；最新 bounded cold run 只用于验证刚修复的
 GEN-030/031 边界并生成更晚的 durable checkpoint。接手者的首要工作是从该 checkpoint 继续同一 episode 的正式
@@ -25,12 +25,12 @@ GEN-030/031 边界并生成更晚的 durable checkpoint。接手者的首要工�
 - mainline worktree（tracked tree/index clean）：
   `C:\Users\xenoa\AppData\Local\Temp\xar-agent-mainline-worktree-20260827-1254`
 - 分支：`agent-mainline-20260827`
-- 已验证并推送的 runtime/source baseline（交接文档提交会在其后）：
-  `fc0f87844ade595ded99168b7d5d1dee2619184f`
+- 已验证并推送的 runtime/source baseline：
+  `7bc0e4f10e1d58ca1c40d19a6617744af7557979`（包含原 production baseline `fc0f87844ade595ded99168b7d5d1dee2619184f`）
 - 最近三个提交：
-  - `a2c81a0` — policy-neutral 高速 sentinel 候选与 1–5 速 typed surface
-  - `95a466b` — stationary speed 3 production 晋级
   - `fc0f878` — war-termination query same-frame snapshot binding
+  - `35a5a82` — 新增 no-launch G1 resume preflight 与结构化 GREEN/RED artifact
+  - `7bc0e4f` — 让 preflight 与真实 native driver consumer、named-pipe 合同共用验证路径
 
 **不要在 `Z:\ck3_mod_rewrite` 的脏工作树上执行、清理或覆盖用户改动。** 所有续跑、修改、测试、提交与 push 都应从上述临时
 mainline worktree 继续。不要再 cherry-pick 性能代理的旧原始提交；它们的合法重构已经以 `a2c81a0 / 95a466b` 合入。
@@ -66,11 +66,10 @@ fresh Release build：
 - source fingerprint：`E539113F363A1DB8956D9707B5FA481F776CED7497CC5598F05FFE3ECCFB2794`
 - fresh native Release CTest：`40/40` 通过。
 
-profile 已由 `fc0f878` prepare 并 verify：
+profile 已在 `7bc0e4f` runtime 下重新 prepare 并 verify（没有启动 CK3）：
 
-- semantic environment SHA-256：`f89cd5ebf6494fda11587986d4bf558e4d7d071167309ac4e55a51c888ca1a9b`
-- environment JSON 文件：size `34,249` bytes，SHA-256
-  `DA2A7AE5A2B11902469D01800AE6230C314533537AE6098EBB3185B1838DACC1`
+- semantic environment SHA-256：`e776eef6652f3c3540d173d521ce978146a6dc7c08c8ab60f0f88cf7635626b6`
+- agent runtime SHA-256：`ddc63ce7850972d8573c2a66d7d281ac1d136244277f33bd5c7db67e34d2edbf`
 - production tree SHA-256：`f4e63fffa6cf9332ba41eb5985d1cb72f280f4bf375a15473f4638f43cf944be`
 - rules SHA-256：`6cca52869f5bc32de1b509dd63255f8847875134933e936f97125ebc6be092f7`
 
@@ -87,6 +86,38 @@ $env:GIT_CONFIG_VALUE_0='C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-wo
   --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
   --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' --bridge-mode disabled verify-profile
 ```
+
+## 2026-08-29 零启动恢复前检 artifact
+
+在不启动 CK3、不操作桌面且不加载 DLL/injector 的条件下，已对本交接唯一恢复点执行正式 preflight：
+
+```powershell
+$env:GIT_CONFIG_COUNT='1'
+$env:GIT_CONFIG_KEY_0='safe.directory'
+$env:GIT_CONFIG_VALUE_0='C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254'
+& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\agent.py' `
+  --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
+  --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' `
+  --bridge-mode disabled `
+  --bridge-pipe '\\.\pipe\xar_ck3_restore_exact2_7aff1d0' `
+  native-one-generation-preflight `
+  --expected-character-id 29829 `
+  --expected-episode-run-id 'native-29829-ee172aa720db' `
+  --expected-checkpoint-sha256 '0DF9CB6615FC19B89D4067F74C72E23221B84A337795546957725DB455C4869C' `
+  --expected-driver-state-sha256 'E066C1D45673D54DB2E3A58D9C0EE2B1EE8ADB4909936C4534B3A94A04DDFD00'
+```
+
+- run：`20260829T144043Z-one-generation-preflight-5f4202db`
+- report：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\preflights\20260829T144043Z-one-generation-preflight-5f4202db\report.json`
+- report size：`2,695` bytes；SHA-256：`F5077C219E99F006F32068FD886353FFF5CAF8E4F606796864D55DDD4C30618B`
+- 结果：`status=ready / ok=true`；双源 CK3 process inventory 为空；`desktop_interaction=false`、
+  `ck3_launch_attempted=false`。
+- checkpoint 保持 `date_raw=53279256 / history=6159 / 0DF9CB66...69C`；driver state 保持
+  `E066C1D4...DFD00`，并由实际 live consumer 的完整 parser 验证 format、`bridge_pid`、全 history、episode、checkpoint、rollback
+  与 managed restore transaction。
+
+该 GREEN 只说明下一条正式长跑命令仍绑定正确、可消费的恢复点；没有产生 live CK3 observation，也没有改变“角色仍活、G1 未完成”的结论。
 
 ## 最新 live artifact
 
@@ -128,8 +159,8 @@ run dir：
 
 ## 接手后的第一条正式命令
 
-先确认没有 CK3 进程、当前 `origin/master` 包含 runtime baseline `fc0f878` 与本交接文档，并可选重算 checkpoint 与
-driver-state 哈希。然后在 mainline worktree运行：
+先执行上一节的 `native-one-generation-preflight` 并取得精确四项 pin 的 GREEN，再确认当前 `origin/master` 包含 runtime baseline
+`7bc0e4f` 与本交接文档。然后在 mainline worktree 运行：
 
 ```powershell
 $env:GIT_CONFIG_COUNT='1'
