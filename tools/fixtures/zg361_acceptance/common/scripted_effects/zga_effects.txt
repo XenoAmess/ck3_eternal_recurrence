@@ -516,6 +516,9 @@ zga_prepare_player_review_effect = {
 	set_variable = { name = zga_pending_grade_sum value = var:zg361_pending_375_n }
 	change_variable = { name = zga_pending_grade_sum add = var:zg361_pending_35_n }
 	change_variable = { name = zga_pending_grade_sum add = var:zg361_pending_325_n }
+	# Keep product semantics, snapshot bookkeeping and pending-state choreography
+	# as separate assertions. A fixture-private flag mismatch must never obscure
+	# the authoritative 7/14/2 product counters again.
 	if = {
 		limit = {
 			var:zga_reviewable_n >= 3
@@ -523,23 +526,33 @@ zga_prepare_player_review_effect = {
 			var:zg361_cohort_n = var:zga_reviewable_n
 			var:zga_pending_grade_n = var:zga_reviewable_n
 			var:zga_pending_grade_sum = var:zga_reviewable_n
-			var:zga_bootstrap_bottom_n = var:zg361_pending_325_n
+		}
+		debug_log = "ZGA: TEST PASS bootstrap_snapshot_prepared_by_product"
+	}
+	else = { debug_log = "ZGA: TEST FAIL bootstrap_snapshot_prepared_by_product" }
+	if = {
+		limit = {
+			var:zg361_cohort_n = 23
 			var:zg361_pending_375_n = 7
 			var:zg361_pending_35_n = 14
 			var:zg361_pending_325_n = 2
 			var:zg361_bottom_slots = 2
+			var:zga_bootstrap_bottom_n = 2
+		}
+		debug_log = "ZGA: TEST PASS bootstrap_first_review_strict_7_14_2"
+	}
+	else = { debug_log = "ZGA: TEST FAIL bootstrap_first_review_strict_7_14_2" }
+	if = {
+		limit = {
+			has_character_flag = zg361_review_in_progress
+			has_variable = zg361_review_serial
+			var:zg361_review_serial >= 1
 			NOT = { has_character_flag = zg361_review_baseline_initialized }
 			NOT = { has_variable = zg361_sb_m_01_char }
 		}
-		debug_log = "ZGA: TEST PASS bootstrap_snapshot_prepared_by_product"
-		debug_log = "ZGA: TEST PASS bootstrap_first_review_strict_7_14_2"
 		debug_log = "ZGA: TEST PASS player_calibration_pending"
 	}
-	else = {
-		debug_log = "ZGA: TEST FAIL bootstrap_snapshot_prepared_by_product"
-		debug_log = "ZGA: TEST FAIL bootstrap_first_review_strict_7_14_2"
-		debug_log = "ZGA: TEST FAIL player_calibration_pending"
-	}
+	else = { debug_log = "ZGA: TEST FAIL player_calibration_pending" }
 	remove_variable = zga_missing_snapshot_n
 	remove_variable = zga_bootstrap_bottom_n
 	remove_variable = zga_pending_grade_n
