@@ -198,6 +198,18 @@ def _ck3_query_campaign_root_context_v1(
     )
 
 
+def _ck3_center_map_on_landed_title_v1(
+    service: GameplayBridgeService,
+    title_key: str,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Explicit presentation-only title navigation; never planner-selected."""
+    return service.center_map_on_landed_title_v1(
+        title_key,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_loaded_feature_manifest_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -579,6 +591,18 @@ def create_server(driver: GameplayBridgeDriver):
         """Read player, title, capital, lieges, government and rule tokens."""
         return _ck3_query_campaign_root_context_v1(
             service,
+            expected_revision,
+        )
+
+    @server.tool()
+    def ck3_center_map_on_landed_title_v1(
+        title_key: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Center the map on one canonical title key through native readback."""
+        return _ck3_center_map_on_landed_title_v1(
+            service,
+            title_key,
             expected_revision,
         )
 

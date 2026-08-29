@@ -74,6 +74,15 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .title_map_navigation_contract import (
+    CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
+    CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
+    TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256,
+    TITLE_MAP_NAVIGATION_V1_GAME_VERSION,
+    normalize_title_map_navigation_v1_binding,
+    normalize_title_map_navigation_v1_result,
+    validate_landed_title_key,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -485,6 +494,10 @@ class GameplayBridgeService:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if step == CENTER_MAP_ON_LANDED_TITLE_V1_STEP:
+            raise UnsupportedStepError(
+                "title-map navigation requires its typed MCP facade"
+            )
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def save_checkpoint(
@@ -1297,6 +1310,115 @@ class GameplayBridgeService:
             ],
             "campaign_root_context": normalized,
         }
+
+    def center_map_on_landed_title_v1(
+        self,
+        title_key: str,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Center the native map without exposing the step to the planner."""
+        key = validate_landed_title_key(title_key)
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+            or expected_revision > 2**64 - 1
+        ):
+            raise ValueError(
+                "expected_revision must be a non-negative uint64"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        typed_command = getattr(
+            self.driver, "center_map_on_landed_title_v1", None
+        )
+        if not (
+            isinstance(bridge_capabilities, list)
+            and CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY
+            in bridge_capabilities
+            and callable(typed_command)
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: selected backend cannot center "
+                "the map on a landed title"
+            )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "title-map navigation requires a paused CK3 snapshot"
+            )
+        if snapshot.get("map_ready") is not True:
+            raise BridgeUnavailableError(
+                "title-map navigation requires a map-ready CK3 snapshot"
+            )
+        try:
+            binding = _title_map_navigation_binding(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"title-map navigation lacks a complete binding: {error}"
+            ) from error
+        if binding["revision"] != expected_revision:
+            raise BridgeUnavailableError(
+                "title-map navigation revision mismatch: expected "
+                f"{expected_revision}, current {binding['revision']}"
+            )
+        diagnostics = snapshot.get("diagnostics")
+        hello = (
+            diagnostics.get("hello")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        observed_version = (
+            hello.get("expected_ck3_version", hello.get("game_version"))
+            if isinstance(hello, dict)
+            else None
+        )
+        observed_sha256 = (
+            hello.get(
+                "expected_ck3_sha256", hello.get("executable_sha256")
+            )
+            if isinstance(hello, dict)
+            else None
+        )
+        if (
+            observed_version != TITLE_MAP_NAVIGATION_V1_GAME_VERSION
+            or not isinstance(observed_sha256, str)
+            or observed_sha256.upper()
+            != TITLE_MAP_NAVIGATION_V1_EXECUTABLE_SHA256
+        ):
+            raise BridgeUnavailableError(
+                "title-map navigation build mirror disagrees with bridge hello"
+            )
+        result = typed_command(key, expected_revision=expected_revision)
+        try:
+            normalized = normalize_title_map_navigation_v1_result(
+                result,
+                expected_title_key=key,
+                expected_binding=binding,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"title-map navigation result is malformed: {error}"
+            ) from error
+        current = self.snapshot()
+        try:
+            current_binding = _title_map_navigation_binding(current)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"title-map navigation lost its session binding: {error}"
+            ) from error
+        if not (
+            current.get("paused") is True
+            and current.get("map_ready") is True
+            and current_binding == binding
+            and current.get("played_character")
+            == snapshot.get("played_character")
+        ):
+            raise BridgeUnavailableError(
+                "title-map navigation crossed its paused session binding"
+            )
+        return normalized
 
     def query_loaded_feature_manifest_v1(
         self,
@@ -3605,6 +3727,29 @@ class GameplayBridgeService:
         return self.driver.wait_for_change(
             after_revision, timeout_seconds=timeout_seconds
         )
+
+
+def _title_map_navigation_binding(
+    snapshot: object,
+) -> dict[str, object]:
+    if not isinstance(snapshot, dict):
+        raise ValueError("snapshot must be an object")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    return normalize_title_map_navigation_v1_binding(
+        {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+            "date_raw": snapshot.get("date_raw"),
+            "episode_run_id": snapshot.get("episode_run_id"),
+            "connection_generation": connection_generation,
+        }
+    )
 
 
 def _route_plan_to_available_step(

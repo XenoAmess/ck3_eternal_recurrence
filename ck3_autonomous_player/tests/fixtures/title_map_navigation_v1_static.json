@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "evidence_level": "static-ready",
+  "live_claim": false,
+  "cases": [
+    {
+      "name": "bianzhou_centered",
+      "title_key": "c_bianzhou",
+      "result": {
+        "schema_version": 1,
+        "step": "center-map-on-landed-title-v1",
+        "accepted": true,
+        "status": "centered",
+        "title": {
+          "key": "c_bianzhou",
+          "title_id": 16777218,
+          "tier_raw": 2,
+          "tier_key": "county",
+          "anchor_kind": "title_bounds_center",
+          "capital_province_id": 9822,
+          "bounds_extent": [1600, -1000, 1674, -895],
+          "map_x_adjustment": 5
+        },
+        "binding": {
+          "snapshot_id": "static-title-map:4",
+          "revision": 4,
+          "native_revision": 17,
+          "date_raw": 53182008,
+          "episode_run_id": "native-12345-static",
+          "connection_generation": 2
+        },
+        "native_action_ack": {
+          "sequence": 9,
+          "status": "dispatched"
+        },
+        "camera_center": {
+          "status": "centered",
+          "postcondition_verified": true,
+          "expected_position_xyz": [1632.0, 0.0, -947.0],
+          "current_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+          "target_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+          "zoom_index": 3,
+          "expected_zoom_value": 0.75,
+          "settled": true,
+          "target_write_blocked": false,
+          "completion_predicate": "exact-build-native-camera-settled-v1"
+        },
+        "source": {
+          "game_version": "1.19.0.6",
+          "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "backend_id": "ck3-1.19.0.6-native-title-map-navigation-v1"
+        }
+      }
+    },
+    {
+      "name": "kaifeng_already_centered",
+      "title_key": "b_kaifeng",
+      "result": {
+        "schema_version": 1,
+        "step": "center-map-on-landed-title-v1",
+        "accepted": true,
+        "status": "already_centered",
+        "title": {
+          "key": "b_kaifeng",
+          "title_id": 16777219,
+          "tier_raw": 1,
+          "tier_key": "barony",
+          "anchor_kind": "title_bounds_center",
+          "capital_province_id": 9822,
+          "bounds_extent": [1632, -947, 1632, -947],
+          "map_x_adjustment": 0
+        },
+        "binding": {
+          "snapshot_id": "static-title-map:4",
+          "revision": 4,
+          "native_revision": 17,
+          "date_raw": 53182008,
+          "episode_run_id": "native-12345-static",
+          "connection_generation": 2
+        },
+        "native_action_ack": {
+          "sequence": null,
+          "status": "not_needed"
+        },
+        "camera_center": {
+          "status": "already_centered",
+          "postcondition_verified": true,
+          "expected_position_xyz": [1632.0, 0.0, -947.0],
+          "current_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+          "target_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+          "zoom_index": 3,
+          "expected_zoom_value": 0.75,
+          "settled": true,
+          "target_write_blocked": false,
+          "completion_predicate": "exact-build-native-camera-settled-v1"
+        },
+        "source": {
+          "game_version": "1.19.0.6",
+          "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "backend_id": "ck3-1.19.0.6-native-title-map-navigation-v1"
+        }
+      }
+    }
+  ]
+}
