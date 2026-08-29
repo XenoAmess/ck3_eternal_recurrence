@@ -40,11 +40,17 @@
 
 即时暂停 sidecar 记录起点 ordinal `389359`、到期 ordinal `389449`。失败时保留的 `fatal_state.png` 显示日期 ordinal `389403`（1066-11-10）且无事件 modal、游戏处于暂停：只推进了 44/90 个游戏日，距到期仍有 46 日。旧 runner 只在进入等待时启动一次五速，此后仅在“识别并关闭了事件弹窗”时恢复时间；CK3 因无 modal 的通知设置静默暂停后，它无法自愈，90 秒墙钟最终耗尽。
 
-最小修复保持产品和 D+90 夹具合同不变：等待器现在复用同一局已经连接的原生 MCP，读取 `paused`、`speed` 与 `date_raw`；发现无 active event 的静默暂停时，提交 `set-speed-5` 与 `resume-map`，并要求原生日期真实增长后才继续。恢复前会再次 pump 目标 marker，避免穿过刚到达的“上司考定”。墙钟上限放宽为 240 秒，只作为失控兜底；每局写出 `10_personal_switch_timeline_gate.json`，记录到期日、原生观测和每次恢复原因。该修复当前为 **static-ready**，下一次完整批量实机只需确认它跨过 D+90，并继续完成同局的个人 3.25、本人榜和六张政策卡。
+最小修复保持产品和 D+90 夹具合同不变：等待器现在复用同一局已经连接的原生 MCP，读取 `paused`、`speed` 与 `date_raw`；发现无 active event 的静默暂停时，提交 `set-speed-5` 与 `resume-map`，并要求原生日期真实增长后才继续。恢复前会再次 pump 目标 marker，避免穿过刚到达的“上司考定”。墙钟上限放宽为 240 秒，只作为失控兜底；每局写出 `10_personal_switch_timeline_gate.json`，记录到期日、原生观测和每次恢复原因。
+
+第三次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_034605_current_c4921dc_mcp` 第三次实机证实 23 人严格分布为 `7 / 14 / 2`。同局的 D+90 等待器成功发现并恢复无 modal 的静默暂停，真实跨过到期日，该 MCP 恢复链现为 **live-confirmed**；随后真实“上司考定”弹窗明确显示本人绩效 `3.25`。
+
+该 attempt 仍为 **RED**：点击“认命”后，夹具 policy 001 在次日抢先弹出，占用了原定的本人榜截取步骤。证据表明这是 runner 在关闭个人结果后等待 HUD/暂停太慢与夹具次日调度相撞的 choreography 问题，不是 361 分布或“上司考定”产品缺陷。
+
+针对性修复已为 **static-ready**：个人结果和六张政策卡的每次关闭均改为 `speed 1 → 同 date_raw 的 running frame → 立即 MCP pause-map → 连续三帧与 pre-click date_raw 相同`；个人结果要求 policy 001 marker 为 0，每张政策卡也在截图前断言后继 successor marker 为 0。它不改产品逻辑或夹具日期，只修正实机批量验收的事件交接节拍。
 
 ## 4. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2`、项目诊断归零、考核榜 GUI 阻塞矩阵和京察规划链已经 live-confirmed；后半段个人结果、新人、政策卡与正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已三次实机复现；项目诊断归零、考核榜 GUI 阻塞矩阵、京察规划链、D+90 MCP 静默暂停恢复以及“上司考定”本人 `3.25` 均已 live-confirmed；本人榜、新人、六张政策卡和正式宣传素材仍等待下一次完整 GREEN。

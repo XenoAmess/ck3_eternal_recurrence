@@ -3687,8 +3687,158 @@ def capture_superior_assigned_result(
     }
 
 
+def arm_native_speed_one(
+    service: GameplayBridgeService,
+    *,
+    timeout_s: float = 5.0,
+) -> dict[str, object]:
+    """Submit speed one and wait until the exact-build snapshot confirms it."""
+
+    submission = service.execute_step("set-speed-1")
+    observations: list[dict[str, object]] = []
+    deadline = time.monotonic() + timeout_s
+    snapshot: dict[str, object] = {}
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        observations.append(_personal_switch_native_snapshot(snapshot))
+        if (
+            snapshot.get("speed") == 1
+            and snapshot.get("paused") is True
+            and isinstance(snapshot.get("date_raw"), int)
+            and not isinstance(snapshot.get("date_raw"), bool)
+        ):
+            return {
+                "submission": submission,
+                "observations": observations,
+                "snapshot": snapshot,
+            }
+        time.sleep(0.05)
+    raise acceptance.RunnerError(
+        "native MCP did not arm speed one before closing a promo event"
+    )
+
+
+def pause_after_promo_event_click(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    pre_click_snapshot: dict[str, object],
+    *,
+    stem: str,
+) -> dict[str, object]:
+    """Freeze an event-restored clock before its next clean carrier wins."""
+
+    pre_observation = _personal_switch_native_snapshot(pre_click_snapshot)
+    pre_event = pre_observation["active_event_instance_id"]
+    pre_date = pre_observation["date_raw"]
+    pre_character = pre_click_snapshot.get("played_character")
+    pre_character_id = (
+        pre_character.get("character_id")
+        if isinstance(pre_character, dict)
+        else None
+    )
+    transition_observations: list[dict[str, object]] = []
+    transition_deadline = time.monotonic() + 0.75
+    running_transition_seen = False
+    transition_failure = ""
+    while time.monotonic() < transition_deadline:
+        snapshot = service.snapshot()
+        observed = _personal_switch_native_snapshot(snapshot)
+        transition_observations.append(observed)
+        if observed["date_raw"] != pre_date:
+            transition_failure = "game date advanced before native pause submission"
+            break
+        if snapshot.get("paused") is False:
+            running_transition_seen = True
+            break
+        time.sleep(0.01)
+    if not running_transition_seen and not transition_failure:
+        transition_failure = (
+            "event close did not expose a same-date running transition within 0.75s"
+        )
+
+    # pause-map is idempotent while an event still owns the pause.  Submit it
+    # only after observing the event-restored running frame, and do so without
+    # an intervening OCR/HUD wait.  On a RED transition we still submit it as
+    # a best-effort containment step before stopping the run.
+    pause_submission = service.execute_step("pause-map")
+    pause_submitted = (
+        isinstance(pause_submission, dict)
+        and pause_submission.get("accepted") is True
+        and pause_submission.get("status") == "submitted"
+    )
+    pause_observations: list[dict[str, object]] = []
+    pause_deadline = time.monotonic() + 5.0
+    paused_snapshot: dict[str, object] = {}
+    frozen = False
+    while time.monotonic() < pause_deadline:
+        paused_snapshot = service.snapshot()
+        pause_observations.append(_personal_switch_native_snapshot(paused_snapshot))
+        tail = pause_observations[-3:]
+        frozen = (
+            len(tail) == 3
+            and all(item["paused"] is True for item in tail)
+            and all(item["date_raw"] == pre_date for item in tail)
+        )
+        if frozen:
+            break
+        time.sleep(0.1)
+
+    post_character = paused_snapshot.get("played_character")
+    post_character_id = (
+        post_character.get("character_id")
+        if isinstance(post_character, dict)
+        else None
+    )
+    played_character_stable = (
+        isinstance(pre_character_id, int)
+        and not isinstance(pre_character_id, bool)
+        and post_character_id == pre_character_id
+    )
+    event_transitioned = (
+        bool(pause_observations)
+        and pause_observations[-1]["active_event_instance_id"] != pre_event
+    )
+    green = (
+        running_transition_seen
+        and pause_submitted
+        and frozen
+        and event_transitioned
+        and played_character_stable
+    )
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if green else "RED",
+        "pause_method": "native_mcp_speed_one_then_pause_map",
+        "pre_click_observation": pre_observation,
+        "transition_observations": transition_observations,
+        "running_transition_seen_same_date": running_transition_seen,
+        "transition_failure": transition_failure or None,
+        "pause_submission": pause_submission,
+        "pause_submission_confirmed": pause_submitted,
+        "pause_observations": pause_observations,
+        "last_three_dates_identical": frozen,
+        "last_three_paused_at_pre_click_date": frozen,
+        "event_transitioned": event_transitioned,
+        "played_character_stable": played_character_stable,
+    }
+    evidence_path = artifacts / f"{stem}_immediate_pause_gate.json"
+    write_json(evidence_path, evidence)
+    if evidence["result"] != "GREEN":
+        acceptance.ImageGrab.grab().save(
+            artifacts / f"red_{stem}_native_pause.png"
+        )
+        raise acceptance.RunnerError(
+            f"native MCP did not freeze the promo-event clock safely ({stem})"
+        )
+    return evidence
+
+
 def capture_received_scoreboard(
-    artifacts: Path, recorder: PromoRecorder
+    stream: MarkerStream,
+    artifacts: Path,
+    recorder: PromoRecorder,
+    *,
+    timeline_service: GameplayBridgeService,
 ) -> dict[str, object]:
     # The manager-facing result summary (zg361.1) has a passive "知道了"
     # close button.  The real subordinate-facing 3.25 result (zg361.4) instead
@@ -3703,7 +3853,36 @@ def capture_received_scoreboard(
         contains=True,
         stable_hits=1,
     )
+    # The event restores its prior speed as soon as the option is accepted.
+    # Arm speed one before the click, then use the same native MCP connection
+    # to pause the map before the fixture's next-day policy carrier can preempt the
+    # received-board capture.
+    speed_one_gate = arm_native_speed_one(timeline_service)
+    pre_click_snapshot = speed_one_gate["snapshot"]
     acceptance.deliberate_click(result_option, "accept real 3.25 result")
+    pause_evidence = pause_after_promo_event_click(
+        timeline_service,
+        artifacts,
+        pre_click_snapshot,
+        stem="11_received_result",
+    )
+    pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
+    pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
+    stream.pump()
+    early_policy_count = stream.count("ZGA: TEST PASS clean_policy_001_dispatched")
+    pause_evidence["early_policy_001_marker_count"] = early_policy_count
+    if early_policy_count != 0:
+        pause_evidence["result"] = "RED"
+        pause_evidence["failure_reason"] = (
+            "policy card 001 dispatched before received-scoreboard capture"
+        )
+    write_json(
+        artifacts / "11_received_result_immediate_pause_gate.json", pause_evidence
+    )
+    if early_policy_count != 0:
+        raise acceptance.RunnerError(
+            "policy card 001 preempted the received-scoreboard capture"
+        )
     deadline = time.time() + 8
     last_image = None
     while time.time() < deadline:
@@ -3719,10 +3898,6 @@ def capture_received_scoreboard(
             last_image.save(artifacts / "timeout_11_superior_result_accept.png")
         raise acceptance.RunnerError("real 3.25 result response was not accepted")
     isolated.wait_for_gameplay_hud(artifacts)
-    # The result event resumes the speed that was active before it appeared.
-    # Pause immediately so unrelated court events cannot grow over the
-    # scoreboard while the promo recorder holds a clean shot.
-    acceptance.ensure_game_paused(artifacts, "11_received_result")
     settle_promo_interruptions(artifacts, "11_received_before_board")
     button = acceptance.wait_for_ocr_text(
         "考核榜",
@@ -3784,6 +3959,7 @@ def capture_received_scoreboard(
         "received_tab_clicked_live": True,
         "received_tab_idempotent_reopen_live": True,
         "received_tab_reopened_artifact": "11_received_tab_reopened.png",
+        "result_close_pause_gate": pause_evidence,
         "normalized_ocr": rendered_text,
     }
 
@@ -4103,10 +4279,18 @@ def settle_promo_interruptions(
 
 def capture_policy_cards(
     stream: MarkerStream,
-    artifacts: Path, recorder: PromoRecorder
+    artifacts: Path,
+    recorder: PromoRecorder,
+    *,
+    timeline_service: GameplayBridgeService,
 ) -> list[dict[str, object]]:
     captured: list[dict[str, object]] = []
-    for mechanism_id, _decision_title, event_title, option_text in PROMO_POLICY_CARDS:
+    for card_index, (
+        mechanism_id,
+        _decision_title,
+        event_title,
+        option_text,
+    ) in enumerate(PROMO_POLICY_CARDS):
         stem = f"12_policy_{mechanism_id:03d}"
         settle_promo_interruptions(artifacts, f"{stem}_preflight")
         acceptance.ensure_game_paused(artifacts, f"{stem}_preflight")
@@ -4147,15 +4331,52 @@ def capture_policy_cards(
             contains=True,
             stable_hits=1,
         )
+        speed_one_gate = arm_native_speed_one(timeline_service)
+        pre_click_snapshot = speed_one_gate["snapshot"]
         acceptance.deliberate_click(option, f"close policy card {mechanism_id:03d}")
+        pause_evidence = pause_after_promo_event_click(
+            timeline_service,
+            artifacts,
+            pre_click_snapshot,
+            stem=f"{stem}_close",
+        )
+        pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
+        pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
+        if card_index + 1 < len(PROMO_POLICY_CARDS):
+            successor_id = PROMO_POLICY_CARDS[card_index + 1][0]
+            successor_marker = (
+                f"ZGA: TEST PASS clean_policy_{successor_id:03d}_dispatched"
+            )
+        else:
+            successor_marker = "ZGA: TEST PASS clean_policy_chain_completed"
+        stream.pump()
+        successor_marker_count = stream.count(successor_marker)
+        pause_evidence["premature_successor_marker"] = successor_marker
+        pause_evidence["premature_successor_marker_count"] = (
+            successor_marker_count
+        )
+        if successor_marker_count != 0:
+            pause_evidence["result"] = "RED"
+            pause_evidence["failure_reason"] = (
+                "policy successor dispatched before predecessor capture"
+            )
+        write_json(
+            artifacts / f"{stem}_close_immediate_pause_gate.json",
+            pause_evidence,
+        )
+        if successor_marker_count != 0:
+            raise acceptance.RunnerError(
+                "policy successor preempted its predecessor capture: "
+                f"{successor_marker} count={successor_marker_count}"
+            )
         isolated.wait_for_gameplay_hud(artifacts)
-        acceptance.ensure_game_paused(artifacts, f"{stem}_closed")
         captured.append(
             {
                 "mechanism_id": mechanism_id,
                 "event_artifact": f"{stem}_event.png",
                 "dispatch_marker": dispatch_marker,
                 "clean_span_id": f"policy_card_{mechanism_id:03d}",
+                "close_pause_gate": pause_evidence,
             }
         )
     acceptance.set_speed_five_and_unpause(
@@ -4236,8 +4457,18 @@ def run_scenario(
     received_evidence = None
     policy_cards: list[dict[str, object]] = []
     if recorder:
-        received_evidence = capture_received_scoreboard(artifacts, recorder)
-        policy_cards = capture_policy_cards(stream, artifacts, recorder)
+        received_evidence = capture_received_scoreboard(
+            stream,
+            artifacts,
+            recorder,
+            timeline_service=title_navigation_service,
+        )
+        policy_cards = capture_policy_cards(
+            stream,
+            artifacts,
+            recorder,
+            timeline_service=title_navigation_service,
+        )
         recorder.mark("all_requested_product_screens_captured")
         recorder.hold(2.0)
     counts = stream.counts()
