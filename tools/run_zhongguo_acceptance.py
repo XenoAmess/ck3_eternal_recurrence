@@ -1931,6 +1931,7 @@ def recenter_promo_camera_on_player_capital(
     title_region = (0.70, 0.07, 0.98, 0.90)
     title_header = None
     title_result = None
+    title_search_point = None
     method = None
     entry_method = None
     search_query = None
@@ -1962,6 +1963,9 @@ def recenter_promo_camera_on_player_capital(
             "search_query": search_query,
             "resolved_title_key": resolved_title_key,
             "title_header_point": list(title_header) if title_header else None,
+            "title_search_point": (
+                list(title_search_point) if title_search_point else None
+            ),
             "title_result_point": list(title_result) if title_result else None,
             "finder_close_ack": finder_close_ack,
             "keyboard_layout_policy": "keep_us_english_for_desktop_automation",
@@ -2351,13 +2355,25 @@ def recenter_promo_camera_on_player_capital(
 
             screen_width, screen_height = acceptance.pyautogui.size()
             reference_scale = screen_height / 1440
-            search_point = (
-                title_header[0],
-                title_header[1] + round(65 * reference_scale),
-            )
-            minimum_result_y = title_header[1] + round(90 * reference_scale)
+            # On CK3 1.19.0.6 the same localized text is rendered both as the
+            # panel heading and as the empty input's placeholder. OCR normally
+            # returns the lower placeholder (y~=226 at 2560x1440). The old
+            # unconditional +65 then clicked empty panel space at y~=291 and
+            # silently stole focus from the already-active input. Normalize
+            # either OCR match to the native field baseline instead.
+            search_field_reference_y = round(screen_height * (226 / 1440))
+            if abs(title_header[1] - search_field_reference_y) <= round(
+                35 * reference_scale
+            ):
+                search_y = title_header[1]
+            else:
+                search_y = title_header[1] + round(49 * reference_scale)
+            search_point = (title_header[0], search_y)
+            title_search_point = search_point
+            minimum_result_y = search_point[1] + round(70 * reference_scale)
             prior_clipboard = pyperclip.paste()
             moved_image = None
+            resolved_any_result = False
             try:
                 for query, title_key in (
                     ("汴州", "c_bianzhou"),
@@ -2368,6 +2384,7 @@ def recenter_promo_camera_on_player_capital(
                     )
                     if candidate is None:
                         continue
+                    resolved_any_result = True
                     action_before = acceptance.ImageGrab.grab()
                     action_before.save(
                         artifacts
@@ -2407,6 +2424,10 @@ def recenter_promo_camera_on_player_capital(
                         moved_image = action_after
                         break
                 if moved_image is None:
+                    if not resolved_any_result:
+                        raise acceptance.RunnerError(
+                            "title finder input/results did not resolve Bianzhou or Kaifeng"
+                        )
                     raise acceptance.RunnerError(
                         "Bianzhou and Kaifeng title actions produced no map movement ACK"
                     )

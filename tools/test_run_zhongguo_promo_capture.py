@@ -495,7 +495,7 @@ def main() -> int:
             mock.call(1280, 720, duration=0.1),
         ]
         assert click.call_args_list == [
-            mock.call((2150, 285), "native title search field"),
+            mock.call((2150, 220), "native title search field"),
         ]
         assert hotkey.call_args_list == [
             mock.call("ctrl", "a"),
@@ -635,7 +635,7 @@ def main() -> int:
         ]
         assert click.call_args_list == [
             mock.call((1807, 1417), "native HUD More button"),
-            mock.call((2150, 285), "native title search field"),
+            mock.call((2150, 220), "native title search field"),
         ]
         assert hotkey.call_args_list == [
             mock.call("ctrl", "a"),
@@ -665,6 +665,7 @@ def main() -> int:
         assert camera_gate["attempts"][2]["entry_ack"] is True
         assert camera_gate["attempts"][2]["row_hover_ack"] is True
         assert camera_gate["attempts"][2]["title_row"] == [1820, 1176]
+        assert camera_gate["title_search_point"] == [2150, 220]
         assert grab.call_count == 12
         assert find_ocr.call_count == 5
         assert wait_ocr.call_count == 3

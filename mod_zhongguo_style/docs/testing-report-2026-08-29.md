@@ -289,3 +289,15 @@ py mod_zhongguo_style/tools/validate_local.py
 项目所有者同时授权这一轮继续使用 OCR。下一条短探针仍可走 OCR compatibility path，但必须在移动到菜单行后先保存并验证 hover 状态仍存活，再原地 mouse-down/up，随后继续要求 finder 标题和地图变化；即使临时路径 GREEN，也只能证明本轮宣传片片场可继续，不能升级 MCP 合同 readiness。
 
 永久证据：根报告 `2487A339FB78DC083600BE03798EF3B52C2806867657D5412FCDA23F7D74DA45`，证据索引 `1785AA4F65450FB2DF9F750D4F8159FD2ABBFCD5DC8E2BC5BAC728F807DB7FE4`，相机 gate `59D9FC18C19F12D89ABB942DB07604C2C9F72F7A09E114D653DBE38287024E3F`；快捷键无 finder 帧 `76746792607F109A1103CCCEF9937D45CF6E1494DFDB1FD7414B84E4FF4B7B47`，两次菜单帧 `52460DA48DD10EB57612CC3E044AEE9206201FDDF382F6C462358F969FDE8413` / `386567E4C91E0656BD960AD7F84A54FC5B3703BBCAA680E634E2196E830C1036`，两次点击后无 finder 帧 `9E8F3237711D1BBC274BEBBC8CC410C8070FF5759B2953AD9C7D706F3C8C4E18` / `A50DCAD64F41E7733DD7A2B68842911693E283A6243CD3EDAC71CF4A65C41AD5`，失败现场 `AB4B137E83B87FE82A74DCE5A220B9FC08CCD146FABE7E7228F9C576FD93E144`。完整 artifact 与 `_userdir` 继续保留。
+
+## 24. 第五条相机短探针：菜单点击闭合，OCR 输入焦点再次证明不适合作为正规路径
+
+`runs/zga_camera_hover_20260829_222741_40a2c80` 使用提交 `40a2c80`，仍为 camera/harness RED，FFmpeg 未启动。产品侧核心夹具再次通过史实赵曙、非独立 AI 公爵、3.25 处分/申诉、361/361 参考路线和幂等性；这不改变“361 领域语义尚未全部实现”的诚实边界。
+
+本轮首次真正闭合了 More 菜单入口：`V` 无 finder 后，同一 CK3 会话 OCR 连续三帧在 `(1820,1154)` 找到“查找头衔”，鼠标零时长移到该点后再次 OCR 到同一行，cursor 也精确回读同一点；原地 left down/up 后，右侧 finder 标题得到 ACK。由此证明上一轮失败确实是瞬态 flyout 在鼠标移动时消失，而不是菜单项无 handler。
+
+随后两个搜索均没有结果。保存的 finder 帧显示搜索框为空。离线复核代码与截图后根因明确：同一面板的标题和空输入框 placeholder 都显示“查找头衔”，实机 OCR 返回 `(2164,226)`，它正是输入框中心；旧代码仍把它当标题再向下加 65 像素，实际点击 `(2164,291)` 的空白内容区，夺走 finder 自动赋予输入框的焦点，所以 `Ctrl+V` 没有输入“汴州/开封”。代码已用 1440p 原生输入框基线归一化两种 OCR 命中，并把 `title_search_point` 写入 sidecar；定向 mock 测试 GREEN。项目所有者随后明确要求优先切换到 MCP 路径，因此不再为这项 OCR 修复单独启动第六条探针。
+
+本轮还暴露了批量并发纪律：三个子线程在 CK3 运行期间向同一源码树新增机制验收 JSON，导致 runner 如实记录 `source_tree_unchanged=false`。这不是 CK3 改写项目，也不是产品玩法失败；以后启动实机前必须暂停同树写入者，或只允许外部独立 worktree 的任务并行。
+
+永久证据：根报告 `700DA38EDE63C68149A4A7C63A0430C0328D957F5A2D0BE01729D249654D8313`，证据索引 `F76A5AE230C2CD83478F1D39465BBAC9561DD7AB7D401B2F0963FAFD004E0290`，相机 gate `957A2FA2B72F6961A62943DC025FEB8474050649F3480D7ECDB8848F96B0ECE4`；hover ACK 帧 `A613778A3D727704CC3A562FD2BF4B15294B17AFC59F7821916C17A3519E2BA8`，finder 打开帧 `59BF39678AC38DB3DFDD793FF51EF9F273F3F2A871D0904B549AAC2F437D1065`，汴州搜索超时帧 `A1DD35C786B1775C0EAF38C15867D6F5FE5C8B698250A464592BF10C6C332F1F`，失败现场 `71C2A781EFA3C697F0C6F8740A4AF1C362154039A1D697579217A774248AEDC5`。完整 artifact 与 `_userdir` 继续保留。

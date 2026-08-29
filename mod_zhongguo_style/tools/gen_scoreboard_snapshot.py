@@ -371,7 +371,9 @@ def render_gui() -> bytes:
     toggle_width, toggle_height = TOGGLE_SIZE
     toggle_x, toggle_y = TOGGLE_POSITION
     toggle_hud_gate = (
-        "[And(And(And(And(Not(IsPauseMenuShown), IsDefaultGUIMode), "
+        "[And(And(And(And(And(And(Not(IsPauseMenuShown), IsDefaultGUIMode), "
+        "Not(IsGameViewOpen('struggle'))), "
+        "Not(GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('hide_ui_main_tabs').GetValue, '(CFixedPoint)0'))), "
         "Not(IsRightWindowOpen)), Not(IsGameViewOpen('outliner'))), "
         "Not(IsGameViewOpen('barbershop')))]"
     )
@@ -400,17 +402,18 @@ def render_gui() -> bytes:
         f"\t\tvisible = \"{toggle_hud_gate}\" using = Animation_ShowHide_Quick",
         f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
         f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), Not(GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))), GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'system')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
         "\t}",
         "\twidget = {",
         "\t\tname = \"zg361_scoreboard_modal\" size = { 100% 100% }",
-        "\t\tvisible = \"[And(GetVariableSystem.Exists('zg361_scoreboard_open'), Or(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]\"",
+        "\t\tvisible = \"[And(GetVariableSystem.Exists('zg361_scoreboard_open'), Or(Or(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))]\"",
         "\t\talwaystransparent = no filter_mouse = all using = Background_Full_Dim using = Animation_ShowHide_Quick",
-        "\t\tbutton_normal = { size = { 100% 100% } onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" shortcut = \"close_window\" }",
+        "\t\tbutton_normal = { size = { 100% 100% } onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" shortcut = close_window }",
         "\t\twidget = {",
         "\t\t\tname = \"zg361_scoreboard_panel\" size = { 1220 820 } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike",
         "\t\t\tvbox = {",
         "\t\t\t\tusing = Window_Margins spacing = 8",
-        "\t\t\t\theader_pattern = { layoutpolicy_horizontal = expanding blockoverride \"header_text\" { text = \"zg361_scoreboard_title\" } blockoverride \"button_close\" { onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" shortcut = \"close_window\" } }",
+        "\t\t\t\theader_pattern = { layoutpolicy_horizontal = expanding blockoverride \"header_text\" { text = \"zg361_scoreboard_title\" } blockoverride \"button_close\" { onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" shortcut = close_window } }",
         "\t\t\t\thbox = { layoutpolicy_horizontal = expanding",
         "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_managed\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')]\" }",
         "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_received\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')]\" }",

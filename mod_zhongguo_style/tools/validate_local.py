@@ -414,11 +414,13 @@ def check_runtime_invariants() -> None:
         if token not in scripted_guis:
             err(f"scoreboard availability predicate missing: {token}")
     if not re.search(
-        r'blockoverride\s+"button_close"\s*\{.*?shortcut\s*=\s*"close_window"',
+        r'blockoverride\s+"button_close"\s*\{.*?shortcut\s*=\s*close_window',
         scoreboard_gui,
         re.S,
     ):
         err("scoreboard modal close button must support the native Escape shortcut")
+    if 'shortcut = "close_window"' in scoreboard_gui:
+        err("scoreboard Escape shortcut must use the native unquoted identifier")
     if 'position = { -60 90 }' not in scoreboard_gui:
         err("scoreboard HUD toggle must align immediately left of the native main-tab rail")
     toggle_match = re.search(
@@ -430,12 +432,22 @@ def check_runtime_invariants() -> None:
     for gate in (
         "Not(IsPauseMenuShown)",
         "IsDefaultGUIMode",
+        "Not(IsGameViewOpen('struggle'))",
+        "hide_ui_main_tabs",
         "Not(IsRightWindowOpen)",
         "Not(IsGameViewOpen('outliner'))",
         "Not(IsGameViewOpen('barbershop'))",
     ):
         if gate not in toggle_body:
             err(f"scoreboard HUD toggle is missing native-overlay gate: {gate}")
+    if toggle_body.count("button_standard = {") != 3:
+        err("scoreboard HUD toggle must expose managed, received, and ledger-only variants")
+    for token in (
+        "zg361_mechanism_ledger_available_gui",
+        "GetVariableSystem.Set('zg361_scoreboard_tab', 'system')",
+    ):
+        if token not in toggle_body:
+            err(f"scoreboard ledger-only HUD entry is missing: {token}")
     if len(re.findall(r"has_variable\s*=\s*merit_(?:military|civilian)_career_score_bonus", effects)) != 4:
         err("native appointment score variables must be initialized before change_variable")
     assignment_at = effects.find("zg361_assign_pending_grades_effect = yes")

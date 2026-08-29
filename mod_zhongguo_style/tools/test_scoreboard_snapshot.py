@@ -127,6 +127,8 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         for gate in (
             "Not(IsPauseMenuShown)",
             "IsDefaultGUIMode",
+            "Not(IsGameViewOpen('struggle'))",
+            "hide_ui_main_tabs",
             "Not(IsRightWindowOpen)",
             "Not(IsGameViewOpen('outliner'))",
             "Not(IsGameViewOpen('barbershop'))",
@@ -162,7 +164,21 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertIsNotNone(toggle)
         self.assertEqual(
             (toggle.group("body") if toggle else "").count("button_standard = {"),
-            2,
+            3,
+        )
+        toggle_body = toggle.group("body") if toggle else ""
+        self.assertIn("zg361_mechanism_ledger_available_gui", toggle_body)
+        self.assertIn(
+            "GetVariableSystem.Set('zg361_scoreboard_tab', 'system')",
+            toggle_body,
+        )
+        self.assertIn(
+            "Not(GetScriptedGui('zg361_scoreboard_managed_available_gui')",
+            toggle_body,
+        )
+        self.assertIn(
+            "Not(GetScriptedGui('zg361_scoreboard_received_available_gui')",
+            toggle_body,
         )
         self.assertEqual(gui.count("button_tertiary = {"), SLOT_COUNT * 2)
         self.assertEqual(
@@ -189,7 +205,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertIn(
             'button_normal = { size = { 100% 100% } onclick = '
             '"[GetVariableSystem.Clear(\'zg361_scoreboard_open\')]" '
-            'shortcut = "close_window" }',
+            'shortcut = close_window }',
             gui,
         )
         self.assertRegex(
@@ -197,9 +213,20 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             re.compile(
                 r'blockoverride\s+"button_close"\s*\{.*?'
                 r"GetVariableSystem.Clear\('zg361_scoreboard_open'\).*?"
-                r'shortcut\s*=\s*"close_window"',
+                r'shortcut\s*=\s*close_window',
                 re.S,
             ),
+        )
+        self.assertNotIn('shortcut = "close_window"', gui)
+        modal = re.search(
+            r'name = "zg361_scoreboard_modal"(?P<body>.*?)\n\t\twidget = \{',
+            gui,
+            re.S,
+        )
+        self.assertIsNotNone(modal)
+        self.assertIn(
+            "GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown",
+            modal.group("body") if modal else "",
         )
 
     def test_row_content_cannot_intercept_the_character_button(self) -> None:

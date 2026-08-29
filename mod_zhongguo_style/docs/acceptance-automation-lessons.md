@@ -57,6 +57,8 @@
 - 原生“更多”菜单带 `_mouse_hierarchy_leave` 行为；菜单文字被 OCR 到不代表随后较慢的鼠标移动仍点中了该行。
 - OCR/键鼠只获项目所有者授权用于当前宣传片临时兼容路径。正规终态是 MCP 夹具按 stable landed-title key 解析并定位地图；能力合同见根知识库 `docs/ck3-native-title-map-navigation-contract.md`。该合同当前仅为 `research`，不得把本轮 OCR GREEN 冒充 MCP 已实现。
 - 菜单消失不构成 handler ACK。必须观察目标窗口或地图的后置状态。
+- “查找头衔”在同一面板里既可能是标题，也可能是空搜索框的 placeholder。实机 OCR 返回的是输入框中心 `(2164,226)`；再机械加 65 像素会点到空白面板、把自动获得的输入焦点夺走，随后 `Ctrl+V` 看似执行但搜索框仍为空。任何输入框定位都必须保存粘贴后的文字 ACK，不能从窗口标题坐标盲推。
+- 实机 runner 会校验源码树前后哈希。运行期间即使是另一个合法子线程新增设计 JSON，也会让整局报告出现 `source_tree_unchanged=false`；因此每次 CK3 启动前必须冻结待测字节，并暂停所有会写同一源码树的并行任务。并发只留给只读研究或外部独立 worktree。
 
 ### 当前有界状态机
 
@@ -67,6 +69,8 @@
 5. 搜索“汴州”，两帧稳定解析结果后右键；若结果缺失或动作没有地图 ACK，在同一个 finder 中尝试史实首府“开封”。
 6. 每个右键动作保存 action-before / action-after；只有中央地图差至少 `0.18` 才接受。
 7. 关闭 finder，并反证标题消失；再确认 CK3 仍保持 `0x04090409`。整个过程的 `attempts[]` 无论 GREEN/RED 都写入 `05_promo_camera_recenter.json`。
+
+2026-08-29 末，项目所有者将正规路径优先级提升到 MCP。上述 OCR 状态机继续保留为历史兼容与故障取证，不再作为正式宣传片导航的首选施工方向；下一次实机优先验收合同中的 typed title-key 原生动作。
 
 ## 4. GUI 自动化经验
 
