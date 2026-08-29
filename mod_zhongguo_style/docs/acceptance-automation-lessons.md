@@ -89,6 +89,7 @@
 - 降速按键、暂停按键、原生时间轴点击都要各自有后置日期 ACK。慢 OCR 本身会消耗游戏时间，不能放在关键截止日之前无限等待。
 - carrier 到期日必须为失败兜底留足同年缓冲；这属于验收夹具编排，不得修改产品的 D+300 京察期限或其他正式规则来迁就 harness。
 - classic character event 的模态停表不能等同于 native snapshot 的普通 `paused=true`。2026-08-30 04:15 attempt 直接证明 `set-speed-1` 已获 `accepted/submitted` 且 `dedicated_server.log` 执行了原生零基速度 `0`，但旧 runner 等待 `speed=1 && paused=true` 仍超时；该次失败循环没有落盘 snapshot，因此 `paused=false` 只能作为强推断，不能写成直接观测。正确交接是：点击前用同一 native event instance、`date_raw`、played character 和命令 ACK 绑定上下文，速度/暂停字段只记录；点击后先看到 event instance 在同日发生变化，只有 changed-event 帧为 running 时才提交 `pause-map`，若已经暂停则禁止反向 toggle，最后以连续三帧 `paused=true` 且日期仍等于点击前日期收口。任何 RED 都应先写 observations sidecar 再抛异常。
+- `letter_event` 与 classic character event 的标题版式不同。2026-08-30 05:20 attempt 中原版 `court_events.1011` 的标题中心落在 `(0.4824, 0.3486)`，旧 classic 标题区域没有命中；但 native snapshot 已明确给出 active event #5，OCR 也已经把唯一可见选项分类为 `center_event_option`。此时不得扩大一个容易误伤考核榜/制度驾驶舱的通用 OCR 区域，也不得在 active event 非空时盲目恢复时间。personal-switch 的正规恢复顺序是：保留 MCP `option_count`；仅对 `option_count == 1` 且视觉已排除继承屏、找到强选项几何的事件，绑定同一 instance/date/revision，原生 `pause-map` 后调用 typed `select_event_option(1)`；旧 instance 变化且日期冻结才算完成。多选事件继续停下等待语义选择或保守视觉路径。
 
 ## 6. 宣传片片场纪律
 

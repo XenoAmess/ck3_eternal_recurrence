@@ -3422,6 +3422,9 @@ def _personal_switch_native_snapshot(
     active_event_id = (
         active_event.get("instance_id") if isinstance(active_event, dict) else None
     )
+    active_event_option_count = (
+        active_event.get("option_count") if isinstance(active_event, dict) else None
+    )
     return {
         "revision": snapshot.get("revision"),
         "native_revision": snapshot.get("native_revision"),
@@ -3429,7 +3432,124 @@ def _personal_switch_native_snapshot(
         "paused": snapshot.get("paused"),
         "speed": snapshot.get("speed"),
         "active_event_instance_id": active_event_id,
+        "active_event_option_count": active_event_option_count,
     }
+
+
+def select_single_option_interruption_native(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    stem: str,
+    *,
+    expected_event_instance_id: int,
+) -> dict[str, object]:
+    """Bind, pause and clear one forced-choice event through the native MCP."""
+
+    before = service.snapshot()
+    before_observation = _personal_switch_native_snapshot(before)
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "selection_method": "native_mcp_single_option",
+        "expected_event_instance_id": expected_event_instance_id,
+        "before": before_observation,
+        "pause_submission": None,
+        "pause_observations": [],
+        "selection_submission": None,
+        "after": None,
+        "failure_reason": None,
+    }
+    evidence_path = artifacts / f"{stem}_native_single_option_gate.json"
+
+    def fail(reason: str) -> None:
+        evidence["failure_reason"] = reason
+        write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(reason)
+
+    event_id = before_observation["active_event_instance_id"]
+    option_count = before_observation["active_event_option_count"]
+    before_revision = before.get("revision")
+    before_date = before.get("date_raw")
+    if event_id != expected_event_instance_id:
+        fail("native interruption event changed before single-option selection")
+    if option_count != 1:
+        fail("native interruption is not an exactly-one-option event")
+    if (
+        isinstance(before_revision, bool)
+        or not isinstance(before_revision, int)
+        or before_revision < 0
+    ):
+        fail("native interruption snapshot lacks a valid revision")
+    if isinstance(before_date, bool) or not isinstance(before_date, int):
+        fail("native interruption snapshot lacks a valid date_raw")
+
+    paused = before
+    if before.get("paused") is not True:
+        evidence["pause_submission"] = service.execute_step(
+            "pause-map", expected_revision=before_revision
+        )
+        pause_deadline = time.monotonic() + 5.0
+        while time.monotonic() < pause_deadline:
+            paused = service.snapshot()
+            observed = _personal_switch_native_snapshot(paused)
+            evidence["pause_observations"].append(observed)
+            if observed["active_event_instance_id"] != expected_event_instance_id:
+                fail("native interruption changed while waiting for pause-map")
+            if observed["date_raw"] != before_date:
+                fail("game date changed while pausing native interruption")
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.05)
+        if paused.get("paused") is not True:
+            fail("native MCP did not pause the single-option interruption")
+    else:
+        evidence["pause_submission"] = {
+            "step": "pause-map",
+            "accepted": True,
+            "status": "not_needed_already_paused",
+        }
+        evidence["pause_observations"].append(before_observation)
+
+    paused_observation = _personal_switch_native_snapshot(paused)
+    paused_revision = paused.get("revision")
+    if paused_observation["active_event_instance_id"] != expected_event_instance_id:
+        fail("native interruption changed before bound option submission")
+    if paused_observation["active_event_option_count"] != 1:
+        fail("native interruption option count changed before submission")
+    if (
+        isinstance(paused_revision, bool)
+        or not isinstance(paused_revision, int)
+        or paused_revision < 0
+    ):
+        fail("paused native interruption lacks a valid revision")
+
+    try:
+        evidence["selection_submission"] = service.select_event_option(
+            1,
+            event_instance_id=expected_event_instance_id,
+            expected_revision=paused_revision,
+        )
+    except Exception as error:
+        evidence["failure_reason"] = (
+            f"native single-option selection failed: {type(error).__name__}: {error}"
+        )
+        write_json(evidence_path, evidence)
+        raise
+
+    after = service.snapshot()
+    after_observation = _personal_switch_native_snapshot(after)
+    evidence["after"] = after_observation
+    if after_observation["active_event_instance_id"] == expected_event_instance_id:
+        fail("native option ACK did not advance the interruption instance")
+    if after_observation["date_raw"] != before_date:
+        fail("game date advanced while clearing native interruption")
+    if after.get("paused") is not True:
+        fail("native interruption selection did not leave CK3 paused")
+
+    evidence["result"] = "GREEN"
+    evidence["failure_reason"] = None
+    write_json(evidence_path, evidence)
+    return evidence
 
 
 def resume_personal_switch_timeline_native(
@@ -3490,6 +3610,14 @@ def resume_personal_switch_timeline_native(
             return {
                 "reason": reason,
                 "result": "GREEN",
+                "terminal_condition": (
+                    "date_advanced_to_active_event"
+                    if _personal_switch_native_snapshot(current)[
+                        "active_event_instance_id"
+                    ]
+                    is not None
+                    else "date_advanced"
+                ),
                 "starting_date_raw": starting_raw,
                 "resumed_date_raw": current_raw,
                 "submissions": submissions,
@@ -3541,11 +3669,25 @@ def advance_to_personal_switch(
         if stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER):
             write_timeline_evidence("GREEN")
             return interruptions
+
+        # Keep the complete native event identity. A one-option event is a
+        # forced presentation choice and can be cleared by the exact-build MCP
+        # without inferring its option number from OCR geometry.
+        snapshot = timeline_service.snapshot()
+        observed = _personal_switch_native_snapshot(snapshot)
+        if not native_observations or observed != native_observations[-1]:
+            native_observations.append(observed)
+        active_event_id = observed["active_event_instance_id"]
+        active_event_option_count = observed["active_event_option_count"]
+
         recovery_round += 1
         recovered = settle_promo_interruptions(
             artifacts,
             f"10_personal_switch_wait_{recovery_round:02d}",
             observation_s=0.5,
+            native_event_service=timeline_service,
+            native_active_event_instance_id=active_event_id,
+            native_active_event_option_count=active_event_option_count,
             stop_event_title="上司考定",
         )
         if recovered:
@@ -4158,6 +4300,8 @@ def _write_promo_interruption_decision(
     status: str,
     kind: str | None,
     selected: dict[str, object] | None,
+    native_active_event_instance_id: int | None = None,
+    selection_method: str | None = None,
 ) -> None:
     write_json(
         artifacts / f"{stem}_decision.json",
@@ -4169,6 +4313,8 @@ def _write_promo_interruption_decision(
             "selected_text": selected.get("text") if selected else None,
             "selected_center": selected.get("center") if selected else None,
             "allow_succession": False,
+            "native_active_event_instance_id": native_active_event_instance_id,
+            "selection_method": selection_method,
         },
     )
 
@@ -4180,6 +4326,9 @@ def settle_promo_interruptions(
     observation_s: float = PROMO_INTERRUPTION_DEFAULT_OBSERVE_S,
     max_dismissals: int = PROMO_INTERRUPTION_MAX_DISMISSALS,
     stop_event_title: str | None = None,
+    native_event_service: GameplayBridgeService | None = None,
+    native_active_event_instance_id: int | None = None,
+    native_active_event_option_count: int | None = None,
 ) -> list[dict[str, object]]:
     """Conservatively settle bounded native events in the promo fixture only.
 
@@ -4282,18 +4431,27 @@ def settle_promo_interruptions(
                 "promo interruption is succession; automatic continuation is forbidden"
             )
 
-        if not promo_event_modal_evidence(items, width, height):
-            remaining = deadline - time.monotonic()
-            if remaining <= 0:
-                return dismissed
-            time.sleep(min(acceptance.POLL_INTERVAL_S, remaining))
-            continue
-
         kind = (
             acceptance.quick_recovery_kind(items, selected, width, height)
             if selected is not None
             else None
         )
+        native_single_option_candidate = (
+            native_event_service is not None
+            and isinstance(native_active_event_instance_id, int)
+            and not isinstance(native_active_event_instance_id, bool)
+            and native_active_event_option_count == 1
+            and kind is not None
+        )
+        if (
+            not promo_event_modal_evidence(items, width, height)
+            and not native_single_option_candidate
+        ):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return dismissed
+            time.sleep(min(acceptance.POLL_INTERVAL_S, remaining))
+            continue
         ordinal = len(dismissed) + 1
         diagnostic = f"{stem}_interruption_{ordinal:02d}"
         acceptance.mark_recovery_items(items, lower, selected)
@@ -4328,11 +4486,30 @@ def settle_promo_interruptions(
             status="selected_safe_event_option",
             kind=kind,
             selected=selected,
+            native_active_event_instance_id=(
+                native_active_event_instance_id
+                if native_single_option_candidate
+                else None
+            ),
+            selection_method=(
+                "native_mcp_single_option"
+                if native_single_option_candidate
+                else "visual_click"
+            ),
         )
-        acceptance.deliberate_click(
-            tuple(selected["center"]),
-            f"promo fixture interruption {kind}: {selected['text']!r}",
-        )
+        native_selection_evidence = None
+        if native_single_option_candidate:
+            native_selection_evidence = select_single_option_interruption_native(
+                native_event_service,
+                artifacts,
+                diagnostic,
+                expected_event_instance_id=native_active_event_instance_id,
+            )
+        else:
+            acceptance.deliberate_click(
+                tuple(selected["center"]),
+                f"promo fixture interruption {kind}: {selected['text']!r}",
+            )
         selected_text = selected["text"]
         selected_center = selected["center"]
         close_deadline = time.monotonic() + 8
@@ -4356,6 +4533,17 @@ def settle_promo_interruptions(
                         "selected_text": selected_text,
                         "selected_center": selected_center,
                         "diagnostic_stem": diagnostic,
+                        "selection_method": (
+                            "native_mcp_single_option"
+                            if native_single_option_candidate
+                            else "visual_click"
+                        ),
+                        "native_active_event_instance_id": (
+                            native_active_event_instance_id
+                            if native_single_option_candidate
+                            else None
+                        ),
+                        "native_selection_evidence": native_selection_evidence,
                     }
                 )
                 # A second queued event can already be visible here. Its modal
@@ -4364,6 +4552,12 @@ def settle_promo_interruptions(
                 ensure_hud_date_frozen(
                     artifacts, f"{diagnostic}_dismissed"
                 )
+                # The caller supplied a snapshot-bound event identity. Return
+                # after one native selection so the outer timeline loop pumps
+                # target markers and takes a fresh instance before any further
+                # event can be considered.
+                if native_single_option_candidate:
+                    return dismissed
                 deadline = time.monotonic() + max(0.0, observation_s)
                 break
         else:

@@ -1821,6 +1821,160 @@ def main() -> int:
             assert blocked["recovery_kind"] == "京察之期"
             assert blocked["selected_text"] is None
 
+    centered_letter_items = [
+        event_item("A former servant writes", (1235, 502), 190),
+        event_item(
+            "The letter contains a sufficiently wide narrative line",
+            (1280, 600),
+            900,
+        ),
+        event_item("Traitor!", (1280, 985), 160),
+    ]
+    centered_letter_image = FakeDesktopImage(centered_letter_items)
+    _lower, centered_letter_selected = real_select(
+        [dict(item) for item in centered_letter_items],
+        centered_letter_image,
+        allow_succession=False,
+    )
+    assert centered_letter_selected is not None
+    assert capture.promo_event_modal_evidence(
+        centered_letter_items, 2560, 1440
+    ) is False
+    assert capture.acceptance.quick_recovery_kind(
+        centered_letter_items,
+        centered_letter_selected,
+        2560,
+        1440,
+    ) == "center_event_option"
+
+    class NativeSingleOptionService:
+        def __init__(self) -> None:
+            self.paused = False
+            self.cleared = False
+            self.revision = 20
+            self.steps: list[tuple[str, int | None]] = []
+            self.selections: list[tuple[int, int | None, int | None]] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "native_revision": self.revision,
+                "date_raw": 53144688,
+                "paused": self.paused,
+                "speed": 5,
+                "active_event": (
+                    None
+                    if self.cleared
+                    else {"instance_id": 5, "option_count": 1}
+                ),
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int | None = None
+        ) -> dict[str, object]:
+            assert step == "pause-map"
+            assert expected_revision == self.revision
+            self.steps.append((step, expected_revision))
+            self.paused = True
+            self.revision += 1
+            return {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+            }
+
+        def select_event_option(
+            self,
+            option_number: int,
+            *,
+            event_instance_id: int | None = None,
+            expected_revision: int | None = None,
+        ) -> dict[str, object]:
+            assert self.paused is True
+            assert self.cleared is False
+            assert option_number == 1
+            assert event_instance_id == 5
+            assert expected_revision == self.revision
+            self.selections.append(
+                (option_number, event_instance_id, expected_revision)
+            )
+            self.cleared = True
+            self.revision += 1
+            return {
+                "step": "select-event-option-1",
+                "accepted": True,
+                "status": "submitted",
+            }
+
+    native_single = NativeSingleOptionService()
+
+    def native_letter_grab() -> FakeDesktopImage:
+        return FakeDesktopImage(
+            []
+            if native_single.cleared
+            else [dict(item) for item in centered_letter_items]
+        )
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab, "grab", native_letter_grab
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "read_hud_game_date",
+                return_value=(389362, (0, 0)),
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            native_dismissed = capture.settle_promo_interruptions(
+                artifacts,
+                "mock_native_letter",
+                observation_s=0.0,
+                native_event_service=native_single,
+                native_active_event_instance_id=5,
+                native_active_event_option_count=1,
+            )
+        click.assert_not_called()
+        assert native_single.steps == [("pause-map", 20)]
+        assert native_single.selections == [(1, 5, 21)]
+        assert len(native_dismissed) == 1
+        assert native_dismissed[0]["selection_method"] == (
+            "native_mcp_single_option"
+        )
+        assert native_dismissed[0]["native_active_event_instance_id"] == 5
+        native_gate = json.loads(
+            (
+                artifacts
+                / "mock_native_letter_interruption_01_native_single_option_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert native_gate["result"] == "GREEN"
+        assert native_gate["before"]["active_event_option_count"] == 1
+        assert native_gate["after"]["active_event_instance_id"] is None
+        native_decision = json.loads(
+            (
+                artifacts / "mock_native_letter_interruption_01_decision.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert native_decision["selection_method"] == "native_mcp_single_option"
+        assert native_decision["native_active_event_instance_id"] == 5
+
     jingcha_advance = inspect.getsource(capture.advance_to_jingcha_mandate)
     for token in (
         "timeout_s: float = 60.0",
@@ -1859,6 +2013,10 @@ def main() -> int:
         '"silent_pause"',
         '"10_personal_switch_timeline_gate.json"',
         'active_event_id is None',
+        'active_event_option_count = observed["active_event_option_count"]',
+        "native_event_service=timeline_service",
+        "native_active_event_instance_id=active_event_id",
+        "native_active_event_option_count=active_event_option_count",
         "time.monotonic() + timeout_s",
     ):
         assert token in switch_advance, token

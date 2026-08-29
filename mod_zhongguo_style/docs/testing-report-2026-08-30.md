@@ -67,9 +67,19 @@
 
 runner 现直接复用已经通过规范化匹配的政策卡截图，不再追加较弱的原始空格 OCR；三个问题均已有定向回归并通过，状态为 **static-ready**。下一步只运行一次新的完整合批实机，不再重复前四轮已闭合的代码审计。
 
-## 5. 环境与证据边界
+## 5. 第六次完整 attempt：原版单选信件截断 D+90
+
+第六次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0520_current_49777d5_mcp` 第六次实机证实宋帝 23 人严格分布为 `7 / 14 / 2`，并再次通过此前的产品、361/361 账本、史实角色、AI 公爵考核、考核榜 GUI、京察与新人保护门。该局 `project_diagnostics = []`，证明上一轮六个组织账 unset-variable tooltip 错误已经归零。
+
+该 attempt 的 **RED** 仍是 runner 阻塞，不是产品或 D+90 夹具失败。`10_personal_switch_timeline_gate.json` 记录京察后起点 `date_raw = 53144616`、到期 ordinal `389449`；原生 `set-speed-5` 与 `resume-map` 均提交成功，但日期只推进到 `53144688`，即 1066-09-30、共 3 天，便停在 `active_event_instance_id = 5`。`fatal_state.png` 明确显示原版单选信件 `court_events.1011`《我曾经的主人，》与唯一选项“叛徒！”，而 marker 始终为 0；因此载体还差 87 天，根本尚未执行，没有任何 `ZGA: TEST FAIL` 可归因于产品。
+
+根因是 runner 丢弃了 MCP 已经发布的 `active_event.option_count`，只保留 instance ID，然后仍依赖 classic character-event OCR 标题区域。该信件标题中心约为 `x = 0.4824, y = 0.3486`，落在旧标题区域之外；同一截图离线重放得到 `promo_event_modal_evidence = false`，但安全选项分类其实已经得到 `center_event_option`。MCP 又正确拒绝在 active event 非空时盲目恢复时间，于是形成 240 秒死锁。
+
+针对性修复现为 **static-ready**：personal-switch sidecar 保留 `option_count`；只有 MCP 证明事件恰好一个选项、视觉分类又排除继承屏并找到强选项几何时，才在同一 event instance、同一日期和 fresh revision 上依次提交 `pause-map` 与 typed `select_event_option(1)`，并要求旧 instance 变化、日期不变且仍暂停。多选事件不走原生盲选；目标 marker 在操作前后继续 pump，“上司考定”标题也继续受保护。定向回归已覆盖本次 centered letter 布局、`paused = false → pause → native option 1 → instance change`，下一步只做一次完整合批实机。
+
+## 6. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已五次实机复现；项目诊断归零曾在第二至第四次 attempt 成立，第五次因政策卡 fresh tooltip 的六个账本变量回归为 RED，现有针对性修复仍待下一轮实机确认。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25` 及本人榜均已 live-confirmed；六张政策卡、零项目诊断和正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已六次实机复现；项目诊断在第六次 attempt 再次归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25` 及本人榜均已 live-confirmed；六张修正标题后的政策卡、单选信件 MCP 恢复和正式宣传素材仍等待下一次完整 GREEN。
