@@ -189,12 +189,14 @@ def _fixture(
                 "source": _record(raw, "clean raw"),
                 "start_seconds": 0.0,
                 "end_seconds": max(video_times),
+                "capture": {"clean_span_id": "managed_scoreboard"},
             },
             {
                 "id": "02-still",
                 "type": "still",
                 "material_status": "captured",
                 "source": _record(still, "clean still"),
+                "capture": {"clean_span_id": "policy_card_361"},
             },
         ],
     }
@@ -229,7 +231,7 @@ def _fixture(
         {
             "evidence_id": "still-361",
             "chapter_ids": ["02-still"],
-            "subject_ids": ["song-emperor"],
+            "subject_ids": ["hunan-governor"],
             "source_sha256": manifest["chapters"][2]["source"]["sha256"],
             "image": _record(still, "exact manifest still"),
             "ocr": _record(still_ocr, "full-screen OCR JSON"),
@@ -274,6 +276,7 @@ def _fixture(
             "reviewed_chapter_ids": ["01-live", "02-still"],
             "attestations": {
                 "historical_characters_only": True,
+                "no_generated_official_name_visible": True,
                 "fixture_test_ui_absent": True,
                 "full_clip_reviewed": True,
                 "no_crop_mask_or_redaction": True,
@@ -453,6 +456,21 @@ class PromoVisualAuditTests(unittest.TestCase):
                 report["evaluation"]["errors"][0],
             )
             self.assertIn("mismatched=['han_8052']", report["evaluation"]["errors"][0])
+
+    def test_evidence_subject_cannot_be_swapped_across_historical_roles(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            spec_path = _fixture(root)
+            spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            spec["evidence"][0]["subject_ids"] = ["hunan-governor"]
+            _write_json(spec_path, spec)
+
+            report = audit.create_report(spec_path)
+            self.assertEqual("RED", report["evaluation"]["result"])
+            self.assertIn(
+                "subject_ids must exactly bind the clean-span historical roles",
+                report["evaluation"]["errors"][0],
+            )
 
     def test_bookmark_must_match_manifest_character_provenance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

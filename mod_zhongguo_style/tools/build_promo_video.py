@@ -558,6 +558,43 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[shared.Chapter]]:
         chapter.promo_layouts = []
         chapters.append(chapter)
 
+    if payload.get("project_status") == "captured_release_candidate":
+        for chapter in chapters:
+            rendered_fields: list[tuple[str, str]] = [
+                ("title_zh", chapter.title_zh),
+                ("title_en", chapter.title_en),
+                ("status.zh", chapter.status_zh),
+                ("status.en", chapter.status_en),
+            ]
+            rendered_fields.extend(
+                (f"body_zh[{index}]", value)
+                for index, value in enumerate(chapter.body_zh)
+            )
+            rendered_fields.extend(
+                (f"body_en[{index}]", value)
+                for index, value in enumerate(chapter.body_en)
+            )
+            for cue_index, cue in enumerate(chapter.promo_cues):
+                rendered_fields.extend(
+                    (
+                        (f"cues[{cue_index}].zh", cue["zh"]),
+                        (f"cues[{cue_index}].en", cue["en"]),
+                        (f"cues[{cue_index}].spoken_zh", cue["spoken_zh"]),
+                    )
+                )
+            for field, value in rendered_fields:
+                normalized = visual_audit._normalize_ocr_text(value)
+                hits = [
+                    token
+                    for token in visual_audit.DEFAULT_FORBIDDEN_TOKENS
+                    if visual_audit._normalize_ocr_text(token) in normalized
+                ]
+                if hits:
+                    raise PromoError(
+                        "release rendered field contains fixture/test-only text: "
+                        f"chapter={chapter.chapter_id!r}; field={field}; hits={hits!r}"
+                    )
+
     missing_topics = sorted(REQUIRED_TOPICS - all_topics)
     if missing_topics:
         raise PromoError(

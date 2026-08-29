@@ -133,6 +133,38 @@ TARGET_PASS_MARKER: Final[str] = (
     "ZGA: TEST PASS historical_personal_result_target"
 )
 
+MANAGER_CLEAN_SPANS: Final[frozenset[str]] = frozenset(
+    {
+        "calibration",
+        "managed_scoreboard",
+        "policy_cockpit",
+        "jingcha_mandate",
+        "free_jingcha_planner",
+    }
+)
+REVIEWED_OFFICIAL_CLEAN_SPANS: Final[frozenset[str]] = frozenset(
+    {
+        "superior_assigned_325",
+        "received_scoreboard_with_325",
+        "policy_card_001",
+        "policy_card_007",
+        "policy_card_020",
+        "policy_card_022",
+        "policy_card_026",
+        "policy_card_361",
+    }
+)
+
+
+def clean_span_subject_role(span_id: str) -> str:
+    """Return the one historical subject role allowed in a promo clean span."""
+
+    if span_id in MANAGER_CLEAN_SPANS:
+        return "manager"
+    if span_id in REVIEWED_OFFICIAL_CLEAN_SPANS:
+        return "reviewed_official"
+    raise ValueError(f"promo clean span has no historical subject role: {span_id!r}")
+
 
 def reviewed_official(history_id: str) -> dict[str, object]:
     """Return a detached canonical record for one allowed reviewed official."""

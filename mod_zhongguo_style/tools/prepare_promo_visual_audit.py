@@ -32,6 +32,7 @@ if str(TOOLS_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIRECTORY))
 
 import audit_promo_visuals as audit  # noqa: E402
+import promo_real_character_contract as real_characters  # noqa: E402
 
 
 SCHEMA_VERSION = 1
@@ -40,23 +41,6 @@ DEFAULT_SPEC_NAME = "promo-visual-audit-spec.PENDING.json"
 DEFAULT_RUN_NAME = "promo-visual-evidence-run.json"
 OCR_MIN_SCORE = 0.45
 PENDING_REVIEW_TIME = "1970-01-01T00:00:00+00:00"
-MANAGER_CLEAN_SPANS = {
-    "calibration",
-    "managed_scoreboard",
-    "policy_cockpit",
-    "jingcha_mandate",
-    "free_jingcha_planner",
-}
-REVIEWED_OFFICIAL_CLEAN_SPANS = {
-    "superior_assigned_325",
-    "received_scoreboard_with_325",
-    "policy_card_001",
-    "policy_card_007",
-    "policy_card_020",
-    "policy_card_022",
-    "policy_card_026",
-    "policy_card_361",
-}
 
 
 class PrepareVisualAuditError(RuntimeError):
@@ -206,14 +190,12 @@ def _chapter_subject_map(
                 "every captured release chapter must retain its clean-span capture record"
             )
         span_id = capture.get("clean_span_id")
-        if span_id in MANAGER_CLEAN_SPANS:
-            role = "manager"
-        elif span_id in REVIEWED_OFFICIAL_CLEAN_SPANS:
-            role = "reviewed_official"
-        else:
+        try:
+            role = real_characters.clean_span_subject_role(str(span_id))
+        except ValueError as exc:
             raise PrepareVisualAuditError(
                 f"captured chapter {chapter_id!r} has unmapped clean span {span_id!r}"
-            )
+            ) from exc
         subject_ids = role_map.get(role)
         if not isinstance(subject_ids, list) or len(subject_ids) != 1:
             raise PrepareVisualAuditError(
@@ -483,7 +465,8 @@ def generate_pending_spec(
         },
         "template_notice": (
             "NOT A SIGN-OFF. Copy this spec to a new signed file only after a "
-            "human reviewer watches every captured chapter at 1x and checks every still."
+            "human reviewer watches every captured chapter at 1x, checks every still, "
+            "and confirms that no generated official name is visible anywhere."
         ),
     }
     spec = {

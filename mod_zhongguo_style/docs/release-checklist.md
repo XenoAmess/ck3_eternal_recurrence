@@ -80,13 +80,14 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 - [ ] 工坊 media strip 的实际数量、顺序和放大图人工复核；删除重传后的顺序变化已校正。
 - [ ] 宣传视频所用原始录屏、TTS 输入、`zh-CN-XiaoxiaoNeural` 音轨、双语字幕源、剪辑工程、中间导出和失败版本均保留，不进入 mod staging。
 - [ ] 宣传成片以中文为主叙事、简中/英文同屏字幕，使用 `zh-CN-XiaoxiaoNeural`，时长严格短于 20 分钟；开场直接进入主题，不含 Launcher、CK3 启动或存档 loading。
-- [ ] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色。
+- [ ] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色，考核榜可见区域也不得出现两名世界生成坊正的姓名。
 - [ ] 最终时间线与 QA 抽帧中 0 个 fixture/test-only 决议、按钮或文字（包括“361制实机验收”、`ZGA`、验收规划器、演示触发器）；含污染的验收素材只保留为过程证据，不以裁字、打码或遮罩方式入片。
 - [ ] 对最终 manifest 运行 `tools/prepare_promo_visual_audit.py`，输出到新的外部 artifact 目录；全部 captured video 章节均含精确起点/终点且采样间隔不超过 1 秒，重叠章节的同源同时间戳证据已合并，角色与 role 映射来自 manifest provenance。
-- [ ] producer 原始 `promo-visual-audit-spec.PENDING.json` 仍保留且明确未签核（空 reviewed chapter、四项 false）；人工完整审阅后另存 SIGNED spec，未通过脚本或批量替换伪造 GREEN。
+- [ ] producer 原始 `promo-visual-audit-spec.PENDING.json` 仍保留且明确未签核（空 reviewed chapter、五项 false）；人工完整审阅后另存 SIGNED spec，未通过脚本或批量替换伪造 GREEN。
 - [ ] 对最终零占位 manifest 运行 `tools/audit_promo_visuals.py audit`：每个实机章节都有间隔不超过 1 秒的全屏 PNG/OCR 覆盖，still 使用原图，全部证据与源素材按 bytes/SHA-256 绑定；报告为 GREEN。
 - [ ] 角色 provenance 为每名主角/考核者/受评者记录书签、原版 history ID、显示名、职责及 exact-build history 文件 SHA；工具已确认 history key 存在且 `temporary_or_generated=false`。
-- [ ] 人工以 1× 完整播放每个入片实机段并检查所有 still，签核 `historical_characters_only`、`fixture_test_ui_absent`、`full_clip_reviewed` 与 `no_crop_mask_or_redaction` 四项；五张均匀 QA 抽帧不替代完整签核。
+- [ ] 人工以 1× 完整播放每个入片实机段并检查所有 still，签核 `historical_characters_only`、`no_generated_official_name_visible`、`fixture_test_ui_absent`、`full_clip_reviewed` 与 `no_crop_mask_or_redaction` 五项；五张均匀 QA 抽帧不替代完整签核。
+- [ ] 合成后再以 1× 完整播放最终 MP4，确认公开角色角标、中文主字幕和英文副字幕没有重新引入 `FIXTURE-LIVE`、`ZGA`、测试决议/事件/按钮或世界生成官员姓名；记录成片 SHA-256 与签核人。构建器同时静态扫描所有会渲染的标题、状态、正文和 cue，人工复核不能被五帧抽样替代。
 - [ ] 使用最终记录的报告 SHA 执行 `tools/audit_promo_visuals.py verify --expected-report-sha256 <sha>` 再现 GREEN；audit spec、GREEN/RED 报告、全屏 PNG、OCR JSON、旧 take 与人工签核全部保留在外部 artifact。
 
 建议截图顺序：

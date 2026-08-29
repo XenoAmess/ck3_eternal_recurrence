@@ -56,12 +56,14 @@ DEFAULT_FORBIDDEN_TOKENS = (
     "Promo Policy Card",
     "Switch to Song and begin review",
     "Open this card",
+    "FIXTURE-LIVE",
     "ZGA",
     "zga_",
     "zga.",
 )
 REQUIRED_ATTESTATIONS = (
     "historical_characters_only",
+    "no_generated_official_name_visible",
     "fixture_test_ui_absent",
     "full_clip_reviewed",
     "no_crop_mask_or_redaction",
@@ -594,6 +596,23 @@ def _manifest_chapters(
             "type": promo_type,
             "source": source,
         }
+        capture = row.get("capture")
+        if not isinstance(capture, dict):
+            raise AuditError(
+                f"captured chapter {chapter_id} must retain its clean-span capture record"
+            )
+        clean_span_id = _identifier(
+            capture.get("clean_span_id"),
+            f"captured chapter {chapter_id}.capture.clean_span_id",
+        )
+        try:
+            expected_subject_role = real_characters.clean_span_subject_role(
+                clean_span_id
+            )
+        except ValueError as exc:
+            raise AuditError(str(exc)) from exc
+        chapter["clean_span_id"] = clean_span_id
+        chapter["expected_subject_role"] = expected_subject_role
         if promo_type == "video_clip":
             start = _number(row.get("start_seconds"), f"chapter {chapter_id}.start_seconds")
             end = _number(row.get("end_seconds"), f"chapter {chapter_id}.end_seconds")
@@ -761,6 +780,19 @@ def _evaluate_spec(spec_path: Path) -> dict[str, Any]:
             f"mismatched={mismatched!r}"
         )
 
+    subject_by_role: dict[str, str] = {}
+    for role in ("manager", "reviewed_official"):
+        matches = sorted(
+            subject_id
+            for subject_id, subject in subjects.items()
+            if role in subject["roles"]
+        )
+        if len(matches) != 1:
+            raise AuditError(
+                f"historical character contract must bind exactly one {role!r} subject"
+            )
+        subject_by_role[role] = matches[0]
+
     extra_tokens = spec.get("additional_forbidden_tokens", [])
     if not isinstance(extra_tokens, list):
         raise AuditError("additional_forbidden_tokens must be an array")
@@ -808,6 +840,17 @@ def _evaluate_spec(spec_path: Path) -> dict[str, Any]:
             raise AuditError(
                 f"{context} references unknown historical subjects: "
                 + ", ".join(unknown_subjects)
+            )
+        expected_subject_ids = sorted(
+            {
+                subject_by_role[captured[chapter_id]["expected_subject_role"]]
+                for chapter_id in chapter_ids
+            }
+        )
+        if sorted(subject_ids) != expected_subject_ids:
+            raise AuditError(
+                f"{context}.subject_ids must exactly bind the clean-span historical "
+                f"roles: expected={expected_subject_ids!r}, got={sorted(subject_ids)!r}"
             )
         image_path, image_record = _validate_file_record(
             raw.get("image"), f"{context}.image"

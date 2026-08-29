@@ -36,7 +36,7 @@
 ## 视觉与声音
 
 - 政策卡画面必须有固定角标：`政策卡 / Policy card · A/B/C → shared profile → 14 ledgers`。
-- 真实现场边角显示 `FIXTURE-LIVE` 或 `CLEAN CAPTURE`；不能把 fixture 静帧叫作连续实机游玩。
+- 最终成片只使用公开角色角标，例如 `赵曙 · 考核者实录 / ZHAO SHU · MANAGER` 与 `受评者实录 / REVIEWED OFFICIAL`；`FIXTURE-LIVE`、`ZGA`、测试决议及其他验收字样一律不得进入画面。
 - 没有独立镜头的章节固定显示 `GENERATED EVIDENCE/BOUNDARY`；零占位不是“全功能逐项实录”的同义词。
 - 数字镜头每项至少停 2 秒；不要用音效遮 KPI、名次、国库或金币。
 - 3.25、校准、申诉保留适量 CK3 原声；旁白在关键文字出现前后留呼吸。

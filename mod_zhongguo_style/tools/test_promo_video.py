@@ -117,6 +117,23 @@ class PromoManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(promo.PromoError, "lacks Chinese script keyword"):
                 promo.load_manifest(path)
 
+    def test_release_rendered_fields_reject_fixture_text(self) -> None:
+        original = _absolute_sources(
+            json.loads(FULL_MANIFEST.read_text(encoding="utf-8"))
+        )
+        original["project_status"] = "captured_release_candidate"
+        original["chapters"][0]["status"]["zh"] = "361制实机验收"
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "fixture-overlay-release.json"
+            path.write_text(
+                json.dumps(original, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(
+                promo.PromoError,
+                "release rendered field contains fixture/test-only text",
+            ):
+                promo.load_manifest(path)
+
     def test_361_copy_distinguishes_policy_cards_from_absent_subsystems(self) -> None:
         _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
         corpus = " ".join(chapter.narration_en for chapter in chapters)

@@ -13,7 +13,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 - 成片必须短于 20 分钟。当前全稿离线保守估算约 `432s`（约 7:12）；实际时长以逐 cue MP3 的
   `ffprobe` 结果为准，超过 `1200s` 会在编码前直接 RED。
 - 片头直接进入 mod 概念和玩法，禁止 CK3 启动器、启动 loading 与存档 loading 入镜。
-- 所有入片实机画面必须使用 CK3 书签/世界中的真实历史角色，并在素材 notes 中记录角色 ID 与开局；不使用为测试临时创建、改名或伪装的角色。
+- 所有入片实机画面必须使用 CK3 书签/世界中的真实历史角色，并在素材 notes 中记录角色 ID 与开局；不使用为测试临时创建、改名或伪装的角色，考核榜可见区域也不得出现世界生成坊正的姓名。
 - 最终时间线中不得出现“361制实机验收”、`ZGA`、验收规划器、演示触发器等 fixture/test-only 决议、按钮或文字。验收原始录像即使整体 GREEN，也只能截取经过污染检查且画面干净的时间段；不能因为报告通过就自动获得宣传片资格。
 - title card 可以是开场/结尾，也可以是明确标注 `GENERATED EVIDENCE/BOUNDARY` 的事实边界卡；其余内容只允许使用明确占位卡或已有实机素材。生成边界卡和占位卡都不算实机镜头。
 - 正式候选必须用 `--stage release` 验收；只要还有一个占位镜头就不能通过。
@@ -98,7 +98,7 @@ $auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyy
 $pendingSpec = "$auditEvidence\promo-visual-audit-spec.PENDING.json"
 $auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
 # 人工审阅后，把 PENDING spec 另存为 $auditSpec，并填写真实 reviewer、带时区 reviewed_at_utc、
-# 全部 captured chapter id 与四项 true attestation；原 PENDING 文件和所有证据保持不动。
+# 全部 captured chapter id 与五项 true attestation；原 PENDING 文件和所有证据保持不动。
 $auditReport = "$capture\release\promo-visual-audit-report.json"
 & tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
   --spec $auditSpec `
@@ -161,7 +161,7 @@ JSON 由现有 RapidOCR 生成并绑定 PNG SHA。角色 `subject_id`、history 
 `real_character_provenance` 派生。输出目录可在仓库外任意指定，且默认拒绝覆盖；失败留下的半成品也应保留，重试时
 另开目录。
 
-生成结果固定叫 `promo-visual-audit-spec.PENDING.json`，其中 reviewer 明示未审、章节列表为空、四项 attestation
+生成结果固定叫 `promo-visual-audit-spec.PENDING.json`，其中 reviewer 明示未审、章节列表为空、五项 attestation
 全部为 false；因此直接交给 audit 只会得到 RED。审阅者必须以 1× 完整观看全部 captured clip、检查每张 still，
 再把 PENDING 文件**另存**为新的 SIGNED spec，填入真实签核信息。之后才运行：
 
@@ -193,12 +193,12 @@ spec 使用绝对路径和声明的 `bytes` / `sha256`，至少包含：
   RGB 帧，并要求它与提交 PNG 逐像素一致；不能拿旧截图或另造干净图顶替。OCR JSON 根必须为对象，包含
   `image_sha256` 绑定该 PNG，并在 `items` / `results` / `ocr` 之一保存识别数组。正常流程由
   `prepare_promo_visual_audit.py` 自动产出这些记录，不再手工抄路径或哈希。
-- `manual_signoff`：逐章完整播放后的签核人、带时区时间、manifest SHA、全部实机章节，以及四项 true 证明：
-  `historical_characters_only`、`fixture_test_ui_absent`、`full_clip_reviewed`、
+- `manual_signoff`：逐章完整播放后的签核人、带时区时间、manifest SHA、全部实机章节，以及五项 true 证明：
+  `historical_characters_only`、`no_generated_official_name_visible`、`fixture_test_ui_absent`、`full_clip_reviewed`、
   `no_crop_mask_or_redaction`。
 
 内建禁词至少包括“361制实机验收”“开始361制实机验收”“验收上司给我的绩效”“验收免费京察规划器”
-“验收规划器”“演示政策卡”“演示触发器”“切换至宋帝并开考”“打开此卡”、`ZGA`、`zga_` 与
+“验收规划器”“演示政策卡”“演示触发器”“切换至宋帝并开考”“打开此卡”、`FIXTURE-LIVE`、`ZGA`、`zga_` 与
 `zga.`；spec 只能追加禁词，不能移除默认表。扫描会先做 Unicode/大小写/空白归一化，并把相邻 OCR 项连接，
 所以测试文案被 OCR 拆成两段也会 RED。报告默认拒绝覆盖；`verify` 会重新读取 spec、manifest、原版 history、
 每张 PNG 和每份 OCR，复算全部 SHA 与确定性 evaluation。正式发布记录必须保存报告绝对路径和报告 SHA-256。
