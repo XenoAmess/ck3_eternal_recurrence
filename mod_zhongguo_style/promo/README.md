@@ -29,6 +29,7 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 | `../tools/build_promo_video.py` | TTS、双语 ASS、画面合成、章节拼接与 sidecar |
 | `../tools/validate_promo_video.py` | 草案/正式门禁、媒体规格、时长、语言、哈希与抽帧检查 |
 | `../tools/prepare_promo_release_manifest.py` | GREEN 集中实录 → 外部零占位正式 manifest + provenance；拒绝 RED、缺 mark、哈希漂移和覆盖旧输出 |
+| `../tools/audit_promo_visuals.py` | 正式 manifest 的独立画面门禁：历史角色来源、全屏 PNG/OCR、测试 UI 禁词、逐章覆盖、人工签核与 SHA 复验 |
 
 ## 无联网静态前置
 
@@ -86,9 +87,22 @@ $release = "$capture\release\zg361-promo-release-manifest.json"
   --artifact-root $capture `
   --output $release
 
+$auditSpec = "$capture\release\promo-visual-audit-spec.json" # 按下节 schema 建立并绑定全屏 OCR/PNG 与历史角色来源
+$auditReport = "$capture\release\promo-visual-audit-report.json"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
+  --spec $auditSpec `
+  --output $auditReport
+
+$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
+  --report $auditReport `
+  --expected-report-sha256 $auditSha
+
 & tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
   --manifest $release `
-  --stage release
+  --stage release `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
 
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $videoRoot = "$capture\release\video-$stamp"
@@ -96,13 +110,17 @@ $videoRoot = "$capture\release\video-$stamp"
   --manifest $release `
   --output "$videoRoot\zg361-promo-release.mp4" `
   --work-dir "$videoRoot\work" `
-  --take-id "zg361-release-$stamp"
+  --take-id "zg361-release-$stamp" `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
 
 & tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
   --manifest $release `
   --stage release `
   --video "$videoRoot\zg361-promo-release.mp4" `
-  --sample-dir "$videoRoot\qa-samples"
+  --sample-dir "$videoRoot\qa-samples" `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
 ```
 
 投影器只接受报告与 evidence index 都为 GREEN、timeline 与报告一致、原始 MKV/六张政策图均在 index 中且
@@ -111,6 +129,53 @@ $videoRoot = "$capture\release\video-$stamp"
 显眼的生成证据边界卡，不能伪装成 live。输出 manifest 及同名 `.provenance.json` 使用绝对路径，默认拒绝覆盖。
 正式投影还必须逐段证明所选画面没有测试专用决议/控件；若自动 OCR 不能可靠排除，就改用单独的 production-only
 录制并人工抽帧签字，不能靠裁掉文字或遮罩来掩盖测试 UI。
+
+### 独立画面内容审计
+
+`prepare_promo_release_manifest.py` 证明一次 CK3 验收与素材哈希成立，但 **GREEN 验收录像不自动是 GREEN 宣传素材**。
+投影完成后、调用正式媒体验证和渲染前，必须为该外部 manifest 建立一份
+`zg361_promo_visual_audit_spec` JSON，并运行独立门禁：
+
+```powershell
+$auditSpec = "$capture\release\promo-visual-audit-spec.json"
+$auditReport = "$capture\release\promo-visual-audit-report.json"
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
+  --spec $auditSpec `
+  --output $auditReport
+
+$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
+  --report $auditReport `
+  --expected-report-sha256 $auditSha
+```
+
+spec 使用绝对路径和声明的 `bytes` / `sha256`，至少包含：
+
+- `release_manifest`：刚生成的正式 manifest 文件记录；审计与人工签核都绑定它的 SHA-256。
+- `bookmark`：CK3 书签 ID 与开局日期。
+- `historical_characters`：每个主角/考核者/受评者的稳定 `subject_id`、原版 `history_id`、显示名、
+  `roles`、`origin="ck3_history_database"`、`temporary_or_generated=false`，以及包含该顶层 history key 的
+  exact-build 原版角色文件记录。只写一个名字或运行时数字 ID 不算历史来源证明。
+- `frame_geometry` 与 `sampling_interval_seconds`：当前门禁要求间隔大于 0 且不超过 1 秒。
+- `evidence`：每个入片 `video_clip` 从起点到终点连续覆盖的全屏 PNG + OCR JSON；每张 `still` 必须用 manifest
+  中的原 PNG 本身。每条证据声明 `[0,0,width,height]` 全屏 OCR 区域、源素材 SHA、章节 ID、角色 subject ID
+  和视频时间戳。审计器会用 ffprobe 核对真实视频、分辨率和时长，再用 ffmpeg 从该 raw 的同一时间戳自行解码
+  RGB 帧，并要求它与提交 PNG 逐像素一致；不能拿旧截图或另造干净图顶替。OCR JSON 根必须为对象，包含
+  `image_sha256` 绑定该 PNG，并在 `items` / `results` / `ocr` 之一保存识别数组。
+- `manual_signoff`：逐章完整播放后的签核人、带时区时间、manifest SHA、全部实机章节，以及四项 true 证明：
+  `historical_characters_only`、`fixture_test_ui_absent`、`full_clip_reviewed`、
+  `no_crop_mask_or_redaction`。
+
+内建禁词至少包括“361制实机验收”“开始361制实机验收”“验收上司给我的绩效”“验收免费京察规划器”
+“验收规划器”“演示政策卡”“演示触发器”“切换至宋帝并开考”“打开此卡”、`ZGA`、`zga_` 与
+`zga.`；spec 只能追加禁词，不能移除默认表。扫描会先做 Unicode/大小写/空白归一化，并把相邻 OCR 项连接，
+所以测试文案被 OCR 拆成两段也会 RED。报告默认拒绝覆盖；`verify` 会重新读取 spec、manifest、原版 history、
+每张 PNG 和每份 OCR，复算全部 SHA 与确定性 evaluation。正式发布记录必须保存报告绝对路径和报告 SHA-256。
+
+自动 OCR 仍可能漏字，因此 GREEN 报告同时要求逐章人工完整观看；现有 `validate_promo_video.py --sample-dir`
+生成的五张均匀抽帧只是字幕/构图抽检，不能替代该签核。命中测试 UI 的旧 take、OCR 和 RED 报告继续保留，
+不得通过裁边、打码或遮罩重新声明为干净素材。
 
 ## 过程素材保留
 
@@ -137,10 +202,13 @@ OCR、静帧、报告和 timeline 都原样保留。输出文件已存在时，m
   --manifest <external-capture-run>\release\zg361-promo-release-manifest.json `
   --stage release `
   --video <candidate.mp4> `
-  --sample-dir <new-qa-directory>
+  --sample-dir <new-qa-directory> `
+  --visual-audit-report <promo-visual-audit-report.json> `
+  --expected-audit-sha256 <64-hex-report-sha256>
 ```
 
 门禁要求：零占位、首章为生成标题卡、每个外部素材使用绝对路径并声明正确的 bytes/SHA-256、全部实机素材声明已排除 CK3 loading、H.264/yuv420p、AAC 48 kHz
 双声道、`zho` 音轨标签、2560×1440、短于 20 分钟、Xiaoxiao voice 绑定、简中/英文双语 ASS 与视频/字幕
-哈希一致。零占位只表示没有“待补”假画面，并不表示每项都有独立实录；生成边界卡必须继续可见。抽帧仍需
-人工检查字幕有没有遮住关键 GUI，以及笑点是否压住了信息。
+哈希一致，并且同一 manifest 的独立画面审计报告已通过带报告 SHA 的 `verify`。零占位只表示没有“待补”
+假画面，并不表示每项都有独立实录；生成边界卡必须继续可见。抽帧仍需人工检查字幕有没有遮住关键 GUI，
+以及笑点是否压住了信息。

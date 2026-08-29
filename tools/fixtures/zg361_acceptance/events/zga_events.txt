@@ -84,21 +84,24 @@ zga_acceptance.2 = {
 	hidden = yes
 
 	immediate = {
-		random_vassal = {
-			limit = {
-				has_character_flag = zga_personal_result_target
-				is_ai = no
-			}
-			save_scope_as = zga_personal_result_target
-			remove_character_flag = zga_personal_result_target
-		}
+		# Re-resolve the canonical history ID after set_player_character rather
+		# than rediscovering an anonymous marked vassal.
+		character:han_5253 = { save_scope_as = zga_personal_result_target }
 		if = {
 			limit = {
 				is_ai = yes
-			exists = scope:zga_personal_result_target
+				has_title = title:h_china
+				exists = scope:zga_personal_result_target
 				scope:zga_personal_result_target = {
+					this = character:han_5253
+					has_character_flag = zga_personal_result_target
+					has_character_flag = zga_reserved_historical_personal_result_target
+					is_ai = no
 					liege = root
 				}
+			}
+			scope:zga_personal_result_target = {
+				remove_character_flag = zga_personal_result_target
 			}
 			# Fixture-only next-cycle precondition: this reviewer already settled
 			# earlier in the same date. Only the yearly gate is advanced here.
@@ -106,19 +109,24 @@ zga_acceptance.2 = {
 			zg361_run_review_effect = yes
 			if = {
 				limit = {
-						scope:zga_personal_result_target = {
-							is_ai = no
-							has_variable = zg361_last_grade
-							var:zg361_last_grade = 1
-							zg361_is_current_liege_review_record_trigger = yes
-							has_character_modifier = zg361_grade_325
-							has_character_modifier = zg361_pip
-							NOT = { has_variable = zg361_skipped_jingcha_superior }
-							NOT = { has_variable = zg361_skipped_jingcha_year }
-						}
+					scope:zga_personal_result_target = {
+						is_ai = no
+						has_variable = zg361_last_grade
+						var:zg361_last_grade = 1
+						zg361_is_current_liege_review_record_trigger = yes
+						has_character_modifier = zg361_grade_325
+						has_character_modifier = zg361_pip
+						NOT = { has_variable = zg361_skipped_jingcha_superior }
+						NOT = { has_variable = zg361_skipped_jingcha_year }
 					}
-					debug_log = "ZGA: TEST PASS superior_assigned_player_grade"
-					debug_log = "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior"
+				}
+				debug_log = "ZGA: TEST PASS superior_assigned_player_grade"
+				debug_log = "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior"
+				scope:zga_personal_result_target = {
+					add_character_flag = zga_clean_policy_chain_subject
+					trigger_event = { id = zga_acceptance.6 days = 2 }
+				}
+				debug_log = "ZGA: TEST PASS clean_policy_chain_scheduled"
 			}
 			else = { debug_log = "ZGA: TEST FAIL superior_assigned_player_grade" }
 
@@ -268,5 +276,211 @@ zga_acceptance.4 = {
 			remove_variable = zga_small_serial_before_duplicate
 		}
 		else = { debug_log = "ZGA: TEST FAIL ai_small_cohort_review_entry" }
+	}
+}
+
+# Clean promo dispatcher: after the manager scoreboard has been verified and
+# captured, enter the shipped periodic Jingcha popup without exposing another
+# fixture decision in the native drawer.
+zga_acceptance.5 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_8052
+				has_title = title:h_china
+				has_character_flag = zga_player_review_verified
+				has_character_flag = zga_clean_jingcha_dispatch_scheduled
+				NOT = { has_character_flag = zga_jingcha_mandate_issued }
+				zg361_is_celestial_liege_trigger = yes
+			}
+			remove_character_flag = zga_clean_jingcha_dispatch_scheduled
+			add_character_flag = zga_jingcha_mandate_issued
+			set_variable = { name = zg361_jingcha_pending value = 1 }
+			debug_log = "ZGA: TEST PASS jingcha_mandate_issued"
+			debug_log = "ZGA: TEST PASS clean_jingcha_dispatched"
+			trigger_event = zg361.40
+			trigger_event = { id = zga_acceptance.3 days = 2 }
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_jingcha_dispatch" }
+	}
+}
+
+# Six clean hidden carriers, each separated by one game day. A carrier queues
+# its successor before opening the current shipped product card, so the next
+# card cannot arrive until the player closes the current event and unpauses.
+zga_acceptance.6 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				NOT = { has_variable = zg361_mechanism_001_choice }
+			}
+			trigger_event = { id = zga_acceptance.7 days = 1 }
+			debug_log = "ZGA: TEST PASS clean_policy_001_dispatched"
+			trigger_event = zg361m.1
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_001_dispatch" }
+	}
+}
+
+zga_acceptance.7 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_mechanism_001_choice
+				NOT = { has_variable = zg361_mechanism_007_choice }
+			}
+			trigger_event = { id = zga_acceptance.8 days = 1 }
+			debug_log = "ZGA: TEST PASS clean_policy_007_dispatched"
+			trigger_event = zg361m.7
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_007_dispatch" }
+	}
+}
+
+zga_acceptance.8 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_mechanism_007_choice
+				NOT = { has_variable = zg361_mechanism_020_choice }
+			}
+			trigger_event = { id = zga_acceptance.9 days = 1 }
+			debug_log = "ZGA: TEST PASS clean_policy_020_dispatched"
+			trigger_event = zg361m.20
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_020_dispatch" }
+	}
+}
+
+zga_acceptance.9 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_mechanism_020_choice
+				NOT = { has_variable = zg361_mechanism_022_choice }
+			}
+			trigger_event = { id = zga_acceptance.10 days = 1 }
+			debug_log = "ZGA: TEST PASS clean_policy_022_dispatched"
+			trigger_event = zg361m.22
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_022_dispatch" }
+	}
+}
+
+zga_acceptance.10 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_mechanism_022_choice
+				NOT = { has_variable = zg361_mechanism_026_choice }
+			}
+			trigger_event = { id = zga_acceptance.11 days = 1 }
+			debug_log = "ZGA: TEST PASS clean_policy_026_dispatched"
+			trigger_event = zg361m.26
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_026_dispatch" }
+	}
+}
+
+zga_acceptance.11 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_reserved_historical_personal_result_target
+				has_character_flag = zga_clean_policy_chain_subject
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_mechanism_026_choice
+				NOT = { has_variable = zg361_mechanism_361_choice }
+			}
+			add_character_flag = zga_clean_policy_completion_pending
+			trigger_event = { id = zga_acceptance.12 days = 1 }
+			remove_character_flag = zga_clean_policy_chain_subject
+			debug_log = "ZGA: TEST PASS clean_policy_361_dispatched"
+			debug_log = "ZGA: TEST PASS clean_policy_chain_all_six_dispatched"
+			trigger_event = zg361m.361
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_361_dispatch" }
+	}
+}
+
+# Final persistence gate. Dispatching #361 is not completion: only the next-day
+# verifier may close the chain after the real product option has stored all six
+# requested choices on the canonical historical player.
+zga_acceptance.12 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				this = character:han_5253
+				has_character_flag = zga_clean_policy_completion_pending
+				has_variable = zg361_mechanism_001_choice
+				has_variable = zg361_mechanism_007_choice
+				has_variable = zg361_mechanism_020_choice
+				has_variable = zg361_mechanism_022_choice
+				has_variable = zg361_mechanism_026_choice
+				has_variable = zg361_mechanism_361_choice
+			}
+			remove_character_flag = zga_clean_policy_completion_pending
+			debug_log = "ZGA: TEST PASS clean_policy_chain_completed"
+		}
+		else = { debug_log = "ZGA: TEST FAIL clean_policy_chain_completed" }
 	}
 }

@@ -7,6 +7,13 @@ zga_initialize_effect = {
 		debug_log = "ZGA: TEST BEGIN zg361"
 
 		character:han_8052 = { save_scope_as = zga_song_emperor }
+		# Reserve one canonical 1066 Song official for the later personal-result
+		# and policy-card sequence. Excluding him from the optional AI-manager
+		# probe keeps the six requested product cards genuinely unconfigured.
+		character:han_5253 = {
+			save_scope_as = zga_historical_personal_result_target
+			add_character_flag = zga_reserved_historical_personal_result_target
+		}
 		if = {
 			limit = {
 				exists = scope:zga_song_emperor
@@ -56,6 +63,7 @@ zga_initialize_effect = {
 				limit = {
 					is_independent_ruler = no
 					zg361_is_celestial_liege_trigger = yes
+					NOT = { this = character:han_5253 }
 					any_vassal = {
 						zg361_is_reviewable_vassal_trigger = yes
 						count >= 3
@@ -72,6 +80,7 @@ zga_initialize_effect = {
 					limit = {
 						is_independent_ruler = no
 						zg361_is_celestial_liege_trigger = yes
+						NOT = { this = character:han_5253 }
 					}
 					save_scope_as = zga_non_independent_liege
 				}
@@ -560,6 +569,12 @@ zga_verify_player_review_effect = {
 	remove_variable = zga_newcomer_result_n
 	remove_variable = zga_newcomer_325_n
 
+	if = {
+		limit = { NOT = { has_character_flag = zga_clean_jingcha_dispatch_scheduled } }
+		add_character_flag = zga_clean_jingcha_dispatch_scheduled
+		trigger_event = { id = zga_acceptance.5 days = 2 }
+		debug_log = "ZGA: TEST PASS clean_jingcha_dispatch_scheduled"
+	}
 	debug_log = "ZGA: TEST DONE zg361"
 	}
 }
@@ -577,26 +592,32 @@ zga_personal_result_effect = {
 		}
 		remove_character_flag = zga_personal_result_pending
 		save_scope_as = zga_reviewing_superior
-		ordered_vassal = {
-			limit = {
-				is_alive = yes
-				is_ai = yes
-				zg361_is_current_liege_review_record_trigger = yes
-				has_variable = zg361_rank
-			}
-			# The prior cohort's largest ordinal is its real tail. Starting there
-			# makes the additional refusal malus deterministically remain in 3.25.
-			order_by = var:zg361_rank
-			save_scope_as = zga_personal_result_target
-		}
+		# Exact-build provenance contract: the reviewed player is the canonical
+		# 1066 Song official Lu Jujian (han_5253), never an anonymous fallback.
+		character:han_5253 = { save_scope_as = zga_personal_result_target }
 		if = {
-			limit = { exists = scope:zga_personal_result_target }
-			scope:zga_personal_result_target = {
-				if = {
-					limit = { var:zg361_rank = root.var:zg361_cohort_n }
-					debug_log = "ZGA: TEST PASS personal_result_target_selected_from_prior_tail"
+			limit = {
+				has_title = title:h_china
+				exists = scope:zga_personal_result_target
+				scope:zga_personal_result_target = {
+					this = character:han_5253
+					is_alive = yes
+					is_ai = yes
+					liege = root
+					has_character_flag = zga_reserved_historical_personal_result_target
+					zg361_is_reviewable_vassal_trigger = yes
+					zg361_is_current_liege_review_record_trigger = yes
+					has_variable = zg361_rank
+					NOT = { has_variable = zg361_mechanism_001_choice }
+					NOT = { has_variable = zg361_mechanism_007_choice }
+					NOT = { has_variable = zg361_mechanism_020_choice }
+					NOT = { has_variable = zg361_mechanism_022_choice }
+					NOT = { has_variable = zg361_mechanism_026_choice }
+					NOT = { has_variable = zg361_mechanism_361_choice }
 				}
-				else = { debug_log = "ZGA: TEST FAIL personal_result_target_not_prior_tail" }
+			}
+			debug_log = "ZGA: TEST PASS historical_personal_result_target_han_5253"
+			scope:zga_personal_result_target = {
 				add_character_flag = zga_personal_result_target
 				# Make this real official refuse a mandate issued by this exact
 				# superior. Extra negative evidence ensures the later real review
@@ -644,6 +665,9 @@ zga_personal_result_effect = {
 				trigger_event = { id = zga_acceptance.2 days = 0 }
 			}
 		}
-		else = { debug_log = "ZGA: TEST FAIL personal_result_target_unavailable" }
+		else = {
+			debug_log = "ZGA: TEST FAIL historical_personal_result_target_han_5253"
+			debug_log = "ZGA: TEST FAIL personal_result_target_unavailable"
+		}
 	}
 }

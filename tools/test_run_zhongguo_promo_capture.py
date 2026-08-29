@@ -12,6 +12,7 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 RUNNER = ROOT / "tools" / "run_zhongguo_acceptance.py"
 FIXTURE = ROOT / "tools" / "fixtures" / "zg361_acceptance"
+SCOREBOARD_GUI = ROOT / "mod_zhongguo_style" / "gui" / "zg361_scoreboard.gui"
 IDS = (1, 7, 20, 22, 26, 361)
 
 
@@ -29,6 +30,19 @@ def main() -> int:
     assert scenario is not None
     body = scenario.group(0)
     assert body.index("initialize_fixture") < body.index("recorder.start()")
+    assert body.index("close_native_decisions_panel") < body.index("recorder.start()")
+    assert body.index("assert_promo_frame_clean") < body.index("recorder.start()")
+    for token in (
+        '"reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID',
+        '"fixture_constructor_counts": constructor_counts',
+        '"historical_subjects_manufactured_by_fixture": bool(',
+        '"test_decisions_visible_inside_clean_spans": 0 if recorder else None',
+        '"native_decisions_drawer_visible_inside_clean_spans": 0 if recorder else None',
+        '"real_character_runtime_attestation": {',
+        '"promo_policy_chain": {',
+        '"persisted_choices_verified": bool(',
+    ):
+        assert token in body, token
     for token in (
         '"-f",\n            "gdigrab"',
         '"zg361-promo-live-full-take-01.mkv"',
@@ -53,6 +67,8 @@ def main() -> int:
         '"right_panel_suppression_artifact"',
         '"button_center_normalized"',
         '"button_expected_region"',
+        "audit_scoreboard_controls",
+        '"representative_control_audit"',
     ):
         assert token in scoreboard_body, token
     assert scoreboard_body.index("isolated.ensure_decisions_panel") < scoreboard_body.index(
@@ -61,11 +77,40 @@ def main() -> int:
     assert scoreboard_body.index("close_native_decisions_panel") < scoreboard_body.index(
         '"07_scoreboard_button.png"'
     )
-    assert scoreboard_body.index(
-        'acceptance.deliberate_click(cockpit, "production policy-cockpit tab")'
-    ) < scoreboard_body.index("settle_promo_interruptions")
-    assert scoreboard_body.index("settle_promo_interruptions") < scoreboard_body.index(
-        '("361 制度账本", "证据质量", "组织信任", "预算压力")'
+    assert 'cockpit_tokens = ("361 制度账本", "证据质量", "组织信任", "预算压力")' in scoreboard_body
+    assert "except acceptance.RunnerError:" in scoreboard_body
+    assert scoreboard_body.index("cockpit_tokens") < scoreboard_body.index(
+        "settle_promo_interruptions"
+    )
+    assert '"08_scoreboard_cockpit_recovered"' in scoreboard_body
+
+    control_audit = re.search(
+        r"def audit_scoreboard_controls\(.*?(?=^def )", runner, re.M | re.S
+    )
+    assert control_audit is not None
+    control_body = control_audit.group(0)
+    for token in (
+        "SCOREBOARD_TITLE_CLOSE_BUTTON",
+        "SCOREBOARD_BACKDROP_POINT",
+        "select_representative_scoreboard_row",
+        "name_probe = personal_name[-2:]",
+        "wait_for_representative_character_view",
+        '"generated_total": SCOREBOARD_GENERATED_ROW_LINKS',
+        '"live_clicked": 1',
+        '"not_individually_clicked": SCOREBOARD_GENERATED_ROW_LINKS - 1',
+        '"one representative click over a shared generated row structure"',
+        '"scoreboard_reopened_after_character_cleanup": True',
+        '"08_gui_audit_row_link_reopen.png"',
+    ):
+        assert token in control_body, token
+    assert control_body.index("settle_promo_interruptions") < control_body.index(
+        "performance-board title-bar close button"
+    )
+    assert control_body.index("performance-board title-bar close button") < control_body.index(
+        "performance-board modal backdrop"
+    )
+    assert control_body.index("performance-board modal backdrop") < control_body.index(
+        "representative generated scoreboard row"
     )
 
     close_drawer = re.search(
@@ -96,6 +141,15 @@ def main() -> int:
     assert "real 3.25 result response was not accepted" in received_body
     assert "acceptance.ensure_game_paused" in received_body
     assert "settle_promo_interruptions" in received_body
+    for token in (
+        '"本人所属考核单元"',
+        '"11_received_tab_reopened"',
+        '"received_tab_clicked_live": True',
+        '"received_tab_idempotent_reopen_live": True',
+        "does not inherit",
+    ):
+        assert token in received_body, token
+    assert '"11_received_cockpit_tab_opened"' not in received_body
     assert received_body.index("open received performance board") < received_body.index(
         '"11_received_after_board_open"'
     )
@@ -130,11 +184,73 @@ def main() -> int:
     sys.path.insert(0, str(ROOT / "tools"))
     import run_zhongguo_acceptance as capture
 
+    assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
+    assert capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID == "han_5253"
+    assert capture.PROMO_CLEAN_SPANS == (
+        "calibration",
+        "managed_scoreboard",
+        "policy_cockpit",
+        "jingcha_mandate",
+        "free_jingcha_planner",
+        "superior_assigned_325",
+        "received_scoreboard_with_325",
+        "policy_card_001",
+        "policy_card_007",
+        "policy_card_020",
+        "policy_card_022",
+        "policy_card_026",
+        "policy_card_361",
+    )
+    provenance = capture.promo_real_character_provenance()
+    assert [row["history_id"] for row in provenance["subjects"]] == [
+        "han_8052",
+        "han_5253",
+    ]
+    assert provenance["subjects"][0]["roles"] == ["manager", "emperor"]
+    assert provenance["subjects"][1]["roles"] == [
+        "reviewed_official",
+        "hunan_governor",
+    ]
+    assert all(not row["temporary_or_generated"] for row in provenance["subjects"])
+    assert all(
+        "expected_runtime_contract" in row for row in provenance["subjects"]
+    )
+    assert provenance["fixture_constructor_counts"] == {
+        "create_character": 0,
+        "create_title": 0,
+        "grant_title": 0,
+        "set_father": 0,
+        "set_mother": 0,
+        "set_spouse": 0,
+        "add_relation": 0,
+        "set_relation": 0,
+    }
+    assert provenance["title_history_assertions"] == {
+        "h_china_holder_at_start": "han_8052",
+        "k_hunan_holder_at_start": "han_5253",
+        "k_hunan_liege_at_start": "h_china",
+    }
+    assert capture.fixture_source_errors() == []
+    assert "test_zg361_clean_promo_fixture.py" in inspect.getsource(capture.preflight)
+
+    clean_frame = inspect.getsource(capture.assert_promo_frame_clean)
+    assert "drawer_absence_consecutive_samples" in clean_frame
+    assert "_promo_decisions_header_hits" in clean_frame
+    assert 'for token in ("决议", "Decisions")' in inspect.getsource(
+        capture._promo_decisions_header_hits
+    )
+
     assert capture.SCOREBOARD_BUTTON_REGION == (0.86, 0.05, 0.985, 0.16)
     assert capture.DECISIONS_CLOSE_BUTTON == (0.961, 0.064)
     close_x, close_y = capture.DECISIONS_CLOSE_BUTTON
     assert round(close_x * 2560) == 2460
     assert round(close_y * 1440) == 92
+    assert capture.SCOREBOARD_TITLE_CLOSE_BUTTON == (0.778, 0.167)
+    panel_close_x, panel_close_y = capture.SCOREBOARD_TITLE_CLOSE_BUTTON
+    assert int(panel_close_x * 2560) == 1991
+    assert int(panel_close_y * 1440) == 240
+    assert capture.SCOREBOARD_BACKDROP_POINT == (0.050, 0.500)
+    assert capture.SCOREBOARD_GENERATED_ROW_LINKS == 160
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom
     assert not (left <= 0.846 <= right and top <= 0.173 <= bottom)
@@ -162,24 +278,79 @@ def main() -> int:
     ]
     small_probe.validate_small_cohort_probe()
 
-    # A clean score row occupies the same classic x/y lane as an event option.
-    # Without a narrative body it must never be treated as dismissible UI.
+    # A clean score row and the cockpit itself occupy the same classic x/y
+    # lanes as event text/options. Neither may be treated as dismissible UI.
     clean_board = [
         {"center": [1280, 243], "bbox": [1178, 228, 1382, 258]},
         {"center": [908, 1062], "bbox": [805, 1049, 1012, 1075]},
     ]
     assert not capture.promo_event_modal_evidence(clean_board, 2560, 1440)
+    clean_cockpit = clean_board + [
+        {"center": [1282, 409], "bbox": [1129, 398, 1435, 421]},
+        {"center": [1280, 536], "bbox": [732, 525, 1828, 548]},
+    ]
+    assert not capture.promo_event_modal_evidence(clean_cockpit, 2560, 1440)
     native_event = clean_board + [
+        {"center": [720, 318], "bbox": [575, 301, 865, 335]},
         {"center": [904, 470], "bbox": [624, 459, 1184, 482]},
     ]
     assert capture.promo_event_modal_evidence(native_event, 2560, 1440)
+
+    representative_rows = native_event + [
+        {
+            "text": "河北经略使，显宗恪",
+            "center": [909, 508],
+            "bbox": [805, 495, 1013, 521],
+        },
+        {
+            "text": "山南观察使，曾公亮",
+            "center": [907, 600],
+            "bbox": [803, 587, 1012, 613],
+        },
+    ]
+    representative = capture.select_representative_scoreboard_row(
+        representative_rows, 2560, 1440
+    )
+    assert representative is not None
+    row, personal_name = representative
+    assert row["text"] == "河北经略使，显宗恪"
+    assert personal_name == "显宗恪"
+
+    scoreboard_gui = bom_text(SCOREBOARD_GUI)
+    row_click = 'onclick = "[DefaultOnCharacterClick(Character.GetID)]"'
+    assert scoreboard_gui.count(row_click) == 160
+    assert len(re.findall(r"zg361_sb_m_\d{2}_char", scoreboard_gui)) == 80
+    assert len(re.findall(r"zg361_sb_r_\d{2}_char", scoreboard_gui)) == 80
 
     policies = re.search(
         r"def capture_policy_cards\(.*?(?=^def )", runner, re.M | re.S
     )
     assert policies is not None
-    assert "settle_promo_interruptions" in policies.group(0)
-    assert "acceptance.ensure_game_paused" in policies.group(0)
+    policy_body = policies.group(0)
+    assert "settle_promo_interruptions" in policy_body
+    assert "acceptance.ensure_game_paused" in policy_body
+    assert "open_decision_detail" not in policy_body
+    assert "clean_policy_{mechanism_id:03d}_dispatched" in policy_body
+    assert "recorder.clean_hold" in policy_body
+    assert "clean_policy_chain_completed" in policy_body
+
+    jingcha = re.search(
+        r"def capture_jingcha_planner\(.*?(?=^def )", runner, re.M | re.S
+    )
+    assert jingcha is not None
+    jingcha_body = jingcha.group(0)
+    assert "open_decision_detail" not in jingcha_body
+    assert "clean_jingcha_dispatch_scheduled" in jingcha_body
+    assert "clean_jingcha_dispatched" in jingcha_body
+
+    personal = re.search(
+        r"def capture_superior_assigned_result\(.*?(?=^def )", runner, re.M | re.S
+    )
+    assert personal is not None
+    personal_body = personal.group(0)
+    assert "personal_result_target_selected_from_prior_tail" not in personal_body
+    assert "historical_personal_result_target_han_5253" in personal_body
+    assert "clean_policy_chain_scheduled" in personal_body
 
     decisions = bom_text(FIXTURE / "common" / "decisions" / "zga_decisions.txt")
     found = tuple(

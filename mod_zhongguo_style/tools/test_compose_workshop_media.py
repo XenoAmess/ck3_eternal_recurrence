@@ -20,6 +20,7 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 
 import compose_workshop_media as media  # noqa: E402
 import prepare_promo_release_manifest as prepare  # noqa: E402
+import test_prepare_promo_release_manifest as promo_fixture  # noqa: E402
 
 
 def _sha(path: Path) -> str:
@@ -49,83 +50,14 @@ def _write_test_capture(path: Path, mechanism_id: int) -> None:
 
 
 def _make_green_capture(root: Path, *, result: str = "GREEN") -> Path:
-    raw = root / "cell" / "promo" / "raw" / "zg361-promo-live-test.mkv"
-    raw.parent.mkdir(parents=True)
-    raw.write_bytes(b"synthetic media bytes for Workshop projection test")
-    for mechanism_id in prepare.POLICY_IDS:
-        path = root / "cell" / f"12_policy_{mechanism_id:03d}_event.png"
-        if mechanism_id in {1, 361}:
-            _write_test_capture(path, mechanism_id)
-        else:
-            path.write_bytes(f"indexed policy {mechanism_id:03d}".encode("ascii"))
-    (root / "cell" / "10_superior_result.png").write_bytes(
-        b"indexed superior receipt"
-    )
-
-    marks = [
-        {"label": label, "seconds": float(index * 10 + 1)}
-        for index, label in enumerate(prepare.REQUIRED_MARKS)
-    ]
-    timeline = {
-        "schema": 1,
-        "exclude_ck3_loading": True,
-        "source_kind": "real CK3 1.19.0.6 desktop capture after gameplay HUD",
-        "raw_path": str(raw.resolve()),
-        "raw_bytes": raw.stat().st_size,
-        "raw_sha256": _sha(raw),
-        "marks": marks,
-    }
-    timeline_path = root / "cell" / "promo" / "capture-timeline.json"
-    _write_json(timeline_path, timeline)
-    report = {
-        "schema_version": 1,
-        "result": result,
-        "cell": {
-            "result": result,
-            "promo_capture": copy.deepcopy(timeline),
-            "scenario_evidence": {
-                "promo_received_scoreboard": {
-                    "received_panel_artifact": "11_received_scoreboard.png"
-                },
-                "promo_policy_cards": [
-                    {
-                        "mechanism_id": mechanism_id,
-                        "event_artifact": f"12_policy_{mechanism_id:03d}_event.png",
-                    }
-                    for mechanism_id in prepare.POLICY_IDS
-                ],
-            },
-        },
-    }
-    report_path = root / "report.json"
-    _write_json(report_path, report)
-    indexed_paths = [
-        report_path,
-        timeline_path,
-        raw,
-        root / "cell" / "10_superior_result.png",
-        *[
-            root / "cell" / f"12_policy_{mechanism_id:03d}_event.png"
-            for mechanism_id in prepare.POLICY_IDS
-        ],
-    ]
-    _write_json(
-        root / "evidence-index.json",
-        {
-            "schema_version": 1,
-            "result": result,
-            "artifact_root": str(root.resolve()),
-            "files": [
-                {
-                    "path": path.relative_to(root).as_posix(),
-                    "bytes": path.stat().st_size,
-                    "sha256": _sha(path),
-                }
-                for path in indexed_paths
-            ],
-        },
-    )
-    return root
+    capture = promo_fixture._make_capture(root, result=result)
+    policy_images = []
+    for mechanism_id in (1, 361):
+        path = capture / "cell" / f"12_policy_{mechanism_id:03d}_event.png"
+        _write_test_capture(path, mechanism_id)
+        policy_images.append(path)
+    promo_fixture._refresh_index_records(capture, *policy_images)
+    return capture
 
 
 class WorkshopMediaTests(unittest.TestCase):

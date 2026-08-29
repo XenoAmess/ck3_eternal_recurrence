@@ -15,6 +15,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -33,16 +34,32 @@ import build_promo_video as promo  # noqa: E402
 
 
 POLICY_IDS = (1, 7, 20, 22, 26, 361)
+CLEAN_SPAN_IDS = (
+    "calibration",
+    "managed_scoreboard",
+    "policy_cockpit",
+    "jingcha_mandate",
+    "free_jingcha_planner",
+    "superior_assigned_325",
+    "received_scoreboard_with_325",
+    *(f"policy_card_{mechanism_id:03d}" for mechanism_id in POLICY_IDS),
+)
+REAL_CHARACTER_CONTRACT = {
+    "han_8052": {
+        "display_name": "赵曙",
+        "roles": {"manager", "emperor"},
+    },
+    "han_5253": {
+        "display_name": "吕居简",
+        "roles": {"reviewed_official", "hunan_governor"},
+    },
+}
 REQUIRED_MARKS = (
     "recording_started_after_gameplay_hud",
-    "calibration_event_visible",
-    "managed_scoreboard_visible",
-    "policy_cockpit_visible",
-    "jingcha_mandate_visible",
-    "free_jingcha_planner_visible",
-    "superior_assigned_325_visible",
-    "received_scoreboard_with_325_visible",
-    *(f"policy_card_{mechanism_id:03d}_visible" for mechanism_id in POLICY_IDS),
+    *(mark for span_id in CLEAN_SPAN_IDS for mark in (
+        f"{span_id}_clean_begin",
+        f"{span_id}_clean_end",
+    )),
     "all_requested_product_screens_captured",
     "recording_stop_requested",
 )
@@ -82,6 +99,70 @@ def _file_record(path: Path, label: str) -> dict[str, Any]:
         "bytes": path.stat().st_size,
         "sha256": _sha256(path),
     }
+
+
+def _verified_file_record(raw: Any, label: str) -> tuple[Path, dict[str, Any]]:
+    if not isinstance(raw, dict):
+        raise PrepareError(f"{label} must be a path/bytes/sha256 object")
+    raw_path = raw.get("path")
+    if not isinstance(raw_path, str) or not Path(raw_path).is_absolute():
+        raise PrepareError(f"{label}.path must be absolute")
+    path = Path(raw_path).expanduser().resolve()
+    if not path.is_file():
+        raise PrepareError(f"{label}.path does not exist: {path}")
+    actual_bytes = path.stat().st_size
+    actual_sha = _sha256(path)
+    if raw.get("bytes") != actual_bytes:
+        raise PrepareError(f"{label}.bytes does not match {path}")
+    declared_sha = raw.get("sha256")
+    if not isinstance(declared_sha, str) or declared_sha.upper() != actual_sha:
+        raise PrepareError(f"{label}.sha256 does not match {path}")
+    return path, {
+        "path": str(path),
+        "label": label,
+        "bytes": actual_bytes,
+        "sha256": actual_sha,
+    }
+
+
+def _history_key_exists(path: Path, history_id: str) -> bool:
+    try:
+        text = path.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError as exc:
+        raise PrepareError(f"CK3 history source is not UTF-8: {path}") from exc
+    return re.search(
+        rf"(?m)^\s*{re.escape(history_id)}\s*=\s*\{{",
+        text,
+    ) is not None
+
+
+def _paradox_top_level_block(text: str, key: str) -> str:
+    match = re.search(rf"(?m)^\s*{re.escape(key)}\s*=\s*\{{", text)
+    if match is None:
+        raise PrepareError(f"CK3 history source is missing top-level block {key}")
+    opening = text.index("{", match.start(), match.end())
+    depth = 0
+    quoted = False
+    escaped = False
+    for index in range(opening, len(text)):
+        character = text[index]
+        if quoted:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                quoted = False
+            continue
+        if character == '"':
+            quoted = True
+        elif character == "{":
+            depth += 1
+        elif character == "}":
+            depth -= 1
+            if depth == 0:
+                return text[match.start() : index + 1]
+    raise PrepareError(f"CK3 history source has unterminated block {key}")
 
 
 def _indexed_files(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -128,6 +209,27 @@ def _verify_indexed_file(
     return path
 
 
+def _verified_indexed_record(
+    raw: Any,
+    label: str,
+    artifact_root: Path,
+    indexed: dict[str, dict[str, Any]],
+) -> tuple[Path, dict[str, Any]]:
+    path, record = _verified_file_record(raw, label)
+    try:
+        relative = path.relative_to(artifact_root).as_posix()
+    except ValueError as exc:
+        raise PrepareError(f"{label}.path lies outside the capture artifact root") from exc
+    indexed_path = _verify_indexed_file(artifact_root, indexed, relative)
+    if indexed_path != path:
+        raise PrepareError(f"{label}.path does not resolve to its indexed capture file")
+    return path, {
+        "path": str(path),
+        "bytes": record["bytes"],
+        "sha256": record["sha256"],
+    }
+
+
 def _mark_map(timeline: dict[str, Any]) -> dict[str, float]:
     rows = timeline.get("marks")
     if not isinstance(rows, list):
@@ -151,6 +253,277 @@ def _mark_map(timeline: dict[str, Any]) -> dict[str, float]:
     if missing:
         raise PrepareError("capture timeline is missing marks: " + ", ".join(missing))
     return marks
+
+
+def _clean_frame_gates(
+    timeline: dict[str, Any],
+    marks: dict[str, float],
+    artifact_root: Path,
+    indexed: dict[str, dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    rows = timeline.get("clean_frame_gates")
+    if not isinstance(rows, list):
+        raise PrepareError("capture timeline clean_frame_gates must be an array")
+    gates: dict[str, dict[str, Any]] = {}
+    for index, raw in enumerate(rows):
+        if not isinstance(raw, dict):
+            raise PrepareError(f"clean_frame_gates[{index}] must be an object")
+        span_id = raw.get("span_id")
+        if not isinstance(span_id, str) or span_id not in CLEAN_SPAN_IDS:
+            raise PrepareError(
+                f"clean_frame_gates[{index}] has unsupported span_id {span_id!r}"
+            )
+        if span_id in gates:
+            raise PrepareError(f"clean_frame_gates repeats {span_id!r}")
+        begin_mark = f"{span_id}_clean_begin"
+        end_mark = f"{span_id}_clean_end"
+        if raw.get("begin_mark") != begin_mark or raw.get("end_mark") != end_mark:
+            raise PrepareError(
+                f"clean-frame gate {span_id!r} does not bind its exact clean marks"
+            )
+        if raw.get("result") != "GREEN":
+            raise PrepareError(f"clean-frame gate {span_id!r} is not GREEN")
+        if raw.get("full_screen") is not True:
+            raise PrepareError(
+                f"clean-frame gate {span_id!r} does not attest full_screen=true"
+            )
+        if raw.get("fixture_test_ui_absent") is not True:
+            raise PrepareError(
+                f"clean-frame gate {span_id!r} does not attest fixture_test_ui_absent=true"
+            )
+        if raw.get("native_decisions_drawer_absent") is not True:
+            raise PrepareError(
+                f"clean-frame gate {span_id!r} does not attest "
+                "native_decisions_drawer_absent=true"
+            )
+        frames = raw.get("frames")
+        if not isinstance(frames, list) or len(frames) != 2:
+            raise PrepareError(
+                f"clean-frame gate {span_id!r} must bind exact begin/end frame proofs"
+            )
+        verified_frames: list[dict[str, Any]] = []
+        for frame_index, phase in enumerate(("begin", "end")):
+            frame = frames[frame_index]
+            context = f"clean-frame gate {span_id!r} {phase} frame"
+            if not isinstance(frame, dict):
+                raise PrepareError(f"{context} must be an object")
+            for key, expected in (
+                ("schema_version", 1),
+                ("result", "GREEN"),
+                ("span", span_id),
+                ("phase", phase),
+                ("full_screen", True),
+                ("fixture_test_ui_absent", True),
+                ("native_decisions_drawer_absent", True),
+                ("drawer_absence_consecutive_samples", 2),
+            ):
+                if frame.get(key) != expected:
+                    raise PrepareError(
+                        f"{context}.{key} must be {expected!r}, got {frame.get(key)!r}"
+                    )
+            if frame.get("forbidden_hits") != []:
+                raise PrepareError(f"{context} contains forbidden OCR hits")
+            samples = frame.get("drawer_absence_samples")
+            if not isinstance(samples, list) or len(samples) != 2:
+                raise PrepareError(
+                    f"{context} must bind two consecutive Decisions-header samples"
+                )
+            verified_samples: list[dict[str, Any]] = []
+            for sample_index, sample in enumerate(samples, start=1):
+                sample_context = f"{context} drawer sample {sample_index}"
+                if not isinstance(sample, dict) or sample.get("sample_index") != sample_index:
+                    raise PrepareError(f"{sample_context} has an invalid sample index")
+                if not isinstance(sample.get("normalized_decisions_header_ocr"), str):
+                    raise PrepareError(
+                        f"{sample_context} lacks normalized Decisions-header OCR"
+                    )
+                _, image_record = _verified_indexed_record(
+                    sample.get("image"),
+                    f"{sample_context}.image",
+                    artifact_root,
+                    indexed,
+                )
+                _, ocr_record = _verified_indexed_record(
+                    sample.get("ocr"),
+                    f"{sample_context}.ocr",
+                    artifact_root,
+                    indexed,
+                )
+                verified_samples.append(
+                    {
+                        "sample_index": sample_index,
+                        "normalized_decisions_header_ocr": sample[
+                            "normalized_decisions_header_ocr"
+                        ],
+                        "image": image_record,
+                        "ocr": ocr_record,
+                    }
+                )
+            if frame.get("image") != samples[0].get("image"):
+                raise PrepareError(f"{context}.image must bind its first sample image")
+            if frame.get("ocr") != samples[0].get("ocr"):
+                raise PrepareError(f"{context}.ocr must bind its first sample OCR")
+            gate_path, gate_record = _verified_indexed_record(
+                frame.get("gate"), f"{context}.gate", artifact_root, indexed
+            )
+            gate_payload = _read_object(gate_path, f"{context} gate JSON")
+            expected_gate_payload = {
+                key: value for key, value in frame.items() if key != "gate"
+            }
+            if gate_payload != expected_gate_payload:
+                raise PrepareError(
+                    f"{context} gate JSON does not exactly bind its timeline proof"
+                )
+            verified_frames.append(
+                {
+                    "schema_version": 1,
+                    "result": "GREEN",
+                    "span": span_id,
+                    "phase": phase,
+                    "full_screen": True,
+                    "fixture_test_ui_absent": True,
+                    "native_decisions_drawer_absent": True,
+                    "drawer_absence_consecutive_samples": 2,
+                    "drawer_absence_samples": verified_samples,
+                    "gate": gate_record,
+                }
+            )
+        begin = marks[begin_mark]
+        end = marks[end_mark]
+        if end <= begin:
+            raise PrepareError(
+                f"clean span {span_id!r} is not positive: {begin:.3f}..{end:.3f}"
+            )
+        gates[span_id] = {
+            "span_id": span_id,
+            "begin_mark": begin_mark,
+            "end_mark": end_mark,
+            "result": "GREEN",
+            "full_screen": True,
+            "fixture_test_ui_absent": True,
+            "native_decisions_drawer_absent": True,
+            "frames": verified_frames,
+        }
+    missing = [span_id for span_id in CLEAN_SPAN_IDS if span_id not in gates]
+    if missing:
+        raise PrepareError(
+            "capture timeline is missing GREEN clean-frame gates: "
+            + ", ".join(missing)
+        )
+    if len(gates) != len(CLEAN_SPAN_IDS):
+        raise PrepareError("capture timeline has unexpected clean-frame gates")
+    return gates
+
+
+def _real_character_provenance(timeline: dict[str, Any]) -> dict[str, Any]:
+    raw = timeline.get("real_character_provenance")
+    if not isinstance(raw, dict) or raw.get("schema_version") != 1:
+        raise PrepareError(
+            "capture timeline real_character_provenance schema_version must be 1"
+        )
+    rows = raw.get("subjects")
+    if not isinstance(rows, list):
+        raise PrepareError("real_character_provenance.subjects must be an array")
+    subjects: dict[str, dict[str, Any]] = {}
+    for index, subject in enumerate(rows):
+        context = f"real_character_provenance.subjects[{index}]"
+        if not isinstance(subject, dict):
+            raise PrepareError(f"{context} must be an object")
+        history_id = subject.get("history_id")
+        expected = REAL_CHARACTER_CONTRACT.get(history_id)
+        if expected is None:
+            raise PrepareError(
+                f"{context}.history_id must be one of "
+                + ", ".join(REAL_CHARACTER_CONTRACT)
+            )
+        if history_id in subjects:
+            raise PrepareError(f"real_character_provenance repeats {history_id}")
+        if subject.get("display_name") != expected["display_name"]:
+            raise PrepareError(
+                f"{context}.display_name must be {expected['display_name']!r}"
+            )
+        roles = subject.get("roles")
+        if (
+            not isinstance(roles, list)
+            or any(not isinstance(role, str) for role in roles)
+            or set(roles) != expected["roles"]
+            or len(roles) != len(set(roles))
+        ):
+            raise PrepareError(
+                f"{context}.roles must be exactly {sorted(expected['roles'])!r}"
+            )
+        if subject.get("origin") != "ck3_history_database":
+            raise PrepareError(f"{context}.origin must be 'ck3_history_database'")
+        if subject.get("temporary_or_generated") is not False:
+            raise PrepareError(f"{context}.temporary_or_generated must be false")
+        history_path, history_source = _verified_file_record(
+            subject.get("history_source"), f"{context}.history_source"
+        )
+        if not _history_key_exists(history_path, history_id):
+            raise PrepareError(
+                f"{context}.history_id {history_id!r} is absent from its history source"
+            )
+        subjects[history_id] = {
+            "history_id": history_id,
+            "display_name": expected["display_name"],
+            "roles": sorted(expected["roles"]),
+            "origin": "ck3_history_database",
+            "temporary_or_generated": False,
+            "history_source": history_source,
+        }
+    if set(subjects) != set(REAL_CHARACTER_CONTRACT):
+        missing = sorted(set(REAL_CHARACTER_CONTRACT) - set(subjects))
+        raise PrepareError(
+            "real_character_provenance must bind exactly han_8052 and han_5253; "
+            f"missing={missing!r}"
+        )
+    expected_bookmark = {"id": "1066_song", "start_date": "1066.9.15"}
+    if raw.get("bookmark") != expected_bookmark:
+        raise PrepareError(
+            "real_character_provenance.bookmark must bind the 1066 Song start"
+        )
+    title_history_path, title_history_source = _verified_file_record(
+        raw.get("title_history_source"),
+        "real_character_provenance.title_history_source",
+    )
+    try:
+        title_text = title_history_path.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError as exc:
+        raise PrepareError(
+            f"CK3 title history source is not UTF-8: {title_history_path}"
+        ) from exc
+    china_block = _paradox_top_level_block(title_text, "h_china")
+    hunan_block = _paradox_top_level_block(title_text, "k_hunan")
+    if re.search(
+        r"1063\.4\.30\s*=\s*\{[^}]*holder\s*=\s*han_8052",
+        china_block,
+        re.S,
+    ) is None:
+        raise PrepareError("h_china history does not bind han_8052 at the 1066 start")
+    if re.search(
+        r"1066\.1\.1\s*=\s*\{[^}]*holder\s*=\s*han_5253"
+        r"[^}]*liege\s*=\s*h_china",
+        hunan_block,
+        re.S,
+    ) is None:
+        raise PrepareError("k_hunan history does not bind han_5253 under h_china")
+    title_assertions = {
+        "h_china_holder_at_start": "han_8052",
+        "k_hunan_holder_at_start": "han_5253",
+        "k_hunan_liege_at_start": "h_china",
+    }
+    if raw.get("title_history_assertions") != title_assertions:
+        raise PrepareError(
+            "real_character_provenance.title_history_assertions do not match "
+            "the verified 1066 title history"
+        )
+    return {
+        "schema_version": 1,
+        "bookmark": expected_bookmark,
+        "subjects": [subjects[history_id] for history_id in REAL_CHARACTER_CONTRACT],
+        "title_history_source": title_history_source,
+        "title_history_assertions": title_assertions,
+    }
 
 
 def _capture_bundle(artifact_root: Path) -> dict[str, Any]:
@@ -208,10 +581,24 @@ def _capture_bundle(artifact_root: Path) -> dict[str, Any]:
         raise PrepareError("capture timeline raw_bytes does not match the MKV")
 
     marks = _mark_map(timeline)
-    if marks["recording_started_after_gameplay_hud"] >= marks["calibration_event_visible"]:
-        raise PrepareError("capture begins too late to contain the calibration excerpt")
-    if marks["recording_stop_requested"] <= marks["policy_card_361_visible"]:
-        raise PrepareError("capture stopped before the final requested policy still")
+    clean_frame_gates = _clean_frame_gates(
+        timeline, marks, artifact_root, indexed
+    )
+    real_characters = _real_character_provenance(timeline)
+    recording_start = marks["recording_started_after_gameplay_hud"]
+    recording_stop = marks["recording_stop_requested"]
+    for span_id in CLEAN_SPAN_IDS:
+        begin = marks[f"{span_id}_clean_begin"]
+        end = marks[f"{span_id}_clean_end"]
+        if begin < recording_start or end > recording_stop:
+            raise PrepareError(
+                f"clean span {span_id!r} lies outside the recorded gameplay window"
+            )
+    final_clean_end = marks[f"policy_card_{POLICY_IDS[-1]:03d}_clean_end"]
+    if marks["all_requested_product_screens_captured"] < final_clean_end:
+        raise PrepareError(
+            "all_requested_product_screens_captured precedes the final clean span"
+        )
 
     reported_capture = cell.get("promo_capture")
     if not isinstance(reported_capture, dict):
@@ -220,9 +607,16 @@ def _capture_bundle(artifact_root: Path) -> dict[str, Any]:
         not isinstance(reported_capture.get("raw_sha256"), str)
         or reported_capture["raw_sha256"].upper() != raw_sha
         or reported_capture.get("marks") != timeline.get("marks")
+        or reported_capture.get("clean_frame_gates")
+        != timeline.get("clean_frame_gates")
+        or reported_capture.get("real_character_provenance")
+        != timeline.get("real_character_provenance")
         or reported_capture.get("exclude_ck3_loading") is not True
     ):
-        raise PrepareError("GREEN report promo_capture does not match the timeline/MKV")
+        raise PrepareError(
+            "GREEN report promo_capture does not match the timeline/MKV, clean gates, "
+            "or real-character provenance"
+        )
 
     scenario = cell.get("scenario_evidence")
     if not isinstance(scenario, dict):
@@ -260,6 +654,8 @@ def _capture_bundle(artifact_root: Path) -> dict[str, Any]:
         "index": index,
         "raw_path": raw_path,
         "marks": marks,
+        "clean_frame_gates": clean_frame_gates,
+        "real_character_provenance": real_characters,
         "policy_paths": policy_paths,
         "superior_result_path": superior_result,
     }
@@ -308,53 +704,22 @@ def _set_boundary(
     chapter["evidence_sources"] = _common_evidence(bundle)
 
 
-def _set_still(
-    chapter: dict[str, Any],
-    bundle: dict[str, Any],
-    *,
-    path: Path,
-    capture_id: str,
-    label: str,
-    zh_status: str,
-    en_status: str,
-    shot: str,
-    classification: str = "fixture-live-policy-still",
-) -> None:
-    _clear_visual(chapter)
-    chapter["type"] = "still"
-    chapter["material_status"] = "captured"
-    chapter["status"] = {
-        "zh": zh_status,
-        "en": en_status,
-        "classification": classification,
-    }
-    chapter["source"] = _file_record(path, label)
-    chapter["evidence_sources"] = _common_evidence(bundle)
-    chapter["capture"] = {
-        "id": capture_id,
-        "exclude_ck3_loading": True,
-        "shot": shot,
-    }
-
-
-def _clip_window(
-    bundle: dict[str, Any],
-    start_label: str,
-    end_label: str,
-    *,
-    before: float,
-    after: float,
-) -> tuple[float, float]:
+def _clean_span_window(
+    bundle: dict[str, Any], span_id: str
+) -> tuple[float, float, str, str]:
+    if span_id not in CLEAN_SPAN_IDS:
+        raise PrepareError(f"unsupported clean span {span_id!r}")
     marks = bundle["marks"]
-    floor = marks["recording_started_after_gameplay_hud"]
-    ceiling = marks["recording_stop_requested"] - 0.10
-    start = max(floor, marks[start_label] - before)
-    end = min(ceiling, marks[end_label] + after)
+    start_label = f"{span_id}_clean_begin"
+    end_label = f"{span_id}_clean_end"
+    start = marks[start_label]
+    end = marks[end_label]
     if end <= start + 0.50:
         raise PrepareError(
-            f"invalid clip window {start_label}..{end_label}: {start:.3f}..{end:.3f}"
+            f"clean span {start_label}..{end_label} is too short: "
+            f"{start:.3f}..{end:.3f}"
         )
-    return round(start, 3), round(end, 3)
+    return start, end, start_label, end_label
 
 
 def _set_video(
@@ -366,28 +731,20 @@ def _set_video(
     zh_status: str,
     en_status: str,
     shot: str,
-    start_label: str,
-    end_label: str,
-    before: float = 1.25,
-    after: float = 4.50,
+    clean_span: str,
 ) -> None:
     _clear_visual(chapter)
-    start, end = _clip_window(
-        bundle,
-        start_label,
-        end_label,
-        before=before,
-        after=after,
-    )
+    start, end, start_label, end_label = _clean_span_window(bundle, clean_span)
     chapter["type"] = "video_clip"
     chapter["material_status"] = "captured"
     chapter["status"] = {
         "zh": zh_status,
         "en": en_status,
-        "classification": "fixture-live-continuous",
+        "classification": "clean-real-character-capture",
     }
     chapter["source"] = _file_record(
-        bundle["raw_path"], "GREEN real-CK3 raw MKV; loading excluded"
+        bundle["raw_path"],
+        f"{label}; GREEN clean-gated real-CK3 raw MKV; loading and test UI excluded",
     )
     chapter["evidence_sources"] = _common_evidence(bundle)
     chapter["start_seconds"] = start
@@ -396,6 +753,8 @@ def _set_video(
         "id": capture_id,
         "exclude_ck3_loading": True,
         "shot": shot,
+        "clean_span_id": clean_span,
+        "clean_frame_gate": bundle["clean_frame_gates"][clean_span],
         "timeline_start_mark": start_label,
         "timeline_end_mark": end_label,
     }
@@ -453,12 +812,18 @@ def project_manifest(
         "evidence_index": _file_record(bundle["index_path"], "Append-only evidence index"),
         "raw_capture": _file_record(bundle["raw_path"], "Preserved real-CK3 raw MKV"),
         "policy_card_ids": list(POLICY_IDS),
+        "clean_span_ids": list(CLEAN_SPAN_IDS),
+        "clean_frame_gates": [
+            bundle["clean_frame_gates"][span_id] for span_id in CLEAN_SPAN_IDS
+        ],
+        "real_character_provenance": bundle["real_character_provenance"],
         "generated_boundary_chapters": [
             "01-who-rates-whom",
             "09-pip-bottom",
+            "14-core-loop",
             "15-honest-boundary",
         ],
-        "loading_exclusion": "raw recording began after gameplay HUD; every clip starts at or after that timeline mark",
+        "loading_exclusion": "raw recording began after gameplay HUD; every clip uses only its exact *_clean_begin/*_clean_end span",
     }
 
     opening = by_id["00-cold-open"]
@@ -476,82 +841,99 @@ def project_manifest(
         body_zh=["实机报告确认公爵及以上入口", "伯爵、男爵边界不伪装成独立实录"],
         body_en=["GREEN report binds the duke-or-higher entry", "Count/baron boundary is not presented as a separate live shot"],
     )
-    _set_still(
+    _set_video(
         by_id["02-okr-kpi"],
         bundle,
-        path=bundle["policy_paths"][1],
         capture_id="CAP-RELEASE-POLICY-001",
-        label="GREEN fixture-live policy card #001",
-        zh_status="实机政策卡 #001：不冒充独立 OKR 面板",
-        en_status="FIXTURE-LIVE POLICY #001 · NO STANDALONE OKR UI CLAIM",
+        label="clean policy card #001",
+        zh_status="干净实机政策卡 #001：不冒充独立 OKR 面板",
+        en_status="CLEAN POLICY #001 · NO STANDALONE OKR UI CLAIM",
         shot="同一 GREEN run 的 #001 KPI 分项证据单；只展示真实 A/B/C 政策卡。",
+        clean_span="policy_card_001",
     )
     _set_video(
         by_id["03-forced-distribution"],
         bundle,
         capture_id="CAP-RELEASE-MANAGED-SCOREBOARD",
-        label="GREEN continuous scoreboard and cockpit excerpt",
-        zh_status="连续实机：新人保护榜与制度驾驶舱",
-        en_status="FIXTURE-LIVE CONTINUOUS · NEWCOMER BOARD AND COCKPIT",
-        shot="从同一原始 MKV 的考核榜时间标记开始；7/16/0 明示为新人保护样本。",
-        start_label="managed_scoreboard_visible",
-        end_label="policy_cockpit_visible",
+        label="clean managed-scoreboard excerpt",
+        zh_status="干净实机：新人保护考核榜",
+        en_status="CLEAN CAPTURE · NEWCOMER-PROTECTED SCOREBOARD",
+        shot="只使用 managed scoreboard 的独立干净区间；7/16/0 明示为新人保护样本。",
+        clean_span="managed_scoreboard",
     )
     _set_video(
         by_id["04-calibration"],
         bundle,
         capture_id="CAP-RELEASE-CALIBRATION",
-        label="GREEN continuous calibration excerpt",
-        zh_status="连续实机：真实校准会三选项",
-        en_status="FIXTURE-LIVE CONTINUOUS · THREE REAL CALIBRATION CHOICES",
+        label="clean calibration excerpt",
+        zh_status="干净实机：真实校准会三选项",
+        en_status="CLEAN CAPTURE · THREE REAL CALIBRATION CHOICES",
         shot="同一 GREEN run 的校准会连续片段；不声称存在命名档案或任意点名器。",
-        start_label="calibration_event_visible",
-        end_label="calibration_event_visible",
-    )
-    _set_still(
-        by_id["05-peer-review-politics"],
-        bundle,
-        path=bundle["policy_paths"][7],
-        capture_id="CAP-RELEASE-POLICY-007",
-        label="GREEN fixture-live policy card #007",
-        zh_status="实机政策卡 #007：同侪互动未单独录屏",
-        en_status="FIXTURE-LIVE POLICY #007 · PEER INTERACTION NOT SEPARATELY RECORDED",
-        shot="同一 GREEN run 的 #007 背靠背 360 邀评政策卡；不冒充举荐/攻讦互动录像。",
-        classification="fixture-live-policy-still-boundary",
+        clean_span="calibration",
     )
     _set_video(
-        by_id["06-jingcha"],
+        by_id["05-peer-review-politics"],
         bundle,
-        capture_id="CAP-RELEASE-JINGCHA",
-        label="GREEN continuous Jingcha mandate and free planner excerpt",
-        zh_status="连续实机：京察弹窗与免费规划器",
-        en_status="FIXTURE-LIVE CONTINUOUS · JINGCHA MANDATE AND FREE PLANNER",
-        shot="同一 GREEN run 连续展示半强制京察弹窗与免费举办规划器。",
-        start_label="jingcha_mandate_visible",
-        end_label="free_jingcha_planner_visible",
+        capture_id="CAP-RELEASE-POLICY-007",
+        label="clean policy card #007",
+        zh_status="干净实机政策卡 #007：同侪互动未单独录屏",
+        en_status="CLEAN POLICY #007 · PEER INTERACTION NOT SEPARATELY RECORDED",
+        shot="同一 GREEN run 的 #007 背靠背 360 邀评政策卡；不冒充举荐/攻讦互动录像。",
+        clean_span="policy_card_007",
     )
+
+    jingcha = by_id["06-jingcha"]
+    jingcha_cues = jingcha.get("cues")
+    if not isinstance(jingcha_cues, list) or len(jingcha_cues) != 3:
+        raise PrepareError("06-jingcha must retain exactly three authoring cues")
+    planner_chapter = copy.deepcopy(jingcha)
+    jingcha["cues"] = [copy.deepcopy(jingcha_cues[0])]
+    _set_video(
+        jingcha,
+        bundle,
+        capture_id="CAP-RELEASE-JINGCHA-MANDATE",
+        label="clean Jingcha mandate excerpt",
+        zh_status="干净实机：半强制京察弹窗",
+        en_status="CLEAN CAPTURE · SEMI-MANDATORY JINGCHA",
+        shot="只使用京察发令弹窗的独立干净区间，不跨越测试决议操作。",
+        clean_span="jingcha_mandate",
+    )
+    planner_chapter["id"] = "06b-free-jingcha-planner"
+    planner_chapter["title_zh"] = "京察规划：活动免费，拒办理由有明确上司"
+    planner_chapter["title_en"] = "JINGCHA PLANNER: FREE EVENT, ACCOUNTABLE REFUSAL"
+    planner_chapter["cues"] = [copy.deepcopy(cue) for cue in jingcha_cues[1:]]
+    _set_video(
+        planner_chapter,
+        bundle,
+        capture_id="CAP-RELEASE-JINGCHA-PLANNER",
+        label="clean free-Jingcha planner excerpt",
+        zh_status="干净实机：免费举办与拒办入口",
+        en_status="CLEAN CAPTURE · FREE PLANNER AND REFUSAL ENTRY",
+        shot="只使用免费京察规划器的独立干净区间，不复用打开测试决议抽屉的动作。",
+        clean_span="free_jingcha_planner",
+    )
+    jingcha_index = chapters.index(jingcha)
+    chapters.insert(jingcha_index + 1, planner_chapter)
+
     _set_video(
         by_id["07-scoreboard-receipt"],
         bundle,
         capture_id="CAP-RELEASE-RECEIVED-SCOREBOARD",
-        label="GREEN continuous received-scoreboard excerpt",
-        zh_status="连续实机：本人所属考核单元与 3.25",
-        en_status="FIXTURE-LIVE CONTINUOUS · RECEIVED BOARD WITH 3.25",
+        label="clean received-scoreboard excerpt",
+        zh_status="干净实机：本人所属考核单元与 3.25",
+        en_status="CLEAN CAPTURE · RECEIVED BOARD WITH 3.25",
         shot="同一 GREEN run 的本人所属考核单元；管理者榜已在前章展示。",
-        start_label="received_scoreboard_with_325_visible",
-        end_label="received_scoreboard_with_325_visible",
+        clean_span="received_scoreboard_with_325",
     )
     _set_video(
         by_id["08-money-and-grade"],
         bundle,
         capture_id="CAP-RELEASE-SUPERIOR-325",
-        label="GREEN continuous superior-assigned 3.25 excerpt",
-        zh_status="连续实机：上司 3.25 告身与国库/金币/贤能/俸禄四重处分",
-        en_status="FIXTURE-LIVE CONTINUOUS · SUPERIOR 3.25 AND FOURFOLD CONSEQUENCE",
+        label="clean superior-assigned 3.25 excerpt",
+        zh_status="干净实机：上司 3.25 告身与四重处分",
+        en_status="CLEAN CAPTURE · SUPERIOR 3.25 AND FOURFOLD CONSEQUENCE",
         shot="同一 GREEN run 的上司 3.25 告身；正式重录画面使用四重精确文案，报告绑定罚没与退款断言。",
-        start_label="superior_assigned_325_visible",
-        end_label="received_scoreboard_with_325_visible",
-        after=-1.0,
+        clean_span="superior_assigned_325",
     )
     _set_boundary(
         by_id["09-pip-bottom"],
@@ -569,77 +951,102 @@ def project_manifest(
     hc_chapter = copy.deepcopy(promotion_hc)
     promotion_hc["cues"] = [copy.deepcopy(original_cues[0])]
     promotion_hc["topics"] = ["promotion_packet"]
-    _set_still(
+    _set_video(
         promotion_hc,
         bundle,
-        path=bundle["policy_paths"][20],
         capture_id="CAP-RELEASE-POLICY-020",
-        label="GREEN fixture-live policy card #020",
-        zh_status="实机政策卡 #020：晋升通道未单独录屏",
-        en_status="FIXTURE-LIVE POLICY #020 · PROMOTION TRACK NOT SEPARATELY RECORDED",
+        label="clean policy card #020",
+        zh_status="干净实机政策卡 #020：晋升通道未单独录屏",
+        en_status="CLEAN POLICY #020 · PROMOTION TRACK NOT SEPARATELY RECORDED",
         shot="同一 GREEN run 的 #020 晋升包与跨部门答辩政策卡。",
-        classification="fixture-live-policy-still-boundary",
+        clean_span="policy_card_020",
     )
     hc_chapter["id"] = "10b-hc-policy-022"
     hc_chapter["title_zh"] = "HC：编制不是许愿池，是压力账"
     hc_chapter["title_en"] = "HEADCOUNT: NOT A WISH ENGINE, A PRESSURE LEDGER"
     hc_chapter["cues"] = [copy.deepcopy(original_cues[1])]
     hc_chapter["topics"] = ["hc"]
-    _set_still(
+    _set_video(
         hc_chapter,
         bundle,
-        path=bundle["policy_paths"][22],
         capture_id="CAP-RELEASE-POLICY-022",
-        label="GREEN fixture-live policy card #022",
-        zh_status="实机政策卡 #022：不冒充招聘模拟器",
-        en_status="FIXTURE-LIVE POLICY #022 · NO STANDALONE HIRING SIM CLAIM",
+        label="clean policy card #022",
+        zh_status="干净实机政策卡 #022：不冒充招聘模拟器",
+        en_status="CLEAN POLICY #022 · NO STANDALONE HIRING SIM CLAIM",
         shot="同一 GREEN run 的 #022 软 HC / 编制预算政策卡。",
+        clean_span="policy_card_022",
     )
     promotion_index = chapters.index(promotion_hc)
     chapters.insert(promotion_index + 1, hc_chapter)
 
-    _set_still(
-        by_id["11-credit-and-dependencies"],
+    credit_chapter = by_id["11-credit-and-dependencies"]
+    credit_cues = credit_chapter.get("cues")
+    if not isinstance(credit_cues, list) or len(credit_cues) != 2:
+        raise PrepareError(
+            "11-credit-and-dependencies must retain exactly two authoring cues"
+        )
+    cockpit_chapter = copy.deepcopy(credit_chapter)
+    credit_chapter["cues"] = [copy.deepcopy(credit_cues[0])]
+    _set_video(
+        credit_chapter,
         bundle,
-        path=bundle["policy_paths"][26],
         capture_id="CAP-RELEASE-POLICY-026",
-        label="GREEN fixture-live policy card #026",
-        zh_status="实机政策卡 #026：不冒充项目仲裁器",
-        en_status="FIXTURE-LIVE POLICY #026 · NO PROJECT ARBITRATION UI CLAIM",
+        label="clean policy card #026",
+        zh_status="干净实机政策卡 #026：不冒充项目仲裁器",
+        en_status="CLEAN POLICY #026 · NO PROJECT ARBITRATION UI CLAIM",
         shot="同一 GREEN run 的 #026 真实贡献 / 上司可见度双账政策卡。",
-        classification="fixture-live-policy-still-boundary",
+        clean_span="policy_card_026",
     )
-    _set_still(
+    cockpit_chapter["id"] = "11b-policy-cockpit"
+    cockpit_chapter["title_zh"] = "制度驾驶舱：账本会说话，但不会替你编项目"
+    cockpit_chapter["title_en"] = "POLICY COCKPIT: LEDGERS SPEAK, PROJECTS ARE NOT INVENTED"
+    cockpit_chapter["cues"] = [copy.deepcopy(credit_cues[1])]
+    _set_video(
+        cockpit_chapter,
+        bundle,
+        capture_id="CAP-RELEASE-POLICY-COCKPIT",
+        label="clean policy-cockpit excerpt",
+        zh_status="干净实机：制度驾驶舱与组织账",
+        en_status="CLEAN CAPTURE · POLICY COCKPIT AND ORGANIZATION LEDGERS",
+        shot="只使用制度驾驶舱的独立干净区间；不跨越测试决议或事件清理动作。",
+        clean_span="policy_cockpit",
+    )
+    credit_index = chapters.index(credit_chapter)
+    chapters.insert(credit_index + 1, cockpit_chapter)
+
+    _set_video(
         by_id["12-appeal"],
         bundle,
-        path=bundle["superior_result_path"],
         capture_id="CAP-RELEASE-APPEAL-ENTRY",
-        label="GREEN fixture-live 3.25 receipt with appeal entry",
-        zh_status="实机告身：申诉入口；退款由同 run 报告绑定",
-        en_status="FIXTURE-LIVE RECEIPT · REFUND BOUND BY SAME-RUN REPORT",
+        label="clean 3.25 receipt with appeal entry",
+        zh_status="干净实机告身：申诉入口；退款由同 run 报告绑定",
+        en_status="CLEAN RECEIPT · REFUND BOUND BY SAME-RUN REPORT",
         shot="同一 GREEN run 的 3.25 告身与申诉入口；不把报告断言伪装成连续退款录像。",
-        classification="fixture-live-still-partial",
-    )
-    _set_still(
-        by_id["13-361-policy-cards"],
-        bundle,
-        path=bundle["policy_paths"][361],
-        capture_id="CAP-RELEASE-POLICY-361",
-        label="GREEN fixture-live policy card #361",
-        zh_status="实机政策卡 #361：六张样卡均绑定同一 run",
-        en_status="FIXTURE-LIVE POLICY #361 · SIX CAPTURED CARDS, ONE GREEN RUN",
-        shot="同一 GREEN run 的 #361 绩效宪章；其余样卡分别出现在 #001/#007/#020/#022/#026 章节。",
+        clean_span="superior_assigned_325",
     )
     _set_video(
+        by_id["13-361-policy-cards"],
+        bundle,
+        capture_id="CAP-RELEASE-POLICY-361",
+        label="clean policy card #361",
+        zh_status="干净实机政策卡 #361：六张样卡均绑定同一 run",
+        en_status="CLEAN POLICY #361 · SIX CAPTURED CARDS, ONE GREEN RUN",
+        shot="同一 GREEN run 的 #361 绩效宪章；其余样卡分别出现在 #001/#007/#020/#022/#026 章节。",
+        clean_span="policy_card_361",
+    )
+    _set_boundary(
         by_id["14-core-loop"],
         bundle,
-        capture_id="CAP-RELEASE-SAME-RUN-CORE",
-        label="GREEN same-run core-loop excerpt",
-        zh_status="连续实机节选：京察到 3.25；全链由同 run 报告绑定",
-        en_status="FIXTURE-LIVE EXCERPT · JINGCHA TO 3.25, SAME-RUN REPORT BINDS LOOP",
-        shot="同一原始 MKV 从京察弹窗连续到本人 3.25；校准与发榜来自同 run 的更早时间标记。",
-        start_label="jingcha_mandate_visible",
-        end_label="received_scoreboard_with_325_visible",
+        zh_status="生成证据边界卡：核心循环不跨测试操作拼接",
+        en_status="GENERATED EVIDENCE/BOUNDARY · NO CROSS-FIXTURE CORE-LOOP CLIP",
+        body_zh=[
+            "校准、榜单、京察、告身各有独立干净镜头",
+            "同 run 报告绑定机制闭环；画面不跨越测试决议操作",
+        ],
+        body_en=[
+            "Calibration, boards, Jingcha and receipt each use a clean span",
+            "The same-run report binds the loop; no clip crosses fixture operations",
+        ],
     )
 
     boundary = by_id["15-honest-boundary"]
@@ -694,9 +1101,15 @@ def project_manifest(
             for mechanism_id in POLICY_IDS
         },
         "policy_card_ids": list(POLICY_IDS),
+        "clean_span_ids": list(CLEAN_SPAN_IDS),
+        "clean_frame_gates": [
+            bundle["clean_frame_gates"][span_id] for span_id in CLEAN_SPAN_IDS
+        ],
+        "real_character_provenance": bundle["real_character_provenance"],
         "generated_boundary_chapters": [
             "01-who-rates-whom",
             "09-pip-bottom",
+            "14-core-loop",
             "15-honest-boundary",
         ],
         "source_files_modified": False,

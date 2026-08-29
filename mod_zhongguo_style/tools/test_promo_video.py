@@ -8,6 +8,7 @@ import io
 import json
 import sys
 import tempfile
+import types
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -249,6 +250,38 @@ class AcceptanceStillImportTests(unittest.TestCase):
 
 
 class BuildAndValidationTests(unittest.TestCase):
+    @staticmethod
+    def _minimal_release_project() -> tuple[dict, list[types.SimpleNamespace]]:
+        manifest = {
+            "_placeholder_count": 0,
+            "_estimated_duration_seconds": 1.0,
+            "project_status": "captured_release_candidate",
+            "release_manifest_provenance": {},
+        }
+        chapter = types.SimpleNamespace(
+            chapter_id="00-title",
+            promo_type="title_card",
+            material_status="generated",
+            raw={},
+            status_zh="",
+            status_en="",
+        )
+        return manifest, [chapter]
+
+    @staticmethod
+    def _verified_report_for(manifest_path: Path) -> dict:
+        return {
+            "evaluation_sha256": "E" * 64,
+            "evaluation": {
+                "result": "GREEN",
+                "release_manifest": {
+                    "path": str(manifest_path.resolve()),
+                    "bytes": manifest_path.stat().st_size,
+                    "sha256": promo.shared._sha256(manifest_path),
+                },
+            },
+        }
+
     def test_validate_only_never_calls_tts_or_writes_output(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -272,13 +305,253 @@ class BuildAndValidationTests(unittest.TestCase):
                 mock.patch.object(
                     promo.shared.edge_tts, "Communicate", communicate
                 ),
+                mock.patch.object(promo.visual_audit, "verify_report") as verify_audit,
                 contextlib.redirect_stdout(io.StringIO()),
             ):
                 result = promo.build(args)
             communicate.assert_not_called()
+            verify_audit.assert_not_called()
             self.assertEqual(output.resolve(), result[0])
             self.assertFalse(output.exists())
             self.assertFalse(work.exists())
+
+    def test_visual_audit_re_evaluates_and_binds_the_exact_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest_path = root / "release-manifest.json"
+            manifest_path.write_text("{}\n", encoding="utf-8")
+            report_path = root / "visual-audit.json"
+            report_path.write_text("{}\n", encoding="utf-8")
+            expected_sha = promo.shared._sha256(report_path)
+            verified = self._verified_report_for(manifest_path)
+            with mock.patch.object(
+                promo.visual_audit, "verify_report", return_value=verified
+            ) as verify_report:
+                binding = promo.verify_visual_audit_binding(
+                    manifest_path=manifest_path,
+                    report_path=report_path,
+                    expected_sha256=expected_sha,
+                    required=True,
+                )
+            verify_report.assert_called_once_with(report_path.resolve(), expected_sha)
+            self.assertEqual("GREEN", binding["result"])
+            self.assertEqual(expected_sha, binding["report"]["sha256"])
+            self.assertEqual(
+                promo.shared._sha256(manifest_path),
+                binding["release_manifest"]["sha256"],
+            )
+
+            wrong_manifest = dict(verified)
+            wrong_manifest["evaluation"] = dict(verified["evaluation"])
+            wrong_manifest["evaluation"]["release_manifest"] = {
+                **verified["evaluation"]["release_manifest"],
+                "path": str(root / "different-release-manifest.json"),
+            }
+            with (
+                mock.patch.object(
+                    promo.visual_audit,
+                    "verify_report",
+                    return_value=wrong_manifest,
+                ),
+                self.assertRaisesRegex(promo.PromoError, "different release manifest"),
+            ):
+                promo.verify_visual_audit_binding(
+                    manifest_path=manifest_path,
+                    report_path=report_path,
+                    expected_sha256=expected_sha,
+                    required=True,
+                )
+
+    def test_visual_audit_arguments_are_paired_and_release_required(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest_path = Path(temporary) / "release-manifest.json"
+            manifest_path.write_text("{}\n", encoding="utf-8")
+            with self.assertRaisesRegex(promo.PromoError, "release media requires"):
+                promo.verify_visual_audit_binding(
+                    manifest_path=manifest_path,
+                    report_path=None,
+                    expected_sha256=None,
+                    required=True,
+                )
+            with self.assertRaisesRegex(promo.PromoError, "provided together"):
+                promo.verify_visual_audit_binding(
+                    manifest_path=manifest_path,
+                    report_path=Path(temporary) / "audit.json",
+                    expected_sha256=None,
+                    required=False,
+                )
+            with self.assertRaisesRegex(promo.PromoError, "64 hexadecimal"):
+                promo.verify_visual_audit_binding(
+                    manifest_path=manifest_path,
+                    report_path=Path(temporary) / "audit.json",
+                    expected_sha256="not-a-sha",
+                    required=False,
+                )
+
+    def test_release_validation_requires_and_re_evaluates_visual_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest_path = root / "release-manifest.json"
+            manifest_path.write_text("{}\n", encoding="utf-8")
+            report_path = root / "visual-audit.json"
+            report_path.write_text("{}\n", encoding="utf-8")
+            expected_sha = promo.shared._sha256(report_path)
+
+            def dependencies(manifest: dict, chapters: list[types.SimpleNamespace]):
+                return (
+                    mock.patch.object(promo, "load_manifest", return_value=(manifest, chapters)),
+                    mock.patch.object(
+                        promo.shared,
+                        "find_program",
+                        side_effect=[Path("ffmpeg"), Path("ffprobe")],
+                    ),
+                    mock.patch.object(promo.shared, "find_fonts", return_value=object()),
+                    mock.patch.object(promo.shared, "preflight_video_sources"),
+                    mock.patch.object(promo, "prepare_subtitle_layouts"),
+                )
+
+            manifest, chapters = self._minimal_release_project()
+            with contextlib.ExitStack() as stack:
+                for patcher in dependencies(manifest, chapters):
+                    stack.enter_context(patcher)
+                with self.assertRaisesRegex(
+                    validator.ValidationError, "release media requires"
+                ):
+                    validator.validate_project(manifest_path, stage="release")
+
+            manifest, chapters = self._minimal_release_project()
+            verified = self._verified_report_for(manifest_path)
+            with contextlib.ExitStack() as stack:
+                for patcher in dependencies(manifest, chapters):
+                    stack.enter_context(patcher)
+                verify_report = stack.enter_context(
+                    mock.patch.object(
+                        promo.visual_audit, "verify_report", return_value=verified
+                    )
+                )
+                checked, _chapters = validator.validate_project(
+                    manifest_path,
+                    stage="release",
+                    visual_audit_report=report_path,
+                    expected_audit_sha256=expected_sha,
+                )
+            verify_report.assert_called_once_with(report_path.resolve(), expected_sha)
+            self.assertEqual("GREEN", checked["_visual_audit_binding"]["result"])
+
+    def test_formal_build_requires_audit_before_writes_and_draft_does_not(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest_path = root / "release-manifest.json"
+            manifest_path.write_text("{}\n", encoding="utf-8")
+            output = root / "output" / "promo.mp4"
+            work = root / "work"
+            manifest, chapters = self._minimal_release_project()
+            base_args = [
+                "--manifest",
+                str(manifest_path),
+                "--output",
+                str(output),
+                "--work-dir",
+                str(work),
+                "--validate-only",
+            ]
+            with (
+                mock.patch.object(promo, "load_manifest", return_value=(manifest, chapters)),
+                self.assertRaisesRegex(promo.PromoError, "release media requires"),
+            ):
+                promo.build(promo.parser().parse_args(base_args))
+            self.assertFalse(output.exists())
+            self.assertFalse(work.exists())
+
+            report_path = root / "visual-audit.json"
+            report_path.write_text("{}\n", encoding="utf-8")
+            expected_sha = promo.shared._sha256(report_path)
+            manifest, chapters = self._minimal_release_project()
+            with (
+                mock.patch.object(promo, "load_manifest", return_value=(manifest, chapters)),
+                mock.patch.object(
+                    promo.visual_audit,
+                    "verify_report",
+                    return_value=self._verified_report_for(manifest_path),
+                ) as verify_report,
+                mock.patch.object(
+                    promo.shared,
+                    "find_program",
+                    side_effect=[Path("ffmpeg"), Path("ffprobe")],
+                ),
+                mock.patch.object(promo.shared, "find_fonts", return_value=object()),
+                mock.patch.object(promo.shared, "preflight_video_sources"),
+                mock.patch.object(promo, "prepare_subtitle_layouts"),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                promo.build(
+                    promo.parser().parse_args(
+                        base_args
+                        + [
+                            "--visual-audit-report",
+                            str(report_path),
+                            "--expected-audit-sha256",
+                            expected_sha,
+                        ]
+                    )
+                )
+            verify_report.assert_called_once_with(report_path.resolve(), expected_sha)
+            self.assertFalse(output.exists())
+            self.assertFalse(work.exists())
+
+    def test_sidecar_persists_audit_binding_and_release_validation_requires_it(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest_path = root / "release-manifest.json"
+            manifest_path.write_text("{}\n", encoding="utf-8")
+            output = root / "promo.mp4"
+            output.write_bytes(b"video")
+            subtitle = root / "promo.ass"
+            subtitle.write_text("subtitle", encoding="utf-8")
+            binding = {
+                "verification": "audit_promo_visuals.verify_report re-evaluation",
+                "result": "GREEN",
+                "report": {"path": "audit.json", "bytes": 1, "sha256": "A" * 64},
+                "evaluation_sha256": "B" * 64,
+                "release_manifest": {
+                    "path": str(manifest_path.resolve()),
+                    "bytes": manifest_path.stat().st_size,
+                    "sha256": promo.shared._sha256(manifest_path),
+                },
+            }
+            sidecar_path = promo.write_sidecar(
+                manifest_path=manifest_path,
+                manifest={"_placeholder_count": 0, "project_status": "captured_release_candidate"},
+                chapters=[],
+                output=output,
+                output_info={
+                    "duration": 1.0,
+                    "video": {"width": 2560, "height": 1440},
+                    "audio": {"sample_rate": "48000", "tags": {"language": "zho"}},
+                },
+                global_ass=subtitle,
+                take_id="release-test",
+                ffmpeg=Path("ffmpeg"),
+                ffprobe=Path("ffprobe"),
+                visual_audit_binding=binding,
+            )
+            sidecar = json.loads(sidecar_path.read_text(encoding="utf-8"))
+            self.assertEqual(binding, sidecar["visual_audit"])
+
+            del sidecar["visual_audit"]
+            sidecar_path.write_text(json.dumps(sidecar), encoding="utf-8")
+            manifest = {"_placeholder_count": 0, "_visual_audit_binding": binding}
+            with self.assertRaisesRegex(
+                validator.ValidationError, "sidecar visual audit does not match"
+            ):
+                validator.validate_media(
+                    manifest_path=manifest_path,
+                    manifest=manifest,
+                    chapters=[],
+                    video_path=output,
+                    sidecar_path=sidecar_path,
+                    stage="release",
+                )
 
     def test_release_gate_rejects_placeholder_animatic(self) -> None:
         with self.assertRaisesRegex(validator.ValidationError, "forbids placeholders"):

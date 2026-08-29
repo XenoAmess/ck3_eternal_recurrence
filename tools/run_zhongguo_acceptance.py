@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 import traceback
+import unicodedata
 import uuid
 from pathlib import Path
 
@@ -34,6 +35,77 @@ EXPECTED_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
 EXPECTED_PLAYER_HISTORY_ID = "han_8052"
+EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID = "han_5253"
+PROMO_HISTORY_CHARACTERS = (
+    {
+        "subject_id": "song_emperor_zhao_shu",
+        "history_id": EXPECTED_PLAYER_HISTORY_ID,
+        "display_name": "赵曙",
+        "roles": ["manager", "emperor"],
+        "origin": "ck3_history_database",
+        "temporary_or_generated": False,
+        "expected_runtime_contract": {
+            "is_player": True,
+            "is_ai": False,
+            "has_h_china": True,
+            "independent": True,
+        },
+    },
+    {
+        "subject_id": "hunan_governor_lu_jujian",
+        "history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
+        "display_name": "吕居简",
+        "roles": ["reviewed_official", "hunan_governor"],
+        "origin": "ck3_history_database",
+        "temporary_or_generated": False,
+        "historical_title": "k_hunan",
+        "historical_liege_title": "h_china",
+        "selection": "exact_fixed_no_fallback",
+        "expected_runtime_contract": {
+            "pre_switch_ai": True,
+            "post_switch_player": True,
+            "direct_liege_runtime": True,
+            "current_review_record_runtime": True,
+        },
+    },
+)
+PROMO_CLEAN_SPANS = (
+    "calibration",
+    "managed_scoreboard",
+    "policy_cockpit",
+    "jingcha_mandate",
+    "free_jingcha_planner",
+    "superior_assigned_325",
+    "received_scoreboard_with_325",
+    "policy_card_001",
+    "policy_card_007",
+    "policy_card_020",
+    "policy_card_022",
+    "policy_card_026",
+    "policy_card_361",
+)
+PROMO_FORBIDDEN_VISIBLE_TEXT = (
+    "决议和大型工程",
+    "361制实机验收",
+    "开始361制实机验收",
+    "验收上司给我的绩效",
+    "验收免费京察规划器",
+    "演示政策卡",
+    "演示触发器",
+    "切换至宋帝并开考",
+    "切换受考",
+    "发出京察召集令",
+    "打开此卡",
+    "ZhongGuo 361 live acceptance",
+    "Verify My Superior's Rating",
+    "Verify the Free Jingcha Planner",
+    "Promo Policy Card",
+    "Switch to Song and begin review",
+    "Open this card",
+    "ZGA",
+    "zga_",
+    "zga.",
+)
 POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_S = 300
 PRODUCT_OUTER = "zg361_acceptance.mod"
@@ -108,6 +180,14 @@ DECISIONS_HEADER_REGION = (0.55, 0.00, 0.90, 0.13)
 # drawer is flush with the right HUD rail, so its close glyph sits near the
 # screen's right edge (2460, 92 in the pinned 2560x1440 acceptance profile).
 DECISIONS_CLOSE_BUTTON = (0.961, 0.064)
+# The generated 1220x820 modal is centered.  Its inherited header close glyph
+# is centered at (1991, 240) in the same pinned acceptance profile.  The
+# backdrop probe deliberately stays far outside the panel's left edge.
+SCOREBOARD_TITLE_CLOSE_BUTTON = (0.778, 0.167)
+SCOREBOARD_BACKDROP_POINT = (0.050, 0.500)
+SCOREBOARD_ROW_NAME_REGION = (0.30, 0.33, 0.45, 0.76)
+CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
+SCOREBOARD_GENERATED_ROW_LINKS = 160
 
 
 def log(message: str) -> None:
@@ -128,6 +208,8 @@ class PromoRecorder:
         self.started_monotonic: float | None = None
         self.started_at_utc: str | None = None
         self.marks: list[dict[str, object]] = []
+        self.clean_frame_gates: dict[str, dict[str, object]] = {}
+        self.real_character_provenance = promo_real_character_provenance()
 
     def start(self) -> None:
         ffmpeg = shutil.which("ffmpeg")
@@ -191,6 +273,37 @@ class PromoRecorder:
         if self.process is not None:
             time.sleep(seconds)
 
+    def clean_hold(self, label: str, artifacts: Path, seconds: float = 2.5) -> None:
+        """Record one exact promo-safe span with full-screen begin/end proof."""
+
+        if self.process is None:
+            return
+        if label not in PROMO_CLEAN_SPANS:
+            raise acceptance.RunnerError(f"unknown promo clean span: {label}")
+        if label in self.clean_frame_gates:
+            raise acceptance.RunnerError(f"duplicate promo clean span: {label}")
+        begin_mark = f"{label}_clean_begin"
+        end_mark = f"{label}_clean_end"
+        begin = assert_promo_frame_clean(
+            artifacts, f"promo_clean_{label}_begin", label=label, phase="begin"
+        )
+        self.mark(begin_mark)
+        self.hold(seconds)
+        end = assert_promo_frame_clean(
+            artifacts, f"promo_clean_{label}_end", label=label, phase="end"
+        )
+        self.mark(end_mark)
+        self.clean_frame_gates[label] = {
+            "span_id": label,
+            "result": "GREEN",
+            "begin_mark": begin_mark,
+            "end_mark": end_mark,
+            "full_screen": True,
+            "fixture_test_ui_absent": True,
+            "native_decisions_drawer_absent": True,
+            "frames": [begin, end],
+        }
+
     def stop(self) -> dict[str, object]:
         if self.process is None:
             return {}
@@ -213,8 +326,11 @@ class PromoRecorder:
             raise acceptance.RunnerError(
                 f"promo recorder failed with exit {returncode}; inspect {self.log_path}"
             )
+        missing_clean_spans = [
+            label for label in PROMO_CLEAN_SPANS if label not in self.clean_frame_gates
+        ]
         payload = {
-            "schema": 1,
+            "schema": 2,
             "started_at_utc": self.started_at_utc,
             "exclude_ck3_loading": True,
             "source_kind": "real CK3 1.19.0.6 desktop capture after gameplay HUD",
@@ -223,9 +339,20 @@ class PromoRecorder:
             "raw_sha256": isolated.sha256_file(self.raw_path),
             "ffmpeg_log": str(self.log_path),
             "marks": self.marks,
+            "clean_frame_gates": [
+                self.clean_frame_gates[label] for label in PROMO_CLEAN_SPANS
+                if label in self.clean_frame_gates
+            ],
+            "clean_capture_complete": not missing_clean_spans,
+            "missing_clean_spans": missing_clean_spans,
+            "real_character_provenance": self.real_character_provenance,
         }
         write_json(self.timeline_path, payload)
         self.process = None
+        if missing_clean_spans:
+            raise acceptance.RunnerError(
+                "promo capture is missing clean spans: " + ", ".join(missing_clean_spans)
+            )
         return payload
 
 
@@ -236,6 +363,256 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def _paradox_top_level_block(text: str, key: str) -> str:
+    """Return one exact top-level Paradox block for provenance checks."""
+
+    match = re.search(rf"(?m)^\s*{re.escape(key)}\s*=\s*\{{", text)
+    if match is None:
+        raise acceptance.RunnerError(f"vanilla history block is missing: {key}")
+    opening = text.index("{", match.start(), match.end())
+    depth = 0
+    quoted = False
+    escaped = False
+    for index in range(opening, len(text)):
+        character = text[index]
+        if quoted:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                quoted = False
+            continue
+        if character == '"':
+            quoted = True
+        elif character == "{":
+            depth += 1
+        elif character == "}":
+            depth -= 1
+            if depth == 0:
+                return text[match.start() : index + 1]
+    raise acceptance.RunnerError(f"vanilla history block is unterminated: {key}")
+
+
+def fixture_constructor_counts() -> dict[str, int]:
+    """Derive, rather than assert, fixture construction-command counts."""
+
+    fixture_files = (
+        tuple(FIXTURE_SOURCE.rglob("*.txt"))
+        + tuple(FIXTURE_SOURCE.rglob("*.gui"))
+        + tuple(FIXTURE_SOURCE.rglob("*.yml"))
+    )
+    text = "\n".join(path.read_text(encoding="utf-8-sig") for path in fixture_files)
+    return {
+        token: len(re.findall(rf"\b{re.escape(token)}\b", text))
+        for token in (
+            "create_character",
+            "create_title",
+            "grant_title",
+            "set_father",
+            "set_mother",
+            "set_spouse",
+            "add_relation",
+            "set_relation",
+        )
+    }
+
+
+def promo_real_character_provenance() -> dict[str, object]:
+    """Bind the clean take to two canonical vanilla 1066 history characters."""
+
+    history_path = ROOT / "Crusader Kings III" / "game" / "history" / "characters" / "han.txt"
+    title_history_path = (
+        ROOT / "Crusader Kings III" / "game" / "history" / "titles" / "e_china.txt"
+    )
+    history_text = history_path.read_text(encoding="utf-8-sig")
+    title_history_text = title_history_path.read_text(encoding="utf-8-sig")
+    records = []
+    for subject in PROMO_HISTORY_CHARACTERS:
+        history_id = str(subject["history_id"])
+        _paradox_top_level_block(history_text, history_id)
+        records.append(
+            {
+                **subject,
+                "history_source": {
+                    "path": str(history_path.resolve()),
+                    "bytes": history_path.stat().st_size,
+                    "sha256": isolated.sha256_file(history_path),
+                },
+            }
+        )
+
+    china_block = _paradox_top_level_block(title_history_text, "h_china")
+    hunan_block = _paradox_top_level_block(title_history_text, "k_hunan")
+    if re.search(
+        r"1063\.4\.30\s*=\s*\{[^}]*holder\s*=\s*han_8052",
+        china_block,
+        re.S,
+    ) is None:
+        raise acceptance.RunnerError(
+            "vanilla h_china history does not bind han_8052 at the 1066 start"
+        )
+    if re.search(
+        r"1066\.1\.1\s*=\s*\{[^}]*holder\s*=\s*han_5253"
+        r"[^}]*liege\s*=\s*h_china",
+        hunan_block,
+        re.S,
+    ) is None:
+        raise acceptance.RunnerError(
+            "vanilla k_hunan history does not bind han_5253 under h_china"
+        )
+    constructor_counts = fixture_constructor_counts()
+    if any(constructor_counts.values()):
+        raise acceptance.RunnerError(
+            f"promo fixture manufactures historical subjects: {constructor_counts}"
+        )
+    return {
+        "schema_version": 1,
+        "bookmark": {"id": "1066_song", "start_date": "1066.9.15"},
+        "subjects": records,
+        "title_history_source": {
+            "path": str(title_history_path.resolve()),
+            "bytes": title_history_path.stat().st_size,
+            "sha256": isolated.sha256_file(title_history_path),
+        },
+        "title_history_assertions": {
+            "h_china_holder_at_start": "han_8052",
+            "k_hunan_holder_at_start": "han_5253",
+            "k_hunan_liege_at_start": "h_china",
+        },
+        "fixture_constructor_counts": constructor_counts,
+        "fixture_state_kind": "fixture_preconditioned_real_characters",
+        "performance_and_refusal_evidence_preconditioned": True,
+        "test_decision_visibility_contract": {
+            "initialization_decision_before_recording_only": True,
+            "all_other_fixture_decisions_permanently_hidden": True,
+        },
+        "native_drawer_close_required_before_first_clean_span": True,
+        "selection_contract": (
+            "han_8052 is the historical Song emperor; han_5253 is his historical "
+            "1066 Hunan direct vassal and the fixed reviewed player"
+        ),
+    }
+
+
+def _normalize_promo_visible_text(value: str) -> str:
+    normalized = unicodedata.normalize("NFKC", value).casefold()
+    return "".join(character for character in normalized if character.isalnum() or character == "_")
+
+
+def _promo_decisions_header_hits(
+    items: list[dict[str, object]], width: int, height: int
+) -> tuple[list[str], str]:
+    left, top, right, bottom = DECISIONS_HEADER_REGION
+    header_text: list[str] = []
+    for item in items:
+        center = item.get("center")
+        if (
+            not isinstance(center, (list, tuple))
+            or len(center) != 2
+            or not all(isinstance(value, (int, float)) for value in center)
+        ):
+            continue
+        x, y = float(center[0]), float(center[1])
+        if left * width <= x <= right * width and top * height <= y <= bottom * height:
+            header_text.append(str(item.get("text", "")))
+    normalized = _normalize_promo_visible_text("".join(header_text))
+    hits = [
+        token
+        for token in ("决议", "Decisions")
+        if _normalize_promo_visible_text(token) in normalized
+    ]
+    return hits, normalized
+
+
+def assert_promo_frame_clean(
+    artifacts: Path, stem: str, *, label: str, phase: str
+) -> dict[str, object]:
+    """Save two consecutive full-screen proofs and reject fixture UI/drawer text."""
+
+    width, height = acceptance.pyautogui.size()
+    samples: list[dict[str, object]] = []
+    for sample_index, sample_stem in enumerate(
+        (stem, f"{stem}_drawer_confirmation"), start=1
+    ):
+        if sample_index > 1:
+            time.sleep(acceptance.POLL_INTERVAL_S)
+        items = acceptance.capture_ocr_bundle(
+            artifacts, sample_stem, acceptance.FULL_SCREEN_REGION
+        )
+        if not items:
+            raise acceptance.RunnerError(
+                f"promo clean frame has no OCR evidence: {sample_stem}"
+            )
+        joined = "".join(str(item.get("text", "")) for item in items)
+        normalized = _normalize_promo_visible_text(joined)
+        forbidden_hits = [
+            token
+            for token in PROMO_FORBIDDEN_VISIBLE_TEXT
+            if _normalize_promo_visible_text(token) in normalized
+        ]
+        drawer_hits, header_ocr = _promo_decisions_header_hits(items, width, height)
+        if forbidden_hits or drawer_hits:
+            write_json(
+                artifacts / f"red_{sample_stem}.json",
+                {
+                    "schema_version": 1,
+                    "result": "RED",
+                    "span": label,
+                    "phase": phase,
+                    "sample_index": sample_index,
+                    "forbidden_hits": forbidden_hits,
+                    "decisions_header_hits": drawer_hits,
+                    "normalized_ocr": normalized,
+                    "normalized_decisions_header_ocr": header_ocr,
+                },
+            )
+            raise acceptance.RunnerError(
+                f"promo clean frame {label}/{phase} contains fixture/test UI or "
+                f"the Decisions drawer: forbidden={forbidden_hits}, drawer={drawer_hits}"
+            )
+        image_path = artifacts / f"{sample_stem}.png"
+        ocr_path = artifacts / f"{sample_stem}_ocr.json"
+        samples.append(
+            {
+                "sample_index": sample_index,
+                "normalized_decisions_header_ocr": header_ocr,
+                "image": {
+                    "path": str(image_path.resolve()),
+                    "bytes": image_path.stat().st_size,
+                    "sha256": isolated.sha256_file(image_path),
+                },
+                "ocr": {
+                    "path": str(ocr_path.resolve()),
+                    "bytes": ocr_path.stat().st_size,
+                    "sha256": isolated.sha256_file(ocr_path),
+                },
+            }
+        )
+    gate_path = artifacts / f"{stem}_gate.json"
+    payload = {
+        "schema_version": 1,
+        "result": "GREEN",
+        "span": label,
+        "phase": phase,
+        "full_screen": True,
+        "fixture_test_ui_absent": True,
+        "native_decisions_drawer_absent": True,
+        "forbidden_hits": [],
+        "drawer_absence_consecutive_samples": 2,
+        "drawer_absence_samples": samples,
+        "image": samples[0]["image"],
+        "ocr": samples[0]["ocr"],
+    }
+    write_json(gate_path, payload)
+    payload["gate"] = {
+        "path": str(gate_path.resolve()),
+        "bytes": gate_path.stat().st_size,
+        "sha256": isolated.sha256_file(gate_path),
+    }
+    return payload
 
 
 def git_text(*arguments: str) -> str:
@@ -463,6 +840,7 @@ def product_source_errors() -> list[str]:
         'name = "zg361_scoreboard_panel"',
         "zg361_sb_m_01_kpi",
         "zg361_scoreboard_tab_managed",
+        "zg361_scoreboard_tab_received",
         "zg361_scoreboard_tab_system",
         'shortcut = "close_window"',
     ):
@@ -548,8 +926,20 @@ def fixture_source_errors() -> list[str]:
         "zga_original_pending_grade",
         "var:zga_mixed_35_actual = var:zga_mixed_35_actual_before",
         "var:zga_mixed_325_actual = var:zga_mixed_325_actual_before",
-        "personal_result_target_selected_from_prior_tail",
-        "order_by = var:zg361_rank",
+        "character:han_5253",
+        "historical_personal_result_target_han_5253",
+        "clean_jingcha_dispatch_scheduled",
+        "clean_jingcha_dispatched",
+        "clean_policy_chain_scheduled",
+        "clean_policy_001_dispatched",
+        "clean_policy_007_dispatched",
+        "clean_policy_020_dispatched",
+        "clean_policy_022_dispatched",
+        "clean_policy_026_dispatched",
+        "clean_policy_361_dispatched",
+        "clean_policy_chain_completed",
+        "trigger_event = { id = zga_acceptance.5 days = 2 }",
+        "trigger_event = { id = zga_acceptance.12 days = 1 }",
         "settled_review_same_year_idempotent",
         "jingcha_refusal_superior_opinion_and_kpi_minus_50",
         "refusal_reason_consumed_once_by_original_superior",
@@ -560,6 +950,24 @@ def fixture_source_errors() -> list[str]:
     ):
         if token not in scenario_text:
             errors.append(f"fixture scenario contract missing {token}")
+    if scenario_text.count("NOT = { this = character:han_5253 }") < 2:
+        errors.append(
+            "fixture must reserve han_5253 from both optional AI reviewer probes"
+        )
+    for token in (
+        "create_character",
+        "create_title",
+        "grant_title",
+        "set_father",
+        "set_mother",
+        "set_spouse",
+        "add_relation",
+        "set_relation",
+    ):
+        if re.search(rf"\b{re.escape(token)}\b", scenario_text):
+            errors.append(
+                f"fixture must use vanilla history subjects, found constructor {token}"
+            )
     return errors
 
 
@@ -671,6 +1079,22 @@ def preflight(
         errors.append(
             "361 live fixture generator is RED:\n"
             + (fixture_generation.stdout + fixture_generation.stderr).strip()
+        )
+    clean_fixture_contract = subprocess.run(
+        [sys.executable, str(ROOT / "tools" / "test_zg361_clean_promo_fixture.py")],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        capture_output=True,
+        check=False,
+    )
+    if clean_fixture_contract.returncode != 0:
+        errors.append(
+            "clean historical promo fixture contract is RED:\n"
+            + (
+                clean_fixture_contract.stdout + clean_fixture_contract.stderr
+            ).strip()
         )
     validation = subprocess.run(
         [sys.executable, str(SOURCE / "tools" / "validate_local.py")],
@@ -1128,7 +1552,7 @@ def choose_direct_publication(
     )
     if recorder:
         recorder.mark("calibration_event_visible")
-        recorder.hold()
+        recorder.clean_hold("calibration", artifacts)
     option = acceptance.wait_for_ocr_text(
         "名单无误",
         acceptance.FULL_SCREEN_REGION,
@@ -1198,6 +1622,313 @@ def close_native_decisions_panel(artifacts: Path, stem: str) -> str:
     raise acceptance.RunnerError(
         "native Decisions drawer remained open after Escape and its title-bar close button"
     )
+
+
+def wait_for_scoreboard_closed_with_toggle(
+    artifacts: Path, stem: str, timeout_s: float = 8.0
+) -> tuple[int, int]:
+    """Prove the modal closed and its safe-lane HUD toggle became clickable again."""
+
+    deadline = time.monotonic() + timeout_s
+    stable_hits = 0
+    last_image = None
+    last_button = None
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        last_image = acceptance.ImageGrab.grab()
+        title = acceptance.find_ocr_text(
+            last_image,
+            "天朝官员考核榜",
+            acceptance.FULL_SCREEN_REGION,
+            contains=True,
+        )
+        last_button = acceptance.find_ocr_text(
+            last_image,
+            "考核榜",
+            SCOREBOARD_BUTTON_REGION,
+            contains=True,
+        )
+        stable_hits = stable_hits + 1 if title is None and last_button else 0
+        if stable_hits >= 2:
+            last_image.save(artifacts / f"{stem}_closed.png")
+            return last_button
+        time.sleep(acceptance.POLL_INTERVAL_S)
+    if last_image is not None:
+        last_image.save(artifacts / f"timeout_{stem}_close.png")
+    raise acceptance.RunnerError(
+        f"{stem} did not close the scoreboard and restore its safe-lane toggle"
+    )
+
+
+def reopen_managed_scoreboard_for_audit(
+    artifacts: Path, stem: str, button: tuple[int, int]
+) -> None:
+    """Reopen the board after one close probe and prove managed content returned."""
+
+    acceptance.deliberate_click(button, f"reopen performance board after {stem}")
+    acceptance.wait_for_ocr_text(
+        "天朝官员考核榜",
+        acceptance.FULL_SCREEN_REGION,
+        12,
+        artifacts,
+        f"{stem}_title.png",
+        contains=True,
+        stable_hits=2,
+    )
+    acceptance.wait_for_ocr_tokens(
+        ("所辖官员", "官员 / 官职", "点击任一官员"),
+        ("zg361_scoreboard", "localize", "error"),
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        stem,
+    )
+
+
+def select_representative_scoreboard_row(
+    items: list[dict[str, object]], width: int, height: int
+) -> tuple[dict[str, object], str] | None:
+    """Select one visible real-character row, never a header or event option."""
+
+    left, top, right, bottom = SCOREBOARD_ROW_NAME_REGION
+    candidates: list[tuple[int, dict[str, object], str]] = []
+    for item in items:
+        text = re.sub(r"\s+", "", str(item.get("text", "")))
+        center = item.get("center")
+        bbox = item.get("bbox")
+        if not isinstance(center, (list, tuple)) or len(center) != 2:
+            continue
+        if not isinstance(bbox, (list, tuple)) or len(bbox) != 4:
+            continue
+        x_ratio = float(center[0]) / width
+        y_ratio = float(center[1]) / height
+        if not (left <= x_ratio <= right and top <= y_ratio <= bottom):
+            continue
+        if (float(bbox[2]) - float(bbox[0])) / width < 0.06:
+            continue
+        parts = re.split(r"[，,、]", text)
+        if len(parts) < 2:
+            continue
+        personal_name = "".join(re.findall(r"[\u3400-\u9fff]", parts[-1]))
+        if len(personal_name) < 2:
+            continue
+        candidates.append((int(center[1]), item, personal_name))
+    if not candidates:
+        return None
+    _, item, personal_name = min(candidates, key=lambda candidate: candidate[0])
+    return item, personal_name
+
+
+def wait_for_representative_character_view(
+    artifacts: Path,
+    stem: str,
+    source_row: dict[str, object],
+    name_probe: str,
+    timeout_s: float = 12.0,
+) -> tuple[int, int]:
+    """Prove a row click closed the board and opened that character's native view."""
+
+    deadline = time.monotonic() + timeout_s
+    stable_hits = 0
+    last_image = None
+    last_name = None
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        last_image = acceptance.ImageGrab.grab()
+        board_title = acceptance.find_ocr_text(
+            last_image,
+            "天朝官员考核榜",
+            acceptance.FULL_SCREEN_REGION,
+            contains=True,
+        )
+        last_name = acceptance.find_ocr_text(
+            last_image,
+            name_probe,
+            CHARACTER_WINDOW_NAME_REGION,
+            contains=True,
+        )
+        stable_hits = stable_hits + 1 if board_title is None and last_name else 0
+        if stable_hits >= 2:
+            last_image.save(artifacts / f"{stem}_character_open.png")
+            write_json(
+                artifacts / f"{stem}_character_open.json",
+                {
+                    "schema_version": 1,
+                    "source_row_text": source_row["text"],
+                    "source_row_center": source_row["center"],
+                    "verification_name_probe": name_probe,
+                    "character_name_center": list(last_name),
+                    "scoreboard_closed": True,
+                    "native_character_view_open": True,
+                },
+            )
+            return last_name
+        time.sleep(acceptance.POLL_INTERVAL_S)
+    if last_image is not None:
+        last_image.save(artifacts / f"timeout_{stem}_character_open.png")
+    raise acceptance.RunnerError(
+        "representative scoreboard row did not close the board and open its character"
+    )
+
+
+def close_representative_character_view(
+    artifacts: Path, stem: str, name_probe: str
+) -> int:
+    """Restore a clean map after the row-link probe, tolerating one tooltip Escape."""
+
+    width, height = acceptance.pyautogui.size()
+    acceptance.pyautogui.moveTo(int(width * 0.80), int(height * 0.50), duration=0.2)
+    for attempt in range(1, 4):
+        acceptance.focus_ck3()
+        acceptance.pyautogui.press("escape")
+        deadline = time.monotonic() + 3.0
+        absent_hits = 0
+        last_image = None
+        while time.monotonic() < deadline:
+            last_image = acceptance.ImageGrab.grab()
+            visible = acceptance.find_ocr_text(
+                last_image,
+                name_probe,
+                CHARACTER_WINDOW_NAME_REGION,
+                contains=True,
+            )
+            absent_hits = absent_hits + 1 if visible is None else 0
+            if absent_hits >= 2:
+                last_image.save(artifacts / f"{stem}_character_closed.png")
+                return attempt
+            time.sleep(acceptance.POLL_INTERVAL_S)
+    if last_image is not None:
+        last_image.save(artifacts / f"red_{stem}_character_still_open.png")
+    raise acceptance.RunnerError(
+        "representative row opened a character view that could not be closed"
+    )
+
+
+def audit_scoreboard_controls(artifacts: Path) -> dict[str, object]:
+    """Live-click representative custom controls without claiming 160 row clicks."""
+
+    # A queued product event can cover the modal even while its title and tabs
+    # remain OCR-visible underneath.  The recovery classifier is deliberately
+    # conservative and leaves a clean board untouched.
+    settle_promo_interruptions(
+        artifacts, "08_gui_audit_preflight", observation_s=1.0
+    )
+    acceptance.wait_for_ocr_tokens(
+        ("天朝官员考核榜", "所辖官员", "点击任一官员"),
+        ("zg361_scoreboard", "localize", "error"),
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "08_gui_audit_ready",
+    )
+    width, height = acceptance.pyautogui.size()
+
+    title_close_point = (
+        int(width * SCOREBOARD_TITLE_CLOSE_BUTTON[0]),
+        int(height * SCOREBOARD_TITLE_CLOSE_BUTTON[1]),
+    )
+    acceptance.deliberate_click(
+        title_close_point, "performance-board title-bar close button"
+    )
+    title_toggle = wait_for_scoreboard_closed_with_toggle(
+        artifacts, "08_gui_audit_title_button"
+    )
+    reopen_managed_scoreboard_for_audit(
+        artifacts, "08_gui_audit_title_button_reopen", title_toggle
+    )
+
+    backdrop_point = (
+        int(width * SCOREBOARD_BACKDROP_POINT[0]),
+        int(height * SCOREBOARD_BACKDROP_POINT[1]),
+    )
+    acceptance.deliberate_click(backdrop_point, "performance-board modal backdrop")
+    backdrop_toggle = wait_for_scoreboard_closed_with_toggle(
+        artifacts, "08_gui_audit_backdrop"
+    )
+    reopen_managed_scoreboard_for_audit(
+        artifacts, "08_gui_audit_backdrop_reopen", backdrop_toggle
+    )
+
+    row_items = acceptance.capture_ocr_bundle(
+        artifacts, "08_gui_audit_row_source", acceptance.FULL_SCREEN_REGION
+    )
+    selected = select_representative_scoreboard_row(row_items, width, height)
+    if selected is None:
+        raise acceptance.RunnerError(
+            "no visible real-character scoreboard row satisfied the representative audit"
+        )
+    source_row, personal_name = selected
+    # Use the final two CJK characters as the cross-font OCR probe.  The row
+    # and native character header render the same UI name at different sizes;
+    # the leading glyph is the one most often recognized differently.
+    name_probe = personal_name[-2:]
+    row_center = tuple(int(value) for value in source_row["center"])
+    acceptance.deliberate_click(
+        row_center, f"representative generated scoreboard row: {source_row['text']!r}"
+    )
+    character_name_center = wait_for_representative_character_view(
+        artifacts,
+        "08_gui_audit_row_link",
+        source_row,
+        name_probe,
+    )
+    cleanup_escape_attempts = close_representative_character_view(
+        artifacts, "08_gui_audit_row_link", name_probe
+    )
+    row_reopen_button = acceptance.wait_for_ocr_text(
+        "考核榜",
+        SCOREBOARD_BUTTON_REGION,
+        10,
+        artifacts,
+        "08_gui_audit_row_link_toggle_restored.png",
+        contains=True,
+        stable_hits=2,
+    )
+    reopen_managed_scoreboard_for_audit(
+        artifacts, "08_gui_audit_row_link_reopen", row_reopen_button
+    )
+
+    return {
+        "scope": "representative_generated_controls",
+        "title_bar_close": {
+            "clicked": True,
+            "scoreboard_closed": True,
+            "scoreboard_reopened": True,
+            "point_px": list(title_close_point),
+            "point_normalized": list(SCOREBOARD_TITLE_CLOSE_BUTTON),
+            "closed_artifact": "08_gui_audit_title_button_closed.png",
+            "reopened_artifact": "08_gui_audit_title_button_reopen.png",
+        },
+        "modal_backdrop": {
+            "clicked": True,
+            "scoreboard_closed": True,
+            "scoreboard_reopened": True,
+            "point_px": list(backdrop_point),
+            "point_normalized": list(SCOREBOARD_BACKDROP_POINT),
+            "closed_artifact": "08_gui_audit_backdrop_closed.png",
+            "reopened_artifact": "08_gui_audit_backdrop_reopen.png",
+        },
+        "row_link": {
+            "clicked": True,
+            "scoreboard_closed": True,
+            "native_character_view_opened": True,
+            "scoreboard_reopened_after_character_cleanup": True,
+            "source_text": source_row["text"],
+            "source_center_px": list(row_center),
+            "source_personal_name_ocr": personal_name,
+            "verification_name_probe": name_probe,
+            "character_name_center_px": list(character_name_center),
+            "artifact": "08_gui_audit_row_link_character_open.png",
+            "reopened_artifact": "08_gui_audit_row_link_reopen.png",
+            "cleanup_escape_attempts": cleanup_escape_attempts,
+        },
+        "row_link_coverage": {
+            "generated_total": SCOREBOARD_GENERATED_ROW_LINKS,
+            "live_clicked": 1,
+            "not_individually_clicked": SCOREBOARD_GENERATED_ROW_LINKS - 1,
+            "claim": "one representative click over a shared generated row structure",
+        },
+    }
 
 
 def capture_scoreboard_gui(
@@ -1293,7 +2024,7 @@ def capture_scoreboard_gui(
     cockpit_artifact = None
     if recorder:
         recorder.mark("managed_scoreboard_visible")
-        recorder.hold()
+        recorder.clean_hold("managed_scoreboard", artifacts)
         cockpit = acceptance.wait_for_ocr_text(
             "制度驾驶舱",
             acceptance.FULL_SCREEN_REGION,
@@ -1304,26 +2035,38 @@ def capture_scoreboard_gui(
         )
         acceptance.deliberate_click(cockpit, "production policy-cockpit tab")
         # The 361 reference batch can schedule ordinary product events on the
-        # next game day.  One may surface over the board between the tab click
-        # and OCR (for example "野狗与小白兔").  Resolve only a positively
-        # identified native event, then prove the cockpit underneath; never
-        # treat an overlaid modal as a missing or broken tab.
-        settle_promo_interruptions(
-            artifacts,
-            "08_scoreboard_cockpit",
-            observation_s=3.5,
-        )
-        acceptance.wait_for_ocr_tokens(
-            ("361 制度账本", "证据质量", "组织信任", "预算压力"),
-            ("zg361_", "localize", "error"),
-            acceptance.FULL_SCREEN_REGION,
-            20,
-            artifacts,
-            "08_scoreboard_cockpit",
-        )
-        cockpit_artifact = "08_scoreboard_cockpit.png"
+        # next game day. One may surface over the board between the tab click
+        # and OCR (for example "野狗与小白兔"). First prove the clean cockpit;
+        # only if that fails do we invoke the conservative event recovery and
+        # retry. This prevents cockpit prose from being mistaken for an event.
+        cockpit_tokens = ("361 制度账本", "证据质量", "组织信任", "预算压力")
+        try:
+            acceptance.wait_for_ocr_tokens(
+                cockpit_tokens,
+                ("zg361_", "localize", "error"),
+                acceptance.FULL_SCREEN_REGION,
+                6,
+                artifacts,
+                "08_scoreboard_cockpit",
+            )
+            cockpit_artifact = "08_scoreboard_cockpit.png"
+        except acceptance.RunnerError:
+            settle_promo_interruptions(
+                artifacts,
+                "08_scoreboard_cockpit_recovery",
+                observation_s=1.5,
+            )
+            acceptance.wait_for_ocr_tokens(
+                cockpit_tokens,
+                ("zg361_", "localize", "error"),
+                acceptance.FULL_SCREEN_REGION,
+                20,
+                artifacts,
+                "08_scoreboard_cockpit_recovered",
+            )
+            cockpit_artifact = "08_scoreboard_cockpit_recovered.png"
         recorder.mark("policy_cockpit_visible")
-        recorder.hold(3.0)
+        recorder.clean_hold("policy_cockpit", artifacts, 3.0)
         managed = acceptance.wait_for_ocr_text(
             "所辖官员",
             acceptance.FULL_SCREEN_REGION,
@@ -1334,6 +2077,9 @@ def capture_scoreboard_gui(
         )
         acceptance.deliberate_click(managed, "return to managed scoreboard tab")
         recorder.hold(1.0)
+    representative_control_audit = audit_scoreboard_controls(artifacts)
+    if recorder:
+        recorder.mark("representative_scoreboard_controls_audited")
     return {
         "button_ocr": True,
         "right_panel_suppression_ocr": True,
@@ -1348,6 +2094,7 @@ def capture_scoreboard_gui(
         "panel_ocr_artifact": "08_scoreboard_panel_ocr.json",
         "normalized_ocr": rendered_text,
         "cockpit_artifact": cockpit_artifact,
+        "representative_control_audit": representative_control_audit,
     }
 
 
@@ -1387,20 +2134,12 @@ def capture_jingcha_planner(
     recorder: PromoRecorder | None = None,
 ) -> dict[str, object]:
     close_scoreboard_panel(artifacts, "09_jingcha")
-    confirm = isolated.open_decision_detail(
-        "验收免费京察规划器",
-        "发出京察召集令",
-        artifacts,
-        "09_jingcha_mandate",
-    )
-    acceptance.click_until_text_disappears(
-        confirm,
-        "发出京察召集令",
-        acceptance.FULL_SCREEN_REGION,
-        artifacts,
-        attempts=2,
+    stream.wait("ZGA: TEST PASS clean_jingcha_dispatch_scheduled", 30)
+    acceptance.set_speed_five_and_unpause(
+        artifacts, "zg361_clean_jingcha_dispatch", require_progress=True
     )
     stream.wait("ZGA: TEST PASS jingcha_mandate_issued", 30)
+    stream.wait("ZGA: TEST PASS clean_jingcha_dispatched", 30)
     if stream.count("ZGA: TEST PASS jingcha_mandate_issued") != 1:
         raise acceptance.RunnerError(
             "Jingcha mandate marker must occur exactly once"
@@ -1416,7 +2155,7 @@ def capture_jingcha_planner(
     )
     if recorder:
         recorder.mark("jingcha_mandate_visible")
-        recorder.hold()
+        recorder.clean_hold("jingcha_mandate", artifacts)
     host_option = acceptance.wait_for_ocr_text(
         "依例举办京察",
         acceptance.FULL_SCREEN_REGION,
@@ -1445,7 +2184,7 @@ def capture_jingcha_planner(
     )
     if recorder:
         recorder.mark("free_jingcha_planner_visible")
-        recorder.hold(3.0)
+        recorder.clean_hold("free_jingcha_planner", artifacts, 3.0)
     exit_planner = acceptance.wait_for_ocr_text(
         "退出活动规划",
         acceptance.FULL_SCREEN_REGION,
@@ -1481,6 +2220,13 @@ def capture_jingcha_planner(
     isolated.wait_for_gameplay_hud(artifacts)
     return {
         "real_mandate_event_path": True,
+        "clean_dispatch_scheduled_marker_count": stream.count(
+            "ZGA: TEST PASS clean_jingcha_dispatch_scheduled"
+        ),
+        "clean_dispatch_marker_count": stream.count(
+            "ZGA: TEST PASS clean_jingcha_dispatched"
+        ),
+        "mandate_marker_count": stream.count("ZGA: TEST PASS jingcha_mandate_issued"),
         "planner_opened": True,
         "custom_activity_title_ocr": True,
         "custom_destination_prompt_ocr": True,
@@ -1504,7 +2250,7 @@ def capture_superior_assigned_result(
     )
     stream.wait("ZGA: TEST PASS personal_result_switch_scheduled", 30)
     stream.wait(
-        "ZGA: TEST PASS personal_result_target_selected_from_prior_tail", 30
+        "ZGA: TEST PASS historical_personal_result_target_han_5253", 30
     )
     stream.wait(
         "ZGA: TEST PASS jingcha_refusal_superior_opinion_and_kpi_minus_50", 30
@@ -1513,6 +2259,7 @@ def capture_superior_assigned_result(
     stream.wait(
         "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior", 30
     )
+    stream.wait("ZGA: TEST PASS clean_policy_chain_scheduled", 30)
     if stream.count("ZGA: TEST PASS superior_assigned_player_grade") != 1:
         raise acceptance.RunnerError(
             "superior-assigned player grade marker must occur exactly once"
@@ -1548,9 +2295,16 @@ def capture_superior_assigned_result(
         )
     if recorder:
         recorder.mark("superior_assigned_325_visible")
-        recorder.hold(3.5)
+        recorder.clean_hold("superior_assigned_325", artifacts, 3.5)
     return {
         "real_superior_review_path": True,
+        "reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
+        "fixed_historical_target_marker_count": stream.count(
+            "ZGA: TEST PASS historical_personal_result_target_han_5253"
+        ),
+        "clean_policy_chain_scheduled_marker_count": stream.count(
+            "ZGA: TEST PASS clean_policy_chain_scheduled"
+        ),
         "rendered_grade": grades[0],
         "title_artifact": "10_superior_result_title.png",
         "panel_artifact": "10_superior_result.png",
@@ -1623,13 +2377,39 @@ def capture_received_scoreboard(
         "11_received_scoreboard",
     )
     recorder.mark("received_scoreboard_with_325_visible")
-    recorder.hold(3.0)
+    recorder.clean_hold("received_scoreboard_with_325", artifacts, 3.0)
+    # This historical official has a received scoreboard but does not inherit
+    # the emperor's mechanism ledger. Exercise the distinct received-tab button
+    # in-place (an intentional idempotent click) without assuming the system tab
+    # is available on this character.
+    received_tab = acceptance.wait_for_ocr_text(
+        "本人所属考核单元",
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "11_received_tab_button.png",
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(
+        received_tab, "received performance-board tab blocker audit"
+    )
+    acceptance.wait_for_ocr_tokens(
+        ("天朝官员考核榜", "本人所属考核单元", "3.25"),
+        ("zg361_", "localize", "error"),
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "11_received_tab_reopened",
+    )
     settle_promo_interruptions(artifacts, "11_received_before_close")
     close_scoreboard_panel(artifacts, "11_received")
     settle_promo_interruptions(artifacts, "11_received_after_close")
     acceptance.ensure_game_paused(artifacts, "11_received_policy_setup")
     return {
         "received_panel_artifact": "11_received_scoreboard.png",
+        "received_tab_clicked_live": True,
+        "received_tab_idempotent_reopen_live": True,
+        "received_tab_reopened_artifact": "11_received_tab_reopened.png",
         "normalized_ocr": rendered_text,
     }
 
@@ -1644,8 +2424,11 @@ def promo_event_modal_evidence(
     generic option ranker from ever clicking an ordinary board row.
     """
     title = any(
-        0.18 <= item["center"][0] / width <= 0.76
-        and 0.10 <= item["center"][1] / height <= 0.36
+        # CK3 character-event titles occupy the left half of the classic
+        # modal. The centered performance-board and cockpit headings must not
+        # satisfy this test even though they also have long explanatory text.
+        0.18 <= item["center"][0] / width < 0.48
+        and 0.16 <= item["center"][1] / height <= 0.32
         and (item["bbox"][2] - item["bbox"][0]) / width >= 0.055
         for item in items
     )
@@ -1826,26 +2609,23 @@ def settle_promo_interruptions(
 
 
 def capture_policy_cards(
+    stream: MarkerStream,
     artifacts: Path, recorder: PromoRecorder
 ) -> list[dict[str, object]]:
     captured: list[dict[str, object]] = []
-    for mechanism_id, decision_title, event_title, option_text in PROMO_POLICY_CARDS:
+    for mechanism_id, _decision_title, event_title, option_text in PROMO_POLICY_CARDS:
         stem = f"12_policy_{mechanism_id:03d}"
         settle_promo_interruptions(artifacts, f"{stem}_preflight")
         acceptance.ensure_game_paused(artifacts, f"{stem}_preflight")
-        confirm = isolated.open_decision_detail(
-            decision_title,
-            "打开此卡",
+        acceptance.set_speed_five_and_unpause(
             artifacts,
-            stem,
+            f"zg361_clean_policy_{mechanism_id:03d}",
+            require_progress=True,
         )
-        acceptance.click_until_text_disappears(
-            confirm,
-            "打开此卡",
-            acceptance.FULL_SCREEN_REGION,
-            artifacts,
-            attempts=2,
+        dispatch_marker = (
+            f"ZGA: TEST PASS clean_policy_{mechanism_id:03d}_dispatched"
         )
+        stream.wait(dispatch_marker, 30)
         acceptance.wait_for_ocr_text(
             event_title,
             acceptance.FULL_SCREEN_REGION,
@@ -1856,7 +2636,9 @@ def capture_policy_cards(
             stable_hits=1,
         )
         recorder.mark(f"policy_card_{mechanism_id:03d}_visible")
-        recorder.hold(2.5)
+        recorder.clean_hold(
+            f"policy_card_{mechanism_id:03d}", artifacts, 2.5
+        )
         option = acceptance.wait_for_ocr_text(
             option_text,
             acceptance.FULL_SCREEN_REGION,
@@ -1873,7 +2655,33 @@ def capture_policy_cards(
             {
                 "mechanism_id": mechanism_id,
                 "event_artifact": f"{stem}_event.png",
+                "dispatch_marker": dispatch_marker,
+                "clean_span_id": f"policy_card_{mechanism_id:03d}",
             }
+        )
+    acceptance.set_speed_five_and_unpause(
+        artifacts, "zg361_clean_policy_chain_completion", require_progress=True
+    )
+    stream.wait("ZGA: TEST PASS clean_policy_chain_completed", 30)
+    acceptance.ensure_game_paused(artifacts, "12_policy_chain_completed")
+    policy_markers = {
+        f"{mechanism_id:03d}": stream.count(
+            f"ZGA: TEST PASS clean_policy_{mechanism_id:03d}_dispatched"
+        )
+        for mechanism_id, *_ in PROMO_POLICY_CARDS
+    }
+    all_six_count = stream.count(
+        "ZGA: TEST PASS clean_policy_chain_all_six_dispatched"
+    )
+    completion_count = stream.count("ZGA: TEST PASS clean_policy_chain_completed")
+    if any(count != 1 for count in policy_markers.values()):
+        raise acceptance.RunnerError(
+            f"clean policy dispatch markers must each occur once: {policy_markers}"
+        )
+    if all_six_count != 1 or completion_count != 1:
+        raise acceptance.RunnerError(
+            "clean policy persistence markers must each occur once: "
+            f"all_six={all_six_count}, completion={completion_count}"
         )
     return captured
 
@@ -1885,6 +2693,16 @@ def run_scenario(
 ) -> dict[str, object]:
     initialize_fixture(stream, artifacts)
     if recorder:
+        # The one visible fixture decision is allowed only before recording.
+        # Close its native drawer and prove a clean HUD before FFmpeg starts;
+        # subsequent fixture coordination is hidden and time-delayed.
+        close_native_decisions_panel(artifacts, "05_promo_pre_record")
+        assert_promo_frame_clean(
+            artifacts,
+            "05_promo_pre_record_clean_hud",
+            label="pre_record_hud",
+            phase="pre_record",
+        )
         recorder.start()
         recorder.hold(2.0)
     choose_direct_publication(stream, artifacts, recorder)
@@ -1897,13 +2715,46 @@ def run_scenario(
     policy_cards: list[dict[str, object]] = []
     if recorder:
         received_evidence = capture_received_scoreboard(artifacts, recorder)
-        policy_cards = capture_policy_cards(artifacts, recorder)
+        policy_cards = capture_policy_cards(stream, artifacts, recorder)
         recorder.mark("all_requested_product_screens_captured")
         recorder.hold(2.0)
     counts = stream.counts()
+    constructor_counts = fixture_constructor_counts()
+    policy_dispatch_counts = {
+        f"{mechanism_id:03d}": stream.count(
+            f"ZGA: TEST PASS clean_policy_{mechanism_id:03d}_dispatched"
+        )
+        for mechanism_id, *_ in PROMO_POLICY_CARDS
+    }
     return {
         "standard_lobby_start": True,
         "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
+        "reviewed_official_history_id": EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID,
+        "real_character_provenance": (
+            recorder.real_character_provenance
+            if recorder
+            else promo_real_character_provenance()
+        ),
+        "fixture_constructor_counts": constructor_counts,
+        "historical_subjects_manufactured_by_fixture": bool(
+            any(constructor_counts.values())
+        ),
+        "test_decisions_visible_inside_clean_spans": 0 if recorder else None,
+        "native_decisions_drawer_visible_inside_clean_spans": 0 if recorder else None,
+        "real_character_runtime_attestation": {
+            "song_emperor_exact_build_marker_count": stream.count(
+                "ZGA: TEST PASS exact_build_song_emperor"
+            ),
+            "song_emperor_player_switch_marker_count": stream.count(
+                "ZGA: TEST PASS switched_to_song_emperor"
+            ),
+            "han_5253_fixed_target_marker_count": stream.count(
+                "ZGA: TEST PASS historical_personal_result_target_han_5253"
+            ),
+            "han_5253_superior_grade_marker_count": stream.count(
+                "ZGA: TEST PASS superior_assigned_player_grade"
+            ),
+        },
         "song_emperor_celestial": True,
         "song_emperor_independent_sample": True,
         "review_liege_minimum_tier": "duchy",
@@ -1956,6 +2807,19 @@ def run_scenario(
         "superior_assigned_player_result": personal_result_evidence,
         "promo_received_scoreboard": received_evidence,
         "promo_policy_cards": policy_cards,
+        "promo_policy_chain": {
+            "dispatch_marker_counts": policy_dispatch_counts,
+            "all_six_dispatched_marker_count": stream.count(
+                "ZGA: TEST PASS clean_policy_chain_all_six_dispatched"
+            ),
+            "completion_marker_count": stream.count(
+                "ZGA: TEST PASS clean_policy_chain_completed"
+            ),
+            "persisted_choices_verified": bool(
+                recorder
+                and stream.count("ZGA: TEST PASS clean_policy_chain_completed") == 1
+            ),
+        },
     }
 
 

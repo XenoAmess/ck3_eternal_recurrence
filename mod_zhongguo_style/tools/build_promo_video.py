@@ -35,6 +35,7 @@ if str(SHARED_TOOLS) not in sys.path:
     sys.path.insert(0, str(SHARED_TOOLS))
 
 import build_full_agent_showcase as shared  # noqa: E402
+import audit_promo_visuals as visual_audit  # noqa: E402
 
 
 FORMAT_VERSION = 1
@@ -580,6 +581,77 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[shared.Chapter]]:
         1 for chapter in chapters if chapter.material_status == "placeholder"
     )
     return payload, chapters
+
+
+def verify_visual_audit_binding(
+    *,
+    manifest_path: Path,
+    report_path: Path | None,
+    expected_sha256: str | None,
+    required: bool,
+) -> dict[str, Any] | None:
+    """Re-evaluate a visual audit and bind it to this exact manifest.
+
+    ``audit_promo_visuals.verify_report`` authenticates the complete report and
+    rebuilds its evaluation from the preserved spec and evidence.  This wrapper
+    additionally prevents a valid report for one release manifest from being
+    supplied while validating or rendering another.
+    """
+
+    if (report_path is None) != (expected_sha256 is None):
+        raise PromoError(
+            "--visual-audit-report and --expected-audit-sha256 must be provided together"
+        )
+    if report_path is None or expected_sha256 is None:
+        if required:
+            raise PromoError(
+                "release media requires --visual-audit-report and "
+                "--expected-audit-sha256"
+            )
+        return None
+    if re.fullmatch(r"[0-9A-Fa-f]{64}", expected_sha256) is None:
+        raise PromoError("--expected-audit-sha256 must be 64 hexadecimal characters")
+
+    manifest_path = manifest_path.expanduser().resolve()
+    report_path = report_path.expanduser().resolve()
+    try:
+        report = visual_audit.verify_report(report_path, expected_sha256)
+    except Exception as exc:
+        # Keep audit parser, I/O, and re-evaluation failures inside the promo
+        # CLI's stable exit-2 error boundary rather than leaking a traceback.
+        raise PromoError(f"visual audit verification failed: {exc}") from exc
+
+    evaluation = report.get("evaluation")
+    bound_manifest = (
+        evaluation.get("release_manifest") if isinstance(evaluation, dict) else None
+    )
+    actual_manifest = {
+        "path": str(manifest_path),
+        "bytes": manifest_path.stat().st_size,
+        "sha256": shared._sha256(manifest_path),
+    }
+    if not isinstance(bound_manifest, dict) or any(
+        bound_manifest.get(key) != value for key, value in actual_manifest.items()
+    ):
+        raise PromoError(
+            "visual audit report is bound to a different release manifest"
+        )
+    if evaluation.get("result") != "GREEN":
+        # verify_report already enforces this; retain an explicit local contract
+        # so the returned sidecar binding is self-describing.
+        raise PromoError("visual audit report is not GREEN")
+
+    return {
+        "verification": "audit_promo_visuals.verify_report re-evaluation",
+        "result": "GREEN",
+        "report": {
+            "path": str(report_path),
+            "bytes": report_path.stat().st_size,
+            "sha256": visual_audit.sha256_file(report_path),
+        },
+        "evaluation_sha256": report.get("evaluation_sha256"),
+        "release_manifest": actual_manifest,
+    }
 
 
 def _layout_lines(draw, text: str, font, *, language: str) -> tuple[list[str], list[float]]:
@@ -1414,6 +1486,7 @@ def write_sidecar(
     take_id: str,
     ffmpeg: Path,
     ffprobe: Path,
+    visual_audit_binding: dict[str, Any] | None = None,
 ) -> Path:
     cursor = 0.0
     chapter_rows: list[dict[str, Any]] = []
@@ -1527,6 +1600,8 @@ def write_sidecar(
         "tools": {"ffmpeg": str(ffmpeg), "ffprobe": str(ffprobe)},
         "chapters": chapter_rows,
     }
+    if visual_audit_binding is not None:
+        payload["visual_audit"] = visual_audit_binding
     sidecar = output.with_suffix(".video.json")
     _atomic_json(sidecar, payload)
     return sidecar
@@ -1557,6 +1632,15 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--take-id", default="take-01")
     result.add_argument("--ffmpeg")
     result.add_argument("--ffprobe")
+    result.add_argument(
+        "--visual-audit-report",
+        type=Path,
+        help="GREEN visual-audit report required by captured release manifests",
+    )
+    result.add_argument(
+        "--expected-audit-sha256",
+        help="expected SHA-256 of --visual-audit-report",
+    )
     result.add_argument("--fps", type=_positive_integer, default=DEFAULT_FPS)
     result.add_argument("--crf", type=_crf, default=DEFAULT_CRF)
     result.add_argument("--preset", default=DEFAULT_PRESET)
@@ -1596,6 +1680,13 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
     take_id = args.take_id.strip()
 
     manifest, chapters = load_manifest(manifest_path)
+    release_build = manifest.get("project_status") == "captured_release_candidate"
+    visual_audit_binding = verify_visual_audit_binding(
+        manifest_path=manifest_path,
+        report_path=args.visual_audit_report,
+        expected_sha256=args.expected_audit_sha256,
+        required=release_build,
+    )
     ffmpeg = shared.find_program(args.ffmpeg, "ffmpeg")
     ffprobe = shared.find_program(args.ffprobe, "ffprobe", sibling_of=ffmpeg)
     fonts = shared.find_fonts()
@@ -1606,7 +1697,8 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
             "VALID: "
             f"chapters={len(chapters)}; placeholders={manifest['_placeholder_count']}; "
             f"estimated={manifest['_estimated_duration_seconds']:.1f}s; "
-            f"voice={VOICE}; bilingual_subtitles=zh-CN+en; loading_opening=excluded"
+            f"voice={VOICE}; bilingual_subtitles=zh-CN+en; loading_opening=excluded; "
+            f"visual_audit={'verified' if visual_audit_binding else 'not_required'}"
         )
         return output, output.with_suffix(".video.json")
 
@@ -1615,6 +1707,11 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
             "manifest_sha256": shared._sha256(manifest_path),
             "take_id": take_id,
             "build_format": BUILD_FORMAT_VERSION,
+            "visual_audit_sha256": (
+                visual_audit_binding["report"]["sha256"]
+                if visual_audit_binding is not None
+                else None
+            ),
         }
     )
     build_directory = work_directory / f"zg361-promo-{build_key[:16].lower()}"
@@ -1669,6 +1766,7 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
         take_id=take_id,
         ffmpeg=ffmpeg,
         ffprobe=ffprobe,
+        visual_audit_binding=visual_audit_binding,
     )
     print(f"VIDEO:   {output}")
     print(f"SIDECAR: {sidecar}")

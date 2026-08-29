@@ -33,6 +33,7 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 & "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
 & "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_promo_video.py
 & "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
+& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_audit_promo_visuals.py
 & "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_promo_video.py `
   --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
 & "tools\.venv\Scripts\python.exe" tools/test_gen_zhongguo_acceptance_cases.py
@@ -80,6 +81,10 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 - [ ] 宣传成片以中文为主叙事、简中/英文同屏字幕，使用 `zh-CN-XiaoxiaoNeural`，时长严格短于 20 分钟；开场直接进入主题，不含 Launcher、CK3 启动或存档 loading。
 - [ ] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色。
 - [ ] 最终时间线与 QA 抽帧中 0 个 fixture/test-only 决议、按钮或文字（包括“361制实机验收”、`ZGA`、验收规划器、演示触发器）；含污染的验收素材只保留为过程证据，不以裁字、打码或遮罩方式入片。
+- [ ] 对最终零占位 manifest 运行 `tools/audit_promo_visuals.py audit`：每个实机章节都有间隔不超过 1 秒的全屏 PNG/OCR 覆盖，still 使用原图，全部证据与源素材按 bytes/SHA-256 绑定；报告为 GREEN。
+- [ ] 角色 provenance 为每名主角/考核者/受评者记录书签、原版 history ID、显示名、职责及 exact-build history 文件 SHA；工具已确认 history key 存在且 `temporary_or_generated=false`。
+- [ ] 人工以 1× 完整播放每个入片实机段并检查所有 still，签核 `historical_characters_only`、`fixture_test_ui_absent`、`full_clip_reviewed` 与 `no_crop_mask_or_redaction` 四项；五张均匀 QA 抽帧不替代完整签核。
+- [ ] 使用最终记录的报告 SHA 执行 `tools/audit_promo_visuals.py verify --expected-report-sha256 <sha>` 再现 GREEN；audit spec、GREEN/RED 报告、全屏 PNG、OCR JSON、旧 take 与人工签核全部保留在外部 artifact。
 
 建议截图顺序：
 
@@ -186,6 +191,7 @@ py tools/verify_zhongguo_workshop_cache.py `
 | BBCode SHA-256 / UTF-8 bytes | |
 | Media-strip index | |
 | Promo master / duration / SHA-256 | |
+| Promo visual audit report / SHA-256 | |
 | Raw/process artifact root | |
 
 签核后仍不得删除任何过程素材。大体积文件不进 Git，但必须在 artifact 索引中留下绝对路径、大小、SHA-256、

@@ -77,7 +77,11 @@ def _validate_release_source_records(chapters: list[promo.shared.Chapter]) -> No
 
 
 def validate_project(
-    manifest_path: Path, *, stage: str
+    manifest_path: Path,
+    *,
+    stage: str,
+    visual_audit_report: Path | None = None,
+    expected_audit_sha256: str | None = None,
 ) -> tuple[dict[str, Any], list[promo.shared.Chapter]]:
     manifest_path = manifest_path.expanduser().resolve()
     manifest, chapters = promo.load_manifest(manifest_path)
@@ -125,6 +129,18 @@ def validate_project(
                 + ", ".join(missing_live)
             )
         _validate_release_source_records(chapters)
+
+    try:
+        visual_audit_binding = promo.verify_visual_audit_binding(
+            manifest_path=manifest_path,
+            report_path=visual_audit_report,
+            expected_sha256=expected_audit_sha256,
+            required=stage == "release",
+        )
+    except promo.PromoError as exc:
+        raise ValidationError(str(exc)) from exc
+    if visual_audit_binding is not None:
+        manifest["_visual_audit_binding"] = visual_audit_binding
 
     capture_ids = [
         chapter.raw["capture"]["id"]
@@ -220,6 +236,14 @@ def validate_media(
         raise ValidationError("release sidecar still contains placeholders")
     if stage == "release" and sidecar.get("readiness") != "rendered_candidate":
         raise ValidationError("release sidecar is not a rendered candidate")
+    if stage == "release":
+        expected_visual_audit = manifest.get("_visual_audit_binding")
+        if not isinstance(expected_visual_audit, dict):
+            raise ValidationError("release validation has no verified visual audit")
+        if sidecar.get("visual_audit") != expected_visual_audit:
+            raise ValidationError(
+                "release sidecar visual audit does not match the verified report"
+            )
     chapter_rows = sidecar.get("chapters")
     if not isinstance(chapter_rows, list) or len(chapter_rows) != len(chapters):
         raise ValidationError("sidecar chapter count does not match manifest")
@@ -311,13 +335,27 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--video", type=Path)
     result.add_argument("--sidecar", type=Path)
     result.add_argument("--sample-dir", type=Path)
+    result.add_argument(
+        "--visual-audit-report",
+        type=Path,
+        help="GREEN visual-audit report required for --stage release",
+    )
+    result.add_argument(
+        "--expected-audit-sha256",
+        help="expected SHA-256 of --visual-audit-report",
+    )
     return result
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
-        manifest, chapters = validate_project(args.manifest, stage=args.stage)
+        manifest, chapters = validate_project(
+            args.manifest,
+            stage=args.stage,
+            visual_audit_report=args.visual_audit_report,
+            expected_audit_sha256=args.expected_audit_sha256,
+        )
         if args.sidecar is not None and args.video is None:
             raise ValidationError("--sidecar requires --video")
         if args.sample_dir is not None and args.video is None:
