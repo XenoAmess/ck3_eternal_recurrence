@@ -187,14 +187,52 @@ def main() -> int:
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (
         'acceptance.pyautogui.press("f8")',
-        'f"{stem}_decisions_panel.png"',
-        "header_region",
-        "stable_hits=2",
+        'f"{stem}_f8_no_panel.png"',
+        "native_right_rail_scan_points",
+        "is_decisions_shortcut_tooltip",
+        "dynamically located native Decisions HUD tab",
+        'f"{stem}_decisions_panel_scan.png"',
     ):
         assert token in shared_open_drawer, token
     assert "0.987" not in shared_open_drawer
     assert "0.367" not in shared_open_drawer
-    assert "native Decisions HUD tab" not in shared_open_drawer
+    assert shared_open_drawer.index('acceptance.pyautogui.press("f8")') < (
+        shared_open_drawer.index("native_right_rail_scan_points")
+    )
+    shared_header_wait = inspect.getsource(
+        capture.isolated._wait_for_decisions_header
+    )
+    assert "stable_hits >= 2" in shared_header_wait
+    assert "raise" not in shared_header_wait
+
+    scan_points = capture.isolated.native_right_rail_scan_points(2560, 1440)
+    assert scan_points[0] == (int(2560 * 0.987), int(1440 * 0.055))
+    assert scan_points[-1][1] <= int(1440 * 0.78)
+    assert scan_points[-1][1] >= int(1440 * 0.78) - 31
+    assert all(point[0] == int(2560 * 0.987) for point in scan_points)
+    assert max(
+        right[1] - left[1] for left, right in zip(scan_points, scan_points[1:])
+    ) <= 31
+    robert_decisions_tooltip = [
+        {"text": "决议", "center": [2443, 552]},
+        {"text": "F8", "center": [2463, 581]},
+    ]
+    hover = (int(2560 * 0.987), int(1440 * 0.367))
+    assert capture.isolated.is_decisions_shortcut_tooltip(
+        robert_decisions_tooltip, hover, 2560, 1440
+    )
+    assert not capture.isolated.is_decisions_shortcut_tooltip(
+        [
+            {"text": "派系", "center": [2443, 552]},
+            {"text": "F7", "center": [2463, 581]},
+        ],
+        hover,
+        2560,
+        1440,
+    )
+    assert not capture.isolated.is_decisions_shortcut_tooltip(
+        robert_decisions_tooltip, (hover[0], hover[1] + 300), 2560, 1440
+    )
 
     assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
     assert capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_ID == "han_5253"
