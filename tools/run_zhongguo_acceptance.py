@@ -2401,6 +2401,17 @@ def choose_direct_publication(
 def close_native_decisions_panel(artifacts: Path, stem: str) -> str:
     """Close the native drawer and prove it is gone before seeking our HUD button."""
 
+    width, height = acceptance.pyautogui.size()
+
+    def park_pointer_away_from_right_rail() -> None:
+        # The title-bar X becomes ordinary map terrain as soon as the drawer
+        # closes.  Leaving the pointer there raises a terrain tooltip over the
+        # adjacent performance-board toggle and can hide its OCR label.
+        acceptance.pyautogui.moveTo(
+            int(width * 0.50), int(height * 0.50), duration=0.2
+        )
+        time.sleep(0.5)
+
     def wait_until_closed(
         timeout_s: float, success_artifact: str, failure_artifact: str
     ) -> bool:
@@ -2423,17 +2434,16 @@ def close_native_decisions_panel(artifacts: Path, stem: str) -> str:
         return False
 
     acceptance.focus_ck3()
-    width, height = acceptance.pyautogui.size()
     # An open decision-row tooltip can consume the first Escape while leaving
     # the right drawer untouched. Move away before exercising that close path.
-    acceptance.pyautogui.moveTo(int(width * 0.50), int(height * 0.50), duration=0.2)
-    time.sleep(0.5)
+    park_pointer_away_from_right_rail()
     acceptance.pyautogui.press("escape")
     if wait_until_closed(
         2.5,
         f"{stem}_closed_by_escape.png",
         f"{stem}_escape_left_drawer_open.png",
     ):
+        park_pointer_away_from_right_rail()
         return "escape"
 
     close_point = (
@@ -2446,6 +2456,7 @@ def close_native_decisions_panel(artifacts: Path, stem: str) -> str:
         f"{stem}_closed_by_title_button.png",
         f"red_{stem}_drawer_still_open.png",
     ):
+        park_pointer_away_from_right_rail()
         return "title_bar_close"
     raise acceptance.RunnerError(
         "native Decisions drawer remained open after Escape and its title-bar close button"

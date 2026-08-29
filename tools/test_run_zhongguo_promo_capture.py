@@ -149,8 +149,14 @@ def main() -> int:
         "native Decisions title-bar close button",
         "absent_hits >= 2",
         'return "title_bar_close"',
+        "park_pointer_away_from_right_rail",
     ):
         assert token in close_body, token
+    assert (
+        close_body.index("native Decisions title-bar close button")
+        < close_body.rindex("park_pointer_away_from_right_rail()")
+        < close_body.index('return "title_bar_close"')
+    )
 
     received = re.search(
         r"def capture_received_scoreboard\(.*?(?=^def )", runner, re.M | re.S
