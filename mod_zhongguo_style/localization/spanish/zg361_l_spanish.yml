@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "Evaluación de Rendimiento"
  zg361_review_now_decision:0 "Realizar Evaluación de Rendimiento Ahora"
- zg361_review_now_decision_desc:0 "Ordena a la oficina de evaluación que clasifique a tu cuadro directivo de inmediato en lugar de esperar a la temporada anual. Los oficiales ya evaluados este año serán reevaluados."
- zg361_review_now_decision_tooltip:0 "Reevaluar inmediatamente al menos a un cargo titular directo en activo."
+ zg361_review_now_decision_desc:0 "Ordena a la oficina de evaluación que clasifique a tu cuadro directivo de inmediato en lugar de esperar a la temporada anual. Los oficiales ya evaluados este año no serán evaluados de nuevo."
+ zg361_review_now_decision_tooltip:0 "Evalúa inmediatamente al menos a un cargo titular directo en activo; no puedes realizar otra evaluación en el mismo año natural."
  zg361_review_now_decision_confirm:0 "¡Publica las clasificaciones!"
  zg361_ratio_strict_decision:0 "Cupo de Cola: 361 Estricto (10%)"
  zg361_ratio_strict_decision_desc:0 "Aplica la distribución: con cinco o más en el grupo, alguien debe asumir el 3.25."

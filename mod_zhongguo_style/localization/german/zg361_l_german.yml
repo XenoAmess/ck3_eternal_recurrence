@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "Leistungsbeurteilung"
  zg361_review_now_decision:0 "Leistungsbeurteilung jetzt durchführen"
- zg361_review_now_decision_desc:0 "Befiehl dem Prüfungsamt, deine direkten Untergebenen sofort zu reihen, statt auf die Saisonrunde zu warten. Bereits in diesem Jahr bewertete Beamte werden neu beurteilt."
- zg361_review_now_decision_tooltip:0 "Sofort mindestens einen direkten Amtsinhaber neu überprüfen."
+ zg361_review_now_decision_desc:0 "Befiehl dem Prüfungsamt, deine direkten Untergebenen sofort zu reihen, statt auf die Saisonrunde zu warten. Bereits in diesem Jahr bewertete Beamte werden nicht erneut beurteilt."
+ zg361_review_now_decision_tooltip:0 "Sofort mindestens einen direkten Amtsinhaber beurteilen; im selben Kalenderjahr kann keine weitere Beurteilung abgeschlossen werden."
  zg361_review_now_decision_confirm:0 "Ranglisten veröffentlichen!"
  zg361_ratio_strict_decision:0 "Mindestquote: Strenges 361 (10%)"
  zg361_ratio_strict_decision_desc:0 "Verteilung durchsetzen: Bei fünf oder mehr Personen im Pool muss jemand die 3.25 erhalten."

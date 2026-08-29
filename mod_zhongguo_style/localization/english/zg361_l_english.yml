@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "Performance Review"
  zg361_review_now_decision:0 "Conduct Performance Review Now"
- zg361_review_now_decision_desc:0 "Order the evaluation bureau to rank your direct roster immediately instead of waiting for the annual season. Officials already reviewed this year will be re-evaluated."
- zg361_review_now_decision_tooltip:0 "Immediately re-evaluate at least one direct incumbent official."
+ zg361_review_now_decision_desc:0 "Order the evaluation bureau to rank your direct roster immediately instead of waiting for the annual season. You may settle only one review per calendar year; officials already covered by your settled review that year will not be evaluated again."
+ zg361_review_now_decision_tooltip:0 "Immediately review at least one direct incumbent official; you cannot settle another review in the same calendar year."
  zg361_review_now_decision_confirm:0 "Publish the rankings!"
  zg361_ratio_strict_decision:0 "Bottom Quota: Strict 361 (10%)"
  zg361_ratio_strict_decision_desc:0 "Enforce the distribution: with five or more in the pool, someone must take the 3.25."

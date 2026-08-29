@@ -1147,6 +1147,74 @@ class ReleaseLocalizationTests(unittest.TestCase):
             self.assertGreater(record["size"], 0)
             self.assertTrue(record["path"].startswith("mod_zhongguo_style/"))
 
+    def test_review_now_copy_matches_same_year_idempotence_in_all_nine_languages(self) -> None:
+        guard = "NOT = { var:zg361_last_settled_year = current_year }"
+        decisions = (
+            release_loc.MOD_ROOT / "common" / "decisions" / "zg361_decisions.txt"
+        ).read_text(encoding="utf-8-sig")
+        effects = (
+            release_loc.MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        self.assertIn(guard, decisions)
+        self.assertIn(guard, effects)
+
+        expected = {
+            "english": (
+                "Order the evaluation bureau to rank your direct roster immediately instead of waiting for the annual season. You may settle only one review per calendar year; officials already covered by your settled review that year will not be evaluated again.",
+                "Immediately review at least one direct incumbent official; you cannot settle another review in the same calendar year.",
+            ),
+            "simp_chinese": (
+                "不等年度绩效季，现在就命考功司开榜排名。你每个自然年只能结算一次考核；本年度已纳入你结算考核的直属官员不会重复评定。",
+                "立即考核至少一名直属在任官员；同一自然年不能再次结算考核。",
+            ),
+            "french": (
+                "Ordonnez au bureau des examens de classer immédiatement vos officiers directs au lieu d'attendre la saison annuelle. Les officiers déjà évalués cette année ne seront pas réexaminés.",
+                "Évaluer immédiatement au moins un titulaire en poste direct ; l'évaluation ne peut pas être répétée la même année.",
+            ),
+            "german": (
+                "Befiehl dem Prüfungsamt, deine direkten Untergebenen sofort zu reihen, statt auf die Saisonrunde zu warten. Bereits in diesem Jahr bewertete Beamte werden nicht erneut beurteilt.",
+                "Sofort mindestens einen direkten Amtsinhaber beurteilen; im selben Kalenderjahr kann keine weitere Beurteilung abgeschlossen werden.",
+            ),
+            "japanese": (
+                "年度の考課季を待たず、直ちに考功司に命じて直属の序列を公表させる。今年すでに考課を受けた官吏は再評価されない。",
+                "直属の現職官吏を少なくとも一名、ただちに考課する。同じ暦年内に再度実施することはできない。",
+            ),
+            "korean": (
+                "연례 시즌을 기다리지 말고 평가국에 명해 직속 인원을 즉시 등급 매기게 한다. 올해 이미 평가된 관료는 다시 평가되지 않는다.",
+                "즉시 최소 한 명의 현직 직속 관료를 평가한다. 같은 해에는 다시 실시할 수 없다.",
+            ),
+            "polish": (
+                "Rozkaż biuru ocen natychmiast uszeregować twoich bezpośrednich podwładnych, zamiast czekać na sezon roczny. Urzędnicy już ocenieni w tym roku nie zostaną ocenieni ponownie.",
+                "Natychmiast oceń co najmniej jednego bezpośredniego urzędnika na aktywnym stanowisku; w tym samym roku nie można przeprowadzić kolejnej oceny.",
+            ),
+            "russian": (
+                "Приказать экзаменационной палате немедленно ранжировать ваш прямой штат, не дожидаясь годового сезона. Чиновники, уже аттестованные в этом году, не будут аттестованы повторно.",
+                "Немедленно аттестовать хотя бы одного действующего прямого подчинённого чиновника; в том же календарном году повторная аттестация невозможна.",
+            ),
+            "spanish": (
+                "Ordena a la oficina de evaluación que clasifique a tu cuadro directivo de inmediato en lugar de esperar a la temporada anual. Los oficiales ya evaluados este año no serán evaluados de nuevo.",
+                "Evalúa inmediatamente al menos a un cargo titular directo en activo; no puedes realizar otra evaluación en el mismo año natural.",
+            ),
+        }
+        for language, (description, tooltip) in expected.items():
+            with self.subTest(language=language):
+                path = (
+                    release_loc.MOD_ROOT
+                    / "localization"
+                    / language
+                    / f"zg361_l_{language}.yml"
+                )
+                values = release_loc.minimax.parse_ck3_localization(path)
+                self.assertEqual(
+                    description, values["zg361_review_now_decision_desc"]
+                )
+                self.assertEqual(
+                    tooltip, values["zg361_review_now_decision_tooltip"]
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

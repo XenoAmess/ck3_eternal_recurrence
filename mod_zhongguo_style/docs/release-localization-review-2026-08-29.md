@@ -41,12 +41,19 @@ Z:\ck3_mod_rewrite_process_assets\zg361\localization\release_0.3.0_review6i_c_20
 
 应用后仓库级审计曾抓到德/韩/波七个旧条目的额外 ASCII 引号。失败候选保留；共享候选门随后增加“未转义 ASCII quote 数量必须与源文一致”的回归，最终候选只定点修改这七键。独立复核确认：德语与波兰语弯引号配对、韩语临时借调仍指人员归属、无薪升职仍指薪资兑现期限，且 `#130` / `#283` 标记未丢失。
 
+### 2026-08-30 冻结后定点修正
+
+- “立即开展绩效考核”的说明与 tooltip 共两键修正为同一自然年只能结算一次，已纳入该轮考核的直属官员不会重复评定；考核逻辑未改。
+- 简中与英文由当前执行者逐字审阅；法、德、日、韩、波、俄、西共 14 个目标值先由 MiniMax-M3 生成最小候选，再以各语言既有术语做定点语义修正。七语完成结构、方向、术语与明显异常审查，但没有新增母语审校签字。
+- 新增回归同时锁定 decision/effect 的同年闸门与九语 18 个最终值；本地化单测 33/33 GREEN。
+- 原始候选与拒绝原样落盘的原因保存在仓库外过程目录 `Z:\ck3_mod_rewrite_process_assets\zg361\localization\review_now_no_repeat_20260830`。
+
 ## 自动化与独立审阅
 
 - 候选完整性、当前源哈希、key 顺序、protected token、目标文字脚本、乱码、明显英文残留与已知误译回归：GREEN。
 - 应用后的 4 个权威源文件与 14 个发布目标文件哈希审计：GREEN。
 - 当前审计快照：`docs/release-localization-audit.json`。
-- 审计快照 SHA-256：`E4F608272FFF90F1C9282AFC8D2A11BAE2A6F3EDF8EEE8E999D646359AA30BDA`。
+- 审计快照 SHA-256：`15904C8B49A0EE150D9C626FD65353BB6F7785B7E19D3D332A14971801B80E3F`。
 - 独立只读最终审批：review6i_c PASS；相对已批准 review6h 仅七个指定值变化，九个迁移键的 63 个七语值无回退。
 - 本地单元测试：orchestrator 32/32、MiniMax caller 26/26 GREEN；Python 编译与目标 diff 检查 GREEN。
 

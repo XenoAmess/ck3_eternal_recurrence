@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "Évaluation des performances"
  zg361_review_now_decision:0 "Lancer une évaluation maintenant"
- zg361_review_now_decision_desc:0 "Ordonnez au bureau des examens de classer immédiatement vos officiers directs au lieu d'attendre la saison annuelle. Les officiers déjà évalués cette année seront réexaminés."
- zg361_review_now_decision_tooltip:0 "Réévaluer immédiatement au moins un titulaire en poste direct."
+ zg361_review_now_decision_desc:0 "Ordonnez au bureau des examens de classer immédiatement vos officiers directs au lieu d'attendre la saison annuelle. Les officiers déjà évalués cette année ne seront pas réexaminés."
+ zg361_review_now_decision_tooltip:0 "Évaluer immédiatement au moins un titulaire en poste direct ; l'évaluation ne peut pas être répétée la même année."
  zg361_review_now_decision_confirm:0 "Publier les résultats !"
  zg361_ratio_strict_decision:0 "Quota du bas : 361 strict (10 %)"
  zg361_ratio_strict_decision_desc:0 "Imposer la distribution : à partir de cinq personnes dans le vivier, quelqu'un doit écoper du 3.25."

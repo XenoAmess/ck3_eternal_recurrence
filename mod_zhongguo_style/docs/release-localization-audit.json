@@ -12,8 +12,8 @@
   "source_files": [
     {
       "path": "mod_zhongguo_style/localization/english/zg361_l_english.yml",
-      "size": 15185,
-      "sha256": "cc3f13f6f89b2e4e7b289da7758f64c24dbd2fa97917d73c3e8a3a24c3da0c5e"
+      "size": 15319,
+      "sha256": "e7186069e008a2622f8126e326d2d2ab82e9c4cc6c96eb2f5ac4e283335e726d"
     },
     {
       "path": "mod_zhongguo_style/localization/english/zg361_mechanisms_l_english.yml",
@@ -22,8 +22,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
-      "size": 13462,
-      "sha256": "8086b5b52eb4d4b4f742fe7178bd385fd74ed15a019ca47dc7a789b6d415f8b4"
+      "size": 13558,
+      "sha256": "a3508cf5cbbe8541dfa769826ebcb2a83d0894d0a74866f4e85e4f80e7848e43"
     },
     {
       "path": "mod_zhongguo_style/localization/simp_chinese/zg361_mechanisms_l_simp_chinese.yml",
@@ -34,8 +34,8 @@
   "target_files": [
     {
       "path": "mod_zhongguo_style/localization/french/zg361_l_french.yml",
-      "size": 17356,
-      "sha256": "0e89de8e92dc636c151a7b7f52deddefe020b26f1687334e4f2296cd36f7d9fe"
+      "size": 17421,
+      "sha256": "25508ef9731a20f7e2d8fcb79ae95b0eb37bbea51f3ef8dea265c4bb2fdc7350"
     },
     {
       "path": "mod_zhongguo_style/localization/french/zg361_mechanisms_l_french.yml",
@@ -44,8 +44,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/german/zg361_l_german.yml",
-      "size": 17262,
-      "sha256": "b82e35816300b9e78506c964ef20ba6ad5ed4df736550c6764012941e2cc39b2"
+      "size": 17341,
+      "sha256": "465b68adafb4fbf992bbabacbb22a8f0d1b9c7a1908f53954652ab5696c3f84f"
     },
     {
       "path": "mod_zhongguo_style/localization/german/zg361_mechanisms_l_german.yml",
@@ -54,8 +54,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/japanese/zg361_l_japanese.yml",
-      "size": 16768,
-      "sha256": "5a2eb3cbf8a32789283af6dd1e95fc4892939ea12dd1e863ffaaa7d04cbf1516"
+      "size": 16828,
+      "sha256": "ed2a78fb01394de430f69a72b91c712539b37762d0b95ba8385a9cb8255ac60b"
     },
     {
       "path": "mod_zhongguo_style/localization/japanese/zg361_mechanisms_l_japanese.yml",
@@ -64,8 +64,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/korean/zg361_l_korean.yml",
-      "size": 16320,
-      "sha256": "65ada46bf853b0e13fc6b60fdaefe765c47f1b1f920304b962830da67cfdd7f1"
+      "size": 16377,
+      "sha256": "c129a986e98feac31b807bf00c441aac74427057d9cc90a6b3da35fd5685e21d"
     },
     {
       "path": "mod_zhongguo_style/localization/korean/zg361_mechanisms_l_korean.yml",
@@ -74,8 +74,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/polish/zg361_l_polish.yml",
-      "size": 16205,
-      "sha256": "e8fd1ed8228a08d6cb6b13410beab842df684b2ce12fe1b277fc4f09ee549094"
+      "size": 16256,
+      "sha256": "64d21f409dd583c7b304ba38f170988f51d34bad3e0e7156cd717d4f44d99d52"
     },
     {
       "path": "mod_zhongguo_style/localization/polish/zg361_mechanisms_l_polish.yml",
@@ -84,8 +84,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/russian/zg361_l_russian.yml",
-      "size": 23968,
-      "sha256": "b2c6987ad633488c15a7639cbb77f7ec60bc99f0ba1b3b7d61142935fa1f4a5e"
+      "size": 24097,
+      "sha256": "b32f396f0b7bef658e8a62712badbf5038f675d27a249d1b0aca8b56317854f8"
     },
     {
       "path": "mod_zhongguo_style/localization/russian/zg361_mechanisms_l_russian.yml",
@@ -94,8 +94,8 @@
     },
     {
       "path": "mod_zhongguo_style/localization/spanish/zg361_l_spanish.yml",
-      "size": 16622,
-      "sha256": "3f367878e66735a2b1ad95303aa45492c5693e40139a92f06fd1d768224b6422"
+      "size": 16692,
+      "sha256": "4fc9d92417827ae3e35c0ea184e94b17628d9d6efbbef29a9f84fc3751c04cfc"
     },
     {
       "path": "mod_zhongguo_style/localization/spanish/zg361_mechanisms_l_spanish.yml",

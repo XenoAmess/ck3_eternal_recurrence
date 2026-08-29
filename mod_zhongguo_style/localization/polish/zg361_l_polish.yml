@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "Ocena Wyników"
  zg361_review_now_decision:0 "Przeprowadź Ocenę Wyników Teraz"
- zg361_review_now_decision_desc:0 "Rozkaż biuru ocen natychmiast uszeregować twoich bezpośrednich podwładnych, zamiast czekać na sezon roczny. Urzędnicy już oceniani w tym roku zostaną ponownie zrewidowani."
- zg361_review_now_decision_tooltip:0 "Natychmiast ponownie oceń co najmniej jednego bezpośredniego urzędnika na aktywnym stanowisku."
+ zg361_review_now_decision_desc:0 "Rozkaż biuru ocen natychmiast uszeregować twoich bezpośrednich podwładnych, zamiast czekać na sezon roczny. Urzędnicy już ocenieni w tym roku nie zostaną ocenieni ponownie."
+ zg361_review_now_decision_tooltip:0 "Natychmiast oceń co najmniej jednego bezpośredniego urzędnika na aktywnym stanowisku; w tym samym roku nie można przeprowadzić kolejnej oceny."
  zg361_review_now_decision_confirm:0 "Ogłość rankingi!"
  zg361_ratio_strict_decision:0 "Kwota Końcowa: Sztywne 361 (10%)"
  zg361_ratio_strict_decision_desc:0 "Egzekwuj rozkład: przy pięciu lub więcej w puli ktoś musi otrzymać 3.25."

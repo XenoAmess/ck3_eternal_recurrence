@@ -20,8 +20,8 @@
  # Decision group & decisions
  decision_group_type_zg361:0 "業績考課"
  zg361_review_now_decision:0 "今すぐ業績考課を実施"
- zg361_review_now_decision_desc:0 "年度の考課季を待たず、直ちに考功司に命じて直属の序列を公表させる。今年すでに考課を受けた官吏は再評価される。"
- zg361_review_now_decision_tooltip:0 "直属の現職職員を少なくとも一名、ただちに再評価する。"
+ zg361_review_now_decision_desc:0 "年度の考課季を待たず、直ちに考功司に命じて直属の序列を公表させる。今年すでに考課を受けた官吏は再評価されない。"
+ zg361_review_now_decision_tooltip:0 "直属の現職官吏を少なくとも一名、ただちに考課する。同じ暦年内に再度実施することはできない。"
  zg361_review_now_decision_confirm:0 "ランキングを発表する！"
  zg361_ratio_strict_decision:0 "最下位枠：厳格な361（10%）"
  zg361_ratio_strict_decision_desc:0 "強制配分を徹底する。評価プールが5名以上の場合は、必ず誰かが3.25を背負う。"

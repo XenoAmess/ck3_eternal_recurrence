@@ -20,8 +20,8 @@
  # 决议组与决议
  decision_group_type_zg361:0 "绩效考核"
  zg361_review_now_decision:0 "立即开展绩效考核"
- zg361_review_now_decision_desc:0 "不等年度绩效季，现在就命考功司开榜排名。本年度已考核过的直属官员将重新评定。"
- zg361_review_now_decision_tooltip:0 "立即重新考核至少一名直属在任官员。"
+ zg361_review_now_decision_desc:0 "不等年度绩效季，现在就命考功司开榜排名。你每个自然年只能结算一次考核；本年度已纳入你结算考核的直属官员不会重复评定。"
+ zg361_review_now_decision_tooltip:0 "立即考核至少一名直属在任官员；同一自然年不能再次结算考核。"
  zg361_review_now_decision_confirm:0 "开榜！"
  zg361_ratio_strict_decision:0 "末位比例：刚性361（10%）"
  zg361_ratio_strict_decision_desc:0 "坚持强制分布：考核池五人以上时，必须有人背3.25。"
