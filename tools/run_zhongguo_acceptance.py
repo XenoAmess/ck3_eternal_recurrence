@@ -1303,6 +1303,16 @@ def capture_scoreboard_gui(
             stable_hits=1,
         )
         acceptance.deliberate_click(cockpit, "production policy-cockpit tab")
+        # The 361 reference batch can schedule ordinary product events on the
+        # next game day.  One may surface over the board between the tab click
+        # and OCR (for example "野狗与小白兔").  Resolve only a positively
+        # identified native event, then prove the cockpit underneath; never
+        # treat an overlaid modal as a missing or broken tab.
+        settle_promo_interruptions(
+            artifacts,
+            "08_scoreboard_cockpit",
+            observation_s=3.5,
+        )
         acceptance.wait_for_ocr_tokens(
             ("361 制度账本", "证据质量", "组织信任", "预算压力"),
             ("zg361_", "localize", "error"),

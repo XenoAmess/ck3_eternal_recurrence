@@ -61,6 +61,12 @@ def main() -> int:
     assert scoreboard_body.index("close_native_decisions_panel") < scoreboard_body.index(
         '"07_scoreboard_button.png"'
     )
+    assert scoreboard_body.index(
+        'acceptance.deliberate_click(cockpit, "production policy-cockpit tab")'
+    ) < scoreboard_body.index("settle_promo_interruptions")
+    assert scoreboard_body.index("settle_promo_interruptions") < scoreboard_body.index(
+        '("361 制度账本", "证据质量", "组织信任", "预算压力")'
+    )
 
     close_drawer = re.search(
         r"def close_native_decisions_panel\(.*?(?=^def )", runner, re.M | re.S
