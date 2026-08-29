@@ -106,6 +106,7 @@ Workshop 缓存复验决定。
 
 ## 工程与测试
 
+- [0.3.0 当前已实现功能、权限边界与发版批验总表](docs/current-version-feature-freeze.md)
 - 详细机制与历史偏差：`docs/zhongguo-361-plan.md`
 - 361 条权威清单：`docs/361-expansion-options.md`
 - 361 领域运行时与诚实完成定义：`docs/361-domain-runtime-architecture.md`
