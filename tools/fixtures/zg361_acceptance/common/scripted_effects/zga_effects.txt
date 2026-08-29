@@ -621,7 +621,9 @@ zga_verify_player_review_effect = {
 	if = {
 		limit = { NOT = { has_character_flag = zga_clean_jingcha_dispatch_scheduled } }
 		add_character_flag = zga_clean_jingcha_dispatch_scheduled
-		trigger_event = { id = zga_acceptance.5 days = 2 }
+		# Fixture choreography only: keep the target mandate away from the
+		# multi-control scoreboard audit. Product Jingcha cadence is unchanged.
+		trigger_event = { id = zga_acceptance.5 days = 10 }
 		debug_log = "ZGA: TEST PASS clean_jingcha_dispatch_scheduled"
 	}
 	debug_log = "ZGA: TEST DONE zg361"

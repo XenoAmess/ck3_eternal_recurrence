@@ -188,7 +188,8 @@ def main() -> int:
     for identifier in (1, 7, 20, 22, 26, 361):
         assert f"remove_variable = zg361_mechanism_{identifier:03d}_choice" in personal
 
-    assert "trigger_event = { id = zga_acceptance.5 days = 2 }" in verify_board
+    assert "trigger_event = { id = zga_acceptance.5 days = 10 }" in verify_board
+    assert "Product Jingcha cadence is unchanged" in verify_board
     assert "ZGA: TEST PASS clean_jingcha_dispatch_scheduled" in verify_board
 
     personal_settlement = top_level_block(events, "zga_acceptance.2")

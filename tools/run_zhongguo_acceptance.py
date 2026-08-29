@@ -169,6 +169,13 @@ PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS = (
 # pause reason may repeat the title of an event hidden behind another modal;
 # it must never satisfy a "target event is visibly on top" assertion.
 PROMO_EVENT_TITLE_REGION = (0.18, 0.16, 0.48, 0.32)
+PROMO_PROTECTED_EVENT_TITLES = (
+    "绩效校准会议",
+    "你主持的考核",
+    "京察之期",
+    "上司考定",
+    *(event_title for _, _, event_title, _ in PROMO_POLICY_CARDS),
+)
 # The generated 180x44 toggle is anchored immediately left of CK3's 50-unit
 # right HUD rail.  Constrain positive OCR to this normalized lane so the old
 # detached {-205,165} placement cannot accidentally satisfy live acceptance.
@@ -1050,7 +1057,7 @@ def fixture_source_errors() -> list[str]:
         "clean_policy_026_dispatched",
         "clean_policy_361_dispatched",
         "clean_policy_chain_completed",
-        "trigger_event = { id = zga_acceptance.5 days = 2 }",
+        "trigger_event = { id = zga_acceptance.5 days = 10 }",
         "trigger_event = { id = zga_acceptance.3 days = 30 }",
         "trigger_event = { id = zga_acceptance.12 days = 1 }",
         "settled_review_same_year_idempotent",
@@ -2159,7 +2166,14 @@ def capture_scoreboard_gui(
         stable_hits=1,
     )
     acceptance.deliberate_click(result_option, "production review result summary")
-    time.sleep(0.8)
+    # The summary interrupted a speed-five timeline. Stop that restored clock
+    # before the Decisions drawer and scoreboard audit spend wall time on OCR;
+    # otherwise the already-scheduled Jingcha mandate can cover the cockpit.
+    acceptance.pyautogui.press("space")
+    ensure_hud_date_frozen(artifacts, "07_result_summary_closed")
+    result_close_interruptions = settle_promo_interruptions(
+        artifacts, "07_result_summary_closed_preemption", observation_s=0.5
+    )
 
     # Deliberately hold the native Decisions drawer open and prove that the
     # additive HUD toggle is suppressed.  The old layout rendered the 180x44
@@ -2296,6 +2310,7 @@ def capture_scoreboard_gui(
         "panel_ocr_artifact": "08_scoreboard_panel_ocr.json",
         "normalized_ocr": rendered_text,
         "cockpit_artifact": cockpit_artifact,
+        "post_result_interruptions_dismissed": result_close_interruptions,
         "representative_control_audit": representative_control_audit,
     }
 
@@ -2328,6 +2343,64 @@ def close_scoreboard_panel(artifacts: Path, stem: str) -> None:
             return
         time.sleep(acceptance.POLL_INTERVAL_S)
     raise acceptance.RunnerError("scoreboard modal did not close")
+
+
+def ensure_hud_date_frozen(
+    artifacts: Path,
+    stem: str,
+    *,
+    probe_interval_s: float = 0.8,
+) -> dict[str, object]:
+    """Prove a pause from the HUD date when modal UI hides the pause label."""
+
+    acceptance.focus_ck3()
+
+    def probe(label: str) -> tuple[bool, list[int], object]:
+        observations: list[int] = []
+        last_image = None
+        for index in range(4):
+            last_image = acceptance.ImageGrab.grab()
+            date = acceptance.read_hud_game_date(last_image)
+            if date is None:
+                last_image.save(artifacts / f"{stem}_{label}_date_unreadable.png")
+                raise acceptance.RunnerError(
+                    f"HUD date became unreadable during pause proof: {stem}"
+                )
+            observations.append(date[0])
+            if index < 3:
+                time.sleep(probe_interval_s)
+        return len(set(observations[-3:])) == 1, observations, last_image
+
+    frozen, observations, last_image = probe("initial")
+    pause_method = "already_frozen"
+    if not frozen:
+        width, height = acceptance.pyautogui.size()
+        acceptance.deliberate_click(
+            (
+                int(width * (2315 / 2560)),
+                int(height * (1410 / 1440)),
+            ),
+            f"timeline pause by HUD date ({stem})",
+        )
+        frozen, click_observations, last_image = probe("timeline_click")
+        observations.extend(click_observations)
+        pause_method = "timeline_click"
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if frozen else "RED",
+        "pause_method": pause_method,
+        "date_observations": observations,
+        "last_three_dates_identical": frozen,
+        "paused_day_ordinal": observations[-1],
+    }
+    write_json(artifacts / f"{stem}_date_freeze_gate.json", evidence)
+    if not frozen:
+        last_image.save(artifacts / f"red_{stem}_date_not_frozen.png")
+        raise acceptance.RunnerError(
+            f"HUD date did not freeze after pause attempts ({stem}): {observations}"
+        )
+    last_image.save(artifacts / f"{stem}_date_frozen.png")
+    return evidence
 
 
 def pause_after_jingcha_host_click(
@@ -2414,6 +2487,49 @@ def pause_after_jingcha_host_click(
     return evidence
 
 
+def advance_to_jingcha_mandate(
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 60.0,
+) -> list[dict[str, object]]:
+    """Advance the delayed mandate while safely clearing earlier product events."""
+
+    marker = "ZGA: TEST PASS jingcha_mandate_issued"
+    acceptance.set_speed_five_and_unpause(
+        artifacts, "zg361_clean_jingcha_dispatch", require_progress=True
+    )
+    deadline = time.monotonic() + timeout_s
+    interruptions: list[dict[str, object]] = []
+    recovery_round = 0
+    while time.monotonic() < deadline:
+        stream.pump()
+        if stream.count(marker):
+            return interruptions
+        recovery_round += 1
+        recovered = settle_promo_interruptions(
+            artifacts,
+            f"09_jingcha_wait_{recovery_round:02d}",
+            observation_s=0.5,
+            stop_event_title="京察之期",
+        )
+        if recovered:
+            interruptions.extend(recovered)
+        stream.pump()
+        if stream.count(marker):
+            return interruptions
+        if recovered:
+            acceptance.set_speed_five_and_unpause(
+                artifacts,
+                f"zg361_clean_jingcha_resume_{recovery_round:02d}",
+                require_progress=True,
+            )
+        else:
+            time.sleep(0.2)
+    raise acceptance.RunnerError(
+        "fixture Jingcha mandate did not arrive after the delayed timeline advance"
+    )
+
+
 def capture_jingcha_planner(
     stream: MarkerStream,
     artifacts: Path,
@@ -2421,20 +2537,19 @@ def capture_jingcha_planner(
 ) -> dict[str, object]:
     close_scoreboard_panel(artifacts, "09_jingcha")
     stream.wait("ZGA: TEST PASS clean_jingcha_dispatch_scheduled", 30)
-    acceptance.set_speed_five_and_unpause(
-        artifacts, "zg361_clean_jingcha_dispatch", require_progress=True
-    )
-    stream.wait("ZGA: TEST PASS jingcha_mandate_issued", 30)
+    jingcha_interruptions = advance_to_jingcha_mandate(stream, artifacts)
     stream.wait("ZGA: TEST PASS clean_jingcha_dispatched", 30)
     if stream.count("ZGA: TEST PASS jingcha_mandate_issued") != 1:
         raise acceptance.RunnerError(
             "Jingcha mandate marker must occur exactly once"
         )
-    jingcha_interruptions = settle_promo_interruptions(
-        artifacts,
-        "09_jingcha_mandate_preemption",
-        observation_s=20.0,
-        stop_event_title="京察之期",
+    jingcha_interruptions.extend(
+        settle_promo_interruptions(
+            artifacts,
+            "09_jingcha_mandate_preemption",
+            observation_s=20.0,
+            stop_event_title="京察之期",
+        )
     )
     acceptance.wait_for_ocr_text(
         "京察之期",
@@ -2920,6 +3035,30 @@ def settle_promo_interruptions(
         ):
             image.save(artifacts / f"{stem}_target_event_visible.png")
             return dismissed
+        protected_title = next(
+            (
+                title
+                for title in PROMO_PROTECTED_EVENT_TITLES
+                if title != stop_event_title
+                and promo_event_title_evidence(items, width, height, title)
+            ),
+            None,
+        )
+        if protected_title is not None:
+            diagnostic = f"{stem}_protected_target_event"
+            acceptance.mark_recovery_items(items, [], None)
+            acceptance.write_recovery_bundle(image, items, artifacts, diagnostic)
+            _write_promo_interruption_decision(
+                artifacts,
+                diagnostic,
+                status="blocked_protected_target_event",
+                kind=protected_title,
+                selected=None,
+            )
+            raise acceptance.RunnerError(
+                "protected promo target surfaced outside its capture step: "
+                f"{protected_title}"
+            )
 
         preferred_event, preferred_selected = promo_preferred_product_event_option(
             items, width, height
@@ -3050,7 +3189,10 @@ def settle_promo_interruptions(
                         "diagnostic_stem": diagnostic,
                     }
                 )
-                acceptance.ensure_game_paused(
+                # A second queued event can already be visible here. Its modal
+                # hides CK3's top-center pause label, so prove the pause from
+                # the HUD date and then let the outer loop classify that event.
+                ensure_hud_date_frozen(
                     artifacts, f"{diagnostic}_dismissed"
                 )
                 deadline = time.monotonic() + max(0.0, observation_s)

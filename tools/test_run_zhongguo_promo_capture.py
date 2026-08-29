@@ -5,8 +5,11 @@ from __future__ import annotations
 
 from pathlib import Path
 import inspect
+import json
 import re
 import sys
+import tempfile
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -170,6 +173,24 @@ def main() -> int:
     assert received_body.index("open received performance board") < received_body.index(
         '"11_received_after_board_open"'
     )
+
+    scoreboard_capture = scoreboard_body
+    for token in (
+        'acceptance.pyautogui.press("space")',
+        'ensure_hud_date_frozen(artifacts, "07_result_summary_closed")',
+        '"07_result_summary_closed_preemption"',
+        "isolated.ensure_decisions_panel",
+    ):
+        assert token in scoreboard_capture, token
+    assert scoreboard_capture.index(
+        'acceptance.deliberate_click(result_option, "production review result summary")'
+    ) < scoreboard_capture.index('acceptance.pyautogui.press("space")')
+    assert scoreboard_capture.index(
+        'ensure_hud_date_frozen(artifacts, "07_result_summary_closed")'
+    ) < scoreboard_capture.index('"07_result_summary_closed_preemption"')
+    assert scoreboard_capture.index(
+        '"07_result_summary_closed_preemption"'
+    ) < scoreboard_capture.index("isolated.ensure_decisions_panel")
     assert received_body.index('"11_received_after_board_open"') < received_body.index(
         "acceptance.wait_for_ocr_tokens"
     )
@@ -194,7 +215,8 @@ def main() -> int:
     ):
         assert token in runner, token
     assert "acceptance.deliberate_click" in interruption_body
-    assert "acceptance.ensure_game_paused" in interruption_body
+    assert "ensure_hud_date_frozen" in interruption_body
+    assert "acceptance.ensure_game_paused" not in interruption_body
     assert "selected is None or kind is None" in interruption_body
     assert "len(dismissed) >= max_dismissals" in interruption_body
 
@@ -583,6 +605,209 @@ def main() -> int:
     )
     assert "promo_preferred_product_event_option" in interruption
     assert "blocked_known_event_safe_option_missing" in interruption
+    assert "PROMO_PROTECTED_EVENT_TITLES" in interruption
+    assert "blocked_protected_target_event" in interruption
+    assert "ensure_hud_date_frozen" in interruption
+    assert "acceptance.ensure_game_paused" not in interruption
+
+    pause_by_date = inspect.getsource(capture.ensure_hud_date_frozen)
+    for token in (
+        "acceptance.read_hud_game_date",
+        "len(set(observations[-3:])) == 1",
+        "timeline pause by HUD date",
+        '"last_three_dates_identical": frozen',
+        'f"{stem}_date_freeze_gate.json"',
+    ):
+        assert token in pause_by_date, token
+
+    class FakeImage:
+        def save(self, path: Path) -> None:
+            Path(path).write_bytes(b"fake image")
+
+    moving_then_frozen = iter((100, 101, 102, 103, 103, 103, 103, 103))
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=[FakeImage() for _ in range(8)],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "read_hud_game_date",
+                side_effect=lambda _image: (next(moving_then_frozen), (0, 0)),
+            ),
+            mock.patch.object(
+                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            frozen = capture.ensure_hud_date_frozen(
+                artifacts, "mock_chain", probe_interval_s=0.0
+            )
+        click.assert_called_once()
+        assert frozen["result"] == "GREEN"
+        assert frozen["pause_method"] == "timeline_click"
+        assert frozen["date_observations"] == [100, 101, 102, 103, 103, 103, 103, 103]
+        assert (artifacts / "mock_chain_date_freeze_gate.json").is_file()
+
+    def event_item(
+        text: str, center: tuple[int, int], width: int = 500
+    ) -> dict[str, object]:
+        x, y = center
+        return {
+            "text": text,
+            "center": [x, y],
+            "bbox": [x - width // 2, y - 12, x + width // 2, y + 12],
+            "score": 0.99,
+        }
+
+    def event_frame(
+        title: str, options: tuple[tuple[str, tuple[int, int]], ...]
+    ) -> list[dict[str, object]]:
+        return [
+            event_item(title, (720, 318), 440),
+            event_item("这是一段足够宽的正式事件叙事正文。", (850, 560), 900),
+            *(event_item(text, center, 620) for text, center in options),
+        ]
+
+    class FakeDesktopImage(FakeImage):
+        size = (2560, 1440)
+
+        def __init__(self, items: list[dict[str, object]]) -> None:
+            self.items = items
+
+    class FakeDesktop:
+        def __init__(self) -> None:
+            self.state = 0
+            self.clicks: list[tuple[int, int]] = []
+            self.frames = (
+                event_frame("例行朝议", (("知道了", (930, 1000)),)),
+                event_frame(
+                    "野狗与小白兔",
+                    (
+                        ("宽严相济：野狗留用观察，小白兔好言安抚。", (930, 989)),
+                        ("严惩野狗、劝退小白兔", (930, 1043)),
+                    ),
+                ),
+                event_frame("京察之期", (("依例举办京察", (930, 989)),)),
+            )
+
+        def grab(self) -> FakeDesktopImage:
+            return FakeDesktopImage(
+                [dict(item) for item in self.frames[self.state]]
+            )
+
+        def click(self, point: tuple[int, int], _label: str) -> None:
+            expected = ((930, 1000), (930, 989))[self.state]
+            assert point == expected, (point, expected)
+            self.clicks.append(point)
+            self.state += 1
+
+    desktop = FakeDesktop()
+    selected_states: list[int] = []
+    real_select = capture.acceptance.select_stall_recovery
+
+    def select_with_state(items, image, allow_succession=False):
+        selected_states.append(desktop.state)
+        return real_select(items, image, allow_succession=allow_succession)
+
+    def write_fake_bundle(image, items, artifacts, stem):
+        image.save(artifacts / f"{stem}.png")
+        return 0.0
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(capture.acceptance.ImageGrab, "grab", desktop.grab),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "read_hud_game_date",
+                side_effect=lambda _image: (2000 + desktop.state, (0, 0)),
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "select_stall_recovery",
+                side_effect=select_with_state,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(
+                capture.acceptance, "deliberate_click", side_effect=desktop.click
+            ),
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            dismissed = capture.settle_promo_interruptions(
+                artifacts,
+                "mock_chain",
+                observation_s=0.0,
+                stop_event_title="京察之期",
+            )
+            assert [row["selected_text"] for row in dismissed] == [
+                "知道了",
+                "宽严相济：野狗留用观察，小白兔好言安抚。",
+            ]
+            assert desktop.clicks == [(930, 1000), (930, 989)]
+            assert selected_states == [0, 1]
+            assert (artifacts / "mock_chain_target_event_visible.png").is_file()
+            for ordinal, expected_day in ((1, 2001), (2, 2002)):
+                gate = json.loads(
+                    (
+                        artifacts
+                        / f"mock_chain_interruption_{ordinal:02d}_dismissed_date_freeze_gate.json"
+                    ).read_text(encoding="utf-8")
+                )
+                assert gate["result"] == "GREEN"
+                assert gate["pause_method"] == "already_frozen"
+                assert gate["date_observations"] == [expected_day] * 4
+
+            clicks_before_wrong_step = len(desktop.clicks)
+            try:
+                capture.settle_promo_interruptions(
+                    artifacts,
+                    "mock_wrong_step",
+                    observation_s=0.0,
+                    stop_event_title="上司考定",
+                )
+            except capture.acceptance.RunnerError as exc:
+                assert "protected promo target surfaced" in str(exc)
+                assert "京察之期" in str(exc)
+            else:
+                raise AssertionError("wrong-step Jingcha target was not blocked")
+            assert len(desktop.clicks) == clicks_before_wrong_step
+            blocked = json.loads(
+                (
+                    artifacts
+                    / "mock_wrong_step_protected_target_event_decision.json"
+                ).read_text(encoding="utf-8")
+            )
+            assert blocked["status"] == "blocked_protected_target_event"
+            assert blocked["recovery_kind"] == "京察之期"
+            assert blocked["selected_text"] is None
+
+    jingcha_advance = inspect.getsource(capture.advance_to_jingcha_mandate)
+    for token in (
+        "timeout_s: float = 60.0",
+        'stop_event_title="京察之期"',
+        "settle_promo_interruptions",
+        "stream.pump()",
+        "zg361_clean_jingcha_resume_",
+    ):
+        assert token in jingcha_advance, token
 
     personal = re.search(
         r"def capture_superior_assigned_result\(.*?(?=^def )", runner, re.M | re.S
