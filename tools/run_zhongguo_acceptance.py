@@ -19,6 +19,7 @@ import uuid
 from pathlib import Path
 
 from PIL import ImageChops
+import pyperclip
 
 import run_acceptance as acceptance
 import build_mod_zhongguo_style_release as release
@@ -1714,9 +1715,9 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
     def map_change_fraction(left, right) -> float:
         width, height = left.size
         box = (
-            int(width * 0.06),
-            int(height * 0.06),
-            int(width * 0.86),
+            int(width * 0.20),
+            int(height * 0.08),
+            int(width * 0.72),
             int(height * 0.88),
         )
         difference = ImageChops.difference(left.crop(box), right.crop(box))
@@ -1739,64 +1740,156 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
     shortcut_change = map_change_fraction(before, shortcut_after)
     method = "shortcut_home"
 
+    title_header = None
+    title_result = None
     if shortcut_change < 0.18:
-        # Exact-build hud.gui places the 30x30 native More button inside the
-        # bottom-right timeline widget. GUI units are scaled by the isolated
-        # profile's 1.30 factor, so verify its rendered "更多……" tooltip before
-        # clicking; the previous unscaled coordinate landed on the date/play
-        # control and correctly caused an early RED.
-        width, height = acceptance.pyautogui.size()
-        more_candidates = (
-            (int(width * (1807 / 2560)), int(height * (1417 / 1440))),
-            (int(width * (1792 / 2560)), int(height * (1417 / 1440))),
-            (int(width * (1822 / 2560)), int(height * (1417 / 1440))),
-            (int(width * (1777 / 2560)), int(height * (1417 / 1440))),
-            (int(width * (1837 / 2560)), int(height * (1417 / 1440))),
-        )
-        more_point = None
-        for candidate in more_candidates:
-            acceptance.focus_ck3()
-            acceptance.pyautogui.moveTo(*candidate, duration=0.2)
-            time.sleep(0.65)
-            tooltip_image = acceptance.ImageGrab.grab()
-            if acceptance.find_ocr_text(
-                tooltip_image,
-                "更多",
-                acceptance.FULL_SCREEN_REGION,
-                contains=True,
-            ) is not None:
-                more_point = candidate
-                tooltip_image.save(
-                    artifacts / "05_promo_camera_more_button_tooltip.png"
-                )
-                break
-        if more_point is None:
-            tooltip_image.save(
-                artifacts / "timeout_05_promo_camera_more_button_tooltip.png"
-            )
-            raise acceptance.RunnerError(
-                "native HUD More button tooltip could not be located"
-            )
-        acceptance.deliberate_click(more_point, "native HUD More button")
-        capital_button = acceptance.wait_for_ocr_text(
-            "转到首都",
-            acceptance.FULL_SCREEN_REGION,
+        # Exact-build live attempts 20 and 21 proved Home was a no-op and that
+        # the transient HUD flyout supplied no observable click ACK. They could
+        # not distinguish a hierarchy-leave close from a player-capital no-op,
+        # so stop speculating about that path. Use the native title finder:
+        # its c_bianzhou result has an explicit DefaultOnCoatOfArmsRightClick
+        # handler, so the selected destination and the resulting map motion are
+        # both independently observable before FFmpeg is allowed to start.
+        title_region = (0.70, 0.07, 0.98, 0.90)
+        acceptance.focus_ck3()
+        acceptance.pyautogui.press("v")
+        title_header = acceptance.wait_for_ocr_text(
+            "查找头衔",
+            title_region,
             8,
             artifacts,
-            "05_promo_camera_more_menu.png",
+            "05_promo_title_finder_open.png",
             contains=True,
             stable_hits=1,
         )
-        # This flyout has a _mouse_hierarchy_leave auto-close state. The shared
-        # deliberate_click helper's animated move and hover dwell can close the
-        # menu before mouse-down, leaving a harmless map click. Jump directly
-        # to the already OCR-proven row and click in one input operation.
+        screen_width, screen_height = acceptance.pyautogui.size()
+        reference_scale = screen_height / 1440
+        search_point = (
+            title_header[0],
+            title_header[1] + round(65 * reference_scale),
+        )
+        acceptance.deliberate_click(search_point, "native title search field")
+        acceptance.pyautogui.hotkey("ctrl", "a")
+        prior_clipboard = pyperclip.paste()
+        try:
+            pyperclip.copy("汴州")
+            acceptance.pyautogui.hotkey("ctrl", "v")
+            time.sleep(0.5)
+        finally:
+            pyperclip.copy(prior_clipboard)
+
+        result_deadline = time.time() + 8
+        minimum_result_y = title_header[1] + round(90 * reference_scale)
+        last_result = None
+        stable_hits = 0
+        result_image = None
+        while time.time() < result_deadline:
+            acceptance.focus_ck3()
+            result_image = acceptance.ImageGrab.grab()
+            candidates = [
+                center
+                for text, _, center, _ in acceptance.ocr_results(
+                    result_image, title_region
+                )
+                if "汴州" in text and center[1] >= minimum_result_y
+            ]
+            current_result = (
+                min(candidates, key=lambda point: point[1])
+                if candidates
+                else None
+            )
+            if current_result is not None:
+                if (
+                    last_result is not None
+                    and abs(current_result[0] - last_result[0]) <= 15
+                    and abs(current_result[1] - last_result[1]) <= 15
+                ):
+                    stable_hits += 1
+                else:
+                    stable_hits = 1
+                last_result = current_result
+                if stable_hits >= 2:
+                    title_result = current_result
+                    result_image.save(
+                        artifacts / "05_promo_title_finder_bianzhou.png"
+                    )
+                    break
+            else:
+                last_result = None
+                stable_hits = 0
+            time.sleep(acceptance.POLL_INTERVAL_S)
+        if title_result is None:
+            if result_image is not None:
+                result_image.save(
+                    artifacts / "timeout_05_promo_title_finder_bianzhou.png"
+                )
+            raise acceptance.RunnerError(
+                "native title finder could not resolve the Bianzhou result row"
+            )
+
         acceptance.focus_ck3()
-        acceptance.pyautogui.click(*capital_button)
-        log(f"clicked native go-to-player-capital menu item at {capital_button}")
+        acceptance.pyautogui.moveTo(*title_result, duration=0.2)
+        time.sleep(0.35)
+        acceptance.pyautogui.mouseDown(button="right")
+        time.sleep(0.15)
+        acceptance.pyautogui.mouseUp(button="right")
+        log(f"right-clicked native Bianzhou title result at {title_result}")
         time.sleep(2.0)
-        after = acceptance.ImageGrab.grab()
-        method = "native_more_menu"
+        after_title_action = acceptance.ImageGrab.grab()
+        after_title_action.save(
+            artifacts / "05_promo_camera_after_bianzhou_right_click.png"
+        )
+        finder_visible = acceptance.find_ocr_text(
+            after_title_action,
+            "查找头衔",
+            title_region,
+            contains=True,
+        ) is not None
+        after = after_title_action
+        close_attempts = 0
+        while finder_visible and close_attempts < 2:
+            # Move off the result row first so a title tooltip cannot consume
+            # Escape. Re-read the header after every attempt instead of
+            # assuming that a sent close shortcut was accepted.
+            acceptance.pyautogui.moveTo(
+                round(screen_width * 0.50),
+                round(screen_height * 0.50),
+                duration=0.1,
+            )
+            acceptance.pyautogui.press("escape")
+            close_attempts += 1
+            time.sleep(0.8)
+            after = acceptance.ImageGrab.grab()
+            finder_visible = acceptance.find_ocr_text(
+                after,
+                "查找头衔",
+                title_region,
+                contains=True,
+            ) is not None
+        if finder_visible:
+            # The inherited header close button sits about 210 reference
+            # pixels to the right of the centered header text at this scale.
+            title_close = (
+                title_header[0] + round(210 * reference_scale),
+                title_header[1],
+            )
+            acceptance.deliberate_click(title_close, "native title finder X")
+            time.sleep(0.8)
+            after = acceptance.ImageGrab.grab()
+            finder_visible = acceptance.find_ocr_text(
+                after,
+                "查找头衔",
+                title_region,
+                contains=True,
+            ) is not None
+            if finder_visible:
+                after.save(
+                    artifacts / "timeout_05_promo_title_finder_close.png"
+                )
+                raise acceptance.RunnerError(
+                    "native title finder remained visible after recenter"
+                )
+        method = "native_title_finder_bianzhou"
     else:
         after = shortcut_after
 
@@ -1805,12 +1898,20 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
     evidence = {
         "schema_version": 1,
         "result": "GREEN" if final_change >= 0.18 else "RED",
-        "native_action": "go_to_capital",
+        "native_action": (
+            "go_to_capital_shortcut"
+            if method == "shortcut_home"
+            else "find_title_right_click"
+        ),
         "default_key": "home",
         "method": method,
         "shortcut_visual_change_fraction": shortcut_change,
         "final_visual_change_fraction": final_change,
         "minimum_visual_change_fraction": 0.18,
+        "search_query": "汴州" if title_header is not None else None,
+        "resolved_title_key": "c_bianzhou" if title_result is not None else None,
+        "title_header_point": list(title_header) if title_header else None,
+        "title_result_point": list(title_result) if title_result else None,
         "expected_player_history_id": EXPECTED_PLAYER_HISTORY_ID,
         "expected_realm_title": "h_china",
         "before_artifact": "05_promo_camera_before_home.png",
@@ -1819,7 +1920,7 @@ def recenter_promo_camera_on_player_capital(artifacts: Path) -> dict[str, object
     write_json(artifacts / "05_promo_camera_recenter.json", evidence)
     if evidence["result"] != "GREEN":
         raise acceptance.RunnerError(
-            "native capital recenter produced no material map movement"
+            "native Bianzhou title recenter produced no material map movement"
         )
     return evidence
 
@@ -3591,6 +3692,7 @@ def run_cell(
     userdir: Path,
     keep_userdir: bool,
     promo_capture: bool = False,
+    promo_camera_probe: bool = False,
     runtime_source: Path = SOURCE,
     runtime_identity: dict[str, object] | None = None,
 ) -> dict[str, object]:
@@ -3652,7 +3754,26 @@ def run_cell(
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_standard_1066_start")
-        evidence = run_scenario(stream, artifacts, recorder)
+        if promo_camera_probe:
+            initialize_fixture(stream, artifacts)
+            close_native_decisions_panel(artifacts, "05_promo_pre_record")
+            camera_evidence = recenter_promo_camera_on_player_capital(artifacts)
+            clean_evidence = assert_promo_frame_clean(
+                artifacts,
+                "05_promo_pre_record_clean_hud",
+                label="pre_record_hud",
+                phase="pre_record",
+            )
+            evidence = {
+                "probe_only": True,
+                "player_history_id": EXPECTED_PLAYER_HISTORY_ID,
+                "expected_realm_title": "h_china",
+                "promo_camera_recenter": camera_evidence,
+                "post_recenter_frame_clean": clean_evidence,
+                "ffmpeg_started": False,
+            }
+        else:
+            evidence = run_scenario(stream, artifacts, recorder)
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
@@ -3693,7 +3814,7 @@ def run_cell(
                 reason = f"controlled stop failed: {error}"
                 error_reason = f"{error_reason}; {reason}" if error_reason else reason
         try:
-            if result == "GREEN":
+            if result == "GREEN" and not promo_camera_probe:
                 stream.validate(final=True)
             else:
                 stream.pump(final=True)
@@ -3774,6 +3895,7 @@ def run_cell(
         "ck3_executable_after_sha256": executable_after,
         "debug_mode": False,
         "isolated_userdir": True,
+        "promo_camera_probe_only": promo_camera_probe,
         "enabled_mods": bootstrap["enabled_mods"],
         "verified_mount_order": mount_order,
         "product_runtime_manifest": bootstrap["manifest"],
@@ -3811,9 +3933,14 @@ def main(
     keep_userdir: bool = True,
     preflight_only: bool = False,
     promo_capture: bool = False,
+    promo_camera_probe: bool = False,
     workshop_cache_source: str | None = None,
     workshop_manifest: str | None = None,
 ) -> int:
+    if promo_capture and promo_camera_probe:
+        raise acceptance.RunnerError(
+            "--promo-capture and --promo-camera-probe are mutually exclusive"
+        )
     runtime_source = (
         Path(workshop_cache_source).expanduser().resolve()
         if workshop_cache_source
@@ -3852,6 +3979,7 @@ def main(
         userdir,
         keep_userdir,
         promo_capture=promo_capture,
+        promo_camera_probe=promo_camera_probe,
         runtime_source=runtime_source,
         runtime_identity=runtime_identity,
     )
@@ -3907,6 +4035,11 @@ if __name__ == "__main__":
         help="record an append-only post-loading gameplay take and extra product UI",
     )
     parser.add_argument(
+        "--promo-camera-probe",
+        action="store_true",
+        help="stop after the historical Bianzhou camera and clean-HUD preflight",
+    )
+    parser.add_argument(
         "--workshop-cache-source",
         help="verified fresh CK3 Workshop cache leaf used instead of the development source",
     )
@@ -3922,6 +4055,7 @@ if __name__ == "__main__":
                 keep_userdir=not arguments.discard_userdir,
                 preflight_only=arguments.preflight,
                 promo_capture=arguments.promo_capture,
+                promo_camera_probe=arguments.promo_camera_probe,
                 workshop_cache_source=arguments.workshop_cache_source,
                 workshop_manifest=arguments.workshop_manifest,
             )

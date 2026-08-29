@@ -1,6 +1,7 @@
 Pillow==12.3.0
 numpy==2.5.2
 PyAutoGUI==0.9.54
+pyperclip==1.11.0
 pywin32==312
 rapidocr-onnxruntime==1.2.3
 opencv-python==5.0.0.93

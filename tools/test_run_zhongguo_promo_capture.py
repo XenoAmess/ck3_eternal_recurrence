@@ -236,19 +236,22 @@ def main() -> int:
     for token in (
         'acceptance.pyautogui.press("home")',
         "ImageChops.difference",
-        '"更多"',
-        '"05_promo_camera_more_button_tooltip.png"',
-        '"native HUD More button tooltip could not be located"',
-        'acceptance.deliberate_click(more_point, "native HUD More button")',
-        '"转到首都"',
-        '"native_more_menu"',
-        "_mouse_hierarchy_leave",
-        "acceptance.pyautogui.click(*capital_button)",
+        'acceptance.pyautogui.press("v")',
+        '"查找头衔"',
+        '"汴州"',
+        '"c_bianzhou"',
+        'acceptance.deliberate_click(search_point, "native title search field")',
+        'acceptance.pyautogui.hotkey("ctrl", "v")',
+        'acceptance.pyautogui.mouseDown(button="right")',
+        '"native_title_finder_bianzhou"',
+        '"05_promo_title_finder_bianzhou.png"',
+        '"native title finder could not resolve the Bianzhou result row"',
         '"shortcut_visual_change_fraction"',
         '"final_visual_change_fraction"',
         '"minimum_visual_change_fraction": 0.18',
-        '"native capital recenter produced no material map movement"',
-        '"native_action": "go_to_capital"',
+        '"native Bianzhou title recenter produced no material map movement"',
+        '"native_action": (',
+        'else "find_title_right_click"',
         '"expected_realm_title": "h_china"',
         '"05_promo_camera_before_home.png"',
         '"05_promo_camera_after_home.png"',
@@ -264,35 +267,91 @@ def main() -> int:
             mock.patch.object(
                 capture.acceptance.ImageGrab,
                 "grab",
-                side_effect=(unchanged, unchanged.copy(), unchanged.copy(), moved),
+                side_effect=(
+                    unchanged,
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    unchanged.copy(),
+                    moved,
+                    moved.copy(),
+                ),
             ),
             mock.patch.object(
                 capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
             ),
             mock.patch.object(capture.acceptance.pyautogui, "press") as press,
             mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
-            mock.patch.object(capture.acceptance.pyautogui, "click") as instant_click,
+            mock.patch.object(capture.acceptance.pyautogui, "hotkey") as hotkey,
+            mock.patch.object(capture.acceptance.pyautogui, "mouseDown") as mouse_down,
+            mock.patch.object(capture.acceptance.pyautogui, "mouseUp") as mouse_up,
             mock.patch.object(
-                capture.acceptance, "find_ocr_text", return_value=(1807, 1417)
+                capture.acceptance,
+                "find_ocr_text",
+                side_effect=((2150, 220), None),
             ),
             mock.patch.object(
-                capture.acceptance, "wait_for_ocr_text", return_value=(1010, 910)
+                capture.acceptance, "wait_for_ocr_text", return_value=(2150, 220)
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_results",
+                return_value=(("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
             ),
             mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
+            mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
             mock.patch.object(capture.time, "sleep"),
         ):
             camera_gate = capture.recenter_promo_camera_on_player_capital(artifacts)
-        press.assert_called_once_with("home")
-        move.assert_called_once_with(1807, 1417, duration=0.2)
-        assert click.call_args_list == [
-            mock.call((1807, 1417), "native HUD More button"),
+        assert press.call_args_list == [
+            mock.call("home"),
+            mock.call("v"),
+            mock.call("escape"),
         ]
-        instant_click.assert_called_once_with(1010, 910)
+        assert move.call_args_list == [
+            mock.call(2100, 345, duration=0.2),
+            mock.call(1280, 720, duration=0.1),
+        ]
+        assert click.call_args_list == [
+            mock.call((2150, 285), "native title search field"),
+        ]
+        assert hotkey.call_args_list == [
+            mock.call("ctrl", "a"),
+            mock.call("ctrl", "v"),
+        ]
+        assert clipboard_copy.call_args_list == [
+            mock.call("汴州"),
+            mock.call("preserved"),
+        ]
+        mouse_down.assert_called_once_with(button="right")
+        mouse_up.assert_called_once_with(button="right")
         assert camera_gate["result"] == "GREEN"
-        assert camera_gate["method"] == "native_more_menu"
+        assert camera_gate["method"] == "native_title_finder_bianzhou"
+        assert camera_gate["resolved_title_key"] == "c_bianzhou"
         assert camera_gate["shortcut_visual_change_fraction"] == 0.0
         assert camera_gate["final_visual_change_fraction"] >= 0.99
         assert (artifacts / "05_promo_camera_recenter.json").is_file()
+
+    camera_probe_cell = inspect.getsource(capture.run_cell)
+    for token in (
+        "if promo_camera_probe:",
+        'close_native_decisions_panel(artifacts, "05_promo_pre_record")',
+        "recenter_promo_camera_on_player_capital(artifacts)",
+        '"probe_only": True',
+        '"ffmpeg_started": False',
+        'result == "GREEN" and not promo_camera_probe',
+    ):
+        assert token in camera_probe_cell, token
+    try:
+        capture.main(
+            preflight_only=True,
+            promo_capture=True,
+            promo_camera_probe=True,
+        )
+    except capture.acceptance.RunnerError as error:
+        assert "mutually exclusive" in str(error)
+    else:
+        raise AssertionError("conflicting promo modes were accepted")
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (
