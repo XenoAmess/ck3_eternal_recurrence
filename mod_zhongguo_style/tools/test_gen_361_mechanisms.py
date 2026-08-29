@@ -7,16 +7,30 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 from gen_361_mechanisms import MOD_ROOT, effect_name, outputs
 from zg361_mechanism_data import (
+    ACCEPTANCE_FIELDS,
+    AcceptanceContract,
     LEDGERS,
     MECHANISM_COUNT,
     PROFILE_DELTAS,
+    load_acceptance_contracts,
     load_mechanisms,
     mechanism_deltas,
 )
+
+
+def valid_acceptance_payload(mechanism_id: int) -> dict[str, object]:
+    return {
+        "acceptance_cn": f"机制 {mechanism_id:03d} 必须冻结具体案卷并核对结果。",
+        "semantic_family": f"family_{mechanism_id:03d}",
+        "required_state": [f"case_{mechanism_id:03d}_id 与 review_serial"],
+        "visible_feedback": [f"显示机制 {mechanism_id:03d} 的具体案卷结果"],
+        "batch_assertions": [f"机制 {mechanism_id:03d} 的案卷只结算一次"],
+    }
 
 
 class MechanismGenerationTests(unittest.TestCase):
@@ -44,6 +58,79 @@ class MechanismGenerationTests(unittest.TestCase):
                 self.assertNotEqual(mechanism.option_a_en, mechanism.option_b_en)
                 self.assertIn(mechanism.profile, PROFILE_DELTAS)
                 self.assertIn(mechanism.reference_choice, {"a", "b", "c"})
+
+    def test_acceptance_contracts_are_typed_complete_and_specific(self) -> None:
+        for mechanism in self.mechanisms:
+            contract = mechanism.acceptance_contract
+            with self.subTest(mechanism=mechanism.id):
+                self.assertIsInstance(contract, AcceptanceContract)
+                self.assertTrue(contract.acceptance_cn)
+                self.assertTrue(contract.semantic_family)
+                self.assertTrue(contract.required_state)
+                self.assertTrue(contract.visible_feedback)
+                self.assertTrue(contract.batch_assertions)
+                for values in (
+                    contract.required_state,
+                    contract.visible_feedback,
+                    contract.batch_assertions,
+                ):
+                    self.assertTrue(all(isinstance(value, str) and value for value in values))
+
+    def test_acceptance_loader_rejects_missing_id(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_folder:
+            folder = Path(raw_folder)
+            payload = {
+                f"{mechanism_id:03d}": valid_acceptance_payload(mechanism_id)
+                for mechanism_id in range(1, MECHANISM_COUNT)
+            }
+            (folder / "acceptance_001_360.json").write_text(
+                json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "exactly 001..361"):
+                load_acceptance_contracts(folder)
+
+    def test_acceptance_loader_rejects_duplicate_id(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_folder:
+            folder = Path(raw_folder)
+            duplicate = {"001": valid_acceptance_payload(1)}
+            for name in ("acceptance_a.json", "acceptance_b.json"):
+                (folder / name).write_text(
+                    json.dumps(duplicate, ensure_ascii=False), encoding="utf-8"
+                )
+            with self.assertRaisesRegex(ValueError, "duplicate acceptance contract"):
+                load_acceptance_contracts(folder)
+
+    def test_acceptance_loader_rejects_missing_or_wrong_typed_field(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_folder:
+            folder = Path(raw_folder)
+            missing = valid_acceptance_payload(1)
+            del missing["visible_feedback"]
+            (folder / "acceptance_missing.json").write_text(
+                json.dumps({"001": missing}, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "fields mismatch"):
+                load_acceptance_contracts(folder)
+
+        with tempfile.TemporaryDirectory() as raw_folder:
+            folder = Path(raw_folder)
+            wrong_type = valid_acceptance_payload(1)
+            wrong_type["required_state"] = "not a list"
+            (folder / "acceptance_wrong_type.json").write_text(
+                json.dumps({"001": wrong_type}, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "must be a non-empty list"):
+                load_acceptance_contracts(folder)
+
+    def test_acceptance_loader_rejects_generic_variable_change_only(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_folder:
+            folder = Path(raw_folder)
+            generic = valid_acceptance_payload(1)
+            generic["batch_assertions"] = ["变量变化"]
+            (folder / "acceptance_generic.json").write_text(
+                json.dumps({"001": generic}, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "generic variable-change claim"):
+                load_acceptance_contracts(folder)
 
     def test_shared_ledgers_have_real_tradeoffs(self) -> None:
         for mechanism in self.mechanisms:
@@ -100,12 +187,29 @@ class MechanismGenerationTests(unittest.TestCase):
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"
         manifest = json.loads(self.rendered[manifest_path].decode("utf-8"))
+        self.assertEqual(manifest["schema"], 2)
         self.assertEqual(manifest["mechanism_count"], 361)
         self.assertEqual([item["id"] for item in manifest["items"]], list(range(1, 362)))
         self.assertEqual({item["live_wave"] for item in manifest["items"]}, {1, 2, 3, 4})
+        expected_status = {
+            "catalogue": "complete",
+            "policy_configuration": "fixture-live",
+            "ledger_projection": "fixture-live",
+            "domain_runtime": "not-implemented",
+            "player_visible_loop": "partial",
+        }
+        mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
         for item in manifest["items"]:
             self.assertEqual(len(item["implementation"]["choice_effects"]), 3)
-            self.assertEqual(item["status"], "fixture-live")
+            self.assertEqual(item["status"], expected_status)
+            self.assertNotIsInstance(item["status"], str)
+            self.assertEqual(
+                tuple(item["acceptance_contract"]), ACCEPTANCE_FIELDS
+            )
+            self.assertEqual(
+                item["acceptance_contract"],
+                mechanisms_by_id[item["id"]].acceptance_contract.manifest_payload(),
+            )
         self.assertEqual(
             manifest["acceptance"]["run_id"],
             "zga_20260829_061314_ea5f04ad",

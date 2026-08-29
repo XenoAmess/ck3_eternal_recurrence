@@ -662,6 +662,17 @@ def wave_for(mechanism_id: int) -> int:
     return 4
 
 
+def implementation_status() -> dict[str, str]:
+    """Expose the current evidence boundary without upgrading domain semantics."""
+    return {
+        "catalogue": "complete",
+        "policy_configuration": "fixture-live",
+        "ledger_projection": "fixture-live",
+        "domain_runtime": "not-implemented",
+        "player_visible_loop": "partial",
+    }
+
+
 def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
     items = []
     for mechanism in mechanisms:
@@ -691,20 +702,29 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
                 "player_path": "annual review card or next-policy decision",
                 "ai_path": "twelve-card annual background batch",
                 "live_wave": wave_for(mechanism.id),
-                "status": "fixture-live",
+                "acceptance_contract": mechanism.acceptance_contract.manifest_payload(),
+                "status": implementation_status(),
             }
         )
     return {
-        "schema": 1,
+        "schema": 2,
         "mechanism_count": MECHANISM_COUNT,
         "source": "docs/361-expansion-options.md",
+        "acceptance_contract_source": "tools/mechanism_acceptance/acceptance_*.json",
+        "status_boundary": {
+            "catalogue": "The numbered design and reviewed choice copy are complete.",
+            "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
+            "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
+            "domain_runtime": "The typed domain objects and state machines required by the acceptance contract are not implemented yet.",
+            "player_visible_loop": "Generic policy cards and ledger climate feedback exist; contract-specific objects, actions, and feedback remain incomplete.",
+        },
         "acceptance": {
-            "scope": "reference choice for every mechanism executed in one real CK3 fixture batch",
+            "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
             "logical_group_semantics": "live_wave is a coverage grouping inside that single CK3 run, not a separate game launch",
             "report": "docs/testing-report-2026-08-29.md",
             "run_id": "zga_20260829_061314_ea5f04ad",
             "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
-            "claim_boundary": "fixture-live does not mean all 1083 A/B/C branches were manually clicked",
+            "claim_boundary": "fixture-live applies only to policy_configuration and ledger_projection; it does not prove the 361 domain runtimes, player-visible semantic loops, or all 1083 A/B/C branches",
         },
         "generated_files": [],
         "items": items,
@@ -715,20 +735,22 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
     lines = [
         "# 361 机制实现映射",
         "",
-        "> GENERATED FILE — edit the numbered design document or reviewed choice JSON.",
+        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, or acceptance-contract JSON.",
         "",
-        "状态口径：本表当前 `fixture-live` 表示 361 项各自的参考路线已在同一次真实 CK3 夹具批次中逐号执行，",
-        "并验证唯一状态与组织账后果；它不表示 1083 个 A/B/C 分支都经过人工 UI 点选。证据见",
-        "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`。",
+        "状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；",
+        "领域对象/状态机仍为 `not-implemented`，玩家侧只有通用政策卡与组织账反馈，因此仅为 `partial`。",
+        "旧实机证据只证明配置变量、共享账本、校验和及幂等性，不证明 361 项领域玩法已经实现。证据见",
+        "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`；逐项目标见 manifest 内 `acceptance_contract`。",
         "",
-        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 状态 |",
-        "|---:|---|---|---|---|---|---|---:|---|",
+        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 领域 | 玩家闭环 |",
+        "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|",
     ]
     for mechanism in mechanisms:
         lines.append(
             f"| {mechanism.id:03d} | {mechanism.title_cn} | {mechanism.group_code} | "
             f"{mechanism.priority} | `{mechanism.profile}` | `zg361m.{mechanism.id}` | "
-            f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | fixture-live |"
+            f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | "
+            "complete | fixture-live | fixture-live | not-implemented | partial |"
         )
     digest = hashlib.sha256(
         json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")

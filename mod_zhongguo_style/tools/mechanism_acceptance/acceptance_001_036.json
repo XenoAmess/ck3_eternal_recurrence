@@ -1,0 +1,758 @@
+{
+  "001": {
+    "acceptance_cn": "以同一受评人同一 review_serial 的结算为夹具：A 必须在结算时冻结治理成果、效率、成长、协作、价值观、京察履责、奖惩与政治修正八类证据，分项代数和严格等于已落盘 KPI；申诉、PIP、晋升包和考核榜只能引用该快照。B 允许用总分与上司印象快速定档，但必须明确标为无分项依据，不能伪装成完整证据单。换上司、转封、跨年和存读档均不得改写旧案。",
+    "semantic_family": "kpi_evidence_sheet",
+    "required_state": [
+      "zg361_mechanism_001_choice 与 review_serial、受评人、直属考核者、结算年份的唯一绑定",
+      "[可复用·review] zg361_kpi、zg361_efficiency、zg361_values、zg361_last_reviewer、zg361_last_review_serial、zg361_last_grade",
+      "[可复用·scoreboard] 冻结的 kpi/rank/values/grade 与 managed/received owner、year、slot",
+      "[领域缺口] 八类证据分项、每项事例 ID/符号/数值/来源日及 immutable evidence_sheet_id"
+    ],
+    "visible_feedback": [
+      "[现有可见] 考核榜显示冻结 KPI、名次、价值观与档位",
+      "[缺口验收] 个人告身逐项显示八类分值、事例和合计校验；B 路线显示“总分/印象定档，分项不可追溯”",
+      "申诉、PIP 与晋升包显示相同 evidence_sheet_id，不读取当前 live 数值"
+    ],
+    "batch_assertions": [
+      "A：八类冻结分项之和必须精确等于同一 review_serial 的 zg361_kpi；更换领地、上司或进入下一年后旧分项与总分逐字不变",
+      "B：只创建一条总分/印象裁决记录，仍冻结 reviewer、year、KPI、grade；不得生成虚假的八项明细，漏项风险进入申诉理由",
+      "C：不创建 evidence_sheet_id、不改 KPI 或档位，只令 choice=3 并增加一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见，重复事件和存读档不得二增",
+      "共同：同一受评人同一 review_serial 最多一张有效证据单，scoreboard、appeal、PIP、promotion 的引用 ID 必须一致"
+    ]
+  },
+  "002": {
+    "acceptance_cn": "为直属受评人分别冻结财政、治安、军备、发展或跨部门协作方向以及期初基线、目标强度和周期截止日。A 的激进/普通/保守目标只改变证据权重与头档上限，原生治理成果仍是主分；保守目标即使完成也不能仅凭完成率进入 3.75。B 的统一进取目标必须留下刷指标与隐瞒风险，不能凭目标标签直接加出治理成果。",
+    "semantic_family": "annual_okr_kpi_contract",
+    "required_state": [
+      "zg361_mechanism_002_choice、goal_contract_id、受评人、考核者、review_serial、方向、强度、期初基线、截止日",
+      "[可复用·review] zg361_kpi、zg361_efficiency、zg361_values、zg361_last_review_serial 与最终档位",
+      "[可复用·manager-review] 京察 mandate 的年份与直属 reviewer 可限定责任书所属周期",
+      "[领域缺口] 目标方向/强度、权重表、完成率、3.75 硬上限及接受/协商/保守回应"
+    ],
+    "visible_feedback": [
+      "责任书显示方向、强度、基线、截止日、权重和头档资格上限",
+      "结算告身同时显示原生治理成果与目标完成解释，不把目标完成率伪装成治理成果",
+      "B 路线显示统一加压及刷指标/迟报风险"
+    ],
+    "batch_assertions": [
+      "A：相同原生成果在不同方向下只按冻结权重解释；保守目标完成率 100% 而硬成果不足时不得获得 3.75，激进失败也不得抹除已发生治理成果",
+      "B：cohort 全员获得同一进取强度与同一截止日，风险记录逐人一次；目标标签不得直接增加财政、控制或发展等原生状态",
+      "C：不创建责任书或目标基线，只登记 choice=3/制度债一次；冻结 next_review_serial 为复议期限并在制度驾驶舱可见，后续 review 不凭空补目标分",
+      "共同：goal_contract_id 在一个 review_serial 内唯一，截止后锁定；所有目标加权后的证据合计仍与落盘 KPI 对账"
+    ]
+  },
+  "003": {
+    "acceptance_cn": "在年度责任书中点安排一次期中节点。A 可选择辅导、加压、补资源或不干预，并且只有战争/叛乱等带唯一 crisis_id 的外部冲击才允许一次 rebaseline；原基线不得覆盖。B 保持年初目标并限期追赶，须留下“已预警但未重置/未支持”的申诉和 PIP 证据。无危机或重复使用同一危机不得洗目标。",
+    "semantic_family": "midcycle_checkin_rebaseline",
+    "required_state": [
+      "zg361_mechanism_003_choice、checkin_id、goal_contract_id、review_serial、计划日、完成日、行动与复盘日",
+      "危机 ID、危机类型/起止日、原基线、新基线、唯一 rebaseline_used 标记",
+      "[可复用·PIP/appeal] zg361_pip、zg361_last_review_serial 可承接预警与支持证据",
+      "[领域缺口] check-in 对象、支持投入、危机真实性、旧新目标版本链"
+    ],
+    "visible_feedback": [
+      "期中事件列出当前目标、风险、可选行动和是否有合法危机",
+      "案卷显示原基线→新基线、crisis_id、上司预警/支持记录与复盘期限",
+      "到期未 check-in 或 B 路线显示可进入申诉/PIP 的流程理由"
+    ],
+    "batch_assertions": [
+      "A：每人每 review_serial 最多完成一次 check-in；仅有唯一真实 crisis_id 时可 rebaseline 一次，第二次点击或同危机复用均为 no-op",
+      "B：目标数值和原基线保持不变，生成一次限期追赶记录；上司未提供支持的事实可被同一周期 appeal/PIP 引用但不直接改档",
+      "C：不创建 checkin_id、不移动目标或截止日，只增加一次制度债；冻结 next_review_serial 为复议期限并可见，跨过期中日后不得补写成已举办",
+      "共同：原目标版本永久保留，任何重置只影响当前周期余下时间且不能改写已冻结的早期证据"
+    ]
+  },
+  "004": {
+    "acceptance_cn": "受评人在校准前只能提交一次自评档位和代表成果。A 保存自评 3.75/3.5/3.25、证据 ID 与上司逐项回应，终评单独落盘；高估差伤可信度、低估只损可见度，高质量事实才进入案卷。B 只收一页推介并有限修正主观项，表达能力不能改写原生治理成果。AI 在固定性格与固定输入下须复现同一策略。",
+    "semantic_family": "self_assessment_gap",
+    "required_state": [
+      "zg361_mechanism_004_choice、self_review_id、受评人、review_serial、自评档位、提交日、代表成果 ID",
+      "[可复用·review] zg361_kpi、zg361_values、zg361_pending_grade、zg361_last_grade 分离自评与终评",
+      "[可复用·calibration] pending_grade 可用于比较但不能被自评直接覆盖",
+      "[领域缺口] 认知差、可信度/可见度修正、上司回应和稳定 AI 自评策略"
+    ],
+    "visible_feedback": [
+      "个人案卷并列显示自评档位、终评档位、认知差与代表成果",
+      "校准会标识自评证据是否采纳以及高估/低估的封顶后果",
+      "重复提交时明确提示本轮已锁定而非覆盖旧自评"
+    ],
+    "batch_assertions": [
+      "A：同一角色同一 review_serial 仅一份 self_review_id；终评字段独立，修改 pending/final grade 不得反写自评档位",
+      "B：一页推介最多影响冻结的主观/可见度分且受硬上限约束；不得改变财政、控制、发展、战争成果等原生证据",
+      "C：不创建自评案、不改 KPI/values/pending_grade，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：固定角色性格、关系与证据重复运行时 AI 自评选择相同；自评总不能单独跨越两个绩效档"
+    ]
+  },
+  "005": {
+    "acceptance_cn": "为地方治理、军务、财政和管理岗在周期开始冻结岗位类型与证据权重，再让所有直属成员进入同一 cohort 横向校准。A 按岗位算分但守住同一配额；B 共用结果榜，必须显式记录难量化岗位的系统性偏差。周期中转岗只登记下一轮岗位，新岗位不得回算旧榜。",
+    "semantic_family": "role_specific_scorecard",
+    "required_state": [
+      "zg361_mechanism_005_choice、role_scorecard_id、受评人、review_serial、冻结岗位、权重版本、生效/到期日",
+      "[可复用·review] cohort、zg361_kpi、efficiency、values、rank、grade 与 last_review_serial",
+      "[可复用·scoreboard] 冻结 title/kpi/rank/values/grade 证明历史不随转岗漂移",
+      "[领域缺口] 四类岗位权重、转岗 next_role 与岗位偏差审计"
+    ],
+    "visible_feedback": [
+      "记分卡显示冻结岗位、各证据权重及共同校准池",
+      "考核榜显示本轮岗位标签；转岗后旧榜仍显示旧岗位",
+      "B 路线显示统一量表及受损岗位类型"
+    ],
+    "batch_assertions": [
+      "A：构造同属性文官与武官，相同原始证据经不同冻结权重得到不同分项，但两人仍各自只占 cohort 一个名额且三档人数和等于 cohort_n",
+      "B：所有岗位使用同一结果量表且只结算一次；必须产生岗位偏差记录，不能悄悄补偿某人而破坏排名顺序",
+      "C：不创建 role_scorecard_id、不改变现有 KPI 或 roster，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：周期中转岗仅写 next_role；旧 review_serial 的岗位、权重、KPI 与榜单槽位存读档后不变"
+    ]
+  },
+  "006": {
+    "acceptance_cn": "在上任日冻结领地繁荣、控制、财政、战争破坏和可用资源作为起点。A 依据改善量作有上限的难度校正，战争结束或换上司后在本周期截止时失效；B 只看期末绝对值并对富庶地加码，需显示“吃老本/收拾残局”偏差。任何路线都不能把困难标签变成永久失败豁免。",
+    "semantic_family": "baseline_difficulty_adjustment",
+    "required_state": [
+      "zg361_mechanism_006_choice、baseline_id、受评人、岗位/领地、上任日、review_serial、五类期初状态",
+      "难度修正值、上限、原因、批准者、生效日和最迟失效日",
+      "[可复用·review] zg361_kpi、efficiency、last_reviewer/serial/grade",
+      "[领域缺口] 期初治理快照、改善量、难度封顶和失效时钟"
+    ],
+    "visible_feedback": [
+      "案卷并列期初值、期末值、改善量、校正原因与封顶前后数值",
+      "战争结束、换上司或周期截止时显示校正到期",
+      "B 路线显示绝对结果口径以及富地/烂摊子偏差"
+    ],
+    "batch_assertions": [
+      "A：难度修正绝对值不得超过冻结上限，且只进入当前 review_serial 一次；期末原生值不被修正对象反向修改",
+      "B：KPI 只消费期末绝对值与明确富庶加码；烂摊子不会获得隐形豁免，偏差标记可被申诉读取",
+      "C：不创建 baseline_id、不改变 KPI 或任期状态，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：更换领地/上司或危机终止后旧基线仍供历史核验，但不得继续影响下一 review_serial"
+    ]
+  },
+  "007": {
+    "acceptance_cn": "用有共同战争/治理任务的评价者和无交集角色组夹具。A 只允许少量真实参与者对业绩、协作、价值观提交带事例的匿名互评，合计权重冻结在 10%–15% 且不能单独跨两档；B 广撒邀评可以放大原票，但互抬、报复和模板灌水风险必须留痕。匿名只隐藏展示作者，复核案卷仍能按 evaluator_id 查证。",
+    "semantic_family": "back_to_back_360_review",
+    "required_state": [
+      "zg361_mechanism_007_choice、peer_review_id、review_serial、subject、evaluator、共同任务证据 ID、三维评分与事例",
+      "邀请来源（本人/上司/系统）、邀请上限、总权重上限、匿名展示标记",
+      "[可复用·review/calibration] zg361_kpi、values、pending_grade、最终 grade",
+      "[领域缺口] 真实协作关系索引、匿名 peer dossier、去重与 10%–15% 权重器"
+    ],
+    "visible_feedback": [
+      "邀评器只列出有共同任务证据者，并显示剩余名额与权重上限",
+      "校准案卷显示匿名事例、修正分和是否触达上限，不向被评人暴露作者",
+      "复核席可见 evaluator_id 与原留言；B 路线显示互抬/报复风险"
+    ],
+    "batch_assertions": [
+      "A：无共同任务 ID 的角色不可被邀请；每对 subject/evaluator/review_serial 最多一条，360 合计权重位于配置的 10%–15% 上限内",
+      "B：原始票可直接计入但仍不得改写硬治理证据；重复模板/互评环会生成信用风险且同一票不能重复计分",
+      "C：不创建邀请或 peer_review_id、不改变 KPI/grade，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：仅靠 360 从初始档位出发不得跨越两个档；匿名展示与底层可追责身份必须同时成立"
+    ]
+  },
+  "008": {
+    "acceptance_cn": "连续多轮保存评价者均值、离散度、举荐命中与翻案率。A 以中性先验起步并对本轮互评施加有硬上限的可信度校正，原留言与原分永久保留；B 本轮照单全收，若后续翻案再扣评价者信用和价值观。互相抬轿应逐轮贬值，恶意低分须能反噬明确评价者。",
+    "semantic_family": "evaluator_calibration_credit",
+    "required_state": [
+      "zg361_mechanism_008_choice、evaluator_profile_id、评价者、样本数、历史均值/方差、命中率、翻案率、统计截止轮",
+      "中性先验、可信度权重、归一化修正值与硬上限",
+      "[可复用·appeal] regrade 结果与 last_penalty_serial 可提供翻案事实",
+      "[领域缺口] 互评历史、评价者信用、原分→修正分的可逆映射"
+    ],
+    "visible_feedback": [
+      "评价者标签显示新评价者/宽松/严苛/可信/惯犯及统计样本数",
+      "案卷并列原留言、原分、可信权重与封顶后修正分",
+      "翻案后向评价者显示信用/价值观后果及生效周期"
+    ],
+    "batch_assertions": [
+      "A：零历史样本使用冻结的中性先验；校正绝对值不超过硬上限，且不得覆盖原留言或原始评分",
+      "B：当前轮按原始互评分结算一次；未来同一 appeal 翻案只扣一次评价者信用，不能追改已发布的原留言",
+      "C：不创建 evaluator_profile_id、不调整互评或 values，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：构造连续互抬与连续恶意低分，下一轮有效权重必须下降；存读档后均值、方差、样本数和翻案计数一致"
+    ]
+  },
+  "009": {
+    "acceptance_cn": "以至少十人的已冻结 cohort 打开校准会。A 在驾驶舱并列 KPI、价值观、目标、360、历史趋势与申诉风险；抬升边界一人时必须同时指定同档承担者，原子交换 3.75↔3.5 或 3.5↔3.25，三档人数保持不变。B 可按当前总分与剩余配额快速拍板，但仍须锁定旧轮 scope、阻止重复点击并保持配额。",
+    "semantic_family": "calibration_dashboard_swap",
+    "required_state": [
+      "zg361_mechanism_009_choice 与 calibration_id、review_serial、cohort owner、锁定人数/配额、开放/截止状态",
+      "[可复用·calibration] zg361_pending_grade、pending_375/35/325_n、top_cut、top_cut_next、bottom_slots 与 promote/demote 原子 effect",
+      "[可复用·review/scoreboard] kpi、values、rank、last grade/streak 与冻结榜单",
+      "[领域缺口] 目标、360、趋势、申诉风险列及每次交换的 reason/evidence trail"
+    ],
+    "visible_feedback": [
+      "[现有可见] 校准事件/考核榜显示 KPI、价值观、名次、档位和三档总数",
+      "[缺口验收] 驾驶舱显示目标、360、趋势、申诉风险以及交换双方和理由",
+      "并列、旧轮或重复点击时显示无效原因，不能静默串账"
+    ],
+    "batch_assertions": [
+      "A：每次有效操作恰好交换两名边界角色；交换前后 pending_375_n、pending_35_n、pending_325_n 逐项相等且总和等于 cohort_n",
+      "B：可一次按总分关榜，但每人只结算一个 pending_grade；剩余配额不得为负，旧 review_serial/延迟一天请求必须 no-op",
+      "C：不打开 calibration_id、不改 pending_grade 或三档人数，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：并列、双击、缺交换对象、新人保护和存读档场景均不得产生半次交换；发布榜单只消费当前 review_serial"
+    ]
+  },
+  "010": {
+    "acceptance_cn": "构造全员达到绝对门槛但严格规则仍需一个 3.25 的 cohort。A 按冻结硬证据指定最低者；若经理护人，必须在同轮留下被保护人、替代承担者、经理威望支出及下一轮管理 KPI 债，配额仍守恒。B 可压给新人/边缘人，但现有首轮新人保护不得被绕过，且申诉、怨恨与流失风险只生成一次。",
+    "semantic_family": "forced_bottom_and_protection",
+    "required_state": [
+      "zg361_mechanism_010_choice、forced_bottom_case_id、review_serial、绝对达标判定、应有 C 名额与承担者",
+      "[可复用·calibration] bottom_slots、pending_grade、demote 原子交换、新人保护 zg361_newcomer_this_cycle",
+      "[可复用·manager-review] 护人造成的下一轮经理责任可接 manager KPI；现有 skipped-Jingcha 展示跨轮扣分范式",
+      "[领域缺口] 护人对象、威望支付、管理 KPI 债、怨恨/流失原因码"
+    ],
+    "visible_feedback": [
+      "校准会明确显示“全员达标仍须背 C”、候选硬证据及新人保护",
+      "护人路线显示经理实际支付的威望和下一轮管理扣分到期轮",
+      "背 C 者告身显示强制分布理由、申诉入口、怨恨与流失风险"
+    ],
+    "batch_assertions": [
+      "A：硬证据路线把恰好 bottom_slots 人落为 3.25；护人则一次性支付配置威望并生成下一 review_serial 的经理 KPI 债，三档配额不变",
+      "B：新人保护标记存在时不得把该新人强制交换为 3.25；合法边缘承担者只获得一次申诉/怨恨/流失风险记录",
+      "C：不指定承担者、不支付威望、不改 pending_grade，只登记一次制度债；冻结 next_review_serial 为复议期限并可见，严格 review 仍须由基础校准流程完成而不能悬空",
+      "共同：任何路线都不得凭空减少 bottom_slots；若免除一名受评人的 C，必须有另一受评人承担或明确且足额的经理代价对象"
+    ]
+  },
+  "011": {
+    "acceptance_cn": "建立皇帝—公爵—伯爵三级夹具。A 让皇帝/政委只检查公爵提交的分布、极端证据和程序；缺证时整榜退回公爵并限定一次重开，皇帝不得直接写伯爵 pending/final grade。B 允许隔级席当场点改的越权结果必须被审计标记，不得伪装成直属经理发布。最终榜 owner 始终是公爵。",
+    "semantic_family": "skip_level_calibration_review",
+    "required_state": [
+      "zg361_mechanism_011_choice、oversight_case_id、上级审查者、直属经理、孙级 cohort、review_serial、提交/退回/重开截止日",
+      "[可复用·calibration/scoreboard] pending_grade、三档计数、scoreboard_managed_owner/year 与发布快照",
+      "[可复用·manager-review] 上司链与京察 reviewer 可验证只能审直属经理",
+      "[领域缺口] 补证/回避/退回原因、复会状态及越级改档审计"
+    ],
+    "visible_feedback": [
+      "隔级审查面板只显示团队分布、极端案和程序状态，不出现直接定档按钮",
+      "退回通知显示缺证理由、直属经理和重开截止日",
+      "最终考核榜显示发布者为公爵；越级路线显示明确程序违规标记"
+    ],
+    "batch_assertions": [
+      "A：皇帝退回后孙级 final grade 不变，公爵的 calibration 状态回到待处理；重开只允许一次且最终 scoreboard owner=公爵",
+      "B：若执行越级点改，必须留下审查者与被改角色、前后档位和程序风险；不得同时生成皇帝与公爵两份 review_serial",
+      "C：不创建 oversight_case、不退回或改档，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：孙级角色始终只是被考核对象，不能获得考核他人的入口；各档人数及 cohort 分母在退回前后守恒"
+    ]
+  },
+  "012": {
+    "acceptance_cn": "在校准开始时冻结经理与每名受评人的亲族、挚友、情人、仇敌、恩主冲突。A 回避后由独立复核席处理该对象且只作用本轮；小 cohort 无替代者时使用抽象复核席而非卡死。B 公开坚持或暗箱操作可改变边界判断，但必须增加当轮翻案风险与经理下一轮扣分，不能永久污染关系规则。",
+    "semantic_family": "calibration_conflict_recusal",
+    "required_state": [
+      "zg361_mechanism_012_choice、conflict_case_id、review_serial、经理、受评人、关系类型、发现日与到期日",
+      "回避决定、替代复核席、前后推荐档位、公开/暗箱标记",
+      "[可复用·appeal/calibration] pending_grade、appeal regrade 与 fixed scoreboard correction",
+      "[领域缺口] 冲突快照、抽象复核席、翻案概率修正与经理责任 reason code"
+    ],
+    "visible_feedback": [
+      "校准前列出本轮冲突关系、回避选项和可用替代席",
+      "案卷显示谁回避、谁复核及冲突对哪个边界判断生效",
+      "B 路线显示翻案风险与经理下一轮管理扣分，而非隐藏加权"
+    ],
+    "batch_assertions": [
+      "A：每个 manager/subject/review_serial 冲突只建一案；回避者不能再改该人的 pending_grade，小 cohort 必须落到唯一抽象复核席并继续结算",
+      "B：公开坚持/暗箱操作最多作用当前轮一次，生成一次 appeal-risk 与经理责任；关系在下一轮重新冻结而非永久施加修正",
+      "C：不创建 conflict_case、不改校准者或档位，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：无论复核席为何，最终每名受评人只有一个 reviewer/grade，三档计数与 cohort_n 对账"
+    ]
+  },
+  "013": {
+    "acceptance_cn": "用管理者、团队成员、本人三种观察身份打开同一冻结榜。A 对本人开放理由与申诉，对团队只公开档位和汇总，敏感互评作者必须权限隔离；B 仅本人收到最终档位且理由封闭，同时生成猜忌/申诉风险。字段隐藏必须由 GUI/查询权限阻断，不能只换一段文案却仍能读取名次、理由或匿名作者。",
+    "semantic_family": "performance_disclosure_policy",
+    "required_state": [
+      "zg361_mechanism_013_choice、disclosure_policy_id、owner、review_serial、生效/到期日与 viewer role",
+      "[可复用·scoreboard] managed/received owner、year、shown_n、slot kpi/rank/values/grade",
+      "[可复用·appeal] 本人申诉入口与冻结结果引用",
+      "[领域缺口] 字段级 ACL、团队汇总视图、敏感互评权限与黑箱风险"
+    ],
+    "visible_feedback": [
+      "本人视图显示本人档位、冻结理由与申诉入口",
+      "团队视图只显示政策允许的档位/汇总字段，匿名互评作者不可见",
+      "黑箱路线只发本人结果并显示缺理由导致的猜忌/申诉风险"
+    ],
+    "batch_assertions": [
+      "A：本人可读自己的 reason/evidence 引用，普通团队成员不可查询他人名次、详细理由或 evaluator_id；管理者仍可完成职责范围内复核",
+      "B：只向 subject 暴露 final grade，不公开名次/理由；被隐藏字段在 GUI binding 和 scripted query 两层均不可取得，并增加一次风险记录",
+      "C：不创建 disclosure policy 或改现有榜单权限，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：同一 review_serial 的底层冻结快照不因展示政策改变；切换观察身份不能泄漏上一身份缓存"
+    ]
+  },
+  "014": {
+    "acceptance_cn": "对一名同轮 3.25 受评人分别以计算错误、漏记成果、利益冲突、强制背档、目标不合理立案。A 以冻结 review_serial 先沟通再复核；成功时原子改为 3.5，逐笔按收据退地方国库、个人金币、贤能，立即移除余下的一年俸禄 -25% 与 PIP，修正 managed/received 榜；重复或过期请求不得二退。B 由原上司快改/驳回应暴露利益冲突和错退风险。",
+    "semantic_family": "performance_appeal_dossier",
+    "required_state": [
+      "zg361_mechanism_014_choice、appeal_case_id、reason_code、subject、直属 reviewer、review_serial、提交/沟通/复核/截止状态",
+      "[可复用·appeal] zg361_appeal_regrade_to_35_effect、last_treasury/gold/merit_penalty_paid、last_penalty_reviewer/serial、stale guard",
+      "[可复用·scoreboard] managed/received 三档计数及 fixed slot 更正",
+      "[领域缺口] 五类理由、冻结附件、两阶段案卷、失败/恶意申诉信用与独立复核席"
+    ],
+    "visible_feedback": [
+      "申诉案卷显示理由、原档、冻结证据、直属上司、review_serial 与期限",
+      "成功清算单逐项显示国库/金币/贤能已退和俸禄止扣/PIP 移除状态",
+      "考核榜原槽位改为 3.5，三档汇总同步；过期/重复请求显示 no-op 原因"
+    ],
+    "batch_assertions": [
+      "A：成功案只消费与 subject、reviewer、review_serial 匹配的三笔固定收据，各精确退款一次；grade 3.25→3.5、bottom streak 归零、PIP 与 3.25 modifier 移除",
+      "B：快改或驳回只允许一个终态；由原上司处理必须写利益冲突/程序风险，且无有效收据时绝不能创造退款",
+      "C：不创建增强 appeal_case、不退款、不改档，只登记一次制度债；冻结 next_review_serial 为复议期限并可见，现有申诉入口仍须遵守收据与 stale guard",
+      "共同：成功更正后 managed 与 received 的 3.25 各减一、3.5 各加一且总人数不变；重复、旧轮或换上司后的 stale 请求均 no-op"
+    ]
+  },
+  "015": {
+    "acceptance_cn": "3.25 结算后创建一份属于当事人真实权限范围的财政、治安、军备、发展或协作任务书。A 记录接受/协商、里程碑、复盘点和截止日；B 下达高压硬期限并把拒绝写入下一轮重大负面证据。成功、失败、超时、拒绝四个终态互斥且仅结算一次：成功减轻低档连击，失败/超时升级合法处置，拒绝不得立即伪造第二个 3.25。",
+    "semantic_family": "pip_improvement_plan",
+    "required_state": [
+      "zg361_mechanism_015_choice、pip_case_id、subject、review_serial、任务类型、权限证据、里程碑、创建/复盘/截止日、回应",
+      "[可复用·PIP] zg361_pip 一年 modifier、zg361_streak_bottom、eliminate_n 与 eliminate route effects",
+      "[可复用·review] 3.25 grade 是唯一自动建 PIP 的入口",
+      "[领域缺口] PIP 任务对象、四路互斥状态机、里程碑观测、拒绝/成功的下轮证据"
+    ],
+    "visible_feedback": [
+      "PIP 任务书显示主管、任务、权限依据、里程碑、复盘点、截止日与支持",
+      "到期提示明确成功/失败/超时/拒绝以及对 bottom streak/下轮 KPI 的后果",
+      "现有 PIP 标记与考核榜状态链接到同一 pip_case_id"
+    ],
+    "batch_assertions": [
+      "A：仅当前有效 3.25 可建一份 pip_case；里程碑必须映射 subject 可控制的原生状态，接受或协商后到截止日恰好进入一个终态",
+      "B：拒绝只写一次重大负面证据并进入 refused 终态；不得在当前 review_serial 再扣一次 grade/金币/国库/贤能",
+      "C：不创建 pip_case 或新里程碑，只登记一次制度债；冻结 next_review_serial 为复议期限并可见，现有 zg361_pip modifier 仍按其一年期限处理",
+      "共同：success/failure/timeout/refused 四标志之和恰为一；重复到期 tick 和存读档不得二次减 streak、升级处置或发放补正"
+    ]
+  },
+  "016": {
+    "acceptance_cn": "给同类型 PIP 建立有支持与无支持两个夹具。A 可拨导师、临时治理资源和关注度，所有投入从经理冻结的支持预算扣除，提升完成概率/可达幅度但不能直接买成 3.5；B 只给指标不拨资源，预算不扣，若任务失败则把“无支持”写入申诉和经理下一轮管理 KPI。支持差异必须量化、封顶且到 PIP 截止日终止。",
+    "semantic_family": "pip_support_budget",
+    "required_state": [
+      "zg361_mechanism_016_choice、pip_case_id、support_package_id、导师、资源/关注度数值、预算 owner、拨付日与到期日",
+      "支持预算期初、已拨、剩余、回收及完成修正上限",
+      "[可复用·PIP/appeal] zg361_pip、PIP 结果及申诉重评/收据框架",
+      "[领域缺口] 支持预算账、导师关系、量化封顶、无支持经理责任"
+    ],
+    "visible_feedback": [
+      "PIP 面板显示每项支持、成本、预算余额、完成修正上限与截止日",
+      "无支持路线显示“只给指标不给资源”并在失败案卷生成可申诉理由",
+      "经理下一轮告身显示未支持失败的具体 case_id"
+    ],
+    "batch_assertions": [
+      "A：拨付总额不得超过期初支持预算，期初=已拨+剩余+已回收；支持修正不超过冻结上限且绝不能直接写 final_grade=3.5",
+      "B：预算余额不变；仅当同一 pip_case 最终 failure/timeout 时生成一次 no_support appeal evidence 与经理 KPI 债，成功时不得伪造责任",
+      "C：不创建 support_package、不扣预算或添导师，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：支持在 pip 截止日后失效，重复结算不重复扣预算/记经理责任；有无支持的差异只作用同任务可完成性而不改原生基线"
+    ]
+  },
+  "017": {
+    "acceptance_cn": "按首次 3.25 与连续低档分别驱动处置阶梯。A 首次只允许沟通、PIP、合法调岗，连续失败后才可冻结晋升、降岗、释放 HC、撤任；B 可激进处置，但必须先验证原版头衔/岗位合法性和替补，不能删除角色或制造无主头衔。所有路线一次只进入一个处置终态，并登记恐惧、申诉、空岗或培养成本。",
+    "semantic_family": "bottom_performer_ladder",
+    "required_state": [
+      "zg361_mechanism_017_choice、disposition_case_id、subject、review_serial、bottom_streak、PIP 终态、合法岗位/头衔与替补",
+      "[可复用·PIP] zg361_streak_bottom、zg361_eliminate_n、purge/stepdown/demote/extend effects 与 promotion_track",
+      "[可复用·review] 首次/连续 3.25 和新人保护状态",
+      "[领域缺口] 沟通/调岗/冻结晋升/释放 HC 的统一阶梯对象、替补与空岗后果"
+    ],
+    "visible_feedback": [
+      "处置面板显示当前阶梯层级、合法选项、替补/空岗风险与申诉后果",
+      "执行后告身显示唯一处置结果以及头衔/岗位的原版合法变化",
+      "无合法替补或不可撤任时按钮禁用并给出原因"
+    ],
+    "batch_assertions": [
+      "A：bottom_streak=1 不得直接走最终淘汰；连续失败满足阈值后才开放更高阶动作，每个 disposition_case 只结算一个终态",
+      "B：激进冻结/降岗/撤任必须通过原版合法性并消耗真实岗位/头衔；无合法路径时 no-op，绝不能脚本删除角色或凭空释放非 361 HC",
+      "C：不创建 disposition_case、不改头衔、岗位、PIP 或 streak，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：任何处置不得重复发放/扣除资源；历史榜单保持原档，处置结果作为后续状态而非回写旧 review"
+    ]
+  },
+  "018": {
+    "acceptance_cn": "结算瞬间冻结玩家本轮档位、KPI、名次、上司、cohort 人数和主要理由。3.25 必须以四行清算：地方国库 -50、个人金币 -25、贤能 -60、一年俸禄 -25%；前三笔记录实际支付收据，第四笔是有明确到期日的 modifier。A 提供逐行冻结告身；B 可合并快速展示并标记错算风险，但底层仍必须使用结算快照与分项收据，不能真的在打开时重读 live 值或重扣。",
+    "semantic_family": "personal_result_receipt",
+    "required_state": [
+      "zg361_mechanism_018_choice 与 result_receipt_id、subject、review_serial、结算时间、主要 reason codes",
+      "[可复用·review] zg361_result_kpi、zg361_result_rank、zg361_reviewing_superior、zg361_result_cohort_n、last_grade",
+      "[可复用·appeal] last_treasury/gold/merit_penalty_paid、last_penalty_reviewer/serial 与 receipted refund stale guard",
+      "[可复用·PIP/scoreboard] grade_325/pip 一年 modifier、冻结 managed/received slot；[领域缺口] 完整理由行与俸禄止扣累计展示"
+    ],
+    "visible_feedback": [
+      "个人告身显示冻结 KPI、名次、上司、档位、cohort 与主要理由",
+      "四重清算分别显示国库 -50、金币 -25、贤能 -60、俸禄 -25% 及各自支付/退款/止扣/到期状态",
+      "考核榜显示冻结档位和 PIP；重复打开不产生任何新 toast 或资源变动"
+    ],
+    "batch_assertions": [
+      "A：3.25 结算一次后国库、个人金币、贤能分别最多减少 50/25/60 的实际可付额并逐笔落收据；grade_325 modifier 恰好持续一年且俸禄系数为 -25%",
+      "B：只把同一冻结快照与三笔收据合并快速展示一次；若打开时重读 live 上司/余额或合并重扣任一资源则失败，错算风险标签立即可见",
+      "C：不创建增强明细或额外处罚，只登记一次制度债；冻结 next_review_serial 为复议期限并可见，基础结果仍由现有告身只读显示",
+      "共同：重复打开、转封、换上司、跨日与存读档均不改冻结结果；成功申诉只退三笔即时收据一次并移除余下 modifier，不伪造已扣俸禄返还"
+    ]
+  },
+  "019": {
+    "acceptance_cn": "用连续两轮 3.75、3.5、活跃 PIP、价值观越线、任期不足和无合法空缺等候选组测试。A 只有连续高绩效、价值观合格、无活跃 PIP、任职年限达标且存在原版合法空缺时才创建晋升资格；这只是提包机会，不直接授予头衔。B sponsor 可跳过明确的软门槛，但不得伪造历史、清除 PIP 或绕过合法空缺。转封后旧绩效仍按旧 reviewer/serial 核验。",
+    "semantic_family": "promotion_eligibility_gate",
+    "required_state": [
+      "zg361_mechanism_019_choice、promotion_eligibility_id、subject、审核者、审核日、有效期与逐项 gate 结果",
+      "[可复用·review/PIP] zg361_streak_top、zg361_last_grade/serial、zg361_values、zg361_pip、zg361_promotion_track",
+      "[可复用·scoreboard] promotion slot 状态及冻结旧 reviewer/year/grade",
+      "[领域缺口] 任职年限、合法空缺、资格失效、sponsor 可跳软门槛清单与提包对象"
+    ],
+    "visible_feedback": [
+      "晋升资格页逐项显示连续 3.75、价值观、PIP、任期和合法空缺通过/不通过",
+      "[现有可见] 考核榜显示 promotion_track；[缺口验收] 链接到具体 eligibility_id 与到期日",
+      "B 路线标明 sponsor 跳过了哪一项软门槛以及不可跳过的硬门槛"
+    ],
+    "batch_assertions": [
+      "A：只有五项 gate 全通过才从 ineligible→eligible 并创建一份资格；不得自动改头衔，连续 3.5 只能积累历史而不能直接 eligible",
+      "B：sponsor 最多跳过配置的软门槛并留下披露记录；活跃 PIP、伪造旧 3.75 或无原版合法空缺时仍不得提包",
+      "C：不创建 eligibility/package、不改 promotion_track 或任命分，只登记 choice=3/制度债一次；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：转封/换上司不改旧 reviewer+serial+grade；资格到期或空缺消失后转回 ineligible，但历史绩效不清零"
+    ]
+  },
+  "020": {
+    "acceptance_cn": "为一名已过资格门槛者冻结治理成果、团队影响和方法沉淀，建立跨部门晋升包。A 从其他同级管理单元抽取无冲突评委，记录答辩边界判断；包装只能有限影响表达分，硬履历占主导。B 由 sponsor 主持口头陈述可提高有限可见度，但空心材料不能覆盖持续低履历。失败进入“延期晋升”并保留履历与下次最早答辩日。",
+    "semantic_family": "promotion_package_panel",
+    "required_state": [
+      "zg361_mechanism_020_choice、promotion_package_id、eligibility_id、候选人、三类冻结证据、提交/答辩/到期日",
+      "评委角色、来源管理单元、冲突检查、各项分数、表达修正上限与终态",
+      "[可复用·review/scoreboard] kpi、rank、values、历史 grade 与 promotion_track",
+      "[领域缺口] 包版本、跨部门评委抽取、答辩、sponsor 发言和延期晋升状态机"
+    ],
+    "visible_feedback": [
+      "晋升包显示冻结成果、团队影响、方法沉淀、评委与答辩日期",
+      "评审结果并列硬履历分、表达/包装修正及封顶，标明通过或延期至何时",
+      "考核榜晋升状态链接到同一 package_id，不把提包显示成已升职"
+    ],
+    "batch_assertions": [
+      "A：评委至少来自候选人当前管理单元之外且冲突者不得入席；硬履历相同口才时高履历者得分更高，包装修正不超过冻结上限",
+      "B：sponsor 口头陈述只增加一次可见度/表达修正，不改 evidence IDs、KPI 或历史 grade；未过硬门槛不得通过",
+      "C：不创建 package/panel、不花预算或改晋升状态，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：每个 package_id 仅一个 passed/deferred/failed 终态；延期保留原履历并冻结 earliest_retry_date，重复答辩不得重发奖励"
+    ]
+  },
+  "021": {
+    "acceptance_cn": "在年度结算前冻结奖金总池与档位—奖金—调薪矩阵。A 按矩阵对 3.75 发一次奖金或有期限的晋薪，3.5 保持，3.25 继续既有四重处罚；所有奖金实付总额不得超过池且真实减少付款方国库。B 把资金集中给少数头档并推迟固定调薪，必须形成逐人欠赏金额与到期日，连续欠赏人才进入转岗/挖角风险。俸禄 -25%、降岗 -50% 和晋薪叠加需统一封顶。",
+    "semantic_family": "bonus_salary_matrix",
+    "required_state": [
+      "zg361_mechanism_021_choice、comp_cycle_id、付款领主、期初奖金池、矩阵版本、锁定/发放/欠付日",
+      "每名受评人的冻结 grade、应付奖金、实付、欠付、短期调薪率与到期日",
+      "[可复用·review/appeal] 3.75/3.5/3.25 modifier、3.25 国库/金币/贤能收据及退款逻辑",
+      "[领域缺口] 奖金池总账、3.75 支付收据、欠赏债与多重俸禄统一 cap"
+    ],
+    "visible_feedback": [
+      "薪酬矩阵显示期初池、各档规则、已承诺/已支付/剩余与欠赏",
+      "个人清算单显示一次奖金、短期调薪及与 3.25/降岗修正叠加后的最终俸禄率",
+      "B 路线对欠赏头档显示到期日及转岗/被挖风险"
+    ],
+    "batch_assertions": [
+      "A：所有实付奖金之和<=冻结奖金池，期初池=实付+剩余；每名 3.75 最多一笔收据，3.5 不变，3.25 不因矩阵重复执行既有罚款",
+      "B：集中支付仍受总池守恒；每笔未付承诺生成唯一 pay_debt 与到期日，连续 3.75 欠赏到期只触发一次人才风险",
+      "C：不创建奖金池/欠赏/调薪对象，不移动国库或个人金币，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：最终俸禄修正受统一上下限；同 cycle 重开或存读档不得重复发奖金、重复扣罚或延长一年 modifier"
+    ]
+  },
+  "022": {
+    "acceptance_cn": "将 HC 定义为领主每年可资助的额外招募、培养、晋升与补员名额，而非 CK3 世界中的角色数。A 公爵及以上按团队成果、国库和原版合法空缺申请增编/保编/临借，逐名额记录用途和回收日；B 临时增编或冻结需留下偏好与低曝光团队缺员风险。无论额度为零，都不得拦截原版角色生成或合法任命。",
+    "semantic_family": "soft_headcount_budget",
+    "required_state": [
+      "zg361_mechanism_022_choice、hc_budget_id、owner、年度、期初名额、增编/借入/借出、已用、剩余、到期/回收日",
+      "名额用途（招募/培养/晋升/补员）、关联合法空缺与 beneficiary",
+      "[可复用·manager-review/scoreboard] 冻结团队人数、绩效分布、manager owner/year",
+      "[领域缺口] 软 HC 资源、年度申请、名额用途/回收、额外 shortlist 加成"
+    ],
+    "visible_feedback": [
+      "HC 面板显示年度总额、用途、已用/剩余、借调来源和回收日",
+      "申请事件显示团队成果、财政与合法空缺，不把角色总数叫作 HC",
+      "B 路线显示临时偏配、占坑和低曝光团队缺员风险"
+    ],
+    "batch_assertions": [
+      "A：期初HC+批准增编+借入=已用+剩余+借出/回收待结算；每个 slot_id 只能绑定一个额外人才用途且在年度到期只回收一次",
+      "B：临时增编/冻结仅改变 361 extra slot 与 shortlist 加成，不得删除角色、取消原版合法任命或把原生空缺凭空填满",
+      "C：不创建 HC budget、slot 或 shortlist 加成，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：伯爵/男爵只有被考核身份，不得申请或分配下属 HC；公爵及以上才有管理入口，原版角色生成在所有路线保持可用"
+    ]
+  },
+  "023": {
+    "acceptance_cn": "管理者以冻结的目标完成、翻案率、人才流失和财政效率对年度 HC 答辩。A 每项承诺绑定下一轮复核；B 凭紧急故事/关系取得借调或加编时须登记未兑现的 HC 信用与倦怠风险。获批额度每年度只发一次，反复打开事件不得增发。京察活动本身始终免费，HC 账不得向举办京察收取任何国库或个人金币。",
+    "semantic_family": "headcount_business_review",
+    "required_state": [
+      "zg361_mechanism_023_choice、hc_defense_id、经理、审核上司、年度、四类冻结指标、申请/批准额度与复核周期",
+      "承诺 ID、目标值、实际值、兑现/未兑现、借调来源及 HC 信用后果",
+      "[可复用·manager-review/appeal/PIP] scoreboard owner/year、翻案更正、PIP 标记与跳过京察 -50 范式",
+      "[领域缺口] 上一轮团队投入产出快照、年度答辩、承诺回写与 HC 信用"
+    ],
+    "visible_feedback": [
+      "答辩页显示四类冻结指标、申请额、获批额、承诺和下一复核日",
+      "下一轮显示逐项兑现/未兑现以及 HC 信用/倦怠后果",
+      "费用区明确京察免费；不得出现举办京察的国库或个人金币扣款"
+    ],
+    "batch_assertions": [
+      "A：同一 manager+year 只有一份答辩和一次额度发放；四类指标来自锁定的上一周期，承诺到 next_review_serial 只回写一次",
+      "B：紧急借调/加编仍需唯一 slot 来源并遵守 HC 守恒；未兑现到期才增加一次信用债/倦怠风险，不能当期无限续借",
+      "C：不创建 defense/commitment 或发放 HC，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：举办京察的 treasury_delta=0 且 personal_gold_delta=0；打开/关闭答辩 UI、存读档均不得改变 HC 余额"
+    ]
+  },
+  "024": {
+    "acceptance_cn": "让一名活跃 PIP 官员申请错岗救济、一名连续 3.75 官员申请更好岗位。A 冻结旧履历，验证原版合法岗位，约定交接、backfill 与新岗位下一轮基线；B 原上司卡人或新上司抢人必须留下雪藏/空缺/经理信誉债。转岗不得清除旧 PIP/绩效事实，也不得让角色在转入当轮同时占两个 cohort 配额。",
+    "semantic_family": "internal_mobility_transfer",
+    "required_state": [
+      "zg361_mechanism_024_choice、mobility_case_id、subject、old/new manager/role、申请理由、批准/拒绝/交接/生效日",
+      "[可复用·review/PIP/scoreboard] last reviewer/serial/grade、streak、PIP、promotion_track 与冻结旧榜",
+      "[可复用·calibration] cohort 唯一成员与分母锁定",
+      "[领域缺口] 合法岗位候选、交接/backfill、新基线、卡人/抢人信誉债"
+    ],
+    "visible_feedback": [
+      "流动案显示旧新岗位、合法性、交接日、backfill 与下一轮纳入日",
+      "旧考核榜保持原 manager/year/grade，新榜显示新岗位基线而非抹旧账",
+      "B 路线显示卡人/抢人造成的雪藏、空缺与经理信誉后果"
+    ],
+    "batch_assertions": [
+      "A：只有原版合法岗位才可 approved→transferred；旧榜逐字不变，新基线从下一 review_serial 生效，当前轮角色只属于一个 cohort",
+      "B：卡人不改 subject 的历史 3.75/PIP，抢人不绕过合法任命；每案只生成一次雪藏/空缺/经理信誉债",
+      "C：不创建 mobility_case、不改岗位、cohort、PIP 或履历，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：转岗前后角色 ID 唯一，旧团队配额不因事后离开重算；backfill 仅随真实空缺生效一次"
+    ]
+  },
+  "025": {
+    "acceptance_cn": "其他天朝制领主只能对连续 3.75、晋升停滞且自己存在原版合法空缺的人才发出有成本的邀请。A 书面 offer 冻结职位、俸禄、有效期与付款方，原上司可用真实晋升/加俸反 offer 或放人；B 广挖明星和口头承诺会产生薪酬债、空心承诺和团队报复。转入后历史榜保留，且不得继承原团队当期配额。",
+    "semantic_family": "talent_poaching_counteroffer",
+    "required_state": [
+      "zg361_mechanism_025_choice、offer_id、候选人、挖角领主、原上司、合法岗位、连续头档证据、停滞期、成本与到期日",
+      "counteroffer 类型、真实职位/加俸资源、接受/拒绝/过期终态与转入周期",
+      "[可复用·review/scoreboard] streak_top、promotion_track、old reviewer/year/grade snapshot",
+      "[领域缺口] 跨组织 offer、合法 vacancy 解析、反 offer、薪酬债和报复后果"
+    ],
+    "visible_feedback": [
+      "邀请书显示合法职位、真实成本、有效期、候选人的冻结连续 3.75 与晋升停滞",
+      "原上司面板显示真实反 offer 可支付性及画饼风险",
+      "转入后新旧榜分别标明生效周期，不继承旧团队本轮配额"
+    ],
+    "batch_assertions": [
+      "A：无合法空缺、非连续 3.75 或未停滞者不得创建 offer；每个 offer 只进入 accepted/rejected/expired 一态，承诺资源真实守恒",
+      "B：口头晋升不能直接改头衔；未兑现到期只生成一次 pay/promise debt，广发多个 offer 各自需要合法空缺且不能复用同一 HC/职位",
+      "C：不创建 offer/counteroffer、不改岗位、国库、金币或配额，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：accepted 后角色只进入新团队下一 review_serial，旧 snapshot 不变且原/新团队当期 cohort 人数与档位都不重算"
+    ]
+  },
+  "026": {
+    "acceptance_cn": "每轮分别冻结真实贡献账和上司可见度账。A 官员把有限精力分配给做事、汇报、经营关系，上司可用隔级访谈核证低曝光成果；汇报/关系只影响主观项和证据采纳概率，不得增加财政、控制、发展或战争结果。B 按汇报质量与关系热度快速修正可见度，必须保留高可见低产出的审计暴露风险。换上司后旧双账不漂移。",
+    "semantic_family": "contribution_visibility_dual_ledger",
+    "required_state": [
+      "zg361_mechanism_026_choice、dual_ledger_id、subject、review_serial、真实贡献分项、可见度分项、精力总额与分配",
+      "汇报/关系/skip-level 证据、主观修正上限、上司身份与审计暴露条件",
+      "[可复用·review/scoreboard] zg361_kpi、efficiency、values、last_reviewer/serial 与 frozen KPI/rank",
+      "[领域缺口] 双账分离、精力守恒、skip-level 访谈及换上司暴露规则"
+    ],
+    "visible_feedback": [
+      "个人案卷并列真实贡献、上司可见度、精力分配和主观修正",
+      "上司访谈结果显示补录了哪条既有成果，而非创造新治理值",
+      "B 路线标出高可见/低产出与换上司或审计的暴露风险"
+    ],
+    "batch_assertions": [
+      "A：做事+汇报+经营关系的冻结精力=配置总额；可见度修正不超过上限且原生财政/控制/发展/战争证据 from→to 完全不变",
+      "B：汇报/关系热度只写一次主观项；不能凭空增加真实贡献，换上司/审计命中时按冻结差距生成一次暴露后果",
+      "C：不创建双账、不分配精力或改 KPI，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：真实贡献合计与 KPI 证据单对账，可见度单独显示；换上司、跨年和存读档不改旧 ledger_id"
+    ]
+  },
+  "027": {
+    "acceptance_cn": "对每个真实共同战争、治理任务或联合项目建立唯一成果 ID，冻结 owner、主责、协作者、救火者、blocker 及实际参与证明。A 在唯一总贡献池内分摊，360 与晋升包引用同一账；B 允许 owner 先独占、他人靠口供争份额，但重复申报与截功风险可审计。非参与者不得申报，同一成果不能在多人名下各记满额。",
+    "semantic_family": "cross_team_contribution_ledger",
+    "required_state": [
+      "zg361_mechanism_027_choice、contribution_id、项目/战争/任务、起止日、owner、主责/协作/救火/blocker 与参与证据",
+      "冻结总贡献量、逐角色份额、申报日、争议状态及下游引用",
+      "[可复用·review/calibration] KPI、values、pending/final grade 可消费封顶后的份额",
+      "[领域缺口] 唯一项目索引、参与校验、份额守恒、360/晋升包引用"
+    ],
+    "visible_feedback": [
+      "跨部门账显示项目 ID、参与者角色、事实证据、贡献份额与 blocker",
+      "申报界面拒绝无参与证明者并显示剩余可分配份额",
+      "360、晋升包和抢功仲裁显示同一 contribution_id"
+    ],
+    "batch_assertions": [
+      "A：只有有参与证据的角色可入账，所有正向贡献份额之和不得超过冻结总量/100%；每个下游只引用份额一次",
+      "B：owner 初始可占 100%，但他人申诉改份额时总量仍守恒且保留原版本；口供不能复制一个完整项目到多人",
+      "C：不创建 contribution_id、不改 KPI 或参与者资源，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：同一原生项目/战争/任务仅一个 contribution_id；结束后锁定，存读档、转封和重复申报均不增大总量"
+    ]
+  },
+  "028": {
+    "acceptance_cn": "每项成功成果或失败事故只创建一个责任 ID。A 依据冻结贡献账、证人和版本链裁定独占/共享/让功或认责/分责/甩锅，硬证据设不可被口才覆盖的下限；B 快速指定英雄或替罪羊必须留下叙事偏离、同侪信用和经理误判风险。裁决仅结算一次，错误裁决成为同一案的申诉理由而非新造事故。",
+    "semantic_family": "credit_blame_arbitration",
+    "required_state": [
+      "zg361_mechanism_028_choice、responsibility_id、成功/事故类型、contribution_id、证人、冻结版本与裁决日",
+      "逐角色责任份额、口才/关系修正上限、裁决者、终态与 appeal 引用",
+      "[可复用·appeal/manager-review] regrade 框架、经理责任可进入下一轮 KPI",
+      "[领域缺口] 唯一责任案、份额仲裁、同侪信用与错误裁决回写"
+    ],
+    "visible_feedback": [
+      "复盘页显示唯一责任 ID、硬证据、证人、前后责任份额与裁决者",
+      "个人告身显示抢功/让功/认责/甩锅对可见度、信用和 KPI 的分开后果",
+      "B 路线标出英雄/替罪羊叙事与硬账偏差及申诉入口"
+    ],
+    "batch_assertions": [
+      "A：每个成果/事故仅一案，正向功劳或负向责任份额合计恰为 100%；口才修正不越过冻结硬证据下限/上限",
+      "B：只指定一个英雄或替罪羊并结算一次；若与贡献账冲突，必须生成同侪信用、经理误判与可申诉理由，不能删除原证据",
+      "C：不创建 responsibility_id、不改 KPI、信用或关系，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：appeal 只能更正同一责任案版本并保持总份额 100%，重复复盘/存读档不得再次派奖或扣责"
+    ]
+  },
+  "029": {
+    "acceptance_cn": "只有已有真实治理基线的税收、治安等指标才可选择真实改善、刷指标或虚报。A 抽查并冻结短期得分、延迟领地代价与审计日；查实后按实际奖励收据追回、加 PIP、降低价值观并问责包庇者。B 可先按亮眼数字发分、爆雷后再查，但短期收益与延迟损失各只触发一次，不能反复刷同一基线。",
+    "semantic_family": "metric_gaming_fraud_audit",
+    "required_state": [
+      "zg361_mechanism_029_choice、metric_case_id、subject、指标、真实 baseline、申报值、策略、短期收益、延迟后果与 audit_due_date",
+      "审计深度、发现状态、实际奖励收据、追回额、包庇经理与终态",
+      "[可复用·PIP/review] zg361_pip、values、KPI/grade；[可复用·manager-review] 问责沿直属链进入下一轮",
+      "[领域缺口] 可造假指标白名单、延迟 tick、奖励收据与经理包庇案"
+    ],
+    "visible_feedback": [
+      "指标案显示真实基线、申报值、刷数副作用、审计日与当前发现状态",
+      "查实清算单显示追回的实际奖励、PIP、价值观扣分和包庇者责任",
+      "B 路线显示先发分及延迟爆雷倒计时"
+    ],
+    "batch_assertions": [
+      "A：无真实 baseline 时不得进入包装/造假池；审计查实只追回同 metric_case 实际已付奖励一次，并只创建一份 PIP/values/manager responsibility 后果",
+      "B：短期分在申报时最多发一次，延迟领地代价在 due_date 最多结算一次；爆雷前后不得重置 case 继续刷同一基线",
+      "C：不创建 metric_case、不改治理值、KPI、PIP 或资源，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：奖励追回<=已付收据，国库/金币不能负向凭空创造；旧 scoreboard 保留原发布值并以更正/审计标识附加而非静默重写"
+    ]
+  },
+  "030": {
+    "acceptance_cn": "让两个团队竞争同一份预算或 HC。A 各获有上限的小试点，冻结统一里程碑、总资源和失败回收日，截止时只选一个胜者；B sponsor 可一次性押注一队，但同一资源不能同时在另一队可用，包装失败到下一轮形成更大的管理责任。胜败与回收必须有明确时间，资源全程守恒。",
+    "semantic_family": "resource_horse_race",
+    "required_state": [
+      "zg361_mechanism_030_choice、race_id、两团队/经理、资源 owner、类型、期初总额、各自拨付、里程碑与决胜日",
+      "胜者、败者、回收额/日期、sponsor、兑现结果及下一轮问责",
+      "[可复用·manager-review/scoreboard] 团队 owner/year/KPI 快照可作为结果证据",
+      "[领域缺口] 赛马对象、双试点拨款、唯一资源锁、回收与失败问责"
+    ],
+    "visible_feedback": [
+      "赛马面板并列两队试点、统一里程碑、拨款/HC、决胜日与资源余额",
+      "结算显示唯一胜者、败者回收额及下一轮交付责任",
+      "B 路线显示 sponsor 押注和包装失败的放大损失"
+    ],
+    "batch_assertions": [
+      "A：两试点拨付之和<=期初总资源，决胜日恰有一名 winner；败者可回收资源只回收一次，期初=在用+已回收+损耗",
+      "B：押注队获得的预算/HC 必须从同一 owner 账户扣除，另一队可用额同步减少；交付失败到 next_review_serial 只问责一次",
+      "C：不创建 race、不拨/锁/回收预算或 HC，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：同一 resource/slot_id 在同一日期最多归属一队；重复结算、延期一天和存读档不生成第二胜者或双份资源"
+    ]
+  },
+  "031": {
+    "acceptance_cn": "恩主可为晋升包、HC 或复核提供一次有期限、可披露的背书。A 只提高进入讨论桌的机会，硬 KPI、资格、合法空缺与原始证据不变；B 允许直接插队时必须留下程序债、依附信用与恩主倒台后的到期后果。关系增益有硬上限且不能遗传给继承人或永久延续。",
+    "semantic_family": "sponsor_network",
+    "required_state": [
+      "zg361_mechanism_031_choice、sponsorship_id、sponsor、beneficiary、用途、关系披露、创建/到期日与影响上限",
+      "关联 promotion_package/hc_defense/appeal_case、进入讨论桌状态及恩主失势终止条件",
+      "[可复用·review/scoreboard] frozen KPI/grade/promotion status 不得被背书改写",
+      "[领域缺口] sponsor 对象、席位概率、插队程序债、倒台失效与非继承性"
+    ],
+    "visible_feedback": [
+      "背书卡显示 sponsor、受益人、用途、披露状态、上限和到期日",
+      "相关晋升/HC/复核面板把硬证据与 sponsor 影响分栏",
+      "恩主失势或到期时显示可见度/信用变化并关闭背书"
+    ],
+    "batch_assertions": [
+      "A：背书只使 excluded→discussed，不能改 KPI、历史档位、PIP、合法空缺或直接写 passed；影响值不超过冻结上限",
+      "B：插队必须绑定一个具体业务案并增加一次程序债/依附信用；恩主失势或到期后加成归零，已冻结硬证据不变",
+      "C：不创建 sponsorship、不改关系、资格、HC 或复核状态，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：每个 sponsorship 到期仅结算一次且不可继承；同案多恩主的合计影响仍受总上限，存读档不续期"
+    ]
+  },
+  "032": {
+    "acceptance_cn": "公爵及以上由直属上司考核其管理绩效，但数据必须来自上一轮冻结的团队目标、按期京察、校准质量、PIP 成功、翻案、留才与 HC 效率，避免同轮递归。A 逐项计算；拒办京察沿已保存的 mandate superior/year 对该经理 KPI 精确 -50 且只消费一次。B 可重罚团队排名、拒办、低档和流失，但只能消费团队汇总，孙级某人的单项表现不得直接写进皇帝榜。",
+    "semantic_family": "manager_team_performance",
+    "required_state": [
+      "zg361_mechanism_032_choice、manager_review_id、经理、直属上司、当前 review_serial、source_team_serial 与七类冻结指标",
+      "[可复用·manager-review] zg361_jingcha_pending/mandate_year/reviewer、skipped_jingcha_superior/year 与 exact -50 KPI consumption",
+      "[可复用·review/scoreboard] last settled year、managed owner/year/n/grade counts、经理自己的 kpi/grade",
+      "[领域缺口] 上一轮团队完整快照、PIP成功/翻案/留才/HC指标、七分项理由与非递归 guard"
+    ],
+    "visible_feedback": [
+      "经理告身显示七项团队管理分、来源上一轮年份/serial 与合计",
+      "拒办京察理由单列 -50，并显示当时直属上司和 mandate year",
+      "上级榜只出现直属经理聚合行，不展开孙级个人分数"
+    ],
+    "batch_assertions": [
+      "A：manager_review 的 source_team_serial 必须严格早于 current_serial；七项冻结分之和等于经理管理 KPI，同轮孙级结算不能回流",
+      "B：快速重罚只消费锁定团队排名/低档/流失汇总并一次结算；任何单个孙级角色 ID 不得直接成为皇帝榜 review owner/subject 关系",
+      "C：不创建 manager_review、不改经理 KPI 或团队历史，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：匹配 saved superior+year 的拒办京察从经理 KPI 精确扣 50 且随计算消费一次；换上司、重复 review 或存读档不得二扣"
+    ]
+  },
+  "033": {
+    "acceptance_cn": "给数据派、护犊型、政治型、仁厚型、残酷型经理输入同一冻结案卷。A 以稳定权重产生校准、申诉、PIP、奖金与 HC 偏好，并在个人告身输出可解释 reason codes；硬证据上限不允许人格跨越。B 可让性格/关系压过边界证据一次，但必须显示覆盖理由与申诉风险。固定输入、性格和权重版本重复运行必须得到同一结果。",
+    "semantic_family": "manager_profile_reason_codes",
+    "required_state": [
+      "zg361_mechanism_033_choice、manager_profile_id、经理、画像类型、权重版本、生效周期与五领域偏好",
+      "reason_code、触发事实、贡献数值、硬证据 cap、关系覆盖及随机种子策略",
+      "[可复用·review/calibration/appeal/PIP] KPI/values/pending grade/regrade/PIP 与 generic AI trait route 仅作输入",
+      "[领域缺口] 稳定画像、领域偏好、理由码渲染、证据上限与确定性决策"
+    ],
+    "visible_feedback": [
+      "经理画像页显示类型、五领域偏好与权重版本",
+      "个人告身/校准/申诉结果逐条显示 reason code、事实与分值，不显示暗骰",
+      "B 路线明确标注性格/关系覆盖了哪项边界证据和由此产生的风险"
+    ],
+    "batch_assertions": [
+      "A：同一输入分别命中不同画像的稳定偏好，但任何偏好修正均不超过硬证据 cap；输出的 reason_code 合计可复算最终决定",
+      "B：性格/关系覆盖只发生一次并留下 before→after 档位/处置与 appeal risk；不得删除硬证据或伪造原始 KPI",
+      "C：不创建 profile/reason ledger、不改现有 AI 选择或档位，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：固定输入+画像+权重版本跨重复调用和存读档结果完全相同；画像只属于经理本人且不遗传给 successor"
+    ]
+  },
+  "034": {
+    "acceptance_cn": "以多轮冻结绩效为横轴、成长速度/岗位适配/能力潜力为纵轴，将当前明星、高潜新人、稳定贡献、错岗人才等构造人物放入九宫格。A 使用至少两轮历史并为象限给出培养、导师、关键人才、调岗或退出建议；B 用本轮档位与天赋快贴标签时必须标记短视风险。九宫格只消费冻结历史，不再次奖励当前属性或改写档位。",
+    "semantic_family": "performance_potential_nine_box",
+    "required_state": [
+      "zg361_mechanism_034_choice、nine_box_snapshot_id、owner、year、subject、历史绩效轴、潜力轴、象限与建议",
+      "[可复用·review/scoreboard/PIP] multi-serial grade/streak、KPI/rank、promotion_track/PIP 与 frozen slot",
+      "[领域缺口] 多轮历史仓、成长/适配/潜力冻结公式、九象限与培养预算引用",
+      "快贴标签版本、到期复评日与不重复奖励 guard"
+    ],
+    "visible_feedback": [
+      "九宫格显示两轴冻结输入、象限、人物标签与建议，而非只显示本轮档位",
+      "个人详情链接所消费的历史 review_serial 列表",
+      "B 路线显示“本轮快照标签”及下一轮强制复评日期"
+    ],
+    "batch_assertions": [
+      "A：至少四个构造角色分别落入预期的明星/高潜/稳定/错岗象限；同一 subject+year 只有一个格位，建议不直接改 grade/KPI",
+      "B：快贴仅消费本轮 grade 与冻结天赋，生成一次短视风险并在 next_review 强制失效；不得把标签永久写成人物命运",
+      "C：不创建 nine-box snapshot、不发培养预算或改履历，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：九宫格只读既有冻结历史，不能因读取当前属性再次增加 KPI、merit、金币、HC 或 promotion score；存读档格位不漂移"
+    ]
+  },
+  "035": {
+    "acceptance_cn": "分别以全员优秀和全员低劣 cohort 验证制度模式。A 混合制同时用绝对达标线与横向排名：全员达标仍保留排名信号但末位处罚减轻，全员低劣不能借绝对线逃避处置。B 严格制按默认 10% 强制填末位，cohort≥5 至少一人。现有 strict/relaxed/off 游戏规则和领主 10%/5% override 可复用，但“混合门槛及减轻处分”仍是领域缺口。",
+    "semantic_family": "distribution_mode_rule",
+    "required_state": [
+      "zg361_mechanism_035_choice、distribution_mode、规则来源（global/liege override）、review_serial、绝对达标线与冻结分母",
+      "[可复用·review/calibration] bottom_slots、pending grade、cohort_n 与三档总数",
+      "[可复用·game-rule] zg361_ratio_strict=10%、ratio_relaxed=5%、ratio_off=0 及领主 override 10/5",
+      "[领域缺口] mixed 模式、绝对门槛、全员达标者末位后果减轻与模式冻结到旧榜"
+    ],
+    "visible_feedback": [
+      "开局规则与考核页显示当前模式、比例来源、绝对门槛和本轮 bottom_slots",
+      "全员优秀/低劣结果页显示为何仍排名、为何减轻或维持末位处置",
+      "旧考核榜保存结算时模式，后来切换不得重算"
+    ],
+    "batch_assertions": [
+      "A：混合制全员优秀时仍生成横向排名与配置名额，但 3.25 的即时/后续处分按冻结减轻表执行；全员低劣时不得把 bottom_slots 降为零",
+      "B：严格制 bottom_slots=floor(cohort_n*0.10)，cohort_n>=5 时 min=1；pending 三档人数之和等于 cohort_n，默认新局为 strict",
+      "C：不改变 global rule、liege override、配额或处分，只登记一次制度债；冻结 next_review_serial 为复议期限并可见，现有规则继续决定本轮",
+      "共同：strict、relaxed(5%)、off(0) 与 mixed 构造结果明确不同；规则在 review 开始时冻结，存读档/后来切换不改旧榜"
+    ]
+  },
+  "036": {
+    "acceptance_cn": "连续十个结算年度按领主冻结档位分布、翻案、PIP 成功、晋升、淘汰、奖金净流、HC、人才外流、真实治理和经理信誉，再从逐年日志汇总十年报告。A 每个指标可回链年度案卷且换领主不串账；B 只公布当前榜与亮眼指标，必须明确缺少长期因果而不能冒充十年报告。非天朝制角色不得生成日志。",
+    "semantic_family": "ten_year_system_report",
+    "required_state": [
+      "zg361_mechanism_036_choice、annual_system_log_id、owner、year、government eligibility 与十类冻结指标",
+      "ten_year_report_id、起止年、所含 annual IDs、逐项合计/均值/净流与生成日",
+      "[可复用·scoreboard/appeal/PIP/manager-review] latest managed/received counts、regrade、PIP/promotion/eliminate、skipped Jingcha 可供年度输入",
+      "[领域缺口] 按 owner 分区的十年历史仓、奖金/HC/流失/真实治理/信誉年度指标及汇总器"
+    ],
+    "visible_feedback": [
+      "十年报告按年度和指标展示趋势，并可展开到对应 annual_system_log_id",
+      "换领主前后分成不同 owner 区段；非天朝角色面板明确无适用数据",
+      "B 路线只显示当前快照并标注“非十年趋势，无法判断治理/流失因果”"
+    ],
+    "batch_assertions": [
+      "A：同一 owner+year 恰有一条年度日志，十年报告每项汇总严格等于所列十条年度记录之和/定义均值，奖金净流满足流入-流出对账",
+      "B：只能读取当前冻结 scoreboard 与选定亮点，不得生成伪造的十年序列或推断 PIP/流失趋势；展示日不改变任何历史状态",
+      "C：不创建年度日志/十年报告、不改 KPI、资源或榜单，只登记一次制度债；冻结 next_review_serial 为复议期限并在制度驾驶舱可见",
+      "共同：换领主后新日志归新 owner，旧 owner 报告不纳入新账；非天朝角色年度记录数=0，存读档/重复生成不复制年份"
+    ]
+  }
+}

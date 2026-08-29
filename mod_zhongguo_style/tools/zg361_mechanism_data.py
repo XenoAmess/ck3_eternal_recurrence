@@ -3,7 +3,8 @@
 """Authoritative parser and balance profiles for the 361 mechanism catalogue.
 
 The prose authority remains docs/361-expansion-options.md.  This module turns
-that numbered catalogue plus reviewed choice overrides into generator input.
+that numbered catalogue, reviewed choice overrides, and typed acceptance
+contracts into generator input.
 It deliberately keeps the ledger vocabulary small: 361 policies interact
 through shared organizational state instead of inventing 361 disconnected
 currencies.
@@ -19,6 +20,26 @@ from typing import Final
 
 
 MECHANISM_COUNT: Final = 361
+
+ACCEPTANCE_FIELDS: Final[tuple[str, ...]] = (
+    "acceptance_cn",
+    "semantic_family",
+    "required_state",
+    "visible_feedback",
+    "batch_assertions",
+)
+
+_GENERIC_ACCEPTANCE_STATEMENTS: Final[frozenset[str]] = frozenset(
+    {
+        "变量变化",
+        "变量已变化",
+        "变量改变",
+        "variablechanged",
+        "variableschanged",
+        "statechanged",
+        "statechanges",
+    }
+)
 
 LEDGERS: Final[tuple[str, ...]] = (
     "evidence",
@@ -39,6 +60,24 @@ LEDGERS: Final[tuple[str, ...]] = (
 
 
 @dataclass(frozen=True)
+class AcceptanceContract:
+    acceptance_cn: str
+    semantic_family: str
+    required_state: tuple[str, ...]
+    visible_feedback: tuple[str, ...]
+    batch_assertions: tuple[str, ...]
+
+    def manifest_payload(self) -> dict[str, object]:
+        return {
+            "acceptance_cn": self.acceptance_cn,
+            "semantic_family": self.semantic_family,
+            "required_state": list(self.required_state),
+            "visible_feedback": list(self.visible_feedback),
+            "batch_assertions": list(self.batch_assertions),
+        }
+
+
+@dataclass(frozen=True)
 class Mechanism:
     id: int
     group_code: str
@@ -55,6 +94,7 @@ class Mechanism:
     option_b_en: str
     profile: str
     reference_choice: str
+    acceptance_contract: AcceptanceContract
 
 
 # A = evidence-rich / durable but costly; B = fast / forceful but risky;
@@ -217,9 +257,118 @@ def load_choice_overrides(folder: Path) -> dict[int, dict[str, object]]:
     return overrides
 
 
+def _object_without_duplicate_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key {key!r}")
+        result[key] = value
+    return result
+
+
+def _is_generic_acceptance_statement(value: str) -> bool:
+    normalized = re.sub(r"[\s，。；：、,.!！?？:_-]+", "", value).lower()
+    return normalized in _GENERIC_ACCEPTANCE_STATEMENTS
+
+
+def _contract_string(
+    mechanism_id: int, raw_contract: dict[str, object], field: str
+) -> str:
+    value = raw_contract[field]
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(
+            f"acceptance contract {mechanism_id:03d} field {field} must be a non-empty string"
+        )
+    result = value.strip()
+    if _is_generic_acceptance_statement(result):
+        raise ValueError(
+            f"acceptance contract {mechanism_id:03d} field {field} is only a generic variable-change claim"
+        )
+    return result
+
+
+def _contract_string_list(
+    mechanism_id: int, raw_contract: dict[str, object], field: str
+) -> tuple[str, ...]:
+    value = raw_contract[field]
+    if not isinstance(value, list) or not value:
+        raise ValueError(
+            f"acceptance contract {mechanism_id:03d} field {field} must be a non-empty list"
+        )
+    if not all(isinstance(item, str) and item.strip() for item in value):
+        raise ValueError(
+            f"acceptance contract {mechanism_id:03d} field {field} must contain only non-empty strings"
+        )
+    result = tuple(item.strip() for item in value)
+    if all(_is_generic_acceptance_statement(item) for item in result):
+        raise ValueError(
+            f"acceptance contract {mechanism_id:03d} field {field} is only a generic variable-change claim"
+        )
+    return result
+
+
+def load_acceptance_contracts(folder: Path) -> dict[int, AcceptanceContract]:
+    """Load the typed, exact 001..361 runtime acceptance contract."""
+    contracts: dict[int, AcceptanceContract] = {}
+    for path in sorted(folder.glob("acceptance_*.json")):
+        payload = json.loads(
+            path.read_text(encoding="utf-8-sig"),
+            object_pairs_hook=_object_without_duplicate_keys,
+        )
+        if not isinstance(payload, dict):
+            raise ValueError(f"acceptance file must contain an object: {path}")
+        for raw_id, raw_contract in payload.items():
+            if not isinstance(raw_id, str) or not re.fullmatch(r"\d{3}", raw_id):
+                raise ValueError(f"acceptance ID must use three digits: {raw_id!r} in {path}")
+            mechanism_id = int(raw_id)
+            if not 1 <= mechanism_id <= MECHANISM_COUNT:
+                raise ValueError(f"acceptance ID outside 001..361: {raw_id} in {path}")
+            if mechanism_id in contracts:
+                raise ValueError(f"duplicate acceptance contract for {mechanism_id:03d}")
+            if not isinstance(raw_contract, dict):
+                raise ValueError(f"acceptance contract {raw_id} must be an object")
+            if set(raw_contract) != set(ACCEPTANCE_FIELDS):
+                missing = sorted(set(ACCEPTANCE_FIELDS) - set(raw_contract))
+                extra = sorted(set(raw_contract) - set(ACCEPTANCE_FIELDS))
+                raise ValueError(
+                    f"acceptance contract {raw_id} fields mismatch; "
+                    f"missing={missing}, extra={extra}"
+                )
+            contracts[mechanism_id] = AcceptanceContract(
+                acceptance_cn=_contract_string(
+                    mechanism_id, raw_contract, "acceptance_cn"
+                ),
+                semantic_family=_contract_string(
+                    mechanism_id, raw_contract, "semantic_family"
+                ),
+                required_state=_contract_string_list(
+                    mechanism_id, raw_contract, "required_state"
+                ),
+                visible_feedback=_contract_string_list(
+                    mechanism_id, raw_contract, "visible_feedback"
+                ),
+                batch_assertions=_contract_string_list(
+                    mechanism_id, raw_contract, "batch_assertions"
+                ),
+            )
+
+    expected = list(range(1, MECHANISM_COUNT + 1))
+    if sorted(contracts) != expected:
+        missing = sorted(set(expected) - set(contracts))
+        extra = sorted(set(contracts) - set(expected))
+        raise ValueError(
+            "acceptance contracts must cover exactly 001..361; "
+            f"missing={missing[:20]}{'...' if len(missing) > 20 else ''}, extra={extra}"
+        )
+    return contracts
+
+
 def load_mechanisms(mod_root: Path, *, require_reviewed_choices: bool = True) -> list[Mechanism]:
     catalogue = parse_catalogue(mod_root / "docs" / "361-expansion-options.md")
     overrides = load_choice_overrides(mod_root / "tools" / "mechanism_choices")
+    acceptance_contracts = load_acceptance_contracts(
+        mod_root / "tools" / "mechanism_acceptance"
+    )
     if require_reviewed_choices and sorted(overrides) != list(range(1, MECHANISM_COUNT + 1)):
         missing = sorted(set(range(1, MECHANISM_COUNT + 1)) - set(overrides))
         extra = sorted(set(overrides) - set(range(1, MECHANISM_COUNT + 1)))
@@ -256,6 +405,7 @@ def load_mechanisms(mod_root: Path, *, require_reviewed_choices: bool = True) ->
                 option_b_en=str(override.get("option_b_en", "Prioritize the short-term result")),
                 profile=profile,
                 reference_choice=reference_choice,
+                acceptance_contract=acceptance_contracts[mechanism_id],
             )
         )
     return mechanisms
