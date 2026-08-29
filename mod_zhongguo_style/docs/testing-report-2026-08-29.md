@@ -277,3 +277,15 @@ py mod_zhongguo_style/tools/validate_local.py
 项目所有者随后明确要求自动化期间一直保持英文输入法，不在结束后切回中文。新 gate 因而改为：锁定 CK3 前台 PID 和焦点窗口线程，确认 US English HKL `0x04090409` 已安装，向焦点窗口 post `WM_INPUTLANGCHANGEREQUEST`，轮询 `GetKeyboardLayout(input_thread_id)` 直到完整值精确等于 `0x04090409`，并保持该布局；没有精确 ACK 就不发送字母快捷键。`V` 仍须由右侧“查找头衔”标题单独 ACK。若快捷键没有 ACK，同一个 CK3 进程改走已经在第二十/二十一次候选实机定位的“更多 → 查找头衔”鼠标入口，不再因为一个小失败重启整链。完整经验已沉淀到 `docs/acceptance-automation-lessons.md`。
 
 永久证据：根报告 `6BC276410F391BC57A2501FE954D20C55D2D57917F7A837DAE8B815A3F6F3BBE`，证据索引 `75DE18954B0A4454F93D448C4CBC56423D6A97902A8A2CA75F7054D2D62BCD5E`；Home 前帧 `E9E082DBEBDDD64CB9AB4C7D47B5FAF365F6D7E938DAA26F2C1516D97E2E6545`，微软拼音 V 模式帧 `E7202E1DDAB74FCC0A5A8D6500FAB6F5E938D5862CBD17A436552651792FD6C6`，Shift 后 finder 超时帧 `1C5DDA8886837EA6DFAD20691D06EA4864C7CD5D8FC7E2D65483F16753F75DB9`，最终现场 `E61F4B20EB10D2FD7939A25EED97B712D2E20B06B767E06504D2FE7A1D15E0F4`。完整 artifact 与 `_userdir` 均继续保留。
+
+## 23. 第四条相机短探针：英文布局已闭合，缺口收敛为头衔导航能力
+
+`runs/zga_camera_english_20260829_2144_e2181eb` 使用已推送提交 `e2181eb`。本轮在约 2 分 30 秒内到达标准 1066 大厅，并再次通过史实赵曙 `han_8052`、21/23 历史 cohort、生成坊正排除、非独立天朝制公爵后台考核、361/361 参考路线与幂等性；测试决议抽屉在片场步骤前关闭，FFmpeg 没有启动。
+
+输入法根因已经排除。初始、相机前和 fallback 前三份 sidecar 均从 CK3 前台 PID 的焦点线程回读完整 HKL `0x04090409`；全局默认输入覆盖也保持 `English (United States) - US`，runner 没有恢复中文。随后 `V` 没有出现微软拼音候选层，但也没有出现 finder。相同 CK3 会话内，两次“更多”菜单均成功展开，OCR 分别把“查找头衔”稳定解析到 `(1820,1176)` 与 `(1819,1164)`；点击后菜单消失，右侧 finder 标题却仍未出现。因为没有 handler/postcondition ACK，本轮按设计 **RED**，没有把“英文已签署”或“菜单消失”冒充相机成功。
+
+根因边界据此收敛为能力缺口：当前验收器没有“按 loaded runtime stable title key 解析 landed title 并将地图居中到其 ProvinceID”的 MCP 夹具动作，只能在瞬态 GUI 上模拟人手。项目所有者明确要求正规终态走 MCP 层，并明确本轮 **MCP 只写能力合同、不实现**；合同已落在根知识库 `docs/ck3-native-title-map-navigation-contract.md`，状态严格为 `research / requirement-only`。它定义未来的 `ck3_center_map_on_landed_title_v1(title_key, expected_revision)`、typed title 解析、native camera 回读 ACK、负例和 fixture-live 门，不改任何 MCP/native 代码，也不声称现有 bridge 已支持。
+
+项目所有者同时授权这一轮继续使用 OCR。下一条短探针仍可走 OCR compatibility path，但必须在移动到菜单行后先保存并验证 hover 状态仍存活，再原地 mouse-down/up，随后继续要求 finder 标题和地图变化；即使临时路径 GREEN，也只能证明本轮宣传片片场可继续，不能升级 MCP 合同 readiness。
+
+永久证据：根报告 `2487A339FB78DC083600BE03798EF3B52C2806867657D5412FCDA23F7D74DA45`，证据索引 `1785AA4F65450FB2DF9F750D4F8159FD2ABBFCD5DC8E2BC5BAC728F807DB7FE4`，相机 gate `59D9FC18C19F12D89ABB942DB07604C2C9F72F7A09E114D653DBE38287024E3F`；快捷键无 finder 帧 `76746792607F109A1103CCCEF9937D45CF6E1494DFDB1FD7414B84E4FF4B7B47`，两次菜单帧 `52460DA48DD10EB57612CC3E044AEE9206201FDDF382F6C462358F969FDE8413` / `386567E4C91E0656BD960AD7F84A54FC5B3703BBCAA680E634E2196E830C1036`，两次点击后无 finder 帧 `9E8F3237711D1BBC274BEBBC8CC410C8070FF5759B2953AD9C7D706F3C8C4E18` / `A50DCAD64F41E7733DD7A2B68842911693E283A6243CD3EDAC71CF4A65C41AD5`，失败现场 `AB4B137E83B87FE82A74DCE5A220B9FC08CCD146FABE7E7228F9C576FD93E144`。完整 artifact 与 `_userdir` 继续保留。

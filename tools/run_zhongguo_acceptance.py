@@ -1966,6 +1966,11 @@ def recenter_promo_camera_on_player_capital(
             "finder_close_ack": finder_close_ack,
             "keyboard_layout_policy": "keep_us_english_for_desktop_automation",
             "keyboard_layout": keyboard_layout_evidence,
+            "navigation_path_status": "temporary_ocr_compatibility",
+            "formal_mcp_contract": (
+                "docs/ck3-native-title-map-navigation-contract.md"
+            ),
+            "mcp_capability_implemented": False,
             "ime_v_mode_recovery_used": False,
             "ime_mode_restored": False,
             "attempts": attempts,
@@ -2050,15 +2055,18 @@ def recenter_promo_camera_on_player_capital(
             )
             return None
         acceptance.deliberate_click(more_point, "native HUD More button")
+        title_row_artifact = (
+            f"05_promo_camera_more_menu_find_title{artifact_suffix}.png"
+        )
         try:
             title_row = acceptance.wait_for_ocr_text(
                 "查找头衔",
                 (0.62, 0.68, 0.90, 0.99),
                 5,
                 artifacts,
-                f"05_promo_camera_more_menu_find_title{artifact_suffix}.png",
+                title_row_artifact,
                 contains=True,
-                stable_hits=1,
+                stable_hits=3,
             )
         except acceptance.RunnerError as error:
             attempts.append(
@@ -2072,8 +2080,61 @@ def recenter_promo_camera_on_player_capital(
                 }
             )
             return None
-        acceptance.focus_ck3()
-        acceptance.pyautogui.click(*title_row)
+
+        # The More flyout owns a _mouse_hierarchy_leave state.  A row being
+        # OCR-visible before pointer movement does not prove that it survived
+        # the movement.  Move once, keep the cursor stationary, then require
+        # the same row to remain visible at the cursor before sending a press.
+        acceptance.pyautogui.moveTo(*title_row, duration=0)
+        time.sleep(0.35)
+        hover_image = acceptance.ImageGrab.grab()
+        hover_image.save(
+            artifacts
+            / f"05_promo_camera_more_menu_find_title_hover{artifact_suffix}.png"
+        )
+        hover_title_row = acceptance.find_ocr_text(
+            hover_image,
+            "查找头衔",
+            (0.62, 0.68, 0.90, 0.99),
+            contains=True,
+        )
+        cursor_position = acceptance.pyautogui.position()
+        cursor_point = (int(cursor_position[0]), int(cursor_position[1]))
+        row_survived_move = (
+            hover_title_row is not None
+            and abs(hover_title_row[0] - title_row[0]) <= 15
+            and abs(hover_title_row[1] - title_row[1]) <= 15
+            and abs(cursor_point[0] - title_row[0]) <= 3
+            and abs(cursor_point[1] - title_row[1]) <= 3
+        )
+        if not row_survived_move:
+            attempts.append(
+                {
+                    "state": "open_title_finder",
+                    "method": "native_more_menu",
+                    "attempt_number": attempt_number,
+                    "more_point": list(more_point),
+                    "title_row": list(title_row),
+                    "hover_title_row": (
+                        list(hover_title_row) if hover_title_row else None
+                    ),
+                    "cursor_point": list(cursor_point),
+                    "row_hover_ack": False,
+                    "entry_ack": False,
+                    "error": "title row did not survive pointer placement",
+                }
+            )
+            return None
+
+        acceptance.pyautogui.mouseDown(button="left")
+        try:
+            time.sleep(0.15)
+        finally:
+            acceptance.pyautogui.mouseUp(button="left")
+        log(
+            "clicked native Find Title row without moving from verified "
+            f"hover point {cursor_point}"
+        )
         try:
             header = wait_for_title_header(
                 f"05_promo_title_finder_open_from_more{artifact_suffix}.png", 5
@@ -2086,6 +2147,9 @@ def recenter_promo_camera_on_player_capital(
                     "attempt_number": attempt_number,
                     "more_point": list(more_point),
                     "title_row": list(title_row),
+                    "hover_title_row": list(hover_title_row),
+                    "cursor_point": list(cursor_point),
+                    "row_hover_ack": True,
                     "entry_ack": False,
                     "error": str(error),
                 }
@@ -2098,6 +2162,9 @@ def recenter_promo_camera_on_player_capital(
                 "attempt_number": attempt_number,
                 "more_point": list(more_point),
                 "title_row": list(title_row),
+                "hover_title_row": list(hover_title_row),
+                "cursor_point": list(cursor_point),
+                "row_hover_ack": True,
                 "entry_ack": True,
             }
         )

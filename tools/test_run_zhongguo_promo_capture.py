@@ -239,11 +239,15 @@ def main() -> int:
         "ImageChops.difference",
         "force_ck3_english_keyboard_layout",
         '"keyboard_layout_policy": "keep_us_english_for_desktop_automation"',
+        '"navigation_path_status": "temporary_ocr_compatibility"',
+        '"mcp_capability_implemented": False',
         'acceptance.pyautogui.press("v")',
         '"查找头衔"',
         '"V模式输入"',
         '"05_promo_title_shortcut_no_finder.png"',
         '"native_more_find_title"',
+        'stable_hits=3',
+        '"row_hover_ack"',
         '"05_promo_camera_more_button_tooltip',
         '"汴州"',
         '"c_bianzhou"',
@@ -271,6 +275,14 @@ def main() -> int:
         camera_recenter,
     )
     assert "Moving out is sufficient to dismiss CK3's transient More" in camera_recenter
+    for earlier, later in (
+        ("stable_hits=3", "moveTo(*title_row, duration=0)"),
+        ("moveTo(*title_row, duration=0)", "hover_image = acceptance.ImageGrab.grab()"),
+        ("hover_image = acceptance.ImageGrab.grab()", "row_survived_move = ("),
+        ("if not row_survived_move:", 'mouseDown(button="left")'),
+        ('mouseDown(button="left")', "header = wait_for_title_header("),
+    ):
+        assert camera_recenter.index(earlier) < camera_recenter.index(later)
 
     keyboard_layout = inspect.getsource(capture.force_ck3_english_keyboard_layout)
     for token in (
@@ -552,26 +564,37 @@ def main() -> int:
                     unchanged.copy(),
                     unchanged.copy(),
                     unchanged.copy(),
+                    unchanged.copy(),
                     moved,
                     moved.copy(),
                     moved.copy(),
                     moved.copy(),
                 ),
-            ),
+            ) as grab,
             mock.patch.object(
                 capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
             ),
             mock.patch.object(capture.acceptance.pyautogui, "press") as press,
             mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
-            mock.patch.object(capture.acceptance.pyautogui, "click") as native_click,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "position",
+                return_value=(1820, 1176),
+            ),
             mock.patch.object(capture.acceptance.pyautogui, "hotkey") as hotkey,
             mock.patch.object(capture.acceptance.pyautogui, "mouseDown") as mouse_down,
             mock.patch.object(capture.acceptance.pyautogui, "mouseUp") as mouse_up,
             mock.patch.object(
                 capture.acceptance,
                 "find_ocr_text",
-                side_effect=((1807, 1417), (2150, 220), None, None),
-            ),
+                side_effect=(
+                    (1807, 1417),
+                    (1820, 1176),
+                    (2150, 220),
+                    None,
+                    None,
+                ),
+            ) as find_ocr,
             mock.patch.object(
                 capture.acceptance,
                 "wait_for_ocr_text",
@@ -580,7 +603,7 @@ def main() -> int:
                     (1820, 1176),
                     (2150, 220),
                 ),
-            ),
+            ) as wait_ocr,
             mock.patch.object(
                 capture.acceptance,
                 "ocr_results",
@@ -589,7 +612,7 @@ def main() -> int:
                     (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
                     (("汴州", 0.99, (2100, 345), (0, 0, 1, 1)),),
                 ),
-            ),
+            ) as ocr,
             mock.patch.object(capture.acceptance, "deliberate_click") as click,
             mock.patch.object(capture.pyperclip, "paste", return_value="preserved"),
             mock.patch.object(capture.pyperclip, "copy") as clipboard_copy,
@@ -606,6 +629,7 @@ def main() -> int:
         assert all(call != mock.call("shift") for call in press.call_args_list)
         assert move.call_args_list == [
             mock.call(1807, 1417, duration=0.2),
+            mock.call(1820, 1176, duration=0),
             mock.call(2100, 345, duration=0.2),
             mock.call(1280, 720, duration=0.1),
         ]
@@ -613,7 +637,6 @@ def main() -> int:
             mock.call((1807, 1417), "native HUD More button"),
             mock.call((2150, 285), "native title search field"),
         ]
-        native_click.assert_called_once_with(1820, 1176)
         assert hotkey.call_args_list == [
             mock.call("ctrl", "a"),
             mock.call("ctrl", "v"),
@@ -622,8 +645,14 @@ def main() -> int:
             mock.call("汴州"),
             mock.call("preserved"),
         ]
-        mouse_down.assert_called_once_with(button="right")
-        mouse_up.assert_called_once_with(button="right")
+        assert mouse_down.call_args_list == [
+            mock.call(button="left"),
+            mock.call(button="right"),
+        ]
+        assert mouse_up.call_args_list == [
+            mock.call(button="left"),
+            mock.call(button="right"),
+        ]
         assert force_english.call_args_list == [
             mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
             mock.call(artifacts, "05_promo_keyboard_layout_recheck"),
@@ -634,7 +663,173 @@ def main() -> int:
         assert camera_gate["entry_method"] == "native_more_find_title"
         assert camera_gate["attempts"][1]["entry_ack"] is False
         assert camera_gate["attempts"][2]["entry_ack"] is True
+        assert camera_gate["attempts"][2]["row_hover_ack"] is True
         assert camera_gate["attempts"][2]["title_row"] == [1820, 1176]
+        assert grab.call_count == 12
+        assert find_ocr.call_count == 5
+        assert wait_ocr.call_count == 3
+        assert ocr.call_count == 3
+        menu_wait = wait_ocr.call_args_list[1]
+        assert menu_wait.args[:5] == (
+            "查找头衔",
+            (0.62, 0.68, 0.90, 0.99),
+            5,
+            artifacts,
+            "05_promo_camera_more_menu_find_title.png",
+        )
+        assert menu_wait.kwargs == {"contains": True, "stable_hits": 3}
+        hover_find = find_ocr.call_args_list[1]
+        assert hover_find.args[1:3] == (
+            "查找头衔",
+            (0.62, 0.68, 0.90, 0.99),
+        )
+        assert hover_find.kwargs == {"contains": True}
+        persisted_camera_gate = json.loads(
+            (artifacts / "05_promo_camera_recenter.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert persisted_camera_gate == camera_gate
+        assert camera_gate["navigation_path_status"] == (
+            "temporary_ocr_compatibility"
+        )
+        assert camera_gate["formal_mcp_contract"] == (
+            "docs/ck3-native-title-map-navigation-contract.md"
+        )
+        assert camera_gate["mcp_capability_implemented"] is False
+        assert (
+            artifacts / "05_promo_camera_more_menu_find_title_hover.png"
+        ).is_file()
+
+    # If moving from More to the OCR row dismisses the transient flyout, both
+    # bounded attempts must leave explicit RED evidence without ever pressing
+    # the stale row coordinate.
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        unchanged = Image.new("RGB", (2560, 1440), (20, 30, 40))
+        layout_gate = {
+            "result": "GREEN",
+            "after_hkl": "0x04090409",
+            "after_langid": "0409",
+            "left_in_english": True,
+            "restore_requested": False,
+            "restore_performed": False,
+        }
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture,
+                "force_ck3_english_keyboard_layout",
+                return_value=layout_gate,
+            ) as force_english,
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=tuple(unchanged.copy() for _ in range(7)),
+            ) as grab,
+            mock.patch.object(
+                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
+            ),
+            mock.patch.object(capture.acceptance.pyautogui, "press") as press,
+            mock.patch.object(capture.acceptance.pyautogui, "moveTo") as move,
+            mock.patch.object(
+                capture.acceptance.pyautogui,
+                "position",
+                side_effect=((1820, 1176), (1819, 1164)),
+            ) as position,
+            mock.patch.object(
+                capture.acceptance.pyautogui, "click"
+            ) as raw_click,
+            mock.patch.object(
+                capture.acceptance.pyautogui, "mouseDown"
+            ) as mouse_down,
+            mock.patch.object(
+                capture.acceptance.pyautogui, "mouseUp"
+            ) as mouse_up,
+            mock.patch.object(
+                capture.acceptance,
+                "find_ocr_text",
+                side_effect=((1807, 1417), None, (1807, 1417), None),
+            ) as find_ocr,
+            mock.patch.object(
+                capture.acceptance,
+                "wait_for_ocr_text",
+                side_effect=(
+                    capture.acceptance.RunnerError("V produced no finder"),
+                    (1820, 1176),
+                    (1819, 1164),
+                ),
+            ) as wait_ocr,
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_results",
+                side_effect=((),),
+            ) as ocr,
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            try:
+                capture.recenter_promo_camera_on_player_capital(
+                    artifacts, layout_gate
+                )
+            except capture.acceptance.RunnerError as error:
+                hover_failure_error = error
+            else:
+                raise AssertionError("two vanished More rows did not fail closed")
+
+        assert "entry paths exhausted" in str(hover_failure_error)
+        assert press.call_args_list == [mock.call("home"), mock.call("v")]
+        assert move.call_args_list == [
+            mock.call(1807, 1417, duration=0.2),
+            mock.call(1820, 1176, duration=0),
+            mock.call(1280, 720, duration=0.1),
+            mock.call(1807, 1417, duration=0.2),
+            mock.call(1819, 1164, duration=0),
+            mock.call(1280, 720, duration=0.1),
+        ]
+        assert click.call_args_list == [
+            mock.call((1807, 1417), "native HUD More button"),
+            mock.call((1807, 1417), "native HUD More button"),
+        ]
+        raw_click.assert_not_called()
+        mouse_down.assert_not_called()
+        mouse_up.assert_not_called()
+        assert position.call_count == 2
+        assert grab.call_count == 7
+        assert find_ocr.call_count == 4
+        assert wait_ocr.call_count == 3
+        assert ocr.call_count == 1
+        assert force_english.call_args_list == [
+            mock.call(artifacts, "05_promo_keyboard_layout_before_camera"),
+            mock.call(artifacts, "05_promo_keyboard_layout_recheck"),
+        ]
+
+        persisted_failure = json.loads(
+            (artifacts / "05_promo_camera_recenter.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert persisted_failure["result"] == "RED"
+        hover_failures = [
+            row
+            for row in persisted_failure["attempts"]
+            if row.get("method") == "native_more_menu"
+            and "row_hover_ack" in row
+        ]
+        assert [row["attempt_number"] for row in hover_failures] == [1, 2]
+        assert all(row["row_hover_ack"] is False for row in hover_failures)
+        assert all(row["entry_ack"] is False for row in hover_failures)
+        assert [row["hover_title_row"] for row in hover_failures] == [None, None]
+        assert (
+            artifacts / "05_promo_camera_more_menu_find_title_hover.png"
+        ).is_file()
+        assert (
+            artifacts
+            / "05_promo_camera_more_menu_find_title_hover_retry_2.png"
+        ).is_file()
+        assert (
+            artifacts / "05_promo_camera_more_button_tooltip_retry_2.png"
+        ).is_file()
 
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (

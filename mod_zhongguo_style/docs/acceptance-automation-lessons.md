@@ -55,6 +55,7 @@
 
 - Home 和原生“转到首都”在切换到赵曙后的当前角色上下文中连续多次没有显著移动地图。它们的无效不代表产品玩法失败。
 - 原生“更多”菜单带 `_mouse_hierarchy_leave` 行为；菜单文字被 OCR 到不代表随后较慢的鼠标移动仍点中了该行。
+- OCR/键鼠只获项目所有者授权用于当前宣传片临时兼容路径。正规终态是 MCP 夹具按 stable landed-title key 解析并定位地图；能力合同见根知识库 `docs/ck3-native-title-map-navigation-contract.md`。该合同当前仅为 `research`，不得把本轮 OCR GREEN 冒充 MCP 已实现。
 - 菜单消失不构成 handler ACK。必须观察目标窗口或地图的后置状态。
 
 ### 当前有界状态机
