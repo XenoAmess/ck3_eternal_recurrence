@@ -316,10 +316,10 @@ def main() -> int:
     assert int(panel_close_x * 2560) == 1991
     assert int(panel_close_y * 1440) == 240
     assert capture.SCOREBOARD_BACKDROP_POINT == (0.050, 0.500)
-    assert capture.CHARACTER_WINDOW_CLOSE_BUTTON == (0.231, 0.014)
+    assert capture.CHARACTER_WINDOW_CLOSE_BUTTON == (0.2891, 0.0181)
     character_close_x, character_close_y = capture.CHARACTER_WINDOW_CLOSE_BUTTON
-    assert int(character_close_x * 2560) == 591
-    assert int(character_close_y * 1440) == 20
+    assert int(character_close_x * 2560) == 740
+    assert int(character_close_y * 1440) == 26
     assert capture.SCOREBOARD_GENERATED_ROW_LINKS == 160
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom

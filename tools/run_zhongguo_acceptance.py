@@ -187,11 +187,12 @@ SCOREBOARD_TITLE_CLOSE_BUTTON = (0.778, 0.167)
 SCOREBOARD_BACKDROP_POINT = (0.050, 0.500)
 SCOREBOARD_ROW_NAME_REGION = (0.30, 0.33, 0.45, 0.76)
 CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
-# CK3's native character sidebar is 610 GUI units wide.  In the pinned
-# 2560x1440 acceptance profile its inherited window-control close glyph is
-# centered at about (592, 20).  Escape does not close this sidebar reliably,
-# so the row-link audit uses the product-native title-bar control directly.
-CHARACTER_WINDOW_CLOSE_BUTTON = (0.231, 0.014)
+# CK3's native character sidebar is 610 GUI units wide and the isolated
+# profile uses 1.30 GUI scale.  Pixel inspection of the unscaled 2560x1440
+# evidence frame places its inherited 30x30 close glyph at (740, 26).
+# Escape does not close this sidebar reliably, so the row-link audit uses the
+# product-native title-bar control directly.
+CHARACTER_WINDOW_CLOSE_BUTTON = (0.2891, 0.0181)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
 
 
