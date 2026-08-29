@@ -88,6 +88,7 @@
 - 暂停是否成功只能用 HUD 日期冻结和相关 marker 尚未到期共同证明。后续自动暂停事件出现时，不能倒推之前的 Space 生效。
 - 降速按键、暂停按键、原生时间轴点击都要各自有后置日期 ACK。慢 OCR 本身会消耗游戏时间，不能放在关键截止日之前无限等待。
 - carrier 到期日必须为失败兜底留足同年缓冲；这属于验收夹具编排，不得修改产品的 D+300 京察期限或其他正式规则来迁就 harness。
+- classic character event 的模态停表不能等同于 native snapshot 的普通 `paused=true`。2026-08-30 04:15 attempt 直接证明 `set-speed-1` 已获 `accepted/submitted` 且 `dedicated_server.log` 执行了原生零基速度 `0`，但旧 runner 等待 `speed=1 && paused=true` 仍超时；该次失败循环没有落盘 snapshot，因此 `paused=false` 只能作为强推断，不能写成直接观测。正确交接是：点击前用同一 native event instance、`date_raw`、played character 和命令 ACK 绑定上下文，速度/暂停字段只记录；点击后先看到 event instance 在同日发生变化，只有 changed-event 帧为 running 时才提交 `pause-map`，若已经暂停则禁止反向 toggle，最后以连续三帧 `paused=true` 且日期仍等于点击前日期收口。任何 RED 都应先写 observations sidecar 再抛异常。
 
 ## 6. 宣传片片场纪律
 

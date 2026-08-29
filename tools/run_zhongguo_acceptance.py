@@ -3689,33 +3689,99 @@ def capture_superior_assigned_result(
 
 def arm_native_speed_one(
     service: GameplayBridgeService,
+    artifacts: Path,
     *,
-    timeout_s: float = 5.0,
+    stem: str,
 ) -> dict[str, object]:
-    """Submit speed one and wait until the exact-build snapshot confirms it."""
+    """Queue speed one while binding the click to the same native modal."""
 
-    submission = service.execute_step("set-speed-1")
-    observations: list[dict[str, object]] = []
-    deadline = time.monotonic() + timeout_s
-    snapshot: dict[str, object] = {}
-    while time.monotonic() < deadline:
-        snapshot = service.snapshot()
-        observations.append(_personal_switch_native_snapshot(snapshot))
-        if (
-            snapshot.get("speed") == 1
-            and snapshot.get("paused") is True
-            and isinstance(snapshot.get("date_raw"), int)
-            and not isinstance(snapshot.get("date_raw"), bool)
-        ):
-            return {
-                "submission": submission,
-                "observations": observations,
-                "snapshot": snapshot,
-            }
-        time.sleep(0.05)
-    raise acceptance.RunnerError(
-        "native MCP did not arm speed one before closing a promo event"
+    starting = service.snapshot()
+    starting_observation = _personal_switch_native_snapshot(starting)
+    starting_event = starting_observation["active_event_instance_id"]
+    starting_date = starting_observation["date_raw"]
+    starting_character = starting.get("played_character")
+    starting_character_id = (
+        starting_character.get("character_id")
+        if isinstance(starting_character, dict)
+        else None
     )
+    precondition_valid = (
+        isinstance(starting_event, int)
+        and not isinstance(starting_event, bool)
+        and isinstance(starting_date, int)
+        and not isinstance(starting_date, bool)
+        and isinstance(starting_character_id, int)
+        and not isinstance(starting_character_id, bool)
+    )
+    if not precondition_valid:
+        evidence = {
+            "schema_version": 1,
+            "result": "RED",
+            "failure_reason": "native modal identity/date/character is incomplete",
+            "starting_observation": starting_observation,
+            "starting_character_id": starting_character_id,
+        }
+        write_json(artifacts / f"{stem}_speed_one_gate.json", evidence)
+        acceptance.ImageGrab.grab().save(
+            artifacts / f"red_{stem}_speed_one_precondition.png"
+        )
+        raise acceptance.RunnerError(
+            "native MCP cannot bind speed one to the visible promo event"
+        )
+    submission = service.execute_step("set-speed-1")
+    submission_confirmed = (
+        isinstance(submission, dict)
+        and submission.get("accepted") is True
+        and submission.get("status") == "submitted"
+    )
+    snapshot = service.snapshot()
+    observed = _personal_switch_native_snapshot(snapshot)
+    observations = [observed]
+    character = snapshot.get("played_character")
+    character_id = (
+        character.get("character_id") if isinstance(character, dict) else None
+    )
+    context_failure = ""
+    if observed["date_raw"] != starting_date:
+        context_failure = "game date changed while arming speed one"
+    elif observed["active_event_instance_id"] != starting_event:
+        context_failure = "active event changed while arming speed one"
+    elif character_id != starting_character_id:
+        context_failure = "played character changed while arming speed one"
+
+    # A CK3 character event can stop map progression without projecting that
+    # modal stop through Jomini's ordinary paused/speed fields.  The command
+    # ACK plus the unchanged event/date/character bind the subsequent click;
+    # the post-click same-date freeze is the authoritative safety gate.
+    armed = submission_confirmed and not context_failure
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if armed else "RED",
+        "starting_observation": starting_observation,
+        "starting_character_id": starting_character_id,
+        "submission": submission,
+        "submission_confirmed": submission_confirmed,
+        "observations": observations,
+        "speed_one_observed_pre_click": snapshot.get("speed") == 1,
+        "paused_observed_pre_click": snapshot.get("paused"),
+        "modal_context_stable": not context_failure,
+        "failure_reason": (
+            context_failure
+            or (None if submission_confirmed else "speed one submission was not accepted")
+        ),
+    }
+    write_json(artifacts / f"{stem}_speed_one_gate.json", evidence)
+    if evidence["result"] != "GREEN":
+        acceptance.ImageGrab.grab().save(
+            artifacts / f"red_{stem}_speed_one_gate.png"
+        )
+        raise acceptance.RunnerError(
+            "native MCP could not bind speed one to the same promo event/date"
+        )
+    return {
+        **evidence,
+        "snapshot": snapshot,
+    }
 
 
 def pause_after_promo_event_click(
@@ -3739,32 +3805,48 @@ def pause_after_promo_event_click(
     transition_observations: list[dict[str, object]] = []
     transition_deadline = time.monotonic() + 0.75
     running_transition_seen = False
+    event_transition_seen = False
     transition_failure = ""
+    transition_snapshot = pre_click_snapshot
     while time.monotonic() < transition_deadline:
-        snapshot = service.snapshot()
-        observed = _personal_switch_native_snapshot(snapshot)
+        transition_snapshot = service.snapshot()
+        observed = _personal_switch_native_snapshot(transition_snapshot)
         transition_observations.append(observed)
         if observed["date_raw"] != pre_date:
             transition_failure = "game date advanced before native pause submission"
             break
-        if snapshot.get("paused") is False:
-            running_transition_seen = True
+        if observed["active_event_instance_id"] != pre_event:
+            event_transition_seen = True
+            running_transition_seen = transition_snapshot.get("paused") is False
             break
         time.sleep(0.01)
-    if not running_transition_seen and not transition_failure:
+    if not event_transition_seen and not transition_failure:
         transition_failure = (
-            "event close did not expose a same-date running transition within 0.75s"
+            "event close did not change the native event instance within 0.75s"
         )
 
-    # pause-map is idempotent while an event still owns the pause.  Submit it
-    # only after observing the event-restored running frame, and do so without
-    # an intervening OCR/HUD wait.  On a RED transition we still submit it as
-    # a best-effort containment step before stopping the run.
-    pause_submission = service.execute_step("pause-map")
+    # Only a same-date, changed-event running frame authorizes pause-map.  A
+    # failed transition may still receive a best-effort containment pause when
+    # the underlying map is running, but it can never turn the gate GREEN.
+    should_submit_pause = transition_snapshot.get("paused") is False
+    pause_submission = (
+        service.execute_step("pause-map")
+        if should_submit_pause
+        else {
+            "step": "pause-map",
+            "accepted": True,
+            "status": "not_needed_already_paused",
+        }
+    )
     pause_submitted = (
         isinstance(pause_submission, dict)
         and pause_submission.get("accepted") is True
         and pause_submission.get("status") == "submitted"
+    )
+    already_paused_after_transition = (
+        event_transition_seen
+        and transition_snapshot.get("paused") is True
+        and pause_submission.get("status") == "not_needed_already_paused"
     )
     pause_observations: list[dict[str, object]] = []
     pause_deadline = time.monotonic() + 5.0
@@ -3799,8 +3881,8 @@ def pause_after_promo_event_click(
         and pause_observations[-1]["active_event_instance_id"] != pre_event
     )
     green = (
-        running_transition_seen
-        and pause_submitted
+        event_transition_seen
+        and (pause_submitted or already_paused_after_transition)
         and frozen
         and event_transitioned
         and played_character_stable
@@ -3808,13 +3890,22 @@ def pause_after_promo_event_click(
     evidence = {
         "schema_version": 1,
         "result": "GREEN" if green else "RED",
-        "pause_method": "native_mcp_speed_one_then_pause_map",
+        "pause_method": (
+            "native_mcp_speed_one_then_pause_map"
+            if pause_submitted
+            else "native_mcp_already_paused_after_event"
+        ),
         "pre_click_observation": pre_observation,
         "transition_observations": transition_observations,
+        "event_transition_seen_same_date": event_transition_seen,
         "running_transition_seen_same_date": running_transition_seen,
         "transition_failure": transition_failure or None,
         "pause_submission": pause_submission,
         "pause_submission_confirmed": pause_submitted,
+        "already_paused_after_event_transition": already_paused_after_transition,
+        "post_close_speed_one_observed": (
+            transition_snapshot.get("speed") == 1 if event_transition_seen else None
+        ),
         "pause_observations": pause_observations,
         "last_three_dates_identical": frozen,
         "last_three_paused_at_pre_click_date": frozen,
@@ -3857,7 +3948,11 @@ def capture_received_scoreboard(
     # Arm speed one before the click, then use the same native MCP connection
     # to pause the map before the fixture's next-day policy carrier can preempt the
     # received-board capture.
-    speed_one_gate = arm_native_speed_one(timeline_service)
+    speed_one_gate = arm_native_speed_one(
+        timeline_service,
+        artifacts,
+        stem="11_received_result",
+    )
     pre_click_snapshot = speed_one_gate["snapshot"]
     acceptance.deliberate_click(result_option, "accept real 3.25 result")
     pause_evidence = pause_after_promo_event_click(
@@ -4331,7 +4426,11 @@ def capture_policy_cards(
             contains=True,
             stable_hits=1,
         )
-        speed_one_gate = arm_native_speed_one(timeline_service)
+        speed_one_gate = arm_native_speed_one(
+            timeline_service,
+            artifacts,
+            stem=f"{stem}_close",
+        )
         pre_click_snapshot = speed_one_gate["snapshot"]
         acceptance.deliberate_click(option, f"close policy card {mechanism_id:03d}")
         pause_evidence = pause_after_promo_event_click(

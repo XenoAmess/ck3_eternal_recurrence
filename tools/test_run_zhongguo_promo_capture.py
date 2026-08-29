@@ -173,7 +173,8 @@ def main() -> int:
     assert "acceptance.ensure_game_paused" in received_body
     assert "settle_promo_interruptions" in received_body
     for token in (
-        "arm_native_speed_one(timeline_service)",
+        "speed_one_gate = arm_native_speed_one(",
+        'stem="11_received_result"',
         "pause_after_promo_event_click",
         '"11_received_result_immediate_pause_gate.json"',
         'stream.count("ZGA: TEST PASS clean_policy_001_dispatched")',
@@ -182,7 +183,7 @@ def main() -> int:
         '"policy card 001 dispatched before received-scoreboard capture"',
     ):
         assert token in received_body, token
-    assert received_body.index("arm_native_speed_one(timeline_service)") < received_body.index(
+    assert received_body.index("speed_one_gate = arm_native_speed_one(") < received_body.index(
         'acceptance.deliberate_click(result_option, "accept real 3.25 result")'
     )
     assert received_body.index(
@@ -258,49 +259,75 @@ def main() -> int:
     arm_source = inspect.getsource(capture.arm_native_speed_one)
     for token in (
         'service.execute_step("set-speed-1")',
-        'snapshot.get("speed") == 1',
-        'snapshot.get("paused") is True',
-        'isinstance(snapshot.get("date_raw"), int)',
+        'submission.get("status") == "submitted"',
+        'observed["date_raw"] != starting_date',
+        'observed["active_event_instance_id"] != starting_event',
+        'write_json(artifacts / f"{stem}_speed_one_gate.json", evidence)',
     ):
         assert token in arm_source, token
+    assert 'snapshot.get("paused") is True' not in arm_source
+    assert "while time.monotonic()" not in arm_source
     pause_source = inspect.getsource(capture.pause_after_promo_event_click)
     for token in (
         "transition_deadline = time.monotonic() + 0.75",
         'observed["date_raw"] != pre_date',
-        'snapshot.get("paused") is False',
+        'observed["active_event_instance_id"] != pre_event',
+        'transition_snapshot.get("paused") is False',
         'service.execute_step("pause-map")',
         'pause_submission.get("status") == "submitted"',
         'all(item["date_raw"] == pre_date for item in tail)',
         "and event_transitioned",
     ):
         assert token in pause_source, token
-    assert pause_source.index('snapshot.get("paused") is False') < (
+    assert pause_source.index('transition_snapshot.get("paused") is False') < (
         pause_source.index('service.execute_step("pause-map")')
     )
 
     class SpeedOneService:
         def __init__(self) -> None:
             self.steps: list[str] = []
+            self.snapshots = [
+                {
+                    "revision": 1,
+                    "native_revision": 1,
+                    "date_raw": 200,
+                    "paused": False,
+                    "speed": 5,
+                    "active_event": {"instance_id": 9},
+                    "played_character": {"character_id": 77},
+                },
+                {
+                    "revision": 2,
+                    "native_revision": 2,
+                    "date_raw": 200,
+                    "paused": False,
+                    "speed": 5,
+                    "active_event": {"instance_id": 9},
+                    "played_character": {"character_id": 77},
+                },
+            ]
 
         def execute_step(self, step: str) -> dict[str, object]:
             self.steps.append(step)
             return {"step": step, "accepted": True, "status": "submitted"}
 
         def snapshot(self) -> dict[str, object]:
-            return {
-                "revision": 1,
-                "native_revision": 1,
-                "date_raw": 200,
-                "paused": True,
-                "speed": 1,
-                "active_event": {"instance_id": 9},
-                "played_character": {"character_id": 77},
-            }
+            return self.snapshots.pop(0)
 
     speed_one_service = SpeedOneService()
-    speed_one_gate = capture.arm_native_speed_one(speed_one_service)
-    assert speed_one_service.steps == ["set-speed-1"]
-    assert speed_one_gate["snapshot"]["paused"] is True
+    with tempfile.TemporaryDirectory() as temp_dir:
+        speed_one_gate = capture.arm_native_speed_one(
+            speed_one_service,
+            Path(temp_dir),
+            stem="mock_received_result",
+        )
+        assert speed_one_service.steps == ["set-speed-1"]
+        assert speed_one_gate["result"] == "GREEN"
+        assert speed_one_gate["snapshot"]["paused"] is False
+        assert speed_one_gate["speed_one_observed_pre_click"] is False
+        assert (
+            Path(temp_dir) / "mock_received_result_speed_one_gate.json"
+        ).is_file()
 
     class PromoEventPauseService:
         def __init__(self) -> None:
@@ -365,6 +392,53 @@ def main() -> int:
         assert (
             Path(temp_dir) / "mock_received_result_immediate_pause_gate.json"
         ).is_file()
+
+    class AlreadyPausedAfterCloseService:
+        def __init__(self) -> None:
+            self.steps: list[str] = []
+            self.snapshots = [
+                {
+                    "revision": 2,
+                    "native_revision": 2,
+                    "date_raw": 200,
+                    "paused": True,
+                    "speed": 1,
+                    "active_event": None,
+                    "played_character": {"character_id": 77},
+                },
+                *[
+                    {
+                        "revision": 3 + index,
+                        "native_revision": 3 + index,
+                        "date_raw": 200,
+                        "paused": True,
+                        "speed": 1,
+                        "active_event": None,
+                        "played_character": {"character_id": 77},
+                    }
+                    for index in range(3)
+                ],
+            ]
+
+        def snapshot(self) -> dict[str, object]:
+            return self.snapshots.pop(0)
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            self.steps.append(step)
+            raise AssertionError("pause-map must not toggle an already-paused map")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        already_paused_service = AlreadyPausedAfterCloseService()
+        already_paused = capture.pause_after_promo_event_click(
+            already_paused_service,
+            Path(temp_dir),
+            pre_click,
+            stem="mock_already_paused",
+        )
+        assert already_paused["result"] == "GREEN"
+        assert already_paused["transition_failure"] is None
+        assert already_paused["already_paused_after_event_transition"] is True
+        assert already_paused_service.steps == []
 
     class DateDriftPauseService:
         def __init__(self) -> None:
@@ -1375,7 +1449,8 @@ def main() -> int:
     assert "clean_policy_chain_completed" in policy_body
     for token in (
         "timeline_service: GameplayBridgeService",
-        "arm_native_speed_one(timeline_service)",
+        "speed_one_gate = arm_native_speed_one(",
+        'stem=f"{stem}_close"',
         "pause_after_promo_event_click",
         'stem=f"{stem}_close"',
         '"premature_successor_marker_count"',
@@ -1388,7 +1463,7 @@ def main() -> int:
         'acceptance.deliberate_click(option, f"close policy card '
         '{mechanism_id:03d}")'
     )
-    assert policy_body.index("arm_native_speed_one(timeline_service)") < (
+    assert policy_body.index("speed_one_gate = arm_native_speed_one(") < (
         policy_body.index(policy_click)
     )
     assert policy_body.index(policy_click) < policy_body.index(

@@ -46,11 +46,17 @@
 
 该 attempt 仍为 **RED**：点击“认命”后，夹具 policy 001 在次日抢先弹出，占用了原定的本人榜截取步骤。证据表明这是 runner 在关闭个人结果后等待 HUD/暂停太慢与夹具次日调度相撞的 choreography 问题，不是 361 分布或“上司考定”产品缺陷。
 
-针对性修复已为 **static-ready**：个人结果和六张政策卡的每次关闭均改为 `speed 1 → 同 date_raw 的 running frame → 立即 MCP pause-map → 连续三帧与 pre-click date_raw 相同`；个人结果要求 policy 001 marker 为 0，每张政策卡也在截图前断言后继 successor marker 为 0。它不改产品逻辑或夹具日期，只修正实机批量验收的事件交接节拍。
+第三次 RED 后的针对性修复将个人结果和六张政策卡的关闭切换到原生 MCP 控速/暂停，不改产品逻辑或夹具日期。
+
+第四次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0415_current_e043596_mcp` 第四次实机证实 23 人严格分布为 `7 / 14 / 2`，并已通过 361/361 机制账本、史实角色来源、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察、D+90、拒办处罚、新人保护，以及“上司考定”明示本人 `3.25`。
+
+该 attempt 的 **RED** 仅发生在点击“认命”之前：runner 错误要求同一 modal snapshot 必须同时满足 `speed = 1` 与 `paused = true`。`set-speed-1` 命令 ACK 已为 submitted，`dedicated_server.log` 也记录 `Changing game speed to:0`；但失败等待 loop 的 observations 没有在 RED 前落盘，因而“当时原生帧持续是 `paused = false`”只能作为由终止分支得出的强推断，不能写成已有逐帧 artifact 直接证明。现有证据指向 runner 门禁过严，没有新的产品 RED。
+
+当前最小修复为 **static-ready**：点击前只强制验证 ACK 已提交，且 event identity、`date_raw` 和角色未变，`speed`/`paused` 仅记录不作阻塞；点击后要求 event instance 已变化且仍在同一 `date_raw`，仅在需要时条件提交 `pause-map`，随后要求连续三帧冻结。每一阶段均先写 sidecar 再进入下一步，避免下次 RED 再丢失失败 loop observations。
 
 ## 4. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已三次实机复现；项目诊断归零、考核榜 GUI 阻塞矩阵、京察规划链、D+90 MCP 静默暂停恢复以及“上司考定”本人 `3.25` 均已 live-confirmed；本人榜、新人、六张政策卡和正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已四次实机复现；项目诊断归零、史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护以及“上司考定”本人 `3.25` 均已 live-confirmed；本人榜、六张政策卡和正式宣传素材仍等待下一次完整 GREEN。
