@@ -175,6 +175,7 @@ def main() -> int:
     for token in (
         "speed_one_gate = arm_native_speed_one(",
         'stem="11_received_result"',
+        'expected_predecessor_event_key="zg361.4"',
         "pause_after_promo_event_click",
         '"11_received_result_immediate_pause_gate.json"',
         'stream.count("ZGA: TEST PASS clean_policy_001_dispatched")',
@@ -276,7 +277,9 @@ def main() -> int:
         'service.execute_step("pause-map")',
         'pause_submission.get("status") == "submitted"',
         'all(item["date_raw"] == pre_date for item in tail)',
-        "and event_transitioned",
+        "query_current_event_window_context_v1",
+        'readiness.get("event_definition_identity_ready") is True',
+        "instance_transitioned or definition_transitioned",
     ):
         assert token in pause_source, token
     assert pause_source.index('transition_snapshot.get("paused") is False') < (
@@ -381,6 +384,7 @@ def main() -> int:
             Path(temp_dir),
             pre_click,
             stem="mock_received_result",
+            expected_predecessor_event_key="zg361.4",
         )
         assert pause_service.trace[:2] == ["snapshot", "execute:pause-map"]
         assert received_pause["result"] == "GREEN"
@@ -434,11 +438,106 @@ def main() -> int:
             Path(temp_dir),
             pre_click,
             stem="mock_already_paused",
+            expected_predecessor_event_key="zg361.4",
         )
         assert already_paused["result"] == "GREEN"
         assert already_paused["transition_failure"] is None
         assert already_paused["already_paused_after_event_transition"] is True
         assert already_paused_service.steps == []
+
+    class SameInstanceDefinitionTransitionService:
+        def __init__(self, definition_key: str) -> None:
+            self.definition_key = definition_key
+            self.steps: list[str] = []
+            self.query_calls: list[tuple[int, int]] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": 12,
+                "native_revision": 11,
+                "date_raw": 200,
+                "paused": True,
+                "speed": 1,
+                "active_event": {"instance_id": 9, "option_count": 4},
+                "played_character": {"character_id": 77},
+            }
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            self.steps.append(step)
+            raise AssertionError("pause-map must not toggle an already-paused map")
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            self.query_calls.append((event_instance_id, expected_revision))
+            return {
+                "status": "available",
+                "current_event_window_context": {
+                    "event_definition_key": self.definition_key,
+                    "readiness": {"event_definition_identity_ready": True},
+                },
+            }
+
+    def advancing_clock() -> object:
+        value = 0.0
+
+        def tick() -> float:
+            nonlocal value
+            value += 0.2
+            return value
+
+        return tick
+
+    with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
+        capture.time, "monotonic", side_effect=advancing_clock()
+    ), mock.patch.object(capture.time, "sleep", return_value=None):
+        chained_service = SameInstanceDefinitionTransitionService("zg361.6")
+        chained = capture.pause_after_promo_event_click(
+            chained_service,
+            Path(temp_dir),
+            pre_click,
+            stem="mock_same_instance_new_definition",
+            expected_predecessor_event_key="zg361m.1",
+        )
+        assert chained["result"] == "GREEN"
+        assert chained["instance_transition_seen_same_date"] is False
+        assert chained["definition_transition_seen_same_date"] is True
+        assert chained["event_transition_identity_method"] == "event_definition_key"
+        assert chained["observed_successor_event_key"] == "zg361.6"
+        assert chained["transition_failure"] is None
+        assert chained_service.query_calls == [(9, 12)]
+        assert chained_service.steps == []
+
+    with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
+        capture.time, "monotonic", side_effect=advancing_clock()
+    ), mock.patch.object(capture.time, "sleep", return_value=None), mock.patch.object(
+        capture.acceptance.ImageGrab,
+        "grab",
+        return_value=SimpleNamespace(save=lambda _path: None),
+    ):
+        unchanged_service = SameInstanceDefinitionTransitionService("zg361m.1")
+        try:
+            capture.pause_after_promo_event_click(
+                unchanged_service,
+                Path(temp_dir),
+                pre_click,
+                stem="mock_same_instance_same_definition",
+                expected_predecessor_event_key="zg361m.1",
+            )
+        except capture.acceptance.RunnerError:
+            pass
+        else:
+            raise AssertionError("same event instance and definition must fail")
+        unchanged_gate = json.loads(
+            (
+                Path(temp_dir)
+                / "mock_same_instance_same_definition_immediate_pause_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert unchanged_gate["result"] == "RED"
+        assert unchanged_gate["definition_transition_seen_same_date"] is False
+        assert unchanged_gate["observed_successor_event_key"] == "zg361m.1"
+        assert unchanged_service.query_calls == [(9, 12)]
 
     class DateDriftPauseService:
         def __init__(self) -> None:
@@ -487,6 +586,7 @@ def main() -> int:
                 Path(temp_dir),
                 pre_click,
                 stem="mock_date_drift",
+                expected_predecessor_event_key="zg361.4",
             )
         except capture.acceptance.RunnerError:
             pass
@@ -1408,6 +1508,36 @@ def main() -> int:
     assert preferred_title == "野狗与小白兔"
     assert preferred_option is not None
     assert preferred_option["text"].startswith("宽严相济")
+    elimination_event = [
+        {
+            "text": "你被列入末位淘汰名单",
+            "center": [820, 320],
+            "bbox": [575, 301, 1065, 339],
+        },
+        {
+            "text": "要求复核！",
+            "center": [930, 740],
+            "bbox": [700, 725, 1160, 755],
+        },
+        {
+            "text": "认命致仕，体面退场。",
+            "center": [930, 790],
+            "bbox": [700, 775, 1160, 805],
+        },
+        {
+            "text": "掀桌起兵！（建立独立派系，对抗主君）",
+            "center": [930, 840],
+            "bbox": [700, 825, 1160, 855],
+        },
+    ]
+    elimination_title, elimination_option = (
+        capture.promo_preferred_product_event_option(
+            elimination_event, 2560, 1440
+        )
+    )
+    assert elimination_title == "你被列入末位淘汰名单"
+    assert elimination_option is not None
+    assert elimination_option["text"].startswith("掀桌起兵")
     assert capture.promo_product_event_overlay_evidence(
         "free_jingcha_planner", native_event, 2560, 1440
     )
@@ -1464,6 +1594,7 @@ def main() -> int:
         "timeline_service: GameplayBridgeService",
         "speed_one_gate = arm_native_speed_one(",
         'stem=f"{stem}_close"',
+        'expected_predecessor_event_key=f"zg361m.{mechanism_id}"',
         "pause_after_promo_event_click",
         'stem=f"{stem}_close"',
         '"premature_successor_marker_count"',

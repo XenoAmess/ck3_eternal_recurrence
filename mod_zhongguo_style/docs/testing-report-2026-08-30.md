@@ -85,9 +85,17 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复只进入外部隔离夹具，状态为 **static-ready**：初始化真实赵曙时添加 `health = 10`、持续 120 天的本地化“御医监护（隔离验收）”角色修正；在切换至史实受考官员之前的同一 effect 帧显式移除，并分别要求 `recording_health_guard_applied` 与 `recording_health_guard_removed_before_switch` PASS。120 天到期提供异常路径兜底；正式产品树和 release staging 均不包含该文件，史实角色、姓名、头衔与 cohort 不变，也没有使用永生特质或继承人续演来伪造宣传素材。定向夹具合同、runner 合同、Python 编译和启动 wiring 回归均已 GREEN；下一步只跑一次完整合批实机。
 
-## 7. 环境与证据边界
+## 7. 第八次完整 attempt：健康夹具闭合，政策事件同窗换定义误判
+
+第八次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0625_current_586650c_mcp` 第八次实机取得宋帝 23 人 `7 / 14 / 2`，结算前后两道严格 marker 均 PASS，项目诊断仍为 0。新健康夹具首次实机闭合：初始化时 `recording_health_guard_applied` PASS，D+90 到期并成功触发 `personal_result_switch_scheduled`，切换史实受考公爵前 `recording_health_guard_removed_before_switch` PASS；随后真实“上司考定”明确显示本人 `3.25`、KPI 与位次，本人所属考核榜也实机打开。说明第七局的赵曙自然死亡 blocker 已解除，且保护没有跟随玩家进入受考角色。
+
+该 attempt 继续通过考核榜按钮及阻塞矩阵、京察强制弹窗、免费活动规划器、拒办处罚和新人保护，并首次把修正后的政策卡第001号《KPI 分项证据单》完整显示、录制并提交其真实选项。整局仍为 **harness RED**：提交 #001 后，产品立即把同一事件窗口替换为 `zg361.6`《你被列入末位淘汰名单》。`12_policy_001_close_immediate_pause_gate.json` 证明点击前后日期始终为 `53146848`；containment `pause-map` ACK 后最后三帧均为 `paused = true`、同日、角色稳定，时钟事实上已安全冻结。但 CK3 对前后两个不同定义都发布 `active_event_instance_id = 7`、`option_count = 4`，旧门仅以 instance ID 改变判定转场，因而制造 false negative。`fatal_state.png` 肉眼及 OCR 均证明顶层定义已经换成末位淘汰事件；这份视觉证据只用于诊断，不作为新放行条件。
+
+针对性修复现为 **static-ready**：保留原 instance-ID 快路径；同 ID 时只在同日冻结后调用现成 `current_event_window_context_v1` MCP，并要求 canonical `event_definition_key` 从调用方声明的前序键（政策卡为 `zg361m.N`，个人告身为 `zg361.4`）发生变化。query unavailable、定义未变、日期漂移或角色变化仍 RED；通用 revision、option_count、OCR 和“已经暂停”都不能代替身份。下一张政策卡前的有界 interruption 处理会对真实 `zg361.6` 明确选择“掀桌起兵”：它保留史实角色和头衔，但会真实建立独立派系；随机申诉、夺爵与致仕不用于连续片场。定向回归已覆盖同 ID 的 `zg361m.1 → zg361.6` GREEN、同 ID 同定义 RED、原 ID 变化路径和日期漂移 RED；下一步仍只跑一局完整合批实机。
+
+## 8. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已七次实机复现；项目诊断在第六、七次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察、拒办处罚和新人保护均已 live-confirmed；D+90 单选信件 MCP 恢复、“上司考定”本人 `3.25`、本人榜、六张修正标题后的政策卡及正式宣传素材仍等待带限时健康夹具的下一次完整 GREEN。
+- `7 / 14 / 2` 已八次实机复现；项目诊断在第六至八次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜和政策卡第001号均已 live-confirmed；同窗 event-definition MCP 转场、其余五张政策卡及正式宣传素材仍等待下一次完整 GREEN。

@@ -203,6 +203,12 @@ PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS = (
     # selection.  The retention option closes the ordinary product event
     # without manufacturing or removing a promo subject.
     ("野狗与小白兔", "宽严相济"),
+    # A second consecutive 3.25 opens the real subordinate elimination event
+    # after policy card 001.  Appeal can randomly purge the historical subject
+    # and retirement always removes their title; the revolt branch preserves
+    # the real character/title continuity while still exercising a real,
+    # consequential product response.
+    ("你被列入末位淘汰名单", "掀桌起兵"),
 )
 # CK3 character-event titles occupy this left-half lane.  The bottom-right
 # pause reason may repeat the title of an event hidden behind another modal;
@@ -3945,8 +3951,14 @@ def pause_after_promo_event_click(
     pre_click_snapshot: dict[str, object],
     *,
     stem: str,
+    expected_predecessor_event_key: str,
 ) -> dict[str, object]:
     """Freeze an event-restored clock before its next clean carrier wins."""
+
+    if not isinstance(expected_predecessor_event_key, str) or not (
+        expected_predecessor_event_key.strip()
+    ):
+        raise ValueError("expected_predecessor_event_key must be non-empty")
 
     pre_observation = _personal_switch_native_snapshot(pre_click_snapshot)
     pre_event = pre_observation["active_event_instance_id"]
@@ -3998,7 +4010,7 @@ def pause_after_promo_event_click(
         and pause_submission.get("accepted") is True
         and pause_submission.get("status") == "submitted"
     )
-    already_paused_after_transition = (
+    already_paused_after_instance_transition = (
         event_transition_seen
         and transition_snapshot.get("paused") is True
         and pause_submission.get("status") == "not_needed_already_paused"
@@ -4031,15 +4043,77 @@ def pause_after_promo_event_click(
         and not isinstance(pre_character_id, bool)
         and post_character_id == pre_character_id
     )
-    event_transitioned = (
+    instance_transitioned = (
         bool(pause_observations)
         and pause_observations[-1]["active_event_instance_id"] != pre_event
     )
+    definition_query: dict[str, object] | None = None
+    definition_query_error: str | None = None
+    observed_successor_event_key: str | None = None
+    definition_transitioned = False
+    post_event_id = (
+        pause_observations[-1]["active_event_instance_id"]
+        if pause_observations
+        else None
+    )
+    # CK3 can replace one event definition with the next while retaining the
+    # same published window instance ID (zg361m.1 -> zg361.6 does this in the
+    # exact 1.19.0.6 build).  Only the existing typed event-window MCP may
+    # prove that same-ID transition; generic revision, option count, OCR, or a
+    # successful pause alone are not event identity.
+    if frozen and post_event_id == pre_event and isinstance(post_event_id, int):
+        try:
+            paused_revision = paused_snapshot.get("revision")
+            if isinstance(paused_revision, bool) or not isinstance(
+                paused_revision, int
+            ):
+                raise acceptance.RunnerError(
+                    "paused event snapshot lacks a public revision"
+                )
+            definition_query = service.query_current_event_window_context_v1(
+                post_event_id,
+                expected_revision=paused_revision,
+            )
+            context = definition_query.get("current_event_window_context")
+            readiness = (
+                context.get("readiness") if isinstance(context, dict) else None
+            )
+            observed_key = (
+                context.get("event_definition_key")
+                if isinstance(context, dict)
+                else None
+            )
+            if not (
+                definition_query.get("status") == "available"
+                and isinstance(readiness, dict)
+                and readiness.get("event_definition_identity_ready") is True
+                and isinstance(observed_key, str)
+                and observed_key
+            ):
+                raise acceptance.RunnerError(
+                    "event-window MCP did not publish canonical definition identity"
+                )
+            observed_successor_event_key = observed_key
+            definition_transitioned = (
+                observed_key != expected_predecessor_event_key
+            )
+        except Exception as error:
+            definition_query_error = f"{type(error).__name__}: {error}"
+    event_transitioned = instance_transitioned or definition_transitioned
+    if definition_transitioned:
+        transition_failure = ""
+        running_transition_seen = any(
+            item.get("paused") is False for item in transition_observations
+        )
+    already_paused_after_transition = (
+        event_transitioned
+        and paused_snapshot.get("paused") is True
+        and pause_submission.get("status") == "not_needed_already_paused"
+    )
     green = (
-        event_transition_seen
+        event_transitioned
         and (pause_submitted or already_paused_after_transition)
         and frozen
-        and event_transitioned
         and played_character_stable
     )
     evidence = {
@@ -4051,15 +4125,29 @@ def pause_after_promo_event_click(
             else "native_mcp_already_paused_after_event"
         ),
         "pre_click_observation": pre_observation,
+        "expected_predecessor_event_key": expected_predecessor_event_key,
         "transition_observations": transition_observations,
-        "event_transition_seen_same_date": event_transition_seen,
+        "event_transition_seen_same_date": event_transitioned,
+        "instance_transition_seen_same_date": event_transition_seen,
+        "definition_transition_seen_same_date": definition_transitioned,
+        "event_transition_identity_method": (
+            "instance_id"
+            if instance_transitioned
+            else ("event_definition_key" if definition_transitioned else None)
+        ),
+        "observed_successor_event_key": observed_successor_event_key,
+        "post_event_window_context_query": definition_query,
+        "post_event_window_context_error": definition_query_error,
         "running_transition_seen_same_date": running_transition_seen,
         "transition_failure": transition_failure or None,
         "pause_submission": pause_submission,
         "pause_submission_confirmed": pause_submitted,
+        "already_paused_after_instance_transition": (
+            already_paused_after_instance_transition
+        ),
         "already_paused_after_event_transition": already_paused_after_transition,
         "post_close_speed_one_observed": (
-            transition_snapshot.get("speed") == 1 if event_transition_seen else None
+            transition_snapshot.get("speed") == 1 if event_transitioned else None
         ),
         "pause_observations": pause_observations,
         "last_three_dates_identical": frozen,
@@ -4115,6 +4203,7 @@ def capture_received_scoreboard(
         artifacts,
         pre_click_snapshot,
         stem="11_received_result",
+        expected_predecessor_event_key="zg361.4",
     )
     pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
     pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
@@ -4272,7 +4361,7 @@ def promo_preferred_product_event_option(
     width: int,
     height: int,
 ) -> tuple[str | None, dict[str, object] | None]:
-    """Select an explicitly non-destructive option for a known product event."""
+    """Select an explicit continuity-preserving option for a known event."""
 
     for event_title, option_text in PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS:
         if not promo_event_title_evidence(items, width, height, event_title):
@@ -4651,6 +4740,7 @@ def capture_policy_cards(
             artifacts,
             pre_click_snapshot,
             stem=f"{stem}_close",
+            expected_predecessor_event_key=f"zg361m.{mechanism_id}",
         )
         pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
         pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
