@@ -560,16 +560,20 @@ def main() -> int:
     host_pause = inspect.getsource(capture.pause_after_jingcha_host_click)
     for token in (
         'acceptance.pyautogui.press("space")',
-        "acceptance.ensure_game_paused",
         "acceptance.read_hud_game_date",
+        "date_freeze_probe",
+        "len(set(observations[-3:])) == 1",
+        "timeline pause after Jingcha host option",
         "stream.pump()",
         "PERSONAL_SWITCH_SCHEDULED_MARKER",
         "paused_day >= due_day",
         '"date_before_due": paused_day < due_day',
+        '"last_three_dates_identical": frozen',
         '"09_jingcha_host_immediate_pause_gate.json"',
     ):
         assert token in host_pause, token
-    assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 2
+    assert "acceptance.ensure_game_paused" not in host_pause
+    assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 30
 
     interruption = inspect.getsource(capture.settle_promo_interruptions)
     assert "stop_event_title: str | None = None" in interruption
@@ -585,14 +589,26 @@ def main() -> int:
     )
     assert personal is not None
     personal_body = personal.group(0)
+    assert "advance_to_personal_switch" in personal_body
     assert "resolved_historical_personal_result_target" in personal_body
     assert "HISTORICAL_TARGET_DATA_MARKER_PREFIX" in personal_body
     assert "HISTORICAL_TARGET_PASS_MARKER" in personal_body
     assert "recorder.resolve_reviewed_subject" in personal_body
     assert "personal_result_target_projected_bottom_two" in personal_body
     assert "clean_policy_chain_scheduled" in personal_body
-    assert '"zg361_personal_switch", require_progress=True' in personal_body
     assert 'if grades[0] != "3.25"' in personal_body
+
+    switch_advance = inspect.getsource(capture.advance_to_personal_switch)
+    for token in (
+        "timeout_s: float = 90.0",
+        '"zg361_personal_switch", require_progress=True',
+        "PERSONAL_SWITCH_SCHEDULED_MARKER",
+        "settle_promo_interruptions",
+        'stop_event_title="上司考定"',
+        "zg361_personal_switch_resume_",
+        "time.monotonic() + timeout_s",
+    ):
+        assert token in switch_advance, token
 
     decisions = bom_text(FIXTURE / "common" / "decisions" / "zga_decisions.txt")
     found = tuple(

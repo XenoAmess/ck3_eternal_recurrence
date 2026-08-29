@@ -205,7 +205,8 @@ def main() -> int:
     assert "hidden = yes" in jingcha
     assert "this = character:han_8052" in jingcha
     assert "trigger_event = zg361.40" in jingcha
-    assert "trigger_event = { id = zga_acceptance.3 days = 2 }" in jingcha
+    assert "trigger_event = { id = zga_acceptance.3 days = 30 }" in jingcha
+    assert "Jingcha timing is not changed" in jingcha
     assert "ZGA: TEST PASS clean_jingcha_dispatched" in jingcha
     assert "ZGA: TEST PASS jingcha_mandate_issued" in jingcha
 

@@ -193,7 +193,7 @@ CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
 # product-native title-bar control directly.
 CHARACTER_WINDOW_CLOSE_BUTTON = (0.2891, 0.0181)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
-JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 2
+JINGCHA_PERSONAL_SWITCH_DELAY_DAYS = 30
 PERSONAL_SWITCH_SCHEDULED_MARKER = (
     "ZGA: TEST PASS personal_result_switch_scheduled"
 )
@@ -1051,6 +1051,7 @@ def fixture_source_errors() -> list[str]:
         "clean_policy_361_dispatched",
         "clean_policy_chain_completed",
         "trigger_event = { id = zga_acceptance.5 days = 2 }",
+        "trigger_event = { id = zga_acceptance.3 days = 30 }",
         "trigger_event = { id = zga_acceptance.12 days = 1 }",
         "settled_review_same_year_idempotent",
         "jingcha_refusal_superior_opinion_and_kpi_minus_50",
@@ -2338,17 +2339,51 @@ def pause_after_jingcha_host_click(
 
     # The mandate event interrupted a running speed-five timeline. Closing its
     # host option restores that running state, so send the pause key before any
-    # planner OCR or transition wait can consume the fixture's two-day margin.
+    # planner OCR. Activity UI can cover CK3's rendered "paused" label; prove
+    # the freeze from three consecutive HUD dates instead of relying on it.
     acceptance.pyautogui.press("space")
-    acceptance.ensure_game_paused(artifacts, "09_jingcha_host_immediate")
-    paused_image = acceptance.ImageGrab.grab()
-    paused_image.save(artifacts / "09_jingcha_host_immediate_pause_verified.png")
-    paused_date = acceptance.read_hud_game_date(paused_image)
-    if paused_date is None:
-        raise acceptance.RunnerError(
-            "Jingcha host pause was visible but its HUD date was unreadable"
+
+    def date_freeze_probe(label: str) -> tuple[bool, list[int], object]:
+        observations: list[int] = []
+        last_image = None
+        for index in range(4):
+            last_image = acceptance.ImageGrab.grab()
+            date = acceptance.read_hud_game_date(last_image)
+            if date is None:
+                last_image.save(
+                    artifacts / f"09_jingcha_host_{label}_date_unreadable.png"
+                )
+                raise acceptance.RunnerError(
+                    "Jingcha host HUD date became unreadable during freeze proof"
+                )
+            observations.append(date[0])
+            if index < 3:
+                time.sleep(0.8)
+        return len(set(observations[-3:])) == 1, observations, last_image
+
+    frozen, observations, paused_image = date_freeze_probe("space")
+    pause_method = "space"
+    if not frozen:
+        width, height = acceptance.pyautogui.size()
+        acceptance.deliberate_click(
+            (
+                int(width * (2315 / 2560)),
+                int(height * (1410 / 1440)),
+            ),
+            "timeline pause after Jingcha host option",
         )
-    paused_day = paused_date[0]
+        frozen, click_observations, paused_image = date_freeze_probe(
+            "timeline_click"
+        )
+        observations.extend(click_observations)
+        pause_method = "timeline_click"
+    if not frozen:
+        paused_image.save(artifacts / "red_09_jingcha_host_date_not_frozen.png")
+        raise acceptance.RunnerError(
+            f"Jingcha host date did not freeze after pause attempts: {observations}"
+        )
+    paused_image.save(artifacts / "09_jingcha_host_immediate_pause_verified.png")
+    paused_day = observations[-1]
     due_day = mandate_day + JINGCHA_PERSONAL_SWITCH_DELAY_DAYS
     stream.pump()
     personal_switch_marker_count = stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER)
@@ -2358,6 +2393,9 @@ def pause_after_jingcha_host_click(
         "mandate_day_ordinal": mandate_day,
         "personal_switch_due_day_ordinal": due_day,
         "paused_day_ordinal": paused_day,
+        "pause_method": pause_method,
+        "date_observations": observations,
+        "last_three_dates_identical": frozen,
         "date_before_due": paused_day < due_day,
         "personal_switch_marker_count": personal_switch_marker_count,
     }
@@ -2502,6 +2540,45 @@ def capture_jingcha_planner(
     }
 
 
+def advance_to_personal_switch(
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 90.0,
+) -> list[dict[str, object]]:
+    """Advance the delayed fixture carrier without letting queued events stall it."""
+
+    acceptance.set_speed_five_and_unpause(
+        artifacts, "zg361_personal_switch", require_progress=True
+    )
+    deadline = time.monotonic() + timeout_s
+    interruptions: list[dict[str, object]] = []
+    recovery_round = 0
+    while time.monotonic() < deadline:
+        stream.pump()
+        if stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER):
+            return interruptions
+        recovery_round += 1
+        recovered = settle_promo_interruptions(
+            artifacts,
+            f"10_personal_switch_wait_{recovery_round:02d}",
+            observation_s=0.5,
+            stop_event_title="上司考定",
+        )
+        if recovered:
+            interruptions.extend(recovered)
+            acceptance.set_speed_five_and_unpause(
+                artifacts,
+                f"zg361_personal_switch_resume_{recovery_round:02d}",
+                require_progress=True,
+            )
+        else:
+            time.sleep(0.2)
+    raise acceptance.RunnerError(
+        "fixture personal-result switch did not arrive after the delayed "
+        "post-Jingcha timeline advance"
+    )
+
+
 def capture_superior_assigned_result(
     stream: MarkerStream,
     artifacts: Path,
@@ -2510,10 +2587,7 @@ def capture_superior_assigned_result(
     # The external fixture schedules only the player-character switch. The
     # former player then becomes the real AI superior and invokes the product
     # review, grade, snapshot and result-event chain.
-    acceptance.set_speed_five_and_unpause(
-        artifacts, "zg361_personal_switch", require_progress=True
-    )
-    stream.wait("ZGA: TEST PASS personal_result_switch_scheduled", 30)
+    switch_interruptions = advance_to_personal_switch(stream, artifacts)
     stream.wait(HISTORICAL_TARGET_DATA_MARKER_PREFIX, 30)
     stream.wait(HISTORICAL_TARGET_PASS_MARKER, 30)
     reviewed_history_id = resolved_historical_personal_result_target(stream)
@@ -2592,6 +2666,7 @@ def capture_superior_assigned_result(
             "ZGA: TEST PASS clean_policy_chain_scheduled"
         ),
         "preempting_product_events_dismissed": superior_interruptions,
+        "timeline_interruptions_before_switch": switch_interruptions,
         "rendered_grade": grades[0],
         "title_artifact": "10_superior_result_title.png",
         "panel_artifact": "10_superior_result.png",
