@@ -116,6 +116,14 @@ POLICY_CARD_RECIPES = (
 )
 
 
+# Canonical Steam media strip.  Description/release validators import this
+# inventory so the renderer and the BBCode gate cannot silently disagree about
+# which eight files constitute the public release set.
+EXPECTED_RELEASE_MEDIA_INVENTORY = tuple(
+    projection.output for projection in PROJECTIONS
+) + tuple(recipe.output for recipe in POLICY_CARD_RECIPES)
+
+
 def _is_sha256(value: object) -> bool:
     return (
         isinstance(value, str)

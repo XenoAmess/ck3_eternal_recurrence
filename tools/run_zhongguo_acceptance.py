@@ -187,6 +187,11 @@ SCOREBOARD_TITLE_CLOSE_BUTTON = (0.778, 0.167)
 SCOREBOARD_BACKDROP_POINT = (0.050, 0.500)
 SCOREBOARD_ROW_NAME_REGION = (0.30, 0.33, 0.45, 0.76)
 CHARACTER_WINDOW_NAME_REGION = (0.00, 0.05, 0.38, 0.80)
+# CK3's native character sidebar is 610 GUI units wide.  In the pinned
+# 2560x1440 acceptance profile its inherited window-control close glyph is
+# centered at about (592, 20).  Escape does not close this sidebar reliably,
+# so the row-link audit uses the product-native title-bar control directly.
+CHARACTER_WINDOW_CLOSE_BUTTON = (0.231, 0.014)
 SCOREBOARD_GENERATED_ROW_LINKS = 160
 
 
@@ -1773,14 +1778,19 @@ def wait_for_representative_character_view(
 
 def close_representative_character_view(
     artifacts: Path, stem: str, name_probe: str
-) -> int:
-    """Restore a clean map after the row-link probe, tolerating one tooltip Escape."""
+) -> dict[str, object]:
+    """Restore a clean map through the native character title-bar close control."""
 
     width, height = acceptance.pyautogui.size()
-    acceptance.pyautogui.moveTo(int(width * 0.80), int(height * 0.50), duration=0.2)
-    for attempt in range(1, 4):
+    close_point = (
+        int(width * CHARACTER_WINDOW_CLOSE_BUTTON[0]),
+        int(height * CHARACTER_WINDOW_CLOSE_BUTTON[1]),
+    )
+    for attempt in range(1, 3):
         acceptance.focus_ck3()
-        acceptance.pyautogui.press("escape")
+        acceptance.deliberate_click(
+            close_point, "native character title-bar close button"
+        )
         deadline = time.monotonic() + 3.0
         absent_hits = 0
         last_image = None
@@ -1795,7 +1805,12 @@ def close_representative_character_view(
             absent_hits = absent_hits + 1 if visible is None else 0
             if absent_hits >= 2:
                 last_image.save(artifacts / f"{stem}_character_closed.png")
-                return attempt
+                return {
+                    "method": "title_bar_close",
+                    "attempts": attempt,
+                    "point_px": list(close_point),
+                    "point_normalized": list(CHARACTER_WINDOW_CLOSE_BUTTON),
+                }
             time.sleep(acceptance.POLL_INTERVAL_S)
     if last_image is not None:
         last_image.save(artifacts / f"red_{stem}_character_still_open.png")
@@ -1872,7 +1887,7 @@ def audit_scoreboard_controls(artifacts: Path) -> dict[str, object]:
         source_row,
         name_probe,
     )
-    cleanup_escape_attempts = close_representative_character_view(
+    cleanup = close_representative_character_view(
         artifacts, "08_gui_audit_row_link", name_probe
     )
     row_reopen_button = acceptance.wait_for_ocr_text(
@@ -1920,7 +1935,7 @@ def audit_scoreboard_controls(artifacts: Path) -> dict[str, object]:
             "character_name_center_px": list(character_name_center),
             "artifact": "08_gui_audit_row_link_character_open.png",
             "reopened_artifact": "08_gui_audit_row_link_reopen.png",
-            "cleanup_escape_attempts": cleanup_escape_attempts,
+            "cleanup": cleanup,
         },
         "row_link_coverage": {
             "generated_total": SCOREBOARD_GENERATED_ROW_LINKS,

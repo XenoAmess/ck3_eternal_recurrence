@@ -113,6 +113,22 @@ def main() -> int:
         "representative generated scoreboard row"
     )
 
+    close_character = re.search(
+        r"def close_representative_character_view\(.*?(?=^def )",
+        runner,
+        re.M | re.S,
+    )
+    assert close_character is not None
+    close_character_body = close_character.group(0)
+    for token in (
+        "CHARACTER_WINDOW_CLOSE_BUTTON",
+        "native character title-bar close button",
+        '"method": "title_bar_close"',
+        "absent_hits >= 2",
+    ):
+        assert token in close_character_body, token
+    assert 'pyautogui.press("escape")' not in close_character_body
+
     close_drawer = re.search(
         r"def close_native_decisions_panel\(.*?(?=^def )", runner, re.M | re.S
     )
@@ -300,6 +316,10 @@ def main() -> int:
     assert int(panel_close_x * 2560) == 1991
     assert int(panel_close_y * 1440) == 240
     assert capture.SCOREBOARD_BACKDROP_POINT == (0.050, 0.500)
+    assert capture.CHARACTER_WINDOW_CLOSE_BUTTON == (0.231, 0.014)
+    character_close_x, character_close_y = capture.CHARACTER_WINDOW_CLOSE_BUTTON
+    assert int(character_close_x * 2560) == 591
+    assert int(character_close_y * 1440) == 20
     assert capture.SCOREBOARD_GENERATED_ROW_LINKS == 160
     left, top, right, bottom = capture.SCOREBOARD_BUTTON_REGION
     assert left <= 0.924 <= right and top <= 0.101 <= bottom
