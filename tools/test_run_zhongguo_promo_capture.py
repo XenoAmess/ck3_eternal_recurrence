@@ -1726,6 +1726,7 @@ def main() -> int:
     assert "ensure_hud_date_frozen" in interruption
     assert "acceptance.ensure_game_paused" not in interruption
     for token in (
+        "pause_bound_native_event_for_definition_query",
         "query_event_definition_identity",
         'status="blocked_event_definition_identity_unavailable"',
         '"identity_method": "event_definition_key"',
@@ -1736,6 +1737,23 @@ def main() -> int:
         '"repeated_visual_option_after_definition_transition"',
     ):
         assert token in interruption, token
+    assert interruption.index(
+        "pause_bound_native_event_for_definition_query"
+    ) < interruption.index("query_event_definition_identity")
+
+    identity_pause = inspect.getsource(
+        capture.pause_bound_native_event_for_definition_query
+    )
+    for token in (
+        'service.execute_step(\n                "pause-map", expected_revision=starting_revision',
+        'paused.get("paused") is True',
+        'observed["active_event_instance_id"] != starting_event',
+        'observed["date_raw"] != starting_date',
+        'character_id != starting_character_id',
+        '"paused_revision": None',
+        'f"{stem}_prequery_pause_gate.json"',
+    ):
+        assert token in identity_pause, token
 
     pause_by_date = inspect.getsource(capture.ensure_hud_date_frozen)
     for token in (
@@ -1936,20 +1954,52 @@ def main() -> int:
     )
 
     class DefinitionTargetService:
-        def __init__(self, *, available: bool) -> None:
+        def __init__(
+            self,
+            *,
+            available: bool,
+            paused: bool = True,
+            drift_after_pause: str | None = None,
+        ) -> None:
             self.available = available
+            self.paused = paused
+            self.drift_after_pause = drift_after_pause
+            self.revision = 40
+            self.date_raw = 53146848
+            self.event_instance_id = 9
+            self.character_id = 77
             self.query_calls: list[tuple[int, int]] = []
+            self.pause_calls: list[tuple[str, int | None]] = []
 
         def snapshot(self) -> dict[str, object]:
             return {
-                "revision": 40,
-                "native_revision": 39,
-                "date_raw": 53146848,
-                "paused": True,
+                "revision": self.revision,
+                "native_revision": self.revision - 1,
+                "date_raw": self.date_raw,
+                "paused": self.paused,
                 "speed": 1,
-                "active_event": {"instance_id": 9, "option_count": 3},
-                "played_character": {"character_id": 77},
+                "active_event": {
+                    "instance_id": self.event_instance_id,
+                    "option_count": 3,
+                },
+                "played_character": {"character_id": self.character_id},
             }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int | None = None
+        ) -> dict[str, object]:
+            assert step == "pause-map"
+            assert expected_revision == self.revision
+            self.pause_calls.append((step, expected_revision))
+            self.paused = True
+            self.revision += 1
+            if self.drift_after_pause == "date":
+                self.date_raw += 1
+            elif self.drift_after_pause == "event":
+                self.event_instance_id += 1
+            elif self.drift_after_pause == "character":
+                self.character_id += 1
+            return {"step": step, "accepted": True, "status": "submitted"}
 
         def query_current_event_window_context_v1(
             self, event_instance_id: int, *, expected_revision: int
@@ -1976,7 +2026,7 @@ def main() -> int:
     policy_020_image = FakeDesktopImage(policy_020_ocr_items)
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
-        target_service = DefinitionTargetService(available=True)
+        target_service = DefinitionTargetService(available=True, paused=False)
         with (
             mock.patch.object(capture.acceptance, "focus_ck3"),
             mock.patch.object(
@@ -2009,7 +2059,19 @@ def main() -> int:
             )
         click.assert_not_called()
         assert target_dismissed == []
-        assert target_service.query_calls == [(9, 40)]
+        assert target_service.pause_calls == [("pause-map", 40)]
+        assert target_service.query_calls == [(9, 41)]
+        prequery_pause_gate = json.loads(
+            (
+                artifacts
+                / "mock_policy_020_ocr_drift_event_definition_identity_prequery_pause_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert prequery_pause_gate["result"] == "GREEN"
+        assert prequery_pause_gate["paused_revision"] == 41
+        assert prequery_pause_gate["event_instance_stable"] is True
+        assert prequery_pause_gate["date_stable"] is True
+        assert prequery_pause_gate["played_character_stable"] is True
         assert (
             artifacts / "mock_policy_020_ocr_drift_target_event_visible.png"
         ).is_file()
@@ -2023,6 +2085,27 @@ def main() -> int:
         assert target_gate["visual_title_match"] is False
         assert target_gate["expected_event_definition_key"] == "zg361m.20"
         assert target_gate["observed_event_definition_key"] == "zg361m.20"
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        already_paused_service = DefinitionTargetService(available=True)
+        already_paused_gate = (
+            capture.pause_bound_native_event_for_definition_query(
+                already_paused_service,
+                artifacts,
+                stem="mock_policy_020_already_paused",
+            )
+        )
+        already_paused_identity = capture.query_event_definition_identity(
+            already_paused_service,
+            already_paused_gate["snapshot"],
+        )
+        assert already_paused_service.pause_calls == []
+        assert already_paused_service.query_calls == [(9, 40)]
+        assert already_paused_identity["event_definition_key"] == "zg361m.20"
+        assert already_paused_gate["evidence"]["pause_submission"][
+            "status"
+        ] == "not_needed_already_paused"
 
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
@@ -2063,6 +2146,7 @@ def main() -> int:
             else:
                 raise AssertionError("unavailable event identity did not fail closed")
         click.assert_not_called()
+        assert unavailable_service.pause_calls == []
         assert unavailable_service.query_calls == [(9, 40)]
         unavailable_gate = json.loads(
             (
@@ -2080,6 +2164,60 @@ def main() -> int:
         assert unavailable_decision["status"] == (
             "blocked_event_definition_identity_unavailable"
         )
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        drifting_service = DefinitionTargetService(
+            available=True,
+            paused=False,
+            drift_after_pause="date",
+        )
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                return_value=policy_020_image,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            try:
+                capture.settle_promo_interruptions(
+                    artifacts,
+                    "mock_policy_020_pause_drift",
+                    observation_s=0.0,
+                    stop_event_title="晋升包与跨部门答辩",
+                    stop_event_definition_key="zg361m.20",
+                    native_event_service=drifting_service,
+                )
+            except capture.acceptance.RunnerError as exc:
+                assert "could not identify the expected promo event" in str(exc)
+            else:
+                raise AssertionError("pause context drift did not fail closed")
+        click.assert_not_called()
+        assert drifting_service.pause_calls == [("pause-map", 40)]
+        assert drifting_service.query_calls == []
+        drift_gate = json.loads(
+            (
+                artifacts
+                / "mock_policy_020_pause_drift_event_definition_identity_prequery_pause_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert drift_gate["result"] == "RED"
+        assert "date changed" in drift_gate["failure_reason"]
 
     class NativeVisualDefinitionService:
         def __init__(self) -> None:
@@ -2101,8 +2239,17 @@ def main() -> int:
                 "played_character": {"character_id": 77},
             }
 
-        def execute_step(self, step: str) -> dict[str, object]:
+        def execute_step(
+            self, step: str, *, expected_revision: int | None = None
+        ) -> dict[str, object]:
+            if step == "pause-map":
+                assert expected_revision == self.revision
+                self.steps.append(step)
+                self.paused = True
+                self.revision += 1
+                return {"step": step, "accepted": True, "status": "submitted"}
             assert step == "set-speed-1"
+            assert expected_revision is None
             self.steps.append(step)
             self.speed = 1
             self.revision += 1
@@ -2199,7 +2346,7 @@ def main() -> int:
                 native_event_service=visual_service,
             )
         assert visual_desktop.clicks == [(936, 1043)]
-        assert visual_service.steps == ["set-speed-1"]
+        assert visual_service.steps == ["pause-map", "set-speed-1"]
         assert len(native_visual_dismissed) == 1
         native_visual_row = native_visual_dismissed[0]
         assert native_visual_row["selection_method"] == (
@@ -2214,9 +2361,9 @@ def main() -> int:
         assert native_visual_gate["definition_transition_seen_same_date"] is True
         assert native_visual_gate["observed_successor_event_key"] == "vanilla.101"
         assert visual_service.query_calls == [
-            (9, 50, "vanilla.100"),
             (9, 51, "vanilla.100"),
-            (9, 52, "vanilla.101"),
+            (9, 52, "vanilla.100"),
+            (9, 53, "vanilla.101"),
         ]
 
     with tempfile.TemporaryDirectory() as temporary:

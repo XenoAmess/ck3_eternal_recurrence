@@ -103,7 +103,15 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**：政策 preemption 调用会把预期 canonical key `zg361m.N` 与原生 service 一并传入；runner 用当前 snapshot 的 active instance 和 public revision 调用 `current_event_window_context_v1`。只有顶层可见 modal 的 canonical key 等于目标 key 才保存目标帧并停止清理，MCP unavailable、identity readiness 不足或视觉标题与 canonical 身份冲突均 fail-closed。真正需要清理的中断会先原生降至一速，再以同日 instance/definition 转场和连续冻结为权威后置门；重复选项文字只保留为诊断，不再决定成功。定向回归覆盖本局真实 OCR“第020号普升包与跨部门答辩”、目标零点击、MCP unavailable RED、同 ID `zg361m.20 → zg361m.22`、同文同位后继和 revision 绑定；Python 编译、宣传 runner 合同测试、`git diff --check` 与 exact-build promo preflight 均 GREEN。下一步只运行一次新的完整合批实机，不重复审计此前已闭合链路。
 
-## 9. 环境与证据边界
+## 9. 第十次完整 attempt：政策身份查询早于原生暂停
+
+第十次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0723_current_385e557_mcp` 第十次实机取得宋帝 23 人严格 `7 / 14 / 2`，结算前后的离散人数、末位名额和实际末位行全部一致。该局再次通过 361/361 机制账本与幂等性、AI 非独立天朝公爵考核、考核榜按钮和 GUI 阻塞矩阵、制度驾驶舱、京察强制弹窗与免费规划器、D+90、拒办处罚、新人保护、史实上司告身中的本人 `3.25` 及本人所属考核榜；`project_diagnostics = []`。因此产品当前没有新增 RED。
+
+本局在政策卡 #001 已经肉眼可见时结束为 **harness RED**。`cell/12_policy_001_preemption_event_definition_identity_unavailable_gate.json` 记录 `BridgeUnavailableError: event-window queries require a paused CK3 snapshot`。根因是 classic event modal 会阻止地图时间继续走，但公开 native snapshot 的普通 `paused` 字段仍可为 `false`；旧 runner 在取得真正 `paused=true` 的 snapshot 前便调用 paused-only 的 `current_event_window_context_v1`。桥按合同拒绝查询是正确行为，不是事件身份能力缺失，也不是政策卡产品失败。
+
+针对性修复现为 **static-ready**：可见事件需要 canonical 身份时，runner 先绑定 active event instance、`date_raw`、played character 和起始 public revision；若尚未普通暂停，以该 revision 提交原生 `pause-map`，逐帧要求事件、日期和角色不变，取得 `paused=true` 的新 public revision 后才查询 `event_definition_key`。目标卡仍然零点击；暂停 ACK 拒绝、等待超时、上下文漂移或 identity unavailable 均 fail-closed，并先写 `*_prequery_pause_gate.json`。定向回归覆盖运行中 modal 的 `revision 40 → pause-map → paused revision 41 → identity query`、already-paused 快路径、暂停时日期漂移、MCP unavailable、真实 #020 OCR 漂移及同文同位后继；Python 编译、宣传 runner 合同测试、`git diff --check` 和精确构建 preflight 均 GREEN。下一步直接运行第十一次完整合批实机，不再重审此前已闭合链路。
+
+## 10. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。

@@ -3500,6 +3500,164 @@ def query_event_definition_identity(
     }
 
 
+def pause_bound_native_event_for_definition_query(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    stem: str,
+) -> dict[str, object]:
+    """Freeze one visible event before issuing a paused-only identity query."""
+
+    starting = service.snapshot()
+    starting_observation = _personal_switch_native_snapshot(starting)
+    starting_event = starting_observation["active_event_instance_id"]
+    starting_date = starting_observation["date_raw"]
+    starting_revision = starting.get("revision")
+    starting_character = starting.get("played_character")
+    starting_character_id = (
+        starting_character.get("character_id")
+        if isinstance(starting_character, dict)
+        else None
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "starting_observation": starting_observation,
+        "starting_character_id": starting_character_id,
+        "pause_submission": None,
+        "pause_observations": [],
+        "paused_revision": None,
+        "event_instance_stable": False,
+        "date_stable": False,
+        "played_character_stable": False,
+        "failure_reason": None,
+    }
+    evidence_path = artifacts / f"{stem}_prequery_pause_gate.json"
+
+    def fail(reason: str) -> None:
+        evidence["failure_reason"] = reason
+        write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(reason)
+
+    if isinstance(starting_event, bool) or not isinstance(starting_event, int):
+        fail("native event-definition pause gate lacks an active event instance")
+    if isinstance(starting_date, bool) or not isinstance(starting_date, int):
+        fail("native event-definition pause gate lacks date_raw")
+    if (
+        isinstance(starting_character_id, bool)
+        or not isinstance(starting_character_id, int)
+    ):
+        fail("native event-definition pause gate lacks a played character")
+    if (
+        isinstance(starting_revision, bool)
+        or not isinstance(starting_revision, int)
+        or starting_revision < 0
+    ):
+        fail("native event-definition pause gate lacks a public revision")
+    if (
+        starting.get("paused") is not True
+        and starting.get("paused") is not False
+    ):
+        fail("native event-definition pause gate lacks paused state")
+
+    paused = starting
+    if starting.get("paused") is not True:
+        try:
+            pause_submission = service.execute_step(
+                "pause-map", expected_revision=starting_revision
+            )
+        except Exception as error:
+            fail(
+                "native pause-map submission failed before event-definition query: "
+                f"{type(error).__name__}: {error}"
+            )
+        evidence["pause_submission"] = pause_submission
+        if not (
+            isinstance(pause_submission, dict)
+            and pause_submission.get("accepted") is True
+            and pause_submission.get("status") == "submitted"
+        ):
+            fail("native pause-map was not accepted before event-definition query")
+
+        pause_deadline = time.monotonic() + 5.0
+        while time.monotonic() < pause_deadline:
+            paused = service.snapshot()
+            observed = _personal_switch_native_snapshot(paused)
+            character = paused.get("played_character")
+            character_id = (
+                character.get("character_id")
+                if isinstance(character, dict)
+                else None
+            )
+            observation = {
+                **observed,
+                "played_character_id": character_id,
+            }
+            evidence["pause_observations"].append(observation)
+            if observed["active_event_instance_id"] != starting_event:
+                fail("active event changed before event-definition query pause")
+            if observed["date_raw"] != starting_date:
+                fail("game date changed before event-definition query pause")
+            if character_id != starting_character_id:
+                fail("played character changed before event-definition query pause")
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.05)
+        if paused.get("paused") is not True:
+            fail("native MCP did not pause the visible event before identity query")
+    else:
+        evidence["pause_submission"] = {
+            "step": "pause-map",
+            "accepted": True,
+            "status": "not_needed_already_paused",
+        }
+        evidence["pause_observations"].append(
+            {
+                **starting_observation,
+                "played_character_id": starting_character_id,
+            }
+        )
+
+    paused_observation = _personal_switch_native_snapshot(paused)
+    paused_character = paused.get("played_character")
+    paused_character_id = (
+        paused_character.get("character_id")
+        if isinstance(paused_character, dict)
+        else None
+    )
+    paused_revision = paused.get("revision")
+    evidence["paused_revision"] = paused_revision
+    evidence["event_instance_stable"] = (
+        paused_observation["active_event_instance_id"] == starting_event
+    )
+    evidence["date_stable"] = paused_observation["date_raw"] == starting_date
+    evidence["played_character_stable"] = (
+        paused_character_id == starting_character_id
+    )
+    if paused.get("paused") is not True:
+        fail("event-definition query snapshot is not paused")
+    if not evidence["event_instance_stable"]:
+        fail("active event changed before the paused identity query")
+    if not evidence["date_stable"]:
+        fail("game date changed before the paused identity query")
+    if not evidence["played_character_stable"]:
+        fail("played character changed before the paused identity query")
+    if (
+        isinstance(paused_revision, bool)
+        or not isinstance(paused_revision, int)
+        or paused_revision < 0
+    ):
+        fail("paused event-definition query snapshot lacks a public revision")
+
+    evidence["result"] = "GREEN"
+    evidence["failure_reason"] = None
+    write_json(evidence_path, evidence)
+    return {
+        "snapshot": paused,
+        "evidence": evidence,
+    }
+
+
 def select_single_option_interruption_native(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -4491,9 +4649,14 @@ def settle_promo_interruptions(
             event_modal_visible or visual_stop_match
         ):
             try:
+                pause_gate = pause_bound_native_event_for_definition_query(
+                    native_event_service,
+                    artifacts,
+                    stem=f"{stem}_event_definition_identity",
+                )
                 native_identity = query_event_definition_identity(
                     native_event_service,
-                    native_event_service.snapshot(),
+                    pause_gate["snapshot"],
                 )
             except Exception as error:
                 native_identity_error = f"{type(error).__name__}: {error}"

@@ -93,6 +93,7 @@
 - 片场主体的史实身份真实，不代表其原版健康适合约百日的确定性验收时间线。2026-08-30 05:56 attempt 中赵曙的原版 `health = 2` 被三个各 `-0.5` 的史实特质压到约 `0.5`，而原版低于 `3.0` 即参加每月自然死亡检查；他在 1066-11-16 真实死亡并触发继承屏。不得把“继续扮演继承人”当成恢复，也不得靠反复重开赌随机数。若宣传合同必须保留这一真实角色，最小可接受方案是仅在外部 fixture 添加有明确期限、带本地化、可由日志断言的健康修正，并在角色切换前同帧移除；产品/release 不得包含它，异常路径还必须靠短期自动到期回收。
 - `active_event.instance_id` 是窗口投影 ID，不能假定为事件定义或生命周期 ID。2026-08-30 06:25 attempt 中政策卡 `zg361m.1` 提交后立即换成 `zg361.6` 末位淘汰事件，两个画面却都发布 instance `7`、option count `4`；通用 revision 又同时受变速、点击和暂停命令影响，三者都不能证明 definition 转场。正确门禁是先用原生 MCP 同日冻结，再在 ID 未变时读取 `current_event_window_context_v1.event_definition_key`；只有 canonical key 离开调用方声明的前序定义才算转场。查询不可用、定义未变、日期或角色漂移都必须 RED，OCR 只用于诊断和选择已明确批准的可见选项。
 - 事件标题 OCR 和“被点文字消失”都不能充当事件身份。2026-08-30 06:51 attempt 中 RapidOCR 把第020号标题的“晋升包”读成“普升包”，runner 因而误把目标卡当中断；点击后产品已切至第022号，但两张卡共用同文同位的 C 选项“这季度先不碰，登记制度债”，旧门仍误判为原事件未关。政策 preemption 必须在点击前用 snapshot-bound `current_event_window_context_v1.event_definition_key = zg361m.N` 识别目标；若确需清理前置中断，点击后仍以同日 instance 变化或 canonical definition 变化收口。OCR 标题漂移、重复按钮文案和坐标只能写进诊断 sidecar，不得放行或否决转场；MCP identity 不可用时 fail-closed。
+- “事件 modal 正在停表”不等于 MCP 已拥有可查询 event-window 的普通暂停帧。2026-08-30 07:23 attempt 中政策卡 #001 已稳定可见，但 public snapshot 仍为 `paused=false`，因此 paused-only `current_event_window_context_v1` 正确返回 unavailable。身份查询的固定顺序必须是：绑定 active instance、`date_raw`、played character 与起始 public revision → 用该 revision 提交 `pause-map` → 逐帧反证三项上下文未漂移并取得 `paused=true` → 用暂停帧的新 public revision 查询 canonical key。不得先查询再按错误字符串补救，也不得退回 OCR；任何暂停 ACK 拒绝、超时或上下文漂移都应在零点击状态下 RED，并保存 prequery pause sidecar。
 
 ## 6. 宣传片片场纪律
 
