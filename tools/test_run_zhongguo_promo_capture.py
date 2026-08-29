@@ -1184,9 +1184,9 @@ def main() -> int:
     assert 'stop_event_title="京察之期"' in jingcha_body
     assert "PROMO_EVENT_TITLE_REGION" in jingcha_body
     assert "pause_after_jingcha_host_click" in jingcha_body
-    assert 'acceptance.pyautogui.press("1")' in jingcha_body
+    assert 'pause_service.execute_step("set-speed-1")' in jingcha_body
     assert jingcha_body.index(
-        'acceptance.pyautogui.press("1")'
+        'pause_service.execute_step("set-speed-1")'
     ) < jingcha_body.index(
         'acceptance.deliberate_click(host_option, "production host Jingcha option")'
     )
@@ -1204,12 +1204,11 @@ def main() -> int:
 
     host_pause = inspect.getsource(capture.pause_after_jingcha_host_click)
     for token in (
-        'acceptance.pyautogui.press("space")',
-        "time.sleep(0.35)",
+        'service.execute_step("pause-map")',
+        "service.snapshot()",
         "acceptance.read_hud_game_date",
-        "date_freeze_probe",
-        "len(set(observations[-3:])) == 1",
-        "timeline pause after Jingcha host option",
+        "native_pause_observations",
+        "played_character_stable",
         "stream.pump()",
         "PERSONAL_SWITCH_SCHEDULED_MARKER",
         "paused_day >= due_day",
@@ -1217,10 +1216,12 @@ def main() -> int:
         '"pause_completed_before_personal_switch_due": paused_day < due_day',
         '"paused_within_two_days": 0 <= pause_delta_days <= 2',
         '"last_three_dates_identical": frozen',
+        '"pause_method": "native_mcp_pause_map"',
         '"09_jingcha_host_immediate_pause_gate.json"',
     ):
         assert token in host_pause, token
     assert "acceptance.ensure_game_paused" not in host_pause
+    assert "pyautogui" not in host_pause
     assert capture.JINGCHA_PERSONAL_SWITCH_DELAY_DAYS == 90
 
     interruption = inspect.getsource(capture.settle_promo_interruptions)
@@ -1288,57 +1289,68 @@ def main() -> int:
             assert marker == capture.PERSONAL_SWITCH_SCHEDULED_MARKER
             return 0
 
-    # Model the live failure mode: Space is swallowed by the post-option
-    # transition and even speed one can advance dozens of dates while the
-    # four-frame freeze probe runs.  The meaningful safety boundary is the
-    # fixture's D+90 personal-switch carrier, not an arbitrary D+2 limit.
-    slow_then_frozen = iter((1011, 1034, 1044, 1044, 1044, 1044, 1044, 1044))
-    action_order: list[tuple[str, object]] = []
+    class NativePauseService:
+        def __init__(self) -> None:
+            self.steps: list[str] = []
+            self.snapshots = iter(
+                (
+                    {"revision": 2, "native_revision": 2, "date_raw": 24000, "paused": True, "active_event": {"instance_id": 77}, "played_character": {"character_id": 901, "alive": True}},
+                    {"revision": 3, "native_revision": 3, "date_raw": 24024, "paused": False, "active_event": None, "played_character": {"character_id": 901, "alive": True}},
+                    {"revision": 4, "native_revision": 4, "date_raw": 24024, "paused": False, "active_event": None, "played_character": {"character_id": 901, "alive": True}},
+                    {"revision": 5, "native_revision": 5, "date_raw": 24024, "paused": True, "active_event": None, "played_character": {"character_id": 901, "alive": True}},
+                    {"revision": 5, "native_revision": 5, "date_raw": 24024, "paused": True, "active_event": None, "played_character": {"character_id": 901, "alive": True}},
+                    {"revision": 5, "native_revision": 5, "date_raw": 24024, "paused": True, "active_event": None, "played_character": {"character_id": 901, "alive": True}},
+                )
+            )
+
+        def snapshot(self) -> dict[str, object]:
+            return next(self.snapshots)
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            self.steps.append(step)
+            return {"accepted": True, "step": step, "backend_id": "native-headless"}
+
+    pause_service = NativePauseService()
+    pre_click_snapshot = {
+        "revision": 1,
+        "native_revision": 1,
+        "date_raw": 24000,
+        "paused": True,
+        "active_event": {"instance_id": 77},
+        "played_character": {"character_id": 901, "alive": True},
+    }
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
         with (
             mock.patch.object(
                 capture.acceptance.ImageGrab,
                 "grab",
-                side_effect=[FakeImage() for _ in range(8)],
+                return_value=FakeImage(),
             ),
             mock.patch.object(
                 capture.acceptance,
                 "read_hud_game_date",
-                side_effect=lambda _image: (next(slow_then_frozen), (0, 0)),
+                return_value=(1001, (0, 0)),
             ),
-            mock.patch.object(
-                capture.acceptance.pyautogui, "size", return_value=(2560, 1440)
-            ),
-            mock.patch.object(
-                capture.acceptance.pyautogui,
-                "press",
-                side_effect=lambda key: action_order.append(("press", key)),
-            ),
-            mock.patch.object(
-                capture.acceptance,
-                "deliberate_click",
-                side_effect=lambda _point, label: action_order.append(("click", label)),
-            ) as click,
-            mock.patch.object(
-                capture.time,
-                "sleep",
-                side_effect=lambda seconds: action_order.append(("sleep", seconds)),
-            ),
+            mock.patch.object(capture.time, "sleep"),
         ):
             pause_gate = capture.pause_after_jingcha_host_click(
-                NoPersonalSwitchStream(), artifacts, mandate_day=1000
+                pause_service,
+                NoPersonalSwitchStream(),
+                artifacts,
+                mandate_day=1000,
+                pre_click_snapshot=pre_click_snapshot,
             )
-        click.assert_called_once()
-        assert action_order[0] == ("sleep", 0.35)
-        assert action_order[1] == ("press", "space")
+        assert pause_service.steps == ["pause-map"]
         assert pause_gate["result"] == "GREEN"
         assert pause_gate["personal_switch_due_day_ordinal"] == 1090
-        assert pause_gate["paused_day_ordinal"] == 1044
-        assert pause_gate["pause_delta_days"] == 44
-        assert pause_gate["paused_within_two_days"] is False
+        assert pause_gate["paused_day_ordinal"] == 1001
+        assert pause_gate["pause_delta_days"] == 1
+        assert pause_gate["paused_within_two_days"] is True
         assert pause_gate["pause_completed_before_personal_switch_due"] is True
         assert pause_gate["personal_switch_marker_count"] == 0
+        assert pause_gate["played_character_stable"] is True
+        assert pause_gate["pause_method"] == "native_mcp_pause_map"
         assert (artifacts / "09_jingcha_host_immediate_pause_gate.json").is_file()
 
     def event_item(

@@ -3057,70 +3057,129 @@ def ensure_hud_date_frozen(
 
 
 def pause_after_jingcha_host_click(
+    service: GameplayBridgeService,
     stream: MarkerStream,
     artifacts: Path,
     mandate_day: int,
+    pre_click_snapshot: dict[str, object],
 ) -> dict[str, object]:
-    """Stop the restored speed-five clock before the delayed switch can race."""
+    """Use the already-connected native MCP to stop the restored game clock."""
 
-    # The mandate event interrupted a running timeline.  The option click has a
-    # short transition during which a keyboard event can be swallowed, so give
-    # the event window one bounded render interval before sending Space.  The
-    # caller has already armed speed one; even if that best-effort key is not
-    # retained across the event transition, the fixture's same-year D+90
-    # carrier leaves the bounded date proof room to recover. Activity UI
-    # can cover CK3's rendered "paused" label, so prove the freeze from three
-    # consecutive HUD dates instead of relying on it.
-    time.sleep(0.35)
-    acceptance.pyautogui.press("space")
-
-    def date_freeze_probe(label: str) -> tuple[bool, list[int], object]:
-        observations: list[int] = []
-        last_image = None
-        for index in range(4):
-            last_image = acceptance.ImageGrab.grab()
-            date = acceptance.read_hud_game_date(last_image)
-            if date is None:
-                last_image.save(
-                    artifacts / f"09_jingcha_host_{label}_date_unreadable.png"
-                )
-                raise acceptance.RunnerError(
-                    "Jingcha host HUD date became unreadable during freeze proof"
-                )
-            observations.append(date[0])
-            if index < 3:
-                time.sleep(0.8)
-        return len(set(observations[-3:])) == 1, observations, last_image
-
-    frozen, observations, paused_image = date_freeze_probe("space")
-    pause_method = "space"
-    if not frozen:
-        width, height = acceptance.pyautogui.size()
-        acceptance.deliberate_click(
-            (
-                int(width * (2315 / 2560)),
-                int(height * (1410 / 1440)),
-            ),
-            "timeline pause after Jingcha host option",
+    def event_instance_id(snapshot: dict[str, object]) -> int | None:
+        active_event = snapshot.get("active_event")
+        instance_id = (
+            active_event.get("instance_id")
+            if isinstance(active_event, dict)
+            else None
         )
-        frozen, click_observations, paused_image = date_freeze_probe(
-            "timeline_click"
+        return (
+            instance_id
+            if isinstance(instance_id, int) and not isinstance(instance_id, bool)
+            else None
         )
-        observations.extend(click_observations)
-        pause_method = "timeline_click"
-    if not frozen:
-        paused_image.save(artifacts / "red_09_jingcha_host_date_not_frozen.png")
+
+    def played_character(snapshot: dict[str, object]) -> tuple[int | None, bool | None]:
+        character = snapshot.get("played_character")
+        if not isinstance(character, dict):
+            return None, None
+        character_id = character.get("character_id")
+        return (
+            character_id
+            if isinstance(character_id, int) and not isinstance(character_id, bool)
+            else None,
+            character.get("alive") if isinstance(character.get("alive"), bool) else None,
+        )
+
+    pre_event_id = event_instance_id(pre_click_snapshot)
+    pre_character_id, pre_character_alive = played_character(pre_click_snapshot)
+    transition_observations: list[dict[str, object]] = []
+    transition_deadline = time.monotonic() + 2.0
+    while True:
+        snapshot = service.snapshot()
+        transition_observations.append(
+            {
+                "revision": snapshot.get("revision"),
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": snapshot.get("date_raw"),
+                "paused": snapshot.get("paused"),
+                "active_event_instance_id": event_instance_id(snapshot),
+            }
+        )
+        if (
+            snapshot.get("paused") is False
+            or event_instance_id(snapshot) != pre_event_id
+            or time.monotonic() >= transition_deadline
+        ):
+            break
+        time.sleep(0.05)
+
+    pause_submission = service.execute_step("pause-map")
+    pause_observations: list[dict[str, object]] = []
+    pause_deadline = time.monotonic() + 5.0
+    frozen = False
+    paused_snapshot: dict[str, object] = {}
+    while time.monotonic() < pause_deadline:
+        paused_snapshot = service.snapshot()
+        character_id, character_alive = played_character(paused_snapshot)
+        pause_observations.append(
+            {
+                "revision": paused_snapshot.get("revision"),
+                "native_revision": paused_snapshot.get("native_revision"),
+                "date_raw": paused_snapshot.get("date_raw"),
+                "paused": paused_snapshot.get("paused"),
+                "played_character_id": character_id,
+                "played_character_alive": character_alive,
+            }
+        )
+        tail = pause_observations[-3:]
+        frozen = (
+            len(tail) == 3
+            and all(item["paused"] is True for item in tail)
+            and len({item["date_raw"] for item in tail}) == 1
+        )
+        if frozen:
+            break
+        time.sleep(0.1)
+
+    paused_image = acceptance.ImageGrab.grab()
+    post_character_id, post_character_alive = played_character(paused_snapshot)
+    played_character_stable = (
+        pre_character_alive is True
+        and post_character_alive is True
+        and pre_character_id is not None
+        and post_character_id == pre_character_id
+    )
+    if not frozen or not played_character_stable:
+        paused_image.save(artifacts / "red_09_jingcha_host_native_pause.png")
+        evidence = {
+            "schema_version": 2,
+            "result": "RED",
+            "pause_method": "native_mcp_pause_map",
+            "native_transition_observations": transition_observations,
+            "native_pause_submission": pause_submission,
+            "native_pause_observations": pause_observations,
+            "last_three_dates_identical": frozen,
+            "played_character_stable": played_character_stable,
+        }
+        write_json(artifacts / "09_jingcha_host_immediate_pause_gate.json", evidence)
         raise acceptance.RunnerError(
-            f"Jingcha host date did not freeze after pause attempts: {observations}"
+            "native MCP did not freeze Jingcha safely on the same living player"
+        )
+
+    paused_date = acceptance.read_hud_game_date(paused_image)
+    if paused_date is None:
+        paused_image.save(artifacts / "09_jingcha_host_native_date_unreadable.png")
+        raise acceptance.RunnerError(
+            "Jingcha host HUD date is unreadable after native MCP pause"
         )
     paused_image.save(artifacts / "09_jingcha_host_immediate_pause_verified.png")
-    paused_day = observations[-1]
+    paused_day = paused_date[0]
     due_day = mandate_day + JINGCHA_PERSONAL_SWITCH_DELAY_DAYS
     pause_delta_days = paused_day - mandate_day
     stream.pump()
     personal_switch_marker_count = stream.count(PERSONAL_SWITCH_SCHEDULED_MARKER)
     evidence = {
-        "schema_version": 1,
+        "schema_version": 2,
         "result": "GREEN",
         "mandate_day_ordinal": mandate_day,
         "personal_switch_due_day_ordinal": due_day,
@@ -3128,9 +3187,13 @@ def pause_after_jingcha_host_click(
         "pause_delta_days": pause_delta_days,
         "paused_within_two_days": 0 <= pause_delta_days <= 2,
         "pause_completed_before_personal_switch_due": paused_day < due_day,
-        "pause_method": pause_method,
-        "date_observations": observations,
+        "pause_method": "native_mcp_pause_map",
+        "date_observations": [paused_day],
+        "native_transition_observations": transition_observations,
+        "native_pause_submission": pause_submission,
+        "native_pause_observations": pause_observations,
         "last_three_dates_identical": frozen,
+        "played_character_stable": played_character_stable,
         "date_before_due": paused_day < due_day,
         "personal_switch_marker_count": personal_switch_marker_count,
     }
@@ -3199,6 +3262,8 @@ def capture_jingcha_planner(
     stream: MarkerStream,
     artifacts: Path,
     recorder: PromoRecorder | None = None,
+    *,
+    pause_service: GameplayBridgeService,
 ) -> dict[str, object]:
     close_scoreboard_panel(artifacts, "09_jingcha")
     stream.wait("ZGA: TEST PASS clean_jingcha_dispatch_scheduled", 30)
@@ -3242,15 +3307,21 @@ def capture_jingcha_planner(
             "Jingcha mandate HUD date is unreadable before accepting the host option"
         )
     mandate_day = mandate_date[0]
-    # Event options use Shift+number shortcuts, leaving the plain number keys
-    # available for native timeline speeds.  Arm speed one before closing the
-    # modal so its restored clock cannot outrun the post-click pause proof.
-    acceptance.pyautogui.press("1")
-    time.sleep(0.35)
+    # Arm speed one through the same exact-build native bridge used by the MCP
+    # title matrix.  Keyboard and OCR latency must not advance weeks of game
+    # time or expose the real historical player to an unrelated death roll.
+    speed_one_submission = pause_service.execute_step("set-speed-1")
+    pre_click_snapshot = pause_service.snapshot()
     acceptance.deliberate_click(host_option, "production host Jingcha option")
     host_pause_evidence = pause_after_jingcha_host_click(
-        stream, artifacts, mandate_day
+        pause_service,
+        stream,
+        artifacts,
+        mandate_day,
+        pre_click_snapshot,
     )
+    host_pause_evidence["native_speed_one_submission"] = speed_one_submission
+    write_json(artifacts / "09_jingcha_host_immediate_pause_gate.json", host_pause_evidence)
     plan_button = acceptance.wait_for_ocr_text(
         "规划京察大计",
         acceptance.FULL_SCREEN_REGION,
@@ -3991,7 +4062,12 @@ def run_scenario(
         recorder.hold(2.0)
     choose_direct_publication(stream, artifacts, recorder)
     gui_evidence = capture_scoreboard_gui(artifacts, recorder)
-    jingcha_evidence = capture_jingcha_planner(stream, artifacts, recorder)
+    jingcha_evidence = capture_jingcha_planner(
+        stream,
+        artifacts,
+        recorder,
+        pause_service=title_navigation_service,
+    )
     personal_result_evidence = capture_superior_assigned_result(
         stream, artifacts, recorder
     )
