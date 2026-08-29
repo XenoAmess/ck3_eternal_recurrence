@@ -3,9 +3,9 @@
 
 [b]欢迎参加今年京察。你的 C 已经在路上了。[/b]
 
-把中国互联网公司的 361 绩效文化，翻译成 CK3 天朝官场玩法：30% 的 3.75、60% 的 3.5、10% 的 3.25；
-有强制分布、背靠背互评、校准会、PIP、末位、晋升包、HC/编制、OKR/KPI、向上管理、跨部门抢功和绩效申诉。
-常规成熟队列执行 30/60/10；首轮新人受 3.25 保护；只有一至两人的直属小组仍会稳定排名、全员按 3.5 正常结算，只是不启用强制分布、校准或末位，因此个别榜单会依法缺档。
+把中国互联网公司的 361 绩效文化翻译成 CK3 天朝官场：现版本已落地逐级考核、30/60/10 强制分布、校准、
+考核榜、京察、告身、3.25/PIP/末位后果与申诉。首轮新人受 3.25 保护；1–2 人小组仍排名并按 3.5 结算，
+只是不硬凑校准或末位。
 
 Version 0.3.0 · CK3 1.19.0.6
 
@@ -62,21 +62,13 @@ AI 默认履责并后台结算，不占用活动 UI。
 
 [h1]361 条制度，不是 361 个皮肤[/h1]
 
-编号 001–361 的每项机制都有独立政策卡、A/B/C 路线、玩家入口、AI 决策入口、持久选择和组织后果。正常考核逐次抛出
-一张未配置政策卡；也可用“下一项制度”加速建设，或花威望直接采用参考宪章。
+编号 001–361 各有政策卡、A/B/C 路线、玩家/AI 入口和持久选择；正常考核逐次抛出未配置卡，也可加速建设或采用参考宪章。
+这些卡会谈到 OKR、互评、晋升、HC、抢功、技术债、加班和《三六一绩效宪章》，但 0.3.0 交付的是[b]制度配置层[/b]，
+不是 361 套独立领域小游戏。
 
-机制范围包括：
-
-[list]
-[*][b]考核程序[/b]：KPI/OKR、自评、背靠背 360、盲审、校准、背 C、告身、申诉、PIP、末位与诚实缩编。
-[*][b]职业资源[/b]：晋升包、九宫格、双通道、薪酬带、奖金/递延/追索、HC、招聘、外包、内部活水与继任。
-[*][b]办公室与工程政治[/b]：向上管理、越级 CC、抢功甩锅、矩阵汇报、技术债、数据口径、A/B 实验、加班、会议和需求插单。
-[*][b]制度终局[/b]：目标棘轮、截止日套利、事实/配额分离、翻案守恒、经理拒绝硬背 C 与《三六一绩效宪章》。
-[/list]
-
-361 张卡共用 17 类后果 profile，而不是假装成 361 套独立小游戏。所有选择共同推动 14 本组织账：证据可信、互信、
-行政负担、申诉风险、交付、稳定性、技术债、数据质量、倦怠、人才、HC 压力、薪酬债、制度债和预算压力，并回流到
-团队和管理者 KPI。流程越厚不一定交付越快，今晚在线不一定明天稳定。
+选择共用 17 类后果 profile，并写入 14 本组织账：证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、
+数据质量、倦怠、人才、HC 压力、薪酬债、制度债和预算压力；当前只提供组织气候与有限 KPI 回流。独立 HC 槽、
+晋升包案卷、贡献争议和事故时间线等领域状态机属于下一版本预研，不冒充本版已落地。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/180f8065fd9c02a199549d56bbc74a4b3f0d3d7a/mod_zhongguo_style/workshop/media/01_calibration_meeting.jpg[/img]
 [i]校准会：名单就在你手里，锅也在 / Calibration: the list—and the liability—is yours[/i]
@@ -100,12 +92,14 @@ AI 默认履责并后台结算，不占用活动 UI。
 
 [h1]实机证据边界[/h1]
 
-一次 CK3 1.19.0.6 GREEN 合批已让 001–361 每号参考路线在真实引擎中逐号执行，并核对持久状态、14 本组织账与幂等性。这里的 361/361 不冒充 1,083 个 A/B/C 分支都做过人工 UI 点选；自然等待 300 日、跨三年存读档和逐爵位画面矩阵也不在该次实测范围内。
+一次 CK3 1.19.0.6 GREEN 合批已让 001–361 的参考配置逐号执行，并核对持久选择、14 本组织账与幂等性。
+这里的 361/361 不代表 361 个领域状态机或 1,083 个 A/B/C 分支都已实现/手点；长期等待与跨三年存读档也未实测。
 
 [h1]English Summary[/h1]
 
 Eligible celestial duke-or-higher rulers review direct officials; counts and barons are reviewees only. Frozen 30/60/10
-boards drive PIP, promotion, compensation and HC, while 361 tracked policy dilemmas feed fourteen organizational ledgers.
+boards drive the current rating, PIP and appeal loop. The 361 policy cards persist selected routes into fourteen shared
+ledgers with limited KPI feedback; richer HC, promotion and cross-team domain runtimes are future work.
 
 [h1]源码 / Source[/h1]
 
