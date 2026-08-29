@@ -843,6 +843,122 @@ class NativeNamedPipeServer:
                 continue
 
 
+def load_native_driver_state_for_resume(
+    path: Path, pipe_name: str
+) -> dict[str, object] | None:
+    """Read one driver state through the exact cold-consumer contract."""
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    if not isinstance(payload, dict):
+        raise ValueError("driver state must be a JSON object")
+    format_version = payload.get("format_version")
+    if format_version not in (1, _NATIVE_DRIVER_STATE_VERSION):
+        return None
+    if payload.get("pipe_name") != pipe_name:
+        return None
+    persisted_bridge_pid = payload.get("bridge_pid")
+    if (
+        isinstance(persisted_bridge_pid, bool)
+        or not isinstance(persisted_bridge_pid, int)
+        or persisted_bridge_pid <= 0
+    ):
+        raise ValueError("driver state bridge_pid is malformed")
+    character_id = payload.get("episode_character_id")
+    run_id = payload.get("episode_run_id")
+    if character_id is None:
+        if run_id is not None:
+            raise ValueError("driver state has a run without a character")
+    elif (
+        isinstance(character_id, bool)
+        or not isinstance(character_id, int)
+        or not isinstance(run_id, str)
+        or not run_id
+    ):
+        raise ValueError("driver state episode identity is malformed")
+    history = payload.get("command_history")
+    if not isinstance(history, list):
+        raise ValueError("driver state command_history is malformed")
+    for index, row in enumerate(history, start=1):
+        if (
+            not isinstance(row, dict)
+            or row.get("index") != index
+            or not isinstance(row.get("command"), str)
+            or not row.get("command")
+            or not isinstance(row.get("ok"), bool)
+        ):
+            raise ValueError("driver state command history is malformed")
+    # Historical timeline rows only need objective-state detail for an
+    # actually active siege.  Normalize the in-memory copy exactly as the
+    # live consumer does; this helper never writes the source artifact.
+    _compact_war_progress_history_in_place(history)
+    last_checkpoint = payload.get("last_checkpoint")
+    if last_checkpoint is not None and not isinstance(last_checkpoint, dict):
+        raise ValueError("driver state checkpoint is malformed")
+    plural_present = "rollback_war_failures" in payload
+    persisted_plural = payload.get("rollback_war_failures")
+    if plural_present and not isinstance(persisted_plural, list):
+        raise ValueError("driver state rollback_war_failures is malformed")
+    singular_failure = _normalize_rollback_war_failure(
+        payload.get("rollback_war_failure")
+    )
+    rollback_war_failures = _bounded_rollback_war_failures(
+        persisted_plural if plural_present else [singular_failure]
+    )
+    rollback_war_failures = [
+        failure
+        for failure in rollback_war_failures
+        if isinstance(last_checkpoint, dict)
+        and failure.get("checkpoint_sha256") == last_checkpoint.get("sha256")
+        and failure.get("episode_run_id") == run_id
+    ]
+    migration_required = bool(
+        not plural_present
+        and isinstance(last_checkpoint, dict)
+        and isinstance(run_id, str)
+        and run_id
+    )
+    if migration_required and rollback_war_failures:
+        scope_snapshot = _rollback_war_failure_scope_snapshot(
+            rollback_war_failures[0]
+        )
+        completed = _derive_completed_rollback_war_failures(
+            history,
+            checkpoint=last_checkpoint,
+            restored_snapshot=scope_snapshot,
+            episode_run_id=run_id,
+            completed_restore_epoch_limit=(
+                _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT
+            ),
+        )
+        rollback_war_failures = _bounded_rollback_war_failures(
+            rollback_war_failures, completed
+        )
+        migration_required = False
+    managed_restore_transaction = _normalize_managed_restore_transaction(
+        payload.get("managed_restore_transaction"),
+        checkpoint=last_checkpoint,
+        history=history,
+        bridge_pid=persisted_bridge_pid,
+        episode_character_id=character_id,
+        episode_run_id=run_id,
+    )
+    return {
+        "format_version": format_version,
+        "bridge_pid": persisted_bridge_pid,
+        "episode_character_id": character_id,
+        "episode_run_id": run_id,
+        "command_history": copy.deepcopy(history),
+        "last_checkpoint": copy.deepcopy(last_checkpoint),
+        "rollback_war_failure": (
+            copy.deepcopy(rollback_war_failures[0])
+            if rollback_war_failures
+            else None
+        ),
+        "rollback_war_failures": copy.deepcopy(rollback_war_failures),
+        "rollback_war_failures_migration_required": migration_required,
+        "managed_restore_transaction": managed_restore_transaction,
+    }
+
+
 class NativeHeadlessGameplayDriver:
     """Pure native mode: never invokes OCR, keyboard, mouse, or window focus."""
 
@@ -3878,135 +3994,7 @@ class NativeHeadlessGameplayDriver:
         if not path.is_file():
             return None
         try:
-            payload = json.loads(path.read_text(encoding="utf-8-sig"))
-            if not isinstance(payload, dict):
-                raise ValueError("driver state must be a JSON object")
-            format_version = payload.get("format_version")
-            if format_version not in (1, _NATIVE_DRIVER_STATE_VERSION):
-                return None
-            if payload.get("pipe_name") != self.pipe_name:
-                return None
-            persisted_bridge_pid = payload.get("bridge_pid")
-            if (
-                isinstance(persisted_bridge_pid, bool)
-                or not isinstance(persisted_bridge_pid, int)
-                or persisted_bridge_pid <= 0
-            ):
-                raise ValueError("driver state bridge_pid is malformed")
-            character_id = payload.get("episode_character_id")
-            run_id = payload.get("episode_run_id")
-            if character_id is None:
-                if run_id is not None:
-                    raise ValueError("driver state has a run without a character")
-            elif (
-                isinstance(character_id, bool)
-                or not isinstance(character_id, int)
-                or not isinstance(run_id, str)
-                or not run_id
-            ):
-                raise ValueError("driver state episode identity is malformed")
-            history = payload.get("command_history")
-            if not isinstance(history, list):
-                raise ValueError("driver state command_history is malformed")
-            for index, row in enumerate(history, start=1):
-                if (
-                    not isinstance(row, dict)
-                    or row.get("index") != index
-                    or not isinstance(row.get("command"), str)
-                    or not row.get("command")
-                    or not isinstance(row.get("ok"), bool)
-                ):
-                    raise ValueError("driver state command history is malformed")
-            # Historical timeline rows only need objective-state detail for
-            # an actually active siege.  Older builds copied every objective
-            # province (often hundreds of empty rows) into both sides of
-            # every advance.  Compact that legacy payload as it is restored
-            # so the first barrier on an existing long episode immediately
-            # sheds the accumulated fixed cost as well.
-            _compact_war_progress_history_in_place(history)
-            last_checkpoint = payload.get("last_checkpoint")
-            if last_checkpoint is not None and not isinstance(
-                last_checkpoint, dict
-            ):
-                raise ValueError("driver state checkpoint is malformed")
-            plural_present = "rollback_war_failures" in payload
-            persisted_plural = payload.get("rollback_war_failures")
-            if plural_present and not isinstance(persisted_plural, list):
-                raise ValueError(
-                    "driver state rollback_war_failures is malformed"
-                )
-            singular_failure = _normalize_rollback_war_failure(
-                payload.get("rollback_war_failure")
-            )
-            rollback_war_failures = _bounded_rollback_war_failures(
-                persisted_plural if plural_present else [singular_failure]
-            )
-            rollback_war_failures = [
-                failure
-                for failure in rollback_war_failures
-                if isinstance(last_checkpoint, dict)
-                and failure.get("checkpoint_sha256")
-                == last_checkpoint.get("sha256")
-                and failure.get("episode_run_id") == run_id
-            ]
-            migration_required = bool(
-                not plural_present
-                and isinstance(last_checkpoint, dict)
-                and isinstance(run_id, str)
-                and run_id
-            )
-            if migration_required and rollback_war_failures:
-                # A valid v2 singular is the newest seed.  Its exact scope is
-                # enough to inspect any completed restore epochs that still
-                # survive in this compatible state.  Once old factual rows
-                # have already been truncated, this scan cannot reconstruct
-                # them.  It never reaches an arbitrary third-or-older epoch.
-                scope_snapshot = _rollback_war_failure_scope_snapshot(
-                    rollback_war_failures[0]
-                )
-                completed = _derive_completed_rollback_war_failures(
-                    history,
-                    checkpoint=last_checkpoint,
-                    restored_snapshot=scope_snapshot,
-                    episode_run_id=run_id,
-                    completed_restore_epoch_limit=(
-                        _ROLLBACK_WAR_FAILURE_COMPLETED_EPOCH_LIMIT
-                    ),
-                )
-                rollback_war_failures = _bounded_rollback_war_failures(
-                    rollback_war_failures, completed
-                )
-                migration_required = False
-            managed_restore_transaction = (
-                _normalize_managed_restore_transaction(
-                    payload.get("managed_restore_transaction"),
-                    checkpoint=last_checkpoint,
-                    history=history,
-                    bridge_pid=persisted_bridge_pid,
-                    episode_character_id=character_id,
-                    episode_run_id=run_id,
-                )
-            )
-            return {
-                "format_version": format_version,
-                "bridge_pid": persisted_bridge_pid,
-                "episode_character_id": character_id,
-                "episode_run_id": run_id,
-                "command_history": copy.deepcopy(history),
-                "last_checkpoint": copy.deepcopy(last_checkpoint),
-                "rollback_war_failure": (
-                    copy.deepcopy(rollback_war_failures[0])
-                    if rollback_war_failures
-                    else None
-                ),
-                "rollback_war_failures": copy.deepcopy(
-                    rollback_war_failures
-                ),
-                "rollback_war_failures_migration_required": (
-                    migration_required
-                ),
-                "managed_restore_transaction": managed_restore_transaction,
-            }
+            return load_native_driver_state_for_resume(path, self.pipe_name)
         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
             with self._driver_state_lock:
                 self._driver_state_error = (

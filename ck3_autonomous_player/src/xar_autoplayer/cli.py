@@ -273,6 +273,34 @@ def parser() -> argparse.ArgumentParser:
             "default"
         ),
     )
+    one_generation_preflight_parser = commands.add_parser(
+        "native-one-generation-preflight",
+        help=(
+            "verify the prepared profile and exact one-generation resume "
+            "anchor without launching CK3"
+        ),
+    )
+    one_generation_preflight_parser.add_argument(
+        "--expected-character-id",
+        type=int,
+        required=True,
+        help="require the durable episode to belong to this CharacterID",
+    )
+    one_generation_preflight_parser.add_argument(
+        "--expected-episode-run-id",
+        required=True,
+        help="require the durable episode to have this exact run ID",
+    )
+    one_generation_preflight_parser.add_argument(
+        "--expected-checkpoint-sha256",
+        required=True,
+        help="require this exact checkpoint SHA-256",
+    )
+    one_generation_preflight_parser.add_argument(
+        "--expected-driver-state-sha256",
+        required=True,
+        help="require this exact driver-state SHA-256",
+    )
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -348,12 +376,13 @@ def main(argv: list[str] | None = None) -> int:
                 f"{args.command} requires --bridge-mode native-headless; "
                 "use opening-dev-session for hybrid-fallback"
             )
-        configure_native_bridge_launch_environment(
-            args.bridge_mode,
-            pipe_name=args.bridge_pipe,
-            dll_path=args.bridge_dll,
-            injector_path=args.bridge_injector,
-        )
+        if args.command != "native-one-generation-preflight":
+            configure_native_bridge_launch_environment(
+                args.bridge_mode,
+                pipe_name=args.bridge_pipe,
+                dll_path=args.bridge_dll,
+                injector_path=args.bridge_injector,
+            )
         if args.command == "_crash-subject":
             from .crash_probe import run_crash_subject
 
@@ -454,6 +483,23 @@ def main(argv: list[str] | None = None) -> int:
                     args.allow_stationary_objective_hold_sentinel_canary
                 ),
             )
+        elif args.command == "native-one-generation-preflight":
+            from .one_generation_preflight import (
+                native_one_generation_preflight,
+            )
+
+            result = native_one_generation_preflight(
+                spec,
+                pipe_name=args.bridge_pipe,
+                expected_character_id=args.expected_character_id,
+                expected_episode_run_id=args.expected_episode_run_id,
+                expected_checkpoint_sha256=(
+                    args.expected_checkpoint_sha256
+                ),
+                expected_driver_state_sha256=(
+                    args.expected_driver_state_sha256
+                ),
+            )
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy
 
@@ -474,7 +520,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     print(json.dumps(_summary(args.command, result), ensure_ascii=False, indent=2))
     if (
-        args.command in {"native-auto-run", "native-one-generation"}
+        args.command
+        in {
+            "native-auto-run",
+            "native-one-generation",
+            "native-one-generation-preflight",
+        }
         and result.get("ok") is not True
     ):
         return 1
