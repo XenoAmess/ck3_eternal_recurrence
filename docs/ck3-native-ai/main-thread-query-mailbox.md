@@ -1,17 +1,19 @@
-# CK3 1.19.0.6 application-main read-only query mailbox
+# CK3 1.19.0.6 application-main typed mailbox
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has eleven bounded production uses:
+`main_thread_query_mailbox_v1` now has thirteen bounded production uses:
 `query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
 `query-actual-contact-scope-v1-N`, `query-combat-simulation-inputs-v3-N`,
 `query-battle-control-snapshot-v1-N`, `query-battle-transition-v1-N`,
 `query-battle-reinforcement-assignment-v1-N`,
 `query-battle-terminal-transition-v1`,
-`query-campaign-root-context-v1`, `query-loaded-feature-manifest-v1` and
-`query-pending-character-interaction-context-v1`. The candidate identity
+`query-campaign-root-context-v1`, `query-loaded-feature-manifest-v1`,
+`query-pending-character-interaction-context-v1`,
+`query-current-event-window-context-v1` and
+`center-map-on-landed-title-v1`. The candidate identity
 remains `application_main_thread_war_entry_v1`; the heartbeat query scope is
-`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context`.
+`typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation`.
 It is not a general native-call, effect, or scripted-VM executor.
 
 The first paused live counter run reached SDL `PeekMessageW` return
@@ -24,8 +26,10 @@ live-confirmed; RNG owner remains raw provenance only.
 
 The route-contact, actual-contact, combat-v3 and ongoing battle-control typed
 executors have exact-build live results; war-entry and the new by-CombatID
-lifecycle query still require their own paused live acceptance. Production
-admits at most one request per pump and only eleven named callbacks:
+lifecycle query still require their own paused live acceptance. Title-map
+navigation has deterministic cross-pump fixture evidence but still requires
+its own paused live camera dispatch and settled readback. Production admits at
+most one request per pump and only thirteen named callbacks:
 `ExecuteWarEntryAssessmentMailboxQueryV1`,
 `ExecuteRouteContactHorizonMailboxQueryV1`,
 `ExecuteActualContactScopeMailboxQueryV1`,
@@ -36,7 +40,9 @@ admits at most one request per pump and only eleven named callbacks:
 `ExecuteBattleTerminalTransitionMailboxQueryV1`,
 `ExecuteCampaignRootContextMailboxQueryV1`,
 `ExecuteLoadedFeatureManifestMailboxQueryV1` and
-`ExecutePendingCharacterInteractionContextMailboxQueryV1`. War-entry remains limited to
+`ExecutePendingCharacterInteractionContextMailboxQueryV1`,
+`ExecuteEventWindowContextMailboxQueryV1` and
+`ExecuteTitleMapNavigationMailboxV1`. War-entry remains limited to
 one target per request; route-contact is limited to one controllable subject
 and the exact complete hostile scope, at most 64 ArmyIDs.
 
@@ -798,12 +804,14 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | eleven fixed production slots plus submit identity gate |
+| Only permitted executors | true in build | thirteen fixed production slots plus submit identity gate |
 | Ongoing battle-control executor | true | fifth typed slot; cold checkpoint maneuver→main ledger acceptance and managed cleanup are live-confirmed in [ongoing-battle-frame.md](ongoing-battle-frame.md) |
 | By-CombatID lifecycle executor | true in build | sixth typed slot; direct full-ID combat resolution, stable double sample, phase/winner/result and ordered sides; live acceptance pending |
 | Campaign-root executor | true | ninth typed slot; exact-build player/title/capital/liege/government/rules query is production-live confirmed in [campaign-root-context.md](campaign-root-context.md) |
 | Loaded-feature executor | true | tenth typed slot; production-live double query returned all 44 effective feature gates and 29 runtime `has_dlc` keys, while entitlement stayed typed unavailable; artifact `2B1C8CA4...C2F2D` |
 | Pending-interaction context executor | true | eleventh typed slot; full generation-bearing pending ID, stable definition/roles/options/route/deadline/legality are sampled on paused application-main; ordinary recipient white-peace cold-reload double query is production-live, while intermediary/notification fixtures remain pending |
+| Current-event-window context executor | true in build | twelfth typed slot; exact-build read-only current event context; live scope is tracked in [current-event-scopes.md](current-event-scopes.md) |
+| Title-map navigation executor | static-ready | thirteenth typed slot; stable key resolution, recursive title bounds, stock camera dispatch and fresh-pump bit-exact settled readback are deterministic-fixture GREEN; paused CK3 live acceptance remains pending |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |

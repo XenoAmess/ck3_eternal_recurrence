@@ -200,10 +200,11 @@ struct MainThreadQueryInstallEnvironmentV1 {
   bool executor_submission_enabled = false;
   // At least one slot is non-null in production.  These exact typed callback
   // identities prevent the infrastructure from becoming a generic native-call
-  // trampoline. V1 has twelve fixed slots for the bounded war-entry,
+  // trampoline. V1 has thirteen fixed slots for the bounded war-entry,
   // route-contact, actual-contact, combat-v3, ongoing-battle, full-CombatID
   // lifecycle, campaign-root, loaded-feature and pending-interaction read-only
-  // and current-event-window read-only executors.
+  // current-event-window read-only and explicit title-map presentation
+  // executors.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_tertiary = nullptr;
@@ -216,6 +217,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_denary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_undenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duodenary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_thirdenary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -299,6 +301,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_denary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_undenary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duodenary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_thirdenary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

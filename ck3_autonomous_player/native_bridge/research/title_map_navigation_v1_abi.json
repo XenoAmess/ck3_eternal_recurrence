@@ -1,0 +1,205 @@
+{
+  "contract": "title-map-navigation-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "architecture": "msvc-x64",
+  "capability": "game.command.center-map-on-landed-title-v1",
+  "step": "center-map-on-landed-title-v1",
+  "backend_id": "ck3-1.19.0.6-native-title-map-navigation-v1",
+  "evidence_kind": "offline_exact_build_static_analysis_plus_deterministic_cross_pump_native_fixtures",
+  "readiness": "static-ready",
+  "production_wire_compiled": true,
+  "live_validated": false,
+  "application_main_only": true,
+  "mutation": "stock title-bounds camera target transition",
+  "source_contract": {
+    "range_convention": "start inclusive, end exclusive",
+    "exact_function_spans": [
+      {
+        "name": "resolve_landed_title_by_stable_key",
+        "start_rva": "0xA0DC00",
+        "end_rva": "0xA0DC9B",
+        "sha256": "D8869ECDB90DC276881870550661C7FA6B7D1505F4F72F5CA871607344FCEB3"
+      },
+      {
+        "name": "landed_title_key_registry_lookup",
+        "start_rva": "0x271EC80",
+        "end_rva": "0x271EDC7",
+        "sha256": "55699C6C481534AE7FEFEE287F88B0F774C7D956083E558714C7437E00863F7F"
+      },
+      {
+        "name": "landed_title_key_registry_build",
+        "start_rva": "0x27224B0",
+        "end_rva": "0x27226C9",
+        "sha256": "12DE6E506DB1D217645219DBC4BA5F7B961ED29FA2B73B5789C1D633C08F4760"
+      },
+      {
+        "name": "resolve_title_capital_province_provenance",
+        "start_rva": "0x20B6B20",
+        "end_rva": "0x20B6B99",
+        "sha256": "9A2A89B5B17FC268A799098790F099E970858C84E86D8D539D50AD916AFD820B"
+      },
+      {
+        "name": "compute_recursive_title_bounds",
+        "start_rva": "0x20B7DD0",
+        "end_rva": "0x20B7F65",
+        "sha256": "CA27A474114A62E7A19036E7043E2E20377F352F6EDA511A3D1C1353EDFC8D0A"
+      },
+      {
+        "name": "query_ingame_handler_mode",
+        "start_rva": "0xA78200",
+        "end_rva": "0xA782F5",
+        "sha256": "F45C47A4E429A6A3C7BD6875B5ACBDF4E38A8E1FE7F244BE62A4CA98C6590922"
+      },
+      {
+        "name": "center_camera_on_title",
+        "start_rva": "0xA79C70",
+        "end_rva": "0xA79D8C",
+        "sha256": "A49FC5FCE9E8E820D2171E3D270C1FF7BF567C12DD27B7D51395B7FD7D286728"
+      },
+      {
+        "name": "write_camera_target",
+        "start_rva": "0xA79B10",
+        "end_rva": "0xA79BE9",
+        "sha256": "5AEF3930D712666F9CA11F9BE00FE29056F1F5E481AB1A9C0349168AFC64F188"
+      },
+      {
+        "name": "canonicalize_camera_position_state",
+        "start_rva": "0x3473590",
+        "end_rva": "0x3473622",
+        "sha256": "2C73A9FDD7524965296798A479A5163156DD94DC5C09ED95E41ED2C4ABBAB1A2"
+      },
+      {
+        "name": "camera_vtable_update_entry",
+        "start_rva": "0x3470560",
+        "end_rva": "0x3470871",
+        "sha256": "872AEC45CFDEB47D2E73A1FCAA35023737DFC9098A1CA538557B4FEC62570821"
+      },
+      {
+        "name": "camera_transition_update",
+        "start_rva": "0x3473630",
+        "end_rva": "0x347382C",
+        "sha256": "CE8E2A3F7D85270A7531E73CBD3A082B4C9905A7CE559D1FE938C14E0BDAB50B"
+      },
+      {
+        "name": "camera_transition_interpolate",
+        "start_rva": "0x3475320",
+        "end_rva": "0x347555E",
+        "sha256": "9A63742D0BDA9684320B1745F5EC397984536D9323DA84DA2C69498F65A685C9"
+      },
+      {
+        "name": "camera_near_target_predicate",
+        "start_rva": "0x3475560",
+        "end_rva": "0x347560F",
+        "sha256": "07876AAE28DBE3FA8AF6209E57BE3B0EAF388A0F3D07E30BA32497450F4ABAF3"
+      }
+    ]
+  },
+  "globals": {
+    "game_state_slot_rva": "0x570E068",
+    "landed_title_storage_slot_rva": "0x570C410",
+    "landed_title_fallback_slot_rva": "0x570C3F8",
+    "ingame_idler_root_slot_rva": "0x570F7B8",
+    "bucket_count_rva": "0x4F459A4",
+    "bucket_thresholds_slot_rva": "0x4F45998",
+    "horizontal_offsets_slot_rva": "0x4F459B0",
+    "zoom_indexes_slot_rva": "0x4F459C8",
+    "degrees_to_radians_rva": "0x45945E0"
+  },
+  "rtti_and_identity": {
+    "runtime_dynamic_cast_rva": "0x3E631F4",
+    "source_type_descriptor_rva": "0x501EF28",
+    "target_type_descriptor_rva": "0x501EF50",
+    "handler_vtable_rva": "0x40AF630",
+    "concrete_camera_vtable_rva": "0x40AF460",
+    "idler_root_object_offset": "0x10",
+    "cast_result_handler_offset": "0x88",
+    "handler_camera_offset": "0x628",
+    "component_index_mask": "0x00FFFFFF",
+    "component_storage_slots_offset": "0x20",
+    "component_storage_capacity_offset": "0x2C",
+    "component_slot_stride": "0x10",
+    "component_slot_object_offset": "0x08",
+    "component_full_identity_offset": "0x10",
+    "full_generation_equality_required": true,
+    "canonical_fallback_pointer_is_not_found": true,
+    "loaded_template_key_roundtrip_required": true
+  },
+  "landed_title_layout": {
+    "template_offset": "0x160",
+    "template_stable_key_offset": "0x18",
+    "template_tier_offset": "0x5C",
+    "capital_province_is_provenance_only": true,
+    "anchor_kind": "title_bounds_center"
+  },
+  "camera_layout": {
+    "current_state_offset": "0x710",
+    "target_state_offset": "0x728",
+    "zoom_index_offset": "0x744",
+    "transient_x_offset": "0x75C",
+    "transient_z_offset": "0x760",
+    "target_write_blocked_offset": "0x777",
+    "zoom_table_offset": "0x7B0",
+    "zoom_count_offset": "0x7BC",
+    "param4_table_offset": "0x7C8",
+    "param4_enabled_offset": "0x7D4",
+    "state_order": [
+      "position_x",
+      "position_y",
+      "position_z",
+      "zoom",
+      "opaque_camera_param_4",
+      "opaque_camera_param_5"
+    ],
+    "bounds_order": [
+      "min_x",
+      "min_z",
+      "max_x",
+      "max_z"
+    ],
+    "bounds_units": "native_map_grid_units",
+    "midpoint": "signed int32 division by 2 toward zero, then one int32-to-f32 conversion",
+    "settled_predicate": "all states finite; target[0..2] equals independently derived adjusted title-bounds center; target[3] equals independently read runtime zoom_table[zoom_index]; current and target are 24-byte bit-exact; target_write_blocked is false; transient x/z are zero",
+    "opaque_post_update_rule": "stock update may clamp target[4]; post-dispatch polls preserve independently bound XYZ and zoom while accepting the stock clamp, and completion still requires full current/target bit equality"
+  },
+  "owning_thread_transport": {
+    "mailbox": "main_thread_query_mailbox_v1",
+    "executor": "ExecuteTitleMapNavigationMailboxV1",
+    "fixed_executor_slot": 13,
+    "dispatch_and_readback_same_pump_forbidden": true,
+    "fresh_ticket_for_each_poll": true,
+    "worker_never_blocks_application_main": true,
+    "maximum_application_main_callbacks": 600,
+    "total_settle_budget_milliseconds": 15000
+  },
+  "wire": {
+    "request_fields": [
+      "expected_revision",
+      "title_key"
+    ],
+    "binding_fields": [
+      "snapshot_id",
+      "revision",
+      "native_revision",
+      "date_raw"
+    ],
+    "success_root_fields": [
+      "schema_version",
+      "step",
+      "accepted",
+      "status",
+      "title",
+      "binding",
+      "native_action_ack",
+      "camera_center",
+      "source"
+    ],
+    "completion_predicate": "exact-build-native-camera-settled-v1"
+  },
+  "unsupported_claims": [
+    "no live CK3 camera dispatch or settled readback has been captured yet",
+    "dispatch acknowledgement alone is not completion",
+    "capital ProvinceID is not a camera postcondition",
+    "opaque camera state components 4 and 5 are not assigned gameplay semantics"
+  ]
+}

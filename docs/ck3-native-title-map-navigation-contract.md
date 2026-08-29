@@ -1,54 +1,157 @@
 # CK3 原生头衔地图定位 MCP 能力合同
 
-> **状态：仅需求合同，尚未实现。** 本文不代表 `ck3_autonomous_player`、native bridge、MCP server 或任何实机夹具已经具备该能力；当前 readiness 为 `research`。实现、ABI 逆向与正式实机验收留待后续独立任务。
+> **状态（2026-08-30）：逆向账本、Python/MCP typed facade、native stable-key
+> resolver、owning-thread camera dispatch、跨 pump readback mailbox、serializer 与
+> production bridge/adapter wire 均为 `static-ready`；exact `1.19.0.6`/SHA adapter 已将
+> capability 作为受管实机候选广告，但 CK3 实机尚未完成。** 本文中的 RVA、布局与完成谓词
+> 只绑定冻结 EXE。静态 fixture 和 Release `41/41` CTest 不是 `fixture-live`，transport ACK
+> 也不是镜头完成。
 
-## 1. 需求来源与边界
+## 1. 需求、边界与当前优先级
 
-`mod_zhongguo_style` 的批量实机验收需要在切换到史实宋帝赵曙后，把继承自 1066 书签的印度镜头定位到汴州。现有验收器只能使用快捷键、OCR 和模拟鼠标：即使 CK3 输入线程已经精确签为 US English HKL `0x04090409`，`V` 仍可能没有打开“查找头衔”；原生“更多”菜单虽然能 OCR 到正确行，瞬态 flyout 的 `_mouse_hierarchy_leave` 也可能让点击落空。
+`mod_zhongguo_style` 的批量实机验收和宣传素材准备，需要在切换到史实宋帝赵曙后，按
+canonical landed-title key 把地图镜头定位到 `c_bianzhou` 或 `b_kaifeng`。此前的快捷键、
+OCR 和模拟鼠标路径受 GUI 瞬态层级、焦点与窗口状态影响，不能提供稳定的语义动作。
 
-这暴露的不是 361 玩法缺陷，而是 MCP 夹具层缺少一个语义动作：**按运行时稳定的 landed-title key 解析头衔，并把地图镜头定位到该头衔的地图锚点。** 正式对接不得再依赖中文名称、GUI 动画、前台输入法或屏幕坐标。
-
-首个消费者：`mod_zhongguo_style` 宣传素材片场准备。首个正向样本为 `c_bianzhou`，其地图锚点为 `b_kaifeng` / ProvinceID `9822`；第二正向样本为 `b_kaifeng`。
+正式能力固定为：**从当前 loaded runtime registry 精确解析 stable title key，并按原版头衔
+右键/脚本命令使用的 title bounds center 移动镜头，随后从 native camera 原始状态证明镜头
+已经 settled。** 当前施工与验收优先使用 MCP 路径；OCR 只保留为历史兼容证据，本轮不再调用。
 
 本能力只改变地图 presentation state，不得：
 
 - 修改头衔、持有人、首都、玩家角色、日期或任何存档玩法状态；
 - 打开“查找头衔”、人物页、holding view 或其他可见窗口；
-- 被 `choose_one_life_turn`、`auto_turn` 或其他通用 planner 自动选择，或被描述成自动玩家的玩法决策能力；
+- 被 `choose_one_life_turn`、`auto_turn` 或通用 planner 自动选择；
 - 在发布版 Mod 中增加测试决议、测试按钮或夹具文本；
-- 使用 OCR、本地化名、截图像素差、键盘、鼠标或剪贴板完成正式路径。
+- 使用 OCR、本地化名称、截图像素差、键盘、鼠标或剪贴板完成正式路径。
 
-该 tool 只允许显式调用。后续实现可以按现有 driver dispatch 约束决定是否还需把固定 semantic step 放进执行白名单；但 planner 必须排除它。是否只在 acceptance fixture session 广告也留给实现任务按实际架构决定，本合同不提前增设第二套 capability registry。
+该 tool 只能被显式调用。固定 semantic step 必须从普通 `ck3_execute_step`、planner 的
+`action_steps` 与 auto-turn 候选中排除。
 
-## 2. Exact-build 账本
+## 2. Exact-build 与原生逆向账本
 
-本合同只绑定当前 Windows x64 exact build：
+### 2.1 冻结构建
 
-| 对象 | SHA-256 | 已知事实 |
+| 对象 | SHA-256 | 结论 |
 |---|---|---|
-| `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | CK3 `1.19.0.6`；未来实现的地址、布局和调用链不得跨 SHA 沿用 |
-| `game/gui/window_find_title.gui` | `82A9C3420E5CAB19BC8F7860AA718A4FBD20724132ECBEBCE91E9BBE6BD0E46A` | finder 列表来自 `FindTitleView.GetTitles`；右键调用 `DefaultOnCoatOfArmsRightClick(Title.GetID)` |
-| `game/gui/hud.gui` | `1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312` | 菜单与全局快捷键均 `ToggleGameView('find_title')`；菜单离开层级后清除展开状态 |
-| `game/gui/shortcuts.shortcuts` | `A70755FCE82E7541108CEF926C09860643070FAC15B0EECFA7C6ED7BCFEDC25D` | `find_title_shortcut = "V"` |
-| `game/common/landed_titles/02_china.txt` | `342F67E4D3E27A66B05A7257493A28C32AD8C0F9D9B314C0E18BDD8261165811` | `c_bianzhou -> b_kaifeng -> province 9822` |
+| `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | Windows x64，CK3 `1.19.0.6`；下列 RVA、布局和调用链不得跨 SHA 沿用 |
+| `game/gui/window_find_title.gui` | `82A9C3420E5CAB19BC8F7860AA718A4FBD20724132ECBEBCE91E9BBE6BD0E46A` | finder 右键使用 `DefaultOnCoatOfArmsRightClick(Title.GetID)` |
+| `game/gui/hud.gui` | `1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312` | 仅作为旧 GUI 路径对照，不参与 MCP 成功判定 |
+| `game/common/landed_titles/02_china.txt` | `342F67E4D3E27A66B05A7257493A28C32AD8C0F9D9B314C0E18BDD8261165811` | `c_bianzhou` 包含 barony/province 9822–9825；9822 只可作为首府来源信息 |
 
-现有 `campaign-root-context-v1` 已经能发布当前角色的主头衔 TitleID/tier 和首都 ProvinceID，但没有“任意 stable title key → loaded runtime title → 地图锚点”的解析能力，也没有可读的 native camera target/postcondition。因此不得把该既有 query 写成已经满足本合同。
+### 2.2 stable key → loaded title
 
-可复用的静态 ABI 候选包括 `CK3GameData+0x2FC8` 的 embedded `CLandedTitleManager`、manager storage `+0x20`、`CLandedTitle+0x10` 的 full-generation TitleID、`CLandedTitle+0x160` 的 template、template `+0x5C` 的 tier，以及 barony template `+0x80` 的 ProvinceID。它们只是后续逆向入口；template stable-key offset、loaded key → runtime `CLandedTitle` registry、`DefaultOnCoatOfArmsRightClick` 的 backing RVA/owning thread，以及可读 camera postcondition 均仍是 `[unknown / required]`。这些缺口闭合前，证据等级只能是 `research/static candidate`。
+已闭合的 exact-build 路径：
 
-原版脚本 `pan_camera_to_province` 可以提供独立控制样本或预期 anchor 来源；它本身会移动镜头，不得在同一次动作验收中充当结果 oracle。它不证明 MCP/native 实现路径已经闭合，也不能替代 camera target 的原生回读。
+```text
+*(base + 0x570E068)
+  -> game state +0xA0
+  -> CK3GameData +0x2FC8 (embedded CLandedTitleManager)
+
+stable-key resolver: base + 0xA0DC00
+key helper:          base + 0x271EC80
+
+full-generation storage root: *(base + 0x570C410)
+  slots +0x20 / capacity +0x2C / stride 0x10 / object +0x08
+  object +0x10 must equal the complete TitleID
+canonical fallback: *(base + 0x570C3F8)
+  pointer-equal fallback must be rejected
+
+CLandedTitle +0x160 -> title template
+template +0x18     -> MSVC string containing canonical stable key
+template +0x5C     -> tier
+```
+
+冻结函数切片 SHA-256：
+
+- resolver `0xA0DC00`：`D8869ECDB90DC276881870550661C7FA6B7D1505F4F72F5CA871607344FCEB3`
+- key helper `0x271EC80`：`55699C6C481534AE7FEFEE287F88B0F774C7D956083E558714C7437E00863F7F`
+
+解析必须完成 full-generation storage round-trip、fallback 排除和 stable-key round-trip；只按
+TitleID 低位 slot、只读文本数据文件，或把当前玩家首府当作目标都不合格。
+
+`capital_province_id` 是 optional positive int32 provenance：有可靠 runtime 回读时返回，否则为
+`null`。它不参与相机期望位置或完成判定。特别是 `c_bianzhou` 的原版定位语义是全部后代
+barony map anchors 的 title bounds center，并不等于首府 9822 的位置。
+
+### 2.3 原版头衔定位调用链
+
+GUI 注册的 `DefaultOnCoatOfArmsRightClick` 路径已经静态闭合：
+
+```text
+0x40AC8B8 -> 0xA239C0 -> 0xA04B80
+           -> 0xA79C70(handler, landed_title, true)
+              -> 0x20B7DD0(landed_title, bounds[4])
+              -> 0xA79B10(handler, derived_target)
+```
+
+脚本 executor `pan_camera_to_title`（`0x995580`）独立汇入同一个 `0xA79C70`，因此本能力复用的是
+原版 title 语义，不是对 finder GUI 的模拟。
+
+`0x20B7DD0` 递归汇总头衔全部后代，返回
+`[min_x,min_z,max_x,max_z]` 四个 signed int32 map-grid bounds；冻结切片 SHA-256 为
+`CA27A474114A62E7A19036E7043E2E20377F352F6EDA511A3D1C1353EDFC8D0A`。
+
+相机 handler 的 exact-build 根链为：
+
+```text
+owner = *(base + 0x570F7B8)
+idler_base = *(owner + 0x10)
+MSVC dynamic_cast at 0x3E631F4:
+  source TD base+0x501EF28 -> target TD base+0x501EF50
+cast_result +0x88 -> handler
+handler +0x628 -> camera
+```
+
+runtime camera 必须通过 concrete `CGameCamera` primary vptr `base+0x40AF460`；不得拿
+base-class ctor vptr `base+0x40AF428` 充当实例门。其 COL 为 `base+0x45F3F50`，type descriptor
+为 `base+0x5190FA8`，vtable slot 2 为 `base+0x3470560`。
+
+### 2.4 camera 布局与 settled 证明
+
+exact-build camera 原始字段：
+
+```text
+current_state[6] : camera +0x710 .. +0x727，六个 f32
+target_state[6]  : camera +0x728 .. +0x73F，六个 f32
+zoom_index       : camera +0x744
+target write gate: camera +0x777（非零表示写入被阻止）
+zoom table       : pointer camera +0x7B0 / count camera +0x7BC
+```
+
+更新/插值证据的冻结函数切片 SHA-256：
+
+- update `0x3470560`：`872AEC45CFDEB47D2E73A1FCAA35023737DFC9098A1CA538557B4FEC62570821`
+- transition `0x3473630`：`CE8E2A3F7D85270A7531E73CBD3A082B4C9905A7CE559D1FE938C14E0BDAB50B`
+- blend `0x3475320`：`9A63742D0BDA9684320B1745F5EC397984536D9323DA84DA2C69498F65A685C9`
+- near predicate `0x3475560`：`07876AAE28DBE3FA8AF6209E57BE3B0EAF388A0F3D07E30BA32497450F4ABAF3`
+
+near predicate 先要求前三分量距离平方 `< 0.005`，第四分量绝对差 `<= 0.005`，第五、六分量
+绝对差各 `<= 0.00005`；成立后引擎会把 target 的 24 bytes 原样复制到 current。公开合同不把
+“接近”冒充完成，而是在复制后要求 `current_state` 与 `target_state` 六个 f32 **逐位完全一致**。
+`0x3470FC0` 只刷新 transition，不是 completion signal。
+
+`0xA79C70`/`0xA79B10` 对 bounds center 的运算必须逐步复现：
+
+1. `min + max` 按 uint32 wrap，再重解释为 signed int32；
+2. signed sum 以 toward-zero 语义除以 2；
+3. X 再按 int32 wrap 减去 `map_x_adjustment`；
+4. X/Y/Z 转成 f32，Y 必须为 `+0.0f`。
+
+普通 Python 无限精度平均、浮点平均或首府坐标都不是 oracle。
 
 ## 3. 最小公开合同
 
-### 3.1 Capability
+### 3.1 Capability 与 tool
 
-受管夹具后端仅在完整实现并通过相应门禁后广告：
+native 只有在 resolver、dispatch、readback、settled gate、serialization 和 production adapter
+全部可用时才可广告：
 
 ```text
 game.command.center-map-on-landed-title-v1
 ```
 
-只定义一个首版 MCP tool：
+MCP 只公开一个参数化工具：
 
 ```text
 ck3_center_map_on_landed_title_v1(
@@ -57,15 +160,20 @@ ck3_center_map_on_landed_title_v1(
 ) -> object
 ```
 
-首版不要求另设公开“查找头衔”查询。动作返回自身的 typed 解析结果，足够诊断“没有找到”“找到但不可定位”和“已定位”。以后若其他 OODA 真的需要任意头衔只读观测，再单独提出 `ck3_query_landed_title_by_key_v1`，不得为了本片场需求提前扩张 schema。
+固定 semantic step 为 `center-map-on-landed-title-v1`。`title_key` 必须是独立的 typed IPC
+field，不得拼进 step 字符串。Python/MCP facade、service、named-pipe client 与 native
+production wire 已达到 `static-ready`；只有 exact adapter 才广告 capability。能力未广告时必须
+返回 `UnsupportedStepError: capability_not_available`，不能降级到 data Mod、OCR 或视觉
+fallback。
 
-native semantic step 固定为 `center-map-on-landed-title-v1`，`title_key` 必须通过 typed IPC request field 传递；不得把 key 拼进 step 字符串，也不得允许 generic `ck3_execute_step` 用自造字符串绕过 typed MCP facade。`center` 专指地图居中，避免与 HWND/键盘 focus 混淆。
+### 3.2 输入与绑定
 
-### 3.2 输入
-
-- `title_key`：UTF-8、非空、最长 1024 bytes 的 canonical landed-title stable key，复用现有 stable-key 合同上限；按 loaded runtime registry 精确匹配，例如 `c_bianzhou`、`b_kaifeng`。不得接受本地化显示名“汴州/开封”，不得扫描安装目录文本来伪造运行时成功。
-- `expected_revision`：当前 backend-neutral paused snapshot 的非负 revision。调用前必须已经满足 exact-build、连接 generation、episode、map-ready 与 paused admission。
-- title key 解析、地图锚点解析、动作提交和后置回读必须绑定同一 `snapshot_id`、`native_revision`、`date_raw`、`episode_run_id` 与 `connection_generation`。中途任一绑定变化即失败，不允许对新状态重放旧意图。
+- `title_key`：UTF-8、非空、最长 1024 bytes 的 canonical key；只接受 `e_`、`k_`、`d_`、
+  `c_`、`b_` 前缀的小写 ASCII key，例如 `c_bianzhou`、`b_kaifeng`。
+- `expected_revision`：当前 backend-neutral paused snapshot 的 non-negative uint64 revision。
+- resolver、dispatch 和所有后续 readback 必须绑定同一 `snapshot_id`、public revision、
+  `native_revision`、`date_raw`、`episode_run_id`、`connection_generation`、玩家和 paused/map-ready
+  状态。任一漂移立即 typed RED，不得在新状态重放旧意图。
 
 ### 3.3 成功结果
 
@@ -77,109 +185,165 @@ native semantic step 固定为 `center-map-on-landed-title-v1`，`title_key` 必
   "status": "centered",
   "title": {
     "key": "c_bianzhou",
-    "title_id": 12345678,
+    "title_id": 16777218,
     "tier_raw": 2,
     "tier_key": "county",
-    "center_anchor_kind": "title_province",
-    "center_province_id": 9822
+    "anchor_kind": "title_bounds_center",
+    "capital_province_id": 9822,
+    "bounds_extent": [1600, -1000, 1674, -895],
+    "map_x_adjustment": 5
   },
   "binding": {
     "snapshot_id": "...",
     "revision": 42,
-    "native_revision": 42,
-    "date_raw": 389000,
+    "native_revision": 17,
+    "date_raw": 53182008,
     "episode_run_id": "...",
     "connection_generation": 3
   },
   "native_action_ack": {
-    "sequence": 7,
+    "sequence": 9,
     "status": "dispatched"
   },
   "camera_center": {
     "status": "centered",
     "postcondition_verified": true,
-    "before_target_province_id": null,
-    "after_target_province_id": 9822,
+    "expected_position_xyz": [1632.0, 0.0, -947.0],
+    "current_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+    "target_state": [1632.0, 0.0, -947.0, 0.75, 0.0, 1.0],
+    "zoom_index": 3,
+    "expected_zoom_value": 0.75,
+    "settled": true,
+    "target_write_blocked": false,
     "completion_predicate": "exact-build-native-camera-settled-v1"
   },
   "source": {
     "game_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "backend_id": "..."
+    "backend_id": "ck3-1.19.0.6-native-title-map-navigation-v1"
   }
 }
 ```
 
-示例中的 `title_id`、`tier_raw`、revision 和 sequence 只是正数形状，**不是汴州的已冻结真实值**；`before_target_province_id=null` 只表示该示例没有可报告的调用前锚点，不代表合法 ProvinceID 为零。正式 fixture 必须从 loaded runtime 读取并保留 full-generation TitleID，不能把占位值提交为 golden。
+上例全部数值只是 `static-ready` schema shape，不是汴州实机 golden。
 
-`status` 只有两种成功终态：
+`status` 只有两个成功终态：
 
-- `centered`：动作后 camera target 与经 exact-build 证明的 settled/idle completion predicate 均确认居中于 `center_province_id`；
-- `already_centered`：调用前即已由同一后置条件确认位于该锚点，`native_action_ack.status=not_needed`，零额外 camera mutation，仍须 `postcondition_verified=true`。
+- `centered`：`native_action_ack.status=dispatched` 且 `sequence` 为 positive uint64；经过至少一个
+  后续 owning-thread pump 的独立回读，完整 postcondition 成立。
+- `already_centered`：提交前同一完整 postcondition 已成立；ACK 为 `not_needed`、sequence 为
+  `null`，不产生额外 camera mutation。
 
-## 4. ACK 与线程语义
+两者都必须同时满足：
+
+- `anchor_kind == title_bounds_center`，bounds 未倒置；
+- `expected_position_xyz` 与 bounds/adjustment 的 exact-build int32 算术结果逐 f32 bit 一致；
+- 12 个 current/target float 全部 finite，两个六维向量逐 f32 bit 一致；
+- target 的前三分量与 expected XYZ 逐 f32 bit 一致；
+- `zoom_index` 在 runtime zoom table 范围内；从该表独立回读的 `expected_zoom_value` 与
+  current/target 第四分量逐 f32 bit 一致；
+- `target_write_blocked == false`、`settled == true`、
+  `postcondition_verified == true`；
+- completion predicate 精确为 `exact-build-native-camera-settled-v1`；
+- exact-build source 与整套 session binding 未漂移。
+
+`camera_param_4`、`camera_param_5` 只作为第五、第六个 opaque f32 返回；现有证据不支持把它们
+命名为 rotation、pitch 或其他高层概念。
+
+## 4. 线程、mailbox 与 ACK 语义
 
 ```mermaid
 flowchart LR
-    A[同一 paused snapshot 绑定] --> B[按 stable key 解析 loaded title]
-    B --> C[解析可定位 ProvinceID]
-    C --> D[在已逆向确认的 owning thread 提交原生 presentation command]
-    D --> E[submission accepted]
-    E --> F[原生回读 camera target 与 settled/idle 状态]
-    F --> G{exact-build completion predicate 成立且绑定未漂移?}
-    G -- 否 --> H[typed RED；不得声称完成]
-    G -- 是 --> I[centered / already_centered]
+    A[绑定 paused snapshot] --> B[owning-thread ticket: resolve + pre-read]
+    B --> C{完整 postcondition 已成立?}
+    C -- 是 --> D[already_centered]
+    C -- 否 --> E[同线程调用 0xA79C70]
+    E --> F[记录 dispatched ticket；返回 worker 等待态]
+    F --> G[后续 pump 的 owning-thread readback ticket]
+    G --> H{bit-exact settled 且 binding 未漂移?}
+    H -- 否且可继续 --> G
+    H -- 否且超时或漂移 --> I[typed RED]
+    H -- 是 --> J[centered]
 ```
 
-- named-pipe 写入、mailbox 入队、`command_result.ok=true`、已发送快捷键、finder 打开、菜单消失或地图像素变化都不是完成 ACK。
-- camera 是 presentation state，可能不提升 semantic snapshot revision；不得用 `wait_for_change` 或 revision 增长代替后置验证。
-- 后续实现必须先逆向 `DefaultOnCoatOfArmsRightClick(Title.GetID)` 最终使用的 native camera path，并确认实际 owning thread。当前合同不预设它一定是 application-main。
-- 完成 ACK 必须回读 native camera target/anchor，并同时满足后续逆向证明足以表示动画结束的 settled/idle 或等价 completion predicate；仅连续看到相同 target 不能预先假定动画已完成。同时复核 paused、日期、episode、玩家角色与 snapshot binding 未变化。
-- finder/window/selection 必须保持原状。调用结束时不得残留 finder、holding view、tooltip、焦点选择或测试 UI。
+- 静态调用链本身没有携带可独立验证的 thread assertion。production 实现复用现有、已经过
+  实机证明的 application-main mailbox，并须在本能力的 live fixture 中再次核对实际线程。
+  named-pipe worker 不得解析 title、访问 title registry/camera borrowed object 或调用 presentation
+  function；resolver、handler/camera 获取、`0xA79C70` dispatch 与每次原始 camera 回读都只能在
+  第十三个 owning-thread executor 中执行。worker 仍沿用既有 `ReadSnapshot` 做 admission 和后置
+  binding 复核，故不得扩大声称为“worker 完全不读取任何 CK3 对象”。
+- `0xA79C70` 只写 target；current 由后续地图 update 插值。因此 dispatch ticket 与 settled
+  readback ticket 必须跨至少两个 mailbox pump，不能在同一个 owning-thread callback 中阻塞
+  等待，也不能在 dispatch 返回后立即宣称成功。
+- worker/service 可以在 owning thread 之外限时等待 mailbox 结果；每个后续 readback ticket
+  都必须重新验证 session binding、paused/map-ready、title generation、camera vptr 和
+  target-write gate。
+- `0xA79C70` 返回 `void` 且可能静默不写。named-pipe 写入、入队、函数返回、
+  `command_result.ok=true`、revision 增长、目标向量被写过、窗口像素变化都不是完成 ACK。
+- finder/window/selection 必须保持原状；结束时不得残留 finder、holding view、tooltip、焦点
+  选择或测试 UI。
 
 ## 5. 错误合同
 
 Python/MCP facade 沿用现有错误分层：
 
-- 参数类型、空 key、非法 UTF-8 或长度超限：`ValueError`；
+- 参数类型、空 key、非法 canonical key、非法 UTF-8 或长度超限：`ValueError`；
 - capability 未广告：`UnsupportedStepError`；
 - stale revision、连接/episode 漂移、timeout、malformed envelope：`BridgeUnavailableError`；
-- native typed rejection 至少区分：`unsupported_build`、`requires_owning_thread`、`requires_paused`、`map_not_ready`、`title_key_not_found`、`title_generation_mismatch`、`title_not_centerable`、`camera_state_unavailable`、`state_changed`、`submission_failed`、`internal_error`。
+- native typed rejection：`unsupported_build`、`requires_owning_thread`、`requires_paused`、
+  `map_not_ready`、`title_key_not_found`、`title_generation_mismatch`、`title_not_centerable`、
+  `camera_state_unavailable`、`state_changed`、`submission_failed`、`internal_error`。
 
-`title_key_not_found` 和 `title_not_centerable` 是合法 typed RED。不得返回 `status=available` 再用 `title_id=0/null` 表示没有找到；也不得静默回退到本地化文本搜索、当前玩家首都或任意同名头衔。
+业务 RED 必须保持机器可区分；未知 rejection string 是 malformed transport。不得返回成功对象再
+用零值/`null` 隐藏失败，也不得静默改用本地化文本、首府或任意同名对象。
 
-## 6. 后续实现验收合同
-
-本节只规定将来何时可以把状态从 `research` 升级；本轮不执行。
+## 6. 验收门与当前诚实边界
 
 ### L0 / static-ready
 
-- 冻结 exact-build stable-key registry、title lifetime、地图锚点与 native camera readback/call chain；
-- contract/parser/service/MCP SDK client 测试覆盖正向、already-centered、未知 key、不可定位 key、stale revision 与 malformed result；
-- 固定 step 不被普通 planner/auto-turn 自动选择，release Mod manifest 不含任何配套测试 UI；
-- schema fixture 只能称 `static-ready`，不能称 `fixture-live` 或 `production-live`。
+当前已达到：
 
-### 受管实机 / fixture-live
+- exact-build stable-key resolver、full-generation storage/fallback、title bounds、官方调用链、
+  concrete camera 类型门、原始 camera 布局和 settled 更新链已静态冻结；
+- Python contract/parser/service/MCP typed facade 与静态 fixture 已落地，覆盖 centered、
+  already-centered、未知 key、stale binding、malformed payload、planner/generic-step 隔离和完整
+  camera gate；
+- native stable-key resolver/round-trip、recursive bounds、official camera dispatch、zoom-table
+  readback、跨 pump bit-exact settled gate、serializer、十三槽 mailbox 与 exact adapter/bridge wire
+  均已落地；fresh Release full build 与 CTest `41/41` GREEN；
+- generic planner、普通 `ck3_execute_step` 与 partial/unknown adapter 均不能调用该固定动作。
 
-在 fresh managed PID、正确 EXE/DLL/injector hash、paused + map-ready 的同一 CK3 session 中：
+仍未达到的是任何 CK3 `fixture-live` 证据。exact adapter 当前广告的是受管实机候选 capability；
+在下面 L1 矩阵通过前，文档、进度与发布物料不得把它写成 live 或 production-ready。
 
-1. 从两个明显不同的起始镜头分别调用 `c_bianzhou` 与 `b_kaifeng`；
-2. 验证 stable key、full TitleID、tier、`center_province_id` 和 native camera postcondition；
-3. 对同一 key 重复调用并得到经过回读的 `already_centered`；
-4. 对不存在 key 与不可定位 title 得到 typed RED，且 camera 零变化；
-5. 核对日期、episode、玩家、paused、selection 与玩法存档状态不变，finder/holding view 不出现；
-6. 正式 MCP SDK client 核心路径的 OCR、截图、窗口激活、键鼠和剪贴板调用计数均为零；
-7. pipe/CK3 仍存活，managed cleanup GREEN；保存 PID、build/hash、request sequence、完整 binding、解析 payload、前后 camera readback、负例与 cleanup artifact。
+静态 fixture 中的 TitleID、bounds 和相机向量只验证 schema 与 parser，不能写成实机 golden。
 
-通过以上矩阵后，本能力最多标记 `fixture-live`。除非另有真实玩法消费者与独立 production 证据，不得升级为 `production-live primitive`，更不得写成完整 OODA。
+### L1 / 受管 CK3 fixture-live
 
-## 7. 本轮 OCR 临时例外
+只有 L0 native 生产链闭合、能力在冻结 exact build 上诚实广告后，才启动一次短批量实机。在同一
+fresh managed PID、paused + map-ready session 中完成：
 
-项目所有者于 2026-08-29 明确授权本轮宣传片验收继续使用 OCR。临时路径可以 OCR “更多 / 查找头衔 / 汴州”，并通过画面后置状态判定成败，但必须：
+1. 从明显不同的起始镜头调用 `c_bianzhou`，证明结果来自整县 title bounds；
+2. 调用 `b_kaifeng`，验证 barony 的独立 bounds 与 settled 结果；
+3. 对同一 key 重复调用，得到经完整 pre-read 证明的 `already_centered`；
+4. 对不存在 key 获得 `title_key_not_found` typed RED；若存在可靠不可定位样本，再验证
+   `title_not_centerable`，且两类 RED 均不改变 camera；
+5. 在安全可控时验证 target-write inhibit 为 typed RED，不把静默失败写成成功；
+6. 核对日期、玩家、episode、paused、snapshot/native revision 与连接代次稳定；finder、holding
+   view 和测试决议均不出现；
+7. MCP 核心路径 OCR、截图判图、窗口激活、键盘、鼠标和剪贴板调用计数全部为零；
+8. pipe 与 CK3 存活，managed cleanup GREEN；保存 PID、build/hash、request/dispatch/readback
+   sequence、完整 binding、title/bounds payload、前后 camera 原始状态、负例和 cleanup artifact。
 
-- 在 artifact 与报告中标成 `OCR compatibility path`；
-- 失败素材、点击前 hover ACK、点击后 finder ACK 和地图变化门全部保留；
-- 不把本轮成功写成 MCP capability 已实现；
-- 不删除本合同，后续正式对接仍以本合同的 stable-key + native camera readback 为准。
+通过该矩阵后最多标记 `fixture-live`。除非另有真实 gameplay consumer 与独立 production 证据，
+不得升级为 `production-live primitive`，更不得写成完整 OODA。
 
-当前 live 证据 `zga_camera_english_20260829_2144_e2181eb` 只证明：CK3 目标线程三次精确保持 HKL `0x04090409`；`V` 没有出现 IME 候选层也没有 finder；两次 OCR 分别在 `(1820,1176)`、`(1819,1164)` 找到“查找头衔”，点击后菜单消失但 finder 未出现。该 run 是 harness/camera RED，FFmpeg 未启动，不能升级本合同状态。
+## 7. OCR 历史证据与停用决定
+
+2026-08-29 曾获准临时使用 OCR 检查“更多 / 查找头衔 / 汴州”路径。保留的 live artifact
+`zga_camera_english_20260829_2144_e2181eb` 证明目标线程三次保持 US English HKL
+`0x04090409`；快捷键未打开 finder，两次 OCR 命中菜单文字后点击仍未出现 finder，FFmpeg 也未
+启动。该 run 是 harness/camera RED，只能作为旧 GUI/OCR 路径不可靠的兼容性证据。
+
+从本合同本次修订起，头衔镜头定位优先且仅按上述 MCP/native 正式路径继续施工和验收；本轮不再
+启动 OCR、键鼠或剪贴板 fallback。历史失败素材不得删除，也不得据此提升 MCP readiness。
