@@ -231,6 +231,33 @@ def main() -> int:
     sys.path.insert(0, str(ROOT / "tools"))
     import run_zhongguo_acceptance as capture
 
+    # The runner preflight must follow CK3's authoritative unquoted shortcut
+    # syntax.  The generated product passes as-is; replacing both close
+    # shortcuts with the formerly accepted quoted spelling must be rejected.
+    product_errors = capture.product_source_errors()
+    assert product_errors == [], product_errors
+    authoritative_gui = bom_text(SCOREBOARD_GUI)
+    assert authoritative_gui.count("shortcut = close_window") == 2
+    quoted_gui = authoritative_gui.replace(
+        "shortcut = close_window", 'shortcut = "close_window"'
+    )
+    assert quoted_gui != authoritative_gui
+    original_read_text = Path.read_text
+
+    def read_text_with_quoted_scoreboard(
+        path: Path, *args: object, **kwargs: object
+    ) -> str:
+        if path.resolve() == SCOREBOARD_GUI.resolve():
+            return quoted_gui
+        return original_read_text(path, *args, **kwargs)
+
+    with mock.patch.object(Path, "read_text", read_text_with_quoted_scoreboard):
+        quoted_errors = capture.product_source_errors()
+    assert (
+        "production managed scoreboard GUI missing shortcut = close_window"
+        in quoted_errors
+    ), quoted_errors
+
     camera_recenter = inspect.getsource(
         capture.recenter_promo_camera_on_player_capital
     )

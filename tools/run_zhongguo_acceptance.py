@@ -1155,7 +1155,7 @@ def product_source_errors() -> list[str]:
         "zg361_scoreboard_tab_managed",
         "zg361_scoreboard_tab_received",
         "zg361_scoreboard_tab_system",
-        'shortcut = "close_window"',
+        "shortcut = close_window",
     ):
         if token not in gui_text:
             errors.append(f"production managed scoreboard GUI missing {token}")
