@@ -251,6 +251,14 @@ def main() -> int:
     )
 
     assert capture.EXPECTED_PLAYER_HISTORY_ID == "han_8052"
+    for late_marker in capture.REQUIRED_LATE_FIXTURE_MARKERS:
+        assert late_marker not in capture.REQUIRED_FIXTURE_MARKERS
+    assert capture.HISTORICAL_TARGET_PASS_MARKER in (
+        capture.REQUIRED_LATE_FIXTURE_MARKERS
+    )
+    validate_markers = inspect.getsource(capture.MarkerStream.validate)
+    assert "if final:" in validate_markers
+    assert "required_markers += REQUIRED_LATE_FIXTURE_MARKERS" in validate_markers
     assert len(capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS) == 18
     assert len(capture.EXPECTED_HISTORICAL_COHORT_HISTORY_IDS) == 21
     assert "han_5253" in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS

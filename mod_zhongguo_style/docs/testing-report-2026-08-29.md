@@ -146,3 +146,11 @@ py mod_zhongguo_style/tools/validate_local.py
 这一拆分修复了集成审计发现的高风险回归：若把三名州官之一切成玩家，个人告身本身可以合法完成，但后续六张经理政策卡会因“伯爵只受评”而正确拒绝，导致整段宣传流程 RED。现在 CK3 侧目标选择、切换后复核、Python provenance、release manifest 与视觉审计均拒绝该越权；离线夹具、runner、manifest、视觉审计、`validate_local.py` 和发布可复现构建全部 GREEN。京察规划器遮挡检测还用既有实机 OCR 回放验证：干净规划器返回 false，第十二次被个人结果覆盖的污染帧返回 true。
 
 上述结论仍是第十三次候选的 **static-ready / fixture-ready** 前置条件，不冒充新的 CK3 live GREEN；下一轮必须在同一次启动中同时得到 13/13 clean spans、动态实名历史长官的精确 `3.25`、本人榜页签、六张政策卡与立即暂停日期门，才可进入正式宣传素材投影。
+
+## 10. 第十三次候选：分阶段 marker 误置导致安全 RED
+
+`promo/captures/zga_20260829_172311_edcbc23` 使用已推送提交 `edcbc23`。CK3 1.19.0.6 精确 EXE、1066 标准大厅、21/23 历史 cohort、非独立天朝制公爵后台考核、四重处分/申诉、校准 C、361/361 账本与幂等性、首轮榜单及项目诊断都已通过；录屏依旧只在初始化测试决议关闭并确认干净 HUD 后启动。
+
+本轮在首轮校准发布后由 harness 主动判 **RED**：动态受评主角只会在后半段京察之后选择，但新增的四个目标 marker 被误放进首轮 `stream.validate()` 的立即计数表，故此时正确值为 `0`，验收器却要求 `1`。产品没有失败，也没有进入可判断京察暂停与动态 `3.25` 的阶段。修复把稳定的首轮 marker 与后半段 marker 拆成两组：普通校准验证只检查前者，`final=True` 才把动态选角、可考核者资格、实名 PASS 与末两名投影四项纳入 exactly-once 门禁；最终个人告身流程中的即时精确检查保持不变。
+
+永久证据：根报告 `9232F5998BFC61826C656C1A8BBECDB9D745449C32F0C2E873A780CFFE03764E`，证据索引 `0FF87FD9320D4462F84F1F9DB02A16AACF7C098B42AC966F7A93B14FE823C735`，原始 MKV `4CFE96B3E786CE17F4D3306339470B248CCA7B5CD7934C24A53D0AFCA52B9AE7`。完整 `_userdir` 保留；由于仅有第一个 clean span，禁止把本 attempt 当正式宣传源。

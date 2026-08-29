@@ -126,6 +126,8 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST DONE zg361",
     "ZGA: TEST PASS historical_song_direct_whitelist_complete",
     "ZGA: TEST PASS generated_city_officials_excluded_from_provenance",
+)
+REQUIRED_LATE_FIXTURE_MARKERS = (
     "ZGA: TEST PASS personal_result_target_selected_from_prior_historical_assessor_tail",
     "ZGA: TEST PASS personal_result_target_can_assess_others",
     HISTORICAL_TARGET_PASS_MARKER,
@@ -1472,7 +1474,10 @@ class MarkerStream:
 
     def validate(self, final: bool = False) -> None:
         self.pump(final=final)
-        for marker in REQUIRED_FIXTURE_MARKERS:
+        required_markers = REQUIRED_FIXTURE_MARKERS
+        if final:
+            required_markers += REQUIRED_LATE_FIXTURE_MARKERS
+        for marker in required_markers:
             count = self.count(marker)
             if count != 1:
                 raise acceptance.RunnerError(
