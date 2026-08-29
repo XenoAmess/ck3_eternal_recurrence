@@ -328,6 +328,26 @@ class ReviewRegressionTests(unittest.TestCase):
         )
         self.assertIsNotNone(assignment)
         assignment_body = assignment.group("body") if assignment else ""
+        self.assertRegex(
+            assignment_body,
+            re.compile(
+                r"every_in_list\s*=\s*\{\s*"
+                r"list\s*=\s*zg361_cohort.*?"
+                r"NOT\s*=\s*\{\s*has_character_flag\s*=\s*"
+                r"zg361_newcomer_this_cycle\s*\}.*?"
+                r"add_to_list\s*=\s*zg361_bottom_candidates",
+                re.S,
+            ),
+        )
+        self.assertRegex(
+            assignment_body,
+            re.compile(
+                r"ordered_in_list\s*=\s*\{\s*"
+                r"list\s*=\s*zg361_bottom_candidates.*?"
+                r"max\s*=\s*list_size:zg361_bottom_candidates",
+                re.S,
+            ),
+        )
         zero_based_gate = (
             "root.var:zg361_bottom_cursor < root.var:zg361_bottom_slots"
         )

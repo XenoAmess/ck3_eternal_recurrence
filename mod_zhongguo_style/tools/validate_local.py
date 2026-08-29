@@ -496,14 +496,24 @@ def check_runtime_invariants() -> None:
         re.M | re.S,
     )
     if assignment_body is None or not re.search(
-        r"ordered_in_list\s*=\s*\{.*?"
+        r"every_in_list\s*=\s*\{\s*"
+        r"list\s*=\s*zg361_cohort.*?"
         r"limit\s*=\s*\{\s*NOT\s*=\s*\{\s*"
-        r"has_character_flag\s*=\s*zg361_newcomer_this_cycle",
+        r"has_character_flag\s*=\s*zg361_newcomer_this_cycle.*?"
+        r"add_to_list\s*=\s*zg361_bottom_candidates",
         assignment_body.group("body") if assignment_body else "",
         re.S,
     ):
         err("3.25 bottom-slot assignment must skip first-cycle newcomers")
     bottom_assignment = assignment_body.group("body") if assignment_body else ""
+    if not re.search(
+        r"ordered_in_list\s*=\s*\{\s*"
+        r"list\s*=\s*zg361_bottom_candidates.*?"
+        r"max\s*=\s*list_size:zg361_bottom_candidates",
+        bottom_assignment,
+        re.S,
+    ):
+        err("bottom-slot ordered list must explicitly iterate its full eligible list")
     zero_based_gate = (
         "root.var:zg361_bottom_cursor < root.var:zg361_bottom_slots"
     )
