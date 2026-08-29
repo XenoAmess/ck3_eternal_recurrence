@@ -200,6 +200,10 @@ PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS = (
 # pause reason may repeat the title of an event hidden behind another modal;
 # it must never satisfy a "target event is visibly on top" assertion.
 PROMO_EVENT_TITLE_REGION = (0.18, 0.16, 0.48, 0.32)
+# The subordinate-result summary line lives inside this fixed event-body lane.
+# Keep grade validation out of the top resource bar (which legitimately shows
+# unrelated values such as "+3.5") and the bottom-right pause reason.
+PROMO_PERSONAL_RESULT_FIELD_REGION = (0.20, 0.34, 0.42, 0.40)
 PROMO_PROTECTED_EVENT_TITLES = (
     "绩效校准会议",
     "你主持的考核",
@@ -3495,18 +3499,14 @@ def capture_superior_assigned_result(
         artifacts,
         "10_superior_result",
     )
-    grades = tuple(
-        grade for grade in ("3.75", "3.5", "3.25") if grade in rendered_text
+    performance_field_text = acceptance.wait_for_ocr_tokens(
+        ("你的绩效", "3.25"),
+        ("3.75", "3.5", "zg361_", "topscope", "localize", "error"),
+        PROMO_PERSONAL_RESULT_FIELD_REGION,
+        15,
+        artifacts,
+        "10_superior_result_performance_field",
     )
-    if len(grades) != 1:
-        raise acceptance.RunnerError(
-            f"personal result must render exactly one grade; OCR={rendered_text}"
-        )
-    if grades[0] != "3.25":
-        raise acceptance.RunnerError(
-            "the refusal-reason probe must reach the real 3.25 result branch; "
-            f"OCR rendered {grades[0]}"
-        )
     if recorder:
         recorder.mark("superior_assigned_325_visible")
         recorder.clean_hold("superior_assigned_325", artifacts, 3.5)
@@ -3527,7 +3527,11 @@ def capture_superior_assigned_result(
         ),
         "preempting_product_events_dismissed": superior_interruptions,
         "timeline_interruptions_before_switch": switch_interruptions,
-        "rendered_grade": grades[0],
+        "rendered_grade": "3.25",
+        "performance_field_ocr_artifact": (
+            "10_superior_result_performance_field_ocr.json"
+        ),
+        "normalized_performance_field_ocr": performance_field_text,
         "title_artifact": "10_superior_result_title.png",
         "panel_artifact": "10_superior_result.png",
         "panel_ocr_artifact": "10_superior_result_ocr.json",

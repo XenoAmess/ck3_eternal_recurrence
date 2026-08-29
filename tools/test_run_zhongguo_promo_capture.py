@@ -916,6 +916,7 @@ def main() -> int:
         "policy_card_026",
         "policy_card_361",
     )
+    assert capture.PROMO_PERSONAL_RESULT_FIELD_REGION == (0.20, 0.34, 0.42, 0.40)
     provenance = capture.promo_real_character_provenance("han_5253")
     assert [row["history_id"] for row in provenance["subjects"]] == [
         "han_8052",
@@ -1520,7 +1521,11 @@ def main() -> int:
     assert "recorder.resolve_reviewed_subject" in personal_body
     assert "personal_result_target_projected_bottom_two" in personal_body
     assert "clean_policy_chain_scheduled" in personal_body
-    assert 'if grades[0] != "3.25"' in personal_body
+    assert "PROMO_PERSONAL_RESULT_FIELD_REGION" in personal_body
+    assert '("你的绩效", "3.25")' in personal_body
+    assert '("3.75", "3.5", "zg361_"' in personal_body
+    assert "personal result must render exactly one grade" not in personal_body
+    assert "grades = tuple" not in personal_body
 
     switch_advance = inspect.getsource(capture.advance_to_personal_switch)
     for token in (
