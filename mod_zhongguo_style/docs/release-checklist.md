@@ -4,6 +4,10 @@
 fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首次发布目前没有已知 Workshop item ID，禁止复用
 `3784706360`、`3787304042` 或 `3790635143`。
 
+0.3.0 的发布范围已经冻结为现有考核核心链、361 项参考政策配置和 14 本共享组织账。38 个领域对象/状态机属于
+下一版本预研；它们可以诚实保留 `not-implemented` / `partial` 状态，但不得反过来阻断 0.3.0，也不得在本版文案中
+冒充已经实现。
+
 ## 1. 候选身份
 
 - [ ] `descriptor.mod` 的版本、名称、`supported_version` 与本次文案一致。
@@ -60,20 +64,29 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 
 桌面输入、OCR、GUI scale、相机与片场清理的可复用规则见 `docs/acceptance-automation-lessons.md`。自动化期间 CK3 输入线程必须精确签为 US English HKL `0x04090409` 并保持英文；不得把 Shift、候选层消失或已发送快捷键当成 ACK。
 
-宣传合批不得承担相机调试。正式 `--promo-capture` 前，先在同一提交上运行一次只到史实赵曙、汴州定位、查找窗关闭与零测试 UI 门的短探针；它不启动 FFmpeg，也不冒充 361 全链：
+头衔定位不再使用 OCR、快捷键、剪贴板或鼠标驱动瞬态“查找头衔”窗口。冻结构建必须先由 exact-build MCP
+`ck3_center_map_on_landed_title_v1(title_key="c_bianzhou", expected_revision=<revision>)` 解析稳定 title key，并在
+游戏拥有线程上回读真实相机终态。成功证据必须包含 `postcondition_verified=true`、
+`anchor_kind=title_bounds_center`、`settled=true`、`target_write_blocked=false`，且 current/target state 与期望中心、
+zoom 和冻结的 paused/date/player/episode binding 一致；命令 dispatch 或菜单消失都不算 ACK。
+
+正式 `--promo-capture` 前，在同一提交上运行一次 **MCP-backed** 相机集成探针。它只验证史实赵曙、
+`c_bianzhou` 与 `b_kaifeng`、重复 already-centered、未知 key 的 typed RED、最终干净 HUD 和零测试 UI；不启动
+FFmpeg，也不冒充 361 全链：
 
 ```powershell
 & "tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py `
   --promo-camera-probe
 ```
 
-只有短探针报告为 GREEN，才允许启动完整宣传合批。
+只有报告明确证明全程没有为头衔定位调用 OCR/键盘/鼠标/剪贴板，且 MCP settled postcondition 全部 GREEN，才允许
+启动完整宣传合批。旧 OCR 相机 attempt 只保留为历史过程素材，不再构成本版本的可接受路径或验收前置。
 
 - [ ] 兼容 smoke 一次整批运行完成 361/361 配置投影：每个编号的 BEGIN/PASS 遥测恰好出现一次，0 duplicate，0 missing；14 本组织账与选择状态均通过。该项本身不代表领域机制完成。
-- [ ] 语义验收覆盖 361/361：每个编号都在所属的 38 个领域状态机中建立真实对象，执行合法迁移，并验证期限、资源/容量恒等式、幂等/stale 负例和可见反馈；manifest 中不再存在 `domain_runtime=not-implemented` 或未解释的 `partial`。
+- [ ] 最终报告与公开文案把 `361/361` 严格限定为参考政策配置、唯一选择状态、14 本共享账、校验和与幂等 smoke；38 个下一版本领域状态机可以继续标为 `not-implemented` / `partial`，且不计入 0.3.0 缺陷或发布阻点。
 - [ ] 同次运行覆盖严格分布、小 cohort、新人保护、互评、校准、告身、考核榜、申诉/PIP、免费京察与拒办后果；一名来宾门槛与零来宾豁免由静态合同覆盖，不用监禁/释放角色伪造实机前置。
 - [ ] 非独立 AI 天朝制公爵完成后台考核；代码/静态审计证明公爵及以上可考核直属官员，伯爵和男爵只有受评入口；发布文案明确这是第二个所有者授权 AI 例外，不外推到其他系统。
-- [ ] 报告分别声明两种覆盖：旧 `361/361` 是配置与共享账本 smoke；新的语义 `361/361` 才是领域运行时完成。二者都不冒充 1,083 个 A/B/C 分支逐一人工点选；未跑的自然期限、跨三年存读档或角色截图矩阵不得写成已实测。
+- [ ] 报告不把配置 smoke 冒充 361 个领域玩法、1,083 个 A/B/C 分支逐一人工点选，或下一版本已经落地；未跑的自然期限、跨三年存读档或角色截图矩阵不得写成已实测。
 - [ ] 同一领主同一年重复结算无二次奖惩；换上司不消费旧上司的拒办理由；旧榜单不读取新一轮实时值。
 - [ ] 3.25 精确核对地方国库 `-50`、个人金币 `-25`、贤能 `-60` 与一年俸禄 `-25%`；申诉只退同一 reviewer / serial 的本轮固定金额，并立即停止尚未结算的未来扣薪。
 - [ ] `error.log`、`debug.log`、GUI warning 和 database conflict 中 0 个阻塞性 `zg361` 诊断。
@@ -90,6 +103,13 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。首
 - [ ] 原始 2560×1440 PNG 永久保留；Workshop 上传副本另存为单张低于 2 MB 的 JPEG，并记录裁切、质量、尺寸与 SHA-256。
 - [ ] 第 7/8 张只采用同一正式 promo GREEN run 的 `#001/#361` 政策卡；`media-policy-lock.json` 已绑定根/cell 报告、evidence index、timeline、原始 MKV 与源/成品 SHA-256，capture 前不得以 fixture 或生成图占位。
 - [ ] 工坊 media strip 的实际数量、顺序和放大图人工复核；删除重传后的顺序变化已校正。
+- [ ] 八图与最终 BBCode 采用同一个 image-bearing commit，并通过独立严格门：
+
+```powershell
+& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_validate_workshop_description.py
+& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_workshop_description.py
+```
+
 - [ ] 宣传视频所用原始录屏、TTS 输入、`zh-CN-XiaoxiaoNeural` 音轨、双语字幕源、剪辑工程、中间导出和失败版本均保留，不进入 mod staging。
 - [ ] 宣传成片以中文为主叙事、简中/英文同屏字幕，使用 `zh-CN-XiaoxiaoNeural`，时长严格短于 20 分钟；开场直接进入主题，不含 Launcher、CK3 启动或存档 loading。
 - [ ] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色，考核榜可见区域也不得出现两名世界生成坊正的姓名。
