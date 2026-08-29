@@ -166,9 +166,15 @@ REQUIRED_LATE_FIXTURE_MARKERS = (
 )
 REQUIRED_PRODUCT_MARKERS = {
     "ZG361: annual review tick": 2,
-    "ZG361: newcomer enters first review with 3.25 protection": 1,
     "ZG361: scoreboard published": 1,
     "ZG361M: REFERENCE CHARTER COMPLETE 361": 2,
+}
+REQUIRED_LATE_PRODUCT_MARKERS = {
+    # The real post-baseline newcomer is created only after the first review,
+    # GUI audit, Jingcha mandate, and personal-result handoff.  Requiring this
+    # during the first stream.validate() aborts a correct run before the marker
+    # can exist.
+    "ZG361: newcomer enters first review with 3.25 protection": 1,
 }
 SOURCE_ONLY_RUNTIME_ROOTS = {
     "artifacts",
@@ -1829,7 +1835,10 @@ class MarkerStream:
                 raise acceptance.RunnerError(
                     f"fixture marker count for {marker!r} is {count}, expected 1"
                 )
-        for marker, minimum in REQUIRED_PRODUCT_MARKERS.items():
+        required_product_markers = dict(REQUIRED_PRODUCT_MARKERS)
+        if final:
+            required_product_markers.update(REQUIRED_LATE_PRODUCT_MARKERS)
+        for marker, minimum in required_product_markers.items():
             count = self.count(marker)
             if count < minimum:
                 raise acceptance.RunnerError(

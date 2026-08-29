@@ -291,6 +291,9 @@ class ReviewRegressionTests(unittest.TestCase):
         events = (MOD_ROOT / "events" / "zg361_events.txt").read_text(
             encoding="utf-8-sig"
         )
+        triggers = (
+            MOD_ROOT / "common" / "scripted_triggers" / "zg361_triggers.txt"
+        ).read_text(encoding="utf-8-sig")
         fixture = (
             MOD_ROOT.parent
             / "tools"
@@ -301,6 +304,35 @@ class ReviewRegressionTests(unittest.TestCase):
             / "zga_effects.txt"
         ).read_text(encoding="utf-8-sig")
         self.assertIn("trigger = { zg361_can_calibrate_demote_trigger = yes }", events)
+        self.assertRegex(
+            triggers,
+            re.compile(
+                r"zg361_can_calibrate_demote_trigger\s*=.*?"
+                r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+                r"has_variable\s*=\s*zg361_pending_grade\s*\}\s*"
+                r"var:zg361_pending_grade\s*=\s*2.*?"
+                r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}.*?"
+                r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+                r"has_variable\s*=\s*zg361_pending_grade\s*\}\s*"
+                r"var:zg361_pending_grade\s*=\s*1.*?"
+                r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+                re.S,
+            ),
+        )
+        self.assertRegex(
+            triggers,
+            re.compile(
+                r"zg361_is_current_liege_review_record_trigger\s*=\s*\{.*?"
+                r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{.*?"
+                r"has_variable\s*=\s*zg361_last_reviewer.*?"
+                r"has_variable\s*=\s*zg361_last_review_serial.*?"
+                r"liege\s*=\s*\{\s*has_variable\s*=\s*zg361_review_serial\s*\}.*?"
+                r"var:zg361_last_reviewer\s*=\s*liege.*?"
+                r"var:zg361_last_review_serial\s*=\s*liege\.var:zg361_review_serial.*?"
+                r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+                re.S,
+            ),
+        )
         self.assertIn("save_temporary_scope_as = zg361_calibration_demote_target", effects)
         self.assertIn("save_temporary_scope_as = zg361_calibration_rescue_target", effects)
         assignment_at = effects.index("zg361_assign_pending_grades_effect = yes")

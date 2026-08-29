@@ -490,6 +490,33 @@ def check_runtime_invariants() -> None:
         re.S,
     ):
         err("newcomer protection must require a previously settled reviewer baseline")
+    if not re.search(
+        r"zg361_can_calibrate_demote_trigger\s*=.*?"
+        r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+        r"has_variable\s*=\s*zg361_pending_grade\s*\}\s*"
+        r"var:zg361_pending_grade\s*=\s*2.*?"
+        r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}.*?"
+        r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{\s*"
+        r"has_variable\s*=\s*zg361_pending_grade\s*\}\s*"
+        r"var:zg361_pending_grade\s*=\s*1.*?"
+        r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+        triggers,
+        re.S,
+    ):
+        err("calibration availability must guard pending-grade reads during tooltip preview")
+    if not re.search(
+        r"zg361_is_current_liege_review_record_trigger\s*=\s*\{.*?"
+        r"trigger_if\s*=\s*\{\s*limit\s*=\s*\{.*?"
+        r"has_variable\s*=\s*zg361_last_reviewer.*?"
+        r"has_variable\s*=\s*zg361_last_review_serial.*?"
+        r"liege\s*=\s*\{\s*has_variable\s*=\s*zg361_review_serial\s*\}.*?"
+        r"var:zg361_last_reviewer\s*=\s*liege.*?"
+        r"var:zg361_last_review_serial\s*=\s*liege\.var:zg361_review_serial.*?"
+        r"trigger_else\s*=\s*\{\s*always\s*=\s*no\s*\}",
+        triggers,
+        re.S,
+    ):
+        err("review-record comparisons must not read unset variables during enumeration")
     assignment_body = re.search(
         r"zg361_assign_pending_grades_effect\s*=\s*\{(?P<body>.*?)^\}",
         effects,

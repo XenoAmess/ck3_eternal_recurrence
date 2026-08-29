@@ -891,9 +891,15 @@ def main() -> int:
     assert capture.HISTORICAL_TARGET_PASS_MARKER in (
         capture.REQUIRED_LATE_FIXTURE_MARKERS
     )
+    newcomer_product_marker = (
+        "ZG361: newcomer enters first review with 3.25 protection"
+    )
+    assert newcomer_product_marker not in capture.REQUIRED_PRODUCT_MARKERS
+    assert capture.REQUIRED_LATE_PRODUCT_MARKERS[newcomer_product_marker] == 1
     validate_markers = inspect.getsource(capture.MarkerStream.validate)
     assert "if final:" in validate_markers
     assert "required_markers += REQUIRED_LATE_FIXTURE_MARKERS" in validate_markers
+    assert "required_product_markers.update(REQUIRED_LATE_PRODUCT_MARKERS)" in validate_markers
     assert len(capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS) == 18
     assert len(capture.EXPECTED_HISTORICAL_COHORT_HISTORY_IDS) == 21
     assert "han_5253" in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS
