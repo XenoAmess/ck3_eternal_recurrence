@@ -530,6 +530,25 @@ zga_prepare_player_review_effect = {
 		debug_log = "ZGA: TEST PASS bootstrap_snapshot_prepared_by_product"
 	}
 	else = { debug_log = "ZGA: TEST FAIL bootstrap_snapshot_prepared_by_product" }
+	# Exact-build diagnostic values are deliberately discrete: debug_log cannot
+	# interpolate CK3 variables, so enumerate the nearby 23-person outcomes once.
+	if = { limit = { var:zg361_cohort_n = 23 } debug_log = "ZGA: DATA bootstrap_cohort_n 23" }
+	else_if = { limit = { var:zg361_cohort_n = 22 } debug_log = "ZGA: DATA bootstrap_cohort_n 22" }
+	else_if = { limit = { var:zg361_cohort_n = 21 } debug_log = "ZGA: DATA bootstrap_cohort_n 21" }
+	if = { limit = { var:zg361_pending_375_n = 7 } debug_log = "ZGA: DATA bootstrap_pending_375_n 7" }
+	else_if = { limit = { var:zg361_pending_375_n = 6 } debug_log = "ZGA: DATA bootstrap_pending_375_n 6" }
+	if = { limit = { var:zg361_pending_35_n = 16 } debug_log = "ZGA: DATA bootstrap_pending_35_n 16" }
+	else_if = { limit = { var:zg361_pending_35_n = 15 } debug_log = "ZGA: DATA bootstrap_pending_35_n 15" }
+	else_if = { limit = { var:zg361_pending_35_n = 14 } debug_log = "ZGA: DATA bootstrap_pending_35_n 14" }
+	if = { limit = { var:zg361_pending_325_n = 2 } debug_log = "ZGA: DATA bootstrap_pending_325_n 2" }
+	else_if = { limit = { var:zg361_pending_325_n = 1 } debug_log = "ZGA: DATA bootstrap_pending_325_n 1" }
+	else_if = { limit = { var:zg361_pending_325_n = 0 } debug_log = "ZGA: DATA bootstrap_pending_325_n 0" }
+	if = { limit = { var:zg361_bottom_slots = 2 } debug_log = "ZGA: DATA bootstrap_bottom_slots 2" }
+	else_if = { limit = { var:zg361_bottom_slots = 1 } debug_log = "ZGA: DATA bootstrap_bottom_slots 1" }
+	else_if = { limit = { var:zg361_bottom_slots = 0 } debug_log = "ZGA: DATA bootstrap_bottom_slots 0" }
+	if = { limit = { var:zga_bootstrap_bottom_n = 2 } debug_log = "ZGA: DATA bootstrap_actual_bottom_rows 2" }
+	else_if = { limit = { var:zga_bootstrap_bottom_n = 1 } debug_log = "ZGA: DATA bootstrap_actual_bottom_rows 1" }
+	else_if = { limit = { var:zga_bootstrap_bottom_n = 0 } debug_log = "ZGA: DATA bootstrap_actual_bottom_rows 0" }
 	if = {
 		limit = {
 			var:zg361_cohort_n = 23
