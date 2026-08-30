@@ -68,8 +68,8 @@ class ReadinessDataTests(unittest.TestCase):
             dict(EXCLUSIVE_COUNTS),
             {
                 "design-only": 0,
-                "python-l0": 40,
-                "ck3-static-ready": 259,
+                "python-l0": 0,
+                "ck3-static-ready": 299,
                 "central-wired": 58,
                 "ck3-live": 4,
             },
@@ -80,7 +80,7 @@ class ReadinessDataTests(unittest.TestCase):
             {
                 "design-only": 361,
                 "python-l0": 361,
-                "ck3-static-ready": 321,
+                "ck3-static-ready": 361,
                 "central-wired": 62,
                 "ck3-live": 4,
             },
@@ -97,8 +97,25 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(actual_cumulative, dict(EXPECTED_CUMULATIVE_RANGES))
         self.assertEqual(
             actual_exclusive["ck3-static-ready"],
-            "019-036, 054-068, 082-134, 146-241, 278-354",
+            "019-036, 054-068, 082-134, 146-356, 360-361",
         )
+
+    def test_workforce_endgame_40_are_ck3_static_ready(self) -> None:
+        workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}
+        self.assertEqual(len(workforce_ids), 40)
+        for mechanism_id in sorted(workforce_ids):
+            record = READINESS_BY_ID[mechanism_id]
+            self.assertEqual(record.level, ReadinessLevel.CK3_STATIC_READY)
+            self.assertEqual(record.package, "workforce-endgame-ck3-runtime")
+            self.assertEqual(
+                record.evidence,
+                (
+                    "tools/gen_361_workforce_endgame_runtime.py",
+                    "tools/test_zg361_workforce_endgame_runtime.py",
+                    "docs/361-workforce-endgame-ck3-runtime-spec.md",
+                ),
+            )
+        self.assertEqual(set(ids_at_least(ReadinessLevel.CK3_STATIC_READY)), set(range(1, 362)))
 
     def test_manifest_embeds_current_summary_and_every_per_id_record(self) -> None:
         manifest = json.loads(self.rendered[self.manifest_path].decode("utf-8"))

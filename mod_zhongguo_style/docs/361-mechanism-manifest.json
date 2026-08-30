@@ -8,9 +8,9 @@
     "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
     "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
     "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
-    "domain_runtime": "321 mechanisms have at least a committed partial CK3 product projection; 40 still have no CK3 domain runtime. Partial does not mean complete.",
+    "domain_runtime": "361 mechanisms have at least a committed partial CK3 product projection; 0 still have no CK3 domain runtime. Partial does not mean complete.",
     "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; static or central wiring does not by itself complete the per-ID player loop.",
-    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 321 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
+    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 361 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
   },
   "acceptance": {
     "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -33,29 +33,29 @@
     ],
     "exclusive_counts": {
       "design-only": 0,
-      "python-l0": 40,
-      "ck3-static-ready": 259,
+      "python-l0": 0,
+      "ck3-static-ready": 299,
       "central-wired": 58,
       "ck3-live": 4
     },
     "cumulative_counts": {
       "design-only": 361,
       "python-l0": 361,
-      "ck3-static-ready": 321,
+      "ck3-static-ready": 361,
       "central-wired": 62,
       "ck3-live": 4
     },
     "exclusive_ranges": {
       "design-only": "",
-      "python-l0": "242-277, 355-356, 360-361",
-      "ck3-static-ready": "019-036, 054-068, 082-134, 146-241, 278-354",
+      "python-l0": "",
+      "ck3-static-ready": "019-036, 054-068, 082-134, 146-356, 360-361",
       "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
       "ck3-live": "001, 018, 069, 357"
     },
     "cumulative_ranges": {
       "design-only": "001-361",
       "python-l0": "001-361",
-      "ck3-static-ready": "001-241, 278-354, 357-359",
+      "ck3-static-ready": "001-361",
       "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
       "ck3-live": "001, 018, 069, 357"
     },
@@ -309,6 +309,42 @@
       239,
       240,
       241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
       278,
       279,
       280,
@@ -386,11 +422,15 @@
       352,
       353,
       354,
+      355,
+      356,
       357,
       358,
-      359
+      359,
+      360,
+      361
     ],
-    "count": 321,
+    "count": 361,
     "evidence": "at-least-ck3-static-ready",
     "source": "tools/zg361_readiness_data.py",
     "tests": "tools/test_zg361_readiness_data.py",
@@ -35292,24 +35332,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -35436,24 +35476,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -35581,24 +35621,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -35725,24 +35765,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -35869,24 +35909,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36013,24 +36053,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36155,24 +36195,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36299,24 +36339,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36443,24 +36483,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36587,24 +36627,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36732,24 +36772,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -36876,24 +36916,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37019,24 +37059,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37162,24 +37202,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37305,24 +37345,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37448,24 +37488,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37591,24 +37631,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37735,24 +37775,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -37878,24 +37918,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38021,24 +38061,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38164,24 +38204,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38305,24 +38345,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38448,24 +38488,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38592,24 +38632,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38735,24 +38775,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -38878,24 +38918,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39019,24 +39059,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39163,24 +39203,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39306,24 +39346,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39449,24 +39489,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39590,24 +39630,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39733,24 +39773,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -39873,24 +39913,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40016,24 +40056,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40159,24 +40199,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40302,24 +40342,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -51421,24 +51461,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -51566,24 +51606,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -52161,24 +52201,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -52307,24 +52347,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "workforce-endgame-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "workforce-endgame-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_workforce_endgame_model.py",
-          "tools/test_zg361_phase3_workforce_endgame_model.py",
-          "docs/361-phase3-workforce-endgame-runtime-spec.md"
+          "tools/gen_361_workforce_endgame_runtime.py",
+          "tools/test_zg361_workforce_endgame_runtime.py",
+          "docs/361-workforce-endgame-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }

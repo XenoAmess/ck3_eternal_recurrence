@@ -108,14 +108,14 @@ LIVE_BOUNDARY: Final = (
 CLAIMS: Final[tuple[ReadinessClaim, ...]] = (
     ReadinessClaim(
         mechanism_ids(range(242, 278), range(355, 357), range(360, 362)),
-        ReadinessLevel.PYTHON_L0,
-        "workforce-endgame-python-model",
+        ReadinessLevel.CK3_STATIC_READY,
+        "workforce-endgame-ck3-runtime",
         (
-            "tools/zg361_phase3_workforce_endgame_model.py",
-            "tools/test_zg361_phase3_workforce_endgame_model.py",
-            "docs/361-phase3-workforce-endgame-runtime-spec.md",
+            "tools/gen_361_workforce_endgame_runtime.py",
+            "tools/test_zg361_workforce_endgame_runtime.py",
+            "docs/361-workforce-endgame-ck3-runtime-spec.md",
         ),
-        "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
     ),
     ReadinessClaim(
         mechanism_ids(range(26, 32), range(54, 69), range(129, 135)),
@@ -329,8 +329,8 @@ CUMULATIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
 EXPECTED_EXCLUSIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
     {
         "design-only": "",
-        "python-l0": "242-277, 355-356, 360-361",
-        "ck3-static-ready": "019-036, 054-068, 082-134, 146-241, 278-354",
+        "python-l0": "",
+        "ck3-static-ready": "019-036, 054-068, 082-134, 146-356, 360-361",
         "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
         "ck3-live": "001, 018, 069, 357",
     }
@@ -339,7 +339,7 @@ EXPECTED_CUMULATIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
     {
         "design-only": "001-361",
         "python-l0": "001-361",
-        "ck3-static-ready": "001-241, 278-354, 357-359",
+        "ck3-static-ready": "001-361",
         "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
         "ck3-live": "001, 018, 069, 357",
     }
@@ -347,8 +347,8 @@ EXPECTED_CUMULATIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
 EXPECTED_EXCLUSIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
     {
         "design-only": 0,
-        "python-l0": 40,
-        "ck3-static-ready": 259,
+        "python-l0": 0,
+        "ck3-static-ready": 299,
         "central-wired": 58,
         "ck3-live": 4,
     }
@@ -357,7 +357,7 @@ EXPECTED_CUMULATIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
     {
         "design-only": 361,
         "python-l0": 361,
-        "ck3-static-ready": 321,
+        "ck3-static-ready": 361,
         "central-wired": 62,
         "ck3-live": 4,
     }
