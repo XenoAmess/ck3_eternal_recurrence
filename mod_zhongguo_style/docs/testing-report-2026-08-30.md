@@ -195,4 +195,20 @@ binding、bit-exact current/target、`settled=true` 与 `target_write_blocked=fa
 
 最终宣传 release manifest 已绑定同一 GREEN 原片、史实赵曙 `han_8052` 与陈贯 `han_6071`，共 20 章，其中 14 个实机视频章、4 个生成证据边界卡和 2 个生成片头/片尾，0 placeholder，估算时长 437.039 秒。机器视觉证据覆盖 108 张全屏帧与 5,014 个 OCR item，22 个测试 UI 禁词零命中。供真人审阅的 14 段无裁切 H.264 片段及索引保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\review-bundle-20260830-100410`。
 
-该宣传候选仍为 **PENDING_HUMAN_REVIEW_NOT_SIGNED**：五项人工 attestation 均为 false，没有生成 SIGNED spec，也没有把抽帧、OCR 或自动测试冒充 1× 完整观看。正式宣传片渲染、annotated release tag、Steam 首次上传与 fresh-cache production smoke 因而仍未宣称完成。
+上述 PENDING 状态随后已由真人审阅闭合：审阅人 `XenoAmess` 以 1× 完整播放 97.033333 秒单文件审阅卷，对 14 个入片实机章节的五项 attestation 全部确认。原始 PENDING spec 保留不变，另存的 `promo-visual-audit-spec.SIGNED.json` SHA-256 为 `22EB7E10DA8A2ACB18BB58F3CDB2CF75E02BC990164F45D1B6047A9B8D243C5D`。以该签核生成的视觉审计报告在 14 章、108 帧上为 **GREEN**，报告 SHA-256 为 `B27F0EA426A78DB25B21DE56AD092AA08A23F419275EB5F3E4BAFFC3EE9779B6`；按该报告 SHA 执行 verify 也再现 GREEN。
+
+## 19. 最终宣传成片与二次人工门
+
+首份完整合成候选 retry03 的 MP4 SHA-256 为 `9255BD7DE0D002E9C683B9CE6B5F222CFB2F34B8239D4341E364B1E58F8B46E0`。它通过了当时的技术媒体校验，但合成后视觉复核发现 450 px 定宽证据角标裁切文字，因而正式判定为 **visual RED**，不得因“编解码、时长与字幕技术门 GREEN”而充当发布成片。提交 `1230ad9` 将角标改为按实际文本测量的动态宽度，并为仅视觉变化提升缓存版本；宣传片定向测试 `27/27` GREEN。retry03 及其工作目录继续保留作为失败证据。
+
+修复后的 retry04 为最终宣传候选：
+
+- MP4：`Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\video-20260830-104354-retry04\zg361-promo-release.mp4`；
+- 大小 `97,128,353` bytes，时长 `449.286068` 秒，2560×1440、30 fps、H.264/AAC；
+- MP4 SHA-256：`A2647D2B88B1E243E9CD46A3EF6B7F0B6DF94A76FC22B048A847A0E31249B763`；
+- sidecar `zg361-promo-release.video.json` SHA-256：`6084E1BDC362A72FAE1844202BF0C134E8EB2BF70DA89BE078D29E652C0550BC`；
+- 自动媒体校验与五张均匀 QA 抽帧为 **GREEN**。抽帧只是辅助证据，没有代替完整人工播放。
+
+审阅人 `XenoAmess` 随后以 1× 从头到尾完整播放 449.286 秒最终 MP4，并确认：中英字幕可读、同步且无裁切；章节标题与证据角标可读且无裁切；旁白剪接、节奏与笑点可接受；没有 loading、test-only UI、fixture 标签或生成测试人名；史实角色、核心玩法与证据边界诚实。签核记录 `FINAL_PLAYBACK_REVIEW.SIGNED.json` SHA-256 为 `57E96541B8B74960F4CBA6E487CA4F0B4AF1845BE67FC497A8BA0C38FAFF8A43`。
+
+因此宣传媒体门现为 **GREEN**。这一结论仅闭合宣传片本身；annotated release tag、最终 formal build、Steam 首次上传、fresh Workshop cache 核验与 production smoke 仍未宣称完成。

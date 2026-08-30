@@ -121,17 +121,19 @@ generation、全部成功调用的 `target_write_blocked=false` 和 OCR/像素�
 & "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_workshop_description.py
 ```
 
-- [ ] 宣传视频所用原始录屏、TTS 输入、`zh-CN-XiaoxiaoNeural` 音轨、双语字幕源、剪辑工程、中间导出和失败版本均保留，不进入 mod staging。
-- [ ] 宣传成片以中文为主叙事、简中/英文同屏字幕，使用 `zh-CN-XiaoxiaoNeural`，时长严格短于 20 分钟；开场直接进入主题，不含 Launcher、CK3 启动或存档 loading。
-- [ ] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色，考核榜可见区域也不得出现两名世界生成坊正的姓名。
-- [ ] 最终时间线与 QA 抽帧中 0 个 fixture/test-only 决议、按钮或文字（包括“361制实机验收”、`ZGA`、验收规划器、演示触发器）；含污染的验收素材只保留为过程证据，不以裁字、打码或遮罩方式入片。
-- [ ] 对最终 manifest 运行 `tools/prepare_promo_visual_audit.py`，输出到新的外部 artifact 目录；全部 captured video 章节均含精确起点/终点且采样间隔不超过 1 秒，重叠章节的同源同时间戳证据已合并，角色与 role 映射来自 manifest provenance。
-- [ ] producer 原始 `promo-visual-audit-spec.PENDING.json` 仍保留且明确未签核（空 reviewed chapter、五项 false）；人工完整审阅后另存 SIGNED spec，未通过脚本或批量替换伪造 GREEN。
-- [ ] 对最终零占位 manifest 运行 `tools/audit_promo_visuals.py audit`：每个实机章节都有间隔不超过 1 秒的全屏 PNG/OCR 覆盖，still 使用原图，全部证据与源素材按 bytes/SHA-256 绑定；报告为 GREEN。
-- [ ] 角色 provenance 为每名主角/考核者/受评者记录书签、原版 history ID、显示名、职责及 exact-build history 文件 SHA；工具已确认 history key 存在且 `temporary_or_generated=false`。
-- [ ] 人工以 1× 完整播放每个入片实机段并检查所有 still，签核 `historical_characters_only`、`no_generated_official_name_visible`、`fixture_test_ui_absent`、`full_clip_reviewed` 与 `no_crop_mask_or_redaction` 五项；五张均匀 QA 抽帧不替代完整签核。
-- [ ] 合成后再以 1× 完整播放最终 MP4，确认公开角色角标、中文主字幕和英文副字幕没有重新引入 `FIXTURE-LIVE`、`ZGA`、测试决议/事件/按钮或世界生成官员姓名；记录成片 SHA-256 与签核人。构建器同时静态扫描所有会渲染的标题、状态、正文和 cue，人工复核不能被五帧抽样替代。
-- [ ] 使用最终记录的报告 SHA 执行 `tools/audit_promo_visuals.py verify --expected-report-sha256 <sha>` 再现 GREEN；audit spec、GREEN/RED 报告、全屏 PNG、OCR JSON、旧 take 与人工签核全部保留在外部 artifact。
+- [x] 宣传视频所用原始录屏、TTS 输入、`zh-CN-XiaoxiaoNeural` 音轨、双语字幕源、剪辑工程、中间导出和失败版本均保留，不进入 mod staging。
+- [x] 宣传成片以中文为主叙事、简中/英文同屏字幕，使用 `zh-CN-XiaoxiaoNeural`，时长严格短于 20 分钟；开场直接进入主题，不含 Launcher、CK3 启动或存档 loading。
+- [x] 所有入片实机镜头使用 CK3 书签/世界中的真实历史角色，素材 notes 记录 bookmark 与 character ID；不使用测试临时角色，考核榜可见区域也不得出现两名世界生成坊正的姓名。
+- [x] 最终时间线与 QA 抽帧中 0 个 fixture/test-only 决议、按钮或文字（包括“361制实机验收”、`ZGA`、验收规划器、演示触发器）；含污染的验收素材只保留为过程证据，不以裁字、打码或遮罩方式入片。
+- [x] 对最终 manifest 运行 `tools/prepare_promo_visual_audit.py`，输出到新的外部 artifact 目录；全部 captured video 章节均含精确起点/终点且采样间隔不超过 1 秒，重叠章节的同源同时间戳证据已合并，角色与 role 映射来自 manifest provenance。
+- [x] producer 原始 `promo-visual-audit-spec.PENDING.json` 仍保留且明确未签核（空 reviewed chapter、五项 false）；人工完整审阅后另存 SIGNED spec，未通过脚本或批量替换伪造 GREEN。
+- [x] 对最终零占位 manifest 运行 `tools/audit_promo_visuals.py audit`：每个实机章节都有间隔不超过 1 秒的全屏 PNG/OCR 覆盖，still 使用原图，全部证据与源素材按 bytes/SHA-256 绑定；报告为 GREEN。
+- [x] 角色 provenance 为每名主角/考核者/受评者记录书签、原版 history ID、显示名、职责及 exact-build history 文件 SHA；工具已确认 history key 存在且 `temporary_or_generated=false`。
+- [x] 人工以 1× 完整播放每个入片实机段并检查所有 still，签核 `historical_characters_only`、`no_generated_official_name_visible`、`fixture_test_ui_absent`、`full_clip_reviewed` 与 `no_crop_mask_or_redaction` 五项；五张均匀 QA 抽帧不替代完整签核。
+- [x] 合成后再以 1× 完整播放最终 MP4，确认公开角色角标、中文主字幕和英文副字幕没有重新引入 `FIXTURE-LIVE`、`ZGA`、测试决议/事件/按钮或世界生成官员姓名；记录成片 SHA-256 与签核人。构建器同时静态扫描所有会渲染的标题、状态、正文和 cue，人工复核不能被五帧抽样替代。
+- [x] 使用最终记录的报告 SHA 执行 `tools/audit_promo_visuals.py verify --expected-report-sha256 <sha>` 再现 GREEN；audit spec、GREEN/RED 报告、全屏 PNG、OCR JSON、旧 take 与人工签核全部保留在外部 artifact。
+
+宣传证据摘要：源素材单文件审阅卷 `97.033333` 秒，审阅人 `XenoAmess` 以 1× 完整播放并签核五项；SIGNED spec SHA-256 为 `22EB7E10DA8A2ACB18BB58F3CDB2CF75E02BC990164F45D1B6047A9B8D243C5D`。14 个实机章节/108 帧视觉审计为 GREEN，报告 SHA-256 为 `B27F0EA426A78DB25B21DE56AD092AA08A23F419275EB5F3E4BAFFC3EE9779B6`。retry03 技术门虽 GREEN，但 450 px 定宽角标裁切导致人工 visual RED；`1230ad9` 改为测量后的动态宽度并提升视觉缓存版本，定向测试 `27/27` GREEN。最终 retry04 自动媒体门 GREEN，审阅人又以 1× 完整播放 `449.286068` 秒成片并确认五项；签核记录 SHA-256 为 `57E96541B8B74960F4CBA6E487CA4F0B4AF1845BE67FC497A8BA0C38FAFF8A43`。
 
 建议截图顺序：
 
@@ -239,9 +241,9 @@ py tools/verify_zhongguo_workshop_cache.py `
 | Thumbnail SHA-256 | |
 | BBCode SHA-256 / UTF-8 bytes | |
 | Media-strip index | |
-| Promo master / duration / SHA-256 | |
-| Promo visual audit report / SHA-256 | |
-| Raw/process artifact root | |
+| Promo master / duration / SHA-256 | `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\video-20260830-104354-retry04\zg361-promo-release.mp4` / `449.286068 s` / `A2647D2B88B1E243E9CD46A3EF6B7F0B6DF94A76FC22B048A847A0E31249B763`; sidecar `6084E1BDC362A72FAE1844202BF0C134E8EB2BF70DA89BE078D29E652C0550BC` |
+| Promo visual audit report / SHA-256 | `release\promo-visual-audit-report-20260830-104354.json` / `B27F0EA426A78DB25B21DE56AD092AA08A23F419275EB5F3E4BAFFC3EE9779B6` (GREEN, 14 chapters / 108 frames) |
+| Raw/process artifact root | `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp` |
 
 签核后仍不得删除任何过程素材。大体积文件不进 Git，但必须在 artifact 索引中留下绝对路径、大小、SHA-256、
 生成命令与对应发布版本。
