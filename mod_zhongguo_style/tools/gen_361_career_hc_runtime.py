@@ -92,12 +92,17 @@ HC_DEST_B = {
 }
 
 
+def clean_generated_text(text: str) -> str:
+    """Normalize generator-only indentation without changing CK3 semantics."""
+    return "\n".join(line.rstrip() for line in text.strip().splitlines()) + "\n"
+
+
 def generated(text: str) -> bytes:
-    return BOM + (HEADER + text.strip() + "\n").encode("utf-8")
+    return BOM + (HEADER + clean_generated_text(text)).encode("utf-8")
 
 
 def localized(text: str) -> bytes:
-    return BOM + (text.strip() + "\n").encode("utf-8")
+    return BOM + clean_generated_text(text).encode("utf-8")
 
 
 def validate_specs() -> None:
