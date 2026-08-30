@@ -57,6 +57,7 @@ jobs:
           python mod_zhongguo_style/tools/gen_scoreboard_snapshot.py --check
           python mod_zhongguo_style/tools/validate_local.py
       - name: Verify ZhongGuo 361 release localization audit
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
         run: |
           python mod_zhongguo_style/tools/prepare_release_localization.py audit --write-report mod_zhongguo_style/docs/release-localization-audit.json
           git ls-files --error-unmatch mod_zhongguo_style/docs/release-localization-audit.json

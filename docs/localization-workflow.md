@@ -12,6 +12,10 @@
 
 只有用户明确要求发布后，才执行以下国际化流程。未收到发布指令时，不得把七种外语占位列为当前功能开发阻塞，也不得擅自发起批量翻译。
 
+普通 push/PR 的 CI 只运行本地化解析、键结构、BOM、生成器和调用器离线合同；不得运行会把七语候选升级为阻塞项的正式
+release-localization audit。该 audit 只允许在明确的 ZhongGuo 发布 tag 或人工 release workflow dispatch 中执行。历史版本已经
+留下 audit snapshot 时，开发中的中英增量可以暂时使它落后；等所有者明确进入发布阶段后，再集中翻译、重建 snapshot 并验收。
+
 ## 一、检查环境与项目
 
 1. 检查环境变量 `MINIMAX_API_KEY` 是否存在。
