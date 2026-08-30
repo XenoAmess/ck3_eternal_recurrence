@@ -280,7 +280,7 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("zg361_b2_on_appeal_filed_effect = yes", interaction)
         self.assertIn("zg361_b2_on_appeal_upheld_effect = yes", interaction)
 
-    def test_069_pre_settlement_abi_is_frozen_and_shared_dependency_remains_red(self) -> None:
+    def test_069_pre_settlement_abi_is_frozen_and_shared_hook_precedes_writes(self) -> None:
         gate = top_level_block(
             self.effects, "zg361_b2_pre_notice_settlement_gate_effect"
         )
@@ -304,11 +304,21 @@ class B2CK3RuntimeTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, gate)
 
-        # The B2 package owns the callee, not the hand-written shared caller.
-        # Keep this assertion GREEN while proving the integration gate itself
-        # is still RED; the spec names the exact one-line dependency to land.
         settle = top_level_block(self.core, "zg361_settle_delivered_325_effect")
-        self.assertNotIn("zg361_b2_pre_notice_settlement_gate_effect = yes", settle)
+        hook = "zg361_b2_pre_notice_settlement_gate_effect = yes"
+        self.assertIn(hook, settle)
+        self.assertIn("var:zg361_b2_m069_settlement_allowed = 1", settle)
+        first_business_write = min(
+            settle.index(token)
+            for token in (
+                "add_character_modifier = { modifier = zg361_grade_325",
+                "zg361_result_salary_cut_active value = 1",
+                "remove_treasury = zg361_perf_treasury_penalty_value",
+                "remove_short_term_gold = zg361_perf_gold_penalty_value",
+                "change_merit = medium_merit_loss",
+            )
+        )
+        self.assertLess(settle.index(hook), first_business_write)
         self.assertIn("zg361_b2_on_notice_delivered_effect = yes", settle)
 
     def test_016_support_is_atomic_real_and_conserved(self) -> None:

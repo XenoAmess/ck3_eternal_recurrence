@@ -565,6 +565,7 @@ zg361_apply_pending_grades_effect = {
 	zg361_refresh_org_climate_effect = yes
 	zg361_b1_mark_published_effect = yes
 	remove_character_flag = zg361_review_in_progress
+	zg361_p2c_on_review_published_effect = yes
 }
 
 # ============================================================
@@ -895,8 +896,10 @@ zg361_deliver_325_notice_effect = {
 
 # 四重处分的一次性清算。拒收只能改变送达方法，最终仍走同一个幂等 receipt。
 zg361_settle_delivered_325_effect = {
+	zg361_b2_pre_notice_settlement_gate_effect = yes
 	if = {
 		limit = {
+			var:zg361_b2_m069_settlement_allowed = 1
 			has_variable = zg361_result_case_owner
 			has_variable = zg361_result_cycle_serial
 			has_variable = zg361_result_case_serial
@@ -980,6 +983,7 @@ zg361_settle_delivered_325_effect = {
 		set_variable = { name = zg361_result_appeal_open value = 1 }
 		zg361_update_settled_325_scoreboard_slots_effect = yes
 		zg361_b2_on_notice_delivered_effect = yes
+		zg361_p2c_on_result_delivered_effect = yes
 
 		# 90 日申诉时钟携带 immutable token；新轮案卷或已改判会令到期事件 stale no-op。
 		var:zg361_result_case_owner = { save_scope_as = zg361_notice_deadline_owner }
@@ -1008,7 +1012,7 @@ zg361_settle_delivered_325_effect = {
 		debug_log = "ZG361P2: delivered 3.25 settlement posted once"
 	}
 	else = {
-		debug_log = "ZG361P2: duplicate or stale 3.25 settlement ignored"
+		debug_log = "ZG361P2: policy-denied, duplicate, or stale 3.25 settlement ignored"
 	}
 }
 
@@ -1145,6 +1149,7 @@ zg361_apply_receipted_appeal_regrade_effect = {
 	}
 	zg361_update_regraded_scoreboard_slots_effect = yes
 	zg361_b2_on_appeal_corrected_effect = yes
+	zg361_b1_on_appeal_corrected_effect = yes
 }
 
 # ============================================================

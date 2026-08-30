@@ -60,7 +60,7 @@ owner/subject/cycle/case 与 hook，防止批次身份漂移。
 | 358 | 原 grade 与国库/个人/贤能处分向量冻结；后续新事实只能另案送达 | A 同案不加重，B 加重必须显式披露并记报复风险，C 不建宪制案 |
 | 359 | 预留位、边界人重审+新 case ID/新 D+90、或下一周期 quota debt 三路守恒 | A 可审计选择，B 暗调保留 audit diff 且强制重送，C 不建配额回流案 |
 
-## #069 shared-hook ABI 与当前 RED
+## #069 shared-hook ABI 与静态接线
 
 `zg361_b2_pre_notice_settlement_gate_effect` 是冻结的唯一前置 ABI。共享
 `zg361_settle_delivered_325_effect` 必须在**第一笔** `remove_treasury` / 个人金币 / 贤能 / 降俸写入之前调用它，然后仅在
@@ -71,8 +71,10 @@ owner/subject/cycle/case 与 hook，防止批次身份漂移。
 - C 返回 allowed=0，只投递一张下周期 policy-debt receipt；
 - 重放和 stale identity 均不得授权。
 
-当前共享 effect 仍先完成结算，随后才调用 `zg361_b2_on_notice_delivered_effect`。B2 专属文件无权修改 shared，故该项必须保持
-**RED：`shared-pre-settlement-hook-missing`**。在 shared owner 落钩并补对应静态/实机用例前，不得把 #069 或整个 B2 写成语义完成。
+共享 effect 现已在任何 modifier、国库、个人金币、贤能或降俸写入前调用该 gate，并把
+`zg361_b2_m069_settlement_allowed = 1` 纳入结算的原子前置条件；静态测试同时锁定调用顺序。因此
+`shared-pre-settlement-hook-missing` 已关闭。该结论只表示 shared caller 与 B2 callee 的 CK3 脚本接线完成；真实 A/B 付款、
+C 路零付款、重放/stale no-op 和存读档连续性仍须 MCP-first CK3 批次证明，不能由 L0 冒充 live。
 
 ## 确定性状态链
 
