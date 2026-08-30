@@ -17,6 +17,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from zg361_phase2_career_model import MECHANISM_BEHAVIORS
+from zg361_career_hc_semantic_model import (
+    EXPECTED_IDS as SEMANTIC_EXPECTED_IDS,
+    SEMANTIC_SPECS,
+)
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -102,6 +106,11 @@ HC_DEST_B = {
     105: "frozen",
 }
 
+Q_AUTHORITY_IDS = tuple(range(121, 129))
+Q_REQUIRED_OBJECT_KINDS = frozenset(
+    {"vacancy", "hc-slot", "candidate", "incumbent", "succession", "backfill"}
+)
+
 
 def clean_generated_text(text: str) -> str:
     """Normalize generator-only indentation without changing CK3 semantics."""
@@ -139,6 +148,21 @@ def validate_specs() -> None:
         raise ValueError("dual-cost mechanism outside slice")
     if not SUBJECT_RESPONSE_IDS <= set(EXPECTED_IDS):
         raise ValueError("subject response outside slice")
+    if EXPECTED_IDS != SEMANTIC_EXPECTED_IDS:
+        raise ValueError("career/HC semantic registry ID drifted")
+    if set(SEMANTIC_SPECS) != set(EXPECTED_IDS):
+        raise ValueError("career/HC semantic registry coverage drifted")
+    q_kinds = {
+        kind.value
+        for mechanism_id in Q_AUTHORITY_IDS
+        for kind in SEMANTIC_SPECS[mechanism_id].object_kinds
+    }
+    if not Q_REQUIRED_OBJECT_KINDS <= q_kinds:
+        raise ValueError("Q manager certification lost a typed career/HC object family")
+    if {kind.value for kind in SEMANTIC_SPECS[124].object_kinds} != (
+        Q_REQUIRED_OBJECT_KINDS | {"manager"}
+    ):
+        raise ValueError("Q124 must remain the authoritative succession/backfill join")
 
 
 def domain_vars(domain: str) -> dict[str, str]:
@@ -318,6 +342,60 @@ def render_cost_initialization(mechanism_id: int) -> str:
     return "\n        ".join(lines)
 
 
+def render_q_authority_initialization() -> str:
+    """Initialize the authoritative Q capacity books and typed-object locks."""
+
+    lines = [
+        "set_variable = { name = zg361_ch_q_manager_hc_authorized value = 4 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_available value = 4 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_reserved value = 0 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_occupied value = 0 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_frozen value = 0 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_reclaimed value = 0 }",
+        "set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }",
+        "set_variable = { name = zg361_ch_q_crisis_hours_authorized value = 100 }",
+        "set_variable = { name = zg361_ch_q_crisis_hours_available value = 100 }",
+        "set_variable = { name = zg361_ch_q_crisis_hours_delegated value = 0 }",
+        "set_variable = { name = zg361_ch_q_crisis_hours_manager value = 0 }",
+        "set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }",
+        "remove_variable = zg361_ch_q_named_successor_candidate",
+        "remove_variable = zg361_ch_q_named_survey_respondent",
+    ]
+    for mechanism_id in Q_AUTHORITY_IDS:
+        p = f"zg361_ch_m{mechanism_id:03d}_business"
+        lines.extend(
+            (
+                f"set_variable = {{ name = {p}_consumed value = 0 }}",
+                f"set_variable = {{ name = {p}_deferred value = 0 }}",
+                f"set_variable = {{ name = {p}_debt value = 0 }}",
+                f"set_variable = {{ name = {p}_object_count value = 0 }}",
+            )
+        )
+    return "\n        ".join(lines)
+
+
+def render_q_named_people_capture() -> str:
+    """Freeze real subordinate characters used by Q survey/succession objects."""
+
+    return '''ordered_vassal = {
+                limit = { zg361_is_reviewable_vassal_trigger = yes }
+                order_by = stewardship
+                position = 0
+                save_temporary_scope_as = zg361_ch_q_named_successor_candidate_scope
+            }
+            if = {
+                limit = { exists = scope:zg361_ch_q_named_successor_candidate_scope }
+                set_variable = {
+                    name = zg361_ch_q_named_successor_candidate
+                    value = scope:zg361_ch_q_named_successor_candidate_scope
+                }
+                set_variable = {
+                    name = zg361_ch_q_named_survey_respondent
+                    value = scope:zg361_ch_q_named_successor_candidate_scope
+                }
+            }'''
+
+
 def domain_mechanisms(domain: DomainSpec) -> tuple[int, ...]:
     return tuple(mechanism_id for stage in domain.stages for mechanism_id in stage)
 
@@ -333,7 +411,12 @@ def event_scope_names(domain: str) -> dict[str, str]:
 
 
 def render_domain_open(domain: DomainSpec) -> str:
-    extra_q = "\n            zg361_is_celestial_liege_trigger = yes" if domain.key == "q" else ""
+    extra_q = (
+        "\n            zg361_is_celestial_liege_trigger = yes"
+        "\n            any_vassal = { zg361_is_reviewable_vassal_trigger = yes }"
+        if domain.key == "q"
+        else ""
+    )
     receipt_resets = []
     cost_resets = []
     ids = list(domain_mechanisms(domain))
@@ -356,8 +439,9 @@ def render_domain_open(domain: DomainSpec) -> str:
         "n": "set_variable = { name = zg361_ch_hc_authorized value = 8 }\n        set_variable = { name = zg361_ch_hc_available value = 8 }\n        set_variable = { name = zg361_ch_hc_reserved value = 0 }\n        set_variable = { name = zg361_ch_hc_occupied value = 0 }\n        set_variable = { name = zg361_ch_hc_frozen value = 0 }\n        set_variable = { name = zg361_ch_hc_reclaimed value = 0 }\n        set_variable = { name = zg361_ch_hc_conserved value = 1 }",
         "o": "set_variable = { name = zg361_ch_knowledge_coverage_percent value = 0 }\n        set_variable = { name = zg361_ch_acting_authority_bound value = 0 }",
         "p": "set_variable = { name = zg361_ch_application_identity_visible value = 0 }\n        set_variable = { name = zg361_ch_release_extension_used value = 0 }",
-        "q": "set_variable = { name = zg361_ch_manager_weight_hard value = 40 }\n        set_variable = { name = zg361_ch_manager_weight_people value = 30 }\n        set_variable = { name = zg361_ch_manager_weight_values value = 30 }",
+        "q": "set_variable = { name = zg361_ch_manager_weight_hard value = 40 }\n        set_variable = { name = zg361_ch_manager_weight_people value = 30 }\n        set_variable = { name = zg361_ch_manager_weight_values value = 30 }\n        " + render_q_authority_initialization(),
     }[domain.key]
+    q_people_capture = render_q_named_people_capture() if domain.key == "q" else ""
     deadline_resets = []
     for state in range(1, len(domain.stages) + 1):
         suffixes = ("a", "b") if domain.key == "p" and state == 3 else ("x",)
@@ -396,6 +480,7 @@ zg361_career_hc_open_{domain.key}_case_effect = {{
             set_variable = {{ name = zg361_ch_{domain.key}_conserved value = 1 }}
             {extra_init}
             {all_resets}
+            {q_people_capture}
             var:zg361_case_{domain.key}_owner = {{ save_scope_as = zg361_ch_{domain.key}_event_owner }}
             save_scope_as = zg361_ch_{domain.key}_event_subject
             save_scope_value_as = {{ name = zg361_ch_{domain.key}_event_cycle value = var:zg361_case_{domain.key}_cycle_serial }}
@@ -722,6 +807,259 @@ def render_hc_move(mechanism_id: int) -> str:
             }}'''
 
 
+def q_object_prefix(mechanism_id: int, kind: str) -> str:
+    return f"zg361_ch_m{mechanism_id:03d}_{kind.replace('-', '_')}_object"
+
+
+def render_q_five_tuple_object(
+    mechanism_id: int,
+    kind: str,
+    state: int,
+    ordinal: int,
+) -> str:
+    """Render one save-stable typed Q object bound to the frozen case."""
+
+    prefix = q_object_prefix(mechanism_id, kind)
+    if kind == "candidate" and mechanism_id != 121:
+        person = "var:zg361_ch_q_named_successor_candidate"
+    else:
+        person = "this"
+    role_links = ""
+    if kind == "succession":
+        role_links = f'''
+            set_variable = {{ name = {prefix}_incumbent value = this }}
+            set_variable = {{ name = {prefix}_candidate value = var:zg361_ch_q_named_successor_candidate }}'''
+    elif kind == "backfill":
+        role_links = f'''
+            set_variable = {{ name = {prefix}_vacancy_id value = var:{q_object_prefix(124, "vacancy")}_id }}
+            set_variable = {{ name = {prefix}_hc_slot_id value = var:{q_object_prefix(124, "hc-slot")}_id }}'''
+    return f'''set_variable = {{
+                name = {prefix}_id
+                value = {{
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = {mechanism_id * 10 + ordinal}
+                }}
+            }}
+            set_variable = {{ name = {prefix}_owner value = var:zg361_case_q_owner }}
+            set_variable = {{ name = {prefix}_subject value = {person} }}
+            set_variable = {{ name = {prefix}_cycle value = var:zg361_case_q_cycle_serial }}
+            set_variable = {{ name = {prefix}_case value = var:zg361_case_q_case_serial }}
+            set_variable = {{ name = {prefix}_state value = {state} }}
+            set_variable = {{ name = {prefix}_revision value = var:zg361_case_q_revision }}
+            set_variable = {{ name = {prefix}_route value = var:zg361_ch_m{mechanism_id:03d}_route }}
+            set_variable = {{ name = {prefix}_active value = 1 }}{role_links}
+            change_variable = {{ name = zg361_ch_m{mechanism_id:03d}_business_object_count add = 1 }}'''
+
+
+def render_q_object_bundle(mechanism_id: int, state: int) -> str:
+    return "\n            ".join(
+        render_q_five_tuple_object(mechanism_id, kind.value, state, ordinal)
+        for ordinal, kind in enumerate(SEMANTIC_SPECS[mechanism_id].object_kinds, start=1)
+    )
+
+
+def render_q_hc_conservation() -> str:
+    return '''set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }'''
+
+
+def render_q_hc_move(mechanism_id: int, destination: str, units: int) -> str:
+    p = f"zg361_ch_m{mechanism_id:03d}_business"
+    return f'''if = {{
+                limit = {{ var:zg361_ch_q_manager_hc_available >= {units} }}
+                change_variable = {{ name = zg361_ch_q_manager_hc_available add = -{units} }}
+                change_variable = {{ name = zg361_ch_q_manager_hc_{destination} add = {units} }}
+                set_variable = {{ name = {p}_capacity_applied value = 1 }}
+            }}
+            else = {{
+                set_variable = {{ name = {p}_capacity_applied value = 0 }}
+                set_variable = {{ name = {p}_debt value = 1 }}
+            }}
+            {render_q_hc_conservation()}'''
+
+
+def render_q_crisis_conservation() -> str:
+    return '''set_variable = { name = zg361_ch_q_crisis_hours_partition value = var:zg361_ch_q_crisis_hours_available }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_delegated }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_manager }
+            set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_partition = var:zg361_ch_q_crisis_hours_authorized }
+                set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+            }'''
+
+
+def render_q_route_payload(mechanism_id: int, state: int, route: int) -> str:
+    """Concrete A/B transition for one authoritative manager mechanism."""
+
+    objects = render_q_object_bundle(mechanism_id, state)
+    p = f"zg361_ch_m{mechanism_id:03d}_business"
+    capacity_precondition = ""
+    capacity_failure_conservation = ""
+    if mechanism_id == 121:
+        destination, units, team_size = (
+            ("reserved", 1, 3) if route == 1 else ("occupied", 3, 8)
+        )
+        capacity_precondition = f"var:zg361_ch_q_manager_hc_available >= {units}"
+        capacity_failure_conservation = render_q_hc_conservation()
+        business = f'''{render_q_hc_move(mechanism_id, destination, units)}
+            set_variable = {{ name = zg361_ch_manager_trial_team_size value = {team_size} }}
+            set_variable = {{ name = zg361_ch_manager_trial_authority_state value = {route} }}'''
+    elif mechanism_id == 122:
+        hard, people, values, total = (
+            (70, 70, 70, 70) if route == 1 else (90, 35, 20, 53)
+        )
+        business = f'''set_variable = {{ name = zg361_ch_manager_score_hard value = {hard} }}
+            set_variable = {{ name = zg361_ch_manager_score_people value = {people} }}
+            set_variable = {{ name = zg361_ch_manager_score_values value = {values} }}
+            set_variable = {{ name = zg361_ch_manager_score_total value = {total} }}
+            set_variable = {{ name = zg361_ch_manager_score_weight_total value = 100 }}'''
+    elif mechanism_id == 123:
+        factors, sample, credibility = (6, 3, 100) if route == 1 else (1, 1, 25)
+        business = f'''set_variable = {{ name = zg361_ch_subordinate_survey_factors value = {factors} }}
+            set_variable = {{ name = zg361_ch_subordinate_survey_sample value = {sample} }}
+            set_variable = {{ name = zg361_ch_subordinate_survey_credibility value = {credibility} }}
+            set_variable = {{ name = zg361_ch_subordinate_survey_respondent value = var:zg361_ch_q_named_survey_respondent }}'''
+    elif mechanism_id == 124:
+        destination = "reserved" if route == 1 else "frozen"
+        accepted = 1 if route == 1 else 0
+        risk = 0 if route == 1 else 1
+        capacity_precondition = "var:zg361_ch_q_manager_hc_available >= 1"
+        capacity_failure_conservation = render_q_hc_conservation()
+        business = f'''{render_q_hc_move(mechanism_id, destination, 1)}
+            set_variable = {{ name = zg361_ch_successor_candidate value = var:zg361_ch_q_named_successor_candidate }}
+            set_variable = {{ name = zg361_ch_successor_incumbent value = this }}
+            set_variable = {{ name = zg361_ch_successor_accepted value = {accepted} }}
+            set_variable = {{ name = zg361_ch_manager_promotion_released value = 1 }}
+            set_variable = {{ name = zg361_ch_manager_promotion_continuity_risk value = {risk} }}
+            set_variable = {{ name = zg361_ch_backfill_owner value = var:zg361_case_q_owner }}'''
+    elif mechanism_id == 125:
+        manager_hours, delegated_hours = (40, 60) if route == 1 else (100, 0)
+        capacity_precondition = "var:zg361_ch_q_crisis_hours_available >= 100"
+        capacity_failure_conservation = render_q_crisis_conservation()
+        business = f'''if = {{
+                limit = {{ var:zg361_ch_q_crisis_hours_available >= 100 }}
+                change_variable = {{ name = zg361_ch_q_crisis_hours_available add = -100 }}
+                change_variable = {{ name = zg361_ch_q_crisis_hours_manager add = {manager_hours} }}
+                change_variable = {{ name = zg361_ch_q_crisis_hours_delegated add = {delegated_hours} }}
+                set_variable = {{ name = {p}_capacity_applied value = 1 }}
+            }}
+            else = {{
+                set_variable = {{ name = {p}_capacity_applied value = 0 }}
+                set_variable = {{ name = {p}_debt value = 1 }}
+            }}
+            set_variable = {{ name = zg361_ch_crisis_hours_budget value = 100 }}
+            set_variable = {{ name = zg361_ch_crisis_manager_hours value = {manager_hours} }}
+            set_variable = {{ name = zg361_ch_crisis_delegated_hours value = {delegated_hours} }}
+            set_variable = {{ name = zg361_ch_successor_evidence value = {1 if route == 1 else 0} }}
+            {render_q_crisis_conservation()}'''
+    elif mechanism_id == 126:
+        quadrant, action = (1, 1) if route == 1 else (2, 2)
+        business = f'''set_variable = {{ name = zg361_ch_values_quadrant value = {quadrant} }}
+            set_variable = {{ name = zg361_ch_values_quadrant_action value = {action} }}
+            set_variable = {{ name = zg361_ch_values_quadrant_evidence_frozen value = 1 }}'''
+    elif mechanism_id == 127:
+        if route == 1:
+            capacity_precondition = "var:zg361_ch_q_manager_hc_available >= 1"
+            capacity_failure_conservation = render_q_hc_conservation()
+            capacity = render_q_hc_move(mechanism_id, "occupied", 1)
+            layered = 1
+        else:
+            capacity = f'''set_variable = {{ name = {p}_capacity_applied value = 0 }}
+            {render_q_hc_conservation()}'''
+            layered = 0
+        business = f'''{capacity}
+            set_variable = {{ name = zg361_ch_span_direct_reports value = 11 }}
+            set_variable = {{ name = zg361_ch_span_frozen value = 8 }}
+            set_variable = {{ name = zg361_ch_span_excess value = 3 }}
+            set_variable = {{ name = zg361_ch_span_layer_inserted value = {layered} }}'''
+    elif mechanism_id == 128:
+        policy = 1 if route == 1 else 2
+        business = f'''set_variable = {{ name = zg361_ch_climate_pressure value = 70 }}
+            set_variable = {{ name = zg361_ch_climate_collaboration value = 55 }}
+            set_variable = {{ name = zg361_ch_climate_risk_reporting value = 45 }}
+            set_variable = {{ name = zg361_ch_climate_peer_credibility value = 60 }}
+            set_variable = {{ name = zg361_ch_climate_regrettable_attrition value = 20 }}
+            set_variable = {{ name = zg361_ch_next_cycle_quota_policy value = {policy} }}
+            set_variable = {{ name = zg361_ch_next_cycle_quota_policy_effective_cycle value = {{ value = var:zg361_case_q_cycle_serial add = 1 }} }}
+            set_variable = {{ name = zg361_ch_current_cycle_quota_policy_unchanged value = 1 }}'''
+    else:
+        raise ValueError(f"Q authority does not own mechanism {mechanism_id}")
+    debt = (
+        f"\n            set_variable = {{ name = {p}_debt value = 1 }}"
+        if route == 2
+        else ""
+    )
+    payload = f'''{objects}
+            {business}'''
+    if capacity_precondition:
+        payload = f'''if = {{
+                limit = {{ {capacity_precondition} }}
+                {payload}
+            }}
+            else = {{
+                set_variable = {{ name = {p}_capacity_applied value = 0 }}
+                set_variable = {{ name = {p}_debt value = 1 }}
+                set_variable = {{ name = {p}_object_count value = 0 }}
+                {capacity_failure_conservation}
+            }}'''
+    return f'''{payload}{debt}'''
+
+
+def render_q_business_consumer(mechanism_id: int, state: int) -> str:
+    """Render the authoritative post-receipt Q object transition."""
+
+    p = f"zg361_ch_m{mechanism_id:03d}"
+    return f'''# Q{mechanism_id:03d} authoritative typed-object consumer; manager-governance is adapter-only.
+{SEMANTIC_SPECS[mechanism_id].consumer_key} = {{
+    remove_variable = zg361_ch_q_business_applied
+    if = {{
+        limit = {{
+            {kernel_guard("q", state, owner="var:zg361_case_q_owner")}
+            var:{p}_receipt_active = 1
+            var:{p}_consumed = 1
+            var:{p}_business_consumed = 0
+            var:{p}_receipt_owner = var:zg361_case_q_owner
+            var:{p}_receipt_subject = this
+            var:{p}_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:{p}_receipt_case = var:zg361_case_q_case_serial
+            var:{p}_receipt_state = {state}
+        }}
+        set_variable = {{ name = {p}_business_consumed value = 1 }}
+        set_variable = {{ name = {p}_business_owner value = var:zg361_case_q_owner }}
+        set_variable = {{ name = {p}_business_subject value = this }}
+        set_variable = {{ name = {p}_business_cycle value = var:zg361_case_q_cycle_serial }}
+        set_variable = {{ name = {p}_business_case value = var:zg361_case_q_case_serial }}
+        set_variable = {{ name = {p}_business_state value = {state} }}
+        set_variable = {{ name = {p}_business_revision value = var:zg361_case_q_revision }}
+        if = {{
+            limit = {{ var:{p}_route = 1 }}
+            {render_q_route_payload(mechanism_id, state, 1)}
+        }}
+        else_if = {{
+            limit = {{ var:{p}_route = 2 }}
+            {render_q_route_payload(mechanism_id, state, 2)}
+        }}
+        else = {{
+            set_variable = {{ name = {p}_business_deferred value = 1 }}
+            set_variable = {{ name = {p}_business_debt value = 1 }}
+            set_variable = {{ name = {p}_business_object_count value = 0 }}
+        }}
+        set_variable = {{ name = zg361_ch_q_business_applied value = 1 }}
+        debug_log = "ZG361CH: authoritative Q business consumer {mechanism_id:03d} committed"
+    }}
+}}'''
+
+
 def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
     p = f"zg361_ch_m{mechanism_id:03d}"
     hc = render_hc_move(mechanism_id) if domain == "n" else ""
@@ -744,6 +1082,11 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
             limit = {{ NOT = {{ var:{p}_route = 3 }} }}
             {semantic}
         }}'''
+    business_hook = (
+        f"{SEMANTIC_SPECS[mechanism_id].consumer_key} = yes"
+        if mechanism_id in Q_AUTHORITY_IDS
+        else ""
+    )
     return f'''zg361_career_hc_m{mechanism_id:03d}_consume_effect = {{
     if = {{
         limit = {{
@@ -769,6 +1112,7 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
         else = {{ change_variable = {{ name = zg361_ch_{domain}_debt add = 1 }} }}
         {semantic_projection}
         {hc}
+        {business_hook}
         set_variable = {{ name = zg361_ch_{domain}_capacity_partition value = var:zg361_ch_{domain}_available }}
         change_variable = {{ name = zg361_ch_{domain}_capacity_partition add = var:zg361_ch_{domain}_used }}
         set_variable = {{ name = zg361_ch_{domain}_conserved value = 0 }}
@@ -1054,7 +1398,10 @@ def render_queue_event(domain: DomainSpec) -> str:
     if next_domain == "q":
         immediate = f'''scope:{scopes["subject"]} = {{
             if = {{
-                limit = {{ zg361_is_celestial_liege_trigger = yes }}
+                limit = {{
+                    zg361_is_celestial_liege_trigger = yes
+                    any_vassal = {{ zg361_is_reviewable_vassal_trigger = yes }}
+                }}
                 zg361_career_hc_open_q_case_effect = yes
             }}
             else = {{ zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes }}
@@ -1116,6 +1463,8 @@ def render_effects() -> bytes:
                     sections.append(response)
                 sections.append(render_core(mechanism_id, domain.key, state))
                 sections.append(render_consumer(mechanism_id, domain.key, state))
+                if mechanism_id in Q_AUTHORITY_IDS:
+                    sections.append(render_q_business_consumer(mechanism_id, state))
     sections.append(render_portfolio_finalizer(DOMAIN_BY_KEY["p"]))
     sections.append(render_portfolio_finalizer(DOMAIN_BY_KEY["q"]))
     return generated("\n\n".join(sections))

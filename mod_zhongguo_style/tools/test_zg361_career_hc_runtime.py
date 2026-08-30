@@ -605,6 +605,157 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("manager_promotion_released value = 1", m124)
         self.assertIn("next_cycle_quota_policy", m128)
 
+    def test_q_authority_has_eight_named_business_consumers_and_real_hooks(self) -> None:
+        definitions = set(
+            re.findall(
+                r"(?m)^zg361_career_hc_m(12[1-8])_business_consumer_effect = \{",
+                self.effects,
+            )
+        )
+        self.assertEqual(definitions, {str(item) for item in range(121, 129)})
+        for mechanism_id in generator.Q_AUTHORITY_IDS:
+            with self.subTest(mechanism=mechanism_id):
+                consumer = block(
+                    self.effects,
+                    f"zg361_career_hc_m{mechanism_id:03d}_consume_effect",
+                )
+                authority = block(
+                    self.effects,
+                    f"zg361_career_hc_m{mechanism_id:03d}_business_consumer_effect",
+                )
+                hook = f"zg361_career_hc_m{mechanism_id:03d}_business_consumer_effect = yes"
+                self.assertEqual(consumer.count(hook), 1)
+                self.assertIn("zg361_case_kernel_full_guard_trigger", authority)
+                self.assertIn(f"zg361_ch_m{mechanism_id:03d}_business_consumed = 0", authority)
+                self.assertIn(
+                    f"name = zg361_ch_m{mechanism_id:03d}_business_consumed value = 1",
+                    authority,
+                )
+                self.assertIn("manager-governance is adapter-only", self.effects)
+                self.assertNotIn("zg361_manager_governance_", authority)
+
+    def test_q_business_receipts_freeze_all_five_case_dimensions_and_revision(self) -> None:
+        for mechanism_id in generator.Q_AUTHORITY_IDS:
+            state = generator.STAGE_BY_ID[mechanism_id]
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_business_consumer_effect",
+            )
+            prefix = f"zg361_ch_m{mechanism_id:03d}_business"
+            with self.subTest(mechanism=mechanism_id):
+                for field, value in (
+                    ("owner", "var:zg361_case_q_owner"),
+                    ("subject", "this"),
+                    ("cycle", "var:zg361_case_q_cycle_serial"),
+                    ("case", "var:zg361_case_q_case_serial"),
+                    ("state", str(state)),
+                    ("revision", "var:zg361_case_q_revision"),
+                ):
+                    self.assertIn(f"name = {prefix}_{field} value = {value}", source)
+                self.assertIn(f"var:zg361_ch_m{mechanism_id:03d}_receipt_state = {state}", source)
+                self.assertIn(f"var:zg361_ch_m{mechanism_id:03d}_route = 1", source)
+                self.assertIn(f"var:zg361_ch_m{mechanism_id:03d}_route = 2", source)
+                self.assertIn(f"name = {prefix}_deferred value = 1", source)
+                self.assertIn(f"name = {prefix}_debt value = 1", source)
+                self.assertIn(f"name = {prefix}_object_count value = 0", source)
+
+    def test_q124_joins_distinct_vacancy_hc_candidate_incumbent_succession_backfill(self) -> None:
+        source = block(
+            self.effects,
+            "zg361_career_hc_m124_business_consumer_effect",
+        )
+        kinds = ("vacancy", "hc_slot", "candidate", "incumbent", "succession", "backfill")
+        for kind in kinds:
+            prefix = f"zg361_ch_m124_{kind}_object"
+            with self.subTest(kind=kind):
+                for field in ("id", "owner", "subject", "cycle", "case", "state", "revision", "route", "active"):
+                    self.assertIn(f"{prefix}_{field}", source)
+        self.assertIn(
+            "zg361_ch_m124_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate",
+            source,
+        )
+        self.assertIn("zg361_ch_m124_incumbent_object_subject value = this", source)
+        self.assertIn("zg361_ch_m124_succession_object_incumbent value = this", source)
+        self.assertIn(
+            "zg361_ch_m124_succession_object_candidate value = var:zg361_ch_q_named_successor_candidate",
+            source,
+        )
+        self.assertIn("zg361_ch_m124_backfill_object_vacancy_id", source)
+        self.assertIn("zg361_ch_m124_backfill_object_hc_slot_id", source)
+
+    def test_q_capacity_and_crisis_books_are_prechecked_and_conserved(self) -> None:
+        opened = block(self.effects, "zg361_career_hc_open_q_case_effect")
+        for needle in (
+            "zg361_ch_q_manager_hc_authorized value = 4",
+            "zg361_ch_q_manager_hc_available value = 4",
+            "zg361_ch_q_crisis_hours_authorized value = 100",
+            "zg361_ch_q_crisis_hours_available value = 100",
+        ):
+            self.assertIn(needle, opened)
+        for mechanism_id in (121, 124, 127):
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_business_consumer_effect",
+            )
+            self.assertIn("zg361_ch_q_manager_hc_available >=", source)
+            self.assertIn("zg361_ch_q_manager_hc_partition", source)
+            self.assertIn("zg361_ch_q_manager_hc_conserved", source)
+            self.assertIn("zg361_ch_q_manager_hc_authorized", source)
+            self.assertLess(
+                source.find("zg361_ch_q_manager_hc_available >="),
+                source.find(f"zg361_ch_m{mechanism_id:03d}_manager_object_id"),
+            )
+            self.assertIn(
+                f"name = zg361_ch_m{mechanism_id:03d}_business_object_count value = 0",
+                source,
+            )
+        crisis = block(self.effects, "zg361_career_hc_m125_business_consumer_effect")
+        self.assertIn("zg361_ch_q_crisis_hours_available >= 100", crisis)
+        self.assertIn("zg361_ch_q_crisis_hours_partition", crisis)
+        self.assertIn("zg361_ch_q_crisis_hours_conserved", crisis)
+        self.assertIn("zg361_ch_crisis_manager_hours value = 40", crisis)
+        self.assertIn("zg361_ch_crisis_delegated_hours value = 60", crisis)
+        self.assertIn("zg361_ch_crisis_manager_hours value = 100", crisis)
+        self.assertIn("zg361_ch_crisis_delegated_hours value = 0", crisis)
+        self.assertLess(
+            crisis.find("zg361_ch_q_crisis_hours_available >= 100"),
+            crisis.find("zg361_ch_m125_manager_object_id"),
+        )
+
+    def test_q_routes_publish_distinct_score_survey_quadrant_span_and_future_policy(self) -> None:
+        m122 = block(self.effects, "zg361_career_hc_m122_business_consumer_effect")
+        self.assertIn("zg361_ch_manager_score_hard value = 70", m122)
+        self.assertIn("zg361_ch_manager_score_hard value = 90", m122)
+        self.assertIn("zg361_ch_manager_score_weight_total value = 100", m122)
+        m123 = block(self.effects, "zg361_career_hc_m123_business_consumer_effect")
+        self.assertIn("zg361_ch_subordinate_survey_factors value = 6", m123)
+        self.assertIn("zg361_ch_subordinate_survey_factors value = 1", m123)
+        self.assertIn("zg361_ch_subordinate_survey_credibility value = 100", m123)
+        self.assertIn("zg361_ch_subordinate_survey_credibility value = 25", m123)
+        m126 = block(self.effects, "zg361_career_hc_m126_business_consumer_effect")
+        self.assertIn("zg361_ch_values_quadrant value = 1", m126)
+        self.assertIn("zg361_ch_values_quadrant value = 2", m126)
+        m127 = block(self.effects, "zg361_career_hc_m127_business_consumer_effect")
+        self.assertIn("zg361_ch_span_direct_reports value = 11", m127)
+        self.assertIn("zg361_ch_span_layer_inserted value = 1", m127)
+        self.assertIn("zg361_ch_span_layer_inserted value = 0", m127)
+        m128 = block(self.effects, "zg361_career_hc_m128_business_consumer_effect")
+        self.assertIn("zg361_ch_climate_pressure value = 70", m128)
+        self.assertIn("zg361_ch_next_cycle_quota_policy_effective_cycle", m128)
+        self.assertIn("zg361_ch_current_cycle_quota_policy_unchanged value = 1", m128)
+
+    def test_q_open_freezes_real_named_people_and_missing_candidate_skips_q_cleanly(self) -> None:
+        opened = block(self.effects, "zg361_career_hc_open_q_case_effect")
+        self.assertIn("ordered_vassal = {", opened)
+        self.assertIn("order_by = stewardship", opened)
+        self.assertIn("position = 0", opened)
+        self.assertIn("zg361_ch_q_named_successor_candidate", opened)
+        self.assertIn("zg361_ch_q_named_survey_respondent", opened)
+        queue = block(self.events, f"zg361ch.{generator.QUEUE_EVENTS['p']}")
+        self.assertIn("any_vassal = { zg361_is_reviewable_vassal_trigger = yes }", queue)
+        self.assertIn("zg361_career_hc_open_q_case_effect = yes", queue)
+        self.assertIn("zg361_career_hc_finalize_p_portfolio_effect = yes", queue)
+
     def test_assessed_subject_responses_never_gain_manager_authority(self) -> None:
         found = set(
             int(item)

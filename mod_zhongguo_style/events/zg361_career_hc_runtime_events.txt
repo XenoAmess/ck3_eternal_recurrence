@@ -3774,7 +3774,10 @@ zg361ch.955 = {
     immediate = {
         scope:zg361_ch_p_event_subject = {
             if = {
-                limit = { zg361_is_celestial_liege_trigger = yes }
+                limit = {
+                    zg361_is_celestial_liege_trigger = yes
+                    any_vassal = { zg361_is_reviewable_vassal_trigger = yes }
+                }
                 zg361_career_hc_open_q_case_effect = yes
             }
             else = { zg361_career_hc_finalize_p_portfolio_effect = yes }

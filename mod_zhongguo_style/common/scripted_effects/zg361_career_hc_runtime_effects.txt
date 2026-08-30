@@ -197,6 +197,7 @@ zg361_career_hc_open_d_case_effect = {
         set_variable = { name = zg361_ch_d_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_d_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_d_s4_x_deadline_expired value = 0 }
+
             var:zg361_case_d_owner = { save_scope_as = zg361_ch_d_event_owner }
             save_scope_as = zg361_ch_d_event_subject
             save_scope_value_as = { name = zg361_ch_d_event_cycle value = var:zg361_case_d_cycle_serial }
@@ -716,6 +717,7 @@ zg361_career_hc_m019_consume_effect = {
             set_variable = { name = zg361_ch_promotion_eligible value = var:zg361_ch_m019_value }
         }
 
+
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
         set_variable = { name = zg361_ch_d_conserved value = 0 }
@@ -895,6 +897,7 @@ zg361_career_hc_m020_consume_effect = {
             limit = { NOT = { var:zg361_ch_m020_route = 3 } }
             set_variable = { name = zg361_ch_promotion_packet_state value = var:zg361_ch_m020_route }
         }
+
 
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
@@ -1174,6 +1177,7 @@ zg361_career_hc_m021_consume_effect = {
             set_variable = { name = zg361_ch_bonus_salary_matrix value = var:zg361_ch_m021_value }
         }
 
+
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
         set_variable = { name = zg361_ch_d_conserved value = 0 }
@@ -1328,6 +1332,7 @@ zg361_career_hc_m022_consume_effect = {
             set_variable = { name = zg361_ch_soft_hc_budget value = var:zg361_ch_m022_route }
         }
 
+
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
         set_variable = { name = zg361_ch_d_conserved value = 0 }
@@ -1480,6 +1485,7 @@ zg361_career_hc_m023_consume_effect = {
         set_variable = { name = zg361_ch_jingcha_treasury_delta value = 0 }
             set_variable = { name = zg361_ch_jingcha_personal_delta value = 0 }
             set_variable = { name = zg361_ch_hc_defense_year value = current_year }
+
 
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
@@ -1660,6 +1666,7 @@ zg361_career_hc_m024_consume_effect = {
             limit = { NOT = { var:zg361_ch_m024_route = 3 } }
             set_variable = { name = zg361_ch_transfer_effective_cycle value = { value = var:zg361_case_d_cycle_serial add = 1 } }
         }
+
 
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
@@ -1965,6 +1972,7 @@ zg361_career_hc_m025_consume_effect = {
             set_variable = { name = zg361_ch_counteroffer_terminal value = var:zg361_ch_m025_route }
         }
 
+
         set_variable = { name = zg361_ch_d_capacity_partition value = var:zg361_ch_d_available }
         change_variable = { name = zg361_ch_d_capacity_partition add = var:zg361_ch_d_used }
         set_variable = { name = zg361_ch_d_conserved value = 0 }
@@ -2034,6 +2042,7 @@ zg361_career_hc_open_m_case_effect = {
         set_variable = { name = zg361_ch_m_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_m_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_m_s4_x_deadline_expired value = 0 }
+
             var:zg361_case_m_owner = { save_scope_as = zg361_ch_m_event_owner }
             save_scope_as = zg361_ch_m_event_subject
             save_scope_value_as = { name = zg361_ch_m_event_cycle value = var:zg361_case_m_cycle_serial }
@@ -2526,6 +2535,7 @@ zg361_career_hc_m092_consume_effect = {
             if = { limit = { var:zg361_ch_m092_route = 2 zg361_is_celestial_liege_trigger = yes } set_variable = { name = zg361_ch_management_authority value = 1 } }
         }
 
+
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
         set_variable = { name = zg361_ch_m_conserved value = 0 }
@@ -2706,6 +2716,7 @@ zg361_career_hc_m093_consume_effect = {
             set_variable = { name = zg361_ch_returned_to_expert value = 1 }
             set_variable = { name = zg361_ch_manager_retry_cycle value = { value = var:zg361_case_m_cycle_serial add = 1 } }
         }
+
 
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
@@ -2888,6 +2899,7 @@ zg361_career_hc_m094_consume_effect = {
             set_variable = { name = zg361_ch_title_unchanged value = 1 }
         }
 
+
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
         set_variable = { name = zg361_ch_m_conserved value = 0 }
@@ -3042,6 +3054,7 @@ zg361_career_hc_m095_consume_effect = {
             set_variable = { name = zg361_ch_management_review_year value = current_year }
             set_variable = { name = zg361_ch_management_review_outcome value = var:zg361_ch_m095_route }
         }
+
 
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
@@ -3198,6 +3211,7 @@ zg361_career_hc_m096_consume_effect = {
             if = { limit = { var:zg361_ch_m096_route = 2 } change_variable = { name = zg361_ch_future_promotion_debt add = 1 } }
         }
 
+
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
         set_variable = { name = zg361_ch_m_conserved value = 0 }
@@ -3352,6 +3366,7 @@ zg361_career_hc_m097_consume_effect = {
             set_variable = { name = zg361_ch_cross_team_calibration_winner value = var:zg361_case_m_subject }
         }
 
+
         set_variable = { name = zg361_ch_m_capacity_partition value = var:zg361_ch_m_available }
         change_variable = { name = zg361_ch_m_capacity_partition add = var:zg361_ch_m_used }
         set_variable = { name = zg361_ch_m_conserved value = 0 }
@@ -3450,6 +3465,7 @@ zg361_career_hc_open_n_case_effect = {
         set_variable = { name = zg361_ch_n_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_n_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_n_s4_x_deadline_expired value = 0 }
+
             var:zg361_case_n_owner = { save_scope_as = zg361_ch_n_event_owner }
             save_scope_as = zg361_ch_n_event_subject
             save_scope_value_as = { name = zg361_ch_n_event_cycle value = var:zg361_case_n_cycle_serial }
@@ -3965,6 +3981,7 @@ zg361_career_hc_m098_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -4138,6 +4155,7 @@ zg361_career_hc_m099_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -4311,6 +4329,7 @@ zg361_career_hc_m100_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -4608,6 +4627,7 @@ zg361_career_hc_m101_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -4781,6 +4801,7 @@ zg361_career_hc_m102_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -4954,6 +4975,7 @@ zg361_career_hc_m103_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -5251,6 +5273,7 @@ zg361_career_hc_m104_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -5424,6 +5447,7 @@ zg361_career_hc_m105_consume_effect = {
                 limit = { var:zg361_ch_hc_partition = var:zg361_ch_hc_authorized }
                 set_variable = { name = zg361_ch_hc_conserved value = 1 }
             }
+
         set_variable = { name = zg361_ch_n_capacity_partition value = var:zg361_ch_n_available }
         change_variable = { name = zg361_ch_n_capacity_partition add = var:zg361_ch_n_used }
         set_variable = { name = zg361_ch_n_conserved value = 0 }
@@ -5511,6 +5535,7 @@ zg361_career_hc_open_o_case_effect = {
         set_variable = { name = zg361_ch_o_s4_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_o_s5_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_o_s5_x_deadline_expired value = 0 }
+
             var:zg361_case_o_owner = { save_scope_as = zg361_ch_o_event_owner }
             save_scope_as = zg361_ch_o_event_subject
             save_scope_value_as = { name = zg361_ch_o_event_cycle value = var:zg361_case_o_cycle_serial }
@@ -6055,6 +6080,7 @@ zg361_career_hc_m106_consume_effect = {
             set_variable = { name = zg361_ch_key_talent_label value = var:zg361_ch_m106_route }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -6235,6 +6261,7 @@ zg361_career_hc_m107_consume_effect = {
             set_variable = { name = zg361_ch_readiness_band value = var:zg361_ch_m107_route }
             set_variable = { name = zg361_ch_readiness_due_cycle value = { value = var:zg361_case_o_cycle_serial add = 2 } }
         }
+
 
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
@@ -6417,6 +6444,7 @@ zg361_career_hc_m108_consume_effect = {
             set_variable = { name = zg361_ch_acting_capacity_units value = 1 }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -6598,6 +6626,7 @@ zg361_career_hc_m109_consume_effect = {
             set_variable = { name = zg361_ch_high_potential_subject_can_read value = 1 }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -6753,6 +6782,7 @@ zg361_career_hc_m110_consume_effect = {
             set_variable = { name = zg361_ch_potential_score value = { value = var:zg361_ch_m110_value multiply = 10 add = 60 min = 0 max = 100 } }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -6907,6 +6937,7 @@ zg361_career_hc_m111_consume_effect = {
             set_variable = { name = zg361_ch_attrition_class value = var:zg361_ch_m111_route }
             set_variable = { name = zg361_ch_attrition_hc_released value = 1 }
         }
+
 
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
@@ -7213,6 +7244,7 @@ zg361_career_hc_m112_consume_effect = {
             set_variable = { name = zg361_ch_stay_promise_due_cycle value = { value = var:zg361_case_o_cycle_serial add = 1 } }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -7394,6 +7426,7 @@ zg361_career_hc_m113_consume_effect = {
             set_variable = { name = zg361_ch_knowledge_milestone_receipt value = var:zg361_case_o_case_serial }
         }
 
+
         set_variable = { name = zg361_ch_o_capacity_partition value = var:zg361_ch_o_available }
         change_variable = { name = zg361_ch_o_capacity_partition add = var:zg361_ch_o_used }
         set_variable = { name = zg361_ch_o_conserved value = 0 }
@@ -7487,6 +7520,7 @@ zg361_career_hc_open_p_case_effect = {
         set_variable = { name = zg361_ch_p_s4_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_p_s5_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_p_s5_x_deadline_expired value = 0 }
+
             var:zg361_case_p_owner = { save_scope_as = zg361_ch_p_event_owner }
             save_scope_as = zg361_ch_p_event_subject
             save_scope_value_as = { name = zg361_ch_p_event_cycle value = var:zg361_case_p_cycle_serial }
@@ -8220,6 +8254,7 @@ zg361_career_hc_m114_consume_effect = {
             set_variable = { name = zg361_ch_backfill_settled value = 1 }
         }
 
+
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
         set_variable = { name = zg361_ch_p_conserved value = 0 }
@@ -8400,6 +8435,7 @@ zg361_career_hc_m115_consume_effect = {
             set_variable = { name = zg361_ch_application_identity_visible value = 0 }
             if = { limit = { var:zg361_ch_m115_route = 2 } set_variable = { name = zg361_ch_application_identity_visible value = 1 } }
         }
+
 
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
@@ -8589,6 +8625,7 @@ zg361_career_hc_m116_consume_effect = {
             set_variable = { name = zg361_ch_release_extension_used value = 0 }
         }
 
+
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
         set_variable = { name = zg361_ch_p_conserved value = 0 }
@@ -8770,6 +8807,7 @@ zg361_career_hc_m117_consume_effect = {
             set_variable = { name = zg361_ch_ramp_participation_percent value = 40 }
         }
 
+
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
         set_variable = { name = zg361_ch_p_conserved value = 0 }
@@ -8924,6 +8962,7 @@ zg361_career_hc_m118_consume_effect = {
             set_variable = { name = zg361_ch_regular_quota_denominator value = 10 }
             set_variable = { name = zg361_ch_probation_failures_separate value = 1 }
         }
+
 
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
@@ -9230,6 +9269,7 @@ zg361_career_hc_m119_consume_effect = {
             set_variable = { name = zg361_ch_hiring_quality_receivers value = 3 }
         }
 
+
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
         set_variable = { name = zg361_ch_p_conserved value = 0 }
@@ -9413,6 +9453,7 @@ zg361_career_hc_m120_consume_effect = {
             set_variable = { name = zg361_ch_mentor_credit_settled value = 1 }
         }
 
+
         set_variable = { name = zg361_ch_p_capacity_partition value = var:zg361_ch_p_available }
         change_variable = { name = zg361_ch_p_capacity_partition add = var:zg361_ch_p_used }
         set_variable = { name = zg361_ch_p_conserved value = 0 }
@@ -9436,6 +9477,7 @@ zg361_career_hc_open_q_case_effect = {
             zg361_is_reviewable_vassal_trigger = yes
             liege = root
             zg361_is_celestial_liege_trigger = yes
+            any_vassal = { zg361_is_reviewable_vassal_trigger = yes }
         }
         zg361_case_q_open_effect = yes
         if = {
@@ -9452,6 +9494,52 @@ zg361_career_hc_open_q_case_effect = {
             set_variable = { name = zg361_ch_manager_weight_hard value = 40 }
         set_variable = { name = zg361_ch_manager_weight_people value = 30 }
         set_variable = { name = zg361_ch_manager_weight_values value = 30 }
+        set_variable = { name = zg361_ch_q_manager_hc_authorized value = 4 }
+        set_variable = { name = zg361_ch_q_manager_hc_available value = 4 }
+        set_variable = { name = zg361_ch_q_manager_hc_reserved value = 0 }
+        set_variable = { name = zg361_ch_q_manager_hc_occupied value = 0 }
+        set_variable = { name = zg361_ch_q_manager_hc_frozen value = 0 }
+        set_variable = { name = zg361_ch_q_manager_hc_reclaimed value = 0 }
+        set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+        set_variable = { name = zg361_ch_q_crisis_hours_authorized value = 100 }
+        set_variable = { name = zg361_ch_q_crisis_hours_available value = 100 }
+        set_variable = { name = zg361_ch_q_crisis_hours_delegated value = 0 }
+        set_variable = { name = zg361_ch_q_crisis_hours_manager value = 0 }
+        set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+        remove_variable = zg361_ch_q_named_successor_candidate
+        remove_variable = zg361_ch_q_named_survey_respondent
+        set_variable = { name = zg361_ch_m121_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m121_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m121_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m121_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m122_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m122_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m122_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m122_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m123_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m123_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m123_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m123_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m124_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m124_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m124_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m124_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m125_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m125_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m125_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m125_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m126_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m126_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m126_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m126_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m127_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m127_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m127_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m127_business_object_count value = 0 }
+        set_variable = { name = zg361_ch_m128_business_consumed value = 0 }
+        set_variable = { name = zg361_ch_m128_business_deferred value = 0 }
+        set_variable = { name = zg361_ch_m128_business_debt value = 0 }
+        set_variable = { name = zg361_ch_m128_business_object_count value = 0 }
             set_variable = { name = zg361_ch_m121_receipt_active value = 0 }
         set_variable = { name = zg361_ch_m121_consumed value = 0 }
         set_variable = { name = zg361_ch_m121_subject_ack value = 0 }
@@ -9492,6 +9580,23 @@ zg361_career_hc_open_q_case_effect = {
         set_variable = { name = zg361_ch_q_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_q_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_q_s4_x_deadline_expired value = 0 }
+            ordered_vassal = {
+                limit = { zg361_is_reviewable_vassal_trigger = yes }
+                order_by = stewardship
+                position = 0
+                save_temporary_scope_as = zg361_ch_q_named_successor_candidate_scope
+            }
+            if = {
+                limit = { exists = scope:zg361_ch_q_named_successor_candidate_scope }
+                set_variable = {
+                    name = zg361_ch_q_named_successor_candidate
+                    value = scope:zg361_ch_q_named_successor_candidate_scope
+                }
+                set_variable = {
+                    name = zg361_ch_q_named_survey_respondent
+                    value = scope:zg361_ch_q_named_successor_candidate_scope
+                }
+            }
             var:zg361_case_q_owner = { save_scope_as = zg361_ch_q_event_owner }
             save_scope_as = zg361_ch_q_event_subject
             save_scope_value_as = { name = zg361_ch_q_event_cycle value = var:zg361_case_q_cycle_serial }
@@ -9964,6 +10069,7 @@ zg361_career_hc_m121_consume_effect = {
             set_variable = { name = zg361_ch_manager_trial_due_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }
         }
 
+        zg361_career_hc_m121_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -9972,6 +10078,239 @@ zg361_career_hc_m121_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_01_effect = yes
+    }
+}
+
+# Q121 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m121_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 1
+            }
+            var:zg361_ch_m121_receipt_active = 1
+            var:zg361_ch_m121_consumed = 1
+            var:zg361_ch_m121_business_consumed = 0
+            var:zg361_ch_m121_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m121_receipt_subject = this
+            var:zg361_ch_m121_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m121_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m121_receipt_state = 1
+        }
+        set_variable = { name = zg361_ch_m121_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m121_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m121_business_subject value = this }
+        set_variable = { name = zg361_ch_m121_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m121_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m121_business_state value = 1 }
+        set_variable = { name = zg361_ch_m121_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m121_route = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                set_variable = {
+                name = zg361_ch_m121_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1211
+                }
+            }
+            set_variable = { name = zg361_ch_m121_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_candidate_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_candidate_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_candidate_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m121_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1212
+                }
+            }
+            set_variable = { name = zg361_ch_m121_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_manager_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_manager_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m121_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1213
+                }
+            }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                change_variable = { name = zg361_ch_q_manager_hc_available add = -1 }
+                change_variable = { name = zg361_ch_q_manager_hc_reserved add = 1 }
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_manager_trial_team_size value = 3 }
+            set_variable = { name = zg361_ch_manager_trial_authority_state value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m121_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m121_route = 2 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 3 }
+                set_variable = {
+                name = zg361_ch_m121_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1211
+                }
+            }
+            set_variable = { name = zg361_ch_m121_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_candidate_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_candidate_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_candidate_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m121_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1212
+                }
+            }
+            set_variable = { name = zg361_ch_m121_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_manager_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_manager_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m121_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1213
+                }
+            }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_state value = 1 }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_route value = var:zg361_ch_m121_route }
+            set_variable = { name = zg361_ch_m121_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m121_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 3 }
+                change_variable = { name = zg361_ch_q_manager_hc_available add = -3 }
+                change_variable = { name = zg361_ch_q_manager_hc_occupied add = 3 }
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_manager_trial_team_size value = 8 }
+            set_variable = { name = zg361_ch_manager_trial_authority_state value = 2 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m121_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m121_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            }
+            set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m121_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m121_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m121_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 121 committed"
     }
 }
 
@@ -10121,6 +10460,7 @@ zg361_career_hc_m122_consume_effect = {
             set_variable = { name = zg361_ch_manager_weight_values value = 30 }
         }
 
+        zg361_career_hc_m122_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10129,6 +10469,101 @@ zg361_career_hc_m122_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_01_effect = yes
+    }
+}
+
+# Q122 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m122_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 1
+            }
+            var:zg361_ch_m122_receipt_active = 1
+            var:zg361_ch_m122_consumed = 1
+            var:zg361_ch_m122_business_consumed = 0
+            var:zg361_ch_m122_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m122_receipt_subject = this
+            var:zg361_ch_m122_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m122_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m122_receipt_state = 1
+        }
+        set_variable = { name = zg361_ch_m122_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m122_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m122_business_subject value = this }
+        set_variable = { name = zg361_ch_m122_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m122_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m122_business_state value = 1 }
+        set_variable = { name = zg361_ch_m122_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m122_route = 1 }
+            set_variable = {
+                name = zg361_ch_m122_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1221
+                }
+            }
+            set_variable = { name = zg361_ch_m122_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m122_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m122_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m122_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m122_manager_object_state value = 1 }
+            set_variable = { name = zg361_ch_m122_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m122_manager_object_route value = var:zg361_ch_m122_route }
+            set_variable = { name = zg361_ch_m122_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m122_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_manager_score_hard value = 70 }
+            set_variable = { name = zg361_ch_manager_score_people value = 70 }
+            set_variable = { name = zg361_ch_manager_score_values value = 70 }
+            set_variable = { name = zg361_ch_manager_score_total value = 70 }
+            set_variable = { name = zg361_ch_manager_score_weight_total value = 100 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m122_route = 2 }
+            set_variable = {
+                name = zg361_ch_m122_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1221
+                }
+            }
+            set_variable = { name = zg361_ch_m122_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m122_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m122_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m122_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m122_manager_object_state value = 1 }
+            set_variable = { name = zg361_ch_m122_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m122_manager_object_route value = var:zg361_ch_m122_route }
+            set_variable = { name = zg361_ch_m122_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m122_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_manager_score_hard value = 90 }
+            set_variable = { name = zg361_ch_manager_score_people value = 35 }
+            set_variable = { name = zg361_ch_manager_score_values value = 20 }
+            set_variable = { name = zg361_ch_manager_score_total value = 53 }
+            set_variable = { name = zg361_ch_manager_score_weight_total value = 100 }
+            set_variable = { name = zg361_ch_m122_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m122_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m122_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m122_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 122 committed"
     }
 }
 
@@ -10277,6 +10712,7 @@ zg361_career_hc_m123_consume_effect = {
             set_variable = { name = zg361_ch_subordinate_survey_credibility value = 100 }
         }
 
+        zg361_career_hc_m123_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10285,6 +10721,133 @@ zg361_career_hc_m123_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_02_effect = yes
+    }
+}
+
+# Q123 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m123_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 2
+            }
+            var:zg361_ch_m123_receipt_active = 1
+            var:zg361_ch_m123_consumed = 1
+            var:zg361_ch_m123_business_consumed = 0
+            var:zg361_ch_m123_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m123_receipt_subject = this
+            var:zg361_ch_m123_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m123_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m123_receipt_state = 2
+        }
+        set_variable = { name = zg361_ch_m123_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m123_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m123_business_subject value = this }
+        set_variable = { name = zg361_ch_m123_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m123_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m123_business_state value = 2 }
+        set_variable = { name = zg361_ch_m123_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m123_route = 1 }
+            set_variable = {
+                name = zg361_ch_m123_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1231
+                }
+            }
+            set_variable = { name = zg361_ch_m123_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m123_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m123_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m123_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m123_manager_object_state value = 2 }
+            set_variable = { name = zg361_ch_m123_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m123_manager_object_route value = var:zg361_ch_m123_route }
+            set_variable = { name = zg361_ch_m123_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m123_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m123_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1232
+                }
+            }
+            set_variable = { name = zg361_ch_m123_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m123_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m123_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m123_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m123_candidate_object_state value = 2 }
+            set_variable = { name = zg361_ch_m123_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m123_candidate_object_route value = var:zg361_ch_m123_route }
+            set_variable = { name = zg361_ch_m123_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m123_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_subordinate_survey_factors value = 6 }
+            set_variable = { name = zg361_ch_subordinate_survey_sample value = 3 }
+            set_variable = { name = zg361_ch_subordinate_survey_credibility value = 100 }
+            set_variable = { name = zg361_ch_subordinate_survey_respondent value = var:zg361_ch_q_named_survey_respondent }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m123_route = 2 }
+            set_variable = {
+                name = zg361_ch_m123_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1231
+                }
+            }
+            set_variable = { name = zg361_ch_m123_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m123_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m123_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m123_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m123_manager_object_state value = 2 }
+            set_variable = { name = zg361_ch_m123_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m123_manager_object_route value = var:zg361_ch_m123_route }
+            set_variable = { name = zg361_ch_m123_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m123_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m123_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1232
+                }
+            }
+            set_variable = { name = zg361_ch_m123_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m123_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m123_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m123_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m123_candidate_object_state value = 2 }
+            set_variable = { name = zg361_ch_m123_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m123_candidate_object_route value = var:zg361_ch_m123_route }
+            set_variable = { name = zg361_ch_m123_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m123_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_subordinate_survey_factors value = 1 }
+            set_variable = { name = zg361_ch_subordinate_survey_sample value = 1 }
+            set_variable = { name = zg361_ch_subordinate_survey_credibility value = 25 }
+            set_variable = { name = zg361_ch_subordinate_survey_respondent value = var:zg361_ch_q_named_survey_respondent }
+            set_variable = { name = zg361_ch_m123_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m123_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m123_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m123_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 123 committed"
     }
 }
 
@@ -10433,6 +10996,7 @@ zg361_career_hc_m124_consume_effect = {
             set_variable = { name = zg361_ch_manager_promotion_released value = 1 }
         }
 
+        zg361_career_hc_m124_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10441,6 +11005,391 @@ zg361_career_hc_m124_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_02_effect = yes
+    }
+}
+
+# Q124 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m124_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 2
+            }
+            var:zg361_ch_m124_receipt_active = 1
+            var:zg361_ch_m124_consumed = 1
+            var:zg361_ch_m124_business_consumed = 0
+            var:zg361_ch_m124_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m124_receipt_subject = this
+            var:zg361_ch_m124_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m124_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m124_receipt_state = 2
+        }
+        set_variable = { name = zg361_ch_m124_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m124_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m124_business_subject value = this }
+        set_variable = { name = zg361_ch_m124_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m124_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m124_business_state value = 2 }
+        set_variable = { name = zg361_ch_m124_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m124_route = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                set_variable = {
+                name = zg361_ch_m124_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1241
+                }
+            }
+            set_variable = { name = zg361_ch_m124_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_manager_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_manager_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_vacancy_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1242
+                }
+            }
+            set_variable = { name = zg361_ch_m124_vacancy_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_vacancy_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_vacancy_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_vacancy_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_vacancy_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_vacancy_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_vacancy_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_vacancy_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1243
+                }
+            }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1244
+                }
+            }
+            set_variable = { name = zg361_ch_m124_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m124_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_candidate_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_candidate_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_incumbent_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1245
+                }
+            }
+            set_variable = { name = zg361_ch_m124_incumbent_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_incumbent_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_incumbent_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_incumbent_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_incumbent_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_incumbent_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_incumbent_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_incumbent_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_succession_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1246
+                }
+            }
+            set_variable = { name = zg361_ch_m124_succession_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_succession_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_succession_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_succession_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_succession_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_succession_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_succession_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_succession_object_active value = 1 }
+            set_variable = { name = zg361_ch_m124_succession_object_incumbent value = this }
+            set_variable = { name = zg361_ch_m124_succession_object_candidate value = var:zg361_ch_q_named_successor_candidate }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_backfill_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1247
+                }
+            }
+            set_variable = { name = zg361_ch_m124_backfill_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_backfill_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_backfill_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_backfill_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_backfill_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_backfill_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_backfill_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_backfill_object_active value = 1 }
+            set_variable = { name = zg361_ch_m124_backfill_object_vacancy_id value = var:zg361_ch_m124_vacancy_object_id }
+            set_variable = { name = zg361_ch_m124_backfill_object_hc_slot_id value = var:zg361_ch_m124_hc_slot_object_id }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                change_variable = { name = zg361_ch_q_manager_hc_available add = -1 }
+                change_variable = { name = zg361_ch_q_manager_hc_reserved add = 1 }
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_successor_candidate value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_successor_incumbent value = this }
+            set_variable = { name = zg361_ch_successor_accepted value = 1 }
+            set_variable = { name = zg361_ch_manager_promotion_released value = 1 }
+            set_variable = { name = zg361_ch_manager_promotion_continuity_risk value = 0 }
+            set_variable = { name = zg361_ch_backfill_owner value = var:zg361_case_q_owner }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m124_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m124_route = 2 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                set_variable = {
+                name = zg361_ch_m124_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1241
+                }
+            }
+            set_variable = { name = zg361_ch_m124_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_manager_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_manager_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_vacancy_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1242
+                }
+            }
+            set_variable = { name = zg361_ch_m124_vacancy_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_vacancy_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_vacancy_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_vacancy_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_vacancy_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_vacancy_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_vacancy_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_vacancy_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1243
+                }
+            }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1244
+                }
+            }
+            set_variable = { name = zg361_ch_m124_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m124_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_candidate_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_candidate_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_incumbent_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1245
+                }
+            }
+            set_variable = { name = zg361_ch_m124_incumbent_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_incumbent_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_incumbent_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_incumbent_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_incumbent_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_incumbent_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_incumbent_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_incumbent_object_active value = 1 }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_succession_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1246
+                }
+            }
+            set_variable = { name = zg361_ch_m124_succession_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_succession_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_succession_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_succession_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_succession_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_succession_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_succession_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_succession_object_active value = 1 }
+            set_variable = { name = zg361_ch_m124_succession_object_incumbent value = this }
+            set_variable = { name = zg361_ch_m124_succession_object_candidate value = var:zg361_ch_q_named_successor_candidate }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m124_backfill_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1247
+                }
+            }
+            set_variable = { name = zg361_ch_m124_backfill_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m124_backfill_object_subject value = this }
+            set_variable = { name = zg361_ch_m124_backfill_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m124_backfill_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m124_backfill_object_state value = 2 }
+            set_variable = { name = zg361_ch_m124_backfill_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m124_backfill_object_route value = var:zg361_ch_m124_route }
+            set_variable = { name = zg361_ch_m124_backfill_object_active value = 1 }
+            set_variable = { name = zg361_ch_m124_backfill_object_vacancy_id value = var:zg361_ch_m124_vacancy_object_id }
+            set_variable = { name = zg361_ch_m124_backfill_object_hc_slot_id value = var:zg361_ch_m124_hc_slot_object_id }
+            change_variable = { name = zg361_ch_m124_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                change_variable = { name = zg361_ch_q_manager_hc_available add = -1 }
+                change_variable = { name = zg361_ch_q_manager_hc_frozen add = 1 }
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_successor_candidate value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_successor_incumbent value = this }
+            set_variable = { name = zg361_ch_successor_accepted value = 0 }
+            set_variable = { name = zg361_ch_manager_promotion_released value = 1 }
+            set_variable = { name = zg361_ch_manager_promotion_continuity_risk value = 1 }
+            set_variable = { name = zg361_ch_backfill_owner value = var:zg361_case_q_owner }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m124_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m124_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            }
+            set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m124_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m124_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m124_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 124 committed"
     }
 }
 
@@ -10590,6 +11539,7 @@ zg361_career_hc_m125_consume_effect = {
             set_variable = { name = zg361_ch_successor_evidence value = 1 }
         }
 
+        zg361_career_hc_m125_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10598,6 +11548,207 @@ zg361_career_hc_m125_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_03_effect = yes
+    }
+}
+
+# Q125 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m125_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_ch_m125_receipt_active = 1
+            var:zg361_ch_m125_consumed = 1
+            var:zg361_ch_m125_business_consumed = 0
+            var:zg361_ch_m125_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m125_receipt_subject = this
+            var:zg361_ch_m125_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m125_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m125_receipt_state = 3
+        }
+        set_variable = { name = zg361_ch_m125_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m125_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m125_business_subject value = this }
+        set_variable = { name = zg361_ch_m125_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m125_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m125_business_state value = 3 }
+        set_variable = { name = zg361_ch_m125_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m125_route = 1 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_available >= 100 }
+                set_variable = {
+                name = zg361_ch_m125_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1251
+                }
+            }
+            set_variable = { name = zg361_ch_m125_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m125_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m125_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m125_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m125_manager_object_state value = 3 }
+            set_variable = { name = zg361_ch_m125_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m125_manager_object_route value = var:zg361_ch_m125_route }
+            set_variable = { name = zg361_ch_m125_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m125_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m125_succession_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1252
+                }
+            }
+            set_variable = { name = zg361_ch_m125_succession_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m125_succession_object_subject value = this }
+            set_variable = { name = zg361_ch_m125_succession_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m125_succession_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m125_succession_object_state value = 3 }
+            set_variable = { name = zg361_ch_m125_succession_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m125_succession_object_route value = var:zg361_ch_m125_route }
+            set_variable = { name = zg361_ch_m125_succession_object_active value = 1 }
+            set_variable = { name = zg361_ch_m125_succession_object_incumbent value = this }
+            set_variable = { name = zg361_ch_m125_succession_object_candidate value = var:zg361_ch_q_named_successor_candidate }
+            change_variable = { name = zg361_ch_m125_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_available >= 100 }
+                change_variable = { name = zg361_ch_q_crisis_hours_available add = -100 }
+                change_variable = { name = zg361_ch_q_crisis_hours_manager add = 40 }
+                change_variable = { name = zg361_ch_q_crisis_hours_delegated add = 60 }
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_crisis_hours_budget value = 100 }
+            set_variable = { name = zg361_ch_crisis_manager_hours value = 40 }
+            set_variable = { name = zg361_ch_crisis_delegated_hours value = 60 }
+            set_variable = { name = zg361_ch_successor_evidence value = 1 }
+            set_variable = { name = zg361_ch_q_crisis_hours_partition value = var:zg361_ch_q_crisis_hours_available }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_delegated }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_manager }
+            set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_partition = var:zg361_ch_q_crisis_hours_authorized }
+                set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+            }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m125_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_crisis_hours_partition value = var:zg361_ch_q_crisis_hours_available }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_delegated }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_manager }
+            set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_partition = var:zg361_ch_q_crisis_hours_authorized }
+                set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+            }
+            }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m125_route = 2 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_available >= 100 }
+                set_variable = {
+                name = zg361_ch_m125_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1251
+                }
+            }
+            set_variable = { name = zg361_ch_m125_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m125_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m125_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m125_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m125_manager_object_state value = 3 }
+            set_variable = { name = zg361_ch_m125_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m125_manager_object_route value = var:zg361_ch_m125_route }
+            set_variable = { name = zg361_ch_m125_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m125_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m125_succession_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1252
+                }
+            }
+            set_variable = { name = zg361_ch_m125_succession_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m125_succession_object_subject value = this }
+            set_variable = { name = zg361_ch_m125_succession_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m125_succession_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m125_succession_object_state value = 3 }
+            set_variable = { name = zg361_ch_m125_succession_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m125_succession_object_route value = var:zg361_ch_m125_route }
+            set_variable = { name = zg361_ch_m125_succession_object_active value = 1 }
+            set_variable = { name = zg361_ch_m125_succession_object_incumbent value = this }
+            set_variable = { name = zg361_ch_m125_succession_object_candidate value = var:zg361_ch_q_named_successor_candidate }
+            change_variable = { name = zg361_ch_m125_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_available >= 100 }
+                change_variable = { name = zg361_ch_q_crisis_hours_available add = -100 }
+                change_variable = { name = zg361_ch_q_crisis_hours_manager add = 100 }
+                change_variable = { name = zg361_ch_q_crisis_hours_delegated add = 0 }
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_crisis_hours_budget value = 100 }
+            set_variable = { name = zg361_ch_crisis_manager_hours value = 100 }
+            set_variable = { name = zg361_ch_crisis_delegated_hours value = 0 }
+            set_variable = { name = zg361_ch_successor_evidence value = 0 }
+            set_variable = { name = zg361_ch_q_crisis_hours_partition value = var:zg361_ch_q_crisis_hours_available }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_delegated }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_manager }
+            set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_partition = var:zg361_ch_q_crisis_hours_authorized }
+                set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+            }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m125_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m125_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_crisis_hours_partition value = var:zg361_ch_q_crisis_hours_available }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_delegated }
+            change_variable = { name = zg361_ch_q_crisis_hours_partition add = var:zg361_ch_q_crisis_hours_manager }
+            set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_crisis_hours_partition = var:zg361_ch_q_crisis_hours_authorized }
+                set_variable = { name = zg361_ch_q_crisis_hours_conserved value = 1 }
+            }
+            }
+            set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m125_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m125_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m125_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 125 committed"
     }
 }
 
@@ -10745,6 +11896,7 @@ zg361_career_hc_m126_consume_effect = {
             set_variable = { name = zg361_ch_values_quadrant value = var:zg361_ch_m126_route }
         }
 
+        zg361_career_hc_m126_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10753,6 +11905,131 @@ zg361_career_hc_m126_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_03_effect = yes
+    }
+}
+
+# Q126 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m126_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_ch_m126_receipt_active = 1
+            var:zg361_ch_m126_consumed = 1
+            var:zg361_ch_m126_business_consumed = 0
+            var:zg361_ch_m126_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m126_receipt_subject = this
+            var:zg361_ch_m126_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m126_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m126_receipt_state = 3
+        }
+        set_variable = { name = zg361_ch_m126_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m126_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m126_business_subject value = this }
+        set_variable = { name = zg361_ch_m126_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m126_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m126_business_state value = 3 }
+        set_variable = { name = zg361_ch_m126_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m126_route = 1 }
+            set_variable = {
+                name = zg361_ch_m126_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1261
+                }
+            }
+            set_variable = { name = zg361_ch_m126_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m126_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m126_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m126_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m126_manager_object_state value = 3 }
+            set_variable = { name = zg361_ch_m126_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m126_manager_object_route value = var:zg361_ch_m126_route }
+            set_variable = { name = zg361_ch_m126_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m126_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m126_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1262
+                }
+            }
+            set_variable = { name = zg361_ch_m126_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m126_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m126_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m126_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m126_candidate_object_state value = 3 }
+            set_variable = { name = zg361_ch_m126_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m126_candidate_object_route value = var:zg361_ch_m126_route }
+            set_variable = { name = zg361_ch_m126_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m126_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_values_quadrant value = 1 }
+            set_variable = { name = zg361_ch_values_quadrant_action value = 1 }
+            set_variable = { name = zg361_ch_values_quadrant_evidence_frozen value = 1 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m126_route = 2 }
+            set_variable = {
+                name = zg361_ch_m126_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1261
+                }
+            }
+            set_variable = { name = zg361_ch_m126_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m126_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m126_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m126_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m126_manager_object_state value = 3 }
+            set_variable = { name = zg361_ch_m126_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m126_manager_object_route value = var:zg361_ch_m126_route }
+            set_variable = { name = zg361_ch_m126_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m126_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m126_candidate_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1262
+                }
+            }
+            set_variable = { name = zg361_ch_m126_candidate_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m126_candidate_object_subject value = var:zg361_ch_q_named_successor_candidate }
+            set_variable = { name = zg361_ch_m126_candidate_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m126_candidate_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m126_candidate_object_state value = 3 }
+            set_variable = { name = zg361_ch_m126_candidate_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m126_candidate_object_route value = var:zg361_ch_m126_route }
+            set_variable = { name = zg361_ch_m126_candidate_object_active value = 1 }
+            change_variable = { name = zg361_ch_m126_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_values_quadrant value = 2 }
+            set_variable = { name = zg361_ch_values_quadrant_action value = 2 }
+            set_variable = { name = zg361_ch_values_quadrant_evidence_frozen value = 1 }
+            set_variable = { name = zg361_ch_m126_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m126_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m126_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m126_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 126 committed"
     }
 }
 
@@ -10901,6 +12178,7 @@ zg361_career_hc_m127_consume_effect = {
             set_variable = { name = zg361_ch_span_excess value = 3 }
         }
 
+        zg361_career_hc_m127_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -10909,6 +12187,216 @@ zg361_career_hc_m127_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_04_effect = yes
+    }
+}
+
+# Q127 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m127_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 4
+            }
+            var:zg361_ch_m127_receipt_active = 1
+            var:zg361_ch_m127_consumed = 1
+            var:zg361_ch_m127_business_consumed = 0
+            var:zg361_ch_m127_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m127_receipt_subject = this
+            var:zg361_ch_m127_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m127_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m127_receipt_state = 4
+        }
+        set_variable = { name = zg361_ch_m127_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m127_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m127_business_subject value = this }
+        set_variable = { name = zg361_ch_m127_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m127_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m127_business_state value = 4 }
+        set_variable = { name = zg361_ch_m127_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m127_route = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                set_variable = {
+                name = zg361_ch_m127_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1271
+                }
+            }
+            set_variable = { name = zg361_ch_m127_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_manager_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_manager_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m127_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1272
+                }
+            }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m127_vacancy_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1273
+                }
+            }
+            set_variable = { name = zg361_ch_m127_vacancy_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_vacancy_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_vacancy_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_vacancy_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_vacancy_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_vacancy_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_vacancy_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_vacancy_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_available >= 1 }
+                change_variable = { name = zg361_ch_q_manager_hc_available add = -1 }
+                change_variable = { name = zg361_ch_q_manager_hc_occupied add = 1 }
+                set_variable = { name = zg361_ch_m127_business_capacity_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m127_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m127_business_debt value = 1 }
+            }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_span_direct_reports value = 11 }
+            set_variable = { name = zg361_ch_span_frozen value = 8 }
+            set_variable = { name = zg361_ch_span_excess value = 3 }
+            set_variable = { name = zg361_ch_span_layer_inserted value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_ch_m127_business_capacity_applied value = 0 }
+                set_variable = { name = zg361_ch_m127_business_debt value = 1 }
+                set_variable = { name = zg361_ch_m127_business_object_count value = 0 }
+                set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m127_route = 2 }
+            set_variable = {
+                name = zg361_ch_m127_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1271
+                }
+            }
+            set_variable = { name = zg361_ch_m127_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_manager_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_manager_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m127_hc_slot_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1272
+                }
+            }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_hc_slot_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            set_variable = {
+                name = zg361_ch_m127_vacancy_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1273
+                }
+            }
+            set_variable = { name = zg361_ch_m127_vacancy_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m127_vacancy_object_subject value = this }
+            set_variable = { name = zg361_ch_m127_vacancy_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m127_vacancy_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m127_vacancy_object_state value = 4 }
+            set_variable = { name = zg361_ch_m127_vacancy_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m127_vacancy_object_route value = var:zg361_ch_m127_route }
+            set_variable = { name = zg361_ch_m127_vacancy_object_active value = 1 }
+            change_variable = { name = zg361_ch_m127_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_m127_business_capacity_applied value = 0 }
+            set_variable = { name = zg361_ch_q_manager_hc_partition value = var:zg361_ch_q_manager_hc_available }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reserved }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_occupied }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_frozen }
+            change_variable = { name = zg361_ch_q_manager_hc_partition add = var:zg361_ch_q_manager_hc_reclaimed }
+            set_variable = { name = zg361_ch_q_manager_hc_conserved value = 0 }
+            if = {
+                limit = { var:zg361_ch_q_manager_hc_partition = var:zg361_ch_q_manager_hc_authorized }
+                set_variable = { name = zg361_ch_q_manager_hc_conserved value = 1 }
+            }
+            set_variable = { name = zg361_ch_span_direct_reports value = 11 }
+            set_variable = { name = zg361_ch_span_frozen value = 8 }
+            set_variable = { name = zg361_ch_span_excess value = 3 }
+            set_variable = { name = zg361_ch_span_layer_inserted value = 0 }
+            set_variable = { name = zg361_ch_m127_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m127_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m127_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m127_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 127 committed"
     }
 }
 
@@ -11057,6 +12545,7 @@ zg361_career_hc_m128_consume_effect = {
             set_variable = { name = zg361_ch_next_cycle_quota_policy value = var:zg361_ch_m128_route }
         }
 
+        zg361_career_hc_m128_business_consumer_effect = yes
         set_variable = { name = zg361_ch_q_capacity_partition value = var:zg361_ch_q_available }
         change_variable = { name = zg361_ch_q_capacity_partition add = var:zg361_ch_q_used }
         set_variable = { name = zg361_ch_q_conserved value = 0 }
@@ -11065,6 +12554,107 @@ zg361_career_hc_m128_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_04_effect = yes
+    }
+}
+
+# Q128 authoritative typed-object consumer; manager-governance is adapter-only.
+zg361_career_hc_m128_business_consumer_effect = {
+    remove_variable = zg361_ch_q_business_applied
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = var:zg361_case_q_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_q_cycle_serial
+                EXPECTED_CASE = var:zg361_case_q_case_serial
+                EXPECTED_STATE = 4
+            }
+            var:zg361_ch_m128_receipt_active = 1
+            var:zg361_ch_m128_consumed = 1
+            var:zg361_ch_m128_business_consumed = 0
+            var:zg361_ch_m128_receipt_owner = var:zg361_case_q_owner
+            var:zg361_ch_m128_receipt_subject = this
+            var:zg361_ch_m128_receipt_cycle = var:zg361_case_q_cycle_serial
+            var:zg361_ch_m128_receipt_case = var:zg361_case_q_case_serial
+            var:zg361_ch_m128_receipt_state = 4
+        }
+        set_variable = { name = zg361_ch_m128_business_consumed value = 1 }
+        set_variable = { name = zg361_ch_m128_business_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_m128_business_subject value = this }
+        set_variable = { name = zg361_ch_m128_business_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_m128_business_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_m128_business_state value = 4 }
+        set_variable = { name = zg361_ch_m128_business_revision value = var:zg361_case_q_revision }
+        if = {
+            limit = { var:zg361_ch_m128_route = 1 }
+            set_variable = {
+                name = zg361_ch_m128_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1281
+                }
+            }
+            set_variable = { name = zg361_ch_m128_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m128_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m128_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m128_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m128_manager_object_state value = 4 }
+            set_variable = { name = zg361_ch_m128_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m128_manager_object_route value = var:zg361_ch_m128_route }
+            set_variable = { name = zg361_ch_m128_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m128_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_climate_pressure value = 70 }
+            set_variable = { name = zg361_ch_climate_collaboration value = 55 }
+            set_variable = { name = zg361_ch_climate_risk_reporting value = 45 }
+            set_variable = { name = zg361_ch_climate_peer_credibility value = 60 }
+            set_variable = { name = zg361_ch_climate_regrettable_attrition value = 20 }
+            set_variable = { name = zg361_ch_next_cycle_quota_policy value = 1 }
+            set_variable = { name = zg361_ch_next_cycle_quota_policy_effective_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }
+            set_variable = { name = zg361_ch_current_cycle_quota_policy_unchanged value = 1 }
+        }
+        else_if = {
+            limit = { var:zg361_ch_m128_route = 2 }
+            set_variable = {
+                name = zg361_ch_m128_manager_object_id
+                value = {
+                    value = var:zg361_case_q_case_serial
+                    multiply = 1000
+                    add = 1281
+                }
+            }
+            set_variable = { name = zg361_ch_m128_manager_object_owner value = var:zg361_case_q_owner }
+            set_variable = { name = zg361_ch_m128_manager_object_subject value = this }
+            set_variable = { name = zg361_ch_m128_manager_object_cycle value = var:zg361_case_q_cycle_serial }
+            set_variable = { name = zg361_ch_m128_manager_object_case value = var:zg361_case_q_case_serial }
+            set_variable = { name = zg361_ch_m128_manager_object_state value = 4 }
+            set_variable = { name = zg361_ch_m128_manager_object_revision value = var:zg361_case_q_revision }
+            set_variable = { name = zg361_ch_m128_manager_object_route value = var:zg361_ch_m128_route }
+            set_variable = { name = zg361_ch_m128_manager_object_active value = 1 }
+            change_variable = { name = zg361_ch_m128_business_object_count add = 1 }
+            set_variable = { name = zg361_ch_climate_pressure value = 70 }
+            set_variable = { name = zg361_ch_climate_collaboration value = 55 }
+            set_variable = { name = zg361_ch_climate_risk_reporting value = 45 }
+            set_variable = { name = zg361_ch_climate_peer_credibility value = 60 }
+            set_variable = { name = zg361_ch_climate_regrettable_attrition value = 20 }
+            set_variable = { name = zg361_ch_next_cycle_quota_policy value = 2 }
+            set_variable = { name = zg361_ch_next_cycle_quota_policy_effective_cycle value = { value = var:zg361_case_q_cycle_serial add = 1 } }
+            set_variable = { name = zg361_ch_current_cycle_quota_policy_unchanged value = 1 }
+            set_variable = { name = zg361_ch_m128_business_debt value = 1 }
+        }
+        else = {
+            set_variable = { name = zg361_ch_m128_business_deferred value = 1 }
+            set_variable = { name = zg361_ch_m128_business_debt value = 1 }
+            set_variable = { name = zg361_ch_m128_business_object_count value = 0 }
+        }
+        set_variable = { name = zg361_ch_q_business_applied value = 1 }
+        debug_log = "ZG361CH: authoritative Q business consumer 128 committed"
     }
 }
 

@@ -214,6 +214,48 @@ N/O/P/Q 的首批可玩字段包括：
 
 D/M 同批提供资格/晋升包/奖金、转岗和双通道的实际案卷入口；它们与 N/O/P/Q 共用同一 receipt、期限和结案框架，后续无需重写内核。
 
+### Q 121–128 的对象与状态权威
+
+Q 的业务状态由本包独占；经理治理包只能读取或做 adapter，不能另写一份“经理认证结果”。每个编号的通用
+`*_consume_effect` 在 operation receipt 消费后，恰好调用一次同编号
+`*_business_consumer_effect`。后者再次核对 owner、subject、cycle、case、state 和当前 revision，并使用独立
+`business_consumed` 锁阻止重复投递。旧 owner、旧 subject、旧 cycle、旧 case、旧 state/revision 均为 no-op。
+
+Q 开案要求受评经理本人也是天朝制公爵及以上，而且至少有一名真实、可考核直属下属。开案时按 stewardship
+确定性冻结一名实名下属，分别作为下属问卷样本与继任候选；没有合法候选时 P 域正常收口，不会留下半开的 Q。
+因此 candidate 与 incumbent 是两个实际人物引用，而不是把受评经理复制两次冒充“已经有人接班”。
+
+#124 是 vacancy / HC slot / candidate / incumbent / succession / backfill 的权威 join。每个 typed object 都保存：
+
+```text
+object_id + owner + subject + cycle + case + state + revision + route
+```
+
+succession 另存 incumbent/candidate 两端，backfill 另存 vacancy/HC 两端。#121 和 #127 复用同一本四单位
+manager-HC partition；#125 使用一百小时危机 partition。两本账均先检查 available，再移动到
+reserved/occupied/frozen，并在每次操作后重算：
+
+```text
+manager_hc_authorized = available + reserved + occupied + frozen + reclaimed
+crisis_hours_authorized = available + delegated + manager
+```
+
+没有容量时只写本编号 capacity debt，不允许出现负数或凭空增编。A/B/C 的差异是业务状态而不只是按钮名：
+
+| ID | A 证据路线 | B 政治路线 | C 延期路线 |
+|---:|---|---|---|
+| 121 | 小团队试运行，预留 1 单位管理 HC | 直接给大团队，占用 3 单位并留债 | 不建对象、不占 HC，记录延期债 |
+| 122 | 70/70/70 的完整 4-3-3 样本 | 90/35/20 的短期结果偏置样本 | 不冻结记分卡 |
+| 123 | 六项、三样本、可信度 100 | 单项、单样本、可信度 25 | 不伪造下属反馈 |
+| 124 | 实名继任者先验收，HC/backfill 预留后放行 | 先升经理，连续性风险与冻结 HC 留账 | 不生成继任成功对象 |
+| 125 | 40 小时亲自处置 + 60 小时授权 | 100 小时全由经理救火 | 不消费危机工时 |
+| 126 | 双高象限及对应动作 | 高绩效低价值观“野狗”及风险动作 | 不伪造四象限判断 |
+| 127 | 冻结 11 人幅度、增设一层并占 1 HC | 继续扁平直管，保存失真债 | 不改组织层级 |
+| 128 | 冻结五项气候并只在下一周期生效 | 保留硬配额，同样只改下一周期 | 不创建未来政策 |
+
+上述结论已有 Python reference model 与生成源静态测试，但仍没有 CK3/MCP 实机证据；“真实人物引用”是脚本
+投影合同，必须等 native query 读回 named character、对象 tuple 和两个 partition 后才能升级 live readiness。
+
 ## 八、玩家反馈与本地化
 
 每个编号生成简中/英文标题、业务说明及 A/B/C 路说明，既供 44 张玩家业务卡使用，也供后续考核榜职业/HC 页消费。结案时：
@@ -238,6 +280,10 @@ D/M 同批提供资格/晋升包/奖金、转岗和双通道的实际案卷入�
 - 所有阶段屏障、真实 delayed event、P116 的 90/150 日分支和 route C 超时；
 - 七项双付款的两本共享 journal 与真实 treasury/gold 转账；
 - #023 免费；N 域 HC partition 守恒；P 域隐私/延期/保护；Q 域 4-3-3/六项评价/接班门；
+- Q121–128 的八个权威 business consumer、typed object 五元组、实名 candidate/incumbent 分离、manager-HC/
+  crisis-hours 守恒、A/B/C、重复锁与 stale guard；
+- `tools/zg361_career_hc_semantic_model.py` 的 Python reference model 逐路线验证对象、容量、资源及 exact no-op，
+  并明确标记为 `python-l0-reference-only`；
 - 伯爵/男爵的 subject-self 路径不含任何管理入口；
 - 玩家事件与 AI 静默边界；
 - 简中/英文原创、七语占位结构、无宗教入口、无新增 GUI。
