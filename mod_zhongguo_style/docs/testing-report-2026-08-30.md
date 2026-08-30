@@ -177,3 +177,13 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
 - `7 / 14 / 2` 已十六次实机复现；第十六次 attempt 的顶层和 cell 均为 GREEN，项目诊断为 0。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、D+2 产品事件 typed MCP 清理及六张代表政策卡完整提交均已在同局达到 **live GREEN**。工坊 01/02/03 替换图、正式宣传视频与发布/上传仍待制作和验收，不因实机功能 GREEN 自动视为完成。
+
+## 18. 最终 GREEN 素材投影与上传前静态矩阵
+
+第十六次完整 GREEN 的八张 Workshop JPEG 已全部重投影并提交：01/02 直接显示宋帝 23 人严格 `7 / 14 / 2`，03 冻结同一正确名单，04–06 覆盖京察、免费规划器与史实上司 `3.25`，07/08 为同局第001/361号真实政策卡。八图与 `media-policy-lock.json` 位于 image-bearing commit `aff24a7dbe2e53e749a85983cce8f63ac518f08c`；随后提交的 README 与 7,917-byte BBCode 均以 40 字符 URL 固定引用该图片提交。原错误素材和全部 RED 录屏继续保留。
+
+提交 `1e55a2e` 的 clean worktree 上传前静态矩阵已经完整 GREEN：发布本地化、thumbnail 可复现、八张 tracked media、宣传脚本/manifest/视觉审计工具、BBCode、361 acceptance cases、Workshop acceptance、release builder、fresh-cache verifier 与 deterministic `--check` 均通过。正式树为 51 个文件；manifest SHA-256 为 `9FA1C48842007038CFE1CC666D154D93550F18C967E3504E7CC94D431358D9FF`，ZIP SHA-256 为 `7ECF185749A6DEB10C7B260EEC70040299EDBD0BE96F49D5418000221BC32BA2`。日志保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\pretag-static-1e55a2e`，先前因德/日六条文案失败的 `pretag-static-318255f` 仍原样保留。
+
+最终宣传 release manifest 已绑定同一 GREEN 原片、史实赵曙 `han_8052` 与陈贯 `han_6071`，共 20 章，其中 14 个实机视频章、4 个生成证据边界卡和 2 个生成片头/片尾，0 placeholder，估算时长 437.039 秒。机器视觉证据覆盖 108 张全屏帧与 5,014 个 OCR item，22 个测试 UI 禁词零命中。供真人审阅的 14 段无裁切 H.264 片段及索引保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\review-bundle-20260830-100410`。
+
+该宣传候选仍为 **PENDING_HUMAN_REVIEW_NOT_SIGNED**：五项人工 attestation 均为 false，没有生成 SIGNED spec，也没有把抽帧、OCR 或自动测试冒充 1× 完整观看。正式宣传片渲染、annotated release tag、Steam 首次上传与 fresh-cache production smoke 因而仍未宣称完成。

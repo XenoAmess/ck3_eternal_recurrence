@@ -48,12 +48,19 @@ Z:\ck3_mod_rewrite_process_assets\zg361\localization\release_0.3.0_review6i_c_20
 - 新增回归同时锁定 decision/effect 的同年闸门与九语 18 个最终值；本地化单测 33/33 GREEN。
 - 原始候选与拒绝原样落盘的原因保存在仓库外过程目录 `Z:\ck3_mod_rewrite_process_assets\zg361\localization\review_now_no_repeat_20260830`。
 
+### 2026-08-30 上传前最终审计修正
+
+- 上传前 clean-worktree 矩阵抓到六个发布级残留：德语第336号仍含英文 `Definition of Ready`，日语第015、061、160、246、287号的长标题缺少假名、呈现为不自然的汉字堆叠。
+- MiniMax-M3 仍只接收六个最小 key-value 及保护 token 并返回候选 JSON；当前执行者复核语义与现有术语后，修改德语/日语权威 translation JSON，再运行 `gen_361_mechanisms.py` 生成发布投影。没有直接手改生成文件，也没有把自动候选称为母语审校。
+- 修正后 `test_prepare_release_localization.py` 33/33、`validate_local.py`、发布本地化 audit 和生成器陈旧检查均为 GREEN；旧 RED 日志没有覆盖。
+- 最终上传前静态日志目录：`Z:\ck3_mod_rewrite_process_assets\zg361\release\pretag-static-1e55a2e`。
+
 ## 自动化与独立审阅
 
 - 候选完整性、当前源哈希、key 顺序、protected token、目标文字脚本、乱码、明显英文残留与已知误译回归：GREEN。
 - 应用后的 4 个权威源文件与 14 个发布目标文件哈希审计：GREEN。
 - 当前审计快照：`docs/release-localization-audit.json`。
-- 审计快照 SHA-256：`15904C8B49A0EE150D9C626FD65353BB6F7785B7E19D3D332A14971801B80E3F`。
+- 当前审计快照 SHA-256：`DC8430A5A79813856BEAF733B122BE0CA1C7CA40F837C4D527D65BB346E986FC`。
 - 独立只读最终审批：review6i_c PASS；相对已批准 review6h 仅七个指定值变化，九个迁移键的 63 个七语值无回退。
 - 本地单元测试：orchestrator 32/32、MiniMax caller 26/26 GREEN；Python 编译与目标 diff 检查 GREEN。
 
