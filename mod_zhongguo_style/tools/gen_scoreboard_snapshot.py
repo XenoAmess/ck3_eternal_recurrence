@@ -14,6 +14,33 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 SLOT_COUNT = 80
 TOGGLE_SIZE = (180, 44)
 TOGGLE_POSITION = (-60, 90)
+
+# The outer frame follows the viewport, while immutable table/detail widths
+# remain inside as-needed two-axis scroll surfaces.  This keeps CK3's native
+# text/button sizes and column alignment instead of silently shrinking them at
+# 1366x768 or high UI scale.  The exact release matrix is a test contract.
+PANEL_VIEWPORT_PERCENT = 90
+TABLE_CONTENT_WIDTH = 1120
+DETAIL_CONTENT_WIDTH = 720
+LEDGER_CONTENT_WIDTH = 760
+GEOMETRY_RESOLUTIONS = ((1366, 768), (1920, 1080), (2560, 1440))
+GEOMETRY_UI_SCALES = (1.0, 1.25, 1.5)
+PANEL_MIN_PHYSICAL_MARGIN = 32
+PANEL_HORIZONTAL_FRAME_MARGIN = 80
+# CK3 1.19.0.6 fixed-height budgets, including the 12-unit horizontal
+# scrollbar.  The detail surface deliberately keeps the 90-unit identity
+# portrait and both tab bars fixed; at the smallest contract cell it still
+# leaves more than one 37-unit field row's height inside the scroll viewport.
+SURFACE_FIXED_CHROME_BUDGETS = {
+    "list": 200,
+    "ledger": 236,
+    "detail": 417,
+}
+SURFACE_MIN_SCROLL_VIEWPORTS = {
+    "list": 250,
+    "ledger": 210,
+    "detail": 37,
+}
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py\n"
 DETAIL_PAGES = ("facts", "peer", "quota", "audit")
@@ -1278,42 +1305,47 @@ def tab_gui(prefix: str) -> list[str]:
         "\tlayoutpolicy_vertical = expanding",
         "\tspacing = 8",
         f"\tvisible = \"{visible}\"",
-        "\thbox = {",
-        "\t\tlayoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }",
+        "\tscrollbox = {",
+        f"\t\tname = \"zg361_scoreboard_table_{source}\"",
+        "\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
+        "\t\tscrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed",
+        "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
+        "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
+        "\t\tblockoverride \"scrollbox_content\" {",
+        "\t\t\tset_parent_size_to_minimum = yes",
+        f"\t\t\tvbox = {{ minimumsize = {{ {TABLE_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 8",
+        "\t\t\t\thbox = {",
+        "\t\t\t\t\tlayoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }",
     ]
     if not managed:
         lines.extend(
             [
-                "\t\ttext_single = { text = \"zg361_scoreboard_reviewer\" default_format = \"#weak\" align = nobaseline }",
-                "\t\ttext_single = { text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_received_owner').Char.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline }",
+                "\t\t\t\t\ttext_single = { text = \"zg361_scoreboard_reviewer\" default_format = \"#weak\" align = nobaseline }",
+                "\t\t\t\t\ttext_single = { text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_received_owner').Char.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline }",
             ]
         )
     lines.extend(
         [
-            "\t\ttext_single = { text = \"zg361_scoreboard_year\" default_format = \"#weak\" align = nobaseline }",
-            f"\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_year').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
-            "\t\ttext_single = { text = \"zg361_scoreboard_total\" default_format = \"#weak\" align = nobaseline }",
-            f"\t\ttext_single = {{ visible = \"[GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" raw_text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
-            f"\t\ttext_single = {{ visible = \"[Not(GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
-            "\t\texpand = {}",
+            "\t\t\t\t\ttext_single = { text = \"zg361_scoreboard_year\" default_format = \"#weak\" align = nobaseline }",
+            f"\t\t\t\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_year').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+            "\t\t\t\t\ttext_single = { text = \"zg361_scoreboard_total\" default_format = \"#weak\" align = nobaseline }",
+            f"\t\t\t\t\ttext_single = {{ visible = \"[GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" raw_text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+            f"\t\t\t\t\ttext_single = {{ visible = \"[Not(GetScriptedGui('{shown_available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+            "\t\t\t\t\texpand = {}",
         ]
     )
     for grade, field in (("375", "375_n"), ("35", "35_n"), ("325", "325_n")):
         lines.extend(
             [
-                f"\t\ttext_single = {{ text = \"zg361_scoreboard_grade_{grade}\" align = nobaseline }}",
-                f"\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_{field}').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+                f"\t\t\t\t\ttext_single = {{ text = \"zg361_scoreboard_grade_{grade}\" align = nobaseline }}",
+                f"\t\t\t\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_{field}').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
             ]
         )
     lines.extend(
         [
-            "\t}",
-            "\tdivider_light = { layoutpolicy_horizontal = expanding }",
-            "\tzg361_scoreboard_columns = {}",
-            "\tscrollbox = {",
-            "\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
-            "\t\tblockoverride \"scrollbox_content\" {",
-            "\t\t\tvbox = { layoutpolicy_horizontal = expanding spacing = 3",
+            "\t\t\t\t}",
+            "\t\t\t\tdivider_light = { layoutpolicy_horizontal = expanding }",
+            "\t\t\t\tzg361_scoreboard_columns = {}",
         ]
     )
     for slot in range(1, SLOT_COUNT + 1):
@@ -1363,9 +1395,14 @@ def detail_page_gui(page: str) -> list[str]:
         f"\tvisible = \"[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', '{page}')]\"",
         f"\ttext_label_center = {{ layoutpolicy_horizontal = expanding text = \"zg361_scoreboard_detail_{page}_hint\" default_format = \"#weak\" using = Font_Size_Small }}",
         "\tscrollbox = {",
+        f"\t\tname = \"zg361_scoreboard_detail_scroll_{page}\"",
         "\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
+        "\t\tscrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed",
+        "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
+        "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
         "\t\tblockoverride \"scrollbox_content\" {",
-        "\t\t\tvbox = { layoutpolicy_horizontal = expanding spacing = 3",
+        "\t\t\tset_parent_size_to_minimum = yes",
+        f"\t\t\tvbox = {{ minimumsize = {{ {DETAIL_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 3",
     ]
     if fields:
         for field in fields:
@@ -1433,35 +1470,53 @@ def ledger_tab_gui() -> list[str]:
     )
     lines = [
         "vbox = {",
-        "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 14 margin = { 34 24 }",
+        "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8",
         "\tvisible = \"[And(GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system'))]\"",
-        "\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_title\" default_format = \"#high\" using = Font_Size_Large }",
-        "\thbox = { layoutpolicy_horizontal = expanding spacing = 12",
-        "\t\ttext_single = { text = \"zg361_ledger_configured\" default_format = \"#weak\" align = nobaseline }",
-        "\t\ttext_single = { raw_text = \"[GetPlayer.MakeScope.Var('zg361_mechanism_configured_n').GetValue|0] / 361\" default_format = \"#high\" align = nobaseline }",
-        "\t\texpand = {}",
-        "\t\ttext_single = { text = \"zg361_ledger_checksum\" default_format = \"#weak\" align = nobaseline }",
-        "\t\ttext_single = { text = \"[GetPlayer.MakeScope.Var('zg361_mechanism_checksum').GetValue|0]\" default_format = \"#high\" align = nobaseline }",
-        "\t}",
-        "\tdivider_light = { layoutpolicy_horizontal = expanding }",
-        "\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_explainer\" default_format = \"#weak\" using = Font_Size_Medium }",
-        "\thbox = {",
-        "\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 28",
+        "\tscrollbox = {",
+        "\t\tname = \"zg361_scoreboard_ledger_scroll\"",
+        "\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
+        "\t\tscrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed",
+        "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
+        "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
+        "\t\tblockoverride \"scrollbox_content\" {",
+        "\t\t\tset_parent_size_to_minimum = yes",
+        f"\t\t\tvbox = {{ minimumsize = {{ {LEDGER_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 14 margin = {{ 34 24 }}",
+        "\t\t\t\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_title\" default_format = \"#high\" using = Font_Size_Large }",
+        "\t\t\t\thbox = { layoutpolicy_horizontal = expanding spacing = 12",
+        "\t\t\t\t\ttext_single = { text = \"zg361_ledger_configured\" default_format = \"#weak\" align = nobaseline }",
+        "\t\t\t\t\ttext_single = { raw_text = \"[GetPlayer.MakeScope.Var('zg361_mechanism_configured_n').GetValue|0] / 361\" default_format = \"#high\" align = nobaseline }",
+        "\t\t\t\t\texpand = {}",
+        "\t\t\t\t\ttext_single = { text = \"zg361_ledger_checksum\" default_format = \"#weak\" align = nobaseline }",
+        "\t\t\t\t\ttext_single = { text = \"[GetPlayer.MakeScope.Var('zg361_mechanism_checksum').GetValue|0]\" default_format = \"#high\" align = nobaseline }",
+        "\t\t\t\t}",
+        "\t\t\t\tdivider_light = { layoutpolicy_horizontal = expanding }",
+        "\t\t\t\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_explainer\" default_format = \"#weak\" using = Font_Size_Medium }",
+        "\t\t\t\thbox = {",
+        "\t\t\t\t\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 28",
     ]
     for column in (labels[:7], labels[7:]):
-        lines.append("\t\tvbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6")
+        lines.append("\t\t\t\t\tvbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6")
         for ledger, label in column:
             lines.extend(
                 [
-                    "\t\t\thbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }",
-                    f"\t\t\t\ttext_single = {{ min_width = 280 text = \"{label}\" default_format = \"#weak\" align = nobaseline }}",
-                    "\t\t\t\texpand = {}",
-                    f"\t\t\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_org_{ledger}').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
-                    "\t\t\t}",
+                    "\t\t\t\t\t\thbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }",
+                    f"\t\t\t\t\t\t\ttext_single = {{ min_width = 280 text = \"{label}\" default_format = \"#weak\" align = nobaseline }}",
+                    "\t\t\t\t\t\t\texpand = {}",
+                    f"\t\t\t\t\t\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('zg361_org_{ledger}').GetValue|0]\" default_format = \"#high\" align = nobaseline }}",
+                    "\t\t\t\t\t\t}",
                 ]
             )
-        lines.append("\t\t}")
-    lines.extend(["\t}", "\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_hint\" default_format = \"#weak\" using = Font_Size_Small }", "}"])
+        lines.append("\t\t\t\t\t}")
+    lines.extend(
+        [
+            "\t\t\t\t}",
+            "\t\t\t}",
+            "\t\t}",
+            "\t}",
+            "\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_hint\" default_format = \"#weak\" using = Font_Size_Small }",
+            "}",
+        ]
+    )
     return lines
 
 
@@ -1515,7 +1570,7 @@ def render_gui() -> bytes:
         "\t\talwaystransparent = no filter_mouse = all using = Background_Full_Dim using = Animation_ShowHide_Quick",
         f"\t\tbutton_normal = {{ size = {{ 100% 100% }} onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }}",
         "\t\twidget = {",
-        "\t\t\tname = \"zg361_scoreboard_panel\" size = { 1220 820 } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike",
+        f"\t\t\tname = \"zg361_scoreboard_panel\" size = {{ {PANEL_VIEWPORT_PERCENT}% {PANEL_VIEWPORT_PERCENT}% }} parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike",
         "\t\t\tvbox = {",
         "\t\t\t\tusing = Window_Margins spacing = 8",
         f"\t\t\t\theader_pattern = {{ layoutpolicy_horizontal = expanding blockoverride \"header_text\" {{ text = \"zg361_scoreboard_title\" }} blockoverride \"button_close\" {{ onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }} }}",

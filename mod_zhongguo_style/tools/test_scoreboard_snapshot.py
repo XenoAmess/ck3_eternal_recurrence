@@ -15,6 +15,7 @@ from gen_scoreboard_snapshot import (
     DETAIL_CLEAR_ACTION,
     DETAIL_CLEAR_GUI,
     DETAIL_PAGES,
+    DETAIL_CONTENT_WIDTH,
     DISCLOSURE_A_CASE_FIELDS,
     DISCLOSURE_A_FIELD_NAMES,
     DISCLOSURE_ACL_MODE,
@@ -29,8 +30,17 @@ from gen_scoreboard_snapshot import (
     SENSITIVE_RECEIVED_FIELDS,
     SENSITIVE_RECEIVED_SOURCE_VARS,
     FieldSpec,
+    GEOMETRY_RESOLUTIONS,
+    GEOMETRY_UI_SCALES,
+    LEDGER_CONTENT_WIDTH,
     MOD_ROOT,
+    PANEL_HORIZONTAL_FRAME_MARGIN,
+    PANEL_MIN_PHYSICAL_MARGIN,
+    PANEL_VIEWPORT_PERCENT,
     SLOT_COUNT,
+    SURFACE_FIXED_CHROME_BUDGETS,
+    SURFACE_MIN_SCROLL_VIEWPORTS,
+    TABLE_CONTENT_WIDTH,
     TOGGLE_POSITION,
     TOGGLE_SIZE,
     disclosure_case_is_current,
@@ -891,6 +901,211 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertEqual(
             tuple(round(value * scale_1440p) for value in (left, right, top, bottom)),
             (2240, 2480, 120, 179),
+        )
+
+    def test_responsive_panel_uses_bounded_two_axis_scroll_surfaces(self) -> None:
+        gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        self.assertIn(
+            f'name = "zg361_scoreboard_panel" size = {{ '
+            f"{PANEL_VIEWPORT_PERCENT}% {PANEL_VIEWPORT_PERCENT}% }} "
+            "parentanchor = center widgetanchor = center",
+            gui,
+        )
+        self.assertNotIn(
+            'name = "zg361_scoreboard_panel" size = { 1220 820 }', gui
+        )
+
+        scroll_contracts = {
+            "zg361_scoreboard_table_managed": TABLE_CONTENT_WIDTH,
+            "zg361_scoreboard_table_received": TABLE_CONTENT_WIDTH,
+            "zg361_scoreboard_ledger_scroll": LEDGER_CONTENT_WIDTH,
+            **{
+                f"zg361_scoreboard_detail_scroll_{page}": DETAIL_CONTENT_WIDTH
+                for page in DETAIL_PAGES
+            },
+        }
+        for name, content_width in scroll_contracts.items():
+            marker = f'name = "{name}"'
+            self.assertEqual(gui.count(marker), 1)
+            body = gui.split(marker, 1)[1].split(
+                'blockoverride "scrollbox_content" {', 1
+            )[0]
+            self.assertIn("layoutpolicy_horizontal = expanding", body)
+            self.assertIn("layoutpolicy_vertical = expanding", body)
+            self.assertIn("scrollbarpolicy_horizontal = as_needed", body)
+            self.assertIn("scrollbarpolicy_vertical = as_needed", body)
+            self.assertIn(
+                "scrollbar_horizontal = { using = Scrollbar_Horizontal }", body
+            )
+            self.assertIn(
+                "scrollbar_vertical = { using = Scrollbar_Vertical }", body
+            )
+            content = gui.split(marker, 1)[1].split(
+                'blockoverride "scrollbox_content" {', 1
+            )[1]
+            self.assertIn("set_parent_size_to_minimum = yes", content)
+            self.assertIn(f"minimumsize = {{ {content_width} 0 }}", content)
+
+        self.assertEqual(gui.count("scrollbarpolicy_horizontal = as_needed"), 7)
+        self.assertEqual(gui.count("scrollbarpolicy_vertical = as_needed"), 7)
+        self.assertEqual(gui.count("using = Scrollbar_Horizontal"), 7)
+        self.assertEqual(gui.count("using = Scrollbar_Vertical"), 7)
+
+    def test_three_by_three_geometry_and_modal_blocking_contract(self) -> None:
+        gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        self.assertEqual(
+            GEOMETRY_RESOLUTIONS,
+            ((1366, 768), (1920, 1080), (2560, 1440)),
+        )
+        self.assertEqual(GEOMETRY_UI_SCALES, (1.0, 1.25, 1.5))
+        self.assertEqual(
+            SURFACE_FIXED_CHROME_BUDGETS,
+            {"list": 200, "ledger": 236, "detail": 417},
+        )
+        self.assertEqual(
+            SURFACE_MIN_SCROLL_VIEWPORTS,
+            {"list": 250, "ledger": 210, "detail": 37},
+        )
+        self.assertIn(
+            'name = "zg361_scoreboard_modal" size = { 100% 100% }', gui
+        )
+        self.assertIn(
+            "alwaystransparent = no filter_mouse = all using = Background_Full_Dim",
+            gui,
+        )
+        self.assertRegex(
+            gui,
+            re.compile(
+                r"button_normal\s*=\s*\{\s*size\s*=\s*\{\s*100%\s+100%\s*\}"
+            ),
+        )
+        self.assertRegex(
+            gui,
+            re.compile(
+                r'name\s*=\s*"zg361_scoreboard_panel".*?'
+                r"alwaystransparent\s*=\s*no\s+filter_mouse\s*=\s*all"
+            ),
+        )
+
+        tested_cells = 0
+        horizontal_overflow_cells = 0
+        expected_horizontal_overflow = {
+            (1366, 768, 1.25),
+            (1366, 768, 1.5),
+            (1920, 1080, 1.5),
+        }
+        panel_ratio = PANEL_VIEWPORT_PERCENT / 100
+        toggle_width, toggle_height = TOGGLE_SIZE
+        toggle_x, toggle_y = TOGGLE_POSITION
+        for width, height in GEOMETRY_RESOLUTIONS:
+            for ui_scale in GEOMETRY_UI_SCALES:
+                with self.subTest(resolution=(width, height), ui_scale=ui_scale):
+                    tested_cells += 1
+                    logical_width = width / ui_scale
+                    logical_height = height / ui_scale
+                    panel_logical_width = logical_width * panel_ratio
+                    panel_logical_height = logical_height * panel_ratio
+                    panel_physical_width = panel_logical_width * ui_scale
+                    panel_physical_height = panel_logical_height * ui_scale
+                    panel_left = (width - panel_physical_width) / 2
+                    panel_top = (height - panel_physical_height) / 2
+                    panel_right = panel_left + panel_physical_width
+                    panel_bottom = panel_top + panel_physical_height
+
+                    self.assertGreaterEqual(panel_left, PANEL_MIN_PHYSICAL_MARGIN)
+                    self.assertGreaterEqual(panel_top, PANEL_MIN_PHYSICAL_MARGIN)
+                    self.assertLessEqual(panel_right, width)
+                    self.assertLessEqual(panel_bottom, height)
+                    for surface, fixed_chrome in (
+                        SURFACE_FIXED_CHROME_BUDGETS.items()
+                    ):
+                        self.assertGreaterEqual(
+                            panel_logical_height - fixed_chrome,
+                            SURFACE_MIN_SCROLL_VIEWPORTS[surface],
+                            surface,
+                        )
+
+                    content_viewport_width = (
+                        panel_logical_width - PANEL_HORIZONTAL_FRAME_MARGIN
+                    )
+                    self.assertGreater(content_viewport_width, 0)
+                    overflows_horizontally = (
+                        TABLE_CONTENT_WIDTH > content_viewport_width
+                    )
+                    self.assertEqual(
+                        overflows_horizontally,
+                        (width, height, ui_scale)
+                        in expected_horizontal_overflow,
+                    )
+                    if overflows_horizontally:
+                        horizontal_overflow_cells += 1
+
+                    toggle_left = width + toggle_x * ui_scale - toggle_width * ui_scale
+                    toggle_right = width + toggle_x * ui_scale
+                    toggle_top = toggle_y * ui_scale
+                    toggle_bottom = toggle_top + toggle_height * ui_scale
+                    self.assertGreaterEqual(toggle_left, 0)
+                    self.assertLessEqual(toggle_right, width)
+                    self.assertGreaterEqual(toggle_top, 0)
+                    self.assertLessEqual(toggle_bottom, height)
+                    self.assertGreaterEqual(
+                        width - toggle_right,
+                        50 * ui_scale + 10 * ui_scale,
+                    )
+
+                    modal_rect = (0, 0, width, height)
+                    self.assertEqual(modal_rect, (0, 0, width, height))
+                    self.assertGreaterEqual(panel_left, modal_rect[0])
+                    self.assertGreaterEqual(panel_top, modal_rect[1])
+                    self.assertLessEqual(panel_right, modal_rect[2])
+                    self.assertLessEqual(panel_bottom, modal_rect[3])
+
+        self.assertEqual(tested_cells, 9)
+        self.assertEqual(
+            horizontal_overflow_cells,
+            len(expected_horizontal_overflow),
+        )
+
+    def test_responsive_scrollbars_add_no_product_action_buttons(self) -> None:
+        gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        expected_direct = {
+            "button_standard = {": SLOT_COUNT * 2 + 4,
+            "button_normal = {": 1,
+            "button_tab = {": 3 + len(DETAIL_PAGES),
+            "button_tertiary = {": SLOT_COUNT * 2,
+        }
+        for marker, expected in expected_direct.items():
+            self.assertEqual(gui.count(marker), expected, marker)
+        self.assertEqual(sum(expected_direct.values()), 332)
+        self.assertEqual(gui.count('blockoverride "button_close"'), 1)
+
+        # The seven as-needed horizontal scroll surfaces instantiate the
+        # vanilla Scrollbar_Horizontal template.  They introduce no product
+        # action node in this generated file; the template owns four bounded
+        # navigation descendants (track, slider, decrement and increment).
+        horizontal_surfaces = gui.count("using = Scrollbar_Horizontal")
+        vertical_surfaces = gui.count("using = Scrollbar_Vertical")
+        self.assertEqual(horizontal_surfaces, 7)
+        self.assertEqual(vertical_surfaces, 7)
+        self.assertNotIn("scrollbar = {", gui)
+        vanilla_navigation_descendants = 4
+        self.assertEqual(
+            horizontal_surfaces * vanilla_navigation_descendants,
+            28,
+        )
+        preexisting_vertical_surfaces = 6
+        new_vertical_surfaces = vertical_surfaces - preexisting_vertical_surfaces
+        self.assertEqual(new_vertical_surfaces, 1)
+        self.assertEqual(
+            (horizontal_surfaces + new_vertical_surfaces)
+            * vanilla_navigation_descendants,
+            32,
         )
 
     def test_all_interactive_controls_keep_the_modal_contract(self) -> None:

@@ -32,7 +32,7 @@ window = {
 		alwaystransparent = no filter_mouse = all using = Background_Full_Dim using = Animation_ShowHide_Quick
 		button_normal = { size = { 100% 100% } onclick = "[GetScriptedGui('zg361_scoreboard_detail_clear_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" onclick = "[GetVariableSystem.Clear('zg361_scoreboard_open')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]" shortcut = close_window }
 		widget = {
-			name = "zg361_scoreboard_panel" size = { 1220 820 } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike
+			name = "zg361_scoreboard_panel" size = { 90% 90% } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike
 			vbox = {
 				using = Window_Margins spacing = 8
 				header_pattern = { layoutpolicy_horizontal = expanding blockoverride "header_text" { text = "zg361_scoreboard_title" } blockoverride "button_close" { onclick = "[GetScriptedGui('zg361_scoreboard_detail_clear_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" onclick = "[GetVariableSystem.Clear('zg361_scoreboard_open')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]" shortcut = close_window } }
@@ -46,27 +46,32 @@ window = {
 					layoutpolicy_vertical = expanding
 					spacing = 8
 					visible = "[And(And(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')), Not(And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
-					hbox = {
-						layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
-						text_single = { text = "zg361_scoreboard_year" default_format = "#weak" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_year').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_total" default_format = "#weak" align = nobaseline }
-						text_single = { visible = "[GetScriptedGui('zg361_scoreboard_managed_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" raw_text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_managed_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { visible = "[Not(GetScriptedGui('zg361_scoreboard_managed_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						expand = {}
-						text_single = { text = "zg361_scoreboard_grade_375" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_375_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_grade_35" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_35_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_grade_325" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_325_n').GetValue|0]" default_format = "#high" align = nobaseline }
-					}
-					divider_light = { layoutpolicy_horizontal = expanding }
-					zg361_scoreboard_columns = {}
 					scrollbox = {
+						name = "zg361_scoreboard_table_managed"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+						scrollbar_horizontal = { using = Scrollbar_Horizontal }
+						scrollbar_vertical = { using = Scrollbar_Vertical }
 						blockoverride "scrollbox_content" {
-							vbox = { layoutpolicy_horizontal = expanding spacing = 3
+							set_parent_size_to_minimum = yes
+							vbox = { minimumsize = { 1120 0 } layoutpolicy_horizontal = expanding spacing = 8
+								hbox = {
+									layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
+									text_single = { text = "zg361_scoreboard_year" default_format = "#weak" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_year').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_total" default_format = "#weak" align = nobaseline }
+									text_single = { visible = "[GetScriptedGui('zg361_scoreboard_managed_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" raw_text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_managed_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { visible = "[Not(GetScriptedGui('zg361_scoreboard_managed_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									expand = {}
+									text_single = { text = "zg361_scoreboard_grade_375" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_375_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_grade_35" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_35_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_grade_325" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_managed_325_n').GetValue|0]" default_format = "#high" align = nobaseline }
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+								zg361_scoreboard_columns = {}
 								hbox = {
 									size = { 1120 68 } layoutpolicy_horizontal = expanding spacing = 8
 									visible = "[GetScriptedGui('zg361_sb_m_01_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
@@ -3436,29 +3441,34 @@ window = {
 					layoutpolicy_vertical = expanding
 					spacing = 8
 					visible = "[And(And(GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')), Not(And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), GetScriptedGui('zg361_scoreboard_detail_received_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
-					hbox = {
-						layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
-						text_single = { text = "zg361_scoreboard_reviewer" default_format = "#weak" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_owner').Char.GetUINameNotMeNoTooltip]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_year" default_format = "#weak" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_year').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_total" default_format = "#weak" align = nobaseline }
-						text_single = { visible = "[GetScriptedGui('zg361_scoreboard_received_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" raw_text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_received_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { visible = "[Not(GetScriptedGui('zg361_scoreboard_received_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						expand = {}
-						text_single = { text = "zg361_scoreboard_grade_375" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_375_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_grade_35" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_35_n').GetValue|0]" default_format = "#high" align = nobaseline }
-						text_single = { text = "zg361_scoreboard_grade_325" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_325_n').GetValue|0]" default_format = "#high" align = nobaseline }
-					}
-					divider_light = { layoutpolicy_horizontal = expanding }
-					zg361_scoreboard_columns = {}
 					scrollbox = {
+						name = "zg361_scoreboard_table_received"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+						scrollbar_horizontal = { using = Scrollbar_Horizontal }
+						scrollbar_vertical = { using = Scrollbar_Vertical }
 						blockoverride "scrollbox_content" {
-							vbox = { layoutpolicy_horizontal = expanding spacing = 3
+							set_parent_size_to_minimum = yes
+							vbox = { minimumsize = { 1120 0 } layoutpolicy_horizontal = expanding spacing = 8
+								hbox = {
+									layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
+									text_single = { text = "zg361_scoreboard_reviewer" default_format = "#weak" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_owner').Char.GetUINameNotMeNoTooltip]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_year" default_format = "#weak" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_year').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_total" default_format = "#weak" align = nobaseline }
+									text_single = { visible = "[GetScriptedGui('zg361_scoreboard_received_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" raw_text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_shown_n').GetValue|0] / [GetPlayer.MakeScope.Var('zg361_scoreboard_received_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { visible = "[Not(GetScriptedGui('zg361_scoreboard_received_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									expand = {}
+									text_single = { text = "zg361_scoreboard_grade_375" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_375_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_grade_35" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_35_n').GetValue|0]" default_format = "#high" align = nobaseline }
+									text_single = { text = "zg361_scoreboard_grade_325" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_scoreboard_received_325_n').GetValue|0]" default_format = "#high" align = nobaseline }
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+								zg361_scoreboard_columns = {}
 								hbox = {
 									size = { 1120 68 } layoutpolicy_horizontal = expanding spacing = 8
 									visible = "[GetScriptedGui('zg361_sb_r_01_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
@@ -6848,9 +6858,14 @@ window = {
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'facts')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_facts_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
+							name = "zg361_scoreboard_detail_scroll_facts"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+							scrollbar_horizontal = { using = Scrollbar_Horizontal }
+							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								vbox = { layoutpolicy_horizontal = expanding spacing = 3
+								set_parent_size_to_minimum = yes
+								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_kpi_frozen_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_kpi_frozen" default_format = "#weak" align = nobaseline }
 										expand = {}
@@ -6969,9 +6984,14 @@ window = {
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'peer')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_peer_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
+							name = "zg361_scoreboard_detail_scroll_peer"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+							scrollbar_horizontal = { using = Scrollbar_Horizontal }
+							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								vbox = { layoutpolicy_horizontal = expanding spacing = 3
+								set_parent_size_to_minimum = yes
+								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_peer_n_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_peer_n" default_format = "#weak" align = nobaseline }
 										expand = {}
@@ -7054,9 +7074,14 @@ window = {
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'quota')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_quota_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
+							name = "zg361_scoreboard_detail_scroll_quota"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+							scrollbar_horizontal = { using = Scrollbar_Horizontal }
+							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								vbox = { layoutpolicy_horizontal = expanding spacing = 3
+								set_parent_size_to_minimum = yes
+								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_cohort_n_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_cohort_n" default_format = "#weak" align = nobaseline }
 										expand = {}
@@ -7121,9 +7146,14 @@ window = {
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'audit')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_audit_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
+							name = "zg361_scoreboard_detail_scroll_audit"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+							scrollbar_horizontal = { using = Scrollbar_Horizontal }
+							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								vbox = { layoutpolicy_horizontal = expanding spacing = 3
+								set_parent_size_to_minimum = yes
+								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_case_owner_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_case_owner" default_format = "#weak" align = nobaseline }
 										expand = {}
@@ -7286,92 +7316,104 @@ window = {
 					}
 				}
 				vbox = {
-					layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 14 margin = { 34 24 }
+					layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
 					visible = "[And(GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system'))]"
-					text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_title" default_format = "#high" using = Font_Size_Large }
-					hbox = { layoutpolicy_horizontal = expanding spacing = 12
-						text_single = { text = "zg361_ledger_configured" default_format = "#weak" align = nobaseline }
-						text_single = { raw_text = "[GetPlayer.MakeScope.Var('zg361_mechanism_configured_n').GetValue|0] / 361" default_format = "#high" align = nobaseline }
-						expand = {}
-						text_single = { text = "zg361_ledger_checksum" default_format = "#weak" align = nobaseline }
-						text_single = { text = "[GetPlayer.MakeScope.Var('zg361_mechanism_checksum').GetValue|0]" default_format = "#high" align = nobaseline }
-					}
-					divider_light = { layoutpolicy_horizontal = expanding }
-					text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_explainer" default_format = "#weak" using = Font_Size_Medium }
-					hbox = {
-						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 28
-						vbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_evidence" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_evidence').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_trust" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_trust').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_admin_load" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_admin_load').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_appeal_risk" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_appeal_risk').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_delivery" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_delivery').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_stability" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_stability').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_tech_debt" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_tech_debt').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-						}
-						vbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_data_quality" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_data_quality').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_burnout" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_burnout').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_talent" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_talent').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_hc_pressure" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_hc_pressure').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_pay_debt" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_pay_debt').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_policy_debt" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_policy_debt').GetValue|0]" default_format = "#high" align = nobaseline }
-							}
-							hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
-								text_single = { min_width = 280 text = "zg361_ledger_budget_pressure" default_format = "#weak" align = nobaseline }
-								expand = {}
-								text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_budget_pressure').GetValue|0]" default_format = "#high" align = nobaseline }
+					scrollbox = {
+						name = "zg361_scoreboard_ledger_scroll"
+						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
+						scrollbar_horizontal = { using = Scrollbar_Horizontal }
+						scrollbar_vertical = { using = Scrollbar_Vertical }
+						blockoverride "scrollbox_content" {
+							set_parent_size_to_minimum = yes
+							vbox = { minimumsize = { 760 0 } layoutpolicy_horizontal = expanding spacing = 14 margin = { 34 24 }
+								text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_title" default_format = "#high" using = Font_Size_Large }
+								hbox = { layoutpolicy_horizontal = expanding spacing = 12
+									text_single = { text = "zg361_ledger_configured" default_format = "#weak" align = nobaseline }
+									text_single = { raw_text = "[GetPlayer.MakeScope.Var('zg361_mechanism_configured_n').GetValue|0] / 361" default_format = "#high" align = nobaseline }
+									expand = {}
+									text_single = { text = "zg361_ledger_checksum" default_format = "#weak" align = nobaseline }
+									text_single = { text = "[GetPlayer.MakeScope.Var('zg361_mechanism_checksum').GetValue|0]" default_format = "#high" align = nobaseline }
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+								text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_explainer" default_format = "#weak" using = Font_Size_Medium }
+								hbox = {
+									layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 28
+									vbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_evidence" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_evidence').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_trust" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_trust').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_admin_load" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_admin_load').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_appeal_risk" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_appeal_risk').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_delivery" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_delivery').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_stability" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_stability').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_tech_debt" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_tech_debt').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+									}
+									vbox = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 6
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_data_quality" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_data_quality').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_burnout" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_burnout').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_talent" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_talent').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_hc_pressure" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_hc_pressure').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_pay_debt" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_pay_debt').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_policy_debt" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_policy_debt').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+										hbox = { layoutpolicy_horizontal = expanding spacing = 12 margin = { 12 6 }
+											text_single = { min_width = 280 text = "zg361_ledger_budget_pressure" default_format = "#weak" align = nobaseline }
+											expand = {}
+											text_single = { text = "[GetPlayer.MakeScope.Var('zg361_org_budget_pressure').GetValue|0]" default_format = "#high" align = nobaseline }
+										}
+									}
+								}
 							}
 						}
 					}
