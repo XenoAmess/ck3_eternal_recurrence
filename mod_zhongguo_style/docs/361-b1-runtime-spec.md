@@ -226,6 +226,22 @@ result case / final reason frozen
 
 ## 六、B1 批量验收门
 
+### 配额、议程、债务与 pending 的确定性参考模型
+
+`tools/zg361_b1_quota_model.py` 现已把下列 A 路语义冻结为可执行 Python L0 reference：
+
+- 0/1/2/3/4/7/14/23 人精确最大余数法，23 人固定为 7/14/2；3+4 只有同一共同上司、同一职能才能组成唯一 7 人池；
+- 新人、离任、调任、长休、周期后加入的 denominator/bottom 资格与名册变更 receipt；
+- 一次只交易一个 top 或 bottom 槽，交易同时产生双方责任、到期周期为 `created_cycle + 1` 的 one-shot 配额债；
+- 议程必须与冻结 cohort 一一相等；attention 席、转让和加班都守恒，并记录被挤占对象与成本，不改冻结档位；
+- 每名边界人最多一个 pending slot，绑定 milestone、verifier、deadline、冻结奖励与成功/失败终态；失败不能直接换成 3.75；
+- 同等强度的正面成果与负面事故可对称重开，旧/新 board hash、recalculation receipt 与发奖互斥均为一次性；
+- typed RED、失败前置原子性、stale 与重复 operation 分离。
+
+`tools/test_zg361_b1_quota_model.py` 当前为 55/55 GREEN。模型显式声明
+`READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；它不代表 G/S 的九项机制、B/C 路径或 CK3 runtime 已完成。
+下一步是让现有 `gen_361_b1_runtime.py` 消费这些规则，并用共享案卷内核记录真实 receipt 与 stage transition。
+
 L0 至少覆盖：
 
 1. 42 个 ID exact；每个 variant 有具体 CK3 effect、唯一 dispatcher hook 和 meaningful write→consumer；
