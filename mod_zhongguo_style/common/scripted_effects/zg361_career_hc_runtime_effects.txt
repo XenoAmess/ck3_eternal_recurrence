@@ -3,7 +3,121 @@
 
 # Routes: 1 = evidence-led; 2 = political/extractive; 3 = bounded defer.
 
-# Public wiring surface: open_<domain>_case + mNNN_manager_apply.
+# Public central surface: zg361_career_hc_open_portfolio_effect only.
+
+# The only manager-scope Career/HC ABI for central wiring.  It selects one
+# eligible direct official and opens D only; later domains are hidden D+1 edges.
+zg361_career_hc_open_portfolio_effect = {
+    remove_variable = zg361_ch_portfolio_applied
+    if = {
+        limit = {
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+            trigger_if = {
+                limit = { has_variable = zg361_ch_manager_portfolio_cycle }
+                NOT = { var:zg361_ch_manager_portfolio_cycle = var:zg361_review_serial }
+            }
+            trigger_else = { always = yes }
+            any_vassal = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                trigger_if = {
+                    limit = { has_variable = zg361_ch_portfolio_cycle }
+                    NOT = { var:zg361_ch_portfolio_cycle = root.var:zg361_review_serial }
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_d_active }
+                    var:zg361_case_d_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_m_active }
+                    var:zg361_case_m_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_n_active }
+                    var:zg361_case_n_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_o_active }
+                    var:zg361_case_o_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_p_active }
+                    var:zg361_case_p_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_q_active }
+                    var:zg361_case_q_active = 0
+                }
+                trigger_else = { always = yes }
+            }
+        }
+        ordered_vassal = {
+            limit = {
+                zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                trigger_if = {
+                    limit = { has_variable = zg361_ch_portfolio_cycle }
+                    NOT = { var:zg361_ch_portfolio_cycle = root.var:zg361_review_serial }
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_d_active }
+                    var:zg361_case_d_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_m_active }
+                    var:zg361_case_m_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_n_active }
+                    var:zg361_case_n_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_o_active }
+                    var:zg361_case_o_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_p_active }
+                    var:zg361_case_p_active = 0
+                }
+                trigger_else = { always = yes }
+                trigger_if = {
+                    limit = { has_variable = zg361_case_q_active }
+                    var:zg361_case_q_active = 0
+                }
+                trigger_else = { always = yes }
+            }
+            order_by = stewardship
+            position = 0
+            zg361_career_hc_open_d_case_effect = yes
+            if = {
+                limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+                set_variable = { name = zg361_ch_portfolio_cycle value = root.var:zg361_review_serial }
+                set_variable = { name = zg361_ch_portfolio_closed value = 0 }
+                set_variable = { name = zg361_ch_portfolio_owner value = root }
+                set_variable = { name = zg361_ch_portfolio_subject value = this }
+                set_variable = { name = zg361_ch_portfolio_open_case value = var:zg361_case_d_case_serial }
+                root = {
+                    set_variable = { name = zg361_ch_manager_portfolio_cycle value = var:zg361_review_serial }
+                    set_variable = { name = zg361_ch_manager_portfolio_active value = 1 }
+                    set_variable = { name = zg361_ch_portfolio_applied value = 1 }
+                }
+            }
+        }
+    }
+}
 
 # Open domain D on one assessed direct vassal.
 zg361_career_hc_open_d_case_effect = {
@@ -83,11 +197,65 @@ zg361_career_hc_open_d_case_effect = {
         set_variable = { name = zg361_ch_d_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_d_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_d_s4_x_deadline_expired value = 0 }
+            var:zg361_case_d_owner = { save_scope_as = zg361_ch_d_event_owner }
+            save_scope_as = zg361_ch_d_event_subject
+            save_scope_value_as = { name = zg361_ch_d_event_cycle value = var:zg361_case_d_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_d_event_case value = var:zg361_case_d_case_serial }
             zg361_career_hc_schedule_d_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_d_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.19 days = 1 } }
+            }
             debug_log = "ZG361CH: opened D career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_d_run_authorized_ai_effect = {
+    zg361_career_hc_m019_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m020_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m021_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m021_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m022_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m023_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m024_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m025_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m025_manager_apply_effect = { ROUTE = 3 }
+        }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.951 days = 1 } }
+        }
 }
 
 zg361_career_hc_schedule_d_stage_01_effect = {
@@ -1866,11 +2034,38 @@ zg361_career_hc_open_m_case_effect = {
         set_variable = { name = zg361_ch_m_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_m_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_m_s4_x_deadline_expired value = 0 }
+            var:zg361_case_m_owner = { save_scope_as = zg361_ch_m_event_owner }
+            save_scope_as = zg361_ch_m_event_subject
+            save_scope_value_as = { name = zg361_ch_m_event_cycle value = var:zg361_case_m_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_m_event_case value = var:zg361_case_m_case_serial }
             zg361_career_hc_schedule_m_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_m_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.92 days = 1 } }
+            }
             debug_log = "ZG361CH: opened M career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_m_run_authorized_ai_effect = {
+    zg361_career_hc_m092_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m093_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m094_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m095_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m096_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m097_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.952 days = 1 } }
+        }
 }
 
 zg361_career_hc_schedule_m_stage_01_effect = {
@@ -3255,11 +3450,66 @@ zg361_career_hc_open_n_case_effect = {
         set_variable = { name = zg361_ch_n_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_n_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_n_s4_x_deadline_expired value = 0 }
+            var:zg361_case_n_owner = { save_scope_as = zg361_ch_n_event_owner }
+            save_scope_as = zg361_ch_n_event_subject
+            save_scope_value_as = { name = zg361_ch_n_event_cycle value = var:zg361_case_n_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_n_event_case value = var:zg361_case_n_case_serial }
             zg361_career_hc_schedule_n_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_n_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.98 days = 1 } }
+            }
             debug_log = "ZG361CH: opened N career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_n_run_authorized_ai_effect = {
+    zg361_career_hc_m098_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m099_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m100_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m101_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m101_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m102_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m103_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m104_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m104_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m105_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.953 days = 1 } }
+        }
 }
 
 zg361_career_hc_schedule_n_stage_01_effect = {
@@ -5261,11 +5511,53 @@ zg361_career_hc_open_o_case_effect = {
         set_variable = { name = zg361_ch_o_s4_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_o_s5_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_o_s5_x_deadline_expired value = 0 }
+            var:zg361_case_o_owner = { save_scope_as = zg361_ch_o_event_owner }
+            save_scope_as = zg361_ch_o_event_subject
+            save_scope_value_as = { name = zg361_ch_o_event_cycle value = var:zg361_case_o_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_o_event_case value = var:zg361_case_o_case_serial }
             zg361_career_hc_schedule_o_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_o_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.106 days = 1 } }
+            }
             debug_log = "ZG361CH: opened O career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_o_run_authorized_ai_effect = {
+    zg361_career_hc_m106_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m107_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m108_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m109_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m110_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m111_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m112_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m112_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m113_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.954 days = 1 } }
+        }
 }
 
 zg361_career_hc_schedule_o_stage_01_effect = {
@@ -7195,11 +7487,65 @@ zg361_career_hc_open_p_case_effect = {
         set_variable = { name = zg361_ch_p_s4_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_p_s5_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_p_s5_x_deadline_expired value = 0 }
+            var:zg361_case_p_owner = { save_scope_as = zg361_ch_p_event_owner }
+            save_scope_as = zg361_ch_p_event_subject
+            save_scope_value_as = { name = zg361_ch_p_event_cycle value = var:zg361_case_p_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_p_event_case value = var:zg361_case_p_case_serial }
             zg361_career_hc_schedule_p_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_p_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.114 days = 1 } }
+            }
             debug_log = "ZG361CH: opened P career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_p_run_authorized_ai_effect = {
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m114_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m114_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m115_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m116_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m117_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m118_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = {
+                government_has_flag = government_has_treasury
+                root = {
+                    government_has_flag = government_has_treasury
+                    treasury >= 5
+                    gold >= 5
+                }
+            }
+            zg361_career_hc_m119_manager_apply_effect = { ROUTE = 1 }
+        }
+        else = {
+            zg361_career_hc_m119_manager_apply_effect = { ROUTE = 3 }
+        }
+    zg361_career_hc_m120_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            root = { trigger_event = { id = zg361ch.955 days = 1 } }
+        }
 }
 
 zg361_career_hc_schedule_p_stage_01_effect = {
@@ -9146,11 +9492,40 @@ zg361_career_hc_open_q_case_effect = {
         set_variable = { name = zg361_ch_q_s3_x_deadline_expired value = 0 }
         set_variable = { name = zg361_ch_q_s4_x_deadline_pending value = 0 }
         set_variable = { name = zg361_ch_q_s4_x_deadline_expired value = 0 }
+            var:zg361_case_q_owner = { save_scope_as = zg361_ch_q_event_owner }
+            save_scope_as = zg361_ch_q_event_subject
+            save_scope_value_as = { name = zg361_ch_q_event_cycle value = var:zg361_case_q_cycle_serial }
+            save_scope_value_as = { name = zg361_ch_q_event_case value = var:zg361_case_q_case_serial }
             zg361_career_hc_schedule_q_stage_01_effect = yes
             set_variable = { name = zg361_ch_runtime_applied value = 1 }
+            if = {
+                limit = { root = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+                zg361_career_hc_q_run_authorized_ai_effect = yes
+            }
+            else_if = {
+                limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+                root = { trigger_event = { id = zg361ch.121 days = 1 } }
+            }
             debug_log = "ZG361CH: opened Q career/HC case"
         }
     }
+}
+
+# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_q_run_authorized_ai_effect = {
+    zg361_career_hc_m121_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m122_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m123_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m124_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m125_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m126_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m127_manager_apply_effect = { ROUTE = 1 }
+    zg361_career_hc_m128_manager_apply_effect = { ROUTE = 1 }
+    if = {
+            limit = { has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }
+            zg361_career_hc_finalize_q_portfolio_effect = yes
+        }
 }
 
 zg361_career_hc_schedule_q_stage_01_effect = {
@@ -10690,5 +11065,63 @@ zg361_career_hc_m128_consume_effect = {
             set_variable = { name = zg361_ch_q_conserved value = 1 }
         }
         zg361_career_hc_q_try_advance_04_effect = yes
+    }
+}
+
+# Close the manager portfolio only against the last domain's frozen identity.
+zg361_career_hc_finalize_p_portfolio_effect = {
+    if = {
+        limit = {
+            exists = scope:zg361_ch_p_event_owner
+            exists = scope:zg361_ch_p_event_subject
+            exists = scope:zg361_ch_p_event_cycle
+            exists = scope:zg361_ch_p_event_case
+            var:zg361_case_p_owner = scope:zg361_ch_p_event_owner
+            var:zg361_case_p_subject = scope:zg361_ch_p_event_subject
+            var:zg361_case_p_cycle_serial = scope:zg361_ch_p_event_cycle
+            var:zg361_case_p_case_serial = scope:zg361_ch_p_event_case
+            var:zg361_case_p_state = 6
+            var:zg361_case_p_active = 0
+        }
+        set_variable = { name = zg361_ch_portfolio_closed value = 1 }
+        set_variable = { name = zg361_ch_portfolio_final_owner value = var:zg361_case_p_owner }
+        set_variable = { name = zg361_ch_portfolio_final_subject value = var:zg361_case_p_subject }
+        set_variable = { name = zg361_ch_portfolio_final_cycle value = var:zg361_case_p_cycle_serial }
+        set_variable = { name = zg361_ch_portfolio_final_case value = var:zg361_case_p_case_serial }
+        set_variable = { name = zg361_ch_portfolio_final_state value = var:zg361_case_p_state }
+        var:zg361_case_p_owner = {
+            set_variable = { name = zg361_ch_manager_portfolio_active value = 0 }
+            set_variable = { name = zg361_ch_manager_portfolio_completed_cycle value = var:zg361_review_serial }
+        }
+        debug_log = "ZG361CH: manager career/HC portfolio closed after P"
+    }
+}
+
+# Close the manager portfolio only against the last domain's frozen identity.
+zg361_career_hc_finalize_q_portfolio_effect = {
+    if = {
+        limit = {
+            exists = scope:zg361_ch_q_event_owner
+            exists = scope:zg361_ch_q_event_subject
+            exists = scope:zg361_ch_q_event_cycle
+            exists = scope:zg361_ch_q_event_case
+            var:zg361_case_q_owner = scope:zg361_ch_q_event_owner
+            var:zg361_case_q_subject = scope:zg361_ch_q_event_subject
+            var:zg361_case_q_cycle_serial = scope:zg361_ch_q_event_cycle
+            var:zg361_case_q_case_serial = scope:zg361_ch_q_event_case
+            var:zg361_case_q_state = 5
+            var:zg361_case_q_active = 0
+        }
+        set_variable = { name = zg361_ch_portfolio_closed value = 1 }
+        set_variable = { name = zg361_ch_portfolio_final_owner value = var:zg361_case_q_owner }
+        set_variable = { name = zg361_ch_portfolio_final_subject value = var:zg361_case_q_subject }
+        set_variable = { name = zg361_ch_portfolio_final_cycle value = var:zg361_case_q_cycle_serial }
+        set_variable = { name = zg361_ch_portfolio_final_case value = var:zg361_case_q_case_serial }
+        set_variable = { name = zg361_ch_portfolio_final_state value = var:zg361_case_q_state }
+        var:zg361_case_q_owner = {
+            set_variable = { name = zg361_ch_manager_portfolio_active value = 0 }
+            set_variable = { name = zg361_ch_manager_portfolio_completed_cycle value = var:zg361_review_serial }
+        }
+        debug_log = "ZG361CH: manager career/HC portfolio closed after Q"
     }
 }

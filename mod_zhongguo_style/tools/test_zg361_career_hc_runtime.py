@@ -137,6 +137,23 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertEqual(brace_balance(self.effects), 0)
         self.assertEqual(brace_balance(self.events), 0)
 
+    def test_top_level_effect_and_event_definitions_are_unique(self) -> None:
+        manager_defs = re.findall(
+            r"(?m)^zg361_career_hc_m\d{3}_manager_apply_effect = \{",
+            self.effects,
+        )
+        self.assertEqual(len(manager_defs), 44)
+        event_ids = re.findall(r"(?m)^zg361ch\.(\d+) = \{", self.events)
+        expected_events = (
+            44
+            + sum(len(domain.stages) for domain in generator.DOMAINS)
+            + 1
+            + len(generator.QUEUE_EVENTS)
+            + len(generator.DOMAINS)
+        )
+        self.assertEqual(len(event_ids), expected_events)
+        self.assertEqual(len(event_ids), len(set(event_ids)))
+
     def test_every_domain_has_one_guarded_open_and_no_gui_surface(self) -> None:
         for domain in generator.DOMAINS:
             with self.subTest(domain=domain.key):
@@ -152,6 +169,66 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertGreaterEqual(q_open.count("zg361_is_celestial_liege_trigger = yes"), 2)
         self.assertNotIn("gui/", self.effects.lower())
         self.assertNotIn("scripted_widget", self.effects.lower())
+
+    def test_one_manager_scope_portfolio_adapter_opens_only_first_eligible_d_case(self) -> None:
+        adapter = block(self.effects, "zg361_career_hc_open_portfolio_effect")
+        self.assertEqual(
+            len(
+                re.findall(
+                    r"(?m)^zg361_career_hc_open_portfolio_effect = \{",
+                    self.effects,
+                )
+            ),
+            1,
+        )
+        self.assertIn("has_game_rule = zg361_on", adapter)
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", adapter)
+        self.assertIn("has_variable = zg361_review_serial", adapter)
+        self.assertIn("any_vassal = {", adapter)
+        self.assertEqual(adapter.count("ordered_vassal = {"), 1)
+        self.assertIn("position = 0", adapter)
+        self.assertIn("order_by = stewardship", adapter)
+        self.assertEqual(
+            adapter.count("zg361_career_hc_open_d_case_effect = yes"),
+            1,
+        )
+        for domain in generator.DOMAIN_ORDER[1:]:
+            self.assertNotIn(
+                f"zg361_career_hc_open_{domain}_case_effect = yes",
+                adapter,
+            )
+        self.assertIn("zg361_ch_manager_portfolio_cycle", adapter)
+        self.assertIn(
+            "NOT = { var:zg361_ch_manager_portfolio_cycle = var:zg361_review_serial }",
+            adapter,
+        )
+        self.assertIn("zg361_ch_portfolio_cycle", adapter)
+        for domain in generator.DOMAIN_ORDER:
+            self.assertIn(f"has_variable = zg361_case_{domain}_active", adapter)
+            self.assertIn(f"var:zg361_case_{domain}_active = 0", adapter)
+        self.assertNotIn("is_ai = no", adapter)
+
+    def test_open_launches_one_player_card_d_plus_one_or_ai_background(self) -> None:
+        for domain in generator.DOMAINS:
+            opened = block(
+                self.effects,
+                f"zg361_career_hc_open_{domain.key}_case_effect",
+            )
+            first = generator.domain_mechanisms(domain)[0]
+            with self.subTest(domain=domain.key):
+                self.assertIn(f"save_scope_as = zg361_ch_{domain.key}_event_owner", opened)
+                self.assertIn(f"save_scope_as = zg361_ch_{domain.key}_event_subject", opened)
+                self.assertIn(f"save_scope_value_as = {{ name = zg361_ch_{domain.key}_event_cycle", opened)
+                self.assertEqual(
+                    opened.count(f"trigger_event = {{ id = zg361ch.{first} days = 1 }}"),
+                    1,
+                )
+                self.assertIn("is_ai = no", opened)
+                self.assertIn("is_ai = yes", opened)
+                self.assertIn(
+                    f"zg361_career_hc_{domain.key}_run_authorized_ai_effect = yes",
+                    opened,
+                )
 
     def test_every_manager_entry_uses_canonical_duke_plus_guard(self) -> None:
         for mechanism_id in generator.EXPECTED_IDS:
@@ -256,11 +333,14 @@ class CareerHcRuntimeTests(unittest.TestCase):
                         )
 
     def test_exact_deadline_tickets_and_route_c_timeout_are_total(self) -> None:
-        expected_hidden = sum(len(domain.stages) for domain in generator.DOMAINS) + 1
+        expected_deadline_hidden = sum(
+            len(domain.stages) for domain in generator.DOMAINS
+        ) + 1
+        expected_hidden = expected_deadline_hidden + len(generator.QUEUE_EVENTS)
         self.assertEqual(self.events.count("hidden = yes"), expected_hidden)
         self.assertEqual(
             self.events.count("zg361_case_kernel_expire_deadline_effect"),
-            expected_hidden,
+            expected_deadline_hidden,
         )
         for domain in generator.DOMAINS:
             for state, ids in enumerate(domain.stages, start=1):
@@ -278,6 +358,138 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("var:zg361_ch_release_days = 150", self.effects)
         self.assertIn("DAYS = 90", self.effects)
         self.assertIn("DAYS = 150", self.effects)
+
+    def test_player_business_windows_are_serial_d_plus_one_with_five_field_guards(self) -> None:
+        self.assertEqual(self.events.count("# Player manager business window #"), 44)
+        self.assertEqual(self.events.count("theme = stewardship"), 44)
+        for domain in generator.DOMAINS:
+            mechanisms = generator.domain_mechanisms(domain)
+            for index, mechanism_id in enumerate(mechanisms):
+                event = block(self.events, f"zg361ch.{mechanism_id}")
+                with self.subTest(domain=domain.key, mechanism=mechanism_id):
+                    self.assertIn("is_ai = no", event)
+                    self.assertIn("zg361_case_kernel_full_guard_trigger", event)
+                    for field in (
+                        "OWNER_VAR",
+                        "SUBJECT_VAR",
+                        "CYCLE_VAR",
+                        "CASE_VAR",
+                        "STATE_VAR",
+                    ):
+                        self.assertIn(field, event)
+                    self.assertEqual(
+                        event.count(f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect"),
+                        3,
+                    )
+                    for route in (1, 2, 3):
+                        self.assertIn(f"ROUTE = {route}", event)
+                    if index + 1 < len(mechanisms):
+                        successor = mechanisms[index + 1]
+                        self.assertEqual(
+                            event.count(
+                                f"trigger_event = {{ id = zg361ch.{successor} days = 1 }}"
+                            ),
+                            3,
+                        )
+                    elif generator.NEXT_DOMAIN[domain.key] is not None:
+                        queue_event = generator.QUEUE_EVENTS[domain.key]
+                        self.assertEqual(
+                            event.count(
+                                f"trigger_event = {{ id = zg361ch.{queue_event} days = 1 }}"
+                            ),
+                            3,
+                        )
+                    else:
+                        self.assertEqual(
+                            event.count(
+                                "zg361_career_hc_finalize_q_portfolio_effect = yes"
+                            ),
+                            3,
+                        )
+
+    def test_cross_domain_queue_edges_are_hidden_closed_identity_guards(self) -> None:
+        for domain in generator.DOMAINS[:-1]:
+            event_id = generator.QUEUE_EVENTS[domain.key]
+            queued = block(self.events, f"zg361ch.{event_id}")
+            next_domain = generator.NEXT_DOMAIN[domain.key]
+            final_state = len(domain.stages) + 1
+            with self.subTest(domain=domain.key):
+                self.assertIn("hidden = yes", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_owner", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_subject", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_cycle_serial", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_case_serial", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_state = {final_state}", queued)
+                self.assertIn(f"var:zg361_case_{domain.key}_active = 0", queued)
+                self.assertIn(
+                    f"zg361_career_hc_open_{next_domain}_case_effect = yes",
+                    queued,
+                )
+        p_queue = block(self.events, f"zg361ch.{generator.QUEUE_EVENTS['p']}")
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", p_queue)
+        self.assertIn("zg361_career_hc_finalize_p_portfolio_effect = yes", p_queue)
+
+    def test_authorized_ai_consumes_receipts_without_visible_business_events(self) -> None:
+        for domain in generator.DOMAINS:
+            runner = block(
+                self.effects,
+                f"zg361_career_hc_{domain.key}_run_authorized_ai_effect",
+            )
+            with self.subTest(domain=domain.key):
+                for mechanism_id in generator.domain_mechanisms(domain):
+                    self.assertIn(
+                        f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect",
+                        runner,
+                    )
+                    self.assertIsNone(
+                        re.search(rf"id = zg361ch\.{mechanism_id}(?:\s|\}})", runner)
+                    )
+                    if mechanism_id in generator.DUAL_COST_IDS:
+                        self.assertIn(
+                            f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = 3 }}",
+                            runner,
+                        )
+                if generator.NEXT_DOMAIN[domain.key] is not None:
+                    self.assertIn(
+                        f"id = zg361ch.{generator.QUEUE_EVENTS[domain.key]} days = 1",
+                        runner,
+                    )
+                else:
+                    self.assertIn(
+                        "zg361_career_hc_finalize_q_portfolio_effect = yes",
+                        runner,
+                    )
+
+    def test_player_funded_routes_cannot_close_an_unpayable_business_card(self) -> None:
+        for mechanism_id in generator.DUAL_COST_IDS:
+            event = block(self.events, f"zg361ch.{mechanism_id}")
+            with self.subTest(mechanism=mechanism_id):
+                self.assertEqual(event.count("treasury >= 5"), 2)
+                self.assertEqual(event.count("gold >= 5"), 2)
+                self.assertEqual(
+                    event.count("government_has_flag = government_has_treasury"),
+                    4,
+                )
+                self.assertIn(
+                    f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = 3 }}",
+                    event,
+                )
+
+    def test_portfolio_finalizers_require_closed_frozen_identity(self) -> None:
+        for domain in (generator.DOMAIN_BY_KEY["p"], generator.DOMAIN_BY_KEY["q"]):
+            finalizer = block(
+                self.effects,
+                f"zg361_career_hc_finalize_{domain.key}_portfolio_effect",
+            )
+            with self.subTest(domain=domain.key):
+                for field in ("owner", "subject", "cycle_serial", "case_serial"):
+                    self.assertIn(f"zg361_case_{domain.key}_{field}", finalizer)
+                self.assertIn(
+                    f"var:zg361_case_{domain.key}_state = {len(domain.stages) + 1}",
+                    finalizer,
+                )
+                self.assertIn(f"var:zg361_case_{domain.key}_active = 0", finalizer)
+                self.assertIn("zg361_ch_manager_portfolio_active value = 0", finalizer)
 
     def test_new_case_resets_stage_deadline_latches(self) -> None:
         for domain in generator.DOMAINS:
@@ -441,7 +653,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("不是一张只会喊口号的制度卡", chinese)
         for mechanism_id in generator.EXPECTED_IDS:
             with self.subTest(mechanism=mechanism_id):
-                for suffix in ("name", "a", "b", "c"):
+                for suffix in ("name", "desc", "a", "b", "c"):
                     key = f"zg361ch.m{mechanism_id:03d}.{suffix}:0"
                     self.assertIn(key, english)
                     self.assertIn(key, chinese)
@@ -495,6 +707,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("尚无实机", spec)
         self.assertIn("不得写成 fixture-live", spec)
         self.assertIn("44", spec)
+        self.assertIn("zg361_career_hc_open_portfolio_effect", spec)
 
 
 if __name__ == "__main__":

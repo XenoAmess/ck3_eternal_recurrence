@@ -38,20 +38,19 @@ L0 合同：`tools/test_zg361_career_hc_runtime.py`
 
 ## 二、入口与接线边界
 
-根线程后续只需在稳定业务 hook 调用以下开放入口，不必修改生成文件：
+中央 dispatcher 后续只接一个 manager-scope portfolio adapter：
 
 ```text
-zg361_career_hc_open_d_case_effect
-zg361_career_hc_open_m_case_effect
-zg361_career_hc_open_n_case_effect
-zg361_career_hc_open_o_case_effect
-zg361_career_hc_open_p_case_effect
-zg361_career_hc_open_q_case_effect
-
-zg361_career_hc_mNNN_manager_apply_effect = { ROUTE = 1|2|3 }
+zg361_career_hc_open_portfolio_effect
 ```
 
-开放案卷时调用上下文必须是：
+调用上下文只有 `THIS = 管理者`。adapter 检查游戏规则、管理者资格、`zg361_review_serial` 与同周期
+single-use marker，然后按 stewardship 排序选择**首名**满足条件的直属受评官员；`position = 0` 和单个
+`ordered_vassal` 保证一次只选一人。候选人的 D/M/N/O/P/Q 旧案都必须已经关闭，且该 subject 在本周期未被
+同一 portfolio 使用。
+
+adapter 只打开 D，不会同日在同一受评者身上并发打开六案。其余五个 subject-scope open effect 与 44 个
+`*_manager_apply_effect` 保留为包内 ABI，由生成的串行运行时消费，不再要求中央逐一调用。每个 open 仍使用：
 
 ```text
 ROOT = 直属上司
@@ -60,6 +59,16 @@ ROOT.var:zg361_review_serial = 当前考核周期
 ```
 
 开放 effect 复用 `zg361_case_d/m/n/o/p/q_open_effect`，不会自行造另一套 owner、subject、cycle、case 或 state。调用失败只是不写 `zg361_ch_runtime_applied`，不留下半个业务案卷。
+
+玩家管理者的首张 #019 卡在 D+1 打开。每个编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
+成功写入/消费后，才把下一张卡排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
+前域已经以原 owner/subject/cycle/case 和最终 state 关闭，再打开后域。领域结案回执占用中间一天，因此前域
+最后一张业务卡、结案回执和后域第一张业务卡不会挤在同一天。本包自身任何游戏日最多产生一张玩家业务窗。
+
+Q 只对同样具备天朝制公爵及以上管理资格的 subject 打开；伯爵、男爵完成 P 后直接关闭 portfolio，仍然只有
+被考核权，没有经理认证或考核别人权限。授权 AI 管理者不触发 44 张业务卡，而是用相同 manager entry、五元
+guard、receipt 和 consumer 在后台确定性结算；资金动作只有双账预检成功才走 A，否则走留债 C。AI 的跨域边
+仍是 hidden D+1 event，不会形成可见窗口。
 
 本文件没有接进现有 central effects/events/interactions，也没有增加 HUD、顶层窗口或按钮。这样可以跟 B1、B2、经理反馈和考核榜投影一起合批接线、合批启动 CK3。
 
@@ -207,7 +216,7 @@ D/M 同批提供资格/晋升包/奖金、转岗和双通道的实际案卷入�
 
 ## 八、玩家反馈与本地化
 
-每个编号生成简中/英文名称及 A/B/C 路说明，供后续考核榜职业/HC 页直接消费。结案时：
+每个编号生成简中/英文标题、业务说明及 A/B/C 路说明，既供 44 张玩家业务卡使用，也供后续考核榜职业/HC 页消费。结案时：
 
 - AI 上司和 AI 受评者保持静默；
 - 玩家上司收到领域结案事件；
@@ -222,6 +231,9 @@ D/M 同批提供资格/晋升包/奖金、转岗和双通道的实际案卷入�
 
 - 44 ID、六领域、阶段分组与模型 registry 精确一致；
 - 11 个生成结果可复现且均有 UTF-8 BOM；
+- 唯一 manager-scope portfolio adapter、首名合格直属选择、同周期防重放和只首开 D；
+- 44 张玩家业务卡逐张 D+1、五条 hidden 跨域边、关闭五元校验与同日最多一张业务窗；
+- 授权 AI 只走后台 manager receipt/consumer，不触发玩家业务事件；
 - 每个 open/manager/core/consumer 的权限、五元 guard、receipt 与 write→consumer；
 - 所有阶段屏障、真实 delayed event、P116 的 90/150 日分支和 route C 超时；
 - 七项双付款的两本共享 journal 与真实 treasury/gold 转账；
@@ -232,7 +244,7 @@ D/M 同批提供资格/晋升包/奖金、转岗和双通道的实际案卷入�
 
 仍待批量完成：
 
-1. 根线程在稳定 hook 接入六个 open effect 和玩家/AI 路由；
+1. 根线程在稳定 hook 只接 `zg361_career_hc_open_portfolio_effect`；
 2. 把结案 revision、债、HC partition、释放期限、readiness、4-3-3 投影进现有考核榜内部页，不新增顶层按钮；
 3. 先用 MCP/native 查询建立 named action 与变量 snapshot；OCR 不作为导航或状态真值；
 4. 与 B1/B2、经理反馈等切片合并后一次 CK3 启动，批量跑成功、B 路、C 路、重复、stale、90/150 日和权限矩阵；

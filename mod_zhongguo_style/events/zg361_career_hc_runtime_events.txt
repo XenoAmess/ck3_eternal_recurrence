@@ -1,6 +1,583 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 namespace = zg361ch
 
+# Player manager business window #019; its only successor is D+1.
+zg361ch.19 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m019.name
+    desc = zg361ch.m019.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m019.a
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m019_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.20 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m019.b
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m019_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.20 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m019.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m019_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.20 days = 1 }
+    }
+}
+}
+
+# Player manager business window #020; its only successor is D+1.
+zg361ch.20 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m020.name
+    desc = zg361ch.m020.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m020.a
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m020_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.21 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m020.b
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m020_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.21 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m020.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m020_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.21 days = 1 }
+    }
+}
+}
+
+# Player manager business window #021; its only successor is D+1.
+zg361ch.21 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m021.name
+    desc = zg361ch.m021.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m021.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_d_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m021_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.22 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m021.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_d_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m021_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.22 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m021.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m021_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.22 days = 1 }
+    }
+}
+}
+
+# Player manager business window #022; its only successor is D+1.
+zg361ch.22 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m022.name
+    desc = zg361ch.m022.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m022.a
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m022_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.23 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m022.b
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m022_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.23 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m022.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m022_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.23 days = 1 }
+    }
+}
+}
+
+# Player manager business window #023; its only successor is D+1.
+zg361ch.23 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m023.name
+    desc = zg361ch.m023.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m023.a
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m023_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.24 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m023.b
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m023_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.24 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m023.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m023_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.24 days = 1 }
+    }
+}
+}
+
+# Player manager business window #024; its only successor is D+1.
+zg361ch.24 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m024.name
+    desc = zg361ch.m024.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m024.a
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m024_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.25 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m024.b
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m024_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.25 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m024.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m024_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.25 days = 1 }
+    }
+}
+}
+
+# Player manager business window #025; its only successor is D+1.
+zg361ch.25 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m025.name
+    desc = zg361ch.m025.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_d_owner
+                SUBJECT_VAR = zg361_case_d_subject
+                CYCLE_VAR = zg361_case_d_cycle_serial
+                CASE_VAR = zg361_case_d_case_serial
+                STATE_VAR = zg361_case_d_state
+                ACTIVE_VAR = zg361_case_d_active
+                EXPECTED_OWNER = scope:zg361_ch_d_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_d_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_d_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_d_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m025.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_d_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m025_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.951 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m025.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_d_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m025_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.951 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m025.c
+    scope:zg361_ch_d_event_subject = {
+        zg361_career_hc_m025_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_d_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.951 days = 1 }
+    }
+}
+}
+
 zg361ch.402 = {
     type = character_event
     hidden = yes
@@ -124,6 +701,507 @@ zg361ch.901 = {
     desc = zg361ch.901.desc
     trigger = { is_ai = no }
     option = { name = zg361ch.901.a }
+}
+
+# D+1 hidden queue edge: D closed -> M opens.
+zg361ch.951 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        exists = scope:zg361_ch_d_event_owner
+        exists = scope:zg361_ch_d_event_subject
+        exists = scope:zg361_ch_d_event_cycle
+        exists = scope:zg361_ch_d_event_case
+        this = scope:zg361_ch_d_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_d_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:zg361_case_d_owner = scope:zg361_ch_d_event_owner
+            var:zg361_case_d_subject = scope:zg361_ch_d_event_subject
+            var:zg361_case_d_cycle_serial = scope:zg361_ch_d_event_cycle
+            var:zg361_case_d_case_serial = scope:zg361_ch_d_event_case
+            var:zg361_case_d_state = 5
+            var:zg361_case_d_active = 0
+        }
+    }
+    immediate = {
+        scope:zg361_ch_d_event_subject = { zg361_career_hc_open_m_case_effect = yes }
+    }
+}
+
+# Player manager business window #092; its only successor is D+1.
+zg361ch.92 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m092.name
+    desc = zg361ch.m092.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m092.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m092_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.93 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m092.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m092_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.93 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m092.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m092_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.93 days = 1 }
+    }
+}
+}
+
+# Player manager business window #093; its only successor is D+1.
+zg361ch.93 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m093.name
+    desc = zg361ch.m093.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m093.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m093_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.94 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m093.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m093_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.94 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m093.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m093_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.94 days = 1 }
+    }
+}
+}
+
+# Player manager business window #094; its only successor is D+1.
+zg361ch.94 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m094.name
+    desc = zg361ch.m094.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m094.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m094_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.95 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m094.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m094_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.95 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m094.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m094_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.95 days = 1 }
+    }
+}
+}
+
+# Player manager business window #095; its only successor is D+1.
+zg361ch.95 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m095.name
+    desc = zg361ch.m095.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m095.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m095_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.96 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m095.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m095_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.96 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m095.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m095_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.96 days = 1 }
+    }
+}
+}
+
+# Player manager business window #096; its only successor is D+1.
+zg361ch.96 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m096.name
+    desc = zg361ch.m096.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m096.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m096_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.97 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m096.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m096_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.97 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m096.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m096_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.97 days = 1 }
+    }
+}
+}
+
+# Player manager business window #097; its only successor is D+1.
+zg361ch.97 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m097.name
+    desc = zg361ch.m097.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_m_owner
+                SUBJECT_VAR = zg361_case_m_subject
+                CYCLE_VAR = zg361_case_m_cycle_serial
+                CASE_VAR = zg361_case_m_case_serial
+                STATE_VAR = zg361_case_m_state
+                ACTIVE_VAR = zg361_case_m_active
+                EXPECTED_OWNER = scope:zg361_ch_m_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_m_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_m_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_m_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m097.a
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m097_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.952 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m097.b
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m097_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.952 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m097.c
+    scope:zg361_ch_m_event_subject = {
+        zg361_career_hc_m097_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_m_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.952 days = 1 }
+    }
+}
 }
 
 zg361ch.1302 = {
@@ -251,6 +1329,689 @@ zg361ch.902 = {
     option = { name = zg361ch.902.a }
 }
 
+# D+1 hidden queue edge: M closed -> N opens.
+zg361ch.952 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        exists = scope:zg361_ch_m_event_owner
+        exists = scope:zg361_ch_m_event_subject
+        exists = scope:zg361_ch_m_event_cycle
+        exists = scope:zg361_ch_m_event_case
+        this = scope:zg361_ch_m_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_m_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:zg361_case_m_owner = scope:zg361_ch_m_event_owner
+            var:zg361_case_m_subject = scope:zg361_ch_m_event_subject
+            var:zg361_case_m_cycle_serial = scope:zg361_ch_m_event_cycle
+            var:zg361_case_m_case_serial = scope:zg361_ch_m_event_case
+            var:zg361_case_m_state = 5
+            var:zg361_case_m_active = 0
+        }
+    }
+    immediate = {
+        scope:zg361_ch_m_event_subject = { zg361_career_hc_open_n_case_effect = yes }
+    }
+}
+
+# Player manager business window #098; its only successor is D+1.
+zg361ch.98 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m098.name
+    desc = zg361ch.m098.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m098.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m098_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.99 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m098.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m098_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.99 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m098.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m098_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.99 days = 1 }
+    }
+}
+}
+
+# Player manager business window #099; its only successor is D+1.
+zg361ch.99 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m099.name
+    desc = zg361ch.m099.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m099.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m099_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.100 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m099.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m099_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.100 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m099.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m099_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.100 days = 1 }
+    }
+}
+}
+
+# Player manager business window #100; its only successor is D+1.
+zg361ch.100 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m100.name
+    desc = zg361ch.m100.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m100.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m100_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.101 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m100.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m100_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.101 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m100.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m100_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.101 days = 1 }
+    }
+}
+}
+
+# Player manager business window #101; its only successor is D+1.
+zg361ch.101 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m101.name
+    desc = zg361ch.m101.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m101.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_n_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m101_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.102 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m101.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_n_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m101_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.102 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m101.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m101_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.102 days = 1 }
+    }
+}
+}
+
+# Player manager business window #102; its only successor is D+1.
+zg361ch.102 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m102.name
+    desc = zg361ch.m102.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m102.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m102_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.103 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m102.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m102_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.103 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m102.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m102_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.103 days = 1 }
+    }
+}
+}
+
+# Player manager business window #103; its only successor is D+1.
+zg361ch.103 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m103.name
+    desc = zg361ch.m103.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m103.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m103_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.104 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m103.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m103_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.104 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m103.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m103_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.104 days = 1 }
+    }
+}
+}
+
+# Player manager business window #104; its only successor is D+1.
+zg361ch.104 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m104.name
+    desc = zg361ch.m104.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m104.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_n_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m104_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.105 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m104.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_n_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m104_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.105 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m104.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m104_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.105 days = 1 }
+    }
+}
+}
+
+# Player manager business window #105; its only successor is D+1.
+zg361ch.105 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m105.name
+    desc = zg361ch.m105.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_n_owner
+                SUBJECT_VAR = zg361_case_n_subject
+                CYCLE_VAR = zg361_case_n_cycle_serial
+                CASE_VAR = zg361_case_n_case_serial
+                STATE_VAR = zg361_case_n_state
+                ACTIVE_VAR = zg361_case_n_active
+                EXPECTED_OWNER = scope:zg361_ch_n_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_n_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_n_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_n_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m105.a
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m105_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.953 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m105.b
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m105_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.953 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m105.c
+    scope:zg361_ch_n_event_subject = {
+        zg361_career_hc_m105_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_n_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.953 days = 1 }
+    }
+}
+}
+
 zg361ch.1402 = {
     type = character_event
     hidden = yes
@@ -374,6 +2135,677 @@ zg361ch.903 = {
     desc = zg361ch.903.desc
     trigger = { is_ai = no }
     option = { name = zg361ch.903.a }
+}
+
+# D+1 hidden queue edge: N closed -> O opens.
+zg361ch.953 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        exists = scope:zg361_ch_n_event_owner
+        exists = scope:zg361_ch_n_event_subject
+        exists = scope:zg361_ch_n_event_cycle
+        exists = scope:zg361_ch_n_event_case
+        this = scope:zg361_ch_n_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_n_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:zg361_case_n_owner = scope:zg361_ch_n_event_owner
+            var:zg361_case_n_subject = scope:zg361_ch_n_event_subject
+            var:zg361_case_n_cycle_serial = scope:zg361_ch_n_event_cycle
+            var:zg361_case_n_case_serial = scope:zg361_ch_n_event_case
+            var:zg361_case_n_state = 5
+            var:zg361_case_n_active = 0
+        }
+    }
+    immediate = {
+        scope:zg361_ch_n_event_subject = { zg361_career_hc_open_o_case_effect = yes }
+    }
+}
+
+# Player manager business window #106; its only successor is D+1.
+zg361ch.106 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m106.name
+    desc = zg361ch.m106.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m106.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m106_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.107 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m106.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m106_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.107 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m106.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m106_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.107 days = 1 }
+    }
+}
+}
+
+# Player manager business window #107; its only successor is D+1.
+zg361ch.107 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m107.name
+    desc = zg361ch.m107.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m107.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m107_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.108 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m107.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m107_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.108 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m107.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m107_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.108 days = 1 }
+    }
+}
+}
+
+# Player manager business window #108; its only successor is D+1.
+zg361ch.108 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m108.name
+    desc = zg361ch.m108.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m108.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m108_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.109 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m108.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m108_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.109 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m108.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m108_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.109 days = 1 }
+    }
+}
+}
+
+# Player manager business window #109; its only successor is D+1.
+zg361ch.109 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m109.name
+    desc = zg361ch.m109.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m109.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m109_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.110 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m109.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m109_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.110 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m109.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m109_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.110 days = 1 }
+    }
+}
+}
+
+# Player manager business window #110; its only successor is D+1.
+zg361ch.110 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m110.name
+    desc = zg361ch.m110.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m110.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m110_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.111 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m110.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m110_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.111 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m110.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m110_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.111 days = 1 }
+    }
+}
+}
+
+# Player manager business window #111; its only successor is D+1.
+zg361ch.111 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m111.name
+    desc = zg361ch.m111.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m111.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m111_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.112 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m111.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m111_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.112 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m111.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m111_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.112 days = 1 }
+    }
+}
+}
+
+# Player manager business window #112; its only successor is D+1.
+zg361ch.112 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m112.name
+    desc = zg361ch.m112.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m112.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_o_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m112_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.113 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m112.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_o_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m112_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.113 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m112.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m112_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.113 days = 1 }
+    }
+}
+}
+
+# Player manager business window #113; its only successor is D+1.
+zg361ch.113 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m113.name
+    desc = zg361ch.m113.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_o_owner
+                SUBJECT_VAR = zg361_case_o_subject
+                CYCLE_VAR = zg361_case_o_cycle_serial
+                CASE_VAR = zg361_case_o_case_serial
+                STATE_VAR = zg361_case_o_state
+                ACTIVE_VAR = zg361_case_o_active
+                EXPECTED_OWNER = scope:zg361_ch_o_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_o_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_o_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_o_event_case
+                EXPECTED_STATE = 5
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m113.a
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m113_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.954 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m113.b
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m113_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.954 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m113.c
+    scope:zg361_ch_o_event_subject = {
+        zg361_career_hc_m113_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_o_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.954 days = 1 }
+    }
+}
 }
 
 zg361ch.1502 = {
@@ -528,6 +2960,610 @@ zg361ch.904 = {
     desc = zg361ch.904.desc
     trigger = { is_ai = no }
     option = { name = zg361ch.904.a }
+}
+
+# D+1 hidden queue edge: O closed -> P opens.
+zg361ch.954 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        exists = scope:zg361_ch_o_event_owner
+        exists = scope:zg361_ch_o_event_subject
+        exists = scope:zg361_ch_o_event_cycle
+        exists = scope:zg361_ch_o_event_case
+        this = scope:zg361_ch_o_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_o_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:zg361_case_o_owner = scope:zg361_ch_o_event_owner
+            var:zg361_case_o_subject = scope:zg361_ch_o_event_subject
+            var:zg361_case_o_cycle_serial = scope:zg361_ch_o_event_cycle
+            var:zg361_case_o_case_serial = scope:zg361_ch_o_event_case
+            var:zg361_case_o_state = 6
+            var:zg361_case_o_active = 0
+        }
+    }
+    immediate = {
+        scope:zg361_ch_o_event_subject = { zg361_career_hc_open_p_case_effect = yes }
+    }
+}
+
+# Player manager business window #114; its only successor is D+1.
+zg361ch.114 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m114.name
+    desc = zg361ch.m114.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m114.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_p_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m114_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.115 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m114.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_p_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m114_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.115 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m114.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m114_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.115 days = 1 }
+    }
+}
+}
+
+# Player manager business window #115; its only successor is D+1.
+zg361ch.115 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m115.name
+    desc = zg361ch.m115.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m115.a
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m115_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.116 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m115.b
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m115_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.116 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m115.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m115_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.116 days = 1 }
+    }
+}
+}
+
+# Player manager business window #116; its only successor is D+1.
+zg361ch.116 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m116.name
+    desc = zg361ch.m116.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m116.a
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m116_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.117 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m116.b
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m116_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.117 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m116.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m116_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.117 days = 1 }
+    }
+}
+}
+
+# Player manager business window #117; its only successor is D+1.
+zg361ch.117 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m117.name
+    desc = zg361ch.m117.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m117.a
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m117_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.118 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m117.b
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m117_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.118 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m117.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m117_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.118 days = 1 }
+    }
+}
+}
+
+# Player manager business window #118; its only successor is D+1.
+zg361ch.118 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m118.name
+    desc = zg361ch.m118.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m118.a
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m118_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.119 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m118.b
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m118_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.119 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m118.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m118_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.119 days = 1 }
+    }
+}
+}
+
+# Player manager business window #119; its only successor is D+1.
+zg361ch.119 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m119.name
+    desc = zg361ch.m119.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m119.a
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_p_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m119_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.120 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m119.b
+    trigger = {
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:zg361_ch_p_event_subject = { government_has_flag = government_has_treasury }
+    }
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m119_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.120 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m119.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m119_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.120 days = 1 }
+    }
+}
+}
+
+# Player manager business window #120; its only successor is D+1.
+zg361ch.120 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m120.name
+    desc = zg361ch.m120.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_p_owner
+                SUBJECT_VAR = zg361_case_p_subject
+                CYCLE_VAR = zg361_case_p_cycle_serial
+                CASE_VAR = zg361_case_p_case_serial
+                STATE_VAR = zg361_case_p_state
+                ACTIVE_VAR = zg361_case_p_active
+                EXPECTED_OWNER = scope:zg361_ch_p_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_p_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_p_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_p_event_case
+                EXPECTED_STATE = 5
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m120.a
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m120_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.955 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m120.b
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m120_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.955 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m120.c
+    scope:zg361_ch_p_event_subject = {
+        zg361_career_hc_m120_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_p_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.955 days = 1 }
+    }
+}
 }
 
 zg361ch.1602 = {
@@ -711,6 +3747,671 @@ zg361ch.905 = {
     desc = zg361ch.905.desc
     trigger = { is_ai = no }
     option = { name = zg361ch.905.a }
+}
+
+# D+1 hidden queue edge: P closed -> Q opens.
+zg361ch.955 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        exists = scope:zg361_ch_p_event_owner
+        exists = scope:zg361_ch_p_event_subject
+        exists = scope:zg361_ch_p_event_cycle
+        exists = scope:zg361_ch_p_event_case
+        this = scope:zg361_ch_p_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_p_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:zg361_case_p_owner = scope:zg361_ch_p_event_owner
+            var:zg361_case_p_subject = scope:zg361_ch_p_event_subject
+            var:zg361_case_p_cycle_serial = scope:zg361_ch_p_event_cycle
+            var:zg361_case_p_case_serial = scope:zg361_ch_p_event_case
+            var:zg361_case_p_state = 6
+            var:zg361_case_p_active = 0
+        }
+    }
+    immediate = {
+        scope:zg361_ch_p_event_subject = {
+            if = {
+                limit = { zg361_is_celestial_liege_trigger = yes }
+                zg361_career_hc_open_q_case_effect = yes
+            }
+            else = { zg361_career_hc_finalize_p_portfolio_effect = yes }
+        }
+    }
+}
+
+# Player manager business window #121; its only successor is D+1.
+zg361ch.121 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m121.name
+    desc = zg361ch.m121.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m121.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m121_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.122 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m121.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m121_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.122 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m121.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m121_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.122 days = 1 }
+    }
+}
+}
+
+# Player manager business window #122; its only successor is D+1.
+zg361ch.122 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m122.name
+    desc = zg361ch.m122.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 1
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m122.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m122_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.123 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m122.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m122_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.123 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m122.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m122_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.123 days = 1 }
+    }
+}
+}
+
+# Player manager business window #123; its only successor is D+1.
+zg361ch.123 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m123.name
+    desc = zg361ch.m123.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m123.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m123_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.124 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m123.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m123_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.124 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m123.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m123_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.124 days = 1 }
+    }
+}
+}
+
+# Player manager business window #124; its only successor is D+1.
+zg361ch.124 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m124.name
+    desc = zg361ch.m124.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 2
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m124.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m124_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.125 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m124.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m124_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.125 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m124.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m124_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.125 days = 1 }
+    }
+}
+}
+
+# Player manager business window #125; its only successor is D+1.
+zg361ch.125 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m125.name
+    desc = zg361ch.m125.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m125.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m125_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.126 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m125.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m125_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.126 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m125.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m125_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.126 days = 1 }
+    }
+}
+}
+
+# Player manager business window #126; its only successor is D+1.
+zg361ch.126 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m126.name
+    desc = zg361ch.m126.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 3
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m126.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m126_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.127 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m126.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m126_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.127 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m126.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m126_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.127 days = 1 }
+    }
+}
+}
+
+# Player manager business window #127; its only successor is D+1.
+zg361ch.127 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m127.name
+    desc = zg361ch.m127.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m127.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m127_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.128 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m127.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m127_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.128 days = 1 }
+    }
+}
+option = {
+    name = zg361ch.m127.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m127_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        trigger_event = { id = zg361ch.128 days = 1 }
+    }
+}
+}
+
+# Player manager business window #128; its only successor is D+1.
+zg361ch.128 = {
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m128.name
+    desc = zg361ch.m128.desc
+    trigger = {
+        is_ai = no
+        exists = scope:zg361_ch_q_event_owner
+        exists = scope:zg361_ch_q_event_subject
+        exists = scope:zg361_ch_q_event_cycle
+        exists = scope:zg361_ch_q_event_case
+        this = scope:zg361_ch_q_event_owner
+        zg361_is_celestial_liege_trigger = yes
+        scope:zg361_ch_q_event_subject = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_q_owner
+                SUBJECT_VAR = zg361_case_q_subject
+                CYCLE_VAR = zg361_case_q_cycle_serial
+                CASE_VAR = zg361_case_q_case_serial
+                STATE_VAR = zg361_case_q_state
+                ACTIVE_VAR = zg361_case_q_active
+                EXPECTED_OWNER = scope:zg361_ch_q_event_owner
+                EXPECTED_SUBJECT = scope:zg361_ch_q_event_subject
+                EXPECTED_CYCLE = scope:zg361_ch_q_event_cycle
+                EXPECTED_CASE = scope:zg361_ch_q_event_case
+                EXPECTED_STATE = 4
+            }
+        }
+    }
+    option = {
+    name = zg361ch.m128.a
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m128_manager_apply_effect = { ROUTE = 1 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        scope:zg361_ch_q_event_subject = { zg361_career_hc_finalize_q_portfolio_effect = yes }
+    }
+}
+option = {
+    name = zg361ch.m128.b
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m128_manager_apply_effect = { ROUTE = 2 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        scope:zg361_ch_q_event_subject = { zg361_career_hc_finalize_q_portfolio_effect = yes }
+    }
+}
+option = {
+    name = zg361ch.m128.c
+    scope:zg361_ch_q_event_subject = {
+        zg361_career_hc_m128_manager_apply_effect = { ROUTE = 3 }
+    }
+    if = {
+        limit = {
+            scope:zg361_ch_q_event_subject = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+        }
+        scope:zg361_ch_q_event_subject = { zg361_career_hc_finalize_q_portfolio_effect = yes }
+    }
+}
 }
 
 zg361ch.1702 = {

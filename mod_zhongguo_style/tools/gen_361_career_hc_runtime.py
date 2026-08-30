@@ -42,6 +42,17 @@ DOMAINS = (
     DomainSpec("q", ((121, 122), (123, 124), (125, 126), (127, 128)), (180, 90, 90, 180), "Manager certification", "管理者绩效文化"),
 )
 
+DOMAIN_ORDER = tuple(domain.key for domain in DOMAINS)
+DOMAIN_BY_KEY = {domain.key: domain for domain in DOMAINS}
+NEXT_DOMAIN = {
+    domain: DOMAIN_ORDER[index + 1] if index + 1 < len(DOMAIN_ORDER) else None
+    for index, domain in enumerate(DOMAIN_ORDER)
+}
+# Hidden D+1 edges separate domain closure receipts from the next player card.
+# They deliberately do not overlap the numbered player events or 901-906
+# completion receipts.
+QUEUE_EVENTS = {"d": 951, "m": 952, "n": 953, "o": 954, "p": 955}
+
 EXPECTED_IDS = tuple(
     (*range(19, 26), *range(92, 129))
 )
@@ -114,6 +125,10 @@ def validate_specs() -> None:
         raise ValueError("runtime references an unknown career model behavior")
     if {domain.key for domain in DOMAINS} != {"d", "m", "n", "o", "p", "q"}:
         raise ValueError("domain set drifted")
+    if DOMAIN_ORDER != ("d", "m", "n", "o", "p", "q"):
+        raise ValueError("career/HC portfolio order drifted")
+    if set(QUEUE_EVENTS) != set(DOMAIN_ORDER[:-1]):
+        raise ValueError("career/HC queue event set drifted")
     for domain in DOMAINS:
         if len(domain.stages) != len(domain.deadlines):
             raise ValueError(f"{domain.key}: stage/deadline count mismatch")
@@ -303,11 +318,25 @@ def render_cost_initialization(mechanism_id: int) -> str:
     return "\n        ".join(lines)
 
 
+def domain_mechanisms(domain: DomainSpec) -> tuple[int, ...]:
+    return tuple(mechanism_id for stage in domain.stages for mechanism_id in stage)
+
+
+def event_scope_names(domain: str) -> dict[str, str]:
+    prefix = f"zg361_ch_{domain}_event"
+    return {
+        "owner": f"{prefix}_owner",
+        "subject": f"{prefix}_subject",
+        "cycle": f"{prefix}_cycle",
+        "case": f"{prefix}_case",
+    }
+
+
 def render_domain_open(domain: DomainSpec) -> str:
     extra_q = "\n            zg361_is_celestial_liege_trigger = yes" if domain.key == "q" else ""
     receipt_resets = []
     cost_resets = []
-    ids = [item for stage in domain.stages for item in stage]
+    ids = list(domain_mechanisms(domain))
     for mechanism_id in ids:
         p = f"zg361_ch_m{mechanism_id:03d}"
         receipt_resets.extend(
@@ -367,9 +396,164 @@ zg361_career_hc_open_{domain.key}_case_effect = {{
             set_variable = {{ name = zg361_ch_{domain.key}_conserved value = 1 }}
             {extra_init}
             {all_resets}
+            var:zg361_case_{domain.key}_owner = {{ save_scope_as = zg361_ch_{domain.key}_event_owner }}
+            save_scope_as = zg361_ch_{domain.key}_event_subject
+            save_scope_value_as = {{ name = zg361_ch_{domain.key}_event_cycle value = var:zg361_case_{domain.key}_cycle_serial }}
+            save_scope_value_as = {{ name = zg361_ch_{domain.key}_event_case value = var:zg361_case_{domain.key}_case_serial }}
             zg361_career_hc_schedule_{domain.key}_stage_01_effect = yes
             set_variable = {{ name = zg361_ch_runtime_applied value = 1 }}
+            if = {{
+                limit = {{ root = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+                zg361_career_hc_{domain.key}_run_authorized_ai_effect = yes
+            }}
+            else_if = {{
+                limit = {{ root = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+                root = {{ trigger_event = {{ id = zg361ch.{ids[0]} days = 1 }} }}
+            }}
             debug_log = "ZG361CH: opened {domain.key.upper()} career/HC case"
+        }}
+    }}
+}}'''
+
+
+def render_authorized_ai_runner(domain: DomainSpec) -> str:
+    calls: list[str] = []
+    for mechanism_id in domain_mechanisms(domain):
+        if mechanism_id in DUAL_COST_IDS:
+            calls.append(
+                f'''if = {{
+        limit = {{
+            government_has_flag = government_has_treasury
+            root = {{
+                government_has_flag = government_has_treasury
+                treasury >= 5
+                gold >= 5
+            }}
+        }}
+        zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = 1 }}
+    }}
+    else = {{
+        zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = 3 }}
+    }}'''
+            )
+        else:
+            calls.append(
+                f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = 1 }}"
+            )
+    if NEXT_DOMAIN[domain.key] is None:
+        tail = f'''if = {{
+        limit = {{ has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }}
+        zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes
+    }}'''
+    else:
+        tail = f'''if = {{
+        limit = {{ has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }}
+        root = {{ trigger_event = {{ id = zg361ch.{QUEUE_EVENTS[domain.key]} days = 1 }} }}
+    }}'''
+    calls_text = "\n".join(
+        f"    {line}" for call in calls for line in call.splitlines()
+    )
+    tail_text = "\n".join(f"    {line}" for line in tail.splitlines())
+    return f'''# Authorized second-AI-exception path: consume the same numbered
+# receipts and consumers without opening any player business event.
+zg361_career_hc_{domain.key}_run_authorized_ai_effect = {{
+{calls_text}
+{tail_text}
+}}'''
+
+
+def render_portfolio_finalizer(domain: DomainSpec) -> str:
+    row = domain_vars(domain.key)
+    scopes = event_scope_names(domain.key)
+    final_state = len(domain.stages) + 1
+    return f'''# Close the manager portfolio only against the last domain's frozen identity.
+zg361_career_hc_finalize_{domain.key}_portfolio_effect = {{
+    if = {{
+        limit = {{
+            exists = scope:{scopes["owner"]}
+            exists = scope:{scopes["subject"]}
+            exists = scope:{scopes["cycle"]}
+            exists = scope:{scopes["case"]}
+            var:{row["owner"]} = scope:{scopes["owner"]}
+            var:{row["subject"]} = scope:{scopes["subject"]}
+            var:{row["cycle"]} = scope:{scopes["cycle"]}
+            var:{row["case"]} = scope:{scopes["case"]}
+            var:{row["state"]} = {final_state}
+            var:{row["active"]} = 0
+        }}
+        set_variable = {{ name = zg361_ch_portfolio_closed value = 1 }}
+        set_variable = {{ name = zg361_ch_portfolio_final_owner value = var:{row["owner"]} }}
+        set_variable = {{ name = zg361_ch_portfolio_final_subject value = var:{row["subject"]} }}
+        set_variable = {{ name = zg361_ch_portfolio_final_cycle value = var:{row["cycle"]} }}
+        set_variable = {{ name = zg361_ch_portfolio_final_case value = var:{row["case"]} }}
+        set_variable = {{ name = zg361_ch_portfolio_final_state value = var:{row["state"]} }}
+        var:{row["owner"]} = {{
+            set_variable = {{ name = zg361_ch_manager_portfolio_active value = 0 }}
+            set_variable = {{ name = zg361_ch_manager_portfolio_completed_cycle value = var:zg361_review_serial }}
+        }}
+        debug_log = "ZG361CH: manager career/HC portfolio closed after {domain.key.upper()}"
+    }}
+}}'''
+
+
+def render_inactive_case_trigger(domain: str) -> str:
+    return f'''trigger_if = {{
+                    limit = {{ has_variable = zg361_case_{domain}_active }}
+                    var:zg361_case_{domain}_active = 0
+                }}
+                trigger_else = {{ always = yes }}'''
+
+
+def render_portfolio_adapter() -> str:
+    inactive = "\n                ".join(
+        render_inactive_case_trigger(domain) for domain in DOMAIN_ORDER
+    )
+    subject_limit = f'''zg361_is_reviewable_vassal_trigger = yes
+                liege = root
+                trigger_if = {{
+                    limit = {{ has_variable = zg361_ch_portfolio_cycle }}
+                    NOT = {{ var:zg361_ch_portfolio_cycle = root.var:zg361_review_serial }}
+                }}
+                trigger_else = {{ always = yes }}
+                {inactive}'''
+    return f'''# The only manager-scope Career/HC ABI for central wiring.  It selects one
+# eligible direct official and opens D only; later domains are hidden D+1 edges.
+zg361_career_hc_open_portfolio_effect = {{
+    remove_variable = zg361_ch_portfolio_applied
+    if = {{
+        limit = {{
+            has_game_rule = zg361_on
+            zg361_is_celestial_liege_trigger = yes
+            has_variable = zg361_review_serial
+            trigger_if = {{
+                limit = {{ has_variable = zg361_ch_manager_portfolio_cycle }}
+                NOT = {{ var:zg361_ch_manager_portfolio_cycle = var:zg361_review_serial }}
+            }}
+            trigger_else = {{ always = yes }}
+            any_vassal = {{
+                {subject_limit}
+            }}
+        }}
+        ordered_vassal = {{
+            limit = {{
+                {subject_limit}
+            }}
+            order_by = stewardship
+            position = 0
+            zg361_career_hc_open_d_case_effect = yes
+            if = {{
+                limit = {{ has_variable = zg361_ch_runtime_applied var:zg361_ch_runtime_applied = 1 }}
+                set_variable = {{ name = zg361_ch_portfolio_cycle value = root.var:zg361_review_serial }}
+                set_variable = {{ name = zg361_ch_portfolio_closed value = 0 }}
+                set_variable = {{ name = zg361_ch_portfolio_owner value = root }}
+                set_variable = {{ name = zg361_ch_portfolio_subject value = this }}
+                set_variable = {{ name = zg361_ch_portfolio_open_case value = var:zg361_case_d_case_serial }}
+                root = {{
+                    set_variable = {{ name = zg361_ch_manager_portfolio_cycle value = var:zg361_review_serial }}
+                    set_variable = {{ name = zg361_ch_manager_portfolio_active value = 1 }}
+                    set_variable = {{ name = zg361_ch_portfolio_applied value = 1 }}
+                }}
+            }}
         }}
     }}
 }}'''
@@ -765,14 +949,159 @@ def render_completion_event(domain: DomainSpec, event_id: int) -> str:
 }}'''
 
 
+def render_business_event_guard(mechanism_id: int, domain: str, state: int) -> str:
+    row = domain_vars(domain)
+    scopes = event_scope_names(domain)
+    return f'''is_ai = no
+        exists = scope:{scopes["owner"]}
+        exists = scope:{scopes["subject"]}
+        exists = scope:{scopes["cycle"]}
+        exists = scope:{scopes["case"]}
+        this = scope:{scopes["owner"]}
+        zg361_is_celestial_liege_trigger = yes
+        scope:{scopes["subject"]} = {{
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            zg361_case_kernel_full_guard_trigger = {{
+                OWNER_VAR = {row["owner"]}
+                SUBJECT_VAR = {row["subject"]}
+                CYCLE_VAR = {row["cycle"]}
+                CASE_VAR = {row["case"]}
+                STATE_VAR = {row["state"]}
+                ACTIVE_VAR = {row["active"]}
+                EXPECTED_OWNER = scope:{scopes["owner"]}
+                EXPECTED_SUBJECT = scope:{scopes["subject"]}
+                EXPECTED_CYCLE = scope:{scopes["cycle"]}
+                EXPECTED_CASE = scope:{scopes["case"]}
+                EXPECTED_STATE = {state}
+            }}
+        }}'''
+
+
+def render_business_option(
+    mechanism_id: int,
+    domain: DomainSpec,
+    route: int,
+    next_mechanism: int | None,
+) -> str:
+    scopes = event_scope_names(domain.key)
+    letter = "abc"[route - 1]
+    option_trigger = ""
+    if mechanism_id in DUAL_COST_IDS and route in (1, 2):
+        option_trigger = f'''    trigger = {{
+        government_has_flag = government_has_treasury
+        treasury >= 5
+        gold >= 5
+        scope:{scopes["subject"]} = {{ government_has_flag = government_has_treasury }}
+    }}
+'''
+    if next_mechanism is not None:
+        continuation = f"trigger_event = {{ id = zg361ch.{next_mechanism} days = 1 }}"
+    elif NEXT_DOMAIN[domain.key] is not None:
+        continuation = f"trigger_event = {{ id = zg361ch.{QUEUE_EVENTS[domain.key]} days = 1 }}"
+    else:
+        continuation = (
+            f"scope:{scopes['subject']} = {{ "
+            f"zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes }}"
+        )
+    return f'''option = {{
+    name = zg361ch.m{mechanism_id:03d}.{letter}
+{option_trigger}    scope:{scopes["subject"]} = {{
+        zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = {route} }}
+    }}
+    if = {{
+        limit = {{
+            scope:{scopes["subject"]} = {{
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }}
+        }}
+        {continuation}
+    }}
+}}'''
+
+
+def render_business_event(
+    mechanism_id: int,
+    domain: DomainSpec,
+    next_mechanism: int | None,
+) -> str:
+    state = STAGE_BY_ID[mechanism_id]
+    options = "\n".join(
+        render_business_option(mechanism_id, domain, route, next_mechanism)
+        for route in (1, 2, 3)
+    )
+    return f'''# Player manager business window #{mechanism_id:03d}; its only successor is D+1.
+zg361ch.{mechanism_id} = {{
+    type = character_event
+    theme = stewardship
+    title = zg361ch.m{mechanism_id:03d}.name
+    desc = zg361ch.m{mechanism_id:03d}.desc
+    trigger = {{
+        {render_business_event_guard(mechanism_id, domain.key, state)}
+    }}
+    {options}
+}}'''
+
+
+def render_queue_event(domain: DomainSpec) -> str:
+    next_domain = NEXT_DOMAIN[domain.key]
+    if next_domain is None:
+        raise ValueError("final Career/HC domain has no queue edge")
+    row = domain_vars(domain.key)
+    scopes = event_scope_names(domain.key)
+    final_state = len(domain.stages) + 1
+    if next_domain == "q":
+        immediate = f'''scope:{scopes["subject"]} = {{
+            if = {{
+                limit = {{ zg361_is_celestial_liege_trigger = yes }}
+                zg361_career_hc_open_q_case_effect = yes
+            }}
+            else = {{ zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes }}
+        }}'''
+    else:
+        immediate = (
+            f'scope:{scopes["subject"]} = {{ '
+            f'zg361_career_hc_open_{next_domain}_case_effect = yes }}'
+        )
+    return f'''# D+1 hidden queue edge: {domain.key.upper()} closed -> {next_domain.upper()} opens.
+zg361ch.{QUEUE_EVENTS[domain.key]} = {{
+    type = character_event
+    hidden = yes
+    trigger = {{
+        exists = scope:{scopes["owner"]}
+        exists = scope:{scopes["subject"]}
+        exists = scope:{scopes["cycle"]}
+        exists = scope:{scopes["case"]}
+        this = scope:{scopes["owner"]}
+        zg361_is_celestial_liege_trigger = yes
+        scope:{scopes["subject"]} = {{
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            var:{row["owner"]} = scope:{scopes["owner"]}
+            var:{row["subject"]} = scope:{scopes["subject"]}
+            var:{row["cycle"]} = scope:{scopes["cycle"]}
+            var:{row["case"]} = scope:{scopes["case"]}
+            var:{row["state"]} = {final_state}
+            var:{row["active"]} = 0
+        }}
+    }}
+    immediate = {{
+        {immediate}
+    }}
+}}'''
+
+
 def render_effects() -> bytes:
     sections = [
         "# ZhongGuo 361 career/HC runtime: D/M/N/O/P/Q, 44 numbered mechanisms.",
         "# Routes: 1 = evidence-led; 2 = political/extractive; 3 = bounded defer.",
-        "# Public wiring surface: open_<domain>_case + mNNN_manager_apply.",
+        "# Public central surface: zg361_career_hc_open_portfolio_effect only.",
+        render_portfolio_adapter(),
     ]
     for domain in DOMAINS:
         sections.append(render_domain_open(domain))
+        sections.append(render_authorized_ai_runner(domain))
         base_event = (ord(domain.key) - ord("a") + 1) * 100
         for state, (stage_ids, days) in enumerate(zip(domain.stages, domain.deadlines), start=1):
             sections.append(render_schedule(domain, state, days, base_event + state * 2))
@@ -787,12 +1116,18 @@ def render_effects() -> bytes:
                     sections.append(response)
                 sections.append(render_core(mechanism_id, domain.key, state))
                 sections.append(render_consumer(mechanism_id, domain.key, state))
+    sections.append(render_portfolio_finalizer(DOMAIN_BY_KEY["p"]))
+    sections.append(render_portfolio_finalizer(DOMAIN_BY_KEY["q"]))
     return generated("\n\n".join(sections))
 
 
 def render_events() -> bytes:
     sections = ["namespace = zg361ch"]
     for domain in DOMAINS:
+        mechanisms = domain_mechanisms(domain)
+        for index, mechanism_id in enumerate(mechanisms):
+            next_mechanism = mechanisms[index + 1] if index + 1 < len(mechanisms) else None
+            sections.append(render_business_event(mechanism_id, domain, next_mechanism))
         base_event = (ord(domain.key) - ord("a") + 1) * 100
         for state in range(1, len(domain.stages) + 1):
             event_id = base_event + state * 2
@@ -803,6 +1138,8 @@ def render_events() -> bytes:
                 sections.append(render_deadline_event(domain, state, event_id))
         completion = 900 + "dmnopq".index(domain.key) + 1
         sections.append(render_completion_event(domain, completion))
+        if NEXT_DOMAIN[domain.key] is not None:
+            sections.append(render_queue_event(domain))
     return generated("\n\n".join(sections))
 
 
@@ -828,9 +1165,18 @@ def localization_rows(language: str) -> list[str]:
     for mechanism_id in EXPECTED_IDS:
         behavior = MECHANISM_BEHAVIORS[mechanism_id]
         title = behavior.behavior_key.replace("_", " ").title() if english else behavior.title_cn
+        domain = DOMAIN_BY_ID[mechanism_id]
+        desc = (
+            f"Decide how this frozen {domain.title_en.lower()} case will handle {title}. "
+            "The route is bound to this manager, official, review cycle, case and stage."
+            if english
+            else f"这份已冻结的{domain.title_cn}案卷来到“{title}”。"
+            "路线会绑定上司、受评官员、考核周期、案卷与阶段，不能靠重开窗口改口。"
+        )
         rows.extend(
             (
                 f' zg361ch.m{mechanism_id:03d}.name:0 "{title}"',
+                f' zg361ch.m{mechanism_id:03d}.desc:0 "{desc}"',
                 f' zg361ch.m{mechanism_id:03d}.a:0 "Evidence-led route"' if english else f' zg361ch.m{mechanism_id:03d}.a:0 "按证据办"',
                 f' zg361ch.m{mechanism_id:03d}.b:0 "Political route"' if english else f' zg361ch.m{mechanism_id:03d}.b:0 "按政治办"',
                 f' zg361ch.m{mechanism_id:03d}.c:0 "Defer with recorded debt"' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "延期，但欠账留痕"',
