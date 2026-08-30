@@ -128,3 +128,262 @@ zg361ip.390 = {
 	trigger = { is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }
 	option = { name = zg361ip.result.ok }
 }
+
+# #192 exact route-C due consumer.
+zg361ip.7192 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m192_consume_due_debt_effect = yes }
+}
+
+# #193 exact route-C due consumer.
+zg361ip.7193 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m193_consume_due_debt_effect = yes }
+}
+
+# #194 exact route-C due consumer.
+zg361ip.7194 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m194_consume_due_debt_effect = yes }
+}
+
+# #195 exact route-C due consumer.
+zg361ip.7195 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m195_consume_due_debt_effect = yes }
+}
+
+# #196 exact route-C due consumer.
+zg361ip.7196 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m196_consume_due_debt_effect = yes }
+}
+
+# #197 exact route-C due consumer.
+zg361ip.7197 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m197_consume_due_debt_effect = yes }
+}
+
+# #198 exact route-C due consumer.
+zg361ip.7198 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m198_consume_due_debt_effect = yes }
+}
+
+# #199 exact route-C due consumer.
+zg361ip.7199 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m199_consume_due_debt_effect = yes }
+}
+
+# #200 exact route-C due consumer.
+zg361ip.7200 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m200_consume_due_debt_effect = yes }
+}
+
+# #201 exact route-C due consumer.
+zg361ip.7201 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m201_consume_due_debt_effect = yes }
+}
+
+# #202 exact route-C due consumer.
+zg361ip.7202 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m202_consume_due_debt_effect = yes }
+}
+
+# #203 exact route-C due consumer.
+zg361ip.7203 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m203_consume_due_debt_effect = yes }
+}
+
+# #204 exact route-C due consumer.
+zg361ip.7204 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m204_consume_due_debt_effect = yes }
+}
+
+# #205 exact route-C due consumer.
+zg361ip.7205 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m205_consume_due_debt_effect = yes }
+}
+
+# #206 exact route-C due consumer.
+zg361ip.7206 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m206_consume_due_debt_effect = yes }
+}
+
+# #207 exact route-C due consumer.
+zg361ip.7207 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m207_consume_due_debt_effect = yes }
+}
+
+# #208 exact route-C due consumer.
+zg361ip.7208 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m208_consume_due_debt_effect = yes }
+}
+
+# #209 exact route-C due consumer.
+zg361ip.7209 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m209_consume_due_debt_effect = yes }
+}
+
+# #210 exact route-C due consumer.
+zg361ip.7210 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m210_consume_due_debt_effect = yes }
+}
+
+# #211 exact route-C due consumer.
+zg361ip.7211 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m211_consume_due_debt_effect = yes }
+}
+
+# #212 exact route-C due consumer.
+zg361ip.7212 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m212_consume_due_debt_effect = yes }
+}
+
+# #213 exact route-C due consumer.
+zg361ip.7213 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m213_consume_due_debt_effect = yes }
+}
+
+# #214 exact route-C due consumer.
+zg361ip.7214 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m214_consume_due_debt_effect = yes }
+}
+
+# #215 exact route-C due consumer.
+zg361ip.7215 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m215_consume_due_debt_effect = yes }
+}
+
+# #216 exact route-C due consumer.
+zg361ip.7216 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m216_consume_due_debt_effect = yes }
+}
+
+# #217 exact route-C due consumer.
+zg361ip.7217 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m217_consume_due_debt_effect = yes }
+}
+
+# #218 exact route-C due consumer.
+zg361ip.7218 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m218_consume_due_debt_effect = yes }
+}
+
+# #219 exact route-C due consumer.
+zg361ip.7219 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m219_consume_due_debt_effect = yes }
+}
+
+# #220 exact route-C due consumer.
+zg361ip.7220 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m220_consume_due_debt_effect = yes }
+}
+
+# #221 exact route-C due consumer.
+zg361ip.7221 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m221_consume_due_debt_effect = yes }
+}
+
+# #222 exact route-C due consumer.
+zg361ip.7222 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m222_consume_due_debt_effect = yes }
+}
+
+# #223 exact route-C due consumer.
+zg361ip.7223 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m223_consume_due_debt_effect = yes }
+}
+
+# #224 exact route-C due consumer.
+zg361ip.7224 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m224_consume_due_debt_effect = yes }
+}
+
+# #225 exact route-C due consumer.
+zg361ip.7225 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m225_consume_due_debt_effect = yes }
+}
+
+# #226 exact route-C due consumer.
+zg361ip.7226 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m226_consume_due_debt_effect = yes }
+}
+
+# #227 exact route-C due consumer.
+zg361ip.7227 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m227_consume_due_debt_effect = yes }
+}
+
+# #228 exact route-C due consumer.
+zg361ip.7228 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_m228_consume_due_debt_effect = yes }
+}

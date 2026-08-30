@@ -210,6 +210,9 @@ class GeneratedFileTests(unittest.TestCase):
             self.assertIn(f"{prefix}_business_object_created value = 0", route_c)
             self.assertIn(f"{prefix}_debt_due_cycle", route_c)
             self.assertIn(f"{prefix}_debt_open value = 1", route_c)
+            for field in ("owner", "subject", "cycle", "case", "state", "type_code", "id", "consumer_contract", "consumed", "escalation_count"):
+                self.assertIn(f"{prefix}_debt_{field}", route_c)
+            self.assertIn(f"id = zg361ip.{gen.DEBT_EVENT[mechanism_id]} days = 365", route_c)
             self.assertNotIn(f"{prefix}_object_type_code", route_c)
             for semantic_field in gen.ASSIGNMENTS[mechanism_id]:
                 self.assertNotIn(f"{prefix}_{semantic_field}", route_c)
@@ -296,7 +299,47 @@ class GeneratedFileTests(unittest.TestCase):
                 self.assertIn("hidden = yes", event)
                 self.assertIn(f"zg361_ip_{domain.slug}_due_{state:02d}_effect", event)
         self.assertEqual(expected_hidden, 14)
-        self.assertEqual(self.events.count("hidden = yes"), 14)
+        self.assertEqual(self.events.count("hidden = yes"), 14 + len(gen.DEBT_EVENT))
+
+    def test_every_route_c_debt_has_exact_due_repayment_escalation_and_idempotency(self) -> None:
+        for mechanism_id in range(192, 229):
+            prefix = f"zg361_ip_m{mechanism_id:03d}"
+            due = block(self.effects, f"{prefix}_consume_due_debt_effect")
+            domain = gen.DOMAIN_BY_ID[mechanism_id]
+            state = domain.stage_for(mechanism_id)
+            for field in ("owner", "subject", "cycle", "case", "state", "type_code", "id", "consumer_contract", "due_cycle", "open", "consumed", "escalation_count"):
+                self.assertIn(f"{prefix}_debt_{field}", due, (mechanism_id, field))
+            self.assertIn(f"{prefix}_debt_type_code = {mechanism_id}", due)
+            self.assertIn(f"{prefix}_debt_consumer_contract = {mechanism_id}", due)
+            self.assertIn(f"{prefix}_debt_state = {state}", due)
+            self.assertIn(f"{prefix}_debt_owner = var:{prefix}_done_owner", due)
+            self.assertIn(f"{prefix}_debt_subject = var:{prefix}_done_subject", due)
+            self.assertIn(f"{prefix}_debt_cycle = var:{prefix}_done_cycle", due)
+            self.assertIn(f"{prefix}_debt_case = var:{prefix}_done_case", due)
+            self.assertIn("change_variable = { name = zg361_kpi_value add = -1 }", due)
+            self.assertIn(f"change_variable = {{ name = zg361_ip_{domain.slug}_policy_debt add = -1 }}", due)
+            self.assertIn(f"{prefix}_debt_open value = 0", due)
+            self.assertIn(f"{prefix}_debt_consumed value = 1", due)
+            self.assertIn(f"{prefix}_debt_escalation_count < 2", due)
+            self.assertIn(f"id = zg361ip.{gen.DEBT_EVENT[mechanism_id]} days = 365", due)
+            self.assertIn(f"debt_blocked_reason value = {80000 + mechanism_id}", due)
+            self.assertIn("zg361_ip_debt_status value = 2", due)
+            event = block(self.events, f"zg361ip.{gen.DEBT_EVENT[mechanism_id]} =")
+            self.assertIn("hidden = yes", event)
+            self.assertIn(f"{prefix}_consume_due_debt_effect = yes", event)
+
+    def test_debt_repayment_conserves_open_count_and_cross_owner_is_fail_closed(self) -> None:
+        for domain in gen.DOMAINS:
+            representative = domain.first_id
+            prefix = f"zg361_ip_m{representative:03d}"
+            due = block(self.effects, f"{prefix}_consume_due_debt_effect")
+            identity = due.index(f"{prefix}_debt_owner = var:{prefix}_done_owner")
+            settlement = due.index(f"change_variable = {{ name = zg361_ip_{domain.slug}_policy_debt add = -1 }}")
+            self.assertLess(identity, settlement)
+            self.assertLess(settlement, due.index(f"{prefix}_debt_open value = 0"))
+            self.assertIn(f"{prefix}_debt_subject = this", due)
+            self.assertIn("zg361_is_celestial_liege_trigger = yes", due)
+            self.assertIn(f"debt_red_code value = {81000 + representative}", due)
 
     def test_dual_payer_paths_are_atomic_and_conserved(self) -> None:
         on_call = block(self.effects, "zg361_ip_m193_apply_effect")

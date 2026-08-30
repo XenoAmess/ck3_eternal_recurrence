@@ -81,7 +81,8 @@ source-derived 结论，尚待 CK3 实机日志验证；若实机行为不同，
 - 同一案同一编号只执行一次的 `done_owner + done_subject + done_cycle + done_case + done_state` 闸门；
 - A（证据充分）、B（快速强推）、C（延期并背政策债）三条路线；
 - A/B 冻结逐编号唯一业务对象类型、object id、五元身份、consumer contract、资源账标记与适用期限；
-- C 不再写 A/B 业务字段或运行其业务消费者，只写五元 policy debt、`due_cycle=current+1` 与负向结果；
+- C 不再写 A/B 业务字段或运行其业务消费者，只写 exact owner/subject/cycle/case/state、type/id/consumer
+  contract、`due_cycle=current+1`、open/consumed/escalation 与负向结果；每个编号有独立 hidden due consumer；
 - 读取前序对象的 22 项机制必须逐项证明前序 exact object 的类型、consumer contract、owner、subject、cycle、case、state
   均属于本案，并且业务对象与指定 consumer 都已执行；前序走 C、缺失或属于旧轮时，
   本项在 receipt 之前级联为 C，禁止偷读上一轮残留变量；
@@ -153,8 +154,9 @@ py tools/gen_361_incident_platform_runtime.py --check
 py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 ```
 
-静态测试覆盖 exact 37 ID、A/B/C、逐项 exact object/consumer/resource/deadline、C 无业务对象、完整五元 done/operation/object 身份、阶段唯一推进、14 个 deadline、三张玩家结案事件、
-写到 KPI 的消费者、双付款原子预检、容量/份额守恒、九语 key 集以及“零新增 GUI/decision/interaction/on_action”。
+静态测试覆盖 exact 37 ID、A/B/C、逐项 exact object/consumer/resource/deadline、C 无业务对象、37 个逐 ID
+policy-debt 到期事件、完整五元 done/operation/object/debt 身份、阶段唯一推进、14 个 case deadline、三张玩家
+结案事件、写到 KPI 的消费者、双付款原子预检、容量/份额守恒、九语 key 集以及“零新增 GUI/decision/interaction/on_action”。
 
 仍需由统一批次完成：
 
@@ -164,7 +166,9 @@ py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 4. 在一次启动中覆盖 X/Y/Z 正常、stale、重复调用、资金不足、玩家/AI、伯爵/男爵 subject；
 5. 保存 paused artifact 后才升级 readiness。
 
-此外，C 路当前会产生可见且带 `due_cycle` 的 policy debt，但本包尚无统一的到期偿债/升级 consumer；在该 consumer
-及其跨存档实机证据出现前，不能把“已登记债务”写成债务闭环。
+C 路的逐编号 consumer 到期后先核对原 write/debt 五元身份。subject 有真实 `zg361_kpi_value` 时以
+`KPI -1 / domain policy_debt -1` 结清；缺少可消费 KPI 时，只在 frozen owner 仍有管理资格且拥有自己的 KPI
+时扣 owner 1 分、延后一周期，最多两次；第三次保持 debt open 并写 `80000+ID` blocked reason。closed 重入
+status 2，cross-owner/错案 status 3。该静态闭环仍需跨存档实机证据，不能仅凭生成文本提升 readiness。
 
 OCR 只可在 native/MCP 状态已经闭合后截取最终画面，不可承担导航、状态真值或 GREEN 判定。

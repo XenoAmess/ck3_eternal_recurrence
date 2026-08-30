@@ -182,15 +182,17 @@ accounted_hours <= authorized_hours
 
 ## 7. 后续 CK3 产品缺口
 
-独立 CK3 静态投影现已存在，并把本模型的 exact object/consumer/resource/deadline 合同投影到 A/B；C 只生成
-五元 policy debt。它仍未中央接线、未过 parser/MCP/存读档/实机，因此至少需要：
+独立 CK3 静态投影现已存在，并把本模型的 exact object/consumer/resource/deadline 合同投影到 A/B；C 生成
+精确五元 policy debt、逐编号 hidden 到期消费者、等量治理工时偿债、两次有界 manager 升级和保持 open 的
+typed blocked 终态。它仍未中央接线、未过 parser/MCP/存读档/实机，因此至少需要：
 
 - 用 exact-build 原生查询把 vacancy/candidate/vendor/team/cohort/charter 标识与合法 court position/council/title 结果互证；
 - 在真实 CK3 中验证正式/影子 HC、国库→角色/供应商、个人信用、capacity 五桶与跨期 consumer 的读写和守恒；
 - 实机覆盖 reject/withdraw/held/reopen、#257/#269/#275 延迟分支、#360 三 cohort 与 #361 多版本未来默认；
 - 提供 deadline scheduler、save/load round-trip、共享 GUI/ledger、MCP query/action、paused snapshot 与实机 acceptance artifact；
-- CK3 投影的 C debt 虽有 exact identity、即时可见性与 abandoned-resource cleanup，仍需统一到期偿债/升级 consumer；
-  #264 sunset/waiver/artifact、#276 历史 rehire 与 #277 已关闭 PIP/离任对象仍需真实 producer ABI；
+- CK3 投影已提供 #264 sunset/waiver/artifact、#276 独立历史 rehire、#277 closed-PIP/exit、#275 runner-up
+  central reopen、357–359 receipt bridge、#360 三 cohort producer 和 #361 三周期 rolling-chain adapter；仍需外域
+  以真实角色/职位/历史/哈希调用这些 typed seam，并完成原生 court-position 任命/离任，不能把 adapter ACK 当来源证明；
 - 运行 generator/static validation/真实 CK3 L1–L3，并保持本规范所列资源与历史不变量。
 
 因此，本文件和静态投影可作为后续施工的 reference oracle，但不能据此把这些机制提高为 fixture-live、

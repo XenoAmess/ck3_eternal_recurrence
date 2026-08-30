@@ -139,6 +139,7 @@ FUTURE_CHOICES = {
     356: (2,),
     361: (1, 2),
 }
+DEBT_EVENT = {mid: 6000 + mid for mid in EXPECTED_MECHANISM_IDS}
 MAX_COLLECTIVE_OUTCOMES = 6
 NONMANAGER_NA_IDS = frozenset({360, 361})
 NONMANAGER_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS - NONMANAGER_NA_IDS)
@@ -486,6 +487,9 @@ def _collective_business_writes(choice: int) -> list[str]:
         _set("m360_realm_trust_delta", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
         _set("m360_manager_cost_direction", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
         _set("m360_settled", 1),
+        _set("al_external_collective_settled", 1),
+        _set("al_external_collective_submission_consumed", 1),
+        _set("al_external_collective_submission_active", 0),
     ]
     if choice == 1:
         lines.append(
@@ -500,6 +504,7 @@ def _collective_business_writes(choice: int) -> list[str]:
 
 def _charter_external_checks() -> list[str]:
     checks = [
+        f"has_variable = {PREFIX}_al_external_long_report_hash",
         f"has_variable = {PREFIX}_al_external_charter_id",
         f"has_variable = {PREFIX}_al_external_charter_previous_id",
         f"has_variable = {PREFIX}_al_external_charter_adopted_day",
@@ -511,7 +516,7 @@ def _charter_external_checks() -> list[str]:
         f"NOT = {{ var:{PREFIX}_al_external_charter_new_history_hash = var:{PREFIX}_al_external_charter_previous_history_hash }}",
     ]
     for slot in (1, 2, 3):
-        for name in ("cycle", "receipt_id", "receipt_hash"):
+        for name in ("cycle", "receipt_id", "receipt_hash", "previous_hash"):
             checks.append(f"has_variable = {PREFIX}_al_external_completed_{name}_{slot}")
         checks += [
             f"var:{PREFIX}_al_external_completed_cycle_{slot} >= 1",
@@ -522,6 +527,8 @@ def _charter_external_checks() -> list[str]:
     checks += [
         f"var:{PREFIX}_al_external_completed_cycle_1 < var:{PREFIX}_al_external_completed_cycle_2",
         f"var:{PREFIX}_al_external_completed_cycle_2 < var:{PREFIX}_al_external_completed_cycle_3",
+        f"var:{PREFIX}_al_external_completed_previous_hash_2 = var:{PREFIX}_al_external_completed_receipt_hash_1",
+        f"var:{PREFIX}_al_external_completed_previous_hash_3 = var:{PREFIX}_al_external_completed_receipt_hash_2",
         f"var:{PREFIX}_al_external_completed_cycle_max = var:{PREFIX}_al_external_completed_cycle_3",
         f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_id_1 = var:{PREFIX}_al_external_completed_receipt_id_2 }}",
         f"NOT = {{ var:{PREFIX}_al_external_completed_receipt_id_1 = var:{PREFIX}_al_external_completed_receipt_id_3 }}",
@@ -539,27 +546,12 @@ def _charter_external_checks() -> list[str]:
         f"\thas_variable = {PREFIX}_realm_charter_history_count",
         f"\tvar:{PREFIX}_realm_charter_history_count = var:{PREFIX}_realm_charter_current_version",
         "}",
-        f"trigger_if = {{ limit = {{ var:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_version = 0 }} }}",
-        f"\tvar:zg361_case_al_owner = {{ NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_cycle_1 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_cycle_2 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_cycle_3 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_id_1 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_id_2 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_id_3 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_1 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_2 }} NOT = {{ has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_3 }} NOT = {{ has_variable = {PREFIX}_realm_charter_long_report_anchor }} }}",
-        f"}} trigger_else = {{",
-        f"\tvar:zg361_case_al_owner = {{ has_variable = {PREFIX}_realm_charter_anchor_cycle_1 has_variable = {PREFIX}_realm_charter_anchor_cycle_2 has_variable = {PREFIX}_realm_charter_anchor_cycle_3 has_variable = {PREFIX}_realm_charter_anchor_receipt_id_1 has_variable = {PREFIX}_realm_charter_anchor_receipt_id_2 has_variable = {PREFIX}_realm_charter_anchor_receipt_id_3 has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_1 has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_2 has_variable = {PREFIX}_realm_charter_anchor_receipt_hash_3 has_variable = {PREFIX}_realm_charter_long_report_anchor }}",
-        f"\tvar:{PREFIX}_al_external_completed_cycle_1 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_cycle_1",
-        f"\tvar:{PREFIX}_al_external_completed_cycle_2 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_cycle_2",
-        f"\tvar:{PREFIX}_al_external_completed_cycle_3 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_cycle_3",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_id_1 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_id_1",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_id_2 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_id_2",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_id_3 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_id_3",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_hash_1 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_hash_1",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_hash_2 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_hash_2",
-        f"\tvar:{PREFIX}_al_external_completed_receipt_hash_3 = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_anchor_receipt_hash_3",
-        f"\tvar:{PREFIX}_al_external_long_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_long_report_anchor",
-        f"}}",
         f"trigger_if = {{ limit = {{ var:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_version > 0 }} }}",
         f"\tvar:{PREFIX}_al_external_charter_previous_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id",
-        f"\tvar:{PREFIX}_al_external_completed_cycles_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_cycle_hash",
-        f"\tvar:{PREFIX}_al_external_long_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_report_id",
         f"\tvar:{PREFIX}_al_external_charter_previous_history_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash",
         f"\tvar:{PREFIX}_al_external_charter_adopted_day > var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_adopted_day",
+        f"\tNOT = {{ var:{PREFIX}_al_external_completed_cycles_hash = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_cycle_hash }}",
+        f"\tNOT = {{ var:{PREFIX}_al_external_long_report_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_report_id }}",
         f"\tvar:zg361_case_al_owner = {{ var:{PREFIX}_realm_charter_current_effective_cycle < {{ value = $TICKET_CYCLE$ add = 1 }} }}",
         f"}} trigger_else = {{ var:{PREFIX}_al_external_charter_previous_id = 0 var:{PREFIX}_al_external_charter_previous_history_hash = 0 }}",
         f"NOT = {{ var:{PREFIX}_al_external_charter_id = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}",
@@ -583,6 +575,7 @@ def _charter_business_writes(choice: int) -> list[str]:
         _set("m361_completed_evidence_count", 3),
         _set("m361_completed_cycles_hash", f"var:{PREFIX}_al_external_completed_cycles_hash"),
         _set("m361_long_report_id", f"var:{PREFIX}_al_external_long_report_id"),
+        _set("m361_long_report_hash", f"var:{PREFIX}_al_external_long_report_hash"),
         _set("m361_report_completed_cycles_hash", f"var:{PREFIX}_al_external_report_completed_cycles_hash"),
         _set("m361_previous_history_hash", f"var:{PREFIX}_al_external_charter_previous_history_hash"),
         _set("m361_new_history_hash", f"var:{PREFIX}_al_external_charter_new_history_hash"),
@@ -592,13 +585,15 @@ def _charter_business_writes(choice: int) -> list[str]:
         _set("m361_future_install_pending", 1),
     ]
     for slot in (1, 2, 3):
-        for name in ("cycle", "receipt_id", "receipt_hash"):
+        for name in ("cycle", "receipt_id", "receipt_hash", "previous_hash"):
             lines.append(_set(f"m361_completed_{name}_{slot}", f"var:{PREFIX}_al_external_completed_{name}_{slot}"))
     lines += [
         f"var:zg361_case_al_owner = {{ if = {{ limit = {{ var:{PREFIX}_realm_charter_current_version = 0 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_cycle_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycle_3 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_id_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_id_3 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_1 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_1 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_2 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_2 }} set_variable = {{ name = {PREFIX}_realm_charter_anchor_receipt_hash_3 value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_receipt_hash_3 }} set_variable = {{ name = {PREFIX}_realm_charter_long_report_anchor value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} }} }}",
         f"var:zg361_case_al_owner = {{ set_variable = {{ name = {PREFIX}_realm_charter_previous_version value = var:{PREFIX}_realm_charter_current_version }} set_variable = {{ name = {PREFIX}_realm_charter_previous_id value = var:{PREFIX}_realm_charter_current_id }} set_variable = {{ name = {PREFIX}_realm_charter_previous_cycle_hash value = var:{PREFIX}_realm_charter_current_cycle_hash }} set_variable = {{ name = {PREFIX}_realm_charter_previous_report_id value = var:{PREFIX}_realm_charter_current_report_id }} change_variable = {{ name = {PREFIX}_realm_charter_current_version add = 1 }} change_variable = {{ name = {PREFIX}_realm_charter_history_count add = 1 }} set_variable = {{ name = {PREFIX}_realm_charter_current_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_cycle_hash value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_completed_cycles_hash }} set_variable = {{ name = {PREFIX}_realm_charter_current_report_id value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} set_variable = {{ name = {PREFIX}_realm_charter_current_adopted_day value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_adopted_day }} set_variable = {{ name = {PREFIX}_realm_charter_current_effective_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }} set_variable = {{ name = {PREFIX}_realm_charter_history_tail_hash value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_charter_new_history_hash }} set_variable = {{ name = {PREFIX}_realm_charter_last_case value = $TICKET_CASE$ }} set_variable = {{ name = {PREFIX}_realm_charter_last_report value = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_long_report_id }} }}",
         _set("m361_adopted_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_version"),
         _set("m361_previous_charter_version", f"var:zg361_case_al_owner.var:{PREFIX}_realm_charter_previous_version"),
+        _set("al_external_charter_evidence_consumed", 1),
+        _set("al_external_charter_evidence_ready", 0),
         f"var:zg361_case_al_owner = {{ remove_gold = {cost} }}",
         f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[361]} days = 365 }}",
     ]
@@ -734,9 +729,53 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
                 f"trigger_else = {{ has_variable = {PREFIX}_shadow_hc_active "
                 f"var:{PREFIX}_shadow_hc_active >= 1 }}"
             ),
+            f"has_variable = {PREFIX}_ac_external_handoff_ready",
+            f"has_variable = {PREFIX}_ac_external_handoff_consumed",
+            f"has_variable = {PREFIX}_ac_external_handoff_owner",
+            f"has_variable = {PREFIX}_ac_external_handoff_subject",
+            f"has_variable = {PREFIX}_ac_external_handoff_cycle",
+            f"has_variable = {PREFIX}_ac_external_handoff_case",
+            f"has_variable = {PREFIX}_ac_external_handoff_state",
+            f"has_variable = {PREFIX}_ac_external_handoff_contract_id",
+            f"has_variable = {PREFIX}_ac_external_handoff_sunset_cycle",
+            f"has_variable = {PREFIX}_ac_external_handoff_outcome",
+            f"var:{PREFIX}_ac_external_handoff_ready = 1",
+            f"var:{PREFIX}_ac_external_handoff_consumed = 0",
+            f"var:{PREFIX}_ac_external_handoff_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_ac_external_handoff_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ac_external_handoff_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_ac_external_handoff_case = $TICKET_CASE$",
+            f"var:{PREFIX}_ac_external_handoff_state = 6",
+            f"var:{PREFIX}_ac_external_handoff_contract_id = var:{PREFIX}_m254_contract_id",
+            f"var:{PREFIX}_ac_external_handoff_sunset_cycle = var:{PREFIX}_m254_sunset_cycle",
         ]
         if choice == 1:
-            checks.append(f"var:zg361_case_{d}_owner = {{ gold >= 20 }}")
+            checks += [
+                f"var:zg361_case_{d}_owner = {{ gold >= 20 }}",
+                f"var:{PREFIX}_ac_external_handoff_outcome = 1",
+                f"has_variable = {PREFIX}_ac_external_handoff_accepted_by",
+                f"has_variable = {PREFIX}_ac_external_handoff_payee",
+                f"has_variable = {PREFIX}_ac_external_handoff_documentation_id",
+                f"has_variable = {PREFIX}_ac_external_handoff_documentation_hash",
+                f"has_variable = {PREFIX}_ac_external_handoff_shadowing_id",
+                f"has_variable = {PREFIX}_ac_external_handoff_shadowing_hash",
+                f"has_variable = {PREFIX}_ac_external_handoff_practical_id",
+                f"has_variable = {PREFIX}_ac_external_handoff_practical_hash",
+                f"var:{PREFIX}_ac_external_handoff_accepted_by = $TICKET_OWNER$",
+                f"var:{PREFIX}_ac_external_handoff_payee = $TICKET_SUBJECT$",
+                f"var:{PREFIX}_ac_external_handoff_documentation_id > 0",
+                f"var:{PREFIX}_ac_external_handoff_documentation_hash > 0",
+                f"var:{PREFIX}_ac_external_handoff_shadowing_id > 0",
+                f"var:{PREFIX}_ac_external_handoff_shadowing_hash > 0",
+                f"var:{PREFIX}_ac_external_handoff_practical_id > 0",
+                f"var:{PREFIX}_ac_external_handoff_practical_hash > 0",
+            ]
+        else:
+            checks += [
+                f"var:{PREFIX}_ac_external_handoff_outcome = 2",
+                f"has_variable = {PREFIX}_ac_external_handoff_rejection_reason",
+                f"var:{PREFIX}_ac_external_handoff_rejection_reason > 0",
+            ]
     if mid == 265 and choice == 1:
         checks += [
             f"has_variable = {PREFIX}_contract_gold_paid",
@@ -848,6 +887,31 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:zg361_case_{d}_owner = {{ gold >= 15 }}",
             f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_ad_hc_flight_pending var:{PREFIX}_ad_hc_flight_pending = 1 var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$ var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$ var:{PREFIX}_ad_hc_flight_case = $TICKET_CASE$ }}",
         ]
+        if choice == 1:
+            checks += [
+                f"has_variable = {PREFIX}_ad_external_appointment_ready",
+                f"has_variable = {PREFIX}_ad_external_appointment_consumed",
+                f"has_variable = {PREFIX}_ad_external_appointment_owner",
+                f"has_variable = {PREFIX}_ad_external_appointment_subject",
+                f"has_variable = {PREFIX}_ad_external_appointment_cycle",
+                f"has_variable = {PREFIX}_ad_external_appointment_case",
+                f"has_variable = {PREFIX}_ad_external_appointment_state",
+                f"has_variable = {PREFIX}_ad_external_appointed_character",
+                f"has_variable = {PREFIX}_ad_external_position_type_id",
+                f"has_variable = {PREFIX}_ad_external_position_receipt_id",
+                f"has_variable = {PREFIX}_ad_external_position_receipt_hash",
+                f"var:{PREFIX}_ad_external_appointment_ready = 1",
+                f"var:{PREFIX}_ad_external_appointment_consumed = 0",
+                f"var:{PREFIX}_ad_external_appointment_owner = $TICKET_OWNER$",
+                f"var:{PREFIX}_ad_external_appointment_subject = $TICKET_SUBJECT$",
+                f"var:{PREFIX}_ad_external_appointment_cycle = $TICKET_CYCLE$",
+                f"var:{PREFIX}_ad_external_appointment_case = $TICKET_CASE$",
+                f"var:{PREFIX}_ad_external_appointment_state = 4",
+                f"var:{PREFIX}_ad_external_appointed_character = $TICKET_SUBJECT$",
+                f"var:{PREFIX}_ad_external_position_type_id > 0",
+                f"var:{PREFIX}_ad_external_position_receipt_id > 0",
+                f"var:{PREFIX}_ad_external_position_receipt_hash > 0",
+            ]
     if mid == 273:
         checks += [
             _zero_or_missing(f"{PREFIX}_candidate_active"),
@@ -889,6 +953,31 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"has_variable = {PREFIX}_m275_not_applicable_hired "
             f"var:{PREFIX}_m275_not_applicable_hired = 0 }}"
         )
+    if mid == 276:
+        for name in (
+            "ready", "consumed", "owner", "subject", "cycle", "case", "state",
+            "id", "candidate", "historical_case_id", "historical_case_hash",
+            "historical_cycle", "growth_evidence_id", "growth_evidence_hash",
+            "future_cohort_cycle",
+        ):
+            checks.append(f"has_variable = {PREFIX}_ad_external_rehire_{name}")
+        checks += [
+            f"var:{PREFIX}_ad_external_rehire_ready = 1",
+            f"var:{PREFIX}_ad_external_rehire_consumed = 0",
+            f"var:{PREFIX}_ad_external_rehire_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_ad_external_rehire_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ad_external_rehire_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_ad_external_rehire_case = $TICKET_CASE$",
+            f"var:{PREFIX}_ad_external_rehire_state = 6",
+            f"var:{PREFIX}_ad_external_rehire_candidate = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ad_external_rehire_historical_case_id > 0",
+            f"NOT = {{ var:{PREFIX}_ad_external_rehire_historical_case_id = $TICKET_CASE$ }}",
+            f"var:{PREFIX}_ad_external_rehire_historical_case_hash > 0",
+            f"var:{PREFIX}_ad_external_rehire_historical_cycle < $TICKET_CYCLE$",
+            f"var:{PREFIX}_ad_external_rehire_growth_evidence_id > 0",
+            f"var:{PREFIX}_ad_external_rehire_growth_evidence_hash > 0",
+            f"var:{PREFIX}_ad_external_rehire_future_cohort_cycle > $TICKET_CYCLE$",
+        ]
     if mid == 277:
         checks += [
             f"has_variable = {PREFIX}_m274_hired",
@@ -906,6 +995,39 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             "has_variable = zg361_ch_hc_occupied",
             "var:zg361_ch_hc_occupied >= 1",
         ]
+        for name in (
+            "owner", "subject", "cycle", "case", "state", "case_id",
+            "case_hash", "closure_receipt_id", "closure_receipt_hash",
+        ):
+            checks.append(f"has_variable = {PREFIX}_ad_external_pip_{name}")
+        for name in (
+            "receipt_id", "receipt_hash", "position_type_id", "former_slot_id",
+            "hc_lineage_case", "displaced_hours", "displaced_cost_receipt",
+        ):
+            checks.append(f"has_variable = {PREFIX}_ad_external_exit_{name}")
+        checks += [
+            f"has_variable = {PREFIX}_ad_external_pip_exit_ready",
+            f"has_variable = {PREFIX}_ad_external_pip_exit_consumed",
+            f"var:{PREFIX}_ad_external_pip_exit_ready = 1",
+            f"var:{PREFIX}_ad_external_pip_exit_consumed = 0",
+            f"var:{PREFIX}_ad_external_pip_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_ad_external_pip_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ad_external_pip_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_ad_external_pip_case = $TICKET_CASE$",
+            f"var:{PREFIX}_ad_external_pip_state = 6",
+            f"var:{PREFIX}_ad_external_pip_case_id > 0",
+            f"NOT = {{ var:{PREFIX}_ad_external_pip_case_id = $TICKET_CASE$ }}",
+            f"var:{PREFIX}_ad_external_pip_case_hash > 0",
+            f"var:{PREFIX}_ad_external_pip_closure_receipt_id > 0",
+            f"var:{PREFIX}_ad_external_pip_closure_receipt_hash > 0",
+            f"var:{PREFIX}_ad_external_exit_receipt_id > 0",
+            f"var:{PREFIX}_ad_external_exit_receipt_hash > 0",
+            f"var:{PREFIX}_ad_external_exit_position_type_id > 0",
+            f"var:{PREFIX}_ad_external_exit_former_slot_id > 0",
+            f"var:{PREFIX}_ad_external_exit_hc_lineage_case = var:{PREFIX}_formal_hc_active_case",
+            f"var:{PREFIX}_ad_external_exit_displaced_hours >= 0",
+            f"var:{PREFIX}_ad_external_exit_displaced_cost_receipt > 0",
+        ]
     if mid == 355 and choice == 1:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
     if mid == 360:
@@ -913,6 +1035,22 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"has_variable = {PREFIX}_manager_score",
             f"has_variable = {PREFIX}_al_external_stage_receipts_verified",
             f"var:{PREFIX}_al_external_stage_receipts_verified = 1",
+            f"has_variable = {PREFIX}_al_external_collective_submission_active",
+            f"has_variable = {PREFIX}_al_external_collective_submission_sealed",
+            f"has_variable = {PREFIX}_al_external_collective_submission_consumed",
+            f"has_variable = {PREFIX}_al_external_collective_submission_owner",
+            f"has_variable = {PREFIX}_al_external_collective_submission_subject",
+            f"has_variable = {PREFIX}_al_external_collective_submission_cycle",
+            f"has_variable = {PREFIX}_al_external_collective_submission_case",
+            f"has_variable = {PREFIX}_al_external_collective_submission_state",
+            f"var:{PREFIX}_al_external_collective_submission_active = 1",
+            f"var:{PREFIX}_al_external_collective_submission_sealed = 1",
+            f"var:{PREFIX}_al_external_collective_submission_consumed = 0",
+            f"var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$",
+            f"var:{PREFIX}_al_external_collective_submission_state = 4",
             f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_realm_trust }}",
             *_collective_external_checks(choice),
         ]
@@ -925,6 +1063,20 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"has_variable = {PREFIX}_al_external_completed_cycle_max",
             f"var:{PREFIX}_al_external_completed_cycle_max <= $TICKET_CYCLE$",
             f"has_variable = {PREFIX}_al_external_long_report_id",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_ready",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_consumed",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_owner",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_subject",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_cycle",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_case",
+            f"has_variable = {PREFIX}_al_external_charter_evidence_state",
+            f"var:{PREFIX}_al_external_charter_evidence_ready = 1",
+            f"var:{PREFIX}_al_external_charter_evidence_consumed = 0",
+            f"var:{PREFIX}_al_external_charter_evidence_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_al_external_charter_evidence_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_al_external_charter_evidence_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_al_external_charter_evidence_case = $TICKET_CASE$",
+            f"var:{PREFIX}_al_external_charter_evidence_state = 5",
             f"var:zg361_case_{d}_owner = {{ zg361_is_celestial_liege_trigger = yes }}",
             f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_realm_charter_current_version has_variable = zg361_review_serial var:zg361_review_serial >= 3 }}",
             f"var:zg361_case_{d}_owner = {{ trigger_if = {{ limit = {{ exists = liege }} NOT = {{ liege = {{ zg361_is_celestial_liege_trigger = yes }} }} }} trigger_else = {{ always = yes }} }}",
@@ -976,10 +1128,20 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             _set(f"m{mid}_debt_subject", "$TICKET_SUBJECT$"),
             _set(f"m{mid}_debt_cycle", "$TICKET_CYCLE$"),
             _set(f"m{mid}_debt_case", "$TICKET_CASE$"),
+            _set(f"m{mid}_debt_state", "$TICKET_STATE$"),
+            _set(f"m{mid}_debt_type_code", mid),
+            _set(
+                f"m{mid}_debt_id",
+                f"{{ value = $TICKET_CYCLE$ multiply = 1000000 add = {{ value = $TICKET_CASE$ multiply = 1000 }} add = {mid} }}",
+            ),
+            _set(f"m{mid}_debt_consumer_contract", mid),
             _set(f"m{mid}_debt_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"),
             _set(f"m{mid}_debt_open", 1),
+            _set(f"m{mid}_debt_consumed", 0),
+            _set(f"m{mid}_debt_escalation_count", 0),
             _set(f"m{mid}_business_object_created", 0),
             _change("policy_debt", 1),
+            f"trigger_event = {{ id = {NAMESPACE}.{DEBT_EVENT[mid]} days = 365 }}",
         ]
         return lines
 
@@ -1063,12 +1225,47 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         else:
             lines += [_set("m263_return_choice", 0), _set("m263_prior_identity_preserved", 1), _set("m263_extension_terminal", 0), _set("m263_terminal_choice", 0), _set("m263_resolved_choice", 0), _set("m263_extension_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m263_extension_pending", 1), _set("m263_extension_count", 1), _set("ac_s05_deadline_pending", 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[263]} days = 365 }}"]
     elif mid == 264:
-        lines += [_set("m264_accepted_by", "$TICKET_OWNER$"), _set("m264_payee", "$TICKET_SUBJECT$"), _set("m264_vendor_identity", "$TICKET_SUBJECT$"), _set("m264_accepted_by_frozen", 1)]
+        lines += [
+            _set("m264_accepted_by", f"var:{PREFIX}_ac_external_handoff_accepted_by"),
+            _set("m264_payee", f"var:{PREFIX}_ac_external_handoff_payee"),
+            _set("m264_vendor_identity", f"var:{PREFIX}_m254_vendor_id"),
+            _set("m264_contract_id", f"var:{PREFIX}_ac_external_handoff_contract_id"),
+            _set("m264_sunset_cycle", f"var:{PREFIX}_ac_external_handoff_sunset_cycle"),
+            _set("m264_waiver_id", f"var:{PREFIX}_ac_external_handoff_waiver_id"),
+            _set("m264_waiver_approver", f"var:{PREFIX}_ac_external_handoff_waiver_approver"),
+            _set("m264_handoff_outcome", f"var:{PREFIX}_ac_external_handoff_outcome"),
+            _set("m264_accepted_by_frozen", 1),
+        ]
         if choice == 1:
-            lines += [_change("gold_reserved", -20), _change("gold_paid", 20), _change("contract_gold_reserved", -20), _change("contract_gold_paid", 20), _set("m264_artifact_count", 3), _set("m264_documentation_accepted", 1), _set("m264_shadowing_accepted", 1), _set("m264_practical_acceptance", 1), _set("m264_payment_settled", 1), f"var:zg361_case_{d}_owner = {{ remove_gold = 20 }}", "add_gold = 20"]
+            lines += [
+                _change("gold_reserved", -20), _change("gold_paid", 20),
+                _change("contract_gold_reserved", -20), _change("contract_gold_paid", 20),
+                _set("m264_artifact_count", 3),
+                _set("m264_documentation_id", f"var:{PREFIX}_ac_external_handoff_documentation_id"),
+                _set("m264_documentation_hash", f"var:{PREFIX}_ac_external_handoff_documentation_hash"),
+                _set("m264_shadowing_id", f"var:{PREFIX}_ac_external_handoff_shadowing_id"),
+                _set("m264_shadowing_hash", f"var:{PREFIX}_ac_external_handoff_shadowing_hash"),
+                _set("m264_practical_id", f"var:{PREFIX}_ac_external_handoff_practical_id"),
+                _set("m264_practical_hash", f"var:{PREFIX}_ac_external_handoff_practical_hash"),
+                _set("m264_documentation_accepted", 1), _set("m264_shadowing_accepted", 1),
+                _set("m264_practical_acceptance", 1), _set("m264_payment_settled", 1),
+                f"var:zg361_case_{d}_owner = {{ remove_gold = 20 }}", "add_gold = 20",
+            ]
         else:
-            lines += [_change("gold_reserved", -20), _change("gold_available", 20), _change("contract_gold_reserved", -20), _set("m264_artifact_count", 0), _set("m264_documentation_accepted", 0), _set("m264_shadowing_accepted", 0), _set("m264_practical_acceptance", 0), _set("m264_payment_settled", 0), _set("m264_payment_refunded", 20)]
-        lines += [f"if = {{ limit = {{ trigger_if = {{ limit = {{ has_variable = {PREFIX}_m257_conversion_settled }} NOT = {{ var:{PREFIX}_m257_conversion_settled = 1 }} }} trigger_else = {{ always = yes }} }} change_variable = {{ name = {PREFIX}_shadow_hc_active add = -1 }} change_variable = {{ name = {PREFIX}_shadow_hc_available add = 1 }} }}", _set("m264_shadow_hc_released", 1)]
+            lines += [
+                _change("gold_reserved", -20), _change("gold_available", 20),
+                _change("contract_gold_reserved", -20), _set("m264_artifact_count", 0),
+                _set("m264_rejection_reason", f"var:{PREFIX}_ac_external_handoff_rejection_reason"),
+                _set("m264_documentation_accepted", 0), _set("m264_shadowing_accepted", 0),
+                _set("m264_practical_acceptance", 0), _set("m264_payment_settled", 0),
+                _set("m264_payment_refunded", 20),
+            ]
+        lines += [
+            f"if = {{ limit = {{ trigger_if = {{ limit = {{ has_variable = {PREFIX}_m257_conversion_settled }} NOT = {{ var:{PREFIX}_m257_conversion_settled = 1 }} }} trigger_else = {{ always = yes }} }} change_variable = {{ name = {PREFIX}_shadow_hc_active add = -1 }} change_variable = {{ name = {PREFIX}_shadow_hc_available add = 1 }} }}",
+            _set("m264_shadow_hc_released", 1),
+            _set("ac_external_handoff_consumed", 1),
+            _set("ac_external_handoff_ready", 0),
+        ]
     elif mid == 265:
         if choice == 1:
             lines += [_change("gold_paid", -5), _change("gold_available", 5), _change("contract_gold_paid", -5), _change("contract_gold_recovered", 5), _set("m265_evidence_count", 2), _set("m265_incident_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_executor_evidence", f"var:{PREFIX}_m261_write_case"), _set("m265_vendor_actor", "$TICKET_SUBJECT$"), _set("m265_liable_manager", "$TICKET_OWNER$"), _set("m265_manager_duty_evidence", f"var:{PREFIX}_m259_write_case"), _set("m265_recovery_payee", "$TICKET_OWNER$"), _set("m265_recovery_source", "$TICKET_SUBJECT$"), _set("m265_liability_total_bps", 10000), _set("m265_actor_identity_verified", 1), _set("m265_suspicion_only", 0), _set("m265_investigation_pending", 0), "remove_gold = 5", f"var:zg361_case_{d}_owner = {{ add_gold = 5 }}"]
@@ -1108,7 +1305,25 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 274:
         lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0), _set("m274_hired", 0)]
         if choice == 1:
-            lines += [_change("gold_reserved", -15), _change("gold_paid", 15), _change("offer_gold_reserved", -15), _change("offer_gold_paid", 15), "change_variable = { name = zg361_ch_hc_reserved add = -1 }", "change_variable = { name = zg361_ch_hc_occupied add = 1 }", _set("m266_hc_reservation_active", 0), _set("candidate_active", 0), _set("formal_hc_active", 1), _set("formal_hc_active_case", "$TICKET_CASE$"), _set("m274_hired", 1), _set("m274_hire_case", "$TICKET_CASE$"), _set("m274_probation_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), f"var:zg361_case_{d}_owner = {{ remove_gold = 15 set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}", "add_gold = 15"]
+            lines += [
+                _set("m274_appointed_character", f"var:{PREFIX}_ad_external_appointed_character"),
+                _set("m274_position_type_id", f"var:{PREFIX}_ad_external_position_type_id"),
+                _set("m274_position_receipt_id", f"var:{PREFIX}_ad_external_position_receipt_id"),
+                _set("m274_position_receipt_hash", f"var:{PREFIX}_ad_external_position_receipt_hash"),
+                _set("m274_native_appointment_confirmed", 1),
+                _change("gold_reserved", -15), _change("gold_paid", 15),
+                _change("offer_gold_reserved", -15), _change("offer_gold_paid", 15),
+                "change_variable = { name = zg361_ch_hc_reserved add = -1 }",
+                "change_variable = { name = zg361_ch_hc_occupied add = 1 }",
+                _set("m266_hc_reservation_active", 0), _set("candidate_active", 0),
+                _set("formal_hc_active", 1), _set("formal_hc_active_case", "$TICKET_CASE$"),
+                _set("m274_hired", 1), _set("m274_hire_case", "$TICKET_CASE$"),
+                _set("m274_probation_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"),
+                _set("ad_external_appointment_consumed", 1),
+                _set("ad_external_appointment_ready", 0),
+                f"var:zg361_case_{d}_owner = {{ remove_gold = 15 set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}",
+                "add_gold = 15",
+            ]
     elif mid == 275:
         due_add = 1 if choice == 1 else 3
         refusal_lines = [_set("m275_refusal", 1), _set("m275_not_applicable_hired", 0), _set("m275_refusal_reason_id", f"var:{PREFIX}_ad_external_refusal_reason_id"), _set("m275_original_candidate", "$TICKET_SUBJECT$"), _set("m275_hold_start_cycle", "$TICKET_CYCLE$"), _set("m275_hold_due_cycle", f"{{ value = $TICKET_CYCLE$ add = {due_add} }}"), _set("m275_hc_lineage_receipt", "$TICKET_CASE$"), _set("m275_hold_pending", 1), _set("m275_runner_attempt_new_case", 1 if choice == 1 else 0), _set("m275_policy_breach_indefinite_requested", 1 if choice == 2 else 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[275]} days = {90 if choice == 1 else 365} }}"]
@@ -1132,9 +1347,45 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             f"else = {{\n{indent(chr(10).join(refusal_lines))}\n}}"
         )
     elif mid == 276:
-        lines += [_set("m276_old_case_hash", "$TICKET_CASE$"), _set("m276_old_history_retained", 1), _set("m276_growth_evidence_frozen", 1 if choice == 1 else 0), _set("m276_history_wipe_attempt", 0 if choice == 1 else 1), _set("m276_hc_touched", 0)]
+        lines += [
+            _set("m276_rehire_id", f"var:{PREFIX}_ad_external_rehire_id"),
+            _set("m276_rehire_candidate", f"var:{PREFIX}_ad_external_rehire_candidate"),
+            _set("m276_old_case_id", f"var:{PREFIX}_ad_external_rehire_historical_case_id"),
+            _set("m276_old_case_hash", f"var:{PREFIX}_ad_external_rehire_historical_case_hash"),
+            _set("m276_old_cycle", f"var:{PREFIX}_ad_external_rehire_historical_cycle"),
+            _set("m276_growth_evidence_id", f"var:{PREFIX}_ad_external_rehire_growth_evidence_id"),
+            _set("m276_growth_evidence_hash", f"var:{PREFIX}_ad_external_rehire_growth_evidence_hash"),
+            _set("m276_future_cohort_cycle", f"var:{PREFIX}_ad_external_rehire_future_cohort_cycle"),
+            _set("m276_old_history_retained", 1),
+            _set("m276_growth_evidence_frozen", 1 if choice == 1 else 0),
+            _set("m276_history_wipe_attempt", 0 if choice == 1 else 1),
+            _set("m276_hc_touched", 0),
+            _set("ad_external_rehire_consumed", 1),
+            _set("ad_external_rehire_ready", 0),
+        ]
     elif mid == 277:
-        lines += ["change_variable = { name = zg361_ch_hc_occupied add = -1 }", "change_variable = { name = zg361_ch_hc_frozen add = 1 }", _set("formal_hc_active", 0), _set("m277_pip_case_frozen", "$TICKET_CASE$"), _set("m277_former_hc_lineage", f"var:{PREFIX}_formal_hc_active_case"), _set("m277_displaced_subject", "$TICKET_SUBJECT$"), _set("m277_displaced_hours", 20), _set("m277_displaced_cost_provenance", "$TICKET_CASE$"), _set("m277_work_proof", 1 if choice == 1 else 0), _set("m277_automatic_refill", 0 if choice == 1 else 1), _set("m277_vacant_frozen", 1), _set("m277_hc_minted", 0)]
+        lines += [
+            "change_variable = { name = zg361_ch_hc_occupied add = -1 }",
+            "change_variable = { name = zg361_ch_hc_frozen add = 1 }",
+            _set("formal_hc_active", 0),
+            _set("m277_pip_case_frozen", f"var:{PREFIX}_ad_external_pip_case_id"),
+            _set("m277_pip_case_hash", f"var:{PREFIX}_ad_external_pip_case_hash"),
+            _set("m277_pip_closure_receipt_id", f"var:{PREFIX}_ad_external_pip_closure_receipt_id"),
+            _set("m277_pip_closure_receipt_hash", f"var:{PREFIX}_ad_external_pip_closure_receipt_hash"),
+            _set("m277_exit_receipt_id", f"var:{PREFIX}_ad_external_exit_receipt_id"),
+            _set("m277_exit_receipt_hash", f"var:{PREFIX}_ad_external_exit_receipt_hash"),
+            _set("m277_position_type_id", f"var:{PREFIX}_ad_external_exit_position_type_id"),
+            _set("m277_former_slot_id", f"var:{PREFIX}_ad_external_exit_former_slot_id"),
+            _set("m277_former_hc_lineage", f"var:{PREFIX}_ad_external_exit_hc_lineage_case"),
+            _set("m277_displaced_subject", "$TICKET_SUBJECT$"),
+            _set("m277_displaced_hours", f"var:{PREFIX}_ad_external_exit_displaced_hours"),
+            _set("m277_displaced_cost_provenance", f"var:{PREFIX}_ad_external_exit_displaced_cost_receipt"),
+            _set("m277_work_proof", 1 if choice == 1 else 0),
+            _set("m277_automatic_refill", 0 if choice == 1 else 1),
+            _set("m277_vacant_frozen", 1), _set("m277_hc_minted", 0),
+            _set("ad_external_pip_exit_consumed", 1),
+            _set("ad_external_pip_exit_ready", 0),
+        ]
     # AL: immutable multi-cycle facts, quota conservation and future-only charter.
     elif mid == 355:
         lines += [_set("m355_prior_target", 100), _set("m355_prior_actual", 150), _set("m355_repeatable_excess", 20), _set("m355_windfall_excess", 30), _set("m355_excess_total", 50), _set("m355_new_target", 120 if choice == 1 else 150), _set("m355_underproduction_risk", 0 if choice == 1 else 50), _set("m355_authority_ref", "$TICKET_OWNER$"), _set("m355_funding_approved_by", "$TICKET_OWNER$"), _set("m355_old_fact_hash_retained", 1)]
@@ -1243,15 +1494,23 @@ def render_consumer(spec: Mechanism) -> str:
     ))
     debt_required = "\n".join(
         f"\t\t\t\t\t\thas_variable = {PREFIX}_m{mid}_debt_{name}"
-        for name in ("owner", "subject", "cycle", "case", "due_cycle", "open")
+        for name in (
+            "owner", "subject", "cycle", "case", "state", "type_code", "id",
+            "consumer_contract", "due_cycle", "open", "consumed", "escalation_count",
+        )
     )
     debt_equal = "\n".join((
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_choice = 3",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_open = 1",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_consumed = 0",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_type_code = {mid}",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_consumer_contract = {mid}",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_owner = var:{PREFIX}_m{mid}_write_owner",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_subject = var:{PREFIX}_m{mid}_write_subject",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_cycle = var:{PREFIX}_m{mid}_write_cycle",
         f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_case = var:{PREFIX}_m{mid}_write_case",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_state = var:{PREFIX}_m{mid}_write_state",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_id = {{ value = var:{PREFIX}_m{mid}_debt_cycle multiply = 1000000 add = {{ value = var:{PREFIX}_m{mid}_debt_case multiply = 1000 }} add = {mid} }}",
     ))
     return f"""# #{mid:03d} read-side projection; existence gates precede tuple reads.
 {PREFIX}_m{mid}_consume_effect = {{
@@ -2319,6 +2578,866 @@ def render_future_consumers() -> str:
 }}"""
 
 
+def render_due_debt_consumer(spec: Mechanism) -> str:
+    """Consume one route-C debt without pretending that metadata is settlement.
+
+    The delayed event runs on the frozen subject.  It first proves the complete
+    debt identity against the original operation write tuple.  Available
+    governance capacity repays the debt; otherwise the frozen manager receives
+    at most two bounded escalation penalties.  A third failure remains open
+    with a typed blocked reason instead of silently disappearing.
+    """
+
+    mid = spec.mid
+    p = f"{PREFIX}_m{mid}"
+    event_id = DEBT_EVENT[mid]
+    return f"""{p}_consume_due_debt_effect = {{
+	remove_variable = {PREFIX}_future_status
+	remove_variable = {PREFIX}_future_red_code
+	if = {{
+		limit = {{
+			has_variable = {p}_debt_owner
+			has_variable = {p}_debt_subject
+			has_variable = {p}_debt_cycle
+			has_variable = {p}_debt_case
+			has_variable = {p}_debt_state
+			has_variable = {p}_debt_type_code
+			has_variable = {p}_debt_id
+			has_variable = {p}_debt_consumer_contract
+			has_variable = {p}_debt_due_cycle
+			has_variable = {p}_debt_open
+			has_variable = {p}_debt_consumed
+			has_variable = {p}_debt_escalation_count
+			has_variable = {p}_write_owner
+			has_variable = {p}_write_subject
+			has_variable = {p}_write_cycle
+			has_variable = {p}_write_case
+			has_variable = {p}_write_state
+			has_variable = {p}_business_object_created
+			has_variable = {PREFIX}_policy_debt
+			var:{p}_debt_open = 1
+			var:{p}_debt_consumed = 0
+			var:{p}_business_object_created = 0
+			var:{p}_debt_type_code = {mid}
+			var:{p}_debt_consumer_contract = {mid}
+			var:{p}_debt_owner = var:{p}_write_owner
+			var:{p}_debt_subject = this
+			var:{p}_debt_subject = var:{p}_write_subject
+			var:{p}_debt_cycle = var:{p}_write_cycle
+			var:{p}_debt_case = var:{p}_write_case
+			var:{p}_debt_state = var:{p}_write_state
+			var:{p}_debt_id = {{ value = var:{p}_debt_cycle multiply = 1000000 add = {{ value = var:{p}_debt_case multiply = 1000 }} add = {mid} }}
+			var:{p}_debt_owner = {{
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:{p}_debt_due_cycle
+			}}
+		}}
+		if = {{
+			limit = {{
+				has_variable = {PREFIX}_hours_available
+				has_variable = {PREFIX}_hours_governance
+				var:{PREFIX}_hours_available >= 2
+				var:{PREFIX}_policy_debt >= 1
+				var:{p}_debt_owner = {{ zg361_is_celestial_liege_trigger = yes }}
+			}}
+			change_variable = {{ name = {PREFIX}_hours_available add = -2 }}
+			change_variable = {{ name = {PREFIX}_hours_governance add = 2 }}
+			change_variable = {{ name = {PREFIX}_policy_debt add = -1 }}
+			set_variable = {{ name = {p}_debt_open value = 0 }}
+			set_variable = {{ name = {p}_debt_consumed value = 1 }}
+			set_variable = {{ name = {p}_debt_resolution value = 1 }}
+			set_variable = {{ name = {p}_debt_settled_cycle value = var:{p}_debt_due_cycle }}
+			set_variable = {{ name = {p}_debt_capacity_paid value = 2 }}
+			set_variable = {{ name = {PREFIX}_future_status value = 1 }}
+		}}
+		else_if = {{
+			limit = {{
+				var:{p}_debt_escalation_count < 2
+				var:{p}_debt_owner = {{
+					zg361_is_celestial_liege_trigger = yes
+					has_variable = {PREFIX}_manager_score
+				}}
+			}}
+			change_variable = {{ name = {p}_debt_escalation_count add = 1 }}
+			change_variable = {{ name = {p}_debt_due_cycle add = 1 }}
+			set_variable = {{ name = {p}_debt_resolution value = 2 }}
+			set_variable = {{ name = {p}_debt_escalated_cycle value = var:{p}_debt_due_cycle }}
+			var:{p}_debt_owner = {{ change_variable = {{ name = {PREFIX}_manager_score add = -2 }} }}
+			set_variable = {{ name = {PREFIX}_future_status value = 1 }}
+			trigger_event = {{ id = {NAMESPACE}.{event_id} days = 365 }}
+		}}
+		else = {{
+			set_variable = {{ name = {p}_debt_resolution value = 3 }}
+			set_variable = {{ name = {p}_debt_blocked_reason value = {70000 + mid} }}
+			set_variable = {{ name = {PREFIX}_future_red_code value = {70000 + mid} }}
+			set_variable = {{ name = {PREFIX}_future_status value = 5 }}
+		}}
+	}}
+	else_if = {{
+		limit = {{
+			has_variable = {p}_debt_open
+			has_variable = {p}_debt_consumed
+			var:{p}_debt_open = 0
+			var:{p}_debt_consumed = 1
+		}}
+		set_variable = {{ name = {PREFIX}_future_status value = 2 }}
+	}}
+	else_if = {{
+		limit = {{
+			has_variable = {p}_debt_open
+			var:{p}_debt_open = 1
+			has_variable = {p}_debt_due_cycle
+			has_variable = {p}_debt_owner
+			var:{p}_debt_owner = {{
+				has_variable = zg361_review_serial
+				var:zg361_review_serial < root.var:{p}_debt_due_cycle
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_future_status value = 5 }}
+		trigger_event = {{ id = {NAMESPACE}.{event_id} days = 90 }}
+	}}
+	else = {{
+		set_variable = {{ name = {PREFIX}_future_status value = 3 }}
+		set_variable = {{ name = {PREFIX}_future_red_code value = {71000 + mid} }}
+	}}
+}}"""
+
+
+def render_due_debt_consumers() -> str:
+    return "\n\n".join(render_due_debt_consumer(spec) for spec in MECHANISMS)
+
+
+def render_collective_producer() -> str:
+    """Render #360's three-cohort submission, outcome append and seal ABI."""
+
+    cohort_checks: list[str] = []
+    cohort_writes: list[str] = []
+    cleanup: list[str] = []
+    for cohort in (1, 2, 3):
+        macro = f"C{cohort}"
+        base = f"{PREFIX}_al_external_collective_{cohort}"
+        cohort_checks += [
+            f"${macro}_COHORT_ID$ > 0",
+            f"${macro}_MANAGER$ = {{ zg361_is_celestial_liege_trigger = yes }}",
+            f"${macro}_MEMBER_COUNT$ >= 1",
+            f"${macro}_MEMBER_HASH$ > 0",
+            f"${macro}_AGENDA_COUNT$ = ${macro}_MEMBER_COUNT$",
+            f"${macro}_AGENDA_HASH$ = ${macro}_MEMBER_HASH$",
+            f"${macro}_QUOTA$ >= 0",
+            f"${macro}_QUOTA$ <= ${macro}_MEMBER_COUNT$",
+            f"${macro}_FORCED_COUNT$ >= 0",
+            f"${macro}_EXCEPTION_COUNT$ >= 0",
+            f"${macro}_QUOTA$ = {{ value = ${macro}_FORCED_COUNT$ add = ${macro}_EXCEPTION_COUNT$ }}",
+            f"${macro}_ALL_MEET_EVIDENCE_ID$ > 0",
+            f"${macro}_MANAGER_COST$ = ${macro}_EXCEPTION_COUNT$",
+            (
+                f"trigger_if = {{ limit = {{ ${macro}_EXCEPTION_COUNT$ > 0 }} "
+                f"NOT = {{ ${macro}_APPROVER$ = ${macro}_MANAGER$ }} "
+                f"${macro}_APPROVER$ = {{ zg361_is_celestial_liege_trigger = yes }} "
+                f"${macro}_MANAGER$ = {{ liege = ${macro}_APPROVER$ }} }} "
+                f"trigger_else = {{ ${macro}_APPROVER$ = 0 }}"
+            ),
+        ]
+        fields = (
+            "cohort_id", "manager", "member_count", "member_hash",
+            "agenda_count", "agenda_hash", "quota", "all_meet_evidence_id",
+            "forced_count", "exception_count", "approver", "manager_cost",
+        )
+        for field in fields:
+            cohort_writes.append(
+                f"set_variable = {{ name = {base}_{field} value = ${macro}_{field.upper()}$ }}"
+            )
+        cohort_writes += [
+            f"set_variable = {{ name = {base}_partition_verified value = 1 }}",
+            f"if = {{ limit = {{ ${macro}_EXCEPTION_COUNT$ > 0 }} set_variable = {{ name = {base}_approval_verified value = 1 }} }}",
+            f"else = {{ set_variable = {{ name = {base}_approval_verified value = 0 }} }}",
+        ]
+        for kind in ("forced", "exception"):
+            for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
+                identity = f"{base}_{kind}_{slot}"
+                cleanup += [
+                    f"remove_variable = {identity}_character",
+                    f"remove_variable = {identity}_cohort_id",
+                    f"remove_variable = {identity}_member_evidence_receipt",
+                    f"remove_variable = {identity}_member_evidence_id",
+                    f"remove_variable = {identity}_member_evidence_hash",
+                ]
+
+    begin = f"""# Begin exactly one #360 submission.  The immutable member and
+# agenda hashes are caller evidence; this module never invents cohort members.
+{PREFIX}_begin_al_three_cohort_collective_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}
+			$SETTLEMENT_ID$ > 0 $SETTLEMENT_HASH$ > 0
+{indent(chr(10).join(cohort_checks), 3)}
+			NOT = {{ $C1_COHORT_ID$ = $C2_COHORT_ID$ }}
+			NOT = {{ $C1_COHORT_ID$ = $C3_COHORT_ID$ }}
+			NOT = {{ $C2_COHORT_ID$ = $C3_COHORT_ID$ }}
+			NOT = {{ $C1_MANAGER$ = $C2_MANAGER$ }}
+			NOT = {{ $C1_MANAGER$ = $C3_MANAGER$ }}
+			NOT = {{ $C2_MANAGER$ = $C3_MANAGER$ }}
+			$C1_QUOTA$ = {{ value = $C1_FORCED_COUNT$ add = $C1_EXCEPTION_COUNT$ }}
+			$C2_QUOTA$ = {{ value = $C2_FORCED_COUNT$ add = $C2_EXCEPTION_COUNT$ }}
+			$C3_QUOTA$ = {{ value = $C3_FORCED_COUNT$ add = $C3_EXCEPTION_COUNT$ }}
+			$TOTAL_QUOTA$ = {{ value = $C1_QUOTA$ add = $C2_QUOTA$ add = $C3_QUOTA$ }}
+			$TOTAL_QUOTA$ <= {MAX_COLLECTIVE_OUTCOMES}
+			$REFORM_PROPOSAL_ID$ > 0
+			$REFORM_EFFECTIVE_CYCLE$ = {{ value = $TICKET_CYCLE$ add = 1 }}
+		}}
+{indent(chr(10).join(cleanup))}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_active value = 1 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_sealed value = 0 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_state value = 4 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submitted_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_cohort_count value = 3 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_settlement_id value = $SETTLEMENT_ID$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_settlement_hash value = $SETTLEMENT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_settled value = 0 }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_reform_proposal_id value = $REFORM_PROPOSAL_ID$ }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_reform_effective_cycle value = $REFORM_EFFECTIVE_CYCLE$ }}
+{indent(chr(10).join(cohort_writes))}
+		set_variable = {{ name = {PREFIX}_al_external_collective_total_members value = {{ value = $C1_MEMBER_COUNT$ add = $C2_MEMBER_COUNT$ add = $C3_MEMBER_COUNT$ }} }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_total_quota value = {{ value = $C1_QUOTA$ add = $C2_QUOTA$ add = $C3_QUOTA$ }} }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_forced_count value = {{ value = $C1_FORCED_COUNT$ add = $C2_FORCED_COUNT$ add = $C3_FORCED_COUNT$ }} }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_exception_count value = {{ value = $C1_EXCEPTION_COUNT$ add = $C2_EXCEPTION_COUNT$ add = $C3_EXCEPTION_COUNT$ }} }}
+		set_variable = {{ name = {PREFIX}_al_external_collective_manager_cost_total value = {{ value = $C1_MANAGER_COST$ add = $C2_MANAGER_COST$ add = $C3_MANAGER_COST$ }} }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3601 }} }}
+}}"""
+
+    appenders: list[str] = []
+    for cohort in (1, 2, 3):
+        for kind in ("forced", "exception"):
+            for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
+                base = f"{PREFIX}_al_external_collective_{cohort}"
+                identity = f"{base}_{kind}_{slot}"
+                appenders.append(f"""{PREFIX}_append_al_collective_{cohort}_{kind}_{slot}_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			has_variable = {PREFIX}_al_external_collective_submission_active
+			var:{PREFIX}_al_external_collective_submission_active = 1
+			var:{PREFIX}_al_external_collective_submission_sealed = 0
+			var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$
+			var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$
+			var:{PREFIX}_al_external_collective_submission_state = 4
+			var:{base}_{kind}_count >= {slot}
+			$COHORT_ID$ = var:{base}_cohort_id
+			$CHARACTER$ = {{ always = yes }}
+			$MEMBER_EVIDENCE_ID$ > 0 $MEMBER_EVIDENCE_HASH$ > 0
+			NOT = {{ has_variable = {identity}_character }}
+		}}
+		set_variable = {{ name = {identity}_character value = $CHARACTER$ }}
+		set_variable = {{ name = {identity}_cohort_id value = $COHORT_ID$ }}
+		set_variable = {{ name = {identity}_member_evidence_receipt value = 1 }}
+		set_variable = {{ name = {identity}_member_evidence_id value = $MEMBER_EVIDENCE_ID$ }}
+		set_variable = {{ name = {identity}_member_evidence_hash value = $MEMBER_EVIDENCE_HASH$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {identity}_character var:{identity}_character = $CHARACTER$ var:{identity}_member_evidence_id = $MEMBER_EVIDENCE_ID$ var:{identity}_member_evidence_hash = $MEMBER_EVIDENCE_HASH$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3602 }} }}
+}}""")
+
+    seal_checks = [
+        f"has_variable = {PREFIX}_al_external_collective_submission_active",
+        f"var:{PREFIX}_al_external_collective_submission_active = 1",
+        f"var:{PREFIX}_al_external_collective_submission_sealed = 0",
+        f"var:{PREFIX}_al_external_collective_submission_consumed = 0",
+        f"var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$",
+        f"var:{PREFIX}_al_external_collective_submission_state = 4",
+        *_collective_external_checks(1),
+    ]
+    # The generic semantic validator above already proves global uniqueness
+    # and every active identity.  The seal is the commit marker consumed by
+    # either #360 A or B; route B adds the no-exception restriction itself.
+    seal = f"""{PREFIX}_seal_al_three_cohort_collective_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+{indent(chr(10).join(seal_checks), 3)}
+		}}
+		set_variable = {{ name = {PREFIX}_al_external_collective_submission_sealed value = 1 }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else_if = {{ limit = {{ has_variable = {PREFIX}_al_external_collective_submission_sealed var:{PREFIX}_al_external_collective_submission_sealed = 1 }} set_variable = {{ name = {PREFIX}_adapter_status value = 2 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3603 }} }}
+}}"""
+    return "\n\n".join([begin, *appenders, seal])
+
+
+def render_completed_cycle_ledger() -> str:
+    """Persist an owner-scoped rolling three-cycle receipt/hash chain."""
+
+    return f"""# Append one genuinely closed portfolio cycle to the realm's
+# rolling three-cycle ledger.  Receipt/hash authenticity is a typed caller
+# input; this product persists and chains it, but does not claim cryptography.
+{PREFIX}_append_completed_cycle_receipt_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			has_variable = {PREFIX}_portfolio_closed
+			has_variable = {PREFIX}_portfolio_status
+			has_variable = {PREFIX}_final_conservation_ok
+			var:{PREFIX}_portfolio_closed = 1
+			var:{PREFIX}_portfolio_status = 6
+			var:{PREFIX}_final_conservation_ok = 1
+			var:zg361_case_al_active = 0
+			var:zg361_case_al_state = 6
+			var:zg361_case_al_owner = $TICKET_OWNER$
+			var:zg361_case_al_subject = $TICKET_SUBJECT$
+			var:zg361_case_al_cycle_serial = $TICKET_CYCLE$
+			var:zg361_case_al_case_serial = $TICKET_CASE$
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = {{
+				zg361_is_celestial_liege_trigger = yes
+				trigger_if = {{
+					limit = {{ has_variable = {PREFIX}_completed_cycle_ledger_count var:{PREFIX}_completed_cycle_ledger_count > 0 }}
+					has_variable = {PREFIX}_completed_cycle_ledger_tail_hash
+					has_variable = {PREFIX}_completed_cycle_ledger_last_cycle
+					var:{PREFIX}_completed_cycle_ledger_tail_hash = $PREVIOUS_CHAIN_HASH$
+					var:{PREFIX}_completed_cycle_ledger_last_cycle < $TICKET_CYCLE$
+				}}
+				trigger_else = {{ $PREVIOUS_CHAIN_HASH$ = 0 }}
+			}}
+			$RECEIPT_ID$ > 0 $RECEIPT_HASH$ > 0 $NEW_CHAIN_HASH$ > 0
+			NOT = {{ $NEW_CHAIN_HASH$ = $PREVIOUS_CHAIN_HASH$ }}
+		}}
+		$TICKET_OWNER$ = {{
+			if = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_completed_cycle_ledger_count }} }} set_variable = {{ name = {PREFIX}_completed_cycle_ledger_count value = 0 }} }}
+			if = {{
+				limit = {{ var:{PREFIX}_completed_cycle_ledger_count >= 3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_1 value = var:{PREFIX}_completed_cycle_ledger_cycle_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_1 value = var:{PREFIX}_completed_cycle_ledger_subject_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_1 value = var:{PREFIX}_completed_cycle_ledger_case_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_1 value = var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_1 value = var:{PREFIX}_completed_cycle_ledger_previous_hash_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_1 value = var:{PREFIX}_completed_cycle_ledger_receipt_hash_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_1 value = var:{PREFIX}_completed_cycle_ledger_chain_hash_2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_2 value = var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_2 value = var:{PREFIX}_completed_cycle_ledger_subject_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_2 value = var:{PREFIX}_completed_cycle_ledger_case_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_2 value = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_2 value = var:{PREFIX}_completed_cycle_ledger_previous_hash_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_2 value = var:{PREFIX}_completed_cycle_ledger_receipt_hash_3 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_2 value = var:{PREFIX}_completed_cycle_ledger_chain_hash_3 }}
+			}}
+			if = {{ limit = {{ var:{PREFIX}_completed_cycle_ledger_count < 3 }} change_variable = {{ name = {PREFIX}_completed_cycle_ledger_count add = 1 }} }}
+			if = {{
+				limit = {{ var:{PREFIX}_completed_cycle_ledger_count = 1 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_1 value = $TICKET_CYCLE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_1 value = $TICKET_SUBJECT$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_1 value = $TICKET_CASE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_1 value = $RECEIPT_ID$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_1 value = $PREVIOUS_CHAIN_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_1 value = $RECEIPT_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_1 value = $NEW_CHAIN_HASH$ }}
+			}}
+			else_if = {{
+				limit = {{ var:{PREFIX}_completed_cycle_ledger_count = 2 }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_2 value = $TICKET_CYCLE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_2 value = $TICKET_SUBJECT$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_2 value = $TICKET_CASE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_2 value = $RECEIPT_ID$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_2 value = $PREVIOUS_CHAIN_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_2 value = $RECEIPT_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_2 value = $NEW_CHAIN_HASH$ }}
+			}}
+			else = {{
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_cycle_3 value = $TICKET_CYCLE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_subject_3 value = $TICKET_SUBJECT$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_case_3 value = $TICKET_CASE$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_id_3 value = $RECEIPT_ID$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_previous_hash_3 value = $PREVIOUS_CHAIN_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_receipt_hash_3 value = $RECEIPT_HASH$ }}
+				set_variable = {{ name = {PREFIX}_completed_cycle_ledger_chain_hash_3 value = $NEW_CHAIN_HASH$ }}
+			}}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_cycle value = $TICKET_CYCLE$ }}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_tail_hash value = $NEW_CHAIN_HASH$ }}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_subject value = $TICKET_SUBJECT$ }}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_case value = $TICKET_CASE$ }}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_receipt_id value = $RECEIPT_ID$ }}
+			set_variable = {{ name = {PREFIX}_completed_cycle_ledger_last_receipt_hash value = $RECEIPT_HASH$ }}
+		}}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else_if = {{
+		limit = {{ $TICKET_OWNER$ = {{ has_variable = {PREFIX}_completed_cycle_ledger_last_cycle has_variable = {PREFIX}_completed_cycle_ledger_tail_hash has_variable = {PREFIX}_completed_cycle_ledger_last_subject has_variable = {PREFIX}_completed_cycle_ledger_last_case has_variable = {PREFIX}_completed_cycle_ledger_last_receipt_id has_variable = {PREFIX}_completed_cycle_ledger_last_receipt_hash var:{PREFIX}_completed_cycle_ledger_last_cycle = $TICKET_CYCLE$ var:{PREFIX}_completed_cycle_ledger_tail_hash = $NEW_CHAIN_HASH$ var:{PREFIX}_completed_cycle_ledger_last_subject = $TICKET_SUBJECT$ var:{PREFIX}_completed_cycle_ledger_last_case = $TICKET_CASE$ var:{PREFIX}_completed_cycle_ledger_last_receipt_id = $RECEIPT_ID$ var:{PREFIX}_completed_cycle_ledger_last_receipt_hash = $RECEIPT_HASH$ }} }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3611 }} }}
+}}
+
+# Project the rolling chain into the exact #361 evidence object while AL is in
+# state 5.  The report/charter hashes remain explicit caller receipts.
+{PREFIX}_prepare_m361_charter_evidence_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 5
+			}}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_al_external_charter_evidence_ready')}
+			$TICKET_OWNER$ = {{
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = {PREFIX}_completed_cycle_ledger_count
+				var:{PREFIX}_completed_cycle_ledger_count = 3
+				var:{PREFIX}_completed_cycle_ledger_cycle_1 < var:{PREFIX}_completed_cycle_ledger_cycle_2
+				var:{PREFIX}_completed_cycle_ledger_cycle_2 < var:{PREFIX}_completed_cycle_ledger_cycle_3
+				var:{PREFIX}_completed_cycle_ledger_cycle_3 < $TICKET_CYCLE$
+				var:{PREFIX}_completed_cycle_ledger_previous_hash_2 = var:{PREFIX}_completed_cycle_ledger_chain_hash_1
+				var:{PREFIX}_completed_cycle_ledger_previous_hash_3 = var:{PREFIX}_completed_cycle_ledger_chain_hash_2
+				var:{PREFIX}_completed_cycle_ledger_tail_hash = var:{PREFIX}_completed_cycle_ledger_chain_hash_3
+				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_1 = var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
+				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_1 = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
+				NOT = {{ var:{PREFIX}_completed_cycle_ledger_receipt_id_2 = var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
+				trigger_if = {{ limit = {{ var:{PREFIX}_realm_charter_current_version > 0 }} NOT = {{ $CHARTER_ID$ = var:{PREFIX}_realm_charter_current_id }} $ADOPTED_DAY$ > var:{PREFIX}_realm_charter_current_adopted_day }}
+				trigger_else = {{ always = yes }}
+			}}
+			$LONG_REPORT_ID$ > 0 $LONG_REPORT_HASH$ > 0
+			$COMPLETED_CYCLES_HASH$ > 0 $CHARTER_ID$ > 0 $ADOPTED_DAY$ > 0
+			$NEW_HISTORY_HASH$ > 0
+			NOT = {{ $NEW_HISTORY_HASH$ = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash }}
+		}}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_evidence_state value = 5 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_receipt_count value = 3 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_max value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
+		set_variable = {{ name = {PREFIX}_al_external_long_report_id value = $LONG_REPORT_ID$ }}
+		set_variable = {{ name = {PREFIX}_al_external_long_report_hash value = $LONG_REPORT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycles_hash value = $COMPLETED_CYCLES_HASH$ }}
+		set_variable = {{ name = {PREFIX}_al_external_report_completed_cycles_hash value = $COMPLETED_CYCLES_HASH$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_id value = $CHARTER_ID$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_previous_id value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_current_id }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_adopted_day value = $ADOPTED_DAY$ }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_previous_history_hash value = var:zg361_case_al_owner.var:{PREFIX}_realm_charter_history_tail_hash }}
+		set_variable = {{ name = {PREFIX}_al_external_charter_new_history_hash value = $NEW_HISTORY_HASH$ }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_1 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_2 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_cycle_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_cycle_3 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_1 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_2 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_id_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_receipt_id_3 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_1 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_2 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_receipt_hash_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_chain_hash_3 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_1 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_1 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_2 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_2 }}
+		set_variable = {{ name = {PREFIX}_al_external_completed_previous_hash_3 value = var:zg361_case_al_owner.var:{PREFIX}_completed_cycle_ledger_previous_hash_3 }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3612 }} }}
+}}"""
+
+
+def render_al_357_359_receipt_bridge() -> str:
+    """Consume three external receipts and advance only their real AL edges.
+
+    The B1/B2 providers remain separate owners.  This effect is deliberately a
+    strict adapter: a caller must supply each provider's immutable five-tuple
+    plus a nonzero receipt id/hash.  Merely setting a readiness boolean cannot
+    move the AL case.
+    """
+
+    return f"""# 357-359 are owned outside this module.  This bridge consumes
+# their exact receipts; it does not manufacture their underlying decisions.
+{PREFIX}_submit_al_357_359_receipts_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 2
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_al_external_stage_receipts_verified')}
+			$M357_OWNER$ = $TICKET_OWNER$ $M357_SUBJECT$ = $TICKET_SUBJECT$
+			$M357_CYCLE$ = $TICKET_CYCLE$ $M357_CASE$ = $TICKET_CASE$ $M357_STATE$ = 2
+			$M358_OWNER$ = $TICKET_OWNER$ $M358_SUBJECT$ = $TICKET_SUBJECT$
+			$M358_CYCLE$ = $TICKET_CYCLE$ $M358_CASE$ = $TICKET_CASE$ $M358_STATE$ = 3
+			$M359_OWNER$ = $TICKET_OWNER$ $M359_SUBJECT$ = $TICKET_SUBJECT$
+			$M359_CYCLE$ = $TICKET_CYCLE$ $M359_CASE$ = $TICKET_CASE$ $M359_STATE$ = 3
+			$M357_RECEIPT_ID$ > 0 $M357_RECEIPT_HASH$ > 0
+			$M358_RECEIPT_ID$ > 0 $M358_RECEIPT_HASH$ > 0
+			$M359_RECEIPT_ID$ > 0 $M359_RECEIPT_HASH$ > 0
+			NOT = {{ $M357_RECEIPT_ID$ = $M358_RECEIPT_ID$ }}
+			NOT = {{ $M357_RECEIPT_ID$ = $M359_RECEIPT_ID$ }}
+			NOT = {{ $M358_RECEIPT_ID$ = $M359_RECEIPT_ID$ }}
+			NOT = {{ $M357_RECEIPT_HASH$ = $M358_RECEIPT_HASH$ }}
+			NOT = {{ $M357_RECEIPT_HASH$ = $M359_RECEIPT_HASH$ }}
+			NOT = {{ $M358_RECEIPT_HASH$ = $M359_RECEIPT_HASH$ }}
+		}}
+		set_variable = {{ name = {PREFIX}_al_external_m357_owner value = $M357_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_subject value = $M357_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_cycle value = $M357_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_case value = $M357_CASE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_state value = $M357_STATE$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_receipt_id value = $M357_RECEIPT_ID$ }}
+		set_variable = {{ name = {PREFIX}_al_external_m357_receipt_hash value = $M357_RECEIPT_HASH$ }}
+		zg361_case_al_advance_02_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		if = {{
+			limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_state = 3 }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_owner value = $M358_OWNER$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_subject value = $M358_SUBJECT$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_cycle value = $M358_CYCLE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_case value = $M358_CASE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_state value = $M358_STATE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_receipt_id value = $M358_RECEIPT_ID$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m358_receipt_hash value = $M358_RECEIPT_HASH$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_owner value = $M359_OWNER$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_subject value = $M359_SUBJECT$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_cycle value = $M359_CYCLE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_case value = $M359_CASE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_state value = $M359_STATE$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_receipt_id value = $M359_RECEIPT_ID$ }}
+			set_variable = {{ name = {PREFIX}_al_external_m359_receipt_hash value = $M359_RECEIPT_HASH$ }}
+			zg361_case_al_advance_03_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			if = {{
+				limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_state = 4 }}
+				set_variable = {{ name = {PREFIX}_al_external_stage_receipts_verified value = 1 }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_owner value = $TICKET_OWNER$ }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_subject value = $TICKET_SUBJECT$ }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_cycle value = $TICKET_CYCLE$ }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_case value = $TICKET_CASE$ }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_state value = 4 }}
+				set_variable = {{ name = {PREFIX}_al_external_receipt_count value = 3 }}
+				set_variable = {{ name = {PREFIX}_al_external_last_operation value = 359 }}
+				set_variable = {{ name = {PREFIX}_awaiting_al_357_359 value = 0 }}
+				set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+			}}
+			else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3593 }} }}
+		}}
+		else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3572 }} }}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {PREFIX}_al_external_stage_receipts_verified var:{PREFIX}_al_external_stage_receipts_verified = 1 var:zg361_case_al_state >= 4 }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3571 }} }}
+}}"""
+
+
+def render_external_fact_adapters() -> str:
+    """Strict product-owned adapters for facts that CK3 must not fabricate."""
+
+    return f"""# #264 handoff evidence producer.  OUTCOME=1 is accepted; 2 is a
+# rejected handoff.  An early settlement requires a distinct celestial waiver.
+{PREFIX}_submit_m264_handoff_fact_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ac_owner SUBJECT_VAR = zg361_case_ac_subject
+				CYCLE_VAR = zg361_case_ac_cycle_serial CASE_VAR = zg361_case_ac_case_serial
+				STATE_VAR = zg361_case_ac_state ACTIVE_VAR = zg361_case_ac_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_ac_external_handoff_ready')}
+			has_variable = {PREFIX}_m254_contract_id
+			has_variable = {PREFIX}_m254_sunset_cycle
+			has_variable = {PREFIX}_m254_object_consumed
+			var:{PREFIX}_m254_object_consumed = 1
+			var:{PREFIX}_m254_contract_id = $CONTRACT_ID$
+			var:{PREFIX}_m254_sunset_cycle = $SUNSET_CYCLE$
+			OR = {{
+				$TICKET_OWNER$ = {{ has_variable = zg361_review_serial var:zg361_review_serial >= root.var:{PREFIX}_m254_sunset_cycle }}
+				AND = {{
+					$TICKET_OWNER$ = {{ has_variable = zg361_review_serial var:zg361_review_serial < root.var:{PREFIX}_m254_sunset_cycle }}
+					$WAIVER_ID$ > 0
+					$WAIVER_APPROVER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+					NOT = {{ $WAIVER_APPROVER$ = $PAYEE$ }}
+				}}
+			}}
+			OR = {{
+				AND = {{
+					$OUTCOME$ = 1
+					$ACCEPTED_BY$ = $TICKET_OWNER$
+					$PAYEE$ = $TICKET_SUBJECT$
+					$DOCUMENTATION_ID$ > 0 $DOCUMENTATION_HASH$ > 0
+					$SHADOWING_ID$ > 0 $SHADOWING_HASH$ > 0
+					$PRACTICAL_ID$ > 0 $PRACTICAL_HASH$ > 0
+					NOT = {{ $DOCUMENTATION_ID$ = $SHADOWING_ID$ }}
+					NOT = {{ $DOCUMENTATION_ID$ = $PRACTICAL_ID$ }}
+					NOT = {{ $SHADOWING_ID$ = $PRACTICAL_ID$ }}
+				}}
+				AND = {{ $OUTCOME$ = 2 $REJECTION_REASON$ > 0 }}
+			}}
+		}}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_state value = 6 }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_contract_id value = $CONTRACT_ID$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_sunset_cycle value = $SUNSET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_waiver_id value = $WAIVER_ID$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_waiver_approver value = $WAIVER_APPROVER$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_outcome value = $OUTCOME$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_accepted_by value = $ACCEPTED_BY$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_payee value = $PAYEE$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_documentation_id value = $DOCUMENTATION_ID$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_documentation_hash value = $DOCUMENTATION_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_shadowing_id value = $SHADOWING_ID$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_shadowing_hash value = $SHADOWING_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_practical_id value = $PRACTICAL_ID$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_practical_hash value = $PRACTICAL_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ac_external_handoff_rejection_reason value = $REJECTION_REASON$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2641 }} }}
+}}
+
+# Native court-position assignment remains external.  This adapter accepts only
+# an already-confirmed appointment receipt bound to the live offer tuple.
+{PREFIX}_submit_ad_appointment_receipt_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_ad_external_appointment_ready')}
+			has_variable = {PREFIX}_m272_offer_candidate
+			has_variable = {PREFIX}_m273_candidate_fingerprint
+			var:{PREFIX}_m272_offer_candidate = $APPOINTED_CHARACTER$
+			var:{PREFIX}_m273_candidate_fingerprint = $APPOINTED_CHARACTER$
+			$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$
+			$APPOINTING_OWNER$ = $TICKET_OWNER$
+			$APPOINTMENT_CONFIRMED$ = 1
+			$POSITION_TYPE_ID$ > 0
+			$POSITION_RECEIPT_ID$ > 0
+			$POSITION_RECEIPT_HASH$ > 0
+		}}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointment_state value = 4 }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointed_character value = $APPOINTED_CHARACTER$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_appointing_owner value = $APPOINTING_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_position_type_id value = $POSITION_TYPE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_position_receipt_id value = $POSITION_RECEIPT_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_position_receipt_hash value = $POSITION_RECEIPT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2741 }} }}
+}}
+
+# Consume the central recruitment result for #275.  This does not appoint the
+# runner-up; it closes the pending handoff only after the central pipeline has
+# returned a distinct requisition case and immutable receipt/hash.
+{PREFIX}_consume_m275_runner_reopen_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			has_variable = {PREFIX}_m275_runner_reopen_pending
+			var:{PREFIX}_m275_runner_reopen_pending = 1
+			has_variable = {PREFIX}_m275_business_object_created
+			has_variable = {PREFIX}_m275_object_owner
+			has_variable = {PREFIX}_m275_object_subject
+			has_variable = {PREFIX}_m275_object_cycle
+			has_variable = {PREFIX}_m275_object_case
+			has_variable = {PREFIX}_m275_object_state
+			has_variable = {PREFIX}_m275_object_consumed
+			has_variable = {PREFIX}_m275_consumer_resolve_offer_refusal_hc_hold_275
+			var:{PREFIX}_m275_business_object_created = 1
+			var:{PREFIX}_m275_object_owner = $TICKET_OWNER$
+			var:{PREFIX}_m275_object_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_m275_object_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_m275_object_case = $TICKET_CASE$
+			var:{PREFIX}_m275_object_state = 4
+			var:{PREFIX}_m275_object_consumed = 1
+			var:{PREFIX}_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+			has_variable = {PREFIX}_m275_runner_up
+			has_variable = {PREFIX}_m275_runner_up_evidence
+			has_variable = {PREFIX}_candidate_active
+			has_variable = {PREFIX}_candidate_active_character
+			has_variable = {PREFIX}_m266_hc_reservation_active
+			var:{PREFIX}_candidate_active = 1
+			var:{PREFIX}_candidate_active_character = var:{PREFIX}_m275_runner_up
+			var:{PREFIX}_m266_hc_reservation_active = 1
+			var:{PREFIX}_m275_write_owner = $TICKET_OWNER$
+			var:{PREFIX}_m275_write_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_m275_write_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_m275_write_case = $TICKET_CASE$
+			$RUNNER_UP$ = var:{PREFIX}_m275_runner_up
+			$RUNNER_EVIDENCE$ = var:{PREFIX}_m275_runner_up_evidence
+			NOT = {{ $RUNNER_UP$ = $TICKET_SUBJECT$ }}
+			$NEW_REQUISITION_CASE$ > 0
+			NOT = {{ $NEW_REQUISITION_CASE$ = $TICKET_CASE$ }}
+			$REQUISITION_RECEIPT_ID$ > 0
+			$REQUISITION_RECEIPT_HASH$ > 0
+			$CENTRAL_REQUISITION_OPENED$ = 1
+		}}
+		set_variable = {{ name = {PREFIX}_m275_runner_reopen_pending value = 0 }}
+		set_variable = {{ name = {PREFIX}_m275_runner_reopen_consumed value = 1 }}
+		set_variable = {{ name = {PREFIX}_m275_runner_new_case value = $NEW_REQUISITION_CASE$ }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_id value = $REQUISITION_RECEIPT_ID$ }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_receipt_hash value = $REQUISITION_RECEIPT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_candidate value = $RUNNER_UP$ }}
+		set_variable = {{ name = {PREFIX}_m275_runner_requisition_evidence value = $RUNNER_EVIDENCE$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else_if = {{ limit = {{ has_variable = {PREFIX}_m275_runner_reopen_consumed var:{PREFIX}_m275_runner_reopen_consumed = 1 }} set_variable = {{ name = {PREFIX}_adapter_status value = 2 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2752 }} }}
+}}
+
+# #276 consumes a genuinely older immutable case, never the current case id.
+{PREFIX}_submit_m276_rehire_history_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_ad_external_rehire_ready')}
+			$REHIRE_ID$ > 0 $HISTORICAL_CASE_ID$ > 0 $HISTORICAL_CASE_HASH$ > 0
+			$HISTORICAL_CYCLE$ < $TICKET_CYCLE$
+			NOT = {{ $HISTORICAL_CASE_ID$ = $TICKET_CASE$ }}
+			$GROWTH_EVIDENCE_ID$ > 0 $GROWTH_EVIDENCE_HASH$ > 0
+			$FUTURE_COHORT_CYCLE$ > $TICKET_CYCLE$
+			$HISTORY_RETAINED$ = 1 $MISCONDUCT_HISTORY_RETAINED$ = 1
+			$REHIRE_CANDIDATE$ = $TICKET_SUBJECT$
+		}}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_state value = 6 }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_id value = $REHIRE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_candidate value = $REHIRE_CANDIDATE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_case_id value = $HISTORICAL_CASE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_case_hash value = $HISTORICAL_CASE_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_historical_cycle value = $HISTORICAL_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_growth_evidence_id value = $GROWTH_EVIDENCE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_growth_evidence_hash value = $GROWTH_EVIDENCE_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_rehire_future_cohort_cycle value = $FUTURE_COHORT_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2761 }} }}
+}}
+
+# #277 consumes a closed PIP plus a native-confirmed exit/position receipt.
+{PREFIX}_submit_m277_closed_pip_exit_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ad_owner SUBJECT_VAR = zg361_case_ad_subject
+				CYCLE_VAR = zg361_case_ad_cycle_serial CASE_VAR = zg361_case_ad_case_serial
+				STATE_VAR = zg361_case_ad_state ACTIVE_VAR = zg361_case_ad_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_ad_external_pip_exit_ready')}
+			has_variable = {PREFIX}_formal_hc_active_case
+			var:{PREFIX}_formal_hc_active_case = $HC_LINEAGE_CASE$
+			$PIP_CASE_ID$ > 0 $PIP_CASE_HASH$ > 0
+			NOT = {{ $PIP_CASE_ID$ = $TICKET_CASE$ }}
+			$PIP_CLOSED$ = 1 $PIP_CLOSURE_RECEIPT_ID$ > 0 $PIP_CLOSURE_RECEIPT_HASH$ > 0
+			$EXIT_CONFIRMED$ = 1 $EXIT_RECEIPT_ID$ > 0 $EXIT_RECEIPT_HASH$ > 0
+			$POSITION_TYPE_ID$ > 0 $FORMER_SLOT_ID$ > 0
+			$DISPLACED_HOURS$ >= 0 $DISPLACED_COST_RECEIPT$ > 0
+			$EXITED_CHARACTER$ = $TICKET_SUBJECT$
+		}}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_exit_ready value = 1 }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_exit_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_state value = 6 }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_case_id value = $PIP_CASE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_case_hash value = $PIP_CASE_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_closure_receipt_id value = $PIP_CLOSURE_RECEIPT_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_pip_closure_receipt_hash value = $PIP_CLOSURE_RECEIPT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_receipt_id value = $EXIT_RECEIPT_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_receipt_hash value = $EXIT_RECEIPT_HASH$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_position_type_id value = $POSITION_TYPE_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_former_slot_id value = $FORMER_SLOT_ID$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_hc_lineage_case value = $HC_LINEAGE_CASE$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_displaced_hours value = $DISPLACED_HOURS$ }}
+		set_variable = {{ name = {PREFIX}_ad_external_exit_displaced_cost_receipt value = $DISPLACED_COST_RECEIPT$ }}
+		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2771 }} }}
+}}"""
+
+
 def render_nonmanager_na_finalize() -> str:
     """Close a count/baron portfolio without forging manager-only #360/#361."""
 
@@ -2537,7 +3656,12 @@ def render_effects() -> bytes:
         "# Stable status: 1=applied, 2=idempotent, 3=stale, 4=typed RED, 5=external dependency, 6=complete, 7=honest N/A terminal.",
         render_portfolio_initialize(),
         render_portfolio_entry(),
+        render_al_357_359_receipt_bridge(),
+        render_collective_producer(),
+        render_completed_cycle_ledger(),
+        render_external_fact_adapters(),
         render_future_consumers(),
+        render_due_debt_consumers(),
         render_abandoned_resource_release(),
         render_nonmanager_na_finalize(),
         render_finalize(),
@@ -2785,6 +3909,14 @@ def render_future_event(mid: int) -> str:
 }}"""
 
 
+def render_debt_event(mid: int) -> str:
+    return f"""{NAMESPACE}.{DEBT_EVENT[mid]} = {{
+	type = character_event
+	hidden = yes
+	immediate = {{ {PREFIX}_m{mid}_consume_due_debt_effect = yes }}
+}}"""
+
+
 def render_events() -> bytes:
     validate_specs()
     sections = [f"namespace = {NAMESPACE}"]
@@ -2806,6 +3938,8 @@ def render_events() -> bytes:
             sections.append(render_deadline_event(domain, state))
     for mid in FUTURE_EVENT:
         sections.append(render_future_event(mid))
+    for mid in sorted(DEBT_EVENT):
+        sections.append(render_debt_event(mid))
     return generated("\n\n".join(sections))
 
 

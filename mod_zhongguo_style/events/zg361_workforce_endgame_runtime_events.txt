@@ -4598,3 +4598,243 @@ zg361we.5361 = {
 	hidden = yes
 	immediate = { zg361_we_m361_future_default_install_effect = yes }
 }
+
+zg361we.6242 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m242_consume_due_debt_effect = yes }
+}
+
+zg361we.6243 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m243_consume_due_debt_effect = yes }
+}
+
+zg361we.6244 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m244_consume_due_debt_effect = yes }
+}
+
+zg361we.6245 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m245_consume_due_debt_effect = yes }
+}
+
+zg361we.6246 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m246_consume_due_debt_effect = yes }
+}
+
+zg361we.6247 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m247_consume_due_debt_effect = yes }
+}
+
+zg361we.6248 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m248_consume_due_debt_effect = yes }
+}
+
+zg361we.6249 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m249_consume_due_debt_effect = yes }
+}
+
+zg361we.6250 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m250_consume_due_debt_effect = yes }
+}
+
+zg361we.6251 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m251_consume_due_debt_effect = yes }
+}
+
+zg361we.6252 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m252_consume_due_debt_effect = yes }
+}
+
+zg361we.6253 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m253_consume_due_debt_effect = yes }
+}
+
+zg361we.6254 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m254_consume_due_debt_effect = yes }
+}
+
+zg361we.6255 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m255_consume_due_debt_effect = yes }
+}
+
+zg361we.6256 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m256_consume_due_debt_effect = yes }
+}
+
+zg361we.6257 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m257_consume_due_debt_effect = yes }
+}
+
+zg361we.6258 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m258_consume_due_debt_effect = yes }
+}
+
+zg361we.6259 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m259_consume_due_debt_effect = yes }
+}
+
+zg361we.6260 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m260_consume_due_debt_effect = yes }
+}
+
+zg361we.6261 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m261_consume_due_debt_effect = yes }
+}
+
+zg361we.6262 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m262_consume_due_debt_effect = yes }
+}
+
+zg361we.6263 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m263_consume_due_debt_effect = yes }
+}
+
+zg361we.6264 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m264_consume_due_debt_effect = yes }
+}
+
+zg361we.6265 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m265_consume_due_debt_effect = yes }
+}
+
+zg361we.6266 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m266_consume_due_debt_effect = yes }
+}
+
+zg361we.6267 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m267_consume_due_debt_effect = yes }
+}
+
+zg361we.6268 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m268_consume_due_debt_effect = yes }
+}
+
+zg361we.6269 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m269_consume_due_debt_effect = yes }
+}
+
+zg361we.6270 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m270_consume_due_debt_effect = yes }
+}
+
+zg361we.6271 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m271_consume_due_debt_effect = yes }
+}
+
+zg361we.6272 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m272_consume_due_debt_effect = yes }
+}
+
+zg361we.6273 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m273_consume_due_debt_effect = yes }
+}
+
+zg361we.6274 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m274_consume_due_debt_effect = yes }
+}
+
+zg361we.6275 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m275_consume_due_debt_effect = yes }
+}
+
+zg361we.6276 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m276_consume_due_debt_effect = yes }
+}
+
+zg361we.6277 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m277_consume_due_debt_effect = yes }
+}
+
+zg361we.6355 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m355_consume_due_debt_effect = yes }
+}
+
+zg361we.6356 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m356_consume_due_debt_effect = yes }
+}
+
+zg361we.6360 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m360_consume_due_debt_effect = yes }
+}
+
+zg361we.6361 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m361_consume_due_debt_effect = yes }
+}

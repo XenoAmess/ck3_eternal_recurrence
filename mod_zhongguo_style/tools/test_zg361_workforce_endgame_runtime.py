@@ -235,9 +235,20 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 else:
                     self.assertNotIn(f"zg361_case_{spec.domain}_advance_", route)
 
-    def test_18_al_never_forges_357_359_edges(self) -> None:
-        self.assertNotIn("zg361_case_al_advance_02_effect", self.effects)
-        self.assertNotIn("zg361_case_al_advance_03_effect", self.effects)
+    def test_18_al_357_359_edges_require_three_exact_external_receipts(self) -> None:
+        bridge = block(self.effects, "zg361_we_submit_al_357_359_receipts_effect")
+        self.assertEqual(1, self.effects.count("zg361_case_al_advance_02_effect"))
+        self.assertEqual(1, self.effects.count("zg361_case_al_advance_03_effect"))
+        self.assertIn("EXPECTED_STATE = 2", bridge)
+        for mid, state in ((357, 2), (358, 3), (359, 3)):
+            for field in ("OWNER", "SUBJECT", "CYCLE", "CASE"):
+                self.assertIn(f"$M{mid}_{field}$ = $TICKET_{field}$", bridge)
+            self.assertIn(f"$M{mid}_STATE$ = {state}", bridge)
+            self.assertIn(f"$M{mid}_RECEIPT_ID$ > 0", bridge)
+            self.assertIn(f"$M{mid}_RECEIPT_HASH$ > 0", bridge)
+        self.assertLess(bridge.index("zg361_case_al_advance_02_effect"), bridge.index("zg361_case_al_advance_03_effect"))
+        self.assertGreater(bridge.index("al_external_stage_receipts_verified value = 1"), bridge.index("var:zg361_case_al_state = 4"))
+        self.assertIn("adapter_status value = 2", bridge)
         for letter in "abc":
             route = block(self.effects, f"zg361_we_m356_route_{letter}_effect")
             self.assertIn("zg361_we_awaiting_al_357_359", route)
@@ -504,7 +515,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 self.assertIn(f"m360_cohort_{slot}_manager value = var:zg361_we_al_external_collective_{slot}_manager", route)
                 self.assertIn(f"m360_cohort_{slot}_quota value = var:zg361_we_al_external_collective_{slot}_quota", route)
             self.assertNotIn("m360_quota_partition value = 2", route)
-            self.assertNotIn("set_variable = { name = zg361_we_al_external_", route)
+            self.assertNotIn("set_variable = { name = zg361_we_al_external_collective_1_cohort_id", route)
+            self.assertIn("al_external_collective_submission_consumed value = 1", route)
+            self.assertIn("al_external_collective_submission_active value = 0", route)
         self.assertIn("al_external_collective_reform_effective_cycle = { value = $TICKET_CYCLE$ add = 1 }", exception)
         self.assertIn("m360_reform_proposal_id value = var:zg361_we_al_external_collective_reform_proposal_id", exception)
         for slot in (1, 2, 3):
@@ -669,8 +682,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
     def test_52_handoff_a_pays_b_refunds_and_both_release_shadow_slot(self) -> None:
         pay = block(self.effects, "zg361_we_m264_route_a_effect")
         terminate = block(self.effects, "zg361_we_m264_route_b_effect")
-        self.assertIn("m264_payee value = $TICKET_SUBJECT$", pay)
-        self.assertIn("m264_accepted_by value = $TICKET_OWNER$", pay)
+        self.assertIn("m264_payee value = var:zg361_we_ac_external_handoff_payee", pay)
+        self.assertIn("m264_accepted_by value = var:zg361_we_ac_external_handoff_accepted_by", pay)
         self.assertIn("m264_payment_settled value = 1", pay)
         self.assertIn("remove_gold = 20", pay)
         self.assertIn("add_gold = 20", pay)
@@ -680,6 +693,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for route in (pay, terminate):
             self.assertIn("shadow_hc_active add = -1", route)
             self.assertIn("shadow_hc_available add = 1", route)
+            self.assertIn("ac_external_handoff_consumed value = 1", route)
+            self.assertIn("ac_external_handoff_ready value = 0", route)
 
     def test_53_fraud_recovery_requires_prior_evidence_and_frozen_payee(self) -> None:
         audit = block(self.effects, "zg361_we_m265_route_a_effect")
@@ -780,7 +795,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_ch_hc_frozen add = 1", exit_route)
         self.assertNotIn("zg361_ch_hc_available add", exit_route)
         self.assertIn("m277_displaced_subject value = $TICKET_SUBJECT$", exit_route)
-        self.assertIn("m277_displaced_cost_provenance value = $TICKET_CASE$", exit_route)
+        self.assertIn("m277_displaced_cost_provenance value = var:zg361_we_ad_external_exit_displaced_cost_receipt", exit_route)
+        self.assertIn("m277_pip_case_frozen value = var:zg361_we_ad_external_pip_case_id", exit_route)
+        self.assertIn("ad_external_pip_exit_consumed value = 1", exit_route)
 
     def test_62_charter_future_defaults_are_read_by_later_portfolio_init(self) -> None:
         init = block(self.effects, "zg361_we_initialize_portfolio_effect")
@@ -885,18 +902,22 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertGreater(route.index(f"m360_cohort_{slot}_cohort_id value"), receipt)
         self.assertLess(receipt, first_cost)
 
-    def test_70_charter_anchors_are_first_version_only_and_amendments_monotonic(self) -> None:
+    def test_70_charter_uses_rolling_chain_and_amendments_are_monotonic(self) -> None:
         route = block(self.effects, "zg361_we_m361_route_a_effect")
+        prepare = block(self.effects, "zg361_we_prepare_m361_charter_evidence_effect")
+        ledger = block(self.effects, "zg361_we_append_completed_cycle_receipt_effect")
         future = block(self.effects, "zg361_we_m361_future_default_install_effect")
         self.assertIn("realm_charter_history_count = var:zg361_we_realm_charter_current_version", route)
-        self.assertIn("realm_charter_current_version = 0", route)
-        self.assertIn("NOT = { has_variable = zg361_we_realm_charter_anchor_cycle_1 }", route)
         self.assertIn("realm_charter_current_version > 0", route)
-        self.assertIn("al_external_completed_cycle_1 = var:zg361_case_al_owner.var:zg361_we_realm_charter_anchor_cycle_1", route)
         self.assertIn("al_external_charter_adopted_day > var:zg361_case_al_owner.var:zg361_we_realm_charter_current_adopted_day", route)
         self.assertIn("realm_charter_current_effective_cycle < { value = $TICKET_CYCLE$ add = 1 }", route)
         self.assertIn("if = { limit = { var:zg361_we_realm_charter_current_version = 0 } set_variable = { name = zg361_we_realm_charter_anchor_cycle_1", route)
         self.assertNotIn("remove_variable = zg361_we_realm_charter_anchor_", route)
+        self.assertIn("completed_cycle_ledger_previous_hash_2 = var:zg361_we_completed_cycle_ledger_chain_hash_1", prepare)
+        self.assertIn("completed_cycle_ledger_previous_hash_3 = var:zg361_we_completed_cycle_ledger_chain_hash_2", prepare)
+        self.assertIn("completed_cycle_ledger_count >= 3", ledger)
+        self.assertIn("completed_cycle_ledger_cycle_1 value = var:zg361_we_completed_cycle_ledger_cycle_2", ledger)
+        self.assertNotIn("al_external_completed_cycle_1 = var:zg361_case_al_owner.var:zg361_we_realm_charter_anchor_cycle_1", route)
         self.assertIn("realm_charter_current_version = root.var:zg361_we_m361_adopted_version", future)
         self.assertIn("zg361_review_serial >= root.var:zg361_we_m361_effective_cycle", future)
 
@@ -1114,6 +1135,106 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn(fragment, ad_release)
         self.assertLess(ac_last.index("zg361_we_release_abandoned_ac_resources_effect"), ac_last.index("zg361_we_ad_launch_effect"))
         self.assertLess(ad_last.index("zg361_we_release_abandoned_ad_resources_effect"), ad_last.index("zg361_we_al_launch_effect"))
+
+    def test_81_every_c_debt_has_exact_due_consumer_conservation_and_bounded_escalation(self) -> None:
+        for mid, spec in sorted(self.specs.items()):
+            route = block(self.effects, f"zg361_we_m{mid}_route_c_effect")
+            due = block(self.effects, f"zg361_we_m{mid}_consume_due_debt_effect")
+            for field in (
+                "owner", "subject", "cycle", "case", "state", "type_code", "id",
+                "consumer_contract", "due_cycle", "open", "consumed", "escalation_count",
+            ):
+                self.assertIn(f"m{mid}_debt_{field}", route, (mid, field))
+                self.assertIn(f"m{mid}_debt_{field}", due, (mid, field))
+            self.assertIn(f"m{mid}_debt_state = var:zg361_we_m{mid}_write_state", due)
+            self.assertIn(f"m{mid}_debt_type_code = {mid}", due)
+            self.assertIn(f"m{mid}_debt_consumer_contract = {mid}", due)
+            self.assertIn("hours_available add = -2", due)
+            self.assertIn("hours_governance add = 2", due)
+            self.assertIn("policy_debt add = -1", due)
+            self.assertIn(f"m{mid}_debt_escalation_count < 2", due)
+            self.assertIn("manager_score add = -2", due)
+            self.assertIn(f"m{mid}_debt_open value = 0", due)
+            self.assertIn(f"m{mid}_debt_consumed value = 1", due)
+            self.assertIn("future_status value = 2", due)
+            self.assertIn(f"debt_blocked_reason value = {70000 + mid}", due)
+            self.assertIn(f"id = zg361we.{gen.DEBT_EVENT[mid]} days = 365", route)
+            self.assertIn(f"zg361we.{gen.DEBT_EVENT[mid]}", self.events)
+
+    def test_82_external_fact_adapters_freeze_real_264_274_275_276_277_objects(self) -> None:
+        handoff = block(self.effects, "zg361_we_submit_m264_handoff_fact_effect")
+        appointment = block(self.effects, "zg361_we_submit_ad_appointment_receipt_effect")
+        runner = block(self.effects, "zg361_we_consume_m275_runner_reopen_effect")
+        rehire = block(self.effects, "zg361_we_submit_m276_rehire_history_effect")
+        pip_exit = block(self.effects, "zg361_we_submit_m277_closed_pip_exit_effect")
+        self.assertIn("$SUNSET_CYCLE$", handoff)
+        self.assertIn("$WAIVER_APPROVER$ = { zg361_is_celestial_liege_trigger = yes }", handoff)
+        for artifact in ("DOCUMENTATION", "SHADOWING", "PRACTICAL"):
+            self.assertIn(f"${artifact}_ID$ > 0", handoff)
+            self.assertIn(f"${artifact}_HASH$ > 0", handoff)
+        self.assertIn("$APPOINTMENT_CONFIRMED$ = 1", appointment)
+        self.assertIn("$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$", appointment)
+        self.assertIn("ad_external_position_receipt_hash", appointment)
+        self.assertIn("$CENTRAL_REQUISITION_OPENED$ = 1", runner)
+        self.assertIn("NOT = { $NEW_REQUISITION_CASE$ = $TICKET_CASE$ }", runner)
+        self.assertIn("m275_runner_reopen_consumed value = 1", runner)
+        self.assertIn("$HISTORICAL_CYCLE$ < $TICKET_CYCLE$", rehire)
+        self.assertIn("NOT = { $HISTORICAL_CASE_ID$ = $TICKET_CASE$ }", rehire)
+        self.assertIn("$PIP_CLOSED$ = 1", pip_exit)
+        self.assertIn("$EXIT_CONFIRMED$ = 1", pip_exit)
+        self.assertIn("$EXITED_CHARACTER$ = $TICKET_SUBJECT$", pip_exit)
+        for code, adapter in ((2641, handoff), (2741, appointment), (2752, runner), (2761, rehire), (2771, pip_exit)):
+            self.assertIn(f"adapter_blocked_reason value = {code}", adapter)
+
+    def test_83_collective_submission_is_exact_three_cohorts_append_only_then_sealed(self) -> None:
+        begin = block(self.effects, "zg361_we_begin_al_three_cohort_collective_effect")
+        seal = block(self.effects, "zg361_we_seal_al_three_cohort_collective_effect")
+        self.assertIn("EXPECTED_STATE = 4", begin)
+        self.assertIn("al_external_collective_cohort_count value = 3", begin)
+        self.assertIn("NOT = { $C1_COHORT_ID$ = $C2_COHORT_ID$ }", begin)
+        self.assertIn("NOT = { $C1_MANAGER$ = $C2_MANAGER$ }", begin)
+        self.assertIn("$TOTAL_QUOTA$ <= 6", begin)
+        for cohort in (1, 2, 3):
+            for kind in ("forced", "exception"):
+                for slot in range(1, gen.MAX_COLLECTIVE_OUTCOMES + 1):
+                    appender = block(self.effects, f"zg361_we_append_al_collective_{cohort}_{kind}_{slot}_effect")
+                    identity = f"al_external_collective_{cohort}_{kind}_{slot}"
+                    self.assertIn(f"{identity}_character value = $CHARACTER$", appender)
+                    self.assertIn(f"{identity}_member_evidence_id value = $MEMBER_EVIDENCE_ID$", appender)
+                    self.assertIn(f"{identity}_member_evidence_hash value = $MEMBER_EVIDENCE_HASH$", appender)
+                    self.assertIn("adapter_status value = 2", appender)
+        self.assertIn("al_external_collective_submission_sealed value = 1", seal)
+        self.assertIn("adapter_blocked_reason value = 3603", seal)
+
+    def test_84_three_cycle_ledger_is_identity_bound_idempotent_and_consumed_once(self) -> None:
+        ledger = block(self.effects, "zg361_we_append_completed_cycle_receipt_effect")
+        prepare = block(self.effects, "zg361_we_prepare_m361_charter_evidence_effect")
+        route = block(self.effects, "zg361_we_m361_route_a_effect")
+        for field in ("owner", "subject", "cycle_serial", "case_serial"):
+            self.assertIn(f"zg361_case_al_{field}", ledger)
+        self.assertIn("portfolio_closed = 1", ledger)
+        self.assertIn("final_conservation_ok = 1", ledger)
+        self.assertIn("completed_cycle_ledger_tail_hash = $PREVIOUS_CHAIN_HASH$", ledger)
+        self.assertIn("NOT = { $NEW_CHAIN_HASH$ = $PREVIOUS_CHAIN_HASH$ }", ledger)
+        self.assertIn("completed_cycle_ledger_last_subject = $TICKET_SUBJECT$", ledger)
+        self.assertIn("completed_cycle_ledger_last_case = $TICKET_CASE$", ledger)
+        self.assertIn("adapter_status value = 2", ledger)
+        self.assertIn("completed_cycle_ledger_count = 3", prepare)
+        self.assertIn("completed_cycle_ledger_cycle_3 < $TICKET_CYCLE$", prepare)
+        self.assertIn("al_external_charter_evidence_ready value = 1", prepare)
+        self.assertIn("al_external_long_report_hash value = $LONG_REPORT_HASH$", prepare)
+        self.assertIn("al_external_charter_evidence_consumed value = 1", route)
+        self.assertIn("al_external_charter_evidence_ready value = 0", route)
+
+    def test_85_native_appointment_is_never_faked_by_the_recruitment_route(self) -> None:
+        route = block(self.effects, "zg361_we_m274_route_a_effect")
+        receipt = block(self.effects, "zg361_we_submit_ad_appointment_receipt_effect")
+        self.assertIn("ad_external_appointment_consumed = 0", route)
+        self.assertIn("m274_native_appointment_confirmed value = 1", route)
+        self.assertIn("m274_position_receipt_hash value = var:zg361_we_ad_external_position_receipt_hash", route)
+        self.assertIn("already-confirmed appointment receipt", self.effects)
+        self.assertNotIn("appoint_court_position", route)
+        self.assertIn("adapter_blocked_reason value = 2741", receipt)
 
 
 if __name__ == "__main__":

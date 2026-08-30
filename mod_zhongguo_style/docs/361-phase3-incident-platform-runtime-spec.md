@@ -151,8 +151,13 @@ CK3 静态投影中的跨编号读链另有 current-case guard：前序对象缺
 4. MCP 角色/头衔/国库/变量/时间查询与 paused snapshot；
 5. fixture-live、production-live 或实机 CK3 GREEN。
 
-CK3 投影的 C 路目前只登记带期限的 policy debt；尚未提供统一到期偿债 consumer。这一缺口不影响
-Python L0 的对象合同，但阻止把静态 C 路称为跨期债务闭环。
+CK3 投影的 C 路现为 37 个逐编号、身份绑定的到期 consumer。每笔债务冻结
+`owner/subject/cycle/case/state/type/id/consumer_contract/due`；consumer 只有在该元组与原业务写入完全一致时
+才允许结算。到期且 subject 仍有真实 KPI 时，扣 1 点 KPI 并同步减少 1 点 policy debt；缺少可消费 KPI 时，
+最多两次向仍具资格且有真实 KPI 的原 manager 升级扣分并顺延。第三次容量失败保持债务 open、写明 blocked
+reason，不以布尔占位伪造偿债。已关闭重放幂等，跨 owner/case/cycle 或 type/id 不一致一律 fail closed。
+这闭合了产品内可持久化的跨期债务对象，但仍只是静态合同：没有真实存档中的到期、升级、保存/读取证据时，
+不得把它提升为 fixture-live 或 production-live。
 
 静态生成文件存在不等于 live。只有完成统一接线、MCP-first CK3 批次并保存真实 paused artifact 后，
 才能再次提升 readiness。

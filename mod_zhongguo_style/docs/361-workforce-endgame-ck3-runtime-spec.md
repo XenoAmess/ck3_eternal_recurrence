@@ -64,7 +64,10 @@ full_guard
 状态码固定：`1=applied`、`2=同 route 幂等 no-op`、`3=stale no-op`、`4=typed RED`、
 `5=等待外部阶段依赖`。RED 在 receipt 和业务写之前返回；旧 owner/subject/cycle/case/state 或重复路线不得
 改资源；同一五元案改选另一 route 是稳定 collision RED，不冒充幂等。C 路线只写 choice、五元 debt provenance、`due_cycle = created_cycle + 1`、`debt_open=1` 与一次 policy debt，
-`business_object_created=0`。
+`business_object_created=0`。每个编号另有独立 hidden due consumer：完整核对 debt 与原 write 五元身份后，
+以 `available_hours -2 / governance_hours +2 / policy_debt -1` 等量偿债；容量不足时只对冻结且仍有管理资格的
+owner 扣 2 分并延后一周期，最多两次。第三次仍失败时 debt 保持 open 并写 `70000+ID` blocked reason；
+已结清重入为 status 2，错案/串 owner 为 status 3，均不重复改资源。
 
 portfolio 重放闸门保存在 subject scope，并绑定该 subject 的 review serial；同一 manager 因而可以在同一周期
 分别考核多个直属 subject，而同一 subject/同一周期不能重复开案。
@@ -152,13 +155,13 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
 | AL | 360 | 4 | 3 个 cohort 的 manager/member/agenda/quota/evidence/exception/forced-C → 逐 cohort agenda=members、exception+forced=quota、真实 manager/trust 成本 |
 | AL | 361 | 5 | exact 3 completed receipts + immutable anchor/report + monotonic version/history/adopted day → append-only future defaults |
 
-## 5. AL 缺口与最高领主门
+## 5. AL receipt bridge、三 cohort producer 与最高领主门
 
-本工作包不拥有 357–359。#355/#356 完成后只允许 `advance_01` 并明确写
-`awaiting_al_357_359`；绝不生成 `zg361_case_al_advance_02_effect` 或
-`zg361_case_al_advance_03_effect`。只有外部真实实现把同一 AL 五元案推进到 state 4/5，并冻结下面的
-显式 ABI 后，再调用同一个 portfolio adapter，才会进入 #360/#361。adapter 只读这些字段，绝不根据
-state 自写“已验证”：
+本工作包不拥有 357–359 的业务语义。#355/#356 完成后只允许 `advance_01` 并明确写
+`awaiting_al_357_359`。`zg361_we_submit_al_357_359_receipts_effect` 必须一次收到 357/358/359 各自完整的
+owner/subject/cycle/case/state、互异 receipt id/hash；三组都与当前 AL 案一致后，才依次消费 shared kernel 的
+`advance_02`、`advance_03`。任一 transition 没有真实 kernel ACK 时不写 verified。重复提交同一已完成桥为
+status 2；缺失、错案或假 state 分别写 typed blocked reason，不会靠一个 readiness 布尔推进：
 
 ```text
 al_external_stage_receipts_verified = 1
@@ -169,7 +172,8 @@ al_external_last_operation = 359
 
 仅凭本包不能宣称 AL 端到端闭环。
 
-#360 的外部 producer 必须提交一个未结算的 collective case/settlement receipt 和**恰好三个**互异 cohort。
+#360 由本包的 `begin → append outcome slot → seal` producer ABI 提交一个未结算的 collective
+case/settlement receipt 和**恰好三个**互异 cohort。
 每个 cohort 完整冻结
 `cohort_id/manager/member_count/member_hash/agenda_count/agenda_hash/quota/all_meet_evidence_id/forced_count/
 exception_count/approver/manager_cost/partition_verified/approval_verified`。member 与 agenda 的 count/hash 必须相等；
@@ -182,13 +186,16 @@ manager。三个 manager 互异，实际分别扣自己的 `manager_score`；own
 每个活动槽必须携带 character/cohort/evidence，且 cohort id 必须精确等于该槽所属 cohort。三 cohort 的 total
 quota ≤ 6，所以 forced+exception 的**活动槽总数**至多 6；所有活动 identity 全局互异。这个 cohort-local
 partition 防止把 cohort 1 声明的两个 forced 结果全部伪标到 cohort 2。超过容量的 collective action 必须由
-中央 producer 拆分或拒绝，本包不会截断。#360 只写自己的 `m360_*` receipt，不回写或伪造
-`al_external_*`。
+上游调用者拆分或拒绝，本包不会截断。producer 只持久化调用者提交的真实角色/成员证据，不会推测 cohort；
+#360 route 在所有语义预检通过后写自己的 `m360_*` receipt，并只把 submission 标成 consumed/settled，
+不改写已冻结的 cohort 身份。
 
-#361 只接受**恰好三个**按 cycle 严格递增且 receipt id/hash 互异的完成证据，`cycle_3=max<=current`；long-run
-report 的 completed-cycle hash 必须等于提交 hash。首次宪章要求 realm anchor 全部不存在，写入三组
-cycle/receipt id/receipt hash 和 report anchor；后续修订必须与这些 immutable anchor 完整相等，永不删除或
-覆盖。realm owner 上维护 `history_count=current_version` 的前置一致性、
+#361 的 `append_completed_cycle_receipt` 在 realm owner 上维护一个最多三项的滚动链：新 cycle 必须严格
+晚于 tail，`previous_hash=tail_hash`，重复的同 subject/case/receipt/hash 为 status 2，其他同周期碰撞 RED。
+`prepare_m361_charter_evidence` 只在 AL state 5 投影最近**恰好三个**严格递增 cycle，且验证
+`previous_hash_2=chain_hash_1`、`previous_hash_3=chain_hash_2`；long-run report 与 charter/history hash
+仍是显式调用者 receipt，产品只持久化和核对链，不宣称提供密码学真实性。realm owner 上继续维护
+`history_count=current_version` 的前置一致性、
 `previous_version → current_version → history_count` 的单调递增、previous charter/history hash 链，以及严格
 变大的 adopted day；已生效版本可修订，但新版本仍只能 `effective_cycle=current+1`，不会改当前 portfolio。
 
@@ -224,15 +231,15 @@ RED `9098`。
 ## 6. 仍需完成的 CK3/live 工作
 
 1. 中央层选择真实 assessed subject 并调用唯一 portfolio adapter；本包不自行弹窗。
-2. 将 AD 的 vacancy/candidate/appointment、真实 PIP exit 与正式角色变更接到冻结 receipt；当前已有
-   canonical HC/金币/身份变量写入，但不能冒充真实 court-position 任命。尤其 #276 仍缺独立历史 rehire producer，
-   #277 仍缺已关闭 PIP/离任事实 producer；当前案变量不能冒充这两类历史对象。
-3. 完成并接入 357–359，提供 AL state 2/3 的真实五元 receipt、#360 三 cohort producer ABI 与 #361 三周期/
-   report/hash-chain producer ABI；本包只能校验提交字段，不能替外部 producer 证明其来源真实。
-4. #275 A 的 runner-up pending 仍需由中央招聘流水线消费，并以新案 receipt 关闭；本包刻意保留原 HC，不把
-   “已写 pending”冒充真实任命闭环。
-5. C debt 目前有 exact identity、即时 read-side 可见性和 abandoned-resource cleanup，但尚无统一到期偿债/
-   升级 consumer；#264 的 sunset/waiver/handoff artifact 也仍缺外部生产者 ABI。
+2. AD 已提供严格 adapter：#274 只消费外部已确认的真实角色/position receipt；#276 只接受旧 cycle/旧 case
+   的 rehire history；#277 只接受独立 closed-PIP 与 exit/position receipt。仍需原生岗位 provider 真正执行并
+   证明 court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
+3. 357–359 的真实业务 owner 仍需调用 receipt bridge；#360 cohort 成员、#361 report/hash 的真实性仍由
+   对应外域/原生 producer 负责。本包可以核对五元身份、顺序、唯一性、守恒与持久化链，不能证明外部哈希来源。
+4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
+   `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
+5. C debt 到期 consumer 与 #264 sunset/waiver/三类 artifact adapter 已落地；仍需 CK3 存读档/跨周期实机证明
+   scheduler、资源守恒和有界升级没有 scope 漂移。
 6. 运行本机 CK3 parser、error.log、玩家事件队列、AI 后台、跨期 hidden event、存读档和 paused snapshot
    验收，再决定是否提升 readiness。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。

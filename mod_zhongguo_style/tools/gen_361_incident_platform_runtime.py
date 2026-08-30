@@ -94,6 +94,9 @@ DOMAIN_BY_ID: Final[dict[int, Domain]] = {
     for domain in DOMAINS
     for mechanism_id in range(domain.first_id, domain.last_id + 1)
 }
+DEBT_EVENT: Final[dict[int, int]] = {
+    mechanism_id: 7000 + mechanism_id for mechanism_id in EXPECTED_IDS
+}
 
 
 # Route values are frozen, deterministic CK3 facts.  The first field of every
@@ -270,9 +273,16 @@ def _route_assignment(mechanism_id: int) -> str:
             f"\t\t\tset_variable = {{ name = {prefix}_debt_subject value = $TICKET_SUBJECT$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_cycle value = $TICKET_CYCLE$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_case value = $TICKET_CASE$ }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_state value = $TICKET_STATE$ }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_type_code value = {mechanism_id} }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_id value = {{ value = $TICKET_CYCLE$ multiply = 1000000 add = {{ value = $TICKET_CASE$ multiply = 1000 }} add = {mechanism_id} }} }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_consumer_contract value = {mechanism_id} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_open value = 1 }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_consumed value = 0 }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_escalation_count value = 0 }}",
             f"\t\t\tchange_variable = {{ name = zg361_ip_{DOMAIN_BY_ID[mechanism_id].slug}_policy_debt add = 1 }}",
+            f"\t\t\ttrigger_event = {{ id = zg361ip.{DEBT_EVENT[mechanism_id]} days = 365 }}",
         )
     )
     lines.append("\t\t}")
@@ -772,6 +782,113 @@ def render_due_effect(domain: Domain, state: int) -> str:
 }}'''
 
 
+def render_policy_debt_consumer(mechanism_id: int) -> str:
+    """Render a due-cycle consumer for one exact route-C debt."""
+
+    p = _prefix(mechanism_id)
+    domain = DOMAIN_BY_ID[mechanism_id]
+    dp = _domain_prefix(domain)
+    event_id = DEBT_EVENT[mechanism_id]
+    state = domain.stage_for(mechanism_id)
+    return f'''{p}_consume_due_debt_effect = {{
+	remove_variable = zg361_ip_debt_status
+	remove_variable = zg361_ip_debt_red_code
+	if = {{
+		limit = {{
+			has_variable = {p}_debt_owner
+			has_variable = {p}_debt_subject
+			has_variable = {p}_debt_cycle
+			has_variable = {p}_debt_case
+			has_variable = {p}_debt_state
+			has_variable = {p}_debt_type_code
+			has_variable = {p}_debt_id
+			has_variable = {p}_debt_consumer_contract
+			has_variable = {p}_debt_due_cycle
+			has_variable = {p}_debt_open
+			has_variable = {p}_debt_consumed
+			has_variable = {p}_debt_escalation_count
+			has_variable = {p}_done_owner
+			has_variable = {p}_done_subject
+			has_variable = {p}_done_cycle
+			has_variable = {p}_done_case
+			has_variable = {p}_done_state
+			has_variable = {p}_business_object_created
+			has_variable = {dp}_policy_debt
+			var:{p}_debt_open = 1
+			var:{p}_debt_consumed = 0
+			var:{p}_business_object_created = 0
+			var:{p}_debt_type_code = {mechanism_id}
+			var:{p}_debt_consumer_contract = {mechanism_id}
+			var:{p}_debt_state = {state}
+			var:{p}_debt_owner = var:{p}_done_owner
+			var:{p}_debt_subject = this
+			var:{p}_debt_subject = var:{p}_done_subject
+			var:{p}_debt_cycle = var:{p}_done_cycle
+			var:{p}_debt_case = var:{p}_done_case
+			var:{p}_debt_state = var:{p}_done_state
+			var:{p}_debt_id = {{ value = var:{p}_debt_cycle multiply = 1000000 add = {{ value = var:{p}_debt_case multiply = 1000 }} add = {mechanism_id} }}
+			var:{p}_debt_owner = {{
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= root.var:{p}_debt_due_cycle
+			}}
+		}}
+		if = {{
+			limit = {{
+				has_variable = zg361_kpi_value
+				var:{dp}_policy_debt >= 1
+				var:{p}_debt_owner = {{ zg361_is_celestial_liege_trigger = yes }}
+			}}
+			change_variable = {{ name = zg361_kpi_value add = -1 }}
+			change_variable = {{ name = {dp}_policy_debt add = -1 }}
+			set_variable = {{ name = {p}_debt_open value = 0 }}
+			set_variable = {{ name = {p}_debt_consumed value = 1 }}
+			set_variable = {{ name = {p}_debt_resolution value = 1 }}
+			set_variable = {{ name = {p}_debt_settled_cycle value = var:{p}_debt_due_cycle }}
+			set_variable = {{ name = {p}_debt_kpi_cost value = 1 }}
+			set_variable = {{ name = zg361_ip_debt_status value = 1 }}
+		}}
+		else_if = {{
+			limit = {{
+				var:{p}_debt_escalation_count < 2
+				var:{p}_debt_owner = {{
+					zg361_is_celestial_liege_trigger = yes
+					has_variable = zg361_kpi_value
+				}}
+			}}
+			change_variable = {{ name = {p}_debt_escalation_count add = 1 }}
+			change_variable = {{ name = {p}_debt_due_cycle add = 1 }}
+			set_variable = {{ name = {p}_debt_resolution value = 2 }}
+			set_variable = {{ name = {p}_debt_escalated_cycle value = var:{p}_debt_due_cycle }}
+			var:{p}_debt_owner = {{ change_variable = {{ name = zg361_kpi_value add = -1 }} }}
+			set_variable = {{ name = zg361_ip_debt_status value = 1 }}
+			trigger_event = {{ id = zg361ip.{event_id} days = 365 }}
+		}}
+		else = {{
+			set_variable = {{ name = {p}_debt_resolution value = 3 }}
+			set_variable = {{ name = {p}_debt_blocked_reason value = {80000 + mechanism_id} }}
+			set_variable = {{ name = zg361_ip_debt_red_code value = {80000 + mechanism_id} }}
+			set_variable = {{ name = zg361_ip_debt_status value = 5 }}
+		}}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {p}_debt_open has_variable = {p}_debt_consumed var:{p}_debt_open = 0 var:{p}_debt_consumed = 1 }}
+		set_variable = {{ name = zg361_ip_debt_status value = 2 }}
+	}}
+	else_if = {{
+		limit = {{
+			has_variable = {p}_debt_open
+			has_variable = {p}_debt_due_cycle
+			has_variable = {p}_debt_owner
+			var:{p}_debt_open = 1
+			var:{p}_debt_owner = {{ has_variable = zg361_review_serial var:zg361_review_serial < root.var:{p}_debt_due_cycle }}
+		}}
+		set_variable = {{ name = zg361_ip_debt_status value = 5 }}
+		trigger_event = {{ id = zg361ip.{event_id} days = 90 }}
+	}}
+	else = {{ set_variable = {{ name = zg361_ip_debt_status value = 3 }} set_variable = {{ name = zg361_ip_debt_red_code value = {81000 + mechanism_id} }} }}
+}}'''
+
+
 def render_effects() -> bytes:
     sections: list[str] = [
         "# X/Y/Z phase-three runtime. Readiness: CK3 static-ready; not live.\n"
@@ -779,6 +896,7 @@ def render_effects() -> bytes:
         "# zg361_ip_open_portfolio_effect. No GUI/on_action/interactions are added."
     ]
     sections.extend(render_mechanism_effect(mechanism_id) for mechanism_id in range(192, 229))
+    sections.extend(render_policy_debt_consumer(mechanism_id) for mechanism_id in range(192, 229))
     for domain in DOMAINS:
         sections.append(render_finalize(domain))
         sections.extend(render_stage_dispatcher(domain, stage) for stage in range(1, domain.transitions + 1))
@@ -831,6 +949,13 @@ zg361ip.{domain.result_event} = {{
 \tdesc = zg361ip.{domain.result_event}.desc
 \ttrigger = {{ is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }}
 \toption = {{ name = zg361ip.result.ok }}
+}}''')
+    for mechanism_id in range(192, 229):
+        sections.append(f'''# #{mechanism_id:03d} exact route-C due consumer.
+zg361ip.{DEBT_EVENT[mechanism_id]} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {_prefix(mechanism_id)}_consume_due_debt_effect = yes }}
 }}''')
     return generated("\n\n".join(sections))
 
