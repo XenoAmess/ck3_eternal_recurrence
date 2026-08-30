@@ -159,7 +159,7 @@ class CandidateExtractionTests(unittest.TestCase):
                 '{"first":"Uno","second":"Dos","extra":"Tres"}',
                 "response key set differs",
             ),
-            ('{"first":"Uno","second":2}', "non-string translation value"),
+            ('{"first":"Uno","second":2}', "non-string translation values"),
             ('["Uno", "Dos"]', "response JSON is not an object"),
             ("not JSON", "not one strict JSON object"),
             ("   ", "response content is empty or not text"),
@@ -197,6 +197,35 @@ class ProtectedTokenTests(unittest.TestCase):
         }
         minimax.assert_protected_tokens(self.SOURCE, candidate, ("Ox Here",))
 
+    def test_raw_ck3_quote_escape_normalization_is_source_gated(self):
+        source = {
+            "raw": 'Call them \\"wild dogs\\".',
+            "ordinary": 'The source has an ordinary "quoted" phrase.',
+        }
+        candidate = {
+            "raw": 'Nenne sie "wilde Hunde".',
+            "ordinary": 'Das Ziel hat eine gewöhnliche "zitierte" Wendung.',
+        }
+        normalized = minimax.normalize_raw_ck3_quote_escapes(source, candidate)
+        self.assertEqual('Nenne sie \\"wilde Hunde\\".', normalized["raw"])
+        self.assertEqual(candidate["ordinary"], normalized["ordinary"])
+        minimax.assert_protected_tokens({"raw": source["raw"]}, {"raw": normalized["raw"]})
+
+    def test_raw_ck3_quote_escape_normalization_still_rejects_extra_quotes(self):
+        source = {"line": 'Call them \\"wild dogs\\".'}
+        candidate = {"line": 'Nenne sie "wilde" "Hunde".'}
+        normalized = minimax.normalize_raw_ck3_quote_escapes(source, candidate)
+        with self.assertRaisesRegex(minimax.TranslationError, "protected-token mismatch"):
+            minimax.assert_protected_tokens(source, normalized)
+
+    def test_candidate_cannot_add_unescaped_ascii_quotes(self):
+        source = {"line": "Rename unfinished work phase one complete"}
+        candidate = {"line": 'Unfertige Arbeit in "Phase eins abgeschlossen" umbenennen'}
+        with self.assertRaisesRegex(
+            minimax.TranslationError, "unescaped ASCII quote count 2 != 0"
+        ):
+            minimax.assert_protected_tokens(source, candidate)
+
     def test_any_automatic_placeholder_drift_is_rejected(self):
         baseline = {
             "event": self.SOURCE["event"],
@@ -229,6 +258,16 @@ class ProtectedTokenTests(unittest.TestCase):
         candidate = {"event": self.SOURCE["event"], "brand": "Ox Here arrives"}
         with self.assertRaisesRegex(minimax.TranslationError, "explicit token 'Ox Here'"):
             minimax.assert_protected_tokens(self.SOURCE, candidate, ("Ox Here",))
+
+    def test_explicit_term_may_be_introduced_when_source_did_not_contain_it(self):
+        source = {"line": "A formal improvement plan begins."}
+        candidate = {"line": "A formal PIP improvement plan begins."}
+        minimax.assert_protected_tokens(source, candidate, ("PIP",))
+
+    def test_explicit_term_may_be_repeated_to_follow_reference_wording(self):
+        source = {"line": "Strict, relaxed, or hybrid 361"}
+        candidate = {"line": "Strict 361 / relaxed 361 / hybrid 361"}
+        minimax.assert_protected_tokens(source, candidate, ("361",))
 
     def test_balanced_icu_plural_and_select_blocks_are_verbatim_tokens(self):
         plural = "{count, plural, =0 {none} one {one ox} other {{count} oxen}}"
@@ -266,6 +305,16 @@ class TargetParsingTests(unittest.TestCase):
                 minimax.parse_target(value)
 
 
+class PromptContractTests(unittest.TestCase):
+    def test_prompt_forbids_nested_or_non_string_values(self):
+        prompt = minimax.make_prompt(
+            "English", (), "German", "fixture", {"line": "Text"}, ()
+        )
+        self.assertIn("Every JSON value MUST be one string", prompt)
+        self.assertIn("Never return nested objects", prompt)
+        self.assertIn('{"key_one":"translated text"', prompt)
+
+
 class RequestContractTests(unittest.TestCase):
     def test_request_uses_official_m3_body_and_validates_envelope(self):
         source = {"line": "Ox Here [CHARACTER.GetName]"}
@@ -285,6 +334,7 @@ class RequestContractTests(unittest.TestCase):
         response.__enter__.return_value = response
         response.read.return_value = json.dumps(envelope, ensure_ascii=False).encode("utf-8")
 
+        captured: list[tuple[int, bytes]] = []
         with mock.patch.object(minimax.request, "urlopen", return_value=response) as urlopen:
             result = minimax.request_candidate(
                 "french",
@@ -294,9 +344,11 @@ class RequestContractTests(unittest.TestCase):
                 "test-only-api-key",
                 4321,
                 ("Ox Here",),
+                lambda attempt, payload: captured.append((attempt, payload)),
             )
 
         self.assertEqual(("french", translated), result)
+        self.assertEqual([(1, response.read.return_value)], captured)
         urlopen.assert_called_once()
         req = urlopen.call_args.args[0]
         self.assertEqual(180, urlopen.call_args.kwargs["timeout"])
@@ -310,6 +362,38 @@ class RequestContractTests(unittest.TestCase):
             {"model", "max_completion_tokens", "temperature", "thinking", "messages"},
             set(body),
         )
+
+    def test_request_normalizes_json_quotes_back_to_raw_ck3_escapes(self):
+        source = {"line": 'Call them \\"wild dogs\\".'}
+        decoded_model_value = {"line": 'Nenne sie "wilde Hunde".'}
+        envelope = {
+            "base_resp": {"status_code": 0},
+            "input_sensitive": False,
+            "output_sensitive": False,
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {
+                        "content": json.dumps(decoded_model_value, ensure_ascii=False)
+                    },
+                }
+            ],
+        }
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = json.dumps(envelope, ensure_ascii=False).encode("utf-8")
+
+        with mock.patch.object(minimax.request, "urlopen", return_value=response):
+            result = minimax.request_candidate(
+                "german",
+                "German",
+                "minimal prompt",
+                source,
+                "test-only-api-key",
+                4321,
+            )
+
+        self.assertEqual(("german", {"line": 'Nenne sie \\"wilde Hunde\\".'}), result)
 
     def test_transport_read_failures_retry_then_raise_controlled_error(self):
         failures = (

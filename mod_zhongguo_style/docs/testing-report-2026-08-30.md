@@ -1,0 +1,249 @@
+# ZhongGuo 361 Style 实机测试报告（2026-08-30）
+
+## 1. 宋帝首轮分布缺陷
+
+用户在宋帝京察中观察到 `7 × 3.75 + 16 × 3.5 + 0 × 3.25`。23 人严格 361 的权威结果应为 `7 / 14 / 2`，原画面不是合法舍入。
+
+缺陷由两层问题叠加：
+
+1. 首次安装时，旧实现把所有没有模组快照的在任官员都当作新人，导致 23 名存量官员全部享受 3.25 保护；
+2. 修正存量/新人语义后，末位 `ordered_in_list` 仍省略了 `max`。CK3 1.19.0.6 的 `ordered_*` 在省略 `max` 时只处理第一项，所以名额变量虽然是 2，实际只发出一个 3.25，表现为 `7 / 15 / 1`。
+
+提交 `9b3b7fb` 的局部修复先建立仅含非新人的 `zg361_bottom_candidates`，再以 `max = list_size:zg361_bottom_candidates` 完整排序遍历。这样既不会少取，也不会把未过滤 cohort 长度作为 `max` 而触发范围错误。静态回归禁止删除该动态上限。
+
+实机 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0302_current_9b3b7fb_mcp2` 已在 CK3 1.19.0.6、1066 史实赵曙、23 名直属官员中取得离散日志：
+
+- `bootstrap_cohort_n = 23`；
+- `bootstrap_pending_375_n = 7`；
+- `bootstrap_pending_35_n = 14`；
+- `bootstrap_pending_325_n = 2`；
+- `bootstrap_bottom_slots = 2`；
+- `bootstrap_actual_bottom_rows = 2`；
+- 结算前 `bootstrap_first_review_strict_7_14_2` PASS；
+- 结算后 `bootstrap_first_review_result_7_14_2` PASS。
+
+同局的 361/361 机制账本和幂等性也已通过。该 attempt 的整局结果仍为 **RED**，不能作为完整发布签核：首轮 `stream.validate()` 错误地提前要求只会在后半段第二轮出现的真实新人产品 marker；同时校准选项 tooltip 在枚举未入考核池的直属封臣时暴露了 unset-variable 诊断。
+
+## 2. 由该 RED 触发的最小后续修复
+
+- 验收器把 `ZG361: newcomer enters first review with 3.25 protection` 从首轮产品 marker 集移到 `final=True` 的后半段产品 marker 集；最终门槛不删除、不降级。
+- `zg361_can_calibrate_demote_trigger` 对 `zg361_pending_grade` 的读取改放到 `trigger_if + has_variable` 门内。
+- `zg361_is_current_liege_review_record_trigger` 把 reviewer、serial 和上司 serial 的存在性检查放在同一个 `trigger_if.limit` 中，只有全部存在才比较变量；`trigger_else = { always = no }` 保持缺记录者不合格。
+
+原因是 CK3 trigger 的同层 AND 条件不保证短路；把 `has_variable` 和 `var:` 比较平铺书写，仍会在 tooltip 预求值时读取不存在的变量。
+
+第二次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0314_current_0f3e200_mcp` 再次取得 23 人 `7 / 14 / 2`，且项目诊断数为 0，证明上述 tooltip 修复已在实机生效。同局还通过考核榜安全区按钮、原生右侧窗口抑制与关闭、管理/本人页切换、政策驾驶舱、标题栏与背景关闭、真实榜单行跳转、京察强制弹窗、免费规划器和主持选项后的原生即时暂停。该 attempt 仍为 **RED**：后半段个人结果载体尚未到期，runner 先触发了墙钟超时。
+
+## 3. 京察后 D+90 等待的验收器 RED
+
+该 RED 不在产品考核链。夹具在真实 `zg361.40` 京察弹窗出现的同一日固定调度 `zga_acceptance.3 days = 90`；只有该隐藏载体到期后，才会打印 `personal_result_switch_scheduled` 并进入真实“上司考定”产品链。最新日志没有该载体的 PASS 或 FAIL，说明它尚未执行，而不是执行后条件失败。
+
+即时暂停 sidecar 记录起点 ordinal `389359`、到期 ordinal `389449`。失败时保留的 `fatal_state.png` 显示日期 ordinal `389403`（1066-11-10）且无事件 modal、游戏处于暂停：只推进了 44/90 个游戏日，距到期仍有 46 日。旧 runner 只在进入等待时启动一次五速，此后仅在“识别并关闭了事件弹窗”时恢复时间；CK3 因无 modal 的通知设置静默暂停后，它无法自愈，90 秒墙钟最终耗尽。
+
+最小修复保持产品和 D+90 夹具合同不变：等待器现在复用同一局已经连接的原生 MCP，读取 `paused`、`speed` 与 `date_raw`；发现无 active event 的静默暂停时，提交 `set-speed-5` 与 `resume-map`，并要求原生日期真实增长后才继续。恢复前会再次 pump 目标 marker，避免穿过刚到达的“上司考定”。墙钟上限放宽为 240 秒，只作为失控兜底；每局写出 `10_personal_switch_timeline_gate.json`，记录到期日、原生观测和每次恢复原因。
+
+第三次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_034605_current_c4921dc_mcp` 第三次实机证实 23 人严格分布为 `7 / 14 / 2`。同局的 D+90 等待器成功发现并恢复无 modal 的静默暂停，真实跨过到期日，该 MCP 恢复链现为 **live-confirmed**；随后真实“上司考定”弹窗明确显示本人绩效 `3.25`。
+
+该 attempt 仍为 **RED**：点击“认命”后，夹具 policy 001 在次日抢先弹出，占用了原定的本人榜截取步骤。证据表明这是 runner 在关闭个人结果后等待 HUD/暂停太慢与夹具次日调度相撞的 choreography 问题，不是 361 分布或“上司考定”产品缺陷。
+
+第三次 RED 后的针对性修复将个人结果和六张政策卡的关闭切换到原生 MCP 控速/暂停，不改产品逻辑或夹具日期。
+
+第四次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0415_current_e043596_mcp` 第四次实机证实 23 人严格分布为 `7 / 14 / 2`，并已通过 361/361 机制账本、史实角色来源、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察、D+90、拒办处罚、新人保护，以及“上司考定”明示本人 `3.25`。
+
+该 attempt 的 **RED** 仅发生在点击“认命”之前：runner 错误要求同一 modal snapshot 必须同时满足 `speed = 1` 与 `paused = true`。`set-speed-1` 命令 ACK 已为 submitted，`dedicated_server.log` 也记录 `Changing game speed to:0`；但失败等待 loop 的 observations 没有在 RED 前落盘，因而“当时原生帧持续是 `paused = false`”只能作为由终止分支得出的强推断，不能写成已有逐帧 artifact 直接证明。现有证据指向 runner 门禁过严，没有新的产品 RED。
+
+当前最小修复为 **static-ready**：点击前只强制验证 ACK 已提交，且 event identity、`date_raw` 和角色未变，`speed`/`paused` 仅记录不作阻塞；点击后要求 event instance 已变化且仍在同一 `date_raw`，仅在需要时条件提交 `pause-map`，随后要求连续三帧冻结。每一阶段均先写 sidecar 再进入下一步，避免下次 RED 再丢失失败 loop observations。
+
+## 4. 第五次完整 attempt：产品链已到政策卡，标题 OCR 假 RED
+
+第五次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0445_current_859d811_mcp` 第五次实机证实宋帝 23 人严格分布为 `7 / 14 / 2`。同局还通过：361/361 机制账本及幂等性、史实角色来源、AI 非独立天朝公爵考核、考核榜安全区与右窗阻塞、管理/本人页、制度驾驶舱、标题 X 与背景关闭、史实榜单行跳转、京察强制弹窗与免费活动规划、D+90 静默暂停恢复、拒办处罚、新人保护，以及“上司考定”明示本人 `3.25`。点击“认命”后的同日冻结、本人的 3.25 榜单和本人页重复点击也首次实机通过，上一轮的 modal pause blocker 已闭合。
+
+该 attempt 的唯一 runner 终止点在第一张政策卡。卡片已经于 1066-12-28 正常置顶并稳定停留至少 21 秒；`clean_policy_001_dispatched` 恰好一次，`clean_policy_007_dispatched` 仍为零。前置门用规范化标题匹配已经认出“KPI 分项证据单”并保存 `12_policy_001_preemption_target_event_visible.png`，紧接着的重复门却用原始字符串包含匹配等待 `KPI 分项证据单`；RapidOCR 稳定返回不含空格的 `KPI分项证据单`，因此把肉眼可见的产品卡误判为 RED。该次未进入政策卡关闭前的 MCP speed-one gate，所以没有政策卡 active-event instance 的持久化原生 sidecar，不能为它补写推测 ID。
+
+同一实机画面和日志还给出两项必须在下次启动前合批修复的直接证据：
+
+- 测试夹具直接向新切换的史实领主触发 `zg361m.1`，没有复刻产品 dispatcher 的组织账初始化；同时产品 `zg361_refresh_org_climate_effect` 的六个阈值仍裸读变量。事件 option tooltip 会独立预演同级 effect，不提交前一个 choice effect 内的初始化，结果六个 `zg361_org_*` 变量各报错 4,240 次，共 25,440 条。修复既在首张 clean carrier 前初始化，也在产品生成器中以 `trigger_if + has_variable` 保护六个阈值；后者保证任何合法 fresh 入口都不会依赖夹具兜底。
+- 政策标题以 ASCII `#001` 开头，被 CK3 当成本地化格式标记吞掉；中文描述中的 `\n` 又被生成器二次转义为 `\\n`，画面遂显示字面量。生成投影现将中文编号写为“第001号”、其余语言写为 `No.001`，并只保留 CK3 所需的单反斜杠换行 token。
+
+runner 现直接复用已经通过规范化匹配的政策卡截图，不再追加较弱的原始空格 OCR；三个问题均已有定向回归并通过，状态为 **static-ready**。下一步只运行一次新的完整合批实机，不再重复前四轮已闭合的代码审计。
+
+## 5. 第六次完整 attempt：原版单选信件截断 D+90
+
+第六次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0520_current_49777d5_mcp` 第六次实机证实宋帝 23 人严格分布为 `7 / 14 / 2`，并再次通过此前的产品、361/361 账本、史实角色、AI 公爵考核、考核榜 GUI、京察与新人保护门。该局 `project_diagnostics = []`，证明上一轮六个组织账 unset-variable tooltip 错误已经归零。
+
+该 attempt 的 **RED** 仍是 runner 阻塞，不是产品或 D+90 夹具失败。`10_personal_switch_timeline_gate.json` 记录京察后起点 `date_raw = 53144616`、到期 ordinal `389449`；原生 `set-speed-5` 与 `resume-map` 均提交成功，但日期只推进到 `53144688`，即 1066-09-30、共 3 天，便停在 `active_event_instance_id = 5`。`fatal_state.png` 明确显示原版单选信件 `court_events.1011`《我曾经的主人，》与唯一选项“叛徒！”，而 marker 始终为 0；因此载体还差 87 天，根本尚未执行，没有任何 `ZGA: TEST FAIL` 可归因于产品。
+
+根因是 runner 丢弃了 MCP 已经发布的 `active_event.option_count`，只保留 instance ID，然后仍依赖 classic character-event OCR 标题区域。该信件标题中心约为 `x = 0.4824, y = 0.3486`，落在旧标题区域之外；同一截图离线重放得到 `promo_event_modal_evidence = false`，但安全选项分类其实已经得到 `center_event_option`。MCP 又正确拒绝在 active event 非空时盲目恢复时间，于是形成 240 秒死锁。
+
+针对性修复现为 **static-ready**：personal-switch sidecar 保留 `option_count`；只有 MCP 证明事件恰好一个选项、视觉分类又排除继承屏并找到强选项几何时，才在同一 event instance、同一日期和 fresh revision 上依次提交 `pause-map` 与 typed `select_event_option(1)`，并要求旧 instance 变化、日期不变且仍暂停。多选事件不走原生盲选；目标 marker 在操作前后继续 pump，“上司考定”标题也继续受保护。定向回归已覆盖本次 centered letter 布局、`paused = false → pause → native option 1 → instance change`，下一步只做一次完整合批实机。
+
+## 6. 第七次完整 attempt：史实赵曙自然死亡
+
+第七次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0556_current_f8955f3_mcp` 第七次实机证实宋帝 23 人首轮分布在结算前后均为 `7 / 14 / 2`：日志为 `bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_actual_bottom_rows = 2`，且 `bootstrap_first_review_strict_7_14_2` 与 `bootstrap_first_review_result_7_14_2` 均 PASS。361/361 机制账本、幂等性、史实 cohort、AI 非独立天朝公爵考核、考核榜 GUI、京察及免费规划器也再次通过。
+
+该 attempt 在 D+90 中止于真实继承屏，而不是 361 产品 RED。保留截图 `cell/10_personal_switch_wait_04_interruption_blocked_succession.png` 和 OCR sidecar 证明：赵曙于 1066-11-16、34 岁时死于心脏衰竭，界面要求继续扮演继承人赵项；runner 按宣传片“连续使用真实指定角色”的合同拒绝自动改演继承人。原版精确构建历史把 `han_8052` 设为 `health = 2`，同时赋予 `depressed_1`、`physique_bad_2`、`possessed_genetic` 三个各 `health = -0.5` 的特质，起局有效健康约为 `0.5`；原版 `DIE_HEALTH_TRESHOLD = 3.0`，因此在约百日的片场时间线上死亡不是可忽略的小概率噪声。
+
+针对性修复只进入外部隔离夹具，状态为 **static-ready**：初始化真实赵曙时添加 `health = 10`、持续 120 天的本地化“御医监护（隔离验收）”角色修正；在切换至史实受考官员之前的同一 effect 帧显式移除，并分别要求 `recording_health_guard_applied` 与 `recording_health_guard_removed_before_switch` PASS。120 天到期提供异常路径兜底；正式产品树和 release staging 均不包含该文件，史实角色、姓名、头衔与 cohort 不变，也没有使用永生特质或继承人续演来伪造宣传素材。定向夹具合同、runner 合同、Python 编译和启动 wiring 回归均已 GREEN；下一步只跑一次完整合批实机。
+
+## 7. 第八次完整 attempt：健康夹具闭合，政策事件同窗换定义误判
+
+第八次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0625_current_586650c_mcp` 第八次实机取得宋帝 23 人 `7 / 14 / 2`，结算前后两道严格 marker 均 PASS，项目诊断仍为 0。新健康夹具首次实机闭合：初始化时 `recording_health_guard_applied` PASS，D+90 到期并成功触发 `personal_result_switch_scheduled`，切换史实受考公爵前 `recording_health_guard_removed_before_switch` PASS；随后真实“上司考定”明确显示本人 `3.25`、KPI 与位次，本人所属考核榜也实机打开。说明第七局的赵曙自然死亡 blocker 已解除，且保护没有跟随玩家进入受考角色。
+
+该 attempt 继续通过考核榜按钮及阻塞矩阵、京察强制弹窗、免费活动规划器、拒办处罚和新人保护，并首次把修正后的政策卡第001号《KPI 分项证据单》完整显示、录制并提交其真实选项。整局仍为 **harness RED**：提交 #001 后，产品立即把同一事件窗口替换为 `zg361.6`《你被列入末位淘汰名单》。`12_policy_001_close_immediate_pause_gate.json` 证明点击前后日期始终为 `53146848`；containment `pause-map` ACK 后最后三帧均为 `paused = true`、同日、角色稳定，时钟事实上已安全冻结。但 CK3 对前后两个不同定义都发布 `active_event_instance_id = 7`、`option_count = 4`，旧门仅以 instance ID 改变判定转场，因而制造 false negative。`fatal_state.png` 肉眼及 OCR 均证明顶层定义已经换成末位淘汰事件；这份视觉证据只用于诊断，不作为新放行条件。
+
+针对性修复现为 **static-ready**：保留原 instance-ID 快路径；同 ID 时只在同日冻结后调用现成 `current_event_window_context_v1` MCP，并要求 canonical `event_definition_key` 从调用方声明的前序键（政策卡为 `zg361m.N`，个人告身为 `zg361.4`）发生变化。query unavailable、定义未变、日期漂移或角色变化仍 RED；通用 revision、option_count、OCR 和“已经暂停”都不能代替身份。下一张政策卡前的有界 interruption 处理会对真实 `zg361.6` 明确选择“掀桌起兵”：它保留史实角色和头衔，但会真实建立独立派系；随机申诉、夺爵与致仕不用于连续片场。定向回归已覆盖同 ID 的 `zg361m.1 → zg361.6` GREEN、同 ID 同定义 RED、原 ID 变化路径和日期漂移 RED；下一步仍只跑一局完整合批实机。
+
+## 8. 第九次完整 attempt：#020 已切到 #022，共用选项文字制造假 RED
+
+第九次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0651_current_cdda2f5_mcp` 第九次实机取得宋帝 23 人严格 `7 / 14 / 2`：`bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_bottom_slots = 2`、`bootstrap_actual_bottom_rows = 2`，结算前后两道严格 marker 均 PASS。361/361 机制账本与幂等性、AI 非独立天朝公爵考核、考核榜按钮和完整 GUI 阻塞矩阵、制度驾驶舱、京察强制弹窗与免费规划器、D+90、拒办处罚、新人保护、史实上司告身中的本人 `3.25` 以及本人所属考核榜也都再次通过；`project_diagnostics = []`。政策卡 #001、#007 已完成可见捕获和真实选项提交，#020 也已真实显示。
+
+本局最终仍为 **harness RED**，但产品转场已经成功。`12_policy_020_preemption_interruption_01.png` 显示 1066-12-31 的第020号《晋升包与跨部门答辩》；RapidOCR 把标题中的“晋”误读为“普”，旧的 OCR stop gate 因而没有认出预期目标，并误把 #020 当成普通中断点击 C“这季度先不碰，登记制度债”。`final_debug.log` 随即记录 `ZG361M: CASE 020 CHOICE C APPLIED` 与唯一一次 `clean_policy_022_dispatched`；`timeout_12_policy_020_preemption_interruption_01.png` 和 `fatal_state.png` 已在 1067-01-01 明确显示第022号《软 HC / 编制预算》。所以 #020 并未卡住，产品也没有漏派发 #022。
+
+旧关闭门只比较被点选项的 OCR 文本和屏幕坐标。全部政策卡的 C 选项本来就共用“这季度先不碰，登记制度债”，#020 与 #022 又使用同一按钮位置，因此后继卡仍命中该启发式，8 秒后被误报为“选项未消失”。这段失败 artifact 没有保存点击前后的 event-window MCP snapshot；decision sidecar 中的 `native_active_event_instance_id = null` 只表示该调用没有接入 native service，不能据此声称原生桥当时观测到了空事件，也不能事后推断 instance 是否复用。
+
+针对性修复现为 **static-ready**：政策 preemption 调用会把预期 canonical key `zg361m.N` 与原生 service 一并传入；runner 用当前 snapshot 的 active instance 和 public revision 调用 `current_event_window_context_v1`。只有顶层可见 modal 的 canonical key 等于目标 key 才保存目标帧并停止清理，MCP unavailable、identity readiness 不足或视觉标题与 canonical 身份冲突均 fail-closed。真正需要清理的中断会先原生降至一速，再以同日 instance/definition 转场和连续冻结为权威后置门；重复选项文字只保留为诊断，不再决定成功。定向回归覆盖本局真实 OCR“第020号普升包与跨部门答辩”、目标零点击、MCP unavailable RED、同 ID `zg361m.20 → zg361m.22`、同文同位后继和 revision 绑定；Python 编译、宣传 runner 合同测试、`git diff --check` 与 exact-build promo preflight 均 GREEN。下一步只运行一次新的完整合批实机，不重复审计此前已闭合链路。
+
+## 9. 第十次完整 attempt：政策身份查询早于原生暂停
+
+第十次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0723_current_385e557_mcp` 第十次实机取得宋帝 23 人严格 `7 / 14 / 2`，结算前后的离散人数、末位名额和实际末位行全部一致。该局再次通过 361/361 机制账本与幂等性、AI 非独立天朝公爵考核、考核榜按钮和 GUI 阻塞矩阵、制度驾驶舱、京察强制弹窗与免费规划器、D+90、拒办处罚、新人保护、史实上司告身中的本人 `3.25` 及本人所属考核榜；`project_diagnostics = []`。因此产品当前没有新增 RED。
+
+本局在政策卡 #001 已经肉眼可见时结束为 **harness RED**。`cell/12_policy_001_preemption_event_definition_identity_unavailable_gate.json` 记录 `BridgeUnavailableError: event-window queries require a paused CK3 snapshot`。根因是 classic event modal 会阻止地图时间继续走，但公开 native snapshot 的普通 `paused` 字段仍可为 `false`；旧 runner 在取得真正 `paused=true` 的 snapshot 前便调用 paused-only 的 `current_event_window_context_v1`。桥按合同拒绝查询是正确行为，不是事件身份能力缺失，也不是政策卡产品失败。
+
+针对性修复现为 **static-ready**：可见事件需要 canonical 身份时，runner 先绑定 active event instance、`date_raw`、played character 和起始 public revision；若尚未普通暂停，以该 revision 提交原生 `pause-map`，逐帧要求事件、日期和角色不变，取得 `paused=true` 的新 public revision 后才查询 `event_definition_key`。目标卡仍然零点击；暂停 ACK 拒绝、等待超时、上下文漂移或 identity unavailable 均 fail-closed，并先写 `*_prequery_pause_gate.json`。定向回归覆盖运行中 modal 的 `revision 40 → pause-map → paused revision 41 → identity query`、already-paused 快路径、暂停时日期漂移、MCP unavailable、真实 #020 OCR 漂移及同文同位后继；Python 编译、宣传 runner 合同测试、`git diff --check` 和精确构建 preflight 均 GREEN。下一步直接运行第十一次完整合批实机，不再重审此前已闭合链路。
+
+## 10. 第十一次完整 attempt：当前工作树的 Python/DLL 合同错位
+
+第十一次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0744_current_c69eddd_mcp` 再次在结算前后取得宋帝 23 人严格 `7 / 14 / 2`，并通过政策卡之前的产品主链、361/361 机制账本与幂等性、完整 GUI 阻塞矩阵、京察强制弹窗与免费规划器、拒办处罚、新人保护、D+90 以及史实上司明示本人 `3.25`。因此本局没有新增产品 RED。
+
+本局在政策卡 #001 的身份查询处结束为 **harness RED**。新加的查询前暂停门已经实机通过：public revision 从 `48` 前进到 `49`，`paused = true`，active event、`date_raw` 和 played character 均未漂移；随后 `current_event_window_context_v1` 却以 `event readiness fields are invalid` 拒绝结果。根因是当前脏工作树中的 Python 消费端已经读入尚在并行开发的 `root_scope_ready` / `saved_scopes_ready` 扩展字段，而本轮冻结的 exact-build DLL `20260830-004128-5798bfcf1f23-release2` 仍发布此前五字段 readiness 合同。也就是说，查询前原生暂停修复已经 **live-confirmed**，终止点是运行时 Python 与 DLL 的合同代际错位，不是政策事件、361 分布或 MCP 暂停能力失败。
+
+后续验收改从 detached clean worktree 运行与冻结 DLL 同一提交的 runner；不修改、不回退另一路正在开发的 scope 合同，也不放宽事件身份门。
+
+## 11. 第十二次完整 attempt：D+2 同日事件堆叠
+
+第十二次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0757_clean_c69eddd_mcp` 从与冻结 DLL 对齐的 clean worktree 启动，身份查询已经正常返回 canonical 定义。该局再次通过政策卡之前的全部产品、361/361、GUI、京察、D+90 和本人 `3.25` 门，并第十二次实机复现结算前后严格 `7 / 14 / 2`。
+
+本局仍为 **harness RED**，但这次原生证据揭示了确定性的夹具编排碰撞：画面顶层和 OCR 都是第001号《KPI 分项证据单》，`current_event_window_context_v1` 对 `active_event_instance_id = 7` 返回的 canonical key 却是 `zg361.6`；右下角暂停原因也对应真实的“你被列入末位淘汰名单”事件。产品在个人得到 `3.25` 后以 `days = 2` 调度 `zg361.6`，旧夹具又以同一个 `days = 2` 调度政策 #001 carrier，CK3 因而在同一天堆叠两个事件窗口：视觉顶层与 native active definition 指向不同层。MCP 没有误读，严格 identity mismatch 判 RED 是正确结果。
+
+最小修复不改变产品时间线，也绝不把 OCR 当身份或放宽 canonical-key 门：政策 #001 carrier 延后到 D+3；等待 dispatch marker 时先读取原生 active event，若 D+2 的 `zg361.6` 抢先停表，就沿现有 typed MCP 路径选择已经批准的“掀桌起兵”，确认真实事件转场并恢复五速，再等待 D+3 的干净政策卡。该编排修复为当前候选，尚须下一次完整实机 GREEN 才能签核其余政策卡与宣传素材。
+
+## 12. 第十三次完整 attempt：D+2 清场已过，第007号被 tooltip 截断 OCR
+
+第十三次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0829_clean_9c1e507_mcp` 再次在结算前后取得宋帝 23 人严格 `7 / 14 / 2`：`bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_bottom_slots = 2`、`bootstrap_actual_bottom_rows = 2`，`bootstrap_first_review_strict_7_14_2` 与结算后的 `bootstrap_first_review_result_7_14_2` 均 PASS。361/361 账本、完整 GUI 阻塞矩阵、京察、免费规划器、D+90、史实上司 `3.25` 告身和本人榜也继续通过。
+
+第十二次暴露的 D+2 堆叠修复已经 **live-confirmed**：runner 用 typed MCP 清理真实产品事件 `zg361.6` 后才恢复时间，第001号政策卡随后以 canonical `zg361m.1` 干净置顶；其真实 A 选项提交、同日定义转场、暂停冻结和“下一张尚未抢跑”门全部 GREEN。第007号也已经以 canonical `zg361m.7` 置顶并保存实机截图；`12_policy_007_preemption_target_event_identity_gate.json` 同时发布三条真实 option row，其中目标 A 选项 `resolved_name` 完整、`shown = true`、`enabled = true`、`native_option_index = 0`。
+
+整局仍为 **harness RED**。上一张卡的鼠标停在首选项按钮上，第007号出现时同位置立即弹出 tooltip，正好遮住目标文字开头“只邀请”；同一超时帧离线 OCR 只能读到后半句“有真实协作的少数评价者……”，所以旧的整句 OCR 点击门等待 15 秒后终止。该 RED 不表示选项缺失或产品事件错误；canonical MCP frame 已直接反证这两种解释。
+
+针对性修复现为 **static-ready**，且无需修改 DLL：每张卡录制前先把鼠标停到事件叙事区并等待 tooltip 消失；关闭卡片时不再用 OCR 定位或鼠标点击，而是从同一暂停帧的 `current_event_window_context_v1.options` 中按规范化 `resolved_name` 唯一匹配配置项，要求 `shown/enabled`，取 `native_option_index + 1` 后以 event instance 与 public revision 绑定调用 `select_event_option`。随后仍沿用同日 canonical definition/instance 转场与连续暂停门。定向回归已证明第007号提交 option 1、disabled/缺失项在提交前 RED，且政策 capture 路径不再调用选项 OCR 或视觉点击；Python 编译、宣传 runner 合同、clean fixture、工坊媒体门、ZhongGuo 静态检查与 release builder 测试均 GREEN。下一步只跑第十四次完整合批实机，不重复审计已通过链路。
+
+## 13. 第十四次完整 attempt：真实末位事件按钮被 OCR 拆段
+
+第十四次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0853_clean_f3c1ae8_mcp` 第十四次实机复现宋帝 23 人严格 `7 / 14 / 2`，并再次通过 361/361 账本、校准与结算、完整 GUI 阻塞矩阵、京察与免费规划器、D+90、拒办理由、史实上司明示 `3.25` 和本人榜。本轮最终仍为 **harness RED**，没有新增产品 RED。
+
+终止点早于第001号卡：D+2 的真实产品事件 `zg361.6`《你被列入末位淘汰名单》已经置顶，canonical MCP 身份、四个 option count 和查询前暂停门均正常；截图清楚显示批准的连续片场选项“掀桌起兵！（建立独立派系，对抗主君）”。RapidOCR 却把按钮正文“掀桌起兵！”和括号说明拆成两个独立 row；已知事件映射能找到前半句，但通用 `quick_recovery_kind` 不肯把这个半句独立分类为安全动作，runner 因而在零点击状态下按 unknown modal RED。第十三次曾通过同一处，只说明 OCR 当时恰好合并了文本，不能把这种分词随机性当合同。
+
+最小修复继续收缩 OCR 权力：已知产品事件仍先由 canonical `event_definition_key` 绑定；“野狗与小白兔”及 `zg361.6` 的明确片场选项随后也复用通用 typed selector，从 `current_event_window_context_v1.options` 按完整 `resolved_name` 唯一匹配 `shown/enabled` 行，并以 `native_option_index + 1`、event instance、public revision 提交。视觉分词仅进入截图/诊断 sidecar，不能否决动作；未知多选事件依旧 fail-closed。定向回归专门模拟“掀桌起兵！”与括号说明拆成两行、强制通用 kind 为 `None`，证明最终提交 option 4、全程零视觉点击、同日转场与暂停门 GREEN；Python 编译、宣传 runner 合同、ZhongGuo 静态检查、release builder 与 diff 门均 GREEN。下一步只运行第十五次完整合批实机。
+
+## 14. 第十五次完整 attempt：降速 ACK 与查询帧之间的异步边界
+
+第十五次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0910_clean_cb48343_mcp` 第十五次实机复现宋帝 23 人严格 `7 / 14 / 2`，并继续通过 361/361、结算、GUI 阻塞矩阵、京察、免费规划器、D+90、拒办理由、史实 `3.25` 告身与本人榜。终止点仍是 **harness RED**，位于 typed option 4 实际提交前。
+
+本轮已经把 `zg361.6` 以 canonical MCP 识别并冻结在同日、同角色、同 event instance：查询前暂停从 public revision `50` 到 `51` 后 GREEN。随后 `set-speed-1` 返回 `accepted/submitted`，但紧接着读取到的第一份 snapshot 仍是 revision `51`、`speed = 5`；runner 立即用这个旧帧再次查询 event-window，native mailbox 正确以 `event-window context snapshot changed or is not ready` 拒绝，因为降速命令正处在 ACK 与新快照发布之间。该错误不涉及产品状态或 option 语义，而是 harness 错把命令 ACK 当成同步可查询屏障。
+
+针对性修复现为 **static-ready**：只有随后必须发起 typed 查询/选择的路径，`arm_native_speed_one` 才要求在 1.5 秒有界窗口内观察到新的 public revision，同时持续反证 event instance、`date_raw`、played character 不变且仍为普通 `paused = true`；取得该新帧后才查询 canonical options。视觉点击路径保留原有 ACK 绑定，不被不必要地扩门。定向回归模拟两次仍返回旧 revision、第三次才发布新 revision/speed 的异步序列，证明 selector 必须等到新暂停帧；超时或任何上下文漂移仍在零选择状态下 RED。Python 编译、宣传 runner 合同、ZhongGuo 静态检查、release builder 和 diff 门均 GREEN。下一步只运行第十六次完整合批实机。
+
+## 15. 第十六次完整 attempt：全链 GREEN
+
+第十六次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp` 在 CK3 1.19.0.6 中完成，顶层 `report.json` 与 cell 结果均为 **GREEN**。宋帝赵曙的 23 人首轮考核在结算前后继续严格得到 `7 / 14 / 2`，`bootstrap_first_review_strict_7_14_2` 与 `bootstrap_first_review_result_7_14_2` 均 PASS；这是该修复的第十六次实机复现。361/361 批量账本本局实测 `fixture_cases_passed = 361`，portfolio 账本和幂等性均通过，项目诊断数为 0。
+
+同一局完整通过考核榜按钮安全区、原生右侧窗口抑制与关闭、管理榜/本人榜、制度驾驶舱、标题栏和背景关闭、真实榜单行跳转等 GUI 链；京察强制弹窗、免费活动规划、拒办上司好感与下轮 KPI 处罚、D+90 切换也全部通过。史实受考官员陈贯（`han_6071`）的“上司考定”明确渲染本人绩效 `3.25`、第 23/23 名及四重清算，本人所属考核榜随后正常打开。
+
+六张代表政策卡第001、007、020、022、026、361号均各派发恰好一次，并完成 canonical 事件身份确认、真实选项解析与 typed MCP 提交、同日转场、暂停冻结和 clean span 首尾门；`clean_policy_chain_completed` 恰好一次，六项选择持久化核验通过。全部 clean capture spans 完整，未出现测试决议或原生决议抽屉侵入最终干净画面。
+
+同一 PID 内的正式 title-map MCP 矩阵也为 GREEN：按
+`c_guangzhou -> c_bianzhou -> c_guangzhou -> b_kaifeng -> b_kaifeng -> unknown ->
+b_kaifeng -> final c_bianzhou` 执行，覆盖县/男爵领定位、重复 `already_centered`、
+`title_key_not_found` typed RED 后相机不变及最终汴州镜头。7 次成功调用均回读完整 paused/session
+binding、bit-exact current/target、`settled=true` 与 `target_write_blocked=false`；该矩阵内 OCR、
+屏幕/像素判断、窗口激活、键盘、鼠标和剪贴板调用计数全为 0。cell report SHA-256 为
+`7D240300754BE5F1FAE8D1B131B3443F95CF20532F09AA17FA2B62DBC1B20665`，因此此前的头衔查找/
+宣传镜头 MCP blocker 已闭合为 `fixture-live`，但不外推为通用 gameplay OODA。
+
+本局使用隔离 userdir；产品树、夹具树与源树前后哈希一致，`protected_storage_unchanged = true`，CK3 进程树受控回收。artifact、隔离 userdir/native state、日志、截图、OCR、sidecar、原始录屏及前十五次 RED 过程素材均继续保留，未删除。
+
+当前 readiness 因而由“等待完整 GREEN”提升为 **live GREEN**：现有版本的 361 分布、361/361 机制账本、考核榜 GUI、京察、本人 `3.25` 告身和六政策卡全链已有同局完整实机证据。该结论不等于发布工作完成；工坊 01/02/03 替换图、正式宣传视频及最终发布/上传仍待基于本次 GREEN 素材制作和验收。
+
+## 16. 旧工坊 01/02/03 素材判定
+
+现有 `workshop/media/01_calibration_meeting.jpg`、`workshop/media/02_review_cohort_frozen.jpg` 与 `workshop/media/03_scoreboard.jpg` 来自后来被确认具有“首次建账把全员视为新人”缺陷的同一历史批次：前两张直接展示 23 人 `7 / 16 / 0`，第三张也冻结了同一错误名单，只是裁切范围没有完整显示表头。即使其中名单、排名、字段或界面布局仍可作为历史 GUI 证据，这三张图的核心 361 语义已经错误，发布判定必须是 **RED**，不得继续作为当前版本的工坊宣传素材。
+
+三张旧图及其原始过程证据继续保留用于复盘，不删除、不覆盖来源事实；正式发布前必须由同一次最终完整 **GREEN** 批次中明确显示 `7 / 14 / 2` 的真实 CK3 截图替换，并同步刷新来源路径、SHA-256、媒体锁和引用。任何仅有局部产品 PASS、最终仍为 harness RED 的 attempt 都不能作为这三格的正式替代来源。
+
+## 17. 环境与证据边界
+
+- 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+- CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
+- attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
+- `7 / 14 / 2` 已十六次实机复现；第十六次 attempt 的顶层和 cell 均为 GREEN，项目诊断为 0。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、D+2 产品事件 typed MCP 清理及六张代表政策卡完整提交均已在同局达到 **live GREEN**。工坊 01/02/03 替换图、正式宣传视频与发布/上传仍待制作和验收，不因实机功能 GREEN 自动视为完成。
+
+## 18. 最终 GREEN 素材投影与上传前静态矩阵
+
+第十六次完整 GREEN 的八张 Workshop JPEG 已全部重投影并提交：01/02 直接显示宋帝 23 人严格 `7 / 14 / 2`，03 冻结同一正确名单，04–06 覆盖京察、免费规划器与史实上司 `3.25`，07/08 为同局第001/361号真实政策卡。八图与 `media-policy-lock.json` 位于 image-bearing commit `aff24a7dbe2e53e749a85983cce8f63ac518f08c`；随后提交的 README 与 7,917-byte BBCode 均以 40 字符 URL 固定引用该图片提交。原错误素材和全部 RED 录屏继续保留。
+
+提交 `1e55a2e` 的 clean worktree 上传前静态矩阵已经完整 GREEN：发布本地化、thumbnail 可复现、八张 tracked media、宣传脚本/manifest/视觉审计工具、BBCode、361 acceptance cases、Workshop acceptance、release builder、fresh-cache verifier 与 deterministic `--check` 均通过。正式树为 51 个文件；manifest SHA-256 为 `9FA1C48842007038CFE1CC666D154D93550F18C967E3504E7CC94D431358D9FF`，ZIP SHA-256 为 `7ECF185749A6DEB10C7B260EEC70040299EDBD0BE96F49D5418000221BC32BA2`。日志保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\pretag-static-1e55a2e`，先前因德/日六条文案失败的 `pretag-static-318255f` 仍原样保留。
+
+最终宣传 release manifest 已绑定同一 GREEN 原片、史实赵曙 `han_8052` 与陈贯 `han_6071`，共 20 章，其中 14 个实机视频章、4 个生成证据边界卡和 2 个生成片头/片尾，0 placeholder，估算时长 437.039 秒。机器视觉证据覆盖 108 张全屏帧与 5,014 个 OCR item，22 个测试 UI 禁词零命中。供真人审阅的 14 段无裁切 H.264 片段及索引保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\review-bundle-20260830-100410`。
+
+上述 PENDING 状态随后已由真人审阅闭合：审阅人 `XenoAmess` 以 1× 完整播放 97.033333 秒单文件审阅卷，对 14 个入片实机章节的五项 attestation 全部确认。原始 PENDING spec 保留不变，另存的 `promo-visual-audit-spec.SIGNED.json` SHA-256 为 `22EB7E10DA8A2ACB18BB58F3CDB2CF75E02BC990164F45D1B6047A9B8D243C5D`。以该签核生成的视觉审计报告在 14 章、108 帧上为 **GREEN**，报告 SHA-256 为 `B27F0EA426A78DB25B21DE56AD092AA08A23F419275EB5F3E4BAFFC3EE9779B6`；按该报告 SHA 执行 verify 也再现 GREEN。
+
+## 19. 最终宣传成片与二次人工门
+
+首份完整合成候选 retry03 的 MP4 SHA-256 为 `9255BD7DE0D002E9C683B9CE6B5F222CFB2F34B8239D4341E364B1E58F8B46E0`。它通过了当时的技术媒体校验，但合成后视觉复核发现 450 px 定宽证据角标裁切文字，因而正式判定为 **visual RED**，不得因“编解码、时长与字幕技术门 GREEN”而充当发布成片。提交 `1230ad9` 将角标改为按实际文本测量的动态宽度，并为仅视觉变化提升缓存版本；宣传片定向测试 `27/27` GREEN。retry03 及其工作目录继续保留作为失败证据。
+
+修复后的 retry04 为最终宣传候选：
+
+- MP4：`Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp\release\video-20260830-104354-retry04\zg361-promo-release.mp4`；
+- 大小 `97,128,353` bytes，时长 `449.286068` 秒，2560×1440、30 fps、H.264/AAC；
+- MP4 SHA-256：`A2647D2B88B1E243E9CD46A3EF6B7F0B6DF94A76FC22B048A847A0E31249B763`；
+- sidecar `zg361-promo-release.video.json` SHA-256：`6084E1BDC362A72FAE1844202BF0C134E8EB2BF70DA89BE078D29E652C0550BC`；
+- 自动媒体校验与五张均匀 QA 抽帧为 **GREEN**。抽帧只是辅助证据，没有代替完整人工播放。
+
+审阅人 `XenoAmess` 随后以 1× 从头到尾完整播放 449.286 秒最终 MP4，并确认：中英字幕可读、同步且无裁切；章节标题与证据角标可读且无裁切；旁白剪接、节奏与笑点可接受；没有 loading、test-only UI、fixture 标签或生成测试人名；史实角色、核心玩法与证据边界诚实。签核记录 `FINAL_PLAYBACK_REVIEW.SIGNED.json` SHA-256 为 `57E96541B8B74960F4CBA6E487CA4F0B4AF1845BE67FC497A8BA0C38FAFF8A43`。
+
+因此宣传媒体门现为 **GREEN**。这一结论仅闭合宣传片本身；在该时间点，annotated release tag、最终 formal build、Steam 首次上传、fresh Workshop cache 核验与 production smoke 尚未宣称完成，后续完成情况按下列章节继续记录。
+
+## 20. 首次隐藏 Steam 上传与 fresh-cache production smoke
+
+`zhongguo-361-v0.3.0` 对应的首次 Steam Workshop 上传已在隐藏状态完成，新的 Workshop item ID 为 `3792585972`。Launcher 日志记录 `2026-08-30T05:43:08.150Z` 开始发布、`2026-08-30T05:43:25.745Z` 发布成功；Steam `workshop_log.txt` 记录 13:43:08 创建 item 成功、13:43:19 上传内容 ManifestID `2542810955685536611`、13:43:25 完成上传。发布成功截图、Launcher 日志、Steam 日志及上传前后内外 descriptor 均保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\steam-upload-3932532`。该步骤只证明隐藏 item 和首份内容上传成功，不等于已经公开发布。
+
+随后通过 Steam 下载同一 item；`workshop_log.txt` 记录 13:52:02 `Download item 3792585972 result : OK`。缓存叶 `Z:\SteamLibrary\steamapps\workshop\content\1158310\3792585972` 的独立核验报告 `verify-workshop-cache.json` 为 **GREEN**：51 个文件、0 error，manifest 绑定 Git `393253276481916f026c4c28e9bbab6da2877275`、tag `zhongguo-361-v0.3.0`、版本 `0.3.0` 和 item `3792585972`。缓存内 `descriptor.mod` 只比 canonical descriptor 多 Launcher 合法注入的 `remote_file_id="3792585972"`，被明确记录为 `launcher-injected`；其余内容逐项匹配。核验报告 SHA-256 为 `CD5097837D66988968975B343F4E245FFB7783A85549DBB1AE9AA9DB6FDEDC8B`。
+
+正式 smoke 前保留了两次 **harness RED**，两次都没有启动 CK3，也没有给产品增加 RED：
+
+1. `acceptance-01` 从 detached clean worktree 发起，但该 worktree 不含被 Git 忽略的 `Crusader Kings III` 本体引用目录，因而在 preflight 失败；失败早于 artifact/report 建立和 CK3 launch。
+2. `acceptance-02` 改从主工作树发起，fresh cache 本身已经通过上面的逐文件核验，但旧 bootstrap 把缓存中带 Launcher 合法 ID 的内层 descriptor 原样投影进隔离 userdir，随后又按开发树规则拒绝任何内层 `remote_file_id`，所以仍在 CK3 launch 前终止。保留下来的 `acceptance-02/cell` 为空，未生成可冒充实机结果的 `report.json`。最小 harness 修复只依据已核验 manifest 的 size/SHA 恢复 canonical 无 ID descriptor，并且只写入隔离 runtime projection；真实 Steam cache 保持逐字节不变，漂移 descriptor 仍 fail-closed。
+
+修复后的 `acceptance-03` 直接以该 Steam fresh cache 为 `verified_workshop_cache` 运行；顶层 `report.json` 与 cell 均为 **GREEN**，耗时 `503.022` 秒。报告明确记录：
+
+- CK3 `1.19.0.6`，EXE 前后 SHA-256 均为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；隔离 userdir、非 debug、suspended/inject/resume 原生启动链；
+- runtime source 精确为 `Z:\SteamLibrary\steamapps\workshop\content\1158310\3792585972`，item ID、manifest SHA `BD6DE37D590BB573D8B3E95833EA0F6D0BF32D5A3939BE1C9E97705A173EA54E`、Git SHA、tag 与 51 个已核验文件均写入报告；
+- 宋帝 23 人首轮严格分布为 `7 / 14 / 2`，管理榜行 marker 同样为 23 行、`7 × 3.75 + 14 × 3.5 + 2 × 3.25`，其中另记录 3 名 AI 非独立天朝公爵行；
+- 361/361 批量机制夹具 `fixture_cases_passed = 361`，产品 choice effect 实际应用 601 次，portfolio 账本与幂等性均通过，项目诊断数为 0；
+- 考核榜按钮安全区、原生右侧窗口抑制与关闭、管理榜打开，以及共享生成行结构的一次代表性真实人物跳转均通过；没有把 160 行都宣称为逐行点击；
+- 京察真实 mandate、强制定期弹窗、免费活动规划器、同日原生 MCP 暂停门均通过；拒办导致上司好感 modifier 与下轮 KPI `-50`，且由原上司恰好消费一次；
+- 史实受考官员的“上司考定”明确渲染 `3.25`、第 23/23 名及对应处罚；原图、字段裁切与 OCR sidecar 均已入 evidence index；
+- 同一 PID 内 `ck3_center_map_on_landed_title_v1` 矩阵为 **GREEN**，共 7 次 typed 成功调用，并保留一次 unknown title 的 typed RED；成功路径没有 OCR、屏幕/像素判断、窗口激活、键盘、鼠标或剪贴板 fallback；
+- 产品 runtime tree、fresh-cache source tree 与源树前后不变，`protected_storage_unchanged = true`，CK3 进程树受控回收。
+
+本轮报告位于 `Z:\ck3_mod_rewrite_process_assets\zg361\release\fresh-cache-3792585972\acceptance-03\report.json`，SHA-256 为 `4FE660637964EF908EF5D0DB4F0F63D412AE319D12502C4EC61737419006F418`；`evidence-index.json` SHA-256 为 `64EA0E135CB2AA9D3BA351DB6C4B862ECCE6C23CA05A486966D83946F6F0FCC6`。因此，首次 Steam 内容上传、服务端回下载、fresh-cache 一致性核验和该缓存上的 production smoke 已闭合为 **GREEN**。本节记录的是先隐藏上传、再验收缓存的阶段；随后完成的公开终验记录如下，公开可见性现已不再是 pending。
+
+## 21. Workshop 公开页终验
+
+在 fresh-cache production smoke GREEN 后，Workshop 可见性菜单已由“隐藏”切换为“公开”。该操作没有出现二次确认、协议、Steam Guard 或 CAPTCHA，也没有接受任何新增法律协议。`2026-08-30T14:50:21.0829291+08:00` 的匿名远端终验为 **GREEN**：Steam API 返回 `result = 1`、`visibility = 0`，标题逐字等于“天朝特色361制官员绩效考核”，`hcontent_file = 2542810955685536611`，发布文件大小为 `6,931,940` bytes；匿名公开 HTML 返回 HTTP 200，并包含 8 个 `highlight_strip_item`。这组证据把状态从“隐藏 item 已上传”提升为“公开页可匿名访问且内容版本正确”。
+
+可见性菜单与公开后的页面截图分别为 `workshop-page/40-visibility-menu.png`（SHA-256 `D1FE9CB3A129AAC9ED044CF0EF285E74C6639B49E6E4435AFE4571142356D34A`）和 `workshop-page/41-after-public-click.png`（SHA-256 `6285C666C47539C1E92B09C4365103855656DA555BEC1BB7D83442E69037B4A0`）；两者均保存在同一不可变上传证据目录中。
+
+描述也做了远端逐字终验。API 返回描述为 `7,918` UTF-8 bytes、使用 CRLF；本地权威 BBCode 为 `7,804` UTF-8 bytes、使用 LF。仅规范化换行后两者逐字相等，未把换行编码差异误报为内容漂移。上传时使用过的临时输入 probe 在 API 描述与公开 HTML 中均不存在。
+
+公开终验证据保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\steam-upload-3932532\remote-public-verify`：`published-file-details.json`、`public-page.html` 与 `verify-publication.json` 均原样保留；后者 SHA-256 为 `195DE867F93AD84D14FF669CE69B908064AEC54200D8E30E0A25A2DE9E5A6DA9`。因此 item `3792585972` 的公开可见性、标题、内容 manifest、文件大小、八图 media strip、完整描述和 probe 清理均已闭合为 **GREEN**。

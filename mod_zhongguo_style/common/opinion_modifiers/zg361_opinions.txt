@@ -1,0 +1,86 @@
+﻿# ZhongGuo 361 Style — opinion modifiers
+
+# 天子垂青：3.75 后领主对封臣
+zg361_favored = {
+	opinion = 15
+	years = 2
+	decaying = yes
+}
+
+# 考绩不佳：3.25 后领主对封臣；带合法夺爵理由
+zg361_poor_review = {
+	opinion = -15
+	years = 2
+	decaying = yes
+	revoke_title_reason = yes
+}
+
+# 申诉纠缠：封臣申诉后领主对其略烦
+zg361_annoyed = {
+	opinion = -5
+	years = 2
+	decaying = yes
+}
+
+# 被末位淘汰：被淘汰者对皇帝的怨恨
+zg361_purged = {
+	opinion = -60
+	years = 10
+	decaying = yes
+}
+
+# 被迫致仕：温和些的怨恨
+zg361_forced_retire = {
+	opinion = -15
+	years = 5
+	decaying = yes
+}
+
+# 法外开恩：被宽恕者对皇帝的感激
+zg361_merciful = {
+	opinion = 5
+	years = 2
+	decaying = yes
+}
+
+# 考核黑幕：校准动手脚曝光后，全考核池对皇帝
+zg361_rigged = {
+	opinion = -10
+	years = 5
+	decaying = yes
+}
+
+# 申诉被驳回：封臣对领主
+zg361_appeal_rejected = {
+	opinion = -10
+	years = 2
+	decaying = yes
+}
+
+# 绩效沟通：被安抚的封臣对领主
+zg361_talked = {
+	opinion = 5
+	years = 2
+	decaying = yes
+}
+
+# 被攻讦：看穿同僚伎俩后对攻讦者
+zg361_slandered_me = {
+	opinion = -20
+	years = 3
+	decaying = yes
+}
+
+# 京察同朝：赴京察大计者对主办方
+zg361_jingcha_attended = {
+	opinion = 10
+	years = 2
+	decaying = yes
+}
+
+# 抗命不办京察：直属上司对主办义务人
+zg361_refused_jingcha = {
+	opinion = -20
+	years = 3
+	decaying = yes
+}

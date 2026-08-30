@@ -1,0 +1,51 @@
+{
+  "format_version": 1,
+  "result": "GREEN",
+  "artifact_root": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\promo\\captures\\zga_20260830_0930_clean_2fa2ac8_mcp",
+  "report_sha256": "786b451b305fc5fccde3fa2650ed2969d6ef51941761d045cbd26249b8c493b1",
+  "evidence_index_sha256": "f22ecda2041bf3ed52f3f0109fb7e0860b23478c1fecb126e67242626442fd40",
+  "timeline_sha256": "02f39dc0cef2f62e558592f96e49cf38cc07b4e1487054364ac6854655497f3b",
+  "raw_capture_sha256": "4d85d5d38a9d89c230153efc66146a0c25afd23f0e50120795d7c82cf016ca67",
+  "policy_ids": [
+    1,
+    361
+  ],
+  "projections": [
+    {
+      "mechanism_id": 1,
+      "source": "12_policy_001_event.png",
+      "source_sha256": "19416e472a4983388b1e0106937cf046013a393958f6bd4654a0f0aca93d1720",
+      "output": "07_policy_001_kpi_evidence.jpg",
+      "crop": [
+        420,
+        280,
+        1610,
+        875
+      ],
+      "dimensions": [
+        1190,
+        595
+      ],
+      "bytes": 159357,
+      "output_sha256": "d992ce8f1c3d4004791f9509709283557dee39050cdc160f5be9519e6ca0a2a3"
+    },
+    {
+      "mechanism_id": 361,
+      "source": "12_policy_361_event.png",
+      "source_sha256": "73b2929e1c3d3f2725a0c262dafcdbe4a35e0015526417698dfc91ae22c2465d",
+      "output": "08_policy_361_charter.jpg",
+      "crop": [
+        420,
+        280,
+        1610,
+        875
+      ],
+      "dimensions": [
+        1190,
+        595
+      ],
+      "bytes": 168539,
+      "output_sha256": "b7fb05cda6ee489a50982fb6acff1652b36127c112bbe6b70053e4a8c6d1ed45"
+    }
+  ]
+}

@@ -159,7 +159,7 @@
       "ready"
     ],
     "executor_submission_enabled": true,
-    "fixed_executor_slots": 11,
+    "fixed_executor_slots": 13,
     "permitted_executors": [
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
@@ -171,15 +171,18 @@
       "ExecuteBattleTerminalTransitionMailboxQueryV1",
       "ExecuteCampaignRootContextMailboxQueryV1",
       "ExecuteLoadedFeatureManifestMailboxQueryV1",
-      "ExecutePendingCharacterInteractionContextMailboxQueryV1"
+      "ExecutePendingCharacterInteractionContextMailboxQueryV1",
+      "ExecuteEventWindowContextMailboxQueryV1",
+      "ExecuteTitleMapNavigationMailboxV1"
     ],
-    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context",
+    "query_scope": "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation",
     "first_live_target_limit": 1,
     "expected_consecutive_verified": 2,
-    "transport": "heartbeat_metadata_plus_typed_war_entry_command"
+    "transport": "heartbeat_metadata_plus_fixed_typed_executor_commands"
   },
   "unsupported_claims": [
     "typed war-entry executor has not yet completed live acceptance",
+    "typed title-map-navigation executor has only deterministic cross-pump fixture evidence and has not yet completed live CK3 acceptance",
     "no generic evaluator or effect executor is admitted",
     "network/session thread is not an executor candidate"
   ]

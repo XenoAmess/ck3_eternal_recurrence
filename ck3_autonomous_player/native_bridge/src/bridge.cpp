@@ -19,6 +19,8 @@
 #include "xar_bridge/startup_particle2_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
+#include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
+#include "xar_bridge/title_map_navigation_v1_serializer.hpp"
 #include "xar_bridge/war_entry_assessments_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -223,7 +225,7 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   AppendJsonString(result,
                    xar::ck3_11906::kMainThreadQueryMailboxV1CandidateId);
   result +=
-      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context\"";
+      ",\"query_scope\":\"typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
   result += ",\"stop\":";
@@ -1805,6 +1807,21 @@ std::string TacticalDailySentinelResultFrame(
   return result;
 }
 
+std::string TitleMapNavigationResultFrame(
+    std::string_view request_id, std::string_view payload) {
+  if (payload.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":";
+  result += payload;
+  result += '}';
+  return result;
+}
+
 std::string RoutePreviewResultFrame(
     std::string_view request_id, std::string_view step,
     const xar::game::PreviewMoveArmyResult &preview) {
@@ -2744,6 +2761,8 @@ public:
             ExecutePendingCharacterInteractionContextMailboxQueryV1;
     environment.permitted_executor_duodenary =
         &xar::ck3_11906::ExecuteEventWindowContextMailboxQueryV1;
+    environment.permitted_executor_thirdenary =
+        &xar::ck3_11906::ExecuteTitleMapNavigationMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -3087,6 +3106,92 @@ void RunConnectedSession(
                           request_id, step,
                           xar::ck3_11906::
                               ReadTacticalDailySentinelStatusV1()));
+          } else if (step == xar::ck3_11906::kTitleMapNavigationV1Step) {
+          xar::ck3_11906::TitleMapNavigationRequestV1 request{};
+          if (!xar::ck3_11906::ParseTitleMapNavigationRequestV1(
+                  incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "internal_error"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "state_changed"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            const bool snapshot_read =
+                previous_snapshot.has_value() &&
+                xar::game::ReadSnapshot(game, current_snapshot) &&
+                current_snapshot == previous_snapshot.value();
+            if (!snapshot_read) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "state_changed"));
+            } else if (!current_snapshot.paused) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "requires_paused"));
+            } else if (!current_snapshot.map_ready) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "map_not_ready"));
+            } else {
+              xar::ck3_11906::TitleMapNavigationMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              const auto module_base = reinterpret_cast<std::uintptr_t>(
+                  GetModuleHandleW(nullptr));
+              query.title_environment =
+                  xar::ck3_11906::BindTitleMapNavigationNativeEnvironmentV1(
+                      module_base, true);
+              query.camera_environment =
+                  xar::ck3_11906::BindTitleMapNavigationCameraEnvironmentV1(
+                      module_base, true);
+              query.command.request = request;
+              query.expected_snapshot = current_snapshot;
+
+              const auto run =
+                  xar::ck3_11906::RunTitleMapNavigationMailboxV1(query);
+              xar::game::Snapshot completion_snapshot{};
+              const bool completion_snapshot_stable =
+                  xar::game::ReadSnapshot(game, completion_snapshot) &&
+                  completion_snapshot == current_snapshot;
+              std::string response;
+              const bool success =
+                  run == xar::ck3_11906::
+                             TitleMapNavigationMailboxRunResultV1::terminal &&
+                  completion_snapshot_stable &&
+                  (query.command.status ==
+                       xar::game::TitleMapNavigationCommandStatusV1::centered ||
+                   query.command.status ==
+                       xar::game::TitleMapNavigationCommandStatusV1::
+                           already_centered);
+              if (success) {
+                const auto payload =
+                    xar::ck3_11906::SerializeTitleMapNavigationResultV1(
+                        query.command, query.dispatch_ticket_sequence);
+                response =
+                    TitleMapNavigationResultFrame(request_id, payload);
+              }
+              if (response.empty()) {
+                if (!completion_snapshot_stable) {
+                  query.command.status =
+                      xar::game::TitleMapNavigationCommandStatusV1::
+                          state_changed;
+                }
+                auto error =
+                    xar::ck3_11906::
+                        TitleMapNavigationCommandRejectionCodeV1(
+                            query.command.status);
+                if (error.empty()) {
+                  error = "internal_error";
+                }
+                response =
+                    CommandResultFrame(request_id, step, false, error);
+              }
+              connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          }
           } else if (step == "pause-map") {
           const auto result = xar::game::SubmitPauseMap(game);
           if (result == xar::game::PauseSubmitResult::unavailable) {

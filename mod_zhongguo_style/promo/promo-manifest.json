@@ -1,0 +1,594 @@
+{
+  "format_version": 1,
+  "kind": "zg361_chinese_first_promo",
+  "project_status": "draft_animatic_until_all_live_captures_are_green",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "primary_language": "zh-CN",
+  "subtitle_languages": ["zh-CN", "en"],
+  "skip_ck3_loading_opening": true,
+  "duration_limit_seconds": 1200,
+  "minimum_chapter_seconds": 4,
+  "narration_padding_seconds": 1.2,
+  "asset_policy": "append-only content-addressed work files; never delete raw captures, cue audio, subtitles, segments, or prior takes",
+  "chapters": [
+    {
+      "id": "00-cold-open",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "欢迎来到天朝大厂：你的封地，也有绩效季",
+      "title_en": "WELCOME TO THE IMPERIAL MEGACORP: YOUR FIEF HAS REVIEW SEASON",
+      "status": {
+        "zh": "宣传片草案",
+        "en": "PROMO DRAFT",
+        "classification": "draft-generated"
+      },
+      "topics": [],
+      "body_zh": ["中文主叙事", "中英双语字幕", "实机镜头从正题开始"],
+      "body_en": ["Chinese-first narration", "Chinese and English subtitles", "Gameplay opens on the feature, never CK3 loading"],
+      "cues": [
+        {
+          "zh": "当上公爵还没来得及喝茶，绩效通知先到了。",
+          "en": "If you thought becoming a duke meant tea, marriage, and waiting for inheritance, you clearly have not received this quarter's review notice."
+        },
+        {
+          "zh": "《天朝特色361制》：不用读条，直接开会。今年这个 C，准备让谁背？",
+          "en": "ZhongGuo 361 Style: no loading screen, straight to the meeting. Who is carrying this year's bottom rating?"
+        }
+      ]
+    },
+    {
+      "id": "01-who-rates-whom",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "谁给谁打分：公爵以上都是经理，伯爵男爵只能被卷",
+      "title_en": "WHO RATES WHOM: DUKES AND ABOVE MANAGE; COUNTS AND BARONS GET MANAGED",
+      "status": {
+        "zh": "待录天朝层级实机",
+        "en": "PLACEHOLDER · HIERARCHY CAPTURE PENDING",
+        "classification": "placeholder-fixture-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-01-HIERARCHY",
+        "shot": "同一存档依次打开天朝制公爵、伯爵、男爵角色页与直属关系；展示公爵的考核入口，以及伯爵/男爵只能收到上司告身。"
+      },
+      "cues": [
+        {
+          "zh": "规则先说清：所有天朝制公爵及以上领主，都要给自己的直属官员做考核，不只皇帝。",
+          "en": "First, the reporting line: every celestial-government duke or higher rates their own direct officials, not just the emperor."
+        },
+        {
+          "zh": "伯爵和男爵也别高兴太早。他们不能考核别人，但会被上司考核；没有打分权，不代表没有被打分权。",
+          "en": "Counts and barons cannot rate anyone, but their superior still rates them. No management authority does not mean freedom from management."
+        },
+        {
+          "zh": "所以你既能主持名单，也可能下一秒收到上司告身：符合预期，翻译一下就是别问涨薪。",
+          "en": "You can host the list, then receive your superior's receipt: meets expectations, corporate for do not ask about a raise."
+        }
+      ]
+    },
+    {
+      "id": "02-okr-kpi",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "OKR负责抬头看路，KPI负责低头看刀",
+      "title_en": "OKR LOOKS AT THE HORIZON; KPI CHECKS THE BLADE",
+      "status": {
+        "zh": "待录 KPI、政策卡与证据列实机",
+        "en": "PLACEHOLDER · OKR/KPI CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["okr_kpi"],
+      "capture": {
+        "id": "CAP-02-OKR-KPI",
+        "shot": "录考核榜的 KPI/价值观列、两名官员的总督效率或贤能成长差异，再展示 #001 与 #002 政策卡的 A/B/C。不得把政策卡录成独立目标管理器。"
+      },
+      "cues": [
+        {
+          "zh": "KPI 不只看效率：贤能成长、上司评价、派系罪行、上轮京察和人情，都会入账。",
+          "en": "KPI is not just governor efficiency: merit, growth, superior opinion, factions, crimes, and last cycle's Jingcha record all enter the score."
+        },
+        {
+          "zh": "OKR 和 KPI 在这里先是一张政策卡：你决定组织怎样记账；分数到了校准会，才变成能上桌的弹药。",
+          "en": "Here OKR and KPI begin as a policy card: you decide how the organization keeps score; at calibration, that score becomes ammunition."
+        }
+      ]
+    },
+    {
+      "id": "03-forced-distribution",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "强制分布：不是问有没有C，是问C姓什么",
+      "title_en": "FORCED DISTRIBUTION: NOT WHETHER THERE IS A BOTTOM RATING, BUT WHO OWNS IT",
+      "status": {
+        "zh": "目标实机镜头：23人、7/14/2 刚性分布；旧 7/16/0 静帧已判 RED，等待当前候选重录",
+        "en": "TARGET LIVE SHOT · 23 PERSONS / 7-14-2; THE OLD 7-16-0 STILL IS RED AND MUST BE RECAPTURED",
+        "classification": "fixture-live-red-recapture-required"
+      },
+      "topics": ["forced_distribution"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/08_scoreboard_panel_raw.png",
+        "label": "GREEN acceptance fixture: managed scoreboard, 23-person cohort"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: managed-scoreboard counts"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-03-DISTRIBUTION",
+        "exclude_ck3_loading": true,
+        "shot": "只接受当前候选整批 GREEN 中的 23 人考核榜：唯一名次与 7/14/2 分档必须同时可见；旧 7/16/0 画面仅保留作 RED 过程证据。"
+      },
+      "cues": [
+        {
+          "zh": "361 的灵魂是强制分布：常规成熟大组按头部 30% 得 3.75、中间 60% 得 3.5、尾部 10% 得 3.25。大家都努力，也不妨碍有人必须背 C。",
+          "en": "The soul of 361 is forced distribution: a regular mature cohort assigns 3.75 to the top 30%, 3.5 to the middle 60%, and 3.25 to the bottom 10%. Everyone may deliver, yet someone must explain why they were not excellent enough."
+        },
+        {
+          "zh": "排名采用固定序位，平分也不会全员并列第一、集体冲进3.75。毕竟真正的大厂从不允许数学破坏组织目标。",
+          "en": "Ranks use a stable unique order. A tie cannot make everyone number one and flood 3.75, because mathematics must never obstruct an organizational target."
+        },
+        {
+          "zh": "23 个人，七个 3.75、十四个 3.5、两个 3.25。系统第一次建账也不许全员冒充新人：这个 C，今天必须有人背。",
+          "en": "Twenty-three officials: seven at 3.75, fourteen at 3.5, and two at 3.25. Initial setup is no excuse for making everyone a newcomer; someone must own the C today."
+        }
+      ]
+    },
+    {
+      "id": "04-calibration",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "校准会：用最礼貌的语气，讨论最不礼貌的名额",
+      "title_en": "CALIBRATION: POLITE VOICES, IMPOLITE QUOTAS",
+      "status": {
+        "zh": "验收夹具实机静帧：校准会三条真选项；人物与代价的干净连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · THREE REAL CALIBRATION CHOICES; CLEAN CONTINUOUS RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
+      },
+      "topics": ["calibration"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/06_calibration_event.png",
+        "label": "GREEN acceptance fixture: calibration event"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: calibration and published scoreboard"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-04-CALIBRATION",
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具中的真实校准会静帧，展示公示前的直接发布、保护与下压三条选择。边界人物、代价与结算的干净连续录屏仍待录。"
+      },
+      "cues": [
+        {
+          "zh": "自动排名后、发榜前，玩家可以校准：直接公示，或在两个分档边界交换两个人。",
+          "en": "After automatic ranking and before publication, the player may calibrate: publish the board as-is, or swap two officials across one of the grade boundaries."
+        },
+        {
+          "zh": "你能抬末名 3.75，或把末名 3.5 压进 3.25；每次动笔有 25% 概率被全员看成考核黑幕。",
+          "en": "You can lift the last 3.75 or push the last 3.5 into 3.25; each pen stroke has a 25% chance of becoming a review scandal."
+        }
+      ]
+    },
+    {
+      "id": "05-peer-review-politics",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "背靠背这张卡，先从同侪的人情账开始",
+      "title_en": "BACK-TO-BACK, STARTING WITH A PEER FAVOUR LEDGER",
+      "status": {
+        "zh": "待录互评与向上管理实机",
+        "en": "PLACEHOLDER · PEER POLITICS CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["peer_review", "upward_management"],
+      "capture": {
+        "id": "CAP-05-PEER-POLITICS",
+        "shot": "录同级封臣的举荐与攻讦互动、冷却和资源成本；结算后录目标的下一期 KPI 加10或减15。可附 #007 背靠背政策卡，不得制造匿名评分或项目 UI。"
+      },
+      "cues": [
+        {
+          "zh": "背靠背不是一套匿名小作文系统；它先是一张政策卡，外加一笔更封建的人情账。",
+          "en": "Back-to-back is not an anonymous essay system here; it begins as a policy card plus a much more feudal favour ledger."
+        },
+        {
+          "zh": "举荐同僚，下期 KPI 加 10；攻讦同僚，七成让他减 15，三成自己社死。向上管理？先学会把人情写进分数。",
+          "en": "Recommend a peer for +10 next review; slander one for a 70% chance of -15 and a 30% chance of embarrassing yourself. Managing up starts by putting favours into the score."
+        }
+      ]
+    },
+    {
+      "id": "06-jingcha",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "京察：活动免费，不办的代价比较贵",
+      "title_en": "JINGCHA: FREE TO HOLD, EXPENSIVE TO SKIP",
+      "status": {
+        "zh": "验收夹具实机静帧：定期京察强制弹窗及拒办入口；完整拒办后果连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · JINGCHA MANDATE AND REFUSAL ENTRY; CLEAN CONSEQUENCE RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
+      },
+      "topics": ["jingcha"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/09_jingcha_mandate_event.png",
+        "label": "GREEN acceptance fixture: semi-mandatory Jingcha event"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: free planner, refusal opinion, and KPI -50"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-06-JINGCHA",
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的定期京察弹窗静帧，显示默认举办和拒办入口。报告验证其免费举办、拒办直属上司好感及下轮 KPI -50；同一因果链干净连续录像仍待录。"
+      },
+      "cues": [
+        {
+          "zh": "京察定期弹出、半强制，而且免费。评价下属不是领导的兴趣爱好，是岗位说明书。",
+          "en": "Jingcha is a periodic semi-mandatory activity and costs nothing to hold. Reviewing subordinates is not a leadership hobby; it is the job description."
+        },
+        {
+          "zh": "玩家当然可以说不。自由一直都在，只是你的直属上司也会自由地降低好感，并把拒办写进下一次绩效理由。",
+          "en": "The player may refuse. Freedom remains, while the direct superior remains free to lose opinion and record refusal as a major reason in the next review."
+        },
+        {
+          "zh": "这笔账绑定发令上司：换个老板，陌生人不能捡走旧理由扣你分。流程终于有责任人。",
+          "en": "The reason is bound to its issuing superior: a new boss cannot pick up an old excuse to dock your score. The process finally has an owner."
+        }
+      ]
+    },
+    {
+      "id": "07-scoreboard-receipt",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "考核榜与告身：终于有人告诉你到底排第几",
+      "title_en": "SCOREBOARD AND RECEIPT: SOMEONE FINALLY TELLS YOU YOUR RANK",
+      "status": {
+        "zh": "验收夹具实机静帧：所辖官员考核榜；本人告身与制度驾驶舱的干净录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · MANAGED SCOREBOARD; CLEAN RECEIPT AND COCKPIT RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
+      },
+      "topics": ["scoreboard"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/08_scoreboard_panel_raw.png",
+        "label": "GREEN acceptance fixture: real managed scoreboard GUI"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: scoreboard GUI OCR and frozen rows"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-07-SCOREBOARD",
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的所辖官员考核榜静帧，显示年度、人数、3.75/3.5/3.25 配额、名次、KPI、价值观、绩效和连续次数。其余两页干净录屏仍待录。"
+      },
+      "cues": [
+        {
+          "zh": "考核榜不是闪一下就没的通知。每轮冻结人物、官职、KPI、价值观、名次、档位、连续次数和状态。",
+          "en": "The scoreboard is not a disposable toast. Each cycle freezes the official, office, KPI, values, rank, grade, streak, and follow-up state."
+        },
+        {
+          "zh": "你主持考核时看整张团队榜；你被上司考核时收到独立告身，直接写明上司是谁、你拿多少分、同组第几、绩效几档。",
+          "en": "Managers see the full team board. When your superior rates you, a separate receipt names the superior, your score, cohort rank, and grade."
+        },
+        {
+          "zh": "最近一期榜单会冻结到下一次发榜，调任不会偷偷改写当期名单；下一轮则用一份新快照整体替换，不拿旧榜行现场重算。",
+          "en": "The latest board stays frozen until the next publication, so transfers cannot rewrite that cycle. The next review replaces it with a new snapshot instead of recalculating old rows in place."
+        }
+      ]
+    },
+    {
+      "id": "08-money-and-grade",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "3.25不是表情包：国库、金币、贤能、俸禄一起有感觉",
+      "title_en": "3.25 IS NOT A MEME: TREASURY, GOLD, MERIT, AND SALARY ALL FEEL IT",
+      "status": {
+        "zh": "验收夹具实机静帧：上司给出3.25、国库/金币/贤能扣减与一年俸禄削减；申诉改判后的对账连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · 3.25 RECEIPT AND FOURFOLD CONSEQUENCE; CLEAN APPEAL LEDGER RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
+      },
+      "topics": [],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/10_superior_result.png",
+        "label": "GREEN acceptance fixture: superior-assigned 3.25 receipt"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: exact 50 treasury / 25 gold / 60 merit penalty and refund"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-08-MONEY",
+        "exclude_ck3_loading": true,
+        "shot": "当前导入夹具静帧直接显示地方国库（若有）扣50、个人金币扣25与有俸禄时削减一年俸禄；贤能扣60和俸禄削减25%的精确数值由同 run 报告验证。正式候选必须改用完成四重精确文案迁移后的新 GREEN capture，不以旧帧冒充四项都直接可见。"
+      },
+      "cues": [
+        {
+          "zh": "档位必须落到资源上才有手感：3.75 进奖励和晋升通道，3.5 保住节奏，3.25 才开始真疼。",
+          "en": "Grades need resource consequences. A 3.75 opens reward and promotion lanes, 3.5 keeps the normal cadence, and 3.25 starts a real improvement cost."
+        },
+        {
+          "zh": "3.25同时影响地方国库、个人金币、贤能和一年俸禄。组织说这是共同承担，翻译一下就是：团队预算、仕途和你钱包都要参加复盘。",
+          "en": "A 3.25 hits the local treasury, personal gold, merit, and one year of salary. Shared accountability means the team budget, your career, and your wallet all attend the retrospective."
+        },
+        {
+          "zh": "罚没保存精确金额和本轮编号；翻案退的是这次实际扣的钱，不是系统心情好发代金券。",
+          "en": "The penalty records exact amounts and the review serial; a reversal refunds what this cycle took, not a goodwill coupon."
+        }
+      ]
+    },
+    {
+      "id": "09-pip-bottom",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "PIP与末位：给你改进机会，也给上司腾椅子的机会",
+      "title_en": "PIP AND THE BOTTOM: A CHANCE TO IMPROVE, AND A CHANCE TO FREE YOUR CHAIR",
+      "status": {
+        "zh": "待录PIP与末位处置实机",
+        "en": "PLACEHOLDER · PIP/BOTTOM CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["pip", "bottom_elimination"],
+      "capture": {
+        "id": "CAP-09-PIP-BOTTOM",
+        "shot": "录首次 3.25 告身与 PIP modifier；再录连续两次 3.25 后的末位名单、逐人夺爵/致仕互动及批量降岗/再观察选择。不得伪造 PIP 任务、支持预算或中期检查 UI。"
+      },
+      "cues": [
+        {
+          "zh": "第一次 3.25 会挂上 PIP：一张一年期红牌，不是自动处决倒计时。",
+          "en": "The first 3.25 applies PIP: a one-year red card, not an automatic execution clock."
+        },
+        {
+          "zh": "连续两次末位才进淘汰阶梯：夺爵、致仕、降岗留用或再观察。有人毕业，有人的岗位毕业。",
+          "en": "Two consecutive bottom ratings enter the exit ladder: title removal, retirement, demotion, or another year. In the final review, someone graduates; sometimes the position graduates without them."
+        }
+      ]
+    },
+    {
+      "id": "10-promotion-hc",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "晋升包与HC：它们是政策卡，不是许愿池",
+      "title_en": "PROMOTION PACKET AND HEADCOUNT: POLICY CARDS, NOT A WISH ENGINE",
+      "status": {
+        "zh": "待录晋升通道、政策卡与组织账实机",
+        "en": "PLACEHOLDER · PROMOTION/HC CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["promotion_packet", "hc"],
+      "capture": {
+        "id": "CAP-10-PROMOTION-HC",
+        "shot": "录连续两次 3.75 的晋升通道 modifier/任命候选加成，再展示 #020、#022 的 A/B/C 政策卡和驾驶舱 HC 压力。不得制造岗位空缺、答辩或增编 UI。"
+      },
+      "cues": [
+        {
+          "zh": "连续两次 3.75，真实会开晋升通道并提高原版任命候选分。晋升包，是 361 卡组里的一种治理选择。",
+          "en": "Two consecutive 3.75 ratings open the real promotion track and raise native appointment candidate score. A promotion packet is a governance choice in the 361 deck."
+        },
+        {
+          "zh": "HC 在当前版本是组织账与政策取舍，不是独立招聘模拟器：它会改变压力、预算和后续 KPI。",
+          "en": "HC, or headcount, is currently an organizational ledger and policy tradeoff, not a separate hiring simulator: it changes pressure, budget, and later KPI."
+        }
+      ]
+    },
+    {
+      "id": "11-credit-and-dependencies",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "跨部门抢功：先把它写进制度，而不是编一个项目管理器",
+      "title_en": "CROSS-TEAM CREDIT: WRITE THE RULE, NOT A FICTIONAL PROJECT MANAGER",
+      "status": {
+        "zh": "待录抢功政策卡与同侪互动实机",
+        "en": "PLACEHOLDER · CREDIT LEDGER CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": ["credit_claims"],
+      "capture": {
+        "id": "CAP-11-CREDIT",
+        "shot": "展示 #026 与 #028 政策卡、驾驶舱证据/互信账，以及同侪举荐/攻讦互动。不得制造项目 ID、依赖时间线、贡献/可见度双账或仲裁 UI。"
+      },
+      "cues": [
+        {
+          "zh": "抢功、甩锅、可见度，已经写进 361 的制度题库；但当前不是一套带项目编号的项目管理器。",
+          "en": "Credit theft, blame, and visibility are in the 361 policy catalogue, but this is not a project manager with project IDs."
+        },
+        {
+          "zh": "你选择治理方向，账本结算证据、互信和交付；真正能直接害同僚掉分的，是举荐与攻讦互动。",
+          "en": "You choose a governance direction, then ledgers settle evidence, trust, and delivery; the direct peer-score tools are recommendation and slander."
+        }
+      ]
+    },
+    {
+      "id": "12-appeal",
+      "type": "still",
+      "material_status": "captured",
+      "title_zh": "绩效申诉：不是掀桌，是要求把桌上的账重新加一遍",
+      "title_en": "PERFORMANCE APPEAL: NOT FLIPPING THE TABLE, JUST RECOUNTING WHAT IS ON IT",
+      "status": {
+        "zh": "验收夹具实机静帧：3.25 告身内的申诉入口；改判、退款与修榜的干净连续录屏仍待录",
+        "en": "FIXTURE-LIVE STILL · APPEAL ENTRY ON A 3.25 RECEIPT; CLEAN REVERSAL RECORDING STILL PENDING",
+        "classification": "fixture-live-still-partial"
+      },
+      "topics": ["appeal"],
+      "source": {
+        "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/cell/10_superior_result.png",
+        "label": "GREEN acceptance fixture: visible appeal entry on 3.25 receipt"
+      },
+      "evidence_sources": [
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/report.json",
+          "label": "GREEN acceptance report: exact refund and stale-appeal idempotence"
+        },
+        {
+          "path": "imported/fixture-live-zga-20260829-061314-ea5f04ad/import-index.json",
+          "label": "Append-only import provenance and hashes"
+        }
+      ],
+      "capture": {
+        "id": "CAP-12-APPEAL",
+        "exclude_ck3_loading": true,
+        "shot": "最终 GREEN 验收夹具的 3.25 告身静帧，清晰显示申诉按钮。报告验证改判精确退款、停止未来俸禄削减及重复申诉幂等；改判界面与修榜的干净连续录像仍待录。"
+      },
+      "cues": [
+        {
+          "zh": "被打 3.25 后，玩家能认命、摆烂、奋发，或者花影响力申诉。它不是掀桌，是请求上司改判。",
+          "en": "After a 3.25, the player may accept, disengage, improve, or spend influence to appeal. It is not flipping the table; it asks the superior to regrade."
+        },
+        {
+          "zh": "改判会修正档位、连续次数、PIP 和精确罚没；申诉不会让原处理凭空加重。",
+          "en": "A reversal updates the scoreboard, streak, and exact penalty. Review may maintain or reduce the decision; it cannot punish you merely for appealing."
+        },
+        {
+          "zh": "报告已实机对账：退款只退这次实际扣的钱，重复申诉也不会二次发奖金。算盘终于没有闹鬼。",
+          "en": "The live report reconciles exact refunds: only this cycle's deduction returns, and a repeat appeal cannot print another reward. The abacus is finally not haunted."
+        }
+      ]
+    },
+    {
+      "id": "13-361-policy-cards",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "不只一个考核季：361张政策卡把组织慢慢养成怪物",
+      "title_en": "BEYOND ONE REVIEW: 361 POLICY CARDS GROW AN ORGANIZATION OVER TIME",
+      "status": {
+        "zh": "待录政策卡与驾驶舱实机",
+        "en": "PLACEHOLDER · POLICY DECK CAPTURE PENDING",
+        "classification": "placeholder-gameplay-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-13-POLICY-DECK",
+        "shot": "一次集中录 #001、#007、#020、#022、#026、#361 六张不同编号政策卡的 A/B/C，再打开制度驾驶舱的 14 本账。可显示 AI 每轮通常后台批量处理最多十二张的代码/证据卡，但不得伪装为逐张真人录屏。"
+      },
+      "cues": [
+        {
+          "zh": "核心考核之外有 361 张逐项政策卡：每张有 A/B/C、持久选择状态，后果收进 14 本组织账。",
+          "en": "Beyond core review are 361 individually numbered policy cards: each has A/B/C, persistent choice state, and consequences flowing into 14 organizational ledgers."
+        },
+        {
+          "zh": "它们共享 17 类后果 profile，不是假装 361 套独立小游戏：证据、互信、交付、稳定、人才、HC 压力和倦怠会一起变。",
+          "en": "They share 17 consequence profiles, not 361 pretend mini-games: evidence, trust, delivery, stability, talent, HC pressure, and burnout move together."
+        },
+        {
+          "zh": "玩家每轮通常只遇一张；AI 按性格与预算压力，每轮通常在后台批量处理最多十二张。不是 361 封邮件，是 361 次制度偏好。",
+          "en": "Players normally see one per review; AI usually batches up to twelve per review from traits and budget pressure. Not 361 emails—361 institutional preferences."
+        }
+      ]
+    },
+    {
+      "id": "14-core-loop",
+      "type": "placeholder_card",
+      "material_status": "placeholder",
+      "title_zh": "一轮真实玩法：京察、KPI、校准、发榜、兑现",
+      "title_en": "THE LIVE LOOP: JINGCHA, KPI, CALIBRATION, BOARD, CONSEQUENCE",
+      "status": {
+        "zh": "待录完整同轮实机",
+        "en": "PLACEHOLDER · SAME-CYCLE LOOP CAPTURE PENDING",
+        "classification": "placeholder-live-loop-pending"
+      },
+      "topics": [],
+      "capture": {
+        "id": "CAP-14-FULL-LOOP",
+        "shot": "同一存档、同一 review serial 连续录：京察/立即考核入口、KPI 排名、校准、发布榜、个人告身、3.25 的国库/金币/贤能/俸禄四重处分，以及申诉或 PIP 的后果。政策卡可作为独立蒙太奇，不得拼成虚构的目标—项目—互评闭环。"
+      },
+      "cues": [
+        {
+          "zh": "真正跑通的闭环是：京察一到，KPI 开算；直属名单横排，校准可动，榜单正式发出。",
+          "en": "The live loop is this: Jingcha arrives, KPI calculates, direct officials rank, calibration may intervene, and the board publishes."
+        },
+        {
+          "zh": "奖励、罚没、晋升通道、PIP、末位和申诉随即兑现；上轮档位、连击、人情和制度账，会回到下一轮继续算。",
+          "en": "Rewards, penalties, promotion track, PIP, bottom action, and appeal land immediately; last grades, streaks, favours, and policy ledgers return next review."
+        },
+        {
+          "zh": "你管的不是古代人力资源表格，是一套会记分、记仇、也记账的天朝大厂。",
+          "en": "This is not an ancient HR sheet. It is an imperial megacorp that keeps scores, grudges, and ledgers."
+        }
+      ]
+    },
+    {
+      "id": "15-honest-boundary",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "先看证据，再喊牛：宣传片也要过绩效",
+      "title_en": "EVIDENCE BEFORE HYPE: EVEN THE PROMO HAS A PERFORMANCE REVIEW",
+      "status": {
+        "zh": "草案边界",
+        "en": "DRAFT BOUNDARY",
+        "classification": "draft-honest-boundary"
+      },
+      "topics": [],
+      "body_zh": ["占位镜头不算实机", "同轮素材绑定同一证据", "最终成片必须短于20分钟"],
+      "body_en": ["Placeholders are not live evidence", "Same-cycle footage binds to the same run", "Final duration must remain under twenty minutes"],
+      "cues": [
+        {
+          "zh": "这是可调整的脚本和占位分镜。待实录就是真的待实录，漂亮卡片不冒充 CK3 已跑通。",
+          "en": "This is an editable script and placeholder animatic. Pending capture means pending; a polished card never impersonates live CK3."
+        },
+        {
+          "zh": "正式版会验时长、编码、字幕安全区、中文配音和无读条开场。宣传片自己不过验收，拿 3.25 也不冤。",
+          "en": "The final cut validates duration, codecs, subtitle safety, Chinese narration, and no-loading opening. A promo that fails review deserves its 3.25."
+        }
+      ]
+    },
+    {
+      "id": "16-finale",
+      "type": "title_card",
+      "material_status": "generated",
+      "title_zh": "来吧，给天下打分——然后等天下给你打分",
+      "title_en": "RATE THE REALM—THEN WAIT FOR THE REALM TO RATE YOU",
+      "status": {
+        "zh": "结尾卡草案",
+        "en": "DRAFT FINALE",
+        "classification": "draft-generated"
+      },
+      "topics": [],
+      "body_zh": ["管理下属", "接受上司考核", "让上轮结果继续算账"],
+      "body_en": ["Manage subordinates", "Face your superior's review", "Let last-cycle results keep accounting"],
+      "cues": [
+        {
+          "zh": "你可以做证据充分、愿意护人的领导，也可以把所有人卷到只剩漂亮报表；选择和账都会留下。",
+          "en": "You may lead with evidence and protection, or grind everyone down until only beautiful reports remain. Both paths exist, and the ledger remembers both."
+        },
+        {
+          "zh": "《天朝特色361制官员绩效考核》：请开始管理你的直属官员，并准备好在上司面前解释，为什么你的管理方式符合预期。",
+          "en": "ZhongGuo 361 Style: begin managing your direct officials, then prepare to explain to your superior why your management style meets expectations."
+        },
+        {
+          "zh": "祝各位年年 3.75。至于名额够不够——这不是我的问题，是下一场校准会的议题。",
+          "en": "May you earn 3.75 every year. Whether the quota allows it is not my problem; that belongs to the next calibration meeting."
+        }
+      ]
+    }
+  ]
+}

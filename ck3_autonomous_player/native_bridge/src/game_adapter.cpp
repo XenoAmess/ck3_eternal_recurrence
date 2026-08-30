@@ -12,6 +12,7 @@
 #include "xar_bridge/event_window_context_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
+#include "xar_bridge/title_map_navigation_v1.hpp"
 
 #include "xar_bridge/ck3_11906_adapter.hpp"
 
@@ -314,6 +315,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
         ck3_11906::kPendingCharacterInteractionContextV1Capability;
   } else if (step == ck3_11906::kEventWindowContextV1Step) {
     capability = ck3_11906::kEventWindowContextV1Capability;
+  } else if (step == ck3_11906::kTitleMapNavigationV1Step) {
+    capability = ck3_11906::kTitleMapNavigationV1Capability;
   } else {
     std::vector<std::int32_t> war_entry_targets;
     if (ck3_11906::ParseWarEntryAssessmentsV1Step(step,

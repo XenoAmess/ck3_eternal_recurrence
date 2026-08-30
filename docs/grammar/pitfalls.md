@@ -35,6 +35,11 @@
 | 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
 | effect 里设的值，同 on_action 触发的事件读到旧值 | effect 与事件**并发**执行 | 计算进事件 immediate，或事件延迟 1 天 |
 | 延迟事件没触发 | root 到点时失效（on_death 的角色已死） | 触发到存活 scope（如 `player_heir`） |
+| `every_vassal` 里调用 scripted effect 后，嵌套 `liege = { opinion = { target = root } }` 变成领主评价自己 | scripted effect 保留调用链的 `ROOT`；进入迭代项只改变当前 `THIS`，不会把该封臣提升成新 `ROOT`。CK3 1.19.0.6 原版 `00_war_effects.txt` 也明确区分“ROOT is a combat side / THIS is commander” | 把 helper 注释写成“当前作用域 = 封臣”；从当前封臣进入 `liege = {}` 后，用 `target = prev` 回指封臣，复杂链先 `save_temporary_scope_as`。本条为 2026-08-28 原版源码与项目故障静态复现，待对应实机格互证 |
+| `Decision picture <key> missing entries` 且报 `Unrecognized loc key <key>_tooltip` | 自定义 decision 不会因为已有 name/desc/confirm 就自动完整；引擎还会查找隐含 `<decision>_tooltip`，并要求 `picture = { reference = ... }` | 为每个 decision 显式声明存在的图片，九语言键集都补 `<decision>_tooltip`；静态校验也要覆盖这个隐含键。2026-08-28 CK3 1.19.0.6 主菜单加载实测 |
+| activity `on_complete` 中直接 `every_attending_character` 报 `Inconsistent effect scopes (character vs. activity)` | `on_complete` 入口是 host character scope，而 attending-character 迭代器需要 activity scope | 仿原版 activity：先 `scope:activity = { every_attending_character = { ... } }`。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
+| 自定义 activity phase 加载时报 `gfx/interface/icons/activity_phases/<phase>.dds not found` | phase key 会隐式映射同名 DDS，只写本地化不会复用活动本身的图标 | 提供同名 phase DDS，或在语义合适时复用已随本体发布的 phase key（如 `imperial_examination_phase_examination`）。2026-08-28 CK3 1.19.0.6 主菜单加载实测 |
+| `ordered_in_list` 明明有多项，却只执行一次 | `ordered_*` 没写 `max` 时默认只取排名第一项，不等价于 `every_in_list` | 需要全量排序迭代时显式写 `max = list_size:<list>`。2026-08-28 CK3 1.19.0.6 三人以上官员榜实测只产生 1 行定位 |
 
 ## 变量
 
@@ -44,6 +49,8 @@
 | 事件 desc 里显示 0 | 保存用了 `save_temporary_scope_value_as`（生命周期不够）或上一条 | `save_scope_value_as` + `[TopScope.GetValue('名')]` |
 | `Data error in loc string`，hidden event 的 `debug_log = <loc_key>` 中 `ROOT.Var` / `ROOT.Char.MakeScope.Var` 全部渲染为空 | 原版可行样例是在可见 character event 的 option 中求值；hidden event `immediate` 的 debug-log 本地化没有等价数据上下文，多跨一层事件也无效 | 不用动态 localization 传遥测。用 script value 对生产 global 做 `abs/floor/divide/modulo 2`，再以静态 bit marker 在 BEGIN/END 间编码，外部 runner 还原。2026-08-19 长期平衡摇测实测 |
 | `Failed to fetch variable ... not being set` | 读了从未设置的变量 | 先 `if NOT has_global_variable` 兜底设默认 |
+| `change_variable effect [ Variable not of the 'value' scope type. Type: empty ]` | `change_variable` 不会为当前 scope 自动创建从未设置的数值变量 | 先 `has_variable`；已有时 `change_variable`，否则 `set_variable = { value = <本次增量> }`。2026-08-28 CK3 1.19.0.6 首次写入原版任命 candidate-score 变量实测 |
+| GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
 
 ## 教程课程 / 全局存储

@@ -1,0 +1,244 @@
+# 361 宣传视频工程
+
+这里保存《天朝特色 361 制官员绩效考核》的宣传片脚本、分镜、实机素材需求和可复现合成入口。仓库内
+`promo-manifest.json` 始终是**可渲染的作者版占位 animatic**；正式候选 manifest 不反写仓库，而是由一次
+GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8 个待补镜头的原始计划，也不会把失败 take
+或尚未单拍的功能悄悄包装成实机。
+
+## 成片合同
+
+- 面向中文观众，简体中文是唯一旁白和主要视觉层级；英文是画面内副字幕。
+- Edge TTS 固定 `edge-tts==7.2.8` 与 `zh-CN-XiaoxiaoNeural`。
+- 简中、英文字幕必须同一 cue 同时出现，并按实际字体像素宽度限制在安全区内。
+- 成片必须短于 20 分钟。当前全稿离线保守估算约 `432s`（约 7:12）；实际时长以逐 cue MP3 的
+  `ffprobe` 结果为准，超过 `1200s` 会在编码前直接 RED。
+- 片头直接进入 mod 概念和玩法，禁止 CK3 启动器、启动 loading 与存档 loading 入镜。
+- 所有入片实机画面必须使用 CK3 书签/世界中的真实历史角色，并在素材 notes 中记录角色 ID 与开局；不使用为测试临时创建、改名或伪装的角色，考核榜可见区域也不得出现世界生成坊正的姓名。
+- 最终时间线中不得出现“361制实机验收”、`ZGA`、验收规划器、演示触发器等 fixture/test-only 决议、按钮或文字。验收原始录像即使整体 GREEN，也只能截取经过污染检查且画面干净的时间段；不能因为报告通过就自动获得宣传片资格。
+- title card 可以是开场/结尾，也可以是明确标注 `GENERATED EVIDENCE/BOUNDARY` 的事实边界卡；其余内容只允许使用明确占位卡或已有实机素材。生成边界卡和占位卡都不算实机镜头。
+- 正式候选必须用 `--stage release` 验收；只要还有一个占位镜头就不能通过。
+
+## 权威文件
+
+| 文件 | 用途 |
+|---|---|
+| `promo-manifest.json` | 权威中文配音稿、逐 cue 英文字幕、章节顺序、主题标签、镜头需求 |
+| `storyboard.md` | 约 7–8 分钟的剪辑结构与节奏说明 |
+| `shot-list.md` | 一次自动集中实录的实际 marks、六张政策卡与不可夸张的产品边界 |
+| `smoke-manifest.json` | 很短的媒体流水线测试；内容明确声明“不是正式成片” |
+| `../tools/build_promo_video.py` | TTS、双语 ASS、画面合成、章节拼接与 sidecar |
+| `../tools/validate_promo_video.py` | 草案/正式门禁、媒体规格、时长、语言、哈希与抽帧检查 |
+| `../tools/prepare_promo_release_manifest.py` | GREEN 集中实录 → 外部零占位正式 manifest + provenance；拒绝 RED、缺 mark、哈希漂移和覆盖旧输出 |
+| `../tools/prepare_promo_visual_audit.py` | 正式 manifest → 全部实机章节的全屏 RGB24 抽帧、RapidOCR、SHA 绑定和明确 `PENDING` 的未签核 spec |
+| `../tools/audit_promo_visuals.py` | 正式 manifest 的独立画面门禁：历史角色来源、全屏 PNG/OCR、测试 UI 禁词、逐章覆盖、人工签核与 SHA 复验 |
+
+## 无联网静态前置
+
+在仓库根目录运行：
+
+```powershell
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
+  --manifest mod_zhongguo_style\promo\promo-manifest.json `
+  --output artifacts\zg361\promo\draft-animatic.mp4 `
+  --work-dir artifacts\zg361\promo\work `
+  --validate-only
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
+  --manifest mod_zhongguo_style\promo\promo-manifest.json `
+  --stage draft
+```
+
+`--validate-only` 不创建目录、不调用 Edge TTS、不编码视频。它会检查 13 项核心主题、中文/英文关键词、
+配音 voice、字幕像素布局、素材存在性、loading 开场禁令和离线时长预算。
+
+## 媒体 smoke
+
+这一步需要联网调用 Edge TTS，但只生成一章很短的流水线测试：
+
+```powershell
+$stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+$run = "artifacts\zg361\promo\smoke-$stamp"
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
+  --manifest mod_zhongguo_style\promo\smoke-manifest.json `
+  --output "$run\zg361-promo-pipeline-smoke.mp4" `
+  --work-dir "$run\work" `
+  --take-id "xiaoxiao-smoke-$stamp"
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
+  --manifest mod_zhongguo_style\promo\smoke-manifest.json `
+  --stage draft `
+  --video "$run\zg361-promo-pipeline-smoke.mp4" `
+  --sample-dir "$run\qa-samples"
+```
+
+smoke 只能证明中文配音、双语字幕和媒体流水线能工作，不能证明 mod 玩法或正式宣传片完成。
+
+## 从一次 GREEN 集中实录生成正式 manifest
+
+集中录制 runner 在进入真实 gameplay HUD 后才启动 FFmpeg，一次保存连续原始 MKV、timeline marks、报告、
+evidence index，以及实际打开的六张政策卡 `#001/#007/#020/#022/#026/#361`。它不声称录到了
+`#002/#015/#035`。拿到 GREEN run 后执行：
+
+```powershell
+$capture = "Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>"
+$release = "$capture\release\zg361-promo-release-manifest.json"
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_release_manifest.py `
+  --artifact-root $capture `
+  --output $release
+
+$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
+  --release-manifest $release `
+  --output-dir $auditEvidence `
+  --sampling-interval-seconds 1.0
+
+# 这里必须暂停自动流水线：逐章以 1× 完整观看，并检查每张 still。生成器只会产出 PENDING，绝不代签 GREEN。
+$pendingSpec = "$auditEvidence\promo-visual-audit-spec.PENDING.json"
+$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
+# 人工审阅后，把 PENDING spec 另存为 $auditSpec，并填写真实 reviewer、带时区 reviewed_at_utc、
+# 全部 captured chapter id 与五项 true attestation；原 PENDING 文件和所有证据保持不动。
+$auditReport = "$capture\release\promo-visual-audit-report.json"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
+  --spec $auditSpec `
+  --output $auditReport
+
+$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
+  --report $auditReport `
+  --expected-report-sha256 $auditSha
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
+  --manifest $release `
+  --stage release `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
+
+$stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+$videoRoot = "$capture\release\video-$stamp"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
+  --manifest $release `
+  --output "$videoRoot\zg361-promo-release.mp4" `
+  --work-dir "$videoRoot\work" `
+  --take-id "zg361-release-$stamp" `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
+  --manifest $release `
+  --stage release `
+  --video "$videoRoot\zg361-promo-release.mp4" `
+  --sample-dir "$videoRoot\qa-samples" `
+  --visual-audit-report $auditReport `
+  --expected-audit-sha256 $auditSha
+```
+
+投影器只接受报告与 evidence index 都为 GREEN、timeline 与报告一致、原始 MKV/六张政策图均在 index 中且
+字节数和 SHA-256 完全匹配的 run。连续实机章节直接引用原始 MKV 和 marks，不先做有损中间裁切；每个 clip
+都从 `recording_started_after_gameplay_hud` 之后开始。层级、同侪互动、PIP/末位等没有独立实录的章节会变成
+显眼的生成证据边界卡，不能伪装成 live。输出 manifest 及同名 `.provenance.json` 使用绝对路径，默认拒绝覆盖。
+正式投影还必须逐段证明所选画面没有测试专用决议/控件；若自动 OCR 不能可靠排除，就改用单独的 production-only
+录制并人工抽帧签字，不能靠裁掉文字或遮罩来掩盖测试 UI。
+
+### 独立画面内容审计
+
+`prepare_promo_release_manifest.py` 证明一次 CK3 验收与素材哈希成立，但 **GREEN 验收录像不自动是 GREEN 宣传素材**。
+投影完成后、调用正式媒体验证和渲染前，必须为该外部 manifest 建立一份
+`zg361_promo_visual_audit_spec` JSON，并运行独立门禁。先让 producer 在新的外部目录提取证据：
+
+```powershell
+$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
+  --release-manifest $release `
+  --output-dir $auditEvidence `
+  --sampling-interval-seconds 1.0
+```
+
+producer 会按 source SHA 与精确时间戳合并重叠章节的相同帧，以 manifest 中每段 `start_seconds` / `end_seconds`
+为端点建立不超过 1 秒的确定性采样序列；PNG 由与 consumer 相同的 FFmpeg 全屏 `rgb24` 解码结果写出，OCR
+JSON 由现有 RapidOCR 生成并绑定 PNG SHA。角色 `subject_id`、history ID、显示名和 role 映射只从 manifest 的
+`real_character_provenance` 派生。输出目录可在仓库外任意指定，且默认拒绝覆盖；失败留下的半成品也应保留，重试时
+另开目录。
+
+生成结果固定叫 `promo-visual-audit-spec.PENDING.json`，其中 reviewer 明示未审、章节列表为空、五项 attestation
+全部为 false；因此直接交给 audit 只会得到 RED。审阅者必须以 1× 完整观看全部 captured clip、检查每张 still，
+再把 PENDING 文件**另存**为新的 SIGNED spec，填入真实签核信息。之后才运行：
+
+```powershell
+$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
+$auditReport = "$capture\release\promo-visual-audit-report.json"
+
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
+  --spec $auditSpec `
+  --output $auditReport
+
+$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
+  --report $auditReport `
+  --expected-report-sha256 $auditSha
+```
+
+spec 使用绝对路径和声明的 `bytes` / `sha256`，至少包含：
+
+- `release_manifest`：刚生成的正式 manifest 文件记录；审计与人工签核都绑定它的 SHA-256。
+- `bookmark`：CK3 书签 ID 与开局日期。
+- `historical_characters`：每个主角/考核者/受评者的稳定 `subject_id`、原版 `history_id`、显示名、
+  `roles`、`origin="ck3_history_database"`、`temporary_or_generated=false`，以及包含该顶层 history key 的
+  exact-build 原版角色文件记录。只写一个名字或运行时数字 ID 不算历史来源证明。
+- `frame_geometry` 与 `sampling_interval_seconds`：当前门禁要求间隔大于 0 且不超过 1 秒。
+- `evidence`：每个入片 `video_clip` 从起点到终点连续覆盖的全屏 PNG + OCR JSON；每张 `still` 必须用 manifest
+  中的原 PNG 本身。每条证据声明 `[0,0,width,height]` 全屏 OCR 区域、源素材 SHA、章节 ID、角色 subject ID
+  和视频时间戳。审计器会用 ffprobe 核对真实视频、分辨率和时长，再用 ffmpeg 从该 raw 的同一时间戳自行解码
+  RGB 帧，并要求它与提交 PNG 逐像素一致；不能拿旧截图或另造干净图顶替。OCR JSON 根必须为对象，包含
+  `image_sha256` 绑定该 PNG，并在 `items` / `results` / `ocr` 之一保存识别数组。正常流程由
+  `prepare_promo_visual_audit.py` 自动产出这些记录，不再手工抄路径或哈希。
+- `manual_signoff`：逐章完整播放后的签核人、带时区时间、manifest SHA、全部实机章节，以及五项 true 证明：
+  `historical_characters_only`、`no_generated_official_name_visible`、`fixture_test_ui_absent`、`full_clip_reviewed`、
+  `no_crop_mask_or_redaction`。
+
+内建禁词至少包括“361制实机验收”“开始361制实机验收”“验收上司给我的绩效”“验收免费京察规划器”
+“验收规划器”“演示政策卡”“演示触发器”“切换至宋帝并开考”“打开此卡”、`FIXTURE-LIVE`、`ZGA`、`zga_` 与
+`zga.`；spec 只能追加禁词，不能移除默认表。扫描会先做 Unicode/大小写/空白归一化，并把相邻 OCR 项连接，
+所以测试文案被 OCR 拆成两段也会 RED。报告默认拒绝覆盖；`verify` 会重新读取 spec、manifest、原版 history、
+每张 PNG 和每份 OCR，复算全部 SHA 与确定性 evaluation。正式发布记录必须保存报告绝对路径和报告 SHA-256。
+
+自动 OCR 仍可能漏字，因此 GREEN 报告同时要求逐章人工完整观看；现有 `validate_promo_video.py --sample-dir`
+生成的五张均匀抽帧只是字幕/构图抽检，不能替代该签核。命中测试 UI 的旧 take、OCR 和 RED 报告继续保留，
+不得通过裁边、打码或遮罩重新声明为干净素材。
+
+## 过程素材保留
+
+构建目录按 manifest SHA 与 `take-id` 分开。每一条旁白 cue 会保留：
+
+- `cue-*.zh-CN.txt`
+- `cue-*.zh-CN.mp3`
+- `cue-*.edge-tts.json`
+- 合并旁白 MP3 与 concat 清单
+- 双语 ASS
+- 生成/叠加帧
+- 每章 MP4 与构建指纹
+- 全片 concat 清单、MP4 和 `.video.json`
+
+正式 manifest 与 provenance 保存在 capture run 的外部 artifact 目录，不进 Git；原始 MKV、失败 take、
+OCR、静帧、报告和 timeline 都原样保留。输出文件已存在时，manifest 投影器直接拒绝覆盖；视频构建明确传
+`--archive-existing` 时，旧 MP4 与 sidecar 会移动到输出目录的
+`superseded/<timestamp>/`，不会删除。QA 抽帧目录也必须是新目录，防止旧抽检被覆盖。
+
+## 正式验收
+
+```powershell
+& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
+  --manifest <external-capture-run>\release\zg361-promo-release-manifest.json `
+  --stage release `
+  --video <candidate.mp4> `
+  --sample-dir <new-qa-directory> `
+  --visual-audit-report <promo-visual-audit-report.json> `
+  --expected-audit-sha256 <64-hex-report-sha256>
+```
+
+门禁要求：零占位、首章为生成标题卡、每个外部素材使用绝对路径并声明正确的 bytes/SHA-256、全部实机素材声明已排除 CK3 loading、H.264/yuv420p、AAC 48 kHz
+双声道、`zho` 音轨标签、2560×1440、短于 20 分钟、Xiaoxiao voice 绑定、简中/英文双语 ASS 与视频/字幕
+哈希一致，并且同一 manifest 的独立画面审计报告已通过带报告 SHA 的 `verify`。零占位只表示没有“待补”
+假画面，并不表示每项都有独立实录；生成边界卡必须继续可见。抽帧仍需人工检查字幕有没有遮住关键 GUI，
+以及笑点是否压住了信息。

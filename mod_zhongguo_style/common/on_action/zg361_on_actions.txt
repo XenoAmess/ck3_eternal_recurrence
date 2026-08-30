@@ -1,0 +1,12 @@
+﻿# ZhongGuo 361 Style — on_action hooks
+# 只加 on_actions 条目扩展 yearly_playable_pulse，不碰原版 effect/events（覆盖不合并坑）
+
+yearly_playable_pulse = {
+	on_actions = { zg361_annual_review_on_action }
+}
+
+zg361_annual_review_on_action = {
+	effect = {
+		zg361_jingcha_annual_dispatch_effect = yes
+	}
+}

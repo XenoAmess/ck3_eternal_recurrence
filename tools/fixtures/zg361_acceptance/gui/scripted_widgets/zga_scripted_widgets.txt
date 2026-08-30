@@ -1,0 +1,2 @@
+﻿gui/zga_bridge.gui = zga_bridge_window
+

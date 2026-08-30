@@ -1,0 +1,36 @@
+﻿zga_initialize_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = zga_initialize_pending
+		NOT = { has_character_flag = zga_initialized }
+	}
+	effect = { zga_initialize_effect = yes }
+}
+
+zga_prepare_player_review_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = zga_prepare_player_review
+		NOT = { has_character_flag = zga_waiting_for_scoreboard }
+	}
+	effect = { zga_prepare_player_review_effect = yes }
+}
+
+zga_verify_player_review_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = zga_waiting_for_scoreboard
+		has_variable = zg361_sb_m_01_char
+		NOT = { has_character_flag = zga_player_review_verified }
+	}
+	effect = { zga_verify_player_review_effect = yes }
+}
+
+zga_personal_result_gui = {
+	scope = character
+	is_shown = {
+		has_character_flag = zga_personal_result_pending
+		has_character_flag = zga_player_review_verified
+	}
+	effect = { zga_personal_result_effect = yes }
+}

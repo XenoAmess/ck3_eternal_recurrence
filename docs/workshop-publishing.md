@@ -48,6 +48,14 @@ Steam。仓库源、正式 manifest 与 GitHub ZIP 仍必须保持无 ID；上�
 
 ## 标准流程
 
+2026-08-29 复核 Valve 官方合同：新物品必须让 `publishedfileid` 缺省或为 `0`，已有 ID 才表示更新；标题、描述、
+可见性、内容目录和预览图都属于同一次 item update，提交后没有取消接口。新物品还可能因尚未接受 Workshop
+Legal Agreement 而保持隐藏。因此本项目首次发布继续坚持“先创建全新隐藏物品 → 记录返回 ID → 新鲜缓存复验 →
+由物品所有者确认协议后再公开”；若出现新的法律协议确认页，自动流程必须停在该页等待所有者处理，绝不代为接受，
+也绝不拿其他产品 ID 试上传。来源：
+[Steam Workshop Implementation Guide](https://partner.steamgames.com/doc/features/workshop/implementation?l=english)、
+[ISteamUGC](https://partner.steamgames.com/doc/api/ISteamUGC)。
+
 1. 运行 L0：`py tools/validate_static.py`、计分 reference vectors 和
    `py tools/build_release.py --check`。这些步骤不会启动 CK3。
 2. 开发候选运行 `py tools/build_release.py`；正式版本先保证 clean worktree 且 HEAD 有与 descriptor 一致的 `v<semver>` tag，再运行 `py tools/build_release.py --release`。1.0.0 输出 staging、`-v1.0.0.manifest.json` 和 deterministic `-v1.0.0.zip`，命令同时打印 manifest/ZIP SHA-256。

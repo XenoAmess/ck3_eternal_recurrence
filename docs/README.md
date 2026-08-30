@@ -2,6 +2,8 @@
 
 本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”“未查明”或“架构预研”的项目外，结论均经过 1.19.0.6 日志或游戏内验证；预研文档以各自声明的证据等级为准，不受这项默认实测声明覆盖。
 
+- [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
+
 ## 机制篇
 
 - [cross-save-persistence.md](cross-save-persistence.md) — **跨存档全局存储的完整方案**（本项目核心）。通道排查结论、教程位机制、读写架构、分层阈值编码、限制与扩展
@@ -14,6 +16,7 @@
 - [autonomous-player-agent.md](autonomous-player-agent.md) — 已启动的长期工程：不作弊的 CK3 高分自主玩家、production 单 mod 隔离、视觉驱动、经验记忆与持续多局优化；实现位于 `ck3_autonomous_player/`
 - [ck3-local-api-mcp-feasibility.md](ck3-local-api-mcp-feasibility.md) — CK3 双后端与 MCP 高效模式：OCR/键鼠 baseline、日志/`run` 数据 Mod 桥、薄 DLL + named pipe、原生 command 逆向锚点与逐能力 hybrid 迁移路线
 - [ck3-native-version-adapters.md](ck3-native-version-adapters.md) — CK3 EXE 升级时的 native 失效语义、稳定 Game API/逐版本 ABI 边界、adapter registry、逐 capability 迁移与最小化实机验收契约
+- [ck3-native-title-map-navigation-contract.md](ck3-native-title-map-navigation-contract.md) — **CK3 1.19.0.6 fixture-live**：MCP 按 stable landed-title key 解析头衔并居中地图的输入、typed result、camera settled ACK、错误语义、零 OCR/键鼠 fallback 与实机证据边界
 - [ck3-native-ai/](ck3-native-ai/README.md) — CK3 1.19.0.6 原生 AI 决策树：军队控制、战斗预测与真实结算、宣战、白和/投降，以及对应的玩家 counter-policy；所有主题均含证据等级、版本边界和 Mermaid 图
 - [ck3-native-settlement-contract.md](ck3-native-settlement-contract.md) — 一代制死亡结算的 Mod→native 投影、serial/ready 发布与纪录持久化边界
 - [ck3-agent-one-life-terminal.md](ck3-agent-one-life-terminal.md) — Python/MCP 一代制终局状态机、纪录位稳定等待、旧 DLL 兼容与跨局成就归一

@@ -1,0 +1,49 @@
+﻿# ZhongGuo 361 Style — character modifiers
+# 图标复用原版贤能品级 icon（icon_merit_00~09，原版 modifier_icons 已注册）
+
+# 3.75 超出预期（限时 1 年，年度考核自动刷新）
+zg361_grade_375 = {
+	icon = icon_merit_08
+	diplomacy = 1
+	liege_opinion = 15
+	vassal_opinion = 10
+	monthly_merit_mult = 0.3
+}
+
+# 3.5 符合预期
+zg361_grade_35 = {
+	icon = icon_merit_04
+	liege_opinion = 3
+}
+
+# 3.25 待改进
+zg361_grade_325 = {
+	icon = icon_merit_01
+	liege_opinion = -20
+	monthly_merit_mult = -0.5
+	monthly_prestige = -0.5
+	monthly_treasury_from_salary_budget_mult = -0.25
+}
+
+# 绩效改进计划（PIP）
+zg361_pip = {
+	icon = icon_merit_00
+	stress_gain_mult = 0.1
+	monthly_prestige = -0.25
+}
+
+# 降岗留用（含减俸 50%，直接砍俸禄预算分成，不动契约义务等级）
+zg361_demoted = {
+	icon = icon_merit_02
+	monthly_prestige = -0.25
+	vassal_opinion = -5
+	monthly_treasury_from_salary_budget_mult = -0.5
+}
+
+# 晋升通道（连续两次 3.75）
+zg361_promotion_track = {
+	icon = icon_merit_09
+	diplomacy = 1
+	character_max_merit_level_add = 1
+	monthly_prestige = 0.25
+}

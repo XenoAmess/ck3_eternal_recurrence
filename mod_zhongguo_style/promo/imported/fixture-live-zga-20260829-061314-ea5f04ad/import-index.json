@@ -1,0 +1,60 @@
+{
+  "format_version": 1,
+  "kind": "zg361_acceptance_still_import",
+  "created_utc": "2026-08-28T22:31:32.085215+00:00",
+  "source_artifact": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\runs\\zga_20260829_061314_ea5f04ad",
+  "source_result": "GREEN",
+  "source_cell_result": "GREEN",
+  "classification": "fixture-live acceptance stills; not a clean promotional recording",
+  "loading_excluded": true,
+  "files": [
+    {
+      "relative_path": "cell/06_calibration_event.png",
+      "source_sha256": "8e1813d538be9f95736d9f07eb88b7bcb719320d421eb37dfbcfce649bd65aab",
+      "copied_sha256": "8e1813d538be9f95736d9f07eb88b7bcb719320d421eb37dfbcfce649bd65aab",
+      "bytes": 4693773
+    },
+    {
+      "relative_path": "cell/07_result_summary.png",
+      "source_sha256": "b020a11ea9e8e10db7aaace83dff11bbde05cb9b2af6a64b3aa9ce55d92b2f7d",
+      "copied_sha256": "b020a11ea9e8e10db7aaace83dff11bbde05cb9b2af6a64b3aa9ce55d92b2f7d",
+      "bytes": 4770705
+    },
+    {
+      "relative_path": "cell/08_scoreboard_panel_raw.png",
+      "source_sha256": "4b1d7157d3b999f2041bd840dbdec841b94e7b60f9aef7aa8fd99011b0337ee7",
+      "copied_sha256": "4b1d7157d3b999f2041bd840dbdec841b94e7b60f9aef7aa8fd99011b0337ee7",
+      "bytes": 3225633
+    },
+    {
+      "relative_path": "cell/09_jingcha_mandate_event.png",
+      "source_sha256": "9f7bb4ee382677c035d6256da3d5c113959e2026b3a1ef59fce33d22ae53cb06",
+      "copied_sha256": "9f7bb4ee382677c035d6256da3d5c113959e2026b3a1ef59fce33d22ae53cb06",
+      "bytes": 4668292
+    },
+    {
+      "relative_path": "cell/09_jingcha_planner.png",
+      "source_sha256": "d4e3e3bdaf88e5817f42dc89f5663e85459a49eb67eeba66fd5b31a22ffe3cca",
+      "copied_sha256": "d4e3e3bdaf88e5817f42dc89f5663e85459a49eb67eeba66fd5b31a22ffe3cca",
+      "bytes": 5015040
+    },
+    {
+      "relative_path": "cell/10_superior_result.png",
+      "source_sha256": "93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f",
+      "copied_sha256": "93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f",
+      "bytes": 5045492
+    },
+    {
+      "relative_path": "report.json",
+      "source_sha256": "dccf8b87d990ba3ed3074fae3391e5004e6cd8b07a5c80750bc344e7f9024c25",
+      "copied_sha256": "dccf8b87d990ba3ed3074fae3391e5004e6cd8b07a5c80750bc344e7f9024c25",
+      "bytes": 208730
+    },
+    {
+      "relative_path": "evidence-index.json",
+      "source_sha256": "b3f88f34a1a84db2414339b01ae10246c59dc8390a46a29a2286904f9ee38df7",
+      "copied_sha256": "b3f88f34a1a84db2414339b01ae10246c59dc8390a46a29a2286904f9ee38df7",
+      "bytes": 12678
+    }
+  ]
+}

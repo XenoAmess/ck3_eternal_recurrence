@@ -95,6 +95,10 @@ add_library(xar_ck3_bridge SHARED
   src/startup_particle2_null_guard_v1.cpp
   src/startup_particle2_stage_recorder_v1.cpp
   src/tactical_daily_sentinel_v1.cpp
+  src/title_map_navigation_v1.cpp
+  src/title_map_navigation_v1_camera.cpp
+  src/title_map_navigation_v1_mailbox.cpp
+  src/title_map_navigation_v1_serializer.cpp
   src/war_entry_assessments_v1.cpp
   src/war_entry_assessments_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
@@ -650,6 +654,103 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/campaign_root_context_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/campaign_root_context_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_title_map_navigation_v1_test
+    src/title_map_navigation_v1.cpp
+    src/title_map_navigation_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_title_map_navigation_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_title_map_navigation_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_title_map_navigation_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_title_map_navigation_v1
+    COMMAND xar_ck3_title_map_navigation_v1_test
+  )
+
+  add_executable(xar_ck3_title_map_navigation_v1_camera_test
+    src/title_map_navigation_v1.cpp
+    src/title_map_navigation_v1_camera.cpp
+    src/title_map_navigation_v1_camera_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_title_map_navigation_v1_camera_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_title_map_navigation_v1_camera_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_title_map_navigation_v1_camera_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_title_map_navigation_v1_camera
+    COMMAND xar_ck3_title_map_navigation_v1_camera_test
+  )
+
+  add_executable(xar_ck3_title_map_navigation_v1_serializer_test
+    src/title_map_navigation_v1.cpp
+    src/title_map_navigation_v1_camera.cpp
+    src/title_map_navigation_v1_serializer.cpp
+    src/title_map_navigation_v1_serializer_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_title_map_navigation_v1_serializer_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_title_map_navigation_v1_serializer_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_title_map_navigation_v1_serializer_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_title_map_navigation_v1_serializer
+    COMMAND xar_ck3_title_map_navigation_v1_serializer_test
+  )
+
+  add_executable(xar_ck3_title_map_navigation_v1_mailbox_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/title_map_navigation_v1.cpp
+    src/title_map_navigation_v1_mailbox.cpp
+    src/title_map_navigation_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_title_map_navigation_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_title_map_navigation_v1_mailbox_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_title_map_navigation_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_title_map_navigation_v1_mailbox
+    COMMAND xar_ck3_title_map_navigation_v1_mailbox_test
   )
 
   add_executable(xar_ck3_loaded_feature_manifest_v1_test

@@ -445,7 +445,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_nonary == nullptr &&
       environment.permitted_executor_denary == nullptr &&
       environment.permitted_executor_undenary == nullptr &&
-      environment.permitted_executor_duodenary == nullptr) {
+      environment.permitted_executor_duodenary == nullptr &&
+      environment.permitted_executor_thirdenary == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -586,6 +587,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_undenary;
   mailbox.permitted_executor_duodenary =
       environment.permitted_executor_duodenary;
+  mailbox.permitted_executor_thirdenary =
+      environment.permitted_executor_thirdenary;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -729,7 +732,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_nonary != nullptr ||
        mailbox.permitted_executor_denary != nullptr ||
        mailbox.permitted_executor_undenary != nullptr ||
-       mailbox.permitted_executor_duodenary != nullptr) &&
+       mailbox.permitted_executor_duodenary != nullptr ||
+       mailbox.permitted_executor_thirdenary != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -741,7 +745,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_nonary &&
       executor != mailbox.permitted_executor_denary &&
       executor != mailbox.permitted_executor_undenary &&
-      executor != mailbox.permitted_executor_duodenary) {
+      executor != mailbox.permitted_executor_duodenary &&
+      executor != mailbox.permitted_executor_thirdenary) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

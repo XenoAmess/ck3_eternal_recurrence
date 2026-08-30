@@ -1,0 +1,1082 @@
+{
+  "1": {
+    "title_en": "Itemized KPI Evidence Sheet",
+    "option_a_cn": "建立分项证据单，逐项冻结产出、效率、增长、协作与价值观案例，并承担填报和复核工时。",
+    "option_a_en": "Build an itemized evidence sheet, freeze cases for output, efficiency, growth, collaboration, and values, and fund the filing and review work.",
+    "option_b_cn": "凭总分和上司印象当场定档，迅速出榜，但让漏项与错项失去可追溯依据。",
+    "option_b_en": "Set the rating immediately from the total score and the superior's impression, publishing fast while leaving omissions and errors hard to trace.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "2": {
+    "title_en": "Annual OKR Direction and KPI Compact",
+    "option_a_cn": "按岗位冻结方向、基线与正常目标，只允许危机时凭事实重定一次，承担持续跟踪成本。",
+    "option_a_en": "Freeze role-specific direction, baselines, and normal targets, allowing one evidence-backed crisis reset at the cost of continuous tracking.",
+    "option_b_cn": "给各单位统一压上进取目标并按原线追责，以短期冲刺换增长，但诱发刷指标和隐瞒风险。",
+    "option_b_en": "Impose aggressive targets across units and hold the original line, buying a short sprint at the risk of metric gaming and concealed trouble.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "3": {
+    "title_en": "Mid-Cycle Check-in and Target Reset",
+    "option_a_cn": "安排期中辅导，记录风险、资源与一次有据可查的危机重设，花管理工时换取可解释终评。",
+    "option_a_en": "Run a mid-cycle coaching review, record risks and resources, and permit one documented crisis reset, spending management time for an explainable final rating.",
+    "option_b_cn": "维持年初目标并限期追赶，省去重设流程，却可能把战略变化算成个人失败并逼人迟报坏消息。",
+    "option_b_en": "Keep the opening targets and demand a deadline catch-up, avoiding reset work but risking personal blame for strategy changes and delayed bad-news reporting.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "4": {
+    "title_en": "Self-Assessment and Perception Gap",
+    "option_a_cn": "要求自评档位附代表性成果，由上司逐项回应认知差，承担谈话成本并留下可复核记录。",
+    "option_a_en": "Require a self-rating backed by representative results and have the superior answer each perception gap, accepting discussion cost for a reviewable record.",
+    "option_b_cn": "只收一页自我推介并据夸大或谦抑快速修正主观分，省时但把表达能力误当真实绩效。",
+    "option_b_en": "Take a one-page self-pitch and rapidly adjust the subjective score for boasting or modesty, saving time while confusing presentation with performance.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "5": {
+    "title_en": "Role-Specific Scorecards",
+    "option_a_cn": "为治理、军事、财政和管理岗位预先冻结不同权重，再在同一直属池中校准，承担维护多套量表的成本。",
+    "option_a_en": "Freeze distinct weights for governance, military, fiscal, and management roles before calibrating the same direct cohort, accepting the cost of multiple scorecards.",
+    "option_b_cn": "所有岗位共用一张结果榜快速强排，便于执行，却会系统性牺牲难量化岗位并放大错配。",
+    "option_b_en": "Force-rank every role on one results table for fast execution, systematically disadvantaging hard-to-measure work and amplifying role mismatch.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "6": {
+    "title_en": "Starting-Point and Difficulty Adjustment",
+    "option_a_cn": "冻结接任基线、资源禀赋和岗位难度，只做有上限的小幅校正，花审计工时换横向可比。",
+    "option_a_en": "Freeze inherited baselines, resources, and role difficulty and allow only capped adjustments, spending audit work to make comparisons fairer.",
+    "option_b_cn": "只看期末绝对结果并对富庶单位加码，出榜更快，却可能奖励吃老本、惩罚收拾残局。",
+    "option_b_en": "Judge only absolute year-end results and push richer units harder, producing a fast table while rewarding inherited wealth and punishing clean-up work.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "7": {
+    "title_en": "Back-to-Back 360 Review Invitations",
+    "option_a_cn": "只邀请有真实协作的少数评价者，要求具体案例并交叉核验，承担邀评与去重工时。",
+    "option_a_en": "Invite a small set of genuine collaborators, require concrete cases, and cross-check them, paying the administrative cost of solicitation and deduplication.",
+    "option_b_cn": "广撒邀评并立刻按高低票加权，迅速放大声量，却给互抬、报复和模板灌水留下空间。",
+    "option_b_en": "Solicit broadly and weight high and low votes immediately, amplifying signal quickly while inviting reciprocal praise, retaliation, and boilerplate feedback.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "8": {
+    "title_en": "Rater Leniency and Peer Credibility",
+    "option_a_cn": "维护评价者历史均值、方差、翻案率与命中率，并据此校正权重，承担长期数据治理成本。",
+    "option_a_en": "Maintain each rater's historical mean, variance, overturn rate, and accuracy and calibrate their weight, accepting long-term data-governance cost.",
+    "option_b_cn": "本轮照单全收原始互评分，待申诉再处罚失真者，能迅速结算但先让手松手紧左右名次。",
+    "option_b_en": "Accept raw peer ratings this cycle and punish distorters only after appeals, settling quickly while lenient and harsh raters shape the ranking first.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "9": {
+    "title_en": "Calibration Meeting Dashboard",
+    "option_a_cn": "在驾驶舱并列展示 KPI、价值观、目标、360、趋势与申诉证据，所有翻档都以配额中性的交换留痕。",
+    "option_a_en": "Display KPI, values, goals, 360 feedback, trends, and appeal evidence together, and record every rating move as a quota-neutral swap.",
+    "option_b_cn": "只按当前总分和剩余配额在一场会上拍板，快速关榜，但边界人物与隐形贡献容易被挤掉。",
+    "option_b_en": "Close the table in one meeting using current totals and remaining quotas, moving fast while squeezing out boundary cases and invisible contributions.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "10": {
+    "title_en": "Assigning the C and Protecting a Subordinate",
+    "option_a_cn": "按冻结硬证据确定末位；若护人则由经理公开支付威望和下轮管理 KPI，保留团队信任但承担制度债。",
+    "option_a_en": "Choose the bottom rating from frozen evidence; if the manager protects someone, charge prestige and next-cycle management KPI openly, preserving trust at a real institutional cost.",
+    "option_b_cn": "把 C 直接压给新人或边缘人以满足配额，立即完成分布，却积累申诉、怨恨和流失风险。",
+    "option_b_en": "Assign the C directly to a newcomer or peripheral member to satisfy the quota, closing distribution now while accumulating appeal, resentment, and attrition risk.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "11": {
+    "title_en": "Skip-Level Calibration and HR Steward Seat",
+    "option_a_cn": "让隔级上司只审分布、极端证据和程序，并把缺证榜单退回直属经理重做，支付一次复会成本。",
+    "option_a_en": "Have the skip-level superior inspect distribution, extreme evidence, and process only, returning weak cases to the direct manager at the cost of another meeting.",
+    "option_b_cn": "由隔级席当场点改孙级档位以快速纠偏，省去退回流程，却破坏直属评分权并制造越级寻租。",
+    "option_b_en": "Let the skip-level seat directly edit grandchildren's ratings for a quick correction, bypassing rework while eroding direct-manager authority and inviting lobbying.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "12": {
+    "title_en": "Conflict Disclosure and Recusal",
+    "option_a_cn": "校准前披露亲族、恩怨与恩主关系，由独立复核席替代回避者，承担组席和延时成本。",
+    "option_a_en": "Disclose kinship, intimacy, hostility, and sponsorship before calibration and replace recused raters with an independent seat, accepting staffing and delay costs.",
+    "option_b_cn": "允许经理公开坚持或暗中操作以迅速保人踩人，短期掌控结果，却显著提高翻案和自身扣分风险。",
+    "option_b_en": "Let the manager insist or maneuver privately to protect or punish someone quickly, controlling the result while sharply raising reversal and personal-rating risk.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "13": {
+    "title_en": "Transparent, Tiered, or Black-Box Publication",
+    "option_a_cn": "向本人开放冻结理由和申诉路径，向团队公开档位与汇总口径，并为敏感互评建立权限隔离。",
+    "option_a_en": "Give each subject frozen reasons and an appeal path, publish ratings and aggregate rules to the team, and administer access controls for sensitive peer feedback.",
+    "option_b_cn": "只口头告知本人最终档位并封闭理由，能压低公开冲突，却把猜忌、向上管理和申诉推高。",
+    "option_b_en": "Tell each person only the final rating and seal the reasons, reducing open conflict quickly while increasing suspicion, upward management, and appeals.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "14": {
+    "title_en": "Performance Appeal Dossier",
+    "option_a_cn": "按错误类型收冻结证据，先沟通再独立复核，并逐项登记重校准、三笔即时退款与俸禄止扣，承担案卷工时。",
+    "option_a_en": "Collect frozen evidence by error type, require discussion before independent review, and reconcile recalibration, all three immediate refunds, and the salary-cut termination item by item.",
+    "option_b_cn": "由原上司当场驳回或凭印象快速改档，立刻止争，却可能二次处罚、错退钱并坐实利益冲突。",
+    "option_b_en": "Let the original superior reject or revise the rating on the spot, ending the dispute quickly while risking duplicate penalties, bad refunds, and confirmed conflicts.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "15": {
+    "title_en": "PIP Improvement Charter",
+    "option_a_cn": "与当事人协商其权限内的可验证里程碑、支持与复盘点，花资源换一次真正可完成的改进机会。",
+    "option_a_en": "Negotiate verifiable milestones, support, and checkpoints within the subject's authority, spending resources on a genuinely achievable improvement chance.",
+    "option_b_cn": "直接下达高压里程碑和硬期限，并把拒绝记为重大负面证据，见效快但更像预设退出。",
+    "option_b_en": "Impose high-pressure milestones and a hard deadline and record refusal as major negative evidence, acting fast while making exit look predetermined.",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "16": {
+    "title_en": "PIP Support Budget",
+    "option_a_cn": "为 PIP 配导师、临时治理资源和定期关注，并记录每项投入，承担预算以检验真实改善。",
+    "option_a_en": "Fund a mentor, temporary governance resources, and scheduled attention for the PIP and record every input, paying budget to test real improvement.",
+    "option_b_cn": "只给指标不给资源并按期硬验收，节省当期预算，却让失败成为申诉证据并反噬经理管理分。",
+    "option_b_en": "Set targets without resources and enforce the deadline, saving current budget while turning failure into appeal evidence and a hit to the manager's score.",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "17": {
+    "title_en": "Bottom-Performer Disposition Ladder",
+    "option_a_cn": "首次低档依次沟通、PIP、合法调岗，连续失败后才降权或释放 HC，承担培养与空缺规划成本。",
+    "option_a_en": "Use discussion, PIP, and lawful reassignment for a first low rating, reducing authority or releasing HC only after repeated failure and paying the development cost.",
+    "option_b_cn": "对末位立即冻结晋升、降岗或撤任以提升人才密度，快速腾位，却制造恐惧、空岗与集中申诉。",
+    "option_b_en": "Immediately freeze promotion, demote, or remove the bottom performer to raise talent density, opening capacity fast while creating fear, vacancies, and concentrated appeals.",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "18": {
+    "title_en": "Personal Record and Fourfold Settlement",
+    "option_a_cn": "结算时冻结档位、名次、上司、理由，以及国库、个人金币、贤能三笔即时罚没与一年俸禄减成，逐项标记支付、退款和止扣状态。",
+    "option_a_en": "Freeze rating, rank, superior, reasons, the three immediate treasury, personal-gold, and merit charges, and the one-year salary cut at settlement, marking every payment, refund, and termination separately.",
+    "option_b_cn": "按打开告身时的现值合并扣缴并即时展示，流程更短，却会因换上司、余额变化或重开而错算重算。",
+    "option_b_en": "Combine charges from live values when the record is opened and display them immediately, shortening the flow while risking errors after superior or balance changes and repeated opens.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "19": {
+    "title_en": "Promotion Eligibility Gates",
+    "option_a_cn": "逐项核验连续高绩效、价值观、PIP、任职年限和合法空缺后才允许提包，承担候选审查成本。",
+    "option_a_en": "Verify sustained high performance, values, PIP status, tenure, and a lawful vacancy before opening a promotion case, accepting candidate-review cost.",
+    "option_b_cn": "由 sponsor 对本轮明星跳过部分门槛直接提名，迅速留人，却可能制造空心晋升和旧账争议。",
+    "option_b_en": "Let a sponsor nominate this cycle's star past some gates to retain them quickly, risking hollow promotion and disputes over prior history.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "20": {
+    "title_en": "Promotion Packet and Cross-Unit Defense",
+    "option_a_cn": "用冻结治理成果、团队影响和方法沉淀组成晋升包，由跨部门评委答辩并记录边界判断。",
+    "option_a_en": "Build the promotion packet from frozen governance results, team impact, and reusable methods, then record a cross-unit panel's boundary judgment.",
+    "option_b_cn": "让恩主主持一次口头陈述快速拍板，表达出色者更易过关，却可能让包装压过持续政绩。",
+    "option_b_en": "Let a sponsor drive a single oral pitch and decide quickly, favoring strong presentation while risking packaging outranking sustained results.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "21": {
+    "title_en": "Bonus and Salary Matrix",
+    "option_a_cn": "事前公布档位—奖金—调薪矩阵并锁定总池，真实拨款兑现头档，承担当期财政压力。",
+    "option_a_en": "Publish the rating-to-bonus-and-raise matrix in advance and lock the total pool, funding top ratings for real at a current fiscal cost.",
+    "option_b_cn": "把有限资金集中给少数头档并推迟固定调薪，迅速强化信号，却积累欠赏、倒挂和被挖风险。",
+    "option_b_en": "Concentrate limited cash on a few top ratings and defer base-pay adjustments, sharpening the signal quickly while building pay debt, inversion, and poaching risk.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "22": {
+    "title_en": "Soft Headcount Budget",
+    "option_a_cn": "按团队成果、财政与空缺制定年度招募、培养和补员预算，逐项追踪名额用途与回收。",
+    "option_a_en": "Set an annual recruiting, development, and backfill budget from team results, finances, and vacancies, tracking each slot through use and recovery.",
+    "option_b_cn": "按当前压力和上司偏好临时增编或冻结，能迅速支援重点，却让低曝光团队长期缺人并诱发占坑。",
+    "option_b_en": "Expand or freeze capacity ad hoc from current pressure and superior preference, reinforcing priorities fast while starving low-visibility teams and encouraging slot hoarding.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "23": {
+    "title_en": "HC Defense and Team Return on Investment",
+    "option_a_cn": "用目标完成、翻案、流失和财政效率答辩 HC，并登记承诺供下轮回写，承担年度复核工时。",
+    "option_a_en": "Defend HC with goal delivery, reversals, attrition, and fiscal efficiency and record commitments for next-cycle review, accepting annual review work.",
+    "option_b_cn": "凭紧急故事和关系当场借调或加编，马上解压，却在未兑现时放大 HC 信用与倦怠风险。",
+    "option_b_en": "Borrow or add capacity immediately from urgency and relationships, relieving pressure now while magnifying HC-credit and burnout risk if promises fail.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "24": {
+    "title_en": "Internal Mobility Bargaining",
+    "option_a_cn": "为转岗冻结旧履历、建立新基线并约定交接与 backfill，花时间给错岗者和明星合法流动路径。",
+    "option_a_en": "Freeze prior history, set a new baseline, and agree handoff and backfill for transfers, spending time on a lawful path for mismatches and stars.",
+    "option_b_cn": "原上司立即卡人或新上司抢人，短期保住或获得产出，却留下雪藏、空缺和管理信誉债。",
+    "option_b_en": "Let the old manager block or the new manager seize the employee immediately, preserving or gaining output now while creating hoarding, vacancy, and reputation debt.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "25": {
+    "title_en": "Poaching High Performers and Counteroffers",
+    "option_a_cn": "只对有合法空缺且晋升停滞的连续头档发有成本的书面邀请，并让原上司用真实职位或加俸回应。",
+    "option_a_en": "Make costed written offers only to sustained top performers with stalled advancement and a lawful vacancy, requiring the old manager to answer with a real role or pay.",
+    "option_b_cn": "广挖可见明星并用晋升口头承诺抢人，迅速补强，却推高薪酬、空心承诺和团队报复。",
+    "option_b_en": "Raid visible stars with verbal promotion promises to strengthen quickly, driving pay inflation, hollow commitments, and inter-team retaliation.",
+    "profile": "promotion",
+    "reference_choice": "c"
+  },
+  "26": {
+    "title_en": "Real Contribution and Superior Visibility Ledgers",
+    "option_a_cn": "分别冻结真实贡献与上司可见度，并用隔级访谈补查低曝光成果，承担额外核证工时。",
+    "option_a_en": "Freeze real contribution and superior visibility separately and use skip-level interviews to recover low-visibility work, accepting extra verification effort.",
+    "option_b_cn": "按本轮汇报质量和关系热度快速分配主观分，立刻奖励会展示者，却让空心材料暂时胜过治理。",
+    "option_b_en": "Allocate subjective points quickly from this cycle's presentation quality and relationship heat, rewarding showmanship now while letting hollow material beat governance temporarily.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "27": {
+    "title_en": "Cross-Unit Contribution Ledger",
+    "option_a_cn": "为联合项目冻结 owner、主责、协作者、救火者与 blocker，按唯一成果总量分摊并接受维护成本。",
+    "option_a_en": "Freeze owner, lead, collaborator, rescuer, and blocker roles for joint work and divide one capped outcome pool, accepting ledger maintenance cost.",
+    "option_b_cn": "由项目 owner 独占结果，其他人靠事后口供争取份额，结算迅速却鼓励截功和重复申报。",
+    "option_b_en": "Let the project owner claim the result and leave others to argue afterward, settling fast while encouraging credit capture and duplicate claims.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "28": {
+    "title_en": "Credit-Grab Arbitration and Blame Review",
+    "option_a_cn": "给成果或事故设唯一责任 ID，依据贡献账本、证人和冻结版本分责，承担听证与复盘成本。",
+    "option_a_en": "Assign a unique responsibility ID to each result or incident and apportion credit or blame from ledgers, witnesses, and frozen versions, paying for a hearing.",
+    "option_b_cn": "立即指定一个英雄或替罪羊以结束争执，快速稳定叙事，却伤害同侪信用并给错误裁决留下申诉口。",
+    "option_b_en": "Name a hero or scapegoat immediately to end the dispute, stabilizing the story fast while damaging peer trust and creating an appeal path for a bad ruling.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "29": {
+    "title_en": "Metric Gaming, Fraud, and Jingcha Audit",
+    "option_a_cn": "从真实治理基线抽查指标，记录刷数副作用并在查实时追奖问责包庇者，承担审计预算。",
+    "option_a_en": "Audit metrics against real governance baselines, record gaming side effects, and claw back rewards while charging enablers when fraud is proven.",
+    "option_b_cn": "先按亮眼税收或治安数字发分，只有爆雷才深查，能刺激短期数字，却放大延迟损失和造假收益。",
+    "option_b_en": "Reward striking tax or order numbers first and investigate only after failure, stimulating short-term figures while magnifying delayed harm and fraud payoff.",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "30": {
+    "title_en": "Resource Horse Race",
+    "option_a_cn": "给竞争团队拨小规模试点并用统一里程碑决胜，冻结预算守恒与失败回收日期，承担双试点成本。",
+    "option_a_en": "Fund small competing pilots under common milestones and freeze budget conservation and recovery dates, paying the cost of two trials.",
+    "option_b_cn": "让 sponsor 选中一队并一次性押上 HC 与预算，快速形成重点，却可能把包装失败放大为组织损失。",
+    "option_b_en": "Let a sponsor choose one team and stake HC and budget at once, creating focus quickly while magnifying a well-packaged failure into organizational loss.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "31": {
+    "title_en": "Sponsor Network",
+    "option_a_cn": "允许恩主把候选送上讨论桌，但必须披露关系、限期背书并保留硬证据门槛。",
+    "option_a_en": "Let sponsors bring candidates to the table only with disclosed ties, expiring endorsements, and intact hard-evidence gates.",
+    "option_b_cn": "让恩主直接插队晋升、HC 或复核，迅速动员权力，却把组织押在人脉与恩主存亡上。",
+    "option_b_en": "Let patrons jump promotion, HC, or review queues directly, mobilizing power fast while tying the organization to connections and patron survival.",
+    "profile": "promotion",
+    "reference_choice": "c"
+  },
+  "32": {
+    "title_en": "The Manager's Own Team Performance",
+    "option_a_cn": "用上一轮冻结的目标、京察、翻案、PIP、留才与 HC 数据考核经理，承担跨周期记账成本。",
+    "option_a_en": "Assess managers on prior-cycle frozen goals, Jingcha, reversals, PIP, retention, and HC, accepting the cost of cross-cycle accounting.",
+    "option_b_cn": "只看本轮团队排名并对拒办、低档和流失立即重罚，执行有力，却把孙级个案递归成经理罪责。",
+    "option_b_en": "Judge only the current team rank and punish skipped reviews, low ratings, and attrition immediately, enforcing hard while recursively blaming managers for grandchildren's cases.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "33": {
+    "title_en": "Manager Archetypes and Explainable Reason Codes",
+    "option_a_cn": "为数据派、护犊型等偏好建立稳定权重和理由码，并用硬证据上限约束，承担解释维护成本。",
+    "option_a_en": "Give data-driven, protective, and other manager styles stable weights and reason codes bounded by hard evidence, accepting explanation maintenance cost.",
+    "option_b_cn": "允许上司性格和关系直接压过边界证据以快速处置，人物更强烈，却让同案不同判难以复核。",
+    "option_b_en": "Let personality and relationships override boundary evidence for fast disposition, producing vivid rulers while making like cases irreproducible.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "34": {
+    "title_en": "Performance-Potential Nine-Box",
+    "option_a_cn": "用多轮冻结绩效、成长速度与岗位适配校准九宫格，并为各象限配置培养或调岗预算。",
+    "option_a_en": "Calibrate the nine-box from multi-cycle frozen performance, growth rate, and role fit, then fund development or mobility by quadrant.",
+    "option_b_cn": "依据本轮档位和天赋快速贴高潜或待退标签，便于集中资源，却让一次结果决定长期命运。",
+    "option_b_en": "Label high potentials and exits quickly from this cycle's rating and talent, focusing resources while letting one result determine a career.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "35": {
+    "title_en": "Strict, Relaxed, or Hybrid 361",
+    "option_a_cn": "采用绝对达标线加横向排名的混合制，保留分布信号但为全员达标者减轻末位处分，并承担双重校验。",
+    "option_a_en": "Use a hybrid of absolute thresholds and relative ranking, retaining distribution while softening bottom sanctions for true passers and paying for dual validation.",
+    "option_b_cn": "严格执行 3-6-1 并强制填满末位，制度最清晰、出榜最快，却在全员优秀时也制造牺牲者。",
+    "option_b_en": "Enforce strict 3-6-1 and fill every bottom slot, making the rule clear and fast while creating a sacrifice even when everyone performs well.",
+    "profile": "calibration",
+    "reference_choice": "b"
+  },
+  "36": {
+    "title_en": "Ten-Year Institution Report",
+    "option_a_cn": "逐年冻结档位、翻案、PIP、晋升、HC、奖金、流失与真实治理，再汇总十年趋势，承担长期统计成本。",
+    "option_a_en": "Freeze annual ratings, reversals, PIP, promotions, HC, bonuses, attrition, and real governance and aggregate a ten-year trend, accepting long-term reporting cost.",
+    "option_b_cn": "只公布当前榜和少数亮眼指标，立刻形成政绩叙事，却无法识别漂亮分布背后的流失与治理倒退。",
+    "option_b_en": "Publish only the current table and a few headline metrics, creating a success story quickly while hiding attrition and governance decline behind a neat distribution.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "37": {
+    "title_en": "Cross-Team Quota Trading",
+    "option_a_cn": "允许两队凭贡献、难度和历史欠账交换一个档位，并登记政治信用、资源与下轮偿还义务。",
+    "option_a_en": "Let two teams trade one rating slot using contribution, difficulty, and historical debt, recording political credit, resources, and next-cycle repayment.",
+    "option_b_cn": "禁止协商并强令各队按本地配额落档，迅速关榜，却让小队偶然末位和真实团队差异无法纠正。",
+    "option_b_en": "Ban negotiation and force each team to fill its local quota, closing quickly while leaving small-team randomness and real quality differences uncorrected.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "38": {
+    "title_en": "Small-Cohort Pooled Calibration",
+    "option_a_cn": "把小样本与同职能单位合池，或由外部席按绝对门槛暂缓强排，承担跨组协调与解释成本。",
+    "option_a_en": "Pool small samples with comparable functions or use an external absolute-threshold review, accepting cross-unit coordination and explanation cost.",
+    "option_b_cn": "在三四人内照常硬切 361 以保自主权，省去合池，却大幅提高偶然背 C、申诉和离职。",
+    "option_b_en": "Force 3-6-1 within three or four people to preserve autonomy, avoiding pooling while sharply increasing accidental Cs, appeals, and exits.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "39": {
+    "title_en": "Denominator Management and Roster Lock",
+    "option_a_cn": "校准前冻结借调、缺勤、转入和离任人员名单，任何变更都须正式理由与审计轨迹。",
+    "option_a_en": "Lock the roster of secondees, absentees, transfers, and leavers before calibration and require a formal reason and audit trail for every change.",
+    "option_b_cn": "在截止前临时移出强者或塞入弱者以填配额，能立刻保护核心，却可能触发重开校准和管理问责。",
+    "option_b_en": "Move strong people out or weak people in just before the deadline to fill quotas, protecting the core now while risking reopened calibration and managerial charges.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "40": {
+    "title_en": "Charging the C to a Leaver",
+    "option_a_cn": "按离任者实际冻结表现评级，并把组织裁撤、离职与 backfill 分账，承担真实空缺和配额压力。",
+    "option_a_en": "Rate departing staff on frozen actual performance and account separately for organizational exit and backfill, accepting the real vacancy and quota pressure.",
+    "option_b_cn": "把末位记给即将离开的人，让现团队迅速全员过关，却留下分布造假、错配补缺和人才判断失真。",
+    "option_b_en": "Charge the bottom slot to someone already leaving so the current team passes, gaining instant peace while falsifying distribution, backfill, and talent judgment.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "41": {
+    "title_en": "Protect, Include, or Sacrifice Newcomers",
+    "option_a_cn": "首轮把新人从配额中保护出来，另设爬坡目标、导师和次轮纳入日期，承担培养与老员配额压力。",
+    "option_a_en": "Protect newcomers from the first-cycle quota, set ramp goals, a mentor, and a fixed inclusion date, accepting development cost and pressure on established staff.",
+    "option_b_cn": "新人立即完整参评并优先承担末位，最快填满 C 档，却伤害导师成绩、招募口碑和新人留存。",
+    "option_b_en": "Fully rate newcomers at once and make them the first bottom-slot candidates, filling the C quota fast while damaging mentors, recruiting reputation, and retention.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "42": {
+    "title_en": "Rotating the C Across Cycles",
+    "option_a_cn": "跨周期抽查固定轮转模式，重建个人证据并调解补偿承诺，花复核工时恢复评级区分度。",
+    "option_a_en": "Audit fixed rotation patterns across cycles, rebuild individual evidence, and mediate compensation promises, spending review effort to restore differentiation.",
+    "option_b_cn": "发现疑似轮流背 C 就整组降权并立即拆约，迅速震慑合谋，却可能误伤真实波动并激化毁约怨恨。",
+    "option_b_en": "Down-weight the whole group and break the pact as soon as rotation is suspected, deterring collusion quickly while risking false positives and betrayal resentment.",
+    "profile": "calibration",
+    "reference_choice": "c"
+  },
+  "43": {
+    "title_en": "Calibration Speaking Seats and Attention Budget",
+    "option_a_cn": "预分少量发言席，要求边界候选人的书面证据并记录经理使用的注意力和政治资本。",
+    "option_a_en": "Allocate a few speaking seats in advance, require written evidence for boundary candidates, and account for the manager's attention and political capital.",
+    "option_b_cn": "允许经理为亲信持续越时争辩直到翻档，可能快速救下一人，却挤掉沉默贡献者并耗尽上司耐心。",
+    "option_b_en": "Let managers argue overtime for favorites until a rating moves, possibly saving one person fast while crowding out quiet contributors and exhausting superior patience.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "44": {
+    "title_en": "Blind First Pass and Named Reconsideration",
+    "option_a_cn": "先隐藏姓名与关系按证据初排，再实名补看岗位难度，并把两阶段差异送复核，承担双轮工时。",
+    "option_a_en": "Rank evidence without names or relationships first, then add role difficulty in a named pass and review large deltas, accepting two rounds of work.",
+    "option_b_cn": "从头实名并由熟悉业务的上司一次定序，出榜更快，却让裙带、仇怨和声量提前进入结果。",
+    "option_b_en": "Rank by name from the outset under a familiar superior, finishing faster while allowing favoritism, hostility, and visibility into the result immediately.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "45": {
+    "title_en": "No-Surprises Feedback Debt",
+    "option_a_cn": "问题出现即记录事实、辅导和下属回应，并在终评前复查改进，承担持续反馈与确认工时。",
+    "option_a_en": "Record the fact, coaching, and employee response when a problem appears and review improvement before the final rating, accepting continuous feedback work.",
+    "option_b_cn": "年终首次亮出 3.25 并以结果硬压接受，迅速结束难谈话，却显著增加翻案和经理反馈债。",
+    "option_b_en": "Reveal a 3.25 for the first time at year end and force acceptance from the result, ending the hard conversation quickly while sharply increasing reversals and feedback debt.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "46": {
+    "title_en": "Opportunity Allocation Audit",
+    "option_a_cn": "校准前审计富庶领地、关键项目、援军和曝光机会，承认不均并只做有上限的难度校正。",
+    "option_a_en": "Audit rich domains, key projects, reinforcements, and exposure before calibration, acknowledge unequal opportunity, and apply only capped difficulty adjustments.",
+    "option_b_cn": "坚持只看最终结果并快速奖励获好机会者，维持简单标准，却把偏爱循环包装成高潜和高绩效。",
+    "option_b_en": "Judge final results alone and reward those given the best opportunities, keeping a simple standard while laundering favoritism into potential and performance.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "47": {
+    "title_en": "Recency Bias and Evidence Window",
+    "option_a_cn": "周期初冻结全年等权或重大里程碑窗口，并保留早期成果供反驳，承担完整证据存储成本。",
+    "option_a_en": "Freeze a full-year or milestone evidence window at cycle start and retain early results for challenge, accepting the cost of complete evidence storage.",
+    "option_b_cn": "终评时重押最近一次成败，迅速响应新局势，却鼓励年底冲刺、藏雷并抹去早期贡献。",
+    "option_b_en": "Heavily weight the latest success or failure at final review, responding quickly while encouraging year-end sprints, hidden risks, and erased early work.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "48": {
+    "title_en": "Rater Workload and Invitation Limits",
+    "option_a_cn": "限制每人只评真实合作对象，抽查案例质量并允许无接触拒评，牺牲覆盖率保护评价工时。",
+    "option_a_en": "Limit each person to genuine collaborators, sample case quality, and allow no-contact refusals, sacrificing coverage to protect review time.",
+    "option_b_cn": "强令所有人广泛互评并按填表量算协作，快速补齐数据，却产生模板灌水、疲劳和政治邀评。",
+    "option_b_en": "Mandate broad peer review and count form volume as collaboration, filling data quickly while producing boilerplate, fatigue, and political invitations.",
+    "profile": "workload",
+    "reference_choice": "a"
+  },
+  "49": {
+    "title_en": "Sealed Submission Deadline",
+    "option_a_cn": "互评背靠背封存，迟交仅能用一次信用申请监督补交，并记录补交对证据完整性的影响。",
+    "option_a_en": "Seal peer reviews back-to-back and allow one supervised late submission paid with credibility, recording its effect on evidence completeness.",
+    "option_b_cn": "截止即永久关门、迟交全部作废，执行最干脆，却可能让真实协作无人作证并诱发抢在截止前串供。",
+    "option_b_en": "Close permanently at the deadline and void every late review, enforcing cleanly while leaving real collaboration unsupported and encouraging pre-deadline coordination.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "50": {
+    "title_en": "Mutual Praise Pacts and Betrayal",
+    "option_a_cn": "用互惠相关性筛查评价对，再抽取共同项目证据核验，承担反串谋分析与听证成本。",
+    "option_a_en": "Screen rater pairs for reciprocal correlation and sample shared-project evidence, accepting anti-collusion analysis and hearing costs.",
+    "option_b_cn": "对疑似互抬者立即双双降权或奖励先揭发者，迅速破盟，却刺激抢先背叛和虚假举报。",
+    "option_b_en": "Immediately down-weight suspected mutual boosters or reward the first accuser, breaking pacts fast while encouraging preemptive betrayal and false reports.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "51": {
+    "title_en": "Inferable Anonymity and Minimum Sample Size",
+    "option_a_cn": "不足最小样本时合并摘要、延后披露或征得署名，并维护反馈权限，牺牲细节保护评价者。",
+    "option_a_en": "Aggregate, delay, or seek signed consent below the minimum sample size and maintain feedback access controls, sacrificing detail to protect raters.",
+    "option_b_cn": "立即公开少量匿名原话以便行动，信息更尖锐，却让作者可被推断并产生报复与寒蝉效应。",
+    "option_b_en": "Publish a few anonymous comments immediately for actionability, gaining sharp detail while making authors inferable and inviting retaliation and silence.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "52": {
+    "title_en": "Preserve the Shape, Not Just the Mean",
+    "option_a_cn": "保存各来源分布与两极结构，对上下评价冲突另开追问，承担更多分析而不把差异压成均分。",
+    "option_a_en": "Preserve source distributions and polarization and investigate upward-downward conflicts separately, accepting more analysis instead of flattening them into a mean.",
+    "option_b_cn": "把所有互评取一个均分直接入榜，比较最迅速，却把可靠协作者和对上不对下者混为一类。",
+    "option_b_en": "Average every peer review into one ranking score, comparing fastest while treating reliable collaborators and upward-only performers alike.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "53": {
+    "title_en": "Development-Only 360 Feedback",
+    "option_a_cn": "将 360 用于发展建议和价值观红线，奖金仍由冻结绩效决定，承担另行辅导却换取更坦诚反馈。",
+    "option_a_en": "Use 360 feedback for development and values red lines while frozen performance determines pay, funding separate coaching in exchange for candor.",
+    "option_b_cn": "把互评分直接挂入奖金和档位以提高填写分量，立刻强化约束，却催生结盟、报复与匿名黑箱。",
+    "option_b_en": "Tie peer scores directly to bonus and rating to raise their stakes, strengthening control now while breeding alliances, retaliation, and anonymous opacity.",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "54": {
+    "title_en": "Reporting Work Crowding Out Delivery",
+    "option_a_cn": "限定一页事实卡和异常上报，为办事工时设保护线并抽查事实，承担模板设计与经理深读成本。",
+    "option_a_en": "Limit reporting to a one-page fact card and exceptions, protect delivery hours, and sample facts, accepting template design and focused manager reading.",
+    "option_b_cn": "要求所有人每周提交精美长材料来强化可见度，短期信息充足，却把治理工时挤成汇报竞赛。",
+    "option_b_en": "Require polished long weekly reports from everyone to maximize visibility, gaining information now while turning governance time into a reporting arms race.",
+    "profile": "workload",
+    "reference_choice": "a"
+  },
+  "55": {
+    "title_en": "Seats in the Superior's Attention",
+    "option_a_cn": "按风险、里程碑和长期低曝光轮换深读与接见席位，并记录占席后的交付，承担排期成本。",
+    "option_a_en": "Rotate deep-read and audience seats by risk, milestones, and sustained low visibility and track delivery after access, accepting scheduling cost.",
+    "option_b_cn": "让 sponsor 和最会争取者随时插队，能迅速听见强声量，却挤掉救火者并奖励无交付占席。",
+    "option_b_en": "Let sponsors and the most assertive candidates jump the queue, hearing strong voices fast while crowding out rescuers and rewarding access without delivery.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "56": {
+    "title_en": "Credit Capture Through Reporting Layers",
+    "option_a_cn": "逐级转报时附原作者、版本和团队贡献签名，让功计入经理育人分，承担归属维护成本。",
+    "option_a_en": "Attach original authors, versions, and team contribution signatures to upward reports and credit managers for developing talent, accepting attribution upkeep.",
+    "option_b_cn": "中层把下属成果统一署为自己的统筹功劳，快速提高上层可见度，却积累越级证据、离心和流失。",
+    "option_b_en": "Let middle managers claim subordinate output as their coordination achievement, boosting visibility fast while accumulating skip-level evidence, disloyalty, and attrition.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "57": {
+    "title_en": "Contribution Trails and Version Signatures",
+    "option_a_cn": "在关键节点冻结主责、协作与版本签名，只在争议、晋升和审计时调用，花少量持续注意力换可追溯性。",
+    "option_a_en": "Freeze ownership, collaboration, and version signatures at key milestones and invoke them only for disputes, promotion, or audit, spending modest ongoing attention for traceability.",
+    "option_b_cn": "不留版本轨迹，事后由权力和口才一次裁定贡献，日常最省事，却让抢功者掌握争议。",
+    "option_b_en": "Keep no version trail and settle contribution afterward through power and persuasion, minimizing daily work while handing disputes to credit grabbers.",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "58": {
+    "title_en": "Skip-Level CC and Information Politics",
+    "option_a_cn": "只准重大成果或风险按协议越级抄送，要求直属经理同步回应并留审计线索，承担额外信息处理。",
+    "option_a_en": "Permit skip-level copies only for material results or risks under a protocol, require a direct-manager response, and retain an audit lead, accepting extra information handling.",
+    "option_b_cn": "禁止越级并强令所有信息由直属经理转报，迅速巩固指挥链，却可能截留坏消息和隐形贡献。",
+    "option_b_en": "Ban skip-level copies and force all information through the direct manager, restoring command quickly while risking suppressed bad news and invisible contributions.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "59": {
+    "title_en": "Early, Late, or Concealed Bad News",
+    "option_a_cn": "风险出现即冻结早报时间、已知事实和求援决定，给透明者支援并在结果后复盘，承担救火预算。",
+    "option_a_en": "Freeze the time, known facts, and aid decision when risk is reported early, support transparent reporters, and review after outcome, accepting rescue cost.",
+    "option_b_cn": "要求团队先自行解决、考核后再报，短期保住指标和注意力，爆雷时却叠加诚信与监督责任。",
+    "option_b_en": "Require teams to solve the issue alone and report after review, protecting metrics and attention now while compounding integrity and supervision liability if it erupts.",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "60": {
+    "title_en": "Material Leaks and Idea Theft",
+    "option_a_cn": "封存原方案版本、接触记录和共同立项条件，由独立席裁定归属，承担证据保存与仲裁成本。",
+    "option_a_en": "Preserve original versions, access records, and joint-project terms and let an independent seat decide ownership, accepting evidence and arbitration cost.",
+    "option_b_cn": "拿到材料的团队立即抢先包装上报以夺资源，可能赢得短期先手，却在签名证据出现时遭追责和反噬。",
+    "option_b_en": "Let the receiving team package and report leaked material first to seize resources, gaining a possible head start while risking severe reversal when signatures surface.",
+    "profile": "governance",
+    "reference_choice": "c"
+  },
+  "61": {
+    "title_en": "Short Briefs and Long Narrative Reports",
+    "option_a_cn": "统一一页事实卡并为复杂协作链接附录，只让异常进入长叙事，承担模板和材料索引维护。",
+    "option_a_en": "Standardize a one-page fact card with linked annexes for complex collaboration and reserve long narratives for exceptions, accepting template and index upkeep.",
+    "option_b_cn": "要求所有人交完整叙事材料以便上司一次掌握背景，短期详尽，却奖励文胆并扩大形式主义工时。",
+    "option_b_en": "Require full narrative reports so the superior can absorb context at once, gaining detail now while rewarding prose skill and expanding ceremonial workload.",
+    "profile": "workload",
+    "reference_choice": "a"
+  },
+  "62": {
+    "title_en": "Solid-Line and Dotted-Line Goal Conflict",
+    "option_a_cn": "触发冲突即让两位上司联合裁定优先级、责任和证据归属，承担协调延迟但给官员单一可执行口径。",
+    "option_a_en": "When goals conflict, have both superiors jointly rule on priority, responsibility, and evidence ownership, accepting delay for one executable direction.",
+    "option_b_cn": "强令官员服从实线上司并忽略虚线交付，指挥立刻清晰，却留下项目差评和跨部门关系债。",
+    "option_b_en": "Order the officer to obey the solid-line superior and ignore dotted-line delivery, clarifying command immediately while creating project criticism and cross-unit debt.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "63": {
+    "title_en": "Cycle-Opening Weight Contract",
+    "option_a_cn": "周期初双签评分权重、交付边界和危机改权条件，承担谈判与版本维护成本。",
+    "option_a_en": "Have both superiors sign rating weights, delivery boundaries, and crisis-change conditions at cycle start, accepting negotiation and version-maintenance cost.",
+    "option_b_cn": "允许更强势上司在年终重写权重以保重点结果，迅速解决冲突，却让员工两头承诺并伤害管理质量。",
+    "option_b_en": "Let the stronger superior rewrite weights at year end to protect priority results, resolving conflict fast while encouraging double promises and damaging management quality.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "64": {
+    "title_en": "Dual-Signed Manager Handover",
+    "option_a_cn": "旧上司冻结完成事项和辅导记录，新上司双签剩余目标并只重置一次优先级，承担交接会议成本。",
+    "option_a_en": "Have the old superior freeze completed work and coaching and the new superior co-sign remaining goals with one priority reset, accepting a handover meeting.",
+    "option_b_cn": "新上司宣布旧承诺作废、按新口径立即重算，迅速取得裁量，却造成证据断裂和高成功率申诉。",
+    "option_b_en": "Let the new superior void old commitments and recalculate immediately, gaining discretion fast while breaking evidence continuity and inviting successful appeals.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "65": {
+    "title_en": "Parachute Manager and Loyalist Package",
+    "option_a_cn": "允许空降主管带少量有明确职责的亲信，同时审计机会分配、留任和知识交接，承担过渡双轨成本。",
+    "option_a_en": "Allow a parachute manager a small, role-defined loyalist team while auditing opportunity, retention, and knowledge transfer, accepting dual-track transition cost.",
+    "option_b_cn": "全面洗牌并以旧部替换原团队，迅速统一执行，却制造空岗、裙带审计和组织记忆断层。",
+    "option_b_en": "Replace the inherited team broadly with loyalists, unifying execution quickly while creating vacancies, favoritism audits, and lost organizational memory.",
+    "profile": "organization",
+    "reference_choice": "c"
+  },
+  "66": {
+    "title_en": "Separating Project Cancellation from Personal Failure",
+    "option_a_cn": "冻结已验证里程碑、止损判断和取消原因，分别评价战略与个人贡献，承担一次专项复盘。",
+    "option_a_en": "Freeze validated milestones, stop-loss judgment, and cancellation reasons and assess strategy separately from individual contribution, accepting a dedicated review.",
+    "option_b_cn": "取消即把全部成果归零并追责项目组，快速止账，却迫使所有人只做短平快项目并掩盖错误战略。",
+    "option_b_en": "Zero all credit and punish the project team when work is cancelled, closing the books fast while pushing everyone toward short projects and hiding bad strategy.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "67": {
+    "title_en": "Two People for One Role After a Merger",
+    "option_a_cn": "用公开竞聘、双人过渡和合法调岗处理重复负责人，记录比较证据并承担短期双岗成本。",
+    "option_a_en": "Resolve duplicate leaders through open competition, a two-person transition, and lawful reassignment, recording comparison evidence and paying temporary dual-role cost.",
+    "option_b_cn": "暗定亲信并立即撤换另一人，迅速消除重叠，却加剧派系、申诉和关键经验流失。",
+    "option_b_en": "Preselect a favorite and remove the other leader immediately, eliminating overlap fast while worsening factions, appeals, and loss of critical experience.",
+    "profile": "organization",
+    "reference_choice": "c"
+  },
+  "68": {
+    "title_en": "Portable History and Local Re-Proof",
+    "option_a_cn": "携带冻结档位、成果语境、争议与未结 PIP，在新岗设一次保护期和明确重证目标。",
+    "option_a_en": "Carry frozen ratings, result context, disputes, and open PIP into the new role and set one protected ramp with explicit re-proof goals.",
+    "option_b_cn": "转入即完整参加新组分布，由新上司选择性采信旧账，快速融入竞争，却可能重复惩罚或占用名额。",
+    "option_b_en": "Put the transferee into full local distribution immediately and let the new superior use prior history selectively, integrating competition fast while risking duplicate punishment or quota capture.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "69": {
+    "title_en": "Formal Delivery and the Appeal Clock",
+    "option_a_cn": "当面送达冻结告身，允许异议签收并以见证处理拒收，逐项启动申诉与奖惩时钟。",
+    "option_a_en": "Deliver the frozen record in person, allow signed dissent, and use a witness for refusal, starting appeal and settlement clocks item by item.",
+    "option_b_cn": "榜单发布即视为全部送达并立即结算，最快进入执行，却可能让未见理由者错过申诉并引发程序翻案。",
+    "option_b_en": "Deem every result served upon publication and settle immediately, moving fastest while causing people without reasons to miss appeals and overturn the process.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "70": {
+    "title_en": "Post-Appeal Anti-Retaliation Window",
+    "option_a_cn": "一年内对调岗、撤职、降俸与新增差评要求新事实并由独立席抽查，承担持续监督工时。",
+    "option_a_en": "Require new facts for reassignment, removal, pay cuts, and new negative feedback for one year and sample them independently, accepting monitoring work.",
+    "option_b_cn": "允许经理在申诉后立即重排岗位和权限以恢复控制，行动迅速，却让理由反转被认定为报复。",
+    "option_b_en": "Let the manager rearrange roles and authority immediately after an appeal to restore control, acting fast while making reversed reasons look retaliatory.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "71": {
+    "title_en": "Internal Forum Essay and Public Escalation",
+    "option_a_cn": "穷尽私下沟通和正式申诉后，允许附冻结证据的实名长文进入受控复核，并投入调解与事实核查。",
+    "option_a_en": "After private discussion and formal appeal are exhausted, allow an evidence-backed signed essay into moderated review and fund mediation and fact checking.",
+    "option_b_cn": "当事人立即公开实名或匿名爆料争取站队，能迅速获得高层注意，却同时烧毁双方声誉和内部信任。",
+    "option_b_en": "Let the subject publish a signed or anonymous exposé immediately to rally support, gaining rapid senior attention while burning both reputations and internal trust.",
+    "profile": "governance",
+    "reference_choice": "c"
+  },
+  "72": {
+    "title_en": "Early Leakage of Performance Ratings",
+    "option_a_cn": "限制校准材料权限、记录访问并统一送达时间，让所有人同步准备申诉，承担保密管理成本。",
+    "option_a_en": "Restrict calibration access, log views, and use a common delivery time so everyone prepares appeals equally, accepting confidentiality administration cost.",
+    "option_b_cn": "私下提醒亲信或向全队放风试探反应，能提前控场，却引发抢跑离职、串供和校准席互疑。",
+    "option_b_en": "Warn favorites privately or float ratings to test the team, managing reaction early while triggering premature exits, coordinated stories, and panel distrust.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "73": {
+    "title_en": "Malicious Leaks and Good-Faith Whistleblowing",
+    "option_a_cn": "由独立席核验材料真伪、公益目的和报复成分，保护真实举报并处罚篡改，承担专项调查成本。",
+    "option_a_en": "Have an independent seat verify authenticity, public purpose, and retaliatory elements, protecting genuine reports and punishing manipulation at the cost of an investigation.",
+    "option_b_cn": "把所有未经授权的泄露一律定为违纪并立即处罚，迅速恢复保密，却压住真实造假线索。",
+    "option_b_en": "Classify every unauthorized leak as misconduct and punish it immediately, restoring secrecy fast while suppressing genuine evidence of fraud.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "74": {
+    "title_en": "Honest Redundancy Versus Washed Ratings",
+    "option_a_cn": "按组织原因公开撤岗、由国库支付离开代价并保留中性履历，花钱换干净的绩效账。",
+    "option_a_en": "Remove the role openly for organizational reasons, pay the exit cost from the treasury, and preserve a neutral record, spending money to keep performance history clean.",
+    "option_b_cn": "先塞 3.25 再以个人不胜任低成本裁撤，迅速缩编，却在翻案时追回处分并重创两级经理信誉。",
+    "option_b_en": "Assign a 3.25 first and then cut the person cheaply for poor performance, shrinking fast while risking restored sanctions and severe damage to two management levels.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "75": {
+    "title_en": "Clean-Record Voluntary Exit Package",
+    "option_a_cn": "给边界末位真实离开俸、中性履历和清晰 HC 释放，承担国库支出并让其自由拒绝。",
+    "option_a_en": "Offer a boundary bottom performer real severance, a neutral record, and explicit HC release, paying treasury cost and preserving a genuine right to refuse.",
+    "option_b_cn": "限时要求无补偿自愿离开，否则立即进入 PIP，能快速降本，却容易被认定为强迫裁撤。",
+    "option_b_en": "Demand an unpaid voluntary exit by a deadline or launch PIP immediately, cutting cost fast while risking reclassification as a coerced redundancy.",
+    "profile": "compensation",
+    "reference_choice": "c"
+  },
+  "76": {
+    "title_en": "Multi-Level Responsibility for Process Failure",
+    "option_a_cn": "翻案后按漏证、失察、制度错误和虚报逐项分责，并写入各自下轮管理分，承担联合复盘。",
+    "option_a_en": "After reversal, apportion responsibility for missing evidence, oversight, design error, and false claims into each party's next management score, accepting a joint review.",
+    "option_b_cn": "让直属经理或政委一人背下全部程序失败以迅速结案，问责清晰，却掩盖系统缺陷并诱发甩锅。",
+    "option_b_en": "Make the direct manager or steward carry the entire process failure to close quickly, clarifying punishment while hiding system faults and encouraging blame shifting.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "77": {
+    "title_en": "Rotating Independent Reviewers",
+    "option_a_cn": "从无直接关系的同级经理中轮换复核席，给双方一次有因回避并记录复核质量，承担人力成本。",
+    "option_a_en": "Rotate reviewers from unrelated peer managers, grant each side one for-cause recusal, and track review quality, accepting staffing cost.",
+    "option_b_cn": "由原校准席快速自纠并限制新证据，节省管理工时，却让同一批人维护自身结论、降低公信力。",
+    "option_b_en": "Have the original panel self-correct quickly with limited new evidence, saving management time while letting the same people defend their own judgment.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "78": {
+    "title_en": "Distribution Fairness Dashboard",
+    "option_a_cn": "按新人、转岗、亲族、派系、岗位和年限展示多年差异，并联查机会分配，只把异常送人工解释。",
+    "option_a_en": "Show multi-year differences by newcomer, transfer, kinship, faction, role, and tenure and pair them with opportunity data, sending anomalies to human explanation only.",
+    "option_b_cn": "一旦某组比例异常就强制调档或处罚经理，纠偏最快，却把小样本和真实业务差异误判为歧视。",
+    "option_b_en": "Force rating changes or punish the manager whenever a subgroup ratio looks abnormal, correcting fastest while mistaking small samples and real business differences for bias.",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "79": {
+    "title_en": "Skip-Level Office Hours",
+    "option_a_cn": "每轮开放少量预约席，只收障碍、成果和申诉线索并生成调查任务，承担高层时间且不现场改档。",
+    "option_a_en": "Open a few booked seats each cycle for obstacles, results, and appeal leads and create investigation tasks, spending senior time without changing ratings on the spot.",
+    "option_b_cn": "高层接见时直接承诺资源或点改孙级档位，快速回应民意，却架空直属经理并刺激越级政治。",
+    "option_b_en": "Let the senior ruler promise resources or alter a grand-subordinate's rating during the audience, responding fast while bypassing direct managers and fueling skip-level politics.",
+    "profile": "governance",
+    "reference_choice": "c"
+  },
+  "80": {
+    "title_en": "Public Metric Defect Ticket",
+    "option_a_cn": "公开登记可刷、冲突或失真的指标缺陷，由 owner 修复或书面接受风险，并保存发现者制度贡献。",
+    "option_a_en": "Register gameable, conflicting, or distorted metric defects openly, require the owner to fix or accept risk in writing, and credit the reporter's institutional contribution.",
+    "option_b_cn": "要求 owner 立即关闭缺陷单、维持现指标到考核后，短期保住可比口径，却让爆雷责任扩散到设计者。",
+    "option_b_en": "Order the owner to close the defect ticket and preserve the metric through review, keeping short-term comparability while spreading later failure to the designer.",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "81": {
+    "title_en": "Hierarchical Compression of Performance Information",
+    "option_a_cn": "按角色开放原始证据、逐级汇总和中央复核权限，并记录谁看过什么，承担权限与隐私治理成本。",
+    "option_a_en": "Grant role-based access to raw evidence, summaries, and central review and log who saw what, accepting permission and privacy administration cost.",
+    "option_b_cn": "强令每层只上报一张排名摘要以加快决策，信息流最短，却放大截功、失真和无法纠偏的黑箱。",
+    "option_b_en": "Force each layer to submit only one ranking summary to speed decisions, shortening the flow while magnifying credit capture, distortion, and an uncorrectable black box.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "82": {
+    "title_en": "Total Reward Formula",
+    "option_a_cn": "拆分固定俸、岗位津贴、绩效、专项和递延奖，逐笔由国库拨付并设置可负担上限。",
+    "option_a_en": "Separate base stipend, role allowance, performance, spot, and deferred awards, funding each from the treasury under affordability caps.",
+    "option_b_cn": "把待遇大幅转成当期绩效浮动奖来强化 361，短期刺激强，却放大焦虑、抢功和财政波动。",
+    "option_b_en": "Shift compensation heavily into current performance awards to intensify 361, producing a strong short-term stimulus while magnifying anxiety, credit grabs, and fiscal volatility.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "83": {
+    "title_en": "Realm, Team, and Individual Bonus Multipliers",
+    "option_a_cn": "周期初冻结天朝、团队和个人三层系数，保留团队分享与个人兑现，并承担复杂结算工时。",
+    "option_a_en": "Freeze realm, team, and individual multipliers at cycle start, preserving team sharing and individual reward at the cost of more complex settlement.",
+    "option_b_cn": "临时把奖金重押个人档位，迅速拉开头档差距，却让失败团队的抢功和内部竞争失控。",
+    "option_b_en": "Shift bonus weight abruptly to individual ratings, widening top-tier rewards fast while letting credit grabs and competition in failing teams run wild.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "84": {
+    "title_en": "Deferred Bonus and Vesting",
+    "option_a_cn": "为长期功赏建立三年分期账，预留国库、写明离任与反噬条件并逐年兑现，承担未来财政承诺。",
+    "option_a_en": "Create a three-year vesting ledger for long-term awards, reserve treasury funds, specify exit and reversal terms, and pay annually, accepting future fiscal commitments.",
+    "option_b_cn": "本轮把奖金全额发清以强刺激留人，结算简单，却在造假或项目反噬时难以追回并加重当期国库。",
+    "option_b_en": "Pay the entire award now for a strong retention signal, simplifying settlement while making fraud or project reversals hard to claw back and straining the current treasury.",
+    "profile": "compensation",
+    "reference_choice": "c"
+  },
+  "85": {
+    "title_en": "Retention Incentive Cliff",
+    "option_a_cn": "提前跟踪旧奖归属终点，按关键性和继任风险预留续期包并公开同档比较，承担长期预算。",
+    "option_a_en": "Track vesting endpoints early, reserve renewal packages by criticality and succession risk, and compare peers openly, accepting long-term budget cost.",
+    "option_b_cn": "等人才临近离开才给紧急反 offer 或口头续期，短期省钱，却制造到点即走、饼债和薪酬不公。",
+    "option_b_en": "Wait until departure is imminent and make an emergency counteroffer or verbal renewal, saving money now while creating cliff exits, promise debt, and pay inequity.",
+    "profile": "compensation",
+    "reference_choice": "c"
+  },
+  "86": {
+    "title_en": "Bonus Holdback and Clawback",
+    "option_a_cn": "对高风险项目事前写明暂扣比例、审计日和造假追索条件，并为每笔款项保留结算记录。",
+    "option_a_en": "Predeclare holdback ratios, audit dates, and fraud clawback terms for high-risk projects and retain a settlement record for every payment.",
+    "option_b_cn": "出现疑点就临时全额扣住或追索已发奖金，迅速保护国库，却因事后改规则引发申诉和离职。",
+    "option_b_en": "Hold or claw back the full award as soon as suspicion appears, protecting the treasury fast while inviting appeals and exits through retroactive rules.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "87": {
+    "title_en": "Pay Bands and Position Within Band",
+    "option_a_cn": "审计资历、市场稀缺、历史绩效和带内位置，优先修补有证据的低位与倒挂，承担调薪预算。",
+    "option_a_en": "Audit tenure, scarcity, performance history, and band position and repair evidenced low placement and inversion first, accepting salary-budget cost.",
+    "option_b_cn": "严格封顶固定俸、只给带顶明星一次奖金，迅速守住带宽，却让高绩效者和被倒挂老臣更易流失。",
+    "option_b_en": "Cap base pay firmly and give band-top stars only a spot bonus, defending the band quickly while increasing exits among top performers and inverted veterans.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "88": {
+    "title_en": "Market Raises Versus Performance Raises",
+    "option_a_cn": "把调薪池拆成市场稀缺、3.75 奖励和内部公平三账，以证据排队并公布预算取舍。",
+    "option_a_en": "Split the raise pool into market scarcity, 3.75 reward, and internal-equity ledgers, queue them by evidence, and publish the budget tradeoff.",
+    "option_b_cn": "把全部调薪押给本轮 3.75 以强化绩效信号，短期鲜明，却放任稀缺岗位和倒挂人才被挖。",
+    "option_b_en": "Give the entire raise pool to current 3.75 performers to sharpen the signal, acting decisively while leaving scarce roles and inverted employees open to poaching.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "89": {
+    "title_en": "Decoupling Rank, Appointment, Authority, and Cash",
+    "option_a_cn": "为加俸、专业级、代理权和正式空缺分别写清权限、现金与兑现日期，承担多轨职位管理成本。",
+    "option_a_en": "Define authority, cash, and delivery dates separately for raises, expert rank, acting power, and formal vacancies, accepting multi-track role administration.",
+    "option_b_cn": "先发一个无钱无权的级别或无限期代理名义稳住明星，成本最低，却积累空心晋升与离职风险。",
+    "option_b_en": "Grant a cashless, powerless level or indefinite acting title to placate a star at minimal cost, building hollow-promotion and exit risk.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "90": {
+    "title_en": "Spot Awards",
+    "option_a_cn": "为救火、跨部门支持和制度建设设独立小池，凭唯一贡献 ID 发奖且不改终评名次。",
+    "option_a_en": "Create a small separate pool for rescues, cross-unit support, and institution building and pay against a unique contribution ID without changing final rank.",
+    "option_b_cn": "经理从团队奖金池即时奖赏最显眼的救火者，激励立刻可见，却可能绕开 361、掏空他人奖金。",
+    "option_b_en": "Let the manager reward the most visible rescuer immediately from the team pool, signaling fast while bypassing 361 and draining others' bonuses.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "91": {
+    "title_en": "Separate Tenure and Performance Awards",
+    "option_a_cn": "把长期服务、艰苦任职和本轮绩效分账分池，逐项兑现，承担更高但可解释的国库承诺。",
+    "option_a_en": "Keep long service, hardship, and current performance in separate ledgers and pools and pay each explicitly, accepting a larger but explainable treasury commitment.",
+    "option_b_cn": "只按本轮档位发钱以保持强分布，结算最简单，却让稳定老臣的一次低档抹去全部留任价值。",
+    "option_b_en": "Pay only from the current rating to preserve hard distribution, simplifying settlement while letting one low cycle erase a veteran's retention value.",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "92": {
+    "title_en": "Expert and Management Career Tracks",
+    "option_a_cn": "建立待遇可比但权力、风险与量表不同的专家和管理通道，并为转轨提供试任与培训预算。",
+    "option_a_en": "Build expert and management tracks with comparable reward but distinct authority, risk, and scorecards, funding trials and training for movement between them.",
+    "option_b_cn": "把最强业务明星直接升成经理填补空缺，立刻获得负责人，却可能同时失去专家产出并制造坏管理。",
+    "option_b_en": "Promote the strongest individual contributor directly into management to fill the vacancy, gaining a leader now while risking both expert output and management quality.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "93": {
+    "title_en": "Returning a Failed Manager to the Expert Track",
+    "option_a_cn": "撤去管理权但保留经验证的专业级和合理待遇，配辅导后再竞聘，承担岗位重配与培养成本。",
+    "option_a_en": "Remove management authority while preserving proven expert rank and fair pay and allow a coached return path, accepting reassignment and development cost.",
+    "option_b_cn": "立即全额降岗降俸或逼其继续硬撑管理岗，处置强硬，却可能赶走强专家或升级团队流失。",
+    "option_b_en": "Demote and cut pay fully or force the person to remain a manager, acting hard while risking the loss of a strong expert or escalating team attrition.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "94": {
+    "title_en": "Micro-Levels and Half-Step Promotions",
+    "option_a_cn": "只设少量有真实职责、带宽和年限门槛的微职级，定期清理通胀，承担更复杂的职位管理。",
+    "option_a_en": "Create only a few micro-levels with real duties, bands, and tenure gates and audit inflation regularly, accepting more complex job architecture.",
+    "option_b_cn": "频繁发半级称号、把现金与权限以后再说，能快速安抚晋升焦虑，却制造头衔通胀和饼债。",
+    "option_b_en": "Issue frequent half-step titles and defer cash and authority, soothing promotion anxiety quickly while creating title inflation and promise debt.",
+    "profile": "promotion",
+    "reference_choice": "c"
+  },
+  "95": {
+    "title_en": "Annual Review of Senior Management Appointments",
+    "option_a_cn": "每年按京察履责、团队结果、翻案、流失和继任复审 361 权限，必要时辅导或收紧预算而不非法剥夺头衔。",
+    "option_a_en": "Review 361 authority annually from Jingcha compliance, team results, reversals, attrition, and succession, coaching or tightening budgets without unlawfully stripping titles.",
+    "option_b_cn": "一轮不佳就立即收走复核席、人才权和预算，迅速问责高管，却把短期波动变成组织震荡。",
+    "option_b_en": "Remove review seats, talent authority, and budget after one bad cycle, holding leaders accountable fast while turning short-term variance into organizational shock.",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "96": {
+    "title_en": "Exceptional Promotion Packet",
+    "option_a_cn": "只用极少额度处理连续超预期或关键战功，说明跳年限理由、被延后人选并次年复审，承担公平成本。",
+    "option_a_en": "Use a tiny exception quota only for sustained outperformance or decisive service, name the bypassed tenure and delayed candidate, and review next year.",
+    "option_b_cn": "让 sponsor 对一次耀眼战功立即跳级晋升，快速留住英雄，却透支正常名额并把次年风险压给评委。",
+    "option_b_en": "Let a sponsor immediately leapfrog someone for one spectacular feat, retaining a hero fast while consuming normal slots and shifting next-year risk to the panel.",
+    "profile": "promotion",
+    "reference_choice": "c"
+  },
+  "97": {
+    "title_en": "Cross-Team Promotion Calibration",
+    "option_a_cn": "让各队提交同格式晋升包，由跨组评委比较超出当前职级的影响范围并记录失败提包质量。",
+    "option_a_en": "Require comparable promotion packets and have a cross-team panel judge impact beyond current level while recording the quality of failed nominations.",
+    "option_b_cn": "按经理声量和各队第一名快速分完晋升槽，能及时关会，却让本地排名压过跨组织贡献。",
+    "option_b_en": "Allocate promotion slots quickly by manager influence and each team's local number one, closing the meeting while letting local rank beat cross-organizational impact.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "98": {
+    "title_en": "Growth, Backfill, and Project HC",
+    "option_a_cn": "把增长、补缺和项目 HC 分别登记用途、期限与验收，转换必须重答辩，承担三套名额管理。",
+    "option_a_en": "Register growth, backfill, and project HC with separate purpose, duration, and acceptance and require a new defense for conversion, accepting three ledgers.",
+    "option_b_cn": "把三类名额合成机动池让经理随时挪用，能快速支援热点，却让临时项目悄然变永久扩编。",
+    "option_b_en": "Merge all three into a flexible pool for immediate manager use, reinforcing hotspots fast while allowing temporary projects to become hidden permanent growth.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "99": {
+    "title_en": "HC Expiry, Carryover, and Year-End Hiring",
+    "option_a_cn": "按招聘管线决定到期归还或一次有据结转，并把主动归还写入下次预算信用，承担规划缺口。",
+    "option_a_en": "Use the hiring pipeline to decide expiry or one evidenced carryover and credit voluntary returns in the next budget, accepting a planned capacity gap.",
+    "option_b_cn": "年底仓促招人保住名额和分母，立即避免回收，却增加错配、试用失败和导师负担。",
+    "option_b_en": "Rush hires at year end to preserve slots and denominator, preventing recovery now while increasing mismatch, probation failure, and mentor load.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "100": {
+    "title_en": "Hiring Freeze and Critical-Role Exceptions",
+    "option_a_cn": "冻结增长 HC，但以岗位风险、承诺项目和安全底线书面特批，并审计低成本替代方案。",
+    "option_a_en": "Freeze growth HC but grant written exceptions from role risk, committed projects, and safety floors and audit lower-cost alternatives.",
+    "option_b_cn": "全面停招，只给领主亲点的“关键岗”开口，短期稳住财政，却制造寻租并让普通关键工作断供。",
+    "option_b_en": "Stop all hiring except ruler-designated critical roles, stabilizing finances now while inviting rent seeking and starving less visible essential work.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "101": {
+    "title_en": "One Senior, Two Regulars, or an Apprentice Pipeline",
+    "option_a_cn": "按交付时点、单点依赖和继任需求设计资深、中阶与学徒组合，并为梯队预留导师预算。",
+    "option_a_en": "Design the senior, regular, and apprentice mix from delivery timing, key-person risk, and succession needs and reserve mentor capacity for the pipeline.",
+    "option_b_cn": "把全部预算押给一个马上能交付的资深者，见效最快，却抬高议价力并留下无人继任的单点。",
+    "option_b_en": "Spend the whole budget on one senior who can deliver immediately, moving fastest while increasing bargaining power and leaving a succession single point.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "102": {
+    "title_en": "Zero-Based Headcount Review",
+    "option_a_cn": "每隔数年只对低效、长期空缺和战略转向岗位做证据化零基重审，并为迁移设置过渡预算。",
+    "option_a_en": "Run evidence-based zero review every few years on low-efficiency, long-vacant, and redirected roles and fund transitions for moved capacity.",
+    "option_b_cn": "每年让所有团队从零抢回全部编制，重分资源最快，却制造汇报风暴、不安和短期主义。",
+    "option_b_en": "Make every team win all HC back from zero each year, reallocating fastest while creating a reporting storm, insecurity, and short-termism.",
+    "profile": "hc",
+    "reference_choice": "c"
+  },
+  "103": {
+    "title_en": "Vacant-Seat Hoarding Audit",
+    "option_a_cn": "长期空编必须提交真实候选管线、主动归还或限期借出，并按月复核，承担放弃未来选择权的成本。",
+    "option_a_en": "Require long-vacant roles to show a real candidate pipeline, return the slot, or lend it for a term and review monthly, accepting reduced future optionality.",
+    "option_b_cn": "用虚拟候选和反复延期开岗保住名额，短期避免被收回，却让现团队过载并在查实时失去 HC 信用。",
+    "option_b_en": "Use phantom candidates and repeated opening delays to keep the slot, avoiding recovery now while overloading the team and destroying HC credibility when found.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "104": {
+    "title_en": "New-Talent and Experienced-Talent Pools",
+    "option_a_cn": "按长期梯队、即时交付和内部流动组合新人、成熟人才与转岗者，并分别预算导师、薪酬和 backfill。",
+    "option_a_en": "Blend newcomers, experienced hires, and transfers for pipeline and immediate delivery and budget mentors, pay, and backfill separately.",
+    "option_b_cn": "集中购买马上能交付的成熟人才，短期产出最高，却造成薪酬倒挂、文化冲突和梯队断层。",
+    "option_b_en": "Buy only experienced talent ready to deliver, maximizing short-term output while creating pay inversion, cultural conflict, and a missing pipeline.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "105": {
+    "title_en": "Ownership of Backfill After Departure",
+    "option_a_cn": "事前规定名额回原组、中央回收或随责任转移，并把放人与 backfill 优先联动，承担规则维护成本。",
+    "option_a_en": "Predefine whether backfill returns to the team, central pool, or transferred work and link release behavior to future priority, accepting policy upkeep.",
+    "option_b_cn": "经理把人卡到考核后再放以保住 backfill，短期守住名额，却拖延流动并扭曲离任时点。",
+    "option_b_en": "Hold the employee until after review to preserve backfill, keeping the slot now while delaying mobility and distorting departure timing.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "106": {
+    "title_en": "Separating Critical Roles from Critical Talent",
+    "option_a_cn": "先评估岗位空缺冲击，再单独评估现任可替代性，为关键岗配置继任和留才预算。",
+    "option_a_en": "Assess vacancy impact first and incumbent replaceability separately, then fund succession for the role and retention for the person as distinct needs.",
+    "option_b_cn": "把上司最偏爱的明星直接标成不可替代并集中资源，迅速稳住关系，却掩盖真正岗位风险和替补缺口。",
+    "option_b_en": "Label the superior's favorite star indispensable and concentrate resources there, stabilizing the relationship quickly while hiding real role risk and successor gaps.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "107": {
+    "title_en": "Succession Readiness Ladder",
+    "option_a_cn": "为关键岗维护现在可接、两年可接、长期培养和无人可接四档，并投入导师、代理任务和曝光。",
+    "option_a_en": "Maintain ready-now, ready-in-two-years, long-term, and no-successor tiers for critical roles and fund mentors, acting tasks, and exposure.",
+    "option_b_cn": "直接点名一位太子为随时可接以迅速消除空白，却可能把关系和潜力标签误当真实准备度。",
+    "option_b_en": "Name one heir as ready now to erase the gap immediately, risking the confusion of sponsorship and potential with actual readiness.",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "108": {
+    "title_en": "Acting-Role Trial",
+    "option_a_cn": "给候选明确期限、真实权限、资源和成功标准，结束后冻结试炼证据，承担原任监督与试错成本。",
+    "option_a_en": "Give the candidate a fixed term, real authority, resources, and success criteria and freeze trial evidence afterward, accepting supervision and trial cost.",
+    "option_b_cn": "只把交付责任压给代理者、保留所有否决权，以最小风险快速试人，却让失败无法证明能力并构成申诉。",
+    "option_b_en": "Give the acting candidate delivery responsibility while retaining every veto, testing cheaply and fast while making failure uninformative and appealable.",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "109": {
+    "title_en": "Visibility of High-Potential Labels",
+    "option_a_cn": "只告知本人及必要上级，公开标准、复审日期和发展投入，并承担名单维护与未入选沟通。",
+    "option_a_en": "Tell the individual and necessary leaders only, publish criteria, review dates, and development investment, and bear list upkeep and non-selection conversations.",
+    "option_b_cn": "向全团队公布高潜名单以立即强化投入和竞争，却制造太子党、未入选者流失与经理偏爱。",
+    "option_b_en": "Publish the high-potential list to the whole team to intensify effort and competition immediately, creating crown-prince politics, non-selectee exits, and favoritism.",
+    "profile": "promotion",
+    "reference_choice": "c"
+  },
+  "110": {
+    "title_en": "Separate Potential and Performance Calibration",
+    "option_a_cn": "先结算当期 361，再另会核验学习速度、跨度与未来责任，维护两张冻结表并分别配置奖励和培养。",
+    "option_a_en": "Settle current 361 first, then separately assess learning speed, breadth, and future responsibility, maintaining two frozen tables for reward and development.",
+    "option_b_cn": "在同一会上用一句高潜直接抬档或挤掉稳定明星，快速集中资源，却混淆奖金与未来押注。",
+    "option_b_en": "Use a high-potential claim in the same meeting to raise a rating or displace a steady star, focusing resources fast while conflating pay with a future bet.",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "111": {
+    "title_en": "Regrettable and Healthy Attrition",
+    "option_a_cn": "离任时按绩效、关键性、错配和程序争议分类，并在其后续成就出现时回写原人才判断。",
+    "option_a_en": "Classify exits by performance, criticality, mismatch, and process dispute and write later achievements back into the original talent judgment.",
+    "option_b_cn": "把所有离开统一报成健康优化以保护本轮经理分，报表立刻好看，却掩盖留才失败和错误低评。",
+    "option_b_en": "Report every departure as healthy optimization to protect the manager's current score, improving the table now while hiding retention failures and false low ratings.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "112": {
+    "title_en": "Stay Interviews",
+    "option_a_cn": "对明星、继任者和不满者做结构化留任访谈，只承诺一项可预算的钱、机会、授权或减负并登记兑现。",
+    "option_a_en": "Run structured stay interviews for stars, successors, and dissatisfied staff and promise one budgeted change in pay, opportunity, authority, or workload with tracked delivery.",
+    "option_b_cn": "等其提出离开才给高额反 offer 或口头画饼，短期可能留人，却抬高成本并让未兑现承诺伤信任。",
+    "option_b_en": "Wait for a resignation threat and answer with a large counteroffer or verbal promise, possibly retaining them now while raising cost and damaging trust if unfulfilled.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "113": {
+    "title_en": "Key-Person Dependency and Knowledge Transfer",
+    "option_a_cn": "奖励培养副手、制度文档和可复制流程，把知识移交写入晋升资格，承担明星分权与带教工时。",
+    "option_a_en": "Reward deputies, institutional documentation, and repeatable processes and make knowledge transfer a promotion gate, accepting star dilution and mentoring time.",
+    "option_b_cn": "继续重奖单点英雄救火并用加俸锁住本人，短期交付强，却让其离开或失能时造成巨大冲击。",
+    "option_b_en": "Keep rewarding a lone hero and retain them with pay, maximizing immediate delivery while making departure or incapacity catastrophic.",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "114": {
+    "title_en": "Manager Credit for Exporting Talent",
+    "option_a_cn": "放出优秀人才可获得育人分、backfill 优先和跨组信用，但必须同时提交继任计划并承担过渡空缺。",
+    "option_a_en": "Reward managers who release strong talent with development credit, backfill priority, and cross-team goodwill, while requiring a succession plan and accepting transition vacancy.",
+    "option_b_cn": "以关键交付为由长期卡住明星保当期产出，团队眼下稳定，却损害人才输出分和内部市场信用。",
+    "option_b_en": "Block a star indefinitely for critical delivery to preserve current output, stabilizing the team now while damaging talent-export and internal-market credibility.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "115": {
+    "title_en": "Anonymous Internal Applications",
+    "option_a_cn": "初筛隐藏申请，终面才通知原上司并规划合法交接，承担突然空缺风险换取免报复通道。",
+    "option_a_en": "Hide applications through screening, notify the old manager only at final interview, and plan a lawful handoff, accepting surprise-vacancy risk for protection from retaliation.",
+    "option_b_cn": "要求申请前先获原上司批准以保护业务连续，信息最透明，却让卡人和雪藏发生在候选出现之前。",
+    "option_b_en": "Require old-manager approval before applying to protect continuity, maximizing transparency while enabling blocking and retaliation before candidacy exists.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "116": {
+    "title_en": "Release Deadline and One Handover Extension",
+    "option_a_cn": "内部录用后设固定放人期，只准凭关键交付和继任计划延期一次，承担交接与 backfill 协调。",
+    "option_a_en": "Set a fixed release window after internal hiring and allow one extension only for a critical deliverable with a succession plan, accepting handoff and backfill coordination.",
+    "option_b_cn": "由原上司以业务需要反复拖到项目结束，短期保住产出，却可能逼新团队放弃并形成卡人记录。",
+    "option_b_en": "Let the old manager delay repeatedly until the project ends for business need, preserving output now while driving the new team away and creating a blocking record.",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "117": {
+    "title_en": "Transfer Ramp Protection",
+    "option_a_cn": "为转岗者设置一次岗位化爬坡目标、部分参评比例和到期日，保留旧履历并投入辅导资源。",
+    "option_a_en": "Give a transferee one role-specific ramp, partial distribution weight, and expiry date, preserving prior history and funding coaching.",
+    "option_b_cn": "转岗首轮立即完整强排以防保护套利，迅速检验适配，却可能把学习曲线再次误判成低绩效。",
+    "option_b_en": "Force-rank the transferee fully in the first cycle to prevent protection gaming, testing fit fast while risking another misdiagnosis of the learning curve.",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "118": {
+    "title_en": "Absolute Probation Gate Outside the Bottom Quota",
+    "option_a_cn": "事前写明试用胜任门槛，按证据通过、延长辅导或退出，另行回写招聘和导师且不占正式 C 档。",
+    "option_a_en": "Predeclare probation standards, pass, coach longer, or exit by evidence, and write results to recruiting and mentors without consuming the regular C quota.",
+    "option_b_cn": "新人未即时达标就快速退出并计入团队末位，既腾岗又保护老员，却鼓励专招新人背 C。",
+    "option_b_en": "Exit newcomers immediately for missing the early bar and count them as the team's bottom rating, freeing capacity and protecting veterans while encouraging sacrificial hiring.",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "119": {
+    "title_en": "Hiring Quality Writeback",
+    "option_a_cn": "等新人完成爬坡后，把成功、错岗或失败按证据回写 HC 提出者、选人者与批准者，承担延迟核算。",
+    "option_a_en": "After ramp-up, write success, mismatch, or failure back to the HC requester, selector, and approver from evidence, accepting delayed accounting.",
+    "option_b_cn": "只按招聘速度和填满名额立即奖经理，迅速推动补员，却奖励低价乱招并把失败甩给新人导师。",
+    "option_b_en": "Reward managers immediately for hiring speed and filled slots, accelerating staffing while rewarding cheap mismatches and shifting failures to newcomers and mentors.",
+    "profile": "hc",
+    "reference_choice": "a"
+  },
+  "120": {
+    "title_en": "Mentor and Onboarding Performance",
+    "option_a_cn": "给导师预留结构化带教工时、阶段目标和结果回写，把新人独立交付计为可验证育人贡献。",
+    "option_a_en": "Reserve structured mentoring time, stage goals, and outcome writeback and count the newcomer's independent delivery as verifiable talent development.",
+    "option_b_cn": "只要求明星导师随问随答、其余时间保个人交付，短期少损产出，却让新人爬坡、留存和管理梯队受损。",
+    "option_b_en": "Ask the star mentor only to answer occasional questions and protect personal delivery, preserving short-term output while harming ramp speed, retention, and the management pipeline.",
+    "profile": "learning",
+    "reference_choice": "a"
+  }
+}

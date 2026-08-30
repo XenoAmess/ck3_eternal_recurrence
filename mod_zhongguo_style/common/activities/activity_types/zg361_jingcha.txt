@@ -1,0 +1,216 @@
+﻿# ZhongGuo 361 Style — 京察大计活动
+# 免费的治所单阶段集会：直属在任官员为客，落幕时立即开榜。
+# 仅天朝制公爵及以上可举办；定期召集令见 zg361_jingcha_mandate_effects.txt。
+# AI 不走活动 UI：它们由同一年度 dispatch 视为默认履责并后台结算。
+
+activity_zg361_jingcha = {
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		has_variable = zg361_jingcha_pending
+		is_adult = yes
+	}
+
+	can_start_showing_failures_only = {
+		has_variable = zg361_jingcha_pending
+		NOT = { is_activity_type_on_cooldown = activity_zg361_jingcha }
+		is_available = yes
+		age >= 16
+		any_vassal = {
+			count >= 1
+			zg361_is_jingcha_eligible_guest_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:host = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+			is_alive = yes
+			is_imprisoned = no
+			NOT = { is_incapable = yes }
+		}
+	}
+
+	on_invalidated = {
+		# 手动取消或因参战中止不能抹掉法定履责：只在主办者死亡、失能、
+		# 被囚或已不再具备主持资格时豁免本期义务。
+		if = {
+			limit = {
+				scope:host = {
+					OR = {
+						is_alive = no
+						is_incapable = yes
+						is_imprisoned = yes
+						NOT = { zg361_is_celestial_liege_trigger = yes }
+					}
+				}
+			}
+			scope:host = {
+				if = {
+					limit = {
+						is_alive = yes
+						has_game_rule = zg361_on
+						zg361_is_celestial_liege_trigger = yes
+					}
+					zg361_excuse_jingcha_assembly_effect = yes
+				}
+				else = { zg361_clear_jingcha_mandate_effect = yes }
+			}
+			# 与原版活动一致：主办者失能时播放专用取消事件。
+			if = {
+				limit = { scope:host = { is_incapable = yes } }
+				scope:activity = {
+					activity_type = { save_scope_as = activity_type }
+				}
+				scope:host = {
+					trigger_event = activity_system.0330
+				}
+				every_attending_character = {
+					limit = { this != scope:host }
+					trigger_event = activity_system.0331
+				}
+			}
+		}
+		else = {
+			debug_log = "ZG361: cancelled jingcha remains due before mandate deadline"
+		}
+	}
+
+	province_filter = capital
+	ai_province_filter = capital
+
+	max_province_icons = 1
+	allow_zero_guest_invites = no
+	open_invite = yes
+
+	province_description = {
+		desc = zg361_jingcha_province_desc
+	}
+
+	province_score = {
+		add = 10
+	}
+
+	cost = {
+		treasury = {
+			value = 0
+		}
+	}
+
+	ui_predicted_cost = {
+		treasury = {
+			value = 0
+		}
+	}
+
+	# pending 门槛把活动锁在周期召集令内；此处另防取消后立刻重开。
+	cooldown = { days = 30 }
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		zg361_jingcha_phase = {
+			is_predefined = yes
+			location_source = pickable
+
+			ai_will_do = {
+				value = 30
+			}
+
+			on_phase_active = {
+				if = {
+					limit = { this = scope:host }
+					scope:activity = { progress_activity_phase_after = { months = 1 } }
+				}
+			}
+		}
+	}
+
+	on_start = {
+		debug_log = "ZG361: jingcha assembly started"
+	}
+
+	on_complete = {
+		# activity_type on_complete 以每名参与角色为 this 各执行一次；整个
+		# 履责、考核和参会奖励必须只由 host 那一帧结算。
+		if = {
+			limit = { this = scope:host }
+			# 只有活动真正落幕才算履责；单纯打开/关闭规划器不算。
+			scope:host = {
+				zg361_clear_jingcha_mandate_effect = yes
+				zg361_run_review_effect = yes
+			}
+			scope:activity = {
+				every_attending_character = {
+					limit = { this != scope:host }
+					if = {
+						limit = { government_has_flag = government_has_merit }
+						change_merit = miniscule_merit_gain
+					}
+					add_opinion = { modifier = zg361_jingcha_attended target = scope:host }
+				}
+			}
+			debug_log = "ZG361: jingcha assembly concluded"
+		}
+	}
+
+	###################
+	# AI VALUES
+	###################
+
+	ai_will_do = {
+		value = 0
+	}
+
+	ai_check_interval = 60
+
+	ai_will_select_province = {
+		value = 10
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+
+	host_intents = {
+		default = reduce_stress_intent
+		intents = { reduce_stress_intent befriend_attendee_intent }
+	}
+
+	guest_intents = {
+		intents = { reduce_stress_intent befriend_attendee_intent }
+		default = reduce_stress_intent
+	}
+
+	can_be_activity_guest = {
+		zg361_is_jingcha_eligible_guest_trigger = yes
+		liege = scope:host
+	}
+
+	guest_invite_rules = {
+		defaults = {
+			1 = activity_invite_rule_vassals
+		}
+	}
+
+	max_guests = 40
+
+	guest_join_chance = {
+		base = 80
+		base_activity_modifier = yes
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+
+	###################
+	# GRAPHICS
+	###################
+
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/tgp_rice_fields.dds"
+		environment = "environment_travel_bridge"
+		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
+	}
+}

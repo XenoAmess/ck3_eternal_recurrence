@@ -1,0 +1,1082 @@
+{
+  "121": {
+    "title_en": "First-Time Manager Trial",
+    "option_a_cn": "先给小团队试管一周期，并配导师与隔级复盘",
+    "option_a_en": "Run a one-cycle small-team trial with mentoring and skip-level review",
+    "option_b_cn": "直接授予大团队正式管理权，只看首周期结果定去留",
+    "option_b_en": "Grant full control of a large team and judge only the first cycle",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "122": {
+    "title_en": "Manager 40-30-30 Scorecard",
+    "option_a_cn": "按四成结果、三成人才、三成过程留证打分",
+    "option_a_en": "Score documented results, talent stewardship, and management process at 40-30-30",
+    "option_b_cn": "把当期硬结果提到绝对多数，流失与反馈债以后再算",
+    "option_b_en": "Let current hard results dominate and defer turnover and feedback debt",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "123": {
+    "title_en": "Subordinate-to-Manager Review Form",
+    "option_a_cn": "用六项专表收集下属评价，并按评价者可信度校正",
+    "option_a_en": "Collect six manager-specific dimensions and weight them by reviewer credibility",
+    "option_b_cn": "用一次匿名好坏票快速判断经理是否得人心",
+    "option_b_en": "Use a single anonymous approval vote to judge the manager quickly",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "124": {
+    "title_en": "No Manager Promotion Without a Successor",
+    "option_a_cn": "先让继任者代理并验收交接，再放经理升任",
+    "option_a_en": "Validate an acting successor and handover before promoting the manager",
+    "option_b_cn": "立即提拔明星经理，由原团队自行填补断层",
+    "option_b_en": "Promote the star manager immediately and leave the old team to fill the gap",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "125": {
+    "title_en": "Firefighting Versus Delegation",
+    "option_a_cn": "划出支持时间让下属主导一次危机，并复盘授权结果",
+    "option_a_en": "Fund a supported subordinate-led response and review the delegation outcome",
+    "option_b_cn": "经理亲自接管危机，以最快恢复换取英雄声望",
+    "option_b_en": "Have the manager seize command for the fastest recovery and visible hero credit",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "126": {
+    "title_en": "Performance-Values Action Matrix",
+    "option_a_cn": "按业绩与价值观四象限分别留用、辅导、转岗或退出",
+    "option_a_en": "Use four evidence-based quadrants for retention, coaching, transfer, or exit",
+    "option_b_cn": "保住所有高产者并立即清退低产者，不另审协作破坏",
+    "option_b_en": "Retain every high producer and cut low producers without a separate conduct review",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "127": {
+    "title_en": "Span of Control and Rating Distortion",
+    "option_a_cn": "直管超限就增设合法负责人并补齐分层证据",
+    "option_a_en": "Add legitimate leads and layered evidence when direct reports exceed the limit",
+    "option_b_cn": "维持扁平直管，由经理按期末结果一次性评分",
+    "option_b_en": "Keep a flat structure and let one manager rate everyone from final outcomes",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "128": {
+    "title_en": "Forced-Ranking Climate Index",
+    "option_a_cn": "逐轮记录压力、协作、报险、互评与遗憾流失并调政策",
+    "option_a_en": "Track pressure, collaboration, risk reporting, review trust, and regretted loss each cycle",
+    "option_b_cn": "维持刚性配额，只用平均 KPI 和人才密度判断成败",
+    "option_b_en": "Keep rigid quotas and judge success only by average KPI and talent density",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "129": {
+    "title_en": "Promotion Queue and Career Plateau",
+    "option_a_cn": "建立有期限的透明候选队列，并给轮岗或现金补偿",
+    "option_a_en": "Maintain a time-bounded transparent queue with rotations or cash compensation",
+    "option_b_cn": "让主管逐年口头许诺，并为急需人选随时插队",
+    "option_b_en": "Rely on annual verbal promises and let urgent favorites jump the queue",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "130": {
+    "title_en": "Dumping Low Performers into Other Teams",
+    "option_a_cn": "随转岗移交 PIP、错岗证据与限期试用条件",
+    "option_a_en": "Transfer the PIP record, role-fit evidence, and a time-bounded trial",
+    "option_b_cn": "把低绩效者包装成高潜，尽快交给愿接收的团队",
+    "option_b_en": "Rebrand the low performer as high potential and move them immediately",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "131": {
+    "title_en": "Exploratory OKRs Versus Committed KPIs",
+    "option_a_cn": "期初冻结探索或承诺标签，并写清验证点与止损线",
+    "option_a_en": "Freeze exploration or commitment labels with validation and stop criteria up front",
+    "option_b_cn": "期末按结果改标签，把未兑现承诺转称探索学习",
+    "option_b_en": "Relabel missed commitments as exploration learning at year end",
+    "profile": "delivery",
+    "reference_choice": "a"
+  },
+  "132": {
+    "title_en": "Credit for Killing a Project in Time",
+    "option_a_cn": "凭不可行证据止损，冻结节省预算并由 sponsor 复核",
+    "option_a_en": "Stop on infeasibility evidence, record saved resources, and obtain sponsor review",
+    "option_b_cn": "继续投入直到交付或彻底失败，以免承认沉没成本",
+    "option_b_en": "Keep funding until delivery or collapse rather than recognize sunk cost",
+    "profile": "delivery",
+    "reference_choice": "a"
+  },
+  "133": {
+    "title_en": "Blameless Learning and Accountability on Separate Tracks",
+    "option_a_cn": "先冻结事实与系统原因，再另审造假、隐瞒和失职",
+    "option_a_en": "Freeze facts and system causes before separately judging deceit or negligence",
+    "option_b_cn": "事故后立即点名主责，以公开处分快速恢复秩序",
+    "option_b_en": "Name and punish a primary culprit immediately to restore order quickly",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "134": {
+    "title_en": "Single Owner and Arbitration for Shared Metrics",
+    "option_a_cn": "事前登记唯一 owner、协作者、依赖和事实仲裁入口",
+    "option_a_en": "Register one owner, contributors, dependencies, and a factual arbitration route",
+    "option_b_cn": "继续共担目标，结算时由上级指定领功者和责任人",
+    "option_b_en": "Keep collective ownership and let leadership assign credit and blame at settlement",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "135": {
+    "title_en": "Shadow Rating and Expectation Window",
+    "option_a_cn": "校准前告知暂定档与证据缺口，保留纠偏窗口",
+    "option_a_en": "Disclose the provisional rating and evidence gaps before calibration",
+    "option_b_cn": "封存影子档直到终评，一次公布以避免中途争议",
+    "option_b_en": "Withhold the shadow rating and announce it once at final review",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "136": {
+    "title_en": "Cross-Manager Pre-Calibration Huddle",
+    "option_a_cn": "只预审边界案例并留纪要，不提前分完整名额",
+    "option_a_en": "Pre-review only boundary cases with minutes, without allocating every slot",
+    "option_b_cn": "小会先把各档名额分完，让正式大会快速确认",
+    "option_b_en": "Pre-allocate all ratings privately so the formal meeting can ratify them quickly",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "137": {
+    "title_en": "Agenda Order and Anchoring",
+    "option_a_cn": "随机或轮换议程，并在会前公开排序规则",
+    "option_a_en": "Randomize or rotate the agenda under a rule published before the meeting",
+    "option_b_cn": "先审战略团队与亲信，趁注意力充足锁定锚点",
+    "option_b_en": "Review strategic teams and allies first to lock anchors while attention is high",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "138": {
+    "title_en": "Quota Rounding and Remainder Allocation",
+    "option_a_cn": "期初冻结最大余数与跨年轮换规则并公开尾差",
+    "option_a_en": "Freeze maximum-remainder and cross-cycle rotation rules before ratings begin",
+    "option_b_cn": "看完名单后由主持人把尾差直接判给一个团队",
+    "option_b_en": "Let the chair assign the remainder to one team after seeing the roster",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "139": {
+    "title_en": "Cross-Cycle Quota Debt",
+    "option_a_cn": "允许借一个档位名额，但登记到期日、经理与重组责任",
+    "option_a_en": "Allow one quota loan with an expiry, accountable manager, and reorganization liability",
+    "option_b_cn": "每轮刚性清零配额，不把头档或末位压力留给未来",
+    "option_b_en": "Settle quotas rigidly every cycle and carry no rating debt forward",
+    "profile": "calibration",
+    "reference_choice": "b"
+  },
+  "140": {
+    "title_en": "Quota Ownership Date in Reorganizations",
+    "option_a_cn": "按服务天数或目标 owner 归属，并在召集令时冻结",
+    "option_a_en": "Assign quota ownership by service days or goal owner and freeze it at convocation",
+    "option_b_cn": "一律由期末组织吸收全部头档与末位配额",
+    "option_b_en": "Make the year-end organization absorb every top and bottom quota",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "141": {
+    "title_en": "Executive Save-or-Kill List",
+    "option_a_cn": "只给高层一次书面必议额度，并审计理由与最终命中",
+    "option_a_en": "Give executives one documented discussion flag and audit its rationale and accuracy",
+    "option_b_cn": "允许高层直接保送或必杀孙级官员，迅速结束争论",
+    "option_b_en": "Let executives directly save or condemn skip-level staff to end debate",
+    "profile": "governance",
+    "reference_choice": "c"
+  },
+  "142": {
+    "title_en": "Pending Rating for Unverified Milestones",
+    "option_a_cn": "设短期待定窗与验证责任人，奖金和配额同步暂缓",
+    "option_a_en": "Open a short pending window with a verifier and hold both pay and quota settlement",
+    "option_b_cn": "按截止日立即定档，迟到的里程碑统一记入下轮",
+    "option_b_en": "Rate at the cutoff and book every late milestone into the next cycle",
+    "profile": "assessment",
+    "reference_choice": "b"
+  },
+  "143": {
+    "title_en": "Symmetric Treatment of Post-Cutoff Events",
+    "option_a_cn": "奖惩发放前按同一重大门槛对称重开一次并再封榜",
+    "option_a_en": "Before payout, reopen once under the same materiality threshold for gains and losses",
+    "option_b_cn": "封榜后绝不重开，重大成功与事故都转入下一轮",
+    "option_b_en": "Never reopen a sealed list; carry both major wins and incidents forward",
+    "profile": "governance",
+    "reference_choice": "b"
+  },
+  "144": {
+    "title_en": "Calibration Dissent Votes",
+    "option_a_cn": "允许实名异议附事实理由，并在翻案后回写判断信用",
+    "option_a_en": "Record named, evidence-backed dissents and update judgment credit after appeals",
+    "option_b_cn": "要求全体签署共同结论，不留少数意见以便立即封账",
+    "option_b_en": "Require unanimous sign-off with no minority record so settlement can close immediately",
+    "profile": "calibration",
+    "reference_choice": "a"
+  },
+  "145": {
+    "title_en": "Shadow Ordering Within a Rating Band",
+    "option_a_cn": "公开仅用于发展的 3.5 内部顺序，并禁止影响奖金",
+    "option_a_en": "Publish a development-only order within 3.5 and bar it from affecting pay",
+    "option_b_cn": "让经理私下维护 B 加减序列并据此快速分机会",
+    "option_b_en": "Let managers keep a secret B-plus/B-minus order for allocating opportunities",
+    "profile": "assessment",
+    "reference_choice": "c"
+  },
+  "146": {
+    "title_en": "Direct Ratings Versus Diplomatic Feedback",
+    "option_a_cn": "开场直报档位，再逐项说明证据、奖惩与行动项",
+    "option_a_en": "State the rating first, then walk through evidence, consequences, and actions",
+    "option_b_cn": "先用发展话术缓和关系，谈话末尾才揭示档位",
+    "option_b_en": "Lead with development language and reveal the rating only at the end",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "147": {
+    "title_en": "Mandatory Praise-and-Critique Template",
+    "option_a_cn": "允许全好或全坏，但每条判断都必须附具体证据",
+    "option_a_en": "Permit all-positive or all-negative feedback when every judgment has evidence",
+    "option_b_cn": "强制每人一扬一抑，用统一模板快速交齐反馈",
+    "option_b_en": "Force one praise and one criticism per person through a standard template",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "148": {
+    "title_en": "Evidence First or Rating First",
+    "option_a_cn": "先逐项核对冻结案卷，再宣读已经锁定的最终档",
+    "option_a_en": "Review the frozen record item by item before announcing the locked rating",
+    "option_b_cn": "先宣布档位，再用有限时间解释最关键几项事实",
+    "option_b_en": "Announce the rating first and explain only the most important facts",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "149": {
+    "title_en": "Performance-Outcome Bargaining Package",
+    "option_a_cn": "把降档交换的补差、目标保护与转岗机会书面入账",
+    "option_a_en": "Ledger every pay adjustment, goal protection, and transfer option exchanged for a lower rating",
+    "option_b_cn": "要求边界员工先接受低档，再口头承诺以后补偿",
+    "option_b_en": "Press the boundary employee to accept the lower rating on a verbal future promise",
+    "profile": "compensation",
+    "reference_choice": "c"
+  },
+  "150": {
+    "title_en": "Take-the-Hit-This-Time Compensation Promise",
+    "option_a_cn": "把专项奖或优先机会写明 owner、期限与非预定档声明",
+    "option_a_en": "Document the award or opportunity, owner, deadline, and non-guaranteed-rating clause",
+    "option_b_cn": "让员工先替团队背档，以经理个人信用口头担保下轮",
+    "option_b_en": "Make the employee absorb the quota now on the manager's verbal guarantee",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "151": {
+    "title_en": "Receipt Is Not Agreement",
+    "option_a_cn": "分别记录同意、保留异议与事实拒签，并保留送达见证",
+    "option_a_en": "Record agreement, reserved dissent, and factual refusal separately with delivery proof",
+    "option_b_cn": "把任何签收都视为接受结论，并立即关闭申诉窗口",
+    "option_b_en": "Treat any receipt as acceptance and close the appeal window immediately",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "152": {
+    "title_en": "Feedback Actionability Score",
+    "option_a_cn": "按具体、可控、期限和资源四项让下属次轮回评",
+    "option_a_en": "Have subordinates rate specificity, control, deadlines, and resources next cycle",
+    "option_b_cn": "由经理按下属是否迅速照做来判断反馈是否有效",
+    "option_b_en": "Let managers judge feedback quality by how quickly subordinates comply",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "153": {
+    "title_en": "Closing the Loop on Feedback Actions",
+    "option_a_cn": "每项辅导、资源或调岗设 owner、期限与关闭凭证",
+    "option_a_en": "Give every coaching, resource, or transfer action an owner, deadline, and closure proof",
+    "option_b_cn": "只留口头待办，年末由经理判断是否算已改善",
+    "option_b_en": "Keep verbal follow-ups and let the manager decide at year end whether they were done",
+    "profile": "assessment",
+    "reference_choice": "a"
+  },
+  "154": {
+    "title_en": "Full Transcript Versus Summary Minutes",
+    "option_a_cn": "复杂案件保存逐项完整纪要，并由双方校正后签认",
+    "option_a_en": "Keep itemized minutes for complex cases and obtain corrected sign-off from both sides",
+    "option_b_cn": "只记录档位和主管结论，以最少留痕快速结案",
+    "option_b_en": "Record only the rating and manager conclusion for a fast close",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "155": {
+    "title_en": "Public Praise and Private Criticism",
+    "option_a_cn": "公开头档事实与团队成果，敏感改进只在私下送达",
+    "option_a_en": "Publish top-rating facts and team wins while delivering sensitive criticism privately",
+    "option_b_cn": "公开全部档位和末位问题，用群体压力推动整改",
+    "option_b_en": "Publish every rating and bottom-tier problem to drive change through group pressure",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "156": {
+    "title_en": "Team Results Briefing",
+    "option_a_cn": "向全组说明分布原则、共性问题和资源，不泄露个案",
+    "option_a_en": "Brief the team on distribution rules, common issues, and resources without exposing cases",
+    "option_b_cn": "取消集体说明，只做一对一通知以尽快结束考核季",
+    "option_b_en": "Skip the group briefing and use private notices to close the cycle quickly",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "157": {
+    "title_en": "Self-Nomination and Manager Nomination",
+    "option_a_cn": "允许合资格者自荐，但须有 sponsor 和主管书面意见",
+    "option_a_en": "Allow eligible self-nomination with a sponsor and a written manager position",
+    "option_b_cn": "把晋升入口完全交给直属主管，只审其正式提名",
+    "option_b_en": "Give direct managers exclusive control and review only their nominees",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "158": {
+    "title_en": "Manager Nomination Quota",
+    "option_a_cn": "给少量提名额并要求排序、理由与未使用额度归还",
+    "option_a_en": "Issue a small quota with ranking, rationale, and return of unused slots",
+    "option_b_cn": "把全部名额押给一名主推者，并用弱包占满余位",
+    "option_b_en": "Concentrate every slot on one favorite and fill the rest with weak packets",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "159": {
+    "title_en": "Managers Shelving Star Performers",
+    "option_a_cn": "为明星设接班计划和最迟提名日，经理获得交接资源",
+    "option_a_en": "Set a successor plan and nomination deadline while funding the handover",
+    "option_b_cn": "因无人替补继续雪藏明星，优先保住本期团队产出",
+    "option_b_en": "Keep the star shelved because no replacement exists and protect current output",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "160": {
+    "title_en": "Department Promotion Pre-Screen",
+    "option_a_cn": "按冻结量表预审并记录淘汰理由，让候选独立答辩",
+    "option_a_en": "Pre-screen on a frozen rubric, record rejection reasons, and let candidates defend themselves",
+    "option_b_cn": "由经理闭门排出战略名单，只把最稳的人送上会",
+    "option_b_en": "Let managers privately shortlist only the safest strategic candidates",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "161": {
+    "title_en": "Filler Candidates and Sham Competition",
+    "option_a_cn": "只提交真正支持的候选，并向弱包本人披露胜算与成本",
+    "option_a_en": "Submit only genuinely supported candidates and disclose odds and costs to weaker nominees",
+    "option_b_cn": "用陪跑包凑足竞争人数，把票源集中给主推者",
+    "option_b_en": "Pad the slate with filler packets to concentrate votes on the favorite",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "162": {
+    "title_en": "Tenure-Requirement Exception",
+    "option_a_cn": "占用有限破格额，先独立审准入再审目标级能力",
+    "option_a_en": "Use a limited exception slot and separate eligibility review from capability review",
+    "option_b_cn": "在同一轮投票中为强 sponsor 的人直接豁免资历",
+    "option_b_en": "Waive tenure inside the final vote for a candidate with a powerful sponsor",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "163": {
+    "title_en": "Promotion Performance Window",
+    "option_a_cn": "期初冻结两轮或本级完整履历，并统一标注重组语境",
+    "option_a_en": "Freeze a two-cycle or full-level record and annotate reorganizations consistently",
+    "option_b_cn": "只取最近最强一轮，快速奖励已经显露的上升势头",
+    "option_b_en": "Use only the strongest recent cycle to reward visible momentum quickly",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "164": {
+    "title_en": "Cross-Team Results in Promotion Packets",
+    "option_a_cn": "由旧 owner 共签已验收成果，并按贡献账本拆分影响",
+    "option_a_en": "Require the former owner to co-sign verified results and split impact by contribution ledger",
+    "option_b_cn": "由新主管选取最有利旧成果，直接写入当前候选包",
+    "option_b_en": "Let the new manager select favorable old results and claim them in the current packet",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "165": {
+    "title_en": "Trial Work at the Next Level",
+    "option_a_cn": "授予明确权限、期限、薪酬与退出条件后再做升级试岗",
+    "option_a_en": "Grant defined authority, duration, compensation, and exit criteria for next-level work",
+    "option_b_cn": "先无限加上下一级工作，等候选证明自己再谈权薪",
+    "option_b_en": "Assign indefinite next-level work and discuss authority and pay only after proof",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "166": {
+    "title_en": "Voluntary Packet Withdrawal",
+    "option_a_cn": "预审前允许撤包，封存已验证材料并立即释放名额",
+    "option_a_en": "Allow pre-screen withdrawal, preserve verified material, and release the slot immediately",
+    "option_b_cn": "劝候选本轮硬上，以免浪费已经取得的提名窗口",
+    "option_b_en": "Push the candidate to defend now rather than waste the nomination window",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "167": {
+    "title_en": "Sponsor Promotion-Credit Debt",
+    "option_a_cn": "记录 sponsor 背书强度，并用晋升后胜任结果回写信用",
+    "option_a_en": "Record sponsorship strength and update sponsor credit from post-promotion performance",
+    "option_b_cn": "让 sponsor 用声望作强力担保，帮助候选快速越过边界票",
+    "option_b_en": "Let sponsors stake prestige on a forceful guarantee to overcome boundary votes",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "168": {
+    "title_en": "Manager Nomination Hit Rate",
+    "option_a_cn": "按候选难度跟踪通过、胜任和漏提，再调整经理额度",
+    "option_a_en": "Track difficulty-adjusted passage, later performance, and omissions before changing quotas",
+    "option_b_cn": "按原始失败次数立刻削减低命中经理的提名额",
+    "option_b_en": "Cut a manager's nomination quota immediately from the raw failure count",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "169": {
+    "title_en": "Panel Expertise Matching",
+    "option_a_cn": "混合领域专家与外部评委，并事前公开两席权重",
+    "option_a_en": "Mix domain experts with outsiders and publish their weights in advance",
+    "option_b_cn": "只用熟悉业务的圈内评委，迅速判断专业深度",
+    "option_b_en": "Use only familiar insiders to judge domain depth quickly",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "170": {
+    "title_en": "Random Versus Familiar Panelists",
+    "option_a_cn": "从跨部门池轮换随机抽席，只允许一次有因回避",
+    "option_a_en": "Rotate a random cross-department pool with one cause-based recusal",
+    "option_b_cn": "让候选团队推荐熟人占多数，减少背景解释时间",
+    "option_b_en": "Let the candidate's team nominate a familiar majority to reduce explanation time",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "171": {
+    "title_en": "Promotion Panel Conflict Recusal",
+    "option_a_cn": "强制披露合作、HC 竞争与关系冲突，并由备选席补位",
+    "option_a_en": "Disclose collaboration, HC competition, and personal conflicts and seat alternates",
+    "option_b_cn": "为免延期保留原评委，只要求其口头承诺公正",
+    "option_b_en": "Keep conflicted panelists to avoid delay and accept verbal pledges of fairness",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "172": {
+    "title_en": "Veto, Majority Vote, or Average Score",
+    "option_a_cn": "普通项用去极值平均，红线否决须附理由并复核",
+    "option_a_en": "Use trimmed averages normally and require reviewable reasons for red-line vetoes",
+    "option_b_cn": "授权任一评委一票否决，以最快速度守住晋升门槛",
+    "option_b_en": "Give every panelist a unilateral veto to guard the promotion bar quickly",
+    "profile": "governance",
+    "reference_choice": "a"
+  },
+  "173": {
+    "title_en": "Blind Packet Review and Live Defense",
+    "option_a_cn": "先匿名审工件，再实名答辩并对比两阶段差异",
+    "option_a_en": "Review artifacts blind, then hold a named defense and compare both stages",
+    "option_b_cn": "直接现场答辩，由评委依据表现快速决定",
+    "option_b_en": "Move directly to a live defense and let the panel decide from performance",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "174": {
+    "title_en": "Promotion Defense Time Budget",
+    "option_a_cn": "固定时长深讲一个代表案例，并保留独立质询时间",
+    "option_a_en": "Use a fixed slot for one deep representative case and protected questioning time",
+    "option_b_cn": "允许堆满项目清单和长材料，以规模压缩评委质询",
+    "option_b_en": "Allow a long project inventory that crowds out panel questioning",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "175": {
+    "title_en": "Mock Defense and Coaching Access",
+    "option_a_cn": "建立跨团队公共教练池，并公开有限辅导时数分配",
+    "option_a_en": "Create a cross-team coaching pool and publish allocation of limited practice hours",
+    "option_b_cn": "让经理把全部模拟答辩资源押给最看好的候选",
+    "option_b_en": "Let managers concentrate all mock-defense support on their favorite candidate",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "176": {
+    "title_en": "Separating Individual Credit from Team Results",
+    "option_a_cn": "冻结个人判断、动作、他人贡献与离岗后持续性证据",
+    "option_a_en": "Freeze evidence of individual judgment, actions, others' work, and durability after departure",
+    "option_b_cn": "把团队结果主要记给台前 owner，迅速形成明确主功",
+    "option_b_en": "Award most team credit to the visible owner to establish one clear hero",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "177": {
+    "title_en": "Project Scale Versus Personal Leverage",
+    "option_a_cn": "分别评分项目影响范围与候选改变打法的个人杠杆",
+    "option_a_en": "Score project impact separately from the candidate's personal leverage on the method",
+    "option_b_cn": "直接用项目预算、人数与战略等级代理个人影响",
+    "option_b_en": "Use project budget, headcount, and strategic rank as proxies for personal impact",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "178": {
+    "title_en": "Verifiable Artifacts and Narrative Evidence",
+    "option_a_cn": "要求可复核工件与口头叙事双门槛，缺一则延期",
+    "option_a_en": "Require both verifiable artifacts and a coherent narrative, deferring incomplete packets",
+    "option_b_cn": "以现场故事和评委追问为主，快速判断复杂影响",
+    "option_b_en": "Rely on the live story and questioning to judge complex impact quickly",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "179": {
+    "title_en": "Named Owner for Failed-Defense Feedback",
+    "option_a_cn": "每条不通过理由指定评委、差距证据与下轮验收项",
+    "option_a_en": "Assign every rejection reason to a panelist with evidence and a next-cycle test",
+    "option_b_cn": "统一写准备不足，下一轮再由新评委重看整包",
+    "option_b_en": "Record generic unreadiness and let a new panel reassess the whole packet later",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "180": {
+    "title_en": "Promotion Retry Cooldown and Packet Refresh",
+    "option_a_cn": "完成指定差距即可重开，保留旧结论并只补新影响",
+    "option_a_en": "Reopen after specified gaps close, retaining old findings and adding only new impact",
+    "option_b_cn": "所有失败者统一冷却一整轮，不审个别改进速度",
+    "option_b_en": "Impose a full-cycle cooldown on every failed candidate regardless of improvement",
+    "profile": "promotion",
+    "reference_choice": "a"
+  },
+  "181": {
+    "title_en": "Capability, Willingness, and Role-Fit Triage",
+    "option_a_cn": "先分清能力、意愿、目标失真与错岗，再匹配处置",
+    "option_a_en": "Diagnose capability, willingness, target validity, and role fit before intervention",
+    "option_b_cn": "见一次低档就按意愿不足启动纪律型 PIP",
+    "option_b_en": "Treat one low rating as unwillingness and launch a disciplinary PIP",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "182": {
+    "title_en": "PIP Evidence Threshold",
+    "option_a_cn": "以严重失职或低档加已反馈问题为正式启动门槛",
+    "option_a_en": "Require serious failure or a low rating plus previously documented problems",
+    "option_b_cn": "任何一次 3.25 都自动转入正式 PIP",
+    "option_b_en": "Send every single 3.25 rating directly into a formal PIP",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "183": {
+    "title_en": "Dual-Signed PIP Goals and Refusal Reasons",
+    "option_a_cn": "设可控里程碑、一次修改权与独立确认并冻结拒签理由",
+    "option_a_en": "Set controllable milestones, one revision right, independent review, and recorded refusal reasons",
+    "option_b_cn": "由经理单方下达目标，把拒签立即视为不服从",
+    "option_b_en": "Let the manager impose goals unilaterally and treat refusal as insubordination",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "184": {
+    "title_en": "Manager PIP Caseload",
+    "option_a_cn": "限制同时辅导人数，超额须配导师、错峰或上级资源",
+    "option_a_en": "Cap concurrent PIPs and require mentors, staggered starts, or senior support above it",
+    "option_b_cn": "把全部低档者同批纳入 PIP，用统一期限压缩管理成本",
+    "option_b_en": "Place every low performer into one batch PIP under a common deadline",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "185": {
+    "title_en": "PIP Midpoint Review",
+    "option_a_cn": "中期核对进展、资源和目标有效性，只允许一次纠偏",
+    "option_a_en": "Audit progress, resources, and goal validity midway with one controlled correction",
+    "option_b_cn": "取消中检，按期末最终结果一次判定毕业或失败",
+    "option_b_en": "Skip the midpoint and decide graduation or failure only at the deadline",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "186": {
+    "title_en": "PIP Goal-Creep Lock",
+    "option_a_cn": "新增要求必须等量替换、延期或通过紧急复核",
+    "option_a_en": "Require equal substitution, deadline extension, or emergency review for new demands",
+    "option_b_cn": "允许经理随业务变化继续加码，保持改进压力",
+    "option_b_en": "Let managers add demands as business changes to preserve pressure",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "187": {
+    "title_en": "PIP Graduation Standard",
+    "option_a_cn": "以关键里程碑加稳定期结业，边界案交独立复核",
+    "option_a_en": "Graduate on key milestones plus a stability period, with independent boundary review",
+    "option_b_cn": "由直属经理凭最终信心决定毕业或继续观察",
+    "option_b_en": "Let the direct manager decide graduation from final confidence",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "188": {
+    "title_en": "Post-PIP Relapse Observation",
+    "option_a_cn": "只观察一轮并区分同类、新问题与外部冲击后到期",
+    "option_a_en": "Observe for one cycle, distinguish recurrence from new or external issues, then expire",
+    "option_b_cn": "保留长期高风险标记，任何失误都快速升级处置",
+    "option_b_en": "Keep a long-term high-risk flag and escalate quickly after any mistake",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "189": {
+    "title_en": "Second PIP, Transfer, or Exit",
+    "option_a_cn": "核对支持、错岗与替代职位，再在二次机会、转岗和退出间选择",
+    "option_a_en": "Compare support, role fit, and vacancies before choosing a second chance, transfer, or exit",
+    "option_b_cn": "首次失败或复发即结束任用，迅速释放岗位",
+    "option_b_en": "End employment after the first failure or relapse and free the role immediately",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "190": {
+    "title_en": "Minimum PIP Disclosure on Transfer",
+    "option_a_cn": "只移交目标、支持、完成度、争议与本人陈述",
+    "option_a_en": "Transfer only goals, support, completion, disputes, and the employee's statement",
+    "option_b_cn": "只贴低绩效标签通知接收经理，省去完整案卷审查",
+    "option_b_en": "Send only a low-performer label to the receiving manager",
+    "profile": "pip",
+    "reference_choice": "a"
+  },
+  "191": {
+    "title_en": "Team Cost Statement After a PIP Exit",
+    "option_a_cn": "冻结补缺、交接、加班与招聘成本，并分配责任预算",
+    "option_a_en": "Freeze vacancy, handover, overtime, and hiring costs and assign their budget owners",
+    "option_b_cn": "人员退出即记全额薪酬节省，不追踪团队后续负担",
+    "option_b_en": "Book the full salary saving immediately and ignore downstream team burden",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "192": {
+    "title_en": "On-Call Rotation",
+    "option_a_cn": "按能力分层轮值并允许留痕换班，同时培训后备",
+    "option_a_en": "Use competency-tiered rotation with recorded swaps and backup training",
+    "option_b_cn": "把急务长期交给固定英雄，换取最快稳定响应",
+    "option_b_en": "Keep emergencies with a permanent hero for the fastest reliable response",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "193": {
+    "title_en": "On-Call Pay or Compensatory Time",
+    "option_a_cn": "按值守时数混合发金币与调休，并设个人年度上限",
+    "option_a_en": "Mix cash and compensatory time by duty hours under an annual personal cap",
+    "option_b_cn": "把值守列为岗位义务，不另付钱也不减下期任务",
+    "option_b_en": "Treat on-call duty as inherent to the role with no extra pay or relief",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "194": {
+    "title_en": "Equal Target Relief for On-Call Work",
+    "option_a_cn": "按已核实急务工时等量减交付、延期限或补替班",
+    "option_a_en": "Offset verified emergency hours with equal scope relief, extensions, or backup",
+    "option_b_cn": "保持原目标不变，鼓励值守者两头全扛争头档",
+    "option_b_en": "Keep original goals and invite responders to carry both workloads for a top rating",
+    "profile": "workload",
+    "reference_choice": "a"
+  },
+  "195": {
+    "title_en": "False Alarms and Alert Quality",
+    "option_a_cn": "由告警 owner 量化噪声、试调阈值并演练漏报风险",
+    "option_a_en": "Have the alert owner measure noise, test thresholds, and rehearse missed-alert risk",
+    "option_b_cn": "立即关闭最吵的告警通道，先恢复值守专注",
+    "option_b_en": "Silence the noisiest alert channel immediately to restore focus",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "196": {
+    "title_en": "Incident-Severity Reporting Game",
+    "option_a_cn": "按损失、范围和恢复时间报级，并接受独立校正",
+    "option_a_en": "Report severity from loss, reach, and recovery time under independent correction",
+    "option_b_cn": "先压低事故等级保住本期绩效，扩大后再升级",
+    "option_b_en": "Understate severity to protect current performance and escalate only if it spreads",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "197": {
+    "title_en": "Credit Split Between Incident Commander and Responder",
+    "option_a_cn": "按发现、决策、执行和协调时间线拆分功责",
+    "option_a_en": "Split credit and responsibility across discovery, decisions, execution, and coordination",
+    "option_b_cn": "把主要救火功记给最后完成修复的台前英雄",
+    "option_b_en": "Give the main recovery credit to the visible person who completed the fix",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "198": {
+    "title_en": "Detecting the Arsonist-Wins-a-Firefighting-Award Pattern",
+    "option_a_cn": "把救火功与根因过失净额结算，区分正常失败与造险",
+    "option_a_en": "Net recovery credit against root-cause fault while separating normal failure from risk creation",
+    "option_b_cn": "只按恢复速度发英雄奖，根因责任另案以后再议",
+    "option_b_en": "Award hero credit for recovery speed and defer root-cause responsibility",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "199": {
+    "title_en": "Credit for Prevention When Nothing Breaks",
+    "option_a_cn": "对被采纳防护设观察期，以后续无事故发有限延迟功",
+    "option_a_en": "Observe adopted safeguards and grant capped delayed credit after an incident-free period",
+    "option_b_cn": "只奖励真实事故中的可见救火，不给未发生风险计功",
+    "option_b_en": "Reward only visible response to real incidents and give no credit for non-events",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "200": {
+    "title_en": "Temporary Emergency Authority",
+    "option_a_cn": "授予限时、限范围的越权权限，并保留命令日志与事后复核",
+    "option_a_en": "Grant time- and scope-limited emergency powers with command logs and after-action review",
+    "option_b_cn": "危机期间开放全面越权，先恢复再补审批",
+    "option_b_en": "Allow unrestricted overrides during the crisis and seek approval after recovery",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "201": {
+    "title_en": "Immutable Incident Timeline",
+    "option_a_cn": "事故开始即冻结发现、升级、命令、行动和恢复节点",
+    "option_a_en": "Freeze discovery, escalation, commands, actions, and recovery nodes from incident start",
+    "option_b_cn": "恢复后由指挥官整理一份精简时间线并删除过程噪声",
+    "option_b_en": "Let the commander produce a concise post-recovery timeline and remove process noise",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "202": {
+    "title_en": "Postmortem Action Owners",
+    "option_a_cn": "每项修复指定唯一 owner、支持者、期限和独立验收人",
+    "option_a_en": "Give each fix one owner, named supporters, a deadline, and an independent verifier",
+    "option_b_cn": "把所有改进愿望列入复盘，由团队按空闲自行认领",
+    "option_b_en": "List every desired improvement and let the team claim items when free",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "203": {
+    "title_en": "Repeated Incidents Become Management Accountability",
+    "option_a_cn": "区分未做、无效、资源被拒和新根因，再追到资源决策层",
+    "option_a_en": "Distinguish undone, ineffective, unfunded, and novel causes before escalating to resource owners",
+    "option_b_cn": "同类事故复发就加罚当班人员，以高压阻止第三次",
+    "option_b_en": "Punish the current responders after a repeat incident to deter a third occurrence",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "204": {
+    "title_en": "Reliability Budget and Deployment Freeze",
+    "option_a_cn": "耗尽可靠性预算即暂停部分新项目，修复到书面门槛",
+    "option_a_en": "Pause selected launches when the reliability budget is exhausted until a written recovery threshold",
+    "option_b_cn": "由高层签字继续冲刺，把后续事故损失归入其决策账",
+    "option_b_en": "Let leadership sign to continue shipping and own the resulting incident losses",
+    "profile": "incident",
+    "reference_choice": "a"
+  },
+  "205": {
+    "title_en": "Toil Share Cap",
+    "option_a_cn": "冻结重复运维工时，超限就自动化、停接或补人",
+    "option_a_en": "Measure repetitive operations and automate, stop intake, or add staff above the cap",
+    "option_b_cn": "维持手工吞吐以保住本期交付，暂不计算隐形工时",
+    "option_b_en": "Keep manual throughput to protect current delivery and leave hidden hours uncounted",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "206": {
+    "title_en": "Debt Principal-and-Interest Ledger",
+    "option_a_cn": "为每笔赶工记录省时本金、维护利息、风险和责任 owner",
+    "option_a_en": "Record saved-time principal, maintenance interest, risk, and owner for every shortcut",
+    "option_b_cn": "只记录按时上线成果，把后续维护作为新团队日常工作",
+    "option_b_en": "Record only the on-time launch and treat later maintenance as ordinary new-team work",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "207": {
+    "title_en": "Fixed Debt-Repayment Budget",
+    "option_a_cn": "每轮锁定偿债人力，并以风险下降验收而非功能数",
+    "option_a_en": "Ring-fence debt capacity each cycle and accept it by risk reduction, not feature count",
+    "option_b_cn": "业务高压时收回全部还债人力，集中完成显性指标",
+    "option_b_en": "Reclaim all debt capacity during business pressure to maximize visible targets",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "208": {
+    "title_en": "Incremental Repair Versus Full Rewrite",
+    "option_a_cn": "按风险分段修补并设可量化退出线，逐步替换旧务",
+    "option_a_en": "Repair by risk segment with measurable exit gates and gradual replacement",
+    "option_b_cn": "宣布全面重做并冻结旧系统演进，押注一次性切换",
+    "option_b_en": "Freeze legacy evolution and bet on a single big-bang rewrite",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "209": {
+    "title_en": "Legacy-System Hazard Pay",
+    "option_a_cn": "为积弊岗位提供限期金币、晋升证据或轮值减免",
+    "option_a_en": "Offer time-limited cash, promotion evidence, or rotation relief for hazardous legacy work",
+    "option_b_cn": "强派最弱势员工接手旧务，以最低成本补上空缺",
+    "option_b_en": "Assign the least powerful employee to fill the legacy role at minimum cost",
+    "profile": "compensation",
+    "reference_choice": "a"
+  },
+  "210": {
+    "title_en": "Maintenance Owner Rotation",
+    "option_a_cn": "定期轮换 owner，并为每次轮换配置交接与实操培训",
+    "option_a_en": "Rotate owners on schedule with handover and practical training every time",
+    "option_b_cn": "让最高效专家永久负责，靠个人熟练度维持速度",
+    "option_b_en": "Keep the most efficient expert permanently responsible to preserve speed",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "211": {
+    "title_en": "Credit for Documentation and Runbooks",
+    "option_a_cn": "让新人按手册完成一次实操验收后再给作者计功",
+    "option_a_en": "Credit the author only after a newcomer completes a practical run from the manual",
+    "option_b_cn": "继续由专家口传心授，避免写作拖慢当前交付",
+    "option_b_en": "Keep expert oral apprenticeship so writing does not delay current delivery",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "212": {
+    "title_en": "The Automation Visibility Paradox",
+    "option_a_cn": "按未来节省工时、故障与交接难度给自动化延迟计功",
+    "option_a_en": "Credit automation from future hours, incidents, and handover difficulty it removes",
+    "option_b_cn": "继续按当期处理件数发绩效，让可见吞吐优先",
+    "option_b_en": "Continue rewarding current ticket counts and prioritize visible throughput",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "213": {
+    "title_en": "Review and Quality-Gate Contribution",
+    "option_a_cn": "同时记录审阅拦错、投入工时与阻塞时长，设周转目标",
+    "option_a_en": "Record defects prevented, reviewer time, and blocking delay under a turnaround target",
+    "option_b_cn": "只给亲自交付者计功，要求审阅者尽快批准避免阻塞",
+    "option_b_en": "Credit only authors and press reviewers to approve quickly to avoid delay",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "214": {
+    "title_en": "Coverage Numbers Versus Real Quality",
+    "option_a_cn": "围绕高风险场景做深测，并用真实事故反校验证选择",
+    "option_a_en": "Test deeply around documented risks and recalibrate selection from real incidents",
+    "option_b_cn": "设检查数量和覆盖率硬线，月底集中补齐数字",
+    "option_b_en": "Set hard test-count and coverage targets and fill the numbers at month end",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "215": {
+    "title_en": "Retiring Legacy Processes as Delivery",
+    "option_a_cn": "先迁移剩余用户、开放必要性申诉，再验收退役节省",
+    "option_a_en": "Migrate remaining users, hear necessity appeals, and verify savings before retirement",
+    "option_b_cn": "立即关闭低使用旧务，把释放 HC 当期计入交付",
+    "option_b_en": "Shut down low-use legacy services immediately and book the freed HC now",
+    "profile": "technology",
+    "reference_choice": "a"
+  },
+  "216": {
+    "title_en": "Offboarding Handover Completeness",
+    "option_a_cn": "给交接时间并按资产、风险、联系人和未结项逐项验收",
+    "option_a_en": "Fund handover time and verify assets, risks, contacts, and open work item by item",
+    "option_b_cn": "立即放人到新岗，把遗留问题交给接任者边做边查",
+    "option_b_en": "Release the employee immediately and let the successor discover gaps on the job",
+    "profile": "organization",
+    "reference_choice": "a"
+  },
+  "217": {
+    "title_en": "Mandatory Versus Voluntary Shared-Platform Adoption",
+    "option_a_cn": "只强制底线接口，其余能力凭试点价值争取采用",
+    "option_a_en": "Mandate only baseline interfaces and earn broader adoption through measured pilots",
+    "option_b_cn": "命令所有团队一次切到统一平台，迅速消灭重复建设",
+    "option_b_en": "Order every team onto one platform at once to eliminate duplication quickly",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "218": {
+    "title_en": "Internal Customer and Strategic Foundation Dual Score",
+    "option_a_cn": "客户体验与战略底座各设最低线，共同进入校准",
+    "option_a_en": "Set minimum bars for customer experience and strategic foundations and calibrate both",
+    "option_b_cn": "让最大内部客户一票决定平台绩效，优先解决眼前痛点",
+    "option_b_en": "Let the largest internal customer determine the rating and prioritize immediate pain",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "219": {
+    "title_en": "Adoption Count, Usage Depth, and Savings",
+    "option_a_cn": "至少绑定一个真实节省结果和一个反指标，再看接入深度",
+    "option_a_en": "Require one real savings outcome and one counter-metric before judging usage depth",
+    "option_b_cn": "以接入团队数为主指标，集中推动大量浅接入",
+    "option_b_en": "Use connected-team count as the main target and drive broad shallow adoption",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "220": {
+    "title_en": "Shared-Cost Showback and Internal Chargeback",
+    "option_a_cn": "先展示成本，再按可核使用量分摊大户并核对国库守恒",
+    "option_a_en": "Show costs first, then charge material users by measured consumption with treasury reconciliation",
+    "option_b_cn": "由中央国库全包平台费用，以零门槛迅速扩大采用",
+    "option_b_en": "Fund the platform centrally and remove price barriers to accelerate adoption",
+    "profile": "platform",
+    "reference_choice": "c"
+  },
+  "221": {
+    "title_en": "Who Pays Migration Cost",
+    "option_a_cn": "按未来受益比例冻结平台、使用方和改革预算的出资额",
+    "option_a_en": "Freeze platform, user-team, and reform funding shares by expected benefit",
+    "option_b_cn": "要求使用团队自付全部迁移 HC，以此检验真实需求",
+    "option_b_en": "Make user teams pay all migration HC to prove genuine demand",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "222": {
+    "title_en": "Dual-Run Migration Period",
+    "option_a_cn": "按风险分批双跑，并为旧路设明确退出日和额外工时",
+    "option_a_en": "Dual-run by risk tier with a firm legacy exit date and explicit extra labor",
+    "option_b_cn": "在统一日期立即切换，停止旧路以强迫问题快速暴露",
+    "option_b_en": "Cut over on one date and disable the old path to expose problems quickly",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "223": {
+    "title_en": "Duplicate-Solution Scan",
+    "option_a_cn": "立项前检索复用、贡献改造与差异例外并留审批证据",
+    "option_a_en": "Search for reuse, upstream contribution, and documented exceptions before approval",
+    "option_b_cn": "为关键项目快速批准自建，避免等待共享方案协调",
+    "option_b_en": "Approve a bespoke build for critical work rather than wait for shared coordination",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "224": {
+    "title_en": "Merger Contest for Duplicate Solutions",
+    "option_a_cn": "用公开试点选主线，保留双方贡献并资助必要重构",
+    "option_a_en": "Choose a mainline through a public pilot, preserve both credits, and fund required refactoring",
+    "option_b_cn": "由高层立即指定唯一胜者，并停止另一方案维护",
+    "option_b_en": "Have leadership choose one winner immediately and stop maintaining the other solution",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "225": {
+    "title_en": "Not-Invented-Here and Legitimate Forks",
+    "option_a_cn": "先向主线提交改动，只有硬差异获批才分叉并自负维护",
+    "option_a_en": "Contribute upstream first and fork only for approved hard requirements with owned maintenance",
+    "option_b_cn": "为本地速度立即分叉，之后再决定是否回馈主线",
+    "option_b_en": "Fork immediately for local speed and decide about upstreaming later",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "226": {
+    "title_en": "Inner-Source Contribution Attribution",
+    "option_a_cn": "按采纳修复、文档和能力给贡献者及审阅维护者双记功",
+    "option_a_en": "Credit accepted fixes, docs, and features to contributors and reviewing maintainers",
+    "option_b_cn": "按提交数量快速合并外组贡献，以活跃度扩大社区",
+    "option_b_en": "Merge external contributions rapidly by submission count to grow community activity",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "227": {
+    "title_en": "Splitting Credit Among Founders, Contributors, and Maintainers",
+    "option_a_cn": "分别冻结原创、扩展与稳定贡献，并让创始光环逐期衰减",
+    "option_a_en": "Freeze invention, extension, and stability credit separately and decay founder halo over time",
+    "option_b_cn": "把平台成功主要记给创始 owner，以明确单一晋升故事",
+    "option_b_en": "Give most platform success to the founding owner for one clear promotion story",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "228": {
+    "title_en": "Blast-Radius Accountability for Platform Incidents",
+    "option_a_cn": "区分平台根因、用户违规和强推决策，并允许本地降级止损",
+    "option_a_en": "Separate platform causes, user violations, and mandate decisions while allowing local degradation",
+    "option_b_cn": "强撑统一平台并把损失归给未按规范使用的各团队",
+    "option_b_en": "Enforce platform uniformity and charge losses to teams that deviated from prescribed use",
+    "profile": "platform",
+    "reference_choice": "a"
+  },
+  "229": {
+    "title_en": "Metric Dictionary and Definition Owner",
+    "option_a_cn": "登记定义、来源、频率、范围、唯一 owner 与版本变更理由",
+    "option_a_en": "Register definition, source, cadence, scope, one owner, and reasons for every version change",
+    "option_b_cn": "由业务主管快速宣布本期口径，先完成统一计算",
+    "option_b_en": "Let the business lead declare the current definition so calculation can proceed immediately",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "230": {
+    "title_en": "Reconciliation Across Data Sources",
+    "option_a_cn": "冲突时暂停结算，由多方签名核对并确定权威源",
+    "option_a_en": "Pause settlement on conflict and reconcile a signed authoritative source across owners",
+    "option_b_cn": "立即选一份官方报表结算，其他差异留待后续审计",
+    "option_b_en": "Settle from one official report immediately and defer discrepancies to audit",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "231": {
+    "title_en": "Denominator Changes in Business Metrics",
+    "option_a_cn": "并列展示新旧分母、重算基线且不追改旧奖金",
+    "option_a_en": "Show old and new denominators, rebase forward, and leave paid bonuses untouched",
+    "option_b_cn": "立即采用更有利的新分母，并用它重述本期增长",
+    "option_b_en": "Adopt the more favorable denominator immediately and restate current growth",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "232": {
+    "title_en": "Missing Data and Manual Backfill",
+    "option_a_cn": "用保守估计或人工凭证双签，并在真数到达后对账",
+    "option_a_en": "Use conservative estimates or dual-signed evidence and reconcile when real data arrives",
+    "option_b_cn": "由单一主管快速回填最合理数字，避免延期发奖",
+    "option_b_en": "Let one manager backfill the most plausible number to avoid delaying rewards",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "233": {
+    "title_en": "Unequal Dashboard Access",
+    "option_a_cn": "按岗位开放看板，并给无权限者查询渠道与目标调整",
+    "option_a_en": "Grant role-based dashboard access plus query channels and target relief for excluded staff",
+    "option_b_cn": "只给经理完整数据，仍要求下属对异常结果负责",
+    "option_b_en": "Reserve full data for managers while holding staff accountable for anomalies",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "234": {
+    "title_en": "Leading Indicators and Lagging Outcomes",
+    "option_a_cn": "同时冻结领先信号与滞后结果，暂定认可到期再转正",
+    "option_a_en": "Freeze leading and lagging measures together and convert provisional credit at maturity",
+    "option_b_cn": "结果未成熟时先按领先指标发奖，以加快行为转向",
+    "option_b_en": "Reward leading indicators before outcomes mature to accelerate behavior change",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "235": {
+    "title_en": "Primary Metrics and Guardrails",
+    "option_a_cn": "每个主指标绑定一项护栏，突破须书面批准并追延迟后果",
+    "option_a_en": "Pair every primary metric with a guardrail and track delayed effects of written exceptions",
+    "option_b_cn": "危机期只追主指标，先拿结果再处理民心与质量",
+    "option_b_en": "Chase only the primary metric during crisis and repair quality or trust later",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "236": {
+    "title_en": "KPI Threshold Cliff",
+    "option_a_cn": "用连续区间计分并保留关键底线，期初冻结斜率",
+    "option_a_en": "Use continuous scoring with a critical floor and freeze the slope up front",
+    "option_b_cn": "坚持百分百硬门槛，让未达标者统一承受完整后果",
+    "option_b_en": "Keep a 100-percent cliff and impose full consequences on every miss",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "237": {
+    "title_en": "Window Shopping for the Best-Looking Period",
+    "option_a_cn": "期初指定完整周期、同比或里程碑窗，并统一修正季节性",
+    "option_a_en": "Pre-register full-cycle, year-over-year, or milestone windows with consistent seasonality adjustment",
+    "option_b_cn": "允许 owner 选最能代表成果的高峰时段来汇报",
+    "option_b_en": "Let owners present the peak period they believe best represents the result",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "238": {
+    "title_en": "Vanity Metrics Versus Final Value",
+    "option_a_cn": "把访问、活动或文件数绑定真实采用、节省或治理结果",
+    "option_a_en": "Tie visits, activities, or document counts to adoption, savings, or governance outcomes",
+    "option_b_cn": "先按快速上涨的可见数字计功，价值转化以后再看",
+    "option_b_en": "Credit fast-rising visible counts now and evaluate value conversion later",
+    "profile": "data",
+    "reference_choice": "a"
+  },
+  "239": {
+    "title_en": "Learning Credit for Failed Experiments",
+    "option_a_cn": "预注册假设与止损线，负结果须形成可复用结论才计功",
+    "option_a_en": "Pre-register hypotheses and stop rules and credit negative results only when reusable",
+    "option_b_cn": "为挽回投入继续上线未达标方案，用真实采用争取翻盘",
+    "option_b_en": "Ship the failed variant anyway and seek redemption through real adoption",
+    "profile": "learning",
+    "reference_choice": "a"
+  },
+  "240": {
+    "title_en": "Experiment Contamination and Sample Competition",
+    "option_a_cn": "由高层排实验窗口或划互斥样本，并登记样本占用",
+    "option_a_en": "Queue experiments or partition exclusive samples under a central allocation ledger",
+    "option_b_cn": "允许多团队同时试验重叠辖地，以更高产量接受污染",
+    "option_b_en": "Run overlapping experiments concurrently and accept contamination for higher throughput",
+    "profile": "data",
+    "reference_choice": "a"
+  }
+}

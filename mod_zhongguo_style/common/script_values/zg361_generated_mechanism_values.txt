@@ -1,0 +1,32 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Shared ledgers feed both the manager's own review and the team's climate.
+
+zg361_manager_mechanism_kpi_value = {
+	value = 0
+	if = { limit = { has_variable = zg361_org_delivery } add = { value = var:zg361_org_delivery multiply = 0.12 } }
+	if = { limit = { has_variable = zg361_org_stability } add = { value = var:zg361_org_stability multiply = 0.10 } }
+	if = { limit = { has_variable = zg361_org_trust } add = { value = var:zg361_org_trust multiply = 0.08 } }
+	if = { limit = { has_variable = zg361_org_talent } add = { value = var:zg361_org_talent multiply = 0.08 } }
+	if = { limit = { has_variable = zg361_org_data_quality } add = { value = var:zg361_org_data_quality multiply = 0.05 } }
+	if = { limit = { has_variable = zg361_org_evidence } add = { value = var:zg361_org_evidence multiply = 0.05 } }
+	if = { limit = { has_variable = zg361_org_burnout } subtract = { value = var:zg361_org_burnout multiply = 0.10 } }
+	if = { limit = { has_variable = zg361_org_tech_debt } subtract = { value = var:zg361_org_tech_debt multiply = 0.08 } }
+	if = { limit = { has_variable = zg361_org_pay_debt } subtract = { value = var:zg361_org_pay_debt multiply = 0.08 } }
+	if = { limit = { has_variable = zg361_org_appeal_risk } subtract = { value = var:zg361_org_appeal_risk multiply = 0.08 } }
+	if = { limit = { has_variable = zg361_org_policy_debt } subtract = { value = var:zg361_org_policy_debt multiply = 0.06 } }
+	if = { limit = { has_variable = zg361_org_admin_load } subtract = { value = var:zg361_org_admin_load multiply = 0.04 } }
+	min = -50
+	max = 30
+}
+
+zg361_team_mechanism_kpi_value = {
+	value = 0
+	if = { limit = { liege = { has_variable = zg361_org_trust } } add = { value = liege.var:zg361_org_trust multiply = 0.03 } }
+	if = { limit = { liege = { has_variable = zg361_org_stability } } add = { value = liege.var:zg361_org_stability multiply = 0.03 } }
+	if = { limit = { liege = { has_variable = zg361_org_talent } } add = { value = liege.var:zg361_org_talent multiply = 0.02 } }
+	if = { limit = { liege = { has_variable = zg361_org_burnout } } subtract = { value = liege.var:zg361_org_burnout multiply = 0.04 } }
+	if = { limit = { liege = { has_variable = zg361_org_tech_debt } } subtract = { value = liege.var:zg361_org_tech_debt multiply = 0.03 } }
+	if = { limit = { liege = { has_variable = zg361_org_policy_debt } } subtract = { value = liege.var:zg361_org_policy_debt multiply = 0.03 } }
+	min = -25
+	max = 15
+}

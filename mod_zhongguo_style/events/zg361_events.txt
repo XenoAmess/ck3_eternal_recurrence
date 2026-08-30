@@ -1,0 +1,333 @@
+﻿namespace = zg361
+
+# ============================================================
+# 玩家领主：年度考核季总览（结算后弹出，打印各档人数）
+# ============================================================
+zg361.1 = {
+	type = character_event
+	theme = crown
+	title = zg361.1.t
+	desc = zg361.1.desc
+
+	immediate = {
+		save_scope_value_as = { name = zg361_n_375 value = var:zg361_last_375_n }
+		save_scope_value_as = { name = zg361_n_35 value = var:zg361_last_35_n }
+		save_scope_value_as = { name = zg361_n_325 value = var:zg361_last_325_n }
+		save_scope_value_as = { name = zg361_n_elim value = var:zg361_eliminate_n }
+	}
+
+	option = {
+		name = zg361.1.a
+	}
+}
+
+# ============================================================
+# 玩家封臣：考核结果三连
+# ============================================================
+zg361.2 = {
+	type = character_event
+	theme = vassal
+	title = zg361.2.t
+	desc = zg361.2.desc
+	trigger = {
+		has_character_modifier = zg361_grade_375
+	}
+
+	option = {
+		name = zg361.2.a
+	}
+}
+
+zg361.3 = {
+	type = character_event
+	theme = vassal
+	title = zg361.3.t
+	desc = zg361.3.desc
+	trigger = {
+		has_character_modifier = zg361_grade_35
+	}
+
+	option = {
+		name = zg361.3.a
+	}
+}
+
+# 3.25：玩家封臣的抉择
+zg361.4 = {
+	type = character_event
+	theme = vassal
+	title = zg361.4.t
+	desc = zg361.4.desc
+	trigger = {
+		has_character_modifier = zg361_grade_325
+	}
+
+	option = { # 认命
+		name = zg361.4.a
+		add_stress = minor_stress_loss
+	}
+
+	option = { # 申诉（花费影响力，三成翻案；想要正式复核走互动）
+		name = zg361.4.b
+		trigger = {
+			influence >= 150
+			zg361_is_current_liege_review_record_trigger = yes
+		}
+		change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+		random = {
+			chance = 30
+			set_variable = { name = zg361_appeal_won value = 1 }
+		}
+		if = {
+			limit = { has_variable = zg361_appeal_won }
+			remove_variable = zg361_appeal_won
+			zg361_appeal_regrade_to_35_effect = yes
+			debug_log = "ZG361: player appeal won, regraded to 3.5"
+		}
+		else = {
+			liege = { add_opinion = { modifier = zg361_annoyed target = root } }
+			debug_log = "ZG361: player appeal rejected"
+		}
+	}
+
+	option = { # 摆烂
+		name = zg361.4.c
+		add_stress = medium_stress_loss
+		set_variable = { name = zg361_slacking value = 1 }
+	}
+
+	option = { # 奋发
+		name = zg361.4.d
+		add_stress = minor_stress_gain
+		set_variable = { name = zg361_striving value = 1 }
+	}
+}
+
+# ============================================================
+# 玩家领主：末位淘汰名单（批量处置；逐人处置走角色互动）
+# ============================================================
+zg361.5 = {
+	type = character_event
+	theme = crown
+	title = zg361.5.t
+	desc = zg361.5.desc
+
+	immediate = {
+		set_variable = { name = zg361_tmp_elim_n value = 0 }
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			root = { change_variable = { name = zg361_tmp_elim_n add = 1 } }
+		}
+		save_scope_value_as = { name = zg361_n_elim value = var:zg361_tmp_elim_n }
+		remove_variable = zg361_tmp_elim_n
+	}
+
+	option = { # 依律处置：复用 AI 裁决逻辑
+		name = zg361.5.a
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			zg361_ai_elimination_effect = yes
+		}
+	}
+
+	option = { # 法外开恩：全部降岗留用
+		name = zg361.5.b
+		add_prestige = { value = 0 subtract = 100 }
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			zg361_eliminate_demote_effect = yes
+		}
+	}
+
+	option = { # 网开一面：streak < 3 者 PIP 延期，其余降岗
+		name = zg361.5.c
+		add_prestige = { value = 0 subtract = 50 }
+		every_vassal = {
+			limit = { zg361_is_elimination_candidate_trigger = yes }
+			add_opinion = { modifier = zg361_merciful target = liege }
+			if = {
+				limit = { var:zg361_streak_bottom < 3 }
+				zg361_eliminate_extend_effect = yes
+			}
+			else = {
+				zg361_eliminate_demote_effect = yes
+			}
+		}
+	}
+}
+
+# ============================================================
+# 玩家封臣：被 AI 皇帝列入末位淘汰的最后窗口
+# ============================================================
+zg361.6 = {
+	type = character_event
+	theme = vassal
+	title = zg361.6.t
+	desc = zg361.6.desc
+	trigger = {
+		zg361_is_elimination_candidate_trigger = yes
+	}
+
+	option = { # 最后申诉：四成改判降岗，失败则夺爵
+		name = zg361.6.a
+		trigger = { influence >= 200 }
+		change_influence = { value = 0 subtract = zg361_final_appeal_influence_cost_value }
+		random = {
+			chance = 40
+			set_variable = { name = zg361_appeal_won value = 1 }
+		}
+		if = {
+			limit = { has_variable = zg361_appeal_won }
+			remove_variable = zg361_appeal_won
+			zg361_eliminate_demote_effect = yes
+			debug_log = "ZG361: final appeal won, demoted instead of purged"
+		}
+		else = {
+			zg361_eliminate_purge_effect = yes
+			debug_log = "ZG361: final appeal rejected, purged"
+		}
+	}
+
+	option = { # 散尽家财：改判降岗留用
+		name = zg361.6.b
+		trigger = { gold >= 300 }
+		remove_short_term_gold = zg361_wealth_bribe_gold_value
+		zg361_eliminate_demote_effect = yes
+		debug_log = "ZG361: bribe accepted, demoted instead of purged"
+	}
+
+	option = { # 认命致仕：体面退场，保住贤能
+		name = zg361.6.c
+		force_step_down_landed_titles = yes
+		debug_log = "ZG361: player accepted honorable retirement"
+	}
+
+	option = { # 掀桌起兵：建立独立派系对抗皇帝
+		name = zg361.6.d
+		trigger = {
+			can_create_faction = { target = liege type = independence_faction }
+		}
+		create_faction = { type = independence_faction target = liege }
+		add_opinion = { modifier = zg361_purged target = liege }
+		debug_log = "ZG361: player revolted after elimination"
+	}
+}
+
+# ============================================================
+# 玩家领主：绩效校准会议（排名出榜后、公示前的动手脚窗口）
+# ============================================================
+zg361.10 = {
+	type = character_event
+	theme = crown
+	title = zg361.10.t
+	desc = zg361.10.desc
+	immediate = {
+		save_scope_value_as = { name = zg361_n_375 value = var:zg361_pending_375_n }
+		save_scope_value_as = { name = zg361_n_35 value = var:zg361_pending_35_n }
+		save_scope_value_as = { name = zg361_n_325 value = var:zg361_pending_325_n }
+	}
+
+	option = { # 直接公示
+		name = zg361.10.a
+		zg361_apply_pending_grades_effect = yes
+	}
+
+	option = { # 抬一个人：末名 3.75 与头名 3.5 互换
+		name = zg361.10.b
+		zg361_calibrate_promote_effect = yes
+		trigger_event = zg361.11
+	}
+
+	option = { # 踩一个人：末名 3.5 打进 3.25
+		name = zg361.10.c
+		trigger = { zg361_can_calibrate_demote_trigger = yes }
+		zg361_calibrate_demote_effect = yes
+		trigger_event = zg361.12
+	}
+}
+
+# 校准后续：抬人确认
+zg361.11 = {
+	type = character_event
+	theme = crown
+	title = zg361.11.t
+	desc = zg361.11.desc
+
+	option = { # 公示结果
+		name = zg361.11.a
+		zg361_apply_pending_grades_effect = yes
+	}
+}
+
+# 校准后续：踩人确认
+zg361.12 = {
+	type = character_event
+	theme = crown
+	title = zg361.12.t
+	desc = zg361.12.desc
+
+	option = { # 公示结果
+		name = zg361.12.a
+		zg361_apply_pending_grades_effect = yes
+	}
+}
+
+# ============================================================
+# 玩家领主：野狗与小白兔（价值观双轨）
+# ============================================================
+zg361.30 = {
+	type = character_event
+	theme = crown
+	title = zg361.30.t
+	desc = zg361.30.desc
+	trigger = {
+		has_game_rule = zg361_on
+		zg361_is_celestial_liege_trigger = yes
+	}
+
+	immediate = {
+		save_scope_value_as = { name = zg361_n_dog value = var:zg361_wild_dog_n }
+		save_scope_value_as = { name = zg361_n_rabbit value = var:zg361_rabbit_n }
+	}
+
+	option = { # 宽严相济：野狗留用观察，小白兔好言安抚
+		name = zg361.30.a
+		every_vassal = {
+			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
+				has_variable = zg361_class
+				var:zg361_class = 2
+			}
+			add_opinion = { modifier = zg361_merciful target = liege }
+		}
+	}
+
+	option = { # 严惩野狗、劝退小白兔
+		name = zg361.30.b
+		add_prestige = 50
+		every_vassal = {
+			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
+				has_variable = zg361_class
+				var:zg361_class = 1
+			}
+			if = {
+				limit = { government_has_flag = government_has_merit }
+				change_merit = major_merit_loss
+			}
+			add_character_modifier = { modifier = zg361_pip years = 1 }
+			liege = {
+				add_opinion = { modifier = zg361_poor_review target = prev }
+			}
+		}
+		every_vassal = {
+			limit = {
+				zg361_is_current_liege_review_record_trigger = yes
+				has_variable = zg361_class
+				var:zg361_class = 2
+			}
+			add_opinion = { modifier = zg361_forced_retire target = liege }
+			force_step_down_landed_titles = yes
+		}
+	}
+}

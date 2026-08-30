@@ -1,0 +1,139 @@
+﻿zga_initialize_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_invite_knights.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 1
+	desc = zga_initialize_decision_desc
+	selection_tooltip = zga_initialize_decision_tooltip
+	is_shown = {
+		is_ai = no
+		NOT = { has_character_flag = zga_initialized }
+		NOT = { has_character_flag = zga_initialize_pending }
+	}
+	is_valid = { is_ai = no }
+	effect = { add_character_flag = zga_initialize_pending }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_personal_result_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 3
+	desc = zga_personal_result_decision_desc
+	selection_tooltip = zga_personal_result_decision_tooltip
+	# Kept as an inert source-contract carrier. Clean capture advances through
+	# hidden fixture events, so no test-only decision can pollute recorded UI.
+	is_shown = { always = no }
+	is_valid = {
+		is_ai = no
+		has_variable = zg361_sb_m_01_char
+	}
+	effect = { add_character_flag = zga_personal_result_pending }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_jingcha_planner_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 2
+	desc = zga_jingcha_planner_decision_desc
+	selection_tooltip = zga_jingcha_planner_decision_tooltip
+	# Kept as an inert source-contract carrier. The hidden dispatcher below the
+	# scoreboard is the only clean-capture entry to the real product event.
+	is_shown = { always = no }
+	is_valid = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+	}
+	effect = {
+		add_character_flag = zga_jingcha_mandate_issued
+		set_variable = { name = zg361_jingcha_pending value = 1 }
+		debug_log = "ZGA: TEST PASS jingcha_mandate_issued"
+		trigger_event = zg361.40
+		trigger_event = { id = zga_acceptance.3 days = 2 }
+	}
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+# Legacy promo carriers retained only as static source-contract witnesses. All
+# are permanently hidden; the hidden event chain now dispatches the shipped
+# zg361m events without opening the native decisions drawer during recording.
+zga_promo_policy_001_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 101
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.1 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_007_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 102
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.7 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_020_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 103
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.20 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_022_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 104
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.22 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_026_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 105
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.26 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}
+
+zga_promo_policy_361_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	decision_group_type = zga_acceptance
+	sort_order = 106
+	desc = zga_promo_policy_decision_desc
+	selection_tooltip = zga_promo_policy_decision_tooltip
+	is_shown = { always = no }
+	is_valid = { is_ai = no }
+	effect = { trigger_event = zg361m.361 }
+	ai_check_interval = 0
+	ai_potential = { always = no }
+}

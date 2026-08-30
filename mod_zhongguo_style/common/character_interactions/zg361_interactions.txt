@@ -1,0 +1,259 @@
+﻿# ZhongGuo 361 Style — character interactions
+# 申诉/绩效沟通/举荐/攻讦/逐人夺爵/逐人致仕。
+# AI 不主动使用这些互动（ai_will_do = 0）：AI 侧奖惩由年度考核自动裁决，避免与淘汰链双重执行。
+
+# ============================================================
+# 绩效申诉（封臣 → 领主）：被打 3.25 / 背上 PIP 时翻案
+# ============================================================
+zg361_appeal_interaction = {
+	icon = icon_contract_modification_single
+	category = interaction_category_vassal
+	desc = zg361_appeal_interaction_desc
+
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 1 }
+	auto_accept = no
+
+	is_shown = {
+		has_game_rule = zg361_on
+	scope:actor = {
+			has_character_modifier = zg361_grade_325
+			zg361_is_current_liege_review_record_trigger = yes
+			liege = scope:recipient
+		}
+		scope:recipient = {
+			zg361_is_celestial_liege_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:actor = { influence >= 150 }
+	}
+	is_valid_showing_failures_only = {
+		scope:actor = { influence >= 150 }
+	}
+
+	ai_accept = {
+		base = 30
+		modifier = {
+			add = 20
+			scope:recipient = { opinion = { target = scope:actor value >= 20 } }
+		}
+		modifier = {
+			add = 15
+			scope:actor = {
+				government_has_flag = government_has_merit
+				merit_level >= 5
+			}
+		}
+		modifier = {
+			add = -100
+			scope:actor = { is_at_war_with_liege = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:actor = {
+			change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+			# 翻案：改判 3.5
+			zg361_appeal_regrade_to_35_effect = yes
+			debug_log = "ZG361: appeal accepted, regraded to 3.5"
+		}
+	}
+
+	on_decline = {
+		scope:actor = {
+			change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+			add_opinion = { modifier = zg361_appeal_rejected target = scope:recipient }
+			debug_log = "ZG361: appeal rejected"
+		}
+	}
+}
+
+# ============================================================
+# 绩效沟通（领主 → 封臣）：一对一安抚
+# ============================================================
+zg361_review_talk_interaction = {
+	icon = icon_acknowledge_governor
+	category = interaction_category_friendly
+	desc = zg361_review_talk_interaction_desc
+
+	cooldown_against_recipient = { years = 1 }
+	auto_accept = yes
+
+	is_shown = {
+		has_game_rule = zg361_on
+		scope:actor = {
+			zg361_is_celestial_liege_trigger = yes
+		}
+		scope:recipient = {
+			liege = scope:actor
+			OR = {
+				has_character_modifier = zg361_grade_375
+				has_character_modifier = zg361_grade_35
+				has_character_modifier = zg361_grade_325
+			}
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:recipient = {
+			add_stress = minor_stress_loss
+			add_opinion = { modifier = zg361_talked target = scope:actor }
+		}
+		debug_log = "ZG361: performance talk held"
+	}
+}
+
+# ============================================================
+# 举荐（同侪封臣 → 同侪封臣）：对方下期 KPI +10
+# ============================================================
+zg361_recommend_interaction = {
+	icon = icon_boost_efficiency
+	category = interaction_category_friendly
+	desc = zg361_recommend_interaction_desc
+
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 2 }
+	auto_accept = yes
+
+	is_shown = {
+		has_game_rule = zg361_on
+		scope:actor = {
+			zg361_has_ranked_peer_cohort_trigger = yes
+		}
+		scope:recipient = {
+			zg361_is_reviewable_vassal_trigger = yes
+			NOT = { this = scope:actor }
+			liege = scope:actor.liege
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:recipient = {
+			set_variable = { name = zg361_recommended value = 1 }
+		}
+		debug_log = "ZG361: peer recommended"
+	}
+}
+
+# ============================================================
+# 攻讦（同侪封臣 → 同侪封臣）：七成让对方下期 KPI -15，三成反噬
+# ============================================================
+zg361_slander_interaction = {
+	icon = icon_damage_efficiency
+	category = interaction_category_hostile
+	desc = zg361_slander_interaction_desc
+
+	cost = { prestige = 50 }
+
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 2 }
+	auto_accept = yes
+
+	is_shown = {
+		has_game_rule = zg361_on
+		scope:actor = {
+			zg361_has_ranked_peer_cohort_trigger = yes
+		}
+		scope:recipient = {
+			zg361_is_reviewable_vassal_trigger = yes
+			NOT = { this = scope:actor }
+			liege = scope:actor.liege
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:actor = {
+			random = {
+				chance = 70
+				set_variable = { name = zg361_slander_hit value = 1 }
+			}
+			if = {
+				limit = { has_variable = zg361_slander_hit }
+				remove_variable = zg361_slander_hit
+				scope:recipient = {
+					set_variable = { name = zg361_slandered value = 1 }
+				}
+				debug_log = "ZG361: slander landed"
+			}
+			else = {
+				set_variable = { name = zg361_slander_backfire value = 1 }
+				scope:recipient = {
+					add_opinion = { modifier = zg361_slandered_me target = scope:actor }
+				}
+				debug_log = "ZG361: slander backfired"
+			}
+		}
+	}
+}
+
+# ============================================================
+# 末位处置 · 夺爵（领主 → 淘汰候选人）：逐人免费夺爵
+# ============================================================
+zg361_purge_interaction = {
+	icon = icon_dead
+	category = interaction_category_hostile
+	desc = zg361_purge_interaction_desc
+
+	auto_accept = yes
+	cooldown_against_recipient = { years = 1 }
+
+	is_shown = {
+		scope:actor = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+		}
+		scope:recipient = {
+			zg361_is_elimination_candidate_trigger = yes
+			liege = scope:actor
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:recipient = {
+			zg361_eliminate_purge_effect = yes
+		}
+	}
+}
+
+# ============================================================
+# 末位处置 · 勒令致仕（领主 → 淘汰候选人）：逐人体面退场
+# ============================================================
+zg361_force_retire_interaction = {
+	icon = icon_cross
+	category = interaction_category_vassal
+	desc = zg361_force_retire_interaction_desc
+
+	auto_accept = yes
+	cooldown_against_recipient = { years = 1 }
+
+	is_shown = {
+		scope:actor = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+		}
+		scope:recipient = {
+			zg361_is_elimination_candidate_trigger = yes
+			liege = scope:actor
+		}
+	}
+
+	ai_will_do = { base = 0 }
+
+	on_accept = {
+		scope:recipient = {
+			zg361_eliminate_stepdown_effect = yes
+		}
+	}
+}

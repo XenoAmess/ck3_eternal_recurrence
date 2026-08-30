@@ -1,0 +1,81 @@
+﻿# ZhongGuo 361 Style — scoreboard GUI predicates
+
+zg361_review_now_bridge_gui = {
+	scope = character
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = zg361_review_now_pending
+	}
+
+	effect = {
+		if = {
+			limit = { has_character_flag = zg361_review_now_pending }
+			remove_character_flag = zg361_review_now_pending
+			zg361_run_review_effect = yes
+		}
+	}
+}
+
+zg361_scoreboard_managed_available_gui = {
+	scope = character
+
+	is_shown = {
+		has_game_rule = zg361_on
+		has_variable = zg361_sb_m_01_char
+	}
+}
+
+zg361_scoreboard_received_available_gui = {
+	scope = character
+
+	is_shown = {
+		has_game_rule = zg361_on
+		has_variable = zg361_sb_r_01_char
+	}
+}
+
+zg361_scoreboard_landed_gui = {
+	scope = character
+	is_shown = { is_landed = yes }
+}
+
+zg361_scoreboard_grade_375_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_last_grade
+		var:zg361_last_grade = 3
+	}
+}
+
+zg361_scoreboard_grade_35_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_last_grade
+		var:zg361_last_grade = 2
+	}
+}
+
+zg361_scoreboard_grade_325_gui = {
+	scope = character
+	is_shown = {
+		has_variable = zg361_last_grade
+		var:zg361_last_grade = 1
+	}
+}
+
+zg361_scoreboard_pip_gui = {
+	scope = character
+
+	is_shown = {
+		has_character_modifier = zg361_pip
+	}
+}
+
+zg361_scoreboard_promotion_gui = {
+	scope = character
+
+	is_shown = {
+		has_character_modifier = zg361_promotion_track
+	}
+}

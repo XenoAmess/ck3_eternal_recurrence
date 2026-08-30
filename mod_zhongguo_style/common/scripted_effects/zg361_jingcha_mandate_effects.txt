@@ -1,0 +1,138 @@
+﻿# ZhongGuo 361 Style — 定期京察召集令
+# root = yearly_playable_pulse 当前角色。玩家走半强制活动弹窗；AI 默认履责。
+
+# 替代旧 zg361_annual_review_effect 的 on_action 入口，保留原有存档计数变量。
+zg361_jingcha_annual_dispatch_effect = {
+	if = {
+		limit = {
+			zg361_is_celestial_liege_trigger = yes
+			has_game_rule = zg361_on
+		}
+		if = {
+			limit = { has_game_rule = zg361_freq_three_year }
+			if = {
+				limit = { NOT = { has_variable = zg361_review_counter } }
+				set_variable = { name = zg361_review_counter value = 1 }
+			}
+			else = {
+				change_variable = { name = zg361_review_counter add = 1 }
+			}
+			if = {
+				limit = { var:zg361_review_counter >= 3 }
+				set_variable = { name = zg361_review_counter value = 0 }
+				zg361_issue_jingcha_mandate_effect = yes
+			}
+		}
+		else = {
+			zg361_issue_jingcha_mandate_effect = yes
+		}
+	}
+}
+
+# 玩家且可正常规划活动、并至少有一名合法直属官员时发召集令；
+# 其余情形静默跑官僚考核。1–2 人小组同样要履行京察，只是不强制分布。
+zg361_issue_jingcha_mandate_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_variable = zg361_jingcha_pending
+		}
+		# 同一份履责义务尚未结清时，不得再叠发召集令；否则新弹窗会压住已打开的原生活动规划器。
+		debug_log = "ZG361: existing jingcha mandate remains pending; duplicate issuance skipped"
+	}
+	else_if = {
+		limit = {
+			is_ai = no
+			is_adult = yes
+			is_imprisoned = no
+			NOT = { is_incapable = yes }
+			any_vassal = {
+				count >= 1
+				zg361_is_jingcha_eligible_guest_trigger = yes
+			}
+		}
+		set_variable = { name = zg361_jingcha_pending value = 1 }
+		set_variable = { name = zg361_jingcha_mandate_year value = current_year }
+		if = {
+			limit = { exists = liege }
+			set_variable = { name = zg361_jingcha_mandate_superior value = liege }
+			if = {
+				limit = { liege = { zg361_is_celestial_liege_trigger = yes } }
+				set_variable = { name = zg361_jingcha_mandate_reviewer value = liege }
+			}
+			else = { remove_variable = zg361_jingcha_mandate_reviewer }
+		}
+		else = {
+			remove_variable = zg361_jingcha_mandate_superior
+			remove_variable = zg361_jingcha_mandate_reviewer
+		}
+		trigger_event = { id = zg361.40 days = 1 }
+		debug_log = "ZG361: periodic jingcha mandate issued to player"
+	}
+	else_if = {
+		limit = { is_ai = yes }
+		zg361_run_review_effect = yes
+		debug_log = "ZG361: AI jingcha duty resolved by background review"
+	}
+	else = {
+		# 玩家未成年、失能、在押或没有合法来宾时豁免集会，但仍刷新官僚快照。
+		zg361_run_review_effect = yes
+		debug_log = "ZG361: player jingcha assembly excused; background review only"
+	}
+}
+
+# 玩家明确拒办，或承诺后 300 日仍未办完时调用。
+# 有上司：上司对本人降好感；只有具备 361 考核资格的原上司才会留下单次 KPI 失察标记。
+# 无上司：只扣制度威信，不设置标记，也不伪造自我考核。
+zg361_refuse_jingcha_effect = {
+	# pending 先失效以防重复触发；上司/年份须保留到本 effect 完成问责读取。
+	remove_variable = zg361_jingcha_pending
+	if = {
+		limit = { has_variable = zg361_jingcha_mandate_superior }
+		var:zg361_jingcha_mandate_superior = {
+			add_opinion = { modifier = zg361_refused_jingcha target = prev }
+		}
+		if = {
+			limit = { has_variable = zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_superior value = var:zg361_jingcha_mandate_reviewer }
+			set_variable = { name = zg361_skipped_jingcha_year value = var:zg361_jingcha_mandate_year }
+			debug_log = "ZG361: jingcha refused; eligible superior opinion and next-review KPI penalty recorded"
+		}
+		else = {
+			debug_log = "ZG361: jingcha refused; ineligible superior opinion penalty recorded without orphan KPI marker"
+		}
+	}
+	else = {
+		add_prestige = {
+			value = 0
+			subtract = zg361_independent_refusal_prestige_cost_value
+		}
+		debug_log = "ZG361: independent top liege refused jingcha; prestige penalty only"
+	}
+	zg361_clear_jingcha_mandate_effect = yes
+}
+
+# 召集令的四项状态必须作为一个生命周期整体清除；否则已完成或已豁免的
+# 京察会把旧上司/年份留给下一轮 UI 与验收。
+zg361_clear_jingcha_mandate_effect = {
+	remove_variable = zg361_jingcha_pending
+	remove_variable = zg361_jingcha_mandate_superior
+	remove_variable = zg361_jingcha_mandate_reviewer
+	remove_variable = zg361_jingcha_mandate_year
+}
+
+# 集会因失能、在押或合法来宾归零而获豁免时，考核义务本身不消失。
+# 仍是天朝制公爵及以上且规则开启者转入同一产品考核链；死亡、降阶、
+# 改制或关闭规则者只做状态清理。
+zg361_excuse_jingcha_assembly_effect = {
+	zg361_clear_jingcha_mandate_effect = yes
+	if = {
+		limit = {
+			is_alive = yes
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+		}
+		zg361_run_review_effect = yes
+		debug_log = "ZG361: jingcha assembly excused; official review still resolved"
+	}
+}

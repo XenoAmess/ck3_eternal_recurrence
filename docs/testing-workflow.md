@@ -697,6 +697,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
   `ninja -t deps` 证明 `ck3_11906.hpp` 同时进入 producer/consumer 对象。fresh Release 目录
   `xar-native-gen015-20260828T0145Z` 以 `direct-2052-utf8` 模式完成 `37/37` CTest；DLL/injector SHA-256 分别为
   `50227D28...831F2` / `2F6CEB43...35B5C`。这是构建兼容修复，不放宽公共 header 依赖门禁。
+- 2026-08-30 在普通 PowerShell 外壳内串联 `vcvars64.bat` 与 `build_fresh.ps1` 时，`cmd.exe` 会在执行整行前展开
+  `%PATH%`；若在 `call vcvars64.bat` 后再写 `set "PATH=<cmake>;<ninja>;%PATH%"`，该旧值会把刚注入的 MSVC
+  `cl.exe` 路径覆盖掉，helper 会报 `cl is required`。同机 `vcvars64.bat` 还要求先让 Visual Studio Installer 目录中的
+  `vswhere.exe` 可见。可复现做法是先把 Installer 目录加入 PATH，再用 `cmd /v:on` 和延迟展开
+  `set "PATH=<cmake>;<ninja>;!PATH!"`；随后 fresh 222-step Release build 与 `44/44` CTest GREEN。失败构建目录应换
+  新名字重试并保留，不能复用成“fresh”证据。
 - 2026-08-21 同一发布候选的第一次矩阵在第二格到达主菜单前发生 CK3 原生 `C0000005`，crash bundle 停在数据库图标初始化，无 fixture marker、无 blocking project diagnostic，运行树、EXE 与受保护存储未变。该 RED 必须原样保留；只有全新 userdir 的同格重试完整 GREEN，且随后另一全新目录的正式三格矩阵 3/3 GREEN，才能把它判为一次性引擎冷启动崩溃，禁止直接重标原报告。
 - Windows Python Launcher 的 `py <script.py>` 会解释脚本首行的 `/usr/bin/env python3`，可能选中 `PATH` 里的另一套 Python，而不是刚由 `py -m pip` 安装依赖的默认解释器。2026-08-21 实测该分裂让非固定 Pillow 重建的三张 DXT1 DDS 与仓库字节不同，产生假 stale；项目 `.venv` 的 `Pillow==12.3.0` 与官方 CI 均 GREEN。遇到素材 parity 全红时先打印实际解释器和 Pillow 版本，本机 L0 优先直接调用 `tools\.venv\Scripts\python.exe`，禁止为消除环境假红而重写已发布素材。
 - `ToggleGameViewData('character', GetPlayer.GetID)` 可能保留地图当前选中角色；要确定打开玩家本人，直接用原版 `button_me` 同款动作 `DefaultOnCharacterClick(GetPlayer.GetID)`（2026-08-18 实测）。

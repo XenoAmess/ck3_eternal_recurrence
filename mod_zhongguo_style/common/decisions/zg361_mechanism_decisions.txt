@@ -1,0 +1,42 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+# Optional acceleration tools. Normal reviews still surface one policy card at a time.
+
+zg361_next_mechanism_decision = {
+	decision_group_type = zg361
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	ai_check_interval = 0
+	cooldown = { days = 30 }
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		trigger_if = {
+			limit = { has_variable = zg361_mechanism_configured_n }
+			var:zg361_mechanism_configured_n < 361
+		}
+	}
+	is_valid = { NOT = { has_character_flag = zg361_mechanism_next_pending } }
+	is_valid_showing_failures_only = { NOT = { has_character_flag = zg361_mechanism_next_pending } }
+	effect = { add_character_flag = zg361_mechanism_next_pending }
+}
+
+zg361_reference_charter_decision = {
+	decision_group_type = zg361
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	ai_check_interval = 0
+	cooldown = { years = 50 }
+	is_shown = {
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+		trigger_if = {
+			limit = { has_variable = zg361_mechanism_configured_n }
+			var:zg361_mechanism_configured_n < 361
+		}
+	}
+	is_valid = {
+		prestige >= 250
+		NOT = { has_character_flag = zg361_reference_charter_pending }
+	}
+	is_valid_showing_failures_only = { prestige >= 250 }
+	cost = { prestige = 250 }
+	effect = { add_character_flag = zg361_reference_charter_pending }
+}

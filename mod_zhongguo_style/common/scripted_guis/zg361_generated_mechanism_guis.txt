@@ -1,0 +1,27 @@
+﻿# GENERATED FILE — edit tools/zg361_mechanism_data.py or tools/mechanism_choices/*.json
+zg361_mechanism_next_bridge_gui = {
+	scope = character
+	is_shown = { is_ai = no has_character_flag = zg361_mechanism_next_pending }
+	effect = {
+		remove_character_flag = zg361_mechanism_next_pending
+		zg361_mechanism_dispatch_next_effect = yes
+	}
+}
+
+zg361_reference_charter_bridge_gui = {
+	scope = character
+	is_shown = { is_ai = no has_character_flag = zg361_reference_charter_pending }
+	effect = {
+		remove_character_flag = zg361_reference_charter_pending
+		zg361_adopt_reference_charter_effect = yes
+	}
+}
+
+zg361_mechanism_ledger_available_gui = {
+	scope = character
+	is_shown = {
+		has_game_rule = zg361_on
+		zg361_is_celestial_liege_trigger = yes
+		has_variable = zg361_mechanism_configured_n
+	}
+}

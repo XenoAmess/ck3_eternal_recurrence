@@ -1,0 +1,43 @@
+﻿# ZhongGuo 361 Style — game rules
+# 361 vassal performance review toggles. Options are read with `has_game_rule = <option_name>`.
+
+zg361_enabled = {
+	categories = {
+		game_modes
+	}
+
+	default = zg361_on
+
+	zg361_on = { }
+
+	zg361_off = { }
+}
+
+zg361_frequency = {
+	categories = {
+		game_modes
+	}
+
+	default = zg361_freq_yearly
+
+	zg361_freq_yearly = { }
+
+	zg361_freq_three_year = { }
+}
+
+zg361_bottom_ratio = {
+	categories = {
+		game_modes
+	}
+
+	default = zg361_ratio_strict
+
+	# 刚性361：末位10%，cohort >= 5 时保底1人
+	zg361_ratio_strict = { }
+
+	# 松绑：末位5%
+	zg361_ratio_relaxed = { }
+
+	# 放养：无强制末位
+	zg361_ratio_off = { }
+}

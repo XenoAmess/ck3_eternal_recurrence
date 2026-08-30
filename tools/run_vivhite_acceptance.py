@@ -692,25 +692,154 @@ def wait_for_gameplay_hud(artifacts: Path, timeout_s: int = 180) -> None:
     raise acceptance.RunnerError("gameplay HUD did not appear after lobby start")
 
 
+DECISIONS_HEADER_REGION = (0.55, 0.00, 0.90, 0.13)
+NATIVE_RIGHT_RAIL_X_RATIO = 0.987
+NATIVE_RIGHT_RAIL_SCAN_TOP_RATIO = 0.055
+NATIVE_RIGHT_RAIL_SCAN_BOTTOM_RATIO = 0.78
+NATIVE_RIGHT_RAIL_SCAN_STEP_RATIO = 0.022
+NATIVE_RIGHT_TOOLTIP_REGION = (0.90, 0.02, 1.00, 0.86)
+
+
+def native_right_rail_scan_points(width: int, height: int) -> list[tuple[int, int]]:
+    """Return resolution-scaled HUD rail probes without assuming a ruler-specific row."""
+    x = int(width * NATIVE_RIGHT_RAIL_X_RATIO)
+    top = int(height * NATIVE_RIGHT_RAIL_SCAN_TOP_RATIO)
+    bottom = int(height * NATIVE_RIGHT_RAIL_SCAN_BOTTOM_RATIO)
+    step = max(24, int(height * NATIVE_RIGHT_RAIL_SCAN_STEP_RATIO))
+    return [(x, y) for y in range(top, bottom + 1, step)]
+
+
+def is_decisions_shortcut_tooltip(
+    items: list[dict[str, object]],
+    candidate: tuple[int, int],
+    width: int,
+    height: int,
+) -> bool:
+    """Match the localized Decisions/F8 tooltip close to the hovered rail probe."""
+    nearby_text: list[str] = []
+    max_x_distance = max(160, int(width * 0.08))
+    max_y_distance = max(72, int(height * 0.055))
+    for item in items:
+        center = item.get("center")
+        if not isinstance(center, (list, tuple)) or len(center) != 2:
+            continue
+        center_x, center_y = center
+        if not isinstance(center_x, (int, float)) or not isinstance(
+            center_y, (int, float)
+        ):
+            continue
+        if center_x < width * NATIVE_RIGHT_TOOLTIP_REGION[0]:
+            continue
+        if abs(center_x - candidate[0]) > max_x_distance:
+            continue
+        if abs(center_y - candidate[1]) > max_y_distance:
+            continue
+        nearby_text.append(
+            "".join(character for character in str(item.get("text", "")).casefold()
+                    if character.isalnum())
+        )
+    return any("决议" in text for text in nearby_text) and any(
+        "f8" in text for text in nearby_text
+    )
+
+
+def _wait_for_decisions_header(
+    artifacts: Path, artifact_name: str, timeout_s: float
+) -> bool:
+    """Non-throwing two-frame proof used by both semantic and visual entry paths."""
+    deadline = time.monotonic() + timeout_s
+    last_center = None
+    stable_hits = 0
+    while time.monotonic() < deadline:
+        acceptance.focus_ck3()
+        image = acceptance.ImageGrab.grab()
+        center = acceptance.find_ocr_text(
+            image, "决议", DECISIONS_HEADER_REGION, contains=True
+        )
+        if center is None:
+            last_center = None
+            stable_hits = 0
+        else:
+            if last_center is not None and all(
+                abs(center[index] - last_center[index]) <= 15 for index in (0, 1)
+            ):
+                stable_hits += 1
+            else:
+                stable_hits = 1
+            last_center = center
+            if stable_hits >= 2:
+                image.save(artifacts / artifact_name)
+                log(f"OCR found stable Decisions header at {center} (2 frames)")
+                return True
+        time.sleep(acceptance.POLL_INTERVAL_S)
+    return False
+
+
 def ensure_decisions_panel(artifacts: Path, stem: str) -> None:
     acceptance.focus_ck3()
     time.sleep(0.8)
     width, height = acceptance.pyautogui.size()
     image = acceptance.ImageGrab.grab()
-    header_region = (0.55, 0.00, 0.90, 0.13)
-    if acceptance.find_ocr_text(image, "决议", header_region, contains=True) is None:
-        tab = (int(width * 0.987), int(height * 0.367))
-        acceptance.pyautogui.moveTo(*tab, duration=0.2)
-        acceptance.wait_for_ocr_text(
-            "决议",
-            acceptance.FULL_SCREEN_REGION,
-            10,
-            artifacts,
-            f"{stem}_decisions_tooltip.png",
-            contains=True,
-            stable_hits=1,
-        )
-        acceptance.deliberate_click(tab, "native Decisions HUD tab")
+    if acceptance.find_ocr_text(
+        image, "决议", DECISIONS_HEADER_REGION, contains=True
+    ) is None:
+        # The right-rail row is character-dependent: switching from the lobby
+        # ruler to a landed emperor inserts additional native tabs, so a fixed
+        # y-coordinate can hit Factions instead of Decisions. CK3 1.19.0.6
+        # binds the native decision_window shortcut to F8, but that shortcut is
+        # not accepted in every live HUD context. Try it as a non-fatal fast
+        # path, then identify the shifted native row by its own tooltip.
+        acceptance.pyautogui.press("f8")
+        if not _wait_for_decisions_header(
+            artifacts, f"{stem}_decisions_panel_f8.png", 3.0
+        ):
+            acceptance.ImageGrab.grab().save(artifacts / f"{stem}_f8_no_panel.png")
+            located = False
+            last_image = None
+            for candidate in native_right_rail_scan_points(width, height):
+                acceptance.focus_ck3()
+                acceptance.pyautogui.moveTo(*candidate, duration=0.1)
+                time.sleep(0.40)
+                first_image = acceptance.ImageGrab.grab()
+                first_items = acceptance.ocr_box_results(
+                    first_image, NATIVE_RIGHT_TOOLTIP_REGION
+                )
+                time.sleep(0.25)
+                last_image = acceptance.ImageGrab.grab()
+                second_items = acceptance.ocr_box_results(
+                    last_image, NATIVE_RIGHT_TOOLTIP_REGION
+                )
+                if not (
+                    is_decisions_shortcut_tooltip(
+                        first_items, candidate, width, height
+                    )
+                    and is_decisions_shortcut_tooltip(
+                        second_items, candidate, width, height
+                    )
+                ):
+                    continue
+                last_image.save(artifacts / f"{stem}_decisions_tooltip_scan.png")
+                acceptance.deliberate_click(
+                    candidate, "dynamically located native Decisions HUD tab"
+                )
+                if not _wait_for_decisions_header(
+                    artifacts, f"{stem}_decisions_panel_scan.png", 6.0
+                ):
+                    acceptance.ImageGrab.grab().save(
+                        artifacts / f"timeout_{stem}_decisions_panel_scan.png"
+                    )
+                    raise acceptance.RunnerError(
+                        "dynamic Decisions HUD tab click did not open the drawer"
+                    )
+                located = True
+                break
+            if not located:
+                if last_image is None:
+                    last_image = acceptance.ImageGrab.grab()
+                last_image.save(artifacts / f"timeout_{stem}_decisions_rail_scan.png")
+                raise acceptance.RunnerError(
+                    "could not locate the native Decisions/F8 tooltip on the right HUD rail"
+                )
     acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
     acceptance.pyautogui.scroll(20)
     time.sleep(0.6)

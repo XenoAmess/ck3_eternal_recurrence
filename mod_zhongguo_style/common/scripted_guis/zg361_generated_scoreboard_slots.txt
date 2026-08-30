@@ -1,0 +1,3210 @@
+﻿# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py
+zg361_scoreboard_managed_shown_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_scoreboard_managed_shown_n }
+}
+
+zg361_scoreboard_received_shown_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_scoreboard_received_shown_n }
+}
+
+zg361_sb_m_01_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_01_char }
+}
+
+zg361_sb_m_01_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_01_title }
+}
+
+zg361_sb_m_01_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_01_promotion var:zg361_sb_m_01_promotion = 1 }
+}
+
+zg361_sb_m_01_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_01_pip var:zg361_sb_m_01_pip = 1 }
+}
+
+zg361_sb_m_02_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_02_char }
+}
+
+zg361_sb_m_02_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_02_title }
+}
+
+zg361_sb_m_02_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_02_promotion var:zg361_sb_m_02_promotion = 1 }
+}
+
+zg361_sb_m_02_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_02_pip var:zg361_sb_m_02_pip = 1 }
+}
+
+zg361_sb_m_03_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_03_char }
+}
+
+zg361_sb_m_03_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_03_title }
+}
+
+zg361_sb_m_03_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_03_promotion var:zg361_sb_m_03_promotion = 1 }
+}
+
+zg361_sb_m_03_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_03_pip var:zg361_sb_m_03_pip = 1 }
+}
+
+zg361_sb_m_04_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_04_char }
+}
+
+zg361_sb_m_04_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_04_title }
+}
+
+zg361_sb_m_04_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_04_promotion var:zg361_sb_m_04_promotion = 1 }
+}
+
+zg361_sb_m_04_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_04_pip var:zg361_sb_m_04_pip = 1 }
+}
+
+zg361_sb_m_05_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_05_char }
+}
+
+zg361_sb_m_05_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_05_title }
+}
+
+zg361_sb_m_05_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_05_promotion var:zg361_sb_m_05_promotion = 1 }
+}
+
+zg361_sb_m_05_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_05_pip var:zg361_sb_m_05_pip = 1 }
+}
+
+zg361_sb_m_06_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_06_char }
+}
+
+zg361_sb_m_06_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_06_title }
+}
+
+zg361_sb_m_06_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_06_promotion var:zg361_sb_m_06_promotion = 1 }
+}
+
+zg361_sb_m_06_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_06_pip var:zg361_sb_m_06_pip = 1 }
+}
+
+zg361_sb_m_07_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_07_char }
+}
+
+zg361_sb_m_07_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_07_title }
+}
+
+zg361_sb_m_07_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_07_promotion var:zg361_sb_m_07_promotion = 1 }
+}
+
+zg361_sb_m_07_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_07_pip var:zg361_sb_m_07_pip = 1 }
+}
+
+zg361_sb_m_08_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_08_char }
+}
+
+zg361_sb_m_08_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_08_title }
+}
+
+zg361_sb_m_08_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_08_promotion var:zg361_sb_m_08_promotion = 1 }
+}
+
+zg361_sb_m_08_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_08_pip var:zg361_sb_m_08_pip = 1 }
+}
+
+zg361_sb_m_09_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_09_char }
+}
+
+zg361_sb_m_09_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_09_title }
+}
+
+zg361_sb_m_09_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_09_promotion var:zg361_sb_m_09_promotion = 1 }
+}
+
+zg361_sb_m_09_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_09_pip var:zg361_sb_m_09_pip = 1 }
+}
+
+zg361_sb_m_10_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_10_char }
+}
+
+zg361_sb_m_10_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_10_title }
+}
+
+zg361_sb_m_10_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_10_promotion var:zg361_sb_m_10_promotion = 1 }
+}
+
+zg361_sb_m_10_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_10_pip var:zg361_sb_m_10_pip = 1 }
+}
+
+zg361_sb_m_11_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_11_char }
+}
+
+zg361_sb_m_11_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_11_title }
+}
+
+zg361_sb_m_11_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_11_promotion var:zg361_sb_m_11_promotion = 1 }
+}
+
+zg361_sb_m_11_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_11_pip var:zg361_sb_m_11_pip = 1 }
+}
+
+zg361_sb_m_12_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_12_char }
+}
+
+zg361_sb_m_12_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_12_title }
+}
+
+zg361_sb_m_12_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_12_promotion var:zg361_sb_m_12_promotion = 1 }
+}
+
+zg361_sb_m_12_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_12_pip var:zg361_sb_m_12_pip = 1 }
+}
+
+zg361_sb_m_13_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_13_char }
+}
+
+zg361_sb_m_13_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_13_title }
+}
+
+zg361_sb_m_13_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_13_promotion var:zg361_sb_m_13_promotion = 1 }
+}
+
+zg361_sb_m_13_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_13_pip var:zg361_sb_m_13_pip = 1 }
+}
+
+zg361_sb_m_14_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_14_char }
+}
+
+zg361_sb_m_14_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_14_title }
+}
+
+zg361_sb_m_14_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_14_promotion var:zg361_sb_m_14_promotion = 1 }
+}
+
+zg361_sb_m_14_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_14_pip var:zg361_sb_m_14_pip = 1 }
+}
+
+zg361_sb_m_15_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_15_char }
+}
+
+zg361_sb_m_15_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_15_title }
+}
+
+zg361_sb_m_15_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_15_promotion var:zg361_sb_m_15_promotion = 1 }
+}
+
+zg361_sb_m_15_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_15_pip var:zg361_sb_m_15_pip = 1 }
+}
+
+zg361_sb_m_16_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_16_char }
+}
+
+zg361_sb_m_16_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_16_title }
+}
+
+zg361_sb_m_16_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_16_promotion var:zg361_sb_m_16_promotion = 1 }
+}
+
+zg361_sb_m_16_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_16_pip var:zg361_sb_m_16_pip = 1 }
+}
+
+zg361_sb_m_17_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_17_char }
+}
+
+zg361_sb_m_17_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_17_title }
+}
+
+zg361_sb_m_17_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_17_promotion var:zg361_sb_m_17_promotion = 1 }
+}
+
+zg361_sb_m_17_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_17_pip var:zg361_sb_m_17_pip = 1 }
+}
+
+zg361_sb_m_18_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_18_char }
+}
+
+zg361_sb_m_18_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_18_title }
+}
+
+zg361_sb_m_18_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_18_promotion var:zg361_sb_m_18_promotion = 1 }
+}
+
+zg361_sb_m_18_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_18_pip var:zg361_sb_m_18_pip = 1 }
+}
+
+zg361_sb_m_19_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_19_char }
+}
+
+zg361_sb_m_19_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_19_title }
+}
+
+zg361_sb_m_19_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_19_promotion var:zg361_sb_m_19_promotion = 1 }
+}
+
+zg361_sb_m_19_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_19_pip var:zg361_sb_m_19_pip = 1 }
+}
+
+zg361_sb_m_20_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_20_char }
+}
+
+zg361_sb_m_20_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_20_title }
+}
+
+zg361_sb_m_20_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_20_promotion var:zg361_sb_m_20_promotion = 1 }
+}
+
+zg361_sb_m_20_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_20_pip var:zg361_sb_m_20_pip = 1 }
+}
+
+zg361_sb_m_21_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_21_char }
+}
+
+zg361_sb_m_21_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_21_title }
+}
+
+zg361_sb_m_21_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_21_promotion var:zg361_sb_m_21_promotion = 1 }
+}
+
+zg361_sb_m_21_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_21_pip var:zg361_sb_m_21_pip = 1 }
+}
+
+zg361_sb_m_22_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_22_char }
+}
+
+zg361_sb_m_22_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_22_title }
+}
+
+zg361_sb_m_22_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_22_promotion var:zg361_sb_m_22_promotion = 1 }
+}
+
+zg361_sb_m_22_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_22_pip var:zg361_sb_m_22_pip = 1 }
+}
+
+zg361_sb_m_23_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_23_char }
+}
+
+zg361_sb_m_23_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_23_title }
+}
+
+zg361_sb_m_23_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_23_promotion var:zg361_sb_m_23_promotion = 1 }
+}
+
+zg361_sb_m_23_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_23_pip var:zg361_sb_m_23_pip = 1 }
+}
+
+zg361_sb_m_24_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_24_char }
+}
+
+zg361_sb_m_24_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_24_title }
+}
+
+zg361_sb_m_24_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_24_promotion var:zg361_sb_m_24_promotion = 1 }
+}
+
+zg361_sb_m_24_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_24_pip var:zg361_sb_m_24_pip = 1 }
+}
+
+zg361_sb_m_25_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_25_char }
+}
+
+zg361_sb_m_25_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_25_title }
+}
+
+zg361_sb_m_25_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_25_promotion var:zg361_sb_m_25_promotion = 1 }
+}
+
+zg361_sb_m_25_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_25_pip var:zg361_sb_m_25_pip = 1 }
+}
+
+zg361_sb_m_26_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_26_char }
+}
+
+zg361_sb_m_26_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_26_title }
+}
+
+zg361_sb_m_26_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_26_promotion var:zg361_sb_m_26_promotion = 1 }
+}
+
+zg361_sb_m_26_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_26_pip var:zg361_sb_m_26_pip = 1 }
+}
+
+zg361_sb_m_27_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_27_char }
+}
+
+zg361_sb_m_27_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_27_title }
+}
+
+zg361_sb_m_27_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_27_promotion var:zg361_sb_m_27_promotion = 1 }
+}
+
+zg361_sb_m_27_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_27_pip var:zg361_sb_m_27_pip = 1 }
+}
+
+zg361_sb_m_28_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_28_char }
+}
+
+zg361_sb_m_28_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_28_title }
+}
+
+zg361_sb_m_28_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_28_promotion var:zg361_sb_m_28_promotion = 1 }
+}
+
+zg361_sb_m_28_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_28_pip var:zg361_sb_m_28_pip = 1 }
+}
+
+zg361_sb_m_29_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_29_char }
+}
+
+zg361_sb_m_29_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_29_title }
+}
+
+zg361_sb_m_29_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_29_promotion var:zg361_sb_m_29_promotion = 1 }
+}
+
+zg361_sb_m_29_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_29_pip var:zg361_sb_m_29_pip = 1 }
+}
+
+zg361_sb_m_30_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_30_char }
+}
+
+zg361_sb_m_30_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_30_title }
+}
+
+zg361_sb_m_30_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_30_promotion var:zg361_sb_m_30_promotion = 1 }
+}
+
+zg361_sb_m_30_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_30_pip var:zg361_sb_m_30_pip = 1 }
+}
+
+zg361_sb_m_31_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_31_char }
+}
+
+zg361_sb_m_31_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_31_title }
+}
+
+zg361_sb_m_31_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_31_promotion var:zg361_sb_m_31_promotion = 1 }
+}
+
+zg361_sb_m_31_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_31_pip var:zg361_sb_m_31_pip = 1 }
+}
+
+zg361_sb_m_32_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_32_char }
+}
+
+zg361_sb_m_32_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_32_title }
+}
+
+zg361_sb_m_32_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_32_promotion var:zg361_sb_m_32_promotion = 1 }
+}
+
+zg361_sb_m_32_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_32_pip var:zg361_sb_m_32_pip = 1 }
+}
+
+zg361_sb_m_33_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_33_char }
+}
+
+zg361_sb_m_33_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_33_title }
+}
+
+zg361_sb_m_33_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_33_promotion var:zg361_sb_m_33_promotion = 1 }
+}
+
+zg361_sb_m_33_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_33_pip var:zg361_sb_m_33_pip = 1 }
+}
+
+zg361_sb_m_34_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_34_char }
+}
+
+zg361_sb_m_34_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_34_title }
+}
+
+zg361_sb_m_34_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_34_promotion var:zg361_sb_m_34_promotion = 1 }
+}
+
+zg361_sb_m_34_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_34_pip var:zg361_sb_m_34_pip = 1 }
+}
+
+zg361_sb_m_35_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_35_char }
+}
+
+zg361_sb_m_35_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_35_title }
+}
+
+zg361_sb_m_35_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_35_promotion var:zg361_sb_m_35_promotion = 1 }
+}
+
+zg361_sb_m_35_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_35_pip var:zg361_sb_m_35_pip = 1 }
+}
+
+zg361_sb_m_36_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_36_char }
+}
+
+zg361_sb_m_36_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_36_title }
+}
+
+zg361_sb_m_36_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_36_promotion var:zg361_sb_m_36_promotion = 1 }
+}
+
+zg361_sb_m_36_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_36_pip var:zg361_sb_m_36_pip = 1 }
+}
+
+zg361_sb_m_37_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_37_char }
+}
+
+zg361_sb_m_37_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_37_title }
+}
+
+zg361_sb_m_37_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_37_promotion var:zg361_sb_m_37_promotion = 1 }
+}
+
+zg361_sb_m_37_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_37_pip var:zg361_sb_m_37_pip = 1 }
+}
+
+zg361_sb_m_38_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_38_char }
+}
+
+zg361_sb_m_38_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_38_title }
+}
+
+zg361_sb_m_38_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_38_promotion var:zg361_sb_m_38_promotion = 1 }
+}
+
+zg361_sb_m_38_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_38_pip var:zg361_sb_m_38_pip = 1 }
+}
+
+zg361_sb_m_39_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_39_char }
+}
+
+zg361_sb_m_39_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_39_title }
+}
+
+zg361_sb_m_39_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_39_promotion var:zg361_sb_m_39_promotion = 1 }
+}
+
+zg361_sb_m_39_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_39_pip var:zg361_sb_m_39_pip = 1 }
+}
+
+zg361_sb_m_40_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_40_char }
+}
+
+zg361_sb_m_40_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_40_title }
+}
+
+zg361_sb_m_40_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_40_promotion var:zg361_sb_m_40_promotion = 1 }
+}
+
+zg361_sb_m_40_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_40_pip var:zg361_sb_m_40_pip = 1 }
+}
+
+zg361_sb_m_41_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_41_char }
+}
+
+zg361_sb_m_41_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_41_title }
+}
+
+zg361_sb_m_41_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_41_promotion var:zg361_sb_m_41_promotion = 1 }
+}
+
+zg361_sb_m_41_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_41_pip var:zg361_sb_m_41_pip = 1 }
+}
+
+zg361_sb_m_42_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_42_char }
+}
+
+zg361_sb_m_42_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_42_title }
+}
+
+zg361_sb_m_42_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_42_promotion var:zg361_sb_m_42_promotion = 1 }
+}
+
+zg361_sb_m_42_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_42_pip var:zg361_sb_m_42_pip = 1 }
+}
+
+zg361_sb_m_43_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_43_char }
+}
+
+zg361_sb_m_43_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_43_title }
+}
+
+zg361_sb_m_43_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_43_promotion var:zg361_sb_m_43_promotion = 1 }
+}
+
+zg361_sb_m_43_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_43_pip var:zg361_sb_m_43_pip = 1 }
+}
+
+zg361_sb_m_44_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_44_char }
+}
+
+zg361_sb_m_44_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_44_title }
+}
+
+zg361_sb_m_44_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_44_promotion var:zg361_sb_m_44_promotion = 1 }
+}
+
+zg361_sb_m_44_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_44_pip var:zg361_sb_m_44_pip = 1 }
+}
+
+zg361_sb_m_45_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_45_char }
+}
+
+zg361_sb_m_45_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_45_title }
+}
+
+zg361_sb_m_45_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_45_promotion var:zg361_sb_m_45_promotion = 1 }
+}
+
+zg361_sb_m_45_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_45_pip var:zg361_sb_m_45_pip = 1 }
+}
+
+zg361_sb_m_46_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_46_char }
+}
+
+zg361_sb_m_46_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_46_title }
+}
+
+zg361_sb_m_46_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_46_promotion var:zg361_sb_m_46_promotion = 1 }
+}
+
+zg361_sb_m_46_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_46_pip var:zg361_sb_m_46_pip = 1 }
+}
+
+zg361_sb_m_47_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_47_char }
+}
+
+zg361_sb_m_47_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_47_title }
+}
+
+zg361_sb_m_47_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_47_promotion var:zg361_sb_m_47_promotion = 1 }
+}
+
+zg361_sb_m_47_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_47_pip var:zg361_sb_m_47_pip = 1 }
+}
+
+zg361_sb_m_48_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_48_char }
+}
+
+zg361_sb_m_48_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_48_title }
+}
+
+zg361_sb_m_48_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_48_promotion var:zg361_sb_m_48_promotion = 1 }
+}
+
+zg361_sb_m_48_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_48_pip var:zg361_sb_m_48_pip = 1 }
+}
+
+zg361_sb_m_49_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_49_char }
+}
+
+zg361_sb_m_49_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_49_title }
+}
+
+zg361_sb_m_49_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_49_promotion var:zg361_sb_m_49_promotion = 1 }
+}
+
+zg361_sb_m_49_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_49_pip var:zg361_sb_m_49_pip = 1 }
+}
+
+zg361_sb_m_50_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_50_char }
+}
+
+zg361_sb_m_50_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_50_title }
+}
+
+zg361_sb_m_50_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_50_promotion var:zg361_sb_m_50_promotion = 1 }
+}
+
+zg361_sb_m_50_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_50_pip var:zg361_sb_m_50_pip = 1 }
+}
+
+zg361_sb_m_51_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_51_char }
+}
+
+zg361_sb_m_51_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_51_title }
+}
+
+zg361_sb_m_51_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_51_promotion var:zg361_sb_m_51_promotion = 1 }
+}
+
+zg361_sb_m_51_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_51_pip var:zg361_sb_m_51_pip = 1 }
+}
+
+zg361_sb_m_52_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_52_char }
+}
+
+zg361_sb_m_52_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_52_title }
+}
+
+zg361_sb_m_52_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_52_promotion var:zg361_sb_m_52_promotion = 1 }
+}
+
+zg361_sb_m_52_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_52_pip var:zg361_sb_m_52_pip = 1 }
+}
+
+zg361_sb_m_53_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_53_char }
+}
+
+zg361_sb_m_53_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_53_title }
+}
+
+zg361_sb_m_53_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_53_promotion var:zg361_sb_m_53_promotion = 1 }
+}
+
+zg361_sb_m_53_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_53_pip var:zg361_sb_m_53_pip = 1 }
+}
+
+zg361_sb_m_54_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_54_char }
+}
+
+zg361_sb_m_54_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_54_title }
+}
+
+zg361_sb_m_54_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_54_promotion var:zg361_sb_m_54_promotion = 1 }
+}
+
+zg361_sb_m_54_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_54_pip var:zg361_sb_m_54_pip = 1 }
+}
+
+zg361_sb_m_55_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_55_char }
+}
+
+zg361_sb_m_55_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_55_title }
+}
+
+zg361_sb_m_55_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_55_promotion var:zg361_sb_m_55_promotion = 1 }
+}
+
+zg361_sb_m_55_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_55_pip var:zg361_sb_m_55_pip = 1 }
+}
+
+zg361_sb_m_56_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_56_char }
+}
+
+zg361_sb_m_56_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_56_title }
+}
+
+zg361_sb_m_56_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_56_promotion var:zg361_sb_m_56_promotion = 1 }
+}
+
+zg361_sb_m_56_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_56_pip var:zg361_sb_m_56_pip = 1 }
+}
+
+zg361_sb_m_57_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_57_char }
+}
+
+zg361_sb_m_57_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_57_title }
+}
+
+zg361_sb_m_57_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_57_promotion var:zg361_sb_m_57_promotion = 1 }
+}
+
+zg361_sb_m_57_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_57_pip var:zg361_sb_m_57_pip = 1 }
+}
+
+zg361_sb_m_58_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_58_char }
+}
+
+zg361_sb_m_58_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_58_title }
+}
+
+zg361_sb_m_58_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_58_promotion var:zg361_sb_m_58_promotion = 1 }
+}
+
+zg361_sb_m_58_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_58_pip var:zg361_sb_m_58_pip = 1 }
+}
+
+zg361_sb_m_59_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_59_char }
+}
+
+zg361_sb_m_59_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_59_title }
+}
+
+zg361_sb_m_59_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_59_promotion var:zg361_sb_m_59_promotion = 1 }
+}
+
+zg361_sb_m_59_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_59_pip var:zg361_sb_m_59_pip = 1 }
+}
+
+zg361_sb_m_60_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_60_char }
+}
+
+zg361_sb_m_60_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_60_title }
+}
+
+zg361_sb_m_60_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_60_promotion var:zg361_sb_m_60_promotion = 1 }
+}
+
+zg361_sb_m_60_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_60_pip var:zg361_sb_m_60_pip = 1 }
+}
+
+zg361_sb_m_61_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_61_char }
+}
+
+zg361_sb_m_61_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_61_title }
+}
+
+zg361_sb_m_61_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_61_promotion var:zg361_sb_m_61_promotion = 1 }
+}
+
+zg361_sb_m_61_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_61_pip var:zg361_sb_m_61_pip = 1 }
+}
+
+zg361_sb_m_62_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_62_char }
+}
+
+zg361_sb_m_62_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_62_title }
+}
+
+zg361_sb_m_62_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_62_promotion var:zg361_sb_m_62_promotion = 1 }
+}
+
+zg361_sb_m_62_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_62_pip var:zg361_sb_m_62_pip = 1 }
+}
+
+zg361_sb_m_63_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_63_char }
+}
+
+zg361_sb_m_63_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_63_title }
+}
+
+zg361_sb_m_63_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_63_promotion var:zg361_sb_m_63_promotion = 1 }
+}
+
+zg361_sb_m_63_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_63_pip var:zg361_sb_m_63_pip = 1 }
+}
+
+zg361_sb_m_64_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_64_char }
+}
+
+zg361_sb_m_64_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_64_title }
+}
+
+zg361_sb_m_64_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_64_promotion var:zg361_sb_m_64_promotion = 1 }
+}
+
+zg361_sb_m_64_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_64_pip var:zg361_sb_m_64_pip = 1 }
+}
+
+zg361_sb_m_65_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_65_char }
+}
+
+zg361_sb_m_65_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_65_title }
+}
+
+zg361_sb_m_65_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_65_promotion var:zg361_sb_m_65_promotion = 1 }
+}
+
+zg361_sb_m_65_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_65_pip var:zg361_sb_m_65_pip = 1 }
+}
+
+zg361_sb_m_66_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_66_char }
+}
+
+zg361_sb_m_66_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_66_title }
+}
+
+zg361_sb_m_66_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_66_promotion var:zg361_sb_m_66_promotion = 1 }
+}
+
+zg361_sb_m_66_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_66_pip var:zg361_sb_m_66_pip = 1 }
+}
+
+zg361_sb_m_67_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_67_char }
+}
+
+zg361_sb_m_67_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_67_title }
+}
+
+zg361_sb_m_67_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_67_promotion var:zg361_sb_m_67_promotion = 1 }
+}
+
+zg361_sb_m_67_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_67_pip var:zg361_sb_m_67_pip = 1 }
+}
+
+zg361_sb_m_68_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_68_char }
+}
+
+zg361_sb_m_68_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_68_title }
+}
+
+zg361_sb_m_68_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_68_promotion var:zg361_sb_m_68_promotion = 1 }
+}
+
+zg361_sb_m_68_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_68_pip var:zg361_sb_m_68_pip = 1 }
+}
+
+zg361_sb_m_69_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_69_char }
+}
+
+zg361_sb_m_69_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_69_title }
+}
+
+zg361_sb_m_69_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_69_promotion var:zg361_sb_m_69_promotion = 1 }
+}
+
+zg361_sb_m_69_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_69_pip var:zg361_sb_m_69_pip = 1 }
+}
+
+zg361_sb_m_70_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_70_char }
+}
+
+zg361_sb_m_70_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_70_title }
+}
+
+zg361_sb_m_70_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_70_promotion var:zg361_sb_m_70_promotion = 1 }
+}
+
+zg361_sb_m_70_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_70_pip var:zg361_sb_m_70_pip = 1 }
+}
+
+zg361_sb_m_71_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_71_char }
+}
+
+zg361_sb_m_71_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_71_title }
+}
+
+zg361_sb_m_71_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_71_promotion var:zg361_sb_m_71_promotion = 1 }
+}
+
+zg361_sb_m_71_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_71_pip var:zg361_sb_m_71_pip = 1 }
+}
+
+zg361_sb_m_72_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_72_char }
+}
+
+zg361_sb_m_72_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_72_title }
+}
+
+zg361_sb_m_72_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_72_promotion var:zg361_sb_m_72_promotion = 1 }
+}
+
+zg361_sb_m_72_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_72_pip var:zg361_sb_m_72_pip = 1 }
+}
+
+zg361_sb_m_73_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_73_char }
+}
+
+zg361_sb_m_73_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_73_title }
+}
+
+zg361_sb_m_73_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_73_promotion var:zg361_sb_m_73_promotion = 1 }
+}
+
+zg361_sb_m_73_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_73_pip var:zg361_sb_m_73_pip = 1 }
+}
+
+zg361_sb_m_74_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_74_char }
+}
+
+zg361_sb_m_74_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_74_title }
+}
+
+zg361_sb_m_74_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_74_promotion var:zg361_sb_m_74_promotion = 1 }
+}
+
+zg361_sb_m_74_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_74_pip var:zg361_sb_m_74_pip = 1 }
+}
+
+zg361_sb_m_75_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_75_char }
+}
+
+zg361_sb_m_75_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_75_title }
+}
+
+zg361_sb_m_75_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_75_promotion var:zg361_sb_m_75_promotion = 1 }
+}
+
+zg361_sb_m_75_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_75_pip var:zg361_sb_m_75_pip = 1 }
+}
+
+zg361_sb_m_76_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_76_char }
+}
+
+zg361_sb_m_76_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_76_title }
+}
+
+zg361_sb_m_76_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_76_promotion var:zg361_sb_m_76_promotion = 1 }
+}
+
+zg361_sb_m_76_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_76_pip var:zg361_sb_m_76_pip = 1 }
+}
+
+zg361_sb_m_77_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_77_char }
+}
+
+zg361_sb_m_77_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_77_title }
+}
+
+zg361_sb_m_77_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_77_promotion var:zg361_sb_m_77_promotion = 1 }
+}
+
+zg361_sb_m_77_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_77_pip var:zg361_sb_m_77_pip = 1 }
+}
+
+zg361_sb_m_78_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_78_char }
+}
+
+zg361_sb_m_78_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_78_title }
+}
+
+zg361_sb_m_78_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_78_promotion var:zg361_sb_m_78_promotion = 1 }
+}
+
+zg361_sb_m_78_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_78_pip var:zg361_sb_m_78_pip = 1 }
+}
+
+zg361_sb_m_79_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_79_char }
+}
+
+zg361_sb_m_79_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_79_title }
+}
+
+zg361_sb_m_79_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_79_promotion var:zg361_sb_m_79_promotion = 1 }
+}
+
+zg361_sb_m_79_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_79_pip var:zg361_sb_m_79_pip = 1 }
+}
+
+zg361_sb_m_80_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_80_char }
+}
+
+zg361_sb_m_80_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_80_title }
+}
+
+zg361_sb_m_80_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_80_promotion var:zg361_sb_m_80_promotion = 1 }
+}
+
+zg361_sb_m_80_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_m_80_pip var:zg361_sb_m_80_pip = 1 }
+}
+
+zg361_sb_r_01_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_01_char }
+}
+
+zg361_sb_r_01_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_01_title }
+}
+
+zg361_sb_r_01_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_01_promotion var:zg361_sb_r_01_promotion = 1 }
+}
+
+zg361_sb_r_01_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_01_pip var:zg361_sb_r_01_pip = 1 }
+}
+
+zg361_sb_r_02_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_02_char }
+}
+
+zg361_sb_r_02_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_02_title }
+}
+
+zg361_sb_r_02_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_02_promotion var:zg361_sb_r_02_promotion = 1 }
+}
+
+zg361_sb_r_02_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_02_pip var:zg361_sb_r_02_pip = 1 }
+}
+
+zg361_sb_r_03_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_03_char }
+}
+
+zg361_sb_r_03_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_03_title }
+}
+
+zg361_sb_r_03_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_03_promotion var:zg361_sb_r_03_promotion = 1 }
+}
+
+zg361_sb_r_03_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_03_pip var:zg361_sb_r_03_pip = 1 }
+}
+
+zg361_sb_r_04_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_04_char }
+}
+
+zg361_sb_r_04_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_04_title }
+}
+
+zg361_sb_r_04_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_04_promotion var:zg361_sb_r_04_promotion = 1 }
+}
+
+zg361_sb_r_04_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_04_pip var:zg361_sb_r_04_pip = 1 }
+}
+
+zg361_sb_r_05_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_05_char }
+}
+
+zg361_sb_r_05_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_05_title }
+}
+
+zg361_sb_r_05_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_05_promotion var:zg361_sb_r_05_promotion = 1 }
+}
+
+zg361_sb_r_05_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_05_pip var:zg361_sb_r_05_pip = 1 }
+}
+
+zg361_sb_r_06_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_06_char }
+}
+
+zg361_sb_r_06_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_06_title }
+}
+
+zg361_sb_r_06_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_06_promotion var:zg361_sb_r_06_promotion = 1 }
+}
+
+zg361_sb_r_06_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_06_pip var:zg361_sb_r_06_pip = 1 }
+}
+
+zg361_sb_r_07_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_07_char }
+}
+
+zg361_sb_r_07_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_07_title }
+}
+
+zg361_sb_r_07_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_07_promotion var:zg361_sb_r_07_promotion = 1 }
+}
+
+zg361_sb_r_07_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_07_pip var:zg361_sb_r_07_pip = 1 }
+}
+
+zg361_sb_r_08_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_08_char }
+}
+
+zg361_sb_r_08_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_08_title }
+}
+
+zg361_sb_r_08_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_08_promotion var:zg361_sb_r_08_promotion = 1 }
+}
+
+zg361_sb_r_08_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_08_pip var:zg361_sb_r_08_pip = 1 }
+}
+
+zg361_sb_r_09_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_09_char }
+}
+
+zg361_sb_r_09_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_09_title }
+}
+
+zg361_sb_r_09_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_09_promotion var:zg361_sb_r_09_promotion = 1 }
+}
+
+zg361_sb_r_09_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_09_pip var:zg361_sb_r_09_pip = 1 }
+}
+
+zg361_sb_r_10_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_10_char }
+}
+
+zg361_sb_r_10_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_10_title }
+}
+
+zg361_sb_r_10_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_10_promotion var:zg361_sb_r_10_promotion = 1 }
+}
+
+zg361_sb_r_10_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_10_pip var:zg361_sb_r_10_pip = 1 }
+}
+
+zg361_sb_r_11_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_11_char }
+}
+
+zg361_sb_r_11_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_11_title }
+}
+
+zg361_sb_r_11_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_11_promotion var:zg361_sb_r_11_promotion = 1 }
+}
+
+zg361_sb_r_11_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_11_pip var:zg361_sb_r_11_pip = 1 }
+}
+
+zg361_sb_r_12_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_12_char }
+}
+
+zg361_sb_r_12_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_12_title }
+}
+
+zg361_sb_r_12_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_12_promotion var:zg361_sb_r_12_promotion = 1 }
+}
+
+zg361_sb_r_12_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_12_pip var:zg361_sb_r_12_pip = 1 }
+}
+
+zg361_sb_r_13_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_13_char }
+}
+
+zg361_sb_r_13_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_13_title }
+}
+
+zg361_sb_r_13_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_13_promotion var:zg361_sb_r_13_promotion = 1 }
+}
+
+zg361_sb_r_13_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_13_pip var:zg361_sb_r_13_pip = 1 }
+}
+
+zg361_sb_r_14_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_14_char }
+}
+
+zg361_sb_r_14_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_14_title }
+}
+
+zg361_sb_r_14_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_14_promotion var:zg361_sb_r_14_promotion = 1 }
+}
+
+zg361_sb_r_14_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_14_pip var:zg361_sb_r_14_pip = 1 }
+}
+
+zg361_sb_r_15_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_15_char }
+}
+
+zg361_sb_r_15_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_15_title }
+}
+
+zg361_sb_r_15_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_15_promotion var:zg361_sb_r_15_promotion = 1 }
+}
+
+zg361_sb_r_15_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_15_pip var:zg361_sb_r_15_pip = 1 }
+}
+
+zg361_sb_r_16_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_16_char }
+}
+
+zg361_sb_r_16_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_16_title }
+}
+
+zg361_sb_r_16_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_16_promotion var:zg361_sb_r_16_promotion = 1 }
+}
+
+zg361_sb_r_16_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_16_pip var:zg361_sb_r_16_pip = 1 }
+}
+
+zg361_sb_r_17_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_17_char }
+}
+
+zg361_sb_r_17_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_17_title }
+}
+
+zg361_sb_r_17_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_17_promotion var:zg361_sb_r_17_promotion = 1 }
+}
+
+zg361_sb_r_17_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_17_pip var:zg361_sb_r_17_pip = 1 }
+}
+
+zg361_sb_r_18_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_18_char }
+}
+
+zg361_sb_r_18_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_18_title }
+}
+
+zg361_sb_r_18_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_18_promotion var:zg361_sb_r_18_promotion = 1 }
+}
+
+zg361_sb_r_18_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_18_pip var:zg361_sb_r_18_pip = 1 }
+}
+
+zg361_sb_r_19_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_19_char }
+}
+
+zg361_sb_r_19_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_19_title }
+}
+
+zg361_sb_r_19_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_19_promotion var:zg361_sb_r_19_promotion = 1 }
+}
+
+zg361_sb_r_19_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_19_pip var:zg361_sb_r_19_pip = 1 }
+}
+
+zg361_sb_r_20_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_20_char }
+}
+
+zg361_sb_r_20_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_20_title }
+}
+
+zg361_sb_r_20_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_20_promotion var:zg361_sb_r_20_promotion = 1 }
+}
+
+zg361_sb_r_20_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_20_pip var:zg361_sb_r_20_pip = 1 }
+}
+
+zg361_sb_r_21_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_21_char }
+}
+
+zg361_sb_r_21_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_21_title }
+}
+
+zg361_sb_r_21_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_21_promotion var:zg361_sb_r_21_promotion = 1 }
+}
+
+zg361_sb_r_21_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_21_pip var:zg361_sb_r_21_pip = 1 }
+}
+
+zg361_sb_r_22_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_22_char }
+}
+
+zg361_sb_r_22_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_22_title }
+}
+
+zg361_sb_r_22_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_22_promotion var:zg361_sb_r_22_promotion = 1 }
+}
+
+zg361_sb_r_22_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_22_pip var:zg361_sb_r_22_pip = 1 }
+}
+
+zg361_sb_r_23_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_23_char }
+}
+
+zg361_sb_r_23_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_23_title }
+}
+
+zg361_sb_r_23_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_23_promotion var:zg361_sb_r_23_promotion = 1 }
+}
+
+zg361_sb_r_23_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_23_pip var:zg361_sb_r_23_pip = 1 }
+}
+
+zg361_sb_r_24_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_24_char }
+}
+
+zg361_sb_r_24_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_24_title }
+}
+
+zg361_sb_r_24_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_24_promotion var:zg361_sb_r_24_promotion = 1 }
+}
+
+zg361_sb_r_24_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_24_pip var:zg361_sb_r_24_pip = 1 }
+}
+
+zg361_sb_r_25_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_25_char }
+}
+
+zg361_sb_r_25_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_25_title }
+}
+
+zg361_sb_r_25_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_25_promotion var:zg361_sb_r_25_promotion = 1 }
+}
+
+zg361_sb_r_25_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_25_pip var:zg361_sb_r_25_pip = 1 }
+}
+
+zg361_sb_r_26_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_26_char }
+}
+
+zg361_sb_r_26_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_26_title }
+}
+
+zg361_sb_r_26_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_26_promotion var:zg361_sb_r_26_promotion = 1 }
+}
+
+zg361_sb_r_26_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_26_pip var:zg361_sb_r_26_pip = 1 }
+}
+
+zg361_sb_r_27_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_27_char }
+}
+
+zg361_sb_r_27_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_27_title }
+}
+
+zg361_sb_r_27_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_27_promotion var:zg361_sb_r_27_promotion = 1 }
+}
+
+zg361_sb_r_27_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_27_pip var:zg361_sb_r_27_pip = 1 }
+}
+
+zg361_sb_r_28_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_28_char }
+}
+
+zg361_sb_r_28_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_28_title }
+}
+
+zg361_sb_r_28_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_28_promotion var:zg361_sb_r_28_promotion = 1 }
+}
+
+zg361_sb_r_28_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_28_pip var:zg361_sb_r_28_pip = 1 }
+}
+
+zg361_sb_r_29_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_29_char }
+}
+
+zg361_sb_r_29_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_29_title }
+}
+
+zg361_sb_r_29_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_29_promotion var:zg361_sb_r_29_promotion = 1 }
+}
+
+zg361_sb_r_29_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_29_pip var:zg361_sb_r_29_pip = 1 }
+}
+
+zg361_sb_r_30_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_30_char }
+}
+
+zg361_sb_r_30_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_30_title }
+}
+
+zg361_sb_r_30_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_30_promotion var:zg361_sb_r_30_promotion = 1 }
+}
+
+zg361_sb_r_30_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_30_pip var:zg361_sb_r_30_pip = 1 }
+}
+
+zg361_sb_r_31_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_31_char }
+}
+
+zg361_sb_r_31_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_31_title }
+}
+
+zg361_sb_r_31_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_31_promotion var:zg361_sb_r_31_promotion = 1 }
+}
+
+zg361_sb_r_31_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_31_pip var:zg361_sb_r_31_pip = 1 }
+}
+
+zg361_sb_r_32_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_32_char }
+}
+
+zg361_sb_r_32_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_32_title }
+}
+
+zg361_sb_r_32_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_32_promotion var:zg361_sb_r_32_promotion = 1 }
+}
+
+zg361_sb_r_32_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_32_pip var:zg361_sb_r_32_pip = 1 }
+}
+
+zg361_sb_r_33_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_33_char }
+}
+
+zg361_sb_r_33_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_33_title }
+}
+
+zg361_sb_r_33_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_33_promotion var:zg361_sb_r_33_promotion = 1 }
+}
+
+zg361_sb_r_33_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_33_pip var:zg361_sb_r_33_pip = 1 }
+}
+
+zg361_sb_r_34_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_34_char }
+}
+
+zg361_sb_r_34_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_34_title }
+}
+
+zg361_sb_r_34_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_34_promotion var:zg361_sb_r_34_promotion = 1 }
+}
+
+zg361_sb_r_34_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_34_pip var:zg361_sb_r_34_pip = 1 }
+}
+
+zg361_sb_r_35_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_35_char }
+}
+
+zg361_sb_r_35_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_35_title }
+}
+
+zg361_sb_r_35_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_35_promotion var:zg361_sb_r_35_promotion = 1 }
+}
+
+zg361_sb_r_35_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_35_pip var:zg361_sb_r_35_pip = 1 }
+}
+
+zg361_sb_r_36_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_36_char }
+}
+
+zg361_sb_r_36_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_36_title }
+}
+
+zg361_sb_r_36_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_36_promotion var:zg361_sb_r_36_promotion = 1 }
+}
+
+zg361_sb_r_36_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_36_pip var:zg361_sb_r_36_pip = 1 }
+}
+
+zg361_sb_r_37_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_37_char }
+}
+
+zg361_sb_r_37_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_37_title }
+}
+
+zg361_sb_r_37_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_37_promotion var:zg361_sb_r_37_promotion = 1 }
+}
+
+zg361_sb_r_37_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_37_pip var:zg361_sb_r_37_pip = 1 }
+}
+
+zg361_sb_r_38_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_38_char }
+}
+
+zg361_sb_r_38_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_38_title }
+}
+
+zg361_sb_r_38_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_38_promotion var:zg361_sb_r_38_promotion = 1 }
+}
+
+zg361_sb_r_38_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_38_pip var:zg361_sb_r_38_pip = 1 }
+}
+
+zg361_sb_r_39_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_39_char }
+}
+
+zg361_sb_r_39_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_39_title }
+}
+
+zg361_sb_r_39_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_39_promotion var:zg361_sb_r_39_promotion = 1 }
+}
+
+zg361_sb_r_39_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_39_pip var:zg361_sb_r_39_pip = 1 }
+}
+
+zg361_sb_r_40_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_40_char }
+}
+
+zg361_sb_r_40_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_40_title }
+}
+
+zg361_sb_r_40_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_40_promotion var:zg361_sb_r_40_promotion = 1 }
+}
+
+zg361_sb_r_40_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_40_pip var:zg361_sb_r_40_pip = 1 }
+}
+
+zg361_sb_r_41_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_41_char }
+}
+
+zg361_sb_r_41_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_41_title }
+}
+
+zg361_sb_r_41_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_41_promotion var:zg361_sb_r_41_promotion = 1 }
+}
+
+zg361_sb_r_41_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_41_pip var:zg361_sb_r_41_pip = 1 }
+}
+
+zg361_sb_r_42_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_42_char }
+}
+
+zg361_sb_r_42_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_42_title }
+}
+
+zg361_sb_r_42_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_42_promotion var:zg361_sb_r_42_promotion = 1 }
+}
+
+zg361_sb_r_42_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_42_pip var:zg361_sb_r_42_pip = 1 }
+}
+
+zg361_sb_r_43_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_43_char }
+}
+
+zg361_sb_r_43_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_43_title }
+}
+
+zg361_sb_r_43_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_43_promotion var:zg361_sb_r_43_promotion = 1 }
+}
+
+zg361_sb_r_43_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_43_pip var:zg361_sb_r_43_pip = 1 }
+}
+
+zg361_sb_r_44_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_44_char }
+}
+
+zg361_sb_r_44_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_44_title }
+}
+
+zg361_sb_r_44_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_44_promotion var:zg361_sb_r_44_promotion = 1 }
+}
+
+zg361_sb_r_44_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_44_pip var:zg361_sb_r_44_pip = 1 }
+}
+
+zg361_sb_r_45_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_45_char }
+}
+
+zg361_sb_r_45_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_45_title }
+}
+
+zg361_sb_r_45_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_45_promotion var:zg361_sb_r_45_promotion = 1 }
+}
+
+zg361_sb_r_45_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_45_pip var:zg361_sb_r_45_pip = 1 }
+}
+
+zg361_sb_r_46_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_46_char }
+}
+
+zg361_sb_r_46_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_46_title }
+}
+
+zg361_sb_r_46_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_46_promotion var:zg361_sb_r_46_promotion = 1 }
+}
+
+zg361_sb_r_46_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_46_pip var:zg361_sb_r_46_pip = 1 }
+}
+
+zg361_sb_r_47_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_47_char }
+}
+
+zg361_sb_r_47_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_47_title }
+}
+
+zg361_sb_r_47_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_47_promotion var:zg361_sb_r_47_promotion = 1 }
+}
+
+zg361_sb_r_47_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_47_pip var:zg361_sb_r_47_pip = 1 }
+}
+
+zg361_sb_r_48_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_48_char }
+}
+
+zg361_sb_r_48_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_48_title }
+}
+
+zg361_sb_r_48_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_48_promotion var:zg361_sb_r_48_promotion = 1 }
+}
+
+zg361_sb_r_48_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_48_pip var:zg361_sb_r_48_pip = 1 }
+}
+
+zg361_sb_r_49_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_49_char }
+}
+
+zg361_sb_r_49_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_49_title }
+}
+
+zg361_sb_r_49_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_49_promotion var:zg361_sb_r_49_promotion = 1 }
+}
+
+zg361_sb_r_49_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_49_pip var:zg361_sb_r_49_pip = 1 }
+}
+
+zg361_sb_r_50_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_50_char }
+}
+
+zg361_sb_r_50_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_50_title }
+}
+
+zg361_sb_r_50_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_50_promotion var:zg361_sb_r_50_promotion = 1 }
+}
+
+zg361_sb_r_50_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_50_pip var:zg361_sb_r_50_pip = 1 }
+}
+
+zg361_sb_r_51_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_51_char }
+}
+
+zg361_sb_r_51_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_51_title }
+}
+
+zg361_sb_r_51_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_51_promotion var:zg361_sb_r_51_promotion = 1 }
+}
+
+zg361_sb_r_51_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_51_pip var:zg361_sb_r_51_pip = 1 }
+}
+
+zg361_sb_r_52_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_52_char }
+}
+
+zg361_sb_r_52_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_52_title }
+}
+
+zg361_sb_r_52_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_52_promotion var:zg361_sb_r_52_promotion = 1 }
+}
+
+zg361_sb_r_52_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_52_pip var:zg361_sb_r_52_pip = 1 }
+}
+
+zg361_sb_r_53_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_53_char }
+}
+
+zg361_sb_r_53_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_53_title }
+}
+
+zg361_sb_r_53_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_53_promotion var:zg361_sb_r_53_promotion = 1 }
+}
+
+zg361_sb_r_53_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_53_pip var:zg361_sb_r_53_pip = 1 }
+}
+
+zg361_sb_r_54_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_54_char }
+}
+
+zg361_sb_r_54_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_54_title }
+}
+
+zg361_sb_r_54_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_54_promotion var:zg361_sb_r_54_promotion = 1 }
+}
+
+zg361_sb_r_54_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_54_pip var:zg361_sb_r_54_pip = 1 }
+}
+
+zg361_sb_r_55_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_55_char }
+}
+
+zg361_sb_r_55_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_55_title }
+}
+
+zg361_sb_r_55_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_55_promotion var:zg361_sb_r_55_promotion = 1 }
+}
+
+zg361_sb_r_55_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_55_pip var:zg361_sb_r_55_pip = 1 }
+}
+
+zg361_sb_r_56_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_56_char }
+}
+
+zg361_sb_r_56_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_56_title }
+}
+
+zg361_sb_r_56_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_56_promotion var:zg361_sb_r_56_promotion = 1 }
+}
+
+zg361_sb_r_56_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_56_pip var:zg361_sb_r_56_pip = 1 }
+}
+
+zg361_sb_r_57_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_57_char }
+}
+
+zg361_sb_r_57_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_57_title }
+}
+
+zg361_sb_r_57_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_57_promotion var:zg361_sb_r_57_promotion = 1 }
+}
+
+zg361_sb_r_57_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_57_pip var:zg361_sb_r_57_pip = 1 }
+}
+
+zg361_sb_r_58_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_58_char }
+}
+
+zg361_sb_r_58_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_58_title }
+}
+
+zg361_sb_r_58_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_58_promotion var:zg361_sb_r_58_promotion = 1 }
+}
+
+zg361_sb_r_58_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_58_pip var:zg361_sb_r_58_pip = 1 }
+}
+
+zg361_sb_r_59_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_59_char }
+}
+
+zg361_sb_r_59_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_59_title }
+}
+
+zg361_sb_r_59_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_59_promotion var:zg361_sb_r_59_promotion = 1 }
+}
+
+zg361_sb_r_59_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_59_pip var:zg361_sb_r_59_pip = 1 }
+}
+
+zg361_sb_r_60_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_60_char }
+}
+
+zg361_sb_r_60_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_60_title }
+}
+
+zg361_sb_r_60_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_60_promotion var:zg361_sb_r_60_promotion = 1 }
+}
+
+zg361_sb_r_60_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_60_pip var:zg361_sb_r_60_pip = 1 }
+}
+
+zg361_sb_r_61_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_61_char }
+}
+
+zg361_sb_r_61_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_61_title }
+}
+
+zg361_sb_r_61_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_61_promotion var:zg361_sb_r_61_promotion = 1 }
+}
+
+zg361_sb_r_61_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_61_pip var:zg361_sb_r_61_pip = 1 }
+}
+
+zg361_sb_r_62_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_62_char }
+}
+
+zg361_sb_r_62_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_62_title }
+}
+
+zg361_sb_r_62_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_62_promotion var:zg361_sb_r_62_promotion = 1 }
+}
+
+zg361_sb_r_62_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_62_pip var:zg361_sb_r_62_pip = 1 }
+}
+
+zg361_sb_r_63_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_63_char }
+}
+
+zg361_sb_r_63_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_63_title }
+}
+
+zg361_sb_r_63_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_63_promotion var:zg361_sb_r_63_promotion = 1 }
+}
+
+zg361_sb_r_63_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_63_pip var:zg361_sb_r_63_pip = 1 }
+}
+
+zg361_sb_r_64_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_64_char }
+}
+
+zg361_sb_r_64_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_64_title }
+}
+
+zg361_sb_r_64_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_64_promotion var:zg361_sb_r_64_promotion = 1 }
+}
+
+zg361_sb_r_64_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_64_pip var:zg361_sb_r_64_pip = 1 }
+}
+
+zg361_sb_r_65_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_65_char }
+}
+
+zg361_sb_r_65_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_65_title }
+}
+
+zg361_sb_r_65_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_65_promotion var:zg361_sb_r_65_promotion = 1 }
+}
+
+zg361_sb_r_65_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_65_pip var:zg361_sb_r_65_pip = 1 }
+}
+
+zg361_sb_r_66_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_66_char }
+}
+
+zg361_sb_r_66_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_66_title }
+}
+
+zg361_sb_r_66_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_66_promotion var:zg361_sb_r_66_promotion = 1 }
+}
+
+zg361_sb_r_66_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_66_pip var:zg361_sb_r_66_pip = 1 }
+}
+
+zg361_sb_r_67_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_67_char }
+}
+
+zg361_sb_r_67_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_67_title }
+}
+
+zg361_sb_r_67_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_67_promotion var:zg361_sb_r_67_promotion = 1 }
+}
+
+zg361_sb_r_67_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_67_pip var:zg361_sb_r_67_pip = 1 }
+}
+
+zg361_sb_r_68_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_68_char }
+}
+
+zg361_sb_r_68_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_68_title }
+}
+
+zg361_sb_r_68_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_68_promotion var:zg361_sb_r_68_promotion = 1 }
+}
+
+zg361_sb_r_68_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_68_pip var:zg361_sb_r_68_pip = 1 }
+}
+
+zg361_sb_r_69_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_69_char }
+}
+
+zg361_sb_r_69_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_69_title }
+}
+
+zg361_sb_r_69_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_69_promotion var:zg361_sb_r_69_promotion = 1 }
+}
+
+zg361_sb_r_69_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_69_pip var:zg361_sb_r_69_pip = 1 }
+}
+
+zg361_sb_r_70_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_70_char }
+}
+
+zg361_sb_r_70_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_70_title }
+}
+
+zg361_sb_r_70_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_70_promotion var:zg361_sb_r_70_promotion = 1 }
+}
+
+zg361_sb_r_70_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_70_pip var:zg361_sb_r_70_pip = 1 }
+}
+
+zg361_sb_r_71_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_71_char }
+}
+
+zg361_sb_r_71_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_71_title }
+}
+
+zg361_sb_r_71_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_71_promotion var:zg361_sb_r_71_promotion = 1 }
+}
+
+zg361_sb_r_71_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_71_pip var:zg361_sb_r_71_pip = 1 }
+}
+
+zg361_sb_r_72_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_72_char }
+}
+
+zg361_sb_r_72_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_72_title }
+}
+
+zg361_sb_r_72_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_72_promotion var:zg361_sb_r_72_promotion = 1 }
+}
+
+zg361_sb_r_72_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_72_pip var:zg361_sb_r_72_pip = 1 }
+}
+
+zg361_sb_r_73_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_73_char }
+}
+
+zg361_sb_r_73_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_73_title }
+}
+
+zg361_sb_r_73_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_73_promotion var:zg361_sb_r_73_promotion = 1 }
+}
+
+zg361_sb_r_73_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_73_pip var:zg361_sb_r_73_pip = 1 }
+}
+
+zg361_sb_r_74_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_74_char }
+}
+
+zg361_sb_r_74_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_74_title }
+}
+
+zg361_sb_r_74_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_74_promotion var:zg361_sb_r_74_promotion = 1 }
+}
+
+zg361_sb_r_74_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_74_pip var:zg361_sb_r_74_pip = 1 }
+}
+
+zg361_sb_r_75_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_75_char }
+}
+
+zg361_sb_r_75_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_75_title }
+}
+
+zg361_sb_r_75_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_75_promotion var:zg361_sb_r_75_promotion = 1 }
+}
+
+zg361_sb_r_75_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_75_pip var:zg361_sb_r_75_pip = 1 }
+}
+
+zg361_sb_r_76_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_76_char }
+}
+
+zg361_sb_r_76_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_76_title }
+}
+
+zg361_sb_r_76_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_76_promotion var:zg361_sb_r_76_promotion = 1 }
+}
+
+zg361_sb_r_76_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_76_pip var:zg361_sb_r_76_pip = 1 }
+}
+
+zg361_sb_r_77_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_77_char }
+}
+
+zg361_sb_r_77_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_77_title }
+}
+
+zg361_sb_r_77_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_77_promotion var:zg361_sb_r_77_promotion = 1 }
+}
+
+zg361_sb_r_77_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_77_pip var:zg361_sb_r_77_pip = 1 }
+}
+
+zg361_sb_r_78_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_78_char }
+}
+
+zg361_sb_r_78_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_78_title }
+}
+
+zg361_sb_r_78_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_78_promotion var:zg361_sb_r_78_promotion = 1 }
+}
+
+zg361_sb_r_78_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_78_pip var:zg361_sb_r_78_pip = 1 }
+}
+
+zg361_sb_r_79_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_79_char }
+}
+
+zg361_sb_r_79_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_79_title }
+}
+
+zg361_sb_r_79_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_79_promotion var:zg361_sb_r_79_promotion = 1 }
+}
+
+zg361_sb_r_79_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_79_pip var:zg361_sb_r_79_pip = 1 }
+}
+
+zg361_sb_r_80_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_80_char }
+}
+
+zg361_sb_r_80_title_available_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_80_title }
+}
+
+zg361_sb_r_80_promotion_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_80_promotion var:zg361_sb_r_80_promotion = 1 }
+}
+
+zg361_sb_r_80_pip_gui = {
+	scope = character
+	is_shown = { has_variable = zg361_sb_r_80_pip var:zg361_sb_r_80_pip = 1 }
+}

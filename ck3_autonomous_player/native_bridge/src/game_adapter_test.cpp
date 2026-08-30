@@ -279,6 +279,8 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.query-current-event-window-context-v1") ||
       !Contains(known.capabilities,
+                "game.command.center-map-on-landed-title-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v2-N") ||
       !Contains(known.capabilities,
                 "game.command.query-combat-simulation-inputs-v3-N") ||
@@ -460,6 +462,9 @@ int main() {
           "query-pending-character-interaction-context-v1") ||
       !exact_adapter->supports_step(
           "query-current-event-window-context-v1") ||
+      !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
+      exact_adapter->supports_step(
+          "center-map-on-landed-title-v1-c_bianzhou") ||
       !exact_adapter->supports_step(
           "acknowledge-pending-character-interaction") ||
       !exact_adapter->supports_step(
@@ -568,6 +573,7 @@ int main() {
           "query-war-termination-exit-terms-v2-16777217") ||
       partial.supports_step("surrender-war-16777217") ||
       partial.supports_step("offer-white-peace-16777217") ||
+      partial.supports_step("center-map-on-landed-title-v1") ||
       !partial.supports_snapshot() || !partial.supports_step("pause-map") ||
       !partial.supports_step("preview-move-army-1-to-2") ||
       !partial.supports_step("split-army-half-1") ||

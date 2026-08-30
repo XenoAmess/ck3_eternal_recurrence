@@ -9,6 +9,7 @@ minimal localization payload, validates the response, and prints candidate JSON.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import http.client
@@ -71,6 +72,55 @@ def find_icu_blocks(value: str) -> tuple[str, ...]:
 
 def protected_tokens(value: str) -> tuple[str, ...]:
     return tuple(PROTECTED.findall(value)) + find_icu_blocks(value)
+
+
+def count_unescaped_ascii_quotes(value: str) -> int:
+    """Count quotes that would terminate a raw CK3 localization value."""
+
+    count = 0
+    for index, character in enumerate(value):
+        if character != '"':
+            continue
+        backslashes = 0
+        cursor = index - 1
+        while cursor >= 0 and value[cursor] == "\\":
+            backslashes += 1
+            cursor -= 1
+        if backslashes % 2 == 0:
+            count += 1
+    return count
+
+
+def normalize_raw_ck3_quote_escapes(
+    source: dict[str, str], candidate: dict[str, str]
+) -> dict[str, str]:
+    """Restore raw YML quote escapes that JSON decoding legitimately removes.
+
+    CK3 source values are intentionally kept in their raw YML representation, so
+    an embedded quote is the two-character token ``\"``. Models commonly return
+    an ordinary quote because JSON already escapes it syntactically. Only values
+    whose source contains that raw token are normalized; the protected-token gate
+    still rejects any missing, added, or otherwise changed escape afterwards.
+    """
+
+    normalized: dict[str, str] = {}
+    for key, value in candidate.items():
+        if '\\"' not in source[key]:
+            normalized[key] = value
+            continue
+        output: list[str] = []
+        for index, character in enumerate(value):
+            if character == '"':
+                backslashes = 0
+                cursor = index - 1
+                while cursor >= 0 and value[cursor] == "\\":
+                    backslashes += 1
+                    cursor -= 1
+                if backslashes % 2 == 0:
+                    output.append("\\")
+            output.append(character)
+        normalized[key] = "".join(output)
+    return normalized
 
 
 def parse_ck3_localization(path: Path) -> dict[str, str]:
@@ -141,8 +191,13 @@ def extract_candidate(content: str, keys: tuple[str, ...]) -> dict[str, str]:
         missing = sorted(set(keys) - set(candidate))
         extra = sorted(set(candidate) - set(keys))
         raise TranslationError(f"response key set differs (missing={missing}, extra={extra})")
-    if not all(isinstance(value, str) for value in candidate.values()):
-        raise TranslationError("response contains a non-string translation value")
+    non_string = sorted(
+        key for key, value in candidate.items() if not isinstance(value, str)
+    )
+    if non_string:
+        raise TranslationError(
+            f"response contains non-string translation values: {non_string}"
+        )
     return {key: candidate[key] for key in keys}
 
 
@@ -157,12 +212,19 @@ def assert_protected_tokens(
         actual = Counter(protected_tokens(candidate[key]))
         if actual != expected:
             errors.append(f"{key}: protected tokens {dict(actual)} != {dict(expected)}")
+        expected_quotes = count_unescaped_ascii_quotes(source_value)
+        actual_quotes = count_unescaped_ascii_quotes(candidate[key])
+        if actual_quotes != expected_quotes:
+            errors.append(
+                f"{key}: unescaped ASCII quote count {actual_quotes} != "
+                f"{expected_quotes}"
+            )
         for token in explicit:
             expected_count = source_value.count(token)
             actual_count = candidate[key].count(token)
-            if actual_count != expected_count:
+            if expected_count and actual_count < expected_count:
                 errors.append(
-                    f"{key}: explicit token {token!r} count {actual_count} != {expected_count}"
+                    f"{key}: explicit token {token!r} count {actual_count} < {expected_count}"
                 )
     if errors:
         raise TranslationError("protected-token mismatch: " + "; ".join(errors))
@@ -198,8 +260,11 @@ Context: {context}
 Requirements:
 1. Return exactly one valid flat JSON object with the same {len(source)} keys and translated string values.
 2. Preserve meaning, tone, concise game-interface style, punctuation intent, and wordplay where practical.
-3. Preserve every protected token exactly, including its spelling and occurrence count.
+3. Preserve every protected-token occurrence already present, including spelling. Do not remove or alter one. A required product term may be introduced or repeated only when the reference meaning needs it.
 4. Do not output Markdown, reasoning, commentary, code, or a second JSON object.
+5. Every JSON value MUST be one string. Never return nested objects, arrays, numbers, booleans, or null.
+
+Required output shape (using the real input keys): {{"key_one":"translated text","key_two":"translated text"}}
 
 Protected tokens:
 {json.dumps(protected, ensure_ascii=False)}
@@ -217,6 +282,7 @@ def request_candidate(
     api_key: str,
     max_completion_tokens: int,
     explicit_protected: tuple[str, ...] = (),
+    raw_response_sink: Callable[[int, bytes], None] | None = None,
 ) -> tuple[str, dict[str, str]]:
     body = json.dumps(
         {
@@ -240,7 +306,10 @@ def request_candidate(
         )
         try:
             with request.urlopen(req, timeout=180) as response:
-                payload = json.loads(response.read().decode("utf-8"))
+                raw_response = response.read()
+            if raw_response_sink is not None:
+                raw_response_sink(attempt + 1, raw_response)
+            payload = json.loads(raw_response.decode("utf-8"))
             if not isinstance(payload, dict):
                 raise TranslationError("response envelope is not an object")
             base_response = payload.get("base_resp")
@@ -256,10 +325,15 @@ def request_candidate(
                 raise TranslationError("response message is not an object")
             content = message.get("content")
             candidate = extract_candidate(content, tuple(source))
+            candidate = normalize_raw_ck3_quote_escapes(source, candidate)
             assert_protected_tokens(source, candidate, explicit_protected)
             return target_key, candidate
         except error.HTTPError as exc:
             last_error = f"HTTP {exc.code}"
+            if raw_response_sink is not None:
+                error_body = exc.read()
+                if error_body:
+                    raw_response_sink(attempt + 1, error_body)
             if exc.code not in {408, 429} and exc.code < 500:
                 raise TranslationError(f"{target_name} translation failed: {last_error}") from exc
             retry_after = exc.headers.get("Retry-After") if exc.headers else None
