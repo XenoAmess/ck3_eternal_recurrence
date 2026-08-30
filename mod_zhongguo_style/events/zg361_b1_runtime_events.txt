@@ -238,3 +238,135 @@ zg361b1.111 = {
 		else = { debug_log = "ZG361B1: incomplete manager-calibration ticket ignored" }
 	}
 }
+
+# Per-subject pending deadline. The shared kernel consumes the frozen
+# owner/subject/cycle/case/state ticket before the domain resolver can write.
+zg361b1.121 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		zg361_case_kernel_expire_deadline_effect = {
+			OWNER_VAR = zg361_b1_case_owner
+			SUBJECT_VAR = zg361_b1_case_subject
+			CYCLE_VAR = zg361_b1_cycle_serial
+			CASE_VAR = zg361_b1_case_serial
+			STATE_VAR = zg361_b1_case_state
+			ACTIVE_VAR = zg361_b1_case_active
+			DEADLINE_OWNER_VAR = zg361_b1_pending_deadline_owner
+			DEADLINE_SUBJECT_VAR = zg361_b1_pending_deadline_subject
+			DEADLINE_CYCLE_VAR = zg361_b1_pending_deadline_ticket_cycle
+			DEADLINE_CASE_VAR = zg361_b1_pending_deadline_ticket_case
+			DEADLINE_STATE_VAR = zg361_b1_pending_deadline_ticket_state
+			DEADLINE_PENDING_VAR = zg361_b1_pending_deadline_pending
+			DEADLINE_EXPIRED_VAR = zg361_b1_pending_deadline_expired
+			REVISION_VAR = zg361_b1_case_revision
+			TIMELINE_VAR = zg361_b1_case_timeline_serial
+			FEEDBACK_VAR = zg361_b1_case_feedback_revision
+		}
+		if = {
+			limit = {
+				has_variable = zg361_case_kernel_applied
+				var:zg361_case_kernel_applied = 1
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_pending_state = 1
+				var:zg361_b1_case_state = 7
+				var:zg361_b1_case_active = 1
+				var:zg361_b1_roster_included = 1
+			}
+			# Observe a fresh live KPI only after the independent 30-day deadline;
+			# facts/evidence_late remains immutable and is merely the frozen target
+			# before-image. This makes success/failure depend on new gameplay state.
+			set_variable = { name = zg361_b1_pending_observed_score value = zg361_kpi_value }
+			set_variable = { name = zg361_b1_pending_observation_recorded value = 1 }
+			set_variable = { name = zg361_b1_pending_observation_year value = current_year }
+			set_variable = { name = zg361_b1_pending_observation_serial value = var:zg361_b1_case_revision }
+			zg361_b1_resolve_pending_subject_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale pending milestone ticket ignored" }
+	}
+}
+
+# Sealed-board late-evidence decision. Both positive and negative evidence use
+# the same absolute threshold and the same five-field subject identity.
+zg361b1.122 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_reopen_ticket_owner
+				exists = scope:zg361_b1_reopen_ticket_subject
+				this = scope:zg361_b1_reopen_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
+				var:zg361_b1_cycle_state = scope:zg361_b1_reopen_ticket_state
+				var:zg361_b1_cycle_state = 7
+				var:zg361_b1_sealed_board_hash = scope:zg361_b1_reopen_ticket_hash
+				var:zg361_b1_reward_snapshot_hash = scope:zg361_b1_reopen_ticket_reward_hash
+				var:zg361_b1_quota_book_version = scope:zg361_b1_reopen_ticket_book_version
+				scope:zg361_b1_reopen_ticket_subject = {
+					var:zg361_b1_case_owner = scope:zg361_b1_reopen_ticket_owner
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
+					var:zg361_b1_case_state = 7
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					var:zg361_pending_grade = var:zg361_b1_reopen_sealed_grade
+				}
+			}
+			scope:zg361_b1_reopen_ticket_subject = {
+				# This post-seal observation is new gameplay state. The frozen facts
+				# score is retained as the before-image and is never rewritten.
+				set_variable = { name = zg361_b1_reopen_observed_score value = zg361_kpi_value }
+				set_variable = {
+					name = zg361_b1_reopen_late_evidence_delta
+					value = { value = var:zg361_b1_reopen_observed_score subtract = var:zg361_b1_reopen_baseline_score }
+				}
+				set_variable = { name = zg361_b1_reopen_late_evidence_magnitude value = var:zg361_b1_reopen_late_evidence_delta }
+				if = {
+					limit = { var:zg361_b1_reopen_late_evidence_magnitude < 0 }
+					set_variable = { name = zg361_b1_reopen_late_evidence_magnitude value = { value = var:zg361_b1_reopen_late_evidence_magnitude multiply = -1 } }
+				}
+				set_variable = { name = zg361_b1_reopen_observation_recorded value = 1 }
+				set_variable = { name = zg361_b1_reopen_observation_year value = current_year }
+				set_variable = { name = zg361_b1_reopen_observation_serial value = var:zg361_b1_case_revision }
+			}
+			zg361_b1_apply_symmetric_reopen_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale symmetric-reopen ticket ignored" }
+	}
+}
+
+# The last independently scheduled subject returns control to the owning
+# manager. No one subject can advance another manager's calibration round.
+zg361b1.123 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_pending_continue_owner
+				exists = scope:zg361_b1_pending_continue_subject
+				this = scope:zg361_b1_pending_continue_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
+				var:zg361_b1_cycle_state = scope:zg361_b1_pending_continue_state
+				var:zg361_b1_cycle_state = 7
+				var:zg361_b1_pending_open_n = 0
+				scope:zg361_b1_pending_continue_subject = {
+					var:zg361_b1_case_owner = scope:zg361_b1_pending_continue_owner
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_pending_continue_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_pending_continue_case
+					var:zg361_b1_case_state = 7
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+					OR = { var:zg361_b1_pending_state = 2 var:zg361_b1_pending_state = 3 }
+				}
+			}
+			zg361_b1_prepare_reopen_gate_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale pending continuation ticket ignored" }
+	}
+}

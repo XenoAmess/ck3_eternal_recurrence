@@ -13,6 +13,7 @@ import re
 import unittest
 
 from gen_361_b1_runtime import MOD_ROOT, outputs
+from zg361_b1_quota_model import compute_quota
 from zg361_b1_runtime_data import B1_BINDINGS, B1_IDS, STAGE_SEQUENCE
 
 
@@ -67,6 +68,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "common/character_interactions/zg361_interactions.txt"
         )
         cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
+        cls.case_kernel_triggers = read(
+            "common/scripted_triggers/zg361_case_kernel_triggers.txt"
+        )
         cls.values = read("common/script_values/zg361_values.txt")
         cls.loc_en = read("localization/english/zg361_b1_l_english.yml")
         cls.loc_zh = read("localization/simp_chinese/zg361_b1_l_simp_chinese.yml")
@@ -216,7 +220,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 )
                 for token in ("owner", "subject", "cycle", "case", "state"):
                     self.assertIn(f"zg361_b1_self_ticket_{token}", ticket)
+                self.assertIn("var:zg361_b1_case_subject = this", ticket)
                 self.assertIn("var:zg361_b1_case_state = 3", ticket)
+                self.assertIn("var:zg361_b1_case_active = 1", ticket)
+                self.assertIn("var:zg361_b1_roster_included = 1", ticket)
                 self.assertIn("var:zg361_b1_self_submitted = 0", ticket)
                 self.assertIn(f"stale {route} self-review ticket ignored", ticket)
 
@@ -290,7 +297,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             )
             for token in ("owner", "subject", "cycle", "case", "state"):
                 self.assertIn(f"zg361_b1_shadow_ticket_{token}", ticket)
+            self.assertIn("var:zg361_b1_case_subject = this", ticket)
             self.assertIn("var:zg361_b1_case_state = 5", ticket)
+            self.assertIn("var:zg361_b1_case_active = 1", ticket)
+            self.assertIn("var:zg361_b1_roster_included = 1", ticket)
             self.assertIn("var:zg361_b1_shadow_response_state = 0", ticket)
             self.assertIn(f"stale shadow-{route} ticket ignored", ticket)
 
@@ -364,6 +374,13 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             )
             self.assertIn("NOT = { this = scope:recipient }", block)
             self.assertIn("var:zg361_b1_case_state = 3", block)
+            self.assertGreaterEqual(
+                block.count("var:zg361_b1_case_subject = this"), 2
+            )
+            self.assertGreaterEqual(block.count("var:zg361_b1_case_active = 1"), 2)
+            self.assertGreaterEqual(
+                block.count("var:zg361_b1_roster_included = 1"), 2
+            )
             self.assertIn("var:zg361_b1_peer_use_mode != 0", block)
             self.assertIn(
                 "var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner",
@@ -436,6 +453,16 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("name = zg361_b1_peer_cap value = 0", initialize)
 
         prepare = top_level_block(self.effects, "zg361_b1_prepare_facts_effect")
+        for identity in (
+            "var:zg361_b1_case_owner = root",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
+            "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+            "var:zg361_b1_case_state = 3",
+            "var:zg361_b1_case_active = 1",
+            "var:zg361_b1_roster_included = 1",
+        ):
+            self.assertIn(identity, prepare)
         evidence = prepare.index(
             "set_variable = { name = zg361_b1_evidence_late value = zg361_kpi_value }"
         )
@@ -449,6 +476,26 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.assertLess(prepare.index(call), seal)
             consumer = top_level_block(
                 self.effects, f"zg361_b1_consume_peer_slot_{slot}_effect"
+            )
+            self.assertIn("var:zg361_b1_case_owner = root", consumer)
+            self.assertIn("var:zg361_b1_case_subject = this", consumer)
+            self.assertIn(
+                "var:zg361_b1_cycle_serial = root.var:zg361_b1_cycle_serial",
+                consumer,
+            )
+            self.assertIn(
+                "var:zg361_b1_case_serial = root.var:zg361_b1_case_serial",
+                consumer,
+            )
+            self.assertIn("var:zg361_b1_case_state = 3", consumer)
+            self.assertIn("var:zg361_b1_case_active = 1", consumer)
+            self.assertIn("var:zg361_b1_roster_included = 1", consumer)
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_subject = this", consumer
+            )
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_cycle = var:zg361_b1_cycle_serial",
+                consumer,
             )
             self.assertIn("zg361_b1_peer_reciprocity_risk value = 1", consumer)
             self.assertIn("multiply = 0.5 floor = yes min = 10", consumer)
@@ -523,8 +570,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 self.assertIn("name = zg361_b1_quota_snapshot value = var:zg361_pending_grade", block)
                 self.assertIn("name = zg361_b1_shadow_to_quota_delta", block)
                 self.assertIn("name = zg361_b1_forced_down value = 1", block)
-        self.assertIn("name = zg361_b1_local_top_slots value = var:zg361_pending_375_n", local)
-        self.assertIn("name = zg361_b1_local_bottom_slots value = var:zg361_pending_325_n", local)
+        self.assertIn("zg361_b1_compute_exact_quota_effect = { COHORT_SIZE = var:zg361_b1_local_candidate_n }", local)
+        self.assertIn("name = zg361_b1_local_top_slots value = var:zg361_b1_quota_top_slots", local)
+        self.assertIn("name = zg361_b1_local_middle_slots value = var:zg361_b1_quota_middle_slots", local)
+        self.assertIn("name = zg361_b1_local_bottom_slots value = var:zg361_b1_quota_bottom_slots", local)
+        self.assertIn("var:zg361_b1_roster_included = 1", local)
         self.assertIn("name = zg361_b1_local_bottom_candidate_n", local)
         self.assertIn("var:zg361_b1_local_bottom_candidate_n >= 1", local)
         self.assertIn("name = zg361_pending_375_n value = 0", local)
@@ -533,8 +583,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("name = zg361_pending_375_n add = 1", local)
         self.assertIn("name = zg361_pending_35_n add = 1", local)
         self.assertIn("name = zg361_pending_325_n add = 1", local)
-        self.assertIn("name = zg361_b1_pool_bottom_candidate_n", common)
-        self.assertIn("var:zg361_b1_pool_bottom_candidate_n >= 1", common)
+        self.assertIn("name = zg361_b1_unique_pool_bottom_candidate_n", common)
+        self.assertIn("var:zg361_b1_unique_pool_bottom_candidate_n >= 1", common)
 
         submit = top_level_block(self.effects, "zg361_b1_submit_quota_book_effect")
         self.assertLess(
@@ -543,13 +593,6 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
 
     def test_quota_reference_matrix_and_three_plus_four_pool(self) -> None:
-        def quota_counts(size: int) -> tuple[int, int, int]:
-            if size < 3:
-                return (0, size, 0)
-            top = max(1, int(size * 0.3 + 0.5))
-            bottom = max(1, int(size * 0.1)) if size >= 5 else 0
-            return (top, size - top - bottom, bottom)
-
         expected = {
             0: (0, 0, 0),
             1: (0, 1, 0),
@@ -560,14 +603,518 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             14: (4, 9, 1),
             23: (7, 14, 2),
         }
-        self.assertEqual({size: quota_counts(size) for size in expected}, expected)
+        self.assertEqual(
+            {
+                size: (
+                    compute_quota(size).effective_counts.top,
+                    compute_quota(size).effective_counts.middle,
+                    compute_quota(size).effective_counts.bottom,
+                )
+                for size in expected
+            },
+            expected,
+        )
         self.assertEqual(sum((3, 4)), 7)
+        exact = top_level_block(
+            self.effects, "zg361_b1_compute_exact_quota_effect"
+        )
+        for token in (
+            "zg361_b1_quota_top_raw_numerator",
+            "zg361_b1_quota_middle_raw_numerator",
+            "zg361_b1_quota_bottom_raw_numerator",
+            "zg361_b1_quota_top_floor",
+            "zg361_b1_quota_middle_floor",
+            "zg361_b1_quota_bottom_floor",
+            "zg361_b1_quota_top_remainder",
+            "zg361_b1_quota_middle_remainder",
+            "zg361_b1_quota_bottom_remainder",
+            "zg361_b1_quota_top_award",
+            "zg361_b1_quota_middle_award",
+            "zg361_b1_quota_bottom_award",
+            "zg361_b1_quota_conservation_check",
+        ):
+            self.assertIn(token, exact)
+        self.assertIn("var:zg361_b1_quota_cohort_size < 3", exact)
+        for formula in (
+            "value = var:zg361_b1_quota_cohort_size multiply = 3",
+            "value = var:zg361_b1_quota_cohort_size multiply = 6",
+            "name = zg361_b1_quota_bottom_raw_numerator value = var:zg361_b1_quota_cohort_size",
+            "value = var:zg361_b1_quota_top_raw_numerator divide = 10 floor = yes",
+            "value = var:zg361_b1_quota_middle_raw_numerator divide = 10 floor = yes",
+            "value = var:zg361_b1_quota_bottom_raw_numerator divide = 10 floor = yes",
+            "subtract = var:zg361_b1_quota_top_floor",
+            "subtract = var:zg361_b1_quota_middle_floor",
+            "subtract = var:zg361_b1_quota_bottom_floor",
+        ):
+            self.assertIn(formula, exact)
+        self.assertNotIn("multiply = 0.3", exact)
+        self.assertNotIn("multiply = 0.1", exact)
+        self.assertNotIn("round = yes", exact)
+        self.assertIn(
+            "var:zg361_b1_quota_top_remainder >= var:zg361_b1_quota_middle_remainder",
+            exact,
+        )
+        self.assertIn("23=7/14/2", exact)
         common = top_level_block(
             self.effects, "zg361_b1_close_common_superior_bank_effect"
         )
-        self.assertIn("change_variable = { name = zg361_b1_pool_n add = 1 }", common)
-        self.assertIn("limit = { var:zg361_b1_pool_n >= 1 }", common)
-        self.assertEqual(common.count("name = zg361_b1_pool_top_slots"), 2)
+        self.assertIn("var:zg361_b1_unique_pool_three_n = 1", common)
+        self.assertIn("var:zg361_b1_unique_pool_four_n = 1", common)
+        self.assertIn(
+            "scope:zg361_b1_pool_three_manager.var:zg361_b1_quota_function_code = scope:zg361_b1_pool_four_manager.var:zg361_b1_quota_function_code",
+            common,
+        )
+        self.assertIn("var:zg361_b1_unique_pool_n = 7", common)
+        self.assertIn(
+            "COHORT_SIZE = var:zg361_b1_unique_pool_n", common
+        )
+        self.assertIn("order_by = var:zg361_b1_calibration_score", common)
+        self.assertNotIn("order_by = var:zg361_kpi", common)
+        for field in (
+            "zg361_b1_quota_pool_top_raw_numerator",
+            "zg361_b1_quota_pool_middle_raw_numerator",
+            "zg361_b1_quota_pool_bottom_raw_numerator",
+            "zg361_b1_quota_pool_top_floor",
+            "zg361_b1_quota_pool_middle_floor",
+            "zg361_b1_quota_pool_bottom_floor",
+            "zg361_b1_quota_pool_top_remainder",
+            "zg361_b1_quota_pool_middle_remainder",
+            "zg361_b1_quota_pool_bottom_remainder",
+            "zg361_b1_quota_pool_top_award",
+            "zg361_b1_quota_pool_middle_award",
+            "zg361_b1_quota_pool_bottom_award",
+            "zg361_b1_quota_pool_rounding_method",
+            "zg361_b1_quota_pool_conservation_check",
+        ):
+            self.assertIn(field, common)
+
+    def test_roster_change_receipts_are_real_and_consumed_by_denominator(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        kernel = initialize.split(
+            "zg361_case_kernel_record_operation_effect = {", 1
+        )[1]
+        for token in (
+            "OWNER_VAR = zg361_b1_case_owner",
+            "SUBJECT_VAR = zg361_b1_case_subject",
+            "CYCLE_VAR = zg361_b1_cycle_serial",
+            "CASE_VAR = zg361_b1_case_serial",
+            "STATE_VAR = zg361_b1_case_state",
+            "ACTIVE_VAR = zg361_b1_case_active",
+            "OPERATION_ID = 39",
+        ):
+            self.assertIn(token, kernel)
+        audit = top_level_block(
+            self.effects, "zg361_b1_audit_frozen_roster_effect"
+        )
+        for field in (
+            "zg361_b1_roster_change_before",
+            "zg361_b1_roster_change_after",
+            "zg361_b1_roster_change_reason",
+            "zg361_b1_roster_change_actor",
+            "zg361_b1_roster_change_approver",
+            "zg361_b1_roster_change_year",
+            "zg361_b1_roster_change_version",
+        ):
+            self.assertIn(field, audit)
+        self.assertLess(
+            audit.index("zg361_b1_roster_change_before value = 1"),
+            audit.index("zg361_b1_roster_included value = 0"),
+        )
+        local = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+        self.assertLess(
+            local.index("zg361_b1_audit_frozen_roster_effect = yes"),
+            local.index("COHORT_SIZE = var:zg361_b1_local_candidate_n"),
+        )
+        self.assertIn("zg361_b1_roster_change_reason value = 1", audit)
+        self.assertIn("zg361_b1_roster_change_reason value = 2", audit)
+        self.assertIn("zg361_b1_roster_change_reason value = 3", audit)
+        self.assertIn("name = zg361_b1_quota_rebuilt_for_roster value = 1", local)
+        self.assertIn("name = zg361_b1_roster_reopen_required value = 0", local)
+
+    def test_newcomer_protection_preserves_exact_top_and_bottom_counts(self) -> None:
+        blocks = (
+            top_level_block(self.effects, "zg361_b1_rebuild_local_quota_effect"),
+            top_level_block(self.effects, "zg361_b1_close_common_superior_bank_effect"),
+            top_level_block(self.effects, "zg361_b1_rerank_frozen_quota_book_effect"),
+        )
+        for block in blocks:
+            with self.subTest(block=block.split(" =", 1)[0]):
+                bottom_write = block.index(
+                    "set_variable = { name = zg361_pending_grade value = 1 }"
+                )
+                top_write = block.index(
+                    "set_variable = { name = zg361_pending_grade value = 3 }",
+                    bottom_write,
+                )
+                self.assertLess(bottom_write, top_write)
+                self.assertIn("newcomer_bottom_exception", block)
+                self.assertIn("newcomer_forced_bottom", block)
+                self.assertIn("limit = { var:zg361_pending_grade = 2 }", block)
+
+        # Negative fixtures freeze the edge that once lost a TOP when newcomer
+        # protection overwrote an already-promoted subject.  They include all-
+        # newcomer and insufficient-incumbent cohorts at both reference sizes.
+        def assign(size: int, newcomer_indexes: set[int]) -> tuple[int, int, int, int]:
+            counts = compute_quota(size).effective_counts
+            grades = [2] * size
+            bottom_assigned = 0
+            for index in range(size - 1, -1, -1):
+                if index not in newcomer_indexes and bottom_assigned < counts.bottom:
+                    grades[index] = 1
+                    bottom_assigned += 1
+            forced_newcomers = 0
+            for index in range(size - 1, -1, -1):
+                if grades[index] == 2 and bottom_assigned < counts.bottom:
+                    grades[index] = 1
+                    bottom_assigned += 1
+                    forced_newcomers += int(index in newcomer_indexes)
+            top_assigned = 0
+            for index in range(size):
+                if grades[index] == 2 and top_assigned < counts.top:
+                    grades[index] = 3
+                    top_assigned += 1
+            return (
+                grades.count(3),
+                grades.count(2),
+                grades.count(1),
+                forced_newcomers,
+            )
+
+        for size, newcomers in (
+            (7, set(range(7))),
+            (14, set(range(13))),
+            (23, set(range(23))),
+            (23, {0, 1, 2, 3, 4, 5, 6}),
+        ):
+            with self.subTest(size=size, newcomers=len(newcomers)):
+                expected = compute_quota(size).effective_counts
+                top, middle, bottom, forced = assign(size, newcomers)
+                self.assertEqual(
+                    (top, middle, bottom),
+                    (expected.top, expected.middle, expected.bottom),
+                )
+                self.assertEqual(
+                    forced > 0,
+                    size - len(newcomers) < expected.bottom,
+                )
+
+    def test_one_slot_trade_creates_bilateral_next_cycle_one_shot_debt(self) -> None:
+        trade = top_level_block(
+            self.effects, "zg361_b1_execute_unique_pool_trade_effect"
+        )
+        self.assertIn("var:zg361_b1_unique_pool_trade_used = 0", trade)
+        self.assertIn("name = zg361_b1_quota_trade_slots value = 1", trade)
+        self.assertIn("name = zg361_b1_quota_trade_band value = 3", trade)
+        self.assertIn("change_variable = { name = zg361_pending_375_n add = -1 }", trade)
+        self.assertIn("change_variable = { name = zg361_pending_375_n add = 1 }", trade)
+        self.assertIn("change_variable = { name = zg361_pending_35_n add = 1 }", trade)
+        self.assertIn("change_variable = { name = zg361_pending_35_n add = -1 }", trade)
+        self.assertEqual(trade.count("change_variable = { name = zg361_b1_quota_book_version add = 1 }"), 2)
+        for field in (
+            "zg361_b1_quota_debt_creditor",
+            "zg361_b1_quota_debt_debtor",
+            "zg361_b1_quota_debt_approver",
+            "zg361_b1_quota_debt_liability",
+            "zg361_b1_quota_debt_source_trade",
+            "zg361_b1_quota_credit_creditor",
+            "zg361_b1_quota_credit_debtor",
+            "zg361_b1_quota_credit_due_cycle",
+            "zg361_b1_quota_credit_source_trade",
+            "zg361_b1_quota_credit_liability",
+        ):
+            self.assertIn(field, trade)
+        self.assertIn("NOT = { var:zg361_b1_quota_credit_state = 1 }", trade)
+        self.assertGreaterEqual(
+            trade.count("value = { value = var:zg361_b1_cycle_serial add = 1 }"),
+            2,
+        )
+        settle = top_level_block(
+            self.effects, "zg361_b1_settle_due_debt_effect"
+        )
+        self.assertIn("var:zg361_b1_quota_debt_state = 1", settle)
+        self.assertIn(
+            "var:zg361_b1_cycle_serial >= var:zg361_b1_quota_debt_due_cycle",
+            settle,
+        )
+        self.assertIn("name = zg361_b1_quota_debt_state value = 2", settle)
+        for reciprocal_identity in (
+            "var:zg361_b1_quota_credit_creditor = this",
+            "var:zg361_b1_quota_credit_due_cycle = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_due_cycle",
+            "var:zg361_b1_quota_credit_source_trade = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_source_trade",
+            "var:zg361_b1_quota_credit_liability = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_liability",
+        ):
+            self.assertIn(reciprocal_identity, settle)
+        self.assertGreaterEqual(
+            settle.count(
+                "var:zg361_b1_quota_credit_source_trade = scope:zg361_b1_debt_manager.var:zg361_b1_quota_debt_source_trade"
+            ),
+            2,
+        )
+        self.assertIn("one-shot quota responsibility debt settled", settle)
+        self.assertGreaterEqual(
+            trade.count("name = zg361_b1_forced_down value = 0"), 2
+        )
+        self.assertIn("var:zg361_absolute_grade > 2", trade)
+        self.assertIn("var:zg361_absolute_grade > 3", trade)
+        self.assertGreaterEqual(
+            settle.count("name = zg361_b1_forced_down value = 0"), 2
+        )
+        self.assertGreaterEqual(
+            settle.count("name = zg361_b1_forced_down value = 1"), 2
+        )
+        for block in (trade, settle):
+            self.assertIn("var:zg361_b1_case_subject = this", block)
+            self.assertIn("var:zg361_b1_case_active = 1", block)
+            self.assertIn("var:zg361_b1_roster_included = 1", block)
+
+    def test_agenda_attention_and_overtime_are_conserved_consumers(self) -> None:
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        self.assertIn("name = zg361_b1_agenda_rotation_start value = 1", open_cycle)
+        self.assertIn("name = zg361_b1_agenda_rotation_start add = 1", open_cycle)
+        self.assertIn(
+            "var:zg361_b1_agenda_rotation_start > var:zg361_b1_subject_n",
+            open_cycle,
+        )
+        self.assertIn("name = zg361_b1_roster_frozen_order", open_cycle)
+        block = top_level_block(
+            self.effects, "zg361_b1_build_agenda_and_attention_effect"
+        )
+        self.assertIn("clear_variable_list = zg361_b1_agenda_subjects", block)
+        self.assertIn("name = zg361_b1_agenda_order", block)
+        self.assertIn("name = zg361_b1_agenda_version", block)
+        self.assertIn("name = zg361_b1_agenda_mode", block)
+        self.assertIn("name = zg361_b1_agenda_rotation_distance", block)
+        self.assertIn(
+            "var:zg361_b1_roster_frozen_order subtract = scope:zg361_b1_agenda_manager.var:zg361_b1_agenda_rotation_start",
+            block,
+        )
+        self.assertIn("add = scope:zg361_b1_agenda_manager.var:zg361_b1_subject_n", block)
+        self.assertIn("name = zg361_b1_attention_total_seats", block)
+        self.assertIn(
+            "value = var:zg361_b1_agenda_n max = 3",
+            block,
+        )
+        self.assertNotIn("value = var:zg361_b1_agenda_n min = 3", block)
+        self.assertIn("name = zg361_b1_attention_evidence_serial", block)
+        self.assertIn("name = zg361_b1_attention_consumed value = 1", block)
+        self.assertIn("name = zg361_b1_pending_candidate value = 1", block)
+        self.assertIn("name = zg361_b1_attention_displaced value = 1", block)
+        self.assertIn("name = zg361_b1_attention_overtime_minutes value = 10", block)
+        self.assertIn("add_prestige = -25", block)
+        self.assertIn("add_stress = 10", block)
+        self.assertIn(
+            "subtract = var:zg361_b1_attention_spent_minutes min = 0",
+            block,
+        )
+        self.assertNotIn(
+            "subtract = var:zg361_b1_attention_spent_minutes max = 0",
+            block,
+        )
+        code = without_comments(block)
+        self.assertNotIn("set_variable = { name = zg361_pending_grade", code)
+
+    def test_multi_subject_pending_has_kernel_deadline_and_success_failure(self) -> None:
+        open_pending = top_level_block(
+            self.effects, "zg361_b1_open_pending_slots_effect"
+        )
+        self.assertIn("variable = zg361_b1_agenda_subjects", open_pending)
+        self.assertNotRegex(open_pending, r"(?m)^\s*max = 1\s*$")
+        self.assertIn("change_variable = { name = zg361_b1_pending_open_n add = 1 }", open_pending)
+        self.assertIn("zg361_b1_pending_fallback_middle_available", open_pending)
+        self.assertIn("zg361_b1_pending_target_score", open_pending)
+        for field in (
+            "zg361_b1_pending_milestone",
+            "zg361_b1_pending_verifier",
+            "zg361_b1_pending_deadline_cycle",
+            "zg361_b1_pending_frozen_reward",
+            "zg361_b1_pending_held_band",
+            "zg361_b1_pending_fallback_band",
+        ):
+            self.assertIn(field, open_pending)
+        self.assertIn("zg361_case_kernel_schedule_deadline_effect = {", open_pending)
+        self.assertIn("EVENT = zg361b1.121", open_pending)
+        deadline = top_level_block(self.events, "zg361b1.121")
+        self.assertIn("zg361_case_kernel_expire_deadline_effect = {", deadline)
+        for token in (
+            "OWNER_VAR = zg361_b1_case_owner",
+            "SUBJECT_VAR = zg361_b1_case_subject",
+            "CYCLE_VAR = zg361_b1_cycle_serial",
+            "CASE_VAR = zg361_b1_case_serial",
+            "STATE_VAR = zg361_b1_case_state",
+            "ACTIVE_VAR = zg361_b1_case_active",
+        ):
+            self.assertIn(token, deadline)
+        self.assertIn("name = zg361_b1_pending_observed_score value = zg361_kpi_value", deadline)
+        self.assertIn("name = zg361_b1_pending_observation_recorded value = 1", deadline)
+        self.assertIn("var:zg361_b1_case_subject = this", deadline)
+        self.assertIn("var:zg361_b1_case_active = 1", deadline)
+        self.assertIn("var:zg361_b1_roster_included = 1", deadline)
+        self.assertIn("stale pending milestone ticket ignored", deadline)
+        resolve = top_level_block(
+            self.effects, "zg361_b1_resolve_pending_subject_effect"
+        )
+        self.assertIn("name = zg361_b1_pending_resolution value = 1", resolve)
+        self.assertIn("name = zg361_b1_pending_resolution value = 2", resolve)
+        self.assertNotIn("name = zg361_b1_pending_resolution value = 3", resolve)
+        self.assertIn("name = zg361_b1_pending_reward_due value = var:zg361_b1_pending_frozen_reward", resolve)
+        self.assertIn("var:zg361_b1_pending_observed_score >= var:zg361_b1_pending_target_score", resolve)
+        self.assertIn("var:zg361_b1_pending_observation_recorded = 1", resolve)
+        self.assertIn("var:zg361_b1_pending_free_middle >= 1", resolve)
+        self.assertIn("name = zg361_b1_forced_down value = 1", resolve)
+        self.assertIn(
+            "change_variable = { name = zg361_b1_pending_reward_book_version add = 1 }",
+            resolve,
+        )
+        self.assertIn(
+            "change_variable = { name = zg361_b1_quota_book_version add = 1 }",
+            resolve,
+        )
+        self.assertNotIn("add_prestige = 25", resolve)
+        failure = resolve.split("else = {", 1)[1]
+        self.assertNotIn("zg361_pending_grade value = 3", failure)
+        continuation = top_level_block(self.events, "zg361b1.123")
+        self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
+        self.assertIn("var:zg361_b1_case_active = 1", continuation)
+        self.assertIn("var:zg361_b1_roster_included = 1", continuation)
+        self.assertIn("stale pending continuation ticket ignored", continuation)
+
+    def test_symmetric_reopen_is_pre_reward_single_use_and_reseals(self) -> None:
+        gate = top_level_block(
+            self.effects, "zg361_b1_prepare_reopen_gate_effect"
+        )
+        self.assertIn("name = zg361_b1_sealed_board_hash", gate)
+        self.assertIn("name = zg361_b1_sealed_board_checksum", gate)
+        self.assertIn("name = zg361_b1_reward_snapshot_hash", gate)
+        self.assertIn("name = zg361_b1_reward_snapshot_checksum", gate)
+        self.assertIn(
+            "value = var:zg361_b1_case_serial multiply = 100000 add = var:zg361_b1_quota_book_version",
+            gate,
+        )
+        self.assertIn("name = zg361_b1_pending_reward_expected_n value = 0", gate)
+        self.assertIn("name = zg361_b1_pending_reward_expected_n add = 1", gate)
+        self.assertIn("trigger_event = { id = zg361b1.122 days = 30 }", gate)
+        self.assertIn("zg361_b1_reopen_ticket_reward_hash", gate)
+        self.assertIn("zg361_b1_reopen_ticket_book_version", gate)
+        self.assertIn("name = zg361_b1_reopen_baseline_score value = zg361_kpi_value", gate)
+        self.assertIn("zg361_b1_agenda_order multiply", gate)
+        self.assertIn("max = 1", gate)
+
+        # The old weighted sum has real assignment collisions.  It remains a
+        # display checksum, while stale authorization is now revision-sealed.
+        board_a = (3, 1, 2, 2, 2, 2, 3)
+        board_b = (2, 3, 1, 2, 2, 2, 3)
+        self.assertNotEqual(board_a, board_b)
+        self.assertEqual(
+            sum((index + 1) * grade for index, grade in enumerate(board_a)),
+            sum((index + 1) * grade for index, grade in enumerate(board_b)),
+        )
+        self.assertNotIn(
+            "name = zg361_b1_sealed_board_hash\n\t\t\t\t\tadd =",
+            gate,
+        )
+        event = top_level_block(self.events, "zg361b1.122")
+        for token in ("owner", "subject", "cycle", "case", "state", "hash"):
+            self.assertIn(f"zg361_b1_reopen_ticket_{token}", event)
+        self.assertIn("var:zg361_b1_case_subject = this", event)
+        self.assertIn("var:zg361_b1_case_active = 1", event)
+        self.assertIn("var:zg361_b1_roster_included = 1", event)
+        self.assertIn(
+            "var:zg361_pending_grade = var:zg361_b1_reopen_sealed_grade",
+            event,
+        )
+        self.assertIn(
+            "var:zg361_b1_quota_book_version = scope:zg361_b1_reopen_ticket_book_version",
+            event,
+        )
+        self.assertIn("var:zg361_b1_reward_snapshot_hash = scope:zg361_b1_reopen_ticket_reward_hash", event)
+        self.assertIn("name = zg361_b1_reopen_observed_score value = zg361_kpi_value", event)
+        self.assertIn(
+            "subtract = var:zg361_b1_reopen_baseline_score",
+            event,
+        )
+        self.assertNotIn("subtract = var:zg361_b1_evidence_late", event)
+        self.assertIn("name = zg361_b1_reopen_observation_recorded value = 1", event)
+        self.assertIn("stale symmetric-reopen ticket ignored", event)
+        reopen = top_level_block(
+            self.effects, "zg361_b1_apply_symmetric_reopen_effect"
+        )
+        self.assertIn("var:zg361_b1_reopen_count = 0", reopen)
+        self.assertIn("var:zg361_b1_rewards_issued = 0", reopen)
+        self.assertIn("var:zg361_b1_pending_rewards_committed = 0", reopen)
+        self.assertIn("zg361_b1_reopen_late_evidence_magnitude >= 10", reopen)
+        self.assertIn("name = zg361_b1_reopen_polarity value = -1", reopen)
+        self.assertIn("name = zg361_b1_reopen_polarity value = 1", reopen)
+        self.assertIn("name = zg361_b1_reopen_source_board_hash", reopen)
+        self.assertIn("name = zg361_b1_reopen_source_book_version", reopen)
+        self.assertIn("name = zg361_b1_reopen_new_board_hash", reopen)
+        self.assertIn("name = zg361_b1_reopen_new_book_version", reopen)
+        self.assertIn("name = zg361_b1_reopen_receipt_subject", reopen)
+        self.assertIn("name = zg361_b1_reopen_subject_old_grade", reopen)
+        self.assertIn("name = zg361_b1_reopen_subject_new_grade", reopen)
+        self.assertIn("name = zg361_b1_reopen_subject_calibration_before", reopen)
+        self.assertIn("name = zg361_b1_reopen_subject_calibration_after", reopen)
+        rerank = top_level_block(
+            self.effects, "zg361_b1_rerank_frozen_quota_book_effect"
+        )
+        self.assertIn("name = zg361_b1_quota_snapshot value = var:zg361_pending_grade", rerank)
+        self.assertIn("name = zg361_b1_shadow_to_quota_delta", rerank)
+        self.assertIn("name = zg361_b1_forced_down value = 1", rerank)
+        self.assertIn(
+            "change_variable = { name = zg361_b1_quota_book_version add = 1 }",
+            rerank,
+        )
+        self.assertIn("zg361_b1_agenda_order multiply", reopen)
+        self.assertNotIn("reopen_source_board_hash add = var:zg361_b1_reopen_polarity", reopen)
+        self.assertIn("name = zg361_b1_closure_state value = 3", reopen)
+        finish = top_level_block(self.effects, "zg361_b1_finish_calibration_effect")
+        self.assertIn("name = zg361_b1_finalization_board_hash", finish)
+        self.assertIn("name = zg361_b1_finalization_reward_hash", finish)
+        self.assertIn("name = zg361_b1_pending_rewards_committed value = 1", finish)
+        self.assertIn(
+            "var:zg361_b1_pending_rewards_paid_n = var:zg361_b1_pending_reward_expected_n",
+            finish,
+        )
+        self.assertIn("publication withheld", finish)
+        pay = top_level_block(
+            self.effects, "zg361_b1_pay_frozen_pending_rewards_effect"
+        )
+        self.assertIn("var:zg361_b1_finalization_board_hash = var:zg361_b1_sealed_board_hash", pay)
+        self.assertIn("var:zg361_b1_finalization_reward_hash = var:zg361_b1_reward_snapshot_hash", pay)
+        self.assertIn("add_prestige = 25", pay)
+        self.assertNotIn("name = zg361_b1_pending_rewards_paid_n value = 0", pay)
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        self.assertIn("name = zg361_b1_rewards_issued value = 1", publish)
+        self.assertIn("name = zg361_b1_closure_state value = 4", publish)
+
+    def test_management_authority_is_duke_plus_while_subject_self_is_rank_neutral(self) -> None:
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", open_cycle)
+        celestial = top_level_block(
+            self.triggers, "zg361_is_celestial_liege_trigger"
+        )
+        self.assertIn("highest_held_title_tier >= tier_duchy", celestial)
+        self.assertIn("is_landed = yes", celestial)
+        self.assertIn("is_alive = yes", celestial)
+        self.assertIn(
+            "zg361_case_kernel_subject_self_guard_trigger",
+            self.case_kernel_triggers,
+        )
+        for event_id in (200, 201):
+            visible = top_level_block(self.events, f"zg361b1.{event_id}")
+            self.assertNotIn("tier_duchy", visible)
+            self.assertNotIn("zg361_is_celestial_liege_trigger", visible)
+
+    def test_every_generated_top_level_block_is_brace_balanced(self) -> None:
+        for source in (self.effects, self.events):
+            keys = re.findall(r"(?m)^([A-Za-z0-9_.]+)\s*=\s*\{", source)
+            for key in keys:
+                with self.subTest(key=key):
+                    block = top_level_block(source, key)
+                    self.assertTrue(block.endswith("}"))
 
     def test_existing_settlement_opens_shadow_and_marks_publication(self) -> None:
         self.assertIn("zg361_b1_open_shadow_effect = yes", self.core)
@@ -579,16 +1126,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
 
     def test_readiness_is_not_inflated_by_foundation(self) -> None:
         manifest = json.loads(read("docs/361-mechanism-manifest.json"))
+        by_id = {int(item["id"]): item for item in manifest["items"]}
+        self.assertEqual(set(B1_IDS) - set(by_id), set())
         self.assertEqual(
-            sum(item["status"]["domain_runtime"] == "partial" for item in manifest["items"]),
-            4,
-        )
-        self.assertEqual(
-            sum(
-                item["status"]["domain_runtime"] == "not-implemented"
-                for item in manifest["items"]
-            ),
-            357,
+            {by_id[item_id]["status"]["domain_runtime"] for item_id in B1_IDS},
+            {"partial"},
         )
 
 

@@ -1,6 +1,6 @@
 # 361 二期 B1：完整绩效事实季运行规范
 
-> 状态：施工规范，2026-08-30（Asia/Shanghai）
+> 状态：施工规范，2026-08-31（Asia/Shanghai）
 >
 > 范围：`001–013`、`037–053`、`135–145`、`357`，共 42 项。
 >
@@ -10,7 +10,7 @@
 本文是 `361-phase2-full-implementation-program.md` 的 B1 施工细化。B1 不是在旧的单 tick 考核链上为 42 个编号各写一个
 布尔变量，而是把现有考核重构为一条真实跨周期绩效季：目标、期中检查、互评、事实封存、影子档、跨经理校准、正式公示。
 
-## 当前施工状态（2026-08-30）
+## 当前施工状态（2026-08-31）
 
 当前可称为 **B1 跨周期行为纵切 static-ready**，仍不能称 42 项已完成：
 
@@ -21,18 +21,37 @@
   绩效季，不再在活动完成或拒办时立刻结算。
 - 已补行为：玩家诚实/夸大/保守自评与 AI 诚实回退；影子档接受/补证；三槽互评的权重、疲劳、跨周期信用、
   mean/variance/shape 与正向互惠降权；`peer_use_mode` 对容量和校准输入的真实分流；本地与共同池均按有界
-  `calibration_score` 重排，并保持原档位数量和新人末档保护。满槽假提交、跨案卷互评和 stale 可见事件均有负例门。
+  `calibration_score` 重排，并保持原档位数量、优先保护新人不进末档；非新人不足以填满精确末档配额时，写明
+  `newcomer_bottom_exception/newcomer_forced_bottom` 后才允许新人补足。满槽假提交、跨案卷互评和 stale 可见事件均有负例门。
+- 已把确定性配额纵切接入 runtime：0/1/2/3/4/7/14/23 使用整数分子最大余数法，23 人精确为 7/14/2；同一冻结
+  common superior 下仅一组同职能 3 人队与 4 人队可形成唯一 7 人池，池内继续消费 `calibration_score`，并把
+  raw/floor/remainder/award/conservation before-image 回写双方 quota book。当前“同职能”使用 governor/非 governor
+  两类最小映射，尚不是完整职位族谱。
+- 已接入名册离开/失地/换上司的单次 amendment receipt 与 denominator consumer；唯一 3+4 池可执行一次固定
+  TOP↔MIDDLE 单槽交易，双方 book version 与 creditor/debtor/liability 收据同步，责任债在 `created_cycle + 1`
+  到期且只结一次。锁定后新加入、完整 backfill 与灰色离任占档仍未实现。
+- 已接入完整 agenda list、跨周期稳定轮换、三席 attention 与有成本的 10 分钟加班换席；同轮可为多名已消费
+  attention 的边界 subject 各开一个 pending，逐人冻结 milestone/verifier/deadline/reward，并走成功或失败终态。
+  pending 先冻结 `min(late evidence + 1, 100)` 的目标，30 天独立事件再读取新的 live KPI；fallback MIDDLE 容量逐人预留，
+  成功奖励直到重开门关闭且 board/reward revision seal 再校验后才支付。封榜后同一绝对阈值的正负 live KPI 变化可在付款前
+  对称重开一次、重排固定档位。当前每个 cohort 只预选 agenda 第一名作为单探针，不代表所有 subject 都有独立重开观察；
+  stale 授权使用 case-scoped quota-book revision seal，`Σ(agenda order × grade)` 仅作为可能碰撞的展示校验和，不作为身份门。
+  冻结奖励另有 expected/paid 完整性对账，未付齐时不得公示。
 - 考核榜已生成事实/互评/配额/审计四个案卷内页，使用冻结 owner/cycle/case 身份与 received 本人缓冲；这只是
   static-ready，named-widget MCP、ACL 与多分辨率实机仍未 GREEN。
-- 尚未完成：具体三维互评与共同任务证据对象、可核验的补证材料、真实 slot trade/debt/余数轮换、程序退回、
-  回避席、attention/议程、盲审实名差、反馈债消费、机会偏置、三窗证据权重、匿名样本阈值、真实预会、pending、
-  对称重开、实名异议与 band order 消费。
+- 尚未完成：具体三维互评与共同任务证据对象、可核验的补证材料、锁名册后新增/backfill、完整职能分类、程序退回、
+  回避席、盲审实名差、反馈债消费、机会偏置、三窗证据权重、匿名样本阈值、真实预会、pending 局部提前公示、
+  实名异议与 band order 消费。
+  pending verifier 当前是冻结经理 + 30 天 live KPI 比较的确定性最小实现，成功奖励固定为 25 威望，不代表外部
+  材料核验完成。现有榜单/结算是 manager 级原子发布，因此任一 pending 会让同 cohort 全员等待至所有 pending 结束；
+  非 pending 人员档位不会改变，但尚未实现“先局部公示、后补 pending 行”。
 - `zg361_b1_mNNN_receipt_serial` 目前只是阶段施工追踪；在对应 meaningful write 与 consumer 都落地并通过同批 CK3 fixture 前，
   receipt 的存在不得用于把任何编号升级为 `complete` 或 `fixture-live`。
 
-本轮生成器同时产出简中/英文正式文案；法德日韩波俄西只有英文结构占位，不代表翻译完成，也未执行发布审计。下一步把
-独立配额守恒模型接回 CK3 runtime，继续填实上列 A/G/B/H/S 缺口，再只启动一次 CK3 做 MCP-first 成组验收。普通开发阶段
-不做七语发布审计、Workshop 上传或宣传物料。
+本轮生成器同时产出简中/英文正式文案；法德日韩波俄西只有英文结构占位，不代表翻译完成，也未执行发布审计。共享案卷
+kernel 目前只接入 roster operation 与 pending deadline 的最小参数化调用；它通过 source contract 与静态测试，不构成 CK3
+参数求值证明。下一步先收口生成器/本地化/布线静态回归，再继续填实上列 A/G/B/H/S 缺口；集成批稳定后只启动一次 CK3
+做 MCP-first 成组验收。普通开发阶段不做七语发布审计、Workshop 上传或宣传物料。
 
 ## 一、为何必须先改时间模型
 
@@ -45,7 +64,7 @@
 - #045 的“不得惊讶”前置反馈；
 - #047 的早、中、晚证据窗；
 - #135 的影子档补证窗；
-- #142 的单人待定里程碑；
+- #142 的多人待定里程碑；
 - #143 的封榜后对称重开。
 
 如果这些编号仍在同一 tick 内从 `open` 走到 `closed`，即使变量、事件标题和 debug marker 都存在，也只能判定为换皮 RED。
@@ -147,8 +166,8 @@ Phase 0 的通用计划会让同一领域的多个编号共享 `from → to`。�
 | 139 | quota ready / publish | 借入恰好一个档位，保存 due cycle 和 liability；到期只偿还一次，重组不删除债。 |
 | 140 | D+0 到名册冻结 | 保存旧新 manager、服务天数、证据区段和 quota owner；一人只能进入一个 cohort、占一个 slot。 |
 | 141 | common-superior must-review | 高层每周期最多一宗必议，只强制进入议程并消耗 attention，不得直接改孙级档位。 |
-| 142 | calibration exception | 最多一名边界人进入 pending；预留其 quota slot、冻结奖励，guarded deadline 只结一次，其他人正常公示。 |
-| 143 | 封榜后、付款前 | 同绝对 severity 的重大正负事实拥有相同重开资格，每轮至多一次，保存 old/new seal；已支付奖励不倒扣。 |
+| 142 | calibration exception | 每名边界人最多一个 pending；同轮允许多人，逐人预留 held/fallback slot、冻结奖励，guarded deadline 各自只结一次；当前保持单榜原子发布，其他人的档位不变但会等待最后一个 pending。 |
+| 143 | 封榜后、付款前 | 对预选单探针而言，同绝对 severity 的重大正负事实拥有相同重开资格，每轮至多一次，保存 old/new revision seal 与展示 checksum；已支付奖励不倒扣。全 cohort 独立探针仍未实现。 |
 | 144 | 校准动作 | 实名异议必须附 subject 和事实理由，并强制一次独立复阅/attention 消耗；空白异议无效。 |
 | 145 | 待定档后 | 每档内部冻结 band order；A 只供辅导/机会且奖金没有 consumer，B 私下用于机会会产生黑箱 audit。 |
 
@@ -239,8 +258,11 @@ result case / final reason frozen
 - typed RED、失败前置原子性、stale 与重复 operation 分离。
 
 `tools/test_zg361_b1_quota_model.py` 当前为 55/55 GREEN。模型显式声明
-`READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；它不代表 G/S 的九项机制、B/C 路径或 CK3 runtime 已完成。
-下一步是让现有 `gen_361_b1_runtime.py` 消费这些规则，并用共享案卷内核记录真实 receipt 与 stage transition。
+`READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；该声明仍准确，因为 Python 模型本身不是 CK3 证据。
+`gen_361_b1_runtime.py` 现已消费其中的确定性纵切：整数最大余数配额、唯一同职能 3+4 池、离开名册 amendment、
+TOP↔MIDDLE 单槽交易与次周期 one-shot 债、agenda/attention/overtime、多人 pending 及付款前对称重开。runtime 专测当前
+22/22 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
+`CK3_IMPLEMENTED=True`、`fixture-live` 或 42 项完成。
 
 L0 至少覆盖：
 
@@ -250,7 +272,7 @@ L0 至少覆盖：
 4. 真实 evaluator/subject/cycle 三槽，0–4 作者、迟交/补交、重复提交、互抬/恶意低分、同均分不同 shape 与 ACL observer；
 5. cohort 0/1/2/3/4/7/14/23；1–2 中性、3+4 唯一合池 7、23 严格 7/14/2；trade/debt/rounding/swap 守恒；
 6. 两 manager ready、一个迟到、换上司、共同上司死亡；barrier 不死锁，且上级不能直接改孙级档位；
-7. shadow 补证、单人 pending slot、正负同 severity 重开、dissent 复阅与 band order 无奖金 consumer；
+7. shadow 补证、同轮多人且逐人唯一的 pending slot、正负同 severity 重开、dissent 复阅与 band order 无奖金 consumer；
 8. #357 facts 必先于 quota，冻结后 live KPI 无效，事实 3.75/3.5→最终 3.25 明确 reason=quota，旧 AL refund 静态 RED；
 9. 玩家/授权 AI 天朝制有地公爵+可管理；非天朝、无地、伯爵、男爵管理 RED；subject 自评/补证/看本人案卷 GREEN；
 10. 旧存档 bootstrap 不改旧榜、不重复结算；旧 `review_in_progress` 有确定性迁移；
