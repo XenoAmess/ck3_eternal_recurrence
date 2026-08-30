@@ -1,0 +1,2626 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py
+namespace = zg361p3
+
+# #229 — Who Owns the Metric Dictionary?
+zg361p3.229 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.229.t
+	desc = zg361p3.229.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.229.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m229_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.230 }
+		}
+	}
+	option = {
+		name = zg361p3.229.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m229_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.230 }
+		}
+	}
+	option = {
+		name = zg361p3.229.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m229_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.230 }
+		}
+	}
+}
+
+# #230 — Two Dashboards, One Number
+zg361p3.230 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.230.t
+	desc = zg361p3.230.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.230.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m230_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.231 }
+		}
+	}
+	option = {
+		name = zg361p3.230.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m230_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.231 }
+		}
+	}
+	option = {
+		name = zg361p3.230.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m230_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.231 }
+		}
+	}
+}
+
+# #231 — The Denominator Moved
+zg361p3.231 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.231.t
+	desc = zg361p3.231.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.231.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m231_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.232 }
+		}
+	}
+	option = {
+		name = zg361p3.231.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m231_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.232 }
+		}
+	}
+	option = {
+		name = zg361p3.231.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m231_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.232 }
+		}
+	}
+}
+
+# #232 — The Spreadsheet Has a Hole
+zg361p3.232 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.232.t
+	desc = zg361p3.232.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.232.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m232_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.233 }
+		}
+	}
+	option = {
+		name = zg361p3.232.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m232_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.233 }
+		}
+	}
+	option = {
+		name = zg361p3.232.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m232_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.233 }
+		}
+	}
+}
+
+# #233 — Who May See the Dashboard?
+zg361p3.233 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.233.t
+	desc = zg361p3.233.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.233.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m233_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.234 }
+		}
+	}
+	option = {
+		name = zg361p3.233.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m233_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.234 }
+		}
+	}
+	option = {
+		name = zg361p3.233.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m233_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.234 }
+		}
+	}
+}
+
+# #234 — Leading Signals, Lagging Results
+zg361p3.234 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.234.t
+	desc = zg361p3.234.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.234.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m234_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.235 }
+		}
+	}
+	option = {
+		name = zg361p3.234.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m234_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.235 }
+		}
+	}
+	option = {
+		name = zg361p3.234.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m234_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.235 }
+		}
+	}
+}
+
+# #235 — A KPI Needs Guardrails
+zg361p3.235 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.235.t
+	desc = zg361p3.235.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.235.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m235_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.236 }
+		}
+	}
+	option = {
+		name = zg361p3.235.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m235_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.236 }
+		}
+	}
+	option = {
+		name = zg361p3.235.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m235_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.236 }
+		}
+	}
+}
+
+# #236 — The KPI Cliff
+zg361p3.236 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.236.t
+	desc = zg361p3.236.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.236.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m236_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.237 }
+		}
+	}
+	option = {
+		name = zg361p3.236.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m236_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.237 }
+		}
+	}
+	option = {
+		name = zg361p3.236.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m236_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.237 }
+		}
+	}
+}
+
+# #237 — The Most Beautiful Time Window
+zg361p3.237 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.237.t
+	desc = zg361p3.237.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.237.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m237_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.240 }
+		}
+	}
+	option = {
+		name = zg361p3.237.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m237_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.240 }
+		}
+	}
+	option = {
+		name = zg361p3.237.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m237_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.240 }
+		}
+	}
+}
+
+# #240 — Everyone Wants the Same Sample
+zg361p3.240 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.240.t
+	desc = zg361p3.240.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.240.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m240_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.238 }
+		}
+	}
+	option = {
+		name = zg361p3.240.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m240_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.238 }
+		}
+	}
+	option = {
+		name = zg361p3.240.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m240_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.238 }
+		}
+	}
+}
+
+# #238 — Vanity Is Not Value
+zg361p3.238 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.238.t
+	desc = zg361p3.238.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361p3.238.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m238_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.239 }
+		}
+	}
+	option = {
+		name = zg361p3.238.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m238_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.239 }
+		}
+	}
+	option = {
+		name = zg361p3.238.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m238_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.239 }
+		}
+	}
+}
+
+# #239 — A Failed Experiment Still Learned
+zg361p3.239 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.239.t
+	desc = zg361p3.239.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361p3.239.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m239_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.241 }
+		}
+	}
+	option = {
+		name = zg361p3.239.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m239_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.241 }
+		}
+	}
+	option = {
+		name = zg361p3.239.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m239_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.241 }
+		}
+	}
+}
+
+# #241 — Who Owns the Long Tail?
+zg361p3.241 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.241.t
+	desc = zg361p3.241.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		scope:zg361_p3_aa_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aa_owner
+				SUBJECT_VAR = zg361_case_aa_subject
+				CYCLE_VAR = zg361_case_aa_cycle_serial
+				CASE_VAR = zg361_case_aa_case_serial
+				STATE_VAR = zg361_case_aa_state
+				ACTIVE_VAR = zg361_case_aa_active
+				EXPECTED_OWNER = scope:zg361_p3_aa_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aa_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aa_cycle
+				EXPECTED_CASE = scope:zg361_p3_aa_case
+				EXPECTED_STATE = 6
+			}
+		}
+	}
+	option = {
+		name = zg361p3.241.a
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m241_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.241.b
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m241_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.241.c
+		scope:zg361_p3_aa_subject = {
+			zg361_p3_m241_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aa_owner
+				TICKET_SUBJECT = scope:zg361_p3_aa_subject
+				TICKET_CYCLE = scope:zg361_p3_aa_cycle
+				TICKET_CASE = scope:zg361_p3_aa_case
+			}
+		}
+	}
+}
+
+# #301 — The Core-Business Halo
+zg361p3.301 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.301.t
+	desc = zg361p3.301.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.301.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m301_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.302 }
+		}
+	}
+	option = {
+		name = zg361p3.301.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m301_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.302 }
+		}
+	}
+	option = {
+		name = zg361p3.301.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m301_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.302 }
+		}
+	}
+}
+
+# #302 — The Declining Business Headwind
+zg361p3.302 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.302.t
+	desc = zg361p3.302.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.302.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m302_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.303 }
+		}
+	}
+	option = {
+		name = zg361p3.302.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m302_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.303 }
+		}
+	}
+	option = {
+		name = zg361p3.302.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m302_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.303 }
+		}
+	}
+}
+
+# #303 — Incubation Needs a Clock
+zg361p3.303 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.303.t
+	desc = zg361p3.303.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.303.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m303_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.304 }
+		}
+	}
+	option = {
+		name = zg361p3.303.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m303_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.304 }
+		}
+	}
+	option = {
+		name = zg361p3.303.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m303_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.304 }
+		}
+	}
+}
+
+# #304 — Two Parents, One Review
+zg361p3.304 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.304.t
+	desc = zg361p3.304.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.304.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m304_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.305 }
+		}
+	}
+	option = {
+		name = zg361p3.304.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m304_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.305 }
+		}
+	}
+	option = {
+		name = zg361p3.304.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m304_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.305 }
+		}
+	}
+}
+
+# #305 — Reorg Quiet Period
+zg361p3.305 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.305.t
+	desc = zg361p3.305.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.305.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m305_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.306 }
+		}
+	}
+	option = {
+		name = zg361p3.305.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m305_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.306 }
+		}
+	}
+	option = {
+		name = zg361p3.305.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m305_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.306 }
+		}
+	}
+}
+
+# #306 — One Head, Two Hats
+zg361p3.306 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.306.t
+	desc = zg361p3.306.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.306.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m306_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.307 }
+		}
+	}
+	option = {
+		name = zg361p3.306.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m306_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.307 }
+		}
+	}
+	option = {
+		name = zg361p3.306.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m306_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.307 }
+		}
+	}
+}
+
+# #307 — Profit Center or Cost Center?
+zg361p3.307 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.307.t
+	desc = zg361p3.307.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.307.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m307_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.308 }
+		}
+	}
+	option = {
+		name = zg361p3.307.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m307_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.308 }
+		}
+	}
+	option = {
+		name = zg361p3.307.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m307_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.308 }
+		}
+	}
+}
+
+# #308 — Managers or Experts?
+zg361p3.308 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.308.t
+	desc = zg361p3.308.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.308.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m308_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.309 }
+		}
+	}
+	option = {
+		name = zg361p3.308.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m308_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.309 }
+		}
+	}
+	option = {
+		name = zg361p3.308.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m308_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.309 }
+		}
+	}
+}
+
+# #309 — The Far Team Is Quiet
+zg361p3.309 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.309.t
+	desc = zg361p3.309.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.309.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m309_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.310 }
+		}
+	}
+	option = {
+		name = zg361p3.309.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m309_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.310 }
+		}
+	}
+	option = {
+		name = zg361p3.309.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m309_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.310 }
+		}
+	}
+}
+
+# #310 — Old Ratings, New Org
+zg361p3.310 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.310.t
+	desc = zg361p3.310.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.310.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m310_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.311 }
+		}
+	}
+	option = {
+		name = zg361p3.310.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m310_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.311 }
+		}
+	}
+	option = {
+		name = zg361p3.310.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m310_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.311 }
+		}
+	}
+}
+
+# #311 — A Pivot Is Not a Time Machine
+zg361p3.311 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.311.t
+	desc = zg361p3.311.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		scope:zg361_p3_ag_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_ag_owner
+				SUBJECT_VAR = zg361_case_ag_subject
+				CYCLE_VAR = zg361_case_ag_cycle_serial
+				CASE_VAR = zg361_case_ag_case_serial
+				STATE_VAR = zg361_case_ag_state
+				ACTIVE_VAR = zg361_case_ag_active
+				EXPECTED_OWNER = scope:zg361_p3_ag_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_ag_subject
+				EXPECTED_CYCLE = scope:zg361_p3_ag_cycle
+				EXPECTED_CASE = scope:zg361_p3_ag_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361p3.311.a
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m311_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.311.b
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m311_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.311.c
+		scope:zg361_p3_ag_subject = {
+			zg361_p3_m311_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_ag_owner
+				TICKET_SUBJECT = scope:zg361_p3_ag_subject
+				TICKET_CYCLE = scope:zg361_p3_ag_cycle
+				TICKET_CASE = scope:zg361_p3_ag_case
+			}
+		}
+	}
+}
+
+# #334 — One Door for Every Demand
+zg361p3.334 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.334.t
+	desc = zg361p3.334.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.334.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m334_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.335 }
+		}
+	}
+	option = {
+		name = zg361p3.334.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m334_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.335 }
+		}
+	}
+	option = {
+		name = zg361p3.334.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m334_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.335 }
+		}
+	}
+}
+
+# #335 — Everything Is Urgent
+zg361p3.335 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.335.t
+	desc = zg361p3.335.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361p3.335.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m335_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.336 }
+		}
+	}
+	option = {
+		name = zg361p3.335.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m335_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.336 }
+		}
+	}
+	option = {
+		name = zg361p3.335.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m335_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.336 }
+		}
+	}
+}
+
+# #336 — Definition of Ready
+zg361p3.336 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.336.t
+	desc = zg361p3.336.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.336.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m336_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.338 }
+		}
+	}
+	option = {
+		name = zg361p3.336.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m336_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.338 }
+		}
+	}
+	option = {
+		name = zg361p3.336.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m336_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.338 }
+		}
+	}
+}
+
+# #338 — Scope, Time, Quality: Pick Two
+zg361p3.338 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.338.t
+	desc = zg361p3.338.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361p3.338.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m338_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.339 }
+		}
+	}
+	option = {
+		name = zg361p3.338.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m338_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.339 }
+		}
+	}
+	option = {
+		name = zg361p3.338.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m338_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.339 }
+		}
+	}
+}
+
+# #339 — Estimate the Work, Not the Hero
+zg361p3.339 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.339.t
+	desc = zg361p3.339.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361p3.339.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m339_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.340 }
+		}
+	}
+	option = {
+		name = zg361p3.339.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m339_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.340 }
+		}
+	}
+	option = {
+		name = zg361p3.339.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m339_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.340 }
+		}
+	}
+}
+
+# #340 — Stop Starting, Start Finishing
+zg361p3.340 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.340.t
+	desc = zg361p3.340.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.340.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m340_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.342 }
+		}
+	}
+	option = {
+		name = zg361p3.340.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m340_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.342 }
+		}
+	}
+	option = {
+		name = zg361p3.340.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m340_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.342 }
+		}
+	}
+}
+
+# #342 — Who Owns the Blocked Time?
+zg361p3.342 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.342.t
+	desc = zg361p3.342.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361p3.342.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m342_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.337 }
+		}
+	}
+	option = {
+		name = zg361p3.342.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m342_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.337 }
+		}
+	}
+	option = {
+		name = zg361p3.342.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m342_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.337 }
+		}
+	}
+}
+
+# #337 — A Change Request Has a Tax
+zg361p3.337 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.337.t
+	desc = zg361p3.337.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361p3.337.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m337_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.341 }
+		}
+	}
+	option = {
+		name = zg361p3.337.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m337_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.341 }
+		}
+	}
+	option = {
+		name = zg361p3.337.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m337_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.341 }
+		}
+	}
+}
+
+# #341 — Unfinished Work Crosses the Line
+zg361p3.341 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.341.t
+	desc = zg361p3.341.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361p3.341.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m341_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.343 }
+		}
+	}
+	option = {
+		name = zg361p3.341.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m341_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.343 }
+		}
+	}
+	option = {
+		name = zg361p3.341.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m341_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.343 }
+		}
+	}
+}
+
+# #343 — Three Signatures, One Delivery
+zg361p3.343 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.343.t
+	desc = zg361p3.343.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 6
+			}
+		}
+	}
+	option = {
+		name = zg361p3.343.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m343_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.344 }
+		}
+	}
+	option = {
+		name = zg361p3.343.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m343_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.344 }
+		}
+	}
+	option = {
+		name = zg361p3.343.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m343_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+		if = {
+			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
+			trigger_event = { id = zg361p3.344 }
+		}
+	}
+}
+
+# #344 — Launch Is Not Value
+zg361p3.344 = {
+	type = character_event
+	theme = stewardship
+	title = zg361p3.344.t
+	desc = zg361p3.344.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_p3_aj_owner
+		exists = scope:zg361_p3_aj_subject
+		exists = scope:zg361_p3_aj_cycle
+		exists = scope:zg361_p3_aj_case
+		this = scope:zg361_p3_aj_owner
+		scope:zg361_p3_aj_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_aj_owner
+				SUBJECT_VAR = zg361_case_aj_subject
+				CYCLE_VAR = zg361_case_aj_cycle_serial
+				CASE_VAR = zg361_case_aj_case_serial
+				STATE_VAR = zg361_case_aj_state
+				ACTIVE_VAR = zg361_case_aj_active
+				EXPECTED_OWNER = scope:zg361_p3_aj_owner
+				EXPECTED_SUBJECT = scope:zg361_p3_aj_subject
+				EXPECTED_CYCLE = scope:zg361_p3_aj_cycle
+				EXPECTED_CASE = scope:zg361_p3_aj_case
+				EXPECTED_STATE = 7
+			}
+		}
+	}
+	option = {
+		name = zg361p3.344.a
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m344_route_a_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.344.b
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m344_route_b_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+	}
+	option = {
+		name = zg361p3.344.c
+		scope:zg361_p3_aj_subject = {
+			zg361_p3_m344_route_c_effect = {
+				TICKET_OWNER = scope:zg361_p3_aj_owner
+				TICKET_SUBJECT = scope:zg361_p3_aj_subject
+				TICKET_CYCLE = scope:zg361_p3_aj_cycle
+				TICKET_CASE = scope:zg361_p3_aj_case
+			}
+		}
+	}
+}
