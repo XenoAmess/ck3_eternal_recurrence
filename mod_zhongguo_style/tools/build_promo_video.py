@@ -41,6 +41,7 @@ import audit_promo_visuals as visual_audit  # noqa: E402
 
 FORMAT_VERSION = 1
 BUILD_FORMAT_VERSION = 1
+VISUAL_FORMAT_VERSION = 2
 KIND = "zg361_chinese_first_promo"
 VOICE = "zh-CN-XiaoxiaoNeural"
 EDGE_TTS_RATE = "+0%"
@@ -98,6 +99,15 @@ SUBTITLE_MAX_WIDTH = 1920
 SUBTITLE_MAX_LINES = 2
 ZH_SUBTITLE_MARGIN_V = 152
 EN_SUBTITLE_MARGIN_V = 66
+STATUS_BADGE_RIGHT_MARGIN = 62
+STATUS_BADGE_TOP = 58
+STATUS_BADGE_MIN_WIDTH = 450
+STATUS_BADGE_MAX_WIDTH = 752
+STATUS_BADGE_HORIZONTAL_PADDING = 28
+STATUS_BADGE_ZH_LINE_HEIGHT = 31
+STATUS_BADGE_EN_LINE_HEIGHT = 24
+STATUS_BADGE_MAX_ZH_LINES = 2
+STATUS_BADGE_MAX_EN_LINES = 2
 
 
 class PromoError(shared.ShowcaseError):
@@ -1016,13 +1026,97 @@ def _classification_color(classification: str) -> tuple[int, int, int]:
     return shared._classification_color(classification)
 
 
+def _status_badge_layout(
+    draw, chapter: shared.Chapter, fonts: shared.Fonts
+) -> dict[str, Any]:
+    zh_font = fonts.chinese(23, bold=True)
+    en_font = fonts.english(18, bold=True)
+    minimum_content_width = (
+        STATUS_BADGE_MIN_WIDTH - (2 * STATUS_BADGE_HORIZONTAL_PADDING)
+    )
+    maximum_content_width = (
+        STATUS_BADGE_MAX_WIDTH - (2 * STATUS_BADGE_HORIZONTAL_PADDING)
+    )
+    widest_unwrapped = max(
+        float(draw.textlength(chapter.status_zh, font=zh_font)),
+        float(draw.textlength(chapter.status_en, font=en_font)),
+    )
+    content_width = min(
+        maximum_content_width,
+        max(minimum_content_width, int(math.ceil(widest_unwrapped))),
+    )
+    zh_lines = [
+        row
+        for row in shared.wrap_text(draw, chapter.status_zh, zh_font, content_width)
+        if row
+    ]
+    en_lines = [
+        row
+        for row in shared.wrap_text(draw, chapter.status_en, en_font, content_width)
+        if row
+    ]
+    if not zh_lines or len(zh_lines) > STATUS_BADGE_MAX_ZH_LINES:
+        raise PromoError(
+            f"Chinese status badge needs {len(zh_lines)} lines; shorten the status "
+            f"so it fits in {STATUS_BADGE_MAX_ZH_LINES} lines"
+        )
+    if not en_lines or len(en_lines) > STATUS_BADGE_MAX_EN_LINES:
+        raise PromoError(
+            f"English status badge needs {len(en_lines)} lines; shorten the status "
+            f"so it fits in {STATUS_BADGE_MAX_EN_LINES} lines"
+        )
+    for language, lines, font in (
+        ("Chinese", zh_lines, zh_font),
+        ("English", en_lines, en_font),
+    ):
+        widest_line = max(float(draw.textlength(row, font=font)) for row in lines)
+        if widest_line > content_width + 0.01:
+            raise PromoError(
+                f"{language} status badge exceeded the {content_width}px safe width"
+            )
+
+    width = content_width + (2 * STATUS_BADGE_HORIZONTAL_PADDING)
+    right = WIDTH - STATUS_BADGE_RIGHT_MARGIN
+    left = right - width
+    en_top = STATUS_BADGE_TOP + 55 + (
+        STATUS_BADGE_ZH_LINE_HEIGHT * (len(zh_lines) - 1)
+    )
+    bottom = STATUS_BADGE_TOP + 96 + (
+        STATUS_BADGE_ZH_LINE_HEIGHT * (len(zh_lines) - 1)
+    ) + (
+        STATUS_BADGE_EN_LINE_HEIGHT * (len(en_lines) - 1)
+    )
+    return {
+        "bounds": (left, STATUS_BADGE_TOP, right, bottom),
+        "text_left": left + STATUS_BADGE_HORIZONTAL_PADDING,
+        "content_width": content_width,
+        "zh_lines": zh_lines,
+        "en_lines": en_lines,
+        "en_top": en_top,
+        "zh_font": zh_font,
+        "en_font": en_font,
+    }
+
+
+def prepare_status_badge_layouts(
+    chapters: Sequence[shared.Chapter], fonts: shared.Fonts
+) -> None:
+    canvas = shared.Image.new("L", (1, 1))
+    draw = shared.ImageDraw.Draw(canvas)
+    for chapter in chapters:
+        try:
+            _status_badge_layout(draw, chapter, fonts)
+        except PromoError as exc:
+            raise PromoError(
+                f"chapter {chapter.chapter_id!r} has an unrenderable status badge: {exc}"
+            ) from exc
+
+
 def _draw_status_badge(image, chapter: shared.Chapter, fonts: shared.Fonts) -> None:
     draw = shared.ImageDraw.Draw(image, "RGBA")
     color = _classification_color(chapter.classification)
-    zh_font = fonts.chinese(23, bold=True)
-    en_font = fonts.english(18, bold=True)
-    width = 450
-    left, top, right, bottom = WIDTH - width - 62, 58, WIDTH - 62, 154
+    layout = _status_badge_layout(draw, chapter, fonts)
+    left, top, right, bottom = layout["bounds"]
     draw.rounded_rectangle(
         (left, top, right, bottom),
         radius=22,
@@ -1030,8 +1124,26 @@ def _draw_status_badge(image, chapter: shared.Chapter, fonts: shared.Fonts) -> N
         outline=(*color, 255),
         width=4,
     )
-    draw.text((left + 28, top + 15), chapter.status_zh, font=zh_font, fill=(250, 251, 254, 255))
-    draw.text((left + 28, top + 55), chapter.status_en, font=en_font, fill=(185, 207, 235, 255))
+    for index, line in enumerate(layout["zh_lines"]):
+        draw.text(
+            (
+                layout["text_left"],
+                top + 15 + (index * STATUS_BADGE_ZH_LINE_HEIGHT),
+            ),
+            line,
+            font=layout["zh_font"],
+            fill=(250, 251, 254, 255),
+        )
+    for index, line in enumerate(layout["en_lines"]):
+        draw.text(
+            (
+                layout["text_left"],
+                layout["en_top"] + (index * STATUS_BADGE_EN_LINE_HEIGHT),
+            ),
+            line,
+            font=layout["en_font"],
+            fill=(185, 207, 235, 255),
+        )
 
 
 def _draw_overlay(chapter: shared.Chapter, fonts: shared.Fonts):
@@ -1216,6 +1328,7 @@ def render_visual(
     visual_fingerprint = _hash_payload(
         {
             "format": BUILD_FORMAT_VERSION,
+            "visual_format": VISUAL_FORMAT_VERSION,
             "chapter": chapter.raw,
             "source_sha256": [row.sha256 for row in chapter.sources],
         }
@@ -1748,6 +1861,7 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
     fonts = shared.find_fonts()
     shared.preflight_video_sources(chapters, ffprobe)
     prepare_subtitle_layouts(chapters, fonts)
+    prepare_status_badge_layouts(chapters, fonts)
     if args.validate_only:
         print(
             "VALID: "

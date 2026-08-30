@@ -247,6 +247,61 @@ class SubtitleAndRenderTests(unittest.TestCase):
 
         self.assertEqual(51.0, duration)
 
+    def test_status_badge_keeps_release_labels_inside_right_safe_gutter(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        chapter = chapters[0]
+        release_labels = (
+            "GENERATED EVIDENCE/BOUNDARY \u00b7 HIERARCHY NOT SEPARATELY RECORDED",
+            "CLEAN CAPTURE \u00b7 THREE REAL CALIBRATION CHOICES",
+            "CLEAN CAPTURE \u00b7 SUPERIOR 3.25 AND FOURFOLD CONSEQUENCE",
+            "GENERATED EVIDENCE/BOUNDARY \u00b7 NO CROSS-FIXTURE CORE-LOOP CLIP",
+        )
+
+        for label in release_labels:
+            with self.subTest(label=label):
+                chapter.status_en = label
+                overlay = promo._draw_overlay(chapter, self.fonts)
+                right_gutter = overlay.getchannel("A").crop(
+                    (promo.WIDTH - 61, 0, promo.WIDTH, 220)
+                )
+                self.assertIsNone(right_gutter.getbbox())
+
+    def test_status_badge_preflight_rejects_unrenderable_future_copy(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        chapter = chapters[0]
+        chapter.status_en = "UNBREAKABLE" * 200
+
+        with self.assertRaisesRegex(
+            promo.PromoError, "English status badge needs"
+        ):
+            promo.prepare_status_badge_layouts([chapter], self.fonts)
+
+    def test_status_badge_layout_version_only_invalidates_visual_cache(self) -> None:
+        _manifest, chapters = promo.load_manifest(FULL_MANIFEST)
+        chapter = chapters[0]
+        cue_before = promo._cue_fingerprint(
+            "same narration", voice=promo.VOICE, take_id="same-take"
+        )
+
+        with tempfile.TemporaryDirectory() as temporary:
+            first_visual, _ = promo.render_visual(
+                chapter, self.fonts, Path(temporary)
+            )
+            with mock.patch.object(
+                promo,
+                "VISUAL_FORMAT_VERSION",
+                promo.VISUAL_FORMAT_VERSION + 1,
+            ):
+                second_visual, _ = promo.render_visual(
+                    chapter, self.fonts, Path(temporary)
+                )
+                cue_after = promo._cue_fingerprint(
+                    "same narration", voice=promo.VOICE, take_id="same-take"
+                )
+
+        self.assertNotEqual(first_visual, second_visual)
+        self.assertEqual(cue_before, cue_after)
+
 
 class EdgeTtsRetryTests(unittest.TestCase):
     def test_two_transient_failures_then_success_preserves_valid_cache(self) -> None:
@@ -628,6 +683,7 @@ class BuildAndValidationTests(unittest.TestCase):
                 mock.patch.object(promo.shared, "find_fonts", return_value=object()),
                 mock.patch.object(promo.shared, "preflight_video_sources"),
                 mock.patch.object(promo, "prepare_subtitle_layouts"),
+                mock.patch.object(promo, "prepare_status_badge_layouts"),
                 contextlib.redirect_stdout(io.StringIO()),
             ):
                 promo.build(
