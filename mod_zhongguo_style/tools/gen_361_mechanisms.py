@@ -18,6 +18,12 @@ from zg361_mechanism_data import (
     mechanism_deltas,
 )
 from zg361_phase2_runtime_data import PHASE2_RUNTIME_SPECS
+from zg361_domain_data import (
+    DOMAIN_SPECS,
+    RUNTIME_PLAN_SCHEMA,
+    build_runtime_plans,
+)
+from zg361_operation_registry import DOMAIN_RECIPE_PRIMITIVES
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -721,9 +727,21 @@ def runtime_contract(mechanism_id: int) -> dict[str, object] | None:
     }
 
 
-def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
+def manifest_payload(
+    mechanisms: list[Mechanism],
+    runtime_plans: list[dict[str, object]],
+) -> dict[str, object]:
+    plans_by_id = {int(plan["id"]): plan for plan in runtime_plans}
     items = []
     for mechanism in mechanisms:
+        plan = plans_by_id[mechanism.id]
+        planned_currencies = sorted(
+            {
+                str(transaction["currency"])
+                for choice in plan["choices"].values()
+                for transaction in choice["transactions"]
+            }
+        )
         item = {
             "id": mechanism.id,
             "group": mechanism.group_code,
@@ -750,6 +768,35 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             "ai_path": "twelve-card annual background batch",
             "live_wave": wave_for(mechanism.id),
             "acceptance_contract": mechanism.acceptance_contract.manifest_payload(),
+            "runtime_plan": {
+                "status": "contract-complete",
+                "source": (
+                    "tools/mechanism_runtime/runtime_001_120.json"
+                    if mechanism.id <= 120
+                    else "tools/mechanism_runtime/runtime_121_240.json"
+                    if mechanism.id <= 240
+                    else "tools/mechanism_runtime/runtime_241_361.json"
+                ),
+                "domain": plan["domain"],
+                "object_type": plan["object_type"],
+                "operation_key": plan["operation_key"],
+                "primitive_recipe": plan["primitive_recipe"],
+                "semantic_family": plan["semantic_family"],
+                "trigger_hook": plan["trigger_hook"],
+                "planned_currencies": planned_currencies,
+                "choice_transitions": {
+                    choice_name: {
+                        "from": choice["allowed_from_states"],
+                        "to": choice["to_state"],
+                        "deadline_kind": choice["deadline"]["kind"],
+                    }
+                    for choice_name, choice in plan["choices"].items()
+                },
+                "claim_boundary": (
+                    "The typed runtime contract is complete; it is not a claim that "
+                    "the CK3 domain effect, event, GUI surface, or live acceptance exists."
+                ),
+            },
             "status": implementation_status(mechanism.id),
         }
         contract = runtime_contract(mechanism.id)
@@ -757,7 +804,7 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             item["runtime_contract"] = contract
         items.append(item)
     return {
-        "schema": 3,
+        "schema": 4,
         "mechanism_count": MECHANISM_COUNT,
         "source": "docs/361-expansion-options.md",
         "acceptance_contract_source": "tools/mechanism_acceptance/acceptance_*.json",
@@ -765,6 +812,7 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             "catalogue": "The numbered design and reviewed choice copy are complete.",
             "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
             "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
+            "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
             "domain_runtime": "Mechanisms 001/018/069/357 have a partial first-slice runtime; the other 357 typed domain runtimes remain not implemented.",
             "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; the first slice adds a partial personal evidence/service/statement loop.",
             "runtime_evidence": "001/018/069/357 are static-ready only: source model, generated manifest, script and localization checks; no CK3 fixture or live claim yet.",
@@ -784,24 +832,88 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             "tests": "tools/test_zg361_phase2_runtime.py",
             "claim_boundary": "Static model and L0 checks do not prove CK3 load, fixture behavior, UI rendering, timed delivery, receipts, or appeal outcomes.",
         },
+        "runtime_plan": {
+            "schema": RUNTIME_PLAN_SCHEMA,
+            "coverage": 361,
+            "domain_count": len(DOMAIN_SPECS),
+            "domain_source": "tools/mechanism_domains/domains.json",
+            "mechanism_sources": [
+                "tools/mechanism_runtime/runtime_001_120.json",
+                "tools/mechanism_runtime/runtime_121_240.json",
+                "tools/mechanism_runtime/runtime_241_361.json",
+            ],
+            "authority": "tools/zg361_domain_data.py + tools/zg361_operation_registry.py + numbered acceptance contracts",
+            "claim_boundary": "runtime-contract-complete does not change domain_runtime or player-visible-loop readiness",
+        },
         "generated_files": [],
         "items": items,
     }
+
+
+def render_runtime_plan_files(
+    mechanisms: list[Mechanism],
+    runtime_plans: list[dict[str, object]],
+) -> dict[Path, bytes]:
+    domain_payload = {
+        "schema": RUNTIME_PLAN_SCHEMA,
+        "generated": True,
+        "authority": "tools/zg361_domain_data.py + tools/zg361_operation_registry.py",
+        "domain_count": len(DOMAIN_SPECS),
+        "mechanism_count": len(mechanisms),
+        "claim_boundary": (
+            "Validated design contract only; domain_runtime readiness remains governed "
+            "by product script and CK3 evidence."
+        ),
+        "domains": [domain.manifest_payload() for domain in DOMAIN_SPECS],
+    }
+    rendered: dict[Path, bytes] = {
+        MOD_ROOT / "tools" / "mechanism_domains" / "domains.json": (
+            json.dumps(domain_payload, ensure_ascii=False, indent=2) + "\n"
+        ).encode("utf-8")
+    }
+    for first_id, last_id in ((1, 120), (121, 240), (241, 361)):
+        rows = [
+            plan
+            for plan in runtime_plans
+            if first_id <= int(plan["id"]) <= last_id
+        ]
+        payload = {
+            "schema": RUNTIME_PLAN_SCHEMA,
+            "generated": True,
+            "authority": (
+                "tools/zg361_domain_data.py + tools/zg361_operation_registry.py + tools/mechanism_acceptance/acceptance_*.json"
+            ),
+            "id_range": [first_id, last_id],
+            "count": len(rows),
+            "claim_boundary": (
+                "runtime-contract-complete only; CK3 runtime status is recorded separately "
+                "in docs/361-mechanism-manifest.json"
+            ),
+            "items": rows,
+        }
+        rendered[
+            MOD_ROOT
+            / "tools"
+            / "mechanism_runtime"
+            / f"runtime_{first_id:03d}_{last_id:03d}.json"
+        ] = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    return rendered
 
 
 def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) -> bytes:
     lines = [
         "# 361 机制实现映射",
         "",
-        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, or `tools/zg361_phase2_runtime_data.py`.",
+        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, `tools/zg361_domain_data.py`, or `tools/zg361_phase2_runtime_data.py`.",
         "",
         "状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；",
+        "361/361 已有 `contract-complete` 的领域/状态/操作/期限/事务/反馈设计合同；这不等于游戏实现。",
         "#001/#018/#069/#357 的首个领域纵切为 `partial / static-ready`；其余357项领域状态机仍为 `not-implemented`。",
         "旧实机证据只证明配置变量、共享账本、校验和及幂等性，不证明 361 项领域玩法已经实现。证据见",
         "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`；逐项目标见 manifest 内 `acceptance_contract`。",
         "",
-        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 领域 | 玩家闭环 |",
-        "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|",
+        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 运行设计 | 领域 | 玩家闭环 |",
+        "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|---|",
     ]
     for mechanism in mechanisms:
         status = implementation_status(mechanism.id)
@@ -809,7 +921,7 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
             f"| {mechanism.id:03d} | {mechanism.title_cn} | {mechanism.group_code} | "
             f"{mechanism.priority} | `{mechanism.profile}` | `zg361m.{mechanism.id}` | "
             f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | "
-            f"complete | fixture-live | fixture-live | {status['domain_runtime']} | "
+            f"complete | fixture-live | fixture-live | contract-complete | {status['domain_runtime']} | "
             f"{status['player_visible_loop']} |"
         )
     digest = hashlib.sha256(
@@ -820,7 +932,12 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
 
 
 def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
-    payload = manifest_payload(mechanisms)
+    runtime_plans = build_runtime_plans(mechanisms)
+    for plan in runtime_plans:
+        plan["primitive_recipe"] = list(
+            DOMAIN_RECIPE_PRIMITIVES[str(plan["operation_key"])]
+        )
+    payload = manifest_payload(mechanisms, runtime_plans)
     result: dict[Path, bytes] = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_mechanism_effects.txt": render_effects(mechanisms),
         MOD_ROOT / "common" / "script_values" / "zg361_generated_mechanism_values.txt": render_values(),
@@ -830,6 +947,7 @@ def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
         MOD_ROOT / "common" / "scripted_guis" / "zg361_generated_mechanism_guis.txt": render_scripted_guis(),
         MOD_ROOT / "gui" / "zg361_mechanism_bridge.gui": render_bridge_gui(),
     }
+    result.update(render_runtime_plan_files(mechanisms, runtime_plans))
     for language in (
         "english",
         "simp_chinese",

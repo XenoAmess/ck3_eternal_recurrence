@@ -43,6 +43,7 @@ jobs:
         run: |
           python mod_zhongguo_style/tools/test_gen_361_mechanisms.py
           python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
+          python mod_zhongguo_style/tools/test_zg361_domain_data.py
           python mod_zhongguo_style/tools/test_zg361_phase2_runtime.py
           python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
           python tools/test_gen_zhongguo_acceptance_cases.py

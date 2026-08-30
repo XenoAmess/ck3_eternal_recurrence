@@ -256,8 +256,11 @@ class MechanismGenerationTests(unittest.TestCase):
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"
         manifest = json.loads(self.rendered[manifest_path].decode("utf-8"))
-        self.assertEqual(manifest["schema"], 3)
+        self.assertEqual(manifest["schema"], 4)
         self.assertEqual(manifest["mechanism_count"], 361)
+        self.assertEqual(manifest["runtime_plan"]["coverage"], 361)
+        self.assertEqual(manifest["runtime_plan"]["domain_count"], 38)
+        self.assertIn("does not change domain_runtime", manifest["runtime_plan"]["claim_boundary"])
         self.assertEqual([item["id"] for item in manifest["items"]], list(range(1, 362)))
         self.assertEqual({item["live_wave"] for item in manifest["items"]}, {1, 2, 3, 4})
         legacy_status = {
@@ -276,6 +279,10 @@ class MechanismGenerationTests(unittest.TestCase):
         mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
         for item in manifest["items"]:
             self.assertEqual(len(item["implementation"]["choice_effects"]), 3)
+            self.assertEqual(item["runtime_plan"]["status"], "contract-complete")
+            self.assertIn("case.transition", item["runtime_plan"]["primitive_recipe"])
+            self.assertEqual(set(item["runtime_plan"]["choice_transitions"]), {"a", "b", "c"})
+            self.assertIn("not a claim", item["runtime_plan"]["claim_boundary"])
             expected_status = phase2_status if item["id"] in phase2_ids else legacy_status
             self.assertEqual(item["status"], expected_status)
             self.assertNotIsInstance(item["status"], str)

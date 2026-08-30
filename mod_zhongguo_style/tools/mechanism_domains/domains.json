@@ -1,0 +1,2448 @@
+{
+  "schema": 1,
+  "generated": true,
+  "authority": "tools/zg361_domain_data.py + tools/zg361_operation_registry.py",
+  "domain_count": 38,
+  "mechanism_count": 361,
+  "claim_boundary": "Validated design contract only; domain_runtime readiness remains governed by product script and CK3 evidence.",
+  "domains": [
+    {
+      "code": "A",
+      "id_range": [
+        1,
+        6
+      ],
+      "name_cn": "目标、证据与评分",
+      "object_type": "review_case",
+      "phase": 1,
+      "operation_key": "apply_review_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "case_open",
+        "goals_locked",
+        "midcycle_rebased",
+        "evidence_frozen",
+        "rated"
+      ],
+      "entry_state": "case_open",
+      "terminal_states": [
+        "rated"
+      ],
+      "transitions": [
+        {
+          "from": "case_open",
+          "to": "goals_locked",
+          "hook": "cycle_open"
+        },
+        {
+          "from": "goals_locked",
+          "to": "midcycle_rebased",
+          "hook": "targets_locked"
+        },
+        {
+          "from": "midcycle_rebased",
+          "to": "evidence_frozen",
+          "hook": "evidence_open"
+        },
+        {
+          "from": "evidence_frozen",
+          "to": "rated",
+          "hook": "evidence_frozen"
+        }
+      ],
+      "resources": [
+        "capacity_hours"
+      ],
+      "invariant": "goal versions and frozen evidence never rewrite an older cycle; used hours equal booked hours",
+      "feedback_surface": "review dossier and KPI evidence tab",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "B",
+      "id_range": [
+        7,
+        13
+      ],
+      "name_cn": "互评与校准政治",
+      "object_type": "calibration_round",
+      "phase": 1,
+      "operation_key": "apply_calibration_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "invited",
+        "sealed",
+        "evaluator_adjusted",
+        "calibrated",
+        "published"
+      ],
+      "entry_state": "invited",
+      "terminal_states": [
+        "published"
+      ],
+      "transitions": [
+        {
+          "from": "invited",
+          "to": "sealed",
+          "hook": "peer_invites_open"
+        },
+        {
+          "from": "sealed",
+          "to": "evaluator_adjusted",
+          "hook": "peer_feedback_sealed"
+        },
+        {
+          "from": "evaluator_adjusted",
+          "to": "calibrated",
+          "hook": "precalibration"
+        },
+        {
+          "from": "calibrated",
+          "to": "published",
+          "hook": "calibration_complete"
+        }
+      ],
+      "resources": [
+        "quota_slot",
+        "review_weight"
+      ],
+      "invariant": "review weights sum to the frozen denominator and rating swaps are quota-neutral",
+      "feedback_surface": "calibration dashboard",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "C",
+      "id_range": [
+        14,
+        18
+      ],
+      "name_cn": "申诉、PIP 与退出",
+      "object_type": "appeal_pip_case",
+      "phase": 1,
+      "operation_key": "apply_appeal_pip_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "result_served",
+        "case_open",
+        "supported",
+        "reviewed",
+        "resolved"
+      ],
+      "entry_state": "result_served",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "result_served",
+          "to": "case_open",
+          "hook": "result_delivered"
+        },
+        {
+          "from": "case_open",
+          "to": "supported",
+          "hook": "appeal_or_pip_opened"
+        },
+        {
+          "from": "supported",
+          "to": "reviewed",
+          "hook": "pip_support_committed"
+        },
+        {
+          "from": "reviewed",
+          "to": "resolved",
+          "hook": "pip_check_due"
+        }
+      ],
+      "resources": [
+        "penalty_receipt",
+        "pip_capacity",
+        "treasury_gold",
+        "personal_gold"
+      ],
+      "invariant": "refunds never exceed settled receipts; PIP support and manager capacity balance",
+      "feedback_surface": "appeal and PIP casebook",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "D",
+      "id_range": [
+        19,
+        25
+      ],
+      "name_cn": "晋升包、薪酬与 HC",
+      "object_type": "career_allocation",
+      "phase": 2,
+      "operation_key": "apply_career_allocation",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "eligible",
+        "packet_open",
+        "panel_complete",
+        "resources_reserved",
+        "settled"
+      ],
+      "entry_state": "eligible",
+      "terminal_states": [
+        "settled"
+      ],
+      "transitions": [
+        {
+          "from": "eligible",
+          "to": "packet_open",
+          "hook": "evidence_frozen"
+        },
+        {
+          "from": "packet_open",
+          "to": "panel_complete",
+          "hook": "promotion_packet_open"
+        },
+        {
+          "from": "panel_complete",
+          "to": "resources_reserved",
+          "hook": "promotion_panel_complete"
+        },
+        {
+          "from": "resources_reserved",
+          "to": "settled",
+          "hook": "career_resources_settled"
+        }
+      ],
+      "resources": [
+        "promotion_slot",
+        "hc_slot",
+        "treasury_gold",
+        "personal_gold"
+      ],
+      "invariant": "promotion, title, authority, cash and HC remain separately reserved and settled",
+      "feedback_surface": "career and promotion panel",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "E",
+      "id_range": [
+        26,
+        31
+      ],
+      "name_cn": "贡献、抢功与指标异化",
+      "object_type": "contribution_case",
+      "phase": 3,
+      "operation_key": "apply_contribution_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "project_registered",
+        "contribution_signed",
+        "claim_open",
+        "audited",
+        "attributed"
+      ],
+      "entry_state": "project_registered",
+      "terminal_states": [
+        "attributed"
+      ],
+      "transitions": [
+        {
+          "from": "project_registered",
+          "to": "contribution_signed",
+          "hook": "project_registered"
+        },
+        {
+          "from": "contribution_signed",
+          "to": "claim_open",
+          "hook": "contribution_signed"
+        },
+        {
+          "from": "claim_open",
+          "to": "audited",
+          "hook": "claim_open"
+        },
+        {
+          "from": "audited",
+          "to": "attributed",
+          "hook": "contribution_audited"
+        }
+      ],
+      "resources": [
+        "contribution_share",
+        "sponsor_credit"
+      ],
+      "invariant": "signed contribution shares conserve the project total and audit reversals net to zero",
+      "feedback_surface": "contribution timeline and credit arbitration",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "F",
+      "id_range": [
+        32,
+        36
+      ],
+      "name_cn": "管理者与制度反馈",
+      "object_type": "manager_review",
+      "phase": 1,
+      "operation_key": "apply_manager_review",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "snapshot_ready",
+        "manager_scored",
+        "reason_coded",
+        "nine_boxed",
+        "reported"
+      ],
+      "entry_state": "snapshot_ready",
+      "terminal_states": [
+        "reported"
+      ],
+      "transitions": [
+        {
+          "from": "snapshot_ready",
+          "to": "manager_scored",
+          "hook": "cycle_closed"
+        },
+        {
+          "from": "manager_scored",
+          "to": "reason_coded",
+          "hook": "manager_score_due"
+        },
+        {
+          "from": "reason_coded",
+          "to": "nine_boxed",
+          "hook": "manager_reason_due"
+        },
+        {
+          "from": "nine_boxed",
+          "to": "reported",
+          "hook": "nine_box_due"
+        }
+      ],
+      "resources": [
+        "manager_capacity"
+      ],
+      "invariant": "manager ratings consume only the previous-cycle team snapshot and never recurse in-cycle",
+      "feedback_surface": "manager reason panel and long report",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "G",
+      "id_range": [
+        37,
+        47
+      ],
+      "name_cn": "强制分布配额工程",
+      "object_type": "quota_book",
+      "phase": 1,
+      "operation_key": "apply_quota_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "cohort_draft",
+        "cohort_locked",
+        "quota_computed",
+        "adjusted",
+        "published"
+      ],
+      "entry_state": "cohort_draft",
+      "terminal_states": [
+        "published"
+      ],
+      "transitions": [
+        {
+          "from": "cohort_draft",
+          "to": "cohort_locked",
+          "hook": "cycle_open"
+        },
+        {
+          "from": "cohort_locked",
+          "to": "quota_computed",
+          "hook": "cohort_locked"
+        },
+        {
+          "from": "quota_computed",
+          "to": "adjusted",
+          "hook": "quota_computed"
+        },
+        {
+          "from": "adjusted",
+          "to": "published",
+          "hook": "calibration_complete"
+        }
+      ],
+      "resources": [
+        "quota_slot"
+      ],
+      "invariant": "top, middle and bottom slots sum exactly to the locked cohort; debt has owner, sign and due cycle",
+      "feedback_surface": "quota ledger and denominator panel",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "H",
+      "id_range": [
+        48,
+        53
+      ],
+      "name_cn": "互评微观博弈",
+      "object_type": "peer_feedback_round",
+      "phase": 1,
+      "operation_key": "apply_peer_feedback_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "invited",
+        "submitted",
+        "sealed",
+        "audited",
+        "applied"
+      ],
+      "entry_state": "invited",
+      "terminal_states": [
+        "applied"
+      ],
+      "transitions": [
+        {
+          "from": "invited",
+          "to": "submitted",
+          "hook": "peer_invites_open"
+        },
+        {
+          "from": "submitted",
+          "to": "sealed",
+          "hook": "peer_feedback_submitted"
+        },
+        {
+          "from": "sealed",
+          "to": "audited",
+          "hook": "peer_feedback_sealed"
+        },
+        {
+          "from": "audited",
+          "to": "applied",
+          "hook": "peer_feedback_audited"
+        }
+      ],
+      "resources": [
+        "peer_invite_slot",
+        "capacity_hours"
+      ],
+      "invariant": "invitation slots, reviewer hours and anonymous sample counts reconcile",
+      "feedback_surface": "peer feedback summary",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "I",
+      "id_range": [
+        54,
+        61
+      ],
+      "name_cn": "汇报与可见度",
+      "object_type": "report_packet",
+      "phase": 3,
+      "operation_key": "apply_report_packet_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "result_ready",
+        "packet_built",
+        "signed",
+        "routed",
+        "resolved"
+      ],
+      "entry_state": "result_ready",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "result_ready",
+          "to": "packet_built",
+          "hook": "result_ready"
+        },
+        {
+          "from": "packet_built",
+          "to": "signed",
+          "hook": "report_packet_built"
+        },
+        {
+          "from": "signed",
+          "to": "routed",
+          "hook": "report_packet_signed"
+        },
+        {
+          "from": "routed",
+          "to": "resolved",
+          "hook": "report_packet_routed"
+        }
+      ],
+      "resources": [
+        "capacity_hours",
+        "contribution_share"
+      ],
+      "invariant": "reporting hours displace delivery capacity and signed attribution shares conserve the result",
+      "feedback_surface": "report packet and visibility timeline",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "J",
+      "id_range": [
+        62,
+        68
+      ],
+      "name_cn": "矩阵、换老板与重组",
+      "object_type": "matrix_handoff",
+      "phase": 3,
+      "operation_key": "apply_matrix_handoff",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "contract_open",
+        "weights_locked",
+        "handoff_open",
+        "dual_signed",
+        "mapped"
+      ],
+      "entry_state": "contract_open",
+      "terminal_states": [
+        "mapped"
+      ],
+      "transitions": [
+        {
+          "from": "contract_open",
+          "to": "weights_locked",
+          "hook": "matrix_contract_open"
+        },
+        {
+          "from": "weights_locked",
+          "to": "handoff_open",
+          "hook": "matrix_weights_locked"
+        },
+        {
+          "from": "handoff_open",
+          "to": "dual_signed",
+          "hook": "manager_handoff_open"
+        },
+        {
+          "from": "dual_signed",
+          "to": "mapped",
+          "hook": "manager_handoff_signed"
+        }
+      ],
+      "resources": [
+        "manager_weight"
+      ],
+      "invariant": "active manager weights sum to 100 percent and historical case ownership never drifts",
+      "feedback_surface": "matrix handoff ledger",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "K",
+      "id_range": [
+        69,
+        81
+      ],
+      "name_cn": "送达、申诉正义与裁员",
+      "object_type": "notice_justice_case",
+      "phase": 1,
+      "operation_key": "apply_notice_justice_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "notice_prepared",
+        "delivered",
+        "appeal_open",
+        "reviewed",
+        "resolved",
+        "observation_closed"
+      ],
+      "entry_state": "notice_prepared",
+      "terminal_states": [
+        "observation_closed"
+      ],
+      "transitions": [
+        {
+          "from": "notice_prepared",
+          "to": "delivered",
+          "hook": "result_frozen"
+        },
+        {
+          "from": "delivered",
+          "to": "appeal_open",
+          "hook": "result_delivered"
+        },
+        {
+          "from": "appeal_open",
+          "to": "reviewed",
+          "hook": "appeal_opened"
+        },
+        {
+          "from": "reviewed",
+          "to": "resolved",
+          "hook": "appeal_resolved"
+        },
+        {
+          "from": "resolved",
+          "to": "observation_closed",
+          "hook": "anti_retaliation_due"
+        }
+      ],
+      "resources": [
+        "penalty_receipt",
+        "appeal_slot"
+      ],
+      "invariant": "service and review timelines are immutable; correction refunds only original receipts",
+      "feedback_surface": "notice, appeal and anti-retaliation casebook",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "L",
+      "id_range": [
+        82,
+        91
+      ],
+      "name_cn": "薪酬、奖金与长期激励",
+      "object_type": "compensation_award",
+      "phase": 2,
+      "operation_key": "apply_compensation_award",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "formula_locked",
+        "funds_reserved",
+        "granted",
+        "held",
+        "settled"
+      ],
+      "entry_state": "formula_locked",
+      "terminal_states": [
+        "settled"
+      ],
+      "transitions": [
+        {
+          "from": "formula_locked",
+          "to": "funds_reserved",
+          "hook": "result_frozen"
+        },
+        {
+          "from": "funds_reserved",
+          "to": "granted",
+          "hook": "compensation_formula_locked"
+        },
+        {
+          "from": "granted",
+          "to": "held",
+          "hook": "compensation_funds_reserved"
+        },
+        {
+          "from": "held",
+          "to": "settled",
+          "hook": "compensation_granted"
+        }
+      ],
+      "resources": [
+        "treasury_gold",
+        "personal_gold",
+        "award_budget"
+      ],
+      "invariant": "same-currency debits equal credits plus refunds; earmarked awards cannot bypass budget",
+      "feedback_surface": "award statement and payment receipts",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "M",
+      "id_range": [
+        92,
+        97
+      ],
+      "name_cn": "职级与双通道",
+      "object_type": "career_track",
+      "phase": 2,
+      "operation_key": "apply_career_track",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "track_selected",
+        "eligible",
+        "calibrated",
+        "changed",
+        "reviewed"
+      ],
+      "entry_state": "track_selected",
+      "terminal_states": [
+        "reviewed"
+      ],
+      "transitions": [
+        {
+          "from": "track_selected",
+          "to": "eligible",
+          "hook": "career_track_selected"
+        },
+        {
+          "from": "eligible",
+          "to": "calibrated",
+          "hook": "career_eligibility_due"
+        },
+        {
+          "from": "calibrated",
+          "to": "changed",
+          "hook": "career_calibration_due"
+        },
+        {
+          "from": "changed",
+          "to": "reviewed",
+          "hook": "career_change_due"
+        }
+      ],
+      "resources": [
+        "promotion_slot"
+      ],
+      "invariant": "career level, title, authority and pay are distinct records and consume explicit slots",
+      "feedback_surface": "career track review",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "N",
+      "id_range": [
+        98,
+        105
+      ],
+      "name_cn": "HC 生命周期",
+      "object_type": "hc_slot",
+      "phase": 2,
+      "operation_key": "apply_hc_lifecycle",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "requested",
+        "decided",
+        "recruiting",
+        "occupied",
+        "closed"
+      ],
+      "entry_state": "requested",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "requested",
+          "to": "decided",
+          "hook": "hc_requested"
+        },
+        {
+          "from": "decided",
+          "to": "recruiting",
+          "hook": "hc_decision_due"
+        },
+        {
+          "from": "recruiting",
+          "to": "occupied",
+          "hook": "hc_recruiting"
+        },
+        {
+          "from": "occupied",
+          "to": "closed",
+          "hook": "hc_occupied"
+        }
+      ],
+      "resources": [
+        "hc_slot",
+        "treasury_gold"
+      ],
+      "invariant": "authorized HC equals vacant plus reserved plus occupied plus frozen or reclaimed slots",
+      "feedback_surface": "HC board",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "O",
+      "id_range": [
+        106,
+        113
+      ],
+      "name_cn": "人才盘点与继任",
+      "object_type": "succession_plan",
+      "phase": 2,
+      "operation_key": "apply_succession_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "role_identified",
+        "pool_ready",
+        "readiness_scored",
+        "trialed",
+        "resolved",
+        "handed_off"
+      ],
+      "entry_state": "role_identified",
+      "terminal_states": [
+        "handed_off"
+      ],
+      "transitions": [
+        {
+          "from": "role_identified",
+          "to": "pool_ready",
+          "hook": "critical_role_identified"
+        },
+        {
+          "from": "pool_ready",
+          "to": "readiness_scored",
+          "hook": "candidate_pool_ready"
+        },
+        {
+          "from": "readiness_scored",
+          "to": "trialed",
+          "hook": "readiness_scored"
+        },
+        {
+          "from": "trialed",
+          "to": "resolved",
+          "hook": "acting_trial_due"
+        },
+        {
+          "from": "resolved",
+          "to": "handed_off",
+          "hook": "succession_resolved"
+        }
+      ],
+      "resources": [
+        "succession_slot",
+        "capacity_hours"
+      ],
+      "invariant": "high-potential, critical-talent and successor evidence remain separate; each role has one readiness ledger",
+      "feedback_surface": "succession ladder",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "P",
+      "id_range": [
+        114,
+        120
+      ],
+      "name_cn": "内部流动与新人落地",
+      "object_type": "mobility_onboarding",
+      "phase": 2,
+      "operation_key": "apply_mobility_onboarding",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "applied",
+        "accepted",
+        "release_due",
+        "transferred",
+        "protected",
+        "quality_written_back"
+      ],
+      "entry_state": "applied",
+      "terminal_states": [
+        "quality_written_back"
+      ],
+      "transitions": [
+        {
+          "from": "applied",
+          "to": "accepted",
+          "hook": "mobility_applied"
+        },
+        {
+          "from": "accepted",
+          "to": "release_due",
+          "hook": "mobility_accepted"
+        },
+        {
+          "from": "release_due",
+          "to": "transferred",
+          "hook": "release_due"
+        },
+        {
+          "from": "transferred",
+          "to": "protected",
+          "hook": "transfer_complete"
+        },
+        {
+          "from": "protected",
+          "to": "quality_written_back",
+          "hook": "protection_due"
+        }
+      ],
+      "resources": [
+        "transfer_slot",
+        "capacity_hours"
+      ],
+      "invariant": "one active transfer per person; old reviews persist and release may be delayed only once",
+      "feedback_surface": "internal mobility and onboarding panel",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "Q",
+      "id_range": [
+        121,
+        128
+      ],
+      "name_cn": "管理者绩效文化",
+      "object_type": "manager_certification",
+      "phase": 2,
+      "operation_key": "apply_manager_certification",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "trial",
+        "scorecard",
+        "feedback",
+        "successor_test",
+        "resolved"
+      ],
+      "entry_state": "trial",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "trial",
+          "to": "scorecard",
+          "hook": "manager_trial_open"
+        },
+        {
+          "from": "scorecard",
+          "to": "feedback",
+          "hook": "manager_scorecard_due"
+        },
+        {
+          "from": "feedback",
+          "to": "successor_test",
+          "hook": "subordinate_feedback_due"
+        },
+        {
+          "from": "successor_test",
+          "to": "resolved",
+          "hook": "successor_test_due"
+        }
+      ],
+      "resources": [
+        "manager_capacity"
+      ],
+      "invariant": "only eligible celestial duke-or-higher managers own cases; high KPI cannot erase retaliation or attrition",
+      "feedback_surface": "manager certification panel",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "R",
+      "id_range": [
+        129,
+        134
+      ],
+      "name_cn": "项目制与系统纠偏",
+      "object_type": "project_governance",
+      "phase": 3,
+      "operation_key": "apply_project_governance",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "proposed",
+        "routed",
+        "executing",
+        "reviewed",
+        "resolved",
+        "observed"
+      ],
+      "entry_state": "proposed",
+      "terminal_states": [
+        "observed"
+      ],
+      "transitions": [
+        {
+          "from": "proposed",
+          "to": "routed",
+          "hook": "project_proposed"
+        },
+        {
+          "from": "routed",
+          "to": "executing",
+          "hook": "project_routed"
+        },
+        {
+          "from": "executing",
+          "to": "reviewed",
+          "hook": "project_execution_due"
+        },
+        {
+          "from": "reviewed",
+          "to": "resolved",
+          "hook": "project_review_due"
+        },
+        {
+          "from": "resolved",
+          "to": "observed",
+          "hook": "project_resolved"
+        }
+      ],
+      "resources": [
+        "project_slot",
+        "capacity_hours"
+      ],
+      "invariant": "one accountable owner per shared metric; stopping a project does not itself equal failure",
+      "feedback_surface": "project card and postmortem",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "S",
+      "id_range": [
+        135,
+        145
+      ],
+      "name_cn": "预校准与影子档位",
+      "object_type": "shadow_calibration",
+      "phase": 1,
+      "operation_key": "apply_shadow_calibration",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "shadowed",
+        "precalibrated",
+        "anchors_frozen",
+        "exception_open",
+        "final_pending",
+        "finalized"
+      ],
+      "entry_state": "shadowed",
+      "terminal_states": [
+        "finalized"
+      ],
+      "transitions": [
+        {
+          "from": "shadowed",
+          "to": "precalibrated",
+          "hook": "pending_grades"
+        },
+        {
+          "from": "precalibrated",
+          "to": "anchors_frozen",
+          "hook": "precalibration"
+        },
+        {
+          "from": "anchors_frozen",
+          "to": "exception_open",
+          "hook": "anchors_frozen"
+        },
+        {
+          "from": "exception_open",
+          "to": "final_pending",
+          "hook": "calibration_exception_open"
+        },
+        {
+          "from": "final_pending",
+          "to": "finalized",
+          "hook": "calibration_complete"
+        }
+      ],
+      "resources": [
+        "quota_slot",
+        "dissent_vote"
+      ],
+      "invariant": "rounding, quota debt and reopened cases use symmetric add-and-return rules",
+      "feedback_surface": "shadow-rating dashboard",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "T",
+      "id_range": [
+        146,
+        156
+      ],
+      "name_cn": "反馈谈判与承诺债",
+      "object_type": "feedback_commitment",
+      "phase": 1,
+      "operation_key": "apply_feedback_commitment",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "result_locked",
+        "feedback_held",
+        "receipt_recorded",
+        "actions_open",
+        "resolved"
+      ],
+      "entry_state": "result_locked",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "result_locked",
+          "to": "feedback_held",
+          "hook": "result_frozen"
+        },
+        {
+          "from": "feedback_held",
+          "to": "receipt_recorded",
+          "hook": "feedback_meeting_due"
+        },
+        {
+          "from": "receipt_recorded",
+          "to": "actions_open",
+          "hook": "feedback_receipt_due"
+        },
+        {
+          "from": "actions_open",
+          "to": "resolved",
+          "hook": "feedback_actions_open"
+        }
+      ],
+      "resources": [
+        "commitment_capacity",
+        "capacity_hours"
+      ],
+      "invariant": "every promise has owner, deadline, resource and breach debt; receipt never implies agreement",
+      "feedback_surface": "feedback minutes and commitment timeline",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "U",
+      "id_range": [
+        157,
+        168
+      ],
+      "name_cn": "晋升提名与预审",
+      "object_type": "promotion_nomination",
+      "phase": 2,
+      "operation_key": "apply_promotion_nomination",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "eligible",
+        "nominated",
+        "slot_reserved",
+        "prescreened",
+        "resolved"
+      ],
+      "entry_state": "eligible",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "eligible",
+          "to": "nominated",
+          "hook": "promotion_eligible"
+        },
+        {
+          "from": "nominated",
+          "to": "slot_reserved",
+          "hook": "nomination_open"
+        },
+        {
+          "from": "slot_reserved",
+          "to": "prescreened",
+          "hook": "nomination_slot_reserved"
+        },
+        {
+          "from": "prescreened",
+          "to": "resolved",
+          "hook": "prescreen_due"
+        }
+      ],
+      "resources": [
+        "nomination_slot",
+        "promotion_slot"
+      ],
+      "invariant": "nomination slots conserve across self, manager and withdrawn packets",
+      "feedback_surface": "promotion nomination queue",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "V",
+      "id_range": [
+        169,
+        180
+      ],
+      "name_cn": "晋升答辩与评委政治",
+      "object_type": "promotion_panel",
+      "phase": 2,
+      "operation_key": "apply_promotion_panel",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "panel_formed",
+        "recused",
+        "blind_reviewed",
+        "defended",
+        "voted",
+        "resolved"
+      ],
+      "entry_state": "panel_formed",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "panel_formed",
+          "to": "recused",
+          "hook": "promotion_panel_formed"
+        },
+        {
+          "from": "recused",
+          "to": "blind_reviewed",
+          "hook": "panel_recusal_due"
+        },
+        {
+          "from": "blind_reviewed",
+          "to": "defended",
+          "hook": "blind_review_due"
+        },
+        {
+          "from": "defended",
+          "to": "voted",
+          "hook": "defense_due"
+        },
+        {
+          "from": "voted",
+          "to": "resolved",
+          "hook": "panel_vote_due"
+        }
+      ],
+      "resources": [
+        "panel_vote",
+        "capacity_hours"
+      ],
+      "invariant": "votes, vetoes, recusal and defense time remain reproducible from the frozen panel",
+      "feedback_surface": "promotion panel record",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "W",
+      "id_range": [
+        181,
+        191
+      ],
+      "name_cn": "PIP 启动、毕业与复发",
+      "object_type": "pip_case",
+      "phase": 2,
+      "operation_key": "apply_pip_lifecycle",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "triaged",
+        "evidence_met",
+        "acknowledged",
+        "executing",
+        "midpoint",
+        "resolved"
+      ],
+      "entry_state": "triaged",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "triaged",
+          "to": "evidence_met",
+          "hook": "pip_triaged"
+        },
+        {
+          "from": "evidence_met",
+          "to": "acknowledged",
+          "hook": "pip_evidence_due"
+        },
+        {
+          "from": "acknowledged",
+          "to": "executing",
+          "hook": "pip_ack_due"
+        },
+        {
+          "from": "executing",
+          "to": "midpoint",
+          "hook": "pip_execution_due"
+        },
+        {
+          "from": "midpoint",
+          "to": "resolved",
+          "hook": "pip_midpoint_due"
+        }
+      ],
+      "resources": [
+        "pip_capacity",
+        "treasury_gold",
+        "personal_gold",
+        "exit_cost"
+      ],
+      "invariant": "manager caseload, support budget, frozen goals and exit cost settle once",
+      "feedback_surface": "PIP task and outcome page",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "X",
+      "id_range": [
+        192,
+        204
+      ],
+      "name_cn": "值守、故障与救火",
+      "object_type": "incident_case",
+      "phase": 3,
+      "operation_key": "apply_incident_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "on_call",
+        "alerted",
+        "classified",
+        "commanded",
+        "timeline_frozen",
+        "reviewed",
+        "actions_open",
+        "resolved"
+      ],
+      "entry_state": "on_call",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "on_call",
+          "to": "alerted",
+          "hook": "on_call_open"
+        },
+        {
+          "from": "alerted",
+          "to": "classified",
+          "hook": "incident_alerted"
+        },
+        {
+          "from": "classified",
+          "to": "commanded",
+          "hook": "incident_classified"
+        },
+        {
+          "from": "commanded",
+          "to": "timeline_frozen",
+          "hook": "incident_commanded"
+        },
+        {
+          "from": "timeline_frozen",
+          "to": "reviewed",
+          "hook": "incident_timeline_frozen"
+        },
+        {
+          "from": "reviewed",
+          "to": "actions_open",
+          "hook": "incident_review_due"
+        },
+        {
+          "from": "actions_open",
+          "to": "resolved",
+          "hook": "incident_actions_open"
+        }
+      ],
+      "resources": [
+        "capacity_hours",
+        "treasury_gold",
+        "personal_gold",
+        "contribution_share"
+      ],
+      "invariant": "on-call relief and pay reconcile; prevention and response credit cannot double count",
+      "feedback_surface": "incident report",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "Y",
+      "id_range": [
+        205,
+        216
+      ],
+      "name_cn": "技术债与维护劳动",
+      "object_type": "debt_item",
+      "phase": 3,
+      "operation_key": "apply_debt_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "registered",
+        "owned",
+        "funded",
+        "worked",
+        "accepted",
+        "closed"
+      ],
+      "entry_state": "registered",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "registered",
+          "to": "owned",
+          "hook": "debt_registered"
+        },
+        {
+          "from": "owned",
+          "to": "funded",
+          "hook": "debt_owned"
+        },
+        {
+          "from": "funded",
+          "to": "worked",
+          "hook": "debt_funded"
+        },
+        {
+          "from": "worked",
+          "to": "accepted",
+          "hook": "debt_work_due"
+        },
+        {
+          "from": "accepted",
+          "to": "closed",
+          "hook": "debt_acceptance_due"
+        }
+      ],
+      "resources": [
+        "debt_point",
+        "treasury_gold",
+        "capacity_hours"
+      ],
+      "invariant": "ending debt equals opening plus additions and interest minus accepted repayment",
+      "feedback_surface": "technical debt ledger",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "Z",
+      "id_range": [
+        217,
+        228
+      ],
+      "name_cn": "中台、共享官署与内部开源",
+      "object_type": "platform_service",
+      "phase": 3,
+      "operation_key": "apply_platform_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "proposed",
+        "adopted",
+        "migrating",
+        "dual_running",
+        "valued",
+        "settled"
+      ],
+      "entry_state": "proposed",
+      "terminal_states": [
+        "settled"
+      ],
+      "transitions": [
+        {
+          "from": "proposed",
+          "to": "adopted",
+          "hook": "platform_proposed"
+        },
+        {
+          "from": "adopted",
+          "to": "migrating",
+          "hook": "platform_adopted"
+        },
+        {
+          "from": "migrating",
+          "to": "dual_running",
+          "hook": "platform_migration_due"
+        },
+        {
+          "from": "dual_running",
+          "to": "valued",
+          "hook": "platform_dual_run"
+        },
+        {
+          "from": "valued",
+          "to": "settled",
+          "hook": "platform_value_due"
+        }
+      ],
+      "resources": [
+        "platform_cost_share",
+        "treasury_gold",
+        "contribution_share"
+      ],
+      "invariant": "cost shares sum to total and founder, contributor and maintainer credit remain separate",
+      "feedback_surface": "platform service page",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AA",
+      "id_range": [
+        229,
+        241
+      ],
+      "name_cn": "数据口径与实验",
+      "object_type": "metric_experiment",
+      "phase": 3,
+      "operation_key": "apply_metric_experiment",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "defined",
+        "reconciled",
+        "preregistered",
+        "running",
+        "frozen",
+        "interpreted",
+        "closed"
+      ],
+      "entry_state": "defined",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "defined",
+          "to": "reconciled",
+          "hook": "metric_defined"
+        },
+        {
+          "from": "reconciled",
+          "to": "preregistered",
+          "hook": "metric_reconciled"
+        },
+        {
+          "from": "preregistered",
+          "to": "running",
+          "hook": "experiment_preregistered"
+        },
+        {
+          "from": "running",
+          "to": "frozen",
+          "hook": "experiment_running"
+        },
+        {
+          "from": "frozen",
+          "to": "interpreted",
+          "hook": "experiment_frozen"
+        },
+        {
+          "from": "interpreted",
+          "to": "closed",
+          "hook": "experiment_interpreted"
+        }
+      ],
+      "resources": [
+        "sample_slot",
+        "capacity_hours"
+      ],
+      "invariant": "numerator, denominator, window and version remain immutable; guardrails and primary metrics settle separately",
+      "feedback_surface": "metric dictionary and experiment report",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AB",
+      "id_range": [
+        242,
+        253
+      ],
+      "name_cn": "加班、会议与在线表演",
+      "object_type": "capacity_period",
+      "phase": 3,
+      "operation_key": "apply_capacity_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "planned",
+        "requested",
+        "decided",
+        "executed",
+        "compensated",
+        "normalized",
+        "resolved"
+      ],
+      "entry_state": "planned",
+      "terminal_states": [
+        "resolved"
+      ],
+      "transitions": [
+        {
+          "from": "planned",
+          "to": "requested",
+          "hook": "capacity_planned"
+        },
+        {
+          "from": "requested",
+          "to": "decided",
+          "hook": "capacity_request_open"
+        },
+        {
+          "from": "decided",
+          "to": "executed",
+          "hook": "capacity_decided"
+        },
+        {
+          "from": "executed",
+          "to": "compensated",
+          "hook": "capacity_executed"
+        },
+        {
+          "from": "compensated",
+          "to": "normalized",
+          "hook": "compensation_due"
+        },
+        {
+          "from": "normalized",
+          "to": "resolved",
+          "hook": "capacity_normalized"
+        }
+      ],
+      "resources": [
+        "capacity_hours",
+        "treasury_gold",
+        "personal_gold"
+      ],
+      "invariant": "hours equal output plus meetings plus learning plus on-call plus leave; compensation uses exactly one route",
+      "feedback_surface": "workload board",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AC",
+      "id_range": [
+        254,
+        265
+      ],
+      "name_cn": "外包、派遣与借调",
+      "object_type": "external_contract",
+      "phase": 3,
+      "operation_key": "apply_external_contract",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "requested",
+        "typed",
+        "sourced",
+        "active",
+        "delivered",
+        "resolved",
+        "handed_off"
+      ],
+      "entry_state": "requested",
+      "terminal_states": [
+        "handed_off"
+      ],
+      "transitions": [
+        {
+          "from": "requested",
+          "to": "typed",
+          "hook": "external_need_open"
+        },
+        {
+          "from": "typed",
+          "to": "sourced",
+          "hook": "contract_type_locked"
+        },
+        {
+          "from": "sourced",
+          "to": "active",
+          "hook": "supplier_selected"
+        },
+        {
+          "from": "active",
+          "to": "delivered",
+          "hook": "contract_active"
+        },
+        {
+          "from": "delivered",
+          "to": "resolved",
+          "hook": "delivery_due"
+        },
+        {
+          "from": "resolved",
+          "to": "handed_off",
+          "hook": "contract_resolved"
+        }
+      ],
+      "resources": [
+        "hc_slot",
+        "treasury_gold",
+        "capacity_hours"
+      ],
+      "invariant": "formal and shadow HC stay separate; SLA liability and individual liability do not merge",
+      "feedback_surface": "supplier and external workforce record",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AD",
+      "id_range": [
+        266,
+        277
+      ],
+      "name_cn": "招聘、面试与 Offer",
+      "object_type": "recruitment_funnel",
+      "phase": 3,
+      "operation_key": "apply_recruitment_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "requested",
+        "voted",
+        "calibrated",
+        "offered",
+        "decided",
+        "probation",
+        "quality_written_back"
+      ],
+      "entry_state": "requested",
+      "terminal_states": [
+        "quality_written_back"
+      ],
+      "transitions": [
+        {
+          "from": "requested",
+          "to": "voted",
+          "hook": "requisition_open"
+        },
+        {
+          "from": "voted",
+          "to": "calibrated",
+          "hook": "interview_votes_due"
+        },
+        {
+          "from": "calibrated",
+          "to": "offered",
+          "hook": "interview_calibration_due"
+        },
+        {
+          "from": "offered",
+          "to": "decided",
+          "hook": "offer_due"
+        },
+        {
+          "from": "decided",
+          "to": "probation",
+          "hook": "offer_decided"
+        },
+        {
+          "from": "probation",
+          "to": "quality_written_back",
+          "hook": "probation_due"
+        }
+      ],
+      "resources": [
+        "hc_slot",
+        "offer_budget",
+        "capacity_hours"
+      ],
+      "invariant": "HC and offer budget reserve before offer; interviewer judgement settles against later quality",
+      "feedback_surface": "recruitment funnel",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AE",
+      "id_range": [
+        278,
+        289
+      ],
+      "name_cn": "薪酬透明与发放纪律",
+      "object_type": "pay_statement",
+      "phase": 2,
+      "operation_key": "apply_pay_statement",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "payable",
+        "due",
+        "decided",
+        "corrected",
+        "appealed",
+        "closed"
+      ],
+      "entry_state": "payable",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "payable",
+          "to": "due",
+          "hook": "payable_generated"
+        },
+        {
+          "from": "due",
+          "to": "decided",
+          "hook": "pay_due"
+        },
+        {
+          "from": "decided",
+          "to": "corrected",
+          "hook": "pay_decision_due"
+        },
+        {
+          "from": "corrected",
+          "to": "appealed",
+          "hook": "pay_correction_due"
+        },
+        {
+          "from": "appealed",
+          "to": "closed",
+          "hook": "pay_appeal_due"
+        }
+      ],
+      "resources": [
+        "treasury_gold",
+        "personal_gold",
+        "pay_receipt"
+      ],
+      "invariant": "payable equals paid plus owed minus returned; every correction and backpay has one receipt",
+      "feedback_surface": "personal pay statement",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AF",
+      "id_range": [
+        290,
+        300
+      ],
+      "name_cn": "长期激励与流动性",
+      "object_type": "lti_grant",
+      "phase": 2,
+      "operation_key": "apply_lti_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "nominated",
+        "granted",
+        "cliff_reached",
+        "vesting",
+        "exit_classified",
+        "settled"
+      ],
+      "entry_state": "nominated",
+      "terminal_states": [
+        "settled"
+      ],
+      "transitions": [
+        {
+          "from": "nominated",
+          "to": "granted",
+          "hook": "lti_nominated"
+        },
+        {
+          "from": "granted",
+          "to": "cliff_reached",
+          "hook": "lti_granted"
+        },
+        {
+          "from": "cliff_reached",
+          "to": "vesting",
+          "hook": "cliff_due"
+        },
+        {
+          "from": "vesting",
+          "to": "exit_classified",
+          "hook": "vesting_due"
+        },
+        {
+          "from": "exit_classified",
+          "to": "settled",
+          "hook": "exit_classification_due"
+        }
+      ],
+      "resources": [
+        "lti_share",
+        "treasury_gold"
+      ],
+      "invariant": "granted shares equal unvested plus vested plus forfeited plus repurchased",
+      "feedback_surface": "long-term incentive statement",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AG",
+      "id_range": [
+        301,
+        311
+      ],
+      "name_cn": "业务周期与重组折算",
+      "object_type": "reorg_case",
+      "phase": 3,
+      "operation_key": "apply_reorg_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "frozen",
+        "split",
+        "quiet_period",
+        "mapped",
+        "normalized",
+        "closed"
+      ],
+      "entry_state": "frozen",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "frozen",
+          "to": "split",
+          "hook": "reorg_facts_frozen"
+        },
+        {
+          "from": "split",
+          "to": "quiet_period",
+          "hook": "responsibility_split"
+        },
+        {
+          "from": "quiet_period",
+          "to": "mapped",
+          "hook": "quiet_period_due"
+        },
+        {
+          "from": "mapped",
+          "to": "normalized",
+          "hook": "old_case_mapping_due"
+        },
+        {
+          "from": "normalized",
+          "to": "closed",
+          "hook": "normalization_due"
+        }
+      ],
+      "resources": [
+        "manager_weight",
+        "capacity_hours"
+      ],
+      "invariant": "split weights, hours and goal totals conserve; strategy changes never rewrite old goals",
+      "feedback_surface": "reorganization before-and-after ledger",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AH",
+      "id_range": [
+        312,
+        322
+      ],
+      "name_cn": "内部市场、离职与回流",
+      "object_type": "internal_market_case",
+      "phase": 3,
+      "operation_key": "apply_internal_market",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "posted",
+        "applied",
+        "trialed",
+        "release_decided",
+        "moved",
+        "alumni",
+        "closed"
+      ],
+      "entry_state": "posted",
+      "terminal_states": [
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": "posted",
+          "to": "applied",
+          "hook": "internal_role_posted"
+        },
+        {
+          "from": "applied",
+          "to": "trialed",
+          "hook": "confidential_application"
+        },
+        {
+          "from": "trialed",
+          "to": "release_decided",
+          "hook": "trial_due"
+        },
+        {
+          "from": "release_decided",
+          "to": "moved",
+          "hook": "release_decision_due"
+        },
+        {
+          "from": "moved",
+          "to": "alumni",
+          "hook": "move_complete"
+        },
+        {
+          "from": "alumni",
+          "to": "closed",
+          "hook": "alumni_due"
+        }
+      ],
+      "resources": [
+        "mobility_slot",
+        "treasury_gold"
+      ],
+      "invariant": "one active market case per person; old performance persists and one counteroffer exhausts retention",
+      "feedback_surface": "internal market and alumni record",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AI",
+      "id_range": [
+        323,
+        333
+      ],
+      "name_cn": "学习、训练与知识扩散",
+      "object_type": "learning_plan",
+      "phase": 3,
+      "operation_key": "apply_learning_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "budgeted",
+        "enrolled",
+        "completed",
+        "applied",
+        "measured",
+        "spread"
+      ],
+      "entry_state": "budgeted",
+      "terminal_states": [
+        "spread"
+      ],
+      "transitions": [
+        {
+          "from": "budgeted",
+          "to": "enrolled",
+          "hook": "learning_budgeted"
+        },
+        {
+          "from": "enrolled",
+          "to": "completed",
+          "hook": "learning_enrolled"
+        },
+        {
+          "from": "completed",
+          "to": "applied",
+          "hook": "learning_complete"
+        },
+        {
+          "from": "applied",
+          "to": "measured",
+          "hook": "application_due"
+        },
+        {
+          "from": "measured",
+          "to": "spread",
+          "hook": "outcome_due"
+        }
+      ],
+      "resources": [
+        "treasury_gold",
+        "capacity_hours"
+      ],
+      "invariant": "learning budget and protected hours reconcile; certificates never directly buy a rating",
+      "feedback_surface": "learning and knowledge-diffusion record",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AJ",
+      "id_range": [
+        334,
+        344
+      ],
+      "name_cn": "需求入口与交付价值",
+      "object_type": "demand_item",
+      "phase": 3,
+      "operation_key": "apply_delivery_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "entered",
+        "defined",
+        "estimated",
+        "in_wip",
+        "changed",
+        "delivered",
+        "adopted",
+        "valued"
+      ],
+      "entry_state": "entered",
+      "terminal_states": [
+        "valued"
+      ],
+      "transitions": [
+        {
+          "from": "entered",
+          "to": "defined",
+          "hook": "demand_entered"
+        },
+        {
+          "from": "defined",
+          "to": "estimated",
+          "hook": "definition_locked"
+        },
+        {
+          "from": "estimated",
+          "to": "in_wip",
+          "hook": "estimate_locked"
+        },
+        {
+          "from": "in_wip",
+          "to": "changed",
+          "hook": "wip_open"
+        },
+        {
+          "from": "changed",
+          "to": "delivered",
+          "hook": "change_requested"
+        },
+        {
+          "from": "delivered",
+          "to": "adopted",
+          "hook": "delivery_due"
+        },
+        {
+          "from": "adopted",
+          "to": "valued",
+          "hook": "adoption_due"
+        }
+      ],
+      "resources": [
+        "wip_slot",
+        "capacity_hours"
+      ],
+      "invariant": "WIP limit holds and scope, time and quality changes carry explicit tax; launch, adoption and value settle separately",
+      "feedback_surface": "demand and value board",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AK",
+      "id_range": [
+        345,
+        354
+      ],
+      "name_cn": "制度运营与审计",
+      "object_type": "policy_version",
+      "phase": 1,
+      "operation_key": "apply_policy_governance",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "drafted",
+        "piloted",
+        "effective",
+        "exception_audited",
+        "measured",
+        "migrated"
+      ],
+      "entry_state": "drafted",
+      "terminal_states": [
+        "migrated"
+      ],
+      "transitions": [
+        {
+          "from": "drafted",
+          "to": "piloted",
+          "hook": "policy_drafted"
+        },
+        {
+          "from": "piloted",
+          "to": "effective",
+          "hook": "policy_piloted"
+        },
+        {
+          "from": "effective",
+          "to": "exception_audited",
+          "hook": "policy_effective"
+        },
+        {
+          "from": "exception_audited",
+          "to": "measured",
+          "hook": "policy_exception_due"
+        },
+        {
+          "from": "measured",
+          "to": "migrated",
+          "hook": "policy_measurement_due"
+        }
+      ],
+      "resources": [
+        "exception_slot",
+        "capacity_hours"
+      ],
+      "invariant": "exceptions expire automatically and old records map explicitly across policy versions",
+      "feedback_surface": "policy health and audit page",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    },
+    {
+      "code": "AL",
+      "id_range": [
+        355,
+        361
+      ],
+      "name_cn": "制度极限与终局",
+      "object_type": "constitution_case",
+      "phase": 4,
+      "operation_key": "apply_constitution_control",
+      "owner_scope": "frozen_reviewing_manager",
+      "subject_scope": "frozen_assessed_official",
+      "states": [
+        "facts_frozen",
+        "quota_applied",
+        "appeal_returned",
+        "collective_action",
+        "chartered",
+        "reported"
+      ],
+      "entry_state": "facts_frozen",
+      "terminal_states": [
+        "reported"
+      ],
+      "transitions": [
+        {
+          "from": "facts_frozen",
+          "to": "quota_applied",
+          "hook": "multi_cycle_facts_frozen"
+        },
+        {
+          "from": "quota_applied",
+          "to": "appeal_returned",
+          "hook": "quota_applied"
+        },
+        {
+          "from": "appeal_returned",
+          "to": "collective_action",
+          "hook": "appeal_quota_returned"
+        },
+        {
+          "from": "collective_action",
+          "to": "chartered",
+          "hook": "manager_collective_action"
+        },
+        {
+          "from": "chartered",
+          "to": "reported",
+          "hook": "constitution_chartered"
+        }
+      ],
+      "resources": [
+        "quota_slot",
+        "appeal_slot",
+        "manager_vote"
+      ],
+      "invariant": "old cases never rewrite; successful appeals return quota and the charter changes future defaults only",
+      "feedback_surface": "361 constitution and ten-year report",
+      "cleanup_rule": "retain immutable closed case; clear only active scheduler handles",
+      "permissions": {
+        "player_manager": "landed celestial duke-or-higher manager",
+        "ai_manager": "owner-authorized second AI exception: landed celestial duke-or-higher manager, background path only",
+        "subject": "the assessed official bound to the frozen case",
+        "count_baron": "subject-only; never a manager, calibrator, PIP owner, or allocator"
+      }
+    }
+  ]
+}

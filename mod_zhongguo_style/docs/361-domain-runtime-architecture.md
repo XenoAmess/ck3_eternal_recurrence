@@ -1,5 +1,10 @@
 # 361 领域运行时架构
 
+> 2026-08-30 施工进度：Phase 0 的设计合同层已经落地。38 个 DomainSpec、361/361 runtime plan、1083 条 A/B/C
+> typed-operation 编译和生成快照已通过 L0；真实 readiness 仍保持 `partial × 4 + not-implemented × 357`。case kernel 的 CK3
+> consumer、第二批产品 effects、共享面板与实机证据尚未完成，不能把 `contract-complete` 写成玩法完成。八批执行账见
+> [`361-phase2-full-implementation-program.md`](361-phase2-full-implementation-program.md)。
+
 本文定义 361 条政策从“可配置的组织账本投影”升级为真正 CK3 决策、对象、期限与后果的施工架构。它不推翻现有考核主循环和实机证据，而是明确区分已经完成的配置投影与尚待实现的领域运行时语义。
 
 > 2026-08-30 二期更新：项目所有者已授权 v0.4.x 实施首个纵切，并已把该成品静态里程碑收入 master 开发基线。#001/#018/#069/#357 现为 `domain_runtime = partial`、`runtime_evidence = static-ready`；其余357项仍为 `not-implemented`。实现、边界与 MCP-first 合批清单见 [phase2-slice-001-018-069-357.md](phase2-slice-001-018-069-357.md)。这不改写已公开 0.3.0 的功能或证据口径。
@@ -174,7 +179,8 @@ PASS
 
 ## 四、v2 runtime schema
 
-现有 `tools/mechanism_choices/*.json` 继续只维护中英文政策选择文案、profile 和参考路线。新增独立的运行语义来源，例如：
+现有 `tools/mechanism_choices/*.json` 继续只维护中英文政策选择文案、profile 和参考路线。当前运行语义权威由
+`tools/zg361_domain_data.py` 与逐项 acceptance contract 共同组成，生成以下机器快照：
 
 ```text
 tools/mechanism_runtime/runtime_001_120.json
@@ -247,7 +253,7 @@ AcceptanceSpec
 
 ## 五、生成器与文件接口
 
-建议新增：
+已新增设计合同层：
 
 ```text
 tools/zg361_domain_data.py
@@ -259,6 +265,8 @@ tools/mechanism_runtime/runtime_241_361.json
 common/scripted_effects/zg361_case_kernel_effects.txt
 common/scripted_triggers/zg361_case_kernel_triggers.txt
 ```
+
+其中前五项已落地；最后两份 CK3 case kernel/trigger 是下一施工项，尚不得写为已实现。
 
 `tools/zg361_domain_data.py` 负责：
 
