@@ -333,7 +333,7 @@ class MechanismGenerationTests(unittest.TestCase):
         )
         static_ids = list(ids_at_least(ReadinessLevel.CK3_STATIC_READY))
         self.assertEqual(manifest["phase2_static"]["mechanism_ids"], static_ids)
-        self.assertEqual(manifest["phase2_static"]["count"], 253)
+        self.assertEqual(manifest["phase2_static"]["count"], 275)
         self.assertEqual(
             manifest["phase2_static"]["evidence"],
             "at-least-ck3-static-ready",

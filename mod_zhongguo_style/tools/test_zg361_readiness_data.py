@@ -68,8 +68,8 @@ class ReadinessDataTests(unittest.TestCase):
             dict(EXCLUSIVE_COUNTS),
             {
                 "design-only": 0,
-                "python-l0": 108,
-                "ck3-static-ready": 191,
+                "python-l0": 86,
+                "ck3-static-ready": 213,
                 "central-wired": 58,
                 "ck3-live": 4,
             },
@@ -80,7 +80,7 @@ class ReadinessDataTests(unittest.TestCase):
             {
                 "design-only": 361,
                 "python-l0": 361,
-                "ck3-static-ready": 253,
+                "ck3-static-ready": 275,
                 "central-wired": 62,
                 "ck3-live": 4,
             },
@@ -97,7 +97,7 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(actual_cumulative, dict(EXPECTED_CUMULATIVE_RANGES))
         self.assertEqual(
             actual_exclusive["ck3-static-ready"],
-            "019-036, 054-068, 082-134, 192-241, 278-311, 334-354",
+            "019-036, 054-068, 082-134, 192-241, 278-354",
         )
 
     def test_manifest_embeds_current_summary_and_every_per_id_record(self) -> None:
