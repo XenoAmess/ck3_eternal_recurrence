@@ -44,7 +44,9 @@ L 的五状态、AE/AF 的六状态均直接复用 `zg361_case_l/ae/af_*`；编�
 
 ## 二、入口、权限与单卡适配器
 
-三个开放入口是：
+唯一对未来 central dispatcher 暴露的入口是 manager-scope
+`zg361_comp_portfolio_open_next_effect`。以下三个 effect 只是本包 portfolio 在 L → AE → AF 顺序中调用的内部
+domain opener，不能绕过 portfolio 直接开案：
 
 ```text
 zg361_comp_open_l_case_effect
@@ -67,12 +69,21 @@ open、manager core、stage advance、付款批准或回购批准权。AE 申诉
 `zg361_comp_ae_subject_appeal_response_effect`，只允许本人写自己的响应，不调用任何管理入口。
 
 `zg361_comp_portfolio_*` 是 manager-scope 适配器：一个管理者同一时刻只持有一个选中受评者、一个 L/AE/AF
-活动案卷和一个当前阶段卡。玩家仅看到统一的 `zg361comp.1` 三路线事件；不存在 33 个编号窗口。授权 AI 由
-`zg361comp.2` 静默选择后台路线，结案后 hidden queue 再取下一案。
+活动案卷和一个当前阶段卡。首次选案只接受当前直属受评者已经正式送达的本轮结果，并一次冻结
+`result_owner/result_subject/result_cycle/result_case/result_state/result_grade`；其中 `result_owner` 必须是当前管理者、
+`result_cycle` 必须等于其当前 `zg361_review_serial`，`result_state >= 3`，grade 只允许 `1/2/3`。缺字段、旧轮、
+owner 不符或 state 仍为 1/2 的未送达结果一律不选、不打开任何 L/AE/AF 案卷。
+
+grade 的唯一数值投影为 `1 -> 325 (3.25)`、`2 -> 350 (3.50)`、`3 -> 375 (3.75)`。L 结案后 portfolio
+保留同一 subject 和同一结果快照开启 AE，AE 结案后再以同一快照开启 AF；中途不得重新按 stewardship 选人，
+也不得从可能已经变化的 current result 重读 grade。玩家仅看到统一的 `zg361comp.1` 三路线事件；不存在 33 个
+编号窗口。授权 AI 由 `zg361comp.2` 静默选择后台路线，结案后 hidden queue 再取下一 domain。
 
 ## 三、五元身份、receipt 与写入消费链
 
-每次 open 后，编号 core、consumer、阶段屏障、资金 journal 和 delayed event 都检查同一五元身份：
+每次内部 domain open 成功后，还会把 manager portfolio 的六元结果来源复制为 subject-scope
+`zg361_comp_result_*` 快照；AE/AF 只消费这份同源快照。编号 core、consumer、阶段屏障、资金 journal 和
+delayed event 继续检查各自同一五元案卷身份：
 
 ```text
 owner + subject + cycle_serial + case_serial + expected_state
@@ -147,6 +158,10 @@ granted_units = unvested_service + unvested_performance + vested + forfeited + r
 `10+4` 当场结算给受评者，递延桶 `3+1` 与暂扣桶 `1+1` 留在 reserve。到期 resolver 只能二选一：结算剩余
 6，或按原两本 receipt 退回 `4 treasury + 2 personal`。
 
+L 中 `performance_bonus`、`individual_bps`、`performance_award` 是金额/公式输出，不是另一套绩效 rating 输入；
+本次审阅确认它们不写 `grade/rating = 350/375`，因此不把这些既有合同常量伪改成结果档位。实际 rating 只来自
+上述 portfolio 结果快照。
+
 086 的追回必须引用即时付款 source receipt，且不超过该 receipt 尚可追回金额；未付金额只可暂扣/没收，不能
 伪装成已付追回。090 专项奖总额 10，实际付款为 `7 treasury + 3 personal`，并明确不占绩效奖名额。其余编号
 写留才断崖、带位、统一调薪池、品级/任命/权力/现金四字段和年功/绩效两账，均由后续阶段或结案消费。
@@ -159,17 +174,20 @@ AE 不用一个“已付款”布尔量折叠流程，而是完整保留：
 payable -> due -> decided -> corrected -> appealed -> closed
 ```
 
-278–280 生成并冻结应付、额外月俸合同属性和折算；281 必须立即支付或生成新的 90/180 日到期 ticket，连续延期写
+278–280 生成并冻结应付、额外月俸合同属性和折算；其中绩效型额外月俸使用 portfolio 实际结果，不再以 `375`
+初始化。281 必须立即支付或生成新的 90/180 日到期 ticket，连续延期写
 兑现信用；282 的追溯补发写独立债和 receipt。283–288 继续消费干升职期限、降薪缓冲、同档调薪、带外修复、可见
-口径和新老倒挂，但每次都重算 `payable/paid/owed/returned` 守恒。
+口径和新老倒挂，但每次都重算 `payable/paid/owed/returned` 守恒。285 的同档校准也复制同一冻结实际 grade，
+不能另写一个固定 `375`。
 
 289 只开放 compensation appeal：受评者先在 `appealed` 状态写本人响应，管理者随后才可裁决。补发/纠错只改钱账，
 `frozen_performance_grade` 不得被薪酬申诉重写；绩效申诉仍属于另一案轨。玩家本人可见申诉事件，AI 当事人保持后台。
 
 ## 七、AF：提名、归属、离任与 FIFO 回购
 
-290 的提名资格门槛明确是 **rating >= 3.75**（脚本定点值 `375`）；**3.50 (`350`) 是明确负例**，不能因处于
-相邻档位而入池。资格只允许进入提名池，不等于自动授予。
+290 的提名资格门槛明确是冻结结果 **grade = 3 且 rating = 3.75**（脚本定点值 `375`）；**真实 grade = 2
+映射出的 3.50 (`350`) 是明确负例**，不能因处于相邻档位而入池。三条路线只决定提名后的方案，任何路线都不能
+改写 rating 或把 3.50 伪造成 3.75。资格只允许进入提名池，不等于自动授予。
 
 291–294 冻结固定份额/固定价值、风险形态、自愿奖金转换和授予价/现值/可变现值；295–296 冻结 Cliff 与
 月/季/年 cadence，并用真实 delayed event 重复归属。297 将服务轨和绩效轨分开，298 要求组织门槛与个人门槛
@@ -196,8 +214,9 @@ py mod_zhongguo_style/tools/test_zg361_case_kernel.py
 ```
 
 专用 L0 合同应固定检查 33 ID/阶段与 model registry、11 个生成结果和 BOM、9 语言结构、权限矩阵、每项
-write-to-consumer、五元 receipt/deadline、双付款预检、L/AE/AF 三条守恒式、3.75/3.50、Good Leaver 默认不加速、
-AF FIFO `7+3` 回购、单可见卡和 AI 静默。七个非日常语言只是英文结构占位，不得称为完成翻译。
+write-to-consumer、五元 receipt/deadline、双付款预检、L/AE/AF 三条守恒式、current delivered result 六元冻结、
+跨 L/AE/AF 同 subject/同结果、3.75/3.50 真值映射、Good Leaver 默认不加速、AF FIFO `7+3` 回购、单可见卡和
+AI 静默。七个非日常语言只是英文结构占位，不得称为完成翻译。
 
 后续实机验收必须 **MCP-first**：先提供 named open/apply/query 和变量 snapshot，在同一 paused CK3 会话中批量读取
 管理者国库、个人金币、受款人金币、五元案卷、operation/cash receipt、statement 与 unit ledger，再验证成功、延期、

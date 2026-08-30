@@ -368,24 +368,84 @@ class CompensationRuntimeTests(unittest.TestCase):
 
     def test_290_nomination_threshold_is_375_and_350_is_a_negative_case(self) -> None:
         source = top_level_block(self.effects, "zg361_comp_m290_consume_effect")
-        default_rating = "set_variable = { name = zg361_comp_m290_rating value = 350 }"
-        qualifying_rating = "set_variable = { name = zg361_comp_m290_rating value = 375 }"
-        threshold = "var:zg361_comp_m290_rating >= 375"
+        self.assertEqual(generator.RESULT_GRADE_RATINGS, {1: 325, 2: 350, 3: 375})
+        frozen_rating = (
+            "set_variable = { name = zg361_comp_m290_rating "
+            "value = var:zg361_comp_result_rating }"
+        )
         default_ineligible = "set_variable = { name = zg361_comp_m290_eligible value = 0 }"
         eligible = "set_variable = { name = zg361_comp_m290_eligible value = 1 }"
-        for token in (
-            default_rating,
-            qualifying_rating,
-            threshold,
-            default_ineligible,
-            eligible,
-        ):
+        threshold = (
+            "var:zg361_comp_m290_result_grade = 3 "
+            "var:zg361_comp_m290_rating = 375"
+        )
+        for token in (frozen_rating, default_ineligible, threshold, eligible):
             self.assertIn(token, source)
-        self.assertLess(source.index(default_rating), source.index(default_ineligible))
+        for field in ("owner", "subject", "cycle", "case", "state", "grade"):
+            self.assertIn(
+                f"name = zg361_comp_m290_result_{field} "
+                f"value = var:zg361_comp_result_{field}",
+                source,
+            )
+        self.assertLess(source.index(frozen_rating), source.index(default_ineligible))
         self.assertLess(source.index(default_ineligible), source.index(threshold))
         self.assertEqual(source.count(eligible), 1)
-        self.assertNotIn("zg361_comp_m290_rating >= 350", source)
-        self.assertFalse(350 >= 375, "3.50 must remain below the 3.75 threshold")
+        self.assertNotIn("zg361_comp_m290_route", source)
+        self.assertNotRegex(
+            source,
+            r"name\s*=\s*zg361_comp_m290_rating\s+value\s*=\s*(?:350|375)",
+        )
+        eligible_from_frozen_result = lambda grade: (
+            grade == 3 and generator.RESULT_GRADE_RATINGS[grade] == 375
+        )
+        self.assertFalse(
+            eligible_from_frozen_result(2),
+            "a real frozen 3.50 result must remain ineligible",
+        )
+        self.assertTrue(eligible_from_frozen_result(3))
+
+    def test_ae_and_af_consume_the_same_frozen_actual_result(self) -> None:
+        ae_open = top_level_block(self.effects, "zg361_comp_open_ae_case_effect")
+        self.assertIn(
+            "name = zg361_comp_ae_frozen_performance_grade "
+            "value = var:zg361_comp_result_rating",
+            ae_open,
+        )
+        self.assertNotIn(
+            "name = zg361_comp_ae_frozen_performance_grade value = 375",
+            ae_open,
+        )
+
+        same_rating = {
+            285: "name = zg361_comp_m285_frozen_grade value = var:zg361_comp_result_rating",
+            289: (
+                "name = zg361_comp_m289_frozen_performance_grade "
+                "value = var:zg361_comp_ae_frozen_performance_grade"
+            ),
+            290: "name = zg361_comp_m290_rating value = var:zg361_comp_result_rating",
+        }
+        for mechanism_id, token in same_rating.items():
+            with self.subTest(mechanism_id=mechanism_id):
+                source = top_level_block(
+                    self.effects, f"zg361_comp_m{mechanism_id:03d}_consume_effect"
+                )
+                self.assertIn(token, source)
+
+        statement = top_level_block(
+            self.effects, "zg361_comp_ae_recalculate_statement_effect"
+        )
+        self.assertIn("var:zg361_comp_ae_frozen_performance_grade < 375", statement)
+
+        # L's performance-named values are monetary/formula outputs, not a
+        # second rating input. They must not smuggle a hard-coded grade/rating.
+        for mechanism_id in (82, 83, 91):
+            source = top_level_block(
+                self.effects, f"zg361_comp_m{mechanism_id:03d}_consume_effect"
+            )
+            self.assertNotRegex(
+                source,
+                r"(?:grade|rating)\s+value\s*=\s*(?:350|375)",
+            )
 
     def test_299_good_leaver_does_not_implicitly_accelerate_unvested_service(self) -> None:
         source = top_level_block(self.effects, "zg361_comp_m299_consume_effect")
@@ -628,6 +688,102 @@ class CompensationRuntimeTests(unittest.TestCase):
                 self.assertIn("var:zg361_case_kernel_applied = 1", event)
                 self.assertIn(f"stale {prefix} five-field ticket ignored", event)
 
+    def test_portfolio_freezes_only_a_current_delivered_result_for_all_domains(self) -> None:
+        snapshot = top_level_block(
+            self.effects, "zg361_comp_freeze_current_result_effect"
+        )
+        opener = top_level_block(
+            self.effects, "zg361_comp_portfolio_open_next_effect"
+        )
+        sources = {
+            "owner": "zg361_result_case_owner",
+            "cycle": "zg361_result_cycle_serial",
+            "case": "zg361_result_case_serial",
+            "state": "zg361_result_case_state",
+            "grade": "zg361_result_grade",
+        }
+        for field, source in sources.items():
+            with self.subTest(field=field):
+                self.assertIn(f"has_variable = {source}", snapshot)
+                self.assertIn(f"has_variable = {source}", opener)
+                self.assertIn(
+                    f"name = zg361_comp_portfolio_result_{field} "
+                    f"value = scope:zg361_comp_result_subject_scope.var:{source}",
+                    snapshot,
+                )
+        self.assertIn(
+            "name = zg361_comp_portfolio_result_subject "
+            "value = scope:zg361_comp_result_subject_scope",
+            snapshot,
+        )
+        self.assertIn("var:zg361_result_case_owner = root", snapshot)
+        self.assertIn(
+            "var:zg361_result_cycle_serial = root.var:zg361_review_serial", snapshot
+        )
+        self.assertIn("var:zg361_result_case_state >= 3", snapshot)
+        self.assertIn("trigger_else = { always = no }", snapshot)
+        for grade, rating in generator.RESULT_GRADE_RATINGS.items():
+            with self.subTest(grade=grade):
+                self.assertIn(f"var:zg361_result_grade = {grade}", snapshot)
+                self.assertIn(
+                    f"name = zg361_comp_portfolio_result_rating value = {rating}",
+                    snapshot,
+                )
+
+        self.assertEqual(opener.count("ordered_vassal = {"), 1)
+        self.assertIn("var:zg361_comp_portfolio_domain = 1", opener)
+        self.assertIn("NOT = { has_variable = zg361_comp_portfolio_subject }", opener)
+        self.assertEqual(opener.count("zg361_comp_freeze_current_result_effect = yes"), 1)
+        self.assertIn("var:zg361_result_case_state >= 3", opener)
+        self.assertIn(
+            "var:zg361_result_cycle_serial = root.var:zg361_review_serial", opener
+        )
+
+        portfolio_fields = ("owner", "subject", "cycle", "case", "state", "grade")
+        for domain in ("l", "ae", "af"):
+            domain_open = top_level_block(
+                self.effects, f"zg361_comp_open_{domain}_case_effect"
+            )
+            self.assertIn("var:zg361_comp_portfolio_result_state >= 3", domain_open)
+            self.assertIn(
+                "var:zg361_comp_portfolio_result_cycle = var:zg361_review_serial",
+                domain_open,
+            )
+            for field in portfolio_fields:
+                with self.subTest(domain=domain, field=field):
+                    self.assertIn(
+                        f"has_variable = zg361_comp_portfolio_result_{field}",
+                        domain_open,
+                    )
+                    self.assertIn(
+                        f"name = zg361_comp_result_{field} "
+                        f"value = root.var:zg361_comp_portfolio_result_{field}",
+                        domain_open,
+                    )
+            self.assertIn(
+                "name = zg361_comp_result_rating "
+                "value = root.var:zg361_comp_portfolio_result_rating",
+                domain_open,
+            )
+
+        def can_open(
+            *, owner_matches: bool, cycle_matches: bool, state: int, grade: int
+        ) -> bool:
+            return owner_matches and cycle_matches and state >= 3 and grade in {1, 2, 3}
+
+        self.assertTrue(
+            can_open(owner_matches=True, cycle_matches=True, state=3, grade=3)
+        )
+        self.assertFalse(
+            can_open(owner_matches=True, cycle_matches=True, state=2, grade=3)
+        )
+        self.assertFalse(
+            can_open(owner_matches=True, cycle_matches=False, state=3, grade=3)
+        )
+        self.assertFalse(
+            can_open(owner_matches=False, cycle_matches=True, state=3, grade=3)
+        )
+
     def test_portfolio_has_one_player_stage_card_and_authorized_ai_is_background(self) -> None:
         opener = top_level_block(
             self.effects, "zg361_comp_portfolio_open_next_effect"
@@ -650,7 +806,11 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertEqual(
             self.effects.count("add_character_flag = zg361_comp_portfolio_active"), 1
         )
-        self.assertIn("name = zg361_comp_portfolio_subject", opener)
+        snapshot = top_level_block(
+            self.effects, "zg361_comp_freeze_current_result_effect"
+        )
+        self.assertIn("name = zg361_comp_portfolio_subject", snapshot)
+        self.assertIn("zg361_comp_freeze_current_result_effect = yes", opener)
         self.assertIn("name = zg361_comp_portfolio_domain", opener)
 
         player_card = top_level_block(self.events, "zg361comp.1")

@@ -113,6 +113,7 @@ STAGE_BY_ID = {
     for mechanism_id in stage
 }
 FINANCIAL_IDS = frozenset({84, 86, 90, 281, 282, 289, 292, 300})
+RESULT_GRADE_RATINGS = {1: 325, 2: 350, 3: 375}
 
 
 def clean(text: str) -> str:
@@ -138,6 +139,8 @@ def validate_specs() -> None:
         raise ValueError("runtime may own only L/AE/AF")
     if any(len(row.states) != len(row.stages) + 1 for row in DOMAINS):
         raise ValueError("each domain needs one explicit state on both sides of every stage")
+    if RESULT_GRADE_RATINGS != {1: 325, 2: 350, 3: 375}:
+        raise ValueError("result grade/rating projection drifted")
 
 
 def vars_for(domain: str) -> dict[str, str]:
@@ -470,7 +473,7 @@ def special_payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_steps value = 2 }}
             set_variable = {{ name = {p}_professional_pay_preserved value = 0 }}
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_professional_pay_preserved value = 1 }} }}''',
-        285: f'''set_variable = {{ name = {p}_frozen_grade value = 375 }}
+        285: f'''set_variable = {{ name = {p}_frozen_grade value = var:zg361_comp_result_rating }}
             set_variable = {{ name = {p}_raise_pool value = 10 }}
             set_variable = {{ name = {p}_band_debt_allocation value = 6 }}
             set_variable = {{ name = {p}_scarcity_allocation value = 4 }}
@@ -494,10 +497,15 @@ def special_payload(mechanism_id: int) -> str:
                 change_variable = {{ name = zg361_comp_ae_statement_payable add = 4 }}
                 change_variable = {{ name = zg361_comp_ae_statement_paid add = 4 }}
             }}''',
-        290: f'''set_variable = {{ name = {p}_rating value = 350 }}
-            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_rating value = 375 }} }}
+        290: f'''set_variable = {{ name = {p}_result_owner value = var:zg361_comp_result_owner }}
+            set_variable = {{ name = {p}_result_subject value = var:zg361_comp_result_subject }}
+            set_variable = {{ name = {p}_result_cycle value = var:zg361_comp_result_cycle }}
+            set_variable = {{ name = {p}_result_case value = var:zg361_comp_result_case }}
+            set_variable = {{ name = {p}_result_state value = var:zg361_comp_result_state }}
+            set_variable = {{ name = {p}_result_grade value = var:zg361_comp_result_grade }}
+            set_variable = {{ name = {p}_rating value = var:zg361_comp_result_rating }}
             set_variable = {{ name = {p}_eligible value = 0 }}
-            if = {{ limit = {{ var:{p}_rating >= 375 }} set_variable = {{ name = {p}_eligible value = 1 }} }}
+            if = {{ limit = {{ var:{p}_result_grade = 3 var:{p}_rating = 375 }} set_variable = {{ name = {p}_eligible value = 1 }} }}
             set_variable = {{ name = {p}_nomination_score value = 10 }}''',
         291: f'''set_variable = {{ name = {p}_grant_measure value = var:{p}_route }}
             set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }}
@@ -1007,7 +1015,7 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_ae_delay_count value = 0 }
             set_variable = { name = zg361_comp_ae_credibility value = 100 }
             set_variable = { name = zg361_comp_ae_payment_red value = 0 }
-            set_variable = { name = zg361_comp_ae_frozen_performance_grade value = 375 }
+            set_variable = { name = zg361_comp_ae_frozen_performance_grade value = var:zg361_comp_result_rating }
             set_variable = { name = zg361_comp_ae_appeal_response_recorded value = 0 }
             set_variable = { name = zg361_comp_ae_appeal_requested value = 0 }
             set_variable = { name = zg361_comp_ae_due_now_treasury_status value = 0 }
@@ -1061,6 +1069,60 @@ def domain_initialization(domain: DomainSpec) -> str:
             }'''
 
 
+def render_result_snapshot_helpers() -> str:
+    return r'''# Subject-scoped freeze of one delivered result.  The manager portfolio owns
+# this immutable source identity for the complete L -> AE -> AF sequence.
+zg361_comp_freeze_current_result_effect = {
+    root = { remove_variable = zg361_comp_portfolio_result_snapshot_applied }
+    if = {
+        limit = {
+            zg361_is_reviewable_vassal_trigger = yes
+            liege = root
+            trigger_if = {
+                limit = {
+                    has_variable = zg361_result_case_owner
+                    has_variable = zg361_result_cycle_serial
+                    has_variable = zg361_result_case_serial
+                    has_variable = zg361_result_case_state
+                    has_variable = zg361_result_grade
+                    root = { has_variable = zg361_review_serial }
+                }
+                var:zg361_result_case_owner = root
+                var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                var:zg361_result_case_state >= 3
+                OR = {
+                    var:zg361_result_grade = 1
+                    var:zg361_result_grade = 2
+                    var:zg361_result_grade = 3
+                }
+            }
+            trigger_else = { always = no }
+        }
+        save_scope_as = zg361_comp_result_subject_scope
+        root = {
+            set_variable = { name = zg361_comp_portfolio_cycle value = var:zg361_review_serial }
+            set_variable = { name = zg361_comp_portfolio_subject value = scope:zg361_comp_result_subject_scope }
+            set_variable = { name = zg361_comp_portfolio_result_owner value = scope:zg361_comp_result_subject_scope.var:zg361_result_case_owner }
+            set_variable = { name = zg361_comp_portfolio_result_subject value = scope:zg361_comp_result_subject_scope }
+            set_variable = { name = zg361_comp_portfolio_result_cycle value = scope:zg361_comp_result_subject_scope.var:zg361_result_cycle_serial }
+            set_variable = { name = zg361_comp_portfolio_result_case value = scope:zg361_comp_result_subject_scope.var:zg361_result_case_serial }
+            set_variable = { name = zg361_comp_portfolio_result_state value = scope:zg361_comp_result_subject_scope.var:zg361_result_case_state }
+            set_variable = { name = zg361_comp_portfolio_result_grade value = scope:zg361_comp_result_subject_scope.var:zg361_result_grade }
+            set_variable = { name = zg361_comp_portfolio_result_rating value = 325 }
+            if = {
+                limit = { scope:zg361_comp_result_subject_scope.var:zg361_result_grade = 2 }
+                set_variable = { name = zg361_comp_portfolio_result_rating value = 350 }
+            }
+            else_if = {
+                limit = { scope:zg361_comp_result_subject_scope.var:zg361_result_grade = 3 }
+                set_variable = { name = zg361_comp_portfolio_result_rating value = 375 }
+            }
+            set_variable = { name = zg361_comp_portfolio_result_snapshot_applied value = 1 }
+        }
+    }
+}'''
+
+
 def render_open(domain: DomainSpec) -> str:
     resets = []
     for mechanism_id in (item for stage in domain.stages for item in stage):
@@ -1080,12 +1142,40 @@ def render_open(domain: DomainSpec) -> str:
             resets.append(f"set_variable = {{ name = {dl['expired']} value = 0 }}")
     reset_text = "\n            ".join(resets)
     return f'''zg361_comp_open_{domain.key}_case_effect = {{
+    save_scope_as = zg361_comp_open_subject
     remove_variable = zg361_comp_runtime_applied
     if = {{
         limit = {{
             root = {{
                 zg361_is_celestial_liege_trigger = yes
                 has_variable = zg361_review_serial
+                trigger_if = {{
+                    limit = {{
+                        has_variable = zg361_comp_portfolio_cycle
+                        has_variable = zg361_comp_portfolio_subject
+                        has_variable = zg361_comp_portfolio_result_owner
+                        has_variable = zg361_comp_portfolio_result_subject
+                        has_variable = zg361_comp_portfolio_result_cycle
+                        has_variable = zg361_comp_portfolio_result_case
+                        has_variable = zg361_comp_portfolio_result_state
+                        has_variable = zg361_comp_portfolio_result_grade
+                        has_variable = zg361_comp_portfolio_result_rating
+                        has_variable = zg361_comp_portfolio_result_snapshot_applied
+                    }}
+                    var:zg361_comp_portfolio_cycle = var:zg361_review_serial
+                    var:zg361_comp_portfolio_subject = scope:zg361_comp_open_subject
+                    var:zg361_comp_portfolio_result_owner = root
+                    var:zg361_comp_portfolio_result_subject = scope:zg361_comp_open_subject
+                    var:zg361_comp_portfolio_result_cycle = var:zg361_review_serial
+                    var:zg361_comp_portfolio_result_state >= 3
+                    var:zg361_comp_portfolio_result_snapshot_applied = 1
+                    OR = {{
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 1 var:zg361_comp_portfolio_result_rating = 325 }}
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 2 var:zg361_comp_portfolio_result_rating = 350 }}
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 3 var:zg361_comp_portfolio_result_rating = 375 }}
+                    }}
+                }}
+                trigger_else = {{ always = no }}
             }}
             zg361_is_reviewable_vassal_trigger = yes
             liege = root
@@ -1093,6 +1183,13 @@ def render_open(domain: DomainSpec) -> str:
         zg361_case_{domain.key}_open_effect = yes
         if = {{
             limit = {{ var:zg361_case_kernel_applied = 1 }}
+            set_variable = {{ name = zg361_comp_result_owner value = root.var:zg361_comp_portfolio_result_owner }}
+            set_variable = {{ name = zg361_comp_result_subject value = root.var:zg361_comp_portfolio_result_subject }}
+            set_variable = {{ name = zg361_comp_result_cycle value = root.var:zg361_comp_portfolio_result_cycle }}
+            set_variable = {{ name = zg361_comp_result_case value = root.var:zg361_comp_portfolio_result_case }}
+            set_variable = {{ name = zg361_comp_result_state value = root.var:zg361_comp_portfolio_result_state }}
+            set_variable = {{ name = zg361_comp_result_grade value = root.var:zg361_comp_portfolio_result_grade }}
+            set_variable = {{ name = zg361_comp_result_rating value = root.var:zg361_comp_portfolio_result_rating }}
             set_variable = {{ name = zg361_comp_{domain.key}_last_operation value = 0 }}
             set_variable = {{ name = zg361_comp_{domain.key}_last_route value = 0 }}
             set_variable = {{ name = zg361_comp_last_disposition value = 0 }}
@@ -1829,20 +1926,79 @@ zg361_comp_portfolio_open_next_effect = {{
             set_variable = {{ name = zg361_comp_portfolio_domain value = 1 }}
         }}
         if = {{
-            limit = {{ var:zg361_comp_portfolio_domain <= 3 }}
+            limit = {{
+                var:zg361_comp_portfolio_domain = 1
+                NOT = {{ has_variable = zg361_comp_portfolio_subject }}
+            }}
+            remove_variable = zg361_comp_portfolio_cycle
             remove_variable = zg361_comp_portfolio_subject
+            remove_variable = zg361_comp_portfolio_result_owner
+            remove_variable = zg361_comp_portfolio_result_subject
+            remove_variable = zg361_comp_portfolio_result_cycle
+            remove_variable = zg361_comp_portfolio_result_case
+            remove_variable = zg361_comp_portfolio_result_state
+            remove_variable = zg361_comp_portfolio_result_grade
+            remove_variable = zg361_comp_portfolio_result_rating
+            remove_variable = zg361_comp_portfolio_result_snapshot_applied
             ordered_vassal = {{
-                limit = {{ zg361_is_reviewable_vassal_trigger = yes liege = root }}
+                limit = {{
+                    zg361_is_reviewable_vassal_trigger = yes
+                    liege = root
+                    trigger_if = {{
+                        limit = {{
+                            has_variable = zg361_result_case_owner
+                            has_variable = zg361_result_cycle_serial
+                            has_variable = zg361_result_case_serial
+                            has_variable = zg361_result_case_state
+                            has_variable = zg361_result_grade
+                            root = {{ has_variable = zg361_review_serial }}
+                        }}
+                        var:zg361_result_case_owner = root
+                        var:zg361_result_cycle_serial = root.var:zg361_review_serial
+                        var:zg361_result_case_state >= 3
+                        OR = {{
+                            var:zg361_result_grade = 1
+                            var:zg361_result_grade = 2
+                            var:zg361_result_grade = 3
+                        }}
+                    }}
+                    trigger_else = {{ always = no }}
+                }}
                 order_by = stewardship
                 position = 0
                 save_temporary_scope_as = zg361_comp_portfolio_selected
-                root = {{ set_variable = {{ name = zg361_comp_portfolio_subject value = scope:zg361_comp_portfolio_selected }} }}
+                zg361_comp_freeze_current_result_effect = yes
             }}
         }}
         if = {{
             limit = {{
                 var:zg361_comp_portfolio_domain <= 3
                 has_variable = zg361_comp_portfolio_subject
+                trigger_if = {{
+                    limit = {{
+                        has_variable = zg361_comp_portfolio_cycle
+                        has_variable = zg361_comp_portfolio_result_owner
+                        has_variable = zg361_comp_portfolio_result_subject
+                        has_variable = zg361_comp_portfolio_result_cycle
+                        has_variable = zg361_comp_portfolio_result_case
+                        has_variable = zg361_comp_portfolio_result_state
+                        has_variable = zg361_comp_portfolio_result_grade
+                        has_variable = zg361_comp_portfolio_result_rating
+                        has_variable = zg361_comp_portfolio_result_snapshot_applied
+                    }}
+                    var:zg361_comp_portfolio_cycle = var:zg361_review_serial
+                    var:zg361_comp_portfolio_result_owner = root
+                    var:zg361_comp_portfolio_result_subject = var:zg361_comp_portfolio_subject
+                    var:zg361_comp_portfolio_result_cycle = var:zg361_review_serial
+                    var:zg361_comp_portfolio_result_state >= 3
+                    var:zg361_comp_portfolio_result_snapshot_applied = 1
+                    OR = {{
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 1 var:zg361_comp_portfolio_result_rating = 325 }}
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 2 var:zg361_comp_portfolio_result_rating = 350 }}
+                        AND = {{ var:zg361_comp_portfolio_result_grade = 3 var:zg361_comp_portfolio_result_rating = 375 }}
+                    }}
+                }}
+                trigger_else = {{ always = no }}
             }}
             {chr(10).join(opens)}
             if = {{
@@ -1856,7 +2012,12 @@ zg361_comp_portfolio_open_next_effect = {{
                 set_variable = {{ name = zg361_comp_portfolio_visible_pending value = 0 }}
                 zg361_comp_portfolio_refresh_effect = yes
             }}
-            else = {{ remove_variable = zg361_comp_portfolio_subject }}
+            else = {{
+                if = {{
+                    limit = {{ var:zg361_comp_portfolio_domain = 1 }}
+                    remove_variable = zg361_comp_portfolio_subject
+                }}
+            }}
         }}
         else_if = {{
             limit = {{ var:zg361_comp_portfolio_domain > 3 }}
@@ -2149,6 +2310,7 @@ def render_effects() -> bytes:
                 f"{domain.states[stage]}; writes "
                 + ", ".join(f"{mechanism_id:03d}" for mechanism_id in mechanism_ids)
             )
+    sections.append(render_result_snapshot_helpers())
     sections.extend(render_open(domain) for domain in DOMAINS)
     sections.append(render_financial_helpers())
     sections.append(render_account_helpers())
