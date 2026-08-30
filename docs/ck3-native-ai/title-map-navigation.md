@@ -2,14 +2,15 @@
 
 ## 当前结论
 
-截至 2026-08-29，`center-map-on-landed-title-v1` 的 **Python/MCP 路径达到
-`static-ready`**：typed facade、service、named-pipe client、严格结果解析、错误分层、
-planner 排除、官方 MCP SDK 调用测试和静态 fixture 均已落地。
-
-这不代表 native camera ABI 已闭合，也不代表 CK3 实机通过。exact-build DLL 只有在
-stable-key resolver、owning-thread dispatch、相机原始状态回读和 settled gate 全部可用时，
-才可广告 `game.command.center-map-on-landed-title-v1`。能力未广告时，调用明确返回
+截至 2026-08-30，`center-map-on-landed-title-v1` 的 typed Python/MCP facade、native
+stable-key resolver、owning-thread dispatch、相机原始状态回读和 settled gate 均已落地，
+并在冻结 CK3 `1.19.0.6` 的最终 ZhongGuo 合批实机中达到 **`fixture-live`**。能力仍只由
+exact-build adapter 广告；能力未广告时，调用明确返回
 `UnsupportedStepError: capability_not_available`。
+
+`fixture-live` 只证明显式调用的 title-map presentation primitive 及其失败合同，不等于跨版本
+支持、通用 gameplay consumer 或完整 OODA。静态 fixture 和 transport ACK 也仍不能单独证明
+镜头完成。
 
 权威需求与实机门见
 [`../ck3-native-title-map-navigation-contract.md`](../ck3-native-title-map-navigation-contract.md)。
@@ -85,8 +86,9 @@ fallback 不会接管。
 `bounds_extent=[min_x,min_z,max_x,max_z]` 与 `map_x_adjustment`。bounds 和 adjustment 都是
 signed int32 native map-grid units；bounds 顺序固定为 X/Z 两轴的最小值和最大值。
 `capital_province_id` 可以是 positive int32 或 `null`，但它只记录 provenance，绝不能充当
-相机中心真值：county 的官方右键语义是所有 de-jure child map anchors 的 bounds center，
-并不等于首府省份。
+相机中心真值：county 必须经过原生 title-bounds resolver。某局中 county 与其 capital barony
+可以得到数值相同的 bounds/center；身份仍由独立 stable key、tier 与 full-generation TitleID
+证明，不能反过来用数值相同把二者合并。
 
 `camera_center` 必须精确包含：
 
@@ -161,8 +163,23 @@ write-blocked gate、session drift，以及官方 MCP SDK 的 list/call/error �
 当前静态 fixture 明示 `evidence_level=static-ready`、`live_claim=false`；其中 TitleID 和相机
 向量都只是 schema shape，不是汴州/开封的实机 golden。
 
-## 尚未解除的实机门
+## Fixture-live 证据与剩余边界
 
-native 必须继续在真实 capability 尚未闭合时保持不广告。闭合后仍须按权威合同，在同一受管
-CK3 session 跑 `c_bianzhou`、`b_kaifeng`、重复 already-centered、不存在 key、不可定位 key、
-零 UI/键鼠/OCR 调用和 cleanup 矩阵；通过前不得写成 `fixture-live`。
+2026-08-30 最终合批 attempt
+`Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp`
+在同一受管 CK3 PID `39576`、同一 connection generation 和同一暂停 binding 中完成正式 typed
+矩阵。权威 `cell/report.json` SHA-256 为
+`7D240300754BE5F1FAE8D1B131B3443F95CF20532F09AA17FA2B62DBC1B20665`。
+
+实机结果包括：从广州移到 `c_bianzhou`、再次移出后定位 `b_kaifeng`、重复调用得到
+`already_centered`、不存在 key 得到 `title_key_not_found` 且相机不变、最后回到
+`c_bianzhou`。县与男爵领分别返回 TitleID `13948` / `13949` 和正确 tier；本局二者原生
+bounds 数值恰好同为 `[6836,2619,6836,2619]`，不作为身份失败。7 次成功调用均满足完整
+binding、bit-exact current/target、runtime zoom、
+`settled=true` 和 `target_write_blocked=false`；正式路径的 OCR、屏幕/像素判断、窗口激活、
+键盘、鼠标和剪贴板计数全为 0。production 没有安全可逆的 inhibit 控件，因此该正向分支明确
+记录为 `skipped / executed=false / live_claim=false`，没有改内存制造测试状态。
+
+当前 readiness 因而是 `fixture-live`。该 tool 仍保持 explicit-only、planner 隔离和 exact-build
+绑定；在真实通用 gameplay consumer 与独立 production 证据出现前，不提升为
+`production-live primitive` 或 `production-live loop`。

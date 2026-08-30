@@ -161,6 +161,15 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 六张代表政策卡第001、007、020、022、026、361号均各派发恰好一次，并完成 canonical 事件身份确认、真实选项解析与 typed MCP 提交、同日转场、暂停冻结和 clean span 首尾门；`clean_policy_chain_completed` 恰好一次，六项选择持久化核验通过。全部 clean capture spans 完整，未出现测试决议或原生决议抽屉侵入最终干净画面。
 
+同一 PID 内的正式 title-map MCP 矩阵也为 GREEN：按
+`c_guangzhou -> c_bianzhou -> c_guangzhou -> b_kaifeng -> b_kaifeng -> unknown ->
+b_kaifeng -> final c_bianzhou` 执行，覆盖县/男爵领定位、重复 `already_centered`、
+`title_key_not_found` typed RED 后相机不变及最终汴州镜头。7 次成功调用均回读完整 paused/session
+binding、bit-exact current/target、`settled=true` 与 `target_write_blocked=false`；该矩阵内 OCR、
+屏幕/像素判断、窗口激活、键盘、鼠标和剪贴板调用计数全为 0。cell report SHA-256 为
+`7D240300754BE5F1FAE8D1B131B3443F95CF20532F09AA17FA2B62DBC1B20665`，因此此前的头衔查找/
+宣传镜头 MCP blocker 已闭合为 `fixture-live`，但不外推为通用 gameplay OODA。
+
 本局使用隔离 userdir；产品树、夹具树与源树前后哈希一致，`protected_storage_unchanged = true`，CK3 进程树受控回收。artifact、隔离 userdir/native state、日志、截图、OCR、sidecar、原始录屏及前十五次 RED 过程素材均继续保留，未删除。
 
 当前 readiness 因而由“等待完整 GREEN”提升为 **live GREEN**：现有版本的 361 分布、361/361 机制账本、考核榜 GUI、京察、本人 `3.25` 告身和六政策卡全链已有同局完整实机证据。该结论不等于发布工作完成；工坊 01/02/03 替换图、正式宣传视频及最终发布/上传仍待基于本次 GREEN 素材制作和验收。

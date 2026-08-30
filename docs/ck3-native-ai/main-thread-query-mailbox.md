@@ -24,11 +24,12 @@ as a thread rejection: independent call-graph review proved that
 earlier HandlePdxEvents TLS gate. Therefore the application-main boundary is
 live-confirmed; RNG owner remains raw provenance only.
 
-The route-contact, actual-contact, combat-v3 and ongoing battle-control typed
-executors have exact-build live results; war-entry and the new by-CombatID
-lifecycle query still require their own paused live acceptance. Title-map
-navigation has deterministic cross-pump fixture evidence but still requires
-its own paused live camera dispatch and settled readback. Production admits at
+The route-contact, actual-contact, combat-v3, ongoing battle-control and
+title-map-navigation typed executors have exact-build live results; war-entry
+and the new by-CombatID lifecycle query still require their own paused live
+acceptance. Title-map navigation completed its paused camera dispatch, cross-pump
+settled readback, already-centered and typed unknown-key matrix in the 2026-08-30
+ZhongGuo full acceptance. Production admits at
 most one request per pump and only thirteen named callbacks:
 `ExecuteWarEntryAssessmentMailboxQueryV1`,
 `ExecuteRouteContactHorizonMailboxQueryV1`,
@@ -811,7 +812,7 @@ unobserved.
 | Loaded-feature executor | true | tenth typed slot; production-live double query returned all 44 effective feature gates and 29 runtime `has_dlc` keys, while entitlement stayed typed unavailable; artifact `2B1C8CA4...C2F2D` |
 | Pending-interaction context executor | true | eleventh typed slot; full generation-bearing pending ID, stable definition/roles/options/route/deadline/legality are sampled on paused application-main; ordinary recipient white-peace cold-reload double query is production-live, while intermediary/notification fixtures remain pending |
 | Current-event-window context executor | true in build | twelfth typed slot; exact-build read-only current event context; live scope is tracked in [current-event-scopes.md](current-event-scopes.md) |
-| Title-map navigation executor | static-ready | thirteenth typed slot; stable key resolution, recursive title bounds, stock camera dispatch and fresh-pump bit-exact settled readback are deterministic-fixture GREEN; paused CK3 live acceptance remains pending |
+| Title-map navigation executor | fixture-live | thirteenth typed slot; stable key resolution, recursive title bounds, stock camera dispatch and fresh-pump bit-exact settled readback passed the 2026-08-30 ZhongGuo full-acceptance matrix for `c_bianzhou`, `b_kaifeng`, repeated `already_centered` and unknown-key typed RED; formal path used zero OCR/input fallback |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |

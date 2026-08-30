@@ -1,11 +1,11 @@
 # CK3 原生头衔地图定位 MCP 能力合同
 
-> **状态（2026-08-30）：逆向账本、Python/MCP typed facade、native stable-key
-> resolver、owning-thread camera dispatch、跨 pump readback mailbox、serializer 与
-> production bridge/adapter wire 均为 `static-ready`；exact `1.19.0.6`/SHA adapter 已将
-> capability 作为受管实机候选广告，但 CK3 实机尚未完成。** 本文中的 RVA、布局与完成谓词
-> 只绑定冻结 EXE。静态 fixture 和 Release `41/41` CTest 不是 `fixture-live`，transport ACK
-> 也不是镜头完成。
+> **状态（2026-08-30）：本能力已在冻结 CK3 `1.19.0.6`、同一受管 PID 的最终 ZhongGuo
+> 合批实机中达到 `fixture-live`。** `c_bianzhou`、`b_kaifeng`、重复
+> `already_centered`、不存在 key 的 typed RED、同一 session binding、相机 bit-exact settled
+> readback 与零 OCR/键鼠 fallback 均为 GREEN；详见第 6 节。本文中的 RVA、布局与完成谓词
+> 仍只绑定冻结 EXE。该结论只证明显式片场/验收 primitive，不把它升级为通用 gameplay OODA
+> 或跨版本能力；transport ACK 本身仍不是镜头完成。
 
 ## 1. 需求、边界与当前优先级
 
@@ -27,6 +27,14 @@ OCR 和模拟鼠标路径受 GUI 瞬态层级、焦点与窗口状态影响，�
 
 该 tool 只能被显式调用。固定 semantic step 必须从普通 `ck3_execute_step`、planner 的
 `action_steps` 与 auto-turn 候选中排除。
+
+### 1.1 与“查找角色”的边界
+
+本合同只覆盖 landed-title stable key 到地图镜头，不定义或暗含通用角色搜索。当前 ZhongGuo
+片场的赵曙 `han_8052` 与陈贯 `han_6071` 由冻结原版 history provenance、fixture allowlist 和
+实机角色/头衔 marker 共同证明，并不依赖“查找角色”窗口或一个尚不存在的 MCP 搜索 tool。
+通用 character discovery 仍是自动玩家路线图中的独立后续能力；它不是 0.3.0 发布或本次宣传
+录制的 blocker，本轮也不据此扩写 MCP 实现。
 
 ## 2. Exact-build 与原生逆向账本
 
@@ -71,8 +79,10 @@ template +0x5C     -> tier
 TitleID 低位 slot、只读文本数据文件，或把当前玩家首府当作目标都不合格。
 
 `capital_province_id` 是 optional positive int32 provenance：有可靠 runtime 回读时返回，否则为
-`null`。它不参与相机期望位置或完成判定。特别是 `c_bianzhou` 的原版定位语义是全部后代
-barony map anchors 的 title bounds center，并不等于首府 9822 的位置。
+`null`。它不参与相机期望位置或完成判定。特别是 `c_bianzhou` 的原版定位语义必须来自 title
+bounds resolver，不能把首府 ProvinceID 9822 直接代入相机；该 resolver 的最终 bounds/center
+在某个 loaded runtime 中可以与 `b_kaifeng` 数值相同，但这不把两者变成同一 title，也不改变
+各自独立解析 stable key、tier 与 full-generation TitleID 的要求。
 
 ### 2.3 原版头衔定位调用链
 
@@ -313,18 +323,21 @@ Python/MCP facade 沿用现有错误分层：
   均已落地；fresh Release full build 与 CTest `41/41` GREEN；
 - generic planner、普通 `ck3_execute_step` 与 partial/unknown adapter 均不能调用该固定动作。
 
-仍未达到的是任何 CK3 `fixture-live` 证据。exact adapter 当前广告的是受管实机候选 capability；
-在下面 L1 矩阵通过前，文档、进度与发布物料不得把它写成 live 或 production-ready。
+上述 L0 证据本身不等于实机。2026-08-30 随后的 L1 矩阵已经通过，因此当前可写为
+`fixture-live`；仍不得仅凭静态 fixture、schema 或 transport ACK 把它升级为
+`production-live loop`。
 
 静态 fixture 中的 TitleID、bounds 和相机向量只验证 schema 与 parser，不能写成实机 golden。
 
 ### L1 / 受管 CK3 fixture-live
 
-只有 L0 native 生产链闭合、能力在冻结 exact build 上诚实广告后，才启动一次短批量实机。在同一
-fresh managed PID、paused + map-ready session 中完成：
+L0 native 生产链闭合、能力在冻结 exact build 上诚实广告后，必须在同一 fresh managed PID、
+paused + map-ready session 中完成：
 
 1. 从明显不同的起始镜头调用 `c_bianzhou`，证明结果来自整县 title bounds；
-2. 调用 `b_kaifeng`，验证 barony 的独立 bounds 与 settled 结果；
+2. 调用 `b_kaifeng`，验证 barony 独立解析出的 stable key、tier、full-generation TitleID、bounds
+   payload 与 settled 结果；county 与 capital barony 的 bounds 数值允许相同，不能把“数值不同”
+   当身份前置；
 3. 对同一 key 重复调用，得到经完整 pre-read 证明的 `already_centered`；
 4. 对不存在 key 获得 `title_key_not_found` typed RED；若存在可靠不可定位样本，再验证
    `title_not_centerable`，且两类 RED 均不改变 camera；
@@ -337,6 +350,38 @@ fresh managed PID、paused + map-ready session 中完成：
 
 通过该矩阵后最多标记 `fixture-live`。除非另有真实 gameplay consumer 与独立 production 证据，
 不得升级为 `production-live primitive`，更不得写成完整 OODA。
+
+### 2026-08-30 L1 实机结果
+
+最终合批 attempt：
+`Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp`。
+权威 cell report 为 `cell/report.json`，SHA-256
+`7D240300754BE5F1FAE8D1B131B3443F95CF20532F09AA17FA2B62DBC1B20665`；顶层与 cell 均为
+GREEN，`scenario_evidence.title_navigation_mcp_matrix` 明确记录
+`navigation_path_status=native_mcp_fixture_live`。
+
+同一 CK3 PID `39576`、同一 connection generation 和同一暂停 binding 完成
+`c_guangzhou -> c_bianzhou -> c_guangzhou -> b_kaifeng -> b_kaifeng -> unknown ->
+b_kaifeng -> final c_bianzhou`。其中：
+
+- `c_bianzhou` 和 `b_kaifeng` 从不同起始镜头得到 `centered`，分别返回 TitleID `13948` 与
+  `13949` 以及 county/barony tier；本局两者 bounds 均为 `[6836,2619,6836,2619]`，与允许
+  county/capital barony 数值相同的合同一致；相机 current/target 与各自期望 XYZ 逐 f32 bit
+  一致，`settled=true`、`target_write_blocked=false`；
+- 重复 `b_kaifeng` 与最终重复 `c_bianzhou` 得到 `already_centered`、
+  `native_action_ack.status=not_needed`；
+- `c_xar_title_map_navigation_v1_unknown` 得到 `title_key_not_found` typed RED，随后完整性探针
+  证明 binding、玩家和相机未变化；
+- 7 次成功 typed 调用的 `target_write_blocked` 全为 false；正式 MCP 路径的 OCR、屏幕/像素
+  判断、窗口激活、键盘、鼠标、剪贴板调用计数均为 0；FFmpeg 在矩阵完成前未启动；
+- production 没有安全、可逆的 inhibit 控件，因此正向 inhibit 实机项按合同记录为
+  `skipped / executed=false / live_claim=false`，没有修改进程内存伪造该分支；
+- EXE SHA-256 为本合同冻结值；DLL SHA-256
+  `446DE4ACDEC33E8CC7720EFD0B9C94A3616BFA746D8D990E66C935FA316C0002`，injector SHA-256
+  `EE2C44A18EE741968C7A5858F27E9CFD605396A4A2582F13AA5FDB0BE8B17AB1`。
+
+因此，原先阻塞宣传片镜头的“夹具层没有按 stable title key 查找并定位头衔”能力缺口已经闭合为
+`fixture-live`。这不改变 OCR 失败素材的保留要求，也不把该显式 presentation tool 放入 planner。
 
 ## 7. OCR 历史证据与停用决定
 

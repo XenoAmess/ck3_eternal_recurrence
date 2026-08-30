@@ -153,7 +153,11 @@
 - 九语“立即考核”说明/tooltip 的游戏内加载与截断 smoke；七种非中英语言只有机器辅助与结构/抽检，不冒充母语签字；
 - 正式 staging 构建后从新鲜 Workshop 缓存订阅下载，逐文件核对并做加载 smoke。
 
-宣传相机仍受“按稳定 title key 查询头衔并居中地图”的 MCP 能力缺口阻塞。它阻塞最终宣传录制，不等于产品考核链本身未实现；OCR 兼容路径即使成功，也不能冒充 MCP readiness。
+“按稳定 title key 查询头衔并居中地图”的 MCP 能力缺口已于 2026-08-30 最终合批 attempt
+`zga_20260830_0930_clean_2fa2ac8_mcp` 闭合为 `fixture-live`：同一受管 PID 完成
+`c_bianzhou`、`b_kaifeng`、重复 `already_centered`、unknown-key typed RED 和最终汴州镜头，
+正式矩阵内 OCR/像素判断/窗口激活/键盘/鼠标/剪贴板计数均为 0。历史 OCR 兼容结果仍不构成
+MCP 证据；当前宣传片剩余阻点是人工全片视觉签核、正式渲染与发布流程，不再是头衔定位能力。
 
 ## 7. 0.3.0 明确不声称
 
