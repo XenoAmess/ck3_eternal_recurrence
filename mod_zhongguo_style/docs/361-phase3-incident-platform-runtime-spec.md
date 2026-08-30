@@ -1,12 +1,15 @@
 ﻿# 361 三期事故、积弊与共享平台 Python L0 内核
 
-状态：`python-l0-only`
+状态：`python-l0-reference-complete`
 
-CK3 接线：`not-implemented`
+CK3 运行时：`static-ready; central-hook-and-live-pending`
 
 权威代码：`tools/zg361_phase3_incident_platform_model.py`
 
 高密度测试：`tools/test_zg361_phase3_incident_platform_model.py`
+
+Python `Behavior.ck3_wiring` 仍保留 `not-implemented`：它描述的是该参考模型自身不执行 CK3 接线，
+不得因为旁路生成了一份尚未中央接线、尚未实机验证的投影而抬高 L0 模型声明。
 
 ## 精确范围
 
@@ -112,14 +115,23 @@ opening_gold = available_gold + recipient_credits
 三案合并后的 provenance 精确触达 192–228 全部 37 个 ID。除此之外，还动态注册
 37 个独立 `test_mechanism_NNN`，逐项检查对应业务结果，而非只检查 receipt 存在。
 
-## CK3 待接线
+## CK3 接线现状与待办
 
-本包尚未实现：
+独立 Paradox 运行时已经生成，权威说明见
+`docs/361-phase3-incident-platform-ck3-runtime-spec.md`：
 
-1. Paradox scripted effects/events/on_actions 及持久变量投影；
-2. CK3 中角色、战争/灾害/财政急务、原生岗位、团队与国库的 exact-build 绑定；
+- X/Y/Z 共 37 个编号 operation、A/B/C、五元回执和写→消费者已投影；
+- 7/5/5 阶段由 14 个身份绑定的 hidden event 推进；
+- 国库与管理者个人金币双付款、份额/容量守恒和下一轮 KPI consumer 已落地；
+- 玩家与获授权 AI 的公爵及以上管理入口、伯爵/男爵 subject-only 边界由共享 case kernel 执行。
+
+仍未完成：
+
+1. 把独立 `zg361_ip_open_portfolio_effect` 接入中央正式考核链；
+2. CK3 中角色、战争/灾害/财政急务、原生岗位、团队与国库的 exact-build 实机互证；
 3. 考核榜中的事故时间线、积弊账和平台分账页面；
-4. MCP 命名 widget、角色/头衔/国库/时间查询与 paused snapshot；
+4. MCP 角色/头衔/国库/变量/时间查询与 paused snapshot；
 5. fixture-live、production-live 或实机 CK3 GREEN。
 
-后续只有完成上述接线并保存真实 paused artifact 后，才能提升 readiness。
+静态生成文件存在不等于 live。只有完成统一接线、MCP-first CK3 批次并保存真实 paused artifact 后，
+才能再次提升 readiness。

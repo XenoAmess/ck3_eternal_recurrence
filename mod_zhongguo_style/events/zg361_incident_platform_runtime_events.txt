@@ -1,0 +1,130 @@
+﻿# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py
+namespace = zg361ip
+
+# X state 2 bound deadline.
+zg361ip.102 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_02_effect = yes }
+}
+
+# X state 3 bound deadline.
+zg361ip.103 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_03_effect = yes }
+}
+
+# X state 4 bound deadline.
+zg361ip.104 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_04_effect = yes }
+}
+
+# X state 5 bound deadline.
+zg361ip.105 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_05_effect = yes }
+}
+
+# X state 6 bound deadline.
+zg361ip.106 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_06_effect = yes }
+}
+
+# X state 7 bound deadline.
+zg361ip.107 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_x_due_07_effect = yes }
+}
+
+# Player manager closure notice; authorized AI managers remain silent.
+zg361ip.190 = {
+	type = character_event
+	theme = vassal
+	title = zg361ip.190.t
+	desc = zg361ip.190.desc
+	trigger = { is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }
+	option = { name = zg361ip.result.ok }
+}
+
+# Y state 2 bound deadline.
+zg361ip.202 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_02_effect = yes }
+}
+
+# Y state 3 bound deadline.
+zg361ip.203 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_03_effect = yes }
+}
+
+# Y state 4 bound deadline.
+zg361ip.204 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_04_effect = yes }
+}
+
+# Y state 5 bound deadline.
+zg361ip.205 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_y_due_05_effect = yes }
+}
+
+# Player manager closure notice; authorized AI managers remain silent.
+zg361ip.290 = {
+	type = character_event
+	theme = vassal
+	title = zg361ip.290.t
+	desc = zg361ip.290.desc
+	trigger = { is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }
+	option = { name = zg361ip.result.ok }
+}
+
+# Z state 2 bound deadline.
+zg361ip.302 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_z_due_02_effect = yes }
+}
+
+# Z state 3 bound deadline.
+zg361ip.303 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_z_due_03_effect = yes }
+}
+
+# Z state 4 bound deadline.
+zg361ip.304 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_z_due_04_effect = yes }
+}
+
+# Z state 5 bound deadline.
+zg361ip.305 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_ip_z_due_05_effect = yes }
+}
+
+# Player manager closure notice; authorized AI managers remain silent.
+zg361ip.390 = {
+	type = character_event
+	theme = vassal
+	title = zg361ip.390.t
+	desc = zg361ip.390.desc
+	trigger = { is_ai = no has_game_rule = zg361_on exists = scope:zg361_ip_result_subject }
+	option = { name = zg361ip.result.ok }
+}
