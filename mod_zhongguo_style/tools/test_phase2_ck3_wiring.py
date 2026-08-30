@@ -13,6 +13,8 @@ from pathlib import Path
 import re
 import unittest
 
+from zg361_readiness_data import CUMULATIVE_COUNTS
+
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 
@@ -225,7 +227,10 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         }
         self.assertEqual(live, {1, 18, 69, 357})
         self.assertEqual(contracts, {1, 18, 69, 357})
-        self.assertEqual(manifest["phase2_static"]["count"], 220)
+        self.assertEqual(
+            manifest["phase2_static"]["count"],
+            CUMULATIVE_COUNTS["ck3-static-ready"],
+        )
         self.assertEqual(
             manifest["readiness"]["partial_live_notes"]["018"],
             "receipt/refund is fixture-live; reopening zg361.53 remains static-ready",
