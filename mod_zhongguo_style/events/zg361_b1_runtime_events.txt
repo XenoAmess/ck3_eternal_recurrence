@@ -1,0 +1,188 @@
+﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
+namespace = zg361b1
+
+# Common-superior season synchronization. The delayed character event resets
+# ROOT to each sibling manager; the cycle-open guard makes replays harmless.
+zg361b1.90 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_b1_open_cycle_effect = yes }
+}
+
+# D+180: check-in and one evidence-backed target reset.
+zg361b1.100 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
+			if = {
+				limit = {
+					this = scope:zg361_b1_ticket_owner
+					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
+					var:zg361_b1_cycle_state = 1
+				}
+				zg361_b1_midcycle_dispatcher_effect = yes
+				save_scope_as = zg361_b1_ticket_owner
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
+				trigger_event = { id = zg361b1.101 days = 60 }
+			}
+			else = { debug_log = "ZG361B1: stale midcycle ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete midcycle ticket ignored" }
+	}
+}
+
+# D+240: open the bounded three-slot peer/self-evidence window.
+zg361b1.101 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			if = {
+				limit = {
+					this = scope:zg361_b1_ticket_owner
+					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
+					var:zg361_b1_cycle_state = 2
+				}
+				zg361_b1_peer_window_dispatcher_effect = yes
+				save_scope_as = zg361_b1_ticket_owner
+				save_scope_value_as = { name = zg361_b1_ticket_cycle value = var:zg361_b1_cycle_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_case value = var:zg361_b1_case_serial }
+				save_scope_value_as = { name = zg361_b1_ticket_state value = var:zg361_b1_cycle_state }
+				trigger_event = { id = zg361b1.102 days = 60 }
+			}
+			else = { debug_log = "ZG361B1: stale peer-window ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete peer-window ticket ignored" }
+	}
+}
+
+# D+300: seal peer records, then enter the existing ranking engine. The engine
+# opens a real shadow window instead of settling immediately when B1 is active.
+zg361b1.102 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			if = {
+				limit = {
+					this = scope:zg361_b1_ticket_owner
+					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
+					var:zg361_b1_cycle_state = 3
+				}
+				zg361_b1_prepare_facts_effect = yes
+				zg361_run_review_effect = yes
+			}
+			else = { debug_log = "ZG361B1: stale facts ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete facts ticket ignored" }
+	}
+}
+
+# D+330: close shadow evidence and post the manager's quota book.
+zg361b1.103 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_b1_ticket_owner has_variable = zg361_b1_cycle_state }
+			if = {
+				limit = {
+					this = scope:zg361_b1_ticket_owner
+					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
+					var:zg361_b1_cycle_state = 5
+				}
+				set_variable = { name = zg361_b1_cycle_state value = 6 }
+				zg361_b1_submit_quota_book_effect = yes
+			}
+			else = { debug_log = "ZG361B1: stale shadow-close ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete shadow-close ticket ignored" }
+	}
+}
+
+# Common-superior close: either all expected managers are ready, or the frozen
+# deadline expires. Both routes share owner/season/case/state and close once.
+zg361b1.110 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_bank_ticket_owner
+				has_variable = zg361_b1_bank_season
+				has_variable = zg361_b1_bank_case_serial
+				has_variable = zg361_b1_bank_state
+			}
+			if = {
+				limit = {
+					this = scope:zg361_b1_bank_ticket_owner
+					var:zg361_b1_bank_season = scope:zg361_b1_bank_ticket_season
+					var:zg361_b1_bank_case_serial = scope:zg361_b1_bank_ticket_case
+					var:zg361_b1_bank_state = scope:zg361_b1_bank_ticket_state
+					var:zg361_b1_bank_state = 1
+				}
+				if = {
+					limit = { has_variable_list = zg361_b1_ready_managers }
+					zg361_b1_close_common_superior_bank_effect = yes
+				}
+				else = {
+					# A deadline may legitimately outlive every expected manager.
+					# Close the bank without evaluating an unset ready list.
+					set_variable = { name = zg361_b1_bank_state value = 2 }
+					debug_log = "ZG361B1: common-superior bank closed with no ready managers"
+				}
+			}
+			else = { debug_log = "ZG361B1: stale common-superior bank ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete common-superior bank ticket ignored" }
+	}
+}
+
+# Common-superior allocation has just written manager-owned receipts, but the
+# closing event's ROOT is the superior. Reset ROOT to the allocated manager and
+# validate its immutable case token before entering calibration/settlement.
+zg361b1.111 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_ticket_owner
+				has_variable = zg361_b1_cycle_serial
+				has_variable = zg361_b1_case_serial
+				has_variable = zg361_b1_cycle_state
+			}
+			if = {
+				limit = {
+					this = scope:zg361_b1_ticket_owner
+					var:zg361_b1_cycle_serial = scope:zg361_b1_ticket_cycle
+					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
+					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
+					var:zg361_b1_cycle_state = 6
+				}
+				zg361_b1_open_calibration_effect = yes
+			}
+			else = { debug_log = "ZG361B1: stale manager-calibration ticket ignored" }
+		}
+		else = { debug_log = "ZG361B1: incomplete manager-calibration ticket ignored" }
+	}
+}

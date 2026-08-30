@@ -23,7 +23,7 @@ from zg361_domain_data import (
     RUNTIME_PLAN_SCHEMA,
     build_runtime_plans,
 )
-from zg361_operation_registry import DOMAIN_RECIPE_PRIMITIVES
+from zg361_operation_registry import primitive_recipe_for
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -783,6 +783,7 @@ def manifest_payload(
                 "primitive_recipe": plan["primitive_recipe"],
                 "semantic_family": plan["semantic_family"],
                 "trigger_hook": plan["trigger_hook"],
+                "transition_owner": plan["transition_owner"],
                 "planned_currencies": planned_currencies,
                 "choice_transitions": {
                     choice_name: {
@@ -934,9 +935,7 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
 def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
     runtime_plans = build_runtime_plans(mechanisms)
     for plan in runtime_plans:
-        plan["primitive_recipe"] = list(
-            DOMAIN_RECIPE_PRIMITIVES[str(plan["operation_key"])]
-        )
+        plan["primitive_recipe"] = list(primitive_recipe_for(plan))
     payload = manifest_payload(mechanisms, runtime_plans)
     result: dict[Path, bytes] = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_generated_mechanism_effects.txt": render_effects(mechanisms),

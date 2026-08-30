@@ -280,7 +280,11 @@ class MechanismGenerationTests(unittest.TestCase):
         for item in manifest["items"]:
             self.assertEqual(len(item["implementation"]["choice_effects"]), 3)
             self.assertEqual(item["runtime_plan"]["status"], "contract-complete")
-            self.assertIn("case.transition", item["runtime_plan"]["primitive_recipe"])
+            self.assertNotIn("case.transition", item["runtime_plan"]["primitive_recipe"])
+            self.assertEqual(
+                item["runtime_plan"]["transition_owner"],
+                "stage_dispatcher",
+            )
             self.assertEqual(set(item["runtime_plan"]["choice_transitions"]), {"a", "b", "c"})
             self.assertIn("not a claim", item["runtime_plan"]["claim_boundary"])
             expected_status = phase2_status if item["id"] in phase2_ids else legacy_status

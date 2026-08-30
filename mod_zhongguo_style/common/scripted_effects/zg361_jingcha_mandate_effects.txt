@@ -32,6 +32,9 @@ zg361_jingcha_annual_dispatch_effect = {
 # 玩家且可正常规划活动、并至少有一名合法直属官员时发召集令；
 # 其余情形静默跑官僚考核。1–2 人小组同样要履行京察，只是不强制分布。
 zg361_issue_jingcha_mandate_effect = {
+	# 京察是绩效季 D+0 的履责活动，不是 D+300 才瞬间生成整年事实。
+	# 无论玩家承办、拒办、获豁免或 AI 后台履责，考核季都从发令日开始。
+	zg361_b1_open_cycle_effect = yes
 	if = {
 		limit = {
 			is_ai = no
@@ -71,13 +74,11 @@ zg361_issue_jingcha_mandate_effect = {
 	}
 	else_if = {
 		limit = { is_ai = yes }
-		zg361_run_review_effect = yes
-		debug_log = "ZG361: AI jingcha duty resolved by background review"
+		debug_log = "ZG361: AI jingcha duty entered the background performance season"
 	}
 	else = {
-		# 玩家未成年、失能、在押或没有合法来宾时豁免集会，但仍刷新官僚快照。
-		zg361_run_review_effect = yes
-		debug_log = "ZG361: player jingcha assembly excused; background review only"
+		# 玩家未成年、失能、在押或没有合法来宾时豁免集会；绩效季已在 D+0 开启。
+		debug_log = "ZG361: player jingcha assembly excused; performance season remains active"
 	}
 }
 
@@ -132,7 +133,6 @@ zg361_excuse_jingcha_assembly_effect = {
 			has_game_rule = zg361_on
 			zg361_is_celestial_liege_trigger = yes
 		}
-		zg361_run_review_effect = yes
-		debug_log = "ZG361: jingcha assembly excused; official review still resolved"
+		debug_log = "ZG361: jingcha assembly excused; active performance season continues"
 	}
 }

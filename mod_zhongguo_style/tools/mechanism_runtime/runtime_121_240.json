@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "generated": true,
   "authority": "tools/zg361_domain_data.py + tools/zg361_operation_registry.py + tools/mechanism_acceptance/acceptance_*.json",
   "id_range": [
@@ -21,6 +21,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "manager_trial_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -47,6 +48,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_121_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -98,6 +101,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_121_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -149,6 +154,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_121_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -226,7 +233,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -248,6 +254,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "manager_trial_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -274,6 +281,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_122_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -325,6 +334,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_122_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -376,6 +387,8 @@
             "trial"
           ],
           "to_state": "scorecard",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_122_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -453,7 +466,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -475,6 +487,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "manager_scorecard_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -501,6 +514,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_123_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -552,6 +567,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_123_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -603,6 +620,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_123_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -680,7 +699,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -702,6 +720,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "manager_scorecard_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -728,6 +747,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_124_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -779,6 +800,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_124_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -830,6 +853,8 @@
             "scorecard"
           ],
           "to_state": "feedback",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_124_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -908,7 +933,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -930,6 +954,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "subordinate_feedback_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -957,6 +982,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_125_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1021,6 +1048,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_125_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1085,6 +1114,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_125_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -1164,7 +1195,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -1186,6 +1216,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "subordinate_feedback_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -1212,6 +1243,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_126_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1263,6 +1296,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_126_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1314,6 +1349,8 @@
             "feedback"
           ],
           "to_state": "successor_test",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_126_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -1392,7 +1429,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -1414,6 +1450,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "successor_test_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -1441,6 +1478,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_127_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1505,6 +1544,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_127_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1569,6 +1610,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_127_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -1648,7 +1691,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -1670,6 +1712,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "manager_certification_serial",
       "trigger_hook": "successor_test_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -1698,6 +1741,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_128_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1762,6 +1807,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_128_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -1826,6 +1873,8 @@
             "successor_test"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_128_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -1906,7 +1955,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -1928,6 +1976,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_proposed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -1955,6 +2004,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_129_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2006,6 +2057,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_129_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2057,6 +2110,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_129_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -2136,7 +2191,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -2159,6 +2213,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_proposed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -2186,6 +2241,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_130_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2237,6 +2294,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_130_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2288,6 +2347,8 @@
             "proposed"
           ],
           "to_state": "routed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_130_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -2367,7 +2428,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -2390,6 +2450,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_routed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -2417,6 +2478,8 @@
             "routed"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_131_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2481,6 +2544,8 @@
             "routed"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_131_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2545,6 +2610,8 @@
             "routed"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_131_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -2624,7 +2691,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -2647,6 +2713,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_execution_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -2675,6 +2742,8 @@
             "executing"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_132_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2739,6 +2808,8 @@
             "executing"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_132_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2803,6 +2874,8 @@
             "executing"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_132_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -2883,7 +2956,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -2906,6 +2978,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -2933,6 +3006,8 @@
             "reviewed"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_133_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -2997,6 +3072,8 @@
             "reviewed"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_133_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3061,6 +3138,8 @@
             "reviewed"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_133_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -3140,7 +3219,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -3163,6 +3241,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "project_governance_serial",
       "trigger_hook": "project_resolved",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -3190,6 +3269,8 @@
             "resolved"
           ],
           "to_state": "observed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_134_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3254,6 +3335,8 @@
             "resolved"
           ],
           "to_state": "observed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_134_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3318,6 +3401,8 @@
             "resolved"
           ],
           "to_state": "observed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_134_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -3397,7 +3482,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -3420,6 +3504,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "pending_grades",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -3447,6 +3532,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_135_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3498,6 +3585,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_135_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3549,6 +3638,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_135_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -3628,7 +3719,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -3651,6 +3741,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "pending_grades",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -3678,6 +3769,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_136_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3742,6 +3835,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_136_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3806,6 +3901,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_136_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -3885,7 +3982,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -3908,6 +4004,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "pending_grades",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -3935,6 +4032,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_137_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -3999,6 +4098,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_137_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4063,6 +4164,8 @@
             "shadowed"
           ],
           "to_state": "precalibrated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_137_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -4142,7 +4245,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -4165,6 +4267,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "precalibration",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -4192,6 +4295,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_138_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4256,6 +4361,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_138_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4320,6 +4427,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_138_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -4399,7 +4508,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -4422,6 +4530,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "precalibration",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -4449,6 +4558,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_139_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4513,6 +4624,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_139_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4577,6 +4690,8 @@
             "precalibrated"
           ],
           "to_state": "anchors_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_139_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -4656,7 +4771,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -4679,6 +4793,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "anchors_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -4707,6 +4822,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_140_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4771,6 +4888,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_140_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -4835,6 +4954,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_140_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -4915,7 +5036,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -4938,6 +5058,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "anchors_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -4965,6 +5086,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_141_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5016,6 +5139,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_141_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5067,6 +5192,8 @@
             "anchors_frozen"
           ],
           "to_state": "exception_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_141_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -5146,7 +5273,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -5169,6 +5295,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "calibration_exception_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -5197,6 +5324,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_142_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5248,6 +5377,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_142_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5299,6 +5430,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_142_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -5379,7 +5512,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -5402,6 +5534,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "calibration_exception_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -5430,6 +5563,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_143_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5481,6 +5616,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_143_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5532,6 +5669,8 @@
             "exception_open"
           ],
           "to_state": "final_pending",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_143_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -5612,7 +5751,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -5635,6 +5773,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "calibration_complete",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -5663,6 +5802,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_144_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5727,6 +5868,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_144_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5791,6 +5934,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_144_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -5871,7 +6016,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -5894,6 +6038,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "shadow_calibration_serial",
       "trigger_hook": "calibration_complete",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -5921,6 +6066,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_145_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -5972,6 +6119,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_145_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6023,6 +6172,8 @@
             "final_pending"
           ],
           "to_state": "finalized",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_145_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -6102,7 +6253,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "score.compute",
@@ -6125,6 +6275,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "result_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -6153,6 +6304,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_146_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6217,6 +6370,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_146_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6281,6 +6436,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_146_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -6361,7 +6518,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -6383,6 +6539,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "result_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -6410,6 +6567,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_147_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6474,6 +6633,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_147_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6538,6 +6699,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_147_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -6617,7 +6780,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -6639,6 +6801,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "result_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -6666,6 +6829,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_148_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6730,6 +6895,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_148_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6794,6 +6961,8 @@
             "result_locked"
           ],
           "to_state": "feedback_held",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_148_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -6873,7 +7042,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -6895,6 +7063,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_meeting_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -6923,6 +7092,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_149_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -6974,6 +7145,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_149_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7025,6 +7198,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_149_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -7105,7 +7280,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -7127,6 +7301,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_meeting_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -7155,6 +7330,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_150_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7206,6 +7383,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_150_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7257,6 +7436,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_150_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -7337,7 +7518,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -7359,6 +7539,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_meeting_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -7387,6 +7568,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_151_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7451,6 +7634,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_151_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7515,6 +7700,8 @@
             "feedback_held"
           ],
           "to_state": "receipt_recorded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_151_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -7595,7 +7782,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -7617,6 +7803,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_receipt_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -7645,6 +7832,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_152_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7709,6 +7898,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_152_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7773,6 +7964,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_152_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -7853,7 +8046,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -7875,6 +8067,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_receipt_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -7903,6 +8096,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_153_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -7967,6 +8162,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_153_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8031,6 +8228,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_153_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -8111,7 +8310,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -8133,6 +8331,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_receipt_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -8161,6 +8360,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_154_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8225,6 +8426,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_154_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8289,6 +8492,8 @@
             "receipt_recorded"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_154_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -8369,7 +8574,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -8391,6 +8595,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_actions_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -8418,6 +8623,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_155_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8469,6 +8676,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_155_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8520,6 +8729,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_155_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -8599,7 +8810,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -8621,6 +8831,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "feedback_commitment_serial",
       "trigger_hook": "feedback_actions_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -8649,6 +8860,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_156_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8713,6 +8926,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_156_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8777,6 +8992,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_156_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -8857,7 +9074,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -8879,6 +9095,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "promotion_eligible",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -8906,6 +9123,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_157_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -8970,6 +9189,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_157_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9034,6 +9255,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_157_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -9113,7 +9336,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -9136,6 +9358,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "promotion_eligible",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -9164,6 +9387,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_158_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9228,6 +9453,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_158_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9292,6 +9519,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_158_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -9372,7 +9601,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -9395,6 +9623,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "promotion_eligible",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -9423,6 +9652,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_159_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9487,6 +9718,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_159_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9551,6 +9784,8 @@
             "eligible"
           ],
           "to_state": "nominated",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_159_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -9631,7 +9866,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -9654,6 +9888,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -9682,6 +9917,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_160_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9746,6 +9983,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_160_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -9810,6 +10049,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_160_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -9890,7 +10131,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -9913,6 +10153,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -9941,6 +10182,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_161_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10005,6 +10248,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_161_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10069,6 +10314,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_161_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -10149,7 +10396,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -10172,6 +10418,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -10200,6 +10447,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_162_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10264,6 +10513,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_162_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10328,6 +10579,8 @@
             "nominated"
           ],
           "to_state": "slot_reserved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_162_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -10408,7 +10661,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -10431,6 +10683,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_slot_reserved",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -10458,6 +10711,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_163_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10522,6 +10777,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_163_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10586,6 +10843,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_163_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -10665,7 +10924,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -10688,6 +10946,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_slot_reserved",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -10716,6 +10975,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_164_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10780,6 +11041,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_164_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -10844,6 +11107,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_164_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -10924,7 +11189,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -10947,6 +11211,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "nomination_slot_reserved",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -10975,6 +11240,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_165_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11039,6 +11306,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_165_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11103,6 +11372,8 @@
             "slot_reserved"
           ],
           "to_state": "prescreened",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_165_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -11183,7 +11454,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -11206,6 +11476,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "prescreen_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -11234,6 +11505,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_166_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11298,6 +11571,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_166_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11362,6 +11637,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_166_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -11442,7 +11719,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -11465,6 +11741,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "prescreen_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -11493,6 +11770,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_167_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11557,6 +11836,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_167_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11621,6 +11902,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_167_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -11701,7 +11984,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -11724,6 +12006,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_nomination_serial",
       "trigger_hook": "prescreen_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -11752,6 +12035,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_168_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11816,6 +12101,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_168_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -11880,6 +12167,8 @@
             "prescreened"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_168_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -11960,7 +12249,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -11983,6 +12271,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "promotion_panel_formed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -12011,6 +12300,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_169_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12075,6 +12366,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_169_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12139,6 +12432,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_169_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -12219,7 +12514,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -12241,6 +12535,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "promotion_panel_formed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -12269,6 +12564,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_170_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12333,6 +12630,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_170_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12397,6 +12696,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_170_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -12477,7 +12778,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -12499,6 +12799,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "promotion_panel_formed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -12527,6 +12828,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_171_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12591,6 +12894,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_171_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12655,6 +12960,8 @@
             "panel_formed"
           ],
           "to_state": "recused",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_171_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -12735,7 +13042,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -12757,6 +13063,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "panel_recusal_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -12785,6 +13092,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_172_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12849,6 +13158,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_172_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -12913,6 +13224,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_172_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -12993,7 +13306,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -13015,6 +13327,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "panel_recusal_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -13043,6 +13356,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_173_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13107,6 +13422,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_173_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13171,6 +13488,8 @@
             "recused"
           ],
           "to_state": "blind_reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_173_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -13251,7 +13570,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -13273,6 +13591,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "blind_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -13301,6 +13620,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_174_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13365,6 +13686,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_174_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13429,6 +13752,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_174_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -13509,7 +13834,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -13531,6 +13855,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "blind_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -13559,6 +13884,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_175_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13623,6 +13950,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_175_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13687,6 +14016,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_175_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -13767,7 +14098,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -13789,6 +14119,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "blind_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -13817,6 +14148,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_176_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13881,6 +14214,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_176_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -13945,6 +14280,8 @@
             "blind_reviewed"
           ],
           "to_state": "defended",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_176_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -14025,7 +14362,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -14047,6 +14383,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "defense_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -14075,6 +14412,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_177_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14139,6 +14478,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_177_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14203,6 +14544,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_177_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -14283,7 +14626,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -14305,6 +14647,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "defense_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -14333,6 +14676,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_178_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14397,6 +14742,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_178_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14461,6 +14808,8 @@
             "defended"
           ],
           "to_state": "voted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_178_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -14541,7 +14890,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -14563,6 +14911,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "panel_vote_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -14591,6 +14940,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_179_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14655,6 +15006,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_179_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14719,6 +15072,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_179_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -14799,7 +15154,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -14821,6 +15175,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "promotion_panel_serial",
       "trigger_hook": "panel_vote_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -14849,6 +15204,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_180_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14913,6 +15270,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_180_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -14977,6 +15336,8 @@
             "voted"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_180_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -15057,7 +15418,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -15079,6 +15439,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_triaged",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -15107,6 +15468,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_181_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15171,6 +15534,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_181_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15235,6 +15600,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_181_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -15315,7 +15682,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -15339,6 +15705,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_triaged",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -15367,6 +15734,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_182_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15431,6 +15800,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_182_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15495,6 +15866,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_182_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -15575,7 +15948,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -15599,6 +15971,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_triaged",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -15629,6 +16002,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_183_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15693,6 +16068,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_183_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15757,6 +16134,8 @@
             "triaged"
           ],
           "to_state": "evidence_met",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_183_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -15839,7 +16218,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -15863,6 +16241,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_evidence_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -15891,6 +16270,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_184_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -15955,6 +16336,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_184_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16019,6 +16402,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_184_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -16099,7 +16484,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -16123,6 +16507,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_evidence_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -16151,6 +16536,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_185_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16215,6 +16602,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_185_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16279,6 +16668,8 @@
             "evidence_met"
           ],
           "to_state": "acknowledged",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_185_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -16359,7 +16750,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -16383,6 +16773,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_ack_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -16411,6 +16802,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_186_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16475,6 +16868,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_186_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16539,6 +16934,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_186_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -16619,7 +17016,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -16643,6 +17039,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_ack_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -16671,6 +17068,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_187_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16735,6 +17134,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_187_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16799,6 +17200,8 @@
             "acknowledged"
           ],
           "to_state": "executing",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_187_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -16879,7 +17282,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -16903,6 +17305,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_execution_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -16931,6 +17334,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_188_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -16995,6 +17400,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_188_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17059,6 +17466,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_188_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -17139,7 +17548,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -17163,6 +17571,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_execution_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -17191,6 +17600,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_189_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17255,6 +17666,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_189_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17319,6 +17732,8 @@
             "executing"
           ],
           "to_state": "midpoint",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_189_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -17399,7 +17814,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -17423,6 +17837,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_midpoint_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -17451,6 +17866,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_190_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17515,6 +17932,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_190_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17579,6 +17998,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_190_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -17659,7 +18080,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -17683,6 +18103,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "pip_case_serial",
       "trigger_hook": "pip_midpoint_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -17711,6 +18132,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_191_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17762,6 +18185,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_191_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -17813,6 +18238,8 @@
             "midpoint"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_191_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -17893,7 +18320,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "notice.deliver",
@@ -17917,6 +18343,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "on_call_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -17946,6 +18373,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_192_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18010,6 +18439,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_192_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18074,6 +18505,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_192_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -18155,7 +18588,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -18179,6 +18611,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "on_call_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -18207,6 +18640,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_193_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18284,6 +18719,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_193_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18361,6 +18798,8 @@
             "on_call"
           ],
           "to_state": "alerted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_193_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -18441,7 +18880,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -18465,6 +18903,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_alerted",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -18493,6 +18932,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_194_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18557,6 +18998,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_194_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18621,6 +19064,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_194_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -18701,7 +19146,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -18725,6 +19169,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_alerted",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -18754,6 +19199,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_195_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18818,6 +19265,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_195_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -18882,6 +19331,8 @@
             "alerted"
           ],
           "to_state": "classified",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_195_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -18963,7 +19414,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -18987,6 +19437,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_classified",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -19016,6 +19467,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_196_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19080,6 +19533,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_196_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19144,6 +19599,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_196_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -19225,7 +19682,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -19249,6 +19705,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_classified",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -19277,6 +19734,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_197_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19341,6 +19800,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_197_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19405,6 +19866,8 @@
             "classified"
           ],
           "to_state": "commanded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_197_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -19485,7 +19948,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -19509,6 +19971,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_commanded",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -19537,6 +20000,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_198_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19601,6 +20066,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_198_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19665,6 +20132,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_198_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -19745,7 +20214,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -19769,6 +20237,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_commanded",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -19797,6 +20266,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_199_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19861,6 +20332,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_199_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -19925,6 +20398,8 @@
             "commanded"
           ],
           "to_state": "timeline_frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_199_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -20005,7 +20480,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -20029,6 +20503,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_timeline_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -20057,6 +20532,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_200_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20121,6 +20598,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_200_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20185,6 +20664,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_200_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -20265,7 +20746,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -20289,6 +20769,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_timeline_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -20317,6 +20798,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_201_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20381,6 +20864,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_201_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20445,6 +20930,8 @@
             "timeline_frozen"
           ],
           "to_state": "reviewed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_201_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -20525,7 +21012,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -20549,6 +21035,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -20578,6 +21065,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_202_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20642,6 +21131,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_202_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20706,6 +21197,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_202_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -20787,7 +21280,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -20811,6 +21303,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_review_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -20840,6 +21333,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_203_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20904,6 +21399,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_203_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -20968,6 +21465,8 @@
             "reviewed"
           ],
           "to_state": "actions_open",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_203_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -21049,7 +21548,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -21073,6 +21571,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "incident_case_serial",
       "trigger_hook": "incident_actions_open",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -21102,6 +21601,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_204_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21166,6 +21667,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_204_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21230,6 +21733,8 @@
             "actions_open"
           ],
           "to_state": "resolved",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_204_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -21311,7 +21816,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "capacity.reserve",
@@ -21335,6 +21839,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_registered",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -21364,6 +21869,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_205_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21428,6 +21935,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_205_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21492,6 +22001,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_205_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -21573,7 +22084,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -21597,6 +22107,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_registered",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -21626,6 +22137,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_206_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21690,6 +22203,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_206_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21754,6 +22269,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_206_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -21835,7 +22352,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -21859,6 +22375,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_registered",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -21887,6 +22404,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_207_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -21951,6 +22470,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_207_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22015,6 +22536,8 @@
             "registered"
           ],
           "to_state": "owned",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_207_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -22095,7 +22618,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -22119,6 +22641,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_owned",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -22148,6 +22671,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_208_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22212,6 +22737,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_208_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22276,6 +22803,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_208_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -22357,7 +22886,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -22381,6 +22909,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_owned",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -22409,6 +22938,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_209_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22473,6 +23004,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_209_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22537,6 +23070,8 @@
             "owned"
           ],
           "to_state": "funded",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_209_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -22617,7 +23152,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -22641,6 +23175,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_funded",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -22669,6 +23204,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_210_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22733,6 +23270,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_210_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22797,6 +23336,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_210_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -22877,7 +23418,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -22901,6 +23441,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_funded",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -22930,6 +23471,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_211_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -22994,6 +23537,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_211_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23058,6 +23603,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_211_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -23139,7 +23686,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -23163,6 +23709,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_funded",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -23192,6 +23739,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_212_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23256,6 +23805,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_212_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23320,6 +23871,8 @@
             "funded"
           ],
           "to_state": "worked",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_212_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -23401,7 +23954,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -23425,6 +23977,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_work_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -23454,6 +24007,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_213_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23518,6 +24073,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_213_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23582,6 +24139,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_213_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -23663,7 +24222,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -23687,6 +24245,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_work_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -23716,6 +24275,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_214_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23780,6 +24341,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_214_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -23844,6 +24407,8 @@
             "worked"
           ],
           "to_state": "accepted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_214_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -23925,7 +24490,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -23949,6 +24513,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_acceptance_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -23978,6 +24543,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_215_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24042,6 +24609,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_215_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24106,6 +24675,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_215_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -24187,7 +24758,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -24211,6 +24781,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "debt_item_serial",
       "trigger_hook": "debt_acceptance_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -24240,6 +24811,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_216_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24291,6 +24864,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_216_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24342,6 +24917,8 @@
             "accepted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_216_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -24423,7 +25000,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "obligation.open",
@@ -24447,6 +25023,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_proposed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -24475,6 +25052,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_217_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24539,6 +25118,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_217_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24603,6 +25184,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_217_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -24683,7 +25266,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -24707,6 +25289,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_proposed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -24735,6 +25318,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_218_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24799,6 +25384,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_218_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -24863,6 +25450,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_218_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -24943,7 +25532,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -24967,6 +25555,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_proposed",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -24995,6 +25584,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_219_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25059,6 +25650,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_219_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25123,6 +25716,8 @@
             "proposed"
           ],
           "to_state": "adopted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_219_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -25203,7 +25798,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -25227,6 +25821,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_adopted",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -25255,6 +25850,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_220_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25319,6 +25916,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_220_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25383,6 +25982,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_220_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -25463,7 +26064,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -25487,6 +26087,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_adopted",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -25515,6 +26116,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_221_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25579,6 +26182,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_221_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25643,6 +26248,8 @@
             "adopted"
           ],
           "to_state": "migrating",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_221_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -25723,7 +26330,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -25747,6 +26353,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_migration_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -25776,6 +26383,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_222_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25840,6 +26449,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_222_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -25904,6 +26515,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_222_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -25985,7 +26598,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -26009,6 +26621,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_migration_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -26038,6 +26651,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_223_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26102,6 +26717,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_223_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26166,6 +26783,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_223_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -26247,7 +26866,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -26271,6 +26889,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_migration_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -26301,6 +26920,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_224_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26365,6 +26986,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_224_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26429,6 +27052,8 @@
             "migrating"
           ],
           "to_state": "dual_running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_224_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -26511,7 +27136,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -26535,6 +27159,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_dual_run",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -26564,6 +27189,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_225_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26628,6 +27255,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_225_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26692,6 +27321,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_225_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -26773,7 +27404,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -26797,6 +27427,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_dual_run",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -26826,6 +27457,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_226_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26890,6 +27523,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_226_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -26954,6 +27589,8 @@
             "dual_running"
           ],
           "to_state": "valued",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_226_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -27035,7 +27672,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -27059,6 +27695,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_value_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -27088,6 +27725,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_227_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27152,6 +27791,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_227_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27216,6 +27857,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_227_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -27297,7 +27940,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -27321,6 +27963,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "platform_service_serial",
       "trigger_hook": "platform_value_due",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -27350,6 +27993,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_228_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27414,6 +28059,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_228_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27478,6 +28125,8 @@
             "valued"
           ],
           "to_state": "settled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_228_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -27559,7 +28208,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "candidate.advance",
@@ -27583,6 +28231,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "metric_defined",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -27613,6 +28262,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_229_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27677,6 +28328,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_229_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27741,6 +28394,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_229_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -27823,7 +28478,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -27847,6 +28501,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "metric_defined",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -27877,6 +28532,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_230_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -27941,6 +28598,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_230_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28005,6 +28664,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_230_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -28087,7 +28748,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -28111,6 +28771,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "metric_defined",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -28140,6 +28801,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_231_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28204,6 +28867,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_231_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28268,6 +28933,8 @@
             "defined"
           ],
           "to_state": "reconciled",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_231_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -28349,7 +29016,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -28373,6 +29039,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "metric_reconciled",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -28403,6 +29070,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_232_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28467,6 +29136,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_232_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28531,6 +29202,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_232_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -28613,7 +29286,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -28637,6 +29309,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "metric_reconciled",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -28666,6 +29339,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_233_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28730,6 +29405,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_233_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28794,6 +29471,8 @@
             "reconciled"
           ],
           "to_state": "preregistered",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_233_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -28875,7 +29554,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -28899,6 +29577,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_preregistered",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -28928,6 +29607,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_234_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -28992,6 +29673,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_234_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29056,6 +29739,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_234_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -29137,7 +29822,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -29161,6 +29845,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_preregistered",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -29190,6 +29875,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_235_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29254,6 +29941,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_235_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29318,6 +30007,8 @@
             "preregistered"
           ],
           "to_state": "running",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_235_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -29399,7 +30090,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -29423,6 +30113,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_running",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -29452,6 +30143,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_236_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29516,6 +30209,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_236_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29580,6 +30275,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_236_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -29661,7 +30358,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -29685,6 +30381,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_running",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -29715,6 +30412,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_237_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29779,6 +30478,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_237_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -29843,6 +30544,8 @@
             "running"
           ],
           "to_state": "frozen",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_237_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -29925,7 +30628,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -29949,6 +30651,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -29978,6 +30681,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_238_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30042,6 +30747,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_238_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30106,6 +30813,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_238_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -30187,7 +30896,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -30211,6 +30919,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_frozen",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -30241,6 +30950,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_239_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30305,6 +31016,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_239_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30369,6 +31082,8 @@
             "frozen"
           ],
           "to_state": "interpreted",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_239_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 90,
@@ -30451,7 +31166,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",
@@ -30475,6 +31189,7 @@
       "cycle_scope": "review_cycle_serial",
       "case_scope": "metric_experiment_serial",
       "trigger_hook": "experiment_interpreted",
+      "transition_owner": "stage_dispatcher",
       "applicability": [
         "landed",
         "celestial_government",
@@ -30505,6 +31220,8 @@
             "interpreted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_240_a_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30569,6 +31286,8 @@
             "interpreted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_240_b_operation_serial",
           "deadline": {
             "kind": "none",
             "reason": "the bound lifecycle hook completes this route synchronously"
@@ -30633,6 +31352,8 @@
             "interpreted"
           ],
           "to_state": "closed",
+          "transition_owner": "stage_dispatcher",
+          "operation_receipt_key": "zg361_rt_240_c_operation_serial",
           "deadline": {
             "kind": "scheduled_event",
             "days": 180,
@@ -30715,7 +31436,6 @@
         "binding.freeze",
         "record.version",
         "rule.evaluate",
-        "case.transition",
         "timeline.append",
         "feedback.project",
         "policy.parameter",

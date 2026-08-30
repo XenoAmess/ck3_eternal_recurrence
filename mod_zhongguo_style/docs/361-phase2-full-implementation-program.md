@@ -78,6 +78,10 @@ audit open/resolve、timeline append、feedback project、relationship apply 与
 
 B1 是下一项施工，不再挑零散卡片。它在一个周期内闭合 A/B/G/H/S，并让既有 001/357 从 `partial` 收口。
 
+逐号 hook、跨周期阶段、共同上司 barrier、考核榜字段和批量测试的权威施工细则见
+[`361-b1-runtime-spec.md`](361-b1-runtime-spec.md)。如果通用 Phase 0 计划与该细则冲突，以 B1 细则为准；尤其 #357 不得走
+AL 的申诉退款迁移。
+
 ### 生命周期
 
 ```text
@@ -163,4 +167,3 @@ B1 的队列矩阵包含 1/2/3 人、4 人合池及 7/14/23 人；23 人必须�
 - B1 后 partial 只允许剩 018/069；B2 后 partial 必须为 0；B8 后 complete=361、not-implemented=0。
 - `fixture-live` 不得冒充 `production-live`；自然路径长期证据单独记账。
 - 只有 B8 和全量回归完成后，才恢复七语发布审计、release staging、Workshop、宣传片和最终实机截图。
-

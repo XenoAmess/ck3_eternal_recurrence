@@ -114,7 +114,7 @@ zg361_review_talk_interaction = {
 }
 
 # ============================================================
-# 举荐（同侪封臣 → 同侪封臣）：对方下期 KPI +10
+# 举荐（同侪封臣 → 同侪封臣）：写入 evaluator/subject/cycle 封存槽
 # ============================================================
 zg361_recommend_interaction = {
 	icon = icon_boost_efficiency
@@ -128,27 +128,23 @@ zg361_recommend_interaction = {
 	is_shown = {
 		has_game_rule = zg361_on
 		scope:actor = {
-			zg361_has_ranked_peer_cohort_trigger = yes
+			zg361_b1_peer_submission_actor_trigger = yes
 		}
 		scope:recipient = {
-			zg361_is_reviewable_vassal_trigger = yes
 			NOT = { this = scope:actor }
-			liege = scope:actor.liege
+			zg361_b1_peer_submission_recipient_trigger = yes
 		}
 	}
 
 	ai_will_do = { base = 0 }
 
 	on_accept = {
-		scope:recipient = {
-			set_variable = { name = zg361_recommended value = 1 }
-		}
-		debug_log = "ZG361: peer recommended"
+		scope:actor = { zg361_b1_submit_peer_positive_effect = yes }
 	}
 }
 
 # ============================================================
-# 攻讦（同侪封臣 → 同侪封臣）：七成让对方下期 KPI -15，三成反噬
+# 攻讦（同侪封臣 → 同侪封臣）：写入具名、可审计的负向封存槽
 # ============================================================
 zg361_slander_interaction = {
 	icon = icon_damage_efficiency
@@ -164,39 +160,18 @@ zg361_slander_interaction = {
 	is_shown = {
 		has_game_rule = zg361_on
 		scope:actor = {
-			zg361_has_ranked_peer_cohort_trigger = yes
+			zg361_b1_peer_submission_actor_trigger = yes
 		}
 		scope:recipient = {
-			zg361_is_reviewable_vassal_trigger = yes
 			NOT = { this = scope:actor }
-			liege = scope:actor.liege
+			zg361_b1_peer_submission_recipient_trigger = yes
 		}
 	}
 
 	ai_will_do = { base = 0 }
 
 	on_accept = {
-		scope:actor = {
-			random = {
-				chance = 70
-				set_variable = { name = zg361_slander_hit value = 1 }
-			}
-			if = {
-				limit = { has_variable = zg361_slander_hit }
-				remove_variable = zg361_slander_hit
-				scope:recipient = {
-					set_variable = { name = zg361_slandered value = 1 }
-				}
-				debug_log = "ZG361: slander landed"
-			}
-			else = {
-				set_variable = { name = zg361_slander_backfire value = 1 }
-				scope:recipient = {
-					add_opinion = { modifier = zg361_slandered_me target = scope:actor }
-				}
-				debug_log = "ZG361: slander backfired"
-			}
-		}
+		scope:actor = { zg361_b1_submit_peer_negative_effect = yes }
 	}
 }
 

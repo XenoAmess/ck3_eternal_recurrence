@@ -57,6 +57,39 @@ zg361_kpi_governance_evidence_value = {
 			multiply = 2
 		}
 	}
+	if = {
+		limit = { has_variable = zg361_b1_evidence_late_frozen }
+		if = {
+			limit = { var:zg361_b1_evidence_late_frozen = 1 }
+			add = zg361_b1_goal_adjustment_value
+		}
+	}
+}
+
+# D+300 goal/baseline consumer for #002/#003/#005/#006/#047. The three
+# evidence windows remain immutable variables; only their bounded delta enters
+# the governance component, so the authoritative KPI is still exactly eight
+# components and a conservative target cannot buy 3.75 by itself.
+zg361_b1_goal_adjustment_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = zg361_b1_evidence_early
+			has_variable = zg361_b1_evidence_late
+		}
+		add = {
+			value = var:zg361_b1_evidence_late
+			subtract = var:zg361_b1_evidence_early
+			multiply = var:zg361_b1_goal_weight
+			divide = 100
+			max = 20
+			min = -20
+		}
+	}
+	if = {
+		limit = { has_variable = zg361_b1_difficulty_adjustment }
+		add = var:zg361_b1_difficulty_adjustment
+	}
 }
 
 # 2. 当前职级/贤能品级。
@@ -178,6 +211,19 @@ zg361_kpi_collaboration_evidence_value = {
 		add = {
 			value = 0
 			subtract = zg361_kpi_slander_backfire_malus_value
+		}
+	}
+	# B1 peer records are sealed evaluator/subject/cycle facts. Their bounded
+	# normalized score replaces neither hard output nor values; it is one real
+	# collaboration consumer and remains capped at +10/-15.
+	if = {
+		limit = {
+			has_variable = zg361_b1_peer_normalized_score
+			has_variable = zg361_b1_peer_use_mode
+		}
+		if = {
+			limit = { var:zg361_b1_peer_use_mode = 2 }
+			add = var:zg361_b1_peer_normalized_score
 		}
 	}
 }

@@ -45,6 +45,7 @@ jobs:
           python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
           python mod_zhongguo_style/tools/test_zg361_domain_data.py
           python mod_zhongguo_style/tools/test_zg361_phase2_runtime.py
+          python mod_zhongguo_style/tools/test_zg361_b1_runtime.py
           python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
@@ -55,6 +56,7 @@ jobs:
       - name: Verify ZhongGuo 361 generated and static content
         run: |
           python mod_zhongguo_style/tools/gen_361_mechanisms.py --check
+          python mod_zhongguo_style/tools/gen_361_b1_runtime.py --check
           python mod_zhongguo_style/tools/gen_scoreboard_snapshot.py --check
           python mod_zhongguo_style/tools/validate_local.py
       - name: Verify ZhongGuo 361 release localization audit

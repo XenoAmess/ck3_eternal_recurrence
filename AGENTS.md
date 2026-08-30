@@ -34,6 +34,9 @@ py tools/compose_vivhite_key_art.py                         # 白绮主视觉 �
 py tools/compose_ox_here_key_art.py                         # 牛来主视觉 → 640×640、低于 1 MB thumbnail
 py tools/compose_ox_here_workshop_media.py --artifacts <run> # 牛来 GREEN 实机截图 → 四张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
+py mod_zhongguo_style/tools/gen_361_mechanisms.py           # 361 目录、领域合同与制度卡
+py mod_zhongguo_style/tools/gen_361_b1_runtime.py           # B1 跨周期绩效季与共同上司 barrier
+py mod_zhongguo_style/tools/gen_scoreboard_snapshot.py      # 考核榜固定快照槽与 GUI 投影
 py tools/build_release.py --check                           # 临时双构建，验证 manifest/ZIP 可复现
 py tools/build_release.py                                   # 生成 dist staging、manifest 与 deterministic ZIP
 py tools/build_vivhite_release.py --check                   # 白绮独立版临时双构建
@@ -236,6 +239,8 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 唯一已授权例外是独立 `ox_here/` mod：AI 可以低意愿使用“牛来”，所有层级每 12 个月检查一次，执行后冷却
   **恰好 1 年且永远不得提高到 1 年以上**。该例外不得外推到主 mod 或白绮独立版；权威权重与实机边界见
   `docs/court-position-mechanics.md`。
+- 第二个已授权例外是独立 `mod_zhongguo_style/`：有地、在世、天朝制公爵及以上 AI 管理者可静默运行 361 后台考核；
+  伯爵和男爵只能被考核，不能建立 cohort、分配配额或校准别人。该例外只覆盖此 mod，不能外推到主 mod、白绮版或其他政府。
 - 所有脚本文件 **UTF-8 BOM**；yml 缺 BOM 直接不加载
 - script values 目录是 `common/script_values`（**不是** scripted_values）
 - `is_tutorial_lesson_completed` 是 interface trigger，只能用于 customizable_localization / GUI，游戏状态脚本禁用

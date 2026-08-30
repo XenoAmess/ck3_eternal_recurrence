@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Final
 
-from zg361_domain_data import DOMAIN_SPECS, STALE_GUARD
+from zg361_domain_data import DOMAIN_SPECS, STALE_GUARD, TRANSITION_OWNER
 
 
 class OperationKind(str, Enum):
@@ -92,7 +92,6 @@ _COMMON_RECIPE: Final[tuple[str, ...]] = (
     "binding.freeze",
     "record.version",
     "rule.evaluate",
-    "case.transition",
     "timeline.append",
     "feedback.project",
 )
@@ -143,6 +142,40 @@ DOMAIN_RECIPE_PRIMITIVES: Final[dict[str, tuple[str, ...]]] = {
     for domain in DOMAIN_SPECS
 }
 
+# A shared stage owns its transition. Per-mechanism recipes deliberately omit
+# case.transition and only post idempotent business receipts while the old
+# state remains valid.
+STAGE_DISPATCHER_PRIMITIVES: Final[tuple[str, ...]] = (
+    "rule.evaluate",
+    "case.transition",
+    "timeline.append",
+)
+
+# #357 adapts A/G/B/result facts. AL's generic recipe includes a refund used by
+# later appeal mechanisms, which would be a false gameplay claim here.
+MECHANISM_PRIMITIVE_OVERRIDES: Final[dict[int, tuple[str, ...]]] = {
+    357: (
+        "case.create",
+        "binding.freeze",
+        "record.version",
+        "rule.evaluate",
+        "evidence.freeze",
+        "score.compute",
+        "cohort.lock",
+        "vote.record",
+        "timeline.append",
+        "feedback.project",
+    ),
+}
+
+
+def primitive_recipe_for(plan: dict[str, object]) -> tuple[str, ...]:
+    mechanism_id = int(plan["id"])
+    return MECHANISM_PRIMITIVE_OVERRIDES.get(
+        mechanism_id,
+        DOMAIN_RECIPE_PRIMITIVES[str(plan["operation_key"])],
+    )
+
 if set(_DOMAIN_RECIPE_EXTRAS) != {domain.code for domain in DOMAIN_SPECS}:
     raise ValueError("primitive recipes must cover every domain exactly once")
 if any(
@@ -168,6 +201,10 @@ def compile_choice_ops(
         raise ValueError(
             f"mechanism {mechanism_id:03d} requested non-whitelisted operation {operation_key!r}"
         )
+    if plan.get("transition_owner") != TRANSITION_OWNER:
+        raise ValueError(
+            f"mechanism {mechanism_id:03d} must use the shared stage dispatcher"
+        )
     choices = plan.get("choices")
     if not isinstance(choices, dict) or choice_name not in choices:
         raise ValueError(f"mechanism {mechanism_id:03d} lacks choice {choice_name}")
@@ -191,13 +228,12 @@ def compile_choice_ops(
                 hook=plan["trigger_hook"],
                 variant=plan["semantic_family"],
                 mode=route["parameters"]["mode"],
+                transition_owner=plan["transition_owner"],
             ),
         )
     ]
     policy_primitive = "policy.defer" if choice_name == "c" else "policy.bind"
-    primitives = tuple(
-        dict.fromkeys((policy_primitive, *DOMAIN_RECIPE_PRIMITIVES[operation_key]))
-    )
+    primitives = tuple(dict.fromkeys((policy_primitive, *primitive_recipe_for(plan))))
     for primitive in primitives:
         compiled.append(
             CompiledOperation(
@@ -266,6 +302,7 @@ def render_transition_guard(operation: CompiledOperation) -> dict[str, object]:
         "expected_state": payload["from_state"],
         "to_state": payload["to_state"],
         "hook": payload["hook"],
+        "transition_owner": payload["transition_owner"],
     }
 
 

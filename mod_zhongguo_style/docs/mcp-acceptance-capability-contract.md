@@ -39,9 +39,24 @@ target/case 绑定时不得判 GREEN；这正是首纵切 `.52` 尚未闭合的�
 
 ### 5. Named scripted-window/widget contract
 
-对 allowlisted scripted window/widget 返回：存在、visible、focus、modal/blocking、screen rect、active tab、close/reopen ability、
-revision。提供 activate/close/reopen 的 typed action 和独立 ACK。用于考核榜内页、告身、申诉/PIP、职业/HC、项目/运营和制度审计；
-不得退化为坐标点击或 OCR 找按钮。
+建议能力名为 `get_named_scripted_widget_state_v1` 与 `activate_named_scripted_widget_v1`（最终命名由 MCP 层决定）。对 allowlisted
+scripted window/widget 返回：stable widget identity、存在、visible、focus、modal/blocking、screen rect、outer/inner active tab、
+close/reopen ability、selected source/slot/cycle/case 与 revision。提供 activate/close/reopen 的 typed action 和独立 ACK；动作参数只允许
+stable identity，不接受坐标。
+
+考核榜 B1 最小 allowlist 必须覆盖：toggle、modal、panel、managed/received/system 外层页、list/detail、facts/peer/quota/audit、
+back/close、`m_01`、`m_80` 与当前玩家 received-self 案卷按钮。状态查询还要证明：
+
+- 详情来自冻结 scoreboard/case snapshot，不是人物 live variable；
+- 公爵及以上管理者可选 managed case，伯爵/男爵只能选 received-self；
+- 非本人 received 行不能取得 evaluator identity、raw comment、recusal identity 或内部 quota trade；
+- X/Escape/backdrop/切页/新榜发布清理 selection，关闭后重开回到 list/facts；
+- 原生右窗、自动事件、决议窗、pause、struggle、outliner、barbershop 与 scoreboard 的 visible/blocking 互斥可查询；
+- 100/125/150% UI scale 与三档分辨率下 rect 仍在安全区。
+
+另需 bounded scoreboard/case snapshot 返回 ACL 后的 facts/peer/quota/audit 冻结字段；GUI state 与数据查询必须来自同一 paused revision。
+它用于考核榜内页、告身、申诉/PIP、职业/HC、项目/运营和制度审计，不得退化为坐标点击或 OCR 找按钮。本条仍是需求合同；本
+mod 工作包不实现 MCP/native bridge。
 
 ### 6. AI-owned case snapshot
 
@@ -71,4 +86,3 @@ paused/date/player identity。动作 ACK 只能证明命令被产品路径接受
 4. OCR 只在所有字段已闭合后生成最终截图，不参与导航和断言；
 5. RED artifact、request/response、ACK、revision 和 cleanup 证据全部保留；
 6. MCP 缺能力时更新本合同并交给 MCP 层施工，mod 侧不得用 OCR 或 acceptance-only 后门永久绕过。
-

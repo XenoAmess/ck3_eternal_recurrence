@@ -23,11 +23,11 @@ zg361_annual_review_effect = {
 			if = {
 				limit = { var:zg361_review_counter >= 3 }
 				set_variable = { name = zg361_review_counter value = 0 }
-				zg361_run_review_effect = yes
+				zg361_b1_open_cycle_effect = yes
 			}
 		}
 		else = {
-			zg361_run_review_effect = yes
+			zg361_b1_open_cycle_effect = yes
 		}
 	}
 }
@@ -53,21 +53,52 @@ zg361_run_review_effect = {
 	# 不能因为没有模组快照就被误判为“新官”而掏空 3.25 配额。
 	# 只有本领主已经完成过至少一轮考核后，新出现且无快照的官员才享受
 	# 一次试用期保护：仍入榜，可得 3.75/3.5，但不成为本轮 3.25。
-	every_vassal = {
-		limit = { zg361_is_reviewable_vassal_trigger = yes }
-		if = {
-			limit = {
-				NOT = { has_variable = zg361_prev_merit_level }
-				root = { has_character_flag = zg361_review_baseline_initialized }
+	if = {
+		limit = {
+			has_character_flag = zg361_b1_cycle_active
+			has_variable = zg361_b1_cycle_state
+			var:zg361_b1_cycle_state = 3
+			has_variable_list = zg361_b1_subjects
+		}
+		# B1 uses the roster frozen at D+0. A transfer cannot silently replace the
+		# denominator at D+300; leavers retain a case record but default to the
+		# fair route and do not receive a current-liege settlement.
+		every_in_list = {
+			variable = zg361_b1_subjects
+			if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					var:zg361_b1_case_owner = root
+					is_alive = yes
+					liege = root
+				}
+				zg361_compute_kpi_effect = yes
+				add_to_list = zg361_cohort
 			}
-			add_character_flag = zg361_newcomer_this_cycle
-			debug_log = "ZG361: newcomer enters first review with 3.25 protection"
+			else = {
+				set_variable = { name = zg361_b1_leaver_route value = 1 }
+				set_variable = { name = zg361_b1_roster_included value = 0 }
+				debug_log = "ZG361B1: frozen-roster leaver preserved outside current settlement"
+			}
 		}
-		else = {
-			remove_character_flag = zg361_newcomer_this_cycle
+	}
+	else = {
+		every_vassal = {
+			limit = { zg361_is_reviewable_vassal_trigger = yes }
+			if = {
+				limit = {
+					NOT = { has_variable = zg361_prev_merit_level }
+					root = { has_character_flag = zg361_review_baseline_initialized }
+				}
+				add_character_flag = zg361_newcomer_this_cycle
+				debug_log = "ZG361: newcomer enters first review with 3.25 protection"
+			}
+			else = {
+				remove_character_flag = zg361_newcomer_this_cycle
+			}
+			zg361_compute_kpi_effect = yes
+			add_to_list = zg361_cohort
 		}
-		zg361_compute_kpi_effect = yes
-		add_to_list = zg361_cohort
 	}
 	set_variable = { name = zg361_cohort_n value = list_size:zg361_cohort }
 
@@ -76,10 +107,16 @@ zg361_run_review_effect = {
 		limit = { var:zg361_cohort_n >= zg361_min_cohort_value }
 		# 每次有效考核都有独立轮次号；榜单只收本轮、由本领主评定的人，避免调任后混入旧数据。
 		if = {
-			limit = { NOT = { has_variable = zg361_review_serial } }
-			set_variable = { name = zg361_review_serial value = 0 }
+			limit = { has_character_flag = zg361_b1_cycle_active }
+			set_variable = { name = zg361_review_serial value = var:zg361_b1_cycle_serial }
 		}
-		change_variable = { name = zg361_review_serial add = 1 }
+		else = {
+			if = {
+				limit = { NOT = { has_variable = zg361_review_serial } }
+				set_variable = { name = zg361_review_serial value = 0 }
+			}
+			change_variable = { name = zg361_review_serial add = 1 }
+		}
 		zg361_rank_cohort_effect = yes
 		zg361_assign_pending_grades_effect = yes
 		# 玩家校准事件的选项 tooltip 会预求值结算 effect；先跨日落盘其条件变量，
@@ -104,14 +141,16 @@ zg361_run_review_effect = {
 			remove_variable = zg361_slander_backfire
 		}
 
-		# 4. AI 直接结算；玩家进校准会议
+		# 4. B1 先开 30 日影子档；旧存档即时链才直接进入校准/结算。
 		if = {
+			limit = { has_character_flag = zg361_b1_cycle_active }
+			zg361_b1_open_shadow_effect = yes
+		}
+		else_if = {
 			limit = { is_ai = yes }
 			zg361_apply_pending_grades_effect = yes
 		}
-		else = {
-			trigger_event = { id = zg361.10 days = 1 }
-		}
+		else = { trigger_event = { id = zg361.10 days = 1 } }
 	}
 	else = {
 			# 1–2 人没有足够同侪支撑强制分布或校准政治，但“免于强排”不等于
@@ -120,10 +159,16 @@ zg361_run_review_effect = {
 			if = {
 				limit = { var:zg361_cohort_n >= 1 }
 				if = {
-					limit = { NOT = { has_variable = zg361_review_serial } }
-					set_variable = { name = zg361_review_serial value = 0 }
+					limit = { has_character_flag = zg361_b1_cycle_active }
+					set_variable = { name = zg361_review_serial value = var:zg361_b1_cycle_serial }
 				}
-				change_variable = { name = zg361_review_serial add = 1 }
+				else = {
+					if = {
+						limit = { NOT = { has_variable = zg361_review_serial } }
+						set_variable = { name = zg361_review_serial value = 0 }
+					}
+					change_variable = { name = zg361_review_serial add = 1 }
+				}
 				zg361_rank_cohort_effect = yes
 				set_variable = { name = zg361_pending_375_n value = 0 }
 				set_variable = { name = zg361_pending_35_n value = var:zg361_cohort_n }
@@ -154,11 +199,23 @@ zg361_run_review_effect = {
 					remove_variable = zg361_slandered
 					remove_variable = zg361_slander_backfire
 				}
-				debug_log = "ZG361: small cohort bypassed forced distribution and settled at 3.5"
-				zg361_apply_pending_grades_effect = yes
+				if = {
+					limit = { has_character_flag = zg361_b1_cycle_active }
+					debug_log = "ZG361B1: small cohort bypassed forced distribution and entered shadow at 3.5"
+					zg361_b1_open_shadow_effect = yes
+				}
+				else = {
+					debug_log = "ZG361: small cohort bypassed forced distribution and settled at 3.5"
+					zg361_apply_pending_grades_effect = yes
+				}
 			}
 			else = {
 				debug_log = "ZG361: empty cohort, review skipped"
+				if = {
+					limit = { has_character_flag = zg361_b1_cycle_active }
+					set_variable = { name = zg361_b1_cycle_state value = 8 }
+					remove_character_flag = zg361_b1_cycle_active
+				}
 				remove_character_flag = zg361_review_in_progress
 			}
 		}
@@ -196,6 +253,18 @@ zg361_compute_kpi_effect = {
 	}
 	else = {
 		set_variable = { name = zg361_absolute_grade value = 1 }
+	}
+	# #002 conservative/deferred goal contracts may cap the absolute grade at
+	# 3.5. The cap is frozen at D+0 and cannot be raised after seeing the result.
+	if = {
+		limit = { has_variable = zg361_b1_goal_grade_cap }
+		if = {
+			limit = {
+				var:zg361_b1_goal_grade_cap = 2
+				var:zg361_absolute_grade = 3
+			}
+			set_variable = { name = zg361_absolute_grade value = 2 }
+		}
 	}
 	remove_variable = zg361_calibration_reason
 	remove_variable = zg361_grade_reason_override
@@ -490,6 +559,7 @@ zg361_apply_pending_grades_effect = {
 		zg361_mechanism_dispatch_next_effect = yes
 	}
 	zg361_refresh_org_climate_effect = yes
+	zg361_b1_mark_published_effect = yes
 	remove_character_flag = zg361_review_in_progress
 }
 

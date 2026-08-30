@@ -319,7 +319,7 @@ def check_runtime_invariants() -> None:
             err("small cohorts must bypass the forced-distribution calibration event")
     if not re.search(
         r'else\s*=\s*\{\s*debug_log\s*=\s*"ZG361: empty cohort, review skipped"'
-        r"\s*remove_character_flag\s*=\s*zg361_review_in_progress\s*\}",
+        r".*?remove_character_flag\s*=\s*zg361_review_in_progress\s*\}",
         review_body,
         re.S,
     ):
@@ -674,7 +674,7 @@ def check_runtime_invariants() -> None:
     for token in (
         "zg361_clear_jingcha_mandate_effect = {",
         "zg361_excuse_jingcha_assembly_effect = {",
-        "jingcha assembly excused; official review still resolved",
+        "jingcha assembly excused; active performance season continues",
     ):
         if token not in mandate_effects:
             err(f"jingcha lifecycle cleanup contract missing token: {token}")
@@ -763,8 +763,10 @@ def check_runtime_invariants() -> None:
     ):
         err("skipped-jingcha marker must be consumed immediately after its KPI is calculated")
 
-    if interactions.count("zg361_has_ranked_peer_cohort_trigger = yes") != 2:
-        err("recommendation and slander must both be disabled below the three-person cohort threshold")
+    if interactions.count("zg361_b1_peer_submission_actor_trigger = yes") != 2:
+        err("recommendation and slander must both require the live B1 peer window")
+    if interactions.count("zg361_b1_peer_submission_recipient_trigger = yes") != 2:
+        err("recommendation and slander must both require a same-cycle recipient slot")
 
     chinese = read_text(
         MOD_ROOT / "localization" / "simp_chinese" / "zg361_l_simp_chinese.yml"

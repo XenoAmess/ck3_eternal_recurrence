@@ -12,7 +12,7 @@ zg361_review_now_bridge_gui = {
 		if = {
 			limit = { has_character_flag = zg361_review_now_pending }
 			remove_character_flag = zg361_review_now_pending
-			zg361_run_review_effect = yes
+			zg361_b1_open_cycle_effect = yes
 		}
 	}
 }

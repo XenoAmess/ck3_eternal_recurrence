@@ -33,7 +33,7 @@
     "claim_boundary": "Static model and L0 checks do not prove CK3 load, fixture behavior, UI rendering, timed delivery, receipts, or appeal outcomes."
   },
   "runtime_plan": {
-    "schema": 1,
+    "schema": 2,
     "coverage": 361,
     "domain_count": 38,
     "domain_source": "tools/mechanism_domains/domains.json",
@@ -144,7 +144,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -156,6 +155,7 @@
         ],
         "semantic_family": "kpi_evidence_sheet",
         "trigger_hook": "cycle_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -292,7 +292,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -304,6 +303,7 @@
         ],
         "semantic_family": "annual_okr_kpi_contract",
         "trigger_hook": "cycle_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -416,7 +416,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -428,6 +427,7 @@
         ],
         "semantic_family": "midcycle_checkin_rebaseline",
         "trigger_hook": "targets_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -540,7 +540,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -552,6 +551,7 @@
         ],
         "semantic_family": "self_assessment_gap",
         "trigger_hook": "evidence_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -664,7 +664,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -676,6 +675,7 @@
         ],
         "semantic_family": "role_specific_scorecard",
         "trigger_hook": "evidence_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -788,7 +788,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -800,6 +799,7 @@
         ],
         "semantic_family": "baseline_difficulty_adjustment",
         "trigger_hook": "evidence_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -912,7 +912,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -923,6 +922,7 @@
         ],
         "semantic_family": "back_to_back_360_review",
         "trigger_hook": "peer_invites_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -1035,7 +1035,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1046,6 +1045,7 @@
         ],
         "semantic_family": "evaluator_calibration_credit",
         "trigger_hook": "peer_invites_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -1158,7 +1158,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1169,6 +1168,7 @@
         ],
         "semantic_family": "calibration_dashboard_swap",
         "trigger_hook": "peer_feedback_sealed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -1281,7 +1281,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1292,6 +1291,7 @@
         ],
         "semantic_family": "forced_bottom_and_protection",
         "trigger_hook": "peer_feedback_sealed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -1404,7 +1404,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1415,6 +1414,7 @@
         ],
         "semantic_family": "skip_level_calibration_review",
         "trigger_hook": "precalibration",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -1525,7 +1525,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1536,6 +1535,7 @@
         ],
         "semantic_family": "calibration_conflict_recusal",
         "trigger_hook": "precalibration",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -1648,7 +1648,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -1659,6 +1658,7 @@
         ],
         "semantic_family": "performance_disclosure_policy",
         "trigger_hook": "calibration_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -1769,7 +1769,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -1781,6 +1780,7 @@
         ],
         "semantic_family": "performance_appeal_dossier",
         "trigger_hook": "result_delivered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -1891,7 +1891,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -1903,6 +1902,7 @@
         ],
         "semantic_family": "pip_improvement_plan",
         "trigger_hook": "result_delivered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -2015,7 +2015,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -2027,6 +2026,7 @@
         ],
         "semantic_family": "pip_support_budget",
         "trigger_hook": "appeal_or_pip_opened",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -2139,7 +2139,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -2151,6 +2150,7 @@
         ],
         "semantic_family": "bottom_performer_ladder",
         "trigger_hook": "pip_support_committed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -2263,7 +2263,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -2275,6 +2274,7 @@
         ],
         "semantic_family": "personal_result_receipt",
         "trigger_hook": "pip_check_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -2412,7 +2412,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -2424,6 +2423,7 @@
         ],
         "semantic_family": "promotion_eligibility_gate",
         "trigger_hook": "evidence_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -2536,7 +2536,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -2548,6 +2547,7 @@
         ],
         "semantic_family": "promotion_package_panel",
         "trigger_hook": "evidence_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -2659,7 +2659,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -2671,6 +2670,7 @@
         ],
         "semantic_family": "bonus_salary_matrix",
         "trigger_hook": "promotion_packet_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "personal_gold",
           "treasury_gold"
@@ -2784,7 +2784,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -2796,6 +2795,7 @@
         ],
         "semantic_family": "soft_headcount_budget",
         "trigger_hook": "promotion_packet_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -2908,7 +2908,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -2920,6 +2919,7 @@
         ],
         "semantic_family": "headcount_business_review",
         "trigger_hook": "promotion_panel_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -3032,7 +3032,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -3044,6 +3043,7 @@
         ],
         "semantic_family": "internal_mobility_transfer",
         "trigger_hook": "promotion_panel_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3154,7 +3154,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -3166,6 +3165,7 @@
         ],
         "semantic_family": "talent_poaching_counteroffer",
         "trigger_hook": "career_resources_settled",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -3278,7 +3278,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3289,6 +3288,7 @@
         ],
         "semantic_family": "contribution_visibility_dual_ledger",
         "trigger_hook": "project_registered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3399,7 +3399,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3410,6 +3409,7 @@
         ],
         "semantic_family": "cross_team_contribution_ledger",
         "trigger_hook": "project_registered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3520,7 +3520,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3531,6 +3530,7 @@
         ],
         "semantic_family": "credit_blame_arbitration",
         "trigger_hook": "contribution_signed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3640,7 +3640,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3651,6 +3650,7 @@
         ],
         "semantic_family": "metric_gaming_fraud_audit",
         "trigger_hook": "claim_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3761,7 +3761,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3772,6 +3771,7 @@
         ],
         "semantic_family": "resource_horse_race",
         "trigger_hook": "claim_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -3882,7 +3882,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.attach",
@@ -3893,6 +3892,7 @@
         ],
         "semantic_family": "sponsor_network",
         "trigger_hook": "contribution_audited",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4003,7 +4003,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -4013,6 +4012,7 @@
         ],
         "semantic_family": "manager_team_performance",
         "trigger_hook": "cycle_closed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4123,7 +4123,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -4133,6 +4132,7 @@
         ],
         "semantic_family": "manager_profile_reason_codes",
         "trigger_hook": "cycle_closed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4243,7 +4243,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -4253,6 +4252,7 @@
         ],
         "semantic_family": "performance_potential_nine_box",
         "trigger_hook": "manager_score_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4363,7 +4363,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -4373,6 +4372,7 @@
         ],
         "semantic_family": "distribution_mode_rule",
         "trigger_hook": "manager_reason_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4483,7 +4483,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -4493,6 +4492,7 @@
         ],
         "semantic_family": "ten_year_system_report",
         "trigger_hook": "nine_box_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -4603,7 +4603,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -4614,6 +4613,7 @@
         ],
         "semantic_family": "quota_trade",
         "trigger_hook": "cycle_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -4726,7 +4726,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -4737,6 +4736,7 @@
         ],
         "semantic_family": "small_sample_pooling",
         "trigger_hook": "cycle_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -4849,7 +4849,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -4860,6 +4859,7 @@
         ],
         "semantic_family": "cohort_lock",
         "trigger_hook": "cycle_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -4972,7 +4972,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -4983,6 +4982,7 @@
         ],
         "semantic_family": "leaver_bottom_slot",
         "trigger_hook": "cohort_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -5095,7 +5095,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5106,6 +5105,7 @@
         ],
         "semantic_family": "newcomer_distribution",
         "trigger_hook": "cohort_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -5218,7 +5218,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5229,6 +5228,7 @@
         ],
         "semantic_family": "rotating_bottom_collusion",
         "trigger_hook": "cohort_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -5341,7 +5341,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5352,6 +5351,7 @@
         ],
         "semantic_family": "calibration_attention",
         "trigger_hook": "quota_computed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -5464,7 +5464,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5475,6 +5474,7 @@
         ],
         "semantic_family": "blind_then_named_review",
         "trigger_hook": "quota_computed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -5587,7 +5587,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5598,6 +5597,7 @@
         ],
         "semantic_family": "no_surprise_feedback_debt",
         "trigger_hook": "quota_computed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -5708,7 +5708,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5719,6 +5718,7 @@
         ],
         "semantic_family": "opportunity_allocation_audit",
         "trigger_hook": "calibration_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -5829,7 +5829,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "cohort.lock",
@@ -5840,6 +5839,7 @@
         ],
         "semantic_family": "evidence_time_window",
         "trigger_hook": "calibration_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -5950,7 +5950,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -5962,6 +5961,7 @@
         ],
         "semantic_family": "peer_review_capacity",
         "trigger_hook": "peer_invites_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -6074,7 +6074,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6086,6 +6085,7 @@
         ],
         "semantic_family": "sealed_peer_review_deadline",
         "trigger_hook": "peer_invites_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -6196,7 +6196,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6208,6 +6207,7 @@
         ],
         "semantic_family": "reciprocal_rating_collusion",
         "trigger_hook": "peer_feedback_submitted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -6318,7 +6318,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6330,6 +6329,7 @@
         ],
         "semantic_family": "anonymous_feedback_threshold",
         "trigger_hook": "peer_feedback_sealed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -6442,7 +6442,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6454,6 +6453,7 @@
         ],
         "semantic_family": "peer_rating_shape",
         "trigger_hook": "peer_feedback_sealed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -6566,7 +6566,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6578,6 +6577,7 @@
         ],
         "semantic_family": "peer_feedback_pay_boundary",
         "trigger_hook": "peer_feedback_audited",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -6688,7 +6688,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6698,6 +6697,7 @@
         ],
         "semantic_family": "reporting_workload_tradeoff",
         "trigger_hook": "result_ready",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -6810,7 +6810,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6820,6 +6819,7 @@
         ],
         "semantic_family": "manager_attention_slots",
         "trigger_hook": "result_ready",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -6932,7 +6932,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -6942,6 +6941,7 @@
         ],
         "semantic_family": "credit_attribution",
         "trigger_hook": "report_packet_built",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -7051,7 +7051,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -7061,6 +7060,7 @@
         ],
         "semantic_family": "contribution_provenance",
         "trigger_hook": "report_packet_built",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -7173,7 +7173,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -7183,6 +7182,7 @@
         ],
         "semantic_family": "skip_level_cc",
         "trigger_hook": "report_packet_signed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -7295,7 +7295,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -7305,6 +7304,7 @@
         ],
         "semantic_family": "bad_news_escalation",
         "trigger_hook": "report_packet_signed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -7417,7 +7417,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -7427,6 +7426,7 @@
         ],
         "semantic_family": "material_leak_and_idea_theft",
         "trigger_hook": "report_packet_routed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -7539,7 +7539,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -7549,6 +7548,7 @@
         ],
         "semantic_family": "report_format_policy",
         "trigger_hook": "report_packet_routed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -7661,7 +7661,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -7669,6 +7668,7 @@
         ],
         "semantic_family": "matrix_goal_conflict",
         "trigger_hook": "matrix_contract_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -7781,7 +7781,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -7789,6 +7788,7 @@
         ],
         "semantic_family": "matrix_weight_contract",
         "trigger_hook": "matrix_contract_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -7899,7 +7899,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -7907,6 +7906,7 @@
         ],
         "semantic_family": "manager_handoff",
         "trigger_hook": "matrix_weights_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -8019,7 +8019,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -8027,6 +8026,7 @@
         ],
         "semantic_family": "parachuted_manager_transition",
         "trigger_hook": "matrix_weights_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -8139,7 +8139,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -8147,6 +8146,7 @@
         ],
         "semantic_family": "cancelled_project_attribution",
         "trigger_hook": "manager_handoff_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -8257,7 +8257,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -8265,6 +8264,7 @@
         ],
         "semantic_family": "duplicate_role_merge",
         "trigger_hook": "manager_handoff_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -8377,7 +8377,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "vote.record",
@@ -8385,6 +8384,7 @@
         ],
         "semantic_family": "portable_performance_record",
         "trigger_hook": "manager_handoff_signed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -8497,7 +8497,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -8510,6 +8509,7 @@
         ],
         "semantic_family": "formal_result_service",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -8649,7 +8649,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -8662,6 +8661,7 @@
         ],
         "semantic_family": "appeal_anti_retaliation",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -8774,7 +8774,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -8787,6 +8786,7 @@
         ],
         "semantic_family": "public_performance_escalation",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -8899,7 +8899,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -8912,6 +8911,7 @@
         ],
         "semantic_family": "rating_leak",
         "trigger_hook": "result_delivered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -9024,7 +9024,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9037,6 +9036,7 @@
         ],
         "semantic_family": "whistleblower_triage",
         "trigger_hook": "result_delivered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -9148,7 +9148,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9161,6 +9160,7 @@
         ],
         "semantic_family": "honest_redundancy",
         "trigger_hook": "result_delivered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -9270,7 +9270,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9283,6 +9282,7 @@
         ],
         "semantic_family": "voluntary_exit_package",
         "trigger_hook": "appeal_opened",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -9393,7 +9393,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9406,6 +9405,7 @@
         ],
         "semantic_family": "multi_level_procedural_liability",
         "trigger_hook": "appeal_opened",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -9518,7 +9518,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9531,6 +9530,7 @@
         ],
         "semantic_family": "independent_reviewer_rotation",
         "trigger_hook": "appeal_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -9642,7 +9642,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9655,6 +9654,7 @@
         ],
         "semantic_family": "distribution_fairness_dashboard",
         "trigger_hook": "appeal_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -9765,7 +9765,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9778,6 +9777,7 @@
         ],
         "semantic_family": "skip_level_office_hours",
         "trigger_hook": "appeal_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -9889,7 +9889,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -9902,6 +9901,7 @@
         ],
         "semantic_family": "metric_defect_ticket",
         "trigger_hook": "anti_retaliation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -10012,7 +10012,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -10025,6 +10024,7 @@
         ],
         "semantic_family": "performance_information_access",
         "trigger_hook": "anti_retaliation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -10136,7 +10136,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10147,6 +10146,7 @@
         ],
         "semantic_family": "total_reward_formula",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10260,7 +10260,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10271,6 +10270,7 @@
         ],
         "semantic_family": "three_level_bonus_multiplier",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10384,7 +10384,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10395,6 +10394,7 @@
         ],
         "semantic_family": "deferred_bonus_vesting",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10508,7 +10508,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10519,6 +10518,7 @@
         ],
         "semantic_family": "retention_renewal_cliff",
         "trigger_hook": "compensation_formula_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10632,7 +10632,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10643,6 +10642,7 @@
         ],
         "semantic_family": "bonus_holdback_clawback",
         "trigger_hook": "compensation_formula_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10756,7 +10756,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10767,6 +10766,7 @@
         ],
         "semantic_family": "pay_band_position",
         "trigger_hook": "compensation_funds_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -10880,7 +10880,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -10891,6 +10890,7 @@
         ],
         "semantic_family": "market_vs_merit_raise_budget",
         "trigger_hook": "compensation_funds_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -11005,7 +11005,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -11016,6 +11015,7 @@
         ],
         "semantic_family": "level_role_power_cash_decoupling",
         "trigger_hook": "compensation_funds_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -11125,7 +11125,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -11136,6 +11135,7 @@
         ],
         "semantic_family": "spot_award",
         "trigger_hook": "compensation_granted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -11249,7 +11249,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "transaction.reserve",
@@ -11260,6 +11259,7 @@
         ],
         "semantic_family": "tenure_vs_performance_awards",
         "trigger_hook": "compensation_granted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "award_budget",
           "personal_gold",
@@ -11374,7 +11374,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11384,6 +11383,7 @@
         ],
         "semantic_family": "dual_career_tracks",
         "trigger_hook": "career_track_selected",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -11496,7 +11496,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11506,6 +11505,7 @@
         ],
         "semantic_family": "manager_return_to_expert",
         "trigger_hook": "career_track_selected",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -11618,7 +11618,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11628,6 +11627,7 @@
         ],
         "semantic_family": "micro_level_progression",
         "trigger_hook": "career_eligibility_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -11740,7 +11740,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11750,6 +11749,7 @@
         ],
         "semantic_family": "annual_management_authority_review",
         "trigger_hook": "career_calibration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -11860,7 +11860,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11870,6 +11869,7 @@
         ],
         "semantic_family": "exceptional_promotion_packet",
         "trigger_hook": "career_calibration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -11982,7 +11982,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -11992,6 +11991,7 @@
         ],
         "semantic_family": "cross_team_promotion_calibration",
         "trigger_hook": "career_change_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -12104,7 +12104,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12115,6 +12114,7 @@
         ],
         "semantic_family": "hc_type_ledger",
         "trigger_hook": "hc_requested",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12227,7 +12227,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12238,6 +12237,7 @@
         ],
         "semantic_family": "hc_expiry_carryover",
         "trigger_hook": "hc_requested",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12350,7 +12350,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12361,6 +12360,7 @@
         ],
         "semantic_family": "hc_freeze_exception",
         "trigger_hook": "hc_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12473,7 +12473,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12484,6 +12483,7 @@
         ],
         "semantic_family": "hc_workforce_mix",
         "trigger_hook": "hc_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12596,7 +12596,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12607,6 +12606,7 @@
         ],
         "semantic_family": "zero_based_hc_review",
         "trigger_hook": "hc_recruiting",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12719,7 +12719,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12730,6 +12729,7 @@
         ],
         "semantic_family": "vacant_hc_hoarding_audit",
         "trigger_hook": "hc_recruiting",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12842,7 +12842,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12853,6 +12852,7 @@
         ],
         "semantic_family": "talent_source_mix",
         "trigger_hook": "hc_occupied",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -12965,7 +12965,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -12976,6 +12975,7 @@
         ],
         "semantic_family": "backfill_ownership",
         "trigger_hook": "hc_occupied",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -13088,7 +13088,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13099,6 +13098,7 @@
         ],
         "semantic_family": "critical_role_talent_split",
         "trigger_hook": "critical_role_identified",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -13209,7 +13209,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13220,6 +13219,7 @@
         ],
         "semantic_family": "succession_readiness_ladder",
         "trigger_hook": "critical_role_identified",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -13332,7 +13332,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13343,6 +13342,7 @@
         ],
         "semantic_family": "acting_role_trial",
         "trigger_hook": "candidate_pool_ready",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -13455,7 +13455,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13466,6 +13465,7 @@
         ],
         "semantic_family": "high_potential_visibility",
         "trigger_hook": "candidate_pool_ready",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -13576,7 +13576,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13587,6 +13586,7 @@
         ],
         "semantic_family": "potential_performance_separation",
         "trigger_hook": "readiness_scored",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -13697,7 +13697,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13708,6 +13707,7 @@
         ],
         "semantic_family": "attrition_classification",
         "trigger_hook": "acting_trial_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -13818,7 +13818,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13829,6 +13828,7 @@
         ],
         "semantic_family": "stay_interview",
         "trigger_hook": "acting_trial_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -13939,7 +13939,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -13950,6 +13949,7 @@
         ],
         "semantic_family": "key_person_dependency",
         "trigger_hook": "succession_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -14062,7 +14062,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14073,6 +14072,7 @@
         ],
         "semantic_family": "manager_talent_export_credit",
         "trigger_hook": "mobility_applied",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -14183,7 +14183,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14194,6 +14193,7 @@
         ],
         "semantic_family": "anonymous_internal_application",
         "trigger_hook": "mobility_applied",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -14304,7 +14304,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14315,6 +14314,7 @@
         ],
         "semantic_family": "transfer_release_deadline",
         "trigger_hook": "mobility_accepted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -14425,7 +14425,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14436,6 +14435,7 @@
         ],
         "semantic_family": "transfer_ramp_protection",
         "trigger_hook": "release_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -14548,7 +14548,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14559,6 +14558,7 @@
         ],
         "semantic_family": "probation_outside_bottom_quota",
         "trigger_hook": "release_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -14671,7 +14671,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14682,6 +14681,7 @@
         ],
         "semantic_family": "hiring_quality_writeback",
         "trigger_hook": "transfer_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -14792,7 +14792,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -14803,6 +14802,7 @@
         ],
         "semantic_family": "mentor_onboarding_performance",
         "trigger_hook": "protection_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -14915,7 +14915,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -14926,6 +14925,7 @@
         ],
         "semantic_family": "manager.trial_assignment",
         "trigger_hook": "manager_trial_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -15036,7 +15036,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15047,6 +15046,7 @@
         ],
         "semantic_family": "manager.scorecard",
         "trigger_hook": "manager_trial_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -15157,7 +15157,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15168,6 +15167,7 @@
         ],
         "semantic_family": "manager.subordinate_review",
         "trigger_hook": "manager_scorecard_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -15279,7 +15279,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15290,6 +15289,7 @@
         ],
         "semantic_family": "manager.successor_gate",
         "trigger_hook": "manager_scorecard_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -15402,7 +15402,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15413,6 +15412,7 @@
         ],
         "semantic_family": "manager.delegation_crisis",
         "trigger_hook": "subordinate_feedback_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_capacity"
         ],
@@ -15526,7 +15526,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15537,6 +15536,7 @@
         ],
         "semantic_family": "manager.performance_values_matrix",
         "trigger_hook": "subordinate_feedback_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -15649,7 +15649,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15660,6 +15659,7 @@
         ],
         "semantic_family": "manager.span_of_control",
         "trigger_hook": "successor_test_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_capacity"
         ],
@@ -15775,7 +15775,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -15786,6 +15785,7 @@
         ],
         "semantic_family": "manager.forced_ranking_climate",
         "trigger_hook": "successor_test_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_capacity"
         ],
@@ -15900,7 +15900,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -15912,6 +15911,7 @@
         ],
         "semantic_family": "promotion.candidate_queue",
         "trigger_hook": "project_proposed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -16024,7 +16024,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -16036,6 +16035,7 @@
         ],
         "semantic_family": "mobility.performance_transfer",
         "trigger_hook": "project_proposed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -16148,7 +16148,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -16160,6 +16159,7 @@
         ],
         "semantic_family": "goals.commitment_exploration",
         "trigger_hook": "project_routed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -16275,7 +16275,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -16287,6 +16286,7 @@
         ],
         "semantic_family": "delivery.project_stop_loss",
         "trigger_hook": "project_execution_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -16401,7 +16401,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -16413,6 +16412,7 @@
         ],
         "semantic_family": "incident.learning_accountability_split",
         "trigger_hook": "project_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -16527,7 +16527,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -16539,6 +16538,7 @@
         ],
         "semantic_family": "goals.shared_owner_arbitration",
         "trigger_hook": "project_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -16653,7 +16653,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -16665,6 +16664,7 @@
         ],
         "semantic_family": "calibration.shadow_rating",
         "trigger_hook": "pending_grades",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -16777,7 +16777,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -16789,6 +16788,7 @@
         ],
         "semantic_family": "calibration.pre_huddle",
         "trigger_hook": "pending_grades",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -16903,7 +16903,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -16915,6 +16914,7 @@
         ],
         "semantic_family": "calibration.agenda_order",
         "trigger_hook": "pending_grades",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -17029,7 +17029,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17041,6 +17040,7 @@
         ],
         "semantic_family": "calibration.quota_rounding",
         "trigger_hook": "precalibration",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -17155,7 +17155,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17167,6 +17166,7 @@
         ],
         "semantic_family": "calibration.cross_cycle_quota_debt",
         "trigger_hook": "precalibration",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -17282,7 +17282,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17294,6 +17293,7 @@
         ],
         "semantic_family": "calibration.reorganization_ownership",
         "trigger_hook": "anchors_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -17408,7 +17408,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17420,6 +17419,7 @@
         ],
         "semantic_family": "calibration.executive_intervention",
         "trigger_hook": "anchors_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -17533,7 +17533,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17545,6 +17544,7 @@
         ],
         "semantic_family": "assessment.pending_milestone",
         "trigger_hook": "calibration_exception_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -17658,7 +17658,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17670,6 +17669,7 @@
         ],
         "semantic_family": "calibration.post_cutoff_reopen",
         "trigger_hook": "calibration_exception_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -17783,7 +17783,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17795,6 +17794,7 @@
         ],
         "semantic_family": "calibration.dissent_record",
         "trigger_hook": "calibration_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -17909,7 +17909,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "score.compute",
@@ -17921,6 +17920,7 @@
         ],
         "semantic_family": "assessment.shadow_band_order",
         "trigger_hook": "calibration_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -18034,7 +18034,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18045,6 +18044,7 @@
         ],
         "semantic_family": "feedback.rating_delivery_style",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -18159,7 +18159,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18170,6 +18169,7 @@
         ],
         "semantic_family": "feedback.praise_critique_template",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -18284,7 +18284,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18295,6 +18294,7 @@
         ],
         "semantic_family": "feedback.evidence_result_order",
         "trigger_hook": "result_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -18409,7 +18409,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18420,6 +18419,7 @@
         ],
         "semantic_family": "feedback.outcome_bargain",
         "trigger_hook": "feedback_meeting_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -18532,7 +18532,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18543,6 +18542,7 @@
         ],
         "semantic_family": "feedback.compensation_promise",
         "trigger_hook": "feedback_meeting_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -18656,7 +18656,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18667,6 +18666,7 @@
         ],
         "semantic_family": "feedback.receipt_acknowledgement",
         "trigger_hook": "feedback_meeting_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -18782,7 +18782,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18793,6 +18792,7 @@
         ],
         "semantic_family": "feedback.actionability_score",
         "trigger_hook": "feedback_receipt_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -18908,7 +18908,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -18919,6 +18918,7 @@
         ],
         "semantic_family": "feedback.action_item_closure",
         "trigger_hook": "feedback_receipt_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -19034,7 +19034,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -19045,6 +19044,7 @@
         ],
         "semantic_family": "feedback.minutes_retention",
         "trigger_hook": "feedback_receipt_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -19159,7 +19159,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -19170,6 +19169,7 @@
         ],
         "semantic_family": "feedback.public_private_boundary",
         "trigger_hook": "feedback_actions_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -19283,7 +19283,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -19294,6 +19293,7 @@
         ],
         "semantic_family": "feedback.team_results_briefing",
         "trigger_hook": "feedback_actions_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -19408,7 +19408,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -19420,6 +19419,7 @@
         ],
         "semantic_family": "promotion.nomination_access",
         "trigger_hook": "promotion_eligible",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -19535,7 +19535,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -19547,6 +19546,7 @@
         ],
         "semantic_family": "promotion.nomination_quota",
         "trigger_hook": "promotion_eligible",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -19662,7 +19662,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -19674,6 +19673,7 @@
         ],
         "semantic_family": "promotion.shelved_star",
         "trigger_hook": "promotion_eligible",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -19789,7 +19789,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -19801,6 +19800,7 @@
         ],
         "semantic_family": "promotion.department_prescreen",
         "trigger_hook": "nomination_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -19916,7 +19916,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -19928,6 +19927,7 @@
         ],
         "semantic_family": "promotion.sham_competition",
         "trigger_hook": "nomination_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20043,7 +20043,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20055,6 +20054,7 @@
         ],
         "semantic_family": "promotion.tenure_exception",
         "trigger_hook": "nomination_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20169,7 +20169,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20181,6 +20180,7 @@
         ],
         "semantic_family": "promotion.performance_window",
         "trigger_hook": "nomination_slot_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20296,7 +20296,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20308,6 +20307,7 @@
         ],
         "semantic_family": "promotion.cross_team_evidence",
         "trigger_hook": "nomination_slot_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20423,7 +20423,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20435,6 +20434,7 @@
         ],
         "semantic_family": "promotion.next_level_trial",
         "trigger_hook": "nomination_slot_reserved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20550,7 +20550,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20562,6 +20561,7 @@
         ],
         "semantic_family": "promotion.packet_withdrawal",
         "trigger_hook": "prescreen_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20677,7 +20677,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20689,6 +20688,7 @@
         ],
         "semantic_family": "promotion.sponsor_credit",
         "trigger_hook": "prescreen_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20804,7 +20804,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20816,6 +20815,7 @@
         ],
         "semantic_family": "promotion.manager_hit_rate",
         "trigger_hook": "prescreen_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "promotion_slot"
         ],
@@ -20931,7 +20931,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -20942,6 +20941,7 @@
         ],
         "semantic_family": "promotion.panel_expertise",
         "trigger_hook": "promotion_panel_formed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -21057,7 +21057,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21068,6 +21067,7 @@
         ],
         "semantic_family": "promotion.panel_selection",
         "trigger_hook": "promotion_panel_formed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -21183,7 +21183,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21194,6 +21193,7 @@
         ],
         "semantic_family": "promotion.panel_recusal",
         "trigger_hook": "promotion_panel_formed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -21309,7 +21309,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21320,6 +21319,7 @@
         ],
         "semantic_family": "promotion.panel_decision_rule",
         "trigger_hook": "panel_recusal_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -21435,7 +21435,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21446,6 +21445,7 @@
         ],
         "semantic_family": "promotion.blind_live_review",
         "trigger_hook": "panel_recusal_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -21561,7 +21561,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21572,6 +21571,7 @@
         ],
         "semantic_family": "promotion.defense_time_budget",
         "trigger_hook": "blind_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -21687,7 +21687,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21698,6 +21697,7 @@
         ],
         "semantic_family": "promotion.coaching_allocation",
         "trigger_hook": "blind_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -21813,7 +21813,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21824,6 +21823,7 @@
         ],
         "semantic_family": "promotion.individual_attribution",
         "trigger_hook": "blind_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -21939,7 +21939,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -21950,6 +21949,7 @@
         ],
         "semantic_family": "promotion.scale_leverage_split",
         "trigger_hook": "defense_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -22065,7 +22065,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -22076,6 +22075,7 @@
         ],
         "semantic_family": "promotion.artifact_narrative_evidence",
         "trigger_hook": "defense_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -22191,7 +22191,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -22202,6 +22201,7 @@
         ],
         "semantic_family": "promotion.rejection_feedback_owner",
         "trigger_hook": "panel_vote_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -22317,7 +22317,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -22328,6 +22327,7 @@
         ],
         "semantic_family": "promotion.retry_cooldown",
         "trigger_hook": "panel_vote_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "panel_vote"
         ],
@@ -22443,7 +22443,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -22456,6 +22455,7 @@
         ],
         "semantic_family": "pip.root_cause_triage",
         "trigger_hook": "pip_triaged",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -22571,7 +22571,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -22584,6 +22583,7 @@
         ],
         "semantic_family": "pip.start_threshold",
         "trigger_hook": "pip_triaged",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -22701,7 +22701,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -22714,6 +22713,7 @@
         ],
         "semantic_family": "pip.goal_dual_sign",
         "trigger_hook": "pip_triaged",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -22829,7 +22829,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -22842,6 +22841,7 @@
         ],
         "semantic_family": "pip.manager_caseload",
         "trigger_hook": "pip_evidence_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -22957,7 +22957,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -22970,6 +22969,7 @@
         ],
         "semantic_family": "pip.midpoint_review",
         "trigger_hook": "pip_evidence_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23085,7 +23085,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23098,6 +23097,7 @@
         ],
         "semantic_family": "pip.goal_creep_lock",
         "trigger_hook": "pip_ack_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23213,7 +23213,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23226,6 +23225,7 @@
         ],
         "semantic_family": "pip.graduation_standard",
         "trigger_hook": "pip_ack_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23341,7 +23341,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23354,6 +23353,7 @@
         ],
         "semantic_family": "pip.relapse_observation",
         "trigger_hook": "pip_execution_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23469,7 +23469,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23482,6 +23481,7 @@
         ],
         "semantic_family": "pip.second_chance_transfer_exit",
         "trigger_hook": "pip_execution_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23597,7 +23597,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23610,6 +23609,7 @@
         ],
         "semantic_family": "pip.transfer_disclosure",
         "trigger_hook": "pip_midpoint_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pip_capacity"
         ],
@@ -23725,7 +23725,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -23738,6 +23737,7 @@
         ],
         "semantic_family": "pip.exit_cost_statement",
         "trigger_hook": "pip_midpoint_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -23852,7 +23852,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -23865,6 +23864,7 @@
         ],
         "semantic_family": "incident.on_call_rotation",
         "trigger_hook": "on_call_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -23979,7 +23979,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -23992,6 +23991,7 @@
         ],
         "semantic_family": "incident.on_call_compensation",
         "trigger_hook": "on_call_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "personal_gold",
           "treasury_gold"
@@ -24108,7 +24108,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24121,6 +24120,7 @@
         ],
         "semantic_family": "workload.on_call_target_relief",
         "trigger_hook": "incident_alerted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24237,7 +24237,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24250,6 +24249,7 @@
         ],
         "semantic_family": "incident.alert_quality",
         "trigger_hook": "incident_alerted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24366,7 +24366,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24379,6 +24378,7 @@
         ],
         "semantic_family": "incident.severity_reporting",
         "trigger_hook": "incident_classified",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24494,7 +24494,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24507,6 +24506,7 @@
         ],
         "semantic_family": "incident.command_responder_credit",
         "trigger_hook": "incident_classified",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24622,7 +24622,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24635,6 +24634,7 @@
         ],
         "semantic_family": "incident.arsonist_credit_netting",
         "trigger_hook": "incident_commanded",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24750,7 +24750,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24763,6 +24762,7 @@
         ],
         "semantic_family": "incident.prevention_credit",
         "trigger_hook": "incident_commanded",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -24878,7 +24878,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -24891,6 +24890,7 @@
         ],
         "semantic_family": "incident.temporary_authority",
         "trigger_hook": "incident_timeline_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -25006,7 +25006,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -25019,6 +25018,7 @@
         ],
         "semantic_family": "incident.immutable_timeline",
         "trigger_hook": "incident_timeline_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -25135,7 +25135,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -25148,6 +25147,7 @@
         ],
         "semantic_family": "incident.postmortem_actions",
         "trigger_hook": "incident_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -25264,7 +25264,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -25277,6 +25276,7 @@
         ],
         "semantic_family": "incident.repeat_management_liability",
         "trigger_hook": "incident_review_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -25393,7 +25393,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -25406,6 +25405,7 @@
         ],
         "semantic_family": "incident.reliability_budget",
         "trigger_hook": "incident_actions_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -25522,7 +25522,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -25535,6 +25534,7 @@
         ],
         "semantic_family": "maintenance.toil_cap",
         "trigger_hook": "debt_registered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -25651,7 +25651,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -25664,6 +25663,7 @@
         ],
         "semantic_family": "maintenance.debt_ledger",
         "trigger_hook": "debt_registered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -25779,7 +25779,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -25792,6 +25791,7 @@
         ],
         "semantic_family": "maintenance.debt_budget",
         "trigger_hook": "debt_registered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -25908,7 +25908,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -25921,6 +25920,7 @@
         ],
         "semantic_family": "maintenance.repair_rewrite",
         "trigger_hook": "debt_owned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26035,7 +26035,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26048,6 +26047,7 @@
         ],
         "semantic_family": "maintenance.hazard_pay",
         "trigger_hook": "debt_owned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -26163,7 +26163,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26176,6 +26175,7 @@
         ],
         "semantic_family": "maintenance.owner_rotation",
         "trigger_hook": "debt_funded",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26292,7 +26292,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26305,6 +26304,7 @@
         ],
         "semantic_family": "learning.runbook_validation",
         "trigger_hook": "debt_funded",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -26421,7 +26421,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26434,6 +26433,7 @@
         ],
         "semantic_family": "maintenance.automation_credit",
         "trigger_hook": "debt_funded",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26550,7 +26550,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26563,6 +26562,7 @@
         ],
         "semantic_family": "maintenance.review_credit",
         "trigger_hook": "debt_work_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26679,7 +26679,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26692,6 +26691,7 @@
         ],
         "semantic_family": "maintenance.coverage_quality",
         "trigger_hook": "debt_work_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26808,7 +26808,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26821,6 +26820,7 @@
         ],
         "semantic_family": "maintenance.legacy_retirement",
         "trigger_hook": "debt_acceptance_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "debt_point"
         ],
@@ -26937,7 +26937,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "obligation.open",
@@ -26950,6 +26949,7 @@
         ],
         "semantic_family": "mobility.handover_completeness",
         "trigger_hook": "debt_acceptance_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -27063,7 +27063,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27076,6 +27075,7 @@
         ],
         "semantic_family": "platform.adoption_policy",
         "trigger_hook": "platform_proposed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27191,7 +27191,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27204,6 +27203,7 @@
         ],
         "semantic_family": "platform.dual_score",
         "trigger_hook": "platform_proposed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27319,7 +27319,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27332,6 +27331,7 @@
         ],
         "semantic_family": "platform.adoption_value_metrics",
         "trigger_hook": "platform_proposed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27447,7 +27447,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27460,6 +27459,7 @@
         ],
         "semantic_family": "platform.cost_showback_chargeback",
         "trigger_hook": "platform_adopted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27575,7 +27575,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27588,6 +27587,7 @@
         ],
         "semantic_family": "platform.migration_cost_allocation",
         "trigger_hook": "platform_adopted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27704,7 +27704,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27717,6 +27716,7 @@
         ],
         "semantic_family": "platform.dual_run_migration",
         "trigger_hook": "platform_migration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27833,7 +27833,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27846,6 +27845,7 @@
         ],
         "semantic_family": "platform.duplicate_scan",
         "trigger_hook": "platform_migration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -27963,7 +27963,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -27976,6 +27975,7 @@
         ],
         "semantic_family": "platform.solution_merger",
         "trigger_hook": "platform_migration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -28092,7 +28092,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -28105,6 +28104,7 @@
         ],
         "semantic_family": "platform.legitimate_fork",
         "trigger_hook": "platform_dual_run",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -28221,7 +28221,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -28234,6 +28233,7 @@
         ],
         "semantic_family": "platform.inner_source_attribution",
         "trigger_hook": "platform_dual_run",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -28350,7 +28350,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -28363,6 +28362,7 @@
         ],
         "semantic_family": "platform.role_credit_split",
         "trigger_hook": "platform_value_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -28479,7 +28479,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -28492,6 +28491,7 @@
         ],
         "semantic_family": "platform.blast_radius_liability",
         "trigger_hook": "platform_value_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "platform_cost_share"
         ],
@@ -28608,7 +28608,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -28621,6 +28620,7 @@
         ],
         "semantic_family": "data.metric_dictionary",
         "trigger_hook": "metric_defined",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -28737,7 +28737,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -28750,6 +28749,7 @@
         ],
         "semantic_family": "data.source_reconciliation",
         "trigger_hook": "metric_defined",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -28865,7 +28865,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -28878,6 +28877,7 @@
         ],
         "semantic_family": "data.denominator_change",
         "trigger_hook": "metric_defined",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -28994,7 +28994,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29007,6 +29006,7 @@
         ],
         "semantic_family": "data.manual_backfill",
         "trigger_hook": "metric_reconciled",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29122,7 +29122,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29135,6 +29134,7 @@
         ],
         "semantic_family": "data.dashboard_access",
         "trigger_hook": "metric_reconciled",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29250,7 +29250,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29263,6 +29262,7 @@
         ],
         "semantic_family": "data.leading_lagging_metrics",
         "trigger_hook": "experiment_preregistered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29378,7 +29378,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29391,6 +29390,7 @@
         ],
         "semantic_family": "data.primary_guardrail",
         "trigger_hook": "experiment_preregistered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29506,7 +29506,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29519,6 +29518,7 @@
         ],
         "semantic_family": "data.kpi_threshold_curve",
         "trigger_hook": "experiment_running",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29635,7 +29635,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29648,6 +29647,7 @@
         ],
         "semantic_family": "data.reporting_window",
         "trigger_hook": "experiment_running",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29763,7 +29763,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29776,6 +29775,7 @@
         ],
         "semantic_family": "data.vanity_value_conversion",
         "trigger_hook": "experiment_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -29893,7 +29893,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -29906,6 +29905,7 @@
         ],
         "semantic_family": "experiment.failure_learning",
         "trigger_hook": "experiment_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30022,7 +30022,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -30035,6 +30034,7 @@
         ],
         "semantic_family": "experiment.sample_contention",
         "trigger_hook": "experiment_interpreted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "sample_slot"
         ],
@@ -30147,7 +30147,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -30160,6 +30159,7 @@
         ],
         "semantic_family": "outcome_attribution",
         "trigger_hook": "experiment_interpreted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30272,7 +30272,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30285,6 +30284,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_planned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30397,7 +30397,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30410,6 +30409,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_planned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30523,7 +30523,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30536,6 +30535,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_request_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30648,7 +30648,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30661,6 +30660,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_request_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -30772,7 +30772,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30785,6 +30784,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "capacity_decided",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "personal_gold",
           "treasury_gold"
@@ -30898,7 +30898,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -30911,6 +30910,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_decided",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -31023,7 +31023,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31036,6 +31035,7 @@
         ],
         "semantic_family": "workforce_capacity",
         "trigger_hook": "capacity_executed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -31146,7 +31146,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31159,6 +31158,7 @@
         ],
         "semantic_family": "meeting_governance",
         "trigger_hook": "capacity_executed",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -31271,7 +31271,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31284,6 +31283,7 @@
         ],
         "semantic_family": "meeting_governance",
         "trigger_hook": "compensation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -31396,7 +31396,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31409,6 +31408,7 @@
         ],
         "semantic_family": "meeting_governance",
         "trigger_hook": "compensation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -31522,7 +31522,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31535,6 +31534,7 @@
         ],
         "semantic_family": "workload_time",
         "trigger_hook": "capacity_normalized",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -31647,7 +31647,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -31660,6 +31659,7 @@
         ],
         "semantic_family": "performance_recovery",
         "trigger_hook": "capacity_normalized",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -31772,7 +31772,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -31784,6 +31783,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "external_need_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -31896,7 +31896,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -31908,6 +31907,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "external_need_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32020,7 +32020,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32032,6 +32031,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "contract_type_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32144,7 +32144,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32156,6 +32155,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "contract_type_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32268,7 +32268,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32280,6 +32279,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "supplier_selected",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32393,7 +32393,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32405,6 +32404,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "supplier_selected",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32517,7 +32517,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32529,6 +32528,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "contract_active",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32641,7 +32641,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32653,6 +32652,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "contract_active",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -32765,7 +32765,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32777,6 +32776,7 @@
         ],
         "semantic_family": "matrix_assessment",
         "trigger_hook": "delivery_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -32889,7 +32889,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -32901,6 +32900,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "delivery_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -33011,7 +33011,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33023,6 +33022,7 @@
         ],
         "semantic_family": "external_workforce",
         "trigger_hook": "contract_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -33136,7 +33136,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33148,6 +33147,7 @@
         ],
         "semantic_family": "compliance_audit",
         "trigger_hook": "contract_resolved",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -33260,7 +33260,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33272,6 +33271,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "requisition_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -33384,7 +33384,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33396,6 +33395,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "requisition_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -33508,7 +33508,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33520,6 +33519,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "interview_votes_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -33631,7 +33631,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33643,6 +33642,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "interview_votes_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -33755,7 +33755,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33767,6 +33766,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "interview_calibration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -33879,7 +33879,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -33891,6 +33890,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "interview_calibration_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -34003,7 +34003,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34015,6 +34014,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "offer_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -34125,7 +34125,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34137,6 +34136,7 @@
         ],
         "semantic_family": "talent_acquisition",
         "trigger_hook": "offer_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -34248,7 +34248,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34260,6 +34259,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "offer_decided",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -34370,7 +34370,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34382,6 +34381,7 @@
         ],
         "semantic_family": "workforce_capacity",
         "trigger_hook": "offer_decided",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -34494,7 +34494,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34506,6 +34505,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "probation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -34618,7 +34618,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -34630,6 +34629,7 @@
         ],
         "semantic_family": "workforce_capacity",
         "trigger_hook": "probation_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "hc_slot"
         ],
@@ -34741,7 +34741,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -34753,6 +34752,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "payable_generated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -34866,7 +34866,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -34878,6 +34877,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "payable_generated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -34991,7 +34991,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35003,6 +35002,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "payable_generated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35116,7 +35116,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35128,6 +35127,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35241,7 +35241,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35253,6 +35252,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35366,7 +35366,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35378,6 +35377,7 @@
         ],
         "semantic_family": "promotion_pipeline",
         "trigger_hook": "pay_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35491,7 +35491,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35503,6 +35502,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35616,7 +35616,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35628,6 +35627,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35741,7 +35741,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35753,6 +35752,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_correction_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -35867,7 +35867,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -35879,6 +35878,7 @@
         ],
         "semantic_family": "information_rights",
         "trigger_hook": "pay_correction_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -35988,7 +35988,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -36000,6 +35999,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "pay_appeal_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -36113,7 +36113,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "notice.deliver",
@@ -36125,6 +36124,7 @@
         ],
         "semantic_family": "appeal_procedure",
         "trigger_hook": "pay_appeal_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "pay_receipt",
           "personal_gold",
@@ -36238,7 +36238,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36250,6 +36249,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "lti_nominated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -36361,7 +36361,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36373,6 +36372,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "lti_nominated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -36484,7 +36484,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36496,6 +36495,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "lti_nominated",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -36607,7 +36607,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36619,6 +36618,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "lti_granted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -36730,7 +36730,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36742,6 +36741,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "lti_granted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -36851,7 +36851,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36863,6 +36862,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "cliff_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -36974,7 +36974,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -36986,6 +36985,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "cliff_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -37097,7 +37097,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -37109,6 +37108,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "vesting_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -37220,7 +37220,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -37232,6 +37231,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "vesting_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -37343,7 +37343,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -37355,6 +37354,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "exit_classification_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -37466,7 +37466,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -37478,6 +37477,7 @@
         ],
         "semantic_family": "long_term_incentive",
         "trigger_hook": "exit_classification_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -37590,7 +37590,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -37599,6 +37598,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "reorg_facts_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -37711,7 +37711,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -37720,6 +37719,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "reorg_facts_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -37832,7 +37832,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -37841,6 +37840,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "reorg_facts_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -37953,7 +37953,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -37962,6 +37961,7 @@
         ],
         "semantic_family": "matrix_assessment",
         "trigger_hook": "responsibility_split",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -38074,7 +38074,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38083,6 +38082,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "responsibility_split",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -38194,7 +38194,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38203,6 +38202,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "quiet_period_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -38315,7 +38315,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38324,6 +38323,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "quiet_period_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -38436,7 +38436,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38445,6 +38444,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "old_case_mapping_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -38557,7 +38557,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38566,6 +38565,7 @@
         ],
         "semantic_family": "visibility_politics",
         "trigger_hook": "old_case_mapping_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "manager_weight"
         ],
@@ -38678,7 +38678,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38687,6 +38686,7 @@
         ],
         "semantic_family": "organization_design",
         "trigger_hook": "normalization_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -38800,7 +38800,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.allocate",
@@ -38809,6 +38808,7 @@
         ],
         "semantic_family": "goal_governance",
         "trigger_hook": "normalization_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -38921,7 +38921,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -38933,6 +38932,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "internal_role_posted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "mobility_slot"
         ],
@@ -39045,7 +39045,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39057,6 +39056,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "internal_role_posted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -39166,7 +39166,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39178,6 +39177,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "confidential_application",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -39290,7 +39290,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39302,6 +39301,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "confidential_application",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "mobility_slot"
         ],
@@ -39413,7 +39413,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39425,6 +39424,7 @@
         ],
         "semantic_family": "compensation_ledger",
         "trigger_hook": "trial_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -39537,7 +39537,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39549,6 +39548,7 @@
         ],
         "semantic_family": "information_rights",
         "trigger_hook": "trial_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -39659,7 +39659,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39671,6 +39670,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "release_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "mobility_slot"
         ],
@@ -39783,7 +39783,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39795,6 +39794,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "release_decision_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "mobility_slot"
         ],
@@ -39906,7 +39906,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -39918,6 +39917,7 @@
         ],
         "semantic_family": "employee_voice",
         "trigger_hook": "move_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -40028,7 +40028,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -40040,6 +40039,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "move_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "mobility_slot"
         ],
@@ -40152,7 +40152,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "candidate.advance",
@@ -40164,6 +40163,7 @@
         ],
         "semantic_family": "internal_mobility",
         "trigger_hook": "alumni_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -40274,7 +40274,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40286,6 +40285,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_budgeted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -40399,7 +40399,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40411,6 +40410,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_budgeted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -40523,7 +40523,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40535,6 +40534,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_budgeted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -40647,7 +40647,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40659,6 +40658,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_enrolled",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -40771,7 +40771,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40783,6 +40782,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_enrolled",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -40896,7 +40896,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -40908,6 +40907,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41020,7 +41020,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -41032,6 +41031,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "learning_complete",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41144,7 +41144,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -41156,6 +41155,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "application_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41268,7 +41268,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -41280,6 +41279,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "application_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41392,7 +41392,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -41404,6 +41403,7 @@
         ],
         "semantic_family": "succession_planning",
         "trigger_hook": "outcome_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41516,7 +41516,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "capacity.reserve",
@@ -41528,6 +41527,7 @@
         ],
         "semantic_family": "learning_development",
         "trigger_hook": "outcome_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "treasury_gold"
         ],
@@ -41640,7 +41640,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -41652,6 +41651,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "demand_entered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -41764,7 +41764,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -41776,6 +41775,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "demand_entered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -41888,7 +41888,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -41900,6 +41899,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "definition_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42012,7 +42012,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42024,6 +42023,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "definition_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42136,7 +42136,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42148,6 +42147,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "estimate_locked",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42259,7 +42259,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42271,6 +42270,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "wip_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -42383,7 +42383,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42395,6 +42394,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "wip_open",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -42507,7 +42507,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42519,6 +42518,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "change_requested",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42631,7 +42631,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42643,6 +42642,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "delivery_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42756,7 +42756,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42768,6 +42767,7 @@
         ],
         "semantic_family": "delivery_governance",
         "trigger_hook": "delivery_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -42881,7 +42881,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.parameter",
@@ -42893,6 +42892,7 @@
         ],
         "semantic_family": "outcome_attribution",
         "trigger_hook": "adoption_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "wip_slot"
         ],
@@ -43005,7 +43005,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43018,6 +43017,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_drafted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43130,7 +43130,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43143,6 +43142,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_drafted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43255,7 +43255,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43268,6 +43267,7 @@
         ],
         "semantic_family": "calibration_governance",
         "trigger_hook": "policy_piloted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [],
         "choice_transitions": {
           "a": {
@@ -43378,7 +43378,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43391,6 +43390,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_piloted",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43503,7 +43503,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43516,6 +43515,7 @@
         ],
         "semantic_family": "compliance_audit",
         "trigger_hook": "policy_effective",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43627,7 +43627,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43640,6 +43639,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_effective",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43752,7 +43752,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43765,6 +43764,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_exception_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -43878,7 +43878,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -43891,6 +43890,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_exception_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -44003,7 +44003,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -44016,6 +44015,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_measurement_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -44129,7 +44129,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "policy.bind",
@@ -44142,6 +44141,7 @@
         ],
         "semantic_family": "policy_governance",
         "trigger_hook": "policy_measurement_due",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "capacity_hours"
         ],
@@ -44254,7 +44254,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -44267,6 +44266,7 @@
         ],
         "semantic_family": "system_endgame",
         "trigger_hook": "multi_cycle_facts_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -44380,7 +44380,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -44393,6 +44392,7 @@
         ],
         "semantic_family": "system_endgame",
         "trigger_hook": "multi_cycle_facts_frozen",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -44505,42 +44505,37 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
-          "timeline.append",
-          "feedback.project",
           "evidence.freeze",
           "score.compute",
           "cohort.lock",
           "vote.record",
-          "transaction.refund",
-          "policy.bind",
-          "relationship.apply"
+          "timeline.append",
+          "feedback.project"
         ],
         "semantic_family": "system_endgame",
-        "trigger_hook": "quota_applied",
-        "planned_currencies": [
-          "quota_slot"
-        ],
+        "trigger_hook": "multi_cycle_facts_frozen",
+        "transition_owner": "stage_dispatcher",
+        "planned_currencies": [],
         "choice_transitions": {
           "a": {
             "from": [
-              "quota_applied"
+              "facts_frozen"
             ],
-            "to": "appeal_returned",
+            "to": "quota_applied",
             "deadline_kind": "none"
           },
           "b": {
             "from": [
-              "quota_applied"
+              "facts_frozen"
             ],
-            "to": "appeal_returned",
+            "to": "quota_applied",
             "deadline_kind": "none"
           },
           "c": {
             "from": [
-              "quota_applied"
+              "facts_frozen"
             ],
-            "to": "appeal_returned",
+            "to": "quota_applied",
             "deadline_kind": "scheduled_event"
           }
         },
@@ -44656,7 +44651,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -44669,6 +44663,7 @@
         ],
         "semantic_family": "appeal_procedure",
         "trigger_hook": "appeal_quota_returned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "appeal_slot"
         ],
@@ -44781,7 +44776,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -44794,6 +44788,7 @@
         ],
         "semantic_family": "system_endgame",
         "trigger_hook": "appeal_quota_returned",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -44907,7 +44902,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -44920,6 +44914,7 @@
         ],
         "semantic_family": "system_endgame",
         "trigger_hook": "manager_collective_action",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],
@@ -45034,7 +45029,6 @@
           "binding.freeze",
           "record.version",
           "rule.evaluate",
-          "case.transition",
           "timeline.append",
           "feedback.project",
           "evidence.freeze",
@@ -45047,6 +45041,7 @@
         ],
         "semantic_family": "system_endgame",
         "trigger_hook": "constitution_chartered",
+        "transition_owner": "stage_dispatcher",
         "planned_currencies": [
           "quota_slot"
         ],

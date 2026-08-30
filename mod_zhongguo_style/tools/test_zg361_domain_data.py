@@ -22,8 +22,10 @@ from zg361_domain_data import (
 from zg361_mechanism_data import load_mechanisms
 from zg361_operation_registry import (
     DOMAIN_RECIPE_PRIMITIVES,
+    MECHANISM_PRIMITIVE_OVERRIDES,
     OperationKind,
     PRIMITIVE_WHITELIST,
+    STAGE_DISPATCHER_PRIMITIVES,
     compile_choice_ops,
     render_deadline,
     render_feedback_projection,
@@ -150,7 +152,7 @@ class DomainRuntimePlanTests(unittest.TestCase):
             self.assertEqual(payload["count"], last_id - first_id + 1)
             ids.extend(int(item["id"]) for item in payload["items"])
             self.assertTrue(
-                all("case.transition" in item["primitive_recipe"] for item in payload["items"])
+                all("case.transition" not in item["primitive_recipe"] for item in payload["items"])
             )
         self.assertEqual(ids, list(range(1, 362)))
 
@@ -186,6 +188,7 @@ class DomainRuntimePlanTests(unittest.TestCase):
                 self.assertIs(operations[0].kind, OperationKind.DOMAIN)
                 guard = render_transition_guard(operations[0])
                 self.assertEqual(guard["hook"], plan["trigger_hook"])
+                self.assertEqual(guard["transition_owner"], "stage_dispatcher")
                 feedback_n = 0
                 primitive_n = 0
                 for operation in operations[1:]:
@@ -215,8 +218,30 @@ class DomainRuntimePlanTests(unittest.TestCase):
         )
         for recipe in DOMAIN_RECIPE_PRIMITIVES.values():
             self.assertIn("case.create", recipe)
-            self.assertIn("case.transition", recipe)
+            self.assertNotIn("case.transition", recipe)
             self.assertIn("feedback.project", recipe)
+        self.assertIn("case.transition", STAGE_DISPATCHER_PRIMITIVES)
+
+    def test_357_is_fact_quota_adapter_and_never_refund_recipe(self) -> None:
+        plan = self.by_id[357]
+        self.assertEqual(plan["trigger_hook"], "multi_cycle_facts_frozen")
+        self.assertEqual(
+            (
+                plan["choices"]["a"]["allowed_from_states"][0],
+                plan["choices"]["a"]["to_state"],
+            ),
+            ("facts_frozen", "quota_applied"),
+        )
+        self.assertEqual(plan["adapter_domains"], ["A", "G", "B", "result_case"])
+        self.assertTrue(
+            all(not route["transactions"] for route in plan["choices"].values())
+        )
+        self.assertNotIn("transaction.refund", MECHANISM_PRIMITIVE_OVERRIDES[357])
+        for choice in ("a", "b", "c"):
+            self.assertNotIn(
+                "transaction.refund",
+                {op.operation_key for op in compile_choice_ops(plan, choice)},
+            )
 
 
 if __name__ == "__main__":

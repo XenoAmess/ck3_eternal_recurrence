@@ -141,7 +141,6 @@ activity_zg361_jingcha = {
 			# 只有活动真正落幕才算履责；单纯打开/关闭规划器不算。
 			scope:host = {
 				zg361_clear_jingcha_mandate_effect = yes
-				zg361_run_review_effect = yes
 			}
 			scope:activity = {
 				every_attending_character = {

@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "generated": true,
   "authority": "tools/zg361_domain_data.py + tools/zg361_operation_registry.py",
   "domain_count": 38,

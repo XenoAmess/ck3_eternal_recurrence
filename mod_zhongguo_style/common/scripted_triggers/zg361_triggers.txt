@@ -61,6 +61,51 @@ zg361_has_ranked_peer_cohort_trigger = {
 	}
 }
 
+# B1 互评提交者与对象。所有数值读取都放在存在性 trigger_if 后，避免
+# interaction 列表枚举普通角色时产生 unset-variable 错误。
+zg361_b1_peer_submission_actor_trigger = {
+	trigger_if = {
+		limit = {
+			exists = liege
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_peer_used
+			has_variable = zg361_b1_peer_cap
+		}
+		var:zg361_b1_case_state = 3
+		var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+		var:zg361_b1_case_owner = liege
+	}
+	trigger_else = { always = no }
+}
+
+zg361_b1_peer_submission_recipient_trigger = {
+	trigger_if = {
+		limit = {
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_state
+			has_variable = zg361_b1_peer_slot_1_filled
+			has_variable = zg361_b1_peer_slot_2_filled
+			has_variable = zg361_b1_peer_slot_3_filled
+			scope:actor = {
+				has_variable = zg361_b1_case_owner
+				has_variable = zg361_b1_cycle_serial
+			}
+		}
+		var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+		var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+		var:zg361_b1_case_state = 3
+		OR = {
+			var:zg361_b1_peer_slot_1_filled = 0
+			var:zg361_b1_peer_slot_2_filled = 0
+			var:zg361_b1_peer_slot_3_filled = 0
+		}
+	}
+	trigger_else = { always = no }
+}
+
 # 本周期淘汰候选人：连续 3.25 且本周期仍 3.25（用于玩家领主事件内重新推导名单）
 # 必须仍属于做出该记录的直属领主，且记录来自该领主的最新考核轮次。
 zg361_is_current_liege_review_record_trigger = {

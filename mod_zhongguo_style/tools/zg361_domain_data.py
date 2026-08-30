@@ -19,7 +19,7 @@ from typing import Final, Iterable
 from zg361_mechanism_data import Mechanism
 
 
-RUNTIME_PLAN_SCHEMA: Final[int] = 1
+RUNTIME_PLAN_SCHEMA: Final[int] = 2
 STALE_GUARD: Final[tuple[str, ...]] = (
     "owner",
     "subject",
@@ -27,6 +27,25 @@ STALE_GUARD: Final[tuple[str, ...]] = (
     "case_serial",
     "expected_state",
 )
+
+# A mechanism operation writes its own receipt while the owning stage remains
+# open. The stage dispatcher advances the shared domain exactly once after all
+# operations bound to that stage have run. This prevents the first mechanism
+# in a shared from->to stage from making every later mechanism stale.
+TRANSITION_OWNER: Final[str] = "stage_dispatcher"
+
+# #357 is catalogued in the constitutional/endgame group, but its playable
+# path is the already-proven fact -> quota -> calibration -> result adapter.
+# It must not inherit AL's later appeal/refund transition merely because of its
+# catalogue position.
+MECHANISM_TRANSITION_OVERRIDES: Final[
+    dict[int, tuple[str, str, str]]
+] = {
+    357: ("facts_frozen", "quota_applied", "multi_cycle_facts_frozen"),
+}
+MECHANISM_ADAPTER_DOMAINS: Final[dict[int, tuple[str, ...]]] = {
+    357: ("A", "G", "B", "result_case"),
+}
 
 PERMISSION_BOUNDARY: Final[dict[str, str]] = {
     "player_manager": "landed celestial duke-or-higher manager",
@@ -230,6 +249,9 @@ def domain_for_id(
 
 
 def _transition_for(mechanism: Mechanism, domain: DomainSpec) -> tuple[str, str, str]:
+    override = MECHANISM_TRANSITION_OVERRIDES.get(mechanism.id)
+    if override is not None:
+        return override
     offset = mechanism.id - domain.first_id
     count = domain.last_id - domain.first_id + 1
     index = min((offset * len(domain.transitions)) // count, len(domain.transitions) - 1)
@@ -256,6 +278,11 @@ def _transactions(
     domain: DomainSpec,
     choice: str,
 ) -> tuple[list[dict[str, object]], str | None]:
+    if mechanism.id == 357:
+        return [], (
+            "mechanism 357 freezes facts and quota reasons only; correction "
+            "refunds belong to the later appeal domain"
+        )
     candidates = tuple(
         resource
         for resource in PROFILE_RESOURCES[mechanism.profile]
@@ -344,6 +371,10 @@ def build_runtime_plans(
                 },
                 "allowed_from_states": [old_state],
                 "to_state": new_state,
+                "transition_owner": TRANSITION_OWNER,
+                "operation_receipt_key": (
+                    f"zg361_rt_{mechanism.id:03d}_{choice}_operation_serial"
+                ),
                 "deadline": _deadline(choice, mechanism),
                 "transactions": transactions,
                 "gameplay_effects": [
@@ -372,6 +403,7 @@ def build_runtime_plans(
             "cycle_scope": "review_cycle_serial",
             "case_scope": f"{domain.object_type}_serial",
             "trigger_hook": hook,
+            "transition_owner": TRANSITION_OWNER,
             "applicability": [
                 "landed",
                 "celestial_government",
@@ -384,6 +416,9 @@ def build_runtime_plans(
             "acceptance_contract": mechanism.acceptance_contract.manifest_payload(),
             "implementation_state": "runtime-contract-complete; ck3-domain-runtime-not-yet-claimed",
         }
+        adapter_domains = MECHANISM_ADAPTER_DOMAINS.get(mechanism.id)
+        if adapter_domains is not None:
+            plan["adapter_domains"] = list(adapter_domains)
         signature = (
             domain.code,
             domain.operation_key,
@@ -427,6 +462,10 @@ def validate_runtime_coverage(
             raise ValueError(f"runtime plan {mechanism.id:03d} uses a non-whitelisted operation")
         if row["actor_role"] != "eligible_manager":
             raise ValueError(f"runtime plan {mechanism.id:03d} widens the actor boundary")
+        if row.get("transition_owner") != TRANSITION_OWNER:
+            raise ValueError(
+                f"runtime plan {mechanism.id:03d} lets a mechanism own a shared transition"
+            )
         choices = row["choices"]
         if not isinstance(choices, dict) or tuple(choices) != ("a", "b", "c"):
             raise ValueError(f"runtime plan {mechanism.id:03d} lacks A/B/C routes")
@@ -440,6 +479,15 @@ def validate_runtime_coverage(
             transition = (old_states[0], raw_choice.get("to_state"), row["trigger_hook"])
             if transition not in legal:
                 raise ValueError(f"runtime plan {mechanism.id:03d}/{choice_name} uses an illegal transition")
+            if raw_choice.get("transition_owner") != TRANSITION_OWNER:
+                raise ValueError(
+                    f"runtime plan {mechanism.id:03d}/{choice_name} bypasses the stage dispatcher"
+                )
+            receipt_key = raw_choice.get("operation_receipt_key")
+            if not isinstance(receipt_key, str) or not receipt_key:
+                raise ValueError(
+                    f"runtime plan {mechanism.id:03d}/{choice_name} lacks an operation receipt"
+                )
             effects = raw_choice.get("gameplay_effects")
             if not isinstance(effects, list) or not effects:
                 raise ValueError(f"runtime plan {mechanism.id:03d}/{choice_name} lacks a typed operation")
@@ -488,6 +536,15 @@ def validate_runtime_coverage(
         alias = row.get("alias_of")
         if alias is not None and (not isinstance(alias, int) or alias >= mechanism.id):
             raise ValueError(f"runtime plan {mechanism.id:03d} has an invalid alias target")
+        if mechanism.id == 357:
+            if row.get("adapter_domains") != ["A", "G", "B", "result_case"]:
+                raise ValueError("runtime plan 357 lost its cross-domain adapter")
+            if any(
+                route["transactions"]
+                for route in choices.values()
+                if isinstance(route, dict)
+            ):
+                raise ValueError("runtime plan 357 must not own an appeal refund")
 
 
 validate_domain_graphs()
