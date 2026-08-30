@@ -1,0 +1,105 @@
+﻿# GENERATED FILE — edit tools/gen_361_case_kernel.py
+# Shared guards deliberately put every var: read behind one existence gate.
+
+zg361_case_kernel_can_open_trigger = {
+	root = {
+		zg361_is_celestial_liege_trigger = yes
+		has_variable = $MANAGER_CYCLE_VAR$
+	}
+	zg361_is_reviewable_vassal_trigger = yes
+	liege = root
+	trigger_if = {
+		limit = { has_variable = $ACTIVE_VAR$ }
+		var:$ACTIVE_VAR$ = 0
+	}
+	trigger_else = { always = yes }
+}
+
+zg361_case_kernel_full_guard_trigger = {
+	trigger_if = {
+		limit = {
+			has_variable = $OWNER_VAR$
+			has_variable = $SUBJECT_VAR$
+			has_variable = $CYCLE_VAR$
+			has_variable = $CASE_VAR$
+			has_variable = $STATE_VAR$
+			has_variable = $ACTIVE_VAR$
+		}
+		var:$OWNER_VAR$ = $EXPECTED_OWNER$
+		var:$SUBJECT_VAR$ = $EXPECTED_SUBJECT$
+		var:$CYCLE_VAR$ = $EXPECTED_CYCLE$
+		var:$CASE_VAR$ = $EXPECTED_CASE$
+		var:$STATE_VAR$ = $EXPECTED_STATE$
+		var:$ACTIVE_VAR$ = 1
+	}
+	trigger_else = { always = no }
+}
+
+zg361_case_kernel_receipt_is_current_trigger = {
+	trigger_if = {
+		limit = {
+			has_variable = $RECEIPT_OWNER_VAR$
+			has_variable = $RECEIPT_SUBJECT_VAR$
+			has_variable = $RECEIPT_CYCLE_VAR$
+			has_variable = $RECEIPT_CASE_VAR$
+			has_variable = $RECEIPT_STATE_VAR$
+			has_variable = $RECEIPT_CHOICE_VAR$
+		}
+		var:$RECEIPT_OWNER_VAR$ = $EXPECTED_OWNER$
+		var:$RECEIPT_SUBJECT_VAR$ = $EXPECTED_SUBJECT$
+		var:$RECEIPT_CYCLE_VAR$ = $EXPECTED_CYCLE$
+		var:$RECEIPT_CASE_VAR$ = $EXPECTED_CASE$
+		var:$RECEIPT_STATE_VAR$ = $EXPECTED_STATE$
+		var:$RECEIPT_CHOICE_VAR$ = $EXPECTED_CHOICE$
+	}
+	trigger_else = { always = no }
+}
+
+zg361_case_kernel_deadline_is_current_trigger = {
+	trigger_if = {
+		limit = {
+			has_variable = $OWNER_VAR$
+			has_variable = $SUBJECT_VAR$
+			has_variable = $CYCLE_VAR$
+			has_variable = $CASE_VAR$
+			has_variable = $STATE_VAR$
+			has_variable = $ACTIVE_VAR$
+			has_variable = $DEADLINE_OWNER_VAR$
+			has_variable = $DEADLINE_SUBJECT_VAR$
+			has_variable = $DEADLINE_CYCLE_VAR$
+			has_variable = $DEADLINE_CASE_VAR$
+			has_variable = $DEADLINE_STATE_VAR$
+			has_variable = $DEADLINE_PENDING_VAR$
+		}
+		var:$ACTIVE_VAR$ = 1
+		var:$DEADLINE_PENDING_VAR$ = 1
+		var:$OWNER_VAR$ = var:$DEADLINE_OWNER_VAR$
+		var:$SUBJECT_VAR$ = var:$DEADLINE_SUBJECT_VAR$
+		var:$CYCLE_VAR$ = var:$DEADLINE_CYCLE_VAR$
+		var:$CASE_VAR$ = var:$DEADLINE_CASE_VAR$
+		var:$STATE_VAR$ = var:$DEADLINE_STATE_VAR$
+	}
+	trigger_else = { always = no }
+}
+
+# Counts/barons may consume only their own frozen case.  This trigger grants no
+# manager, calibration, PIP-owner, HC or allocation authority.
+zg361_case_kernel_subject_self_guard_trigger = {
+	trigger_if = {
+		limit = {
+			has_variable = $SUBJECT_VAR$
+			has_variable = $ACTIVE_VAR$
+		}
+		var:$SUBJECT_VAR$ = this
+		var:$ACTIVE_VAR$ = 1
+	}
+	trigger_else = { always = no }
+}
+
+zg361_case_kernel_positive_amount_trigger = {
+	save_temporary_scope_value_as = {
+		name = zg361_case_kernel_amount
+		value = $AMOUNT$
+	}
+	scope:zg361_case_kernel_amount > 0
+}
