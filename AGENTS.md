@@ -16,6 +16,16 @@
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
 - 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
 
+## Steam 创意工坊发布 Changelog
+
+- 本仓库内每个独立 mod 产品，每次正式发布或更新到 Steam 创意工坊成功后，都必须编写一份**相对上一公开版本**的 changelog，
+  永久保存为仓库跟踪文件并提交、推送到 `master`。统一路径为
+  `docs/release-changelogs/<product-key>/<version>.md`；首次发布没有上一版本时，必须明确标为 initial baseline。
+- 每份 changelog 至少记录：产品与 Workshop item ID、当前/上一版本、发布日期、当前/上一 tag 与 commit、玩家可见新增/变更/修复、
+  兼容或存档迁移、已知限制，以及正式构建和实机验收证据链接。草稿可以在发布前准备，但只有实际上传成功后才能写入最终发布事实。
+- Workshop 上传、订阅缓存复核和对应 changelog 的 `master` commit/push 缺一不可；没有永久入库的 changelog，不得把该次 release
+  标为完成。历史 changelog 不得覆盖删除；勘误必须追加带日期的更正记录。
+
 ## 构建/生成
 
 ```powershell
