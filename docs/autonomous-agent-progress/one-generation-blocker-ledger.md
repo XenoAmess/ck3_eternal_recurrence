@@ -646,5 +646,23 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 - 回归基线：最终相关 Python `562 passed + 360 subtests`；全量 Python
   `1583 passed, 3 skipped, 1120 subtests passed`；native CTest `44/44`。唯一 WinError 5 pytest cache warning 是既有环境告警，
   不影响结果，也未扩修。
-- readiness 只提升为“signed battle identity action→paused query production-live loop slice”。G1 `155/155` formal GREEN 不变；
-  首个 G2 start-next-episode gate 不重复；第二角色自然死亡、结算及后续 episode 仍待继续。
+- 用户 turn 中断留下的 run `20260830T180744Z-next-episode-1cd83c9e` 保持
+  `preflight_ready / finalized=false`，不重标为 capability RED。中断前后台已完成到 `history=2181 / date_raw=53295288` 的
+  durable ACK；checkpoint 实物与 driver `last_checkpoint` 同为 `96,977,945` bytes、SHA-256
+  `816B8B02E894B61CA8DBA8B9B1A283EF01C51849732FD45B3432004E28626D26`。接手时 CK3 inventory 为空；残留
+  `owner.json` 指向死 PID，只是 harness/user-turn interruption 现场。
+- 最终 continuation `20260830T182851Z-next-episode-19d679de` 从上述锚点 cold resume，`472/472` turns、墙钟
+  `1198.576s`，counts 为 query `310`、gameplay `160`、checkpoint `151`、terminal `1`、recovery `1`。turn 468 的
+  stationary-objective sentinel 在自然时间推进 `53319720→53319768` 时观察 `played_character_changed` 并立即停表；没有
+  `die`、控制台或人工死亡动作。turn 469 `death-terminal` 得到 matching episode settlement：score `0`、blessing `7`、
+  heir gameplay `0`，且记录前世已完成 Palermo holy-war win。
+- turn 470 把 PID `72636→39036`、connection generation `1→2`、episode run ID
+  `native-29829-fffa4ba935f6→native-29829-6e06850de2a3`，精确重载 immutable seed；turn 472 完成新 episode 一次
+  visible gameplay，保存 `history=4 / date_raw=53211576 / size=76979953 / SHA-256 56C00CDC...408E`。15/15 qualification
+  gates、session/shutdown/tree/driver cleanup 全绿，结束后 CK3=0，`first_blocker=null`。
+- report / terminal / next-episode SHA-256 分别为 `2D798DAB...C4DD / C72C3A11...667A / BB570624...33A3`。fresh
+  Release build 为 222 steps、native CTest `44/44`；DLL / injector SHA-256 为
+  `3B1BE173...4EB6 / 0E85B1F5...ACC6`。HKL 启动与十分钟复验都实际发现系统可把 CK3 线程带回 `0x08040804`，均被立即
+  纠正并留在 `0x04090409`；五分钟中间证据为全程英文。本轮不用 OCR。
+- readiness 现提升为“同一冻结 seed 的 G2 第二完整寿命、结算及再次跨 episode production-live loop”。G1 `155/155`
+  formal GREEN 不变；下一项不再重复该 seed，而是不同 seed/ruler/government/DLC 的泛化矩阵。

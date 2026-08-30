@@ -874,7 +874,34 @@ GREEN 的权威链：
 played-character、alive 与 `played_character_dead→played_character_changed` 表面演化。paused/map-ready/fresh revision、同 episode
 owner、合法 terminal identity 与后续 settlement 仍必须逐项验证。该放宽不得复用于 active event 或 pending interaction。
 
-该 GREEN 只证明同一冻结 seed 的首个跨 episode OODA 与 checkpoint，不证明第二个完整寿命、多 seed/ruler/government/DLC 或
+该 GREEN 只证明同一冻结 seed 的首个跨 episode OODA 与 checkpoint；第二个完整寿命由下述续跑单独证明。
+
+### G2 第二寿命至再次跨局（2026-08-31）
+
+正式 continuation 为
+`C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\g2-runs\20260830T182851Z-next-episode-19d679de`。
+它从 no-launch preflight 已逐项绑定的 `history=2181 / date_raw=53295288 / checkpoint SHA-256 816B8B02...6D26`
+cold resume；fresh Release bridge 先完成 222-step build 与 native CTest `44/44`，DLL / injector SHA-256 为
+`3B1BE173...4EB6 / 0E85B1F5...ACC6`。
+
+- 结果为 `next_episode_checkpointed / qualified / ok=true`，`472/472` turns、墙钟 `1198.576s`；310 query、160 gameplay、
+  151 checkpoint、1 terminal、1 recovery，`first_blocker=null`。
+- turn 468 的原生 sentinel 从 `53319720` 自然推进到 `53319768` 时观察 `played_character_changed` 并立即暂停；没有执行
+  `die`、控制台或任何人工死亡动作。turn 469 的 `death-terminal` 验证 matching episode settlement、score `0`、7 次 blessing
+  与 `heir_gameplay_actions=0`。
+- turn 470 的 `start-next-episode` 把 PID `72636→39036`、connection generation `1→2`、run ID
+  `native-29829-fffa4ba935f6→native-29829-6e06850de2a3`，逐字节重载 immutable seed；turn 472 在新 episode
+  `53211552→53211576` 完成可见 gameplay，并保存绑定新 run 的 checkpoint `56C00CDC...408E`（history 4）。
+- 15 项 qualification gate 全 true；session report、shutdown、tree-gone、cleanup-proven、driver-close 全 true，结束后 CK3=0。
+  report / terminal / next-episode SHA-256 为 `2D798DAB...C4DD / C72C3A11...667A / BB570624...33A3`。
+
+本次 user turn 曾中断上一条长跑 `20260830T180744Z-next-episode-1cd83c9e`；其报告只到
+`preflight_ready / finalized=false`，故归类为 harness/user-turn interruption，不得伪造为 gameplay RED。接手时应以
+driver `last_checkpoint` 与 checkpoint 实物的 size/SHA/history/date 四项一致性选择最新 durable anchor，而不能只复用 provisional
+report 的旧 preflight 输入。另一个实测坑是 CK3 线程在无人输入时仍可能被系统从 US English 带回中文 HKL；长跑需独立轮询
+目标 UI thread，只在异常时发 `WM_INPUTLANGCHANGEREQUEST`，保留 before/after 证据，并始终留在 `0x04090409`。
+
+该 GREEN 完成同一冻结 seed 的第二完整寿命与再次跨 episode；不证明不同 seed/ruler/government/DLC、普通 campaign 跨继承或
 全游戏自治。
 
 ## ZhongGuo v0.4.x phase2：MCP-first 纵切验收（2026-08-30）

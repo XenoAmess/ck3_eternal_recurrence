@@ -5,9 +5,11 @@
 [`docs/ck3-native-ai/`](../ck3-native-ai/README.md) 与
 [`docs/testing-workflow.md`](../testing-workflow.md)。
 
-当前 headline（2026-08-30）：固定 production seed 的 G1 已完整 GREEN；首个严格 G2 跨 episode gate 也已完成
-`death-terminal → start-next-episode → exact seed reload → 新 episode gameplay → durable checkpoint`。这只证明同一冻结
-production seed 的可重复跨局生命周期，不代表第二个完整寿命、更多 ruler/政府/DLC 或全游戏自治已经完成。
+当前 headline（2026-08-31）：固定 production seed 的 G1 与随后第二个完整寿命均已 GREEN。第二寿命在无人接管的
+production 长跑中自然触发 one-life terminal，完成匹配结算，再经
+`death-terminal → start-next-episode → exact seed reload → 新 episode gameplay → durable checkpoint`
+进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
+跨继承或全游戏自治已经完成。
 
 ## 导航
 
@@ -22,10 +24,12 @@ production seed 的可重复跨局生命周期，不代表第二个完整寿命�
 - [2026-08-27 早会（补录）](meetings/daily/2026-08-27.md)
 - [2026-W35 周计划会（补录）](meetings/weekly/2026-W35.md)
 - [2026-08-30 日报（滚动）](daily/2026-08-30.md)
+- [2026-08-31 日报（滚动）](daily/2026-08-31.md)
 - [2026-08-29 日报](daily/2026-08-29.md)
 - [2026-08-28 日报](daily/2026-08-28.md)
 - [2026-08-27 日报](daily/2026-08-27.md)
 - [2026-W35 周报](weekly/2026-W35.md)
+- [2026-W36 周报（滚动）](weekly/2026-W36.md)
 - [2026-08 月报：完整能力盘点](monthly/2026-08.md)
 - [2026-08-27 阶段成果演示手册](demos/2026-08-27-event-window.md)
 - [Show-off 视频规范与索引](demos/README.md)
