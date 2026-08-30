@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Unit contracts for A-route reference primitives, not CK3 runtime completion."""
+"""Unit contracts for B1 reference primitives, not CK3 runtime completion."""
 
 from __future__ import annotations
 
@@ -10,63 +10,100 @@ import unittest
 
 from zg361_b1_quota_model import (
     AgendaEntry,
+    AgendaCalibrationCase,
     AgendaMode,
     AttentionLedger,
     AttentionSeatLedger,
+    BandAssignment,
     BoardRecalculationReceipt,
+    CaseIdentity,
     ClosedCalibrationRound,
     CK3_IMPLEMENTED,
     ClosurePhase,
     CohortMember,
     ConservationError,
+    ConsensusRecord,
     DebtKind,
     DebtNotDueError,
     DebtState,
     DuplicateInputError,
     DuplicateOperationError,
+    DissentRecord,
+    DissentRegistry,
     EligibilityPolicy,
     EligibilityTreatment,
     EvidencePolarity,
+    EvidenceSegment,
+    ExecutiveMustReviewCase,
+    ExecutiveReviewRegistry,
     FrozenCandidateGrade,
     IllegalStateError,
     InsufficientSlotError,
     InvalidInputError,
     LateEvidence,
     PendingResolution,
+    PendingMilestoneCase,
     PendingSlotLedger,
+    PolicyDecisionLedger,
+    PolicyRoute,
+    PostCutoffCase,
     QuotaBook,
     QuotaCounts,
     QuotaDebt,
+    QuotaRoundingCase,
     RatingBand,
     READINESS,
     RedCode,
     SlotTrade,
     StaleOperationError,
     SymmetricReopenPolicy,
+    ShadowBandOrderCase,
     TeamCohort,
     ThresholdNotMetError,
     TradeDebtTerms,
     apply_bilateral_slot_trade,
     apply_bilateral_slot_trade_with_debt,
     apply_roster_change,
+    allocate_reorganized_subject,
     bind_attention_seat,
     build_agenda,
     compute_quota,
     consume_attention_seat,
+    consume_agenda_subject,
+    consume_precalibration_meeting,
+    consume_post_cutoff_case,
+    consume_shadow_band_order,
     hold_pending_slot,
     issue_rewards,
     lock_cohort,
     open_attention_seat_ledger,
+    open_agenda_calibration_case,
+    open_executive_must_review,
     open_pending_slot_ledger,
+    open_pending_milestone_case,
+    open_post_cutoff_case,
+    open_precalibration_meeting,
+    open_quota_rounding_case,
+    open_reorganization_ownership_case,
     open_roster_audit,
+    open_shadow_rating_case,
+    open_shadow_band_order_case,
+    open_dissent_case,
     pool_by_common_superior,
     request_symmetric_reopen,
+    resolve_executive_must_review,
+    resolve_pending_milestone_case,
     reseal_reopened_round,
     resolve_pending_slot,
     settle_due_debt,
+    seal_consensus,
     spend_attention,
+    submit_shadow_evidence,
+    finalize_shadow_rating,
+    publish_rounded_quota,
     transfer_attention_seat,
     use_overtime_attention,
+    validate_dissent,
 )
 
 
@@ -1405,6 +1442,871 @@ class SymmetricReopenTests(unittest.TestCase):
                 accepted_evidence=LateEvidence(
                     "evidence", EvidencePolarity.SUCCESS, 3
                 ),
+            )
+
+
+class NumberedCalibrationSemanticTests(unittest.TestCase):
+    def identity(
+        self,
+        case_serial: int,
+        *,
+        subject_id: str = "subject-a",
+        state: str = "policy_open",
+        cycle: int = 12,
+    ) -> CaseIdentity:
+        return CaseIdentity("manager-a", subject_id, cycle, case_serial, state)
+
+    def test_135_shadow_a_writes_evidence_then_final_consumer_b_is_hidden(self) -> None:
+        ledger = PolicyDecisionLedger()
+        opened_a = open_shadow_rating_case(
+            ledger,
+            identity=self.identity(135),
+            route=PolicyRoute.A,
+            shadow_band=RatingBand.TOP,
+            notice_day=100,
+            deadline_day=110,
+            gap_ids=("gap-kpi", "gap-values"),
+            gap_magnitude=4,
+            operation_id="m135-a-open",
+        )
+        case_a = opened_a.business_object
+        self.assertIsInstance(case_a, object)
+        self.assertTrue(case_a.disclosed)  # type: ignore[union-attr]
+        self.assertFalse(case_a.quota_committed)  # type: ignore[union-attr]
+        self.assertFalse(case_a.reward_issued)  # type: ignore[union-attr]
+        case_a = submit_shadow_evidence(
+            case_a,  # type: ignore[arg-type]
+            evidence_id="supplement-1",
+            submitted_day=109,
+            evidence_delta=3,
+            operation_id="m135-a-evidence",
+            expected_identity=case_a.identity,  # type: ignore[union-attr]
+        )
+        case_a = finalize_shadow_rating(
+            case_a,
+            final_band=RatingBand.TOP,
+            explanation="supplement accepted",
+            current_day=110,
+            operation_id="m135-a-final",
+            expected_identity=case_a.identity,
+        )
+        self.assertEqual(case_a.accepted_evidence_ids, ("supplement-1",))
+        self.assertEqual(case_a.shadow_object_id, 13535)
+        self.assertEqual(case_a.evidence_object_id, 13501)
+        self.assertEqual(
+            (case_a.evidence_revision, case_a.evidence_delta, case_a.response_code),
+            (1, 3, 2),
+        )
+        self.assertEqual(case_a.response_day, 109)
+        self.assertTrue(case_a.quota_committed)
+        self.assertFalse(case_a.reward_issued)
+        self.assertEqual((case_a.feedback_debt_delta, case_a.appeal_weight_delta), (0, 0))
+
+        opened_b = open_shadow_rating_case(
+            opened_a.ledger,
+            identity=self.identity(1135),
+            route=PolicyRoute.B,
+            shadow_band=RatingBand.TOP,
+            notice_day=100,
+            deadline_day=110,
+            gap_ids=("gap-hidden",),
+            gap_magnitude=2,
+            operation_id="m135-b-open",
+        )
+        case_b = opened_b.business_object
+        self.assertFalse(case_b.disclosed)  # type: ignore[union-attr]
+        with self.assertRaises(IllegalStateError):
+            submit_shadow_evidence(
+                case_b,  # type: ignore[arg-type]
+                evidence_id="cannot-see",
+                submitted_day=105,
+                evidence_delta=2,
+                operation_id="m135-b-evidence",
+                expected_identity=case_b.identity,  # type: ignore[union-attr]
+            )
+        case_b = finalize_shadow_rating(
+            case_b,  # type: ignore[arg-type]
+            final_band=RatingBand.MIDDLE,
+            explanation="late unexplained downgrade",
+            current_day=110,
+            operation_id="m135-b-final",
+            expected_identity=case_b.identity,  # type: ignore[union-attr]
+        )
+        self.assertEqual(case_b.final_drop, 1)
+        self.assertFalse(case_b.drop_explained)
+        self.assertEqual((case_b.feedback_debt_delta, case_b.appeal_weight_delta), (1, 2))
+
+    def test_c_route_has_no_object_adds_one_debt_and_duplicate_is_atomic(self) -> None:
+        before = PolicyDecisionLedger()
+        result = open_shadow_rating_case(
+            before,
+            identity=self.identity(2135),
+            route=PolicyRoute.C,
+            shadow_band=RatingBand.MIDDLE,
+            notice_day=100,
+            deadline_day=110,
+            gap_ids=(),
+            gap_magnitude=0,
+            operation_id="m135-c",
+        )
+        self.assertIsNone(result.business_object)
+        self.assertEqual((before.policy_debt, result.ledger.policy_debt), (0, 1))
+        frozen_after = result.ledger
+        with self.assertRaises(DuplicateOperationError):
+            open_shadow_rating_case(
+                frozen_after,
+                identity=self.identity(2135),
+                route=PolicyRoute.C,
+                shadow_band=RatingBand.MIDDLE,
+                notice_day=100,
+                deadline_day=110,
+                gap_ids=(),
+                gap_magnitude=0,
+                operation_id="m135-c-replay",
+            )
+        self.assertEqual(result.ledger, frozen_after)
+        with self.assertRaises(StaleOperationError):
+            open_shadow_rating_case(
+                PolicyDecisionLedger(),
+                identity=self.identity(4135, state="already_closed"),
+                route=PolicyRoute.C,
+                shadow_band=RatingBand.MIDDLE,
+                notice_day=100,
+                deadline_day=110,
+                gap_ids=(),
+                gap_magnitude=0,
+                operation_id="m135-c-stale-open",
+            )
+
+    def test_136_real_multi_manager_huddle_preserves_recommendation_diff(self) -> None:
+        cohort = ("one", "two", "three", "four", "five")
+        boundary = ("one", "five")
+        opened = open_precalibration_meeting(
+            PolicyDecisionLedger(),
+            identity=self.identity(136, subject_id="cohort-a"),
+            route=PolicyRoute.A,
+            manager_ids=("manager-a", "manager-b", "manager-c"),
+            cohort_ids=cohort,
+            boundary_case_ids=boundary,
+            standard_snapshot="standard-v12",
+            minutes=45,
+            suggested_assignments=(
+                BandAssignment("one", RatingBand.TOP),
+                BandAssignment("five", RatingBand.BOTTOM),
+            ),
+            operation_id="m136-a-open",
+        )
+        meeting = opened.business_object
+        formal = (
+            BandAssignment("one", RatingBand.MIDDLE),
+            BandAssignment("two", RatingBand.MIDDLE),
+            BandAssignment("three", RatingBand.TOP),
+            BandAssignment("four", RatingBand.MIDDLE),
+            BandAssignment("five", RatingBand.BOTTOM),
+        )
+        consumed = consume_precalibration_meeting(
+            meeting,  # type: ignore[arg-type]
+            formal_assignments=formal,
+            operation_id="m136-a-formal",
+            expected_identity=meeting.identity,  # type: ignore[union-attr]
+        )
+        self.assertEqual(consumed.consumed_minutes, 45)
+        self.assertEqual(
+            tuple((item.subject_id, item.suggested_band, item.formal_band) for item in consumed.diffs),
+            (("one", RatingBand.TOP, RatingBand.MIDDLE),),
+        )
+        self.assertEqual(
+            tuple(item.subject_id for item in consumed.suggested_assignments), boundary
+        )
+
+        with self.assertRaises(ConservationError):
+            open_precalibration_meeting(
+                PolicyDecisionLedger(),
+                identity=self.identity(3136, subject_id="fake-huddle"),
+                route=PolicyRoute.A,
+                manager_ids=("manager-a",),
+                cohort_ids=cohort,
+                boundary_case_ids=boundary,
+                standard_snapshot="standard-v12",
+                minutes=45,
+                suggested_assignments=(
+                    BandAssignment("one", RatingBand.TOP),
+                    BandAssignment("five", RatingBand.BOTTOM),
+                ),
+                operation_id="m136-fake-open",
+            )
+
+    def test_136_b_preallocates_whole_cohort_and_is_materially_different(self) -> None:
+        cohort = ("one", "two", "three")
+        assignments = (
+            BandAssignment("one", RatingBand.TOP),
+            BandAssignment("two", RatingBand.MIDDLE),
+            BandAssignment("three", RatingBand.BOTTOM),
+        )
+        opened = open_precalibration_meeting(
+            PolicyDecisionLedger(),
+            identity=self.identity(4136, subject_id="cohort-b"),
+            route=PolicyRoute.B,
+            manager_ids=("manager-a", "manager-b", "manager-c", "manager-d"),
+            cohort_ids=cohort,
+            boundary_case_ids=("one",),
+            standard_snapshot="standard-v12",
+            minutes=30,
+            suggested_assignments=assignments,
+            operation_id="m136-b-open",
+        )
+        meeting = opened.business_object
+        self.assertTrue(meeting.black_box_risk)  # type: ignore[union-attr]
+        self.assertEqual(
+            len(meeting.suggested_assignments), len(cohort)  # type: ignore[union-attr]
+        )
+
+    def test_137_agenda_consumes_attention_and_quota_in_frozen_order(self) -> None:
+        entries = (
+            AgendaEntry("one", 1),
+            AgendaEntry("two", 2, strategic=True),
+            AgendaEntry("three", 3),
+        )
+        opened = open_agenda_calibration_case(
+            PolicyDecisionLedger(),
+            identity=self.identity(137, subject_id="cohort-agenda"),
+            route=PolicyRoute.B,
+            entries=entries,
+            authoritative_cohort_ids=("one", "two", "three"),
+            quota=QuotaCounts(1, 1, 1),
+            attention_minutes=12,
+            seed="cycle-12",
+            operation_id="m137-b-open",
+        )
+        case = opened.business_object
+        self.assertIsInstance(case, AgendaCalibrationCase)
+        self.assertEqual(case.plan.subject_ids[0], "two")
+        bands = {
+            "one": RatingBand.TOP,
+            "two": RatingBand.MIDDLE,
+            "three": RatingBand.BOTTOM,
+        }
+        for index, subject_id in enumerate(case.plan.subject_ids, start=1):
+            case = consume_agenda_subject(
+                case,
+                subject_id=subject_id,
+                band=bands[subject_id],
+                attention_cost=4,
+                operation_id=f"m137-consume-{index}",
+                expected_identity=case.identity,
+            )
+        self.assertEqual(case.identity.state, "agenda_consumed")
+        self.assertEqual((case.attention.spent, case.attention.remaining), (12, 0))
+        self.assertEqual(case.remaining_quota, QuotaCounts())
+        self.assertTrue(case.resolutions[-1].late_segment_pressure)
+
+    def test_138_rounding_a_is_rotated_b_is_chair_selected_and_publish_conserves(self) -> None:
+        ledger = PolicyDecisionLedger()
+        opened_a = open_quota_rounding_case(
+            ledger,
+            identity=self.identity(138, subject_id="quota-a"),
+            route=PolicyRoute.A,
+            cohort_size=23,
+            team_ids=("red", "blue"),
+            rotation_cycle=2,
+            operation_id="m138-a-open",
+        )
+        case_a = opened_a.business_object
+        self.assertIsInstance(case_a, QuotaRoundingCase)
+        self.assertEqual(case_a.computation.effective_counts, QuotaCounts(7, 14, 2))
+        self.assertEqual(case_a.remainder_team_id, "blue")
+        published = publish_rounded_quota(
+            case_a,
+            team_id="pool-a",
+            common_superior_id="emperor",
+            operation_id="m138-a-publish",
+            expected_identity=case_a.identity,
+        )
+        self.assertEqual(published.published_book.counts.total, 23)  # type: ignore[union-attr]
+
+        opened_b = open_quota_rounding_case(
+            opened_a.ledger,
+            identity=self.identity(1138, subject_id="quota-b"),
+            route=PolicyRoute.B,
+            cohort_size=23,
+            team_ids=("red", "blue"),
+            rotation_cycle=2,
+            operation_id="m138-b-open",
+            chair_id="chair-favorite",
+            discretionary_team_id="red",
+        )
+        case_b = opened_b.business_object
+        self.assertEqual(case_b.remainder_team_id, "red")  # type: ignore[union-attr]
+        self.assertTrue(case_b.black_box_risk)  # type: ignore[union-attr]
+
+    def test_140_reorg_keeps_both_evidence_segments_but_occupies_one_slot(self) -> None:
+        segments = (
+            EvidenceSegment("old-team", "old-manager", 1, 80, ("old-kpi",)),
+            EvidenceSegment("new-team", "new-manager", 81, 120, ("new-kpi",)),
+        )
+        opened_a = open_reorganization_ownership_case(
+            PolicyDecisionLedger(),
+            identity=self.identity(140),
+            route=PolicyRoute.A,
+            old_manager_id="old-manager",
+            new_manager_id="new-manager",
+            old_team_id="old-team",
+            new_team_id="new-team",
+            old_service_days=80,
+            new_service_days=40,
+            ownership_freeze_day=90,
+            evidence_segments=segments,
+            operation_id="m140-a-open",
+        )
+        case_a = allocate_reorganized_subject(
+            opened_a.business_object,  # type: ignore[arg-type]
+            operation_id="m140-a-allocate",
+            expected_identity=opened_a.business_object.identity,  # type: ignore[union-attr]
+        )
+        self.assertEqual(case_a.quota_owner_team_id, "old-team")
+        self.assertEqual(case_a.allocation_receipt.occupied_slots, 1)  # type: ignore[union-attr]
+        self.assertEqual(
+            set(case_a.allocation_receipt.evidence_ids),  # type: ignore[union-attr]
+            {"old-kpi", "new-kpi"},
+        )
+
+        opened_b = open_reorganization_ownership_case(
+            opened_a.ledger,
+            identity=self.identity(1140),
+            route=PolicyRoute.B,
+            old_manager_id="old-manager",
+            new_manager_id="new-manager",
+            old_team_id="old-team",
+            new_team_id="new-team",
+            old_service_days=80,
+            new_service_days=40,
+            ownership_freeze_day=90,
+            evidence_segments=segments,
+            operation_id="m140-b-open",
+        )
+        self.assertEqual(
+            opened_b.business_object.quota_owner_team_id,  # type: ignore[union-attr]
+            "new-team",
+        )
+        self.assertEqual(len(opened_b.business_object.evidence_segments), 2)  # type: ignore[union-attr]
+
+    def test_141_must_review_a_is_advisory_b_is_manager_owned_conserved_swap(self) -> None:
+        registry = ExecutiveReviewRegistry()
+        opened_a = open_executive_must_review(
+            PolicyDecisionLedger(),
+            registry,
+            identity=self.identity(141),
+            route=PolicyRoute.A,
+            executive_id="executive",
+            direct_manager_id="manager-a",
+            reason="written strategic reason",
+            intervention_kind="must_review",
+            operation_id="m141-a-open",
+        )
+        case_a = opened_a.policy.business_object
+        self.assertIsInstance(case_a, ExecutiveMustReviewCase)
+        resolved_a = resolve_executive_must_review(
+            case_a,
+            direct_manager_band=RatingBand.MIDDLE,
+            intervention_supported=False,
+            operation_id="m141-a-resolve",
+            expected_identity=case_a.identity,
+        )
+        self.assertEqual(resolved_a.final_band, RatingBand.MIDDLE)
+        self.assertEqual((resolved_a.attention_consumed, resolved_a.judgment_credit_delta), (1, -1))
+        self.assertEqual(resolved_a.judgment_result, "miss")
+        self.assertFalse(resolved_a.swap_executed)
+        with self.assertRaises(InsufficientSlotError):
+            open_executive_must_review(
+                opened_a.policy.ledger,
+                opened_a.registry,
+                identity=self.identity(1141, subject_id="subject-b"),
+                route=PolicyRoute.A,
+                executive_id="executive",
+                direct_manager_id="manager-a",
+                reason="second request",
+                intervention_kind="must_review",
+                operation_id="m141-a-second",
+            )
+
+        opened_b = open_executive_must_review(
+            opened_a.policy.ledger,
+            opened_a.registry,
+            identity=self.identity(2141, subject_id="subject-c", cycle=13),
+            route=PolicyRoute.B,
+            executive_id="executive",
+            direct_manager_id="manager-a",
+            reason="attempted direct override",
+            intervention_kind="override",
+            operation_id="m141-b-open",
+        )
+        case_b = opened_b.policy.business_object
+        resolved_b = resolve_executive_must_review(
+            case_b,  # type: ignore[arg-type]
+            direct_manager_band=RatingBand.MIDDLE,
+            intervention_supported=True,
+            operation_id="m141-b-resolve",
+            expected_identity=case_b.identity,  # type: ignore[union-attr]
+            swap_peer_id="peer-top",
+            swap_peer_band=RatingBand.TOP,
+            manager_band_counts=QuotaCounts(2, 4, 1),
+            expected_book_version=7,
+        )
+        self.assertEqual(resolved_b.final_band, RatingBand.TOP)
+        self.assertEqual(resolved_b.attention_consumed, 1)
+        self.assertTrue(resolved_b.override_blocked)
+        self.assertTrue(resolved_b.swap_executed)
+        self.assertTrue(resolved_b.conservation_valid)
+        self.assertEqual(resolved_b.swap_peer_id, "peer-top")
+        self.assertEqual(
+            (
+                resolved_b.subject_band_before,
+                resolved_b.subject_band_after,
+                resolved_b.peer_band_before,
+                resolved_b.peer_band_after,
+            ),
+            (
+                RatingBand.MIDDLE,
+                RatingBand.TOP,
+                RatingBand.TOP,
+                RatingBand.MIDDLE,
+            ),
+        )
+        self.assertEqual(resolved_b.band_counts_before, resolved_b.band_counts_after)
+        self.assertEqual(
+            (resolved_b.book_version_before, resolved_b.book_version_after), (7, 8)
+        )
+        self.assertEqual((resolved_b.judgment_result, resolved_b.judgment_credit_delta), ("hit", 1))
+
+        with self.assertRaises(InsufficientSlotError):
+            resolve_executive_must_review(
+                case_b,  # type: ignore[arg-type]
+                direct_manager_band=RatingBand.BOTTOM,
+                intervention_supported=True,
+                operation_id="m141-b-forged-swap",
+                expected_identity=case_b.identity,  # type: ignore[union-attr]
+                swap_peer_id="peer-top",
+                swap_peer_band=RatingBand.TOP,
+                manager_band_counts=QuotaCounts(2, 4, 1),
+                expected_book_version=7,
+            )
+
+
+class NumberedTailSemanticTests(unittest.TestCase):
+    def identity(
+        self,
+        case_serial: int,
+        *,
+        subject_id: str = "subject-a",
+        cycle: int = 20,
+        state: str = "policy_open",
+    ) -> CaseIdentity:
+        return CaseIdentity("manager-a", subject_id, cycle, case_serial, state)
+
+    def test_142_a_holds_and_releases_one_slot_b_only_writes_next_cycle(self) -> None:
+        quota = QuotaCounts(1, 2, 1)
+        slots = open_pending_slot_ledger(
+            round_id="round-20", review_serial=20, quota=quota
+        )
+        opened_a = open_pending_milestone_case(
+            PolicyDecisionLedger(),
+            slots,
+            identity=self.identity(142),
+            route=PolicyRoute.A,
+            hold_id="hold-a",
+            milestone_id="milestone-a",
+            verifier_id="verifier-a",
+            deadline_cycle=21,
+            held_band=RatingBand.TOP,
+            fallback_band=RatingBand.MIDDLE,
+            frozen_reward=Fraction(75),
+            operation_id="m142-a-open",
+        )
+        case_a = opened_a.policy.business_object
+        self.assertIsInstance(case_a, PendingMilestoneCase)
+        self.assertEqual(opened_a.slot_ledger.free, QuotaCounts(0, 2, 1))
+        self.assertEqual(
+            case_a.disclosed_fields,
+            ("pending_marker", "milestone_id", "deadline_cycle"),
+        )
+        self.assertEqual(
+            dict(case_a.public_snapshot),
+            {
+                "pending_marker": True,
+                "milestone_id": "milestone-a",
+                "deadline_cycle": 21,
+            },
+        )
+        self.assertNotIn("held_band", case_a.public_snapshot)
+        self.assertNotIn("frozen_reward", case_a.public_snapshot)
+        resolved = resolve_pending_milestone_case(
+            case_a,
+            opened_a.slot_ledger,
+            current_cycle=21,
+            resolution=PendingResolution.SUCCESS,
+            operation_id="m142-a-resolve",
+            expected_identity=case_a.identity,
+        )
+        self.assertEqual(resolved.case.final_band, RatingBand.TOP)
+        self.assertEqual(resolved.case.reward_released, Fraction(75))
+        self.assertFalse(resolved.case.quota_held)
+        for band in (RatingBand.TOP, RatingBand.MIDDLE, RatingBand.BOTTOM):
+            self.assertEqual(
+                resolved.slot_ledger.free[band]
+                + resolved.slot_ledger.committed[band],
+                quota[band],
+            )
+
+        slots_before_b = resolved.slot_ledger
+        opened_b = open_pending_milestone_case(
+            opened_a.policy.ledger,
+            slots_before_b,
+            identity=self.identity(1142, subject_id="subject-b"),
+            route=PolicyRoute.B,
+            hold_id="hold-b",
+            milestone_id="milestone-b",
+            verifier_id="verifier-b",
+            deadline_cycle=21,
+            held_band=RatingBand.TOP,
+            fallback_band=RatingBand.MIDDLE,
+            frozen_reward=Fraction(999),
+            operation_id="m142-b-open",
+        )
+        case_b = opened_b.policy.business_object
+        self.assertEqual(opened_b.slot_ledger, slots_before_b)
+        self.assertFalse(case_b.quota_held)  # type: ignore[union-attr]
+        self.assertEqual(case_b.frozen_reward, 0)  # type: ignore[union-attr]
+        self.assertEqual(  # type: ignore[union-attr]
+            case_b.disclosed_fields,
+            ("current_final_unchanged", "next_cycle_evidence"),
+        )
+        with self.assertRaises(IllegalStateError):
+            resolve_pending_milestone_case(
+                case_b,  # type: ignore[arg-type]
+                opened_b.slot_ledger,
+                current_cycle=20,
+                resolution=PendingResolution.SUCCESS,
+                operation_id="m142-b-too-early",
+                expected_identity=case_b.identity,  # type: ignore[union-attr]
+                deferred_evidence_id="late-delivery",
+            )
+        deferred = resolve_pending_milestone_case(
+            case_b,  # type: ignore[arg-type]
+            opened_b.slot_ledger,
+            current_cycle=21,
+            resolution=PendingResolution.SUCCESS,
+            operation_id="m142-b-next-cycle",
+            expected_identity=case_b.identity,  # type: ignore[union-attr]
+            deferred_evidence_id="late-delivery",
+        )
+        self.assertEqual(deferred.case.deferred_evidence_id, "late-delivery")
+        self.assertIsNone(deferred.case.final_band)
+        self.assertEqual(deferred.slot_ledger, slots_before_b)
+
+    def test_142_c_is_no_object_and_failed_hold_is_atomic(self) -> None:
+        slots = open_pending_slot_ledger(
+            round_id="round-empty", review_serial=20, quota=QuotaCounts(0, 2, 1)
+        )
+        before_slots = slots
+        before_policy = PolicyDecisionLedger()
+        with self.assertRaises(InsufficientSlotError):
+            open_pending_milestone_case(
+                before_policy,
+                slots,
+                identity=self.identity(2142),
+                route=PolicyRoute.A,
+                hold_id="no-top",
+                milestone_id="milestone",
+                verifier_id="verifier",
+                deadline_cycle=21,
+                held_band=RatingBand.TOP,
+                fallback_band=RatingBand.MIDDLE,
+                frozen_reward=Fraction(50),
+                operation_id="m142-fail",
+            )
+        self.assertEqual(slots, before_slots)
+        self.assertEqual(before_policy, PolicyDecisionLedger())
+
+        declined = open_pending_milestone_case(
+            before_policy,
+            slots,
+            identity=self.identity(3142),
+            route=PolicyRoute.C,
+            hold_id="ignored",
+            milestone_id="ignored",
+            verifier_id="ignored",
+            deadline_cycle=21,
+            held_band=RatingBand.TOP,
+            fallback_band=RatingBand.MIDDLE,
+            frozen_reward=Fraction(50),
+            operation_id="m142-c",
+        )
+        self.assertIsNone(declined.policy.business_object)
+        self.assertEqual(declined.policy.ledger.policy_debt, 1)
+        self.assertEqual(declined.slot_ledger, slots)
+
+    def test_143_a_reopens_b_defers_without_clawing_back_paid_reward(self) -> None:
+        board = ClosedCalibrationRound(
+            "round-20",
+            20,
+            QuotaCounts(1, 2, 1),
+            "board-cycle-20",
+            "board-v1",
+            "reward-v1",
+        )
+        opened_a = open_post_cutoff_case(
+            PolicyDecisionLedger(),
+            identity=self.identity(143, subject_id="cohort-a"),
+            route=PolicyRoute.A,
+            board=board,
+            evidence=LateEvidence("success", EvidencePolarity.SUCCESS, 3),
+            reopen_policy=SymmetricReopenPolicy(Fraction(5, 2)),
+            operation_id="m143-a-open",
+        )
+        case_a = opened_a.business_object
+        self.assertIsInstance(case_a, PostCutoffCase)
+        self.assertEqual(case_a.board.phase, ClosurePhase.REOPENED)
+        receipt = BoardRecalculationReceipt(
+            "recalc-20",
+            "board-v1",
+            "success",
+            "board-v2",
+            QuotaCounts(1, 2, 1),
+            "reward-v2",
+        )
+        resealed = consume_post_cutoff_case(
+            case_a,
+            operation_id="m143-a-reseal",
+            expected_identity=case_a.identity,
+            current_cycle=20,
+            receipt=receipt,
+        )
+        self.assertEqual(resealed.board.phase, ClosurePhase.RESEALED)
+
+        paid = issue_rewards(
+            board,
+            operation_id="old-reward-paid",
+            expected_review_serial=20,
+            expected_board_hash="board-v1",
+            expected_reward_snapshot_hash="reward-v1",
+        )
+        opened_b = open_post_cutoff_case(
+            opened_a.ledger,
+            identity=self.identity(1143, subject_id="cohort-b"),
+            route=PolicyRoute.B,
+            board=paid,
+            evidence=LateEvidence("incident", EvidencePolarity.INCIDENT, 3),
+            reopen_policy=SymmetricReopenPolicy(Fraction(5, 2)),
+            operation_id="m143-b-open",
+        )
+        case_b = opened_b.business_object
+        self.assertEqual(case_b.board.phase, ClosurePhase.REWARDS_ISSUED)  # type: ignore[union-attr]
+        self.assertEqual(case_b.board.reopen_count, 0)  # type: ignore[union-attr]
+        deferred = consume_post_cutoff_case(
+            case_b,  # type: ignore[arg-type]
+            operation_id="m143-b-next",
+            expected_identity=case_b.identity,  # type: ignore[union-attr]
+            current_cycle=21,
+            deferred_evidence_id="next-cycle-incident",
+        )
+        self.assertEqual(deferred.board, paid)
+        self.assertEqual(deferred.deferred_evidence_id, "next-cycle-incident")
+
+    def test_144_dissent_consumes_review_attention_b_keeps_only_consensus(self) -> None:
+        registry = DissentRegistry()
+        opened_a = open_dissent_case(
+            PolicyDecisionLedger(),
+            registry,
+            identity=self.identity(144),
+            route=PolicyRoute.A,
+            manager_id="manager-b",
+            reason="verified delivery evidence was omitted",
+            timestamp=200,
+            advocated_band=RatingBand.TOP,
+            consensus_manager_ids=(),
+            consensus_band=RatingBand.MIDDLE,
+            operation_id="m144-a-open",
+        )
+        dissent = opened_a.policy.business_object
+        self.assertIsInstance(dissent, DissentRecord)
+        validated = validate_dissent(
+            dissent,
+            original_band=RatingBand.MIDDLE,
+            formal_band=RatingBand.TOP,
+            independent_reviewer_id="common-superior-reviewer",
+            review_attention_receipt_id="review-attention-144-a",
+            operation_id="m144-a-validate",
+            expected_identity=dissent.identity,
+        )
+        self.assertEqual((validated.attention_consumed, validated.credit_delta), (1, 1))
+        self.assertEqual(validated.independent_reviewer_id, "common-superior-reviewer")
+        self.assertEqual(validated.review_attention_receipt_id, "review-attention-144-a")
+        self.assertTrue(validated.self_safe_evidence)
+        self.assertFalse(validated.procedural_risk)
+
+        with self.assertRaises(ConservationError):
+            validate_dissent(
+                dissent,
+                original_band=RatingBand.MIDDLE,
+                formal_band=RatingBand.TOP,
+                independent_reviewer_id=dissent.manager_id,
+                review_attention_receipt_id="forged-self-review",
+                operation_id="m144-a-forged-reviewer",
+                expected_identity=dissent.identity,
+            )
+
+        with self.assertRaises(InvalidInputError):
+            open_dissent_case(
+                opened_a.policy.ledger,
+                opened_a.registry,
+                identity=self.identity(1144, subject_id="blank-reason"),
+                route=PolicyRoute.A,
+                manager_id="manager-c",
+                reason="",
+                timestamp=201,
+                advocated_band=RatingBand.TOP,
+                consensus_manager_ids=(),
+                consensus_band=RatingBand.MIDDLE,
+                operation_id="m144-blank",
+            )
+
+        opened_b = open_dissent_case(
+            opened_a.policy.ledger,
+            opened_a.registry,
+            identity=self.identity(2144, subject_id="subject-b"),
+            route=PolicyRoute.B,
+            manager_id="ignored-manager",
+            reason="ignored-reason",
+            timestamp=202,
+            advocated_band=RatingBand.TOP,
+            consensus_manager_ids=("manager-a", "manager-b", "manager-c"),
+            consensus_band=RatingBand.MIDDLE,
+            operation_id="m144-b-open",
+        )
+        consensus = opened_b.policy.business_object
+        self.assertIsInstance(consensus, ConsensusRecord)
+        self.assertEqual(len(opened_b.registry.dissent_records), 1)
+        sealed = seal_consensus(
+            consensus,
+            operation_id="m144-b-seal",
+            expected_identity=consensus.identity,
+        )
+        self.assertTrue(sealed.sealed)
+
+    def test_145_only_middle_rank_drives_finite_opportunity_never_compensation(self) -> None:
+        subjects = ("one", "two", "three")
+        opened_a = open_shadow_band_order_case(
+            PolicyDecisionLedger(),
+            identity=self.identity(145, subject_id="middle-band-a"),
+            route=PolicyRoute.A,
+            formal_band=RatingBand.MIDDLE,
+            ordered_subject_ids=subjects,
+            operation_id="m145-a-open",
+        )
+        case_a = opened_a.business_object
+        self.assertIsInstance(case_a, ShadowBandOrderCase)
+        consumed_a = consume_shadow_band_order(
+            case_a,
+            coaching_count=1,
+            opportunity_count=1,
+            operation_id="m145-a-consume",
+            expected_identity=case_a.identity,
+        )
+        self.assertTrue(consumed_a.disclosed)
+        self.assertEqual(consumed_a.coaching_subject_ids, ("one",))
+        self.assertEqual(consumed_a.opportunity_subject_ids, ("one",))
+        self.assertEqual(consumed_a.appeal_evidence_subject_ids, ())
+        self.assertFalse(consumed_a.black_box_audit)
+        self.assertTrue(all(item.band is RatingBand.MIDDLE for item in consumed_a.official_bands))
+
+        opened_b = open_shadow_band_order_case(
+            opened_a.ledger,
+            identity=self.identity(1145, subject_id="middle-band-b"),
+            route=PolicyRoute.B,
+            formal_band=RatingBand.MIDDLE,
+            ordered_subject_ids=subjects,
+            operation_id="m145-b-open",
+        )
+        case_b = opened_b.business_object
+        consumed_b = consume_shadow_band_order(
+            case_b,  # type: ignore[arg-type]
+            coaching_count=0,
+            opportunity_count=1,
+            operation_id="m145-b-consume",
+            expected_identity=case_b.identity,  # type: ignore[union-attr]
+        )
+        self.assertFalse(consumed_b.disclosed)
+        self.assertEqual(consumed_b.coaching_subject_ids, ())
+        self.assertEqual(consumed_b.opportunity_subject_ids, ("one",))
+        self.assertEqual(set(consumed_b.appeal_evidence_subject_ids), set(subjects))
+        self.assertTrue(consumed_b.black_box_audit)
+        self.assertTrue(all(item.band is RatingBand.MIDDLE for item in consumed_b.official_bands))
+        for forbidden_field in ("bonus_awards", "reward_budget", "compensation_awards"):
+            self.assertFalse(hasattr(consumed_a, forbidden_field))
+            self.assertFalse(hasattr(consumed_b, forbidden_field))
+
+        with self.assertRaises(ConservationError):
+            open_shadow_band_order_case(
+                opened_b.ledger,
+                identity=self.identity(2145, subject_id="not-middle"),
+                route=PolicyRoute.A,
+                formal_band=RatingBand.TOP,
+                ordered_subject_ids=subjects,
+                operation_id="m145-top-forbidden",
+            )
+        with self.assertRaises(ConservationError):
+            consume_shadow_band_order(
+                case_b,  # type: ignore[arg-type]
+                coaching_count=1,
+                opportunity_count=1,
+                operation_id="m145-private-coaching-forbidden",
+                expected_identity=case_b.identity,  # type: ignore[union-attr]
+            )
+
+    def test_five_field_stale_and_duplicate_consumers_are_atomic(self) -> None:
+        opened = open_shadow_band_order_case(
+            PolicyDecisionLedger(),
+            identity=self.identity(3145, subject_id="atomic-band"),
+            route=PolicyRoute.A,
+            formal_band=RatingBand.MIDDLE,
+            ordered_subject_ids=("one", "two"),
+            operation_id="m145-atomic-open",
+        )
+        case = opened.business_object
+        before = case
+        with self.assertRaises(DuplicateOperationError):
+            consume_shadow_band_order(
+                case,  # type: ignore[arg-type]
+                coaching_count=1,
+                opportunity_count=1,
+                operation_id="m145-atomic-open",
+                expected_identity=case.identity,  # type: ignore[union-attr]
+            )
+        self.assertEqual(case, before)
+        stale = replace(case.identity, cycle=case.identity.cycle + 1)  # type: ignore[union-attr]
+        with self.assertRaises(StaleOperationError):
+            consume_shadow_band_order(
+                case,  # type: ignore[arg-type]
+                coaching_count=1,
+                opportunity_count=1,
+                operation_id="m145-stale",
+                expected_identity=stale,
+            )
+        self.assertEqual(case, before)
+        consumed = consume_shadow_band_order(
+            case,  # type: ignore[arg-type]
+            coaching_count=1,
+            opportunity_count=1,
+            operation_id="m145-once",
+            expected_identity=case.identity,  # type: ignore[union-attr]
+        )
+        with self.assertRaises(DuplicateOperationError):
+            consume_shadow_band_order(
+                consumed,
+                coaching_count=1,
+                opportunity_count=1,
+                operation_id="m145-once",
+                expected_identity=consumed.identity,
             )
 
 
