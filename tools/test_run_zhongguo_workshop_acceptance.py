@@ -101,9 +101,14 @@ class WorkshopRuntimeTests(unittest.TestCase):
                 entry for entry in payload["files"] if entry["path"] == "descriptor.mod"
             )
 
-            result = acceptance.bootstrap_userdir(
-                root / "profile", cache, workshop_manifest=manifest
-            )
+            with mock.patch.object(
+                acceptance.acceptance,
+                "declared_vanilla_rule_defaults",
+                return_value=[("difficulty", "difficulty_normal")],
+            ):
+                result = acceptance.bootstrap_userdir(
+                    root / "profile", cache, workshop_manifest=manifest
+                )
 
             runtime_descriptor = (
                 Path(result["targets"]["product"]) / "descriptor.mod"

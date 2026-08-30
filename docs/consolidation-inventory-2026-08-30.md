@@ -93,3 +93,9 @@ master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。�
   `direct-2052-utf8`。构建目录与所有失败的命令行尝试均保留在 process assets，没有清理。
 - 官方 push/workflow-dispatch run ID 与最终 master merge SHA 在推送后补录；在它们 terminal GREEN 前，本清单不把
   consolidation 标记为最终完成。
+- 首次 push merge SHA 为 `7ebb78d5904c06ad3847ded316301939296979c3`；官方 run `33301313411` 在
+  `Test ZhongGuo 361 generators and acceptance contracts` RED。两个直接原因均为 L0 测试 fixture 偶然读取不存在的
+  `CK3_EXE` / vanilla `00_game_rules.txt`，本机游戏 junction 曾遮住它们。最小修复只为相应用例提供 fake executable 与
+  explicit vanilla-rule fixture，并为 provenance parser 动态构造最小 `han.txt/e_china.txt` 历史数据库。暂时移走
+  integration 的游戏 junction 后，`static-ci.yml` 全部公共步骤已在“游戏路径不存在”条件完整 GREEN；原 RED run 保留，
+  后续 push SHA/run ID 待官方 GREEN 后补录。

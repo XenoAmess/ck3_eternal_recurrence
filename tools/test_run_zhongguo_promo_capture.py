@@ -1046,8 +1046,10 @@ def main() -> int:
         temporary_root = Path(temporary)
         dll = temporary_root / "bridge.dll"
         injector = temporary_root / "injector.exe"
+        managed_executable = temporary_root / "ck3.exe"
         dll.write_bytes(b"zg361-title-navigation-dll")
         injector.write_bytes(b"zg361-title-navigation-injector")
+        managed_executable.write_bytes(b"zg361-title-navigation-managed-executable")
         explicit_pipe = (
             capture.NATIVE_TITLE_PIPE_PREFIX + "1" * 32
         )
@@ -1221,6 +1223,11 @@ def main() -> int:
                 "_known_call",
                 return_value=final,
             ) as final_call,
+            mock.patch.object(
+                capture.acceptance,
+                "CK3_EXE",
+                managed_executable,
+            ),
             mock.patch.object(
                 capture.acceptance,
                 "find_ocr_text",
@@ -1533,7 +1540,51 @@ def main() -> int:
         "policy_card_361",
     )
     assert capture.PROMO_PERSONAL_RESULT_FIELD_REGION == (0.20, 0.34, 0.42, 0.40)
-    provenance = capture.promo_real_character_provenance("han_5253")
+
+    def fixture_provenance(history_id: str) -> dict[str, object]:
+        """Exercise provenance parsing without depending on an installed game tree."""
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture_root = Path(temporary)
+            character_root = (
+                fixture_root
+                / "Crusader Kings III"
+                / "game"
+                / "history"
+                / "characters"
+            )
+            title_root = character_root.parent / "titles"
+            character_root.mkdir(parents=True)
+            title_root.mkdir(parents=True)
+            history_ids = (
+                capture.real_characters.MANAGER_HISTORY_ID,
+                *capture.real_characters.PROMO_REVIEWED_HISTORY_IDS,
+            )
+            (character_root / "han.txt").write_text(
+                "\n".join(f"{value} = {{\n}}" for value in history_ids) + "\n",
+                encoding="utf-8",
+            )
+            title_blocks = [
+                "h_china = {\n"
+                "\t1063.4.30 = { holder = han_8052 }\n"
+                "}"
+            ]
+            for subject_id, contract in (
+                capture.real_characters.REVIEWED_OFFICIAL_CONTRACT.items()
+            ):
+                title_blocks.append(
+                    f"{contract['title_id']} = {{\n"
+                    f"\tliege = {contract['liege_title_id']}\n"
+                    f"\t{contract['holder_date']} = {{ holder = {subject_id} }}\n"
+                    "}"
+                )
+            (title_root / "e_china.txt").write_text(
+                "\n".join(title_blocks) + "\n",
+                encoding="utf-8",
+            )
+            with mock.patch.object(capture, "ROOT", fixture_root):
+                return capture.promo_real_character_provenance(history_id)
+
+    provenance = fixture_provenance("han_5253")
     assert [row["history_id"] for row in provenance["subjects"]] == [
         "han_8052",
         "han_5253",
@@ -1567,11 +1618,11 @@ def main() -> int:
         "reviewed_official_direct_liege_holder_date": "1063.4.30",
     }
     for history_id in capture.EXPECTED_REVIEWED_OFFICIAL_HISTORY_IDS:
-        candidate_provenance = capture.promo_real_character_provenance(history_id)
+        candidate_provenance = fixture_provenance(history_id)
         assert [
             row["history_id"] for row in candidate_provenance["subjects"]
         ] == ["han_8052", history_id]
-    dynamic_provenance = capture.promo_real_character_provenance("han_6875")
+    dynamic_provenance = fixture_provenance("han_6875")
     assert [row["history_id"] for row in dynamic_provenance["subjects"]] == [
         "han_8052",
         "han_6875",
@@ -1585,7 +1636,7 @@ def main() -> int:
     ] == "h_china"
     for rejected_id in ("han_7247", "han_999999999"):
         try:
-            capture.promo_real_character_provenance(rejected_id)
+            fixture_provenance(rejected_id)
         except capture.acceptance.RunnerError as error:
             assert "outside the frozen allowlist" in str(error)
         else:

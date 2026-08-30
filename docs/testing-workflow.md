@@ -108,6 +108,12 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 
 官方 runner 没有 CK3、Steam 授权、工坊缓存、用户目录或可靠交互桌面，因此禁止调用 `run_acceptance.py` 或 `run_vivhite_acceptance.py`，也不能把云端 L0 表述成引擎或 UI 已验。官方 CI 能证明生成器 parity、BOM/loc、玩家/AI 闸门、release allowlist、acceptance 剥离和构建可复现；不能证明 Paradox 运行时语义、跨存档落盘、鼠标/OCR 或游戏日期推进。
 
+2026-08-30 的 push run `33301313411` 进一步实证：即使 L0 测试已用 import stubs 隔离 `pyautogui`/OCR，
+单测调用到 `sha256_file(CK3_EXE)` 或 `declared_vanilla_rule_defaults()` 仍会在官方 runner 因游戏树不存在而 RED；本机
+integration worktree 的游戏目录 junction 会遮住这类偶然依赖。L0 合同测试必须在测试上下文提供最小 fake executable
+与明确的 vanilla-rule fixture，不能读取真实 CK3 安装，也不能因此把游戏文件打包进 CI。该 RED 是 test-fixture isolation
+RED，不是 title-map、Workshop 产品或 CK3 实机能力 RED；原 run 保留，不重标。
+
 真实游戏层在本机串行执行并保存 artifacts：
 
 - L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。
