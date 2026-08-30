@@ -99,6 +99,17 @@ CENTRAL_WIRING_BOUNDARY: Final = (
     "central-wired records committed hook reachability only; it does not prove "
     "complete per-ID semantics, a complete player-visible loop, or CK3 live acceptance"
 )
+CENTRAL_RUNTIME_EVIDENCE: Final = (
+    "tools/gen_361_phase2_central_runtime.py",
+    "tools/test_zg361_phase2_central_runtime.py",
+    "docs/361-phase2-central-runtime-spec.md",
+    "common/scripted_effects/zg361_effects.txt",
+)
+CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY: Final = (
+    "central-wired records committed reachability to the Workforce adapter and its "
+    "typed external-wait/resume seam; #360-361 remain conditional on real 357-359 "
+    "receipts and are not central-completable, CK3 live, or complete"
+)
 LIVE_BOUNDARY: Final = (
     "ck3-live means bounded fixture-live evidence for the named slice; no mechanism "
     "is promoted here to production-live or full semantic completion"
@@ -107,103 +118,114 @@ LIVE_BOUNDARY: Final = (
 
 CLAIMS: Final[tuple[ReadinessClaim, ...]] = (
     ReadinessClaim(
-        mechanism_ids(range(242, 278), range(355, 357), range(360, 362)),
-        ReadinessLevel.CK3_STATIC_READY,
+        mechanism_ids(range(242, 278), range(355, 357)),
+        ReadinessLevel.CENTRAL_WIRED,
         "workforce-endgame-ck3-runtime",
         (
             "tools/gen_361_workforce_endgame_runtime.py",
             "tools/test_zg361_workforce_endgame_runtime.py",
             "docs/361-workforce-endgame-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
+    ),
+    ReadinessClaim(
+        mechanism_ids(range(360, 362)),
+        ReadinessLevel.CENTRAL_WIRED,
+        "workforce-endgame-conditional-external-wait",
+        (
+            "tools/gen_361_workforce_endgame_runtime.py",
+            "tools/test_zg361_workforce_endgame_runtime.py",
+            "docs/361-workforce-endgame-ck3-runtime-spec.md",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(26, 32), range(54, 69), range(129, 135)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "credit-project-ck3-runtime",
         (
             "tools/gen_361_credit_project_runtime.py",
             "tools/test_gen_361_credit_project_runtime.py",
             "docs/361-phase3-credit-project-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(312, 334)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "career-learning-ck3-runtime",
         (
             "tools/gen_361_career_learning_runtime.py",
             "tools/test_zg361_career_learning_runtime.py",
             "docs/361-phase2-career-learning-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(82, 92), range(278, 301)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "compensation-lti-ck3-runtime",
         (
             "tools/gen_361_compensation_runtime.py",
             "tools/test_zg361_compensation_runtime.py",
             "docs/361-compensation-lti-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(146, 192)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "feedback-promotion-pip-ck3-runtime",
         (
             "tools/gen_361_feedback_promotion_pip_runtime.py",
             "tools/test_zg361_feedback_promotion_pip_runtime.py",
             "docs/361-feedback-promotion-pip-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(19, 26), range(92, 129)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "career-hc-ck3-runtime",
         (
             "tools/gen_361_career_hc_runtime.py",
             "tools/test_zg361_career_hc_runtime.py",
             "docs/361-career-hc-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(32, 37), range(345, 355)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "manager-governance-ck3-runtime",
         (
             "tools/gen_361_manager_governance_runtime.py",
             "tools/test_zg361_manager_governance_runtime.py",
             "docs/361-phase2-manager-governance-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(192, 229)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "incident-platform-ck3-runtime",
         (
             "tools/gen_361_incident_platform_runtime.py",
             "tools/test_zg361_incident_platform_runtime.py",
             "docs/361-phase3-incident-platform-ck3-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(229, 242), range(301, 312), range(334, 345)),
-        ReadinessLevel.CK3_STATIC_READY,
+        ReadinessLevel.CENTRAL_WIRED,
         "metrics-delivery-ck3-runtime",
         (
             "tools/gen_361_phase3_metrics_delivery_runtime.py",
             "tools/test_zg361_phase3_metrics_delivery_runtime.py",
             "docs/361-phase3-metrics-delivery-runtime-spec.md",
-        ),
-        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
+        ) + CENTRAL_RUNTIME_EVIDENCE,
+        CENTRAL_WIRING_BOUNDARY,
     ),
     ReadinessClaim(
         mechanism_ids(range(2, 14), range(37, 54), range(135, 146)),
@@ -330,8 +352,8 @@ EXPECTED_EXCLUSIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
     {
         "design-only": "",
         "python-l0": "",
-        "ck3-static-ready": "019-036, 054-068, 082-134, 146-356, 360-361",
-        "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
+        "ck3-static-ready": "",
+        "central-wired": "002-017, 019-068, 070-356, 358-361",
         "ck3-live": "001, 018, 069, 357",
     }
 )
@@ -340,7 +362,7 @@ EXPECTED_CUMULATIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
         "design-only": "001-361",
         "python-l0": "001-361",
         "ck3-static-ready": "001-361",
-        "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
+        "central-wired": "001-361",
         "ck3-live": "001, 018, 069, 357",
     }
 )
@@ -348,8 +370,8 @@ EXPECTED_EXCLUSIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
     {
         "design-only": 0,
         "python-l0": 0,
-        "ck3-static-ready": 299,
-        "central-wired": 58,
+        "ck3-static-ready": 0,
+        "central-wired": 357,
         "ck3-live": 4,
     }
 )
@@ -358,7 +380,7 @@ EXPECTED_CUMULATIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
         "design-only": 361,
         "python-l0": 361,
         "ck3-static-ready": 361,
-        "central-wired": 62,
+        "central-wired": 361,
         "ck3-live": 4,
     }
 )
@@ -393,6 +415,8 @@ validate_readiness()
 
 __all__ = [
     "CENTRAL_WIRING_BOUNDARY",
+    "CENTRAL_CONDITIONAL_EXTERNAL_WAIT_BOUNDARY",
+    "CENTRAL_RUNTIME_EVIDENCE",
     "CLAIMS",
     "CUMULATIVE_COUNTS",
     "EXPECTED_CUMULATIVE_COUNTS",

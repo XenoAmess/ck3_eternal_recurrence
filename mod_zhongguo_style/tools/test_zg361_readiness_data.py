@@ -69,8 +69,8 @@ class ReadinessDataTests(unittest.TestCase):
             {
                 "design-only": 0,
                 "python-l0": 0,
-                "ck3-static-ready": 299,
-                "central-wired": 58,
+                "ck3-static-ready": 0,
+                "central-wired": 357,
                 "ck3-live": 4,
             },
         )
@@ -81,7 +81,7 @@ class ReadinessDataTests(unittest.TestCase):
                 "design-only": 361,
                 "python-l0": 361,
                 "ck3-static-ready": 361,
-                "central-wired": 62,
+                "central-wired": 361,
                 "ck3-live": 4,
             },
         )
@@ -97,25 +97,47 @@ class ReadinessDataTests(unittest.TestCase):
         self.assertEqual(actual_cumulative, dict(EXPECTED_CUMULATIVE_RANGES))
         self.assertEqual(
             actual_exclusive["ck3-static-ready"],
-            "019-036, 054-068, 082-134, 146-356, 360-361",
+            "",
+        )
+        self.assertEqual(
+            actual_exclusive["central-wired"],
+            "002-017, 019-068, 070-356, 358-361",
         )
 
-    def test_workforce_endgame_40_are_ck3_static_ready(self) -> None:
+    def test_workforce_endgame_40_are_central_wired_with_terminal_external_wait(self) -> None:
         workforce_ids = set(range(242, 278)) | {355, 356, 360, 361}
         self.assertEqual(len(workforce_ids), 40)
         for mechanism_id in sorted(workforce_ids):
             record = READINESS_BY_ID[mechanism_id]
-            self.assertEqual(record.level, ReadinessLevel.CK3_STATIC_READY)
-            self.assertEqual(record.package, "workforce-endgame-ck3-runtime")
+            self.assertEqual(record.level, ReadinessLevel.CENTRAL_WIRED)
             self.assertEqual(
-                record.evidence,
+                record.package,
+                "workforce-endgame-conditional-external-wait"
+                if mechanism_id in {360, 361}
+                else "workforce-endgame-ck3-runtime",
+            )
+            self.assertEqual(
+                record.evidence[:3],
                 (
                     "tools/gen_361_workforce_endgame_runtime.py",
                     "tools/test_zg361_workforce_endgame_runtime.py",
                     "docs/361-workforce-endgame-ck3-runtime-spec.md",
                 ),
             )
+            self.assertEqual(
+                record.evidence[3:],
+                (
+                    "tools/gen_361_phase2_central_runtime.py",
+                    "tools/test_zg361_phase2_central_runtime.py",
+                    "docs/361-phase2-central-runtime-spec.md",
+                    "common/scripted_effects/zg361_effects.txt",
+                ),
+            )
+            if mechanism_id in {360, 361}:
+                self.assertIn("conditional", record.note)
+                self.assertIn("not central-completable", record.note)
         self.assertEqual(set(ids_at_least(ReadinessLevel.CK3_STATIC_READY)), set(range(1, 362)))
+        self.assertEqual(set(ids_at_least(ReadinessLevel.CENTRAL_WIRED)), set(range(1, 362)))
 
     def test_manifest_embeds_current_summary_and_every_per_id_record(self) -> None:
         manifest = json.loads(self.rendered[self.manifest_path].decode("utf-8"))
