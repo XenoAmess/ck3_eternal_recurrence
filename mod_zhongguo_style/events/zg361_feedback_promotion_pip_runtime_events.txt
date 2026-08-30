@@ -4296,6 +4296,34 @@ zg361pp.190 = {
 	has_variable = zg361_pp_w_transfer_vacancy_id
 	var:zg361_pp_w_transfer_vacancy_active = 1
 	var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+	var:zg361_pp_w_transfer_vacancy_owner = root
+	var:zg361_pp_w_transfer_vacancy_subject = this
+	var:zg361_transfer_vacancy_active = 1
+	var:zg361_transfer_vacancy_status = 1
+	var:zg361_transfer_vacancy_id = var:zg361_pp_w_transfer_vacancy_id
+	var:zg361_transfer_vacancy_owner = root
+	var:zg361_transfer_vacancy_subject = this
+	var:zg361_transfer_vacancy_receiver = var:zg361_pp_w_transfer_vacancy_receiver
+	var:zg361_transfer_vacancy_source_cycle = var:zg361_pp_w_transfer_source_cycle
+	var:zg361_transfer_vacancy_source_case = var:zg361_pp_w_transfer_source_case
+	var:zg361_transfer_vacancy_title = var:zg361_pp_w_transfer_vacancy_title
+	var:zg361_transfer_vacancy_maturity_cycle = var:zg361_pp_w_transfer_maturity_cycle
+	var:zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind
+	var:zg361_pp_w_transfer_position_kind = 1
+	primary_title = var:zg361_pp_w_transfer_vacancy_title
+	var:zg361_pp_w_transfer_vacancy_title = { holder = this }
+	var:zg361_transfer_hc_authorized = 1
+	var:zg361_transfer_hc_reserved = 1
+	var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+	var:zg361_transfer_hc_conserved = 1
+	var:zg361_pp_w_transfer_vacancy_receiver = {
+		liege = root
+		primary_title.tier > prev.primary_title.tier
+		vassal_count < vassal_limit
+		NOT = { is_at_war_with = root }
+		NOT = { is_at_war_with = prev }
+	}
+	NOT = { is_at_war_with = var:zg361_pp_w_transfer_vacancy_receiver }
 	has_variable = zg361_pp_m183_goal_bundle_id
 	has_variable = zg361_pp_m184_support_status
 	has_variable = zg361_pp_m187_graduation_status
@@ -4333,6 +4361,34 @@ zg361pp.190 = {
 	has_variable = zg361_pp_w_transfer_vacancy_id
 	var:zg361_pp_w_transfer_vacancy_active = 1
 	var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+	var:zg361_pp_w_transfer_vacancy_owner = root
+	var:zg361_pp_w_transfer_vacancy_subject = this
+	var:zg361_transfer_vacancy_active = 1
+	var:zg361_transfer_vacancy_status = 1
+	var:zg361_transfer_vacancy_id = var:zg361_pp_w_transfer_vacancy_id
+	var:zg361_transfer_vacancy_owner = root
+	var:zg361_transfer_vacancy_subject = this
+	var:zg361_transfer_vacancy_receiver = var:zg361_pp_w_transfer_vacancy_receiver
+	var:zg361_transfer_vacancy_source_cycle = var:zg361_pp_w_transfer_source_cycle
+	var:zg361_transfer_vacancy_source_case = var:zg361_pp_w_transfer_source_case
+	var:zg361_transfer_vacancy_title = var:zg361_pp_w_transfer_vacancy_title
+	var:zg361_transfer_vacancy_maturity_cycle = var:zg361_pp_w_transfer_maturity_cycle
+	var:zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind
+	var:zg361_pp_w_transfer_position_kind = 1
+	primary_title = var:zg361_pp_w_transfer_vacancy_title
+	var:zg361_pp_w_transfer_vacancy_title = { holder = this }
+	var:zg361_transfer_hc_authorized = 1
+	var:zg361_transfer_hc_reserved = 1
+	var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+	var:zg361_transfer_hc_conserved = 1
+	var:zg361_pp_w_transfer_vacancy_receiver = {
+		liege = root
+		primary_title.tier > prev.primary_title.tier
+		vassal_count < vassal_limit
+		NOT = { is_at_war_with = root }
+		NOT = { is_at_war_with = prev }
+	}
+	NOT = { is_at_war_with = var:zg361_pp_w_transfer_vacancy_receiver }
 	has_variable = zg361_pp_m183_goal_bundle_id
 	has_variable = zg361_pp_m184_support_status
 	has_variable = zg361_pp_m187_graduation_status
@@ -6651,9 +6707,22 @@ zg361pp.2190 = {
 							var:zg361_pp_received_transfer_completion = root.var:zg361_pp_m190_completion_snapshot
 							var:zg361_pp_received_transfer_subject_statement = root.var:zg361_pp_m190_subject_statement_snapshot
 						}
+						var:zg361_transfer_vacancy_status = 2
+						var:zg361_transfer_vacancy_active = 1
+						var:zg361_transfer_request_pp_owner = root.var:zg361_case_w_owner
+						var:zg361_transfer_request_pp_subject = root
+						var:zg361_transfer_request_pp_cycle = root.var:zg361_case_w_cycle_serial
+						var:zg361_transfer_request_pp_case = root.var:zg361_case_w_case_serial
+						var:zg361_transfer_request_vacancy = root.var:zg361_pp_m190_vacancy_id_snapshot
 					}
 					set_variable = { name = zg361_pp_m190_audit_delivery_acl_pass value = 1 }
 				}
+			}
+			if = {
+				limit = { var:zg361_pp_m190_audit_delivery_acl_pass = 1 }
+				zg361_career_hc_settle_pp_transfer_effect = yes
+				set_variable = { name = zg361_pp_m190_audit_external_status value = var:zg361_transfer_vacancy_status }
+				set_variable = { name = zg361_pp_m190_audit_external_red_code value = var:zg361_transfer_adapter_red_code }
 			}
 			if = {
 				limit = { NOT = { var:zg361_pp_m190_route = 3 } }

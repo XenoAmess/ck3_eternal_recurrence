@@ -288,7 +288,11 @@ AUDIT_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
         "skipped_first_failure",
     ),
     189: ("skipped_no_relapse",),
-    190: ("audit_delivery_acl_pass",),
+    190: (
+        "audit_delivery_acl_pass",
+        "audit_external_status",
+        "audit_external_red_code",
+    ),
 }
 
 RESPONSE_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
@@ -534,6 +538,34 @@ var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
 has_variable = zg361_pp_w_transfer_vacancy_id
 var:zg361_pp_w_transfer_vacancy_active = 1
 var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+var:zg361_pp_w_transfer_vacancy_owner = root
+var:zg361_pp_w_transfer_vacancy_subject = this
+var:zg361_transfer_vacancy_active = 1
+var:zg361_transfer_vacancy_status = 1
+var:zg361_transfer_vacancy_id = var:zg361_pp_w_transfer_vacancy_id
+var:zg361_transfer_vacancy_owner = root
+var:zg361_transfer_vacancy_subject = this
+var:zg361_transfer_vacancy_receiver = var:zg361_pp_w_transfer_vacancy_receiver
+var:zg361_transfer_vacancy_source_cycle = var:zg361_pp_w_transfer_source_cycle
+var:zg361_transfer_vacancy_source_case = var:zg361_pp_w_transfer_source_case
+var:zg361_transfer_vacancy_title = var:zg361_pp_w_transfer_vacancy_title
+var:zg361_transfer_vacancy_maturity_cycle = var:zg361_pp_w_transfer_maturity_cycle
+var:zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind
+var:zg361_pp_w_transfer_position_kind = 1
+primary_title = var:zg361_pp_w_transfer_vacancy_title
+var:zg361_pp_w_transfer_vacancy_title = { holder = this }
+var:zg361_transfer_hc_authorized = 1
+var:zg361_transfer_hc_reserved = 1
+var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+var:zg361_transfer_hc_conserved = 1
+var:zg361_pp_w_transfer_vacancy_receiver = {
+\tliege = root
+\tprimary_title.tier > prev.primary_title.tier
+\tvassal_count < vassal_limit
+\tNOT = { is_at_war_with = root }
+\tNOT = { is_at_war_with = prev }
+}
+NOT = { is_at_war_with = var:zg361_pp_w_transfer_vacancy_receiver }
 has_variable = zg361_pp_m183_goal_bundle_id
 has_variable = zg361_pp_m184_support_status
 has_variable = zg361_pp_m187_graduation_status
@@ -1425,20 +1457,34 @@ set_variable = {{ name = {p}_disclosed_fields value = 4 }}
 set_variable = {{ name = {p}_private_ids_excluded value = 1 }}
 set_variable = {{ name = {p}_old_rating_snapshot value = var:zg361_pp_w_non_aggravation_grade }}
 set_variable = {{ name = {p}_old_rating_unchanged value = 1 }}
-set_variable = {{ name = {p}_acl_pass value = 1 }}
+set_variable = {{ name = {p}_acl_pass value = 0 }}
 set_variable = {{ name = {p}_stigma_risk value = 0 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_stigma_risk value = 1 }} }}
-save_temporary_scope_as = zg361_pp_m190_disclosure_subject
-var:{p}_acl_receiver = {{
-\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_bundle value = scope:zg361_pp_m190_disclosure_subject.var:{p}_disclosure_bundle_id }}
-\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_subject value = scope:zg361_pp_m190_disclosure_subject }}
-\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_cycle value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_cycle_serial }}
-\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_case value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_case_serial }}
-\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_vacancy value = scope:zg361_pp_m190_disclosure_subject.var:{p}_vacancy_id_snapshot }}
-\tset_variable = {{ name = zg361_pp_received_transfer_goal value = scope:zg361_pp_m190_disclosure_subject.var:{p}_goal_snapshot }}
-\tset_variable = {{ name = zg361_pp_received_transfer_support value = scope:zg361_pp_m190_disclosure_subject.var:{p}_support_snapshot }}
-\tset_variable = {{ name = zg361_pp_received_transfer_completion value = scope:zg361_pp_m190_disclosure_subject.var:{p}_completion_snapshot }}
-\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_statement_snapshot }}
+zg361_career_hc_accept_pp_transfer_request_effect = yes
+set_variable = {{ name = {p}_external_request_status value = var:zg361_transfer_vacancy_status }}
+set_variable = {{ name = {p}_external_request_red_code value = var:zg361_transfer_adapter_red_code }}
+if = {{
+\tlimit = {{
+\t\ttrigger_if = {{
+\t\t\tlimit = {{ has_variable = zg361_transfer_adapter_applied has_variable = zg361_transfer_vacancy_status }}
+\t\t\tvar:zg361_transfer_adapter_applied = 1
+\t\t\tvar:zg361_transfer_vacancy_status = 2
+\t\t}}
+\t\ttrigger_else = {{ always = no }}
+\t}}
+\tset_variable = {{ name = {p}_acl_pass value = 1 }}
+\tsave_temporary_scope_as = zg361_pp_m190_disclosure_subject
+\tvar:{p}_acl_receiver = {{
+\t\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_bundle value = scope:zg361_pp_m190_disclosure_subject.var:{p}_disclosure_bundle_id }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_subject value = scope:zg361_pp_m190_disclosure_subject }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_cycle value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_cycle_serial }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_case value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_case_serial }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_vacancy value = scope:zg361_pp_m190_disclosure_subject.var:{p}_vacancy_id_snapshot }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_goal value = scope:zg361_pp_m190_disclosure_subject.var:{p}_goal_snapshot }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_support value = scope:zg361_pp_m190_disclosure_subject.var:{p}_support_snapshot }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_completion value = scope:zg361_pp_m190_disclosure_subject.var:{p}_completion_snapshot }}
+\t\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_statement_snapshot }}
+\t}}
 }}''',
         191: f'''set_variable = {{ name = {p}_terminal_code_consumed value = var:zg361_pp_m189_terminal_code }}
 set_variable = {{ name = {p}_vacancy_cost value = 3 }}
@@ -1805,22 +1851,72 @@ if = {
 remove_variable = zg361_pp_w_receiving_manager
 remove_variable = zg361_pp_w_transfer_vacancy_id
 remove_variable = zg361_pp_w_transfer_vacancy_receiver
+remove_variable = zg361_pp_w_transfer_vacancy_owner
+remove_variable = zg361_pp_w_transfer_vacancy_subject
+remove_variable = zg361_pp_w_transfer_source_cycle
+remove_variable = zg361_pp_w_transfer_source_case
+remove_variable = zg361_pp_w_transfer_vacancy_title
+remove_variable = zg361_pp_w_transfer_maturity_cycle
+remove_variable = zg361_pp_w_transfer_position_kind
 set_variable = { name = zg361_pp_w_real_vacancy value = 0 }
 set_variable = { name = zg361_pp_w_transfer_vacancy_active value = 0 }
 if = {
 	limit = {
-		has_variable = zg361_transfer_vacancy_id
-		has_variable = zg361_transfer_vacancy_receiver
-		var:zg361_transfer_vacancy_active = 1
-		NOT = { var:zg361_transfer_vacancy_receiver = this }
-		var:zg361_transfer_vacancy_receiver = {
-			zg361_is_celestial_liege_trigger = yes
-			NOT = { this = root }
+		trigger_if = {
+			limit = {
+				has_variable = zg361_transfer_vacancy_id
+				has_variable = zg361_transfer_vacancy_owner
+				has_variable = zg361_transfer_vacancy_subject
+				has_variable = zg361_transfer_vacancy_receiver
+				has_variable = zg361_transfer_vacancy_source_cycle
+				has_variable = zg361_transfer_vacancy_source_case
+				has_variable = zg361_transfer_vacancy_title
+				has_variable = zg361_transfer_vacancy_maturity_cycle
+				has_variable = zg361_transfer_vacancy_position_kind
+				has_variable = zg361_transfer_vacancy_active
+				has_variable = zg361_transfer_vacancy_status
+				has_variable = zg361_transfer_hc_authorized
+				has_variable = zg361_transfer_hc_reserved
+				has_variable = zg361_transfer_hc_partition
+				has_variable = zg361_transfer_hc_conserved
+			}
+			var:zg361_transfer_vacancy_active = 1
+			var:zg361_transfer_vacancy_status = 1
+			var:zg361_transfer_vacancy_owner = root
+			var:zg361_transfer_vacancy_subject = this
+			var:zg361_transfer_vacancy_source_cycle < root.var:zg361_review_serial
+			var:zg361_transfer_vacancy_maturity_cycle <= root.var:zg361_review_serial
+			var:zg361_transfer_vacancy_position_kind = 1
+			NOT = { var:zg361_transfer_vacancy_receiver = this }
+			primary_title = var:zg361_transfer_vacancy_title
+			var:zg361_transfer_vacancy_title = { holder = this }
+			var:zg361_transfer_hc_authorized = 1
+			var:zg361_transfer_hc_reserved = 1
+			var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+			var:zg361_transfer_hc_conserved = 1
+			var:zg361_transfer_vacancy_receiver = {
+				zg361_is_celestial_liege_trigger = yes
+				NOT = { this = root }
+				liege = root
+				primary_title.tier > prev.primary_title.tier
+				vassal_count < vassal_limit
+				NOT = { is_at_war_with = root }
+				NOT = { is_at_war_with = prev }
+			}
+			NOT = { is_at_war_with = var:zg361_transfer_vacancy_receiver }
 		}
+		trigger_else = { always = no }
 	}
 	set_variable = { name = zg361_pp_w_receiving_manager value = var:zg361_transfer_vacancy_receiver }
 	set_variable = { name = zg361_pp_w_transfer_vacancy_receiver value = var:zg361_transfer_vacancy_receiver }
 	set_variable = { name = zg361_pp_w_transfer_vacancy_id value = var:zg361_transfer_vacancy_id }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_owner value = var:zg361_transfer_vacancy_owner }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_subject value = this }
+	set_variable = { name = zg361_pp_w_transfer_source_cycle value = var:zg361_transfer_vacancy_source_cycle }
+	set_variable = { name = zg361_pp_w_transfer_source_case value = var:zg361_transfer_vacancy_source_case }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_title value = var:zg361_transfer_vacancy_title }
+	set_variable = { name = zg361_pp_w_transfer_maturity_cycle value = var:zg361_transfer_vacancy_maturity_cycle }
+	set_variable = { name = zg361_pp_w_transfer_position_kind value = var:zg361_transfer_vacancy_position_kind }
 	set_variable = { name = zg361_pp_w_transfer_vacancy_active value = 1 }
 	set_variable = { name = zg361_pp_w_real_vacancy value = 1 }
 }
@@ -2872,9 +2968,22 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\t\t\t\tvar:zg361_pp_received_transfer_completion = root.var:{p}_completion_snapshot
 \t\t\t\t\t\t\tvar:zg361_pp_received_transfer_subject_statement = root.var:{p}_subject_statement_snapshot
 \t\t\t\t\t\t}}
+\t\t\t\t\t\tvar:zg361_transfer_vacancy_status = 2
+\t\t\t\t\t\tvar:zg361_transfer_vacancy_active = 1
+\t\t\t\t\t\tvar:zg361_transfer_request_pp_owner = root.var:zg361_case_w_owner
+\t\t\t\t\t\tvar:zg361_transfer_request_pp_subject = root
+\t\t\t\t\t\tvar:zg361_transfer_request_pp_cycle = root.var:zg361_case_w_cycle_serial
+\t\t\t\t\t\tvar:zg361_transfer_request_pp_case = root.var:zg361_case_w_case_serial
+\t\t\t\t\t\tvar:zg361_transfer_request_vacancy = root.var:{p}_vacancy_id_snapshot
 \t\t\t\t\t}}
 \t\t\t\t\tset_variable = {{ name = {p}_audit_delivery_acl_pass value = 1 }}
 \t\t\t\t}}
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{p}_audit_delivery_acl_pass = 1 }}
+\t\t\t\tzg361_career_hc_settle_pp_transfer_effect = yes
+\t\t\t\tset_variable = {{ name = {p}_audit_external_status value = var:zg361_transfer_vacancy_status }}
+\t\t\t\tset_variable = {{ name = {p}_audit_external_red_code value = var:zg361_transfer_adapter_red_code }}
 \t\t\t}}'''
     typed_audit = delayed_consumer_write(mechanism, index)
     return f'''zg361pp.{event_id} = {{

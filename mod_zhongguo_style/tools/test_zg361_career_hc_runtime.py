@@ -150,6 +150,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
             + 1
             + len(generator.QUEUE_EVENTS)
             + len(generator.DOMAINS)
+            + 1  # exact externally-blocked transfer retry
         )
         self.assertEqual(len(event_ids), expected_events)
         self.assertEqual(len(event_ids), len(set(event_ids)))
@@ -336,7 +337,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
         expected_deadline_hidden = sum(
             len(domain.stages) for domain in generator.DOMAINS
         ) + 1
-        expected_hidden = expected_deadline_hidden + len(generator.QUEUE_EVENTS)
+        expected_hidden = expected_deadline_hidden + len(generator.QUEUE_EVENTS) + 1
         self.assertEqual(self.events.count("hidden = yes"), expected_hidden)
         self.assertEqual(
             self.events.count("zg361_case_kernel_expire_deadline_effect"),
@@ -490,6 +491,109 @@ class CareerHcRuntimeTests(unittest.TestCase):
                 )
                 self.assertIn(f"var:zg361_case_{domain.key}_active = 0", finalizer)
                 self.assertIn("zg361_ch_manager_portfolio_active value = 0", finalizer)
+
+    def test_transfer_vacancy_is_real_title_bound_cross_cycle_and_conserved(self) -> None:
+        prepare = block(
+            self.effects,
+            "zg361_career_hc_prepare_transfer_vacancy_effect",
+        )
+        for token in (
+            "zg361_ch_m114_consumed = 1",
+            "zg361_ch_m114_route = 1",
+            "primary_title = scope:zg361_transfer_prepare_title",
+            "scope:zg361_transfer_prepare_title.holder = this",
+            "zg361_transfer_vacancy_owner value = scope:zg361_transfer_prepare_owner",
+            "zg361_transfer_vacancy_subject value = this",
+            "zg361_transfer_vacancy_receiver value = scope:zg361_transfer_prepare_receiver",
+            "zg361_transfer_vacancy_title value = scope:zg361_transfer_prepare_title",
+            "zg361_transfer_vacancy_maturity_cycle",
+            "add = 1",
+            "zg361_transfer_vacancy_active value = 1",
+            "zg361_transfer_vacancy_status value = 1",
+            "zg361_transfer_hc_authorized value = 1",
+            "zg361_transfer_hc_reserved value = 1",
+            "zg361_transfer_hc_conserved value = 1",
+            "zg361_transfer_adapter_red_code value = 1",
+            "zg361_transfer_adapter_red_code value = 2",
+            "zg361_transfer_adapter_red_code value = 3",
+        ):
+            self.assertIn(token, prepare)
+        self.assertIn("remove_variable = zg361_transfer_vacancy_position_kind", prepare)
+        self.assertIn(
+            "trigger_if = {\n                limit = { has_variable = zg361_transfer_vacancy_active }",
+            prepare,
+        )
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", prepare)
+        self.assertIn(
+            "primary_title.tier > scope:zg361_transfer_prepare_subject.primary_title.tier",
+            prepare,
+        )
+        self.assertNotIn("create_character", prepare)
+
+        request = block(
+            self.effects,
+            "zg361_career_hc_accept_pp_transfer_request_effect",
+        )
+        for token in (
+            "zg361_transfer_vacancy_source_cycle = var:zg361_pp_w_transfer_source_cycle",
+            "zg361_transfer_vacancy_source_case = var:zg361_pp_w_transfer_source_case",
+            "zg361_transfer_vacancy_title = var:zg361_pp_w_transfer_vacancy_title",
+            "zg361_transfer_vacancy_maturity_cycle = var:zg361_pp_w_transfer_maturity_cycle",
+            "zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind",
+            "zg361_transfer_vacancy_maturity_cycle <= root.var:zg361_review_serial",
+            "zg361_transfer_request_pp_owner value = var:zg361_case_w_owner",
+            "zg361_transfer_request_pp_subject value = this",
+            "zg361_transfer_request_pp_cycle value = var:zg361_case_w_cycle_serial",
+            "zg361_transfer_request_pp_case value = var:zg361_case_w_case_serial",
+            "zg361_transfer_request_receipt_owner value = var:zg361_case_w_owner",
+            "zg361_transfer_request_receipt_subject value = this",
+            "zg361_transfer_request_receipt_cycle value = var:zg361_case_w_cycle_serial",
+            "zg361_transfer_request_receipt_case value = var:zg361_case_w_case_serial",
+            "zg361_transfer_request_receipt_vacancy value = var:zg361_pp_m190_vacancy_id_snapshot",
+            "zg361_transfer_request_receipt_source_cycle value = var:zg361_transfer_vacancy_source_cycle",
+            "zg361_transfer_request_receipt_source_case value = var:zg361_transfer_vacancy_source_case",
+            "zg361_transfer_request_receipt_title value = var:zg361_transfer_vacancy_title",
+            "zg361_transfer_vacancy_status value = 2",
+        ):
+            self.assertIn(token, request)
+
+        settle = block(
+            self.effects,
+            "zg361_career_hc_settle_pp_transfer_effect",
+        )
+        for token in (
+            "create_title_and_vassal_change",
+            "change_liege",
+            "resolve_title_and_vassal_change",
+            "liege = scope:zg361_transfer_settle_receiver",
+            "primary_title = scope:zg361_transfer_settle_title",
+            "scope:zg361_transfer_settle_title.holder = this",
+            "var:zg361_transfer_request_pp_owner = var:zg361_transfer_request_receipt_owner",
+            "var:zg361_transfer_request_pp_cycle = var:zg361_transfer_request_receipt_cycle",
+            "var:zg361_transfer_request_pp_case = var:zg361_transfer_request_receipt_case",
+            "var:zg361_transfer_request_vacancy = var:zg361_transfer_request_receipt_vacancy",
+            "var:zg361_transfer_vacancy_source_cycle = var:zg361_transfer_request_receipt_source_cycle",
+            "var:zg361_transfer_vacancy_source_case = var:zg361_transfer_request_receipt_source_case",
+            "var:zg361_transfer_vacancy_title = var:zg361_transfer_request_receipt_title",
+            "zg361_transfer_vacancy_status value = 3",
+            "name = zg361_transfer_hc_reserved add = -1",
+            "name = zg361_transfer_hc_settled add = 1",
+            "zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized",
+            "zg361_transfer_adapter_red_code value = 4",
+            "zg361_transfer_adapter_red_code value = 6",
+            "trigger_event = { id = zg361ch.990 days = 30 }",
+        ):
+            self.assertIn(token, settle)
+        self.assertLess(settle.index("change_liege"), settle.index("zg361_transfer_vacancy_status value = 3"))
+        self.assertNotIn("appoint_court_position", settle)
+        stale_tail = settle.rsplit("else = {", 1)[1]
+        self.assertIn("zg361_transfer_adapter_red_code value = 3", stale_tail)
+        self.assertNotIn("zg361_career_hc_reclaim_transfer_hc_effect", stale_tail)
+
+        p_queue = block(self.events, f"zg361ch.{generator.QUEUE_EVENTS['p']}")
+        self.assertIn("zg361_career_hc_prepare_transfer_vacancy_effect = yes", p_queue)
+        retry = block(self.events, "zg361ch.990")
+        self.assertIn("zg361_career_hc_settle_pp_transfer_effect = yes", retry)
 
     def test_new_case_resets_stage_deadline_latches(self) -> None:
         for domain in generator.DOMAINS:

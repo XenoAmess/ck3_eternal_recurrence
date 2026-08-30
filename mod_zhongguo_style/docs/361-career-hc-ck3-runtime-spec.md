@@ -58,6 +58,15 @@ THIS = 受评直属官员
 ROOT.var:zg361_review_serial = 当前考核周期
 ```
 
+PP external chain 另有两个公开但非中央 dispatcher 入口：
+
+```text
+zg361_career_hc_accept_pp_transfer_request_effect
+zg361_career_hc_settle_pp_transfer_effect
+```
+
+两者只能消费本包先前生成的完整 vacancy ticket；它们不选择受评者、不授予 manager 权限，也不绕过 P 案卷来源和跨周期成熟门。
+
 开放 effect 复用 `zg361_case_d/m/n/o/p/q_open_effect`，不会自行造另一套 owner、subject、cycle、case 或 state。调用失败只是不写 `zg361_ch_runtime_applied`，不留下半个业务案卷。
 
 玩家管理者的首张 #019 卡在 D+1 打开。每个编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
@@ -171,6 +180,31 @@ authorized_hc = available + reserved + occupied + frozen + reclaimed
 
 098–105 每项至多移动一个单位，C 路保持空缺并留债。内部流动只改 slot 状态/来源，不生成角色；外部招募路线才写 occupied 和外部来源。当前层不直接创建 CK3 人物，避免用脚本伪造原版合法角色/职位。
 
+### Career/HC ↔ PP 的真实转岗空缺
+
+P 域关闭后，`zg361_career_hc_prepare_transfer_vacancy_effect` 只从现有世界对象中冻结一个候选转岗：受评者本人、其当前 `primary_title`、原直属上司，以及另一名直属于同一上司且爵位更高的天朝制公爵以上接收经理。接收经理还必须有真实 vassal capacity，双方不得处于战争。脚本不创建人物、不复制 flag，也不把“找到经理”这一布尔值当成空缺。
+
+空缺身份完整保存为：
+
+```text
+vacancy_id + owner + subject + source_cycle + source_case
++ receiver + title + maturity_cycle + position_kind
+```
+
+只有 #114 证据路线已经消费、P 案卷以冻结五元身份关闭，并且 title 的 holder 仍是 subject 时，才发布 `zg361_transfer_vacancy_active=1/status=1`。`maturity_cycle=source_cycle+1`，所以同周期 PP 不能消费刚生成的空缺。已有活动空缺不会被新周期覆盖：相同 ticket 返回 duplicate RED，不同来源返回 stale RED，原 ticket 与 HC 预留均保持不变。
+
+该通道另有一单位独立 HC 账：
+
+```text
+transfer_hc_authorized
+  = transfer_hc_available + transfer_hc_reserved
+  + transfer_hc_settled + transfer_hc_reclaimed
+```
+
+准备时从零直接建立一张 `authorized=reserved=1` 的外部转岗票据；PP #190 接受请求会再冻结一份不可替代的 `PP owner/subject/cycle/case/vacancy/receiver` receipt，只把 vacancy `status 1→2`，不提前结清 HC。settlement 必须让 request 与 receipt 六项逐一相等。D+30 ACL audit 调用 Career/HC 的 settlement consumer；中央 phase-2 lane 仍活动时返回 external-blocked RED=6、保留预留并在 D+30 重试。lane 空闲后才使用原版 `create_title_and_vassal_change → change_liege → resolve_title_and_vassal_change` 改变真实封臣岗位，并回读 `new liege + unchanged primary-title holder`。两项后置条件都成立才写 `status=3`、`reserved→settled`；no-vacancy 或 native postcondition 失败写 typed RED 并 `reserved→reclaimed`。duplicate/stale 只返回 RED，绝不改动现存票据或 HC 账。
+
+这里没有使用 `appoint_court_position`：原版接口明确要求受任者以任命者为 liege，而本产品的 subject 在案卷期间必须是原经理的直属有地封臣。强行调用会制造错误日志或假成功。当前可执行路径因此是正式 title/character 转封；不满足该 exact API 前置条件时保持 external blocked/RED。
+
 ### 双付款
 
 021、025、101、104、112、114、119 是有真实资金后果的动作。A/B 路必须同时满足：
@@ -282,6 +316,7 @@ crisis_hours_authorized = available + delegated + manager
 - #023 免费；N 域 HC partition 守恒；P 域隐私/延期/保护；Q 域 4-3-3/六项评价/接班门；
 - Q121–128 的八个权威 business consumer、typed object 五元组、实名 candidate/incumbent 分离、manager-HC/
   crisis-hours 守恒、A/B/C、重复锁与 stale guard；
+- Career/HC→PP 空缺的 title/character/owner/subject/cycle/case 冻结、跨周期成熟、duplicate/stale/no-vacancy typed RED、单单位 HC reserve/settled/reclaimed 守恒，以及真实 `change_liege` 后置条件；
 - `tools/zg361_career_hc_semantic_model.py` 的 Python reference model 逐路线验证对象、容量、资源及 exact no-op，
   并明确标记为 `python-l0-reference-only`；
 - 伯爵/男爵的 subject-self 路径不含任何管理入口；
@@ -290,7 +325,7 @@ crisis_hours_authorized = available + delegated + manager
 
 仍待批量完成：
 
-1. 根线程在稳定 hook 只接 `zg361_career_hc_open_portfolio_effect`；
+1. 中央稳定 hook 已接 `zg361_career_hc_open_portfolio_effect`；PP #190 已接上述 request/settlement ABI，仍待实机验证 exact title/vassal 后果；
 2. 把结案 revision、债、HC partition、释放期限、readiness、4-3-3 投影进现有考核榜内部页，不新增顶层按钮；
 3. 先用 MCP/native 查询建立 named action 与变量 snapshot；OCR 不作为导航或状态真值；
 4. 与 B1/B2、经理反馈等切片合并后一次 CK3 启动，批量跑成功、B 路、C 路、重复、stale、90/150 日和权限矩阵；

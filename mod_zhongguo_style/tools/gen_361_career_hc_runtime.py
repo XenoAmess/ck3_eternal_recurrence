@@ -644,6 +644,328 @@ zg361_career_hc_open_portfolio_effect = {{
 }}'''
 
 
+def render_transfer_vacancy_adapter() -> str:
+    """Render the Career/HC-owned external vacancy and settlement ABI.
+
+    A reviewed official is a landed direct vassal. CK3's court-position API
+    rejects appointing that character in a different manager's court, so the
+    adapter freezes the existing title/character and uses the vanilla landed
+    office transfer primitive. Variables never substitute for its postcondition.
+    """
+
+    return '''# Career/HC owns the external transfer-vacancy ABI consumed by PP #190.
+# Status: 1 prepared, 2 PP request accepted, 3 title/vassal transfer settled,
+# 4 rejected/reclaimed. RED: 1 no vacancy, 2 duplicate, 3 stale identity,
+# 4 native postcondition failed, 6 central lane still active (retry pending).
+zg361_career_hc_prepare_transfer_vacancy_effect = {
+    remove_variable = zg361_transfer_adapter_applied
+    set_variable = { name = zg361_transfer_adapter_red_code value = 0 }
+    if = {
+        limit = {
+            trigger_if = {
+                limit = { has_variable = zg361_transfer_vacancy_active }
+                var:zg361_transfer_vacancy_active = 1
+            }
+            trigger_else = { always = no }
+        }
+        if = {
+            limit = {
+                var:zg361_transfer_vacancy_owner = var:zg361_case_p_owner
+                var:zg361_transfer_vacancy_subject = this
+                var:zg361_transfer_vacancy_source_cycle = var:zg361_case_p_cycle_serial
+                var:zg361_transfer_vacancy_source_case = var:zg361_case_p_case_serial
+            }
+            set_variable = { name = zg361_transfer_adapter_red_code value = 2 }
+        }
+        else = { set_variable = { name = zg361_transfer_adapter_red_code value = 3 } }
+    }
+    else = {
+        set_variable = { name = zg361_transfer_hc_authorized value = 0 }
+        set_variable = { name = zg361_transfer_hc_available value = 0 }
+        set_variable = { name = zg361_transfer_hc_reserved value = 0 }
+        set_variable = { name = zg361_transfer_hc_settled value = 0 }
+        set_variable = { name = zg361_transfer_hc_reclaimed value = 0 }
+        set_variable = { name = zg361_transfer_hc_partition value = 0 }
+        set_variable = { name = zg361_transfer_hc_conserved value = 1 }
+        set_variable = { name = zg361_transfer_vacancy_active value = 0 }
+        set_variable = { name = zg361_transfer_vacancy_status value = 4 }
+        remove_variable = zg361_transfer_vacancy_id
+        remove_variable = zg361_transfer_vacancy_owner
+        remove_variable = zg361_transfer_vacancy_subject
+        remove_variable = zg361_transfer_vacancy_source_cycle
+        remove_variable = zg361_transfer_vacancy_source_case
+        remove_variable = zg361_transfer_vacancy_receiver
+        remove_variable = zg361_transfer_vacancy_title
+        remove_variable = zg361_transfer_vacancy_maturity_cycle
+        remove_variable = zg361_transfer_vacancy_position_kind
+        save_temporary_scope_as = zg361_transfer_prepare_subject
+        var:zg361_case_p_owner = { save_temporary_scope_as = zg361_transfer_prepare_owner }
+        primary_title = { save_temporary_scope_as = zg361_transfer_prepare_title }
+        scope:zg361_transfer_prepare_owner = {
+            ordered_vassal = {
+                limit = {
+                    zg361_is_celestial_liege_trigger = yes
+                    NOT = { this = scope:zg361_transfer_prepare_subject }
+                    primary_title.tier > scope:zg361_transfer_prepare_subject.primary_title.tier
+                    vassal_count < vassal_limit
+                    NOT = { is_at_war_with = scope:zg361_transfer_prepare_owner }
+                    NOT = { is_at_war_with = scope:zg361_transfer_prepare_subject }
+                    scope:zg361_transfer_prepare_subject = { NOT = { is_at_war_with = this } }
+                }
+                order_by = stewardship
+                position = 0
+                save_temporary_scope_as = zg361_transfer_prepare_receiver
+            }
+        }
+        if = {
+            limit = {
+                exists = scope:zg361_transfer_prepare_owner
+                exists = scope:zg361_transfer_prepare_subject
+                exists = scope:zg361_transfer_prepare_receiver
+                exists = scope:zg361_transfer_prepare_title
+                var:zg361_case_p_owner = scope:zg361_transfer_prepare_owner
+                var:zg361_case_p_subject = this
+                var:zg361_case_p_state = 6
+                var:zg361_case_p_active = 0
+                var:zg361_ch_m114_consumed = 1
+                var:zg361_ch_m114_route = 1
+                liege = scope:zg361_transfer_prepare_owner
+                primary_title = scope:zg361_transfer_prepare_title
+                scope:zg361_transfer_prepare_title.holder = this
+                scope:zg361_transfer_prepare_receiver = {
+                    zg361_is_celestial_liege_trigger = yes
+                    liege = scope:zg361_transfer_prepare_owner
+                    primary_title.tier > scope:zg361_transfer_prepare_subject.primary_title.tier
+                    vassal_count < vassal_limit
+                    NOT = { is_at_war_with = scope:zg361_transfer_prepare_owner }
+                    NOT = { is_at_war_with = scope:zg361_transfer_prepare_subject }
+                }
+            }
+            set_variable = { name = zg361_transfer_vacancy_id value = { value = var:zg361_case_p_case_serial multiply = 1000 add = 114 } }
+            set_variable = { name = zg361_transfer_vacancy_owner value = scope:zg361_transfer_prepare_owner }
+            set_variable = { name = zg361_transfer_vacancy_subject value = this }
+            set_variable = { name = zg361_transfer_vacancy_source_cycle value = var:zg361_case_p_cycle_serial }
+            set_variable = { name = zg361_transfer_vacancy_source_case value = var:zg361_case_p_case_serial }
+            set_variable = { name = zg361_transfer_vacancy_receiver value = scope:zg361_transfer_prepare_receiver }
+            set_variable = { name = zg361_transfer_vacancy_title value = scope:zg361_transfer_prepare_title }
+            set_variable = { name = zg361_transfer_vacancy_maturity_cycle value = { value = var:zg361_case_p_cycle_serial add = 1 } }
+            set_variable = { name = zg361_transfer_vacancy_position_kind value = 1 }
+            set_variable = { name = zg361_transfer_vacancy_active value = 1 }
+            set_variable = { name = zg361_transfer_vacancy_status value = 1 }
+            set_variable = { name = zg361_transfer_settlement_attempts value = 0 }
+            set_variable = { name = zg361_transfer_hc_authorized value = 1 }
+            set_variable = { name = zg361_transfer_hc_reserved value = 1 }
+            set_variable = { name = zg361_transfer_hc_partition value = 1 }
+            set_variable = { name = zg361_transfer_adapter_applied value = 1 }
+        }
+        else = { set_variable = { name = zg361_transfer_adapter_red_code value = 1 } }
+    }
+}
+
+# PP #190 may request only the exact matured vacancy frozen by W prework.
+zg361_career_hc_accept_pp_transfer_request_effect = {
+    remove_variable = zg361_transfer_adapter_applied
+    set_variable = { name = zg361_transfer_adapter_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_request_pp_owner = var:zg361_case_w_owner
+            var:zg361_transfer_request_pp_subject = this
+            var:zg361_transfer_request_pp_cycle = var:zg361_case_w_cycle_serial
+            var:zg361_transfer_request_pp_case = var:zg361_case_w_case_serial
+            var:zg361_transfer_request_vacancy = var:zg361_pp_m190_vacancy_id_snapshot
+        }
+        set_variable = { name = zg361_transfer_adapter_red_code value = 2 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 1
+            var:zg361_transfer_vacancy_owner = root
+            var:zg361_transfer_vacancy_subject = this
+            var:zg361_transfer_vacancy_id = var:zg361_pp_m190_vacancy_id_snapshot
+            var:zg361_transfer_vacancy_receiver = var:zg361_pp_m190_receiving_manager
+            var:zg361_transfer_vacancy_source_cycle = var:zg361_pp_w_transfer_source_cycle
+            var:zg361_transfer_vacancy_source_case = var:zg361_pp_w_transfer_source_case
+            var:zg361_transfer_vacancy_title = var:zg361_pp_w_transfer_vacancy_title
+            var:zg361_transfer_vacancy_maturity_cycle = var:zg361_pp_w_transfer_maturity_cycle
+            var:zg361_transfer_vacancy_position_kind = var:zg361_pp_w_transfer_position_kind
+            var:zg361_transfer_vacancy_position_kind = 1
+            primary_title = var:zg361_transfer_vacancy_title
+            var:zg361_transfer_vacancy_title = { holder = this }
+            var:zg361_transfer_vacancy_maturity_cycle <= root.var:zg361_review_serial
+            var:zg361_transfer_hc_authorized = 1
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_request_pp_owner value = var:zg361_case_w_owner }
+        set_variable = { name = zg361_transfer_request_pp_subject value = this }
+        set_variable = { name = zg361_transfer_request_pp_cycle value = var:zg361_case_w_cycle_serial }
+        set_variable = { name = zg361_transfer_request_pp_case value = var:zg361_case_w_case_serial }
+        set_variable = { name = zg361_transfer_request_vacancy value = var:zg361_pp_m190_vacancy_id_snapshot }
+        set_variable = { name = zg361_transfer_request_receiver value = var:zg361_pp_m190_receiving_manager }
+        set_variable = { name = zg361_transfer_request_receipt_owner value = var:zg361_case_w_owner }
+        set_variable = { name = zg361_transfer_request_receipt_subject value = this }
+        set_variable = { name = zg361_transfer_request_receipt_cycle value = var:zg361_case_w_cycle_serial }
+        set_variable = { name = zg361_transfer_request_receipt_case value = var:zg361_case_w_case_serial }
+        set_variable = { name = zg361_transfer_request_receipt_vacancy value = var:zg361_pp_m190_vacancy_id_snapshot }
+        set_variable = { name = zg361_transfer_request_receipt_receiver value = var:zg361_pp_m190_receiving_manager }
+        set_variable = { name = zg361_transfer_request_receipt_source_cycle value = var:zg361_transfer_vacancy_source_cycle }
+        set_variable = { name = zg361_transfer_request_receipt_source_case value = var:zg361_transfer_vacancy_source_case }
+        set_variable = { name = zg361_transfer_request_receipt_title value = var:zg361_transfer_vacancy_title }
+        set_variable = { name = zg361_transfer_request_receipt_maturity_cycle value = var:zg361_transfer_vacancy_maturity_cycle }
+        set_variable = { name = zg361_transfer_vacancy_status value = 2 }
+        set_variable = { name = zg361_transfer_adapter_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_adapter_red_code value = 3 } }
+}
+
+# The D+30 PP audit calls this consumer. A live central lane is a strict
+# external block, not a success: retry later without touching the HC book.
+zg361_career_hc_settle_pp_transfer_effect = {
+    remove_variable = zg361_transfer_adapter_applied
+    set_variable = { name = zg361_transfer_adapter_red_code value = 0 }
+    if = {
+        limit = { var:zg361_transfer_vacancy_status = 3 }
+        set_variable = { name = zg361_transfer_adapter_red_code value = 2 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_vacancy_owner = var:zg361_transfer_request_pp_owner
+            var:zg361_transfer_vacancy_subject = this
+            var:zg361_transfer_vacancy_id = var:zg361_transfer_request_vacancy
+            var:zg361_transfer_vacancy_receiver = var:zg361_transfer_request_receiver
+            var:zg361_transfer_request_pp_owner = var:zg361_transfer_request_receipt_owner
+            var:zg361_transfer_request_pp_subject = var:zg361_transfer_request_receipt_subject
+            var:zg361_transfer_request_pp_cycle = var:zg361_transfer_request_receipt_cycle
+            var:zg361_transfer_request_pp_case = var:zg361_transfer_request_receipt_case
+            var:zg361_transfer_request_vacancy = var:zg361_transfer_request_receipt_vacancy
+            var:zg361_transfer_request_receiver = var:zg361_transfer_request_receipt_receiver
+            var:zg361_transfer_vacancy_source_cycle = var:zg361_transfer_request_receipt_source_cycle
+            var:zg361_transfer_vacancy_source_case = var:zg361_transfer_request_receipt_source_case
+            var:zg361_transfer_vacancy_title = var:zg361_transfer_request_receipt_title
+            var:zg361_transfer_vacancy_maturity_cycle = var:zg361_transfer_request_receipt_maturity_cycle
+            var:zg361_transfer_vacancy_position_kind = 1
+            var:zg361_transfer_hc_authorized = 1
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized
+            var:zg361_transfer_hc_conserved = 1
+        }
+        if = {
+            limit = {
+                var:zg361_transfer_vacancy_owner = {
+                    trigger_if = {
+                        limit = { has_variable = zg361_p2c_active }
+                        var:zg361_p2c_active = 0
+                    }
+                    trigger_else = { always = yes }
+                }
+            }
+            if = {
+                limit = {
+                    liege = var:zg361_transfer_vacancy_owner
+                    primary_title = var:zg361_transfer_vacancy_title
+                    var:zg361_transfer_vacancy_title = { holder = this }
+                    var:zg361_transfer_vacancy_receiver = {
+                        zg361_is_celestial_liege_trigger = yes
+                        liege = root.var:zg361_transfer_vacancy_owner
+                        primary_title.tier > root.primary_title.tier
+                        vassal_count < vassal_limit
+                        NOT = { is_at_war_with = root.var:zg361_transfer_vacancy_owner }
+                        NOT = { is_at_war_with = root }
+                    }
+                    NOT = { is_at_war_with = var:zg361_transfer_vacancy_receiver }
+                }
+                save_temporary_scope_as = zg361_transfer_settle_subject
+                var:zg361_transfer_vacancy_owner = { save_temporary_scope_as = zg361_transfer_settle_owner }
+                var:zg361_transfer_vacancy_receiver = { save_temporary_scope_as = zg361_transfer_settle_receiver }
+                var:zg361_transfer_vacancy_title = { save_temporary_scope_as = zg361_transfer_settle_title }
+                scope:zg361_transfer_settle_owner = {
+                    create_title_and_vassal_change = {
+                        type = granted
+                        save_scope_as = zg361_transfer_title_change
+                        add_claim_on_loss = no
+                    }
+                    scope:zg361_transfer_settle_subject = {
+                        change_liege = {
+                            liege = scope:zg361_transfer_settle_receiver
+                            change = scope:zg361_transfer_title_change
+                        }
+                    }
+                    resolve_title_and_vassal_change = scope:zg361_transfer_title_change
+                }
+                if = {
+                    limit = {
+                        liege = scope:zg361_transfer_settle_receiver
+                        primary_title = scope:zg361_transfer_settle_title
+                        scope:zg361_transfer_settle_title.holder = this
+                    }
+                    set_variable = { name = zg361_transfer_vacancy_active value = 0 }
+                    set_variable = { name = zg361_transfer_vacancy_status value = 3 }
+                    change_variable = { name = zg361_transfer_hc_reserved add = -1 }
+                    change_variable = { name = zg361_transfer_hc_settled add = 1 }
+                    set_variable = { name = zg361_transfer_hc_partition value = var:zg361_transfer_hc_available }
+                    change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reserved }
+                    change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_settled }
+                    change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reclaimed }
+                    set_variable = { name = zg361_transfer_hc_conserved value = 0 }
+                    if = { limit = { var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized } set_variable = { name = zg361_transfer_hc_conserved value = 1 } }
+                    scope:zg361_transfer_settle_receiver = {
+                        set_variable = { name = zg361_received_transfer_vacancy value = root.var:zg361_transfer_vacancy_id }
+                        set_variable = { name = zg361_received_transfer_subject value = root }
+                        set_variable = { name = zg361_received_transfer_title value = scope:zg361_transfer_settle_title }
+                    }
+                    scope:zg361_transfer_settle_owner = {
+                        set_variable = { name = zg361_last_settled_transfer_vacancy value = root.var:zg361_transfer_vacancy_id }
+                        set_variable = { name = zg361_last_settled_transfer_subject value = root }
+                    }
+                    set_variable = { name = zg361_transfer_adapter_applied value = 1 }
+                }
+                else = {
+                    set_variable = { name = zg361_transfer_adapter_red_code value = 4 }
+                    zg361_career_hc_reclaim_transfer_hc_effect = yes
+                }
+            }
+            else = {
+                set_variable = { name = zg361_transfer_adapter_red_code value = 1 }
+                zg361_career_hc_reclaim_transfer_hc_effect = yes
+            }
+        }
+        else = {
+            set_variable = { name = zg361_transfer_adapter_red_code value = 6 }
+            change_variable = { name = zg361_transfer_settlement_attempts add = 1 }
+            trigger_event = { id = zg361ch.990 days = 30 }
+        }
+    }
+    else = {
+        set_variable = { name = zg361_transfer_adapter_red_code value = 3 }
+    }
+}
+
+zg361_career_hc_reclaim_transfer_hc_effect = {
+    if = {
+        limit = {
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_vacancy_active value = 0 }
+        set_variable = { name = zg361_transfer_vacancy_status value = 4 }
+        change_variable = { name = zg361_transfer_hc_reserved add = -1 }
+        change_variable = { name = zg361_transfer_hc_reclaimed add = 1 }
+        set_variable = { name = zg361_transfer_hc_partition value = var:zg361_transfer_hc_available }
+        change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reserved }
+        change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_settled }
+        change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reclaimed }
+        set_variable = { name = zg361_transfer_hc_conserved value = 0 }
+        if = { limit = { var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized } set_variable = { name = zg361_transfer_hc_conserved value = 1 } }
+    }
+}'''
+
+
 def render_manager_entry(mechanism_id: int, domain: str, state: int) -> str:
     row = domain_vars(domain)
     q_subject = "\n            zg361_is_celestial_liege_trigger = yes" if domain == "q" else ""
@@ -1397,6 +1719,7 @@ def render_queue_event(domain: DomainSpec) -> str:
     final_state = len(domain.stages) + 1
     if next_domain == "q":
         immediate = f'''scope:{scopes["subject"]} = {{
+            zg361_career_hc_prepare_transfer_vacancy_effect = yes
             if = {{
                 limit = {{
                     zg361_is_celestial_liege_trigger = yes
@@ -1443,7 +1766,8 @@ def render_effects() -> bytes:
     sections = [
         "# ZhongGuo 361 career/HC runtime: D/M/N/O/P/Q, 44 numbered mechanisms.",
         "# Routes: 1 = evidence-led; 2 = political/extractive; 3 = bounded defer.",
-        "# Public central surface: zg361_career_hc_open_portfolio_effect only.",
+        "# Public surfaces: central open plus the strict PP transfer adapters.",
+        render_transfer_vacancy_adapter(),
         render_portfolio_adapter(),
     ]
     for domain in DOMAINS:
@@ -1489,6 +1813,12 @@ def render_events() -> bytes:
         sections.append(render_completion_event(domain, completion))
         if NEXT_DOMAIN[domain.key] is not None:
             sections.append(render_queue_event(domain))
+    sections.append('''# Retry only while the exact PP-requested vacancy remains externally blocked.
+zg361ch.990 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_career_hc_settle_pp_transfer_effect = yes }
+}''')
     return generated("\n\n".join(sections))
 
 

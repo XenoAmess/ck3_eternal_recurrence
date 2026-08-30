@@ -158,10 +158,18 @@ deadline 为 D+368，和观察路径的弹窗不再同日竞争。
 #189 C 已在 D+368 同日消费，D+90 的 #188 audit 仍能把案卷推进到第五阶段，不会永久卡在 state 4。
 
 #189 先把 `second_pip/transfer/exit` 全部清零，再只写一个终态并校验和为 1；无论 A/B/C，终局关闭都按 #184
-原票据释放容量一次。#190 不再把“找到另一个经理”冒充空缺：中央 career/HC 适配器必须先在 subject 上绑定
-`zg361_transfer_vacancy_id + zg361_transfer_vacancy_receiver + zg361_transfer_vacancy_active=1`，W 才冻结真实 vacancy ID
-和接收经理。转岗包把目标、支持、毕业结果、本人陈述四个实际快照投影到该接收经理，D+30 audit 再从 receiver
-侧回读 bundle/case/vacancy/四字段并验证 ACL；不存在真实空缺时 transfer 分支不可用。
+原票据释放容量一次。#190 不再把“找到另一个经理”冒充空缺：Career/HC 必须先在 subject 上发布完整的
+`vacancy_id/owner/subject/source_cycle/source_case/receiver/title/maturity_cycle/active/status`，且独立 transfer-HC 账满足
+`authorized=reserved` 与 conservation。W 只接受 `source_cycle < current review`、`maturity_cycle <= current review` 的
+跨周期成熟 ticket；title holder、subject 当前 `primary_title`、接收经理和全部来源身份任一不符，`real_vacancy` 保持 0。
+
+#190 core 冻结相同身份后调用 Career/HC request adapter。只有 adapter 把 exact vacancy 从 prepared(1) 改为
+requested(2)，才设置 `acl_pass=1` 并向接收经理投影目标、支持、毕业结果、本人陈述四个快照。D+30 audit 除了从 receiver
+侧回读 bundle/case/vacancy/四字段，还复核 Career request 的 owner/subject/PP cycle/PP case/vacancy；通过后调用
+Career/HC settlement consumer。该 consumer 只有在中央 lane 空闲且原 title/character/liege/vacancy 前置条件仍成立时，
+才执行原版 title/vassal transfer，并以 `new liege + unchanged title holder` 回读作为成功依据。中央仍忙时是严格
+external-blocked RED 并延迟重试；duplicate、stale、no-vacancy 或 native postcondition 失败均为 typed RED，不能把披露
+成功冒充转岗成功，也不能泄漏或重复结算 HC。
 
 ## 六、资源与原子性
 
@@ -207,6 +215,6 @@ py tools/validate_local.py
 
 `tools/test_zg361_b2_runtime.py` 仍可作为 T/W Python reference 回归运行。本独立包不越权修改 B2 或中央 manifest；最终中央合并时必须由对应 owner 统一 readiness 口径。
 
-L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#184/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W 证据门/D+368 竞态边界/同类复发/无复发 skip/所有终局容量释放/互斥终态/真实 vacancy 输入/四字段 receiver ACL、申诉不加重、manager/subject 权限、第二 AI 例外、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
+L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#184/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W 证据门/D+368 竞态边界/同类复发/无复发 skip/所有终局容量释放/互斥终态、Career 空缺完整身份与成熟门、#190 exact request、四字段 receiver ACL、D+30 settlement 调用与 external typed RED、申诉不加重、manager/subject 权限、第二 AI 例外、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
 
-下一步由中央代理接 `zg361_pp_manager_portfolio_adapter_effect`，与其他二期包一次性跑 MCP-first CK3 批量验收。必须同一启动覆盖：玩家公爵/国王/皇帝、授权 AI 公爵、伯爵/男爵 subject-only、非天朝 manager RED、A/B/C、资源不足、重复、stale、D+7/30/90/180/365、存读档与四域顺序队列。没有 paused snapshot、日志和玩家窗口证据前，本包保持 `static-ready`。
+中央已经调用 `zg361_pp_manager_portfolio_adapter_effect`，Career/HC→PP external chain 的脚本 ABI 已闭合。下一步仍必须以 CK3 实机覆盖：玩家公爵/国王/皇帝、授权 AI 公爵、伯爵/男爵 subject-only、非天朝 manager RED、A/B/C、无接收经理/无 vassal capacity、duplicate、stale、中央忙时重试、真实转封前后 title/liege 回读、D+7/30/90/180/365 与存读档。没有 paused snapshot、error/debug log 和真实 title/liege 证据前，本包保持 `static-ready`；strict adapter/RED 不能称为 production-live 成功。

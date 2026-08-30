@@ -782,13 +782,41 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         open_w = effect_block(self.effects, "zg361_pp_open_w_case_effect")
         for token in (
             "has_variable = zg361_transfer_vacancy_id",
+            "has_variable = zg361_transfer_vacancy_owner",
+            "has_variable = zg361_transfer_vacancy_subject",
             "has_variable = zg361_transfer_vacancy_receiver",
+            "has_variable = zg361_transfer_vacancy_source_cycle",
+            "has_variable = zg361_transfer_vacancy_source_case",
+            "has_variable = zg361_transfer_vacancy_title",
+            "has_variable = zg361_transfer_vacancy_maturity_cycle",
+            "has_variable = zg361_transfer_vacancy_position_kind",
             "var:zg361_transfer_vacancy_active = 1",
+            "var:zg361_transfer_vacancy_status = 1",
+            "var:zg361_transfer_vacancy_owner = root",
+            "var:zg361_transfer_vacancy_subject = this",
+            "var:zg361_transfer_vacancy_source_cycle < root.var:zg361_review_serial",
+            "var:zg361_transfer_vacancy_maturity_cycle <= root.var:zg361_review_serial",
+            "var:zg361_transfer_vacancy_position_kind = 1",
+            "primary_title = var:zg361_transfer_vacancy_title",
+            "var:zg361_transfer_vacancy_title = { holder = this }",
+            "var:zg361_transfer_hc_reserved = 1",
+            "var:zg361_transfer_hc_conserved = 1",
+            "liege = root",
+            "primary_title.tier > prev.primary_title.tier",
+            "vassal_count < vassal_limit",
+            "NOT = { is_at_war_with = var:zg361_transfer_vacancy_receiver }",
             "zg361_pp_w_transfer_vacancy_id value = var:zg361_transfer_vacancy_id",
             "zg361_pp_w_transfer_vacancy_receiver value = var:zg361_transfer_vacancy_receiver",
+            "zg361_pp_w_transfer_source_cycle value = var:zg361_transfer_vacancy_source_cycle",
+            "zg361_pp_w_transfer_source_case value = var:zg361_transfer_vacancy_source_case",
+            "zg361_pp_w_transfer_vacancy_title value = var:zg361_transfer_vacancy_title",
+            "zg361_pp_w_transfer_position_kind value = var:zg361_transfer_vacancy_position_kind",
             "name = zg361_pp_w_real_vacancy value = 1",
         ):
             self.assertIn(token, open_w)
+        self.assertIn("trigger_if = {", open_w)
+        self.assertIn("has_variable = zg361_transfer_hc_conserved", open_w)
+        self.assertIn("trigger_else = { always = no }", open_w)
         self.assertNotIn(
             "limit = { has_variable = zg361_pp_w_receiving_manager } set_variable = { name = zg361_pp_w_real_vacancy value = 1 }",
             open_w,
@@ -810,12 +838,19 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "zg361_pp_m190_subject_statement_snapshot value = var:zg361_pp_m183_subject_statement_code",
             "zg361_pp_m190_private_ids_excluded value = 1",
             "zg361_pp_m190_acl_pass value = 1",
+            "zg361_career_hc_accept_pp_transfer_request_effect = yes",
+            "zg361_pp_m190_external_request_status",
+            "zg361_pp_m190_external_request_red_code",
             "zg361_pp_received_transfer_goal",
             "zg361_pp_received_transfer_support",
             "zg361_pp_received_transfer_completion",
             "zg361_pp_received_transfer_subject_statement",
         ):
             self.assertIn(token, m190)
+        self.assertIn(
+            "limit = { has_variable = zg361_transfer_adapter_applied has_variable = zg361_transfer_vacancy_status }",
+            m190,
+        )
         response = effect_block(self.effects, "zg361_pp_m190_subject_response_effect")
         self.assertIn("zg361_case_kernel_subject_self_guard_trigger", response)
         self.assertIn("zg361_pp_m190_subject_statement_author value = this", response)
@@ -827,6 +862,19 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "name = zg361_pp_m190_audit_1_business_input value = var:zg361_pp_m190_audit_delivery_acl_pass",
             audit,
         )
+        for token in (
+            "var:zg361_transfer_vacancy_status = 2",
+            "var:zg361_transfer_vacancy_active = 1",
+            "var:zg361_transfer_request_pp_owner = root.var:zg361_case_w_owner",
+            "var:zg361_transfer_request_pp_subject = root",
+            "var:zg361_transfer_request_pp_cycle = root.var:zg361_case_w_cycle_serial",
+            "var:zg361_transfer_request_pp_case = root.var:zg361_case_w_case_serial",
+            "var:zg361_transfer_request_vacancy = root.var:zg361_pp_m190_vacancy_id_snapshot",
+            "zg361_career_hc_settle_pp_transfer_effect = yes",
+            "zg361_pp_m190_audit_external_status",
+            "zg361_pp_m190_audit_external_red_code",
+        ):
+            self.assertIn(token, audit)
 
     def test_appeal_non_aggravation_is_snapshotted_and_never_writes_grade(self) -> None:
         m151 = effect_block(self.effects, "zg361_pp_m151_core_effect")
