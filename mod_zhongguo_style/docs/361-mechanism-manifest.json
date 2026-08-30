@@ -8,9 +8,9 @@
     "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
     "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
     "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
-    "domain_runtime": "220 mechanisms have at least a committed partial CK3 product projection; 141 still have no CK3 domain runtime. Partial does not mean complete.",
+    "domain_runtime": "253 mechanisms have at least a committed partial CK3 product projection; 108 still have no CK3 domain runtime. Partial does not mean complete.",
     "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; static or central wiring does not by itself complete the per-ID player loop.",
-    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 220 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
+    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 253 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
   },
   "acceptance": {
     "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -33,29 +33,29 @@
     ],
     "exclusive_counts": {
       "design-only": 0,
-      "python-l0": 141,
-      "ck3-static-ready": 158,
+      "python-l0": 108,
+      "ck3-static-ready": 191,
       "central-wired": 58,
       "ck3-live": 4
     },
     "cumulative_counts": {
       "design-only": 361,
       "python-l0": 361,
-      "ck3-static-ready": 220,
+      "ck3-static-ready": 253,
       "central-wired": 62,
       "ck3-live": 4
     },
     "exclusive_ranges": {
       "design-only": "",
-      "python-l0": "082-091, 146-191, 242-300, 312-333, 355-356, 360-361",
-      "ck3-static-ready": "019-036, 054-068, 092-134, 192-241, 301-311, 334-354",
+      "python-l0": "146-191, 242-277, 312-333, 355-356, 360-361",
+      "ck3-static-ready": "019-036, 054-068, 082-134, 192-241, 278-311, 334-354",
       "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
       "ck3-live": "001, 018, 069, 357"
     },
     "cumulative_ranges": {
       "design-only": "001-361",
       "python-l0": "001-361",
-      "ck3-static-ready": "001-081, 092-145, 192-241, 301-311, 334-354, 357-359",
+      "ck3-static-ready": "001-145, 192-241, 278-311, 334-354, 357-359",
       "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
       "ck3-live": "001, 018, 069, 357"
     },
@@ -149,6 +149,16 @@
       79,
       80,
       81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
       92,
       93,
       94,
@@ -253,6 +263,29 @@
       239,
       240,
       241,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300,
       301,
       302,
       303,
@@ -289,7 +322,7 @@
       358,
       359
     ],
-    "count": 220,
+    "count": 253,
     "evidence": "at-least-ck3-static-ready",
     "source": "tools/zg361_readiness_data.py",
     "tests": "tools/test_zg361_readiness_data.py",
@@ -12004,23 +12037,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12146,23 +12180,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12288,23 +12323,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12430,23 +12466,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12572,23 +12609,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12714,23 +12752,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12856,23 +12895,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -12995,23 +13035,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -13137,23 +13178,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -13279,23 +13321,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40289,23 +40332,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40432,23 +40476,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40575,23 +40620,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40718,23 +40764,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -40861,23 +40908,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41004,23 +41052,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41147,23 +41196,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41290,23 +41340,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41433,23 +41484,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41573,23 +41625,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41716,23 +41769,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -41859,23 +41913,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42000,23 +42055,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42141,23 +42197,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42282,23 +42339,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42423,23 +42481,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42562,23 +42621,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42703,23 +42763,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42844,23 +42905,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -42985,23 +43047,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -43126,23 +43189,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -43267,23 +43331,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -43408,23 +43473,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "compensation-lti-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "compensation-lti-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_compensation_model.py",
-          "tools/test_zg361_phase2_compensation_model.py"
+          "tools/gen_361_compensation_runtime.py",
+          "tools/test_zg361_compensation_runtime.py",
+          "docs/361-compensation-lti-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }

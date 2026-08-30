@@ -4,7 +4,7 @@
 
 状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；
 361/361 已有 `contract-complete` 的领域/状态/操作/期限/事务/反馈设计合同；这不等于游戏实现。
-当前累计门为 Python L0 `361/361`、CK3 static `220/361`、central-wired `62/361`、bounded fixture-live `4/361`。
+当前累计门为 Python L0 `361/361`、CK3 static `253/361`、central-wired `62/361`、bounded fixture-live `4/361`。
 `central-wired` 只表示中央产品 hook 可达，不表示逐号语义完整；#018 只有 receipt/refund 为 fixture-live，`.53` 重开仍为 static-ready。
 旧 361 政策卡与共享账本 fixture 只证明配置投影，不得提升领域运行时。完整分层见 `361-phase2-coverage-ledger.md`。
 
@@ -91,16 +91,16 @@
 | 079 | 隔级接待日 | K | P2 | `governance` | `zg361m.79` | `zg361_mechanism_079_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 080 | 公开指标缺陷单 | K | P1 | `data` | `zg361m.80` | `zg361_mechanism_080_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
 | 081 | 绩效信息层级压缩 | K | P2 | `governance` | `zg361m.81` | `zg361_mechanism_081_ai_effect` | 1 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `central-wired` |
-| 082 | 总回报配方 | L | P1 | `compensation` | `zg361m.82` | `zg361_mechanism_082_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 083 | 公司—团队—个人三层奖金系数 | L | P1 | `compensation` | `zg361m.83` | `zg361_mechanism_083_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 084 | 递延奖金与分期归属 | L | P2 | `compensation` | `zg361m.84` | `zg361_mechanism_084_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 085 | 续期激励断崖 | L | P2 | `compensation` | `zg361m.85` | `zg361_mechanism_085_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 086 | 奖金暂扣与追索 | L | P1 | `compensation` | `zg361m.86` | `zg361_mechanism_086_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 087 | 薪酬带宽与带内位置 | L | P1 | `compensation` | `zg361m.87` | `zg361_mechanism_087_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 088 | 市场调薪与绩效调薪争预算 | L | P1 | `compensation` | `zg361m.88` | `zg361_mechanism_088_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 089 | 职级、任命、权力与现金解耦 | L | P1 | `promotion` | `zg361m.89` | `zg361_mechanism_089_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 090 | 专项即时奖 | L | P1 | `compensation` | `zg361m.90` | `zg361_mechanism_090_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 091 | 年功奖与绩效奖分账 | L | P2 | `compensation` | `zg361m.91` | `zg361_mechanism_091_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
+| 082 | 总回报配方 | L | P1 | `compensation` | `zg361m.82` | `zg361_mechanism_082_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 083 | 公司—团队—个人三层奖金系数 | L | P1 | `compensation` | `zg361m.83` | `zg361_mechanism_083_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 084 | 递延奖金与分期归属 | L | P2 | `compensation` | `zg361m.84` | `zg361_mechanism_084_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 085 | 续期激励断崖 | L | P2 | `compensation` | `zg361m.85` | `zg361_mechanism_085_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 086 | 奖金暂扣与追索 | L | P1 | `compensation` | `zg361m.86` | `zg361_mechanism_086_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 087 | 薪酬带宽与带内位置 | L | P1 | `compensation` | `zg361m.87` | `zg361_mechanism_087_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 088 | 市场调薪与绩效调薪争预算 | L | P1 | `compensation` | `zg361m.88` | `zg361_mechanism_088_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 089 | 职级、任命、权力与现金解耦 | L | P1 | `promotion` | `zg361m.89` | `zg361_mechanism_089_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 090 | 专项即时奖 | L | P1 | `compensation` | `zg361m.90` | `zg361_mechanism_090_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 091 | 年功奖与绩效奖分账 | L | P2 | `compensation` | `zg361m.91` | `zg361_mechanism_091_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 092 | 专业 / 管理双通道 | M | P1 | `promotion` | `zg361m.92` | `zg361_mechanism_092_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 093 | 失败经理回归专家岗 | M | P1 | `promotion` | `zg361m.93` | `zg361_mechanism_093_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 094 | 微职级与“升半级”缓冲 | M | P2 | `promotion` | `zg361m.94` | `zg361_mechanism_094_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
@@ -287,29 +287,29 @@
 | 275 | Offer 拒绝与 HC 保留期 | AD | P1 | `hc` | `zg361m.275` | `zg361_mechanism_275_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
 | 276 | 离职人才回聘 | AD | P1 | `hc` | `zg361m.276` | `zg361_mechanism_276_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
 | 277 | PIP 退出不自动补 HC | AD | P1 | `hc` | `zg361m.277` | `zg361_mechanism_277_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 278 | 年度总包实得对账单 | AE | P1 | `compensation` | `zg361m.278` | `zg361_mechanism_278_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 279 | 额外月份俸禄的契约属性 | AE | P1 | `compensation` | `zg361m.279` | `zg361_mechanism_279_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 280 | 年中入离职奖金折算 | AE | P1 | `compensation` | `zg361m.280` | `zg361_mechanism_280_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 281 | 奖金发放日与延期信用 | AE | P1 | `compensation` | `zg361m.281` | `zg361_mechanism_281_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 282 | 调薪生效日与追溯补发 | AE | P1 | `compensation` | `zg361m.282` | `zg361_mechanism_282_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 283 | “干升职”兑现期限 | AE | P1 | `compensation` | `zg361m.283` | `zg361_mechanism_283_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 284 | 降级薪俸缓冲坡 | AE | P1 | `compensation` | `zg361m.284` | `zg361_mechanism_284_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 285 | 同档调薪二次校准 | AE | P1 | `compensation` | `zg361m.285` | `zg361_mechanism_285_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 286 | 超带冻结与低带追赶 | AE | P1 | `compensation` | `zg361m.286` | `zg361_mechanism_286_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 287 | 密薪 / 带宽公开 / 匿名分布 | AE | P2 | `governance` | `zg361m.287` | `zg361_mechanism_287_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 288 | 新老薪酬倒挂修复 | AE | P1 | `compensation` | `zg361m.288` | `zg361_mechanism_288_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 289 | 薪酬申诉与绩效申诉分轨 | AE | P1 | `compensation` | `zg361m.289` | `zg361_mechanism_289_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 290 | 长期功赏提名池 | AF | P1 | `compensation` | `zg361m.290` | `zg361_mechanism_290_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 291 | 定份额 / 定授予价值 | AF | P2 | `compensation` | `zg361m.291` | `zg361_mechanism_291_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 292 | 高风险期权式 / 保底份额式 | AF | P2 | `compensation` | `zg361m.292` | `zg361_mechanism_292_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 293 | 当期奖金自愿换长期份额 | AF | P2 | `compensation` | `zg361m.293` | `zg361_mechanism_293_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 294 | 授予价、当前估值与可变现值三栏 | AF | P1 | `data` | `zg361m.294` | `zg361_mechanism_294_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 295 | 首授 Cliff 长短 | AF | P2 | `compensation` | `zg361m.295` | `zg361_mechanism_295_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 296 | 月度 / 季度 / 年度归属节奏 | AF | P2 | `compensation` | `zg361m.296` | `zg361_mechanism_296_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 297 | 服务归属与绩效归属分轨 | AF | P1 | `compensation` | `zg361m.297` | `zg361_mechanism_297_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 298 | 组织门槛 × 个人门槛双闸 | AF | P1 | `compensation` | `zg361m.298` | `zg361_mechanism_298_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 299 | Good Leaver / Bad Leaver 分类 | AF | P1 | `compensation` | `zg361m.299` | `zg361_mechanism_299_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
-| 300 | 回购窗口与流动性队列 | AF | P1 | `compensation` | `zg361m.300` | `zg361_mechanism_300_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
+| 278 | 年度总包实得对账单 | AE | P1 | `compensation` | `zg361m.278` | `zg361_mechanism_278_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 279 | 额外月份俸禄的契约属性 | AE | P1 | `compensation` | `zg361m.279` | `zg361_mechanism_279_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 280 | 年中入离职奖金折算 | AE | P1 | `compensation` | `zg361m.280` | `zg361_mechanism_280_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 281 | 奖金发放日与延期信用 | AE | P1 | `compensation` | `zg361m.281` | `zg361_mechanism_281_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 282 | 调薪生效日与追溯补发 | AE | P1 | `compensation` | `zg361m.282` | `zg361_mechanism_282_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 283 | “干升职”兑现期限 | AE | P1 | `compensation` | `zg361m.283` | `zg361_mechanism_283_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 284 | 降级薪俸缓冲坡 | AE | P1 | `compensation` | `zg361m.284` | `zg361_mechanism_284_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 285 | 同档调薪二次校准 | AE | P1 | `compensation` | `zg361m.285` | `zg361_mechanism_285_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 286 | 超带冻结与低带追赶 | AE | P1 | `compensation` | `zg361m.286` | `zg361_mechanism_286_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 287 | 密薪 / 带宽公开 / 匿名分布 | AE | P2 | `governance` | `zg361m.287` | `zg361_mechanism_287_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 288 | 新老薪酬倒挂修复 | AE | P1 | `compensation` | `zg361m.288` | `zg361_mechanism_288_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 289 | 薪酬申诉与绩效申诉分轨 | AE | P1 | `compensation` | `zg361m.289` | `zg361_mechanism_289_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 290 | 长期功赏提名池 | AF | P1 | `compensation` | `zg361m.290` | `zg361_mechanism_290_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 291 | 定份额 / 定授予价值 | AF | P2 | `compensation` | `zg361m.291` | `zg361_mechanism_291_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 292 | 高风险期权式 / 保底份额式 | AF | P2 | `compensation` | `zg361m.292` | `zg361_mechanism_292_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 293 | 当期奖金自愿换长期份额 | AF | P2 | `compensation` | `zg361m.293` | `zg361_mechanism_293_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 294 | 授予价、当前估值与可变现值三栏 | AF | P1 | `data` | `zg361m.294` | `zg361_mechanism_294_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 295 | 首授 Cliff 长短 | AF | P2 | `compensation` | `zg361m.295` | `zg361_mechanism_295_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 296 | 月度 / 季度 / 年度归属节奏 | AF | P2 | `compensation` | `zg361m.296` | `zg361_mechanism_296_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 297 | 服务归属与绩效归属分轨 | AF | P1 | `compensation` | `zg361m.297` | `zg361_mechanism_297_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 298 | 组织门槛 × 个人门槛双闸 | AF | P1 | `compensation` | `zg361m.298` | `zg361_mechanism_298_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 299 | Good Leaver / Bad Leaver 分类 | AF | P1 | `compensation` | `zg361m.299` | `zg361_mechanism_299_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
+| 300 | 回购窗口与流动性队列 | AF | P1 | `compensation` | `zg361m.300` | `zg361_mechanism_300_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 301 | 核心业务光环折算 | AG | P1 | `assessment` | `zg361m.301` | `zg361_mechanism_301_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 302 | 衰退业务的逆风责任 | AG | P1 | `assessment` | `zg361m.302` | `zg361_mechanism_302_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
 | 303 | 孵化团队的限期分布保护 | AG | P1 | `assessment` | `zg361m.303` | `zg361_mechanism_303_ai_effect` | 2 | complete | fixture-live | fixture-live | contract-complete | partial | partial | `ck3-static-ready` |
@@ -372,4 +372,4 @@
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | complete | fixture-live | fixture-live | contract-complete | not-implemented | partial | `python-l0` |
 
-Manifest semantic SHA-256: `d0d3b3b0b7c0e17ce61ecb4f5bc8afe067871473a305f12ef18b07f916dc042a`
+Manifest semantic SHA-256: `f99184c245511954d528d826a7cb774bde764dd9c0b66a4c102adf1af6e5962d`
