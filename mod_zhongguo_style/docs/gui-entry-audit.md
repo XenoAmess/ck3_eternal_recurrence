@@ -6,7 +6,7 @@
 
 目标版本：CK3 1.19.0.6
 
-当前审计对象：`gui/zg361_scoreboard.gui`，SHA-256 `EA2A0D88578DFB676DDDAA27D0C3178C576264935C2CE32EF3D62DDD3BE3693E`。
+当前审计对象：`gui/zg361_scoreboard.gui`，SHA-256 `179AE0792B7D508876440983B15E18E198041ADADB23BF0ABEEF4383822B8EC4`。
 
 状态：当前精确字节仅为 `static-ready`。对 41 份保留的实机 runtime 副本逐一计算 SHA-256，命中当前 SHA 的副本为 **0**；下文旧 SHA 的实机结果仅作历史诊断证据，不能继承为当前字节的 L3 或整批 GREEN。
 
@@ -199,3 +199,14 @@ F1–F5 应尽量放进一次 2560×1440、1.30 启动；若游戏允许可靠�
 入口矩形、七项 HUD 门的开关两态、modal 阻塞、四个详情页、managed/received ACL、关闭重开、玩家切换与
 1366×768、1920×1080、2560×1440 几何审计。MCP 能力未接通前，OCR 只允许在状态真值闭合后截取最终素材，
 不得承担导航或 GREEN 判定。
+
+## 9. 2026-08-31 #013 披露 ACL 候选
+
+提交 `6d084d3` 把 #013 的 A/B/C 披露策略接入本人榜案卷，同时修正了 B1 案号与结果案号被错误视为同一
+cursor 的问题。合法正例固定为 B1 case `41`、result case `903`；两套案号分别冻结，A/B 的 policy ID
+只绑定 B1 case，后续申诉等 mutable 更新只绑定 result tuple。
+
+- 当前 GUI SHA-256 为 `179AE0792B7D508876440983B15E18E198041ADADB23BF0ABEEF4383822B8EC4`；生成器 SHA-256 为 `A8E8DB4FFD1FDB9466C42AB21487AD09B356716D34E88B200B120C1315D9C80E`。
+- 本次没有新增 HUD 按钮、顶层 window、详情页签、关闭控件或 scripted-widget 注册；按钮数量、`position = { -60 90 }` 锚点和 `1220×820` 外框均未改变。GUI 差异只给 received 详情行增加字段可用性 `visible` 门：A 显示本人结果、理由、证据与申诉，B 只显示最终结果，C/旧存档维持旧本人视图；不可披露行直接不占布局。
+- 静态门为 scoreboard `24/24`、生成器 `--check`、`validate_local.py` 与 phase-2 wiring `12/12` GREEN。它们证明 ACL 和生成投影，不证明真实分辨率、鼠标阻塞、modal、Escape 或案卷内容在 CK3 中已 GREEN。
+- 新按钮阻塞审计的静态结论是“本提交新增按钮数为 0”；但原有三个入口变体、标题 X、四个详情页签、人物行、背景 modal 与 Escape 仍必须作为一个 MCP named-widget 批次复验。MCP 能力未实现前保持 `static-ready`，禁止用 OCR 首判或继承旧 SHA 的实点结果。
