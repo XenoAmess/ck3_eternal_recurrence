@@ -131,7 +131,7 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertEqual(len(route_defs), 105)
         self.assertEqual({int(mid) for mid, _ in route_defs}, EXPECTED_IDS)
         self.assertEqual({int(mid) for mid in consumer_defs}, EXPECTED_IDS)
-        self.assertEqual({int(mid) for mid in event_defs}, EXPECTED_IDS)
+        self.assertEqual({int(mid) for mid in event_defs}, EXPECTED_IDS | set(gen.QUEUE_EVENTS.values()))
 
     def test_each_event_has_exactly_three_options(self) -> None:
         for mid in sorted(EXPECTED_IDS):
@@ -150,7 +150,7 @@ class GeneratorContractTests(unittest.TestCase):
                     self.assertIn(f"exists = scope:zg361_p3_{spec.domain}_{name}", event)
 
     def test_event_references_are_all_defined(self) -> None:
-        referenced = {int(mid) for mid in re.findall(r"trigger_event = \{ id = zg361p3\.(\d+) \}", self.effects + self.events)}
+        referenced = {int(mid) for mid in re.findall(r"trigger_event = \{ id = zg361p3\.(\d+)", self.effects + self.events)}
         defined = {int(mid) for mid in re.findall(r"^zg361p3\.(\d+) = \{$", self.events, re.MULTILINE)}
         self.assertEqual(referenced, defined)
 
@@ -259,6 +259,127 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertIn(f"save_scope_as = zg361_p3_{domain}_subject", launch)
                 self.assertIn(f"name = zg361_p3_{domain}_cycle", launch)
                 self.assertIn(f"name = zg361_p3_{domain}_case", launch)
+
+    def test_only_public_entry_is_manager_scope_portfolio_adapter(self) -> None:
+        self.assertEqual(len(re.findall(r"^zg361_p3_open_portfolio_effect = \{$", self.effects, re.MULTILINE)), 1)
+        adapter = block(self.effects, "zg361_p3_open_portfolio_effect")
+        self.assertIn("has_game_rule = zg361_on", adapter)
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", adapter)
+        self.assertIn("has_variable = zg361_review_serial", adapter)
+        self.assertIn("$SUBJECT$ = {", adapter)
+        self.assertIn("zg361_is_reviewable_vassal_trigger = yes", adapter)
+        self.assertIn("liege = root", adapter)
+        self.assertEqual(adapter.count("zg361_p3_aa_launch_effect = yes"), 1)
+        self.assertNotIn("zg361_p3_ag_launch_effect", adapter)
+        self.assertNotIn("zg361_p3_aj_launch_effect", adapter)
+        self.assertNotIn("trigger_event", adapter)
+
+    def test_portfolio_adapter_freezes_delivered_case_and_replay_is_noop(self) -> None:
+        adapter = block(self.effects, "zg361_p3_open_portfolio_effect")
+        initializer = block(self.effects, "zg361_p3_initialize_portfolio_effect")
+        for name in ("owner", "cycle", "case", "state"):
+            source = {
+                "owner": "zg361_result_case_owner",
+                "cycle": "zg361_result_cycle_serial",
+                "case": "zg361_result_case_serial",
+                "state": "zg361_result_case_state",
+            }[name]
+            self.assertIn(f"has_variable = {source}", adapter)
+            self.assertIn(f"name = zg361_p3_portfolio_result_{name} value = var:{source}", initializer)
+        self.assertIn("name = zg361_p3_portfolio_result_subject value = this", initializer)
+        self.assertIn("var:zg361_result_case_owner = root", adapter)
+        self.assertIn("var:zg361_result_cycle_serial = root.var:zg361_review_serial", adapter)
+        self.assertIn("var:zg361_result_case_state >= 3", adapter)
+        self.assertIn("has_variable = zg361_p3_manager_portfolio_cycle", adapter)
+        self.assertIn("NOT = { var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial }", adapter)
+        self.assertIn("has_variable = zg361_p3_portfolio_cycle", adapter)
+        self.assertIn("NOT = { var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial }", adapter)
+        for domain in gen.DOMAIN_ORDER:
+            self.assertIn(f"has_variable = zg361_case_{domain}_active", adapter)
+            self.assertIn(f"var:zg361_case_{domain}_active = 0", adapter)
+
+    def test_only_aa_launch_initializes_portfolio_after_successful_open(self) -> None:
+        for domain in gen.DOMAIN_ORDER:
+            launch = block(self.effects, f"zg361_p3_{domain}_launch_effect")
+            with self.subTest(domain=domain):
+                if domain == "aa":
+                    self.assertEqual(launch.count("zg361_p3_initialize_portfolio_effect = yes"), 1)
+                    self.assertLess(launch.index("var:zg361_case_kernel_applied = 1"), launch.index("zg361_p3_initialize_portfolio_effect = yes"))
+                else:
+                    self.assertNotIn("zg361_p3_initialize_portfolio_effect", launch)
+
+    def test_player_visible_chain_is_d_plus_one_after_first_card(self) -> None:
+        for domain, order in gen.DOMAIN_ORDER.items():
+            for index, mid in enumerate(order):
+                event = block(self.events, f"zg361p3.{mid}")
+                with self.subTest(domain=domain, mid=mid):
+                    if index + 1 < len(order):
+                        next_mid = order[index + 1]
+                        edge = f"trigger_event = {{ id = zg361p3.{next_mid} days = 1 }}"
+                        self.assertEqual(event.count(edge), 3)
+                        self.assertNotIn(f"trigger_event = {{ id = zg361p3.{next_mid} }}", event)
+                    else:
+                        self.assertNotIn("trigger_event", event)
+
+    def test_closed_domain_queues_next_domain_and_aj_finalizes(self) -> None:
+        final_by_domain = {domain: order[-1] for domain, order in gen.DOMAIN_ORDER.items()}
+        for domain, queue_id in gen.QUEUE_EVENTS.items():
+            final_mid = final_by_domain[domain]
+            for letter in "abc":
+                route = block(self.effects, f"zg361_p3_m{final_mid}_route_{letter}_effect")
+                with self.subTest(domain=domain, route=letter):
+                    self.assertEqual(route.count(f"trigger_event = {{ id = zg361p3.{queue_id} days = 1 }}"), 1)
+                    self.assertNotIn(f"zg361_p3_{gen.NEXT_DOMAIN[domain]}_launch_effect", route)
+        for letter in "abc":
+            final = block(self.effects, f"zg361_p3_m{final_by_domain['aj']}_route_{letter}_effect")
+            self.assertEqual(final.count("zg361_p3_finalize_portfolio_effect = yes"), 1)
+            self.assertNotIn("trigger_event", final)
+
+    def test_hidden_queue_revalidates_closed_case_and_frozen_portfolio(self) -> None:
+        final_states = {domain: max(gen.STAGE_LAST[domain].values()) + 1 for domain in gen.QUEUE_EVENTS}
+        for domain, queue_id in gen.QUEUE_EVENTS.items():
+            queued = block(self.events, f"zg361p3.{queue_id}")
+            next_domain = gen.NEXT_DOMAIN[domain]
+            opened_domain = ("aa", "ag", "aj").index(next_domain) + 1
+            with self.subTest(domain=domain):
+                self.assertIn("hidden = yes", queued)
+                self.assertNotIn("\ttitle =", queued)
+                self.assertNotIn("\tdesc =", queued)
+                self.assertNotIn("\toption =", queued)
+                self.assertIn("zg361_is_celestial_liege_trigger = yes", queued)
+                self.assertIn("var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial", queued)
+                for name in ("owner", "subject", "cycle", "case"):
+                    self.assertIn(f"exists = scope:zg361_p3_{domain}_{name}", queued)
+                self.assertIn(f"var:zg361_case_{domain}_state = {final_states[domain]}", queued)
+                self.assertIn(f"var:zg361_case_{domain}_active = 0", queued)
+                for name in ("owner", "subject", "cycle", "case", "state"):
+                    self.assertIn(f"has_variable = zg361_p3_portfolio_result_{name}", queued)
+                for source in ("zg361_result_case_owner", "zg361_result_cycle_serial", "zg361_result_case_serial", "zg361_result_case_state"):
+                    self.assertIn(f"has_variable = {source}", queued)
+                self.assertIn("var:zg361_p3_portfolio_closed = 0", queued)
+                self.assertIn(f"var:zg361_p3_portfolio_opened_domain = {opened_domain - 1}", queued)
+                self.assertIn(f"name = zg361_p3_portfolio_opened_domain value = {opened_domain}", queued)
+                self.assertEqual(queued.count(f"zg361_p3_{next_domain}_launch_effect = yes"), 1)
+
+    def test_same_day_visible_entrypoints_are_bounded(self) -> None:
+        direct = re.findall(r"trigger_event = \{ id = zg361p3\.(\d+) \}", self.effects + self.events)
+        self.assertEqual({int(mid) for mid in direct}, {order[0] for order in gen.DOMAIN_ORDER.values()})
+        for domain, order in gen.DOMAIN_ORDER.items():
+            launch = block(self.effects, f"zg361_p3_{domain}_launch_effect")
+            self.assertEqual(launch.count(f"trigger_event = {{ id = zg361p3.{order[0]} }}"), 1)
+        adapter = block(self.effects, "zg361_p3_open_portfolio_effect")
+        self.assertEqual(adapter.count("zg361_p3_aa_launch_effect = yes"), 1)
+        self.assertNotIn("zg361_p3_ag_launch_effect", adapter)
+        self.assertNotIn("zg361_p3_aj_launch_effect", adapter)
+
+    def test_ai_portfolio_stays_background_only(self) -> None:
+        for domain in gen.DOMAIN_ORDER:
+            ai = block(self.effects, f"zg361_p3_{domain}_run_authorized_ai_effect")
+            self.assertNotIn("trigger_event", ai)
+        for queue_id in gen.QUEUE_EVENTS.values():
+            queued = block(self.events, f"zg361p3.{queue_id}")
+            self.assertIn("hidden = yes", queued)
+            self.assertNotIn("is_ai = no", queued)
 
     def test_player_and_authorized_ai_paths_are_separate(self) -> None:
         for domain in gen.DOMAIN_ORDER:
@@ -414,6 +535,10 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertEqual(set(table_ids), EXPECTED_IDS)
         self.assertEqual(len(table_ids), 35)
         self.assertIn("CK3 script static-ready", self.spec)
+        self.assertIn("唯一 manager-scope portfolio adapter", self.spec)
+        self.assertIn("同一游戏日最多产生一个可见业务窗口", self.spec)
+        self.assertIn("D+1 hidden queue", self.spec)
+        self.assertIn("AI domain runner 不含 `trigger_event`", self.spec)
         self.assertIn("没有中央 `on_action`", self.spec)
         self.assertIn("没有 MCP named action/query", self.spec)
         self.assertIn("没有 CK3 parser/error.log", self.spec)

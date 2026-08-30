@@ -1,8 +1,107 @@
 ﻿# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py
 # ZhongGuo 361 phase 3 — AA metrics, AG reorg, AJ demand delivery.
 # READINESS: ck3-script-static-ready-not-live. No CK3 parser/paused/live evidence is claimed.
+# Public entry: zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }.
 # Stable status: 1=applied, 2=idempotent no-op, 3=stale no-op, 4=typed RED.
 
+
+# Freeze the institutional cycle and delivered result case once.  This is the
+# only manager-scope ABI exposed to a future central dispatcher.
+zg361_p3_initialize_portfolio_effect = {
+	save_scope_as = zg361_p3_portfolio_subject
+	set_variable = { name = zg361_p3_portfolio_cycle value = root.var:zg361_review_serial }
+	root = { set_variable = { name = zg361_p3_manager_portfolio_cycle value = var:zg361_review_serial } }
+	set_variable = { name = zg361_p3_portfolio_owner value = root }
+	set_variable = { name = zg361_p3_portfolio_result_owner value = var:zg361_result_case_owner }
+	set_variable = { name = zg361_p3_portfolio_result_subject value = this }
+	set_variable = { name = zg361_p3_portfolio_result_cycle value = var:zg361_result_cycle_serial }
+	set_variable = { name = zg361_p3_portfolio_result_case value = var:zg361_result_case_serial }
+	set_variable = { name = zg361_p3_portfolio_result_state value = var:zg361_result_case_state }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
+	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
+}
+
+# Public manager-scope portfolio adapter. Counts/barons may be $SUBJECT$, never
+# the manager ROOT. Replay in the same frozen review cycle is a strict no-op.
+zg361_p3_open_portfolio_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			trigger_if = {
+				limit = { has_variable = zg361_p3_manager_portfolio_cycle }
+				NOT = { var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+			$SUBJECT$ = {
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = root
+				trigger_if = {
+					limit = {
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						root = { has_variable = zg361_review_serial }
+					}
+					var:zg361_result_case_owner = root
+					var:zg361_result_cycle_serial = root.var:zg361_review_serial
+					var:zg361_result_case_state >= 3
+				}
+				trigger_else = { always = no }
+				trigger_if = {
+					limit = { has_variable = zg361_p3_portfolio_cycle }
+					NOT = { var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial }
+				}
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aa_active } var:zg361_case_aa_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ag_active } var:zg361_case_ag_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aj_active } var:zg361_case_aj_active = 0 }
+				trigger_else = { always = yes }
+			}
+		}
+		# The adapter opens only AA.  AG and AJ are reachable solely through the
+		# frozen D+1 queue edges emitted after their predecessor closes.
+		$SUBJECT$ = { zg361_p3_aa_launch_effect = yes }
+	}
+}
+
+zg361_p3_finalize_portfolio_effect = {
+	set_variable = { name = zg361_p3_portfolio_closed value = 1 }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 3 }
+	set_variable = { name = zg361_p3_final_owner value = var:zg361_case_aj_owner }
+	set_variable = { name = zg361_p3_final_subject value = var:zg361_case_aj_subject }
+	set_variable = { name = zg361_p3_final_cycle value = var:zg361_case_aj_cycle_serial }
+	set_variable = { name = zg361_p3_final_case value = var:zg361_case_aj_case_serial }
+	set_variable = { name = zg361_p3_final_state value = var:zg361_case_aj_state }
+	set_variable = { name = zg361_p3_final_conservation_ok value = 0 }
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_p3_aa_operation_used
+					has_variable = zg361_p3_ag_operation_used
+					has_variable = zg361_p3_aj_operation_used
+					has_variable = zg361_case_aa_active
+					has_variable = zg361_case_ag_active
+					has_variable = zg361_case_aj_active
+				}
+				var:zg361_p3_aa_operation_used = 13
+				var:zg361_p3_ag_operation_used = 11
+				var:zg361_p3_aj_operation_used = 11
+				var:zg361_case_aa_active = 0
+				var:zg361_case_ag_active = 0
+				var:zg361_case_aj_active = 0
+			}
+			trigger_else = { always = no }
+		}
+		set_variable = { name = zg361_p3_final_conservation_ok value = 1 }
+	}
+	debug_log = "ZG361P3: metrics/delivery portfolio closed static runtime"
+}
 
 zg361_p3_aa_initialize_effect = {
 	set_variable = { name = zg361_p3_aa_operation_total value = 13 }
@@ -142,12 +241,14 @@ zg361_p3_aa_run_authorized_ai_effect = {
 	}
 }
 
-# Public manager entry. Call in assessed-subject scope with ROOT = manager.
+# Internal domain entry. Call in assessed-subject scope with ROOT = frozen manager.
 zg361_p3_aa_launch_effect = {
 	remove_variable = zg361_p3_runtime_applied
 	zg361_case_aa_open_effect = yes
 	if = {
 		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+
+		zg361_p3_initialize_portfolio_effect = yes
 		zg361_p3_aa_initialize_effect = yes
 		var:zg361_case_aa_owner = { save_scope_as = zg361_p3_aa_owner }
 		save_scope_as = zg361_p3_aa_subject
@@ -289,12 +390,13 @@ zg361_p3_ag_run_authorized_ai_effect = {
 	}
 }
 
-# Public manager entry. Call in assessed-subject scope with ROOT = manager.
+# Internal domain entry. Call in assessed-subject scope with ROOT = frozen manager.
 zg361_p3_ag_launch_effect = {
 	remove_variable = zg361_p3_runtime_applied
 	zg361_case_ag_open_effect = yes
 	if = {
 		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+
 		zg361_p3_ag_initialize_effect = yes
 		var:zg361_case_ag_owner = { save_scope_as = zg361_p3_ag_owner }
 		save_scope_as = zg361_p3_ag_subject
@@ -442,12 +544,13 @@ zg361_p3_aj_run_authorized_ai_effect = {
 	}
 }
 
-# Public manager entry. Call in assessed-subject scope with ROOT = manager.
+# Internal domain entry. Call in assessed-subject scope with ROOT = frozen manager.
 zg361_p3_aj_launch_effect = {
 	remove_variable = zg361_p3_runtime_applied
 	zg361_case_aj_open_effect = yes
 	if = {
 		limit = { has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }
+
 		zg361_p3_aj_initialize_effect = yes
 		var:zg361_case_aj_owner = { save_scope_as = zg361_p3_aj_owner }
 		save_scope_as = zg361_p3_aj_subject
@@ -12447,6 +12550,18 @@ zg361_p3_m241_route_a_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_aa_owner = {
+						trigger_event = { id = zg361p3.9001 days = 1 }
+					}
+				}
 			}
 		}
 	}
@@ -12769,6 +12884,18 @@ zg361_p3_m241_route_b_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_aa_owner = {
+						trigger_event = { id = zg361p3.9001 days = 1 }
+					}
+				}
 			}
 		}
 	}
@@ -13090,6 +13217,18 @@ zg361_p3_m241_route_c_effect = {
 					TICKET_SUBJECT = $TICKET_SUBJECT$
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_aa_owner = {
+						trigger_event = { id = zg361p3.9001 days = 1 }
+					}
 				}
 			}
 		}
@@ -23263,6 +23402,18 @@ zg361_p3_m311_route_a_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_ag_owner = {
+						trigger_event = { id = zg361p3.9002 days = 1 }
+					}
+				}
 			}
 		}
 	}
@@ -23578,6 +23729,18 @@ zg361_p3_m311_route_b_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_ag_owner = {
+						trigger_event = { id = zg361p3.9002 days = 1 }
+					}
+				}
 			}
 		}
 	}
@@ -23892,6 +24055,18 @@ zg361_p3_m311_route_c_effect = {
 					TICKET_SUBJECT = $TICKET_SUBJECT$
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					var:zg361_case_ag_owner = {
+						trigger_event = { id = zg361p3.9002 days = 1 }
+					}
 				}
 			}
 		}
@@ -34200,6 +34375,16 @@ zg361_p3_m344_route_a_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					zg361_p3_finalize_portfolio_effect = yes
+				}
 			}
 		}
 	}
@@ -34522,6 +34707,16 @@ zg361_p3_m344_route_b_effect = {
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
 				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					zg361_p3_finalize_portfolio_effect = yes
+				}
 			}
 		}
 	}
@@ -34843,6 +35038,16 @@ zg361_p3_m344_route_c_effect = {
 					TICKET_SUBJECT = $TICKET_SUBJECT$
 					TICKET_CYCLE = $TICKET_CYCLE$
 					TICKET_CASE = $TICKET_CASE$
+				}
+				if = {
+					limit = {
+						trigger_if = {
+							limit = { has_variable = zg361_case_kernel_applied }
+							var:zg361_case_kernel_applied = 1
+						}
+						trigger_else = { always = no }
+					}
+					zg361_p3_finalize_portfolio_effect = yes
 				}
 			}
 		}

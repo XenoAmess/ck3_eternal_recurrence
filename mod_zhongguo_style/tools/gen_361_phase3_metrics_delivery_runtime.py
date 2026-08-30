@@ -258,6 +258,8 @@ STAGE_LAST = {
     "ag": {302: 1, 304: 2, 306: 3, 310: 4, 311: 5},
     "aj": {335: 1, 338: 2, 339: 3, 342: 4, 341: 5, 343: 6, 344: 7},
 }
+NEXT_DOMAIN = {"aa": "ag", "ag": "aj", "aj": None}
+QUEUE_EVENTS = {"aa": 9001, "ag": 9002}
 DOMAIN_TOTALS = {domain: len(order) for domain, order in DOMAIN_ORDER.items()}
 
 
@@ -601,6 +603,15 @@ zg361_p3_m{mid}_consume_effect = {{
 }}"""
 
 
+def final_domain_action(domain: str) -> str:
+    next_domain = NEXT_DOMAIN[domain]
+    if next_domain is not None:
+        return f"""var:zg361_case_{domain}_owner = {{
+\ttrigger_event = {{ id = zg361p3.{QUEUE_EVENTS[domain]} days = 1 }}
+}}"""
+    return "zg361_p3_finalize_portfolio_effect = yes"
+
+
 def render_route_effect(spec: Mechanism, choice: int) -> str:
     mid, d = spec.mid, spec.domain
     letter = "abc"[choice - 1]
@@ -611,17 +622,31 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     advance = ""
     if mid in STAGE_LAST[d]:
         barrier = stage_barrier(spec)
+        edge = STAGE_LAST[d][mid]
+        after = ""
+        if edge == max(STAGE_LAST[d].values()):
+            after = f"""
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
+\t\t\t\t\t\t\tvar:zg361_case_kernel_applied = 1
+\t\t\t\t\t\t}}
+\t\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t\t}}
+{indent(final_domain_action(d), 5)}
+\t\t\t\t}}"""
         advance = f"""
 \t\t\tif = {{
 \t\t\t\tlimit = {{
 {indent(barrier, 5)}
 \t\t\t\t}}
-\t\t\t\tzg361_case_{d}_advance_{STAGE_LAST[d][mid]:02d}_effect = {{
+\t\t\t\tzg361_case_{d}_advance_{edge:02d}_effect = {{
 \t\t\t\t\tTICKET_OWNER = $TICKET_OWNER$
 \t\t\t\t\tTICKET_SUBJECT = $TICKET_SUBJECT$
 \t\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$
 \t\t\t\t\tTICKET_CASE = $TICKET_CASE$
-\t\t\t\t}}
+\t\t\t\t}}{after}
 \t\t\t}}
 """
     red_code = spec.mid * 10 + choice
@@ -767,14 +792,116 @@ def render_ai(domain: str) -> str:
 }}"""
 
 
+def render_portfolio_entries() -> str:
+    return r'''# Freeze the institutional cycle and delivered result case once.  This is the
+# only manager-scope ABI exposed to a future central dispatcher.
+zg361_p3_initialize_portfolio_effect = {
+	save_scope_as = zg361_p3_portfolio_subject
+	set_variable = { name = zg361_p3_portfolio_cycle value = root.var:zg361_review_serial }
+	root = { set_variable = { name = zg361_p3_manager_portfolio_cycle value = var:zg361_review_serial } }
+	set_variable = { name = zg361_p3_portfolio_owner value = root }
+	set_variable = { name = zg361_p3_portfolio_result_owner value = var:zg361_result_case_owner }
+	set_variable = { name = zg361_p3_portfolio_result_subject value = this }
+	set_variable = { name = zg361_p3_portfolio_result_cycle value = var:zg361_result_cycle_serial }
+	set_variable = { name = zg361_p3_portfolio_result_case value = var:zg361_result_case_serial }
+	set_variable = { name = zg361_p3_portfolio_result_state value = var:zg361_result_case_state }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
+	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
+}
+
+# Public manager-scope portfolio adapter. Counts/barons may be $SUBJECT$, never
+# the manager ROOT. Replay in the same frozen review cycle is a strict no-op.
+zg361_p3_open_portfolio_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			trigger_if = {
+				limit = { has_variable = zg361_p3_manager_portfolio_cycle }
+				NOT = { var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+			$SUBJECT$ = {
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = root
+				trigger_if = {
+					limit = {
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						root = { has_variable = zg361_review_serial }
+					}
+					var:zg361_result_case_owner = root
+					var:zg361_result_cycle_serial = root.var:zg361_review_serial
+					var:zg361_result_case_state >= 3
+				}
+				trigger_else = { always = no }
+				trigger_if = {
+					limit = { has_variable = zg361_p3_portfolio_cycle }
+					NOT = { var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial }
+				}
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aa_active } var:zg361_case_aa_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_ag_active } var:zg361_case_ag_active = 0 }
+				trigger_else = { always = yes }
+				trigger_if = { limit = { has_variable = zg361_case_aj_active } var:zg361_case_aj_active = 0 }
+				trigger_else = { always = yes }
+			}
+		}
+		# The adapter opens only AA.  AG and AJ are reachable solely through the
+		# frozen D+1 queue edges emitted after their predecessor closes.
+		$SUBJECT$ = { zg361_p3_aa_launch_effect = yes }
+	}
+}
+
+zg361_p3_finalize_portfolio_effect = {
+	set_variable = { name = zg361_p3_portfolio_closed value = 1 }
+	set_variable = { name = zg361_p3_portfolio_opened_domain value = 3 }
+	set_variable = { name = zg361_p3_final_owner value = var:zg361_case_aj_owner }
+	set_variable = { name = zg361_p3_final_subject value = var:zg361_case_aj_subject }
+	set_variable = { name = zg361_p3_final_cycle value = var:zg361_case_aj_cycle_serial }
+	set_variable = { name = zg361_p3_final_case value = var:zg361_case_aj_case_serial }
+	set_variable = { name = zg361_p3_final_state value = var:zg361_case_aj_state }
+	set_variable = { name = zg361_p3_final_conservation_ok value = 0 }
+	if = {
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_p3_aa_operation_used
+					has_variable = zg361_p3_ag_operation_used
+					has_variable = zg361_p3_aj_operation_used
+					has_variable = zg361_case_aa_active
+					has_variable = zg361_case_ag_active
+					has_variable = zg361_case_aj_active
+				}
+				var:zg361_p3_aa_operation_used = 13
+				var:zg361_p3_ag_operation_used = 11
+				var:zg361_p3_aj_operation_used = 11
+				var:zg361_case_aa_active = 0
+				var:zg361_case_ag_active = 0
+				var:zg361_case_aj_active = 0
+			}
+			trigger_else = { always = no }
+		}
+		set_variable = { name = zg361_p3_final_conservation_ok value = 1 }
+	}
+	debug_log = "ZG361P3: metrics/delivery portfolio closed static runtime"
+}'''
+
+
 def render_launch(domain: str) -> str:
     first = DOMAIN_ORDER[domain][0]
-    return f"""# Public manager entry. Call in assessed-subject scope with ROOT = manager.
+    portfolio_init = "\n\t\tzg361_p3_initialize_portfolio_effect = yes" if domain == "aa" else ""
+    return f"""# Internal domain entry. Call in assessed-subject scope with ROOT = frozen manager.
 zg361_p3_{domain}_launch_effect = {{
 \tremove_variable = zg361_p3_runtime_applied
 \tzg361_case_{domain}_open_effect = yes
 \tif = {{
 \t\tlimit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
+{portfolio_init}
 \t\tzg361_p3_{domain}_initialize_effect = yes
 \t\tvar:zg361_case_{domain}_owner = {{ save_scope_as = zg361_p3_{domain}_owner }}
 \t\tsave_scope_as = zg361_p3_{domain}_subject
@@ -797,7 +924,9 @@ def render_effects() -> bytes:
     sections = [
         "# ZhongGuo 361 phase 3 — AA metrics, AG reorg, AJ demand delivery.\n"
         f"# READINESS: {READINESS}. No CK3 parser/paused/live evidence is claimed.\n"
+        "# Public entry: zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }.\n"
         "# Stable status: 1=applied, 2=idempotent no-op, 3=stale no-op, 4=typed RED.\n",
+        render_portfolio_entries(),
     ]
     for domain in ("aa", "ag", "aj"):
         sections += [render_init(domain), render_subject_read(domain), render_ai(domain), render_launch(domain)]
@@ -841,7 +970,7 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
         next_event = f"""
 \tif = {{
 \t\tlimit = {{ scope:zg361_p3_{d}_subject = {{ has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 }} }}
-\t\ttrigger_event = {{ id = zg361p3.{next_mid} }}
+\t\ttrigger_event = {{ id = zg361p3.{next_mid} days = 1 }}
 \t}}"""
     return f"""option = {{
 \tname = zg361p3.{mid}.{letter}
@@ -853,6 +982,85 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 \t\t\tTICKET_CASE = scope:zg361_p3_{d}_case
 \t\t}}
 \t}}{next_event}
+}}"""
+
+
+def render_queue_event(domain: str) -> str:
+    next_domain = NEXT_DOMAIN[domain]
+    if next_domain is None:
+        raise ValueError("the final AJ domain has no queue event")
+    event_id = QUEUE_EVENTS[domain]
+    final_state = max(STAGE_LAST[domain].values()) + 1
+    opened_domain = ("aa", "ag", "aj").index(next_domain) + 1
+    return f"""# Hidden D+1 edge: closed {domain.upper()} -> first {next_domain.upper()} case.
+zg361p3.{event_id} = {{
+\ttype = character_event
+\thidden = yes
+\ttrigger = {{
+\t\texists = scope:zg361_p3_{domain}_owner
+\t\texists = scope:zg361_p3_{domain}_subject
+\t\texists = scope:zg361_p3_{domain}_cycle
+\t\texists = scope:zg361_p3_{domain}_case
+\t\tthis = scope:zg361_p3_{domain}_owner
+\t\tzg361_is_celestial_liege_trigger = yes
+\t\ttrigger_if = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = zg361_review_serial
+\t\t\t\thas_variable = zg361_p3_manager_portfolio_cycle
+\t\t\t}}
+\t\t\tvar:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial
+\t\t}}
+\t\ttrigger_else = {{ always = no }}
+\t\tscope:zg361_p3_{domain}_subject = {{
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = zg361_case_{domain}_owner
+\t\t\t\t\thas_variable = zg361_case_{domain}_subject
+\t\t\t\t\thas_variable = zg361_case_{domain}_cycle_serial
+\t\t\t\t\thas_variable = zg361_case_{domain}_case_serial
+\t\t\t\t\thas_variable = zg361_case_{domain}_state
+\t\t\t\t\thas_variable = zg361_case_{domain}_active
+\t\t\t\t\thas_variable = zg361_p3_portfolio_owner
+\t\t\t\t\thas_variable = zg361_p3_portfolio_subject
+\t\t\t\t\thas_variable = zg361_p3_portfolio_cycle
+\t\t\t\t\thas_variable = zg361_p3_portfolio_result_owner
+\t\t\t\t\thas_variable = zg361_p3_portfolio_result_subject
+\t\t\t\t\thas_variable = zg361_p3_portfolio_result_cycle
+\t\t\t\t\thas_variable = zg361_p3_portfolio_result_case
+\t\t\t\t\thas_variable = zg361_p3_portfolio_result_state
+\t\t\t\t\thas_variable = zg361_p3_portfolio_opened_domain
+\t\t\t\t\thas_variable = zg361_p3_portfolio_closed
+\t\t\t\t\thas_variable = zg361_result_case_owner
+\t\t\t\t\thas_variable = zg361_result_cycle_serial
+\t\t\t\t\thas_variable = zg361_result_case_serial
+\t\t\t\t\thas_variable = zg361_result_case_state
+\t\t\t\t}}
+\t\t\t\tvar:zg361_case_{domain}_owner = scope:zg361_p3_{domain}_owner
+\t\t\t\tvar:zg361_case_{domain}_subject = scope:zg361_p3_{domain}_subject
+\t\t\t\tvar:zg361_case_{domain}_cycle_serial = scope:zg361_p3_{domain}_cycle
+\t\t\t\tvar:zg361_case_{domain}_case_serial = scope:zg361_p3_{domain}_case
+\t\t\t\tvar:zg361_case_{domain}_state = {final_state}
+\t\t\t\tvar:zg361_case_{domain}_active = 0
+\t\t\t\tvar:zg361_p3_portfolio_owner = scope:zg361_p3_{domain}_owner
+\t\t\t\tvar:zg361_p3_portfolio_subject = scope:zg361_p3_{domain}_subject
+\t\t\t\tvar:zg361_p3_portfolio_cycle = root.var:zg361_review_serial
+\t\t\t\tvar:zg361_p3_portfolio_result_owner = var:zg361_result_case_owner
+\t\t\t\tvar:zg361_p3_portfolio_result_subject = scope:zg361_p3_{domain}_subject
+\t\t\t\tvar:zg361_p3_portfolio_result_cycle = var:zg361_result_cycle_serial
+\t\t\t\tvar:zg361_p3_portfolio_result_case = var:zg361_result_case_serial
+\t\t\t\tvar:zg361_p3_portfolio_result_state = var:zg361_result_case_state
+\t\t\t\tvar:zg361_p3_portfolio_opened_domain = {opened_domain - 1}
+\t\t\t\tvar:zg361_p3_portfolio_closed = 0
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = no }}
+\t\t}}
+\t}}
+\timmediate = {{
+\t\tscope:zg361_p3_{domain}_subject = {{
+\t\t\tset_variable = {{ name = zg361_p3_portfolio_opened_domain value = {opened_domain} }}
+\t\t\tzg361_p3_{next_domain}_launch_effect = yes
+\t\t}}
+\t}}
 }}"""
 
 
@@ -877,6 +1085,7 @@ zg361p3.{mid} = {{
 \t}}
 {indent(options)}
 }}""")
+    events.extend(render_queue_event(domain) for domain in ("aa", "ag"))
     return generated("\n\n".join(events))
 
 

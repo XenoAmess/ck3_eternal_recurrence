@@ -42,7 +42,7 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 }
+			trigger_event = { id = zg361p3.230 days = 1 }
 		}
 	}
 	option = {
@@ -57,7 +57,7 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 }
+			trigger_event = { id = zg361p3.230 days = 1 }
 		}
 	}
 	option = {
@@ -72,7 +72,7 @@ zg361p3.229 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.230 }
+			trigger_event = { id = zg361p3.230 days = 1 }
 		}
 	}
 }
@@ -118,7 +118,7 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 }
+			trigger_event = { id = zg361p3.231 days = 1 }
 		}
 	}
 	option = {
@@ -133,7 +133,7 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 }
+			trigger_event = { id = zg361p3.231 days = 1 }
 		}
 	}
 	option = {
@@ -148,7 +148,7 @@ zg361p3.230 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.231 }
+			trigger_event = { id = zg361p3.231 days = 1 }
 		}
 	}
 }
@@ -194,7 +194,7 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 }
+			trigger_event = { id = zg361p3.232 days = 1 }
 		}
 	}
 	option = {
@@ -209,7 +209,7 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 }
+			trigger_event = { id = zg361p3.232 days = 1 }
 		}
 	}
 	option = {
@@ -224,7 +224,7 @@ zg361p3.231 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.232 }
+			trigger_event = { id = zg361p3.232 days = 1 }
 		}
 	}
 }
@@ -270,7 +270,7 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 }
+			trigger_event = { id = zg361p3.233 days = 1 }
 		}
 	}
 	option = {
@@ -285,7 +285,7 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 }
+			trigger_event = { id = zg361p3.233 days = 1 }
 		}
 	}
 	option = {
@@ -300,7 +300,7 @@ zg361p3.232 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.233 }
+			trigger_event = { id = zg361p3.233 days = 1 }
 		}
 	}
 }
@@ -346,7 +346,7 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 }
+			trigger_event = { id = zg361p3.234 days = 1 }
 		}
 	}
 	option = {
@@ -361,7 +361,7 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 }
+			trigger_event = { id = zg361p3.234 days = 1 }
 		}
 	}
 	option = {
@@ -376,7 +376,7 @@ zg361p3.233 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.234 }
+			trigger_event = { id = zg361p3.234 days = 1 }
 		}
 	}
 }
@@ -422,7 +422,7 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 }
+			trigger_event = { id = zg361p3.235 days = 1 }
 		}
 	}
 	option = {
@@ -437,7 +437,7 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 }
+			trigger_event = { id = zg361p3.235 days = 1 }
 		}
 	}
 	option = {
@@ -452,7 +452,7 @@ zg361p3.234 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.235 }
+			trigger_event = { id = zg361p3.235 days = 1 }
 		}
 	}
 }
@@ -498,7 +498,7 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 }
+			trigger_event = { id = zg361p3.236 days = 1 }
 		}
 	}
 	option = {
@@ -513,7 +513,7 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 }
+			trigger_event = { id = zg361p3.236 days = 1 }
 		}
 	}
 	option = {
@@ -528,7 +528,7 @@ zg361p3.235 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.236 }
+			trigger_event = { id = zg361p3.236 days = 1 }
 		}
 	}
 }
@@ -574,7 +574,7 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 }
+			trigger_event = { id = zg361p3.237 days = 1 }
 		}
 	}
 	option = {
@@ -589,7 +589,7 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 }
+			trigger_event = { id = zg361p3.237 days = 1 }
 		}
 	}
 	option = {
@@ -604,7 +604,7 @@ zg361p3.236 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.237 }
+			trigger_event = { id = zg361p3.237 days = 1 }
 		}
 	}
 }
@@ -650,7 +650,7 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 }
+			trigger_event = { id = zg361p3.240 days = 1 }
 		}
 	}
 	option = {
@@ -665,7 +665,7 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 }
+			trigger_event = { id = zg361p3.240 days = 1 }
 		}
 	}
 	option = {
@@ -680,7 +680,7 @@ zg361p3.237 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.240 }
+			trigger_event = { id = zg361p3.240 days = 1 }
 		}
 	}
 }
@@ -726,7 +726,7 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 }
+			trigger_event = { id = zg361p3.238 days = 1 }
 		}
 	}
 	option = {
@@ -741,7 +741,7 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 }
+			trigger_event = { id = zg361p3.238 days = 1 }
 		}
 	}
 	option = {
@@ -756,7 +756,7 @@ zg361p3.240 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.238 }
+			trigger_event = { id = zg361p3.238 days = 1 }
 		}
 	}
 }
@@ -802,7 +802,7 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 }
+			trigger_event = { id = zg361p3.239 days = 1 }
 		}
 	}
 	option = {
@@ -817,7 +817,7 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 }
+			trigger_event = { id = zg361p3.239 days = 1 }
 		}
 	}
 	option = {
@@ -832,7 +832,7 @@ zg361p3.238 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.239 }
+			trigger_event = { id = zg361p3.239 days = 1 }
 		}
 	}
 }
@@ -878,7 +878,7 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 }
+			trigger_event = { id = zg361p3.241 days = 1 }
 		}
 	}
 	option = {
@@ -893,7 +893,7 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 }
+			trigger_event = { id = zg361p3.241 days = 1 }
 		}
 	}
 	option = {
@@ -908,7 +908,7 @@ zg361p3.239 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aa_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.241 }
+			trigger_event = { id = zg361p3.241 days = 1 }
 		}
 	}
 }
@@ -1018,7 +1018,7 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 }
+			trigger_event = { id = zg361p3.302 days = 1 }
 		}
 	}
 	option = {
@@ -1033,7 +1033,7 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 }
+			trigger_event = { id = zg361p3.302 days = 1 }
 		}
 	}
 	option = {
@@ -1048,7 +1048,7 @@ zg361p3.301 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.302 }
+			trigger_event = { id = zg361p3.302 days = 1 }
 		}
 	}
 }
@@ -1094,7 +1094,7 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 }
+			trigger_event = { id = zg361p3.303 days = 1 }
 		}
 	}
 	option = {
@@ -1109,7 +1109,7 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 }
+			trigger_event = { id = zg361p3.303 days = 1 }
 		}
 	}
 	option = {
@@ -1124,7 +1124,7 @@ zg361p3.302 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.303 }
+			trigger_event = { id = zg361p3.303 days = 1 }
 		}
 	}
 }
@@ -1170,7 +1170,7 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 }
+			trigger_event = { id = zg361p3.304 days = 1 }
 		}
 	}
 	option = {
@@ -1185,7 +1185,7 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 }
+			trigger_event = { id = zg361p3.304 days = 1 }
 		}
 	}
 	option = {
@@ -1200,7 +1200,7 @@ zg361p3.303 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.304 }
+			trigger_event = { id = zg361p3.304 days = 1 }
 		}
 	}
 }
@@ -1246,7 +1246,7 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 }
+			trigger_event = { id = zg361p3.305 days = 1 }
 		}
 	}
 	option = {
@@ -1261,7 +1261,7 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 }
+			trigger_event = { id = zg361p3.305 days = 1 }
 		}
 	}
 	option = {
@@ -1276,7 +1276,7 @@ zg361p3.304 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.305 }
+			trigger_event = { id = zg361p3.305 days = 1 }
 		}
 	}
 }
@@ -1322,7 +1322,7 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 }
+			trigger_event = { id = zg361p3.306 days = 1 }
 		}
 	}
 	option = {
@@ -1337,7 +1337,7 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 }
+			trigger_event = { id = zg361p3.306 days = 1 }
 		}
 	}
 	option = {
@@ -1352,7 +1352,7 @@ zg361p3.305 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.306 }
+			trigger_event = { id = zg361p3.306 days = 1 }
 		}
 	}
 }
@@ -1398,7 +1398,7 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 }
+			trigger_event = { id = zg361p3.307 days = 1 }
 		}
 	}
 	option = {
@@ -1413,7 +1413,7 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 }
+			trigger_event = { id = zg361p3.307 days = 1 }
 		}
 	}
 	option = {
@@ -1428,7 +1428,7 @@ zg361p3.306 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.307 }
+			trigger_event = { id = zg361p3.307 days = 1 }
 		}
 	}
 }
@@ -1474,7 +1474,7 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 }
+			trigger_event = { id = zg361p3.308 days = 1 }
 		}
 	}
 	option = {
@@ -1489,7 +1489,7 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 }
+			trigger_event = { id = zg361p3.308 days = 1 }
 		}
 	}
 	option = {
@@ -1504,7 +1504,7 @@ zg361p3.307 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.308 }
+			trigger_event = { id = zg361p3.308 days = 1 }
 		}
 	}
 }
@@ -1550,7 +1550,7 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 }
+			trigger_event = { id = zg361p3.309 days = 1 }
 		}
 	}
 	option = {
@@ -1565,7 +1565,7 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 }
+			trigger_event = { id = zg361p3.309 days = 1 }
 		}
 	}
 	option = {
@@ -1580,7 +1580,7 @@ zg361p3.308 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.309 }
+			trigger_event = { id = zg361p3.309 days = 1 }
 		}
 	}
 }
@@ -1626,7 +1626,7 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 }
+			trigger_event = { id = zg361p3.310 days = 1 }
 		}
 	}
 	option = {
@@ -1641,7 +1641,7 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 }
+			trigger_event = { id = zg361p3.310 days = 1 }
 		}
 	}
 	option = {
@@ -1656,7 +1656,7 @@ zg361p3.309 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.310 }
+			trigger_event = { id = zg361p3.310 days = 1 }
 		}
 	}
 }
@@ -1702,7 +1702,7 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 }
+			trigger_event = { id = zg361p3.311 days = 1 }
 		}
 	}
 	option = {
@@ -1717,7 +1717,7 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 }
+			trigger_event = { id = zg361p3.311 days = 1 }
 		}
 	}
 	option = {
@@ -1732,7 +1732,7 @@ zg361p3.310 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_ag_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.311 }
+			trigger_event = { id = zg361p3.311 days = 1 }
 		}
 	}
 }
@@ -1842,7 +1842,7 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 }
+			trigger_event = { id = zg361p3.335 days = 1 }
 		}
 	}
 	option = {
@@ -1857,7 +1857,7 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 }
+			trigger_event = { id = zg361p3.335 days = 1 }
 		}
 	}
 	option = {
@@ -1872,7 +1872,7 @@ zg361p3.334 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.335 }
+			trigger_event = { id = zg361p3.335 days = 1 }
 		}
 	}
 }
@@ -1918,7 +1918,7 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 }
+			trigger_event = { id = zg361p3.336 days = 1 }
 		}
 	}
 	option = {
@@ -1933,7 +1933,7 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 }
+			trigger_event = { id = zg361p3.336 days = 1 }
 		}
 	}
 	option = {
@@ -1948,7 +1948,7 @@ zg361p3.335 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.336 }
+			trigger_event = { id = zg361p3.336 days = 1 }
 		}
 	}
 }
@@ -1994,7 +1994,7 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 }
+			trigger_event = { id = zg361p3.338 days = 1 }
 		}
 	}
 	option = {
@@ -2009,7 +2009,7 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 }
+			trigger_event = { id = zg361p3.338 days = 1 }
 		}
 	}
 	option = {
@@ -2024,7 +2024,7 @@ zg361p3.336 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.338 }
+			trigger_event = { id = zg361p3.338 days = 1 }
 		}
 	}
 }
@@ -2070,7 +2070,7 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 }
+			trigger_event = { id = zg361p3.339 days = 1 }
 		}
 	}
 	option = {
@@ -2085,7 +2085,7 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 }
+			trigger_event = { id = zg361p3.339 days = 1 }
 		}
 	}
 	option = {
@@ -2100,7 +2100,7 @@ zg361p3.338 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.339 }
+			trigger_event = { id = zg361p3.339 days = 1 }
 		}
 	}
 }
@@ -2146,7 +2146,7 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 }
+			trigger_event = { id = zg361p3.340 days = 1 }
 		}
 	}
 	option = {
@@ -2161,7 +2161,7 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 }
+			trigger_event = { id = zg361p3.340 days = 1 }
 		}
 	}
 	option = {
@@ -2176,7 +2176,7 @@ zg361p3.339 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.340 }
+			trigger_event = { id = zg361p3.340 days = 1 }
 		}
 	}
 }
@@ -2222,7 +2222,7 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 }
+			trigger_event = { id = zg361p3.342 days = 1 }
 		}
 	}
 	option = {
@@ -2237,7 +2237,7 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 }
+			trigger_event = { id = zg361p3.342 days = 1 }
 		}
 	}
 	option = {
@@ -2252,7 +2252,7 @@ zg361p3.340 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.342 }
+			trigger_event = { id = zg361p3.342 days = 1 }
 		}
 	}
 }
@@ -2298,7 +2298,7 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 }
+			trigger_event = { id = zg361p3.337 days = 1 }
 		}
 	}
 	option = {
@@ -2313,7 +2313,7 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 }
+			trigger_event = { id = zg361p3.337 days = 1 }
 		}
 	}
 	option = {
@@ -2328,7 +2328,7 @@ zg361p3.342 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.337 }
+			trigger_event = { id = zg361p3.337 days = 1 }
 		}
 	}
 }
@@ -2374,7 +2374,7 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 }
+			trigger_event = { id = zg361p3.341 days = 1 }
 		}
 	}
 	option = {
@@ -2389,7 +2389,7 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 }
+			trigger_event = { id = zg361p3.341 days = 1 }
 		}
 	}
 	option = {
@@ -2404,7 +2404,7 @@ zg361p3.337 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.341 }
+			trigger_event = { id = zg361p3.341 days = 1 }
 		}
 	}
 }
@@ -2450,7 +2450,7 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 }
+			trigger_event = { id = zg361p3.343 days = 1 }
 		}
 	}
 	option = {
@@ -2465,7 +2465,7 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 }
+			trigger_event = { id = zg361p3.343 days = 1 }
 		}
 	}
 	option = {
@@ -2480,7 +2480,7 @@ zg361p3.341 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.343 }
+			trigger_event = { id = zg361p3.343 days = 1 }
 		}
 	}
 }
@@ -2526,7 +2526,7 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 }
+			trigger_event = { id = zg361p3.344 days = 1 }
 		}
 	}
 	option = {
@@ -2541,7 +2541,7 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 }
+			trigger_event = { id = zg361p3.344 days = 1 }
 		}
 	}
 	option = {
@@ -2556,7 +2556,7 @@ zg361p3.343 = {
 		}
 		if = {
 			limit = { scope:zg361_p3_aj_subject = { has_variable = zg361_p3_runtime_applied var:zg361_p3_runtime_applied = 1 } }
-			trigger_event = { id = zg361p3.344 }
+			trigger_event = { id = zg361p3.344 days = 1 }
 		}
 	}
 }
@@ -2621,6 +2621,148 @@ zg361p3.344 = {
 				TICKET_CYCLE = scope:zg361_p3_aj_cycle
 				TICKET_CASE = scope:zg361_p3_aj_case
 			}
+		}
+	}
+}
+
+# Hidden D+1 edge: closed AA -> first AG case.
+zg361p3.9001 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_p3_aa_owner
+		exists = scope:zg361_p3_aa_subject
+		exists = scope:zg361_p3_aa_cycle
+		exists = scope:zg361_p3_aa_case
+		this = scope:zg361_p3_aa_owner
+		zg361_is_celestial_liege_trigger = yes
+		trigger_if = {
+			limit = {
+				has_variable = zg361_review_serial
+				has_variable = zg361_p3_manager_portfolio_cycle
+			}
+			var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial
+		}
+		trigger_else = { always = no }
+		scope:zg361_p3_aa_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_aa_owner
+					has_variable = zg361_case_aa_subject
+					has_variable = zg361_case_aa_cycle_serial
+					has_variable = zg361_case_aa_case_serial
+					has_variable = zg361_case_aa_state
+					has_variable = zg361_case_aa_active
+					has_variable = zg361_p3_portfolio_owner
+					has_variable = zg361_p3_portfolio_subject
+					has_variable = zg361_p3_portfolio_cycle
+					has_variable = zg361_p3_portfolio_result_owner
+					has_variable = zg361_p3_portfolio_result_subject
+					has_variable = zg361_p3_portfolio_result_cycle
+					has_variable = zg361_p3_portfolio_result_case
+					has_variable = zg361_p3_portfolio_result_state
+					has_variable = zg361_p3_portfolio_opened_domain
+					has_variable = zg361_p3_portfolio_closed
+					has_variable = zg361_result_case_owner
+					has_variable = zg361_result_cycle_serial
+					has_variable = zg361_result_case_serial
+					has_variable = zg361_result_case_state
+				}
+				var:zg361_case_aa_owner = scope:zg361_p3_aa_owner
+				var:zg361_case_aa_subject = scope:zg361_p3_aa_subject
+				var:zg361_case_aa_cycle_serial = scope:zg361_p3_aa_cycle
+				var:zg361_case_aa_case_serial = scope:zg361_p3_aa_case
+				var:zg361_case_aa_state = 7
+				var:zg361_case_aa_active = 0
+				var:zg361_p3_portfolio_owner = scope:zg361_p3_aa_owner
+				var:zg361_p3_portfolio_subject = scope:zg361_p3_aa_subject
+				var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial
+				var:zg361_p3_portfolio_result_owner = var:zg361_result_case_owner
+				var:zg361_p3_portfolio_result_subject = scope:zg361_p3_aa_subject
+				var:zg361_p3_portfolio_result_cycle = var:zg361_result_cycle_serial
+				var:zg361_p3_portfolio_result_case = var:zg361_result_case_serial
+				var:zg361_p3_portfolio_result_state = var:zg361_result_case_state
+				var:zg361_p3_portfolio_opened_domain = 1
+				var:zg361_p3_portfolio_closed = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = {
+		scope:zg361_p3_aa_subject = {
+			set_variable = { name = zg361_p3_portfolio_opened_domain value = 2 }
+			zg361_p3_ag_launch_effect = yes
+		}
+	}
+}
+
+# Hidden D+1 edge: closed AG -> first AJ case.
+zg361p3.9002 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_p3_ag_owner
+		exists = scope:zg361_p3_ag_subject
+		exists = scope:zg361_p3_ag_cycle
+		exists = scope:zg361_p3_ag_case
+		this = scope:zg361_p3_ag_owner
+		zg361_is_celestial_liege_trigger = yes
+		trigger_if = {
+			limit = {
+				has_variable = zg361_review_serial
+				has_variable = zg361_p3_manager_portfolio_cycle
+			}
+			var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial
+		}
+		trigger_else = { always = no }
+		scope:zg361_p3_ag_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_ag_owner
+					has_variable = zg361_case_ag_subject
+					has_variable = zg361_case_ag_cycle_serial
+					has_variable = zg361_case_ag_case_serial
+					has_variable = zg361_case_ag_state
+					has_variable = zg361_case_ag_active
+					has_variable = zg361_p3_portfolio_owner
+					has_variable = zg361_p3_portfolio_subject
+					has_variable = zg361_p3_portfolio_cycle
+					has_variable = zg361_p3_portfolio_result_owner
+					has_variable = zg361_p3_portfolio_result_subject
+					has_variable = zg361_p3_portfolio_result_cycle
+					has_variable = zg361_p3_portfolio_result_case
+					has_variable = zg361_p3_portfolio_result_state
+					has_variable = zg361_p3_portfolio_opened_domain
+					has_variable = zg361_p3_portfolio_closed
+					has_variable = zg361_result_case_owner
+					has_variable = zg361_result_cycle_serial
+					has_variable = zg361_result_case_serial
+					has_variable = zg361_result_case_state
+				}
+				var:zg361_case_ag_owner = scope:zg361_p3_ag_owner
+				var:zg361_case_ag_subject = scope:zg361_p3_ag_subject
+				var:zg361_case_ag_cycle_serial = scope:zg361_p3_ag_cycle
+				var:zg361_case_ag_case_serial = scope:zg361_p3_ag_case
+				var:zg361_case_ag_state = 6
+				var:zg361_case_ag_active = 0
+				var:zg361_p3_portfolio_owner = scope:zg361_p3_ag_owner
+				var:zg361_p3_portfolio_subject = scope:zg361_p3_ag_subject
+				var:zg361_p3_portfolio_cycle = root.var:zg361_review_serial
+				var:zg361_p3_portfolio_result_owner = var:zg361_result_case_owner
+				var:zg361_p3_portfolio_result_subject = scope:zg361_p3_ag_subject
+				var:zg361_p3_portfolio_result_cycle = var:zg361_result_cycle_serial
+				var:zg361_p3_portfolio_result_case = var:zg361_result_case_serial
+				var:zg361_p3_portfolio_result_state = var:zg361_result_case_state
+				var:zg361_p3_portfolio_opened_domain = 2
+				var:zg361_p3_portfolio_closed = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = {
+		scope:zg361_p3_ag_subject = {
+			set_variable = { name = zg361_p3_portfolio_opened_domain value = 3 }
+			zg361_p3_aj_launch_effect = yes
 		}
 	}
 }

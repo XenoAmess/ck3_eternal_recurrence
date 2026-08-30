@@ -10,6 +10,7 @@
 
 - **35/35 已实现的共同层**：每项都有独立 A/B/C route enum、同一组六字段 receipt、五元 write ticket、显式 provenance、独立 consumer、`visible_value` 和可见 revision；每条路线还落一组确定性的 quality / throughput / management-debt 取舍，因此不是三个同义按钮。
 - **已实现的宽领域层**：AA240/241、AG304/306/308/309/310/311、AJ335/336/337/338/340/341/342/343/344 另有样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签字、WIP、跨期容量和价值 credit 等专门字段与守恒写入。
+- **唯一 manager-scope portfolio adapter**：未来中央调度只允许调用 `zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }`。adapter 读取并冻结当前制度周期与已交付结果案卷，只打开 AA 首案；AA→AG→AJ 依靠带完整冻结身份复核的 D+1 hidden queue 串行交接。
 
 后文机制表的“consumer 必须发布”列描述该机制最终面向案卷/考核榜/MCP 的丰富查询合同；尚未列入上述两层的细字段不能据此冒充当前已经写入 CK3。当前静态包完成的是可加载目录中的 write→consumer 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
 
@@ -202,20 +203,34 @@ AA 的 stage 顺序特意把 240 放在 238/239 之前：先冻结实际运行�
 
 ## 事件链接口
 
-每个 domain 至少公开一个“在受评人 scope 执行、管理者为 `ROOT`”的 launch effect：
+本包只公开一个供未来中央调度调用的管理者作用域入口：
 
-- AA launch 调用 `zg361_case_aa_open_effect`；
-- AG launch 调用 `zg361_case_ag_open_effect`；
-- AJ launch 调用 `zg361_case_aj_open_effect`。
+```ck3
+zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
+```
 
-open 成功后：
+调用时 `ROOT` 是管理者。入口要求 361 规则开启、管理者通过天朝制公爵及以上资格、`SUBJECT` 是可考核直属封臣，并读取以下已存在的冻结制度/案卷事实：
 
-- 玩家管理者保存该 domain 的 subject named scope，并进入按表中 ID 顺序排列的 character event 链；每个事件恰有 A/B/C 三个业务选项。
-- 每个选项只调用对应 ID 的 route wrapper。wrapper 若 `applied = 1` 才继续下一个事件；typed RED、stale 或 receipt no-op 均安全终止当前链，不伪造后续成功。
-- 获授权 AI 管理者不弹窗，使用完全相同的 wrapper、五元 guard、consumer 和 stage barrier，确定性执行默认 A 路线；不能另写一条跳过权限/资源账的 AI 捷径。
+- 管理者存在 `zg361_review_serial`；
+- 受评人存在 `zg361_result_case_owner/cycle_serial/case_serial/case_state`；
+- 结果案卷 owner 等于当前管理者、cycle 等于管理者当前 review serial，且 state 至少为 3（已交付/结算）；
+- 受评人本周期尚未有 portfolio，且 AA、AG、AJ 均无活跃案卷。
+
+成功打开 AA 后，initializer 一次性冻结 portfolio owner/subject/cycle 和结果案卷 owner/subject/cycle/case/state，并在管理者侧写同周期 marker。相同管理者或相同受评人在同一制度周期重放入口均为 no-op；不得重置账本、另开第二条长链或覆盖旧案卷。AA/AG/AJ 的 `launch_effect` 是包内 domain 入口，不是供 central、GUI 或 MCP 绕过 adapter 调用的公开 ABI。
+
+窗口节流合同如下：
+
+- adapter 只同步打开 AA，并且玩家当日只收到 AA 第一张业务卡；不会同时打开 AG 或 AJ。
+- 玩家选择某卡且 route 真正 `applied = 1` 后，同 domain 下一张卡统一使用 `days = 1`；typed RED、stale 或 receipt no-op 不排后续卡。
+- AA 和 AG 的最后一个 barrier 关闭本案后，只给冻结 owner 排一个 `days = 1` hidden queue event。hidden event 必须重新核对刚关闭案卷的 owner/subject/cycle/case/state、`active = 0`、管理者制度周期，以及冻结结果案卷五元；全部匹配才分别打开 AG、AJ 首案。
+- 因此，一个 portfolio 在同一游戏日最多产生一个可见业务窗口。hidden queue 本身没有 title、desc 或 option，不计作可见业务窗。
+- AJ 最后一个 barrier 只在共享 close 确认 applied 后冻结最终案卷五元并关闭 portfolio，不再排可见卡。
+- 获授权 AI 管理者经过同一个 adapter、D+1 hidden queue、wrapper、五元 guard、consumer 和 stage barrier，但每个 domain 确定性执行默认 A 路线且不触发任何可见事件；不能另写一条跳过权限或资源账的 AI 捷径。
 - 受评人的 self-read effect 只执行 consumer/read projection；它不能打开或推进案卷。
 
-本包不新增顶层 GUI 按钮，也不直接接考核榜。未来 GUI 或 MCP 只能调用上述公开入口/读取可见字段，不能复制一套业务逻辑。
+冻结结果案卷在 D+1 交接前若发生 owner、cycle、case 或 state 漂移，queue 必须 stale no-op，不能把一次 portfolio 拼接到另一份考核结果上。该 fail-closed 行为可能留下待诊断的未完成 portfolio，但不会伪造跨案卷成功；未来 MCP 查询应暴露冻结 tuple 与 `opened_domain/closed` 供定位。
+
+本包不新增顶层 GUI 按钮，也不直接接考核榜。未来 central、GUI 或 MCP 只能调用上述唯一公开 adapter/读取可见字段，不能复制业务逻辑或直接串行调用三个内部 launch。
 
 ## 本地化合同
 
@@ -239,8 +254,10 @@ open 成功后：
 6. 三个 stage 图、barrier 与共享内核公开 `advance` effect 一致；
 7. AA240、AA241、AG304、AG306、AG308、AG309、AJ335、AJ337、AJ340、AJ341、AJ344 的守恒断言存在；
 8. 玩家 A/B/C 事件链和授权 AI 默认 A 路线复用同一 wrapper；
-9. 管理入口要求天朝制公爵及以上，伯爵/男爵只有 subject self-consumer；
-10. 九语 key parity、中文/英文原创集合、七语英文结构占位和 BOM 均通过。
+9. 只有一个 manager-scope portfolio adapter；它读取已交付结果案卷、冻结制度周期与结果五元、同周期重放 no-op，且只打开 AA；
+10. 玩家同 domain 后续卡与 AA→AG→AJ 跨案交接全部是 D+1；hidden queue 逐项复核关闭案卷与冻结 portfolio，静态数据流中同日最多一个可见业务窗；
+11. AI domain runner 不含 `trigger_event`，跨案 queue 全部 `hidden = yes`；管理入口要求天朝制公爵及以上，伯爵/男爵只有 subject self-consumer；
+12. 九语 key parity、中文/英文原创集合、七语英文结构占位和 BOM 均通过。
 
 这些测试只证明生成结构与静态合同，不证明 CK3 实际解析、事件作用域、存读档或 UI 呈现。
 
@@ -248,7 +265,7 @@ open 成功后：
 
 当生成器与上述独立 L0 测试全部通过时，本包最多标记为 **`CK3 script static-ready`**。以下项目均明确未由本规格或静态测试完成：
 
-- 没有中央 `on_action` 周期调度；AI 静默入口存在也不会因此自动定期触发；
+- 没有中央 `on_action` 周期调度；唯一 portfolio adapter 尚未被 central 调用，AI 静默入口存在也不会因此自动定期触发；
 - 没有新增 GUI，也没有考核榜接线或按钮阻塞审计；
 - 没有 MCP named action/query、paused snapshot 或 fixture 对接；
 - 没有 CK3 parser/error.log 加载证据；
