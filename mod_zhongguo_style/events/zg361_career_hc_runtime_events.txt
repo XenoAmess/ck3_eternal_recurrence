@@ -1,0 +1,839 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+namespace = zg361ch
+
+zg361ch.402 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_d_owner
+            SUBJECT_VAR = zg361_case_d_subject
+            CYCLE_VAR = zg361_case_d_cycle_serial
+            CASE_VAR = zg361_case_d_case_serial
+            STATE_VAR = zg361_case_d_state
+            ACTIVE_VAR = zg361_case_d_active
+            REVISION_VAR = zg361_case_d_revision
+            TIMELINE_VAR = zg361_case_d_timeline_serial
+            FEEDBACK_VAR = zg361_case_d_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_d_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_d_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_d_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_d_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_d_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_d_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_d_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_d_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.404 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_d_owner
+            SUBJECT_VAR = zg361_case_d_subject
+            CYCLE_VAR = zg361_case_d_cycle_serial
+            CASE_VAR = zg361_case_d_case_serial
+            STATE_VAR = zg361_case_d_state
+            ACTIVE_VAR = zg361_case_d_active
+            REVISION_VAR = zg361_case_d_revision
+            TIMELINE_VAR = zg361_case_d_timeline_serial
+            FEEDBACK_VAR = zg361_case_d_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_d_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_d_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_d_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_d_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_d_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_d_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_d_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_d_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.406 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_d_owner
+            SUBJECT_VAR = zg361_case_d_subject
+            CYCLE_VAR = zg361_case_d_cycle_serial
+            CASE_VAR = zg361_case_d_case_serial
+            STATE_VAR = zg361_case_d_state
+            ACTIVE_VAR = zg361_case_d_active
+            REVISION_VAR = zg361_case_d_revision
+            TIMELINE_VAR = zg361_case_d_timeline_serial
+            FEEDBACK_VAR = zg361_case_d_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_d_s3_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_d_s3_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_d_s3_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_d_s3_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_d_s3_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_d_s3_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_d_s3_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_d_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.408 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_d_owner
+            SUBJECT_VAR = zg361_case_d_subject
+            CYCLE_VAR = zg361_case_d_cycle_serial
+            CASE_VAR = zg361_case_d_case_serial
+            STATE_VAR = zg361_case_d_state
+            ACTIVE_VAR = zg361_case_d_active
+            REVISION_VAR = zg361_case_d_revision
+            TIMELINE_VAR = zg361_case_d_timeline_serial
+            FEEDBACK_VAR = zg361_case_d_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_d_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_d_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_d_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_d_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_d_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_d_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_d_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_d_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.901 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.901.t
+    desc = zg361ch.901.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.901.a }
+}
+
+zg361ch.1302 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_m_owner
+            SUBJECT_VAR = zg361_case_m_subject
+            CYCLE_VAR = zg361_case_m_cycle_serial
+            CASE_VAR = zg361_case_m_case_serial
+            STATE_VAR = zg361_case_m_state
+            ACTIVE_VAR = zg361_case_m_active
+            REVISION_VAR = zg361_case_m_revision
+            TIMELINE_VAR = zg361_case_m_timeline_serial
+            FEEDBACK_VAR = zg361_case_m_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_m_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_m_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_m_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_m_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_m_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_m_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_m_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_m_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.1304 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_m_owner
+            SUBJECT_VAR = zg361_case_m_subject
+            CYCLE_VAR = zg361_case_m_cycle_serial
+            CASE_VAR = zg361_case_m_case_serial
+            STATE_VAR = zg361_case_m_state
+            ACTIVE_VAR = zg361_case_m_active
+            REVISION_VAR = zg361_case_m_revision
+            TIMELINE_VAR = zg361_case_m_timeline_serial
+            FEEDBACK_VAR = zg361_case_m_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_m_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_m_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_m_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_m_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_m_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_m_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_m_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_m_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.1306 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_m_owner
+            SUBJECT_VAR = zg361_case_m_subject
+            CYCLE_VAR = zg361_case_m_cycle_serial
+            CASE_VAR = zg361_case_m_case_serial
+            STATE_VAR = zg361_case_m_state
+            ACTIVE_VAR = zg361_case_m_active
+            REVISION_VAR = zg361_case_m_revision
+            TIMELINE_VAR = zg361_case_m_timeline_serial
+            FEEDBACK_VAR = zg361_case_m_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_m_s3_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_m_s3_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_m_s3_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_m_s3_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_m_s3_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_m_s3_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_m_s3_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_m_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1308 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_m_owner
+            SUBJECT_VAR = zg361_case_m_subject
+            CYCLE_VAR = zg361_case_m_cycle_serial
+            CASE_VAR = zg361_case_m_case_serial
+            STATE_VAR = zg361_case_m_state
+            ACTIVE_VAR = zg361_case_m_active
+            REVISION_VAR = zg361_case_m_revision
+            TIMELINE_VAR = zg361_case_m_timeline_serial
+            FEEDBACK_VAR = zg361_case_m_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_m_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_m_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_m_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_m_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_m_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_m_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_m_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_m_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.902 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.902.t
+    desc = zg361ch.902.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.902.a }
+}
+
+zg361ch.1402 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_n_owner
+            SUBJECT_VAR = zg361_case_n_subject
+            CYCLE_VAR = zg361_case_n_cycle_serial
+            CASE_VAR = zg361_case_n_case_serial
+            STATE_VAR = zg361_case_n_state
+            ACTIVE_VAR = zg361_case_n_active
+            REVISION_VAR = zg361_case_n_revision
+            TIMELINE_VAR = zg361_case_n_timeline_serial
+            FEEDBACK_VAR = zg361_case_n_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_n_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_n_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_n_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_n_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_n_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_n_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_n_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_n_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.1404 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_n_owner
+            SUBJECT_VAR = zg361_case_n_subject
+            CYCLE_VAR = zg361_case_n_cycle_serial
+            CASE_VAR = zg361_case_n_case_serial
+            STATE_VAR = zg361_case_n_state
+            ACTIVE_VAR = zg361_case_n_active
+            REVISION_VAR = zg361_case_n_revision
+            TIMELINE_VAR = zg361_case_n_timeline_serial
+            FEEDBACK_VAR = zg361_case_n_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_n_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_n_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_n_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_n_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_n_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_n_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_n_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_n_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.1406 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_n_owner
+            SUBJECT_VAR = zg361_case_n_subject
+            CYCLE_VAR = zg361_case_n_cycle_serial
+            CASE_VAR = zg361_case_n_case_serial
+            STATE_VAR = zg361_case_n_state
+            ACTIVE_VAR = zg361_case_n_active
+            REVISION_VAR = zg361_case_n_revision
+            TIMELINE_VAR = zg361_case_n_timeline_serial
+            FEEDBACK_VAR = zg361_case_n_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_n_s3_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_n_s3_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_n_s3_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_n_s3_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_n_s3_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_n_s3_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_n_s3_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_n_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1408 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_n_owner
+            SUBJECT_VAR = zg361_case_n_subject
+            CYCLE_VAR = zg361_case_n_cycle_serial
+            CASE_VAR = zg361_case_n_case_serial
+            STATE_VAR = zg361_case_n_state
+            ACTIVE_VAR = zg361_case_n_active
+            REVISION_VAR = zg361_case_n_revision
+            TIMELINE_VAR = zg361_case_n_timeline_serial
+            FEEDBACK_VAR = zg361_case_n_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_n_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_n_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_n_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_n_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_n_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_n_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_n_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_n_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.903 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.903.t
+    desc = zg361ch.903.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.903.a }
+}
+
+zg361ch.1502 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_o_owner
+            SUBJECT_VAR = zg361_case_o_subject
+            CYCLE_VAR = zg361_case_o_cycle_serial
+            CASE_VAR = zg361_case_o_case_serial
+            STATE_VAR = zg361_case_o_state
+            ACTIVE_VAR = zg361_case_o_active
+            REVISION_VAR = zg361_case_o_revision
+            TIMELINE_VAR = zg361_case_o_timeline_serial
+            FEEDBACK_VAR = zg361_case_o_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_o_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_o_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_o_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_o_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_o_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_o_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_o_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_o_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.1504 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_o_owner
+            SUBJECT_VAR = zg361_case_o_subject
+            CYCLE_VAR = zg361_case_o_cycle_serial
+            CASE_VAR = zg361_case_o_case_serial
+            STATE_VAR = zg361_case_o_state
+            ACTIVE_VAR = zg361_case_o_active
+            REVISION_VAR = zg361_case_o_revision
+            TIMELINE_VAR = zg361_case_o_timeline_serial
+            FEEDBACK_VAR = zg361_case_o_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_o_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_o_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_o_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_o_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_o_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_o_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_o_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_o_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.1506 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_o_owner
+            SUBJECT_VAR = zg361_case_o_subject
+            CYCLE_VAR = zg361_case_o_cycle_serial
+            CASE_VAR = zg361_case_o_case_serial
+            STATE_VAR = zg361_case_o_state
+            ACTIVE_VAR = zg361_case_o_active
+            REVISION_VAR = zg361_case_o_revision
+            TIMELINE_VAR = zg361_case_o_timeline_serial
+            FEEDBACK_VAR = zg361_case_o_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_o_s3_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_o_s3_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_o_s3_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_o_s3_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_o_s3_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_o_s3_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_o_s3_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_o_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1508 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_o_owner
+            SUBJECT_VAR = zg361_case_o_subject
+            CYCLE_VAR = zg361_case_o_cycle_serial
+            CASE_VAR = zg361_case_o_case_serial
+            STATE_VAR = zg361_case_o_state
+            ACTIVE_VAR = zg361_case_o_active
+            REVISION_VAR = zg361_case_o_revision
+            TIMELINE_VAR = zg361_case_o_timeline_serial
+            FEEDBACK_VAR = zg361_case_o_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_o_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_o_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_o_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_o_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_o_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_o_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_o_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_o_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.1510 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_o_owner
+            SUBJECT_VAR = zg361_case_o_subject
+            CYCLE_VAR = zg361_case_o_cycle_serial
+            CASE_VAR = zg361_case_o_case_serial
+            STATE_VAR = zg361_case_o_state
+            ACTIVE_VAR = zg361_case_o_active
+            REVISION_VAR = zg361_case_o_revision
+            TIMELINE_VAR = zg361_case_o_timeline_serial
+            FEEDBACK_VAR = zg361_case_o_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_o_s5_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_o_s5_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_o_s5_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_o_s5_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_o_s5_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_o_s5_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_o_s5_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_o_timeout_stage_05_effect = yes
+        }
+    }
+}
+
+zg361ch.904 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.904.t
+    desc = zg361ch.904.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.904.a }
+}
+
+zg361ch.1602 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.1604 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.1606 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s3_a_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s3_a_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s3_a_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s3_a_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s3_a_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s3_a_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_a_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1607 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s3_b_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s3_b_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s3_b_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s3_b_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s3_b_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s3_b_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s3_b_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1608 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.1610 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_p_owner
+            SUBJECT_VAR = zg361_case_p_subject
+            CYCLE_VAR = zg361_case_p_cycle_serial
+            CASE_VAR = zg361_case_p_case_serial
+            STATE_VAR = zg361_case_p_state
+            ACTIVE_VAR = zg361_case_p_active
+            REVISION_VAR = zg361_case_p_revision
+            TIMELINE_VAR = zg361_case_p_timeline_serial
+            FEEDBACK_VAR = zg361_case_p_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_p_s5_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_p_s5_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_p_s5_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_p_s5_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_p_s5_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_p_s5_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_p_s5_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_p_timeout_stage_05_effect = yes
+        }
+    }
+}
+
+zg361ch.905 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.905.t
+    desc = zg361ch.905.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.905.a }
+}
+
+zg361ch.1702 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_q_owner
+            SUBJECT_VAR = zg361_case_q_subject
+            CYCLE_VAR = zg361_case_q_cycle_serial
+            CASE_VAR = zg361_case_q_case_serial
+            STATE_VAR = zg361_case_q_state
+            ACTIVE_VAR = zg361_case_q_active
+            REVISION_VAR = zg361_case_q_revision
+            TIMELINE_VAR = zg361_case_q_timeline_serial
+            FEEDBACK_VAR = zg361_case_q_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_q_s1_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_q_s1_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_q_s1_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_q_s1_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_q_s1_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_q_s1_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_q_s1_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_q_timeout_stage_01_effect = yes
+        }
+    }
+}
+
+zg361ch.1704 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_q_owner
+            SUBJECT_VAR = zg361_case_q_subject
+            CYCLE_VAR = zg361_case_q_cycle_serial
+            CASE_VAR = zg361_case_q_case_serial
+            STATE_VAR = zg361_case_q_state
+            ACTIVE_VAR = zg361_case_q_active
+            REVISION_VAR = zg361_case_q_revision
+            TIMELINE_VAR = zg361_case_q_timeline_serial
+            FEEDBACK_VAR = zg361_case_q_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_q_s2_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_q_s2_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_q_s2_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_q_s2_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_q_s2_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_q_s2_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_q_s2_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_q_timeout_stage_02_effect = yes
+        }
+    }
+}
+
+zg361ch.1706 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_q_owner
+            SUBJECT_VAR = zg361_case_q_subject
+            CYCLE_VAR = zg361_case_q_cycle_serial
+            CASE_VAR = zg361_case_q_case_serial
+            STATE_VAR = zg361_case_q_state
+            ACTIVE_VAR = zg361_case_q_active
+            REVISION_VAR = zg361_case_q_revision
+            TIMELINE_VAR = zg361_case_q_timeline_serial
+            FEEDBACK_VAR = zg361_case_q_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_q_s3_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_q_s3_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_q_s3_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_q_s3_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_q_s3_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_q_s3_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_q_s3_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_q_timeout_stage_03_effect = yes
+        }
+    }
+}
+
+zg361ch.1708 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_q_owner
+            SUBJECT_VAR = zg361_case_q_subject
+            CYCLE_VAR = zg361_case_q_cycle_serial
+            CASE_VAR = zg361_case_q_case_serial
+            STATE_VAR = zg361_case_q_state
+            ACTIVE_VAR = zg361_case_q_active
+            REVISION_VAR = zg361_case_q_revision
+            TIMELINE_VAR = zg361_case_q_timeline_serial
+            FEEDBACK_VAR = zg361_case_q_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_ch_q_s4_x_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_ch_q_s4_x_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_ch_q_s4_x_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_ch_q_s4_x_deadline_case
+            DEADLINE_STATE_VAR = zg361_ch_q_s4_x_deadline_state
+            DEADLINE_PENDING_VAR = zg361_ch_q_s4_x_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_ch_q_s4_x_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_career_hc_q_timeout_stage_04_effect = yes
+        }
+    }
+}
+
+zg361ch.906 = {
+    type = character_event
+    theme = vassal
+    title = zg361ch.906.t
+    desc = zg361ch.906.desc
+    trigger = { is_ai = no }
+    option = { name = zg361ch.906.a }
+}
