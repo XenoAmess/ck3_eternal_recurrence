@@ -31,6 +31,51 @@ LANGUAGES = (
 )
 DAILY_CORE_ONLY_LOC_PREFIXES = ("zg361_scoreboard_detail_",)
 DAILY_CORE_ONLY_LOC_KEYS = frozenset({"zg361_scoreboard_col_dossier"})
+SCOREBOARD_B1_DETAIL_SOURCES = {
+    "self_choice": "zg361_b1_self_choice",
+    "self_score": "zg361_b1_self_score",
+    "self_gap": "zg361_b1_self_gap",
+    "shadow_response": "zg361_b1_shadow_response_state",
+    "shadow_delta": "zg361_b1_shadow_evidence_delta",
+    "peer_n": "zg361_b1_peer_n",
+    "peer_mean": "zg361_b1_peer_mean",
+    "peer_variance": "zg361_b1_peer_variance",
+    "peer_normalized_score": "zg361_b1_peer_normalized_score",
+    "peer_shape": "zg361_b1_peer_shape",
+    "peer_reciprocity_risk": "zg361_b1_peer_reciprocity_risk",
+    "peer_timely_n": "zg361_b1_peer_timely_n",
+    "peer_credit_total": "zg361_b1_peer_credit_total",
+    "evaluator_credit": "zg361_b1_evaluator_credit",
+    "calibration_score": "zg361_b1_calibration_score",
+    "calibration_score_before_shadow": "zg361_b1_calibration_score_before_shadow",
+    "shadow_to_quota_delta": "zg361_b1_shadow_to_quota_delta",
+    "quota_snapshot": "zg361_b1_quota_snapshot",
+    "forced_down": "zg361_b1_forced_down",
+    "b1_case_owner": "zg361_b1_case_owner",
+    "b1_cycle_serial": "zg361_b1_cycle_serial",
+    "b1_case_serial": "zg361_b1_case_serial",
+    "b1_fact_sheet_serial": "zg361_b1_fact_sheet_serial",
+    "b1_peer_sealed": "zg361_b1_peer_sealed",
+    "b1_self_receipt_serial": "zg361_b1_m004_receipt_serial",
+    "b1_peer_receipt_serial": "zg361_b1_m008_receipt_serial",
+    "b1_shadow_receipt_serial": "zg361_b1_m001_receipt_serial",
+    "b1_band_receipt_serial": "zg361_b1_m145_receipt_serial",
+}
+SCOREBOARD_RECEIVED_FORBIDDEN = frozenset(
+    {
+        "evaluator_id",
+        "peer_slot_1_evaluator",
+        "peer_slot_2_evaluator",
+        "peer_slot_3_evaluator",
+        "raw_comment",
+        "recusal_identity",
+        "zg361_b1_peer_slot_1_evaluator",
+        "zg361_b1_peer_slot_2_evaluator",
+        "zg361_b1_peer_slot_3_evaluator",
+        "zg361_b1_raw_comment",
+        "zg361_b1_recusal_identity",
+    }
+)
 
 errors: list[str] = []
 
@@ -422,6 +467,14 @@ def check_runtime_invariants() -> None:
         for field in ("char", "rank", "case_owner", "cycle_serial", "case_serial"):
             if f"has_variable = zg361_sb_m_{slot}_{field}" not in body:
                 err(f"scoreboard managed selector {slot} lacks frozen identity field: {field}")
+        for token in (
+            "has_variable = zg361_scoreboard_managed_owner",
+            "has_variable = zg361_scoreboard_managed_cycle_serial",
+            f"var:zg361_sb_m_{slot}_case_owner = var:zg361_scoreboard_managed_owner",
+            f"var:zg361_sb_m_{slot}_cycle_serial = var:zg361_scoreboard_managed_cycle_serial",
+        ):
+            if token not in body:
+                err(f"scoreboard managed selector {slot} lacks identity equality: {token}")
     self_selector = re.search(
         r"zg361_sb_self_select_gui\s*=\s*\{.*?"
         r"is_shown\s*=\s*\{(?P<body>.*?)^\s*\}\s*^\s*effect\s*=\s*\{",
@@ -432,6 +485,20 @@ def check_runtime_invariants() -> None:
     for field in ("char", "case_owner", "cycle_serial", "case_serial"):
         if f"has_variable = zg361_sb_self_{field}" not in self_selector_body:
             err(f"scoreboard received-self selector lacks frozen identity field: {field}")
+    for field in ("owner", "cycle_serial", "case_serial"):
+        if f"has_variable = zg361_scoreboard_received_{field}" not in self_selector_body:
+            err(f"scoreboard received-self selector lacks header identity: {field}")
+    for field, header in (
+        ("case_owner", "owner"),
+        ("cycle_serial", "cycle_serial"),
+        ("case_serial", "case_serial"),
+    ):
+        token = (
+            f"var:zg361_sb_self_{field} = "
+            f"var:zg361_scoreboard_received_{header}"
+        )
+        if token not in self_selector_body:
+            err(f"scoreboard received-self selector lacks identity equality: {field}")
     if "var:zg361_sb_self_char = root" in self_selector_body:
         err("scoreboard received-self selector must not compare a possibly unset sibling variable")
     copy_self = snapshot_effects.split(
@@ -442,15 +509,54 @@ def check_runtime_invariants() -> None:
         "var:zg361_scoreboard_managed_cycle_serial = "
         "root.var:zg361_result_cycle_serial"
     )
+    case_guard = (
+        "name = zg361_scoreboard_received_case_serial "
+        "value = var:zg361_result_case_serial"
+    )
     self_write = "name = zg361_sb_self_char"
-    if not all(token in copy_self for token in (owner_guard, cycle_guard, self_write)):
-        err("received-self dossier buffer lacks owner/cycle publication identity gate")
+    if not all(
+        token in copy_self for token in (owner_guard, cycle_guard, case_guard, self_write)
+    ):
+        err("received-self dossier buffer lacks owner/cycle/case publication identity gate")
     elif not (
         copy_self.index(owner_guard)
         < copy_self.index(cycle_guard)
+        < copy_self.index(case_guard)
         < copy_self.index(self_write)
     ):
         err("received-self dossier identity gates must precede every self-buffer write")
+    for field, source in SCOREBOARD_B1_DETAIL_SOURCES.items():
+        for token, surface in (
+            (source, "snapshot source"),
+            (f"zg361_sb_m_01_{field}", "managed frozen slot"),
+            (f"zg361_sb_self_{field}", "received-self ACL"),
+            (f"zg361_sb_detail_{field}", "selected detail buffer"),
+            (f"zg361_scoreboard_detail_field_{field}", "detail GUI row"),
+        ):
+            haystack = (
+                scoreboard_gui
+                if surface == "detail GUI row"
+                else slot_guis
+                if surface == "selected detail buffer"
+                else snapshot_effects
+            )
+            if token not in haystack:
+                err(f"scoreboard B1 {surface} missing {field}: {token}")
+    for sensitive in SCOREBOARD_RECEIVED_FORBIDDEN:
+        if sensitive in copy_self:
+            err(f"received-self ACL copies sensitive peer field: {sensitive}")
+    phase2_updates = snapshot_effects.split(
+        "# Current scope = player official after witnessed/acknowledged 3.25 settlement.",
+        1,
+    )[-1]
+    for token in (
+        "var:zg361_sb_m_01_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+        "var:zg361_sb_m_80_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+        "var:zg361_sb_detail_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+        "var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+    ):
+        if token not in phase2_updates:
+            err(f"scoreboard mutable update lacks frozen case guard: {token}")
     if scoreboard_gui.count('name = "zg361_scoreboard_toggle"') != 1:
         err("scoreboard must retain exactly one top-level HUD toggle")
     if scoreboard_gui.count('name = "zg361_scoreboard_detail_panel"') != 1:
@@ -464,11 +570,22 @@ def check_runtime_invariants() -> None:
             f'name = "zg361_scoreboard_detail_tab_{page}"'
         ) != 1:
             err(f"scoreboard dossier tab must be unique: {page}")
-    for sensitive in ("evaluator_id", "raw_comment", "recusal_identity"):
-        if re.search(rf"zg361_sb_r_\d{{2}}_{sensitive}", snapshot_effects + slot_guis):
+    for sensitive in SCOREBOARD_RECEIVED_FORBIDDEN:
+        if re.search(
+            rf"zg361_sb_r_\d{{2}}_{re.escape(sensitive)}",
+            snapshot_effects + slot_guis,
+        ):
             err(f"received team slots must not copy sensitive dossier field: {sensitive}")
-    if re.search(r"Character\.MakeScope\.Var\('zg361_result_", scoreboard_gui):
+    if re.search(r"Character\.MakeScope\.Var\('zg361_(?:result|b1)_", scoreboard_gui):
         err("scoreboard dossier must read selected frozen buffers, not live case variables")
+    if slot_guis.count("zg361_scoreboard_detail_clear_gui = {") != 1:
+        err("scoreboard must expose exactly one detail-buffer clear action")
+    clear_action = (
+        "GetScriptedGui('zg361_scoreboard_detail_clear_gui')."
+        "Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+    )
+    if scoreboard_gui.count(clear_action) < 6:
+        err("scoreboard close/reopen paths must clear the selected dossier buffer")
     if not re.search(
         r"hbox\s*=\s*\{.*?button_tertiary\s*=\s*\{.*?"
         r"DefaultOnCharacterClick\(Character\.GetID\).*?^\s*\}.*?"

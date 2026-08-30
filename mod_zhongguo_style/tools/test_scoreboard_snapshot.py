@@ -12,28 +12,36 @@ import unittest
 from gen_scoreboard_snapshot import (
     BASE_FIELDS,
     CASE_FIELDS,
+    DETAIL_CLEAR_ACTION,
+    DETAIL_CLEAR_GUI,
     DETAIL_PAGES,
+    RECEIVED_CASE_FIELDS,
     SENSITIVE_RECEIVED_FIELDS,
+    SENSITIVE_RECEIVED_SOURCE_VARS,
     FieldSpec,
     MOD_ROOT,
     SLOT_COUNT,
     TOGGLE_POSITION,
     TOGGLE_SIZE,
     outputs,
+    received_case_fields,
     row_gui,
 )
 
 
 class ScoreboardSnapshotTests(unittest.TestCase):
     def test_case_detail_schema_uses_only_existing_frozen_product_fields(self) -> None:
-        product_effects = (
-            MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"
-        ).read_text(encoding="utf-8-sig")
+        product_effects = "\n".join(
+            (
+                MOD_ROOT / "common" / "scripted_effects" / filename
+            ).read_text(encoding="utf-8-sig")
+            for filename in ("zg361_effects.txt", "zg361_b1_runtime_effects.txt")
+        )
         self.assertTrue(all(isinstance(field, FieldSpec) for field in BASE_FIELDS))
         self.assertTrue(all(isinstance(field, FieldSpec) for field in CASE_FIELDS))
         self.assertEqual(
             {field.page for field in CASE_FIELDS},
-            {"facts", "quota", "audit"},
+            {"facts", "peer", "quota", "audit"},
         )
         self.assertEqual(DETAIL_PAGES, ("facts", "peer", "quota", "audit"))
         for field in CASE_FIELDS:
@@ -44,9 +52,58 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             )
         self.assertTrue(
             SENSITIVE_RECEIVED_FIELDS.isdisjoint(
-                {field.name for field in BASE_FIELDS + CASE_FIELDS}
+                {field.name for field in RECEIVED_CASE_FIELDS}
             )
         )
+        self.assertTrue(
+            SENSITIVE_RECEIVED_SOURCE_VARS.isdisjoint(
+                {field.source_var for field in RECEIVED_CASE_FIELDS}
+            )
+        )
+        required_by_page = {
+            "facts": {
+                "self_choice",
+                "self_score",
+                "self_gap",
+                "shadow_response",
+                "shadow_delta",
+            },
+            "peer": {
+                "peer_n",
+                "peer_mean",
+                "peer_variance",
+                "peer_normalized_score",
+                "peer_shape",
+                "peer_reciprocity_risk",
+                "peer_timely_n",
+                "peer_credit_total",
+                "evaluator_credit",
+            },
+            "quota": {
+                "calibration_score",
+                "calibration_score_before_shadow",
+                "shadow_to_quota_delta",
+                "quota_snapshot",
+                "forced_down",
+            },
+            "audit": {
+                "case_owner",
+                "cycle_serial",
+                "case_serial",
+                "b1_case_owner",
+                "b1_cycle_serial",
+                "b1_case_serial",
+                "b1_fact_sheet_serial",
+                "b1_peer_sealed",
+                "b1_self_receipt_serial",
+                "b1_peer_receipt_serial",
+                "b1_shadow_receipt_serial",
+                "b1_band_receipt_serial",
+            },
+        }
+        for page, required in required_by_page.items():
+            actual = {field.name for field in CASE_FIELDS if field.page == page}
+            self.assertTrue(required <= actual, f"{page} is missing {required - actual}")
 
     def test_single_case_detail_projection_and_selector_cardinality(self) -> None:
         rendered = outputs()
@@ -82,9 +139,13 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 gui.count(f'name = "zg361_scoreboard_detail_tab_{page}"'), 1
             )
 
+        received_names = {field.name for field in RECEIVED_CASE_FIELDS}
         for field in CASE_FIELDS:
             self.assertIn(f"zg361_sb_m_01_{field.name}", effects)
-            self.assertIn(f"zg361_sb_self_{field.name}", effects)
+            if field.name in received_names:
+                self.assertIn(f"zg361_sb_self_{field.name}", effects)
+            else:
+                self.assertNotIn(f"name = zg361_sb_self_{field.name}", effects)
             self.assertNotIn(f"zg361_sb_r_01_{field.name}", effects)
             self.assertIn(f"zg361_sb_detail_{field.name}", slot_guis)
         for sensitive in SENSITIVE_RECEIVED_FIELDS:
@@ -92,8 +153,8 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 effects + slot_guis + gui,
                 re.compile(rf"zg361_sb_r_\d{{2}}_{re.escape(sensitive)}"),
             )
-        self.assertNotIn("zg361_result_peer", gui)
-        self.assertNotIn("zg361_result_evaluator", gui)
+        self.assertNotIn("Character.MakeScope.Var('zg361_b1_", gui)
+        self.assertNotIn("Character.MakeScope.Var('zg361_result_", gui)
         self.assertIn("zg361_scoreboard_detail_unavailable", gui)
 
     def test_dossier_selectors_require_complete_frozen_case_identity(self) -> None:
@@ -110,15 +171,33 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         )[0]
         for field in ("char", "rank", "case_owner", "cycle_serial", "case_serial"):
             self.assertIn(f"has_variable = zg361_sb_m_01_{field}", managed)
+        for token in (
+            "has_variable = zg361_scoreboard_managed_owner",
+            "has_variable = zg361_scoreboard_managed_cycle_serial",
+            "var:zg361_sb_m_01_case_owner = var:zg361_scoreboard_managed_owner",
+            "var:zg361_sb_m_01_cycle_serial = var:zg361_scoreboard_managed_cycle_serial",
+        ):
+            self.assertIn(token, managed)
 
         self_selector = slot_guis.split("zg361_sb_self_select_gui = {", 1)[1].split(
             "\n}\n", 1
         )[0]
         for field in ("char", "case_owner", "cycle_serial", "case_serial"):
             self.assertIn(f"has_variable = zg361_sb_self_{field}", self_selector)
+        for field in ("owner", "cycle_serial", "case_serial"):
+            self.assertIn(
+                f"has_variable = zg361_scoreboard_received_{field}", self_selector
+            )
+        for field in ("case_owner", "cycle_serial", "case_serial"):
+            header = "owner" if field == "case_owner" else field
+            self.assertIn(
+                f"var:zg361_sb_self_{field} = "
+                f"var:zg361_scoreboard_received_{header}",
+                self_selector,
+            )
         self.assertNotIn("var:zg361_sb_self_char = root", self_selector)
 
-    def test_received_self_buffer_rejects_different_owner_or_cycle(self) -> None:
+    def test_received_self_buffer_rejects_different_owner_cycle_or_case(self) -> None:
         effects = outputs()[
             MOD_ROOT
             / "common"
@@ -137,24 +216,61 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "var:zg361_scoreboard_managed_cycle_serial = "
             "root.var:zg361_result_cycle_serial"
         )
+        case_guard = (
+            "name = zg361_scoreboard_received_case_serial "
+            "value = var:zg361_result_case_serial"
+        )
         self_write = "name = zg361_sb_self_char"
 
         self.assertIn(owner_guard, copy_self)
         self.assertIn(cycle_guard, copy_self)
+        self.assertIn(case_guard, copy_self)
         self.assertIn(self_write, copy_self)
         self.assertLess(copy_self.index(owner_guard), copy_self.index(cycle_guard))
-        self.assertLess(copy_self.index(cycle_guard), copy_self.index(self_write))
-        # Mutation-style negative cases: removing either exact identity equality
+        self.assertLess(copy_self.index(cycle_guard), copy_self.index(case_guard))
+        self.assertLess(copy_self.index(case_guard), copy_self.index(self_write))
+        # Mutation-style negative cases: removing any identity token
         # makes the static availability proof fail, rather than silently opening
-        # a dossier for another reviewer or publication cycle.
-        for missing_guard in (owner_guard, cycle_guard):
+        # a dossier for another reviewer, publication cycle or case.
+        for missing_guard in (owner_guard, cycle_guard, case_guard):
             mutated = copy_self.replace(missing_guard, "always = yes", 1)
             self.assertFalse(
                 owner_guard in mutated
                 and cycle_guard in mutated
+                and case_guard in mutated
                 and mutated.index(owner_guard) < mutated.index(cycle_guard)
-                and mutated.index(cycle_guard) < mutated.index(self_write)
+                and mutated.index(cycle_guard) < mutated.index(case_guard)
+                and mutated.index(case_guard) < mutated.index(self_write)
             )
+
+    def test_received_acl_excludes_peer_identities_and_unstructured_text(self) -> None:
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        copy_self = effects.split(
+            "zg361_copy_received_scoreboard_slots_effect = {", 1
+        )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
+        for field in RECEIVED_CASE_FIELDS:
+            self.assertIn(f"name = zg361_sb_self_{field.name}", copy_self)
+        for sensitive in SENSITIVE_RECEIVED_FIELDS:
+            self.assertNotIn(f"zg361_sb_self_{sensitive}", copy_self)
+        for source_var in SENSITIVE_RECEIVED_SOURCE_VARS:
+            self.assertNotIn(source_var, copy_self)
+        injected = CASE_FIELDS + (
+            FieldSpec(
+                "peer_slot_1_evaluator",
+                "zg361_b1_peer_slot_1_evaluator",
+                "peer",
+                "character",
+            ),
+            FieldSpec("raw_comment", "zg361_b1_raw_comment", "peer"),
+            FieldSpec("recusal_identity", "zg361_b1_recusal_identity", "peer"),
+        )
+        filtered = received_case_fields(injected)
+        self.assertEqual(filtered, RECEIVED_CASE_FIELDS)
 
     def test_detail_selection_is_cleared_by_publication_and_navigation(self) -> None:
         rendered = outputs()
@@ -167,6 +283,12 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
             "utf-8-sig"
         )
+        slot_guis = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt"
+        ].decode("utf-8-sig")
         for prefix in ("m", "r"):
             clear = effects.split(
                 f"zg361_clear_scoreboard_{prefix}_slots_effect = {{", 1
@@ -191,6 +313,17 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "GetScriptedGui('zg361_scoreboard_detail_received_gui').IsShown",
             gui,
         )
+        self.assertEqual(slot_guis.count(f"{DETAIL_CLEAR_GUI} = {{"), 1)
+        self.assertGreaterEqual(gui.count(DETAIL_CLEAR_ACTION), 6)
+        toggle = gui.split('name = "zg361_scoreboard_toggle"', 1)[1].split(
+            "\n\t}", 1
+        )[0]
+        self.assertEqual(toggle.count(DETAIL_CLEAR_ACTION), 3)
+        for close_marker in (
+            'name = "zg361_scoreboard_detail_back"',
+            "shortcut = close_window",
+        ):
+            self.assertIn(close_marker, gui)
 
     def test_character_and_dossier_controls_are_siblings(self) -> None:
         for prefix in ("m", "r"):
@@ -262,7 +395,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         ]
         self.assertEqual(stale, [])
 
-    def test_phase2_case_updates_follow_frozen_owner_and_cycle(self) -> None:
+    def test_phase2_case_updates_follow_frozen_owner_cycle_and_case(self) -> None:
         effects = outputs()[
             MOD_ROOT
             / "common"
@@ -281,8 +414,22 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertIn("var:zg361_result_case_owner = {", phase2)
         self.assertIn("zg361_scoreboard_managed_cycle_serial", phase2)
         self.assertIn("zg361_scoreboard_received_cycle_serial", phase2)
+        self.assertIn("zg361_scoreboard_received_case_serial", phase2)
         self.assertIn(
             "var:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
+            phase2,
+        )
+        for slot in (1, SLOT_COUNT):
+            frozen_case = f"zg361_sb_m_{slot:02d}_case_serial"
+            self.assertIn(f"has_variable = {frozen_case}", phase2)
+            self.assertIn(
+                f"var:{frozen_case} = "
+                "scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                phase2,
+            )
+        self.assertIn(
+            "var:zg361_sb_detail_case_serial = "
+            "scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
             phase2,
         )
         self.assertNotIn("\tliege = {", phase2)
@@ -291,6 +438,21 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             phase2.count("scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom"),
             SLOT_COUNT * 2,
         )
+
+    def test_generated_clausewitz_outputs_are_brace_balanced(self) -> None:
+        def balance(text: str) -> int:
+            cleaned = []
+            for line in text.splitlines():
+                line = re.sub(r'"(?:[^"\\]|\\.)*"', '""', line)
+                cleaned.append(line.split("#", 1)[0])
+            return "\n".join(cleaned).count("{") - "\n".join(cleaned).count("}")
+
+        for path, data in outputs().items():
+            if path.suffix not in {".txt", ".gui"}:
+                continue
+            text = data.decode("utf-8-sig")
+            self.assertEqual(balance(text), 0, path.name)
+            self.assertNotEqual(balance(text.rsplit("}", 1)[0]), 0, path.name)
 
     def test_eighty_row_cap_is_explicitly_reported_as_shown_over_full(self) -> None:
         product_effects = (

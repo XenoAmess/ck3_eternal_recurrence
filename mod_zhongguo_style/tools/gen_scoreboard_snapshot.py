@@ -17,8 +17,29 @@ TOGGLE_POSITION = (-60, 90)
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_scoreboard_snapshot.py\n"
 DETAIL_PAGES = ("facts", "peer", "quota", "audit")
+DETAIL_CLEAR_GUI = "zg361_scoreboard_detail_clear_gui"
+DETAIL_CLEAR_ACTION = (
+    "[GetScriptedGui('zg361_scoreboard_detail_clear_gui')."
+    "Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+)
 SENSITIVE_RECEIVED_FIELDS = frozenset(
-    {"evaluator_id", "raw_comment", "recusal_identity"}
+    {
+        "evaluator_id",
+        "peer_slot_1_evaluator",
+        "peer_slot_2_evaluator",
+        "peer_slot_3_evaluator",
+        "raw_comment",
+        "recusal_identity",
+    }
+)
+SENSITIVE_RECEIVED_SOURCE_VARS = frozenset(
+    {
+        "zg361_b1_peer_slot_1_evaluator",
+        "zg361_b1_peer_slot_2_evaluator",
+        "zg361_b1_peer_slot_3_evaluator",
+        "zg361_b1_raw_comment",
+        "zg361_b1_recusal_identity",
+    }
 )
 
 
@@ -31,6 +52,7 @@ class FieldSpec:
     page: str
     kind: str = "number"
     mutable: bool = False
+    received: bool = True
 
 
 BASE_FIELDS = (
@@ -45,13 +67,13 @@ BASE_FIELDS = (
     FieldSpec("pip", "", "summary"),
 )
 
-# Only variables already written by zg361_effects.txt are projected.  B1 peer,
-# conflict and recusal data deliberately remain unavailable until their runtime
-# exists; the GUI must never manufacture those records from policy markers.
+# Only variables already written by the product runtimes are projected.  Peer
+# records are aggregate-only: evaluator identity, free-form comments and
+# recusal identity are deliberately excluded from the received-self ACL.
 CASE_FIELDS = (
-    FieldSpec("case_owner", "zg361_result_case_owner", "facts", "character"),
-    FieldSpec("cycle_serial", "zg361_result_cycle_serial", "facts"),
-    FieldSpec("case_serial", "zg361_result_case_serial", "facts"),
+    FieldSpec("case_owner", "zg361_result_case_owner", "audit", "character"),
+    FieldSpec("cycle_serial", "zg361_result_cycle_serial", "audit"),
+    FieldSpec("case_serial", "zg361_result_case_serial", "audit"),
     FieldSpec("kpi_frozen", "zg361_result_kpi_frozen", "facts"),
     FieldSpec("values_frozen", "zg361_result_values_frozen", "facts"),
     FieldSpec("evidence_governance", "zg361_result_evidence_governance", "facts"),
@@ -62,10 +84,53 @@ CASE_FIELDS = (
     FieldSpec("evidence_collaboration", "zg361_result_evidence_collaboration", "facts"),
     FieldSpec("evidence_jingcha", "zg361_result_evidence_jingcha", "facts"),
     FieldSpec("evidence_organization", "zg361_result_evidence_organization", "facts"),
+    FieldSpec("self_choice", "zg361_b1_self_choice", "facts"),
+    FieldSpec("self_score", "zg361_b1_self_score", "facts", "decimal"),
+    FieldSpec("self_gap", "zg361_b1_self_gap", "facts", "decimal"),
+    FieldSpec("self_submitted_year", "zg361_b1_self_submitted_year", "facts"),
+    FieldSpec("shadow_grade", "zg361_b1_shadow_grade", "facts", "grade"),
+    FieldSpec("shadow_response", "zg361_b1_shadow_response_state", "facts"),
+    FieldSpec(
+        "shadow_delta", "zg361_b1_shadow_evidence_delta", "facts", "decimal"
+    ),
+    FieldSpec("shadow_response_year", "zg361_b1_shadow_response_year", "facts"),
+    FieldSpec("peer_n", "zg361_b1_peer_n", "peer"),
+    FieldSpec("peer_mean", "zg361_b1_peer_mean", "peer", "decimal"),
+    FieldSpec("peer_variance", "zg361_b1_peer_variance", "peer", "decimal"),
+    FieldSpec(
+        "peer_normalized_score",
+        "zg361_b1_peer_normalized_score",
+        "peer",
+        "decimal",
+    ),
+    FieldSpec("peer_shape", "zg361_b1_peer_shape", "peer"),
+    FieldSpec(
+        "peer_reciprocity_risk", "zg361_b1_peer_reciprocity_risk", "peer"
+    ),
+    FieldSpec("peer_timely_n", "zg361_b1_peer_timely_n", "peer"),
+    FieldSpec("peer_credit_total", "zg361_b1_peer_credit_total", "peer"),
+    FieldSpec("evaluator_credit", "zg361_b1_evaluator_credit", "peer"),
+    FieldSpec("evaluator_sample_n", "zg361_b1_evaluator_sample_n", "peer"),
+    FieldSpec("peer_use_mode", "zg361_b1_peer_use_mode", "peer"),
+    FieldSpec("peer_fatigue", "zg361_b1_peer_fatigue", "peer"),
     FieldSpec("cohort_n", "zg361_result_cohort_n_frozen", "quota"),
     FieldSpec("absolute_grade", "zg361_result_absolute_grade", "quota", "grade"),
     FieldSpec("final_grade", "zg361_result_grade", "quota", "grade", True),
     FieldSpec("grade_reason", "zg361_result_grade_reason", "quota"),
+    FieldSpec(
+        "calibration_score", "zg361_b1_calibration_score", "quota", "decimal"
+    ),
+    FieldSpec(
+        "calibration_score_before_shadow",
+        "zg361_b1_calibration_score_before_shadow",
+        "quota",
+        "decimal",
+    ),
+    FieldSpec(
+        "shadow_to_quota_delta", "zg361_b1_shadow_to_quota_delta", "quota"
+    ),
+    FieldSpec("quota_snapshot", "zg361_b1_quota_snapshot", "quota", "grade"),
+    FieldSpec("forced_down", "zg361_b1_forced_down", "quota"),
     FieldSpec("case_state", "zg361_result_case_state", "audit", "number", True),
     FieldSpec(
         "delivery_method", "zg361_result_delivery_method", "audit", "number", True
@@ -105,8 +170,44 @@ CASE_FIELDS = (
     FieldSpec(
         "merit_refunded", "zg361_result_merit_refunded", "audit", "number", True
     ),
+    FieldSpec("b1_case_owner", "zg361_b1_case_owner", "audit", "character"),
+    FieldSpec("b1_cycle_serial", "zg361_b1_cycle_serial", "audit"),
+    FieldSpec("b1_case_serial", "zg361_b1_case_serial", "audit"),
+    FieldSpec("b1_case_state", "zg361_b1_case_state", "audit"),
+    FieldSpec("b1_fact_sheet_serial", "zg361_b1_fact_sheet_serial", "audit"),
+    FieldSpec("b1_peer_sealed", "zg361_b1_peer_sealed", "audit"),
+    FieldSpec(
+        "b1_self_receipt_serial", "zg361_b1_m004_receipt_serial", "audit"
+    ),
+    FieldSpec(
+        "b1_peer_receipt_serial", "zg361_b1_m008_receipt_serial", "audit"
+    ),
+    FieldSpec(
+        "b1_shadow_receipt_serial", "zg361_b1_m001_receipt_serial", "audit"
+    ),
+    FieldSpec(
+        "b1_band_receipt_serial", "zg361_b1_m145_receipt_serial", "audit"
+    ),
 )
 MUTABLE_CASE_FIELDS = tuple(field for field in CASE_FIELDS if field.mutable)
+
+
+def received_case_fields(fields: tuple[FieldSpec, ...]) -> tuple[FieldSpec, ...]:
+    """Apply the received-self dossier ACL to a candidate managed schema."""
+
+    return tuple(
+        field
+        for field in fields
+        if field.received
+        and field.name not in SENSITIVE_RECEIVED_FIELDS
+        and field.source_var not in SENSITIVE_RECEIVED_SOURCE_VARS
+    )
+
+
+RECEIVED_CASE_FIELDS = received_case_fields(CASE_FIELDS)
+MUTABLE_RECEIVED_CASE_FIELDS = tuple(
+    field for field in RECEIVED_CASE_FIELDS if field.mutable
+)
 FIELDS = tuple(field.name for field in BASE_FIELDS)
 
 
@@ -197,6 +298,7 @@ def render_effects() -> bytes:
         lines.append("\tzg361_clear_scoreboard_detail_effect = yes")
         if prefix == "r":
             lines.append("\tzg361_clear_scoreboard_self_effect = yes")
+            lines.append("\tremove_variable = zg361_scoreboard_received_case_serial")
         for slot in range(1, SLOT_COUNT + 1):
             for field in BASE_FIELDS:
                 lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
@@ -282,6 +384,7 @@ def render_effects() -> bytes:
             "\t\t\tlimit = { var:zg361_result_case_owner = scope:zg361_scoreboard_source }",
             "\t\t\tif = {",
             "\t\t\t\tlimit = { scope:zg361_scoreboard_source = { var:zg361_scoreboard_managed_cycle_serial = root.var:zg361_result_cycle_serial } }",
+            "\t\t\t\tset_variable = { name = zg361_scoreboard_received_case_serial value = var:zg361_result_case_serial }",
             f"\t\t\t\tset_variable = {{ name = {fixed_var('self', 'char')} value = scope:zg361_scoreboard_self_entry }}",
             f"\t\t\t\tset_variable = {{ name = {fixed_var('self', 'title')} value = scope:zg361_scoreboard_self_entry.primary_title }}",
             "\t\t\t\tif = {",
@@ -290,7 +393,7 @@ def render_effects() -> bytes:
             "\t\t\t\t}",
         ]
     )
-    for field in CASE_FIELDS:
+    for field in RECEIVED_CASE_FIELDS:
         append_field_copy(
             lines,
             indent="\t\t\t\t",
@@ -316,7 +419,7 @@ def render_effects() -> bytes:
     def append_case_slot_update(
         *, effect_name: str, comment: str, grade: str, streak: str, pip: int
     ) -> None:
-        """Update only the frozen owner/cycle copy of the current subject's case."""
+        """Update only the frozen owner/cycle/case copy of the current subject."""
 
         lines.extend(
             [
@@ -335,6 +438,8 @@ def render_effects() -> bytes:
                     "\t\t\t\tvar:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
                     f"\t\t\t\thas_variable = {var('m', slot, 'char')}",
                     f"\t\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_case_entry",
+                    f"\t\t\t\thas_variable = {var('m', slot, 'case_serial')}",
+                    f"\t\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
                     "\t\t\t}",
                     f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = {grade} }}",
                     f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = {streak} }}",
@@ -359,6 +464,8 @@ def render_effects() -> bytes:
                 f"\t\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
                 f"\t\t\t\thas_variable = {fixed_var('detail', 'cycle_serial')}",
                 f"\t\t\t\tvar:{fixed_var('detail', 'cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                f"\t\t\t\thas_variable = {fixed_var('detail', 'case_serial')}",
+                f"\t\t\t\tvar:{fixed_var('detail', 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
                 "\t\t\t}",
             ]
         )
@@ -384,6 +491,10 @@ def render_effects() -> bytes:
                     "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
                     "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
                     "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
+                    "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
+                    "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+                    f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
+                    f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
                     f"\t\t\thas_variable = {var('r', slot, 'char')}",
                     f"\t\t\tvar:{var('r', slot, 'char')} = scope:zg361_scoreboard_case_entry",
                     "\t\t}",
@@ -401,10 +512,14 @@ def render_effects() -> bytes:
                 f"\t\t\tvar:{fixed_var('self', 'char')} = scope:zg361_scoreboard_case_entry",
                 "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
                 "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
+                "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
+                "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+                f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
+                f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
                 "\t\t}",
             ]
         )
-        for field in MUTABLE_CASE_FIELDS:
+        for field in MUTABLE_RECEIVED_CASE_FIELDS:
             append_field_copy(
                 lines,
                 indent="\t\t",
@@ -422,12 +537,16 @@ def render_effects() -> bytes:
                 f"\t\t\tvar:{fixed_var('detail', 'source')} = 2",
                 f"\t\t\thas_variable = {fixed_var('detail', 'char')}",
                 f"\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
+                "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
+                "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
                 f"\t\t\thas_variable = {fixed_var('detail', 'cycle_serial')}",
                 f"\t\t\tvar:{fixed_var('detail', 'cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                f"\t\t\thas_variable = {fixed_var('detail', 'case_serial')}",
+                f"\t\t\tvar:{fixed_var('detail', 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
                 "\t\t}",
             ]
         )
-        for field in MUTABLE_CASE_FIELDS:
+        for field in MUTABLE_RECEIVED_CASE_FIELDS:
             append_field_copy(
                 lines,
                 indent="\t\t",
@@ -494,6 +613,12 @@ def render_scripted_guis() -> bytes:
             f"\tis_shown = {{ has_variable = {fixed_var('detail', 'title')} }}",
             "}",
             "",
+            f"{DETAIL_CLEAR_GUI} = {{",
+            "\tscope = character",
+            "\tis_shown = { always = yes }",
+            "\teffect = { zg361_clear_scoreboard_detail_effect = yes }",
+            "}",
+            "",
             "zg361_sb_self_available_gui = {",
             "\tscope = character",
             "\tis_shown = {",
@@ -501,6 +626,12 @@ def render_scripted_guis() -> bytes:
             f"\t\thas_variable = {fixed_var('self', 'case_owner')}",
             f"\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
             f"\t\thas_variable = {fixed_var('self', 'case_serial')}",
+            "\t\thas_variable = zg361_scoreboard_received_owner",
+            "\t\thas_variable = zg361_scoreboard_received_cycle_serial",
+            "\t\thas_variable = zg361_scoreboard_received_case_serial",
+            f"\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_scoreboard_received_owner",
+            f"\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_scoreboard_received_cycle_serial",
+            f"\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_scoreboard_received_case_serial",
             "\t}",
             "}",
             "",
@@ -554,6 +685,10 @@ def render_scripted_guis() -> bytes:
                 f"\t\thas_variable = {var('m', slot, 'case_owner')}",
                 f"\t\thas_variable = {var('m', slot, 'cycle_serial')}",
                 f"\t\thas_variable = {var('m', slot, 'case_serial')}",
+                "\t\thas_variable = zg361_scoreboard_managed_owner",
+                "\t\thas_variable = zg361_scoreboard_managed_cycle_serial",
+                f"\t\tvar:{var('m', slot, 'case_owner')} = var:zg361_scoreboard_managed_owner",
+                f"\t\tvar:{var('m', slot, 'cycle_serial')} = var:zg361_scoreboard_managed_cycle_serial",
                 "\t}",
                 "\teffect = {",
                 "\t\tzg361_clear_scoreboard_detail_effect = yes",
@@ -590,6 +725,12 @@ def render_scripted_guis() -> bytes:
             f"\t\thas_variable = {fixed_var('self', 'case_owner')}",
             f"\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
             f"\t\thas_variable = {fixed_var('self', 'case_serial')}",
+            "\t\thas_variable = zg361_scoreboard_received_owner",
+            "\t\thas_variable = zg361_scoreboard_received_cycle_serial",
+            "\t\thas_variable = zg361_scoreboard_received_case_serial",
+            f"\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_scoreboard_received_owner",
+            f"\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_scoreboard_received_cycle_serial",
+            f"\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_scoreboard_received_case_serial",
             "\t}",
             "\teffect = {",
             "\t\tzg361_clear_scoreboard_detail_effect = yes",
@@ -606,7 +747,7 @@ def render_scripted_guis() -> bytes:
             "\t\t}",
         ]
     )
-    for field in CASE_FIELDS:
+    for field in RECEIVED_CASE_FIELDS:
         lines.append(
             f"\t\tif = {{ limit = {{ has_variable = {fixed_var('self', field.name)} }} "
             f"set_variable = {{ name = {fixed_var('detail', field.name)} value = var:{fixed_var('self', field.name)} }} }}"
@@ -646,6 +787,7 @@ def row_gui(prefix: str, slot: int) -> list[str]:
         "\tbutton_tertiary = {",
         "\t\tsize = { 1014 68 }",
         "\t\tonclick = \"[DefaultOnCharacterClick(Character.GetID)]\"",
+        f"\t\tonclick = \"{DETAIL_CLEAR_ACTION}\"",
         "\t\tonclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\"",
         "\t\tonclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\"",
         "\t\tonclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\"",
@@ -762,7 +904,7 @@ def detail_field_row(field: FieldSpec) -> list[str]:
             f"\ttext_single = {{ visible = \"[GetScriptedGui('{available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"[GetPlayer.MakeScope.Var('{value_var}').Char.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline }}"
         )
     else:
-        value_format = "2" if field.kind == "grade" else "0"
+        value_format = "2" if field.kind == "grade" else "1" if field.kind == "decimal" else "0"
         lines.append(
             f"\ttext_single = {{ visible = \"[GetScriptedGui('{available}').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"[GetPlayer.MakeScope.Var('{value_var}').GetValue|{value_format}]\" default_format = \"#high\" align = nobaseline }}"
         )
@@ -814,7 +956,7 @@ def detail_gui() -> list[str]:
         "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 10 margin = { 20 8 }",
         f"\tvisible = \"[And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), Or({managed_visible}, {received_visible}))]\"",
         "\thbox = { layoutpolicy_horizontal = expanding spacing = 14",
-        "\t\tbutton_standard = { name = \"zg361_scoreboard_detail_back\" size = { 118 44 } text = \"zg361_scoreboard_detail_back\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" }",
+        f"\t\tbutton_standard = {{ name = \"zg361_scoreboard_detail_back\" size = {{ 118 44 }} text = \"zg361_scoreboard_detail_back\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" }}",
         f"\t\tportrait_head_small = {{ datacontext = \"[GetPlayer.MakeScope.Var('{fixed_var('detail', 'char')}').Char]\" blockoverride \"portrait_button\" {{ alwaystransparent = yes }} }}",
         "\t\tvbox = { layoutpolicy_horizontal = expanding spacing = 2",
         f"\t\t\ttext_single = {{ text = \"[GetPlayer.MakeScope.Var('{fixed_var('detail', 'char')}').Char.GetUINameNotMeNoTooltip]\" default_format = \"#high\" align = nobaseline using = Font_Size_Large }}",
@@ -926,20 +1068,20 @@ def render_gui() -> bytes:
         "\twidget = {",
         f"\t\tname = \"zg361_scoreboard_toggle\" size = {{ {toggle_width} {toggle_height} }} parentanchor = top|right position = {{ {toggle_x} {toggle_y} }}",
         f"\t\tvisible = \"{toggle_hud_gate}\" using = Animation_ShowHide_Quick",
-        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
-        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
-        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), Not(GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))), GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'system')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_open\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
+        f"\t\tbutton_standard = {{ size = {{ {toggle_width} {toggle_height} }} visible = \"[And(And(Not(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), Not(GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))), GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]\" text = \"zg361_scoreboard_open\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Toggle('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'system')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.Exists('zg361_scoreboard_open')]\" tooltip = \"zg361_scoreboard_open_tooltip\" }}",
         "\t}",
         "\twidget = {",
         "\t\tname = \"zg361_scoreboard_modal\" size = { 100% 100% }",
         f"\t\tvisible = \"[And(And(GetVariableSystem.Exists('zg361_scoreboard_open'), {any_surface}), {overlay_gate})]\"",
         "\t\talwaystransparent = no filter_mouse = all using = Background_Full_Dim using = Animation_ShowHide_Quick",
-        "\t\tbutton_normal = { size = { 100% 100% } onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }",
+        f"\t\tbutton_normal = {{ size = {{ 100% 100% }} onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }}",
         "\t\twidget = {",
         "\t\t\tname = \"zg361_scoreboard_panel\" size = { 1220 820 } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike",
         "\t\t\tvbox = {",
         "\t\t\t\tusing = Window_Margins spacing = 8",
-        "\t\t\t\theader_pattern = { layoutpolicy_horizontal = expanding blockoverride \"header_text\" { text = \"zg361_scoreboard_title\" } blockoverride \"button_close\" { onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window } }",
+        f"\t\t\t\theader_pattern = {{ layoutpolicy_horizontal = expanding blockoverride \"header_text\" {{ text = \"zg361_scoreboard_title\" }} blockoverride \"button_close\" {{ onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Clear('zg361_scoreboard_open')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" shortcut = close_window }} }}",
         "\t\t\t\thbox = { layoutpolicy_horizontal = expanding",
         "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_managed\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')]\" }",
         "\t\t\t\t\tbutton_tab = { layoutpolicy_horizontal = expanding visible = \"[GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]\" text = \"zg361_scoreboard_tab_received\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', 'received')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')]\" }",
