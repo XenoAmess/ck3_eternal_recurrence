@@ -972,6 +972,23 @@ class Phase3WorkforceEndgameModel:
         ]
         if len(active_candidates) != len(set(active_candidates)):
             raise DomainRed(RedCode.STATE_CONFLICT, "candidate has multiple active requisitions")
+        pending_conversion_ids = [
+            item.converted_official_id
+            for item in self.external_contracts.values()
+            if item.conversion_hc_reserved and item.converted_official_id is not None
+        ]
+        pending_requisition_ids = [
+            item.candidate_id
+            for item in self.requisitions.values()
+            if item.hc_reservation_active and item.candidate_id is not None
+        ]
+        formal_identity_claims = [
+            *self.formal_hc_occupants,
+            *pending_conversion_ids,
+            *pending_requisition_ids,
+        ]
+        if len(formal_identity_claims) != len(set(formal_identity_claims)):
+            raise DomainRed(RedCode.STATE_CONFLICT, "actor has multiple formal HC claims")
         reserved_offer_gold = sum(
             item.offer_gold_reserved + item.referral_gold_reserved
             for item in self.requisitions.values()
@@ -1225,6 +1242,22 @@ class Phase3WorkforceEndgameModel:
         if requisition is None:
             raise DomainRed(RedCode.NOT_FOUND, "requisition not found")
         return requisition
+
+    def _claimed_formal_hc_actor_ids(self) -> set[str]:
+        """Return filled and actively reserved formal-HC actor identities."""
+
+        claimed = set(self.formal_hc_occupants)
+        claimed.update(
+            item.converted_official_id
+            for item in self.external_contracts.values()
+            if item.conversion_hc_reserved and item.converted_official_id is not None
+        )
+        claimed.update(
+            item.candidate_id
+            for item in self.requisitions.values()
+            if item.hc_reservation_active and item.candidate_id is not None
+        )
+        return claimed
 
     # AB / 242-253 -----------------------------------------------------
 
@@ -1841,17 +1874,7 @@ class Phase3WorkforceEndgameModel:
                 raise DomainRed(RedCode.STATE_CONFLICT, "conversion lacks verified delivery")
             if candidate.formal_hc_available < 1:
                 raise DomainRed(RedCode.RESOURCE_EXHAUSTED, "no formal HC is available")
-            pending_or_filled = set(candidate.formal_hc_occupants)
-            pending_or_filled.update(
-                item.converted_official_id
-                for item in candidate.external_contracts.values()
-                if item.conversion_hc_reserved and item.converted_official_id is not None
-            )
-            pending_or_filled.update(
-                item.candidate_id
-                for item in candidate.requisitions.values()
-                if item.candidate_id is not None and item.status is not RequisitionStatus.CLOSED
-            )
+            pending_or_filled = candidate._claimed_formal_hc_actor_ids()
             if official in pending_or_filled:
                 raise DomainRed(RedCode.STATE_CONFLICT, "official already has formal or pending HC")
             candidate.formal_hc_available -= 1
@@ -2096,6 +2119,11 @@ class Phase3WorkforceEndgameModel:
                 return
             elif route == "permanent":
                 if record.official_id not in candidate.formal_hc_occupants:
+                    if record.official_id in candidate._claimed_formal_hc_actor_ids():
+                        raise DomainRed(
+                            RedCode.STATE_CONFLICT,
+                            "permanent transfer actor already has pending formal HC",
+                        )
                     if candidate.formal_hc_available < 1:
                         raise DomainRed(RedCode.RESOURCE_EXHAUSTED, "permanent transfer lacks HC")
                     candidate.formal_hc_available -= 1

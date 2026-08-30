@@ -962,6 +962,145 @@ class WorkforceEndgameModelTests(unittest.TestCase):
         self.assertEqual(RedCode.STATE_CONFLICT, caught.exception.code)
         self.assertEqual(late_snapshot, late)
 
+    def test_263_permanent_rejects_pending_conversion_or_requisition_identity_atomically(self) -> None:
+        conversion = make_model()
+        apply(
+            conversion,
+            "conversion-contract",
+            "open_external_contract_254",
+            contract_id="conversion-contract",
+            vendor_id="conversion-vendor",
+            contract_type=ContractType.OUTCOME,
+            shadow_hc_units=1,
+            budget_gold=10,
+            sunset_cycle=5,
+        )
+        apply(
+            conversion,
+            "conversion-lock",
+            "lock_contract_type_260",
+            contract_id="conversion-contract",
+            contract_type=ContractType.OUTCOME,
+            ownership_ref="conversion-owner",
+            change_rule_ref="conversion-change",
+        )
+        apply(
+            conversion,
+            "conversion-chain",
+            "disclose_executor_chain_261",
+            contract_id="conversion-contract",
+            executor_chain=("conversion-vendor", "conversion-executor"),
+            actual_executor_id="conversion-executor",
+        )
+        apply(
+            conversion,
+            "conversion-score",
+            "evaluate_supplier_pool_256",
+            contract_id="conversion-contract",
+            delivery_score=80,
+            quality_score=80,
+            sla_score=80,
+            decision="renew",
+        )
+        apply(
+            conversion,
+            "conversion-reserve",
+            "convert_external_worker_257",
+            contract_id="conversion-contract",
+            official_id="external",
+            effective_cycle=4,
+            recruitment_ref="conversion-recruitment",
+        )
+        apply(
+            conversion,
+            "conversion-secondment",
+            "open_secondment_review_262",
+            secondment_id="conversion-secondment",
+            official_id="external",
+            home_manager_id="emperor",
+            host_manager_id="duke",
+            home_weight=50,
+            host_weight=50,
+            due_cycle=4,
+            return_right="permanent_option",
+        )
+        conversion.cycle_serial = 4
+        conversion._validate()
+        conversion_snapshot = copy.deepcopy(conversion)
+        with self.assertRaises(DomainRed) as caught:
+            conversion.resolve_secondment_return_263(
+                conversion.command("conversion-permanent-collision"),
+                secondment_id="conversion-secondment",
+                choice="permanent",
+                as_of_cycle=4,
+            )
+        self.assertEqual(RedCode.STATE_CONFLICT, caught.exception.code)
+        self.assertEqual(conversion_snapshot, conversion)
+        self.assertEqual((7, 1, 0), (
+            conversion.formal_hc_available,
+            conversion.formal_hc_reserved,
+            conversion.formal_hc_filled,
+        ))
+        apply(
+            conversion,
+            "conversion-settle",
+            "settle_external_conversion_257",
+            contract_id="conversion-contract",
+        )
+        self.assertEqual((7, 0, 1), (
+            conversion.formal_hc_available,
+            conversion.formal_hc_reserved,
+            conversion.formal_hc_filled,
+        ))
+        self.assertEqual(1, conversion.formal_hc_occupants["external"])
+
+        requisition = make_model()
+        apply(
+            requisition,
+            "requisition-open",
+            "open_requisition_266",
+            requisition_id="requisition",
+            role_id="requisition-role",
+            threshold=50,
+            urgency=50,
+        )
+        apply(
+            requisition,
+            "requisition-owner",
+            "assign_candidate_owner_273",
+            requisition_id="requisition",
+            candidate_id="external",
+            owner_id="emperor",
+            allocation_ref="requisition-allocation",
+            scout_credit_bps=5_000,
+            hiring_credit_bps=5_000,
+        )
+        apply(
+            requisition,
+            "requisition-secondment",
+            "open_secondment_review_262",
+            secondment_id="requisition-secondment",
+            official_id="external",
+            home_manager_id="emperor",
+            host_manager_id="duke",
+            home_weight=50,
+            host_weight=50,
+            due_cycle=4,
+            return_right="permanent_option",
+        )
+        requisition.cycle_serial = 4
+        requisition._validate()
+        requisition_snapshot = copy.deepcopy(requisition)
+        with self.assertRaises(DomainRed) as caught:
+            requisition.resolve_secondment_return_263(
+                requisition.command("requisition-permanent-collision"),
+                secondment_id="requisition-secondment",
+                choice="permanent",
+                as_of_cycle=4,
+            )
+        self.assertEqual(RedCode.STATE_CONFLICT, caught.exception.code)
+        self.assertEqual(requisition_snapshot, requisition)
+
 
 if __name__ == "__main__":
     unittest.main()
