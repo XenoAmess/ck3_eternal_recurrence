@@ -43,7 +43,10 @@ jobs:
         run: |
           python mod_zhongguo_style/tools/test_gen_361_mechanisms.py
           python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
+          python mod_zhongguo_style/tools/test_zg361_phase2_runtime.py
+          python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
           python tools/test_gen_zhongguo_acceptance_cases.py
+          python tools/test_zg361_clean_promo_fixture.py
           python tools/test_run_zhongguo_promo_capture.py
           python tools/test_run_zhongguo_workshop_acceptance.py
       - name: Test ZhongGuo 361 release localization
