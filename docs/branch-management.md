@@ -88,8 +88,8 @@ clone 的 local tip（不留 persistent ref），再与当前 master 做 ancestr
 
 | branch / checkout | reason / base | owner | acceptance / deadline | status |
 |---|---|---|---|---|
-| `wip/zhongguo-phase2-v0.4`（迁移前名 `mod-zhongguo-style-phase2-v0.4`） | 二期 MCP-first 批量实机；静态 milestone `b5a0b0e` 已合入 master；现 base `22553a8` | ZhongGuo phase2 | 保留两份未提交 acceptance 文件；本 L1 slice GREEN 后立即 merge，且必须早于第二个 slice 开工 | `active` |
-| `wip/g2-next-episode`（迁移前名 `agent-mainline-20260827`） | G2 `start-next-episode → gameplay/checkpoint`；由 `388cf37` 无损迁到 `22553a8` | autonomous G2 | 保留 4 modified + 1 untracked；next-episode 端到端 gate GREEN 后立即 merge，且必须早于任何无关 G2 milestone | `active` |
+| `wip/zhongguo-phase2-v0.4`（迁移前名 `mod-zhongguo-style-phase2-v0.4`） | 二期 MCP-first 首纵切；WIP `3d135c9` 已拣入最新 G2 master 为 `688c643` | ZhongGuo phase2 | attempt 06 bounded fixture-live GREEN；等待 exact master 官方 CI 后立即 detach/delete local+remote ref，早于第二纵切 | `merged-ci-pending` |
+| `wip/g2-next-episode`（迁移前名 `agent-mainline-20260827`） | G2 `start-next-episode → gameplay/checkpoint` | autonomous G2 | commit `a348a62`、docs `46afe1d` 已进 master；CI `33306686336` / `33306797242` GREEN；checkout 在 `46afe1d` detach 并写 marker，本地 ref 已删除，artifact 保留 | `retired` |
 | `Z:\ck3_mod_rewrite` | 一期 WIP tip `17dc506` 上的用户脏现场 | owner | 已同 tip detach、删除 ref；中央 ledger 保留 exact HEAD/status/diff，绝不删除 36 tracked / 12,600 untracked | `retired` ref；frozen evidence 原地保留 |
 | 旧 agent/runtime/release checkout | 已合入、patch-equivalent 或 superseded 的 live 证据 | consolidation | 34 个根已 detach + marker；目录不随 35 个历史 ref 删除 | `retired` |
 

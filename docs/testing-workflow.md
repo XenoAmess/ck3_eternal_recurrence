@@ -871,3 +871,36 @@ owner、合法 terminal identity 与后续 settlement 仍必须逐项验证。�
 
 该 GREEN 只证明同一冻结 seed 的首个跨 episode OODA 与 checkpoint，不证明第二个完整寿命、多 seed/ruler/government/DLC 或
 全游戏自治。
+
+## ZhongGuo v0.4.x phase2：MCP-first 纵切验收（2026-08-30）
+
+首纵切 #001/#018/#069/#357 的权威 GREEN artifact 为
+`Z:\ck3_mod_rewrite_process_assets\zg361\phase2-worktrees\v0.4-main_process_assets\zg361\runs\zga_20260830_191131_7e82d061`。
+顶层 `report.json` SHA-256 为
+`409CF4366A7A96801CFE56C91792D11C7B779A6DEECB1D2DDDF4876C87D8DD6B`，`evidence-index.json` 为
+`140E5FF79F37717B25D1233E02427ADE7F2031FAC6B7944B2ACCDA6AF979B450`。运行 `477.458s`，保护存储未变，
+PID `31904` 的 job active `1→0`，process tree、watchdog、driver 和 runtime locks 均完成清理，结束后 CK3=0。
+
+MCP-first 合同：
+
+1. 通用 New Game/bookmark、acceptance-only initializer，以及一期 GUI 的截图抽样目前仍可使用**已登记的 startup/bootstrap
+   视觉辅助**，因为尚无 decision-list/action MCP。它们不读取二期角色、头衔、事件、案卷或资源，也不参与 GREEN；因此完整
+   runner 不得写成 zero-OCR。
+2. 二期角色/头衔、可见事件 canonical definition、选项解析、typed submission 与独立 ACK 只能使用 frozen exact-build native
+   MCP。`.50` 实例 `8` 在 public revision `53` 被识别，拒签为 rendered option `3` / native index `2`；提交 ACK 从
+   `54→55` 并逐项证明 instance advanced 与 postcondition。随后 `.4` 实例 `9` 在 revision `60` 被识别，option `1` /
+   native index `0` 的 ACK 从 `61→62`。不得用 OCR 或按钮坐标替代这些绑定。
+3. 隐藏 `.51` 没有 event window，D+7 见证送达只能由产品 marker 与只读 fixture oracle 对账；两个 marker 各恰好一次，重复调用
+   delivery/settlement 后资源不再变化。`.52` 的通用 timer marker 未绑定本案角色，不能冒充 `han_6875` 的案卷证明；`.53`
+   本轮没有 live 命中，因此个人陈述重开仍是 `static-ready`。
+4. OCR 只允许在 native identity 闭合后保存画面证据。任何 canonical key、revision、instance、option、ACK 或 receipt 不一致都
+   保持 RED；不得拿视觉文字反向放行。
+5. 当前 MCP 不发布通用 mod character variables、`treasury`、`merit` 等资源快照，所以这次 evidence 上限是 bounded
+   `fixture-live`，不是 `production-live`。夹具只建立可重复前置条件并提供只读 oracle，不得直接写 grade、处分、receipt 或 PASS
+   后置状态。
+
+本轮还冻结了两个必须复用的测试经验。其一，visible multi-option interruption 在 `set-speed-1` 后必须等待**后续 public
+revision** 再查询 event context；不能因为没有配置 preferred option text 就跳过 settled-revision 门。其二，CK3 多条件
+`NOT` 不能承担 unset/value compare 的短路逻辑：新案把 settlement/refund posted serial 初始化为 `0`，事务只允许零值进入，
+成功后写正数 case serial；验收准备态必须断言 `0`，不能继续要求变量不存在。对应语法索引见
+[grammar/pitfalls.md](grammar/pitfalls.md)。
