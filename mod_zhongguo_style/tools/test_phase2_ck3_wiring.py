@@ -225,7 +225,7 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         }
         self.assertEqual(live, {1, 18, 69, 357})
         self.assertEqual(contracts, {1, 18, 69, 357})
-        self.assertEqual(manifest["phase2_static"]["count"], 193)
+        self.assertEqual(manifest["phase2_static"]["count"], 220)
         self.assertEqual(
             manifest["readiness"]["partial_live_notes"]["018"],
             "receipt/refund is fixture-live; reopening zg361.53 remains static-ready",

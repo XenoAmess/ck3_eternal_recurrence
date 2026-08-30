@@ -168,18 +168,18 @@ class DomainRuntimePlanTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "partial" for item in manifest["items"]),
-            193,
+            220,
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "not-implemented" for item in manifest["items"]),
-            168,
+            141,
         )
         self.assertEqual(
             manifest["readiness"]["exclusive_counts"],
             {
                 "design-only": 0,
-                "python-l0": 168,
-                "ck3-static-ready": 131,
+                "python-l0": 141,
+                "ck3-static-ready": 158,
                 "central-wired": 58,
                 "ck3-live": 4,
             },

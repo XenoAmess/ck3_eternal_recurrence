@@ -8,9 +8,9 @@
     "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
     "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
     "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
-    "domain_runtime": "193 mechanisms have at least a committed partial CK3 product projection; 168 still have no CK3 domain runtime. Partial does not mean complete.",
+    "domain_runtime": "220 mechanisms have at least a committed partial CK3 product projection; 141 still have no CK3 domain runtime. Partial does not mean complete.",
     "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; static or central wiring does not by itself complete the per-ID player loop.",
-    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 193 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
+    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 220 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
   },
   "acceptance": {
     "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -33,29 +33,29 @@
     ],
     "exclusive_counts": {
       "design-only": 0,
-      "python-l0": 168,
-      "ck3-static-ready": 131,
+      "python-l0": 141,
+      "ck3-static-ready": 158,
       "central-wired": 58,
       "ck3-live": 4
     },
     "cumulative_counts": {
       "design-only": 361,
       "python-l0": 361,
-      "ck3-static-ready": 193,
+      "ck3-static-ready": 220,
       "central-wired": 62,
       "ck3-live": 4
     },
     "exclusive_ranges": {
       "design-only": "",
-      "python-l0": "026-031, 054-068, 082-091, 129-134, 146-191, 242-300, 312-333, 355-356, 360-361",
-      "ck3-static-ready": "019-025, 032-036, 092-128, 192-241, 301-311, 334-354",
+      "python-l0": "082-091, 146-191, 242-300, 312-333, 355-356, 360-361",
+      "ck3-static-ready": "019-036, 054-068, 092-134, 192-241, 301-311, 334-354",
       "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
       "ck3-live": "001, 018, 069, 357"
     },
     "cumulative_ranges": {
       "design-only": "001-361",
       "python-l0": "001-361",
-      "ck3-static-ready": "001-025, 032-053, 069-081, 092-128, 135-145, 192-241, 301-311, 334-354, 357-359",
+      "ck3-static-ready": "001-081, 092-145, 192-241, 301-311, 334-354, 357-359",
       "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
       "ck3-live": "001, 018, 069, 357"
     },
@@ -93,6 +93,12 @@
       23,
       24,
       25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
       32,
       33,
       34,
@@ -115,6 +121,21 @@
       51,
       52,
       53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
       69,
       70,
       71,
@@ -165,6 +186,12 @@
       126,
       127,
       128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
       135,
       136,
       137,
@@ -262,7 +289,7 @@
       358,
       359
     ],
-    "count": 193,
+    "count": 220,
     "evidence": "at-least-ck3-static-ready",
     "source": "tools/zg361_readiness_data.py",
     "tests": "tools/test_zg361_readiness_data.py",
@@ -4037,23 +4064,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -4176,23 +4204,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -4315,23 +4344,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -4453,23 +4483,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -4592,23 +4623,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -4731,23 +4763,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -7991,23 +8024,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8131,23 +8165,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8269,23 +8304,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8408,23 +8444,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8548,23 +8585,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8688,23 +8726,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8828,23 +8867,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -8968,23 +9008,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9106,23 +9147,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9242,23 +9284,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9380,23 +9423,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9518,23 +9562,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9654,23 +9699,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9792,23 +9838,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -9930,23 +9977,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -18600,23 +18648,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -18742,23 +18791,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -18886,23 +18936,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -19031,23 +19082,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -19175,23 +19227,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -19319,23 +19372,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "credit-project-python-model",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "credit-project-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase3_credit_project_model.py",
-          "tools/test_zg361_phase3_credit_project_model.py"
+          "tools/gen_361_credit_project_runtime.py",
+          "tools/test_gen_361_credit_project_runtime.py",
+          "docs/361-phase3-credit-project-ck3-runtime-spec.md"
         ],
-        "note": "Committed deterministic Python reference model; CK3 product projection is not counted.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
