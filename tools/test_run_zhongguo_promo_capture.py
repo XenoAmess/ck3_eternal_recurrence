@@ -278,7 +278,7 @@ def main() -> int:
     ):
         assert token in identity_source, token
     policy_option_source = inspect.getsource(
-        capture.select_policy_reference_option_native
+        capture.select_resolved_event_option_native
     )
     for token in (
         "query_event_definition_identity",
@@ -367,7 +367,7 @@ def main() -> int:
     }
     with tempfile.TemporaryDirectory() as temp_dir:
         policy_option_service = PolicyOptionService()
-        policy_option_gate = capture.select_policy_reference_option_native(
+        policy_option_gate = capture.select_resolved_event_option_native(
             policy_option_service,
             Path(temp_dir),
             policy_option_snapshot,
@@ -394,7 +394,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as temp_dir:
         disabled_policy_option_service = PolicyOptionService(enabled=False)
         try:
-            capture.select_policy_reference_option_native(
+            capture.select_resolved_event_option_native(
                 disabled_policy_option_service,
                 Path(temp_dir),
                 policy_option_snapshot,
@@ -1766,7 +1766,7 @@ def main() -> int:
         "timeline_service: GameplayBridgeService",
         "speed_one_gate = arm_native_speed_one(",
         'stem=f"{stem}_close"',
-        "select_policy_reference_option_native(",
+        "select_resolved_event_option_native(",
         'expected_option_text=option_text',
         'expected_event_definition_key=f"zg361m.{mechanism_id}"',
         'pause_evidence["native_option_selection"]',
@@ -1780,9 +1780,9 @@ def main() -> int:
     ):
         assert token in policy_body, token
     assert policy_body.index("speed_one_gate = arm_native_speed_one(") < (
-        policy_body.index("select_policy_reference_option_native(")
+        policy_body.index("select_resolved_event_option_native(")
     )
-    assert policy_body.index("select_policy_reference_option_native(") < policy_body.index(
+    assert policy_body.index("select_resolved_event_option_native(") < policy_body.index(
         "pause_after_promo_event_click"
     )
     assert "acceptance.wait_for_ocr_text" not in policy_body
@@ -2500,6 +2500,202 @@ def main() -> int:
             (9, 52, "vanilla.100"),
             (9, 53, "vanilla.101"),
         ]
+
+    class NativeResolvedProductService:
+        def __init__(self) -> None:
+            self.revision = 60
+            self.speed = 5
+            self.paused = False
+            self.active = True
+            self.query_calls: list[tuple[int, int]] = []
+            self.steps: list[str] = []
+            self.selections: list[tuple[int, int | None, int | None]] = []
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "native_revision": self.revision,
+                "date_raw": 53146824,
+                "paused": self.paused,
+                "speed": self.speed,
+                "active_event": (
+                    {"instance_id": 7, "option_count": 4}
+                    if self.active
+                    else None
+                ),
+                "played_character": {"character_id": 27664},
+            }
+
+        def execute_step(
+            self, step: str, *, expected_revision: int | None = None
+        ) -> dict[str, object]:
+            if step == "pause-map":
+                assert expected_revision == self.revision
+                self.paused = True
+            else:
+                assert step == "set-speed-1"
+                assert expected_revision is None
+                self.speed = 1
+            self.steps.append(step)
+            self.revision += 1
+            return {"step": step, "accepted": True, "status": "submitted"}
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            assert self.active is True
+            self.query_calls.append((event_instance_id, expected_revision))
+            return {
+                "status": "available",
+                "current_event_window_context": {
+                    "event_definition_key": "zg361.6",
+                    "readiness": {
+                        "event_definition_identity_ready": True,
+                        "option_presentation_ready": True,
+                    },
+                    "options": [
+                        {
+                            "native_option_index": 0,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "最后申诉！要求复核！",
+                        },
+                        {
+                            "native_option_index": 1,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "散尽家财，上下打点。",
+                        },
+                        {
+                            "native_option_index": 2,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "认命致仕，体面退场。",
+                        },
+                        {
+                            "native_option_index": 3,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "掀桌起兵！（建立独立派系，对抗主君）",
+                        },
+                    ],
+                },
+            }
+
+        def select_event_option(
+            self,
+            option_number: int,
+            *,
+            event_instance_id: int | None = None,
+            expected_revision: int | None = None,
+        ) -> dict[str, object]:
+            assert self.paused is True
+            assert self.active is True
+            self.selections.append(
+                (option_number, event_instance_id, expected_revision)
+            )
+            self.active = False
+            self.revision += 1
+            return {
+                "step": f"select-event-option-{option_number}",
+                "accepted": True,
+                "status": "submitted",
+            }
+
+    split_elimination_items = event_frame(
+        "你被列入末位淘汰名单",
+        (
+            ("最后申诉！要求复核！", (930, 887)),
+            ("认命致仕，体面退场。", (930, 989)),
+            ("掀桌起兵！", (808, 1043)),
+            ("（建立独立派系，对抗主君）", (983, 1043)),
+        ),
+    )
+    split_elimination_image = FakeDesktopImage(split_elimination_items)
+    _split_lower, split_selected = real_select(
+        [dict(item) for item in split_elimination_items],
+        split_elimination_image,
+        allow_succession=False,
+    )
+    assert split_selected is not None
+    split_preferred_title, split_preferred_option = (
+        capture.promo_preferred_product_event_option(
+            split_elimination_items, 2560, 1440
+        )
+    )
+    assert split_preferred_title == "你被列入末位淘汰名单"
+    assert split_preferred_option is not None
+    assert split_preferred_option["text"] == "掀桌起兵！"
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        resolved_product_service = NativeResolvedProductService()
+
+        def resolved_product_grab() -> FakeDesktopImage:
+            return FakeDesktopImage(
+                [dict(item) for item in split_elimination_items]
+                if resolved_product_service.active
+                else []
+            )
+
+        with (
+            mock.patch.object(capture.acceptance, "focus_ck3"),
+            mock.patch.object(
+                capture.acceptance.ImageGrab,
+                "grab",
+                side_effect=resolved_product_grab,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "ocr_box_results",
+                side_effect=lambda image, _region: [
+                    dict(item) for item in image.items
+                ],
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "write_recovery_bundle",
+                side_effect=write_fake_bundle,
+            ),
+            mock.patch.object(
+                capture.acceptance,
+                "quick_recovery_kind",
+                return_value=None,
+            ),
+            mock.patch.object(capture.acceptance, "deliberate_click") as click,
+            mock.patch.object(
+                capture.time, "monotonic", side_effect=advancing_clock()
+            ),
+            mock.patch.object(capture.time, "sleep"),
+        ):
+            resolved_product_dismissed = capture.settle_promo_interruptions(
+                artifacts,
+                "mock_split_elimination",
+                observation_s=0.0,
+                stop_event_title="KPI 分项证据单",
+                stop_event_definition_key="zg361m.1",
+                native_event_service=resolved_product_service,
+            )
+        click.assert_not_called()
+        assert resolved_product_service.steps == ["pause-map", "set-speed-1"]
+        assert resolved_product_service.selections == [(4, 7, 62)]
+        assert len(resolved_product_dismissed) == 1
+        resolved_product_row = resolved_product_dismissed[0]
+        assert resolved_product_row["selection_method"] == (
+            "native_mcp_resolved_product_option"
+        )
+        assert resolved_product_row["native_event_definition_key"] == "zg361.6"
+        resolved_product_gate = resolved_product_row["native_selection_evidence"]
+        assert resolved_product_gate["result"] == "GREEN"
+        assert resolved_product_gate["native_option_selection"]["result"] == (
+            "GREEN"
+        )
+        assert resolved_product_gate["native_option_selection"][
+            "selected_native_option_index"
+        ] == 3
+        assert resolved_product_gate["native_option_selection"][
+            "selected_option_number"
+        ] == 4
 
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)

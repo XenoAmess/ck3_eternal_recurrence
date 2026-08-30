@@ -137,15 +137,23 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**，且无需修改 DLL：每张卡录制前先把鼠标停到事件叙事区并等待 tooltip 消失；关闭卡片时不再用 OCR 定位或鼠标点击，而是从同一暂停帧的 `current_event_window_context_v1.options` 中按规范化 `resolved_name` 唯一匹配配置项，要求 `shown/enabled`，取 `native_option_index + 1` 后以 event instance 与 public revision 绑定调用 `select_event_option`。随后仍沿用同日 canonical definition/instance 转场与连续暂停门。定向回归已证明第007号提交 option 1、disabled/缺失项在提交前 RED，且政策 capture 路径不再调用选项 OCR 或视觉点击；Python 编译、宣传 runner 合同、clean fixture、工坊媒体门、ZhongGuo 静态检查与 release builder 测试均 GREEN。下一步只跑第十四次完整合批实机，不重复审计已通过链路。
 
-## 13. 旧工坊 01/02/03 素材判定
+## 13. 第十四次完整 attempt：真实末位事件按钮被 OCR 拆段
+
+第十四次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0853_clean_f3c1ae8_mcp` 第十四次实机复现宋帝 23 人严格 `7 / 14 / 2`，并再次通过 361/361 账本、校准与结算、完整 GUI 阻塞矩阵、京察与免费规划器、D+90、拒办理由、史实上司明示 `3.25` 和本人榜。本轮最终仍为 **harness RED**，没有新增产品 RED。
+
+终止点早于第001号卡：D+2 的真实产品事件 `zg361.6`《你被列入末位淘汰名单》已经置顶，canonical MCP 身份、四个 option count 和查询前暂停门均正常；截图清楚显示批准的连续片场选项“掀桌起兵！（建立独立派系，对抗主君）”。RapidOCR 却把按钮正文“掀桌起兵！”和括号说明拆成两个独立 row；已知事件映射能找到前半句，但通用 `quick_recovery_kind` 不肯把这个半句独立分类为安全动作，runner 因而在零点击状态下按 unknown modal RED。第十三次曾通过同一处，只说明 OCR 当时恰好合并了文本，不能把这种分词随机性当合同。
+
+最小修复继续收缩 OCR 权力：已知产品事件仍先由 canonical `event_definition_key` 绑定；“野狗与小白兔”及 `zg361.6` 的明确片场选项随后也复用通用 typed selector，从 `current_event_window_context_v1.options` 按完整 `resolved_name` 唯一匹配 `shown/enabled` 行，并以 `native_option_index + 1`、event instance、public revision 提交。视觉分词仅进入截图/诊断 sidecar，不能否决动作；未知多选事件依旧 fail-closed。定向回归专门模拟“掀桌起兵！”与括号说明拆成两行、强制通用 kind 为 `None`，证明最终提交 option 4、全程零视觉点击、同日转场与暂停门 GREEN；Python 编译、宣传 runner 合同、ZhongGuo 静态检查、release builder 与 diff 门均 GREEN。下一步只运行第十五次完整合批实机。
+
+## 14. 旧工坊 01/02/03 素材判定
 
 现有 `workshop/media/01_calibration_meeting.jpg`、`workshop/media/02_review_cohort_frozen.jpg` 与 `workshop/media/03_scoreboard.jpg` 来自后来被确认具有“首次建账把全员视为新人”缺陷的同一历史批次：前两张直接展示 23 人 `7 / 16 / 0`，第三张也冻结了同一错误名单，只是裁切范围没有完整显示表头。即使其中名单、排名、字段或界面布局仍可作为历史 GUI 证据，这三张图的核心 361 语义已经错误，发布判定必须是 **RED**，不得继续作为当前版本的工坊宣传素材。
 
 三张旧图及其原始过程证据继续保留用于复盘，不删除、不覆盖来源事实；正式发布前必须由同一次最终完整 **GREEN** 批次中明确显示 `7 / 14 / 2` 的真实 CK3 截图替换，并同步刷新来源路径、SHA-256、媒体锁和引用。任何仅有局部产品 PASS、最终仍为 harness RED 的 attempt 都不能作为这三格的正式替代来源。
 
-## 14. 环境与证据边界
+## 15. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已十三次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、D+2 产品事件清理、政策卡 #001 的完整提交及 #007 的 canonical 置顶均已 live-confirmed；#007 的 MCP 选项提交、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已十四次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、政策卡 #001 的完整提交及 #007 的 canonical 置顶均已 live-confirmed；D+2 真实产品事件的 typed option 4 清理、#007 的 MCP 选项提交、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。

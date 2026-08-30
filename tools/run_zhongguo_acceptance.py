@@ -3500,7 +3500,7 @@ def query_event_definition_identity(
     }
 
 
-def select_policy_reference_option_native(
+def select_resolved_event_option_native(
     service: GameplayBridgeService,
     artifacts: Path,
     snapshot: dict[str, object],
@@ -3509,7 +3509,7 @@ def select_policy_reference_option_native(
     expected_event_definition_key: str,
     expected_option_text: str,
 ) -> dict[str, object]:
-    """Select one configured policy choice from the typed event-window frame."""
+    """Select one configured choice from the typed event-window frame."""
 
     observation = _personal_switch_native_snapshot(snapshot)
     evidence: dict[str, object] = {
@@ -4930,6 +4930,15 @@ def settle_promo_interruptions(
         preferred_event, preferred_selected = promo_preferred_product_event_option(
             items, width, height
         )
+        preferred_option_text = next(
+            (
+                configured_option
+                for configured_title, configured_option
+                in PROMO_PREFERRED_PRODUCT_EVENT_OPTIONS
+                if configured_title == preferred_event
+            ),
+            None,
+        )
         lower, selected = acceptance.select_stall_recovery(
             items, image, allow_succession=False
         )
@@ -4981,9 +4990,13 @@ def settle_promo_interruptions(
             )
 
         kind = (
-            acceptance.quick_recovery_kind(items, selected, width, height)
-            if selected is not None
-            else None
+            "promo_preferred_product_option"
+            if preferred_event is not None and selected is not None
+            else (
+                acceptance.quick_recovery_kind(items, selected, width, height)
+                if selected is not None
+                else None
+            )
         )
         native_single_option_candidate = (
             native_event_service is not None
@@ -5074,9 +5087,14 @@ def settle_promo_interruptions(
             "native_mcp_single_option"
             if native_single_option_candidate
             else (
-                "native_mcp_definition_identity_visual_click"
+                "native_mcp_resolved_product_option"
                 if native_visual_identity_candidate
-                else "visual_click"
+                and preferred_option_text is not None
+                else (
+                    "native_mcp_definition_identity_visual_click"
+                    if native_visual_identity_candidate
+                    else "visual_click"
+                )
             )
         )
         _write_promo_interruption_decision(
@@ -5111,6 +5129,22 @@ def settle_promo_interruptions(
                 diagnostic,
                 expected_event_instance_id=native_active_event_instance_id,
             )
+        elif (
+            native_visual_identity_candidate
+            and preferred_option_text is not None
+            and native_visual_speed_gate is not None
+            and native_identity is not None
+        ):
+            native_selection_evidence = select_resolved_event_option_native(
+                native_event_service,
+                artifacts,
+                native_visual_speed_gate["snapshot"],
+                stem=f"{diagnostic}_native_resolved",
+                expected_event_definition_key=str(
+                    native_identity["event_definition_key"]
+                ),
+                expected_option_text=preferred_option_text,
+            )
         else:
             acceptance.deliberate_click(
                 tuple(selected["center"]),
@@ -5119,6 +5153,7 @@ def settle_promo_interruptions(
         selected_text = selected["text"]
         selected_center = selected["center"]
         if native_visual_identity_candidate:
+            option_selection_evidence = native_selection_evidence
             native_selection_evidence = pause_after_promo_event_click(
                 native_event_service,
                 artifacts,
@@ -5128,6 +5163,10 @@ def settle_promo_interruptions(
                     native_identity["event_definition_key"]
                 ),
             )
+            if option_selection_evidence is not None:
+                native_selection_evidence["native_option_selection"] = (
+                    option_selection_evidence
+                )
             native_selection_evidence["speed_one_submission"] = (
                 native_visual_speed_gate["submission"]
             )
@@ -5381,7 +5420,7 @@ def capture_policy_cards(
             stem=f"{stem}_close",
         )
         pre_click_snapshot = speed_one_gate["snapshot"]
-        option_selection_evidence = select_policy_reference_option_native(
+        option_selection_evidence = select_resolved_event_option_native(
             timeline_service,
             artifacts,
             pre_click_snapshot,
