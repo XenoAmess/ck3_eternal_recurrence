@@ -45,6 +45,36 @@ zg361_review_now_decision = {
 	}
 }
 
+# 查看最近一期个人考核清算单。任何层级的玩家受评者都可查看；
+# 伯爵/男爵仍不因此获得管理他人的权限。
+zg361_view_result_statement_decision = {
+	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	ai_check_interval = 0
+
+	is_shown = {
+		is_ai = no
+		has_game_rule = zg361_on
+		has_variable = zg361_result_case_serial
+		has_variable = zg361_result_case_owner
+	}
+	is_valid = {
+		has_variable = zg361_result_case_serial
+		has_variable = zg361_result_case_owner
+	}
+	is_valid_showing_failures_only = {
+		has_variable = zg361_result_case_serial
+		has_variable = zg361_result_case_owner
+	}
+
+	# 决议 effect 会被 UI 预演：只写一次性旗标，由隐形 scripted-GUI 桥消费。
+	effect = {
+		add_character_flag = zg361_view_result_statement_pending
+	}
+}
+
 # 末位比例：刚性 361（10%）
 zg361_ratio_strict_decision = {
 	decision_group_type = zg361

@@ -2,6 +2,8 @@
 
 本文定义 361 条政策从“可配置的组织账本投影”升级为真正 CK3 决策、对象、期限与后果的施工架构。它不推翻现有考核主循环和实机证据，而是明确区分已经完成的配置投影与尚待实现的领域运行时语义。
 
+> 2026-08-30 二期更新：项目所有者已授权 v0.4.x 隔离分支实施首个纵切。#001/#018/#069/#357 现为 `domain_runtime = partial`、`runtime_evidence = static-ready`；其余357项仍为 `not-implemented`。实现、边界与 MCP-first 合批清单见 [phase2-slice-001-018-069-357.md](phase2-slice-001-018-069-357.md)。这不改写已公开 0.3.0 的功能或证据口径。
+
 设计边界：
 
 - 只有天朝制公爵及以上在任领主可以拥有考核单元并考核自己的直属官员。
@@ -25,7 +27,7 @@
 - 组合校验和增量；
 - 编号化 debug marker 与本地化文本。
 
-目标责任书、申诉案卷、HC、晋升包、事故时间线、奖金归属等概念还没有各自的运行时对象、状态迁移、期限或资源事务。现有实机夹具执行每号的 `reference_choice`，其分布为 326 个 A、4 个 B、31 个 C；随后逐号检查 choice 变量，再核对 14 本账的总和及幂等性。这证明 361 条配置投影确实进入了真实 CK3 引擎，但不证明 361 条领域语义已经实现。
+除二期首纵切的最近一期证据/送达/清算案卷外，目标版本、完整申诉复核、HC、晋升包、事故时间线、奖金归属等概念还没有各自的运行时对象、状态迁移、期限或资源事务。现有实机夹具执行每号的 `reference_choice`，其分布为 326 个 A、4 个 B、31 个 C；随后逐号检查 choice 变量，再核对 14 本账的总和及幂等性。这证明 361 条配置投影确实进入了真实 CK3 引擎，但不证明 361 条领域语义已经实现，也不是二期新字节的 CK3 证据。
 
 因此 manifest 应把状态拆开记录：
 
@@ -35,6 +37,7 @@ policy_configuration    = fixture-live
 ledger_projection       = fixture-live
 domain_runtime          = not-implemented / partial / fixture-live
 player_visible_loop     = not-implemented / partial / fixture-live
+runtime_evidence        = none / static-ready / fixture-live / production-live
 ```
 
 不得删除或贬低已有 artifact；其准确名称应是“361/361 配置与账本投影 fixture-live”。只有在真实领域对象上建立前置状态、执行产品动作、验证状态/资源/期限/反馈后，对应编号的 `domain_runtime` 才能升级。

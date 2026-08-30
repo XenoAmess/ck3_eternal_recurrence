@@ -14,4 +14,9 @@ window = {
 		trigger_when = "[GetScriptedGui('zg361_review_now_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[GetScriptedGui('zg361_review_now_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	}
+	state = {
+		name = "zg361_view_result_statement"
+		trigger_when = "[GetScriptedGui('zg361_view_result_statement_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('zg361_view_result_statement_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
 }

@@ -9,6 +9,12 @@
 
 Steam Workshop：[3792585972](https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972)（已于 2026-08-30 14:48 左右，Asia/Shanghai 公开发布）。
 
+## v0.4.x 隔离开发状态（不是 Workshop 当前版）
+
+二期首纵切已将 #001 KPI 分项证据、#357 事实档/配额档分离、#069 正式送达/申诉时钟和 #018 个人清算单接入隔离 v0.4.x 分支。玩家面对 3.25 可签收、异议签收或拒收；拒收只改为七日后见证送达，不能逃避 PIP 和四重处分。最近一期案卷可从原生决议页重新打开，不新增 HUD 按钮。
+
+当前诚实状态仅为 `partial / static-ready`：已通过 source-model、生成一致性、CK3 脚本接线和本地静态门，**尚未启动 CK3，不是 fixture-live，也尚未更新 Workshop**。具体设计、变量、证据边界和 MCP-first 合批计划见 [二期首纵切](docs/phase2-slice-001-018-069-357.md)。已公开 0.3.0 的功能和实机证据仍以下文为准。
+
 ## 权威范围
 
 - 所有在任、在世的**天朝制公爵及以上领主**都是考核者，不要求独立；每人只考核自己的直属官员。
@@ -118,6 +124,7 @@ Workshop 上传、fresh-cache 签核与公开远端终验均已完成。
 - 详细机制与历史偏差：`docs/zhongguo-361-plan.md`
 - 361 条权威清单：`docs/361-expansion-options.md`
 - 361 领域运行时与诚实完成定义：`docs/361-domain-runtime-architecture.md`
+- v0.4.x 二期首纵切、状态机与 MCP-first 合批清单：`docs/phase2-slice-001-018-069-357.md`
 - 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
 - 当前批量实机报告与证据边界：`docs/testing-report-2026-08-30.md`
 - 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`

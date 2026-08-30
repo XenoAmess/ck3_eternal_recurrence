@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "mechanism_count": 361,
   "source": "docs/361-expansion-options.md",
   "acceptance_contract_source": "tools/mechanism_acceptance/acceptance_*.json",
@@ -7,8 +7,9 @@
     "catalogue": "The numbered design and reviewed choice copy are complete.",
     "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
     "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
-    "domain_runtime": "The typed domain objects and state machines required by the acceptance contract are not implemented yet.",
-    "player_visible_loop": "Generic policy cards and ledger climate feedback exist; contract-specific objects, actions, and feedback remain incomplete."
+    "domain_runtime": "Mechanisms 001/018/069/357 have a partial first-slice runtime; the other 357 typed domain runtimes remain not implemented.",
+    "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; the first slice adds a partial personal evidence/service/statement loop.",
+    "runtime_evidence": "001/018/069/357 are static-ready only: source model, generated manifest, script and localization checks; no CK3 fixture or live claim yet."
   },
   "acceptance": {
     "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -17,6 +18,18 @@
     "run_id": "zga_20260829_061314_ea5f04ad",
     "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
     "claim_boundary": "fixture-live applies only to policy_configuration and ledger_projection; it does not prove the 361 domain runtimes, player-visible semantic loops, or all 1083 A/B/C branches"
+  },
+  "phase2_static": {
+    "mechanism_ids": [
+      1,
+      18,
+      69,
+      357
+    ],
+    "evidence": "static-ready",
+    "source": "tools/zg361_phase2_runtime_data.py",
+    "tests": "tools/test_zg361_phase2_runtime.py",
+    "claim_boundary": "Static model and L0 checks do not prove CK3 load, fixture behavior, UI rendering, timed delivery, receipts, or appeal outcomes."
   },
   "generated_files": [
     "common/decisions/zg361_mechanism_decisions.txt",
@@ -106,8 +119,32 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
-        "player_visible_loop": "partial"
+        "domain_runtime": "partial",
+        "player_visible_loop": "partial",
+        "runtime_evidence": "static-ready"
+      },
+      "runtime_contract": {
+        "object_type": "review_case",
+        "owner_binding": "frozen_reviewing_manager",
+        "subject_binding": "frozen_direct_assessed_official",
+        "cycle_binding": "review_cycle_serial",
+        "case_binding": "evidence_sheet_case_serial",
+        "hook": "review_evidence_freeze",
+        "states": [
+          "EVIDENCE_OPEN",
+          "EVIDENCE_FROZEN"
+        ],
+        "feedback": [
+          "scoreboard_kpi_evidence_detail",
+          "personal_notice_kpi_breakdown",
+          "appeal_evidence_reference"
+        ],
+        "permissions": {
+          "player_manager": "Only an in-office landed celestial duke-or-above may own a cohort and use the player-visible review/calibration/notice path.",
+          "ai_manager": "The owner-authorized AI exception is limited to an in-office landed celestial duke-or-above reviewing direct officials in the background.",
+          "subject": "A direct assessed official may read, acknowledge, refuse, or appeal only that official's own frozen case.",
+          "count_baron": "Counts and barons are subject-only: they cannot own a cohort, impose quota C, calibrate another official, settle another case, or start PIP."
+        }
       }
     },
     {
@@ -1347,8 +1384,35 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
-        "player_visible_loop": "partial"
+        "domain_runtime": "partial",
+        "player_visible_loop": "partial",
+        "runtime_evidence": "static-ready"
+      },
+      "runtime_contract": {
+        "object_type": "notice_case",
+        "owner_binding": "frozen_reviewing_manager",
+        "subject_binding": "frozen_direct_assessed_official",
+        "cycle_binding": "review_cycle_serial",
+        "case_binding": "notice_case_serial",
+        "hook": "notice_delivered",
+        "states": [
+          "PREPARED",
+          "REFUSED_PENDING_WITNESS",
+          "DELIVERED_SETTLED",
+          "APPEAL_CLOSED",
+          "CORRECTED"
+        ],
+        "feedback": [
+          "reopenable_personal_settlement_statement",
+          "itemized_penalty_and_refund_receipts",
+          "remaining_salary_withholding_status"
+        ],
+        "permissions": {
+          "player_manager": "Only an in-office landed celestial duke-or-above may own a cohort and use the player-visible review/calibration/notice path.",
+          "ai_manager": "The owner-authorized AI exception is limited to an in-office landed celestial duke-or-above reviewing direct officials in the background.",
+          "subject": "A direct assessed official may read, acknowledge, refuse, or appeal only that official's own frozen case.",
+          "count_baron": "Counts and barons are subject-only: they cannot own a cohort, impose quota C, calibrate another official, settle another case, or start PIP."
+        }
       }
     },
     {
@@ -5067,8 +5131,35 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
-        "player_visible_loop": "partial"
+        "domain_runtime": "partial",
+        "player_visible_loop": "partial",
+        "runtime_evidence": "static-ready"
+      },
+      "runtime_contract": {
+        "object_type": "notice_case",
+        "owner_binding": "frozen_reviewing_manager",
+        "subject_binding": "frozen_direct_assessed_official",
+        "cycle_binding": "review_cycle_serial",
+        "case_binding": "notice_case_serial",
+        "hook": "review_result_frozen",
+        "states": [
+          "PREPARED",
+          "REFUSED_PENDING_WITNESS",
+          "DELIVERED_SETTLED",
+          "APPEAL_CLOSED",
+          "CORRECTED"
+        ],
+        "feedback": [
+          "notice_service_timeline",
+          "refusal_witness_record",
+          "appeal_deadline_and_outcome"
+        ],
+        "permissions": {
+          "player_manager": "Only an in-office landed celestial duke-or-above may own a cohort and use the player-visible review/calibration/notice path.",
+          "ai_manager": "The owner-authorized AI exception is limited to an in-office landed celestial duke-or-above reviewing direct officials in the background.",
+          "subject": "A direct assessed official may read, acknowledge, refuse, or appeal only that official's own frozen case.",
+          "count_baron": "Counts and barons are subject-only: they cannot own a cohort, impose quota C, calibrate another official, settle another case, or start PIP."
+        }
       }
     },
     {
@@ -26419,8 +26510,34 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
-        "player_visible_loop": "partial"
+        "domain_runtime": "partial",
+        "player_visible_loop": "partial",
+        "runtime_evidence": "static-ready"
+      },
+      "runtime_contract": {
+        "object_type": "calibration_case",
+        "owner_binding": "frozen_reviewing_manager",
+        "subject_binding": "frozen_direct_assessed_official",
+        "cycle_binding": "review_cycle_serial",
+        "case_binding": "calibration_case_serial",
+        "hook": "kpi_evidence_frozen_before_quota",
+        "states": [
+          "FACTS_OPEN",
+          "ABSOLUTE_GRADE_FROZEN",
+          "QUOTA_APPLIED",
+          "FINAL_GRADE_FROZEN"
+        ],
+        "feedback": [
+          "absolute_and_final_grade_comparison",
+          "quota_or_calibration_reason_code",
+          "newcomer_protection_marker"
+        ],
+        "permissions": {
+          "player_manager": "Only an in-office landed celestial duke-or-above may own a cohort and use the player-visible review/calibration/notice path.",
+          "ai_manager": "The owner-authorized AI exception is limited to an in-office landed celestial duke-or-above reviewing direct officials in the background.",
+          "subject": "A direct assessed official may read, acknowledge, refuse, or appeal only that official's own frozen case.",
+          "count_baron": "Counts and barons are subject-only: they cannot own a cohort, impose quota C, calibrate another official, settle another case, or start PIP."
+        }
       }
     },
     {

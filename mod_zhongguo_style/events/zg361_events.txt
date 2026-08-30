@@ -71,7 +71,10 @@ zg361.4 = {
 		name = zg361.4.b
 		trigger = {
 			influence >= 150
-			zg361_is_current_liege_review_record_trigger = yes
+			has_variable = zg361_result_appeal_open
+			var:zg361_result_appeal_open = 1
+			has_variable = zg361_result_case_state
+			var:zg361_result_case_state = 3
 		}
 		change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
 		random = {
@@ -85,7 +88,12 @@ zg361.4 = {
 			debug_log = "ZG361: player appeal won, regraded to 3.5"
 		}
 		else = {
-			liege = { add_opinion = { modifier = zg361_annoyed target = root } }
+			var:zg361_result_case_owner = {
+				if = {
+					limit = { is_alive = yes }
+					add_opinion = { modifier = zg361_annoyed target = root }
+				}
+			}
 			debug_log = "ZG361: player appeal rejected"
 		}
 	}
@@ -101,6 +109,205 @@ zg361.4 = {
 		add_stress = minor_stress_gain
 		set_variable = { name = zg361_striving value = 1 }
 	}
+}
+
+# ============================================================
+# 玩家封臣：3.25 正式送达、见证送达、申诉时钟与个人清算单
+# ============================================================
+
+# 3.25 结果先送达，后由同一份幂等 receipt 清算四重后果。
+zg361.50 = {
+	type = character_event
+	theme = vassal
+	title = zg361.50.t
+	desc = zg361.50.desc
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		has_variable = zg361_result_case_owner
+		has_variable = zg361_result_case_serial
+		has_variable = zg361_result_case_state
+		var:zg361_result_case_state = 1
+		has_variable = zg361_result_grade
+		var:zg361_result_grade = 1
+	}
+
+	immediate = {
+		var:zg361_result_case_owner = { save_scope_as = zg361_reviewing_superior }
+		save_scope_value_as = { name = zg361_notice_kpi value = var:zg361_result_kpi_frozen }
+		save_scope_value_as = { name = zg361_notice_rank value = var:zg361_result_rank_frozen }
+		save_scope_value_as = { name = zg361_notice_cohort value = var:zg361_result_cohort_n_frozen }
+		save_scope_value_as = { name = zg361_notice_absolute_grade value = var:zg361_result_absolute_grade }
+	}
+
+	option = { # 签收
+		name = zg361.50.a
+		set_variable = { name = zg361_result_delivery_method value = 1 }
+		zg361_deliver_325_notice_effect = yes
+	}
+
+	option = { # 签收但保留异议；签字不等于认同
+		name = zg361.50.b
+		set_variable = { name = zg361_result_delivery_method value = 2 }
+		set_variable = { name = zg361_result_objection_recorded value = 1 }
+		zg361_deliver_325_notice_effect = yes
+	}
+
+	option = { # 拒收；只改变送达路径，七日后见证送达
+		name = zg361.50.c
+		set_variable = { name = zg361_result_case_state value = 2 }
+		set_variable = { name = zg361_result_delivery_method value = 3 }
+		var:zg361_result_case_owner = {
+			save_scope_as = zg361_notice_witness_owner
+			if = {
+				limit = { is_alive = yes }
+				add_opinion = { modifier = zg361_annoyed target = root }
+			}
+		}
+		save_scope_value_as = { name = zg361_notice_witness_cycle value = var:zg361_result_cycle_serial }
+		save_scope_value_as = { name = zg361_notice_witness_case value = var:zg361_result_case_serial }
+		save_scope_value_as = { name = zg361_notice_witness_state value = var:zg361_result_case_state }
+		trigger_event = { id = zg361.51 days = 7 }
+		debug_log = "ZG361P2: player refused signature; witnessed delivery scheduled"
+	}
+}
+
+# 拒收后的见证送达。新案卷、已签收或已改判均 stale no-op。
+zg361.51 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				has_variable = zg361_result_case_owner
+				var:zg361_result_case_owner = scope:zg361_notice_witness_owner
+				has_variable = zg361_result_cycle_serial
+				var:zg361_result_cycle_serial = scope:zg361_notice_witness_cycle
+				has_variable = zg361_result_case_serial
+				var:zg361_result_case_serial = scope:zg361_notice_witness_case
+				has_variable = zg361_result_case_state
+				var:zg361_result_case_state = scope:zg361_notice_witness_state
+				var:zg361_result_case_state = 2
+			}
+			set_variable = { name = zg361_result_delivery_method value = 3 }
+			zg361_deliver_325_notice_effect = yes
+			debug_log = "ZG361P2: refused notice delivered by witness"
+		}
+		else = {
+			debug_log = "ZG361P2: stale witnessed-delivery token ignored"
+		}
+	}
+}
+
+# 正式送达后 90 日关闭申诉时钟。签收时冻结的 token 不得关闭新案。
+zg361.52 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				has_variable = zg361_result_case_owner
+				var:zg361_result_case_owner = scope:zg361_notice_deadline_owner
+				has_variable = zg361_result_cycle_serial
+				var:zg361_result_cycle_serial = scope:zg361_notice_deadline_cycle
+				has_variable = zg361_result_case_serial
+				var:zg361_result_case_serial = scope:zg361_notice_deadline_case
+				has_variable = zg361_result_case_state
+				var:zg361_result_case_state = scope:zg361_notice_deadline_state
+				var:zg361_result_case_state = 3
+				has_variable = zg361_result_appeal_open
+				var:zg361_result_appeal_open = 1
+			}
+			set_variable = { name = zg361_result_appeal_open value = 0 }
+			set_variable = { name = zg361_result_case_state value = 4 }
+			debug_log = "ZG361P2: formal appeal clock closed"
+		}
+		else = {
+			debug_log = "ZG361P2: stale appeal-deadline token ignored"
+		}
+	}
+}
+
+# 可从决议页重开的最近一期个人清算单；只读，不新增 HUD 按钮。
+zg361.53 = {
+	type = character_event
+	theme = vassal
+	title = zg361.53.t
+	desc = {
+		desc = zg361.53.desc
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_absolute_grade = 3 } desc = zg361.53.absolute_375 }
+			triggered_desc = { trigger = { var:zg361_result_absolute_grade = 2 } desc = zg361.53.absolute_35 }
+			triggered_desc = { trigger = { var:zg361_result_absolute_grade = 1 } desc = zg361.53.absolute_325 }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade = 3 } desc = zg361.53.grade_375 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 2 } desc = zg361.53.grade_35 }
+			triggered_desc = { trigger = { var:zg361_result_grade = 1 } desc = zg361.53.grade_325 }
+		}
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 1 } desc = zg361.53.reason_1 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 2 } desc = zg361.53.reason_2 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 3 } desc = zg361.53.reason_3 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 4 } desc = zg361.53.reason_4 }
+			triggered_desc = {
+				trigger = {
+					var:zg361_result_grade_reason = 5
+					var:zg361_result_grade = 1
+				}
+				desc = zg361.53.reason_5_c
+			}
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 5 } desc = zg361.53.reason_5 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 6 } desc = zg361.53.reason_6 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 7 } desc = zg361.53.reason_7 }
+			triggered_desc = { trigger = { var:zg361_result_grade_reason = 8 } desc = zg361.53.reason_8 }
+			desc = zg361.53.reason_0
+		}
+		desc = zg361.53.evidence
+		desc = zg361.53.service
+		desc = zg361.53.receipts
+		first_valid = {
+			triggered_desc = { trigger = { var:zg361_result_case_state = 1 } desc = zg361.53.state_1 }
+			triggered_desc = { trigger = { var:zg361_result_case_state = 2 } desc = zg361.53.state_2 }
+			triggered_desc = { trigger = { var:zg361_result_case_state = 3 } desc = zg361.53.state_3 }
+			triggered_desc = { trigger = { var:zg361_result_case_state = 4 } desc = zg361.53.state_4 }
+			triggered_desc = { trigger = { var:zg361_result_case_state = 5 } desc = zg361.53.state_5 }
+		}
+	}
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		has_variable = zg361_result_case_owner
+		has_variable = zg361_result_case_serial
+	}
+
+	immediate = {
+		var:zg361_result_case_owner = { save_scope_as = zg361_reviewing_superior }
+		save_scope_value_as = { name = zg361_stmt_kpi value = var:zg361_result_kpi_frozen }
+		save_scope_value_as = { name = zg361_stmt_rank value = var:zg361_result_rank_frozen }
+		save_scope_value_as = { name = zg361_stmt_cohort value = var:zg361_result_cohort_n_frozen }
+		save_scope_value_as = { name = zg361_stmt_absolute_grade value = var:zg361_result_absolute_grade }
+		save_scope_value_as = { name = zg361_stmt_governance value = var:zg361_result_evidence_governance }
+		save_scope_value_as = { name = zg361_stmt_capability value = var:zg361_result_evidence_capability }
+		save_scope_value_as = { name = zg361_stmt_growth value = var:zg361_result_evidence_growth }
+		save_scope_value_as = { name = zg361_stmt_superior value = var:zg361_result_evidence_superior }
+		save_scope_value_as = { name = zg361_stmt_values value = var:zg361_result_evidence_values }
+		save_scope_value_as = { name = zg361_stmt_collaboration value = var:zg361_result_evidence_collaboration }
+		save_scope_value_as = { name = zg361_stmt_jingcha value = var:zg361_result_evidence_jingcha }
+		save_scope_value_as = { name = zg361_stmt_organization value = var:zg361_result_evidence_organization }
+		save_scope_value_as = { name = zg361_stmt_treasury_paid value = var:zg361_result_treasury_paid }
+		save_scope_value_as = { name = zg361_stmt_gold_paid value = var:zg361_result_gold_paid }
+		save_scope_value_as = { name = zg361_stmt_merit_paid value = var:zg361_result_merit_paid }
+		save_scope_value_as = { name = zg361_stmt_treasury_refunded value = var:zg361_result_treasury_refunded }
+		save_scope_value_as = { name = zg361_stmt_gold_refunded value = var:zg361_result_gold_refunded }
+		save_scope_value_as = { name = zg361_stmt_merit_refunded value = var:zg361_result_merit_refunded }
+		save_scope_value_as = { name = zg361_stmt_salary_cut value = var:zg361_result_salary_cut_active }
+		save_scope_value_as = { name = zg361_stmt_appeal_open value = var:zg361_result_appeal_open }
+		save_scope_value_as = { name = zg361_stmt_delivery_method value = var:zg361_result_delivery_method }
+		save_scope_value_as = { name = zg361_stmt_delivered_year value = var:zg361_result_delivered_year }
+	}
+
+	option = { name = zg361.53.a }
 }
 
 # ============================================================

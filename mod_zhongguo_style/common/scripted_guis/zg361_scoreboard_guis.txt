@@ -17,6 +17,23 @@ zg361_review_now_bridge_gui = {
 	}
 }
 
+zg361_view_result_statement_bridge_gui = {
+	scope = character
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = zg361_view_result_statement_pending
+	}
+
+	effect = {
+		if = {
+			limit = { has_character_flag = zg361_view_result_statement_pending }
+			remove_character_flag = zg361_view_result_statement_pending
+			trigger_event = zg361.53
+		}
+	}
+}
+
 zg361_scoreboard_managed_available_gui = {
 	scope = character
 

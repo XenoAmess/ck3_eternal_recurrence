@@ -21,6 +21,7 @@ from zg361_mechanism_data import (
     load_mechanisms,
     mechanism_deltas,
 )
+from zg361_phase2_runtime_data import PHASE2_RUNTIME_SPECS
 
 
 def valid_acceptance_payload(mechanism_id: int) -> dict[str, object]:
@@ -255,22 +256,48 @@ class MechanismGenerationTests(unittest.TestCase):
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"
         manifest = json.loads(self.rendered[manifest_path].decode("utf-8"))
-        self.assertEqual(manifest["schema"], 2)
+        self.assertEqual(manifest["schema"], 3)
         self.assertEqual(manifest["mechanism_count"], 361)
         self.assertEqual([item["id"] for item in manifest["items"]], list(range(1, 362)))
         self.assertEqual({item["live_wave"] for item in manifest["items"]}, {1, 2, 3, 4})
-        expected_status = {
+        legacy_status = {
             "catalogue": "complete",
             "policy_configuration": "fixture-live",
             "ledger_projection": "fixture-live",
             "domain_runtime": "not-implemented",
             "player_visible_loop": "partial",
         }
+        phase2_status = {
+            **legacy_status,
+            "domain_runtime": "partial",
+            "runtime_evidence": "static-ready",
+        }
+        phase2_ids = {int(mechanism_id) for mechanism_id in PHASE2_RUNTIME_SPECS}
         mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
         for item in manifest["items"]:
             self.assertEqual(len(item["implementation"]["choice_effects"]), 3)
+            expected_status = phase2_status if item["id"] in phase2_ids else legacy_status
             self.assertEqual(item["status"], expected_status)
             self.assertNotIsInstance(item["status"], str)
+            if item["id"] in phase2_ids:
+                self.assertIsInstance(item["runtime_contract"], dict)
+                self.assertEqual(
+                    set(item["runtime_contract"]),
+                    {
+                        "object_type",
+                        "owner_binding",
+                        "subject_binding",
+                        "cycle_binding",
+                        "case_binding",
+                        "hook",
+                        "states",
+                        "feedback",
+                        "permissions",
+                    },
+                )
+            else:
+                self.assertNotIn("runtime_contract", item)
+                self.assertNotIn("runtime_evidence", item["status"])
             self.assertEqual(
                 tuple(item["acceptance_contract"]), ACCEPTANCE_FIELDS
             )
@@ -286,6 +313,9 @@ class MechanismGenerationTests(unittest.TestCase):
             "1083",
             manifest["acceptance"]["claim_boundary"],
         )
+        self.assertEqual(manifest["phase2_static"]["mechanism_ids"], [1, 18, 69, 357])
+        self.assertEqual(manifest["phase2_static"]["evidence"], "static-ready")
+        self.assertIn("do not prove CK3", manifest["phase2_static"]["claim_boundary"])
 
     def test_checked_in_projection_is_current(self) -> None:
         stale = [
