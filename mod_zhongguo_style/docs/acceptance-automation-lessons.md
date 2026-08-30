@@ -98,6 +98,7 @@
 - 同日到期的多个事件会堆叠，顶层视觉窗口与 native active definition 可能指向不同层。2026-08-30 07:57 attempt 中画面和 OCR 都显示政策 #001，但 MCP canonical key 为下层真实产品事件 `zg361.6`：两者都被安排在 D+2。此时 identity mismatch 必须保持 RED，不能用“肉眼看起来对”放宽；夹具 carrier 应错开到 D+3，并在等待目标 marker 的循环中先以 canonical 身份识别、用已批准的 typed 选项清理 D+2 产品事件、验证转场和恢复时间，再接收干净的目标卡。
 - 鼠标位置本身也是宣传片状态。2026-08-30 08:29 attempt 中 #001 的首选项点击把鼠标留在约 `(931,935)`；#007 的首选项出现在同一位置后立即弹出 tooltip，遮住“只邀请”，RapidOCR 只剩“有真实协作……”并制造超时。不能靠缩短 OCR 子串逐卡打补丁：每张政策卡 clean hold 前先把鼠标停到非交互叙事区并等待 tooltip 消失；选择则读取同一暂停帧的 `current_event_window_context_v1.options`，按配置文字唯一匹配 `resolved_name`，要求 `shown/enabled`，以 `native_option_index + 1`、event instance 和 public revision 调用 typed `select_event_option`。OCR 继续用于画面诊断，不再决定多选政策卡的动作。
 - OCR 还会把同一个按钮的正文与括号说明拆成两条 row。2026-08-30 09:02 attempt 中真实 `zg361.6` 的“掀桌起兵！”和“（建立独立派系，对抗主君）”分离；已知选项子串命中，但通用 kind 分类返回 `None`。第十三次同一按钮偶然合并成功不构成稳定性证据。对 canonical key 已知、片场动作明确批准的产品事件，应与政策卡共用 typed `resolved_name → native_option_index` 选择；不得先让通用 OCR 分类器否决 MCP 已发布且启用的目标行。未知多选事件仍保持 fail-closed。
+- 原生命令的 `accepted/submitted` ACK 不是“下一条 paused-only 查询可在同一瞬间执行”的同步屏障。2026-08-30 09:20 attempt 中 `set-speed-1` 已 ACK，但第一次回读仍是旧 public revision `51`、`speed = 5`；立即查询 event-window 被 native mailbox 以 snapshot changed/not ready 拒绝。对随后要做 typed 查询/选择的路径，应在短有界窗口内等待新 public revision，并在每帧反证 event instance、日期、角色不变且仍普通暂停；再以新 revision 查询。不得盲 sleep 后复用旧 revision，也不得把任意 revision 变化当成功而忽略上下文漂移。
 
 ## 6. 宣传片片场纪律
 

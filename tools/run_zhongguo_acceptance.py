@@ -4187,6 +4187,7 @@ def arm_native_speed_one(
     artifacts: Path,
     *,
     stem: str,
+    require_settled_revision: bool = False,
 ) -> dict[str, object]:
     """Queue speed one while binding the click to the same native modal."""
 
@@ -4229,26 +4230,48 @@ def arm_native_speed_one(
         and submission.get("accepted") is True
         and submission.get("status") == "submitted"
     )
-    snapshot = service.snapshot()
-    observed = _personal_switch_native_snapshot(snapshot)
-    observations = [observed]
-    character = snapshot.get("played_character")
-    character_id = (
-        character.get("character_id") if isinstance(character, dict) else None
-    )
+    observations: list[dict[str, object]] = []
     context_failure = ""
-    if observed["date_raw"] != starting_date:
-        context_failure = "game date changed while arming speed one"
-    elif observed["active_event_instance_id"] != starting_event:
-        context_failure = "active event changed while arming speed one"
-    elif character_id != starting_character_id:
-        context_failure = "played character changed while arming speed one"
+    settled_revision_observed = False
+    settle_deadline = time.monotonic() + (1.5 if require_settled_revision else 0.0)
+    while True:
+        snapshot = service.snapshot()
+        observed = _personal_switch_native_snapshot(snapshot)
+        observations.append(observed)
+        character = snapshot.get("played_character")
+        character_id = (
+            character.get("character_id") if isinstance(character, dict) else None
+        )
+        if observed["date_raw"] != starting_date:
+            context_failure = "game date changed while arming speed one"
+        elif observed["active_event_instance_id"] != starting_event:
+            context_failure = "active event changed while arming speed one"
+        elif character_id != starting_character_id:
+            context_failure = "played character changed while arming speed one"
+        if context_failure:
+            break
+        settled_revision_observed = (
+            snapshot.get("revision") != starting.get("revision")
+            and snapshot.get("paused") is True
+        )
+        if not require_settled_revision or settled_revision_observed:
+            break
+        if time.monotonic() >= settle_deadline:
+            context_failure = (
+                "speed one submission did not reach a new paused revision"
+            )
+            break
+        time.sleep(0.05)
 
     # A CK3 character event can stop map progression without projecting that
     # modal stop through Jomini's ordinary paused/speed fields.  The command
     # ACK plus the unchanged event/date/character bind the subsequent click;
     # the post-click same-date freeze is the authoritative safety gate.
-    armed = submission_confirmed and not context_failure
+    armed = (
+        submission_confirmed
+        and not context_failure
+        and (not require_settled_revision or settled_revision_observed)
+    )
     evidence = {
         "schema_version": 1,
         "result": "GREEN" if armed else "RED",
@@ -4257,6 +4280,8 @@ def arm_native_speed_one(
         "submission": submission,
         "submission_confirmed": submission_confirmed,
         "observations": observations,
+        "settled_revision_required": require_settled_revision,
+        "settled_revision_observed": settled_revision_observed,
         "speed_one_observed_pre_click": snapshot.get("speed") == 1,
         "paused_observed_pre_click": snapshot.get("paused"),
         "modal_context_stable": not context_failure,
@@ -5055,6 +5080,7 @@ def settle_promo_interruptions(
                 native_event_service,
                 artifacts,
                 stem=f"{diagnostic}_native_visual",
+                require_settled_revision=preferred_option_text is not None,
             )
             refreshed_identity = query_event_definition_identity(
                 native_event_service,
@@ -5418,6 +5444,7 @@ def capture_policy_cards(
             timeline_service,
             artifacts,
             stem=f"{stem}_close",
+            require_settled_revision=True,
         )
         pre_click_snapshot = speed_one_gate["snapshot"]
         option_selection_evidence = select_resolved_event_option_native(

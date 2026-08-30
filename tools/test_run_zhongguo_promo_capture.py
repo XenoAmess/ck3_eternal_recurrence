@@ -263,11 +263,13 @@ def main() -> int:
         'submission.get("status") == "submitted"',
         'observed["date_raw"] != starting_date',
         'observed["active_event_instance_id"] != starting_event',
+        "require_settled_revision",
+        'snapshot.get("revision") != starting.get("revision")',
+        'snapshot.get("paused") is True',
+        '"settled_revision_observed": settled_revision_observed',
         'write_json(artifacts / f"{stem}_speed_one_gate.json", evidence)',
     ):
         assert token in arm_source, token
-    assert 'snapshot.get("paused") is True' not in arm_source
-    assert "while time.monotonic()" not in arm_source
     identity_source = inspect.getsource(capture.query_event_definition_identity)
     for token in (
         "query_current_event_window_context_v1",
@@ -477,6 +479,46 @@ def main() -> int:
         assert (
             Path(temp_dir) / "mock_received_result_speed_one_gate.json"
         ).is_file()
+
+    class DelayedSpeedOneService:
+        def __init__(self) -> None:
+            self.steps: list[str] = []
+            self.snapshots = [
+                {
+                    "revision": revision,
+                    "native_revision": revision,
+                    "date_raw": 200,
+                    "paused": True,
+                    "speed": speed,
+                    "active_event": {"instance_id": 9, "option_count": 3},
+                    "played_character": {"character_id": 77},
+                }
+                for revision, speed in ((10, 5), (10, 5), (10, 5), (11, 1))
+            ]
+
+        def execute_step(self, step: str) -> dict[str, object]:
+            self.steps.append(step)
+            return {"step": step, "accepted": True, "status": "submitted"}
+
+        def snapshot(self) -> dict[str, object]:
+            return self.snapshots.pop(0)
+
+    delayed_speed_one_service = DelayedSpeedOneService()
+    with tempfile.TemporaryDirectory() as temp_dir, mock.patch.object(
+        capture.time, "sleep"
+    ):
+        delayed_speed_one_gate = capture.arm_native_speed_one(
+            delayed_speed_one_service,
+            Path(temp_dir),
+            stem="mock_typed_policy_option",
+            require_settled_revision=True,
+        )
+        assert delayed_speed_one_service.steps == ["set-speed-1"]
+        assert delayed_speed_one_gate["result"] == "GREEN"
+        assert delayed_speed_one_gate["settled_revision_required"] is True
+        assert delayed_speed_one_gate["settled_revision_observed"] is True
+        assert delayed_speed_one_gate["snapshot"]["revision"] == 11
+        assert len(delayed_speed_one_gate["observations"]) == 3
 
     class PromoEventPauseService:
         def __init__(self) -> None:
