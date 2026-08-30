@@ -23,9 +23,9 @@
 - **3.5 符合预期**：小额贤能奖励，连击归零。
 - **3.25 待改进**：地方国库 -50（有国库时）、个人金币 -25、贤能 -60（有贤能制时）、一年俸禄 -25%（有俸禄时），并进入 PIP；连续两次后进入末位淘汰。
 
-常规成熟队列按 30/60/10 执行；首轮新人受 3.25 保护；只有一至两人的直属小组仍会稳定排名、全员按 3.5 正常结算，
-只是不会硬凑强制分布、校准或末位，因此个别榜单会依法缺档，
-不会为了让比例好看而把新人或两人小组硬塞进末位。
+常规成熟队列按 30/60/10 执行。**首次建账时的存量官员不算新人**，所以宋帝的 23 人首轮榜严格结算为
+7 个 3.75、14 个 3.5、2 个 3.25；只有基线建立后新到任的官员，才在本人第一次受评时获得 3.25 保护。
+一至两人的直属小组仍会稳定排名、全员按 3.5 正常结算，只是不硬凑强制分布、校准或末位。
 
 末位处置包括免费夺爵、强制致仕、降岗留用和再留一年。玩家封臣可申诉、认命、摆烂或奋发；
 玩家领主可在公示前校准边界名单。申诉改判会同步退回本次固定财政罚没并修正榜头统计。
@@ -76,9 +76,12 @@ PIP 案卷、HC 槽、晋升包、贡献争议、事故时间线等 38 个领域
 | ![天朝官员考核榜](workshop/media/03_scoreboard.jpg) | ![京察之期](workshop/media/04_jingcha_mandate.jpg) |
 | 免费京察活动 | 上司考定 3.25 |
 | ![免费京察活动](workshop/media/05_free_jingcha_activity.jpg) | ![上司考定 3.25](workshop/media/06_superior_325_result.jpg) |
+| 第001号 KPI 分项证据单 | 第361号三六一绩效宪章 |
+| ![第001号 KPI 分项证据单](workshop/media/07_policy_001_kpi_evidence.jpg) | ![第361号三六一绩效宪章](workshop/media/08_policy_361_charter.jpg) |
 
-当前六张 JPEG 是首轮整批 GREEN 实机证据 PNG 的确定性裁切；无损原图、失败 attempt、日志和完整一次性 userdir 均保留在
-验收 artifact。正式候选采用的最终批次与替换图会另行锁定，来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`。
+当前八张 JPEG 均为最终完整 GREEN 批次
+`zga_20260830_0930_clean_2fa2ac8_mcp` 的真实 CK3 画面确定性裁切；无损原图、录屏、日志、一次性 userdir 与全部失败
+attempt 均保留。来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`。
 
 ## 安装与兼容性
 
@@ -90,19 +93,18 @@ PIP 案卷、HC 槽、晋升包、贡献争议、事故时间线等 38 个领域
 
 ## 当前交付状态
 
-版本 0.3.0 的功能面已经冻结，当前进入现有功能的发布验收线；本次不再追加 38 个下一版本领域状态机。当前状态分层如下：
+版本 0.3.0 的功能面已经冻结，当前处于**上传前完整 live GREEN**：现有功能已完成同局实机合批，仍待正式宣传视频、
+正式 release 构建与 Workshop fresh-cache 复验；本次不再追加 38 个下一版本领域状态机。当前状态分层如下：
 
 - 361 项目录与中英文政策文案：`complete`；
-- 361 项参考政策配置与 14 本共享账本投影：历史批次为 `fixture-live`，冻结候选仍须完成正式合批复验；
-- 现有核心玩法——逐级考核、强制分布、校准、考核榜、京察、告身、3.25/PIP/末位后果与申诉——历史批次为
-  `fixture-live`，冻结候选仍须完成正式合批、发布物料与新鲜 Workshop 缓存签核；
+- 361/361 参考政策配置、唯一选择状态与 14 本共享账：`live GREEN`；这不等于 361 个领域状态机；
+- 现有核心玩法——23 人严格 7/14/2、逐级考核、校准、考核榜管理页/本人页、京察、上司 3.25 告身、
+  PIP/末位后果、申诉与六张代表政策卡全链——`live GREEN`；
 - 38 个领域对象/状态机：`next-version research / not-implemented`，不属于 0.3.0 runtime 或发布门。
 
-既有真实 CK3 批次准确证明了 361 个参考选择、唯一状态、共享账本、校验和与幂等性，也覆盖了非独立 AI 天朝公爵、
-首轮新人、考核榜、免费京察、拒办扣分、3.25 四重处分与申诉退款；它没有证明 361 个领域机制或 1,083 个 A/B/C
-分支已经完成。0.3.0 的发布声明只覆盖现有核心玩法，以及 361 项参考政策配置与 14 本共享账本；下一版本预研未实现
-不是本版本 blocker。本版本是否可发布，只由冻结源码的新一轮 CK3 合批、MCP 相机门、物料签核、正式构建与新鲜
-Workshop 缓存复验决定。
+最终 artifact `zga_20260830_0930_clean_2fa2ac8_mcp` 在 CK3 1.19.0.6 中同局证明了上述链路，项目诊断为 0，
+且最终干净画面不含测试决议。它没有证明 361 个领域机制或 1,083 个 A/B/C 分支全部完成；0.3.0 的声明只覆盖现有核心
+玩法与“361 项政策配置 + 14 本共享账”。下一版本预研不是本版 blocker，上传仍以物料、正式构建和 fresh-cache 签核为准。
 
 ## 工程与测试
 
@@ -111,7 +113,7 @@ Workshop 缓存复验决定。
 - 361 条权威清单：`docs/361-expansion-options.md`
 - 361 领域运行时与诚实完成定义：`docs/361-domain-runtime-architecture.md`
 - 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
-- 当前批量实机报告与证据边界：`docs/testing-report-2026-08-29.md`
+- 当前批量实机报告与证据边界：`docs/testing-report-2026-08-30.md`
 - 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`
 - 隔离 CK3 实机验收：`& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"`
 - release builder 单元测试：`py tools/test_build_mod_zhongguo_style_release.py`
@@ -133,8 +135,8 @@ AI 授权仅限本 mod 的 361 考核系统，不得外推。
 ## English summary
 
 ZhongGuo 361 Style turns Chinese internet-company performance culture into a CK3 celestial-government game loop.
-Every eligible duke-or-higher ruler reviews direct officials; counts and barons are reviewees only. Reviews freeze a ranked
-30/60/10 board, apply 3.75/3.5/3.25 consequences, drive PIP, promotion, compensation and headcount politics, and let the
-player navigate 361 individually tracked policy dilemmas. Simplified Chinese is the primary presentation and English is fully
-authored. Release localizations are included for all nine supported languages; the other seven are machine-assisted and passed
-automated checks plus an independent stratified review, but they are not represented as full native-speaker sign-off.
+Every eligible duke-or-higher ruler reviews direct officials; counts and barons are reviewees only. A 23-person mature board
+resolves to 7/14/2, while only post-baseline arrivals receive one-review bottom-tier protection. Version 0.3.0 includes the
+current review, Jingcha, scoreboard, PIP and appeal loop plus 361 tracked policy configurations feeding fourteen shared ledgers;
+it does not claim 361 separate domain state machines. Simplified Chinese and English are authored; the other seven release
+localizations are machine-assisted, automatically checked and independently sampled, not native-speaker sign-off.
