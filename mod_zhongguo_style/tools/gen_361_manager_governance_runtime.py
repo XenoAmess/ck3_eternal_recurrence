@@ -720,9 +720,10 @@ zg361_mg_clear_red_effect = {{
 
 {render_q_projection_adapter()}
 
-# The existing Jingcha is free/default-mandatory.  This compatibility adapter
-# mirrors its refusal path with the exact owner requirement: opinion -25 and a
-# next-review -50 marker.  Central callers remain outside this isolated file.
+# The existing Jingcha is free/default-mandatory.  Its explicit player-refusal
+# option calls this product effect directly.  Freeze the mandate business token
+# before lifecycle cleanup, then apply exactly one -25 opinion instance and one
+# eligible-reviewer -50 next-review reason.
 zg361_mg_refuse_jingcha_exact_effect = {{
 	if = {{
 		limit = {{
@@ -731,6 +732,19 @@ zg361_mg_refuse_jingcha_exact_effect = {{
 			has_variable = zg361_jingcha_mandate_year
 		}}
 		save_scope_as = zg361_mg_refusing_manager
+		set_variable = {{ name = zg361_mg_refusal_owner value = var:zg361_jingcha_mandate_superior }}
+		set_variable = {{ name = zg361_mg_refusal_subject value = this }}
+		set_variable = {{ name = zg361_mg_refusal_cycle value = var:zg361_jingcha_mandate_year }}
+		set_variable = {{ name = zg361_mg_refusal_case value = {{ value = var:zg361_jingcha_mandate_year multiply = 1000 add = 32 }} }}
+		if = {{ limit = {{ has_variable = zg361_b1_cycle_serial }} set_variable = {{ name = zg361_mg_refusal_cycle value = var:zg361_b1_cycle_serial }} }}
+		if = {{ limit = {{ has_variable = zg361_b1_case_serial }} set_variable = {{ name = zg361_mg_refusal_case value = var:zg361_b1_case_serial }} }}
+		set_variable = {{ name = zg361_mg_refusal_state value = 1 }}
+		set_variable = {{ name = zg361_mg_refusal_revision value = 1 }}
+		set_variable = {{ name = zg361_mg_refusal_operation value = 32 }}
+		set_variable = {{ name = zg361_mg_refusal_mandate_year value = var:zg361_jingcha_mandate_year }}
+		set_variable = {{ name = zg361_mg_refusal_opinion_delta value = -25 }}
+		set_variable = {{ name = zg361_mg_refusal_kpi_delta value = 0 }}
+		set_variable = {{ name = zg361_mg_refusal_reviewer_eligible value = 0 }}
 		var:zg361_jingcha_mandate_superior = {{
 			# Replace the legacy default -20 instance instead of stacking a second
 			# modifier on it.  The resulting relation is exactly -25.
@@ -748,7 +762,9 @@ zg361_mg_refuse_jingcha_exact_effect = {{
 			set_variable = {{ name = zg361_skipped_jingcha_superior value = var:zg361_jingcha_mandate_reviewer }}
 			set_variable = {{ name = zg361_skipped_jingcha_year value = var:zg361_jingcha_mandate_year }}
 			set_variable = {{ name = zg361_mg_refusal_kpi_delta value = -50 }}
+			set_variable = {{ name = zg361_mg_refusal_reviewer_eligible value = 1 }}
 		}}
+		set_variable = {{ name = zg361_mg_refusal_status value = 1 }}
 		zg361_clear_jingcha_mandate_effect = yes
 		debug_log = "ZG361MG: exact Jingcha refusal recorded (-25 opinion, -50 next review)"
 	}}

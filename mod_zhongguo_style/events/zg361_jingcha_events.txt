@@ -32,7 +32,7 @@ zg361.40 = {
 	option = { # 明确抗命：立即记录制度后果
 		name = zg361.40.b
 		custom_tooltip = zg361.40.b.tt
-		zg361_refuse_jingcha_effect = yes
+		zg361_mg_refuse_jingcha_exact_effect = yes
 	}
 }
 

@@ -504,9 +504,14 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             r"ui_predicted_cost\s*=\s*\{\s*treasury\s*=\s*\{\s*value\s*=\s*0",
         )
         mandate = top_level_block(self.jingcha_events, "zg361.40")
+        deadline = top_level_block(self.jingcha_events, "zg361.41")
         self.assertLess(mandate.index("name = zg361.40.a"), mandate.index("name = zg361.40.b"))
         self.assertIn("open_view_data", mandate)
-        self.assertIn("zg361_refuse_jingcha_effect = yes", mandate)
+        self.assertIn("zg361_mg_refuse_jingcha_exact_effect = yes", mandate)
+        self.assertNotIn("zg361_refuse_jingcha_effect = yes", mandate)
+        # The D+300 breach remains the pre-existing automatic failure path;
+        # this test's new contract is the player's explicit option caller.
+        self.assertIn("zg361_refuse_jingcha_effect = yes", deadline)
         self.assertIn("limit = { is_ai = yes }", self.jingcha_mandate)
         self.assertIn("AI jingcha duty entered the background performance season", self.jingcha_mandate)
         self.assertNotRegex(self.activity, r"remove_treasury|add_gold|remove_gold")
@@ -520,6 +525,28 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("remove_opinion", adapter)
         self.assertIn("zg361_mg_refusal_opinion_exact_superior", adapter)
         self.assertIn("value = -50", adapter)
+        for field in ("owner", "subject", "cycle", "case"):
+            self.assertIn(f"zg361_mg_refusal_{field}", adapter)
+        self.assertIn(
+            "zg361_mg_refusal_owner value = var:zg361_jingcha_mandate_superior",
+            adapter,
+        )
+        self.assertIn("zg361_mg_refusal_subject value = this", adapter)
+        self.assertIn(
+            "zg361_mg_refusal_cycle value = var:zg361_b1_cycle_serial", adapter
+        )
+        self.assertIn(
+            "zg361_mg_refusal_case value = var:zg361_b1_case_serial", adapter
+        )
+        self.assertIn("zg361_mg_refusal_operation value = 32", adapter)
+        self.assertIn("zg361_mg_refusal_opinion_delta value = -25", adapter)
+        self.assertIn("zg361_mg_refusal_kpi_delta value = -50", adapter)
+        self.assertIn("zg361_mg_refusal_reviewer_eligible value = 1", adapter)
+        self.assertIn("zg361_mg_refusal_status value = 1", adapter)
+        self.assertLess(
+            adapter.index("zg361_mg_refusal_owner value"),
+            adapter.index("zg361_clear_jingcha_mandate_effect = yes"),
+        )
         self.assertIn("opinion = -25", scorer)
         self.assertIn("remove_opinion", scorer)
         self.assertIn("zg361_mg_refusal_opinion_exact_match", scorer)

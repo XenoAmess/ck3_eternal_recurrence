@@ -160,7 +160,9 @@ A/B 只复制 Career/HC 权威 `manager_object_{id,owner,subject,cycle,case,stat
 - 合格 AI 不走活动 UI，后台默认履责。
 - `zg361_kpi_jingcha_evidence_value` 在冻结 KPI 时读取保存的原上司并精确减 50；`zg361_compute_kpi_effect` 先冻结证据，再清除 marker，所以同一拒办只消费一次，调任后的新上司不能继承。
 
-既有 `zg361_refused_jingcha` modifier 的默认数值仍为 -20。独立运行时提供 `zg361_mg_refuse_jingcha_exact_effect`：先移除同名旧实例，再用动态 `opinion = -25` 安装唯一实例，并保存原上司/年份精确收据。若旧中央路径已经先加 -20，下一次 F032 消费会在收据不匹配时同样执行“移除旧实例 → 安装 -25”；若 adapter 已执行则不重复加。中央拒办 caller 切换到该 adapter 属后续集成接线，不在本次“不得修改中央文件”的授权内。
+既有 `zg361_refused_jingcha` modifier 的默认数值仍为 -20，但玩家在 `zg361.40` 第二项明确拒办时，正式事件 caller 已直接调用 `zg361_mg_refuse_jingcha_exact_effect`，不再先走旧 `zg361_refuse_jingcha_effect` 再靠 F032 自愈。该 effect 在清理 mandate 前冻结 `owner = 发令时直属上司`、`subject = 拒办经理本人`、`cycle/case = 当期 B1 绩效季 token`（极端旧存档缺 token 时以 mandate year 派生稳定 fallback），并记录 state/revision/operation/year、`opinion_delta=-25` 与 receipt status。随后先移除同名旧实例，再用动态 `opinion = -25` 安装唯一实例；具备考核资格的原上司同时写一次性 `-50` 下轮 KPI 重大理由和 `reviewer_eligible=1`。最后才统一清理 pending/superior/reviewer/year，故生命周期清理不能抹掉本次业务身份。
+
+承诺举办后 D+300 仍未完成属于自动违约，不是玩家在弹窗中“明确拒办”；它暂时保留既有 deadline failure effect。两条路径均不改变京察免费、第一项默认举办、AI 后台履责、独立顶级领主 prestige fallback 或伯爵/男爵只受评的既有合同。F032 的旧存档兼容归一化仍保留，但只是迁移兜底，不再冒充明确拒办的正式 caller。
 
 ## 六、原子资源与收费边界
 
@@ -202,7 +204,7 @@ py tools/test_zg361_manager_governance_runtime.py
 py -O tools/test_zg361_manager_governance_runtime.py
 ```
 
-L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate、归一化 route 冲突、输入 fingerprint 冲突、successor/stale、owner drift、route-C 债创建/到期/一次消费，以及 Q 八项三路线只读投影；同时锁住 F 与 AK 的上游 C / 下游 A-B 混合组合，不允许旧值穿透。CK3 静态层另锁住 351 的两个
+L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate、归一化 route 冲突、输入 fingerprint 冲突、successor/stale、owner drift、route-C 债创建/到期/一次消费，以及 Q 八项三路线只读投影；同时锁住 F 与 AK 的上游 C / 下游 A-B 混合组合，不允许旧值穿透。京察回归另断言 `zg361.40.b -> zg361_mg_refuse_jingcha_exact_effect` 的正式直连、清理前冻结四元业务身份、直属上司 -25 与合格考核上司下轮 -50。CK3 静态层另锁住 351 的两个
 `ordered_vassal position = 0/1` 和显式 manager scope，防止再次把第 0 位经理漏掉或在 vassal scope 误读 `root.var`。这些仍只是 L0，不替代下一段的 MCP-first 实机矩阵。
 
 下一步必须先将 callable adapter 接入真实结算 hook，再通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。没有这批 paused snapshot 与日志之前，状态保持 `static-ready`。
