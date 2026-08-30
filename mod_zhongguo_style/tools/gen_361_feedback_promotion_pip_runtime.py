@@ -61,7 +61,11 @@ DOMAINS: tuple[DomainSpec, ...] = (
     # V follows the authoritative DomainSpec partition exactly: 174--176 are
     # blind_reviewed -> defended; 177--178 are defended -> voted.
     DomainSpec("V", "v", ((169, 170, 171), (172, 173), (174, 175, 176), (177, 178), (179, 180)), (30, 30, 30, 30, 90), "晋升答辩与评委政治", "Promotion panels and review politics", "operation_capacity"),
-    DomainSpec("W", "w", ((181, 182, 183), (184, 185), (186, 187), (188, 189), (190, 191)), (30, 30, 180, 365, 30), "PIP 启动、毕业与复发", "PIP initiation, graduation and relapse", "operation_capacity"),
+    # A graduated case waits for #188's exact D+365 observation, which queues
+    # #189 on D+367.  Its case deadline is D+368 so neither same-day event
+    # ordering nor timeout can choose the terminal fork for the player.  A
+    # failed first PIP skips #188 as not applicable and enters #189 directly.
+    DomainSpec("W", "w", ((181, 182, 183), (184, 185), (186, 187), (188, 189), (190, 191)), (30, 30, 180, 368, 30), "PIP 启动、毕业与复发", "PIP initiation, graduation and relapse", "operation_capacity"),
 )
 DOMAIN_BY_KEY = {domain.key: domain for domain in DOMAINS}
 DOMAIN_BY_ID = {
@@ -156,7 +160,8 @@ MECHANISMS: tuple[MechanismSpec, ...] = (
 )
 MECHANISM_BY_ID = {mechanism.mechanism_id: mechanism for mechanism in MECHANISMS}
 EXPECTED_IDS = tuple(range(146, 192))
-DUAL_COST_IDS = frozenset({149, 150, 165, 189, 191})
+DUAL_COST_ROUTE_BY_ID = {149: 1, 150: 1, 165: 1, 189: 2, 191: 1}
+DUAL_COST_IDS = frozenset(DUAL_COST_ROUTE_BY_ID)
 SUBJECT_RESPONSE_IDS = frozenset({151, 166, 183, 190})
 P2_DEFER_IDS = frozenset({147, 149, 154, 155, 161, 162, 166, 170, 172, 173})
 EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
@@ -164,14 +169,20 @@ EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
     149: ("capacity_hours", "commitment_capacity"),
     150: ("capacity_hours", "commitment_capacity"),
     157: ("nomination_slot",),
-    160: ("promotion_slot",),
     162: ("tenure_exception_slot",),
     165: ("capacity_hours",),
     **{mechanism_id: ("panel_vote",) for mechanism_id in (169, 170, 173, 174, 176, 177, 178, 179, 180)},
     **{mechanism_id: ("capacity_hours",) for mechanism_id in (171, 172, 175)},
-    184: ("pip_capacity",),
-    189: ("exit_cost",),
     191: ("exit_cost",),
+}
+
+# These resources exist only when the corresponding route creates the real
+# business object.  A political prescreen rejection must not burn a promotion
+# slot; an overloaded PIP must not pretend that capacity was reserved; and a
+# supported second-PIP/transfer path must not post an exit-cost receipt.
+ROUTE_A_EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
+    160: ("promotion_slot",),
+    184: ("pip_capacity",),
 }
 
 # #161 only spends a second real nomination slot and preparation hours on the
@@ -179,6 +190,117 @@ EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
 # candidate and therefore must not burn those resources.
 ROUTE_B_EXTRA_RESOURCES_BY_ID: dict[int, tuple[str, ...]] = {
     161: ("nomination_slot", "capacity_hours"),
+    189: ("exit_cost",),
+}
+
+# Every delayed audit must consume one field from the mechanism's typed
+# business object.  Merely copying the A/B/C route into a generic audit row is
+# not a downstream consumer: it cannot prove that the promised packet, vote,
+# obligation, PIP gate, or terminal fork ever existed.  These fields are all
+# initialized on both A and B and are read only after the five-tuple audit
+# guard succeeds.  Route C has no typed object and therefore records only the
+# bounded policy-debt outcome.
+DELAYED_CONSUMER_FIELD_BY_ID: dict[int, str] = {
+    146: "frozen_grade",
+    147: "quality_credit",
+    148: "rating_snapshot",
+    149: "obligation_status",
+    150: "obligation_status",
+    151: "grade_at_delivery",
+    152: "total_score",
+    153: "current_due_days",
+    154: "evidence_index",
+    155: "private_sensitive_fields",
+    156: "completion_receipt",
+    157: "packet_status",
+    158: "quota_conserved",
+    159: "nomination_due_cycles",
+    160: "prescreen_pass",
+    161: "filler",
+    162: "admission_vote_frozen",
+    163: "window_cycles",
+    164: "share_check",
+    165: "trial_due_days",
+    166: "packet_active_after",
+    167: "observation_id",
+    168: "attempt_id",
+    169: "weight_check",
+    170: "selection_checksum",
+    171: "active_panel_revision",
+    172: "decision_rule_code",
+    173: "blind_score",
+    174: "time_check",
+    175: "coaching_conserved",
+    176: "share_check",
+    177: "dimensions_separate",
+    178: "final_decision",
+    179: "gap_id",
+    180: "retry_count",
+    181: "evidence_id",
+    182: "gate_status",
+    183: "acknowledgement_status",
+    184: "active_case",
+    185: "midpoint_status",
+    186: "current_workload",
+    187: "graduation_status",
+    188: "relapse_status",
+    189: "terminal_code",
+    190: "audit_delivery_acl_pass",
+    191: "net_cost",
+}
+
+# A business decision may be recorded immediately while its promised outcome
+# remains time-bound.  These three mechanisms deliberately hold their stage
+# barrier until the target-bound audit consumes the promise.  #188 also holds
+# the next same-stage card, otherwise the player could choose a terminal fork
+# before the one-cycle relapse window had elapsed.
+DELAYED_STAGE_GATE_IDS = frozenset({185, 187, 188})
+
+AUDIT_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
+    149: ("fulfilled_receipt", "breach_receipt"),
+    150: ("fulfilled_receipt", "breach_receipt"),
+    151: (
+        "delivery_audit_closed",
+        "delivery_receipt_valid",
+        "appeal_clock_closed",
+        "appeal_result_grade",
+        "appeal_closed_without_filing",
+    ),
+    167: ("competent", "sponsor_credit_delta"),
+    168: ("competent",),
+    180: ("retry_unlock_reason", "retry_settled_receipt"),
+    185: ("progress_snapshot", "resource_delivery_valid", "late_correction_invalid"),
+    187: (
+        "key_milestones_met",
+        "stability_days_observed",
+        "independent_review_pass",
+        "appeal_weight",
+    ),
+    188: (
+        "observed_result_owner",
+        "observed_result_subject",
+        "observed_result_cycle",
+        "observed_result_case",
+        "observed_result_state",
+        "observed_result_grade",
+        "observed_result_reason",
+        "observed_category",
+        "skipped_first_failure",
+    ),
+    189: ("skipped_no_relapse",),
+    190: ("audit_delivery_acl_pass",),
+}
+
+RESPONSE_ONLY_FIELDS_BY_ID: dict[int, tuple[str, ...]] = {
+    151: ("appeal_snapshot_grade",),
+    190: (
+        "subject_statement_author",
+        "subject_statement_receiver",
+        "subject_statement_version",
+        "subject_statement_private_ids",
+        "subject_statement_code",
+        "subject_disclosure_refused",
+    ),
 }
 
 
@@ -208,6 +330,22 @@ def validate_specs() -> None:
         raise ValueError("secondary resource outside owned range")
     if not set(ROUTE_B_EXTRA_RESOURCES_BY_ID) <= set(EXPECTED_IDS):
         raise ValueError("route-B resource outside owned range")
+    if not set(ROUTE_A_EXTRA_RESOURCES_BY_ID) <= set(EXPECTED_IDS):
+        raise ValueError("route-A resource outside owned range")
+    if set(ROUTE_A_EXTRA_RESOURCES_BY_ID) & set(ROUTE_B_EXTRA_RESOURCES_BY_ID):
+        raise ValueError("route-specific resource ownership must be unambiguous")
+    if set(DUAL_COST_ROUTE_BY_ID) != set(DUAL_COST_IDS) or not all(
+        route in (1, 2) for route in DUAL_COST_ROUTE_BY_ID.values()
+    ):
+        raise ValueError("dual-payer routes must be explicit A/B operations")
+    if set(DELAYED_CONSUMER_FIELD_BY_ID) != set(EXPECTED_IDS):
+        raise ValueError("every owned mechanism needs one typed delayed consumer")
+    if not DELAYED_STAGE_GATE_IDS <= set(EXPECTED_IDS):
+        raise ValueError("delayed stage gate outside owned range")
+    if not set(AUDIT_ONLY_FIELDS_BY_ID) <= set(EXPECTED_IDS):
+        raise ValueError("audit-only reset field outside owned range")
+    if not set(RESPONSE_ONLY_FIELDS_BY_ID) <= set(SUBJECT_RESPONSE_IDS):
+        raise ValueError("response-only reset field without subject response")
     if READINESS != "static-ready":
         raise ValueError("generator must not claim live readiness")
 
@@ -300,6 +438,7 @@ OR = {
 \tvar:zg361_pp_m157_nomination_slot_status = 2
 }'''
     rows: dict[int, str] = {
+        157: "var:zg361_pp_u_candidate_eligible = 1",
         158: common_packet,
         161: common_packet,
         162: common_packet,
@@ -321,6 +460,10 @@ var:zg361_pp_m166_withdrawn_before_prescreen = 0''',
 var:zg361_pp_m160_packet_candidate_consumed = this''',
         168: '''has_variable = zg361_pp_m160_prescreen_pass
 has_variable = zg361_pp_m167_observation_id''',
+        169: '''var:zg361_pp_m160_prescreen_pass = 1
+var:zg361_pp_m160_packet_candidate_consumed = this
+var:zg361_pp_m160_promotion_slot_status = 2
+has_variable = zg361_pp_v_source_packet_case''',
         170: '''has_variable = zg361_pp_v_panel_pool_1
 has_variable = zg361_pp_v_panel_pool_2
 has_variable = zg361_pp_v_panel_pool_3''',
@@ -346,20 +489,60 @@ var:zg361_pp_m176_share_check = 100
 has_variable = zg361_pp_m177_scale_score
 has_variable = zg361_pp_m177_leverage_score''',
         179: '''var:zg361_pp_m178_final_decision = 0
-has_variable = zg361_pp_m170_panelist_1''',
+has_variable = zg361_pp_m171_active_panel_1''',
         180: '''var:zg361_pp_m178_final_decision = 0
 has_variable = zg361_pp_m179_gap_id
-var:zg361_pp_m179_feedback_owner = var:zg361_pp_m170_panelist_1''',
-        182: "has_variable = zg361_pp_m181_primary_category",
-        183: "has_variable = zg361_pp_m182_evidence_threshold_met",
-        184: "has_variable = zg361_pp_m183_goals_frozen",
-        185: "has_variable = zg361_pp_m184_capacity_reserved",
-        186: "has_variable = zg361_pp_m185_midpoint_receipt",
-        187: "has_variable = zg361_pp_m186_baseline_workload",
-        188: "has_variable = zg361_pp_m187_key_milestones_met",
-        189: "has_variable = zg361_pp_m188_observation_days",
-        190: "has_variable = zg361_pp_m189_exclusive_terminal",
-        191: "has_variable = zg361_pp_m189_exclusive_terminal",
+var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1''',
+        182: '''has_variable = zg361_pp_m181_primary_category
+has_variable = zg361_pp_m181_evidence_id
+var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade''',
+        183: "has_variable = zg361_pp_m182_gate_status",
+        184: '''OR = {
+\tvar:zg361_pp_m182_gate_status = 1
+\tvar:zg361_pp_m182_gate_status = 2
+}
+var:zg361_pp_m183_goals_frozen = 1
+var:zg361_pp_m183_manager_signed = 1
+OR = {
+\tvar:zg361_pp_m183_subject_signed = 1
+\tvar:zg361_pp_m183_independent_review_pass = 1
+}''',
+        185: "var:zg361_pp_m184_active_case = 1",
+        186: '''var:zg361_pp_m185_audit_1_consumed = 1
+OR = {
+\tvar:zg361_pp_m185_midpoint_status = 1
+\tvar:zg361_pp_m185_midpoint_status = 2
+}''',
+        187: '''var:zg361_pp_m185_audit_1_consumed = 1
+has_variable = zg361_pp_m186_baseline_workload''',
+        188: "var:zg361_pp_m187_graduation_status = 1",
+        189: '''OR = {
+\tAND = {
+\t\tvar:zg361_pp_m187_route = 2
+\t\tvar:zg361_pp_m187_graduation_status = 2
+\t\tvar:zg361_pp_m188_skipped_first_failure = 1
+\t}
+\tAND = {
+\t\tvar:zg361_pp_m188_audit_1_consumed = 1
+\t\tvar:zg361_pp_m188_observation_closed = 1
+\t\tvar:zg361_pp_m188_relapse_status = 1
+\t}
+}''',
+        190: '''var:zg361_pp_m189_terminal_code = 2
+has_variable = zg361_pp_m189_receiving_manager
+var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
+has_variable = zg361_pp_w_transfer_vacancy_id
+var:zg361_pp_w_transfer_vacancy_active = 1
+var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+has_variable = zg361_pp_m183_goal_bundle_id
+has_variable = zg361_pp_m184_support_status
+has_variable = zg361_pp_m187_graduation_status
+has_variable = zg361_pp_m183_subject_statement_code
+var:zg361_pp_m189_receiving_manager = {
+\tzg361_is_celestial_liege_trigger = yes
+\tNOT = { this = root }
+}''',
+        191: "var:zg361_pp_m189_terminal_code = 3",
     }
     result = rows.get(mechanism_id, "always = yes")
     if mechanism_id == 161 and route == 2:
@@ -373,6 +556,40 @@ NOT = { has_variable = zg361_pp_m160_prescreen_pass }
 var:zg361_pp_m157_nomination_slot_owner = var:zg361_case_u_owner
 var:zg361_pp_m157_nomination_slot_cycle = var:zg361_case_u_cycle_serial
 var:zg361_pp_m157_nomination_slot_case = var:zg361_case_u_case_serial'''
+    if mechanism_id == 171 and route == 1:
+        result += '''
+has_variable = zg361_pp_v_panel_pool_4
+NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_1 }
+NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_2 }
+NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 }'''
+    if mechanism_id == 182:
+        result += (
+            "\nvar:zg361_pp_w_pip_gate_candidate = 1"
+            if route == 1
+            else "\nvar:zg361_pp_w_frozen_grade = 1"
+        )
+    if mechanism_id == 183:
+        result += (
+            "\nvar:zg361_pp_m182_gate_status = 1"
+            if route == 1
+            else "\nvar:zg361_pp_m182_gate_status = 2"
+        )
+    if mechanism_id == 188 and route == 2:
+        # The political route may label a successfully graduated subject too,
+        # but it still cannot invent a relapse before the D+365 observation.
+        result += "\nvar:zg361_pp_m187_graduation_status = 1"
+    if mechanism_id == 189 and route == 1:
+        result += '''
+OR = {
+\tAND = {
+\t\tvar:zg361_pp_m187_route = 2
+\t\tvar:zg361_pp_m187_graduation_status = 2
+\t\tvar:zg361_pp_m188_skipped_first_failure = 1
+\t}
+\tvar:zg361_pp_m188_same_category_relapse = 1
+}'''
+    if mechanism_id == 189 and route == 2:
+        result += "\nvar:zg361_pp_w_frozen_grade = 1"
     return result
 
 
@@ -490,23 +707,25 @@ if = {{
 def dual_cost_guard(mechanism_id: int) -> str:
     if mechanism_id not in DUAL_COST_IDS:
         return "always = yes"
-    return '''trigger_if = {
-\tlimit = { scope:zg361_pp_route = 1 }
-\tvar:zg361_pp_cost_owner = {
+    route = DUAL_COST_ROUTE_BY_ID[mechanism_id]
+    return f'''trigger_if = {{
+\tlimit = {{ scope:zg361_pp_route = {route} }}
+\tvar:zg361_pp_cost_owner = {{
 \t\tgovernment_has_flag = government_has_treasury
 \t\ttreasury >= 5
 \t\tgold >= 5
-\t}
-}
-trigger_else = { always = yes }'''
+\t}}
+}}
+trigger_else = {{ always = yes }}'''
 
 
 def dual_cost_write(mechanism: MechanismSpec) -> str:
     if mechanism.mechanism_id not in DUAL_COST_IDS:
         return ""
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
+    route = DUAL_COST_ROUTE_BY_ID[mechanism.mechanism_id]
     return f'''if = {{
-\tlimit = {{ scope:zg361_pp_route = 1 }}
+\tlimit = {{ scope:zg361_pp_route = {route} }}
 \tvar:zg361_case_{mechanism.domain}_owner = {{
 \t\tremove_treasury = 5
 \t\tremove_gold = 5
@@ -519,46 +738,258 @@ def dual_cost_write(mechanism: MechanismSpec) -> str:
 }}'''
 
 
+def business_object_identity_write(mechanism: MechanismSpec, state: int) -> str:
+    """Freeze an explicit owner/subject/cycle/case/state business identity.
+
+    The case-kernel operation receipt already carries this tuple, but typed
+    downstream objects must not rely on whatever case happens to be current
+    when a D+365 event wakes up.  Keeping the tuple beside every payload also
+    gives MCP a stable object key without requiring 46 bespoke schemas.
+    """
+
+    p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
+    row = case_vars(mechanism.domain)
+    return f'''set_variable = {{ name = {p}_object_owner value = var:{row["owner"]} }}
+set_variable = {{ name = {p}_object_subject value = this }}
+set_variable = {{ name = {p}_object_cycle value = var:{row["cycle"]} }}
+set_variable = {{ name = {p}_object_case value = var:{row["case"]} }}
+set_variable = {{ name = {p}_object_state value = {state} }}'''
+
+
+def pip_capacity_release_write(state: int, reason: int) -> str:
+    """Release #184's one real capacity receipt exactly once.
+
+    Graduation releases it from the D+90 #187 consumer; a failed/relapsed case
+    releases it only after #189 chooses its exclusive terminal.  The shared
+    refund primitive rechecks the live W five-tuple and receipt status, so a
+    duplicate or stale audit cannot mint capacity.
+    """
+
+    return f'''if = {{
+\tlimit = {{
+\t\tvar:zg361_pp_w_capacity_released = 0
+\t\tvar:zg361_pp_m184_pip_capacity_status = 1
+\t}}
+\tzg361_case_kernel_refund_transaction_effect = {{
+\t\tOWNER_VAR = zg361_case_w_owner
+\t\tSUBJECT_VAR = zg361_case_w_subject
+\t\tCYCLE_VAR = zg361_case_w_cycle_serial
+\t\tCASE_VAR = zg361_case_w_case_serial
+\t\tSTATE_VAR = zg361_case_w_state
+\t\tACTIVE_VAR = zg361_case_w_active
+\t\tREVISION_VAR = zg361_case_w_revision
+\t\tAVAILABLE_VAR = zg361_pp_w_pip_capacity_available
+\t\tRESERVED_VAR = zg361_pp_w_pip_capacity_reserved
+\t\tSETTLED_VAR = zg361_pp_w_pip_capacity_settled
+\t\tRECEIPT_AMOUNT_VAR = zg361_pp_m184_pip_capacity_amount
+\t\tRECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status
+\t\tTICKET_OWNER = var:zg361_case_w_owner
+\t\tTICKET_SUBJECT = this
+\t\tTICKET_CYCLE = var:zg361_case_w_cycle_serial
+\t\tTICKET_CASE = var:zg361_case_w_case_serial
+\t\tTICKET_STATE = {state}
+\t}}
+\tif = {{
+\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\tset_variable = {{ name = zg361_pp_w_capacity_released value = 1 }}
+\t\tset_variable = {{ name = zg361_pp_w_capacity_release_reason value = {reason} }}
+\t\tset_variable = {{ name = zg361_pp_m184_capacity_reserved value = 0 }}
+\t\tset_variable = {{ name = zg361_pp_m184_active_case value = 0 }}
+\t\tset_variable = {{ name = zg361_pp_m184_release_once value = 0 }}
+\t}}
+}}
+else_if = {{
+\tlimit = {{ var:zg361_pp_w_capacity_released = 0 NOT = {{ var:zg361_pp_m184_pip_capacity_status = 1 }} }}
+\t# Political overbooking never reserved capacity, so terminal closure records
+\t# a no-release receipt rather than manufacturing one.
+\tset_variable = {{ name = zg361_pp_w_capacity_released value = 1 }}
+\tset_variable = {{ name = zg361_pp_w_capacity_release_reason value = {reason} }}
+\tset_variable = {{ name = zg361_pp_m184_active_case value = 0 }}
+}}'''
+
+
+def render_m189_no_relapse_skip() -> str:
+    """Close the conditional terminal mechanism when the observation is clean.
+
+    #189 is not a policy breach when no same-category relapse happened; it is
+    simply inapplicable.  This explicit receipt lets the stage and completed
+    count close without inventing a second PIP, transfer, exit, policy debt or
+    delayed audit.
+    """
+
+    return '''zg361_pp_m189_skip_no_relapse_effect = {
+\tif = {
+\t\tlimit = {
+\t\t\tzg361_case_kernel_full_guard_trigger = {
+\t\t\t\tOWNER_VAR = zg361_case_w_owner
+\t\t\t\tSUBJECT_VAR = zg361_case_w_subject
+\t\t\t\tCYCLE_VAR = zg361_case_w_cycle_serial
+\t\t\t\tCASE_VAR = zg361_case_w_case_serial
+\t\t\t\tSTATE_VAR = zg361_case_w_state
+\t\t\t\tACTIVE_VAR = zg361_case_w_active
+\t\t\t\tEXPECTED_OWNER = var:zg361_case_w_owner
+\t\t\t\tEXPECTED_SUBJECT = this
+\t\t\t\tEXPECTED_CYCLE = var:zg361_case_w_cycle_serial
+\t\t\t\tEXPECTED_CASE = var:zg361_case_w_case_serial
+\t\t\t\tEXPECTED_STATE = 4
+\t\t\t}
+\t\t\tvar:zg361_pp_m188_audit_1_consumed = 1
+\t\t\tvar:zg361_pp_m188_relapse_status = 2
+\t\t\tvar:zg361_pp_m189_receipt_active = 0
+\t\t}
+\t\tset_variable = { name = zg361_pp_m189_receipt_owner value = var:zg361_case_w_owner }
+\t\tset_variable = { name = zg361_pp_m189_receipt_subject value = this }
+\t\tset_variable = { name = zg361_pp_m189_receipt_cycle value = var:zg361_case_w_cycle_serial }
+\t\tset_variable = { name = zg361_pp_m189_receipt_case value = var:zg361_case_w_case_serial }
+\t\tset_variable = { name = zg361_pp_m189_receipt_state value = 4 }
+\t\tset_variable = { name = zg361_pp_m189_receipt_route value = 0 }
+\t\tset_variable = { name = zg361_pp_m189_receipt_active value = 1 }
+\t\tset_variable = { name = zg361_pp_m189_route value = 0 }
+\t\tset_variable = { name = zg361_pp_m189_terminal_fork value = 0 }
+\t\tset_variable = { name = zg361_pp_m189_terminal_code value = 0 }
+\t\tset_variable = { name = zg361_pp_m189_skipped_no_relapse value = 1 }
+\t\tset_variable = { name = zg361_pp_m189_visible_outcome_code value = 4 }
+\t\tset_variable = { name = zg361_pp_m189_audit_1_state value = 2 }
+\t\tset_variable = { name = zg361_pp_m189_audit_1_consumed value = 1 }
+\t\tzg361_pp_m189_consume_effect = yes
+\t}
+}'''
+
+
+def render_m188_first_failure_skip() -> str:
+    """Close post-graduation observation when the first PIP already failed.
+
+    A first-PIP failure is itself a terminal-fork input.  It must not wait a
+    year for, or manufacture, a post-graduation relapse.  This exact route-0
+    receipt closes #188 as not applicable while retaining the failed #187
+    evidence that authorizes #189 A/B.
+    """
+
+    return '''zg361_pp_m188_skip_first_failure_effect = {
+\tif = {
+\t\tlimit = {
+\t\t\tzg361_case_kernel_full_guard_trigger = {
+\t\t\t\tOWNER_VAR = zg361_case_w_owner
+\t\t\t\tSUBJECT_VAR = zg361_case_w_subject
+\t\t\t\tCYCLE_VAR = zg361_case_w_cycle_serial
+\t\t\t\tCASE_VAR = zg361_case_w_case_serial
+\t\t\t\tSTATE_VAR = zg361_case_w_state
+\t\t\t\tACTIVE_VAR = zg361_case_w_active
+\t\t\t\tEXPECTED_OWNER = var:zg361_case_w_owner
+\t\t\t\tEXPECTED_SUBJECT = this
+\t\t\t\tEXPECTED_CYCLE = var:zg361_case_w_cycle_serial
+\t\t\t\tEXPECTED_CASE = var:zg361_case_w_case_serial
+\t\t\t\tEXPECTED_STATE = 4
+\t\t\t}
+\t\t\tvar:zg361_pp_m187_route = 2
+\t\t\tvar:zg361_pp_m187_graduation_status = 2
+\t\t\tvar:zg361_pp_m188_receipt_active = 0
+\t\t}
+\t\tset_variable = { name = zg361_pp_m188_receipt_owner value = var:zg361_case_w_owner }
+\t\tset_variable = { name = zg361_pp_m188_receipt_subject value = this }
+\t\tset_variable = { name = zg361_pp_m188_receipt_cycle value = var:zg361_case_w_cycle_serial }
+\t\tset_variable = { name = zg361_pp_m188_receipt_case value = var:zg361_case_w_case_serial }
+\t\tset_variable = { name = zg361_pp_m188_receipt_state value = 4 }
+\t\tset_variable = { name = zg361_pp_m188_receipt_route value = 0 }
+\t\tset_variable = { name = zg361_pp_m188_receipt_active value = 1 }
+\t\tset_variable = { name = zg361_pp_m188_route value = 0 }
+\t\tset_variable = { name = zg361_pp_m188_relapse_window value = 0 }
+\t\tset_variable = { name = zg361_pp_m188_relapse_status value = 0 }
+\t\tset_variable = { name = zg361_pp_m188_skipped_first_failure value = 1 }
+\t\tset_variable = { name = zg361_pp_m188_visible_outcome_code value = 4 }
+\t\tset_variable = { name = zg361_pp_m188_audit_1_state value = 2 }
+\t\tset_variable = { name = zg361_pp_m188_audit_1_consumed value = 1 }
+\t\tzg361_pp_m188_consume_effect = yes
+\t}
+}'''
+
+
 def semantic_write(mechanism: MechanismSpec) -> str:
     """Behavior-specific writes consumed by later mechanisms or projections."""
 
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
     d = mechanism.domain
     snippets: dict[int, str] = {
-        146: f'''set_variable = {{ name = {p}_frozen_rating_preserved value = 1 }}
-set_variable = {{ name = {p}_understanding_recorded value = 1 }}''',
-        147: f'''set_variable = {{ name = {p}_evidence_linked value = 1 }}
-set_variable = {{ name = {p}_boilerplate_count value = 0 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_boilerplate_count value = 1 }} }}''',
-        148: f'''set_variable = {{ name = {p}_evidence_snapshot_preserved value = 1 }}
-set_variable = {{ name = {p}_rating_snapshot_preserved value = 1 }}''',
-        149: f'''set_variable = {{ name = {p}_current_rating_unchanged value = 1 }}
+        146: f'''set_variable = {{ name = {p}_frozen_grade value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_disclosed_grade value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_understood_grade value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_understanding_gap value = 0 }}
+set_variable = {{ name = {p}_frozen_evidence_hash value = var:zg361_pp_t_frozen_evidence_hash }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_understood_grade value = 0 }} set_variable = {{ name = {p}_understanding_gap value = 1 }} }}''',
+        147: f'''set_variable = {{ name = {p}_evidence_hash_consumed value = var:zg361_pp_t_frozen_evidence_hash }}
+set_variable = {{ name = {p}_supported_praise_n value = 1 }}
+set_variable = {{ name = {p}_supported_critique_n value = 1 }}
+set_variable = {{ name = {p}_unsupported_sentence_n value = 0 }}
+set_variable = {{ name = {p}_quality_credit value = 2 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_supported_praise_n value = 0 }} set_variable = {{ name = {p}_supported_critique_n value = 0 }} set_variable = {{ name = {p}_unsupported_sentence_n value = 2 }} set_variable = {{ name = {p}_quality_credit value = 0 }} }}''',
+        148: f'''set_variable = {{ name = {p}_evidence_snapshot value = var:zg361_pp_t_frozen_evidence_hash }}
+set_variable = {{ name = {p}_rating_snapshot value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_step_order value = 1 }}
+set_variable = {{ name = {p}_facts_acknowledged value = 1 }}
+set_variable = {{ name = {p}_dispute_open value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_step_order value = 2 }} set_variable = {{ name = {p}_dispute_open value = 1 }} }}''',
+        149: f'''set_variable = {{ name = {p}_grade_before_terms value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_grade_after_terms value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_obligation_id value = {{ value = var:zg361_case_t_case_serial multiply = 1000 add = 149 }} }}
 set_variable = {{ name = {p}_term_owner value = var:zg361_case_t_owner }}
-set_variable = {{ name = {p}_term_due_days value = 180 }}''',
-        150: f'''set_variable = {{ name = {p}_promise_owner value = var:zg361_case_t_owner }}
+set_variable = {{ name = {p}_term_due_days value = 180 }}
+set_variable = {{ name = {p}_obligation_status value = 1 }}
+set_variable = {{ name = {p}_funded value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 1 }} set_variable = {{ name = {p}_funded value = 1 }} }}''',
+        150: f'''set_variable = {{ name = {p}_obligation_id value = {{ value = var:zg361_case_t_case_serial multiply = 1000 add = 150 }} }}
+set_variable = {{ name = {p}_sacrifice_cycle value = var:zg361_case_t_cycle_serial }}
+set_variable = {{ name = {p}_promise_owner value = var:zg361_case_t_owner }}
 set_variable = {{ name = {p}_promise_due_days value = 365 }}
+set_variable = {{ name = {p}_obligation_status value = 1 }}
 set_variable = {{ name = {p}_written value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_written value = 0 }} }}''',
+set_variable = {{ name = {p}_funded value = 1 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_written value = 0 }} set_variable = {{ name = {p}_funded value = 0 }} }}''',
         151: f'''set_variable = {{ name = {p}_delivered value = 1 }}
 set_variable = {{ name = {p}_agreed value = 0 }}
+set_variable = {{ name = {p}_disputed value = 1 }}
+set_variable = {{ name = {p}_witness_required value = 0 }}
 set_variable = {{ name = {p}_appeal_eligible value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_procedural_debt value = 1 }} }}''',
+set_variable = {{ name = {p}_appeal_due_days value = 90 }}
+set_variable = {{ name = {p}_grade_at_delivery value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_non_aggravation_grade value = var:zg361_pp_t_frozen_grade }}
+set_variable = {{ name = {p}_appeal_filed value = 0 }}
+set_variable = {{ name = {p}_non_aggravation_ok value = 1 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_agreed value = 1 }} set_variable = {{ name = {p}_suppressed_objection value = 1 }} set_variable = {{ name = {p}_procedural_debt value = 1 }} }}''',
         152: f'''set_variable = {{ name = {p}_specificity value = 25 }}
 set_variable = {{ name = {p}_controllability value = 25 }}
 set_variable = {{ name = {p}_deadline_quality value = 25 }}
 set_variable = {{ name = {p}_resource_quality value = 25 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_specificity value = 5 }} set_variable = {{ name = {p}_controllability value = 5 }} set_variable = {{ name = {p}_deadline_quality value = 0 }} set_variable = {{ name = {p}_resource_quality value = 0 }} }}''',
+set_variable = {{ name = {p}_total_score value = 100 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_specificity value = 5 }} set_variable = {{ name = {p}_controllability value = 5 }} set_variable = {{ name = {p}_deadline_quality value = 0 }} set_variable = {{ name = {p}_resource_quality value = 0 }} set_variable = {{ name = {p}_total_score value = 10 }} }}''',
         153: f'''set_variable = {{ name = {p}_action_owner value = var:zg361_case_t_owner }}
 set_variable = {{ name = {p}_original_due_days value = 90 }}
-set_variable = {{ name = {p}_terminal_receipt value = 0 }}''',
-        154: f'''set_variable = {{ name = {p}_append_only value = 1 }}
-set_variable = {{ name = {p}_evidence_refs_preserved value = 1 }}''',
-        155: f'''set_variable = {{ name = {p}_private_sensitive_fields value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} add_stress = minor_stress_gain set_variable = {{ name = {p}_public_shaming value = 1 }} }}''',
-        156: f'''set_variable = {{ name = {p}_rule_explained value = 1 }}
+set_variable = {{ name = {p}_current_due_days value = 90 }}
+set_variable = {{ name = {p}_deadline_revision value = 1 }}
+set_variable = {{ name = {p}_terminal_status value = 0 }}
+set_variable = {{ name = {p}_acceptance_evidence value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_current_due_days value = 120 }} set_variable = {{ name = {p}_deadline_revision value = 2 }} set_variable = {{ name = {p}_change_reason value = 1 }} }}''',
+        154: f'''set_variable = {{ name = {p}_minutes_id value = {{ value = var:zg361_case_t_case_serial multiply = 1000 add = 154 }} }}
+set_variable = {{ name = {p}_mode value = 1 }}
+set_variable = {{ name = {p}_version value = 1 }}
+set_variable = {{ name = {p}_append_only value = 1 }}
+set_variable = {{ name = {p}_evidence_index value = var:zg361_pp_t_frozen_evidence_hash }}
+set_variable = {{ name = {p}_correction_revision value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_mode value = 2 }} }}''',
+        155: f'''set_variable = {{ name = {p}_public_achievement_fields value = 1 }}
+set_variable = {{ name = {p}_public_grade_fields value = 0 }}
+set_variable = {{ name = {p}_private_sensitive_fields value = 1 }}
+set_variable = {{ name = {p}_subject_projection_acl value = 1 }}
+set_variable = {{ name = {p}_team_projection_acl value = 2 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} add_stress = minor_stress_gain set_variable = {{ name = {p}_public_grade_fields value = 1 }} set_variable = {{ name = {p}_public_shaming value = 1 }} set_variable = {{ name = {p}_retaliation_risk value = 1 }} }}''',
+        156: f'''set_variable = {{ name = {p}_briefing_id value = {{ value = var:zg361_case_t_case_serial multiply = 1000 add = 156 }} }}
+set_variable = {{ name = {p}_distribution_rule_explained value = 1 }}
+set_variable = {{ name = {p}_common_issue_n value = 1 }}
 set_variable = {{ name = {p}_resource_plan_explained value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_rule_explained value = 0 }} set_variable = {{ name = {p}_rumor_debt value = 1 }} }}''',
+set_variable = {{ name = {p}_completion_receipt value = 1 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_distribution_rule_explained value = 0 }} set_variable = {{ name = {p}_resource_plan_explained value = 0 }} set_variable = {{ name = {p}_completion_receipt value = 0 }} set_variable = {{ name = {p}_rumor_debt value = 1 }} }}''',
         157: f'''save_temporary_scope_as = zg361_pp_nomination_candidate
+set_variable = {{ name = {p}_eligibility_grade value = var:zg361_pp_u_frozen_grade }}
+set_variable = {{ name = {p}_eligible_at_nomination value = var:zg361_pp_u_candidate_eligible }}
 set_variable = {{ name = {p}_packet_candidate value = this }}
 set_variable = {{ name = {p}_packet_owner value = var:zg361_case_u_owner }}
 set_variable = {{ name = {p}_packet_cycle value = var:zg361_case_u_cycle_serial }}
@@ -628,7 +1059,10 @@ set_variable = {{ name = {p}_rubric_level value = 80 }}
 set_variable = {{ name = {p}_rubric_strategy value = 80 }}
 set_variable = {{ name = {p}_packet_score value = 240 }}
 set_variable = {{ name = {p}_prescreen_pass value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_packet_score value = 120 }} set_variable = {{ name = {p}_prescreen_pass value = 0 }} set_variable = {{ name = {p}_political_cut value = 1 }} }}''',
+set_variable = {{ name = {p}_promotion_boundary value = 180 }}
+set_variable = {{ name = {p}_boundary_pass value = 1 }}
+set_variable = {{ name = {p}_rejection_reason value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_packet_score value = 120 }} set_variable = {{ name = {p}_prescreen_pass value = 0 }} set_variable = {{ name = {p}_boundary_pass value = 0 }} set_variable = {{ name = {p}_rejection_reason value = 2 }} set_variable = {{ name = {p}_political_cut value = 1 }} }}''',
         161: f'''set_variable = {{ name = {p}_filler value = 0 }}
 set_variable = {{ name = {p}_preparation_hours value = 0 }}
 set_variable = {{ name = {p}_main_packet_candidate value = var:zg361_pp_m157_packet_candidate }}
@@ -768,13 +1202,15 @@ set_variable = {{ name = {p}_selection_checksum value = var:{p}_panel_seed }}
 change_variable = {{ name = {p}_selection_checksum add = var:{p}_panel_size }}
 set_variable = {{ name = {p}_selection_replay_ok value = 1 }}''',
         171: f'''set_variable = {{ name = {p}_conflicts_disclosed value = 1 }}
-set_variable = {{ name = {p}_active_panel_1 value = var:zg361_pp_m170_panelist_1 }}
+set_variable = {{ name = {p}_recused_panelist value = var:zg361_pp_m170_panelist_1 }}
+set_variable = {{ name = {p}_replacement_panelist value = var:zg361_pp_v_panel_pool_4 }}
+set_variable = {{ name = {p}_active_panel_1 value = var:zg361_pp_v_panel_pool_4 }}
 set_variable = {{ name = {p}_active_panel_2 value = var:zg361_pp_m170_panelist_2 }}
 set_variable = {{ name = {p}_active_panel_3 value = var:zg361_pp_m170_panelist_3 }}
 set_variable = {{ name = {p}_active_panel_count value = 3 }}
 set_variable = {{ name = {p}_active_panel_revision value = {{ value = var:zg361_case_v_revision add = 1 }} }}
 set_variable = {{ name = {p}_replacement_same_kind value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_conflicts_disclosed value = 0 }} set_variable = {{ name = {p}_rereview_debt value = 1 }} set_variable = {{ name = {p}_active_panel_revision value = {{ value = var:{p}_active_panel_revision add = 1 }} }} }}''',
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_conflicts_disclosed value = 0 }} set_variable = {{ name = {p}_active_panel_1 value = var:zg361_pp_m170_panelist_1 }} set_variable = {{ name = {p}_rereview_debt value = 1 }} set_variable = {{ name = {p}_active_panel_revision value = {{ value = var:{p}_active_panel_revision add = 1 }} }} }}''',
         172: f'''set_variable = {{ name = {p}_rule_frozen_before_vote value = 1 }}
 set_variable = {{ name = {p}_decision_rule_code value = 2 }}
 set_variable = {{ name = {p}_veto_reason_required value = 1 }}
@@ -784,12 +1220,17 @@ set_variable = {{ name = {p}_panel_weight_check value = var:{p}_expert_weight_co
 change_variable = {{ name = {p}_panel_weight_check add = var:{p}_external_weight_consumed }}
 set_variable = {{ name = {p}_active_panel_revision_consumed value = var:zg361_pp_m171_active_panel_revision }}
 set_variable = {{ name = {p}_active_panel_count_consumed value = var:zg361_pp_m171_active_panel_count }}
+set_variable = {{ name = {p}_active_panel_1_consumed value = var:zg361_pp_m171_active_panel_1 }}
+set_variable = {{ name = {p}_active_panel_2_consumed value = var:zg361_pp_m171_active_panel_2 }}
+set_variable = {{ name = {p}_active_panel_3_consumed value = var:zg361_pp_m171_active_panel_3 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_decision_rule_code value = 3 }} set_variable = {{ name = {p}_rule_drift_debt value = 1 }} }}''',
         173: f'''set_variable = {{ name = {p}_blind_score value = 78 }}
 set_variable = {{ name = {p}_blind_score_frozen value = 1 }}
 set_variable = {{ name = {p}_identity_fields_hidden value = 1 }}
+set_variable = {{ name = {p}_live_score value = 72 }}
+set_variable = {{ name = {p}_unblind_after_freeze value = 1 }}
 set_variable = {{ name = {p}_active_panel_revision_consumed value = var:zg361_pp_m172_active_panel_revision_consumed }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_blind_score value = 55 }} set_variable = {{ name = {p}_identity_fields_hidden value = 0 }} set_variable = {{ name = {p}_relationship_anchor value = 1 }} }}''',
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_blind_score value = 55 }} set_variable = {{ name = {p}_live_score value = 90 }} set_variable = {{ name = {p}_identity_fields_hidden value = 0 }} set_variable = {{ name = {p}_relationship_anchor value = 1 }} }}''',
         174: f'''set_variable = {{ name = {p}_total_minutes value = 60 }}
 set_variable = {{ name = {p}_presentation_minutes value = 40 }}
 set_variable = {{ name = {p}_question_minutes value = 20 }}
@@ -839,7 +1280,7 @@ set_variable = {{ name = {p}_votes_cast value = 0 }}
 set_variable = {{ name = {p}_final_decision value = 0 }}
 if = {{ limit = {{ var:{p}_vote_eligible = 1 var:{p}_weighted_score >= 70 }} set_variable = {{ name = {p}_votes_cast value = 3 }} set_variable = {{ name = {p}_final_decision value = 1 }} }}
 else = {{ set_variable = {{ name = {p}_material_deferral value = 1 }} }}''',
-        179: f'''set_variable = {{ name = {p}_feedback_owner value = var:zg361_pp_m170_panelist_1 }}
+        179: f'''set_variable = {{ name = {p}_feedback_owner value = var:zg361_pp_m171_active_panel_1 }}
 set_variable = {{ name = {p}_gap_id value = {{ value = var:zg361_case_v_case_serial multiply = 1000 add = 179 }} }}
 set_variable = {{ name = {p}_gap_frozen value = 1 }}
 set_variable = {{ name = {p}_next_evidence_id value = {{ value = var:{p}_gap_id add = 1 }} }}
@@ -857,44 +1298,157 @@ set_variable = {{ name = {p}_retry_available value = 0 }}
 set_variable = {{ name = {p}_nomination_slot_consumed value = 0 }}
 if = {{ limit = {{ scope:zg361_pp_route = 1 stewardship >= 12 }} set_variable = {{ name = {p}_gap_completion value = 1 }} }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_panel_congestion value = 1 }} }}''',
-        181: f'''set_variable = {{ name = {p}_primary_category value = 3 }}
+        181: f'''set_variable = {{ name = {p}_evidence_id value = {{ value = var:zg361_case_w_case_serial multiply = 1000 add = 181 }} }}
+set_variable = {{ name = {p}_result_owner_snapshot value = var:zg361_pp_w_result_owner }}
+set_variable = {{ name = {p}_result_cycle_snapshot value = var:zg361_pp_w_result_cycle }}
+set_variable = {{ name = {p}_result_case_snapshot value = var:zg361_pp_w_result_case }}
+set_variable = {{ name = {p}_result_state_snapshot value = var:zg361_pp_w_result_state }}
+set_variable = {{ name = {p}_result_grade_snapshot value = var:zg361_pp_w_frozen_grade }}
+set_variable = {{ name = {p}_result_reason_snapshot value = var:zg361_pp_w_frozen_reason }}
+set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_w_evidence_component_count }}
+set_variable = {{ name = {p}_primary_category value = 1 }}
+if = {{ limit = {{ var:zg361_pp_w_frozen_reason = 5 }} set_variable = {{ name = {p}_primary_category value = 3 }} }}
 set_variable = {{ name = {p}_current_rating_unchanged value = 1 }}
+set_variable = {{ name = {p}_misdiagnosis_risk value = 0 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_primary_category value = 2 }} set_variable = {{ name = {p}_misdiagnosis_risk value = 1 }} }}''',
-        182: f'''set_variable = {{ name = {p}_evidence_threshold_met value = 1 }}
+        182: f'''set_variable = {{ name = {p}_evidence_bundle_id value = var:zg361_pp_m181_evidence_id }}
+set_variable = {{ name = {p}_evidence_component_count value = var:zg361_pp_m181_evidence_component_count }}
+set_variable = {{ name = {p}_threshold_required value = 3 }}
+set_variable = {{ name = {p}_evidence_threshold_met value = 0 }}
+set_variable = {{ name = {p}_grade_only_autostart value = 0 }}
+set_variable = {{ name = {p}_gate_status value = 0 }}
 set_variable = {{ name = {p}_misconduct_routed_separately value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_false_positive_risk value = 1 }} }}''',
-        183: f'''set_variable = {{ name = {p}_goals_frozen value = 1 }}
+set_variable = {{ name = {p}_false_positive_risk value = 0 }}
+if = {{
+\tlimit = {{ scope:zg361_pp_route = 1 var:zg361_pp_w_pip_gate_candidate = 1 }}
+\tset_variable = {{ name = {p}_evidence_threshold_met value = 1 }}
+\tset_variable = {{ name = {p}_gate_status value = 1 }}
+}}
+else_if = {{
+\tlimit = {{ scope:zg361_pp_route = 2 var:zg361_pp_w_frozen_grade = 1 }}
+\tset_variable = {{ name = {p}_grade_only_autostart value = 1 }}
+\tset_variable = {{ name = {p}_gate_status value = 2 }}
+\tset_variable = {{ name = {p}_false_positive_risk value = 1 }}
+}}''',
+        183: f'''set_variable = {{ name = {p}_goal_bundle_id value = {{ value = var:zg361_case_w_case_serial multiply = 1000 add = 183 }} }}
+set_variable = {{ name = {p}_goals_frozen value = 1 }}
 set_variable = {{ name = {p}_resources_frozen value = 1 }}
+set_variable = {{ name = {p}_deadline_days value = 180 }}
+set_variable = {{ name = {p}_manager_signed value = 1 }}
+set_variable = {{ name = {p}_subject_signed value = 1 }}
+set_variable = {{ name = {p}_independent_review_pass value = 0 }}
+set_variable = {{ name = {p}_acknowledgement_status value = 1 }}
+set_variable = {{ name = {p}_subject_statement_code value = 1 }}
+set_variable = {{ name = {p}_subject_statement_author value = this }}
 set_variable = {{ name = {p}_revision_remaining value = 1 }}
-set_variable = {{ name = {p}_refusal_is_failure value = 0 }}''',
-        184: f'''set_variable = {{ name = {p}_capacity_reserved value = 1 }}
+set_variable = {{ name = {p}_refusal_is_failure value = 0 }}
+set_variable = {{ name = {p}_non_aggravation_grade value = var:zg361_pp_w_non_aggravation_grade }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_subject_signed value = 0 }} set_variable = {{ name = {p}_independent_review_pass value = 1 }} set_variable = {{ name = {p}_acknowledgement_status value = 2 }} set_variable = {{ name = {p}_subject_statement_code value = 2 }} set_variable = {{ name = {p}_refusal_reason value = 1 }} }}''',
+        184: f'''set_variable = {{ name = {p}_active_case value = 1 }}
+set_variable = {{ name = {p}_capacity_reserved value = 0 }}
+set_variable = {{ name = {p}_support_status value = 2 }}
 set_variable = {{ name = {p}_release_once value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_overload_liability value = 1 }} }}''',
-        185: f'''set_variable = {{ name = {p}_midpoint_receipt value = 1 }}
+set_variable = {{ name = {p}_overload_liability value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 1 }} set_variable = {{ name = {p}_capacity_reserved value = 1 }} set_variable = {{ name = {p}_support_status value = 1 }} }}
+else_if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_overload_liability value = 1 }} }}''',
+        185: f'''set_variable = {{ name = {p}_midpoint_due_days value = 180 }}
+set_variable = {{ name = {p}_midpoint_status value = 0 }}
+set_variable = {{ name = {p}_midpoint_pending value = 1 }}
+set_variable = {{ name = {p}_midpoint_completed value = 0 }}
 set_variable = {{ name = {p}_corrections_remaining value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_midpoint_receipt value = 0 }} set_variable = {{ name = {p}_corrections_remaining value = 0 }} }}''',
+set_variable = {{ name = {p}_skipped_midpoint value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_corrections_remaining value = 0 }} set_variable = {{ name = {p}_skipped_midpoint value = 1 }} }}''',
         186: f'''set_variable = {{ name = {p}_baseline_workload value = 100 }}
 set_variable = {{ name = {p}_current_workload value = 100 }}
+set_variable = {{ name = {p}_replacement_workload value = 0 }}
+set_variable = {{ name = {p}_deadline_extension_days value = 0 }}
+set_variable = {{ name = {p}_goal_creep_violation value = 0 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_current_workload value = 130 }} set_variable = {{ name = {p}_goal_creep_violation value = 1 }} }}''',
-        187: f'''set_variable = {{ name = {p}_key_milestones_met value = 1 }}
-set_variable = {{ name = {p}_stability_days value = 90 }}
+        187: f'''set_variable = {{ name = {p}_milestone_evidence_submitted value = 1 }}
+set_variable = {{ name = {p}_stability_days_required value = 90 }}
+set_variable = {{ name = {p}_independent_review_required value = 1 }}
+set_variable = {{ name = {p}_evaluation_pending value = 1 }}
+set_variable = {{ name = {p}_graduation_status value = 0 }}
 set_variable = {{ name = {p}_writes_top_grade value = 0 }}
+set_variable = {{ name = {p}_opaque_extension value = 0 }}
 if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_opaque_extension value = 1 }} }}''',
         188: f'''set_variable = {{ name = {p}_observation_days value = 365 }}
+set_variable = {{ name = {p}_observation_start_cycle value = root.var:zg361_review_serial }}
+set_variable = {{ name = {p}_observation_due_cycle value = {{ value = root.var:zg361_review_serial add = 1 }} }}
 set_variable = {{ name = {p}_same_category_only value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_observation_days value = 730 }} set_variable = {{ name = {p}_overbreadth_risk value = 1 }} }}''',
-        189: f'''set_variable = {{ name = {p}_exclusive_terminal value = 1 }}
+set_variable = {{ name = {p}_category_snapshot value = var:zg361_pp_m181_primary_category }}
+set_variable = {{ name = {p}_observation_pending value = 1 }}
+set_variable = {{ name = {p}_observation_closed value = 0 }}
+set_variable = {{ name = {p}_same_category_relapse value = 0 }}
+set_variable = {{ name = {p}_relapse_status value = 0 }}
+set_variable = {{ name = {p}_overbreadth_risk value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_same_category_only value = 0 }} set_variable = {{ name = {p}_overbreadth_risk value = 1 }} }}''',
+        189: f'''set_variable = {{ name = {p}_second_pip value = 0 }}
+set_variable = {{ name = {p}_transfer value = 0 }}
+set_variable = {{ name = {p}_exit value = 0 }}
+set_variable = {{ name = {p}_terminal_code value = 0 }}
 set_variable = {{ name = {p}_real_vacancy_required value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_forced_exit value = 1 }} set_variable = {{ name = {p}_replacement_cost value = 10 }} }}''',
-        190: f'''set_variable = {{ name = {p}_disclosed_fields value = 4 }}
+if = {{
+\tlimit = {{ scope:zg361_pp_route = 1 var:zg361_pp_m181_primary_category = 3 var:zg361_pp_w_real_vacancy = 1 }}
+\tset_variable = {{ name = {p}_transfer value = 1 }}
+\tset_variable = {{ name = {p}_terminal_code value = 2 }}
+\tset_variable = {{ name = {p}_receiving_manager value = var:zg361_pp_w_receiving_manager }}
+\tset_variable = {{ name = {p}_vacancy_id value = var:zg361_pp_w_transfer_vacancy_id }}
+}}
+else_if = {{
+\tlimit = {{ scope:zg361_pp_route = 1 }}
+\tset_variable = {{ name = {p}_second_pip value = 1 }}
+\tset_variable = {{ name = {p}_terminal_code value = 1 }}
+}}
+else_if = {{
+\tlimit = {{ scope:zg361_pp_route = 2 }}
+\tset_variable = {{ name = {p}_exit value = 1 }}
+\tset_variable = {{ name = {p}_terminal_code value = 3 }}
+\tset_variable = {{ name = {p}_forced_exit value = 1 }}
+\tset_variable = {{ name = {p}_replacement_cost value = 10 }}
+}}
+set_variable = {{ name = {p}_terminal_sum value = var:{p}_second_pip }}
+change_variable = {{ name = {p}_terminal_sum add = var:{p}_transfer }}
+change_variable = {{ name = {p}_terminal_sum add = var:{p}_exit }}
+set_variable = {{ name = {p}_exclusive_terminal value = 0 }}
+if = {{ limit = {{ var:{p}_terminal_sum = 1 }} set_variable = {{ name = {p}_exclusive_terminal value = 1 }} }}''',
+        190: f'''set_variable = {{ name = {p}_disclosure_bundle_id value = {{ value = var:zg361_case_w_case_serial multiply = 1000 add = 190 }} }}
+set_variable = {{ name = {p}_receiving_manager value = var:zg361_pp_m189_receiving_manager }}
+set_variable = {{ name = {p}_acl_subject value = this }}
+set_variable = {{ name = {p}_acl_receiver value = var:zg361_pp_m189_receiving_manager }}
+set_variable = {{ name = {p}_vacancy_id_snapshot value = var:zg361_pp_w_transfer_vacancy_id }}
+set_variable = {{ name = {p}_goal_snapshot value = var:zg361_pp_m183_goal_bundle_id }}
+set_variable = {{ name = {p}_support_snapshot value = var:zg361_pp_m184_support_status }}
+set_variable = {{ name = {p}_completion_snapshot value = var:zg361_pp_m187_graduation_status }}
+set_variable = {{ name = {p}_subject_statement_snapshot value = var:zg361_pp_m183_subject_statement_code }}
+set_variable = {{ name = {p}_disclosed_fields value = 4 }}
 set_variable = {{ name = {p}_private_ids_excluded value = 1 }}
+set_variable = {{ name = {p}_old_rating_snapshot value = var:zg361_pp_w_non_aggravation_grade }}
 set_variable = {{ name = {p}_old_rating_unchanged value = 1 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_stigma_risk value = 1 }} }}''',
-        191: f'''set_variable = {{ name = {p}_vacancy_cost value = 3 }}
+set_variable = {{ name = {p}_acl_pass value = 1 }}
+set_variable = {{ name = {p}_stigma_risk value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_stigma_risk value = 1 }} }}
+save_temporary_scope_as = zg361_pp_m190_disclosure_subject
+var:{p}_acl_receiver = {{
+\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_bundle value = scope:zg361_pp_m190_disclosure_subject.var:{p}_disclosure_bundle_id }}
+\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_subject value = scope:zg361_pp_m190_disclosure_subject }}
+\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_cycle value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_cycle_serial }}
+\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_case value = scope:zg361_pp_m190_disclosure_subject.var:zg361_case_w_case_serial }}
+\tset_variable = {{ name = zg361_pp_received_transfer_disclosure_vacancy value = scope:zg361_pp_m190_disclosure_subject.var:{p}_vacancy_id_snapshot }}
+\tset_variable = {{ name = zg361_pp_received_transfer_goal value = scope:zg361_pp_m190_disclosure_subject.var:{p}_goal_snapshot }}
+\tset_variable = {{ name = zg361_pp_received_transfer_support value = scope:zg361_pp_m190_disclosure_subject.var:{p}_support_snapshot }}
+\tset_variable = {{ name = zg361_pp_received_transfer_completion value = scope:zg361_pp_m190_disclosure_subject.var:{p}_completion_snapshot }}
+\tset_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_disclosure_subject.var:{p}_subject_statement_snapshot }}
+}}''',
+        191: f'''set_variable = {{ name = {p}_terminal_code_consumed value = var:zg361_pp_m189_terminal_code }}
+set_variable = {{ name = {p}_vacancy_cost value = 3 }}
 set_variable = {{ name = {p}_handover_cost value = 2 }}
+set_variable = {{ name = {p}_overtime_cost value = 0 }}
 set_variable = {{ name = {p}_replacement_cost value = 5 }}
 set_variable = {{ name = {p}_net_cost value = 10 }}
-if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_net_cost value = 0 }} set_variable = {{ name = {p}_hidden_cost_debt value = 10 }} }}''',
+set_variable = {{ name = {p}_cost_conserved value = 1 }}
+set_variable = {{ name = {p}_hidden_cost_debt value = 0 }}
+if = {{ limit = {{ scope:zg361_pp_route = 2 }} set_variable = {{ name = {p}_net_cost value = 0 }} set_variable = {{ name = {p}_cost_conserved value = 0 }} set_variable = {{ name = {p}_hidden_cost_debt value = 10 }} }}''',
     }
     return snippets[mechanism.mechanism_id]
 
@@ -945,6 +1499,33 @@ def render_portfolio_adapter() -> str:
 
     checks = []
     for domain in DOMAINS:
+        if domain.key in {"u", "v", "w"}:
+            skip_comments = {
+                "u": "Only a delivered 3.5/3.75 result may create a promotion packet.",
+                "v": "No U prescreen winner means no panel, vote or phantom promotion slot.",
+                "w": "Only a delivered 3.25 result may enter PIP; other grades create no PIP object.",
+            }
+            skip_vars = {
+                "u": "zg361_pp_u_skipped_not_eligible_cycle",
+                "v": "zg361_pp_v_skipped_no_winner_cycle",
+                "w": "zg361_pp_w_skipped_not_applicable_cycle",
+            }
+            skip_comment = skip_comments[domain.key]
+            skip_var = skip_vars[domain.key]
+            checks.append(
+                f'''else_if = {{
+\tlimit = {{
+\t\t{portfolio_done_trigger(domain.key, expected=False)}
+\t\t{indent(no_pending_audit_trigger(domain), 2).lstrip()}
+\t\tNOT = {{
+\t\t\t{indent(domain_open_guard(domain), 3).lstrip()}
+\t\t}}
+\t}}
+\t# {skip_comment}
+\tset_variable = {{ name = {skip_var} value = root.var:zg361_review_serial }}
+\tset_variable = {{ name = zg361_pp_{domain.key}_portfolio_done_cycle value = root.var:zg361_review_serial }}
+}}'''
+            )
         checks.append(
             f'''else_if = {{
 \tlimit = {{
@@ -1008,7 +1589,10 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
         f"{p}_audit_revision": 0,
     }
     owned = set(
-        re.findall(r"name = (zg361_pp_m\d{3}_[A-Za-z0-9_]+)", semantic_write(mechanism))
+        re.findall(
+            r"name = (zg361_pp_m\d{3}_[A-Za-z0-9_]+)",
+            "\n".join((semantic_write(mechanism), dual_cost_write(mechanism))),
+        )
     )
     owned.update(
         {
@@ -1025,12 +1609,21 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
             f"{p}_receipt_route",
             f"{p}_subject_response",
             f"{p}_withdraw_intent",
+            f"{p}_object_owner",
+            f"{p}_object_subject",
+            f"{p}_object_cycle",
+            f"{p}_object_case",
+            f"{p}_object_state",
         }
     )
+    owned.update(f"{p}_{suffix}" for suffix in AUDIT_ONLY_FIELDS_BY_ID.get(mechanism.mechanism_id, ()))
+    owned.update(f"{p}_{suffix}" for suffix in RESPONSE_ONLY_FIELDS_BY_ID.get(mechanism.mechanism_id, ()))
+    controls[f"{p}_visible_outcome_code"] = 0
     resources = dict.fromkeys(
         (
             domain.resource,
             *EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
+            *ROUTE_A_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
             *ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
         )
     )
@@ -1043,6 +1636,8 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
     for index, _ in enumerate(mechanism.deadlines, start=1):
         controls[f"{p}_audit_{index}_state"] = 0
         controls[f"{p}_audit_{index}_consumed"] = 0
+        controls[f"{p}_audit_{index}_business_settled"] = 0
+        controls[f"{p}_audit_{index}_policy_debt_settled"] = 0
         owned.update(
             {
                 f"{p}_audit_{index}_owner",
@@ -1052,6 +1647,7 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
                 f"{p}_audit_{index}_expected_state",
                 f"{p}_audit_{index}_outcome",
                 f"{p}_audit_{index}_consumer_value",
+                f"{p}_audit_{index}_business_input",
             }
         )
     for name in sorted(owned - set(controls)):
@@ -1062,8 +1658,34 @@ def mechanism_reset_lines(mechanism: MechanismSpec, domain: DomainSpec) -> list[
 
 
 def render_domain_prework(domain: DomainSpec) -> str:
+    if domain.key == "t":
+        return '''# Freeze the delivered result's exact five-tuple and payload.  A live
+# result case, not last_grade or a Boolean "preserved" marker, is authoritative.
+set_variable = { name = zg361_pp_t_result_owner value = var:zg361_result_case_owner }
+set_variable = { name = zg361_pp_t_result_subject value = this }
+set_variable = { name = zg361_pp_t_result_cycle value = var:zg361_result_cycle_serial }
+set_variable = { name = zg361_pp_t_result_case value = var:zg361_result_case_serial }
+set_variable = { name = zg361_pp_t_result_state value = var:zg361_result_case_state }
+set_variable = { name = zg361_pp_t_frozen_grade value = var:zg361_result_grade }
+set_variable = { name = zg361_pp_t_frozen_reason value = var:zg361_result_grade_reason }
+set_variable = { name = zg361_pp_t_frozen_kpi value = var:zg361_result_kpi_frozen }
+set_variable = { name = zg361_pp_t_frozen_rank value = var:zg361_result_rank_frozen }
+set_variable = { name = zg361_pp_t_frozen_evidence_hash value = { value = var:zg361_result_case_serial multiply = 100 add = var:zg361_pp_t_frozen_reason } }
+set_variable = { name = zg361_pp_t_non_aggravation_ok value = 1 }
+set_variable = { name = zg361_pp_t_visible_feedback_revision value = 0 }'''
     if domain.key == "u":
-        return '''# Persistent shelving obligations are consumed once per later review cycle.
+        return '''# Freeze the delivered result identity and candidate boundary before
+# nomination politics can move either one.
+set_variable = { name = zg361_pp_u_result_owner value = var:zg361_result_case_owner }
+set_variable = { name = zg361_pp_u_result_subject value = this }
+set_variable = { name = zg361_pp_u_result_cycle value = var:zg361_result_cycle_serial }
+set_variable = { name = zg361_pp_u_result_case value = var:zg361_result_case_serial }
+set_variable = { name = zg361_pp_u_result_state value = var:zg361_result_case_state }
+set_variable = { name = zg361_pp_u_frozen_grade value = var:zg361_result_grade }
+set_variable = { name = zg361_pp_u_frozen_reason value = var:zg361_result_grade_reason }
+set_variable = { name = zg361_pp_u_candidate_eligible value = 0 }
+if = { limit = { var:zg361_pp_u_frozen_grade >= 2 } set_variable = { name = zg361_pp_u_candidate_eligible value = 1 } }
+# Persistent shelving obligations are consumed once per later review cycle.
 root = {
 \tif = {
 \t\tlimit = {
@@ -1100,6 +1722,7 @@ if = {
 \t}
 }
 # Freeze a distinct filler candidate before #161 can spend real quota/hours.
+remove_variable = zg361_pp_m161_filler_candidate
 save_temporary_scope_as = zg361_pp_u_main_candidate
 root = {
 \tordered_vassal = {
@@ -1116,7 +1739,7 @@ if = { limit = { exists = scope:zg361_pp_u_filler_candidate } set_variable = { n
     if domain.key == "v":
         selectors = []
         assignments = []
-        for index in range(1, 4):
+        for index in range(1, 5):
             selectors.append(
                 f'''ordered_vassal = {{
 \tlimit = {{
@@ -1131,16 +1754,124 @@ if = { limit = { exists = scope:zg361_pp_u_filler_candidate } set_variable = { n
             assignments.append(
                 f'''if = {{ limit = {{ exists = scope:zg361_pp_v_pool_{index} }} set_variable = {{ name = zg361_pp_v_panel_pool_{index} value = scope:zg361_pp_v_pool_{index} }} }}'''
             )
-        return f'''# Freeze three real, unique cross-unit panelists for deterministic replay.
+        return f'''# Consume the one real U prescreen winner and freeze three active seats plus
+# one clean alternate.  The candidate cannot manufacture a panel without a
+# passed packet and the reserved promotion slot is settled exactly once here.
+set_variable = {{ name = zg361_pp_v_source_packet_case value = var:zg361_pp_m157_packet_case }}
+set_variable = {{ name = zg361_pp_v_source_prescreen_case value = var:zg361_pp_m160_receipt_case }}
+if = {{
+	limit = {{ var:zg361_pp_m160_promotion_slot_status = 1 }}
+	change_variable = {{ name = zg361_pp_u_promotion_slot_reserved add = -1 }}
+	change_variable = {{ name = zg361_pp_u_promotion_slot_settled add = 1 }}
+	set_variable = {{ name = zg361_pp_m160_promotion_slot_status value = 2 }}
+}}
 remove_variable = zg361_pp_v_panel_pool_1
 remove_variable = zg361_pp_v_panel_pool_2
 remove_variable = zg361_pp_v_panel_pool_3
+remove_variable = zg361_pp_v_panel_pool_4
 save_temporary_scope_as = zg361_pp_v_candidate
 root = {{
 \t{indent(chr(10).join(selectors), 1).lstrip()}
 }}
 {chr(10).join(assignments)}'''
+    if domain.key == "w":
+        return '''# A PIP begins from the delivered result's exact five-tuple and a
+# distinct real receiving-manager candidate.  Grade 3.25 is one signal, never
+# the whole evidence gate, and this runtime never rewrites result_grade.
+set_variable = { name = zg361_pp_w_result_owner value = var:zg361_result_case_owner }
+set_variable = { name = zg361_pp_w_result_subject value = this }
+set_variable = { name = zg361_pp_w_result_cycle value = var:zg361_result_cycle_serial }
+set_variable = { name = zg361_pp_w_result_case value = var:zg361_result_case_serial }
+set_variable = { name = zg361_pp_w_result_state value = var:zg361_result_case_state }
+set_variable = { name = zg361_pp_w_frozen_grade value = var:zg361_result_grade }
+set_variable = { name = zg361_pp_w_frozen_reason value = var:zg361_result_grade_reason }
+set_variable = { name = zg361_pp_w_frozen_kpi value = var:zg361_result_kpi_frozen }
+set_variable = { name = zg361_pp_w_frozen_rank value = var:zg361_result_rank_frozen }
+set_variable = { name = zg361_pp_w_case_open_grade value = var:zg361_pp_w_frozen_grade }
+set_variable = { name = zg361_pp_w_non_aggravation_grade value = var:zg361_pp_w_frozen_grade }
+set_variable = { name = zg361_pp_w_evidence_component_count value = 0 }
+if = { limit = { var:zg361_pp_w_frozen_grade = 1 } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
+if = { limit = { var:zg361_pp_w_frozen_reason > 0 } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
+if = { limit = { has_variable = zg361_result_evidence_governance } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
+if = { limit = { has_variable = zg361_result_evidence_capability } change_variable = { name = zg361_pp_w_evidence_component_count add = 1 } }
+set_variable = { name = zg361_pp_w_pip_gate_candidate value = 0 }
+if = {
+	limit = { var:zg361_pp_w_frozen_grade = 1 var:zg361_pp_w_evidence_component_count >= 3 }
+	set_variable = { name = zg361_pp_w_pip_gate_candidate value = 1 }
+}
+# A receiving manager does not prove that a vacancy exists.  The central
+# career/HC adapter must bind an exact active vacancy ID and its receiver on
+# this subject; this package only freezes and verifies that input.
+remove_variable = zg361_pp_w_receiving_manager
+remove_variable = zg361_pp_w_transfer_vacancy_id
+remove_variable = zg361_pp_w_transfer_vacancy_receiver
+set_variable = { name = zg361_pp_w_real_vacancy value = 0 }
+set_variable = { name = zg361_pp_w_transfer_vacancy_active value = 0 }
+if = {
+	limit = {
+		has_variable = zg361_transfer_vacancy_id
+		has_variable = zg361_transfer_vacancy_receiver
+		var:zg361_transfer_vacancy_active = 1
+		NOT = { var:zg361_transfer_vacancy_receiver = this }
+		var:zg361_transfer_vacancy_receiver = {
+			zg361_is_celestial_liege_trigger = yes
+			NOT = { this = root }
+		}
+	}
+	set_variable = { name = zg361_pp_w_receiving_manager value = var:zg361_transfer_vacancy_receiver }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_receiver value = var:zg361_transfer_vacancy_receiver }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_id value = var:zg361_transfer_vacancy_id }
+	set_variable = { name = zg361_pp_w_transfer_vacancy_active value = 1 }
+	set_variable = { name = zg361_pp_w_real_vacancy value = 1 }
+}
+set_variable = { name = zg361_pp_w_capacity_released value = 0 }
+set_variable = { name = zg361_pp_w_capacity_release_reason value = 0 }
+set_variable = { name = zg361_pp_w_visible_case_revision value = 0 }'''
     return "# no domain-specific prework"
+
+
+def domain_open_guard(domain: DomainSpec) -> str:
+    if domain.key == "t":
+        return '''has_variable = zg361_result_case_owner
+var:zg361_result_case_owner = root
+has_variable = zg361_result_cycle_serial
+var:zg361_result_cycle_serial = root.var:zg361_review_serial
+has_variable = zg361_result_case_serial
+has_variable = zg361_result_case_state
+var:zg361_result_case_state >= 3
+has_variable = zg361_result_grade
+has_variable = zg361_result_grade_reason
+has_variable = zg361_result_kpi_frozen
+has_variable = zg361_result_rank_frozen'''
+    if domain.key == "u":
+        return '''has_variable = zg361_result_case_owner
+var:zg361_result_case_owner = root
+has_variable = zg361_result_cycle_serial
+var:zg361_result_cycle_serial = root.var:zg361_review_serial
+has_variable = zg361_result_case_serial
+has_variable = zg361_result_case_state
+var:zg361_result_case_state >= 3
+has_variable = zg361_result_grade
+var:zg361_result_grade >= 2
+has_variable = zg361_result_grade_reason'''
+    if domain.key == "v":
+        return '''var:zg361_pp_m160_prescreen_pass = 1
+var:zg361_pp_m160_packet_candidate_consumed = this
+var:zg361_pp_m160_promotion_slot_status = 1'''
+    if domain.key == "w":
+        return '''has_variable = zg361_result_case_owner
+var:zg361_result_case_owner = root
+has_variable = zg361_result_cycle_serial
+var:zg361_result_cycle_serial = root.var:zg361_review_serial
+has_variable = zg361_result_case_serial
+has_variable = zg361_result_case_state
+var:zg361_result_case_state >= 3
+has_variable = zg361_result_grade
+var:zg361_result_grade = 1
+has_variable = zg361_result_grade_reason
+has_variable = zg361_result_kpi_frozen
+has_variable = zg361_result_rank_frozen'''
+    raise AssertionError(domain.key)
 
 
 def render_open(domain: DomainSpec) -> str:
@@ -1167,6 +1898,7 @@ def render_open(domain: DomainSpec) -> str:
     for mechanism_id in ids:
         for resource in (
             *EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
+            *ROUTE_A_EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
             *ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
         ):
             extra_counts[resource] = extra_counts.get(resource, 0) + 1
@@ -1195,6 +1927,7 @@ zg361_pp_open_{domain.key}_case_effect = {{
 \t\t\t}}
 \t\t\tzg361_is_reviewable_vassal_trigger = yes
 \t\t\tliege = root
+\t\t\t{indent(domain_open_guard(domain), 3).lstrip()}
 \t\t\t# Do not reuse this domain's receipt variables while any delayed
 \t\t\t# audit is pending.  The portfolio adapter may skip to another
 \t\t\t# domain and retry this one after the old receipt is terminal.
@@ -1251,7 +1984,20 @@ def render_subject_response(mechanism: MechanismSpec) -> str:
     state = mechanism_stage(mechanism.mechanism_id)
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
     response_action = ""
-    if mechanism.mechanism_id == 166:
+    if mechanism.mechanism_id == 151:
+        response_action = f'''if = {{
+\t\t\tlimit = {{ scope:zg361_pp_subject_route = 1 }}
+\t\t\tset_variable = {{ name = {p}_agreed value = 1 }}
+\t\t\tset_variable = {{ name = {p}_disputed value = 0 }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ scope:zg361_pp_subject_route = 2 }}
+\t\t\tset_variable = {{ name = {p}_appeal_filed value = 1 }}
+\t\t\tset_variable = {{ name = {p}_appeal_snapshot_grade value = var:{p}_non_aggravation_grade }}
+\t\t\tset_variable = {{ name = {p}_disputed value = 1 }}
+\t\t}}
+\t\tchange_variable = {{ name = zg361_case_t_feedback_revision add = 1 }}'''
+    elif mechanism.mechanism_id == 166:
         response_action = f'''set_variable = {{ name = {p}_withdraw_intent value = 1 }}
 \t\tzg361_pp_m166_core_effect = {{
 \t\t\tROUTE = 1
@@ -1261,6 +2007,34 @@ def render_subject_response(mechanism: MechanismSpec) -> str:
 \t\t\tTICKET_CASE = var:zg361_case_u_case_serial
 \t\t\tTICKET_STATE = 3
 \t\t}}'''
+    elif mechanism.mechanism_id == 183:
+        response_action = f'''if = {{
+\t\t\tlimit = {{ scope:zg361_pp_subject_route = 1 }}
+\t\t\tset_variable = {{ name = {p}_subject_signed value = 1 }}
+\t\t\tset_variable = {{ name = {p}_acknowledgement_status value = 1 }}
+\t\t\tset_variable = {{ name = {p}_subject_statement_code value = 1 }}
+\t\t\tset_variable = {{ name = {p}_subject_statement_author value = this }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ scope:zg361_pp_subject_route = 2 }}
+\t\t\tset_variable = {{ name = {p}_subject_signed value = 0 }}
+\t\t\tset_variable = {{ name = {p}_acknowledgement_status value = 2 }}
+\t\t\tset_variable = {{ name = {p}_subject_statement_code value = 2 }}
+\t\t\tset_variable = {{ name = {p}_subject_statement_author value = this }}
+\t\t\tset_variable = {{ name = {p}_refusal_reason value = 1 }}
+\t\t}}
+\t\tchange_variable = {{ name = zg361_case_w_feedback_revision add = 1 }}'''
+    elif mechanism.mechanism_id == 190:
+        response_action = f'''set_variable = {{ name = {p}_subject_statement_author value = this }}
+\t\tset_variable = {{ name = {p}_subject_statement_receiver value = var:{p}_acl_receiver }}
+\t\tset_variable = {{ name = {p}_subject_statement_version value = 1 }}
+\t\tset_variable = {{ name = {p}_subject_statement_private_ids value = 0 }}
+\t\tset_variable = {{ name = {p}_subject_statement_code value = scope:zg361_pp_subject_route }}
+\t\tset_variable = {{ name = {p}_subject_statement_snapshot value = scope:zg361_pp_subject_route }}
+\t\tsave_temporary_scope_as = zg361_pp_m190_statement_subject
+\t\tvar:{p}_acl_receiver = {{ set_variable = {{ name = zg361_pp_received_transfer_subject_statement value = scope:zg361_pp_m190_statement_subject.var:{p}_subject_statement_snapshot }} }}
+\t\tif = {{ limit = {{ scope:zg361_pp_subject_route = 2 }} set_variable = {{ name = {p}_subject_disclosure_refused value = 1 }} }}
+\t\tchange_variable = {{ name = zg361_case_w_feedback_revision add = 1 }}'''
     return f'''# The assessed official may respond only to their own packet.  This grants no
 # cohort, nomination, panel, PIP-initiation or assessment authority.
 zg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{
@@ -1268,6 +2042,7 @@ zg361_pp_m{mechanism.mechanism_id:03d}_subject_response_effect = {{
 \tif = {{
 \t\tlimit = {{
 \t\t\tis_ai = no
+\t\t\tOR = {{ scope:zg361_pp_subject_route = 1 scope:zg361_pp_subject_route = 2 }}
 \t\t\tzg361_case_kernel_subject_self_guard_trigger = {{
 \t\t\t\tSUBJECT_VAR = zg361_case_{mechanism.domain}_subject
 \t\t\t\tACTIVE_VAR = zg361_case_{mechanism.domain}_active
@@ -1289,6 +2064,7 @@ def render_core(mechanism: MechanismSpec) -> str:
     cost_owner = f"set_variable = {{ name = zg361_pp_cost_owner value = var:{row['owner']} }}"
     transaction = transaction_call(mechanism, state, domain.resource)
     extra_resources = EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ())
+    route_a_resources = ROUTE_A_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ())
     route_b_resources = ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ())
     extra_guard = "\n".join(
         f"var:zg361_pp_{mechanism.domain}_{resource}_available >= 1"
@@ -1296,6 +2072,13 @@ def render_core(mechanism: MechanismSpec) -> str:
     ) or "always = yes"
     extra_transaction = "\n".join(
         transaction_call(mechanism, state, resource) for resource in extra_resources
+    )
+    route_a_guard = "\n".join(
+        f"var:zg361_pp_{mechanism.domain}_{resource}_available >= 1"
+        for resource in route_a_resources
+    ) or "always = yes"
+    route_a_transaction = "\n".join(
+        transaction_call(mechanism, state, resource) for resource in route_a_resources
     )
     route_b_guard = "\n".join(
         f"var:zg361_pp_{mechanism.domain}_{resource}_available >= 1"
@@ -1325,8 +2108,22 @@ else = {{ always = yes }}'''
 trigger_else = {{ always = yes }}'''
         for resource in route_b_resources
     ) or "always = yes"
-    semantic = semantic_write(mechanism)
+    route_a_status = "\n".join(
+        f'''trigger_if = {{
+\tlimit = {{ scope:zg361_pp_route = 1 }}
+\tvar:{p}_{resource}_status = 1
+}}
+trigger_else = {{ always = yes }}'''
+        for resource in route_a_resources
+    ) or "always = yes"
+    semantic = "\n".join(
+        (business_object_identity_write(mechanism, state), semantic_write(mechanism))
+    )
     payment = dual_cost_write(mechanism)
+    # Terminal closure must release #184's exact reservation even when #189
+    # itself is route C.  Keeping this outside the A/B semantic block avoids a
+    # conserved-but-never-reusable capacity leak.
+    post_operation = pip_capacity_release_write(4, 2) if mechanism.mechanism_id == 189 else ""
     deadline_calls = "\n\t\t\t".join(
         f"zg361_pp_m{mechanism.mechanism_id:03d}_schedule_audit_{index}_effect = yes"
         for index, _ in enumerate(mechanism.deadlines, start=1)
@@ -1349,6 +2146,11 @@ zg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
 \t\t\t}}
 \t\t\ttrigger_else = {{ always = yes }}
 \t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{ scope:zg361_pp_route = 1 }}
+\t\t\t\t{route_a_guard}
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = yes }}
+\t\t\ttrigger_if = {{
 \t\t\t\tlimit = {{ scope:zg361_pp_route = 2 }}
 \t\t\t\t{route_b_guard}
 \t\t\t}}
@@ -1363,6 +2165,10 @@ zg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
 \t\t\t\t{indent(transaction, 4).lstrip()}
 \t\t\t\t{indent(extra_transaction, 4).lstrip()}
 \t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ scope:zg361_pp_route = 1 }}
+\t\t\t\t\t{indent(route_a_transaction, 5).lstrip()}
+\t\t\t\t}}
+\t\t\t\tif = {{
 \t\t\t\t\tlimit = {{ scope:zg361_pp_route = 2 }}
 \t\t\t\t\t{indent(route_b_transaction, 5).lstrip()}
 \t\t\t\t}}
@@ -1370,6 +2176,7 @@ zg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
 \t\t\tif = {{
 \t\t\t\tlimit = {{
 \t\t\t\t\t{indent(status_rows, 5).lstrip()}
+\t\t\t\t\t{indent(route_a_status, 5).lstrip()}
 \t\t\t\t\t{indent(route_b_status, 5).lstrip()}
 \t\t\t\t}}
 \t\t\t\tset_variable = {{ name = {p}_receipt_active value = 1 }}
@@ -1394,6 +2201,7 @@ zg361_pp_m{mechanism.mechanism_id:03d}_core_effect = {{
 \t\t\t\t\t{indent(semantic, 5).lstrip()}
 \t\t\t\t\t{indent(payment, 5).lstrip()}
 \t\t\t\t}}
+\t\t\t\t{indent(post_operation, 4).lstrip()}
 \t\t\t\tzg361_pp_m{mechanism.mechanism_id:03d}_consume_effect = yes
 \t\t\t\t{deadline_calls}
 \t\t\t\tset_variable = {{ name = zg361_pp_runtime_applied value = 1 }}
@@ -1417,7 +2225,11 @@ def render_consumer(mechanism: MechanismSpec) -> str:
 trigger_else = {{ always = yes }}'''
     extra_conservation_rows: list[str] = []
     for extra_resource in dict.fromkeys(
-        (*EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()), *ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()))
+        (
+            *EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
+            *ROUTE_A_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
+            *ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism.mechanism_id, ()),
+        )
     ):
         extra_conservation_rows.append(f'''set_variable = {{ name = zg361_pp_{mechanism.domain}_{extra_resource}_partition value = var:zg361_pp_{mechanism.domain}_{extra_resource}_available }}
 \t\tchange_variable = {{ name = zg361_pp_{mechanism.domain}_{extra_resource}_partition add = var:zg361_pp_{mechanism.domain}_{extra_resource}_reserved }}
@@ -1517,11 +2329,18 @@ def render_stage_dispatch(domain: DomainSpec, state: int, stage: tuple[int, ...]
     first = stage[0]
     ai_calls = []
     for mechanism_id in stage:
+        if mechanism_id == 189:
+            # #188's D+365 audit owns this dispatch for both player and AI.
+            continue
         ai_pre = (
             "if = { limit = { var:zg361_pp_ai_route = 1 } set_variable = { name = zg361_pp_m166_withdraw_intent value = 1 } }\n"
             if mechanism_id == 166
             else ""
         )
+        if mechanism_id == 190:
+            ai_pre += "if = { limit = { NOT = { var:zg361_pp_m189_terminal_code = 2 } } set_variable = { name = zg361_pp_ai_route value = 3 } }\n"
+        elif mechanism_id == 191:
+            ai_pre += "if = { limit = { NOT = { var:zg361_pp_m189_terminal_code = 3 } } set_variable = { name = zg361_pp_ai_route value = 3 } }\n"
         ai_calls.append(
             f'''set_variable = {{ name = zg361_pp_ai_route value = 1 }}
 if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ is_at_war = yes }} }} set_variable = {{ name = zg361_pp_ai_route value = 3 }} }}
@@ -1537,6 +2356,56 @@ else_if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ OR = {{ has_trait
         )
     ai_text = "\n\t\t".join(ai_calls)
     queue = queue_decision_call(first)
+    if domain.key == "w" and state == 4:
+        terminal_queue = queue_decision_call(189)
+        first_failure_guard = '''var:zg361_pp_m187_route = 2
+var:zg361_pp_m187_graduation_status = 2
+var:zg361_pp_m188_receipt_active = 0'''
+        return f'''zg361_pp_dispatch_w_stage_04_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_case_w_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }}
+\t\t\t{indent(first_failure_guard, 3).lstrip()}
+\t\t}}
+\t\t# A failed first PIP enters the terminal fork immediately; #188 is a
+\t\t# post-graduation observation and is explicitly not applicable here.
+\t\tzg361_pp_m188_skip_first_failure_effect = yes
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_pp_m188_skipped_first_failure = 1 }}
+\t\t\tset_variable = {{ name = zg361_pp_ai_route value = 1 }}
+\t\t\tif = {{ limit = {{ var:zg361_case_w_owner = {{ OR = {{ has_trait = arbitrary has_trait = ambitious }} }} }} set_variable = {{ name = zg361_pp_ai_route value = 2 }} }}
+\t\t\tzg361_pp_m189_core_effect = {{
+\t\t\t\tROUTE = var:zg361_pp_ai_route
+\t\t\t\tTICKET_OWNER = var:zg361_case_w_owner
+\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\tTICKET_CYCLE = var:zg361_case_w_cycle_serial
+\t\t\t\tTICKET_CASE = var:zg361_case_w_case_serial
+\t\t\t\tTICKET_STATE = 4
+\t\t\t}}
+\t\t}}
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_case_w_owner = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }}
+\t\t\t{indent(first_failure_guard, 3).lstrip()}
+\t\t}}
+\t\tzg361_pp_m188_skip_first_failure_effect = yes
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_pp_m188_skipped_first_failure = 1 }}
+\t\t\t{indent(terminal_queue, 3).lstrip()}
+\t\t}}
+\t}}
+\telse_if = {{
+\t\tlimit = {{ var:zg361_case_w_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+\t\t# Owner-authorized second AI exception: background resolver only, no GUI.
+\t\t{ai_text}
+\t}}
+\telse_if = {{
+\t\tlimit = {{ var:zg361_case_w_owner = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+\t\t# Graduated cases enter the one-cycle #188 observation first.
+\t\t{indent(queue, 2).lstrip()}
+\t}}
+}}'''
     return f'''zg361_pp_dispatch_{domain.key}_stage_{state:02d}_effect = {{
 \tif = {{
 \t\tlimit = {{ var:zg361_case_{domain.key}_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
@@ -1553,7 +2422,16 @@ else_if = {{ limit = {{ var:zg361_case_{domain.key}_owner = {{ OR = {{ has_trait
 
 
 def render_barrier(domain: DomainSpec, state: int, stage: tuple[int, ...]) -> str:
-    required = "\n\t\t\t".join(f"var:{PREFIX}_m{mechanism_id:03d}_consumed = 1" for mechanism_id in stage)
+    requirements = [
+        f"var:{PREFIX}_m{mechanism_id:03d}_consumed = 1"
+        for mechanism_id in stage
+    ]
+    requirements.extend(
+        f"var:{PREFIX}_m{mechanism_id:03d}_audit_1_consumed = 1"
+        for mechanism_id in stage
+        if mechanism_id in DELAYED_STAGE_GATE_IDS
+    )
+    required = "\n\t\t\t".join(requirements)
     row = case_vars(domain.key)
     final = state == len(domain.stages)
     after = (
@@ -1603,11 +2481,27 @@ def render_timeout(domain: DomainSpec, state: int, stage: tuple[int, ...]) -> st
 
 def render_outcome(domain: DomainSpec, completion_event: int) -> str:
     row = case_vars(domain.key)
+    extra_resources = sorted(
+        {
+            resource
+            for mechanism_id in (mid for stage in domain.stages for mid in stage)
+            for resource in (
+                *EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
+                *ROUTE_A_EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
+                *ROUTE_B_EXTRA_RESOURCES_BY_ID.get(mechanism_id, ()),
+            )
+        }
+    )
+    extra_conserved = "\n\t\t\t".join(
+        f"var:zg361_pp_{domain.key}_{resource}_conserved = 1"
+        for resource in extra_resources
+    )
     return f'''zg361_pp_resolve_{domain.key}_outcome_effect = {{
 \tif = {{
 \t\tlimit = {{
 \t\t\tvar:zg361_pp_{domain.key}_completed = var:zg361_pp_{domain.key}_authorized
 \t\t\tvar:zg361_pp_{domain.key}_resource_conserved = 1
+\t\t\t{extra_conserved}
 \t\t}}
 \t\tset_variable = {{ name = zg361_pp_{domain.key}_outcome value = 0 }}
 \t\tif = {{ limit = {{ var:zg361_pp_{domain.key}_evidence_led > var:zg361_pp_{domain.key}_political }} set_variable = {{ name = zg361_pp_{domain.key}_outcome value = 1 }} add_prestige = 25 }}
@@ -1616,6 +2510,7 @@ def render_outcome(domain: DomainSpec, completion_event: int) -> str:
 \t\tset_variable = {{ name = zg361_pp_{domain.key}_portfolio_done_cycle value = var:{row["cycle"]} }}
 \t\tif = {{
 \t\t\tlimit = {{ var:{row["owner"]} = {{ is_ai = no }} }}
+\t\t\tsave_scope_as = zg361_pp_completion_subject
 \t\t\t# Retain the queue lock through the visible completion card, otherwise a
 \t\t\t# same-day central adapter call could overlap it with the next domain.
 \t\t\tvar:{row["owner"]} = {{ trigger_event = {{ id = {EVENT_NAMESPACE}.{completion_event} days = 1 }} }}
@@ -1636,6 +2531,8 @@ def render_effects() -> bytes:
         "# Only integration seam: zg361_pp_manager_portfolio_adapter_effect.",
     ]
     sections.append(render_portfolio_adapter())
+    sections.append(render_m188_first_failure_skip())
+    sections.append(render_m189_no_relapse_skip())
     for domain_index, domain in enumerate(DOMAINS, start=1):
         sections.append(render_open(domain))
         for state, (stage, days) in enumerate(zip(domain.stages, domain.stage_deadlines), start=1):
@@ -1657,6 +2554,10 @@ def render_effects() -> bytes:
 
 
 def next_in_stage(mechanism_id: int) -> int | None:
+    if mechanism_id in DELAYED_STAGE_GATE_IDS:
+        # The next card is dispatched only by the target-bound audit.  This is
+        # material for #188, whose terminal fork must not appear on D+1.
+        return None
     domain = DOMAIN_BY_ID[mechanism_id]
     for stage in domain.stages:
         if mechanism_id in stage:
@@ -1665,10 +2566,41 @@ def next_in_stage(mechanism_id: int) -> int | None:
     raise AssertionError(mechanism_id)
 
 
+def delayed_consumer_write(mechanism: MechanismSpec, index: int) -> str:
+    """Consume one mechanism-specific payload after a valid delayed ticket."""
+
+    p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
+    field = DELAYED_CONSUMER_FIELD_BY_ID[mechanism.mechanism_id]
+    return f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_audit_{index}_business_input value = var:{p}_{field} }}
+\t\t\t\tset_variable = {{ name = {p}_audit_{index}_business_settled value = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_visible_outcome_code value = var:{p}_route }}
+\t\t\t}}
+\t\t\telse = {{
+\t\t\t\t# Route C closes only its policy-debt timer; it cannot manufacture
+\t\t\t\t# the typed business field named above.
+\t\t\t\tset_variable = {{ name = {p}_audit_{index}_policy_debt_settled value = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_visible_outcome_code value = 3 }}
+\t\t\t}}
+\t\t\tchange_variable = {{ name = zg361_pp_{mechanism.domain}_visible_receipt_revision add = 1 }}'''
+
+
 def render_player_event(mechanism: MechanismSpec) -> str:
     state = mechanism_stage(mechanism.mechanism_id)
     row = case_vars(mechanism.domain)
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
+    desc = f"zg361pp.{mechanism.mechanism_id}.desc"
+    if mechanism.domain in {"t", "w"}:
+        frozen = f"zg361_pp_{mechanism.domain}_frozen_grade"
+        desc = f'''{{
+\t\tdesc = zg361pp.{mechanism.mechanism_id}.desc
+\t\tfirst_valid = {{
+\t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_prompt_subject = {{ var:{frozen} = 3 }} }} desc = zg361pp.grade.375 }}
+\t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_prompt_subject = {{ var:{frozen} = 2 }} }} desc = zg361pp.grade.350 }}
+\t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_prompt_subject = {{ var:{frozen} = 1 }} }} desc = zg361pp.grade.325 }}
+\t\t}}
+\t}}'''
     nxt = next_in_stage(mechanism.mechanism_id)
     chain = ""
     if nxt is not None:
@@ -1701,7 +2633,7 @@ zg361pp.{mechanism.mechanism_id} = {{
 \ttype = character_event
 \ttheme = vassal
 \ttitle = zg361pp.{mechanism.mechanism_id}.t
-\tdesc = zg361pp.{mechanism.mechanism_id}.desc
+\tdesc = {desc}
 \ttrigger = {{
 \t\tis_ai = no
 \t\tzg361_is_celestial_liege_trigger = yes
@@ -1728,12 +2660,53 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
     p = f"{PREFIX}_m{mechanism.mechanism_id:03d}"
     event_id = 2000 + mechanism.mechanism_id + (1000 if index > 1 else 0)
     special_audit = ""
-    if mechanism.mechanism_id == 159:
-        special_audit = '''var:zg361_case_u_owner = {
-\t\t\t\tset_variable = { name = zg361_pp_u_shelving_last_audit_candidate value = root }
-\t\t\t\tset_variable = { name = zg361_pp_u_shelving_last_audit_cycle value = var:zg361_review_serial }
-\t\t\t\tset_variable = { name = zg361_pp_u_shelving_last_audit_active value = var:zg361_pp_u_shelving_active }
-\t\t\t}'''
+    if mechanism.mechanism_id == 149:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ var:{p}_route = 1 var:{p}_funded = 1 var:{p}_obligation_status = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_obligation_status value = 2 }}
+\t\t\t\tset_variable = {{ name = {p}_fulfilled_receipt value = var:{p}_obligation_id }}
+\t\t\t}}
+\t\t\telse_if = {{
+\t\t\t\tlimit = {{ var:{p}_route = 2 var:{p}_obligation_status = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_obligation_status value = 3 }}
+\t\t\t\tset_variable = {{ name = {p}_breach_receipt value = var:{p}_obligation_id }}
+\t\t\t}}'''
+    elif mechanism.mechanism_id == 150:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ var:{p}_route = 1 var:{p}_funded = 1 var:{p}_written = 1 var:{p}_obligation_status = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_obligation_status value = 2 }}
+\t\t\t\tset_variable = {{ name = {p}_fulfilled_receipt value = var:{p}_obligation_id }}
+\t\t\t}}
+\t\t\telse_if = {{
+\t\t\t\tlimit = {{ var:{p}_route = 2 var:{p}_obligation_status = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_obligation_status value = 3 }}
+\t\t\t\tset_variable = {{ name = {p}_breach_receipt value = var:{p}_obligation_id }}
+\t\t\t}}'''
+    elif mechanism.mechanism_id == 151:
+        if index == 1:
+            special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_delivery_audit_closed value = 1 }}
+\t\t\t\tif = {{ limit = {{ var:{p}_delivered = 1 }} set_variable = {{ name = {p}_delivery_receipt_valid value = 1 }} }}
+\t\t\t}}'''
+        else:
+            special_audit = f'''set_variable = {{ name = {p}_appeal_clock_closed value = 1 }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{p}_appeal_filed = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_appeal_result_grade value = var:zg361_result_grade }}
+\t\t\t\tset_variable = {{ name = {p}_non_aggravation_ok value = 0 }}
+\t\t\t\tif = {{ limit = {{ var:zg361_result_grade >= var:{p}_appeal_snapshot_grade }} set_variable = {{ name = {p}_non_aggravation_ok value = 1 }} }}
+\t\t\t}}
+\t\t\telse = {{ set_variable = {{ name = {p}_appeal_closed_without_filing value = 1 }} }}'''
+    elif mechanism.mechanism_id == 159:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tvar:zg361_case_u_owner = {{
+\t\t\t\t\tset_variable = {{ name = zg361_pp_u_shelving_last_audit_candidate value = root }}
+\t\t\t\t\tset_variable = {{ name = zg361_pp_u_shelving_last_audit_cycle value = var:zg361_review_serial }}
+\t\t\t\t\tset_variable = {{ name = zg361_pp_u_shelving_last_audit_active value = var:zg361_pp_u_shelving_active }}
+\t\t\t\t}}
+\t\t\t}}'''
     elif mechanism.mechanism_id == 167:
         special_audit = f'''if = {{
 \t\t\t\tlimit = {{ var:{p}_observation_settled = 0 }}
@@ -1776,6 +2749,134 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\t\tset_variable = {{ name = {p}_retry_unlock_reason value = 2 }}
 \t\t\t\tset_variable = {{ name = {p}_retry_settled_receipt value = var:{p}_prior_gap_id }}
 \t\t\t}}'''
+    elif mechanism.mechanism_id == 185:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_midpoint_pending value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_midpoint_completed value = 1 }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ var:{p}_route = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_midpoint_status value = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_progress_snapshot value = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_resource_delivery_valid value = 1 }}
+\t\t\t\t}}
+\t\t\t\telse_if = {{
+\t\t\t\t\tlimit = {{ var:{p}_route = 2 }}
+\t\t\t\t\tset_variable = {{ name = {p}_midpoint_status value = 2 }}
+\t\t\t\t\tset_variable = {{ name = {p}_late_correction_invalid value = 1 }}
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tzg361_pp_w_try_advance_02_effect = yes'''
+    elif mechanism.mechanism_id == 187:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_evaluation_pending value = 0 }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ var:{p}_route = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_key_milestones_met value = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_stability_days_observed value = 90 }}
+\t\t\t\t\tset_variable = {{ name = {p}_independent_review_pass value = 1 }}
+\t\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 1 }}
+\t\t\t\t\t{indent(pip_capacity_release_write(3, 1), 5).lstrip()}
+\t\t\t\t}}
+\t\t\t\telse_if = {{
+\t\t\t\t\tlimit = {{ var:{p}_route = 2 }}
+\t\t\t\t\tset_variable = {{ name = {p}_graduation_status value = 2 }}
+\t\t\t\t\tset_variable = {{ name = {p}_appeal_weight value = 1 }}
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tzg361_pp_w_try_advance_03_effect = yes'''
+    elif mechanism.mechanism_id == 188:
+        followup = queue_decision_call(189)
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_observation_pending value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_observation_closed value = 1 }}
+\t\t\t\tset_variable = {{ name = {p}_same_category_relapse value = 0 }}
+\t\t\t\tset_variable = {{ name = {p}_relapse_status value = 2 }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\thas_variable = zg361_result_case_owner
+\t\t\t\t\t\thas_variable = zg361_result_cycle_serial
+\t\t\t\t\t\thas_variable = zg361_result_case_serial
+\t\t\t\t\t\thas_variable = zg361_result_case_state
+\t\t\t\t\t\thas_variable = zg361_result_grade
+\t\t\t\t\t\thas_variable = zg361_result_grade_reason
+\t\t\t\t\t\tvar:zg361_result_case_owner = var:zg361_case_w_owner
+\t\t\t\t\t\tvar:zg361_result_cycle_serial = var:{p}_observation_due_cycle
+\t\t\t\t\t\tvar:zg361_result_case_state >= 3
+\t\t\t\t\t\tvar:zg361_result_grade = 1
+\t\t\t\t\t}}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_owner value = var:zg361_result_case_owner }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_subject value = this }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_cycle value = var:zg361_result_cycle_serial }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_case value = var:zg361_result_case_serial }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_state value = var:zg361_result_case_state }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_grade value = var:zg361_result_grade }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_result_reason value = var:zg361_result_grade_reason }}
+\t\t\t\t\tset_variable = {{ name = {p}_observed_category value = 1 }}
+\t\t\t\t\tif = {{ limit = {{ var:zg361_result_grade_reason = 5 }} set_variable = {{ name = {p}_observed_category value = 3 }} }}
+\t\t\t\t\tif = {{
+\t\t\t\t\t\tlimit = {{
+\t\t\t\t\t\t\tOR = {{
+\t\t\t\t\t\t\t\tvar:{p}_route = 2
+\t\t\t\t\t\t\t\tAND = {{ var:{p}_route = 1 var:{p}_observed_category = var:{p}_category_snapshot }}
+\t\t\t\t\t\t\t}}
+\t\t\t\t\t\t}}
+\t\t\t\t\t\tif = {{ limit = {{ var:{p}_observed_category = var:{p}_category_snapshot }} set_variable = {{ name = {p}_same_category_relapse value = 1 }} }}
+\t\t\t\t\t\tset_variable = {{ name = {p}_relapse_status value = 1 }}
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{p}_relapse_status = 2 }}
+\t\t\t\tzg361_pp_m189_skip_no_relapse_effect = yes
+\t\t\t}}
+\t\t\telse_if = {{
+\t\t\t\tlimit = {{ var:zg361_case_w_owner = {{ is_ai = yes zg361_is_celestial_liege_trigger = yes }} }}
+\t\t\t\tset_variable = {{ name = zg361_pp_ai_route value = 3 }}
+\t\t\t\tif = {{ limit = {{ NOT = {{ var:{p}_route = 3 }} }} set_variable = {{ name = zg361_pp_ai_route value = 1 }} }}
+\t\t\t\tif = {{ limit = {{ NOT = {{ var:{p}_route = 3 }} var:zg361_case_w_owner = {{ has_trait = arbitrary }} }} set_variable = {{ name = zg361_pp_ai_route value = 2 }} }}
+\t\t\t\tzg361_pp_m189_core_effect = {{
+\t\t\t\t\tROUTE = var:zg361_pp_ai_route
+\t\t\t\t\tTICKET_OWNER = var:zg361_case_w_owner
+\t\t\t\t\tTICKET_SUBJECT = this
+\t\t\t\t\tTICKET_CYCLE = var:zg361_case_w_cycle_serial
+\t\t\t\t\tTICKET_CASE = var:zg361_case_w_case_serial
+\t\t\t\t\tTICKET_STATE = 4
+\t\t\t\t}}
+\t\t\t}}
+\t\t\telse_if = {{
+\t\t\t\tlimit = {{ var:zg361_case_w_owner = {{ is_ai = no zg361_is_celestial_liege_trigger = yes }} }}
+\t\t\t\t{indent(followup, 4).lstrip()}
+\t\t\t}}
+\t\t\t# The stage timeout may already have consumed #189 as route C while
+\t\t\t# this delayed #188 audit was pending.  Recheck the barrier after the
+\t\t\t# audit closes so that exact fallback cannot strand W in state four.
+\t\t\tzg361_pp_w_try_advance_04_effect = yes'''
+    elif mechanism.mechanism_id == 190:
+        special_audit = f'''if = {{
+\t\t\t\tlimit = {{ NOT = {{ var:{p}_route = 3 }} }}
+\t\t\t\tset_variable = {{ name = {p}_audit_delivery_acl_pass value = 0 }}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{
+\t\t\t\t\t\tvar:{p}_receiving_manager = var:{p}_acl_receiver
+\t\t\t\t\t\tvar:{p}_receiving_manager = {{
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_disclosure_bundle = root.var:{p}_disclosure_bundle_id
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_disclosure_subject = root
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_disclosure_cycle = root.var:zg361_case_w_cycle_serial
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_disclosure_case = root.var:zg361_case_w_case_serial
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_disclosure_vacancy = root.var:{p}_vacancy_id_snapshot
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_goal = root.var:{p}_goal_snapshot
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_support = root.var:{p}_support_snapshot
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_completion = root.var:{p}_completion_snapshot
+\t\t\t\t\t\t\tvar:zg361_pp_received_transfer_subject_statement = root.var:{p}_subject_statement_snapshot
+\t\t\t\t\t\t}}
+\t\t\t\t\t}}
+\t\t\t\t\tset_variable = {{ name = {p}_audit_delivery_acl_pass value = 1 }}
+\t\t\t\t}}
+\t\t\t}}'''
+    typed_audit = delayed_consumer_write(mechanism, index)
     return f'''zg361pp.{event_id} = {{
 \ttype = character_event
 \thidden = yes
@@ -1800,6 +2901,7 @@ def render_audit_event(mechanism: MechanismSpec, index: int) -> str:
 \t\t\telse_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_audit_{index}_outcome value = 2 }} var:zg361_case_{mechanism.domain}_owner = {{ change_variable = {{ name = zg361_pp_management_debt add = 1 }} }} }}
 \t\t\telse = {{ set_variable = {{ name = {p}_audit_{index}_outcome value = 3 }} }}
 \t\t\t{special_audit}
+\t\t\t{typed_audit}
 \t\t}}
 \t\telse = {{ debug_log = "ZG361PP: stale {mechanism.mechanism_id:03d} audit ticket ignored" }}
 \t}}
@@ -1838,15 +2940,33 @@ def render_stage_deadline_event(domain: DomainSpec, state: int) -> str:
 
 
 def render_completion_event(domain: DomainSpec, event_id: int) -> str:
+    terminal = ""
+    if domain.key == "w":
+        terminal = '''
+\t\tfirst_valid = {
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_skipped_no_relapse = 1 } } desc = zg361pp.terminal.graduated }
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 1 } } desc = zg361pp.terminal.second_pip }
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 2 } } desc = zg361pp.terminal.transfer }
+\t\t\ttriggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 3 } } desc = zg361pp.terminal.exit }
+\t\t}'''
     return f'''zg361pp.{event_id} = {{
 \ttype = character_event
 \ttheme = vassal
 \ttitle = zg361pp.{event_id}.t
-\tdesc = zg361pp.{event_id}.desc
+\tdesc = {{
+\t\tdesc = zg361pp.{event_id}.desc
+\t\tfirst_valid = {{
+\t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_completion_subject = {{ var:zg361_pp_{domain.key}_outcome = 1 }} }} desc = zg361pp.outcome.evidence }}
+\t\t\ttriggered_desc = {{ trigger = {{ scope:zg361_pp_completion_subject = {{ var:zg361_pp_{domain.key}_outcome = -1 }} }} desc = zg361pp.outcome.political }}
+\t\t\tdesc = zg361pp.outcome.mixed
+\t\t}}
+\t\t{terminal}
+\t}}
 \ttrigger = {{
 \t\tis_ai = no
 \t\tzg361_is_celestial_liege_trigger = yes
 \t\tvar:zg361_pp_portfolio_queue_active = 1
+\t\texists = scope:zg361_pp_completion_subject
 \t}}
 \toption = {{
 \t\tname = zg361pp.{event_id}.a
@@ -1875,6 +2995,36 @@ def escape_loc(value: str) -> str:
 def localization_rows(language: str) -> list[str]:
     chinese = language == "simp_chinese"
     rows = [f"l_{language}:"]
+    if chinese:
+        rows.extend(
+            (
+                ' zg361pp.grade.375:0 "本轮冻结绩效：3.75。别急，这一页还没开始夸你。"',
+                ' zg361pp.grade.350:0 "本轮冻结绩效：3.5。翻译成人话：干得不少，坑也给你留着。"',
+                ' zg361pp.grade.325:0 "本轮冻结绩效：3.25。PPT 叫改进空间，账本叫证据起点。"',
+                ' zg361pp.outcome.evidence:0 "证据路线占优：流程没有变善良，只是这次终于留下了能对账的东西。"',
+                ' zg361pp.outcome.political:0 "政治路线占优：业务很灵活，责任很稳定——稳定地落在经理名下。"',
+                ' zg361pp.outcome.mixed:0 "路线打平：制度和人情各赢一半，只有会议时间全输了。"',
+                ' zg361pp.terminal.second_pip:0 "终局：二次 PIP。恭喜，改进计划成功改进成了续费服务。"',
+                ' zg361pp.terminal.graduated:0 "终局：观察期内没有同类复发。这回改进计划没有续费成功。"',
+                ' zg361pp.terminal.transfer:0 "终局：真实转岗。不是把问题挪个群聊，而是连接收经理和空缺都写进了案卷。"',
+                ' zg361pp.terminal.exit:0 "终局：退出。空缺、交接、加班和补员成本一个都没被‘组织优化’优化掉。"',
+            )
+        )
+    else:
+        rows.extend(
+            (
+                ' zg361pp.grade.375:0 "Frozen performance: 3.75. Relax; this page has not started praising you yet."',
+                ' zg361pp.grade.350:0 "Frozen performance: 3.5. In plain speech: plenty delivered, with a few traps left for the review."',
+                ' zg361pp.grade.325:0 "Frozen performance: 3.25. Slides call it growth space; the ledger calls it an evidence starting point."',
+                ' zg361pp.outcome.evidence:0 "Evidence led: the process is not kinder, but it finally left something auditable."',
+                ' zg361pp.outcome.political:0 "Politics led: the business stayed flexible and responsibility stayed reliably attached to the manager."',
+                ' zg361pp.outcome.mixed:0 "The routes tied: policy and politics each won half; meeting time lost all of it."',
+                ' zg361pp.terminal.second_pip:0 "Terminal: second PIP. The improvement plan has improved itself into a subscription."',
+                ' zg361pp.terminal.graduated:0 "Terminal: no same-category relapse. The improvement plan did not renew its subscription this time."',
+                ' zg361pp.terminal.transfer:0 "Terminal: real transfer. This moves a vacancy and receiving manager, not merely the problem into another chat."',
+                ' zg361pp.terminal.exit:0 "Terminal: exit. Vacancy, handover, overtime and replacement costs all survived the optimization."',
+            )
+        )
     for mechanism in MECHANISMS:
         title = mechanism.title_cn if chinese else mechanism.title_en
         desc = (

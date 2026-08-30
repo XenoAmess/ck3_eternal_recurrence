@@ -108,6 +108,8 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 f"var:zg361_pp_m{mid:03d}_receipt_active = 0",
             ):
                 self.assertIn(token, block, f"{mid}: missing {token}")
+            for suffix in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"zg361_pp_m{mid:03d}_object_{suffix}", block)
 
     def test_c_route_is_policy_debt_only_not_business_operation(self) -> None:
         # The shared operation call is inside an explicit route != 3 branch;
@@ -168,16 +170,23 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
         # nomination/promotion/panel/PIP ledgers.
         self.assertEqual({domain.resource for domain in gen.DOMAINS}, {"operation_capacity"})
         self.assertEqual(gen.EXTRA_RESOURCES_BY_ID[157], ("nomination_slot",))
-        self.assertEqual(gen.EXTRA_RESOURCES_BY_ID[160], ("promotion_slot",))
         self.assertEqual(gen.EXTRA_RESOURCES_BY_ID[162], ("tenure_exception_slot",))
-        self.assertEqual(gen.EXTRA_RESOURCES_BY_ID[184], ("pip_capacity",))
+        self.assertNotIn(160, gen.EXTRA_RESOURCES_BY_ID)
+        self.assertNotIn(184, gen.EXTRA_RESOURCES_BY_ID)
+        self.assertEqual(
+            gen.ROUTE_A_EXTRA_RESOURCES_BY_ID,
+            {160: ("promotion_slot",), 184: ("pip_capacity",)},
+        )
         self.assertEqual(
             [mid for mid, resources in gen.EXTRA_RESOURCES_BY_ID.items() if "nomination_slot" in resources],
             [157],
         )
-        self.assertEqual(gen.ROUTE_B_EXTRA_RESOURCES_BY_ID, {161: ("nomination_slot", "capacity_hours")})
         self.assertEqual(
-            [mid for mid, resources in gen.EXTRA_RESOURCES_BY_ID.items() if "promotion_slot" in resources],
+            gen.ROUTE_B_EXTRA_RESOURCES_BY_ID,
+            {161: ("nomination_slot", "capacity_hours"), 189: ("exit_cost",)},
+        )
+        self.assertEqual(
+            [mid for mid, resources in gen.ROUTE_A_EXTRA_RESOURCES_BY_ID.items() if "promotion_slot" in resources],
             [160],
         )
         for mid, resources in gen.EXTRA_RESOURCES_BY_ID.items():
@@ -186,6 +195,16 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 self.assertIn(f"zg361_pp_{gen.DOMAIN_BY_ID[mid].key}_{resource}_available >= 1", block)
                 self.assertIn(f"zg361_pp_m{mid:03d}_{resource}_status = 1", block)
                 self.assertIn(f"zg361_pp_m{mid:03d}_{resource}_status = 2", block)
+        for route_map, route in (
+            (gen.ROUTE_A_EXTRA_RESOURCES_BY_ID, 1),
+            (gen.ROUTE_B_EXTRA_RESOURCES_BY_ID, 2),
+        ):
+            for mid, resources in route_map.items():
+                block = effect_block(self.effects, f"zg361_pp_m{mid:03d}_core_effect")
+                for resource in resources:
+                    self.assertIn(f"limit = {{ scope:zg361_pp_route = {route} }}", block)
+                    self.assertIn(f"zg361_pp_{gen.DOMAIN_BY_ID[mid].key}_{resource}_available >= 1", block)
+                    self.assertIn(f"zg361_pp_m{mid:03d}_{resource}_status = {route}", block)
 
     def test_authoritative_u_v_stage_partition_and_resource_bindings(self) -> None:
         self.assertEqual(
@@ -231,6 +250,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 (
                     domain.resource,
                     *gen.EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()),
+                    *gen.ROUTE_A_EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()),
                     *gen.ROUTE_B_EXTRA_RESOURCES_BY_ID.get(row.mechanism_id, ()),
                 )
             )
@@ -244,6 +264,45 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 pending = f"NOT = {{ var:zg361_pp_m{row.mechanism_id:03d}_audit_{index}_state = 1 }}"
                 self.assertIn(pending, adapter)
                 self.assertIn(pending, opened)
+                self.assertIn(
+                    f"name = zg361_pp_m{row.mechanism_id:03d}_audit_{index}_business_settled value = 0",
+                    opened,
+                )
+                self.assertIn(
+                    f"name = zg361_pp_m{row.mechanism_id:03d}_audit_{index}_policy_debt_settled value = 0",
+                    opened,
+                )
+                self.assertIn(
+                    f"remove_variable = zg361_pp_m{row.mechanism_id:03d}_audit_{index}_business_input",
+                    opened,
+                )
+            for suffix in gen.AUDIT_ONLY_FIELDS_BY_ID.get(row.mechanism_id, ()):
+                self.assertIn(f"remove_variable = zg361_pp_m{row.mechanism_id:03d}_{suffix}", opened)
+            for suffix in gen.RESPONSE_ONLY_FIELDS_BY_ID.get(row.mechanism_id, ()):
+                self.assertIn(f"remove_variable = zg361_pp_m{row.mechanism_id:03d}_{suffix}", opened)
+
+    def test_every_case_local_write_is_cleared_before_cross_cycle_reuse(self) -> None:
+        for row in gen.MECHANISMS:
+            mid = row.mechanism_id
+            prefix = f"zg361_pp_m{mid:03d}_"
+            domain = gen.DOMAIN_BY_ID[mid]
+            opened = effect_block(self.effects, f"zg361_pp_open_{domain.key}_case_effect")
+            sources = [effect_block(self.effects, f"zg361_pp_m{mid:03d}_core_effect")]
+            if mid in gen.SUBJECT_RESPONSE_IDS:
+                sources.append(effect_block(self.effects, f"zg361_pp_m{mid:03d}_subject_response_effect"))
+            for index, _ in enumerate(row.deadlines, start=1):
+                sources.append(effect_block(self.events, f"zg361pp.{2000 + mid + (1000 if index > 1 else 0)}"))
+            assigned = {
+                name
+                for source in sources
+                for name in re.findall(rf"name = ({prefix}[A-Za-z0-9_]+)", source)
+            }
+            for name in assigned:
+                self.assertTrue(
+                    f"remove_variable = {name}" in opened
+                    or re.search(rf"name = {re.escape(name)} value = (?:0|1)", opened),
+                    f"{mid}: cross-cycle reset misses {name}",
+                )
 
     def test_route_a_reserves_route_b_settles_and_c_spends_nothing(self) -> None:
         for row in gen.MECHANISMS:
@@ -345,7 +404,7 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             self.assertIn(token, m178)
 
         m179 = effect_block(self.effects, "zg361_pp_m179_core_effect")
-        self.assertIn("zg361_pp_m179_feedback_owner value = var:zg361_pp_m170_panelist_1", m179)
+        self.assertIn("zg361_pp_m179_feedback_owner value = var:zg361_pp_m171_active_panel_1", m179)
         self.assertIn("zg361_pp_m178_final_decision = 0", m179)
 
         m180 = effect_block(self.effects, "zg361_pp_m180_core_effect")
@@ -446,10 +505,356 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
             "zg361_pp_m178_coaching_hours_consumed",
             "zg361_pp_m178_candidate_share_consumed",
             "zg361_pp_m178_leverage_consumed",
-            "zg361_pp_m179_feedback_owner value = var:zg361_pp_m170_panelist_1",
+            "zg361_pp_m179_feedback_owner value = var:zg361_pp_m171_active_panel_1",
             "zg361_pp_m180_prior_gap_id value = var:zg361_pp_m179_gap_id",
         ):
             self.assertIn(token, self.effects)
+
+    def test_true_result_case_is_frozen_and_visible_without_last_grade_fallback(self) -> None:
+        for domain in ("t", "w"):
+            opened = effect_block(self.effects, f"zg361_pp_open_{domain}_case_effect")
+            for suffix in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"name = zg361_pp_{domain}_result_{suffix}", opened)
+            for token in (
+                f"name = zg361_pp_{domain}_frozen_grade value = var:zg361_result_grade",
+                f"name = zg361_pp_{domain}_frozen_reason value = var:zg361_result_grade_reason",
+                f"name = zg361_pp_{domain}_frozen_kpi value = var:zg361_result_kpi_frozen",
+                "var:zg361_result_case_owner = root",
+                "var:zg361_result_cycle_serial = root.var:zg361_review_serial",
+                "var:zg361_result_case_state >= 3",
+            ):
+                self.assertIn(token, opened)
+            self.assertNotIn("zg361_last_grade", opened)
+        open_u = effect_block(self.effects, "zg361_pp_open_u_case_effect")
+        for suffix in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"name = zg361_pp_u_result_{suffix}", open_u)
+        self.assertIn("name = zg361_pp_u_frozen_grade value = var:zg361_result_grade", open_u)
+        self.assertIn("var:zg361_result_grade >= 2", open_u)
+        adapter = effect_block(self.effects, "zg361_pp_manager_portfolio_adapter_effect")
+        self.assertIn("zg361_pp_u_skipped_not_eligible_cycle", adapter)
+        self.assertIn("zg361_pp_v_skipped_no_winner_cycle", adapter)
+        self.assertIn("zg361_pp_w_skipped_not_applicable_cycle", adapter)
+        open_w = effect_block(self.effects, "zg361_pp_open_w_case_effect")
+        self.assertIn("var:zg361_result_grade = 1", open_w)
+        self.assertIn("zg361_pp_w_evidence_component_count", open_w)
+        self.assertIn("zg361_pp_w_pip_gate_candidate value = 1", open_w)
+        for mid in (*range(146, 157), *range(181, 192)):
+            event = effect_block(self.events, f"zg361pp.{mid}")
+            self.assertIn("zg361pp.grade.375", event)
+            self.assertIn("zg361pp.grade.350", event)
+            self.assertIn("zg361pp.grade.325", event)
+
+    def test_every_audit_consumes_its_typed_payload_not_only_route(self) -> None:
+        self.assertEqual(set(gen.DELAYED_CONSUMER_FIELD_BY_ID), set(range(146, 192)))
+        for row in gen.MECHANISMS:
+            mid = row.mechanism_id
+            field = gen.DELAYED_CONSUMER_FIELD_BY_ID[mid]
+            for index, _ in enumerate(row.deadlines, start=1):
+                event_id = 2000 + mid + (1000 if index > 1 else 0)
+                event = effect_block(self.events, f"zg361pp.{event_id}")
+                self.assertIn(
+                    f"name = zg361_pp_m{mid:03d}_audit_{index}_business_input value = var:zg361_pp_m{mid:03d}_{field}",
+                    event,
+                )
+                self.assertIn(f"zg361_pp_m{mid:03d}_audit_{index}_business_settled", event)
+                self.assertIn(f"zg361_pp_m{mid:03d}_audit_{index}_policy_debt_settled", event)
+                self.assertIn("NOT = { var:zg361_pp_m", event)
+
+    def test_prescreen_rejection_never_burns_a_promotion_slot(self) -> None:
+        core = effect_block(self.effects, "zg361_pp_m160_core_effect")
+        self.assertIn("scope:zg361_pp_route = 1", core)
+        self.assertIn("zg361_pp_u_promotion_slot_available >= 1", core)
+        self.assertIn("zg361_pp_m160_promotion_slot_status = 1", core)
+        self.assertNotIn("zg361_pp_m160_promotion_slot_status = 2", core)
+        self.assertIn("scope:zg361_pp_route = 2", core)
+        self.assertIn("name = zg361_pp_m160_prescreen_pass value = 0", core)
+        open_v = effect_block(self.effects, "zg361_pp_open_v_case_effect")
+        self.assertIn("var:zg361_pp_m160_promotion_slot_status = 1", open_v)
+        self.assertIn("name = zg361_pp_m160_promotion_slot_status value = 2", open_v)
+
+    def test_pip_gate_requires_evidence_and_grade_only_route_is_explicit(self) -> None:
+        m182 = effect_block(self.effects, "zg361_pp_m182_core_effect")
+        self.assertIn("var:zg361_pp_w_pip_gate_candidate = 1", m182)
+        self.assertIn("name = zg361_pp_m182_evidence_threshold_met value = 0", m182)
+        self.assertEqual(
+            m182.count("name = zg361_pp_m182_evidence_threshold_met value = 1"),
+            1,
+        )
+        self.assertIn("scope:zg361_pp_route = 1 var:zg361_pp_w_pip_gate_candidate = 1", m182)
+        self.assertIn("name = zg361_pp_m182_gate_status value = 1", m182)
+        self.assertIn("name = zg361_pp_m182_gate_status value = 2", m182)
+        self.assertIn("name = zg361_pp_m182_grade_only_autostart value = 1", m182)
+        m183 = effect_block(self.effects, "zg361_pp_m183_core_effect")
+        self.assertIn("var:zg361_pp_m182_gate_status = 1", m183)
+        self.assertIn("var:zg361_pp_m182_gate_status = 2", m183)
+
+    def test_pip_capacity_is_route_specific_and_released_once(self) -> None:
+        m184 = effect_block(self.effects, "zg361_pp_m184_core_effect")
+        self.assertIn("scope:zg361_pp_route = 1", m184)
+        self.assertIn("zg361_pp_w_pip_capacity_available >= 1", m184)
+        self.assertIn("zg361_pp_m184_pip_capacity_status = 1", m184)
+        self.assertNotIn("zg361_pp_m184_pip_capacity_status = 2", m184)
+        self.assertIn("name = zg361_pp_m184_capacity_reserved value = 0", m184)
+        self.assertIn("name = zg361_pp_m184_overload_liability value = 1", m184)
+        for block in (
+            effect_block(self.events, "zg361pp.2187"),
+            effect_block(self.effects, "zg361_pp_m189_core_effect"),
+        ):
+            self.assertIn("zg361_case_kernel_refund_transaction_effect", block)
+            self.assertIn("RECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status", block)
+            self.assertIn("var:zg361_pp_w_capacity_released = 0", block)
+            self.assertIn("name = zg361_pp_w_capacity_released value = 1", block)
+
+    def test_midpoint_graduation_and_relapse_are_real_time_gates(self) -> None:
+        self.assertEqual(gen.DELAYED_STAGE_GATE_IDS, {185, 187, 188})
+        schedules = {185: 180, 187: 90, 188: 365}
+        for mid, days in schedules.items():
+            schedule = effect_block(self.effects, f"zg361_pp_m{mid:03d}_schedule_audit_1_effect")
+            self.assertIn(f"days = {days}", schedule)
+            event = effect_block(self.events, f"zg361pp.{2000 + mid}")
+            self.assertIn(f"zg361_pp_m{mid:03d}_audit_1_consumed = 0", event)
+        self.assertIn(
+            "var:zg361_pp_m185_audit_1_consumed = 1",
+            effect_block(self.effects, "zg361_pp_w_try_advance_02_effect"),
+        )
+        self.assertIn(
+            "var:zg361_pp_m187_audit_1_consumed = 1",
+            effect_block(self.effects, "zg361_pp_w_try_advance_03_effect"),
+        )
+        self.assertIn(
+            "var:zg361_pp_m188_audit_1_consumed = 1",
+            effect_block(self.effects, "zg361_pp_w_try_advance_04_effect"),
+        )
+        self.assertNotIn("zg361pp.189", effect_block(self.events, "zg361pp.188"))
+        self.assertIn("zg361pp.189", effect_block(self.events, "zg361pp.2188"))
+        stage4 = effect_block(self.effects, "zg361_pp_dispatch_w_stage_04_effect")
+        self.assertIn("zg361_pp_m188_core_effect", stage4)
+        self.assertIn("zg361_pp_m189_core_effect", stage4)
+        self.assertIn("zg361_pp_m188_skip_first_failure_effect = yes", stage4)
+        self.assertIn(
+            "DAYS = 368",
+            effect_block(self.effects, "zg361_pp_schedule_w_stage_04_effect"),
+        )
+
+    def test_first_pip_failure_skips_observation_and_reaches_terminal_fork(self) -> None:
+        skip = effect_block(self.effects, "zg361_pp_m188_skip_first_failure_effect")
+        for token in (
+            "EXPECTED_STATE = 4",
+            "var:zg361_pp_m187_route = 2",
+            "var:zg361_pp_m187_graduation_status = 2",
+            "var:zg361_pp_m188_receipt_active = 0",
+            "name = zg361_pp_m188_receipt_route value = 0",
+            "name = zg361_pp_m188_route value = 0",
+            "name = zg361_pp_m188_relapse_window value = 0",
+            "name = zg361_pp_m188_relapse_status value = 0",
+            "name = zg361_pp_m188_skipped_first_failure value = 1",
+            "name = zg361_pp_m188_audit_1_state value = 2",
+            "name = zg361_pp_m188_audit_1_consumed value = 1",
+            "zg361_pp_m188_consume_effect = yes",
+        ):
+            self.assertIn(token, skip)
+        self.assertIn(
+            "has_variable = zg361_pp_m188_relapse_window",
+            effect_block(self.effects, "zg361_pp_m188_consume_effect"),
+        )
+
+        stage4 = effect_block(self.effects, "zg361_pp_dispatch_w_stage_04_effect")
+        self.assertIn("zg361_pp_m188_skip_first_failure_effect = yes", stage4)
+        self.assertIn("id = zg361pp.189 days = 1", stage4)
+        self.assertIn("zg361_pp_m189_core_effect", stage4)
+        self.assertIn("id = zg361pp.188 days = 1", stage4)
+
+        m189 = effect_block(self.effects, "zg361_pp_m189_core_effect")
+        for token in (
+            "var:zg361_pp_m187_route = 2",
+            "var:zg361_pp_m187_graduation_status = 2",
+            "var:zg361_pp_m188_skipped_first_failure = 1",
+            "var:zg361_pp_m188_audit_1_consumed = 1",
+            "var:zg361_pp_m188_observation_closed = 1",
+            "var:zg361_pp_m188_relapse_status = 1",
+            "var:zg361_pp_m188_same_category_relapse = 1",
+        ):
+            self.assertIn(token, m189)
+        self.assertIn(
+            "remove_variable = zg361_pp_m188_skipped_first_failure",
+            effect_block(self.effects, "zg361_pp_open_w_case_effect"),
+        )
+
+    def test_stage4_timeout_rechecks_barrier_after_delayed_observation_audit(self) -> None:
+        timeout = effect_block(self.effects, "zg361_pp_w_timeout_stage_04_effect")
+        self.assertLess(
+            timeout.index("zg361_pp_m188_core_effect"),
+            timeout.index("zg361_pp_m189_core_effect"),
+        )
+        audit = effect_block(self.events, "zg361pp.2188")
+        retry = audit.rindex("zg361_pp_w_try_advance_04_effect = yes")
+        self.assertGreater(retry, audit.rindex("zg361_pp_m189_core_effect"))
+        barrier = effect_block(self.effects, "zg361_pp_w_try_advance_04_effect")
+        for token in (
+            "var:zg361_pp_m188_consumed = 1",
+            "var:zg361_pp_m189_consumed = 1",
+            "var:zg361_pp_m188_audit_1_consumed = 1",
+        ):
+            self.assertIn(token, barrier)
+
+    def test_relapse_audit_is_same_category_and_skips_terminal_when_clean(self) -> None:
+        m188 = effect_block(self.effects, "zg361_pp_m188_core_effect")
+        audit = effect_block(self.events, "zg361pp.2188")
+        skip = effect_block(self.effects, "zg361_pp_m189_skip_no_relapse_effect")
+        self.assertIn("zg361_pp_m188_observation_due_cycle", m188)
+        for token in (
+            "var:zg361_result_cycle_serial = var:zg361_pp_m188_observation_due_cycle",
+            "has_variable = zg361_result_grade_reason",
+            "zg361_pp_m188_observed_result_reason value = var:zg361_result_grade_reason",
+            "zg361_pp_m188_observed_category value = 1",
+            "var:zg361_result_grade_reason = 5",
+            "var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot",
+            "name = zg361_pp_m188_same_category_relapse value = 1",
+            "name = zg361_pp_m188_relapse_status value = 1",
+            "zg361_pp_m189_skip_no_relapse_effect = yes",
+        ):
+            self.assertIn(token, audit)
+        for token in (
+            "var:zg361_pp_m188_relapse_status = 2",
+            "name = zg361_pp_m189_skipped_no_relapse value = 1",
+            "name = zg361_pp_m189_route value = 0",
+            "name = zg361_pp_m189_terminal_code value = 0",
+            "zg361_pp_m189_consume_effect = yes",
+        ):
+            self.assertIn(token, skip)
+        self.assertIn("zg361pp.terminal.graduated", effect_block(self.events, "zg361pp.9004"))
+
+    def test_route_c_audits_never_create_midpoint_graduation_or_relapse_objects(self) -> None:
+        checks = {
+            185: "zg361_pp_m185_midpoint_status",
+            187: "zg361_pp_m187_graduation_status",
+            188: "zg361_pp_m188_observation_closed",
+        }
+        for mid, business_field in checks.items():
+            event = effect_block(self.events, f"zg361pp.{2000 + mid}")
+            guarded = re.compile(
+                rf"limit = \{{ NOT = \{{ var:zg361_pp_m{mid:03d}_route = 3 \}} \}}.*?{business_field}",
+                re.DOTALL,
+            )
+            self.assertRegex(event, guarded)
+            self.assertIn(f"zg361_pp_m{mid:03d}_audit_1_policy_debt_settled", event)
+        m189 = effect_block(self.effects, "zg361_pp_m189_core_effect")
+        self.assertIn("var:zg361_pp_m188_relapse_status = 1", m189)
+        self.assertIn("var:zg361_pp_m188_same_category_relapse = 1", m189)
+
+    def test_terminal_fork_is_exclusive_and_exit_cost_is_route_bound(self) -> None:
+        m189 = effect_block(self.effects, "zg361_pp_m189_core_effect")
+        for token in (
+            "zg361_pp_m189_second_pip value = 0",
+            "zg361_pp_m189_transfer value = 0",
+            "zg361_pp_m189_exit value = 0",
+            "zg361_pp_m189_terminal_sum",
+            "var:zg361_pp_m189_terminal_sum = 1",
+            "name = zg361_pp_m189_exclusive_terminal value = 1",
+            "name = zg361_pp_m189_terminal_code value = 1",
+            "name = zg361_pp_m189_terminal_code value = 2",
+            "name = zg361_pp_m189_terminal_code value = 3",
+            "zg361_pp_w_exit_cost_available >= 1",
+            "scope:zg361_pp_route = 2",
+        ):
+            self.assertIn(token, m189)
+        self.assertEqual(gen.DUAL_COST_ROUTE_BY_ID[189], 2)
+        self.assertEqual(gen.ROUTE_B_EXTRA_RESOURCES_BY_ID[189], ("exit_cost",))
+
+    def test_terminal_route_c_releases_capacity_and_open_resets_release_reason(self) -> None:
+        core = effect_block(self.effects, "zg361_pp_m189_core_effect")
+        self.assertNotIn("zg361_case_kernel_refund_transaction_effect", gen.semantic_write(gen.MECHANISM_BY_ID[189]))
+        self.assertEqual(core.count("RECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status"), 1)
+        release = core.index("RECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status")
+        semantic_guard = core.index("limit = { NOT = { scope:zg361_pp_route = 3 } }")
+        consume = core.index("zg361_pp_m189_consume_effect = yes")
+        self.assertLess(semantic_guard, release)
+        self.assertLess(release, consume)
+        open_w = effect_block(self.effects, "zg361_pp_open_w_case_effect")
+        self.assertIn("name = zg361_pp_w_capacity_release_reason value = 0", open_w)
+
+    def test_filler_candidate_and_external_vacancy_are_freshly_bound(self) -> None:
+        open_u = effect_block(self.effects, "zg361_pp_open_u_case_effect")
+        self.assertLess(
+            open_u.index("remove_variable = zg361_pp_m161_filler_candidate"),
+            open_u.index("name = zg361_pp_m161_filler_candidate value = scope:zg361_pp_u_filler_candidate"),
+        )
+        open_w = effect_block(self.effects, "zg361_pp_open_w_case_effect")
+        for token in (
+            "has_variable = zg361_transfer_vacancy_id",
+            "has_variable = zg361_transfer_vacancy_receiver",
+            "var:zg361_transfer_vacancy_active = 1",
+            "zg361_pp_w_transfer_vacancy_id value = var:zg361_transfer_vacancy_id",
+            "zg361_pp_w_transfer_vacancy_receiver value = var:zg361_transfer_vacancy_receiver",
+            "name = zg361_pp_w_real_vacancy value = 1",
+        ):
+            self.assertIn(token, open_w)
+        self.assertNotIn(
+            "limit = { has_variable = zg361_pp_w_receiving_manager } set_variable = { name = zg361_pp_w_real_vacancy value = 1 }",
+            open_w,
+        )
+
+    def test_transfer_disclosure_has_receiver_and_subject_acl(self) -> None:
+        m190 = effect_block(self.effects, "zg361_pp_m190_core_effect")
+        for token in (
+            "var:zg361_pp_m189_terminal_code = 2",
+            "var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager",
+            "zg361_is_celestial_liege_trigger = yes",
+            "NOT = { this = root }",
+            "zg361_pp_m190_acl_subject value = this",
+            "zg361_pp_m190_acl_receiver value = var:zg361_pp_m189_receiving_manager",
+            "zg361_pp_m190_vacancy_id_snapshot value = var:zg361_pp_w_transfer_vacancy_id",
+            "zg361_pp_m190_goal_snapshot value = var:zg361_pp_m183_goal_bundle_id",
+            "zg361_pp_m190_support_snapshot value = var:zg361_pp_m184_support_status",
+            "zg361_pp_m190_completion_snapshot value = var:zg361_pp_m187_graduation_status",
+            "zg361_pp_m190_subject_statement_snapshot value = var:zg361_pp_m183_subject_statement_code",
+            "zg361_pp_m190_private_ids_excluded value = 1",
+            "zg361_pp_m190_acl_pass value = 1",
+            "zg361_pp_received_transfer_goal",
+            "zg361_pp_received_transfer_support",
+            "zg361_pp_received_transfer_completion",
+            "zg361_pp_received_transfer_subject_statement",
+        ):
+            self.assertIn(token, m190)
+        response = effect_block(self.effects, "zg361_pp_m190_subject_response_effect")
+        self.assertIn("zg361_case_kernel_subject_self_guard_trigger", response)
+        self.assertIn("zg361_pp_m190_subject_statement_author value = this", response)
+        self.assertIn("zg361_pp_m190_subject_statement_receiver", response)
+        audit = effect_block(self.events, "zg361pp.2190")
+        self.assertIn("name = zg361_pp_m190_audit_delivery_acl_pass value = 0", audit)
+        self.assertIn("name = zg361_pp_m190_audit_delivery_acl_pass value = 1", audit)
+        self.assertIn(
+            "name = zg361_pp_m190_audit_1_business_input value = var:zg361_pp_m190_audit_delivery_acl_pass",
+            audit,
+        )
+
+    def test_appeal_non_aggravation_is_snapshotted_and_never_writes_grade(self) -> None:
+        m151 = effect_block(self.effects, "zg361_pp_m151_core_effect")
+        response = effect_block(self.effects, "zg361_pp_m151_subject_response_effect")
+        appeal_audit = effect_block(self.events, "zg361pp.3151")
+        self.assertIn("zg361_pp_m151_non_aggravation_grade value = var:zg361_pp_t_frozen_grade", m151)
+        self.assertIn("zg361_pp_m151_appeal_snapshot_grade", response)
+        self.assertIn("var:zg361_result_grade >= var:zg361_pp_m151_appeal_snapshot_grade", appeal_audit)
+        self.assertIn("zg361_pp_m151_appeal_closed_without_filing", appeal_audit)
+        forbidden = re.compile(r"(?:set|change)_variable\s*=\s*\{\s*name\s*=\s*zg361_result_grade\b")
+        self.assertIsNone(forbidden.search(self.effects))
+        self.assertIsNone(forbidden.search(self.events))
+
+    def test_completion_cards_expose_route_and_w_terminal_outcome(self) -> None:
+        for event_id in range(9001, 9005):
+            event = effect_block(self.events, f"zg361pp.{event_id}")
+            self.assertIn("scope:zg361_pp_completion_subject", event)
+            self.assertIn("zg361pp.outcome.evidence", event)
+            self.assertIn("zg361pp.outcome.political", event)
+            self.assertIn("zg361pp.outcome.mixed", event)
+        w = effect_block(self.events, "zg361pp.9004")
+        for key in (
+            "zg361pp.terminal.graduated",
+            "zg361pp.terminal.second_pip",
+            "zg361pp.terminal.transfer",
+            "zg361pp.terminal.exit",
+        ):
+            self.assertIn(key, w)
 
     def test_events_and_effects_have_balanced_braces(self) -> None:
         self.assertEqual(self.effects.count("{"), self.effects.count("}"))
@@ -479,6 +884,23 @@ class FeedbackPromotionPipRuntimeTests(unittest.TestCase):
                 placeholder.replace(f"l_{language}:", "", 1),
                 english.replace("l_english:", "", 1),
             )
+
+    def test_generator_is_deterministic_and_all_nine_loc_keysets_match(self) -> None:
+        first = gen.outputs()
+        second = gen.outputs()
+        self.assertEqual(first, second)
+        self.assertTrue(all(payload.startswith(gen.BOM) for payload in first.values()))
+        keysets: dict[str, set[str]] = {}
+        for language in gen.LANGUAGES:
+            source = text(
+                MOD_ROOT
+                / "localization"
+                / language
+                / f"zg361_feedback_promotion_pip_l_{language}.yml"
+            )
+            keysets[language] = set(re.findall(r"^\s+([^\s:]+):\d+\s+\"", source, re.MULTILINE))
+        self.assertTrue(keysets["english"])
+        self.assertTrue(all(keys == keysets["english"] for keys in keysets.values()))
 
     def test_generator_check_is_green(self) -> None:
         result = subprocess.run(

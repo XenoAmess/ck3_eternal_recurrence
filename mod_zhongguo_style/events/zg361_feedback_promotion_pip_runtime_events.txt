@@ -6,7 +6,14 @@ zg361pp.146 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.146.t
-	desc = zg361pp.146.desc
+	desc = {
+		desc = zg361pp.146.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -104,7 +111,14 @@ zg361pp.147 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.147.t
-	desc = zg361pp.147.desc
+	desc = {
+		desc = zg361pp.147.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -202,7 +216,14 @@ zg361pp.148 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.148.t
-	desc = zg361pp.148.desc
+	desc = {
+		desc = zg361pp.148.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -273,7 +294,14 @@ zg361pp.149 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.149.t
-	desc = zg361pp.149.desc
+	desc = {
+		desc = zg361pp.149.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -371,7 +399,14 @@ zg361pp.150 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.150.t
-	desc = zg361pp.150.desc
+	desc = {
+		desc = zg361pp.150.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -469,7 +504,14 @@ zg361pp.151 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.151.t
-	desc = zg361pp.151.desc
+	desc = {
+		desc = zg361pp.151.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -540,7 +582,14 @@ zg361pp.152 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.152.t
-	desc = zg361pp.152.desc
+	desc = {
+		desc = zg361pp.152.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -638,7 +687,14 @@ zg361pp.153 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.153.t
-	desc = zg361pp.153.desc
+	desc = {
+		desc = zg361pp.153.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -736,7 +792,14 @@ zg361pp.154 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.154.t
-	desc = zg361pp.154.desc
+	desc = {
+		desc = zg361pp.154.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -807,7 +870,14 @@ zg361pp.155 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.155.t
-	desc = zg361pp.155.desc
+	desc = {
+		desc = zg361pp.155.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -905,7 +975,14 @@ zg361pp.156 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.156.t
-	desc = zg361pp.156.desc
+	desc = {
+		desc = zg361pp.156.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_t_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -997,7 +1074,7 @@ zg361pp.157 = {
 	}
 	option = {
 			name = zg361pp.157.a
-			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_u_candidate_eligible = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m157_manager_apply_effect = {
 					ROUTE = 1
@@ -1021,7 +1098,7 @@ zg361pp.157 = {
 		}
 	option = {
 			name = zg361pp.157.b
-			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_u_candidate_eligible = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m157_manager_apply_effect = {
 					ROUTE = 2
@@ -2241,7 +2318,10 @@ zg361pp.169 = {
 	}
 	option = {
 			name = zg361pp.169.a
-			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_prescreen_pass = 1
+	var:zg361_pp_m160_packet_candidate_consumed = this
+	var:zg361_pp_m160_promotion_slot_status = 2
+	has_variable = zg361_pp_v_source_packet_case } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m169_manager_apply_effect = {
 					ROUTE = 1
@@ -2265,7 +2345,10 @@ zg361pp.169 = {
 		}
 	option = {
 			name = zg361pp.169.b
-			trigger = { scope:zg361_pp_prompt_subject = { always = yes } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m160_prescreen_pass = 1
+	var:zg361_pp_m160_packet_candidate_consumed = this
+	var:zg361_pp_m160_promotion_slot_status = 2
+	has_variable = zg361_pp_v_source_packet_case } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m169_manager_apply_effect = {
 					ROUTE = 2
@@ -2442,7 +2525,11 @@ zg361pp.171 = {
 	option = {
 			name = zg361pp.171.a
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m170_selection_replay_ok = 1
-	var:zg361_pp_m170_panel_unique = 1 } }
+	var:zg361_pp_m170_panel_unique = 1
+	has_variable = zg361_pp_v_panel_pool_4
+	NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_1 }
+	NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_2 }
+	NOT = { var:zg361_pp_v_panel_pool_4 = var:zg361_pp_m170_panelist_3 } } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m171_manager_apply_effect = {
 					ROUTE = 1
@@ -3144,7 +3231,7 @@ zg361pp.179 = {
 	option = {
 			name = zg361pp.179.a
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
-	has_variable = zg361_pp_m170_panelist_1 } }
+	has_variable = zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m179_manager_apply_effect = {
 					ROUTE = 1
@@ -3169,7 +3256,7 @@ zg361pp.179 = {
 	option = {
 			name = zg361pp.179.b
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
-	has_variable = zg361_pp_m170_panelist_1 } }
+	has_variable = zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m179_manager_apply_effect = {
 					ROUTE = 2
@@ -3245,7 +3332,7 @@ zg361pp.180 = {
 			name = zg361pp.180.a
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m179_gap_id
-	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m170_panelist_1 } }
+	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m180_manager_apply_effect = {
 					ROUTE = 1
@@ -3262,7 +3349,7 @@ zg361pp.180 = {
 			name = zg361pp.180.b
 			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m178_final_decision = 0
 	has_variable = zg361_pp_m179_gap_id
-	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m170_panelist_1 } }
+	var:zg361_pp_m179_feedback_owner = var:zg361_pp_m171_active_panel_1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m180_manager_apply_effect = {
 					ROUTE = 2
@@ -3297,7 +3384,14 @@ zg361pp.181 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.181.t
-	desc = zg361pp.181.desc
+	desc = {
+		desc = zg361pp.181.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3395,7 +3489,14 @@ zg361pp.182 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.182.t
-	desc = zg361pp.182.desc
+	desc = {
+		desc = zg361pp.182.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3416,7 +3517,10 @@ zg361pp.182 = {
 	}
 	option = {
 			name = zg361pp.182.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category } }
+			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category
+	has_variable = zg361_pp_m181_evidence_id
+	var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
+	var:zg361_pp_w_pip_gate_candidate = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m182_manager_apply_effect = {
 					ROUTE = 1
@@ -3440,7 +3544,10 @@ zg361pp.182 = {
 		}
 	option = {
 			name = zg361pp.182.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category } }
+			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m181_primary_category
+	has_variable = zg361_pp_m181_evidence_id
+	var:zg361_pp_m181_result_grade_snapshot = var:zg361_pp_w_frozen_grade
+	var:zg361_pp_w_frozen_grade = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m182_manager_apply_effect = {
 					ROUTE = 2
@@ -3493,7 +3600,14 @@ zg361pp.183 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.183.t
-	desc = zg361pp.183.desc
+	desc = {
+		desc = zg361pp.183.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3514,7 +3628,8 @@ zg361pp.183 = {
 	}
 	option = {
 			name = zg361pp.183.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m182_evidence_threshold_met } }
+			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m182_gate_status
+	var:zg361_pp_m182_gate_status = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m183_manager_apply_effect = {
 					ROUTE = 1
@@ -3529,7 +3644,8 @@ zg361pp.183 = {
 		}
 	option = {
 			name = zg361pp.183.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m182_evidence_threshold_met } }
+			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m182_gate_status
+	var:zg361_pp_m182_gate_status = 2 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m183_manager_apply_effect = {
 					ROUTE = 2
@@ -3564,7 +3680,14 @@ zg361pp.184 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.184.t
-	desc = zg361pp.184.desc
+	desc = {
+		desc = zg361pp.184.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3585,7 +3708,16 @@ zg361pp.184 = {
 	}
 	option = {
 			name = zg361pp.184.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m183_goals_frozen } }
+			trigger = { scope:zg361_pp_prompt_subject = { OR = {
+		var:zg361_pp_m182_gate_status = 1
+		var:zg361_pp_m182_gate_status = 2
+	}
+	var:zg361_pp_m183_goals_frozen = 1
+	var:zg361_pp_m183_manager_signed = 1
+	OR = {
+		var:zg361_pp_m183_subject_signed = 1
+		var:zg361_pp_m183_independent_review_pass = 1
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m184_manager_apply_effect = {
 					ROUTE = 1
@@ -3609,7 +3741,16 @@ zg361pp.184 = {
 		}
 	option = {
 			name = zg361pp.184.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m183_goals_frozen } }
+			trigger = { scope:zg361_pp_prompt_subject = { OR = {
+		var:zg361_pp_m182_gate_status = 1
+		var:zg361_pp_m182_gate_status = 2
+	}
+	var:zg361_pp_m183_goals_frozen = 1
+	var:zg361_pp_m183_manager_signed = 1
+	OR = {
+		var:zg361_pp_m183_subject_signed = 1
+		var:zg361_pp_m183_independent_review_pass = 1
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m184_manager_apply_effect = {
 					ROUTE = 2
@@ -3662,7 +3803,14 @@ zg361pp.185 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.185.t
-	desc = zg361pp.185.desc
+	desc = {
+		desc = zg361pp.185.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3683,7 +3831,7 @@ zg361pp.185 = {
 	}
 	option = {
 			name = zg361pp.185.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m184_capacity_reserved } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_active_case = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m185_manager_apply_effect = {
 					ROUTE = 1
@@ -3698,7 +3846,7 @@ zg361pp.185 = {
 		}
 	option = {
 			name = zg361pp.185.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m184_capacity_reserved } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m184_active_case = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m185_manager_apply_effect = {
 					ROUTE = 2
@@ -3733,7 +3881,14 @@ zg361pp.186 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.186.t
-	desc = zg361pp.186.desc
+	desc = {
+		desc = zg361pp.186.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3754,7 +3909,11 @@ zg361pp.186 = {
 	}
 	option = {
 			name = zg361pp.186.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m185_midpoint_receipt } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
+	OR = {
+		var:zg361_pp_m185_midpoint_status = 1
+		var:zg361_pp_m185_midpoint_status = 2
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m186_manager_apply_effect = {
 					ROUTE = 1
@@ -3778,7 +3937,11 @@ zg361pp.186 = {
 		}
 	option = {
 			name = zg361pp.186.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m185_midpoint_receipt } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
+	OR = {
+		var:zg361_pp_m185_midpoint_status = 1
+		var:zg361_pp_m185_midpoint_status = 2
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m186_manager_apply_effect = {
 					ROUTE = 2
@@ -3831,7 +3994,14 @@ zg361pp.187 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.187.t
-	desc = zg361pp.187.desc
+	desc = {
+		desc = zg361pp.187.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3852,7 +4022,8 @@ zg361pp.187 = {
 	}
 	option = {
 			name = zg361pp.187.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m186_baseline_workload } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
+	has_variable = zg361_pp_m186_baseline_workload } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m187_manager_apply_effect = {
 					ROUTE = 1
@@ -3867,7 +4038,8 @@ zg361pp.187 = {
 		}
 	option = {
 			name = zg361pp.187.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m186_baseline_workload } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m185_audit_1_consumed = 1
+	has_variable = zg361_pp_m186_baseline_workload } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m187_manager_apply_effect = {
 					ROUTE = 2
@@ -3902,7 +4074,14 @@ zg361pp.188 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.188.t
-	desc = zg361pp.188.desc
+	desc = {
+		desc = zg361pp.188.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -3923,7 +4102,7 @@ zg361pp.188 = {
 	}
 	option = {
 			name = zg361pp.188.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m187_key_milestones_met } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m187_graduation_status = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m188_manager_apply_effect = {
 					ROUTE = 1
@@ -3934,20 +4113,12 @@ zg361pp.188 = {
 					TICKET_STATE = scope:zg361_pp_prompt_state
 				}
 			}
-			if = {
-				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m188_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 189 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.189 days = 1 } } }
-			}
+
 		}
 	option = {
 			name = zg361pp.188.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m187_key_milestones_met } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m187_graduation_status = 1
+	var:zg361_pp_m187_graduation_status = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m188_manager_apply_effect = {
 					ROUTE = 2
@@ -3958,16 +4129,7 @@ zg361pp.188 = {
 					TICKET_STATE = scope:zg361_pp_prompt_state
 				}
 			}
-			if = {
-				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m188_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 189 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.189 days = 1 } } }
-			}
+
 		}
 	option = {
 			name = zg361pp.188.c
@@ -3982,16 +4144,7 @@ zg361pp.188 = {
 					TICKET_STATE = scope:zg361_pp_prompt_state
 				}
 			}
-			if = {
-				limit = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m188_consumed = 1 } }
-				scope:zg361_pp_prompt_subject = { save_scope_as = zg361_pp_prompt_subject
-	var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
-	save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
-	save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
-	save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 189 }
-	var:zg361_case_w_owner = { trigger_event = { id = zg361pp.189 days = 1 } } }
-			}
+
 		}
 }
 
@@ -4000,7 +4153,14 @@ zg361pp.189 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.189.t
-	desc = zg361pp.189.desc
+	desc = {
+		desc = zg361pp.189.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -4021,7 +4181,26 @@ zg361pp.189 = {
 	}
 	option = {
 			name = zg361pp.189.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m188_observation_days } }
+			trigger = { scope:zg361_pp_prompt_subject = { OR = {
+		AND = {
+			var:zg361_pp_m187_route = 2
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_pp_m188_skipped_first_failure = 1
+		}
+		AND = {
+			var:zg361_pp_m188_audit_1_consumed = 1
+			var:zg361_pp_m188_observation_closed = 1
+			var:zg361_pp_m188_relapse_status = 1
+		}
+	}
+	OR = {
+		AND = {
+			var:zg361_pp_m187_route = 2
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_pp_m188_skipped_first_failure = 1
+		}
+		var:zg361_pp_m188_same_category_relapse = 1
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m189_manager_apply_effect = {
 					ROUTE = 1
@@ -4036,7 +4215,19 @@ zg361pp.189 = {
 		}
 	option = {
 			name = zg361pp.189.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m188_observation_days } }
+			trigger = { scope:zg361_pp_prompt_subject = { OR = {
+		AND = {
+			var:zg361_pp_m187_route = 2
+			var:zg361_pp_m187_graduation_status = 2
+			var:zg361_pp_m188_skipped_first_failure = 1
+		}
+		AND = {
+			var:zg361_pp_m188_audit_1_consumed = 1
+			var:zg361_pp_m188_observation_closed = 1
+			var:zg361_pp_m188_relapse_status = 1
+		}
+	}
+	var:zg361_pp_w_frozen_grade = 1 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m189_manager_apply_effect = {
 					ROUTE = 2
@@ -4071,7 +4262,14 @@ zg361pp.190 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.190.t
-	desc = zg361pp.190.desc
+	desc = {
+		desc = zg361pp.190.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -4092,7 +4290,20 @@ zg361pp.190 = {
 	}
 	option = {
 			name = zg361pp.190.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m189_exclusive_terminal } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 2
+	has_variable = zg361_pp_m189_receiving_manager
+	var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
+	has_variable = zg361_pp_w_transfer_vacancy_id
+	var:zg361_pp_w_transfer_vacancy_active = 1
+	var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+	has_variable = zg361_pp_m183_goal_bundle_id
+	has_variable = zg361_pp_m184_support_status
+	has_variable = zg361_pp_m187_graduation_status
+	has_variable = zg361_pp_m183_subject_statement_code
+	var:zg361_pp_m189_receiving_manager = {
+		zg361_is_celestial_liege_trigger = yes
+		NOT = { this = root }
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m190_manager_apply_effect = {
 					ROUTE = 1
@@ -4116,7 +4327,20 @@ zg361pp.190 = {
 		}
 	option = {
 			name = zg361pp.190.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m189_exclusive_terminal } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 2
+	has_variable = zg361_pp_m189_receiving_manager
+	var:zg361_pp_m189_receiving_manager = var:zg361_pp_w_receiving_manager
+	has_variable = zg361_pp_w_transfer_vacancy_id
+	var:zg361_pp_w_transfer_vacancy_active = 1
+	var:zg361_pp_w_transfer_vacancy_receiver = var:zg361_pp_m189_receiving_manager
+	has_variable = zg361_pp_m183_goal_bundle_id
+	has_variable = zg361_pp_m184_support_status
+	has_variable = zg361_pp_m187_graduation_status
+	has_variable = zg361_pp_m183_subject_statement_code
+	var:zg361_pp_m189_receiving_manager = {
+		zg361_is_celestial_liege_trigger = yes
+		NOT = { this = root }
+	} } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m190_manager_apply_effect = {
 					ROUTE = 2
@@ -4169,7 +4393,14 @@ zg361pp.191 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.191.t
-	desc = zg361pp.191.desc
+	desc = {
+		desc = zg361pp.191.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 3 } } desc = zg361pp.grade.375 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 2 } } desc = zg361pp.grade.350 }
+			triggered_desc = { trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_w_frozen_grade = 1 } } desc = zg361pp.grade.325 }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
@@ -4190,7 +4421,7 @@ zg361pp.191 = {
 	}
 	option = {
 			name = zg361pp.191.a
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m189_exclusive_terminal } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 3 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m191_manager_apply_effect = {
 					ROUTE = 1
@@ -4205,7 +4436,7 @@ zg361pp.191 = {
 		}
 	option = {
 			name = zg361pp.191.b
-			trigger = { scope:zg361_pp_prompt_subject = { has_variable = zg361_pp_m189_exclusive_terminal } }
+			trigger = { scope:zg361_pp_prompt_subject = { var:zg361_pp_m189_terminal_code = 3 } }
 			scope:zg361_pp_prompt_subject = {
 				zg361_pp_m191_manager_apply_effect = {
 					ROUTE = 2
@@ -4259,6 +4490,19 @@ zg361pp.2146 = {
 			else_if = { limit = { var:zg361_pp_m146_route = 2 } set_variable = { name = zg361_pp_m146_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m146_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m146_route = 3 } }
+				set_variable = { name = zg361_pp_m146_audit_1_business_input value = var:zg361_pp_m146_frozen_grade }
+				set_variable = { name = zg361_pp_m146_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m146_visible_outcome_code value = var:zg361_pp_m146_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m146_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m146_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 146 audit ticket ignored" }
 	}
@@ -4288,6 +4532,19 @@ zg361pp.2147 = {
 			else_if = { limit = { var:zg361_pp_m147_route = 2 } set_variable = { name = zg361_pp_m147_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m147_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m147_route = 3 } }
+				set_variable = { name = zg361_pp_m147_audit_1_business_input value = var:zg361_pp_m147_quality_credit }
+				set_variable = { name = zg361_pp_m147_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m147_visible_outcome_code value = var:zg361_pp_m147_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m147_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m147_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 147 audit ticket ignored" }
 	}
@@ -4317,6 +4574,19 @@ zg361pp.2148 = {
 			else_if = { limit = { var:zg361_pp_m148_route = 2 } set_variable = { name = zg361_pp_m148_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m148_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m148_route = 3 } }
+				set_variable = { name = zg361_pp_m148_audit_1_business_input value = var:zg361_pp_m148_rating_snapshot }
+				set_variable = { name = zg361_pp_m148_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m148_visible_outcome_code value = var:zg361_pp_m148_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m148_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m148_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 148 audit ticket ignored" }
 	}
@@ -4345,7 +4615,29 @@ zg361pp.2149 = {
 			if = { limit = { var:zg361_pp_m149_route = 1 } set_variable = { name = zg361_pp_m149_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m149_route = 2 } set_variable = { name = zg361_pp_m149_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m149_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { var:zg361_pp_m149_route = 1 var:zg361_pp_m149_funded = 1 var:zg361_pp_m149_obligation_status = 1 }
+				set_variable = { name = zg361_pp_m149_obligation_status value = 2 }
+				set_variable = { name = zg361_pp_m149_fulfilled_receipt value = var:zg361_pp_m149_obligation_id }
+			}
+			else_if = {
+				limit = { var:zg361_pp_m149_route = 2 var:zg361_pp_m149_obligation_status = 1 }
+				set_variable = { name = zg361_pp_m149_obligation_status value = 3 }
+				set_variable = { name = zg361_pp_m149_breach_receipt value = var:zg361_pp_m149_obligation_id }
+			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m149_route = 3 } }
+				set_variable = { name = zg361_pp_m149_audit_1_business_input value = var:zg361_pp_m149_obligation_status }
+				set_variable = { name = zg361_pp_m149_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m149_visible_outcome_code value = var:zg361_pp_m149_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m149_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m149_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 149 audit ticket ignored" }
 	}
@@ -4374,7 +4666,29 @@ zg361pp.2150 = {
 			if = { limit = { var:zg361_pp_m150_route = 1 } set_variable = { name = zg361_pp_m150_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m150_route = 2 } set_variable = { name = zg361_pp_m150_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m150_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { var:zg361_pp_m150_route = 1 var:zg361_pp_m150_funded = 1 var:zg361_pp_m150_written = 1 var:zg361_pp_m150_obligation_status = 1 }
+				set_variable = { name = zg361_pp_m150_obligation_status value = 2 }
+				set_variable = { name = zg361_pp_m150_fulfilled_receipt value = var:zg361_pp_m150_obligation_id }
+			}
+			else_if = {
+				limit = { var:zg361_pp_m150_route = 2 var:zg361_pp_m150_obligation_status = 1 }
+				set_variable = { name = zg361_pp_m150_obligation_status value = 3 }
+				set_variable = { name = zg361_pp_m150_breach_receipt value = var:zg361_pp_m150_obligation_id }
+			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m150_route = 3 } }
+				set_variable = { name = zg361_pp_m150_audit_1_business_input value = var:zg361_pp_m150_obligation_status }
+				set_variable = { name = zg361_pp_m150_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m150_visible_outcome_code value = var:zg361_pp_m150_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m150_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m150_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 150 audit ticket ignored" }
 	}
@@ -4403,7 +4717,24 @@ zg361pp.2151 = {
 			if = { limit = { var:zg361_pp_m151_route = 1 } set_variable = { name = zg361_pp_m151_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m151_route = 2 } set_variable = { name = zg361_pp_m151_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m151_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { NOT = { var:zg361_pp_m151_route = 3 } }
+				set_variable = { name = zg361_pp_m151_delivery_audit_closed value = 1 }
+				if = { limit = { var:zg361_pp_m151_delivered = 1 } set_variable = { name = zg361_pp_m151_delivery_receipt_valid value = 1 } }
+			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m151_route = 3 } }
+				set_variable = { name = zg361_pp_m151_audit_1_business_input value = var:zg361_pp_m151_grade_at_delivery }
+				set_variable = { name = zg361_pp_m151_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m151_visible_outcome_code value = var:zg361_pp_m151_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m151_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m151_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 151 audit ticket ignored" }
 	}
@@ -4432,7 +4763,27 @@ zg361pp.3151 = {
 			if = { limit = { var:zg361_pp_m151_route = 1 } set_variable = { name = zg361_pp_m151_audit_2_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m151_route = 2 } set_variable = { name = zg361_pp_m151_audit_2_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m151_audit_2_outcome value = 3 } }
-
+			set_variable = { name = zg361_pp_m151_appeal_clock_closed value = 1 }
+			if = {
+				limit = { var:zg361_pp_m151_appeal_filed = 1 }
+				set_variable = { name = zg361_pp_m151_appeal_result_grade value = var:zg361_result_grade }
+				set_variable = { name = zg361_pp_m151_non_aggravation_ok value = 0 }
+				if = { limit = { var:zg361_result_grade >= var:zg361_pp_m151_appeal_snapshot_grade } set_variable = { name = zg361_pp_m151_non_aggravation_ok value = 1 } }
+			}
+			else = { set_variable = { name = zg361_pp_m151_appeal_closed_without_filing value = 1 } }
+			if = {
+				limit = { NOT = { var:zg361_pp_m151_route = 3 } }
+				set_variable = { name = zg361_pp_m151_audit_2_business_input value = var:zg361_pp_m151_grade_at_delivery }
+				set_variable = { name = zg361_pp_m151_audit_2_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m151_visible_outcome_code value = var:zg361_pp_m151_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m151_audit_2_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m151_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 151 audit ticket ignored" }
 	}
@@ -4462,6 +4813,19 @@ zg361pp.2152 = {
 			else_if = { limit = { var:zg361_pp_m152_route = 2 } set_variable = { name = zg361_pp_m152_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m152_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m152_route = 3 } }
+				set_variable = { name = zg361_pp_m152_audit_1_business_input value = var:zg361_pp_m152_total_score }
+				set_variable = { name = zg361_pp_m152_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m152_visible_outcome_code value = var:zg361_pp_m152_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m152_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m152_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 152 audit ticket ignored" }
 	}
@@ -4491,6 +4855,19 @@ zg361pp.2153 = {
 			else_if = { limit = { var:zg361_pp_m153_route = 2 } set_variable = { name = zg361_pp_m153_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m153_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m153_route = 3 } }
+				set_variable = { name = zg361_pp_m153_audit_1_business_input value = var:zg361_pp_m153_current_due_days }
+				set_variable = { name = zg361_pp_m153_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m153_visible_outcome_code value = var:zg361_pp_m153_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m153_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m153_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 153 audit ticket ignored" }
 	}
@@ -4520,6 +4897,19 @@ zg361pp.2154 = {
 			else_if = { limit = { var:zg361_pp_m154_route = 2 } set_variable = { name = zg361_pp_m154_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m154_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m154_route = 3 } }
+				set_variable = { name = zg361_pp_m154_audit_1_business_input value = var:zg361_pp_m154_evidence_index }
+				set_variable = { name = zg361_pp_m154_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m154_visible_outcome_code value = var:zg361_pp_m154_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m154_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m154_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 154 audit ticket ignored" }
 	}
@@ -4549,6 +4939,19 @@ zg361pp.2155 = {
 			else_if = { limit = { var:zg361_pp_m155_route = 2 } set_variable = { name = zg361_pp_m155_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m155_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m155_route = 3 } }
+				set_variable = { name = zg361_pp_m155_audit_1_business_input value = var:zg361_pp_m155_private_sensitive_fields }
+				set_variable = { name = zg361_pp_m155_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m155_visible_outcome_code value = var:zg361_pp_m155_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m155_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m155_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 155 audit ticket ignored" }
 	}
@@ -4578,6 +4981,19 @@ zg361pp.2156 = {
 			else_if = { limit = { var:zg361_pp_m156_route = 2 } set_variable = { name = zg361_pp_m156_audit_1_outcome value = 2 } var:zg361_case_t_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m156_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m156_route = 3 } }
+				set_variable = { name = zg361_pp_m156_audit_1_business_input value = var:zg361_pp_m156_completion_receipt }
+				set_variable = { name = zg361_pp_m156_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m156_visible_outcome_code value = var:zg361_pp_m156_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m156_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m156_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_t_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 156 audit ticket ignored" }
 	}
@@ -4607,6 +5023,19 @@ zg361pp.2157 = {
 			else_if = { limit = { var:zg361_pp_m157_route = 2 } set_variable = { name = zg361_pp_m157_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m157_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m157_route = 3 } }
+				set_variable = { name = zg361_pp_m157_audit_1_business_input value = var:zg361_pp_m157_packet_status }
+				set_variable = { name = zg361_pp_m157_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m157_visible_outcome_code value = var:zg361_pp_m157_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m157_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m157_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 157 audit ticket ignored" }
 	}
@@ -4636,6 +5065,19 @@ zg361pp.2158 = {
 			else_if = { limit = { var:zg361_pp_m158_route = 2 } set_variable = { name = zg361_pp_m158_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m158_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m158_route = 3 } }
+				set_variable = { name = zg361_pp_m158_audit_1_business_input value = var:zg361_pp_m158_quota_conserved }
+				set_variable = { name = zg361_pp_m158_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m158_visible_outcome_code value = var:zg361_pp_m158_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m158_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m158_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 158 audit ticket ignored" }
 	}
@@ -4664,11 +5106,27 @@ zg361pp.2159 = {
 			if = { limit = { var:zg361_pp_m159_route = 1 } set_variable = { name = zg361_pp_m159_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m159_route = 2 } set_variable = { name = zg361_pp_m159_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m159_audit_1_outcome value = 3 } }
-			var:zg361_case_u_owner = {
-				set_variable = { name = zg361_pp_u_shelving_last_audit_candidate value = root }
-				set_variable = { name = zg361_pp_u_shelving_last_audit_cycle value = var:zg361_review_serial }
-				set_variable = { name = zg361_pp_u_shelving_last_audit_active value = var:zg361_pp_u_shelving_active }
+			if = {
+				limit = { NOT = { var:zg361_pp_m159_route = 3 } }
+				var:zg361_case_u_owner = {
+					set_variable = { name = zg361_pp_u_shelving_last_audit_candidate value = root }
+					set_variable = { name = zg361_pp_u_shelving_last_audit_cycle value = var:zg361_review_serial }
+					set_variable = { name = zg361_pp_u_shelving_last_audit_active value = var:zg361_pp_u_shelving_active }
+				}
 			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m159_route = 3 } }
+				set_variable = { name = zg361_pp_m159_audit_1_business_input value = var:zg361_pp_m159_nomination_due_cycles }
+				set_variable = { name = zg361_pp_m159_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m159_visible_outcome_code value = var:zg361_pp_m159_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m159_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m159_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 159 audit ticket ignored" }
 	}
@@ -4698,6 +5156,19 @@ zg361pp.2160 = {
 			else_if = { limit = { var:zg361_pp_m160_route = 2 } set_variable = { name = zg361_pp_m160_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m160_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m160_route = 3 } }
+				set_variable = { name = zg361_pp_m160_audit_1_business_input value = var:zg361_pp_m160_prescreen_pass }
+				set_variable = { name = zg361_pp_m160_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m160_visible_outcome_code value = var:zg361_pp_m160_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m160_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m160_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 160 audit ticket ignored" }
 	}
@@ -4727,6 +5198,19 @@ zg361pp.2161 = {
 			else_if = { limit = { var:zg361_pp_m161_route = 2 } set_variable = { name = zg361_pp_m161_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m161_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m161_route = 3 } }
+				set_variable = { name = zg361_pp_m161_audit_1_business_input value = var:zg361_pp_m161_filler }
+				set_variable = { name = zg361_pp_m161_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m161_visible_outcome_code value = var:zg361_pp_m161_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m161_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m161_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 161 audit ticket ignored" }
 	}
@@ -4756,6 +5240,19 @@ zg361pp.2162 = {
 			else_if = { limit = { var:zg361_pp_m162_route = 2 } set_variable = { name = zg361_pp_m162_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m162_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m162_route = 3 } }
+				set_variable = { name = zg361_pp_m162_audit_1_business_input value = var:zg361_pp_m162_admission_vote_frozen }
+				set_variable = { name = zg361_pp_m162_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m162_visible_outcome_code value = var:zg361_pp_m162_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m162_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m162_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 162 audit ticket ignored" }
 	}
@@ -4785,6 +5282,19 @@ zg361pp.2163 = {
 			else_if = { limit = { var:zg361_pp_m163_route = 2 } set_variable = { name = zg361_pp_m163_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m163_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m163_route = 3 } }
+				set_variable = { name = zg361_pp_m163_audit_1_business_input value = var:zg361_pp_m163_window_cycles }
+				set_variable = { name = zg361_pp_m163_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m163_visible_outcome_code value = var:zg361_pp_m163_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m163_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m163_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 163 audit ticket ignored" }
 	}
@@ -4814,6 +5324,19 @@ zg361pp.2164 = {
 			else_if = { limit = { var:zg361_pp_m164_route = 2 } set_variable = { name = zg361_pp_m164_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m164_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m164_route = 3 } }
+				set_variable = { name = zg361_pp_m164_audit_1_business_input value = var:zg361_pp_m164_share_check }
+				set_variable = { name = zg361_pp_m164_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m164_visible_outcome_code value = var:zg361_pp_m164_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m164_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m164_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 164 audit ticket ignored" }
 	}
@@ -4843,6 +5366,19 @@ zg361pp.2165 = {
 			else_if = { limit = { var:zg361_pp_m165_route = 2 } set_variable = { name = zg361_pp_m165_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m165_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m165_route = 3 } }
+				set_variable = { name = zg361_pp_m165_audit_1_business_input value = var:zg361_pp_m165_trial_due_days }
+				set_variable = { name = zg361_pp_m165_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m165_visible_outcome_code value = var:zg361_pp_m165_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m165_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m165_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 165 audit ticket ignored" }
 	}
@@ -4872,6 +5408,19 @@ zg361pp.2166 = {
 			else_if = { limit = { var:zg361_pp_m166_route = 2 } set_variable = { name = zg361_pp_m166_audit_1_outcome value = 2 } var:zg361_case_u_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m166_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m166_route = 3 } }
+				set_variable = { name = zg361_pp_m166_audit_1_business_input value = var:zg361_pp_m166_packet_active_after }
+				set_variable = { name = zg361_pp_m166_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m166_visible_outcome_code value = var:zg361_pp_m166_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m166_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m166_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 166 audit ticket ignored" }
 	}
@@ -4909,6 +5458,19 @@ zg361pp.2167 = {
 				var:zg361_case_u_owner = { change_variable = { name = zg361_pp_sponsor_credit add = root.var:zg361_pp_m167_sponsor_credit_delta } }
 				set_variable = { name = zg361_pp_m167_observation_settled value = 1 }
 			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m167_route = 3 } }
+				set_variable = { name = zg361_pp_m167_audit_1_business_input value = var:zg361_pp_m167_observation_id }
+				set_variable = { name = zg361_pp_m167_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m167_visible_outcome_code value = var:zg361_pp_m167_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m167_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m167_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 167 audit ticket ignored" }
 	}
@@ -4953,6 +5515,19 @@ zg361pp.2168 = {
 				set_variable = { name = zg361_pp_m168_sample_pending value = 0 }
 				set_variable = { name = zg361_pp_m168_sample_settled value = 1 }
 			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m168_route = 3 } }
+				set_variable = { name = zg361_pp_m168_audit_1_business_input value = var:zg361_pp_m168_attempt_id }
+				set_variable = { name = zg361_pp_m168_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m168_visible_outcome_code value = var:zg361_pp_m168_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m168_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m168_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_u_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 168 audit ticket ignored" }
 	}
@@ -4982,6 +5557,19 @@ zg361pp.2169 = {
 			else_if = { limit = { var:zg361_pp_m169_route = 2 } set_variable = { name = zg361_pp_m169_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m169_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m169_route = 3 } }
+				set_variable = { name = zg361_pp_m169_audit_1_business_input value = var:zg361_pp_m169_weight_check }
+				set_variable = { name = zg361_pp_m169_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m169_visible_outcome_code value = var:zg361_pp_m169_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m169_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m169_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 169 audit ticket ignored" }
 	}
@@ -5011,6 +5599,19 @@ zg361pp.2170 = {
 			else_if = { limit = { var:zg361_pp_m170_route = 2 } set_variable = { name = zg361_pp_m170_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m170_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m170_route = 3 } }
+				set_variable = { name = zg361_pp_m170_audit_1_business_input value = var:zg361_pp_m170_selection_checksum }
+				set_variable = { name = zg361_pp_m170_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m170_visible_outcome_code value = var:zg361_pp_m170_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m170_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m170_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 170 audit ticket ignored" }
 	}
@@ -5040,6 +5641,19 @@ zg361pp.2171 = {
 			else_if = { limit = { var:zg361_pp_m171_route = 2 } set_variable = { name = zg361_pp_m171_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m171_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m171_route = 3 } }
+				set_variable = { name = zg361_pp_m171_audit_1_business_input value = var:zg361_pp_m171_active_panel_revision }
+				set_variable = { name = zg361_pp_m171_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m171_visible_outcome_code value = var:zg361_pp_m171_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m171_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m171_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 171 audit ticket ignored" }
 	}
@@ -5069,6 +5683,19 @@ zg361pp.2172 = {
 			else_if = { limit = { var:zg361_pp_m172_route = 2 } set_variable = { name = zg361_pp_m172_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m172_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m172_route = 3 } }
+				set_variable = { name = zg361_pp_m172_audit_1_business_input value = var:zg361_pp_m172_decision_rule_code }
+				set_variable = { name = zg361_pp_m172_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m172_visible_outcome_code value = var:zg361_pp_m172_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m172_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m172_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 172 audit ticket ignored" }
 	}
@@ -5098,6 +5725,19 @@ zg361pp.2173 = {
 			else_if = { limit = { var:zg361_pp_m173_route = 2 } set_variable = { name = zg361_pp_m173_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m173_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m173_route = 3 } }
+				set_variable = { name = zg361_pp_m173_audit_1_business_input value = var:zg361_pp_m173_blind_score }
+				set_variable = { name = zg361_pp_m173_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m173_visible_outcome_code value = var:zg361_pp_m173_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m173_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m173_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 173 audit ticket ignored" }
 	}
@@ -5127,6 +5767,19 @@ zg361pp.2174 = {
 			else_if = { limit = { var:zg361_pp_m174_route = 2 } set_variable = { name = zg361_pp_m174_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m174_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m174_route = 3 } }
+				set_variable = { name = zg361_pp_m174_audit_1_business_input value = var:zg361_pp_m174_time_check }
+				set_variable = { name = zg361_pp_m174_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m174_visible_outcome_code value = var:zg361_pp_m174_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m174_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m174_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 174 audit ticket ignored" }
 	}
@@ -5156,6 +5809,19 @@ zg361pp.2175 = {
 			else_if = { limit = { var:zg361_pp_m175_route = 2 } set_variable = { name = zg361_pp_m175_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m175_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m175_route = 3 } }
+				set_variable = { name = zg361_pp_m175_audit_1_business_input value = var:zg361_pp_m175_coaching_conserved }
+				set_variable = { name = zg361_pp_m175_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m175_visible_outcome_code value = var:zg361_pp_m175_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m175_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m175_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 175 audit ticket ignored" }
 	}
@@ -5185,6 +5851,19 @@ zg361pp.2176 = {
 			else_if = { limit = { var:zg361_pp_m176_route = 2 } set_variable = { name = zg361_pp_m176_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m176_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m176_route = 3 } }
+				set_variable = { name = zg361_pp_m176_audit_1_business_input value = var:zg361_pp_m176_share_check }
+				set_variable = { name = zg361_pp_m176_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m176_visible_outcome_code value = var:zg361_pp_m176_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m176_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m176_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 176 audit ticket ignored" }
 	}
@@ -5214,6 +5893,19 @@ zg361pp.2177 = {
 			else_if = { limit = { var:zg361_pp_m177_route = 2 } set_variable = { name = zg361_pp_m177_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m177_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m177_route = 3 } }
+				set_variable = { name = zg361_pp_m177_audit_1_business_input value = var:zg361_pp_m177_dimensions_separate }
+				set_variable = { name = zg361_pp_m177_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m177_visible_outcome_code value = var:zg361_pp_m177_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m177_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m177_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 177 audit ticket ignored" }
 	}
@@ -5243,6 +5935,19 @@ zg361pp.2178 = {
 			else_if = { limit = { var:zg361_pp_m178_route = 2 } set_variable = { name = zg361_pp_m178_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m178_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m178_route = 3 } }
+				set_variable = { name = zg361_pp_m178_audit_1_business_input value = var:zg361_pp_m178_final_decision }
+				set_variable = { name = zg361_pp_m178_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m178_visible_outcome_code value = var:zg361_pp_m178_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m178_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m178_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 178 audit ticket ignored" }
 	}
@@ -5272,6 +5977,19 @@ zg361pp.2179 = {
 			else_if = { limit = { var:zg361_pp_m179_route = 2 } set_variable = { name = zg361_pp_m179_audit_1_outcome value = 2 } var:zg361_case_v_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m179_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m179_route = 3 } }
+				set_variable = { name = zg361_pp_m179_audit_1_business_input value = var:zg361_pp_m179_gap_id }
+				set_variable = { name = zg361_pp_m179_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m179_visible_outcome_code value = var:zg361_pp_m179_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m179_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m179_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 179 audit ticket ignored" }
 	}
@@ -5306,6 +6024,19 @@ zg361pp.2180 = {
 				set_variable = { name = zg361_pp_m180_retry_unlock_reason value = 1 }
 				set_variable = { name = zg361_pp_m180_retry_settled_receipt value = var:zg361_pp_m180_prior_gap_id }
 			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m180_route = 3 } }
+				set_variable = { name = zg361_pp_m180_audit_1_business_input value = var:zg361_pp_m180_retry_count }
+				set_variable = { name = zg361_pp_m180_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m180_visible_outcome_code value = var:zg361_pp_m180_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m180_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m180_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 180 audit ticket ignored" }
 	}
@@ -5340,6 +6071,19 @@ zg361pp.3180 = {
 				set_variable = { name = zg361_pp_m180_retry_unlock_reason value = 2 }
 				set_variable = { name = zg361_pp_m180_retry_settled_receipt value = var:zg361_pp_m180_prior_gap_id }
 			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m180_route = 3 } }
+				set_variable = { name = zg361_pp_m180_audit_2_business_input value = var:zg361_pp_m180_retry_count }
+				set_variable = { name = zg361_pp_m180_audit_2_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m180_visible_outcome_code value = var:zg361_pp_m180_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m180_audit_2_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m180_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_v_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 180 audit ticket ignored" }
 	}
@@ -5369,6 +6113,19 @@ zg361pp.2181 = {
 			else_if = { limit = { var:zg361_pp_m181_route = 2 } set_variable = { name = zg361_pp_m181_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m181_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m181_route = 3 } }
+				set_variable = { name = zg361_pp_m181_audit_1_business_input value = var:zg361_pp_m181_evidence_id }
+				set_variable = { name = zg361_pp_m181_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m181_visible_outcome_code value = var:zg361_pp_m181_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m181_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m181_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 181 audit ticket ignored" }
 	}
@@ -5398,6 +6155,19 @@ zg361pp.2182 = {
 			else_if = { limit = { var:zg361_pp_m182_route = 2 } set_variable = { name = zg361_pp_m182_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m182_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m182_route = 3 } }
+				set_variable = { name = zg361_pp_m182_audit_1_business_input value = var:zg361_pp_m182_gate_status }
+				set_variable = { name = zg361_pp_m182_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m182_visible_outcome_code value = var:zg361_pp_m182_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m182_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m182_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 182 audit ticket ignored" }
 	}
@@ -5427,6 +6197,19 @@ zg361pp.2183 = {
 			else_if = { limit = { var:zg361_pp_m183_route = 2 } set_variable = { name = zg361_pp_m183_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m183_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m183_route = 3 } }
+				set_variable = { name = zg361_pp_m183_audit_1_business_input value = var:zg361_pp_m183_acknowledgement_status }
+				set_variable = { name = zg361_pp_m183_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m183_visible_outcome_code value = var:zg361_pp_m183_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m183_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m183_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 183 audit ticket ignored" }
 	}
@@ -5456,6 +6239,19 @@ zg361pp.2184 = {
 			else_if = { limit = { var:zg361_pp_m184_route = 2 } set_variable = { name = zg361_pp_m184_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m184_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m184_route = 3 } }
+				set_variable = { name = zg361_pp_m184_audit_1_business_input value = var:zg361_pp_m184_active_case }
+				set_variable = { name = zg361_pp_m184_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m184_visible_outcome_code value = var:zg361_pp_m184_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m184_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m184_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 184 audit ticket ignored" }
 	}
@@ -5484,7 +6280,36 @@ zg361pp.2185 = {
 			if = { limit = { var:zg361_pp_m185_route = 1 } set_variable = { name = zg361_pp_m185_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m185_route = 2 } set_variable = { name = zg361_pp_m185_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m185_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { NOT = { var:zg361_pp_m185_route = 3 } }
+				set_variable = { name = zg361_pp_m185_midpoint_pending value = 0 }
+				set_variable = { name = zg361_pp_m185_midpoint_completed value = 1 }
+				if = {
+					limit = { var:zg361_pp_m185_route = 1 }
+					set_variable = { name = zg361_pp_m185_midpoint_status value = 1 }
+					set_variable = { name = zg361_pp_m185_progress_snapshot value = 1 }
+					set_variable = { name = zg361_pp_m185_resource_delivery_valid value = 1 }
+				}
+				else_if = {
+					limit = { var:zg361_pp_m185_route = 2 }
+					set_variable = { name = zg361_pp_m185_midpoint_status value = 2 }
+					set_variable = { name = zg361_pp_m185_late_correction_invalid value = 1 }
+				}
+			}
+			zg361_pp_w_try_advance_02_effect = yes
+			if = {
+				limit = { NOT = { var:zg361_pp_m185_route = 3 } }
+				set_variable = { name = zg361_pp_m185_audit_1_business_input value = var:zg361_pp_m185_midpoint_status }
+				set_variable = { name = zg361_pp_m185_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m185_visible_outcome_code value = var:zg361_pp_m185_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m185_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m185_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 185 audit ticket ignored" }
 	}
@@ -5514,6 +6339,19 @@ zg361pp.2186 = {
 			else_if = { limit = { var:zg361_pp_m186_route = 2 } set_variable = { name = zg361_pp_m186_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m186_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m186_route = 3 } }
+				set_variable = { name = zg361_pp_m186_audit_1_business_input value = var:zg361_pp_m186_current_workload }
+				set_variable = { name = zg361_pp_m186_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m186_visible_outcome_code value = var:zg361_pp_m186_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m186_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m186_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 186 audit ticket ignored" }
 	}
@@ -5542,7 +6380,77 @@ zg361pp.2187 = {
 			if = { limit = { var:zg361_pp_m187_route = 1 } set_variable = { name = zg361_pp_m187_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m187_route = 2 } set_variable = { name = zg361_pp_m187_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m187_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { NOT = { var:zg361_pp_m187_route = 3 } }
+				set_variable = { name = zg361_pp_m187_evaluation_pending value = 0 }
+				if = {
+					limit = { var:zg361_pp_m187_route = 1 }
+					set_variable = { name = zg361_pp_m187_key_milestones_met value = 1 }
+					set_variable = { name = zg361_pp_m187_stability_days_observed value = 90 }
+					set_variable = { name = zg361_pp_m187_independent_review_pass value = 1 }
+					set_variable = { name = zg361_pp_m187_graduation_status value = 1 }
+					if = {
+						limit = {
+							var:zg361_pp_w_capacity_released = 0
+							var:zg361_pp_m184_pip_capacity_status = 1
+						}
+						zg361_case_kernel_refund_transaction_effect = {
+							OWNER_VAR = zg361_case_w_owner
+							SUBJECT_VAR = zg361_case_w_subject
+							CYCLE_VAR = zg361_case_w_cycle_serial
+							CASE_VAR = zg361_case_w_case_serial
+							STATE_VAR = zg361_case_w_state
+							ACTIVE_VAR = zg361_case_w_active
+							REVISION_VAR = zg361_case_w_revision
+							AVAILABLE_VAR = zg361_pp_w_pip_capacity_available
+							RESERVED_VAR = zg361_pp_w_pip_capacity_reserved
+							SETTLED_VAR = zg361_pp_w_pip_capacity_settled
+							RECEIPT_AMOUNT_VAR = zg361_pp_m184_pip_capacity_amount
+							RECEIPT_STATUS_VAR = zg361_pp_m184_pip_capacity_status
+							TICKET_OWNER = var:zg361_case_w_owner
+							TICKET_SUBJECT = this
+							TICKET_CYCLE = var:zg361_case_w_cycle_serial
+							TICKET_CASE = var:zg361_case_w_case_serial
+							TICKET_STATE = 3
+						}
+						if = {
+							limit = { var:zg361_case_kernel_applied = 1 }
+							set_variable = { name = zg361_pp_w_capacity_released value = 1 }
+							set_variable = { name = zg361_pp_w_capacity_release_reason value = 1 }
+							set_variable = { name = zg361_pp_m184_capacity_reserved value = 0 }
+							set_variable = { name = zg361_pp_m184_active_case value = 0 }
+							set_variable = { name = zg361_pp_m184_release_once value = 0 }
+						}
+					}
+					else_if = {
+						limit = { var:zg361_pp_w_capacity_released = 0 NOT = { var:zg361_pp_m184_pip_capacity_status = 1 } }
+						# Political overbooking never reserved capacity, so terminal closure records
+						# a no-release receipt rather than manufacturing one.
+						set_variable = { name = zg361_pp_w_capacity_released value = 1 }
+						set_variable = { name = zg361_pp_w_capacity_release_reason value = 1 }
+						set_variable = { name = zg361_pp_m184_active_case value = 0 }
+					}
+				}
+				else_if = {
+					limit = { var:zg361_pp_m187_route = 2 }
+					set_variable = { name = zg361_pp_m187_graduation_status value = 2 }
+					set_variable = { name = zg361_pp_m187_appeal_weight value = 1 }
+				}
+			}
+			zg361_pp_w_try_advance_03_effect = yes
+			if = {
+				limit = { NOT = { var:zg361_pp_m187_route = 3 } }
+				set_variable = { name = zg361_pp_m187_audit_1_business_input value = var:zg361_pp_m187_graduation_status }
+				set_variable = { name = zg361_pp_m187_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m187_visible_outcome_code value = var:zg361_pp_m187_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m187_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m187_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 187 audit ticket ignored" }
 	}
@@ -5571,7 +6479,91 @@ zg361pp.2188 = {
 			if = { limit = { var:zg361_pp_m188_route = 1 } set_variable = { name = zg361_pp_m188_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m188_route = 2 } set_variable = { name = zg361_pp_m188_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m188_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { NOT = { var:zg361_pp_m188_route = 3 } }
+				set_variable = { name = zg361_pp_m188_observation_pending value = 0 }
+				set_variable = { name = zg361_pp_m188_observation_closed value = 1 }
+				set_variable = { name = zg361_pp_m188_same_category_relapse value = 0 }
+				set_variable = { name = zg361_pp_m188_relapse_status value = 2 }
+				if = {
+					limit = {
+						has_variable = zg361_result_case_owner
+						has_variable = zg361_result_cycle_serial
+						has_variable = zg361_result_case_serial
+						has_variable = zg361_result_case_state
+						has_variable = zg361_result_grade
+						has_variable = zg361_result_grade_reason
+						var:zg361_result_case_owner = var:zg361_case_w_owner
+						var:zg361_result_cycle_serial = var:zg361_pp_m188_observation_due_cycle
+						var:zg361_result_case_state >= 3
+						var:zg361_result_grade = 1
+					}
+					set_variable = { name = zg361_pp_m188_observed_result_owner value = var:zg361_result_case_owner }
+					set_variable = { name = zg361_pp_m188_observed_result_subject value = this }
+					set_variable = { name = zg361_pp_m188_observed_result_cycle value = var:zg361_result_cycle_serial }
+					set_variable = { name = zg361_pp_m188_observed_result_case value = var:zg361_result_case_serial }
+					set_variable = { name = zg361_pp_m188_observed_result_state value = var:zg361_result_case_state }
+					set_variable = { name = zg361_pp_m188_observed_result_grade value = var:zg361_result_grade }
+					set_variable = { name = zg361_pp_m188_observed_result_reason value = var:zg361_result_grade_reason }
+					set_variable = { name = zg361_pp_m188_observed_category value = 1 }
+					if = { limit = { var:zg361_result_grade_reason = 5 } set_variable = { name = zg361_pp_m188_observed_category value = 3 } }
+					if = {
+						limit = {
+							OR = {
+								var:zg361_pp_m188_route = 2
+								AND = { var:zg361_pp_m188_route = 1 var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot }
+							}
+						}
+						if = { limit = { var:zg361_pp_m188_observed_category = var:zg361_pp_m188_category_snapshot } set_variable = { name = zg361_pp_m188_same_category_relapse value = 1 } }
+						set_variable = { name = zg361_pp_m188_relapse_status value = 1 }
+					}
+				}
+			}
+			if = {
+				limit = { var:zg361_pp_m188_relapse_status = 2 }
+				zg361_pp_m189_skip_no_relapse_effect = yes
+			}
+			else_if = {
+				limit = { var:zg361_case_w_owner = { is_ai = yes zg361_is_celestial_liege_trigger = yes } }
+				set_variable = { name = zg361_pp_ai_route value = 3 }
+				if = { limit = { NOT = { var:zg361_pp_m188_route = 3 } } set_variable = { name = zg361_pp_ai_route value = 1 } }
+				if = { limit = { NOT = { var:zg361_pp_m188_route = 3 } var:zg361_case_w_owner = { has_trait = arbitrary } } set_variable = { name = zg361_pp_ai_route value = 2 } }
+				zg361_pp_m189_core_effect = {
+					ROUTE = var:zg361_pp_ai_route
+					TICKET_OWNER = var:zg361_case_w_owner
+					TICKET_SUBJECT = this
+					TICKET_CYCLE = var:zg361_case_w_cycle_serial
+					TICKET_CASE = var:zg361_case_w_case_serial
+					TICKET_STATE = 4
+				}
+			}
+			else_if = {
+				limit = { var:zg361_case_w_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
+				save_scope_as = zg361_pp_prompt_subject
+				var:zg361_case_w_owner = { save_scope_as = zg361_pp_prompt_owner }
+				save_scope_value_as = { name = zg361_pp_prompt_cycle value = var:zg361_case_w_cycle_serial }
+				save_scope_value_as = { name = zg361_pp_prompt_case value = var:zg361_case_w_case_serial }
+				save_scope_value_as = { name = zg361_pp_prompt_state value = 4 }
+				save_scope_value_as = { name = zg361_pp_prompt_mechanism value = 189 }
+				var:zg361_case_w_owner = { trigger_event = { id = zg361pp.189 days = 1 } }
+			}
+			# The stage timeout may already have consumed #189 as route C while
+			# this delayed #188 audit was pending.  Recheck the barrier after the
+			# audit closes so that exact fallback cannot strand W in state four.
+			zg361_pp_w_try_advance_04_effect = yes
+			if = {
+				limit = { NOT = { var:zg361_pp_m188_route = 3 } }
+				set_variable = { name = zg361_pp_m188_audit_1_business_input value = var:zg361_pp_m188_relapse_status }
+				set_variable = { name = zg361_pp_m188_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m188_visible_outcome_code value = var:zg361_pp_m188_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m188_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m188_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 188 audit ticket ignored" }
 	}
@@ -5601,6 +6593,19 @@ zg361pp.2189 = {
 			else_if = { limit = { var:zg361_pp_m189_route = 2 } set_variable = { name = zg361_pp_m189_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m189_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m189_route = 3 } }
+				set_variable = { name = zg361_pp_m189_audit_1_business_input value = var:zg361_pp_m189_terminal_code }
+				set_variable = { name = zg361_pp_m189_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m189_visible_outcome_code value = var:zg361_pp_m189_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m189_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m189_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 189 audit ticket ignored" }
 	}
@@ -5629,7 +6634,40 @@ zg361pp.2190 = {
 			if = { limit = { var:zg361_pp_m190_route = 1 } set_variable = { name = zg361_pp_m190_audit_1_outcome value = 1 } }
 			else_if = { limit = { var:zg361_pp_m190_route = 2 } set_variable = { name = zg361_pp_m190_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m190_audit_1_outcome value = 3 } }
-
+			if = {
+				limit = { NOT = { var:zg361_pp_m190_route = 3 } }
+				set_variable = { name = zg361_pp_m190_audit_delivery_acl_pass value = 0 }
+				if = {
+					limit = {
+						var:zg361_pp_m190_receiving_manager = var:zg361_pp_m190_acl_receiver
+						var:zg361_pp_m190_receiving_manager = {
+							var:zg361_pp_received_transfer_disclosure_bundle = root.var:zg361_pp_m190_disclosure_bundle_id
+							var:zg361_pp_received_transfer_disclosure_subject = root
+							var:zg361_pp_received_transfer_disclosure_cycle = root.var:zg361_case_w_cycle_serial
+							var:zg361_pp_received_transfer_disclosure_case = root.var:zg361_case_w_case_serial
+							var:zg361_pp_received_transfer_disclosure_vacancy = root.var:zg361_pp_m190_vacancy_id_snapshot
+							var:zg361_pp_received_transfer_goal = root.var:zg361_pp_m190_goal_snapshot
+							var:zg361_pp_received_transfer_support = root.var:zg361_pp_m190_support_snapshot
+							var:zg361_pp_received_transfer_completion = root.var:zg361_pp_m190_completion_snapshot
+							var:zg361_pp_received_transfer_subject_statement = root.var:zg361_pp_m190_subject_statement_snapshot
+						}
+					}
+					set_variable = { name = zg361_pp_m190_audit_delivery_acl_pass value = 1 }
+				}
+			}
+			if = {
+				limit = { NOT = { var:zg361_pp_m190_route = 3 } }
+				set_variable = { name = zg361_pp_m190_audit_1_business_input value = var:zg361_pp_m190_audit_delivery_acl_pass }
+				set_variable = { name = zg361_pp_m190_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m190_visible_outcome_code value = var:zg361_pp_m190_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m190_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m190_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 190 audit ticket ignored" }
 	}
@@ -5659,6 +6697,19 @@ zg361pp.2191 = {
 			else_if = { limit = { var:zg361_pp_m191_route = 2 } set_variable = { name = zg361_pp_m191_audit_1_outcome value = 2 } var:zg361_case_w_owner = { change_variable = { name = zg361_pp_management_debt add = 1 } } }
 			else = { set_variable = { name = zg361_pp_m191_audit_1_outcome value = 3 } }
 
+			if = {
+				limit = { NOT = { var:zg361_pp_m191_route = 3 } }
+				set_variable = { name = zg361_pp_m191_audit_1_business_input value = var:zg361_pp_m191_net_cost }
+				set_variable = { name = zg361_pp_m191_audit_1_business_settled value = 1 }
+				set_variable = { name = zg361_pp_m191_visible_outcome_code value = var:zg361_pp_m191_route }
+			}
+			else = {
+				# Route C closes only its policy-debt timer; it cannot manufacture
+				# the typed business field named above.
+				set_variable = { name = zg361_pp_m191_audit_1_policy_debt_settled value = 1 }
+				set_variable = { name = zg361_pp_m191_visible_outcome_code value = 3 }
+			}
+			change_variable = { name = zg361_pp_w_visible_receipt_revision add = 1 }
 		}
 		else = { debug_log = "ZG361PP: stale 191 audit ticket ignored" }
 	}
@@ -5772,11 +6823,20 @@ zg361pp.9001 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.9001.t
-	desc = zg361pp.9001.desc
+	desc = {
+		desc = zg361pp.9001.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_t_outcome = 1 } } desc = zg361pp.outcome.evidence }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_t_outcome = -1 } } desc = zg361pp.outcome.political }
+			desc = zg361pp.outcome.mixed
+		}
+
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
 		var:zg361_pp_portfolio_queue_active = 1
+		exists = scope:zg361_pp_completion_subject
 	}
 	option = {
 		name = zg361pp.9001.a
@@ -5892,11 +6952,20 @@ zg361pp.9002 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.9002.t
-	desc = zg361pp.9002.desc
+	desc = {
+		desc = zg361pp.9002.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_u_outcome = 1 } } desc = zg361pp.outcome.evidence }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_u_outcome = -1 } } desc = zg361pp.outcome.political }
+			desc = zg361pp.outcome.mixed
+		}
+
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
 		var:zg361_pp_portfolio_queue_active = 1
+		exists = scope:zg361_pp_completion_subject
 	}
 	option = {
 		name = zg361pp.9002.a
@@ -6038,11 +7107,20 @@ zg361pp.9003 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.9003.t
-	desc = zg361pp.9003.desc
+	desc = {
+		desc = zg361pp.9003.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_v_outcome = 1 } } desc = zg361pp.outcome.evidence }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_v_outcome = -1 } } desc = zg361pp.outcome.political }
+			desc = zg361pp.outcome.mixed
+		}
+
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
 		var:zg361_pp_portfolio_queue_active = 1
+		exists = scope:zg361_pp_completion_subject
 	}
 	option = {
 		name = zg361pp.9003.a
@@ -6184,11 +7262,26 @@ zg361pp.9004 = {
 	type = character_event
 	theme = vassal
 	title = zg361pp.9004.t
-	desc = zg361pp.9004.desc
+	desc = {
+		desc = zg361pp.9004.desc
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_w_outcome = 1 } } desc = zg361pp.outcome.evidence }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_w_outcome = -1 } } desc = zg361pp.outcome.political }
+			desc = zg361pp.outcome.mixed
+		}
+
+		first_valid = {
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_skipped_no_relapse = 1 } } desc = zg361pp.terminal.graduated }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 1 } } desc = zg361pp.terminal.second_pip }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 2 } } desc = zg361pp.terminal.transfer }
+			triggered_desc = { trigger = { scope:zg361_pp_completion_subject = { var:zg361_pp_m189_terminal_code = 3 } } desc = zg361pp.terminal.exit }
+		}
+	}
 	trigger = {
 		is_ai = no
 		zg361_is_celestial_liege_trigger = yes
 		var:zg361_pp_portfolio_queue_active = 1
+		exists = scope:zg361_pp_completion_subject
 	}
 	option = {
 		name = zg361pp.9004.a

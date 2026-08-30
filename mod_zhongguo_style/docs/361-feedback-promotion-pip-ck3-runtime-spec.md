@@ -53,6 +53,12 @@ adapter 当前 scope 必须是：在世、有地、天朝制、公爵及以上�
 
 每一阶段同时有 target-bound case-kernel deadline。到期只把本阶段尚未处理的编号走 C，不重放已完成操作；旧 owner/subject/cycle/case/state 任一变化，hidden event 即 stale no-op。
 
+T/U/W 不再从 `last_grade` 或“档位已保留”布尔值猜结果。开案必须命中已经送达的真实 result case，并冻结
+`result_case_owner + subject + result_cycle_serial + result_case_serial + result_case_state` 五元身份，以及
+`result_grade/result_grade_reason/result_kpi_frozen/result_rank_frozen`。T 与 W 的每张玩家卡都直接显示这份冻结档位；
+生成树不得写 `zg361_result_grade`，申诉和 PIP 只能保存不加重快照并观察结果，不能暗改原告身。U 仅为 3.5/3.75
+建立晋升包，W 仅为 3.25 建立 PIP；不适用者由 adapter 明确记为 skipped，不弹一串只剩 C 的假决策。
+
 U 的编号顺序特意不按自然数平均切段：#166 必须发生在 #160 预审之前，只有 `NOMINATED` 包才允许撤回；#163–165 先冻结观察窗、跨组贡献与试岗授权，#161/#162/#166 再完成席位前置，最后 #160 消费整包并由 #167/#168建立跨周期样本。V 则严格保持答辩语义：#176 仍属于 defense 阶段，#177/#178 才进入投票前的杠杆与双证据门。
 
 ## 四、A/B/C 合同
@@ -141,6 +147,22 @@ P1 的 C 审计为 D+90；P2 的 #147、#149、#154、#155、#161、#162、#166�
 | 190 | 接收经理 ACL、最小字段、本人陈述 | 转岗包不改旧档位、不扩散私人 ID |
 | 191 | 空缺、交接、加班、补员付款与净额 | 团队成本单和经理记分卡消费同一净成本 |
 
+W 的时间不是卡片标题上的装饰：#185 选项只建立中检义务，D+180 audit 才写中检终态并放行下一阶段；#187
+只提交毕业证据，D+90 audit 才冻结里程碑、稳定期与独立复核结果；#188 卡在阶段开启 D+1 作答，D+365 audit
+因此发生在阶段 D+366，并逐项冻结下一轮 result 五元身份、档位、理由与派生问题类别。证据路线只有同类 3.25 才算
+复发，政治路线把任意新 3.25 贴为复发但留下过度标签风险；没有复发时 #189 以明确 `not-applicable` receipt 关闭，
+不会硬塞二次 PIP。首轮 PIP 已失败时则反过来：#188 以 `not-applicable/first-failure` receipt 立即关闭，不伪造“毕业后
+复发”，并直接在第四阶段弹 #189；只有真正毕业的案子才走一年观察，真实复发在阶段 D+367 弹 #189。第四阶段
+deadline 为 D+368，和观察路径的弹窗不再同日竞争。
+若第四阶段最终走 deadline fallback，#188 C 的延迟 policy-debt audit 会在关闭后再次调用阶段 barrier；这样即使
+#189 C 已在 D+368 同日消费，D+90 的 #188 audit 仍能把案卷推进到第五阶段，不会永久卡在 state 4。
+
+#189 先把 `second_pip/transfer/exit` 全部清零，再只写一个终态并校验和为 1；无论 A/B/C，终局关闭都按 #184
+原票据释放容量一次。#190 不再把“找到另一个经理”冒充空缺：中央 career/HC 适配器必须先在 subject 上绑定
+`zg361_transfer_vacancy_id + zg361_transfer_vacancy_receiver + zg361_transfer_vacancy_active=1`，W 才冻结真实 vacancy ID
+和接收经理。转岗包把目标、支持、毕业结果、本人陈述四个实际快照投影到该接收经理，D+30 audit 再从 receiver
+侧回读 bundle/case/vacancy/四字段并验证 ACL；不存在真实空缺时 transfer 分支不可用。
+
 ## 六、资源与原子性
 
 每项 A/B 首先用 `operation_capacity` 留下一次确定性 transaction receipt；这只是本包防重/守恒账，不冒充业务稀缺资源。真正稀缺资源只在相应机制消费：
@@ -151,20 +173,20 @@ P1 的 C 审计为 D+90；P2 的 #147、#149、#154、#155、#161、#162、#166�
 | `commitment_capacity` | #149/#150 | 一项承诺占一次，不能口头重复履约 |
 | `nomination_slot` | #157；#161 的 B 路线另建真实 filler 包 | 一包一次；#166 只 refund #157 主包的同一 receipt，不退 filler |
 | `tenure_exception_slot` | #162 | 破格准入先占独立额度，能力评审不等于准入投票 |
-| `promotion_slot` | 仅 #160 | 预审席位不是 12 个机制各扣一次 |
+| `promotion_slot` | 仅 #160 的 A 通过路线 | 政治淘汰不提前占席；V 开案才把同一预留票据结算 |
 | `panel_vote` | #169/#170/#173/#174/#176–180 | active panel、权重、盲分、答辩和反馈均引用同一冻结席位 |
-| `pip_capacity` | 仅 #184 正式承载 | 每案预留、终态释放一次 |
-| `exit_cost` | #189/#191 | 互斥终态与成本单各一次 |
+| `pip_capacity` | 仅 #184 的 A 支持路线 | B 过载只写经理责任，不伪造容量；毕业或终局（含 #189 C）按原票据释放一次 |
+| `exit_cost` | #189 的 B 退出路线与 #191 成本单 | second-PIP/transfer 不产生 #189 退出成本；终态与成本单各一次 |
 
-其中 V 的资源绑定刻意区分：#172 冻结决策规则消耗 `capacity_hours`，#174 才消耗答辩 `panel_vote`；#180 重试不再扣 nomination slot。每笔 A 路线保持 `reserved/status=1`，B 路线同步 settle 为 `status=2`，C 路线不生成业务 transaction。新周期只在全部延迟审计终态后清零 amount/status/owner/cycle/case，因此跨周期不会把旧票据当新票据。
+其中 V 的资源绑定刻意区分：#172 冻结决策规则消耗 `capacity_hours`，#174 才消耗答辩 `panel_vote`；#180 重试不再扣 nomination slot。共享资源的 A 路线保持 `reserved/status=1`，B 路线同步 settle 为 `status=2`；仅 A 或仅 B 才合法的 route-specific 资源只在对应路线核对和记账，另一条路线不存在空票据。C 路线不生成业务 transaction，延迟 audit 也只关闭 policy-debt timer，不写 midpoint/graduation/relapse 等业务对象。新周期只在全部延迟审计终态后清零 amount/status/owner/cycle/case；U prework 还会先删除旧 #161 filler，再尝试绑定新 alternate，因此不会把上一周期的人继续当本轮填充包。
 
-#149、#150、#165、#189、#191 的有资金 A 路线先原子核对经理国库 ≥5 且个人金币 ≥5，随后才同时扣国库 5、个人金币 5，并给 subject 10。任一不足则不发生部分付款。receipt 明列 `treasury_paid=5 + personal_paid=5 = subject_received=10`。这把“组织预算”和“经理自己画饼的成本”同时落到了 CK3 资源，而不是再造一枚 PPT 货币。
+#149、#150、#165、#191 的 A 路线，以及 #189 的 B 强制退出路线，先原子核对经理国库 ≥5 且个人金币 ≥5，随后才同时扣国库 5、个人金币 5，并给 subject 10。任一不足则不发生部分付款。receipt 明列 `treasury_paid=5 + personal_paid=5 = subject_received=10`。这把“组织预算”和“经理自己画饼的成本”同时落到了 CK3 资源，而不是再造一枚 PPT 货币。
 
 ## 七、可见队列与本地化
 
-玩家卡为 `zg361pp.146` 至 `zg361pp.191`。每张恰好三个 option；每个 option 最多排一个下一事件。阶段最后一张不自行排卡，而由 barrier 成功 advance 后只排下一阶段第一张。四个 completion event 为 `zg361pp.9001–9004`；AI 永不收到它们。
+玩家卡为 `zg361pp.146` 至 `zg361pp.191`。每张恰好三个 option；每个 option 最多排一个下一事件。阶段最后一张不自行排卡，而由 barrier 成功 advance 后只排下一阶段第一张；#188 是额外的时间门，D+365 audit 只有在真实复发时才排 #189，无复发则显示“观察期毕业”并显式 skip。四个 completion event 为 `zg361pp.9001–9004`；AI 永不收到它们。T/W 卡显示真实冻结档位，completion card 显示证据/政治/混合结果，W 还显示观察期毕业、二次 PIP、真实转岗或退出终态，而不是只说“流程已完成”。
 
-每个业务操作还调度一个精确延迟 audit；#151 有 D+7/D+90 两个，#180 有完成差距的 D+90 提前解锁与正常 D+365 两个，因此共 48 个。audit 保存并复核：
+每个业务操作还调度一个精确延迟 audit；#151 有 D+7/D+90 两个，#180 有完成差距的 D+90 提前解锁与正常 D+365 两个，因此共 48 个。每个 audit 在五元 guard 后必须读取该编号自己的 typed payload（46 项由 `DELAYED_CONSUMER_FIELD_BY_ID` 完整映射）；C 只结算 policy debt，不读取或制造该 payload。audit 保存并复核：
 
 ```text
 owner + subject + cycle_serial + case_serial + expected_local_state
@@ -183,8 +205,8 @@ py tools/test_zg361_case_kernel.py -v
 py tools/validate_local.py
 ```
 
-`tools/test_zg361_b2_runtime.py` 仍可作为 T/W Python reference 回归运行；当前仓库基线为 45/46，唯一 RED 是该测试仍要求 146–156、181–191 的中央 manifest 为 `not-implemented`，而并行收口已把这些行标为 `partial`。它不是本独立包的 effect/event RED，本包也不越权修改 B2 或中央 manifest；最终中央合并时必须由对应 owner 统一 readiness 口径。
+`tools/test_zg361_b2_runtime.py` 仍可作为 T/W Python reference 回归运行。本独立包不越权修改 B2 或中央 manifest；最终中央合并时必须由对应 owner 统一 readiness 口径。
 
-L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation、48 个五元 audit、18 个 stage deadline、跨周期 pending-audit 防覆盖、资源恒等、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、manager/subject 权限、第二 AI 例外、单窗队列、九语言 BOM 与生成可复现。
+L0 固定检查：46/46、四域状态组、每项 manager/core/consumer、A/B/C、C 不碰业务 operation 或 delayed business object、46 个显式业务五元对象、48 个五元 audit 与逐项 typed consumer、18 个 stage deadline、跨周期 pending-audit/filler 防覆盖、资源恒等、#160/#184/#189 路线资源、#166 精确退额、五个双 payer、U 跨周期观察、V 评委/盲审/双门/重试链、W 证据门/D+368 竞态边界/同类复发/无复发 skip/所有终局容量释放/互斥终态/真实 vacancy 输入/四字段 receiver ACL、申诉不加重、manager/subject 权限、第二 AI 例外、单窗队列、可见结果、九语言 BOM/key parity 与生成可复现。
 
 下一步由中央代理接 `zg361_pp_manager_portfolio_adapter_effect`，与其他二期包一次性跑 MCP-first CK3 批量验收。必须同一启动覆盖：玩家公爵/国王/皇帝、授权 AI 公爵、伯爵/男爵 subject-only、非天朝 manager RED、A/B/C、资源不足、重复、stale、D+7/30/90/180/365、存读档与四域顺序队列。没有 paused snapshot、日志和玩家窗口证据前，本包保持 `static-ready`。
