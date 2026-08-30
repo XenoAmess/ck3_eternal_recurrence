@@ -3500,6 +3500,136 @@ def query_event_definition_identity(
     }
 
 
+def select_policy_reference_option_native(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    snapshot: dict[str, object],
+    *,
+    stem: str,
+    expected_event_definition_key: str,
+    expected_option_text: str,
+) -> dict[str, object]:
+    """Select one configured policy choice from the typed event-window frame."""
+
+    observation = _personal_switch_native_snapshot(snapshot)
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "selection_method": "native_mcp_resolved_option",
+        "expected_event_definition_key": expected_event_definition_key,
+        "expected_option_text": expected_option_text,
+        "preselection_observation": observation,
+        "identity": None,
+        "matched_options": [],
+        "selected_native_option_index": None,
+        "selected_option_number": None,
+        "selection_submission": None,
+        "failure_reason": None,
+    }
+    evidence_path = artifacts / f"{stem}_native_option_selection_gate.json"
+
+    def fail(reason: str) -> None:
+        evidence["failure_reason"] = reason
+        write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(reason)
+
+    if snapshot.get("paused") is not True:
+        fail("policy option selection requires a paused native snapshot")
+    event_instance_id = observation["active_event_instance_id"]
+    revision = snapshot.get("revision")
+    if isinstance(event_instance_id, bool) or not isinstance(
+        event_instance_id, int
+    ):
+        fail("policy option selection lacks an active event instance")
+    if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0:
+        fail("policy option selection lacks a valid public revision")
+
+    try:
+        identity = query_event_definition_identity(service, snapshot)
+    except Exception as error:
+        fail(
+            "policy option identity query failed: "
+            f"{type(error).__name__}: {error}"
+        )
+    evidence["identity"] = identity
+    observed_key = identity["event_definition_key"]
+    if observed_key != expected_event_definition_key:
+        fail(
+            "policy option event identity mismatch: "
+            f"expected {expected_event_definition_key}, observed {observed_key}"
+        )
+
+    query = identity["query"]
+    context = query.get("current_event_window_context")
+    readiness = context.get("readiness") if isinstance(context, dict) else None
+    options = context.get("options") if isinstance(context, dict) else None
+    if not (
+        isinstance(readiness, dict)
+        and readiness.get("option_presentation_ready") is True
+        and isinstance(options, list)
+    ):
+        fail("policy event-window MCP did not publish option presentation")
+
+    expected = _normalize_promo_visible_text(expected_option_text)
+    if not expected:
+        fail("configured policy option text normalizes to an empty value")
+    matches = [
+        option
+        for option in options
+        if isinstance(option, dict)
+        and option.get("shown") is True
+        and option.get("enabled") is True
+        and isinstance(option.get("resolved_name"), str)
+        and expected
+        in _normalize_promo_visible_text(str(option["resolved_name"]))
+    ]
+    evidence["matched_options"] = matches
+    if len(matches) != 1:
+        fail(
+            "policy event-window MCP did not resolve exactly one configured "
+            f"option: matches={len(matches)}"
+        )
+
+    native_option_index = matches[0].get("native_option_index")
+    option_count = observation["active_event_option_count"]
+    if (
+        isinstance(native_option_index, bool)
+        or not isinstance(native_option_index, int)
+        or native_option_index < 0
+        or isinstance(option_count, bool)
+        or not isinstance(option_count, int)
+        or native_option_index >= option_count
+    ):
+        fail("resolved policy option has an invalid native option index")
+    option_number = native_option_index + 1
+    evidence["selected_native_option_index"] = native_option_index
+    evidence["selected_option_number"] = option_number
+
+    try:
+        submission = service.select_event_option(
+            option_number,
+            event_instance_id=event_instance_id,
+            expected_revision=revision,
+        )
+    except Exception as error:
+        fail(
+            "native policy option selection failed: "
+            f"{type(error).__name__}: {error}"
+        )
+    evidence["selection_submission"] = submission
+    if not (
+        isinstance(submission, dict)
+        and submission.get("accepted") is True
+        and submission.get("status") == "submitted"
+    ):
+        fail("native policy option selection was not accepted")
+
+    evidence["result"] = "GREEN"
+    evidence["failure_reason"] = None
+    write_json(evidence_path, evidence)
+    return evidence
+
+
 def pause_bound_native_event_for_definition_query(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -5231,26 +5361,34 @@ def capture_policy_cards(
                 f"{validated_event_artifact}"
             )
         shutil.copy2(validated_event_artifact, event_artifact)
+        screen_width, screen_height = acceptance.pyautogui.size()
+        # The preceding card leaves the pointer over the same first-option
+        # lane. Park it on inert narrative space so CK3 closes that tooltip
+        # before the clean still and video hold.
+        acceptance.pyautogui.moveTo(
+            int(screen_width * 0.50), int(screen_height * 0.50), duration=0.2
+        )
+        time.sleep(0.5)
+        acceptance.ImageGrab.grab().save(event_artifact)
         recorder.mark(f"policy_card_{mechanism_id:03d}_visible")
         recorder.clean_hold(
             f"policy_card_{mechanism_id:03d}", artifacts, 2.5
         )
-        option = acceptance.wait_for_ocr_text(
-            option_text,
-            acceptance.FULL_SCREEN_REGION,
-            15,
-            artifacts,
-            f"{stem}_option.png",
-            contains=True,
-            stable_hits=1,
-        )
+        acceptance.ImageGrab.grab().save(artifacts / f"{stem}_option.png")
         speed_one_gate = arm_native_speed_one(
             timeline_service,
             artifacts,
             stem=f"{stem}_close",
         )
         pre_click_snapshot = speed_one_gate["snapshot"]
-        acceptance.deliberate_click(option, f"close policy card {mechanism_id:03d}")
+        option_selection_evidence = select_policy_reference_option_native(
+            timeline_service,
+            artifacts,
+            pre_click_snapshot,
+            stem=f"{stem}_close",
+            expected_event_definition_key=f"zg361m.{mechanism_id}",
+            expected_option_text=option_text,
+        )
         pause_evidence = pause_after_promo_event_click(
             timeline_service,
             artifacts,
@@ -5258,6 +5396,7 @@ def capture_policy_cards(
             stem=f"{stem}_close",
             expected_predecessor_event_key=f"zg361m.{mechanism_id}",
         )
+        pause_evidence["native_option_selection"] = option_selection_evidence
         pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
         pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
         if card_index + 1 < len(PROMO_POLICY_CARDS):

@@ -277,6 +277,144 @@ def main() -> int:
         '"event_definition_key": event_definition_key',
     ):
         assert token in identity_source, token
+    policy_option_source = inspect.getsource(
+        capture.select_policy_reference_option_native
+    )
+    for token in (
+        "query_event_definition_identity",
+        'readiness.get("option_presentation_ready") is True',
+        'option.get("shown") is True',
+        'option.get("enabled") is True',
+        'option.get("resolved_name")',
+        'matches[0].get("native_option_index")',
+        "service.select_event_option(",
+        "event_instance_id=event_instance_id",
+        "expected_revision=revision",
+        '"selection_method": "native_mcp_resolved_option"',
+    ):
+        assert token in policy_option_source, token
+    assert "wait_for_ocr_text" not in policy_option_source
+    assert "deliberate_click" not in policy_option_source
+
+    class PolicyOptionService:
+        def __init__(self, *, enabled: bool = True) -> None:
+            self.enabled = enabled
+            self.query_calls: list[tuple[int, int]] = []
+            self.selections: list[tuple[int, int | None, int | None]] = []
+
+        def query_current_event_window_context_v1(
+            self, event_instance_id: int, *, expected_revision: int
+        ) -> dict[str, object]:
+            self.query_calls.append((event_instance_id, expected_revision))
+            return {
+                "status": "available",
+                "current_event_window_context": {
+                    "event_definition_key": "zg361m.7",
+                    "readiness": {
+                        "event_definition_identity_ready": True,
+                        "option_presentation_ready": True,
+                    },
+                    "options": [
+                        {
+                            "native_option_index": 0,
+                            "shown": True,
+                            "enabled": self.enabled,
+                            "resolved_name": (
+                                "只邀请有真实协作的少数评价者，要求具体案例并交叉核验，"
+                                "承担邀评与去重工时。"
+                            ),
+                        },
+                        {
+                            "native_option_index": 1,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "广撒邀评并立刻按高低票加权。",
+                        },
+                        {
+                            "native_option_index": 2,
+                            "shown": True,
+                            "enabled": True,
+                            "resolved_name": "这季度先不碰，登记制度债",
+                        },
+                    ],
+                },
+            }
+
+        def select_event_option(
+            self,
+            option_number: int,
+            *,
+            event_instance_id: int | None = None,
+            expected_revision: int | None = None,
+        ) -> dict[str, object]:
+            self.selections.append(
+                (option_number, event_instance_id, expected_revision)
+            )
+            return {
+                "step": f"select-event-option-{option_number}",
+                "accepted": True,
+                "status": "submitted",
+            }
+
+    policy_option_snapshot = {
+        "revision": 56,
+        "native_revision": 55,
+        "date_raw": 53146896,
+        "paused": True,
+        "speed": 1,
+        "active_event": {"instance_id": 7, "option_count": 3},
+        "played_character": {"character_id": 77},
+    }
+    with tempfile.TemporaryDirectory() as temp_dir:
+        policy_option_service = PolicyOptionService()
+        policy_option_gate = capture.select_policy_reference_option_native(
+            policy_option_service,
+            Path(temp_dir),
+            policy_option_snapshot,
+            stem="12_policy_007_close",
+            expected_event_definition_key="zg361m.7",
+            expected_option_text="只邀请有真实协作",
+        )
+        assert policy_option_service.query_calls == [(7, 56)]
+        assert policy_option_service.selections == [(1, 7, 56)]
+        assert policy_option_gate["result"] == "GREEN"
+        assert policy_option_gate["selected_native_option_index"] == 0
+        assert policy_option_gate["selected_option_number"] == 1
+        persisted_policy_option_gate = json.loads(
+            (
+                Path(temp_dir)
+                / "12_policy_007_close_native_option_selection_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert persisted_policy_option_gate["result"] == "GREEN"
+        assert persisted_policy_option_gate["selection_submission"][
+            "status"
+        ] == "submitted"
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        disabled_policy_option_service = PolicyOptionService(enabled=False)
+        try:
+            capture.select_policy_reference_option_native(
+                disabled_policy_option_service,
+                Path(temp_dir),
+                policy_option_snapshot,
+                stem="12_policy_007_disabled",
+                expected_event_definition_key="zg361m.7",
+                expected_option_text="只邀请有真实协作",
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "exactly one configured option" in str(error)
+        else:
+            raise AssertionError("disabled policy option did not fail closed")
+        assert disabled_policy_option_service.selections == []
+        disabled_policy_option_gate = json.loads(
+            (
+                Path(temp_dir)
+                / "12_policy_007_disabled_native_option_selection_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert disabled_policy_option_gate["result"] == "RED"
+        assert disabled_policy_option_gate["matched_options"] == []
     pause_source = inspect.getsource(capture.pause_after_promo_event_click)
     for token in (
         "transition_deadline = time.monotonic() + 0.75",
@@ -1628,6 +1766,10 @@ def main() -> int:
         "timeline_service: GameplayBridgeService",
         "speed_one_gate = arm_native_speed_one(",
         'stem=f"{stem}_close"',
+        "select_policy_reference_option_native(",
+        'expected_option_text=option_text',
+        'expected_event_definition_key=f"zg361m.{mechanism_id}"',
+        'pause_evidence["native_option_selection"]',
         'expected_predecessor_event_key=f"zg361m.{mechanism_id}"',
         "pause_after_promo_event_click",
         'stem=f"{stem}_close"',
@@ -1637,21 +1779,14 @@ def main() -> int:
         '"policy successor dispatched before predecessor capture"',
     ):
         assert token in policy_body, token
-    policy_click = (
-        'acceptance.deliberate_click(option, f"close policy card '
-        '{mechanism_id:03d}")'
-    )
     assert policy_body.index("speed_one_gate = arm_native_speed_one(") < (
-        policy_body.index(policy_click)
+        policy_body.index("select_policy_reference_option_native(")
     )
-    assert policy_body.index(policy_click) < policy_body.index(
+    assert policy_body.index("select_policy_reference_option_native(") < policy_body.index(
         "pause_after_promo_event_click"
     )
-    assert (
-        'acceptance.deliberate_click(option, f"close policy card '
-        '{mechanism_id:03d}")\n'
-        "        pause_evidence = pause_after_promo_event_click("
-    ) in policy_body
+    assert "acceptance.wait_for_ocr_text" not in policy_body
+    assert "acceptance.deliberate_click" not in policy_body
     assert 'acceptance.ensure_game_paused(artifacts, f"{stem}_closed")' not in (
         policy_body
     )

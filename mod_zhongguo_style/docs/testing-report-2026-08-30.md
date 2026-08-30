@@ -127,15 +127,25 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 最小修复不改变产品时间线，也绝不把 OCR 当身份或放宽 canonical-key 门：政策 #001 carrier 延后到 D+3；等待 dispatch marker 时先读取原生 active event，若 D+2 的 `zg361.6` 抢先停表，就沿现有 typed MCP 路径选择已经批准的“掀桌起兵”，确认真实事件转场并恢复五速，再等待 D+3 的干净政策卡。该编排修复为当前候选，尚须下一次完整实机 GREEN 才能签核其余政策卡与宣传素材。
 
-## 12. 旧工坊 01/02/03 素材判定
+## 12. 第十三次完整 attempt：D+2 清场已过，第007号被 tooltip 截断 OCR
+
+第十三次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0829_clean_9c1e507_mcp` 再次在结算前后取得宋帝 23 人严格 `7 / 14 / 2`：`bootstrap_pending_375_n = 7`、`bootstrap_pending_35_n = 14`、`bootstrap_pending_325_n = 2`、`bootstrap_bottom_slots = 2`、`bootstrap_actual_bottom_rows = 2`，`bootstrap_first_review_strict_7_14_2` 与结算后的 `bootstrap_first_review_result_7_14_2` 均 PASS。361/361 账本、完整 GUI 阻塞矩阵、京察、免费规划器、D+90、史实上司 `3.25` 告身和本人榜也继续通过。
+
+第十二次暴露的 D+2 堆叠修复已经 **live-confirmed**：runner 用 typed MCP 清理真实产品事件 `zg361.6` 后才恢复时间，第001号政策卡随后以 canonical `zg361m.1` 干净置顶；其真实 A 选项提交、同日定义转场、暂停冻结和“下一张尚未抢跑”门全部 GREEN。第007号也已经以 canonical `zg361m.7` 置顶并保存实机截图；`12_policy_007_preemption_target_event_identity_gate.json` 同时发布三条真实 option row，其中目标 A 选项 `resolved_name` 完整、`shown = true`、`enabled = true`、`native_option_index = 0`。
+
+整局仍为 **harness RED**。上一张卡的鼠标停在首选项按钮上，第007号出现时同位置立即弹出 tooltip，正好遮住目标文字开头“只邀请”；同一超时帧离线 OCR 只能读到后半句“有真实协作的少数评价者……”，所以旧的整句 OCR 点击门等待 15 秒后终止。该 RED 不表示选项缺失或产品事件错误；canonical MCP frame 已直接反证这两种解释。
+
+针对性修复现为 **static-ready**，且无需修改 DLL：每张卡录制前先把鼠标停到事件叙事区并等待 tooltip 消失；关闭卡片时不再用 OCR 定位或鼠标点击，而是从同一暂停帧的 `current_event_window_context_v1.options` 中按规范化 `resolved_name` 唯一匹配配置项，要求 `shown/enabled`，取 `native_option_index + 1` 后以 event instance 与 public revision 绑定调用 `select_event_option`。随后仍沿用同日 canonical definition/instance 转场与连续暂停门。定向回归已证明第007号提交 option 1、disabled/缺失项在提交前 RED，且政策 capture 路径不再调用选项 OCR 或视觉点击；Python 编译、宣传 runner 合同、clean fixture、工坊媒体门、ZhongGuo 静态检查与 release builder 测试均 GREEN。下一步只跑第十四次完整合批实机，不重复审计已通过链路。
+
+## 13. 旧工坊 01/02/03 素材判定
 
 现有 `workshop/media/01_calibration_meeting.jpg`、`workshop/media/02_review_cohort_frozen.jpg` 与 `workshop/media/03_scoreboard.jpg` 来自后来被确认具有“首次建账把全员视为新人”缺陷的同一历史批次：前两张直接展示 23 人 `7 / 16 / 0`，第三张也冻结了同一错误名单，只是裁切范围没有完整显示表头。即使其中名单、排名、字段或界面布局仍可作为历史 GUI 证据，这三张图的核心 361 语义已经错误，发布判定必须是 **RED**，不得继续作为当前版本的工坊宣传素材。
 
 三张旧图及其原始过程证据继续保留用于复盘，不删除、不覆盖来源事实；正式发布前必须由同一次最终完整 **GREEN** 批次中明确显示 `7 / 14 / 2` 的真实 CK3 截图替换，并同步刷新来源路径、SHA-256、媒体锁和引用。任何仅有局部产品 PASS、最终仍为 harness RED 的 attempt 都不能作为这三格的正式替代来源。
 
-## 13. 环境与证据边界
+## 14. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已十二次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜及政策卡 #001/#007/#020 均已 live-confirmed；D+2 产品事件清理、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已十三次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、D+2 产品事件清理、政策卡 #001 的完整提交及 #007 的 canonical 置顶均已 live-confirmed；#007 的 MCP 选项提交、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。

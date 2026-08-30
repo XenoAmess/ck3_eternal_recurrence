@@ -96,6 +96,7 @@
 - “事件 modal 正在停表”不等于 MCP 已拥有可查询 event-window 的普通暂停帧。2026-08-30 07:23 attempt 中政策卡 #001 已稳定可见，但 public snapshot 仍为 `paused=false`，因此 paused-only `current_event_window_context_v1` 正确返回 unavailable。身份查询的固定顺序必须是：绑定 active instance、`date_raw`、played character 与起始 public revision → 用该 revision 提交 `pause-map` → 逐帧反证三项上下文未漂移并取得 `paused=true` → 用暂停帧的新 public revision 查询 canonical key。不得先查询再按错误字符串补救，也不得退回 OCR；任何暂停 ACK 拒绝、超时或上下文漂移都应在零点击状态下 RED，并保存 prequery pause sidecar。
 - MCP 消费端和冻结 native DLL 必须来自同一合同代际。2026-08-30 07:44 attempt 的查询前暂停门已经得到 `revision 48 → 49`、`paused=true`、事件/日期/角色稳定的实机 ACK，但当前工作树 Python 已要求新增的 `root_scope_ready` / `saved_scopes_ready`，冻结 DLL 仍只发布旧五字段 readiness，于是身份查询以 `event readiness fields are invalid` 终止。此类结果应判 **harness RED**；改从与 DLL 对齐的 clean worktree 重跑，不得为了兼容错位而删除 readiness 校验，也不得回退另一条并行开发分支。
 - 同日到期的多个事件会堆叠，顶层视觉窗口与 native active definition 可能指向不同层。2026-08-30 07:57 attempt 中画面和 OCR 都显示政策 #001，但 MCP canonical key 为下层真实产品事件 `zg361.6`：两者都被安排在 D+2。此时 identity mismatch 必须保持 RED，不能用“肉眼看起来对”放宽；夹具 carrier 应错开到 D+3，并在等待目标 marker 的循环中先以 canonical 身份识别、用已批准的 typed 选项清理 D+2 产品事件、验证转场和恢复时间，再接收干净的目标卡。
+- 鼠标位置本身也是宣传片状态。2026-08-30 08:29 attempt 中 #001 的首选项点击把鼠标留在约 `(931,935)`；#007 的首选项出现在同一位置后立即弹出 tooltip，遮住“只邀请”，RapidOCR 只剩“有真实协作……”并制造超时。不能靠缩短 OCR 子串逐卡打补丁：每张政策卡 clean hold 前先把鼠标停到非交互叙事区并等待 tooltip 消失；选择则读取同一暂停帧的 `current_event_window_context_v1.options`，按配置文字唯一匹配 `resolved_name`，要求 `shown/enabled`，以 `native_option_index + 1`、event instance 和 public revision 调用 typed `select_event_option`。OCR 继续用于画面诊断，不再决定多选政策卡的动作。
 
 ## 6. 宣传片片场纪律
 
