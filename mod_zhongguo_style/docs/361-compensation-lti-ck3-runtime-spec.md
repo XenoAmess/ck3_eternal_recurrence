@@ -1,0 +1,208 @@
+﻿# 361 薪酬、发放与长期激励 CK3 运行时
+
+状态：**CK3 script static-ready；尚无 CK3 解析日志、MCP paused snapshot 或玩家实机证据**
+
+生成器：`tools/gen_361_compensation_runtime.py`
+
+生成结果：
+
+- `common/scripted_effects/zg361_generated_compensation_runtime_effects.txt`
+- `events/zg361_generated_compensation_runtime_events.txt`
+- `localization/*/zg361_compensation_runtime_l_*.yml`（简中、英文原创；其余七语为日常开发期英文结构占位）
+
+L0 合同：`tools/test_zg361_compensation_runtime.py`；既有领域模型：
+`tools/zg361_phase2_compensation_model.py`。该模型仍可作为编号 registry、资金原语和守恒 oracle，但其 #290
+旧门槛 `350` 与 #299 Good Leaver 自动加速尚未跟随本次冻结合同；本包不改共享/中央模型，专测以本规范要求的
+`375` 门槛和默认不加速为准，不能用旧模型行为覆盖 actual CK3 投影。
+
+本层只投影 L、AE、AF 三个共享案卷，不修改中央考核 hook、B1/B2、考核榜 GUI 或共享案卷内核。开放 effect
+留给后续集成调用；没有真实 CK3 启动证据前，不得标成 fixture-live、production-live 或 complete。
+
+## 一、精确覆盖与状态分组
+
+本批精确覆盖 **33 个编号**：`082–091`、`278–300`，没有吸收相邻领域。
+编号写入发生在表中“当前状态”，本阶段全部消费者完成后，唯一 stage dispatcher 才进入箭头右侧状态。
+
+| 领域 / 案卷 | 阶段 | 状态迁移 | 本阶段编号与行为 |
+|---|---:|---|---|
+| L `compensation_award` | 1 | `formula_locked -> funds_reserved` | 082 `total_reward_quote`；083 `three_factor_bonus`；084 `grant_bonus` |
+| L | 2 | `funds_reserved -> granted` | 085 `retention_cliff_gap`；086 `hold_and_clawback_bonus` |
+| L | 3 | `granted -> held` | 087 `pay_band_position`；088 `allocate_raise_pool`；089 `career_package` |
+| L | 4 | `held -> settled` | 090 `pay_spot_award`；091 `separate_award_accounts` |
+| AE `pay_statement` | 1 | `payable -> due` | 278 `pay_statement`；279 `extra_month_contract`；280 `prorate_award` |
+| AE | 2 | `due -> decided` | 281 `defer_statement`；282 `apply_backpay` |
+| AE | 3 | `decided -> corrected` | 283 `dry_promotion_commitment`；284 `demotion_pay_schedule`；285 `allocate_raise_pool` |
+| AE | 4 | `corrected -> appealed` | 286 `band_correction`；287 `pay_visibility` |
+| AE | 5 | `appealed -> closed` | 288 `repair_pay_inversion`；289 `compensation_appeal` |
+| AF `lti_grant` | 1 | `nominated -> granted` | 290 `select_lti_nominations`；291 `grant_units`；292 `risk_award_choice` |
+| AF | 2 | `granted -> cliff_reached` | 293 `convert_bonus_to_units`；294 `valuation_columns` |
+| AF | 3 | `cliff_reached -> vesting` | 295 `lti_cliff`；296 `lti_cadence` |
+| AF | 4 | `vesting -> exit_classified` | 297 `lti_tracks`；298 `lti_double_gate` |
+| AF | 5 | `exit_classified -> settled` | 299 `classify_lti_leaver`；300 `settle_repurchase` |
+
+L 的五状态、AE/AF 的六状态均直接复用 `zg361_case_l/ae/af_*`；编号 operation 不得自行改共享 state。
+
+## 二、入口、权限与单卡适配器
+
+三个开放入口是：
+
+```text
+zg361_comp_open_l_case_effect
+zg361_comp_open_ae_case_effect
+zg361_comp_open_af_case_effect
+```
+
+每个编号只有一个管理入口：
+
+```text
+zg361_comp_mNNN_manager_apply_effect = { ROUTE = 1|2|3 }
+```
+
+调用上下文冻结为 `ROOT = 直属管理者`、`THIS = 直属受评者`。管理者必须通过
+`zg361_is_celestial_liege_trigger`，即在任、有地、天朝制、公爵及以上。入口不加 `is_ai = no`：玩家管理者与
+项目明确授权的 AI 管理者使用同一套 duke+ resolver；AI 只走 hidden 后台路线，不打开玩家事件。
+
+受评者必须通过 `zg361_is_reviewable_vassal_trigger` 且 `liege = ROOT`。伯爵、男爵可以被考核，但不能因此获得
+open、manager core、stage advance、付款批准或回购批准权。AE 申诉中的本人响应另走
+`zg361_comp_ae_subject_appeal_response_effect`，只允许本人写自己的响应，不调用任何管理入口。
+
+`zg361_comp_portfolio_*` 是 manager-scope 适配器：一个管理者同一时刻只持有一个选中受评者、一个 L/AE/AF
+活动案卷和一个当前阶段卡。玩家仅看到统一的 `zg361comp.1` 三路线事件；不存在 33 个编号窗口。授权 AI 由
+`zg361comp.2` 静默选择后台路线，结案后 hidden queue 再取下一案。
+
+## 三、五元身份、receipt 与写入消费链
+
+每次 open 后，编号 core、consumer、阶段屏障、资金 journal 和 delayed event 都检查同一五元身份：
+
+```text
+owner + subject + cycle_serial + case_serial + expected_state
+```
+
+每个编号先由 `zg361_case_kernel_record_operation_effect` 写
+`receipt_owner/subject/cycle/case/state/route`，再由本域 single-use `receipt_active` 锁定同案路线。同一五元身份、
+同一路线重放是 idempotent no-op；同一 receipt 偷换路线为 typed RED；旧 cycle/case/state 为 stale no-op，不能改
+新案。
+
+资金 receipt 还必须冻结实际身份，而不能结算时重新从当前关系推断：
+
+```text
+treasury_payer
+personal_payer
+recipient
+approver
+frozen_owner / frozen_subject / frozen_cycle / frozen_case / frozen_state
+```
+
+33 项统一执行 `manager_apply -> core write -> consume`：core 写机制专有字段和 operation receipt；consumer 将这些
+字段投进 L 奖金桶、AE 薪酬单或 AF 份额账，写 `mNNN_consumed = 1`；阶段屏障只有在本组所有编号都 consumed
+且领域守恒成立时才调用共享 dispatcher。由此每个 write 都有后续 consumer，不以 debug ACK 或裸 `choice` 冒充玩法。
+
+所有真实期限先保存五元 ticket，再调度 hidden character event；到期事件必须先调用共享 expire helper，只有
+`kernel_applied = 1` 才可进入领域 resolver。旧 ticket 因任一字段不符只能 no-op。当前期限包括 L 递延结算、AE
+90/180 日应付、AF 30/90/180/365/730 日归属和 90 日回购。
+
+## 四、双付款与原子守恒
+
+所有真实制度支出有两个实际账户：组织国库是案主的 CK3 `treasury`（以原生 `has_treasury = yes` 验证），负责人个人付款是同一案主的 `gold`；受款人
+获得个人 `gold`。默认资金政策为 **70% 国库 / 30% 负责人个人金币**。动态金额先按冻结的整数口径拆分；固定
+10/20 金额分别为 `7+3`、`14+6`。整数极小额按可表示的已冻结份额处理，退款和追回始终复用原 receipt 的两边
+金额，禁止重新按比例计算或改换付款人。
+
+静态语法依据当前仓库冻结的原版脚本：`10_tgp_interactions.txt` 以 `has_treasury = yes` 判断国库账户，
+`10_dlc_tgp_scripted_effects.txt` 以 `remove_treasury = { value = ... }` 扣动态国库值。本包沿用这两个原生形式；
+这只是 exact-source 依据，不等于 CK3 parser/live 验收。
+
+事务顺序固定为：
+
+1. 同时预检国库余额、负责人个人金币、领域 treasury/personal budget 和 receipt 状态；
+2. 两本共享 journal 都成功 reserve 后才 settle；
+3. 两边 receipt 都处于 settled 才执行真实 `remove_treasury`、个人 `gold` 扣款和受款人 `add_gold`；
+4. 任一预检或 journal 失败即 typed RED，不产生半笔真实付款；
+5. 未用预留走 exact refund，已付追回走带 source receipt 的 bounded return，并按原付款账户返回。
+
+L 的奖金守恒为：
+
+```text
+grant_total = immediate_unpaid + deferred_unpaid + held + net_paid + forfeited
+net_paid = paid - returned
+```
+
+AE 的显式薪酬单始终满足：
+
+```text
+payable = paid + owed - returned
+```
+
+AF 的份额账始终满足：
+
+```text
+granted_units = unvested_service + unvested_performance + vested + forfeited + repurchased
+```
+
+份额授予和归属不是现金支出；只有现金替代或真实回购才触发双付款。
+
+## 五、L：奖金、递延、追回与专项奖
+
+082–084 先分别写五栏总回报、三系数公式和公式锁，再为总额 20 冻结 `14 treasury + 6 personal`：即时桶
+`10+4` 当场结算给受评者，递延桶 `3+1` 与暂扣桶 `1+1` 留在 reserve。到期 resolver 只能二选一：结算剩余
+6，或按原两本 receipt 退回 `4 treasury + 2 personal`。
+
+086 的追回必须引用即时付款 source receipt，且不超过该 receipt 尚可追回金额；未付金额只可暂扣/没收，不能
+伪装成已付追回。090 专项奖总额 10，实际付款为 `7 treasury + 3 personal`，并明确不占绩效奖名额。其余编号
+写留才断崖、带位、统一调薪池、品级/任命/权力/现金四字段和年功/绩效两账，均由后续阶段或结案消费。
+
+## 六、AE：显式薪酬单状态与申诉分轨
+
+AE 不用一个“已付款”布尔量折叠流程，而是完整保留：
+
+```text
+payable -> due -> decided -> corrected -> appealed -> closed
+```
+
+278–280 生成并冻结应付、额外月俸合同属性和折算；281 必须立即支付或生成新的 90/180 日到期 ticket，连续延期写
+兑现信用；282 的追溯补发写独立债和 receipt。283–288 继续消费干升职期限、降薪缓冲、同档调薪、带外修复、可见
+口径和新老倒挂，但每次都重算 `payable/paid/owed/returned` 守恒。
+
+289 只开放 compensation appeal：受评者先在 `appealed` 状态写本人响应，管理者随后才可裁决。补发/纠错只改钱账，
+`frozen_performance_grade` 不得被薪酬申诉重写；绩效申诉仍属于另一案轨。玩家本人可见申诉事件，AI 当事人保持后台。
+
+## 七、AF：提名、归属、离任与 FIFO 回购
+
+290 的提名资格门槛明确是 **rating >= 3.75**（脚本定点值 `375`）；**3.50 (`350`) 是明确负例**，不能因处于
+相邻档位而入池。资格只允许进入提名池，不等于自动授予。
+
+291–294 冻结固定份额/固定价值、风险形态、自愿奖金转换和授予价/现值/可变现值；295–296 冻结 Cliff 与
+月/季/年 cadence，并用真实 delayed event 重复归属。297 将服务轨和绩效轨分开，298 要求组织门槛与个人门槛
+同时满足才归属绩效轨；服务轨不被一次低档吞掉。状态 4 会保持 `vesting`，直到管理者显式请求离任分类，不能把
+多期归属压缩成一次状态跳转。
+
+299 的默认合同冻结为 `good_leaver_acceleration = 0`：Good Leaver 保留已经 vested 的份额，但**不自动加速任何尚未
+归属的服务份额**；未归属服务/绩效份额按默认合同没收。只有未来明确写进冻结合同的独立加速条款才可改变这一点。
+Bad Leaver 可标记 clawback eligibility，但该标记本身不能直接吞掉已归属份额。
+
+300 只处理已经 vested 的单位，按管理者队列 `queue_tail -> queue_head` 严格 FIFO。立即或 90 日回购成功时才支付
+总额 10：组织 `treasury -7`、负责人 `personal_gold -3`、持有人 `gold +10`；两本 receipt 都 settled 后才把
+`vested -10` 搬到 `repurchased +10`。余额不足、非队首、窗口关闭或单位不足均不能移动单位。
+
+## 八、L0 门、MCP-first 实机计划与诚实边界
+
+静态验收应运行：
+
+```powershell
+py mod_zhongguo_style/tools/gen_361_compensation_runtime.py --check
+py mod_zhongguo_style/tools/test_zg361_compensation_runtime.py
+py mod_zhongguo_style/tools/test_zg361_phase2_compensation_model.py
+py mod_zhongguo_style/tools/test_zg361_case_kernel.py
+```
+
+专用 L0 合同应固定检查 33 ID/阶段与 model registry、11 个生成结果和 BOM、9 语言结构、权限矩阵、每项
+write-to-consumer、五元 receipt/deadline、双付款预检、L/AE/AF 三条守恒式、3.75/3.50、Good Leaver 默认不加速、
+AF FIFO `7+3` 回购、单可见卡和 AI 静默。七个非日常语言只是英文结构占位，不得称为完成翻译。
+
+后续实机验收必须 **MCP-first**：先提供 named open/apply/query 和变量 snapshot，在同一 paused CK3 会话中批量读取
+管理者国库、个人金币、受款人金币、五元案卷、operation/cash receipt、statement 与 unit ledger，再验证成功、延期、
+退款、追回、重复、改路、stale、权限和 FIFO。OCR 不得作为导航依据、数值来源或状态真值，只可在必要时做非权威
+画面辅助。
+
+当前尚未完成中央 hook 接线、CK3 parser log、真实 delayed-event 等待、paused snapshot、存读档或 live artifact。
+因此本文只能声明 **CK3 script static-ready**。

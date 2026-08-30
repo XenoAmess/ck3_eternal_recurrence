@@ -1,0 +1,367 @@
+﻿# GENERATED FILE — edit tools/gen_361_compensation_runtime.py
+namespace = zg361comp
+
+zg361comp.100 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_l_owner
+            SUBJECT_VAR = zg361_case_l_subject
+            CYCLE_VAR = zg361_case_l_cycle_serial
+            CASE_VAR = zg361_case_l_case_serial
+            STATE_VAR = zg361_case_l_state
+            ACTIVE_VAR = zg361_case_l_active
+            REVISION_VAR = zg361_case_l_revision
+            TIMELINE_VAR = zg361_case_l_timeline_serial
+            FEEDBACK_VAR = zg361_case_l_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_l_deferred_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_l_deferred_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_l_deferred_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_l_deferred_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_l_deferred_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_l_deferred_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_l_deferred_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_l_consume_deferred_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale l_deferred five-field ticket ignored" }
+    }
+}
+
+zg361comp.210 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_ae_owner
+            SUBJECT_VAR = zg361_case_ae_subject
+            CYCLE_VAR = zg361_case_ae_cycle_serial
+            CASE_VAR = zg361_case_ae_case_serial
+            STATE_VAR = zg361_case_ae_state
+            ACTIVE_VAR = zg361_case_ae_active
+            REVISION_VAR = zg361_case_ae_revision
+            TIMELINE_VAR = zg361_case_ae_timeline_serial
+            FEEDBACK_VAR = zg361_case_ae_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_ae_due_90_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_ae_due_90_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_ae_due_90_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_ae_due_90_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_ae_due_90_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_ae_due_90_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_ae_due_90_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_ae_consume_due_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale ae_due_90 five-field ticket ignored" }
+    }
+}
+
+zg361comp.211 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_ae_owner
+            SUBJECT_VAR = zg361_case_ae_subject
+            CYCLE_VAR = zg361_case_ae_cycle_serial
+            CASE_VAR = zg361_case_ae_case_serial
+            STATE_VAR = zg361_case_ae_state
+            ACTIVE_VAR = zg361_case_ae_active
+            REVISION_VAR = zg361_case_ae_revision
+            TIMELINE_VAR = zg361_case_ae_timeline_serial
+            FEEDBACK_VAR = zg361_case_ae_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_ae_due_180_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_ae_due_180_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_ae_due_180_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_ae_due_180_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_ae_due_180_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_ae_due_180_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_ae_due_180_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_ae_consume_due_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale ae_due_180 five-field ticket ignored" }
+    }
+}
+
+zg361comp.300 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_vest_30_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_vest_30_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_vest_30_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_vest_30_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_vest_30_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_vest_30_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_30_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_vest_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_vest_30 five-field ticket ignored" }
+    }
+}
+
+zg361comp.301 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_vest_90_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_vest_90_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_vest_90_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_vest_90_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_vest_90_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_vest_90_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_90_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_vest_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_vest_90 five-field ticket ignored" }
+    }
+}
+
+zg361comp.302 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_vest_180_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_vest_180_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_vest_180_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_vest_180_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_vest_180_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_vest_180_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_180_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_vest_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_vest_180 five-field ticket ignored" }
+    }
+}
+
+zg361comp.303 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_vest_365_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_vest_365_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_vest_365_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_vest_365_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_vest_365_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_vest_365_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_365_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_vest_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_vest_365 five-field ticket ignored" }
+    }
+}
+
+zg361comp.304 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_vest_730_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_vest_730_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_vest_730_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_vest_730_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_vest_730_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_vest_730_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_vest_730_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_vest_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_vest_730 five-field ticket ignored" }
+    }
+}
+
+zg361comp.310 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_case_kernel_expire_deadline_effect = {
+            OWNER_VAR = zg361_case_af_owner
+            SUBJECT_VAR = zg361_case_af_subject
+            CYCLE_VAR = zg361_case_af_cycle_serial
+            CASE_VAR = zg361_case_af_case_serial
+            STATE_VAR = zg361_case_af_state
+            ACTIVE_VAR = zg361_case_af_active
+            REVISION_VAR = zg361_case_af_revision
+            TIMELINE_VAR = zg361_case_af_timeline_serial
+            FEEDBACK_VAR = zg361_case_af_feedback_revision
+            DEADLINE_OWNER_VAR = zg361_comp_af_buyback_90_deadline_owner
+            DEADLINE_SUBJECT_VAR = zg361_comp_af_buyback_90_deadline_subject
+            DEADLINE_CYCLE_VAR = zg361_comp_af_buyback_90_deadline_cycle
+            DEADLINE_CASE_VAR = zg361_comp_af_buyback_90_deadline_case
+            DEADLINE_STATE_VAR = zg361_comp_af_buyback_90_deadline_state
+            DEADLINE_PENDING_VAR = zg361_comp_af_buyback_90_deadline_pending
+            DEADLINE_EXPIRED_VAR = zg361_comp_af_buyback_90_deadline_expired
+        }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_comp_af_consume_buyback_effect = yes
+        }
+        else = { debug_log = "ZG361COMP: stale af_buyback_90 five-field ticket ignored" }
+    }
+}
+
+zg361comp.1 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.1.t
+    desc = zg361comp.1.desc
+    trigger = {
+        is_ai = no
+        zg361_is_celestial_liege_trigger = yes
+        has_character_flag = zg361_comp_portfolio_active
+        var:zg361_comp_portfolio_visible_pending = 1
+    }
+    immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
+    option = { name = zg361comp.1.a zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 } }
+    option = { name = zg361comp.1.b zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 } }
+    option = { name = zg361comp.1.c zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 } }
+}
+
+# Authorized AI managers never open the visible portfolio card.
+zg361comp.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                is_ai = yes
+                zg361_is_celestial_liege_trigger = yes
+                has_character_flag = zg361_comp_portfolio_active
+            }
+            set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+            zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+        }
+    }
+}
+
+zg361comp.3 = {
+    type = character_event
+    hidden = yes
+    immediate = { zg361_comp_portfolio_open_next_effect = yes }
+}
+
+zg361comp.289 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.289.t
+    desc = zg361comp.289.desc
+    trigger = { is_ai = no var:zg361_case_ae_state = 5 }
+    option = { name = zg361comp.289.a zg361_comp_ae_subject_appeal_response_effect = { ROUTE = 1 } }
+    option = { name = zg361comp.289.b zg361_comp_ae_subject_appeal_response_effect = { ROUTE = 2 } }
+}
+
+zg361comp.900 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.900.t
+    desc = zg361comp.900.desc
+    trigger = { is_ai = no }
+    option = { name = zg361comp.ok }
+}
+
+zg361comp.901 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.901.t
+    desc = zg361comp.901.desc
+    trigger = { is_ai = no }
+    option = { name = zg361comp.ok }
+}
+
+zg361comp.902 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.902.t
+    desc = zg361comp.902.desc
+    trigger = { is_ai = no }
+    option = { name = zg361comp.ok }
+}
+
+zg361comp.903 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.903.t
+    desc = zg361comp.903.desc
+    trigger = { is_ai = no }
+    option = { name = zg361comp.ok }
+}
+
+zg361comp.904 = {
+    type = character_event
+    theme = vassal
+    title = zg361comp.904.t
+    desc = zg361comp.904.desc
+    trigger = { is_ai = no }
+    option = { name = zg361comp.ok }
+}
