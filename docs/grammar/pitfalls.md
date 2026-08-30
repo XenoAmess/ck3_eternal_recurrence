@@ -50,6 +50,7 @@
 | `Data error in loc string`，hidden event 的 `debug_log = <loc_key>` 中 `ROOT.Var` / `ROOT.Char.MakeScope.Var` 全部渲染为空 | 原版可行样例是在可见 character event 的 option 中求值；hidden event `immediate` 的 debug-log 本地化没有等价数据上下文，多跨一层事件也无效 | 不用动态 localization 传遥测。用 script value 对生产 global 做 `abs/floor/divide/modulo 2`，再以静态 bit marker 在 BEGIN/END 间编码，外部 runner 还原。2026-08-19 长期平衡摇测实测 |
 | `Failed to fetch variable ... not being set` | 读了从未设置的变量 | 先 `if NOT has_global_variable` 兜底设默认 |
 | `change_variable effect [ Variable not of the 'value' scope type. Type: empty ]` | `change_variable` 不会为当前 scope 自动创建从未设置的数值变量 | 先 `has_variable`；已有时 `change_variable`，否则 `set_variable = { value = <本次增量> }`。2026-08-28 CK3 1.19.0.6 首次写入原版任命 candidate-score 变量实测 |
+| 参数化 scripted effect 想校验 `$AMOUNT$ > 0`，展开后可能变成无效的 `10 > 0` | `$PARAM$` 是文本替换；比较式左侧应是可求值的 script value/scope value，不能假定调用方传入的数字字面量可直接充当左值 | 先在 scripted trigger 中 `save_temporary_scope_value_as = { name = amount value = $AMOUNT$ }`，再写 `scope:amount > 0`；动态变量名可用原版已采用的 `has_variable = $VARIABLE$`、`var:$VARIABLE$`、`name = $VARIABLE$`。原版源码证据：CK3 1.19.0.6 `00_military_triggers.txt` 的 ratio 临时值与 `00_achievement_effects.txt` 的变量名参数；本项目共享案卷内核已做 L0 source contract，尚待 CK3 加载期互证 |
 | GUI 明明在 `MakeScope.Var(...)` 读镜像表头，加载仍报 `Variable '<name>' is set but is never used` | CK3 的游戏脚本变量用途分析不把 GUI/本地化读取算作脚本消费 | 变量确实只用于 UI 时，仍在实际可达的 effect/trigger 中做有意义的一次校验或组合；无用遥测则直接删掉。2026-08-28 CK3 1.19.0.6 PostValidate 实测 |
 | `Wrong scope for effect: character, expected dynasty` | 迭代器 scope 不对 | `every_dynasty_member` 需在 dynasty scope：角色下先 `dynasty = {}` |
 
