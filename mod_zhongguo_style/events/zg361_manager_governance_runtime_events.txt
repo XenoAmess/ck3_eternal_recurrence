@@ -1,0 +1,163 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+namespace = zg361mg
+
+# F032-036 delayed stage tickets.  Every event binds owner, subject, cycle,
+# case and expected state; stale copies are strict no-ops.
+zg361mg.100 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_mg_f_ticket_owner
+				exists = scope:zg361_mg_f_ticket_subject
+				this = scope:zg361_mg_f_ticket_subject
+				var:zg361_case_f_owner = scope:zg361_mg_f_ticket_owner
+				var:zg361_case_f_subject = scope:zg361_mg_f_ticket_subject
+				var:zg361_case_f_cycle_serial = scope:zg361_mg_f_ticket_cycle
+				var:zg361_case_f_case_serial = scope:zg361_mg_f_ticket_case
+				var:zg361_case_f_state = scope:zg361_mg_f_ticket_state
+				var:zg361_case_f_state = 1
+			}
+			zg361_mg_m032_score_manager_effect = yes
+		}
+		else = { debug_log = "ZG361MG: stale F032 ticket ignored" }
+	}
+}
+
+zg361mg.101 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_mg_f_ticket_owner exists = scope:zg361_mg_f_ticket_subject this = scope:zg361_mg_f_ticket_subject var:zg361_case_f_owner = scope:zg361_mg_f_ticket_owner var:zg361_case_f_subject = scope:zg361_mg_f_ticket_subject var:zg361_case_f_cycle_serial = scope:zg361_mg_f_ticket_cycle var:zg361_case_f_case_serial = scope:zg361_mg_f_ticket_case var:zg361_case_f_state = scope:zg361_mg_f_ticket_state var:zg361_case_f_state = 2 }
+			zg361_mg_m033_reason_code_effect = yes
+		}
+		else = { debug_log = "ZG361MG: stale F033 ticket ignored" }
+	}
+}
+
+zg361mg.102 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_mg_f_ticket_owner exists = scope:zg361_mg_f_ticket_subject this = scope:zg361_mg_f_ticket_subject var:zg361_case_f_owner = scope:zg361_mg_f_ticket_owner var:zg361_case_f_subject = scope:zg361_mg_f_ticket_subject var:zg361_case_f_cycle_serial = scope:zg361_mg_f_ticket_cycle var:zg361_case_f_case_serial = scope:zg361_mg_f_ticket_case var:zg361_case_f_state = scope:zg361_mg_f_ticket_state var:zg361_case_f_state = 3 }
+			zg361_mg_m034_freeze_nine_box_effect = yes
+		}
+		else = { debug_log = "ZG361MG: stale F034 ticket ignored" }
+	}
+}
+
+zg361mg.103 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = {
+			limit = { exists = scope:zg361_mg_f_ticket_owner exists = scope:zg361_mg_f_ticket_subject this = scope:zg361_mg_f_ticket_subject var:zg361_case_f_owner = scope:zg361_mg_f_ticket_owner var:zg361_case_f_subject = scope:zg361_mg_f_ticket_subject var:zg361_case_f_cycle_serial = scope:zg361_mg_f_ticket_cycle var:zg361_case_f_case_serial = scope:zg361_mg_f_ticket_case var:zg361_case_f_state = scope:zg361_mg_f_ticket_state var:zg361_case_f_state = 4 }
+			zg361_mg_m036_append_decade_log_effect = yes
+		}
+		else = { debug_log = "ZG361MG: stale F036 ticket ignored" }
+	}
+}
+
+# Player-visible manager result.  The score is in the event body, rather than
+# forcing the player to infer it from a grade or a separate scoreboard tab.
+zg361mg.120 = {
+	type = character_event
+	theme = vassal
+	title = zg361mg.120.t
+	desc = zg361mg.120.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_mg_f_ticket_owner
+		exists = scope:zg361_mg_f_ticket_subject
+		this = scope:zg361_mg_f_ticket_subject
+		var:zg361_case_f_owner = scope:zg361_mg_f_ticket_owner
+		var:zg361_case_f_cycle_serial = scope:zg361_mg_f_ticket_cycle
+		var:zg361_case_f_case_serial = scope:zg361_mg_f_ticket_case
+		var:zg361_case_f_state = 5
+		var:zg361_case_f_active = 0
+	}
+	option = { name = zg361mg.120.a }
+}
+
+# AK345-354 five-stage tickets.
+zg361mg.200 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = { limit = { exists = scope:zg361_mg_ak_ticket_owner exists = scope:zg361_mg_ak_ticket_subject this = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner var:zg361_case_ak_subject = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case var:zg361_case_ak_state = scope:zg361_mg_ak_ticket_state var:zg361_case_ak_state = 1 } zg361_mg_ak_stage_1_effect = yes }
+		else = { debug_log = "ZG361MG: stale AK drafted ticket ignored" }
+	}
+}
+
+zg361mg.201 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = { limit = { exists = scope:zg361_mg_ak_ticket_owner exists = scope:zg361_mg_ak_ticket_subject this = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner var:zg361_case_ak_subject = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case var:zg361_case_ak_state = scope:zg361_mg_ak_ticket_state var:zg361_case_ak_state = 2 } zg361_mg_ak_stage_2_effect = yes }
+		else = { debug_log = "ZG361MG: stale AK piloted ticket ignored" }
+	}
+}
+
+zg361mg.202 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = { limit = { exists = scope:zg361_mg_ak_ticket_owner exists = scope:zg361_mg_ak_ticket_subject this = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner var:zg361_case_ak_subject = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case var:zg361_case_ak_state = scope:zg361_mg_ak_ticket_state var:zg361_case_ak_state = 3 } zg361_mg_ak_stage_3_effect = yes }
+		else = { debug_log = "ZG361MG: stale AK effective ticket ignored" }
+	}
+}
+
+zg361mg.203 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = { limit = { exists = scope:zg361_mg_ak_ticket_owner exists = scope:zg361_mg_ak_ticket_subject this = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner var:zg361_case_ak_subject = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case var:zg361_case_ak_state = scope:zg361_mg_ak_ticket_state var:zg361_case_ak_state = 4 } zg361_mg_ak_stage_4_effect = yes }
+		else = { debug_log = "ZG361MG: stale AK exception-audited ticket ignored" }
+	}
+}
+
+zg361mg.204 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = { limit = { exists = scope:zg361_mg_ak_ticket_owner exists = scope:zg361_mg_ak_ticket_subject this = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner var:zg361_case_ak_subject = scope:zg361_mg_ak_ticket_subject var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case var:zg361_case_ak_state = scope:zg361_mg_ak_ticket_state var:zg361_case_ak_state = 5 } zg361_mg_ak_stage_5_effect = yes }
+		else = { debug_log = "ZG361MG: stale AK measured ticket ignored" }
+	}
+}
+
+zg361mg.220 = {
+	type = character_event
+	theme = stewardship
+	title = zg361mg.220.t
+	desc = zg361mg.220.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_mg_ak_ticket_owner
+		exists = scope:zg361_mg_ak_ticket_subject
+		this = scope:zg361_mg_ak_ticket_subject
+		var:zg361_case_ak_owner = scope:zg361_mg_ak_ticket_owner
+		var:zg361_case_ak_cycle_serial = scope:zg361_mg_ak_ticket_cycle
+		var:zg361_case_ak_case_serial = scope:zg361_mg_ak_ticket_case
+		var:zg361_case_ak_state = 6
+		var:zg361_case_ak_active = 0
+	}
+	option = { name = zg361mg.220.a }
+}
+
+zg361mg.250 = {
+	type = character_event hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_mg_exception_ticket_owner
+				exists = scope:zg361_mg_exception_ticket_subject
+				this = scope:zg361_mg_exception_ticket_subject
+				has_variable = zg361_mg_exception_pending
+				var:zg361_mg_exception_pending = 1
+				var:zg361_mg_exception_owner = scope:zg361_mg_exception_ticket_owner
+				var:zg361_mg_exception_subject = scope:zg361_mg_exception_ticket_subject
+				var:zg361_mg_exception_cycle = scope:zg361_mg_exception_ticket_cycle
+				var:zg361_mg_exception_case = scope:zg361_mg_exception_ticket_case
+				var:zg361_mg_exception_state = scope:zg361_mg_exception_ticket_state
+				var:zg361_mg_exception_expiry_year = scope:zg361_mg_exception_ticket_expiry
+			}
+			zg361_mg_resolve_exception_due_effect = yes
+		}
+		else = { debug_log = "ZG361MG: stale policy-exception deadline ignored" }
+	}
+}

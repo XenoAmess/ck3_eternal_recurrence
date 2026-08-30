@@ -1,0 +1,7 @@
+﻿l_polish:
+ zg361mg.120.t:0 "Your Manager Performance Record"
+ zg361mg.120.desc:0 "Your direct superior has closed the manager review. Manager score: #high [ROOT.MakeScope.Var('zg361_mg_manager_score').GetValue|0]#!. Frozen source cycle: [ROOT.MakeScope.Var('zg361_mg_snapshot_source_serial').GetValue|0]; current review cycle: [ROOT.MakeScope.Var('zg361_case_f_cycle_serial').GetValue|0]. Profile reason total: [ROOT.MakeScope.Var('zg361_mg_reason_total').GetValue|0]. Nine-box code: [ROOT.MakeScope.Var('zg361_mg_nine_box_code').GetValue|0] (0 means that a second frozen history does not yet exist). A Jingcha refusal, when present, is shown in the frozen breakdown as exactly -50 and is consumed only once."
+ zg361mg.120.a:0 "I have read the score and its reasons."
+ zg361mg.220.t:0 "Performance-System Operations Report"
+ zg361mg.220.desc:0 "The policy cycle has migrated. Remaining governance capacity: #high [ROOT.MakeScope.Var('zg361_mg_admin_capacity_remaining').GetValue|0]#!. Audit sample: [ROOT.MakeScope.Var('zg361_mg_audit_sample_n').GetValue|0]; deterministic fingerprint: [ROOT.MakeScope.Var('zg361_mg_audit_selection_fingerprint').GetValue|0]. Fairness-gaming flag: [ROOT.MakeScope.Var('zg361_mg_fairness_gaming').GetValue|0]."
+ zg361mg.220.a:0 "Archive the receipts."
