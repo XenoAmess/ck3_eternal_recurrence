@@ -79,6 +79,18 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         ):
             self.assertIn(f"name = {variable}", self.effects)
 
+    def test_frozen_values_score_has_reachable_statement_consumer(self) -> None:
+        self.assertIn(
+            "name = zg361_result_values_frozen value = var:zg361_values",
+            self.effects,
+        )
+        statement = self.events.split("zg361.53 = {", 1)[1]
+        self.assertIn(
+            "name = zg361_stmt_values_score "
+            "value = var:zg361_result_values_frozen",
+            statement,
+        )
+
     def test_refusal_only_changes_service_route_and_witness_must_settle(self) -> None:
         notice = self.events.split("zg361.50 = {", 1)[1].split("zg361.51 = {", 1)[0]
         witness = self.events.split("zg361.51 = {", 1)[1].split("zg361.52 = {", 1)[0]
@@ -90,12 +102,43 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         self.assertIn("stale witnessed-delivery token ignored", witness)
 
     def test_delivery_and_fourfold_settlement_are_idempotent(self) -> None:
+        freeze = self.effects.split("zg361_freeze_result_case_effect = {", 1)[
+            1
+        ].split("zg361_apply_grade_effect = {", 1)[0]
         settlement = self.effects.split(
             "zg361_settle_delivered_325_effect = {", 1
         )[1].split("zg361_appeal_regrade_to_35_effect = {", 1)[0]
         self.assertIn(
-            "var:zg361_result_settlement_posted_serial = "
-            "var:zg361_result_case_serial",
+            "set_variable = { name = zg361_result_settlement_posted_serial value = 0 }",
+            freeze,
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_result_refund_posted_serial value = 0 }",
+            freeze,
+        )
+        self.assertNotIn(
+            "remove_variable = zg361_result_settlement_posted_serial", freeze
+        )
+        self.assertNotIn("remove_variable = zg361_result_refund_posted_serial", freeze)
+        delivery = self.effects.split("zg361_deliver_325_notice_effect = {", 1)[
+            1
+        ].split("zg361_settle_delivered_325_effect = {", 1)[0]
+        self.assertIn("var:zg361_result_settlement_posted_serial = 0", delivery)
+        self.assertIn("var:zg361_result_settlement_posted_serial = 0", settlement)
+        self.assertNotIn(
+            "has_variable = zg361_result_settlement_posted_serial", delivery
+        )
+        self.assertNotIn(
+            "has_variable = zg361_result_settlement_posted_serial",
+            settlement.split("set_variable = { name = zg361_result_settlement_posted_serial", 1)[0],
+        )
+        self.assertNotIn(
+            "NOT = {\n\t\t\t\thas_variable = zg361_result_settlement_posted_serial",
+            delivery + settlement,
+        )
+        self.assertIn(
+            "set_variable = { name = zg361_result_settlement_posted_serial "
+            "value = var:zg361_result_case_serial }",
             settlement,
         )
         self.assertIn("name = zg361_result_treasury_before value = treasury", settlement)
@@ -131,6 +174,15 @@ class Phase2Ck3WiringTests(unittest.TestCase):
             "name = zg361_result_appeal_open value = 0",
         ):
             self.assertIn(token, appeal)
+        self.assertIn("var:zg361_result_refund_posted_serial = 0", appeal)
+        refund_gate = appeal.split(
+            "zg361_apply_receipted_appeal_regrade_effect = yes", 1
+        )[0]
+        self.assertNotIn("has_variable = zg361_result_refund_posted_serial", refund_gate)
+        self.assertNotIn(
+            "NOT = {\n\t\t\t\thas_variable = zg361_result_refund_posted_serial",
+            refund_gate,
+        )
 
     def test_statement_reuses_decision_and_invisible_bridge_not_hud(self) -> None:
         self.assertIn("zg361_view_result_statement_decision = {", self.decisions)

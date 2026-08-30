@@ -287,6 +287,7 @@ zg361.53 = {
 		save_scope_value_as = { name = zg361_stmt_rank value = var:zg361_result_rank_frozen }
 		save_scope_value_as = { name = zg361_stmt_cohort value = var:zg361_result_cohort_n_frozen }
 		save_scope_value_as = { name = zg361_stmt_absolute_grade value = var:zg361_result_absolute_grade }
+		save_scope_value_as = { name = zg361_stmt_values_score value = var:zg361_result_values_frozen }
 		save_scope_value_as = { name = zg361_stmt_governance value = var:zg361_result_evidence_governance }
 		save_scope_value_as = { name = zg361_stmt_capability value = var:zg361_result_evidence_capability }
 		save_scope_value_as = { name = zg361_stmt_growth value = var:zg361_result_evidence_growth }

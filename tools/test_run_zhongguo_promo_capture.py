@@ -193,20 +193,13 @@ def main() -> int:
     )
     assert received is not None
     received_body = received.group(0)
-    assert '"\u8ba4\u547d"' in received_body
-    assert '"\u4e0a\u53f8\u8003\u5b9a"' in received_body
-    assert (
-        'result_option = acceptance.wait_for_ocr_text(\n        "\u77e5\u9053\u4e86"'
-        not in received_body
-    )
-    assert "real 3.25 result response was not accepted" in received_body
+    assert '"native_mcp_completed_before_received_board"' in received_body
+    assert '"ocr_used_for_navigation_or_green": False' in received_body
+    assert '"\u8ba4\u547d"' not in received_body
+    assert '"\u4e0a\u53f8\u8003\u5b9a"' not in received_body
     assert "acceptance.ensure_game_paused" in received_body
     assert "settle_promo_interruptions" in received_body
     for token in (
-        "speed_one_gate = arm_native_speed_one(",
-        'stem="11_received_result"',
-        'expected_predecessor_event_key="zg361.4"',
-        "pause_after_promo_event_click",
         '"11_received_result_immediate_pause_gate.json"',
         'stream.count("ZGA: TEST PASS clean_policy_001_dispatched")',
         '"early_policy_001_marker_count"',
@@ -214,17 +207,9 @@ def main() -> int:
         '"policy card 001 dispatched before received-scoreboard capture"',
     ):
         assert token in received_body, token
-    assert received_body.index("speed_one_gate = arm_native_speed_one(") < received_body.index(
-        'acceptance.deliberate_click(result_option, "accept real 3.25 result")'
-    )
-    assert received_body.index(
-        'acceptance.deliberate_click(result_option, "accept real 3.25 result")'
-    ) < received_body.index("pause_after_promo_event_click")
-    assert (
-        'acceptance.deliberate_click(result_option, "accept real 3.25 result")\n'
-        "    pause_evidence = pause_after_promo_event_click("
-    ) in received_body
-    assert 'acceptance.ensure_game_paused(artifacts, "11_received_result")' not in received_body
+    assert "arm_native_speed_one" not in received_body
+    assert "pause_after_promo_event_click" not in received_body
+    assert "result_option" not in received_body
     for token in (
         '"本人所属考核单元"',
         '"11_received_tab_reopened"',
@@ -2025,6 +2010,8 @@ def main() -> int:
     assert interruption.index(
         "pause_bound_native_event_for_definition_query"
     ) < interruption.index("query_event_definition_identity")
+    assert "require_settled_revision=True" in interruption
+    assert "require_settled_revision=preferred_option_text is not None" not in interruption
 
     identity_pause = inspect.getsource(
         capture.pause_bound_native_event_for_definition_query
@@ -3103,11 +3090,55 @@ def main() -> int:
     assert "recorder.resolve_reviewed_subject" in personal_body
     assert "personal_result_target_projected_bottom_two" in personal_body
     assert "clean_policy_chain_scheduled" in personal_body
+    for token in (
+        'expected_event_definition_key="zg361.50"',
+        'expected_option_text="拒绝签收"',
+        'expected_event_definition_key="zg361.4"',
+        'expected_option_text="认命"',
+        "select_resolved_event_option_native",
+        "pause_after_promo_event_click",
+        "wait_for_fixture_marker_native",
+        "phase2_refused_notice_witnessed_and_settled",
+        '"ocr_used_for_navigation_or_green": False',
+    ):
+        assert token in personal_body, token
+    notice_identity_index = personal_body.index(
+        'expected_event_definition_key="zg361.50"'
+    )
+    refusal_option_index = personal_body.index('expected_option_text="拒绝签收"')
+    result_identity_index = personal_body.index(
+        'expected_event_definition_key="zg361.4"'
+    )
+    assert notice_identity_index < refusal_option_index < result_identity_index
+    assert personal_body.index('expected_event_definition_key="zg361.4"') < (
+        personal_body.index('("上司考定", "你的绩效", "KPI", "同组位次")')
+    )
     assert "PROMO_PERSONAL_RESULT_FIELD_REGION" in personal_body
     assert '("你的绩效", "3.25")' in personal_body
     assert '("3.75", "3.5", "zg361_"' in personal_body
     assert "personal result must render exactly one grade" not in personal_body
     assert "grades = tuple" not in personal_body
+
+    native_event_wait = inspect.getsource(capture.wait_for_native_event_definition)
+    for token in (
+        "pause_bound_native_event_for_definition_query",
+        "query_event_definition_identity",
+        "select_single_option_interruption_native",
+        "resume_personal_switch_timeline_native",
+        '"ocr_used_for_navigation": False',
+        '"visual_fallback_used": False',
+    ):
+        assert token in native_event_wait, token
+    assert "wait_for_ocr" not in native_event_wait
+    assert "deliberate_click" not in native_event_wait
+
+    native_marker_wait = inspect.getsource(capture.wait_for_fixture_marker_native)
+    assert "stream.count(marker)" in native_marker_wait
+    assert 'service.execute_step(\n                        "pause-map"' in native_marker_wait
+    assert "resume_personal_switch_timeline_native" in native_marker_wait
+    assert '"ocr_used_for_navigation": False' in native_marker_wait
+    assert "wait_for_ocr" not in native_marker_wait
+    assert "deliberate_click" not in native_marker_wait
 
     switch_advance = inspect.getsource(capture.advance_to_personal_switch)
     for token in (

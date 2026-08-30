@@ -148,22 +148,34 @@ zga_acceptance.2 = {
 						has_variable = zg361_last_grade
 						var:zg361_last_grade = 1
 						zg361_is_current_liege_review_record_trigger = yes
-						has_character_modifier = zg361_grade_325
-						has_character_modifier = zg361_pip
+						has_variable = zg361_result_case_owner
+						var:zg361_result_case_owner = root
+						has_variable = zg361_result_cycle_serial
+						var:zg361_result_cycle_serial = root.var:zg361_review_serial
+						has_variable = zg361_result_case_serial
+						var:zg361_result_case_serial > 0
+						var:zg361_result_case_state = 1
+						var:zg361_result_delivery_method = 0
+						var:zg361_result_grade = 1
+						var:zg361_result_appeal_open = 0
+						var:zg361_result_salary_cut_active = 0
+						NOT = { has_character_modifier = zg361_grade_325 }
+						NOT = { has_character_modifier = zg361_pip }
+						var:zg361_result_settlement_posted_serial = 0
+						var:zg361_result_refund_posted_serial = 0
 						NOT = { has_variable = zg361_skipped_jingcha_superior }
 						NOT = { has_variable = zg361_skipped_jingcha_year }
 					}
 				}
 				debug_log = "ZGA: TEST PASS superior_assigned_player_grade"
+				debug_log = "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty"
 				debug_log = "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior"
 				scope:zga_personal_result_target = {
-					add_character_flag = zga_clean_policy_chain_subject
-					# The shipped 3.25 elimination follow-up zg361.6 arrives at D+2.
-					# Keep policy #001 one day later so the native MCP can identify and
-					# clear that real event before the clean policy card is presented.
-					trigger_event = { id = zga_acceptance.6 days = 3 }
+					# Verify only after the player's seven-day refusal/witness path has
+					# had one full extra day to settle. This carrier never mutates case
+					# state or receipts; it is an acceptance-only read oracle.
+					trigger_event = { id = zga_acceptance.13 days = 8 }
 				}
-				debug_log = "ZGA: TEST PASS clean_policy_chain_scheduled"
 			}
 			else = { debug_log = "ZGA: TEST FAIL superior_assigned_player_grade" }
 
@@ -529,5 +541,87 @@ zga_acceptance.12 = {
 			debug_log = "ZGA: TEST PASS clean_policy_chain_completed"
 		}
 		else = { debug_log = "ZGA: TEST FAIL clean_policy_chain_completed" }
+	}
+}
+
+# Phase-two refusal verifier. The shipped zg361.50 option schedules witnessed
+# delivery at D+7; this hidden D+8 carrier only checks the product-owned state,
+# retries the two idempotent product effects, and then starts the existing clean
+# policy-card chain. It never writes a PASS precondition or receipt.
+zga_acceptance.13 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = zga_historical_song_direct_candidate
+				has_character_flag = zga_reserved_historical_personal_result_target
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_result_case_owner
+				var:zg361_result_case_owner = liege
+				has_variable = zg361_result_cycle_serial
+				var:zg361_result_cycle_serial = liege.var:zg361_review_serial
+				has_variable = zg361_result_case_serial
+				var:zg361_result_case_serial > 0
+				var:zg361_result_case_state = 3
+				var:zg361_result_delivery_method = 3
+				var:zg361_result_grade = 1
+				var:zg361_result_delivered_year = current_year
+				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+				var:zg361_result_appeal_open = 1
+				var:zg361_result_salary_cut_active = 1
+				has_character_modifier = zg361_grade_325
+				has_character_modifier = zg361_pip
+				has_variable = zg361_result_treasury_paid
+				has_variable = zg361_result_gold_paid
+				has_variable = zg361_result_merit_paid
+				has_variable = zg361_last_penalty_reviewer
+				var:zg361_last_penalty_reviewer = var:zg361_result_case_owner
+				has_variable = zg361_last_penalty_serial
+				var:zg361_last_penalty_serial = var:zg361_result_cycle_serial
+				liege = {
+					has_opinion_modifier = {
+						target = root
+						modifier = zg361_annoyed
+					}
+				}
+			}
+			debug_log = "ZGA: TEST PASS phase2_refused_notice_witnessed_and_settled"
+
+			set_variable = { name = zga_refusal_case_serial value = var:zg361_result_case_serial }
+			set_variable = { name = zga_refusal_gold value = gold }
+			set_variable = { name = zga_refusal_treasury value = treasury }
+			set_variable = { name = zga_refusal_merit value = merit }
+			set_variable = { name = zga_refusal_streak value = var:zg361_streak_bottom }
+			zg361_deliver_325_notice_effect = yes
+			zg361_settle_delivered_325_effect = yes
+			if = {
+				limit = {
+					gold = var:zga_refusal_gold
+					treasury = var:zga_refusal_treasury
+					merit = var:zga_refusal_merit
+					var:zg361_streak_bottom = var:zga_refusal_streak
+					var:zg361_result_case_serial = var:zga_refusal_case_serial
+					var:zg361_result_settlement_posted_serial = var:zga_refusal_case_serial
+				}
+				debug_log = "ZGA: TEST PASS phase2_refused_delivery_receipt_idempotent"
+			}
+			else = { debug_log = "ZGA: TEST FAIL phase2_refused_delivery_receipt_idempotent" }
+			remove_variable = zga_refusal_case_serial
+			remove_variable = zga_refusal_gold
+			remove_variable = zga_refusal_treasury
+			remove_variable = zga_refusal_merit
+			remove_variable = zga_refusal_streak
+
+			add_character_flag = zga_clean_policy_chain_subject
+			# The shipped 3.25 elimination follow-up zg361.6 arrives at D+2.
+			# Keep policy #001 one day later so the native MCP can identify and
+			# clear that real event before the clean policy card is presented.
+			trigger_event = { id = zga_acceptance.6 days = 3 }
+			debug_log = "ZGA: TEST PASS clean_policy_chain_scheduled"
+		}
+		else = { debug_log = "ZGA: TEST FAIL phase2_refused_notice_witnessed_and_settled" }
 	}
 }

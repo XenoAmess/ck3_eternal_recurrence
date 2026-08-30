@@ -189,8 +189,10 @@ zga_initialize_effect = {
 	}
 }
 
-# Integrated receipt probe: exercise the real 3.25 and appeal effects against
-# one disposable AI official before the main first-cycle review resets results.
+# Integrated phase-two result-case probe. The fixture establishes only a real
+# reviewer/subject/cycle precondition; production computes the evidence sheet,
+# freezes the case, auto-delivers the AI subject's 3.25, posts the receipt and
+# performs the appeal. No post-state is manufactured by the fixture.
 zga_verify_penalty_and_appeal_effect = {
 	random_vassal = {
 		limit = {
@@ -204,10 +206,23 @@ zga_verify_penalty_and_appeal_effect = {
 	if = {
 		limit = { exists = scope:zga_receipt_probe }
 		set_variable = { name = zg361_review_serial value = 7001 }
+		set_variable = { name = zg361_cohort_n value = 1 }
 		set_variable = { name = zg361_last_325_n value = 0 }
 		set_variable = { name = zg361_last_35_n value = 0 }
 		scope:zga_receipt_probe = {
 			set_variable = { name = zg361_streak_bottom value = 0 }
+			set_variable = { name = zg361_last_reviewer value = root }
+			set_variable = { name = zg361_last_review_serial value = root.var:zg361_review_serial }
+			set_variable = { name = zg361_rank value = 1 }
+			# Deterministic negative collaboration/Jingcha evidence is a fixture
+			# input, not a grade. The real KPI effect still freezes all eight fields
+			# and derives the absolute grade before the forced final 3.25 is applied.
+			set_variable = { name = zg361_slacking value = 1 }
+			set_variable = { name = zg361_slandered value = 1 }
+			set_variable = { name = zg361_slander_backfire value = 1 }
+			set_variable = { name = zg361_skipped_jingcha_superior value = root }
+			set_variable = { name = zg361_skipped_jingcha_year value = current_year }
+			zg361_compute_kpi_effect = yes
 			add_gold = 500
 			add_treasury = 500
 			change_merit = { value = 500 }
@@ -226,7 +241,8 @@ zga_verify_penalty_and_appeal_effect = {
 				name = zga_merit_after_penalty
 				value = { value = var:zga_merit_before_penalty subtract = medium_merit_value }
 			}
-			zg361_grade_325_apply_effect = yes
+			set_variable = { name = zg361_pending_grade value = 1 }
+			zg361_apply_grade_effect = yes
 			if = {
 				limit = {
 					gold = var:zga_gold_after_penalty
@@ -244,6 +260,68 @@ zga_verify_penalty_and_appeal_effect = {
 				debug_log = "ZGA: TEST PASS grade_325_fourfold_penalty"
 			}
 			else = { debug_log = "ZGA: TEST FAIL grade_325_fourfold_penalty" }
+
+			if = {
+				limit = {
+					has_variable = zg361_result_case_owner
+					var:zg361_result_case_owner = root
+					has_variable = zg361_result_cycle_serial
+					var:zg361_result_cycle_serial = 7001
+					has_variable = zg361_result_case_serial
+					var:zg361_result_case_serial > 0
+					var:zg361_result_case_state = 3
+					var:zg361_result_delivery_method = 4
+					var:zg361_result_grade = 1
+					var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
+					var:zg361_result_kpi_frozen = var:zg361_kpi
+					var:zg361_result_absolute_grade = var:zg361_absolute_grade
+					var:zg361_result_evidence_governance = var:zg361_evidence_governance
+					var:zg361_result_evidence_capability = var:zg361_evidence_capability
+					var:zg361_result_evidence_growth = var:zg361_evidence_growth
+					var:zg361_result_evidence_superior = var:zg361_evidence_superior
+					var:zg361_result_evidence_values = var:zg361_evidence_values
+					var:zg361_result_evidence_collaboration = var:zg361_evidence_collaboration
+					var:zg361_result_evidence_jingcha = var:zg361_evidence_jingcha
+					var:zg361_result_evidence_organization = var:zg361_evidence_organization
+					OR = {
+						AND = {
+							var:zg361_result_absolute_grade = 1
+							var:zg361_result_grade_reason = 0
+						}
+						AND = {
+							var:zg361_result_absolute_grade >= 2
+							var:zg361_result_grade_reason = 5
+						}
+					}
+					var:zg361_result_appeal_open = 1
+					var:zg361_result_salary_cut_active = 1
+					NOT = { has_variable = zg361_pending_grade }
+				}
+				debug_log = "ZGA: TEST PASS phase2_case_facts_and_quota_reason_frozen"
+			}
+			else = { debug_log = "ZGA: TEST FAIL phase2_case_facts_and_quota_reason_frozen" }
+
+			# Delivery and settlement retries must not post a second receipt, mutate
+			# resources or advance the bottom streak.
+			set_variable = { name = zga_case_serial_after_penalty value = var:zg361_result_case_serial }
+			set_variable = { name = zga_gold_after_idempotent_base value = gold }
+			set_variable = { name = zga_treasury_after_idempotent_base value = treasury }
+			set_variable = { name = zga_merit_after_idempotent_base value = merit }
+			set_variable = { name = zga_streak_after_idempotent_base value = var:zg361_streak_bottom }
+			zg361_deliver_325_notice_effect = yes
+			zg361_settle_delivered_325_effect = yes
+			if = {
+				limit = {
+					gold = var:zga_gold_after_idempotent_base
+					treasury = var:zga_treasury_after_idempotent_base
+					merit = var:zga_merit_after_idempotent_base
+					var:zg361_streak_bottom = var:zga_streak_after_idempotent_base
+					var:zg361_result_case_serial = var:zga_case_serial_after_penalty
+					var:zg361_result_settlement_posted_serial = var:zga_case_serial_after_penalty
+				}
+				debug_log = "ZGA: TEST PASS phase2_delivery_and_receipt_idempotent"
+			}
+			else = { debug_log = "ZGA: TEST FAIL phase2_delivery_and_receipt_idempotent" }
 
 			zg361_appeal_regrade_to_35_effect = yes
 			set_variable = {
@@ -263,6 +341,14 @@ zga_verify_penalty_and_appeal_effect = {
 					NOT = { has_variable = zg361_last_merit_penalty_paid }
 					NOT = { has_variable = zg361_last_penalty_reviewer }
 					NOT = { has_variable = zg361_last_penalty_serial }
+					var:zg361_result_case_state = 5
+					var:zg361_result_grade = 2
+					var:zg361_result_appeal_open = 0
+					var:zg361_result_salary_cut_active = 0
+					var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
+					var:zg361_result_treasury_refunded = var:zg361_result_treasury_paid
+					var:zg361_result_gold_refunded = var:zg361_result_gold_paid
+					var:zg361_result_merit_refunded = var:zg361_result_merit_paid
 				}
 				debug_log = "ZGA: TEST PASS appeal_exact_fixed_refund_and_salary_stop"
 			}
@@ -281,8 +367,17 @@ zga_verify_penalty_and_appeal_effect = {
 			}
 			else = { debug_log = "ZGA: TEST FAIL appeal_refund_idempotent" }
 			remove_character_modifier = zg361_grade_35
+			remove_variable = zg361_slacking
+			remove_variable = zg361_slandered
+			remove_variable = zg361_slander_backfire
+			remove_variable = zga_case_serial_after_penalty
+			remove_variable = zga_gold_after_idempotent_base
+			remove_variable = zga_treasury_after_idempotent_base
+			remove_variable = zga_merit_after_idempotent_base
+			remove_variable = zga_streak_after_idempotent_base
 		}
 		set_variable = { name = zg361_review_serial value = 0 }
+		set_variable = { name = zg361_cohort_n value = 0 }
 		debug_log = "ZGA: TEST PASS receipt_probe_completed"
 	}
 	else = { debug_log = "ZGA: TEST FAIL receipt_probe_target_unavailable" }

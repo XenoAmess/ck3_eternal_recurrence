@@ -137,6 +137,15 @@ def main() -> int:
     initialize = top_level_block(effects, "zga_initialize_effect")
     personal = top_level_block(effects, "zga_personal_result_effect")
     verify_board = top_level_block(effects, "zga_verify_player_review_effect")
+    phase2_receipt_probe = top_level_block(
+        effects, "zga_verify_penalty_and_appeal_effect"
+    )
+    assert "zg361_compute_kpi_effect = yes" in phase2_receipt_probe
+    assert "zg361_apply_grade_effect = yes" in phase2_receipt_probe
+    assert "zg361_grade_325_apply_effect = yes" not in phase2_receipt_probe
+    assert "ZGA: TEST PASS phase2_case_facts_and_quota_reason_frozen" in phase2_receipt_probe
+    assert "ZGA: TEST PASS phase2_delivery_and_receipt_idempotent" in phase2_receipt_probe
+    assert "zg361_appeal_regrade_to_35_effect = yes" in phase2_receipt_probe
     assert "character:han_8052" in initialize
     assert len(
         re.findall(
@@ -235,9 +244,26 @@ def main() -> int:
     assert "zg361_is_celestial_liege_trigger = yes" in personal_settlement
     assert "character:han_5253 = { save_scope_as = zga_personal_result_target }" not in personal_settlement
     assert "random_vassal" in personal_settlement  # optional real small-cohort probe remains
-    assert "trigger_event = { id = zga_acceptance.6 days = 3 }" in personal_settlement
-    assert "shipped 3.25 elimination follow-up zg361.6 arrives at D+2" in personal_settlement
-    assert "ZGA: TEST PASS clean_policy_chain_scheduled" in personal_settlement
+    assert "trigger_event = { id = zga_acceptance.13 days = 8 }" in personal_settlement
+    assert "var:zg361_result_case_state = 1" in personal_settlement
+    assert "NOT = { has_character_modifier = zg361_grade_325 }" in personal_settlement
+    assert "var:zg361_result_settlement_posted_serial = 0" in personal_settlement
+    assert "var:zg361_result_refund_posted_serial = 0" in personal_settlement
+    assert "NOT = { has_variable = zg361_result_settlement_posted_serial }" not in personal_settlement
+    assert "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty" in personal_settlement
+
+    refusal_verifier = top_level_block(events, "zga_acceptance.13")
+    assert "hidden = yes" in refusal_verifier
+    assert "var:zg361_result_case_state = 3" in refusal_verifier
+    assert "var:zg361_result_delivery_method = 3" in refusal_verifier
+    assert "var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial" in refusal_verifier
+    assert "ZGA: TEST PASS phase2_refused_notice_witnessed_and_settled" in refusal_verifier
+    assert "zg361_deliver_325_notice_effect = yes" in refusal_verifier
+    assert "zg361_settle_delivered_325_effect = yes" in refusal_verifier
+    assert "ZGA: TEST PASS phase2_refused_delivery_receipt_idempotent" in refusal_verifier
+    assert "trigger_event = { id = zga_acceptance.6 days = 3 }" in refusal_verifier
+    assert "shipped 3.25 elimination follow-up zg361.6 arrives at D+2" in refusal_verifier
+    assert "ZGA: TEST PASS clean_policy_chain_scheduled" in refusal_verifier
 
     jingcha = top_level_block(events, "zga_acceptance.5")
     assert "hidden = yes" in jingcha

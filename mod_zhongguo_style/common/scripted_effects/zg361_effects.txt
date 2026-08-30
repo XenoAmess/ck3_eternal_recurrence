@@ -575,8 +575,13 @@ zg361_freeze_result_case_effect = {
 		set_variable = { name = zg361_result_salary_cut_active value = 0 }
 		set_variable = { name = zg361_result_appeal_open value = 0 }
 		set_variable = { name = zg361_result_delivery_method value = 0 }
-		remove_variable = zg361_result_settlement_posted_serial
-		remove_variable = zg361_result_refund_posted_serial
+		# 0 is an explicit "not posted" sentinel. Event-option tooltip
+		# evaluation speculatively walks the delivery/refund effects and does not
+		# short-circuit a has_variable guard before comparing the serial. Keeping
+		# both receipts initialized avoids unset-scope errors without posting or
+		# weakening either idempotence gate; real case serials are always 1..999999.
+		set_variable = { name = zg361_result_settlement_posted_serial value = 0 }
+		set_variable = { name = zg361_result_refund_posted_serial value = 0 }
 		set_variable = { name = zg361_result_treasury_refunded value = 0 }
 		set_variable = { name = zg361_result_gold_refunded value = 0 }
 		set_variable = { name = zg361_result_merit_refunded value = 0 }
@@ -794,10 +799,7 @@ zg361_deliver_325_notice_effect = {
 				var:zg361_result_case_state = 1
 				var:zg361_result_case_state = 2
 			}
-			NOT = {
-				has_variable = zg361_result_settlement_posted_serial
-				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
-			}
+			var:zg361_result_settlement_posted_serial = 0
 		}
 		set_variable = { name = zg361_result_case_state value = 3 }
 		set_variable = { name = zg361_result_delivered_year value = current_year }
@@ -818,10 +820,7 @@ zg361_settle_delivered_325_effect = {
 			has_variable = zg361_result_case_serial
 			var:zg361_result_case_state = 3
 			var:zg361_result_grade = 1
-			NOT = {
-				has_variable = zg361_result_settlement_posted_serial
-				var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
-			}
+			var:zg361_result_settlement_posted_serial = 0
 		}
 
 		add_character_modifier = { modifier = zg361_grade_325 years = 1 }
@@ -943,10 +942,7 @@ zg361_appeal_regrade_to_35_effect = {
 			var:zg361_result_appeal_open = 1
 			has_variable = zg361_result_settlement_posted_serial
 			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
-			NOT = {
-				has_variable = zg361_result_refund_posted_serial
-				var:zg361_result_refund_posted_serial = var:zg361_result_case_serial
-			}
+			var:zg361_result_refund_posted_serial = 0
 			has_variable = zg361_last_penalty_reviewer
 			var:zg361_last_penalty_reviewer = var:zg361_result_case_owner
 			has_variable = zg361_last_penalty_serial

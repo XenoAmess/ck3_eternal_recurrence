@@ -143,6 +143,8 @@ REQUIRED_FIXTURE_MARKERS = (
     "ZGA: TEST PASS calibration_c_mixed_newcomer_atomic_swap",
     "ZGA: TEST PASS pending_review_idempotent",
     "ZGA: TEST PASS grade_325_fourfold_penalty",
+    "ZGA: TEST PASS phase2_case_facts_and_quota_reason_frozen",
+    "ZGA: TEST PASS phase2_delivery_and_receipt_idempotent",
     "ZGA: TEST PASS appeal_exact_fixed_refund_and_salary_stop",
     "ZGA: TEST PASS appeal_refund_idempotent",
     "ZGA: MECHANISM BATCH BEGIN 361",
@@ -165,6 +167,9 @@ REQUIRED_LATE_FIXTURE_MARKERS = (
     "ZGA: TEST PASS post_baseline_newcomer_prepared",
     "ZGA: TEST PASS post_baseline_newcomer_protected_from_325",
     "ZGA: TEST PASS recording_health_guard_removed_before_switch",
+    "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty",
+    "ZGA: TEST PASS phase2_refused_notice_witnessed_and_settled",
+    "ZGA: TEST PASS phase2_refused_delivery_receipt_idempotent",
 )
 REQUIRED_PRODUCT_MARKERS = {
     "ZG361: annual review tick": 2,
@@ -1150,7 +1155,7 @@ def product_source_errors() -> list[str]:
     if effects_text.count("zg361_snapshot_player_result_effect = yes") != 3:
         errors.append("all three player grades must freeze their result payload")
     # Only the legacy delayed result trio (.2/.3/.4) is forbidden from
-    # rebuilding its payload from live review variables. Phase-two events
+    # rebuilding its payload from live review variables.  Phase two events
     # deliberately bind the already-frozen result case to saved event scopes;
     # scanning the whole file would reject that immutable read model.
     legacy_result_event_text = event_text.split(
@@ -1287,6 +1292,14 @@ def fixture_source_errors() -> list[str]:
         "trigger_event = zg361.40",
         "jingcha_mandate_issued",
         "grade_325_fourfold_penalty",
+        "phase2_case_facts_and_quota_reason_frozen",
+        "phase2_delivery_and_receipt_idempotent",
+        "zg361_compute_kpi_effect = yes",
+        "zg361_apply_grade_effect = yes",
+        "phase2_player_325_prepared_without_early_penalty",
+        "trigger_event = { id = zga_acceptance.13 days = 8 }",
+        "phase2_refused_notice_witnessed_and_settled",
+        "phase2_refused_delivery_receipt_idempotent",
         "appeal_exact_fixed_refund_and_salary_stop",
         "appeal_refund_idempotent",
         "bootstrap_first_review_strict_7_14_2",
@@ -4043,6 +4056,247 @@ def resume_personal_switch_timeline_native(
     )
 
 
+def wait_for_native_event_definition(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    stem: str,
+    expected_event_definition_key: str,
+    timeout_s: float = 45.0,
+) -> dict[str, object]:
+    """Reach one product event using native state, identity and ACK only.
+
+    No OCR or geometry participates in navigation or the GREEN decision. An
+    unrelated exactly-one-option event may be cleared through its bound native
+    instance; a multi-option interruption is an explicit MCP/policy blocker.
+    """
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "navigation_method": "native_mcp_event_identity_and_ack",
+        "expected_event_definition_key": expected_event_definition_key,
+        "timeout_seconds": timeout_s,
+        "observations": [],
+        "identity_queries": [],
+        "native_resumes": [],
+        "cleared_single_option_interruptions": [],
+        "terminal_identity": None,
+        "failure_reason": None,
+        "ocr_used_for_navigation": False,
+        "visual_fallback_used": False,
+    }
+    evidence_path = artifacts / f"{stem}_native_event_wait_gate.json"
+
+    def finish_red(reason: str) -> None:
+        evidence["failure_reason"] = reason
+        write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(reason)
+
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        observation = _personal_switch_native_snapshot(snapshot)
+        observations = evidence["observations"]
+        assert isinstance(observations, list)
+        if not observations or observation != observations[-1]:
+            observations.append(observation)
+
+        active_event_id = observation["active_event_instance_id"]
+        option_count = observation["active_event_option_count"]
+        if isinstance(active_event_id, int) and not isinstance(
+            active_event_id, bool
+        ):
+            try:
+                pause_gate = pause_bound_native_event_for_definition_query(
+                    service,
+                    artifacts,
+                    stem=f"{stem}_identity_{len(evidence['identity_queries']) + 1:02d}",
+                )
+                identity = query_event_definition_identity(
+                    service, pause_gate["snapshot"]
+                )
+            except Exception as error:
+                finish_red(
+                    "native MCP event identity unavailable: "
+                    f"{type(error).__name__}: {error}"
+                )
+            identity_queries = evidence["identity_queries"]
+            assert isinstance(identity_queries, list)
+            identity_queries.append(identity)
+            if identity["event_definition_key"] == expected_event_definition_key:
+                evidence["result"] = "GREEN"
+                evidence["terminal_identity"] = identity
+                evidence["failure_reason"] = None
+                write_json(evidence_path, evidence)
+                return {
+                    "snapshot": pause_gate["snapshot"],
+                    "identity": identity,
+                    "evidence": evidence,
+                }
+
+            if option_count == 1:
+                cleared = select_single_option_interruption_native(
+                    service,
+                    artifacts,
+                    f"{stem}_unexpected_{len(evidence['cleared_single_option_interruptions']) + 1:02d}",
+                    expected_event_instance_id=active_event_id,
+                )
+                cleared["event_definition_key"] = identity[
+                    "event_definition_key"
+                ]
+                cleared_rows = evidence["cleared_single_option_interruptions"]
+                assert isinstance(cleared_rows, list)
+                cleared_rows.append(cleared)
+                continue
+
+            finish_red(
+                "unexpected multi-option event blocks native phase-two path: "
+                f"{identity['event_definition_key']} options={option_count}"
+            )
+
+        if snapshot.get("paused") is True or snapshot.get("speed") != 5:
+            try:
+                resume = resume_personal_switch_timeline_native(
+                    service,
+                    reason=f"{stem}_resume_to_{expected_event_definition_key}",
+                    timeout_s=min(10.0, max(1.0, deadline - time.monotonic())),
+                )
+            except Exception as error:
+                finish_red(
+                    "native MCP timeline resume failed: "
+                    f"{type(error).__name__}: {error}"
+                )
+            resumes = evidence["native_resumes"]
+            assert isinstance(resumes, list)
+            resumes.append(resume)
+        else:
+            time.sleep(0.05)
+
+    finish_red(
+        "native MCP timed out waiting for product event "
+        f"{expected_event_definition_key}"
+    )
+    raise AssertionError("unreachable")
+
+
+def wait_for_fixture_marker_native(
+    stream: MarkerStream,
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    stem: str,
+    marker: str,
+    timeout_s: float = 20.0,
+) -> dict[str, object]:
+    """Advance natively until one fixture read-oracle marker is observed."""
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "navigation_method": "native_mcp_timeline_and_fixture_read_oracle",
+        "marker": marker,
+        "marker_count": 0,
+        "native_resumes": [],
+        "pause_submission": None,
+        "terminal_snapshot": None,
+        "failure_reason": None,
+        "ocr_used_for_navigation": False,
+        "visual_fallback_used": False,
+    }
+    evidence_path = artifacts / f"{stem}_native_marker_wait_gate.json"
+    deadline = time.monotonic() + timeout_s
+    while time.monotonic() < deadline:
+        stream.pump()
+        count = stream.count(marker)
+        if count:
+            snapshot = service.snapshot()
+            if snapshot.get("paused") is not True:
+                revision = snapshot.get("revision")
+                try:
+                    submission = service.execute_step(
+                        "pause-map",
+                        expected_revision=(
+                            revision
+                            if isinstance(revision, int)
+                            and not isinstance(revision, bool)
+                            else None
+                        ),
+                    )
+                except Exception as error:
+                    evidence["failure_reason"] = (
+                        "native pause after fixture marker failed: "
+                        f"{type(error).__name__}: {error}"
+                    )
+                    write_json(evidence_path, evidence)
+                    raise acceptance.RunnerError(
+                        str(evidence["failure_reason"])
+                    ) from error
+                evidence["pause_submission"] = submission
+                pause_deadline = time.monotonic() + 5.0
+                while time.monotonic() < pause_deadline:
+                    snapshot = service.snapshot()
+                    if snapshot.get("paused") is True:
+                        break
+                    time.sleep(0.05)
+            if snapshot.get("paused") is not True:
+                evidence["failure_reason"] = (
+                    "native MCP did not freeze timeline after fixture marker"
+                )
+                write_json(evidence_path, evidence)
+                raise acceptance.RunnerError(str(evidence["failure_reason"]))
+            evidence["result"] = "GREEN" if count == 1 else "RED"
+            evidence["marker_count"] = count
+            evidence["terminal_snapshot"] = _personal_switch_native_snapshot(
+                snapshot
+            )
+            evidence["failure_reason"] = (
+                None if count == 1 else f"fixture marker count is {count}, expected 1"
+            )
+            write_json(evidence_path, evidence)
+            if count != 1:
+                raise acceptance.RunnerError(str(evidence["failure_reason"]))
+            return evidence
+
+        snapshot = service.snapshot()
+        observation = _personal_switch_native_snapshot(snapshot)
+        active_event_id = observation["active_event_instance_id"]
+        if isinstance(active_event_id, int) and not isinstance(
+            active_event_id, bool
+        ):
+            evidence["failure_reason"] = (
+                "unexpected visible event blocked fixture marker wait; "
+                "query it through the native event path before continuing"
+            )
+            evidence["terminal_snapshot"] = observation
+            write_json(evidence_path, evidence)
+            raise acceptance.RunnerError(str(evidence["failure_reason"]))
+        if snapshot.get("paused") is True or snapshot.get("speed") != 5:
+            try:
+                resume = resume_personal_switch_timeline_native(
+                    service,
+                    reason=f"{stem}_resume_to_fixture_marker",
+                    timeout_s=min(10.0, max(1.0, deadline - time.monotonic())),
+                )
+            except Exception as error:
+                evidence["failure_reason"] = (
+                    "native timeline resume before fixture marker failed: "
+                    f"{type(error).__name__}: {error}"
+                )
+                write_json(evidence_path, evidence)
+                raise acceptance.RunnerError(str(evidence["failure_reason"])) from error
+            resumes = evidence["native_resumes"]
+            assert isinstance(resumes, list)
+            resumes.append(resume)
+        else:
+            time.sleep(0.05)
+
+    evidence["marker_count"] = stream.count(marker)
+    evidence["failure_reason"] = f"fixture marker timeout: {marker}"
+    write_json(evidence_path, evidence)
+    raise acceptance.RunnerError(str(evidence["failure_reason"]))
+
+
 def advance_to_personal_switch(
     stream: MarkerStream,
     artifacts: Path,
@@ -4174,19 +4428,61 @@ def capture_superior_assigned_result(
     )
     stream.wait("ZGA: TEST PASS superior_assigned_player_grade", 30)
     stream.wait(
+        "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty", 30
+    )
+    stream.wait(
         "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior", 30
     )
-    stream.wait("ZGA: TEST PASS clean_policy_chain_scheduled", 30)
     if stream.count("ZGA: TEST PASS superior_assigned_player_grade") != 1:
         raise acceptance.RunnerError(
             "superior-assigned player grade marker must occur exactly once"
         )
-    superior_interruptions = settle_promo_interruptions(
+
+    # Phase-two delivery is navigated exclusively through the exact-build
+    # event-window MCP. First bind the prepared notice, then choose refusal by
+    # resolved option text and independent typed ACK. OCR is not consulted.
+    notice_gate = wait_for_native_event_definition(
+        timeline_service,
         artifacts,
-        "10_superior_result_preemption",
-        observation_s=20.0,
-        stop_event_title="上司考定",
+        stem="10_phase2_325_notice",
+        expected_event_definition_key="zg361.50",
+        timeout_s=30.0,
     )
+    notice_speed_gate = arm_native_speed_one(
+        timeline_service,
+        artifacts,
+        stem="10_phase2_325_notice_refusal",
+        require_settled_revision=True,
+    )
+    notice_selection = select_resolved_event_option_native(
+        timeline_service,
+        artifacts,
+        notice_speed_gate["snapshot"],
+        stem="10_phase2_325_notice_refusal",
+        expected_event_definition_key="zg361.50",
+        expected_option_text="拒绝签收",
+    )
+    notice_transition = pause_after_promo_event_click(
+        timeline_service,
+        artifacts,
+        notice_speed_gate["snapshot"],
+        stem="10_phase2_325_notice_refusal",
+        expected_predecessor_event_key="zg361.50",
+    )
+
+    # Seven days later the hidden witness effect settles the same receipt; the
+    # visible personal result is the next canonical product event. This event
+    # identity, not its pixels, is the L1 navigation/state boundary.
+    result_gate = wait_for_native_event_definition(
+        timeline_service,
+        artifacts,
+        stem="10_phase2_witnessed_result",
+        expected_event_definition_key="zg361.4",
+        timeout_s=30.0,
+    )
+
+    # OCR below is final visual evidence only, after MCP has already proved the
+    # canonical event and completed the refusal action/ACK path.
     acceptance.wait_for_ocr_text(
         "上司考定",
         PROMO_EVENT_TITLE_REGION,
@@ -4215,6 +4511,43 @@ def capture_superior_assigned_result(
     if recorder:
         recorder.mark("superior_assigned_325_visible")
         recorder.clean_hold("superior_assigned_325", artifacts, 3.5)
+
+    # Close the result through the same typed event MCP, then advance only far
+    # enough for the D+8 fixture read-oracle to verify witnessed settlement and
+    # retry idempotence. Freeze before the existing policy chain can dispatch.
+    result_speed_gate = arm_native_speed_one(
+        timeline_service,
+        artifacts,
+        stem="10_phase2_result_accept",
+        require_settled_revision=True,
+    )
+    result_selection = select_resolved_event_option_native(
+        timeline_service,
+        artifacts,
+        result_speed_gate["snapshot"],
+        stem="10_phase2_result_accept",
+        expected_event_definition_key="zg361.4",
+        expected_option_text="认命",
+    )
+    result_transition = pause_after_promo_event_click(
+        timeline_service,
+        artifacts,
+        result_speed_gate["snapshot"],
+        stem="10_phase2_result_accept",
+        expected_predecessor_event_key="zg361.4",
+    )
+    refused_settlement_gate = wait_for_fixture_marker_native(
+        stream,
+        timeline_service,
+        artifacts,
+        stem="10_phase2_refused_settlement",
+        marker="ZGA: TEST PASS phase2_refused_notice_witnessed_and_settled",
+        timeout_s=20.0,
+    )
+    stream.wait(
+        "ZGA: TEST PASS phase2_refused_delivery_receipt_idempotent", 5
+    )
+    stream.wait("ZGA: TEST PASS clean_policy_chain_scheduled", 5)
     return {
         "real_superior_review_path": True,
         "reviewed_official_history_id": reviewed_history_id,
@@ -4230,8 +4563,31 @@ def capture_superior_assigned_result(
         "clean_policy_chain_scheduled_marker_count": stream.count(
             "ZGA: TEST PASS clean_policy_chain_scheduled"
         ),
-        "preempting_product_events_dismissed": superior_interruptions,
+        "preempting_product_events_dismissed": (
+            notice_gate["evidence"]["cleared_single_option_interruptions"]
+            + result_gate["evidence"]["cleared_single_option_interruptions"]
+        ),
         "timeline_interruptions_before_switch": switch_interruptions,
+        "phase2_mcp_first_delivery": {
+            "prepared_without_early_penalty_marker_count": stream.count(
+                "ZGA: TEST PASS phase2_player_325_prepared_without_early_penalty"
+            ),
+            "notice_identity": notice_gate["identity"],
+            "refusal_option_selection": notice_selection,
+            "refusal_transition": notice_transition,
+            "witnessed_result_identity": result_gate["identity"],
+            "result_option_selection": result_selection,
+            "result_transition": result_transition,
+            "witnessed_settlement_marker_gate": refused_settlement_gate,
+            "witnessed_settlement_marker_count": stream.count(
+                "ZGA: TEST PASS phase2_refused_notice_witnessed_and_settled"
+            ),
+            "refused_receipt_idempotence_marker_count": stream.count(
+                "ZGA: TEST PASS phase2_refused_delivery_receipt_idempotent"
+            ),
+            "ocr_used_for_navigation_or_green": False,
+            "visual_evidence_captured_after_native_identity": True,
+        },
         "rendered_grade": "3.25",
         "performance_field_ocr_artifact": (
             "10_superior_result_performance_field_ocr.json"
@@ -4570,39 +4926,14 @@ def capture_received_scoreboard(
     *,
     timeline_service: GameplayBridgeService,
 ) -> dict[str, object]:
-    # The manager-facing result summary (zg361.1) has a passive "知道了"
-    # close button.  The real subordinate-facing 3.25 result (zg361.4) instead
-    # requires one of four responses.  Choose the side-effect-minimal acceptance
-    # branch so the modal closes without opening an appeal or another event.
-    result_option = acceptance.wait_for_ocr_text(
-        "认命",
-        acceptance.FULL_SCREEN_REGION,
-        15,
-        artifacts,
-        "11_superior_result_accept_option.png",
-        contains=True,
-        stable_hits=1,
-    )
-    # The event restores its prior speed as soon as the option is accepted.
-    # Arm speed one before the click, then use the same native MCP connection
-    # to pause the map before the fixture's next-day policy carrier can preempt the
-    # received-board capture.
-    speed_one_gate = arm_native_speed_one(
-        timeline_service,
-        artifacts,
-        stem="11_received_result",
-    )
-    pre_click_snapshot = speed_one_gate["snapshot"]
-    acceptance.deliberate_click(result_option, "accept real 3.25 result")
-    pause_evidence = pause_after_promo_event_click(
-        timeline_service,
-        artifacts,
-        pre_click_snapshot,
-        stem="11_received_result",
-        expected_predecessor_event_key="zg361.4",
-    )
-    pause_evidence["speed_one_submission"] = speed_one_gate["submission"]
-    pause_evidence["speed_one_observations"] = speed_one_gate["observations"]
+    # capture_superior_assigned_result already closed zg361.4 through the typed
+    # event MCP and froze the timeline after the D+8 refusal verifier. This step
+    # is now display-only and must never navigate phase-two state through OCR.
+    pause_evidence = {
+        "result": "GREEN",
+        "selection_method": "native_mcp_completed_before_received_board",
+        "ocr_used_for_navigation_or_green": False,
+    }
     stream.pump()
     early_policy_count = stream.count("ZGA: TEST PASS clean_policy_001_dispatched")
     pause_evidence["early_policy_001_marker_count"] = early_policy_count
@@ -4618,20 +4949,6 @@ def capture_received_scoreboard(
         raise acceptance.RunnerError(
             "policy card 001 preempted the received-scoreboard capture"
         )
-    deadline = time.time() + 8
-    last_image = None
-    while time.time() < deadline:
-        last_image = acceptance.ImageGrab.grab()
-        if acceptance.find_ocr_text(
-            last_image, "上司考定", acceptance.FULL_SCREEN_REGION, contains=True
-        ) is None:
-            last_image.save(artifacts / "11_superior_result_accepted.png")
-            break
-        time.sleep(acceptance.POLL_INTERVAL_S)
-    else:
-        if last_image is not None:
-            last_image.save(artifacts / "timeout_11_superior_result_accept.png")
-        raise acceptance.RunnerError("real 3.25 result response was not accepted")
     isolated.wait_for_gameplay_hud(artifacts)
     settle_promo_interruptions(artifacts, "11_received_before_board")
     button = acceptance.wait_for_ocr_text(
@@ -5142,7 +5459,11 @@ def settle_promo_interruptions(
                 native_event_service,
                 artifacts,
                 stem=f"{diagnostic}_native_visual",
-                require_settled_revision=preferred_option_text is not None,
+                # set-speed-1 itself advances the public native revision.  The
+                # paused event query below must bind the post-command frame for
+                # every multi-option interruption, including vanilla events
+                # that have no configured preferred text.
+                require_settled_revision=True,
             )
             refreshed_identity = query_event_definition_identity(
                 native_event_service,

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Project phase-two English placeholder keys into the seven deferred locales.
+"""Keep phase-two key coverage in the seven non-authoring locales.
 
 Daily development authors Simplified Chinese and English only.  CK3 still
 requires every active language to expose the same keys, so this generator
-copies the bounded phase-two English block as explicit placeholders.  These
-files are structural coverage, not release-quality translations.
+appends missing keys from the bounded English block as explicit placeholders.
+Existing translated values in the canonical per-language files are preserved.
 """
 
 from __future__ import annotations
@@ -51,19 +51,45 @@ def phase2_lines() -> list[str]:
 
 def outputs() -> dict[Path, bytes]:
     body = phase2_lines()
+    source_by_key = {
+        line.lstrip().split(":", 1)[0]: line
+        for line in body
+    }
     result: dict[Path, bytes] = {}
     for language in LANGUAGES:
-        lines = [
-            f"l_{language}:",
-            " # GENERATED FILE — English placeholders only; not a release translation.",
-            *body,
-        ]
         path = (
             MOD_ROOT
             / "localization"
             / language
-            / f"zg361_phase2_l_{language}.yml"
+            / f"zg361_l_{language}.yml"
         )
+        if path.is_file():
+            existing = path.read_text(encoding="utf-8-sig").splitlines()
+            existing_keys = {
+                line.lstrip().split(":", 1)[0]
+                for line in existing
+                if line.startswith(" ") and ":" in line
+            }
+            missing = [
+                source_by_key[key]
+                for key in source_by_key
+                if key not in existing_keys
+            ]
+            lines = list(existing)
+            if missing:
+                lines.extend(
+                    [
+                        "",
+                        " # English development placeholders for missing phase-two keys.",
+                        *missing,
+                    ]
+                )
+        else:
+            lines = [
+                f"l_{language}:",
+                " # English development placeholders; not a release translation.",
+                *body,
+            ]
         result[path] = BOM + ("\n".join(lines) + "\n").encode("utf-8")
     return result
 
@@ -85,8 +111,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"STALE: {path.relative_to(MOD_ROOT)}")
         return 1
     print(
-        "GREEN: phase-two English placeholders "
-        + ("are current" if args.check else "generated")
+        "GREEN: phase-two locale coverage "
+        + ("is current" if args.check else "updated without replacing translations")
     )
     return 0
 
