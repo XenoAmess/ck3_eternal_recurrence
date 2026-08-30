@@ -1,6 +1,8 @@
 # ZhongGuo 361 二期 MCP 验收能力合同
 
-状态：需求合同，**只写能力边界，不在本工作包实现 MCP/native bridge**。二期测试优先 MCP；OCR 仅允许在 native 状态已经闭合后
+状态：需求合同与 provider 施工账本。**合同、native bridge/provider 实现和 exact-build 实机验收均已获授权**；不再存在
+“只写能力边界、不实现 provider”的限制。天朝二期完全完成前保持全局最高优先级，G2 次之；MCP 施工按下文真实 blocker
+逐项闭合，不扩成无关的平台重构，也不得中断正在运行的有效 CK3 长局。二期测试优先 MCP；OCR 仅允许在 native 状态已经闭合后
 制作最终截图，不参与导航、状态真值或 GREEN 判定。
 
 ## 当前实现盘点（2026-08-31，exact repository source）
@@ -79,8 +81,8 @@ back/close、`m_01`、`m_80` 与当前玩家 received-self 案卷按钮。状态
 - 100/125/150% UI scale 与三档分辨率下 rect 仍在安全区。
 
 另需 bounded scoreboard/case snapshot 返回 ACL 后的 facts/peer/quota/audit 冻结字段；GUI state 与数据查询必须来自同一 paused revision。
-它用于考核榜内页、告身、申诉/PIP、职业/HC、项目/运营和制度审计，不得退化为坐标点击或 OCR 找按钮。本条仍是需求合同；本
-mod 工作包不实现 MCP/native bridge。
+它用于考核榜内页、告身、申诉/PIP、职业/HC、项目/运营和制度审计，不得退化为坐标点击或 OCR 找按钮。本条先冻结 typed 合同，
+随后由 native bridge/provider、MCP facade、fixture 和 exact-build 实机矩阵依次实现并验收；在最后一项通过前仍保持 capability RED。
 
 ### 6. AI-owned case snapshot
 

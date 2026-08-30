@@ -284,7 +284,7 @@ py mod_zhongguo_style/tools/validate_local.py
 
 输入法根因已经排除。初始、相机前和 fallback 前三份 sidecar 均从 CK3 前台 PID 的焦点线程回读完整 HKL `0x04090409`；全局默认输入覆盖也保持 `English (United States) - US`，runner 没有恢复中文。随后 `V` 没有出现微软拼音候选层，但也没有出现 finder。相同 CK3 会话内，两次“更多”菜单均成功展开，OCR 分别把“查找头衔”稳定解析到 `(1820,1176)` 与 `(1819,1164)`；点击后菜单消失，右侧 finder 标题却仍未出现。因为没有 handler/postcondition ACK，本轮按设计 **RED**，没有把“英文已签署”或“菜单消失”冒充相机成功。
 
-根因边界据此收敛为能力缺口：当前验收器没有“按 loaded runtime stable title key 解析 landed title 并将地图居中到其 ProvinceID”的 MCP 夹具动作，只能在瞬态 GUI 上模拟人手。项目所有者明确要求正规终态走 MCP 层，并明确本轮 **MCP 只写能力合同、不实现**；合同已落在根知识库 `docs/ck3-native-title-map-navigation-contract.md`，状态严格为 `research / requirement-only`。它定义未来的 `ck3_center_map_on_landed_title_v1(title_key, expected_revision)`、typed title 解析、native camera 回读 ACK、负例和 fixture-live 门，不改任何 MCP/native 代码，也不声称现有 bridge 已支持。
+根因边界据此收敛为能力缺口：当前验收器没有“按 loaded runtime stable title key 解析 landed title 并将地图居中到其 ProvinceID”的 MCP 夹具动作，只能在瞬态 GUI 上模拟人手。项目所有者当时明确要求正规终态走 MCP 层，并将该轮限制为 **MCP 只写能力合同、不实现**；合同已落在根知识库 `docs/ck3-native-title-map-navigation-contract.md`，当时状态严格为 `research / requirement-only`。它定义未来的 `ck3_center_map_on_landed_title_v1(title_key, expected_revision)`、typed title 解析、native camera 回读 ACK、负例和 fixture-live 门；这一段只记录 2026-08-29 当时的真实边界。该临时限制已被 2026-08-31 的项目所有者指示撤销，当前允许并要求按真实 blocker 实现 provider；后续实现与实机结果以能力合同及新报告为准。
 
 项目所有者同时授权这一轮继续使用 OCR。下一条短探针仍可走 OCR compatibility path，但必须在移动到菜单行后先保存并验证 hover 状态仍存活，再原地 mouse-down/up，随后继续要求 finder 标题和地图变化；即使临时路径 GREEN，也只能证明本轮宣传片片场可继续，不能升级 MCP 合同 readiness。
 
