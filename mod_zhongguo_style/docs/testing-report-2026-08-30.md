@@ -153,15 +153,27 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**：只有随后必须发起 typed 查询/选择的路径，`arm_native_speed_one` 才要求在 1.5 秒有界窗口内观察到新的 public revision，同时持续反证 event instance、`date_raw`、played character 不变且仍为普通 `paused = true`；取得该新帧后才查询 canonical options。视觉点击路径保留原有 ACK 绑定，不被不必要地扩门。定向回归模拟两次仍返回旧 revision、第三次才发布新 revision/speed 的异步序列，证明 selector 必须等到新暂停帧；超时或任何上下文漂移仍在零选择状态下 RED。Python 编译、宣传 runner 合同、ZhongGuo 静态检查、release builder 和 diff 门均 GREEN。下一步只运行第十六次完整合批实机。
 
-## 15. 旧工坊 01/02/03 素材判定
+## 15. 第十六次完整 attempt：全链 GREEN
+
+第十六次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp` 在 CK3 1.19.0.6 中完成，顶层 `report.json` 与 cell 结果均为 **GREEN**。宋帝赵曙的 23 人首轮考核在结算前后继续严格得到 `7 / 14 / 2`，`bootstrap_first_review_strict_7_14_2` 与 `bootstrap_first_review_result_7_14_2` 均 PASS；这是该修复的第十六次实机复现。361/361 批量账本本局实测 `fixture_cases_passed = 361`，portfolio 账本和幂等性均通过，项目诊断数为 0。
+
+同一局完整通过考核榜按钮安全区、原生右侧窗口抑制与关闭、管理榜/本人榜、制度驾驶舱、标题栏和背景关闭、真实榜单行跳转等 GUI 链；京察强制弹窗、免费活动规划、拒办上司好感与下轮 KPI 处罚、D+90 切换也全部通过。史实受考官员陈贯（`han_6071`）的“上司考定”明确渲染本人绩效 `3.25`、第 23/23 名及四重清算，本人所属考核榜随后正常打开。
+
+六张代表政策卡第001、007、020、022、026、361号均各派发恰好一次，并完成 canonical 事件身份确认、真实选项解析与 typed MCP 提交、同日转场、暂停冻结和 clean span 首尾门；`clean_policy_chain_completed` 恰好一次，六项选择持久化核验通过。全部 clean capture spans 完整，未出现测试决议或原生决议抽屉侵入最终干净画面。
+
+本局使用隔离 userdir；产品树、夹具树与源树前后哈希一致，`protected_storage_unchanged = true`，CK3 进程树受控回收。artifact、隔离 userdir/native state、日志、截图、OCR、sidecar、原始录屏及前十五次 RED 过程素材均继续保留，未删除。
+
+当前 readiness 因而由“等待完整 GREEN”提升为 **live GREEN**：现有版本的 361 分布、361/361 机制账本、考核榜 GUI、京察、本人 `3.25` 告身和六政策卡全链已有同局完整实机证据。该结论不等于发布工作完成；工坊 01/02/03 替换图、正式宣传视频及最终发布/上传仍待基于本次 GREEN 素材制作和验收。
+
+## 16. 旧工坊 01/02/03 素材判定
 
 现有 `workshop/media/01_calibration_meeting.jpg`、`workshop/media/02_review_cohort_frozen.jpg` 与 `workshop/media/03_scoreboard.jpg` 来自后来被确认具有“首次建账把全员视为新人”缺陷的同一历史批次：前两张直接展示 23 人 `7 / 16 / 0`，第三张也冻结了同一错误名单，只是裁切范围没有完整显示表头。即使其中名单、排名、字段或界面布局仍可作为历史 GUI 证据，这三张图的核心 361 语义已经错误，发布判定必须是 **RED**，不得继续作为当前版本的工坊宣传素材。
 
 三张旧图及其原始过程证据继续保留用于复盘，不删除、不覆盖来源事实；正式发布前必须由同一次最终完整 **GREEN** 批次中明确显示 `7 / 14 / 2` 的真实 CK3 截图替换，并同步刷新来源路径、SHA-256、媒体锁和引用。任何仅有局部产品 PASS、最终仍为 harness RED 的 attempt 都不能作为这三格的正式替代来源。
 
-## 16. 环境与证据边界
+## 17. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已十五次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、政策卡 #001 的完整提交及 #007 的 canonical 置顶均已 live-confirmed；D+2 真实产品事件的新 revision 屏障与 typed option 4 清理、#007 的 MCP 选项提交、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已十六次实机复现；第十六次 attempt 的顶层和 cell 均为 GREEN，项目诊断为 0。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜、D+2 产品事件 typed MCP 清理及六张代表政策卡完整提交均已在同局达到 **live GREEN**。工坊 01/02/03 替换图、正式宣传视频与发布/上传仍待制作和验收，不因实机功能 GREEN 自动视为完成。
