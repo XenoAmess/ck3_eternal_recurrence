@@ -41,11 +41,9 @@ jobs:
           python tools/test_verify_zhongguo_workshop_cache.py
       - name: Test ZhongGuo 361 generators and acceptance contracts
         run: |
-          python mod_zhongguo_style/tools/test_gen_361_mechanisms.py
+          python -m unittest discover -s mod_zhongguo_style/tools -p "test_gen_361*.py"
+          python -m unittest discover -s mod_zhongguo_style/tools -p "test_zg361*.py"
           python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
-          python mod_zhongguo_style/tools/test_zg361_domain_data.py
-          python mod_zhongguo_style/tools/test_zg361_phase2_runtime.py
-          python mod_zhongguo_style/tools/test_zg361_b1_runtime.py
           python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
