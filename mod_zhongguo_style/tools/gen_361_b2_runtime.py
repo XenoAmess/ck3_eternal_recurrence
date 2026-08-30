@@ -18,11 +18,18 @@ from zg361_b2_runtime_data import B2_BINDINGS, validate_b2_bindings
 MOD_ROOT = Path(__file__).resolve().parent.parent
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b2_runtime.py\n"
-WIRED_IDS = (
+CORE_IDS = (
     tuple(range(14, 18))
     + tuple(range(69, 82))
     + (358, 359)
 )
+DELEGATED_IDS = tuple(range(146, 157)) + tuple(range(181, 192))
+WIRED_IDS = CORE_IDS
+# This generator owns only the native delivery/appeal/justice slice.  The
+# feedback/PIP runtime is authoritative for #146-156/#181-191; retaining that
+# range here as a negative guard is intentional, but claiming or rendering it
+# here would create two lifecycle owners for the same mechanisms.
+SEMANTIC_IDS = CORE_IDS
 INTERFACE_IDS = (69,)
 
 
@@ -43,6 +50,304 @@ def validate_wired_scope() -> None:
         raise ValueError("B2 CK3 slice contains an unknown binding")
     if INTERFACE_IDS != (69,):
         raise ValueError("069 is the only pre-existing interface in this slice")
+    if SEMANTIC_IDS != CORE_IDS:
+        raise ValueError("B2 semantic ownership must remain the nineteen native IDs")
+    if set(SEMANTIC_IDS) & set(DELEGATED_IDS):
+        raise ValueError("B2 must not duplicate feedback/PIP delegated IDs")
+
+
+def render_policy_object_kernel() -> str:
+    """Render the shared per-mechanism A/B/C identity and receipt kernel.
+
+    The older B2 slice had useful domain effects, but those effects never read
+    the frozen ``zg361_mechanism_NNN_choice`` policy.  Consequently route C
+    still created cases and route B was indistinguishable from route A.  This
+    kernel is deliberately small: it binds every native B2 row to the result
+    owner/subject/cycle/case, prevents replay, and gives C a separate deferred
+    debt receipt without manufacturing a business object.
+    """
+
+    sections: list[str] = [r'''
+# ---------------------------------------------------------------------------
+# Native B2 A/B/C identity kernel.  T/W #146-156/#181-191 are authoritative
+# in zg361_feedback_promotion_pip_runtime and are not duplicated here.
+# ---------------------------------------------------------------------------
+
+zg361_b2_consume_due_policy_debts_effect = {
+''']
+    for mechanism_id in CORE_IDS:
+        key = f"{mechanism_id:03d}"
+        sections.append(f'''\tif = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_b2_m{key}_policy_debt_active = 1
+\t\t\thas_variable = zg361_b2_m{key}_policy_debt_due_cycle
+\t\t\tvar:zg361_result_cycle_serial >= var:zg361_b2_m{key}_policy_debt_due_cycle
+\t\t\thas_variable = zg361_b2_m{key}_policy_debt_owner
+\t\t}}
+\t\tvar:zg361_b2_m{key}_policy_debt_owner = {{
+\t\t\tchange_variable = {{ name = zg361_b2_management_debt add = 1 }}
+\t\t}}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_active value = 0 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_audit_state value = 3 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_consumed_cycle value = var:zg361_result_cycle_serial }}
+\t}}
+''')
+    sections.append("}\n")
+
+    for mechanism_id in CORE_IDS:
+        key = f"{mechanism_id:03d}"
+        sections.append(f'''
+zg361_b2_m{key}_resolve_policy_effect = {{
+\tset_variable = {{ name = zg361_b2_m{key}_route value = 1 }}
+\tif = {{
+\t\tlimit = {{ var:zg361_b2_case_owner = {{ has_variable = zg361_mechanism_{key}_choice }} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_route value = var:zg361_b2_case_owner.var:zg361_mechanism_{key}_choice }}
+\t}}
+}}
+
+zg361_b2_m{key}_post_policy_debt_effect = {{
+\tzg361_b2_m{key}_resolve_policy_effect = yes
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_b2_m{key}_route = 3
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_policy_debt_receipt_case }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_policy_debt_receipt_case = var:zg361_b2_case_serial }}
+\t\t\t}}
+\t\t\tNOT = {{ var:zg361_b2_m{key}_policy_debt_active = 1 }}
+\t\t}}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_owner value = var:zg361_b2_case_owner }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_subject value = this }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_cycle value = var:zg361_b2_case_cycle }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_receipt_case value = var:zg361_b2_case_serial }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_expected_state value = var:zg361_b2_notice_state }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_due_cycle value = {{ value = var:zg361_b2_case_cycle add = 1 }} }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_active value = 1 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_policy_debt_audit_state value = 1 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_visible_revision value = var:zg361_b2_case_feedback_revision }}
+\t}}
+}}
+
+zg361_b2_m{key}_open_business_object_effect = {{
+\tzg361_b2_m{key}_resolve_policy_effect = yes
+\tif = {{
+\t\tlimit = {{ var:zg361_b2_m{key}_route = 3 }}
+\t\tzg361_b2_m{key}_post_policy_debt_effect = yes
+\t}}
+\telse_if = {{
+\t\tlimit = {{
+\t\t\tOR = {{
+\t\t\t\tNOT = {{ has_variable = zg361_b2_m{key}_object_receipt_case }}
+\t\t\t\tNOT = {{ var:zg361_b2_m{key}_object_receipt_case = var:zg361_b2_case_serial }}
+\t\t\t}}
+\t\t\tNOT = {{ var:zg361_b2_m{key}_object_active = 1 }}
+\t\t}}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_owner value = var:zg361_b2_case_owner }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_subject value = this }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_cycle value = var:zg361_b2_case_cycle }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_receipt_case value = var:zg361_b2_case_serial }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_state value = var:zg361_b2_notice_state }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_route value = var:zg361_b2_m{key}_route }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 1 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 0 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_visible_revision value = var:zg361_b2_case_feedback_revision }}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_b2_m{key}_route = 2 }}
+\t\t\tset_variable = {{ name = zg361_b2_m{key}_procedural_risk value = 1 }}
+\t\t}}
+\t}}
+}}
+
+zg361_b2_m{key}_consume_business_object_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_b2_m{key}_object_active = 1
+\t\t\tvar:zg361_b2_m{key}_object_consumed = 0
+\t\t\tvar:zg361_b2_m{key}_object_owner = var:zg361_b2_case_owner
+\t\t\tvar:zg361_b2_m{key}_object_subject = this
+\t\t\tvar:zg361_b2_m{key}_object_cycle = var:zg361_b2_case_cycle
+\t\t\tvar:zg361_b2_m{key}_object_receipt_case = var:zg361_b2_case_serial
+\t\t}}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_consumed value = 1 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_object_active value = 0 }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_consumer_revision value = var:zg361_b2_case_feedback_revision }}
+\t\tset_variable = {{ name = zg361_b2_m{key}_consumer_receipt_case value = var:zg361_b2_case_serial }}
+\t}}
+}}
+''')
+    return "".join(sections)
+
+
+FAIRNESS_DIMENSIONS = (
+    ("newcomer", "veteran", "has_character_flag = zg361_newcomer_this_cycle"),
+    (
+        "transfer",
+        "local",
+        "has_variable = zg361_b1_reorg_transfer_detected\n\t\t\tvar:zg361_b1_reorg_transfer_detected = 1",
+    ),
+    ("kin", "nonkin", "is_close_family_of = scope:zg361_b2_fairness_owner"),
+    ("faction", "nonfaction", "exists = joined_faction"),
+    ("landed", "unlanded", "is_landed = yes"),
+    ("governor", "nongovernor", "is_governor = yes"),
+)
+
+
+def render_fairness_kernel() -> str:
+    """Render #078 cohort denominators and resolved-appeal numerators.
+
+    Every result contributes at most one sample to its frozen manager/cycle.
+    Appeal outcomes update only the matching sample.  Cross-multiplied rates
+    avoid division and small groups are explicitly marked, never auto-graded.
+    """
+
+    sample_dimensions: list[str] = []
+    outcome_dimensions: list[str] = []
+    anomaly_dimensions: list[str] = []
+    counter_initializers: list[str] = []
+    for positive, negative, trigger in FAIRNESS_DIMENSIONS:
+        for suffix in ("n", "bottom_n", "corrected_n"):
+            for group in (positive, negative):
+                variable = f"zg361_b2_fairness_{group}_{suffix}"
+                counter_initializers.append(
+                    f'''\t\t\tif = {{\n\t\t\t\tlimit = {{ NOT = {{ has_variable = {variable} }} }}\n\t\t\t\tset_variable = {{ name = {variable} value = 0 }}\n\t\t\t}}\n'''
+                )
+        sample_dimensions.append(
+            f'''		if = {{
+			limit = {{ scope:zg361_b2_fairness_subject = {{ {trigger} }} }}
+			change_variable = {{ name = zg361_b2_fairness_{positive}_n add = 1 }}
+			scope:zg361_b2_fairness_subject = {{ set_variable = {{ name = zg361_b2_m078_group_{positive} value = 1 }} }}
+			if = {{
+				limit = {{ scope:zg361_b2_fairness_subject.var:zg361_result_grade = 1 }}
+				change_variable = {{ name = zg361_b2_fairness_{positive}_bottom_n add = 1 }}
+			}}
+		}}
+		else = {{
+			change_variable = {{ name = zg361_b2_fairness_{negative}_n add = 1 }}
+			scope:zg361_b2_fairness_subject = {{ set_variable = {{ name = zg361_b2_m078_group_{positive} value = 2 }} }}
+			if = {{
+				limit = {{ scope:zg361_b2_fairness_subject.var:zg361_result_grade = 1 }}
+				change_variable = {{ name = zg361_b2_fairness_{negative}_bottom_n add = 1 }}
+			}}
+		}}
+'''
+        )
+        outcome_dimensions.append(
+            f'''		if = {{
+			limit = {{
+				scope:zg361_b2_fairness_subject.var:zg361_b2_appeal_state = 3
+				scope:zg361_b2_fairness_subject.var:zg361_b2_m078_group_{positive} = 1
+			}}
+			change_variable = {{ name = zg361_b2_fairness_{positive}_corrected_n add = 1 }}
+		}}
+		else_if = {{
+			limit = {{
+				scope:zg361_b2_fairness_subject.var:zg361_b2_appeal_state = 3
+				scope:zg361_b2_fairness_subject.var:zg361_b2_m078_group_{positive} = 2
+			}}
+			change_variable = {{ name = zg361_b2_fairness_{negative}_corrected_n add = 1 }}
+		}}
+'''
+        )
+        anomaly_dimensions.append(
+            f'''		if = {{
+			limit = {{
+				var:zg361_b2_fairness_{positive}_n >= 3
+				var:zg361_b2_fairness_{negative}_n >= 3
+			}}
+			set_variable = {{ name = zg361_b2_fairness_{positive}_rate_cross value = {{ value = var:zg361_b2_fairness_{positive}_corrected_n multiply = var:zg361_b2_fairness_{negative}_n }} }}
+			set_variable = {{ name = zg361_b2_fairness_{negative}_rate_cross value = {{ value = var:zg361_b2_fairness_{negative}_corrected_n multiply = var:zg361_b2_fairness_{positive}_n }} }}
+			if = {{
+				limit = {{ NOT = {{ var:zg361_b2_fairness_{positive}_rate_cross = var:zg361_b2_fairness_{negative}_rate_cross }} }}
+				set_variable = {{ name = zg361_b2_fairness_anomaly_open value = 1 }}
+				set_variable = {{ name = zg361_b2_fairness_anomaly_dimension value = {len(anomaly_dimensions) + 1} }}
+			}}
+		}}
+		else = {{ set_variable = {{ name = zg361_b2_fairness_small_sample value = 1 }} }}
+'''
+        )
+
+    return r'''
+# ---------------------------------------------------------------------------
+# #078 full-cohort fairness samples.  These counters are diagnostics only:
+# neither baseline nor appeal resolution contains a grade write.
+# ---------------------------------------------------------------------------
+
+zg361_b2_m078_record_cohort_sample_effect = {
+	zg361_b2_m078_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_m078_route != 3
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			OR = {
+				NOT = { has_variable = zg361_b2_m078_sample_receipt_case }
+				NOT = { var:zg361_b2_m078_sample_receipt_case = var:zg361_b2_case_serial }
+			}
+		}
+		save_temporary_scope_as = zg361_b2_fairness_subject
+		var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_fairness_owner }
+		set_variable = { name = zg361_b2_m078_sample_receipt_case value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m078_sample_cycle value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m078_state value = 1 }
+		scope:zg361_b2_fairness_owner = {
+			if = { limit = { NOT = { has_variable = zg361_b2_fairness_total_n } } set_variable = { name = zg361_b2_fairness_total_n value = 0 } }
+			if = { limit = { NOT = { has_variable = zg361_b2_fairness_bottom_n } } set_variable = { name = zg361_b2_fairness_bottom_n value = 0 } }
+			if = { limit = { NOT = { has_variable = zg361_b2_fairness_reviewed_n } } set_variable = { name = zg361_b2_fairness_reviewed_n value = 0 } }
+			if = { limit = { NOT = { has_variable = zg361_b2_fairness_corrected_n } } set_variable = { name = zg361_b2_fairness_corrected_n value = 0 } }
+''' + "".join(counter_initializers) + r'''
+			change_variable = { name = zg361_b2_fairness_total_n add = 1 }
+			if = {
+				limit = { scope:zg361_b2_fairness_subject.var:zg361_result_grade = 1 }
+				change_variable = { name = zg361_b2_fairness_bottom_n add = 1 }
+			}
+''' + "".join(sample_dimensions) + r'''			set_variable = { name = zg361_b2_fairness_dimension_n value = 6 }
+			scope:zg361_b2_fairness_subject = {
+				set_variable = { name = zg361_b2_m078_denominator_snapshot value = scope:zg361_b2_fairness_owner.var:zg361_b2_fairness_total_n }
+			}
+		}
+	}
+}
+
+zg361_b2_m078_apply_resolved_sample_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m078_object_active = 1
+			var:zg361_b2_m078_sample_receipt_case = var:zg361_b2_case_serial
+			OR = {
+				NOT = { has_variable = zg361_b2_m078_outcome_receipt_case }
+				NOT = { var:zg361_b2_m078_outcome_receipt_case = var:zg361_b2_case_serial }
+			}
+		}
+		save_temporary_scope_as = zg361_b2_fairness_subject
+		var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_fairness_owner }
+		scope:zg361_b2_fairness_owner = {
+			change_variable = { name = zg361_b2_fairness_reviewed_n add = 1 }
+			if = {
+				limit = { scope:zg361_b2_fairness_subject.var:zg361_b2_appeal_state = 3 }
+				change_variable = { name = zg361_b2_fairness_corrected_n add = 1 }
+			}
+''' + "".join(outcome_dimensions) + r'''			set_variable = { name = zg361_b2_fairness_small_sample value = 0 }
+			set_variable = { name = zg361_b2_fairness_anomaly_open value = 0 }
+''' + "".join(anomaly_dimensions) + r'''			if = {
+				limit = { var:zg361_b2_fairness_anomaly_open = 1 }
+				set_variable = { name = zg361_b2_fairness_explanation_task value = scope:zg361_b2_fairness_subject.var:zg361_b2_case_serial }
+				if = {
+					limit = { scope:zg361_b2_fairness_subject.var:zg361_b2_m078_route = 2 }
+					set_variable = { name = zg361_b2_fairness_auto_adjustment_attempted value = 1 }
+					set_variable = { name = zg361_b2_fairness_no_direct_grade_write value = 1 }
+					change_variable = { name = zg361_b2_management_debt add = 1 }
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m078_state value = 3 }
+		set_variable = { name = zg361_b2_m078_receipt_serial value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m078_outcome_receipt_case value = var:zg361_b2_case_serial }
+		zg361_b2_m078_consume_business_object_effect = yes
+	}
+}
+'''
 
 
 def render_effects() -> bytes:
@@ -57,6 +362,37 @@ def render_effects() -> bytes:
 # Result freeze and delivery adapters: #069, #072, #081.
 # ---------------------------------------------------------------------------
 
+# Shared-hook ABI for #069.  The hand-written settlement effect must call this
+# after formal delivery has been proved but before any treasury/gold/merit or
+# salary-cut write.  It may proceed only when the returned variable is one.
+# This generator deliberately does not edit the shared file; until that caller
+# lands, #069 route C remains an explicit cross-package RED rather than a false
+# claim that an after-settlement adapter prevented the payment.
+zg361_b2_pre_notice_settlement_gate_effect = {
+	set_variable = { name = zg361_b2_m069_settlement_allowed value = 0 }
+	zg361_b2_m069_resolve_policy_effect = yes
+	if = {
+		limit = {
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_case_owner = var:zg361_result_case_owner
+			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
+			var:zg361_b2_case_serial = var:zg361_result_case_serial
+			var:zg361_b2_notice_state = 1
+			var:zg361_b2_m069_route != 3
+			var:zg361_b2_m069_object_active = 1
+		}
+		set_variable = { name = zg361_b2_m069_settlement_allowed value = 1 }
+		set_variable = { name = zg361_b2_m069_pre_settlement_gate_seen value = var:zg361_b2_case_serial }
+	}
+	else_if = {
+		limit = { var:zg361_b2_m069_route = 3 }
+		zg361_b2_m069_post_policy_debt_effect = yes
+		set_variable = { name = zg361_b2_m069_settlement_blocked_case value = var:zg361_b2_case_serial }
+		debug_log = "ZG361B2: route-C formal-result settlement blocked before resource writes"
+	}
+	else = { debug_log = "ZG361B2: stale formal-result settlement gate denied" }
+}
+
 zg361_b2_on_result_frozen_effect = {
 	if = {
 		limit = {
@@ -64,6 +400,49 @@ zg361_b2_on_result_frozen_effect = {
 			has_variable = zg361_result_cycle_serial
 			has_variable = zg361_result_case_serial
 			has_variable = zg361_result_case_state
+		}
+		# Consume prior-cycle C receipts before replacing the subject's current
+		# case identity.  A debt is charged to its frozen owner, never the new one.
+		zg361_b2_consume_due_policy_debts_effect = yes
+		# A skip-level remand is consumed only by the next real result from the
+		# same direct manager.  This is the downstream consumer; the skip-level
+		# reviewer never writes a grade in the old case.
+		if = {
+			limit = {
+				var:zg361_b2_m079_remand_active = 1
+				var:zg361_b2_m079_remand_owner = var:zg361_result_case_owner
+				var:zg361_result_cycle_serial > var:zg361_b2_m079_remand_cycle
+			}
+			set_variable = { name = zg361_b2_m079_remand_active value = 0 }
+			set_variable = { name = zg361_b2_m079_remand_consumer_case value = var:zg361_result_case_serial }
+			set_variable = { name = zg361_b2_m079_manager_rework_completed value = 1 }
+		}
+		# Repaired/suppressed defect tickets are likewise checked against a later
+		# metric version.  Repetition after suppression assigns liability to the
+		# frozen suppressor and does not rewrite the old evidence.
+		if = {
+			limit = {
+				OR = {
+					var:zg361_b2_m080_state = 3
+					var:zg361_b2_m080_state = 4
+				}
+				var:zg361_b2_m080_owner = var:zg361_result_case_owner
+				var:zg361_result_cycle_serial > var:zg361_b2_m080_cycle
+			}
+			set_variable = { name = zg361_b2_m080_consumer_case value = var:zg361_result_case_serial }
+			if = {
+				limit = { var:zg361_b2_m080_metric_repaired = 1 }
+				set_variable = { name = zg361_b2_m080_repair_verified value = 1 }
+			}
+			else_if = {
+				limit = {
+					var:zg361_b2_m080_suppressed = 1
+					var:zg361_result_grade_reason = var:zg361_b2_m080_defect_type
+				}
+				set_variable = { name = zg361_b2_m080_repeated_after_suppression value = 1 }
+				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			}
+			set_variable = { name = zg361_b2_m080_state value = 5 }
 		}
 		# A later, freshly frozen result by the same owner is the only automatic
 		# source of "new fact" for a pending retaliation observation.  Merely
@@ -98,7 +477,7 @@ zg361_b2_on_result_frozen_effect = {
 		set_variable = { name = zg361_b2_m015_state value = 0 }
 		set_variable = { name = zg361_b2_m016_state value = 0 }
 		set_variable = { name = zg361_b2_m017_state value = 0 }
-		set_variable = { name = zg361_b2_m069_state value = 1 }
+		set_variable = { name = zg361_b2_m069_state value = 0 }
 		set_variable = { name = zg361_b2_m069_receipt_serial value = 0 }
 		set_variable = { name = zg361_b2_m071_state value = 0 }
 		set_variable = { name = zg361_b2_m073_state value = 0 }
@@ -112,8 +491,22 @@ zg361_b2_on_result_frozen_effect = {
 		set_variable = { name = zg361_b2_m358_state value = 0 }
 		set_variable = { name = zg361_b2_m359_state value = 0 }
 
-		zg361_b2_m072_lock_pre_delivery_access_effect = yes
-		zg361_b2_m081_project_case_access_effect = yes
+		zg361_b2_m069_open_business_object_effect = yes
+		zg361_b2_m072_open_business_object_effect = yes
+		zg361_b2_m081_open_business_object_effect = yes
+		if = {
+			limit = { var:zg361_b2_m069_object_active = 1 }
+			set_variable = { name = zg361_b2_m069_state value = 1 }
+		}
+		if = {
+			limit = { var:zg361_b2_m072_object_active = 1 }
+			zg361_b2_m072_lock_pre_delivery_access_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m081_object_active = 1 }
+			zg361_b2_m081_project_case_access_effect = yes
+		}
+		zg361_b2_m078_record_cohort_sample_effect = yes
 		debug_log = "ZG361B2: result-bound justice case prepared"
 	}
 }
@@ -132,6 +525,8 @@ zg361_b2_m072_lock_pre_delivery_access_effect = {
 zg361_b2_record_case_access_effect = {
 	if = {
 		limit = {
+			var:zg361_b2_m072_object_active = 1
+			var:zg361_b2_m072_route = 2
 			var:zg361_b2_case_subject = this
 			var:zg361_b2_m072_receipt_serial = var:zg361_b2_case_serial
 			var:zg361_b2_notice_state = 1
@@ -152,6 +547,19 @@ zg361_b2_record_case_access_effect = {
 	}
 	else_if = {
 		limit = {
+			var:zg361_b2_m072_object_active = 1
+			var:zg361_b2_m072_route = 1
+			var:zg361_b2_case_subject = this
+			var:zg361_b2_notice_state = 1
+		}
+		change_variable = { name = zg361_b2_m072_denied_reads add = 1 }
+		set_variable = { name = zg361_b2_m072_last_denied_reader value = this }
+		set_variable = { name = zg361_b2_m072_last_denied_year value = current_year }
+		set_variable = { name = zg361_b2_m072_acl_enforced value = 1 }
+	}
+	else_if = {
+		limit = {
+			var:zg361_b2_m081_object_active = 1
 			var:zg361_b2_case_subject = this
 			var:zg361_b2_m081_receipt_serial = var:zg361_b2_case_serial
 			var:zg361_b2_notice_state >= 3
@@ -165,6 +573,15 @@ zg361_b2_m081_project_case_access_effect = {
 	set_variable = { name = zg361_b2_m081_state value = 1 }
 	set_variable = { name = zg361_b2_m081_access_level value = 1 } # subject summary
 	set_variable = { name = zg361_b2_m081_visible_fields value = 4 }
+	set_variable = { name = zg361_b2_m081_acl_subject_level value = 1 }
+	set_variable = { name = zg361_b2_m081_acl_manager_level value = 2 }
+	set_variable = { name = zg361_b2_m081_acl_central_level value = 3 }
+	set_variable = { name = zg361_b2_m081_direct_grade_writer value = var:zg361_b2_case_owner }
+	if = {
+		limit = { var:zg361_b2_m081_route = 2 }
+		set_variable = { name = zg361_b2_m081_summary_compressed value = 1 }
+		set_variable = { name = zg361_b2_m081_omitted_fields value = 4 }
+	}
 	set_variable = { name = zg361_b2_m081_correction_owner value = var:zg361_b2_case_owner }
 	set_variable = { name = zg361_b2_m081_receipt_serial value = var:zg361_b2_case_serial }
 }
@@ -185,9 +602,25 @@ zg361_b2_on_notice_delivered_effect = {
 			var:zg361_result_case_state = 3
 			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
 		}
-		zg361_b2_m069_record_delivery_effect = yes
-		zg361_b2_m072_close_access_log_effect = yes
-		zg361_b2_m081_publish_case_projection_effect = yes
+		if = {
+			limit = { var:zg361_b2_m069_object_active = 1 }
+			zg361_b2_m069_record_delivery_effect = yes
+			zg361_b2_m069_consume_business_object_effect = yes
+		}
+		else = {
+			# The shared settlement currently calls this adapter after posting.
+			# Keep the violation visible until the shared pre-settlement gate lands.
+			set_variable = { name = zg361_b2_m069_c_post_settlement_violation value = 1 }
+			zg361_b2_m069_post_policy_debt_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m072_object_active = 1 }
+			zg361_b2_m072_close_access_log_effect = yes
+		}
+		if = {
+			limit = { var:zg361_b2_m081_object_active = 1 }
+			zg361_b2_m081_publish_case_projection_effect = yes
+		}
 		zg361_b2_m015_open_pip_effect = yes
 		debug_log = "ZG361B2: delivered result consumed by justice runtime"
 	}
@@ -201,6 +634,12 @@ zg361_b2_m069_record_delivery_effect = {
 	set_variable = { name = zg361_b2_m069_state value = 3 }
 	set_variable = { name = zg361_b2_m069_receipt_serial value = var:zg361_b2_case_serial }
 	set_variable = { name = zg361_b2_m069_appeal_clock_open value = 1 }
+	if = {
+		limit = { var:zg361_b2_m069_route = 2 }
+		set_variable = { name = zg361_b2_m069_aggregate_publication_shortcut value = 1 }
+		set_variable = { name = zg361_b2_m069_individual_reason_unseen_risk value = 1 }
+		var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+	}
 	if = {
 		limit = {
 			has_variable = zg361_result_delivery_witness
@@ -220,20 +659,24 @@ zg361_b2_m072_close_access_log_effect = {
 	else = {
 		set_variable = { name = zg361_b2_m072_state value = 3 }
 		set_variable = { name = zg361_b2_m072_investigation_result value = 0 }
+		zg361_b2_m072_consume_business_object_effect = yes
 	}
 }
 
 zg361_b2_m081_publish_case_projection_effect = {
 	set_variable = { name = zg361_b2_m081_state value = 3 }
 	if = {
-		limit = { has_variable = zg361_result_objection_recorded }
-		set_variable = { name = zg361_b2_m081_access_level value = 2 }
+		limit = { var:zg361_b2_m081_route = 1 }
+		set_variable = { name = zg361_b2_m081_access_level value = 3 }
 		set_variable = { name = zg361_b2_m081_visible_fields value = 8 }
+		set_variable = { name = zg361_b2_m081_raw_evidence_preserved value = 1 }
 	}
 	else = {
 		set_variable = { name = zg361_b2_m081_access_level value = 1 }
 		set_variable = { name = zg361_b2_m081_visible_fields value = 4 }
+		set_variable = { name = zg361_b2_m081_compression_appeal_evidence value = 1 }
 	}
+	zg361_b2_m081_consume_business_object_effect = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -241,8 +684,10 @@ zg361_b2_m081_publish_case_projection_effect = {
 # ---------------------------------------------------------------------------
 
 zg361_b2_m015_open_pip_effect = {
+	zg361_b2_m015_open_business_object_effect = yes
 	if = {
 		limit = {
+			var:zg361_b2_m015_object_active = 1
 			var:zg361_result_grade = 1
 			var:zg361_b2_m015_state = 0
 		}
@@ -261,6 +706,18 @@ zg361_b2_m015_open_pip_effect = {
 			set_variable = { name = zg361_b2_pip_task_kind value = 2 } # local capability
 		}
 		set_variable = { name = zg361_b2_pip_task_controllable value = 1 }
+		set_variable = { name = zg361_b2_pip_policy_route value = var:zg361_b2_m015_route }
+		set_variable = { name = zg361_b2_pip_support_reserved value = 0 }
+		set_variable = { name = zg361_b2_pip_support_absent value = 0 }
+		set_variable = { name = zg361_b2_pip_support_budget_allocated value = 0 }
+		set_variable = { name = zg361_b2_pip_support_budget_spent value = 0 }
+		remove_variable = zg361_b2_pip_support_mentor
+		if = {
+			limit = { var:zg361_b2_m015_route = 2 }
+			set_variable = { name = zg361_b2_pip_high_pressure value = 1 }
+			set_variable = { name = zg361_b2_pip_refusal_major_evidence value = 1 }
+			add_stress = minor_stress_gain
+		}
 		set_variable = { name = zg361_b2_pip_refusal_receipt value = 0 }
 		set_variable = { name = zg361_b2_m015_state value = 1 }
 		set_variable = { name = zg361_b2_m015_receipt_serial value = var:zg361_b2_pip_case }
@@ -314,15 +771,45 @@ zg361_b2_refuse_pip_effect = {
 		set_variable = { name = zg361_b2_pip_state value = 5 } # refused terminal
 		set_variable = { name = zg361_b2_m015_state value = 5 }
 		set_variable = { name = zg361_b2_next_cycle_pip_refusal_evidence value = 1 }
+		zg361_b2_m015_consume_business_object_effect = yes
 		# Refusal is next-cycle evidence only; it does not settle another current penalty.
 		debug_log = "ZG361B2: PIP refusal recorded without current-cycle double penalty"
 	}
 }
 
 zg361_b2_m016_commit_support_effect = {
+	zg361_b2_m016_open_business_object_effect = yes
 	save_temporary_scope_as = zg361_b2_support_subject
+	var:zg361_b2_pip_owner = { save_temporary_scope_as = zg361_b2_support_owner }
 	set_variable = { name = zg361_b2_pip_support_reserved value = 0 }
-	var:zg361_b2_pip_owner = {
+	# A support package is atomic: one real mentor, one capacity slot and the
+	# exact public budget must all exist before any of them is consumed.
+	if = {
+		limit = {
+			var:zg361_b2_m016_object_active = 1
+			var:zg361_b2_m016_route = 1
+		}
+		scope:zg361_b2_support_owner = {
+			ordered_vassal = {
+				limit = {
+					is_alive = yes
+					NOT = { this = scope:zg361_b2_support_owner }
+					NOT = { this = scope:zg361_b2_support_subject }
+				}
+				order_by = learning
+				position = 0
+				save_scope_as = zg361_b2_support_mentor
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:zg361_b2_support_mentor
+				scope:zg361_b2_support_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 25
+				}
+			}
+			scope:zg361_b2_support_owner = {
 		if = {
 			limit = { NOT = { has_variable = zg361_b2_pip_capacity_used } }
 			set_variable = { name = zg361_b2_pip_capacity_used value = 0 }
@@ -330,21 +817,41 @@ zg361_b2_m016_commit_support_effect = {
 		if = {
 			limit = { var:zg361_b2_pip_capacity_used < 2 }
 			change_variable = { name = zg361_b2_pip_capacity_used add = 1 }
+			remove_treasury = 25
 			scope:zg361_b2_support_subject = {
 				set_variable = { name = zg361_b2_pip_support_reserved value = 1 }
-				set_variable = { name = zg361_b2_pip_support_hours value = 1 }
+				set_variable = { name = zg361_b2_pip_support_hours value = 12 }
+				set_variable = { name = zg361_b2_pip_support_attention value = 1 }
+				set_variable = { name = zg361_b2_pip_support_mentor value = scope:zg361_b2_support_mentor }
+				set_variable = { name = zg361_b2_pip_support_budget_owner value = scope:zg361_b2_support_owner }
+				set_variable = { name = zg361_b2_pip_support_budget_allocated value = 25 }
+				set_variable = { name = zg361_b2_pip_support_budget_spent value = 25 }
 				set_variable = { name = zg361_b2_pip_support_absent value = 0 }
 				set_variable = { name = zg361_b2_m016_state value = 2 }
 				set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
 			}
 		}
+			}
+		}
 	}
 	if = {
-		limit = { var:zg361_b2_pip_support_reserved = 0 }
+		limit = {
+			var:zg361_b2_m016_object_active = 1
+			var:zg361_b2_pip_support_reserved = 0
+		}
 		set_variable = { name = zg361_b2_pip_support_hours value = 0 }
+		set_variable = { name = zg361_b2_pip_support_attention value = 0 }
 		set_variable = { name = zg361_b2_pip_support_absent value = 1 }
 		set_variable = { name = zg361_b2_m016_state value = 1 }
 		set_variable = { name = zg361_b2_m016_receipt_serial value = var:zg361_b2_pip_case }
+		if = {
+			limit = { var:zg361_b2_m016_route = 2 }
+			set_variable = { name = zg361_b2_pip_support_withheld value = 1 }
+			set_variable = { name = zg361_b2_pip_support_budget_unchanged value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_pip_support_atomic_shortfall value = 1 }
+		}
 	}
 }
 
@@ -392,6 +899,8 @@ zg361_b2_resolve_pip_due_effect = {
 			change_variable = { name = zg361_streak_bottom add = -1 }
 		}
 		zg361_b2_release_pip_support_effect = yes
+		zg361_b2_m015_consume_business_object_effect = yes
+		zg361_b2_m016_consume_business_object_effect = yes
 	}
 	else = {
 		set_variable = { name = zg361_b2_pip_state value = 4 } # failed/timeout
@@ -403,15 +912,33 @@ zg361_b2_resolve_pip_due_effect = {
 			var:zg361_b2_pip_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
 		}
 		zg361_b2_release_pip_support_effect = yes
+		zg361_b2_m015_consume_business_object_effect = yes
+		zg361_b2_m016_consume_business_object_effect = yes
 		zg361_b2_m017_open_disposition_effect = yes
 	}
 }
 
 zg361_b2_m017_open_disposition_effect = {
+	zg361_b2_m017_open_business_object_effect = yes
 	if = {
-		limit = { var:zg361_b2_pip_state = 4 var:zg361_b2_m017_state = 0 }
+		limit = {
+			var:zg361_b2_m017_object_active = 1
+			var:zg361_b2_pip_state = 4
+			var:zg361_b2_m017_state = 0
+		}
 		set_variable = { name = zg361_b2_m017_state value = 1 }
 		set_variable = { name = zg361_b2_m017_receipt_serial value = var:zg361_b2_pip_case }
+		set_variable = { name = zg361_b2_m017_frozen_bottom_streak value = var:zg361_streak_bottom }
+		if = {
+			limit = { var:zg361_b2_m017_route = 1 var:zg361_streak_bottom < 2 }
+			set_variable = { name = zg361_b2_m017_first_low_restricted value = 1 }
+		}
+		else = { set_variable = { name = zg361_b2_m017_first_low_restricted value = 0 } }
+		if = {
+			limit = { var:zg361_b2_m017_route = 2 }
+			set_variable = { name = zg361_b2_m017_expedited_evidence value = var:zg361_b2_pip_case }
+			set_variable = { name = zg361_b2_m017_expedited_risk value = 1 }
+		}
 		zg361_b2_m074_open_redundancy_offer_effect = yes
 		if = {
 			limit = { is_ai = yes }
@@ -432,6 +959,8 @@ zg361_b2_m017_open_disposition_effect = {
 				zg361_eliminate_extend_effect = yes
 			}
 			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
 		}
 		else = {
 			var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_disposition_owner }
@@ -449,8 +978,10 @@ zg361_b2_m017_open_disposition_effect = {
 # ---------------------------------------------------------------------------
 
 zg361_b2_on_appeal_filed_effect = {
+	zg361_b2_m014_open_business_object_effect = yes
 	if = {
 		limit = {
+			var:zg361_b2_m014_object_active = 1
 			var:zg361_b2_case_subject = this
 			var:zg361_b2_case_owner = var:zg361_result_case_owner
 			var:zg361_b2_case_cycle = var:zg361_result_cycle_serial
@@ -478,15 +1009,30 @@ zg361_b2_on_appeal_filed_effect = {
 		set_variable = { name = zg361_b2_m014_headstart_days value = var:zg361_b2_m072_headstart_days }
 		set_variable = { name = zg361_b2_m014_state value = 1 }
 		set_variable = { name = zg361_b2_m014_receipt_serial value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m014_review_mode value = var:zg361_b2_m014_route }
+		if = {
+			limit = { var:zg361_b2_m014_route = 2 }
+			set_variable = { name = zg361_b2_m014_original_owner_conflict value = 1 }
+			set_variable = { name = zg361_b2_m014_fast_review_risk value = 1 }
+		}
+		zg361_b2_m070_open_business_object_effect = yes
+		zg361_b2_m077_open_business_object_effect = yes
+		zg361_b2_m358_open_business_object_effect = yes
 		zg361_b2_m070_open_observation_effect = yes
 		zg361_b2_m077_assign_reviewer_effect = yes
 		zg361_b2_m358_freeze_non_aggravation_effect = yes
 		debug_log = "ZG361B2: target-bound appeal case opened"
 	}
+	else_if = {
+		limit = { var:zg361_b2_m014_route = 3 }
+		debug_log = "ZG361B2: enhanced appeal dossier deferred; core receipt appeal remains available"
+	}
 	else = { debug_log = "ZG361B2: duplicate or stale appeal filing ignored" }
 }
 
 zg361_b2_m070_open_observation_effect = {
+	if = {
+		limit = { var:zg361_b2_m070_object_active = 1 }
 	set_variable = { name = zg361_b2_retaliation_owner value = var:zg361_b2_case_owner }
 	set_variable = { name = zg361_b2_retaliation_subject value = this }
 	set_variable = { name = zg361_b2_retaliation_cycle value = var:zg361_b2_case_cycle }
@@ -496,40 +1042,180 @@ zg361_b2_m070_open_observation_effect = {
 	set_variable = { name = zg361_b2_retaliation_suspended_n value = 0 }
 	set_variable = { name = zg361_b2_m070_state value = 1 }
 	set_variable = { name = zg361_b2_m070_receipt_serial value = var:zg361_b2_case_serial }
+	if = {
+		limit = { var:zg361_b2_m070_route = 2 }
+		set_variable = { name = zg361_b2_m070_immediate_action_risk value = 1 }
+		set_variable = { name = zg361_b2_m070_reason_reversal_weight value = 2 }
+	}
 	var:zg361_b2_retaliation_owner = { save_scope_as = zg361_b2_retaliation_deadline_owner }
 	save_scope_as = zg361_b2_retaliation_deadline_subject
 	save_scope_value_as = { name = zg361_b2_retaliation_deadline_cycle value = var:zg361_b2_retaliation_cycle }
 	save_scope_value_as = { name = zg361_b2_retaliation_deadline_case value = var:zg361_b2_retaliation_case }
 	save_scope_value_as = { name = zg361_b2_retaliation_deadline_state value = var:zg361_b2_retaliation_state }
 	trigger_event = { id = zg361b2.120 days = 365 }
+	}
 }
 
 zg361_b2_m077_assign_reviewer_effect = {
+	if = {
+		limit = { var:zg361_b2_m077_object_active = 1 }
 	set_variable = { name = zg361_b2_m077_state value = 1 }
 	set_variable = { name = zg361_b2_m077_independent value = 0 }
-	var:zg361_b2_case_owner = {
+	save_temporary_scope_as = zg361_b2_review_subject
+	var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_review_owner }
+	if = {
+		limit = { var:zg361_b2_m077_route = 1 }
+		var:zg361_b2_case_owner = {
 		if = {
-			limit = { exists = liege liege = { is_alive = yes } }
-			liege = { save_temporary_scope_as = zg361_b2_independent_reviewer }
+			limit = { exists = liege }
+			liege = {
+				ordered_vassal = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+						NOT = { this = scope:zg361_b2_review_owner }
+						NOT = { this = scope:zg361_b2_review_subject }
+						NOT = { is_close_family_of = scope:zg361_b2_review_owner }
+						NOT = { is_close_family_of = scope:zg361_b2_review_subject }
+					}
+					order_by = stewardship
+					position = 0
+					save_scope_as = zg361_b2_independent_reviewer
+				}
+			}
 		}
+	}
 	}
 	if = {
 		limit = { exists = scope:zg361_b2_independent_reviewer }
 		set_variable = { name = zg361_b2_m077_reviewer value = scope:zg361_b2_independent_reviewer }
 		set_variable = { name = zg361_b2_m077_independent value = 1 }
 	}
-	else = { set_variable = { name = zg361_b2_m077_reviewer value = var:zg361_b2_case_owner } }
+	else = {
+		set_variable = { name = zg361_b2_m077_reviewer value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_self_correction value = 1 }
+		set_variable = { name = zg361_b2_m077_independence_disclosed value = 1 }
+	}
+	set_variable = { name = zg361_b2_m077_recusal_subject_used value = 0 }
+	set_variable = { name = zg361_b2_m077_recusal_owner_used value = 0 }
+	# The core appeal resolves in the same effect stack, so a later UI-only
+	# recusal would be decorative.  Consume each side's token synchronously when
+	# the selected reviewer has an observable friend/lover/rival conflict.
+	if = {
+		limit = {
+			var:zg361_b2_m077_independent = 1
+			var:zg361_b2_m077_reviewer = {
+				OR = {
+					has_relation_friend = scope:zg361_b2_review_subject
+					has_relation_lover = scope:zg361_b2_review_subject
+					has_relation_rival = scope:zg361_b2_review_subject
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m077_subject_conflict_reason value = 1 }
+		zg361_b2_m077_subject_recusal_effect = yes
+	}
+	if = {
+		limit = {
+			var:zg361_b2_m077_independent = 1
+			var:zg361_b2_m077_reviewer = {
+				OR = {
+					has_relation_friend = scope:zg361_b2_review_owner
+					has_relation_lover = scope:zg361_b2_review_owner
+					has_relation_rival = scope:zg361_b2_review_owner
+				}
+			}
+		}
+		set_variable = { name = zg361_b2_m077_owner_conflict_reason value = 2 }
+		zg361_b2_m077_owner_recusal_effect = yes
+	}
 	set_variable = { name = zg361_b2_m077_quality_bonus value = 0 }
 	if = {
 		limit = { var:zg361_b2_m077_independent = 1 }
 		set_variable = { name = zg361_b2_m077_quality_bonus value = 10 }
+		set_variable = { name = zg361_b2_m077_review_time_cost value = 30 }
 	}
-	set_variable = { name = zg361_b2_m077_recusal_subject_used value = 0 }
-	set_variable = { name = zg361_b2_m077_recusal_owner_used value = 0 }
 	set_variable = { name = zg361_b2_m077_receipt_serial value = var:zg361_b2_case_serial }
+	}
+}
+
+# Each side owns one reason-bound recusal token.  The replacement search is
+# deterministic and excludes the frozen parties and the reviewer just removed.
+zg361_b2_m077_subject_recusal_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m077_object_active = 1
+			var:zg361_b2_m077_route = 1
+			var:zg361_b2_m077_recusal_subject_used = 0
+			has_variable = zg361_b2_m077_subject_conflict_reason
+			var:zg361_b2_m077_subject_conflict_reason >= 1
+			has_variable = zg361_b2_m077_reviewer
+		}
+		set_variable = { name = zg361_b2_m077_recused_reviewer value = var:zg361_b2_m077_reviewer }
+		set_variable = { name = zg361_b2_m077_recusal_subject_used value = 1 }
+		set_variable = { name = zg361_b2_m077_recusal_reason_frozen value = var:zg361_b2_m077_subject_conflict_reason }
+		zg361_b2_m077_pick_replacement_effect = yes
+	}
+}
+
+zg361_b2_m077_owner_recusal_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m077_object_active = 1
+			var:zg361_b2_m077_route = 1
+			var:zg361_b2_m077_recusal_owner_used = 0
+			has_variable = zg361_b2_m077_owner_conflict_reason
+			var:zg361_b2_m077_owner_conflict_reason >= 1
+			has_variable = zg361_b2_m077_reviewer
+		}
+		set_variable = { name = zg361_b2_m077_recused_reviewer value = var:zg361_b2_m077_reviewer }
+		set_variable = { name = zg361_b2_m077_recusal_owner_used value = 1 }
+		set_variable = { name = zg361_b2_m077_recusal_reason_frozen value = var:zg361_b2_m077_owner_conflict_reason }
+		zg361_b2_m077_pick_replacement_effect = yes
+	}
+}
+
+zg361_b2_m077_pick_replacement_effect = {
+	save_temporary_scope_as = zg361_b2_recusal_subject
+	var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_recusal_owner }
+	var:zg361_b2_case_owner = {
+		if = {
+			limit = { exists = liege }
+			liege = {
+				ordered_vassal = {
+					limit = {
+						is_alive = yes
+						is_landed = yes
+						NOT = { this = scope:zg361_b2_recusal_owner }
+						NOT = { this = scope:zg361_b2_recusal_subject }
+						NOT = { this = scope:zg361_b2_recusal_subject.var:zg361_b2_m077_recused_reviewer }
+						NOT = { is_close_family_of = scope:zg361_b2_recusal_owner }
+						NOT = { is_close_family_of = scope:zg361_b2_recusal_subject }
+					}
+					order_by = stewardship
+					position = 0
+					save_scope_as = zg361_b2_replacement_reviewer
+				}
+			}
+		}
+	}
+	if = {
+		limit = { exists = scope:zg361_b2_replacement_reviewer }
+		set_variable = { name = zg361_b2_m077_reviewer value = scope:zg361_b2_replacement_reviewer }
+		change_variable = { name = zg361_b2_m077_reviewer_revision add = 1 }
+	}
+	else = {
+		set_variable = { name = zg361_b2_m077_replacement_unavailable value = 1 }
+		set_variable = { name = zg361_b2_m077_reviewer value = var:zg361_b2_case_owner }
+		set_variable = { name = zg361_b2_m077_independent value = 0 }
+		set_variable = { name = zg361_b2_m077_self_correction value = 1 }
+		set_variable = { name = zg361_b2_m077_independence_disclosed value = 1 }
+	}
 }
 
 zg361_b2_m358_freeze_non_aggravation_effect = {
+	if = {
+		limit = { var:zg361_b2_m358_object_active = 1 }
 	set_variable = { name = zg361_b2_m358_state value = 1 }
 	set_variable = { name = zg361_b2_m358_original_grade value = var:zg361_result_grade }
 	set_variable = { name = zg361_b2_m358_original_treasury value = var:zg361_result_treasury_paid }
@@ -538,6 +1224,12 @@ zg361_b2_m358_freeze_non_aggravation_effect = {
 	set_variable = { name = zg361_b2_m358_original_salary value = var:zg361_result_salary_cut_active }
 	set_variable = { name = zg361_b2_m358_aggravated value = 0 }
 	set_variable = { name = zg361_b2_m358_receipt_serial value = var:zg361_b2_case_serial }
+	if = {
+		limit = { var:zg361_b2_m358_route = 2 }
+		set_variable = { name = zg361_b2_m358_same_case_aggravation_permitted value = 1 }
+		set_variable = { name = zg361_b2_m358_retaliation_risk value = 1 }
+	}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -557,9 +1249,24 @@ zg361_b2_on_appeal_upheld_effect = {
 		set_variable = { name = zg361_result_case_state value = 4 }
 		set_variable = { name = zg361_result_appeal_outcome value = 2 }
 		set_variable = { name = zg361_b2_m077_state value = 4 }
+		set_variable = { name = zg361_b2_m077_conclusion value = 2 }
+		set_variable = { name = zg361_b2_m077_conclusion_evidence_revision value = var:zg361_b2_appeal_evidence_revision }
+		set_variable = { name = zg361_b2_m077_conclusion_receipt value = var:zg361_b2_case_serial }
+		if = {
+			limit = { has_variable = zg361_b2_m077_reviewer }
+			var:zg361_b2_m077_reviewer = {
+				change_variable = { name = zg361_b2_reviewer_case_n add = 1 }
+				set_variable = { name = zg361_b2_reviewer_last_case value = root.var:zg361_b2_case_serial }
+			}
+		}
+		zg361_b2_m078_open_business_object_effect = yes
+		zg361_b2_m071_open_business_object_effect = yes
 		zg361_b2_m078_update_fairness_effect = yes
+		zg361_b2_m358_apply_disclosed_aggravation_effect = yes
 		zg361_b2_m358_close_non_aggravation_effect = yes
 		zg361_b2_m071_open_escalation_effect = yes
+		zg361_b2_m014_consume_business_object_effect = yes
+		zg361_b2_m077_consume_business_object_effect = yes
 	}
 }
 
@@ -579,6 +1286,9 @@ zg361_b2_on_appeal_expired_effect = {
 			limit = { var:zg361_b2_m014_state = 1 }
 			set_variable = { name = zg361_b2_m014_state value = 5 }
 			set_variable = { name = zg361_b2_appeal_state value = 5 }
+			zg361_b2_m014_consume_business_object_effect = yes
+			zg361_b2_m077_consume_business_object_effect = yes
+			zg361_b2_m358_consume_business_object_effect = yes
 		}
 		# Existing AI-manager elimination resumes only after the ninety-day
 		# appeal window really closes; the settlement-day D+2 shortcut is gated.
@@ -610,73 +1320,125 @@ zg361_b2_on_appeal_corrected_effect = {
 		set_variable = { name = zg361_b2_m014_state value = 3 }
 		set_variable = { name = zg361_b2_m014_outcome value = 1 }
 		set_variable = { name = zg361_b2_m077_state value = 3 }
+		set_variable = { name = zg361_b2_m077_conclusion value = 1 }
+		set_variable = { name = zg361_b2_m077_conclusion_evidence_revision value = var:zg361_b2_appeal_evidence_revision }
+		set_variable = { name = zg361_b2_m077_conclusion_receipt value = var:zg361_b2_case_serial }
+		if = {
+			limit = { has_variable = zg361_b2_m077_reviewer }
+			var:zg361_b2_m077_reviewer = {
+				change_variable = { name = zg361_b2_reviewer_case_n add = 1 }
+				set_variable = { name = zg361_b2_reviewer_last_case value = root.var:zg361_b2_case_serial }
+			}
+		}
+		zg361_b2_m076_open_business_object_effect = yes
+		zg361_b2_m078_open_business_object_effect = yes
+		zg361_b2_m359_open_business_object_effect = yes
 		zg361_b2_m076_allocate_liability_effect = yes
 		zg361_b2_m078_update_fairness_effect = yes
 		zg361_b2_m358_close_non_aggravation_effect = yes
 		zg361_b2_m359_open_quota_return_effect = yes
+		zg361_b2_m014_consume_business_object_effect = yes
+		zg361_b2_m077_consume_business_object_effect = yes
 		debug_log = "ZG361B2: appeal correction consumed actual refund receipt"
 	}
 }
 
 zg361_b2_m076_allocate_liability_effect = {
+	if = {
+		limit = { var:zg361_b2_m076_object_active = 1 }
 	save_temporary_scope_as = zg361_b2_liability_subject
 	set_variable = { name = zg361_b2_m076_state value = 3 }
-	set_variable = { name = zg361_b2_m076_direct_share value = 70 }
-	set_variable = { name = zg361_b2_m076_system_share value = 30 }
+	set_variable = { name = zg361_b2_m076_direct_share value = 50 }
+	set_variable = { name = zg361_b2_m076_superior_share value = 25 }
+	set_variable = { name = zg361_b2_m076_system_share value = 25 }
+	if = {
+		limit = { var:zg361_b2_m076_route = 2 }
+		set_variable = { name = zg361_b2_m076_direct_share value = 100 }
+		set_variable = { name = zg361_b2_m076_superior_share value = 0 }
+		set_variable = { name = zg361_b2_m076_system_share value = 0 }
+		set_variable = { name = zg361_b2_m076_scapegoat_risk value = 1 }
+		set_variable = { name = zg361_b2_m076_unresolved_system_defect value = 1 }
+	}
 	set_variable = { name = zg361_b2_m076_share_total value = 100 }
 	set_variable = { name = zg361_b2_m076_receipt_serial value = var:zg361_b2_case_serial }
 	var:zg361_b2_case_owner = {
 		change_variable = { name = zg361_b2_management_debt add = 1 }
 		set_variable = { name = zg361_b2_management_debt_source_case value = scope:zg361_b2_liability_subject.var:zg361_b2_case_serial }
+		if = {
+			limit = { scope:zg361_b2_liability_subject.var:zg361_b2_m076_route = 1 exists = liege }
+			liege = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		}
+	}
+	zg361_b2_m076_consume_business_object_effect = yes
 	}
 }
 
 zg361_b2_m078_update_fairness_effect = {
-	save_temporary_scope_as = zg361_b2_fairness_subject
-	set_variable = { name = zg361_b2_m078_state value = 3 }
-	set_variable = { name = zg361_b2_m078_receipt_serial value = var:zg361_b2_case_serial }
-	var:zg361_b2_case_owner = {
-		change_variable = { name = zg361_b2_fairness_reviewed_n add = 1 }
-		if = {
-			limit = { scope:zg361_b2_fairness_subject.var:zg361_b2_appeal_state = 3 }
-			change_variable = { name = zg361_b2_fairness_corrected_n add = 1 }
-		}
-		set_variable = { name = zg361_b2_fairness_denominator value = var:zg361_b2_fairness_reviewed_n }
-		set_variable = { name = zg361_b2_fairness_numerator value = 0 }
-		if = {
-			limit = { has_variable = zg361_b2_fairness_corrected_n }
-			set_variable = { name = zg361_b2_fairness_numerator value = var:zg361_b2_fairness_corrected_n }
-		}
-		set_variable = { name = zg361_b2_fairness_small_sample value = 0 }
-		if = {
-			limit = { var:zg361_b2_fairness_denominator < 5 }
-			set_variable = { name = zg361_b2_fairness_small_sample value = 1 }
-		}
-		if = {
-			limit = {
-				has_variable = zg361_b2_fairness_corrected_n
-				var:zg361_b2_fairness_corrected_n >= 2
-				var:zg361_b2_fairness_denominator >= 5
+	zg361_b2_m078_apply_resolved_sample_effect = yes
+}
+
+zg361_b2_m358_apply_disclosed_aggravation_effect = {
+	if = {
+		limit = {
+			var:zg361_b2_m358_object_active = 1
+			var:zg361_b2_m358_state = 1
+			var:zg361_b2_m358_route = 2
+			var:zg361_b2_m358_receipt_serial = var:zg361_b2_case_serial
+			OR = {
+				NOT = { has_variable = zg361_b2_m358_aggravation_receipt }
+				NOT = { var:zg361_b2_m358_aggravation_receipt = var:zg361_b2_case_serial }
 			}
-			set_variable = { name = zg361_b2_fairness_anomaly_open value = 1 }
 		}
+		set_variable = { name = zg361_b2_m358_aggravation_gold_before value = gold }
+		remove_short_term_gold = 10
+		set_variable = {
+			name = zg361_b2_m358_extra_gold_paid
+			value = { value = var:zg361_b2_m358_aggravation_gold_before subtract = gold }
+		}
+		change_variable = { name = zg361_result_gold_paid add = var:zg361_b2_m358_extra_gold_paid }
+		set_variable = { name = zg361_b2_m358_aggravation_receipt value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m358_aggravation_disclosed value = 1 }
+		var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		remove_variable = zg361_b2_m358_aggravation_gold_before
 	}
 }
 
 zg361_b2_m358_close_non_aggravation_effect = {
 	if = {
 		limit = {
+			var:zg361_b2_m358_object_active = 1
 			var:zg361_b2_m358_state = 1
 			var:zg361_b2_m358_receipt_serial = var:zg361_b2_case_serial
+			OR = {
+				var:zg361_b2_m358_route = 2
+				AND = {
 			var:zg361_result_grade >= var:zg361_b2_m358_original_grade
 			var:zg361_result_treasury_paid <= var:zg361_b2_m358_original_treasury
 			var:zg361_result_gold_paid <= var:zg361_b2_m358_original_gold
 			var:zg361_result_merit_paid <= var:zg361_b2_m358_original_merit
+				}
+			}
 		}
 		set_variable = { name = zg361_b2_m358_state value = 3 }
 		set_variable = { name = zg361_b2_m358_aggravated value = 0 }
+		if = {
+			limit = {
+				var:zg361_b2_m358_route = 2
+				OR = {
+					var:zg361_result_grade < var:zg361_b2_m358_original_grade
+					var:zg361_result_treasury_paid > var:zg361_b2_m358_original_treasury
+					var:zg361_result_gold_paid > var:zg361_b2_m358_original_gold
+					var:zg361_result_merit_paid > var:zg361_b2_m358_original_merit
+				}
+			}
+			set_variable = { name = zg361_b2_m358_aggravated value = 1 }
+			set_variable = { name = zg361_b2_m358_aggravation_disclosed value = 1 }
+			set_variable = { name = zg361_b2_m358_retaliation_risk value = 1 }
+		}
+		zg361_b2_m358_consume_business_object_effect = yes
 	}
-	else = {
+	else_if = {
+		limit = { var:zg361_b2_m358_object_active = 1 }
 		set_variable = { name = zg361_b2_m358_state value = 4 }
 		set_variable = { name = zg361_b2_m358_aggravated value = 1 }
 		debug_log = "ZG361B2: non-aggravation invariant failed"
@@ -684,8 +1446,12 @@ zg361_b2_m358_close_non_aggravation_effect = {
 }
 
 zg361_b2_m071_open_escalation_effect = {
+	if = {
+		limit = { var:zg361_b2_m071_object_active = 1 }
 	set_variable = { name = zg361_b2_m071_state value = 1 }
 	set_variable = { name = zg361_b2_m071_receipt_serial value = var:zg361_b2_case_serial }
+	set_variable = { name = zg361_b2_m071_private_route_exhausted value = 1 }
+	set_variable = { name = zg361_b2_m071_formal_appeal_exhausted value = 1 }
 	if = {
 		limit = { is_ai = no }
 		var:zg361_b2_case_owner = { save_scope_as = zg361_b2_escalation_owner }
@@ -696,15 +1462,29 @@ zg361_b2_m071_open_escalation_effect = {
 		trigger_event = { id = zg361b2.50 days = 1 }
 		if = {
 			limit = { has_variable = zg361_streak_bottom var:zg361_streak_bottom >= 2 }
-			var:zg361_b2_case_owner = { save_scope_as = zg361_b2_exit_offer_owner }
-			save_scope_as = zg361_b2_exit_offer_subject
-			save_scope_value_as = { name = zg361_b2_exit_offer_cycle value = var:zg361_b2_case_cycle }
-			save_scope_value_as = { name = zg361_b2_exit_offer_case value = var:zg361_b2_case_serial }
-			save_scope_value_as = { name = zg361_b2_exit_offer_state value = var:zg361_b2_m014_state }
-			trigger_event = { id = zg361b2.60 days = 2 }
+			zg361_b2_m075_open_exit_offer_effect = yes
+			if = {
+				limit = { var:zg361_b2_m075_object_active = 1 var:zg361_b2_m075_state = 1 }
+				var:zg361_b2_case_owner = { save_scope_as = zg361_b2_exit_offer_owner }
+				save_scope_as = zg361_b2_exit_offer_subject
+				save_scope_value_as = { name = zg361_b2_exit_offer_cycle value = var:zg361_b2_case_cycle }
+				save_scope_value_as = { name = zg361_b2_exit_offer_case value = var:zg361_b2_case_serial }
+				save_scope_value_as = { name = zg361_b2_exit_offer_state value = var:zg361_b2_m014_state }
+				trigger_event = { id = zg361b2.60 days = 2 }
+			}
 		}
 	}
-	else = { set_variable = { name = zg361_b2_m071_state value = 4 } }
+	else = {
+		if = {
+			limit = { var:zg361_b2_m071_route = 2 }
+			zg361_b2_publish_evidence_escalation_effect = yes
+		}
+		else = {
+			set_variable = { name = zg361_b2_m071_state value = 4 }
+			zg361_b2_m071_consume_business_object_effect = yes
+		}
+	}
+	}
 }
 
 zg361_b2_publish_evidence_escalation_effect = {
@@ -726,6 +1506,12 @@ zg361_b2_publish_evidence_escalation_effect = {
 			}
 		}
 		set_variable = { name = zg361_b2_m071_factcheck_state value = 1 }
+		if = {
+			limit = { var:zg361_b2_m071_route = 2 }
+			set_variable = { name = zg361_b2_m071_immediate_publication value = 1 }
+			set_variable = { name = zg361_b2_m071_mutual_reputation_cost value = 1 }
+			var:zg361_b2_case_owner = { add_prestige = { value = 0 subtract = 25 } }
+		}
 		var:zg361_b2_case_owner = { save_scope_as = zg361_b2_factcheck_owner }
 		save_scope_as = zg361_b2_factcheck_subject
 		save_scope_value_as = { name = zg361_b2_factcheck_cycle value = var:zg361_b2_case_cycle }
@@ -742,7 +1528,9 @@ zg361_b2_publish_anonymous_report_effect = {
 	if = {
 		limit = { var:zg361_b2_m071_state = 1 }
 		set_variable = { name = zg361_b2_m071_state value = 3 }
+		zg361_b2_m073_open_business_object_effect = yes
 		zg361_b2_m073_triage_report_effect = yes
+		zg361_b2_m071_consume_business_object_effect = yes
 	}
 }
 
@@ -751,10 +1539,13 @@ zg361_b2_defer_escalation_effect = {
 		limit = { var:zg361_b2_m071_state = 1 }
 		set_variable = { name = zg361_b2_m071_state value = 4 }
 		set_variable = { name = zg361_b2_m071_policy_debt value = 1 }
+		zg361_b2_m071_consume_business_object_effect = yes
 	}
 }
 
 zg361_b2_m073_triage_report_effect = {
+	if = {
+		limit = { var:zg361_b2_m073_object_active = 1 }
 	set_variable = { name = zg361_b2_m073_state value = 2 }
 	set_variable = { name = zg361_b2_m073_receipt_serial value = var:zg361_b2_case_serial }
 	set_variable = { name = zg361_b2_m073_provenance value = this }
@@ -768,11 +1559,20 @@ zg361_b2_m073_triage_report_effect = {
 	}
 	set_variable = { name = zg361_b2_m073_truth_finding value = 0 }
 	if = {
+		limit = { var:zg361_b2_m073_route = 2 }
+		set_variable = { name = zg361_b2_m073_blanket_sanction value = 1 }
+		set_variable = { name = zg361_b2_m073_protected value = 0 }
+		set_variable = { name = zg361_b2_m073_state value = 4 }
+		if = {
+			limit = { var:zg361_b2_m071_evidence_strength >= 2 }
+			set_variable = { name = zg361_b2_m073_suppressed_genuine_lead value = 1 }
+			var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		}
+		add_prestige = { value = 0 subtract = 50 }
+	}
+	else_if = {
 		limit = {
-			OR = {
-				has_variable = zg361_result_objection_recorded
-				var:zg361_result_grade_reason > 0
-			}
+			var:zg361_b2_m071_evidence_strength >= 2
 		}
 		set_variable = { name = zg361_b2_m073_public_interest value = 1 }
 		set_variable = { name = zg361_b2_m073_truth_finding value = 1 }
@@ -786,6 +1586,8 @@ zg361_b2_m073_triage_report_effect = {
 		set_variable = { name = zg361_b2_m073_state value = 4 }
 		add_prestige = { value = 0 subtract = 50 }
 	}
+	zg361_b2_m073_consume_business_object_effect = yes
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -794,8 +1596,9 @@ zg361_b2_m073_triage_report_effect = {
 # ---------------------------------------------------------------------------
 
 zg361_b2_m074_open_redundancy_offer_effect = {
+	zg361_b2_m074_open_business_object_effect = yes
 	if = {
-		limit = { var:zg361_b2_m074_state = 0 }
+		limit = { var:zg361_b2_m074_object_active = 1 var:zg361_b2_m074_state = 0 }
 		set_variable = { name = zg361_b2_m074_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_m074_subject value = this }
 		set_variable = { name = zg361_b2_m074_cycle value = var:zg361_b2_case_cycle }
@@ -809,6 +1612,14 @@ zg361_b2_m074_open_redundancy_offer_effect = {
 		set_variable = { name = zg361_b2_m074_actual_exit value = 0 }
 		set_variable = { name = zg361_b2_m074_hc_released value = 0 }
 		set_variable = { name = zg361_b2_m074_receipt_serial value = var:zg361_b2_case_serial }
+		if = {
+			limit = { var:zg361_b2_m074_route = 2 }
+			set_variable = { name = zg361_b2_m074_reason value = 2 } # disguised performance exit
+			set_variable = { name = zg361_b2_m074_offer_gold value = 0 }
+			set_variable = { name = zg361_b2_m074_redundancy_eligible value = 1 }
+			set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+			set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+		}
 		if = {
 			limit = {
 				var:zg361_b2_m074_owner = {
@@ -826,21 +1637,33 @@ zg361_b2_m074_accept_redundancy_effect = {
 		limit = {
 			var:zg361_b2_m074_owner = var:zg361_b2_case_owner
 			var:zg361_b2_m074_subject = this
+			var:zg361_b2_m074_object_active = 1
 			var:zg361_b2_m074_cycle = var:zg361_b2_case_cycle
 			var:zg361_b2_m074_case = var:zg361_b2_case_serial
 			var:zg361_b2_m074_state = 1
 			var:zg361_b2_m074_redundancy_eligible = 1
 			var:zg361_b2_m074_receipt_serial = var:zg361_b2_m074_case
-			var:zg361_b2_m074_owner = {
-				government_has_flag = government_has_treasury
-				treasury >= 50
+			OR = {
+				var:zg361_b2_m074_route = 2
+				var:zg361_b2_m074_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 50
+				}
 			}
 		}
-		var:zg361_b2_m074_owner = { remove_treasury = 50 }
-		add_gold = 50
-		set_variable = { name = zg361_b2_m074_treasury_paid value = 50 }
-		set_variable = { name = zg361_b2_m074_personal_received value = 50 }
-		set_variable = { name = zg361_b2_m074_neutral_record value = 1 }
+		if = {
+			limit = { var:zg361_b2_m074_route = 1 }
+			var:zg361_b2_m074_owner = { remove_treasury = 50 }
+			add_gold = 50
+			set_variable = { name = zg361_b2_m074_treasury_paid value = 50 }
+			set_variable = { name = zg361_b2_m074_personal_received value = 50 }
+			set_variable = { name = zg361_b2_m074_neutral_record value = 1 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_m074_treasury_paid value = 0 }
+			set_variable = { name = zg361_b2_m074_personal_received value = 0 }
+			set_variable = { name = zg361_b2_m074_unfunded_disguised_exit value = 1 }
+		}
 		set_variable = { name = zg361_b2_m074_actual_exit value = 1 }
 		set_variable = { name = zg361_b2_m074_hc_released value = 1 }
 		set_variable = { name = zg361_b2_m074_state value = 3 }
@@ -859,18 +1682,26 @@ zg361_b2_m074_reject_redundancy_effect = {
 		limit = { var:zg361_b2_m074_state = 1 }
 		set_variable = { name = zg361_b2_m074_state value = 5 }
 		set_variable = { name = zg361_b2_m074_redundancy_eligible value = 0 }
+		zg361_b2_m074_consume_business_object_effect = yes
 	}
 }
 
 zg361_b2_m075_open_exit_offer_effect = {
+	zg361_b2_m075_open_business_object_effect = yes
 	if = {
-		limit = { var:zg361_b2_m075_state = 0 }
+		limit = { var:zg361_b2_m075_object_active = 1 var:zg361_b2_m075_state = 0 }
 		set_variable = { name = zg361_b2_m075_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_m075_subject value = this }
 		set_variable = { name = zg361_b2_m075_cycle value = var:zg361_b2_case_cycle }
 		set_variable = { name = zg361_b2_m075_case value = var:zg361_b2_case_serial }
 		set_variable = { name = zg361_b2_m075_state value = 1 }
 		set_variable = { name = zg361_b2_m075_offer_gold value = 50 }
+		if = {
+			limit = { var:zg361_b2_m075_route = 2 }
+			set_variable = { name = zg361_b2_m075_offer_gold value = 0 }
+			set_variable = { name = zg361_b2_m075_coercion_evidence value = 1 }
+			set_variable = { name = zg361_b2_m075_reclassification_due value = 1 }
+		}
 		set_variable = { name = zg361_b2_m075_receipt_serial value = var:zg361_b2_case_serial }
 		var:zg361_b2_m075_owner = { save_scope_as = zg361_b2_exit_deadline_owner }
 		save_scope_as = zg361_b2_exit_deadline_subject
@@ -889,20 +1720,34 @@ zg361_b2_m075_accept_exit_offer_effect = {
 			var:zg361_b2_m075_cycle = var:zg361_b2_case_cycle
 			var:zg361_b2_m075_case = var:zg361_b2_case_serial
 			var:zg361_b2_m075_state = 1
+			var:zg361_b2_m075_object_active = 1
 			var:zg361_b2_m075_receipt_serial = var:zg361_b2_case_serial
-			var:zg361_b2_case_owner = {
-				government_has_flag = government_has_treasury
-				treasury >= 50
+			OR = {
+				var:zg361_b2_m075_route = 2
+				var:zg361_b2_case_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 50
+				}
 			}
 		}
-		var:zg361_b2_case_owner = { remove_treasury = 50 }
-		add_gold = 50
-		set_variable = { name = zg361_b2_m075_treasury_paid value = 50 }
-		set_variable = { name = zg361_b2_m075_personal_received value = 50 }
+		if = {
+			limit = { var:zg361_b2_m075_route = 1 }
+			var:zg361_b2_case_owner = { remove_treasury = 50 }
+			add_gold = 50
+			set_variable = { name = zg361_b2_m075_treasury_paid value = 50 }
+			set_variable = { name = zg361_b2_m075_personal_received value = 50 }
+		}
+		else = {
+			set_variable = { name = zg361_b2_m075_treasury_paid value = 0 }
+			set_variable = { name = zg361_b2_m075_personal_received value = 0 }
+			set_variable = { name = zg361_b2_m075_procedural_redundancy value = 1 }
+			var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		}
 		set_variable = { name = zg361_b2_m075_state value = 3 }
 		set_variable = { name = zg361_b2_m075_neutral_record value = 1 }
 		set_variable = { name = zg361_b2_m075_actual_exit value = 1 }
 		set_variable = { name = zg361_b2_m075_hc_released value = 1 }
+		zg361_b2_m075_consume_business_object_effect = yes
 		force_step_down_landed_titles = yes
 	}
 }
@@ -911,6 +1756,8 @@ zg361_b2_m075_reject_exit_offer_effect = {
 	if = {
 		limit = { var:zg361_b2_m075_state = 1 }
 		set_variable = { name = zg361_b2_m075_state value = 4 }
+		set_variable = { name = zg361_b2_m075_refused_without_transfer value = 1 }
+		zg361_b2_m075_consume_business_object_effect = yes
 		# Refusal moves to ordinary PIP/appeal and transfers no resource.
 	}
 }
@@ -920,42 +1767,61 @@ zg361_b2_m075_reject_exit_offer_effect = {
 # ---------------------------------------------------------------------------
 
 zg361_b2_m079_open_skip_level_effect = {
-	set_variable = { name = zg361_b2_m079_state value = 1 }
-	set_variable = { name = zg361_b2_m079_receipt_serial value = var:zg361_b2_case_serial }
-	var:zg361_b2_case_owner = {
-		if = {
-			limit = { exists = liege liege = { is_alive = yes } }
-			liege = { save_temporary_scope_as = zg361_b2_skip_level_reviewer }
-		}
-	}
+	zg361_b2_m079_open_business_object_effect = yes
 	if = {
-		limit = { exists = scope:zg361_b2_skip_level_reviewer }
-		set_variable = { name = zg361_b2_m079_reviewer value = scope:zg361_b2_skip_level_reviewer }
-		set_variable = { name = zg361_b2_m079_seat_reserved value = 0 }
-		save_temporary_scope_as = zg361_b2_skip_subject
-		scope:zg361_b2_skip_level_reviewer = {
+		limit = { var:zg361_b2_m079_object_active = 1 var:zg361_b2_m079_state = 0 }
+		set_variable = { name = zg361_b2_m079_state value = 1 }
+		set_variable = { name = zg361_b2_m079_receipt_serial value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_evidence_task value = var:zg361_b2_case_serial }
+		set_variable = { name = zg361_b2_m079_direct_grade_write_allowed value = 0 }
+		if = {
+			limit = { var:zg361_b2_m079_route = 2 }
+			set_variable = { name = zg361_b2_m079_instant_promise_attempted value = 1 }
+			set_variable = { name = zg361_b2_m079_overreach_risk value = 1 }
+		}
+		var:zg361_b2_case_owner = {
 			if = {
-				limit = { NOT = { has_variable = zg361_b2_skip_seats_used } }
-				set_variable = { name = zg361_b2_skip_seats_used value = 0 }
-			}
-			if = {
-				limit = { var:zg361_b2_skip_seats_used < 2 }
-				change_variable = { name = zg361_b2_skip_seats_used add = 1 }
-				scope:zg361_b2_skip_subject = { set_variable = { name = zg361_b2_m079_seat_reserved value = 1 } }
+				limit = { exists = liege liege = { is_alive = yes } }
+				liege = { save_temporary_scope_as = zg361_b2_skip_level_reviewer }
 			}
 		}
 		if = {
-			limit = { var:zg361_b2_m079_seat_reserved = 1 }
-			scope:zg361_b2_skip_level_reviewer = { save_scope_as = zg361_b2_skip_deadline_owner }
-			save_scope_as = zg361_b2_skip_deadline_subject
-			save_scope_value_as = { name = zg361_b2_skip_deadline_cycle value = var:zg361_b2_case_cycle }
-			save_scope_value_as = { name = zg361_b2_skip_deadline_case value = var:zg361_b2_case_serial }
-			save_scope_value_as = { name = zg361_b2_skip_deadline_state value = var:zg361_b2_m079_state }
-			trigger_event = { id = zg361b2.140 days = 30 }
+			limit = { exists = scope:zg361_b2_skip_level_reviewer }
+			set_variable = { name = zg361_b2_m079_reviewer value = scope:zg361_b2_skip_level_reviewer }
+			set_variable = { name = zg361_b2_m079_seat_reserved value = 0 }
+			save_temporary_scope_as = zg361_b2_skip_subject
+			scope:zg361_b2_skip_level_reviewer = {
+				if = {
+					limit = { NOT = { has_variable = zg361_b2_skip_seats_used } }
+					set_variable = { name = zg361_b2_skip_seats_used value = 0 }
+				}
+				if = {
+					limit = { var:zg361_b2_skip_seats_used < 2 }
+					change_variable = { name = zg361_b2_skip_seats_used add = 1 }
+					scope:zg361_b2_skip_subject = { set_variable = { name = zg361_b2_m079_seat_reserved value = 1 } }
+				}
+			}
+			if = {
+				limit = { var:zg361_b2_m079_seat_reserved = 1 }
+				scope:zg361_b2_skip_level_reviewer = { save_scope_as = zg361_b2_skip_deadline_owner }
+				save_scope_as = zg361_b2_skip_deadline_subject
+				save_scope_value_as = { name = zg361_b2_skip_deadline_cycle value = var:zg361_b2_case_cycle }
+				save_scope_value_as = { name = zg361_b2_skip_deadline_case value = var:zg361_b2_case_serial }
+				save_scope_value_as = { name = zg361_b2_skip_deadline_state value = var:zg361_b2_m079_state }
+				trigger_event = { id = zg361b2.140 days = 30 }
+			}
+			else = {
+				set_variable = { name = zg361_b2_m079_state value = 4 }
+				set_variable = { name = zg361_b2_m079_capacity_denied value = 1 }
+				zg361_b2_m079_consume_business_object_effect = yes
+			}
 		}
-		else = { set_variable = { name = zg361_b2_m079_state value = 4 } }
+		else = {
+			set_variable = { name = zg361_b2_m079_state value = 4 }
+			set_variable = { name = zg361_b2_m079_reviewer_unavailable value = 1 }
+			zg361_b2_m079_consume_business_object_effect = yes
+		}
 	}
-	else = { set_variable = { name = zg361_b2_m079_state value = 4 } }
 }
 
 zg361_b2_m079_release_seat_effect = {
@@ -976,14 +1842,23 @@ zg361_b2_m079_release_seat_effect = {
 }
 
 zg361_b2_m080_open_metric_defect_effect = {
+	zg361_b2_m080_open_business_object_effect = yes
 	if = {
-		limit = { var:zg361_b2_m080_state = 0 }
+		limit = { var:zg361_b2_m080_object_active = 1 var:zg361_b2_m080_state = 0 }
 		set_variable = { name = zg361_b2_m080_state value = 1 }
 		set_variable = { name = zg361_b2_m080_owner value = var:zg361_b2_case_owner }
 		set_variable = { name = zg361_b2_m080_subject value = this }
 		set_variable = { name = zg361_b2_m080_cycle value = var:zg361_b2_case_cycle }
 		set_variable = { name = zg361_b2_m080_case value = var:zg361_b2_case_serial }
 		set_variable = { name = zg361_b2_m080_metric_version value = var:zg361_b2_case_cycle }
+		set_variable = { name = zg361_b2_m080_defect_id value = { value = var:zg361_b2_case_serial multiply = 10 add = var:zg361_b2_appeal_reason } }
+		set_variable = { name = zg361_b2_m080_defect_type value = var:zg361_b2_appeal_reason }
+		set_variable = { name = zg361_b2_m080_evidence_hash value = { value = var:zg361_b2_case_serial multiply = 100 add = var:zg361_b2_appeal_evidence_revision } }
+		set_variable = { name = zg361_b2_m080_evidence_preserved value = 1 }
+		if = {
+			limit = { var:zg361_b2_m080_route = 2 }
+			set_variable = { name = zg361_b2_m080_suppression_attempted value = 1 }
+		}
 		set_variable = { name = zg361_b2_m080_receipt_serial value = var:zg361_b2_case_serial }
 		var:zg361_b2_m080_owner = { save_scope_as = zg361_b2_metric_deadline_owner }
 		save_scope_as = zg361_b2_metric_deadline_subject
@@ -1047,15 +1922,32 @@ zg361_b2_prepare_adverse_action_effect = {
 			}
 		}
 		else = {
-			set_variable = { name = zg361_b2_adverse_action_allowed value = 0 }
-			change_variable = { name = zg361_b2_retaliation_suspended_n add = 1 }
-			set_variable = { name = zg361_b2_m070_finding value = 1 } # pending independent review
-			set_variable = { name = zg361_b2_m074_state value = 2 }
-			set_variable = { name = zg361_b2_m074_reason value = 2 }
-			set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
-			set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
-			var:zg361_b2_retaliation_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
-			debug_log = "ZG361B2: unsupported post-appeal adverse action suspended"
+			if = {
+				limit = { var:zg361_b2_m070_route = 2 }
+				# Expedient policy really permits the action, but freezes an
+				# explicit retaliation finding and a heavier manager liability.
+				set_variable = { name = zg361_b2_adverse_action_allowed value = 1 }
+				set_variable = { name = zg361_b2_m070_finding value = 3 }
+				set_variable = { name = zg361_b2_m070_retaliation_action_executed value = var:zg361_b2_pending_adverse_action }
+				set_variable = { name = zg361_b2_m070_retaliation_receipt value = var:zg361_b2_retaliation_case }
+				set_variable = { name = zg361_b2_m074_state value = 4 }
+				set_variable = { name = zg361_b2_m074_reason value = 2 }
+				set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+				var:zg361_b2_retaliation_owner = { change_variable = { name = zg361_b2_management_debt add = 2 } }
+				debug_log = "ZG361B2: expedient post-appeal retaliation executed and disclosed"
+			}
+			else = {
+				set_variable = { name = zg361_b2_adverse_action_allowed value = 0 }
+				change_variable = { name = zg361_b2_retaliation_suspended_n add = 1 }
+				set_variable = { name = zg361_b2_m070_finding value = 1 } # pending independent review
+				set_variable = { name = zg361_b2_m074_state value = 2 }
+				set_variable = { name = zg361_b2_m074_reason value = 2 }
+				set_variable = { name = zg361_b2_m074_disguised_performance_exit value = 1 }
+				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+				var:zg361_b2_retaliation_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+				debug_log = "ZG361B2: unsupported post-appeal adverse action suspended"
+			}
 		}
 	}
 	else = {
@@ -1133,6 +2025,12 @@ zg361_b2_execute_pending_adverse_action_effect = {
 		else_if = { limit = { var:zg361_b2_pending_adverse_action = 2 } zg361_eliminate_stepdown_effect = yes }
 		else_if = { limit = { var:zg361_b2_pending_adverse_action = 3 } zg361_eliminate_demote_effect = yes }
 		else_if = { limit = { var:zg361_b2_pending_adverse_action = 4 } zg361_eliminate_extend_effect = yes }
+		if = {
+			limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
+			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
+		}
 	}
 }
 
@@ -1142,11 +2040,12 @@ zg361_b2_execute_pending_adverse_action_effect = {
 
 zg361_b2_m359_open_quota_return_effect = {
 	if = {
-		limit = { var:zg361_b2_m359_state = 0 }
+		limit = { var:zg361_b2_m359_object_active = 1 var:zg361_b2_m359_state = 0 }
 		set_variable = { name = zg361_b2_m359_state value = 1 }
 		set_variable = { name = zg361_b2_m359_receipt_serial value = var:zg361_b2_case_serial }
 		if = {
 			limit = {
+				var:zg361_b2_m359_route = 1
 				var:zg361_b2_case_owner = { is_ai = no zg361_is_celestial_liege_trigger = yes }
 			}
 			var:zg361_b2_case_owner = { save_scope_as = zg361_b2_quota_return_owner }
@@ -1156,43 +2055,73 @@ zg361_b2_m359_open_quota_return_effect = {
 			save_scope_value_as = { name = zg361_b2_quota_return_state value = var:zg361_b2_m359_state }
 			var:zg361_b2_case_owner = { trigger_event = { id = zg361b2.130 days = 1 } }
 		}
+		else_if = {
+			limit = { var:zg361_b2_m359_route = 2 }
+			set_variable = { name = zg361_b2_m359_hidden_rebalance value = 1 }
+			set_variable = { name = zg361_b2_m359_audit_diff_preserved value = 1 }
+			zg361_b2_m359_open_boundary_review_effect = yes
+		}
+		else_if = {
+			limit = {
+				var:zg361_b2_m359_route = 1
+				var:zg361_b2_case_owner = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
+			}
+			zg361_b2_m359_consume_reserve_effect = yes
+		}
 		else = { zg361_b2_m359_post_next_cycle_debt_effect = yes }
 	}
 }
 
 zg361_b2_m359_consume_reserve_effect = {
 	save_temporary_scope_as = zg361_b2_reserve_subject
+	if = {
+		limit = {
+			var:zg361_b2_m359_object_active = 1
+			var:zg361_b2_m359_state = 1
+			var:zg361_b2_m359_receipt_serial = var:zg361_b2_case_serial
+		}
 	var:zg361_b2_case_owner = {
 		if = {
 			limit = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
 			change_variable = { name = zg361_b2_quota_reserve add = -1 }
 			scope:zg361_b2_reserve_subject = {
 				set_variable = { name = zg361_b2_m359_state value = 2 }
-				set_variable = { name = zg361_b2_m359_route value = 1 }
+				set_variable = { name = zg361_b2_m359_return_route value = 1 }
 				set_variable = { name = zg361_b2_m359_reserved_consumed value = 1 }
+				zg361_b2_m359_consume_business_object_effect = yes
 			}
 		}
+	}
 	}
 }
 
 zg361_b2_m359_post_next_cycle_debt_effect = {
 	if = {
-		limit = { var:zg361_b2_m359_state = 1 }
+		limit = {
+			var:zg361_b2_m359_object_active = 1
+			var:zg361_b2_m359_state = 1
+			var:zg361_b2_m359_receipt_serial = var:zg361_b2_case_serial
+		}
 		save_temporary_scope_as = zg361_b2_quota_debt_subject
 		set_variable = { name = zg361_b2_m359_state value = 2 }
-		set_variable = { name = zg361_b2_m359_route value = 3 }
+		set_variable = { name = zg361_b2_m359_return_route value = 3 }
 		set_variable = { name = zg361_b2_m359_debt_added value = 1 }
 		var:zg361_b2_case_owner = {
 			change_variable = { name = zg361_b2_quota_debt add = 1 }
 			set_variable = { name = zg361_b2_quota_debt_due_cycle value = { value = scope:zg361_b2_quota_debt_subject.var:zg361_b2_case_cycle add = 1 } }
 			set_variable = { name = zg361_b2_quota_debt_source_case value = scope:zg361_b2_quota_debt_subject.var:zg361_b2_case_serial }
 		}
+		zg361_b2_m359_consume_business_object_effect = yes
 	}
 }
 
 zg361_b2_m359_open_boundary_review_effect = {
 	if = {
-		limit = { var:zg361_b2_m359_state = 1 }
+		limit = {
+			var:zg361_b2_m359_object_active = 1
+			var:zg361_b2_m359_state = 1
+			var:zg361_b2_m359_receipt_serial = var:zg361_b2_case_serial
+		}
 		save_temporary_scope_as = zg361_b2_corrected_subject
 		var:zg361_b2_case_owner = { save_temporary_scope_as = zg361_b2_boundary_owner }
 		var:zg361_b2_case_owner = {
@@ -1214,7 +2143,7 @@ zg361_b2_m359_open_boundary_review_effect = {
 		if = {
 			limit = { exists = scope:zg361_b2_boundary_subject }
 			set_variable = { name = zg361_b2_m359_state value = 2 }
-			set_variable = { name = zg361_b2_m359_route value = 2 }
+			set_variable = { name = zg361_b2_m359_return_route value = 2 }
 			set_variable = { name = zg361_b2_m359_boundary_subject value = scope:zg361_b2_boundary_subject }
 			set_variable = { name = zg361_b2_m359_corrected_grade_before value = 1 }
 			set_variable = { name = zg361_b2_m359_corrected_grade_after value = 2 }
@@ -1288,6 +2217,8 @@ zg361_b2_apply_boundary_redelivery_effect = {
 			var:zg361_result_settlement_posted_serial = var:zg361_result_case_serial
 		}
 		remove_character_modifier = zg361_grade_35
+		set_variable = { name = zg361_b2_redelivery_original_result_case value = var:zg361_result_case_serial }
+		set_variable = { name = zg361_result_case_serial value = var:zg361_b2_redelivery_case }
 		set_variable = { name = zg361_last_grade value = 1 }
 		set_variable = { name = zg361_result_grade value = 1 }
 		set_variable = { name = zg361_result_grade_reason value = 9 }
@@ -1322,6 +2253,7 @@ zg361_b2_apply_boundary_redelivery_effect = {
 			set_variable = { name = zg361_b2_m359_state value = 3 }
 			set_variable = { name = zg361_b2_m359_redelivery_subject value = scope:zg361_b2_adjusted_boundary_subject }
 			set_variable = { name = zg361_b2_m359_redelivery_receipt value = scope:zg361_b2_adjusted_boundary_subject.var:zg361_b2_redelivery_case }
+			zg361_b2_m359_consume_business_object_effect = yes
 		}
 		# Reuse the proven product settlement and appeal/refund chain.  The
 		# redelivery receipt authorizes this reset once; all actual money/merit
@@ -1364,7 +2296,7 @@ zg361_b2_consume_management_debt_effect = {
 		set_variable = { name = zg361_b2_management_debt_consumed_year value = current_year }
 	}
 }
-''')
+''' + render_policy_object_kernel() + render_fairness_kernel())
 
 
 def render_events() -> bytes:
@@ -1437,6 +2369,8 @@ zg361b2.60 = {
 		var:zg361_b2_case_serial = scope:zg361_b2_exit_offer_case
 		var:zg361_b2_m014_state = scope:zg361_b2_exit_offer_state
 		var:zg361_b2_m014_state = 4
+		var:zg361_b2_m075_object_active = 1
+		var:zg361_b2_m075_state = 1
 	}
 	immediate = { zg361_b2_m075_open_exit_offer_effect = yes }
 	option = {
@@ -1470,6 +2404,7 @@ zg361b2.61 = {
 			}
 			set_variable = { name = zg361_b2_m075_state value = 5 }
 			set_variable = { name = zg361_b2_m075_expired value = 1 }
+			zg361_b2_m075_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale voluntary-exit D+30 ticket ignored" }
 	}
@@ -1525,40 +2460,73 @@ zg361b2.110 = {
 			limit = { has_variable = zg361_b2_pending_adverse_action }
 			set_variable = { name = zg361_b2_m017_state value = 2 }
 		}
-		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+		else = {
+			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
+		}
 	}
 	option = {
 		name = zg361b2.110.b
+		trigger = {
+			OR = {
+				var:zg361_b2_m017_expedited_evidence = var:zg361_b2_pip_case
+				AND = {
+					var:zg361_b2_m017_first_low_restricted = 0
+					has_variable = zg361_streak_bottom
+					var:zg361_streak_bottom >= 2
+				}
+			}
+		}
 		zg361_b2_m074_reject_redundancy_effect = yes
 		zg361_eliminate_demote_effect = yes
 		if = {
 			limit = { has_variable = zg361_b2_pending_adverse_action }
 			set_variable = { name = zg361_b2_m017_state value = 2 }
 		}
-		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+		else = {
+			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
+		}
 	}
 	option = {
 		name = zg361b2.110.c
+		trigger = {
+			var:zg361_b2_m017_first_low_restricted = 0
+			has_variable = zg361_streak_bottom
+			var:zg361_streak_bottom >= 3
+		}
 		zg361_b2_m074_reject_redundancy_effect = yes
 		zg361_eliminate_stepdown_effect = yes
 		if = {
 			limit = { has_variable = zg361_b2_pending_adverse_action }
 			set_variable = { name = zg361_b2_m017_state value = 2 }
 		}
-		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+		else = {
+			set_variable = { name = zg361_b2_m017_state value = 3 }
+			set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+			zg361_b2_m017_consume_business_object_effect = yes
+		}
 	}
 	option = {
 		name = zg361b2.110.d
 		trigger = {
+			var:zg361_b2_m017_first_low_restricted = 0
 			var:zg361_b2_m074_state = 1
 			var:zg361_b2_m074_redundancy_eligible = 1
-			var:zg361_b2_m074_owner = {
-				government_has_flag = government_has_treasury
-				treasury >= 50
+			OR = {
+				var:zg361_b2_m074_route = 2
+				var:zg361_b2_m074_owner = {
+					government_has_flag = government_has_treasury
+					treasury >= 50
+				}
 			}
 		}
 		zg361_b2_m074_accept_redundancy_effect = yes
 		set_variable = { name = zg361_b2_m017_state value = 3 }
+		set_variable = { name = zg361_b2_m017_disposition_receipt value = var:zg361_b2_pip_case }
+		zg361_b2_m017_consume_business_object_effect = yes
 	}
 }
 
@@ -1582,6 +2550,7 @@ zg361b2.120 = {
 			set_variable = { name = zg361_b2_retaliation_state value = 4 }
 			set_variable = { name = zg361_b2_m070_state value = 4 }
 			set_variable = { name = zg361_b2_m070_observed_years value = 1 }
+			zg361_b2_m070_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale retaliation D+365 ticket ignored" }
 	}
@@ -1609,6 +2578,7 @@ zg361b2.121 = {
 			set_variable = { name = zg361_b2_m072_investigation_result value = 1 }
 			set_variable = { name = zg361_b2_m072_source_finding value = var:zg361_b2_m072_source }
 			var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			zg361_b2_m072_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale pre-delivery access D+30 ticket ignored" }
 	}
@@ -1634,6 +2604,8 @@ zg361b2.130 = {
 			var:zg361_b2_case_serial = scope:zg361_b2_quota_return_case
 			var:zg361_b2_m359_state = scope:zg361_b2_quota_return_state
 			var:zg361_b2_m359_state = 1
+			var:zg361_b2_m359_object_active = 1
+			var:zg361_b2_m359_route = 1
 		}
 	}
 	option = {
@@ -1745,17 +2717,36 @@ zg361b2.140 = {
 				var:zg361_b2_case_serial = scope:zg361_b2_skip_deadline_case
 				var:zg361_b2_m079_state = scope:zg361_b2_skip_deadline_state
 				var:zg361_b2_m079_state = 1
+				var:zg361_b2_m079_object_active = 1
+				var:zg361_b2_m079_receipt_serial = var:zg361_b2_case_serial
 			}
 			zg361_b2_m079_release_seat_effect = yes
 			if = {
 				limit = { var:zg361_b2_m071_evidence_strength >= 2 }
 				set_variable = { name = zg361_b2_m079_state value = 3 }
-				set_variable = { name = zg361_result_case_state value = 3 }
-				set_variable = { name = zg361_result_appeal_open value = 1 }
-				set_variable = { name = zg361_b2_m014_state value = 1 }
-				zg361_appeal_regrade_to_35_effect = yes
+				set_variable = { name = zg361_b2_m079_investigation_result value = 1 }
+				set_variable = { name = zg361_b2_m079_manager_rework_required value = 1 }
+				set_variable = { name = zg361_b2_m079_remand_owner value = var:zg361_b2_case_owner }
+				set_variable = { name = zg361_b2_m079_remand_cycle value = var:zg361_b2_case_cycle }
+				set_variable = { name = zg361_b2_m079_remand_case value = var:zg361_b2_case_serial }
+				set_variable = { name = zg361_b2_m079_remand_active value = 1 }
+				change_variable = { name = zg361_b2_case_feedback_revision add = 1 }
+				set_variable = { name = zg361_b2_m079_evidence_revision value = var:zg361_b2_case_feedback_revision }
+				# A skip-level reviewer can remand evidence, never write this
+				# subject's pending/final grade or transfer a promised resource.
+				set_variable = { name = zg361_b2_m079_no_direct_grade_write value = 1 }
+				if = {
+					limit = { var:zg361_b2_m079_route = 2 }
+					set_variable = { name = zg361_b2_m079_unauthorized_promise_reversed value = 1 }
+					var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+				}
 			}
-			else = { set_variable = { name = zg361_b2_m079_state value = 4 } }
+			else = {
+				set_variable = { name = zg361_b2_m079_state value = 4 }
+				set_variable = { name = zg361_b2_m079_investigation_result value = 2 }
+			}
+			set_variable = { name = zg361_b2_m079_outcome_receipt value = var:zg361_b2_case_serial }
+			zg361_b2_m079_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale skip-level D+30 ticket ignored" }
 	}
@@ -1789,6 +2780,7 @@ zg361b2.141 = {
 				set_variable = { name = zg361_b2_m071_factcheck_outcome value = 2 }
 				add_prestige = { value = 0 subtract = 25 }
 			}
+			zg361_b2_m071_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale public fact-check D+30 ticket ignored" }
 	}
@@ -1810,9 +2802,20 @@ zg361b2.150 = {
 				var:zg361_b2_m080_case = scope:zg361_b2_metric_deadline_case
 				var:zg361_b2_m080_state = scope:zg361_b2_metric_deadline_state
 				var:zg361_b2_m080_state = 1
+				var:zg361_b2_m080_object_active = 1
+				var:zg361_b2_m080_receipt_serial = var:zg361_b2_case_serial
 			}
 			if = {
+				limit = { var:zg361_b2_m080_route = 2 }
+				set_variable = { name = zg361_b2_m080_state value = 4 }
+				set_variable = { name = zg361_b2_m080_suppressed value = 1 }
+				set_variable = { name = zg361_b2_m080_evidence_preserved value = 1 }
+				set_variable = { name = zg361_b2_m080_suppression_owner value = var:zg361_b2_m080_owner }
+				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			}
+			else_if = {
 				limit = {
+					var:zg361_b2_m080_route = 1
 					OR = {
 						var:zg361_b2_m073_protected = 1
 						var:zg361_b2_case_owner = { has_variable = zg361_b2_fairness_anomaly_open }
@@ -1820,13 +2823,16 @@ zg361b2.150 = {
 				}
 				set_variable = { name = zg361_b2_m080_state value = 3 }
 				set_variable = { name = zg361_b2_m080_metric_repaired value = 1 }
+				change_variable = { name = zg361_b2_m080_metric_version add = 1 }
 				set_variable = { name = zg361_b2_m080_subject_contribution value = 1 }
 			}
 			else = {
 				set_variable = { name = zg361_b2_m080_state value = 4 }
 				set_variable = { name = zg361_b2_m080_accepted_risk value = 1 }
-				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+				set_variable = { name = zg361_b2_m080_accepted_risk_reason value = 1 }
 			}
+			set_variable = { name = zg361_b2_m080_outcome_receipt value = var:zg361_b2_m080_defect_id }
+			zg361_b2_m080_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale metric D+90 ticket ignored" }
 	}
@@ -1932,6 +2938,12 @@ zg361b2.162 = {
 				limit = { has_variable = zg361_b2_separate_objection }
 				set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
 				remove_variable = zg361_b2_pending_adverse_action
+				if = {
+					limit = { var:zg361_b2_m017_object_active = 1 var:zg361_b2_m017_state = 2 }
+					set_variable = { name = zg361_b2_m017_state value = 4 }
+					set_variable = { name = zg361_b2_m017_disposition_cancelled value = var:zg361_b2_pip_case }
+					zg361_b2_m017_consume_business_object_effect = yes
+				}
 			}
 			else = { set_variable = { name = zg361_b2_separate_review_outcome value = 1 } }
 		}
@@ -1972,6 +2984,7 @@ zg361b2.171 = {
 				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
 				var:zg361_b2_m074_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
 			}
+			zg361_b2_m074_consume_business_object_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale redundancy D+30 audit ticket ignored" }
 	}

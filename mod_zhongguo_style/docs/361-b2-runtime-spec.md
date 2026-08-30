@@ -1,20 +1,29 @@
-# 361 B2 送达、申诉、反馈与 PIP 参考内核
+# 361 B2 送达、申诉正义与首段 PIP 运行时
 
-状态：2026-08-30 建立。本文件冻结 B2 的 Python 参考合同和确定性状态不变量；权威批次范围仍以
+状态：2026-08-30 建立，2026-08-31 完成原生 B2 语义补强。本文件冻结 B2 的 Python 参考合同、CK3 静态产品边界和
+确定性状态不变量；权威批次范围仍以
 [`361-phase2-full-implementation-program.md`](361-phase2-full-implementation-program.md) 为准。
+
+当前结论：19 个原生 B2 ID 已具备生成式 CK3 案卷、A/B/C 路由、幂等/过期保护和下游消费者；但 #069 的 C 路仍有一个
+明确的 shared-hook RED（见下文），且整个批次尚无 paused fixture/实机证据。因此只能称 `static-ready/central-wired partial`，
+不能称 fixture-live、production-live 或二期完成。
 
 ## 边界与计数
 
-- 本批新机制恰好 40 项：014–017、070–081、146–156、181–191、358–359。
-- 018、069 只是 B2 要收口的既有跨域接口，`batch_role=interface-only`，不得计入 40 项新完成数。
-- `tools/zg361_b2_runtime_data.py` 是 CK3 无关的可执行参考内核；它不生成或修改 Paradox 脚本。
+- 原生 B2 generator 的唯一权威范围恰好 19 项：014–017、069–081、358–359；其中 #069 仍是既有跨域接口。
+- 146–156、181–191 已归 `zg361_feedback_promotion_pip_runtime` 独占实现。B2 generator 只保留负向 ID guard，禁止复制这些机制、
+  生成同名案卷或宣称第二套 lifecycle owner。
+- `tools/zg361_b2_runtime_data.py` 是早期 42 行跨包 typed contract，仍由 feedback-PIP 测试复用；它不生成或修改 Paradox
+  脚本，也不代表 B2 generator 对 T/W 的所有权。
+- `tools/zg361_b2_semantic_model.py` 只覆盖上述 19 个原生 ID，以可执行方式证明 choice→稳定案卷→consumer、C 路不建案、
+  duplicate/stale no-op；它同样不是 CK3 live 证据。
 - 本包固定 `CK3_IMPLEMENTED=false`、`runtime_evidence=python-reference-only`、`readiness_change=none`。
   单元测试 GREEN 不得写成 fixture-live、production-live，亦不得提升 `domain_runtime` 或
   `player_visible_loop`。
 
 ## 逐项冻结合同
 
-42 行合同都必须冻结以下字段：
+19 个原生 CK3 对象及共享 typed contract 都必须冻结以下字段：
 
 1. `owner / subject / cycle / case / state` 身份与状态绑定；
 2. 实际消费该对象的 lifecycle hook；
@@ -26,6 +35,44 @@
 
 Python 表还逐行和冻结的 `361-mechanism-manifest.json`、runtime snapshot 对照 title、domain、object、operation、
 owner/subject/cycle/case 与 hook，防止批次身份漂移。
+
+## 原生 19 项产品语义
+
+| ID | 稳定对象与真实消费者 | A/B/C 边界 |
+|---:|---|---|
+| 014 | 冻结原 owner/subject/cycle/case、理由与证据 revision；真实退款仍复用按实付 receipt 的共享改判链 | A 独立复核，B 原链快审并披露冲突，C 不建增强案卷 |
+| 015 | 3.25 送达后开唯一 PIP；本人接受/协商一次/拒绝，D+365 仅一个终态 | A 可控目标，B 高压与拒绝风险，C 不建 PIP 案 |
+| 016 | 导师、12 工时、1 容量与 25 国库支持预算原子核对；终态只释放容量一次 | A 全部齐备才扣国库，B 明示只给指标不给资源，C 不建支持包 |
+| 017 | PIP 失败后才开处置案；首次末位只允许延长支持，更高阶处置读取连续末位/加速证据 | A 阶梯处置，B 有证据加速并留风险，C 不建处置案 |
+| 069 | 正式送达、见证拒签、D+90 时钟与 actual settlement receipt | A/B 可结算；C 必须在任何资源写之前拦截，当前 shared caller 仍 RED |
+| 070 | 申诉后 365 日观察对象；不含后续新事实的动作暂停，真实新事实另案送达 | A 独立审查，B 冒险管理并加权反转风险，C 不建观察期 |
+| 071 | 私下/正式渠道耗尽后冻结公开证据包、哈希和 D+30 核查 | A 有界证据公开，B 追求传播并承担双边声誉成本，C 只记债 |
+| 072 | 结果冻结时锁 ACL；送达前读取只记录一次来源、先手期与 D+30 调查 | A 拒绝越权读取，B 记录真实提前读取及来源，C 不建泄露案 |
+| 073 | 举报来源、材料哈希、真伪与保护/处分终态 | A 分流真实吹哨与恶意泄密，B 一刀切并保留压案责任，C 不建举报案 |
+| 074 | 组织原因、50 国库→50 个人金币、真实退出和 HC 释放、D+30 守恒审计 | A 诚实裁撤，B 披露洗成绩及翻案责任，C 不建裁撤案 |
+| 075 | 可拒绝的退出包与 D+30 有效期；拒绝不扣钱、不改案、不释放 HC | A 有资金才签，B 零补偿胁迫转程序责任，C 连弹窗都不创建 |
+| 076 | 翻案后 50/25/25 或 100/0/0 责任份额，总和固定 100；债落在真实管理链 | A 多级分责，B 直属背锅并保留系统缺陷，C 不建责任案 |
+| 077 | 同级候选排除双方与近亲；真实 friend/lover/rival 冲突同步消费双方各一次回避 token | A 独立轮换，B 明示原席自纠，C 不指派复核人 |
+| 078 | 每份冻结结果进入六维 cohort 分母；翻案只更新匹配分子，交叉乘法比较率 | A 只提示/解释，B 记录强制调整风险但不自动写 grade，C 不聚合 |
+| 079 | 隔级席位容量、D+30 调查、证据 revision 和下一次直属结果 remand consumer | A 调查发回，B 现场承诺被标越权并撤销；任何路线都不直接改分，C 不占席 |
+| 080 | 唯一 defect ID、type、证据 hash、D+90 修复/接受风险/压案及下一版本验证 | A 修复或具理由接受，B 压案后同缺陷复发落责任，C 不建缺陷单 |
+| 081 | subject/直属/隔级/中央 ACL、读取 receipt、原始证据与摘要压缩标记 | 权限只改信息流；grade writer 永远保持冻结直属 owner；C 不建权限投影 |
+| 358 | 原 grade 与国库/个人/贤能处分向量冻结；后续新事实只能另案送达 | A 同案不加重，B 加重必须显式披露并记报复风险，C 不建宪制案 |
+| 359 | 预留位、边界人重审+新 case ID/新 D+90、或下一周期 quota debt 三路守恒 | A 可审计选择，B 暗调保留 audit diff 且强制重送，C 不建配额回流案 |
+
+## #069 shared-hook ABI 与当前 RED
+
+`zg361_b2_pre_notice_settlement_gate_effect` 是冻结的唯一前置 ABI。共享
+`zg361_settle_delivered_325_effect` 必须在**第一笔** `remove_treasury` / 个人金币 / 贤能 / 降俸写入之前调用它，然后仅在
+`zg361_b2_m069_settlement_allowed = 1` 时继续。callee 已满足：
+
+- 完整核对 owner、subject、cycle、case、`notice_state=prepared`；
+- A/B 返回 allowed=1；
+- C 返回 allowed=0，只投递一张下周期 policy-debt receipt；
+- 重放和 stale identity 均不得授权。
+
+当前共享 effect 仍先完成结算，随后才调用 `zg361_b2_on_notice_delivered_effect`。B2 专属文件无权修改 shared，故该项必须保持
+**RED：`shared-pre-settlement-hook-missing`**。在 shared owner 落钩并补对应静态/实机用例前，不得把 #069 或整个 B2 写成语义完成。
 
 ## 确定性状态链
 
@@ -90,7 +137,10 @@ FAILED / RELAPSED → 新案号二次 PIP | 真实空缺转岗 | 有成本 recei
 
 ```powershell
 py -m unittest -v test_zg361_b2_runtime.py
-py -m compileall -q zg361_b2_runtime_data.py test_zg361_b2_runtime.py
+py -m unittest -v test_zg361_b2_semantic_model.py
+py -m unittest -v test_gen_361_b2_runtime.py
+py -m compileall -q zg361_b2_runtime_data.py zg361_b2_semantic_model.py test_zg361_b2_runtime.py test_zg361_b2_semantic_model.py
+py gen_361_b2_runtime.py --check
 ```
 
-这些验证只证明 Python 合同、状态迁移、幂等与守恒，不替代 CK3 产品脚本、paused fixture 或实机验收。
+这些验证证明 Python 合同、状态迁移、幂等、守恒与生成式 CK3 静态结构；它们不替代 paused fixture 或实机验收。

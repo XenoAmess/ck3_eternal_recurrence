@@ -208,10 +208,17 @@ class BindingContractTests(unittest.TestCase):
         self.assertFalse(runtime.CK3_IMPLEMENTED)
         self.assertEqual(runtime.READINESS_CHANGE, "none")
         self.assertEqual(runtime.RUNTIME_EVIDENCE, "python-reference-only")
+        # The manifest now records the separately generated CK3 products as
+        # partial/static-ready.  This Python reference test must neither roll
+        # that honest state back to not-implemented nor promote it to live.
         for mechanism_id in runtime.B2_NEW_IDS:
             self.assertEqual(
                 self.items[mechanism_id]["status"]["domain_runtime"],
-                "not-implemented",
+                "partial",
+            )
+            self.assertEqual(
+                self.items[mechanism_id]["status"]["runtime_evidence"],
+                "static-ready",
             )
         for mechanism_id in runtime.B2_INTERFACE_IDS:
             self.assertEqual(

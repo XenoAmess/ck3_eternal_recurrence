@@ -12,7 +12,14 @@ from pathlib import Path
 import re
 import unittest
 
-from gen_361_b2_runtime import INTERFACE_IDS, MOD_ROOT, WIRED_IDS, outputs
+from gen_361_b2_runtime import (
+    DELEGATED_IDS,
+    INTERFACE_IDS,
+    MOD_ROOT,
+    SEMANTIC_IDS,
+    WIRED_IDS,
+    outputs,
+)
 from zg361_b2_runtime_data import B2_BINDINGS
 
 
@@ -90,6 +97,8 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertEqual(WIRED_IDS, expected)
         self.assertEqual(len(WIRED_IDS), 19)
         self.assertEqual(INTERFACE_IDS, (69,))
+        self.assertEqual(SEMANTIC_IDS, expected)
+        self.assertTrue(set(SEMANTIC_IDS).isdisjoint(DELEGATED_IDS))
         self.assertEqual(len(set(WIRED_IDS) - set(INTERFACE_IDS)), 18)
         self.assertNotIn(18, WIRED_IDS)
         selected = {
@@ -145,6 +154,34 @@ class B2CK3RuntimeTests(unittest.TestCase):
             r"(?m)^(zg361_b2_[a-z0-9_]+_effect)\s*=\s*\{", self.effects
         ):
             top_level_block(self.effects, effect_name)
+
+    def test_every_native_id_has_open_c_debt_and_terminal_consumer_paths(self) -> None:
+        combined = self.effects + self.events
+        for mechanism_id in WIRED_IDS:
+            key = f"{mechanism_id:03d}"
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn(
+                    f"zg361_b2_m{key}_open_business_object_effect = yes", combined
+                )
+                self.assertIn(
+                    f"zg361_b2_m{key}_post_policy_debt_effect = yes", combined
+                )
+                self.assertIn(
+                    f"zg361_b2_m{key}_consume_business_object_effect = yes",
+                    combined,
+                )
+        for event_id, mechanism_id in (
+            (61, 75),
+            (120, 70),
+            (121, 72),
+            (141, 71),
+            (171, 74),
+        ):
+            block = top_level_block(self.events, f"zg361b2.{event_id}")
+            self.assertIn(
+                f"zg361_b2_m{mechanism_id:03d}_consume_business_object_effect = yes",
+                block,
+            )
 
     def test_visible_events_are_player_only_and_localized_in_nine_files(self) -> None:
         visible = {
@@ -243,6 +280,235 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("zg361_b2_on_appeal_filed_effect = yes", interaction)
         self.assertIn("zg361_b2_on_appeal_upheld_effect = yes", interaction)
 
+    def test_069_pre_settlement_abi_is_frozen_and_shared_dependency_remains_red(self) -> None:
+        gate = top_level_block(
+            self.effects, "zg361_b2_pre_notice_settlement_gate_effect"
+        )
+        for field in (
+            "zg361_b2_case_owner",
+            "zg361_b2_case_subject",
+            "zg361_b2_case_cycle",
+            "zg361_b2_case_serial",
+            "zg361_b2_notice_state",
+        ):
+            self.assertIn(field, gate)
+        self.assertIn("zg361_b2_m069_settlement_allowed value = 0", gate)
+        self.assertIn("zg361_b2_m069_settlement_allowed value = 1", gate)
+        self.assertIn("var:zg361_b2_m069_route = 3", gate)
+        self.assertIn("zg361_b2_m069_post_policy_debt_effect = yes", gate)
+        for forbidden in (
+            "remove_treasury",
+            "remove_gold",
+            "remove_merit",
+            "add_character_modifier = zg361_salary_cut",
+        ):
+            self.assertNotIn(forbidden, gate)
+
+        # The B2 package owns the callee, not the hand-written shared caller.
+        # Keep this assertion GREEN while proving the integration gate itself
+        # is still RED; the spec names the exact one-line dependency to land.
+        settle = top_level_block(self.core, "zg361_settle_delivered_325_effect")
+        self.assertNotIn("zg361_b2_pre_notice_settlement_gate_effect = yes", settle)
+        self.assertIn("zg361_b2_on_notice_delivered_effect = yes", settle)
+
+    def test_016_support_is_atomic_real_and_conserved(self) -> None:
+        support = top_level_block(
+            self.effects, "zg361_b2_m016_commit_support_effect"
+        )
+        for required in (
+            "zg361_b2_support_mentor",
+            "zg361_b2_pip_capacity_used < 2",
+            "treasury >= 25",
+            "remove_treasury = 25",
+            "zg361_b2_pip_support_budget_allocated value = 25",
+            "zg361_b2_pip_support_budget_spent value = 25",
+            "zg361_b2_pip_support_hours value = 12",
+            "zg361_b2_pip_support_attention value = 1",
+        ):
+            self.assertIn(required, support)
+        self.assertLess(support.index("treasury >= 25"), support.index("remove_treasury = 25"))
+        self.assertEqual(support.count("remove_treasury = 25"), 1)
+        self.assertNotIn("add_gold", support)
+        release = top_level_block(
+            self.effects, "zg361_b2_release_pip_support_effect"
+        )
+        self.assertIn("zg361_b2_pip_capacity_used add = -1", release)
+        self.assertIn("zg361_b2_pip_support_reserved value = 0", release)
+
+    def test_017_first_low_cannot_skip_directly_to_adverse_disposition(self) -> None:
+        opened = top_level_block(
+            self.effects, "zg361_b2_m017_open_disposition_effect"
+        )
+        self.assertIn("zg361_b2_m017_first_low_restricted value = 1", opened)
+        self.assertIn("zg361_b2_m017_expedited_evidence", opened)
+        event = top_level_block(self.events, "zg361b2.110")
+        self.assertGreaterEqual(
+            event.count("zg361_b2_m017_first_low_restricted = 0"), 3
+        )
+        self.assertIn("var:zg361_streak_bottom >= 2", event)
+        self.assertIn("var:zg361_streak_bottom >= 3", event)
+        self.assertIn("zg361_b2_m017_disposition_receipt", event)
+
+    def test_075_route_c_cannot_open_a_ghost_exit_offer(self) -> None:
+        escalation = top_level_block(
+            self.effects, "zg361_b2_m071_open_escalation_effect"
+        )
+        self.assertIn("zg361_b2_m075_open_exit_offer_effect = yes", escalation)
+        self.assertIn("var:zg361_b2_m075_object_active = 1", escalation)
+        self.assertLess(
+            escalation.index("var:zg361_b2_m075_object_active = 1"),
+            escalation.index("trigger_event = { id = zg361b2.60 days = 2 }"),
+        )
+        offer = top_level_block(self.events, "zg361b2.60")
+        self.assertIn("var:zg361_b2_m075_object_active = 1", offer)
+        self.assertIn("var:zg361_b2_m075_state = 1", offer)
+
+    def test_077_rotation_has_real_conflict_recusal_and_history_consumer(self) -> None:
+        assign = top_level_block(
+            self.effects, "zg361_b2_m077_assign_reviewer_effect"
+        )
+        for required in (
+            "ordered_vassal",
+            "NOT = { this = scope:zg361_b2_review_owner }",
+            "NOT = { this = scope:zg361_b2_review_subject }",
+            "has_relation_friend",
+            "has_relation_lover",
+            "has_relation_rival",
+            "zg361_b2_m077_subject_recusal_effect = yes",
+            "zg361_b2_m077_owner_recusal_effect = yes",
+        ):
+            self.assertIn(required, assign)
+        subject_recusal = top_level_block(
+            self.effects, "zg361_b2_m077_subject_recusal_effect"
+        )
+        owner_recusal = top_level_block(
+            self.effects, "zg361_b2_m077_owner_recusal_effect"
+        )
+        for block, token in (
+            (subject_recusal, "recusal_subject_used"),
+            (owner_recusal, "recusal_owner_used"),
+        ):
+            self.assertIn(f"zg361_b2_m077_{token} = 0", block)
+            self.assertIn(f"zg361_b2_m077_{token} value = 1", block)
+            self.assertIn("zg361_b2_m077_pick_replacement_effect = yes", block)
+        corrected = top_level_block(
+            self.effects, "zg361_b2_on_appeal_corrected_effect"
+        )
+        upheld = top_level_block(
+            self.effects, "zg361_b2_on_appeal_upheld_effect"
+        )
+        for block in (corrected, upheld):
+            self.assertIn("zg361_b2_m077_conclusion_receipt", block)
+            self.assertIn("zg361_b2_reviewer_case_n", block)
+
+    def test_078_uses_full_cohort_dimensions_and_never_auto_grades(self) -> None:
+        baseline = top_level_block(
+            self.effects, "zg361_b2_m078_record_cohort_sample_effect"
+        )
+        outcome = top_level_block(
+            self.effects, "zg361_b2_m078_apply_resolved_sample_effect"
+        )
+        self.assertIn("var:zg361_b2_m078_route != 3", baseline)
+        self.assertIn("zg361_b2_fairness_total_n add = 1", baseline)
+        for dimension in (
+            "newcomer",
+            "transfer",
+            "kin",
+            "faction",
+            "landed",
+            "governor",
+        ):
+            self.assertIn(f"zg361_b2_fairness_{dimension}_n", baseline)
+            self.assertIn(f"zg361_b2_fairness_{dimension}_corrected_n", outcome)
+            self.assertIn(f"zg361_b2_fairness_{dimension}_rate_cross", outcome)
+        self.assertIn("zg361_b2_fairness_small_sample value = 1", outcome)
+        self.assertIn("zg361_b2_fairness_explanation_task", outcome)
+        combined = baseline + outcome
+        for forbidden in (
+            "zg361_result_grade value",
+            "zg361_last_grade value",
+            "add_character_modifier = zg361_grade_",
+            "zg361_appeal_regrade_to_35_effect",
+        ):
+            self.assertNotIn(forbidden, combined)
+
+    def test_079_skip_level_remands_but_never_writes_the_grade(self) -> None:
+        opened = top_level_block(
+            self.effects, "zg361_b2_m079_open_skip_level_effect"
+        )
+        self.assertIn("zg361_b2_m079_open_business_object_effect = yes", opened)
+        self.assertIn("var:zg361_b2_m079_object_active = 1", opened)
+        closed = top_level_block(self.events, "zg361b2.140")
+        for required in (
+            "zg361_b2_m079_manager_rework_required",
+            "zg361_b2_m079_remand_active",
+            "zg361_b2_m079_no_direct_grade_write",
+            "zg361_b2_m079_outcome_receipt",
+            "zg361_b2_m079_consume_business_object_effect = yes",
+        ):
+            self.assertIn(required, closed)
+        for forbidden in (
+            "zg361_appeal_regrade_to_35_effect",
+            "zg361_result_grade value",
+            "zg361_last_grade value",
+        ):
+            self.assertNotIn(forbidden, closed)
+        frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
+        self.assertIn("zg361_b2_m079_remand_consumer_case", frozen)
+        self.assertIn("zg361_b2_m079_manager_rework_completed", frozen)
+
+    def test_080_defect_ticket_is_unique_routed_and_consumed_later(self) -> None:
+        opened = top_level_block(
+            self.effects, "zg361_b2_m080_open_metric_defect_effect"
+        )
+        self.assertIn("zg361_b2_m080_open_business_object_effect = yes", opened)
+        self.assertIn("var:zg361_b2_m080_object_active = 1", opened)
+        for field in (
+            "zg361_b2_m080_defect_id",
+            "zg361_b2_m080_defect_type",
+            "zg361_b2_m080_evidence_hash",
+            "zg361_b2_m080_evidence_preserved",
+        ):
+            self.assertIn(field, opened)
+        closed = top_level_block(self.events, "zg361b2.150")
+        for required in (
+            "var:zg361_b2_m080_route = 2",
+            "zg361_b2_m080_suppressed",
+            "zg361_b2_m080_metric_repaired",
+            "zg361_b2_m080_accepted_risk",
+            "zg361_b2_m080_outcome_receipt",
+            "zg361_b2_m080_consume_business_object_effect = yes",
+        ):
+            self.assertIn(required, closed)
+        frozen = top_level_block(self.effects, "zg361_b2_on_result_frozen_effect")
+        self.assertIn("zg361_b2_m080_consumer_case", frozen)
+        self.assertIn("zg361_b2_m080_repeated_after_suppression", frozen)
+
+    def test_359_policy_route_and_fresh_redelivery_identity_are_conserved(self) -> None:
+        opened = top_level_block(
+            self.effects, "zg361_b2_m359_open_quota_return_effect"
+        )
+        self.assertIn("var:zg361_b2_m359_object_active = 1", opened)
+        self.assertIn("var:zg361_b2_m359_route = 1", opened)
+        self.assertIn("var:zg361_b2_m359_route = 2", opened)
+        self.assertIn("zg361_b2_m359_hidden_rebalance", opened)
+        self.assertNotIn("var:zg361_b2_m359_route = 3", opened)
+        manager_event = top_level_block(self.events, "zg361b2.130")
+        self.assertIn("var:zg361_b2_m359_object_active = 1", manager_event)
+        self.assertIn("var:zg361_b2_m359_route = 1", manager_event)
+        redelivery = top_level_block(
+            self.effects, "zg361_b2_apply_boundary_redelivery_effect"
+        )
+        self.assertIn(
+            "zg361_result_case_serial value = var:zg361_b2_redelivery_case",
+            redelivery,
+        )
+        self.assertIn("zg361_b2_redelivery_original_result_case", redelivery)
+        self.assertLess(
+            redelivery.index("zg361_result_case_serial value = var:zg361_b2_redelivery_case"),
+            redelivery.index("zg361_b2_on_result_frozen_effect = yes"),
+        )
+
     def test_interface_069_closes_full_prompt_witness_and_deadline_identity(self) -> None:
         grade = top_level_block(self.core, "zg361_grade_325_apply_effect")
         for field in ("owner", "subject", "cycle", "case", "state"):
@@ -306,6 +572,9 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertEqual(redundancy.count("add_gold = 50"), 1)
         self.assertIn("zg361_b2_m074_actual_exit value = 1", redundancy)
         self.assertIn("zg361_b2_m074_hc_released value = 1", redundancy)
+        self.assertIn("var:zg361_b2_m074_route = 2", redundancy)
+        self.assertIn("zg361_b2_m074_treasury_paid value = 0", redundancy)
+        self.assertIn("zg361_b2_m074_unfunded_disguised_exit", redundancy)
         audit = top_level_block(self.events, "zg361b2.171")
         self.assertIn("zg361_b2_m074_treasury_paid = 50", audit)
         self.assertIn("zg361_b2_m074_personal_received = 50", audit)
@@ -318,6 +587,10 @@ class B2CK3RuntimeTests(unittest.TestCase):
         self.assertIn("adverse action held until base appeal window closes", prepare)
         self.assertIn("var:zg361_b2_retaliation_new_fact = 1", prepare)
         self.assertIn("zg361_b2_m358_open_separate_case_effect = yes", prepare)
+        self.assertIn("var:zg361_b2_m070_route = 2", prepare)
+        self.assertIn("zg361_b2_adverse_action_allowed value = 1", prepare)
+        self.assertIn("zg361_b2_m070_retaliation_action_executed", prepare)
+        self.assertIn("zg361_b2_management_debt add = 2", prepare)
         for index, name in enumerate(
             ("purge", "stepdown", "demote", "extend"), start=1
         ):
@@ -392,6 +665,32 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         self.assertIn("zg361_b2_m359_corrected_grade_before value = 1", quota_open)
         self.assertIn("zg361_b2_m359_boundary_grade_after value = 1", quota_open)
+
+    def test_358_route_b_aggravates_with_an_actual_bounded_receipt(self) -> None:
+        aggravate = top_level_block(
+            self.effects, "zg361_b2_m358_apply_disclosed_aggravation_effect"
+        )
+        for required in (
+            "var:zg361_b2_m358_route = 2",
+            "remove_short_term_gold = 10",
+            "zg361_b2_m358_extra_gold_paid",
+            "zg361_result_gold_paid add = var:zg361_b2_m358_extra_gold_paid",
+            "zg361_b2_m358_aggravation_receipt",
+            "zg361_b2_m358_aggravation_disclosed",
+        ):
+            self.assertIn(required, aggravate)
+        upheld = top_level_block(
+            self.effects, "zg361_b2_on_appeal_upheld_effect"
+        )
+        self.assertLess(
+            upheld.index("zg361_b2_m358_apply_disclosed_aggravation_effect = yes"),
+            upheld.index("zg361_b2_m358_close_non_aggravation_effect = yes"),
+        )
+        closed = top_level_block(
+            self.effects, "zg361_b2_m358_close_non_aggravation_effect"
+        )
+        self.assertIn("zg361_b2_m358_aggravated value = 1", closed)
+        self.assertIn("zg361_b2_m358_retaliation_risk value = 1", closed)
 
     def test_no_later_feedback_or_full_pip_batches_are_claimed(self) -> None:
         combined = self.effects + self.events
