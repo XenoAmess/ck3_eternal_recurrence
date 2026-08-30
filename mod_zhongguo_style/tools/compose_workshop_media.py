@@ -30,6 +30,9 @@ DEFAULT_ARTIFACTS = Path(
 EXPECTED_SIZE = (2560, 1440)
 MAX_BYTES = 2_000_000
 JPEG_QUALITY = 90
+STRICT_BASE_CAPTURE_MARKER = (
+    "ZGA: TEST PASS bootstrap_first_review_strict_7_14_2"
+)
 
 
 @dataclass(frozen=True)
@@ -122,6 +125,7 @@ POLICY_CARD_RECIPES = (
 EXPECTED_RELEASE_MEDIA_INVENTORY = tuple(
     projection.output for projection in PROJECTIONS
 ) + tuple(recipe.output for recipe in POLICY_CARD_RECIPES)
+BASE_PROJECTION_OUTPUTS = frozenset(projection.output for projection in PROJECTIONS)
 
 
 def _is_sha256(value: object) -> bool:
@@ -311,6 +315,39 @@ def sha256(data: bytes | Path) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def require_strict_base_capture_marker(artifacts: Path) -> None:
+    """Reject legacy base-media runs that captured a non-strict 23-person board."""
+    report = artifacts / "report.json"
+    try:
+        payload = json.loads(report.read_text(encoding="utf-8-sig"))
+    except OSError as exc:
+        raise ValueError(
+            f"base projection artifact report is unavailable: {report}: {exc}"
+        ) from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"invalid base projection artifact report JSON: {report}: {exc}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise ValueError("base projection artifact report root must be an object")
+    if payload.get("result") != "GREEN":
+        raise ValueError("base projection artifact root report must be GREEN")
+    cell = payload.get("cell")
+    if cell is None:
+        cell = payload
+    elif not isinstance(cell, dict) or cell.get("result") != "GREEN":
+        raise ValueError("base projection artifact cell report must be GREEN")
+    markers = cell.get("fixture_markers")
+    if not isinstance(markers, list) or not any(
+        isinstance(marker, str) and STRICT_BASE_CAPTURE_MARKER in marker
+        for marker in markers
+    ):
+        raise ValueError(
+            "base projection artifact lacks the strict 23-person 7/14/2 live "
+            f"marker: {STRICT_BASE_CAPTURE_MARKER}"
+        )
+
+
 def jpeg_bytes(source: Path, crop: tuple[int, int, int, int]) -> tuple[bytes, tuple[int, int]]:
     with Image.open(source) as image:
         image.load()
@@ -336,6 +373,10 @@ def render(
     check: bool,
     projections: Sequence[Projection] = PROJECTIONS,
 ) -> list[dict[str, object]]:
+    if BASE_PROJECTION_OUTPUTS.intersection(
+        projection.output for projection in projections
+    ):
+        require_strict_base_capture_marker(artifacts)
     cell = artifacts / "cell" if (artifacts / "cell").is_dir() else artifacts
     expected_outputs = {projection.output for projection in projections}
     existing = {path.name for path in output.glob("*.jpg")} if output.is_dir() else set()

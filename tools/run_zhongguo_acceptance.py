@@ -5087,6 +5087,99 @@ def settle_promo_interruptions(
             )
 
 
+def advance_to_policy_dispatch(
+    stream: MarkerStream,
+    artifacts: Path,
+    *,
+    timeline_service: GameplayBridgeService,
+    stem: str,
+    dispatch_marker: str,
+    target_event_title: str,
+    target_event_definition_key: str,
+    timeout_s: float = 60.0,
+) -> list[dict[str, object]]:
+    """Advance one policy carrier while clearing earlier real product events."""
+
+    interruptions: list[dict[str, object]] = []
+    native_resumes: list[dict[str, object]] = []
+    native_observations: list[dict[str, object]] = []
+    recovery_round = 0
+    deadline = time.monotonic() + timeout_s
+
+    def observe() -> tuple[dict[str, object], dict[str, object]]:
+        snapshot = timeline_service.snapshot()
+        observation = _personal_switch_native_snapshot(snapshot)
+        if not native_observations or observation != native_observations[-1]:
+            native_observations.append(observation)
+        return snapshot, observation
+
+    def resume_if_clear(reason: str) -> None:
+        snapshot, observation = observe()
+        if observation["active_event_instance_id"] is not None:
+            return
+        if snapshot.get("paused") is True or snapshot.get("speed") != 5:
+            native_resumes.append(
+                resume_personal_switch_timeline_native(
+                    timeline_service,
+                    reason=reason,
+                )
+            )
+
+    def write_evidence(result: str) -> None:
+        write_json(
+            artifacts / f"{stem}_dispatch_timeline_gate.json",
+            {
+                "schema_version": 1,
+                "result": result,
+                "dispatch_marker": dispatch_marker,
+                "dispatch_marker_count": stream.count(dispatch_marker),
+                "target_event_definition_key": target_event_definition_key,
+                "interruption_count": len(interruptions),
+                "interruptions": interruptions,
+                "native_resumes": native_resumes,
+                "native_observations": native_observations,
+            },
+        )
+
+    resume_if_clear(f"{stem}_initial_resume")
+    while time.monotonic() < deadline:
+        stream.pump()
+        if stream.count(dispatch_marker):
+            write_evidence("GREEN")
+            return interruptions
+
+        snapshot, observation = observe()
+        recovery_round += 1
+        recovered = settle_promo_interruptions(
+            artifacts,
+            f"{stem}_dispatch_wait_{recovery_round:02d}",
+            observation_s=0.5,
+            stop_event_title=target_event_title,
+            stop_event_definition_key=target_event_definition_key,
+            native_event_service=timeline_service,
+            native_active_event_instance_id=observation[
+                "active_event_instance_id"
+            ],
+            native_active_event_option_count=observation[
+                "active_event_option_count"
+            ],
+        )
+        if recovered:
+            interruptions.extend(recovered)
+
+        stream.pump()
+        if stream.count(dispatch_marker):
+            write_evidence("GREEN")
+            return interruptions
+        resume_if_clear(f"{stem}_resume_after_{recovery_round:02d}")
+        time.sleep(0.1)
+
+    write_evidence("RED")
+    raise acceptance.RunnerError(
+        f"policy dispatch marker did not arrive: {dispatch_marker}"
+    )
+
+
 def capture_policy_cards(
     stream: MarkerStream,
     artifacts: Path,
@@ -5104,15 +5197,18 @@ def capture_policy_cards(
         stem = f"12_policy_{mechanism_id:03d}"
         settle_promo_interruptions(artifacts, f"{stem}_preflight")
         acceptance.ensure_game_paused(artifacts, f"{stem}_preflight")
-        acceptance.set_speed_five_and_unpause(
-            artifacts,
-            f"zg361_clean_policy_{mechanism_id:03d}",
-            require_progress=True,
-        )
         dispatch_marker = (
             f"ZGA: TEST PASS clean_policy_{mechanism_id:03d}_dispatched"
         )
-        stream.wait(dispatch_marker, 30)
+        advance_to_policy_dispatch(
+            stream,
+            artifacts,
+            timeline_service=timeline_service,
+            stem=stem,
+            dispatch_marker=dispatch_marker,
+            target_event_title=event_title,
+            target_event_definition_key=f"zg361m.{mechanism_id}",
+        )
         settle_promo_interruptions(
             artifacts,
             f"{stem}_preemption",

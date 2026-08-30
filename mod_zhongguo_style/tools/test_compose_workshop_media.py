@@ -61,6 +61,71 @@ def _make_green_capture(root: Path, *, result: str = "GREEN") -> Path:
 
 
 class WorkshopMediaTests(unittest.TestCase):
+    def test_base_projections_require_strict_23_person_live_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "legacy-base-capture"
+            output = root / "projected"
+            _write_json(
+                artifacts / "report.json",
+                {
+                    "result": "GREEN",
+                    "cell": {
+                        "result": "GREEN",
+                        "fixture_markers": [
+                            "ZGA: DATA bootstrap_cohort_n 23",
+                            "ZGA: DATA bootstrap_pending_375_n 7",
+                            "ZGA: DATA bootstrap_pending_35_n 16",
+                            "ZGA: DATA bootstrap_pending_325_n 0",
+                        ]
+                    },
+                },
+            )
+
+            with self.assertRaisesRegex(
+                ValueError, "strict 23-person 7/14/2 live marker"
+            ):
+                media.render(artifacts, output, check=False)
+            self.assertFalse(output.exists())
+
+            _write_json(
+                artifacts / "report.json",
+                {
+                    "result": "GREEN",
+                    "cell": {
+                        "result": "GREEN",
+                        "fixture_markers": [
+                            "timestamp and engine context: "
+                            + media.STRICT_BASE_CAPTURE_MARKER
+                        ]
+                    },
+                },
+            )
+            media.require_strict_base_capture_marker(artifacts)
+
+    def test_red_report_cannot_supply_base_media_even_with_strict_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            artifacts = Path(temporary) / "red-base-capture"
+            for label, root_result, cell_result, message in (
+                ("root", "RED", "GREEN", "root report must be GREEN"),
+                ("cell", "GREEN", "RED", "cell report must be GREEN"),
+            ):
+                with self.subTest(report=label):
+                    _write_json(
+                        artifacts / "report.json",
+                        {
+                            "result": root_result,
+                            "cell": {
+                                "result": cell_result,
+                                "fixture_markers": [
+                                    media.STRICT_BASE_CAPTURE_MARKER
+                                ],
+                            },
+                        },
+                    )
+                    with self.assertRaisesRegex(ValueError, message):
+                        media.require_strict_base_capture_marker(artifacts)
+
     def test_policy_recipes_are_exactly_release_slots_seven_and_eight(self) -> None:
         self.assertEqual(
             [1, 361],

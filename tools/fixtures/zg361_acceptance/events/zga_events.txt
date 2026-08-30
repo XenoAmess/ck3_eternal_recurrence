@@ -158,7 +158,10 @@ zga_acceptance.2 = {
 				debug_log = "ZGA: TEST PASS refusal_reason_consumed_once_by_original_superior"
 				scope:zga_personal_result_target = {
 					add_character_flag = zga_clean_policy_chain_subject
-					trigger_event = { id = zga_acceptance.6 days = 2 }
+					# The shipped 3.25 elimination follow-up zg361.6 arrives at D+2.
+					# Keep policy #001 one day later so the native MCP can identify and
+					# clear that real event before the clean policy card is presented.
+					trigger_event = { id = zga_acceptance.6 days = 3 }
 				}
 				debug_log = "ZGA: TEST PASS clean_policy_chain_scheduled"
 			}

@@ -2741,6 +2741,127 @@ def main() -> int:
         assert gate["due_day_ordinal"] == 190
         assert gate["marker_count"] == 1
 
+    policy_dispatch_marker = "ZGA: TEST PASS clean_policy_001_dispatched"
+
+    class PolicyDispatchStream:
+        marker_ready = False
+
+        def pump(self) -> None:
+            return None
+
+        def count(self, marker: str) -> int:
+            assert marker == policy_dispatch_marker
+            return int(self.marker_ready)
+
+    class PolicyDispatchService:
+        def __init__(self) -> None:
+            self.revision = 1
+            self.date_raw = 200
+            self.paused = True
+            self.speed = 5
+            self.active_event: dict[str, int] | None = None
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "revision": self.revision,
+                "native_revision": self.revision,
+                "date_raw": self.date_raw,
+                "paused": self.paused,
+                "speed": self.speed,
+                "active_event": self.active_event,
+            }
+
+    policy_stream = PolicyDispatchStream()
+    policy_service = PolicyDispatchService()
+    policy_actions: list[str] = []
+    policy_resume_reasons: list[str] = []
+    policy_settle_calls: list[dict[str, object]] = []
+
+    def fake_policy_resume(_service, *, reason, timeout_s=10.0):
+        del timeout_s
+        assert _service is policy_service
+        policy_resume_reasons.append(reason)
+        policy_actions.append(f"resume:{reason}")
+        policy_service.revision += 1
+        if len(policy_resume_reasons) == 1:
+            # The shipped 3.25 elimination follow-up reaches the modal first.
+            policy_service.date_raw += 2
+            policy_service.paused = True
+            policy_service.active_event = {"instance_id": 6, "option_count": 4}
+        else:
+            policy_service.date_raw += 1
+            policy_service.paused = False
+            policy_service.active_event = None
+            policy_stream.marker_ready = True
+        return {"reason": reason, "result": "GREEN"}
+
+    def fake_policy_settle(_artifacts, stem, **kwargs):
+        assert _artifacts == policy_artifacts
+        assert policy_service.active_event == {"instance_id": 6, "option_count": 4}
+        policy_actions.append("settle:zg361.6")
+        policy_settle_calls.append({"stem": stem, **kwargs})
+        policy_service.revision += 1
+        policy_service.paused = True
+        policy_service.active_event = None
+        return [{"event_definition_key": "zg361.6", "selection": "preferred"}]
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        policy_artifacts = Path(temp_dir)
+        with mock.patch.object(
+            capture,
+            "resume_personal_switch_timeline_native",
+            side_effect=fake_policy_resume,
+        ), mock.patch.object(
+            capture,
+            "settle_promo_interruptions",
+            side_effect=fake_policy_settle,
+        ), mock.patch.object(
+            capture.time, "monotonic", return_value=0.0
+        ), mock.patch.object(capture.time, "sleep", return_value=None):
+            policy_interruptions = capture.advance_to_policy_dispatch(
+                policy_stream,
+                policy_artifacts,
+                timeline_service=policy_service,
+                stem="12_policy_001",
+                dispatch_marker=policy_dispatch_marker,
+                target_event_title="policy #001",
+                target_event_definition_key="zg361m.1",
+                timeout_s=1.0,
+            )
+
+        assert policy_interruptions == [
+            {"event_definition_key": "zg361.6", "selection": "preferred"}
+        ]
+        assert policy_actions == [
+            "resume:12_policy_001_initial_resume",
+            "settle:zg361.6",
+            "resume:12_policy_001_resume_after_01",
+        ]
+        assert policy_resume_reasons == [
+            "12_policy_001_initial_resume",
+            "12_policy_001_resume_after_01",
+        ]
+        assert len(policy_settle_calls) == 1
+        assert policy_settle_calls[0]["native_active_event_instance_id"] == 6
+        assert policy_settle_calls[0]["native_active_event_option_count"] == 4
+        assert policy_settle_calls[0]["stop_event_definition_key"] == "zg361m.1"
+        assert policy_settle_calls[0]["stop_event_title"] == "policy #001"
+        assert policy_stream.marker_ready is True
+        policy_gate = json.loads(
+            (
+                policy_artifacts
+                / "12_policy_001_dispatch_timeline_gate.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert policy_gate["result"] == "GREEN"
+        assert policy_gate["dispatch_marker_count"] == 1
+        assert policy_gate["interruption_count"] == 1
+        assert len(policy_gate["native_resumes"]) == 2
+        assert any(
+            row["active_event_instance_id"] == 6
+            for row in policy_gate["native_observations"]
+        )
+
     decisions = bom_text(FIXTURE / "common" / "decisions" / "zga_decisions.txt")
     found = tuple(
         int(value)

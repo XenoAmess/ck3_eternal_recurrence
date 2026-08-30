@@ -3,9 +3,16 @@
 The six currently tracked JPEGs are deterministic, presentation-only crops
 from the first full-batch `GREEN` CK3 acceptance artifact. They are real game
 captures, not generated illustrations; the untouched PNG evidence remains at
-the external artifact location below. The final eight-image strip adds real
-policy cards #001 and #361 from the forthcoming single-run promo `GREEN`
-capture. Until that run exists and its lock is reviewed, slots 7–8 remain
+the external artifact location below. That historical run was later proved to
+have the first-cycle newcomer bug: slots 1–2 visibly show `7 / 16 / 0`, and
+slot 3 freezes the same invalid cohort. Those three tracked files are retained
+only as process history and are **RED for publication**. The renderer now
+rejects a base artifact unless both report layers are GREEN and the run carries
+the live `bootstrap_first_review_strict_7_14_2` marker.
+
+The final eight-image strip must replace slots 1–3 from one final complete
+`7 / 14 / 2` promo `GREEN` capture and add real policy cards #001 and #361
+from that same run. Until its lock is reviewed, slots 1–3 and 7–8 remain
 explicitly pending and no substitute image may be published. Workshop JPEGs
 must not be put in the mod release staging.
 

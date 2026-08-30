@@ -235,7 +235,8 @@ def main() -> int:
     assert "zg361_is_celestial_liege_trigger = yes" in personal_settlement
     assert "character:han_5253 = { save_scope_as = zga_personal_result_target }" not in personal_settlement
     assert "random_vassal" in personal_settlement  # optional real small-cohort probe remains
-    assert "trigger_event = { id = zga_acceptance.6 days = 2 }" in personal_settlement
+    assert "trigger_event = { id = zga_acceptance.6 days = 3 }" in personal_settlement
+    assert "shipped 3.25 elimination follow-up zg361.6 arrives at D+2" in personal_settlement
     assert "ZGA: TEST PASS clean_policy_chain_scheduled" in personal_settlement
 
     jingcha = top_level_block(events, "zga_acceptance.5")

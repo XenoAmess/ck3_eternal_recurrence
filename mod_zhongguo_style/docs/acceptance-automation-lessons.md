@@ -94,6 +94,8 @@
 - `active_event.instance_id` 是窗口投影 ID，不能假定为事件定义或生命周期 ID。2026-08-30 06:25 attempt 中政策卡 `zg361m.1` 提交后立即换成 `zg361.6` 末位淘汰事件，两个画面却都发布 instance `7`、option count `4`；通用 revision 又同时受变速、点击和暂停命令影响，三者都不能证明 definition 转场。正确门禁是先用原生 MCP 同日冻结，再在 ID 未变时读取 `current_event_window_context_v1.event_definition_key`；只有 canonical key 离开调用方声明的前序定义才算转场。查询不可用、定义未变、日期或角色漂移都必须 RED，OCR 只用于诊断和选择已明确批准的可见选项。
 - 事件标题 OCR 和“被点文字消失”都不能充当事件身份。2026-08-30 06:51 attempt 中 RapidOCR 把第020号标题的“晋升包”读成“普升包”，runner 因而误把目标卡当中断；点击后产品已切至第022号，但两张卡共用同文同位的 C 选项“这季度先不碰，登记制度债”，旧门仍误判为原事件未关。政策 preemption 必须在点击前用 snapshot-bound `current_event_window_context_v1.event_definition_key = zg361m.N` 识别目标；若确需清理前置中断，点击后仍以同日 instance 变化或 canonical definition 变化收口。OCR 标题漂移、重复按钮文案和坐标只能写进诊断 sidecar，不得放行或否决转场；MCP identity 不可用时 fail-closed。
 - “事件 modal 正在停表”不等于 MCP 已拥有可查询 event-window 的普通暂停帧。2026-08-30 07:23 attempt 中政策卡 #001 已稳定可见，但 public snapshot 仍为 `paused=false`，因此 paused-only `current_event_window_context_v1` 正确返回 unavailable。身份查询的固定顺序必须是：绑定 active instance、`date_raw`、played character 与起始 public revision → 用该 revision 提交 `pause-map` → 逐帧反证三项上下文未漂移并取得 `paused=true` → 用暂停帧的新 public revision 查询 canonical key。不得先查询再按错误字符串补救，也不得退回 OCR；任何暂停 ACK 拒绝、超时或上下文漂移都应在零点击状态下 RED，并保存 prequery pause sidecar。
+- MCP 消费端和冻结 native DLL 必须来自同一合同代际。2026-08-30 07:44 attempt 的查询前暂停门已经得到 `revision 48 → 49`、`paused=true`、事件/日期/角色稳定的实机 ACK，但当前工作树 Python 已要求新增的 `root_scope_ready` / `saved_scopes_ready`，冻结 DLL 仍只发布旧五字段 readiness，于是身份查询以 `event readiness fields are invalid` 终止。此类结果应判 **harness RED**；改从与 DLL 对齐的 clean worktree 重跑，不得为了兼容错位而删除 readiness 校验，也不得回退另一条并行开发分支。
+- 同日到期的多个事件会堆叠，顶层视觉窗口与 native active definition 可能指向不同层。2026-08-30 07:57 attempt 中画面和 OCR 都显示政策 #001，但 MCP canonical key 为下层真实产品事件 `zg361.6`：两者都被安排在 D+2。此时 identity mismatch 必须保持 RED，不能用“肉眼看起来对”放宽；夹具 carrier 应错开到 D+3，并在等待目标 marker 的循环中先以 canonical 身份识别、用已批准的 typed 选项清理 D+2 产品事件、验证转场和恢复时间，再接收干净的目标卡。
 
 ## 6. 宣传片片场纪律
 
@@ -101,6 +103,7 @@
 - 连续主角只能来自史实赵曙和冻结白名单中的史实公爵及以上天朝制领主；史实伯爵只作为被考核对象，生成坊正不能进入宣传身份。
 - 每个 clean span 都要做全屏 OCR 禁词检查，并保留 begin/end 帧。系统 Toast 遮挡也会使素材作废。
 - 冷启动/loading、测试标签、fixture 文案、测试决议、生成角色和 RED 轮次录像不得进入正式 release manifest。
+- 宣传截图不仅要画面干净，还要来自语义正确的最终 GREEN 批次。现有工坊 `01_calibration_meeting.jpg`、`02_review_cohort_frozen.jpg` 与 `03_scoreboard.jpg` 虽来自当时标为 GREEN 的同一历史 run，但前两张直接显示 `7 / 16 / 0`，第三张也冻结了同一错误名单；该结果后来被证实是全员新人初始化缺陷，因此三张都必须判 **RED**。保留旧素材作历史证据，正式发布时只用同一次最终完整 GREEN 中明确显示 `7 / 14 / 2` 的截图替换，并同步更新来源与哈希；不得用局部 PASS 或最终 harness RED 的新图顶替。
 - 片场 gate 通过前不启动 FFmpeg；这样一次十秒探针失败不会制造可误用的长录像。
 
 ## 7. 批量验收组织

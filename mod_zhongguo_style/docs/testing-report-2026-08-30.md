@@ -111,9 +111,31 @@ runner 现直接复用已经通过规范化匹配的政策卡截图，不再追�
 
 针对性修复现为 **static-ready**：可见事件需要 canonical 身份时，runner 先绑定 active event instance、`date_raw`、played character 和起始 public revision；若尚未普通暂停，以该 revision 提交原生 `pause-map`，逐帧要求事件、日期和角色不变，取得 `paused=true` 的新 public revision 后才查询 `event_definition_key`。目标卡仍然零点击；暂停 ACK 拒绝、等待超时、上下文漂移或 identity unavailable 均 fail-closed，并先写 `*_prequery_pause_gate.json`。定向回归覆盖运行中 modal 的 `revision 40 → pause-map → paused revision 41 → identity query`、already-paused 快路径、暂停时日期漂移、MCP unavailable、真实 #020 OCR 漂移及同文同位后继；Python 编译、宣传 runner 合同测试、`git diff --check` 和精确构建 preflight 均 GREEN。下一步直接运行第十一次完整合批实机，不再重审此前已闭合链路。
 
-## 10. 环境与证据边界
+## 10. 第十一次完整 attempt：当前工作树的 Python/DLL 合同错位
+
+第十一次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0744_current_c69eddd_mcp` 再次在结算前后取得宋帝 23 人严格 `7 / 14 / 2`，并通过政策卡之前的产品主链、361/361 机制账本与幂等性、完整 GUI 阻塞矩阵、京察强制弹窗与免费规划器、拒办处罚、新人保护、D+90 以及史实上司明示本人 `3.25`。因此本局没有新增产品 RED。
+
+本局在政策卡 #001 的身份查询处结束为 **harness RED**。新加的查询前暂停门已经实机通过：public revision 从 `48` 前进到 `49`，`paused = true`，active event、`date_raw` 和 played character 均未漂移；随后 `current_event_window_context_v1` 却以 `event readiness fields are invalid` 拒绝结果。根因是当前脏工作树中的 Python 消费端已经读入尚在并行开发的 `root_scope_ready` / `saved_scopes_ready` 扩展字段，而本轮冻结的 exact-build DLL `20260830-004128-5798bfcf1f23-release2` 仍发布此前五字段 readiness 合同。也就是说，查询前原生暂停修复已经 **live-confirmed**，终止点是运行时 Python 与 DLL 的合同代际错位，不是政策事件、361 分布或 MCP 暂停能力失败。
+
+后续验收改从 detached clean worktree 运行与冻结 DLL 同一提交的 runner；不修改、不回退另一路正在开发的 scope 合同，也不放宽事件身份门。
+
+## 11. 第十二次完整 attempt：D+2 同日事件堆叠
+
+第十二次完整 attempt `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0757_clean_c69eddd_mcp` 从与冻结 DLL 对齐的 clean worktree 启动，身份查询已经正常返回 canonical 定义。该局再次通过政策卡之前的全部产品、361/361、GUI、京察、D+90 和本人 `3.25` 门，并第十二次实机复现结算前后严格 `7 / 14 / 2`。
+
+本局仍为 **harness RED**，但这次原生证据揭示了确定性的夹具编排碰撞：画面顶层和 OCR 都是第001号《KPI 分项证据单》，`current_event_window_context_v1` 对 `active_event_instance_id = 7` 返回的 canonical key 却是 `zg361.6`；右下角暂停原因也对应真实的“你被列入末位淘汰名单”事件。产品在个人得到 `3.25` 后以 `days = 2` 调度 `zg361.6`，旧夹具又以同一个 `days = 2` 调度政策 #001 carrier，CK3 因而在同一天堆叠两个事件窗口：视觉顶层与 native active definition 指向不同层。MCP 没有误读，严格 identity mismatch 判 RED 是正确结果。
+
+最小修复不改变产品时间线，也绝不把 OCR 当身份或放宽 canonical-key 门：政策 #001 carrier 延后到 D+3；等待 dispatch marker 时先读取原生 active event，若 D+2 的 `zg361.6` 抢先停表，就沿现有 typed MCP 路径选择已经批准的“掀桌起兵”，确认真实事件转场并恢复五速，再等待 D+3 的干净政策卡。该编排修复为当前候选，尚须下一次完整实机 GREEN 才能签核其余政策卡与宣传素材。
+
+## 12. 旧工坊 01/02/03 素材判定
+
+现有 `workshop/media/01_calibration_meeting.jpg`、`workshop/media/02_review_cohort_frozen.jpg` 与 `workshop/media/03_scoreboard.jpg` 来自后来被确认具有“首次建账把全员视为新人”缺陷的同一历史批次：前两张直接展示 23 人 `7 / 16 / 0`，第三张也冻结了同一错误名单，只是裁切范围没有完整显示表头。即使其中名单、排名、字段或界面布局仍可作为历史 GUI 证据，这三张图的核心 361 语义已经错误，发布判定必须是 **RED**，不得继续作为当前版本的工坊宣传素材。
+
+三张旧图及其原始过程证据继续保留用于复盘，不删除、不覆盖来源事实；正式发布前必须由同一次最终完整 **GREEN** 批次中明确显示 `7 / 14 / 2` 的真实 CK3 截图替换，并同步刷新来源路径、SHA-256、媒体锁和引用。任何仅有局部产品 PASS、最终仍为 harness RED 的 attempt 都不能作为这三格的正式替代来源。
+
+## 13. 环境与证据边界
 
 - 精确游戏版本：CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - CK3 前台输入线程已回读并保持 US English HKL `0x04090409`，未恢复中文。
 - attempt 的 artifact、隔离 userdir、日志、截图、未完成录屏和 native state 全部保留；保护存储未变化，CK3 进程树已受控回收。
-- `7 / 14 / 2` 已九次实机复现；项目诊断在第六至九次 attempt 均维持归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜及政策卡 #001/#007/#020 均已 live-confirmed；政策 preemption 的 canonical-key 目标门、其余政策卡与正式宣传素材仍等待下一次完整 GREEN。
+- `7 / 14 / 2` 已十二次实机复现；项目诊断自第六次 attempt 起在已完成检查的批次中持续归零。史实角色、AI 非独立天朝公爵考核、考核榜 GUI 阻塞与原生页面、京察/D+90、拒办处罚、新人保护、“上司考定”本人 `3.25`、本人榜及政策卡 #001/#007/#020 均已 live-confirmed；D+2 产品事件清理、其余政策卡、工坊 01/02/03 替换图与正式宣传素材仍等待下一次完整 GREEN。
