@@ -5,7 +5,7 @@
  zg361b1.200.b:0 "把最耀眼的一面写进案卷。"
  zg361b1.200.c:0 "收敛锋芒，保守自陈。"
  zg361b1.201.t:0 "非最终影子档"
- zg361b1.201.desc:0 "直属上司已开放影子档供你回应。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界证据供校准参考；已经封存的事实 KPI 不会改变。"
+ zg361b1.201.desc:0 "直属上司给出的非最终影子档代码是 #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!；冻结差距幅度为 [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]，回应窗口为 [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] 天。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界且非零的新证据；已经封存的事实 KPI 不会改变。"
  zg361b1.201.a:0 "接受这份影子记录。"
  zg361b1.201.b:0 "补交证据，交由校准复核。"
  zg361_scoreboard_detail_field_self_choice:0 "自评选择码（1 诚实 / 2 夸大 / 3 保守）"

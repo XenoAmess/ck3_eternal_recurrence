@@ -268,6 +268,12 @@ zg361b1.121 = {
 				has_variable = zg361_case_kernel_applied
 				var:zg361_case_kernel_applied = 1
 				var:zg361_b1_case_subject = this
+				var:zg361_b1_pending_object_available = 1
+				var:zg361_b1_pending_object_owner = var:zg361_b1_case_owner
+				var:zg361_b1_pending_object_subject = this
+				var:zg361_b1_pending_object_cycle = var:zg361_b1_cycle_serial
+				var:zg361_b1_pending_object_case = var:zg361_b1_case_serial
+				var:zg361_b1_pending_object_state = 1
 				var:zg361_b1_pending_state = 1
 				var:zg361_b1_case_state = 7
 				var:zg361_b1_case_active = 1
@@ -286,12 +292,16 @@ zg361b1.121 = {
 	}
 }
 
-# Sealed-board late-evidence decision. Both positive and negative evidence use
-# the same absolute threshold and the same five-field subject identity.
+# Sealed-board late-evidence batch.  Every live subject gets one immutable
+# owner/subject/cycle/case/state object and one fresh observation. Route A waits
+# for the entire batch and may reopen at most the single largest qualifying
+# delta; route B only creates a visible next-cycle object. Route C schedules no
+# event. A duplicate/stale callback cannot decrement the barrier twice.
 zg361b1.122 = {
 	type = character_event
 	hidden = yes
 	immediate = {
+		set_variable = { name = zg361_b1_reopen_callback_consumed value = 0 }
 		if = {
 			limit = {
 				exists = scope:zg361_b1_reopen_ticket_owner
@@ -301,10 +311,22 @@ zg361b1.122 = {
 				var:zg361_b1_case_serial = scope:zg361_b1_reopen_ticket_case
 				var:zg361_b1_cycle_state = scope:zg361_b1_reopen_ticket_state
 				var:zg361_b1_cycle_state = 7
+				var:zg361_b1_closure_state = 1
+				var:zg361_b1_reopen_pending_n >= 1
 				var:zg361_b1_sealed_board_hash = scope:zg361_b1_reopen_ticket_hash
 				var:zg361_b1_reward_snapshot_hash = scope:zg361_b1_reopen_ticket_reward_hash
 				var:zg361_b1_quota_book_version = scope:zg361_b1_reopen_ticket_book_version
+				var:zg361_b1_reopen_batch_object_available = 1
+				var:zg361_b1_reopen_batch_owner = this
+				var:zg361_b1_reopen_batch_subject = this
+				var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
+				var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+				var:zg361_b1_reopen_batch_state = 1
+			}
+			if = {
+				limit = {
 				scope:zg361_b1_reopen_ticket_subject = {
+					is_alive = yes
 					var:zg361_b1_case_owner = scope:zg361_b1_reopen_ticket_owner
 					var:zg361_b1_case_subject = this
 					var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_ticket_cycle
@@ -313,9 +335,17 @@ zg361b1.122 = {
 					var:zg361_b1_case_active = 1
 					var:zg361_b1_roster_included = 1
 					var:zg361_pending_grade = var:zg361_b1_reopen_sealed_grade
+					var:zg361_b1_reopen_object_available = 1
+					var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
+					var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
+					var:zg361_b1_reopen_object_subject = this
+					var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
+					var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
+					var:zg361_b1_reopen_object_state = 1
+					var:zg361_b1_reopen_route = scope:zg361_b1_reopen_ticket_route
 				}
-			}
-			scope:zg361_b1_reopen_ticket_subject = {
+				}
+				scope:zg361_b1_reopen_ticket_subject = {
 				# This post-seal observation is new gameplay state. The frozen facts
 				# score is retained as the before-image and is never rewritten.
 				set_variable = { name = zg361_b1_reopen_observed_score value = zg361_kpi_value }
@@ -331,10 +361,72 @@ zg361b1.122 = {
 				set_variable = { name = zg361_b1_reopen_observation_recorded value = 1 }
 				set_variable = { name = zg361_b1_reopen_observation_year value = current_year }
 				set_variable = { name = zg361_b1_reopen_observation_serial value = var:zg361_b1_case_revision }
+				set_variable = {
+					name = zg361_b1_reopen_stable_order_key
+					value = {
+						value = var:zg361_b1_reopen_late_evidence_magnitude multiply = 1000000
+						subtract = { value = var:zg361_b1_roster_frozen_order multiply = 1000 }
+						subtract = var:zg361_b1_reopen_object_case
+					}
+				}
+				set_variable = { name = zg361_b1_reopen_object_state value = 2 }
+				if = {
+					limit = { var:zg361_b1_reopen_route = 2 }
+					set_variable = { name = zg361_b1_post_cutoff_event_id value = var:zg361_b1_reopen_object_id }
+					set_variable = { name = zg361_b1_post_cutoff_event_owner value = var:zg361_b1_reopen_object_owner }
+					set_variable = { name = zg361_b1_post_cutoff_event_subject value = this }
+					set_variable = { name = zg361_b1_post_cutoff_event_cycle value = var:zg361_b1_reopen_object_cycle }
+					set_variable = { name = zg361_b1_post_cutoff_event_case value = var:zg361_b1_reopen_object_case }
+					set_variable = { name = zg361_b1_post_cutoff_event_state value = 1 }
+					set_variable = { name = zg361_b1_post_cutoff_event_sign value = 0 }
+					if = { limit = { var:zg361_b1_reopen_late_evidence_delta > 0 } set_variable = { name = zg361_b1_post_cutoff_event_sign value = 1 } }
+					else_if = { limit = { var:zg361_b1_reopen_late_evidence_delta < 0 } set_variable = { name = zg361_b1_post_cutoff_event_sign value = -1 } }
+					set_variable = { name = zg361_b1_post_cutoff_event_magnitude value = var:zg361_b1_reopen_late_evidence_magnitude }
+					set_variable = { name = zg361_b1_post_cutoff_visible_notice value = 1 }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_available value = 1 }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_id value = var:zg361_b1_reopen_object_id }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_owner value = var:zg361_b1_reopen_object_owner }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_subject value = this }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_cycle value = { value = var:zg361_b1_reopen_object_cycle add = 1 } }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_case value = var:zg361_b1_reopen_object_id }
+					set_variable = { name = zg361_b1_reopen_next_cycle_object_state value = 1 }
+					set_variable = { name = zg361_b1_reopen_next_cycle_due value = var:zg361_b1_reopen_next_cycle_object_cycle }
+					set_variable = { name = zg361_b1_reopen_next_cycle_delta value = { value = var:zg361_b1_reopen_late_evidence_delta max = 2 min = -2 } }
+				}
+				}
+				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }
+				change_variable = { name = zg361_b1_reopen_processed_n add = 1 }
+				set_variable = { name = zg361_b1_reopen_callback_consumed value = 1 }
 			}
-			zg361_b1_apply_symmetric_reopen_effect = yes
+			else_if = {
+				# A dead, transferred or otherwise invalid subject still consumes its
+				# one open batch object.  This is a cancellation, never a fake review.
+				limit = {
+					scope:zg361_b1_reopen_ticket_subject = {
+						var:zg361_b1_reopen_object_available = 1
+						var:zg361_b1_reopen_object_id = scope:zg361_b1_reopen_ticket_object
+						var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_ticket_owner
+						var:zg361_b1_reopen_object_subject = this
+						var:zg361_b1_reopen_object_cycle = scope:zg361_b1_reopen_ticket_cycle
+						var:zg361_b1_reopen_object_case = scope:zg361_b1_reopen_ticket_case
+						var:zg361_b1_reopen_object_state = 1
+					}
+				}
+				scope:zg361_b1_reopen_ticket_subject = {
+					set_variable = { name = zg361_b1_reopen_object_state value = 3 }
+					set_variable = { name = zg361_b1_reopen_cancel_reason value = 1 }
+			}
+				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }
+				change_variable = { name = zg361_b1_reopen_processed_n add = 1 }
+				change_variable = { name = zg361_b1_reopen_cancelled_n add = 1 }
+				set_variable = { name = zg361_b1_reopen_callback_consumed value = 1 }
+			}
+			if = {
+				limit = { var:zg361_b1_reopen_callback_consumed = 1 var:zg361_b1_reopen_pending_n = 0 }
+				zg361_b1_resolve_reopen_batch_effect = yes
+			}
 		}
-		else = { debug_log = "ZG361B1: stale symmetric-reopen ticket ignored" }
+		else = { debug_log = "ZG361B1: stale post-seal batch ticket ignored" }
 	}
 }
 
@@ -368,5 +460,102 @@ zg361b1.123 = {
 			zg361_b1_prepare_reopen_gate_effect = yes
 		}
 		else = { debug_log = "ZG361B1: stale pending continuation ticket ignored" }
+	}
+}
+
+# A true skip-level reviewer returns only the manager-owned procedure.  This
+# manager-rooted continuation never enters a subject scope and contains no
+# pending/final grade write.
+zg361b1.124 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_oversight_ticket_owner
+				this = scope:zg361_b1_oversight_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_oversight_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_oversight_ticket_case
+				var:zg361_b1_cycle_state = scope:zg361_b1_oversight_ticket_state
+				var:zg361_b1_cycle_state = 6
+				var:zg361_b1_oversight_return_status = 1
+				var:zg361_b1_skip_level_return_count = 1
+				var:zg361_b1_publication_blocked = 1
+			}
+			set_variable = { name = zg361_b1_oversight_return_status value = 2 }
+			set_variable = { name = zg361_b1_oversight_reopen_year value = current_year }
+			set_variable = { name = zg361_b1_publication_blocked value = 0 }
+			set_variable = { name = zg361_b1_cycle_state value = 7 }
+			zg361_b1_build_agenda_and_attention_effect = yes
+			zg361_b1_consume_must_review_effect = yes
+			zg361_b1_record_named_dissent_effect = yes
+			zg361_b1_open_pending_slots_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale skip-level return ticket ignored" }
+	}
+}
+
+# Manager-owned D+31 watchdog for #142.  Subject-rooted delayed events may be
+# discarded when the subject dies; this independent owner ticket cancels each
+# still-open five-tuple exactly once, releases its reserved peer, and advances
+# the barrier without pretending an observation occurred.
+zg361b1.125 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b1_pending_watch_owner
+				this = scope:zg361_b1_pending_watch_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_pending_watch_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_pending_watch_case
+				var:zg361_b1_cycle_state = scope:zg361_b1_pending_watch_state
+				var:zg361_b1_cycle_state = 7
+				var:zg361_b1_pending_open_n >= 1
+			}
+			set_variable = { name = zg361_b1_pending_watchdog_cancelled_n value = 0 }
+			every_in_list = {
+				variable = zg361_b1_pending_watch_subjects
+				limit = {
+					var:zg361_b1_pending_object_available = 1
+					var:zg361_b1_pending_object_owner = root
+					var:zg361_b1_pending_object_subject = this
+					var:zg361_b1_pending_object_cycle = scope:zg361_b1_pending_watch_cycle
+					var:zg361_b1_pending_object_case = scope:zg361_b1_pending_watch_case
+					var:zg361_b1_pending_object_state = 1
+					var:zg361_b1_pending_state = 1
+				}
+				save_temporary_scope_as = zg361_b1_pending_watch_subject
+				if = {
+					limit = { has_variable = zg361_b1_pending_fallback_subject }
+					var:zg361_b1_pending_fallback_subject = {
+						if = {
+							limit = {
+								var:zg361_b1_pending_reservation_state = 1
+								var:zg361_b1_pending_reserved_for_subject = scope:zg361_b1_pending_watch_subject
+							}
+							set_variable = { name = zg361_b1_pending_reservation_state value = 4 }
+							remove_variable = zg361_b1_pending_reserved_for_subject
+						}
+					}
+				}
+				set_variable = { name = zg361_b1_pending_object_state value = 5 }
+				set_variable = { name = zg361_b1_pending_state value = 5 }
+				set_variable = { name = zg361_b1_pending_cancel_reason value = 1 }
+				set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
+				root = {
+					change_variable = { name = zg361_b1_pending_open_n add = -1 }
+					change_variable = { name = zg361_b1_pending_watchdog_cancelled_n add = 1 }
+					change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }
+				}
+			}
+			if = {
+				limit = { var:zg361_b1_pending_open_n > 0 }
+				set_variable = { name = zg361_b1_pending_watchdog_orphan_n value = var:zg361_b1_pending_open_n }
+				set_variable = { name = zg361_b1_pending_open_n value = 0 }
+			}
+			zg361_b1_prepare_reopen_gate_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale pending watchdog ticket ignored" }
 	}
 }

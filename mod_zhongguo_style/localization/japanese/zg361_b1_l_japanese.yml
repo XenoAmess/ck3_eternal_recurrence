@@ -5,7 +5,7 @@
  zg361b1.200.b:0 "Present the strongest possible account."
  zg361b1.200.c:0 "Understate my own contribution."
  zg361b1.201.t:0 "Non-Final Shadow Grade"
- zg361b1.201.desc:0 "Your manager has opened a shadow grade for response. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded evidence packet for calibration; the frozen KPI will not change."
+ zg361b1.201.desc:0 "Your manager has opened a non-final shadow band code of #high [ROOT.MakeScope.Var('zg361_b1_shadow_grade').GetValue|0]#!. Frozen gap magnitude: [ROOT.MakeScope.Var('zg361_b1_shadow_gap_magnitude').GetValue|0]; response window: [ROOT.MakeScope.Var('zg361_b1_shadow_deadline_days').GetValue|0] days. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded, non-zero evidence packet; the frozen KPI will not change."
  zg361b1.201.a:0 "Accept the shadow record."
  zg361b1.201.b:0 "Submit supplementary evidence."
  zg361_scoreboard_detail_field_self_choice:0 "Self-Review Choice Code (1 Honest / 2 Exaggerated / 3 Conservative)"

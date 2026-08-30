@@ -25,11 +25,13 @@
   `newcomer_bottom_exception/newcomer_forced_bottom` 后才允许新人补足。满槽假提交、跨案卷互评和 stale 可见事件均有负例门。
 - 已把确定性配额纵切接入 runtime：0/1/2/3/4/7/14/23 使用整数分子最大余数法，23 人精确为 7/14/2；同一冻结
   common superior 下仅一组同职能 3 人队与 4 人队可形成唯一 7 人池，池内继续消费 `calibration_score`，并把
-  raw/floor/remainder/award/conservation before-image 回写双方 quota book。当前“同职能”使用 governor/非 governor
-  两类最小映射，尚不是完整职位族谱。
+  raw/floor/remainder/award/conservation before-image 回写双方 quota book。当前“同职能”已统一冻结为地方治理、军务、
+  财政、管理/兜底四类真实任命映射，subject scorecard 与 common pool 消费同一分类；这仍是四族 taxonomy，未细分所有头衔与兼职。
 - 已接入名册离开/失地/换上司的单次 amendment receipt 与 denominator consumer；唯一 3+4 池可执行一次固定
   TOP↔MIDDLE 单槽交易，双方 book version 与 creditor/debtor/liability 收据同步，责任债在 `created_cycle + 1`
-  到期且只结一次。锁定后新加入、完整 backfill 与灰色离任占档仍未实现。
+  到期且只结一次。事实冻结前也会审计锁定后的合法新加入与 departure backfill，为新增者建立完整五元案卷、写 0→1
+  amendment 并重开配额；离任审计项为可追溯性仍留在持久 list，因此 backfill 后物理 list 可超过 80，但 `roster_included=1`
+  的有效 denominator 仍不超过 80。灰色离任继续占档仍未实现。
 - 已接入完整 agenda list、跨周期稳定轮换、三席 attention 与有成本的 10 分钟加班换席；同轮可为多名已消费
   attention 的边界 subject 各开一个 pending，逐人冻结 milestone/verifier/deadline/reward，并走成功或失败终态。
   pending 先冻结 `min(late evidence + 1, 100)` 的目标，30 天独立事件再读取新的 live KPI；fallback MIDDLE 容量逐人预留，
@@ -37,16 +39,55 @@
   对称重开一次、重排固定档位。当前每个 cohort 只预选 agenda 第一名作为单探针，不代表所有 subject 都有独立重开观察；
   stale 授权使用 case-scoped quota-book revision seal，`Σ(agenda order × grade)` 仅作为可能碰撞的展示校验和，不作为身份门。
   冻结奖励另有 expected/paid 完整性对账，未付齐时不得公示。
-- 考核榜已生成事实/互评/配额/审计四个案卷内页，使用冻结 owner/cycle/case 身份与 received 本人缓冲；这只是
-  static-ready，named-widget MCP、ACL 与多分辨率实机仍未 GREEN。
-- 尚未完成：具体三维互评与共同任务证据对象、可核验的补证材料、锁名册后新增/backfill、完整职能分类、程序退回、
-  回避席、盲审实名差、反馈债消费、机会偏置、三窗证据权重、匿名样本阈值、真实预会、pending 局部提前公示、
-  实名异议与 band order 消费。
+- #001–#013 已补最小 write→consumer 纵切：八项/总分事实单、目标/岗位/五类起点解释、自评三路线、三维互评槽与
+  evaluator 跨周期统计、盲审→实名关系差审计、A 路校准原子交换/护人责任债、A 路隔级程序退回、关系回避、三窗权重、
+  匿名样本阈值、反馈债次周期扣分和档内顺序→次周期辅导/机会。C 路统一为 defer：不创建该机制业务对象，只在经理上
+  写一次制度债并于下一次真实上级考核消费；旧 ID 与 completion receipt 在新案卷初始化时清理。
+- 考核榜四内页及 #013 ACL 由独立 scoreboard 工作包施工；B1 runtime 在 D+0 只冻结稳定 disclosure ABI。named-widget MCP、
+  完整 ACL 矩阵、多分辨率与 CK3 实机仍未 GREEN，因此 #013 仍是 partial，不能由 ABI 字段冒充完成。
+- 本批补齐：#007 不再用 cohort/case sentinel 冒充共同任务；提交只在双方为同一场 live war 的同阵营登记参与者时成立，
+  并把 war-scope serial、owner/cycle/case 与主要攻守方冻结进三槽。该真实 accepted path 覆盖率有限，普通治理/项目仍缺少
+  当前绩效季可用的持久共同任务信号。#008 已把通用 result case 与 B1 case 在发布时冻结成显式 adapter；真实 3.25→3.5
+  胜诉 hook 会按三槽方向一次性回写 evaluator overturn/credit，五元 receipt 防重复，A 路正向意见可获印证信用，负向意见才计
+  overturn。该 hook 与同阵营战争判定都只通过 source contract，尚未做 CK3 scope 求值证明。
+- #009 B 已实现一次性快速关榜：不改档，只核对每人唯一 pending grade、三档合计和非负 remaining；#010 B 只给既有合法
+  非新人末档承担者写一次申诉/怨恨/流失风险，若只有受保护新人则明确 blocked，绝不为制造风险绕过保护；#011 B 由隔级席
+  发起、但只在直属经理唯一 quota book 内执行一组 TOP↔MIDDLE 原子代理交换，保存 reviewer、双方 before/after 与程序风险，
+  不创建第二份上级 review serial，最终 owner 仍是直属经理。
+- 回避 ACL 以 `freeze_conflict_recusals` 为唯一生效边界：边界后的 #009/#010/#011、pending 与 reopen 都拒绝 recused subject；
+  重排先扣除 recused subject 已占的固定 top/middle/bottom，再只重排未回避者；B1 不再暴露旧 `zg361.10` 自由升降档事件，
+  玩家与 AI 都只走同一 settlement commit。命名替代席必须同时不同于经理、被评人和原回避者；无合法真人时走 authority=3
+  抽象复核席。两路都按冻结盲审分独立重算建议档；建议变化只能与一名未回避、目标档同案卷人员做双边原子交换，保持
+  TOP/MIDDLE/BOTTOM 数量不变；目标档无席时冻结 `quota_blocked`，绝不单边改档。发布时另写
+  `recusal_post_grade/lock_match`。这闭合了 #012 的静态替代复评 write→consumer，但尚无 CK3 scope/结算实证。
+- 仍未完成：#003 的真实 war scope 只通过 source contract，未做 CK3 求值证明；影子补证仍是固定有界 delta，不是可核验材料
+  对象；机会偏置审计、真实预会、pending 局部提前公示与实名异议仍未闭合。
   pending verifier 当前是冻结经理 + 30 天 live KPI 比较的确定性最小实现，成功奖励固定为 25 威望，不代表外部
   材料核验完成。现有榜单/结算是 manager 级原子发布，因此任一 pending 会让同 cohort 全员等待至所有 pending 结束；
   非 pending 人员档位不会改变，但尚未实现“先局部公示、后补 pending 行”。
 - `zg361_b1_mNNN_receipt_serial` 目前只是阶段施工追踪；在对应 meaningful write 与 consumer 都落地并通过同批 CK3 fixture 前，
   receipt 的存在不得用于把任何编号升级为 `complete` 或 `fixture-live`。
+
+### 001–013 静态收口矩阵
+
+所有 C 路均已统一为“不开业务对象、只写一次 next-review 制度债”；下表的 `static-ready` 只表示生成脚本、consumer 与负例合同
+闭合，不表示 CK3 已加载或实机行为 GREEN。
+
+| ID | 当前静态口径 | 仍需实证/补齐 |
+|---:|---|---|
+| 001 | A 八项事实逐项求和，B 仅总分并标 incomplete，C 无 sheet。 | CK3 事实冻结与榜/申诉同 ID。 |
+| 002 | goal direction/strength/baseline/weight/deadline 写入评分解释，C 无 contract。 | 跨年度目标完成的 paused artifact。 |
+| 003 | A 只在冻结 war/crisis scope 允许一次 rebase，B 固定目标，C check-in unavailable。 | exact-build war scope 求值。 |
+| 004 | 玩家诚实/夸大/保守三路与 AI 诚实回退；夸大/保守 gap 只产生负向有界可见度输入。 | 三选项与 stale ticket 实机。 |
+| 005 | 四职能族 scorecard、权重和 next-role 分离进入总分。 | 兼职/调任覆盖率与 CK3 scope。 |
+| 006 | 五类起点、难度理由、hard cap 与解释分 consumer；不改原生领地值。 | 原生数值读取实机。 |
+| 007 | 三唯一评价者槽；仅同一 live war 同阵营可写真实 common-task tuple。 | shared-war CK3 求值；非战争治理/项目持久信号。 |
+| 008 | n/mean/variance/shape/normalized/reciprocity/credit 进入校准；胜诉 1→2 hook 回写 evaluator credit。 | 通用 result↔B1 adapter 与 hook 实机；历史样本跨存档。 |
+| 009 | A 原子边界交换；B 不改档快速关榜并逐人/配额对账；双击和旧 case no-op。 | 10+ cohort 的真实点击/事件批。 |
+| 010 | A 护人双边换档、威望与次轮债；B 非新人末档承担者一次性风险，受保护新人不被绕过。 | 全员达标夹具与次轮债消费。 |
+| 011 | A 上级只退回一次；B 上级发起、直属经理单账本执行一组原子代理交换并留程序风险。 | 帝—公—伯三层 owner/reviewer 实机。 |
+| 012 | 冻结冲突与 authority 1/2/3；命名/抽象替代席按盲审分独立重评，差异只做双边配额中性交换；经理后续 writer 锁人。 | named 与 abstract 两路 CK3 scope、无目标档 `quota_blocked` 和最终 lock 实机。 |
+| 013 | runtime disclosure ABI 与四页 scoreboard ACL 已静态接线，received 不复制 evaluator/recusal identity。 | named-widget MCP、关闭重开清理、多分辨率和三角色矩阵。 |
 
 本轮生成器同时产出简中/英文正式文案；法德日韩波俄西只有英文结构占位，不代表翻译完成，也未执行发布审计。共享案卷
 kernel 目前只接入 roster operation 与 pending deadline 的最小参数化调用；它通过 source contract 与静态测试，不构成 CK3
@@ -120,12 +161,12 @@ Phase 0 的通用计划会让同一领域的多个编号共享 `from → to`。�
 
 | ID | hook 与对象 | 必须产生的真实结果 |
 |---:|---|---|
-| 007 | 邀评窗 + 提交互动 | 每名 subject 最多三槽 `evaluator/subject/cycle` 反馈；保存三维分、事例、共同任务来源与封存状态，不再直接写 KPI。 |
-| 008 | 互评封存 | evaluator 人物保存样本、均值、方差、翻案率与信用；原分、修正分和权重并列保留，修正分进入 aggregate。 |
-| 009 | 待定档→校准→公示 | 复用原子配额中性交换，但补齐 calibration ID、状态、双方、理由、attention 和重复/旧轮拒绝。 |
-| 010 | 全员达标/护人案 | C 承担者与保护对象都要明确；护人支付实际威望或下一轮管理扣分，且必须由另一合法人承接同一 C。 |
-| 011 | common-superior oversight | 隔级只可检查程序并退回直属经理一次，不得越级写孙级 final grade；退回会阻塞公示直到重开或到期。 |
-| 012 | 校准前 conflict case | 冻结关系类型、回避者、替代席与前后建议；回避者对该 subject 的 grade write 必须被 trigger 拒绝。 |
+| 007 | 邀评窗 + 提交互动 | 每名 subject 最多三槽 `evaluator/subject/cycle` 反馈；保存三维分、事例、封存状态以及真实同阵营 war task tuple；无共同战争时拒绝，不再回退为 case sentinel。 |
+| 008 | 互评封存 + 胜诉 hook | evaluator 保存样本、均值、方差、翻案率与信用；原分、修正分和权重并列保留，修正分进入 aggregate；真实 3.25→3.5 胜诉按槽方向一次性更新信用。 |
+| 009 | 待定档→校准→公示 | A 复用原子配额中性交换并补齐 ID/双方/reason/attention；B 不改档快速关榜，核对每人唯一 grade、三档和 remaining；重复/旧轮拒绝。 |
+| 010 | 全员达标/护人案 | A 护人支付威望、次轮管理债并由另一合法人承接同一 C；B 只给既有非新人末档承担者一次申诉/怨恨/流失风险，不能绕过新人保护。 |
+| 011 | common-superior oversight | A 只检查程序并退回直属经理一次；B 可请求一组边界点改，但由直属经理唯一 quota book 原子执行并审计，不生成第二 review serial，最终 owner 始终是直属经理。 |
+| 012 | 校准前 conflict case | 冻结关系、回避者与替代席；命名/抽象席按 identity-blind score 重算建议档，同档确认或与未回避目标档人员原子互换；无席显式 quota-blocked；manager writer 均拒绝 recused subject。 |
 | 013 | D+0 ACL + 公示 | 本人始终可看 final/reason/申诉；团队按模式看汇总或档位；evaluator identity 只对 manager/复核席开放。 |
 
 ### G：强制分布配额工程
@@ -165,11 +206,124 @@ Phase 0 的通用计划会让同一领域的多个编号共享 `from → to`。�
 | 138 | rank 后、pending 前 | 保存原始小数、取整模式、remainder、受益队和轮换期，并直接生成三档配额；23 人必须是 7/14/2。 |
 | 139 | quota ready / publish | 借入恰好一个档位，保存 due cycle 和 liability；到期只偿还一次，重组不删除债。 |
 | 140 | D+0 到名册冻结 | 保存旧新 manager、服务天数、证据区段和 quota owner；一人只能进入一个 cohort、占一个 slot。 |
-| 141 | common-superior must-review | 高层每周期最多一宗必议，只强制进入议程并消耗 attention，不得直接改孙级档位。 |
-| 142 | calibration exception | 每名边界人最多一个 pending；同轮允许多人，逐人预留 held/fallback slot、冻结奖励，guarded deadline 各自只结一次；当前保持单榜原子发布，其他人的档位不变但会等待最后一个 pending。 |
-| 143 | 封榜后、付款前 | 对预选单探针而言，同绝对 severity 的重大正负事实拥有相同重开资格，每轮至多一次，保存 old/new revision seal 与展示 checksum；已支付奖励不倒扣。全 cohort 独立探针仍未实现。 |
-| 144 | 校准动作 | 实名异议必须附 subject 和事实理由，并强制一次独立复阅/attention 消耗；空白异议无效。 |
-| 145 | 待定档后 | 每档内部冻结 band order；A 只供辅导/机会且奖金没有 consumer，B 私下用于机会会产生黑箱 audit。 |
+| 141 | common-superior must-review | A 只强制一宗真实边界案进入直属经理议程并守恒消耗 attention；B 也只能由直属经理在同一冻结账内原子交换一名 MIDDLE 与一名 TOP，人数守恒且 book version 只前进一版。高层不得直接写孙级档位。 |
+| 142 | calibration exception | A 为逐人 pending：本人公开投影严格只有 marker/milestone/deadline；B 不持有名额、不冻结奖励且不改当期终档，本人严格只收到 current-final-unchanged/next-cycle-evidence。 |
+| 143 | 封榜后、付款前 | 为整个冻结 cohort 建 batch 并逐人建立 probe；A 按绝对 severity 选至多一人重开，稳定并列规则固定；无人达阈值也必须封存 NO_QUALIFYING 结果。B 逐人生成独立次周期证据对象。 |
+| 144 | 校准动作 | A 实名异议必须绑定真实 subject、事实理由、独立 reviewer 与一次 attention receipt；B 共识封存必须保存真实且唯一的参会 manager identity，不能用计数或本地变量伪造多人。 |
+| 145 | 正式 MIDDLE=3.5 后 | 只允许对正式 3.5 人群排序。A 公开排序但机会名额有限；B 排序私有，所有受影响本人都获得申诉证据与 blackbox audit。绝不接入 pay/reward/bonus。 |
+
+### S.1 #141–#145 冻结 runtime ABI、consumer 与投影 ACL
+
+本节是 #141–#145 的权威 ABI；上表只是摘要。这里冻结的是 runtime 对象和 GUI/MCP 投影合同，**不是当前已经在
+CK3 画面中可见的声明**。
+
+#### 共同五元组与默认拒绝
+
+每个 batch、case、probe、swap、pending、consensus、order row 和 next-cycle evidence 对象都必须保存并在每次
+写入、消费、投影前逐项匹配：
+
+```text
+(object_owner, object_subject, object_cycle, object_case, object_state)
+```
+
+- `object_owner` 是该对象的真实直属经理/账本所有者；manager 级 batch 的 `object_subject` 明确取该 manager 本人，逐人对象
+  则必须取真实被考核者。`object_id`、slot、当前 scope 或 live liege 不能替代五元组。
+- `object_cycle` 与 `object_case` 都来自对象创建时的冻结快照；调任、死亡、新周期或重新选中 GUI 行不得把旧对象重绑到新 owner、
+  subject、cycle 或 case。
+- `object_state` 必须经过该机制列出的单向状态机；终态重复消费和任一五元不匹配均为 no-op，并留下 stale/duplicate receipt，
+  不能重新写榜、发机会或重复扣 attention。
+- manager/audit、`received/self`、team/public 是三个不同投影通道。以下白名单逐字段允许，未列字段一律拒绝；内部变量即使存在、
+  即使叫 `visible`/`public`，也不会因此自动成为 GUI 或 MCP 字段。投影只能复制冻结对象，不得回读人物 live 变量。
+- C 路只记该机制的 policy debt，不创建业务对象、不写任何投影；policy debt 也不允许借别的机制字段伪装成 A/B 结果。
+
+#### #141：高层必议与直属经理守恒交换
+
+- 必议对象五元组为 `(direct_manager, boundary_subject, cycle, must_review_case, OPEN)`。高层只提交
+  recommendation/agenda reason，并预留一份真实 attention；它不是 owner，也没有 grade writer。
+- A 的唯一 consumer 是直属经理的校准议程：经理完成复阅后把对象置为 `REVIEWED`，attention 由 reservation→receipt 恰好一次；
+  不存在换档 payload。
+- B 必须在同一 `direct_manager`、同一 cycle/case、同一本冻结 quota book 内同时找到
+  `boundary_subject=MIDDLE(3.5)` 与 `swap_peer=TOP(3.75)`。唯一合法提交是一个原子事务：subject
+  `MIDDLE→TOP` 且 peer `TOP→MIDDLE`。提交前后 TOP/MIDDLE/BOTTOM 总数和各档人数完全相等；任何半边写入、跨经理 peer、
+  无真实 peer 或档位已漂移都进入 `NO_PAIR`/`CANCELLED`，不得伪造 `SWAPPED`。
+- B receipt 必须冻结 `book_version_before`、`book_version_after=before+1`、双方 before/after band、交换前后档位计数及
+  `attention_receipt`；该 receipt 才是 quota book 和上级判断信用的 consumer。重复调用不得产生第二个版本。
+- manager/audit 白名单：`recommendation_owner`、`direct_manager`、`subject`、`swap_peer`、`agenda_reason`、
+  `attention_reservation/receipt`、双方 before/after band、交换前后计数、book version、终态与判断信用结果。
+  `received/self` 白名单：`must_review_marker`、`agenda_reason`、`review_outcome`、`own_final_band`。team/public 为空；本人不得看到
+  peer identity、对方档位、内部计数、book version 或经理信用。
+
+#### #142：pending 与延期承诺的严格分路
+
+- A 的 pending 五元组为 `(direct_manager, pending_subject, cycle, pending_case, PENDING_OPEN)`；每个 subject/cycle
+  最多一个。状态只能走 `PENDING_OPEN→SUCCEEDED|FAILED|CANCELLED`，所有 pending 都必须各自到达终态后 batch barrier 才能关闭。
+- A 内部 ledger 可以保存 `held_slot`、`fallback_slot`、provisional/fallback band、verifier、reward freeze、reserved peer、
+  quota count、hash 与结算 receipt；这些字段只供 manager/audit 的里程碑验证、配额守恒和一次性结算 consumer 使用。
+  **本人公开投影的精确白名单只有** `pending_marker`、`milestone`、`deadline`；不得投影 held/fallback/provisional band、
+  verifier identity、冻结/释放/到期/已支付 reward、reserved peer、quota count、hash 或内部终态分支。
+- B 不创建 pending、不持有 held/fallback slot、不冻结或支付 reward，也不重写当期榜。它创建独立的次周期对象
+  `(direct_manager, subject, next_cycle, deferred_case, DEFERRED_OPEN)`，由下一周期证据入口一次消费后置为 `CONSUMED`；
+  stale/调任/死亡走 `CANCELLED`。**本人公开投影的精确白名单只有** `current_final_unchanged`、
+  `next_cycle_evidence`。manager/audit 可看该对象完整五元组和消费 receipt；team/public 为空。
+- #142 B 的 next-cycle 字段必须使用自己的 namespace，不得与 #143 的 reopen probe/next-cycle object 共用 marker、state 或 receipt。
+
+#### #143：全 cohort batch、唯一结果与稳定并列
+
+- manager batch 五元组为 `(direct_manager, direct_manager, cycle, reopen_batch_case, COLLECTING)`；冻结 source board/reward/book
+  seal、cohort size、pending/processed/cancelled count 与 route。每名冻结 cohort 成员都必须另有
+  `(direct_manager, member, cycle, probe_case, PROBE_OPEN)`，不能预选一个人来冒充全 cohort。
+- cutoff 后每个 probe 至多接收一条 fresh observation，并冻结 sign、absolute severity、source serial 与 eligible。stale、死亡、
+  调任或取消也必须把该 probe 恰好一次计入 barrier，不能让 batch 永久停在 `COLLECTING`。
+- A 只有在全部 probe 终结后才选择 `abs(severity)` 达阈值的至多一人。稳定排序依次为：绝对 severity 降序、冻结 roster
+  order 升序、object case 升序；正负同绝对强度没有额外偏置。选中者产生 `REOPENED`；无人达阈值产生真实终态
+  `NO_QUALIFYING`。后者必须有 result/receipt 且保持 board/reward/book seal 不变，不能被当作 C 或“没执行”。
+- A 重开只发生在付款前：固定配额重排、产生新 board/reward/book version 与 old/new seal，最多一次。其唯一 consumer 是
+  重算/重新封榜；B 不改旧榜，而为每名有合格 observation 的 subject 创建独立
+  `(direct_manager, subject, next_cycle, next_evidence_case, NEXT_OPEN)`，只由下一周期 evidence ingestion 一次消费。
+- manager/audit 白名单：batch/probe/result 五元组、冻结 cohort identities、sign/severity/source、计数、稳定排序键、阈值、
+  selected/no-qualifying、old/new seals/versions 与 consumption receipt。A 的 `received/self` 白名单：`reopen_result`、
+  `own_final_band`、`reason_code`；B 的 `received/self` 白名单：`next_cycle_evidence`、`target_cycle`。team/public 为空，且任何本人
+  投影都不得包含其他 cohort identity、severity、排序键、账本 seal 或 reward ledger。
+
+#### #144：独立复阅、attention receipt 与真实共识身份
+
+- A dissent 五元组为 `(direct_manager, dissent_subject, cycle, dissent_case, DISSENT_OPEN)`，必须同时冻结非空 fact reason、
+  advocated band、原档位与真实 named dissenter。reviewer 必须是冻结时真实、合格且独立的参与者：
+  `reviewer != direct_manager`、`reviewer != subject`；没有独立 reviewer 就 `CANCELLED`，不能让原经理自审或制造抽象 reviewer。
+- 独立 reviewer 必须消费一份有限 attention reservation，并生成与五元组相绑的唯一 `attention_receipt`。结果只能是
+  `OVERTURNED` 或 `NOT_VALIDATED`，同时冻结 final band、judgment credit/procedural-risk consumer；重复复阅不得再扣 attention。
+- B consensus 对象也必须有完整五元组 `(direct_manager, consensus_subject, cycle, consensus_case, CONSENSUS_OPEN)`。
+  `attending_manager_ids` 必须来自真实冻结参会者、逐一唯一，count 必须等于 identity 集合大小；subject、final band 与 consensus
+  reason 必须冻结后才可 `SEALED`。单一 manager 的多个本地变量、重复 identity 或只有 count 没有 identity 一律无效。
+- manager/audit 白名单：上述五元组、dissenter/reviewer/attendee identities、事实理由、advocated/original/final band、attention
+  reservation/receipt、review/consensus outcome、credit 与 procedural risk。A 的 `received/self` 白名单：`dissent_marker`、
+  `fact_reason`、`review_outcome`、`own_final_band`；B 的 `received/self` 白名单：`consensus_marker`、`own_final_band`。
+  team/public 只允许 B 的 `consensus_marker`、`final_band`，不得出现 dissenter、reviewer、attendee identity、attention 或信用账。
+
+#### #145：仅 3.5、有限机会、私排申诉，永不接薪酬
+
+- order batch 五元组为 `(direct_manager, direct_manager, cycle, middle_order_case, ORDER_OPEN)`；每一行另存
+  `(direct_manager, middle_subject, cycle, order_row_case, ORDER_FROZEN)`。进入 cohort 的硬条件是正式终档恰为
+  `MIDDLE=3.5`；TOP=3.75、BOTTOM=3.25、shadow/pending grade 均不得进入。通用 rerank order 不能冒充 #145 order。
+- 排序键固定为校准分降序、冻结 roster order 升序、object case 升序。机会/辅导 capacity 必须是有限整数
+  `1..cohort_size-1`；不足两名 MIDDLE 时状态为 `NO_COHORT`，不创建假排序或假机会。
+- A 的唯一 consumer 是公开的有限机会/辅导分配；不改变任何正式档位。team/public 与 `received/self` 的精确白名单为
+  `formal_band=3.5`、`within_middle_order`、`opportunity_capacity`、`opportunity_selected`、`coaching_selected`。
+- B 的完整 order 与 selection 只进 manager/audit。team/public 为空；**每一名**冻结 MIDDLE 成员，无论是否入选机会，都必须获得
+  本人投影，精确白名单为 `formal_band=3.5`、`own_opportunity_selected`、`appeal_evidence_available`、`blackbox_audit`。
+  本人不得看到自己的数值 rank/order、他人 identity/selection 或完整排序；appeal/blackbox consumer 必须覆盖全部 affected self，
+  不能只覆盖落选者或第一名。
+- #145 在所有路线都没有且永远不得新增 compensation consumer：不得读写 personal gold、国库、俸禄、工资、奖金、bonus、
+  reward、分红或其他物质 payout；不得复用 reward ledger，也不得被 band/grade writer 读取。它只能分配有限机会/辅导并生成
+  appeal/blackbox audit。出现任何 pay/reward/bonus 写入即为 RED。
+
+#### GUI binder 尚未施工的可见性边界
+
+上述字段目前只是冻结 runtime/projection ABI。仓库尚未为 #141–#145 完成把这些白名单字段绑定到考核榜 named widgets 的 GUI
+binder，也没有对应的 MCP named-widget snapshot 与真实 CK3 可见 artifact。脚本变量、projection marker 或静态测试 GREEN 都不会自行
+渲染成玩家可见界面。因此在 binder、ACL 同源过滤、关闭重开清理和 MCP-first 实机证据闭合以前，只能称
+`ABI-frozen/static-ready`；不得称“游戏中可见”、`fixture-live`、`production-live` 或完成。未来 binder 必须只消费本节允许的冻结
+projection snapshot，不能直接绑定 manager/audit 内部账或人物 live 变量。
 
 ### #357：跨域事实→配额适配器
 
@@ -261,7 +415,7 @@ result case / final reason frozen
 `READINESS = python-l0-reference-only`、`CK3_IMPLEMENTED = False`；该声明仍准确，因为 Python 模型本身不是 CK3 证据。
 `gen_361_b1_runtime.py` 现已消费其中的确定性纵切：整数最大余数配额、唯一同职能 3+4 池、离开名册 amendment、
 TOP↔MIDDLE 单槽交易与次周期 one-shot 债、agenda/attention/overtime、多人 pending 及付款前对称重开。runtime 专测当前
-22/22 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
+30/30 GREEN，且共享案卷内核调用只达到 source-contract/static-ready；尚无 CK3 fixture，因此不得把上述静态实现写成
 `CK3_IMPLEMENTED=True`、`fixture-live` 或 42 项完成。
 
 L0 至少覆盖：

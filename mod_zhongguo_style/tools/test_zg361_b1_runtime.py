@@ -249,8 +249,17 @@ class B1RuntimeFoundationTests(unittest.TestCase):
 
         shadow = top_level_block(self.effects, "zg361_b1_open_shadow_effect")
         self.assertIn("name = zg361_b1_self_visibility_adjustment", shadow)
-        self.assertIn("value = var:zg361_b1_self_gap multiply = 0.2", shadow)
-        self.assertIn("max = 3 min = -3", shadow)
+        self.assertIn(
+            "value = var:zg361_b1_self_gap multiply = -0.2 round = yes max = 0 min = -3",
+            shadow,
+        )
+        self.assertIn(
+            "value = var:zg361_b1_self_gap multiply = 0.1 round = yes max = 0 min = -2",
+            shadow,
+        )
+        self.assertNotIn(
+            "value = var:zg361_b1_self_gap multiply = 0.2", shadow
+        )
         self.assertIn("add = var:zg361_b1_self_visibility_adjustment", shadow)
         prepare = top_level_block(self.effects, "zg361_b1_prepare_facts_effect")
         self.assertLess(
@@ -275,9 +284,27 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.effects, "zg361_b1_record_shadow_supplement_effect"
         )
         self.assertIn("name = zg361_b1_shadow_evidence_delta value = 0", accept)
-        self.assertIn("name = zg361_b1_shadow_evidence_delta value = 10", supplement)
+        self.assertIn(
+            "name = zg361_b1_shadow_new_evidence_baseline_score value = var:zg361_b1_evidence_late",
+            open_shadow,
+        )
+        self.assertIn(
+            "name = zg361_b1_shadow_new_evidence_observed_score value = zg361_kpi_value",
+            supplement,
+        )
+        self.assertIn(
+            "subtract = var:zg361_b1_shadow_new_evidence_baseline_score max = 10 min = -10",
+            supplement,
+        )
+        self.assertNotIn("subtract = var:zg361_b1_evidence_mid", supplement)
+        self.assertNotIn("subtract = var:zg361_b1_evidence_late", supplement)
+        self.assertIn("NOT = { var:zg361_b1_shadow_evidence_delta = 0 }", supplement)
+        self.assertIn("name = zg361_b1_shadow_evidence_object_available value = 1", supplement)
+        self.assertIn("name = zg361_b1_shadow_evidence_revision value = 1", supplement)
+        self.assertIn("name = zg361_b1_shadow_new_evidence_source value = 1", supplement)
+        self.assertIn("name = zg361_b1_shadow_new_evidence value = 1", supplement)
         self.assertIn("name = zg361_b1_calibration_score", supplement)
-        self.assertIn("add = 10", supplement)
+        self.assertIn("add = var:zg361_b1_shadow_evidence_delta", supplement)
         supplement_code = without_comments(supplement)
         for immutable_name in (
             "zg361_kpi",
@@ -309,6 +336,692 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             close.index("zg361_b1_record_shadow_accept_effect = yes"),
             close.index("zg361_b1_submit_quota_book_effect = yes"),
         )
+
+    def test_135_shadow_routes_have_stable_objects_and_honest_receipts(self) -> None:
+        open_shadow = top_level_block(self.effects, "zg361_b1_open_shadow_effect")
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        supplement = top_level_block(
+            self.effects, "zg361_b1_record_shadow_supplement_effect"
+        )
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            with self.subTest(object="shadow", field=field):
+                self.assertIn(f"zg361_b1_shadow_object_{field}", open_shadow)
+            with self.subTest(object="supplement", field=field):
+                self.assertIn(
+                    f"zg361_b1_shadow_evidence_object_{field}", supplement
+                )
+
+        # A exposes the non-final object, B reveals the same frozen object only
+        # at publication, and C is represented solely by the policy choice.
+        self.assertIn("root.var:zg361_b1_m135_mode != 3", open_shadow)
+        self.assertIn("root.var:zg361_b1_m135_mode = 1", open_shadow)
+        self.assertIn("name = zg361_b1_shadow_reveal_state value = 1", open_shadow)
+        self.assertIn(
+            "root.var:zg361_b1_m135_mode = 2 var:zg361_b1_shadow_object_available = 1",
+            publish,
+        )
+        self.assertIn("name = zg361_b1_shadow_reveal_state value = 2", publish)
+        self.assertEqual(
+            open_shadow.count(
+                "set_variable = { name = zg361_b1_m135_receipt_serial"
+            ),
+            1,
+        )
+        self.assertIn(
+            "name = zg361_b1_m135_receipt_serial value = var:zg361_b1_shadow_object_case",
+            open_shadow,
+        )
+        self.assertLess(
+            open_shadow.index("root.var:zg361_b1_m135_mode != 3"),
+            open_shadow.index("name = zg361_b1_m135_receipt_serial"),
+        )
+        self.assertIn("remove_variable = zg361_b1_m135_receipt_serial", initialize)
+        for prefix in (
+            "zg361_b1_shadow_object",
+            "zg361_b1_shadow_evidence_object",
+        ):
+            for field in ("owner", "subject", "cycle", "case", "state"):
+                with self.subTest(reset=prefix, field=field):
+                    self.assertRegex(
+                        initialize,
+                        rf"(?:remove_variable = {prefix}_{field}|"
+                        rf"set_variable = \{{ name = {prefix}_{field} value = 0 \}})",
+                    )
+
+        # The supplement packet is created only for a non-zero observation,
+        # is immediately consumed, and cannot itself mutate a frozen grade.
+        self.assertIn("name = zg361_b1_shadow_evidence_object_state value = 2", supplement)
+        self.assertIn("name = zg361_b1_shadow_evidence_consumed value = 1", supplement)
+        self.assertIn("add = var:zg361_b1_shadow_evidence_delta", supplement)
+        self.assertIn(
+            "var:zg361_b1_shadow_new_evidence = 1 var:zg361_b1_shadow_evidence_delta < 0",
+            publish,
+        )
+        self.assertIn("name = zg361_b1_feedback_debt value = 1", publish)
+        supplement_code = without_comments(supplement)
+        for forbidden in (
+            "name = zg361_kpi",
+            "name = zg361_absolute_grade",
+            "name = zg361_pending_grade",
+            "name = zg361_b1_shadow_grade",
+            "name = zg361_b1_final_grade",
+        ):
+            self.assertNotIn(forbidden, supplement_code)
+
+    def test_136_huddle_host_and_attendee_namespaces_do_not_collide(self) -> None:
+        prepare = top_level_block(
+            self.effects, "zg361_b1_prepare_bank_huddle_effect"
+        )
+        finalize = top_level_block(
+            self.effects, "zg361_b1_finalize_huddle_diff_effect"
+        )
+
+        for prefix in ("zg361_b1_huddle_host", "zg361_b1_huddle_attendee"):
+            for field in ("owner", "subject", "cycle", "case", "state"):
+                with self.subTest(prefix=prefix, field=field):
+                    self.assertIn(f"{prefix}_{field}", prepare)
+
+        legacy_singletons = re.compile(
+            r"\bzg361_b1_huddle_(?:object_available|owner|subject|cycle|case|"
+            r"state|id|attending|route|seat|ack_posted|ack_n|attendee_n|"
+            r"manager_[1-4])\b"
+        )
+        self.assertIsNone(legacy_singletons.search(prepare + finalize))
+
+        # Route C and a bank with fewer than three managers must leave neither
+        # a stale object nor a stale success receipt behind.
+        self.assertIn("remove_variable = zg361_b1_m136_receipt_serial", prepare)
+        for prefix in ("zg361_b1_huddle_host", "zg361_b1_huddle_attendee"):
+            for field in ("owner", "subject", "cycle", "case"):
+                with self.subTest(reset=prefix, field=field):
+                    self.assertRegex(
+                        prepare,
+                        rf"(?:remove_variable = {prefix}_{field}|"
+                        rf"set_variable = \{{ name = {prefix}_{field} value = 0 \}})",
+                    )
+        self.assertIn("var:zg361_b1_bank_m136_mode != 3", prepare)
+        self.assertIn("var:zg361_b1_ready_manager_n >= 3", prepare)
+        self.assertEqual(
+            prepare.count(
+                "set_variable = { name = zg361_b1_m136_receipt_serial"
+            ),
+            1,
+        )
+        self.assertIn(
+            "name = zg361_b1_m136_receipt_serial value = var:zg361_b1_huddle_host_case",
+            prepare,
+        )
+
+    def test_136_huddle_routes_order_and_real_diff_consumer_are_frozen(self) -> None:
+        prepare = top_level_block(
+            self.effects, "zg361_b1_prepare_bank_huddle_effect"
+        )
+        finalize = top_level_block(
+            self.effects, "zg361_b1_finalize_huddle_diff_effect"
+        )
+
+        # Manager arrival order is frozen once and is the sole seat order;
+        # manager-local case serials are not a globally unique tie breaker.
+        self.assertIn(
+            "name = zg361_b1_bank_ready_order value = root.var:zg361_b1_ready_manager_n",
+            self.effects,
+        )
+        self.assertIn(
+            "order_by = { value = var:zg361_b1_bank_ready_order multiply = -1 }",
+            prepare,
+        )
+        self.assertNotIn("order_by = var:zg361_b1_case_serial", prepare)
+        self.assertIn("name = zg361_b1_huddle_attendee_seat", prepare)
+
+        # A freezes one boundary recommendation per attendee; B freezes the
+        # whole preallocation. Both are later compared with the formal book.
+        self.assertIn("root.var:zg361_b1_bank_m136_mode = 1", prepare)
+        self.assertIn("max = 1", prepare)
+        self.assertIn("name = zg361_b1_huddle_attendee_boundary_case_n", prepare)
+        self.assertIn("name = zg361_b1_huddle_attendee_preallocation_top", prepare)
+        self.assertIn("name = zg361_b1_huddle_attendee_preallocation_middle", prepare)
+        self.assertIn("name = zg361_b1_huddle_attendee_preallocation_bottom", prepare)
+        self.assertIn(
+            "name = zg361_b1_huddle_attendee_cycle value = root.var:zg361_b1_huddle_host_cycle",
+            prepare,
+        )
+        self.assertIn(
+            "name = zg361_b1_huddle_attendee_case value = root.var:zg361_b1_huddle_host_case",
+            prepare,
+        )
+        self.assertIn(
+            "order_by = { value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order }",
+            prepare,
+        )
+
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            with self.subTest(finalizer="attendee", field=field):
+                self.assertIn(f"var:zg361_b1_huddle_attendee_{field}", finalize)
+            with self.subTest(finalizer="host", field=field):
+                self.assertIn(f"var:zg361_b1_huddle_host_{field}", finalize)
+        self.assertIn(
+            "var:zg361_b1_huddle_host_id = prev.var:zg361_b1_huddle_attendee_id",
+            finalize,
+        )
+        for relation in (
+            "var:zg361_b1_huddle_host_owner = this",
+            "var:zg361_b1_huddle_host_subject = this",
+            "var:zg361_b1_huddle_host_cycle = prev.var:zg361_b1_huddle_attendee_cycle",
+            "var:zg361_b1_huddle_host_case = prev.var:zg361_b1_huddle_attendee_case",
+            "var:zg361_b1_huddle_host_state = 1",
+        ):
+            self.assertIn(relation, finalize)
+        self.assertIn("name = zg361_b1_huddle_assignment_state value = 2", finalize)
+        self.assertIn("name = zg361_b1_huddle_grade_diff", finalize)
+        self.assertIn("name = zg361_b1_huddle_attendee_ack_posted value = 1", finalize)
+        self.assertIn("name = zg361_b1_huddle_host_state value = 2", finalize)
+
+    def test_137_agenda_header_and_item_objects_are_isolated(self) -> None:
+        build = top_level_block(
+            self.effects, "zg361_b1_build_agenda_and_attention_effect"
+        )
+        finalize = top_level_block(
+            self.effects, "zg361_b1_finalize_agenda_audit_effect"
+        )
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+
+        for prefix in ("zg361_b1_agenda_header", "zg361_b1_agenda_item"):
+            for field in ("owner", "subject", "cycle", "case", "state"):
+                with self.subTest(prefix=prefix, field=field):
+                    self.assertIn(f"{prefix}_{field}", build)
+                    self.assertIn(f"var:{prefix}_{field}", finalize)
+
+        legacy_singletons = re.compile(
+            r"\bzg361_b1_agenda_object_(?:available|owner|subject|cycle|case|state)\b"
+        )
+        self.assertIsNone(legacy_singletons.search(build + finalize))
+
+        for field in ("owner", "subject", "cycle", "case"):
+            with self.subTest(reset="header", field=field):
+                self.assertRegex(
+                    build,
+                    rf"(?:remove_variable = zg361_b1_agenda_header_{field}|"
+                    rf"set_variable = \{{ name = zg361_b1_agenda_header_{field} value = 0 \}})",
+                )
+            with self.subTest(reset="item", field=field):
+                self.assertRegex(
+                    initialize,
+                    rf"(?:remove_variable = zg361_b1_agenda_item_{field}|"
+                    rf"set_variable = \{{ name = zg361_b1_agenda_item_{field} value = 0 \}})",
+                )
+        self.assertIn("name = zg361_b1_agenda_header_state value = 0", build)
+        self.assertIn("name = zg361_b1_agenda_item_state value = 0", initialize)
+
+    def test_137_agenda_routes_have_stable_order_real_consumers_and_no_fake_receipt(self) -> None:
+        build = top_level_block(
+            self.effects, "zg361_b1_build_agenda_and_attention_effect"
+        )
+        finalize = top_level_block(
+            self.effects, "zg361_b1_finalize_agenda_audit_effect"
+        )
+        pending = top_level_block(
+            self.effects, "zg361_b1_open_pending_slots_effect"
+        )
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+
+        self.assertIn("var:zg361_b1_m137_mode != 3", build)
+        self.assertIn("zg361_b1_agenda_header_object_available value = 1", build)
+        self.assertIn("zg361_b1_agenda_item_object_available value = 1", build)
+        self.assertEqual(
+            build.count(
+                "set_variable = { name = zg361_b1_m137_receipt_serial"
+            ),
+            1,
+        )
+        self.assertIn(
+            "name = zg361_b1_m137_receipt_serial value = var:zg361_b1_agenda_item_case",
+            build,
+        )
+        self.assertLess(
+            build.index("root.var:zg361_b1_m137_mode != 3"),
+            build.index("name = zg361_b1_m137_receipt_serial"),
+        )
+        self.assertIn("remove_variable = zg361_b1_m137_receipt_serial", initialize)
+
+        # A uses frozen roster rotation. B may privilege only explicitly
+        # strategic/allied cases and uses roster order as its deterministic tie.
+        self.assertIn("var:zg361_b1_agenda_mode = 1", build)
+        self.assertIn("var:zg361_b1_roster_frozen_order subtract", build)
+        self.assertIn("var:zg361_b1_agenda_mode = 2", build)
+        self.assertNotIn("var:zg361_b1_role_code >= 1", build)
+        self.assertIn("var:zg361_b1_role_code >= 3", build)
+        self.assertIn("has_relation_friend = scope:zg361_b1_agenda_manager", build)
+        self.assertIn(
+            "value = var:zg361_b1_calibration_score multiply = 1000 subtract = var:zg361_b1_roster_frozen_order",
+            build,
+        )
+        self.assertIn("order_by = var:zg361_b1_agenda_sort_key", build)
+
+        # Attention is the gameplay consumer: only reviewed items enter the
+        # pending/milestone consumer. The finalizer closes reviewed and skipped
+        # items separately and records an auditable header summary.
+        self.assertIn("var:zg361_b1_attention_consumed = 1", pending)
+        for reset in (
+            "zg361_b1_agenda_reviewed_n",
+            "zg361_b1_agenda_changed_n",
+            "zg361_b1_agenda_review_minutes",
+            "zg361_b1_agenda_skipped_n",
+        ):
+            self.assertIn(f"name = {reset} value = 0", finalize)
+        self.assertIn("name = zg361_b1_agenda_item_state value = 2", finalize)
+        self.assertIn("name = zg361_b1_agenda_item_state value = 3", finalize)
+        self.assertIn("name = zg361_b1_agenda_header_state value = 2", finalize)
+        self.assertIn("name = zg361_b1_agenda_skipped value = 1", finalize)
+
+    def test_138_local_and_bank_rounding_objects_never_share_state(self) -> None:
+        exact = top_level_block(
+            self.effects, "zg361_b1_compute_exact_quota_effect"
+        )
+        local = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+        bank = top_level_block(
+            self.effects, "zg361_b1_close_common_superior_bank_effect"
+        )
+
+        self.assertIn("ROUNDING_SCOPE = 1", local)
+        self.assertIn("ROUNDING_SCOPE = 2", bank)
+        self.assertIn(
+            "zg361_b1_quota_rounding_work_scope value = $ROUNDING_SCOPE$", exact
+        )
+        self.assertIn(
+            "zg361_b1_quota_rounding_work_route value = var:zg361_b1_m138_mode",
+            exact,
+        )
+        self.assertIn(
+            "zg361_b1_quota_rounding_work_route value = var:zg361_b1_bank_m138_mode",
+            exact,
+        )
+
+        for prefix in (
+            "zg361_b1_quota_rounding_local",
+            "zg361_b1_quota_rounding_bank",
+        ):
+            for field in ("owner", "subject", "cycle", "case", "state"):
+                with self.subTest(prefix=prefix, field=field):
+                    self.assertIn(f"{prefix}_{field}", exact)
+            for field in ("owner", "subject", "cycle", "case"):
+                with self.subTest(reset=prefix, field=field):
+                    self.assertRegex(
+                        exact,
+                        rf"(?:remove_variable = {prefix}_{field}|"
+                        rf"set_variable = \{{ name = {prefix}_{field} value = 0 \}})",
+                    )
+            self.assertIn(f"name = {prefix}_state value = 0", exact)
+            self.assertIn(f"name = {prefix}_state value = 1", exact)
+
+        ambiguous_singletons = re.compile(
+            r"\bzg361_b1_quota_rounding_(?:object_available|owner|subject|cycle|"
+            r"case|state|route|team_n|team_[12]|remainder_team|affected_team)\b"
+        )
+        self.assertIsNone(ambiguous_singletons.search(exact + local + bank))
+
+    def test_138_rounding_routes_feed_stable_allocation_and_terminal_receipts(self) -> None:
+        exact = top_level_block(
+            self.effects, "zg361_b1_compute_exact_quota_effect"
+        )
+        local = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+        bank = top_level_block(
+            self.effects, "zg361_b1_close_common_superior_bank_effect"
+        )
+
+        for prefix in (
+            "zg361_b1_quota_rounding_local",
+            "zg361_b1_quota_rounding_bank",
+        ):
+            self.assertIn(f"name = {prefix}_rotation_cursor", exact)
+            self.assertIn(f"name = {prefix}_chair", exact)
+            self.assertIn(f"name = {prefix}_blackbox_risk value = 1", exact)
+
+        # A rotates the remainder owner; B records explicit chair discretion.
+        # C creates no object, and therefore cannot leave a terminal receipt.
+        self.assertGreaterEqual(
+            exact.count("var:zg361_b1_quota_rounding_work_route != 3"), 2
+        )
+        self.assertGreaterEqual(
+            exact.count("var:zg361_b1_quota_rounding_work_route = 2"), 2
+        )
+        self.assertIn("remove_variable = zg361_b1_m138_receipt_serial", exact)
+        self.assertIn(
+            "var:zg361_b1_m138_mode != 3 var:zg361_b1_quota_rounding_local_object_available = 1",
+            local,
+        )
+        self.assertIn(
+            "var:zg361_b1_bank_m138_mode != 3 var:zg361_b1_quota_rounding_bank_object_available = 1",
+            bank,
+        )
+        self.assertIn(
+            "name = zg361_b1_quota_rounding_local_state value = 2", local
+        )
+        self.assertIn(
+            "name = zg361_b1_quota_rounding_bank_state value = 2", bank
+        )
+        self.assertIn("name = zg361_b1_quota_rounding_local_operation_seal", local)
+        self.assertIn("name = zg361_b1_quota_rounding_bank_operation_seal", bank)
+        self.assertLess(
+            local.index("name = zg361_b1_quota_rounding_local_operation_seal"),
+            local.index("name = zg361_b1_quota_rounding_local_state value = 2"),
+        )
+        self.assertLess(
+            bank.index("name = zg361_b1_quota_rounding_bank_operation_seal"),
+            bank.index("name = zg361_b1_quota_rounding_bank_state value = 2"),
+        )
+        self.assertEqual(
+            local.count(
+                "set_variable = { name = zg361_b1_m138_receipt_serial"
+            ),
+            1,
+        )
+        self.assertEqual(
+            bank.count(
+                "set_variable = { name = zg361_b1_m138_receipt_serial"
+            ),
+            1,
+        )
+        self.assertIn(
+            "name = zg361_b1_m138_receipt_serial value = var:zg361_b1_quota_rounding_local_case",
+            local,
+        )
+        self.assertIn(
+            "name = zg361_b1_m138_receipt_serial value = var:zg361_b1_quota_rounding_bank_case",
+            bank,
+        )
+        self.assertLess(
+            local.index("name = zg361_b1_quota_rounding_local_state value = 2"),
+            local.index("name = zg361_b1_m138_receipt_serial"),
+        )
+        self.assertLess(
+            bank.index("name = zg361_b1_quota_rounding_bank_state value = 2"),
+            bank.index("name = zg361_b1_m138_receipt_serial"),
+        )
+
+        # The selected bank remainder team changes the real rank key; source
+        # size and frozen roster order finish the deterministic tie-break.
+        self.assertIn(
+            "var:zg361_b1_case_owner = root.var:zg361_b1_quota_rounding_bank_remainder_team",
+            bank,
+        )
+        self.assertIn("name = zg361_b1_quota_rounding_team_priority", bank)
+        self.assertIn("name = zg361_b1_quota_pool_tie_key", bank)
+        self.assertIn(
+            "var:zg361_b1_quota_rounding_team_priority multiply = 1000", bank
+        )
+        self.assertIn(
+            "var:zg361_b1_quota_pool_subject_source_size multiply = 100", bank
+        )
+        self.assertIn("subtract = var:zg361_b1_roster_frozen_order", bank)
+        self.assertIn("order_by = var:zg361_b1_quota_pool_tie_key", bank)
+        self.assertIn(
+            "name = zg361_b1_quota_rounding_bank_tie_consumer_active value = 1",
+            bank,
+        )
+
+    def test_140_reorg_routes_have_one_complete_replay_safe_owner_object(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        additions = top_level_block(
+            self.effects, "zg361_b1_audit_locked_roster_additions_effect"
+        )
+
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            with self.subTest(field=field):
+                self.assertIn(f"zg361_b1_reorg_object_{field}", additions)
+        for field in ("owner", "subject", "cycle", "case"):
+            with self.subTest(reset=field):
+                self.assertRegex(
+                    initialize,
+                    rf"(?:remove_variable = zg361_b1_reorg_object_{field}|"
+                    rf"set_variable = \{{ name = zg361_b1_reorg_object_{field} value = 0 \}})",
+                )
+        self.assertIn("name = zg361_b1_reorg_object_available value = 0", initialize)
+        self.assertIn("name = zg361_b1_reorg_object_state value = 0", initialize)
+        self.assertIn("remove_variable = zg361_b1_reorg_quota_owner", initialize)
+        self.assertIn("remove_variable = zg361_b1_m140_receipt_serial", initialize)
+
+        # A preserves the archived manager/case tuple. B explicitly opens a new
+        # manager tuple. C never falls through either allocation branch.
+        self.assertIn("scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode != 3", additions)
+        self.assertIn("scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode = 1", additions)
+        self.assertIn("scope:zg361_b1_roster_add_manager.var:zg361_b1_m140_mode = 2", additions)
+        self.assertIn("name = zg361_b1_reorg_route value = 1", additions)
+        self.assertIn("name = zg361_b1_reorg_route value = 2", additions)
+        self.assertIn(
+            "var:zg361_b1_reorg_object_cycle = var:zg361_b1_reorg_archive_cycle",
+            additions,
+        )
+        self.assertIn("var:zg361_b1_reorg_archive_subject = this", additions)
+
+        replay_prefix = additions.split(
+            "has_variable = zg361_b1_reorg_archive_case", 1
+        )[1].split(
+            "set_variable = { name = zg361_b1_reorg_replay_detected value = 1 }",
+            1,
+        )[0]
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            with self.subTest(replay=field):
+                self.assertIn(f"zg361_b1_reorg_object_{field}", replay_prefix)
+
+    def test_140_zero_day_observation_is_not_a_fake_segment_or_receipt(self) -> None:
+        additions = top_level_block(
+            self.effects, "zg361_b1_audit_locked_roster_additions_effect"
+        )
+        local = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+
+        self.assertNotIn(
+            "name = zg361_b1_reorg_allocation_evidence_count value = 4",
+            additions,
+        )
+        self.assertEqual(
+            additions.count(
+                "name = zg361_b1_reorg_allocation_evidence_count value = 3"
+            ),
+            2,
+        )
+        self.assertEqual(
+            additions.count("name = zg361_b1_reorg_new_observation_n value = 1"),
+            2,
+        )
+        self.assertEqual(
+            additions.count(
+                "name = zg361_b1_reorg_new_evidence_segment_available value = 0"
+            ),
+            2,
+        )
+        self.assertIn("name = zg361_b1_reorg_service_days value = 0", additions)
+
+        # One occupied cohort slot is terminally receipted once per A/B route;
+        # the 0-day live snapshot remains an observation, never a fourth fact.
+        terminal_receipts = re.findall(
+            r"name = zg361_b1_reorg_allocation_occupied_slots value = 1.*?"
+            r"name = zg361_b1_reorg_allocation_receipt_state value = 1.*?"
+            r"name = zg361_b1_m140_receipt_serial",
+            additions,
+            re.DOTALL,
+        )
+        self.assertEqual(len(terminal_receipts), 2)
+        self.assertEqual(
+            additions.count(
+                "set_variable = { name = zg361_b1_m140_receipt_serial"
+            ),
+            2,
+        )
+        self.assertEqual(
+            additions.count(
+                "name = zg361_b1_m140_receipt_serial value = var:zg361_b1_reorg_object_case"
+            ),
+            2,
+        )
+
+        # The frozen owner is not audit-only: it is an eligibility guard for
+        # the real local quota cohort, preventing old and new books both taking it.
+        self.assertIn("has_variable = zg361_b1_reorg_quota_owner", local)
+        self.assertIn("var:zg361_b1_reorg_quota_owner = root", local)
+
+    def test_001_013_defer_modes_create_policy_debt_not_domain_objects(self) -> None:
+        freeze = top_level_block(
+            self.effects, "zg361_b1_freeze_001_013_policy_effect"
+        )
+        self.assertIn("name = zg361_b1_policy_debt_cycle_n value = 0", freeze)
+        self.assertIn("name = zg361_b1_policy_next_review_serial", freeze)
+        self.assertIn("add = 1", freeze)
+        for mechanism_id in range(1, 14):
+            key = f"{mechanism_id:03d}"
+            with self.subTest(mechanism=key):
+                self.assertIn(f"name = zg361_b1_m{key}_mode value = 1", freeze)
+                self.assertIn(f"zg361_mechanism_{key}_choice", freeze)
+                self.assertIn(f"var:zg361_b1_m{key}_mode = 3", freeze)
+                self.assertIn(f"zg361_b1_m{key}_policy_debt_serial", freeze)
+
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        for mechanism_id in range(1, 14):
+            self.assertIn(
+                f"remove_variable = zg361_b1_m{mechanism_id:03d}_receipt_serial",
+                initialize,
+            )
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        for mechanism_id in (9, 10, 11, 13):
+            self.assertIn(
+                f"remove_variable = zg361_b1_m{mechanism_id:03d}_receipt_serial",
+                open_cycle,
+            )
+        for object_id in (
+            "zg361_b1_checkin_id",
+            "zg361_b1_self_review_id",
+            "zg361_b1_self_evidence_id",
+            "zg361_b1_evidence_sheet_id",
+            "zg361_b1_conflict_case_id",
+            "zg361_b1_recusal_reviewer",
+        ):
+            self.assertIn(f"remove_variable = {object_id}", initialize)
+        self.assertIn("root.var:zg361_b1_m003_mode = 3", initialize)
+        self.assertIn("name = zg361_b1_checkin_available value = 0", initialize)
+        self.assertIn("root.var:zg361_b1_m004_mode = 3", initialize)
+        self.assertIn("name = zg361_b1_self_review_available value = 0", initialize)
+        self.assertIn("root.var:zg361_b1_m007_mode = 3", initialize)
+        self.assertIn("name = zg361_b1_peer_cap value = 0", initialize)
+        self.assertIn("root.var:zg361_b1_m008_mode = 3", initialize)
+        self.assertIn("name = zg361_b1_peer_use_mode value = 0", initialize)
+        for default_abi in (
+            "name = zg361_b1_disclosure_policy_available value = 1",
+            "name = zg361_b1_disclosure_policy_id value = var:zg361_b1_case_serial",
+            "name = zg361_b1_disclosure_self_mode value = 3",
+            "name = zg361_b1_disclosure_team_mode value = 2",
+            "name = zg361_b1_disclosure_evaluator_identity_mode value = 1",
+            "name = zg361_b1_disclosure_blackbox_risk value = 0",
+        ):
+            self.assertIn(default_abi, initialize)
+        self.assertIn("root.var:zg361_b1_m013_mode = 2", initialize)
+        self.assertIn("name = zg361_b1_disclosure_self_mode value = 1", initialize)
+        self.assertIn("name = zg361_b1_disclosure_team_mode value = 0", initialize)
+        self.assertIn("name = zg361_b1_disclosure_blackbox_risk value = 1", initialize)
+        self.assertIn("root.var:zg361_b1_m013_mode = 3", initialize)
+        self.assertIn("name = zg361_b1_disclosure_policy_available value = 0", initialize)
+        self.assertIn("remove_variable = zg361_b1_disclosure_policy_id", initialize)
+
+        open_calibration = top_level_block(
+            self.effects, "zg361_b1_open_calibration_effect"
+        )
+        for mechanism_id in (9, 10, 12):
+            self.assertNotIn(
+                f"set_variable = {{ name = zg361_b1_m{mechanism_id:03d}_receipt_serial",
+                open_calibration,
+            )
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        self.assertIn("limit = { var:zg361_b1_m013_mode != 3 }", publish)
+        liability = top_level_block(
+            self.effects, "zg361_b1_consume_manager_liabilities_as_subject_effect"
+        )
+        self.assertIn("var:zg361_b1_policy_debt_due_year <= current_year", liability)
+        self.assertIn("multiply = -2", liability)
+        self.assertIn("max = 0 min = -20", liability)
+
+    def test_001_006_have_frozen_facts_and_bounded_score_consumers(self) -> None:
+        classifier = top_level_block(
+            self.effects, "zg361_b1_classify_function_effect"
+        )
+        for marker in (
+            "vassal_contract_has_flag = celestial_military_appointment",
+            "has_council_position = councillor_marshal",
+            "has_council_position = councillor_steward",
+            "is_governor = yes",
+            "zg361_b1_function_code value = 4",
+            "zg361_b1_function_code value = 3",
+            "zg361_b1_function_code value = 2",
+            "zg361_b1_function_code value = 1",
+        ):
+            self.assertIn(marker, classifier)
+
+        facts = top_level_block(
+            self.effects, "zg361_b1_finalize_subject_facts_effect"
+        )
+        evidence_fields = (
+            "governance",
+            "capability",
+            "growth",
+            "superior",
+            "values",
+            "collaboration",
+            "jingcha",
+            "organization",
+        )
+        for field in evidence_fields:
+            self.assertIn(
+                f"zg361_b1_evidence_{field} value = var:zg361_evidence_{field}",
+                facts,
+            )
+            self.assertIn(f"var:zg361_b1_evidence_{field}", facts)
+        self.assertIn("var:zg361_b1_evidence_sum_check = var:zg361_kpi", facts)
+        self.assertIn("name = zg361_b1_goal_score_adjustment", facts)
+        self.assertIn("name = zg361_b1_role_weighted_score", facts)
+        self.assertIn("name = zg361_b1_baseline_state_delta", facts)
+        self.assertIn("name = zg361_b1_difficulty_score_adjustment", facts)
+
+        shadow = top_level_block(self.effects, "zg361_b1_open_shadow_effect")
+        for adjustment in (
+            "zg361_b1_self_visibility_adjustment",
+            "zg361_b1_peer_calibration_adjustment",
+            "zg361_b1_goal_score_adjustment",
+            "zg361_b1_role_score_adjustment",
+            "zg361_b1_evidence_window_adjustment",
+            "zg361_b1_difficulty_score_adjustment",
+            "zg361_b1_manager_liability_adjustment",
+        ):
+            self.assertIn(f"add = var:{adjustment}", shadow)
+
+        midcycle = top_level_block(
+            self.effects, "zg361_b1_midcycle_dispatcher_effect"
+        )
+        self.assertIn("limit = { var:zg361_b1_checkin_available = 1 }", midcycle)
+        self.assertIn(
+            "random_character_war = { save_temporary_scope_as = zg361_b1_midcycle_crisis_war }",
+            midcycle,
+        )
+        self.assertIn(
+            "name = zg361_b1_crisis_war value = scope:zg361_b1_midcycle_crisis_war",
+            midcycle,
+        )
+        self.assertIn("name = zg361_b1_goal_old_target", midcycle)
+        self.assertIn("name = zg361_b1_goal_new_target", midcycle)
 
     def test_all_scheduled_b1_events_exist_and_visible_keys_are_localized(self) -> None:
         definition_list = re.findall(
@@ -369,6 +1082,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             ("zg361_b1_submit_peer_negative_effect", "-15"),
         ):
             block = top_level_block(self.effects, effect_name)
+            self.assertIn("zg361_b1_prepare_shared_war_peer_task_effect = yes", block)
+            self.assertIn("var:zg361_b1_peer_common_task_found = 1", block)
+            self.assertIn("var:zg361_b1_peer_common_task_kind = 1", block)
+            self.assertNotIn(
+                "common_task_id value = var:zg361_b1_case_serial", block
+            )
             self.assertIn(
                 "var:zg361_b1_peer_used < var:zg361_b1_peer_cap", block
             )
@@ -419,6 +1138,20 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                     "subject",
                     "cycle",
                     "raw",
+                    "performance",
+                    "collaboration",
+                    "values",
+                    "example_id",
+                    "common_task_id",
+                    "common_task_kind",
+                    "common_task_owner",
+                    "common_task_cycle",
+                    "common_task_case",
+                    "common_task_attacker",
+                    "common_task_defender",
+                    "invitation_source",
+                    "anonymous",
+                    "contribution_weight",
                     "weight",
                     "submitted_year",
                 ):
@@ -497,6 +1230,20 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 f"var:zg361_b1_peer_slot_{slot}_cycle = var:zg361_b1_cycle_serial",
                 consumer,
             )
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_common_task_kind = 1", consumer
+            )
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_common_task_owner = root", consumer
+            )
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_common_task_cycle = var:zg361_b1_cycle_serial",
+                consumer,
+            )
+            self.assertIn(
+                f"var:zg361_b1_peer_slot_{slot}_common_task_case = var:zg361_b1_case_serial",
+                consumer,
+            )
             self.assertIn("zg361_b1_peer_reciprocity_risk value = 1", consumer)
             self.assertIn("multiply = 0.5 floor = yes min = 10", consumer)
             self.assertLess(
@@ -519,14 +1266,594 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         shadow = top_level_block(self.effects, "zg361_b1_open_shadow_effect")
         self.assertIn("limit = { var:zg361_b1_peer_use_mode = 2 }", shadow)
         self.assertIn(
-            "value = var:zg361_b1_peer_normalized_score multiply = 0.2",
+            "value = var:zg361_b1_peer_normalized_score multiply = var:zg361_b1_peer_effective_weight_percent divide = 100",
             shadow,
         )
+        self.assertIn(
+            "name = zg361_b1_peer_effective_weight_percent", prepare
+        )
+        self.assertIn("multiply = 5 max = var:zg361_b1_peer_total_weight_cap", prepare)
         self.assertIn("limit = { var:zg361_b1_peer_shape = 4 }", shadow)
         self.assertIn("limit = { var:zg361_b1_peer_reciprocity_risk = 1 }", shadow)
         self.assertIn("add = var:zg361_b1_peer_calibration_adjustment", shadow)
         self.assertIn("zg361_b1_peer_normalized_score", self.values)
         self.assertIn("add = var:zg361_b1_peer_normalized_score", self.values)
+
+    def test_peer_common_task_is_a_real_same_side_war_or_submission_is_rejected(self) -> None:
+        task = top_level_block(
+            self.effects, "zg361_b1_prepare_shared_war_peer_task_effect"
+        )
+        self.assertIn("random_character_war = {", task)
+        self.assertIn("scope:actor = { is_attacker_in_war = prev }", task)
+        self.assertIn("scope:recipient = { is_attacker_in_war = prev }", task)
+        self.assertIn("scope:actor = { is_defender_in_war = prev }", task)
+        self.assertIn("scope:recipient = { is_defender_in_war = prev }", task)
+        self.assertIn("save_temporary_scope_as = zg361_b1_peer_common_war", task)
+        for field in ("owner", "cycle", "case", "serial_cursor"):
+            self.assertIn(f"zg361_b1_peer_task_{field}", task)
+        self.assertIn("scope:zg361_b1_peer_common_war.primary_attacker", task)
+        self.assertIn("scope:zg361_b1_peer_common_war.primary_defender", task)
+        task_code = without_comments(task)
+        self.assertNotIn(
+            "name = zg361_b1_peer_common_task_serial value = var:zg361_b1_case_serial",
+            task_code,
+        )
+
+    def test_009_012_calibration_writes_are_guarded_atomic_and_recusal_safe(self) -> None:
+        recusal = top_level_block(
+            self.effects, "zg361_b1_freeze_conflict_recusals_effect"
+        )
+        for token in (
+            "var:zg361_b1_case_owner = scope:zg361_b1_conflict_manager",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_cycle_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_cycle_serial",
+            "var:zg361_b1_case_serial = scope:zg361_b1_conflict_manager.var:zg361_b1_case_serial",
+            "var:zg361_b1_case_state = 5",
+            "var:zg361_b1_case_active = 1",
+            "var:zg361_b1_roster_included = 1",
+            "root.var:zg361_b1_m012_mode != 3",
+        ):
+            self.assertIn(token, recusal)
+        self.assertIn("name = zg361_b1_recusal_actor", recusal)
+        self.assertIn("name = zg361_b1_recusal_reviewer", recusal)
+        self.assertIn("root.var:zg361_b1_m012_mode = 1", recusal)
+        self.assertIn("name = zg361_b1_recusal_active value = 1", recusal)
+
+        swap = top_level_block(
+            self.effects, "zg361_b1_apply_atomic_calibration_swap_effect"
+        )
+        self.assertIn("var:zg361_b1_m009_mode != 3", swap)
+        self.assertIn("var:zg361_b1_cycle_state = 7", swap)
+        self.assertIn(
+            "NOT = { var:zg361_b1_m009_receipt_serial = var:zg361_b1_case_serial }",
+            swap,
+        )
+        self.assertEqual(swap.count("var:zg361_b1_recusal_active = 0"), 2)
+        self.assertIn("var:zg361_b1_calibration_swap_candidate_n = 2", swap)
+        self.assertIn(
+            "scope:zg361_b1_calibration_promote_subject.var:zg361_b1_calibration_score > scope:zg361_b1_calibration_demote_subject.var:zg361_b1_calibration_score",
+            swap,
+        )
+        self.assertEqual(
+            swap.count("set_variable = { name = zg361_pending_grade value ="), 2
+        )
+        self.assertIn("change_variable = { name = zg361_b1_calibration_attention add = -1 }", swap)
+        self.assertIn("change_variable = { name = zg361_b1_quota_book_version add = 1 }", swap)
+        for count_field in ("top", "middle", "bottom"):
+            self.assertIn(f"zg361_b1_calibration_before_{count_field}", swap)
+            self.assertIn(f"zg361_b1_calibration_after_{count_field}", swap)
+            self.assertIn(f"zg361_b1_calibration_remaining_{count_field}", swap)
+        self.assertIn("var:zg361_b1_m009_mode = 2", swap)
+        self.assertIn("name = zg361_b1_calibration_quick_close value = 1", swap)
+        self.assertIn("name = zg361_b1_calibration_assignment_n add = 1", swap)
+        self.assertIn("name = zg361_b1_calibration_one_grade_check value = 1", swap)
+        self.assertIn(
+            "name = zg361_b1_calibration_quick_close_blocked value = 1", swap
+        )
+        self.assertIn("name = zg361_b1_publication_blocked value = 1", swap)
+
+        protection = top_level_block(
+            self.effects, "zg361_b1_apply_bottom_protection_effect"
+        )
+        self.assertIn("var:zg361_b1_m010_mode = 1", protection)
+        self.assertGreaterEqual(protection.count("var:zg361_b1_recusal_active = 0"), 3)
+        self.assertIn("NOT = { has_character_flag = zg361_newcomer_this_cycle }", protection)
+        self.assertIn("var:zg361_b1_bottom_protection_candidate_n = 2", protection)
+        self.assertEqual(
+            protection.count("set_variable = { name = zg361_pending_grade value ="),
+            2,
+        )
+        self.assertIn("add_prestige = -25", protection)
+        self.assertIn("name = zg361_b1_protection_debt_state value = 1", protection)
+        self.assertIn("value = current_year add = 1", protection)
+        self.assertIn("var:zg361_b1_m010_mode = 2", protection)
+        self.assertIn("name = zg361_b1_bottom_edge_candidate_n", protection)
+        self.assertIn("name = zg361_b1_resentment_risk value = 1", protection)
+        self.assertIn("name = zg361_b1_attrition_risk value = 1", protection)
+        self.assertIn(
+            "name = zg361_b1_bottom_edge_blocked_newcomer_protection value = 1",
+            protection,
+        )
+
+        oversight = top_level_block(
+            self.effects, "zg361_b1_prepare_skip_level_return_effect"
+        )
+        self.assertIn("var:zg361_b1_m011_mode = 1", oversight)
+        self.assertIn("var:zg361_b1_skip_level_return_count = 0", oversight)
+        self.assertIn("name = zg361_b1_publication_blocked value = 1", oversight)
+        self.assertIn("trigger_event = { id = zg361b1.124 days = 1 }", oversight)
+        self.assertIn("var:zg361_b1_m011_mode = 2", oversight)
+        self.assertIn("name = zg361_b1_oversight_owner value = this", oversight)
+        self.assertIn("name = zg361_b1_oversight_improper_route_risk value = 1", oversight)
+        self.assertIn("name = zg361_b1_oversight_override_executed value = 1", oversight)
+        self.assertIn("name = zg361_b1_skip_level_book_owner value = root", oversight)
+        self.assertEqual(
+            oversight.count("set_variable = { name = zg361_pending_grade value ="),
+            2,
+        )
+        self.assertGreaterEqual(
+            oversight.count("var:zg361_b1_recusal_active = 0"), 2
+        )
+        open_calibration = top_level_block(
+            self.effects, "zg361_b1_open_calibration_effect"
+        )
+        self.assertIn(
+            "limit = { var:zg361_b1_calibration_quick_close_blocked = 0 }",
+            open_calibration,
+        )
+        self.assertIn("B quick-close assignment/quota mismatch", open_calibration)
+        continuation = top_level_block(self.events, "zg361b1.124")
+        for token in ("owner", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_oversight_ticket_{token}", continuation)
+        self.assertIn("var:zg361_b1_skip_level_return_count = 1", continuation)
+        continuation_code = without_comments(continuation)
+        for forbidden in ("zg361_pending_grade", "zg361_b1_final_grade", "zg361_last_grade"):
+            self.assertNotIn(f"name = {forbidden}", continuation_code)
+
+    def test_post_recusal_grade_writers_share_one_frozen_acl_boundary(self) -> None:
+        recusal = top_level_block(
+            self.effects, "zg361_b1_freeze_conflict_recusals_effect"
+        )
+        self.assertIn("name = zg361_b1_grade_write_acl_frozen value = 1", recusal)
+        for authority in (1, 2, 3):
+            self.assertIn(
+                f"name = zg361_b1_grade_write_authority value = {authority}",
+                recusal,
+            )
+        self.assertIn("name = zg361_b1_grade_write_reviewer", recusal)
+
+        pending_open = top_level_block(
+            self.effects, "zg361_b1_open_pending_slots_effect"
+        )
+        pending_resolve = top_level_block(
+            self.effects, "zg361_b1_resolve_pending_subject_effect"
+        )
+        reopen_gate = top_level_block(
+            self.effects, "zg361_b1_prepare_reopen_gate_effect"
+        )
+        for block in (pending_open, pending_resolve, reopen_gate):
+            self.assertIn("var:zg361_b1_recusal_active = 0", block)
+
+        rerank = top_level_block(
+            self.effects, "zg361_b1_rerank_frozen_quota_book_effect"
+        )
+        for field in (
+            "zg361_b1_rerank_fixed_top",
+            "zg361_b1_rerank_fixed_middle",
+            "zg361_b1_rerank_fixed_bottom",
+            "zg361_b1_rerank_target_top",
+            "zg361_b1_rerank_target_middle",
+            "zg361_b1_rerank_target_bottom",
+        ):
+            self.assertIn(field, rerank)
+        self.assertIn("var:zg361_b1_recusal_active = 1", rerank)
+        self.assertIn("var:zg361_b1_recusal_active = 0", rerank)
+        self.assertIn(
+            "subtract = var:zg361_b1_rerank_fixed_bottom min = 0", rerank
+        )
+
+        finish = top_level_block(
+            self.effects, "zg361_b1_finish_calibration_effect"
+        )
+        self.assertIn("zg361_apply_pending_grades_effect = yes", finish)
+        self.assertNotIn("id = zg361.10", finish)
+        self.assertNotIn("zg361_b1_open_calibration_legacy_unused_effect", self.effects)
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        self.assertIn("name = zg361_b1_recusal_post_grade", publish)
+        self.assertIn("name = zg361_b1_recusal_lock_match value = 1", publish)
+
+    def test_012_replacement_reviewer_independently_rescores_and_commits(self) -> None:
+        recusal = top_level_block(
+            self.effects, "zg361_b1_freeze_conflict_recusals_effect"
+        )
+        self.assertIn("NOT = { var:zg361_b1_bank_superior = this }", recusal)
+        self.assertIn("NOT = { this = root.var:zg361_b1_bank_superior }", recusal)
+        self.assertIn(
+            "name = zg361_b1_recusal_post_recommendation value = 0", recusal
+        )
+
+        review = top_level_block(
+            self.effects, "zg361_b1_apply_recusal_replacement_reviews_effect"
+        )
+        for token in (
+            "var:zg361_b1_case_owner = scope:zg361_b1_recusal_review_manager",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_cycle_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial",
+            "var:zg361_b1_case_serial = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial",
+            "var:zg361_b1_case_state = 5",
+            "var:zg361_b1_case_active = 1",
+            "var:zg361_b1_roster_included = 1",
+            "var:zg361_b1_recusal_active = 1",
+            "var:zg361_b1_grade_write_acl_frozen = 1",
+            "scope:zg361_b1_recusal_review_manager.var:zg361_b1_m012_mode = 1",
+        ):
+            self.assertIn(token, review)
+
+        # Named replacement is distinct from manager, subject, and the recused
+        # actor.  A one-person/small cohort instead takes the explicit abstract
+        # authority-3 branch; neither path silently falls back to the manager.
+        for token in (
+            "var:zg361_b1_grade_write_authority = 2",
+            "var:zg361_b1_recusal_replacement_kind = 1",
+            "var:zg361_b1_grade_write_reviewer = var:zg361_b1_recusal_reviewer",
+            "NOT = { var:zg361_b1_grade_write_reviewer = scope:zg361_b1_recusal_review_manager }",
+            "NOT = { var:zg361_b1_grade_write_reviewer = this }",
+            "NOT = { var:zg361_b1_grade_write_reviewer = var:zg361_b1_recusal_actor }",
+            "var:zg361_b1_grade_write_authority = 3",
+            "var:zg361_b1_recusal_replacement_kind = 2",
+            "NOT = { has_variable = zg361_b1_grade_write_reviewer }",
+            "NOT = { has_variable = zg361_b1_recusal_reviewer }",
+        ):
+            self.assertIn(token, review)
+
+        # The replacement action recomputes from the identity-blind frozen
+        # score, rather than copying the manager's already forced grade.
+        self.assertIn(
+            "name = zg361_b1_recusal_review_base_score value = var:zg361_b1_blind_score",
+            review,
+        )
+        self.assertIn("var:zg361_b1_recusal_review_score >= 50", review)
+        self.assertIn("var:zg361_b1_recusal_review_score < 0", review)
+        for grade in (1, 2, 3):
+            self.assertIn(
+                f"name = zg361_b1_recusal_review_recommended_grade value = {grade}",
+                review,
+            )
+        self.assertIn(
+            "name = zg361_b1_recusal_post_recommendation value = var:zg361_b1_recusal_review_recommended_grade",
+            review,
+        )
+
+        # A changed recommendation is a two-sided write only.  The peer must be
+        # unrecused and in the target band, so grade counts remain exact without
+        # editing the three count variables.  No target slot is an explicit
+        # quota-blocked terminal, never a one-sided write.
+        self.assertEqual(
+            review.count("set_variable = { name = zg361_pending_grade value ="), 2
+        )
+        self.assertGreaterEqual(review.count("var:zg361_b1_recusal_active = 0"), 2)
+        self.assertIn("name = zg361_b1_recusal_review_partner_n value = 0", review)
+        self.assertIn("zg361_b1_recusal_review_partner_n = 1", review)
+        self.assertIn("name = zg361_b1_recusal_review_quota_blocked value = 1", review)
+        self.assertIn("name = zg361_b1_recusal_review_state value = 3", review)
+        self.assertIn(
+            "change_variable = { name = zg361_b1_quota_book_version add = 1 }",
+            review,
+        )
+        for count_field in ("zg361_pending_375_n", "zg361_pending_35_n", "zg361_pending_325_n"):
+            self.assertNotIn(count_field, review)
+
+        # The receipt itself is the full owner/subject/cycle/case/state tuple;
+        # the same tuple appears in the pre-write NOT guard, making double-click
+        # and an old case deterministic no-ops.
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_recusal_review_receipt_{field}", review)
+        self.assertIn(
+            "var:zg361_b1_recusal_review_receipt_owner = scope:zg361_b1_recusal_review_manager",
+            review,
+        )
+        self.assertIn(
+            "var:zg361_b1_recusal_review_receipt_subject = this", review
+        )
+        self.assertIn(
+            "var:zg361_b1_recusal_review_receipt_cycle = scope:zg361_b1_recusal_review_manager.var:zg361_b1_cycle_serial",
+            review,
+        )
+        self.assertIn(
+            "var:zg361_b1_recusal_review_receipt_case = scope:zg361_b1_recusal_review_manager.var:zg361_b1_case_serial",
+            review,
+        )
+        self.assertIn("var:zg361_b1_recusal_review_receipt_state = 2", review)
+
+        open_calibration = top_level_block(
+            self.effects, "zg361_b1_open_calibration_effect"
+        )
+        freeze_at = open_calibration.index(
+            "zg361_b1_freeze_conflict_recusals_effect = yes"
+        )
+        replacement_at = open_calibration.index(
+            "zg361_b1_apply_recusal_replacement_reviews_effect = yes"
+        )
+        manager_swap_at = open_calibration.index(
+            "zg361_b1_apply_atomic_calibration_swap_effect = yes"
+        )
+        self.assertLess(freeze_at, replacement_at)
+        self.assertLess(replacement_at, manager_swap_at)
+
+    def test_successful_appeal_updates_evaluator_credit_once_through_frozen_adapter(self) -> None:
+        self.assertIn("zg361_b1_on_appeal_corrected_effect = yes", self.core)
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        for field in (
+            "result_owner",
+            "result_subject",
+            "result_cycle",
+            "result_case",
+            "b1_owner",
+            "b1_subject",
+            "b1_cycle",
+            "b1_case",
+            "original_grade",
+            "m008_mode",
+        ):
+            self.assertIn(f"zg361_b1_result_adapter_{field}", publish)
+
+        appeal = top_level_block(
+            self.effects, "zg361_b1_on_appeal_corrected_effect"
+        )
+        for token in (
+            "var:zg361_b1_result_adapter_b1_subject = this",
+            "var:zg361_b1_result_adapter_b1_state = 8",
+            "var:zg361_b1_result_adapter_original_grade = 1",
+            "var:zg361_result_case_state = 5",
+            "var:zg361_result_grade = 2",
+            "var:zg361_result_appeal_outcome = 1",
+            "var:zg361_result_refund_posted_serial = var:zg361_result_case_serial",
+            "var:zg361_b1_result_adapter_m008_mode != 3",
+        ):
+            self.assertIn(token, appeal)
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_peer_appeal_receipt_{field}", appeal)
+        self.assertIn("NOT = {", appeal)
+        self.assertNotIn("name = zg361_pending_grade", without_comments(appeal))
+        self.assertNotIn("name = zg361_last_grade", without_comments(appeal))
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        self.assertNotIn("remove_variable = zg361_b1_result_adapter", initialize)
+
+        for slot in (1, 2, 3):
+            self.assertIn(
+                f"zg361_b1_result_adapter_peer_slot_{slot}_evaluator", publish
+            )
+            consumer = top_level_block(
+                self.effects, f"zg361_b1_apply_appeal_credit_slot_{slot}_effect"
+            )
+            self.assertIn(
+                f"var:zg361_b1_result_adapter_peer_slot_{slot}_raw < 0",
+                consumer,
+            )
+            self.assertEqual(
+                consumer.count(
+                    "change_variable = { name = zg361_b1_evaluator_overturn_n add = 1 }"
+                ),
+                1,
+            )
+            self.assertIn("name = zg361_b1_evaluator_credit add = -5", consumer)
+            self.assertIn("var:zg361_b1_result_adapter_m008_mode = 1", consumer)
+            self.assertIn("name = zg361_b1_evaluator_credit add = 2", consumer)
+            self.assertIn("max = 125 min = 25", consumer)
+            self.assertIn("zg361_b1_evaluator_overturn_rate", consumer)
+
+    def test_band_order_and_feedback_debt_have_next_cycle_consumers(self) -> None:
+        band = top_level_block(self.effects, "zg361_b1_freeze_band_order_effect")
+        self.assertIn("var:zg361_pending_grade = 2", band)
+        self.assertNotIn("var:zg361_pending_grade = 3", band)
+        self.assertNotIn("var:zg361_pending_grade = 1", band)
+        self.assertEqual(
+            band.count("order_by = var:zg361_b1_band_order_sort_key"), 1
+        )
+        self.assertIn(
+            "value = var:zg361_b1_calibration_score multiply = 1000000", band
+        )
+        self.assertIn(
+            "subtract = { value = var:zg361_b1_roster_frozen_order multiply = 1000 }",
+            band,
+        )
+        self.assertIn("subtract = var:zg361_b1_case_serial", band)
+        self.assertEqual(
+            band.count("name = zg361_b1_band_order value = root.var:zg361_b1_band_cursor"),
+            1,
+        )
+        band_code = without_comments(band)
+        self.assertNotIn("name = zg361_pending_grade", band_code)
+        self.assertNotIn("add_prestige", band_code)
+        midcycle = top_level_block(
+            self.effects, "zg361_b1_midcycle_dispatcher_effect"
+        )
+        self.assertIn("var:zg361_b1_previous_band_order >= 1", midcycle)
+        self.assertIn("name = zg361_b1_coaching_priority", midcycle)
+        self.assertIn("name = zg361_b1_opportunity_grant", midcycle)
+
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        self.assertIn("var:zg361_b1_final_grade < var:zg361_b1_shadow_grade", publish)
+        self.assertIn("root.var:zg361_b1_m135_mode != 3", publish)
+        self.assertIn("name = zg361_b1_feedback_debt_open_n add = 1", publish)
+        self.assertIn("name = zg361_b1_feedback_debt_due_year", publish)
+        liability = top_level_block(
+            self.effects, "zg361_b1_consume_manager_liabilities_as_subject_effect"
+        )
+        self.assertIn("var:zg361_b1_feedback_debt_due_year <= current_year", liability)
+        self.assertIn("multiply = -5", liability)
+        self.assertIn("name = zg361_b1_feedback_debt_open_n value = 0", liability)
+
+    def test_141_direct_manager_owns_atomic_conserved_swap_and_terminal_receipt(self) -> None:
+        prepare = top_level_block(
+            self.effects, "zg361_b1_prepare_bank_must_review_effect"
+        )
+        consume = top_level_block(
+            self.effects, "zg361_b1_consume_must_review_effect"
+        )
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_must_review_object_{field}", prepare)
+        self.assertIn(
+            "name = zg361_b1_must_review_object_owner value = scope:zg361_b1_must_review_manager",
+            prepare,
+        )
+        self.assertIn("var:zg361_b1_must_review_route = 2", consume)
+        self.assertIn("var:zg361_pending_grade = 2", consume)
+        self.assertIn("var:zg361_pending_grade = 3", consume)
+        self.assertIn("name = zg361_pending_grade value = 3", consume)
+        self.assertIn("name = zg361_pending_grade value = 2", consume)
+        for field in (
+            "before_top",
+            "before_middle",
+            "before_bottom",
+            "after_top",
+            "after_middle",
+            "after_bottom",
+            "subject_before",
+            "subject_after",
+            "peer_before",
+            "peer_after",
+            "book_version_before",
+            "book_version_after",
+            "conservation_valid",
+            "swap_executed",
+        ):
+            self.assertIn(f"zg361_b1_must_review_{field}", consume)
+        self.assertEqual(
+            consume.count(
+                "change_variable = { name = zg361_b1_quota_book_version add = 1 }"
+            ),
+            1,
+        )
+        self.assertIn("name = zg361_b1_must_review_manager_link_state value = 3", consume)
+        self.assertIn("name = zg361_b1_must_review_object_state value = 3", consume)
+        self.assertIn("name = zg361_b1_must_review_object_state value = 2", publish)
+        self.assertIn("name = zg361_b1_must_review_credit_delta value = -1", publish)
+        self.assertIn("name = zg361_b1_must_review_credit_delta value = 1", publish)
+
+    def test_142_pending_and_deferred_objects_are_separate_and_watchdog_closes_barrier(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        opened = top_level_block(self.effects, "zg361_b1_open_pending_slots_effect")
+        deferred = opened.split(
+            "else_if = {\n\t\tlimit = { var:zg361_b1_m142_mode = 2 }", 1
+        )[1].split("\n\tif = {\n\t\tlimit = { var:zg361_b1_m142_mode = 1", 1)[0]
+        self.assertNotIn("zg361_b1_pending_object_", deferred)
+        self.assertNotIn("zg361_b1_pending_held_band", deferred)
+        self.assertNotIn("zg361_b1_pending_frozen_reward", deferred)
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_pending_next_cycle_object_{field}", deferred)
+            self.assertIn(f"zg361_b1_pending_next_cycle_object_{field}", initialize)
+        self.assertIn(
+            "name = zg361_b1_pending_next_cycle_object_cycle value = { value = var:zg361_b1_cycle_serial add = 1 }",
+            deferred,
+        )
+        self.assertIn(
+            "name = zg361_b1_pending_next_cycle_object_state value = 2",
+            initialize,
+        )
+        self.assertIn("zg361_b1_pending_carried_adjustment", initialize)
+        self.assertIn("zg361_b1_pending_self_safe_current_final_unchanged", opened)
+        self.assertIn("zg361_b1_pending_self_safe_next_cycle_evidence", opened)
+        watchdog = top_level_block(self.events, "zg361b1.125")
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_pending_object_{field}", watchdog)
+        self.assertIn("name = zg361_b1_pending_object_state value = 5", watchdog)
+        self.assertIn("name = zg361_b1_pending_open_n add = -1", watchdog)
+        self.assertIn("name = zg361_b1_pending_open_n value = 0", watchdog)
+        self.assertIn("zg361_b1_prepare_reopen_gate_effect = yes", watchdog)
+
+    def test_143_full_cohort_batch_has_stable_result_and_distinct_next_cycle_consumer(self) -> None:
+        initialize = top_level_block(
+            self.effects, "zg361_b1_initialize_subject_case_effect"
+        )
+        prepare = top_level_block(self.effects, "zg361_b1_prepare_reopen_gate_effect")
+        resolve = top_level_block(
+            self.effects, "zg361_b1_resolve_reopen_batch_effect"
+        )
+        callback = top_level_block(self.events, "zg361b1.122")
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_reopen_batch_{field}", prepare)
+            self.assertIn(f"zg361_b1_reopen_object_{field}", prepare)
+        self.assertIn("variable = zg361_b1_processing_subjects", prepare)
+        self.assertIn(
+            "var:zg361_b1_reopen_processed_n = var:zg361_b1_reopen_batch_expected_n",
+            resolve,
+        )
+        self.assertIn("order_by = var:zg361_b1_reopen_stable_order_key", resolve)
+        self.assertIn(
+            "value = var:zg361_b1_reopen_late_evidence_magnitude multiply = 1000000",
+            callback,
+        )
+        self.assertIn("subtract = var:zg361_b1_reopen_object_case", callback)
+        self.assertIn("name = zg361_b1_reopen_batch_result value = 2", resolve)
+        self.assertIn("name = zg361_b1_reopen_batch_result value = 3", resolve)
+        self.assertIn(
+            "name = zg361_b1_m143_receipt_serial value = var:zg361_b1_reopen_batch_case",
+            resolve,
+        )
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_reopen_next_cycle_object_{field}", callback)
+            self.assertIn(f"zg361_b1_reopen_next_cycle_object_{field}", initialize)
+        self.assertIn("zg361_b1_reopen_carried_adjustment", initialize)
+        self.assertNotEqual(
+            "zg361_b1_pending_next_cycle_object", "zg361_b1_reopen_next_cycle_object"
+        )
+
+    def test_144_independent_review_and_consensus_freeze_real_identities(self) -> None:
+        record = top_level_block(
+            self.effects, "zg361_b1_record_named_dissent_effect"
+        )
+        finalize = top_level_block(
+            self.effects, "zg361_b1_finalize_named_dissent_effect"
+        )
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_dissent_object_{field}", record)
+            self.assertIn(f"zg361_b1_consensus_{field}", record)
+        self.assertIn(
+            "NOT = { var:zg361_b1_dissent_reviewer = scope:zg361_b1_dissent_finalize_manager }",
+            finalize,
+        )
+        self.assertIn("NOT = { var:zg361_b1_dissent_reviewer = this }", finalize)
+        self.assertIn("var:zg361_b1_dissent_reviewer = { is_alive = yes }", finalize)
+        self.assertIn("zg361_b1_dissent_review_attention_receipt_id", record)
+        self.assertIn("name = zg361_b1_dissent_review_attention_consumed value = 1", finalize)
+        self.assertIn("name = zg361_b1_dissent_object_state value = 3", finalize)
+        self.assertIn("name = zg361_b1_dissent_review_attention_consumed value = 0", finalize)
+        for slot in range(1, 5):
+            self.assertIn(f"zg361_b1_consensus_manager_{slot}", record)
+        self.assertIn("zg361_b1_huddle_host_attendee_n", record)
+        self.assertIn("name = zg361_b1_consensus_state value = 2", finalize)
+
+    def test_145_only_middle_receives_finite_non_compensation_consumers(self) -> None:
+        band = top_level_block(self.effects, "zg361_b1_freeze_band_order_effect")
+        midcycle = top_level_block(self.effects, "zg361_b1_midcycle_dispatcher_effect")
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_band_order_batch_{field}", band)
+            self.assertIn(f"zg361_b1_band_order_object_{field}", band)
+        self.assertIn("var:zg361_pending_grade = 2", band)
+        self.assertNotIn("var:zg361_pending_grade = 3", band)
+        self.assertNotIn("var:zg361_pending_grade = 1", band)
+        self.assertIn("name = zg361_b1_band_order_batch_state value = 3", band)
+        self.assertIn("name = zg361_b1_band_opportunity_capacity value = 1", band)
+        self.assertIn("name = zg361_b1_band_opportunity_capacity value = 2", band)
+        self.assertIn("zg361_b1_band_self_public_opportunity_selected", band)
+        self.assertIn("zg361_b1_band_self_public_coaching_selected", band)
+        self.assertIn("zg361_b1_band_self_private_opportunity_selected", band)
+        self.assertIn("name = zg361_b1_band_self_appeal_evidence value = 1", band)
+        self.assertIn("name = zg361_b1_band_order_blackbox_risk value = 1", band)
+        self.assertIn("var:zg361_b1_previous_band_order_use_mode = 1", midcycle)
+        self.assertIn("var:zg361_b1_previous_band_order_use_mode = 2", midcycle)
+        self.assertIn("name = zg361_b1_opportunity_project_available value = 1", midcycle)
+        self.assertIn("name = zg361_b1_previous_band_object_state value = 2", midcycle)
+        forbidden = re.compile(
+            r"(?i)(?:add_gold|gold\s*=|salary|compensation|bonus|dividend|reward)"
+        )
+        self.assertIsNone(forbidden.search(without_comments(band)))
 
     def test_common_superior_barrier_is_two_phase_and_pooled(self) -> None:
         for variable_list in (
@@ -561,16 +1888,22 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         common = top_level_block(
             self.effects, "zg361_b1_close_common_superior_bank_effect"
         )
-        for label, block in (("local", local), ("common", common)):
+        for label, block, order_key in (
+            ("local", local, "zg361_b1_calibration_score"),
+            ("common", common, "zg361_b1_quota_pool_tie_key"),
+        ):
             with self.subTest(path=label):
-                self.assertIn("order_by = var:zg361_b1_calibration_score", block)
+                self.assertIn(f"order_by = var:{order_key}", block)
                 self.assertNotIn("order_by = var:zg361_kpi", block)
                 self.assertIn("has_variable = zg361_b1_calibration_score", block)
                 self.assertIn("NOT = { has_character_flag = zg361_newcomer_this_cycle }", block)
                 self.assertIn("name = zg361_b1_quota_snapshot value = var:zg361_pending_grade", block)
                 self.assertIn("name = zg361_b1_shadow_to_quota_delta", block)
                 self.assertIn("name = zg361_b1_forced_down value = 1", block)
-        self.assertIn("zg361_b1_compute_exact_quota_effect = { COHORT_SIZE = var:zg361_b1_local_candidate_n }", local)
+        self.assertIn(
+            "zg361_b1_compute_exact_quota_effect = { COHORT_SIZE = var:zg361_b1_local_candidate_n ROUNDING_SCOPE = 1 }",
+            local,
+        )
         self.assertIn("name = zg361_b1_local_top_slots value = var:zg361_b1_quota_top_slots", local)
         self.assertIn("name = zg361_b1_local_middle_slots value = var:zg361_b1_quota_middle_slots", local)
         self.assertIn("name = zg361_b1_local_bottom_slots value = var:zg361_b1_quota_bottom_slots", local)
@@ -668,7 +2001,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn(
             "COHORT_SIZE = var:zg361_b1_unique_pool_n", common
         )
-        self.assertIn("order_by = var:zg361_b1_calibration_score", common)
+        self.assertIn("order_by = var:zg361_b1_quota_pool_tie_key", common)
+        self.assertIn(
+            "value = var:zg361_b1_calibration_score multiply = 10000", common
+        )
         self.assertNotIn("order_by = var:zg361_kpi", common)
         for field in (
             "zg361_b1_quota_pool_top_raw_numerator",
@@ -734,6 +2070,30 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_b1_roster_change_reason value = 3", audit)
         self.assertIn("name = zg361_b1_quota_rebuilt_for_roster value = 1", local)
         self.assertIn("name = zg361_b1_roster_reopen_required value = 0", local)
+
+        additions = top_level_block(
+            self.effects, "zg361_b1_audit_locked_roster_additions_effect"
+        )
+        prepare = top_level_block(self.effects, "zg361_b1_prepare_facts_effect")
+        self.assertLess(
+            prepare.index("zg361_b1_audit_locked_roster_additions_effect = yes"),
+            prepare.index("variable = zg361_b1_subjects"),
+        )
+        for marker in (
+            "is_target_in_variable_list = {",
+            "target = scope:zg361_b1_roster_add_subject",
+            "var:zg361_b1_roster_backfill_needed >= 1",
+            "var:zg361_b1_subject_n < 80",
+            "name = zg361_b1_roster_change_before value = 0",
+            "name = zg361_b1_roster_change_after value = 1",
+            "name = zg361_b1_roster_change_reason value = 4",
+            "name = zg361_b1_roster_change_reason value = 5",
+            "zg361_b1_initialize_subject_case_effect = yes",
+            "name = zg361_b1_case_state value = 3",
+            "name = zg361_b1_subjects",
+        ):
+            self.assertIn(marker, additions)
+        self.assertIn("name = zg361_b1_roster_included value = 1", initialize)
 
     def test_newcomer_protection_preserves_exact_top_and_bottom_counts(self) -> None:
         blocks = (
@@ -895,7 +2255,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("add = scope:zg361_b1_agenda_manager.var:zg361_b1_subject_n", block)
         self.assertIn("name = zg361_b1_attention_total_seats", block)
         self.assertIn(
-            "value = var:zg361_b1_agenda_n max = 3",
+            "value = var:zg361_b1_processing_n max = 3",
             block,
         )
         self.assertNotIn("value = var:zg361_b1_agenda_n min = 3", block)
@@ -921,8 +2281,16 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         open_pending = top_level_block(
             self.effects, "zg361_b1_open_pending_slots_effect"
         )
-        self.assertIn("variable = zg361_b1_agenda_subjects", open_pending)
-        self.assertNotRegex(open_pending, r"(?m)^\s*max = 1\s*$")
+        self.assertIn("variable = zg361_b1_processing_subjects", open_pending)
+        self.assertIn(
+            "every_in_list = {\n\t\t\tvariable = zg361_b1_processing_subjects",
+            open_pending,
+        )
+        # The only max=1 is the deterministic one-peer MIDDLE reservation for
+        # each independently processed TOP subject; it does not cap subjects.
+        self.assertEqual(
+            len(re.findall(r"(?m)^\s*max = 1\s*$", open_pending)), 1
+        )
         self.assertIn("change_variable = { name = zg361_b1_pending_open_n add = 1 }", open_pending)
         self.assertIn("zg361_b1_pending_fallback_middle_available", open_pending)
         self.assertIn("zg361_b1_pending_target_score", open_pending)
@@ -963,7 +2331,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("name = zg361_b1_pending_reward_due value = var:zg361_b1_pending_frozen_reward", resolve)
         self.assertIn("var:zg361_b1_pending_observed_score >= var:zg361_b1_pending_target_score", resolve)
         self.assertIn("var:zg361_b1_pending_observation_recorded = 1", resolve)
-        self.assertIn("var:zg361_b1_pending_free_middle >= 1", resolve)
+        self.assertIn(
+            "change_variable = { name = zg361_b1_pending_fallback_middle_available add = 1 }",
+            resolve,
+        )
         self.assertIn("name = zg361_b1_forced_down value = 1", resolve)
         self.assertIn(
             "change_variable = { name = zg361_b1_pending_reward_book_version add = 1 }",
@@ -975,7 +2346,13 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertNotIn("add_prestige = 25", resolve)
         failure = resolve.split("else = {", 1)[1]
-        self.assertNotIn("zg361_pending_grade value = 3", failure)
+        self.assertEqual(
+            failure.count("name = zg361_pending_grade value = 3"), 1
+        )
+        self.assertEqual(
+            failure.count("name = zg361_pending_grade value = 2"), 1
+        )
+        self.assertIn("zg361_b1_pending_fallback_subject = {", failure)
         continuation = top_level_block(self.events, "zg361b1.123")
         self.assertIn("var:zg361_b1_pending_open_n = 0", continuation)
         self.assertIn("var:zg361_b1_case_active = 1", continuation)
@@ -1001,7 +2378,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_b1_reopen_ticket_book_version", gate)
         self.assertIn("name = zg361_b1_reopen_baseline_score value = zg361_kpi_value", gate)
         self.assertIn("zg361_b1_agenda_order multiply", gate)
-        self.assertIn("max = 1", gate)
+        self.assertNotRegex(gate, r"(?m)^\s*max = 1\s*$")
+        resolver = top_level_block(
+            self.effects, "zg361_b1_resolve_reopen_batch_effect"
+        )
+        self.assertIn("max = 1", resolver)
+        self.assertIn("var:zg361_b1_reopen_pending_n = 0", resolver)
 
         # The old weighted sum has real assignment collisions.  It remains a
         # display checksum, while stale authorization is now revision-sealed.
@@ -1038,7 +2420,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertNotIn("subtract = var:zg361_b1_evidence_late", event)
         self.assertIn("name = zg361_b1_reopen_observation_recorded value = 1", event)
-        self.assertIn("stale symmetric-reopen ticket ignored", event)
+        self.assertIn("stale post-seal batch ticket ignored", event)
         reopen = top_level_block(
             self.effects, "zg361_b1_apply_symmetric_reopen_effect"
         )
@@ -1110,6 +2492,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
 
     def test_every_generated_top_level_block_is_brace_balanced(self) -> None:
         for source in (self.effects, self.events):
+            code = without_comments(source)
+            self.assertEqual(code.count("{"), code.count("}"))
             keys = re.findall(r"(?m)^([A-Za-z0-9_.]+)\s*=\s*\{", source)
             for key in keys:
                 with self.subTest(key=key):
