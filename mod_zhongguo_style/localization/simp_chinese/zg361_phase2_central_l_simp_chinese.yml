@@ -1,0 +1,5 @@
+﻿l_simp_chinese:
+ # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+ zg361_p2c_summary_title:0 "二期绩效流水线：终于跑完了"
+ zg361_p2c_summary_desc:0 "公示后的二期案卷已经串行收口。成功域：#high [ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#!；不适用：[ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0]；RED：[ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0]；曾等待外部依赖：[ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0]。好消息是没有九个部门同时弹窗，坏消息是它们确实都留下了表格。"
+ zg361_p2c_summary_ack:0 "很好，把这摞表从我桌上拿走。"

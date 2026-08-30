@@ -1,0 +1,65 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+namespace = zg361p2c
+
+# Exact delayed poll.  Old tickets never mutate a newer central case.
+zg361p2c.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                exists = scope:zg361_p2c_ticket_manager
+                this = scope:zg361_p2c_ticket_manager
+                has_variable = zg361_p2c_active
+                var:zg361_p2c_active = 1
+                var:zg361_p2c_cycle = scope:zg361_p2c_ticket_cycle
+                var:zg361_p2c_case_serial = scope:zg361_p2c_ticket_case
+                var:zg361_p2c_stage = scope:zg361_p2c_ticket_stage
+                var:zg361_p2c_ticket_serial = scope:zg361_p2c_ticket_identity
+            }
+            zg361_p2c_pump_effect = yes
+        }
+        else = { debug_log = "ZG361P2C: stale or replayed central poll ignored" }
+    }
+}
+
+# The only central visible event.  Domain packages retain their own bounded
+# cards; the central layer emits one terminal aggregate and nothing per stage.
+zg361p2c.2 = {
+    type = character_event
+    title = zg361_p2c_summary_title
+    desc = zg361_p2c_summary_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        has_variable = zg361_p2c_summary_pending
+        var:zg361_p2c_cycle = scope:zg361_p2c_summary_cycle
+        var:zg361_p2c_case_serial = scope:zg361_p2c_summary_case
+    }
+    option = {
+        name = zg361_p2c_summary_ack
+        remove_variable = zg361_p2c_summary_pending
+    }
+}
+
+# A new B1 season that collides with an old active central case is initialized
+# only after the old typed-RED summary had one full day to be acknowledged.
+zg361p2c.3 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                has_variable = zg361_p2c_deferred_reinit
+                var:zg361_p2c_deferred_reinit = 1
+                has_variable = zg361_review_serial
+                has_variable = zg361_b1_case_serial
+                var:zg361_review_serial = var:zg361_p2c_deferred_reinit_cycle
+                var:zg361_b1_case_serial = var:zg361_p2c_deferred_reinit_b1_case
+            }
+            remove_variable = zg361_p2c_deferred_reinit
+            zg361_p2c_on_review_published_effect = yes
+        }
+        else = { debug_log = "ZG361P2C: stale deferred central reinitialization ignored" }
+    }
+}

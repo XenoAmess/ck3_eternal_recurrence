@@ -1,0 +1,5 @@
+﻿l_english:
+ # GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+ zg361_p2c_summary_title:0 "Phase-Two Performance Pipeline: Finally Closed"
+ zg361_p2c_summary_desc:0 "The post-publication phase-two portfolio has closed serially. Successful domains: #high [ROOT.MakeScope.Var('zg361_p2c_success_n').GetValue|0]#!; not applicable: [ROOT.MakeScope.Var('zg361_p2c_na_n').GetValue|0]; RED: [ROOT.MakeScope.Var('zg361_p2c_red_n').GetValue|0]; external waits encountered: [ROOT.MakeScope.Var('zg361_p2c_external_n').GetValue|0]. The good news is that nine teams did not open nine windows at once. The bad news is that every team still produced a spreadsheet."
+ zg361_p2c_summary_ack:0 "Excellent. Remove this stack from my desk."
