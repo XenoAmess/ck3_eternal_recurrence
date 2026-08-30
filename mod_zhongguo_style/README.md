@@ -7,6 +7,8 @@
 
 一句话：在这里，打下江山只是入职；真正决定你能不能过年的，是上司有没有给你背 C。
 
+Steam Workshop：[3792585972](https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972)（已于 2026-08-30 14:48 左右，Asia/Shanghai 公开发布）。
+
 ## 权威范围
 
 - 所有在任、在世的**天朝制公爵及以上领主**都是考核者，不要求独立；每人只考核自己的直属官员。
@@ -86,15 +88,18 @@ attempt 均保留。来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`�
 ## 安装与兼容性
 
 - 需要 CK3 1.19.0.6，并依赖该版本的天朝制内容；推荐新开局、单人游戏。
-- 手动安装时，将本目录注册为独立 mod；正式发布后应优先订阅 Steam Workshop 版本。
+- 手动安装时，将本目录注册为独立 mod；Workshop 物品已公开，应优先订阅 Workshop 版本。
 - 本 mod 新增自己的 `zg361_` / `zg361m` 命名空间，不主动覆盖原版文件。其他 mod 若定义同名键、替换相同
   scripted widget，或重写相同年度 on_action 链，仍可能冲突。
 - 伯爵和男爵只受评；只有天朝制公爵及以上领主主持考核。宗教系统不在本 mod 的机制范围内。
 
 ## 当前交付状态
 
-版本 0.3.0 的功能面已经冻结，当前处于**上传前完整 live GREEN**：现有功能已完成同局实机合批，仍待正式宣传视频、
-正式 release 构建与 Workshop fresh-cache 复验；本次不再追加 38 个下一版本领域状态机。当前状态分层如下：
+版本 0.3.0 的功能面已经冻结，已完成**正式 release 构建、宣传片、Workshop 上传与 fresh-cache GREEN 复验**。
+Workshop 物品为 [3792585972](https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972)，已于 2026-08-30 14:48 左右（Asia/Shanghai）公开发布。
+匿名远端终验为 GREEN：Steam API `result=1`、`visibility=0`，标题与内容 `ManifestID=2542810955685536611`
+均正确；公开 HTML 展示 8 张媒体图，远端描述与本地 `workshop/description.bbcode` 除 CRLF/末尾换行差异外一致，且不含测试 probe。
+本次不再追加 38 个下一版本领域状态机。当前状态分层如下：
 
 - 361 项目录与中英文政策文案：`complete`；
 - 361/361 参考政策配置、唯一选择状态与 14 本共享账：`live GREEN`；这不等于 361 个领域状态机；
@@ -104,7 +109,8 @@ attempt 均保留。来源、裁切、尺寸与 SHA-256 见 `workshop/media.md`�
 
 最终 artifact `zga_20260830_0930_clean_2fa2ac8_mcp` 在 CK3 1.19.0.6 中同局证明了上述链路，项目诊断为 0，
 且最终干净画面不含测试决议。它没有证明 361 个领域机制或 1,083 个 A/B/C 分支全部完成；0.3.0 的声明只覆盖现有核心
-玩法与“361 项政策配置 + 14 本共享账”。下一版本预研不是本版 blocker，上传仍以物料、正式构建和 fresh-cache 签核为准。
+玩法与“361 项政策配置 + 14 本共享账”。下一版本预研不是本版 blocker；0.3.0 的正式构建、宣传物料、
+Workshop 上传、fresh-cache 签核与公开远端终验均已完成。
 
 ## 工程与测试
 

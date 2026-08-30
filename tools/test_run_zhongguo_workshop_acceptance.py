@@ -64,6 +64,54 @@ class WorkshopRuntimeTests(unittest.TestCase):
                 identity["verified_file_count"], len(release.release_files(SOURCE))
             )
 
+    def test_bootstrap_projects_id_free_descriptor_without_mutating_cache(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            _, app_root, manifest = self.build_cache(root)
+            cache = app_root / ITEM_ID
+            cache_descriptor = cache / "descriptor.mod"
+            cache_before = cache_descriptor.read_bytes()
+            payload = release._load_manifest(manifest, cache)
+            expected = next(
+                entry for entry in payload["files"] if entry["path"] == "descriptor.mod"
+            )
+
+            result = acceptance.bootstrap_userdir(
+                root / "profile", cache, workshop_manifest=manifest
+            )
+
+            runtime_descriptor = (
+                Path(result["targets"]["product"]) / "descriptor.mod"
+            )
+            self.assertEqual(cache_descriptor.read_bytes(), cache_before)
+            self.assertNotIn(b"remote_file_id", runtime_descriptor.read_bytes())
+            self.assertEqual(runtime_descriptor.stat().st_size, expected["size"])
+            self.assertEqual(
+                release.sha256_file(runtime_descriptor), expected["sha256"]
+            )
+            outer = root / "profile" / "mod" / acceptance.PRODUCT_OUTER
+            self.assertIn(
+                f'path="{Path(result["targets"]["product"]).as_posix()}"',
+                outer.read_text(encoding="utf-8-sig"),
+            )
+
+    def test_bootstrap_rejects_noncanonical_workshop_descriptor(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            _, app_root, manifest = self.build_cache(root)
+            cache = app_root / ITEM_ID
+            descriptor = cache / "descriptor.mod"
+            descriptor.write_bytes(
+                descriptor.read_bytes().replace(b'name="', b'name="drift ')
+            )
+
+            with self.assertRaisesRegex(
+                Exception, "exact permitted launcher injection"
+            ):
+                acceptance.bootstrap_userdir(
+                    root / "profile", cache, workshop_manifest=manifest
+                )
+
     def test_cache_leaf_must_match_manifest_item_id(self) -> None:
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)

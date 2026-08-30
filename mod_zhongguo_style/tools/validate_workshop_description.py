@@ -43,6 +43,7 @@ HEX_COMMIT_RE = re.compile(r"[0-9a-fA-F]{40}")
 @dataclass(frozen=True)
 class ValidationResult:
     byte_count: int
+    submitted_byte_count: int
     image_count: int
     commit_sha: str | None
     media_inventory: tuple[str, ...]
@@ -69,22 +70,27 @@ def validate_description(
     try:
         data = description.read_bytes()
     except OSError as error:
-        return ValidationResult(0, 0, None, (), (f"cannot read description: {error}",))
-
-    if len(data) >= MAX_DESCRIPTION_BYTES:
-        errors.append(
-            "Workshop description must be below 8000 UTF-8 bytes: "
-            f"{len(data)} bytes"
-        )
+        return ValidationResult(0, 0, 0, None, (), (f"cannot read description: {error}",))
     try:
         text = data.decode("utf-8-sig")
     except UnicodeDecodeError as error:
         return ValidationResult(
             len(data),
             0,
+            0,
             None,
             (),
             tuple(errors + [f"Workshop description is not valid UTF-8: {error}"]),
+        )
+
+    # Steam's HTML form serializes textarea line endings as CRLF. Checking
+    # only repository LF bytes can admit a value that the endpoint rejects.
+    submitted_text = text.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n")
+    submitted_byte_count = len(submitted_text.encode("utf-8"))
+    if submitted_byte_count >= MAX_DESCRIPTION_BYTES:
+        errors.append(
+            "Workshop description must be below 8000 UTF-8 bytes after CRLF "
+            f"form projection: local={len(data)}, submitted={submitted_byte_count} bytes"
         )
 
     opening_count = len(IMAGE_OPEN_RE.findall(text))
@@ -144,6 +150,7 @@ def validate_description(
     commit_sha = next(iter(commits)) if len(commits) == 1 else None
     return ValidationResult(
         byte_count=len(data),
+        submitted_byte_count=submitted_byte_count,
         image_count=len(image_urls),
         commit_sha=commit_sha,
         media_inventory=tuple(sorted(referenced_set)),
@@ -167,7 +174,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     print(
         "GREEN: Workshop description is release-ready; "
-        f"{result.byte_count} UTF-8 bytes, {result.image_count} images, "
+        f"{result.byte_count} local / {result.submitted_byte_count} CRLF-projected "
+        f"UTF-8 bytes, {result.image_count} images, "
         f"commit {result.commit_sha}, exact 01-08 media inventory"
     )
     return 0

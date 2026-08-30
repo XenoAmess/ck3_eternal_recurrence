@@ -1663,10 +1663,61 @@ def render_presets() -> str:
     )
 
 
+def canonical_workshop_descriptor(
+    descriptor: Path, workshop_manifest: Path
+) -> bytes:
+    """Recover the exact ID-free descriptor recorded by a formal manifest."""
+
+    descriptor = Path(descriptor).resolve()
+    workshop_manifest = Path(workshop_manifest).resolve()
+    try:
+        manifest = release._load_manifest(workshop_manifest, descriptor.parent)
+        item_id = str(manifest["workshop_item_id"])
+        entries = [
+            entry for entry in manifest["files"] if entry["path"] == "descriptor.mod"
+        ]
+        if len(entries) != 1 or not release.workshop_descriptor_matches(
+            descriptor, entries[0], item_id
+        ):
+            raise ValueError(
+                "Workshop descriptor is not the exact permitted launcher injection"
+            )
+        data = descriptor.read_bytes()
+    except (OSError, UnicodeError, ValueError) as error:
+        raise acceptance.RunnerError(
+            f"cannot project canonical Workshop descriptor: {error}"
+        ) from error
+
+    lines = data.splitlines()
+    candidates: set[bytes] = set()
+    for separator in (b"\n", b"\r\n"):
+        body = separator.join(lines[:-1])
+        for candidate in (body, body + separator):
+            if (
+                len(candidate) == entries[0]["size"]
+                and release.sha256_bytes(candidate) == entries[0]["sha256"]
+            ):
+                candidates.add(candidate)
+    if len(candidates) != 1:
+        raise acceptance.RunnerError(
+            "cannot uniquely recover canonical descriptor from Workshop cache"
+        )
+    return candidates.pop()
+
+
 def bootstrap_userdir(
-    userdir: Path, product_source: Path = SOURCE
+    userdir: Path,
+    product_source: Path = SOURCE,
+    workshop_manifest: Path | None = None,
 ) -> dict[str, object]:
     product_source = Path(product_source).resolve()
+    canonical_descriptor = (
+        canonical_workshop_descriptor(
+            product_source / "descriptor.mod", Path(workshop_manifest)
+        )
+        if workshop_manifest is not None
+        else None
+    )
     for path in (
         userdir / "mod",
         userdir / "mod-content",
@@ -1690,7 +1741,10 @@ def bootstrap_userdir(
             continue
         destination = product / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source_path, destination)
+        if relative.as_posix() == "descriptor.mod" and canonical_descriptor is not None:
+            destination.write_bytes(canonical_descriptor)
+        else:
+            shutil.copy2(source_path, destination)
         product_files.append(relative.as_posix())
 
     fixture = userdir / "mod-content" / "fixture"
@@ -5744,7 +5798,17 @@ def run_cell(
     source_before = isolated.tree_snapshot(SOURCE)
     runtime_source_before = isolated.tree_snapshot(runtime_source)
     acceptance.configure_runtime_userdir(userdir)
-    bootstrap = bootstrap_userdir(userdir, runtime_source)
+    verified_manifest_path = runtime_identity.get("workshop_manifest_path")
+    bootstrap = bootstrap_userdir(
+        userdir,
+        runtime_source,
+        workshop_manifest=(
+            Path(str(verified_manifest_path))
+            if runtime_identity.get("verified_workshop_cache") is True
+            and verified_manifest_path
+            else None
+        ),
+    )
     spec = make_spec(state_dir, acceptance.CK3_EXE.parent.parent)
     if spec.profile_dir.resolve() != userdir:
         raise acceptance.RunnerError(

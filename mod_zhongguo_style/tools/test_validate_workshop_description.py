@@ -71,6 +71,18 @@ class WorkshopDescriptionGateTests(unittest.TestCase):
         self.assertFalse(result.ok)
         self.assertTrue(any("below 8000" in error for error in result.errors))
 
+    def test_rejects_lf_text_that_exceeds_limit_after_form_projection(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            data = _description()
+            added_lines = 120
+            padding = gate.MAX_DESCRIPTION_BYTES - 10 - len(data) - added_lines
+            self.assertGreaterEqual(padding, 0)
+            data += (b"x" * padding) + (b"\n" * added_lines)
+            self.assertLess(len(data), gate.MAX_DESCRIPTION_BYTES)
+            result = self._validate(Path(temporary), data)
+        self.assertGreaterEqual(result.submitted_byte_count, gate.MAX_DESCRIPTION_BYTES)
+        self.assertTrue(any("CRLF form projection" in error for error in result.errors))
+
     def test_rejects_invalid_utf8(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             result = self._validate(Path(temporary), _description() + b"\xff")

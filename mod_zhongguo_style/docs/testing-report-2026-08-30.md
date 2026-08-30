@@ -211,4 +211,39 @@ binding、bit-exact current/target、`settled=true` 与 `target_write_blocked=fa
 
 审阅人 `XenoAmess` 随后以 1× 从头到尾完整播放 449.286 秒最终 MP4，并确认：中英字幕可读、同步且无裁切；章节标题与证据角标可读且无裁切；旁白剪接、节奏与笑点可接受；没有 loading、test-only UI、fixture 标签或生成测试人名；史实角色、核心玩法与证据边界诚实。签核记录 `FINAL_PLAYBACK_REVIEW.SIGNED.json` SHA-256 为 `57E96541B8B74960F4CBA6E487CA4F0B4AF1845BE67FC497A8BA0C38FAFF8A43`。
 
-因此宣传媒体门现为 **GREEN**。这一结论仅闭合宣传片本身；annotated release tag、最终 formal build、Steam 首次上传、fresh Workshop cache 核验与 production smoke 仍未宣称完成。
+因此宣传媒体门现为 **GREEN**。这一结论仅闭合宣传片本身；在该时间点，annotated release tag、最终 formal build、Steam 首次上传、fresh Workshop cache 核验与 production smoke 尚未宣称完成，后续完成情况按下列章节继续记录。
+
+## 20. 首次隐藏 Steam 上传与 fresh-cache production smoke
+
+`zhongguo-361-v0.3.0` 对应的首次 Steam Workshop 上传已在隐藏状态完成，新的 Workshop item ID 为 `3792585972`。Launcher 日志记录 `2026-08-30T05:43:08.150Z` 开始发布、`2026-08-30T05:43:25.745Z` 发布成功；Steam `workshop_log.txt` 记录 13:43:08 创建 item 成功、13:43:19 上传内容 ManifestID `2542810955685536611`、13:43:25 完成上传。发布成功截图、Launcher 日志、Steam 日志及上传前后内外 descriptor 均保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\steam-upload-3932532`。该步骤只证明隐藏 item 和首份内容上传成功，不等于已经公开发布。
+
+随后通过 Steam 下载同一 item；`workshop_log.txt` 记录 13:52:02 `Download item 3792585972 result : OK`。缓存叶 `Z:\SteamLibrary\steamapps\workshop\content\1158310\3792585972` 的独立核验报告 `verify-workshop-cache.json` 为 **GREEN**：51 个文件、0 error，manifest 绑定 Git `393253276481916f026c4c28e9bbab6da2877275`、tag `zhongguo-361-v0.3.0`、版本 `0.3.0` 和 item `3792585972`。缓存内 `descriptor.mod` 只比 canonical descriptor 多 Launcher 合法注入的 `remote_file_id="3792585972"`，被明确记录为 `launcher-injected`；其余内容逐项匹配。核验报告 SHA-256 为 `CD5097837D66988968975B343F4E245FFB7783A85549DBB1AE9AA9DB6FDEDC8B`。
+
+正式 smoke 前保留了两次 **harness RED**，两次都没有启动 CK3，也没有给产品增加 RED：
+
+1. `acceptance-01` 从 detached clean worktree 发起，但该 worktree 不含被 Git 忽略的 `Crusader Kings III` 本体引用目录，因而在 preflight 失败；失败早于 artifact/report 建立和 CK3 launch。
+2. `acceptance-02` 改从主工作树发起，fresh cache 本身已经通过上面的逐文件核验，但旧 bootstrap 把缓存中带 Launcher 合法 ID 的内层 descriptor 原样投影进隔离 userdir，随后又按开发树规则拒绝任何内层 `remote_file_id`，所以仍在 CK3 launch 前终止。保留下来的 `acceptance-02/cell` 为空，未生成可冒充实机结果的 `report.json`。最小 harness 修复只依据已核验 manifest 的 size/SHA 恢复 canonical 无 ID descriptor，并且只写入隔离 runtime projection；真实 Steam cache 保持逐字节不变，漂移 descriptor 仍 fail-closed。
+
+修复后的 `acceptance-03` 直接以该 Steam fresh cache 为 `verified_workshop_cache` 运行；顶层 `report.json` 与 cell 均为 **GREEN**，耗时 `503.022` 秒。报告明确记录：
+
+- CK3 `1.19.0.6`，EXE 前后 SHA-256 均为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；隔离 userdir、非 debug、suspended/inject/resume 原生启动链；
+- runtime source 精确为 `Z:\SteamLibrary\steamapps\workshop\content\1158310\3792585972`，item ID、manifest SHA `BD6DE37D590BB573D8B3E95833EA0F6D0BF32D5A3939BE1C9E97705A173EA54E`、Git SHA、tag 与 51 个已核验文件均写入报告；
+- 宋帝 23 人首轮严格分布为 `7 / 14 / 2`，管理榜行 marker 同样为 23 行、`7 × 3.75 + 14 × 3.5 + 2 × 3.25`，其中另记录 3 名 AI 非独立天朝公爵行；
+- 361/361 批量机制夹具 `fixture_cases_passed = 361`，产品 choice effect 实际应用 601 次，portfolio 账本与幂等性均通过，项目诊断数为 0；
+- 考核榜按钮安全区、原生右侧窗口抑制与关闭、管理榜打开，以及共享生成行结构的一次代表性真实人物跳转均通过；没有把 160 行都宣称为逐行点击；
+- 京察真实 mandate、强制定期弹窗、免费活动规划器、同日原生 MCP 暂停门均通过；拒办导致上司好感 modifier 与下轮 KPI `-50`，且由原上司恰好消费一次；
+- 史实受考官员的“上司考定”明确渲染 `3.25`、第 23/23 名及对应处罚；原图、字段裁切与 OCR sidecar 均已入 evidence index；
+- 同一 PID 内 `ck3_center_map_on_landed_title_v1` 矩阵为 **GREEN**，共 7 次 typed 成功调用，并保留一次 unknown title 的 typed RED；成功路径没有 OCR、屏幕/像素判断、窗口激活、键盘、鼠标或剪贴板 fallback；
+- 产品 runtime tree、fresh-cache source tree 与源树前后不变，`protected_storage_unchanged = true`，CK3 进程树受控回收。
+
+本轮报告位于 `Z:\ck3_mod_rewrite_process_assets\zg361\release\fresh-cache-3792585972\acceptance-03\report.json`，SHA-256 为 `4FE660637964EF908EF5D0DB4F0F63D412AE319D12502C4EC61737419006F418`；`evidence-index.json` SHA-256 为 `64EA0E135CB2AA9D3BA351DB6C4B862ECCE6C23CA05A486966D83946F6F0FCC6`。因此，首次 Steam 内容上传、服务端回下载、fresh-cache 一致性核验和该缓存上的 production smoke 已闭合为 **GREEN**。本节记录的是先隐藏上传、再验收缓存的阶段；随后完成的公开终验记录如下，公开可见性现已不再是 pending。
+
+## 21. Workshop 公开页终验
+
+在 fresh-cache production smoke GREEN 后，Workshop 可见性菜单已由“隐藏”切换为“公开”。该操作没有出现二次确认、协议、Steam Guard 或 CAPTCHA，也没有接受任何新增法律协议。`2026-08-30T14:50:21.0829291+08:00` 的匿名远端终验为 **GREEN**：Steam API 返回 `result = 1`、`visibility = 0`，标题逐字等于“天朝特色361制官员绩效考核”，`hcontent_file = 2542810955685536611`，发布文件大小为 `6,931,940` bytes；匿名公开 HTML 返回 HTTP 200，并包含 8 个 `highlight_strip_item`。这组证据把状态从“隐藏 item 已上传”提升为“公开页可匿名访问且内容版本正确”。
+
+可见性菜单与公开后的页面截图分别为 `workshop-page/40-visibility-menu.png`（SHA-256 `D1FE9CB3A129AAC9ED044CF0EF285E74C6639B49E6E4435AFE4571142356D34A`）和 `workshop-page/41-after-public-click.png`（SHA-256 `6285C666C47539C1E92B09C4365103855656DA555BEC1BB7D83442E69037B4A0`）；两者均保存在同一不可变上传证据目录中。
+
+描述也做了远端逐字终验。API 返回描述为 `7,918` UTF-8 bytes、使用 CRLF；本地权威 BBCode 为 `7,804` UTF-8 bytes、使用 LF。仅规范化换行后两者逐字相等，未把换行编码差异误报为内容漂移。上传时使用过的临时输入 probe 在 API 描述与公开 HTML 中均不存在。
+
+公开终验证据保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\steam-upload-3932532\remote-public-verify`：`published-file-details.json`、`public-page.html` 与 `verify-publication.json` 均原样保留；后者 SHA-256 为 `195DE867F93AD84D14FF669CE69B908064AEC54200D8E30E0A25A2DE9E5A6DA9`。因此 item `3792585972` 的公开可见性、标题、内容 manifest、文件大小、八图 media strip、完整描述和 probe 清理均已闭合为 **GREEN**。

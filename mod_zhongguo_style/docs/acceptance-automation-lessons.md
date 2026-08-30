@@ -6,7 +6,7 @@
 
 ## 1. 永久工作规则
 
-1. 自动化期间保持系统当前前台应用和 CK3 使用 **US English** 键盘布局；目标 HKL 必须精确等于 `0x04090409`。不要在任务结束时切回微软拼音，也不要删除系统中已有的中文输入法。
+1. 自动化期间保持系统当前前台应用以及 Launcher、Steam、CK3 的每个新目标输入线程使用 **US English** 键盘布局；目标 HKL 必须精确等于 `0x04090409`。该要求跨启动、上传和验收阶段持续有效，不要在任务结束时切回微软拼音，也不要删除系统中已有的中文输入法。
 2. “发出了按键/点击”只是意图，不是游戏收到动作的证据。每个关键动作必须有 OCR、窗口状态、日期、日志 marker 或地图像素差等独立 ACK。
 3. 局部 UI 探针失败先在同一 CK3 进程内走有界兜底；只有入口全部耗尽或无法恢复干净 HUD 才结束本轮。不要为十秒级相机/菜单问题反复重启完整 361 链。
 4. 玩法验收、GUI 审计、真实角色 provenance、宣传片片场分别记账。后者 RED 不抹掉前者已经签过的产品证据，前者 GREEN 也不能冒充宣传片就绪。
@@ -82,6 +82,14 @@
 - 同构生成行只实点一条时，只能声称“1 条 L3 实点 + 其余静态同构”，不能把 160 条同构行都写成实机点击通过。
 - 数字字段不能用全屏字符串集合判唯一。`zga_20260830_0156_current_fa2f684_mcp` 的上司告身正确显示“你的绩效：3.25”，但顶栏资源增量同时出现 `+3.5`，旧门禁遂误报两个档位。现在档位断言只读取告身正文的归一化小区域，要求同帧出现“你的绩效 + 3.25”并排除另外两档；全屏 OCR 仍用于标题、KPI、位次和 raw-key 检查。界面上合法重复同一值也不应被当作重复结果。
 
+### Launcher DPI 与 CEF 富文本输入
+
+- 2026-08-30 的 Launcher 上传实机中，未声明 DPI-aware 的自动化进程把真实 `2560×1440` 桌面报告成 `2048×1152`；按后者计算的截图与点击坐标会错位，实际出现了点击落在目标窗口外的现象。Launcher/Steam 桌面自动化必须先调用 `SetProcessDPIAware()`，再初始化 `pyautogui` 并重新读取屏幕尺寸；不能把缩放后的逻辑分辨率当成物理像素坐标。
+- Launcher 的 CEF 工坊描述编辑框在该次实机中没有接收普通剪贴板粘贴或通用 `SendInput` 全文输入。已验证可用的路径是找到实际接收文本的 CEF 子窗口，先清除 9 字符探针，再逐字符投递 `WM_CHAR`；最终输入与权威 `description.bbcode` 一致，为 4,801 个字符、7,917 bytes、114 个换行，并通过 Launcher 的绿色校验。完整尾部画面保存在 `Z:\ck3_mod_rewrite_process_assets\zg361\release\steam-upload-3932532\launcher-26-description-wmchar-complete.png`，SHA-256 为 `CDCE87645D1FF79DC1BBCE6935ED08BA18FF94C6CCD9ADC9DDAB0AF6F2DB742B`。
+- `WM_CHAR` 成功只证明本次 Launcher CEF 子窗口的可行输入路径；后续仍要核对输入前探针已清空、权威文本长度/换行数、表单校验和末尾可见文本，不能仅以消息投递成功作为内容完整 ACK。Launcher 和 Steam 的目标 GUI 线程也必须分别复读 HKL 为 `0x04090409`，且完成后不恢复中文布局。
+- Steam Workshop 网页描述的 8,000-byte 门禁按 HTML form/CEF 提交后的换行字节计算，不能只看仓库中 LF 文本的本地大小。该次实机中，本地约 7,916–7,917 UTF-8 bytes、含 114 个 LF 的描述在提交时被浏览器投影成 CRLF；每个换行多出 1 byte，提交体约 8,030 bytes，超过 8,000 后页面只给出泛化保存失败。
+- 将同一描述压缩为本地 UTF-8 `7,804` bytes、仍保留 `114` 个 LF 后，CRLF 投影为 `7,918` bytes，网页保存成功。随后从 Steam API 回读的远端描述为 `7,918` bytes；把远端 CRLF 与本地 LF 规范化到同一种换行后，内容逐字一致。今后的发布前门禁必须计算 `UTF-8(CRLF-projected text) <= 8000`，并在保存后做远端回读与换行规范化逐字比较；本地 LF 文件小于 8,000 bytes 不能单独放行。
+
 ## 5. 时间推进与事件转场
 
 - 事件选项 click 后可能发生异步 activity-detail 转场；紧跟 mouse-up 的 Space 可能被吞。
@@ -117,6 +125,12 @@
 - 完整链中把静态 L0、361 唯一 marker/幂等性、GUI 阻塞、京察时间线、本人受评、政策卡和素材 capture marks 合批验收，避免为每个机制单独启动 CK3。
 - 每轮报告要区分 `product GREEN / harness RED / promo not started`。相机脚本 RED 不能写成“361 机制失败”。
 - 同一小状态的失败最多做有界回退；每条回退都必须有独立 ACK 和 `attempts[]` 记录，不能用无限重试掩盖不确定性。
+
+### 新鲜工坊缓存的描述符投影
+
+- Steam/Launcher 发布后的真实工坊缓存允许在内层 `descriptor.mod` 末尾注入与清单一致的 `remote_file_id`；正式 staging 的 canonical 描述符仍必须无 ID。新鲜缓存验证已经把这两种状态分开：`Z:\ck3_mod_rewrite_process_assets\zg361\release\fresh-cache-3792585972\verify-workshop-cache.json` 对物品 `3792585972` 返回 GREEN、51 文件、0 errors，并把该描述符明确判为 `launcher-injected`；报告 SHA-256 为 `CD5097837D66988968975B343F4E245FFB7783A85549DBB1AE9AA9DB6FDEDC8B`。
+- isolated `_userdir` 运行投影不能原样复制这条 Launcher ID，也不能修改刚下载的真实缓存。当前 harness 只在缓存已经通过正式 manifest 验证时，从 `descriptor.mod` 去掉注入行，并以 manifest 记录的 canonical size 与 SHA-256 唯一重建无 ID 描述符；只把该字节写入 isolated product copy。缓存本体保持逐字节不变；注入内容漂移、候选不唯一或 size/SHA 不匹配都 fail-closed。对应 workshop runner 回归测试 7/7 GREEN，release builder 回归测试 7/7 GREEN。
+- fresh-cache attempt-01 在 preflight 就因 clean detached worktree 不含被忽略的 `Crusader Kings III` 参考目录而结束，CK3 没有启动；这是运行环境/夹具 RED，不是 mod 或工坊缓存 RED。attempt-02 已通过缓存 preflight，但在 CK3 加载前把合法的 ID-bearing 缓存描述符复制进 isolated profile，随后被开发树的 no-ID 不变量拒绝；这是 harness 集成 RED，也不能写成产品 RED。两次结果只触发上述最小投影修复和同一候选的下一次合批实机，不触发重新审计已经签过的 361、GUI 或发布物料。
 
 ## 8. 政策卡标题、tooltip 与本地化投影
 
