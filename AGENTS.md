@@ -154,6 +154,9 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - `origin/master` 是唯一集成真相，默认从最新 master 直接开发。只有具体隔离、真实并发或高风险 live 理由才建
   `wip/<topic>`；必要发布线才用 `release/<product>-<version>`。分支必须登记 reason/base/owner/acceptance/deadline，
   成品及时合入，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。
+- **谨慎创建 Git 分支不等于限制 Agent 子线程。** 能按文件所有权、运行现场或依赖边界安全拆分的工作应主动使用多 Agent
+  并行；各线程仍共同服务于 `master`，可在同一工作树修改互不重叠文件，或使用基于 exact master 的 detached worktree。
+  detached worktree 不是新分支；若产生提交，必须尽快回合 `master`，不得因此保留长期游离 ref。
 - 禁止 force-push。并发推送先 fetch/复核 remote master；远端移动时停止 push，rebase 到新 master、复测后普通 fast-forward push。
 - 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。仅当写 marker 会
   改变所有者已冻结的 dirty tree 时，才可用记录 exact HEAD/status/diff hash 的中央 machine-readable ledger 代替。删除 branch ref
