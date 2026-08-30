@@ -15,7 +15,17 @@ from gen_scoreboard_snapshot import (
     DETAIL_CLEAR_ACTION,
     DETAIL_CLEAR_GUI,
     DETAIL_PAGES,
+    DISCLOSURE_A_CASE_FIELDS,
+    DISCLOSURE_A_FIELD_NAMES,
+    DISCLOSURE_ACL_MODE,
+    DISCLOSURE_B_CASE_FIELDS,
+    DISCLOSURE_B_FIELD_NAMES,
+    DISCLOSURE_POLICY_VARS,
+    MUTABLE_DISCLOSURE_A_CASE_FIELDS,
+    MUTABLE_DISCLOSURE_B_CASE_FIELDS,
+    MUTABLE_RECEIVED_CASE_FIELDS,
     RECEIVED_CASE_FIELDS,
+    RECEIVED_BINDING_FIELD_NAMES,
     SENSITIVE_RECEIVED_FIELDS,
     SENSITIVE_RECEIVED_SOURCE_VARS,
     FieldSpec,
@@ -23,6 +33,9 @@ from gen_scoreboard_snapshot import (
     SLOT_COUNT,
     TOGGLE_POSITION,
     TOGGLE_SIZE,
+    disclosure_case_is_current,
+    disclosure_policy_is_current,
+    disclosed_case_fields,
     outputs,
     received_case_fields,
     row_gui,
@@ -271,6 +284,342 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         )
         filtered = received_case_fields(injected)
         self.assertEqual(filtered, RECEIVED_CASE_FIELDS)
+
+    def test_disclosure_a_b_c_field_contract_and_legacy_fallback(self) -> None:
+        expected_a = {
+            "kpi_frozen",
+            "values_frozen",
+            "evidence_governance",
+            "evidence_capability",
+            "evidence_growth",
+            "evidence_superior",
+            "evidence_values",
+            "evidence_collaboration",
+            "evidence_jingcha",
+            "evidence_organization",
+            "final_grade",
+            "grade_reason",
+            "appeal_open",
+            "appeal_outcome",
+        }
+        self.assertEqual(DISCLOSURE_A_FIELD_NAMES, expected_a)
+        self.assertEqual(
+            {field.name for field in DISCLOSURE_A_CASE_FIELDS}, expected_a
+        )
+        self.assertEqual(DISCLOSURE_B_FIELD_NAMES, {"final_grade"})
+        self.assertEqual(
+            {field.name for field in DISCLOSURE_B_CASE_FIELDS}, {"final_grade"}
+        )
+        self.assertEqual(
+            disclosed_case_fields(policy_available=1, self_mode=3),
+            DISCLOSURE_A_CASE_FIELDS,
+        )
+        self.assertEqual(
+            disclosed_case_fields(policy_available=1, self_mode=1),
+            DISCLOSURE_B_CASE_FIELDS,
+        )
+        # Explicit C and a pre-#013 save both preserve the former received ACL.
+        self.assertEqual(
+            disclosed_case_fields(policy_available=0, self_mode=0),
+            RECEIVED_CASE_FIELDS,
+        )
+        self.assertEqual(
+            disclosed_case_fields(policy_available=None, self_mode=None),
+            RECEIVED_CASE_FIELDS,
+        )
+        # A configured but unknown/partial mode cannot widen into legacy C.
+        self.assertEqual(
+            disclosed_case_fields(policy_available=1, self_mode=0), ()
+        )
+        internal_quota_trade = {
+            "cohort_n",
+            "absolute_grade",
+            "calibration_score",
+            "calibration_score_before_shadow",
+            "shadow_to_quota_delta",
+            "quota_snapshot",
+            "forced_down",
+        }
+        for fields in (DISCLOSURE_A_CASE_FIELDS, DISCLOSURE_B_CASE_FIELDS):
+            names = {field.name for field in fields}
+            self.assertTrue(names.isdisjoint(internal_quota_trade))
+            self.assertTrue(names.isdisjoint(SENSITIVE_RECEIVED_FIELDS))
+
+    def test_generated_received_copy_freezes_policy_and_applies_a_b_c(self) -> None:
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        copy_self = effects.split(
+            "zg361_copy_received_scoreboard_slots_effect = {", 1
+        )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
+        policy_freeze = effects.split(
+            "zg361_freeze_received_disclosure_policy_effect = {", 1
+        )[1].split("\n}\n\n# Current scope = player official", 1)[0]
+
+        for name, source_var in DISCLOSURE_POLICY_VARS:
+            self.assertIn(f"has_variable = {source_var}", policy_freeze)
+            self.assertIn(
+                f"name = zg361_sb_self_{name} value = var:{source_var}",
+                policy_freeze,
+            )
+            self.assertIn(
+                f"name = zg361_sb_self_{name} value = 0", policy_freeze
+            )
+        self.assertIn(
+            "var:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial",
+            policy_freeze,
+        )
+        self.assertIn(
+            f"name = zg361_sb_self_{DISCLOSURE_ACL_MODE} value = 0",
+            policy_freeze,
+        )
+        self.assertIn(
+            "zg361_freeze_received_disclosure_policy_effect = yes", copy_self
+        )
+        # The generic copy surface remains free of identity-bearing ABI tokens;
+        # the dedicated helper is invoked only behind the tuple gate.
+        self.assertNotIn("evaluator_id", copy_self)
+
+        def marked(begin: str, end: str) -> str:
+            return copy_self.split(begin, 1)[1].split(end, 1)[0]
+
+        a = marked("# DISCLOSURE_A_BEGIN", "# DISCLOSURE_A_END")
+        b = marked("# DISCLOSURE_B_BEGIN", "# DISCLOSURE_B_END")
+        c = marked(
+            "# DISCLOSURE_C_LEGACY_BEGIN", "# DISCLOSURE_C_LEGACY_END"
+        )
+
+        def destinations(body: str) -> set[str]:
+            return set(re.findall(r"name = zg361_sb_self_([a-z0-9_]+)", body))
+
+        self.assertEqual(destinations(a), DISCLOSURE_A_FIELD_NAMES)
+        self.assertEqual(destinations(b), DISCLOSURE_B_FIELD_NAMES)
+        self.assertEqual(
+            destinations(c),
+            {field.name for field in RECEIVED_CASE_FIELDS}
+            - RECEIVED_BINDING_FIELD_NAMES,
+        )
+        for sensitive in SENSITIVE_RECEIVED_SOURCE_VARS:
+            self.assertNotIn(sensitive, a + b)
+        for internal in (
+            "zg361_b1_calibration_score",
+            "zg361_b1_shadow_to_quota_delta",
+            "zg361_b1_quota_snapshot",
+            "zg361_b1_forced_down",
+        ):
+            self.assertNotIn(internal, a + b)
+        # The manager projection remains the existing CASE_FIELDS schema.
+        self.assertNotIn("zg361_sb_m_01_disclosure_", effects)
+
+    def test_mutable_updates_cannot_widen_the_frozen_disclosure_route(self) -> None:
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        phase2 = effects.split(
+            "# Current scope = player official after witnessed/acknowledged 3.25 settlement.",
+            1,
+        )[1]
+        expected = {
+            "A": {field.name for field in MUTABLE_DISCLOSURE_A_CASE_FIELDS},
+            "B": {field.name for field in MUTABLE_DISCLOSURE_B_CASE_FIELDS},
+            "C_LEGACY": {field.name for field in MUTABLE_RECEIVED_CASE_FIELDS},
+        }
+        for label, field_names in expected.items():
+            sections = re.findall(
+                rf"# DISCLOSURE_{label}_MUTABLE_BEGIN(?P<body>.*?)"
+                rf"# DISCLOSURE_{label}_MUTABLE_END",
+                phase2,
+                re.S,
+            )
+            # self buffer + selected detail, for settlement + regrade.
+            self.assertEqual(len(sections), 4, label)
+            for body in sections:
+                destinations = set(
+                    re.findall(
+                        r"name = zg361_sb_(?:self|detail)_([a-z0-9_]+)", body
+                    )
+                )
+                self.assertEqual(destinations, field_names, label)
+        self.assertNotIn(
+            "var:zg361_sb_self_b1_case_serial = var:zg361_sb_self_case_serial",
+            phase2,
+        )
+        self.assertEqual(expected["B"], {"final_grade"})
+        self.assertEqual(
+            expected["A"],
+            {"final_grade", "appeal_open", "appeal_outcome"},
+        )
+
+    def test_received_selector_hides_absent_b_fields_instead_of_placeholder_rows(self) -> None:
+        rendered = outputs()
+        slot_guis = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt"
+        ].decode("utf-8-sig")
+        gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        selector = slot_guis.split("zg361_sb_self_select_gui = {", 1)[1].split(
+            "\n}\n", 1
+        )[0]
+
+        def marked(begin: str, end: str) -> str:
+            return selector.split(begin, 1)[1].split(end, 1)[0]
+
+        a = marked("# DISCLOSURE_A_SELECT_BEGIN", "# DISCLOSURE_A_SELECT_END")
+        b = marked("# DISCLOSURE_B_SELECT_BEGIN", "# DISCLOSURE_B_SELECT_END")
+        c = marked(
+            "# DISCLOSURE_C_LEGACY_SELECT_BEGIN",
+            "# DISCLOSURE_C_LEGACY_SELECT_END",
+        )
+        self.assertEqual(
+            set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", a)),
+            DISCLOSURE_A_FIELD_NAMES,
+        )
+        self.assertEqual(
+            set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", b)),
+            DISCLOSURE_B_FIELD_NAMES,
+        )
+        self.assertEqual(
+            set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", c)),
+            {field.name for field in RECEIVED_CASE_FIELDS},
+        )
+        self.assertIn("zg361_sb_detail_binding_owner", selector)
+        self.assertIn("zg361_sb_detail_binding_cycle_serial", selector)
+        self.assertIn("zg361_sb_detail_binding_case_serial", selector)
+
+        # Managed details retain missing-value placeholders; received details
+        # remove any row whose field was not copied by the frozen ACL.
+        for field in ("grade_reason", "quota_snapshot", "b1_case_serial"):
+            gate = (
+                "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui')."
+                "IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), "
+                f"GetScriptedGui('zg361_sb_detail_{field}_available_gui')."
+                "IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+            )
+            self.assertIn(f'hbox = {{ visible = "{gate}"', gui)
+            self.assertIn(f'text = "zg361_scoreboard_detail_field_{field}"', gui)
+
+    def test_received_binding_accepts_independent_cases_and_rejects_stale_owner_cycle_policy(self) -> None:
+        current = dict(
+            result_owner="manager-a",
+            result_cycle=8,
+            result_case=903,
+            b1_owner="manager-a",
+            b1_cycle=8,
+            b1_case=41,
+            published_owner="manager-a",
+            published_cycle=8,
+        )
+        self.assertTrue(disclosure_case_is_current(**current))
+        for field, stale in (
+            ("result_owner", "manager-b"),
+            ("result_cycle", 7),
+            ("b1_owner", "manager-b"),
+            ("b1_cycle", 7),
+            ("published_owner", "manager-b"),
+            ("published_cycle", 7),
+        ):
+            mutated = dict(current)
+            mutated[field] = stale
+            self.assertFalse(disclosure_case_is_current(**mutated), field)
+        # Independent cursors: neither case number is compared to the other.
+        for field, another_valid_case in (
+            ("result_case", 1903),
+            ("b1_case", 141),
+        ):
+            mutated = dict(current)
+            mutated[field] = another_valid_case
+            self.assertTrue(disclosure_case_is_current(**mutated), field)
+        for mode in (3, 1):
+            self.assertTrue(
+                disclosure_policy_is_current(
+                    policy_available=1,
+                    policy_id=41,
+                    self_mode=mode,
+                    b1_case=41,
+                )
+            )
+        for stale_policy_id in (40, 903):
+            self.assertFalse(
+                disclosure_policy_is_current(
+                    policy_available=1,
+                    policy_id=stale_policy_id,
+                    self_mode=3,
+                    b1_case=41,
+                )
+            )
+
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        copy_self = effects.split(
+            "zg361_copy_received_scoreboard_slots_effect = {", 1
+        )[1].split("\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source", 1)[0]
+        tuple_gate = copy_self.split("# Freeze the complete #013 ABI", 1)[0]
+        for guard in (
+            "var:zg361_result_case_owner = scope:zg361_scoreboard_source",
+            "var:zg361_scoreboard_managed_cycle_serial = root.var:zg361_result_cycle_serial",
+            "var:zg361_b1_case_owner = var:zg361_result_case_owner",
+            "var:zg361_b1_cycle_serial = var:zg361_result_cycle_serial",
+        ):
+            self.assertIn(guard, tuple_gate)
+        self.assertNotIn(
+            "var:zg361_b1_case_serial = var:zg361_result_case_serial",
+            copy_self,
+        )
+        self.assertIn(
+            "name = zg361_sb_self_case_serial value = var:zg361_result_case_serial",
+            copy_self,
+        )
+        self.assertIn(
+            "name = zg361_sb_self_b1_case_serial value = var:zg361_b1_case_serial",
+            copy_self,
+        )
+        self.assertNotIn(
+            "var:zg361_sb_self_b1_case_serial = var:zg361_sb_self_case_serial",
+            outputs()[
+                MOD_ROOT
+                / "common"
+                / "scripted_guis"
+                / "zg361_generated_scoreboard_slots.txt"
+            ].decode("utf-8-sig"),
+        )
+        freeze_call = copy_self.index(
+            "zg361_freeze_received_disclosure_policy_effect = yes"
+        )
+        first_visible_write = copy_self.index("name = zg361_sb_self_char")
+        self.assertLess(
+            copy_self.index("var:zg361_b1_cycle_serial = var:zg361_result_cycle_serial"),
+            freeze_call,
+        )
+        self.assertLess(freeze_call, first_visible_write)
+        policy_binding = effects.index(
+            "var:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial"
+        )
+        helper_definition = effects.index(
+            "zg361_freeze_received_disclosure_policy_effect = {"
+        )
+        self.assertLess(helper_definition, policy_binding)
+
+    def test_scoreboard_outputs_are_reproducible_utf8_bom(self) -> None:
+        first = outputs()
+        second = outputs()
+        self.assertEqual(first, second)
+        for path, data in first.items():
+            self.assertTrue(data.startswith(b"\xef\xbb\xbf"), path.name)
 
     def test_detail_selection_is_cleared_by_publication_and_navigation(self) -> None:
         rendered = outputs()

@@ -42,6 +42,59 @@ SENSITIVE_RECEIVED_SOURCE_VARS = frozenset(
     }
 )
 
+# #013 is a field-level received-self disclosure policy.  These six subject
+# variables are the stable B1 ABI; the scoreboard freezes them at publication
+# and never asks the GUI to read the subject's later live values.
+DISCLOSURE_POLICY_VARS = (
+    ("disclosure_policy_available", "zg361_b1_disclosure_policy_available"),
+    ("disclosure_policy_id", "zg361_b1_disclosure_policy_id"),
+    ("disclosure_self_mode", "zg361_b1_disclosure_self_mode"),
+    ("disclosure_team_mode", "zg361_b1_disclosure_team_mode"),
+    (
+        "disclosure_evaluator_identity_mode",
+        "zg361_b1_disclosure_evaluator_identity_mode",
+    ),
+    ("disclosure_blackbox_risk", "zg361_b1_disclosure_blackbox_risk"),
+)
+DISCLOSURE_ACL_MODE = "disclosure_acl_mode"
+
+# A exposes the employee's frozen result, reason, evidence sheet and appeal.
+# B exposes the final result alone.  Neither route exposes peer/evaluator
+# identity, comments, recusal identity, or internal quota/calibration trades.
+DISCLOSURE_A_FIELD_NAMES = frozenset(
+    {
+        "kpi_frozen",
+        "values_frozen",
+        "evidence_governance",
+        "evidence_capability",
+        "evidence_growth",
+        "evidence_superior",
+        "evidence_values",
+        "evidence_collaboration",
+        "evidence_jingcha",
+        "evidence_organization",
+        "final_grade",
+        "grade_reason",
+        "appeal_open",
+        "appeal_outcome",
+    }
+)
+DISCLOSURE_B_FIELD_NAMES = frozenset({"final_grade"})
+
+# These fields are copied to the received mirror solely as immutable selector
+# bindings.  A/B never project them into the visible detail buffer; legacy C
+# keeps the previous received-self presentation for save compatibility.
+RECEIVED_BINDING_FIELD_NAMES = frozenset(
+    {
+        "case_owner",
+        "cycle_serial",
+        "case_serial",
+        "b1_case_owner",
+        "b1_cycle_serial",
+        "b1_case_serial",
+    }
+)
+
 
 @dataclass(frozen=True)
 class FieldSpec:
@@ -205,14 +258,155 @@ def received_case_fields(fields: tuple[FieldSpec, ...]) -> tuple[FieldSpec, ...]
 
 
 RECEIVED_CASE_FIELDS = received_case_fields(CASE_FIELDS)
+DISCLOSURE_A_CASE_FIELDS = tuple(
+    field for field in RECEIVED_CASE_FIELDS if field.name in DISCLOSURE_A_FIELD_NAMES
+)
+DISCLOSURE_B_CASE_FIELDS = tuple(
+    field for field in RECEIVED_CASE_FIELDS if field.name in DISCLOSURE_B_FIELD_NAMES
+)
 MUTABLE_RECEIVED_CASE_FIELDS = tuple(
     field for field in RECEIVED_CASE_FIELDS if field.mutable
+)
+MUTABLE_DISCLOSURE_A_CASE_FIELDS = tuple(
+    field for field in DISCLOSURE_A_CASE_FIELDS if field.mutable
+)
+MUTABLE_DISCLOSURE_B_CASE_FIELDS = tuple(
+    field for field in DISCLOSURE_B_CASE_FIELDS if field.mutable
 )
 FIELDS = tuple(field.name for field in BASE_FIELDS)
 
 
+def disclosed_case_fields(
+    *, policy_available: int | None, self_mode: int | None
+) -> tuple[FieldSpec, ...]:
+    """Return the received-self visible schema for one frozen #013 policy.
+
+    ``None`` models a pre-#013 save.  Explicit C (``available == 0``) and a
+    legacy save both retain the old received-self allowlist.  A malformed
+    configured policy is fail-closed; it must never become an accidental
+    legacy/full disclosure.
+    """
+
+    if policy_available in (None, 0):
+        return RECEIVED_CASE_FIELDS
+    if policy_available == 1 and self_mode == 3:
+        return DISCLOSURE_A_CASE_FIELDS
+    if policy_available == 1 and self_mode == 1:
+        return DISCLOSURE_B_CASE_FIELDS
+    return ()
+
+
+def disclosure_case_is_current(
+    *,
+    result_owner: object,
+    result_cycle: int,
+    result_case: int,
+    b1_owner: object,
+    b1_cycle: int,
+    b1_case: int,
+    published_owner: object,
+    published_cycle: int,
+) -> bool:
+    """Reference predicate; result and B1 case IDs are independent cursors."""
+
+    return (
+        result_case is not None
+        and b1_case is not None
+        and result_owner == published_owner
+        and result_cycle == published_cycle
+        and b1_owner == result_owner
+        and b1_cycle == result_cycle
+    )
+
+
+def disclosure_policy_is_current(
+    *,
+    policy_available: int | None,
+    policy_id: int | None,
+    self_mode: int | None,
+    b1_case: int,
+) -> bool:
+    """Configured A/B policies bind to the independent frozen B1 case ID."""
+
+    return (
+        policy_available == 1
+        and self_mode in (3, 1)
+        and policy_id == b1_case
+    )
+
+
 def fixed_var(prefix: str, field: str) -> str:
     return f"zg361_sb_{prefix}_{field}"
+
+
+def append_received_identity_gate(lines: list[str], *, indent: str) -> None:
+    """Require the immutable result tuple, B1 tuple and published header."""
+
+    for field in (
+        "char",
+        "case_owner",
+        "cycle_serial",
+        "case_serial",
+        "b1_case_owner",
+        "b1_cycle_serial",
+        "b1_case_serial",
+        DISCLOSURE_ACL_MODE,
+    ):
+        lines.append(f"{indent}has_variable = {fixed_var('self', field)}")
+    for field in ("owner", "cycle_serial", "case_serial"):
+        lines.append(f"{indent}has_variable = zg361_scoreboard_received_{field}")
+    for name, _source in DISCLOSURE_POLICY_VARS:
+        lines.append(f"{indent}has_variable = {fixed_var('self', name)}")
+    lines.extend(
+        [
+            f"{indent}var:{fixed_var('self', 'case_owner')} = var:zg361_scoreboard_received_owner",
+            f"{indent}var:{fixed_var('self', 'cycle_serial')} = var:zg361_scoreboard_received_cycle_serial",
+            f"{indent}var:{fixed_var('self', 'case_serial')} = var:zg361_scoreboard_received_case_serial",
+            f"{indent}var:{fixed_var('self', 'b1_case_owner')} = var:{fixed_var('self', 'case_owner')}",
+            f"{indent}var:{fixed_var('self', 'b1_cycle_serial')} = var:{fixed_var('self', 'cycle_serial')}",
+            f"{indent}OR = {{",
+            f"{indent}\tAND = {{",
+            f"{indent}\t\tvar:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 0",
+            f"{indent}\t\tvar:{fixed_var('self', 'disclosure_policy_available')} = 0",
+            f"{indent}\t}}",
+        ]
+    )
+    for mode in (3, 1):
+        lines.extend(
+            [
+                f"{indent}\tAND = {{",
+                f"{indent}\t\tvar:{fixed_var('self', DISCLOSURE_ACL_MODE)} = {mode}",
+            ]
+        )
+        for name, _source in DISCLOSURE_POLICY_VARS:
+            lines.append(f"{indent}\t\thas_variable = {fixed_var('self', name)}")
+        lines.extend(
+            [
+                f"{indent}\t\tvar:{fixed_var('self', 'disclosure_policy_available')} = 1",
+                f"{indent}\t\tvar:{fixed_var('self', 'disclosure_policy_id')} = var:{fixed_var('self', 'b1_case_serial')}",
+                f"{indent}\t\tvar:{fixed_var('self', 'disclosure_self_mode')} = {mode}",
+                f"{indent}\t}}",
+            ]
+        )
+    lines.append(f"{indent}}}")
+
+
+def append_self_field_projection(
+    lines: list[str],
+    *,
+    indent: str,
+    fields: tuple[FieldSpec, ...],
+    destination_prefix: str,
+    source_prefix: str,
+) -> None:
+    """Copy only present frozen self-buffer fields into another buffer."""
+
+    for field in fields:
+        lines.append(
+            f"{indent}if = {{ limit = {{ has_variable = {fixed_var(source_prefix, field.name)} }} "
+            f"set_variable = {{ name = {fixed_var(destination_prefix, field.name)} "
+            f"value = var:{fixed_var(source_prefix, field.name)} }} }}"
+        )
 
 
 def encoded(body: str) -> bytes:
@@ -267,6 +461,41 @@ def append_field_copy(
     )
 
 
+def append_policy_gated_mutable_copy(
+    lines: list[str],
+    *,
+    indent: str,
+    acl_var: str,
+    destination_prefix: str,
+    source_scope: str,
+) -> None:
+    """Refresh mutable received fields without widening the frozen #013 ACL."""
+
+    routes = (
+        (3, MUTABLE_DISCLOSURE_A_CASE_FIELDS, "A"),
+        (1, MUTABLE_DISCLOSURE_B_CASE_FIELDS, "B"),
+        (0, MUTABLE_RECEIVED_CASE_FIELDS, "C_LEGACY"),
+    )
+    for index, (mode, fields, label) in enumerate(routes):
+        keyword = "if" if index == 0 else "else_if"
+        lines.extend(
+            [
+                f"{indent}# DISCLOSURE_{label}_MUTABLE_BEGIN",
+                f"{indent}{keyword} = {{",
+                f"{indent}\tlimit = {{ var:{acl_var} = {mode} }}",
+            ]
+        )
+        for field in fields:
+            append_field_copy(
+                lines,
+                indent=f"{indent}\t",
+                destination=fixed_var(destination_prefix, field.name),
+                field=field,
+                source_scope=source_scope,
+            )
+        lines.extend([f"{indent}}}", f"{indent}# DISCLOSURE_{label}_MUTABLE_END"])
+
+
 def render_effects() -> bytes:
     lines: list[str] = [
         "# Fixed slots freeze values on the viewing character. Character references remain clickable,",
@@ -275,8 +504,21 @@ def render_effects() -> bytes:
         "# One selected-case buffer backs all four internal detail pages.",
         "zg361_clear_scoreboard_detail_effect = {",
     ]
-    for field in ("valid", "source", "slot", "char", "title", "rank"):
+    for field in (
+        "valid",
+        "source",
+        "slot",
+        "char",
+        "title",
+        "rank",
+        "binding_owner",
+        "binding_cycle_serial",
+        "binding_case_serial",
+        DISCLOSURE_ACL_MODE,
+    ):
         lines.append(f"\tremove_variable = {fixed_var('detail', field)}")
+    for name, _source in DISCLOSURE_POLICY_VARS:
+        lines.append(f"\tremove_variable = {fixed_var('detail', name)}")
     for field in CASE_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('detail', field.name)}")
     lines.extend(
@@ -287,8 +529,10 @@ def render_effects() -> bytes:
             "zg361_clear_scoreboard_self_effect = {",
         ]
     )
-    for field in ("char", "title", "rank"):
+    for field in ("char", "title", "rank", DISCLOSURE_ACL_MODE):
         lines.append(f"\tremove_variable = {fixed_var('self', field)}")
+    for name, _source in DISCLOSURE_POLICY_VARS:
+        lines.append(f"\tremove_variable = {fixed_var('self', name)}")
     for field in CASE_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('self', field.name)}")
     lines.extend(["}", ""])
@@ -369,6 +613,67 @@ def render_effects() -> bytes:
 
     lines.extend(
         [
+            "# Current scope = tuple-validated player subject. Normalize and freeze #013 policy metadata in one helper.",
+            "zg361_freeze_received_disclosure_policy_effect = {",
+        ]
+    )
+    for name, source_var in DISCLOSURE_POLICY_VARS:
+        lines.extend(
+            [
+                "\tif = {",
+                f"\t\tlimit = {{ has_variable = {source_var} }}",
+                f"\t\tset_variable = {{ name = {fixed_var('self', name)} value = var:{source_var} }}",
+                "\t}",
+                "\telse = {",
+                f"\t\tset_variable = {{ name = {fixed_var('self', name)} value = 0 }}",
+                "\t}",
+            ]
+        )
+    lines.extend(
+        [
+            "\t# Legacy save or explicit C: preserve the pre-#013 received-self ACL.",
+            "\tif = {",
+            "\t\tlimit = { NOT = { has_variable = zg361_b1_disclosure_policy_available } }",
+            f"\t\tset_variable = {{ name = {fixed_var('self', DISCLOSURE_ACL_MODE)} value = 0 }}",
+            "\t}",
+            "\telse_if = {",
+            "\t\tlimit = { var:zg361_b1_disclosure_policy_available = 0 }",
+            f"\t\tset_variable = {{ name = {fixed_var('self', DISCLOSURE_ACL_MODE)} value = 0 }}",
+            "\t}",
+            "\telse = {",
+            "\t\tif = {",
+            "\t\t\tlimit = {",
+        ]
+    )
+    for _name, source_var in DISCLOSURE_POLICY_VARS:
+        lines.append(f"\t\t\t\thas_variable = {source_var}")
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t\tif = {",
+            "\t\t\t\tlimit = {",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_policy_available = 1",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_self_mode = 3",
+            "\t\t\t\t}",
+            f"\t\t\t\tset_variable = {{ name = {fixed_var('self', DISCLOSURE_ACL_MODE)} value = 3 }}",
+            "\t\t\t}",
+            "\t\t\telse_if = {",
+            "\t\t\t\tlimit = {",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_policy_available = 1",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_policy_id = var:zg361_b1_case_serial",
+            "\t\t\t\t\tvar:zg361_b1_disclosure_self_mode = 1",
+            "\t\t\t\t}",
+            f"\t\t\t\tset_variable = {{ name = {fixed_var('self', DISCLOSURE_ACL_MODE)} value = 1 }}",
+            "\t\t\t}",
+            "\t\t}",
+            "\t}",
+        ]
+    )
+    lines.extend(["}", ""])
+
+    lines.extend(
+        [
             "# Current scope = player official; scope:zg361_scoreboard_source = reviewing manager.",
             "zg361_copy_received_scoreboard_slots_effect = {",
             "\tzg361_clear_scoreboard_r_slots_effect = yes",
@@ -378,29 +683,95 @@ def render_effects() -> bytes:
             "\t\t\thas_variable = zg361_result_case_owner",
             "\t\t\thas_variable = zg361_result_cycle_serial",
             "\t\t\thas_variable = zg361_result_case_serial",
+            "\t\t\thas_variable = zg361_b1_case_owner",
+            "\t\t\thas_variable = zg361_b1_cycle_serial",
+            "\t\t\thas_variable = zg361_b1_case_serial",
             "\t\t\tscope:zg361_scoreboard_source = { has_variable = zg361_scoreboard_managed_cycle_serial }",
+            "\t\t\tvar:zg361_result_case_owner = scope:zg361_scoreboard_source",
+            "\t\t\tscope:zg361_scoreboard_source = { var:zg361_scoreboard_managed_cycle_serial = root.var:zg361_result_cycle_serial }",
+            "\t\t\tvar:zg361_b1_case_owner = var:zg361_result_case_owner",
+            "\t\t\tvar:zg361_b1_cycle_serial = var:zg361_result_cycle_serial",
             "\t\t}",
+            "\t\t# Freeze the complete #013 ABI only after result and B1 tuples match.",
+            "\t\tzg361_freeze_received_disclosure_policy_effect = yes",
+            "\t\t# Unknown configured modes stay fail-closed: no self dossier is written.",
             "\t\tif = {",
-            "\t\t\tlimit = { var:zg361_result_case_owner = scope:zg361_scoreboard_source }",
+            f"\t\t\tlimit = {{ has_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)} }}",
+            "\t\t\tset_variable = { name = zg361_scoreboard_received_case_serial value = var:zg361_result_case_serial }",
+            f"\t\t\tset_variable = {{ name = {fixed_var('self', 'char')} value = scope:zg361_scoreboard_self_entry }}",
+            f"\t\t\tset_variable = {{ name = {fixed_var('self', 'title')} value = scope:zg361_scoreboard_self_entry.primary_title }}",
             "\t\t\tif = {",
-            "\t\t\t\tlimit = { scope:zg361_scoreboard_source = { var:zg361_scoreboard_managed_cycle_serial = root.var:zg361_result_cycle_serial } }",
-            "\t\t\t\tset_variable = { name = zg361_scoreboard_received_case_serial value = var:zg361_result_case_serial }",
-            f"\t\t\t\tset_variable = {{ name = {fixed_var('self', 'char')} value = scope:zg361_scoreboard_self_entry }}",
-            f"\t\t\t\tset_variable = {{ name = {fixed_var('self', 'title')} value = scope:zg361_scoreboard_self_entry.primary_title }}",
-            "\t\t\t\tif = {",
-            "\t\t\t\t\tlimit = { has_variable = zg361_result_rank_frozen }",
-            f"\t\t\t\t\tset_variable = {{ name = {fixed_var('self', 'rank')} value = var:zg361_result_rank_frozen }}",
-            "\t\t\t\t}",
+            "\t\t\t\tlimit = { has_variable = zg361_result_rank_frozen }",
+            f"\t\t\t\tset_variable = {{ name = {fixed_var('self', 'rank')} value = var:zg361_result_rank_frozen }}",
+            "\t\t\t}",
         ]
     )
-    for field in RECEIVED_CASE_FIELDS:
+    # The six tuple fields are private selector metadata for A/B and remain
+    # visible only when explicit/legacy C selects the former full self schema.
+    for field in CASE_FIELDS:
+        if field.name not in RECEIVED_BINDING_FIELD_NAMES:
+            continue
+        append_field_copy(
+            lines,
+            indent="\t\t\t",
+            destination=fixed_var("self", field.name),
+            field=field,
+        )
+    lines.extend(
+        [
+            "\t\t\t# DISCLOSURE_A_BEGIN self_mode=3",
+            "\t\t\tif = {",
+            f"\t\t\t\tlimit = {{ var:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 3 }}",
+        ]
+    )
+    for field in DISCLOSURE_A_CASE_FIELDS:
         append_field_copy(
             lines,
             indent="\t\t\t\t",
             destination=fixed_var("self", field.name),
             field=field,
         )
-    lines.extend(["\t\t\t}", "\t\t}", "\t}"])
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t\t# DISCLOSURE_A_END",
+            "\t\t\t# DISCLOSURE_B_BEGIN self_mode=1",
+            "\t\t\telse_if = {",
+            f"\t\t\t\tlimit = {{ var:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 1 }}",
+        ]
+    )
+    for field in DISCLOSURE_B_CASE_FIELDS:
+        append_field_copy(
+            lines,
+            indent="\t\t\t\t",
+            destination=fixed_var("self", field.name),
+            field=field,
+        )
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t\t# DISCLOSURE_B_END",
+            "\t\t\t# DISCLOSURE_C_LEGACY_BEGIN available=0-or-absent",
+            "\t\t\telse = {",
+        ]
+    )
+    for field in RECEIVED_CASE_FIELDS:
+        if field.name in RECEIVED_BINDING_FIELD_NAMES:
+            continue
+        append_field_copy(
+            lines,
+            indent="\t\t\t\t",
+            destination=fixed_var("self", field.name),
+            field=field,
+        )
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t\t# DISCLOSURE_C_LEGACY_END",
+            "\t\t}",
+            "\t}",
+        ]
+    )
     for slot in range(1, SLOT_COUNT + 1):
         lines.extend(
             [
@@ -493,8 +864,18 @@ def render_effects() -> bytes:
                     "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
                     "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
                     "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+                    f"\t\t\thas_variable = {fixed_var('self', 'case_owner')}",
+                    f"\t\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_result_case_owner",
+                    f"\t\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
+                    f"\t\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_result_cycle_serial",
                     f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
                     f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
+                    f"\t\t\thas_variable = {fixed_var('self', 'b1_case_owner')}",
+                    f"\t\t\tvar:{fixed_var('self', 'b1_case_owner')} = var:{fixed_var('self', 'case_owner')}",
+                    f"\t\t\thas_variable = {fixed_var('self', 'b1_cycle_serial')}",
+                    f"\t\t\tvar:{fixed_var('self', 'b1_cycle_serial')} = var:{fixed_var('self', 'cycle_serial')}",
+                    f"\t\t\thas_variable = {fixed_var('self', 'b1_case_serial')}",
+                    f"\t\t\thas_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)}",
                     f"\t\t\thas_variable = {var('r', slot, 'char')}",
                     f"\t\t\tvar:{var('r', slot, 'char')} = scope:zg361_scoreboard_case_entry",
                     "\t\t}",
@@ -510,23 +891,34 @@ def render_effects() -> bytes:
                 "\t\tlimit = {",
                 f"\t\t\thas_variable = {fixed_var('self', 'char')}",
                 f"\t\t\tvar:{fixed_var('self', 'char')} = scope:zg361_scoreboard_case_entry",
+                "\t\t\thas_variable = zg361_scoreboard_received_owner",
+                "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
                 "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
                 "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
                 "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
                 "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+                f"\t\t\thas_variable = {fixed_var('self', 'case_owner')}",
+                f"\t\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_result_case_owner",
+                f"\t\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
+                f"\t\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_result_cycle_serial",
                 f"\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
                 f"\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
+                f"\t\t\thas_variable = {fixed_var('self', 'b1_case_owner')}",
+                f"\t\t\tvar:{fixed_var('self', 'b1_case_owner')} = var:{fixed_var('self', 'case_owner')}",
+                f"\t\t\thas_variable = {fixed_var('self', 'b1_cycle_serial')}",
+                f"\t\t\tvar:{fixed_var('self', 'b1_cycle_serial')} = var:{fixed_var('self', 'cycle_serial')}",
+                f"\t\t\thas_variable = {fixed_var('self', 'b1_case_serial')}",
+                f"\t\t\thas_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)}",
                 "\t\t}",
             ]
         )
-        for field in MUTABLE_RECEIVED_CASE_FIELDS:
-            append_field_copy(
-                lines,
-                indent="\t\t",
-                destination=fixed_var("self", field.name),
-                field=field,
-                source_scope="scope:zg361_scoreboard_case_entry",
-            )
+        append_policy_gated_mutable_copy(
+            lines,
+            indent="\t\t",
+            acl_var=fixed_var("self", DISCLOSURE_ACL_MODE),
+            destination_prefix="self",
+            source_scope="scope:zg361_scoreboard_case_entry",
+        )
         lines.extend(["\t}"])
         lines.extend(
             [
@@ -537,23 +929,27 @@ def render_effects() -> bytes:
                 f"\t\t\tvar:{fixed_var('detail', 'source')} = 2",
                 f"\t\t\thas_variable = {fixed_var('detail', 'char')}",
                 f"\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
+                "\t\t\thas_variable = zg361_scoreboard_received_owner",
+                "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
                 "\t\t\thas_variable = zg361_scoreboard_received_case_serial",
                 "\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
-                f"\t\t\thas_variable = {fixed_var('detail', 'cycle_serial')}",
-                f"\t\t\tvar:{fixed_var('detail', 'cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
-                f"\t\t\thas_variable = {fixed_var('detail', 'case_serial')}",
-                f"\t\t\tvar:{fixed_var('detail', 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                f"\t\t\thas_variable = {fixed_var('detail', 'binding_owner')}",
+                f"\t\t\tvar:{fixed_var('detail', 'binding_owner')} = var:zg361_result_case_owner",
+                f"\t\t\thas_variable = {fixed_var('detail', 'binding_cycle_serial')}",
+                f"\t\t\tvar:{fixed_var('detail', 'binding_cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                f"\t\t\thas_variable = {fixed_var('detail', 'binding_case_serial')}",
+                f"\t\t\tvar:{fixed_var('detail', 'binding_case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                f"\t\t\thas_variable = {fixed_var('detail', DISCLOSURE_ACL_MODE)}",
                 "\t\t}",
             ]
         )
-        for field in MUTABLE_RECEIVED_CASE_FIELDS:
-            append_field_copy(
-                lines,
-                indent="\t\t",
-                destination=fixed_var("detail", field.name),
-                field=field,
-                source_scope="scope:zg361_scoreboard_case_entry",
-            )
+        append_policy_gated_mutable_copy(
+            lines,
+            indent="\t\t",
+            acl_var=fixed_var("detail", DISCLOSURE_ACL_MODE),
+            destination_prefix="detail",
+            source_scope="scope:zg361_scoreboard_case_entry",
+        )
         lines.extend(["\t}", "}", ""])
 
     append_case_slot_update(
@@ -622,21 +1018,10 @@ def render_scripted_guis() -> bytes:
             "zg361_sb_self_available_gui = {",
             "\tscope = character",
             "\tis_shown = {",
-            f"\t\thas_variable = {fixed_var('self', 'char')}",
-            f"\t\thas_variable = {fixed_var('self', 'case_owner')}",
-            f"\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
-            f"\t\thas_variable = {fixed_var('self', 'case_serial')}",
-            "\t\thas_variable = zg361_scoreboard_received_owner",
-            "\t\thas_variable = zg361_scoreboard_received_cycle_serial",
-            "\t\thas_variable = zg361_scoreboard_received_case_serial",
-            f"\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_scoreboard_received_owner",
-            f"\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_scoreboard_received_cycle_serial",
-            f"\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_scoreboard_received_case_serial",
-            "\t}",
-            "}",
-            "",
         ]
     )
+    append_received_identity_gate(lines, indent="\t\t")
+    lines.extend(["\t}", "}", ""])
     for field in CASE_FIELDS:
         lines.extend(
             [
@@ -721,22 +1106,21 @@ def render_scripted_guis() -> bytes:
             "zg361_sb_self_select_gui = {",
             "\tscope = character",
             "\tis_shown = {",
-            f"\t\thas_variable = {fixed_var('self', 'char')}",
-            f"\t\thas_variable = {fixed_var('self', 'case_owner')}",
-            f"\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
-            f"\t\thas_variable = {fixed_var('self', 'case_serial')}",
-            "\t\thas_variable = zg361_scoreboard_received_owner",
-            "\t\thas_variable = zg361_scoreboard_received_cycle_serial",
-            "\t\thas_variable = zg361_scoreboard_received_case_serial",
-            f"\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_scoreboard_received_owner",
-            f"\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_scoreboard_received_cycle_serial",
-            f"\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_scoreboard_received_case_serial",
+        ]
+    )
+    append_received_identity_gate(lines, indent="\t\t")
+    lines.extend(
+        [
             "\t}",
             "\teffect = {",
             "\t\tzg361_clear_scoreboard_detail_effect = yes",
             f"\t\tset_variable = {{ name = {fixed_var('detail', 'source')} value = 2 }}",
             f"\t\tset_variable = {{ name = {fixed_var('detail', 'slot')} value = 0 }}",
             f"\t\tset_variable = {{ name = {fixed_var('detail', 'char')} value = var:{fixed_var('self', 'char')} }}",
+            f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_owner')} value = var:{fixed_var('self', 'case_owner')} }}",
+            f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_cycle_serial')} value = var:{fixed_var('self', 'cycle_serial')} }}",
+            f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_case_serial')} value = var:{fixed_var('self', 'case_serial')} }}",
+            f"\t\tset_variable = {{ name = {fixed_var('detail', DISCLOSURE_ACL_MODE)} value = var:{fixed_var('self', DISCLOSURE_ACL_MODE)} }}",
             "\t\tif = {",
             f"\t\t\tlimit = {{ has_variable = {fixed_var('self', 'title')} }}",
             f"\t\t\tset_variable = {{ name = {fixed_var('detail', 'title')} value = var:{fixed_var('self', 'title')} }}",
@@ -747,13 +1131,60 @@ def render_scripted_guis() -> bytes:
             "\t\t}",
         ]
     )
-    for field in RECEIVED_CASE_FIELDS:
+    for name, _source_var in DISCLOSURE_POLICY_VARS:
         lines.append(
-            f"\t\tif = {{ limit = {{ has_variable = {fixed_var('self', field.name)} }} "
-            f"set_variable = {{ name = {fixed_var('detail', field.name)} value = var:{fixed_var('self', field.name)} }} }}"
+            f"\t\tif = {{ limit = {{ has_variable = {fixed_var('self', name)} }} "
+            f"set_variable = {{ name = {fixed_var('detail', name)} value = var:{fixed_var('self', name)} }} }}"
         )
     lines.extend(
         [
+            "\t\t# DISCLOSURE_A_SELECT_BEGIN",
+            "\t\tif = {",
+            f"\t\t\tlimit = {{ var:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 3 }}",
+        ]
+    )
+    append_self_field_projection(
+        lines,
+        indent="\t\t\t",
+        fields=DISCLOSURE_A_CASE_FIELDS,
+        destination_prefix="detail",
+        source_prefix="self",
+    )
+    lines.extend(
+        [
+            "\t\t}",
+            "\t\t# DISCLOSURE_A_SELECT_END",
+            "\t\t# DISCLOSURE_B_SELECT_BEGIN",
+            "\t\telse_if = {",
+            f"\t\t\tlimit = {{ var:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 1 }}",
+        ]
+    )
+    append_self_field_projection(
+        lines,
+        indent="\t\t\t",
+        fields=DISCLOSURE_B_CASE_FIELDS,
+        destination_prefix="detail",
+        source_prefix="self",
+    )
+    lines.extend(
+        [
+            "\t\t}",
+            "\t\t# DISCLOSURE_B_SELECT_END",
+            "\t\t# DISCLOSURE_C_LEGACY_SELECT_BEGIN",
+            "\t\telse = {",
+        ]
+    )
+    append_self_field_projection(
+        lines,
+        indent="\t\t\t",
+        fields=RECEIVED_CASE_FIELDS,
+        destination_prefix="detail",
+        source_prefix="self",
+    )
+    lines.extend(
+        [
+            "\t\t}",
+            "\t\t# DISCLOSURE_C_LEGACY_SELECT_END",
             f"\t\tset_variable = {{ name = {fixed_var('detail', 'valid')} value = 1 }}",
             "\t}",
             "}",
@@ -894,8 +1325,14 @@ def tab_gui(prefix: str) -> list[str]:
 def detail_field_row(field: FieldSpec) -> list[str]:
     available = f"zg361_sb_detail_{field.name}_available_gui"
     value_var = fixed_var("detail", field.name)
+    row_visible = (
+        "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui')."
+        "IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), "
+        f"GetScriptedGui('{available}')."
+        "IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+    )
     lines = [
-        "hbox = { layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }",
+        f'hbox = {{ visible = "{row_visible}" layoutpolicy_horizontal = expanding spacing = 16 margin = {{ 28 7 }}',
         f"\ttext_single = {{ min_width = 390 max_width = 390 text = \"zg361_scoreboard_detail_field_{field.name}\" default_format = \"#weak\" align = nobaseline }}",
         "\texpand = {}",
     ]
