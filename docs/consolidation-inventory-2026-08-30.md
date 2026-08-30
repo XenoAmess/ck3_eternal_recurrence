@@ -1,9 +1,12 @@
 # Master consolidation inventory — 2026-08-30
 
-状态：**本地 integration GREEN；待推送 master 与官方 Actions 闭合**
+状态：**master consolidation、官方 push CI 与手动 release-candidate CI/CD 全部 GREEN；无价值游离分支已标记删除**
 
-本清单以 `origin/master = 986d7281240334190e109f879eaa2f38877af489` 为基线，目标是把仍有效、且未被
-master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。盘点不授权删除分支、构建目录、artifact 或用户工作树。
+本清单以 consolidation 起始 `origin/master = 986d7281240334190e109f879eaa2f38877af489` 为基线，目标是把仍有效、且未被
+master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。最终 consolidation 基线为
+`fa8893923731ae82bb9087dfb868b10bfc20e900`。最初盘点不授权删除任何现场；项目所有者在 2026-08-30
+追加要求：无价值游离分支必须明确标记删除。该授权只覆盖已经证明为祖先、patch-equivalent 或 superseded 的
+branch ref，不覆盖构建目录、artifact、录像、日志、用户脏工作树或其他过程素材。
 
 ## 产品面
 
@@ -46,11 +49,37 @@ master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。�
   `run_current_event_scopes_live_acceptance.py`、`one_generation_run.py`、两份对应测试、canary helper/handoff 和
   `run_one_generation_canary.ps1`。它们作为现场保留，不重新加入发布树。
 
+### branch retirement ledger
+
+以下标记只处置 branch ref；关联 worktree 先转为 detached HEAD，因此文件、未跟踪素材与历史构建现场继续原地保留。
+`DELETE` 的证据已经用 `git merge-base --is-ancestor`、`git cherry origin/master <branch>` 和上述 superseded
+实现对照闭合，不再为这些分支开新审计或恢复旧实现。
+
+| 分支 | 证据 | 标记 |
+|---|---|---|
+| `agent-gen031-war-query-same-frame-20260828` | tip 已是 master 祖先 | `DELETE` |
+| `agent/battle-pause-reduction`（本地与远端） | `git cherry` 仅 `- 7960e7c` | `DELETE` |
+| `agent/perf-120dpm-20260828` | 3 个提交均为 `-` | `DELETE` |
+| `agent/sentinel-event-trigger-race-20260828` | `git cherry` 仅 `- dcfe397` | `DELETE` |
+| `perf-policy-neutral-rework-20260828` | 2 个提交均为 `-` | `DELETE` |
+| `stationary-timeout-1787909000` | `git cherry` 仅 `- b297852` | `DELETE` |
+| `origin/agent-defensive-war-native-20260828` | `git cherry` 仅 `- 3223c05` | `DELETE` |
+| `agent/perf-production-speed3-20260828` | 唯一残余 `+ 1322b6a` 已被 policy-neutral production gate 取代 | `DELETE` |
+| `agent/sentinel-cancel-20260828` | 唯一残余 `+ 5670890` 是已被 generation-bound 协议取代的旧合同 | `DELETE` |
+| `integrate/zhongguo-phase1-20260830` | tip 与完成 consolidation 的 master 相同 | `DELETE` |
+| `origin/mod-zhongguo-style-wip` | phase-I tip 已是 master 第二父祖先 | `DELETE` |
+| 本地 `mod-zhongguo-style-wip` | phase-I tip 已是 master 祖先，但仍承载 `Z:\ck3_mod_rewrite` 脏现场 | `DELETE-DEFERRED`：现场完成迁移/归档后删除 ref；现在禁止强拆 |
+| `master` | 唯一正式集成与 CI/CD 准线 | `KEEP` |
+| `mod-zhongguo-style-phase2-v0.4` | 当前唯一有效的 v0.4 开发线，基于完成 consolidation 的 master | `KEEP-ACTIVE`；每个成品里程碑及时回并 master |
+
+这里的 `DELETE-DEFERRED` 不是让旧一期分支继续开发。它只是一枚保护用户脏现场的临时引用；任何新代码都不得再以
+`17dc506` 为基线。删除 branch ref 也不等于删除 process assets，本清单禁止用 branch 清理名义清理那些素材。
+
 ### unfinished-preserved
 
-- `mod-zhongguo-style-phase2-v0.4` 仍指向 `17dc506`，独立 worktree 有 **20 个 tracked 修改 + 12 个 untracked
-  文件**。这是 38 领域/phase2 slice 的未提交开发现场；按 owner 最新指令暂停，不混入 consolidation，不清理，待 master
-  GREEN 后由主线程重基恢复。
+- `mod-zhongguo-style-phase2-v0.4` 已无损重基到 `fa889392`，原 **20 个 tracked 修改 + 12 个 untracked 文件**
+  已形成静态里程碑 `b5a0b0eb4872657ee3de973f54f8089006167ca7` 并推送独立分支。它仍是未完成的下一版本：L0 与
+  可复现 release GREEN 不代表 CK3 L1/L2/L3；完成 MCP-first 批量实机验收前不得合入 master 或宣称 production-live。
 - `Z:\ck3_mod_rewrite` 主工作树仍在 WIP tip，存在 **36 个 tracked 修改 + 12,600 个 untracked 路径**。
   tracked 中 12 个文件逐字节等于新 master、18 个是 master 历史旧 blob、6 个是旧 WIP 与历史 autonomous 代码/文档的
   未提交组合。产品 provenance 与 7 条 CK3 语法实证是其中仍有效的唯一知识增量，已精确迁入 integration；其余代码由
@@ -91,17 +120,21 @@ master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。�
   `BC721794399C735D530B3A99AFFA9982364EB06F53F7035A4EF069B5760CEDAE`，DLL SHA-256
   `2FAB665017DA824DC3A3BA1E85D6EF3F32FB7772A1554EC0D4D21B9368B6E7C9`，dependency mode
   `direct-2052-utf8`。构建目录与所有失败的命令行尝试均保留在 process assets，没有清理。
-- 官方 push/workflow-dispatch run ID 与最终 master merge SHA 在推送后补录；在它们 terminal GREEN 前，本清单不把
-  consolidation 标记为最终完成。
+- 最终 consolidation SHA 为 `fa8893923731ae82bb9087dfb868b10bfc20e900`。官方 push run
+  [`33301863644`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/33301863644) 与同 SHA 的手动
+  workflow-dispatch run [`33301945134`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/33301945134)
+  均为 terminal `SUCCESS`；后者完成四套 candidate build 与 artifact upload。artifact `9729238097`
+  （`release-candidate-master-33301945134`，6,415,687 bytes）已原样保存在
+  `Z:\ck3_mod_rewrite_process_assets\zg361\merge-phase1\actions\fa88939-dispatch-33301945134`。
 - 首次 push merge SHA 为 `7ebb78d5904c06ad3847ded316301939296979c3`；官方 run `33301313411` 在
   `Test ZhongGuo 361 generators and acceptance contracts` RED。两个直接原因均为 L0 测试 fixture 偶然读取不存在的
   `CK3_EXE` / vanilla `00_game_rules.txt`，本机游戏 junction 曾遮住它们。最小修复只为相应用例提供 fake executable 与
   explicit vanilla-rule fixture，并为 provenance parser 动态构造最小 `han.txt/e_china.txt` 历史数据库。暂时移走
   integration 的游戏 junction 后，`static-ci.yml` 全部公共步骤已在“游戏路径不存在”条件完整 GREEN；原 RED run 保留，
-  后续 push SHA/run ID 待官方 GREEN 后补录。
+  修复提交为 `ddc3f2045683f9fcf78c035a65c3b84e837ec239`。
 - fix SHA `ddc3f2045683f9fcf78c035a65c3b84e837ec239` 的 run `33301609323` 通过上一轮失败 step，
   随后在 promo step 因 runner 无 ffmpeg 及 `%TEMP%` 的 8.3/长路径混用 RED。最小修复让纯 title-card/still 的
   draft/validate-only 路径不再发现未使用的 ffmpeg；video clip 与真正渲染仍硬性要求 ffmpeg/ffprobe。证据相对路径比较先
   `resolve()` 两端。本机从 PATH 移除 ffmpeg 后，promo 三命令组 GREEN；ZhongGuo 51-file formal staging 仍可复现且
   ZIP SHA-256 仍为 `7ECF185749A6DEB10C7B260EEC70040299EDBD0BE96F49D5418000221BC32BA2`，即修改只落在
-  未发布的 promo tooling/tests。后续官方 run 待闭合。
+  未发布的 promo tooling/tests。后续 `fa889392` push 与 dispatch 两轮已按上一条闭合。
