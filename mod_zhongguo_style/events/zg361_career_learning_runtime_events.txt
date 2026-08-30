@@ -397,6 +397,182 @@ zg361cl.204 = {
     }
 }
 
+zg361cl.812 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m312_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.813 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m313_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.814 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m314_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.815 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m315_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.816 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m316_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.817 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m317_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.818 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m318_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.819 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m319_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.820 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m320_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.821 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m321_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.822 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m322_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.823 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m323_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.824 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m324_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.825 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m325_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.826 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m326_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.827 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m327_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.828 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m328_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.829 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m329_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.830 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m330_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.831 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m331_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.832 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m332_resolve_obligation_effect = yes
+    }
+}
+
+zg361cl.833 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        zg361_cl_m333_resolve_obligation_effect = yes
+    }
+}
+
 # The only visible event in this package.  It is one owner digest, never one
 # event per mechanism or subordinate.  Authorized AI owners never enter it.
 zg361cl.390 = {

@@ -96,8 +96,69 @@ DUAL_COSTS: dict[int, tuple[int, int, frozenset[int]]] = {
     323: (8, 2, frozenset({1, 2})),
     326: (9, 3, frozenset({1, 2})),
     330: (15, 5, frozenset({1, 2})),
-    333: (18, 6, frozenset({1, 2})),
+    # All three high-cost-training choices fund the same course.  Route C is
+    # the deliberately unbound contract, not a free certificate loophole.
+    333: (18, 6, frozenset({1, 2, 3})),
 }
+
+# Business deadlines created *after* a case-stage receipt.  These are not the
+# stage scheduler above: they belong to the vacancy/offer/learning object and
+# survive the case advancing.  One hidden event consumes each active object;
+# the pending latch prevents a newer case from overwriting an unresolved one.
+OBLIGATION_DAYS: dict[int, dict[int, int]] = {
+    312: {1: 30, 2: 30, 3: 30},
+    313: {1: 30, 2: 30, 3: 30},
+    314: {1: 190, 3: 30},
+    315: {1: 90, 2: 90, 3: 30},
+    316: {1: 90, 3: 365},
+    317: {2: 7, 3: 7},
+    318: {2: 14, 3: 14},
+    319: {1: 30, 2: 90, 3: 45},
+    320: {1: 180, 2: 180, 3: 180},
+    321: {1: 365, 3: 30},
+    322: {1: 30, 2: 30, 3: 30},
+    323: {1: 365, 2: 365, 3: 365},
+    324: {1: 90, 2: 90, 3: 90},
+    325: {1: 30, 2: 30, 3: 30},
+    326: {1: 30, 2: 30, 3: 30},
+    327: {1: 30, 2: 30, 3: 30},
+    328: {1: 90, 2: 90, 3: 90},
+    329: {1: 190, 2: 190, 3: 190},
+    330: {1: 90, 2: 30, 3: 180},
+    331: {1: 365, 2: 365, 3: 365},
+    332: {1: 90, 2: 90, 3: 30},
+    333: {1: 360, 2: 90},
+}
+
+# Stable numeric kind IDs keep the CK3 projection queryable without relying on
+# localized strings.  The Python semantic authority owns the matching typed
+# ObjectKind registry and asserts that every ID has one distinct consumer.
+OBJECT_KINDS: dict[int, str] = {
+    312: "vacancy",
+    313: "reference",
+    314: "transfer_offer",
+    315: "trial_assignment",
+    316: "pay_mapping",
+    317: "application_acl",
+    318: "application_quota",
+    319: "release_obligation",
+    320: "exit_signal",
+    321: "alumni_relation",
+    322: "returnee_case",
+    323: "learning_budget",
+    324: "learning_progress",
+    325: "competence_assessment",
+    326: "conference_adoption",
+    327: "teaching_attribution",
+    328: "community_artifact",
+    329: "mentor_match",
+    330: "reskill_case",
+    331: "protected_time_loan",
+    332: "succession_drill",
+    333: "training_commitment",
+}
+
+RELATIONSHIP_IDS = frozenset({313, 314, 315, 317, 319, 321, 322, 327, 329, 330, 332, 333})
 STAGES: dict[str, tuple[tuple[int, ...], ...]] = {
     "ah": ((312, 313), (314, 315, 318), (316, 317), (319,), (320, 321), (322,)),
     "ai": ((323, 324, 325), (326, 327), (328, 329), (330, 331), (332, 333)),
@@ -136,6 +197,19 @@ def validate_data() -> None:
                     raise ValueError(f"stage metadata drift for {mechanism_id}")
     if set(DUAL_COSTS) != {314, 321, 323, 326, 330, 333}:
         raise ValueError("dual-payer set drift")
+    if set(OBLIGATION_DAYS) != set(EXPECTED_IDS):
+        raise ValueError("every career/learning mechanism needs an obligation policy")
+    for mechanism_id, routes in OBLIGATION_DAYS.items():
+        if not routes or not set(routes) <= {1, 2, 3}:
+            raise ValueError(f"invalid obligation routes for {mechanism_id}")
+        if any(isinstance(days, bool) or days < 1 for days in routes.values()):
+            raise ValueError(f"invalid obligation duration for {mechanism_id}")
+    if set(OBJECT_KINDS) != set(EXPECTED_IDS):
+        raise ValueError("object kind coverage drift")
+    if len(set(OBJECT_KINDS.values())) != len(EXPECTED_IDS):
+        raise ValueError("object kinds must be unique")
+    if not RELATIONSHIP_IDS <= set(EXPECTED_IDS):
+        raise ValueError("relationship mechanism coverage drift")
     if READINESS != "static-ready":
         raise ValueError("generator cannot claim live readiness")
 
@@ -214,6 +288,26 @@ def receipt_current(row: Mechanism, *, indent: int = 0, ticket: bool = False) ->
 }}'''
     pad = "\t" * indent
     return "\n".join(pad + line if line else line for line in body.splitlines())
+
+
+def object_receipt_current(row: Mechanism) -> str:
+    """Validate an immutable receipt after the shared case has advanced."""
+
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    return f'''zg361_case_kernel_receipt_is_current_trigger = {{
+    RECEIPT_OWNER_VAR = {p}_receipt_owner
+    RECEIPT_SUBJECT_VAR = {p}_receipt_subject
+    RECEIPT_CYCLE_VAR = {p}_receipt_cycle
+    RECEIPT_CASE_VAR = {p}_receipt_case
+    RECEIPT_STATE_VAR = {p}_receipt_state
+    RECEIPT_CHOICE_VAR = {p}_receipt_choice
+    EXPECTED_OWNER = var:{p}_object_owner
+    EXPECTED_SUBJECT = var:{p}_object_subject
+    EXPECTED_CYCLE = var:{p}_object_cycle
+    EXPECTED_CASE = var:{p}_object_case
+    EXPECTED_STATE = {row.state}
+    EXPECTED_CHOICE = var:{p}_object_route
+}}'''
 
 
 def record_operation(row: Mechanism) -> str:
@@ -404,22 +498,31 @@ def live_permission_trigger(row: Mechanism) -> str:
 
 
 def semantic_precheck(row: Mechanism) -> str:
-    if row.mechanism_id != 331:
-        return "always = yes"
-    owner = case_vars(row.domain)["owner"]
-    return f'''trigger_if = {{
-                limit = {{
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    checks = [f'''trigger_if = {{
+                    limit = {{ has_variable = {p}_obligation_pending }}
+                    var:{p}_obligation_pending = 0
+                }}
+                trigger_else = {{ always = yes }}''']
+    if row.mechanism_id == 331:
+        owner = case_vars(row.domain)["owner"]
+        checks.append(f'''trigger_if = {{
+                    limit = {{
+                        OR = {{
+                            scope:zg361_cl_route = 1
+                            scope:zg361_cl_route = 2
+                        }}
+                    }}
                     OR = {{
-                        scope:zg361_cl_route = 1
-                        scope:zg361_cl_route = 2
+                        is_at_war = yes
+                        var:{owner} = {{ is_at_war = yes }}
                     }}
                 }}
-                OR = {{
-                    is_at_war = yes
-                    var:{owner} = {{ is_at_war = yes }}
-                }}
-            }}
-            trigger_else = {{ always = yes }}'''
+                trigger_else = {{ always = yes }}''')
+    body = "\n".join("                " + line if line else line for check in checks for line in check.splitlines())
+    return f'''AND = {{
+{body}
+            }}'''
 
 
 def payload(mechanism_id: int) -> str:
@@ -452,8 +555,9 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_temporary_allowance value = 6 }}
             set_variable = {{ name = {p}_family_support value = 4 }}
             set_variable = {{ name = {p}_allowance_end_day value = 190 }}
+            set_variable = {{ name = {p}_allowance_active value = 0 }}
             set_variable = {{ name = {p}_performance_delta value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_accepted value = 1 }} }}
+            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_accepted value = 1 }} set_variable = {{ name = {p}_allowance_active value = 1 }} }}
             else = {{ set_variable = {{ name = {p}_declined value = 1 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_accepted }}''',
         315: f'''set_variable = {{ name = {p}_trial_days value = 90 }}
@@ -501,7 +605,7 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_released_on_time value = 1 }}
             set_variable = {{ name = {p}_promise_fulfilled value = 1 }}
             set_variable = {{ name = {p}_manager_talent_delta value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_released_on_time value = 0 }} set_variable = {{ name = {p}_promise_fulfilled value = 0 }} set_variable = {{ name = {p}_manager_talent_delta value = -20 }} }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_released_on_time value = 0 }} set_variable = {{ name = {p}_promise_fulfilled value = 0 }} set_variable = {{ name = {p}_promise_pending value = 1 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_manager_talent_delta }}''',
         320: f'''set_variable = {{ name = {p}_named_n value = 1 }}
             set_variable = {{ name = {p}_anonymous_n value = 1 }}
@@ -519,8 +623,8 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_lead_idempotent value = 1 }}
             set_variable = {{ name = {p}_contact_projection_deleted value = 0 }}
             set_variable = {{ name = {p}_humiliation_history_immutable value = 1 }}
-            set_variable = {{ name = {p}_talent_reputation_delta value = -10 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_consent value = 0 }} set_variable = {{ name = {p}_contact_projection_deleted value = 1 }} }}
+            set_variable = {{ name = {p}_talent_reputation_delta value = 2 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_consent value = 0 }} set_variable = {{ name = {p}_contact_projection_deleted value = 1 }} set_variable = {{ name = {p}_talent_reputation_delta value = -10 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_talent_reputation_delta }}''',
         322: f'''set_variable = {{ name = {p}_old_case_links value = 2 }}
             set_variable = {{ name = {p}_exit_reason_frozen value = 1 }}
@@ -595,9 +699,10 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_deadline_after value = 190 }}
             set_variable = {{ name = {p}_rematch_limit value = 1 }}
             set_variable = {{ name = {p}_rematch_used value = 0 }}
-            set_variable = {{ name = {p}_application_evidence value = 1 }}
-            set_variable = {{ name = {p}_mentor_credit value = 1 }}
+            set_variable = {{ name = {p}_application_evidence value = 0 }}
+            set_variable = {{ name = {p}_mentor_credit value = 0 }}
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_rematch_used value = 1 }} }}
+            if = {{ limit = {{ var:{p}_mentor_distinct = 0 }} set_variable = {{ name = {p}_active_mentor_count value = 0 }} set_variable = {{ name = {p}_application_evidence value = 0 }} set_variable = {{ name = {p}_mentor_credit value = 0 }} set_variable = {{ name = {p}_match_failed value = 1 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_mentor_credit }}''',
         330: f'''set_variable = {{ name = {p}_route_code value = 1 }}
             set_variable = {{ name = {p}_affected_character_count value = 1 }}
@@ -617,10 +722,9 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_delivery_hours value = 94 }}
             set_variable = {{ name = {p}_real_crisis_required value = 1 }}
             set_variable = {{ name = {p}_repayment_due_cycle value = {{ value = var:zg361_case_ai_cycle_serial add = 1 }} }}
-            set_variable = {{ name = {p}_repaid_hours value = 4 }}
+            set_variable = {{ name = {p}_repaid_hours value = 0 }}
             set_variable = {{ name = {p}_manager_score_delta value = 0 }}
             set_variable = {{ name = {p}_capacity_conserved value = 1 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_manager_score_delta value = -10 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_manager_score_delta }}''',
         332: f'''set_variable = {{ name = {p}_safe_simulation value = 1 }}
             set_variable = {{ name = {p}_readiness_before value = 40 }}
@@ -650,6 +754,143 @@ def payload(mechanism_id: int) -> str:
     return payloads[mechanism_id]
 
 
+def obligation_event_id(mechanism_id: int) -> int:
+    return 500 + mechanism_id
+
+
+def render_typed_relations(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    owner = f"var:{p}_object_owner"
+    subject = f"var:{p}_object_subject"
+    relations = {
+        312: (("reporting_manager", owner), ("vacancy_candidate", subject)),
+        313: (("source_manager", owner), ("reference_candidate", subject)),
+        314: (("target_manager", owner), ("offered_official", subject)),
+        315: (("trial_target_manager", owner), ("trial_official", subject)),
+        316: (("pay_owner", owner), ("mapped_official", subject)),
+        317: (("acl_owner", owner), ("applicant", subject)),
+        318: (("quota_owner", owner), ("applicant", subject)),
+        319: (("releasing_manager", owner), ("released_official", subject)),
+        320: (("aggregate_owner", owner), ("exit_official", subject)),
+        321: (("relationship_owner", owner), ("alumnus", subject)),
+        322: (("returnee_owner", owner), ("returnee", subject)),
+        323: (("budget_owner", owner), ("learner", subject)),
+        324: (("learning_owner", owner), ("learner", subject)),
+        325: (("training_owner", owner), ("assessed_official", subject)),
+        326: (("conference_owner", owner), ("delegate", subject)),
+        327: (("application_owner", owner), ("teacher", subject)),
+        328: (("community_owner", owner), ("maintainer", subject)),
+        330: (("target_role_owner", owner), ("affected_official", subject)),
+        331: (("capacity_owner", owner), ("learner", subject)),
+        332: (("incumbent", owner), ("successor_candidate", subject)),
+        333: (("contract_owner", owner), ("bound_official", subject)),
+    }
+    if row.mechanism_id == 329:
+        return f'''save_temporary_scope_as = zg361_cl_mentor_subject
+                var:{p}_object_owner = {{
+                    random_vassal = {{
+                        limit = {{
+                            zg361_is_reviewable_vassal_trigger = yes
+                            NOT = {{ this = scope:zg361_cl_mentor_subject }}
+                        }}
+                        save_temporary_scope_as = zg361_cl_external_mentor
+                    }}
+                }}
+                if = {{
+                    limit = {{ exists = scope:zg361_cl_external_mentor }}
+                    set_variable = {{ name = {p}_mentor value = scope:zg361_cl_external_mentor }}
+                    set_variable = {{ name = {p}_mentor_distinct value = 1 }}
+                }}
+                else = {{
+                    # A missing distinct mentor is an observable negative object,
+                    # never a fabricated successful cross-team match.
+                    set_variable = {{ name = {p}_mentor_missing value = 1 }}
+                    set_variable = {{ name = {p}_mentor_distinct value = 0 }}
+                }}
+                set_variable = {{ name = {p}_mentee value = {subject} }}'''
+    return "\n                ".join(
+        f"set_variable = {{ name = {p}_{name} value = {value} }}"
+        for name, value in relations[row.mechanism_id]
+    )
+
+
+def render_object_open(row: Mechanism) -> str:
+    """Freeze a queryable business/debt object after the kernel receipt."""
+
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    kind_id = row.mechanism_id - EXPECTED_IDS[0] + 1
+    return f'''set_variable = {{ name = {p}_object_kind_id value = {kind_id} }}
+                set_variable = {{ name = {p}_object_serial value = $TICKET_CASE$ }}
+                set_variable = {{ name = {p}_object_owner value = $TICKET_OWNER$ }}
+                set_variable = {{ name = {p}_object_subject value = $TICKET_SUBJECT$ }}
+                set_variable = {{ name = {p}_object_cycle value = $TICKET_CYCLE$ }}
+                set_variable = {{ name = {p}_object_case value = $TICKET_CASE$ }}
+                set_variable = {{ name = {p}_object_route value = scope:zg361_cl_route }}
+                set_variable = {{ name = {p}_object_revision value = 1 }}
+                set_variable = {{ name = {p}_object_consumer_revision value = 0 }}
+                set_variable = {{ name = {p}_object_resolved value = 0 }}
+                set_variable = {{ name = {p}_obligation_pending value = 0 }}
+                set_variable = {{ name = {p}_obligation_resolved value = 0 }}
+                set_variable = {{ name = {p}_relation_manager value = $TICKET_OWNER$ }}
+                set_variable = {{ name = {p}_relation_official value = $TICKET_SUBJECT$ }}
+                {render_typed_relations(row)}
+                if = {{
+                    limit = {{ scope:zg361_cl_route = 3 }}
+                    set_variable = {{ name = {p}_object_active value = 0 }}
+                    set_variable = {{ name = {p}_debt_active value = 1 }}
+                    set_variable = {{ name = {p}_acl_class value = 0 }}
+                }}
+                else = {{
+                    set_variable = {{ name = {p}_object_active value = 1 }}
+                    set_variable = {{ name = {p}_debt_active value = 0 }}
+                    if = {{
+                        limit = {{ scope:zg361_cl_route = 1 }}
+                        set_variable = {{ name = {p}_acl_class value = 1 }}
+                    }}
+                    else = {{ set_variable = {{ name = {p}_acl_class value = 2 }} }}
+                }}'''
+
+
+def render_obligation_schedule(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    routes = OBLIGATION_DAYS[row.mechanism_id]
+    branches: list[str] = []
+    for index, (route, days) in enumerate(sorted(routes.items())):
+        keyword = "if" if index == 0 else "else_if"
+        branches.append(f'''{keyword} = {{
+                    limit = {{ scope:zg361_cl_route = {route} }}
+                    set_variable = {{ name = {p}_obligation_pending value = 1 }}
+                    set_variable = {{ name = {p}_obligation_days value = {days} }}
+                    set_variable = {{ name = {p}_obligation_owner value = $TICKET_OWNER$ }}
+                    set_variable = {{ name = {p}_obligation_subject value = $TICKET_SUBJECT$ }}
+                    set_variable = {{ name = {p}_obligation_cycle value = $TICKET_CYCLE$ }}
+                    set_variable = {{ name = {p}_obligation_case value = $TICKET_CASE$ }}
+                    set_variable = {{ name = {p}_obligation_route value = scope:zg361_cl_route }}
+                    trigger_event = {{ id = zg361cl.{obligation_event_id(row.mechanism_id)} days = {days} }}
+                }}''')
+    branches.append(f'''else = {{
+                    set_variable = {{ name = {p}_obligation_pending value = 0 }}
+                    set_variable = {{ name = {p}_obligation_days value = 0 }}
+                }}''')
+    return "\n                ".join(branches)
+
+
+def render_relationship_mutation(row: Mechanism) -> str:
+    if row.mechanism_id not in RELATIONSHIP_IDS:
+        return ""
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    return f'''if = {{
+            limit = {{ var:{p}_route = 1 }}
+            add_opinion = {{ modifier = friendliness_opinion target = var:{p}_object_owner opinion = 5 }}
+            set_variable = {{ name = {p}_relationship_revision value = 1 }}
+        }}
+        else_if = {{
+            limit = {{ var:{p}_route = 2 }}
+            add_opinion = {{ modifier = angry_opinion target = var:{p}_object_owner opinion = -5 }}
+            set_variable = {{ name = {p}_relationship_revision value = 1 }}
+        }}'''
+
+
 def render_consumer(row: Mechanism) -> str:
     p = f"zg361_cl_m{row.mechanism_id:03d}"
     return f'''# {row.mechanism_id:03d} consumer: frozen receipt -> domain projection.
@@ -660,6 +901,9 @@ zg361_cl_m{row.mechanism_id:03d}_consume_effect = {{
             NOT = {{ var:{p}_route = 3 }}
         }}
         {payload(row.mechanism_id)}
+        {render_relationship_mutation(row)}
+        change_variable = {{ name = {p}_object_consumer_revision add = 1 }}
+        set_variable = {{ name = {p}_object_state value = 2 }}
         set_variable = {{ name = {p}_consumed value = 1 }}
         debug_log = "ZG361CL: consumed {row.mechanism_id:03d} {row.operation}"
     }}
@@ -731,6 +975,10 @@ zg361_cl_m{row.mechanism_id:03d}_core_effect = {{
                 set_variable = {{ name = {p}_consumed value = 0 }}
                 set_variable = {{ name = {p}_deferred value = 0 }}
                 {apply_cost}
+                # A receipt now owns one typed object identity.  A/B activate
+                # the business object; C activates only a due governance debt.
+                {render_object_open(row)}
+                {render_obligation_schedule(row)}
                 if = {{
                     limit = {{ scope:zg361_cl_route = 3 }}
                     set_variable = {{ name = {p}_deferred value = 1 }}
@@ -786,6 +1034,154 @@ zg361_cl_m{row.mechanism_id:03d}_subject_response_effect = {{
         set_variable = {{ name = {p}_subject_response value = scope:zg361_cl_subject_route }}
         change_variable = {{ name = zg361_case_{row.domain}_feedback_revision add = 1 }}
         debug_log = "ZG361CL: assessed subject answered {row.mechanism_id:03d} once"
+    }}
+}}'''
+
+
+def obligation_resolution_payload(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    payloads = {
+        312: f"set_variable = {{ name = {p}_vacancy_closed value = 1 }}",
+        313: f"set_variable = {{ name = {p}_reference_review_closed value = 1 }}",
+        314: f"set_variable = {{ name = {p}_allowance_active value = 0 }}",
+        315: f"set_variable = {{ name = {p}_trial_resolved value = 1 }}",
+        316: f"set_variable = {{ name = {p}_pay_mapping_settled value = 1 }}",
+        317: f"set_variable = {{ name = {p}_acl_review_closed value = 1 }}",
+        318: f"set_variable = {{ name = {p}_slot_timeout_settled value = 1 }}",
+        319: f'''set_variable = {{ name = {p}_release_or_promise_checked value = 1 }}
+            if = {{
+                limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_promise_pending value = 0 }}
+                set_variable = {{ name = {p}_manager_talent_delta value = -20 }}
+            }}''',
+        320: f"set_variable = {{ name = {p}_aggregate_audit_closed value = 1 }}",
+        321: f"set_variable = {{ name = {p}_alumni_contact_cycle_closed value = 1 }}",
+        322: f"set_variable = {{ name = {p}_returnee_review_closed value = 1 }}",
+        323: f"set_variable = {{ name = {p}_learning_budget_window_closed value = 1 }}",
+        324: f"set_variable = {{ name = {p}_outcome_window_closed value = 1 }}",
+        325: f"set_variable = {{ name = {p}_practical_assessment_closed value = 1 }}",
+        326: f"set_variable = {{ name = {p}_adoption_window_closed value = 1 }}",
+        327: f"set_variable = {{ name = {p}_teaching_application_window_closed value = 1 }}",
+        328: f"set_variable = {{ name = {p}_community_maintenance_window_closed value = 1 }}",
+        329: f'''set_variable = {{ name = {p}_mentor_match_window_closed value = 1 }}
+            if = {{
+                limit = {{ var:{p}_route = 1 var:{p}_mentor_distinct = 1 }}
+                set_variable = {{ name = {p}_application_evidence value = 1 }}
+                set_variable = {{ name = {p}_mentor_credit value = 1 }}
+            }}''',
+        330: f"set_variable = {{ name = {p}_reskill_assessment_closed value = 1 }}",
+        331: f'''set_variable = {{ name = {p}_protected_time_repayment_checked value = 1 }}
+            set_variable = {{ name = {p}_repaid_hours value = 4 }}
+            if = {{
+                limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_manager_score_delta value = -10 }}
+            }}''',
+        332: f"set_variable = {{ name = {p}_succession_drill_closed value = 1 }}",
+        333: f"set_variable = {{ name = {p}_training_service_window_closed value = 1 }}",
+    }
+    return payloads[row.mechanism_id]
+
+
+def render_obligation_finalize(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    relationship_failure = (
+        f"add_opinion = {{ modifier = angry_opinion target = var:{p}_object_owner opinion = -5 }}"
+        if row.mechanism_id in RELATIONSHIP_IDS
+        else ""
+    )
+    relationship_success = (
+        f"add_opinion = {{ modifier = friendliness_opinion target = var:{p}_object_owner opinion = 5 }}"
+        if row.mechanism_id in RELATIONSHIP_IDS
+        else ""
+    )
+    return f'''set_variable = {{ name = {p}_obligation_pending value = 0 }}
+            set_variable = {{ name = {p}_obligation_resolved value = 1 }}
+            set_variable = {{ name = {p}_object_resolved value = 1 }}
+            set_variable = {{ name = {p}_object_state value = 3 }}
+            {obligation_resolution_payload(row)}
+            if = {{
+                limit = {{ var:{p}_object_route = 3 }}
+                set_variable = {{ name = {p}_debt_overdue value = 1 }}
+                {relationship_failure}
+            }}
+            else_if = {{
+                limit = {{ var:{p}_object_route = 2 }}
+                set_variable = {{ name = {p}_obligation_negative_outcome value = 1 }}
+                {relationship_failure}
+            }}
+            else = {{
+                set_variable = {{ name = {p}_obligation_positive_outcome value = 1 }}
+                {relationship_success}
+            }}'''
+
+
+def render_obligation_resolver(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    finalizer = render_obligation_finalize(row)
+    if row.mechanism_id == 333:
+        resolve_body = f'''if = {{
+            limit = {{ var:{p}_object_route = 2 }}
+            zg361_cl_m333_layoff_exemption_effect = yes
+            if = {{
+                limit = {{ var:{p}_recovery_settled = 0 }}
+                zg361_cl_m333_recover_outstanding_effect = yes
+            }}
+            if = {{
+                limit = {{ var:{p}_recovery_settled = 1 }}
+                {finalizer}
+            }}
+            else = {{
+                # Insufficient personal funds leave the obligation pending and
+                # retryable; no recovery or resolved receipt is fabricated.
+                trigger_event = {{ id = zg361cl.{obligation_event_id(row.mechanism_id)} days = 30 }}
+            }}
+        }}
+        else = {{ {finalizer} }}'''
+    else:
+        resolve_body = finalizer
+    return f'''# {row.mechanism_id:03d} post-receipt business/debt deadline consumer.
+zg361_cl_m{row.mechanism_id:03d}_resolve_obligation_effect = {{
+    zg361_cl_clear_red_effect = yes
+    if = {{
+        limit = {{ NOT = {{ var:{p}_obligation_pending = 1 }} }}
+        zg361_cl_set_red_effect = {{ CODE = 3 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{
+            NOT = {{
+                AND = {{
+                    has_variable = {p}_object_owner
+                    has_variable = {p}_object_subject
+                    has_variable = {p}_object_cycle
+                    has_variable = {p}_object_case
+                    has_variable = {p}_receipt_owner
+                    has_variable = {p}_receipt_subject
+                    has_variable = {p}_receipt_cycle
+                    has_variable = {p}_receipt_case
+                    var:{p}_object_subject = this
+                    var:{p}_object_owner = var:{p}_receipt_owner
+                    var:{p}_object_subject = var:{p}_receipt_subject
+                    var:{p}_object_cycle = var:{p}_receipt_cycle
+                    var:{p}_object_case = var:{p}_receipt_case
+                    var:{p}_object_revision = 1
+                }}
+            }}
+        }}
+        zg361_cl_set_red_effect = {{ CODE = 2 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{ NOT = {{ var:{p}_object_owner = {{ zg361_is_celestial_liege_trigger = yes }} }} }}
+        zg361_cl_set_red_effect = {{ CODE = 1 MECHANISM = {row.mechanism_id} }}
+        # A former owner cannot execute the obligation, but the orphan is
+        # terminally audited so it cannot deadlock every later review cycle.
+        set_variable = {{ name = {p}_obligation_pending value = 0 }}
+        set_variable = {{ name = {p}_obligation_orphaned value = 1 }}
+        set_variable = {{ name = {p}_object_resolved value = 1 }}
+        set_variable = {{ name = {p}_object_state value = 4 }}
+    }}
+    else = {{
+        {resolve_body}
+        debug_log = "ZG361CL: resolved {row.mechanism_id:03d} {OBJECT_KINDS[row.mechanism_id]} obligation"
     }}
 }}'''
 
@@ -919,26 +1315,6 @@ def render_stage_runner(domain: str, state: int, ids: tuple[int, ...]) -> str:
     )
     before_transition = ""
     completion_guard = ""
-    if domain == "ai" and state == 5:
-        row333 = by_id[333]
-        before_transition = f'''if = {{
-        limit = {{
-            {receipt_current(row333, ticket=True)}
-            var:zg361_cl_m333_route = 2
-            var:zg361_cl_m333_recovery_settled = 0
-        }}
-        # A funded, actual B2 #074 organization exit is the only waiver fact.
-        zg361_cl_m333_layoff_exemption_effect = yes
-        if = {{
-            limit = {{ var:zg361_cl_m333_recovery_settled = 0 }}
-            zg361_cl_m333_recover_outstanding_effect = yes
-        }}
-    }}'''
-        completion_guard = '''trigger_if = {
-                limit = { var:zg361_cl_m333_route = 2 }
-                var:zg361_cl_m333_recovery_settled = 1
-            }
-            trigger_else = { always = yes }'''
     return f'''zg361_cl_run_{domain}_stage_{state:02d}_effect = {{
     # Revalidate the frozen case and live authority even when every mechanism
     # receipt was written early and the core calls below will all be skipped.
@@ -1041,6 +1417,7 @@ def render_effects() -> bytes:
         for item in (
             render_core(row),
             render_consumer(row),
+            render_obligation_resolver(row),
             render_manager_entry(row),
             render_subject_response(row),
         )
@@ -1192,7 +1569,7 @@ zg361_cl_m312_hire_once_effect = {{
 zg361_cl_m333_layoff_exemption_effect = {{
     if = {{
         limit = {{
-            {receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 333))}
+            {object_receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 333))}
             var:zg361_cl_m333_recovery_settled = 0
             has_variable = zg361_b2_m074_actual_exit
             has_variable = zg361_b2_m074_reason
@@ -1223,14 +1600,14 @@ zg361_cl_m333_layoff_exemption_effect = {{
 zg361_cl_m333_recover_outstanding_effect = {{
     if = {{
         limit = {{
-            {receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 333))}
+            {object_receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 333))}
             var:zg361_cl_m333_organization_layoff_exempt = 0
             var:zg361_cl_m333_recovery_settled = 0
             var:zg361_cl_m333_outstanding = 18
             gold >= 18
         }}
         add_gold = {{ value = 0 subtract = 18 }}
-        var:zg361_case_ai_owner = {{
+        var:zg361_cl_m333_object_owner = {{
             add_treasury = 13
             add_gold = 5
         }}
@@ -1266,16 +1643,29 @@ def render_hidden_event(domain: str, state: int) -> str:
 }}'''
 
 
+def render_obligation_event(row: Mechanism) -> str:
+    return f'''zg361cl.{obligation_event_id(row.mechanism_id)} = {{
+    type = character_event
+    hidden = yes
+    immediate = {{
+        zg361_cl_m{row.mechanism_id:03d}_resolve_obligation_effect = yes
+    }}
+}}'''
+
+
 def render_events() -> bytes:
-    hidden = "\n\n".join(
+    stage_hidden = "\n\n".join(
         render_hidden_event(domain, state)
         for domain in ("ah", "ai")
         for state in range(1, len(STAGES[domain]) + 1)
     )
+    obligation_hidden = "\n\n".join(render_obligation_event(row) for row in MECHANISMS)
     body = f'''
 namespace = zg361cl
 
-{hidden}
+{stage_hidden}
+
+{obligation_hidden}
 
 # The only visible event in this package.  It is one owner digest, never one
 # event per mechanism or subordinate.  Authorized AI owners never enter it.

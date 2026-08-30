@@ -6,7 +6,7 @@
 - MCP evidence: `none`
 - CK3 live evidence: `none`
 - 精确范围：AH `312–322` 与 AI `323–333`，共 22 项。
-- 本包已生成可加载的 effect/event/localization，并以静态测试证明收据、期限、资源和消费者合同；尚未接中央生命周期，也没有真实 CK3 paused snapshot，因此不得写成 live 或发版签核。
+- 本包已生成可加载的 effect/event/localization，并以静态测试和专用 Python 语义模型证明收据、对象、期限、资源、ACL、关系和消费者合同；尚未接中央生命周期，也没有真实 CK3 paused snapshot，因此不得写成 live 或发版签核。
 
 ## 一、独立产物与唯一接缝
 
@@ -25,6 +25,8 @@ zg361_cl_dispatch_direct_reports_effect
 入口冻结当前 `review_serial`，分别记录**成功打开且首个 deadline 已成功排队**的 AH/AI case 数与完成数。开案失败的受评者不进入 expected，因而不会把摘要队列永久挂死。重复调用同一轮不会重置现场；新 `review_serial` 才建立新 portfolio。当前文件不自行修改中央 caller。
 
 每个逐项 manager callable 都显式要求 caller 传入冻结的 `TICKET_OWNER / TICKET_SUBJECT / TICKET_CYCLE / TICKET_CASE / TICKET_STATE`；绝不在执行时从当前 case 自读一组值再与自身比较。中央接线只应调用 portfolio adapter，不应另造 22 个入口。
+
+纯 Python 权威语义层为 `tools/zg361_career_learning_semantic_model.py` 与 `tools/test_zg361_career_learning_semantic_model.py`。它逐号建模 22 种不同的 typed object、22 个不同的 named consumer、A/B/C 三路线、双付款和容量守恒、期限 resolve、ACL、岗位/导师/继任关系，以及 duplicate/stale/negative no-mutation。它的诚实边界是 `python-l0-model`，不能冒充 CK3 wiring 或 live evidence。
 
 ## 二、权限与第二 AI 例外
 
@@ -87,9 +89,19 @@ budgeted(1):           323 + 324 + 325
 | 332 | `learning.run_safe_succession_drill` | safe simulation、40→50/42、一次 veto | 失败只写 development gap；`real_incident=0` 且不自动 3.25 |
 | 333 | `learning.settle_training_commitment` | 成本 24、360 日服务期、每月递减 2、应用证据 | 国库 18 + 经理 6；D+90 自愿离开余额 18，按整除规则返还国库 13 / 经理 5 且只一次；只有 B2 #074 已实付、实际离任、释放 HC 且原因为组织裁撤的事实可豁免；无应用信用 0 |
 
-每项都有独立 `*_core_effect`、六字段 receipt、`*_consume_effect` 与 manager callable。route C 只登记 `mechanism + owner + cycle` 的下一轮制度债，不写业务成功、不扣资源。
+每项都有独立 `*_core_effect`、六字段 receipt、typed object identity、`*_consume_effect`、`*_resolve_obligation_effect` 与 manager callable。A/B 创建真实业务对象并只由对应 named consumer 消费一次；C 不伪造业务成功，而是创建带 owner/subject/cycle/case/due-cycle 的治理债对象。#333 的 C 是“无绑定但仍由组织出资”的合同，因此仍原子扣国库 18 与经理个人 6，不能借 C 获得免费培训。
 
-## 五、五元守卫、幂等与期限
+## 五、对象合同：不是 marker/string-only
+
+每个 receipt 后必须冻结：`object_kind_id / object_serial`、`object_owner / subject / cycle / case / route`、`object_revision / consumer_revision / state / resolved`、typed relation fields、`acl_class`，以及 `obligation_owner / subject / cycle / case / route / days / pending / resolved`。
+
+`OBJECT_KINDS` 精确映射 22 种对象：vacancy、reference、transfer offer、trial assignment、pay mapping、application ACL/quota、release obligation、exit signal、alumni relation、returnee case、learning budget/progress、competence assessment、conference adoption、teaching attribution、community artifact、mentor match、reskill case、protected-time loan、succession drill、training commitment。
+
+这些对象有可消费语义：#312 的合法 vacancy 冻结 HC、汇报线、候选人与一次录用 consumer；#314/#315/#319 冻结 offer、trial、release 的负责经理/本人关系和独立到期日；#317 冻结 ACL class 与访问日志；#323 同时消费学习金币池与受保护工时；#324 冻结 completion/application/outcome 三阶段；#332 冻结 incumbent=owner、candidate=subject 的安全继任演练，失败仍保持 `real_incident=0` 和 `automatic_low_grade=0`。
+
+#329 会从 owner 的其他直属受评者中选择与本人不同的真实 mentor scope；找不到时写 `mentor_missing/match_failed`，不得把 owner 或本人伪装成跨团队导师。导师信用只在应用窗口结算后产生。关系类 consumer 使用真实 CK3 opinion mutation，而不是只写字符串。#333 的提前离开追缴只在 D+90 obligation resolver 执行，不能为了关 AI stage 在同日提前追缴。
+
+## 六、五元守卫、幂等与期限
 
 所有 mutation 顺序固定为：
 
@@ -100,45 +112,48 @@ real-time celestial owner + direct-liege relationship -> permission RED
 route/semantic invariant -> invariant RED
 full CK3 resource precheck -> resource RED
 both shadow journals reserve/settle -> business receipt -> real CK3 debits
-domain consumer -> stage transition
+typed object + obligation -> domain consumer -> stage transition
 ```
 
 receipt 字段为 owner、subject、cycle、case、state、choice。重复或 stale 调用发生在 `record_operation`、金币扣除和领域变量以前。旧 deadline 先走 `zg361_case_kernel_expire_deadline_effect`；过期成功后，resolver 继续携带 deadline 冻结的五元 ticket，重新验证 owner 仍为合格天朝制公爵以上领主、subject 仍为其直属可受评封臣。该 gate 位于 stage runner 最外层，因此即使同段 receipt 已由 manager callable 提前写齐、所有 core 都被跳过，也不能绕过权限直接 transition。身份、状态或实时权限任一失效都不能形成新业务 receipt 或推进 state。
 
 typed RED 固定为：1 permission、2 stale identity/state、3 duplicate receipt、4 invariant/route、5 resource exhausted。
 
-## 六、金币与保护工时守恒
+每项还有独立的 post-receipt obligation pending latch。旧对象 unresolved 时，新 cycle 即使拿到不同 case ticket，也会在 record/payment/object mutation 以前得到 typed invariant RED，不能覆盖旧 owner/subject/deadline。到期 resolver 固定顺序为 duplicate → immutable receipt/object identity → 实时天朝制公爵以上 owner → domain resolution；错误 owner、subject、cycle 或 case 不得结算。若冻结 owner 已失去天朝制公爵以上资格，resolver 写 permission RED 与 `obligation_orphaned` 终态并释放 pending，既不替他结算业务，也不让永久失权的旧对象卡死以后所有轮次。
+
+## 七、金币与保护工时守恒
 
 收费编号精确为 `{314, 321, 323, 326, 330, 333}`。每笔先同时预检负责经理的政府国库与个人金币，再分别走共享 transaction journal 的 reserve→settle；**两本 journal 均 settled 后才允许生成业务 receipt**，随后才执行真实 `remove_treasury` 与个人 `add_gold = -N`。任一本 journal 失败会 refund 已 reserve/settle 的另一边；极端情况下业务 receipt 写入又失去 frozen guard，也会 refund 两本 shadow journal，而且真实金币尚未扣除。失败路径不留业务 receipt、不写消费者、不推进 state。
 
-333 的提前离开回收额 18 不超过原 receipt 24；按 L0 `amount * treasury_share // total` 规则，受评者支付 18 后组织国库返 13、负责经理个人返 5，并把 `recovery_settled` 锁为 1。组织裁撤豁免只消费 B2 #074 的真实事实：`reason=1`、subject 相同、国库已付 50、个人已收 50、`actual_exit=1`、`hc_released=1`，且 redundancy state 为已执行/已审计（3/4）。豁免只把 outstanding 归零，不能删除原 receipt 或凭空制造工作应用信用。
+333 的提前离开回收额 18 不超过原 receipt 24；按 L0 `amount * treasury_share // total` 规则，受评者支付 18 后组织国库返 13、负责经理个人返 5，并把 `recovery_settled` 锁为 1。组织裁撤豁免只消费 B2 #074 的真实事实：`reason=1`、subject 相同、国库已付 50、个人已收 50、`actual_exit=1`、`hc_released=1`，且 redundancy state 为已执行/已审计（3/4）。豁免只把 outstanding 归零，不能删除原 receipt 或凭空制造工作应用信用。D+90 时个人金币不足会保持 obligation pending 并在 30 日后重试，不生成虚假的 recovered/resolved receipt。
 
 学习金币池与保护工时池分账；结课标签不能兑换绩效。331 的借用保持 `100 = 94 delivery + 6 remaining protected` 的投影，并把补回期限固定到下一 cycle。
 
-## 七、有序事件队列与唯一可见摘要
+## 八、有序事件队列与唯一可见摘要
 
-AH 六段、AI 五段各自只排一个 hidden deadline；整个包共 11 个 hidden event。阶段到期自动批量消费本段编号，不生成逐编号窗口。
+AH 六段、AI 五段各自只排一个 stage hidden deadline，共 11 个 stage event。每个编号另有一个 post-receipt business/debt obligation hidden event，共 22 个；整个包合计 33 个 hidden event。业务期限事件只消费已经冻结的对象，不生成逐编号窗口，也不阻塞 case stage 结案。唯一可见事件仍是 portfolio digest `zg361cl.390`。
 
 manager-scope portfolio 在 owner 上分别冻结 `ah_expected` 与 `ai_expected`，且只在对应开案和首个 deadline 都成功后累加。每个 AH/AI case 关闭后，先在 subject scope 冻结 completion cycle，再切到 owner；只有该 cycle 等于 owner 当前 portfolio cycle 才累加 completion。至少一域 expected 非零、两域各自 completion 达到各自 expected，且本轮 `digest_shown=0`，才排 `zg361cl.390`。因此玩家每个 portfolio/review serial 最多收到一张可见摘要。合格 AI owner 永远只留后台日志。
 
-## 八、本地化边界
+## 九、本地化边界
 
 简中和英文是本轮创作文案。法、德、日、韩、波、俄、西只复制 English structural placeholders，保持九语言文件可加载；这七份不是 release-grade 翻译。正式发版前再按仓库发布流程完成七语审计和实机抽检。
 
-## 九、静态验收
+## 十、静态验收
 
 ```powershell
 py -m py_compile tools/gen_361_career_learning_runtime.py tools/test_zg361_career_learning_runtime.py
 py tools/gen_361_career_learning_runtime.py --check
 py -m unittest tools/test_zg361_career_learning_runtime.py
+py tools/test_zg361_career_learning_semantic_model.py
 py tools/test_zg361_phase2_manager_talent_model.py
 py tools/test_zg361_case_kernel.py
 py tools/validate_local.py
 ```
 
-测试还检查：22/22 精确覆盖、operation 唯一、11 个 deadline、冻结 ticket 逐层透传、deadline 实时权限重验、transition 同段重试、共享状态迁移、重复/stale 在业务写入前、六笔双付款 journal→receipt→真实扣款次序与 rollback、成功开案分域 expected、331 战争事实、333 B2 #074 裁撤事实、逐编号非泛化语义、本人响应权限、玩家单摘要/AI 静默、九语 key parity、UTF-8 BOM 和生成器可复现。
+测试还检查：22/22 精确覆盖、22 种对象/consumer 唯一、11 个 stage deadline + 22 个 object obligation event、冻结 ticket 逐层透传、deadline 实时权限重验、pending 防覆盖、transition 同段重试、共享状态迁移、重复/stale 在业务写入前、六笔双付款 journal→receipt→真实扣款次序与 rollback、66 条 A/B/C L0 路径、容量/金币守恒、ACL negative、岗位一次录用、真实独立 mentor、继任关系、333 D+90 追缴与重试、成功开案分域 expected、331 战争事实、333 B2 #074 裁撤事实、本人响应权限、玩家单摘要/AI 静默、九语 key parity、UTF-8 BOM 和生成器可复现。
 
-## 十、后续
+## 十一、后续
 
 1. 由中央结算生命周期调用唯一 portfolio adapter；不得另开 22 个 caller。
 2. MCP 必须直接查询 owner/subject/cycle/case/state、receipt、deadline、双付款余额/流水、关键消费者字段与 portfolio completion；禁止优先 OCR。

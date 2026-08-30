@@ -144,6 +144,8 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         for relative in (
             "tools/gen_361_career_learning_runtime.py",
             "tools/test_zg361_career_learning_runtime.py",
+            "tools/zg361_career_learning_semantic_model.py",
+            "tools/test_zg361_career_learning_semantic_model.py",
             "docs/361-phase2-career-learning-ck3-runtime-spec.md",
         ):
             self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(b"\xef\xbb\xbf"))
@@ -376,7 +378,9 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("eligible AI career/learning portfolio advanced silently", queue)
 
     def test_only_one_visible_event_and_hidden_work_is_queued(self) -> None:
-        hidden_expected = sum(len(stages) for stages in generator.STAGES.values())
+        hidden_expected = sum(len(stages) for stages in generator.STAGES.values()) + len(
+            generator.MECHANISMS
+        )
         self.assertEqual(self.events.count("hidden = yes"), hidden_expected)
         event_ids = re.findall(r"(?m)^(zg361cl\.\d+)\s*=\s*\{", self.events)
         self.assertEqual(len(event_ids), hidden_expected + 1)
@@ -425,8 +429,9 @@ class CareerLearningRuntimeTests(unittest.TestCase):
 
     def test_declining_relocation_and_contact_never_charge(self) -> None:
         for mechanism_id in (314, 321):
-            source = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_core_effect")
-            charged = source[source.index("trigger_if = {") : source.index("trigger_else = { always = yes }")]
+            _treasury, _manager, charged_routes = generator.DUAL_COSTS[mechanism_id]
+            self.assertEqual(charged_routes, frozenset({1}))
+            charged = generator.charged_route_trigger(charged_routes)
             self.assertIn("scope:zg361_cl_route = 1", charged)
             self.assertNotIn("scope:zg361_cl_route = 2", charged)
         relocation = block(self.effects, "zg361_cl_m314_consume_effect")
@@ -492,11 +497,14 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         ):
             self.assertIn(fact, exemption)
         stage5 = block(self.effects, "zg361_cl_run_ai_stage_05_effect")
-        exemption_at = stage5.index("zg361_cl_m333_layoff_exemption_effect = yes")
-        recovery_at = stage5.index("zg361_cl_m333_recover_outstanding_effect = yes")
-        transition_at = stage5.index("zg361_case_ai_advance_05_effect")
+        resolver = block(self.effects, "zg361_cl_m333_resolve_obligation_effect")
+        event = block(self.events, f"zg361cl.{generator.obligation_event_id(333)}")
+        exemption_at = resolver.index("zg361_cl_m333_layoff_exemption_effect = yes")
+        recovery_at = resolver.index("zg361_cl_m333_recover_outstanding_effect = yes")
         self.assertLess(exemption_at, recovery_at)
-        self.assertLess(recovery_at, transition_at)
+        self.assertNotIn("zg361_cl_m333_recover_outstanding_effect = yes", stage5)
+        self.assertIn("zg361_case_ai_advance_05_effect", stage5)
+        self.assertIn("zg361_cl_m333_resolve_obligation_effect = yes", event)
 
     def test_internal_market_semantics_are_not_generic_reskins(self) -> None:
         assertions = {
@@ -507,7 +515,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             316: ("professional_base value = 30", "historical_payments_immutable", "step_3 value = 35"),
             317: ("acl_stage", "access_log_rows", "rating_changed_without_evidence"),
             318: ("formal_limit value = 2", "withdrawal_still_consumes", "manager_timeout_refunds"),
-            319: ("counteroffer_limit value = 1", "release_deadline_days value = 30", "manager_talent_delta value = -20"),
+            319: ("counteroffer_limit value = 1", "release_deadline_days value = 30", "promise_pending value = 1"),
             320: ("minimum_same_issue_sample value = 2", "anonymous_identity_hidden", "original_reason_preserved"),
             321: ("consent", "maintenance_once_per_cycle", "humiliation_history_immutable"),
             322: ("old_case_links value = 2", "active_flow_limit value = 1", "history_wipe_blocked"),
@@ -527,7 +535,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             328: ("maintainers value = 1", "capacity_conserved", "cross_team_impact"),
             329: ("active_mentor_count value = 1", "rematch_limit value = 1", "deadline_after value = 190"),
             330: ("role_identity_conserved", "failed_is_low_grade value = 0", "fairness_debt value = 1"),
-            331: ("protected_hours value = 10", "delivery_hours value = 94", "manager_score_delta value = -10"),
+            331: ("protected_hours value = 10", "delivery_hours value = 94", "repaid_hours value = 0"),
             332: ("safe_simulation value = 1", "real_incident value = 0", "development_gap value = 1"),
             333: ("monthly_reduction value = 2", "recovery_cap value = 24", "outstanding value = 18"),
         }
@@ -551,12 +559,177 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("recovered value = 18", recovery)
         self.assertIn("organization_layoff_exempt value = 1", exemption)
         self.assertIn("outstanding value = 0", exemption)
-        stage = block(self.effects, "zg361_cl_run_ai_stage_05_effect")
+        resolver = block(self.effects, "zg361_cl_m333_resolve_obligation_effect")
+        event = block(self.events, f"zg361cl.{generator.obligation_event_id(333)}")
         self.assertLess(
-            stage.index("zg361_cl_m333_recover_outstanding_effect = yes"),
-            stage.index("zg361_case_ai_advance_05_effect"),
+            resolver.index("zg361_cl_m333_recover_outstanding_effect = yes"),
+            resolver.index("var:zg361_cl_m333_recovery_settled = 1"),
         )
-        self.assertIn("var:zg361_cl_m333_recovery_settled = 1", stage)
+        self.assertIn("days = 30", resolver)
+        self.assertIn("zg361_cl_m333_resolve_obligation_effect = yes", event)
+
+    def test_all_22_receipts_own_typed_objects_and_named_consumers(self) -> None:
+        self.assertEqual(set(generator.OBJECT_KINDS), set(range(312, 334)))
+        self.assertEqual(len(set(generator.OBJECT_KINDS.values())), 22)
+        for row in generator.MECHANISMS:
+            mechanism_id = row.mechanism_id
+            p = f"zg361_cl_m{mechanism_id:03d}"
+            with self.subTest(mechanism_id=mechanism_id):
+                core = block(self.effects, f"{p}_core_effect")
+                consumer = block(self.effects, f"{p}_consume_effect")
+                record_at = core.index("zg361_case_kernel_record_operation_effect")
+                object_at = core.index(f"{p}_object_kind_id", record_at)
+                schedule_at = core.index(f"{p}_obligation_pending value = 1", object_at)
+                consumer_at = core.index(f"{p}_consume_effect = yes", schedule_at)
+                self.assertLess(record_at, object_at)
+                self.assertLess(object_at, schedule_at)
+                self.assertLess(schedule_at, consumer_at)
+                for suffix in (
+                    "object_owner",
+                    "object_subject",
+                    "object_cycle",
+                    "object_case",
+                    "object_route",
+                    "object_revision",
+                    "relation_manager",
+                    "relation_official",
+                    "acl_class",
+                ):
+                    self.assertIn(f"{p}_{suffix}", core)
+                self.assertIn(f"{p}_object_active value = 1", core)
+                self.assertIn(f"{p}_debt_active value = 1", core)
+                self.assertIn(f"{p}_object_consumer_revision", consumer)
+                self.assertIn(row.consumer, consumer)
+
+    def test_typed_role_offer_mentor_and_succession_relations_are_projected(self) -> None:
+        expected_relations = {
+            312: ("reporting_manager", "vacancy_candidate"),
+            314: ("target_manager", "offered_official"),
+            315: ("trial_target_manager", "trial_official"),
+            319: ("releasing_manager", "released_official"),
+            323: ("budget_owner", "learner"),
+            324: ("learning_owner", "learner"),
+            327: ("application_owner", "teacher"),
+            330: ("target_role_owner", "affected_official"),
+            332: ("incumbent", "successor_candidate"),
+            333: ("contract_owner", "bound_official"),
+        }
+        for mechanism_id, suffixes in expected_relations.items():
+            core = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_core_effect")
+            for suffix in suffixes:
+                self.assertIn(f"zg361_cl_m{mechanism_id:03d}_{suffix}", core)
+
+        mentor = block(self.effects, "zg361_cl_m329_core_effect")
+        self.assertIn("random_vassal", mentor)
+        self.assertIn("NOT = { this = scope:zg361_cl_mentor_subject }", mentor)
+        self.assertIn("zg361_cl_m329_mentor_distinct value = 1", mentor)
+        self.assertIn("zg361_cl_m329_mentor_missing value = 1", mentor)
+        mentor_consumer = block(self.effects, "zg361_cl_m329_consume_effect")
+        self.assertIn("var:zg361_cl_m329_mentor_distinct = 0", mentor_consumer)
+        self.assertIn("zg361_cl_m329_match_failed value = 1", mentor_consumer)
+
+    def test_business_obligations_are_frozen_scheduled_and_single_use(self) -> None:
+        self.assertEqual(set(generator.OBLIGATION_DAYS), set(range(312, 334)))
+        for row in generator.MECHANISMS:
+            mechanism_id = row.mechanism_id
+            p = f"zg361_cl_m{mechanism_id:03d}"
+            with self.subTest(mechanism_id=mechanism_id):
+                core = block(self.effects, f"{p}_core_effect")
+                resolver = block(self.effects, f"{p}_resolve_obligation_effect")
+                event_id = generator.obligation_event_id(mechanism_id)
+                event = block(self.events, f"zg361cl.{event_id}")
+                self.assertIn(f"{p}_resolve_obligation_effect = yes", event)
+                for route, days in generator.OBLIGATION_DAYS[mechanism_id].items():
+                    self.assertIn(f"scope:zg361_cl_route = {route}", core)
+                    self.assertIn(
+                        f"trigger_event = {{ id = zg361cl.{event_id} days = {days} }}",
+                        core,
+                    )
+                for suffix in (
+                    "obligation_owner",
+                    "obligation_subject",
+                    "obligation_cycle",
+                    "obligation_case",
+                    "obligation_route",
+                ):
+                    self.assertIn(f"{p}_{suffix}", core)
+                duplicate_at = resolver.index(f"CODE = 3 MECHANISM = {mechanism_id}")
+                stale_at = resolver.index(f"CODE = 2 MECHANISM = {mechanism_id}")
+                permission_at = resolver.index(f"CODE = 1 MECHANISM = {mechanism_id}")
+                finalize_at = resolver.index(f"{p}_obligation_resolved value = 1")
+                self.assertLess(duplicate_at, stale_at)
+                self.assertLess(stale_at, permission_at)
+                self.assertLess(permission_at, finalize_at)
+                self.assertIn(f"var:{p}_object_subject = this", resolver)
+                self.assertIn(f"var:{p}_object_owner = var:{p}_receipt_owner", resolver)
+                self.assertIn(f"var:{p}_object_cycle = var:{p}_receipt_cycle", resolver)
+                self.assertIn(f"var:{p}_object_case = var:{p}_receipt_case", resolver)
+                self.assertIn("zg361_is_celestial_liege_trigger = yes", resolver)
+                self.assertIn(f"{p}_obligation_orphaned value = 1", resolver)
+                self.assertIn(f"{p}_object_state value = 4", resolver)
+
+    def test_unresolved_object_blocks_overwrite_before_receipt_or_payment(self) -> None:
+        for row in generator.MECHANISMS:
+            mechanism_id = row.mechanism_id
+            p = f"zg361_cl_m{mechanism_id:03d}"
+            core = block(self.effects, f"{p}_core_effect")
+            record_at = core.index("zg361_case_kernel_record_operation_effect")
+            prefix = core[:record_at]
+            self.assertIn(f"has_variable = {p}_obligation_pending", prefix)
+            self.assertIn(f"var:{p}_obligation_pending = 0", prefix)
+            self.assertIn(f"CODE = 4 MECHANISM = {mechanism_id}", prefix)
+            self.assertNotIn(f"{p}_object_revision value = 1", prefix)
+
+    def test_route_c_is_a_due_debt_not_a_fake_business_consumer(self) -> None:
+        for row in generator.MECHANISMS:
+            mechanism_id = row.mechanism_id
+            p = f"zg361_cl_m{mechanism_id:03d}"
+            core = block(self.effects, f"{p}_core_effect")
+            debt_at = core.index(f"{p}_debt_active value = 1")
+            deferred_at = core.index(f"{p}_deferred value = 1", debt_at)
+            consumer_at = core.index(f"{p}_consume_effect = yes", deferred_at)
+            self.assertLess(debt_at, deferred_at)
+            self.assertLess(deferred_at, consumer_at)
+            self.assertIn(f"{p}_debt_due_cycle", core)
+            self.assertIn(f"{p}_consumer_value value = 0", core)
+        # The high-cost unbound route still pays for the course.
+        self.assertIn(3, generator.DUAL_COSTS[333][2])
+
+    def test_relationship_consumers_have_real_opinion_consequences(self) -> None:
+        self.assertEqual(
+            generator.RELATIONSHIP_IDS,
+            frozenset({313, 314, 315, 317, 319, 321, 322, 327, 329, 330, 332, 333}),
+        )
+        for mechanism_id in generator.RELATIONSHIP_IDS:
+            consumer = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_consume_effect")
+            resolver = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_resolve_obligation_effect")
+            self.assertIn("add_opinion", consumer)
+            self.assertIn("friendliness_opinion", consumer)
+            self.assertIn("angry_opinion", consumer)
+            self.assertIn("opinion = 5", consumer)
+            self.assertIn("opinion = -5", consumer)
+            self.assertIn("add_opinion", resolver)
+
+    def test_deadline_consumers_apply_domain_results_not_only_markers(self) -> None:
+        expected = {
+            312: "vacancy_closed",
+            314: "allowance_active value = 0",
+            315: "trial_resolved",
+            317: "acl_review_closed",
+            318: "slot_timeout_settled",
+            319: "manager_talent_delta value = -20",
+            323: "learning_budget_window_closed",
+            324: "outcome_window_closed",
+            327: "teaching_application_window_closed",
+            329: "mentor_credit value = 1",
+            330: "reskill_assessment_closed",
+            331: "repaid_hours value = 4",
+            332: "succession_drill_closed",
+            333: "training_service_window_closed",
+        }
+        for mechanism_id, needle in expected.items():
+            resolver = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_resolve_obligation_effect")
+            self.assertIn(needle, resolver, mechanism_id)
 
     def test_localization_has_identical_nine_language_structure(self) -> None:
         expected_keys = loc_keys(self.loc_en)
