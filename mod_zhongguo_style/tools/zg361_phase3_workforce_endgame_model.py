@@ -221,6 +221,124 @@ class MechanismBinding:
     trigger_hook: str
     behaviors: tuple[str, ...]
     conservation_rule: str
+    consumer_key: str
+    resource_books: tuple[str, ...]
+    deadline_cycles: int
+    execution_stage: int
+
+
+WORKFORCE_OBJECT_TYPES: Final[dict[int, str]] = {
+    242: "work_observation",
+    243: "after_hours_message",
+    244: "voluntary_effort_request",
+    245: "overtime_claim",
+    246: "overtime_settlement",
+    247: "sprint_order",
+    248: "vacancy_load_record",
+    249: "meeting",
+    250: "meeting_contribution",
+    251: "meeting_refusal",
+    252: "leave_normalization",
+    253: "recovery_plan",
+    254: "external_contract",
+    255: "workforce_tco_comparison",
+    256: "supplier_scorecard",
+    257: "conversion_reservation",
+    258: "controllable_scope_snapshot",
+    259: "sla_liability_allocation",
+    260: "contract_type_lock",
+    261: "executor_chain",
+    262: "secondment_review",
+    263: "secondment_return",
+    264: "handoff_acceptance",
+    265: "fraud_case",
+    266: "vacancy_requisition",
+    267: "interview_ballot",
+    268: "interviewer_calibration",
+    269: "hire_quality_outcome",
+    270: "hiring_risk_policy",
+    271: "referral",
+    272: "offer",
+    273: "candidate_ownership",
+    274: "counteroffer",
+    275: "hc_hold",
+    276: "rehire_review",
+    277: "pip_exit_vacancy",
+    355: "target_ratchet",
+    356: "outcome_timing",
+    360: "collective_action",
+    361: "charter_version",
+}
+
+WORKFORCE_RESOURCE_BOOKS: Final[dict[int, tuple[str, ...]]] = {
+    242: ("capacity",),
+    243: ("capacity", "on_call"),
+    244: ("capacity", "gold"),
+    245: ("capacity", "overtime"),
+    246: ("overtime", "gold", "leave", "target"),
+    247: ("capacity", "sprint"),
+    248: ("capacity", "hc", "manager_score"),
+    249: ("capacity", "meeting"),
+    250: ("meeting", "evidence", "credit"),
+    251: ("meeting", "capacity", "manager_score"),
+    252: ("capacity", "target", "credit"),
+    253: ("pip", "appeal", "manager_score"),
+    254: ("shadow_hc", "gold", "contract"),
+    255: ("gold", "hc", "shadow_hc"),
+    256: ("supplier", "external_score"),
+    257: ("formal_hc", "shadow_hc", "recruitment"),
+    258: ("access", "target", "governance"),
+    259: ("sla", "liability"),
+    260: ("contract", "change"),
+    261: ("contract", "provenance"),
+    262: ("secondment", "capacity", "credit"),
+    263: ("secondment", "deadline", "workforce"),
+    264: ("contract", "gold", "handover"),
+    265: ("gold", "liability", "evidence"),
+    266: ("formal_hc", "vacancy"),
+    267: ("interview", "evidence"),
+    268: ("interview", "calibration"),
+    269: ("interview", "outcome", "credit"),
+    270: ("hiring_policy", "interview"),
+    271: ("gold", "referral", "interview"),
+    272: ("gold", "offer", "promotion"),
+    273: ("candidate", "credit"),
+    274: ("gold", "offer", "formal_hc"),
+    275: ("formal_hc", "offer", "deadline"),
+    276: ("history", "rehire", "formal_hc"),
+    277: ("formal_hc", "vacancy", "pip"),
+    355: ("target", "gold", "history"),
+    356: ("outcome", "history", "governance"),
+    360: ("cohort", "quota", "manager_score"),
+    361: ("charter", "gold", "policy_defaults", "history"),
+}
+
+WORKFORCE_DEADLINE_CYCLES: Final[dict[int, int]] = {
+    mechanism_id: (1 if mechanism_id in {
+        247, 254, 257, 262, 263, 264, 269, 272, 275, 355, 356, 360, 361,
+    } else 0)
+    for mechanism_id in (*range(242, 278), 355, 356, 360, 361)
+}
+
+# Executable order/stage is a semantic contract, not a restatement of the
+# legacy manifest hook.  In particular, contract type and real executor must
+# precede supplier scoring; candidate ownership/referral must precede sealed
+# interview votes; and hire quality is settled only after the offer branch.
+WORKFORCE_EXECUTION_ORDER: Final[dict[str, tuple[int, ...]]] = {
+    "AB": tuple(range(242, 254)),
+    "AC": (254, 255, 260, 261, 256, 258, 259, 257, 262, 263, 264, 265),
+    "AD": (266, 273, 271, 267, 268, 270, 272, 274, 275, 269, 276, 277),
+    "AL": (355, 356, 360, 361),
+}
+WORKFORCE_EXECUTION_STAGE: Final[dict[int, int]] = {
+    242: 1, 243: 1, 244: 2, 245: 2, 246: 3, 247: 3,
+    248: 4, 249: 4, 250: 5, 251: 5, 252: 6, 253: 6,
+    254: 1, 255: 1, 260: 2, 261: 2, 256: 3, 258: 3,
+    259: 3, 257: 4, 262: 4, 263: 5, 264: 6, 265: 6,
+    266: 1, 273: 1, 271: 1, 267: 1, 268: 2, 270: 2,
+    272: 3, 274: 4, 275: 4, 269: 5, 276: 6, 277: 6,
+    355: 1, 356: 1, 360: 4, 361: 5,
+}
 
 
 def _binding(
@@ -237,12 +355,7 @@ def _binding(
         "AD": "apply_recruitment_control",
         "AL": "apply_constitution_control",
     }[domain]
-    object_type = {
-        "AB": "capacity_period",
-        "AC": "external_contract",
-        "AD": "recruitment_funnel",
-        "AL": "constitution_case",
-    }[domain]
+    object_type = WORKFORCE_OBJECT_TYPES[mechanism_id]
     return MechanismBinding(
         mechanism_id,
         domain,
@@ -252,6 +365,10 @@ def _binding(
         trigger_hook,
         (behavior,),
         conservation_rule,
+        behavior,
+        WORKFORCE_RESOURCE_BOOKS[mechanism_id],
+        WORKFORCE_DEADLINE_CYCLES[mechanism_id],
+        WORKFORCE_EXECUTION_STAGE[mechanism_id],
     )
 
 
@@ -3140,7 +3257,29 @@ class Phase3WorkforceEndgameModel:
 
 if set(MECHANISM_BINDINGS) != set(EXPECTED_MECHANISM_IDS):
     raise RuntimeError("workforce/endgame mechanism mapping is incomplete")
+if set(WORKFORCE_OBJECT_TYPES) != set(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame exact object mapping is incomplete")
+if len(set(WORKFORCE_OBJECT_TYPES.values())) != len(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame object types must be per-mechanism, not domain-generic")
+if set(WORKFORCE_RESOURCE_BOOKS) != set(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame resource mapping is incomplete")
+if set(WORKFORCE_DEADLINE_CYCLES) != set(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame deadline mapping is incomplete")
+if {mid for order in WORKFORCE_EXECUTION_ORDER.values() for mid in order} != set(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame execution order is incomplete")
+if sum(len(order) for order in WORKFORCE_EXECUTION_ORDER.values()) != len(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame execution order contains duplicates")
+if set(WORKFORCE_EXECUTION_STAGE) != set(EXPECTED_MECHANISM_IDS):
+    raise RuntimeError("workforce/endgame execution stage mapping is incomplete")
 for _mechanism_id, _binding_record in MECHANISM_BINDINGS.items():
+    if not _binding_record.resource_books:
+        raise RuntimeError(f"mechanism {_mechanism_id} has no resource book")
+    if _binding_record.deadline_cycles not in (0, 1):
+        raise RuntimeError(f"mechanism {_mechanism_id} has an invalid deadline")
+    if _binding_record.consumer_key != _binding_record.behaviors[0]:
+        raise RuntimeError(f"mechanism {_mechanism_id} consumer binding diverges")
+    if _binding_record.execution_stage != WORKFORCE_EXECUTION_STAGE[_mechanism_id]:
+        raise RuntimeError(f"mechanism {_mechanism_id} execution stage diverges")
     for _behavior in _binding_record.behaviors:
         if not hasattr(Phase3WorkforceEndgameModel, _behavior):
             raise RuntimeError(
@@ -3171,5 +3310,7 @@ __all__ = [
     "RatchetMode",
     "RedCode",
     "Vote",
+    "WORKFORCE_EXECUTION_ORDER",
+    "WORKFORCE_EXECUTION_STAGE",
     "WorkCategory",
 ]

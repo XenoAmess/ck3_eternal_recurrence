@@ -194,6 +194,29 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 self.assertIn(f"name = zg361_we_m{spec.mid}_provenance_choice value = {choice}", route)
                 self.assertIn(f"zg361_we_m{spec.mid}_consume_effect = yes", route)
 
+    def test_16a_exact_object_or_debt_envelope_is_consumed_per_id(self) -> None:
+        self.assertEqual(40, len({spec.object_type for spec in gen.MECHANISMS}))
+        for spec in gen.MECHANISMS:
+            consumer = block(self.effects, f"zg361_we_m{spec.mid}_consume_effect")
+            self.assertIn(f"has_variable = zg361_we_m{spec.mid}_business_object_created", consumer)
+            self.assertIn(f"has_variable = zg361_we_m{spec.mid}_object_{spec.object_type}", consumer)
+            self.assertIn(f"var:zg361_we_m{spec.mid}_object_type_code = {spec.mid}", consumer)
+            self.assertIn(f"name = zg361_we_m{spec.mid}_consumer_{spec.consumer_key} value = 1", consumer)
+            for resource_book in spec.resource_books:
+                self.assertIn(f"has_variable = zg361_we_m{spec.mid}_resource_{resource_book}", consumer)
+            if spec.deadline_cycles:
+                self.assertIn(f"has_variable = zg361_we_m{spec.mid}_object_due_cycle", consumer)
+            for letter in "ab":
+                route = block(self.effects, f"zg361_we_m{spec.mid}_route_{letter}_effect")
+                self.assertIn(f"name = zg361_we_m{spec.mid}_business_object_created value = 1", route)
+                self.assertIn(f"name = zg361_we_m{spec.mid}_object_{spec.object_type} value = 1", route)
+                for name in ("owner", "subject", "cycle", "case", "state", "id"):
+                    self.assertIn(f"name = zg361_we_m{spec.mid}_object_{name}", route)
+            route_c = block(self.effects, f"zg361_we_m{spec.mid}_route_c_effect")
+            self.assertIn(f"name = zg361_we_m{spec.mid}_business_object_created value = 0", route_c)
+            self.assertIn(f"name = zg361_we_m{spec.mid}_debt_due_cycle", route_c)
+            self.assertNotIn(f"name = zg361_we_m{spec.mid}_object_{spec.object_type}", route_c)
+
     def test_17_only_stage_last_advances_after_full_barrier(self) -> None:
         for spec in gen.MECHANISMS:
             same_stage = [row.mid for row in gen.MECHANISMS if row.domain == spec.domain and row.state == spec.state]
@@ -279,7 +302,17 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for spec in gen.MECHANISMS:
             event = block(self.events, f"zg361we.{spec.mid}")
             for option in event.split("\n\toption = {")[1:]:
-                self.assertLessEqual(option.count("trigger_event = { id = zg361we."), 1)
+                expected_max = 2 if spec.mid in (274, 275) else 1
+                self.assertLessEqual(option.count("trigger_event = { id = zg361we."), expected_max)
+        accepted = block(self.events, "zg361we.274")
+        self.assertIn("m274_hired = 1", accepted)
+        self.assertIn("zg361_we_m275_route_a_effect", accepted)
+        self.assertIn("id = zg361we.269", accepted)
+        self.assertIn("id = zg361we.275", accepted)
+        refused = block(self.events, "zg361we.275")
+        self.assertIn("m275_refusal = 1", refused)
+        self.assertIn("zg361_we_m269_route_a_effect", refused)
+        self.assertIn("id = zg361we.276", refused)
         for domain in gen.DOMAIN_ORDER:
             ai = block(self.effects, f"zg361_we_{domain}_run_authorized_ai_effect")
             self.assertIn("is_ai = yes zg361_is_celestial_liege_trigger = yes", ai)
@@ -287,7 +320,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
     def test_24_replay_cannot_reset_same_cycle_or_active_cases(self) -> None:
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
-        self.assertIn("zg361_we_manager_portfolio_cycle = var:zg361_review_serial", entry)
+        self.assertNotIn("zg361_we_manager_portfolio_cycle", entry)
+        self.assertIn("has_variable = zg361_we_portfolio_cycle", entry)
+        self.assertIn("NOT = { var:zg361_we_portfolio_cycle = root.var:zg361_review_serial }", entry)
         for domain in ("ab", "ac", "ad", "al"):
             self.assertIn(f"has_variable = zg361_case_{domain}_active", entry)
             self.assertIn(f"var:zg361_case_{domain}_active = 0", entry)
@@ -391,7 +426,9 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         future = block(self.effects, "zg361_we_m269_future_consume_effect")
         self.assertIn("referral_gold_reserved add = 5", referral)
         self.assertIn("m271_referrer_recused_before_vote value = 1", referral)
-        self.assertIn("m271_referrer_voted value = var:zg361_we_m267_referrer_voted", referral)
+        self.assertIn("m271_referrer_voted value = var:zg361_we_ad_external_referrer_voted", referral)
+        self.assertIn("m271_referral_id value = var:zg361_we_ad_external_referral_id", referral)
+        self.assertLess(gen.DOMAIN_ORDER["ad"].index(271), gen.DOMAIN_ORDER["ad"].index(267))
         self.assertIn("m271_reward_due_after_probation value = 1", referral)
         self.assertIn("var:zg361_case_ad_owner = { remove_gold = 5 }", referral)
         self.assertIn("m271_reward_paid_before_probation value = 1", undisclosed)
@@ -753,13 +790,18 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn(f"realm_current_default_{name} value = var:zg361_we_realm_future_default_{name}", init)
             self.assertIn(f"portfolio_default_{name} value = root.var:zg361_we_realm_current_default_{name}", init)
 
-    def test_63_only_manager_specific_secondment_routes_require_duke_subject(self) -> None:
+    def test_63_secondment_official_may_be_count_but_host_manager_is_authorized(self) -> None:
         for mid in (262, 263):
             for letter in "ab":
                 route = block(self.effects, f"zg361_we_m{mid}_route_{letter}_effect")
-                self.assertIn("var:zg361_case_ac_subject = { zg361_is_celestial_liege_trigger = yes }", route)
+                self.assertNotIn("var:zg361_case_ac_subject = { zg361_is_celestial_liege_trigger = yes }", route)
+                if mid == 262:
+                    self.assertIn("has_variable = zg361_we_ac_external_secondment_host_manager", route)
+                    self.assertIn("var:zg361_we_ac_external_secondment_host_manager = { zg361_is_celestial_liege_trigger = yes }", route)
+                    self.assertIn("NOT = { var:zg361_we_ac_external_secondment_host_manager = $TICKET_SUBJECT$ }", route)
+                    self.assertIn("m262_host_manager value = var:zg361_we_ac_external_secondment_host_manager", route)
             debt = block(self.effects, f"zg361_we_m{mid}_route_c_effect")
-            self.assertNotIn("var:zg361_case_ac_subject = { zg361_is_celestial_liege_trigger = yes }", debt)
+            self.assertNotIn("ac_external_secondment_host_manager", debt)
 
     def test_64_all_delayed_flights_block_tuple_overwrite_at_entry(self) -> None:
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
@@ -814,7 +856,8 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         due = block(self.effects, "zg361_we_m275_hold_due_effect")
         for route in (refusal, indefinite):
             self.assertIn("m275_refusal_reason_id value = var:zg361_we_ad_external_refusal_reason_id", route)
-            self.assertIn("m269_watch_cancelled_by_refusal value = 1", route)
+            self.assertNotIn("m269_watch_cancelled_by_refusal value = 1", route)
+            self.assertIn("m275_not_applicable_hired value = 1", route)
         self.assertIn("m275_runner_up value = var:zg361_we_ad_external_runner_up", refusal)
         self.assertIn("m275_runner_up_evidence value = var:zg361_we_ad_external_runner_up_evidence", refusal)
         self.assertIn("var:zg361_we_m275_receipt_choice = 1", due)
@@ -923,6 +966,154 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertLess(transition, final.index("final_conservation_ok value = 1"))
         self.assertNotIn("m360_receipt_", final)
         self.assertNotIn("m361_receipt_", final)
+
+    def test_74_semantic_order_matches_real_object_dependencies(self) -> None:
+        self.assertEqual(
+            (254, 255, 260, 261, 256, 258, 259, 257, 262, 263, 264, 265),
+            gen.DOMAIN_ORDER["ac"],
+        )
+        self.assertEqual(
+            (266, 273, 271, 267, 268, 270, 272, 274, 275, 269, 276, 277),
+            gen.DOMAIN_ORDER["ad"],
+        )
+        for mid, sources in gen.CURRENT_OBJECT_DEPENDENCIES.items():
+            order = gen.DOMAIN_ORDER[self.specs[mid].domain]
+            for source_mid in sources:
+                self.assertLess(order.index(source_mid), order.index(mid), (source_mid, mid))
+
+    def test_75_ab_routes_require_consumed_current_case_objects_but_c_does_not(self) -> None:
+        for mid, sources in gen.CURRENT_OBJECT_DEPENDENCIES.items():
+            route_a = block(self.effects, f"zg361_we_m{mid}_route_a_effect")
+            pre_a = route_a.split("zg361_case_kernel_record_operation_effect", 1)[0]
+            route_c = block(self.effects, f"zg361_we_m{mid}_route_c_effect")
+            pre_c = route_c.split("zg361_case_kernel_record_operation_effect", 1)[0]
+            for source_mid in sources:
+                source = self.specs[source_mid]
+                for fragment in (
+                    f"m{source_mid}_business_object_created = 1",
+                    f"m{source_mid}_object_owner = $TICKET_OWNER$",
+                    f"m{source_mid}_object_subject = $TICKET_SUBJECT$",
+                    f"m{source_mid}_object_cycle = $TICKET_CYCLE$",
+                    f"m{source_mid}_object_case = $TICKET_CASE$",
+                    f"m{source_mid}_object_consumed = 1",
+                    f"m{source_mid}_consumer_{source.consumer_key} = 1",
+                ):
+                    self.assertIn(fragment, pre_a, (source_mid, mid, fragment))
+                    if not (mid == 263 and source_mid == 262 and fragment.endswith("business_object_created = 1")):
+                        self.assertNotIn(fragment, pre_c, (source_mid, mid, fragment))
+
+    def test_76_offer_outcomes_are_mutually_exclusive_and_hidden_when_inapplicable(self) -> None:
+        counter = block(self.events, "zg361we.274")
+        refusal = block(self.events, "zg361we.275")
+        route_275 = block(self.effects, "zg361_we_m275_route_a_effect")
+        route_269 = block(self.effects, "zg361_we_m269_route_a_effect")
+        self.assertIn("m274_hired = 1", counter)
+        self.assertIn("m274_business_object_created = 1", counter)
+        self.assertIn("m274_object_cycle = scope:zg361_we_ad_cycle", counter)
+        self.assertIn("m274_object_case = scope:zg361_we_ad_case", counter)
+        self.assertIn("zg361_we_m275_route_a_effect", counter)
+        self.assertIn("else = { trigger_event = { id = zg361we.275 } }", counter)
+        self.assertIn("m275_not_applicable_hired value = 1", route_275)
+        self.assertIn("m275_resources_touched value = 0", route_275)
+        self.assertIn("m275_refusal = 1", refusal)
+        self.assertIn("m275_business_object_created = 1", refusal)
+        self.assertIn("m275_object_cycle = scope:zg361_we_ad_cycle", refusal)
+        self.assertIn("m275_object_case = scope:zg361_we_ad_case", refusal)
+        self.assertIn("zg361_we_m269_route_a_effect", refusal)
+        self.assertIn("m269_not_applicable_no_hire value = 1", route_269)
+        self.assertIn("m269_outcome_pending value = 0", route_269)
+
+    def test_77_all_c_routes_create_consumable_open_debt(self) -> None:
+        for mid in sorted(self.specs):
+            route = block(self.effects, f"zg361_we_m{mid}_route_c_effect")
+            consumer = block(self.effects, f"zg361_we_m{mid}_consume_effect")
+            receipt = route.index("zg361_case_kernel_record_operation_effect")
+            for fragment in (
+                f"m{mid}_debt_owner value = $TICKET_OWNER$",
+                f"m{mid}_debt_subject value = $TICKET_SUBJECT$",
+                f"m{mid}_debt_cycle value = $TICKET_CYCLE$",
+                f"m{mid}_debt_case value = $TICKET_CASE$",
+                f"m{mid}_debt_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }}",
+                f"m{mid}_debt_open value = 1",
+                f"m{mid}_business_object_created value = 0",
+            ):
+                self.assertIn(fragment, route, (mid, fragment))
+                self.assertGreater(route.index(fragment), receipt, (mid, fragment))
+            self.assertIn(f"m{mid}_debt_open = 1", consumer)
+            self.assertIn(f"m{mid}_debt_visible_to_settlement value = 1", consumer)
+
+    def test_78_real_269_waits_for_future_settlement_then_resumes_stage_6(self) -> None:
+        route = block(self.effects, "zg361_we_m269_route_a_effect")
+        future = block(self.effects, "zg361_we_m269_future_consume_effect")
+        hired_branch = route[route.index("m269_not_applicable_no_hire value = 0"):]
+        self.assertIn("m269_outcome_pending value = 1", hired_branch)
+        self.assertIn("ad_s05_deadline_pending value = 0", hired_branch)
+        self.assertLess(
+            route.index("m269_not_applicable_no_hire value = 1"),
+            route.index("zg361_case_ad_advance_05_effect"),
+        )
+        self.assertLess(
+            future.index("m269_outcome_settled value = 1"),
+            future.index("zg361_case_ad_advance_05_effect"),
+        )
+        self.assertLess(
+            future.index("zg361_case_ad_advance_05_effect"),
+            future.index("zg361_we_m276_route_a_effect"),
+        )
+        self.assertIn("else = { var:zg361_we_m269_write_owner = { trigger_event = { id = zg361we.276 } } }", future)
+
+    def test_79_offer_and_pip_paths_reject_stale_branch_flags(self) -> None:
+        counter_a = block(self.effects, "zg361_we_m274_route_a_effect")
+        counter_b = block(self.effects, "zg361_we_m274_route_b_effect")
+        pip_a = block(self.effects, "zg361_we_m277_route_a_effect")
+        future = block(self.effects, "zg361_we_m269_future_consume_effect")
+        self.assertLess(counter_a.index("m274_hired value = 0"), counter_a.index("m274_hired value = 1"))
+        self.assertIn("m274_hired value = 0", counter_b)
+        self.assertNotIn("m274_hired value = 1", counter_b)
+        receipt = pip_a.index("zg361_case_kernel_record_operation_effect")
+        for fragment in (
+            "m269_business_object_created = 1",
+            "m269_object_cycle = $TICKET_CYCLE$",
+            "m269_object_case = $TICKET_CASE$",
+            "m269_object_consumed = 1",
+            "m269_consumer_write_back_hire_quality_269 = 1",
+            "m269_outcome_settled = 1",
+            "m269_not_applicable_no_hire = 0",
+            "formal_hc_active_case = $TICKET_CASE$",
+        ):
+            self.assertIn(fragment, pip_a, fragment)
+            self.assertLess(pip_a.index(fragment), receipt, fragment)
+        self.assertNotIn("m269_watch_cancelled_by_refusal", future)
+        self.assertNotIn("m269_cancel_receipt_consumed", future)
+
+    def test_80_deferred_domains_release_abandoned_finite_resources(self) -> None:
+        init = block(self.effects, "zg361_we_initialize_portfolio_effect")
+        ac_release = block(self.effects, "zg361_we_release_abandoned_ac_resources_effect")
+        ad_release = block(self.effects, "zg361_we_release_abandoned_ad_resources_effect")
+        ac_last = block(self.effects, "zg361_we_m265_route_c_effect")
+        ad_last = block(self.effects, "zg361_we_m277_route_c_effect")
+        self.assertIn("NOT = { has_variable = zg361_we_overtime_pending }", init)
+        self.assertIn("NOT = { has_variable = zg361_we_leave_bank }", init)
+        self.assertNotIn("set_variable = { name = zg361_we_overtime_pending value = 0 }\n\tset_variable", init)
+        for fragment in (
+            "contract_gold_reserved > 0",
+            "gold_reserved add = { value = var:zg361_we_ac_release_gold multiply = -1 }",
+            "shadow_hc_available add = var:zg361_we_ac_release_shadow",
+            "shadow_hc_active value = 0",
+        ):
+            self.assertIn(fragment, ac_release)
+        for fragment in (
+            "offer_gold_reserved > 0",
+            "m271_reward_escrowed = 1",
+            "m266_hc_reservation_active = 1",
+            "zg361_we_m275_hold_pending",
+            "zg361_ch_hc_reserved add = -1",
+            "zg361_ch_hc_available add = 1",
+            "ad_hc_flight_pending value = 0",
+        ):
+            self.assertIn(fragment, ad_release)
+        self.assertLess(ac_last.index("zg361_we_release_abandoned_ac_resources_effect"), ac_last.index("zg361_we_ad_launch_effect"))
+        self.assertLess(ad_last.index("zg361_we_release_abandoned_ad_resources_effect"), ad_last.index("zg361_we_al_launch_effect"))
 
 
 if __name__ == "__main__":

@@ -27,7 +27,10 @@ paused snapshot 或实机 artifact；作用是把完整施工计划中的资源�
 manifest 对本范围仍标记 `domain_runtime=not-implemented`，player-visible loop 也未闭合。通用 runtime JSON 的机械线性边仅用于
 traceability，不能冒充逐项语义已经审定。例如 #260 合同类型和 #261 执行者披露必须在交付前冻结；#256、#257 要消费交付证据；
 #269 必须等录用后的延迟结果；#275 必须分叉到 held/reopen/release；#276、#277 不是 probation 线性边。Python 模型按语义约束这些
-先后关系，但不声称已经修正 CK3 生成器。
+先后关系；`MechanismBinding.execution_stage` 与 `WORKFORCE_EXECUTION_ORDER` 另行冻结真实执行顺序，不再从旧 manifest hook
+机械推导。CK3 静态生成器现在消费这两份模型常量：AC 为
+`254→255→260→261→256→258→259→257→262→263→264→265`，AD 为
+`266→273→271→267→268→270→272→274→275→269→276→277`。这只修正静态投影顺序，不提升 live readiness。
 
 ## 2. 统一命令与返回合同
 
@@ -163,6 +166,8 @@ accounted_hours <= authorized_hours
 `test_zg361_phase3_workforce_endgame_model.py` 包含：
 
 1. 精确 40-ID catalogue、domain/hook/conservation/callable 完整性；
+   catalogue 还冻结 40 个互不重复的 exact object type、真实 consumer callable、非空资源账与适用期限，
+   以及独立于 legacy hook 的 execution stage/order，不再用 `capacity_period` / `recruitment_funnel` 四个域级泛化标签冒充业务对象；
 2. AB 242–253 单链触达与金币/五类工时/会议贡献分账；
 3. AC 254–265 单链触达与采购付款/追回、formal/shadow HC、借调、转正和知识移交；
 4. AD 266–277 的录用成功链，以及拒绝→HC hold→到期释放、回聘历史、PIP 退出不造 HC；
@@ -177,16 +182,16 @@ accounted_hours <= authorized_hours
 
 ## 7. 后续 CK3 产品缺口
 
-这 40 项当前仍全部缺少完整 CK3 domain runtime。至少需要：
+独立 CK3 静态投影现已存在，并把本模型的 exact object/consumer/resource/deadline 合同投影到 A/B；C 只生成
+五元 policy debt。它仍未中央接线、未过 parser/MCP/存读档/实机，因此至少需要：
 
-- 把 generic assessed-official subject 拆成真实 vacancy、candidate character、contract/vendor、team/cohort 与 constitution case；
-- 绑定合法 court position/council/title vacancy、角色存在性、邀请/接受度、任命、调任与离任结果；
-- 建立正式/影子 HC、国库→角色/供应商、个人信用、capacity 五桶的真实 scripted resource consumer 与 receipt；
-- 为 #243 消息/值守、#245→#246 加班 claim、#249–#251 会议、#252 休假/替补、#262–#263 借调提供持久对象；
-- 将 AD 从线性 funnel 拆成 Vacancy + CandidateAttempt + Interview + Offer + Probation 分支，支持 reject/withdraw/held/reopen；
-- 把 #256/#257/#269/#275/#276/#277 从错误的机械 hook 接到真实交付、录用、试用、离任和后续周期 consumer；
+- 用 exact-build 原生查询把 vacancy/candidate/vendor/team/cohort/charter 标识与合法 court position/council/title 结果互证；
+- 在真实 CK3 中验证正式/影子 HC、国库→角色/供应商、个人信用、capacity 五桶与跨期 consumer 的读写和守恒；
+- 实机覆盖 reject/withdraw/held/reopen、#257/#269/#275 延迟分支、#360 三 cohort 与 #361 多版本未来默认；
 - 提供 deadline scheduler、save/load round-trip、共享 GUI/ledger、MCP query/action、paused snapshot 与实机 acceptance artifact；
+- CK3 投影的 C debt 虽有 exact identity、即时可见性与 abandoned-resource cleanup，仍需统一到期偿债/升级 consumer；
+  #264 sunset/waiver/artifact、#276 历史 rehire 与 #277 已关闭 PIP/离任对象仍需真实 producer ABI；
 - 运行 generator/static validation/真实 CK3 L1–L3，并保持本规范所列资源与历史不变量。
 
-因此，本文件可作为后续施工的 reference oracle，但不能用于提高这些机制的 `domain_runtime` 或
-`player_visible_loop` readiness。
+因此，本文件和静态投影可作为后续施工的 reference oracle，但不能据此把这些机制提高为 fixture-live、
+production-live 或 complete。

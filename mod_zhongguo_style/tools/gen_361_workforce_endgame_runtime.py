@@ -17,6 +17,8 @@ from pathlib import Path
 from zg361_phase3_workforce_endgame_model import (
     EXPECTED_MECHANISM_IDS,
     MECHANISM_BINDINGS,
+    WORKFORCE_EXECUTION_ORDER,
+    WORKFORCE_EXECUTION_STAGE,
 )
 
 
@@ -45,6 +47,10 @@ class Mechanism:
     domain: str
     state: int
     field: str
+    object_type: str
+    consumer_key: str
+    resource_books: tuple[str, ...]
+    deadline_cycles: int
     title_en: str
     title_cn: str
     desc_en: str
@@ -53,47 +59,52 @@ class Mechanism:
     routes_cn: tuple[str, str, str]
 
 
-DOMAIN_ORDER = {
-    "ab": tuple(range(242, 254)),
-    "ac": tuple(range(254, 266)),
-    "ad": tuple(range(266, 278)),
-    "al": (355, 356, 360, 361),
-}
+DOMAIN_ORDER = {domain.lower(): order for domain, order in WORKFORCE_EXECUTION_ORDER.items()}
 DOMAIN_EXPECTED = {
     "ab": {242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253},
     "ac": {254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265},
     "ad": {266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277},
     "al": {355, 356, 360, 361},
 }
-STATE_BY_HOOK = {
-    "capacity_planned": 1,
-    "capacity_request_open": 2,
-    "capacity_decided": 3,
-    "capacity_executed": 4,
-    "compensation_due": 5,
-    "capacity_normalized": 6,
-    "external_need_open": 1,
-    "contract_type_locked": 2,
-    "supplier_selected": 3,
-    "contract_active": 4,
-    "delivery_due": 5,
-    "contract_resolved": 6,
-    "requisition_open": 1,
-    "interview_votes_due": 2,
-    "interview_calibration_due": 3,
-    "offer_due": 4,
-    "offer_decided": 5,
-    "probation_due": 6,
-    "multi_cycle_facts_frozen": 1,
-    "manager_collective_action": 4,
-    "constitution_chartered": 5,
-}
+STATE_BY_ID = dict(WORKFORCE_EXECUTION_STAGE)
 STAGE_LAST = {
     "ab": {243: 1, 245: 2, 247: 3, 249: 4, 251: 5, 253: 6},
-    "ac": {255: 1, 257: 2, 259: 3, 261: 4, 263: 5, 265: 6},
-    "ad": {267: 1, 269: 2, 271: 3, 273: 4, 275: 5, 277: 6},
+    "ac": {255: 1, 261: 2, 259: 3, 262: 4, 263: 5, 265: 6},
+    "ad": {267: 1, 270: 2, 272: 3, 275: 4, 269: 5, 277: 6},
     # AL 2/3 belong to mechanisms 357-359.  This slice never forges them.
     "al": {356: 1, 360: 4, 361: 5},
+}
+# A route may consume only business objects frozen by the same five-tuple.
+# This is deliberately narrower than "an earlier variable happens to exist":
+# old-cycle projections and route-C debt cannot satisfy a current business
+# prerequisite.  The order is the executable model's real dependency order.
+CURRENT_OBJECT_DEPENDENCIES = {
+    246: (245,),
+    250: (249,),
+    251: (249, 250),
+    255: (254,),
+    260: (254,),
+    261: (254, 260),
+    256: (254, 260, 261),
+    258: (254,),
+    259: (254, 260, 261),
+    257: (254, 256),
+    263: (262,),
+    264: (254, 256, 261),
+    265: (259, 261, 264),
+    273: (266,),
+    271: (266, 273),
+    267: (266, 273, 271),
+    268: (267,),
+    270: (266, 267),
+    272: (266, 267, 268, 270, 273),
+    274: (266, 272, 273),
+    # #274 hire and #275 refusal are mutually exclusive outcomes of the same
+    # offer.  #275 still records a current no-hold decision after a hire.
+    275: (266, 272, 273, 274),
+    269: (267, 268, 274, 275),
+    277: (274, 269),
+    361: (360,),
 }
 NEXT_DOMAIN = {"ab": "ac", "ac": "ad", "ad": "al", "al": None}
 DEADLINE_DAYS = {"ab": 90, "ac": 180, "ad": 90, "al": 180}
@@ -141,7 +152,7 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
         for mid in DOMAIN_ORDER[domain]:
             binding = MECHANISM_BINDINGS[mid]
             choice = choices[str(mid)]
-            state = STATE_BY_HOOK[binding.trigger_hook]
+            state = binding.execution_stage
             title_en = choice["title_en"]
             title_cn = binding.title_cn
             conservation = binding.conservation_rule.rstrip(".")
@@ -158,6 +169,10 @@ def _load_mechanisms() -> tuple[Mechanism, ...]:
                     domain,
                     state,
                     binding.behaviors[0],
+                    binding.object_type,
+                    binding.consumer_key,
+                    binding.resource_books,
+                    binding.deadline_cycles,
                     title_en,
                     title_cn,
                     desc_en,
@@ -203,10 +218,30 @@ def validate_specs() -> None:
         raise ValueError("portfolio order must touch every ID once")
     if len({spec.field for spec in MECHANISMS}) != len(MECHANISMS):
         raise ValueError("every numbered mechanism needs a unique semantic write")
+    if len({spec.object_type for spec in MECHANISMS}) != len(MECHANISMS):
+        raise ValueError("every numbered mechanism needs an exact, non-generic object type")
+    for spec in MECHANISMS:
+        binding = MECHANISM_BINDINGS[spec.mid]
+        if (
+            spec.object_type != binding.object_type
+            or spec.consumer_key != binding.consumer_key
+            or spec.resource_books != binding.resource_books
+            or spec.deadline_cycles != binding.deadline_cycles
+            or spec.state != binding.execution_stage
+        ):
+            raise ValueError(f"mechanism {spec.mid} semantic projection diverges from the model")
+        if not spec.resource_books or spec.deadline_cycles not in (0, 1):
+            raise ValueError(f"mechanism {spec.mid} has an invalid resource/deadline contract")
     for domain, order in DOMAIN_ORDER.items():
+        positions = {mid: index for index, mid in enumerate(order)}
         for mid in order:
             if specs[mid].domain != domain:
                 raise ValueError(f"mechanism {mid} is bound to the wrong domain")
+            for source_mid in CURRENT_OBJECT_DEPENDENCIES.get(mid, ()):
+                if specs[source_mid].domain != domain:
+                    raise ValueError(f"mechanism {mid} has a cross-domain business dependency")
+                if positions[source_mid] >= positions[mid]:
+                    raise ValueError(f"mechanism {mid} reads future object {source_mid}")
         for mid, state in STAGE_LAST[domain].items():
             if specs[mid].state != state:
                 raise ValueError(f"stage barrier {mid} has the wrong state")
@@ -570,6 +605,42 @@ def _charter_business_writes(choice: int) -> list[str]:
     return lines
 
 
+def _current_object_checks(spec: Mechanism) -> list[str]:
+    """Require every semantic input to be a consumed object of this case.
+
+    Per-ID variables persist on characters across review cycles.  Existence by
+    itself therefore accepts stale evidence.  These checks bind every source
+    object back to the live owner/subject/cycle/case tuple before any resource
+    read or receipt is written.
+    """
+
+    checks: list[str] = []
+    for source_mid in CURRENT_OBJECT_DEPENDENCIES.get(spec.mid, ()):
+        source = by_id()[source_mid]
+        for name in (
+            "business_object_created",
+            "object_type_code",
+            "object_owner",
+            "object_subject",
+            "object_cycle",
+            "object_case",
+            "object_consumed",
+            f"consumer_{source.consumer_key}",
+        ):
+            checks.append(f"has_variable = {PREFIX}_m{source_mid}_{name}")
+        checks += [
+            f"var:{PREFIX}_m{source_mid}_business_object_created = 1",
+            f"var:{PREFIX}_m{source_mid}_object_type_code = {source_mid}",
+            f"var:{PREFIX}_m{source_mid}_object_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_m{source_mid}_object_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_m{source_mid}_object_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_m{source_mid}_object_case = $TICKET_CASE$",
+            f"var:{PREFIX}_m{source_mid}_object_consumed = 1",
+            f"var:{PREFIX}_m{source_mid}_consumer_{source.consumer_key} = 1",
+        ]
+    return checks
+
+
 def resource_checks(spec: Mechanism, choice: int) -> list[str]:
     """Every read is paired with an existence gate before record_operation."""
     d, mid = spec.domain, spec.mid
@@ -589,6 +660,7 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         ]
     if choice == 3:
         return checks
+    checks += _current_object_checks(spec)
     if mid == 263:
         checks += [
             f"has_variable = {PREFIX}_m262_business_object_created",
@@ -644,8 +716,13 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"has_variable = {PREFIX}_m249_agenda_frozen",
             f"var:{PREFIX}_m249_agenda_frozen = 1",
         ]
-    if mid in (262, 263):
-        checks += [f"var:zg361_case_{d}_subject = {{ zg361_is_celestial_liege_trigger = yes }}"]
+    if mid == 262:
+        checks += [
+            f"has_variable = {PREFIX}_ac_external_secondment_host_manager",
+            f"var:{PREFIX}_ac_external_secondment_host_manager = {{ zg361_is_celestial_liege_trigger = yes }}",
+            f"NOT = {{ var:{PREFIX}_ac_external_secondment_host_manager = $TICKET_SUBJECT$ }}",
+            f"NOT = {{ var:{PREFIX}_ac_external_secondment_host_manager = $TICKET_OWNER$ }}",
+        ]
     if mid == 264:
         checks += [
             f"has_variable = {PREFIX}_contract_gold_reserved",
@@ -697,6 +774,19 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             f"var:{PREFIX}_ad_external_referrer_voted >= 0",
             f"var:{PREFIX}_ad_external_referrer_voted <= 1",
             f"trigger_if = {{ limit = {{ var:{PREFIX}_ad_external_referral_present = 1 }} has_variable = {PREFIX}_ad_external_referral_id has_variable = {PREFIX}_ad_external_referrer has_variable = {PREFIX}_ad_external_referral_relationship has_variable = {PREFIX}_ad_external_referral_evidence_receipt has_variable = {PREFIX}_ad_external_referral_reward var:{PREFIX}_ad_external_referral_reward = 5 NOT = {{ var:{PREFIX}_ad_external_referrer = var:{PREFIX}_ad_external_candidate }} }} trigger_else = {{ always = yes }}",
+            f"has_variable = {PREFIX}_m271_candidate",
+            f"has_variable = {PREFIX}_m271_referral_id",
+            f"has_variable = {PREFIX}_m271_referrer",
+            f"has_variable = {PREFIX}_m271_relationship_ref",
+            f"has_variable = {PREFIX}_m271_evidence_receipt",
+            f"has_variable = {PREFIX}_m271_reward_gold",
+            f"var:{PREFIX}_ad_external_referral_present = 1",
+            f"var:{PREFIX}_ad_external_candidate = var:{PREFIX}_m271_candidate",
+            f"var:{PREFIX}_ad_external_referral_id = var:{PREFIX}_m271_referral_id",
+            f"var:{PREFIX}_ad_external_referrer = var:{PREFIX}_m271_referrer",
+            f"var:{PREFIX}_ad_external_referral_relationship = var:{PREFIX}_m271_relationship_ref",
+            f"var:{PREFIX}_ad_external_referral_evidence_receipt = var:{PREFIX}_m271_evidence_receipt",
+            f"var:{PREFIX}_ad_external_referral_reward = var:{PREFIX}_m271_reward_gold",
         ]
         for slot in (1, 2, 3):
             checks += [
@@ -724,18 +814,19 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
     if mid == 271:
         checks += _gold_check(5) + [
             f"var:zg361_case_{d}_owner = {{ gold >= 5 }}",
-            f"has_variable = {PREFIX}_m267_candidate_frozen",
-            f"has_variable = {PREFIX}_m267_referral_present",
-            f"has_variable = {PREFIX}_m267_referrer_frozen",
-            f"has_variable = {PREFIX}_m267_referral_id",
-            f"has_variable = {PREFIX}_m267_referral_relationship",
-            f"has_variable = {PREFIX}_m267_referral_evidence_receipt",
-            f"has_variable = {PREFIX}_m267_referral_reward",
-            f"var:{PREFIX}_m267_candidate_frozen = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_m267_referral_present = 1",
-            f"var:{PREFIX}_m267_write_case = $TICKET_CASE$",
-            f"var:{PREFIX}_m267_business_object_created = 1",
-            f"var:{PREFIX}_m267_referrer_voted = {0 if choice == 1 else 1}",
+            f"has_variable = {PREFIX}_ad_external_candidate",
+            f"has_variable = {PREFIX}_ad_external_referral_present",
+            f"has_variable = {PREFIX}_ad_external_referral_id",
+            f"has_variable = {PREFIX}_ad_external_referrer",
+            f"has_variable = {PREFIX}_ad_external_referral_relationship",
+            f"has_variable = {PREFIX}_ad_external_referral_evidence_receipt",
+            f"has_variable = {PREFIX}_ad_external_referral_reward",
+            f"has_variable = {PREFIX}_ad_external_referrer_voted",
+            f"var:{PREFIX}_ad_external_candidate = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_ad_external_referral_present = 1",
+            f"var:{PREFIX}_ad_external_referral_reward = 5",
+            f"var:{PREFIX}_ad_external_referrer_voted = {0 if choice == 1 else 1}",
+            f"NOT = {{ var:{PREFIX}_ad_external_referrer = var:{PREFIX}_ad_external_candidate }}",
         ]
     if mid == 272:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
@@ -764,31 +855,54 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
             _zero_or_missing(f"{PREFIX}_formal_hc_active"),
         ]
     if mid == 275:
-        checks += [
-            "has_variable = zg361_ch_hc_reserved",
-            "var:zg361_ch_hc_reserved >= 1",
-            f"has_variable = {PREFIX}_m266_hc_reservation_active",
-            f"var:{PREFIX}_m266_hc_reservation_active = 1",
-            f"has_variable = {PREFIX}_m266_hc_receipt",
-            f"var:{PREFIX}_m266_hc_receipt = $TICKET_CASE$",
-            f"has_variable = {PREFIX}_offer_gold_reserved",
-            f"var:{PREFIX}_offer_gold_reserved >= 15",
-            f"has_variable = {PREFIX}_gold_reserved",
-            f"var:{PREFIX}_gold_reserved >= 15",
-            _zero_or_missing(f"{PREFIX}_m274_hired"),
-            f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_ad_hc_flight_pending var:{PREFIX}_ad_hc_flight_pending = 1 var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$ var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$ var:{PREFIX}_ad_hc_flight_case = $TICKET_CASE$ }}",
-            f"has_variable = {PREFIX}_ad_external_refusal_reason_id",
-        ]
+        refusal_only = (
+            f"has_variable = zg361_ch_hc_reserved var:zg361_ch_hc_reserved >= 1 "
+            f"has_variable = {PREFIX}_m266_hc_reservation_active var:{PREFIX}_m266_hc_reservation_active = 1 "
+            f"has_variable = {PREFIX}_m266_hc_receipt var:{PREFIX}_m266_hc_receipt = $TICKET_CASE$ "
+            f"has_variable = {PREFIX}_offer_gold_reserved var:{PREFIX}_offer_gold_reserved >= 15 "
+            f"has_variable = {PREFIX}_gold_reserved var:{PREFIX}_gold_reserved >= 15 "
+            f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_ad_hc_flight_pending "
+            f"var:{PREFIX}_ad_hc_flight_pending = 1 var:{PREFIX}_ad_hc_flight_subject = $TICKET_SUBJECT$ "
+            f"var:{PREFIX}_ad_hc_flight_cycle = $TICKET_CYCLE$ var:{PREFIX}_ad_hc_flight_case = $TICKET_CASE$ }} "
+            f"has_variable = {PREFIX}_ad_external_refusal_reason_id"
+        )
         if choice == 1:
-            checks += [
-                f"has_variable = {PREFIX}_ad_external_runner_up",
-                f"has_variable = {PREFIX}_ad_external_runner_up_evidence",
-                f"NOT = {{ var:{PREFIX}_ad_external_runner_up = $TICKET_SUBJECT$ }}",
-            ]
+            refusal_only += (
+                f" has_variable = {PREFIX}_ad_external_runner_up "
+                f"has_variable = {PREFIX}_ad_external_runner_up_evidence "
+                f"NOT = {{ var:{PREFIX}_ad_external_runner_up = $TICKET_SUBJECT$ }}"
+            )
+        checks.append(
+            f"trigger_if = {{ limit = {{ has_variable = {PREFIX}_m274_hired "
+            f"var:{PREFIX}_m274_hired = 1 }} has_variable = {PREFIX}_formal_hc_active "
+            f"var:{PREFIX}_formal_hc_active = 1 has_variable = zg361_ch_hc_occupied "
+            f"var:zg361_ch_hc_occupied >= 1 }} trigger_else = {{ {refusal_only} }}"
+        )
+    if mid == 269:
+        checks.append(
+            f"trigger_if = {{ limit = {{ has_variable = {PREFIX}_m274_hired "
+            f"var:{PREFIX}_m274_hired = 1 }} has_variable = {PREFIX}_formal_hc_active "
+            f"var:{PREFIX}_formal_hc_active = 1 has_variable = {PREFIX}_m274_probation_due_cycle "
+            f"var:{PREFIX}_m274_hire_case = $TICKET_CASE$ }} trigger_else = {{ "
+            f"has_variable = {PREFIX}_m275_refusal var:{PREFIX}_m275_refusal = 1 "
+            f"has_variable = {PREFIX}_m275_hold_pending var:{PREFIX}_m275_hold_pending = 1 "
+            f"has_variable = {PREFIX}_m275_not_applicable_hired "
+            f"var:{PREFIX}_m275_not_applicable_hired = 0 }}"
+        )
     if mid == 277:
         checks += [
+            f"has_variable = {PREFIX}_m274_hired",
+            f"var:{PREFIX}_m274_hired = 1",
+            f"has_variable = {PREFIX}_m274_hire_case",
+            f"var:{PREFIX}_m274_hire_case = $TICKET_CASE$",
+            f"has_variable = {PREFIX}_m269_outcome_settled",
+            f"var:{PREFIX}_m269_outcome_settled = 1",
+            f"has_variable = {PREFIX}_m269_not_applicable_no_hire",
+            f"var:{PREFIX}_m269_not_applicable_no_hire = 0",
             f"has_variable = {PREFIX}_formal_hc_active",
             f"var:{PREFIX}_formal_hc_active = 1",
+            f"has_variable = {PREFIX}_formal_hc_active_case",
+            f"var:{PREFIX}_formal_hc_active_case = $TICKET_CASE$",
             "has_variable = zg361_ch_hc_occupied",
             "var:zg361_ch_hc_occupied >= 1",
         ]
@@ -863,12 +977,34 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             _set(f"m{mid}_debt_cycle", "$TICKET_CYCLE$"),
             _set(f"m{mid}_debt_case", "$TICKET_CASE$"),
             _set(f"m{mid}_debt_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"),
+            _set(f"m{mid}_debt_open", 1),
             _set(f"m{mid}_business_object_created", 0),
             _change("policy_debt", 1),
         ]
         return lines
 
-    lines += [_set(f"m{mid}_business_object_created", 1)]
+    lines += [
+        _set(f"m{mid}_business_object_created", 1),
+        _set(f"m{mid}_object_type_code", mid),
+        _set(f"m{mid}_object_{spec.object_type}", 1),
+        _set(f"m{mid}_object_owner", "$TICKET_OWNER$"),
+        _set(f"m{mid}_object_subject", "$TICKET_SUBJECT$"),
+        _set(f"m{mid}_object_cycle", "$TICKET_CYCLE$"),
+        _set(f"m{mid}_object_case", "$TICKET_CASE$"),
+        _set(f"m{mid}_object_state", spec.state),
+        _set(f"m{mid}_object_id", f"{{ value = $TICKET_CASE$ multiply = 1000 add = {mid} }}"),
+        _set(f"m{mid}_consumer_contract", mid),
+        _set(f"m{mid}_object_consumed", 0),
+    ]
+    for resource_book in spec.resource_books:
+        lines.append(_set(f"m{mid}_resource_{resource_book}", 1))
+    if spec.deadline_cycles:
+        lines.append(
+            _set(
+                f"m{mid}_object_due_cycle",
+                f"{{ value = $TICKET_CYCLE$ add = {spec.deadline_cycles} }}",
+            )
+        )
     # AB: authorised hours, overtime liabilities, meetings and leave all reconcile.
     if mid == 242:
         lines += [_change("hours_available", -20), _change("hours_output", 20), _set("m242_presence_hours", 30), _set("m242_output_hours", 20), _set("m242_presence_rewarded", 0 if choice == 1 else 1)]
@@ -902,25 +1038,25 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [_set("m253_minimum_duty_distinct", 1), _set("m253_appeal_repair", 1 if choice == 1 else 0), _set("m253_misconduct", 0 if choice == 1 else 1)]
     # AC: external capacity has a separate shadow-HC book; formal HC is shared.
     elif mid == 254:
-        lines += [_change("shadow_hc_available", -1), _change("shadow_hc_active", 1), _change("gold_available", -20), _change("gold_reserved", 20), _change("contract_gold_reserved", 20), _set("m254_sunset_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m254_formal_hc_touched", 0)]
+        lines += [_change("shadow_hc_available", -1), _change("shadow_hc_active", 1), _change("gold_available", -20), _change("gold_reserved", 20), _change("contract_gold_reserved", 20), _set("m254_contract_id", "$TICKET_CASE$"), _set("m254_vendor_id", "$TICKET_SUBJECT$"), _set("m254_contract_type", 2), _set("m254_shadow_hc_units", 1), _set("m254_budget_gold", 20), _set("m254_start_cycle", "$TICKET_CYCLE$"), _set("m254_sunset_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m254_formal_hc_touched", 0)]
     elif mid == 255:
-        lines += [_set("m255_formal_tco", 120), _set("m255_external_tco", 110), _set("m255_mixed_tco", 100), _set("m255_selected_tco", 100 if choice == 1 else 110)]
+        lines += [_set("m255_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m255_formal_tco", 120), _set("m255_external_tco", 110), _set("m255_mixed_tco", 100), _set("m255_selected_tco", 100 if choice == 1 else 110)]
     elif mid == 256:
-        lines += [_set("m256_external_pool_separate", 1 if choice == 1 else 0), _set("m256_external_entries_in_formal_cohort", 0 if choice == 1 else 1), _set("m256_displaced_formal_members", 0 if choice == 1 else 1)]
+        lines += [_set("m256_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m256_actual_executor", f"var:{PREFIX}_m261_actual_executor"), _set("m256_delivery_score", 80), _set("m256_quality_score", 80), _set("m256_sla_score", 80), _set("m256_external_pool_separate", 1 if choice == 1 else 0), _set("m256_external_entries_in_formal_cohort", 0 if choice == 1 else 1), _set("m256_displaced_formal_members", 0 if choice == 1 else 1)]
     elif mid == 257:
         lines += ["change_variable = { name = zg361_ch_hc_available add = -1 }", "change_variable = { name = zg361_ch_hc_reserved add = 1 }", _set("m257_conversion_pending", 1), _set("m257_conversion_official", "$TICKET_SUBJECT$"), _set("m257_recruitment_ref", "$TICKET_CASE$"), _set("m257_effective_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("formal_hc_pending", 1), _set("formal_hc_pending_owner", "$TICKET_OWNER$"), _set("formal_hc_pending_case", "$TICKET_CASE$"), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[257]} days = 365 }}"]
     elif mid == 258:
-        lines += [_set("m258_missing_access_count", 1), _set("m258_target_adjustment", 20 if choice == 1 else 0), _set("m258_formal_grade_written", 0), _set("m258_governance_risk", 0 if choice == 1 else 1)]
+        lines += [_set("m258_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m258_missing_access_count", 1), _set("m258_target_adjustment", 20 if choice == 1 else 0), _set("m258_formal_grade_written", 0), _set("m258_governance_risk", 0 if choice == 1 else 1)]
     elif mid == 259:
         client, vendor = ((3000, 7000) if choice == 1 else (0, 10000))
-        lines += [_set("m259_client_change_bps", client), _set("m259_vendor_management_bps", vendor), _set("m259_responsibility_total_bps", 10000), _set("m259_formal_grade_written", 0)]
+        lines += [_set("m259_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m259_incident_id", "$TICKET_CASE$"), _set("m259_client_change_bps", client), _set("m259_vendor_management_bps", vendor), _set("m259_responsibility_total_bps", 10000), _set("m259_formal_grade_written", 0)]
     elif mid == 260:
-        lines += [_set("m260_contract_type", 2 if choice == 1 else 1), _set("m260_ownership_frozen", 1), _set("m260_change_rule_frozen", 1)]
+        lines += [_set("m260_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m260_contract_type", f"var:{PREFIX}_m254_contract_type"), _set("m260_ownership_frozen", 1 if choice == 1 else 0), _set("m260_change_rule_frozen", 1 if choice == 1 else 0)]
     elif mid == 261:
-        lines += [_set("m261_chain_depth", 3 if choice == 1 else 5), _set("m261_actual_executor_frozen", 1), _set("m261_chain_acyclic", 1 if choice == 1 else 0)]
+        lines += [_set("m261_contract_id", f"var:{PREFIX}_m254_contract_id"), _set("m261_vendor_id", f"var:{PREFIX}_m254_vendor_id"), _set("m261_actual_executor", "$TICKET_SUBJECT$"), _set("m261_chain_depth", 3 if choice == 1 else 5), _set("m261_actual_executor_frozen", 1), _set("m261_chain_acyclic", 1 if choice == 1 else 0)]
     elif mid == 262:
         home, host = ((40, 60) if choice == 1 else (0, 100))
-        lines += [_set("m262_seconded_official", "$TICKET_SUBJECT$"), _set("m262_home_manager", "$TICKET_OWNER$"), _set("m262_host_manager", "$TICKET_SUBJECT$"), _set("m262_home_weight", home), _set("m262_host_weight", host), _set("m262_weight_total", 100), _set("m262_cost_booked_once", 1), _set("m262_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m262_review_pending", 1), _set("ac_s05_deadline_pending", 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[262]} days = 365 }}"]
+        lines += [_set("m262_seconded_official", "$TICKET_SUBJECT$"), _set("m262_home_manager", "$TICKET_OWNER$"), _set("m262_host_manager", f"var:{PREFIX}_ac_external_secondment_host_manager"), _set("m262_home_weight", home), _set("m262_host_weight", host), _set("m262_weight_total", 100), _set("m262_cost_booked_once", 1), _set("m262_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m262_review_pending", 1), _set("ac_s05_deadline_pending", 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[262]} days = 365 }}"]
     elif mid == 263:
         if choice == 1:
             lines += [_set("m263_return_choice", 1), _set("m263_prior_identity_preserved", 1), _set("m263_extension_terminal", 0), _set("m263_terminal_choice", 1), _set("m263_resolved_choice", 1), _set("m263_due_cycle", "$TICKET_CYCLE$")]
@@ -942,8 +1078,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 266:
         lines += ["change_variable = { name = zg361_ch_hc_available add = -1 }", "change_variable = { name = zg361_ch_hc_reserved add = 1 }", _set("m266_standard_bar", 70), _set("m266_selected_bar", 70 if choice == 1 else 60), _set("m266_urgency_level", 2 if choice == 1 else 4), _set("m266_hc_receipt", "$TICKET_CASE$"), _set("m266_hc_reservation_active", 1), _set("m266_vacancy_serial", "$TICKET_CASE$"), f"var:zg361_case_{d}_owner = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 1 }} set_variable = {{ name = {PREFIX}_ad_hc_flight_subject value = $TICKET_SUBJECT$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_cycle value = $TICKET_CYCLE$ }} set_variable = {{ name = {PREFIX}_ad_hc_flight_case value = $TICKET_CASE$ }} }}"]
     elif mid == 267:
-        lines += [_set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_ad_external_candidate"), _set("m267_referral_present", f"var:{PREFIX}_ad_external_referral_present"), _set("m267_referrer_voted", f"var:{PREFIX}_ad_external_referrer_voted"), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
-        lines += [f"if = {{ limit = {{ var:{PREFIX}_ad_external_referral_present = 1 }} set_variable = {{ name = {PREFIX}_m267_referral_id value = var:{PREFIX}_ad_external_referral_id }} set_variable = {{ name = {PREFIX}_m267_referrer_frozen value = var:{PREFIX}_ad_external_referrer }} set_variable = {{ name = {PREFIX}_m267_referral_relationship value = var:{PREFIX}_ad_external_referral_relationship }} set_variable = {{ name = {PREFIX}_m267_referral_evidence_receipt value = var:{PREFIX}_ad_external_referral_evidence_receipt }} set_variable = {{ name = {PREFIX}_m267_referral_reward value = var:{PREFIX}_ad_external_referral_reward }} set_variable = {{ name = {PREFIX}_m267_referrer_excluded_before_seal value = 1 }} }}"]
+        lines += [_set("m267_vote_count", 3), _set("m267_evidence_count", 3), _set("m267_anchor_before_votes", 0 if choice == 1 else 1), _set("m267_candidate_frozen", f"var:{PREFIX}_m271_candidate"), _set("m267_referral_present", 1), _set("m267_referrer_voted", f"var:{PREFIX}_m271_referrer_voted"), _set("m267_referral_frozen_case", "$TICKET_CASE$")]
+        lines += [_set("m267_referral_id", f"var:{PREFIX}_m271_referral_id"), _set("m267_referrer_frozen", f"var:{PREFIX}_m271_referrer"), _set("m267_referral_relationship", f"var:{PREFIX}_m271_relationship_ref"), _set("m267_referral_evidence_receipt", f"var:{PREFIX}_m271_evidence_receipt"), _set("m267_referral_reward", f"var:{PREFIX}_m271_reward_gold"), _set("m267_referrer_excluded_before_seal", 1 if choice == 1 else 0)]
         for slot in (1, 2, 3):
             lines += [_set(f"m267_interviewer_{slot}", f"var:{PREFIX}_ad_external_interviewer_{slot}"), _set(f"m267_vote_{slot}", f"var:{PREFIX}_ad_external_vote_{slot}"), _set(f"m267_vote_evidence_{slot}", f"var:{PREFIX}_ad_external_vote_evidence_{slot}")]
         # The seal is the commit marker for the complete identity/vote/evidence
@@ -952,11 +1088,17 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 268:
         lines += [_set("m268_calibration_snapshot", "$TICKET_CASE$"), _set("m268_raw_votes_preserved", 1), _set("m268_adjustment_bound", 20 if choice == 1 else 100), _set("m268_training_required", 1 if choice == 1 else 0)]
     elif mid == 269:
-        lines += [_set("m269_outcome_pending", 1), _set("m269_raw_vote_snapshot", 1), _set("m269_attribution_pending", 1), _set("m269_observed_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[269]} days = 365 }}"]
+        hired_lines = [_set("m269_not_applicable_no_hire", 0), _set("m269_no_hire_consumed", 0), _set("m269_outcome_settled", 0), _set("m269_outcome_pending", 1), _set("m269_raw_vote_snapshot", 1), _set("m269_attribution_pending", 1), _set("m269_observed_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("ad_s05_deadline_pending", 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[269]} days = 365 }}"]
+        no_hire_lines = [_set("m269_not_applicable_no_hire", 1), _set("m269_outcome_settled", 0), _set("m269_outcome_pending", 0), _set("m269_attribution_pending", 0), _set("m269_refusal_case", f"var:{PREFIX}_m275_object_case"), _set("m269_refusal_reason_id", f"var:{PREFIX}_m275_refusal_reason_id"), _set("m269_no_hire_consumed", 1)]
+        lines.append(
+            f"if = {{ limit = {{ has_variable = {PREFIX}_m274_hired "
+            f"var:{PREFIX}_m274_hired = 1 }}\n{indent(chr(10).join(hired_lines))}\n}}\n"
+            f"else = {{\n{indent(chr(10).join(no_hire_lines))}\n}}"
+        )
     elif mid == 270:
         lines += [_set("m270_role_class", 1 if choice == 1 else 4), _set("m270_threshold", 75 if choice == 1 else 85), _set("m270_policy_version", "$TICKET_CYCLE$"), _set("m270_raw_votes_rewritten", 0)]
     elif mid == 271:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", f"var:{PREFIX}_m267_candidate_frozen"), _set("m271_referrer", f"var:{PREFIX}_m267_referrer_frozen"), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_voted", f"var:{PREFIX}_m267_referrer_voted"), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_gold = 5 }}"]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("referral_gold_reserved", 5), _set("m271_candidate", f"var:{PREFIX}_ad_external_candidate"), _set("m271_referral_id", f"var:{PREFIX}_ad_external_referral_id"), _set("m271_referrer", f"var:{PREFIX}_ad_external_referrer"), _set("m271_relationship_ref", f"var:{PREFIX}_ad_external_referral_relationship"), _set("m271_evidence_receipt", f"var:{PREFIX}_ad_external_referral_evidence_receipt"), _set("m271_reward_gold", f"var:{PREFIX}_ad_external_referral_reward"), _set("m271_referrer_not_candidate", 1), _set("m271_relationship_disclosed", 1 if choice == 1 else 0), _set("m271_referrer_recused_before_vote", 1 if choice == 1 else 0), _set("m271_referrer_voted", f"var:{PREFIX}_ad_external_referrer_voted"), _set("m271_reward_due_after_probation", 1 if choice == 1 else 0), _set("m271_reward_escrowed", 1), f"var:zg361_case_{d}_owner = {{ remove_gold = 5 }}"]
         if choice == 2:
             lines += [_change("gold_reserved", -5), _change("gold_paid", 5), _change("referral_gold_reserved", -5), _change("referral_gold_paid", 5), _set("m271_internal_owner_credit", 5), _set("m271_reward_paid_before_probation", 1), _set("m271_reward_payee", f"var:{PREFIX}_m271_referrer"), _set("m271_reward_escrowed", 0), f"var:{PREFIX}_m271_referrer = {{ add_gold = 5 }}"]
     elif mid == 272:
@@ -964,18 +1106,31 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 273:
         lines += [_set("candidate_active", 1), _set("candidate_active_owner", "$TICKET_OWNER$"), _set("candidate_active_case", "$TICKET_CASE$"), _set("m273_candidate_fingerprint", "$TICKET_SUBJECT$"), _set("m273_owner_frozen", "$TICKET_OWNER$"), _set("m273_scout_credit_bps", 3000 if choice == 1 else 10000), _set("m273_hiring_credit_bps", 7000 if choice == 1 else 0), _set("m273_credit_total_bps", 10000), _set("m273_additional_hc_reserved", 0)]
     elif mid == 274:
-        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0)]
+        lines += [_change("gold_available", -5), _change("gold_reserved", 5), _change("offer_gold_reserved", 5), _set("m274_counter_used", 1), _set("m274_counter_amount", 5 if choice == 1 else 15), _set("m274_fairness_cap", 10), _set("m274_offer_acceptance_candidate", 1 if choice == 1 else 0), _set("m274_hired", 0)]
         if choice == 1:
             lines += [_change("gold_reserved", -15), _change("gold_paid", 15), _change("offer_gold_reserved", -15), _change("offer_gold_paid", 15), "change_variable = { name = zg361_ch_hc_reserved add = -1 }", "change_variable = { name = zg361_ch_hc_occupied add = 1 }", _set("m266_hc_reservation_active", 0), _set("candidate_active", 0), _set("formal_hc_active", 1), _set("formal_hc_active_case", "$TICKET_CASE$"), _set("m274_hired", 1), _set("m274_hire_case", "$TICKET_CASE$"), _set("m274_probation_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), f"var:zg361_case_{d}_owner = {{ remove_gold = 15 set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}", "add_gold = 15"]
     elif mid == 275:
         due_add = 1 if choice == 1 else 3
-        lines += [_set("m275_refusal", 1), _set("m275_refusal_reason_id", f"var:{PREFIX}_ad_external_refusal_reason_id"), _set("m275_original_candidate", "$TICKET_SUBJECT$"), _set("m275_hold_start_cycle", "$TICKET_CYCLE$"), _set("m275_hold_due_cycle", f"{{ value = $TICKET_CYCLE$ add = {due_add} }}"), _set("m275_hc_lineage_receipt", "$TICKET_CASE$"), _set("m275_hold_pending", 1), _set("m275_runner_attempt_new_case", 1 if choice == 1 else 0), _set("m275_policy_breach_indefinite_requested", 1 if choice == 2 else 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[275]} days = {90 if choice == 1 else 365} }}"]
+        refusal_lines = [_set("m275_refusal", 1), _set("m275_not_applicable_hired", 0), _set("m275_refusal_reason_id", f"var:{PREFIX}_ad_external_refusal_reason_id"), _set("m275_original_candidate", "$TICKET_SUBJECT$"), _set("m275_hold_start_cycle", "$TICKET_CYCLE$"), _set("m275_hold_due_cycle", f"{{ value = $TICKET_CYCLE$ add = {due_add} }}"), _set("m275_hc_lineage_receipt", "$TICKET_CASE$"), _set("m275_hold_pending", 1), _set("m275_runner_attempt_new_case", 1 if choice == 1 else 0), _set("m275_policy_breach_indefinite_requested", 1 if choice == 2 else 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[275]} days = {90 if choice == 1 else 365} }}"]
         if choice == 1:
-            lines += [_set("m275_runner_up", f"var:{PREFIX}_ad_external_runner_up"), _set("m275_runner_up_evidence", f"var:{PREFIX}_ad_external_runner_up_evidence"), _set("m275_runner_reopen_pending", 0)]
+            refusal_lines += [_set("m275_runner_up", f"var:{PREFIX}_ad_external_runner_up"), _set("m275_runner_up_evidence", f"var:{PREFIX}_ad_external_runner_up_evidence"), _set("m275_runner_reopen_pending", 0)]
         else:
-            lines += [_set("m275_reason_remediated", 0)]
-        lines += [f"if = {{ limit = {{ has_variable = {PREFIX}_m269_outcome_pending var:{PREFIX}_m269_outcome_pending = 1 var:{PREFIX}_m269_write_case = $TICKET_CASE$ }} set_variable = {{ name = {PREFIX}_m269_outcome_pending value = 0 }} set_variable = {{ name = {PREFIX}_m269_watch_cancelled_by_refusal value = 1 }} }}"]
-        lines += [_change("gold_reserved", -15), _change("gold_available", 15), _change("offer_gold_reserved", -15), _change("offer_gold_refunded", 15), _set("candidate_active", 0), f"if = {{ limit = {{ has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 }} change_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_available add = 5 }} set_variable = {{ name = {PREFIX}_m271_reward_refunded value = 1 }} set_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }} var:zg361_case_{d}_owner = {{ add_gold = 5 }} }}"]
+            refusal_lines += [_set("m275_reason_remediated", 0)]
+        refusal_lines += [_change("gold_reserved", -15), _change("gold_available", 15), _change("offer_gold_reserved", -15), _change("offer_gold_refunded", 15), _set("candidate_active", 0), f"if = {{ limit = {{ has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 }} change_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_available add = 5 }} set_variable = {{ name = {PREFIX}_m271_reward_refunded value = 1 }} set_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }} var:zg361_case_{d}_owner = {{ add_gold = 5 }} }}"]
+        hired_lines = [
+            _set("m275_refusal", 0),
+            _set("m275_not_applicable_hired", 1),
+            _set("m275_hire_case", f"var:{PREFIX}_m274_hire_case"),
+            _set("m275_hc_lineage_receipt", f"var:{PREFIX}_m266_hc_receipt"),
+            _set("m275_hold_pending", 0),
+            _set("m275_hc_held", 0),
+            _set("m275_resources_touched", 0),
+        ]
+        lines.append(
+            f"if = {{ limit = {{ has_variable = {PREFIX}_m274_hired "
+            f"var:{PREFIX}_m274_hired = 1 }}\n{indent(chr(10).join(hired_lines))}\n}}\n"
+            f"else = {{\n{indent(chr(10).join(refusal_lines))}\n}}"
+        )
     elif mid == 276:
         lines += [_set("m276_old_case_hash", "$TICKET_CASE$"), _set("m276_old_history_retained", 1), _set("m276_growth_evidence_frozen", 1 if choice == 1 else 0), _set("m276_history_wipe_attempt", 0 if choice == 1 else 1), _set("m276_hc_touched", 0)]
     elif mid == 277:
@@ -1035,6 +1190,8 @@ def render_consumer(spec: Mechanism) -> str:
     required = [
         *(f"{PREFIX}_m{mid}_write_{name}" for name in ("owner", "subject", "cycle", "case", "state")),
         f"{PREFIX}_{spec.field}",
+        f"{PREFIX}_m{mid}_choice",
+        f"{PREFIX}_m{mid}_business_object_created",
         *(f"zg361_case_{d}_{name}" for name in ("owner", "subject", "cycle_serial", "case_serial", "state")),
     ]
     existence = "\n".join(f"\t\t\t\thas_variable = {name}" for name in required)
@@ -1057,6 +1214,45 @@ def render_consumer(spec: Mechanism) -> str:
         f"\t\tset_variable = {{ name = {PREFIX}_m{mid}_consumed_{name} value = var:{PREFIX}_m{mid}_write_{name} }}"
         for name in ("owner", "subject", "cycle", "case", "state")
     )
+    object_required_names = [
+        "object_type_code",
+        f"object_{spec.object_type}",
+        "object_owner",
+        "object_subject",
+        "object_cycle",
+        "object_case",
+        "object_state",
+        "object_id",
+        "consumer_contract",
+        *(f"resource_{book}" for book in spec.resource_books),
+    ]
+    if spec.deadline_cycles:
+        object_required_names.append("object_due_cycle")
+    object_required = "\n".join(
+        f"\t\t\t\t\t\thas_variable = {PREFIX}_m{mid}_{name}"
+        for name in object_required_names
+    )
+    object_equal = "\n".join((
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_type_code = {mid}",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_consumer_contract = {mid}",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_owner = var:{PREFIX}_m{mid}_write_owner",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_subject = var:{PREFIX}_m{mid}_write_subject",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_cycle = var:{PREFIX}_m{mid}_write_cycle",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_case = var:{PREFIX}_m{mid}_write_case",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_object_state = var:{PREFIX}_m{mid}_write_state",
+    ))
+    debt_required = "\n".join(
+        f"\t\t\t\t\t\thas_variable = {PREFIX}_m{mid}_debt_{name}"
+        for name in ("owner", "subject", "cycle", "case", "due_cycle", "open")
+    )
+    debt_equal = "\n".join((
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_choice = 3",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_open = 1",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_owner = var:{PREFIX}_m{mid}_write_owner",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_subject = var:{PREFIX}_m{mid}_write_subject",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_cycle = var:{PREFIX}_m{mid}_write_cycle",
+        f"\t\t\t\t\tvar:{PREFIX}_m{mid}_debt_case = var:{PREFIX}_m{mid}_write_case",
+    ))
     return f"""# #{mid:03d} read-side projection; existence gates precede tuple reads.
 {PREFIX}_m{mid}_consume_effect = {{
 \tif = {{
@@ -1066,6 +1262,25 @@ def render_consumer(spec: Mechanism) -> str:
 {existence}
 \t\t\t\t}}
 {comparisons}
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ var:{PREFIX}_m{mid}_business_object_created = 1 }}
+\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\tlimit = {{
+{object_required}
+\t\t\t\t\t\t}}
+{object_equal}
+\t\t\t\t\t}}
+\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{
+\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\tlimit = {{
+{debt_required}
+\t\t\t\t\t\t}}
+{debt_equal}
+\t\t\t\t\t}}
+\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t}}
 \t\t\t\ttrigger_if = {{
 \t\t\t\t\tlimit = {{
 {consumed_exists}
@@ -1081,6 +1296,8 @@ def render_consumer(spec: Mechanism) -> str:
 {writes}
 \t\tset_variable = {{ name = {PREFIX}_m{mid}_visible_value value = var:{PREFIX}_{spec.field} }}
 \t\tset_variable = {{ name = {PREFIX}_m{mid}_visible_provenance_case value = var:{PREFIX}_m{mid}_write_case }}
+\t\tif = {{ limit = {{ var:{PREFIX}_m{mid}_business_object_created = 1 }} set_variable = {{ name = {PREFIX}_m{mid}_object_consumed value = 1 }} set_variable = {{ name = {PREFIX}_m{mid}_consumer_{spec.consumer_key} value = 1 }} }}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_m{mid}_debt_visible_to_settlement value = 1 }} }}
 \t\tchange_variable = {{ name = {PREFIX}_{d}_visible_revision add = 1 }}
 \t}}
 }}"""
@@ -1190,10 +1407,79 @@ if = {{
         return f"{PREFIX}_finalize_portfolio_effect = yes"
     if state < 6:
         return f"{PREFIX}_{d}_schedule_stage_{state + 1:02d}_deadline_effect = yes"
+    if d == "ac":
+        return f"""{PREFIX}_release_abandoned_ac_resources_effect = yes
+{PREFIX}_ad_launch_effect = yes"""
+    if d == "ad":
+        return f"""{PREFIX}_release_abandoned_ad_resources_effect = yes
+{PREFIX}_al_launch_effect = yes"""
     next_domain = NEXT_DOMAIN[d]
     if next_domain:
         return f"{PREFIX}_{next_domain}_launch_effect = yes"
     return f"{PREFIX}_finalize_portfolio_effect = yes"
+
+
+def render_abandoned_resource_release() -> str:
+    """Release reservations that no longer have an A/B business flight.
+
+    Route C remains a due policy debt.  It must not, however, strand the
+    finite contract/recruitment books forever after the domain case closes.
+    A real #275 hold is the one explicit exception and keeps its HC lineage
+    until the tuple-guarded future consumer settles it.
+    """
+
+    return f"""{PREFIX}_release_abandoned_ac_resources_effect = {{
+\tif = {{
+\t\tlimit = {{ has_variable = {PREFIX}_contract_gold_reserved var:{PREFIX}_contract_gold_reserved > 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ac_release_gold value = var:{PREFIX}_contract_gold_reserved }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_reserved add = {{ value = var:{PREFIX}_ac_release_gold multiply = -1 }} }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_available add = var:{PREFIX}_ac_release_gold }}
+\t\tset_variable = {{ name = {PREFIX}_contract_gold_reserved value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ac_abandoned_contract_refunded value = 1 }}
+\t}}
+\tif = {{
+\t\tlimit = {{ has_variable = {PREFIX}_shadow_hc_active var:{PREFIX}_shadow_hc_active > 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ac_release_shadow value = var:{PREFIX}_shadow_hc_active }}
+\t\tchange_variable = {{ name = {PREFIX}_shadow_hc_available add = var:{PREFIX}_ac_release_shadow }}
+\t\tset_variable = {{ name = {PREFIX}_shadow_hc_active value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ac_abandoned_shadow_released value = 1 }}
+\t}}
+}}
+
+{PREFIX}_release_abandoned_ad_resources_effect = {{
+\tif = {{
+\t\tlimit = {{ has_variable = {PREFIX}_offer_gold_reserved var:{PREFIX}_offer_gold_reserved > 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ad_release_offer_gold value = var:{PREFIX}_offer_gold_reserved }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_reserved add = {{ value = var:{PREFIX}_ad_release_offer_gold multiply = -1 }} }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_available add = var:{PREFIX}_ad_release_offer_gold }}
+\t\tchange_variable = {{ name = {PREFIX}_offer_gold_refunded add = var:{PREFIX}_ad_release_offer_gold }}
+\t\tset_variable = {{ name = {PREFIX}_offer_gold_reserved value = 0 }}
+\t}}
+\tif = {{
+\t\tlimit = {{ has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_gold_reserved var:{PREFIX}_gold_reserved >= 5 }}
+\t\tchange_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_reserved add = -5 }}
+\t\tchange_variable = {{ name = {PREFIX}_gold_available add = 5 }}
+\t\tset_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_m271_reward_refunded value = 1 }}
+\t\tvar:zg361_case_ad_owner = {{ add_gold = 5 }}
+\t}}
+\tif = {{
+\t\tlimit = {{
+\t\t\thas_variable = {PREFIX}_m266_hc_reservation_active
+\t\t\tvar:{PREFIX}_m266_hc_reservation_active = 1
+\t\t\t{_zero_or_missing(f'{PREFIX}_m275_hold_pending')}
+\t\t\thas_variable = zg361_ch_hc_reserved
+\t\t\tvar:zg361_ch_hc_reserved >= 1
+\t\t}}
+\t\tchange_variable = {{ name = zg361_ch_hc_reserved add = -1 }}
+\t\tchange_variable = {{ name = zg361_ch_hc_available add = 1 }}
+\t\tset_variable = {{ name = {PREFIX}_m266_hc_reservation_active value = 0 }}
+\t\tset_variable = {{ name = {PREFIX}_ad_abandoned_hc_released value = 1 }}
+\t\tvar:zg361_case_ad_owner = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}
+\t}}
+\tif = {{ limit = {{ has_variable = {PREFIX}_candidate_active var:{PREFIX}_candidate_active = 1 }} set_variable = {{ name = {PREFIX}_candidate_active value = 0 }} }}
+}}"""
 
 
 def render_route_effect(spec: Mechanism, choice: int) -> str:
@@ -1204,9 +1490,11 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     checks = atomic_precheck(spec, choice)
     business = "\n".join(business_effects(spec, choice))
     advance = ""
-    # #263 route B is a bounded extension, not a terminal return choice.  Its
-    # delayed consumer advances the case only after the new due cycle.
-    if mid in STAGE_LAST[d] and not (mid == 263 and choice == 2):
+    # #263 route B and a real #269 hire outcome are future-settled.  Their
+    # delayed consumers, rather than the write-side receipt, advance the case.
+    if mid in STAGE_LAST[d] and not (
+        (mid == 263 and choice == 2) or (mid == 269 and choice in (1, 2))
+    ):
         barrier = stage_barrier(spec)
         edge = STAGE_LAST[d][mid]
         after = _after_advance(spec)
@@ -1228,6 +1516,34 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 {indent(after, 5)}
 \t\t\t\t}}
 \t\t\t}}
+"""
+    elif mid == 269 and choice in (1, 2):
+        # A refused offer has no hire-quality clock.  Its explicit N/A object
+        # closes state 5 now; a real hire remains in state 5 until evidence is
+        # consumed by m269_future_consume_effect.
+        barrier = stage_barrier(spec)
+        edge = STAGE_LAST[d][mid]
+        after = _after_advance(spec)
+        deadline = deadline_prefix(d, edge)
+        advance = f"""
+			if = {{
+				limit = {{
+					has_variable = {PREFIX}_m269_not_applicable_no_hire
+					var:{PREFIX}_m269_not_applicable_no_hire = 1
+{indent(barrier, 5)}
+				}}
+				set_variable = {{ name = {deadline}_pending value = 0 }}
+				zg361_case_{d}_advance_{edge:02d}_effect = {{
+					TICKET_OWNER = $TICKET_OWNER$
+					TICKET_SUBJECT = $TICKET_SUBJECT$
+					TICKET_CYCLE = $TICKET_CYCLE$
+					TICKET_CASE = $TICKET_CASE$
+				}}
+				if = {{
+					limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
+{indent(after, 5)}
+				}}
+			}}
 """
     red_code = mid * 10 + choice
     return f"""# #{mid:03d} route {letter.upper()}: guard -> atomic precheck -> receipt -> write -> consumer.
@@ -1297,7 +1613,6 @@ def render_portfolio_initialize() -> str:
 \tsave_scope_as = {PREFIX}_portfolio_subject
 \troot = {{ save_scope_as = {PREFIX}_portfolio_owner }}
 \tset_variable = {{ name = {PREFIX}_portfolio_cycle value = root.var:zg361_review_serial }}
-\troot = {{ set_variable = {{ name = {PREFIX}_manager_portfolio_cycle value = var:zg361_review_serial }} }}
 \tset_variable = {{ name = {PREFIX}_operation_total value = 40 }}
 \tset_variable = {{ name = {PREFIX}_operation_used value = 0 }}
 \tset_variable = {{ name = {PREFIX}_hours_total value = 400 }}
@@ -1307,8 +1622,8 @@ def render_portfolio_initialize() -> str:
 \tset_variable = {{ name = {PREFIX}_hours_meeting value = 0 }}
 \tset_variable = {{ name = {PREFIX}_hours_leave value = 0 }}
 \tset_variable = {{ name = {PREFIX}_hours_governance value = 0 }}
-\tset_variable = {{ name = {PREFIX}_overtime_pending value = 0 }}
-\tset_variable = {{ name = {PREFIX}_leave_bank value = 0 }}
+\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_overtime_pending }} }} set_variable = {{ name = {PREFIX}_overtime_pending value = 0 }} }}
+\tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_leave_bank }} }} set_variable = {{ name = {PREFIX}_leave_bank value = 0 }} }}
 \t# Gold and shadow-HC books are fixed-cap persistent books.  A new review
 \t# never resets debt and never mints another allocation.
 \tif = {{ limit = {{ NOT = {{ has_variable = {PREFIX}_gold_total }} }} set_variable = {{ name = {PREFIX}_gold_total value = 200 }} }}
@@ -1558,9 +1873,9 @@ trigger_else = {{ always = yes }}"""
 {indent(future_clear, 4)}
 \t\t\t\t{_zero_or_missing(f'{PREFIX}_m266_hc_reservation_active')}
 \t\t\t}}
-\t\t\ttrigger_if = {{ limit = {{ has_variable = {PREFIX}_manager_portfolio_cycle }} NOT = {{ var:{PREFIX}_manager_portfolio_cycle = var:zg361_review_serial }} }}
-\t\t\ttrigger_else = {{ always = yes }}
 \t\t\t$SUBJECT$ = {{
+\t\t\t\ttrigger_if = {{ limit = {{ has_variable = {PREFIX}_portfolio_cycle }} NOT = {{ var:{PREFIX}_portfolio_cycle = root.var:zg361_review_serial }} }}
+\t\t\t\ttrigger_else = {{ always = yes }}
 {indent(active_clear, 4)}
 \t\t\t}}
 \t\t}}
@@ -1665,6 +1980,8 @@ def render_future_consumers() -> str:
 \t\tif = {{
 \t\t\tlimit = {{ var:{PREFIX}_m262_write_owner = {{ is_ai = yes }} }}
 \t\t\t{PREFIX}_m263_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
+\t\t\t{PREFIX}_m264_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
+\t\t\t{PREFIX}_m265_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
 \t\t}}
 \t\telse = {{ var:{PREFIX}_m262_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.263 }} }} }}
 \t}}
@@ -1701,7 +2018,12 @@ def render_future_consumers() -> str:
 \t\t\tsave_scope_as = {PREFIX}_ac_subject
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_ac_cycle value = var:{PREFIX}_m263_write_cycle }}
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_ac_case value = var:{PREFIX}_m263_write_case }}
-\t\t\tif = {{ limit = {{ var:{PREFIX}_m263_write_owner = {{ is_ai = no }} }} var:{PREFIX}_m263_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.264 }} }} }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{PREFIX}_m263_write_owner = {{ is_ai = yes }} }}
+\t\t\t\t{PREFIX}_m264_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m263_write_cycle TICKET_CASE = var:{PREFIX}_m263_write_case }}
+\t\t\t\t{PREFIX}_m265_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m263_write_cycle TICKET_CASE = var:{PREFIX}_m263_write_case }}
+\t\t\t}}
+\t\t\telse = {{ var:{PREFIX}_m263_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.264 }} }} }}
 \t\t}}
 \t}}
 \telse_if = {{
@@ -1820,15 +2142,21 @@ def render_future_consumers() -> str:
 \t\tset_variable = {{ name = {PREFIX}_m269_attribution_pending value = 0 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_settled value = 1 }}
 \t\tset_variable = {{ name = {PREFIX}_m269_outcome_pending value = 0 }} # clear last
-\t}}
-\telse_if = {{
-\t\tlimit = {{
-{indent(_future_tuple_guard(269), 3)}
-\t\t\thas_variable = {PREFIX}_m269_watch_cancelled_by_refusal
-\t\t\tvar:{PREFIX}_m269_watch_cancelled_by_refusal = 1
-\t\t\tvar:{PREFIX}_m269_outcome_pending = 0
+\t\tzg361_case_ad_advance_05_effect = {{ TICKET_OWNER = var:{PREFIX}_m269_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m269_write_cycle TICKET_CASE = var:{PREFIX}_m269_write_case }}
+\t\tif = {{
+\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
+\t\t\t{PREFIX}_ad_schedule_stage_06_deadline_effect = yes
+\t\t\tvar:{PREFIX}_m269_write_owner = {{ save_scope_as = {PREFIX}_ad_owner }}
+\t\t\tsave_scope_as = {PREFIX}_ad_subject
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_cycle value = var:{PREFIX}_m269_write_cycle }}
+\t\t\tsave_scope_value_as = {{ name = {PREFIX}_ad_case value = var:{PREFIX}_m269_write_case }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:{PREFIX}_m269_write_owner = {{ is_ai = yes }} }}
+\t\t\t\t{PREFIX}_m276_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m269_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m269_write_cycle TICKET_CASE = var:{PREFIX}_m269_write_case }}
+\t\t\t\t{PREFIX}_m277_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m269_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m269_write_cycle TICKET_CASE = var:{PREFIX}_m269_write_case }}
+\t\t\t}}
+\t\t\telse = {{ var:{PREFIX}_m269_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.276 }} }} }}
 \t\t}}
-\t\tset_variable = {{ name = {PREFIX}_m269_cancel_receipt_consumed value = 1 }}
 \t}}
 \telse_if = {{
 \t\tlimit = {{
@@ -2210,6 +2538,7 @@ def render_effects() -> bytes:
         render_portfolio_initialize(),
         render_portfolio_entry(),
         render_future_consumers(),
+        render_abandoned_resource_release(),
         render_nonmanager_na_finalize(),
         render_finalize(),
     ]
@@ -2293,7 +2622,56 @@ def render_option(spec: Mechanism, choice: int) -> str:
     next_event = ""
     # #262 opens a due-cycle review; it must not immediately ask #263 in the
     # same cycle.  The hidden due consumer queues that player event later.
-    if next_mid is not None and not (mid == 262 and choice in (1, 2)):
+    if mid == 274 and next_mid == 275:
+        # Accepted counteroffers cannot also be refused.  Close #275 through
+        # its internal no-hold projection and never show a contradictory
+        # refusal window; only a still-open offer exposes #275 A/B/C.
+        next_event = f"""
+	if = {{
+		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }} }}
+		if = {{
+			limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_m274_business_object_created var:{PREFIX}_m274_business_object_created = 1 has_variable = {PREFIX}_m274_object_owner var:{PREFIX}_m274_object_owner = scope:{PREFIX}_{d}_owner has_variable = {PREFIX}_m274_object_subject var:{PREFIX}_m274_object_subject = scope:{PREFIX}_{d}_subject has_variable = {PREFIX}_m274_object_cycle var:{PREFIX}_m274_object_cycle = scope:{PREFIX}_{d}_cycle has_variable = {PREFIX}_m274_object_case var:{PREFIX}_m274_object_case = scope:{PREFIX}_{d}_case has_variable = {PREFIX}_m274_hired var:{PREFIX}_m274_hired = 1 }} }}
+			scope:{PREFIX}_{d}_subject = {{
+				{PREFIX}_m275_route_a_effect = {{
+					TICKET_OWNER = scope:{PREFIX}_{d}_owner
+					TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+					TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+					TICKET_CASE = scope:{PREFIX}_{d}_case
+				}}
+			}}
+			if = {{
+				limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_{d}_state = 5 }} }}
+				trigger_event = {{ id = {NAMESPACE}.269 }}
+			}}
+		}}
+		else = {{ trigger_event = {{ id = {NAMESPACE}.275 }} }}
+	}}"""
+    elif mid == 275 and next_mid == 269:
+        # A refusal has no probation outcome to write back.  Close #269 with
+        # its no-hire disposition internally and do not show a contradictory
+        # delayed-quality window.  Route C still exposes #269 so debt can
+        # cascade honestly when the offer branch itself was deferred.
+        next_event = f"""
+	if = {{
+		limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }} }}
+		if = {{
+			limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_m275_business_object_created var:{PREFIX}_m275_business_object_created = 1 has_variable = {PREFIX}_m275_object_owner var:{PREFIX}_m275_object_owner = scope:{PREFIX}_{d}_owner has_variable = {PREFIX}_m275_object_subject var:{PREFIX}_m275_object_subject = scope:{PREFIX}_{d}_subject has_variable = {PREFIX}_m275_object_cycle var:{PREFIX}_m275_object_cycle = scope:{PREFIX}_{d}_cycle has_variable = {PREFIX}_m275_object_case var:{PREFIX}_m275_object_case = scope:{PREFIX}_{d}_case has_variable = {PREFIX}_m275_refusal var:{PREFIX}_m275_refusal = 1 }} }}
+			scope:{PREFIX}_{d}_subject = {{
+				{PREFIX}_m269_route_a_effect = {{
+					TICKET_OWNER = scope:{PREFIX}_{d}_owner
+					TICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+					TICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+					TICKET_CASE = scope:{PREFIX}_{d}_case
+				}}
+			}}
+			if = {{
+				limit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_{d}_state = 6 }} }}
+				trigger_event = {{ id = {NAMESPACE}.276 }}
+			}}
+		}}
+		else = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
+	}}"""
+    elif next_mid is not None and not (mid == 262 and choice in (1, 2)):
         next_state = by_id()[next_mid].state
         next_event = f"""
 \tif = {{
@@ -2439,7 +2817,9 @@ def render_localization(language: str) -> bytes:
     validate_specs()
     chinese = language == "simp_chinese"
     rows: list[str] = []
-    for spec in MECHANISMS:
+    # Localization remains stable by public ID even when executable semantic
+    # dependencies require a non-numeric event order.
+    for spec in sorted(MECHANISMS, key=lambda item: item.mid):
         title = spec.title_cn if chinese else spec.title_en
         desc = spec.desc_cn if chinese else spec.desc_en
         routes = spec.routes_cn if chinese else spec.routes_en

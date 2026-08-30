@@ -34,6 +34,8 @@ from zg361_phase3_workforce_endgame_model import (
     RatchetMode,
     RedCode,
     Vote,
+    WORKFORCE_EXECUTION_ORDER,
+    WORKFORCE_EXECUTION_STAGE,
     WorkCategory,
 )
 
@@ -111,6 +113,25 @@ class WorkforceEndgameModelTests(unittest.TestCase):
             self.assertTrue(binding.conservation_rule)
             self.assertEqual(1, len(binding.behaviors))
             self.assertTrue(hasattr(Phase3WorkforceEndgameModel, binding.behaviors[0]))
+            self.assertEqual(binding.behaviors[0], binding.consumer_key)
+            self.assertTrue(binding.object_type)
+            self.assertTrue(binding.resource_books)
+            self.assertIn(binding.deadline_cycles, (0, 1))
+            self.assertEqual(WORKFORCE_EXECUTION_STAGE[mechanism_id], binding.execution_stage)
+        self.assertEqual(40, len({binding.object_type for binding in MECHANISM_BINDINGS.values()}))
+        self.assertEqual("overtime_claim", MECHANISM_BINDINGS[245].object_type)
+        self.assertEqual("vacancy_requisition", MECHANISM_BINDINGS[266].object_type)
+        self.assertEqual("pip_exit_vacancy", MECHANISM_BINDINGS[277].object_type)
+        self.assertEqual("collective_action", MECHANISM_BINDINGS[360].object_type)
+        self.assertEqual("charter_version", MECHANISM_BINDINGS[361].object_type)
+        self.assertEqual(
+            (254, 255, 260, 261, 256, 258, 259, 257, 262, 263, 264, 265),
+            WORKFORCE_EXECUTION_ORDER["AC"],
+        )
+        self.assertEqual(
+            (266, 273, 271, 267, 268, 270, 272, 274, 275, 269, 276, 277),
+            WORKFORCE_EXECUTION_ORDER["AD"],
+        )
 
     def test_ab_242_through_253_end_to_end_and_hours_conserve(self) -> None:
         model = make_model()
