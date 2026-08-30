@@ -16,7 +16,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from gen_361_manager_governance_runtime import (
     BINDINGS,
+    INPUT_FINGERPRINT_GUARDS,
+    INPUT_FINGERPRINT_OPAQUE_VARS,
+    INPUT_FINGERPRINT_RAW_VALUES,
+    INPUT_FINGERPRINT_VARS,
     MOD_ROOT,
+    Q_PROJECTION_IDS,
     READINESS,
     TARGET_IDS,
     outputs,
@@ -98,6 +103,9 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         cls.events = read("events/zg361_manager_governance_runtime_events.txt")
         cls.case_effects = read("common/scripted_effects/zg361_case_kernel_effects.txt")
         cls.case_triggers = read("common/scripted_triggers/zg361_case_kernel_triggers.txt")
+        cls.career_hc_effects = read(
+            "common/scripted_effects/zg361_career_hc_runtime_effects.txt"
+        )
         cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
         cls.activity = read("common/activities/activity_types/zg361_jingcha.txt")
         cls.jingcha_events = read("events/zg361_jingcha_events.txt")
@@ -148,6 +156,17 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                     or relative.startswith("localization/")
                     and "zg361_manager_governance_l_" in relative
                 )
+
+    def test_manager_sources_models_tests_and_spec_keep_utf8_bom(self) -> None:
+        for relative in (
+            "tools/gen_361_manager_governance_runtime.py",
+            "tools/zg361_manager_governance_model.py",
+            "tools/test_zg361_manager_governance_model.py",
+            "tools/test_zg361_manager_governance_runtime.py",
+            "docs/361-phase2-manager-governance-ck3-runtime-spec.md",
+        ):
+            with self.subTest(path=relative):
+                self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(b"\xef\xbb\xbf"))
         for source in (
             MOD_ROOT / "tools" / "gen_361_manager_governance_runtime.py",
             MOD_ROOT / "tools" / "test_zg361_manager_governance_runtime.py",
@@ -175,6 +194,171 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                 self.assertIn(row.consumer, self.effects + self.events + self.loc_en)
                 self.assertGreaterEqual(caller_surface.count(row.effect), 2)
 
+    def test_every_owned_id_freezes_owner_subject_object_and_real_c_debt(self) -> None:
+        for row in BINDINGS:
+            with self.subTest(mechanism=row.mechanism_id):
+                block = top_level_block(self.effects, row.effect)
+                stem = f"zg361_mg_m{row.mechanism_id:03d}"
+                domain = row.domain.lower()
+                for identity_field in ("owner", "subject", "cycle", "case"):
+                    self.assertIn(f"{stem}_route_{identity_field}", block)
+                for object_field in ("id", "owner", "subject", "cycle", "case", "state", "revision", "route", "kind"):
+                    self.assertIn(f"{stem}_object_{object_field}", block)
+                self.assertIn(f"{stem}_object_input_fingerprint", block)
+                self.assertIn(f"{stem}_business_object_created value = 1", block)
+                self.assertIn(f"{stem}_business_object_created value = 0", block)
+                self.assertIn(f"{stem}_debt_status value = 1", block)
+                self.assertIn(f"{stem}_debt_owner value = var:zg361_case_{domain}_owner", block)
+                self.assertIn(f"{stem}_debt_subject value = this", block)
+                self.assertIn(f"{stem}_debt_state", block)
+                self.assertIn(f"{stem}_debt_revision", block)
+                self.assertIn(f"{stem}_debt_input_fingerprint", block)
+                self.assertIn(f"{stem}_next_review_serial", block)
+                self.assertIn("add = 1", block)
+
+    def test_exact_replay_is_noop_and_route_or_input_change_is_stale_red(self) -> None:
+        self.assertEqual(set(INPUT_FINGERPRINT_VARS), set(TARGET_IDS))
+        self.assertEqual(set(INPUT_FINGERPRINT_OPAQUE_VARS), set(TARGET_IDS))
+        self.assertEqual(set(INPUT_FINGERPRINT_RAW_VALUES), set(TARGET_IDS))
+        known_fields = {
+            (mechanism_id, variable)
+            for mechanism_id, variables in INPUT_FINGERPRINT_VARS.items()
+            for variable in variables
+        }
+        self.assertTrue(set(INPUT_FINGERPRINT_GUARDS) <= known_fields)
+        for row in BINDINGS:
+            with self.subTest(mechanism=row.mechanism_id):
+                block = top_level_block(self.effects, row.effect)
+                stem = f"zg361_mg_m{row.mechanism_id:03d}"
+                self.assertIn(f"remove_variable = {stem}_replay_route_conflict", block)
+                self.assertIn(
+                    f"set_variable = {{ name = {stem}_requested_route value = 1 }}",
+                    block,
+                )
+                self.assertIn(
+                    f"name = {stem}_requested_route value = var:zg361_mechanism_{row.mechanism_id:03d}_choice",
+                    block,
+                )
+                self.assertIn(
+                    f"NOT = {{ var:{stem}_requested_route = var:{stem}_route }}",
+                    block,
+                )
+                self.assertIn(
+                    f"has_variable = zg361_mechanism_{row.mechanism_id:03d}_input_revision",
+                    block,
+                )
+                self.assertIn(f"{stem}_requested_input_fingerprint", block)
+                self.assertIn(
+                    f"NOT = {{ var:{stem}_requested_input_fingerprint = var:{stem}_object_input_fingerprint }}",
+                    block,
+                )
+                self.assertIn(
+                    f"NOT = {{ var:{stem}_requested_input_fingerprint = var:{stem}_debt_input_fingerprint }}",
+                    block,
+                )
+                self.assertIn(f"{stem}_replay_route_conflict value = 1", block)
+                self.assertIn(
+                    f"var:zg361_case_{row.domain.lower()}_cycle_serial < var:{stem}_route_cycle",
+                    block,
+                )
+                self.assertIn(
+                    f"NOT = {{ var:zg361_case_{row.domain.lower()}_owner = var:{stem}_route_owner }}",
+                    block,
+                )
+                self.assertIn(
+                    f"zg361_mg_set_red_effect = {{ CODE = 2 MECHANISM = {row.mechanism_id} }}",
+                    block,
+                )
+                # The terminal failure branch is also receipt-not-current;
+                # therefore an exact A/B receipt replay reaches no writer/RED.
+                terminal = block[block.rfind("else_if = {") :]
+                self.assertIn("zg361_case_kernel_receipt_is_current_trigger", terminal)
+                self.assertIn(
+                    f"NOT = {{ has_variable = {stem}_replay_route_conflict }}",
+                    terminal,
+                )
+
+    def test_policy_debt_has_due_once_consumer_and_next_score_sink(self) -> None:
+        consumer = top_level_block(
+            self.effects, "zg361_mg_consume_due_policy_debts_effect"
+        )
+        opener = top_level_block(
+            self.effects, "zg361_mg_open_manager_governance_cases_effect"
+        )
+        snapshot = top_level_block(
+            self.effects, "zg361_mg_freeze_team_snapshot_effect"
+        )
+        self.assertIn("zg361_mg_consume_due_policy_debts_effect = yes", opener)
+        self.assertIn("liege = root", opener)
+        self.assertIn(
+            "root.var:zg361_review_serial >= var:zg361_mg_m032_next_review_serial",
+            consumer,
+        )
+        self.assertNotRegex(consumer, r"(?<!root\.)var:zg361_review_serial\s*>=")
+        for mechanism_id in TARGET_IDS:
+            stem = f"zg361_mg_m{mechanism_id:03d}"
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn(f"{stem}_debt_status = 1", consumer)
+                self.assertIn(f"{stem}_debt_subject = this", consumer)
+                self.assertIn(f"{stem}_debt_status value = 2", consumer)
+                self.assertIn(f"{stem}_debt_settled_by_owner value = root", consumer)
+                self.assertIn(f"{stem}_debt_manager_score_delta value = -3", consumer)
+                self.assertIn(f"{stem}_debt_remediation_code value = 1", consumer)
+        self.assertEqual(consumer.count("change_variable = { name = zg361_mg_manager_score_delta add = -3 }"), len(TARGET_IDS))
+        self.assertIn("add = var:zg361_mg_manager_score_delta", snapshot)
+        self.assertIn("remove_variable = zg361_mg_manager_score_delta", snapshot)
+
+    def test_q121_128_are_strict_read_only_career_hc_projections(self) -> None:
+        adapter = top_level_block(
+            self.effects, "zg361_mg_project_career_hc_q_receipts_effect"
+        )
+        opener = top_level_block(
+            self.effects, "zg361_mg_open_manager_governance_cases_effect"
+        )
+        self.assertEqual(Q_PROJECTION_IDS, tuple(range(121, 129)))
+        self.assertIn("zg361_mg_project_career_hc_q_receipts_effect = yes", opener)
+        for mechanism_id in Q_PROJECTION_IDS:
+            expected_state = 1 + (mechanism_id - 121) // 2
+            stem = f"zg361_ch_m{mechanism_id:03d}"
+            projection = f"zg361_mg_q{mechanism_id:03d}"
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn(f"{stem}_consumed = 1", adapter)
+                self.assertIn(f"{stem}_business_consumed = 1", adapter)
+                self.assertIn(f"{stem}_receipt_state = {expected_state}", adapter)
+                self.assertIn(f"{stem}_receipt_route = 1 var:{stem}_value = 1", adapter)
+                self.assertIn(f"{stem}_receipt_route = 2 var:{stem}_value = -1", adapter)
+                self.assertIn(f"{stem}_receipt_route = 3 var:{stem}_value = 0", adapter)
+                for field in ("id", "owner", "subject", "cycle", "case", "state", "revision"):
+                    self.assertIn(f"var:{stem}_manager_object_{field}", adapter)
+                    self.assertIn(f"name = {projection}_authoritative_object_{field}", adapter)
+                    self.assertIn(f"name = {stem}_manager_object_{field}", self.career_hc_effects)
+                for field in ("owner", "cycle", "case", "state", "route"):
+                    self.assertIn(
+                        f"var:{stem}_manager_object_{field} = var:{stem}_receipt_{field}",
+                        adapter,
+                    )
+                self.assertIn(f"var:{stem}_manager_object_subject = this", adapter)
+                self.assertIn(
+                    f"var:{stem}_receipt_cycle < var:{projection}_cycle", adapter
+                )
+                self.assertIn(
+                    f"var:{stem}_receipt_cycle > var:{projection}_cycle", adapter
+                )
+
+        # Career/HC owns every Q case, object and business consumer.  The
+        # manager package may read zg361_ch_* but must never write or invoke it.
+        forbidden_writer_patterns = (
+            r"set_variable\s*=\s*\{\s*name\s*=\s*zg361_ch_",
+            r"change_variable\s*=\s*\{\s*name\s*=\s*zg361_ch_",
+            r"remove_variable\s*=\s*zg361_ch_",
+            r"zg361_case_q_(?:open|advance|close)[A-Za-z0-9_]*\s*=",
+            r"zg361_career_hc_m12[1-8]_(?:core|consume|business_consumer)_effect\s*=",
+        )
+        for pattern in forbidden_writer_patterns:
+            self.assertNotRegex(self.effects, pattern)
+        self.assertIn("Q 的对象与状态权威只属于", self.spec)
+        self.assertIn("manager 自己的 `zg361_mg_qNNN_*` 只是只读缓存", self.spec)
+
     def test_shared_kernel_domains_and_stage_transitions_are_reused(self) -> None:
         for key in (
             "zg361_case_f_open_effect",
@@ -193,6 +377,87 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             self.assertIn(f"{key} =", self.effects)
         self.assertIn("zg361_case_kernel_full_guard_trigger", self.case_triggers)
         self.assertIn("trigger_else = { always = no }", self.case_triggers)
+
+    def test_route_c_receipts_advance_f_and_do_not_deadlock_ak_barriers(self) -> None:
+        for mechanism_id, state, next_event in (
+            (32, 1, 101),
+            (33, 2, 102),
+            (34, 3, 103),
+            (36, 4, 120),
+        ):
+            row = next(row for row in BINDINGS if row.mechanism_id == mechanism_id)
+            block = top_level_block(self.effects, row.effect)
+            with self.subTest(mechanism=mechanism_id):
+                self.assertIn(f"zg361_mg_m{mechanism_id:03d}_route = 3", block)
+                self.assertGreaterEqual(
+                    block.count(f"zg361_case_f_advance_{state:02d}_effect"), 2
+                )
+                self.assertIn(f"EVENT = zg361mg.{next_event}", block)
+
+        stage_2 = top_level_block(self.effects, "zg361_mg_ak_stage_2_effect")
+        stage_3 = top_level_block(self.effects, "zg361_mg_ak_stage_3_effect")
+        self.assertIn("zg361_mg_m347_receipt_choice = 3", stage_2)
+        self.assertIn("zg361_mg_override_quota_neutral = 1", stage_2)
+        self.assertIn("zg361_mg_m349_receipt_choice = 3", stage_3)
+        self.assertIn("zg361_mg_audit_settled = 1", stage_3)
+
+    def test_mixed_upstream_c_downstream_ab_uses_explicit_empty_basis_not_old_values(self) -> None:
+        scorer = top_level_block(self.effects, "zg361_mg_m032_score_manager_effect")
+        reason = top_level_block(self.effects, "zg361_mg_m033_reason_code_effect")
+        nine_box = top_level_block(self.effects, "zg361_mg_m034_freeze_nine_box_effect")
+        report = top_level_block(self.effects, "zg361_mg_m036_append_decade_log_effect")
+        benchmark = top_level_block(self.effects, "zg361_mg_m350_version_benchmark_effect")
+        mapping = top_level_block(self.effects, "zg361_mg_m352_map_history_effect")
+        admin = top_level_block(self.effects, "zg361_mg_m353_charge_admin_capacity_effect")
+        fairness = top_level_block(self.effects, "zg361_mg_m354_audit_fairness_effect")
+
+        # 035C is a valid upstream receipt for 032A/B; it never requires an
+        # old distribution_conserved value to exist.
+        self.assertIn("zg361_mg_m035_receipt_choice = 3", scorer)
+
+        # 032C lets later F stages close, but the later business objects use a
+        # visible unavailable/zero basis rather than a previous cycle's score.
+        for block in (reason, nine_box):
+            self.assertIn("zg361_mg_m032_receipt_choice = 3", block)
+            self.assertIn("NOT = { var:zg361_mg_m032_receipt_choice = 3 }", block)
+        self.assertIn("zg361_mg_reason_score_basis value = 0", reason)
+        self.assertIn("var:zg361_mg_reason_score_basis < 40", reason)
+        self.assertIn("zg361_mg_nine_box_score_basis value = 0", nine_box)
+        self.assertIn("zg361_mg_nine_box_score_source_available = 1", nine_box)
+        self.assertIn("zg361_mg_report_manager_score value = 0", report)
+        self.assertIn("zg361_mg_report_reason_total value = 0", report)
+        self.assertIn("zg361_mg_report_nine_box_code value = 0", report)
+        self.assertIn(
+            "add = var:zg361_mg_report_manager_score", report
+        )
+        self.assertIn("add = var:zg361_mg_report_reason_total", report)
+
+        # 345C/346C produce explicit defaults for consumers; 350C creates a
+        # new-series 352 object; 352C gives 354 mapping version 0.  Raw old
+        # values remain archival and are never selected through these C gates.
+        self.assertIn("zg361_mg_benchmark_effective_cycle_basis", benchmark)
+        self.assertIn("NOT = { var:zg361_mg_m345_receipt_choice = 3 }", benchmark)
+        self.assertIn(
+            "zg361_mg_benchmark_effective_cycle value = var:zg361_mg_benchmark_effective_cycle_basis",
+            benchmark,
+        )
+        self.assertIn("zg361_mg_m350_receipt_choice = 3", mapping)
+        self.assertIn("zg361_mg_history_source_available value = 0", mapping)
+        self.assertIn("zg361_mg_history_new_series value = 1", mapping)
+        self.assertIn("zg361_mg_admin_calendar_basis value = 0", admin)
+        self.assertIn("zg361_mg_admin_offcycle_basis value = 0", admin)
+        self.assertIn("NOT = { var:zg361_mg_m345_receipt_choice = 3 }", admin)
+        self.assertIn("NOT = { var:zg361_mg_m346_receipt_choice = 3 }", admin)
+        self.assertIn(
+            "zg361_mg_admin_meeting_hours value = var:zg361_mg_admin_calendar_basis",
+            admin,
+        )
+        self.assertIn("zg361_mg_fairness_history_mapping_basis value = 0", fairness)
+        self.assertIn("NOT = { var:zg361_mg_m352_receipt_choice = 3 }", fairness)
+        self.assertIn(
+            "zg361_mg_fairness_history_mapping_version value = var:zg361_mg_fairness_history_mapping_basis",
+            fairness,
+        )
 
     def test_permission_matrix_player_ai_duke_and_assessed_only(self) -> None:
         dispatcher = top_level_block(
@@ -273,11 +538,14 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         event = top_level_block(self.events, "zg361mg.120")
         self.assertIn("desc = zg361mg.120.desc", event)
         for variable in (
-            "zg361_mg_manager_score",
+            "zg361_mg_report_manager_score",
+            "zg361_mg_report_score_available",
             "zg361_mg_snapshot_source_serial",
             "zg361_case_f_cycle_serial",
-            "zg361_mg_reason_total",
-            "zg361_mg_nine_box_code",
+            "zg361_mg_report_reason_total",
+            "zg361_mg_report_reason_available",
+            "zg361_mg_report_nine_box_code",
+            "zg361_mg_report_nine_box_available",
         ):
             self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_en)
             self.assertIn(f"MakeScope.Var('{variable}').GetValue", self.loc_zh)
@@ -309,9 +577,14 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         block = top_level_block(self.effects, "zg361_mg_m033_reason_code_effect")
         for reason in ("calibration", "appeal", "pip", "delivery", "hc"):
             self.assertIn(f"zg361_mg_reason_{reason}", block)
+            self.assertIn(f"zg361_mg_profile_weight_{reason}", block)
+            self.assertIn(f"multiply = var:zg361_mg_profile_weight_{reason}", block)
         self.assertGreaterEqual(block.count("max = 25 min = -25"), 5)
+        self.assertIn("zg361_mg_profile_code value = 1", block)
+        for profile_code in range(2, 6):
+            self.assertIn(f"zg361_mg_profile_code = {profile_code}", block)
         self.assertIn("zg361_mg_reason_relationship_once value = 5", block)
-        self.assertIn("zg361_mg_reason_appeal_risk value = 5", block)
+        self.assertIn("zg361_mg_reason_appeal_risk value = 10", block)
         self.assertNotIn("set_variable = { name = zg361_kpi", block)
 
     def test_f034_first_cycle_is_unclassified_but_nonblocking_and_read_only(self) -> None:
@@ -324,7 +597,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_mg_previous_manager_score_serial", block)
         self.assertIn("zg361_result_cycle_serial", block)
         self.assertIn("CODE = 6 MECHANISM = 34", block)
-        self.assertLess(block.index("CODE = 6 MECHANISM = 34"), block.index("zg361_case_f_advance_03_effect"))
+        self.assertLess(block.index("CODE = 6 MECHANISM = 34"), block.rindex("zg361_case_f_advance_03_effect"))
         for forbidden in (
             "name = zg361_kpi",
             "name = zg361_pending_grade",
@@ -341,6 +614,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("multiply = 0.10", block)
         self.assertIn("multiply = 0.05", block)
         self.assertIn("zg361_mg_distribution_bottom_slots value = 0", block)
+        self.assertIn("has_variable = zg361_distribution_mode", block)
+        self.assertIn("value = var:zg361_distribution_mode", block)
+        self.assertIn("zg361_mg_distribution_rule_source", block)
+        self.assertIn("zg361_mg_distribution_review_serial", block)
+        self.assertIn("zg361_mg_distribution_bottom_consequence value = 0", block)
         self.assertIn("var:zg361_mg_team_n >= 5", block)
         self.assertIn("zg361_mg_distribution_bottom_consequence value = 2", block)
         self.assertIn(
@@ -348,6 +626,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             block,
         )
         scorer = top_level_block(self.effects, "zg361_mg_m032_score_manager_effect")
+        self.assertIn("zg361_mg_m035_receipt_choice = 3", scorer)
         self.assertIn(
             "var:zg361_mg_distribution_conserved = var:zg361_mg_team_n", scorer
         )
@@ -379,10 +658,13 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
     def test_ak345_calendar_is_future_exact_and_batched(self) -> None:
         block = top_level_block(self.effects, "zg361_mg_m345_freeze_calendar_effect")
         self.assertIn("value = var:zg361_case_ak_cycle_serial add = 1", block)
-        for final_n in (1, 2, 4):
+        for final_n in (1, 4):
             self.assertIn(f"zg361_mg_calendar_final_n value = {final_n}", block)
         self.assertIn("zg361_mg_calendar_checkin_n value = 1", block)
         self.assertIn("zg361_mg_calendar_player_ai_batch value = 1", block)
+        self.assertIn("zg361_mg_calendar_admin_hours value = 72", block)
+        self.assertIn("zg361_mg_calendar_short_term_bias value = 25", block)
+        self.assertIn("zg361_mg_calendar_fatigue value = 30", block)
 
     def test_ak346_material_signal_is_once_and_never_reruns_cohort(self) -> None:
         record = top_level_block(self.effects, "zg361_mg_record_offcycle_signal_effect")
@@ -449,7 +731,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_ak351_pilot_control_are_disjoint_and_complete_before_difference(self) -> None:
         block = top_level_block(self.effects, "zg361_mg_m351_measure_pilot_effect")
-        self.assertIn("max = 2", block)
+        self.assertIn("save_scope_as = zg361_mg_pilot_manager", block)
+        self.assertIn("position = 0", block)
+        self.assertIn("position = 1", block)
+        self.assertIn("scope:zg361_mg_pilot_manager", block)
+        self.assertNotIn("root.var:zg361_mg_pilot_region_cursor", block)
         self.assertIn("zg361_mg_pilot_region", block)
         self.assertIn("zg361_mg_control_region", block)
         self.assertIn("NOT = { var:zg361_mg_pilot_region = var:zg361_mg_control_region }", block)
