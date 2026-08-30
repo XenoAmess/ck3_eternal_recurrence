@@ -172,6 +172,41 @@ class CommandSemanticsTests(unittest.TestCase):
 
 
 class ProjectAndCreditTests(unittest.TestCase):
+    def test_project_identity_version_and_deadline_are_stable_business_state(self) -> None:
+        instance = make_model()
+        seed_project(instance)
+        project = instance.projects["p1"]
+        identity = (
+            project.project_id,
+            project.manager_id,
+            project.owner_id,
+            project.origin_cycle_serial,
+            project.origin_case_serial,
+        )
+        self.assertEqual(identity, ("p1", "manager", "worker", 7, 11))
+        self.assertEqual(project.deadline_cycle, 9)
+        self.assertEqual(project.version, 1)
+        apply(
+            instance,
+            "record_effort_026",
+            "effort-version",
+            project_id="p1",
+            delivery_hours=10,
+            report_hours=1,
+            relationship_hours=1,
+        )
+        self.assertEqual(project.version, 2)
+        self.assertEqual(
+            (
+                project.project_id,
+                project.manager_id,
+                project.owner_id,
+                project.origin_cycle_serial,
+                project.origin_case_serial,
+            ),
+            identity,
+        )
+
     def test_project_slots_and_capacity_conserve_and_failed_preflight_is_atomic(self) -> None:
         instance = make_model(capacity=30, slots=2)
         seed_project(instance, capacity=20)
@@ -345,6 +380,53 @@ class ProjectAndCreditTests(unittest.TestCase):
 
 
 class ReportPacketTests(unittest.TestCase):
+    def test_report_packet_has_independent_identity_version_deadline_and_project_link(self) -> None:
+        instance = make_model()
+        seed_project(instance)
+        sign_default_shares(instance)
+        apply(
+            instance,
+            "build_report_054",
+            "build-stable-report",
+            packet_id="report-stable",
+            project_id="p1",
+            author_id="worker",
+        )
+        packet = instance.reports["report-stable"]
+        self.assertEqual(
+            (
+                packet.packet_id,
+                packet.project_id,
+                packet.owner_id,
+                packet.cycle_serial,
+                packet.case_serial,
+                packet.deadline_cycle,
+                packet.object_version,
+            ),
+            ("report-stable", "p1", "manager", 7, 11, 8, 1),
+        )
+        apply(
+            instance,
+            "forward_report_056",
+            "forward-stable-report",
+            packet_id="report-stable",
+            source_id="worker",
+            manager_id="manager",
+            basis_points=500,
+        )
+        self.assertEqual(packet.object_version, 2)
+        before = copy.deepcopy(instance)
+        with self.assertRaises(model.DomainRed):
+            apply(
+                instance,
+                "sign_report_057",
+                "wrong-signature",
+                packet_id="report-stable",
+                signer_id="manager",
+                version=1,
+            )
+        self.assertEqual(instance, before)
+
     def _prepared_report(self, *, attention: int = 2):
         instance = make_model(attention=attention)
         seed_project(instance, capacity=30)

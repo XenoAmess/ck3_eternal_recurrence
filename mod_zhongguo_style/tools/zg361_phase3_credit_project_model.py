@@ -229,7 +229,12 @@ class MetricRecord:
 @dataclass
 class Project:
     project_id: str
+    manager_id: str
     owner_id: str
+    origin_cycle_serial: int
+    origin_case_serial: int
+    version: int
+    deadline_cycle: int
     participants: tuple[str, ...]
     track: ProjectTrack
     track_locked: bool
@@ -271,6 +276,11 @@ class Project:
 class ReportPacket:
     packet_id: str
     project_id: str
+    owner_id: str
+    cycle_serial: int
+    case_serial: int
+    object_version: int
+    deadline_cycle: int
     author_id: str
     format: ReportFormat
     hours: int
@@ -508,6 +518,14 @@ class Phase3CreditProjectModel:
             raise DomainRed(RedCode.NOT_FOUND, f"unknown report {packet_id}")
         return packet
 
+    @staticmethod
+    def _touch_project(project: Project) -> None:
+        project.version += 1
+
+    @staticmethod
+    def _touch_report(packet: ReportPacket) -> None:
+        packet.object_version += 1
+
     @property
     def project_slots_used(self) -> int:
         return sum(project.occupies_slot for project in self.projects.values())
@@ -565,7 +583,12 @@ class Phase3CreditProjectModel:
             raise DomainRed(RedCode.CAPACITY_EXCEEDED, "portfolio capacity exceeded")
         return Project(
             project_id=project_id,
+            manager_id=self.owner_id,
             owner_id=owner_id,
+            origin_cycle_serial=self.cycle_serial,
+            origin_case_serial=self.case_serial,
+            version=1,
+            deadline_cycle=self.cycle_serial + 2,
             participants=participant_rows,
             track=track,
             track_locked=True,
@@ -630,6 +653,7 @@ class Phase3CreditProjectModel:
         project.visibility_points += values["report_hours"] * 2 + values[
             "relationship_hours"
         ] * 3
+        self._touch_project(project)
         return self._commit(command, 26)
 
     def sign_contributions_027(
@@ -665,6 +689,7 @@ class Phase3CreditProjectModel:
             )
         project.signed_contributions = candidate
         project.claimed_contributions = dict(candidate)
+        self._touch_project(project)
         return self._commit(command, 27)
 
     @staticmethod
@@ -717,6 +742,7 @@ class Phase3CreditProjectModel:
         )
         project.claimed_contributions = candidate
         project.claims[claim_id] = claim
+        self._touch_project(project)
         return self._commit(command, 28)
 
     def audit_credit_claim_028(
@@ -755,6 +781,7 @@ class Phase3CreditProjectModel:
         project.claimed_contributions = candidate
         claim.audit_delta = audit_delta
         claim.status = status
+        self._touch_project(project)
         return self._commit(command, 28)
 
     def record_metric_029(
@@ -788,6 +815,7 @@ class Phase3CreditProjectModel:
         project.metrics[metric_id] = MetricRecord(
             metric_id, baseline, strategy, short_kpi_gain, delayed_cost
         )
+        self._touch_project(project)
         return self._commit(command, 29)
 
     def audit_metric_029(
@@ -811,6 +839,7 @@ class Phase3CreditProjectModel:
         metric.audited = True
         metric.clawback = clawback
         metric.realized_delayed_cost = realized_cost
+        self._touch_project(project)
         return self._commit(command, 29)
 
     def award_resource_race_030(
@@ -921,13 +950,19 @@ class Phase3CreditProjectModel:
         }
         project.report_hours += hours
         self.reports[packet_id] = ReportPacket(
-            packet_id,
-            project.project_id,
-            author_id,
-            self.report_policy,
-            hours,
+            packet_id=packet_id,
+            project_id=project.project_id,
+            owner_id=self.owner_id,
+            cycle_serial=self.cycle_serial,
+            case_serial=self.case_serial,
+            object_version=1,
+            deadline_cycle=self.cycle_serial + 1,
+            author_id=author_id,
+            format=self.report_policy,
+            hours=hours,
             claimed_attribution=dict(claims),
         )
+        self._touch_project(project)
         return self._commit(command, 54)
 
     def forward_report_056(
@@ -952,6 +987,7 @@ class Phase3CreditProjectModel:
             packet.claimed_attribution, source_id, manager_id, basis_points
         )
         packet.claimed_attribution = candidate
+        self._touch_report(packet)
         return self._commit(command, 56)
 
     def sign_report_057(
@@ -972,6 +1008,7 @@ class Phase3CreditProjectModel:
         packet.signed_attribution = dict(packet.claimed_attribution)
         packet.version_signature = f"{packet.packet_id}:v{version}:{signer_id}"
         packet.state = ReportState.SIGNED
+        self._touch_report(packet)
         return self._commit(command, 57)
 
     def route_report_058(
@@ -1001,6 +1038,7 @@ class Phase3CreditProjectModel:
             routes.append(skip_level_manager_id)
         packet.routes = tuple(routes)
         packet.state = ReportState.ROUTED
+        self._touch_report(packet)
         return self._commit(command, 58)
 
     def read_report_055(
@@ -1018,7 +1056,10 @@ class Phase3CreditProjectModel:
         if self.attention_slots_used >= self.attention_slot_total:
             raise DomainRed(RedCode.ATTENTION_EXHAUSTED, "no deep-read slot remains")
         packet.seen_by.add(manager_id)
-        self.projects[packet.project_id].visibility_points += 5
+        project = self.projects[packet.project_id]
+        project.visibility_points += 5
+        self._touch_project(project)
+        self._touch_report(packet)
         return self._commit(command, 55)
 
     def record_risk_059(
@@ -1046,6 +1087,7 @@ class Phase3CreditProjectModel:
         packet.risk_timing = timing
         packet.risk_remaining_loss = loss
         packet.integrity_delta = integrity
+        self._touch_report(packet)
         return self._commit(command, 59)
 
     def arbitrate_idea_060(
@@ -1071,6 +1113,7 @@ class Phase3CreditProjectModel:
         signature_proves_original = packet.author_id == original_author_id
         packet.idea_owner_id = original_author_id if signature_proves_original else claimed_author_id
         packet.theft_upheld = signature_proves_original
+        self._touch_report(packet)
         return self._commit(command, 60)
 
     def lock_matrix_weights_063(
@@ -1265,6 +1308,7 @@ class Phase3CreditProjectModel:
         project.individual_outcome = (
             "verified_contribution_preserved" if verified_milestones else "no_verified_credit"
         )
+        self._touch_project(project)
         return self._commit(command, 66)
 
     def resolve_duplicate_role_067(
@@ -1455,6 +1499,7 @@ class Phase3CreditProjectModel:
         project.business_outcome = "stopped"
         project.individual_outcome = "judgement_separate_from_business_result"
         project.stop_judgement = judgement
+        self._touch_project(project)
         return self._commit(command, 132)
 
     def record_postmortem_133(
@@ -1496,6 +1541,7 @@ class Phase3CreditProjectModel:
             "individual_liability": violations,
             "blanket_penalty": False,
         }
+        self._touch_project(project)
         return self._commit(command, 133)
 
     def assign_shared_metric_134(
@@ -1540,6 +1586,14 @@ class Phase3CreditProjectModel:
         if not 0 <= self.capacity_hours_free <= self.capacity_hours_total:
             raise DomainRed(RedCode.INVARIANT_BROKEN, "portfolio capacity does not conserve")
         for project in self.projects.values():
+            if (
+                project.manager_id != self.owner_id
+                or project.origin_cycle_serial != self.cycle_serial
+                or project.origin_case_serial != self.case_serial
+                or project.version < 1
+                or project.deadline_cycle < project.origin_cycle_serial
+            ):
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "project identity/version drifted")
             if project.booked_hours > project.reserved_capacity_hours:
                 raise DomainRed(RedCode.INVARIANT_BROKEN, "project capacity overspent")
             if project.delivery_hours > project.delivery_capacity_hours:
@@ -1558,6 +1612,18 @@ class Phase3CreditProjectModel:
                     raise DomainRed(RedCode.INVARIANT_BROKEN, "claim delta is not net zero")
                 if claim.audit_delta and sum(claim.audit_delta.values()) != 0:
                     raise DomainRed(RedCode.INVARIANT_BROKEN, "audit delta is not net zero")
+        for packet in self.reports.values():
+            project = self.projects.get(packet.project_id)
+            if project is None:
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "report packet lost its project")
+            if (
+                packet.owner_id != self.owner_id
+                or packet.cycle_serial != self.cycle_serial
+                or packet.case_serial != self.case_serial
+                or packet.object_version < 1
+                or packet.deadline_cycle < packet.cycle_serial
+            ):
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "report identity/version drifted")
         if self.attention_slots_used > self.attention_slot_total:
             raise DomainRed(RedCode.INVARIANT_BROKEN, "attention slots overspent")
         if self.matrix is not None:

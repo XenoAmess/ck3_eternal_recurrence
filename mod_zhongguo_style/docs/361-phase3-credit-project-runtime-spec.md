@@ -38,9 +38,11 @@ MCP / fixture / 实机证据：**无**
 - 晋升、共享指标与重复岗位均只能有一个最终 owner；
 - 战略取消保留已验证个人贡献，释放未花容量，不能把业务判断直接改写成个人失败。
 
+项目与汇报材料不是字符串标签或命令 receipt。每个 `Project` 冻结 `project_id + manager + owner + origin cycle/case + version + deadline`；每份 `ReportPacket` 另有独立 packet identity/version/deadline 并回链项目。成功业务变更才递增对象版本，stale、duplicate、签名错误和资源 RED 都不得改变对象。
+
 ## 测试合同
 
-36 项 unittest 覆盖：27 个 ID 的单条确定性端到端场景、精确范围、行为可调用性、UTF-8 BOM、typed RED、原子预检、
+38 项 unittest 覆盖：27 个 ID 的单条确定性端到端场景、精确范围、行为可调用性、UTF-8 BOM、typed RED、原子预检、
 stale/idempotent、资源与贡献守恒，以及 `READINESS = python-l0-only` 的诚实边界。
 
 ## 仍待 CK3 接线

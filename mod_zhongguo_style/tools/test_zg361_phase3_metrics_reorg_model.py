@@ -66,6 +66,8 @@ def submit_demand(
     *,
     demand_id: str,
     proposer_id: str = "proposer",
+    executor_id: str = "executor",
+    beneficiary_id: str = "beneficiary",
     provenance_id: str | None = None,
 ) -> None:
     apply(
@@ -76,6 +78,9 @@ def submit_demand(
         source=model.DemandSource.TERRITORY,
         source_owner_id="prefecture",
         proposer_id=proposer_id,
+        executor_id=executor_id,
+        beneficiary_id=beneficiary_id,
+        deadline_cycle=instance.cycle_serial + 1,
         provenance_id=provenance_id or f"prov-{demand_id}",
     )
 
@@ -676,6 +681,21 @@ class ReorganizationTests(unittest.TestCase):
 
     def test_legacy_rating_map_never_consumes_current_quota(self) -> None:
         instance = make_model()
+        before = copy.deepcopy(instance)
+        with self.assertRaises(model.DomainRed) as caught:
+            apply(
+                instance,
+                "map_legacy_ratings_310",
+                "bad-legacy-bridge",
+                team_id="merged-team",
+                old_ratings={"a": "A", "b": "C"},
+                mapping_route="common_baseline",
+                historical_owner_id="old-manager",
+                mapped_owner_id="new-manager",
+                bridge_signers=("old-manager", "impostor"),
+            )
+        self.assertEqual(caught.exception.code, model.RedCode.SIGNATURE_REQUIRED)
+        self.assertEqual(instance, before)
         apply(
             instance,
             "map_legacy_ratings_310",
@@ -683,8 +703,15 @@ class ReorganizationTests(unittest.TestCase):
             team_id="merged-team",
             old_ratings={"a": "A", "b": "C"},
             mapping_route="common_baseline",
+            historical_owner_id="old-manager",
+            mapped_owner_id="new-manager",
+            bridge_signers=("old-manager", "new-manager"),
         )
-        self.assertEqual(instance.legacy_maps["merged-team"]["current_quota_slots_consumed"], 0)
+        record = instance.legacy_maps["merged-team"]
+        self.assertEqual(record["current_quota_slots_consumed"], 0)
+        self.assertEqual(record["historical_owner_id"], "old-manager")
+        self.assertEqual(record["mapped_owner_id"], "new-manager")
+        self.assertEqual(set(record["bridge_signers"]), {"old-manager", "new-manager"})
 
     def test_strategy_pivot_keeps_old_goal_frozen_and_starts_new_goal_on_date(self) -> None:
         instance = make_model()
@@ -890,6 +917,15 @@ class DemandDeliveryTests(unittest.TestCase):
     def test_blocker_provenance_moves_collaboration_blame_without_auto_low_output(self) -> None:
         instance = make_model()
         submit_demand(instance, demand_id="d1")
+        admit_complete(instance, demand_id="d1")
+        apply(
+            instance,
+            "start_work_340",
+            "start",
+            demand_id="d1",
+            exception_owner_id=None,
+            hidden_extra_wip=False,
+        )
         apply(
             instance,
             "record_blocker_342",
@@ -925,6 +961,24 @@ class DemandDeliveryTests(unittest.TestCase):
     def test_launch_adoption_value_settle_in_order_and_never_exceed_full_credit(self) -> None:
         instance = make_model()
         submit_demand(instance, demand_id="d1", proposer_id="proposer")
+        admit_complete(instance, demand_id="d1")
+        apply(
+            instance,
+            "start_work_340",
+            "start",
+            demand_id="d1",
+            exception_owner_id=None,
+            hidden_extra_wip=False,
+        )
+        apply(
+            instance,
+            "carryover_demand_341",
+            "finish",
+            demand_id="d1",
+            unfinished_hours=0,
+            accepted_hours=20,
+            route=model.CarryoverRoute.SPLIT_ACCEPTED,
+        )
         apply(
             instance,
             "accept_delivery_343",
@@ -949,6 +1003,101 @@ class DemandDeliveryTests(unittest.TestCase):
                 credit_basis_points=credit,
             )
         self.assertEqual(sum(instance.demands["d1"].value_credits.values()), 10_000)
+        self.assertEqual(instance.deliveries["d1"].maturity, 3)
+        self.assertEqual(instance.deliveries["d1"].status, model.DeliveryStatus.VALUED)
+
+    def test_stable_demand_and_delivery_identity_version_deadline_survive_lifecycle(self) -> None:
+        instance = make_model()
+        submit_demand(instance, demand_id="d1")
+        demand = instance.demands["d1"]
+        identity = (
+            demand.demand_id,
+            demand.object_owner_id,
+            demand.object_cycle_serial,
+            demand.object_case_serial,
+        )
+        initial_deadline = demand.deadline_cycle
+        self.assertEqual(demand.object_version, 1)
+        admit_complete(instance, demand_id="d1")
+        apply(
+            instance,
+            "sign_delivery_triangle_338",
+            "triangle",
+            demand_id="d1",
+            tradeoff=model.TriangleTradeoff.EXTEND_TIME,
+            approver_id="manager",
+        )
+        self.assertEqual(demand.deadline_cycle, initial_deadline + 1)
+        apply(
+            instance,
+            "start_work_340",
+            "start",
+            demand_id="d1",
+            exception_owner_id=None,
+            hidden_extra_wip=False,
+        )
+        delivery = instance.deliveries["d1"]
+        self.assertEqual(delivery.delivery_id, "delivery:d1")
+        self.assertEqual(delivery.deadline_cycle, demand.deadline_cycle)
+        self.assertEqual(delivery.version, 1)
+        before = copy.deepcopy(instance)
+        with self.assertRaises(model.DomainRed):
+            apply(
+                instance,
+                "start_work_340",
+                "duplicate-start",
+                demand_id="d1",
+                exception_owner_id=None,
+                hidden_extra_wip=False,
+            )
+        self.assertEqual(instance, before)
+        self.assertEqual(
+            (demand.demand_id, demand.object_owner_id, demand.object_cycle_serial, demand.object_case_serial),
+            identity,
+        )
+
+    def test_frozen_delivery_roles_reject_substituted_signature_atomically(self) -> None:
+        instance = make_model()
+        submit_demand(instance, demand_id="d1")
+        admit_complete(instance, demand_id="d1")
+        apply(instance, "start_work_340", "start", demand_id="d1", exception_owner_id=None, hidden_extra_wip=False)
+        apply(instance, "carryover_demand_341", "finish", demand_id="d1", unfinished_hours=0, accepted_hours=20, route=model.CarryoverRoute.SPLIT_ACCEPTED)
+        before = copy.deepcopy(instance)
+        with self.assertRaises(model.DomainRed) as caught:
+            apply(
+                instance,
+                "accept_delivery_343",
+                "wrong-executor",
+                demand_id="d1",
+                proposer_signer_id="proposer",
+                executor_signer_id="substitute",
+                beneficiary_signer_id="beneficiary",
+                outcome=model.AcceptanceOutcome.ACCEPTED,
+            )
+        self.assertEqual(caught.exception.code, model.RedCode.SIGNATURE_REQUIRED)
+        self.assertEqual(instance, before)
+
+    def test_rejected_delivery_cannot_mint_launch_adoption_or_value_credit(self) -> None:
+        instance = make_model()
+        submit_demand(instance, demand_id="d1")
+        admit_complete(instance, demand_id="d1")
+        apply(instance, "start_work_340", "start", demand_id="d1", exception_owner_id=None, hidden_extra_wip=False)
+        apply(instance, "carryover_demand_341", "finish", demand_id="d1", unfinished_hours=0, accepted_hours=20, route=model.CarryoverRoute.SPLIT_ACCEPTED)
+        apply(
+            instance,
+            "accept_delivery_343",
+            "reject",
+            demand_id="d1",
+            proposer_signer_id="proposer",
+            executor_signer_id="executor",
+            beneficiary_signer_id="beneficiary",
+            outcome=model.AcceptanceOutcome.REJECTED,
+        )
+        before = copy.deepcopy(instance)
+        with self.assertRaises(model.DomainRed):
+            apply(instance, "settle_value_stage_344", "no-credit", demand_id="d1", stage=model.ValueStage.LAUNCH, credit_basis_points=1)
+        self.assertEqual(instance, before)
+        self.assertEqual(instance.deliveries["d1"].status, model.DeliveryStatus.REJECTED)
 
 
 class ExactBehaviorCoverageTests(unittest.TestCase):
@@ -1159,6 +1308,9 @@ class ExactBehaviorCoverageTests(unittest.TestCase):
             team_id="legacy",
             old_ratings={"a": "A", "b": "B"},
             mapping_route="context_only",
+            historical_owner_id="old-manager",
+            mapped_owner_id="new-manager",
+            bridge_signers=("old-manager", "new-manager"),
         )
         apply(
             instance,
@@ -1227,21 +1379,21 @@ class ExactBehaviorCoverageTests(unittest.TestCase):
         )
         apply(
             instance,
-            "carryover_demand_341",
-            "341",
-            demand_id="d1",
-            unfinished_hours=5,
-            accepted_hours=15,
-            route=model.CarryoverRoute.SPLIT_ACCEPTED,
-        )
-        apply(
-            instance,
             "record_blocker_342",
             "342",
             demand_id="d1",
             blocker_owner_id="records",
             blocked_since_day=100,
             escalated_day=101,
+        )
+        apply(
+            instance,
+            "carryover_demand_341",
+            "341",
+            demand_id="d1",
+            unfinished_hours=5,
+            accepted_hours=15,
+            route=model.CarryoverRoute.SPLIT_ACCEPTED,
         )
         apply(
             instance,

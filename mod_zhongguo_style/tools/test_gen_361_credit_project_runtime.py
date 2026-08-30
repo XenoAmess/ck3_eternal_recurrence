@@ -464,6 +464,67 @@ class RoleAndLedgerInvariantTests(unittest.TestCase):
         self.assertIn("has_variable = zg361_b2_pip_state", history)
         self.assertNotRegex(history, r"(?:set|change|remove)_variable = \{ name = zg361_b2_")
 
+    def test_project_is_a_stable_versioned_object_not_a_receipt_alias(self) -> None:
+        expected_owners = {
+            "a": "$TICKET_SUBJECT$",
+            "b": "var:zg361_cp_cross_reviewer",
+            "c": "$TICKET_OWNER$",
+        }
+        for letter, owner in expected_owners.items():
+            creator = block(self.effects, f"zg361_cp_m30_route_{letter}_effect")
+            with self.subTest(route=letter):
+                self.assertIn("project_object_manager value = $TICKET_OWNER$", creator)
+                self.assertIn(f"project_object_owner value = {owner}", creator)
+                self.assertIn("project_object_subject value = $TICKET_SUBJECT$", creator)
+                self.assertIn("project_object_cycle value = $TICKET_CYCLE$", creator)
+                self.assertIn("project_object_origin_case value = $TICKET_CASE$", creator)
+                self.assertIn("project_object_version value = 1", creator)
+                self.assertIn("project_object_deadline_cycle add = 2", creator)
+        for spec in gen.MECHANISMS:
+            if spec.mid == 30:
+                continue
+            route = block(self.effects, f"zg361_cp_m{spec.mid}_route_a_effect")
+            with self.subTest(mid=spec.mid):
+                self.assertLess(route.index("project_object_manager = $TICKET_OWNER$"), route.index("record_operation"))
+                self.assertLess(route.index("project_object_subject = $TICKET_SUBJECT$"), route.index("record_operation"))
+                self.assertIn("project_object_version add = 1", route)
+
+    def test_report_packet_has_its_own_identity_version_and_project_link(self) -> None:
+        creator = block(self.effects, "zg361_cp_m54_route_a_effect")
+        for token in (
+            "report_object_owner value = $TICKET_OWNER$",
+            "report_object_subject value = $TICKET_SUBJECT$",
+            "report_object_cycle value = $TICKET_CYCLE$",
+            "report_object_case value = $TICKET_CASE$",
+            "report_object_version value = 1",
+            "report_object_deadline_cycle add = 1",
+            "report_project_origin_case value = var:zg361_cp_project_object_origin_case",
+        ):
+            self.assertIn(token, creator)
+        for mid in (56, 57, 58, 59, 55, 60):
+            route = block(self.effects, f"zg361_cp_m{mid}_route_a_effect")
+            self.assertLess(route.index("report_object_case = $TICKET_CASE$"), route.index("record_operation"))
+            self.assertIn("report_object_version add = 1", route)
+
+    def test_every_consumer_publishes_project_identity_version_deadline_and_status(self) -> None:
+        for spec in gen.MECHANISMS:
+            consumer = block(self.effects, f"zg361_cp_m{spec.mid}_consume_effect")
+            with self.subTest(mid=spec.mid):
+                for source in (
+                    "zg361_cp_project_object_manager",
+                    "zg361_cp_project_object_owner",
+                    "zg361_cp_project_object_subject",
+                    "zg361_cp_project_object_origin_case",
+                    "zg361_cp_project_object_version",
+                    "zg361_cp_project_object_deadline_cycle",
+                    "zg361_cp_project_object_status",
+                ):
+                    self.assertIn(f"has_variable = {source}", consumer)
+                    self.assertIn(f"value = var:{source}", consumer)
+        finalizer = block(self.effects, "zg361_cp_finalize_portfolio_effect")
+        self.assertIn("project_object_version = 27", finalizer)
+        self.assertIn("report_object_version = 7", finalizer)
+
 
 class LocalizationAndBoundaryTests(unittest.TestCase):
     def test_localization_keysets_match_and_seven_languages_are_english_placeholders(self) -> None:

@@ -210,6 +210,16 @@ class ValueStage(str, Enum):
     VALUE = "value"
 
 
+class DeliveryStatus(str, Enum):
+    IN_WIP = "in_wip"
+    CARRIED = "carried"
+    CANCELLED = "cancelled"
+    ACCEPTED = "accepted"
+    CONDITIONAL = "conditional"
+    REJECTED = "rejected"
+    VALUED = "valued"
+
+
 @dataclass
 class MetricDefinition:
     metric_id: str
@@ -240,9 +250,16 @@ class SampleAllocation:
 @dataclass
 class Demand:
     demand_id: str
+    object_owner_id: str
+    object_cycle_serial: int
+    object_case_serial: int
+    object_version: int
+    deadline_cycle: int
     source: DemandSource
     source_owner_id: str
     proposer_id: str
+    executor_id: str
+    beneficiary_id: str
     provenance_id: str
     queue_sequence: int
     benefit: str | None = None
@@ -272,6 +289,24 @@ class Demand:
     signatures: dict[str, str] = field(default_factory=dict)
     acceptance_outcome: AcceptanceOutcome | None = None
     value_credits: dict[ValueStage, int] = field(default_factory=dict)
+
+
+@dataclass
+class Delivery:
+    delivery_id: str
+    demand_id: str
+    owner_id: str
+    executor_id: str
+    beneficiary_id: str
+    cycle_serial: int
+    case_serial: int
+    deadline_cycle: int
+    version: int
+    status: DeliveryStatus
+    reserved_hours: int
+    carryover_hours: int = 0
+    accepted_hours: int = 0
+    maturity: int = 0
 
 
 @dataclass
@@ -315,6 +350,7 @@ class MetricsReorgModel:
     legacy_maps: dict[str, dict[str, object]] = field(default_factory=dict)
     pivots: dict[str, dict[str, object]] = field(default_factory=dict)
     demands: dict[str, Demand] = field(default_factory=dict)
+    deliveries: dict[str, Delivery] = field(default_factory=dict)
     capacity_hours_reserved: int = 0
     next_cycle_capacity_reserved: int = 0
     emergency_slots_used: int = 0
@@ -444,6 +480,21 @@ class MetricsReorgModel:
         if demand is None:
             raise DomainRed(RedCode.NOT_FOUND, f"unknown demand {demand_id}")
         return demand
+
+    def _delivery(self, demand_id: object) -> Delivery:
+        demand_id = self._text(demand_id, "demand_id")
+        delivery = self.deliveries.get(demand_id)
+        if delivery is None:
+            raise DomainRed(RedCode.NOT_FOUND, f"demand {demand_id} has no delivery object")
+        return delivery
+
+    @staticmethod
+    def _touch_demand(demand: Demand) -> None:
+        demand.object_version += 1
+
+    @staticmethod
+    def _touch_delivery(delivery: Delivery) -> None:
+        delivery.version += 1
 
     @property
     def active_sample_slots(self) -> int:
@@ -1252,12 +1303,17 @@ class MetricsReorgModel:
         team_id: str,
         old_ratings: Mapping[str, str],
         mapping_route: str,
+        historical_owner_id: str,
+        mapped_owner_id: str,
+        bridge_signers: tuple[str, str],
     ) -> ActionResult:
         gate = self._gate(command, 310)
         if gate:
             return gate
         team_id = self._text(team_id, "team_id")
         mapping_route = self._text(mapping_route, "mapping_route")
+        historical_owner_id = self._text(historical_owner_id, "historical_owner_id")
+        mapped_owner_id = self._text(mapped_owner_id, "mapped_owner_id")
         if mapping_route not in {"equivalence", "context_only", "common_baseline"}:
             raise DomainRed(RedCode.INVALID_VALUE, "invalid legacy mapping route")
         if not isinstance(old_ratings, Mapping) or not old_ratings:
@@ -1266,6 +1322,13 @@ class MetricsReorgModel:
             self._text(actor, "legacy actor"): self._text(rating, "legacy rating")
             for actor, rating in old_ratings.items()
         }
+        if historical_owner_id == mapped_owner_id:
+            raise DomainRed(RedCode.INVALID_VALUE, "legacy bridge requires old and new owners")
+        if not isinstance(bridge_signers, tuple) or len(bridge_signers) != 2:
+            raise DomainRed(RedCode.INVALID_TYPE, "legacy bridge requires two signatures")
+        signers = tuple(self._text(row, "bridge signer") for row in bridge_signers)
+        if set(signers) != {historical_owner_id, mapped_owner_id}:
+            raise DomainRed(RedCode.SIGNATURE_REQUIRED, "legacy bridge signatures do not match owners")
         if team_id in self.legacy_maps:
             raise DomainRed(RedCode.STATE_CONFLICT, "legacy map exists")
         self.legacy_maps[team_id] = {
@@ -1273,6 +1336,10 @@ class MetricsReorgModel:
             "mapping_route": mapping_route,
             "historical_context_only": True,
             "current_quota_slots_consumed": 0,
+            "mapping_version": 1,
+            "historical_owner_id": historical_owner_id,
+            "mapped_owner_id": mapped_owner_id,
+            "bridge_signers": signers,
         }
         return self._commit(command, 310)
 
@@ -1315,6 +1382,9 @@ class MetricsReorgModel:
         source: DemandSource,
         source_owner_id: str,
         proposer_id: str,
+        executor_id: str,
+        beneficiary_id: str,
+        deadline_cycle: int,
         provenance_id: str,
     ) -> ActionResult:
         gate = self._gate(command, 334)
@@ -1324,16 +1394,33 @@ class MetricsReorgModel:
         source = self._enum(source, DemandSource, "demand source")
         source_owner_id = self._text(source_owner_id, "source_owner_id")
         proposer_id = self._text(proposer_id, "proposer_id")
+        executor_id = self._text(executor_id, "executor_id")
+        beneficiary_id = self._text(beneficiary_id, "beneficiary_id")
+        deadline_cycle = self._integer(
+            deadline_cycle, "deadline_cycle", minimum=self.cycle_serial
+        )
+        if len({proposer_id, executor_id, beneficiary_id}) != 3:
+            raise DomainRed(
+                RedCode.SIGNATURE_REQUIRED,
+                "demand must freeze three distinct delivery roles",
+            )
         if demand_id in self.demands:
             raise DomainRed(RedCode.STATE_CONFLICT, "demand already entered")
         provenance_id = self._check_provenance(provenance_id, f"demand:{demand_id}")
         self.demands[demand_id] = Demand(
-            demand_id,
-            source,
-            source_owner_id,
-            proposer_id,
-            provenance_id,
-            len(self.demands),
+            demand_id=demand_id,
+            object_owner_id=self.owner_id,
+            object_cycle_serial=self.cycle_serial,
+            object_case_serial=self.case_serial,
+            object_version=1,
+            deadline_cycle=deadline_cycle,
+            source=source,
+            source_owner_id=source_owner_id,
+            proposer_id=proposer_id,
+            executor_id=executor_id,
+            beneficiary_id=beneficiary_id,
+            provenance_id=provenance_id,
+            queue_sequence=len(self.demands),
         )
         self._register_provenance(provenance_id, f"demand:{demand_id}")
         return self._commit(command, 334)
@@ -1366,6 +1453,7 @@ class MetricsReorgModel:
         demand.emergency_tradeoff = tradeoff
         if consumes_slot:
             self.emergency_slots_used += 1
+        self._touch_demand(demand)
         return self._commit(command, 335)
 
     def admit_demand_336(
@@ -1430,6 +1518,7 @@ class MetricsReorgModel:
         demand.admitted = admitted
         demand.admission_route = route
         demand.forced_owner_liability = route is AdmissionRoute.FORCED_COMMITMENT
+        self._touch_demand(demand)
         return self._commit(command, 336)
 
     def change_demand_337(
@@ -1469,6 +1558,14 @@ class MetricsReorgModel:
         )
         demand.signatures["change_approver"] = approver_id
         self.capacity_hours_reserved += additional_reservation
+        if route is ChangeRoute.EXTEND:
+            demand.deadline_cycle += 1
+        self._touch_demand(demand)
+        if demand_id in self.deliveries:
+            delivery = self.deliveries[demand_id]
+            delivery.deadline_cycle = demand.deadline_cycle
+            delivery.reserved_hours += additional_reservation
+            self._touch_delivery(delivery)
         return self._commit(command, 337)
 
     def sign_delivery_triangle_338(
@@ -1494,6 +1591,9 @@ class MetricsReorgModel:
         demand.quality_liability_id = (
             approver_id if tradeoff is TriangleTradeoff.LOWER_QUALITY else None
         )
+        if tradeoff is TriangleTradeoff.EXTEND_TIME:
+            demand.deadline_cycle += 1
+        self._touch_demand(demand)
         return self._commit(command, 338)
 
     def calibrate_estimate_339(
@@ -1529,6 +1629,7 @@ class MetricsReorgModel:
         demand.actual_hours = actual_hours
         demand.estimate_error = error
         demand.estimate_reason = reason
+        self._touch_demand(demand)
         return self._commit(command, 339)
 
     def start_work_340(
@@ -1561,10 +1662,26 @@ class MetricsReorgModel:
         demand_capacity = demand.estimated_hours + demand.change_tax_hours
         if self.capacity_hours_reserved + demand_capacity > self.capacity_hours_total:
             raise DomainRed(RedCode.CAPACITY_EXCEEDED, "delivery capacity exceeded")
+        if demand_id in self.deliveries:
+            raise DomainRed(RedCode.STATE_CONFLICT, "delivery object already exists")
         demand.active = True
         demand.wip_exception_owner_id = exception_owner_id
         demand.hidden_wip_penalty = penalty
         self.capacity_hours_reserved += demand_capacity
+        self.deliveries[demand_id] = Delivery(
+            delivery_id=f"delivery:{demand_id}",
+            demand_id=demand_id,
+            owner_id=demand.object_owner_id,
+            executor_id=demand.executor_id,
+            beneficiary_id=demand.beneficiary_id,
+            cycle_serial=demand.object_cycle_serial,
+            case_serial=demand.object_case_serial,
+            deadline_cycle=demand.deadline_cycle,
+            version=1,
+            status=DeliveryStatus.IN_WIP,
+            reserved_hours=demand_capacity,
+        )
+        self._touch_demand(demand)
         return self._commit(command, 340)
 
     def carryover_demand_341(
@@ -1580,6 +1697,9 @@ class MetricsReorgModel:
         if gate:
             return gate
         demand = self._demand(demand_id)
+        delivery = self._delivery(demand_id)
+        if delivery.status is not DeliveryStatus.IN_WIP:
+            raise DomainRed(RedCode.STATE_CONFLICT, "carryover requires active WIP")
         unfinished_hours = self._integer(unfinished_hours, "unfinished_hours")
         accepted_hours = self._integer(accepted_hours, "accepted_hours")
         route = self._enum(route, CarryoverRoute, "carryover route")
@@ -1597,6 +1717,14 @@ class MetricsReorgModel:
         self.capacity_hours_reserved -= demand.estimated_hours + demand.change_tax_hours
         if route is CarryoverRoute.CANCEL:
             demand.admitted = False
+            delivery.status = DeliveryStatus.CANCELLED
+        else:
+            delivery.status = DeliveryStatus.CARRIED
+        delivery.reserved_hours = 0
+        delivery.carryover_hours = reserve
+        delivery.accepted_hours = accepted_hours
+        self._touch_delivery(delivery)
+        self._touch_demand(demand)
         return self._commit(command, 341)
 
     def record_blocker_342(
@@ -1612,6 +1740,9 @@ class MetricsReorgModel:
         if gate:
             return gate
         demand = self._demand(demand_id)
+        delivery = self._delivery(demand_id)
+        if delivery.status is not DeliveryStatus.IN_WIP:
+            raise DomainRed(RedCode.STATE_CONFLICT, "blocker requires active WIP")
         blocker_owner_id = self._text(blocker_owner_id, "blocker_owner_id")
         blocked_since_day = self._integer(blocked_since_day, "blocked_since_day", minimum=1)
         if escalated_day is not None:
@@ -1628,6 +1759,8 @@ class MetricsReorgModel:
             "executor_shared_responsibility": escalated_day is None,
             "blocker_collaboration_penalty": True,
         }
+        self._touch_demand(demand)
+        self._touch_delivery(delivery)
         return self._commit(command, 342)
 
     def accept_delivery_343(
@@ -1654,10 +1787,24 @@ class MetricsReorgModel:
             raise DomainRed(RedCode.SIGNATURE_REQUIRED, "delivery requires three distinct roles")
         if signers["proposer"] != demand.proposer_id:
             raise DomainRed(RedCode.SIGNATURE_REQUIRED, "proposer signature does not match intake")
+        if signers["executor"] != demand.executor_id:
+            raise DomainRed(RedCode.SIGNATURE_REQUIRED, "executor signature does not match intake")
+        if signers["beneficiary"] != demand.beneficiary_id:
+            raise DomainRed(RedCode.SIGNATURE_REQUIRED, "beneficiary signature does not match intake")
         if demand.acceptance_outcome is not None:
             raise DomainRed(RedCode.STATE_CONFLICT, "delivery already accepted or rejected")
+        delivery = self._delivery(demand_id)
+        if delivery.status is DeliveryStatus.CANCELLED or delivery.accepted_hours <= 0:
+            raise DomainRed(RedCode.STATE_CONFLICT, "delivery has no accepted work to sign")
         demand.signatures.update(signers)
         demand.acceptance_outcome = outcome
+        delivery.status = {
+            AcceptanceOutcome.ACCEPTED: DeliveryStatus.ACCEPTED,
+            AcceptanceOutcome.CONDITIONAL: DeliveryStatus.CONDITIONAL,
+            AcceptanceOutcome.REJECTED: DeliveryStatus.REJECTED,
+        }[outcome]
+        self._touch_delivery(delivery)
+        self._touch_demand(demand)
         return self._commit(command, 343)
 
     def settle_value_stage_344(
@@ -1672,6 +1819,7 @@ class MetricsReorgModel:
         if gate:
             return gate
         demand = self._demand(demand_id)
+        delivery = self._delivery(demand_id)
         stage = self._enum(stage, ValueStage, "value stage")
         credit_basis_points = self._integer(
             credit_basis_points, "credit_basis_points", minimum=1
@@ -1693,6 +1841,15 @@ class MetricsReorgModel:
         if sum(demand.value_credits.values()) + credit_basis_points > SHARE_TOTAL_BPS:
             raise DomainRed(RedCode.SHARE_IMBALANCE, "staged value credit exceeds 10000")
         demand.value_credits[stage] = credit_basis_points
+        delivery.maturity = {
+            ValueStage.LAUNCH: 1,
+            ValueStage.ADOPTION: 2,
+            ValueStage.VALUE: 3,
+        }[stage]
+        if stage is ValueStage.VALUE:
+            delivery.status = DeliveryStatus.VALUED
+        self._touch_delivery(delivery)
+        self._touch_demand(demand)
         return self._commit(command, 344)
 
     def assert_invariants(self) -> None:
@@ -1708,6 +1865,41 @@ class MetricsReorgModel:
             raise DomainRed(RedCode.INVARIANT_BROKEN, "next capacity does not conserve")
         if self.active_wip > self.wip_limit + self.wip_exception_count:
             raise DomainRed(RedCode.INVARIANT_BROKEN, "WIP exceeds signed exceptions")
+        for demand_id, demand in self.demands.items():
+            if (
+                demand.object_owner_id != self.owner_id
+                or demand.object_cycle_serial != self.cycle_serial
+                or demand.object_case_serial != self.case_serial
+                or demand.object_version < 1
+                or demand.deadline_cycle < demand.object_cycle_serial
+            ):
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "demand identity/version drifted")
+            if len({demand.proposer_id, demand.executor_id, demand.beneficiary_id}) != 3:
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "demand roles are not distinct")
+            delivery = self.deliveries.get(demand_id)
+            if demand.active and delivery is None:
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "active demand lacks delivery object")
+        for demand_id, delivery in self.deliveries.items():
+            demand = self.demands.get(demand_id)
+            if demand is None or delivery.demand_id != demand_id:
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "orphan delivery object")
+            if (
+                delivery.owner_id != demand.object_owner_id
+                or delivery.executor_id != demand.executor_id
+                or delivery.beneficiary_id != demand.beneficiary_id
+                or delivery.cycle_serial != demand.object_cycle_serial
+                or delivery.case_serial != demand.object_case_serial
+                or delivery.version < 1
+                or delivery.maturity not in (0, 1, 2, 3)
+            ):
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "delivery identity/version drifted")
+            if delivery.status is DeliveryStatus.IN_WIP:
+                if not demand.active or delivery.reserved_hours <= 0:
+                    raise DomainRed(RedCode.INVARIANT_BROKEN, "WIP delivery lost reservation")
+            elif delivery.reserved_hours != 0:
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "terminal delivery retained capacity")
+            if delivery.maturity != len(demand.value_credits):
+                raise DomainRed(RedCode.INVARIANT_BROKEN, "delivery value maturity skipped a stage")
         if self.manager_hc + self.expert_hc != self.total_hc:
             raise DomainRed(RedCode.INVARIANT_BROKEN, "HC structure drifted")
         if not 0 <= self.management_capacity_used <= self.management_capacity_total:

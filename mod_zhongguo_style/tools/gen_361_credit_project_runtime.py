@@ -328,6 +328,33 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         f"has_variable = zg361_cp_{d}_operation_used",
         f"var:zg361_cp_{d}_operation_used < var:zg361_cp_{d}_operation_total",
     ]
+    if mid != 30:
+        checks += [
+            "has_variable = zg361_cp_project_object_manager",
+            "has_variable = zg361_cp_project_object_subject",
+            "has_variable = zg361_cp_project_object_cycle",
+            "has_variable = zg361_cp_project_object_origin_case",
+            "has_variable = zg361_cp_project_object_version",
+            "has_variable = zg361_cp_project_object_deadline_cycle",
+            "has_variable = zg361_cp_project_object_status",
+            "var:zg361_cp_project_object_manager = $TICKET_OWNER$",
+            "var:zg361_cp_project_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_cp_project_object_cycle = $TICKET_CYCLE$",
+        ]
+    if mid in (56, 57, 58, 59, 55, 60):
+        checks += [
+            "has_variable = zg361_cp_report_object_owner",
+            "has_variable = zg361_cp_report_object_subject",
+            "has_variable = zg361_cp_report_object_cycle",
+            "has_variable = zg361_cp_report_object_case",
+            "has_variable = zg361_cp_report_object_version",
+            "has_variable = zg361_cp_report_project_origin_case",
+            "var:zg361_cp_report_object_owner = $TICKET_OWNER$",
+            "var:zg361_cp_report_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_cp_report_object_cycle = $TICKET_CYCLE$",
+            "var:zg361_cp_report_object_case = $TICKET_CASE$",
+            "var:zg361_cp_report_project_origin_case = var:zg361_cp_project_object_origin_case",
+        ]
     if mid == 30:
         amount = (40, 60, 80)[choice - 1]
         checks += [
@@ -408,6 +435,15 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         amount = (40, 60, 80)[choice - 1]
         winner = ("$TICKET_SUBJECT$", "var:zg361_cp_cross_reviewer", "$TICKET_OWNER$")[choice - 1]
         lines += [
+            "set_variable = { name = zg361_cp_project_object_manager value = $TICKET_OWNER$ }",
+            f"set_variable = {{ name = zg361_cp_project_object_owner value = {winner} }}",
+            "set_variable = { name = zg361_cp_project_object_subject value = $TICKET_SUBJECT$ }",
+            "set_variable = { name = zg361_cp_project_object_cycle value = $TICKET_CYCLE$ }",
+            "set_variable = { name = zg361_cp_project_object_origin_case value = $TICKET_CASE$ }",
+            "set_variable = { name = zg361_cp_project_object_version value = 1 }",
+            "set_variable = { name = zg361_cp_project_object_deadline_cycle value = $TICKET_CYCLE$ }",
+            "change_variable = { name = zg361_cp_project_object_deadline_cycle add = 2 }",
+            "set_variable = { name = zg361_cp_project_object_status value = 1 }",
             "set_variable = { name = zg361_cp_project_slot_used value = 1 }",
             f"set_variable = {{ name = zg361_cp_project_winner value = {winner} }}",
             f"set_variable = {{ name = zg361_cp_capacity_reserved value = {amount} }}",
@@ -501,6 +537,14 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif mid == 54:
         hours = (1, 4, 1)[choice - 1]
         lines += [
+            "set_variable = { name = zg361_cp_report_object_owner value = $TICKET_OWNER$ }",
+            "set_variable = { name = zg361_cp_report_object_subject value = $TICKET_SUBJECT$ }",
+            "set_variable = { name = zg361_cp_report_object_cycle value = $TICKET_CYCLE$ }",
+            "set_variable = { name = zg361_cp_report_object_case value = $TICKET_CASE$ }",
+            "set_variable = { name = zg361_cp_report_object_version value = 1 }",
+            "set_variable = { name = zg361_cp_report_object_deadline_cycle value = $TICKET_CYCLE$ }",
+            "change_variable = { name = zg361_cp_report_object_deadline_cycle add = 1 }",
+            "set_variable = { name = zg361_cp_report_project_origin_case value = var:zg361_cp_project_object_origin_case }",
             f"change_variable = {{ name = zg361_cp_report_hours add = {hours} }}",
             f"change_variable = {{ name = zg361_cp_capacity_spent add = {hours} }}",
             f"change_variable = {{ name = zg361_cp_capacity_remaining subtract = {hours} }}",
@@ -615,6 +659,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
                 "set_variable = { name = zg361_cp_capacity_reserved value = var:zg361_cp_capacity_spent }",
                 "set_variable = { name = zg361_cp_project_active value = 0 }",
                 "set_variable = { name = zg361_cp_project_slot_used value = 0 }",
+                "set_variable = { name = zg361_cp_project_object_status value = 2 }",
                 "set_variable = { name = zg361_cp_business_outcome value = 2 }",
                 "set_variable = { name = zg361_cp_individual_outcome value = 1 }",
             ]
@@ -710,6 +755,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             "\tset_variable = { name = zg361_cp_capacity_reserved value = var:zg361_cp_capacity_spent }",
             "\tset_variable = { name = zg361_cp_project_active value = 0 }",
             "\tset_variable = { name = zg361_cp_project_slot_used value = 0 }",
+            "\tset_variable = { name = zg361_cp_project_object_status value = 3 }",
             "}",
         ]
         if choice in (1, 2):
@@ -736,6 +782,10 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             "set_variable = { name = zg361_cp_postmortem_blanket_penalty value = 0 }",
             "set_variable = { name = zg361_cp_postmortem_learning_consumed value = 0 }",
         ]
+    if mid != 30:
+        lines += ["change_variable = { name = zg361_cp_project_object_version add = 1 }"]
+    if mid in (56, 57, 58, 59, 55, 60):
+        lines += ["change_variable = { name = zg361_cp_report_object_version add = 1 }"]
     return lines
 
 
@@ -770,7 +820,25 @@ def consumer_effects(spec: Mechanism) -> list[str]:
         133: ["set_variable = { name = zg361_cp_visible_learning_actions value = var:zg361_cp_postmortem_learning_actions }", "set_variable = { name = zg361_cp_visible_named_liability value = var:zg361_cp_postmortem_named_liability }", "set_variable = { name = zg361_cp_postmortem_learning_consumed value = 1 }"],
         134: ["set_variable = { name = zg361_cp_visible_shared_metric_owner value = var:zg361_cp_shared_metric_owner }", "set_variable = { name = zg361_cp_visible_shared_metric_owner_count value = var:zg361_cp_shared_metric_owner_count }"],
     }
-    return specific[mid]
+    rows = list(specific[mid])
+    rows += [
+        "set_variable = { name = zg361_cp_visible_project_manager value = var:zg361_cp_project_object_manager }",
+        "set_variable = { name = zg361_cp_visible_project_owner value = var:zg361_cp_project_object_owner }",
+        "set_variable = { name = zg361_cp_visible_project_subject value = var:zg361_cp_project_object_subject }",
+        "set_variable = { name = zg361_cp_visible_project_cycle value = var:zg361_cp_project_object_cycle }",
+        "set_variable = { name = zg361_cp_visible_project_origin_case value = var:zg361_cp_project_object_origin_case }",
+        "set_variable = { name = zg361_cp_visible_project_version value = var:zg361_cp_project_object_version }",
+        "set_variable = { name = zg361_cp_visible_project_deadline_cycle value = var:zg361_cp_project_object_deadline_cycle }",
+        "set_variable = { name = zg361_cp_visible_project_status value = var:zg361_cp_project_object_status }",
+    ]
+    if mid in (54, 56, 57, 58, 59, 55, 60):
+        rows += [
+            "set_variable = { name = zg361_cp_visible_report_case value = var:zg361_cp_report_object_case }",
+            "set_variable = { name = zg361_cp_visible_report_version value = var:zg361_cp_report_object_version }",
+            "set_variable = { name = zg361_cp_visible_report_deadline_cycle value = var:zg361_cp_report_object_deadline_cycle }",
+            "set_variable = { name = zg361_cp_visible_report_project_origin_case value = var:zg361_cp_report_project_origin_case }",
+        ]
+    return rows
 
 
 def operation_call(spec: Mechanism, choice: int) -> str:
@@ -806,7 +874,24 @@ def operation_call(spec: Mechanism, choice: int) -> str:
 def render_consumer(spec: Mechanism) -> str:
     d, mid = spec.domain, spec.mid
     identity = ("owner", "subject", "cycle", "case", "state")
-    required = [f"zg361_cp_m{mid}_write_{name}" for name in identity] + [f"zg361_cp_{spec.field}"]
+    required = [f"zg361_cp_m{mid}_write_{name}" for name in identity] + [
+        f"zg361_cp_{spec.field}",
+        "zg361_cp_project_object_manager",
+        "zg361_cp_project_object_owner",
+        "zg361_cp_project_object_subject",
+        "zg361_cp_project_object_cycle",
+        "zg361_cp_project_object_origin_case",
+        "zg361_cp_project_object_version",
+        "zg361_cp_project_object_deadline_cycle",
+        "zg361_cp_project_object_status",
+    ]
+    if mid in (54, 56, 57, 58, 59, 55, 60):
+        required += [
+            "zg361_cp_report_object_case",
+            "zg361_cp_report_object_version",
+            "zg361_cp_report_object_deadline_cycle",
+            "zg361_cp_report_project_origin_case",
+        ]
     existence = "\n".join(f"has_variable = {name}" for name in required)
     comparisons = "\n".join(
         f"var:zg361_cp_m{mid}_write_{name} = var:zg361_case_{d}_{'cycle_serial' if name == 'cycle' else 'case_serial' if name == 'case' else name}"
@@ -1168,6 +1253,12 @@ zg361_cp_finalize_portfolio_effect = {
 			var:zg361_cp_final_promotion_check = 1
 			var:zg361_cp_final_share_total = 10000
 			var:zg361_cp_project_slot_used = 0
+			var:zg361_cp_project_object_version = 27
+			OR = {
+				var:zg361_cp_project_object_status = 2
+				var:zg361_cp_project_object_status = 3
+			}
+			var:zg361_cp_report_object_version = 7
 		}
 		set_variable = { name = zg361_cp_final_conservation_ok value = 1 }
 	}

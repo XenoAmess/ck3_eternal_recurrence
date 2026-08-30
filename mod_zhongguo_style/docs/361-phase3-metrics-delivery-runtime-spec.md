@@ -8,11 +8,14 @@
 
 当前 static-ready 投影分为两层，必须分开陈述：
 
-- **35/35 已实现的共同层**：每项都有独立 A/B/C route enum、同一组六字段 receipt、五元 write ticket、显式 provenance、独立 consumer、`visible_value` 和可见 revision；每条路线还落一组确定性的 quality / throughput / management-debt 取舍，因此不是三个同义按钮。
-- **已实现的宽领域层**：AA240/241、AG304/306/308/309/310/311、AJ335/336/337/338/340/341/342/343/344 另有样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签字、WIP、跨期容量和价值 credit 等专门字段与守恒写入。
+- **35/35 已实现的共同层**：每项都有独立 A/B/C route、同一组六字段 receipt、五元 write ticket、显式 provenance、独立 consumer 与可见 revision；consumer 不再只投影 route enum，而会存在性门控并发布该项的 4–10 个业务事实。
+- **四类稳定业务对象**：AA229 创建唯一指标对象，AG301 创建重组对象，AJ334 创建需求对象，AJ340 从需求派生独立交付对象。对象各自冻结 owner/subject/cycle/case/version；后续 route 必须同时通过 case kernel 五元身份和对象身份，receipt 不能冒充对象。
+- **已实现的宽领域层**：样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签名、期限、WIP、跨期容量与价值 credit 均有真实写入和读侧投影。AJ344 对已验收交付按 `上线 → 采用 → 价值` 写顺序 1/2/3；拒收或 N/A 可以正常闭案，但 10000 bp 全部留在 `unallocated`，不会凭空发奖。
 - **唯一 manager-scope portfolio adapter**：未来中央调度只允许调用 `zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }`。adapter 读取并冻结当前制度周期与已交付结果案卷，只打开 AA 首案；AA→AG→AJ 依靠带完整冻结身份复核的 D+1 hidden queue 串行交接。
 
 后文机制表的“consumer 必须发布”列描述该机制最终面向案卷/考核榜/MCP 的丰富查询合同；尚未列入上述两层的细字段不能据此冒充当前已经写入 CK3。当前静态包完成的是可加载目录中的 write→consumer 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
+
+Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 48 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
 
 ## 权威来源与产物边界
 

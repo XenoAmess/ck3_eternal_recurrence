@@ -452,8 +452,11 @@ class GeneratorContractTests(unittest.TestCase):
     def test_reorg_history_owner_does_not_drift(self) -> None:
         for letter in "abc":
             route = block(self.effects, f"zg361_p3_m310_route_{letter}_effect")
-            self.assertIn("m310_historical_owner value = $TICKET_OWNER$", route)
-            self.assertIn("m310_mapped_owner value = $TICKET_OWNER$", route)
+            self.assertIn("m310_historical_owner value = var:zg361_p3_portfolio_result_owner", route)
+            self.assertIn("m310_mapped_owner value = var:zg361_p3_reorg_object_owner", route)
+            self.assertIn("m310_bridge_signature_count value = 2", route)
+            self.assertIn("m310_bridge_dual_signed value = 1", route)
+            self.assertNotIn("m310_historical_owner value = $TICKET_OWNER$", route)
         self.assertIn("m311_old_target_locked value = 1", block(self.effects, "zg361_p3_m311_route_a_effect"))
 
     def test_aj_emergency_and_change_tax_prechecks_are_atomic(self) -> None:
@@ -471,22 +474,28 @@ class GeneratorContractTests(unittest.TestCase):
     def test_aj_wip_and_capacity_conserve(self) -> None:
         normal = block(self.effects, "zg361_p3_m340_route_a_effect")
         self.assertLess(normal.index("wip_used < var:zg361_p3_aj_wip_limit"), normal.index("record_operation"))
-        for letter in "abc":
+        for letter, slots, capacity_source in (
+            ("a", 1, "demand_estimated_hours"),
+            ("b", 2, "demand_estimated_plus_exception"),
+            ("c", 2, "demand_estimated_plus_exception"),
+        ):
             route = block(self.effects, f"zg361_p3_m340_route_{letter}_effect")
-            self.assertIn("capacity_remaining subtract = 20", route)
-            self.assertIn("capacity_reserved add = 20", route)
-            self.assertIn("wip_used add = 1", route)
+            self.assertLess(route.index(f"capacity_remaining >= var:zg361_p3_{capacity_source}"), route.index("record_operation"))
+            self.assertIn("capacity_remaining subtract = var:zg361_p3_demand_reserved_hours", route)
+            self.assertIn("capacity_reserved add = var:zg361_p3_demand_reserved_hours", route)
+            self.assertIn(f"wip_used add = {slots}", route)
+            self.assertIn(f"delivery_wip_slots value = {slots}", route)
         self.assertIn("exception_signed value = 1", block(self.effects, "zg361_p3_m340_route_b_effect"))
-        self.assertIn("hidden_wip_debt add = 1", block(self.effects, "zg361_p3_m340_route_c_effect"))
+        self.assertIn("hidden_wip_debt add = 2", block(self.effects, "zg361_p3_m340_route_c_effect"))
 
     def test_aj_carryover_is_net_zero_current_and_charges_next(self) -> None:
         expected = {"a": 10, "b": 5, "c": 0}
         for letter, carry_hours in expected.items():
             route = block(self.effects, f"zg361_p3_m341_route_{letter}_effect")
             with self.subTest(route=letter):
-                self.assertLess(route.index("capacity_reserved >= 10"), route.index("record_operation"))
-                self.assertIn("capacity_reserved subtract = 10", route)
-                self.assertIn("capacity_remaining add = 10", route)
+                self.assertLess(route.index("capacity_reserved >= var:zg361_p3_demand_reserved_hours"), route.index("record_operation"))
+                self.assertIn("capacity_reserved subtract = var:zg361_p3_demand_reserved_hours", route)
+                self.assertIn("capacity_remaining add = var:zg361_p3_demand_reserved_hours", route)
                 self.assertIn(f"m341_transfer_hours value = {carry_hours}", route)
                 if carry_hours:
                     self.assertIn(f"next_capacity_remaining subtract = {carry_hours}", route)
@@ -506,6 +515,45 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertLess(value.index("value_credit_remaining = 10000"), value.index("record_operation"))
             self.assertIn("m344_share_total value = 10000", value)
             self.assertIn("value_credit_remaining value = 0", value)
+
+    def test_stable_metric_reorg_demand_and_delivery_objects_are_not_receipts(self) -> None:
+        creators = {
+            229: ("metric", "zg361_p3_metric_object"),
+            301: ("reorg", "zg361_p3_reorg_object"),
+            334: ("demand", "zg361_p3_demand_object"),
+            340: ("delivery", "zg361_p3_delivery_object"),
+        }
+        for mid, (name, prefix) in creators.items():
+            route = block(self.effects, f"zg361_p3_m{mid}_route_a_effect")
+            with self.subTest(object=name):
+                for suffix in ("owner", "subject", "cycle", "case", "version"):
+                    self.assertIn(f"name = {prefix}_{suffix}", route)
+                self.assertNotIn(f"{prefix}_receipt", route)
+        for mid in (342, 337, 341, 343, 344):
+            route = block(self.effects, f"zg361_p3_m{mid}_route_a_effect")
+            self.assertLess(route.index("delivery_object_case = $TICKET_CASE$"), route.index("record_operation"))
+            self.assertIn("delivery_demand_case = var:zg361_p3_demand_object_case", route)
+
+    def test_every_consumer_projects_concrete_business_fields(self) -> None:
+        self.assertEqual(set(gen.CONSUMER_SOURCES), EXPECTED_IDS)
+        for spec in gen.MECHANISMS:
+            consumer = block(self.effects, f"zg361_p3_m{spec.mid}_consume_effect")
+            with self.subTest(mid=spec.mid):
+                self.assertGreaterEqual(len(gen.CONSUMER_SOURCES[spec.mid]), 4)
+                for source in gen.consumer_fields(spec):
+                    visible = source.removeprefix("zg361_p3_")
+                    self.assertIn(f"has_variable = {source}", consumer)
+                    self.assertIn(f"visible_{visible} value = var:{source}", consumer)
+
+    def test_rejected_and_not_applicable_delivery_close_without_minting_credit(self) -> None:
+        rejected = block(self.effects, "zg361_p3_m344_route_c_effect")
+        self.assertLess(rejected.index("demand_acceptance_outcome = 3"), rejected.index("record_operation"))
+        self.assertIn("m344_unallocated_share value = 10000", rejected)
+        self.assertIn("m344_ledger_total value = 10000", rejected)
+        self.assertIn("m344_share_total value = 0", rejected)
+        self.assertIn("m344_launch_order value = 1", rejected)
+        self.assertLess(rejected.index("m344_launch_order value = 1"), rejected.index("m344_adoption_order value = 2"))
+        self.assertLess(rejected.index("m344_adoption_order value = 2"), rejected.index("m344_value_order value = 3"))
 
     def test_localization_has_nine_language_key_parity(self) -> None:
         rows = {

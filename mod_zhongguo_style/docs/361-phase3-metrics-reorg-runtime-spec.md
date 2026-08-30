@@ -7,6 +7,8 @@
 - `tools/zg361_phase3_metrics_reorg_model.py`
 - `tools/test_zg361_phase3_metrics_reorg_model.py`
 
+模型把需求与交付拆成两类稳定对象：需求冻结 owner/cycle/case/version/deadline 以及提出者、执行者、受益方；进入 WIP 后才创建对应交付对象，并沿阻塞、跨周期、三方验收和上线→采用→价值成熟度递增版本。receipt 只证明命令提交，不能代替业务对象。
+
 覆盖三个连续机制域：
 
 - AA 229–241：指标字典、多源对账、分母版本、人工回填、看板访问权、领先/滞后信号、护栏、计分策略、时间窗审计、虚荣指标、失败实验、样本冲突与长尾归属。
@@ -32,11 +34,12 @@
 
 ## 已验证边界
 
-`test_zg361_phase3_metrics_reorg_model.py` 当前包含 45 个测试，逐项覆盖 35 个编号并检查：
+`test_zg361_phase3_metrics_reorg_model.py` 当前包含 48 个测试，逐项覆盖 35 个编号并检查：
 
 - 精确编号集合与真实 callable 绑定；
 - stale、重复、命令碰撞、provenance 冲突和 RED 原子性；
 - 指标、样本、容量、WIP、HC、管理容量及分功守恒；
+- 稳定需求/交付 identity、版本、期限、三方签名，重复开工与拒收后领 credit 的原子 RED；
 - 三个域的关键 A/B 决策后果，以及一个贯穿全部编号的确定性场景。
 
 本模型尚未证明：CK3 parser 可加载、角色/头衔作用域正确、事件期限真实触发、存读档保持、考核榜消费、MCP paused snapshot 或实机玩家可见闭环。后续 CK3 runtime 必须复用共享 case identity/receipt 合同，接入真实消费者后再成批启动游戏验收。

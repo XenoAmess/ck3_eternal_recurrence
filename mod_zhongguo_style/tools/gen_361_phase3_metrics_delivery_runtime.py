@@ -346,31 +346,123 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         f"has_variable = zg361_p3_{d}_operation_used",
         f"var:zg361_p3_{d}_operation_used < var:zg361_p3_{d}_operation_total",
     ]
+    if 230 <= mid <= 241:
+        checks += [
+            "has_variable = zg361_p3_metric_object_owner",
+            "has_variable = zg361_p3_metric_object_subject",
+            "has_variable = zg361_p3_metric_object_case",
+            "has_variable = zg361_p3_metric_object_cycle",
+            "has_variable = zg361_p3_metric_object_version",
+            "var:zg361_p3_metric_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_p3_metric_object_cycle = $TICKET_CYCLE$",
+            "var:zg361_p3_metric_object_case = $TICKET_CASE$",
+        ]
+    if 302 <= mid <= 311:
+        checks += [
+            "has_variable = zg361_p3_reorg_object_owner",
+            "has_variable = zg361_p3_reorg_object_subject",
+            "has_variable = zg361_p3_reorg_object_case",
+            "has_variable = zg361_p3_reorg_object_cycle",
+            "has_variable = zg361_p3_reorg_object_version",
+            "var:zg361_p3_reorg_object_owner = $TICKET_OWNER$",
+            "var:zg361_p3_reorg_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_p3_reorg_object_cycle = $TICKET_CYCLE$",
+            "var:zg361_p3_reorg_object_case = $TICKET_CASE$",
+        ]
+    if 335 <= mid <= 344:
+        checks += [
+            "has_variable = zg361_p3_demand_object_owner",
+            "has_variable = zg361_p3_demand_object_subject",
+            "has_variable = zg361_p3_demand_object_case",
+            "has_variable = zg361_p3_demand_object_cycle",
+            "has_variable = zg361_p3_demand_object_version",
+            "has_variable = zg361_p3_demand_admitted",
+            "var:zg361_p3_demand_object_owner = $TICKET_OWNER$",
+            "var:zg361_p3_demand_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_p3_demand_object_cycle = $TICKET_CYCLE$",
+            "var:zg361_p3_demand_object_case = $TICKET_CASE$",
+        ]
+    if mid in (342, 337, 341, 343, 344):
+        checks += [
+            "has_variable = zg361_p3_delivery_object_owner",
+            "has_variable = zg361_p3_delivery_object_subject",
+            "has_variable = zg361_p3_delivery_object_cycle",
+            "has_variable = zg361_p3_delivery_object_case",
+            "has_variable = zg361_p3_delivery_object_version",
+            "has_variable = zg361_p3_delivery_demand_case",
+            "var:zg361_p3_delivery_object_owner = $TICKET_OWNER$",
+            "var:zg361_p3_delivery_object_subject = $TICKET_SUBJECT$",
+            "var:zg361_p3_delivery_object_cycle = $TICKET_CYCLE$",
+            "var:zg361_p3_delivery_object_case = $TICKET_CASE$",
+            "var:zg361_p3_delivery_demand_case = var:zg361_p3_demand_object_case",
+        ]
     if mid == 240 and choice in (1, 2):
         checks += ["has_variable = zg361_p3_aa_sample_total", "has_variable = zg361_p3_aa_sample_used", "var:zg361_p3_aa_sample_used < var:zg361_p3_aa_sample_total"]
     if mid == 335 and choice == 1:
         checks += ["has_variable = zg361_p3_aj_emergency_total", "has_variable = zg361_p3_aj_emergency_used", "var:zg361_p3_aj_emergency_used < var:zg361_p3_aj_emergency_total"]
     if mid == 337 and choice in (1, 2):
-        checks += ["has_variable = zg361_p3_aj_capacity_remaining", "var:zg361_p3_aj_capacity_remaining >= 10"]
-    if mid == 337 and choice == 3:
-        checks += ["has_variable = zg361_p3_aj_disaster_waiver_used", "var:zg361_p3_aj_disaster_waiver_used = 0"]
-    if mid == 340:
-        checks += ["has_variable = zg361_p3_aj_capacity_remaining", "var:zg361_p3_aj_capacity_remaining >= 20"]
-        if choice == 1:
-            checks += ["has_variable = zg361_p3_aj_wip_used", "has_variable = zg361_p3_aj_wip_limit", "var:zg361_p3_aj_wip_used < var:zg361_p3_aj_wip_limit"]
-    if mid == 341:
         checks += [
-            "has_variable = zg361_p3_aj_wip_used", "var:zg361_p3_aj_wip_used > 0",
-            "has_variable = zg361_p3_aj_capacity_reserved", "var:zg361_p3_aj_capacity_reserved >= 10",
+            "has_variable = zg361_p3_aj_capacity_remaining",
+            "OR = { var:zg361_p3_demand_admitted = 0 var:zg361_p3_aj_capacity_remaining >= 10 }",
+        ]
+    if mid == 337 and choice == 3:
+        checks += [
+            "has_variable = zg361_p3_aj_disaster_waiver_used",
+            "OR = { var:zg361_p3_demand_admitted = 0 var:zg361_p3_aj_disaster_waiver_used = 0 }",
+        ]
+    if mid == 340:
+        checks += [
+            "has_variable = zg361_p3_aj_capacity_remaining",
+            "has_variable = zg361_p3_demand_estimated_hours",
+            "has_variable = zg361_p3_demand_estimated_plus_exception",
+            (
+                "OR = { var:zg361_p3_demand_admitted = 0 "
+                + (
+                    "var:zg361_p3_aj_capacity_remaining >= var:zg361_p3_demand_estimated_hours"
+                    if choice == 1
+                    else "var:zg361_p3_aj_capacity_remaining >= var:zg361_p3_demand_estimated_plus_exception"
+                )
+                + " }"
+            ),
         ]
         if choice == 1:
-            checks += ["has_variable = zg361_p3_aj_next_capacity_remaining", "var:zg361_p3_aj_next_capacity_remaining >= 10"]
+            checks += [
+                "has_variable = zg361_p3_aj_wip_used",
+                "has_variable = zg361_p3_aj_wip_limit",
+                "OR = { var:zg361_p3_demand_admitted = 0 var:zg361_p3_aj_wip_used < var:zg361_p3_aj_wip_limit }",
+            ]
+    if mid == 341:
+        checks += [
+            "has_variable = zg361_p3_demand_active",
+            "has_variable = zg361_p3_demand_reserved_hours",
+            "has_variable = zg361_p3_aj_wip_used",
+            "has_variable = zg361_p3_aj_capacity_reserved",
+            "OR = { var:zg361_p3_demand_active = 0 AND = { var:zg361_p3_aj_wip_used > 0 var:zg361_p3_aj_capacity_reserved >= var:zg361_p3_demand_reserved_hours } }",
+        ]
+        if choice == 1:
+            checks += ["has_variable = zg361_p3_aj_next_capacity_remaining", "OR = { var:zg361_p3_demand_active = 0 var:zg361_p3_aj_next_capacity_remaining >= 10 }"]
         elif choice == 2:
-            checks += ["has_variable = zg361_p3_aj_next_capacity_remaining", "var:zg361_p3_aj_next_capacity_remaining >= 5"]
+            checks += ["has_variable = zg361_p3_aj_next_capacity_remaining", "OR = { var:zg361_p3_demand_active = 0 var:zg361_p3_aj_next_capacity_remaining >= 5 }"]
     if mid == 309 and choice in (1, 2):
         checks += ["has_variable = zg361_p3_ag_management_capacity_remaining", "var:zg361_p3_ag_management_capacity_remaining >= 10"]
+    if mid == 343:
+        checks += [
+            "has_variable = zg361_p3_demand_proposer",
+            "has_variable = zg361_p3_demand_executor",
+            "has_variable = zg361_p3_demand_acceptor",
+            "has_variable = zg361_p3_cross_reviewer_valid",
+            "var:zg361_p3_cross_reviewer_valid = 1",
+            "NOT = { var:zg361_p3_demand_proposer = var:zg361_p3_demand_executor }",
+            "NOT = { var:zg361_p3_demand_proposer = var:zg361_p3_demand_acceptor }",
+            "NOT = { var:zg361_p3_demand_executor = var:zg361_p3_demand_acceptor }",
+        ]
     if mid == 344:
-        checks += ["has_variable = zg361_p3_aj_value_credit_remaining", "var:zg361_p3_aj_value_credit_remaining = 10000"]
+        checks += [
+            "has_variable = zg361_p3_aj_value_credit_remaining",
+            "has_variable = zg361_p3_demand_acceptance_outcome",
+            "var:zg361_p3_aj_value_credit_remaining = 10000",
+            "OR = { var:zg361_p3_demand_acceptance_outcome = 1 var:zg361_p3_demand_acceptance_outcome = 2 var:zg361_p3_demand_acceptance_outcome = 3 var:zg361_p3_demand_acceptance_outcome = 4 }",
+        ]
     return checks
 
 
@@ -393,23 +485,486 @@ def stage_barrier(spec: Mechanism) -> str:
 
 def business_effects(spec: Mechanism, choice: int) -> list[str]:
     d, mid = spec.domain, spec.mid
+
+    def setv(name: str, value: str | int) -> str:
+        return f"set_variable = {{ name = {name} value = {value} }}"
+
+    def addv(name: str, value: str | int) -> str:
+        return f"change_variable = {{ name = {name} add = {value} }}"
+
+    def subv(name: str, value: str | int) -> str:
+        return f"change_variable = {{ name = {name} subtract = {value} }}"
+
     lines = [
-        f"set_variable = {{ name = zg361_p3_{spec.field} value = {choice} }}",
-        f"change_variable = {{ name = zg361_p3_{d}_operation_used add = 1 }}",
+        setv(f"zg361_p3_{spec.field}", choice),
+        addv(f"zg361_p3_{d}_operation_used", 1),
     ]
     if choice == 1:
-        lines += [f"change_variable = {{ name = zg361_p3_{d}_quality add = 2 }}"]
+        lines += [addv(f"zg361_p3_{d}_quality", 2)]
     elif choice == 2:
-        lines += [f"change_variable = {{ name = zg361_p3_{d}_quality add = 1 }}", f"change_variable = {{ name = zg361_p3_{d}_management_debt add = 1 }}"]
+        lines += [addv(f"zg361_p3_{d}_quality", 1), addv(f"zg361_p3_{d}_management_debt", 1)]
     else:
-        lines += [f"change_variable = {{ name = zg361_p3_{d}_throughput add = 1 }}", f"change_variable = {{ name = zg361_p3_{d}_management_debt add = 2 }}"]
+        lines += [addv(f"zg361_p3_{d}_throughput", 1), addv(f"zg361_p3_{d}_management_debt", 2)]
+
+    # AA: one stable metric object.  Every later record points back to the
+    # frozen metric cycle/case/version rather than treating its route receipt
+    # as the business object.
+    if mid == 229:
+        definition_owner = ("$TICKET_SUBJECT$", "$TICKET_OWNER$", "$TICKET_SUBJECT$")[choice - 1]
+        coauthor = ("$TICKET_OWNER$", "var:zg361_p3_cross_reviewer", "$TICKET_OWNER$")[choice - 1]
+        lines += [
+            setv("zg361_p3_metric_object_owner", definition_owner),
+            setv("zg361_p3_metric_object_subject", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_metric_object_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_metric_object_case", "$TICKET_CASE$"),
+            setv("zg361_p3_metric_object_version", 1),
+            setv("zg361_p3_metric_definition_owner", definition_owner),
+            setv("zg361_p3_metric_definition_coauthor", coauthor),
+            setv("zg361_p3_metric_source_code", choice),
+            setv("zg361_p3_metric_frequency_code", (1, 2, 3)[choice - 1]),
+            setv("zg361_p3_metric_scope_code", (3, 2, 1)[choice - 1]),
+            setv("zg361_p3_metric_denominator", 100),
+            setv("zg361_p3_metric_definition_debt", (0, 1, 2)[choice - 1]),
+            setv("zg361_p3_metric_confidence", (100, 80, 60)[choice - 1]),
+            setv("zg361_p3_metric_provenance_case", "$TICKET_CASE$"),
+        ]
+    elif mid == 230:
+        lines += [
+            setv("zg361_p3_m230_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m230_metric_version", "var:zg361_p3_metric_object_version"),
+            setv("zg361_p3_m230_source_count", (2, 3, 2)[choice - 1]),
+            setv("zg361_p3_m230_resolved_value", (100, 95, 0)[choice - 1]),
+            setv("zg361_p3_m230_pending", (0, 0, 1)[choice - 1]),
+            setv("zg361_p3_m230_responsibility_owner", ("$TICKET_SUBJECT$", "$TICKET_OWNER$", "var:zg361_p3_cross_reviewer")[choice - 1]),
+            setv("zg361_p3_m230_provenance_case", "$TICKET_CASE$"),
+        ]
+    elif mid == 231:
+        lines += [
+            setv("zg361_p3_m231_old_version", "var:zg361_p3_metric_object_version"),
+            setv("zg361_p3_m231_old_denominator", "var:zg361_p3_metric_denominator"),
+            setv("zg361_p3_m231_new_version", (2, 2, 1)[choice - 1]),
+            setv("zg361_p3_m231_new_denominator", (120, 120, 100)[choice - 1]),
+            setv("zg361_p3_m231_effective_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_m231_effective_cycle", (1, 0, 1)[choice - 1]),
+            setv("zg361_p3_m231_dual_track", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m231_awards_rewritten", 0),
+            setv("zg361_p3_metric_object_version", (2, 2, 1)[choice - 1]),
+        ]
+    elif mid == 232:
+        lines += [
+            setv("zg361_p3_m232_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m232_missing_units", 10),
+            setv("zg361_p3_m232_filled_units", (10, 8, 0)[choice - 1]),
+            setv("zg361_p3_m232_method_code", choice),
+            setv("zg361_p3_m232_confidence", (100, 70, 0)[choice - 1]),
+            setv("zg361_p3_m232_filler", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m232_approver", ("var:zg361_p3_cross_reviewer", "var:zg361_p3_cross_reviewer", "$TICKET_OWNER$")[choice - 1]),
+            setv("zg361_p3_m232_signature_count", (2, 2, 0)[choice - 1]),
+            setv("zg361_p3_m232_deviation_owner_code", (1, 2, 0)[choice - 1]),
+        ]
+    elif mid == 233:
+        lines += [
+            setv("zg361_p3_m233_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m233_access_level", (3, 2, 1)[choice - 1]),
+            setv("zg361_p3_m233_query_channel", (1, 1, 0)[choice - 1]),
+            setv("zg361_p3_m233_target_adjusted", (0, 0, 1)[choice - 1]),
+            setv("zg361_p3_m233_unseen_anomaly_blame_eligible", (1, 1, 0)[choice - 1]),
+        ]
+    elif mid == 234:
+        lines += [
+            setv("zg361_p3_m234_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m234_leading_value", 80),
+            setv("zg361_p3_m234_lagging_value", 60),
+            setv("zg361_p3_m234_recognition_state", choice),
+            setv("zg361_p3_m234_direction_conflict", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m234_requires_calibration", (0, 1, 0)[choice - 1]),
+        ]
+    elif mid == 235:
+        lines += [
+            setv("zg361_p3_m235_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m235_primary_value", 110),
+            setv("zg361_p3_m235_guardrail_value", (90, 90, 95)[choice - 1]),
+            setv("zg361_p3_m235_guardrail_breach", 1),
+            setv("zg361_p3_m235_top_credit_eligible", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m235_crisis_override", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m235_liability_owner", ("$TICKET_SUBJECT$", "$TICKET_OWNER$", "$TICKET_SUBJECT$")[choice - 1]),
+        ]
+    elif mid == 236:
+        lines += [
+            setv("zg361_p3_m236_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m236_policy_code", choice),
+            setv("zg361_p3_m236_threshold", 100),
+            setv("zg361_p3_m236_locked_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_m236_year_end_mutable", 0),
+            setv("zg361_p3_m236_gaming_risk", (1, 2, 3)[choice - 1]),
+        ]
+    elif mid == 237:
+        lines += [
+            setv("zg361_p3_m237_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m237_registered_days", 365),
+            setv("zg361_p3_m237_declared_days", (365, 90, 30)[choice - 1]),
+            setv("zg361_p3_m237_full_window_value", 90),
+            setv("zg361_p3_m237_declared_value", (90, 110, 130)[choice - 1]),
+            setv("zg361_p3_m237_cherry_picked", (0, 0, 1)[choice - 1]),
+            setv("zg361_p3_m237_settled_value", (90, 95, 90)[choice - 1]),
+            setv("zg361_p3_m237_integrity_penalty", (0, 0, 2)[choice - 1]),
+        ]
+    elif mid == 238:
+        lines += [
+            setv("zg361_p3_m238_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m238_provisional_credit_bps", 6000),
+            setv("zg361_p3_m238_adoption_verified", (1, 0, 0)[choice - 1]),
+            setv("zg361_p3_m238_governance_proxy", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m238_kept_credit_bps", (5000, 3000, 0)[choice - 1]),
+            setv("zg361_p3_m238_clawback_bps", (1000, 3000, 6000)[choice - 1]),
+        ]
+    elif mid == 239:
+        lines += [
+            setv("zg361_p3_m239_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m239_primary_success_bps", 0),
+            setv("zg361_p3_m239_preregistered", (1, 1, 0)[choice - 1]),
+            setv("zg361_p3_m239_reusable_conclusion", (1, 0, 0)[choice - 1]),
+            setv("zg361_p3_m239_negative_result_quality", (100, 60, 0)[choice - 1]),
+        ]
+    elif mid == 240:
+        lines += [
+            setv("zg361_p3_m240_experiment_owner", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m240_experiment_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_m240_experiment_case", "$TICKET_CASE$"),
+            setv("zg361_p3_m240_experiment_version", 1),
+            setv("zg361_p3_m240_sample_route", choice),
+            setv("zg361_p3_m240_boundary_signer", ("$TICKET_SUBJECT$", "var:zg361_p3_cross_reviewer", "$TICKET_OWNER$")[choice - 1]),
+            setv("zg361_p3_m240_boundary_signed", (0, 1, 0)[choice - 1]),
+        ]
+    elif mid == 241:
+        lines += [
+            setv("zg361_p3_m241_metric_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m241_attribution_version", 1),
+            setv("zg361_p3_m241_builder", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m241_operator", "$TICKET_OWNER$"),
+            setv("zg361_p3_m241_successor", "var:zg361_p3_cross_reviewer"),
+            setv("zg361_p3_m241_effective_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_m241_effective_cycle", 1),
+        ]
+
+    # AG: a stable organization-change object keeps pre/post snapshots and
+    # historical ownership independent from the operation receipt.
+    elif mid == 301:
+        lines += [
+            setv("zg361_p3_reorg_object_owner", "$TICKET_OWNER$"),
+            setv("zg361_p3_reorg_object_subject", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_reorg_object_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_reorg_object_case", "$TICKET_CASE$"),
+            setv("zg361_p3_reorg_object_version", 1),
+            setv("zg361_p3_m301_raw_outcome", 120),
+            setv("zg361_p3_m301_tailwind", 40),
+            setv("zg361_p3_m301_evidence_strength", (90, 70, 40)[choice - 1]),
+            setv("zg361_p3_m301_adjustment", (-30, -20, -10)[choice - 1]),
+            setv("zg361_p3_m301_personal_increment", (90, 100, 110)[choice - 1]),
+            setv("zg361_p3_m301_adjustment_cap", (30, 20, 10)[choice - 1]),
+        ]
+    elif mid == 302:
+        lines += [
+            setv("zg361_p3_m302_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m302_expected_decline", -20),
+            setv("zg361_p3_m302_actual_decline", -10),
+            setv("zg361_p3_m302_avoided_decline", 10),
+            setv("zg361_p3_m302_defense_quality", (90, 70, 20)[choice - 1]),
+            setv("zg361_p3_m302_disclosed", (1, 1, 0)[choice - 1]),
+            setv("zg361_p3_m302_sponsor_liability", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m302_integrity_penalty", (0, 0, 2)[choice - 1]),
+        ]
+    elif mid == 303:
+        lines += [
+            setv("zg361_p3_m303_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m303_start_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_m303_expiry_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_m303_expiry_cycle", (1, 2, 1)[choice - 1]),
+            setv("zg361_p3_m303_milestone_evidence", 1),
+            setv("zg361_p3_m303_exit_code", choice),
+            setv("zg361_p3_m303_permanent_c_immunity", 0),
+        ]
+    elif mid == 304:
+        lines += [
+            setv("zg361_p3_m304_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m304_project_parent", "$TICKET_OWNER$"),
+            setv("zg361_p3_m304_function_parent", "var:zg361_p3_cross_reviewer"),
+            setv("zg361_p3_m304_project_parent_signed", 1),
+            setv("zg361_p3_m304_function_parent_signed", 1),
+            setv("zg361_p3_m304_final_owner", ("$TICKET_OWNER$", "$TICKET_OWNER$", "var:zg361_p3_cross_reviewer")[choice - 1]),
+            setv("zg361_p3_m304_final_owner_count", 1),
+        ]
+    elif mid == 305:
+        lines += [
+            setv("zg361_p3_m305_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m305_quiet_period", 1),
+            setv("zg361_p3_m305_route_code", choice),
+            setv("zg361_p3_m305_crisis_reason", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m305_superior_signer", ("$TICKET_OWNER$", "var:zg361_p3_cross_reviewer", "$TICKET_OWNER$")[choice - 1]),
+            setv("zg361_p3_m305_superior_signed", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m305_moved_subjects", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m305_old_cohort_frozen", 1),
+        ]
+    elif mid == 306:
+        lines += [
+            setv("zg361_p3_m306_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m306_actor", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m306_expiry_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_m306_expiry_cycle", 1),
+            setv("zg361_p3_m306_support_code", choice),
+            setv("zg361_p3_m306_full_target_count", 1),
+        ]
+    elif mid == 307:
+        lines += [
+            setv("zg361_p3_m307_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m307_team", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m307_center_type", choice),
+            setv("zg361_p3_m307_revenue_metric", (1, 0, 1)[choice - 1]),
+            setv("zg361_p3_m307_quality_metric", 1),
+            setv("zg361_p3_m307_savings_metric", (0, 1, 1)[choice - 1]),
+            setv("zg361_p3_m307_stability_metric", (0, 1, 1)[choice - 1]),
+            setv("zg361_p3_m307_internal_value_metric", (0, 1, 1)[choice - 1]),
+            setv("zg361_p3_m307_forced_common_metric", 0),
+        ]
+    elif mid == 308:
+        manager, expert = ((20, 80), (30, 70), (40, 60))[choice - 1]
+        lines += [
+            setv("zg361_p3_m308_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m308_before_manager_hc", "var:zg361_p3_ag_manager_hc"),
+            setv("zg361_p3_m308_before_expert_hc", "var:zg361_p3_ag_expert_hc"),
+            setv("zg361_p3_m308_reporting_tax", manager * 2),
+            setv("zg361_p3_m308_management_span", (5, 4, 3)[choice - 1]),
+            setv("zg361_p3_m308_hc_version", 2),
+        ]
+    elif mid == 309:
+        lines += [
+            setv("zg361_p3_m309_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m309_team", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_m309_route_code", choice),
+            setv("zg361_p3_m309_manager_hours", (10, 10, 0)[choice - 1]),
+            setv("zg361_p3_m309_delivery_output_created", 0),
+        ]
+    elif mid == 310:
+        lines += [
+            setv("zg361_p3_m310_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m310_old_case", "var:zg361_p3_portfolio_result_case"),
+            setv("zg361_p3_m310_mapping_version", "var:zg361_p3_reorg_object_version"),
+            setv("zg361_p3_m310_mapping_route", choice),
+            setv("zg361_p3_m310_historical_context_only", 1),
+            setv("zg361_p3_m310_current_quota_slots", 0),
+            setv("zg361_p3_m310_bridge_signer_old", "var:zg361_p3_portfolio_result_owner"),
+            setv("zg361_p3_m310_bridge_signer_new", "var:zg361_p3_cross_reviewer"),
+            setv("zg361_p3_m310_bridge_old_signed", 1),
+            setv("zg361_p3_m310_bridge_new_signed", 1),
+            setv("zg361_p3_m310_bridge_signature_count", 2),
+        ]
+    elif mid == 311:
+        lines += [
+            setv("zg361_p3_m311_reorg_case", "var:zg361_p3_reorg_object_case"),
+            setv("zg361_p3_m311_pivot_version", 1),
+            setv("zg361_p3_m311_old_goal_case", "var:zg361_p3_metric_object_case"),
+            setv("zg361_p3_m311_old_goal_completed", 80),
+            setv("zg361_p3_m311_old_goal_rewritten", 0),
+            setv("zg361_p3_m311_new_goal_version", 2),
+            setv("zg361_p3_m311_effective_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_m311_effective_cycle", (0, 0, 1)[choice - 1]),
+            setv("zg361_p3_m311_overlap_visible", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m311_interruption_cost", (0, 0, 10)[choice - 1]),
+        ]
+
+    # AJ: one demand object survives intake, admission, WIP, carryover,
+    # tri-party acceptance and the value chain.  A returned demand follows an
+    # explicit N/A path and cannot mint work, signatures or value.
+    elif mid == 334:
+        proposer = ("$TICKET_OWNER$", "$TICKET_OWNER$", "var:zg361_p3_cross_reviewer")[choice - 1]
+        acceptor = ("var:zg361_p3_cross_reviewer", "var:zg361_p3_cross_reviewer", "$TICKET_OWNER$")[choice - 1]
+        source_owner = ("$TICKET_OWNER$", "$TICKET_SUBJECT$", "var:zg361_p3_cross_reviewer")[choice - 1]
+        lines += [
+            setv("zg361_p3_demand_object_owner", "$TICKET_OWNER$"),
+            setv("zg361_p3_demand_object_subject", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_demand_object_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_demand_object_case", "$TICKET_CASE$"),
+            setv("zg361_p3_demand_object_version", 1),
+            setv("zg361_p3_demand_source_code", choice),
+            setv("zg361_p3_demand_source_owner", source_owner),
+            setv("zg361_p3_demand_proposer", proposer),
+            setv("zg361_p3_demand_executor", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_demand_acceptor", acceptor),
+            setv("zg361_p3_demand_queue_sequence", "$TICKET_CASE$"),
+            setv("zg361_p3_demand_provenance_case", "$TICKET_CASE$"),
+            setv("zg361_p3_demand_deadline_cycle", "$TICKET_CYCLE$"),
+            addv("zg361_p3_demand_deadline_cycle", 1),
+            setv("zg361_p3_demand_status", 1),
+            setv("zg361_p3_demand_admitted", 0),
+            setv("zg361_p3_demand_active", 0),
+            setv("zg361_p3_demand_reserved_hours", 0),
+            setv("zg361_p3_demand_accepted_hours", 0),
+            setv("zg361_p3_demand_carry_hours", 0),
+            setv("zg361_p3_demand_acceptance_outcome", 0),
+            setv("zg361_p3_demand_estimated_plus_exception", 10),
+        ]
+    elif mid == 335:
+        lines += [
+            setv("zg361_p3_m335_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m335_route_code", choice),
+            setv("zg361_p3_m335_slot_consumed", (1, 0, 0)[choice - 1]),
+            setv("zg361_p3_m335_scope_trade_hours", (0, 10, 0)[choice - 1]),
+            setv("zg361_p3_m335_queue_debt", (0, 0, 1)[choice - 1]),
+        ]
+    elif mid == 336:
+        lines += [
+            setv("zg361_p3_m336_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m336_admission_route", choice),
+            setv("zg361_p3_m336_benefit_defined", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m336_acceptance_defined", (0, 0, 0)[choice - 1]),
+            setv("zg361_p3_m336_boundary_defined", (0, 1, 0)[choice - 1]),
+            setv("zg361_p3_m336_dependency_count", (1, 1, 2)[choice - 1]),
+            setv("zg361_p3_demand_estimated_hours", (5, 10, 20)[choice - 1]),
+            setv("zg361_p3_demand_estimated_plus_exception", (15, 20, 30)[choice - 1]),
+            setv("zg361_p3_demand_admitted", (0, 1, 1)[choice - 1]),
+            setv("zg361_p3_demand_status", (2, 3, 3)[choice - 1]),
+            setv("zg361_p3_m336_forcing_owner", ("$TICKET_OWNER$", "$TICKET_OWNER$", "$TICKET_OWNER$")[choice - 1]),
+            setv("zg361_p3_m336_sponsor_liability_signed", (0, 0, 1)[choice - 1]),
+            addv("zg361_p3_demand_object_version", 1),
+        ]
+    elif mid == 338:
+        lines += [
+            setv("zg361_p3_m338_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m338_applicable", "var:zg361_p3_demand_admitted"),
+            setv("zg361_p3_m338_tradeoff_code", choice),
+            setv("zg361_p3_m338_tradeoff_signed", 0),
+            setv("zg361_p3_m338_signer", "$TICKET_OWNER$"),
+            setv("zg361_p3_m338_scope_reduction", 0),
+            setv("zg361_p3_m338_deadline_extension", 0),
+            setv("zg361_p3_m338_hc_added", 0),
+            "if = {\n\tlimit = { var:zg361_p3_demand_admitted = 1 }\n\tset_variable = { name = zg361_p3_m338_tradeoff_signed value = 1 }\n\tchange_variable = { name = zg361_p3_demand_object_version add = 1 }\n\t"
+            + ("set_variable = { name = zg361_p3_m338_scope_reduction value = 10 }" if choice == 1 else "change_variable = { name = zg361_p3_demand_deadline_cycle add = 1 }\n\tset_variable = { name = zg361_p3_m338_deadline_extension value = 1 }" if choice == 2 else "set_variable = { name = zg361_p3_m338_hc_added value = 1 }")
+            + "\n}",
+        ]
+    elif mid == 339:
+        lines += [
+            setv("zg361_p3_m339_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m339_applicable", "var:zg361_p3_demand_admitted"),
+            setv("zg361_p3_m339_estimated_hours", "var:zg361_p3_demand_estimated_hours"),
+            setv("zg361_p3_m339_actual_hours", (8, 12, 20)[choice - 1]),
+            setv("zg361_p3_m339_external_blocking_hours", (0, 4, 0)[choice - 1]),
+            setv("zg361_p3_m339_normalized_actual", (8, 8, 20)[choice - 1]),
+            setv("zg361_p3_m339_reason_code", choice),
+            setv("zg361_p3_m339_padding_flag", (0, 0, 1)[choice - 1]),
+            addv("zg361_p3_demand_object_version", 1),
+        ]
+    elif mid == 340:
+        extra = 0 if choice == 1 else 10
+        slots = 1 if choice == 1 else 2
+        lines += [
+            setv("zg361_p3_m340_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m340_applicable", "var:zg361_p3_demand_admitted"),
+            setv("zg361_p3_m340_wip_slots", 0),
+            setv("zg361_p3_m340_exception_signed", 0),
+            setv("zg361_p3_m340_exception_owner", "$TICKET_OWNER$"),
+            setv("zg361_p3_m340_hidden_penalty", 0),
+            setv("zg361_p3_delivery_object_owner", "$TICKET_OWNER$"),
+            setv("zg361_p3_delivery_object_subject", "$TICKET_SUBJECT$"),
+            setv("zg361_p3_delivery_object_cycle", "$TICKET_CYCLE$"),
+            setv("zg361_p3_delivery_object_case", "$TICKET_CASE$"),
+            setv("zg361_p3_delivery_object_version", 1),
+            setv("zg361_p3_delivery_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_delivery_deadline_cycle", "var:zg361_p3_demand_deadline_cycle"),
+            setv("zg361_p3_delivery_status", 0),
+            setv("zg361_p3_delivery_wip_slots", 0),
+            setv("zg361_p3_delivery_reserved_hours", 0),
+            "if = {\n\tlimit = { var:zg361_p3_demand_admitted = 1 }\n\tset_variable = { name = zg361_p3_demand_reserved_hours value = var:zg361_p3_demand_estimated_hours }\n"
+            + (f"\tchange_variable = {{ name = zg361_p3_demand_reserved_hours add = {extra} }}\n" if extra else "")
+            + "\tchange_variable = { name = zg361_p3_aj_capacity_remaining subtract = var:zg361_p3_demand_reserved_hours }\n\tchange_variable = { name = zg361_p3_aj_capacity_reserved add = var:zg361_p3_demand_reserved_hours }\n"
+            + f"\tchange_variable = {{ name = zg361_p3_aj_wip_used add = {slots} }}\n\tset_variable = {{ name = zg361_p3_m340_wip_slots value = {slots} }}\n\tset_variable = {{ name = zg361_p3_delivery_wip_slots value = {slots} }}\n\tset_variable = {{ name = zg361_p3_delivery_reserved_hours value = var:zg361_p3_demand_reserved_hours }}\n\tset_variable = {{ name = zg361_p3_delivery_status value = 1 }}\n\tset_variable = {{ name = zg361_p3_demand_active value = 1 }}\n\tset_variable = {{ name = zg361_p3_demand_status value = 4 }}\n\tchange_variable = {{ name = zg361_p3_demand_object_version add = 1 }}"
+            + ("\n\tset_variable = { name = zg361_p3_m340_exception_signed value = 1 }\n\tchange_variable = { name = zg361_p3_aj_wip_exception_count add = 1 }" if choice == 2 else "\n\tset_variable = { name = zg361_p3_m340_hidden_penalty value = 2 }\n\tchange_variable = { name = zg361_p3_aj_hidden_wip_debt add = 2 }\n\tchange_variable = { name = zg361_p3_aj_wip_exception_count add = 1 }" if choice == 3 else "")
+            + "\n}",
+        ]
+    elif mid == 342:
+        team_bps, external_bps = ((0, 10000), (5000, 5000), (10000, 0))[choice - 1]
+        lines += [
+            setv("zg361_p3_m342_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m342_applicable", "var:zg361_p3_demand_active"),
+            setv("zg361_p3_m342_blocker_owner", ("var:zg361_p3_cross_reviewer", "$TICKET_OWNER$", "$TICKET_SUBJECT$")[choice - 1]),
+            setv("zg361_p3_m342_blocked_since_sequence", 1),
+            setv("zg361_p3_m342_escalated_sequence", (2, 0, 0)[choice - 1]),
+            setv("zg361_p3_m342_team_blocker_bps", team_bps),
+            setv("zg361_p3_m342_external_blocker_bps", external_bps),
+            setv("zg361_p3_m342_blocker_total", 10000),
+            setv("zg361_p3_m342_executor_low_output_penalty", 0),
+            setv("zg361_p3_m342_shared_responsibility", (0, 1, 1)[choice - 1]),
+            addv("zg361_p3_delivery_object_version", 1),
+            addv("zg361_p3_demand_object_version", 1),
+        ]
+    elif mid == 337:
+        lines += [
+            setv("zg361_p3_m337_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m337_applicable", "var:zg361_p3_demand_admitted"),
+            setv("zg361_p3_m337_change_route", choice),
+            setv("zg361_p3_m337_change_tax", 0),
+            setv("zg361_p3_m337_approver", "$TICKET_OWNER$"),
+            setv("zg361_p3_m337_scope_removed", 0),
+            setv("zg361_p3_m337_policy_debt", 0),
+            "if = {\n\tlimit = { var:zg361_p3_demand_admitted = 1 }\n"
+            + ("\tchange_variable = { name = zg361_p3_aj_capacity_remaining subtract = 10 }\n\tchange_variable = { name = zg361_p3_aj_capacity_reserved add = 10 }\n\tchange_variable = { name = zg361_p3_demand_reserved_hours add = 10 }\n\tset_variable = { name = zg361_p3_m337_change_tax value = 10 }\n\tchange_variable = { name = zg361_p3_demand_deadline_cycle add = 1 }" if choice == 1 else "\tchange_variable = { name = zg361_p3_aj_capacity_remaining subtract = 10 }\n\tchange_variable = { name = zg361_p3_aj_capacity_reserved add = 10 }\n\tchange_variable = { name = zg361_p3_demand_reserved_hours add = 10 }\n\tset_variable = { name = zg361_p3_m337_change_tax value = 10 }\n\tset_variable = { name = zg361_p3_m337_scope_removed value = 10 }" if choice == 2 else "\tset_variable = { name = zg361_p3_aj_disaster_waiver_used value = 1 }\n\tchange_variable = { name = zg361_p3_aj_policy_debt add = 10 }\n\tset_variable = { name = zg361_p3_m337_policy_debt value = 10 }")
+            + "\n\tset_variable = { name = zg361_p3_delivery_deadline_cycle value = var:zg361_p3_demand_deadline_cycle }\n\tchange_variable = { name = zg361_p3_delivery_object_version add = 1 }\n\tchange_variable = { name = zg361_p3_demand_object_version add = 1 }\n}",
+        ]
+    elif mid == 341:
+        carry = (10, 5, 0)[choice - 1]
+        lines += [
+            setv("zg361_p3_m341_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m341_applicable", "var:zg361_p3_demand_active"),
+            setv("zg361_p3_m341_transfer_hours", 0),
+            setv("zg361_p3_m341_accepted_hours", 0),
+            setv("zg361_p3_m341_cancelled", 0),
+            setv("zg361_p3_m341_released_current", 0),
+            "if = {\n\tlimit = { var:zg361_p3_demand_active = 1 }\n\tset_variable = { name = zg361_p3_m341_released_current value = var:zg361_p3_demand_reserved_hours }\n\tchange_variable = { name = zg361_p3_aj_capacity_reserved subtract = var:zg361_p3_demand_reserved_hours }\n\tchange_variable = { name = zg361_p3_aj_capacity_remaining add = var:zg361_p3_demand_reserved_hours }\n\tchange_variable = { name = zg361_p3_aj_wip_used subtract = var:zg361_p3_m340_wip_slots }\n"
+            + (f"\tset_variable = {{ name = zg361_p3_m341_transfer_hours value = {carry} }}\n\tset_variable = {{ name = zg361_p3_demand_carry_hours value = {carry} }}\n\tchange_variable = {{ name = zg361_p3_aj_next_capacity_remaining subtract = {carry} }}\n\tchange_variable = {{ name = zg361_p3_aj_next_capacity_reserved add = {carry} }}\n\tset_variable = {{ name = zg361_p3_m341_accepted_hours value = var:zg361_p3_demand_reserved_hours }}\n\tchange_variable = {{ name = zg361_p3_m341_accepted_hours subtract = {carry} }}\n\tset_variable = {{ name = zg361_p3_demand_accepted_hours value = var:zg361_p3_m341_accepted_hours }}" if carry else "\tset_variable = { name = zg361_p3_m341_cancelled value = 1 }\n\tset_variable = { name = zg361_p3_demand_admitted value = 0 }\n\tset_variable = { name = zg361_p3_demand_status value = 7 }")
+            + f"\n\tset_variable = {{ name = zg361_p3_demand_active value = 0 }}\n\tset_variable = {{ name = zg361_p3_demand_reserved_hours value = 0 }}\n\tset_variable = {{ name = zg361_p3_delivery_reserved_hours value = 0 }}\n\tset_variable = {{ name = zg361_p3_delivery_wip_slots value = 0 }}\n\tset_variable = {{ name = zg361_p3_delivery_status value = {(2, 2, 3)[choice - 1]} }}\n\tchange_variable = {{ name = zg361_p3_delivery_object_version add = 1 }}\n\tchange_variable = {{ name = zg361_p3_demand_object_version add = 1 }}\n}}",
+        ]
+    elif mid == 343:
+        outcome = (1, 2, 3)[choice - 1]
+        lines += [
+            setv("zg361_p3_m343_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m343_applicable", 0),
+            setv("zg361_p3_m343_proposer_signer", "var:zg361_p3_demand_proposer"),
+            setv("zg361_p3_m343_executor_signer", "var:zg361_p3_demand_executor"),
+            setv("zg361_p3_m343_acceptor_signer", "var:zg361_p3_demand_acceptor"),
+            setv("zg361_p3_m343_proposer_signed", 0),
+            setv("zg361_p3_m343_executor_signed", 0),
+            setv("zg361_p3_m343_acceptor_signed", 0),
+            setv("zg361_p3_m343_signature_count", 0),
+            setv("zg361_p3_demand_acceptance_outcome", 4),
+            "if = {\n\tlimit = { var:zg361_p3_demand_accepted_hours > 0 }\n\tset_variable = { name = zg361_p3_m343_applicable value = 1 }\n\tset_variable = { name = zg361_p3_m343_proposer_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_executor_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_acceptor_signed value = 1 }\n\tset_variable = { name = zg361_p3_m343_signature_count value = 3 }\n"
+            + f"\tset_variable = {{ name = zg361_p3_demand_acceptance_outcome value = {outcome} }}\n\tset_variable = {{ name = zg361_p3_demand_status value = 6 }}\n\tset_variable = {{ name = zg361_p3_delivery_status value = {3 + outcome} }}\n\tchange_variable = {{ name = zg361_p3_delivery_object_version add = 1 }}\n\tchange_variable = {{ name = zg361_p3_demand_object_version add = 1 }}\n}}",
+        ]
+    elif mid == 344:
+        launch, adoption, value = ((6000, 2500, 1500), (3000, 3000, 4000), (1000, 2000, 7000))[choice - 1]
+        lines += [
+            setv("zg361_p3_m344_demand_case", "var:zg361_p3_demand_object_case"),
+            setv("zg361_p3_m344_applicable", 0),
+            setv("zg361_p3_m344_launch_share", 0),
+            setv("zg361_p3_m344_adoption_share", 0),
+            setv("zg361_p3_m344_verified_value_share", 0),
+            setv("zg361_p3_m344_share_total", 0),
+            setv("zg361_p3_m344_launch_settled", 0),
+            setv("zg361_p3_m344_adoption_settled", 0),
+            setv("zg361_p3_m344_value_settled", 0),
+            setv("zg361_p3_m344_maturity", 0),
+            setv("zg361_p3_m344_unallocated_share", 10000),
+            setv("zg361_p3_m344_ledger_total", 10000),
+            setv("zg361_p3_m344_launch_order", 0),
+            setv("zg361_p3_m344_adoption_order", 0),
+            setv("zg361_p3_m344_value_order", 0),
+            "if = {\n\tlimit = { OR = { var:zg361_p3_demand_acceptance_outcome = 1 var:zg361_p3_demand_acceptance_outcome = 2 } }\n\tset_variable = { name = zg361_p3_m344_applicable value = 1 }\n"
+            + f"\tset_variable = {{ name = zg361_p3_m344_launch_share value = {launch} }}\n\tset_variable = {{ name = zg361_p3_m344_launch_settled value = 1 }}\n\tset_variable = {{ name = zg361_p3_m344_launch_order value = 1 }}\n\tset_variable = {{ name = zg361_p3_m344_maturity value = 1 }}\n\tset_variable = {{ name = zg361_p3_m344_adoption_share value = {adoption} }}\n\tset_variable = {{ name = zg361_p3_m344_adoption_settled value = 1 }}\n\tset_variable = {{ name = zg361_p3_m344_adoption_order value = 2 }}\n\tset_variable = {{ name = zg361_p3_m344_maturity value = 2 }}\n\tset_variable = {{ name = zg361_p3_m344_verified_value_share value = {value} }}\n\tset_variable = {{ name = zg361_p3_m344_value_settled value = 1 }}\n\tset_variable = {{ name = zg361_p3_m344_value_order value = 3 }}\n\tset_variable = {{ name = zg361_p3_m344_maturity value = 3 }}\n\tset_variable = {{ name = zg361_p3_m344_share_total value = 10000 }}\n\tset_variable = {{ name = zg361_p3_m344_unallocated_share value = 0 }}\n\tset_variable = {{ name = zg361_p3_aj_value_credit_remaining value = 0 }}\n\tset_variable = {{ name = zg361_p3_demand_status value = 8 }}\n\tset_variable = {{ name = zg361_p3_delivery_status value = 7 }}\n\tchange_variable = {{ name = zg361_p3_delivery_object_version add = 1 }}\n\tchange_variable = {{ name = zg361_p3_demand_object_version add = 1 }}\n}}",
+        ]
 
     split_10000: dict[int, tuple[tuple[int, int, int], tuple[str, str, str]]] = {
         234: ((6000, 4000, 0) if choice == 1 else (5000, 5000, 0) if choice == 2 else (3000, 7000, 0), ("leading_share", "lagging_share", "signal_reserve")),
         235: ((5000, 5000, 0) if choice == 1 else (6000, 4000, 0) if choice == 2 else (7000, 3000, 0), ("primary_share", "guardrail_share", "guardrail_reserve")),
         238: ((1000, 7000, 2000) if choice == 1 else (3000, 5000, 2000) if choice == 2 else (6000, 2000, 2000), ("vanity_share", "value_share", "unverified_share")),
         241: ((5000, 3000, 2000) if choice == 1 else (3300, 3300, 3400) if choice == 2 else (2000, 3000, 5000), ("builder_share", "operator_share", "successor_share")),
-        344: ((6000, 2500, 1500) if choice == 1 else (3000, 3000, 4000) if choice == 2 else (1000, 2000, 7000), ("launch_share", "adoption_share", "verified_value_share")),
     }
     if mid in split_10000:
         values, names = split_10000[mid]
@@ -427,9 +982,9 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [f"set_variable = {{ name = zg361_p3_m239_learning_credit_bps value = {(7000, 4000, 0)[choice - 1]} }}"]
     if mid == 240:
         if choice in (1, 2):
-            lines += ["change_variable = { name = zg361_p3_aa_sample_used add = 1 }", "set_variable = { name = zg361_p3_m240_clean_claim value = 1 }"]
+            lines += [addv("zg361_p3_aa_sample_used", 1), setv("zg361_p3_m240_clean_claim", 1), setv("zg361_p3_m240_queue_sequence", 0)]
         else:
-            lines += ["set_variable = { name = zg361_p3_m240_clean_claim value = 0 }", "change_variable = { name = zg361_p3_aa_sample_queue add = 1 }"]
+            lines += [setv("zg361_p3_m240_clean_claim", 0), addv("zg361_p3_aa_sample_queue", 1), setv("zg361_p3_m240_queue_sequence", "var:zg361_p3_aa_sample_queue")]
     if mid == 304:
         weights = ((6000, 4000), (5000, 5000), (4000, 6000))[choice - 1]
         lines += [
@@ -439,7 +994,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             f"set_variable = {{ name = zg361_p3_m304_project_goal_bps value = {weights[0]} }}",
             f"set_variable = {{ name = zg361_p3_m304_function_goal_bps value = {weights[1]} }}",
             "set_variable = { name = zg361_p3_m304_goal_share_total value = 10000 }",
-            "set_variable = { name = zg361_p3_m304_dual_signature value = 1 }",
+            setv("zg361_p3_m304_dual_signature", 1),
         ]
     if mid == 306:
         weights = ((30, 70), (50, 50), (70, 30))[choice - 1]
@@ -457,14 +1012,15 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         ]
     if mid == 309:
         if choice in (1, 2):
-            lines += ["change_variable = { name = zg361_p3_ag_management_capacity_remaining subtract = 10 }", "change_variable = { name = zg361_p3_ag_management_capacity_used add = 10 }", "set_variable = { name = zg361_p3_m309_visibility_gain value = 10 }"]
+            lines += [subv("zg361_p3_ag_management_capacity_remaining", 10), addv("zg361_p3_ag_management_capacity_used", 10), setv("zg361_p3_m309_visibility_gain", 10)]
         else:
-            lines += ["set_variable = { name = zg361_p3_m309_visibility_gain value = 0 }", "change_variable = { name = zg361_p3_ag_visibility_debt add = 10 }"]
+            lines += [setv("zg361_p3_m309_visibility_gain", 0), addv("zg361_p3_ag_visibility_debt", 10)]
     if mid == 310:
         lines += [
-            "set_variable = { name = zg361_p3_m310_historical_owner value = $TICKET_OWNER$ }",
-            "set_variable = { name = zg361_p3_m310_mapped_owner value = $TICKET_OWNER$ }",
-            f"set_variable = {{ name = zg361_p3_m310_bridge_dual_signed value = {1 if choice == 2 else 0} }}",
+            "set_variable = { name = zg361_p3_m310_historical_owner value = var:zg361_p3_portfolio_result_owner }",
+            "set_variable = { name = zg361_p3_m310_mapped_owner value = var:zg361_p3_reorg_object_owner }",
+            "set_variable = { name = zg361_p3_m310_bridge_dual_signed value = 1 }",
+            "change_variable = { name = zg361_p3_reorg_object_version add = 1 }",
         ]
     if mid == 311:
         lines += ["set_variable = { name = zg361_p3_m311_old_target_locked value = 1 }", f"set_variable = {{ name = zg361_p3_m311_future_target_route value = {choice} }}"]
@@ -475,49 +1031,6 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             lines += ["change_variable = { name = zg361_p3_aj_scope_traded add = 10 }"]
         else:
             lines += ["change_variable = { name = zg361_p3_aj_queue_debt add = 1 }"]
-    if mid == 336 and choice == 3:
-        lines += ["set_variable = { name = zg361_p3_m336_sponsor_liability_signed value = 1 }"]
-    if mid == 338:
-        lines += ["set_variable = { name = zg361_p3_m338_tradeoff_signed value = 1 }", "set_variable = { name = zg361_p3_m338_signer value = $TICKET_OWNER$ }"]
-    if mid == 337:
-        if choice in (1, 2):
-            lines += ["change_variable = { name = zg361_p3_aj_capacity_remaining subtract = 10 }", "change_variable = { name = zg361_p3_aj_capacity_reserved add = 10 }", "set_variable = { name = zg361_p3_m337_change_tax value = 10 }"]
-        else:
-            lines += ["set_variable = { name = zg361_p3_aj_disaster_waiver_used value = 1 }", "change_variable = { name = zg361_p3_aj_policy_debt add = 10 }", "set_variable = { name = zg361_p3_m337_change_tax value = 0 }"]
-    if mid == 340:
-        lines += ["change_variable = { name = zg361_p3_aj_capacity_remaining subtract = 20 }", "change_variable = { name = zg361_p3_aj_capacity_reserved add = 20 }", "change_variable = { name = zg361_p3_aj_wip_used add = 1 }"]
-        if choice == 2:
-            lines += ["set_variable = { name = zg361_p3_m340_exception_signed value = 1 }"]
-        elif choice == 3:
-            lines += ["change_variable = { name = zg361_p3_aj_hidden_wip_debt add = 1 }"]
-    if mid == 341:
-        carry_hours = (10, 5, 0)[choice - 1]
-        lines += [
-            "change_variable = { name = zg361_p3_aj_capacity_reserved subtract = 10 }",
-            "change_variable = { name = zg361_p3_aj_capacity_remaining add = 10 }",
-            "change_variable = { name = zg361_p3_aj_wip_used subtract = 1 }",
-            f"set_variable = {{ name = zg361_p3_m341_transfer_hours value = {carry_hours} }}",
-        ]
-        if carry_hours:
-            lines += [
-                f"change_variable = {{ name = zg361_p3_aj_next_capacity_remaining subtract = {carry_hours} }}",
-                f"change_variable = {{ name = zg361_p3_aj_next_capacity_reserved add = {carry_hours} }}",
-            ]
-        if choice == 2:
-            lines += ["set_variable = { name = zg361_p3_m341_accepted_hours value = 5 }"]
-        elif choice == 3:
-            lines += ["set_variable = { name = zg361_p3_m341_cancelled value = 1 }"]
-    if mid == 342:
-        shares = ((0, 10000), (5000, 5000), (10000, 0))[choice - 1]
-        lines += [f"set_variable = {{ name = zg361_p3_m342_team_blocker_bps value = {shares[0]} }}", f"set_variable = {{ name = zg361_p3_m342_external_blocker_bps value = {shares[1]} }}", "set_variable = { name = zg361_p3_m342_blocker_total value = 10000 }"]
-    if mid == 343:
-        lines += [
-            "set_variable = { name = zg361_p3_m343_proposer_signed value = 1 }",
-            "set_variable = { name = zg361_p3_m343_executor_signed value = 1 }",
-            "set_variable = { name = zg361_p3_m343_acceptor_signed value = 1 }",
-        ]
-    if mid == 344:
-        lines += ["set_variable = { name = zg361_p3_aj_value_credit_remaining value = 0 }"]
     return lines
 
 
@@ -551,15 +1064,71 @@ def operation_call(spec: Mechanism, choice: int) -> str:
 }}"""
 
 
+CONSUMER_SOURCES: dict[int, tuple[str, ...]] = {
+    229: ("zg361_p3_metric_definition_owner", "zg361_p3_metric_source_code", "zg361_p3_metric_confidence", "zg361_p3_metric_definition_debt"),
+    230: ("zg361_p3_m230_resolved_value", "zg361_p3_m230_pending", "zg361_p3_m230_responsibility_owner", "zg361_p3_m230_source_count"),
+    231: ("zg361_p3_m231_old_version", "zg361_p3_m231_new_version", "zg361_p3_m231_effective_cycle", "zg361_p3_m231_awards_rewritten"),
+    232: ("zg361_p3_m232_missing_units", "zg361_p3_m232_filled_units", "zg361_p3_m232_signature_count", "zg361_p3_m232_confidence"),
+    233: ("zg361_p3_m233_access_level", "zg361_p3_m233_query_channel", "zg361_p3_m233_target_adjusted", "zg361_p3_m233_unseen_anomaly_blame_eligible"),
+    234: ("zg361_p3_m234_leading_value", "zg361_p3_m234_lagging_value", "zg361_p3_m234_direction_conflict", "zg361_p3_m234_requires_calibration"),
+    235: ("zg361_p3_m235_primary_value", "zg361_p3_m235_guardrail_value", "zg361_p3_m235_guardrail_breach", "zg361_p3_m235_top_credit_eligible"),
+    236: ("zg361_p3_m236_policy_code", "zg361_p3_m236_threshold", "zg361_p3_m236_locked_cycle", "zg361_p3_m236_gaming_risk"),
+    237: ("zg361_p3_m237_declared_days", "zg361_p3_m237_cherry_picked", "zg361_p3_m237_settled_value", "zg361_p3_m237_integrity_penalty"),
+    238: ("zg361_p3_m238_adoption_verified", "zg361_p3_m238_governance_proxy", "zg361_p3_m238_kept_credit_bps", "zg361_p3_m238_clawback_bps"),
+    239: ("zg361_p3_m239_primary_success_bps", "zg361_p3_m239_preregistered", "zg361_p3_m239_reusable_conclusion", "zg361_p3_m239_learning_credit_bps"),
+    240: ("zg361_p3_m240_experiment_case", "zg361_p3_m240_sample_route", "zg361_p3_m240_boundary_signed", "zg361_p3_m240_clean_claim", "zg361_p3_m240_queue_sequence"),
+    241: ("zg361_p3_m241_attribution_version", "zg361_p3_m241_effective_cycle", "zg361_p3_m241_share_total", "zg361_p3_m241_cost_share_total"),
+    301: ("zg361_p3_m301_raw_outcome", "zg361_p3_m301_tailwind", "zg361_p3_m301_adjustment", "zg361_p3_m301_personal_increment"),
+    302: ("zg361_p3_m302_expected_decline", "zg361_p3_m302_actual_decline", "zg361_p3_m302_avoided_decline", "zg361_p3_m302_integrity_penalty"),
+    303: ("zg361_p3_m303_start_cycle", "zg361_p3_m303_expiry_cycle", "zg361_p3_m303_exit_code", "zg361_p3_m303_permanent_c_immunity"),
+    304: ("zg361_p3_m304_project_parent", "zg361_p3_m304_function_parent", "zg361_p3_m304_parent_weight_total", "zg361_p3_m304_goal_share_total", "zg361_p3_m304_final_owner"),
+    305: ("zg361_p3_m305_quiet_period", "zg361_p3_m305_crisis_reason", "zg361_p3_m305_superior_signed", "zg361_p3_m305_old_cohort_frozen"),
+    306: ("zg361_p3_m306_expiry_cycle", "zg361_p3_m306_manager_weight", "zg361_p3_m306_expert_weight", "zg361_p3_m306_weight_total"),
+    307: ("zg361_p3_m307_center_type", "zg361_p3_m307_revenue_metric", "zg361_p3_m307_savings_metric", "zg361_p3_m307_forced_common_metric"),
+    308: ("zg361_p3_m308_before_manager_hc", "zg361_p3_m308_before_expert_hc", "zg361_p3_ag_manager_hc", "zg361_p3_ag_expert_hc", "zg361_p3_ag_hc_total"),
+    309: ("zg361_p3_m309_manager_hours", "zg361_p3_m309_visibility_gain", "zg361_p3_m309_delivery_output_created", "zg361_p3_ag_management_capacity_remaining"),
+    310: ("zg361_p3_m310_old_case", "zg361_p3_m310_mapping_version", "zg361_p3_m310_mapping_route", "zg361_p3_m310_historical_owner", "zg361_p3_m310_mapped_owner", "zg361_p3_m310_bridge_signature_count", "zg361_p3_m310_current_quota_slots"),
+    311: ("zg361_p3_m311_old_goal_case", "zg361_p3_m311_old_goal_completed", "zg361_p3_m311_old_goal_rewritten", "zg361_p3_m311_new_goal_version", "zg361_p3_m311_effective_cycle"),
+    334: ("zg361_p3_demand_source_code", "zg361_p3_demand_source_owner", "zg361_p3_demand_proposer", "zg361_p3_demand_executor", "zg361_p3_demand_acceptor", "zg361_p3_demand_queue_sequence"),
+    335: ("zg361_p3_m335_slot_consumed", "zg361_p3_m335_scope_trade_hours", "zg361_p3_m335_queue_debt", "zg361_p3_aj_emergency_used"),
+    336: ("zg361_p3_m336_admission_route", "zg361_p3_m336_benefit_defined", "zg361_p3_m336_acceptance_defined", "zg361_p3_m336_boundary_defined", "zg361_p3_demand_estimated_hours", "zg361_p3_demand_admitted"),
+    337: ("zg361_p3_m337_applicable", "zg361_p3_m337_change_route", "zg361_p3_m337_change_tax", "zg361_p3_m337_scope_removed", "zg361_p3_m337_policy_debt", "zg361_p3_demand_deadline_cycle"),
+    338: ("zg361_p3_m338_applicable", "zg361_p3_m338_tradeoff_code", "zg361_p3_m338_tradeoff_signed", "zg361_p3_m338_signer", "zg361_p3_demand_deadline_cycle"),
+    339: ("zg361_p3_m339_applicable", "zg361_p3_m339_estimated_hours", "zg361_p3_m339_actual_hours", "zg361_p3_m339_normalized_actual", "zg361_p3_m339_reason_code", "zg361_p3_m339_padding_flag"),
+    340: ("zg361_p3_m340_applicable", "zg361_p3_m340_wip_slots", "zg361_p3_m340_exception_signed", "zg361_p3_m340_hidden_penalty", "zg361_p3_delivery_reserved_hours"),
+    341: ("zg361_p3_m341_applicable", "zg361_p3_m341_transfer_hours", "zg361_p3_m341_accepted_hours", "zg361_p3_m341_cancelled", "zg361_p3_m341_released_current", "zg361_p3_aj_next_capacity_reserved"),
+    342: ("zg361_p3_m342_applicable", "zg361_p3_m342_blocker_owner", "zg361_p3_m342_blocked_since_sequence", "zg361_p3_m342_escalated_sequence", "zg361_p3_m342_blocker_total", "zg361_p3_m342_executor_low_output_penalty"),
+    343: ("zg361_p3_m343_applicable", "zg361_p3_m343_proposer_signer", "zg361_p3_m343_executor_signer", "zg361_p3_m343_acceptor_signer", "zg361_p3_m343_signature_count", "zg361_p3_demand_acceptance_outcome"),
+    344: ("zg361_p3_m344_applicable", "zg361_p3_m344_launch_share", "zg361_p3_m344_adoption_share", "zg361_p3_m344_verified_value_share", "zg361_p3_m344_maturity", "zg361_p3_m344_launch_order", "zg361_p3_m344_adoption_order", "zg361_p3_m344_value_order", "zg361_p3_m344_unallocated_share", "zg361_p3_m344_ledger_total"),
+}
+
+
+def consumer_fields(spec: Mechanism) -> tuple[str, ...]:
+    mid = spec.mid
+    common: list[str] = []
+    if 229 <= mid <= 241:
+        common += ["zg361_p3_metric_object_case", "zg361_p3_metric_object_version"]
+    elif 301 <= mid <= 311:
+        common += ["zg361_p3_reorg_object_case", "zg361_p3_reorg_object_version"]
+    else:
+        common += ["zg361_p3_demand_object_case", "zg361_p3_demand_object_version", "zg361_p3_demand_deadline_cycle", "zg361_p3_demand_status"]
+        if mid in (340, 342, 337, 341, 343, 344):
+            common += ["zg361_p3_delivery_object_case", "zg361_p3_delivery_object_version", "zg361_p3_delivery_deadline_cycle", "zg361_p3_delivery_status"]
+    return tuple(dict.fromkeys((*common, *CONSUMER_SOURCES[mid])))
+
+
 def render_consumer(spec: Mechanism) -> str:
     d, mid = spec.domain, spec.mid
+    projection = consumer_fields(spec)
     required = [
         f"zg361_p3_m{mid}_write_owner", f"zg361_p3_m{mid}_write_subject",
         f"zg361_p3_m{mid}_write_cycle", f"zg361_p3_m{mid}_write_case",
         f"zg361_p3_m{mid}_write_state", f"zg361_p3_{spec.field}",
         f"zg361_case_{d}_owner", f"zg361_case_{d}_subject",
         f"zg361_case_{d}_cycle_serial", f"zg361_case_{d}_case_serial", f"zg361_case_{d}_state",
+        *projection,
     ]
+    required = list(dict.fromkeys(required))
     existence = "\n".join(f"\t\t\t\thas_variable = {name}" for name in required)
     comparisons = "\n".join((
         f"\t\t\tvar:zg361_p3_m{mid}_write_owner = var:zg361_case_{d}_owner",
@@ -570,6 +1139,10 @@ def render_consumer(spec: Mechanism) -> str:
     ))
     consumed_required = "\n".join(f"\t\t\t\t\t\thas_variable = zg361_p3_m{mid}_consumed_{name}" for name in ("owner", "subject", "cycle", "case", "state"))
     consumed_compare = "\n".join(f"\t\t\t\t\tvar:zg361_p3_m{mid}_consumed_{name} = var:zg361_p3_m{mid}_write_{name}" for name in ("owner", "subject", "cycle", "case", "state"))
+    business_projection = "\n".join(
+        f"\t\tset_variable = {{ name = zg361_p3_m{mid}_visible_{source.removeprefix('zg361_p3_')} value = var:{source} }}"
+        for source in projection
+    )
     return f"""# #{mid:03d} read-side consumer; existence gates precede every tuple read.
 zg361_p3_m{mid}_consume_effect = {{
 \tif = {{
@@ -598,6 +1171,7 @@ zg361_p3_m{mid}_consume_effect = {{
 \t\tset_variable = {{ name = zg361_p3_m{mid}_consumed_state value = var:zg361_p3_m{mid}_write_state }}
 \t\tset_variable = {{ name = zg361_p3_m{mid}_visible_value value = var:zg361_p3_{spec.field} }}
 \t\tset_variable = {{ name = zg361_p3_m{mid}_visible_provenance_case value = var:zg361_p3_m{mid}_write_case }}
+{business_projection}
 \t\tchange_variable = {{ name = zg361_p3_{d}_visible_revision add = 1 }}
 \t}}
 }}"""
@@ -721,6 +1295,7 @@ def render_init(domain: str) -> str:
             "set_variable = { name = zg361_p3_ag_management_capacity_total value = 20 }",
             "set_variable = { name = zg361_p3_ag_management_capacity_remaining value = 20 }",
             "set_variable = { name = zg361_p3_ag_management_capacity_used value = 0 }",
+            "set_variable = { name = zg361_p3_ag_visibility_debt value = 0 }",
             "set_variable = { name = zg361_p3_ag_hc_total value = 100 }",
             "set_variable = { name = zg361_p3_ag_manager_hc value = 20 }",
             "set_variable = { name = zg361_p3_ag_expert_hc value = 80 }",
@@ -734,9 +1309,14 @@ def render_init(domain: str) -> str:
             "set_variable = { name = zg361_p3_aj_next_capacity_reserved value = 0 }",
             "set_variable = { name = zg361_p3_aj_emergency_total value = 1 }",
             "set_variable = { name = zg361_p3_aj_emergency_used value = 0 }",
+            "set_variable = { name = zg361_p3_aj_scope_traded value = 0 }",
+            "set_variable = { name = zg361_p3_aj_queue_debt value = 0 }",
             "set_variable = { name = zg361_p3_aj_wip_limit value = 1 }",
             "set_variable = { name = zg361_p3_aj_wip_used value = 0 }",
+            "set_variable = { name = zg361_p3_aj_wip_exception_count value = 0 }",
+            "set_variable = { name = zg361_p3_aj_hidden_wip_debt value = 0 }",
             "set_variable = { name = zg361_p3_aj_disaster_waiver_used value = 0 }",
+            "set_variable = { name = zg361_p3_aj_policy_debt value = 0 }",
             "set_variable = { name = zg361_p3_aj_value_credit_remaining value = 10000 }",
         ],
     }[domain]
@@ -807,6 +1387,31 @@ zg361_p3_initialize_portfolio_effect = {
 	set_variable = { name = zg361_p3_portfolio_result_state value = var:zg361_result_case_state }
 	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
 	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
+	set_variable = { name = zg361_p3_cross_reviewer value = root }
+	set_variable = { name = zg361_p3_cross_reviewer_valid value = 0 }
+	root = {
+		if = {
+			limit = { exists = liege liege = { zg361_is_celestial_liege_trigger = yes } }
+			liege = { save_temporary_scope_as = zg361_p3_cross_candidate }
+			scope:zg361_p3_portfolio_subject = {
+				set_variable = { name = zg361_p3_cross_reviewer value = scope:zg361_p3_cross_candidate }
+				set_variable = { name = zg361_p3_cross_reviewer_valid value = 1 }
+			}
+		}
+		ordered_vassal = {
+			limit = {
+				zg361_is_reviewable_vassal_trigger = yes
+				NOT = { this = scope:zg361_p3_portfolio_subject }
+			}
+			order_by = stewardship
+			position = 0
+			save_temporary_scope_as = zg361_p3_cross_candidate
+			scope:zg361_p3_portfolio_subject = {
+				set_variable = { name = zg361_p3_cross_reviewer value = scope:zg361_p3_cross_candidate }
+				set_variable = { name = zg361_p3_cross_reviewer_valid value = 1 }
+			}
+		}
+	}
 }
 
 # Public manager-scope portfolio adapter. Counts/barons may be $SUBJECT$, never
@@ -817,6 +1422,13 @@ zg361_p3_open_portfolio_effect = {
 			has_game_rule = zg361_on
 			zg361_is_celestial_liege_trigger = yes
 			has_variable = zg361_review_serial
+			OR = {
+				any_vassal = {
+					zg361_is_reviewable_vassal_trigger = yes
+					NOT = { this = $SUBJECT$ }
+				}
+				liege = { zg361_is_celestial_liege_trigger = yes }
+			}
 			trigger_if = {
 				limit = { has_variable = zg361_p3_manager_portfolio_cycle }
 				NOT = { var:zg361_p3_manager_portfolio_cycle = var:zg361_review_serial }
@@ -876,6 +1488,14 @@ zg361_p3_finalize_portfolio_effect = {
 					has_variable = zg361_case_aa_active
 					has_variable = zg361_case_ag_active
 					has_variable = zg361_case_aj_active
+					has_variable = zg361_p3_aa_sample_used
+					has_variable = zg361_p3_aa_sample_total
+					has_variable = zg361_p3_ag_hc_total
+					has_variable = zg361_p3_ag_management_capacity_used
+					has_variable = zg361_p3_ag_management_capacity_total
+					has_variable = zg361_p3_aj_capacity_reserved
+					has_variable = zg361_p3_aj_wip_used
+					has_variable = zg361_p3_m344_ledger_total
 				}
 				var:zg361_p3_aa_operation_used = 13
 				var:zg361_p3_ag_operation_used = 11
@@ -883,6 +1503,12 @@ zg361_p3_finalize_portfolio_effect = {
 				var:zg361_case_aa_active = 0
 				var:zg361_case_ag_active = 0
 				var:zg361_case_aj_active = 0
+				var:zg361_p3_aa_sample_used <= var:zg361_p3_aa_sample_total
+				var:zg361_p3_ag_hc_total = 100
+				var:zg361_p3_ag_management_capacity_used <= var:zg361_p3_ag_management_capacity_total
+				var:zg361_p3_aj_capacity_reserved = 0
+				var:zg361_p3_aj_wip_used = 0
+				var:zg361_p3_m344_ledger_total = 10000
 			}
 			trigger_else = { always = no }
 		}

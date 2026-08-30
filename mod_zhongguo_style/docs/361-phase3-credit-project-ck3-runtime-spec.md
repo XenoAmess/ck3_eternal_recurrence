@@ -60,6 +60,9 @@ ROOT 必须通过既有 `zg361_is_celestial_liege_trigger`，也就是在世、�
 
 ## 守恒与跨机制消费
 
+- #030 成功后创建唯一稳定项目对象，冻结 manager、业务 owner、subject、制度 cycle、E 案 origin case、version、截止周期与状态；其余 26 项必须先验证对象身份再提交，并且每次 applied 恰好把 version 加一。#054 另建独立汇报对象，冻结 I 案 identity、version、截止周期及项目 origin case；签字、路由、阅读、风险和创意仲裁沿同一对象递增版本。
+- 27 个 consumer 均发布项目身份、version、deadline 与 active/cancelled/stopped 状态；I 域七个材料 consumer 还发布汇报 identity/version/deadline。receipt 只负责幂等，不能替代这些业务对象或可见投影。
+
 - 项目总容量为 100、项目席位为 1。#030 只产生一个赢家并预留 40/60/80；#026 与 #054 从同一剩余容量扣账，汇报不增加 `hard_output`；#066 或 #132 只把未花容量释放一次。
 - #027 的 subject/manager/cross-department 签字贡献严格合计 10000 bp。#028 抢功转移和审计回拨各自净零且不改写 signed baseline；#056 从 claimed ledger 建立 report ledger，截功仍净零；#057 只签署合计 10000 bp 的版本。
 - 跨部门证据不是装饰字段：portfolio 冻结独立 reviewer；其身份参与 #027 三方签名、#056 附件、#058 抄送、#060 创意来源、#067 岗位归属与 #134 shared metric 依赖消费。
@@ -68,8 +71,12 @@ ROOT 必须通过既有 `zg361_is_celestial_liege_trigger`，也就是在世、�
 - #129 的晋升槽位上限为 1；#130 隐瞒 PIP 且试用失败会把责任写回 source manager；#131 在结果前锁定 exploration/commitment；#132 的 business stop 与 individual judgement 分账；#133 的学习消费与具名责任分账；#134 只写一个最终 owner。
 - #068 只读取既有 B2 `zg361_b2_pip_state` 判断是否携带未结 PIP，不写任何 B2 字段；历史记录不占本期 quota。
 
+最终 conservation 同时要求容量、注意力、晋升槽与 10000 bp 贡献账守恒，项目槽释放，项目对象 version 精确为 27、状态为 cancelled/stopped，汇报对象 version 精确为 7。该断言仍是静态脚本合同，不是 CK3 实机证据。
+
 ## 本地化与证据边界
 
 简体中文和英文为日常开发文案。法、德、日、韩、波、俄、西文件使用英文结构占位，只证明 key 结构可加载，不是发布翻译。
 
 本包没有启动 CK3，没有 parser 输出、paused snapshot、MCP、fixture 或生产实机证据。因此最高状态只能是 `static-ready`，不能标记 `fixture-live`、`production-live` 或 `complete`。正式集成后仍需中央调用点、游戏内玩家/AI 双路线和存读档实测。
+
+当前生成运行时专测为 40 项，Python 参考模型专测为 38 项；两者都必须同时在普通模式与 `-O` 模式通过。测试数量不改变上述 readiness 边界。
