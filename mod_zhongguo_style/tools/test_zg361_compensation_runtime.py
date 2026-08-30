@@ -76,6 +76,16 @@ def code_without_comments(text: str) -> str:
     return "\n".join(line.split("#", 1)[0] for line in text.splitlines())
 
 
+def localization_keys(payload: bytes) -> tuple[str, ...]:
+    """Return ordered CK3 localization keys, excluding the language header."""
+
+    return tuple(
+        match.group(1)
+        for line in payload.decode("utf-8-sig").splitlines()
+        if (match := re.match(r"^\s+([^\s:]+):\d+\s", line)) is not None
+    )
+
+
 def assert_balanced(test: unittest.TestCase, text: str, label: str) -> None:
     depth = 0
     quoted = False
@@ -230,6 +240,53 @@ class CompensationRuntimeTests(unittest.TestCase):
         ):
             self.assertTrue((MOD_ROOT / relative).read_bytes().startswith(generator.BOM))
 
+    def test_generator_is_deterministic_and_all_nine_localizations_have_bom_key_parity(self) -> None:
+        first = generator.outputs()
+        second = generator.outputs()
+        self.assertEqual(tuple(first), tuple(second))
+        self.assertEqual(first, second)
+
+        expected_keys = (
+            "zg361comp.1.t",
+            "zg361comp.1.desc",
+            *(f"zg361comp.1.l{state}" for state in range(1, 5)),
+            *(f"zg361comp.1.ae{state}" for state in range(1, 6)),
+            *(f"zg361comp.1.af{state}" for state in range(1, 6)),
+            "zg361comp.1.a",
+            "zg361comp.1.b",
+            "zg361comp.1.c",
+            "zg361comp.289.t",
+            "zg361comp.289.desc",
+            "zg361comp.289.a",
+            "zg361comp.289.b",
+            "zg361comp.900.t",
+            "zg361comp.900.desc",
+            "zg361comp.901.t",
+            "zg361comp.901.desc",
+            "zg361comp.902.t",
+            "zg361comp.902.desc",
+            "zg361comp.903.t",
+            "zg361comp.903.desc",
+            "zg361comp.904.t",
+            "zg361comp.904.desc",
+            "zg361comp.ok",
+        )
+        localization_paths = [
+            MOD_ROOT
+            / "localization"
+            / language
+            / f"zg361_compensation_runtime_l_{language}.yml"
+            for language in LANGUAGES
+        ]
+        self.assertEqual(len(localization_paths), 9)
+        for path in localization_paths:
+            with self.subTest(language=path.parent.name):
+                payload = first[path]
+                self.assertTrue(payload.startswith(generator.BOM))
+                keys = localization_keys(payload)
+                self.assertEqual(keys, expected_keys)
+                self.assertEqual(len(keys), len(set(keys)))
+
     def test_generated_ck3_sources_are_balanced_and_top_level_keys_unique(self) -> None:
         assert_balanced(self, self.effects, "compensation effects")
         assert_balanced(self, self.events, "compensation events")
@@ -366,6 +423,166 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("EXPECTED_STATE = 4", exit_barrier)
         self.assertEqual(exit_barrier.count("zg361_case_af_advance_04_effect"), 1)
 
+    def test_every_id_has_a_numeric_resource_write_and_a_real_downstream_consumer(self) -> None:
+        # This is deliberately stronger than checking a choice string or an
+        # operation receipt.  Each producer token is a numeric business fact;
+        # the second token is the later calculation, payment, deadline, or
+        # projection that actually consumes it.
+        contracts = {
+            82: ("name = zg361_comp_m082_total_reward", "value = var:zg361_comp_m082_total_reward"),
+            83: ("name = zg361_comp_m083_computed_bonus", "value = var:zg361_comp_m083_computed_bonus"),
+            84: ("name = zg361_comp_m084_frozen_gross", "var:zg361_comp_bonus_total"),
+            85: ("name = zg361_comp_m085_cliff_gap_years", "value = var:zg361_comp_m085_cliff_gap_years"),
+            86: ("name = zg361_comp_m086_hold_policy", "var:zg361_comp_m086_route = 1"),
+            87: ("name = zg361_comp_m087_position_bps", "value = var:zg361_comp_m087_position_bps"),
+            88: ("name = zg361_comp_m088_raise_pool", "value = var:zg361_comp_m088_raise_pool"),
+            89: ("name = zg361_comp_m089_cash_raise", "add = var:zg361_comp_m089_cash_raise"),
+            90: ("name = zg361_comp_m090_spot_gross", "value = var:zg361_comp_m090_spot_gross"),
+            91: ("name = zg361_comp_m091_award_total", "name = zg361_comp_m091_source_spot_gross"),
+            278: ("name = zg361_comp_m278_projection_mode", "name = zg361_comp_m278_promised"),
+            279: ("name = zg361_comp_m279_amount", "value = var:zg361_comp_m279_amount"),
+            280: ("name = zg361_comp_m280_proration_bps", "multiply = var:zg361_comp_m280_proration_bps"),
+            281: ("name = zg361_comp_m281_decision", "var:zg361_comp_m281_route = 2"),
+            282: ("name = zg361_comp_m282_backpay", "name = zg361_comp_ae_statement_owed add = 4"),
+            283: ("name = zg361_comp_m283_cash_raise", "name = zg361_comp_ae_statement_owed add = var:zg361_comp_m283_cash_raise"),
+            284: ("name = zg361_comp_m284_next_cycle_delta", "add = var:zg361_comp_ae_next_cycle_base_delta"),
+            285: ("name = zg361_comp_m285_subject_raise", "name = zg361_comp_ae_statement_owed add = var:zg361_comp_m285_subject_raise"),
+            286: ("name = zg361_comp_m286_statement_delta", "name = zg361_comp_ae_statement_owed add = var:zg361_comp_m286_statement_delta"),
+            287: ("name = zg361_comp_m287_visibility_mode", "name = zg361_comp_m287_named_peer_salary_visible"),
+            288: ("name = zg361_comp_m288_repair_due", "name = zg361_comp_ae_statement_owed add = var:zg361_comp_m288_repair_due"),
+            289: ("name = zg361_comp_m289_outcome", "name = zg361_comp_ae_statement_paid add = 4"),
+            290: ("name = zg361_comp_m290_nomination_score", "var:zg361_comp_m290_eligible = 1"),
+            291: ("name = zg361_comp_af_grant_base_units", "var:zg361_comp_af_grant_base_units"),
+            292: ("name = zg361_comp_m292_risk_kind", "var:zg361_comp_m292_risk_kind = 3"),
+            293: ("name = zg361_comp_af_conversion_units", "var:zg361_comp_af_conversion_units"),
+            294: ("name = zg361_comp_m294_liquid_value", "multiply = var:zg361_comp_m294_liquidity_bps"),
+            295: ("name = zg361_comp_af_cliff_days", "var:zg361_comp_af_cliff_days = 180"),
+            296: ("name = zg361_comp_af_cadence_days", "var:zg361_comp_af_cadence_days = 90"),
+            297: ("name = zg361_comp_m297_service_bps", "value = var:zg361_comp_m297_service_bps"),
+            298: ("name = zg361_comp_m298_organization_gate", "var:zg361_comp_m298_organization_gate = 1"),
+            299: ("name = zg361_comp_m299_leaver_class", "name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_service"),
+            300: ("name = zg361_comp_m300_requested_units", "name = zg361_comp_af_repurchased_units add = 10"),
+        }
+        self.assertEqual(set(contracts), set(generator.EXPECTED_IDS))
+        for mechanism_id, (producer, consumer) in contracts.items():
+            with self.subTest(mechanism_id=mechanism_id):
+                source = top_level_block(
+                    self.effects, f"zg361_comp_m{mechanism_id:03d}_consume_effect"
+                )
+                self.assertIn(producer, source)
+                self.assertIn(consumer, self.effects)
+                self.assertTrue(
+                    all(route.resource_values or not route.materializes_object for route in model.MECHANISM_ROUTE_OUTCOMES[mechanism_id])
+                )
+
+    def test_route_c_no_object_contract_matches_the_executable_model(self) -> None:
+        expected = {84, 88, 90, 282, 283, 285, 288, 293, 300}
+        self.assertEqual(generator.NO_OBJECT_ROUTE3_IDS, expected)
+        self.assertEqual(model.NO_OBJECT_ROUTE3_IDS, expected)
+        for mechanism_id in expected:
+            with self.subTest(mechanism_id=mechanism_id):
+                payload = generator.special_payload(mechanism_id)
+                self.assertIn(
+                    f"name = zg361_comp_m{mechanism_id:03d}_object_materialized value = 0",
+                    payload,
+                )
+
+    def test_route_dependent_cash_helpers_use_the_frozen_dual_account_amounts(self) -> None:
+        expected_helpers = {
+            "zg361_comp_l_pay_spot_effect": ("zg361_comp_m090_pay", 7, 3, 10),
+            "zg361_comp_l_pay_spot_bounded_effect": ("zg361_comp_m090_bounded", 4, 2, 6),
+            "zg361_comp_af_pay_conversion_remainder_effect": ("zg361_comp_m293_cash6", 4, 2, 6),
+            "zg361_comp_af_pay_unconverted_bonus_effect": ("zg361_comp_m293_cash10", 7, 3, 10),
+        }
+        for effect_name, (prefix, treasury, personal, gross) in expected_helpers.items():
+            with self.subTest(effect=effect_name):
+                source = top_level_block(self.effects, effect_name)
+                self.assertIn(f"AMOUNT = {treasury}", source)
+                self.assertIn(f"AMOUNT = {personal}", source)
+                self.assertIn(f"var:{prefix}_treasury_status = 2", source)
+                self.assertIn(f"var:{prefix}_personal_status = 2", source)
+                self.assertIn(f"remove_treasury = {treasury}", source)
+                self.assertIn(f"add_gold = {{ value = 0 subtract = {personal} }}", source)
+                self.assertIn(f"add_gold = {gross}", source)
+                self.assertLess(
+                    source.index(f"var:{prefix}_personal_status = 2"),
+                    source.index(f"remove_treasury = {treasury}"),
+                )
+                for suffix in ("treasury_payer", "personal_payer", "recipient", "approver"):
+                    self.assertIn(f"name = {prefix}_{suffix}", source)
+
+        spot_core = top_level_block(self.effects, "zg361_comp_m090_core_effect")
+        self.assertIn("scope:zg361_comp_route = 1", spot_core)
+        self.assertIn("zg361_comp_l_pay_spot_effect = yes", spot_core)
+        self.assertIn("scope:zg361_comp_route = 2", spot_core)
+        self.assertIn("zg361_comp_l_pay_spot_bounded_effect = yes", spot_core)
+        conversion_core = top_level_block(self.effects, "zg361_comp_m293_core_effect")
+        self.assertIn("zg361_comp_af_pay_conversion_remainder_effect = yes", conversion_core)
+        self.assertIn("zg361_comp_af_pay_unconverted_bonus_effect = yes", conversion_core)
+
+    def test_bonus_reserve_settle_refund_and_clawback_use_frozen_sources(self) -> None:
+        reserve = top_level_block(self.effects, "zg361_comp_l_reserve_bonus_effect")
+        for token in (
+            "scope:zg361_comp_route = 1",
+            "remove_treasury = 14",
+            "value = 0 subtract = 6",
+            "add_gold = 14",
+            "scope:zg361_comp_route = 2",
+            "remove_treasury = 11",
+            "value = 0 subtract = 5",
+            "add_gold = 10",
+            "name = zg361_comp_bonus_deferred_treasury_funded",
+            "name = zg361_comp_bonus_deferred_personal_funded",
+        ):
+            self.assertIn(token, reserve)
+        deferred = top_level_block(self.effects, "zg361_comp_l_consume_deferred_effect")
+        self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_unpaid_total }", deferred)
+        self.assertIn("add_treasury = { value = var:zg361_comp_bonus_deferred_treasury_funded }", deferred)
+        self.assertIn("add_gold = { value = var:zg361_comp_bonus_deferred_personal_funded }", deferred)
+        self.assertIn("value = var:zg361_comp_m084_reserve_receipt", deferred)
+        clawback = top_level_block(self.effects, "zg361_comp_l_clawback_bonus_effect")
+        self.assertIn("gold >= 2", clawback)
+        self.assertIn("add_gold = { value = 0 subtract = 2 }", clawback)
+        self.assertIn("value = var:zg361_comp_bonus_immediate_receipt_serial", clawback)
+
+    def test_deferred_statement_freezes_amount_and_both_payer_shares_before_deadline(self) -> None:
+        freezer = top_level_block(
+            self.effects, "zg361_comp_ae_freeze_due_obligation_effect"
+        )
+        for token in (
+            "EXPECTED_STATE = 3",
+            "name = zg361_comp_ae_due_frozen_gross value = var:zg361_comp_ae_statement_owed",
+            "name = zg361_comp_ae_due_frozen_treasury",
+            "name = zg361_comp_ae_due_frozen_personal",
+            "name = zg361_comp_ae_due_obligation_treasury_payer",
+            "name = zg361_comp_ae_due_obligation_personal_payer",
+            "name = zg361_comp_ae_due_obligation_recipient",
+            "name = zg361_comp_ae_due_obligation_frozen_case",
+        ):
+            self.assertIn(token, freezer)
+        stage_two = top_level_block(
+            self.effects, "zg361_comp_ae_try_advance_02_effect"
+        )
+        self.assertEqual(
+            stage_two.count("zg361_comp_ae_freeze_due_obligation_effect = yes"), 2
+        )
+        for deadline in ("zg361_comp_ae_due_90_deadline", "zg361_comp_ae_due_180_deadline"):
+            self.assertLess(
+                stage_two.index("zg361_comp_ae_freeze_due_obligation_effect = yes"),
+                stage_two.index(deadline),
+            )
+        consumer = top_level_block(self.effects, "zg361_comp_ae_consume_due_effect")
+        self.assertIn(
+            "name = zg361_comp_due_gross value = var:zg361_comp_ae_due_frozen_gross",
+            consumer,
+        )
+        self.assertIn("value = var:zg361_comp_ae_due_frozen_treasury", consumer)
+        self.assertIn("value = var:zg361_comp_ae_due_frozen_personal", consumer)
+        self.assertNotIn(
+            "name = zg361_comp_due_gross value = var:zg361_comp_ae_statement_owed",
+            consumer,
+        )
+
     def test_290_nomination_threshold_is_375_and_350_is_a_negative_case(self) -> None:
         source = top_level_block(self.effects, "zg361_comp_m290_consume_effect")
         self.assertEqual(generator.RESULT_GRADE_RATINGS, {1: 325, 2: 350, 3: 375})
@@ -390,7 +607,8 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertLess(source.index(frozen_rating), source.index(default_ineligible))
         self.assertLess(source.index(default_ineligible), source.index(threshold))
         self.assertEqual(source.count(eligible), 1)
-        self.assertNotIn("zg361_comp_m290_route", source)
+        self.assertIn("zg361_comp_m290_route = 2", source)
+        self.assertIn("zg361_comp_m290_route = 3", source)
         self.assertNotRegex(
             source,
             r"name\s*=\s*zg361_comp_m290_rating\s+value\s*=\s*(?:350|375)",
@@ -855,6 +1073,39 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertIn(f"scope:zg361_comp_notify_domain = {domain_number}", notifier)
             self.assertIn(f"var:zg361_case_{domain}_owner", notifier)
         self.assertEqual(notifier.count("zg361_comp_portfolio_refresh_effect = yes"), 3)
+
+    def test_player_card_explains_each_stage_and_completion_cards_show_numeric_ledgers(self) -> None:
+        player_card = top_level_block(self.events, "zg361comp.1")
+        stage_keys = (
+            *(f"zg361comp.1.l{state}" for state in range(1, 5)),
+            *(f"zg361comp.1.ae{state}" for state in range(1, 6)),
+            *(f"zg361comp.1.af{state}" for state in range(1, 6)),
+        )
+        self.assertIn("first_valid = {", player_card)
+        self.assertEqual(player_card.count("triggered_desc = {"), 14)
+        for key in stage_keys:
+            self.assertIn(f"desc = {key}", player_card)
+
+        english = generator.render_english_localization().decode("utf-8-sig")
+        chinese = generator.render_simp_chinese_localization().decode("utf-8-sig")
+        for key in stage_keys:
+            with self.subTest(localization=key):
+                self.assertIn(f" {key}:0 ", english)
+                self.assertIn(f" {key}:0 ", chinese)
+        for source in (english, chinese):
+            for variable in (
+                "zg361_comp_bonus_total",
+                "zg361_comp_ae_statement_payable",
+                "zg361_comp_ae_statement_owed",
+                "zg361_comp_m287_visibility_mode",
+                "zg361_comp_af_total_units",
+                "zg361_comp_m294_current_value",
+                "zg361_comp_m294_liquid_value",
+                "zg361_comp_m299_leaver_class",
+                "zg361_comp_af_repurchased_units",
+            ):
+                self.assertIn(f"ROOT.MakeScope.Var('{variable}').GetValue", source)
+            self.assertNotIn("named_peer_salary", source)
 
     def test_runtime_claims_only_static_ready_without_live_evidence(self) -> None:
         header = "\n".join(self.effects.splitlines()[:8]).lower()

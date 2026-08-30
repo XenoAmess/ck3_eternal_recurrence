@@ -275,7 +275,25 @@ zg361comp.1 = {
     type = character_event
     theme = vassal
     title = zg361comp.1.t
-    desc = zg361comp.1.desc
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 } } desc = zg361comp.1.l1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 } } desc = zg361comp.1.l2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 } } desc = zg361comp.1.l3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 } } desc = zg361comp.1.l4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 } } desc = zg361comp.1.ae1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 } } desc = zg361comp.1.ae2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 } } desc = zg361comp.1.ae3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 } } desc = zg361comp.1.ae4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 } } desc = zg361comp.1.ae5 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 } } desc = zg361comp.1.af1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 } } desc = zg361comp.1.af2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 } } desc = zg361comp.1.af3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 } } desc = zg361comp.1.af4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 } } desc = zg361comp.1.af5 }
+            desc = zg361comp.1.desc
+        }
+    }
     trigger = {
         is_ai = no
         zg361_is_celestial_liege_trigger = yes

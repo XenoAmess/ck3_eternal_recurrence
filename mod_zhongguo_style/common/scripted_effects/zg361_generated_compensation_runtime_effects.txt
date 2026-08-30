@@ -151,6 +151,11 @@ zg361_comp_open_l_case_effect = {
             set_variable = { name = zg361_comp_l_treasury_settled value = 0 }
             set_variable = { name = zg361_comp_l_personal_settled value = 0 }
             set_variable = { name = zg361_comp_bonus_total value = 0 }
+            set_variable = { name = zg361_comp_bonus_treasury_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_personal_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_treasury_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_personal_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_unpaid_total value = 0 }
             set_variable = { name = zg361_comp_bonus_immediate_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_deferred_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_held value = 0 }
@@ -171,46 +176,138 @@ zg361_comp_open_l_case_effect = {
             set_variable = { name = zg361_comp_bonus_held_personal_status value = 0 }
             set_variable = { name = zg361_comp_m090_pay_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m090_pay_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m090_bounded_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m090_bounded_personal_status value = 0 }
             set_variable = { name = zg361_comp_m082_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m082_consumed value = 0 }
             set_variable = { name = zg361_comp_m082_route value = 0 }
             set_variable = { name = zg361_comp_m082_value value = 0 }
+            set_variable = { name = zg361_comp_m082_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m082_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m082_visible_revision value = 0 }
+            remove_variable = zg361_comp_m082_object_owner
+            remove_variable = zg361_comp_m082_object_subject
+            remove_variable = zg361_comp_m082_object_cycle
+            remove_variable = zg361_comp_m082_object_case
+            remove_variable = zg361_comp_m082_object_state
+            remove_variable = zg361_comp_m082_object_route
             set_variable = { name = zg361_comp_m083_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m083_consumed value = 0 }
             set_variable = { name = zg361_comp_m083_route value = 0 }
             set_variable = { name = zg361_comp_m083_value value = 0 }
+            set_variable = { name = zg361_comp_m083_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m083_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m083_visible_revision value = 0 }
+            remove_variable = zg361_comp_m083_object_owner
+            remove_variable = zg361_comp_m083_object_subject
+            remove_variable = zg361_comp_m083_object_cycle
+            remove_variable = zg361_comp_m083_object_case
+            remove_variable = zg361_comp_m083_object_state
+            remove_variable = zg361_comp_m083_object_route
             set_variable = { name = zg361_comp_m084_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m084_consumed value = 0 }
             set_variable = { name = zg361_comp_m084_route value = 0 }
             set_variable = { name = zg361_comp_m084_value value = 0 }
+            set_variable = { name = zg361_comp_m084_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m084_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m084_visible_revision value = 0 }
+            remove_variable = zg361_comp_m084_object_owner
+            remove_variable = zg361_comp_m084_object_subject
+            remove_variable = zg361_comp_m084_object_cycle
+            remove_variable = zg361_comp_m084_object_case
+            remove_variable = zg361_comp_m084_object_state
+            remove_variable = zg361_comp_m084_object_route
             set_variable = { name = zg361_comp_m085_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m085_consumed value = 0 }
             set_variable = { name = zg361_comp_m085_route value = 0 }
             set_variable = { name = zg361_comp_m085_value value = 0 }
+            set_variable = { name = zg361_comp_m085_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m085_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m085_visible_revision value = 0 }
+            remove_variable = zg361_comp_m085_object_owner
+            remove_variable = zg361_comp_m085_object_subject
+            remove_variable = zg361_comp_m085_object_cycle
+            remove_variable = zg361_comp_m085_object_case
+            remove_variable = zg361_comp_m085_object_state
+            remove_variable = zg361_comp_m085_object_route
             set_variable = { name = zg361_comp_m086_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m086_consumed value = 0 }
             set_variable = { name = zg361_comp_m086_route value = 0 }
             set_variable = { name = zg361_comp_m086_value value = 0 }
+            set_variable = { name = zg361_comp_m086_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m086_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m086_visible_revision value = 0 }
+            remove_variable = zg361_comp_m086_object_owner
+            remove_variable = zg361_comp_m086_object_subject
+            remove_variable = zg361_comp_m086_object_cycle
+            remove_variable = zg361_comp_m086_object_case
+            remove_variable = zg361_comp_m086_object_state
+            remove_variable = zg361_comp_m086_object_route
             set_variable = { name = zg361_comp_m087_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m087_consumed value = 0 }
             set_variable = { name = zg361_comp_m087_route value = 0 }
             set_variable = { name = zg361_comp_m087_value value = 0 }
+            set_variable = { name = zg361_comp_m087_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m087_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m087_visible_revision value = 0 }
+            remove_variable = zg361_comp_m087_object_owner
+            remove_variable = zg361_comp_m087_object_subject
+            remove_variable = zg361_comp_m087_object_cycle
+            remove_variable = zg361_comp_m087_object_case
+            remove_variable = zg361_comp_m087_object_state
+            remove_variable = zg361_comp_m087_object_route
             set_variable = { name = zg361_comp_m088_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m088_consumed value = 0 }
             set_variable = { name = zg361_comp_m088_route value = 0 }
             set_variable = { name = zg361_comp_m088_value value = 0 }
+            set_variable = { name = zg361_comp_m088_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m088_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m088_visible_revision value = 0 }
+            remove_variable = zg361_comp_m088_object_owner
+            remove_variable = zg361_comp_m088_object_subject
+            remove_variable = zg361_comp_m088_object_cycle
+            remove_variable = zg361_comp_m088_object_case
+            remove_variable = zg361_comp_m088_object_state
+            remove_variable = zg361_comp_m088_object_route
             set_variable = { name = zg361_comp_m089_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m089_consumed value = 0 }
             set_variable = { name = zg361_comp_m089_route value = 0 }
             set_variable = { name = zg361_comp_m089_value value = 0 }
+            set_variable = { name = zg361_comp_m089_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m089_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m089_visible_revision value = 0 }
+            remove_variable = zg361_comp_m089_object_owner
+            remove_variable = zg361_comp_m089_object_subject
+            remove_variable = zg361_comp_m089_object_cycle
+            remove_variable = zg361_comp_m089_object_case
+            remove_variable = zg361_comp_m089_object_state
+            remove_variable = zg361_comp_m089_object_route
             set_variable = { name = zg361_comp_m090_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m090_consumed value = 0 }
             set_variable = { name = zg361_comp_m090_route value = 0 }
             set_variable = { name = zg361_comp_m090_value value = 0 }
+            set_variable = { name = zg361_comp_m090_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m090_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m090_visible_revision value = 0 }
+            remove_variable = zg361_comp_m090_object_owner
+            remove_variable = zg361_comp_m090_object_subject
+            remove_variable = zg361_comp_m090_object_cycle
+            remove_variable = zg361_comp_m090_object_case
+            remove_variable = zg361_comp_m090_object_state
+            remove_variable = zg361_comp_m090_object_route
             set_variable = { name = zg361_comp_m091_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m091_consumed value = 0 }
             set_variable = { name = zg361_comp_m091_route value = 0 }
             set_variable = { name = zg361_comp_m091_value value = 0 }
+            set_variable = { name = zg361_comp_m091_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m091_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m091_visible_revision value = 0 }
+            remove_variable = zg361_comp_m091_object_owner
+            remove_variable = zg361_comp_m091_object_subject
+            remove_variable = zg361_comp_m091_object_cycle
+            remove_variable = zg361_comp_m091_object_case
+            remove_variable = zg361_comp_m091_object_state
+            remove_variable = zg361_comp_m091_object_route
             set_variable = { name = zg361_comp_l_deferred_deadline_pending value = 0 }
             set_variable = { name = zg361_comp_l_deferred_deadline_expired value = 0 }
             set_variable = { name = zg361_comp_runtime_applied value = 1 }
@@ -279,6 +376,20 @@ zg361_comp_open_ae_case_effect = {
             set_variable = { name = zg361_comp_ae_treasury_settled value = 0 }
             set_variable = { name = zg361_comp_ae_personal_settled value = 0 }
             set_variable = { name = zg361_comp_ae_statement_base value = 15 }
+            if = {
+                limit = { var:zg361_comp_m082_consumed = 1 }
+                set_variable = { name = zg361_comp_ae_statement_base value = var:zg361_comp_m082_fixed_pay }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m082_role_allowance }
+            }
+            if = {
+                limit = { var:zg361_comp_m089_consumed = 1 }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m089_cash_raise }
+            }
+            if = {
+                limit = { has_variable = zg361_comp_ae_next_cycle_base_delta }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_ae_next_cycle_base_delta }
+            }
+            set_variable = { name = zg361_comp_ae_next_cycle_base_delta value = 0 }
             set_variable = { name = zg361_comp_ae_statement_payable value = 0 }
             set_variable = { name = zg361_comp_ae_statement_paid value = 0 }
             set_variable = { name = zg361_comp_ae_statement_owed value = 0 }
@@ -286,6 +397,9 @@ zg361_comp_open_ae_case_effect = {
             set_variable = { name = zg361_comp_ae_statement_initialized value = 0 }
             set_variable = { name = zg361_comp_ae_statement_conserved value = 1 }
             set_variable = { name = zg361_comp_ae_due_resolved value = 1 }
+            set_variable = { name = zg361_comp_ae_due_frozen_gross value = 0 }
+            set_variable = { name = zg361_comp_ae_due_frozen_treasury value = 0 }
+            set_variable = { name = zg361_comp_ae_due_frozen_personal value = 0 }
             set_variable = { name = zg361_comp_ae_delay_count value = 0 }
             set_variable = { name = zg361_comp_ae_credibility value = 100 }
             set_variable = { name = zg361_comp_ae_payment_red value = 0 }
@@ -304,50 +418,158 @@ zg361_comp_open_ae_case_effect = {
             set_variable = { name = zg361_comp_m278_consumed value = 0 }
             set_variable = { name = zg361_comp_m278_route value = 0 }
             set_variable = { name = zg361_comp_m278_value value = 0 }
+            set_variable = { name = zg361_comp_m278_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m278_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m278_visible_revision value = 0 }
+            remove_variable = zg361_comp_m278_object_owner
+            remove_variable = zg361_comp_m278_object_subject
+            remove_variable = zg361_comp_m278_object_cycle
+            remove_variable = zg361_comp_m278_object_case
+            remove_variable = zg361_comp_m278_object_state
+            remove_variable = zg361_comp_m278_object_route
             set_variable = { name = zg361_comp_m279_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m279_consumed value = 0 }
             set_variable = { name = zg361_comp_m279_route value = 0 }
             set_variable = { name = zg361_comp_m279_value value = 0 }
+            set_variable = { name = zg361_comp_m279_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m279_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m279_visible_revision value = 0 }
+            remove_variable = zg361_comp_m279_object_owner
+            remove_variable = zg361_comp_m279_object_subject
+            remove_variable = zg361_comp_m279_object_cycle
+            remove_variable = zg361_comp_m279_object_case
+            remove_variable = zg361_comp_m279_object_state
+            remove_variable = zg361_comp_m279_object_route
             set_variable = { name = zg361_comp_m280_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m280_consumed value = 0 }
             set_variable = { name = zg361_comp_m280_route value = 0 }
             set_variable = { name = zg361_comp_m280_value value = 0 }
+            set_variable = { name = zg361_comp_m280_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m280_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m280_visible_revision value = 0 }
+            remove_variable = zg361_comp_m280_object_owner
+            remove_variable = zg361_comp_m280_object_subject
+            remove_variable = zg361_comp_m280_object_cycle
+            remove_variable = zg361_comp_m280_object_case
+            remove_variable = zg361_comp_m280_object_state
+            remove_variable = zg361_comp_m280_object_route
             set_variable = { name = zg361_comp_m281_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m281_consumed value = 0 }
             set_variable = { name = zg361_comp_m281_route value = 0 }
             set_variable = { name = zg361_comp_m281_value value = 0 }
+            set_variable = { name = zg361_comp_m281_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m281_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m281_visible_revision value = 0 }
+            remove_variable = zg361_comp_m281_object_owner
+            remove_variable = zg361_comp_m281_object_subject
+            remove_variable = zg361_comp_m281_object_cycle
+            remove_variable = zg361_comp_m281_object_case
+            remove_variable = zg361_comp_m281_object_state
+            remove_variable = zg361_comp_m281_object_route
             set_variable = { name = zg361_comp_m282_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m282_consumed value = 0 }
             set_variable = { name = zg361_comp_m282_route value = 0 }
             set_variable = { name = zg361_comp_m282_value value = 0 }
+            set_variable = { name = zg361_comp_m282_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m282_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m282_visible_revision value = 0 }
+            remove_variable = zg361_comp_m282_object_owner
+            remove_variable = zg361_comp_m282_object_subject
+            remove_variable = zg361_comp_m282_object_cycle
+            remove_variable = zg361_comp_m282_object_case
+            remove_variable = zg361_comp_m282_object_state
+            remove_variable = zg361_comp_m282_object_route
             set_variable = { name = zg361_comp_m283_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m283_consumed value = 0 }
             set_variable = { name = zg361_comp_m283_route value = 0 }
             set_variable = { name = zg361_comp_m283_value value = 0 }
+            set_variable = { name = zg361_comp_m283_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m283_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m283_visible_revision value = 0 }
+            remove_variable = zg361_comp_m283_object_owner
+            remove_variable = zg361_comp_m283_object_subject
+            remove_variable = zg361_comp_m283_object_cycle
+            remove_variable = zg361_comp_m283_object_case
+            remove_variable = zg361_comp_m283_object_state
+            remove_variable = zg361_comp_m283_object_route
             set_variable = { name = zg361_comp_m284_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m284_consumed value = 0 }
             set_variable = { name = zg361_comp_m284_route value = 0 }
             set_variable = { name = zg361_comp_m284_value value = 0 }
+            set_variable = { name = zg361_comp_m284_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m284_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m284_visible_revision value = 0 }
+            remove_variable = zg361_comp_m284_object_owner
+            remove_variable = zg361_comp_m284_object_subject
+            remove_variable = zg361_comp_m284_object_cycle
+            remove_variable = zg361_comp_m284_object_case
+            remove_variable = zg361_comp_m284_object_state
+            remove_variable = zg361_comp_m284_object_route
             set_variable = { name = zg361_comp_m285_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m285_consumed value = 0 }
             set_variable = { name = zg361_comp_m285_route value = 0 }
             set_variable = { name = zg361_comp_m285_value value = 0 }
+            set_variable = { name = zg361_comp_m285_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m285_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m285_visible_revision value = 0 }
+            remove_variable = zg361_comp_m285_object_owner
+            remove_variable = zg361_comp_m285_object_subject
+            remove_variable = zg361_comp_m285_object_cycle
+            remove_variable = zg361_comp_m285_object_case
+            remove_variable = zg361_comp_m285_object_state
+            remove_variable = zg361_comp_m285_object_route
             set_variable = { name = zg361_comp_m286_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m286_consumed value = 0 }
             set_variable = { name = zg361_comp_m286_route value = 0 }
             set_variable = { name = zg361_comp_m286_value value = 0 }
+            set_variable = { name = zg361_comp_m286_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m286_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m286_visible_revision value = 0 }
+            remove_variable = zg361_comp_m286_object_owner
+            remove_variable = zg361_comp_m286_object_subject
+            remove_variable = zg361_comp_m286_object_cycle
+            remove_variable = zg361_comp_m286_object_case
+            remove_variable = zg361_comp_m286_object_state
+            remove_variable = zg361_comp_m286_object_route
             set_variable = { name = zg361_comp_m287_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m287_consumed value = 0 }
             set_variable = { name = zg361_comp_m287_route value = 0 }
             set_variable = { name = zg361_comp_m287_value value = 0 }
+            set_variable = { name = zg361_comp_m287_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m287_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m287_visible_revision value = 0 }
+            remove_variable = zg361_comp_m287_object_owner
+            remove_variable = zg361_comp_m287_object_subject
+            remove_variable = zg361_comp_m287_object_cycle
+            remove_variable = zg361_comp_m287_object_case
+            remove_variable = zg361_comp_m287_object_state
+            remove_variable = zg361_comp_m287_object_route
             set_variable = { name = zg361_comp_m288_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m288_consumed value = 0 }
             set_variable = { name = zg361_comp_m288_route value = 0 }
             set_variable = { name = zg361_comp_m288_value value = 0 }
+            set_variable = { name = zg361_comp_m288_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m288_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m288_visible_revision value = 0 }
+            remove_variable = zg361_comp_m288_object_owner
+            remove_variable = zg361_comp_m288_object_subject
+            remove_variable = zg361_comp_m288_object_cycle
+            remove_variable = zg361_comp_m288_object_case
+            remove_variable = zg361_comp_m288_object_state
+            remove_variable = zg361_comp_m288_object_route
             set_variable = { name = zg361_comp_m289_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m289_consumed value = 0 }
             set_variable = { name = zg361_comp_m289_route value = 0 }
             set_variable = { name = zg361_comp_m289_value value = 0 }
+            set_variable = { name = zg361_comp_m289_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m289_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m289_visible_revision value = 0 }
+            remove_variable = zg361_comp_m289_object_owner
+            remove_variable = zg361_comp_m289_object_subject
+            remove_variable = zg361_comp_m289_object_cycle
+            remove_variable = zg361_comp_m289_object_case
+            remove_variable = zg361_comp_m289_object_state
+            remove_variable = zg361_comp_m289_object_route
             set_variable = { name = zg361_comp_ae_due_90_deadline_pending value = 0 }
             set_variable = { name = zg361_comp_ae_due_90_deadline_expired value = 0 }
             set_variable = { name = zg361_comp_ae_due_180_deadline_pending value = 0 }
@@ -444,6 +666,10 @@ zg361_comp_open_af_case_effect = {
             set_variable = { name = zg361_comp_af_buyback_red value = 0 }
             set_variable = { name = zg361_comp_m292_cash_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m292_cash_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash6_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash6_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash10_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash10_personal_status value = 0 }
             set_variable = { name = zg361_comp_m300_buyback_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m300_buyback_personal_status value = 0 }
             set_variable = { name = zg361_comp_af_buyback_later_treasury_status value = 0 }
@@ -456,46 +682,145 @@ zg361_comp_open_af_case_effect = {
             set_variable = { name = zg361_comp_m290_consumed value = 0 }
             set_variable = { name = zg361_comp_m290_route value = 0 }
             set_variable = { name = zg361_comp_m290_value value = 0 }
+            set_variable = { name = zg361_comp_m290_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m290_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m290_visible_revision value = 0 }
+            remove_variable = zg361_comp_m290_object_owner
+            remove_variable = zg361_comp_m290_object_subject
+            remove_variable = zg361_comp_m290_object_cycle
+            remove_variable = zg361_comp_m290_object_case
+            remove_variable = zg361_comp_m290_object_state
+            remove_variable = zg361_comp_m290_object_route
             set_variable = { name = zg361_comp_m291_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m291_consumed value = 0 }
             set_variable = { name = zg361_comp_m291_route value = 0 }
             set_variable = { name = zg361_comp_m291_value value = 0 }
+            set_variable = { name = zg361_comp_m291_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m291_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m291_visible_revision value = 0 }
+            remove_variable = zg361_comp_m291_object_owner
+            remove_variable = zg361_comp_m291_object_subject
+            remove_variable = zg361_comp_m291_object_cycle
+            remove_variable = zg361_comp_m291_object_case
+            remove_variable = zg361_comp_m291_object_state
+            remove_variable = zg361_comp_m291_object_route
             set_variable = { name = zg361_comp_m292_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m292_consumed value = 0 }
             set_variable = { name = zg361_comp_m292_route value = 0 }
             set_variable = { name = zg361_comp_m292_value value = 0 }
+            set_variable = { name = zg361_comp_m292_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m292_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m292_visible_revision value = 0 }
+            remove_variable = zg361_comp_m292_object_owner
+            remove_variable = zg361_comp_m292_object_subject
+            remove_variable = zg361_comp_m292_object_cycle
+            remove_variable = zg361_comp_m292_object_case
+            remove_variable = zg361_comp_m292_object_state
+            remove_variable = zg361_comp_m292_object_route
             set_variable = { name = zg361_comp_m293_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m293_consumed value = 0 }
             set_variable = { name = zg361_comp_m293_route value = 0 }
             set_variable = { name = zg361_comp_m293_value value = 0 }
+            set_variable = { name = zg361_comp_m293_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m293_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m293_visible_revision value = 0 }
+            remove_variable = zg361_comp_m293_object_owner
+            remove_variable = zg361_comp_m293_object_subject
+            remove_variable = zg361_comp_m293_object_cycle
+            remove_variable = zg361_comp_m293_object_case
+            remove_variable = zg361_comp_m293_object_state
+            remove_variable = zg361_comp_m293_object_route
             set_variable = { name = zg361_comp_m294_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m294_consumed value = 0 }
             set_variable = { name = zg361_comp_m294_route value = 0 }
             set_variable = { name = zg361_comp_m294_value value = 0 }
+            set_variable = { name = zg361_comp_m294_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m294_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m294_visible_revision value = 0 }
+            remove_variable = zg361_comp_m294_object_owner
+            remove_variable = zg361_comp_m294_object_subject
+            remove_variable = zg361_comp_m294_object_cycle
+            remove_variable = zg361_comp_m294_object_case
+            remove_variable = zg361_comp_m294_object_state
+            remove_variable = zg361_comp_m294_object_route
             set_variable = { name = zg361_comp_m295_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m295_consumed value = 0 }
             set_variable = { name = zg361_comp_m295_route value = 0 }
             set_variable = { name = zg361_comp_m295_value value = 0 }
+            set_variable = { name = zg361_comp_m295_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m295_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m295_visible_revision value = 0 }
+            remove_variable = zg361_comp_m295_object_owner
+            remove_variable = zg361_comp_m295_object_subject
+            remove_variable = zg361_comp_m295_object_cycle
+            remove_variable = zg361_comp_m295_object_case
+            remove_variable = zg361_comp_m295_object_state
+            remove_variable = zg361_comp_m295_object_route
             set_variable = { name = zg361_comp_m296_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m296_consumed value = 0 }
             set_variable = { name = zg361_comp_m296_route value = 0 }
             set_variable = { name = zg361_comp_m296_value value = 0 }
+            set_variable = { name = zg361_comp_m296_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m296_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m296_visible_revision value = 0 }
+            remove_variable = zg361_comp_m296_object_owner
+            remove_variable = zg361_comp_m296_object_subject
+            remove_variable = zg361_comp_m296_object_cycle
+            remove_variable = zg361_comp_m296_object_case
+            remove_variable = zg361_comp_m296_object_state
+            remove_variable = zg361_comp_m296_object_route
             set_variable = { name = zg361_comp_m297_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m297_consumed value = 0 }
             set_variable = { name = zg361_comp_m297_route value = 0 }
             set_variable = { name = zg361_comp_m297_value value = 0 }
+            set_variable = { name = zg361_comp_m297_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m297_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m297_visible_revision value = 0 }
+            remove_variable = zg361_comp_m297_object_owner
+            remove_variable = zg361_comp_m297_object_subject
+            remove_variable = zg361_comp_m297_object_cycle
+            remove_variable = zg361_comp_m297_object_case
+            remove_variable = zg361_comp_m297_object_state
+            remove_variable = zg361_comp_m297_object_route
             set_variable = { name = zg361_comp_m298_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m298_consumed value = 0 }
             set_variable = { name = zg361_comp_m298_route value = 0 }
             set_variable = { name = zg361_comp_m298_value value = 0 }
+            set_variable = { name = zg361_comp_m298_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m298_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m298_visible_revision value = 0 }
+            remove_variable = zg361_comp_m298_object_owner
+            remove_variable = zg361_comp_m298_object_subject
+            remove_variable = zg361_comp_m298_object_cycle
+            remove_variable = zg361_comp_m298_object_case
+            remove_variable = zg361_comp_m298_object_state
+            remove_variable = zg361_comp_m298_object_route
             set_variable = { name = zg361_comp_m299_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m299_consumed value = 0 }
             set_variable = { name = zg361_comp_m299_route value = 0 }
             set_variable = { name = zg361_comp_m299_value value = 0 }
+            set_variable = { name = zg361_comp_m299_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m299_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m299_visible_revision value = 0 }
+            remove_variable = zg361_comp_m299_object_owner
+            remove_variable = zg361_comp_m299_object_subject
+            remove_variable = zg361_comp_m299_object_cycle
+            remove_variable = zg361_comp_m299_object_case
+            remove_variable = zg361_comp_m299_object_state
+            remove_variable = zg361_comp_m299_object_route
             set_variable = { name = zg361_comp_m300_receipt_active value = 0 }
             set_variable = { name = zg361_comp_m300_consumed value = 0 }
             set_variable = { name = zg361_comp_m300_route value = 0 }
             set_variable = { name = zg361_comp_m300_value value = 0 }
+            set_variable = { name = zg361_comp_m300_object_materialized value = 0 }
+            set_variable = { name = zg361_comp_m300_visible_outcome value = 0 }
+            set_variable = { name = zg361_comp_m300_visible_revision value = 0 }
+            remove_variable = zg361_comp_m300_object_owner
+            remove_variable = zg361_comp_m300_object_subject
+            remove_variable = zg361_comp_m300_object_cycle
+            remove_variable = zg361_comp_m300_object_case
+            remove_variable = zg361_comp_m300_object_state
+            remove_variable = zg361_comp_m300_object_route
             set_variable = { name = zg361_comp_af_vest_30_deadline_pending value = 0 }
             set_variable = { name = zg361_comp_af_vest_30_deadline_expired value = 0 }
             set_variable = { name = zg361_comp_af_vest_90_deadline_pending value = 0 }
@@ -516,7 +841,9 @@ zg361_comp_open_af_case_effect = {
 
 zg361_comp_l_reserve_bonus_effect = {
     remove_variable = zg361_comp_financial_applied
-    zg361_case_kernel_reserve_transaction_effect = {
+    if = {
+        limit = { scope:zg361_comp_route = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -538,7 +865,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 10
             }
-    zg361_case_kernel_reserve_transaction_effect = {
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -560,7 +887,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 4
             }
-    zg361_case_kernel_reserve_transaction_effect = {
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -582,7 +909,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 3
             }
-    zg361_case_kernel_reserve_transaction_effect = {
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -604,7 +931,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 1
             }
-    zg361_case_kernel_reserve_transaction_effect = {
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -626,7 +953,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 1
             }
-    zg361_case_kernel_reserve_transaction_effect = {
+        zg361_case_kernel_reserve_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -648,16 +975,16 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_STATE = 1
                 AMOUNT = 1
             }
-    if = {
-        limit = {
-            var:zg361_comp_bonus_immediate_treasury_status = 1
-            var:zg361_comp_bonus_immediate_personal_status = 1
-            var:zg361_comp_bonus_deferred_treasury_status = 1
-            var:zg361_comp_bonus_deferred_personal_status = 1
-            var:zg361_comp_bonus_held_treasury_status = 1
-            var:zg361_comp_bonus_held_personal_status = 1
-        }
-        zg361_case_kernel_settle_transaction_effect = {
+        if = {
+            limit = {
+                var:zg361_comp_bonus_immediate_treasury_status = 1
+                var:zg361_comp_bonus_immediate_personal_status = 1
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }
+            zg361_case_kernel_settle_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -675,7 +1002,7 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_CASE = var:zg361_case_l_case_serial
                 TICKET_STATE = 1
             }
-        zg361_case_kernel_settle_transaction_effect = {
+            zg361_case_kernel_settle_transaction_effect = {
                 OWNER_VAR = zg361_case_l_owner
                 SUBJECT_VAR = zg361_case_l_subject
                 CYCLE_VAR = zg361_case_l_cycle_serial
@@ -693,22 +1020,22 @@ zg361_comp_l_reserve_bonus_effect = {
                 TICKET_CASE = var:zg361_case_l_case_serial
                 TICKET_STATE = 1
             }
-    }
-    if = {
-        limit = {
-            var:zg361_comp_bonus_immediate_treasury_status = 2
-            var:zg361_comp_bonus_immediate_personal_status = 2
-            var:zg361_comp_bonus_deferred_treasury_status = 1
-            var:zg361_comp_bonus_deferred_personal_status = 1
-            var:zg361_comp_bonus_held_treasury_status = 1
-            var:zg361_comp_bonus_held_personal_status = 1
         }
-        var:zg361_case_l_owner = {
-            remove_treasury = 14
-            add_gold = { value = 0 subtract = 6 }
-        }
-        add_gold = 14
-        set_variable = { name = zg361_comp_bonus_immediate_receipt_treasury_payer value = var:zg361_case_l_owner }
+        if = {
+            limit = {
+                var:zg361_comp_bonus_immediate_treasury_status = 2
+                var:zg361_comp_bonus_immediate_personal_status = 2
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }
+            var:zg361_case_l_owner = {
+                remove_treasury = 14
+                add_gold = { value = 0 subtract = 6 }
+            }
+            add_gold = 14
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_treasury_payer value = var:zg361_case_l_owner }
             set_variable = { name = zg361_comp_bonus_immediate_receipt_personal_payer value = var:zg361_case_l_owner }
             set_variable = { name = zg361_comp_bonus_immediate_receipt_recipient value = this }
             set_variable = { name = zg361_comp_bonus_immediate_receipt_approver value = var:zg361_case_l_owner }
@@ -717,16 +1044,242 @@ zg361_comp_l_reserve_bonus_effect = {
             set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_cycle value = var:zg361_case_l_cycle_serial }
             set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_case value = var:zg361_case_l_case_serial }
             set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_state value = 1 }
-        set_variable = { name = zg361_comp_bonus_immediate_receipt_serial value = var:zg361_case_l_case_serial }
-        set_variable = { name = zg361_comp_bonus_total value = 20 }
-        set_variable = { name = zg361_comp_bonus_immediate_owed value = 0 }
-        set_variable = { name = zg361_comp_bonus_deferred_owed value = 4 }
-        set_variable = { name = zg361_comp_bonus_held value = 2 }
-        set_variable = { name = zg361_comp_bonus_paid_gross value = 14 }
-        set_variable = { name = zg361_comp_bonus_immediate_paid value = 14 }
-        set_variable = { name = zg361_comp_bonus_funded value = 1 }
-        set_variable = { name = zg361_comp_financial_applied value = 1 }
-        zg361_comp_l_check_conservation_effect = yes
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_serial value = var:zg361_case_l_case_serial }
+            set_variable = { name = zg361_comp_bonus_total value = 20 }
+            set_variable = { name = zg361_comp_bonus_treasury_funded value = 14 }
+            set_variable = { name = zg361_comp_bonus_personal_funded value = 6 }
+            set_variable = { name = zg361_comp_bonus_immediate_owed value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_owed value = 4 }
+            set_variable = { name = zg361_comp_bonus_held value = 2 }
+            set_variable = { name = zg361_comp_bonus_paid_gross value = 14 }
+            set_variable = { name = zg361_comp_bonus_immediate_paid value = 14 }
+            set_variable = { name = zg361_comp_bonus_deferred_treasury_funded value = 4 }
+            set_variable = { name = zg361_comp_bonus_deferred_personal_funded value = 2 }
+            set_variable = { name = zg361_comp_bonus_deferred_unpaid_total value = 6 }
+            set_variable = { name = zg361_comp_bonus_funded value = 1 }
+            set_variable = { name = zg361_comp_financial_applied value = 1 }
+            zg361_comp_l_check_conservation_effect = yes
+        }
+    }
+    else_if = {
+        limit = { scope:zg361_comp_route = 2 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_treasury_available
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_immediate_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_immediate_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_immediate_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_immediate_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_immediate_treasury_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 7
+            }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_personal_available
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_immediate_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_immediate_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_immediate_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_immediate_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_immediate_personal_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 3
+            }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_treasury_available
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_deferred_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_deferred_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_deferred_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_deferred_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_deferred_treasury_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 3
+            }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_personal_available
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_deferred_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_deferred_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_deferred_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_deferred_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_deferred_personal_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 1
+            }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_treasury_available
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_held_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_held_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_held_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_held_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_held_treasury_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 1
+            }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_personal_available
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_held_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_held_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_bonus_held_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_bonus_held_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_bonus_held_personal_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+                AMOUNT = 1
+            }
+        if = {
+            limit = {
+                var:zg361_comp_bonus_immediate_treasury_status = 1
+                var:zg361_comp_bonus_immediate_personal_status = 1
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                SETTLED_VAR = zg361_comp_l_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_immediate_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_immediate_treasury_status
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+            }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                SETTLED_VAR = zg361_comp_l_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_bonus_immediate_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_bonus_immediate_personal_status
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 1
+            }
+        }
+        if = {
+            limit = {
+                var:zg361_comp_bonus_immediate_treasury_status = 2
+                var:zg361_comp_bonus_immediate_personal_status = 2
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }
+            var:zg361_case_l_owner = {
+                remove_treasury = 11
+                add_gold = { value = 0 subtract = 5 }
+            }
+            add_gold = 10
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_treasury_payer value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_personal_payer value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_recipient value = this }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_approver value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_owner value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_subject value = this }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_cycle value = var:zg361_case_l_cycle_serial }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_case value = var:zg361_case_l_case_serial }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_frozen_state value = 1 }
+            set_variable = { name = zg361_comp_bonus_immediate_receipt_serial value = var:zg361_case_l_case_serial }
+            set_variable = { name = zg361_comp_bonus_total value = 16 }
+            set_variable = { name = zg361_comp_bonus_treasury_funded value = 11 }
+            set_variable = { name = zg361_comp_bonus_personal_funded value = 5 }
+            set_variable = { name = zg361_comp_bonus_immediate_owed value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_owed value = 4 }
+            set_variable = { name = zg361_comp_bonus_held value = 2 }
+            set_variable = { name = zg361_comp_bonus_paid_gross value = 10 }
+            set_variable = { name = zg361_comp_bonus_immediate_paid value = 10 }
+            set_variable = { name = zg361_comp_bonus_deferred_treasury_funded value = 4 }
+            set_variable = { name = zg361_comp_bonus_deferred_personal_funded value = 2 }
+            set_variable = { name = zg361_comp_bonus_deferred_unpaid_total value = 6 }
+            set_variable = { name = zg361_comp_bonus_funded value = 1 }
+            set_variable = { name = zg361_comp_financial_applied value = 1 }
+            zg361_comp_l_check_conservation_effect = yes
+        }
     }
 }
 
@@ -848,10 +1401,10 @@ zg361_comp_l_consume_deferred_effect = {
                 var:zg361_comp_bonus_deferred_treasury_status = 2
                 var:zg361_comp_bonus_deferred_personal_status = 2
                 var:zg361_comp_bonus_held_treasury_status = 2
-                var:zg361_comp_bonus_held_personal_status = 2
-            }
-            add_gold = 6
-            change_variable = { name = zg361_comp_bonus_paid_gross add = 6 }
+            var:zg361_comp_bonus_held_personal_status = 2
+        }
+            add_gold = { value = var:zg361_comp_bonus_deferred_unpaid_total }
+            change_variable = { name = zg361_comp_bonus_paid_gross add = var:zg361_comp_bonus_deferred_unpaid_total }
             set_variable = { name = zg361_comp_bonus_deferred_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_held value = 0 }
             set_variable = { name = zg361_comp_bonus_deferred_settlement_receipt_treasury_payer value = var:zg361_case_l_owner }
@@ -951,11 +1504,14 @@ zg361_comp_l_consume_deferred_effect = {
                 var:zg361_comp_bonus_held_treasury_status = 3
                 var:zg361_comp_bonus_held_personal_status = 3
             }
-            var:zg361_case_l_owner = { add_treasury = 4 add_gold = 2 }
-            change_variable = { name = zg361_comp_bonus_forfeited add = 6 }
+            var:zg361_case_l_owner = {
+                add_treasury = { value = var:zg361_comp_bonus_deferred_treasury_funded }
+                add_gold = { value = var:zg361_comp_bonus_deferred_personal_funded }
+            }
+            change_variable = { name = zg361_comp_bonus_forfeited add = var:zg361_comp_bonus_deferred_unpaid_total }
             set_variable = { name = zg361_comp_bonus_deferred_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_held value = 0 }
-            set_variable = { name = zg361_comp_bonus_refund_source_receipt value = var:zg361_comp_bonus_immediate_receipt_serial }
+            set_variable = { name = zg361_comp_bonus_refund_source_receipt value = var:zg361_comp_m084_reserve_receipt }
             set_variable = { name = zg361_comp_bonus_refund_receipt_treasury_payer value = var:zg361_case_l_owner }
             set_variable = { name = zg361_comp_bonus_refund_receipt_personal_payer value = var:zg361_case_l_owner }
             set_variable = { name = zg361_comp_bonus_refund_receipt_recipient value = this }
@@ -1109,6 +1665,124 @@ zg361_comp_l_pay_spot_effect = {
             set_variable = { name = zg361_comp_m090_pay_frozen_case value = var:zg361_case_l_case_serial }
             set_variable = { name = zg361_comp_m090_pay_frozen_state value = 4 }
         set_variable = { name = zg361_comp_m090_pay_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_l_pay_spot_bounded_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_treasury_available
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m090_bounded_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m090_bounded_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m090_bounded_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m090_bounded_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m090_bounded_treasury_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 4
+                AMOUNT = 4
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                AVAILABLE_VAR = zg361_comp_l_personal_available
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m090_bounded_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m090_bounded_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m090_bounded_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m090_bounded_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m090_bounded_personal_case
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 4
+                AMOUNT = 2
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m090_bounded_treasury_status = 1
+            var:zg361_comp_m090_bounded_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                RESERVED_VAR = zg361_comp_l_treasury_reserved
+                SETTLED_VAR = zg361_comp_l_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m090_bounded_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m090_bounded_treasury_status
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 4
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_l_owner
+                SUBJECT_VAR = zg361_case_l_subject
+                CYCLE_VAR = zg361_case_l_cycle_serial
+                CASE_VAR = zg361_case_l_case_serial
+                STATE_VAR = zg361_case_l_state
+                ACTIVE_VAR = zg361_case_l_active
+                REVISION_VAR = zg361_case_l_revision
+                RESERVED_VAR = zg361_comp_l_personal_reserved
+                SETTLED_VAR = zg361_comp_l_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m090_bounded_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m090_bounded_personal_status
+                TICKET_OWNER = var:zg361_case_l_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_l_cycle_serial
+                TICKET_CASE = var:zg361_case_l_case_serial
+                TICKET_STATE = 4
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m090_bounded_treasury_status = 2
+            var:zg361_comp_m090_bounded_personal_status = 2
+        }
+        var:zg361_case_l_owner = {
+            remove_treasury = 4
+            add_gold = { value = 0 subtract = 2 }
+        }
+        add_gold = 6
+        set_variable = { name = zg361_comp_m090_bounded_treasury_payer value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_m090_bounded_personal_payer value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_m090_bounded_recipient value = this }
+            set_variable = { name = zg361_comp_m090_bounded_approver value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_m090_bounded_frozen_owner value = var:zg361_case_l_owner }
+            set_variable = { name = zg361_comp_m090_bounded_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m090_bounded_frozen_cycle value = var:zg361_case_l_cycle_serial }
+            set_variable = { name = zg361_comp_m090_bounded_frozen_case value = var:zg361_case_l_case_serial }
+            set_variable = { name = zg361_comp_m090_bounded_frozen_state value = 4 }
+        set_variable = { name = zg361_comp_m090_bounded_gross value = 6 }
         set_variable = { name = zg361_comp_financial_applied value = 1 }
     }
 }
@@ -1703,6 +2377,242 @@ zg361_comp_af_pay_cash_alternative_effect = {
     }
 }
 
+zg361_comp_af_pay_conversion_remainder_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash6_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash6_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash6_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 4
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash6_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash6_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash6_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 2
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash6_treasury_status = 1
+            var:zg361_comp_m293_cash6_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash6_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash6_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash6_treasury_status = 2
+            var:zg361_comp_m293_cash6_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 4
+            add_gold = { value = 0 subtract = 2 }
+        }
+        add_gold = 6
+        set_variable = { name = zg361_comp_m293_cash6_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_recipient value = this }
+            set_variable = { name = zg361_comp_m293_cash6_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m293_cash6_frozen_state value = 2 }
+        set_variable = { name = zg361_comp_m293_cash6_gross value = 6 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
+zg361_comp_af_pay_unconverted_bonus_effect = {
+    remove_variable = zg361_comp_financial_applied
+    zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_treasury_available
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_treasury_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash10_treasury_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash10_treasury_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash10_treasury_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 7
+            }
+    if = {
+        limit = { var:zg361_case_kernel_applied = 1 }
+        zg361_case_kernel_reserve_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                AVAILABLE_VAR = zg361_comp_af_personal_available
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_personal_status
+                RECEIPT_OWNER_VAR = zg361_comp_m293_cash10_personal_owner
+                RECEIPT_CYCLE_VAR = zg361_comp_m293_cash10_personal_cycle
+                RECEIPT_CASE_VAR = zg361_comp_m293_cash10_personal_case
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+                AMOUNT = 3
+            }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash10_treasury_status = 1
+            var:zg361_comp_m293_cash10_personal_status = 1
+        }
+        zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_treasury_reserved
+                SETTLED_VAR = zg361_comp_af_treasury_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_treasury_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_treasury_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        if = {
+            limit = { var:zg361_case_kernel_applied = 1 }
+            zg361_case_kernel_settle_transaction_effect = {
+                OWNER_VAR = zg361_case_af_owner
+                SUBJECT_VAR = zg361_case_af_subject
+                CYCLE_VAR = zg361_case_af_cycle_serial
+                CASE_VAR = zg361_case_af_case_serial
+                STATE_VAR = zg361_case_af_state
+                ACTIVE_VAR = zg361_case_af_active
+                REVISION_VAR = zg361_case_af_revision
+                RESERVED_VAR = zg361_comp_af_personal_reserved
+                SETTLED_VAR = zg361_comp_af_personal_settled
+                RECEIPT_AMOUNT_VAR = zg361_comp_m293_cash10_personal_amount
+                RECEIPT_STATUS_VAR = zg361_comp_m293_cash10_personal_status
+                TICKET_OWNER = var:zg361_case_af_owner
+                TICKET_SUBJECT = this
+                TICKET_CYCLE = var:zg361_case_af_cycle_serial
+                TICKET_CASE = var:zg361_case_af_case_serial
+                TICKET_STATE = 2
+            }
+        }
+    }
+    if = {
+        limit = {
+            var:zg361_comp_m293_cash10_treasury_status = 2
+            var:zg361_comp_m293_cash10_personal_status = 2
+        }
+        var:zg361_case_af_owner = {
+            remove_treasury = 7
+            add_gold = { value = 0 subtract = 3 }
+        }
+        add_gold = 10
+        set_variable = { name = zg361_comp_m293_cash10_treasury_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_personal_payer value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_recipient value = this }
+            set_variable = { name = zg361_comp_m293_cash10_approver value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_owner value = var:zg361_case_af_owner }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_subject value = this }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_cycle value = var:zg361_case_af_cycle_serial }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_case value = var:zg361_case_af_case_serial }
+            set_variable = { name = zg361_comp_m293_cash10_frozen_state value = 2 }
+        set_variable = { name = zg361_comp_m293_cash10_gross value = 10 }
+        set_variable = { name = zg361_comp_financial_applied value = 1 }
+    }
+}
+
 zg361_comp_af_pay_buyback_now_effect = {
     remove_variable = zg361_comp_financial_applied
     zg361_case_kernel_reserve_transaction_effect = {
@@ -2040,15 +2950,55 @@ zg361_comp_af_check_conservation_effect = {
     }
 }
 
+zg361_comp_ae_freeze_due_obligation_effect = {
+    if = {
+        limit = {
+            zg361_case_kernel_full_guard_trigger = {
+                OWNER_VAR = zg361_case_ae_owner
+                SUBJECT_VAR = zg361_case_ae_subject
+                CYCLE_VAR = zg361_case_ae_cycle_serial
+                CASE_VAR = zg361_case_ae_case_serial
+                STATE_VAR = zg361_case_ae_state
+                ACTIVE_VAR = zg361_case_ae_active
+                EXPECTED_OWNER = var:zg361_case_ae_owner
+                EXPECTED_SUBJECT = this
+                EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                EXPECTED_CASE = var:zg361_case_ae_case_serial
+                EXPECTED_STATE = 3
+            }
+            var:zg361_comp_ae_due_resolved = 0
+            var:zg361_comp_ae_statement_owed >= 2
+        }
+        set_variable = { name = zg361_comp_ae_due_frozen_gross value = var:zg361_comp_ae_statement_owed }
+        set_variable = {
+            name = zg361_comp_ae_due_frozen_treasury
+            value = { value = var:zg361_comp_ae_due_frozen_gross multiply = 0.7 add = 0.5 floor = yes }
+        }
+        set_variable = {
+            name = zg361_comp_ae_due_frozen_personal
+            value = { value = var:zg361_comp_ae_due_frozen_gross subtract = var:zg361_comp_ae_due_frozen_treasury }
+        }
+        set_variable = { name = zg361_comp_ae_due_obligation_treasury_payer value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_personal_payer value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_recipient value = this }
+            set_variable = { name = zg361_comp_ae_due_obligation_approver value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_owner value = var:zg361_case_ae_owner }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_subject value = this }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_cycle value = var:zg361_case_ae_cycle_serial }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_case value = var:zg361_case_ae_case_serial }
+            set_variable = { name = zg361_comp_ae_due_obligation_frozen_state value = 3 }
+    }
+}
+
 zg361_comp_ae_consume_due_effect = {
-    save_temporary_scope_value_as = { name = zg361_comp_due_gross value = var:zg361_comp_ae_statement_owed }
+    save_temporary_scope_value_as = { name = zg361_comp_due_gross value = var:zg361_comp_ae_due_frozen_gross }
     save_temporary_scope_value_as = {
         name = zg361_comp_due_treasury
-        value = { value = scope:zg361_comp_due_gross multiply = 0.7 add = 0.5 floor = yes }
+        value = var:zg361_comp_ae_due_frozen_treasury
     }
     save_temporary_scope_value_as = {
         name = zg361_comp_due_personal
-        value = { value = scope:zg361_comp_due_gross subtract = scope:zg361_comp_due_treasury }
+        value = var:zg361_comp_ae_due_frozen_personal
     }
     remove_variable = zg361_comp_financial_applied
     if = {
@@ -3110,12 +4060,35 @@ zg361_comp_m082_consume_effect = {
             var:zg361_comp_m082_receipt_active = 1
             var:zg361_comp_m082_consumed = 0
         }
+        set_variable = { name = zg361_comp_m082_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m082_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m082_object_subject value = this }
+        set_variable = { name = zg361_comp_m082_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m082_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m082_object_state value = 1 }
+        set_variable = { name = zg361_comp_m082_object_route value = var:zg361_comp_m082_route }
+        set_variable = { name = zg361_comp_m082_visible_outcome value = var:zg361_comp_m082_route }
+        set_variable = { name = zg361_comp_m082_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m082_fixed_pay value = 12 }
             set_variable = { name = zg361_comp_m082_role_allowance value = 3 }
-            set_variable = { name = zg361_comp_m082_performance_bonus value = 20 }
+            set_variable = { name = zg361_comp_m082_performance_bonus value = 14 }
             set_variable = { name = zg361_comp_m082_spot_award value = 10 }
             set_variable = { name = zg361_comp_m082_deferred_award value = 6 }
-            set_variable = { name = zg361_comp_m082_total_reward value = 51 }
+            if = { limit = { var:zg361_comp_m082_route = 2 }
+                set_variable = { name = zg361_comp_m082_performance_bonus value = 10 }
+                set_variable = { name = zg361_comp_m082_spot_award value = 6 }
+                set_variable = { name = zg361_comp_m082_deferred_award value = 6 }
+            }
+            else_if = { limit = { var:zg361_comp_m082_route = 3 }
+                set_variable = { name = zg361_comp_m082_performance_bonus value = 0 }
+                set_variable = { name = zg361_comp_m082_spot_award value = 0 }
+                set_variable = { name = zg361_comp_m082_deferred_award value = 0 }
+            }
+            set_variable = { name = zg361_comp_m082_total_reward value = var:zg361_comp_m082_fixed_pay }
+            change_variable = { name = zg361_comp_m082_total_reward add = var:zg361_comp_m082_role_allowance }
+            change_variable = { name = zg361_comp_m082_total_reward add = var:zg361_comp_m082_performance_bonus }
+            change_variable = { name = zg361_comp_m082_total_reward add = var:zg361_comp_m082_spot_award }
+            change_variable = { name = zg361_comp_m082_total_reward add = var:zg361_comp_m082_deferred_award }
 
 
 
@@ -3269,10 +4242,23 @@ zg361_comp_m083_consume_effect = {
             var:zg361_comp_m083_receipt_active = 1
             var:zg361_comp_m083_consumed = 0
         }
+        set_variable = { name = zg361_comp_m083_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m083_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m083_object_subject value = this }
+        set_variable = { name = zg361_comp_m083_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m083_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m083_object_state value = 1 }
+        set_variable = { name = zg361_comp_m083_object_route value = var:zg361_comp_m083_route }
+        set_variable = { name = zg361_comp_m083_visible_outcome value = var:zg361_comp_m083_route }
+        set_variable = { name = zg361_comp_m083_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m083_realm_bps value = 10000 }
             set_variable = { name = zg361_comp_m083_team_bps value = 10000 }
             set_variable = { name = zg361_comp_m083_individual_bps value = 10000 }
             if = { limit = { var:zg361_comp_m083_route = 2 } set_variable = { name = zg361_comp_m083_individual_bps value = 8000 } }
+            else_if = { limit = { var:zg361_comp_m083_route = 3 } set_variable = { name = zg361_comp_m083_individual_bps value = 0 } }
+            set_variable = { name = zg361_comp_m083_computed_bonus value = 20 }
+            if = { limit = { var:zg361_comp_m083_route = 2 } set_variable = { name = zg361_comp_m083_computed_bonus value = 16 } }
+            else_if = { limit = { var:zg361_comp_m083_route = 3 } set_variable = { name = zg361_comp_m083_computed_bonus value = 0 } }
             set_variable = { name = zg361_comp_m083_formula_version value = 1 }
 
 
@@ -3342,19 +4328,28 @@ zg361_comp_m084_core_effect = {
             var:zg361_comp_m084_receipt_active = 0
 
             trigger_if = {
-                limit = { NOT = { scope:zg361_comp_route = 3 } }
-                var:zg361_case_l_owner = {
-                    has_treasury = yes
-                    treasury >= 14
-                    gold >= 6
-                }
+                limit = { scope:zg361_comp_route = 1 }
+                var:zg361_case_l_owner = { has_treasury = yes treasury >= 14 gold >= 6 }
                 var:zg361_comp_l_treasury_available >= 14
                 var:zg361_comp_l_personal_available >= 6
-                trigger_if = {
-                    limit = { has_variable = zg361_comp_bonus_immediate_treasury_status }
-                    var:zg361_comp_bonus_immediate_treasury_status = 0
-                }
-                trigger_else = { always = yes }
+                var:zg361_comp_bonus_immediate_treasury_status = 0
+                var:zg361_comp_bonus_immediate_personal_status = 0
+                var:zg361_comp_bonus_deferred_treasury_status = 0
+                var:zg361_comp_bonus_deferred_personal_status = 0
+                var:zg361_comp_bonus_held_treasury_status = 0
+                var:zg361_comp_bonus_held_personal_status = 0
+            }
+            trigger_else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                var:zg361_case_l_owner = { has_treasury = yes treasury >= 11 gold >= 5 }
+                var:zg361_comp_l_treasury_available >= 11
+                var:zg361_comp_l_personal_available >= 5
+                var:zg361_comp_bonus_immediate_treasury_status = 0
+                var:zg361_comp_bonus_immediate_personal_status = 0
+                var:zg361_comp_bonus_deferred_treasury_status = 0
+                var:zg361_comp_bonus_deferred_personal_status = 0
+                var:zg361_comp_bonus_held_treasury_status = 0
+                var:zg361_comp_bonus_held_personal_status = 0
             }
             trigger_else = { always = yes }
         }
@@ -3446,9 +4441,27 @@ zg361_comp_m084_consume_effect = {
             var:zg361_comp_m084_receipt_active = 1
             var:zg361_comp_m084_consumed = 0
         }
+        set_variable = { name = zg361_comp_m084_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m084_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m084_object_subject value = this }
+        set_variable = { name = zg361_comp_m084_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m084_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m084_object_state value = 1 }
+        set_variable = { name = zg361_comp_m084_object_route value = var:zg361_comp_m084_route }
+        set_variable = { name = zg361_comp_m084_visible_outcome value = var:zg361_comp_m084_route }
+        set_variable = { name = zg361_comp_m084_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m084_formula_locked value = 1 }
             set_variable = { name = zg361_comp_m084_reserve_receipt value = var:zg361_case_l_case_serial }
+            set_variable = { name = zg361_comp_m084_frozen_total_reward value = var:zg361_comp_m082_total_reward }
+            set_variable = { name = zg361_comp_m084_frozen_computed_bonus value = var:zg361_comp_m083_computed_bonus }
+            set_variable = { name = zg361_comp_m084_frozen_gross value = var:zg361_comp_bonus_total }
+            set_variable = { name = zg361_comp_m084_frozen_treasury value = var:zg361_comp_bonus_treasury_funded }
+            set_variable = { name = zg361_comp_m084_frozen_personal value = var:zg361_comp_bonus_personal_funded }
             set_variable = { name = zg361_comp_m084_deferred_due_year value = { value = current_year add = 1 } }
+            if = { limit = { var:zg361_comp_m084_route = 3 }
+                set_variable = { name = zg361_comp_m084_object_materialized value = 0 }
+                set_variable = { name = zg361_comp_m084_deferred_due_year value = 0 }
+            }
 
 
 
@@ -3602,9 +4615,19 @@ zg361_comp_m085_consume_effect = {
             var:zg361_comp_m085_receipt_active = 1
             var:zg361_comp_m085_consumed = 0
         }
+        set_variable = { name = zg361_comp_m085_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m085_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m085_object_subject value = this }
+        set_variable = { name = zg361_comp_m085_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m085_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m085_object_state value = 2 }
+        set_variable = { name = zg361_comp_m085_object_route value = var:zg361_comp_m085_route }
+        set_variable = { name = zg361_comp_m085_visible_outcome value = var:zg361_comp_m085_route }
+        set_variable = { name = zg361_comp_m085_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m085_last_vest_year value = current_year }
             set_variable = { name = zg361_comp_m085_next_grant_year value = 0 }
             if = { limit = { var:zg361_comp_m085_route = 1 } set_variable = { name = zg361_comp_m085_next_grant_year value = { value = current_year add = 2 } } }
+            else_if = { limit = { var:zg361_comp_m085_route = 2 } set_variable = { name = zg361_comp_m085_next_grant_year value = { value = current_year add = 1 } } }
             set_variable = { name = zg361_comp_m085_cliff_gap_years value = 0 }
             if = { limit = { var:zg361_comp_m085_next_grant_year > 0 } set_variable = { name = zg361_comp_m085_cliff_gap_years value = { value = var:zg361_comp_m085_next_grant_year subtract = var:zg361_comp_m085_last_vest_year } } }
 
@@ -3776,7 +4799,18 @@ zg361_comp_m086_consume_effect = {
             var:zg361_comp_m086_receipt_active = 1
             var:zg361_comp_m086_consumed = 0
         }
+        set_variable = { name = zg361_comp_m086_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m086_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m086_object_subject value = this }
+        set_variable = { name = zg361_comp_m086_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m086_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m086_object_state value = 2 }
+        set_variable = { name = zg361_comp_m086_object_route value = var:zg361_comp_m086_route }
+        set_variable = { name = zg361_comp_m086_visible_outcome value = var:zg361_comp_m086_route }
+        set_variable = { name = zg361_comp_m086_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m086_hold_policy value = var:zg361_comp_m086_route }
+            set_variable = { name = zg361_comp_m086_retention_gap_years value = var:zg361_comp_m085_cliff_gap_years }
+            set_variable = { name = zg361_comp_m086_retention_risk value = var:zg361_comp_m085_cliff_gap_years }
             set_variable = { name = zg361_comp_m086_clawback_source_receipt value = var:zg361_comp_bonus_immediate_receipt_serial }
             set_variable = { name = zg361_comp_m086_clawback_limit value = 2 }
 
@@ -3932,11 +4966,21 @@ zg361_comp_m087_consume_effect = {
             var:zg361_comp_m087_receipt_active = 1
             var:zg361_comp_m087_consumed = 0
         }
+        set_variable = { name = zg361_comp_m087_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m087_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m087_object_subject value = this }
+        set_variable = { name = zg361_comp_m087_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m087_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m087_object_state value = 3 }
+        set_variable = { name = zg361_comp_m087_object_route value = var:zg361_comp_m087_route }
+        set_variable = { name = zg361_comp_m087_visible_outcome value = var:zg361_comp_m087_route }
+        set_variable = { name = zg361_comp_m087_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m087_band_min value = 10 }
             set_variable = { name = zg361_comp_m087_band_max value = 20 }
             set_variable = { name = zg361_comp_m087_salary value = 15 }
             set_variable = { name = zg361_comp_m087_position_bps value = 5000 }
-            if = { limit = { var:zg361_comp_m087_route = 2 } set_variable = { name = zg361_comp_m087_position_bps value = 11000 } }
+            if = { limit = { var:zg361_comp_m087_route = 2 } set_variable = { name = zg361_comp_m087_salary value = 21 } set_variable = { name = zg361_comp_m087_position_bps value = 11000 } }
+            else_if = { limit = { var:zg361_comp_m087_route = 3 } set_variable = { name = zg361_comp_m087_salary value = 9 } set_variable = { name = zg361_comp_m087_position_bps value = -1000 } }
 
 
 
@@ -4090,11 +5134,34 @@ zg361_comp_m088_consume_effect = {
             var:zg361_comp_m088_receipt_active = 1
             var:zg361_comp_m088_consumed = 0
         }
+        set_variable = { name = zg361_comp_m088_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m088_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m088_object_subject value = this }
+        set_variable = { name = zg361_comp_m088_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m088_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m088_object_state value = 3 }
+        set_variable = { name = zg361_comp_m088_object_route value = var:zg361_comp_m088_route }
+        set_variable = { name = zg361_comp_m088_visible_outcome value = var:zg361_comp_m088_route }
+        set_variable = { name = zg361_comp_m088_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m088_raise_pool value = 10 }
             set_variable = { name = zg361_comp_m088_market_allocation value = 4 }
             set_variable = { name = zg361_comp_m088_merit_allocation value = 3 }
             set_variable = { name = zg361_comp_m088_fairness_allocation value = 3 }
-            set_variable = { name = zg361_comp_m088_allocation_total value = 10 }
+            if = { limit = { var:zg361_comp_m088_route = 2 }
+                set_variable = { name = zg361_comp_m088_market_allocation value = 2 }
+                set_variable = { name = zg361_comp_m088_merit_allocation value = 5 }
+                set_variable = { name = zg361_comp_m088_fairness_allocation value = 3 }
+            }
+            else_if = { limit = { var:zg361_comp_m088_route = 3 }
+                set_variable = { name = zg361_comp_m088_raise_pool value = 0 }
+                set_variable = { name = zg361_comp_m088_market_allocation value = 0 }
+                set_variable = { name = zg361_comp_m088_merit_allocation value = 0 }
+                set_variable = { name = zg361_comp_m088_fairness_allocation value = 0 }
+                set_variable = { name = zg361_comp_m088_object_materialized value = 0 }
+            }
+            set_variable = { name = zg361_comp_m088_allocation_total value = var:zg361_comp_m088_market_allocation }
+            change_variable = { name = zg361_comp_m088_allocation_total add = var:zg361_comp_m088_merit_allocation }
+            change_variable = { name = zg361_comp_m088_allocation_total add = var:zg361_comp_m088_fairness_allocation }
 
 
 
@@ -4248,10 +5315,28 @@ zg361_comp_m089_consume_effect = {
             var:zg361_comp_m089_receipt_active = 1
             var:zg361_comp_m089_consumed = 0
         }
+        set_variable = { name = zg361_comp_m089_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m089_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m089_object_subject value = this }
+        set_variable = { name = zg361_comp_m089_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m089_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m089_object_state value = 3 }
+        set_variable = { name = zg361_comp_m089_object_route value = var:zg361_comp_m089_route }
+        set_variable = { name = zg361_comp_m089_visible_outcome value = var:zg361_comp_m089_route }
+        set_variable = { name = zg361_comp_m089_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m089_grade_level value = 4 }
             set_variable = { name = zg361_comp_m089_appointment_code value = var:zg361_comp_m089_route }
-            set_variable = { name = zg361_comp_m089_authority value = 1 }
+            set_variable = { name = zg361_comp_m089_frozen_band_position_bps value = var:zg361_comp_m087_position_bps }
+            set_variable = { name = zg361_comp_m089_frozen_raise_pool value = var:zg361_comp_m088_raise_pool }
+            set_variable = { name = zg361_comp_m089_authority value = 0 }
             set_variable = { name = zg361_comp_m089_cash_raise value = 0 }
+            if = {
+                limit = { var:zg361_comp_m089_route = 1 var:zg361_comp_m087_position_bps <= 10000 }
+                set_variable = { name = zg361_comp_m089_authority value = 1 }
+                set_variable = { name = zg361_comp_m089_cash_raise value = var:zg361_comp_m088_market_allocation }
+            }
+            else_if = { limit = { var:zg361_comp_m089_route = 2 } set_variable = { name = zg361_comp_m089_authority value = 1 } }
+            else_if = { limit = { var:zg361_comp_m089_route = 3 } set_variable = { name = zg361_comp_m089_appointment_code value = 0 } set_variable = { name = zg361_comp_m089_authority value = 0 } }
 
 
 
@@ -4320,19 +5405,20 @@ zg361_comp_m090_core_effect = {
             var:zg361_comp_m090_receipt_active = 0
 
             trigger_if = {
-                limit = { NOT = { scope:zg361_comp_route = 3 } }
-                var:zg361_case_l_owner = {
-                    has_treasury = yes
-                    treasury >= 7
-                    gold >= 3
-                }
+                limit = { scope:zg361_comp_route = 1 }
+                var:zg361_case_l_owner = { has_treasury = yes treasury >= 7 gold >= 3 }
                 var:zg361_comp_l_treasury_available >= 7
                 var:zg361_comp_l_personal_available >= 3
-                trigger_if = {
-                    limit = { has_variable = zg361_comp_m090_pay_treasury_status }
-                    var:zg361_comp_m090_pay_treasury_status = 0
-                }
-                trigger_else = { always = yes }
+                var:zg361_comp_m090_pay_treasury_status = 0
+                var:zg361_comp_m090_pay_personal_status = 0
+            }
+            trigger_else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                var:zg361_case_l_owner = { has_treasury = yes treasury >= 4 gold >= 2 }
+                var:zg361_comp_l_treasury_available >= 4
+                var:zg361_comp_l_personal_available >= 2
+                var:zg361_comp_m090_bounded_treasury_status = 0
+                var:zg361_comp_m090_bounded_personal_status = 0
             }
             trigger_else = { always = yes }
         }
@@ -4365,8 +5451,12 @@ zg361_comp_m090_core_effect = {
         if = {
             limit = { var:zg361_case_kernel_applied = 1 }
             if = {
-                limit = { NOT = { scope:zg361_comp_route = 3 } }
+                limit = { scope:zg361_comp_route = 1 }
                 zg361_comp_l_pay_spot_effect = yes
+            }
+            else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                zg361_comp_l_pay_spot_bounded_effect = yes
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }
             if = {
@@ -4424,8 +5514,19 @@ zg361_comp_m090_consume_effect = {
             var:zg361_comp_m090_receipt_active = 1
             var:zg361_comp_m090_consumed = 0
         }
+        set_variable = { name = zg361_comp_m090_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m090_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m090_object_subject value = this }
+        set_variable = { name = zg361_comp_m090_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m090_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m090_object_state value = 4 }
+        set_variable = { name = zg361_comp_m090_object_route value = var:zg361_comp_m090_route }
+        set_variable = { name = zg361_comp_m090_visible_outcome value = var:zg361_comp_m090_route }
+        set_variable = { name = zg361_comp_m090_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m090_spot_gross value = 0 }
-            if = { limit = { OR = { var:zg361_comp_m090_route = 1 var:zg361_comp_m090_route = 2 } } set_variable = { name = zg361_comp_m090_spot_gross value = 10 } }
+            if = { limit = { var:zg361_comp_m090_route = 1 } set_variable = { name = zg361_comp_m090_spot_gross value = 10 } }
+            else_if = { limit = { var:zg361_comp_m090_route = 2 } set_variable = { name = zg361_comp_m090_spot_gross value = 6 } }
+            else = { set_variable = { name = zg361_comp_m090_object_materialized value = 0 } }
             set_variable = { name = zg361_comp_m090_performance_slot_delta value = 0 }
 
 
@@ -4580,9 +5681,22 @@ zg361_comp_m091_consume_effect = {
             var:zg361_comp_m091_receipt_active = 1
             var:zg361_comp_m091_consumed = 0
         }
+        set_variable = { name = zg361_comp_m091_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m091_object_owner value = var:zg361_case_l_owner }
+        set_variable = { name = zg361_comp_m091_object_subject value = this }
+        set_variable = { name = zg361_comp_m091_object_cycle value = var:zg361_case_l_cycle_serial }
+        set_variable = { name = zg361_comp_m091_object_case value = var:zg361_case_l_case_serial }
+        set_variable = { name = zg361_comp_m091_object_state value = 4 }
+        set_variable = { name = zg361_comp_m091_object_route value = var:zg361_comp_m091_route }
+        set_variable = { name = zg361_comp_m091_visible_outcome value = var:zg361_comp_m091_route }
+        set_variable = { name = zg361_comp_m091_visible_revision value = var:zg361_case_l_revision }
         set_variable = { name = zg361_comp_m091_tenure_award value = 3 }
             set_variable = { name = zg361_comp_m091_performance_award value = 7 }
-            set_variable = { name = zg361_comp_m091_award_total value = 10 }
+            if = { limit = { var:zg361_comp_m091_route = 2 } set_variable = { name = zg361_comp_m091_tenure_award value = 4 } set_variable = { name = zg361_comp_m091_performance_award value = 2 } }
+            else_if = { limit = { var:zg361_comp_m091_route = 3 } set_variable = { name = zg361_comp_m091_tenure_award value = 0 } set_variable = { name = zg361_comp_m091_performance_award value = 0 } }
+            set_variable = { name = zg361_comp_m091_award_total value = var:zg361_comp_m091_tenure_award }
+            change_variable = { name = zg361_comp_m091_award_total add = var:zg361_comp_m091_performance_award }
+            set_variable = { name = zg361_comp_m091_source_spot_gross value = var:zg361_comp_m090_spot_gross }
 
 
 
@@ -4736,10 +5850,20 @@ zg361_comp_m278_consume_effect = {
             var:zg361_comp_m278_receipt_active = 1
             var:zg361_comp_m278_consumed = 0
         }
+        set_variable = { name = zg361_comp_m278_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m278_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m278_object_subject value = this }
+        set_variable = { name = zg361_comp_m278_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m278_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m278_object_state value = 1 }
+        set_variable = { name = zg361_comp_m278_object_route value = var:zg361_comp_m278_route }
+        set_variable = { name = zg361_comp_m278_visible_outcome value = var:zg361_comp_m278_route }
+        set_variable = { name = zg361_comp_m278_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m278_promised value = var:zg361_comp_ae_statement_payable }
             set_variable = { name = zg361_comp_m278_paid value = var:zg361_comp_ae_statement_paid }
             set_variable = { name = zg361_comp_m278_owed value = var:zg361_comp_ae_statement_owed }
             set_variable = { name = zg361_comp_m278_returned value = var:zg361_comp_ae_statement_returned }
+            set_variable = { name = zg361_comp_m278_projection_mode value = var:zg361_comp_m278_route }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -4893,6 +6017,15 @@ zg361_comp_m279_consume_effect = {
             var:zg361_comp_m279_receipt_active = 1
             var:zg361_comp_m279_consumed = 0
         }
+        set_variable = { name = zg361_comp_m279_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m279_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m279_object_subject value = this }
+        set_variable = { name = zg361_comp_m279_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m279_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m279_object_state value = 1 }
+        set_variable = { name = zg361_comp_m279_object_route value = var:zg361_comp_m279_route }
+        set_variable = { name = zg361_comp_m279_visible_outcome value = var:zg361_comp_m279_route }
+        set_variable = { name = zg361_comp_m279_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m279_contract_kind value = var:zg361_comp_m279_route }
             set_variable = { name = zg361_comp_m279_locked_cycle value = var:zg361_case_ae_cycle_serial }
             set_variable = { name = zg361_comp_m279_amount value = 6 }
@@ -5049,6 +6182,15 @@ zg361_comp_m280_consume_effect = {
             var:zg361_comp_m280_receipt_active = 1
             var:zg361_comp_m280_consumed = 0
         }
+        set_variable = { name = zg361_comp_m280_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m280_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m280_object_subject value = this }
+        set_variable = { name = zg361_comp_m280_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m280_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m280_object_state value = 1 }
+        set_variable = { name = zg361_comp_m280_object_route value = var:zg361_comp_m280_route }
+        set_variable = { name = zg361_comp_m280_visible_outcome value = var:zg361_comp_m280_route }
+        set_variable = { name = zg361_comp_m280_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m280_rule value = var:zg361_comp_m280_route }
             set_variable = { name = zg361_comp_m280_service_months value = 12 }
             set_variable = { name = zg361_comp_m280_proration_bps value = 10000 }
@@ -5235,6 +6377,15 @@ zg361_comp_m281_consume_effect = {
             var:zg361_comp_m281_receipt_active = 1
             var:zg361_comp_m281_consumed = 0
         }
+        set_variable = { name = zg361_comp_m281_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m281_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m281_object_subject value = this }
+        set_variable = { name = zg361_comp_m281_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m281_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m281_object_state value = 2 }
+        set_variable = { name = zg361_comp_m281_object_route value = var:zg361_comp_m281_route }
+        set_variable = { name = zg361_comp_m281_visible_outcome value = var:zg361_comp_m281_route }
+        set_variable = { name = zg361_comp_m281_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m281_decision value = var:zg361_comp_m281_route }
             if = { limit = { var:zg361_comp_m281_route = 1 }
                 set_variable = { name = zg361_comp_m281_paid_amount value = scope:zg361_comp_due_gross }
@@ -5421,6 +6572,15 @@ zg361_comp_m282_consume_effect = {
             var:zg361_comp_m282_receipt_active = 1
             var:zg361_comp_m282_consumed = 0
         }
+        set_variable = { name = zg361_comp_m282_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m282_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m282_object_subject value = this }
+        set_variable = { name = zg361_comp_m282_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m282_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m282_object_state value = 2 }
+        set_variable = { name = zg361_comp_m282_object_route value = var:zg361_comp_m282_route }
+        set_variable = { name = zg361_comp_m282_visible_outcome value = var:zg361_comp_m282_route }
+        set_variable = { name = zg361_comp_m282_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m282_reason_code value = var:zg361_comp_m282_route }
             set_variable = { name = zg361_comp_m282_backpay value = 0 }
             if = { limit = { var:zg361_comp_m282_route = 1 }
@@ -5433,6 +6593,7 @@ zg361_comp_m282_consume_effect = {
                 change_variable = { name = zg361_comp_ae_statement_payable add = 4 }
                 change_variable = { name = zg361_comp_ae_statement_owed add = 4 }
             }
+            else = { set_variable = { name = zg361_comp_m282_object_materialized value = 0 } }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -5586,9 +6747,31 @@ zg361_comp_m283_consume_effect = {
             var:zg361_comp_m283_receipt_active = 1
             var:zg361_comp_m283_consumed = 0
         }
+        set_variable = { name = zg361_comp_m283_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m283_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m283_object_subject value = this }
+        set_variable = { name = zg361_comp_m283_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m283_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m283_object_state value = 3 }
+        set_variable = { name = zg361_comp_m283_object_route value = var:zg361_comp_m283_route }
+        set_variable = { name = zg361_comp_m283_visible_outcome value = var:zg361_comp_m283_route }
+        set_variable = { name = zg361_comp_m283_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m283_responsibility_cycle value = var:zg361_case_ae_cycle_serial }
             set_variable = { name = zg361_comp_m283_cash_due_cycle value = { value = var:zg361_case_ae_cycle_serial add = 1 } }
             set_variable = { name = zg361_comp_m283_cash_raise value = 4 }
+            if = { limit = { var:zg361_comp_m283_route = 2 }
+                set_variable = { name = zg361_comp_m283_cash_due_cycle value = { value = var:zg361_case_ae_cycle_serial add = 2 } }
+                set_variable = { name = zg361_comp_m283_cash_raise value = 2 }
+            }
+            else_if = { limit = { var:zg361_comp_m283_route = 3 }
+                set_variable = { name = zg361_comp_m283_cash_due_cycle value = 0 }
+                set_variable = { name = zg361_comp_m283_cash_raise value = 0 }
+                set_variable = { name = zg361_comp_m283_object_materialized value = 0 }
+            }
+            if = { limit = { var:zg361_comp_m283_cash_raise > 0 }
+                change_variable = { name = zg361_comp_ae_statement_payable add = var:zg361_comp_m283_cash_raise }
+                change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m283_cash_raise }
+            }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -5742,11 +6925,23 @@ zg361_comp_m284_consume_effect = {
             var:zg361_comp_m284_receipt_active = 1
             var:zg361_comp_m284_consumed = 0
         }
+        set_variable = { name = zg361_comp_m284_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m284_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m284_object_subject value = this }
+        set_variable = { name = zg361_comp_m284_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m284_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m284_object_state value = 3 }
+        set_variable = { name = zg361_comp_m284_object_route value = var:zg361_comp_m284_route }
+        set_variable = { name = zg361_comp_m284_visible_outcome value = var:zg361_comp_m284_route }
+        set_variable = { name = zg361_comp_m284_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m284_current_pay value = 20 }
             set_variable = { name = zg361_comp_m284_target_pay value = 16 }
             set_variable = { name = zg361_comp_m284_steps value = 2 }
             set_variable = { name = zg361_comp_m284_professional_pay_preserved value = 0 }
-            if = { limit = { var:zg361_comp_m284_route = 2 } set_variable = { name = zg361_comp_m284_professional_pay_preserved value = 1 } }
+            set_variable = { name = zg361_comp_m284_next_cycle_delta value = -2 }
+            if = { limit = { var:zg361_comp_m284_route = 2 } set_variable = { name = zg361_comp_m284_target_pay value = 20 } set_variable = { name = zg361_comp_m284_professional_pay_preserved value = 1 } set_variable = { name = zg361_comp_m284_next_cycle_delta value = 0 } }
+            else_if = { limit = { var:zg361_comp_m284_route = 3 } set_variable = { name = zg361_comp_m284_steps value = 1 } set_variable = { name = zg361_comp_m284_next_cycle_delta value = -4 } }
+            set_variable = { name = zg361_comp_ae_next_cycle_base_delta value = var:zg361_comp_m284_next_cycle_delta }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -5900,11 +7095,39 @@ zg361_comp_m285_consume_effect = {
             var:zg361_comp_m285_receipt_active = 1
             var:zg361_comp_m285_consumed = 0
         }
+        set_variable = { name = zg361_comp_m285_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m285_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m285_object_subject value = this }
+        set_variable = { name = zg361_comp_m285_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m285_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m285_object_state value = 3 }
+        set_variable = { name = zg361_comp_m285_object_route value = var:zg361_comp_m285_route }
+        set_variable = { name = zg361_comp_m285_visible_outcome value = var:zg361_comp_m285_route }
+        set_variable = { name = zg361_comp_m285_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m285_frozen_grade value = var:zg361_comp_result_rating }
             set_variable = { name = zg361_comp_m285_raise_pool value = 10 }
             set_variable = { name = zg361_comp_m285_band_debt_allocation value = 6 }
             set_variable = { name = zg361_comp_m285_scarcity_allocation value = 4 }
-            set_variable = { name = zg361_comp_m285_allocation_total value = 10 }
+            if = { limit = { var:zg361_comp_m285_route = 2 }
+                set_variable = { name = zg361_comp_m285_raise_pool value = 6 }
+                set_variable = { name = zg361_comp_m285_band_debt_allocation value = 2 }
+                set_variable = { name = zg361_comp_m285_scarcity_allocation value = 4 }
+            }
+            else_if = { limit = { var:zg361_comp_m285_route = 3 }
+                set_variable = { name = zg361_comp_m285_raise_pool value = 0 }
+                set_variable = { name = zg361_comp_m285_band_debt_allocation value = 0 }
+                set_variable = { name = zg361_comp_m285_scarcity_allocation value = 0 }
+                set_variable = { name = zg361_comp_m285_object_materialized value = 0 }
+            }
+            set_variable = { name = zg361_comp_m285_allocation_total value = var:zg361_comp_m285_band_debt_allocation }
+            change_variable = { name = zg361_comp_m285_allocation_total add = var:zg361_comp_m285_scarcity_allocation }
+            set_variable = { name = zg361_comp_m285_subject_raise value = 0 }
+            if = { limit = { var:zg361_comp_m285_route = 1 } set_variable = { name = zg361_comp_m285_subject_raise value = 4 } }
+            else_if = { limit = { var:zg361_comp_m285_route = 2 } set_variable = { name = zg361_comp_m285_subject_raise value = 2 } }
+            if = { limit = { var:zg361_comp_m285_subject_raise > 0 }
+                change_variable = { name = zg361_comp_ae_statement_payable add = var:zg361_comp_m285_subject_raise }
+                change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m285_subject_raise }
+            }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -6058,11 +7281,27 @@ zg361_comp_m286_consume_effect = {
             var:zg361_comp_m286_receipt_active = 1
             var:zg361_comp_m286_consumed = 0
         }
+        set_variable = { name = zg361_comp_m286_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m286_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m286_object_subject value = this }
+        set_variable = { name = zg361_comp_m286_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m286_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m286_object_state value = 4 }
+        set_variable = { name = zg361_comp_m286_object_route value = var:zg361_comp_m286_route }
+        set_variable = { name = zg361_comp_m286_visible_outcome value = var:zg361_comp_m286_route }
+        set_variable = { name = zg361_comp_m286_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m286_fixed_raise value = 0 }
             set_variable = { name = zg361_comp_m286_one_time_bonus value = 0 }
             set_variable = { name = zg361_comp_m286_exception_expiry_cycle value = 0 }
             if = { limit = { var:zg361_comp_m286_route = 1 } set_variable = { name = zg361_comp_m286_fixed_raise value = 4 } }
             else_if = { limit = { var:zg361_comp_m286_route = 2 } set_variable = { name = zg361_comp_m286_one_time_bonus value = 4 } set_variable = { name = zg361_comp_m286_exception_expiry_cycle value = { value = var:zg361_case_ae_cycle_serial add = 1 } } }
+            else_if = { limit = { var:zg361_comp_m286_route = 3 } set_variable = { name = zg361_comp_m286_exception_expiry_cycle value = { value = var:zg361_case_ae_cycle_serial add = 1 } } }
+            set_variable = { name = zg361_comp_m286_statement_delta value = var:zg361_comp_m286_fixed_raise }
+            change_variable = { name = zg361_comp_m286_statement_delta add = var:zg361_comp_m286_one_time_bonus }
+            if = { limit = { var:zg361_comp_m286_statement_delta > 0 }
+                change_variable = { name = zg361_comp_ae_statement_payable add = var:zg361_comp_m286_statement_delta }
+                change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m286_statement_delta }
+            }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -6216,6 +7455,15 @@ zg361_comp_m287_consume_effect = {
             var:zg361_comp_m287_receipt_active = 1
             var:zg361_comp_m287_consumed = 0
         }
+        set_variable = { name = zg361_comp_m287_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m287_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m287_object_subject value = this }
+        set_variable = { name = zg361_comp_m287_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m287_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m287_object_state value = 4 }
+        set_variable = { name = zg361_comp_m287_object_route value = var:zg361_comp_m287_route }
+        set_variable = { name = zg361_comp_m287_visible_outcome value = var:zg361_comp_m287_route }
+        set_variable = { name = zg361_comp_m287_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m287_visibility_mode value = var:zg361_comp_m287_route }
             set_variable = { name = zg361_comp_m287_named_peer_salary_visible value = 0 }
             set_variable = { name = zg361_comp_m287_own_salary_visible value = 1 }
@@ -6372,10 +7620,25 @@ zg361_comp_m288_consume_effect = {
             var:zg361_comp_m288_receipt_active = 1
             var:zg361_comp_m288_consumed = 0
         }
+        set_variable = { name = zg361_comp_m288_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m288_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m288_object_subject value = this }
+        set_variable = { name = zg361_comp_m288_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m288_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m288_object_state value = 5 }
+        set_variable = { name = zg361_comp_m288_object_route value = var:zg361_comp_m288_route }
+        set_variable = { name = zg361_comp_m288_visible_outcome value = var:zg361_comp_m288_route }
+        set_variable = { name = zg361_comp_m288_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m288_incumbent_salary value = 15 }
-            set_variable = { name = zg361_comp_m288_new_hire_salary value = 18 }
+            set_variable = { name = zg361_comp_m288_new_hire_salary value = 20 }
             set_variable = { name = zg361_comp_m288_scarcity_allowance value = 1 }
-            set_variable = { name = zg361_comp_m288_repair_due value = 2 }
+            set_variable = { name = zg361_comp_m288_repair_due value = 4 }
+            if = { limit = { var:zg361_comp_m288_route = 2 } set_variable = { name = zg361_comp_m288_repair_due value = 2 } }
+            else_if = { limit = { var:zg361_comp_m288_route = 3 } set_variable = { name = zg361_comp_m288_repair_due value = 0 } set_variable = { name = zg361_comp_m288_object_materialized value = 0 } }
+            if = { limit = { var:zg361_comp_m288_repair_due > 0 }
+                change_variable = { name = zg361_comp_ae_statement_payable add = var:zg361_comp_m288_repair_due }
+                change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m288_repair_due }
+            }
 
         zg361_comp_ae_recalculate_statement_effect = yes
 
@@ -6553,12 +7816,25 @@ zg361_comp_m289_consume_effect = {
             var:zg361_comp_m289_receipt_active = 1
             var:zg361_comp_m289_consumed = 0
         }
+        set_variable = { name = zg361_comp_m289_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m289_object_owner value = var:zg361_case_ae_owner }
+        set_variable = { name = zg361_comp_m289_object_subject value = this }
+        set_variable = { name = zg361_comp_m289_object_cycle value = var:zg361_case_ae_cycle_serial }
+        set_variable = { name = zg361_comp_m289_object_case value = var:zg361_case_ae_case_serial }
+        set_variable = { name = zg361_comp_m289_object_state value = 5 }
+        set_variable = { name = zg361_comp_m289_object_route value = var:zg361_comp_m289_route }
+        set_variable = { name = zg361_comp_m289_visible_outcome value = var:zg361_comp_m289_route }
+        set_variable = { name = zg361_comp_m289_visible_revision value = var:zg361_case_ae_revision }
         set_variable = { name = zg361_comp_m289_appeal_track value = 1 }
             set_variable = { name = zg361_comp_m289_frozen_performance_grade value = var:zg361_comp_ae_frozen_performance_grade }
             set_variable = { name = zg361_comp_m289_outcome value = var:zg361_comp_m289_route }
             if = { limit = { var:zg361_comp_m289_route = 1 }
                 change_variable = { name = zg361_comp_ae_statement_payable add = 4 }
                 change_variable = { name = zg361_comp_ae_statement_paid add = 4 }
+            }
+            else_if = { limit = { var:zg361_comp_m289_route = 2 }
+                change_variable = { name = zg361_comp_ae_statement_payable add = 2 }
+                change_variable = { name = zg361_comp_ae_statement_owed add = 2 }
             }
 
         zg361_comp_ae_recalculate_statement_effect = yes
@@ -6713,6 +7989,15 @@ zg361_comp_m290_consume_effect = {
             var:zg361_comp_m290_receipt_active = 1
             var:zg361_comp_m290_consumed = 0
         }
+        set_variable = { name = zg361_comp_m290_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m290_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m290_object_subject value = this }
+        set_variable = { name = zg361_comp_m290_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m290_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m290_object_state value = 1 }
+        set_variable = { name = zg361_comp_m290_object_route value = var:zg361_comp_m290_route }
+        set_variable = { name = zg361_comp_m290_visible_outcome value = var:zg361_comp_m290_route }
+        set_variable = { name = zg361_comp_m290_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m290_result_owner value = var:zg361_comp_result_owner }
             set_variable = { name = zg361_comp_m290_result_subject value = var:zg361_comp_result_subject }
             set_variable = { name = zg361_comp_m290_result_cycle value = var:zg361_comp_result_cycle }
@@ -6722,7 +8007,10 @@ zg361_comp_m290_consume_effect = {
             set_variable = { name = zg361_comp_m290_rating value = var:zg361_comp_result_rating }
             set_variable = { name = zg361_comp_m290_eligible value = 0 }
             if = { limit = { var:zg361_comp_m290_result_grade = 3 var:zg361_comp_m290_rating = 375 } set_variable = { name = zg361_comp_m290_eligible value = 1 } }
-            set_variable = { name = zg361_comp_m290_nomination_score value = 10 }
+            set_variable = { name = zg361_comp_m290_nomination_score value = 15 }
+            if = { limit = { var:zg361_comp_m290_route = 2 } set_variable = { name = zg361_comp_m290_nomination_score value = 10 } }
+            else_if = { limit = { var:zg361_comp_m290_route = 3 } set_variable = { name = zg361_comp_m290_nomination_score value = 5 } }
+            if = { limit = { has_variable = zg361_comp_m086_retention_risk } change_variable = { name = zg361_comp_m290_nomination_score add = var:zg361_comp_m086_retention_risk } }
 
 
 
@@ -6876,14 +8164,24 @@ zg361_comp_m291_consume_effect = {
             var:zg361_comp_m291_receipt_active = 1
             var:zg361_comp_m291_consumed = 0
         }
+        set_variable = { name = zg361_comp_m291_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m291_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m291_object_subject value = this }
+        set_variable = { name = zg361_comp_m291_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m291_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m291_object_state value = 1 }
+        set_variable = { name = zg361_comp_m291_object_route value = var:zg361_comp_m291_route }
+        set_variable = { name = zg361_comp_m291_visible_outcome value = var:zg361_comp_m291_route }
+        set_variable = { name = zg361_comp_m291_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m291_grant_measure value = var:zg361_comp_m291_route }
             set_variable = { name = zg361_comp_af_grant_base_units value = 0 }
             if = {
                 limit = { var:zg361_comp_m290_eligible = 1 }
                 set_variable = { name = zg361_comp_af_grant_base_units value = 100 }
                 if = { limit = { var:zg361_comp_m291_route = 2 } set_variable = { name = zg361_comp_af_grant_base_units value = 80 } }
-                else_if = { limit = { var:zg361_comp_m291_route = 3 } set_variable = { name = zg361_comp_af_grant_base_units value = 60 } }
+                else_if = { limit = { var:zg361_comp_m291_route = 3 } set_variable = { name = zg361_comp_af_grant_base_units value = 0 } }
             }
+            else = { set_variable = { name = zg361_comp_m291_object_materialized value = 0 } }
 
 
         zg361_comp_af_recalculate_units_effect = yes
@@ -7056,15 +8354,28 @@ zg361_comp_m292_consume_effect = {
             var:zg361_comp_m292_receipt_active = 1
             var:zg361_comp_m292_consumed = 0
         }
+        set_variable = { name = zg361_comp_m292_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m292_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m292_object_subject value = this }
+        set_variable = { name = zg361_comp_m292_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m292_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m292_object_state value = 1 }
+        set_variable = { name = zg361_comp_m292_object_route value = var:zg361_comp_m292_route }
+        set_variable = { name = zg361_comp_m292_visible_outcome value = var:zg361_comp_m292_route }
+        set_variable = { name = zg361_comp_m292_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m292_risk_kind value = var:zg361_comp_m292_route }
             set_variable = { name = zg361_comp_m292_cash_alternative value = 0 }
             set_variable = { name = zg361_comp_m292_can_expire_worthless value = 0 }
-            if = { limit = { var:zg361_comp_m292_route = 1 } set_variable = { name = zg361_comp_m292_can_expire_worthless value = 1 } }
-            else_if = {
-                limit = { var:zg361_comp_m292_route = 3 }
-                set_variable = { name = zg361_comp_af_grant_base_units value = 0 }
-                if = { limit = { var:zg361_comp_m290_eligible = 1 } set_variable = { name = zg361_comp_m292_cash_alternative value = 10 } }
+            if = {
+                limit = { var:zg361_comp_m290_eligible = 1 }
+                if = { limit = { var:zg361_comp_m292_route = 1 } set_variable = { name = zg361_comp_m292_can_expire_worthless value = 1 } }
+                else_if = {
+                    limit = { var:zg361_comp_m292_route = 3 }
+                    set_variable = { name = zg361_comp_af_grant_base_units value = 0 }
+                    set_variable = { name = zg361_comp_m292_cash_alternative value = 10 }
+                }
             }
+            else = { set_variable = { name = zg361_comp_m292_object_materialized value = 0 } }
 
 
         zg361_comp_af_recalculate_units_effect = yes
@@ -7132,7 +8443,23 @@ zg361_comp_m293_core_effect = {
             has_variable = zg361_comp_m293_receipt_active
             var:zg361_comp_m293_receipt_active = 0
 
-
+            trigger_if = {
+                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                var:zg361_case_af_owner = { has_treasury = yes treasury >= 4 gold >= 2 }
+                var:zg361_comp_af_treasury_available >= 4
+                var:zg361_comp_af_personal_available >= 2
+                var:zg361_comp_m293_cash6_treasury_status = 0
+                var:zg361_comp_m293_cash6_personal_status = 0
+            }
+            trigger_else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                var:zg361_case_af_owner = { has_treasury = yes treasury >= 7 gold >= 3 }
+                var:zg361_comp_af_treasury_available >= 7
+                var:zg361_comp_af_personal_available >= 3
+                var:zg361_comp_m293_cash10_treasury_status = 0
+                var:zg361_comp_m293_cash10_personal_status = 0
+            }
+            trigger_else = { always = yes }
         }
         zg361_case_kernel_record_operation_effect = {
             OWNER_VAR = zg361_case_af_owner
@@ -7162,7 +8489,15 @@ zg361_comp_m293_core_effect = {
         }
         if = {
             limit = { var:zg361_case_kernel_applied = 1 }
-            set_variable = { name = zg361_comp_financial_applied value = 1 }
+            if = {
+                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                zg361_comp_af_pay_conversion_remainder_effect = yes
+            }
+            else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                zg361_comp_af_pay_unconverted_bonus_effect = yes
+            }
+            else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }
             if = {
                 limit = { var:zg361_comp_financial_applied = 1 }
                 set_variable = { name = zg361_comp_m293_receipt_active value = 1 }
@@ -7218,16 +8553,27 @@ zg361_comp_m293_consume_effect = {
             var:zg361_comp_m293_receipt_active = 1
             var:zg361_comp_m293_consumed = 0
         }
+        set_variable = { name = zg361_comp_m293_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m293_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m293_object_subject value = this }
+        set_variable = { name = zg361_comp_m293_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m293_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m293_object_state value = 2 }
+        set_variable = { name = zg361_comp_m293_object_route value = var:zg361_comp_m293_route }
+        set_variable = { name = zg361_comp_m293_visible_outcome value = var:zg361_comp_m293_route }
+        set_variable = { name = zg361_comp_m293_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m293_voluntary value = 0 }
             set_variable = { name = zg361_comp_m293_converted_cash value = 0 }
             set_variable = { name = zg361_comp_af_conversion_units value = 0 }
-            set_variable = { name = zg361_comp_m293_cash_remaining value = 10 }
+            set_variable = { name = zg361_comp_m293_cash_remaining value = 0 }
             if = { limit = { var:zg361_comp_m293_route = 1 var:zg361_comp_m290_eligible = 1 }
                 set_variable = { name = zg361_comp_m293_voluntary value = 1 }
                 set_variable = { name = zg361_comp_m293_converted_cash value = 4 }
                 set_variable = { name = zg361_comp_af_conversion_units value = 4 }
                 set_variable = { name = zg361_comp_m293_cash_remaining value = 6 }
             }
+            else_if = { limit = { var:zg361_comp_m293_route = 2 } set_variable = { name = zg361_comp_m293_cash_remaining value = 10 } }
+            else = { set_variable = { name = zg361_comp_m293_object_materialized value = 0 } }
 
 
         zg361_comp_af_recalculate_units_effect = yes
@@ -7381,12 +8727,23 @@ zg361_comp_m294_consume_effect = {
             var:zg361_comp_m294_receipt_active = 1
             var:zg361_comp_m294_consumed = 0
         }
+        set_variable = { name = zg361_comp_m294_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m294_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m294_object_subject value = this }
+        set_variable = { name = zg361_comp_m294_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m294_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m294_object_state value = 2 }
+        set_variable = { name = zg361_comp_m294_object_route value = var:zg361_comp_m294_route }
+        set_variable = { name = zg361_comp_m294_visible_outcome value = var:zg361_comp_m294_route }
+        set_variable = { name = zg361_comp_m294_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m294_grant_price value = 1 }
             set_variable = { name = zg361_comp_m294_current_price value = 2 }
             set_variable = { name = zg361_comp_m294_liquidity_bps value = 5000 }
+            if = { limit = { var:zg361_comp_m294_route = 2 } set_variable = { name = zg361_comp_m294_liquidity_bps value = 10000 } }
+            else_if = { limit = { var:zg361_comp_m294_route = 3 } set_variable = { name = zg361_comp_m294_liquidity_bps value = 0 } }
             set_variable = { name = zg361_comp_m294_grant_value value = var:zg361_comp_af_total_units }
             set_variable = { name = zg361_comp_m294_current_value value = { value = var:zg361_comp_af_total_units multiply = 2 } }
-            set_variable = { name = zg361_comp_m294_liquid_value value = var:zg361_comp_af_total_units }
+            set_variable = { name = zg361_comp_m294_liquid_value value = { value = var:zg361_comp_m294_current_value multiply = var:zg361_comp_m294_liquidity_bps divide = 10000 floor = yes } }
 
 
 
@@ -7540,6 +8897,15 @@ zg361_comp_m295_consume_effect = {
             var:zg361_comp_m295_receipt_active = 1
             var:zg361_comp_m295_consumed = 0
         }
+        set_variable = { name = zg361_comp_m295_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m295_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m295_object_subject value = this }
+        set_variable = { name = zg361_comp_m295_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m295_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m295_object_state value = 3 }
+        set_variable = { name = zg361_comp_m295_object_route value = var:zg361_comp_m295_route }
+        set_variable = { name = zg361_comp_m295_visible_outcome value = var:zg361_comp_m295_route }
+        set_variable = { name = zg361_comp_m295_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m295_cliff_days value = 365 }
             if = { limit = { var:zg361_comp_m295_route = 2 } set_variable = { name = zg361_comp_m295_cliff_days value = 180 } }
             else_if = { limit = { var:zg361_comp_m295_route = 3 } set_variable = { name = zg361_comp_m295_cliff_days value = 730 } }
@@ -7697,6 +9063,15 @@ zg361_comp_m296_consume_effect = {
             var:zg361_comp_m296_receipt_active = 1
             var:zg361_comp_m296_consumed = 0
         }
+        set_variable = { name = zg361_comp_m296_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m296_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m296_object_subject value = this }
+        set_variable = { name = zg361_comp_m296_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m296_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m296_object_state value = 3 }
+        set_variable = { name = zg361_comp_m296_object_route value = var:zg361_comp_m296_route }
+        set_variable = { name = zg361_comp_m296_visible_outcome value = var:zg361_comp_m296_route }
+        set_variable = { name = zg361_comp_m296_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m296_cadence_days value = 30 }
             set_variable = { name = zg361_comp_m296_vesting_periods value = 12 }
             if = { limit = { var:zg361_comp_m296_route = 2 } set_variable = { name = zg361_comp_m296_cadence_days value = 90 } set_variable = { name = zg361_comp_m296_vesting_periods value = 4 } }
@@ -7856,6 +9231,15 @@ zg361_comp_m297_consume_effect = {
             var:zg361_comp_m297_receipt_active = 1
             var:zg361_comp_m297_consumed = 0
         }
+        set_variable = { name = zg361_comp_m297_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m297_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m297_object_subject value = this }
+        set_variable = { name = zg361_comp_m297_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m297_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m297_object_state value = 4 }
+        set_variable = { name = zg361_comp_m297_object_route value = var:zg361_comp_m297_route }
+        set_variable = { name = zg361_comp_m297_visible_outcome value = var:zg361_comp_m297_route }
+        set_variable = { name = zg361_comp_m297_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m297_service_bps value = 5000 }
             set_variable = { name = zg361_comp_m297_performance_bps value = 5000 }
             if = { limit = { var:zg361_comp_m297_route = 2 } set_variable = { name = zg361_comp_m297_service_bps value = 7000 } set_variable = { name = zg361_comp_m297_performance_bps value = 3000 } }
@@ -8013,6 +9397,15 @@ zg361_comp_m298_consume_effect = {
             var:zg361_comp_m298_receipt_active = 1
             var:zg361_comp_m298_consumed = 0
         }
+        set_variable = { name = zg361_comp_m298_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m298_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m298_object_subject value = this }
+        set_variable = { name = zg361_comp_m298_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m298_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m298_object_state value = 4 }
+        set_variable = { name = zg361_comp_m298_object_route value = var:zg361_comp_m298_route }
+        set_variable = { name = zg361_comp_m298_visible_outcome value = var:zg361_comp_m298_route }
+        set_variable = { name = zg361_comp_m298_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m298_organization_gate value = 1 }
             set_variable = { name = zg361_comp_m298_individual_gate value = 1 }
             if = { limit = { var:zg361_comp_m298_route = 2 } set_variable = { name = zg361_comp_m298_individual_gate value = 0 } }
@@ -8170,15 +9563,22 @@ zg361_comp_m299_consume_effect = {
             var:zg361_comp_m299_receipt_active = 1
             var:zg361_comp_m299_consumed = 0
         }
+        set_variable = { name = zg361_comp_m299_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m299_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m299_object_subject value = this }
+        set_variable = { name = zg361_comp_m299_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m299_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m299_object_state value = 5 }
+        set_variable = { name = zg361_comp_m299_object_route value = var:zg361_comp_m299_route }
+        set_variable = { name = zg361_comp_m299_visible_outcome value = var:zg361_comp_m299_route }
+        set_variable = { name = zg361_comp_m299_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m299_leaver_class value = var:zg361_comp_m299_route }
             set_variable = { name = zg361_comp_m299_good_leaver_acceleration value = 0 }
             set_variable = { name = zg361_comp_m299_vested_preserved value = var:zg361_comp_af_vested_units }
-            if = { limit = { OR = { var:zg361_comp_m299_route = 1 var:zg361_comp_m299_route = 2 } }
-                change_variable = { name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_service }
-                change_variable = { name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_performance }
-                set_variable = { name = zg361_comp_af_unvested_service value = 0 }
-                set_variable = { name = zg361_comp_af_unvested_performance value = 0 }
-            }
+            change_variable = { name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_service }
+            change_variable = { name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_performance }
+            set_variable = { name = zg361_comp_af_unvested_service value = 0 }
+            set_variable = { name = zg361_comp_af_unvested_performance value = 0 }
             set_variable = { name = zg361_comp_m299_clawback_eligible value = 0 }
             if = { limit = { var:zg361_comp_m299_route = 2 } set_variable = { name = zg361_comp_m299_clawback_eligible value = 1 } }
 
@@ -8361,12 +9761,22 @@ zg361_comp_m300_consume_effect = {
             var:zg361_comp_m300_receipt_active = 1
             var:zg361_comp_m300_consumed = 0
         }
+        set_variable = { name = zg361_comp_m300_object_materialized value = 1 }
+        set_variable = { name = zg361_comp_m300_object_owner value = var:zg361_case_af_owner }
+        set_variable = { name = zg361_comp_m300_object_subject value = this }
+        set_variable = { name = zg361_comp_m300_object_cycle value = var:zg361_case_af_cycle_serial }
+        set_variable = { name = zg361_comp_m300_object_case value = var:zg361_case_af_case_serial }
+        set_variable = { name = zg361_comp_m300_object_state value = 5 }
+        set_variable = { name = zg361_comp_m300_object_route value = var:zg361_comp_m300_route }
+        set_variable = { name = zg361_comp_m300_visible_outcome value = var:zg361_comp_m300_route }
+        set_variable = { name = zg361_comp_m300_visible_revision value = var:zg361_case_af_revision }
         set_variable = { name = zg361_comp_m300_window_open value = 0 }
             set_variable = { name = zg361_comp_m300_requested_units value = 0 }
             if = { limit = { OR = { var:zg361_comp_m300_route = 1 var:zg361_comp_m300_route = 2 } }
                 set_variable = { name = zg361_comp_m300_window_open value = 1 }
                 set_variable = { name = zg361_comp_m300_requested_units value = 10 }
             }
+            else = { set_variable = { name = zg361_comp_m300_object_materialized value = 0 } }
         if = {
             limit = { OR = { var:zg361_comp_m300_route = 1 var:zg361_comp_m300_route = 2 } }
             var:zg361_case_af_owner = { change_variable = { name = zg361_comp_af_queue_tail add = 1 } }
@@ -8641,6 +10051,7 @@ zg361_comp_ae_try_advance_02_effect = {
             limit = { var:zg361_case_kernel_applied = 1 }
             if = {
             limit = { var:zg361_comp_ae_due_resolved = 0 var:zg361_comp_m281_route = 2 }
+            zg361_comp_ae_freeze_due_obligation_effect = yes
             zg361_case_kernel_schedule_deadline_effect = {
             OWNER_VAR = zg361_case_ae_owner
             SUBJECT_VAR = zg361_case_ae_subject
@@ -8667,6 +10078,7 @@ zg361_comp_ae_try_advance_02_effect = {
         }
         else_if = {
             limit = { var:zg361_comp_ae_due_resolved = 0 var:zg361_comp_m281_route = 3 }
+            zg361_comp_ae_freeze_due_obligation_effect = yes
             zg361_case_kernel_schedule_deadline_effect = {
             OWNER_VAR = zg361_case_ae_owner
             SUBJECT_VAR = zg361_case_ae_subject

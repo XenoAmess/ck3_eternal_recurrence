@@ -73,6 +73,274 @@ MECHANISM_BEHAVIORS: Final[dict[int, MechanismBehavior]] = {
     row[0]: MechanismBehavior(*row) for row in _BEHAVIOR_ROWS
 }
 
+_STAGE_ROWS: Final = (
+    ((82, 83, 84), (85, 86), (87, 88, 89), (90, 91)),
+    ((278, 279, 280), (281, 282), (283, 284, 285), (286, 287), (288, 289)),
+    ((290, 291, 292), (293, 294), (295, 296), (297, 298), (299, 300)),
+)
+MECHANISM_EXPECTED_STATES: Final[dict[int, int]] = {
+    mechanism_id: state
+    for domain_stages in _STAGE_ROWS
+    for state, mechanism_ids in enumerate(domain_stages, 1)
+    for mechanism_id in mechanism_ids
+}
+
+
+class FundingAction(str, Enum):
+    """Frozen cash behavior for one player route.
+
+    ``OBLIGATION`` changes a statement but does not pretend that cash moved;
+    ``DEFERRED_PAYMENT`` freezes the two payer shares for a later consumer.
+    """
+
+    NONE = "none"
+    RESERVE = "reserve"
+    PAYMENT = "payment"
+    OBLIGATION = "obligation"
+    DEFERRED_PAYMENT = "deferred-payment"
+
+
+@dataclass(frozen=True)
+class MechanismRouteOutcome:
+    consequence_code: str
+    funding_action: FundingAction = FundingAction.NONE
+    gross: int = 0
+    materializes_object: bool = True
+    resource_values: tuple[tuple[str, int], ...] = ()
+    dynamic_gross: bool = False
+
+    def __post_init__(self) -> None:
+        if not self.consequence_code:
+            raise ValueError("route consequence code is required")
+        if self.gross < 0:
+            raise ValueError("route gross cannot be negative")
+        if self.dynamic_gross:
+            if self.funding_action not in (
+                FundingAction.PAYMENT,
+                FundingAction.OBLIGATION,
+                FundingAction.DEFERRED_PAYMENT,
+            ) or self.gross != 0:
+                raise ValueError("dynamic gross needs a deferred/payable action and zero template")
+        elif self.funding_action in (
+            FundingAction.RESERVE,
+            FundingAction.PAYMENT,
+            FundingAction.OBLIGATION,
+            FundingAction.DEFERRED_PAYMENT,
+        ) and self.gross < 2:
+            raise ValueError("dual-funded routes need at least two cash units")
+        if self.materializes_object and not self.resource_values:
+            raise ValueError("materialized routes need an executable resource payload")
+        if not self.materializes_object and (
+            self.resource_values or self.funding_action is not FundingAction.NONE
+        ):
+            raise ValueError("no-object routes cannot mutate resources or money")
+        if len({name for name, _ in self.resource_values}) != len(self.resource_values):
+            raise ValueError("resource keys must be unique inside one route")
+
+
+def _route(
+    consequence_code: str,
+    resource: str,
+    value: int,
+    *,
+    funding_action: FundingAction = FundingAction.NONE,
+    gross: int = 0,
+    extra: tuple[tuple[str, int], ...] = (),
+    dynamic_gross: bool = False,
+) -> MechanismRouteOutcome:
+    return MechanismRouteOutcome(
+        consequence_code,
+        funding_action,
+        gross,
+        True,
+        ((resource, value), *extra),
+        dynamic_gross,
+    )
+
+
+def _no_object(consequence_code: str) -> MechanismRouteOutcome:
+    return MechanismRouteOutcome(consequence_code, materializes_object=False)
+
+
+# This table is the executable A/B/C contract shared by the Python oracle and
+# the generated CK3 tests.  A row may be non-cash (for example a pay-band or
+# vesting-policy object), but every route has a distinct, queryable outcome.
+MECHANISM_ROUTE_OUTCOMES: Final[
+    dict[int, tuple[MechanismRouteOutcome, MechanismRouteOutcome, MechanismRouteOutcome]]
+] = {
+    82: (
+        _route("stable-total-reward", "total_reward", 45),
+        _route("variable-total-reward", "total_reward", 37),
+        _route("fixed-only-total-reward", "total_reward", 15),
+    ),
+    83: (
+        _route("full-three-factor-bonus", "computed_bonus", 20),
+        _route("bounded-individual-factor", "computed_bonus", 16),
+        _route("zero-individual-factor", "computed_bonus", 0),
+    ),
+    84: (
+        _route("full-bonus-reserved", "reserved_bonus", 20, funding_action=FundingAction.RESERVE, gross=20),
+        _route("bounded-bonus-reserved", "reserved_bonus", 16, funding_action=FundingAction.RESERVE, gross=16),
+        _no_object("bonus-declined"),
+    ),
+    85: (
+        _route("two-year-retention-gap", "retention_gap_years", 2),
+        _route("one-year-retention-gap", "retention_gap_years", 1),
+        _route("no-refresh-grant", "retention_gap_years", 0),
+    ),
+    86: (
+        _route("deferred-bonus-settles", "hold_policy", 1, extra=(("clawback_limit", 0),)),
+        _route("paid-bonus-clawed-back", "hold_policy", 2, extra=(("clawback_limit", 2),)),
+        _route("deferred-bonus-refunded", "hold_policy", 3, extra=(("clawback_limit", 0),)),
+    ),
+    87: (
+        _route("inside-band", "position_bps", 5000),
+        _route("above-band", "position_bps", 11000),
+        _route("below-band", "position_bps", -1000),
+    ),
+    88: (
+        _route("market-first-pool", "raise_pool", 10, extra=(("market_allocation", 4),)),
+        _route("merit-first-pool", "raise_pool", 10, extra=(("merit_allocation", 5),)),
+        _no_object("raise-pool-declined"),
+    ),
+    89: (
+        _route("cash-and-authority-package", "cash_raise", 4, extra=(("authority", 1),)),
+        _route("authority-only-package", "cash_raise", 0, extra=(("authority", 1),)),
+        _route("package-declined", "cash_raise", 0, extra=(("authority", 0),)),
+    ),
+    90: (
+        _route("individual-spot-paid", "spot_paid", 10, funding_action=FundingAction.PAYMENT, gross=10),
+        _route("team-spot-paid", "spot_paid", 6, funding_action=FundingAction.PAYMENT, gross=6),
+        _no_object("spot-declined"),
+    ),
+    91: (
+        _route("performance-heavy-award", "award_total", 10, extra=(("tenure_award", 3), ("performance_award", 7))),
+        _route("tenure-heavy-award", "award_total", 6, extra=(("tenure_award", 4), ("performance_award", 2))),
+        _route("zero-award-accounts", "award_total", 0),
+    ),
+    278: (
+        _route("full-pay-statement", "projection_mode", 1),
+        _route("summary-pay-statement", "projection_mode", 2),
+        _route("minimum-pay-statement", "projection_mode", 3),
+    ),
+    279: (
+        _route("fixed-extra-month", "extra_month_kind", 1, extra=(("extra_month_amount", 6),)),
+        _route("performance-extra-month", "extra_month_kind", 2, extra=(("extra_month_amount", 6),)),
+        _route("discretionary-extra-month", "extra_month_kind", 3, extra=(("extra_month_amount", 0),)),
+    ),
+    280: (
+        _route("full-cycle-proration", "proration_bps", 10000),
+        _route("half-cycle-proration", "proration_bps", 5000),
+        _route("all-or-nothing-proration", "proration_bps", 0),
+    ),
+    281: (
+        _route("statement-paid-now", "statement_due", 0, funding_action=FundingAction.PAYMENT, dynamic_gross=True),
+        _route("statement-deferred-90", "due_days", 90, funding_action=FundingAction.DEFERRED_PAYMENT, dynamic_gross=True),
+        _route("statement-deferred-180", "due_days", 180, funding_action=FundingAction.DEFERRED_PAYMENT, dynamic_gross=True),
+    ),
+    282: (
+        _route("backpay-paid", "backpay", 4, funding_action=FundingAction.PAYMENT, gross=4),
+        _route("backpay-owed", "backpay_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _no_object("backpay-rejected"),
+    ),
+    283: (
+        _route("dry-promotion-due-next-cycle", "dry_promotion_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _route("dry-promotion-due-two-cycles", "dry_promotion_owed", 2, funding_action=FundingAction.OBLIGATION, gross=2),
+        _no_object("dry-promotion-declined"),
+    ),
+    284: (
+        _route("two-step-pay-buffer", "next_cycle_pay_delta", -2),
+        _route("professional-pay-preserved", "next_cycle_pay_delta", 0),
+        _route("immediate-pay-cut", "next_cycle_pay_delta", -4),
+    ),
+    285: (
+        _route("full-same-band-raise", "same_band_raise_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _route("bounded-same-band-raise", "same_band_raise_owed", 2, funding_action=FundingAction.OBLIGATION, gross=2),
+        _no_object("same-band-raise-declined"),
+    ),
+    286: (
+        _route("below-band-catch-up", "band_correction_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _route("above-band-one-time-award", "band_correction_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _route("one-cycle-band-exception", "exception_cycles", 1),
+    ),
+    287: (
+        _route("secret-pay", "visibility_mode", 1),
+        _route("public-band", "visibility_mode", 2),
+        _route("anonymous-distribution", "visibility_mode", 3),
+    ),
+    288: (
+        _route("full-inversion-repair", "inversion_repair_owed", 4, funding_action=FundingAction.OBLIGATION, gross=4),
+        _route("bounded-inversion-repair", "inversion_repair_owed", 2, funding_action=FundingAction.OBLIGATION, gross=2),
+        _no_object("inversion-repair-declined"),
+    ),
+    289: (
+        _route("appeal-upheld-paid", "appeal_cash", 4, funding_action=FundingAction.PAYMENT, gross=4),
+        _route("appeal-partly-upheld", "appeal_owed", 2, funding_action=FundingAction.OBLIGATION, gross=2),
+        _route("appeal-denied", "appeal_outcome", 0),
+    ),
+    290: (
+        _route("retention-heavy-nomination", "nomination_score", 15),
+        _route("balanced-nomination", "nomination_score", 10),
+        _route("broad-pool-nomination", "nomination_score", 5),
+    ),
+    291: (
+        _route("fixed-unit-grant", "grant_units", 100),
+        _route("fixed-value-grant", "grant_units", 80),
+        _route("cash-route-zero-units", "grant_units", 0),
+    ),
+    292: (
+        _route("option-grant", "risk_kind", 1),
+        _route("restricted-unit-grant", "risk_kind", 2),
+        _route("cash-alternative-paid", "cash_alternative", 10, funding_action=FundingAction.PAYMENT, gross=10),
+    ),
+    293: (
+        _route("convert-four-pay-six", "conversion_units", 4, funding_action=FundingAction.PAYMENT, gross=6),
+        _route("retain-ten-cash", "cash_remaining", 10, funding_action=FundingAction.PAYMENT, gross=10),
+        _no_object("conversion-declined"),
+    ),
+    294: (
+        _route("discounted-liquid-value", "liquidity_bps", 5000),
+        _route("full-liquid-value", "liquidity_bps", 10000),
+        _route("illiquid-value", "liquidity_bps", 0),
+    ),
+    295: (
+        _route("one-year-cliff", "cliff_days", 365),
+        _route("half-year-cliff", "cliff_days", 180),
+        _route("two-year-cliff", "cliff_days", 730),
+    ),
+    296: (
+        _route("monthly-vesting", "cadence_days", 30, extra=(("vesting_periods", 12),)),
+        _route("quarterly-vesting", "cadence_days", 90, extra=(("vesting_periods", 4),)),
+        _route("annual-vesting", "cadence_days", 365, extra=(("vesting_periods", 1),)),
+    ),
+    297: (
+        _route("balanced-vesting-tracks", "service_bps", 5000),
+        _route("service-heavy-tracks", "service_bps", 7000),
+        _route("service-only-track", "service_bps", 10000),
+    ),
+    298: (
+        _route("both-vesting-gates-open", "open_gate_count", 2),
+        _route("organization-gate-only", "open_gate_count", 1),
+        _route("both-vesting-gates-closed", "open_gate_count", 0),
+    ),
+    299: (
+        _route("good-leaver", "leaver_class", 1, extra=(("forfeit_unvested", 1), ("clawback_eligible", 0))),
+        _route("bad-leaver", "leaver_class", 2, extra=(("forfeit_unvested", 1), ("clawback_eligible", 1))),
+        _route("transfer-leaver", "leaver_class", 3, extra=(("forfeit_unvested", 1), ("clawback_eligible", 0))),
+    ),
+    300: (
+        _route("buyback-paid-now", "repurchased_units", 10, funding_action=FundingAction.PAYMENT, gross=10),
+        _route("buyback-due-90", "buyback_due_days", 90, funding_action=FundingAction.DEFERRED_PAYMENT, gross=10),
+        _no_object("buyback-declined"),
+    ),
+}
+
+NO_OBJECT_ROUTE3_IDS: Final[frozenset[int]] = frozenset(
+    mechanism_id
+    for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items()
+    if not outcomes[2].materializes_object
+)
+
 
 class CompensationRed(RuntimeError):
     """Base class for typed, deterministic domain failures."""
@@ -600,6 +868,278 @@ class TransactionJournal:
             elif receipt.kind in (ReceiptKind.REFUND, ReceiptKind.RETURN):
                 if receipt.gross != receipt.treasury_credit + receipt.manager_credit:
                     raise ConservationRed("refund/return credits do not equal gross")
+
+
+@dataclass(frozen=True)
+class DecisionIdentity:
+    owner_id: str
+    subject_id: str
+    cycle_serial: int
+    case_serial: int
+    expected_state: int
+
+    def __post_init__(self) -> None:
+        if not self.owner_id or not self.subject_id:
+            raise InvalidInputRed("decision owner and subject are required")
+        for name, value in (
+            ("cycle serial", self.cycle_serial),
+            ("case serial", self.case_serial),
+            ("expected state", self.expected_state),
+        ):
+            _require_positive(name, value)
+
+
+@dataclass
+class FrozenMechanismObject:
+    object_id: str
+    mechanism_id: int
+    route: int
+    identity: DecisionIdentity
+    consequence_code: str
+    funding_action: FundingAction
+    frozen_gross: int
+    frozen_treasury: int
+    frozen_manager: int
+    resource_values: tuple[tuple[str, int], ...]
+    receipt_id: str | None = None
+    visible: bool = True
+    settled: int = 0
+    refunded: int = 0
+    settlement_operation_key: str | None = None
+
+
+class CompensationRouteLedger:
+    """Executable per-ID A/B/C object ledger.
+
+    It deliberately sits beside the richer award/statement/LTI state machines:
+    the object ledger proves that every numbered choice has a stable identity,
+    while the domain objects remain the source of business conservation rules.
+    """
+
+    def __init__(
+        self,
+        *,
+        treasury_gold: int,
+        manager_gold: int,
+        recipient_gold: int = 0,
+        split: FundingSplit | None = None,
+        case_serial: int = 1,
+    ) -> None:
+        self.wallets = WalletBook(treasury_gold, manager_gold, recipient_gold)
+        self.split = split or FundingSplit()
+        self.clock = IdempotencyClock(case_serial)
+        self.journal = TransactionJournal(self.wallets, self.split, case_serial)
+        self.objects: dict[str, FrozenMechanismObject] = {}
+        self.resource_totals: dict[str, int] = {}
+        self.obligations: dict[str, int] = {}
+
+    def advance_case_serial(self, new_serial: int) -> None:
+        self.clock.advance(new_serial)
+        self.journal.advance(new_serial)
+
+    def apply(
+        self,
+        mechanism_id: int,
+        route: int,
+        identity: DecisionIdentity,
+        *,
+        operation_key: str,
+        gross_override: int | None = None,
+    ) -> OperationResult:
+        try:
+            outcome = MECHANISM_ROUTE_OUTCOMES[mechanism_id][route - 1]
+        except (KeyError, IndexError) as exc:
+            raise InvalidInputRed("unknown mechanism or route") from exc
+        if route not in (1, 2, 3):
+            raise InvalidInputRed("route must be A, B, or C")
+        if identity.expected_state != MECHANISM_EXPECTED_STATES[mechanism_id]:
+            raise StateTransitionRed("mechanism was applied outside its frozen stage")
+        if outcome.dynamic_gross:
+            if gross_override is None or gross_override < 2:
+                raise InvalidInputRed("dynamic dual-funded route needs a frozen gross")
+            actual_gross = gross_override
+        else:
+            if gross_override is not None:
+                raise InvalidInputRed("fixed route does not accept a gross override")
+            actual_gross = outcome.gross
+        if identity.case_serial != self.clock.case_serial:
+            # Route objects share the same stale/future contract as the
+            # domain kernels; ask the clock before any balance or object write.
+            guarded = self.clock.guard(
+                operation_key,
+                identity.case_serial,
+                ("mechanism-route", mechanism_id, route, identity, outcome, actual_gross),
+            )
+            assert guarded is not None
+            return guarded
+        fingerprint = ("mechanism-route", mechanism_id, route, identity, outcome, actual_gross)
+        guarded = self.clock.guard(operation_key, identity.case_serial, fingerprint)
+        if guarded is not None:
+            return guarded
+
+        object_id = (
+            f"m{mechanism_id:03d}:{identity.owner_id}:{identity.subject_id}:"
+            f"{identity.cycle_serial}:{identity.case_serial}:{identity.expected_state}"
+        )
+        if object_id in self.objects:
+            raise IdempotencyConflictRed(
+                "a numbered object already exists under a different operation key"
+            )
+
+        if not outcome.materializes_object:
+            return self.clock.commit(
+                operation_key,
+                fingerprint,
+                OperationResult(
+                    Disposition.APPLIED,
+                    detail=f"{outcome.consequence_code}:no-object",
+                ),
+            )
+
+        treasury = manager = 0
+        receipt_id: str | None = None
+        if actual_gross >= 2:
+            treasury, manager = self.split.allocate(actual_gross)
+        if outcome.funding_action is FundingAction.RESERVE:
+            result = self.journal.reserve(
+                actual_gross,
+                operation_key=f"journal:{operation_key}",
+                case_serial=identity.case_serial,
+            )
+            receipt_id = result.receipt_id
+        elif outcome.funding_action is FundingAction.PAYMENT:
+            result = self.journal.pay(
+                actual_gross,
+                operation_key=f"journal:{operation_key}",
+                case_serial=identity.case_serial,
+            )
+            receipt_id = result.receipt_id
+
+        for resource, value in outcome.resource_values:
+            self.resource_totals[resource] = self.resource_totals.get(resource, 0) + value
+        if outcome.funding_action in (
+            FundingAction.OBLIGATION,
+            FundingAction.DEFERRED_PAYMENT,
+        ):
+            self.obligations[object_id] = actual_gross
+
+        self.objects[object_id] = FrozenMechanismObject(
+            object_id=object_id,
+            mechanism_id=mechanism_id,
+            route=route,
+            identity=identity,
+            consequence_code=outcome.consequence_code,
+            funding_action=outcome.funding_action,
+            frozen_gross=actual_gross,
+            frozen_treasury=treasury,
+            frozen_manager=manager,
+            resource_values=outcome.resource_values,
+            receipt_id=receipt_id,
+        )
+        return self.clock.commit(
+            operation_key,
+            fingerprint,
+            OperationResult(
+                Disposition.APPLIED,
+                value=actual_gross,
+                receipt_id=receipt_id,
+                detail=object_id,
+            ),
+        )
+
+    def settle_reservation(
+        self,
+        object_id: str,
+        amount: int,
+        *,
+        operation_key: str,
+    ) -> OperationResult:
+        obj = self.objects.get(object_id)
+        if obj is None or obj.funding_action is not FundingAction.RESERVE:
+            raise StateTransitionRed("settlement requires a reserved mechanism object")
+        assert obj.receipt_id is not None
+        result = self.journal.settle_reserved(
+            obj.receipt_id,
+            amount,
+            operation_key=operation_key,
+            case_serial=obj.identity.case_serial,
+        )
+        if result.disposition is Disposition.APPLIED:
+            obj.settled += amount
+        return result
+
+    def refund_reservation(
+        self,
+        object_id: str,
+        amount: int,
+        *,
+        operation_key: str,
+    ) -> OperationResult:
+        obj = self.objects.get(object_id)
+        if obj is None or obj.funding_action is not FundingAction.RESERVE:
+            raise StateTransitionRed("refund requires a reserved mechanism object")
+        assert obj.receipt_id is not None
+        result = self.journal.refund_reservation(
+            obj.receipt_id,
+            amount,
+            operation_key=operation_key,
+            case_serial=obj.identity.case_serial,
+        )
+        if result.disposition is Disposition.APPLIED:
+            obj.refunded += amount
+        return result
+
+    def settle_deferred_payment(
+        self,
+        object_id: str,
+        *,
+        operation_key: str,
+    ) -> OperationResult:
+        obj = self.objects.get(object_id)
+        if obj is None or obj.funding_action is not FundingAction.DEFERRED_PAYMENT:
+            raise StateTransitionRed("object has no deferred payment")
+        if obj.settlement_operation_key is not None:
+            if obj.settlement_operation_key != operation_key:
+                raise IdempotencyConflictRed("deferred payment already used another key")
+        elif self.obligations.get(object_id) != obj.frozen_gross:
+            raise StateTransitionRed("deferred payment obligation drifted")
+        result = self.journal.pay(
+            obj.frozen_gross,
+            operation_key=operation_key,
+            case_serial=obj.identity.case_serial,
+        )
+        if result.disposition is Disposition.APPLIED:
+            obj.receipt_id = result.receipt_id
+            obj.settled = obj.frozen_gross
+            obj.settlement_operation_key = operation_key
+            self.obligations[object_id] = 0
+        return result
+
+    def settle_obligation(
+        self,
+        object_id: str,
+        *,
+        operation_key: str,
+    ) -> OperationResult:
+        obj = self.objects.get(object_id)
+        if obj is None or obj.funding_action is not FundingAction.OBLIGATION:
+            raise StateTransitionRed("object has no payable obligation")
+        if obj.settlement_operation_key is not None:
+            if obj.settlement_operation_key != operation_key:
+                raise IdempotencyConflictRed("obligation already used another key")
+        elif self.obligations.get(object_id) != obj.frozen_gross:
+            raise StateTransitionRed("obligation was already settled or drifted")
+        result = self.journal.pay(
+            obj.frozen_gross,
+            operation_key=operation_key,
+            case_serial=obj.identity.case_serial,
+        )
+        if result.disposition is Disposition.APPLIED:
+            obj.receipt_id = result.receipt_id
+            obj.settled = obj.frozen_gross
+            obj.settlement_operation_key = operation_key
+            self.obligations[object_id] = 0
+        return result
 
 
 @dataclass(frozen=True)
@@ -1739,8 +2279,9 @@ def select_lti_nominations(
     selected = {nomination.candidate_id: 0 for nomination in nominations}
     remaining = unit_pool
     for nomination in sorted(nominations, key=lambda item: (-item.score, item.candidate_id)):
-        # A top rating makes a candidate eligible, never automatically entitled.
-        if nomination.rating < 350:
+        # Only a frozen 3.75 result opens the pool.  A real 3.50 is an explicit
+        # negative case, and eligibility still does not imply allocation.
+        if nomination.rating != 375:
             continue
         units = min(nomination.requested_units, remaining)
         selected[nomination.candidate_id] = units
@@ -1975,13 +2516,12 @@ class LTIGrant:
         if self.state is LTIState.LEAVER:
             raise StateTransitionRed("leaver classification is already frozen")
         if classification is LeaverClass.GOOD:
-            # Good leavers preserve the service portion already promised by
-            # the frozen contract; only the still-contingent performance track
-            # lapses.  This is deliberately different from a bad-leaver wipe.
-            preserved_service = self.unvested_service
+            # The frozen default contract preserves units already vested, but
+            # contains no implicit service acceleration.  Both unvested tracks
+            # therefore lapse unless a future, separately frozen clause says
+            # otherwise.
+            forfeited = self.unvested_units
             self.unvested_service = 0
-            self.vested_units += preserved_service
-            forfeited = self.unvested_performance
             self.unvested_performance = 0
         else:
             forfeited = self.unvested_units
@@ -2024,6 +2564,16 @@ def validate_mechanism_coverage() -> None:
         raise ConservationRed("compensation mechanism map is not exact")
     if len({row.behavior for row in MECHANISM_BEHAVIORS.values()}) < 25:
         raise ConservationRed("mechanism behavior map collapsed too many semantics")
+    if set(MECHANISM_ROUTE_OUTCOMES) != expected:
+        raise ConservationRed("A/B/C route map is not exact")
+    if set(MECHANISM_EXPECTED_STATES) != expected:
+        raise ConservationRed("mechanism state map is not exact")
+    for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items():
+        if len(outcomes) != 3:
+            raise ConservationRed(f"mechanism {mechanism_id} does not have A/B/C")
+        codes = {outcome.consequence_code for outcome in outcomes}
+        if len(codes) != 3:
+            raise ConservationRed(f"mechanism {mechanism_id} collapsed route outcomes")
 
 
 validate_mechanism_coverage()

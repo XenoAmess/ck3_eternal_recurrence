@@ -14,13 +14,16 @@ from zg361_phase2_compensation_model import (
     BonusState,
     CareerPackage,
     CompensationKernel,
+    CompensationRouteLedger,
     ConservationRed,
+    DecisionIdentity,
     Disposition,
     DryPromotionCommitment,
     ExtraMonthContract,
     ExtraMonthKind,
     FormulaLockedRed,
     FundingSplit,
+    FundingAction,
     FutureSerialRed,
     GrantMeasure,
     IdempotencyConflictRed,
@@ -30,6 +33,9 @@ from zg361_phase2_compensation_model import (
     LTINomination,
     LeaverClass,
     MECHANISM_BEHAVIORS,
+    MECHANISM_EXPECTED_STATES,
+    MECHANISM_ROUTE_OUTCOMES,
+    NO_OBJECT_ROUTE3_IDS,
     PayVisibility,
     ProrationRule,
     QueueOrderRed,
@@ -95,6 +101,10 @@ class CompensationMechanismTests(unittest.TestCase):
             case_serial=1,
         )
 
+    @staticmethod
+    def _route_kwargs(outcome: object) -> dict[str, int]:
+        return {"gross_override": 20} if getattr(outcome, "dynamic_gross") else {}
+
     def _create_lti(
         self,
         grant_id: str = "lti-1",
@@ -125,6 +135,343 @@ class CompensationMechanismTests(unittest.TestCase):
         self.assertEqual(
             {row.domain for row in MECHANISM_BEHAVIORS.values()}, {"L", "AE", "AF"}
         )
+
+    def test_all_33_ids_have_three_distinct_executable_route_contracts(self) -> None:
+        self.assertEqual(set(MECHANISM_ROUTE_OUTCOMES), set(MECHANISM_BEHAVIORS))
+        for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items():
+            with self.subTest(mechanism_id=mechanism_id):
+                self.assertEqual(len(outcomes), 3)
+                self.assertEqual(len({item.consequence_code for item in outcomes}), 3)
+                for outcome in outcomes:
+                    if outcome.materializes_object:
+                        self.assertTrue(outcome.resource_values)
+                    else:
+                        self.assertEqual(outcome.resource_values, ())
+
+    def test_no_object_route_c_set_is_exact_and_shared_with_ck3_generator(self) -> None:
+        self.assertEqual(
+            NO_OBJECT_ROUTE3_IDS,
+            {84, 88, 90, 282, 283, 285, 288, 293, 300},
+        )
+
+    def test_financial_route_matrix_is_explicit_not_receipt_only(self) -> None:
+        expected = {
+            84: (FundingAction.RESERVE, FundingAction.RESERVE, FundingAction.NONE),
+            90: (FundingAction.PAYMENT, FundingAction.PAYMENT, FundingAction.NONE),
+            281: (
+                FundingAction.PAYMENT,
+                FundingAction.DEFERRED_PAYMENT,
+                FundingAction.DEFERRED_PAYMENT,
+            ),
+            282: (FundingAction.PAYMENT, FundingAction.OBLIGATION, FundingAction.NONE),
+            283: (FundingAction.OBLIGATION, FundingAction.OBLIGATION, FundingAction.NONE),
+            285: (FundingAction.OBLIGATION, FundingAction.OBLIGATION, FundingAction.NONE),
+            286: (FundingAction.OBLIGATION, FundingAction.OBLIGATION, FundingAction.NONE),
+            288: (FundingAction.OBLIGATION, FundingAction.OBLIGATION, FundingAction.NONE),
+            289: (FundingAction.PAYMENT, FundingAction.OBLIGATION, FundingAction.NONE),
+            292: (FundingAction.NONE, FundingAction.NONE, FundingAction.PAYMENT),
+            293: (FundingAction.PAYMENT, FundingAction.PAYMENT, FundingAction.NONE),
+            300: (
+                FundingAction.PAYMENT,
+                FundingAction.DEFERRED_PAYMENT,
+                FundingAction.NONE,
+            ),
+        }
+        actual = {
+            mechanism_id: tuple(route.funding_action for route in outcomes)
+            for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items()
+            if any(route.funding_action is not FundingAction.NONE for route in outcomes)
+        }
+        self.assertEqual(actual, expected)
+
+    def test_stage_routes_reconcile_quote_bonus_spot_and_conversion_resources(self) -> None:
+        for route in range(3):
+            quote = dict(MECHANISM_ROUTE_OUTCOMES[82][route].resource_values)["total_reward"]
+            bonus = dict(MECHANISM_ROUTE_OUTCOMES[83][route].resource_values)["computed_bonus"]
+            spot_outcome = MECHANISM_ROUTE_OUTCOMES[90][route]
+            spot = (
+                dict(spot_outcome.resource_values)["spot_paid"]
+                if spot_outcome.materializes_object
+                else 0
+            )
+            self.assertEqual(quote, 15 + bonus + spot)
+            grant = MECHANISM_ROUTE_OUTCOMES[84][route]
+            if grant.materializes_object:
+                self.assertEqual(grant.gross, bonus)
+            else:
+                self.assertEqual(bonus, 0)
+            award_accounts = dict(
+                MECHANISM_ROUTE_OUTCOMES[91][route].resource_values
+            )["award_total"]
+            self.assertEqual(award_accounts, spot)
+
+        converted = dict(MECHANISM_ROUTE_OUTCOMES[293][0].resource_values)
+        self.assertEqual(converted["conversion_units"] + MECHANISM_ROUTE_OUTCOMES[293][0].gross, 10)
+        self.assertEqual(MECHANISM_ROUTE_OUTCOMES[293][1].gross, 10)
+        self.assertFalse(MECHANISM_ROUTE_OUTCOMES[293][2].materializes_object)
+
+    def test_all_99_routes_freeze_identity_or_explicitly_record_no_object(self) -> None:
+        for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items():
+            identity = DecisionIdentity(
+                "manager", "subject", 7, 1, MECHANISM_EXPECTED_STATES[mechanism_id]
+            )
+            for route, outcome in enumerate(outcomes, 1):
+                with self.subTest(mechanism_id=mechanism_id, route=route):
+                    ledger = CompensationRouteLedger(
+                        treasury_gold=10_000, manager_gold=10_000
+                    )
+                    result = ledger.apply(
+                        mechanism_id,
+                        route,
+                        identity,
+                        operation_key=f"m{mechanism_id:03d}:r{route}",
+                        **self._route_kwargs(outcome),
+                    )
+                    self.assertEqual(result.disposition, Disposition.APPLIED)
+                    if outcome.materializes_object:
+                        obj = ledger.objects[result.detail]
+                        self.assertEqual(obj.identity, identity)
+                        self.assertEqual(obj.route, route)
+                        self.assertEqual(obj.consequence_code, outcome.consequence_code)
+                        self.assertEqual(obj.resource_values, outcome.resource_values)
+                        self.assertTrue(obj.visible)
+                        for resource, value in outcome.resource_values:
+                            self.assertEqual(ledger.resource_totals[resource], value)
+                    else:
+                        self.assertEqual(ledger.objects, {})
+                        self.assertTrue(result.detail.endswith(":no-object"))
+
+    def test_route_object_duplicate_stale_and_changed_replay_are_bounded(self) -> None:
+        identity = DecisionIdentity("manager", "subject", 7, 1, 4)
+        ledger = CompensationRouteLedger(treasury_gold=100, manager_gold=100)
+        first = ledger.apply(90, 1, identity, operation_key="spot-route")
+        frozen_wallets = copy.deepcopy(ledger.wallets)
+        repeated = ledger.apply(90, 1, identity, operation_key="spot-route")
+        self.assertEqual(first.disposition, Disposition.APPLIED)
+        self.assertEqual(repeated.disposition, Disposition.IDEMPOTENT_NOOP)
+        self.assertEqual(ledger.wallets, frozen_wallets)
+        frozen_resources = copy.deepcopy(ledger.resource_totals)
+        frozen_obligations = copy.deepcopy(ledger.obligations)
+        with self.assertRaises(IdempotencyConflictRed):
+            ledger.apply(90, 2, identity, operation_key="spot-route")
+        self.assertEqual(ledger.resource_totals, frozen_resources)
+        self.assertEqual(ledger.obligations, frozen_obligations)
+
+        for mechanism_id in MECHANISM_ROUTE_OUTCOMES:
+            stale_ledger = CompensationRouteLedger(
+                treasury_gold=100, manager_gold=100, case_serial=1
+            )
+            stale_ledger.advance_case_serial(2)
+            stale = stale_ledger.apply(
+                mechanism_id,
+                1,
+                DecisionIdentity(
+                    "manager", "subject", 7, 1, MECHANISM_EXPECTED_STATES[mechanism_id]
+                ),
+                operation_key=f"stale:{mechanism_id}",
+                **self._route_kwargs(MECHANISM_ROUTE_OUTCOMES[mechanism_id][0]),
+            )
+            self.assertEqual(stale.disposition, Disposition.STALE_NOOP)
+            self.assertEqual(stale_ledger.objects, {})
+            self.assertEqual(stale_ledger.journal.receipts, {})
+            self.assertEqual(stale_ledger.resource_totals, {})
+            self.assertEqual(stale_ledger.obligations, {})
+
+    def test_every_id_rejects_a_valid_case_serial_in_the_wrong_stage(self) -> None:
+        for mechanism_id, expected_state in MECHANISM_EXPECTED_STATES.items():
+            wrong_state = 1 if expected_state != 1 else 2
+            ledger = CompensationRouteLedger(treasury_gold=100, manager_gold=100)
+            with self.subTest(mechanism_id=mechanism_id):
+                with self.assertRaises(StateTransitionRed):
+                    ledger.apply(
+                        mechanism_id,
+                        1,
+                        DecisionIdentity("manager", "subject", 7, 1, wrong_state),
+                        operation_key=f"wrong-state:{mechanism_id}",
+                    )
+                self.assertEqual(ledger.objects, {})
+                self.assertEqual(ledger.resource_totals, {})
+                self.assertEqual(ledger.journal.receipts, {})
+
+    def test_all_cash_routes_freeze_two_real_payers_and_pending_debt_settles_atomically(self) -> None:
+        for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items():
+            identity = DecisionIdentity(
+                "manager", "subject", 7, 1, MECHANISM_EXPECTED_STATES[mechanism_id]
+            )
+            for route, outcome in enumerate(outcomes, 1):
+                if outcome.funding_action is FundingAction.NONE:
+                    continue
+                with self.subTest(mechanism_id=mechanism_id, route=route):
+                    ledger = CompensationRouteLedger(
+                        treasury_gold=1_000, manager_gold=1_000
+                    )
+                    result = ledger.apply(
+                        mechanism_id,
+                        route,
+                        identity,
+                        operation_key=f"financial:{mechanism_id}:{route}",
+                        **self._route_kwargs(outcome),
+                    )
+                    obj = ledger.objects[result.detail]
+                    self.assertGreaterEqual(obj.frozen_treasury, 1)
+                    self.assertGreaterEqual(obj.frozen_manager, 1)
+                    expected_gross = 20 if outcome.dynamic_gross else outcome.gross
+                    self.assertEqual(
+                        obj.frozen_treasury + obj.frozen_manager, obj.frozen_gross
+                    )
+                    self.assertEqual(obj.frozen_gross, expected_gross)
+                    if outcome.funding_action in (
+                        FundingAction.OBLIGATION,
+                        FundingAction.DEFERRED_PAYMENT,
+                    ):
+                        self.assertEqual(ledger.wallets, WalletBook(1_000, 1_000, 0))
+                        self.assertEqual(ledger.obligations[result.detail], expected_gross)
+                        if outcome.funding_action is FundingAction.OBLIGATION:
+                            paid = ledger.settle_obligation(
+                                result.detail,
+                                operation_key=f"settle:{mechanism_id}:{route}",
+                            )
+                        else:
+                            paid = ledger.settle_deferred_payment(
+                                result.detail,
+                                operation_key=f"settle:{mechanism_id}:{route}",
+                            )
+                        self.assertEqual(paid.disposition, Disposition.APPLIED)
+                        self.assertEqual(ledger.obligations[result.detail], 0)
+                        self.assertEqual(ledger.wallets.recipient_gold, expected_gross)
+                        settled_wallets = copy.deepcopy(ledger.wallets)
+                        if outcome.funding_action is FundingAction.OBLIGATION:
+                            repeated = ledger.settle_obligation(
+                                result.detail,
+                                operation_key=f"settle:{mechanism_id}:{route}",
+                            )
+                            changed_call = ledger.settle_obligation
+                        else:
+                            repeated = ledger.settle_deferred_payment(
+                                result.detail,
+                                operation_key=f"settle:{mechanism_id}:{route}",
+                            )
+                            changed_call = ledger.settle_deferred_payment
+                        self.assertEqual(repeated.disposition, Disposition.IDEMPOTENT_NOOP)
+                        self.assertEqual(ledger.wallets, settled_wallets)
+                        with self.assertRaises(IdempotencyConflictRed):
+                            changed_call(
+                                result.detail,
+                                operation_key=f"changed:{mechanism_id}:{route}",
+                            )
+                        self.assertEqual(ledger.wallets, settled_wallets)
+                    elif outcome.funding_action is FundingAction.PAYMENT:
+                        self.assertEqual(ledger.wallets.recipient_gold, expected_gross)
+                    else:
+                        self.assertEqual(outcome.funding_action, FundingAction.RESERVE)
+                        self.assertEqual(ledger.wallets.recipient_gold, 0)
+                    ledger.journal.assert_conserved()
+
+    def test_deferred_consumer_is_atomic_when_personal_payer_becomes_short(self) -> None:
+        ledger = CompensationRouteLedger(treasury_gold=100, manager_gold=100)
+        result = ledger.apply(
+            300,
+            2,
+            DecisionIdentity("manager", "subject", 7, 1, 5),
+            operation_key="buyback:queue",
+        )
+        ledger.wallets.manager_gold = 0
+        before = copy.deepcopy(ledger.wallets)
+        with self.assertRaises(InsufficientFundsRed):
+            ledger.settle_deferred_payment(result.detail, operation_key="buyback:due")
+        self.assertEqual(ledger.wallets, before)
+        self.assertEqual(ledger.obligations[result.detail], 10)
+        self.assertEqual(ledger.journal.receipts, {})
+
+    def test_statement_due_route_requires_and_freezes_the_runtime_amount(self) -> None:
+        identity = DecisionIdentity("manager", "subject", 7, 1, 2)
+        ledger = CompensationRouteLedger(treasury_gold=100, manager_gold=100)
+        with self.assertRaises(InvalidInputRed):
+            ledger.apply(281, 2, identity, operation_key="statement:defer")
+        self.assertEqual(ledger.objects, {})
+        first = ledger.apply(
+            281,
+            2,
+            identity,
+            operation_key="statement:defer",
+            gross_override=23,
+        )
+        obj = ledger.objects[first.detail]
+        self.assertEqual(
+            (obj.frozen_gross, obj.frozen_treasury, obj.frozen_manager),
+            (23, 16, 7),
+        )
+        repeated = ledger.apply(
+            281,
+            2,
+            identity,
+            operation_key="statement:defer",
+            gross_override=23,
+        )
+        self.assertEqual(repeated.disposition, Disposition.IDEMPOTENT_NOOP)
+        with self.assertRaises(IdempotencyConflictRed):
+            ledger.apply(
+                281,
+                2,
+                identity,
+                operation_key="statement:defer",
+                gross_override=24,
+            )
+
+    def test_every_immediate_cash_route_is_atomic_when_either_payer_is_short(self) -> None:
+        for mechanism_id, outcomes in MECHANISM_ROUTE_OUTCOMES.items():
+            identity = DecisionIdentity(
+                "manager", "subject", 7, 1, MECHANISM_EXPECTED_STATES[mechanism_id]
+            )
+            for route, outcome in enumerate(outcomes, 1):
+                if outcome.funding_action not in (
+                    FundingAction.RESERVE,
+                    FundingAction.PAYMENT,
+                ):
+                    continue
+                with self.subTest(mechanism_id=mechanism_id, route=route):
+                    expected_gross = 20 if outcome.dynamic_gross else outcome.gross
+                    ledger = CompensationRouteLedger(
+                        treasury_gold=expected_gross,
+                        manager_gold=0,
+                    )
+                    before = copy.deepcopy(ledger.wallets)
+                    with self.assertRaises(InsufficientFundsRed):
+                        ledger.apply(
+                            mechanism_id,
+                            route,
+                            identity,
+                            operation_key=f"negative:{mechanism_id}:{route}",
+                            **self._route_kwargs(outcome),
+                        )
+                    self.assertEqual(ledger.wallets, before)
+                    self.assertEqual(ledger.objects, {})
+                    self.assertEqual(ledger.journal.receipts, {})
+
+    def test_bonus_route_reserve_has_exact_settlement_and_refund_consumers(self) -> None:
+        ledger = CompensationRouteLedger(treasury_gold=100, manager_gold=100)
+        result = ledger.apply(
+            84,
+            1,
+            DecisionIdentity("manager", "subject", 7, 1, 1),
+            operation_key="bonus:reserve",
+        )
+        obj = ledger.objects[result.detail]
+        self.assertEqual(
+            (obj.frozen_gross, obj.frozen_treasury, obj.frozen_manager),
+            (20, 14, 6),
+        )
+        ledger.settle_reservation(result.detail, 14, operation_key="bonus:settle")
+        ledger.refund_reservation(result.detail, 6, operation_key="bonus:refund")
+        self.assertEqual((obj.settled, obj.refunded), (14, 6))
+        self.assertEqual(ledger.wallets.recipient_gold, 14)
+        self.assertEqual(
+            ledger.wallets.treasury_gold
+            + ledger.wallets.manager_gold
+            + ledger.wallets.recipient_gold,
+            200,
+        )
+        ledger.journal.assert_conserved()
 
     def test_082_total_reward_formula_keeps_components_visible(self) -> None:
         quote = total_reward_quote(
@@ -363,10 +710,13 @@ class CompensationMechanismTests(unittest.TestCase):
             (
                 LTINomination("critical", 80, 3, 5, 4, 5, 375),
                 LTINomination("also-375", 80, 3, 1, 1, 1, 375),
+                LTINomination("real-350", 80, 9, 9, 9, 9, 350),
             ),
             80,
         )
-        self.assertEqual(selected, {"critical": 80, "also-375": 0})
+        self.assertEqual(
+            selected, {"critical": 80, "also-375": 0, "real-350": 0}
+        )
 
     def test_291_fixed_units_and_fixed_value_freeze_different_price_risk(self) -> None:
         self.assertEqual(
@@ -491,6 +841,19 @@ class CompensationMechanismTests(unittest.TestCase):
         self.assertEqual((bad_forfeit.value, bad.forfeited_units), (1_000, 1_000))
         good.assert_conserved()
         bad.assert_conserved()
+
+        # Good-leaver status preserves already vested units; it does not
+        # silently accelerate a still-unvested service track.
+        unvested_good = self._create_lti("unvested-good", cliff_days=365)
+        unvested_forfeit = self.kernel.classify_lti_leaver(
+            "unvested-good",
+            LeaverClass.GOOD,
+            operation_key="unvested-good:leave",
+            case_serial=1,
+        )
+        self.assertEqual(unvested_forfeit.value, 1_000)
+        self.assertEqual(unvested_good.vested_units, 0)
+        self.assertEqual(unvested_good.forfeited_units, 1_000)
 
     def test_300_repurchase_is_fifo_dual_funded_and_unit_conserving(self) -> None:
         first = self._create_lti("first", cliff_days=0, periods=1)

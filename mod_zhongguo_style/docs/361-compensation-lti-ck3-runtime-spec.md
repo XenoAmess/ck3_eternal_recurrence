@@ -8,12 +8,12 @@
 
 - `common/scripted_effects/zg361_generated_compensation_runtime_effects.txt`
 - `events/zg361_generated_compensation_runtime_events.txt`
-- `localization/*/zg361_compensation_runtime_l_*.yml`（简中、英文原创；其余七语为日常开发期英文结构占位）
+- `localization/*/zg361_compensation_runtime_l_*.yml`（共 9 份；简中、英文原创；其余七语为日常开发期英文结构占位）
 
 L0 合同：`tools/test_zg361_compensation_runtime.py`；既有领域模型：
-`tools/zg361_phase2_compensation_model.py`。该模型仍可作为编号 registry、资金原语和守恒 oracle，但其 #290
-旧门槛 `350` 与 #299 Good Leaver 自动加速尚未跟随本次冻结合同；本包不改共享/中央模型，专测以本规范要求的
-`375` 门槛和默认不加速为准，不能用旧模型行为覆盖 actual CK3 投影。
+`tools/zg361_phase2_compensation_model.py`。模型与 CK3 投影现在共享精确的 33 ID、99 条 A/B/C 数值资源合同、
+#290 `375` 门槛、#299 Good Leaver 默认不加速和九个 C 路线 `no-object` 集合；Python 模型仍只是 L0 oracle，
+不能覆盖 actual CK3 投影或替代实机证据。
 
 本层只投影 L、AE、AF 三个共享案卷，不修改中央考核 hook、B1/B2、考核榜 GUI 或共享案卷内核。开放 effect
 留给后续集成调用；没有真实 CK3 启动证据前，不得标成 fixture-live、production-live 或 complete。
@@ -79,6 +79,10 @@ grade 的唯一数值投影为 `1 -> 325 (3.25)`、`2 -> 350 (3.50)`、`3 -> 375
 也不得从可能已经变化的 current result 重读 grade。玩家仅看到统一的 `zg361comp.1` 三路线事件；不存在 33 个
 编号窗口。授权 AI 由 `zg361comp.2` 静默选择后台路线，结案后 hidden queue 再取下一 domain。
 
+统一玩家事件不是三个空泛按钮：L 四阶段、AE 五阶段、AF 五阶段共 14 组 `triggered_desc` 在选择前列明该阶段
+A/B/C 的实际双账户金额、欠付/期限、份额、门槛和离任后果。结案卡再直接投影奖金、薪酬单与长期份额账的数值；
+薪酬透明度只显示制度口径和匿名数值，不泄露具名同僚薪酬。当前这些仍只是静态可加载投影，尚未获得玩家实机证据。
+
 ## 三、五元身份、receipt 与写入消费链
 
 每次内部 domain open 成功后，还会把 manager portfolio 的六元结果来源复制为 subject-scope
@@ -107,6 +111,11 @@ frozen_owner / frozen_subject / frozen_cycle / frozen_case / frozen_state
 33 项统一执行 `manager_apply -> core write -> consume`：core 写机制专有字段和 operation receipt；consumer 将这些
 字段投进 L 奖金桶、AE 薪酬单或 AF 份额账，写 `mNNN_consumed = 1`；阶段屏障只有在本组所有编号都 consumed
 且领域守恒成立时才调用共享 dispatcher。由此每个 write 都有后续 consumer，不以 debug ACK 或裸 `choice` 冒充玩法。
+
+统一卡片的一次 A/B/C 选择会应用到该阶段的全部编号。每个编号都必须冻结至少一个数值业务资源，并由后续
+计算、付款、期限、归属、离任或只读投影消费。明确拒绝业务对象的 C 路线集合固定为
+`084/088/090/282/283/285/288/293/300`；这些路线只留下已选择但 `no-object` 的审计结果，不能伪造一笔奖金、
+欠款、转换或回购。其余路线即使金额为零，也保留真实合同/可见性/门槛对象。
 
 所有真实期限先保存五元 ticket，再调度 hidden character event；到期事件必须先调用共享 expire helper，只有
 `kernel_applied = 1` 才可进入领域 resolver。旧 ticket 因任一字段不符只能 no-op。当前期限包括 L 递延结算、AE
@@ -154,17 +163,20 @@ granted_units = unvested_service + unvested_performance + vested + forfeited + r
 
 ## 五、L：奖金、递延、追回与专项奖
 
-082–084 先分别写五栏总回报、三系数公式和公式锁，再为总额 20 冻结 `14 treasury + 6 personal`：即时桶
-`10+4` 当场结算给受评者，递延桶 `3+1` 与暂扣桶 `1+1` 留在 reserve。到期 resolver 只能二选一：结算剩余
-6，或按原两本 receipt 退回 `4 treasury + 2 personal`。
+082–084 先分别写五栏总回报、三系数公式和公式锁，084 再冻结前两项的实际数值。A 路线为总额 20：
+`14 treasury + 6 personal`，即时桶 `10+4` 当场结算给受评者，递延桶 `3+1` 与暂扣桶 `1+1` 留在 reserve；
+B 路线为总额 16：`11 treasury + 5 personal`，即时 10、递延 4、暂扣 2；C 路线不创建奖金对象。到期 resolver
+只能结算冻结的剩余总额，或按该路线原两本 receipt 原路退款，不能拿 A 路线常量结算 B 路线。
 
 L 中 `performance_bonus`、`individual_bps`、`performance_award` 是金额/公式输出，不是另一套绩效 rating 输入；
 本次审阅确认它们不写 `grade/rating = 350/375`，因此不把这些既有合同常量伪改成结果档位。实际 rating 只来自
 上述 portfolio 结果快照。
 
 086 的追回必须引用即时付款 source receipt，且不超过该 receipt 尚可追回金额；未付金额只可暂扣/没收，不能
-伪装成已付追回。090 专项奖总额 10，实际付款为 `7 treasury + 3 personal`，并明确不占绩效奖名额。其余编号
-写留才断崖、带位、统一调薪池、品级/任命/权力/现金四字段和年功/绩效两账，均由后续阶段或结案消费。
+伪装成已付追回。090 A 路线专项奖总额 10，实际付款 `7 treasury + 3 personal`；B 路线总额 6，实际付款
+`4 treasury + 2 personal`；C 路线不创建专项奖。091 把 090 的实际已付总额分别按 `3+7` 或 `4+2` 分成
+年功/绩效两账，不能再凭空承诺第二笔 10。087 带位和 088 调薪池由 089 的职级/任命/权力/现金包消费；冻结的
+现金增量进入随后 AE 薪酬单基础额，降薪缓冲则只进入下一周期 carry-over，避免在本期已付款后破坏守恒。
 
 ## 六、AE：显式薪酬单状态与申诉分轨
 
@@ -180,8 +192,16 @@ payable -> due -> decided -> corrected -> appealed -> closed
 口径和新老倒挂，但每次都重算 `payable/paid/owed/returned` 守恒。285 的同档校准也复制同一冻结实际 grade，
 不能另写一个固定 `375`。
 
+281 选择延期后，必须等同阶段的 282 写完补发债，再在 state 3 冻结完整 `gross/treasury/personal` 三元金额和
+付款人、受款人、案卷五元身份，之后才调度 90/180 日 ticket。到期 consumer 只读这份冻结金额，不重新读取可能
+变化的 `statement_owed`；余额不足时不移动任一账户，欠付仍原样可见。
+
 289 只开放 compensation appeal：受评者先在 `appealed` 状态写本人响应，管理者随后才可裁决。补发/纠错只改钱账，
 `frozen_performance_grade` 不得被薪酬申诉重写；绩效申诉仍属于另一案轨。玩家本人可见申诉事件，AI 当事人保持后台。
+
+283、285、286、288 和 289-B 写入的金额是显式 `owed`，不是“已经付款”的文字。它们持续保留在
+`payable = paid + owed - returned` 中；实际支付时仍必须经过同一双账户 precheck/journal。任何小于无法同时表示
+国库与个人份额的单笔付款都不得假装完成。
 
 ## 七、AF：提名、归属、离任与 FIFO 回购
 
@@ -189,7 +209,9 @@ payable -> due -> decided -> corrected -> appealed -> closed
 映射出的 3.50 (`350`) 是明确负例**，不能因处于相邻档位而入池。三条路线只决定提名后的方案，任何路线都不能
 改写 rating 或把 3.50 伪造成 3.75。资格只允许进入提名池，不等于自动授予。
 
-291–294 冻结固定份额/固定价值、风险形态、自愿奖金转换和授予价/现值/可变现值；295–296 冻结 Cliff 与
+291–294 冻结固定份额/固定价值、风险形态、自愿奖金转换和授予价/现值/可变现值。293 A 路线把 4 转为单位并
+真实支付现金余量 6（`4 treasury + 2 personal`），B 路线保留全现金 10（`7+3`），C 路线不创建转换对象；
+禁止再只写一个 `cash_remaining` 数字却不实际扣款。295–296 冻结 Cliff 与
 月/季/年 cadence，并用真实 delayed event 重复归属。297 将服务轨和绩效轨分开，298 要求组织门槛与个人门槛
 同时满足才归属绩效轨；服务轨不被一次低档吞掉。状态 4 会保持 `vesting`，直到管理者显式请求离任分类，不能把
 多期归属压缩成一次状态跳转。
@@ -197,6 +219,7 @@ payable -> due -> decided -> corrected -> appealed -> closed
 299 的默认合同冻结为 `good_leaver_acceleration = 0`：Good Leaver 保留已经 vested 的份额，但**不自动加速任何尚未
 归属的服务份额**；未归属服务/绩效份额按默认合同没收。只有未来明确写进冻结合同的独立加速条款才可改变这一点。
 Bad Leaver 可标记 clawback eligibility，但该标记本身不能直接吞掉已归属份额。
+第三条“正常调动/保留已归属但不回购”路线同样结清未归属桶，避免案卷关闭后留下永不再归属的悬空单位。
 
 300 只处理已经 vested 的单位，按管理者队列 `queue_tail -> queue_head` 严格 FIFO。立即或 90 日回购成功时才支付
 总额 10：组织 `treasury -7`、负责人 `personal_gold -3`、持有人 `gold +10`；两本 receipt 都 settled 后才把
@@ -213,8 +236,9 @@ py mod_zhongguo_style/tools/test_zg361_phase2_compensation_model.py
 py mod_zhongguo_style/tools/test_zg361_case_kernel.py
 ```
 
-专用 L0 合同应固定检查 33 ID/阶段与 model registry、11 个生成结果和 BOM、9 语言结构、权限矩阵、每项
-write-to-consumer、五元 receipt/deadline、双付款预检、L/AE/AF 三条守恒式、current delivered result 六元冻结、
+专用 L0 合同当前为 runtime 23 条、model 58 条，normal 与 `python -O` 均须 GREEN。它们固定检查 33 ID/阶段、
+99 条 A/B/C 数值资源、11 个生成结果的确定性与 BOM、9 语言 key parity、权限矩阵、每项 write-to-consumer、九个 no-object C 路线、
+五元 receipt/deadline、双付款预检、reserve/settle/refund/return、欠付/延期付款、L/AE/AF 三条守恒式、current delivered result 六元冻结、
 跨 L/AE/AF 同 subject/同结果、3.75/3.50 真值映射、Good Leaver 默认不加速、AF FIFO `7+3` 回购、单可见卡和
 AI 静默。七个非日常语言只是英文结构占位，不得称为完成翻译。
 

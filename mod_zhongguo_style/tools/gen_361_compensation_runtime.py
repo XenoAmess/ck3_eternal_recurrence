@@ -112,7 +112,8 @@ STAGE_BY_ID = {
     for state, stage in enumerate(domain.stages, start=1)
     for mechanism_id in stage
 }
-FINANCIAL_IDS = frozenset({84, 86, 90, 281, 282, 289, 292, 300})
+FINANCIAL_IDS = frozenset({84, 86, 90, 281, 282, 289, 292, 293, 300})
+NO_OBJECT_ROUTE3_IDS = frozenset({84, 88, 90, 282, 283, 285, 288, 293, 300})
 RESULT_GRADE_RATINGS = {1: 325, 2: 350, 3: 375}
 
 
@@ -387,50 +388,111 @@ def special_payload(mechanism_id: int) -> str:
     payloads = {
         82: f'''set_variable = {{ name = {p}_fixed_pay value = 12 }}
             set_variable = {{ name = {p}_role_allowance value = 3 }}
-            set_variable = {{ name = {p}_performance_bonus value = 20 }}
+            set_variable = {{ name = {p}_performance_bonus value = 14 }}
             set_variable = {{ name = {p}_spot_award value = 10 }}
             set_variable = {{ name = {p}_deferred_award value = 6 }}
-            set_variable = {{ name = {p}_total_reward value = 51 }}''',
+            if = {{ limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_performance_bonus value = 10 }}
+                set_variable = {{ name = {p}_spot_award value = 6 }}
+                set_variable = {{ name = {p}_deferred_award value = 6 }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }}
+                set_variable = {{ name = {p}_performance_bonus value = 0 }}
+                set_variable = {{ name = {p}_spot_award value = 0 }}
+                set_variable = {{ name = {p}_deferred_award value = 0 }}
+            }}
+            set_variable = {{ name = {p}_total_reward value = var:{p}_fixed_pay }}
+            change_variable = {{ name = {p}_total_reward add = var:{p}_role_allowance }}
+            change_variable = {{ name = {p}_total_reward add = var:{p}_performance_bonus }}
+            change_variable = {{ name = {p}_total_reward add = var:{p}_spot_award }}
+            change_variable = {{ name = {p}_total_reward add = var:{p}_deferred_award }}''',
         83: f'''set_variable = {{ name = {p}_realm_bps value = 10000 }}
             set_variable = {{ name = {p}_team_bps value = 10000 }}
             set_variable = {{ name = {p}_individual_bps value = 10000 }}
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_individual_bps value = 8000 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_individual_bps value = 0 }} }}
+            set_variable = {{ name = {p}_computed_bonus value = 20 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_computed_bonus value = 16 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_computed_bonus value = 0 }} }}
             set_variable = {{ name = {p}_formula_version value = 1 }}''',
         84: f'''set_variable = {{ name = {p}_formula_locked value = 1 }}
             set_variable = {{ name = {p}_reserve_receipt value = var:zg361_case_l_case_serial }}
-            set_variable = {{ name = {p}_deferred_due_year value = {{ value = current_year add = 1 }} }}''',
+            set_variable = {{ name = {p}_frozen_total_reward value = var:zg361_comp_m082_total_reward }}
+            set_variable = {{ name = {p}_frozen_computed_bonus value = var:zg361_comp_m083_computed_bonus }}
+            set_variable = {{ name = {p}_frozen_gross value = var:zg361_comp_bonus_total }}
+            set_variable = {{ name = {p}_frozen_treasury value = var:zg361_comp_bonus_treasury_funded }}
+            set_variable = {{ name = {p}_frozen_personal value = var:zg361_comp_bonus_personal_funded }}
+            set_variable = {{ name = {p}_deferred_due_year value = {{ value = current_year add = 1 }} }}
+            if = {{ limit = {{ var:{p}_route = 3 }}
+                set_variable = {{ name = {p}_object_materialized value = 0 }}
+                set_variable = {{ name = {p}_deferred_due_year value = 0 }}
+            }}''',
         85: f'''set_variable = {{ name = {p}_last_vest_year value = current_year }}
             set_variable = {{ name = {p}_next_grant_year value = 0 }}
             if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_next_grant_year value = {{ value = current_year add = 2 }} }} }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_next_grant_year value = {{ value = current_year add = 1 }} }} }}
             set_variable = {{ name = {p}_cliff_gap_years value = 0 }}
             if = {{ limit = {{ var:{p}_next_grant_year > 0 }} set_variable = {{ name = {p}_cliff_gap_years value = {{ value = var:{p}_next_grant_year subtract = var:{p}_last_vest_year }} }} }}''',
         86: f'''set_variable = {{ name = {p}_hold_policy value = var:{p}_route }}
+            set_variable = {{ name = {p}_retention_gap_years value = var:zg361_comp_m085_cliff_gap_years }}
+            set_variable = {{ name = {p}_retention_risk value = var:zg361_comp_m085_cliff_gap_years }}
             set_variable = {{ name = {p}_clawback_source_receipt value = var:zg361_comp_bonus_immediate_receipt_serial }}
             set_variable = {{ name = {p}_clawback_limit value = 2 }}''',
         87: f'''set_variable = {{ name = {p}_band_min value = 10 }}
             set_variable = {{ name = {p}_band_max value = 20 }}
             set_variable = {{ name = {p}_salary value = 15 }}
             set_variable = {{ name = {p}_position_bps value = 5000 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_position_bps value = 11000 }} }}''',
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_salary value = 21 }} set_variable = {{ name = {p}_position_bps value = 11000 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_salary value = 9 }} set_variable = {{ name = {p}_position_bps value = -1000 }} }}''',
         88: f'''set_variable = {{ name = {p}_raise_pool value = 10 }}
             set_variable = {{ name = {p}_market_allocation value = 4 }}
             set_variable = {{ name = {p}_merit_allocation value = 3 }}
             set_variable = {{ name = {p}_fairness_allocation value = 3 }}
-            set_variable = {{ name = {p}_allocation_total value = 10 }}''',
+            if = {{ limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_market_allocation value = 2 }}
+                set_variable = {{ name = {p}_merit_allocation value = 5 }}
+                set_variable = {{ name = {p}_fairness_allocation value = 3 }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }}
+                set_variable = {{ name = {p}_raise_pool value = 0 }}
+                set_variable = {{ name = {p}_market_allocation value = 0 }}
+                set_variable = {{ name = {p}_merit_allocation value = 0 }}
+                set_variable = {{ name = {p}_fairness_allocation value = 0 }}
+                set_variable = {{ name = {p}_object_materialized value = 0 }}
+            }}
+            set_variable = {{ name = {p}_allocation_total value = var:{p}_market_allocation }}
+            change_variable = {{ name = {p}_allocation_total add = var:{p}_merit_allocation }}
+            change_variable = {{ name = {p}_allocation_total add = var:{p}_fairness_allocation }}''',
         89: f'''set_variable = {{ name = {p}_grade_level value = 4 }}
             set_variable = {{ name = {p}_appointment_code value = var:{p}_route }}
-            set_variable = {{ name = {p}_authority value = 1 }}
-            set_variable = {{ name = {p}_cash_raise value = 0 }}''',
+            set_variable = {{ name = {p}_frozen_band_position_bps value = var:zg361_comp_m087_position_bps }}
+            set_variable = {{ name = {p}_frozen_raise_pool value = var:zg361_comp_m088_raise_pool }}
+            set_variable = {{ name = {p}_authority value = 0 }}
+            set_variable = {{ name = {p}_cash_raise value = 0 }}
+            if = {{
+                limit = {{ var:{p}_route = 1 var:zg361_comp_m087_position_bps <= 10000 }}
+                set_variable = {{ name = {p}_authority value = 1 }}
+                set_variable = {{ name = {p}_cash_raise value = var:zg361_comp_m088_market_allocation }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_authority value = 1 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_appointment_code value = 0 }} set_variable = {{ name = {p}_authority value = 0 }} }}''',
         90: f'''set_variable = {{ name = {p}_spot_gross value = 0 }}
-            if = {{ limit = {{ OR = {{ var:{p}_route = 1 var:{p}_route = 2 }} }} set_variable = {{ name = {p}_spot_gross value = 10 }} }}
+            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_spot_gross value = 10 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_spot_gross value = 6 }} }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}
             set_variable = {{ name = {p}_performance_slot_delta value = 0 }}''',
         91: f'''set_variable = {{ name = {p}_tenure_award value = 3 }}
             set_variable = {{ name = {p}_performance_award value = 7 }}
-            set_variable = {{ name = {p}_award_total value = 10 }}''',
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_tenure_award value = 4 }} set_variable = {{ name = {p}_performance_award value = 2 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_tenure_award value = 0 }} set_variable = {{ name = {p}_performance_award value = 0 }} }}
+            set_variable = {{ name = {p}_award_total value = var:{p}_tenure_award }}
+            change_variable = {{ name = {p}_award_total add = var:{p}_performance_award }}
+            set_variable = {{ name = {p}_source_spot_gross value = var:zg361_comp_m090_spot_gross }}''',
         278: f'''set_variable = {{ name = {p}_promised value = var:zg361_comp_ae_statement_payable }}
             set_variable = {{ name = {p}_paid value = var:zg361_comp_ae_statement_paid }}
             set_variable = {{ name = {p}_owed value = var:zg361_comp_ae_statement_owed }}
-            set_variable = {{ name = {p}_returned value = var:zg361_comp_ae_statement_returned }}''',
+            set_variable = {{ name = {p}_returned value = var:zg361_comp_ae_statement_returned }}
+            set_variable = {{ name = {p}_projection_mode value = var:{p}_route }}''',
         279: f'''set_variable = {{ name = {p}_contract_kind value = var:{p}_route }}
             set_variable = {{ name = {p}_locked_cycle value = var:zg361_case_ae_cycle_serial }}
             set_variable = {{ name = {p}_amount value = 6 }}''',
@@ -464,38 +526,91 @@ def special_payload(mechanism_id: int) -> str:
                 set_variable = {{ name = {p}_backpay value = 4 }}
                 change_variable = {{ name = zg361_comp_ae_statement_payable add = 4 }}
                 change_variable = {{ name = zg361_comp_ae_statement_owed add = 4 }}
-            }}''',
+            }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}''',
         283: f'''set_variable = {{ name = {p}_responsibility_cycle value = var:zg361_case_ae_cycle_serial }}
             set_variable = {{ name = {p}_cash_due_cycle value = {{ value = var:zg361_case_ae_cycle_serial add = 1 }} }}
-            set_variable = {{ name = {p}_cash_raise value = 4 }}''',
+            set_variable = {{ name = {p}_cash_raise value = 4 }}
+            if = {{ limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_cash_due_cycle value = {{ value = var:zg361_case_ae_cycle_serial add = 2 }} }}
+                set_variable = {{ name = {p}_cash_raise value = 2 }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }}
+                set_variable = {{ name = {p}_cash_due_cycle value = 0 }}
+                set_variable = {{ name = {p}_cash_raise value = 0 }}
+                set_variable = {{ name = {p}_object_materialized value = 0 }}
+            }}
+            if = {{ limit = {{ var:{p}_cash_raise > 0 }}
+                change_variable = {{ name = zg361_comp_ae_statement_payable add = var:{p}_cash_raise }}
+                change_variable = {{ name = zg361_comp_ae_statement_owed add = var:{p}_cash_raise }}
+            }}''',
         284: f'''set_variable = {{ name = {p}_current_pay value = 20 }}
             set_variable = {{ name = {p}_target_pay value = 16 }}
             set_variable = {{ name = {p}_steps value = 2 }}
             set_variable = {{ name = {p}_professional_pay_preserved value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_professional_pay_preserved value = 1 }} }}''',
+            set_variable = {{ name = {p}_next_cycle_delta value = -2 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_target_pay value = 20 }} set_variable = {{ name = {p}_professional_pay_preserved value = 1 }} set_variable = {{ name = {p}_next_cycle_delta value = 0 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_steps value = 1 }} set_variable = {{ name = {p}_next_cycle_delta value = -4 }} }}
+            set_variable = {{ name = zg361_comp_ae_next_cycle_base_delta value = var:{p}_next_cycle_delta }}''',
         285: f'''set_variable = {{ name = {p}_frozen_grade value = var:zg361_comp_result_rating }}
             set_variable = {{ name = {p}_raise_pool value = 10 }}
             set_variable = {{ name = {p}_band_debt_allocation value = 6 }}
             set_variable = {{ name = {p}_scarcity_allocation value = 4 }}
-            set_variable = {{ name = {p}_allocation_total value = 10 }}''',
+            if = {{ limit = {{ var:{p}_route = 2 }}
+                set_variable = {{ name = {p}_raise_pool value = 6 }}
+                set_variable = {{ name = {p}_band_debt_allocation value = 2 }}
+                set_variable = {{ name = {p}_scarcity_allocation value = 4 }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }}
+                set_variable = {{ name = {p}_raise_pool value = 0 }}
+                set_variable = {{ name = {p}_band_debt_allocation value = 0 }}
+                set_variable = {{ name = {p}_scarcity_allocation value = 0 }}
+                set_variable = {{ name = {p}_object_materialized value = 0 }}
+            }}
+            set_variable = {{ name = {p}_allocation_total value = var:{p}_band_debt_allocation }}
+            change_variable = {{ name = {p}_allocation_total add = var:{p}_scarcity_allocation }}
+            set_variable = {{ name = {p}_subject_raise value = 0 }}
+            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_subject_raise value = 4 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_subject_raise value = 2 }} }}
+            if = {{ limit = {{ var:{p}_subject_raise > 0 }}
+                change_variable = {{ name = zg361_comp_ae_statement_payable add = var:{p}_subject_raise }}
+                change_variable = {{ name = zg361_comp_ae_statement_owed add = var:{p}_subject_raise }}
+            }}''',
         286: f'''set_variable = {{ name = {p}_fixed_raise value = 0 }}
             set_variable = {{ name = {p}_one_time_bonus value = 0 }}
             set_variable = {{ name = {p}_exception_expiry_cycle value = 0 }}
             if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_fixed_raise value = 4 }} }}
-            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_one_time_bonus value = 4 }} set_variable = {{ name = {p}_exception_expiry_cycle value = {{ value = var:zg361_case_ae_cycle_serial add = 1 }} }} }}''',
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_one_time_bonus value = 4 }} set_variable = {{ name = {p}_exception_expiry_cycle value = {{ value = var:zg361_case_ae_cycle_serial add = 1 }} }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_exception_expiry_cycle value = {{ value = var:zg361_case_ae_cycle_serial add = 1 }} }} }}
+            set_variable = {{ name = {p}_statement_delta value = var:{p}_fixed_raise }}
+            change_variable = {{ name = {p}_statement_delta add = var:{p}_one_time_bonus }}
+            if = {{ limit = {{ var:{p}_statement_delta > 0 }}
+                change_variable = {{ name = zg361_comp_ae_statement_payable add = var:{p}_statement_delta }}
+                change_variable = {{ name = zg361_comp_ae_statement_owed add = var:{p}_statement_delta }}
+            }}''',
         287: f'''set_variable = {{ name = {p}_visibility_mode value = var:{p}_route }}
             set_variable = {{ name = {p}_named_peer_salary_visible value = 0 }}
             set_variable = {{ name = {p}_own_salary_visible value = 1 }}''',
         288: f'''set_variable = {{ name = {p}_incumbent_salary value = 15 }}
-            set_variable = {{ name = {p}_new_hire_salary value = 18 }}
+            set_variable = {{ name = {p}_new_hire_salary value = 20 }}
             set_variable = {{ name = {p}_scarcity_allowance value = 1 }}
-            set_variable = {{ name = {p}_repair_due value = 2 }}''',
+            set_variable = {{ name = {p}_repair_due value = 4 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_repair_due value = 2 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_repair_due value = 0 }} set_variable = {{ name = {p}_object_materialized value = 0 }} }}
+            if = {{ limit = {{ var:{p}_repair_due > 0 }}
+                change_variable = {{ name = zg361_comp_ae_statement_payable add = var:{p}_repair_due }}
+                change_variable = {{ name = zg361_comp_ae_statement_owed add = var:{p}_repair_due }}
+            }}''',
         289: f'''set_variable = {{ name = {p}_appeal_track value = 1 }}
             set_variable = {{ name = {p}_frozen_performance_grade value = var:zg361_comp_ae_frozen_performance_grade }}
             set_variable = {{ name = {p}_outcome value = var:{p}_route }}
             if = {{ limit = {{ var:{p}_route = 1 }}
                 change_variable = {{ name = zg361_comp_ae_statement_payable add = 4 }}
                 change_variable = {{ name = zg361_comp_ae_statement_paid add = 4 }}
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }}
+                change_variable = {{ name = zg361_comp_ae_statement_payable add = 2 }}
+                change_variable = {{ name = zg361_comp_ae_statement_owed add = 2 }}
             }}''',
         290: f'''set_variable = {{ name = {p}_result_owner value = var:zg361_comp_result_owner }}
             set_variable = {{ name = {p}_result_subject value = var:zg361_comp_result_subject }}
@@ -506,40 +621,52 @@ def special_payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_rating value = var:zg361_comp_result_rating }}
             set_variable = {{ name = {p}_eligible value = 0 }}
             if = {{ limit = {{ var:{p}_result_grade = 3 var:{p}_rating = 375 }} set_variable = {{ name = {p}_eligible value = 1 }} }}
-            set_variable = {{ name = {p}_nomination_score value = 10 }}''',
+            set_variable = {{ name = {p}_nomination_score value = 15 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_nomination_score value = 10 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_nomination_score value = 5 }} }}
+            if = {{ limit = {{ has_variable = zg361_comp_m086_retention_risk }} change_variable = {{ name = {p}_nomination_score add = var:zg361_comp_m086_retention_risk }} }}''',
         291: f'''set_variable = {{ name = {p}_grant_measure value = var:{p}_route }}
             set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }}
             if = {{
                 limit = {{ var:zg361_comp_m290_eligible = 1 }}
                 set_variable = {{ name = zg361_comp_af_grant_base_units value = 100 }}
                 if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = zg361_comp_af_grant_base_units value = 80 }} }}
-                else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = zg361_comp_af_grant_base_units value = 60 }} }}
-            }}''',
+                else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }} }}
+            }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}''',
         292: f'''set_variable = {{ name = {p}_risk_kind value = var:{p}_route }}
             set_variable = {{ name = {p}_cash_alternative value = 0 }}
             set_variable = {{ name = {p}_can_expire_worthless value = 0 }}
-            if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_can_expire_worthless value = 1 }} }}
-            else_if = {{
-                limit = {{ var:{p}_route = 3 }}
-                set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }}
-                if = {{ limit = {{ var:zg361_comp_m290_eligible = 1 }} set_variable = {{ name = {p}_cash_alternative value = 10 }} }}
-            }}''',
+            if = {{
+                limit = {{ var:zg361_comp_m290_eligible = 1 }}
+                if = {{ limit = {{ var:{p}_route = 1 }} set_variable = {{ name = {p}_can_expire_worthless value = 1 }} }}
+                else_if = {{
+                    limit = {{ var:{p}_route = 3 }}
+                    set_variable = {{ name = zg361_comp_af_grant_base_units value = 0 }}
+                    set_variable = {{ name = {p}_cash_alternative value = 10 }}
+                }}
+            }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}''',
         293: f'''set_variable = {{ name = {p}_voluntary value = 0 }}
             set_variable = {{ name = {p}_converted_cash value = 0 }}
             set_variable = {{ name = zg361_comp_af_conversion_units value = 0 }}
-            set_variable = {{ name = {p}_cash_remaining value = 10 }}
+            set_variable = {{ name = {p}_cash_remaining value = 0 }}
             if = {{ limit = {{ var:{p}_route = 1 var:zg361_comp_m290_eligible = 1 }}
                 set_variable = {{ name = {p}_voluntary value = 1 }}
                 set_variable = {{ name = {p}_converted_cash value = 4 }}
                 set_variable = {{ name = zg361_comp_af_conversion_units value = 4 }}
                 set_variable = {{ name = {p}_cash_remaining value = 6 }}
-            }}''',
+            }}
+            else_if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_cash_remaining value = 10 }} }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}''',
         294: f'''set_variable = {{ name = {p}_grant_price value = 1 }}
             set_variable = {{ name = {p}_current_price value = 2 }}
             set_variable = {{ name = {p}_liquidity_bps value = 5000 }}
+            if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_liquidity_bps value = 10000 }} }}
+            else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_liquidity_bps value = 0 }} }}
             set_variable = {{ name = {p}_grant_value value = var:zg361_comp_af_total_units }}
             set_variable = {{ name = {p}_current_value value = {{ value = var:zg361_comp_af_total_units multiply = 2 }} }}
-            set_variable = {{ name = {p}_liquid_value value = var:zg361_comp_af_total_units }}''',
+            set_variable = {{ name = {p}_liquid_value value = {{ value = var:{p}_current_value multiply = var:{p}_liquidity_bps divide = 10000 floor = yes }} }}''',
         295: f'''set_variable = {{ name = {p}_cliff_days value = 365 }}
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_cliff_days value = 180 }} }}
             else_if = {{ limit = {{ var:{p}_route = 3 }} set_variable = {{ name = {p}_cliff_days value = 730 }} }}
@@ -561,12 +688,10 @@ def special_payload(mechanism_id: int) -> str:
         299: f'''set_variable = {{ name = {p}_leaver_class value = var:{p}_route }}
             set_variable = {{ name = {p}_good_leaver_acceleration value = 0 }}
             set_variable = {{ name = {p}_vested_preserved value = var:zg361_comp_af_vested_units }}
-            if = {{ limit = {{ OR = {{ var:{p}_route = 1 var:{p}_route = 2 }} }}
-                change_variable = {{ name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_service }}
-                change_variable = {{ name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_performance }}
-                set_variable = {{ name = zg361_comp_af_unvested_service value = 0 }}
-                set_variable = {{ name = zg361_comp_af_unvested_performance value = 0 }}
-            }}
+            change_variable = {{ name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_service }}
+            change_variable = {{ name = zg361_comp_af_forfeited_units add = var:zg361_comp_af_unvested_performance }}
+            set_variable = {{ name = zg361_comp_af_unvested_service value = 0 }}
+            set_variable = {{ name = zg361_comp_af_unvested_performance value = 0 }}
             set_variable = {{ name = {p}_clawback_eligible value = 0 }}
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_clawback_eligible value = 1 }} }}''',
         300: f'''set_variable = {{ name = {p}_window_open value = 0 }}
@@ -574,7 +699,8 @@ def special_payload(mechanism_id: int) -> str:
             if = {{ limit = {{ OR = {{ var:{p}_route = 1 var:{p}_route = 2 }} }}
                 set_variable = {{ name = {p}_window_open value = 1 }}
                 set_variable = {{ name = {p}_requested_units value = 10 }}
-            }}''',
+            }}
+            else = {{ set_variable = {{ name = {p}_object_materialized value = 0 }} }}''',
     }
     return payloads[mechanism_id]
 
@@ -638,9 +764,69 @@ def finance_prelude(mechanism_id: int) -> str:
 def finance_guard(mechanism_id: int, domain: str) -> str:
     p = f"zg361_comp_m{mechanism_id:03d}"
     row = vars_for(domain)
+    if mechanism_id == 84:
+        return f'''trigger_if = {{
+                limit = {{ scope:zg361_comp_route = 1 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 14 gold >= 6 }}
+                var:zg361_comp_l_treasury_available >= 14
+                var:zg361_comp_l_personal_available >= 6
+                var:zg361_comp_bonus_immediate_treasury_status = 0
+                var:zg361_comp_bonus_immediate_personal_status = 0
+                var:zg361_comp_bonus_deferred_treasury_status = 0
+                var:zg361_comp_bonus_deferred_personal_status = 0
+                var:zg361_comp_bonus_held_treasury_status = 0
+                var:zg361_comp_bonus_held_personal_status = 0
+            }}
+            trigger_else_if = {{
+                limit = {{ scope:zg361_comp_route = 2 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 11 gold >= 5 }}
+                var:zg361_comp_l_treasury_available >= 11
+                var:zg361_comp_l_personal_available >= 5
+                var:zg361_comp_bonus_immediate_treasury_status = 0
+                var:zg361_comp_bonus_immediate_personal_status = 0
+                var:zg361_comp_bonus_deferred_treasury_status = 0
+                var:zg361_comp_bonus_deferred_personal_status = 0
+                var:zg361_comp_bonus_held_treasury_status = 0
+                var:zg361_comp_bonus_held_personal_status = 0
+            }}
+            trigger_else = {{ always = yes }}'''
+    if mechanism_id == 90:
+        return f'''trigger_if = {{
+                limit = {{ scope:zg361_comp_route = 1 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 7 gold >= 3 }}
+                var:zg361_comp_l_treasury_available >= 7
+                var:zg361_comp_l_personal_available >= 3
+                var:zg361_comp_m090_pay_treasury_status = 0
+                var:zg361_comp_m090_pay_personal_status = 0
+            }}
+            trigger_else_if = {{
+                limit = {{ scope:zg361_comp_route = 2 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 4 gold >= 2 }}
+                var:zg361_comp_l_treasury_available >= 4
+                var:zg361_comp_l_personal_available >= 2
+                var:zg361_comp_m090_bounded_treasury_status = 0
+                var:zg361_comp_m090_bounded_personal_status = 0
+            }}
+            trigger_else = {{ always = yes }}'''
+    if mechanism_id == 293:
+        return f'''trigger_if = {{
+                limit = {{ scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 4 gold >= 2 }}
+                var:zg361_comp_af_treasury_available >= 4
+                var:zg361_comp_af_personal_available >= 2
+                var:zg361_comp_m293_cash6_treasury_status = 0
+                var:zg361_comp_m293_cash6_personal_status = 0
+            }}
+            trigger_else_if = {{
+                limit = {{ scope:zg361_comp_route = 2 }}
+                var:{row["owner"]} = {{ has_treasury = yes treasury >= 7 gold >= 3 }}
+                var:zg361_comp_af_treasury_available >= 7
+                var:zg361_comp_af_personal_available >= 3
+                var:zg361_comp_m293_cash10_treasury_status = 0
+                var:zg361_comp_m293_cash10_personal_status = 0
+            }}
+            trigger_else = {{ always = yes }}'''
     fixed: dict[int, tuple[str, int, int, str]] = {
-        84: (f"NOT = {{ scope:zg361_comp_route = 3 }}", 14, 6, "zg361_comp_bonus_immediate_treasury_status"),
-        90: (f"NOT = {{ scope:zg361_comp_route = 3 }}", 7, 3, "zg361_comp_m090_pay_treasury_status"),
         282: ("scope:zg361_comp_route = 1", 3, 1, "zg361_comp_m282_pay_treasury_status"),
         289: ("scope:zg361_comp_route = 1", 3, 1, "zg361_comp_m289_pay_treasury_status"),
         292: ("scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1", 7, 3, "zg361_comp_m292_cash_treasury_status"),
@@ -739,8 +925,12 @@ def finance_apply(mechanism_id: int) -> str:
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
         90: '''if = {
-                limit = { NOT = { scope:zg361_comp_route = 3 } }
+                limit = { scope:zg361_comp_route = 1 }
                 zg361_comp_l_pay_spot_effect = yes
+            }
+            else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                zg361_comp_l_pay_spot_bounded_effect = yes
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
         281: '''if = {
@@ -761,6 +951,15 @@ def finance_apply(mechanism_id: int) -> str:
         292: '''if = {
                 limit = { scope:zg361_comp_route = 3 var:zg361_comp_m290_eligible = 1 }
                 zg361_comp_af_pay_cash_alternative_effect = yes
+            }
+            else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
+        293: '''if = {
+                limit = { scope:zg361_comp_route = 1 var:zg361_comp_m290_eligible = 1 }
+                zg361_comp_af_pay_conversion_remainder_effect = yes
+            }
+            else_if = {
+                limit = { scope:zg361_comp_route = 2 }
+                zg361_comp_af_pay_unconverted_bonus_effect = yes
             }
             else = { set_variable = { name = zg361_comp_financial_applied value = 1 } }''',
         300: '''if = {
@@ -860,6 +1059,22 @@ zg361_comp_m{mechanism_id:03d}_core_effect = {{
 }}'''
 
 
+def freeze_business_object(mechanism_id: int, domain: str, state: int) -> str:
+    """Freeze the queryable identity shared by every numbered business write."""
+
+    p = f"zg361_comp_m{mechanism_id:03d}"
+    row = vars_for(domain)
+    return f'''set_variable = {{ name = {p}_object_materialized value = 1 }}
+        set_variable = {{ name = {p}_object_owner value = var:{row["owner"]} }}
+        set_variable = {{ name = {p}_object_subject value = this }}
+        set_variable = {{ name = {p}_object_cycle value = var:{row["cycle"]} }}
+        set_variable = {{ name = {p}_object_case value = var:{row["case"]} }}
+        set_variable = {{ name = {p}_object_state value = {state} }}
+        set_variable = {{ name = {p}_object_route value = var:{p}_route }}
+        set_variable = {{ name = {p}_visible_outcome value = var:{p}_route }}
+        set_variable = {{ name = {p}_visible_revision value = var:{row["revision"]} }}'''
+
+
 def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
     p = f"zg361_comp_m{mechanism_id:03d}"
     reconcile_statement = recalculate_statement_call(mechanism_id)
@@ -877,6 +1092,7 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
             var:{p}_receipt_active = 1
             var:{p}_consumed = 0
         }}
+        {freeze_business_object(mechanism_id, domain, state)}
         {special_payload(mechanism_id)}
         {post}
         {reconcile_statement}
@@ -977,6 +1193,11 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_l_treasury_settled value = 0 }
             set_variable = { name = zg361_comp_l_personal_settled value = 0 }
             set_variable = { name = zg361_comp_bonus_total value = 0 }
+            set_variable = { name = zg361_comp_bonus_treasury_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_personal_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_treasury_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_personal_funded value = 0 }
+            set_variable = { name = zg361_comp_bonus_deferred_unpaid_total value = 0 }
             set_variable = { name = zg361_comp_bonus_immediate_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_deferred_owed value = 0 }
             set_variable = { name = zg361_comp_bonus_held value = 0 }
@@ -996,7 +1217,9 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_bonus_held_treasury_status value = 0 }
             set_variable = { name = zg361_comp_bonus_held_personal_status value = 0 }
             set_variable = { name = zg361_comp_m090_pay_treasury_status value = 0 }
-            set_variable = { name = zg361_comp_m090_pay_personal_status value = 0 }'''
+            set_variable = { name = zg361_comp_m090_pay_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m090_bounded_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m090_bounded_personal_status value = 0 }'''
     if domain.key == "ae":
         return r'''set_variable = { name = zg361_comp_ae_treasury_available value = 200 }
             set_variable = { name = zg361_comp_ae_personal_available value = 100 }
@@ -1005,6 +1228,20 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_ae_treasury_settled value = 0 }
             set_variable = { name = zg361_comp_ae_personal_settled value = 0 }
             set_variable = { name = zg361_comp_ae_statement_base value = 15 }
+            if = {
+                limit = { var:zg361_comp_m082_consumed = 1 }
+                set_variable = { name = zg361_comp_ae_statement_base value = var:zg361_comp_m082_fixed_pay }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m082_role_allowance }
+            }
+            if = {
+                limit = { var:zg361_comp_m089_consumed = 1 }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m089_cash_raise }
+            }
+            if = {
+                limit = { has_variable = zg361_comp_ae_next_cycle_base_delta }
+                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_ae_next_cycle_base_delta }
+            }
+            set_variable = { name = zg361_comp_ae_next_cycle_base_delta value = 0 }
             set_variable = { name = zg361_comp_ae_statement_payable value = 0 }
             set_variable = { name = zg361_comp_ae_statement_paid value = 0 }
             set_variable = { name = zg361_comp_ae_statement_owed value = 0 }
@@ -1012,6 +1249,9 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_ae_statement_initialized value = 0 }
             set_variable = { name = zg361_comp_ae_statement_conserved value = 1 }
             set_variable = { name = zg361_comp_ae_due_resolved value = 1 }
+            set_variable = { name = zg361_comp_ae_due_frozen_gross value = 0 }
+            set_variable = { name = zg361_comp_ae_due_frozen_treasury value = 0 }
+            set_variable = { name = zg361_comp_ae_due_frozen_personal value = 0 }
             set_variable = { name = zg361_comp_ae_delay_count value = 0 }
             set_variable = { name = zg361_comp_ae_credibility value = 100 }
             set_variable = { name = zg361_comp_ae_payment_red value = 0 }
@@ -1059,6 +1299,10 @@ def domain_initialization(domain: DomainSpec) -> str:
             set_variable = { name = zg361_comp_af_buyback_red value = 0 }
             set_variable = { name = zg361_comp_m292_cash_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m292_cash_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash6_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash6_personal_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash10_treasury_status value = 0 }
+            set_variable = { name = zg361_comp_m293_cash10_personal_status value = 0 }
             set_variable = { name = zg361_comp_m300_buyback_treasury_status value = 0 }
             set_variable = { name = zg361_comp_m300_buyback_personal_status value = 0 }
             set_variable = { name = zg361_comp_af_buyback_later_treasury_status value = 0 }
@@ -1133,6 +1377,15 @@ def render_open(domain: DomainSpec) -> str:
                 f"set_variable = {{ name = {p}_consumed value = 0 }}",
                 f"set_variable = {{ name = {p}_route value = 0 }}",
                 f"set_variable = {{ name = {p}_value value = 0 }}",
+                f"set_variable = {{ name = {p}_object_materialized value = 0 }}",
+                f"set_variable = {{ name = {p}_visible_outcome value = 0 }}",
+                f"set_variable = {{ name = {p}_visible_revision value = 0 }}",
+                f"remove_variable = {p}_object_owner",
+                f"remove_variable = {p}_object_subject",
+                f"remove_variable = {p}_object_cycle",
+                f"remove_variable = {p}_object_case",
+                f"remove_variable = {p}_object_state",
+                f"remove_variable = {p}_object_route",
             )
         )
     for prefix, (key, _, _, _) in DEADLINES.items():
@@ -1205,22 +1458,80 @@ def render_open(domain: DomainSpec) -> str:
 
 def render_bonus_financial_helpers() -> str:
     owner = vars_for("l")["owner"]
-    reserves = "\n    ".join(
-        (
-            journal_reserve("l", 1, "zg361_comp_bonus_immediate", "treasury", "10"),
-            journal_reserve("l", 1, "zg361_comp_bonus_immediate", "personal", "4"),
-            journal_reserve("l", 1, "zg361_comp_bonus_deferred", "treasury", "3"),
-            journal_reserve("l", 1, "zg361_comp_bonus_deferred", "personal", "1"),
-            journal_reserve("l", 1, "zg361_comp_bonus_held", "treasury", "1"),
-            journal_reserve("l", 1, "zg361_comp_bonus_held", "personal", "1"),
+    def bonus_path(
+        immediate_treasury: int,
+        immediate_personal: int,
+        deferred_treasury: int,
+        deferred_personal: int,
+        held_treasury: int,
+        held_personal: int,
+    ) -> str:
+        treasury_total = immediate_treasury + deferred_treasury + held_treasury
+        personal_total = immediate_personal + deferred_personal + held_personal
+        immediate_gross = immediate_treasury + immediate_personal
+        deferred_gross = deferred_treasury + deferred_personal
+        held_gross = held_treasury + held_personal
+        gross = treasury_total + personal_total
+        reserves = "\n        ".join(
+            (
+                journal_reserve("l", 1, "zg361_comp_bonus_immediate", "treasury", str(immediate_treasury)),
+                journal_reserve("l", 1, "zg361_comp_bonus_immediate", "personal", str(immediate_personal)),
+                journal_reserve("l", 1, "zg361_comp_bonus_deferred", "treasury", str(deferred_treasury)),
+                journal_reserve("l", 1, "zg361_comp_bonus_deferred", "personal", str(deferred_personal)),
+                journal_reserve("l", 1, "zg361_comp_bonus_held", "treasury", str(held_treasury)),
+                journal_reserve("l", 1, "zg361_comp_bonus_held", "personal", str(held_personal)),
+            )
         )
-    )
-    settles = "\n        ".join(
-        (
-            journal_settle("l", 1, "zg361_comp_bonus_immediate", "treasury"),
-            journal_settle("l", 1, "zg361_comp_bonus_immediate", "personal"),
+        settles = "\n            ".join(
+            (
+                journal_settle("l", 1, "zg361_comp_bonus_immediate", "treasury"),
+                journal_settle("l", 1, "zg361_comp_bonus_immediate", "personal"),
+            )
         )
-    )
+        return f'''{reserves}
+        if = {{
+            limit = {{
+                var:zg361_comp_bonus_immediate_treasury_status = 1
+                var:zg361_comp_bonus_immediate_personal_status = 1
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }}
+            {settles}
+        }}
+        if = {{
+            limit = {{
+                var:zg361_comp_bonus_immediate_treasury_status = 2
+                var:zg361_comp_bonus_immediate_personal_status = 2
+                var:zg361_comp_bonus_deferred_treasury_status = 1
+                var:zg361_comp_bonus_deferred_personal_status = 1
+                var:zg361_comp_bonus_held_treasury_status = 1
+                var:zg361_comp_bonus_held_personal_status = 1
+            }}
+            var:{owner} = {{
+                remove_treasury = {treasury_total}
+                add_gold = {{ value = 0 subtract = {personal_total} }}
+            }}
+            add_gold = {immediate_gross}
+            {freeze_cash_identities("zg361_comp_bonus_immediate_receipt", "l", 1)}
+            set_variable = {{ name = zg361_comp_bonus_immediate_receipt_serial value = var:zg361_case_l_case_serial }}
+            set_variable = {{ name = zg361_comp_bonus_total value = {gross} }}
+            set_variable = {{ name = zg361_comp_bonus_treasury_funded value = {treasury_total} }}
+            set_variable = {{ name = zg361_comp_bonus_personal_funded value = {personal_total} }}
+            set_variable = {{ name = zg361_comp_bonus_immediate_owed value = 0 }}
+            set_variable = {{ name = zg361_comp_bonus_deferred_owed value = {deferred_gross} }}
+            set_variable = {{ name = zg361_comp_bonus_held value = {held_gross} }}
+            set_variable = {{ name = zg361_comp_bonus_paid_gross value = {immediate_gross} }}
+            set_variable = {{ name = zg361_comp_bonus_immediate_paid value = {immediate_gross} }}
+            set_variable = {{ name = zg361_comp_bonus_deferred_treasury_funded value = {deferred_treasury + held_treasury} }}
+            set_variable = {{ name = zg361_comp_bonus_deferred_personal_funded value = {deferred_personal + held_personal} }}
+            set_variable = {{ name = zg361_comp_bonus_deferred_unpaid_total value = {deferred_gross + held_gross} }}
+            set_variable = {{ name = zg361_comp_bonus_funded value = 1 }}
+            set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
+            zg361_comp_l_check_conservation_effect = yes
+        }}'''
+
     settle_deferred = "\n        ".join(
         (
             journal_settle("l", 4, "zg361_comp_bonus_deferred", "treasury"),
@@ -1239,43 +1550,13 @@ def render_bonus_financial_helpers() -> str:
     )
     return f'''zg361_comp_l_reserve_bonus_effect = {{
     remove_variable = zg361_comp_financial_applied
-    {reserves}
     if = {{
-        limit = {{
-            var:zg361_comp_bonus_immediate_treasury_status = 1
-            var:zg361_comp_bonus_immediate_personal_status = 1
-            var:zg361_comp_bonus_deferred_treasury_status = 1
-            var:zg361_comp_bonus_deferred_personal_status = 1
-            var:zg361_comp_bonus_held_treasury_status = 1
-            var:zg361_comp_bonus_held_personal_status = 1
-        }}
-        {settles}
+        limit = {{ scope:zg361_comp_route = 1 }}
+        {bonus_path(10, 4, 3, 1, 1, 1)}
     }}
-    if = {{
-        limit = {{
-            var:zg361_comp_bonus_immediate_treasury_status = 2
-            var:zg361_comp_bonus_immediate_personal_status = 2
-            var:zg361_comp_bonus_deferred_treasury_status = 1
-            var:zg361_comp_bonus_deferred_personal_status = 1
-            var:zg361_comp_bonus_held_treasury_status = 1
-            var:zg361_comp_bonus_held_personal_status = 1
-        }}
-        var:{owner} = {{
-            remove_treasury = 14
-            add_gold = {{ value = 0 subtract = 6 }}
-        }}
-        add_gold = 14
-        {freeze_cash_identities("zg361_comp_bonus_immediate_receipt", "l", 1)}
-        set_variable = {{ name = zg361_comp_bonus_immediate_receipt_serial value = var:zg361_case_l_case_serial }}
-        set_variable = {{ name = zg361_comp_bonus_total value = 20 }}
-        set_variable = {{ name = zg361_comp_bonus_immediate_owed value = 0 }}
-        set_variable = {{ name = zg361_comp_bonus_deferred_owed value = 4 }}
-        set_variable = {{ name = zg361_comp_bonus_held value = 2 }}
-        set_variable = {{ name = zg361_comp_bonus_paid_gross value = 14 }}
-        set_variable = {{ name = zg361_comp_bonus_immediate_paid value = 14 }}
-        set_variable = {{ name = zg361_comp_bonus_funded value = 1 }}
-        set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
-        zg361_comp_l_check_conservation_effect = yes
+    else_if = {{
+        limit = {{ scope:zg361_comp_route = 2 }}
+        {bonus_path(7, 3, 3, 1, 1, 1)}
     }}
 }}
 
@@ -1318,10 +1599,10 @@ zg361_comp_l_consume_deferred_effect = {{
                 var:zg361_comp_bonus_deferred_treasury_status = 2
                 var:zg361_comp_bonus_deferred_personal_status = 2
                 var:zg361_comp_bonus_held_treasury_status = 2
-                var:zg361_comp_bonus_held_personal_status = 2
-            }}
-            add_gold = 6
-            change_variable = {{ name = zg361_comp_bonus_paid_gross add = 6 }}
+            var:zg361_comp_bonus_held_personal_status = 2
+        }}
+            add_gold = {{ value = var:zg361_comp_bonus_deferred_unpaid_total }}
+            change_variable = {{ name = zg361_comp_bonus_paid_gross add = var:zg361_comp_bonus_deferred_unpaid_total }}
             set_variable = {{ name = zg361_comp_bonus_deferred_owed value = 0 }}
             set_variable = {{ name = zg361_comp_bonus_held value = 0 }}
             {freeze_cash_identities("zg361_comp_bonus_deferred_settlement_receipt", "l", 4)}
@@ -1338,11 +1619,14 @@ zg361_comp_l_consume_deferred_effect = {{
                 var:zg361_comp_bonus_held_treasury_status = 3
                 var:zg361_comp_bonus_held_personal_status = 3
             }}
-            var:{owner} = {{ add_treasury = 4 add_gold = 2 }}
-            change_variable = {{ name = zg361_comp_bonus_forfeited add = 6 }}
+            var:{owner} = {{
+                add_treasury = {{ value = var:zg361_comp_bonus_deferred_treasury_funded }}
+                add_gold = {{ value = var:zg361_comp_bonus_deferred_personal_funded }}
+            }}
+            change_variable = {{ name = zg361_comp_bonus_forfeited add = var:zg361_comp_bonus_deferred_unpaid_total }}
             set_variable = {{ name = zg361_comp_bonus_deferred_owed value = 0 }}
             set_variable = {{ name = zg361_comp_bonus_held value = 0 }}
-            set_variable = {{ name = zg361_comp_bonus_refund_source_receipt value = var:zg361_comp_bonus_immediate_receipt_serial }}
+            set_variable = {{ name = zg361_comp_bonus_refund_source_receipt value = var:zg361_comp_m084_reserve_receipt }}
             {freeze_cash_identities("zg361_comp_bonus_refund_receipt", "l", 4)}
             set_variable = {{ name = zg361_comp_financial_applied value = 1 }}
         }}
@@ -1380,6 +1664,7 @@ def render_financial_helpers() -> str:
     parts.extend(
         (
             render_fixed_dual_payment("zg361_comp_l_pay_spot_effect", "l", 4, "zg361_comp_m090_pay", 7, 3),
+            render_fixed_dual_payment("zg361_comp_l_pay_spot_bounded_effect", "l", 4, "zg361_comp_m090_bounded", 4, 2),
             render_dynamic_dual_payment(
                 "zg361_comp_ae_pay_due_now_effect",
                 "ae",
@@ -1401,6 +1686,8 @@ def render_financial_helpers() -> str:
             render_fixed_dual_payment("zg361_comp_ae_pay_backpay_effect", "ae", 2, "zg361_comp_m282_pay", 3, 1),
             render_fixed_dual_payment("zg361_comp_ae_pay_appeal_effect", "ae", 5, "zg361_comp_m289_pay", 3, 1),
             render_fixed_dual_payment("zg361_comp_af_pay_cash_alternative_effect", "af", 1, "zg361_comp_m292_cash", 7, 3),
+            render_fixed_dual_payment("zg361_comp_af_pay_conversion_remainder_effect", "af", 2, "zg361_comp_m293_cash6", 4, 2),
+            render_fixed_dual_payment("zg361_comp_af_pay_unconverted_bonus_effect", "af", 2, "zg361_comp_m293_cash10", 7, 3),
             render_fixed_dual_payment("zg361_comp_af_pay_buyback_now_effect", "af", 5, "zg361_comp_m300_buyback", 7, 3),
             render_fixed_dual_payment("zg361_comp_af_pay_buyback_later_effect", "af", 5, "zg361_comp_af_buyback_later", 7, 3),
         )
@@ -1520,10 +1807,12 @@ def after_transition(domain: str, state: int) -> str:
     if domain == "ae" and state == 2:
         return f'''if = {{
             limit = {{ var:zg361_comp_ae_due_resolved = 0 var:zg361_comp_m281_route = 2 }}
+            zg361_comp_ae_freeze_due_obligation_effect = yes
             {schedule_deadline("ae_due_90")}
         }}
         else_if = {{
             limit = {{ var:zg361_comp_ae_due_resolved = 0 var:zg361_comp_m281_route = 3 }}
+            zg361_comp_ae_freeze_due_obligation_effect = yes
             {schedule_deadline("ae_due_180")}
         }}'''
     if domain == "ae" and state == 4:
@@ -1588,15 +1877,35 @@ def render_barrier(domain: DomainSpec, state: int, stage_ids: tuple[int, ...]) -
 
 def render_ae_runtime_helpers() -> str:
     owner = vars_for("ae")["owner"]
-    return f'''zg361_comp_ae_consume_due_effect = {{
-    save_temporary_scope_value_as = {{ name = zg361_comp_due_gross value = var:zg361_comp_ae_statement_owed }}
+    return f'''zg361_comp_ae_freeze_due_obligation_effect = {{
+    if = {{
+        limit = {{
+            {full_guard("ae", 3, owner=f"var:{owner}")}
+            var:zg361_comp_ae_due_resolved = 0
+            var:zg361_comp_ae_statement_owed >= 2
+        }}
+        set_variable = {{ name = zg361_comp_ae_due_frozen_gross value = var:zg361_comp_ae_statement_owed }}
+        set_variable = {{
+            name = zg361_comp_ae_due_frozen_treasury
+            value = {{ value = var:zg361_comp_ae_due_frozen_gross multiply = 0.7 add = 0.5 floor = yes }}
+        }}
+        set_variable = {{
+            name = zg361_comp_ae_due_frozen_personal
+            value = {{ value = var:zg361_comp_ae_due_frozen_gross subtract = var:zg361_comp_ae_due_frozen_treasury }}
+        }}
+        {freeze_cash_identities("zg361_comp_ae_due_obligation", "ae", 3)}
+    }}
+}}
+
+zg361_comp_ae_consume_due_effect = {{
+    save_temporary_scope_value_as = {{ name = zg361_comp_due_gross value = var:zg361_comp_ae_due_frozen_gross }}
     save_temporary_scope_value_as = {{
         name = zg361_comp_due_treasury
-        value = {{ value = scope:zg361_comp_due_gross multiply = 0.7 add = 0.5 floor = yes }}
+        value = var:zg361_comp_ae_due_frozen_treasury
     }}
     save_temporary_scope_value_as = {{
         name = zg361_comp_due_personal
-        value = {{ value = scope:zg361_comp_due_gross subtract = scope:zg361_comp_due_treasury }}
+        value = var:zg361_comp_ae_due_frozen_personal
     }}
     remove_variable = zg361_comp_financial_applied
     if = {{
@@ -2200,7 +2509,25 @@ def render_events() -> bytes:
     type = character_event
     theme = vassal
     title = zg361comp.1.t
-    desc = zg361comp.1.desc
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 1 } } desc = zg361comp.1.l1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 2 } } desc = zg361comp.1.l2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 3 } } desc = zg361comp.1.l3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 1 var:zg361_comp_portfolio_subject = { var:zg361_case_l_state = 4 } } desc = zg361comp.1.l4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 1 } } desc = zg361comp.1.ae1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 2 } } desc = zg361comp.1.ae2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 3 } } desc = zg361comp.1.ae3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 4 } } desc = zg361comp.1.ae4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_subject = { var:zg361_case_ae_state = 5 } } desc = zg361comp.1.ae5 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 1 } } desc = zg361comp.1.af1 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 2 } } desc = zg361comp.1.af2 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 3 } } desc = zg361comp.1.af3 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 4 } } desc = zg361comp.1.af4 }
+            triggered_desc = { trigger = { var:zg361_comp_portfolio_domain = 3 var:zg361_comp_portfolio_subject = { var:zg361_case_af_state = 5 } } desc = zg361comp.1.af5 }
+            desc = zg361comp.1.desc
+        }
+    }
     trigger = {
         is_ai = no
         zg361_is_celestial_liege_trigger = yes
@@ -2336,6 +2663,20 @@ def render_english_localization() -> bytes:
     return localized(r'''l_english:
  zg361comp.1.t:0 "Compensation Portfolio"
  zg361comp.1.desc:0 "One sealed compensation case is before you. Choose the route for this stage; its numbered writes will be consumed together, never as thirty-three competing windows."
+ zg361comp.1.l1:0 "Bonus formula. A: quote 45, reserve 20 (treasury 14 / your gold 6). B: quote 37, reserve 16 (11 / 5). C: fixed pay only; create no bonus."
+ zg361comp.1.l2:0 "Retention and holdback. A: record a two-year refresh gap and settle the deferred award. B: one-year gap, claw back 2 already paid, refund the unpaid reserve. C: no refresh grant and refund the unpaid reserve."
+ zg361comp.1.l3:0 "Band and package. A: inside-band market package, authority plus a 4-pay next-statement increase. B: above-band authority package, no fixed-pay increase. C: decline the raise pool and package."
+ zg361comp.1.l4:0 "Spot award. A: pay 10 (treasury 7 / your gold 3), accounted as tenure 3 + performance 7. B: pay 6 (4 / 2), accounted as 4 + 2. C: no spot-award object."
+ zg361comp.1.ae1:0 "Statement basis. A: fixed extra month with full-cycle proration. B: performance extra month at half-cycle proration, payable only for frozen 3.75. C: discretionary extra month pays zero."
+ zg361comp.1.ae2:0 "Payment date. A: pay the statement now and pay 4 backpay. B: freeze the full debt for 90 days and add 4 backpay owed. C: freeze it for 180 days and reject backpay."
+ zg361comp.1.ae3:0 "Promotion and pay slope. A: 4 dry-promotion debt + 4 same-band raise; next-cycle base steps down 2. B: 2 + 2 debt, preserve professional pay. C: no new debt; next-cycle base drops 4."
+ zg361comp.1.ae4:0 "Band correction and visibility. A: 4 fixed-pay catch-up owed, private pay. B: 4 one-time award owed, public band. C: one-cycle exception, anonymous distribution, no new debt."
+ zg361comp.1.ae5:0 "Repair and appeal. A: 4 inversion repair owed and 4 appeal correction paid. B: 2 repair + 2 partial-appeal debt. C: no repair; deny the appeal without changing the grade."
+ zg361comp.1.af1:0 "LTI nomination. A: retention-heavy score, 100 option-style units. B: balanced score, 80 restricted units. C: zero units and a 10 cash alternative. Frozen 3.75 is required; eligibility is not entitlement."
+ zg361comp.1.af2:0 "Bonus conversion and valuation. A: voluntarily convert 4 to units, pay 6 cash, show 50% liquidity. B: pay all 10 cash, show full liquidity. C: create no conversion and show zero liquidity."
+ zg361comp.1.af3:0 "Vesting clock. A: 365-day cliff then 12 monthly tranches. B: 180-day cliff then 4 quarterly tranches. C: 730-day cliff then one annual tranche."
+ zg361comp.1.af4:0 "Vesting gates. A: 50/50 service-performance with both gates open. B: 70/30, organization gate only. C: service-only. After a vesting tick, A/B request exit classification while C waits another period."
+ zg361comp.1.af5:0 "Exit and liquidity. A: Good Leaver, forfeit unvested units, buy back 10 now. B: Bad Leaver, mark clawback eligibility, queue a 10 buyback for 90 days. C: transfer classification, retain vested units, request no buyback."
  zg361comp.1.a:0 "Follow the frozen contract and evidence."
  zg361comp.1.b:0 "Use the bounded alternative."
  zg361comp.1.c:0 "Defer or decline this stage."
@@ -2344,15 +2685,15 @@ def render_english_localization() -> bytes:
  zg361comp.289.a:0 "File a compensation-only appeal."
  zg361comp.289.b:0 "Accept the statement as served."
  zg361comp.900.t:0 "Compensation Case Settled"
- zg361comp.900.desc:0 "The award, its reserve, payments, refunds, and any bounded return now reconcile to the frozen contract."
+ zg361comp.900.desc:0 "The award reconciles. Bonus [ROOT.MakeScope.Var('zg361_comp_bonus_total').GetValue|0]; paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]; spot [ROOT.MakeScope.Var('zg361_comp_m090_spot_gross').GetValue|0]."
  zg361comp.901.t:0 "Deferred Award Resolved"
- zg361comp.901.desc:0 "The delayed award has either vested into personal gold or returned to its original treasury and personal payers."
+ zg361comp.901.desc:0 "The delayed award resolved against its frozen reserve. Total paid [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]; returned [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]; forfeited [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]."
  zg361comp.902.t:0 "Pay Statement Closed"
- zg361comp.902.desc:0 "Promised, paid, owed, and returned amounts now share one closed statement. The frozen performance grade was not rewritten."
+ zg361comp.902.desc:0 "Statement closed: payable [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0], paid [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0], owed [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0], returned [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]. Visibility mode [ROOT.MakeScope.Var('zg361_comp_m287_visibility_mode').GetValue|0]; the frozen grade was not rewritten."
  zg361comp.903.t:0 "Long-Term Units Vested"
- zg361comp.903.desc:0 "A scheduled service tranche, and any performance tranche whose two gates opened, has moved into vested units."
+ zg361comp.903.desc:0 "Vesting ledger: total [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0], service unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0], performance unvested [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]. Current value [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]; liquid value [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]."
  zg361comp.904.t:0 "Long-Term Incentive Settled"
- zg361comp.904.desc:0 "Exit classification and the FIFO liquidity request are closed without minting units or bypassing either payer."
+ zg361comp.904.desc:0 "LTI closed: leaver class [ROOT.MakeScope.Var('zg361_comp_m299_leaver_class').GetValue|0], vested [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0], forfeited [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0], repurchased [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]. FIFO and both payers remained binding."
  zg361comp.ok:0 "Record the receipt."
 ''')
 
@@ -2361,6 +2702,20 @@ def render_simp_chinese_localization() -> bytes:
     return localized(r'''l_simp_chinese:
  zg361comp.1.t:0 "薪酬案卷"
  zg361comp.1.desc:0 "一份封存的薪酬案卷正在候审。请选择本阶段路线；各编号写入会成组消费，绝不会化作三十三扇争相弹出的窗口。"
+ zg361comp.1.l1:0 "奖金公式。A：总包报价 45，预留 20（国库 14 / 你的金币 6）；B：报价 37，预留 16（11 / 5）；C：只留固定俸，不创建奖金对象。"
+ zg361comp.1.l2:0 "留任与暂扣。A：记录两年续授断崖并结算递延奖；B：一年断崖，追回已付 2，并退回未付预留；C：不续授，退回未付预留。"
+ zg361comp.1.l3:0 "薪带与待遇包。A：带内市场包，给权并让下张薪酬单加 4；B：带上给权不加固定俸；C：放弃调薪池与待遇包。"
+ zg361comp.1.l4:0 "专项奖。A：支付 10（国库 7 / 你的金币 3），分账为年功 3 + 绩效 7；B：支付 6（4 / 2），分账 4 + 2；C：不创建专项奖。"
+ zg361comp.1.ae1:0 "薪酬单基础。A：固定额外月俸、全周期折算；B：绩效月俸、半周期折算，且冻结结果必须为 3.75；C：酌情月俸为零。"
+ zg361comp.1.ae2:0 "发放日。A：立即付清薪酬单并补发 4；B：把完整欠款冻结 90 日，另记补发债 4；C：冻结 180 日并拒绝补发。"
+ zg361comp.1.ae3:0 "干升职与降俸坡。A：干升职债 4 + 同档调薪债 4，下周期基础俸降 2；B：两笔各 2，保留专业薪级；C：不新增债，下周期基础俸降 4。"
+ zg361comp.1.ae4:0 "带宽纠偏与透明度。A：低带追赶 4 记欠、金额保密；B：一次奖 4 记欠、公开带宽；C：带外例外一轮、匿名分布、不新增债。"
+ zg361comp.1.ae5:0 "倒挂修复与申诉。A：倒挂修复债 4，薪酬翻案补发 4；B：修复 2 + 部分翻案债 2；C：不修复并驳回申诉，绩效档不动。"
+ zg361comp.1.af1:0 "长期功赏提名。A：偏留任，100 份期权式；B：均衡，80 份限制式；C：零份额、现金替代 10。冻结 3.75 只是资格，不是自动获授。"
+ zg361comp.1.af2:0 "奖金转换与估值。A：自愿将 4 换份额、现金实付 6、流动性按 50%；B：现金全付 10、按完全流动；C：不创建转换、流动性为零。"
+ zg361comp.1.af3:0 "归属时钟。A：365 日 Cliff，之后月度 12 期；B：180 日，季度 4 期；C：730 日，年度 1 期。"
+ zg361comp.1.af4:0 "归属门槛。A：服务/绩效各半且双门开启；B：七三分，只有组织门开启；C：纯服务。归属一次后，A/B 请求离任分类，C 再等一期。"
+ zg361comp.1.af5:0 "离任与流动性。A：Good Leaver，没收未归属，立即回购 10；B：Bad Leaver，标记追索资格，90 日后排队回购 10；C：正常调动，保留已归属但不申请回购。"
  zg361comp.1.a:0 "依冻结合同与证据执行。"
  zg361comp.1.b:0 "采用有界替代方案。"
  zg361comp.1.c:0 "延期或放弃本阶段。"
@@ -2369,15 +2724,15 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.289.a:0 "仅就薪酬账发起申诉。"
  zg361comp.289.b:0 "接受送达的薪酬单。"
  zg361comp.900.t:0 "薪酬案结清"
- zg361comp.900.desc:0 "授予、预留、支付、退款与有界追回已经按冻结合同完成对账。"
+ zg361comp.900.desc:0 "奖金已对账：总额 [ROOT.MakeScope.Var('zg361_comp_bonus_total').GetValue|0]；已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]；专项奖 [ROOT.MakeScope.Var('zg361_comp_m090_spot_gross').GetValue|0]。"
  zg361comp.901.t:0 "递延奖励已处理"
- zg361comp.901.desc:0 "延期奖励已经归属为个人金币，或按原比例退回最初的国库与个人付款人。"
+ zg361comp.901.desc:0 "递延奖励已按冻结预留处理：累计已付 [ROOT.MakeScope.Var('zg361_comp_bonus_paid_gross').GetValue|0]；追回 [ROOT.MakeScope.Var('zg361_comp_bonus_returned').GetValue|0]；没收 [ROOT.MakeScope.Var('zg361_comp_bonus_forfeited').GetValue|0]。"
  zg361comp.902.t:0 "薪酬单已关闭"
- zg361comp.902.desc:0 "应付、实付、欠付与退回归于同一份结清账单；冻结的绩效档没有被改写。"
+ zg361comp.902.desc:0 "薪酬单关闭：应付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_payable').GetValue|0]，实付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_paid').GetValue|0]，欠付 [ROOT.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，退回 [ROOT.MakeScope.Var('zg361_comp_ae_statement_returned').GetValue|0]。可见模式 [ROOT.MakeScope.Var('zg361_comp_m287_visibility_mode').GetValue|0]；冻结绩效档未改写。"
  zg361comp.903.t:0 "长期份额归属"
- zg361comp.903.desc:0 "一批定时服务份额，以及同时通过组织与个人门槛的绩效份额，已经转为已归属。"
+ zg361comp.903.desc:0 "归属账：总份额 [ROOT.MakeScope.Var('zg361_comp_af_total_units').GetValue|0]，未归属服务 [ROOT.MakeScope.Var('zg361_comp_af_unvested_service').GetValue|0]，未归属绩效 [ROOT.MakeScope.Var('zg361_comp_af_unvested_performance').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]。现值 [ROOT.MakeScope.Var('zg361_comp_m294_current_value').GetValue|0]；可变现值 [ROOT.MakeScope.Var('zg361_comp_m294_liquid_value').GetValue|0]。"
  zg361comp.904.t:0 "长期激励结清"
- zg361comp.904.desc:0 "离任分类与先进先出的流动性申请已经关闭；份额没有凭空增加，付款也没有绕过任何一方。"
+ zg361comp.904.desc:0 "长期功赏关闭：离任分类 [ROOT.MakeScope.Var('zg361_comp_m299_leaver_class').GetValue|0]，已归属 [ROOT.MakeScope.Var('zg361_comp_af_vested_units').GetValue|0]，没收 [ROOT.MakeScope.Var('zg361_comp_af_forfeited_units').GetValue|0]，已回购 [ROOT.MakeScope.Var('zg361_comp_af_repurchased_units').GetValue|0]。FIFO 与双付款仍有效。"
  zg361comp.ok:0 "收存这份凭据。"
 ''')
 

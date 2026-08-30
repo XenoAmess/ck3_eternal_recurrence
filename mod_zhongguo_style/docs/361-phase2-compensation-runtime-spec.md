@@ -1,8 +1,9 @@
 ﻿# 天朝 361 二期：薪酬、奖金与长期激励 L0 内核
 
-> 状态：`python-l0-model` / `CK3 not-wired`。本文记录
-> `tools/zg361_phase2_compensation_model.py` 的确定性领域合同及其 46 条单元测试；它不是
-> Paradox 脚本接线、夹具实机或玩家可见闭环的完成声明。
+> 状态：`python-l0-model` + companion `CK3 script static-ready`。本文记录
+> `tools/zg361_phase2_compensation_model.py` 的确定性领域合同及其 58 条单元测试；对应 CK3 投影由
+> `tools/gen_361_compensation_runtime.py` 生成并通过 23 条专测。两层都尚无 central hook、夹具实机、
+> MCP paused snapshot 或玩家可见闭环证据。
 
 ## 一、范围与对象
 
@@ -17,6 +18,12 @@
 
 模型刻意不把三者合并成一个“金币加减器”。奖金、工资应付与长期份额分别有自己的状态与守恒式，
 但所有真实金币流动共用同一份 receipt journal。
+
+33 个编号另有统一的 `CompensationRouteLedger`：99 条 A/B/C 路线逐条冻结
+`owner + subject + cycle + case + expected_state`、数值资源载荷和可见结果；明确拒绝的 C 路线只记录
+`no-object`，不伪造业务对象。相同 operation key 重放、旧 serial、换路重放分别走 idempotent、stale 和
+typed RED。该路线账不是字符串 registry：现金路线会真实调用双付款 journal，欠付/延期路线冻结两边份额并可
+随后结算，非现金路线也必须写入至少一个可执行数值资源。
 
 ## 二、金币合同：国库与负责人个人金币双扣
 
@@ -68,6 +75,9 @@ payable = paid + owed − returned
 ```
 
 实际回购时才从国库和负责人个人金币双扣，并向持有人支付金币。回购队列固定 FIFO，禁止暗箱插队。
+
+路线账中的欠付和延期付款也遵守同一原则：创建债务时不冒充现金已动；真正调用 settlement consumer 时才同时
+预检、扣减国库与负责人个人金币并给受款人入账。任一付款方不足时，债务、钱包和 journal 保持原样。
 
 ## 四、33 个机制的确定性落点
 
@@ -126,13 +136,13 @@ cd mod_zhongguo_style/tools
 py test_zg361_phase2_compensation_model.py
 ```
 
-当前 46 条测试中，33 个机制各有具名行为测试，其余覆盖双扣原子性、退款上限、公式锁、旧案 stale、
-同案幂等、未来 serial、手工守恒漂移与 typed RED。
+当前 58 条测试中，33 个机制各有具名行为测试，并逐条执行全部 99 条 A/B/C 资源路线；其余覆盖双扣原子性、
+reserve → settle/refund、欠付/延期真实付款、退款上限、公式锁、旧案 stale、同案幂等、换路冲突、未来 serial、
+Good/Bad Leaver、FIFO 回购、手工守恒漂移与 typed RED。normal 与 `python -O` 两套运行均必须通过。
 
-进入 CK3 runtime 前仍需施工：
+CK3 静态投影已经完成；仍需施工和实证的是：
 
-1. 将三类 Python 对象投影为 Paradox 变量/flag/定时事件，并绑定 owner、subject、cycle、case serial；
-2. 把国库与负责人个人金币的余额预检、双扣和 receipt 序号接到真实 effect；
-3. 将工资单、奖金 receipt、长期奖估值/归属/回购队列投影进既有考核榜案卷，不新增奇怪 HUD 按钮；
-4. 用 MCP 命名 widget/状态查询批量证明支付前后余额、receipt、stale 重放和守恒式；OCR 不作为状态真值；
-5. 在一次 CK3 启动里合批测试公爵、国王、皇帝管理者及伯爵/男爵受评者边界，并保留 RED attempt。
+1. central dispatcher 调用统一 portfolio opener；
+2. 将工资单、奖金 receipt、长期奖估值/归属/回购队列投影进既有考核榜案卷，不新增奇怪 HUD 按钮；
+3. 用 MCP 命名 widget/状态查询批量证明支付前后余额、receipt、stale 重放和守恒式；OCR 不作为状态真值；
+4. 在一次 CK3 启动里合批测试公爵、国王、皇帝管理者及伯爵/男爵受评者边界，并保留 RED attempt。
