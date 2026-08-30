@@ -15,19 +15,20 @@ import prepare_release_localization as release_loc  # noqa: E402
 
 
 class ReleaseLocalizationTests(unittest.TestCase):
-    def test_batches_cover_two_thousand_and_forty_eight_keys_once(self) -> None:
+    def test_batches_cover_two_thousand_and_ninety_one_keys_once(self) -> None:
         batches = release_loc.build_batches()
-        self.assertEqual(18, len(batches))
+        self.assertEqual(19, len(batches))
         core = [key for batch in batches if batch.source == "core" for key in batch.keys]
         mechanisms = [
             key for batch in batches if batch.source == "mechanisms" for key in batch.keys
         ]
-        self.assertEqual(200, len(core))
+        self.assertEqual(243, len(core))
         self.assertEqual(1848, len(mechanisms))
         self.assertEqual(len(core), len(set(core)))
         self.assertEqual(len(mechanisms), len(set(mechanisms)))
-        self.assertEqual(40, len(batches[2].keys))
-        self.assertEqual(168, len(batches[3].keys))
+        self.assertEqual(80, len(batches[2].keys))
+        self.assertEqual(3, len(batches[3].keys))
+        self.assertEqual(168, len(batches[4].keys))
         self.assertEqual(55, len(batches[-1].keys))
 
     def test_merge_raw_yml_appends_only_a_source_order_suffix(self) -> None:

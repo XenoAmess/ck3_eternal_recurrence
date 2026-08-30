@@ -10,6 +10,11 @@ import sys
 import unittest
 
 from gen_scoreboard_snapshot import (
+    BASE_FIELDS,
+    CASE_FIELDS,
+    DETAIL_PAGES,
+    SENSITIVE_RECEIVED_FIELDS,
+    FieldSpec,
     MOD_ROOT,
     SLOT_COUNT,
     TOGGLE_POSITION,
@@ -20,6 +25,199 @@ from gen_scoreboard_snapshot import (
 
 
 class ScoreboardSnapshotTests(unittest.TestCase):
+    def test_case_detail_schema_uses_only_existing_frozen_product_fields(self) -> None:
+        product_effects = (
+            MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        self.assertTrue(all(isinstance(field, FieldSpec) for field in BASE_FIELDS))
+        self.assertTrue(all(isinstance(field, FieldSpec) for field in CASE_FIELDS))
+        self.assertEqual(
+            {field.page for field in CASE_FIELDS},
+            {"facts", "quota", "audit"},
+        )
+        self.assertEqual(DETAIL_PAGES, ("facts", "peer", "quota", "audit"))
+        for field in CASE_FIELDS:
+            self.assertIn(
+                f"name = {field.source_var}",
+                product_effects,
+                f"detail field {field.name} is not backed by a written product variable",
+            )
+        self.assertTrue(
+            SENSITIVE_RECEIVED_FIELDS.isdisjoint(
+                {field.name for field in BASE_FIELDS + CASE_FIELDS}
+            )
+        )
+
+    def test_single_case_detail_projection_and_selector_cardinality(self) -> None:
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        slot_guis = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt"
+        ].decode("utf-8-sig")
+        gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+
+        self.assertEqual(
+            len(re.findall(r"zg361_sb_m_\d{2}_select_gui\s*=\s*\{", slot_guis)),
+            SLOT_COUNT,
+        )
+        self.assertEqual(slot_guis.count("zg361_sb_self_select_gui = {"), 1)
+        self.assertEqual(gui.count('name = "zg361_scoreboard_window"'), 1)
+        self.assertEqual(gui.count('name = "zg361_scoreboard_toggle"'), 1)
+        self.assertEqual(gui.count('name = "zg361_scoreboard_detail_panel"'), 1)
+        for page in DETAIL_PAGES:
+            self.assertEqual(
+                gui.count(f'name = "zg361_scoreboard_detail_page_{page}"'), 1
+            )
+            self.assertEqual(
+                gui.count(f'name = "zg361_scoreboard_detail_tab_{page}"'), 1
+            )
+
+        for field in CASE_FIELDS:
+            self.assertIn(f"zg361_sb_m_01_{field.name}", effects)
+            self.assertIn(f"zg361_sb_self_{field.name}", effects)
+            self.assertNotIn(f"zg361_sb_r_01_{field.name}", effects)
+            self.assertIn(f"zg361_sb_detail_{field.name}", slot_guis)
+        for sensitive in SENSITIVE_RECEIVED_FIELDS:
+            self.assertNotRegex(
+                effects + slot_guis + gui,
+                re.compile(rf"zg361_sb_r_\d{{2}}_{re.escape(sensitive)}"),
+            )
+        self.assertNotIn("zg361_result_peer", gui)
+        self.assertNotIn("zg361_result_evaluator", gui)
+        self.assertIn("zg361_scoreboard_detail_unavailable", gui)
+
+    def test_dossier_selectors_require_complete_frozen_case_identity(self) -> None:
+        rendered = outputs()
+        slot_guis = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_guis"
+            / "zg361_generated_scoreboard_slots.txt"
+        ].decode("utf-8-sig")
+
+        managed = slot_guis.split("zg361_sb_m_01_select_gui = {", 1)[1].split(
+            "\n}\n", 1
+        )[0]
+        for field in ("char", "rank", "case_owner", "cycle_serial", "case_serial"):
+            self.assertIn(f"has_variable = zg361_sb_m_01_{field}", managed)
+
+        self_selector = slot_guis.split("zg361_sb_self_select_gui = {", 1)[1].split(
+            "\n}\n", 1
+        )[0]
+        for field in ("char", "case_owner", "cycle_serial", "case_serial"):
+            self.assertIn(f"has_variable = zg361_sb_self_{field}", self_selector)
+        self.assertNotIn("var:zg361_sb_self_char = root", self_selector)
+
+    def test_received_self_buffer_rejects_different_owner_or_cycle(self) -> None:
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        copy_self = effects.split(
+            "zg361_copy_received_scoreboard_slots_effect = {", 1
+        )[1].split(
+            "\n\tif = {\n\t\tlimit = { scope:zg361_scoreboard_source = { "
+            "has_variable = zg361_sb_m_01_char",
+            1,
+        )[0]
+        owner_guard = "var:zg361_result_case_owner = scope:zg361_scoreboard_source"
+        cycle_guard = (
+            "var:zg361_scoreboard_managed_cycle_serial = "
+            "root.var:zg361_result_cycle_serial"
+        )
+        self_write = "name = zg361_sb_self_char"
+
+        self.assertIn(owner_guard, copy_self)
+        self.assertIn(cycle_guard, copy_self)
+        self.assertIn(self_write, copy_self)
+        self.assertLess(copy_self.index(owner_guard), copy_self.index(cycle_guard))
+        self.assertLess(copy_self.index(cycle_guard), copy_self.index(self_write))
+        # Mutation-style negative cases: removing either exact identity equality
+        # makes the static availability proof fail, rather than silently opening
+        # a dossier for another reviewer or publication cycle.
+        for missing_guard in (owner_guard, cycle_guard):
+            mutated = copy_self.replace(missing_guard, "always = yes", 1)
+            self.assertFalse(
+                owner_guard in mutated
+                and cycle_guard in mutated
+                and mutated.index(owner_guard) < mutated.index(cycle_guard)
+                and mutated.index(cycle_guard) < mutated.index(self_write)
+            )
+
+    def test_detail_selection_is_cleared_by_publication_and_navigation(self) -> None:
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        gui = rendered[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
+            "utf-8-sig"
+        )
+        for prefix in ("m", "r"):
+            clear = effects.split(
+                f"zg361_clear_scoreboard_{prefix}_slots_effect = {{", 1
+            )[1].split("}\n", 1)[0]
+            self.assertIn("zg361_clear_scoreboard_detail_effect = yes", clear)
+        self.assertIn('name = "zg361_scoreboard_detail_back"', gui)
+        self.assertGreaterEqual(
+            gui.count("GetVariableSystem.Set('zg361_scoreboard_view', 'list')"),
+            9,
+        )
+        self.assertGreaterEqual(
+            gui.count(
+                "GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')"
+            ),
+            9,
+        )
+        self.assertIn(
+            "GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown",
+            gui,
+        )
+        self.assertIn(
+            "GetScriptedGui('zg361_scoreboard_detail_received_gui').IsShown",
+            gui,
+        )
+
+    def test_character_and_dossier_controls_are_siblings(self) -> None:
+        for prefix in ("m", "r"):
+            row = row_gui(prefix, 1)
+            character_index = next(
+                index
+                for index, line in enumerate(row)
+                if line.strip() == "button_tertiary = {"
+            )
+            detail_index = next(
+                index
+                for index, line in enumerate(row)
+                if f'name = "zg361_scoreboard_detail_button_{prefix}_01"' in line
+            )
+            self.assertGreater(detail_index, character_index)
+            self.assertTrue(row[character_index].startswith("\t"))
+            self.assertTrue(row[detail_index].startswith("\t"))
+            self.assertFalse(row[detail_index].startswith("\t\t"))
+            self.assertNotIn(
+                "button_standard = {",
+                "\n".join(row[character_index:detail_index]),
+            )
+        self.assertIn("zg361_sb_m_01_select_gui", "\n".join(row_gui("m", 1)))
+        received_row = "\n".join(row_gui("r", 1))
+        self.assertIn("zg361_sb_self_select_gui", received_row)
+        self.assertIn("Character.IsPlayer", received_row)
+
     def test_exact_slots_and_no_live_score_reads(self) -> None:
         rendered = outputs()
         effects = rendered[
@@ -232,11 +430,16 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 f"down = \"[GetVariableSystem.HasValue('zg361_scoreboard_tab', '{tab}')]\"",
                 gui,
             )
-        self.assertIn(
-            'button_normal = { size = { 100% 100% } onclick = '
-            '"[GetVariableSystem.Clear(\'zg361_scoreboard_open\')]" '
-            'shortcut = close_window }',
+        self.assertRegex(
             gui,
+            re.compile(
+                r"button_normal\s*=\s*\{\s*size\s*=\s*\{\s*100%\s+100%\s*\}.*?"
+                r"GetVariableSystem.Clear\('zg361_scoreboard_open'\).*?"
+                r"GetVariableSystem.Set\('zg361_scoreboard_view', 'list'\).*?"
+                r"GetVariableSystem.Set\('zg361_scoreboard_detail_tab', 'facts'\).*?"
+                r"shortcut\s*=\s*close_window",
+                re.S,
+            ),
         )
         self.assertRegex(
             gui,
@@ -258,11 +461,20 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown",
             modal.group("body") if modal else "",
         )
+        for gate in (
+            "Not(IsPauseMenuShown)",
+            "IsDefaultGUIMode",
+            "Not(IsGameViewOpen('struggle'))",
+            "hide_ui_main_tabs",
+            "Not(IsRightWindowOpen)",
+            "Not(IsGameViewOpen('outliner'))",
+            "Not(IsGameViewOpen('barbershop'))",
+        ):
+            self.assertIn(gate, modal.group("body") if modal else "")
 
     def test_row_content_cannot_intercept_the_character_button(self) -> None:
-        # The whole row is the button.  Every rendered leaf must pass pointer
-        # input through to it; otherwise clicking the visible name/KPI/grade
-        # only shows a tooltip and never executes DefaultOnCharacterClick.
+        # The character portion of the row is one button. Every rendered leaf
+        # passes pointer input through to it; the dossier control is its sibling.
         row = row_gui("m", 1)
         interactive_leaves = [
             line

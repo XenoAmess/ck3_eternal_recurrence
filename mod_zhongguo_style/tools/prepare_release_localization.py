@@ -766,8 +766,8 @@ def build_batches() -> tuple[Batch, ...]:
     covered = tuple(key for batch in batches if batch.source == "mechanisms" for key in batch.keys)
     if covered != mechanism:
         raise ReleaseLocalizationError("mechanism localization batching changed source key order")
-    if len(batches) != 18:
-        raise ReleaseLocalizationError(f"expected 18 translation batches, got {len(batches)}")
+    if len(batches) != 19:
+        raise ReleaseLocalizationError(f"expected 19 translation batches, got {len(batches)}")
     return tuple(batches)
 
 
