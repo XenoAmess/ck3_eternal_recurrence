@@ -99,3 +99,9 @@ master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。�
   explicit vanilla-rule fixture，并为 provenance parser 动态构造最小 `han.txt/e_china.txt` 历史数据库。暂时移走
   integration 的游戏 junction 后，`static-ci.yml` 全部公共步骤已在“游戏路径不存在”条件完整 GREEN；原 RED run 保留，
   后续 push SHA/run ID 待官方 GREEN 后补录。
+- fix SHA `ddc3f2045683f9fcf78c035a65c3b84e837ec239` 的 run `33301609323` 通过上一轮失败 step，
+  随后在 promo step 因 runner 无 ffmpeg 及 `%TEMP%` 的 8.3/长路径混用 RED。最小修复让纯 title-card/still 的
+  draft/validate-only 路径不再发现未使用的 ffmpeg；video clip 与真正渲染仍硬性要求 ffmpeg/ffprobe。证据相对路径比较先
+  `resolve()` 两端。本机从 PATH 移除 ffmpeg 后，promo 三命令组 GREEN；ZhongGuo 51-file formal staging 仍可复现且
+  ZIP SHA-256 仍为 `7ECF185749A6DEB10C7B260EEC70040299EDBD0BE96F49D5418000221BC32BA2`，即修改只落在
+  未发布的 promo tooling/tests。后续官方 run 待闭合。

@@ -1856,10 +1856,19 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
         expected_sha256=args.expected_audit_sha256,
         required=release_build,
     )
-    ffmpeg = shared.find_program(args.ffmpeg, "ffmpeg")
-    ffprobe = shared.find_program(args.ffprobe, "ffprobe", sibling_of=ffmpeg)
+    video_sources_present = any(
+        chapter.kind == "video_clip" and chapter.source_path is not None
+        for chapter in chapters
+    )
+    ffmpeg: Path | None = None
+    ffprobe: Path | None = None
+    if not args.validate_only or video_sources_present:
+        ffmpeg = shared.find_program(args.ffmpeg, "ffmpeg")
+        ffprobe = shared.find_program(args.ffprobe, "ffprobe", sibling_of=ffmpeg)
     fonts = shared.find_fonts()
-    shared.preflight_video_sources(chapters, ffprobe)
+    if video_sources_present:
+        assert ffprobe is not None
+        shared.preflight_video_sources(chapters, ffprobe)
     prepare_subtitle_layouts(chapters, fonts)
     prepare_status_badge_layouts(chapters, fonts)
     if args.validate_only:
@@ -1871,6 +1880,9 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
             f"visual_audit={'verified' if visual_audit_binding else 'not_required'}"
         )
         return output, output.with_suffix(".video.json")
+
+    assert ffmpeg is not None
+    assert ffprobe is not None
 
     build_key = _hash_payload(
         {

@@ -114,6 +114,13 @@ integration worktree 的游戏目录 junction 会遮住这类偶然依赖。L0 �
 与明确的 vanilla-rule fixture，不能读取真实 CK3 安装，也不能因此把游戏文件打包进 CI。该 RED 是 test-fixture isolation
 RED，不是 title-map、Workshop 产品或 CK3 实机能力 RED；原 run 保留，不重标。
 
+同日 follow-up run `33301609323` 已通过上述无游戏树用例，随后在 promo step 暴露两条 Windows L0 事实：
+GitHub `windows-latest` 不保证 `ffmpeg` 在 PATH，而 draft/manifest-only 工程只有 title-card/still 时本来就不需要媒体
+probe；项目校验与 `--validate-only` 现在只在存在 `video_clip`（或真正渲染）时发现 ffmpeg/ffprobe，真实视频源和正式
+编码仍保持硬依赖。其次，runner 的 `%TEMP%` 可能返回 `RUNNER~1` 8.3 路径，而写入证据的 `resolve()` 路径是
+`runneradmin` 长路径；测试做子路径比较前必须同时规范化两端，不能直接把两种等价拼写交给 lexical `relative_to()`。
+这两项都是 CI 环境/测试路径 RED，原失败 run 同样保留。
+
 真实游戏层在本机串行执行并保存 artifacts：
 
 - L1：`off`，production release 投影冷启动、引擎解析及禁用规则负例。

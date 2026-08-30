@@ -462,6 +462,8 @@ class BuildAndValidationTests(unittest.TestCase):
         chapter = types.SimpleNamespace(
             chapter_id="00-title",
             promo_type="title_card",
+            kind="title_card",
+            source_path=None,
             material_status="generated",
             raw={},
             status_zh="",

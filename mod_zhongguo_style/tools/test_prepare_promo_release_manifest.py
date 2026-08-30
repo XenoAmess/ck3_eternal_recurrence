@@ -401,6 +401,11 @@ class PromoReleaseProjectionTests(unittest.TestCase):
                 "evaluation_sha256": "A" * 64,
             }
             with (
+                mock.patch.object(
+                    promo.shared,
+                    "find_program",
+                    side_effect=[Path("ffmpeg"), Path("ffprobe")],
+                ),
                 mock.patch.object(promo.shared, "preflight_video_sources"),
                 mock.patch.object(promo, "prepare_subtitle_layouts"),
                 mock.patch.object(
@@ -513,7 +518,9 @@ class PromoReleaseProjectionTests(unittest.TestCase):
             gate_path = Path(
                 timeline["clean_frame_gates"][0]["frames"][0]["gate"]["path"]
             )
-            relative = gate_path.relative_to(missing_index).as_posix()
+            relative = gate_path.resolve().relative_to(
+                missing_index.resolve()
+            ).as_posix()
             index_path = missing_index / "evidence-index.json"
             index = json.loads(index_path.read_text(encoding="utf-8"))
             index["files"] = [

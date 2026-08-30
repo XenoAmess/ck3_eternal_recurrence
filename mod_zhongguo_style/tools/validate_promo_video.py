@@ -85,11 +85,6 @@ def validate_project(
 ) -> tuple[dict[str, Any], list[promo.shared.Chapter]]:
     manifest_path = manifest_path.expanduser().resolve()
     manifest, chapters = promo.load_manifest(manifest_path)
-    ffmpeg = promo.shared.find_program(None, "ffmpeg")
-    ffprobe = promo.shared.find_program(None, "ffprobe", sibling_of=ffmpeg)
-    fonts = promo.shared.find_fonts()
-    promo.shared.preflight_video_sources(chapters, ffprobe)
-    promo.prepare_subtitle_layouts(chapters, fonts)
 
     if promo.shared.EDGE_TTS_VERSION != "7.2.8":
         raise ValidationError(
@@ -129,6 +124,17 @@ def validate_project(
                 + ", ".join(missing_live)
             )
         _validate_release_source_records(chapters)
+
+    video_sources_present = any(
+        chapter.kind == "video_clip" and chapter.source_path is not None
+        for chapter in chapters
+    )
+    if video_sources_present:
+        ffmpeg = promo.shared.find_program(None, "ffmpeg")
+        ffprobe = promo.shared.find_program(None, "ffprobe", sibling_of=ffmpeg)
+        promo.shared.preflight_video_sources(chapters, ffprobe)
+    fonts = promo.shared.find_fonts()
+    promo.prepare_subtitle_layouts(chapters, fonts)
 
     try:
         visual_audit_binding = promo.verify_visual_audit_binding(
