@@ -1,6 +1,6 @@
 # Master consolidation inventory — 2026-08-30
 
-状态：**第二轮 exhaustive consolidation 本地进行中：phase2 静态里程碑已合入；待完整复测、官方 CI GREEN 与 branch ref 退休**
+状态：**能力与文档已收口到 `22553a8`，官方 push/dispatch GREEN；历史 branch refs 已按保全合同退休，待本清理账本提交的 exact CI GREEN**
 
 本清单以 consolidation 起始 `origin/master = 986d7281240334190e109f879eaa2f38877af489` 为基线，目标是把仍有效、且未被
 master 等价或更优实现覆盖的能力和 mod 收口到同一个 master。第一轮 consolidation GREEN 基线为
@@ -59,41 +59,41 @@ branch ref，不覆盖构建目录、artifact、录像、日志、用户脏工�
 
 | 分支 | 证据 | 标记 |
 |---|---|---|
-| `agent-gen031-war-query-same-frame-20260828` | tip 已是 master 祖先 | `DELETE` |
-| `agent/battle-pause-reduction`（本地与远端） | `git cherry` 仅 `- 7960e7c` | `DELETE` |
-| `agent/perf-120dpm-20260828` | 3 个提交均为 `-` | `DELETE` |
-| `agent/sentinel-event-trigger-race-20260828` | `git cherry` 仅 `- dcfe397` | `DELETE` |
-| `perf-policy-neutral-rework-20260828` | 2 个提交均为 `-` | `DELETE` |
-| `stationary-timeout-1787909000` | `git cherry` 仅 `- b297852` | `DELETE` |
-| `origin/agent-defensive-war-native-20260828` | `git cherry` 仅 `- 3223c05` | `DELETE` |
-| `agent/perf-production-speed3-20260828` | 唯一残余 `+ 1322b6a` 已被 policy-neutral production gate 取代 | `DELETE` |
-| `agent/sentinel-cancel-20260828` | 唯一残余 `+ 5670890` 是已被 generation-bound 协议取代的旧合同 | `DELETE` |
-| `integrate/zhongguo-phase1-20260830` | tip 与完成 consolidation 的 master 相同 | `DELETE` |
-| `origin/mod-zhongguo-style-wip` | phase-I tip 已是 master 第二父祖先 | `DELETE` |
-| 本地 `mod-zhongguo-style-wip` | phase-I tip 已是 master 祖先，但仍承载 `Z:\ck3_mod_rewrite` 脏现场 | `DELETE-DEFERRED`：现场完成迁移/归档后删除 ref；现在禁止强拆 |
+| `agent-gen031-war-query-same-frame-20260828` | tip 已是 master 祖先 | `RETIRED` |
+| `agent/battle-pause-reduction`（本地与远端） | `git cherry` 仅 `- 7960e7c` | `RETIRED` |
+| `agent/perf-120dpm-20260828` | 3 个提交均为 `-` | `RETIRED` |
+| `agent/sentinel-event-trigger-race-20260828` | `git cherry` 仅 `- dcfe397` | `RETIRED` |
+| `perf-policy-neutral-rework-20260828` | 2 个提交均为 `-` | `RETIRED` |
+| `stationary-timeout-1787909000` | `git cherry` 仅 `- b297852` | `RETIRED` |
+| `origin/agent-defensive-war-native-20260828` | `git cherry` 仅 `- 3223c05` | `RETIRED` |
+| `agent/perf-production-speed3-20260828` | 唯一残余 `+ 1322b6a` 已被 policy-neutral production gate 取代 | `RETIRED` |
+| `agent/sentinel-cancel-20260828` | 唯一残余 `+ 5670890` 是已被 generation-bound 协议取代的旧合同 | `RETIRED` |
+| `integrate/zhongguo-phase1-20260830` | tip 与完成 consolidation 的 master 相同 | `RETIRED`；worktree 已接管 local `master` |
+| `origin/mod-zhongguo-style-wip` | phase-I tip 已是 master 第二父祖先 | `RETIRED` |
+| 本地 `mod-zhongguo-style-wip` | phase-I tip 已是 master 祖先；dirty tree 同 tip detach 后 hashes 不变 | `RETIRED`；现场仍原地冻结 |
 | `master` | 唯一正式集成与 CI/CD 准线 | `KEEP` |
-| `mod-zhongguo-style-phase2-v0.4` | 当前唯一有效的 v0.4 开发线，基于完成 consolidation 的 master | `KEEP-ACTIVE`；每个成品里程碑及时回并 master |
+| `wip/zhongguo-phase2-v0.4` | 当前唯一有效的 v0.4 开发线，基于 `22553a8` | `KEEP-ACTIVE`；本 L1 slice GREEN 后、第二 slice 前回并 master |
 
-这里的 `DELETE-DEFERRED` 不是让旧一期分支继续开发。它只是一枚保护用户脏现场的临时引用；任何新代码都不得再以
-`17dc506` 为基线。删除 branch ref 也不等于删除 process assets，本清单禁止用 branch 清理名义清理那些素材。
+旧一期 ref 已删除，但 dirty checkout 和 process assets 均未删除；任何新代码都不得再以 `17dc506` 为基线。本清单禁止用
+branch 清理名义清理那些素材。
 
 ### unfinished-preserved
 
-- `mod-zhongguo-style-phase2-v0.4` 已无损重基到 `fa889392`，原 **20 个 tracked 修改 + 12 个 untracked 文件**
+- `wip/zhongguo-phase2-v0.4` 已无损迁到 `22553a8`，原 **20 个 tracked 修改 + 12 个 untracked 文件**
   已形成静态里程碑 `b5a0b0e97413a35a3ec50dad525251970fb659f0`；该成品切片现已通过 merge `ec339ed` 收入
   master。worktree 仍有两份未提交 acceptance 施工文件，字节继续保留；L0 GREEN 不代表 CK3 L1/L2/L3，后续仍必须 MCP-first
   合批实机，不能宣称 production-live。迁移前冻结 SHA-256：fixture `zga_effects.txt =
   0DE4BBDA09303AF95D264DF711EC69F391E2C1672C0FE5574100E04FA87B3F2A`，runner `run_zhongguo_acceptance.py =
   0396480674DBB059AF20CD8B93E7015E3CBE33C4C0C2EF0F4FD9C983E0352D0E`。
-- `Z:\ck3_mod_rewrite` 主工作树仍在 WIP tip，存在 **36 个 tracked 修改 + 12,600 个 untracked 路径**。
+- `Z:\ck3_mod_rewrite` 主工作树已在同一 WIP tip `17dc506` detach，仍存在 **36 个 tracked 修改 + 12,600 个 untracked 路径**。
   tracked 中 12 个文件逐字节等于新 master、18 个是 master 历史旧 blob、6 个是旧 WIP 与历史 autonomous 代码/文档的
   未提交组合。产品 provenance 与 7 条 CK3 语法实证是其中仍有效的唯一知识增量，已精确迁入 integration；其余代码由
   当前 G1/GEN-032b/title-map 并集更完整地覆盖。
 - 12,600 个 untracked 路径绝大多数是原生构建树、object、日志与历史媒体/artifact；
   `session-ses_fb82.md`（926,620 bytes）、月报/361 过程素材和下一版本 prototype archive 均原地保留，不进 Git、不删除。
-- 独立 G2 common-dir 的 `agent-mainline-20260827` 基于 `388cf37`，有 4 modified + 1 untracked 的
-  `start-next-episode` 继续施工现场。它不是已成品能力，不并入本轮 commit；官方 CI GREEN 后只把 branch/worktree 安全迁到
-  consolidated master 并改名 `wip/g2-next-episode`，五份文件按 SHA-256 前后逐字节验证。迁移前 SHA-256 依次为：
+- 独立 G2 common-dir 的继续施工现场已由 `agent-mainline-20260827@388cf37` 无损迁到
+  `wip/g2-next-episode@22553a8`，仍有 4 modified + 1 untracked。它不是已成品能力，不并入本轮 commit；五份文件已按
+  SHA-256 前后逐字节验证。SHA-256 依次为：
   `cli.py 97D439D2...19042`、`native_auto_run.py 3999A98F...367B9`、`native_session.py 079D3A52...09857`、
   `test_native_auto_run.py 6C040100...DA416`、`next_episode_run.py 1B05F6E2...4EC77`；完整 64 位值保存在本轮交付记录。
 
@@ -238,3 +238,34 @@ exact candidate/DLL/injector/artifact hash、两次 startup RED、desktop identi
   media `6/6 + 8 JPEG`、promo `27/27 + 10/10`、MiniMax caller `26/26`、showcase `9/9`；四套 static 与 build-check 全绿。
   ZhongGuo development staging 是 51 files，manifest `8c96169c8394e6d361aa7936010672c0a9f24c77284a54bba9b600586128d8e1`、
   ZIP `b9d85f566be1ef7595ab8780baa12f003c36bb551cdcb549f3fd6e25272e0096`。它只证明当前 master 开发树可复现，未发布。
+
+## 官方 GREEN 与实际 branch-ref 退休（17:58）
+
+- 第二轮 consolidation 提交 `22553a882f1e3a0f7a70209611c0e9189718c3d0` 已普通 fast-forward 推到
+  `origin/master`。push run [`33304348481`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/33304348481)、
+  workflow-dispatch run [`33304422168`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/33304422168) 与同 SHA 的
+  phase2 WIP push run [`33304583259`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/33304583259) 均为 terminal
+  `SUCCESS`。dispatch artifact `9730002463`（`release-candidate-master-33304422168`，6,434,230 bytes）已下载到
+  `Z:\ck3_mod_rewrite_process_assets\zg361\merge-phase1\actions\22553a8-dispatch-33304422168`。
+- 四套 candidate 的 manifest / ZIP SHA-256 分别为：main `CCC64938...C85A / AE64843F...6E49`、Vivhite
+  `0C6FCE0B...3597 / B5D7F276...0C08`、Ox `8838AFEF...7629 / 2EAACBAF...18FD`、ZhongGuo
+  `3D5F37E2...A57F / B9D85F56...E0096`；它们是 CI release candidate，不改变既有 Workshop 发布声明。
+- 实际退休 **36 个 local refs**：Z common-dir 10 个（含一期 WIP 与临时 integration ref）、G2 common-dir 11 个、15 个独立
+  runtime clone 的 `master`；另以普通 `git push --delete` 退休 4 个 remote refs。远端现只剩 `master` 与
+  `wip/zhongguo-phase2-v0.4`；Z common-dir 只剩同名两条，G2 common-dir 只剩 `master` 与 `wip/g2-next-episode`；15 个独立
+  clone 均为 detached HEAD 且无 local head ref。未删除或移动任何 worktree、clone、artifact、录像、日志或 process directory。
+- 34 个保留根已写 `.xar-frozen-evidence.json`；`Z:\ck3_mod_rewrite` 是唯一中央 ledger 例外，以免 marker 本身改变所有者脏树。
+  该根 detach 前后仍为 `17dc506`，status/diff hash 仍为 `1a95274e...201f / d0b7f574...c2d6`。phase2 两份 dirty 文件仍为
+  `0DE4BBDA...3F2A / 03964806...2D0E`；G2 的 4 modified + 1 untracked 五个 SHA 仍为
+  `97D439D2...19042 / 3999A98F...367B9 / 079D3A52...09857 / 6C040100...DA416 / 1B05F6E2...4EC77`。
+- `%TEMP%` 最终发现命中 16 个本项目 repo config；按 resolved common-dir 去重后是 1 个 G2 common root 与 15 个独立 clone，
+  没有隐藏开发分支。event-scope 冻结 clone 的 origin fetch/index-pack RED 仍原样保留；其 `a860702` 已有健康仓库语义超集证明，
+  因 stale upstream 唯一使用本地 `branch -D` 删除 ref，clone 目录与对象未修、未删。dirty persistence 两文件仍为
+  `860B021C...F8C / 313DAD3A...B0C`。
+- machine-readable cleanup 根目录为
+  `Z:\ck3_mod_rewrite_process_assets\zg361\merge-phase1\cleanup-20260830`。关键证据 SHA-256：
+  `pre-cleanup-inventory.json 695FDA72...E57D`、`z-common-detach.json 53A33438...40B`、
+  `g2-common-detach.json BEE0B05D...34C7`、`independent-clone-detach.json 9D817D44...8AFF`、
+  `freeze-marker-index.json 6FD77BF4...59B`、`local-ref-deletions.json D65F00B8...26CF`、
+  `remote-ref-deletions.json 8CC35453...A103`、`dirty-root-central-ledger.json A0192457...ECFC`、
+  `master-workline-transition.json FD2E62A6...8315`、`post-cleanup-inventory.json 9AF435B8...5624`。

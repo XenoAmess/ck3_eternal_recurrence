@@ -29,7 +29,7 @@
 
 ## 冻结证据不是开发分支
 
-历史 live source、失败复现、benchmark 或 release checkout 默认使用 detached HEAD。每个新冻结 checkout/clone 根目录必须有
+历史 live source、失败复现、benchmark 或 release checkout 默认使用 detached HEAD。每个新冻结 checkout/clone 根目录默认必须有
 `.xar-frozen-evidence.json`：
 
 ```json
@@ -47,7 +47,10 @@
 }
 ```
 
-marker 是 sidecar，不进入产品 staging；它不得替代 artifact 自身的 manifest/hash。若脏现场暂时无法 detach，只允许建立
+marker 是 sidecar，不进入产品 staging；它不得替代 artifact 自身的 manifest/hash。唯一可用的无 sidecar 例外是：写 marker
+本身会改变所有者已经交付并冻结的 dirty tree。此时必须在仓库外中央 machine-readable ledger 写入相同 schema，再追加绝对路径、
+exact HEAD、`git status --porcelain=v2 -z` hash、`git diff --binary` hash、前后相等证明和“不写 root marker”的理由；该例外不得用于
+普通 clean checkout，也不得省略 `do_not_develop=true`。若脏现场暂时无法 detach，只允许建立
 `frozen/<short-purpose>` **本地分支**，同时登记 `frozen-exception`：禁止 push、禁止新 commit，待 dirty bytes/hash 已记录后立即
 detach、写 marker、删除 ref。删除 ref 时禁止 prune/remove worktree，也禁止删除或搬移 process assets。
 
@@ -85,10 +88,10 @@ clone 的 local tip（不留 persistent ref），再与当前 master 做 ancestr
 
 | branch / checkout | reason / base | owner | acceptance / deadline | status |
 |---|---|---|---|---|
-| `wip/zhongguo-phase2-v0.4`（迁移前名 `mod-zhongguo-style-phase2-v0.4`） | 二期 MCP-first 批量实机；静态 milestone `b5a0b0e` 已合入 master | ZhongGuo phase2 | 保留两份未提交 acceptance 文件；本 L1 slice GREEN 后立即 merge，且必须早于第二个 slice 开工 | `active` |
-| `wip/g2-next-episode`（迁移前名 `agent-mainline-20260827`） | G2 `start-next-episode → gameplay/checkpoint`；base `388cf37` | autonomous G2 | 保留 4 modified + 1 untracked；next-episode 端到端 gate GREEN 后立即 merge，且必须早于任何无关 G2 milestone | `active` |
-| `Z:\ck3_mod_rewrite` | 一期 WIP tip `17dc506` 上的用户脏现场 | owner | detach 后写 frozen marker；绝不删除 36 tracked / 12,600 untracked | `frozen-exception`，本轮退休 ref |
-| 旧 agent/runtime/release checkout | 已合入、patch-equivalent 或 superseded 的 live 证据 | consolidation | master CI GREEN 后 detach + marker；目录永不随 ref 删除 | `merged-ci-pending` |
+| `wip/zhongguo-phase2-v0.4`（迁移前名 `mod-zhongguo-style-phase2-v0.4`） | 二期 MCP-first 批量实机；静态 milestone `b5a0b0e` 已合入 master；现 base `22553a8` | ZhongGuo phase2 | 保留两份未提交 acceptance 文件；本 L1 slice GREEN 后立即 merge，且必须早于第二个 slice 开工 | `active` |
+| `wip/g2-next-episode`（迁移前名 `agent-mainline-20260827`） | G2 `start-next-episode → gameplay/checkpoint`；由 `388cf37` 无损迁到 `22553a8` | autonomous G2 | 保留 4 modified + 1 untracked；next-episode 端到端 gate GREEN 后立即 merge，且必须早于任何无关 G2 milestone | `active` |
+| `Z:\ck3_mod_rewrite` | 一期 WIP tip `17dc506` 上的用户脏现场 | owner | 已同 tip detach、删除 ref；中央 ledger 保留 exact HEAD/status/diff，绝不删除 36 tracked / 12,600 untracked | `retired` ref；frozen evidence 原地保留 |
+| 旧 agent/runtime/release checkout | 已合入、patch-equivalent 或 superseded 的 live 证据 | consolidation | 34 个根已 detach + marker；目录不随 35 个历史 ref 删除 | `retired` |
 
 ## 合并与清理 checklist
 
@@ -97,7 +100,8 @@ clone 的 local tip（不留 persistent ref），再与当前 master 做 ancestr
 - [ ] push 前 `ls-remote` 与预期 master 一致，无 force；
 - [ ] exact master SHA 的全部 required Actions terminal GREEN；
 - [ ] 每个关联 worktree/clone 在相同 tip detach，dirty 文件数量与 SHA 前后不变；
-- [ ] frozen checkout 已写 `.xar-frozen-evidence.json`，`do_not_develop=true`；
+- [ ] frozen checkout 已写 `.xar-frozen-evidence.json`，`do_not_develop=true`；若使用唯一 dirty-owner-root 例外，中央 ledger 含
+      同 schema、exact HEAD/status/diff 与不写 marker 的理由；
 - [ ] 删除的是 local/remote branch ref，不是 worktree、clone、artifact 或 process directory；
 - [ ] 已枚举并按 common-dir 去重所有 workspace、worktree 与独立 `%TEMP%` clone；
 - [ ] 最终 ref 清单只剩 master、ledger 中 active `wip/`/必要 `release/` 和明确 exception。

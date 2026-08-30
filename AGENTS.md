@@ -141,7 +141,8 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `wip/<topic>`；必要发布线才用 `release/<product>-<version>`。分支必须登记 reason/base/owner/acceptance/deadline，
   成品及时合入，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。
 - 禁止 force-push。并发推送先 fetch/复核 remote master；远端移动时停止 push，rebase 到新 master、复测后普通 fast-forward push。
-- 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。删除 branch ref
+- 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。仅当写 marker 会
+  改变所有者已冻结的 dirty tree 时，才可用记录 exact HEAD/status/diff hash 的中央 machine-readable ledger 代替。删除 branch ref
   绝不授权删除 worktree、clone、构建目录或 process assets。完整规则与跨 common-dir/独立 clone 清单见
   `docs/branch-management.md`。
 
