@@ -1,28 +1,32 @@
 # ZhongGuo 361 Workshop Media
 
-The six currently tracked JPEGs are deterministic, presentation-only crops
-from the first full-batch `GREEN` CK3 acceptance artifact. They are real game
-captures, not generated illustrations; the untouched PNG evidence remains at
-the external artifact location below. That historical run was later proved to
-have the first-cycle newcomer bug: slots 1–2 visibly show `7 / 16 / 0`, and
-slot 3 freezes the same invalid cohort. Those three tracked files are retained
-only as process history and are **RED for publication**. The renderer now
-rejects a base artifact unless both report layers are GREEN and the run carries
-the live `bootstrap_first_review_strict_7_14_2` marker.
+The eight tracked JPEGs are deterministic, presentation-only crops from one
+final complete `GREEN` CK3 promo capture. They are real game captures, not
+generated illustrations; the untouched PNG evidence and raw video remain at
+the external artifact location below. Slots 1–2 explicitly show the corrected
+strict first-cycle `7 / 14 / 2` distribution; slot 3 freezes that same corrected
+cohort but crops the aggregate counters out of frame. Slots 7–8 show the real
+#001 and #361 policy cards from the same run. The earlier `7 / 16 / 0` JPEGs
+remain in Git history and external process artifacts only; they are **RED for
+publication** and were not deleted.
 
-The final eight-image strip must replace slots 1–3 from one final complete
-`7 / 14 / 2` promo `GREEN` capture and add real policy cards #001 and #361
-from that same run. Until its lock is reviewed, slots 1–3 and 7–8 remain
-explicitly pending and no substitute image may be published. Workshop JPEGs
-must not be put in the mod release staging.
+The renderer binds slots 1–6 through frozen source/output hashes and slots 7–8
+through `workshop/media-policy-lock.json`. Raw-to-JPEG reproduction requires
+both report layers to be GREEN, the live
+`bootstrap_first_review_strict_7_14_2` marker, and one matching artifact root
+for all eight projections. Workshop JPEGs must not be put in the mod release
+staging.
 
 ## Evidence source
 
-- Artifact root: `Z:\ck3_mod_rewrite_process_assets\zg361\runs\zga_20260829_061314_ea5f04ad`
+- Artifact root: `Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\zga_20260830_0930_clean_2fa2ac8_mcp`
 - Capture directory: `cell/`
 - Acceptance result: `GREEN`, CK3 `1.19.0.6`, isolated userdir, 2560×1440
-- Report SHA-256: `dccf8b87d990ba3ed3074fae3391e5004e6cd8b07a5c80750bc344e7f9024c25`
-- Evidence-index SHA-256: `b3f88f34a1a84db2414339b01ae10246c59dc8390a46a29a2286904f9ee38df7`
+- Report SHA-256: `786b451b305fc5fccde3fa2650ed2969d6ef51941761d045cbd26249b8c493b1`
+- Evidence-index SHA-256: `f22ecda2041bf3ed52f3f0109fb7e0860b23478c1fecb126e67242626442fd40`
+- Timeline SHA-256: `02f39dc0cef2f62e558592f96e49cf38cc07b4e1487054364ac6854655497f3b`
+- Raw-capture SHA-256: `4d85d5d38a9d89c230153efc66146a0c25afd23f0e50120795d7c82cf016ca67`
+- Media policy-lock SHA-256: `1e48a487c0831abc2209d8c5934ab1cfc7292d9546554edd6d17f34c91c06b82`
 - Renderer: `tools/compose_workshop_media.py`; Pillow JPEG quality 90,
   optimized progressive 4:4:4 (`subsampling=0`); each output is below
   Steam's 2,000,000-byte limit.
@@ -31,25 +35,18 @@ must not be put in the mod release staging.
 
 | Order | Feature / 功能 | Acceptance source | Source SHA-256 | Crop `(left, top, right, bottom)` | Workshop JPEG | Dimensions | Bytes | Output SHA-256 |
 |---:|---|---|---|---|---|---:|---:|---|
-| 1 | Calibration meeting / 绩效校准会议 | `cell/06_calibration_event.png` | `8e1813d538be9f95736d9f07eb88b7bcb719320d421eb37dfbcfce649bd65aab` | `420,280,1610,875` | `media/01_calibration_meeting.jpg` | 1190×595 | 166,163 | `abdc899a14ce6ce0f48df5af0e18290efa65971e65ebea3e39eb94bba59575a2` |
-| 2 | Frozen review cohort / 冻结考核名单 | `cell/07_result_summary.png` | `b020a11ea9e8e10db7aaace83dff11bbde05cb9b2af6a64b3aa9ce55d92b2f7d` | `430,275,1605,885` | `media/02_review_cohort_frozen.jpg` | 1175×610 | 184,750 | `9ca4d85efb4be45f16927912343509e81ec9722a190a1d4a805a50fe3b8adccf` |
-| 3 | 30/60/10 scoreboard / 天朝官员考核榜 | `cell/08_scoreboard_panel.png` | `bb45518330ea20399d0b73f6776c72ac5da6f3ebdf1e2c84dc6643430ad9aca3` | `430,130,1640,1020` | `media/03_scoreboard.jpg` | 1210×890 | 180,041 | `98d06d1661745761ab94d90628eedbf67668e5e77a74863ce5c46c27753fb790` |
-| 4 | Semi-mandatory Jingcha / 京察之期 | `cell/09_jingcha_mandate_event.png` | `9f7bb4ee382677c035d6256da3d5c113959e2026b3a1ef59fce33d22ae53cb06` | `420,280,1610,875` | `media/04_jingcha_mandate.jpg` | 1190×595 | 167,248 | `77dc6bd7da79ed79448c849f6597298291cb33bf73653517604e76417071ea64` |
-| 5 | Free Jingcha activity / 免费京察活动 | `cell/09_jingcha_activity_detail.png` | `c34f54b69898f8bf5a630226b86dfb185cf3acc2052faa0183d7f771e10123c1` | `720,120,2000,1200` | `media/05_free_jingcha_activity.jpg` | 1280×1080 | 302,381 | `784b2f2b3cb3c763990ea4133064600a2fb66e5602ef3dfa6c7429fc74b0f9d4` |
-| 6 | Actual 3.25 outcome / 上司考定 3.25 | `cell/10_superior_result.png` | `93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f` | `430,275,1605,885` | `media/06_superior_325_result.jpg` | 1175×610 | 162,398 | `58ac67ad919a93f279c0d21de53e1244d9e83b58071a910260c8c60b59f28bd1` |
+| 1 | Calibration meeting / 绩效校准会议 | `cell/06_calibration_event.png` | `d384bfe4b717892a7923613ac4f191856fdf4d85868927b71250dee4d86013b8` | `420,280,1610,875` | `media/01_calibration_meeting.jpg` | 1190×595 | 175,673 | `60c11f4407ef2e52496cdcbbea16a0e2abae016be572b003164d55d6967327f4` |
+| 2 | Frozen review cohort / 冻结考核名单 | `cell/07_result_summary.png` | `bfeaf077634a057e00d18599c4b7825e7f7a2787990b4ca18221796b6dfd6406` | `430,275,1605,885` | `media/02_review_cohort_frozen.jpg` | 1175×610 | 194,850 | `b0f9467a933fc0ced16b44bc05d2cfe0e61bd9a1f7958d1090bf2197a2c93ef6` |
+| 3 | 30/60/10 scoreboard / 天朝官员考核榜 | `cell/08_scoreboard_panel.png` | `8b10e6e1d8715a084091777200cf8e456748f66a9c087426badb683054535e37` | `430,130,1640,1020` | `media/03_scoreboard.jpg` | 1210×890 | 185,618 | `bd6b588e6a508a7b36cfb2d052efa4babfdbbde60fc0696f68e4c6a7ed18311c` |
+| 4 | Semi-mandatory Jingcha / 京察之期 | `cell/09_jingcha_mandate_event.png` | `a158e9dd21503eddfea8a6df7f4268800e3bb5f725f3749651166668619d9eed` | `420,280,1610,875` | `media/04_jingcha_mandate.jpg` | 1190×595 | 177,396 | `6c2af19da15624eea28a82b359fb0dbc3e7029205e512da95b367aded4420634` |
+| 5 | Free Jingcha activity / 免费京察活动 | `cell/09_jingcha_activity_detail.png` | `7cd1c532ab7bad63e6e4573687c975f29c2fb1bfb954cf815e76a172a99c8eb7` | `720,120,2000,1200` | `media/05_free_jingcha_activity.jpg` | 1280×1080 | 339,651 | `0f001de99c51d71d8f6ead09fa0989aec3b880e8cb399bec1e0614985d99c201` |
+| 6 | Actual 3.25 outcome / 上司考定 3.25 | `cell/10_superior_result.png` | `1faf5ca71c6140aff2f1aeaf8d9662f0caf3d35cf2927199edfd0e7dafa6d435` | `430,275,1605,885` | `media/06_superior_325_result.jpg` | 1175×610 | 167,511 | `3a341668248ade6102d2a1e1b5c9ed07501ea352cf1798f14929a177b967f287` |
+| 7 | KPI evidence policy / #001 KPI 分项证据单 | `cell/12_policy_001_event.png` | `19416e472a4983388b1e0106937cf046013a393958f6bd4654a0f0aca93d1720` | `420,280,1610,875` | `media/07_policy_001_kpi_evidence.jpg` | 1190×595 | 159,357 | `d992ce8f1c3d4004791f9509709283557dee39050cdc160f5be9519e6ca0a2a3` |
+| 8 | Performance charter / #361 三六一绩效宪章 | `cell/12_policy_361_event.png` | `73b2929e1c3d3f2725a0c262dafcdbe4a35e0015526417698dfc91ae22c2465d` | `420,280,1610,875` | `media/08_policy_361_charter.jpg` | 1190×595 | 168,539 | `b7fb05cda6ee489a50982fb6acff1652b36127c112bbe6b70053e4a8c6d1ed45` |
 
-The two final recipes are already frozen, but their hashes and byte counts are
-not guessed in advance:
-
-| Order | Feature / 功能 | Required source in the final promo GREEN run | Crop | Workshop JPEG | Current state |
-|---:|---|---|---|---|---|
-| 7 | KPI evidence policy / #001 KPI 分项证据单 | `cell/12_policy_001_event.png` | `420,280,1610,875` | `media/07_policy_001_kpi_evidence.jpg` | Pending formal capture and lock |
-| 8 | Performance charter / #361 三六一绩效宪章 | `cell/12_policy_361_event.png` | `420,280,1610,875` | `media/08_policy_361_charter.jpg` | Pending formal capture and lock |
-
-Both become 1190×595 progressive 4:4:4 JPEGs. The renderer rejects either
-output at 2,000,000 bytes or above. Their source and output SHA-256 values enter
-`workshop/media-policy-lock.json` only after the complete promo run passes the
-same report/index/timeline/MKV provenance contract as the final video.
+Slots 7–8 are frozen in `workshop/media-policy-lock.json`, created only after
+the complete promo run passed the report/index/timeline/MKV provenance
+contract. The renderer rejects every output at 2,000,000 bytes or above.
 
 Recommended captions (Chinese first) are:
 
@@ -74,21 +71,20 @@ source artifact:
 python mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
 ```
 
-The renderer pins all six currently active source PNG hashes and rejects
-unexpected JPEGs in `workshop/media/`. The `--check-tracked` form is the CI-safe
-integrity check for machines that do not hold the external raw artifact; it
-verifies the exact active inventory (six files now, eight after the reviewed
-policy lock is committed), JPEG decoding, dimensions, size limits and pinned
-output hashes. It does not replace the local raw-to-JPEG reproduction check.
-Neither mode deletes, rewrites or moves the external artifact.
-If a future final GREEN run is intentionally adopted, update the six source
-hashes, crop table, output hashes and this document together; do not claim an
-old crop as current evidence.
+The renderer pins all eight source PNG and output JPEG hashes and rejects
+unexpected JPEGs in `workshop/media/`. The `--check-tracked` form is the
+CI-safe integrity check for machines that do not hold the external raw
+artifact; it verifies the exact eight-file inventory, JPEG decoding,
+dimensions, size limits and pinned output hashes. It does not replace the local
+raw-to-JPEG reproduction check. Neither mode deletes, rewrites or moves the
+external artifact. If a future final GREEN run is intentionally adopted,
+update the default artifact, all source/output hashes, policy lock and this
+document together; do not mix captures from different runs.
 
-After the final promo capture is GREEN, create the policy lock beside the
-preserved capture first; this action validates the root/cell reports, evidence
-index, timeline marks, raw MKV, all six captured policy cards, and exact source
-hashes before it writes any lock. It does not write JPEGs:
+For a future replacement capture, create the policy lock beside the preserved
+capture first. This validates the root/cell reports, evidence index, timeline
+marks, raw MKV, all six captured policy cards, and exact source hashes before
+it writes any lock. It does not write JPEGs:
 
 ```powershell
 $capture = "Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run>"
@@ -104,12 +100,10 @@ $lock = "$capture\release\workshop-media-policy-lock.json"
 
 Visually inspect the two preview JPEGs, retain that external lock and preview,
 then adopt the reviewed lock as `workshop/media-policy-lock.json` together with
-the final run's `DEFAULT_ARTIFACTS` path and updated six base-image pins. A
-default render/check then expects all eight files; `--check-tracked` consumes
-the committed lock without needing the external artifact. A lock from any
-other artifact root is rejected during raw-to-JPEG reproduction. Until the
-committed lock exists, the default six-image integrity check remains GREEN and
-slots 7–8 remain pending.
+the same run's `DEFAULT_ARTIFACTS` path and updated six base-image pins. A
+default render/check expects all eight files; `--check-tracked` consumes the
+committed lock without needing the external artifact. A lock from any other
+artifact root is rejected during raw-to-JPEG reproduction.
 
 ## Publication handoff
 

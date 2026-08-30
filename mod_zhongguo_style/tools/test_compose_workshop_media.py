@@ -144,6 +144,20 @@ class WorkshopMediaTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requires a policy-card lock"):
             media.selected_projections(None, policy_cards_only=True)
 
+        release_lock = json.loads(
+            media.DEFAULT_POLICY_LOCK.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            media.DEFAULT_ARTIFACTS.resolve(),
+            Path(release_lock["artifact_root"]).resolve(),
+        )
+        release_projections = media.selected_projections(media.DEFAULT_POLICY_LOCK)
+        self.assertEqual(8, len(release_projections))
+        self.assertEqual(
+            media.EXPECTED_RELEASE_MEDIA_INVENTORY,
+            tuple(projection.output for projection in release_projections),
+        )
+
     def test_green_capture_lock_renders_two_deterministic_sub_2mb_jpegs(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

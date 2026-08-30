@@ -25,7 +25,8 @@ MOD_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = MOD_ROOT / "workshop" / "media"
 DEFAULT_POLICY_LOCK = MOD_ROOT / "workshop" / "media-policy-lock.json"
 DEFAULT_ARTIFACTS = Path(
-    r"Z:\ck3_mod_rewrite_process_assets\zg361\runs\zga_20260829_061314_ea5f04ad"
+    r"Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures"
+    r"\zga_20260830_0930_clean_2fa2ac8_mcp"
 )
 EXPECTED_SIZE = (2560, 1440)
 MAX_BYTES = 2_000_000
@@ -55,45 +56,45 @@ class PolicyCardRecipe:
 PROJECTIONS = (
     Projection(
         "06_calibration_event.png",
-        "8e1813d538be9f95736d9f07eb88b7bcb719320d421eb37dfbcfce649bd65aab",
+        "d384bfe4b717892a7923613ac4f191856fdf4d85868927b71250dee4d86013b8",
         "01_calibration_meeting.jpg",
         (420, 280, 1610, 875),
-        "abdc899a14ce6ce0f48df5af0e18290efa65971e65ebea3e39eb94bba59575a2",
+        "60c11f4407ef2e52496cdcbbea16a0e2abae016be572b003164d55d6967327f4",
     ),
     Projection(
         "07_result_summary.png",
-        "b020a11ea9e8e10db7aaace83dff11bbde05cb9b2af6a64b3aa9ce55d92b2f7d",
+        "bfeaf077634a057e00d18599c4b7825e7f7a2787990b4ca18221796b6dfd6406",
         "02_review_cohort_frozen.jpg",
         (430, 275, 1605, 885),
-        "9ca4d85efb4be45f16927912343509e81ec9722a190a1d4a805a50fe3b8adccf",
+        "b0f9467a933fc0ced16b44bc05d2cfe0e61bd9a1f7958d1090bf2197a2c93ef6",
     ),
     Projection(
         "08_scoreboard_panel.png",
-        "bb45518330ea20399d0b73f6776c72ac5da6f3ebdf1e2c84dc6643430ad9aca3",
+        "8b10e6e1d8715a084091777200cf8e456748f66a9c087426badb683054535e37",
         "03_scoreboard.jpg",
         (430, 130, 1640, 1020),
-        "98d06d1661745761ab94d90628eedbf67668e5e77a74863ce5c46c27753fb790",
+        "bd6b588e6a508a7b36cfb2d052efa4babfdbbde60fc0696f68e4c6a7ed18311c",
     ),
     Projection(
         "09_jingcha_mandate_event.png",
-        "9f7bb4ee382677c035d6256da3d5c113959e2026b3a1ef59fce33d22ae53cb06",
+        "a158e9dd21503eddfea8a6df7f4268800e3bb5f725f3749651166668619d9eed",
         "04_jingcha_mandate.jpg",
         (420, 280, 1610, 875),
-        "77dc6bd7da79ed79448c849f6597298291cb33bf73653517604e76417071ea64",
+        "6c2af19da15624eea28a82b359fb0dbc3e7029205e512da95b367aded4420634",
     ),
     Projection(
         "09_jingcha_activity_detail.png",
-        "c34f54b69898f8bf5a630226b86dfb185cf3acc2052faa0183d7f771e10123c1",
+        "7cd1c532ab7bad63e6e4573687c975f29c2fb1bfb954cf815e76a172a99c8eb7",
         "05_free_jingcha_activity.jpg",
         (720, 120, 2000, 1200),
-        "784b2f2b3cb3c763990ea4133064600a2fb66e5602ef3dfa6c7429fc74b0f9d4",
+        "0f001de99c51d71d8f6ead09fa0989aec3b880e8cb399bec1e0614985d99c201",
     ),
     Projection(
         "10_superior_result.png",
-        "93ecfad072711b6caa1759fefa267f492897e36b8ce14905230541a7f7eab46f",
+        "1faf5ca71c6140aff2f1aeaf8d9662f0caf3d35cf2927199edfd0e7dafa6d435",
         "06_superior_325_result.jpg",
         (430, 275, 1605, 885),
-        "58ac67ad919a93f279c0d21de53e1244d9e83b58071a910260c8c60b59f28bd1",
+        "3a341668248ade6102d2a1e1b5c9ed07501ea352cf1798f14929a177b967f287",
     ),
 )
 
