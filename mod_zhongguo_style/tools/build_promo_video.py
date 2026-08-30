@@ -25,6 +25,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
@@ -45,6 +46,8 @@ VOICE = "zh-CN-XiaoxiaoNeural"
 EDGE_TTS_RATE = "+0%"
 EDGE_TTS_VOLUME = "+0%"
 EDGE_TTS_PITCH = "+0Hz"
+EDGE_TTS_MAX_ATTEMPTS = 3
+EDGE_TTS_RETRY_BACKOFF_SECONDS = 1.0
 MAX_DURATION_SECONDS = 20 * 60
 STATIC_DURATION_GUARD_SECONDS = 18 * 60
 DEFAULT_FPS = 30
@@ -798,56 +801,72 @@ def _synthesize_cue(
         raise PromoError(
             "edge-tts is required; use tools\\.venv\\Scripts\\python.exe"
         )
-    temporary = chapter_directory / f".{stem}.{os.getpid()}.partial.mp3"
-    if temporary.exists():
-        raise PromoError(f"stale partial cue exists: {temporary}")
-    try:
-        communicator = shared.edge_tts.Communicate(
-            cue["spoken_zh"],
-            voice,
-            rate=EDGE_TTS_RATE,
-            volume=EDGE_TTS_VOLUME,
-            pitch=EDGE_TTS_PITCH,
+    last_error: Exception | None = None
+    for attempt in range(1, EDGE_TTS_MAX_ATTEMPTS + 1):
+        temporary = chapter_directory / (
+            f".{stem}.{os.getpid()}.attempt-{attempt:02d}.partial.mp3"
         )
-        communicator.save_sync(str(temporary))
-        if not temporary.is_file() or temporary.stat().st_size == 0:
-            raise PromoError(
-                f"Edge TTS produced no cue audio for {chapter.chapter_id} cue "
-                f"{cue_index + 1}"
+        try:
+            if temporary.exists():
+                raise PromoError(f"stale partial cue exists: {temporary}")
+            communicator = shared.edge_tts.Communicate(
+                cue["spoken_zh"],
+                voice,
+                rate=EDGE_TTS_RATE,
+                volume=EDGE_TTS_VOLUME,
+                pitch=EDGE_TTS_PITCH,
             )
-        duration = shared._narration_duration(
-            shared.probe_media(ffprobe, temporary), temporary
-        )
-        metadata = {
-            "format_version": 1,
-            "fingerprint": fingerprint,
-            "provider": "edge-tts",
-            "provider_version": shared.EDGE_TTS_VERSION or "unknown",
-            "voice": voice,
-            "settings": {
-                "rate": EDGE_TTS_RATE,
-                "volume": EDGE_TTS_VOLUME,
-                "pitch": EDGE_TTS_PITCH,
-            },
-            "take_id": take_id,
-            "duration_seconds": round(duration, 6),
-            "media_sha256": shared._sha256(temporary),
-            "text_sha256": hashlib.sha256(
-                cue["spoken_zh"].encode("utf-8")
-            ).hexdigest().upper(),
-        }
-        os.replace(temporary, media_path)
-        _atomic_json(metadata_path, metadata)
-        return media_path, duration, metadata
-    except PromoError:
-        raise
-    except Exception as exc:
-        raise PromoError(
-            f"Edge TTS failed for {chapter.chapter_id} cue {cue_index + 1}: {exc}"
-        ) from exc
-    finally:
-        if temporary.exists():
-            temporary.unlink()
+            communicator.save_sync(str(temporary))
+            if not temporary.is_file() or temporary.stat().st_size == 0:
+                raise PromoError(
+                    f"Edge TTS produced no cue audio for {chapter.chapter_id} cue "
+                    f"{cue_index + 1}"
+                )
+            duration = shared._narration_duration(
+                shared.probe_media(ffprobe, temporary), temporary
+            )
+            metadata = {
+                "format_version": 1,
+                "fingerprint": fingerprint,
+                "provider": "edge-tts",
+                "provider_version": shared.EDGE_TTS_VERSION or "unknown",
+                "voice": voice,
+                "settings": {
+                    "rate": EDGE_TTS_RATE,
+                    "volume": EDGE_TTS_VOLUME,
+                    "pitch": EDGE_TTS_PITCH,
+                },
+                "take_id": take_id,
+                "duration_seconds": round(duration, 6),
+                "media_sha256": shared._sha256(temporary),
+                "text_sha256": hashlib.sha256(
+                    cue["spoken_zh"].encode("utf-8")
+                ).hexdigest().upper(),
+            }
+            shared._commit_edge_tts_cache(
+                temporary, media_path, metadata_path, metadata
+            )
+            return media_path, duration, metadata
+        except Exception as exc:
+            last_error = exc
+        finally:
+            if temporary.exists():
+                temporary.unlink()
+
+        if attempt < EDGE_TTS_MAX_ATTEMPTS:
+            delay = EDGE_TTS_RETRY_BACKOFF_SECONDS * attempt
+            print(
+                f"Edge TTS attempt {attempt}/{EDGE_TTS_MAX_ATTEMPTS} failed "
+                f"for {chapter.chapter_id} cue {cue_index + 1}: {last_error}; "
+                f"retrying in {delay:.1f}s",
+                file=sys.stderr,
+            )
+            time.sleep(delay)
+
+    raise PromoError(
+        f"Edge TTS failed for {chapter.chapter_id} cue {cue_index + 1} after "
+        f"{EDGE_TTS_MAX_ATTEMPTS} attempts: {last_error}"
+    ) from last_error
 
 
 def synthesize_chapter(

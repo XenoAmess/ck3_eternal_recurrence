@@ -248,6 +248,126 @@ class SubtitleAndRenderTests(unittest.TestCase):
         self.assertEqual(51.0, duration)
 
 
+class EdgeTtsRetryTests(unittest.TestCase):
+    def test_two_transient_failures_then_success_preserves_valid_cache(self) -> None:
+        attempts = 0
+
+        def communicate(*_args, **_kwargs):
+            nonlocal attempts
+            attempts += 1
+            current_attempt = attempts
+
+            class Communicator:
+                @staticmethod
+                def save_sync(destination: str) -> None:
+                    path = Path(destination)
+                    path.write_bytes(f"attempt-{current_attempt}".encode("ascii"))
+                    if current_attempt < 3:
+                        raise RuntimeError("No audio was received")
+                    path.write_bytes(b"valid-third-attempt-mp3")
+
+            return Communicator()
+
+        with tempfile.TemporaryDirectory() as temporary:
+            chapter_directory = Path(temporary)
+            chapter = types.SimpleNamespace(chapter_id="03-forced-distribution")
+            edge_tts = types.SimpleNamespace(Communicate=communicate)
+            with (
+                mock.patch.object(promo.shared, "edge_tts", edge_tts),
+                mock.patch.object(promo.shared, "EDGE_TTS_VERSION", "7.2.8"),
+                mock.patch.object(promo.shared, "probe_media", return_value={}),
+                mock.patch.object(
+                    promo.shared, "_narration_duration", return_value=1.25
+                ),
+                mock.patch.object(promo.time, "sleep") as sleep,
+                contextlib.redirect_stderr(io.StringIO()),
+            ):
+                media, duration, metadata = promo._synthesize_cue(
+                    chapter=chapter,
+                    cue_index=0,
+                    cue={"spoken_zh": "三六一不是平均主义。"},
+                    chapter_directory=chapter_directory,
+                    voice=promo.VOICE,
+                    take_id="retry-test",
+                    ffprobe=Path("ffprobe"),
+                )
+                first_bytes = media.read_bytes()
+
+                cached_media, cached_duration, cached_metadata = (
+                    promo._synthesize_cue(
+                        chapter=chapter,
+                        cue_index=0,
+                        cue={"spoken_zh": "三六一不是平均主义。"},
+                        chapter_directory=chapter_directory,
+                        voice=promo.VOICE,
+                        take_id="retry-test",
+                        ffprobe=Path("ffprobe"),
+                    )
+                )
+
+            self.assertEqual(3, attempts)
+            self.assertEqual(
+                [mock.call(1.0), mock.call(2.0)], sleep.call_args_list
+            )
+            self.assertEqual(1.25, duration)
+            self.assertEqual(media, cached_media)
+            self.assertEqual(duration, cached_duration)
+            self.assertEqual(metadata, cached_metadata)
+            self.assertEqual(b"valid-third-attempt-mp3", first_bytes)
+            self.assertEqual(first_bytes, cached_media.read_bytes())
+            self.assertFalse(
+                any(".partial.mp3" in path.name for path in chapter_directory.iterdir())
+            )
+
+    def test_retry_exhaustion_is_red_without_partial_or_bad_cache(self) -> None:
+        attempts = 0
+
+        def communicate(*_args, **_kwargs):
+            nonlocal attempts
+            attempts += 1
+
+            class Communicator:
+                @staticmethod
+                def save_sync(destination: str) -> None:
+                    Path(destination).write_bytes(b"incomplete-audio")
+                    raise RuntimeError("No audio was received")
+
+            return Communicator()
+
+        with tempfile.TemporaryDirectory() as temporary:
+            chapter_directory = Path(temporary)
+            chapter = types.SimpleNamespace(chapter_id="03-forced-distribution")
+            edge_tts = types.SimpleNamespace(Communicate=communicate)
+            with (
+                mock.patch.object(promo.shared, "edge_tts", edge_tts),
+                mock.patch.object(promo.shared, "EDGE_TTS_VERSION", "7.2.8"),
+                mock.patch.object(promo.time, "sleep") as sleep,
+                contextlib.redirect_stderr(io.StringIO()),
+            ):
+                with self.assertRaisesRegex(
+                    promo.PromoError,
+                    r"cue 1 after 3 attempts: No audio was received",
+                ):
+                    promo._synthesize_cue(
+                        chapter=chapter,
+                        cue_index=0,
+                        cue={"spoken_zh": "三六一不是平均主义。"},
+                        chapter_directory=chapter_directory,
+                        voice=promo.VOICE,
+                        take_id="retry-exhaustion-test",
+                        ffprobe=Path("ffprobe"),
+                    )
+
+            self.assertEqual(promo.EDGE_TTS_MAX_ATTEMPTS, attempts)
+            self.assertEqual(
+                [mock.call(1.0), mock.call(2.0)], sleep.call_args_list
+            )
+            leftovers = list(chapter_directory.iterdir())
+            self.assertFalse(any(".partial.mp3" in path.name for path in leftovers))
+            self.assertFalse(any(path.suffix == ".mp3" for path in leftovers))
+            self.assertFalse(any(path.suffix == ".json" for path in leftovers))
+
+
 class AcceptanceStillImportTests(unittest.TestCase):
     def test_green_import_is_append_only_and_records_copy_hashes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
