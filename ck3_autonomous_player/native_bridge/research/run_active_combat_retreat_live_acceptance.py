@@ -162,7 +162,12 @@ def _battle_combat_id(pre_action_battle: object) -> int | None:
     if not isinstance(pre_action_battle, dict):
         return None
     direct = pre_action_battle.get("combat_id")
-    if isinstance(direct, int) and not isinstance(direct, bool) and direct > 0:
+    if (
+        isinstance(direct, int)
+        and not isinstance(direct, bool)
+        and -(2**31) <= direct <= 2**31 - 1
+        and direct != -1
+    ):
         return direct
     frame = pre_action_battle.get("battle_control_snapshot")
     if not isinstance(frame, dict):
@@ -172,7 +177,8 @@ def _battle_combat_id(pre_action_battle: object) -> int | None:
         nested
         if isinstance(nested, int)
         and not isinstance(nested, bool)
-        and nested > 0
+        and -(2**31) <= nested <= 2**31 - 1
+        and nested != -1
         else None
     )
 
@@ -505,7 +511,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         try:
             prior_combat_id = _battle_combat_id(pre_action_battle)
             if prior_combat_id is None:
-                raise RuntimeError("pre-action battle lacks a positive CombatID")
+                raise RuntimeError(
+                    "pre-action battle lacks a non-missing full CombatID"
+                )
             post_transition_query = service.query_battle_transition_v1(
                 prior_combat_id,
                 expected_revision=int(post["revision"]),

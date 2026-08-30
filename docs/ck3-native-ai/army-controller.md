@@ -483,6 +483,16 @@ flowchart LR
 - [live-confirmed] 同一只读证据中有两次新 WarID 只在外部 paused frame 才进入 active-war set。现有 CUnit watch
   能保证真实接触形成 CombatID 时同日停，却不能 exact-watch 新战争加入；因此 active-war-set 变化仍属于下面的
   七日 bounded blind spot。
+- [production-live blocker] G2 continuation `20260830T143741Z-next-episode-685427cd` 给出了这个边界的首个
+  可重放失败：stationary arm 从 `date_raw=53256840` 运行四日到 `53256936`，原有 active-war set
+  `{134217738}` 变为 `{134217738,117440530}`。CK3 已原生暂停，但 sentinel generation `60` 仍为
+  `armed / completed_daily_ticks=4 / trigger_reasons=[]`；旧 composite 只识别 event / interaction / one-life-terminal
+  边界，仍强制普通 `triggered` 后置，因而报
+  `native tactical sentinel stop failed its generation/date/tick postcondition`。report / first-blocker SHA-256 分别为
+  `DEFDC694A42C3171B53331022BB4453BCED5E6F4705309A4978CADE8B15EB6CE` /
+  `310DAC0B3171AF356A5C15F64AE0CE51184F6019BB06E9EA8AA7C2D38632E40A`；最新 durable checkpoint 为
+  `date_raw=53256504 / history_index=1110 / SHA-256 7DCA5878...925F82`。这不证明 native exact-watch，
+  只证明 fresh paused snapshot 已经足以把 active-war-set 变化作为一个外层 replan boundary。
 - [unknown] 当前 exact build 尚未闭合一条可由现有 decision sentinel 同日监听的 active-war set（包括新 WarID 加入）、WarID、战争分数、战争终结、
   objective membership、occupation、current province 或 local-objective state 原生字段链。尤其不能把
   `CUnit` 仍然 idle/stationary 推断成 active-war set 未变、战争仍 active、目标仍属于该战争或占领状态不变。
@@ -496,6 +506,19 @@ flowchart LR
   逐项对拍，并在 stop 后取得 fresh paused snapshot 重新观测同一绑定。任何 omitted war/objective/occupation/state 变化
   最迟只会在七日 deadline 后被 Python 发现，因此它是 bounded sparse-pause production primitive，不是 exact war-terminal
   watch；planner 与报告仍必须诚实保留 `maximum_omitted_state_detection_lag_days=7`。
+- [counter-policy] 若 CK3 在 arm 期间已暂停，且 fresh frame 的完整正整数 WarID set 与 arm 前不同，
+  composite 应把这个 snapshot delta 当作独立 `active_war_set_changed` 边界：绑定 bridge / connection /
+  episode / played-character / date / revision，记录 exact before / after / added / removed set，并复用已有
+  generation-bound cancel -> `idle` -> fresh paused identity 复核。外层随后重新查询并规划全部战争；不宣称或新增
+  native exact active-war watch，也不改变最多七日的 omitted-state 检测上界。
+- [implementation-confirmed; production-live loop] composite 已实现上述边界，且同一 G2 cold resume
+  `20260830T151352Z-next-episode-df7f4dc1` 在 driver history `1238` 真实命中：arm 从
+  `53263248` 推进两日到 `53263296`，WarID set 由 `{83886125,134217738}` 变为
+  `{83886125,134217738,150994995}`，边界精确记录 `added=[150994995] / removed=[]`。它将同一
+  generation `41` 从 `armed / ticks=2 / no trigger reasons` 取消为 `idle`，全程无外部 pause，
+  `progress_status=postcondition`。外层随后查询三个 WarID并继续提交战争 gameplay，因此这是真实
+  OODA 恢复，而不是只有 cancel ACK。该次完整寿命 run 仍在运行；最终 report/hash 待终局或下一真实
+  blocker 后补入，不预报 G2 complete。
 - [live-confirmed] canary `20260828T092300Z-one-generation-90d3cf79` 连续完成 `20` 个 speed-3、七日
   stationary hold，全部由 `date_deadline` 同日停表，成功臂平均 `6.012s`。第 `21` 臂在固定 `30s` wait 内停于
   `53267040`。随后 `20260828T094742Z-one-generation-71e3b7c1` 从同一 durable anchor 重跑：前两臂 GREEN，第三臂即使把
@@ -536,7 +559,7 @@ flowchart TD
     S -->|yes| R["same-day native stop for watched transition"]
     S -->|deadline| R
     R --> F["[counter-policy] fresh paused snapshot<br/>revalidate WarID / subject / objective / bound / scope"]
-    U -. "[unknown] no exact native watch; detection may lag <= 7 days" .-> F
+    U -. "[unknown] no exact native watch; detection may lag <= 7 days<br/>fresh paused active-war-set delta becomes replan boundary" .-> F
     F --> O["resume full war OODA; never claim exact war terminal"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U unknown;

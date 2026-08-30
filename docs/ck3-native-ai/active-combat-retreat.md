@@ -285,19 +285,26 @@ side 布局为：
 `errors == nullptr` 时首个失败立即返回 false；有 error sink 时会追加每个命中的 localization reason，继续求值，最终返回
 四个 gate 的 conjunction。因此 typed query 可以一次发布全部 reason，但必须保持以上原生顺序。
 
-day gate 的 exact 数据链来自机器分支而不只是 define 注释：`CCombat+0x708` **只**是 full `BattleResultID`。
-`0x23083B7..0x23083E8` 以低 24-bit 查 `module+0x57C0328` Battle-result store、回读
-`BattleResult+0x08` 校验完整 generation；原函数在解析失败时改取 `module+0x57C0320` fallback object。elapsed 的历史
+day gate 的 exact 数据链来自机器分支而不只是 define 注释：`CCombat+0x708` **只**是 opaque signed full
+`BattleResultID`，`-1` 是唯一 missing sentinel。`0x23083B7..0x23083E8` 以低 24-bit 查
+`module+0x57C0328` Battle-result store、回读 `BattleResult+0x08` 校验完整 signed dword；原函数在解析失败时改取
+`module+0x57C0320` fallback object。elapsed 的历史
 操作数实际是解析结果的 signed dword `BattleResult+0x2C`，当前操作数是
 `(*(module+0x570E068) /* CGameState */)+0x08` 的 signed low dword。两者分别执行
 `trunc_signed((date_raw-0x029C55C0)/24)`，随后以 current day index 减去 Battle-result day index，再同 runtime
 `MIN_DAYS_BEFORE_MANUAL_RETREAT=14` 比较；通过分支是 signed `jg`。
 
 生产 `BattleControlSnapshot` 的 same-frame identity gate 故意比该 helper 更强：合法缺省
-`BattleResultID == -1` 才读取 `module+0x57C0320` fallback；任何正数 ID 若 generation 回读不一致，一律返回
+`BattleResultID == -1` 才读取 `module+0x57C0320` fallback；任何其它 signed full ID 若 generation 回读不一致，一律返回
 `state_changed`，不把它静默降级成 fallback。这是查询对同一帧身份一致性的边界，**不声称**原生 `0x2308250`
-面对 stale-positive ID 时也会失败。因此 live 验收必须使用 generation-valid BattleResult，或确实为 `-1` 的合法缺省帧，
-不能用 stale-positive 输入证明 legality 已可用。
+面对 stale non-`-1` ID 时也会失败。因此 live 验收必须使用 generation-valid BattleResult，或确实为 `-1` 的合法缺省帧，
+不能用 stale full ID 证明 legality 已可用。
+
+[production-live correction] G2 paused artifact
+`20260831T011500Z-signed-battle-result-query` 在 `date_raw=53291904` 连续两次读到稳定
+`CombatID=-2147483647 / BattleResultID=-2046820351`，frame SHA-256
+`5AD7B6D65ED5876B619CE05A9EEC286FE325E444C055BB255AF75575F97630AF`。这直接否定“负 ID 等于未物化”的旧
+consumer 假设；完整 ID 必须原样贯穿 query、action token、transition 与 terminal journal。
 
 [unknown] `BattleResult+0x2C` 的独立原生业务名尚无符号、反射或写入链闭合；本文只称它为
 `retreat_elapsed_baseline_date_raw`，不称“战斗起始日期”。`allow_early_retreat` 只跳过这一步，不跳过 disallow、phase 或

@@ -57,7 +57,7 @@
       "selected_public_cunit_id": "positive int32 full CUnitID",
       "selected_native_carmy_id": "positive int32 full CArmyID",
       "selected_owner_character_id": "positive int32 full CharacterID",
-      "combat_id": "positive int32 full CombatID",
+      "combat_id": "signed int32 full CombatID; -1 is the only missing sentinel",
       "combat_province_id": "positive int32 full ProvinceID",
       "side_index": "0 | 1",
       "side_scope": "full_side | owner_subset",
@@ -133,7 +133,7 @@
     "day_gate": {
       "battle_result_resolution": "use the low 24-bit index from CCombat+0x708 in module+0x57C0328, then require BattleResult+0x08 to equal the full BattleResultID",
       "resolution_fallback": "inside native 0x2308250, any BattleResult resolution failure uses module+0x57C0320",
-      "typed_query_resolution_boundary": "the BattleControl query uses module+0x57C0320 only for the legal missing sentinel BattleResultID=-1; a positive stale-generation ID fails the stronger same-frame identity gate as state_changed. This is a query consistency boundary and does not claim that native 0x2308250 rejects the same stale-positive input",
+      "typed_query_resolution_boundary": "the BattleControl query uses module+0x57C0320 only for the legal missing sentinel BattleResultID=-1; any other signed full ID with a generation mismatch fails the stronger same-frame identity gate as state_changed. This is a query consistency boundary and does not claim that native 0x2308250 rejects the same stale non--1 input",
       "baseline_raw": "signed dword BattleResult+0x2C, conservatively named retreat_elapsed_baseline_date_raw",
       "current_raw": "signed low dword at (*(module+0x570E068) CGameState)+0x08",
       "day_index_formula": "trunc_signed((date_raw - 0x029C55C0) / 24)",
@@ -270,7 +270,7 @@
       "implementation": "Python production composition over the exact battle-control query, PreviewMoveArmy and SubmitMoveArmy; no new native mutator entry",
       "request": {
         "expected_snapshot_revision": "uint64",
-        "expected_combat_id": "positive int32 full CombatID",
+        "expected_combat_id": "signed int32 full CombatID; -1 is the only missing sentinel",
         "selected_public_cunit_id": "positive int32 full CUnitID",
         "expected_side_index": "0 | 1",
         "expected_scope": "full_side | owner_subset",

@@ -102,6 +102,8 @@ from .actual_contact_contract import (
     query_actual_contact_scope_step,
 )
 from .battle_control_contract import (
+    BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
+    BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX,
     normalize_battle_control_snapshot_v1,
@@ -379,6 +381,10 @@ _TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS = (
 )
 _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
     "CK3 battle-control state changed during query"
+)
+_BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ERROR = (
+    f"{_BATTLE_CONTROL_TRANSIENT_QUERY_ERROR} "
+    f"({BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC})"
 )
 _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS = 3
 _ACTIVE_COMBAT_RETREAT_V1_REQUIRED_CAPABILITIES = frozenset(
@@ -1913,9 +1919,9 @@ class NativeHeadlessGameplayDriver:
             ),
             "battle_control_snapshot_v1": (
                 copy.deepcopy(
-                    battle_control_snapshot_v1_query[
+                    battle_control_snapshot_v1_query.get(
                         "battle_control_snapshot"
-                    ]
+                    )
                 )
                 if isinstance(battle_control_snapshot_v1_query, dict)
                 else None
@@ -1927,6 +1933,21 @@ class NativeHeadlessGameplayDriver:
             ),
             "battle_control_snapshot_v1_query_sequence": (
                 battle_control_snapshot_v1_query.get("query_sequence")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_query_attempts": (
+                battle_control_snapshot_v1_query.get("query_attempts")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_diagnostic_reason": (
+                battle_control_snapshot_v1_query.get("diagnostic_reason")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_native_query_status": (
+                battle_control_snapshot_v1_query.get("native_query_status")
                 if isinstance(battle_control_snapshot_v1_query, dict)
                 else None
             ),
@@ -1944,6 +1965,13 @@ class NativeHeadlessGameplayDriver:
             ),
             "battle_control_snapshot_v1_queried_revision": (
                 battle_control_snapshot_v1_query.get("queried_revision")
+                if isinstance(battle_control_snapshot_v1_query, dict)
+                else None
+            ),
+            "battle_control_snapshot_v1_queried_native_revision": (
+                battle_control_snapshot_v1_query.get(
+                    "queried_native_revision"
+                )
                 if isinstance(battle_control_snapshot_v1_query, dict)
                 else None
             ),
@@ -2512,7 +2540,7 @@ class NativeHeadlessGameplayDriver:
         *,
         episode_run_id: str | None,
     ) -> dict[str, object] | None:
-        """Project only a complete battle frame bound to this paused revision."""
+        """Project only a battle observation bound to this paused revision."""
         if snapshot.get("paused") is not True:
             return None
         diagnostics = snapshot.get("diagnostics")
@@ -2526,6 +2554,81 @@ class NativeHeadlessGameplayDriver:
             if not isinstance(cached, dict):
                 return None
             binding = cached.get("cache_binding")
+            if cached.get("status") == BATTLE_CONTROL_IDENTITY_PENDING_STATUS:
+                if not (
+                    set(cached)
+                    == {
+                        "status",
+                        "diagnostic_reason",
+                        "native_query_status",
+                        "query_attempts",
+                        "cache_binding",
+                    }
+                    and cached.get("diagnostic_reason")
+                    == BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+                    and cached.get("native_query_status") == "state_changed"
+                    and cached.get("query_attempts")
+                    == _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS
+                    and isinstance(binding, dict)
+                    and set(binding)
+                    == {
+                        "native_revision",
+                        "snapshot_id",
+                        "revision",
+                        "date_raw",
+                        "connection_generation",
+                        "episode_run_id",
+                        "subject_public_cunit_id",
+                    }
+                ):
+                    self._battle_control_snapshot_v1_query = None
+                    return None
+                subject = binding.get("subject_public_cunit_id")
+                native_revision = binding.get("native_revision")
+                revision = binding.get("revision")
+                date_raw = binding.get("date_raw")
+                current_subject = (
+                    _army_by_id(snapshot, int(subject))
+                    if _positive_native_id(subject)
+                    else None
+                )
+                if not (
+                    _positive_native_id(native_revision)
+                    and isinstance(revision, int)
+                    and not isinstance(revision, bool)
+                    and revision >= 0
+                    and isinstance(date_raw, int)
+                    and not isinstance(date_raw, bool)
+                    and binding.get("native_revision")
+                    == snapshot.get("native_revision")
+                    and binding.get("snapshot_id")
+                    == snapshot.get("snapshot_id")
+                    and binding.get("revision") == snapshot.get("revision")
+                    and binding.get("date_raw") == snapshot.get("date_raw")
+                    and binding.get("connection_generation")
+                    == connection_generation
+                    and binding.get("episode_run_id") == episode_run_id
+                    and isinstance(current_subject, dict)
+                    and current_subject.get("controllable") is True
+                    and current_subject.get("in_combat") is True
+                ):
+                    self._battle_control_snapshot_v1_query = None
+                    return None
+                return {
+                    "status": BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+                    "diagnostic_reason": (
+                        BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+                    ),
+                    "native_query_status": "state_changed",
+                    "query_attempts": _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS,
+                    "subject_public_cunit_id": int(subject),
+                    "queried_snapshot_id": snapshot.get("snapshot_id"),
+                    "queried_revision": snapshot.get("revision"),
+                    "queried_native_revision": snapshot.get(
+                        "native_revision"
+                    ),
+                    "episode_run_id": episode_run_id,
+                }
             query_sequence = cached.get("query_sequence")
             if not (
                 set(cached)
@@ -6709,10 +6812,8 @@ class NativeHeadlessGameplayDriver:
                 )
                 break
             except _NativeCommandRejectedError as error:
-                if (
-                    error.native_error
-                    != _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR
-                    or attempt + 1 >= _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS
+                if not error.native_error.startswith(
+                    _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR
                 ):
                     raise
                 retry_snapshot = self.take_snapshot()
@@ -6729,6 +6830,24 @@ class NativeHeadlessGameplayDriver:
                     and retry_subject.get("controllable") is True
                     and _army_in_active_combat(retry_subject)
                 ):
+                    raise
+                if attempt + 1 >= _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS:
+                    if (
+                        error.native_error
+                        == _BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ERROR
+                        and subject.get("in_combat") is True
+                        and retry_subject.get("in_combat") is True
+                    ):
+                        return self._cache_battle_control_identity_pending(
+                            step=step,
+                            starting=starting,
+                            current=retry_snapshot,
+                            subject_public_cunit_id=(
+                                subject_public_cunit_id
+                            ),
+                            native_revision=int(native_revision),
+                            date_raw=date_raw,
+                        )
                     raise
         if (
             set(result)
@@ -6843,6 +6962,73 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
+        }
+
+    def _cache_battle_control_identity_pending(
+        self,
+        *,
+        step: str,
+        starting: dict[str, object],
+        current: dict[str, object],
+        subject_public_cunit_id: int,
+        native_revision: int,
+        date_raw: int,
+    ) -> dict[str, object]:
+        """Expose one exact frozen combat-identity materialization request."""
+        starting_subject = _army_by_id(starting, subject_public_cunit_id)
+        current_subject = _army_by_id(current, subject_public_cunit_id)
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw") == date_raw
+            and isinstance(starting_subject, dict)
+            and starting_subject.get("controllable") is True
+            and starting_subject.get("in_combat") is True
+            and isinstance(current_subject, dict)
+            and current_subject.get("controllable") is True
+            and current_subject.get("in_combat") is True
+        ):
+            raise BridgeUnavailableError(
+                "native battle-control identity-pending observation crossed "
+                "its frozen public combat frame"
+            )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        cache_binding = {
+            "native_revision": native_revision,
+            "snapshot_id": starting.get("snapshot_id"),
+            "revision": starting.get("revision"),
+            "date_raw": date_raw,
+            "connection_generation": connection_generation,
+            "episode_run_id": starting.get("episode_run_id"),
+            "subject_public_cunit_id": subject_public_cunit_id,
+        }
+        with self._driver_state_lock:
+            self._battle_control_snapshot_v1_query = {
+                "status": BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+                "diagnostic_reason": (
+                    BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+                ),
+                "native_query_status": "state_changed",
+                "query_attempts": _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS,
+                "cache_binding": cache_binding,
+            }
+        return {
+            "step": step,
+            "accepted": True,
+            "status": BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+            "native_query_status": "state_changed",
+            "diagnostic_reason": BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
+            "query_attempts": _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS,
+            "subject_public_cunit_id": subject_public_cunit_id,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "backend_id": "native-headless",
         }
 
     def _execute_battle_transition_v1_query(
@@ -9567,11 +9753,18 @@ class NativeHeadlessGameplayDriver:
                 )
             observed_boundary = (
                 _battle_sentinel_player_decision_boundary(current)
+                or _battle_sentinel_active_war_set_boundary(
+                    starting, current
+                )
             )
             new_decision_boundary = bool(
                 observed_boundary is not None
-                and _battle_sentinel_player_decision_is_new(
-                    starting, current
+                and (
+                    observed_boundary.get("kind")
+                    == "active_war_set_changed"
+                    or _battle_sentinel_player_decision_is_new(
+                        starting, current
+                    )
                 )
             )
             running_boundary = (
@@ -9720,6 +9913,9 @@ class NativeHeadlessGameplayDriver:
             post_stop_decision_boundary = (
                 _battle_sentinel_player_decision_boundary(
                     post_stop_snapshot
+                )
+                or _battle_sentinel_active_war_set_boundary(
+                    starting, post_stop_snapshot
                 )
             )
             if player_decision_boundary is not None:
@@ -9877,6 +10073,45 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native life-advance timed out waiting for map_ready"
             )
+        identity_materialization: dict[str, object] | None = None
+        if (
+            starting.get("battle_control_snapshot_v1_status")
+            == BATTLE_CONTROL_IDENTITY_PENDING_STATUS
+        ):
+            if exact_one_day or result_step != "life-advance":
+                raise BridgeUnavailableError(
+                    "battle identity materialization requires the explicit "
+                    "life-advance composite"
+                )
+            identity_materialization = (
+                _battle_identity_materialization_request(starting)
+            )
+            if identity_materialization is None:
+                raise BridgeUnavailableError(
+                    "battle identity materialization lacks an exact frozen "
+                    "paused public-combat binding"
+                )
+            with self._history_lock:
+                previous_materialization = (
+                    _battle_identity_materialization_for_snapshot(
+                        self._command_history,
+                        starting,
+                        subject_public_cunit_id=int(
+                            identity_materialization[
+                                "subject_public_cunit_id"
+                            ]
+                        ),
+                    )
+                )
+            if previous_materialization is not None:
+                raise BridgeUnavailableError(
+                    "battle identity materialization was already consumed "
+                    "for this revision; the next query must expose a "
+                    "non-missing full CombatID"
+                )
+            exact_one_day = True
+            exact_one_day_proof_kind = "battle_identity_materialization"
+            exact_one_day_preferred_speed = 1
         starting_revision = int(starting["revision"])
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
@@ -9902,7 +10137,7 @@ class NativeHeadlessGameplayDriver:
                     )
         if exact_one_day and starting.get("paused") is not True:
             raise BridgeUnavailableError(
-                "route-contact one-day advance requires a paused map"
+                "exact one-day advance requires a paused map"
             )
         # Assault lifecycle checks are read-only.  Scan the owned transcript
         # under its lock so a timeline slice does not deep-copy an ever-growing
@@ -10059,10 +10294,65 @@ class NativeHeadlessGameplayDriver:
         ending_date_raw = _date_raw(current, "ending snapshot")
         if exact_one_day and ending_date_raw > starting_date_raw + 24:
             raise BridgeUnavailableError(
-                "route-contact one-day advance exceeded its 24-hour native "
+                "exact one-day advance exceeded its 24-hour native "
                 f"horizon: {starting_date_raw} -> {ending_date_raw}"
             )
-        return {
+        materialization_result: dict[str, object] | None = None
+        if identity_materialization is not None:
+            subject_public_cunit_id = int(
+                identity_materialization["subject_public_cunit_id"]
+            )
+            ending_subject = _army_by_id(current, subject_public_cunit_id)
+            starting_native_revision = starting.get("native_revision")
+            ending_native_revision = current.get("native_revision")
+            starting_played = starting.get("played_character")
+            ending_played = current.get("played_character")
+            if not (
+                ending_date_raw == starting_date_raw + 24
+                and current.get("paused") is True
+                and isinstance(current.get("revision"), int)
+                and not isinstance(current.get("revision"), bool)
+                and int(current["revision"]) > starting_revision
+                and _positive_native_id(starting_native_revision)
+                and _positive_native_id(ending_native_revision)
+                and int(ending_native_revision)
+                > int(starting_native_revision)
+                and starting.get("episode_run_id")
+                == current.get("episode_run_id")
+                and starting.get("episode_character_id")
+                == current.get("episode_character_id")
+                and isinstance(starting_played, dict)
+                and isinstance(ending_played, dict)
+                and starting_played.get("character_id")
+                == ending_played.get("character_id")
+                and isinstance(ending_subject, dict)
+                and ending_subject.get("controllable") is True
+                and ending_subject.get("in_combat") is True
+            ):
+                raise BridgeUnavailableError(
+                    "battle identity materialization did not produce one "
+                    "exact next paused public-combat revision"
+                )
+            materialization_result = {
+                "schema_version": 1,
+                "status": "one_day_advanced",
+                "proof_kind": "battle_identity_materialization",
+                "diagnostic_reason": (
+                    BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+                ),
+                "subject_public_cunit_id": subject_public_cunit_id,
+                "starting_snapshot_id": starting.get("snapshot_id"),
+                "starting_revision": starting_revision,
+                "starting_native_revision": int(starting_native_revision),
+                "starting_date_raw": starting_date_raw,
+                "ending_snapshot_id": current.get("snapshot_id"),
+                "ending_revision": int(current["revision"]),
+                "ending_native_revision": int(ending_native_revision),
+                "ending_date_raw": ending_date_raw,
+                "elapsed_days": 1,
+                "next_revision_requirement": "full_combat_id",
+            }
+        result: dict[str, object] = {
             "step": result_step,
             "backend_id": "native-headless",
             "source": "native-composite",
@@ -10086,6 +10376,11 @@ class NativeHeadlessGameplayDriver:
             "snapshot_id": current["snapshot_id"],
             "revision": current["revision"],
         }
+        if materialization_result is not None:
+            result["battle_identity_materialization"] = (
+                materialization_result
+            )
+        return result
 
     def _resume_life_advance(
         self,
@@ -11428,7 +11723,7 @@ def _battle_sentinel_has_active_combat(
             or (
                 isinstance(combat_id, int)
                 and not isinstance(combat_id, bool)
-                and combat_id > 0
+                and combat_id != -1
             )
         ):
             return True
@@ -11564,6 +11859,157 @@ def _battle_sentinel_player_decision_boundary(
             "native_revision": snapshot.get("native_revision"),
         }
     return None
+
+
+def _battle_sentinel_active_war_ids(
+    snapshot: object,
+) -> tuple[int, ...] | None:
+    """Return the complete, normalized active WarID set for one frame."""
+
+    if not isinstance(snapshot, dict):
+        return None
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list):
+        return None
+    war_ids: list[int] = []
+    for war in wars:
+        war_id = war.get("war_id") if isinstance(war, dict) else None
+        if (
+            isinstance(war_id, bool)
+            or not isinstance(war_id, int)
+            or not 0 < war_id <= 2**31 - 1
+            or war_id in war_ids
+        ):
+            return None
+        war_ids.append(war_id)
+    return tuple(sorted(war_ids))
+
+
+def _battle_sentinel_active_war_set_instance_id(
+    before_war_ids: tuple[int, ...],
+    after_war_ids: tuple[int, ...],
+) -> str:
+    before = ",".join(str(war_id) for war_id in before_war_ids) or "-"
+    after = ",".join(str(war_id) for war_id in after_war_ids) or "-"
+    return f"active-wars:{before}->{after}"
+
+
+def _battle_sentinel_active_war_set_boundary(
+    starting: object,
+    current: object,
+) -> dict[str, object] | None:
+    """Describe a fresh paused-frame active-war-set replan boundary.
+
+    This is deliberately a Python snapshot delta, not an exact native watch.
+    It only consumes a boundary after CK3 has already paused and keeps every
+    bridge/episode/player owner pin stable across a whole-day revision step.
+    """
+
+    if not isinstance(starting, dict) or not isinstance(current, dict):
+        return None
+    before_war_ids = _battle_sentinel_active_war_ids(starting)
+    after_war_ids = _battle_sentinel_active_war_ids(current)
+    if (
+        before_war_ids is None
+        or after_war_ids is None
+        or before_war_ids == after_war_ids
+        or current.get("paused") is not True
+        or current.get("map_ready") is not True
+    ):
+        return None
+    starting_revision = starting.get("revision")
+    current_revision = current.get("revision")
+    starting_date_raw = starting.get("date_raw")
+    current_date_raw = current.get("date_raw")
+    if not (
+        isinstance(starting_revision, int)
+        and not isinstance(starting_revision, bool)
+        and isinstance(current_revision, int)
+        and not isinstance(current_revision, bool)
+        and current_revision > starting_revision
+        and isinstance(starting_date_raw, int)
+        and not isinstance(starting_date_raw, bool)
+        and isinstance(current_date_raw, int)
+        and not isinstance(current_date_raw, bool)
+        and current_date_raw >= starting_date_raw
+        and (current_date_raw - starting_date_raw) % 24 == 0
+    ):
+        return None
+    starting_binding = _battle_sentinel_frame_binding(starting)
+    current_binding = _battle_sentinel_frame_binding(current)
+    owner_fields = (
+        "bridge_pid",
+        "connection_generation",
+        "episode_character_id",
+        "episode_run_id",
+        "played_character_id",
+    )
+    if not all(
+        starting_binding.get(field) == current_binding.get(field)
+        for field in owner_fields
+    ):
+        return None
+    before_set = set(before_war_ids)
+    after_set = set(after_war_ids)
+    return {
+        **current_binding,
+        "kind": "active_war_set_changed",
+        "instance_id": _battle_sentinel_active_war_set_instance_id(
+            before_war_ids, after_war_ids
+        ),
+        "before_war_ids": list(before_war_ids),
+        "after_war_ids": list(after_war_ids),
+        "added_war_ids": sorted(after_set - before_set),
+        "removed_war_ids": sorted(before_set - after_set),
+        "snapshot_id": current.get("snapshot_id"),
+        "revision": current_revision,
+        "native_revision": current.get("native_revision"),
+    }
+
+
+def _battle_sentinel_active_war_set_boundary_identity_valid(
+    boundary: object,
+) -> bool:
+    if not isinstance(boundary, dict):
+        return False
+    rows: dict[str, tuple[int, ...]] = {}
+    for key in (
+        "before_war_ids",
+        "after_war_ids",
+        "added_war_ids",
+        "removed_war_ids",
+    ):
+        value = boundary.get(key)
+        if not isinstance(value, list):
+            return False
+        normalized: list[int] = []
+        for war_id in value:
+            if (
+                isinstance(war_id, bool)
+                or not isinstance(war_id, int)
+                or not 0 < war_id <= 2**31 - 1
+                or war_id in normalized
+            ):
+                return False
+            normalized.append(war_id)
+        if normalized != sorted(normalized):
+            return False
+        rows[key] = tuple(normalized)
+    before = rows["before_war_ids"]
+    after = rows["after_war_ids"]
+    if before == after:
+        return False
+    before_set = set(before)
+    after_set = set(after)
+    return bool(
+        boundary.get("kind") == "active_war_set_changed"
+        and boundary.get("instance_id")
+        == _battle_sentinel_active_war_set_instance_id(before, after)
+        and rows["added_war_ids"] == tuple(sorted(after_set - before_set))
+        and rows["removed_war_ids"]
+        == tuple(sorted(before_set - after_set))
+        and (rows["added_war_ids"] or rows["removed_war_ids"])
+    )
 
 
 def _battle_sentinel_frame_binding(
@@ -12219,14 +12665,15 @@ def _validate_tactical_daily_sentinel_decision_boundary(
     player_decision_boundary: dict[str, object],
     player_decision_boundary_cancel: dict[str, object] | None,
 ) -> None:
-    """Validate a real player decision at the daily-sentinel boundary.
+    """Validate a real replan boundary during a daily-sentinel arm.
 
     CK3 can materialize a blocking event before the sentinel's final daily
     callback.  The game date then stops while the public paused bit remains
     false.  That path requires an exact generation-bound cancel proven by an
     idle status.  When the event and the native deadline land on the same
     daily callback, the ordinary native stop is already complete and must be
-    retained without attempting to cancel it.
+    retained without attempting to cancel it.  A fresh paused active-war-set
+    delta uses the same cancel/idle envelope without claiming a native watch.
     """
 
     raw_delta = ending_date_raw - starting_date_raw
@@ -12249,6 +12696,12 @@ def _validate_tactical_daily_sentinel_decision_boundary(
                 is False
                 or player_decision_boundary.get("played_character_id")
                 != player_decision_boundary.get("episode_character_id")
+            )
+        )
+        or (
+            boundary_kind == "active_war_set_changed"
+            and _battle_sentinel_active_war_set_boundary_identity_valid(
+                player_decision_boundary
             )
         )
     )
@@ -12563,6 +13016,112 @@ def _native_history_after_latest_restore(
         if row.get("command") == _RESTORE_CHECKPOINT_STEP and row.get("ok") is True:
             return history[position + 1 :]
     return history
+
+
+def _battle_identity_materialization_request(
+    snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Validate the sole public condition allowed to materialize CombatID."""
+    subject = snapshot.get("battle_control_snapshot_v1_subject_army_id")
+    if not _positive_native_id(subject):
+        return None
+    army = _army_by_id(snapshot, int(subject))
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("battle_control_snapshot_v1_status")
+        == BATTLE_CONTROL_IDENTITY_PENDING_STATUS
+        and snapshot.get("battle_control_snapshot_v1_diagnostic_reason")
+        == BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+        and snapshot.get("battle_control_snapshot_v1_native_query_status")
+        == "state_changed"
+        and snapshot.get("battle_control_snapshot_v1_query_attempts")
+        == _BATTLE_CONTROL_QUERY_MAX_ATTEMPTS
+        and snapshot.get("battle_control_snapshot_v1") is None
+        and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
+        == snapshot.get("snapshot_id")
+        and snapshot.get("battle_control_snapshot_v1_queried_revision")
+        == snapshot.get("revision")
+        and snapshot.get(
+            "battle_control_snapshot_v1_queried_native_revision"
+        )
+        == snapshot.get("native_revision")
+        and isinstance(army, dict)
+        and army.get("controllable") is True
+        and army.get("in_combat") is True
+    ):
+        return None
+    return {
+        "status": BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+        "diagnostic_reason": BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
+        "subject_public_cunit_id": int(subject),
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+    }
+
+
+def _battle_identity_materialization_for_snapshot(
+    history: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    subject_public_cunit_id: int,
+) -> dict[str, object] | None:
+    """Find a consumed materialization whose ending is this exact frame."""
+    for row in reversed(_native_history_after_latest_restore(history)):
+        if row.get("ok") is not True:
+            continue
+        command, result = _effective_native_history_entry(row)
+        if command != "life-advance" or not isinstance(result, dict):
+            continue
+        materialization = result.get("battle_identity_materialization")
+        if not isinstance(materialization, dict):
+            continue
+        start_date_raw = materialization.get("starting_date_raw")
+        end_date_raw = materialization.get("ending_date_raw")
+        start_revision = materialization.get("starting_revision")
+        end_revision = materialization.get("ending_revision")
+        start_native_revision = materialization.get(
+            "starting_native_revision"
+        )
+        end_native_revision = materialization.get("ending_native_revision")
+        if not (
+            materialization.get("schema_version") == 1
+            and materialization.get("status") == "one_day_advanced"
+            and materialization.get("proof_kind")
+            == "battle_identity_materialization"
+            and materialization.get("diagnostic_reason")
+            == BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+            and materialization.get("subject_public_cunit_id")
+            == subject_public_cunit_id
+            and materialization.get("next_revision_requirement")
+            == "full_combat_id"
+            and isinstance(start_date_raw, int)
+            and not isinstance(start_date_raw, bool)
+            and isinstance(end_date_raw, int)
+            and not isinstance(end_date_raw, bool)
+            and end_date_raw == start_date_raw + 24
+            and materialization.get("elapsed_days") == 1
+            and isinstance(start_revision, int)
+            and not isinstance(start_revision, bool)
+            and isinstance(end_revision, int)
+            and not isinstance(end_revision, bool)
+            and end_revision > start_revision
+            and _positive_native_id(start_native_revision)
+            and _positive_native_id(end_native_revision)
+            and int(end_native_revision) > int(start_native_revision)
+            and materialization.get("ending_snapshot_id")
+            == snapshot.get("snapshot_id")
+            and end_revision == snapshot.get("revision")
+            and end_native_revision == snapshot.get("native_revision")
+            and end_date_raw == snapshot.get("date_raw")
+        ):
+            continue
+        return copy.deepcopy(materialization)
+    return None
 
 
 def _native_open_assault_lifecycles(
@@ -12894,6 +13453,8 @@ def _exact_route_contact_timeline_policy(
     selected_proof_kind = (
         proof_kind if isinstance(proof_kind, str) else "unknown"
     )
+    if selected_proof_kind == "battle_identity_materialization":
+        return 1, "exact_one_day_battle_identity_materialization"
     if selected_proof_kind != "contact_free":
         return 1, "exact_one_day_unavoidable_contact"
     requested = _timeline_speed(
@@ -14603,6 +15164,15 @@ def _action_steps(
                 and isinstance(current_route, list)
                 and current_route
             )
+            stationary_contact_hold_ready = bool(
+                _positive_native_id(current_province_id)
+                and isinstance(current_route, list)
+                and not current_route
+                and "move_target_province_id" in army
+                and army.get("move_target_province_id") is None
+                and _army_is_known_stationary(army)
+                and not _army_in_combat_or_retreat(army)
+            )
             if same_province_route_clear_ready:
                 army_target_provinces.add(int(current_province_id))
             for province_id in army_target_provinces:
@@ -14610,9 +15180,17 @@ def _action_steps(
                     province_id == current_province_id
                     and same_province_route_clear_ready
                 )
+                stationary_contact_hold = bool(
+                    province_id == current_province_id
+                    and stationary_contact_hold_ready
+                )
                 if (
                     province_id == current_province_id
                     and not same_province_route_clear
+                    and not (
+                        expand_route_contact_horizons
+                        and stationary_contact_hold
+                    )
                 ):
                     continue
                 if (
@@ -14623,7 +15201,7 @@ def _action_steps(
                     )
                 ):
                     steps.add(move_army_step(army_id, province_id))
-                if expand_preview_move_armies:
+                if expand_preview_move_armies and not stationary_contact_hold:
                     steps.add(preview_move_army_step(army_id, province_id))
                 if (
                     expand_route_contact_horizons
@@ -14745,6 +15323,21 @@ def _fresh_route_contact_advance_proofs(
         )
         snapshot_route = _canonical_remaining_route(subject)
         proof_route = _canonical_timed_route(subject_route)
+        active_route_matches = bool(
+            isinstance(subject, dict)
+            and subject.get("move_target_province_id") == target_province_id
+            and snapshot_route
+            and snapshot_route[-1] == target_province_id
+        )
+        stationary_hold_matches = bool(
+            isinstance(subject, dict)
+            and subject.get("current_province_id") == target_province_id
+            and "move_target_province_id" in subject
+            and subject.get("move_target_province_id") is None
+            and snapshot_route == []
+            and _army_is_known_stationary(subject)
+            and not _army_in_combat_or_retreat(subject)
+        )
         proof_kind = (
             "contact_free"
             if normalized_horizon.get("one_day_contact_free") is True
@@ -14757,9 +15350,7 @@ def _fresh_route_contact_advance_proofs(
         if not (
             isinstance(subject, dict)
             and subject.get("controllable") is True
-            and subject.get("move_target_province_id") == target_province_id
-            and snapshot_route
-            and snapshot_route[-1] == target_province_id
+            and (active_route_matches or stationary_hold_matches)
             and proof_route == snapshot_route
             and isinstance(subject_route, dict)
             and subject_route.get("army_id") == subject_army_id
@@ -15183,16 +15774,49 @@ def _predicted_contact_boundary_postcondition(
         or not isinstance(conflicts, list)
         or not conflicts
         or not isinstance(subject_arrival_date_raws, list)
-        or not subject_arrival_date_raws
-        or isinstance(subject_arrival_date_raws[0], bool)
-        or not isinstance(subject_arrival_date_raws[0], int)
-        or subject_arrival_date_raws[0] <= horizon_end_date_raw
     ):
         return None
     starting_subject = _army_by_id(starting, int(subject_army_id))
     ending_subject = _army_by_id(ending, int(subject_army_id))
     starting_remaining_route = _canonical_remaining_route(starting_subject)
     ending_remaining_route = _canonical_remaining_route(ending_subject)
+    subject_route_province_ids = (
+        subject_route.get("route_province_ids")
+        if isinstance(subject_route, dict)
+        else None
+    )
+    moving_route_province_ids = (
+        subject_route_province_ids
+        if isinstance(subject_route_province_ids, list)
+        else starting_remaining_route
+    )
+    moving_edge_cannot_clear = bool(
+        isinstance(starting_subject, dict)
+        and isinstance(ending_subject, dict)
+        and isinstance(moving_route_province_ids, list)
+        and moving_route_province_ids
+        and len(subject_arrival_date_raws) == len(moving_route_province_ids)
+        and not isinstance(subject_arrival_date_raws[0], bool)
+        and isinstance(subject_arrival_date_raws[0], int)
+        and subject_arrival_date_raws[0] > horizon_end_date_raw
+        and starting_subject.get("move_target_province_id")
+        == proof.get("target_province_id")
+        and ending_subject.get("move_target_province_id")
+        == proof.get("target_province_id")
+        and bool(starting_remaining_route)
+        and ending_remaining_route == starting_remaining_route
+    )
+    stationary_hold = bool(
+        isinstance(starting_subject, dict)
+        and isinstance(ending_subject, dict)
+        and subject_route_province_ids == []
+        and subject_arrival_date_raws == []
+        and proof.get("target_province_id") == contact_province_id
+        and starting_subject.get("move_target_province_id") is None
+        and ending_subject.get("move_target_province_id") is None
+        and starting_remaining_route == []
+        and ending_remaining_route == []
+    )
     if not (
         isinstance(starting_subject, dict)
         and isinstance(ending_subject, dict)
@@ -15200,13 +15824,8 @@ def _predicted_contact_boundary_postcondition(
         and ending_subject.get("controllable") is True
         and starting_subject.get("current_province_id") == contact_province_id
         and ending_subject.get("current_province_id") == contact_province_id
-        and starting_subject.get("move_target_province_id")
-        == ending_subject.get("move_target_province_id")
-        and starting_subject.get("move_target_province_id")
-        == proof.get("target_province_id")
         and isinstance(starting_remaining_route, list)
-        and bool(starting_remaining_route)
-        and ending_remaining_route == starting_remaining_route
+        and (moving_edge_cannot_clear or stationary_hold)
         and not _army_in_active_combat(starting_subject)
         and not _army_retreating(starting_subject)
         and not _army_in_active_combat(ending_subject)

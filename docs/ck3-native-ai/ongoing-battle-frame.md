@@ -332,7 +332,8 @@ application-main callback 内执行：
 - primary、commander、owner-hard CharacterID 都按 full generation 回读；
 - selected IDs/owner/combat Province 必须与既有 subject/combat identity 同帧相等；selected CArmy 只出现于一侧；
 - scope 对 selected side 的每个 Army owner 按原生 stored order 重算；affected 仅含 selected owner，unaffected 含其余 owner；
-- `BattleResultID==-1` 才允许读 `module+0x57C0320` fallback；positive stale generation 必须返回 `state_changed`；
+- `BattleResultID==-1` 才允许读 `module+0x57C0320` fallback；任何其它 signed full ID 的 stale generation 必须返回
+  `state_changed`；负值本身不是 missing；
 - `0x2308250` 只以 null ErrorSink 调用；`0x26165B0` 只读取返回对象 `+0x38` bit 10。四 gate 的 raw inputs
   在调用前后保持稳定，reason 顺序必须是 disallow → day → phase → landless，且 `legal_now==native_boolean`；
 - phase 只接受 `0..3`，winner/forced winner 只接受 `-1..1`；

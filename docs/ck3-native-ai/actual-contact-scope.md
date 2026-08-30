@@ -411,7 +411,7 @@ flowchart TD
   变化，都必须返回 `state_changed`。
 
 因此 post-contact 对账的强条件是：pre-contact 的 predicted attacker/defender CUnitID 数组，分别与同一接敌结果的
-post-contact actual arrays **按值、按序完全相等**，且 actual CombatID 为正、subject 只位于一侧、actual Province
+post-contact actual arrays **按值、按序完全相等**，且 actual CombatID 是非 `-1` 的 signed full ID、subject 只位于一侧、actual Province
 等于预期 target。仅比较集合会漏掉原生 side insertion order 漂移。
 
 ### combat end 后的同省重扫
@@ -599,7 +599,7 @@ CombatID、Province、两侧顺序、scope/transition 六项逐项相等，comba
 1. 同日多到达，首个 queue initiator 创建 combat，后项加入；
 2. Province 已有多个兼容 combats，验证 native 最终选择与 mirror 的“last compatible”一致。
 
-每类仍必须保存 mutation 前 snapshot、route/contact prediction，以及 native transition 后同一 query 的 positive CombatID、
+每类仍必须保存 mutation 前 snapshot、route/contact prediction，以及 native transition 后同一 query 的非 `-1` signed full CombatID、
 actual Province 与 side CUnitID order。它们用于闭合 `join_existing` 与 multiple-compatible 分支矩阵；当前单场 create-new
 实机已经足以证明已发布的 post-contact observation 有独立可玩价值。
 

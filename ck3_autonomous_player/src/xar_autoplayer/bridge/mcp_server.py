@@ -153,7 +153,7 @@ def _ck3_query_battle_transition_v1(
     combat_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Observe one positive full CombatID without an army-state gate."""
+    """Observe one non-missing signed full CombatID without an army-state gate."""
     return service.query_battle_transition_v1(
         combat_id,
         expected_revision=expected_revision,

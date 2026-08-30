@@ -102,6 +102,18 @@ int main() {
           "query-battle-transition-v1-2147483648", request)) {
     return Fail("battle-transition canonical step parser failed");
   }
+  if (!ParseBattleTransitionV1Step(
+          "query-battle-transition-v1--2147483647", request) ||
+      request.combat_id != -2'147'483'647 ||
+      !ParseBattleTransitionV1Step(
+          "query-battle-transition-v1-0", request) ||
+      request.combat_id != 0 ||
+      ParseBattleTransitionV1Step(
+          "query-battle-transition-v1--1", request) ||
+      ParseBattleTransitionV1Step(
+          "query-battle-transition-v1--01", request)) {
+    return Fail("battle-transition signed full-ID parser failed");
+  }
   std::uint64_t revision = 0;
   if (!ParseBattleTransitionExpectedRevisionV1(
           "{\"expected_revision\":49}", revision) ||
@@ -127,6 +139,14 @@ int main() {
       !Contains(json,
                 "\"defender_public_cunit_ids_in_stored_order\":[357,358]")) {
     return Fail("battle-transition available serializer lost lifecycle fields");
+  }
+  auto signed_complete = complete;
+  signed_complete.combat_id = -2'147'483'647;
+  signed_complete.battle_result_id = -2'046'820'351;
+  const auto signed_json = SerializeBattleTransitionV1(signed_complete);
+  if (!Contains(signed_json, "\"combat_id\":-2147483647") ||
+      !Contains(signed_json, "\"battle_result_id\":-2046820351")) {
+    return Fail("battle-transition serializer lost signed full IDs");
   }
   auto missing = game::BattleTransitionSnapshot{};
   missing.status =
@@ -162,7 +182,7 @@ int main() {
   }
 
   g_outer_snapshot = CompleteOuterSnapshot();
-  g_native_result = complete;
+  g_native_result = signed_complete;
   g_native_result.snapshot_revision = 0;
   g_native_status = game::BattleTransitionSnapshotStatus::available;
   g_snapshot_reads = 0;
@@ -172,7 +192,7 @@ int main() {
   BattleTransitionMailboxContextV1 query{};
   query.mailbox = &mailbox;
   query.ticket.sequence = 17;
-  query.request.combat_id = 335'544'325;
+  query.request.combat_id = -2'147'483'647;
   query.expected_snapshot_revision = 49;
   query.expected_snapshot = g_outer_snapshot;
   mailbox.state.store(MainThreadQueryMailboxStateV1::executing);
@@ -198,7 +218,7 @@ int main() {
       query.completion != BattleTransitionMailboxCompletionV1::completed ||
       query.executor_invocations != 1 || g_snapshot_reads != 2 ||
       g_transition_reads != 1 || query.result.snapshot_revision != 49 ||
-      query.result.combat_id != 335'544'325 ||
+      query.result.combat_id != -2'147'483'647 ||
       SerializeBattleTransitionV1(query.result).empty()) {
     return Fail("battle-transition application-main executor contract failed");
   }

@@ -58,17 +58,17 @@ bool AppendInt32Array(std::string &output,
   return true;
 }
 
-bool ParseCanonicalPositiveInt32(std::string_view text,
-                                 std::int32_t &output) noexcept {
+bool ParseCanonicalFullComponentId(std::string_view text,
+                                   std::int32_t &output) noexcept {
   output = -1;
-  if (text.empty() || text.front() == '0') {
+  if (text.empty()) {
     return false;
   }
   std::int32_t value = -1;
   const auto parsed =
       std::from_chars(text.data(), text.data() + text.size(), value);
   if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size() ||
-      value <= 0) {
+      value == -1) {
     return false;
   }
   char canonical[16]{};
@@ -96,7 +96,7 @@ bool IsExecutingExactMailboxSlot(
     const BattleTransitionMailboxContextV1 &query,
     const MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
-      query.expected_snapshot_revision == 0 || query.request.combat_id <= 0 ||
+      query.expected_snapshot_revision == 0 || query.request.combat_id == -1 ||
       stamp.pump_epoch == 0 || stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 ||
       stamp.tls_initialized != 1 || stamp.tls_context == 0 ||
@@ -149,7 +149,7 @@ bool ValidIds(const std::vector<std::int32_t> &values) noexcept {
 
 bool ValidateSnapshot(
     const game::BattleTransitionSnapshot &snapshot) noexcept {
-  if (snapshot.snapshot_revision == 0 || snapshot.combat_id <= 0 ||
+  if (snapshot.snapshot_revision == 0 || snapshot.combat_id == -1 ||
       StatusName(snapshot.status).empty()) {
     return false;
   }
@@ -186,8 +186,6 @@ bool ValidateSnapshot(
   if (!snapshot.battle_transition_ready || snapshot.province_id <= 0 ||
       !phase_valid || snapshot.phase_day < 0 || !winner_valid ||
       !forced_winner_valid ||
-      (snapshot.battle_result_id != -1 &&
-       snapshot.battle_result_id <= 0) ||
       !ValidIds(snapshot.attacker_public_cunit_ids_in_stored_order) ||
       !ValidIds(snapshot.defender_public_cunit_ids_in_stored_order)) {
     return false;
@@ -221,7 +219,7 @@ bool ParseBattleTransitionV1Step(
     std::string_view step, game::BattleTransitionRequest &output) noexcept {
   output = {};
   if (!step.starts_with(kBattleTransitionV1StepPrefix) ||
-      !ParseCanonicalPositiveInt32(
+      !ParseCanonicalFullComponentId(
           step.substr(kBattleTransitionV1StepPrefix.size()),
           output.combat_id)) {
     output = {};
@@ -400,7 +398,7 @@ std::string SerializeBattleTransitionV1(
   output += ",\"finalized\":";
   output += available ? (snapshot.finalized ? "true" : "false") : "null";
   output += ",\"battle_result_id\":";
-  if (available && snapshot.battle_result_id > 0) {
+  if (available && snapshot.battle_result_id != -1) {
     if (!AppendNumber(output, snapshot.battle_result_id)) return {};
   } else {
     output += "null";

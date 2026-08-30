@@ -107,6 +107,30 @@ bool ParseCanonicalPositiveInt32(std::string_view text,
   return true;
 }
 
+bool ParseCanonicalFullComponentId(std::string_view text,
+                                   std::int32_t &output) noexcept {
+  output = -1;
+  if (text.empty()) {
+    return false;
+  }
+  std::int32_t value = -1;
+  const auto parsed =
+      std::from_chars(text.data(), text.data() + text.size(), value);
+  if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size() ||
+      value == -1) {
+    return false;
+  }
+  char canonical[16]{};
+  const auto rendered =
+      std::to_chars(canonical, canonical + sizeof(canonical), value);
+  if (rendered.ec != std::errc{} ||
+      std::string_view(canonical, rendered.ptr) != text) {
+    return false;
+  }
+  output = value;
+  return true;
+}
+
 bool ParseCanonicalUint64(std::string_view text,
                           std::uint64_t &output) noexcept {
   output = 0;
@@ -209,9 +233,15 @@ bool ValidPositiveIds(const std::vector<std::int32_t> &values) noexcept {
                      [](std::int32_t value) { return value > 0; });
 }
 
+bool ValidFullComponentIds(
+    const std::vector<std::int32_t> &values) noexcept {
+  return std::all_of(values.begin(), values.end(),
+                     [](std::int32_t value) { return value != -1; });
+}
+
 bool ValidateSnapshot(
     const game::BattleTerminalTransitionSnapshotV1 &snapshot) noexcept {
-  if (snapshot.snapshot_revision == 0 || snapshot.prior_combat_id <= 0 ||
+  if (snapshot.snapshot_revision == 0 || snapshot.prior_combat_id == -1 ||
       snapshot.subject_public_cunit_id <= 0 || StatusName(snapshot.status).empty()) {
     return false;
   }
@@ -240,7 +270,8 @@ bool ValidateSnapshot(
       AiMembershipStatusName(
           snapshot.subject.ai_membership_status).empty() ||
       SuccessorStateName(snapshot.successor.state).empty() ||
-      !ValidPositiveIds(snapshot.successor.matching_combat_ids_in_native_order) ||
+      !ValidFullComponentIds(
+          snapshot.successor.matching_combat_ids_in_native_order) ||
       !ValidPositiveIds(snapshot.successor
                             .participant_overlap_public_cunit_ids_in_prior_order)) {
     return false;
@@ -334,8 +365,14 @@ bool ValidateSnapshot(
           *snapshot.prior.defender_public_cunit_ids_in_stored_order)) {
     return false;
   }
-  return !snapshot.successor.selected_successor_combat_id.has_value() ||
-         *snapshot.successor.selected_successor_combat_id > 0;
+  return (!snapshot.prior.battle_result_id.has_value() ||
+          *snapshot.prior.battle_result_id != -1) &&
+         (!snapshot.subject.combat_backlink_id.has_value() ||
+          *snapshot.subject.combat_backlink_id != -1) &&
+         (!snapshot.subject.active_combat_id.has_value() ||
+          *snapshot.subject.active_combat_id != -1) &&
+         (!snapshot.successor.selected_successor_combat_id.has_value() ||
+          *snapshot.successor.selected_successor_combat_id != -1);
 }
 
 bool SameExpectedFrame(
@@ -353,7 +390,7 @@ bool IsExecutingExactMailboxSlot(
     const MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 ||
-      query.request.prior_combat_id <= 0 ||
+      query.request.prior_combat_id == -1 ||
       query.request.subject_public_cunit_id <= 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
@@ -413,16 +450,16 @@ bool ParseBattleTerminalTransitionV1Step(
     return false;
   }
   const auto wire = step.substr(kBattleTerminalTransitionV1StepPrefix.size());
-  const auto first = wire.find('-');
-  const auto second =
-      first == std::string_view::npos ? first : wire.find('-', first + 1);
-  if (first == std::string_view::npos || second == std::string_view::npos ||
-      wire.find('-', second + 1) != std::string_view::npos) {
+  const auto second = wire.rfind('-');
+  const auto first = second == std::string_view::npos || second == 0
+                         ? std::string_view::npos
+                         : wire.rfind('-', second - 1);
+  if (first == std::string_view::npos || second == std::string_view::npos) {
     return false;
   }
   std::uint64_t cursor = 0;
-  if (!ParseCanonicalPositiveInt32(wire.substr(0, first),
-                                   output.prior_combat_id) ||
+  if (!ParseCanonicalFullComponentId(wire.substr(0, first),
+                                     output.prior_combat_id) ||
       !ParseCanonicalPositiveInt32(
           wire.substr(first + 1, second - first - 1),
           output.subject_public_cunit_id) ||

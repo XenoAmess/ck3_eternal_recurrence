@@ -710,6 +710,11 @@ probe；项目校验与 `--validate-only` 现在只在存在 `video_clip`（或�
   `ninja -t deps` 证明 `ck3_11906.hpp` 同时进入 producer/consumer 对象。fresh Release 目录
   `xar-native-gen015-20260828T0145Z` 以 `direct-2052-utf8` 模式完成 `37/37` CTest；DLL/injector SHA-256 分别为
   `50227D28...831F2` / `2F6CEB43...35B5C`。这是构建兼容修复，不放宽公共 header 依赖门禁。
+- 2026-08-31 实测当前 `PATH` 中裸 `ctest` 可能解析为 `C:\cygwin64\bin\ctest.exe`。它会把 Windows CMake 生成的
+  `C:/.../test.exe` 再错误拼到当前目录，表现为全部测试 `BAD_COMMAND / no such file or directory`，实际 0 个 test binary
+  被执行。这是 runner 调用错误，不是 native capability RED。Windows build 必须使用 Visual Studio/CMake 随附的原生
+  `ctest.exe`（当前为 `C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\ctest.exe`）
+  并把 build directory 设为工作目录；同一 G2 build 随后真实完成 `44/44` GREEN。
 - 2026-08-30 在普通 PowerShell 外壳内串联 `vcvars64.bat` 与 `build_fresh.ps1` 时，`cmd.exe` 会在执行整行前展开
   `%PATH%`；若在 `call vcvars64.bat` 后再写 `set "PATH=<cmake>;<ninja>;%PATH%"`，该旧值会把刚注入的 MSVC
   `cl.exe` 路径覆盖掉，helper 会报 `cl is required`。同机 `vcvars64.bat` 还要求先让 Visual Studio Installer 目录中的

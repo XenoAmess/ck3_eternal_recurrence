@@ -343,6 +343,28 @@ class RouteContactHorizonContractTests(unittest.TestCase):
             unavoidable_current_province_contact_in_horizon(mixed_conflict)
         )
 
+        stationary = copy.deepcopy(normalized)
+        stationary["target_province_id"] = 2603
+        stationary["subject_route"].update(
+            {
+                "effective_origin_province_id": 2603,
+                "route_province_ids": [],
+                "arrival_date_raws": [],
+            }
+        )
+        stationary["conflicts"][0]["province_id"] = 2603
+        self.assertTrue(
+            unavoidable_current_province_contact_in_horizon(stationary)
+        )
+
+        stationary_wrong_target = copy.deepcopy(stationary)
+        stationary_wrong_target["target_province_id"] = 2585
+        self.assertFalse(
+            unavoidable_current_province_contact_in_horizon(
+                stationary_wrong_target
+            )
+        )
+
     def test_driver_expands_only_complete_nonretreating_hostile_scope(self) -> None:
         player = {
             "army_id": 11,

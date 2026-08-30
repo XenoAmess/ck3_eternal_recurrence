@@ -2948,7 +2948,7 @@ def _normalize_ongoing_combats(
             if raw_combat_id is None
             else _signed_int32(raw_combat_id, f"{name}.combat_id")
         )
-        if available and (combat_id is None or combat_id < 0):
+        if available and (combat_id is None or combat_id == -1):
             raise ValueError(f"native available {name}.combat_id is invalid")
         if combat_id is not None:
             if combat_id in seen_ids:

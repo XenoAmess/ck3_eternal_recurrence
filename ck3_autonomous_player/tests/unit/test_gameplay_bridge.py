@@ -252,11 +252,105 @@ def _arrange_marriage_context_result(
     return result
 
 
+def _negotiate_alliance_context_result(
+    *,
+    legality: dict[str, dict[str, object]] | None = None,
+    selected_option_index: int | None = None,
+    intermediary_character_id: int = -1,
+) -> dict[str, object]:
+    if legality is None:
+        legality = {
+            action: {"status": "available", "allowed": True, "reason": None}
+            for action in ("accept", "reject", "block")
+        }
+        legality["acknowledge"] = {
+            "status": "available",
+            "allowed": False,
+            "reason": "normal_reply_channel",
+        }
+    result = _pending_context_result(
+        pending_id=-234_881_021,
+        revision=2_299,
+        native_revision=2_298,
+        date_raw=53_247_096,
+        definition_key="negotiate_alliance_interaction",
+        actor_character_id=34_867,
+        recipient_character_id=29_829,
+        legality=legality,
+        special_data_present=False,
+    )
+    context = result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    roles = context["roles"]
+    assert isinstance(roles, dict)
+    roles["intermediary_character_id"] = intermediary_character_id
+    context["deadline"] = {
+        "age_days": 0,
+        "expiration_days": 60,
+        "remaining_days": 60,
+        "expiry_boundary_status": "not_reached",
+    }
+    context["send_options"] = {
+        "exclusive": False,
+        "definition_count": 2,
+        "context_count": 2,
+        "rows": [
+            {
+                "native_index": 0,
+                "numeric_flag_identifier": 49,
+                "selected": selected_option_index == 0,
+                "is_shown": False,
+                "is_valid": True,
+            },
+            {
+                "native_index": 1,
+                "numeric_flag_identifier": 7_218,
+                "selected": selected_option_index == 1,
+                "is_shown": False,
+                "is_valid": False,
+            },
+        ],
+    }
+    return result
+
+
+def _raiktor_inbound_white_peace_context_result(
+    *,
+    legality: dict[str, dict[str, object]] | None = None,
+) -> dict[str, object]:
+    return _pending_context_result(
+        pending_id=-268_435_441,
+        revision=437,
+        native_revision=437,
+        date_raw=53_216_352,
+        definition_key="end_war_attacker_white_peace_interaction",
+        actor_character_id=36_769,
+        recipient_character_id=29_829,
+        legality=legality,
+        special_data_present=True,
+        special_war_binding={
+            "status": "available",
+            "value": {
+                "special_interaction_kind": (
+                    "end_war_white_peace_interaction"
+                ),
+                "absolute_outcome": "white_peace",
+                "war_id": 33_554_527,
+                "actor_war_role": "primary_defender",
+                "recipient_war_role": "primary_attacker",
+                "binding_source": "native_common_war_relation",
+            },
+            "reason": None,
+        },
+    )
+
+
 def _plan_for_pending_context(
     context_result: dict[str, object],
     *,
     action_steps: tuple[str, ...],
     active_wars: list[dict[str, object]] | None = None,
+    termination_options: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     context = context_result["pending_character_interaction_context"]
     assert isinstance(context, dict)
@@ -273,6 +367,19 @@ def _plan_for_pending_context(
             "result": context_result,
         }
     ]
+    episode_run_id = "native-707-pending-fixture"
+    connection_generation = 3
+    bound_termination_options = [
+        {
+            **copy.deepcopy(row),
+            "queried_snapshot_id": f"session:{revision}",
+            "queried_revision": revision,
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+            "episode_run_id": episode_run_id,
+        }
+        for row in (termination_options or [])
+    ]
     driver = CallbackGameplayDriver(
         backend_id="native-headless",
         snapshot=lambda: {
@@ -280,11 +387,20 @@ def _plan_for_pending_context(
             "paused": True,
             "native_revision": native_revision,
             "date_raw": date_raw,
+            "episode_run_id": episode_run_id,
+            "diagnostics": {
+                "connection_generation": connection_generation,
+            },
+            "played_character": {
+                "character_id": roles["recipient_character_id"],
+                "alive": True,
+            },
             "pending_character_interaction": {
                 "instance_id": pending_id,
                 "sender_character_id": roles["actor_character_id"],
                 "auto_accept_notification": False,
             },
+            "war_termination_options": bound_termination_options,
             **(
                 {
                     "active_wars": active_wars,
@@ -544,6 +660,30 @@ def _termination_options(
         },
         "source": "native",
     }
+
+
+def _raiktor_inbound_white_peace_options(
+    war_id: int = 88,
+    *,
+    score: int = 7,
+    war_duration_days: int = 937,
+) -> dict[str, object]:
+    options = _termination_options(
+        war_id,
+        score=score,
+        war_duration_days=war_duration_days,
+    )
+    options["active_casus_belli_identity"] = {
+        "database_index": 409,
+        "canonical_key": "raiktor_claim_cb",
+    }
+    white_peace = options["options"]["white_peace"]
+    assert isinstance(white_peace, dict)
+    # This event CB cannot be offered outbound in the observed frame.  The
+    # inbound pending and its reply legality are the responder-path authority.
+    white_peace["native_validator_passed"] = False
+    white_peace["available"] = False
+    return options
 
 
 def _termination_terms(
@@ -3103,6 +3243,127 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(blocked["selected_step"])
 
+    def test_stationary_objective_uses_own_one_day_contact_horizon(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=2619,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=800,
+            province_id=2604,
+            controllable=False,
+            move_target_province_id=2619,
+            army_state="moving",
+            route_province_ids=[2605, 8757, 2615, 2616, 2617, 2618, 2619],
+        )
+        query_step = query_route_contact_horizon_step(11, 2619, (21,))
+        advance_step = advance_route_contact_horizon_step(11, 2619, (21,))
+
+        query = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            objective=2619,
+            steps=(query_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            query["phase"], "native_war_stationary_contact_horizon"
+        )
+        self.assertEqual(query["selected_step"], query_step)
+
+        proof = _route_contact_row(
+            1,
+            origin=2619,
+            target=2619,
+            date_raw=24_000,
+            route=[],
+            hostile_ids=(21,),
+            contact_free=True,
+        )
+        hostile_route = proof["result"]["route_contact_horizon"][
+            "hostile_routes"
+        ][0]
+        hostile_route.update(
+            {
+                "current_province_id": 2604,
+                "effective_origin_province_id": 2605,
+                "route_province_ids": [
+                    2605,
+                    8757,
+                    2615,
+                    2616,
+                    2617,
+                    2618,
+                    2619,
+                ],
+                "arrival_date_raws": [
+                    24_048,
+                    24_072,
+                    24_096,
+                    24_120,
+                    24_144,
+                    24_168,
+                    24_192,
+                ],
+            }
+        )
+        progress = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[proof],
+            objective=2619,
+            steps=(advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            progress["phase"],
+            "native_war_stationary_contact_horizon_progress",
+        )
+        self.assertEqual(progress["selected_step"], advance_step)
+        self.assertEqual(
+            progress["route_audit"]["status"],
+            "safe_one_day_stationary_contact_horizon",
+        )
+
+        conflict_proof = _route_contact_row(
+            2,
+            origin=2619,
+            target=2619,
+            date_raw=24_000,
+            route=[],
+            hostile_ids=(21,),
+            contact_free=False,
+        )
+        contact = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=24_000,
+            history=[conflict_proof],
+            objective=2619,
+            steps=(advance_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+        self.assertEqual(
+            contact["phase"], "native_war_unavoidable_contact_transition"
+        )
+        self.assertEqual(contact["selected_step"], advance_step)
+        self.assertEqual(
+            contact["route_audit"]["status"],
+            "stationary_current_province_contact",
+        )
+
     def test_route_preview_freshness_uses_date_origin_and_latest_restore(
         self,
     ) -> None:
@@ -5043,6 +5304,149 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["decision"]["blocked_reasons"],
         )
 
+    def test_planner_accepts_exact_zero_option_inbound_alliance_in_defense(
+        self,
+    ) -> None:
+        defensive_war = {
+            **_war(
+                war_id=134_217_738,
+                allied_armies=[],
+                enemy_armies=[],
+                score=-23,
+                player_side="defender",
+            ),
+            "primary_opponent_character_id": 32_309,
+        }
+        plan = _plan_for_pending_context(
+            _negotiate_alliance_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "block-pending-character-interaction",
+            ),
+            active_wars=[defensive_war],
+        )
+
+        self.assertEqual(plan["phase"], "pending_negotiate_alliance_accept")
+        self.assertEqual(
+            plan["selected_step"], "accept-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(
+            decision["classification"], "known_negotiate_alliance_inbound"
+        )
+        self.assertEqual(
+            decision["rule_id"], "negotiate-alliance-inbound-accept-v1"
+        )
+        self.assertEqual(decision["selected_action"], "accept")
+        self.assertFalse(decision["semantic_optimal"])
+        assessment = decision["negotiate_alliance_inbound"]
+        self.assertEqual(assessment["status"], "ready")
+        self.assertEqual(
+            assessment["evidence"]["active_defensive_war_ids"],
+            [134_217_738],
+        )
+        self.assertEqual(assessment["evidence"]["selected_option_count"], 0)
+        self.assertFalse(
+            assessment["evidence"]["alliance_semantic_postcondition_ready"]
+        )
+
+    def test_inbound_alliance_accept_blocks_selected_option(self) -> None:
+        plan = _plan_for_pending_context(
+            _negotiate_alliance_context_result(selected_option_index=0),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[
+                _war(
+                    war_id=134_217_738,
+                    allied_armies=[],
+                    enemy_armies=[],
+                    score=-23,
+                    player_side="defender",
+                )
+            ],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "negotiate_alliance_zero_option_vector_mismatch",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_inbound_alliance_accept_requires_active_defensive_war(self) -> None:
+        for active_wars in (
+            [],
+            [
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    player_side="attacker",
+                )
+            ],
+        ):
+            with self.subTest(active_wars=active_wars):
+                plan = _plan_for_pending_context(
+                    _negotiate_alliance_context_result(),
+                    action_steps=("accept-pending-character-interaction",),
+                    active_wars=active_wars,
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    "negotiate_alliance_active_defensive_war_required",
+                    plan["decision"]["blocked_reasons"],
+                )
+
+    def test_inbound_alliance_accept_blocks_actor_war_opponent(self) -> None:
+        war = _war(
+            allied_armies=[],
+            enemy_armies=[],
+            player_side="defender",
+        )
+        war["primary_opponent_character_id"] = 34_867
+        plan = _plan_for_pending_context(
+            _negotiate_alliance_context_result(),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[war],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "negotiate_alliance_actor_is_active_war_opponent",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_inbound_alliance_accept_requires_native_accept_legality(self) -> None:
+        legality = {
+            "accept": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "reject": {"status": "available", "allowed": True, "reason": None},
+            "block": {"status": "available", "allowed": True, "reason": None},
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "normal_reply_channel",
+            },
+        }
+        plan = _plan_for_pending_context(
+            _negotiate_alliance_context_result(legality=legality),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[
+                _war(
+                    allied_armies=[],
+                    enemy_armies=[],
+                    player_side="defender",
+                )
+            ],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "negotiate_alliance_accept_not_native_legal",
+            plan["decision"]["blocked_reasons"],
+        )
+
     def test_enforce_demands_precedes_marriage_reject_only(self) -> None:
         plan = _plan_for_pending_context(
             _arrange_marriage_context_result(),
@@ -5308,6 +5712,190 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["decision"]["classification"], "evidence_invalid")
         self.assertIn(
             "local_responder_identity_mismatch",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_queries_same_frame_terms_for_raiktor_inbound_white_peace(
+        self,
+    ) -> None:
+        war = {
+            **_war(
+                war_id=33_554_527,
+                allied_armies=[],
+                enemy_armies=[],
+                score=7,
+                player_side="attacker",
+            ),
+            "primary_opponent_character_id": 36_769,
+        }
+        query_step = query_war_termination_options_step(33_554_527)
+        plan = _plan_for_pending_context(
+            _raiktor_inbound_white_peace_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                query_step,
+                "raise-troops-default",
+            ),
+            active_wars=[war],
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_raiktor_white_peace_termination_query"
+        )
+        self.assertEqual(plan["selected_step"], query_step)
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "raiktor-inbound-white-peace-v1")
+        self.assertEqual(
+            decision["selected_action"], "observe_war_termination"
+        )
+        self.assertEqual(
+            decision["raiktor_inbound_white_peace"]["status"],
+            "query_required",
+        )
+
+    def test_planner_accepts_exact_raiktor_inbound_white_peace(self) -> None:
+        war = {
+            **_war(
+                war_id=33_554_527,
+                allied_armies=[],
+                enemy_armies=[],
+                score=7,
+                player_side="attacker",
+            ),
+            "primary_opponent_character_id": 36_769,
+        }
+        plan = _plan_for_pending_context(
+            _raiktor_inbound_white_peace_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+                "block-pending-character-interaction",
+            ),
+            active_wars=[war],
+            termination_options=[
+                _raiktor_inbound_white_peace_options(33_554_527)
+            ],
+        )
+
+        self.assertEqual(plan["phase"], "pending_raiktor_white_peace_accept")
+        self.assertEqual(
+            plan["selected_step"], "accept-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "raiktor-inbound-white-peace-v1")
+        self.assertEqual(decision["selected_action"], "accept")
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertFalse(decision["semantic_decision_ready"])
+        assessment = decision["raiktor_inbound_white_peace"]
+        self.assertEqual(assessment["status"], "ready")
+        self.assertFalse(
+            assessment["evidence"]["outbound_white_peace_available"]
+        )
+        self.assertEqual(
+            assessment["evidence"]["postcondition"],
+            "old_pending_full_id_and_bound_war_id_absent",
+        )
+
+    def test_planner_blocks_raiktor_white_peace_on_cb_mismatch(self) -> None:
+        war = {
+            **_war(
+                war_id=33_554_527,
+                allied_armies=[],
+                enemy_armies=[],
+                score=7,
+                player_side="attacker",
+            ),
+            "primary_opponent_character_id": 36_769,
+        }
+        options = _raiktor_inbound_white_peace_options(33_554_527)
+        options["active_casus_belli_identity"] = {
+            "database_index": 0,
+            "canonical_key": "claim_cb",
+        }
+        plan = _plan_for_pending_context(
+            _raiktor_inbound_white_peace_context_result(),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[war],
+            termination_options=[options],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "raiktor_white_peace_termination_terms_mismatch",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_blocks_raiktor_white_peace_with_hostage_role(self) -> None:
+        context_result = _raiktor_inbound_white_peace_context_result()
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        roles = context["roles"]
+        assert isinstance(roles, dict)
+        roles["secondary_actor_character_id"] = 40_001
+        war = {
+            **_war(
+                war_id=33_554_527,
+                allied_armies=[],
+                enemy_armies=[],
+                score=7,
+                player_side="attacker",
+            ),
+            "primary_opponent_character_id": 36_769,
+        }
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[war],
+            termination_options=[
+                _raiktor_inbound_white_peace_options(33_554_527)
+            ],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "raiktor_white_peace_hostage_or_intermediary_present",
+            plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_blocks_raiktor_white_peace_when_accept_is_illegal(
+        self,
+    ) -> None:
+        legality = {
+            "accept": {
+                "status": "available",
+                "allowed": False,
+                "reason": "native_reply_not_allowed",
+            },
+            "reject": {"status": "available", "allowed": True, "reason": None},
+            "block": {"status": "available", "allowed": True, "reason": None},
+            "acknowledge": {
+                "status": "available",
+                "allowed": False,
+                "reason": "normal_reply_channel",
+            },
+        }
+        war = {
+            **_war(
+                war_id=33_554_527,
+                allied_armies=[],
+                enemy_armies=[],
+                score=7,
+                player_side="attacker",
+            ),
+            "primary_opponent_character_id": 36_769,
+        }
+        plan = _plan_for_pending_context(
+            _raiktor_inbound_white_peace_context_result(legality=legality),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[war],
+            termination_options=[
+                _raiktor_inbound_white_peace_options(33_554_527)
+            ],
+        )
+
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "raiktor_white_peace_accept_not_native_legal",
             plan["decision"]["blocked_reasons"],
         )
 

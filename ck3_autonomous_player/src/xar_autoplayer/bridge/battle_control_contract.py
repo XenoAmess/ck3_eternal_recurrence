@@ -9,6 +9,10 @@ QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY = (
 QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX = (
     "query-battle-control-snapshot-v1-"
 )
+BATTLE_CONTROL_IDENTITY_PENDING_STATUS = "identity_pending"
+BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC = (
+    "active_combat_identity_subject_combat_id_invalid"
+)
 
 _SNAPSHOT_KEYS = {
     "schema_version",
@@ -227,7 +231,7 @@ def normalize_battle_control_snapshot_v1(
     ):
         raise ValueError("native battle_control_snapshot binding disagrees")
 
-    combat_id = _positive_int32(
+    combat_id = _full_component_id(
         value.get("combat_id"), "battle_control_snapshot.combat_id"
     )
     province_id = _positive_int32(
@@ -303,7 +307,7 @@ def normalize_battle_control_snapshot_v1(
     finalized = _strict_bool(
         value.get("finalized"), "battle_control_snapshot.finalized"
     )
-    battle_result_id = _optional_positive_int32(
+    battle_result_id = _optional_full_component_id(
         value.get("battle_result_id"),
         "battle_control_snapshot.battle_result_id",
     )
@@ -770,7 +774,7 @@ def _normalize_armies(
                 row.get("owner_character_id"),
                 f"{row_name}.owner_character_id",
             ),
-            "combat_backlink_id": _positive_int32(
+            "combat_backlink_id": _full_component_id(
                 row.get("combat_backlink_id"),
                 f"{row_name}.combat_backlink_id",
             ),
@@ -966,6 +970,13 @@ def _signed_int32(value: object, name: str) -> int:
     return value
 
 
+def _full_component_id(value: object, name: str) -> int:
+    result = _signed_int32(value, name)
+    if result == -1:
+        raise ValueError(f"{name} must not be the missing-ID sentinel")
+    return result
+
+
 def _signed_int64(value: object, name: str) -> int:
     if (
         isinstance(value, bool)
@@ -988,6 +999,10 @@ def _positive_uint64(value: object, name: str) -> int:
 
 def _optional_positive_int32(value: object, name: str) -> int | None:
     return None if value is None else _positive_int32(value, name)
+
+
+def _optional_full_component_id(value: object, name: str) -> int | None:
+    return None if value is None else _full_component_id(value, name)
 
 
 def _retreat_day_index(date_raw: int) -> int:

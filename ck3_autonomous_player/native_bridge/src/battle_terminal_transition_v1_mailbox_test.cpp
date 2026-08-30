@@ -119,6 +119,21 @@ bool TestParserAndSerializer() {
           "query-battle-terminal-transition-v1-5-3-0-extra", request)) {
     return false;
   }
+  if (!ParseBattleTerminalTransitionV1Step(
+          "query-battle-terminal-transition-v1--2147483647-3-42",
+          request) ||
+      request.prior_combat_id != -2'147'483'647 ||
+      request.subject_public_cunit_id != 3 ||
+      request.after_terminal_sequence != 42 ||
+      !ParseBattleTerminalTransitionV1Step(
+          "query-battle-terminal-transition-v1-0-3-0", request) ||
+      request.prior_combat_id != 0 ||
+      ParseBattleTerminalTransitionV1Step(
+          "query-battle-terminal-transition-v1--1-3-0", request) ||
+      ParseBattleTerminalTransitionV1Step(
+          "query-battle-terminal-transition-v1--01-3-0", request)) {
+    return false;
+  }
   std::uint64_t revision = 0;
   if (!ParseBattleTerminalTransitionExpectedRevisionV1(
           "{\"expected_revision\":9}", revision) || revision != 9) {
@@ -138,6 +153,18 @@ bool TestParserAndSerializer() {
           std::string::npos ||
       json.find("\"combat_backlink_id\":null") == std::string::npos ||
       json.find("\"attacker_primary_participant_character_id\":101") ==
+          std::string::npos) {
+    return false;
+  }
+  auto signed_complete = complete;
+  signed_complete.prior_combat_id = -2'147'483'647;
+  signed_complete.prior.combat_id = -2'147'483'647;
+  signed_complete.prior.battle_result_id = -2'046'820'351;
+  const auto signed_json =
+      SerializeBattleTerminalTransitionV1(signed_complete);
+  if (signed_json.find("\"prior_combat_id\":-2147483647") ==
+          std::string::npos ||
+      signed_json.find("\"battle_result_id\":-2046820351") ==
           std::string::npos) {
     return false;
   }
@@ -383,13 +410,16 @@ bool TestMailboxExecution() {
   g_snapshot.played_character_alive = true;
   g_snapshot.date_raw = 1234;
   g_native_result = CompleteResult();
+  g_native_result.prior_combat_id = -2'147'483'647;
+  g_native_result.prior.combat_id = -2'147'483'647;
+  g_native_result.prior.battle_result_id = -2'046'820'351;
   g_native_result.snapshot_revision = 0;
   MainThreadQueryMailboxV1 mailbox{};
   BattleTerminalTransitionMailboxContextV1 query{};
   query.mailbox = &mailbox;
   query.ticket.sequence = 1;
   query.bindings.enabled = true;
-  query.request.prior_combat_id = 5;
+  query.request.prior_combat_id = -2'147'483'647;
   query.request.subject_public_cunit_id = 3;
   query.expected_snapshot_revision = 9;
   query.expected_snapshot = g_snapshot;
@@ -414,7 +444,9 @@ bool TestMailboxExecution() {
          query.completion ==
              BattleTerminalTransitionMailboxCompletionV1::completed &&
          query.executor_invocations == 1 &&
-         query.result.snapshot_revision == 9 &&
+          query.result.snapshot_revision == 9 &&
+          query.result.prior_combat_id == -2'147'483'647 &&
+          query.result.prior.battle_result_id == -2'046'820'351 &&
          query.result.subject.combat_backlink_id == std::nullopt;
 }
 

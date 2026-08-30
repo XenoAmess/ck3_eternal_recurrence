@@ -266,6 +266,39 @@ int main() {
     return Fail("battle-control serializer omitted a frozen ABI field");
   }
 
+  // Full component IDs are signed dword bit patterns.  A generation byte
+  // with its high bit set is negative in JSON but remains a valid identity;
+  // only -1 denotes a missing ID.
+  constexpr std::int32_t signed_generation_combat_id = -2'130'706'429;
+  auto signed_combat = complete;
+  signed_combat.combat_id = signed_generation_combat_id;
+  signed_combat.attacker.ordered_armies[0].combat_backlink_id =
+      signed_generation_combat_id;
+  signed_combat.defender.ordered_armies[0].combat_backlink_id =
+      signed_generation_combat_id;
+  const auto signed_combat_encoded =
+      SerializeBattleControlSnapshotV1(signed_combat);
+  if (signed_combat_encoded.empty() ||
+      !Contains(signed_combat_encoded,
+                "\"combat_id\":-2130706429") ||
+      !Contains(signed_combat_encoded,
+                "\"combat_backlink_id\":-2130706429")) {
+    return Fail("battle-control serializer rejected a signed full CombatID");
+  }
+
+  constexpr std::int32_t signed_generation_battle_result_id = -2'130'706'431;
+  auto signed_battle_result = complete;
+  signed_battle_result.battle_result_id =
+      signed_generation_battle_result_id;
+  const auto signed_battle_result_encoded =
+      SerializeBattleControlSnapshotV1(signed_battle_result);
+  if (signed_battle_result_encoded.empty() ||
+      !Contains(signed_battle_result_encoded,
+                "\"battle_result_id\":-2130706431")) {
+    return Fail(
+        "battle-control serializer rejected a signed full BattleResultID");
+  }
+
   auto all_retreat_gates_closed = complete;
   all_retreat_gates_closed.side_flags.disallow_retreat = true;
   all_retreat_gates_closed.legality.native_boolean = false;

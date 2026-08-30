@@ -47,6 +47,12 @@ NATIVE_REVISION = 5
 DATE_RAW = 53_178_264
 STEP = f"query-battle-control-snapshot-v1-{SUBJECT}"
 TRANSIENT_QUERY_ERROR = "CK3 battle-control state changed during query"
+IDENTITY_PENDING_DIAGNOSTIC = (
+    "active_combat_identity_subject_combat_id_invalid"
+)
+IDENTITY_PENDING_QUERY_ERROR = (
+    f"{TRANSIENT_QUERY_ERROR} ({IDENTITY_PENDING_DIAGNOSTIC})"
+)
 
 
 def _army_identity(
@@ -326,6 +332,22 @@ def _battle_frame() -> dict[str, object]:
     }
 
 
+def _with_combat_id(
+    frame: dict[str, object], combat_id: int
+) -> dict[str, object]:
+    result = copy.deepcopy(frame)
+    result["combat_id"] = combat_id
+    for side_name in ("attacker", "defender"):
+        side = result[side_name]
+        assert isinstance(side, dict)
+        armies = side["ordered_armies"]
+        assert isinstance(armies, list)
+        for army in armies:
+            assert isinstance(army, dict)
+            army["combat_backlink_id"] = combat_id
+    return result
+
+
 def _native_result() -> dict[str, object]:
     return {
         "step": STEP,
@@ -573,14 +595,123 @@ class BattleControlStrategyTests(unittest.TestCase):
         frame: dict[str, object] | None,
         army_state: str = "combat",
         steps: tuple[str, ...] = (STEP, "life-advance"),
+        snapshot_overrides: dict[str, object] | None = None,
     ) -> dict[str, object]:
+        snapshot = _planner_battle_snapshot(
+            frame=frame,
+            army_state=army_state,
+        )
+        if isinstance(snapshot_overrides, dict):
+            snapshot.update(copy.deepcopy(snapshot_overrides))
         return choose_one_life_turn(
             history,
-            snapshot=_planner_battle_snapshot(
-                frame=frame,
-                army_state=army_state,
-            ),
+            snapshot=snapshot,
             action_steps=steps,
+        )
+
+    def test_identity_pending_allows_one_explicit_materialization_day(
+        self,
+    ) -> None:
+        pending = {
+            "battle_control_snapshot_v1": None,
+            "battle_control_snapshot_v1_status": "identity_pending",
+            "battle_control_snapshot_v1_query_sequence": None,
+            "battle_control_snapshot_v1_query_attempts": 3,
+            "battle_control_snapshot_v1_diagnostic_reason": (
+                IDENTITY_PENDING_DIAGNOSTIC
+            ),
+            "battle_control_snapshot_v1_native_query_status": "state_changed",
+            "battle_control_snapshot_v1_subject_army_id": SUBJECT,
+            "battle_control_snapshot_v1_queried_snapshot_id": (
+                f"native:{NATIVE_REVISION}"
+            ),
+            "battle_control_snapshot_v1_queried_revision": NATIVE_REVISION,
+            "battle_control_snapshot_v1_queried_native_revision": (
+                NATIVE_REVISION
+            ),
+        }
+
+        plan = self.plan([], frame=None, snapshot_overrides=pending)
+
+        self.assertEqual(
+            plan["phase"], "native_war_battle_identity_materialization"
+        )
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["next_revision_requirement"], "full_combat_id"
+        )
+
+    def test_identity_pending_after_materialization_stays_blocked(
+        self,
+    ) -> None:
+        pending = {
+            "battle_control_snapshot_v1": None,
+            "battle_control_snapshot_v1_status": "identity_pending",
+            "battle_control_snapshot_v1_query_sequence": None,
+            "battle_control_snapshot_v1_query_attempts": 3,
+            "battle_control_snapshot_v1_diagnostic_reason": (
+                IDENTITY_PENDING_DIAGNOSTIC
+            ),
+            "battle_control_snapshot_v1_native_query_status": "state_changed",
+            "battle_control_snapshot_v1_subject_army_id": SUBJECT,
+            "battle_control_snapshot_v1_queried_snapshot_id": (
+                f"native:{NATIVE_REVISION}"
+            ),
+            "battle_control_snapshot_v1_queried_revision": NATIVE_REVISION,
+            "battle_control_snapshot_v1_queried_native_revision": (
+                NATIVE_REVISION
+            ),
+        }
+        materialization = {
+            "index": 1,
+            "command": "life-advance",
+            "ok": True,
+            "result": {
+                "step": "life-advance",
+                "starting_date_raw": DATE_RAW - 24,
+                "ending_date_raw": DATE_RAW,
+                "elapsed_days": 1,
+                "timeline_speed": 1,
+                "timeline_policy": (
+                    "exact_one_day_battle_identity_materialization"
+                ),
+                "paused": True,
+                "battle_identity_materialization": {
+                    "schema_version": 1,
+                    "status": "one_day_advanced",
+                    "proof_kind": "battle_identity_materialization",
+                    "diagnostic_reason": IDENTITY_PENDING_DIAGNOSTIC,
+                    "subject_public_cunit_id": SUBJECT,
+                    "starting_snapshot_id": (
+                        f"native:{NATIVE_REVISION - 1}"
+                    ),
+                    "starting_revision": NATIVE_REVISION - 1,
+                    "starting_native_revision": NATIVE_REVISION - 1,
+                    "starting_date_raw": DATE_RAW - 24,
+                    "ending_snapshot_id": f"native:{NATIVE_REVISION}",
+                    "ending_revision": NATIVE_REVISION,
+                    "ending_native_revision": NATIVE_REVISION,
+                    "ending_date_raw": DATE_RAW,
+                    "elapsed_days": 1,
+                    "next_revision_requirement": "full_combat_id",
+                },
+            },
+        }
+
+        plan = self.plan(
+            [materialization],
+            frame=None,
+            snapshot_overrides=pending,
+        )
+
+        self.assertEqual(
+            plan["phase"],
+            "native_war_battle_identity_materialization_failed",
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["required_observation"],
+            "full-current-revision-CombatID",
         )
 
     def test_combat_queries_current_paused_subject_before_advancing(self) -> None:
@@ -2382,6 +2513,36 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             [357, 33_554_657],
         )
 
+    def test_signed_generation_combat_id_is_not_missing(self) -> None:
+        combat_id = -2_130_706_429
+        frame = _with_combat_id(_battle_frame(), combat_id)
+
+        normalized = self.normalize(frame)
+
+        self.assertEqual(normalized["combat_id"], combat_id)
+        for side_name in ("attacker", "defender"):
+            self.assertTrue(
+                all(
+                    army["combat_backlink_id"] == combat_id
+                    for army in normalized[side_name]["ordered_armies"]
+                )
+            )
+
+        missing = _with_combat_id(_battle_frame(), -1)
+        with self.assertRaisesRegex(ValueError, "missing-ID sentinel"):
+            self.normalize(missing)
+
+    def test_signed_generation_battle_result_id_is_not_missing(self) -> None:
+        frame = _battle_frame()
+        frame["battle_result_id"] = -2_130_706_431
+
+        normalized = self.normalize(frame)
+
+        self.assertEqual(normalized["battle_result_id"], -2_130_706_431)
+        frame["battle_result_id"] = -1
+        with self.assertRaisesRegex(ValueError, "missing-ID sentinel"):
+            self.normalize(frame)
+
     def test_available_legality_closes_all_four_gates_in_native_order(
         self,
     ) -> None:
@@ -2772,7 +2933,10 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
                         "protocol_version": 1,
                         "request_id": frame["request_id"],
                         "ok": False,
-                        "error": TRANSIENT_QUERY_ERROR,
+                        "error": (
+                            TRANSIENT_QUERY_ERROR
+                            + " (retreat_projection_failed)"
+                        ),
                     }
                 )
                 return
@@ -2829,6 +2993,57 @@ class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
             getattr(rejected.exception, "native_error", None),
             TRANSIENT_QUERY_ERROR,
         )
+
+    def test_persistent_identity_gap_becomes_same_frame_typed_pending(
+        self,
+    ) -> None:
+        driver, endpoint = _native_driver()
+        attempts = 0
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal attempts
+            if frame.get("type") != "execute_step":
+                return
+            attempts += 1
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": False,
+                    "error": IDENTITY_PENDING_QUERY_ERROR,
+                }
+            )
+
+        endpoint.send_hook = answer
+        revision = int(driver.take_snapshot()["revision"])
+
+        result = driver.execute_step(STEP, expected_revision=revision)
+
+        self.assertEqual(attempts, 3)
+        self.assertEqual(result["status"], "identity_pending")
+        self.assertEqual(result["native_query_status"], "state_changed")
+        self.assertEqual(result["diagnostic_reason"], IDENTITY_PENDING_DIAGNOSTIC)
+        self.assertEqual(result["query_attempts"], 3)
+        self.assertEqual(result["subject_public_cunit_id"], SUBJECT)
+        cached = driver.take_snapshot()
+        self.assertEqual(
+            cached["battle_control_snapshot_v1_status"], "identity_pending"
+        )
+        self.assertIsNone(cached["battle_control_snapshot_v1"])
+        self.assertEqual(
+            cached["battle_control_snapshot_v1_diagnostic_reason"],
+            IDENTITY_PENDING_DIAGNOSTIC,
+        )
+        self.assertEqual(
+            cached["battle_control_snapshot_v1_queried_native_revision"],
+            NATIVE_REVISION,
+        )
+
+        endpoint.publish(_semantic_snapshot(NATIVE_REVISION + 1))
+        advanced = driver.take_snapshot()
+        self.assertIsNone(advanced["battle_control_snapshot_v1_status"])
+        self.assertIsNone(advanced["battle_control_snapshot_v1"])
 
     def test_transient_query_error_does_not_retry_after_snapshot_drift(
         self,

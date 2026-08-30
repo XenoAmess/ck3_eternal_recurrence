@@ -1530,6 +1530,70 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertNotIn("interaction_result", blocker["result"])
         self.assertEqual(report["auto_run"]["turns"], [])
 
+    def test_raiktor_pending_accept_requires_bound_war_id_to_disappear(
+        self,
+    ) -> None:
+        war_id = 33_554_527
+        before = {
+            "_semantic": {
+                "pending_character_interaction": {
+                    "instance_id": _SIGNED_PENDING_ID,
+                    "sender_character_id": 36_769,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [{"war_id": war_id}],
+            }
+        }
+        result = {
+            "interaction_result": {
+                "status": "accepted",
+                "instance_id": _SIGNED_PENDING_ID,
+                "sender_character_id": 36_769,
+            },
+            "remaining_pending_character_interaction": None,
+            "paused": True,
+        }
+        plan = {
+            "decision": {
+                "rule_id": "raiktor-inbound-white-peace-v1",
+                "selected_action": "accept",
+                "raiktor_inbound_white_peace": {
+                    "status": "ready",
+                    "war_id": war_id,
+                },
+            }
+        }
+        evidence = ["pending_interaction_changed", "war_changed"]
+
+        self.assertTrue(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "accept-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot={
+                    "pending_character_interaction": None,
+                    "active_wars": [],
+                    "paused": True,
+                },
+                evidence=evidence,
+                plan=plan,
+            )
+        )
+        self.assertFalse(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "accept-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot={
+                    "pending_character_interaction": None,
+                    "active_wars": [{"war_id": war_id}],
+                    "paused": True,
+                },
+                evidence=["pending_interaction_changed"],
+                plan=plan,
+            )
+        )
+
     def test_white_peace_applied_preserves_bounded_semantic_evidence(
         self,
     ) -> None:

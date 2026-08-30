@@ -127,7 +127,7 @@ template <typename Callback> bool FaultBoundary(Callback &&callback) noexcept {
 
 void *ResolveStoredComponent(void **storage_slot, std::int32_t component_id,
                              std::size_t id_offset) noexcept {
-  if (storage_slot == nullptr || component_id <= 0) {
+  if (storage_slot == nullptr || component_id == -1) {
     return nullptr;
   }
   void *const storage = *storage_slot;
@@ -188,9 +188,6 @@ bool ReadArmyFingerprint(const Bindings &bindings, std::int32_t army_id,
   }
   output.combat_id =
       LoadAt<std::int32_t>(internal_army, kInternalArmyCombatIdOffset);
-  if (output.combat_id == 0 || output.combat_id < -1) {
-    return false;
-  }
   output.retreating =
       LoadAt<std::int32_t>(unit, kPublicCunitRetreatStateOffset) > 0;
   return true;
@@ -613,7 +610,7 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
         return false;
       }
       const auto combat_id = payload.armies[index].combat_id;
-      if (combat_id <= 0) {
+      if (combat_id == -1) {
         continue;
       }
       const auto existing =

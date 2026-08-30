@@ -628,6 +628,7 @@ def native_auto_run(
                     before=before,
                     after_snapshot=after_snapshot,
                     evidence=evidence,
+                    plan=plan,
                 ):
                     capture_first_failure(
                         stage="postcondition",
@@ -2163,6 +2164,7 @@ def _pending_interaction_lifecycle_verified(
     before: dict[str, object],
     after_snapshot: dict[str, object],
     evidence: list[str],
+    plan: object = None,
 ) -> bool:
     """Require the typed reply result and the same old full-ID transition."""
 
@@ -2172,6 +2174,11 @@ def _pending_interaction_lifecycle_verified(
     before_semantic = before.get("_semantic")
     before_pending = (
         before_semantic.get("pending_character_interaction")
+        if isinstance(before_semantic, dict)
+        else None
+    )
+    before_wars = (
+        before_semantic.get("active_wars")
         if isinstance(before_semantic, dict)
         else None
     )
@@ -2197,7 +2204,7 @@ def _pending_interaction_lifecycle_verified(
         if isinstance(after_pending, dict)
         else None
     )
-    return bool(
+    ordinary_lifecycle_verified = bool(
         "pending_interaction_changed" in evidence
         and _valid_pending_interaction_id(old_instance_id)
         and isinstance(interaction_result, dict)
@@ -2211,6 +2218,43 @@ def _pending_interaction_lifecycle_verified(
         and _semantic_digest(remaining) == _semantic_digest(after_pending)
         and result.get("paused") is True
         and after_snapshot.get("paused") is True
+    )
+    if not ordinary_lifecycle_verified:
+        return False
+
+    decision = plan.get("decision") if isinstance(plan, dict) else None
+    assessment = (
+        decision.get("raiktor_inbound_white_peace")
+        if isinstance(decision, dict)
+        else None
+    )
+    if not (
+        isinstance(decision, dict)
+        and decision.get("rule_id") == "raiktor-inbound-white-peace-v1"
+        and decision.get("selected_action") == "accept"
+    ):
+        return True
+    war_id = assessment.get("war_id") if isinstance(assessment, dict) else None
+    if (
+        isinstance(war_id, bool)
+        or not isinstance(war_id, int)
+        or war_id <= 0
+        or not isinstance(before_wars, list)
+    ):
+        return False
+    after_wars = after_snapshot.get("active_wars")
+    return bool(
+        assessment.get("status") == "ready"
+        and "war_changed" in evidence
+        and any(
+            isinstance(war, dict) and war.get("war_id") == war_id
+            for war in before_wars
+        )
+        and isinstance(after_wars, list)
+        and not any(
+            isinstance(war, dict) and war.get("war_id") == war_id
+            for war in after_wars
+        )
     )
 
 

@@ -5189,10 +5189,19 @@ void RunConnectedSession(
                     }
                   }
                   if (response.empty()) {
-                    const auto error = xar::ck3_11906::
+                    const auto failure = xar::ck3_11906::
                         BattleControlSnapshotFailureMessageV1(
                             wait, query.completion, query.result.status,
                             completion_snapshot_stable);
+                    std::string error(failure);
+                    if (query.result.status == xar::game::
+                                                   BattleControlSnapshotStatus::
+                                                       state_changed &&
+                        !query.result.diagnostic_reason.empty()) {
+                      error += " (";
+                      error += query.result.diagnostic_reason;
+                      error += ")";
+                    }
                     response =
                         CommandResultFrame(request_id, step, false, error);
                   }

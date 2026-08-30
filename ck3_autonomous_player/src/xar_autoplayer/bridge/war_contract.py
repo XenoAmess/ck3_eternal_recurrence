@@ -1031,13 +1031,15 @@ def stationary_province_contact_free_in_horizon(
 def unavoidable_current_province_contact_in_horizon(
     value: object,
 ) -> bool:
-    """Recognize the narrow one-day contact transition that rerouting cannot beat.
+    """Recognize a proof-bound one-day current-Province contact transition.
 
-    This is deliberately stricter than ``one_day_contact_free is False``.  It
-    only accepts a moving subject whose first timed arrival is after the closed
-    one-day window and whose complete conflict set consists of same-Province
-    overlaps at the subject's current Province.  In that shape a new target
-    cannot move the army off its already committed edge before contact.
+    This is deliberately stricter than ``one_day_contact_free is False``.  A
+    moving subject is accepted only when its first timed arrival is after the
+    closed one-day window.  A stationary subject is accepted only for the
+    explicit ``target == current`` hold shape with empty route/timeline.  In
+    both cases every conflict must be a same-Province overlap at the subject's
+    current Province.  The planner must still exhaust alternate exact
+    objectives before choosing the stationary hold transition.
     """
     if not isinstance(value, dict):
         return False
@@ -1065,13 +1067,24 @@ def unavoidable_current_province_contact_in_horizon(
         or not isinstance(current_province_id, int)
         or current_province_id <= 0
         or not isinstance(route, list)
-        or not route
         or not isinstance(arrivals, list)
         or len(arrivals) != len(route)
-        or isinstance(arrivals[0], bool)
-        or not isinstance(arrivals[0], int)
-        or arrivals[0] <= horizon_end
     ):
+        return False
+    moving_edge_cannot_clear = bool(
+        route
+        and not isinstance(arrivals[0], bool)
+        and isinstance(arrivals[0], int)
+        and arrivals[0] > horizon_end
+    )
+    stationary_hold = bool(
+        not route
+        and not arrivals
+        and value.get("target_province_id") == current_province_id
+        and subject_route.get("effective_origin_province_id")
+        == current_province_id
+    )
+    if not (moving_edge_cannot_clear or stationary_hold):
         return False
     return all(
         isinstance(conflict, dict)

@@ -5304,12 +5304,6 @@ bool AppendOngoingCombat(const Bindings &bindings, void *game_state,
     return true;
   }
   OngoingCombatInputsSnapshot row{};
-  if (combat_id < 0) {
-    row.unavailable_reason = "combat_id_invalid";
-    has_unavailable_subdomain = true;
-    output.push_back(std::move(row));
-    return true;
-  }
   const auto existing = std::find_if(
       output.begin(), output.end(), [combat_id](const auto &candidate) {
         return candidate.combat_id_observable &&
@@ -8111,6 +8105,26 @@ RouteContactHorizonStatus BuildSubjectRouteTimeline(
     return RouteContactHorizonStatus::target_province_not_found;
   }
 
+  // A stationary hold is already an exact active-path observation; asking
+  // CK3 to construct a move back to the current Province can reject before
+  // the timeline code even though the wire contract can represent the hold.
+  // Reuse the same generation/current-Province/path-header validation used
+  // for hostile active timelines, but only for a fully observed ordinary
+  // stationary subject.  Combat, retreat, unknown-target and other states
+  // retain their existing fail-closed route-construction path.
+  const bool stationary_same_current =
+      selected->route_province_ids.empty() &&
+      selected->move_target_province_id <= 0 && !selected->in_combat &&
+      !selected->retreating &&
+      (selected->army_state == "regular" || selected->army_state == "sieging") &&
+      selected->current_province_id == request.target_province_id;
+  if (stationary_same_current) {
+    return BuildActiveRouteTimeline(bindings, game_state, snapshot.date_raw,
+                                    *selected, output)
+               ? RouteContactHorizonStatus::available
+               : RouteContactHorizonStatus::timeline_unavailable;
+  }
+
   // Re-querying the already committed target must project the exact stored
   // active MovePath.  Re-running A* could produce a different equal-cost tail
   // and would no longer prove the route the simulation is actually following.
@@ -8477,7 +8491,8 @@ namespace {
 bool ReadContactIdArray(const void *owner, std::size_t data_offset,
                         std::size_t count_offset, std::int32_t maximum,
                         std::vector<std::int32_t> &output,
-                        bool require_strictly_sorted) {
+                        bool require_strictly_sorted,
+                        bool allow_signed_full_ids = false) {
   output.clear();
   void *const data = LoadAt<void *>(owner, data_offset);
   const auto count = LoadAt<std::int32_t>(owner, count_offset);
@@ -8488,9 +8503,15 @@ bool ReadContactIdArray(const void *owner, std::size_t data_offset,
   for (std::int32_t index = 0; index < count; ++index) {
     const auto id = LoadAt<std::int32_t>(
         data, static_cast<std::size_t>(index) * sizeof(std::int32_t));
-    if (id <= 0 ||
-        (require_strictly_sorted && !output.empty() &&
-         output.back() >= id)) {
+    const bool id_invalid = allow_signed_full_ids ? id == -1 : id <= 0;
+    const bool order_invalid =
+        require_strictly_sorted && !output.empty() &&
+        (allow_signed_full_ids
+             ? static_cast<std::uint32_t>(output.back()) >=
+                   static_cast<std::uint32_t>(id)
+             : output.back() >= id);
+    if (id_invalid ||
+        order_invalid) {
       output.clear();
       return false;
     }
@@ -8616,64 +8637,85 @@ bool ReadActiveCombatIdentityV1(
     const Bindings &bindings, void *game_state, void *subject_unit,
     void *subject_native_army, void *expected_province,
     std::int32_t expected_subject_public_cunit_id, bool require_not_finalized,
-    ActiveCombatIdentityV1 &output) noexcept {
+    ActiveCombatIdentityV1 &output,
+    std::string_view *diagnostic_reason = nullptr) noexcept {
   output = {};
+  if (diagnostic_reason != nullptr) {
+    *diagnostic_reason = {};
+  }
+  const auto fail = [diagnostic_reason](std::string_view reason) noexcept {
+    if (diagnostic_reason != nullptr) {
+      *diagnostic_reason = reason;
+    }
+    return false;
+  };
   const auto combat_id = LoadAt<std::int32_t>(
       subject_native_army, kInternalArmyCombatIdOffset);
-  if (combat_id <= 0) {
-    return false;
+  // CK3 component IDs are signed int32 bit patterns.  Generation byte 0x80+
+  // therefore produces a negative, but still generation-valid, full ID.
+  // The exact native resolver at 0x22771F0 masks the low 24-bit slot index
+  // and compares the complete dword; only -1 is the missing-ID sentinel.
+  if (combat_id == -1) {
+    return fail("active_combat_identity_subject_combat_id_invalid");
   }
   void *const combat = ResolveStoredComponent(
       bindings.combat_storage_slot, combat_id, kCombatIdOffset);
   if (combat == nullptr) {
-    return false;
+    return fail("active_combat_identity_combat_resolution_failed");
   }
   const bool finalized =
       LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset) != 0;
   if (require_not_finalized && finalized) {
-    return false;
+    return fail("active_combat_identity_combat_finalized");
   }
   void *const actual_province =
       LoadAt<void *>(combat, kCombatProvinceOffset);
   if (actual_province == nullptr || actual_province != expected_province ||
       LoadAt<void *>(subject_unit, kArmyCurrentProvinceOffset) !=
           actual_province) {
-    return false;
+    return fail("active_combat_identity_combat_province_mismatch");
   }
   const auto province_id =
       LoadAt<std::int32_t>(actual_province, kProvinceIdOffset);
   if (province_id <= 0 ||
       ResolveProvince(game_state, province_id) != actual_province) {
-    return false;
+    return fail("active_combat_identity_province_resolution_failed");
   }
   if (!ReadContactIdArray(
           actual_province, kProvinceUnitIdsOffset,
           kProvinceUnitIdCountOffset, kMaximumActualContactProvinceUnits,
-          output.province_public_cunit_ids, true) ||
-      !ReadContactIdArray(
+          output.province_public_cunit_ids, true)) {
+    return fail("active_combat_identity_province_unit_ids_failed");
+  }
+  if (!ReadContactIdArray(
           actual_province, kProvinceCombatIdsOffset,
           kProvinceCombatIdCountOffset,
           kMaximumActualContactProvinceCombats,
-          output.province_combat_ids, true) ||
-      !std::binary_search(output.province_public_cunit_ids.begin(),
+          output.province_combat_ids, true, true)) {
+    return fail("active_combat_identity_province_combat_ids_failed");
+  }
+  if (!std::binary_search(output.province_public_cunit_ids.begin(),
                           output.province_public_cunit_ids.end(),
                           expected_subject_public_cunit_id)) {
-    return false;
+    return fail("active_combat_identity_subject_absent_from_province");
   }
-  const auto selected = std::lower_bound(output.province_combat_ids.begin(),
-                                         output.province_combat_ids.end(),
-                                         combat_id);
-  if (selected == output.province_combat_ids.end() ||
-      *selected != combat_id ||
-      !ReadActiveCombatSideIds(
+  const auto selected = std::find(output.province_combat_ids.begin(),
+                                  output.province_combat_ids.end(),
+                                  combat_id);
+  if (selected == output.province_combat_ids.end() || *selected != combat_id) {
+    return fail("active_combat_identity_combat_absent_from_province");
+  }
+  if (!ReadActiveCombatSideIds(
           bindings, combat, kCombatAttackerSideOffset, combat_id,
           output.attacker_native_carmy_ids,
-          output.attacker_public_cunit_ids) ||
-      !ReadActiveCombatSideIds(
+          output.attacker_public_cunit_ids)) {
+    return fail("active_combat_identity_attacker_side_ids_failed");
+  }
+  if (!ReadActiveCombatSideIds(
           bindings, combat, kCombatDefenderSideOffset, combat_id,
           output.defender_native_carmy_ids,
           output.defender_public_cunit_ids)) {
-    return false;
+    return fail("active_combat_identity_defender_side_ids_failed");
   }
   const auto attacker_subject_count = static_cast<std::size_t>(std::count(
       output.attacker_public_cunit_ids.begin(),
@@ -8684,20 +8726,22 @@ bool ReadActiveCombatIdentityV1(
       output.defender_public_cunit_ids.end(),
       expected_subject_public_cunit_id));
   if (attacker_subject_count + defender_subject_count != 1) {
-    return false;
+    return fail("active_combat_identity_subject_side_membership_invalid");
   }
   for (const auto attacker_id : output.attacker_public_cunit_ids) {
     if (std::find(output.defender_public_cunit_ids.begin(),
                   output.defender_public_cunit_ids.end(), attacker_id) !=
         output.defender_public_cunit_ids.end()) {
-      return false;
+      return fail("active_combat_identity_cross_side_duplicate");
     }
   }
   if (ResolveStoredComponent(bindings.combat_storage_slot, combat_id,
-                             kCombatIdOffset) != combat ||
-      LoadAt<std::int32_t>(subject_native_army,
+                             kCombatIdOffset) != combat) {
+    return fail("active_combat_identity_combat_reread_failed");
+  }
+  if (LoadAt<std::int32_t>(subject_native_army,
                            kInternalArmyCombatIdOffset) != combat_id) {
-    return false;
+    return fail("active_combat_identity_subject_combat_backlink_changed");
   }
   output.combat_id = combat_id;
   output.province_id = province_id;
@@ -10280,15 +10324,16 @@ bool ReadActiveCombatRetreatProjection(
 
   // The exact native helper falls back for any BattleResult resolution
   // failure.  BattleControl deliberately keeps its stronger full-generation
-  // identity gate for a positive ID; only the native legal missing sentinel
-  // (-1) reaches the fallback object in this same-frame projection.
+  // identity gate for every full ID; only the native legal missing sentinel
+  // (-1) reaches the fallback object in this same-frame projection.  Full
+  // component IDs are signed bit patterns, so a negative generation is not
+  // a resolution failure by itself.
   void *baseline_battle_result = nullptr;
-  if (battle.battle_result_id > 0) {
+  if (battle.battle_result_id != -1) {
     baseline_battle_result = ResolveStoredComponent(
         bindings.battle_result_storage_slot, battle.battle_result_id,
         kBattleResultIdOffset);
-  } else if (battle.battle_result_id == -1 &&
-             bindings.battle_result_fallback_slot != nullptr) {
+  } else if (bindings.battle_result_fallback_slot != nullptr) {
     baseline_battle_result = *bindings.battle_result_fallback_slot;
   }
   if (baseline_battle_result == nullptr ||
@@ -10409,6 +10454,7 @@ bool ReadBattleControlSnapshotSample(
     const Bindings &bindings, const game::BattleControlRequest &request,
     game::BattleControlSnapshot &output) noexcept {
   output = {};
+  output.diagnostic_reason = "sample_started";
   output.subject_public_cunit_id = request.subject_public_cunit_id;
   void *const game_state = *bindings.game_state_slot;
   output.observed_date_raw =
@@ -10417,6 +10463,7 @@ bool ReadBattleControlSnapshotSample(
       bindings.army_storage_slot, request.subject_public_cunit_id,
       kArmyIdOffset);
   if (subject_unit == nullptr) {
+    output.diagnostic_reason = "subject_cunit_resolution_failed";
     return false;
   }
   output.subject_native_carmy_id =
@@ -10426,17 +10473,33 @@ bool ReadBattleControlSnapshotSample(
       output.subject_native_carmy_id, kInternalArmyIdOffset);
   void *const province =
       LoadAt<void *>(subject_unit, kArmyCurrentProvinceOffset);
-  if (subject_native_army == nullptr || province == nullptr ||
-      LoadAt<std::int32_t>(subject_native_army,
+  if (subject_native_army == nullptr) {
+    output.diagnostic_reason = "subject_carmy_resolution_failed";
+    return false;
+  }
+  if (province == nullptr) {
+    output.diagnostic_reason = "subject_province_resolution_failed";
+    return false;
+  }
+  if (LoadAt<std::int32_t>(subject_native_army,
                            kInternalArmyUnitIdOffset) !=
-          request.subject_public_cunit_id ||
-      !bindings.is_army_in_combat(subject_native_army)) {
+      request.subject_public_cunit_id) {
+    output.diagnostic_reason = "subject_cunit_carmy_backlink_mismatch";
+    return false;
+  }
+  if (!bindings.is_army_in_combat(subject_native_army)) {
+    output.diagnostic_reason = "subject_active_combat_predicate_failed";
     return false;
   }
   ActiveCombatIdentityV1 identity{};
+  std::string_view identity_diagnostic_reason;
   if (!ReadActiveCombatIdentityV1(
           bindings, game_state, subject_unit, subject_native_army, province,
-          request.subject_public_cunit_id, false, identity)) {
+          request.subject_public_cunit_id, false, identity,
+          &identity_diagnostic_reason)) {
+    output.diagnostic_reason = identity_diagnostic_reason.empty()
+                                   ? "active_combat_identity_failed"
+                                   : identity_diagnostic_reason;
     return false;
   }
   output.combat_id = identity.combat_id;
@@ -10444,9 +10507,13 @@ bool ReadBattleControlSnapshotSample(
   output.finalized = identity.finalized;
   void *const combat = ResolveStoredComponent(
       bindings.combat_storage_slot, output.combat_id, kCombatIdOffset);
-  if (combat == nullptr ||
-      LoadAt<std::uint8_t>(combat,
+  if (combat == nullptr) {
+    output.diagnostic_reason = "combat_resolution_failed";
+    return false;
+  }
+  if (LoadAt<std::uint8_t>(combat,
                            kCombatDailyDispatchInProgressOffset) != 0) {
+    output.diagnostic_reason = "combat_daily_dispatch_in_progress";
     return false;
   }
   output.phase_raw =
@@ -10466,6 +10533,7 @@ bool ReadBattleControlSnapshotSample(
   if (phase.empty() || winner.empty() || forced_winner.empty() ||
       output.phase_day < 0 || finalized_raw > 1 ||
       (finalized_raw != 0) != output.finalized) {
+    output.diagnostic_reason = "combat_scalar_domain_invalid";
     return false;
   }
   output.phase = std::string(phase);
@@ -10474,10 +10542,10 @@ bool ReadBattleControlSnapshotSample(
   output.battle_result_id =
       LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
   if (output.battle_result_id != -1 &&
-      (output.battle_result_id <= 0 ||
-       ResolveStoredComponent(bindings.battle_result_storage_slot,
-                              output.battle_result_id,
-                              kBattleResultIdOffset) == nullptr)) {
+      ResolveStoredComponent(bindings.battle_result_storage_slot,
+                             output.battle_result_id,
+                             kBattleResultIdOffset) == nullptr) {
+    output.diagnostic_reason = "battle_result_resolution_failed";
     return false;
   }
   output.base_combat_width =
@@ -10490,37 +10558,62 @@ bool ReadBattleControlSnapshotSample(
       LoadAt<std::int64_t>(combat, kCombatBaseAdvantageOffset);
   output.resolved_advantage_raw =
       LoadAt<std::int64_t>(combat, kCombatResolvedAdvantageOffset);
-  if (output.base_combat_width < 0 || output.final_combat_width < 0 ||
-      !ReadBattleControlSide(
+  if (output.base_combat_width < 0 || output.final_combat_width < 0) {
+    output.diagnostic_reason = "combat_width_domain_invalid";
+    return false;
+  }
+  if (!ReadBattleControlSide(
           bindings, combat, kCombatAttackerSideOffset, 0, "attacker",
           output.combat_id, identity.attacker_native_carmy_ids,
           identity.attacker_public_cunit_ids,
           LoadAt<std::int32_t>(combat, kCombatSide0RollOffset),
-          output.attacker) ||
-      !ReadBattleControlSide(
+          output.attacker)) {
+    output.diagnostic_reason = "attacker_side_projection_failed";
+    return false;
+  }
+  if (!ReadBattleControlSide(
           bindings, combat, kCombatDefenderSideOffset, 1, "defender",
           output.combat_id, identity.defender_native_carmy_ids,
           identity.defender_public_cunit_ids,
           LoadAt<std::int32_t>(combat, kCombatSide1RollOffset),
-          output.defender) ||
-      !ReadActiveCombatRetreatProjection(
+          output.defender)) {
+    output.diagnostic_reason = "defender_side_projection_failed";
+    return false;
+  }
+  if (!ReadActiveCombatRetreatProjection(
           bindings, game_state, combat, subject_unit, subject_native_army,
           output, output)) {
+    output.diagnostic_reason = "retreat_projection_failed";
     return false;
   }
   ActiveCombatIdentityV1 identity_after{};
   if (LoadAt<std::uint8_t>(combat,
-                           kCombatDailyDispatchInProgressOffset) != 0 ||
-      ResolveStoredComponent(bindings.combat_storage_slot,
-                             output.combat_id, kCombatIdOffset) != combat ||
-      !ReadActiveCombatIdentityV1(
+                           kCombatDailyDispatchInProgressOffset) != 0) {
+    output.diagnostic_reason = "combat_dispatch_changed_after_projection";
+    return false;
+  }
+  if (ResolveStoredComponent(bindings.combat_storage_slot,
+                             output.combat_id, kCombatIdOffset) != combat) {
+    output.diagnostic_reason = "combat_identity_changed_after_projection";
+    return false;
+  }
+  identity_diagnostic_reason = {};
+  if (!ReadActiveCombatIdentityV1(
           bindings, game_state, subject_unit, subject_native_army, province,
-          request.subject_public_cunit_id, false, identity_after) ||
-      identity_after != identity) {
+          request.subject_public_cunit_id, false, identity_after,
+          &identity_diagnostic_reason)) {
+    output.diagnostic_reason = identity_diagnostic_reason.empty()
+                                   ? "active_combat_identity_reread_failed"
+                                   : identity_diagnostic_reason;
+    return false;
+  }
+  if (identity_after != identity) {
+    output.diagnostic_reason = "active_combat_identity_changed";
     return false;
   }
   output.status = game::BattleControlSnapshotStatus::available;
   output.battle_control_ready = true;
+  output.diagnostic_reason.clear();
   return true;
 }
 
@@ -10632,10 +10725,9 @@ game::BattleTransitionSnapshotStatus ReadBattleTransitionSnapshotSample(
       phase.empty() || winner.empty() || forced_winner.empty() ||
       output.phase_day < 0 || finalized_raw > 1 ||
       (output.battle_result_id != -1 &&
-       (output.battle_result_id <= 0 ||
-        ResolveStoredComponent(bindings.battle_result_storage_slot,
-                               output.battle_result_id,
-                               kBattleResultIdOffset) == nullptr)) ||
+       ResolveStoredComponent(bindings.battle_result_storage_slot,
+                              output.battle_result_id,
+                              kBattleResultIdOffset) == nullptr) ||
       !ReadBattleTransitionSidePublicIds(
           bindings, combat, kCombatAttackerSideOffset,
           request.combat_id,
@@ -10720,7 +10812,7 @@ void PopulateTerminalPriorFromEventV1(
   output.finalized_before = event.finalized_before;
   output.daily_guard_raw = event.daily_guard_raw;
   output.province_id = event.province_id;
-  if (event.battle_result_id > 0) {
+  if (event.battle_result_id != -1) {
     output.battle_result_id = event.battle_result_id;
   }
   if (event.wipe_raw_observable) {
@@ -10770,7 +10862,7 @@ bool PopulateTerminalPriorFromActiveCombatV1(
   output.province_id = province_id;
   const auto result_id =
       LoadAt<std::int32_t>(combat, kCombatBattleResultIdOffset);
-  if (result_id > 0) {
+  if (result_id != -1) {
     void *const result = ResolveStoredComponent(
         bindings.battle_result_storage_slot, result_id,
         kBattleResultIdOffset);
@@ -10780,8 +10872,6 @@ bool PopulateTerminalPriorFromActiveCombatV1(
     output.battle_result_id = result_id;
     output.wipe_raw =
         LoadAt<std::uint8_t>(result, kBattleResultReadyOffset) != 0;
-  } else if (result_id != -1) {
-    return false;
   }
   output.attacker_primary_participant_character_id =
       LoadAt<std::int32_t>(
@@ -11017,13 +11107,8 @@ bool ReadTerminalSubjectV1(
     output.native_carmy_id = native_carmy_id;
     const auto combat_id = LoadAt<std::int32_t>(
         native_army, kInternalArmyCombatIdOffset);
-    if (combat_id != -1 && combat_id <= 0) {
-      return false;
-    }
-    if (combat_id > 0) {
+    if (combat_id != -1) {
       output.combat_backlink_id = combat_id;
-    }
-    if (combat_id > 0) {
       void *const combat = ResolveStoredComponent(
           bindings.combat_storage_slot, combat_id, kCombatIdOffset);
       if (combat != nullptr &&
@@ -11075,7 +11160,7 @@ bool ReadTerminalProvinceMembershipV1(
     if (!ReadContactIdArray(
             prior_province, kProvinceCombatIdsOffset,
             kProvinceCombatIdCountOffset,
-            kMaximumActualContactProvinceCombats, combat_ids, false)) {
+            kMaximumActualContactProvinceCombats, combat_ids, false, true)) {
       return false;
     }
     output.prior_province_contains_prior_combat_id =
@@ -11126,7 +11211,7 @@ bool ReadTerminalSuccessorV1(
             prior_province, kProvinceCombatIdsOffset,
             kProvinceCombatIdCountOffset,
             kMaximumActualContactProvinceCombats, province_combat_ids,
-            false)) {
+            false, true)) {
       return false;
     }
     for (const auto combat_id : province_combat_ids) {
@@ -11452,10 +11537,33 @@ BattleControlSnapshotStatus ReadBattleControlSnapshot(
   game::BattleControlSnapshot first{};
   game::BattleControlSnapshot second{};
   Snapshot after{};
-  if (!ReadBattleControlSnapshotSample(bindings, request, first) ||
-      !ReadBattleControlSnapshotSample(bindings, request, second) ||
-      first != second || !ReadSnapshot(bindings, after) || before != after) {
+  if (!ReadBattleControlSnapshotSample(bindings, request, first)) {
+    output = std::move(first);
     output.status = BattleControlSnapshotStatus::state_changed;
+    output.battle_control_ready = false;
+    return output.status;
+  }
+  if (!ReadBattleControlSnapshotSample(bindings, request, second)) {
+    output = std::move(second);
+    output.status = BattleControlSnapshotStatus::state_changed;
+    output.battle_control_ready = false;
+    return output.status;
+  }
+  if (first != second) {
+    output = std::move(second);
+    output.status = BattleControlSnapshotStatus::state_changed;
+    output.battle_control_ready = false;
+    output.diagnostic_reason = "double_sample_mismatch";
+    return output.status;
+  }
+  if (!ReadSnapshot(bindings, after)) {
+    output.status = BattleControlSnapshotStatus::state_changed;
+    output.diagnostic_reason = "ending_world_snapshot_unavailable";
+    return output.status;
+  }
+  if (before != after) {
+    output.status = BattleControlSnapshotStatus::state_changed;
+    output.diagnostic_reason = "world_snapshot_changed";
     return output.status;
   }
   output = std::move(second);
@@ -11476,7 +11584,7 @@ BattleTransitionSnapshotStatus ReadBattleTransitionSnapshot(
       bindings.army_storage_slot == nullptr ||
       bindings.army_internal_storage_slot == nullptr ||
       bindings.battle_result_storage_slot == nullptr ||
-      request.combat_id <= 0) {
+      request.combat_id == -1) {
     output.status = BattleTransitionSnapshotStatus::unavailable;
     return output.status;
   }
@@ -11543,9 +11651,9 @@ BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
       bindings.army_storage_slot == nullptr ||
       bindings.army_internal_storage_slot == nullptr ||
       bindings.battle_result_storage_slot == nullptr ||
-      request.prior_combat_id <= 0 ||
+      request.prior_combat_id == -1 ||
       request.subject_public_cunit_id <= 0) {
-    return unavailable(request.prior_combat_id <= 0 ||
+    return unavailable(request.prior_combat_id == -1 ||
                                request.subject_public_cunit_id <= 0
                            ? "invalid_request"
                            : "unsupported_build");

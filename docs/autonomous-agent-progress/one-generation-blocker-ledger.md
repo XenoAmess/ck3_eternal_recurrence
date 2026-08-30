@@ -16,6 +16,8 @@
 report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。下表保留全部历史 RED 与能力债；GEN-001/006
 现已关闭。G2 前探关闭 GEN-032 后，严格 runner 又以三次独立 attempt 完成 GEN-009；其中 capability RED 与 harness RED 均保留，
 最终 GREEN 已实走 `start-next-episode`、新 run ID、新 episode gameplay 与 durable checkpoint。
+截至 2026-08-31，第二角色已继续到 `date_raw=53292072 / history=2103`；signed battle identity 的真实 blocker 已闭合，
+但第二角色仍存活，完整第二寿命与结算仍未完成。
 
 ## 分级
 
@@ -63,6 +65,7 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 | GEN-030 | B1 harness | player decision 与 native sentinel 在 deadline 同日转移状态时仍盲目 cancel | 历史 RED `cbbd3fab` 在 `53278752` 同时观察 event 51 与七日 deadline。`9186bfa3` 的 turn 8 精确重现同日边界：generation 2 为正常 `triggered`，`date_deadline / ticks=7 / intermediate pause=0 / overshoot=0`；composite 没有 cancel，返回 `player_decision`，随后 query 并选择 event option 1，旧 event 消失且日期不变 | 已满足：同代 armed 走 cancel→idle；同代正常 triggered 保留完整 stop 证明后免 cancel；failed/无证明 idle 仍拒绝；事件优先级与战争策略均未改变 | 2026-08-28 resolved；exact same-day blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-031 | B1 native capability | war-termination options query 未绑定已发布 paused revision | 历史 RED `33876238` 在 `53278752 / native:25 / revision=26` 的第二个 WarID query 发生 row mismatch。`fc0f878` 让 native handler 消费 expected revision，并在 admission/completion 进行完整 snapshot sandwich；只在稳定成功后推进 query sequence。Python 只把明确 stale/admission-changed/completion-changed 的零写入拒绝映射为既有一次 whole-turn replan，真实四字段 mismatch 继续硬 RED并留最小 diff | `9186bfa3` turn 11/12 已在同一 paused native revision 26 连续成功查询 WarID `83886203 / 134217852`，跨过原失败边界；后续查询至 turn 20 持续成功，cleanup 全绿 | 2026-08-28 resolved；`fc0f878` blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | 三次早期 attempt 先关闭 terminal 识别与日期漂移；formal G2 attempt 01 又证明同一 bound episode 的 terminal surface 在 pause 服务期间可从死亡角色演化为继承人。最终合同只固定 bridge/connection/episode owner；played-character、alive 与 `dead→changed` terminal reason 可单调演化。event/pending interaction 的 exact identity 不变 | formal G2 attempt 03 已在相同生产边界返回 `death-terminal`，随后继续完成 GEN-009；driver 回归 `196 passed + 212 subtests`，相关聚合 `468 passed + 287 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；边界由 G2 live 再校准 |
+| GEN-033 | B1（G2） | 新接触战斗的 full CombatID/BattleResultID 为负，被旧 consumer 当成未物化 | attempts 08/09 在 `53291904` 分别报 `active_combat_identity_failed` / `subject_combat_id_invalid`；attempt10 唯一一次 `+24h` 后仍因“缺 positive CombatID”停止。exact-build 证明两类 ID 均为 opaque signed full dword、low24 仅选槽、`-1` 唯一 missing。attempt11 先穿过 CombatID 后暴露 BattleResultID，同一修复后 attempt12 双查询稳定读到 `-2147483647 / -2046820351` | signed identity 原样贯穿 reader、wire、contracts、planner literal、battle action/transition/terminal journal 与 sentinel；同 checkpoint 做真实 action 后 paused requery 并保存 durable checkpoint | 2026-08-31 resolved；attempt16 production-live loop slice，完整 G2 第二寿命仍进行中 |
 
 ## Degraded heuristic 纪律
 
@@ -612,4 +615,36 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 - 最新 checkpoint 为 `53258328 / history=5207 / size=87715536 / SHA-256
   5AFCE04F64960FF4491CCE4FD2DC6F62254B3D44E46FCACB9CEB9282BFA28960`。route composite 现从显式 canary 晋级为默认
   production capability，gate 改为 `committed_route_sentinel_live_ready=true`；严格绑定合同不变。GEN-027 关闭，下一步从该点
-  直接恢复正式一生长跑。
+   直接恢复正式一生长跑。
+
+## 2026-08-31：GEN-033 signed battle identity 关闭，G2 第二寿命继续
+
+- frozen source 为 `date_raw=53291904 / history=2096 / checkpoint SHA-256
+  0D5B9F116DDAEFCD7C8DE0A9446924B88814D78FFBBD35FFD1F5E10C8D812858`，CharacterID `29829`、episode
+  `native-29829-fffa4ba935f6`。
+- attempts 08/09 是 production capability RED，report SHA-256 分别为
+  `1F8AB25CD92F092B144FFEBB80DB9741C5409CD0D033D5B938D81F261B7B88DA /`
+  `8567FB3F191DED7F09FF8A79AEF7C48A593750DC4F2C417074F0217B48977E5A`；两次 cleanup 全绿，checkpoint 未变。
+- attempt10 只执行唯一允许的 one-day materialization；`53291904→53291928`、revision
+  `4/native3→7/native6`，下一 frozen revision 仍被旧 positive-only planner 阻断，禁止第二次 advance。report / blocker
+  SHA-256 为 `ECD945B9...78A9E / 54D57640...EDB0`。
+- exact-build `ck3.exe` SHA-256 `2D00FF31...DB86` 的 `0x22771FC/0x2277204/0x2277220` 与
+  `0x23083B7/0x23083C1/0x23083DF`（并在 `0x230845C/466/484` 重复）证明 signed full-ID 规则。attempt11
+  `20260831T011000Z-signed-combat-id-query` 因 `battle_result_resolution_failed` 保留为下一层 RED；report / driver-state
+  SHA-256 为 `ED8AC58D...1CE6 / 72CD4A94...DCCE`。
+- attempt12 `20260831T011500Z-signed-battle-result-query` 为 paused production-live GREEN：同帧两次 query 均返回
+  `CombatID=-2147483647 / BattleResultID=-2046820351 / Province=2619 / maneuver day 1 / finalized=false`。report / frame /
+  driver-state SHA-256 为 `63FE9E3C...1D66 / 5AD7B6D6...30AF / 8672911D...FB96`，cleanup 全绿。
+- attempts 13–15 依次证明一次 query、冷恢复仍从 checkpoint 截断后的 query history 开始，以及同 session 必须先完成 battle
+  query + 三场 termination query 后 planner 才能进入 action；它们均是 bounded query-only、日期未推进，不是 capability RED。
+- attempt16 `20260830T174839Z-next-episode-daf8eb6f` 完成 `6/6` turns（query 5、gameplay 1、checkpoint 1）。唯一
+  gameplay action 是 speed-3 battle decision epoch，`53291904→53292072` 共 7 日，以 `combat_roster_changed` 停表，随后
+  paused query 在 `native:13 / revision14 / native_revision13` 返回同一 signed IDs 与 `main` phase。新 checkpoint 为
+  `history=2103 / size=96130176 / SHA-256 ED031039DA50C5FFA2FB9E5F47AF329BC2F4A56133816968584AF17B42C1C8E3`；
+  report / output driver SHA-256 为 `3954608B...9326 / 4FC09FE1...F631`，session/shutdown/tree/driver cleanup 全绿，
+  target HKL 最终保持 `0x04090409`。
+- 回归基线：最终相关 Python `562 passed + 360 subtests`；全量 Python
+  `1583 passed, 3 skipped, 1120 subtests passed`；native CTest `44/44`。唯一 WinError 5 pytest cache warning 是既有环境告警，
+  不影响结果，也未扩修。
+- readiness 只提升为“signed battle identity action→paused query production-live loop slice”。G1 `155/155` formal GREEN 不变；
+  首个 G2 start-next-episode gate 不重复；第二角色自然死亡、结算及后续 episode 仍待继续。

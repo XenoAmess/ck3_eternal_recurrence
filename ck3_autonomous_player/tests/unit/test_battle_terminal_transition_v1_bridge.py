@@ -33,6 +33,9 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 
 PRIOR_COMBAT_ID = 335_544_325
 SUCCESSOR_COMBAT_ID = 335_544_326
+SIGNED_PRIOR_COMBAT_ID = -2_147_483_647
+SIGNED_SUCCESSOR_COMBAT_ID = -2_147_483_646
+SIGNED_BATTLE_RESULT_ID = -2_046_820_351
 SUBJECT_CUNIT_ID = 83_886_341
 OTHER_CUNIT_ID = 357
 NATIVE_REVISION = 7
@@ -334,8 +337,26 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
             ),
             (PRIOR_COMBAT_ID, SUBJECT_CUNIT_ID, None),
         )
+        signed_step = query_battle_terminal_transition_v1_step(
+            SIGNED_PRIOR_COMBAT_ID, SUBJECT_CUNIT_ID, CURSOR
+        )
+        self.assertEqual(
+            parse_query_battle_terminal_transition_v1_step(signed_step),
+            (SIGNED_PRIOR_COMBAT_ID, SUBJECT_CUNIT_ID, CURSOR),
+        )
+        zero_step = query_battle_terminal_transition_v1_step(
+            0, SUBJECT_CUNIT_ID
+        )
+        self.assertEqual(
+            parse_query_battle_terminal_transition_v1_step(zero_step),
+            (0, SUBJECT_CUNIT_ID, None),
+        )
+        with self.assertRaises(ValueError):
+            query_battle_terminal_transition_v1_step(
+                -1, SUBJECT_CUNIT_ID, CURSOR
+            )
         for malformed in (
-            "query-battle-terminal-transition-v1-0-1-0",
+            "query-battle-terminal-transition-v1--1-1-0",
             "query-battle-terminal-transition-v1-1-0-0",
             "query-battle-terminal-transition-v1-01-1-0",
             "query-battle-terminal-transition-v1-1-1-00",
@@ -347,6 +368,45 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
                 self.assertIsNone(
                     parse_query_battle_terminal_transition_v1_step(malformed)
                 )
+
+    def test_signed_full_ids_survive_terminal_normalization(self) -> None:
+        frame = _normal_frame()
+        frame["prior_combat_id"] = SIGNED_PRIOR_COMBAT_ID
+        prior = frame["prior"]
+        assert isinstance(prior, dict)
+        prior["combat_id"] = SIGNED_PRIOR_COMBAT_ID
+        prior["battle_result_id"] = SIGNED_BATTLE_RESULT_ID
+        subject = frame["subject"]
+        assert isinstance(subject, dict)
+        subject["combat_backlink_id"] = SIGNED_SUCCESSOR_COMBAT_ID
+        subject["active_combat_id"] = SIGNED_SUCCESSOR_COMBAT_ID
+        successor = frame["successor"]
+        assert isinstance(successor, dict)
+        successor["matching_combat_ids_in_native_order"] = [
+            SIGNED_SUCCESSOR_COMBAT_ID
+        ]
+        successor["selected_successor_combat_id"] = (
+            SIGNED_SUCCESSOR_COMBAT_ID
+        )
+        normalized = normalize_battle_terminal_transition_v1(
+            frame,
+            expected_prior_combat_id=SIGNED_PRIOR_COMBAT_ID,
+            expected_subject_public_cunit_id=SUBJECT_CUNIT_ID,
+            expected_after_terminal_sequence=CURSOR,
+            expected_observed_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(
+            normalized["prior_combat_id"], SIGNED_PRIOR_COMBAT_ID
+        )
+        self.assertEqual(
+            normalized["prior"]["battle_result_id"],
+            SIGNED_BATTLE_RESULT_ID,
+        )
+        self.assertEqual(
+            normalized["successor"]["selected_successor_combat_id"],
+            SIGNED_SUCCESSOR_COMBAT_ID,
+        )
 
     def test_normal_result_does_not_depend_on_result_id_and_zero_is_recorded(self) -> None:
         frame = _normalize(_normal_frame())

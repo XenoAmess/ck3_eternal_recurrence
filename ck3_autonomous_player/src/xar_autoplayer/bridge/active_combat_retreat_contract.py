@@ -18,7 +18,7 @@ _TOKEN_PATTERN = re.compile(r"[A-Za-z0-9_-]{32,128}")
 _ORDER_PATTERN = re.compile(
     r"order-active-combat-retreat-v1-(?P<selected>[1-9][0-9]*)"
     r"-revision-(?P<revision>0|[1-9][0-9]*)"
-    r"-combat-(?P<combat>[1-9][0-9]*)"
+    r"-combat-(?P<combat>-?(?:0|[1-9][0-9]*))"
     r"-side-(?P<side>[01])"
     r"-scope-(?P<scope>full_side|owner_subset)"
     r"-to-(?P<target>[1-9][0-9]*)"
@@ -173,7 +173,7 @@ def order_active_combat_retreat_v1_step(
     revision = _non_negative_uint64(
         expected_snapshot_revision, "expected_snapshot_revision"
     )
-    combat = _positive_int32(expected_combat_id, "expected_combat_id")
+    combat = _full_component_id(expected_combat_id, "expected_combat_id")
     side = _side_index(expected_side_index, "expected_side_index")
     scope = _scope(expected_scope, "expected_scope")
     target = _positive_int32(target_province_id, "target_province_id")
@@ -200,7 +200,8 @@ def parse_order_active_combat_retreat_v1_step(
     target = int(match.group("target"))
     if (
         selected > 2**31 - 1
-        or combat > 2**31 - 1
+        or not -(2**31) <= combat <= 2**31 - 1
+        or combat == -1
         or target > 2**31 - 1
         or revision > 2**64 - 1
     ):
@@ -344,7 +345,7 @@ def normalize_active_combat_retreat_v1_order_ack(
         "expected_snapshot_revision": _non_negative_uint64(
             expected_snapshot_revision, "expected_snapshot_revision"
         ),
-        "expected_combat_id": _positive_int32(
+        "expected_combat_id": _full_component_id(
             expected_combat_id, "expected_combat_id"
         ),
         "expected_side_index": _side_index(
@@ -748,6 +749,19 @@ def _positive_int32(value: object, name: str) -> int:
         or not 1 <= value <= 2**31 - 1
     ):
         raise ValueError(f"{name} must be a positive int32")
+    return value
+
+
+def _full_component_id(value: object, name: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or not -(2**31) <= value <= 2**31 - 1
+        or value == -1
+    ):
+        raise ValueError(
+            f"{name} must be a signed full component ID other than -1"
+        )
     return value
 
 

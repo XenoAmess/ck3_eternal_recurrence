@@ -254,3 +254,87 @@ production-live loop，但不升级 accept、secondary-pair semantic outcome 或
   不展开 doctrine、tenet、fervor、改宗或其它通用宗教树。
 - [counter-policy] 完整 P6 仍需候选年龄/traits/health/fertility、继承位置、lineality、联盟价值、声望、近亲、接受
   breakdown 与 secondary-pair/alliance postcondition；本次不抢占这些后续工程。
+
+## G2：入站协商联盟的 exact blocker
+
+本节只处理第二角色长跑中首次真实出现的 stock
+`negotiate_alliance_interaction`。它不把通用外交、主动邀请盟友、call-to-war 或完整联盟效用标成完成。
+
+### 冻结来源与 production RED
+
+| 证据 | SHA-256 / 值 | 用途 |
+|---|---|---|
+| `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | exact build 与 pending reply ABI |
+| `game/common/character_interactions/00_alliance.txt` | `919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D` | definition、options、accept/decline effects 与 AI reply tree |
+| attempt02 `report.json` | `E28928785B449BEE6DC545E145EB189A4D70F4100F0993F41A8904D3384C2493` | 657/658 成功 turns 后的 production capability RED |
+| attempt02 `first-blocker.json` | `FD2717013C2B917584395AA93D065B2EF8D63FEF177E830603A02548CB180FBD` | exact pending context 与 durable recovery boundary |
+| durable checkpoint | date `53247072`, `78FF44A599BC8D65EC5079763CE3B71CCC07E15B492C593BB7F4B9587E7DF874` | cold replay seed |
+
+artifact：
+
+`C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\g2-runs\20260830T135913Z-next-episode-78576354\`
+
+[production-live primitive] pending full ID `-234881021` 在 `date_raw=53247096` 出现：actor `34867` 向玩家
+recipient `29829` 提议联盟；无 secondary actor/recipient/intermediary，normal direct route，age/expiry 为 `0/60`；
+accept/reject/block 原生合法、ACK 非法。两个非互斥 option 都未选择。玩家当时是 WarID `134217738` 的 primary
+defender，warscore `-23`。planner 唯一 RED 是 definition 尚未被显式分类；transport、typed query 与 cleanup 均为 GREEN。
+
+### 原生树与 effect 边界
+
+- [static-confirmed] `00_alliance.txt:1120-1284` 只在双方统治者尚未结盟，且存在近亲/婚姻、hostage oath、
+  blood-brother opinion 或 house relation 等原生关系时展示；完整 validity 还排除交战、囚禁、不可游玩与已经拒绝过的组合。
+- [static-confirmed] `1292-1331` 只有 `hook` 与行政制 `influence` 两个非互斥 option。`1333-1353` 仅在相应
+  option scope 为 true 时消耗 actor 的 hook/influence；本次两个 selected byte 均为 false，所以接受不会消耗玩家资源，
+  也不会消耗 AI actor 的这两项显式资源。
+- [static-confirmed] `1333-1551` 的 accept 触发 actor event、可能给 shy actor stress，并沿原生关系分支调用
+  `create_alliance`；玩家是 recipient，不承担上述 actor stress。`1553-1570` 的 decline 会令 actor 获得针对玩家的
+  `refused_alliance_opinion`，并产生 minor clan-unity loss，因而拒绝不是中性动作。
+- [static-confirmed] `1581-2299` 的 stock `ai_accept` 从双方亲缘、tier、opinion、traits、军力、claims、house、
+  既有盟友、dread、legitimacy 与 actor 是否在战争中等输入求和。faith 只在该原生 final evaluator 内作为 opaque 输入；
+  本施工不扩展通用宗教模型。
+- [observation boundary] 当前 wire 可以证明 exact definition、roles、零 option、reply legality、command applied 与旧 pending
+  full ID 消失，但尚未发布任意两名 ruler 的 `is_allied_to` 后置查询。因此本规则是有明确效用方向的 definition-bound
+  blocker removal；live replay 前仍不得把 `alliance_semantic_postcondition_ready` 写成 true。
+
+```mermaid
+flowchart TD
+    A["[static-confirmed] AI 构造 negotiate_alliance_interaction"] --> S{"[static-confirmed] is_shown + validity?"}
+    S -->|否| N["[static-confirmed] 不发送"]
+    S -->|是| P["[live-confirmed] direct player-recipient pending"]
+    P --> O{"[counter-policy] exact key / zero selected options / normal route / active defensive war?"}
+    O -->|否| F["[counter-policy] fail closed"]
+    O -->|是| L{"[live-confirmed] native accept legal且命令可达?"}
+    L -->|否| F
+    L -->|是| X["[counter-policy] accept"]
+    X --> C["[postcondition] old full pending ID disappears in paused frame"]
+    C -. "is_allied_to 尚未发布" .-> U["[unknown] typed alliance relation postcondition"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+### 最小 counter-policy
+
+只在以下条件全部成立时接受：
+
+1. exact key 为 `negotiate_alliance_interaction`，`special_data_present=false` 且 war-special binding 明确为 not applicable；
+2. 玩家是 direct local recipient，所有 secondary/intermediary ID 均为 `-1`，pending frame binding 未变化；
+3. expiry 为 stock `60` 天且当前 age 为 `0`，两个 definition/context option 行完整且全部 `selected=false`；
+4. 玩家是至少一场 active war 的 primary defender，actor 不是任一 active war 的 primary opponent；
+5. accept 的 same-frame native legality 为 true，accept primitive 可达；
+6. 执行后等待旧 signed full pending ID 消失，并保持 paused snapshot。
+
+这条规则选择 accept 的实际依据是：当前 life 的既定计划把当前世代联盟列为最高优先级；本次没有玩家支付项；玩家正在防御战争中；
+而 stock decline 有确定的 opinion/unity 负效应。它保持 `native_ai_equivalent=false`、`semantic_optimal=false` 和
+`semantic_decision_ready=false`。若任一 shape guard 不满足，不能回落到 generic ordinary reject/unique-accept。
+
+[production-live loop] attempt03 从上述 durable checkpoint cold resume 后，在同一 `date_raw=53247096` 重现 exact
+definition/roles/options。cold reload 后 full pending ID 合法地变为 `-637534207`；第二个 option 的 numeric flag identifier 也从
+attempt02 的 `7218` 变为 `7075`，再次证明该 numeric identifier 不能跨进程充当 canonical option key。本规则只依赖 authored
+row count/index 与 `selected=false`，没有依赖这两个不稳定数字。turn 974 的 typed query 后，turn 975 选择
+`accept-pending-character-interaction`；native result 为 `status=submitted`、`interaction_result.status=accepted`，after
+snapshot `native:8/revision:9` 保持 paused，且 `remaining_pending_character_interaction=null`。随后日期继续推进并在
+`date_raw=53247432` 保存新的 durable checkpoint，证明 blocker 已解除。该证据只把 exact accept reply lifecycle 升级为
+production-live loop；由于 wire 仍无 `is_allied_to`，不升级联盟关系 semantic postcondition。
+
+下一步质量升级是在真实 gameplay 再次证明联盟关系观测会改变决策时，新增最小只读 `is_allied_to(actor, recipient)` MCP；
+在那以前只诚实声称“accept reply lifecycle GREEN”，不声称完整联盟语义已观测。

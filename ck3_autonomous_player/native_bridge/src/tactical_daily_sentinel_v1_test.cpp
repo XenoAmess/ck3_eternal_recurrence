@@ -89,9 +89,9 @@ struct WorldFixture {
     active = this;
   }
 
-  void AddCombat() {
-    Store(internal_army, 0x128, std::int32_t{1});
-    Store(combat, 0x08, std::int32_t{1});
+  void AddCombat(std::int32_t combat_id = 1) {
+    Store(internal_army, 0x128, combat_id);
+    Store(combat, 0x08, combat_id);
     Store(combat, 0x6B0, std::int32_t{1});
     Store(combat, 0x6B4, std::int32_t{4});
     Store(combat, 0x6E0, std::int32_t{-1});
@@ -112,7 +112,7 @@ struct WorldFixture {
     void *combat_pointer = combat.data();
     std::memcpy(attacker_side + 0xB8, &combat_pointer, sizeof(combat_pointer));
     std::memcpy(defender_side + 0xB8, &combat_pointer, sizeof(combat_pointer));
-    combats.Set(1, combat.data());
+    combats.Set(combat_id, combat.data());
   }
 
   void AddIdleRegularArmyWithNonPositiveDirectTarget() {
@@ -444,7 +444,9 @@ bool TestBattlePhaseRosterAndTerminalEpochs() {
   using namespace xar::ck3_11906;
   {
     WorldFixture world;
-    world.AddCombat();
+    // Component IDs are opaque signed full dwords.  Sign-bit generations are
+    // legal; only -1 is the missing sentinel.
+    world.AddCombat(-2'147'483'647);
     pause_calls = 0;
     if (!InitializeTacticalDailySentinelFixtureV1(world.bindings, &SetPaused) ||
         ArmTacticalDailySentinelV1(Request(3, 1'120)) !=

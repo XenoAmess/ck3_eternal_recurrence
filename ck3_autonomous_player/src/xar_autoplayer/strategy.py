@@ -20,6 +20,8 @@ from .bridge.combat_phase_contract import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
 )
 from .bridge.battle_control_contract import (
+    BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
+    BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
     normalize_battle_control_snapshot_v1,
     parse_query_battle_control_snapshot_v1_step,
     query_battle_control_snapshot_v1_step,
@@ -124,6 +126,7 @@ _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
 _BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
+_BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ATTEMPTS = 3
 _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS = 45
 _BATTLE_SENTINEL_MAX_WATCH_ARMIES = 64
 _NATIVE_ENEMY_TARGET_MILESTONES_DAYS = (7, 14)
@@ -146,6 +149,17 @@ _KNOWN_WAR_EXIT_INTERACTION_KEYS = {
     "end_war_attacker_victory_interaction",
     "end_war_attacker_white_peace_interaction",
     "end_war_attacker_defeat_interaction",
+}
+_RAIKTOR_INBOUND_WHITE_PEACE_POLICY = {
+    "rule_id": "raiktor-inbound-white-peace-v1",
+    "definition_key": "end_war_attacker_white_peace_interaction",
+    "special_interaction_kind": "end_war_white_peace_interaction",
+    "absolute_outcome": "white_peace",
+    "casus_belli_key": "raiktor_claim_cb",
+    "source": "common/casus_belli_types/00_event_war.txt",
+    "source_sha256": (
+        "BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707"
+    ),
 }
 _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
     "spar_with_knight_interaction": {
@@ -181,6 +195,21 @@ _DEGRADED_MARRIAGE_REJECT_ONLY_ALLOWLIST = {
             "secondary_actor:player_declined_marriage:5y",
         ],
     },
+}
+_NEGOTIATE_ALLIANCE_INBOUND_POLICY = {
+    "rule_id": "negotiate-alliance-inbound-accept-v1",
+    "definition_key": "negotiate_alliance_interaction",
+    "domain": "marriage_alliance",
+    "source": "common/character_interactions/00_alliance.txt",
+    "source_sha256": (
+        "919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D"
+    ),
+    "required_send_option_count": 2,
+    "known_selected_option_costs": ["actor_hook", "actor_influence"],
+    "known_decline_effects": [
+        "actor:refused_alliance_opinion:toward_recipient",
+        "minor_clan_unity_loss",
+    ],
 }
 
 
@@ -860,6 +889,156 @@ def _arrange_marriage_reject_contract_gaps(
     return gaps
 
 
+def _negotiate_alliance_inbound_assessment(
+    context: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    available_steps: set[str],
+    candidate_replies: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    """Admit only the exact zero-option inbound alliance production blocker."""
+
+    policy = _NEGOTIATE_ALLIANCE_INBOUND_POLICY
+    definition = context.get("definition")
+    definition_key = (
+        definition.get("canonical_key")
+        if isinstance(definition, dict)
+        else None
+    )
+    if definition_key != policy["definition_key"]:
+        return {"status": "not_applicable", "rule_id": policy["rule_id"]}
+
+    blocked: list[str] = []
+    roles = context.get("roles")
+    actor_id = (
+        roles.get("actor_character_id") if isinstance(roles, dict) else None
+    )
+    recipient_id = (
+        roles.get("recipient_character_id") if isinstance(roles, dict) else None
+    )
+    if not (
+        isinstance(actor_id, int)
+        and not isinstance(actor_id, bool)
+        and actor_id > 0
+        and isinstance(recipient_id, int)
+        and not isinstance(recipient_id, bool)
+        and recipient_id > 0
+        and actor_id != recipient_id
+        and isinstance(roles, dict)
+        and roles.get("secondary_actor_character_id") == -1
+        and roles.get("secondary_recipient_character_id") == -1
+        and roles.get("intermediary_character_id") == -1
+    ):
+        blocked.append("negotiate_alliance_direct_roles_mismatch")
+
+    routing = context.get("routing")
+    if not (
+        isinstance(routing, dict)
+        and routing.get("kind") == 0
+        and routing.get("played_character_id") == recipient_id
+        and routing.get("current_responder_role") == "recipient"
+        and routing.get("reply_execution_channel") == "recipient"
+        and routing.get("local_route") is True
+        and routing.get("auto_accept_notification") is False
+    ):
+        blocked.append("negotiate_alliance_direct_local_route_mismatch")
+
+    deadline = context.get("deadline")
+    if not (
+        isinstance(deadline, dict)
+        and deadline.get("age_days") == 0
+        and deadline.get("expiration_days") == 60
+        and deadline.get("remaining_days") == 60
+        and deadline.get("expiry_boundary_status") == "not_reached"
+    ):
+        blocked.append("negotiate_alliance_same_day_deadline_shape_mismatch")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and terms.get("special_data_present") is False
+        and isinstance(special, dict)
+        and special.get("status") == "unavailable"
+        and special.get("value") is None
+        and special.get("reason") == "special_war_binding_not_applicable"
+    ):
+        blocked.append("negotiate_alliance_non_special_shape_mismatch")
+
+    send_options = context.get("send_options")
+    rows = send_options.get("rows") if isinstance(send_options, dict) else None
+    if not (
+        isinstance(send_options, dict)
+        and send_options.get("exclusive") is False
+        and send_options.get("definition_count")
+        == policy["required_send_option_count"]
+        and send_options.get("context_count")
+        == policy["required_send_option_count"]
+        and isinstance(rows, list)
+        and len(rows) == policy["required_send_option_count"]
+        and all(
+            isinstance(row, dict)
+            and row.get("native_index") == index
+            and row.get("selected") is False
+            for index, row in enumerate(rows)
+        )
+    ):
+        blocked.append("negotiate_alliance_zero_option_vector_mismatch")
+
+    defensive_wars = [
+        war
+        for war in active_wars
+        if isinstance(war, dict)
+        and war.get("player_side") == "defender"
+        and war.get("player_is_primary_war_leader") is True
+    ]
+    if not defensive_wars:
+        blocked.append("negotiate_alliance_active_defensive_war_required")
+    if any(
+        isinstance(war, dict)
+        and war.get("primary_opponent_character_id") == actor_id
+        for war in active_wars
+    ):
+        blocked.append("negotiate_alliance_actor_is_active_war_opponent")
+
+    accept = candidate_replies.get("accept")
+    if not isinstance(accept, dict) or accept.get("native_legal") is not True:
+        blocked.append("negotiate_alliance_accept_not_native_legal")
+    elif accept.get("action_reachable") is not True:
+        blocked.append("negotiate_alliance_accept_command_unavailable")
+
+    evidence = {
+        "source": policy["source"],
+        "source_sha256": policy["source_sha256"],
+        "actor_character_id": actor_id,
+        "recipient_character_id": recipient_id,
+        "selected_option_count": (
+            sum(
+                1
+                for row in rows
+                if isinstance(row, dict) and row.get("selected") is True
+            )
+            if isinstance(rows, list)
+            else None
+        ),
+        "active_defensive_war_ids": [
+            war.get("war_id") for war in defensive_wars
+        ],
+        "known_selected_option_costs": list(
+            policy["known_selected_option_costs"]
+        ),
+        "known_decline_effects": list(policy["known_decline_effects"]),
+        "postcondition": "old_pending_full_id_absent_in_paused_frame",
+        "alliance_semantic_postcondition_ready": False,
+    }
+    return {
+        "status": "ready" if not blocked else "blocked",
+        "rule_id": policy["rule_id"],
+        "evidence": evidence,
+        "blocked_reasons": blocked,
+    }
+
+
 def _special_war_snapshot_binding(
     context: dict[str, object],
     active_wars: list[dict[str, object]],
@@ -928,6 +1107,189 @@ def _special_war_snapshot_binding(
         "active_war_id_match": bool(matching_wars),
         "active_war_roles_match": role_matched,
         "same_frame_bound": True,
+    }
+
+
+def _raiktor_inbound_white_peace_assessment(
+    context: dict[str, object],
+    *,
+    snapshot: dict[str, object],
+    active_wars: list[dict[str, object]],
+    available_steps: set[str],
+    candidate_replies: dict[str, dict[str, object]],
+    special_binding_audit: dict[str, object] | None,
+) -> dict[str, object]:
+    """Evaluate one exact inbound event-CB white-peace blocker.
+
+    This is deliberately not a generic special-terms decoder.  It joins the
+    existing pending binding to the existing same-frame termination query and
+    admits only the frozen Raiktor CB whose authored white-peace branch is
+    claim-like and distinct from its special victory rewards.
+    """
+
+    policy = _RAIKTOR_INBOUND_WHITE_PEACE_POLICY
+    definition = context.get("definition")
+    definition_key = (
+        definition.get("canonical_key")
+        if isinstance(definition, dict)
+        else None
+    )
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    binding = special.get("value") if isinstance(special, dict) else None
+    if not (
+        definition_key == policy["definition_key"]
+        and isinstance(binding, dict)
+        and binding.get("special_interaction_kind")
+        == policy["special_interaction_kind"]
+        and binding.get("absolute_outcome") == policy["absolute_outcome"]
+        and binding.get("actor_war_role") == "primary_defender"
+        and binding.get("recipient_war_role") == "primary_attacker"
+        and binding.get("binding_source") == "native_common_war_relation"
+    ):
+        return {"status": "not_applicable", "rule_id": policy["rule_id"]}
+
+    blocked: list[str] = []
+    war_id = binding.get("war_id")
+    if (
+        isinstance(war_id, bool)
+        or not isinstance(war_id, int)
+        or war_id <= 0
+    ):
+        blocked.append("raiktor_white_peace_war_id_unavailable")
+    if not (
+        isinstance(special_binding_audit, dict)
+        and special_binding_audit.get("active_war_id_match") is True
+        and special_binding_audit.get("active_war_roles_match") is True
+    ):
+        blocked.append("special_war_snapshot_binding_mismatch")
+
+    roles = context.get("roles")
+    if not (
+        isinstance(roles, dict)
+        and roles.get("secondary_actor_character_id") == -1
+        and roles.get("secondary_recipient_character_id") == -1
+        and roles.get("intermediary_character_id") == -1
+    ):
+        blocked.append("raiktor_white_peace_hostage_or_intermediary_present")
+
+    matching_wars = [
+        war
+        for war in active_wars
+        if isinstance(war_id, int)
+        and not isinstance(war_id, bool)
+        and war.get("war_id") == war_id
+    ]
+    war = matching_wars[0] if len(matching_wars) == 1 else None
+    score = war.get("player_relative_war_score") if isinstance(war, dict) else None
+    if not (
+        isinstance(war, dict)
+        and war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 <= score < 100
+    ):
+        blocked.append("raiktor_white_peace_active_war_shape_mismatch")
+    if blocked:
+        return {
+            "status": "blocked",
+            "rule_id": policy["rule_id"],
+            "war_id": war_id,
+            "blocked_reasons": blocked,
+        }
+
+    raw_options = snapshot.get("war_termination_options")
+    same_frame_rows = [
+        row
+        for row in (raw_options if isinstance(raw_options, list) else [])
+        if isinstance(row, dict)
+        and row.get("war_id") == war_id
+        and _same_frame_termination_row(snapshot, row, int(war_id))
+    ]
+    query_step = query_war_termination_options_step(int(war_id))
+    if len(same_frame_rows) != 1:
+        return {
+            "status": "query_required",
+            "rule_id": policy["rule_id"],
+            "war_id": war_id,
+            "query_step": query_step,
+            "query_reachable": query_step in available_steps,
+            "blocked_reasons": (
+                []
+                if query_step in available_steps
+                else ["raiktor_white_peace_termination_query_unavailable"]
+            ),
+        }
+
+    options = same_frame_rows[0]
+    casus_belli = options.get("active_casus_belli_identity")
+    option_rows = options.get("options")
+    white_peace = (
+        option_rows.get("white_peace")
+        if isinstance(option_rows, dict)
+        else None
+    )
+    duration = options.get("war_duration_days")
+    option_score = options.get("player_relative_war_score")
+    if not (
+        options.get("source") == "native"
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and option_score == score
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= 365
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == policy["casus_belli_key"]
+        and options.get("cb_allows_white_peace") is True
+        and isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+    ):
+        blocked.append("raiktor_white_peace_termination_terms_mismatch")
+
+    accept = candidate_replies.get("accept")
+    if not isinstance(accept, dict) or accept.get("native_legal") is not True:
+        blocked.append("raiktor_white_peace_accept_not_native_legal")
+    elif accept.get("action_reachable") is not True:
+        blocked.append("raiktor_white_peace_accept_command_unavailable")
+
+    evidence = {
+        "source": policy["source"],
+        "source_sha256": policy["source_sha256"],
+        "war_id": war_id,
+        "casus_belli_key": (
+            casus_belli.get("canonical_key")
+            if isinstance(casus_belli, dict)
+            else None
+        ),
+        "player_side": options.get("player_side"),
+        "player_is_primary_war_leader": options.get(
+            "player_is_primary_war_leader"
+        ),
+        "player_relative_war_score": option_score,
+        "war_duration_days": duration,
+        "cb_allows_white_peace": options.get("cb_allows_white_peace"),
+        "outbound_white_peace_available": (
+            white_peace.get("available")
+            if isinstance(white_peace, dict)
+            else None
+        ),
+        "outbound_white_peace_validator_passed": (
+            white_peace.get("native_validator_passed")
+            if isinstance(white_peace, dict)
+            else None
+        ),
+        "postcondition": "old_pending_full_id_and_bound_war_id_absent",
+    }
+    return {
+        "status": "ready" if not blocked else "blocked",
+        "rule_id": policy["rule_id"],
+        "war_id": war_id,
+        "evidence": evidence,
+        "blocked_reasons": blocked,
     }
 
 
@@ -1006,12 +1368,25 @@ def _degraded_pending_interaction_decision(
         if isinstance(marriage_allowlist_evidence, dict)
         else []
     )
+    negotiate_alliance_evidence = (
+        _NEGOTIATE_ALLIANCE_INBOUND_POLICY
+        if definition_key
+        == _NEGOTIATE_ALLIANCE_INBOUND_POLICY["definition_key"]
+        else None
+    )
     if evidence_gaps:
         classification = "evidence_invalid"
     elif special_status == "available":
         classification = "known_war_exit"
     elif isinstance(marriage_allowlist_evidence, dict):
         classification = "known_marriage_special"
+    elif (
+        isinstance(negotiate_alliance_evidence, dict)
+        and special_status == "unavailable"
+        and special_reason == "special_war_binding_not_applicable"
+        and special_present is False
+    ):
+        classification = "known_negotiate_alliance_inbound"
     elif (
         special_status == "unavailable"
         and special_reason == "special_war_binding_not_applicable"
@@ -1034,10 +1409,41 @@ def _degraded_pending_interaction_decision(
         if classification == "known_war_exit"
         else None
     )
+    raiktor_white_peace = (
+        _raiktor_inbound_white_peace_assessment(
+            context,
+            snapshot=snapshot,
+            active_wars=active_wars,
+            available_steps=available_steps,
+            candidate_replies=by_action,
+            special_binding_audit=special_binding_audit,
+        )
+        if classification == "known_war_exit"
+        else None
+    )
+    negotiate_alliance = (
+        _negotiate_alliance_inbound_assessment(
+            context,
+            active_wars=active_wars,
+            available_steps=available_steps,
+            candidate_replies=by_action,
+        )
+        if classification == "known_negotiate_alliance_inbound"
+        else None
+    )
     classification_evidence = (
-        marriage_allowlist_evidence
-        if classification == "known_marriage_special"
-        else definition_allowlist_evidence
+        dict(_RAIKTOR_INBOUND_WHITE_PEACE_POLICY)
+        if isinstance(raiktor_white_peace, dict)
+        and raiktor_white_peace.get("status") != "not_applicable"
+        else (
+            negotiate_alliance_evidence
+            if classification == "known_negotiate_alliance_inbound"
+            else (
+                marriage_allowlist_evidence
+                if classification == "known_marriage_special"
+                else definition_allowlist_evidence
+            )
+        )
     )
     decision: dict[str, object] = {
         "rule_id": (
@@ -1065,11 +1471,22 @@ def _degraded_pending_interaction_decision(
         "reply_legality": summary.get("reply_legality"),
         "special_war_binding": summary.get("special_war_binding"),
         "special_war_snapshot_binding": special_binding_audit,
+        "raiktor_inbound_white_peace": raiktor_white_peace,
+        "negotiate_alliance_inbound": negotiate_alliance,
         "definition_classification": {
             "policy": (
-                "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1"
-                if classification == "known_marriage_special"
-                else "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1"
+                "ck3-1.19.0.6-exact-raiktor-inbound-white-peace-v1"
+                if isinstance(raiktor_white_peace, dict)
+                and raiktor_white_peace.get("status") != "not_applicable"
+                else (
+                    "ck3-1.19.0.6-exact-negotiate-alliance-inbound-v1"
+                    if classification == "known_negotiate_alliance_inbound"
+                    else (
+                        "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1"
+                        if classification == "known_marriage_special"
+                        else "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1"
+                    )
+                )
             ),
             "definition_key": definition_key,
             "allowlisted": isinstance(classification_evidence, dict),
@@ -1112,13 +1529,71 @@ def _degraded_pending_interaction_decision(
         blocked_reasons.extend(evidence_gaps)
         return {"summary": summary, "decision": decision}
     if classification == "known_war_exit":
-        if not (
-            isinstance(special_binding_audit, dict)
-            and special_binding_audit.get("active_war_id_match") is True
-            and special_binding_audit.get("active_war_roles_match") is True
+        if (
+            isinstance(raiktor_white_peace, dict)
+            and raiktor_white_peace.get("status") != "not_applicable"
         ):
-            blocked_reasons.append("special_war_snapshot_binding_mismatch")
-        blocked_reasons.append("special_outcome_terms_unavailable")
+            decision["rule_id"] = raiktor_white_peace["rule_id"]
+            decision["deterministic_rule"] = (
+                "for only the exact no-hostage inbound Raiktor white-peace "
+                "binding, join the active WarID to a same-frame native "
+                "termination row before any reply, keep overall semantic "
+                "readiness false, and require the bound WarID to disappear "
+                "after an accepted reply"
+            )
+        if (
+            isinstance(raiktor_white_peace, dict)
+            and raiktor_white_peace.get("status") == "query_required"
+        ):
+            decision["recommended_action"] = "observe_war_termination"
+            query_step = raiktor_white_peace.get("query_step")
+            if (
+                raiktor_white_peace.get("query_reachable") is True
+                and isinstance(query_step, str)
+            ):
+                decision["selected_action"] = "observe_war_termination"
+                decision["selected_step"] = query_step
+            else:
+                decision["required_step"] = query_step
+                blocked_reasons.extend(
+                    raiktor_white_peace.get("blocked_reasons", [])
+                )
+            decision["deterministic_rule"] = (
+                "for the exact inbound Raiktor white-peace binding, first "
+                "join the bound WarID to a same-frame native termination "
+                "row; a stale or missing row may only select its read-only "
+                "query"
+            )
+            return {"summary": summary, "decision": decision}
+        if (
+            isinstance(raiktor_white_peace, dict)
+            and raiktor_white_peace.get("status") == "ready"
+        ):
+            decision["recommended_action"] = "accept"
+            decision["selected_action"] = "accept"
+            decision["selected_step"] = _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP
+            decision["deterministic_rule"] = (
+                "accept only an exact same-frame, no-hostage Raiktor "
+                "white-peace request sent by the primary defender to the "
+                "player primary attacker after at least 365 days while "
+                "the player score is 0..99 and native accept is legal; "
+                "then require both the old pending ID and bound WarID to "
+                "disappear"
+            )
+            return {"summary": summary, "decision": decision}
+        if isinstance(raiktor_white_peace, dict):
+            blocked_reasons.extend(
+                raiktor_white_peace.get("blocked_reasons", [])
+            )
+        if not blocked_reasons:
+            if not (
+                isinstance(special_binding_audit, dict)
+                and special_binding_audit.get("active_war_id_match") is True
+                and special_binding_audit.get("active_war_roles_match") is True
+            ):
+                blocked_reasons.append("special_war_snapshot_binding_mismatch")
+        if not blocked_reasons:
+            blocked_reasons.append("special_outcome_terms_unavailable")
         return {"summary": summary, "decision": decision}
     if classification == "known_marriage_special":
         if marriage_contract_gaps:
@@ -1134,6 +1609,32 @@ def _degraded_pending_interaction_decision(
             decision["selected_step"] = reject["step"]
         else:
             blocked_reasons.append("legal_marriage_reject_command_unavailable")
+        return {"summary": summary, "decision": decision}
+    if classification == "known_negotiate_alliance_inbound":
+        decision["rule_id"] = _NEGOTIATE_ALLIANCE_INBOUND_POLICY["rule_id"]
+        decision["deterministic_rule"] = (
+            "accept only the exact same-day, direct, zero-option inbound "
+            "negotiate_alliance_interaction while the player leads an active "
+            "defensive war and the actor is not an active-war opponent; keep "
+            "semantic alliance outcome readiness false and require the old "
+            "signed pending ID to disappear in a paused frame"
+        )
+        if not (
+            isinstance(negotiate_alliance, dict)
+            and negotiate_alliance.get("status") == "ready"
+        ):
+            if isinstance(negotiate_alliance, dict):
+                blocked_reasons.extend(
+                    negotiate_alliance.get("blocked_reasons", [])
+                )
+            else:
+                blocked_reasons.append(
+                    "negotiate_alliance_assessment_unavailable"
+                )
+            return {"summary": summary, "decision": decision}
+        decision["recommended_action"] = "accept"
+        decision["selected_action"] = "accept"
+        decision["selected_step"] = _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP
         return {"summary": summary, "decision": decision}
     if classification == "definition_unclassified":
         blocked_reasons.append(
@@ -1195,7 +1696,15 @@ def _degraded_pending_interaction_plan(
     assert isinstance(decision, dict)
     selected_step = decision.get("selected_step")
     selected_action = decision.get("selected_action")
-    if selected_action == "reject":
+    rule_id = decision.get("rule_id")
+    if selected_action == "observe_war_termination":
+        phase = "pending_raiktor_white_peace_termination_query"
+        reason = (
+            "read the bound WarID's same-frame native CB identity, duration, "
+            "score, and white-peace permission before replying to the exact "
+            "Raiktor request"
+        )
+    elif selected_action == "reject":
         if decision.get("classification") == "known_marriage_special":
             phase = "pending_arrange_marriage_reject_only"
             reason = (
@@ -1210,12 +1719,29 @@ def _degraded_pending_interaction_plan(
                 "same-frame legal and the reject command is executable"
             )
     elif selected_action == "accept":
-        phase = "pending_character_interaction_degraded_unique_accept"
-        reason = (
-            "accept this exact ordinary non-war request only because native "
-            "legality proves reject, block, and acknowledge illegal, leaving "
-            "accept as the sole executable legal reply"
-        )
+        if rule_id == _RAIKTOR_INBOUND_WHITE_PEACE_POLICY["rule_id"]:
+            phase = "pending_raiktor_white_peace_accept"
+            reason = (
+                "accept this exact no-hostage Raiktor white peace: the "
+                "same-frame native row proves the bound active CB, duration, "
+                "score and permission, while the authored white-peace branch "
+                "does not execute Raiktor's special victory rewards"
+            )
+        elif rule_id == _NEGOTIATE_ALLIANCE_INBOUND_POLICY["rule_id"]:
+            phase = "pending_negotiate_alliance_accept"
+            reason = (
+                "accept this exact direct, zero-option alliance proposal: "
+                "the player leads an active defensive war, no selected hook "
+                "or influence cost exists, and stock decline has a definite "
+                "opinion and clan-unity penalty"
+            )
+        else:
+            phase = "pending_character_interaction_degraded_unique_accept"
+            reason = (
+                "accept this exact ordinary non-war request only because "
+                "native legality proves reject, block, and acknowledge "
+                "illegal, leaving accept as the sole executable legal reply"
+            )
     else:
         phase = (
             "pending_war_interaction_evidence_required"
@@ -1238,20 +1764,26 @@ def _degraded_pending_interaction_plan(
         "decision": decision,
     }
     if selected_step is None:
+        required_step = decision.get("required_step")
+        if isinstance(required_step, str) and required_step:
+            plan["required_step"] = required_step
         recommended_action = decision.get("recommended_action")
         recommended = (
             _PENDING_REPLY_STEPS.get(str(recommended_action))
             if isinstance(recommended_action, str)
             else None
         )
-        if isinstance(recommended, str):
+        if isinstance(recommended, str) and "required_step" not in plan:
             plan["required_step"] = recommended
         if decision.get("classification") == "known_war_exit":
             plan["required_capabilities"] = [
                 "game.state.pending-character-interaction-special-outcome-terms",
                 "game.policy.pending-character-interaction-war-outcome-decision",
             ]
-        elif decision.get("classification") != "ordinary_non_war":
+        elif decision.get("classification") not in {
+            "ordinary_non_war",
+            "known_negotiate_alliance_inbound",
+        }:
             plan["required_capabilities"] = [
                 "game.state.pending-character-interaction-structured-terms",
                 "game.policy.pending-character-interaction-semantic-decision",
@@ -2050,6 +2582,74 @@ def _battle_sentinel_advance_validation(
     }
 
 
+def _active_war_set_boundary_matches_result(
+    boundary: object,
+    advance_result: dict[str, object],
+) -> bool:
+    if not isinstance(boundary, dict):
+        return False
+
+    normalized: dict[str, tuple[int, ...]] = {}
+    for key in (
+        "before_war_ids",
+        "after_war_ids",
+        "added_war_ids",
+        "removed_war_ids",
+    ):
+        value = boundary.get(key)
+        if not isinstance(value, list):
+            return False
+        ids: list[int] = []
+        for item in value:
+            war_id = _native_int(item)
+            if war_id is None or not 0 < war_id <= 2**31 - 1 or war_id in ids:
+                return False
+            ids.append(war_id)
+        if ids != sorted(ids):
+            return False
+        normalized[key] = tuple(ids)
+
+    before = normalized["before_war_ids"]
+    after = normalized["after_war_ids"]
+    before_set = set(before)
+    after_set = set(after)
+    before_text = ",".join(str(war_id) for war_id in before) or "-"
+    after_text = ",".join(str(war_id) for war_id in after) or "-"
+    if not (
+        before != after
+        and normalized["added_war_ids"]
+        == tuple(sorted(after_set - before_set))
+        and normalized["removed_war_ids"]
+        == tuple(sorted(before_set - after_set))
+        and (
+            normalized["added_war_ids"]
+            or normalized["removed_war_ids"]
+        )
+        and boundary.get("instance_id")
+        == f"active-wars:{before_text}->{after_text}"
+    ):
+        return False
+
+    summary_ids: list[tuple[int, ...]] = []
+    for key in ("war_progress_before", "war_progress_after"):
+        summary = advance_result.get(key)
+        wars = summary.get("wars") if isinstance(summary, dict) else None
+        if not isinstance(wars, list):
+            return False
+        ids: list[int] = []
+        for war in wars:
+            war_id = (
+                _native_int(war.get("war_id"))
+                if isinstance(war, dict)
+                else None
+            )
+            if war_id is None or not 0 < war_id <= 2**31 - 1 or war_id in ids:
+                return False
+            ids.append(war_id)
+        summary_ids.append(tuple(sorted(ids)))
+    return summary_ids == [before, after]
+
+
 def _battle_sentinel_player_decision_validation(
     advance_result: dict[str, object],
     *,
@@ -2060,7 +2660,7 @@ def _battle_sentinel_player_decision_validation(
     committed_route_request: tuple[int, int, int] | None,
     objective_hold_request: tuple[int, int, int, int] | None,
 ) -> dict[str, object]:
-    """Validate a real player decision that pre-empted native final-stage."""
+    """Validate a player-decision or paused-frame replan boundary."""
 
     step = advance_result.get("step")
     boundary = advance_result.get("player_decision_boundary")
@@ -2175,6 +2775,14 @@ def _battle_sentinel_player_decision_validation(
                     or advance_result.get("played_character_id")
                     != advance_result.get("episode_character_id")
                 )
+            )
+            or (
+                kind == "active_war_set_changed"
+                and _active_war_set_boundary_matches_result(
+                    boundary, advance_result
+                )
+                and active_event is None
+                and pending is None
             )
         )
     )
@@ -2341,17 +2949,31 @@ def _battle_sentinel_player_decision_validation(
             and admission.get("watch_army_ids") == watch
         ):
             errors.append("objective_hold_admission_binding_failed")
-        if not (
+        common_post_stop_binding = bool(
             isinstance(post_stop, dict)
-            and post_stop.get("status") == "invalidated"
-            and post_stop.get("reason") == "pending_player_decision"
             and post_stop.get("war_id") == objective_hold_request[0]
             and post_stop.get("subject_army_id")
             == objective_hold_request[1]
             and post_stop.get("objective_province_id")
             == objective_hold_request[2]
             and post_stop.get("watch_army_ids") == watch
-        ):
+        )
+        decision_post_stop_valid = bool(
+            common_post_stop_binding
+            and (
+                (
+                    kind == "active_war_set_changed"
+                    and post_stop.get("status")
+                    in {"matched", "invalidated"}
+                )
+                or (
+                    kind != "active_war_set_changed"
+                    and post_stop.get("status") == "invalidated"
+                    and post_stop.get("reason") == "pending_player_decision"
+                )
+            )
+        )
+        if not decision_post_stop_valid:
             errors.append("objective_hold_decision_boundary_revalidation_failed")
         if not (
             advance_result.get("exact_war_terminal_watch") is False
@@ -2909,6 +3531,126 @@ def _battle_control_frame_summary(
     }
 
 
+def _current_battle_identity_pending(
+    snapshot: dict[str, object] | None,
+    *,
+    subject_public_cunit_id: int,
+) -> dict[str, object] | None:
+    """Recognize only the exact frozen public-combat pending observation."""
+    if not isinstance(snapshot, dict):
+        return None
+    armies = snapshot.get("player_armies")
+    subject = next(
+        (
+            army
+            for army in (armies if isinstance(armies, list) else [])
+            if isinstance(army, dict)
+            and army.get("army_id") == subject_public_cunit_id
+        ),
+        None,
+    )
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("battle_control_snapshot_v1_status")
+        == BATTLE_CONTROL_IDENTITY_PENDING_STATUS
+        and snapshot.get("battle_control_snapshot_v1_diagnostic_reason")
+        == BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+        and snapshot.get("battle_control_snapshot_v1_native_query_status")
+        == "state_changed"
+        and snapshot.get("battle_control_snapshot_v1_query_attempts")
+        == _BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ATTEMPTS
+        and snapshot.get("battle_control_snapshot_v1") is None
+        and snapshot.get("battle_control_snapshot_v1_subject_army_id")
+        == subject_public_cunit_id
+        and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
+        == snapshot.get("snapshot_id")
+        and snapshot.get("battle_control_snapshot_v1_queried_revision")
+        == snapshot.get("revision")
+        and snapshot.get(
+            "battle_control_snapshot_v1_queried_native_revision"
+        )
+        == snapshot.get("native_revision")
+        and isinstance(subject, dict)
+        and subject.get("controllable") is True
+        and subject.get("in_combat") is True
+    ):
+        return None
+    return {
+        "status": BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
+        "diagnostic_reason": BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
+        "subject_army_id": subject_public_cunit_id,
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+    }
+
+
+def _battle_identity_materialization_for_current_pending(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    subject_public_cunit_id: int,
+) -> dict[str, object] | None:
+    """Find a prior +24 materialization ending on this pending revision."""
+    for row in reversed(rows):
+        if row.get("ok") is not True or _effective_command(row) != "life-advance":
+            continue
+        result = _effective_command_result(row)
+        materialization = (
+            result.get("battle_identity_materialization")
+            if isinstance(result, dict)
+            else None
+        )
+        if not isinstance(materialization, dict):
+            continue
+        start_date_raw = _native_int(materialization.get("starting_date_raw"))
+        end_date_raw = _native_int(materialization.get("ending_date_raw"))
+        start_revision = _native_int(materialization.get("starting_revision"))
+        end_revision = _native_int(materialization.get("ending_revision"))
+        start_native_revision = _native_int(
+            materialization.get("starting_native_revision")
+        )
+        end_native_revision = _native_int(
+            materialization.get("ending_native_revision")
+        )
+        if not (
+            materialization.get("schema_version") == 1
+            and materialization.get("status") == "one_day_advanced"
+            and materialization.get("proof_kind")
+            == "battle_identity_materialization"
+            and materialization.get("diagnostic_reason")
+            == BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC
+            and materialization.get("subject_public_cunit_id")
+            == subject_public_cunit_id
+            and materialization.get("next_revision_requirement")
+            == "full_combat_id"
+            and start_date_raw is not None
+            and end_date_raw == start_date_raw + 24
+            and materialization.get("elapsed_days") == 1
+            and start_revision is not None
+            and end_revision is not None
+            and end_revision > start_revision
+            and start_native_revision is not None
+            and start_native_revision > 0
+            and end_native_revision is not None
+            and end_native_revision > start_native_revision
+            and materialization.get("ending_snapshot_id")
+            == snapshot.get("snapshot_id")
+            and end_revision == _native_int(snapshot.get("revision"))
+            and end_native_revision
+            == _native_int(snapshot.get("native_revision"))
+            and end_date_raw == _native_int(snapshot.get("date_raw"))
+            and result.get("paused") is True
+            and result.get("timeline_speed") == 1
+            and result.get("timeline_policy")
+            == "exact_one_day_battle_identity_materialization"
+        ):
+            continue
+        return materialization
+    return None
+
+
 def _battle_control_turn_state(
     rows: list[dict[str, object]],
     snapshot: dict[str, object] | None,
@@ -3069,6 +3811,31 @@ def _battle_control_turn_state(
         return {
             "status": "wait_for_pause",
             "subject_army_ids": active_subjects,
+        }
+
+    for subject in active_subjects:
+        identity_pending = _current_battle_identity_pending(
+            snapshot,
+            subject_public_cunit_id=subject,
+        )
+        if identity_pending is None:
+            continue
+        prior_materialization = (
+            _battle_identity_materialization_for_current_pending(
+                scoped,
+                snapshot,
+                subject_public_cunit_id=subject,
+            )
+        )
+        return {
+            "status": (
+                "identity_pending_after_materialization"
+                if prior_materialization is not None
+                else "identity_pending"
+            ),
+            "subject_army_id": subject,
+            "identity_pending": identity_pending,
+            "prior_materialization": prior_materialization,
         }
 
     for subject in active_subjects:
@@ -4476,6 +5243,61 @@ def choose_one_life_turn(
                 "subject_army_ids", []
             ),
         }
+    if battle_control_status == "identity_pending":
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_battle_identity_materialization",
+                "selected_step": "life-advance",
+                "reason": (
+                    "the frozen paused public subject is in combat, but CK3 "
+                    "has not materialized its CombatID; advance exactly one "
+                    "day once, then require a non-missing full CombatID on "
+                    "the next "
+                    "revision"
+                ),
+                "battle_subject_army_id": battle_control_state.get(
+                    "subject_army_id"
+                ),
+                "battle_identity_pending": battle_control_state.get(
+                    "identity_pending"
+                ),
+                "next_revision_requirement": "full_combat_id",
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_identity_materialization_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": (
+                "the frozen CombatID materialization boundary requires one "
+                "explicit bounded day, but this backend cannot advance it"
+            ),
+            "battle_subject_army_id": battle_control_state.get(
+                "subject_army_id"
+            ),
+        }
+    if battle_control_status == "identity_pending_after_materialization":
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_identity_materialization_failed",
+            "selected_step": None,
+            "required_observation": "full-current-revision-CombatID",
+            "reason": (
+                "the single explicit one-day materialization was consumed, "
+                "but the next frozen revision still lacks a non-missing "
+                "CombatID; do not advance again"
+            ),
+            "battle_subject_army_id": battle_control_state.get(
+                "subject_army_id"
+            ),
+            "battle_identity_pending": battle_control_state.get(
+                "identity_pending"
+            ),
+            "battle_identity_materialization": battle_control_state.get(
+                "prior_materialization"
+            ),
+        }
     if battle_control_status == "query_required":
         battle_query_step = battle_control_state.get("step")
         if (
@@ -5518,7 +6340,7 @@ def choose_one_life_turn(
                     if isinstance(frame, dict)
                     else None
                 )
-                if combat_id is None or combat_id <= 0 or subject is None:
+                if combat_id is None or combat_id == -1 or subject is None:
                     continue
                 incumbent = distinct_frames.get(combat_id)
                 incumbent_subject = (
@@ -6928,6 +7750,7 @@ def choose_one_life_turn(
             and route_exact_candidates
         ):
             route_rejections: list[dict[str, object]] = []
+            stationary_contact_transition: dict[str, object] | None = None
             # The exact set is already ranked by observable siege quality.
             # Stop at its first fully safe route instead of globally scanning
             # every objective for the shortest path.  This is not a fixed cap:
@@ -6948,11 +7771,119 @@ def choose_one_life_turn(
                         )
                         continue
                     if stationary_threats:
+                        if route_contact_scope_supported:
+                            stationary_contact_horizon = (
+                                _fresh_route_contact_horizon(
+                                    rows,
+                                    snapshot,
+                                    army_id=army_id,
+                                    origin_province_id=current_province_id,
+                                    target_province_id=province_id,
+                                    hostile_army_ids=route_threat_enemy_ids,
+                                    route_province_ids=[],
+                                )
+                            )
+                            stationary_query_step = (
+                                query_route_contact_horizon_step(
+                                    army_id,
+                                    province_id,
+                                    route_threat_enemy_ids,
+                                )
+                            )
+                            if stationary_contact_horizon is None:
+                                if stationary_query_step in available_steps:
+                                    return {
+                                        "policy": "one-life-turn-v1",
+                                        "phase": "native_war_stationary_contact_horizon",
+                                        "selected_step": stationary_query_step,
+                                        "reason": "resolve geometric convergence on the occupied exact objective with the stationary subject and hostile native arrival timelines",
+                                        "route_audit": {
+                                            "status": "stationary_geometric_threat",
+                                            "target_province_id": province_id,
+                                            "conflicts": stationary_threats,
+                                        },
+                                        "route_rejections": route_rejections,
+                                        "active_wars": war_summary,
+                                    }
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_stationary_contact_horizon_unsupported",
+                                    "selected_step": None,
+                                    "required_step": stationary_query_step,
+                                    "reason": "the occupied exact objective requires a fresh stationary one-day contact horizon",
+                                    "route_rejections": route_rejections,
+                                    "active_wars": war_summary,
+                                }
+                            stationary_advance_step = (
+                                advance_route_contact_horizon_step(
+                                    army_id,
+                                    province_id,
+                                    route_threat_enemy_ids,
+                                )
+                            )
+                            stationary_contact_free = (
+                                stationary_contact_horizon.get(
+                                    "one_day_contact_free"
+                                )
+                                is True
+                            )
+                            stationary_contact_unavoidable = (
+                                unavoidable_current_province_contact_in_horizon(
+                                    stationary_contact_horizon
+                                )
+                            )
+                            if stationary_contact_free:
+                                if stationary_advance_step in available_steps:
+                                    return {
+                                        "policy": "one-life-turn-v1",
+                                        "phase": "native_war_stationary_contact_horizon_progress",
+                                        "selected_step": stationary_advance_step,
+                                        "reason": "the exact stationary timeline proves the occupied objective contact-free for the next day",
+                                        "route_audit": {
+                                            "status": "safe_one_day_stationary_contact_horizon",
+                                            "target_province_id": province_id,
+                                            "contact_horizon": stationary_contact_horizon,
+                                        },
+                                        "route_rejections": route_rejections,
+                                        "active_wars": war_summary,
+                                    }
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_stationary_contact_horizon_progress_unsupported",
+                                    "selected_step": None,
+                                    "required_step": stationary_advance_step,
+                                    "reason": "the fresh stationary horizon is actionable, but the proof-bound one-day advance is unavailable",
+                                    "route_rejections": route_rejections,
+                                    "active_wars": war_summary,
+                                }
+                            if stationary_contact_unavoidable:
+                                # Do not accept contact while a later-ranked
+                                # exact objective may still offer a safe exit.
+                                # Keep the proof and finish the candidate
+                                # sweep; only the all-alternatives-rejected
+                                # branch may choose this hold transition.
+                                stationary_contact_transition = {
+                                    "advance_step": stationary_advance_step,
+                                    "target_province_id": province_id,
+                                    "contact_horizon": stationary_contact_horizon,
+                                }
                         route_rejections.append(
                             {
                                 "target_province_id": province_id,
                                 "status": "unsafe",
                                 "conflicts": stationary_threats,
+                                **(
+                                    {
+                                        "contact_horizon": (
+                                            stationary_contact_horizon
+                                        )
+                                    }
+                                    if route_contact_scope_supported
+                                    and isinstance(
+                                        stationary_contact_horizon, dict
+                                    )
+                                    else {}
+                                ),
                             }
                         )
                         continue
@@ -7167,6 +8098,42 @@ def choose_one_life_turn(
                 }
                 break
             if preview_selected_target is None:
+                if isinstance(stationary_contact_transition, dict):
+                    stationary_advance_step = stationary_contact_transition.get(
+                        "advance_step"
+                    )
+                    stationary_target = stationary_contact_transition.get(
+                        "target_province_id"
+                    )
+                    stationary_horizon = stationary_contact_transition.get(
+                        "contact_horizon"
+                    )
+                    if (
+                        isinstance(stationary_advance_step, str)
+                        and stationary_advance_step in available_steps
+                    ):
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_unavoidable_contact_transition",
+                            "selected_step": stationary_advance_step,
+                            "reason": "every alternate exact objective route was rejected; hold the occupied objective for one proof-bound day and require an observed contact transition",
+                            "route_audit": {
+                                "status": "stationary_current_province_contact",
+                                "target_province_id": stationary_target,
+                                "contact_horizon": stationary_horizon,
+                            },
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_unavoidable_contact_transition_unsupported",
+                        "selected_step": None,
+                        "required_step": stationary_advance_step,
+                        "reason": "every alternate exact objective route was rejected and the stationary contact proof is fresh, but no proof-bound one-day transition is available",
+                        "route_rejections": route_rejections,
+                        "active_wars": war_summary,
+                    }
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "native_war_no_safe_exact_route",

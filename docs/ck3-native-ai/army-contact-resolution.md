@@ -241,6 +241,98 @@ flowchart TD
     class L,R unknown;
 ```
 
+### 2026-08-30 G2 长跑帧：全静止目标缺少可复用的 hostile timeline
+
+[production-live blocker] G2 attempt04
+`C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/g2-runs/20260830T151352Z-next-episode-df7f4dc1/`
+从第二角色的 durable checkpoint 连续执行到 turn `734` / `date_raw=53290584` 后停在
+`native_war_no_safe_exact_route`。`report.json` SHA-256 为
+`460985436DBA413D814F967F16B2F6BC7F6F8CA0A9B6C727D8DCBFF2799C3E07`，`first-blocker.json`
+SHA-256 为 `B8922DE00F164A9B65DD79AE3DD4CEE282F01071C4274D574E316597FCE53EE5`；最后 durable
+checkpoint 为 turn `722` / history `1918` / `date_raw=53290248` / SHA-256
+`B3A9FF0C5DDC2BED5718B1FA0AC79BD6D137EE4F9FCA64C1934FB434BC2D9A23`。角色 `29829` 仍存活，
+session、shutdown、进程树和 driver cleanup 均为 GREEN。
+
+- [production-live blocker] 本帧只有一支可控 Army `134218218`，它已停在 exact objective Province `2619`，
+  无 active route。三场战争均仍 active；敌 Army `167772532` 当前在 `2604`，target 为 `2619`，remaining route
+  为 `[2605,8757,2615,2616,2617,2618,2619]`。旧 `_stationary_province_threats` 只按 route membership
+  产生 `enemy_targeting_stationary_province`，没有 arrival date，因而把“未来会到”直接当成“下一日会接触”。
+- [production-live blocker] 这次不存在可作为 subject 的 moving 玩家军，所以 2026-08-28 已闭合的“从同帧 moving
+  horizon 复用完整 hostile timelines”没有输入。保守停止是诚实的，但它现在已成为第二角色完整寿命长跑的真实 blocker。
+- [static-confirmed] 同一 frozen exact-build reader 的 `BuildActiveRouteTimeline` 已能验证 CUnit current Province
+  指针、读取 active MovePath header，并在 route count 为 `0` 时发布 `current_province_id`、相同
+  `effective_origin_province_id` 与空 route/arrival arrays。`BuildTimelineIntervals` 随后会把该 row 投影成覆盖整个
+  `[horizon_start,horizon_end]` 的闭区间。完整 hostile scope、每条 hostile active timeline 以及 before/after paused
+  snapshot equality 门禁也已经存在；缺口仅是 `BuildSubjectRouteTimeline` 在 same-current empty-route 情形仍先走
+  `get_army_move_mode/resolve_move_origin`，使这些既有只读能力不可达。
+- [counter-policy] 最小原生扩展不新增 schema 或命令：仅当 subject 可控、`regular/sieging`、非 combat/retreat、
+  move target 已明确为空、公开 route 为空、request target 等于 current Province，且 raw active MovePath header 也确认
+  count 为 `0` 时，直接复用 `BuildActiveRouteTimeline` 构造 stationary subject timeline。其它 target、状态或不完整
+  shape 仍走原路线构造或 fail closed；hostile scope 与原子 before/after 绑定不变。
+- [counter-policy] Python 只为上述 exact stationary hold 广告 `target=current` horizon。fresh query 若证明下一日
+  contact-free，才广告既有 proof-bound one-day advance；若证明 current-Province contact unavoidable，则仍走既有严格
+  contact-transition 后置；任何 unavailable/stale/conflicting 结果继续保持暂停。该入口不授权多日 hold、猜 ETA、按 hop
+  数估时或把 contact-free 改写成“战斗有利”。
+
+```mermaid
+flowchart TD
+    P["[production-live blocker] paused 53290584<br/>134218218 stationary at objective 2619"] --> G["[production-live blocker] geometric route membership<br/>167772532 eventually targets 2619"]
+    G --> Q{"[counter-policy] exact same-current<br/>stationary horizon available?"}
+    Q -->|missing / stale| B["keep paused; capability blocker"]
+    Q -->|fresh| T["[static-confirmed] empty subject MovePath<br/>+ complete hostile native timelines"]
+    T --> O{"closed occupancy overlaps<br/>within next native day?"}
+    O -->|no| A["proof-bound one-day advance<br/>then paused re-observation"]
+    O -->|yes| C["strict one-day contact transition"]
+    U["[unknown] hostile arrival for this exact live frame"] -. "cold replay must publish it" .-> T
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+### 2026-08-31 G2 实机闭环：stationary hostile timeline → 严格接触转换
+
+- [production-live] attempt05
+  `C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/g2-runs/20260830T155719Z-next-episode-f2241f93/`
+  用 DLL SHA-256 `8E0770310DCB1CCA43AFC1FE63E9431735985F045BE2C0B771E5EDEE3AA8A262`
+  从 `53290248 / history 1918` 冷恢复。新 stationary query 在旧 blocker `53290584` 返回可用时间线，随后连续推进
+  到 `53291856`；本次共 `152 attempted / 151 successful / 55 visible gameplay`。这证明
+  `target=current + raw empty MovePath` 入口已在 production loop 可达，不再把未来 53 日后的 route vertex 当成次日接触。
+  最后 durable checkpoint 为 `53291832 / history 2085 /`
+  `1B24C2486BF2258D3DBA8B201FB9AAC15B7B62825CAAA1330C14C3DD7B9EB7C6`；report SHA-256
+  `D23D36FFAB490825493F8EE742B4C3DD2FBEEBAF89BC3787A362746118EA0CED`。
+- [production-live] `53291856` 的 fresh horizon 又给出真实冲突：stationary player Army `134218218@2619`，
+  hostile `167772532` 将在闭区间端点 `53291880` 到达同省，`one_day_contact_free=false`。旧 planner 在这里仍停止，
+  因为通用 `unavoidable_current_province_contact_in_horizon` 只接受非空 moving subject route；这是 attempt05 的新
+  capability RED，不是否定 stationary reader。
+- [counter-policy] stationary 冲突不能抢在可用撤离路线前执行。planner 先保存这一份同省 proof，继续检查全部
+  exact-objective candidates；只有其它 exact objective 都被拒绝时，才选择 speed-1 proof-bound contact transition。
+  driver 对 stationary proof 仍要求 `target=current`、空 subject route/arrival、完整 hostile scope 与同一 snapshot 绑定；
+  endpoint marker 另要求 subject 前后均保持 stationary，不能把 ACK 或单纯跨日当成接触。
+- [production-live] attempt06
+  `C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/g2-runs/20260830T160740Z-next-episode-c2ef48a8/`
+  从 `53291832` 冷恢复。`53291856→53291880` 的第一日严格转换只得到
+  `predicted_contact_boundary_reached`，没有冒充已接触；唯一允许的相邻日 follow-up 随后在 `53291904` 直接观察到
+  player `134218218` 与 hostile `167772532 / 251658360` 的真实 active CombatID 状态，后置为
+  `active_combat_observed`。这把 stationary horizon → endpoint marker → actual combat 的完整 OODA 边界升为
+  production-live。durable checkpoint 为 `53291904 / history 2096 /`
+  `0D5B9F116DDAEFCD7C8DE0A9446924B88814D78FFBBD35FFD1F5E10C8D812858`；report SHA-256
+  `8144BC04E7FB905AE9F212EFEDDB94C2EABF6B0C2751A5E4793AEF89F81F3014`。
+- [production-live blocker] 同一 attempt 的下一 turn 首次读取
+  `query-battle-control-snapshot-v1-134218218` 时，原生 query 返回
+  `CK3 battle-control state changed during query`。这发生在新 combat 已落盘、checkpoint 已保存之后；当前只记为待冷恢复
+  区分的一次 query RED，尚不能声称是稳定 capability 缺口。first-blocker SHA-256
+  `E0F3DFD147B92FB1E96A5D081E14D6BAE82A93376505CDA05C5971D2D68ABC88`。
+
+### 2026-08-31 G2 冷恢复结论：接触已物化，旧 consumer 错拒 signed full CombatID
+
+- [production-live correction] attempts 08/09 从 `53291904 / history=2096 / 0D5B9F11...2858` 冷恢复后稳定复现
+  query RED；attempt10 唯一一次 `+24h` 仍被旧“positive CombatID”门拒绝。exact-build resolver 证明 low24 只用于选槽，
+  object identity 必须与完整 signed dword 相等；因此负值不是“接触尚未物化”。
+- [production-live] attempt12 同帧双查询读到稳定 `CombatID=-2147483647 / BattleResultID=-2046820351`；attempt16 又让
+  该身份经过一次 7 日 speed-3 battle decision epoch，并在 `combat_roster_changed` 原生日界停表后 paused 重读为同一 ID、
+  phase `main`。新 durable checkpoint 为 `53292072 / history=2103 / ED031039...C8E3`。
+- [readiness boundary] stationary timeline→endpoint marker→actual combat→battle action→paused verification 这条相邻 OODA 链已
+  production-live；G2 第二角色仍存活，完整寿命、死亡结算与再跨 episode 尚未完成，不能由这一切片冒充。
+
 ### 2026-08-28 正式长跑帧：第二条几何安全 active route 被 capability gate 丢失
 
 [live-confirmed] 正式一代长跑在 paused `snapshot_id=native:578`、service revision `579`、native revision

@@ -293,6 +293,60 @@ interaction_semantic_decision_ready = false
 victory 与 defeat 仍各需独立 fixture；white-peace live 不能替代另外两个 outcome 的 vptr/key/side
 组合验证。圣战属于允许的战争域窄例外，但不得混入这份普通 `claim_cb` live 矩阵；它需要自己的最小战争切片与证据。
 
+## G2 长跑：Raiktor 防守方主动白和
+
+[production-live RED / counter-policy static-ready] G2 第二角色长跑 Attempt 1
+`20260830T133348Z-next-episode-24ec12bd` 在 date `53216352` 首次遇到由 primary defender
+发给玩家 primary attacker 的 `end_war_attacker_white_peace_interaction`。pending full ID
+`-268435441` 的 typed binding 指向 active WarID `33554527`，actor `36769=primary_defender`、
+recipient `29829=primary_attacker`，secondary actor、secondary recipient 与 intermediary 均为 `-1`；
+accept/reject/block 原生合法，ACK 原生非法。当前策略因 `special_outcome_terms_unavailable` 正确停住，
+但这已成为阻断完整第二寿命 OODA 的真实 B1，而不是理论缺口。first-blocker SHA-256 为
+`FB75EFCBFB677B18B10D7A95D9399545C05FF78670354A593CA080C9693D8777E`；可恢复 checkpoint
+date `53215632`、SHA-256
+`9302EDD1F7BF91DCF52E7FD9617CB27794D4E534D2A9CEF288BD5C1B0F91DE34`。
+
+同一 frozen build 的现有 `query-war-termination-options-33554527` 已在前序 paused 帧发布
+active CB `raiktor_claim_cb`、player attacker/primary、war score `7`、duration `937` days 与
+`cb_allows_white_peace=true`。该 event CB 的 outbound player white-peace validator/available 为 false，
+所以不能把 outbound offer 可用性误作 inbound reply 的必要条件；当前 inbound pending 本身及 accept
+legality 才是 responder 路径的原生合法性证据。
+
+原版 `common/casus_belli_types/00_event_war.txt` SHA-256 为
+`BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707`。`raiktor_claim_cb`
+的 `on_white_peace` 与普通 claim 路径一致：不改 title holder，保留目标 claim 并把 weak claim 强化，
+primary 双方没有 baseline gold 转移，attacker 支付 `-5 * cb_prestige_factor` prestige，释放战俘并建立
+white-peace truce；Raiktor 专属 Epirus/Byzantium/title/gold/trait 奖励只位于 `on_victory`，不会在白和执行。
+CB 还明确 `allow_hostages = no`。因此允许一个不升级整体 structured-terms readiness 的 exact-key
+blocker-removal counter-policy：只接受这一种 CB、这一种 absolute outcome 与这一种角色方向；其它 CB、
+hostage、victory/defeat 或角色方向继续 fail closed。
+
+```mermaid
+flowchart TD
+    P["same-frame typed pending"] --> K{"exact key =<br/>end_war_attacker_white_peace_interaction?"}
+    K -->|no| X["existing classifier / fail closed"]
+    K -->|yes| B{"binding = white_peace<br/>actor primary defender<br/>recipient player primary attacker?"}
+    B -->|no| X
+    B -->|yes| H{"secondary roles and intermediary<br/>all -1?"}
+    H -->|no| X
+    H -->|yes| Q{"same-frame termination row<br/>for bound WarID present?"}
+    Q -->|no| O["read-only query-war-termination-options-WarID"]
+    Q -->|yes| C{"CB = raiktor_claim_cb<br/>attacker/primary; duration >= 365<br/>0 <= player score < 100<br/>CB permits white peace?"}
+    C -->|no| X
+    C -->|yes| L{"native accept legal<br/>and command reachable?"}
+    L -->|no| X
+    L -->|yes| A["accept; semantic_optimal=false<br/>exact blocker-removal policy"]
+    A --> V{"old pending ID gone<br/>and bound WarID gone?"}
+    V -->|yes| G["visible gameplay; checkpoint eligible"]
+    V -->|no| R["postcondition RED; do not claim war ended"]
+```
+
+这里复用两条已经存在的只读生产口，不新增 DLL reader：pending context 提供 full-ID、absolute outcome、
+WarID、roles、routing 与 reply legality；termination query 提供 active CB identity、duration、score 与
+CB white-peace permission。两者必须命中同一 snapshot/public revision/native revision/connection/episode。
+执行后除旧 pending full ID 生命周期外，还必须验证 bound WarID 从下一 paused snapshot 消失；仅 pending
+消失不算白和完成。当前段落在修复后实机重跑前仍是 `static-ready`，不得称为 GREEN/live policy。
+
 ## Unknown 与停止边界
 
 | unknown | 下一静态入口 | 当前行为 |

@@ -43,6 +43,7 @@ PLAYER = 29_829
 ALLY_OWNER = 40_001
 ENEMY_OWNER = 36_108
 COMBAT_ID = 335_544_325
+SIGNED_COMBAT_ID = -2_147_483_647
 COMBAT_PROVINCE = 2586
 TARGET_PROVINCE = 2700
 MID_PROVINCE = 2630
@@ -460,6 +461,22 @@ class ActiveCombatRetreatV1ContractTests(unittest.TestCase):
                 "target_province_id": TARGET_PROVINCE,
                 "candidate_token": token,
             },
+        )
+        signed_order = order_active_combat_retreat_v1_step(
+            SELECTED,
+            expected_snapshot_revision=7,
+            expected_combat_id=SIGNED_COMBAT_ID,
+            expected_side_index=0,
+            expected_scope="full_side",
+            target_province_id=TARGET_PROVINCE,
+            candidate_token=token,
+        )
+        signed_parsed = parse_order_active_combat_retreat_v1_step(
+            signed_order
+        )
+        assert signed_parsed is not None
+        self.assertEqual(
+            signed_parsed["expected_combat_id"], SIGNED_COMBAT_ID
         )
         for malformed in (
             preview.replace(f"-{SELECTED}-", f"-0{SELECTED}-"),

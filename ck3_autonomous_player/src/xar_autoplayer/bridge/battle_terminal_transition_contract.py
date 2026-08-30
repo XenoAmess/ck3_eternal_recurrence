@@ -153,6 +153,17 @@ def _optional_positive_int32(value: object, field: str) -> int | None:
     return _positive_int32(value, field)
 
 
+def _full_component_id(value: object, field: str) -> int:
+    result = _integer(value, field, minimum=-(2**31), maximum=2**31 - 1)
+    if result == -1:
+        raise ValueError(f"{field} must not be the missing-ID sentinel")
+    return result
+
+
+def _optional_full_component_id(value: object, field: str) -> int | None:
+    return None if value is None else _full_component_id(value, field)
+
+
 def _optional_integer(
     value: object,
     field: str,
@@ -204,6 +215,23 @@ def _ordered_positive_ids(
     return result
 
 
+def _ordered_full_component_ids(
+    value: object,
+    field: str,
+    *,
+    unique: bool,
+) -> list[int]:
+    if not isinstance(value, list):
+        raise ValueError(f"{field} must be a list")
+    result = [
+        _full_component_id(item, f"{field}[{index}]")
+        for index, item in enumerate(value)
+    ]
+    if unique and len(result) != len(set(result)):
+        raise ValueError(f"{field} must not contain duplicate full IDs")
+    return result
+
+
 def query_battle_terminal_transition_v1_step(
     prior_combat_id: int,
     subject_public_cunit_id: int,
@@ -211,7 +239,7 @@ def query_battle_terminal_transition_v1_step(
 ) -> str:
     """Encode the two exact identities and optional journal cursor."""
 
-    prior_combat_id = _positive_int32(prior_combat_id, "prior_combat_id")
+    prior_combat_id = _full_component_id(prior_combat_id, "prior_combat_id")
     subject_public_cunit_id = _positive_int32(
         subject_public_cunit_id, "subject_public_cunit_id"
     )
@@ -241,24 +269,23 @@ def parse_query_battle_terminal_transition_v1_step(
     suffix = step.removeprefix(
         QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
     )
-    parts = suffix.split("-")
+    parts = suffix.rsplit("-", 2)
     if len(parts) != 3:
         return None
-    if any(
-        not part.isascii()
-        or not part.isdecimal()
-        or (part.startswith("0") and part != "0")
-        for part in parts
-    ):
+    if any(not part.isascii() for part in parts):
         return None
     try:
         prior_combat_id, subject_public_cunit_id, cursor_wire = map(int, parts)
     except ValueError:
         return None
     if not (
-        1 <= prior_combat_id <= 2**31 - 1
+        -(2**31) <= prior_combat_id <= 2**31 - 1
+        and prior_combat_id != -1
+        and str(prior_combat_id) == parts[0]
         and 1 <= subject_public_cunit_id <= 2**31 - 1
+        and str(subject_public_cunit_id) == parts[1]
         and 0 <= cursor_wire <= 2**64 - 1
+        and str(cursor_wire) == parts[2]
     ):
         return None
     return (
@@ -400,7 +427,7 @@ def _normalize_prior(
     prior = _exact_dict(
         value, "battle_terminal_transition.prior", _PRIOR_FIELDS
     )
-    combat_id = _positive_int32(
+    combat_id = _full_component_id(
         prior.get("combat_id"), "battle_terminal_transition.prior.combat_id"
     )
     if combat_id != expected_prior_combat_id:
@@ -451,7 +478,7 @@ def _normalize_prior(
         prior.get("province_id"),
         "battle_terminal_transition.prior.province_id",
     )
-    battle_result_id = _optional_positive_int32(
+    battle_result_id = _optional_full_component_id(
         prior.get("battle_result_id"),
         "battle_terminal_transition.prior.battle_result_id",
     )
@@ -651,13 +678,15 @@ def _normalize_subject(value: object) -> dict[str, object]:
     positive_fields = (
         "current_province_id",
         "native_carmy_id",
-        "combat_backlink_id",
-        "active_combat_id",
         "move_target_province_id",
         "coordinator_id",
     )
     for key in positive_fields:
         normalized[key] = _optional_positive_int32(
+            subject.get(key), f"battle_terminal_transition.subject.{key}"
+        )
+    for key in ("combat_backlink_id", "active_combat_id"):
+        normalized[key] = _optional_full_component_id(
             subject.get(key), f"battle_terminal_transition.subject.{key}"
         )
     normalized["movement_or_retreat_state_raw"] = _optional_integer(
@@ -730,13 +759,13 @@ def _normalize_successor(
     state = successor.get("state")
     if state not in _SUCCESSOR_STATES:
         raise ValueError("battle successor state is invalid")
-    matching = _ordered_positive_ids(
+    matching = _ordered_full_component_ids(
         successor.get("matching_combat_ids_in_native_order"),
         "battle_terminal_transition.successor."
         "matching_combat_ids_in_native_order",
         unique=True,
     )
-    selected = _optional_positive_int32(
+    selected = _optional_full_component_id(
         successor.get("selected_successor_combat_id"),
         "battle_terminal_transition.successor.selected_successor_combat_id",
     )
@@ -826,7 +855,7 @@ def normalize_battle_terminal_transition_v1(
 ) -> dict[str, object]:
     """Normalize one journal-backed frame without inferring terminal kind."""
 
-    expected_prior_combat_id = _positive_int32(
+    expected_prior_combat_id = _full_component_id(
         expected_prior_combat_id, "expected_prior_combat_id"
     )
     expected_subject_public_cunit_id = _positive_int32(
@@ -881,7 +910,7 @@ def normalize_battle_terminal_transition_v1(
         minimum=-(2**31),
         maximum=2**31 - 1,
     )
-    prior_combat_id = _positive_int32(
+    prior_combat_id = _full_component_id(
         frame.get("prior_combat_id"),
         "battle_terminal_transition.prior_combat_id",
     )

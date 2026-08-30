@@ -439,11 +439,9 @@ bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
   if (snapshot.status != game::BattleControlSnapshotStatus::available ||
       !snapshot.battle_control_ready || snapshot.snapshot_revision == 0 ||
       snapshot.subject_public_cunit_id <= 0 ||
-      snapshot.subject_native_carmy_id <= 0 || snapshot.combat_id <= 0 ||
+      snapshot.subject_native_carmy_id <= 0 || snapshot.combat_id == -1 ||
       snapshot.province_id <= 0 || !phase_valid || !winner_valid ||
       !forced_winner_valid || snapshot.phase_day < 0 ||
-      (snapshot.battle_result_id != -1 &&
-       snapshot.battle_result_id <= 0) ||
       !ValidateActiveCombatRetreat(snapshot) ||
       !ValidateSide(snapshot.attacker, 0, "attacker", snapshot.combat_id) ||
       !ValidateSide(snapshot.defender, 1, "defender", snapshot.combat_id)) {
@@ -863,8 +861,10 @@ bool ExecuteBattleControlSnapshotMailboxQueryV1(
           BattleControlSnapshotMailboxCompletionV1::available;
       return true;
     }
+    const auto diagnostic_reason = query->result.diagnostic_reason;
     query->result = {};
     query->result.status = status;
+    query->result.diagnostic_reason = diagnostic_reason;
     query->completion =
         BattleControlSnapshotMailboxCompletionV1::query_unavailable;
     return true;
@@ -1044,7 +1044,7 @@ std::string SerializeBattleControlSnapshotV1(
   output += ",\"finalized\":";
   output += snapshot.finalized ? "true" : "false";
   output += ",\"battle_result_id\":";
-  if (snapshot.battle_result_id > 0) {
+  if (snapshot.battle_result_id != -1) {
     if (!AppendNumber(output, snapshot.battle_result_id)) {
       return {};
     }

@@ -250,13 +250,13 @@ bool CaptureTerminalUnsafe(void *combat,
   event.province_id = province == nullptr
                           ? -1
                           : LoadAt<std::int32_t>(province, kProvinceIdOffset);
-  if (event.combat_id <= 0 || event.province_id <= 0 || event.phase_day < 0 ||
+  if (event.combat_id == -1 || event.province_id <= 0 || event.phase_day < 0 ||
       event.winner_raw < -1 || event.winner_raw > 1 || finalized_raw > 1 ||
       event.attacker_primary_participant_character_id <= 0 ||
       event.defender_primary_participant_character_id <= 0) {
     event.capture_failure_flags |= battle_terminal_capture_failure_identity;
   }
-  if (event.battle_result_id > 0) {
+  if (event.battle_result_id != -1) {
     void *const result = ResolveStoredComponent(
         g_bindings.battle_result_storage_slot, event.battle_result_id,
         kBattleResultIdOffset);
@@ -267,8 +267,6 @@ bool CaptureTerminalUnsafe(void *combat,
       event.wipe_raw =
           LoadAt<std::uint8_t>(result, kBattleResultWipeOffset) != 0;
     }
-  } else if (event.battle_result_id != -1) {
-    event.capture_failure_flags |= battle_terminal_capture_failure_identity;
   }
   (void)ReadTerminalSide(
       combat, kCombatAttackerSideOffset, event.combat_id,
@@ -310,7 +308,7 @@ bool ReadWarscorePreUnsafe(void *war, void *combat,
       LoadAt<std::int32_t>(war, kWarBattleRowCountOffset);
   const auto capacity =
       LoadAt<std::int32_t>(war, kWarBattleRowCapacityOffset);
-  return output.combat_id > 0 && output.war_id > 0 &&
+  return output.combat_id != -1 && output.war_id > 0 &&
          output.row_count >= 0 && output.row_count <= capacity &&
          capacity <= kMaximumComponentCapacity;
 }
@@ -319,7 +317,7 @@ bool CaptureWarscorePostUnsafe(
     void *war, void *combat, const WarscorePreObservationV1 &before,
     BattleWarscoreJournalEventV1 &event, bool &row_appended) noexcept {
   row_appended = false;
-  if (war == nullptr || combat == nullptr || before.combat_id <= 0 ||
+  if (war == nullptr || combat == nullptr || before.combat_id == -1 ||
       before.war_id <= 0) {
     return false;
   }
@@ -595,7 +593,7 @@ BattleTerminalJournalLookupV1 LookupBattleTerminalJournalV1(
     std::uint64_t after_terminal_sequence) noexcept {
   BattleTerminalJournalLookupV1 output{};
   output.requested_after_sequence = after_terminal_sequence;
-  if (prior_combat_id <= 0 ||
+  if (prior_combat_id == -1 ||
       !g_storage_initialized.load(std::memory_order_acquire)) {
     return output;
   }
@@ -640,7 +638,7 @@ BattleTerminalJournalLookupV1 LookupBattleTerminalJournalV1(
 BattleWarscoreJournalLookupV1 LookupBattleWarscoreJournalV1(
     std::int32_t combat_id) noexcept {
   BattleWarscoreJournalLookupV1 output{};
-  if (combat_id <= 0 ||
+  if (combat_id == -1 ||
       !g_storage_initialized.load(std::memory_order_acquire)) {
     return output;
   }

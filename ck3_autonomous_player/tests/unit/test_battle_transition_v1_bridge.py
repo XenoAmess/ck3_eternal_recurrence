@@ -29,6 +29,8 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 
 
 COMBAT_ID = 335_544_325
+SIGNED_COMBAT_ID = -2_147_483_647
+SIGNED_BATTLE_RESULT_ID = -2_046_820_351
 SUBJECT = 83_886_341
 NATIVE_REVISION = 5
 PUBLIC_REVISION = 4
@@ -145,15 +147,26 @@ def _semantic_snapshot(revision: int = NATIVE_REVISION) -> dict[str, object]:
 
 
 class BattleTransitionV1ContractTests(unittest.TestCase):
-    def test_step_requires_one_canonical_positive_full_combat_id(self) -> None:
+    def test_step_requires_one_canonical_non_missing_full_combat_id(self) -> None:
         self.assertEqual(query_battle_transition_v1_step(COMBAT_ID), STEP)
         self.assertEqual(
             parse_query_battle_transition_v1_step(STEP), COMBAT_ID
         )
+        signed_step = query_battle_transition_v1_step(SIGNED_COMBAT_ID)
+        self.assertEqual(
+            signed_step,
+            f"query-battle-transition-v1-{SIGNED_COMBAT_ID}",
+        )
+        self.assertEqual(
+            parse_query_battle_transition_v1_step(signed_step),
+            SIGNED_COMBAT_ID,
+        )
+        self.assertEqual(query_battle_transition_v1_step(0), "query-battle-transition-v1-0")
+        self.assertEqual(parse_query_battle_transition_v1_step("query-battle-transition-v1-0"), 0)
         for malformed in (
-            "query-battle-transition-v1-0",
             "query-battle-transition-v1-01",
             "query-battle-transition-v1--1",
+            "query-battle-transition-v1--01",
             "query-battle-transition-v1-335544325x",
             "query-battle-transition-v1-N",
         ):
@@ -161,10 +174,25 @@ class BattleTransitionV1ContractTests(unittest.TestCase):
                 self.assertIsNone(
                     parse_query_battle_transition_v1_step(malformed)
                 )
-        for invalid in (True, 0, -1, 2**31):
+        for invalid in (True, -1, 2**31, -(2**31) - 1):
             with self.subTest(invalid=invalid):
                 with self.assertRaises(ValueError):
                     query_battle_transition_v1_step(invalid)
+
+    def test_signed_full_ids_survive_transition_normalization(self) -> None:
+        frame = _frame()
+        frame["combat_id"] = SIGNED_COMBAT_ID
+        frame["battle_result_id"] = SIGNED_BATTLE_RESULT_ID
+        normalized = normalize_battle_transition_v1(
+            frame,
+            expected_combat_id=SIGNED_COMBAT_ID,
+            expected_observed_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(normalized["combat_id"], SIGNED_COMBAT_ID)
+        self.assertEqual(
+            normalized["battle_result_id"], SIGNED_BATTLE_RESULT_ID
+        )
 
     def test_all_statuses_have_exact_readiness_and_nullability(self) -> None:
         for status in (

@@ -4847,6 +4847,66 @@ int main() {
     return Fail("battle-control defender projection drifted from ABI");
   }
 
+  // Generation byte 0x81 makes the full CombatID negative as a signed
+  // int32, while preserving storage slot index 3.  The native resolver uses
+  // unsigned low-24 indexing and exact dword identity, so the read-only
+  // projection must preserve this ID instead of treating it as absent.
+  constexpr std::int32_t signed_generation_combat_id = -2'130'706'429;
+  Store(g_contact_combat_1, 0x08, signed_generation_combat_id);
+  Store(g_player_internal_army, 0x128, signed_generation_combat_id);
+  Store(g_enemy_internal_army, 0x128, signed_generation_combat_id);
+  g_contact_province_combat_ids[1] = signed_generation_combat_id;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.combat_id != signed_generation_combat_id ||
+      battle.attacker.ordered_armies[0].combat_backlink_id !=
+          signed_generation_combat_id ||
+      battle.defender.ordered_armies[0].combat_backlink_id !=
+          signed_generation_combat_id) {
+    return Fail("battle-control rejected a signed full CombatID");
+  }
+  const xar::game::BattleTransitionRequest signed_transition_request{
+      signed_generation_combat_id};
+  xar::game::BattleTransitionSnapshot signed_transition{};
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          bindings, signed_transition_request, signed_transition) !=
+          xar::game::BattleTransitionSnapshotStatus::available ||
+      signed_transition.combat_id != signed_generation_combat_id) {
+    return Fail("battle-transition rejected a signed full CombatID");
+  }
+  Store(g_contact_combat_1, 0x08, contact_combat_1_id);
+  Store(g_player_internal_army, 0x128, contact_combat_1_id);
+  Store(g_enemy_internal_army, 0x128, contact_combat_1_id);
+  g_contact_province_combat_ids[1] = contact_combat_1_id;
+
+  // BattleResultID uses the same low-24 slot plus full-dword generation
+  // identity contract.  Preserve a legal sign-bit generation instead of
+  // conflating it with the sole missing sentinel -1.
+  constexpr std::int32_t signed_generation_battle_result_id =
+      -2'130'706'431;
+  Store(g_contact_battle_result, 0x08,
+        signed_generation_battle_result_id);
+  Store(g_contact_combat_1, 0x708,
+        signed_generation_battle_result_id);
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      battle.battle_result_id != signed_generation_battle_result_id) {
+    return Fail("battle-control rejected a signed full BattleResultID");
+  }
+  const xar::game::BattleTransitionRequest result_transition_request{
+      contact_combat_1_id};
+  if (xar::ck3_11906::ReadBattleTransitionSnapshot(
+          bindings, result_transition_request, signed_transition) !=
+          xar::game::BattleTransitionSnapshotStatus::available ||
+      signed_transition.battle_result_id !=
+          signed_generation_battle_result_id) {
+    return Fail("battle-transition rejected a signed full BattleResultID");
+  }
+  Store(g_contact_battle_result, 0x08, contact_battle_result_id);
+  Store(g_contact_combat_1, 0x708, contact_battle_result_id);
+
   // The exact day gate is strict: elapsed day 14 fails, while the selected
   // side's early override bypasses only that gate.
   Store(g_contact_battle_result, 0x2C, std::int32_t{43'822'768});
@@ -4980,7 +5040,8 @@ int main() {
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::state_changed ||
-      battle.battle_control_ready) {
+      battle.battle_control_ready ||
+      battle.diagnostic_reason != "retreat_projection_failed") {
     return Fail("battle-control accepted a native retreat legality mismatch");
   }
   g_can_order_combat_retreat_result = true;
@@ -5001,7 +5062,8 @@ int main() {
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::state_changed ||
-      battle.battle_control_ready) {
+      battle.battle_control_ready ||
+      battle.diagnostic_reason != "double_sample_mismatch") {
     return Fail("battle-control accepted a changing double sample");
   }
   Store(g_contact_combat_1, 0x6B4, std::int32_t{4});
@@ -5011,7 +5073,8 @@ int main() {
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::state_changed ||
-      battle.battle_control_ready) {
+      battle.battle_control_ready ||
+      battle.diagnostic_reason != "battle_result_resolution_failed") {
     return Fail("battle-control accepted stale BattleResult generation");
   }
   Store(g_contact_battle_result, 0x08, contact_battle_result_id);
@@ -5020,7 +5083,8 @@ int main() {
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::state_changed ||
-      battle.battle_control_ready) {
+      battle.battle_control_ready ||
+      battle.diagnostic_reason != "combat_daily_dispatch_in_progress") {
     return Fail("battle-control sampled inside daily dispatch");
   }
   Store(g_contact_combat_1, 0x705, std::uint8_t{0});
@@ -5030,7 +5094,9 @@ int main() {
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::state_changed ||
-      battle.battle_control_ready) {
+      battle.battle_control_ready ||
+      battle.diagnostic_reason !=
+          "active_combat_identity_attacker_side_ids_failed") {
     return Fail("battle-control accepted a stale CCombatSide back-pointer");
   }
   Store(g_contact_combat_1, 0x20 + 0xB8,
@@ -5872,11 +5938,11 @@ int main() {
       combat_inputs.input_observation_ready ||
       combat_inputs.ongoing_combats.size() != 1 ||
       combat_inputs.ongoing_combats[0].available ||
-      combat_inputs.ongoing_combats[0].combat_id_observable ||
-      combat_inputs.ongoing_combats[0].combat_id != -1 ||
+      !combat_inputs.ongoing_combats[0].combat_id_observable ||
+      combat_inputs.ongoing_combats[0].combat_id != -2 ||
       combat_inputs.ongoing_combats[0].unavailable_reason !=
-          "combat_id_invalid") {
-    return Fail("invalid CCombatID was serialized as an observed identity");
+          "combat_not_found") {
+    return Fail("signed CCombatID was not preserved as an opaque identity");
   }
   Store(g_player_internal_army, 0x128, active_combat_id);
 
@@ -7118,6 +7184,41 @@ int main() {
     return Fail(
         "active route-contact timeline did not preserve the committed path");
   }
+
+  // A regular subject with an exactly empty active MovePath occupies its
+  // current Province for the whole one-day horizon.  The reader must not ask
+  // CK3 to construct a move back to that same Province: production returns a
+  // route-unavailable move mode for this otherwise observable hold.
+  Store(g_player_army, 0x38, static_cast<void *>(nullptr));
+  Store(g_player_army, 0x40, std::int32_t{0});
+  Store(g_player_army, 0x44, std::int32_t{0});
+  g_player_army_state_code = 1;
+  g_move_mode_result = 2;
+  route_contact_request.target_province_id = 2;
+  g_preview_route_built = false;
+  g_route_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      !route_contact.one_day_contact_free ||
+      !route_contact.conflicts.empty() ||
+      !route_contact.subject_route.timeline_observable ||
+      route_contact.subject_route.current_province_id != 2 ||
+      route_contact.subject_route.effective_origin_province_id != 2 ||
+      !route_contact.subject_route.route_province_ids.empty() ||
+      !route_contact.subject_route.arrival_date_raws.empty() ||
+      g_preview_route_built || g_route_duration_calls != 0) {
+    return Fail("stationary same-current route-contact was not observable");
+  }
+
+  Store(g_player_army, 0x38,
+        static_cast<void *>(g_player_move_path.data()));
+  Store(g_player_army, 0x40, std::int32_t{3});
+  Store(g_player_army, 0x44, std::int32_t{3});
+  g_player_army_state_code = 7;
+  g_move_mode_result = 1;
+  route_contact_request.target_province_id = 3;
 
   // 0x2247320 cannot represent the exact Province boundary where progress,
   // cached speed, and recalculated current-edge speed are all zero: despite

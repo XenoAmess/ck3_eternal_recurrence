@@ -245,6 +245,44 @@ live artifact：`report.json` size `6519552`，SHA-256
 SHA-256 `DBACD2824CCB8E382CEC1EFB5649A634D305D957BEED3082144C08E1526F1470`。角色 `29829` 仍存活，最后 checkpoint
 `date_raw=53195880/history=1888`，cleanup 全绿；这不是死亡结算或人生分数证据。
 
+### 2026-08-31 G2 修正：CombatID/BattleResultID 是 opaque signed full dword
+
+[static-confirmed] exact build `1.19.0.6`、`ck3.exe` SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的两个原生 resolver 都没有
+`id > 0` 门：
+
+| 身份 | 读取 / 选槽 / 完整回读 | 机器码 |
+|---|---|---|
+| `CArmy+0x128` CombatID | `0x22771FC` 读完整 dword；`0x2277204` 仅以 low24 选槽；`0x2277220` 比较 object `+0x08` 与原完整 dword | `8B 91 28 01 00 00` / `81 E1 FF FF FF 00` / `39 51 08` |
+| `CCombat+0x708` BattleResultID | `0x23083B7` 读完整 dword；`0x23083C1` low24 选槽；`0x23083DF` 完整比较；同一模式在 `0x230845C/466/484` 重复 | `44 8B 86 08 07 00 00` / `25 FF FF FF 00` / `44 39 40 08` |
+
+因此两类 ID 都是 **signed int32 表示、opaque generation-bearing identity**；`-1` 才是 missing。符号位为 1 只表示
+generation 进入高位，不能被 consumer、serializer、planner literal、action/transition query 或 sentinel 当作无效。
+
+- [production-live RED] attempts 08/09
+  `20260830T162636Z-next-episode-e053cb02` 与
+  `20260830T163115Z-next-episode-4f1b5152` 在同一冻结 checkpoint `53291904 / 0D5B9F11...2858`
+  分别以 `active_combat_identity_failed` 与 `active_combat_identity_subject_combat_id_invalid` 停止；两次都 0 gameplay、
+  cleanup 全绿。它们证明旧 query/consumer 将真实负 CombatID 丢弃。
+- [production-live RED] attempt10
+  `20260830T165130Z-next-episode-98b0c045` 只按门禁推进一次 `+24h`，revision `4/native3 → 7/native6`，随后仍因
+  “缺 positive CombatID”停止；没有第二次推进。report / blocker SHA-256 为
+  `ECD945B92E8B87DD288671EF447DE0080379F3C365D240DB143883E5EB278A9E /`
+  `54D5764092CCC1235E0039E1244B08222AE7529D4CAC9D35BB57029BB760EDB0`。这是假设 RED，不是 CK3 未物化。
+- [production-live RED→GREEN] attempt11 先让 signed CombatID 通过，再暴露 signed BattleResultID 被拒；attempt12
+  `20260831T011500Z-signed-battle-result-query` 以同帧双查询稳定返回
+  `CombatID=-2147483647 / BattleResultID=-2046820351 / Province=2619 / maneuver day 1 / finalized=false`。
+  report / frame SHA-256 为
+  `63FE9E3CDFD62E9B93AFD7C257BA357F0A49F7D0DEA709BE050FEEB850741D66 /`
+  `5AD7B6D65ED5876B619CE05A9EEC286FE325E444C055BB255AF75575F97630AF`。
+- [production-live loop slice] attempt16
+  `20260830T174839Z-next-episode-daf8eb6f` 在同一 session 内完成 battle query、三场 war termination query、一次
+  speed-3 decision epoch 与下一 paused battle query。唯一 gameplay 动作 `53291904→53292072` 跑 7 日，以
+  `combat_roster_changed` 当日停表；同一负 CombatID/BattleResultID 原样保持，phase `maneuver→main`。随后保存
+  `history=2103 / date_raw=53292072 / checkpoint SHA-256 ED031039...C8E3`。report SHA-256
+  `3954608B316B51B6F28F73EC2C10834F68DF2F15A2CF4656161D01520DEE9326`，cleanup 全绿。该切片证明
+  signed identity 已贯穿真实 planner action→sentinel→paused requery；它不等于第二角色完整寿命已经结算。
+
 ## 求援与增援树
 
 ### 当前 stack 的求援滞回

@@ -504,16 +504,22 @@ int main() {
           "query-battle-control-snapshot-v1-2147483648") ||
       !exact_adapter->supports_step(
           "query-battle-transition-v1-335544325") ||
+      !exact_adapter->supports_step(
+          "query-battle-transition-v1--2147483647") ||
+      !exact_adapter->supports_step(
+          "query-battle-transition-v1-0") ||
       exact_adapter->supports_step(
           "query-battle-transition-v1-0335544325") ||
-      exact_adapter->supports_step(
-          "query-battle-transition-v1-0") ||
       exact_adapter->supports_step(
           "query-battle-transition-v1-2147483648") ||
       !exact_adapter->supports_step(
           "query-battle-terminal-transition-v1-335544325-83886341-0") ||
       !exact_adapter->supports_step(
           "query-battle-terminal-transition-v1-335544325-83886341-42") ||
+      !exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1--2147483647-83886341-42") ||
+      !exact_adapter->supports_step(
+          "query-battle-terminal-transition-v1-0-83886341-0") ||
       exact_adapter->supports_step(
           "query-battle-terminal-transition-v1-0335544325-83886341-0") ||
       exact_adapter->supports_step(

@@ -14,6 +14,39 @@
     "preferred_image_base": "0x140000000",
     "addresses_are": "RVA"
   },
+  "signed_full_id_resolution": {
+    "identity_rule": "CombatID and BattleResultID are opaque signed int32 full-generation identifiers; -1 is the only missing sentinel. Mask only the low 24-bit slot index, then require object identity to equal the complete signed dword.",
+    "combat_resolver": {
+      "range": "0x22771FC..0x2277223",
+      "instructions": [
+        "0x22771FC: 8B 91 28 01 00 00 | mov edx,[rcx+0x128]",
+        "0x2277204: 81 E1 FF FF FF 00 | and ecx,0x00FFFFFF",
+        "0x2277220: 39 51 08 | cmp [rcx+0x08],edx"
+      ]
+    },
+    "battle_result_resolver": {
+      "ranges": [
+        "0x23083B7..0x23083E3",
+        "0x230845C..0x230848A"
+      ],
+      "instructions": [
+        "0x23083B7: 44 8B 86 08 07 00 00 | mov r8d,[rsi+0x708]",
+        "0x23083C1: 25 FF FF FF 00 | and eax,0x00FFFFFF",
+        "0x23083DF: 44 39 40 08 | cmp [rax+0x08],r8d",
+        "0x230845C: 44 8B 86 08 07 00 00 | mov r8d,[rsi+0x708]",
+        "0x2308466: 25 FF FF FF 00 | and eax,0x00FFFFFF",
+        "0x2308484: 44 39 42 08 | cmp [rdx+0x08],r8d"
+      ]
+    },
+    "production_live": {
+      "artifact": "C:/Users/xenoa/AppData/Local/Temp/xar-marriage-reject-c21c096-state/g2-runs/20260831T011500Z-signed-battle-result-query/report.json",
+      "report_sha256": "63FE9E3CDFD62E9B93AFD7C257BA357F0A49F7D0DEA709BE050FEEB850741D66",
+      "frame_sha256": "5AD7B6D65ED5876B619CE05A9EEC286FE325E444C055BB255AF75575F97630AF",
+      "combat_id": -2147483647,
+      "battle_result_id": -2046820351,
+      "same_frame_double_query_stable": true
+    }
+  },
   "command": {
     "capability": "game.command.query-battle-control-snapshot-v1-N",
     "step_prefix": "query-battle-control-snapshot-v1-",
@@ -71,7 +104,7 @@
       "ccombat_storage": "module+0x570C758",
       "cregiment_storage": "module+0x57BF4C8; no fallback",
       "character_storage": "module+0x570C130",
-      "battle_result_storage": "module+0x57C0328; object+0x08 full BattleResultID; a positive stale generation is a BattleControl state_changed boundary",
+      "battle_result_storage": "module+0x57C0328; object+0x08 full signed BattleResultID; any non--1 generation mismatch is a BattleControl state_changed boundary",
       "battle_result_fallback": "module+0x57C0320; BattleControl reads it only for the legal CCombat BattleResultID sentinel -1",
       "minimum_days_before_manual_retreat": "signed int32 at module+0x570EE04; exact-build runtime value 14"
     },
@@ -148,7 +181,7 @@
       "+0x1B8": "opaque land/title-status object used by the exact active-retreat landless gate"
     },
     "BattleResult": {
-      "+0x08": "full BattleResultID identity for positive store resolution",
+      "+0x08": "full signed BattleResultID identity for non--1 store resolution",
       "+0x2C": "signed int32 retreat_elapsed_baseline_date_raw; independent native business name remains unknown"
     },
     "retreat_land_status_object": {
@@ -199,7 +232,7 @@
       "observed_date_raw": "int64",
       "subject_public_cunit_id": "int32 full ID",
       "subject_native_carmy_id": "int32 full ID",
-      "combat_id": "positive int32 full ID",
+      "combat_id": "signed int32 full ID; -1 is the only missing sentinel",
       "province_id": "positive int32 full ID",
       "selected_public_cunit_id": "positive int32 full CUnitID; equals subject_public_cunit_id",
       "selected_native_carmy_id": "positive int32 full CArmyID; equals subject_native_carmy_id",
@@ -219,7 +252,7 @@
       "forced_winner_side": "none | attacker | defender",
       "forced_winner_raw": "int32 -1..1",
       "finalized": "bool from CCombat+0x704; independent of phase",
-      "battle_result_id": "nullable positive full ID; null only when native value is -1",
+      "battle_result_id": "nullable signed int32 full ID; null only when native value is -1",
       "base_combat_width": "int32",
       "final_combat_width": "int32",
       "roll_cadence_counter": "int32",
@@ -319,7 +352,7 @@
     "the selected CArmy occurs in exactly one side; selected IDs/owner/combat Province are same-frame duplicates that must equal the existing subject/combat identity",
     "scope is recomputed from every same-side Army owner in native stored order; affected contains selected-owner public CUnits and unaffected contains all other owners",
     "selected-side +0xC0/+0xC1/+0xC2, current date, BattleResult baseline, runtime minimum, land-status pointer/sentinel and rule-state bit remain stable around the null-sink 0x2308250 call",
-    "only BattleResultID -1 may use module+0x57C0320; a positive generation mismatch remains state_changed and is not silently replaced by the fallback",
+    "only BattleResultID -1 may use module+0x57C0320; any non--1 generation mismatch remains state_changed and is not silently replaced by the fallback",
     "projected four-gate reasons preserve native order and computed legal_now must equal the null-sink native boolean",
     "all counts are nonnegative and bounded; every checked sum/subtraction fits its declared type",
     "two complete samples and the outer paused snapshot revision/date are identical"
@@ -332,7 +365,7 @@
     "serialized_snapshot_bytes": 921600
   },
   "closed_observation_domains": {
-    "combat_identity_province_phase_day_winner_finalized": "static-confirmed and production live-confirmed from maneuver day 1 through main day 2",
+    "combat_identity_province_phase_day_winner_finalized": "static-confirmed and production live-confirmed from maneuver day 1 through main day 2, including opaque negative full CombatID -2147483647",
     "ordered_side_carmy_to_public_cunit_mapping": "static-confirmed and production live-confirmed",
     "retained_entry_starting_current_soft_and_conditional_hard": "static-confirmed and production live-confirmed through two main-phase casualty deltas; hard remains exact only for fights_in_main_phase retained rows",
     "participant_owner_hard_ledger": "static-confirmed and production live-confirmed through two main-phase casualty deltas",

@@ -74,6 +74,17 @@ def _optional_positive_int32(value: object, field: str) -> int | None:
     return _positive_int32(value, field)
 
 
+def _full_component_id(value: object, field: str) -> int:
+    result = _int(value, field, minimum=-(2**31), maximum=2**31 - 1)
+    if result == -1:
+        raise ValueError(f"{field} must not be the missing-ID sentinel")
+    return result
+
+
+def _optional_full_component_id(value: object, field: str) -> int | None:
+    return None if value is None else _full_component_id(value, field)
+
+
 def _ordered_ids(value: object, field: str) -> list[int]:
     if not isinstance(value, list):
         raise ValueError(f"{field} must be a list")
@@ -87,7 +98,7 @@ def _ordered_ids(value: object, field: str) -> list[int]:
 
 
 def query_battle_transition_v1_step(combat_id: int) -> str:
-    combat_id = _positive_int32(combat_id, "combat_id")
+    combat_id = _full_component_id(combat_id, "combat_id")
     return f"{QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX}{combat_id}"
 
 
@@ -97,13 +108,19 @@ def parse_query_battle_transition_v1_step(step: object) -> int | None:
     ):
         return None
     suffix = step.removeprefix(QUERY_BATTLE_TRANSITION_V1_STEP_PREFIX)
-    if not suffix.isascii() or not suffix.isdecimal() or suffix.startswith("0"):
+    if not suffix.isascii():
         return None
     try:
         value = int(suffix)
     except ValueError:
         return None
-    return value if 1 <= value <= 2**31 - 1 and str(value) == suffix else None
+    return (
+        value
+        if -(2**31) <= value <= 2**31 - 1
+        and value != -1
+        and str(value) == suffix
+        else None
+    )
 
 
 def normalize_battle_transition_v1(
@@ -115,7 +132,7 @@ def normalize_battle_transition_v1(
 ) -> dict[str, object]:
     """Normalize one exact wire frame; reject omitted and invented state."""
 
-    expected_combat_id = _positive_int32(
+    expected_combat_id = _full_component_id(
         expected_combat_id, "expected_combat_id"
     )
     expected_observed_date_raw = _int(
@@ -160,7 +177,7 @@ def normalize_battle_transition_v1(
         minimum=-(2**63),
         maximum=2**63 - 1,
     )
-    combat_id = _positive_int32(
+    combat_id = _full_component_id(
         value.get("combat_id"), "battle_transition_snapshot.combat_id"
     )
     if snapshot_revision != expected_snapshot_revision:
@@ -249,7 +266,7 @@ def normalize_battle_transition_v1(
     finalized = value.get("finalized")
     if not isinstance(finalized, bool):
         raise ValueError("battle_transition_snapshot.finalized must be boolean")
-    battle_result_id = _optional_positive_int32(
+    battle_result_id = _optional_full_component_id(
         value.get("battle_result_id"),
         "battle_transition_snapshot.battle_result_id",
     )

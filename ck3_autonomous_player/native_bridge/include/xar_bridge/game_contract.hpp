@@ -1094,6 +1094,10 @@ struct ActiveCombatRetreatLegalitySnapshot {
 struct BattleControlSnapshot {
   BattleControlSnapshotStatus status =
       BattleControlSnapshotStatus::unavailable;
+  // Internal/read-only diagnostic retained when an exact paused query cannot
+  // publish a frame.  Available wire frames keep this empty; the mailbox may
+  // append it to a typed failure without exposing native pointers.
+  std::string diagnostic_reason;
   std::uint64_t snapshot_revision = 0;
   std::int64_t observed_date_raw = 0;
   std::int32_t subject_public_cunit_id = -1;
