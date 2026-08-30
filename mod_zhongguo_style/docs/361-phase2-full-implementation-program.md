@@ -167,3 +167,18 @@ B1 的队列矩阵包含 1/2/3 人、4 人合池及 7/14/23 人；23 人必须�
 - B1 后 partial 只允许剩 018/069；B2 后 partial 必须为 0；B8 后 complete=361、not-implemented=0。
 - `fixture-live` 不得冒充 `production-live`；自然路径长期证据单独记账。
 - 只有 B8 和全量回归完成后，才恢复七语发布审计、release staging、Workshop、宣传片和最终实机截图。
+
+## 八、二期自动发布与续篇宣传合同
+
+项目所有者于 2026-08-30 明确授权：二期达到上述完成门后，无需再次等待“可以发布”的口头确认，直接复用一期已经实证的正式流程完成发布。该授权不降低门槛，也不允许在功能未完成时预耗发布验收工时。
+
+正式顺序固定为：
+
+1. 361/361 领域运行时和玩家闭环全部完成，MCP-first 批量 CK3、存读档、多周期与 GUI 阻塞矩阵 GREEN；
+2. 再启动发布级九语翻译与差异审计，更新 README、thumbnail、Workshop BBCode、实机截图和媒体条；
+3. 在 `docs/release-changelogs/` 永久保存相对一期公开版本的 changelog；
+4. 只用 `build_mod_zhongguo_style_release.py --release` 生成的 staging 上传同一 Steam Workshop 物品；
+5. 上传后从 fresh Workshop cache 再跑一次 production smoke，保存报告、日志、截图、存档、哈希和失败 attempt；
+6. fresh-cache GREEN 后完成二期宣传片及最终公开物料核对。
+
+二期宣传片不是一期重讲。默认观众已经看过一期，只用最短回顾交代“京察、考核榜、3.25 与申诉”基线，主体专门展示二期新增的领域对象、决策、资源守恒、跨周期债、经理连责与组织后果。文风延续一期的嘲讽、诙谐、生活化风格，但笑点必须落在真实新增玩法上，不用互联网热词替代机制演示。继续使用中文主叙事、简中/英文同屏字幕、`zh-CN-XiaoxiaoNeural`、真实历史角色、短于 20 分钟、无 loading 开场和无 test-only UI；全部录屏、TTS、字幕、工程、失败 take、中间导出和签核材料永久保留在外部 artifact 树。
