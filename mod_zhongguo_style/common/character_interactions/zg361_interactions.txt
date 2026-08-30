@@ -17,6 +17,7 @@ zg361_appeal_interaction = {
 	is_shown = {
 		has_game_rule = zg361_on
 		scope:actor = {
+			is_ai = no
 			has_character_modifier = zg361_grade_325
 			has_variable = zg361_result_case_owner
 			var:zg361_result_case_owner = scope:recipient
@@ -61,6 +62,7 @@ zg361_appeal_interaction = {
 	on_accept = {
 		scope:actor = {
 			change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+			zg361_b2_on_appeal_filed_effect = yes
 			# 翻案：改判 3.5
 			zg361_appeal_regrade_to_35_effect = yes
 			debug_log = "ZG361: appeal accepted, regraded to 3.5"
@@ -70,6 +72,8 @@ zg361_appeal_interaction = {
 	on_decline = {
 		scope:actor = {
 			change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
+			zg361_b2_on_appeal_filed_effect = yes
+			zg361_b2_on_appeal_upheld_effect = yes
 			add_opinion = { modifier = zg361_appeal_rejected target = scope:recipient }
 			debug_log = "ZG361: appeal rejected"
 		}

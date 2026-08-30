@@ -77,9 +77,21 @@ zg361.4 = {
 			var:zg361_result_case_state = 3
 		}
 		change_influence = { value = 0 subtract = zg361_appeal_influence_cost_value }
-		random = {
-			chance = 30
-			set_variable = { name = zg361_appeal_won value = 1 }
+		zg361_b2_on_appeal_filed_effect = yes
+		# An actually independent B2 reviewer is consumed by the real appeal
+		# roll. It improves review quality without changing the sanction ceiling.
+		if = {
+			limit = { has_variable = zg361_b2_m077_quality_bonus var:zg361_b2_m077_quality_bonus = 10 }
+			random = {
+				chance = 40
+				set_variable = { name = zg361_appeal_won value = 1 }
+			}
+		}
+		else = {
+			random = {
+				chance = 30
+				set_variable = { name = zg361_appeal_won value = 1 }
+			}
 		}
 		if = {
 			limit = { has_variable = zg361_appeal_won }
@@ -88,6 +100,7 @@ zg361.4 = {
 			debug_log = "ZG361: player appeal won, regraded to 3.5"
 		}
 		else = {
+			zg361_b2_on_appeal_upheld_effect = yes
 			var:zg361_result_case_owner = {
 				if = {
 					limit = { is_alive = yes }
@@ -124,9 +137,17 @@ zg361.50 = {
 	trigger = {
 		is_ai = no
 		has_game_rule = zg361_on
+		exists = scope:zg361_notice_prompt_owner
+		exists = scope:zg361_notice_prompt_subject
+		this = scope:zg361_notice_prompt_subject
 		has_variable = zg361_result_case_owner
+		var:zg361_result_case_owner = scope:zg361_notice_prompt_owner
+		has_variable = zg361_result_cycle_serial
+		var:zg361_result_cycle_serial = scope:zg361_notice_prompt_cycle
 		has_variable = zg361_result_case_serial
+		var:zg361_result_case_serial = scope:zg361_notice_prompt_case
 		has_variable = zg361_result_case_state
+		var:zg361_result_case_state = scope:zg361_notice_prompt_state
 		var:zg361_result_case_state = 1
 		has_variable = zg361_result_grade
 		var:zg361_result_grade = 1
@@ -160,10 +181,17 @@ zg361.50 = {
 		var:zg361_result_case_owner = {
 			save_scope_as = zg361_notice_witness_owner
 			if = {
+				limit = { exists = liege liege = { is_alive = yes } }
+				liege = { save_scope_as = zg361_notice_witness }
+			}
+			else = { save_scope_as = zg361_notice_witness }
+			if = {
 				limit = { is_alive = yes }
 				add_opinion = { modifier = zg361_annoyed target = root }
 			}
 		}
+		set_variable = { name = zg361_result_delivery_witness value = scope:zg361_notice_witness }
+		save_scope_as = zg361_notice_witness_subject
 		save_scope_value_as = { name = zg361_notice_witness_cycle value = var:zg361_result_cycle_serial }
 		save_scope_value_as = { name = zg361_notice_witness_case value = var:zg361_result_case_serial }
 		save_scope_value_as = { name = zg361_notice_witness_state value = var:zg361_result_case_state }
@@ -179,6 +207,10 @@ zg361.51 = {
 	immediate = {
 		if = {
 			limit = {
+				exists = scope:zg361_notice_witness_owner
+				exists = scope:zg361_notice_witness_subject
+				exists = scope:zg361_notice_witness
+				this = scope:zg361_notice_witness_subject
 				has_variable = zg361_result_case_owner
 				var:zg361_result_case_owner = scope:zg361_notice_witness_owner
 				has_variable = zg361_result_cycle_serial
@@ -188,8 +220,11 @@ zg361.51 = {
 				has_variable = zg361_result_case_state
 				var:zg361_result_case_state = scope:zg361_notice_witness_state
 				var:zg361_result_case_state = 2
+				has_variable = zg361_result_delivery_witness
+				var:zg361_result_delivery_witness = scope:zg361_notice_witness
 			}
 			set_variable = { name = zg361_result_delivery_method value = 3 }
+			set_variable = { name = zg361_result_delivery_witness_receipt value = var:zg361_result_case_serial }
 			zg361_deliver_325_notice_effect = yes
 			debug_log = "ZG361P2: refused notice delivered by witness"
 		}
@@ -206,6 +241,9 @@ zg361.52 = {
 	immediate = {
 		if = {
 			limit = {
+				exists = scope:zg361_notice_deadline_owner
+				exists = scope:zg361_notice_deadline_subject
+				this = scope:zg361_notice_deadline_subject
 				has_variable = zg361_result_case_owner
 				var:zg361_result_case_owner = scope:zg361_notice_deadline_owner
 				has_variable = zg361_result_cycle_serial
@@ -220,6 +258,7 @@ zg361.52 = {
 			}
 			set_variable = { name = zg361_result_appeal_open value = 0 }
 			set_variable = { name = zg361_result_case_state value = 4 }
+			zg361_b2_on_appeal_expired_effect = yes
 			debug_log = "ZG361P2: formal appeal clock closed"
 		}
 		else = {
@@ -263,9 +302,55 @@ zg361.53 = {
 			triggered_desc = { trigger = { var:zg361_result_grade_reason = 8 } desc = zg361.53.reason_8 }
 			desc = zg361.53.reason_0
 		}
-		desc = zg361.53.evidence
-		desc = zg361.53.service
-		desc = zg361.53.receipts
+		# #072/#081: before service only the summary row is visible. The existing
+		# detailed statement becomes available from the delivered case itself.
+		triggered_desc = {
+			trigger = {
+				var:zg361_result_case_state >= 3
+				OR = {
+					AND = {
+						has_variable = zg361_b2_m081_visible_fields
+						var:zg361_b2_m081_visible_fields >= 4
+					}
+					NOT = { has_variable = zg361_b2_case_serial }
+				}
+			}
+			desc = zg361.53.evidence
+		}
+		triggered_desc = {
+			trigger = {
+				var:zg361_result_case_state >= 3
+				OR = {
+					AND = {
+						has_variable = zg361_b2_m081_visible_fields
+						var:zg361_b2_m081_visible_fields >= 4
+					}
+					NOT = { has_variable = zg361_b2_case_serial }
+				}
+			}
+			desc = zg361.53.service
+		}
+		triggered_desc = {
+			trigger = {
+				var:zg361_result_case_state >= 3
+				OR = {
+					AND = {
+						has_variable = zg361_b2_m081_visible_fields
+						var:zg361_b2_m081_visible_fields >= 4
+					}
+					NOT = { has_variable = zg361_b2_case_serial }
+				}
+			}
+			desc = zg361.53.receipts
+		}
+		first_valid = {
+			triggered_desc = { trigger = { has_variable = zg361_b2_appeal_state var:zg361_b2_appeal_state = 3 } desc = zg361b2.statement.corrected }
+			triggered_desc = { trigger = { has_variable = zg361_b2_appeal_state var:zg361_b2_appeal_state = 1 } desc = zg361b2.statement.appeal }
+			triggered_desc = { trigger = { has_variable = zg361_b2_notice_state var:zg361_b2_notice_state = 3 } desc = zg361b2.statement.delivered }
+			triggered_desc = { trigger = { has_variable = zg361_b2_notice_state var:zg361_b2_notice_state = 1 } desc = zg361b2.statement.prepared }
+		}
+		triggered_desc = { trigger = { has_variable = zg361_b2_pip_state var:zg361_b2_pip_state = 2 } desc = zg361b2.statement.pip }
+		triggered_desc = { trigger = { has_variable = zg361_b2_retaliation_state var:zg361_b2_retaliation_state = 1 } desc = zg361b2.statement.retaliation }
 		first_valid = {
 			triggered_desc = { trigger = { var:zg361_result_case_state = 1 } desc = zg361.53.state_1 }
 			triggered_desc = { trigger = { var:zg361_result_case_state = 2 } desc = zg361.53.state_2 }
@@ -282,6 +367,7 @@ zg361.53 = {
 	}
 
 	immediate = {
+		zg361_b2_record_case_access_effect = yes
 		var:zg361_result_case_owner = { save_scope_as = zg361_reviewing_superior }
 		save_scope_value_as = { name = zg361_stmt_kpi value = var:zg361_result_kpi_frozen }
 		save_scope_value_as = { name = zg361_stmt_rank value = var:zg361_result_rank_frozen }

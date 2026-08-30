@@ -1,0 +1,608 @@
+﻿# GENERATED FILE — edit tools/gen_361_b2_runtime.py
+namespace = zg361b2
+
+# #015 acknowledgement. Visible events are player-only; AI subjects take the
+# same effects silently at the call site.
+zg361b2.40 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.40.t
+	desc = zg361b2.40.desc
+	trigger = {
+		is_ai = no
+		has_game_rule = zg361_on
+		exists = scope:zg361_b2_pip_prompt_owner
+		exists = scope:zg361_b2_pip_prompt_subject
+		this = scope:zg361_b2_pip_prompt_subject
+		var:zg361_b2_pip_owner = scope:zg361_b2_pip_prompt_owner
+		var:zg361_b2_pip_subject = scope:zg361_b2_pip_prompt_subject
+		var:zg361_b2_pip_cycle = scope:zg361_b2_pip_prompt_cycle
+		var:zg361_b2_pip_case = scope:zg361_b2_pip_prompt_case
+		var:zg361_b2_pip_state = scope:zg361_b2_pip_prompt_state
+		var:zg361_b2_pip_state = 1
+	}
+	option = { name = zg361b2.40.a zg361_b2_accept_pip_effect = yes }
+	option = { name = zg361b2.40.b zg361_b2_negotiate_pip_effect = yes }
+	option = { name = zg361b2.40.c zg361_b2_refuse_pip_effect = yes }
+}
+
+# #071/#073 escalation after an upheld appeal.
+zg361b2.50 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.50.t
+	desc = zg361b2.50.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_b2_escalation_owner
+		exists = scope:zg361_b2_escalation_subject
+		this = scope:zg361_b2_escalation_subject
+		var:zg361_b2_case_owner = scope:zg361_b2_escalation_owner
+		var:zg361_b2_case_subject = scope:zg361_b2_escalation_subject
+		var:zg361_b2_case_cycle = scope:zg361_b2_escalation_cycle
+		var:zg361_b2_case_serial = scope:zg361_b2_escalation_case
+		var:zg361_b2_m071_state = scope:zg361_b2_escalation_state
+		var:zg361_b2_m071_state = 1
+	}
+	option = { name = zg361b2.50.a zg361_b2_publish_evidence_escalation_effect = yes }
+	option = { name = zg361b2.50.b zg361_b2_publish_anonymous_report_effect = yes }
+	option = { name = zg361b2.50.c zg361_b2_defer_escalation_effect = yes }
+}
+
+# #075 voluntary exit; the option is absent unless the frozen owner can fund
+# the exact fifty-treasury / fifty-personal-gold transfer.
+zg361b2.60 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.60.t
+	desc = zg361b2.60.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_b2_exit_offer_owner
+		exists = scope:zg361_b2_exit_offer_subject
+		this = scope:zg361_b2_exit_offer_subject
+		var:zg361_b2_case_owner = scope:zg361_b2_exit_offer_owner
+		var:zg361_b2_case_subject = scope:zg361_b2_exit_offer_subject
+		var:zg361_b2_case_cycle = scope:zg361_b2_exit_offer_cycle
+		var:zg361_b2_case_serial = scope:zg361_b2_exit_offer_case
+		var:zg361_b2_m014_state = scope:zg361_b2_exit_offer_state
+		var:zg361_b2_m014_state = 4
+	}
+	immediate = { zg361_b2_m075_open_exit_offer_effect = yes }
+	option = {
+		name = zg361b2.60.a
+		trigger = {
+			var:zg361_b2_case_owner = {
+				government_has_flag = government_has_treasury
+				treasury >= 50
+			}
+		}
+		zg361_b2_m075_accept_exit_offer_effect = yes
+	}
+	option = { name = zg361b2.60.b zg361_b2_m075_reject_exit_offer_effect = yes }
+}
+
+zg361b2.61 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_exit_deadline_owner
+				exists = scope:zg361_b2_exit_deadline_subject
+				this = scope:zg361_b2_exit_deadline_subject
+				var:zg361_b2_m075_owner = scope:zg361_b2_exit_deadline_owner
+				var:zg361_b2_m075_subject = scope:zg361_b2_exit_deadline_subject
+				var:zg361_b2_m075_cycle = scope:zg361_b2_exit_deadline_cycle
+				var:zg361_b2_m075_case = scope:zg361_b2_exit_deadline_case
+				var:zg361_b2_m075_state = scope:zg361_b2_exit_deadline_state
+				var:zg361_b2_m075_state = 1
+			}
+			set_variable = { name = zg361_b2_m075_state value = 5 }
+			set_variable = { name = zg361_b2_m075_expired value = 1 }
+		}
+		else = { debug_log = "ZG361B2: stale voluntary-exit D+30 ticket ignored" }
+	}
+}
+
+# #015/#016 D+365 outcome. Every component of the immutable ticket must match.
+zg361b2.100 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_pip_deadline_owner
+				exists = scope:zg361_b2_pip_deadline_subject
+				this = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_pip_deadline_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_pip_deadline_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_pip_deadline_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_pip_deadline_case
+				var:zg361_b2_pip_state = scope:zg361_b2_pip_deadline_state
+				var:zg361_b2_pip_state = 2
+			}
+			zg361_b2_resolve_pip_due_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale PIP D+365 ticket ignored" }
+	}
+}
+
+# #017 bounded post-PIP disposition; any active appeal observation still passes
+# through the common adverse-action gate in the four core disposition effects.
+zg361b2.110 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.110.t
+	desc = zg361b2.110.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_b2_disposition_owner
+		exists = scope:zg361_b2_disposition_subject
+		this = scope:zg361_b2_disposition_subject
+		var:zg361_b2_pip_owner = scope:zg361_b2_disposition_owner
+		var:zg361_b2_pip_subject = scope:zg361_b2_disposition_subject
+		var:zg361_b2_pip_cycle = scope:zg361_b2_disposition_cycle
+		var:zg361_b2_pip_case = scope:zg361_b2_disposition_case
+		var:zg361_b2_m017_state = scope:zg361_b2_disposition_state
+		var:zg361_b2_m017_state = 1
+	}
+	option = {
+		name = zg361b2.110.a
+		zg361_b2_m074_reject_redundancy_effect = yes
+		zg361_eliminate_extend_effect = yes
+		if = {
+			limit = { has_variable = zg361_b2_pending_adverse_action }
+			set_variable = { name = zg361_b2_m017_state value = 2 }
+		}
+		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+	}
+	option = {
+		name = zg361b2.110.b
+		zg361_b2_m074_reject_redundancy_effect = yes
+		zg361_eliminate_demote_effect = yes
+		if = {
+			limit = { has_variable = zg361_b2_pending_adverse_action }
+			set_variable = { name = zg361_b2_m017_state value = 2 }
+		}
+		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+	}
+	option = {
+		name = zg361b2.110.c
+		zg361_b2_m074_reject_redundancy_effect = yes
+		zg361_eliminate_stepdown_effect = yes
+		if = {
+			limit = { has_variable = zg361_b2_pending_adverse_action }
+			set_variable = { name = zg361_b2_m017_state value = 2 }
+		}
+		else = { set_variable = { name = zg361_b2_m017_state value = 3 } }
+	}
+	option = {
+		name = zg361b2.110.d
+		trigger = {
+			var:zg361_b2_m074_state = 1
+			var:zg361_b2_m074_redundancy_eligible = 1
+			var:zg361_b2_m074_owner = {
+				government_has_flag = government_has_treasury
+				treasury >= 50
+			}
+		}
+		zg361_b2_m074_accept_redundancy_effect = yes
+		set_variable = { name = zg361_b2_m017_state value = 3 }
+	}
+}
+
+# #070 target-bound one-year anti-retaliation observation.
+zg361b2.120 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_retaliation_deadline_owner
+				exists = scope:zg361_b2_retaliation_deadline_subject
+				this = scope:zg361_b2_retaliation_deadline_subject
+				var:zg361_b2_retaliation_owner = scope:zg361_b2_retaliation_deadline_owner
+				var:zg361_b2_retaliation_subject = scope:zg361_b2_retaliation_deadline_subject
+				var:zg361_b2_retaliation_cycle = scope:zg361_b2_retaliation_deadline_cycle
+				var:zg361_b2_retaliation_case = scope:zg361_b2_retaliation_deadline_case
+				var:zg361_b2_retaliation_state = scope:zg361_b2_retaliation_deadline_state
+				var:zg361_b2_retaliation_state = 1
+			}
+			set_variable = { name = zg361_b2_retaliation_state value = 4 }
+			set_variable = { name = zg361_b2_m070_state value = 4 }
+			set_variable = { name = zg361_b2_m070_observed_years value = 1 }
+		}
+		else = { debug_log = "ZG361B2: stale retaliation D+365 ticket ignored" }
+	}
+}
+
+# #072 a logged pre-delivery read receives one target-bound D+30 source finding.
+zg361b2.121 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_leak_deadline_owner
+				exists = scope:zg361_b2_leak_deadline_subject
+				this = scope:zg361_b2_leak_deadline_subject
+				var:zg361_b2_case_owner = scope:zg361_b2_leak_deadline_owner
+				var:zg361_b2_case_subject = scope:zg361_b2_leak_deadline_subject
+				var:zg361_b2_case_cycle = scope:zg361_b2_leak_deadline_cycle
+				var:zg361_b2_case_serial = scope:zg361_b2_leak_deadline_case
+				var:zg361_b2_m072_state = scope:zg361_b2_leak_deadline_state
+				var:zg361_b2_m072_state = 2
+				var:zg361_b2_m072_receipt_serial = var:zg361_b2_case_serial
+			}
+			set_variable = { name = zg361_b2_m072_state value = 3 }
+			set_variable = { name = zg361_b2_m072_investigation_result value = 1 }
+			set_variable = { name = zg361_b2_m072_source_finding value = var:zg361_b2_m072_source }
+			var:zg361_b2_case_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+		}
+		else = { debug_log = "ZG361B2: stale pre-delivery access D+30 ticket ignored" }
+	}
+}
+
+# #359 player-manager quota return decision. Counts and barons can be the saved
+# subject, but only an eligible celestial manager can ever receive this GUI.
+zg361b2.130 = {
+	type = character_event
+	theme = realm
+	title = zg361b2.130.t
+	desc = zg361b2.130.desc
+	trigger = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		exists = scope:zg361_b2_quota_return_owner
+		exists = scope:zg361_b2_quota_return_subject
+		this = scope:zg361_b2_quota_return_owner
+		scope:zg361_b2_quota_return_subject = {
+			var:zg361_b2_case_owner = scope:zg361_b2_quota_return_owner
+			var:zg361_b2_case_subject = scope:zg361_b2_quota_return_subject
+			var:zg361_b2_case_cycle = scope:zg361_b2_quota_return_cycle
+			var:zg361_b2_case_serial = scope:zg361_b2_quota_return_case
+			var:zg361_b2_m359_state = scope:zg361_b2_quota_return_state
+			var:zg361_b2_m359_state = 1
+		}
+	}
+	option = {
+		name = zg361b2.130.a
+		trigger = { has_variable = zg361_b2_quota_reserve var:zg361_b2_quota_reserve >= 1 }
+		scope:zg361_b2_quota_return_subject = { zg361_b2_m359_consume_reserve_effect = yes }
+	}
+	option = {
+		name = zg361b2.130.b
+		scope:zg361_b2_quota_return_subject = { zg361_b2_m359_open_boundary_review_effect = yes }
+	}
+	option = {
+		name = zg361b2.130.c
+		scope:zg361_b2_quota_return_subject = { zg361_b2_m359_post_next_cycle_debt_effect = yes }
+	}
+}
+
+# #359 fresh boundary notice. Refusal freezes a distinct D+7 witness ticket.
+zg361b2.131 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.131.t
+	desc = zg361b2.131.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_b2_redelivery_prompt_owner
+		exists = scope:zg361_b2_redelivery_prompt_subject
+		this = scope:zg361_b2_redelivery_prompt_subject
+		var:zg361_b2_redelivery_owner = scope:zg361_b2_redelivery_prompt_owner
+		var:zg361_b2_redelivery_subject = scope:zg361_b2_redelivery_prompt_subject
+		var:zg361_b2_redelivery_cycle = scope:zg361_b2_redelivery_prompt_cycle
+		var:zg361_b2_redelivery_case = scope:zg361_b2_redelivery_prompt_case
+		var:zg361_b2_redelivery_state = scope:zg361_b2_redelivery_prompt_state
+		var:zg361_b2_redelivery_state = 1
+	}
+	option = {
+		name = zg361b2.131.a
+		set_variable = { name = zg361_b2_redelivery_method value = 1 }
+		zg361_b2_deliver_boundary_notice_effect = yes
+	}
+	option = {
+		name = zg361b2.131.b
+		set_variable = { name = zg361_b2_redelivery_method value = 2 }
+		set_variable = { name = zg361_result_objection_recorded value = 1 }
+		zg361_b2_deliver_boundary_notice_effect = yes
+		zg361_b2_contest_boundary_notice_effect = yes
+	}
+	option = {
+		name = zg361b2.131.c
+		set_variable = { name = zg361_b2_redelivery_state value = 2 }
+		set_variable = { name = zg361_b2_redelivery_method value = 3 }
+		var:zg361_b2_redelivery_owner = {
+			if = {
+				limit = { exists = liege liege = { is_alive = yes } }
+				liege = { save_scope_as = zg361_b2_redelivery_witness }
+			}
+			else = { save_scope_as = zg361_b2_redelivery_witness }
+		}
+		set_variable = { name = zg361_b2_redelivery_witness_identity value = scope:zg361_b2_redelivery_witness }
+		var:zg361_b2_redelivery_owner = { save_scope_as = zg361_b2_redelivery_witness_owner }
+		save_scope_as = zg361_b2_redelivery_witness_subject
+		save_scope_value_as = { name = zg361_b2_redelivery_witness_cycle value = var:zg361_b2_redelivery_cycle }
+		save_scope_value_as = { name = zg361_b2_redelivery_witness_case value = var:zg361_b2_redelivery_case }
+		save_scope_value_as = { name = zg361_b2_redelivery_witness_state value = var:zg361_b2_redelivery_state }
+		trigger_event = { id = zg361b2.132 days = 7 }
+	}
+}
+
+zg361b2.132 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_redelivery_witness_owner
+				exists = scope:zg361_b2_redelivery_witness_subject
+				exists = scope:zg361_b2_redelivery_witness
+				this = scope:zg361_b2_redelivery_witness_subject
+				var:zg361_b2_redelivery_owner = scope:zg361_b2_redelivery_witness_owner
+				var:zg361_b2_redelivery_subject = scope:zg361_b2_redelivery_witness_subject
+				var:zg361_b2_redelivery_cycle = scope:zg361_b2_redelivery_witness_cycle
+				var:zg361_b2_redelivery_case = scope:zg361_b2_redelivery_witness_case
+				var:zg361_b2_redelivery_state = scope:zg361_b2_redelivery_witness_state
+				var:zg361_b2_redelivery_state = 2
+				var:zg361_b2_redelivery_witness_identity = scope:zg361_b2_redelivery_witness
+			}
+			set_variable = { name = zg361_b2_redelivery_witness_receipt value = var:zg361_b2_redelivery_case }
+			set_variable = { name = zg361_result_delivery_witness value = scope:zg361_b2_redelivery_witness }
+			set_variable = { name = zg361_result_delivery_witness_receipt value = var:zg361_result_case_serial }
+			zg361_b2_deliver_boundary_notice_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale boundary D+7 witness ticket ignored" }
+	}
+}
+
+# #079 D+30 independent skip-level result.
+zg361b2.140 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_skip_deadline_owner
+				exists = scope:zg361_b2_skip_deadline_subject
+				this = scope:zg361_b2_skip_deadline_subject
+				var:zg361_b2_m079_reviewer = scope:zg361_b2_skip_deadline_owner
+				var:zg361_b2_case_subject = scope:zg361_b2_skip_deadline_subject
+				var:zg361_b2_case_cycle = scope:zg361_b2_skip_deadline_cycle
+				var:zg361_b2_case_serial = scope:zg361_b2_skip_deadline_case
+				var:zg361_b2_m079_state = scope:zg361_b2_skip_deadline_state
+				var:zg361_b2_m079_state = 1
+			}
+			zg361_b2_m079_release_seat_effect = yes
+			if = {
+				limit = { var:zg361_b2_m071_evidence_strength >= 2 }
+				set_variable = { name = zg361_b2_m079_state value = 3 }
+				set_variable = { name = zg361_result_case_state value = 3 }
+				set_variable = { name = zg361_result_appeal_open value = 1 }
+				set_variable = { name = zg361_b2_m014_state value = 1 }
+				zg361_appeal_regrade_to_35_effect = yes
+			}
+			else = { set_variable = { name = zg361_b2_m079_state value = 4 } }
+		}
+		else = { debug_log = "ZG361B2: stale skip-level D+30 ticket ignored" }
+	}
+}
+
+# #071 one public packet creates exactly one D+30 fact-check result.
+zg361b2.141 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_factcheck_owner
+				exists = scope:zg361_b2_factcheck_subject
+				this = scope:zg361_b2_factcheck_subject
+				var:zg361_b2_case_owner = scope:zg361_b2_factcheck_owner
+				var:zg361_b2_case_subject = scope:zg361_b2_factcheck_subject
+				var:zg361_b2_case_cycle = scope:zg361_b2_factcheck_cycle
+				var:zg361_b2_case_serial = scope:zg361_b2_factcheck_case
+				var:zg361_b2_m071_factcheck_state = scope:zg361_b2_factcheck_state
+				var:zg361_b2_m071_factcheck_state = 1
+			}
+			if = {
+				limit = { var:zg361_b2_m071_evidence_strength >= 2 }
+				set_variable = { name = zg361_b2_m071_factcheck_state value = 3 }
+				set_variable = { name = zg361_b2_m071_factcheck_outcome value = 1 }
+				add_prestige = 25
+			}
+			else = {
+				set_variable = { name = zg361_b2_m071_factcheck_state value = 4 }
+				set_variable = { name = zg361_b2_m071_factcheck_outcome value = 2 }
+				add_prestige = { value = 0 subtract = 25 }
+			}
+		}
+		else = { debug_log = "ZG361B2: stale public fact-check D+30 ticket ignored" }
+	}
+}
+
+# #080 D+90 metric defect review writes a repair or an accepted-risk debt.
+zg361b2.150 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_metric_deadline_owner
+				exists = scope:zg361_b2_metric_deadline_subject
+				this = scope:zg361_b2_metric_deadline_subject
+				var:zg361_b2_m080_owner = scope:zg361_b2_metric_deadline_owner
+				var:zg361_b2_m080_subject = scope:zg361_b2_metric_deadline_subject
+				var:zg361_b2_m080_cycle = scope:zg361_b2_metric_deadline_cycle
+				var:zg361_b2_m080_case = scope:zg361_b2_metric_deadline_case
+				var:zg361_b2_m080_state = scope:zg361_b2_metric_deadline_state
+				var:zg361_b2_m080_state = 1
+			}
+			if = {
+				limit = {
+					OR = {
+						var:zg361_b2_m073_protected = 1
+						var:zg361_b2_case_owner = { has_variable = zg361_b2_fairness_anomaly_open }
+					}
+				}
+				set_variable = { name = zg361_b2_m080_state value = 3 }
+				set_variable = { name = zg361_b2_m080_metric_repaired value = 1 }
+				set_variable = { name = zg361_b2_m080_subject_contribution value = 1 }
+			}
+			else = {
+				set_variable = { name = zg361_b2_m080_state value = 4 }
+				set_variable = { name = zg361_b2_m080_accepted_risk value = 1 }
+				var:zg361_b2_m080_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			}
+		}
+		else = { debug_log = "ZG361B2: stale metric D+90 ticket ignored" }
+	}
+}
+
+# #358 separately served new-fact action; refusal creates a D+7 witnessed
+# delivery, while an objection holds execution through the D+90 review.
+zg361b2.160 = {
+	type = character_event
+	theme = vassal
+	title = zg361b2.160.t
+	desc = zg361b2.160.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_b2_separate_prompt_owner
+		exists = scope:zg361_b2_separate_prompt_subject
+		this = scope:zg361_b2_separate_prompt_subject
+		var:zg361_b2_separate_notice_owner = scope:zg361_b2_separate_prompt_owner
+		var:zg361_b2_separate_notice_subject = scope:zg361_b2_separate_prompt_subject
+		var:zg361_b2_separate_notice_cycle = scope:zg361_b2_separate_prompt_cycle
+		var:zg361_b2_separate_notice_case = scope:zg361_b2_separate_prompt_case
+		var:zg361_b2_separate_notice_state = scope:zg361_b2_separate_prompt_state
+		var:zg361_b2_separate_notice_state = 1
+	}
+	option = {
+		name = zg361b2.160.a
+		set_variable = { name = zg361_b2_separate_delivery_method value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+		zg361_b2_execute_pending_adverse_action_effect = yes
+	}
+	option = {
+		name = zg361b2.160.b
+		set_variable = { name = zg361_b2_separate_delivery_method value = 2 }
+		set_variable = { name = zg361_b2_separate_objection value = 1 }
+		zg361_b2_deliver_separate_case_effect = yes
+	}
+	option = {
+		name = zg361b2.160.c
+		set_variable = { name = zg361_b2_separate_notice_state value = 2 }
+		set_variable = { name = zg361_b2_separate_delivery_method value = 3 }
+		var:zg361_b2_separate_notice_owner = {
+			if = {
+				limit = { exists = liege liege = { is_alive = yes } }
+				liege = { save_scope_as = zg361_b2_separate_witness }
+			}
+			else = { save_scope_as = zg361_b2_separate_witness }
+		}
+		set_variable = { name = zg361_b2_separate_witness_identity value = scope:zg361_b2_separate_witness }
+		var:zg361_b2_separate_notice_owner = { save_scope_as = zg361_b2_separate_witness_owner }
+		save_scope_as = zg361_b2_separate_witness_subject
+		save_scope_value_as = { name = zg361_b2_separate_witness_cycle value = var:zg361_b2_separate_notice_cycle }
+		save_scope_value_as = { name = zg361_b2_separate_witness_case value = var:zg361_b2_separate_notice_case }
+		save_scope_value_as = { name = zg361_b2_separate_witness_state value = var:zg361_b2_separate_notice_state }
+		trigger_event = { id = zg361b2.161 days = 7 }
+	}
+}
+
+zg361b2.161 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_separate_witness_owner
+				exists = scope:zg361_b2_separate_witness_subject
+				exists = scope:zg361_b2_separate_witness
+				this = scope:zg361_b2_separate_witness_subject
+				var:zg361_b2_separate_notice_owner = scope:zg361_b2_separate_witness_owner
+				var:zg361_b2_separate_notice_subject = scope:zg361_b2_separate_witness_subject
+				var:zg361_b2_separate_notice_cycle = scope:zg361_b2_separate_witness_cycle
+				var:zg361_b2_separate_notice_case = scope:zg361_b2_separate_witness_case
+				var:zg361_b2_separate_notice_state = scope:zg361_b2_separate_witness_state
+				var:zg361_b2_separate_notice_state = 2
+				var:zg361_b2_separate_witness_identity = scope:zg361_b2_separate_witness
+			}
+			set_variable = { name = zg361_b2_separate_witness_receipt value = var:zg361_b2_separate_notice_case }
+			zg361_b2_deliver_separate_case_effect = yes
+			zg361_b2_execute_pending_adverse_action_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale separate-case D+7 witness ticket ignored" }
+	}
+}
+
+zg361b2.162 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_separate_deadline_owner
+				exists = scope:zg361_b2_separate_deadline_subject
+				this = scope:zg361_b2_separate_deadline_subject
+				var:zg361_b2_separate_notice_owner = scope:zg361_b2_separate_deadline_owner
+				var:zg361_b2_separate_notice_subject = scope:zg361_b2_separate_deadline_subject
+				var:zg361_b2_separate_notice_cycle = scope:zg361_b2_separate_deadline_cycle
+				var:zg361_b2_separate_notice_case = scope:zg361_b2_separate_deadline_case
+				var:zg361_b2_separate_notice_state = scope:zg361_b2_separate_deadline_state
+				var:zg361_b2_separate_notice_state = 3
+			}
+			set_variable = { name = zg361_b2_separate_appeal_open value = 0 }
+			set_variable = { name = zg361_b2_separate_notice_state value = 4 }
+			if = {
+				limit = { has_variable = zg361_b2_separate_objection }
+				set_variable = { name = zg361_b2_separate_review_outcome value = 2 }
+				remove_variable = zg361_b2_pending_adverse_action
+			}
+			else = { set_variable = { name = zg361_b2_separate_review_outcome value = 1 } }
+		}
+		else = { debug_log = "ZG361B2: stale separate-case D+90 ticket ignored" }
+	}
+}
+
+# #074 D+30 conservation audit: exit and HC release are accepted only beside
+# the exact public-treasury debit and personal-gold credit.
+zg361b2.171 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_redundancy_audit_owner
+				exists = scope:zg361_b2_redundancy_audit_subject
+				this = scope:zg361_b2_redundancy_audit_subject
+				var:zg361_b2_m074_owner = scope:zg361_b2_redundancy_audit_owner
+				var:zg361_b2_m074_subject = scope:zg361_b2_redundancy_audit_subject
+				var:zg361_b2_m074_cycle = scope:zg361_b2_redundancy_audit_cycle
+				var:zg361_b2_m074_case = scope:zg361_b2_redundancy_audit_case
+				var:zg361_b2_m074_state = scope:zg361_b2_redundancy_audit_state
+				var:zg361_b2_m074_state = 3
+			}
+			if = {
+				limit = {
+					var:zg361_b2_m074_treasury_paid = 50
+					var:zg361_b2_m074_personal_received = 50
+					var:zg361_b2_m074_actual_exit = 1
+					var:zg361_b2_m074_hc_released = 1
+				}
+				set_variable = { name = zg361_b2_m074_state value = 4 }
+				set_variable = { name = zg361_b2_m074_audit_receipt value = var:zg361_b2_m074_case }
+			}
+			else = {
+				set_variable = { name = zg361_b2_m074_state value = 6 }
+				set_variable = { name = zg361_b2_m074_reversal_liability value = 1 }
+				var:zg361_b2_m074_owner = { change_variable = { name = zg361_b2_management_debt add = 1 } }
+			}
+		}
+		else = { debug_log = "ZG361B2: stale redundancy D+30 audit ticket ignored" }
+	}
+}

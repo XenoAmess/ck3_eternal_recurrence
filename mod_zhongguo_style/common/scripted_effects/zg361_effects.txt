@@ -241,6 +241,8 @@ zg361_compute_kpi_effect = {
 	set_variable = { name = zg361_evidence_jingcha value = zg361_kpi_jingcha_evidence_value }
 	set_variable = { name = zg361_evidence_organization value = zg361_kpi_organization_evidence_value }
 	set_variable = { name = zg361_kpi value = zg361_kpi_value }
+	# B2 management/fairness debt is consumed only by this next real KPI write.
+	zg361_b2_consume_management_debt_effect = yes
 	# #357 最小事实层：先按冻结 KPI 得出绝对档，再由排名/配额/校准决定终档。
 	# 3/2/1 分别映射 3.75/3.5/3.25；二者的差异理由在结算案卷中冻结。
 	if = {
@@ -336,6 +338,8 @@ zg361_rank_cohort_effect = {
 	set_variable = { name = zg361_top_cut value = zg361_top_slots_value }
 	set_variable = { name = zg361_top_cut_next value = { value = var:zg361_top_cut add = 1 } }
 	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	# #359 next-cycle quota debt changes an actual allocation input once.
+	zg361_b2_apply_due_quota_debt_effect = yes
 }
 
 # ============================================================
@@ -657,6 +661,8 @@ zg361_freeze_result_case_effect = {
 		set_variable = { name = zg361_result_merit_refunded value = 0 }
 		set_variable = { name = zg361_result_delivered_year value = 0 }
 		remove_variable = zg361_result_objection_recorded
+		remove_variable = zg361_result_delivery_witness
+		remove_variable = zg361_result_delivery_witness_receipt
 		remove_variable = zg361_result_appeal_outcome
 		if = {
 			limit = { var:zg361_pending_grade = 1 }
@@ -668,6 +674,7 @@ zg361_freeze_result_case_effect = {
 			set_variable = { name = zg361_result_delivered_year value = current_year }
 			set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
 		}
+		zg361_b2_on_result_frozen_effect = yes
 		debug_log = "ZG361P2: result case frozen"
 	}
 	else = {
@@ -851,6 +858,11 @@ zg361_grade_325_apply_effect = {
 		zg361_deliver_325_notice_effect = yes
 	}
 	else = {
+		var:zg361_result_case_owner = { save_scope_as = zg361_notice_prompt_owner }
+		save_scope_as = zg361_notice_prompt_subject
+		save_scope_value_as = { name = zg361_notice_prompt_cycle value = var:zg361_result_cycle_serial }
+		save_scope_value_as = { name = zg361_notice_prompt_case value = var:zg361_result_case_serial }
+		save_scope_value_as = { name = zg361_notice_prompt_state value = var:zg361_result_case_state }
 		trigger_event = { id = zg361.50 days = 1 }
 	}
 }
@@ -967,9 +979,11 @@ zg361_settle_delivered_325_effect = {
 		set_variable = { name = zg361_result_settlement_posted_serial value = var:zg361_result_case_serial }
 		set_variable = { name = zg361_result_appeal_open value = 1 }
 		zg361_update_settled_325_scoreboard_slots_effect = yes
+		zg361_b2_on_notice_delivered_effect = yes
 
 		# 90 日申诉时钟携带 immutable token；新轮案卷或已改判会令到期事件 stale no-op。
 		var:zg361_result_case_owner = { save_scope_as = zg361_notice_deadline_owner }
+		save_scope_as = zg361_notice_deadline_subject
 		save_scope_value_as = { name = zg361_notice_deadline_cycle value = var:zg361_result_cycle_serial }
 		save_scope_value_as = { name = zg361_notice_deadline_case value = var:zg361_result_case_serial }
 		save_scope_value_as = { name = zg361_notice_deadline_state value = var:zg361_result_case_state }
@@ -984,6 +998,7 @@ zg361_settle_delivered_325_effect = {
 			if = {
 				limit = {
 					var:zg361_streak_bottom >= 2
+					var:zg361_result_appeal_open = 0
 					var:zg361_result_case_owner = liege
 					var:zg361_result_case_owner = { is_ai = yes is_alive = yes }
 				}
@@ -1129,6 +1144,7 @@ zg361_apply_receipted_appeal_regrade_effect = {
 		change_variable = { name = zg361_scoreboard_received_35_n add = 1 }
 	}
 	zg361_update_regraded_scoreboard_slots_effect = yes
+	zg361_b2_on_appeal_corrected_effect = yes
 }
 
 # ============================================================
@@ -1356,36 +1372,64 @@ zg361_ai_elimination_effect = {
 
 # 免费夺爵：合法理由（考绩不佳 opinion 带 revoke_title_reason），无暴政
 zg361_eliminate_purge_effect = {
-	debug_log = "ZG361: elimination -> purge (title stripped)"
+	set_variable = { name = zg361_b2_pending_adverse_action value = 1 }
+	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { government_has_flag = government_has_merit }
-		change_merit = massive_merit_loss
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> purge (title stripped)"
+		if = {
+			limit = { government_has_flag = government_has_merit }
+			change_merit = massive_merit_loss
+		}
+		add_opinion = { modifier = zg361_purged target = liege }
+		force_step_down_landed_titles = yes
+		zg361_b2_finish_adverse_action_effect = yes
 	}
-	add_opinion = { modifier = zg361_purged target = liege }
-	force_step_down_landed_titles = yes
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
 }
 
 # 强制致仕：体面退场
 zg361_eliminate_stepdown_effect = {
-	debug_log = "ZG361: elimination -> forced retirement"
-	add_opinion = { modifier = zg361_forced_retire target = liege }
-	force_step_down_landed_titles = yes
+	set_variable = { name = zg361_b2_pending_adverse_action value = 2 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> forced retirement"
+		add_opinion = { modifier = zg361_forced_retire target = liege }
+		force_step_down_landed_titles = yes
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
 }
 
 # 降岗留用：merit 扣减 + 降岗 modifier（含减俸 50%）+ PIP 重置
 zg361_eliminate_demote_effect = {
-	debug_log = "ZG361: elimination -> demoted but retained"
+	set_variable = { name = zg361_b2_pending_adverse_action value = 3 }
+	zg361_b2_prepare_adverse_action_effect = yes
 	if = {
-		limit = { government_has_flag = government_has_merit }
-		change_merit = major_merit_loss
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> demoted but retained"
+		if = {
+			limit = { government_has_flag = government_has_merit }
+			change_merit = major_merit_loss
+		}
+		add_character_modifier = { modifier = zg361_demoted years = 1 }
+		add_character_modifier = { modifier = zg361_pip years = 1 }
+		set_variable = { name = zg361_streak_bottom value = 0 }
+		zg361_b2_finish_adverse_action_effect = yes
 	}
-	add_character_modifier = { modifier = zg361_demoted years = 1 }
-	add_character_modifier = { modifier = zg361_pip years = 1 }
-	set_variable = { name = zg361_streak_bottom value = 0 }
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
 }
 
 # 再留一年：仅 PIP 延期（连击保留）
 zg361_eliminate_extend_effect = {
-	debug_log = "ZG361: elimination -> PIP extended"
-	add_character_modifier = { modifier = zg361_pip years = 1 }
+	set_variable = { name = zg361_b2_pending_adverse_action value = 4 }
+	zg361_b2_prepare_adverse_action_effect = yes
+	if = {
+		limit = { var:zg361_b2_adverse_action_allowed = 1 }
+		debug_log = "ZG361: elimination -> PIP extended"
+		add_character_modifier = { modifier = zg361_pip years = 1 }
+		zg361_b2_finish_adverse_action_effect = yes
+	}
+	else = { zg361_b2_cancel_blocked_action_effect = yes }
 }
