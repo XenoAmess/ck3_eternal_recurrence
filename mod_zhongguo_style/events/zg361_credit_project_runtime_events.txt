@@ -1,0 +1,2807 @@
+﻿# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py
+namespace = zg361cp
+
+# #030 — One Project Wins the Capacity Race
+zg361cp.30 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.30.t
+	desc = zg361cp.30.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.30.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m30_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.26 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.30.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m30_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.26 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.30.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m30_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.26 days = 1 }
+		}
+	}
+}
+
+# #026 — Work and Visibility Are Different Ledgers
+zg361cp.26 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.26.t
+	desc = zg361cp.26.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.26.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m26_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.27 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.26.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m26_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.27 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.26.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m26_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.27 days = 1 }
+		}
+	}
+}
+
+# #027 — Sign One Hundred Percent of the Credit
+zg361cp.27 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.27.t
+	desc = zg361cp.27.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.27.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m27_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.31 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.27.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m27_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.31 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.27.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m27_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.31 days = 1 }
+		}
+	}
+}
+
+# #031 — Sponsor Credit Has a Cap and Expiry
+zg361cp.31 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.31.t
+	desc = zg361cp.31.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.31.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m31_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.28 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.31.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m31_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.28 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.31.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m31_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.28 days = 1 }
+		}
+	}
+}
+
+# #028 — Credit Claim and Audit Reversal
+zg361cp.28 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.28.t
+	desc = zg361cp.28.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361cp.28.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m28_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.29 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.28.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m28_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.29 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.28.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m28_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_e_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.29 days = 1 }
+		}
+	}
+}
+
+# #029 — Metric Packaging and Audit
+zg361cp.29 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.29.t
+	desc = zg361cp.29.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_e_owner
+				SUBJECT_VAR = zg361_case_e_subject
+				CYCLE_VAR = zg361_case_e_cycle_serial
+				CASE_VAR = zg361_case_e_case_serial
+				STATE_VAR = zg361_case_e_state
+				ACTIVE_VAR = zg361_case_e_active
+				EXPECTED_OWNER = scope:zg361_cp_e_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_e_subject
+				EXPECTED_CYCLE = scope:zg361_cp_e_cycle
+				EXPECTED_CASE = scope:zg361_cp_e_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.29.a
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m29_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.29.b
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m29_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.29.c
+
+		scope:zg361_cp_e_subject = {
+			zg361_cp_m29_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_e_owner
+				TICKET_SUBJECT = scope:zg361_cp_e_subject
+				TICKET_CYCLE = scope:zg361_cp_e_cycle
+				TICKET_CASE = scope:zg361_cp_e_case
+			}
+		}
+	}
+}
+
+# #061 — Choose the Reporting Regime First
+zg361cp.61 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.61.t
+	desc = zg361cp.61.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.61.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m61_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.54 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.61.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m61_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.54 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.61.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m61_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.54 days = 1 }
+		}
+	}
+}
+
+# #054 — Reporting Consumes Delivery Capacity
+zg361cp.54 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.54.t
+	desc = zg361cp.54.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.54.a
+
+		trigger = {
+			scope:zg361_cp_i_subject = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_report_policy has_variable = zg361_cp_report_policy_hours }
+					var:zg361_cp_report_policy = 1
+					var:zg361_cp_report_policy_hours = 1
+				}
+				trigger_else = { always = no }
+			}
+		}
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m54_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.56 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.54.b
+
+		trigger = {
+			scope:zg361_cp_i_subject = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_report_policy has_variable = zg361_cp_report_policy_hours }
+					var:zg361_cp_report_policy = 2
+					var:zg361_cp_report_policy_hours = 4
+				}
+				trigger_else = { always = no }
+			}
+		}
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m54_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.56 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.54.c
+
+		trigger = {
+			scope:zg361_cp_i_subject = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_report_policy has_variable = zg361_cp_report_policy_hours }
+					var:zg361_cp_report_policy = 3
+					var:zg361_cp_report_policy_hours = 1
+				}
+				trigger_else = { always = no }
+			}
+		}
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m54_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.56 days = 1 }
+		}
+	}
+}
+
+# #056 — Forward Without Quietly Taking Credit
+zg361cp.56 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.56.t
+	desc = zg361cp.56.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.56.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m56_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.57 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.56.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m56_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.57 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.56.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m56_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.57 days = 1 }
+		}
+	}
+}
+
+# #057 — Freeze the Report Version
+zg361cp.57 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.57.t
+	desc = zg361cp.57.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.57.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m57_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.58 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.57.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m57_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.58 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.57.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m57_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.58 days = 1 }
+		}
+	}
+}
+
+# #058 — Signed Material Before Routing
+zg361cp.58 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.58.t
+	desc = zg361cp.58.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361cp.58.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m58_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.59 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.58.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m58_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.59 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.58.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m58_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.59 days = 1 }
+		}
+	}
+}
+
+# #059 — Bad News Has a Timestamp
+zg361cp.59 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.59.t
+	desc = zg361cp.59.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361cp.59.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m59_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.55 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.59.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m59_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.55 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.59.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m59_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.55 days = 1 }
+		}
+	}
+}
+
+# #055 — Routing Is Not Reading
+zg361cp.55 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.55.t
+	desc = zg361cp.55.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.55.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m55_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.60 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.55.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m55_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.60 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.55.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m55_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_i_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.60 days = 1 }
+		}
+	}
+}
+
+# #060 — The Signed Version Owns the Idea
+zg361cp.60 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.60.t
+	desc = zg361cp.60.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_i_owner
+				SUBJECT_VAR = zg361_case_i_subject
+				CYCLE_VAR = zg361_case_i_cycle_serial
+				CASE_VAR = zg361_case_i_case_serial
+				STATE_VAR = zg361_case_i_state
+				ACTIVE_VAR = zg361_case_i_active
+				EXPECTED_OWNER = scope:zg361_cp_i_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_i_subject
+				EXPECTED_CYCLE = scope:zg361_cp_i_cycle
+				EXPECTED_CASE = scope:zg361_cp_i_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.60.a
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m60_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.60.b
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m60_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.60.c
+
+		scope:zg361_cp_i_subject = {
+			zg361_cp_m60_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_i_owner
+				TICKET_SUBJECT = scope:zg361_cp_i_subject
+				TICKET_CYCLE = scope:zg361_cp_i_cycle
+				TICKET_CASE = scope:zg361_cp_i_case
+			}
+		}
+	}
+}
+
+# #063 — Lock Solid and Dotted Weights
+zg361cp.63 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.63.t
+	desc = zg361cp.63.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.63.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m63_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.62 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.63.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m63_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.62 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.63.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m63_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.62 days = 1 }
+		}
+	}
+}
+
+# #062 — Two Lines, One Recorded Choice
+zg361cp.62 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.62.t
+	desc = zg361cp.62.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.62.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m62_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.65 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.62.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m62_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.65 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.62.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m62_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.65 days = 1 }
+		}
+	}
+}
+
+# #065 — An Airborne Manager Brings a Staff Pack
+zg361cp.65 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.65.t
+	desc = zg361cp.65.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.65.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m65_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.64 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.65.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m65_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.64 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.65.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m65_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.64 days = 1 }
+		}
+	}
+}
+
+# #064 — A Manager Handoff Needs Two Signatures
+zg361cp.64 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.64.t
+	desc = zg361cp.64.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361cp.64.a
+
+		trigger = {
+			scope:zg361_cp_j_subject = {
+				trigger_if = {
+					limit = { has_variable = zg361_cp_successor_valid }
+					var:zg361_cp_successor_valid = 1
+				}
+				trigger_else = { always = no }
+			}
+		}
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m64_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.66 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.64.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m64_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.66 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.64.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m64_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.66 days = 1 }
+		}
+	}
+}
+
+# #066 — Business Cancellation Is Not Personal Failure
+zg361cp.66 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.66.t
+	desc = zg361cp.66.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.66.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m66_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.67 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.66.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m66_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.67 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.66.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m66_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.67 days = 1 }
+		}
+	}
+}
+
+# #067 — Two Incumbents Need One Terminal Owner
+zg361cp.67 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.67.t
+	desc = zg361cp.67.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.67.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m67_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.68 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.67.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m67_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.68 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.67.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m67_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_j_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.68 days = 1 }
+		}
+	}
+}
+
+# #068 — History Travels; Authorship Does Not
+zg361cp.68 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.68.t
+	desc = zg361cp.68.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_j_owner
+				SUBJECT_VAR = zg361_case_j_subject
+				CYCLE_VAR = zg361_case_j_cycle_serial
+				CASE_VAR = zg361_case_j_case_serial
+				STATE_VAR = zg361_case_j_state
+				ACTIVE_VAR = zg361_case_j_active
+				EXPECTED_OWNER = scope:zg361_cp_j_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_j_subject
+				EXPECTED_CYCLE = scope:zg361_cp_j_cycle
+				EXPECTED_CASE = scope:zg361_cp_j_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.68.a
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m68_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.68.b
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m68_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.68.c
+
+		scope:zg361_cp_j_subject = {
+			zg361_cp_m68_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_j_owner
+				TICKET_SUBJECT = scope:zg361_cp_j_subject
+				TICKET_CYCLE = scope:zg361_cp_j_cycle
+				TICKET_CASE = scope:zg361_cp_j_case
+			}
+		}
+	}
+}
+
+# #131 — Exploration and Commitment Are Different Tracks
+zg361cp.131 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.131.t
+	desc = zg361cp.131.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 1
+			}
+		}
+	}
+	option = {
+		name = zg361cp.131.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m131_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.129 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.131.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m131_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.129 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.131.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m131_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.129 days = 1 }
+		}
+	}
+}
+
+# #129 — Promotion Is a Queue With Real Slots
+zg361cp.129 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.129.t
+	desc = zg361cp.129.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.129.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m129_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.134 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.129.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m129_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.134 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.129.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m129_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.134 days = 1 }
+		}
+	}
+}
+
+# #134 — A Shared Metric Still Has One Owner
+zg361cp.134 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.134.t
+	desc = zg361cp.134.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 2
+			}
+		}
+	}
+	option = {
+		name = zg361cp.134.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m134_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.130 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.134.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m134_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.130 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.134.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m134_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.130 days = 1 }
+		}
+	}
+}
+
+# #130 — Do Not Dump a Hidden PIP
+zg361cp.130 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.130.t
+	desc = zg361cp.130.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 3
+			}
+		}
+	}
+	option = {
+		name = zg361cp.130.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m130_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.132 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.130.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m130_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.132 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.130.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m130_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.132 days = 1 }
+		}
+	}
+}
+
+# #132 — A Timely Stop Can Earn Credit
+zg361cp.132 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.132.t
+	desc = zg361cp.132.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 4
+			}
+		}
+	}
+	option = {
+		name = zg361cp.132.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m132_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.133 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.132.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m132_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.133 days = 1 }
+		}
+	}
+	option = {
+		name = zg361cp.132.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m132_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+		if = {
+			limit = {
+				scope:zg361_cp_r_subject = {
+					trigger_if = {
+						limit = { has_variable = zg361_cp_runtime_applied }
+						var:zg361_cp_runtime_applied = 1
+					}
+					trigger_else = { always = no }
+				}
+			}
+			trigger_event = { id = zg361cp.133 days = 1 }
+		}
+	}
+}
+
+# #133 — Learning and Liability Need Separate Tracks
+zg361cp.133 = {
+	type = character_event
+	theme = stewardship
+	title = zg361cp.133.t
+	desc = zg361cp.133.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_cp_r_owner
+		exists = scope:zg361_cp_r_subject
+		exists = scope:zg361_cp_r_cycle
+		exists = scope:zg361_cp_r_case
+		this = scope:zg361_cp_r_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_r_subject = {
+			zg361_case_kernel_full_guard_trigger = {
+				OWNER_VAR = zg361_case_r_owner
+				SUBJECT_VAR = zg361_case_r_subject
+				CYCLE_VAR = zg361_case_r_cycle_serial
+				CASE_VAR = zg361_case_r_case_serial
+				STATE_VAR = zg361_case_r_state
+				ACTIVE_VAR = zg361_case_r_active
+				EXPECTED_OWNER = scope:zg361_cp_r_owner
+				EXPECTED_SUBJECT = scope:zg361_cp_r_subject
+				EXPECTED_CYCLE = scope:zg361_cp_r_cycle
+				EXPECTED_CASE = scope:zg361_cp_r_case
+				EXPECTED_STATE = 5
+			}
+		}
+	}
+	option = {
+		name = zg361cp.133.a
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m133_route_a_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.133.b
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m133_route_b_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+	}
+	option = {
+		name = zg361cp.133.c
+
+		scope:zg361_cp_r_subject = {
+			zg361_cp_m133_route_c_effect = {
+				TICKET_OWNER = scope:zg361_cp_r_owner
+				TICKET_SUBJECT = scope:zg361_cp_r_subject
+				TICKET_CYCLE = scope:zg361_cp_r_cycle
+				TICKET_CASE = scope:zg361_cp_r_case
+			}
+		}
+	}
+}
+
+# D+1 hidden queue edge: E closed -> I opens.
+zg361cp.9001 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_e_owner
+		exists = scope:zg361_cp_e_subject
+		exists = scope:zg361_cp_e_cycle
+		exists = scope:zg361_cp_e_case
+		this = scope:zg361_cp_e_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_e_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_e_owner
+					has_variable = zg361_case_e_subject
+					has_variable = zg361_case_e_cycle_serial
+					has_variable = zg361_case_e_case_serial
+					has_variable = zg361_case_e_state
+					has_variable = zg361_case_e_active
+				}
+				var:zg361_case_e_owner = scope:zg361_cp_e_owner
+				var:zg361_case_e_subject = scope:zg361_cp_e_subject
+				var:zg361_case_e_cycle_serial = scope:zg361_cp_e_cycle
+				var:zg361_case_e_case_serial = scope:zg361_cp_e_case
+				var:zg361_case_e_state = 5
+				var:zg361_case_e_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_e_subject = { zg361_cp_i_launch_effect = yes } }
+}
+
+# D+1 hidden queue edge: I closed -> J opens.
+zg361cp.9002 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_i_owner
+		exists = scope:zg361_cp_i_subject
+		exists = scope:zg361_cp_i_cycle
+		exists = scope:zg361_cp_i_case
+		this = scope:zg361_cp_i_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_i_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_i_owner
+					has_variable = zg361_case_i_subject
+					has_variable = zg361_case_i_cycle_serial
+					has_variable = zg361_case_i_case_serial
+					has_variable = zg361_case_i_state
+					has_variable = zg361_case_i_active
+				}
+				var:zg361_case_i_owner = scope:zg361_cp_i_owner
+				var:zg361_case_i_subject = scope:zg361_cp_i_subject
+				var:zg361_case_i_cycle_serial = scope:zg361_cp_i_cycle
+				var:zg361_case_i_case_serial = scope:zg361_cp_i_case
+				var:zg361_case_i_state = 5
+				var:zg361_case_i_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_i_subject = { zg361_cp_j_launch_effect = yes } }
+}
+
+# D+1 hidden queue edge: J closed -> R opens.
+zg361cp.9003 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		exists = scope:zg361_cp_j_owner
+		exists = scope:zg361_cp_j_subject
+		exists = scope:zg361_cp_j_cycle
+		exists = scope:zg361_cp_j_case
+		this = scope:zg361_cp_j_owner
+		zg361_is_celestial_liege_trigger = yes
+		scope:zg361_cp_j_subject = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_case_j_owner
+					has_variable = zg361_case_j_subject
+					has_variable = zg361_case_j_cycle_serial
+					has_variable = zg361_case_j_case_serial
+					has_variable = zg361_case_j_state
+					has_variable = zg361_case_j_active
+				}
+				var:zg361_case_j_owner = scope:zg361_cp_j_owner
+				var:zg361_case_j_subject = scope:zg361_cp_j_subject
+				var:zg361_case_j_cycle_serial = scope:zg361_cp_j_cycle
+				var:zg361_case_j_case_serial = scope:zg361_cp_j_case
+				var:zg361_case_j_state = 5
+				var:zg361_case_j_active = 0
+			}
+			trigger_else = { always = no }
+		}
+	}
+	immediate = { scope:zg361_cp_j_subject = { zg361_cp_r_launch_effect = yes } }
+}
