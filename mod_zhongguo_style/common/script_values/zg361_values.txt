@@ -41,13 +41,15 @@ zg361_perf_bonus_scaled_value = {
 }
 
 # ============================================================
-# KPI 公式（当前作用域 = 被考核封臣；调用链 ROOT 可能仍是考核领主）
+# KPI 分项证据（当前作用域 = 被考核封臣；调用链 ROOT 可能仍是考核领主）
+#
+# 二期首纵切把同一公式拆成八个可冻结分项。zg361_kpi_value 只做代数求和，
+# 不再维护第二份平行公式；个人清算单、申诉和后续 PIP 都读取结算时冻结值。
 # ============================================================
 
-zg361_kpi_value = {
+# 1. 治理产出：总督效率（-50~+50）×2；直属男爵无总督效率，记 0。
+zg361_kpi_governance_evidence_value = {
 	value = 0
-
-	# 产出：总督效率（-50~+50）× 2；直属男爵无总督效率，记 0。
 	if = {
 		limit = { is_governor = yes }
 		add = {
@@ -55,27 +57,51 @@ zg361_kpi_value = {
 			multiply = 2
 		}
 	}
+}
 
-	# 职级与成长：只对拥有贤能资源的官员读取。
+# 2. 当前职级/贤能品级。
+zg361_kpi_capability_evidence_value = {
+	value = 0
 	if = {
 		limit = { government_has_flag = government_has_merit }
 		add = {
 			value = merit_level
 			multiply = 8
 		}
+	}
+}
+
+# 3. 相对上一轮的成长；首次建账无快照时按 0。
+zg361_kpi_growth_evidence_value = {
+	value = 0
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			has_variable = zg361_prev_merit_level
+		}
 		if = {
-			limit = { has_variable = zg361_prev_merit_level }
+			limit = { merit_level >= var:zg361_prev_merit_level }
+			add = {
+				value = merit_level
+				subtract = var:zg361_prev_merit_level
+				multiply = 10
+				max = 20
+			}
+		}
+		else = {
 			add = {
 				value = merit_level
 				subtract = var:zg361_prev_merit_level
 				multiply = 10
 				min = -20
-				max = 20
 			}
 		}
 	}
+}
 
-	# 上级评价：领主对封臣好感分档
+# 4. 直属上司评价。
+zg361_kpi_superior_evidence_value = {
+	value = 0
 	if = {
 		limit = { liege = { opinion = { target = prev value >= 50 } } }
 		add = 10
@@ -92,8 +118,11 @@ zg361_kpi_value = {
 		limit = { liege = { opinion = { target = prev value <= -20 } } }
 		add = -10
 	}
+}
 
-	# 价值观红线
+# 5. 战争、派系、重罪与退休占位等政治/价值观红线。
+zg361_kpi_values_evidence_value = {
+	value = 0
 	if = {
 		limit = { is_at_war_with_liege = yes }
 		add = -60
@@ -117,8 +146,11 @@ zg361_kpi_value = {
 		limit = { age >= 60 }
 		add = -15
 	}
+}
 
-	# 人际博弈（上期事件/互动结果，年度快照时清除）
+# 6. 上期奋斗/摆烂与同僚举荐/攻讦信号。
+zg361_kpi_collaboration_evidence_value = {
+	value = 0
 	if = {
 		limit = { has_variable = zg361_striving }
 		add = zg361_kpi_striving_bonus_value
@@ -148,8 +180,11 @@ zg361_kpi_value = {
 			subtract = zg361_kpi_slander_backfire_malus_value
 		}
 	}
+}
 
-	# 拒办法定京察是重大失察，但只允许发令时保存的原上司在其下轮考核中消费。
+# 7. 京察履责。只允许发令时保存的原上司消费一次。
+zg361_kpi_jingcha_evidence_value = {
+	value = 0
 	if = {
 		limit = {
 			has_variable = zg361_skipped_jingcha_superior
@@ -160,8 +195,11 @@ zg361_kpi_value = {
 			subtract = zg361_skipped_jingcha_kpi_malus_value
 		}
 	}
+}
 
-	# 361 制度卡不是收藏数字：团队气候影响每名下属，管理者自己的制度账进入上司评分。
+# 8. 361 组织制度气候；团队账和管理者自己的制度账分别回流。
+zg361_kpi_organization_evidence_value = {
+	value = 0
 	if = {
 		limit = { liege = { has_variable = zg361_mechanism_configured_n } }
 		add = zg361_team_mechanism_kpi_value
@@ -170,6 +208,19 @@ zg361_kpi_value = {
 		limit = { has_variable = zg361_mechanism_configured_n }
 		add = zg361_manager_mechanism_kpi_value
 	}
+}
+
+# 权威 KPI = 八个冻结分项之和。静态/model 门会逐项断言这里没有额外项。
+zg361_kpi_value = {
+	value = 0
+	add = zg361_kpi_governance_evidence_value
+	add = zg361_kpi_capability_evidence_value
+	add = zg361_kpi_growth_evidence_value
+	add = zg361_kpi_superior_evidence_value
+	add = zg361_kpi_values_evidence_value
+	add = zg361_kpi_collaboration_evidence_value
+	add = zg361_kpi_jingcha_evidence_value
+	add = zg361_kpi_organization_evidence_value
 }
 
 # ============================================================

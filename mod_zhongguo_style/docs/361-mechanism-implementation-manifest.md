@@ -1,15 +1,15 @@
 # 361 机制实现映射
 
-> GENERATED FILE — edit the numbered design document, reviewed choice JSON, or acceptance-contract JSON.
+> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, or `tools/zg361_phase2_runtime_data.py`.
 
 状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；
-领域对象/状态机仍为 `not-implemented`，玩家侧只有通用政策卡与组织账反馈，因此仅为 `partial`。
+#001/#018/#069/#357 的首个领域纵切为 `partial / static-ready`；其余357项领域状态机仍为 `not-implemented`。
 旧实机证据只证明配置变量、共享账本、校验和及幂等性，不证明 361 项领域玩法已经实现。证据见
 `docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`；逐项目标见 manifest 内 `acceptance_contract`。
 
 | ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 领域 | 玩家闭环 |
 |---:|---|---|---|---|---|---|---:|---|---|---|---|---|
-| 001 | KPI 分项证据单 | A | P0 | `assessment` | `zg361m.1` | `zg361_mechanism_001_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
+| 001 | KPI 分项证据单 | A | P0 | `assessment` | `zg361m.1` | `zg361_mechanism_001_ai_effect` | 1 | complete | fixture-live | fixture-live | partial | partial |
 | 002 | 年度目标责任书：OKR 方向 + KPI 结果 | A | P0 | `assessment` | `zg361m.2` | `zg361_mechanism_002_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 003 | 期中 Check-in 与目标重置 | A | P1 | `assessment` | `zg361m.3` | `zg361_mechanism_003_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 004 | 自评与认知差 | A | P1 | `assessment` | `zg361m.4` | `zg361_mechanism_004_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
@@ -26,7 +26,7 @@
 | 015 | PIP 改进任务书 | C | P0 | `pip` | `zg361m.15` | `zg361_mechanism_015_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 016 | PIP 支持预算与“只给指标不给资源” | C | P1 | `pip` | `zg361m.16` | `zg361_mechanism_016_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 017 | 末位处置阶梯 | C | P0 | `pip` | `zg361m.17` | `zg361_mechanism_017_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
-| 018 | 个人告身与四重后果清算单 | C | P0 | `assessment` | `zg361m.18` | `zg361_mechanism_018_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
+| 018 | 个人告身与四重后果清算单 | C | P0 | `assessment` | `zg361m.18` | `zg361_mechanism_018_ai_effect` | 1 | complete | fixture-live | fixture-live | partial | partial |
 | 019 | 晋升资格门槛 | D | P0 | `promotion` | `zg361m.19` | `zg361_mechanism_019_ai_effect` | 2 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 020 | 晋升包与跨部门答辩 | D | P1 | `promotion` | `zg361m.20` | `zg361_mechanism_020_ai_effect` | 2 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 021 | 奖金—调薪矩阵 | D | P1 | `compensation` | `zg361m.21` | `zg361_mechanism_021_ai_effect` | 2 | complete | fixture-live | fixture-live | not-implemented | partial |
@@ -77,7 +77,7 @@
 | 066 | 项目取消：业务失败与个人失败分离 | J | P1 | `assessment` | `zg361m.66` | `zg361_mechanism_066_ai_effect` | 3 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 067 | 合并后“一岗两人” | J | P2 | `organization` | `zg361m.67` | `zg361_mechanism_067_ai_effect` | 3 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 068 | 可携带履历与本地重新证明 | J | P1 | `organization` | `zg361m.68` | `zg361_mechanism_068_ai_effect` | 3 | complete | fixture-live | fixture-live | not-implemented | partial |
-| 069 | 正式送达与申诉时钟 | K | P0 | `governance` | `zg361m.69` | `zg361_mechanism_069_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
+| 069 | 正式送达与申诉时钟 | K | P0 | `governance` | `zg361m.69` | `zg361_mechanism_069_ai_effect` | 1 | complete | fixture-live | fixture-live | partial | partial |
 | 070 | 申诉后的反报复观察期 | K | P1 | `governance` | `zg361m.70` | `zg361_mechanism_070_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 071 | 内部论坛长文与公开升级 | K | P2 | `governance` | `zg361m.71` | `zg361_mechanism_071_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 072 | 提前泄露绩效档位 | K | P1 | `governance` | `zg361m.72` | `zg361_mechanism_072_ai_effect` | 1 | complete | fixture-live | fixture-live | not-implemented | partial |
@@ -365,10 +365,10 @@
 | 354 | “公平指标”也会被刷 | AK | P2 | `governance` | `zg361m.354` | `zg361_mechanism_354_ai_effect` | 3 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 355 | 高绩效目标棘轮 | AL | P1 | `endgame` | `zg361m.355` | `zg361_mechanism_355_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 356 | 好消息雪藏与截止日套利 | AL | P1 | `endgame` | `zg361m.356` | `zg361_mechanism_356_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
-| 357 | 先锁事实、再套 361 配额 | AL | P1 | `calibration` | `zg361m.357` | `zg361_mechanism_357_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
+| 357 | 先锁事实、再套 361 配额 | AL | P1 | `calibration` | `zg361m.357` | `zg361_mechanism_357_ai_effect` | 4 | complete | fixture-live | fixture-live | partial | partial |
 | 358 | 申诉不加重原则 | AL | P1 | `governance` | `zg361m.358` | `zg361_mechanism_358_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 359 | 翻案后的配额回流与连环送达 | AL | P1 | `calibration` | `zg361m.359` | `zg361_mechanism_359_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 360 | 经理集体拒绝“硬背 C” | AL | P2 | `endgame` | `zg361m.360` | `zg361_mechanism_360_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
 | 361 | 《三六一绩效宪章》 | AL | P2 | `endgame` | `zg361m.361` | `zg361_mechanism_361_ai_effect` | 4 | complete | fixture-live | fixture-live | not-implemented | partial |
 
-Manifest semantic SHA-256: `9c0578940aebb6f631a0c2834a72e6d327f135a9fb771139956a287f110fb625`
+Manifest semantic SHA-256: `e629708f2a72a7f8d9922b1176085f634a3b1bf69493ffc7de070ad94c273381`

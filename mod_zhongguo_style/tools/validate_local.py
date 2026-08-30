@@ -342,8 +342,8 @@ def check_runtime_invariants() -> None:
         err("obsolete review carrier event must not remain orphaned")
     if "add_character_flag = zg361_review_now_pending" not in decisions:
         err("review decision is missing its one-shot GUI bridge flag")
-    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 4:
-        err("all four 361 decisions must declare an existing vanilla picture")
+    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 5:
+        err("all five 361 decisions must declare an existing vanilla picture")
     if "zg361_review_now_bridge_gui" not in scripted_guis:
         err("review decision scripted GUI bridge is missing")
     if re.search(r"add_gold\s*=\s*\{\s*value\s*=\s*0\s+subtract", events):
@@ -592,15 +592,19 @@ def check_runtime_invariants() -> None:
         if token not in effects and token not in events:
             err(f"atomic newcomer-safe calibration C contract missing token: {token}")
 
-    # Appeal settlement is a one-shot receipt reversal. It refunds the exact
-    # fixed penalties, stops the future salary modifier, then clears ownership.
+    # Appeal settlement is a one-shot receipt reversal. Phase two refunds the
+    # actual frozen receipt amounts, stops future salary withholding, and posts
+    # a case-serial refund token rather than recalculating constants.
     for token in (
         "zg361_appeal_regrade_to_35_effect = {",
         "zg361_apply_receipted_appeal_regrade_effect = yes",
         'debug_log = "ZG361: duplicate or stale appeal regrade ignored"',
-        "add_treasury = var:zg361_last_treasury_penalty_paid",
-        "add_gold = var:zg361_last_gold_penalty_paid",
-        "change_merit = { value = var:zg361_last_merit_penalty_paid }",
+        "add_treasury = var:zg361_result_treasury_paid",
+        "add_gold = var:zg361_result_gold_paid",
+        "change_merit = { value = var:zg361_result_merit_paid }",
+        "name = zg361_result_refund_posted_serial value = var:zg361_result_case_serial",
+        "name = zg361_result_case_state value = 5",
+        "name = zg361_result_salary_cut_active value = 0",
         "remove_character_modifier = zg361_grade_325",
         "remove_character_modifier = zg361_pip",
     ):
@@ -776,16 +780,24 @@ def check_runtime_invariants() -> None:
     ):
         if token not in chinese:
             err(f"personal performance writ must expose its identity and result: {token}")
-    for token in (
-        "save_scope_as = zg361_reviewing_superior",
-        "name = zg361_result_kpi",
-        "name = zg361_result_rank",
-        "name = zg361_result_cohort_n",
+    if effects.count("save_scope_as = zg361_reviewing_superior") != 1:
+        err("player result snapshot helper must freeze its reviewer exactly once")
+    for variable in (
+        "zg361_result_kpi",
+        "zg361_result_rank",
+        "zg361_result_cohort_n",
     ):
-        if effects.count(token) != 1:
-            err(f"player result snapshot helper must freeze loc data exactly once: {token}")
-        if token in events:
-            err(f"delayed personal result events must not re-read live loc data: {token}")
+        if len(re.findall(rf"name\s*=\s*{variable}(?=\s)", effects)) != 1:
+            err(
+                "player result snapshot helper must freeze loc data exactly once: "
+                f"name = {variable}"
+            )
+    if "liege = { save_scope_as = zg361_reviewing_superior }" in events:
+        err("delayed personal result events must not re-read the live liege")
+    if events.count(
+        "var:zg361_result_case_owner = { save_scope_as = zg361_reviewing_superior }"
+    ) != 2:
+        err("formal notice and reopenable statement must read the frozen case owner")
     if effects.count("zg361_snapshot_player_result_effect = yes") != 3:
         err("all three grade effects must freeze the delayed personal result payload")
 

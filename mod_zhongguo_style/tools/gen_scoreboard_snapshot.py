@@ -123,43 +123,80 @@ def render_effects() -> bytes:
         lines.append("\t}")
     lines.extend(["}", ""])
 
-    lines.extend(
-        [
-            "# Current scope = successfully regraded official. Update every frozen copy of this latest record.",
-            "zg361_update_regraded_scoreboard_slots_effect = {",
-            "\tsave_temporary_scope_as = zg361_scoreboard_regraded_entry",
-            "\tliege = {",
-        ]
-    )
-    for slot in range(1, SLOT_COUNT + 1):
+    def append_case_slot_update(
+        *, effect_name: str, comment: str, grade: str, streak: str, pip: int
+    ) -> None:
+        """Update only the frozen owner/cycle copy of the current subject's case."""
+
         lines.extend(
             [
-                "\t\tif = {",
-                f"\t\t\tlimit = {{ has_variable = {var('m', slot, 'char')} var:{var('m', slot, 'char')} = scope:zg361_scoreboard_regraded_entry }}",
-                f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = 3.5 }}",
-                f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = 0 }}",
-                f"\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = 0 }}",
-                "\t\t}",
+                comment,
+                f"{effect_name} = {{",
+                "\tsave_temporary_scope_as = zg361_scoreboard_case_entry",
+                "\tvar:zg361_result_case_owner = {",
             ]
         )
-    lines.extend(
-        [
-            "\t\tevery_vassal = {",
-            "\t\t\tlimit = { is_ai = no has_variable = zg361_scoreboard_received_owner var:zg361_scoreboard_received_owner = prev }",
-        ]
+        for slot in range(1, SLOT_COUNT + 1):
+            lines.extend(
+                [
+                    "\t\tif = {",
+                    "\t\t\tlimit = {",
+                    "\t\t\t\thas_variable = zg361_scoreboard_managed_cycle_serial",
+                    "\t\t\t\tvar:zg361_scoreboard_managed_cycle_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                    f"\t\t\t\thas_variable = {var('m', slot, 'char')}",
+                    f"\t\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_case_entry",
+                    "\t\t\t}",
+                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'grade')} value = {grade} }}",
+                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'streak')} value = {streak} }}",
+                    f"\t\t\tset_variable = {{ name = {var('m', slot, 'pip')} value = {pip} }}",
+                    "\t\t}",
+                ]
+            )
+        lines.extend(["\t}"])
+
+        # Only the current player subject owns a received mirror.  Updating it
+        # directly avoids enumerating whoever happens to be the owner's current
+        # vassal after a transfer.
+        for slot in range(1, SLOT_COUNT + 1):
+            lines.extend(
+                [
+                    "\tif = {",
+                    "\t\tlimit = {",
+                    "\t\t\thas_variable = zg361_scoreboard_received_owner",
+                    "\t\t\tvar:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
+                    "\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
+                    "\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
+                    f"\t\t\thas_variable = {var('r', slot, 'char')}",
+                    f"\t\t\tvar:{var('r', slot, 'char')} = scope:zg361_scoreboard_case_entry",
+                    "\t\t}",
+                    f"\t\tset_variable = {{ name = {var('r', slot, 'grade')} value = {grade} }}",
+                    f"\t\tset_variable = {{ name = {var('r', slot, 'streak')} value = {streak} }}",
+                    f"\t\tset_variable = {{ name = {var('r', slot, 'pip')} value = {pip} }}",
+                    "\t}",
+                ]
+            )
+        lines.extend(["}", ""])
+
+    append_case_slot_update(
+        effect_name="zg361_update_settled_325_scoreboard_slots_effect",
+        comment=(
+            "# Current scope = player official after witnessed/acknowledged 3.25 settlement. "
+            "Update only the frozen owner/cycle copies."
+        ),
+        grade="3.25",
+        streak="scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom",
+        pip=1,
     )
-    for slot in range(1, SLOT_COUNT + 1):
-        lines.extend(
-            [
-                "\t\t\tif = {",
-                f"\t\t\t\tlimit = {{ has_variable = {var('r', slot, 'char')} var:{var('r', slot, 'char')} = scope:zg361_scoreboard_regraded_entry }}",
-                f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'grade')} value = 3.5 }}",
-                f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'streak')} value = 0 }}",
-                f"\t\t\t\tset_variable = {{ name = {var('r', slot, 'pip')} value = 0 }}",
-                "\t\t\t}",
-            ]
-        )
-    lines.extend(["\t\t}", "\t}", "}", ""])
+    append_case_slot_update(
+        effect_name="zg361_update_regraded_scoreboard_slots_effect",
+        comment=(
+            "# Current scope = successfully regraded official. Update only the frozen "
+            "owner/cycle copies."
+        ),
+        grade="3.5",
+        streak="0",
+        pip=0,
+    )
     return encoded("\n".join(lines))
 
 

@@ -17,6 +17,7 @@ from zg361_mechanism_data import (
     load_mechanisms,
     mechanism_deltas,
 )
+from zg361_phase2_runtime_data import PHASE2_RUNTIME_SPECS
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -680,52 +681,83 @@ def wave_for(mechanism_id: int) -> int:
     return 4
 
 
-def implementation_status() -> dict[str, str]:
-    """Expose the current evidence boundary without upgrading domain semantics."""
-    return {
+def implementation_status(mechanism_id: int) -> dict[str, str]:
+    """Expose per-item evidence without inflating the other 357 mechanisms."""
+    status = {
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
         "domain_runtime": "not-implemented",
         "player_visible_loop": "partial",
     }
+    spec = PHASE2_RUNTIME_SPECS.get(f"{mechanism_id:03d}")
+    if spec is not None:
+        status["domain_runtime"] = spec.domain_runtime
+        status["player_visible_loop"] = spec.player_visible_loop
+        status["runtime_evidence"] = spec.runtime_evidence
+    return status
+
+
+def runtime_contract(mechanism_id: int) -> dict[str, object] | None:
+    """Serialize only the four source-backed first-slice contracts."""
+    spec = PHASE2_RUNTIME_SPECS.get(f"{mechanism_id:03d}")
+    if spec is None:
+        return None
+    return {
+        "object_type": spec.object_type,
+        "owner_binding": spec.owner_binding,
+        "subject_binding": spec.subject_binding,
+        "cycle_binding": spec.cycle_binding,
+        "case_binding": spec.case_binding,
+        "hook": spec.hook,
+        "states": list(spec.states),
+        "feedback": list(spec.feedback),
+        "permissions": {
+            "player_manager": spec.permissions.player_manager,
+            "ai_manager": spec.permissions.ai_manager,
+            "subject": spec.permissions.subject,
+            "count_baron": spec.permissions.count_baron,
+        },
+    }
 
 
 def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
     items = []
     for mechanism in mechanisms:
-        items.append(
-            {
-                "id": mechanism.id,
-                "group": mechanism.group_code,
-                "group_title": mechanism.group_title,
-                "priority": mechanism.priority,
-                "title_cn": mechanism.title_cn,
-                "title_en": mechanism.title_en,
-                "profile": mechanism.profile,
-                "reference_choice": mechanism.reference_choice,
-                "implementation": {
-                    "event": f"zg361m.{mechanism.id}",
-                    "choice_effects": [
-                        effect_name(mechanism.id, choice) for choice in ("a", "b", "c")
-                    ],
-                    "ai_effect": f"zg361_mechanism_{mechanism.id:03d}_ai_effect",
-                    "policy_variable": f"zg361_mechanism_{mechanism.id:03d}_choice",
-                    "debug_marker": f"ZG361M: CASE {mechanism.id:03d}",
-                },
-                "actor_boundary": "celestial duke-or-higher manager; counts/barons remain assessed-only",
-                "state_changes": {
-                    choice: mechanism_deltas(mechanism, choice) for choice in ("a", "b", "c")
-                },
-                "player_path": "annual review card or next-policy decision",
-                "ai_path": "twelve-card annual background batch",
-                "live_wave": wave_for(mechanism.id),
-                "acceptance_contract": mechanism.acceptance_contract.manifest_payload(),
-                "status": implementation_status(),
-            }
-        )
+        item = {
+            "id": mechanism.id,
+            "group": mechanism.group_code,
+            "group_title": mechanism.group_title,
+            "priority": mechanism.priority,
+            "title_cn": mechanism.title_cn,
+            "title_en": mechanism.title_en,
+            "profile": mechanism.profile,
+            "reference_choice": mechanism.reference_choice,
+            "implementation": {
+                "event": f"zg361m.{mechanism.id}",
+                "choice_effects": [
+                    effect_name(mechanism.id, choice) for choice in ("a", "b", "c")
+                ],
+                "ai_effect": f"zg361_mechanism_{mechanism.id:03d}_ai_effect",
+                "policy_variable": f"zg361_mechanism_{mechanism.id:03d}_choice",
+                "debug_marker": f"ZG361M: CASE {mechanism.id:03d}",
+            },
+            "actor_boundary": "celestial duke-or-higher manager; counts/barons remain assessed-only",
+            "state_changes": {
+                choice: mechanism_deltas(mechanism, choice) for choice in ("a", "b", "c")
+            },
+            "player_path": "annual review card or next-policy decision",
+            "ai_path": "twelve-card annual background batch",
+            "live_wave": wave_for(mechanism.id),
+            "acceptance_contract": mechanism.acceptance_contract.manifest_payload(),
+            "status": implementation_status(mechanism.id),
+        }
+        contract = runtime_contract(mechanism.id)
+        if contract is not None:
+            item["runtime_contract"] = contract
+        items.append(item)
     return {
-        "schema": 2,
+        "schema": 3,
         "mechanism_count": MECHANISM_COUNT,
         "source": "docs/361-expansion-options.md",
         "acceptance_contract_source": "tools/mechanism_acceptance/acceptance_*.json",
@@ -733,8 +765,9 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             "catalogue": "The numbered design and reviewed choice copy are complete.",
             "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
             "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
-            "domain_runtime": "The typed domain objects and state machines required by the acceptance contract are not implemented yet.",
-            "player_visible_loop": "Generic policy cards and ledger climate feedback exist; contract-specific objects, actions, and feedback remain incomplete.",
+            "domain_runtime": "Mechanisms 001/018/069/357 have a partial first-slice runtime; the other 357 typed domain runtimes remain not implemented.",
+            "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; the first slice adds a partial personal evidence/service/statement loop.",
+            "runtime_evidence": "001/018/069/357 are static-ready only: source model, generated manifest, script and localization checks; no CK3 fixture or live claim yet.",
         },
         "acceptance": {
             "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -743,6 +776,13 @@ def manifest_payload(mechanisms: list[Mechanism]) -> dict[str, object]:
             "run_id": "zga_20260829_061314_ea5f04ad",
             "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
             "claim_boundary": "fixture-live applies only to policy_configuration and ledger_projection; it does not prove the 361 domain runtimes, player-visible semantic loops, or all 1083 A/B/C branches",
+        },
+        "phase2_static": {
+            "mechanism_ids": [1, 18, 69, 357],
+            "evidence": "static-ready",
+            "source": "tools/zg361_phase2_runtime_data.py",
+            "tests": "tools/test_zg361_phase2_runtime.py",
+            "claim_boundary": "Static model and L0 checks do not prove CK3 load, fixture behavior, UI rendering, timed delivery, receipts, or appeal outcomes.",
         },
         "generated_files": [],
         "items": items,
@@ -753,10 +793,10 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
     lines = [
         "# 361 机制实现映射",
         "",
-        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, or acceptance-contract JSON.",
+        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, or `tools/zg361_phase2_runtime_data.py`.",
         "",
         "状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；",
-        "领域对象/状态机仍为 `not-implemented`，玩家侧只有通用政策卡与组织账反馈，因此仅为 `partial`。",
+        "#001/#018/#069/#357 的首个领域纵切为 `partial / static-ready`；其余357项领域状态机仍为 `not-implemented`。",
         "旧实机证据只证明配置变量、共享账本、校验和及幂等性，不证明 361 项领域玩法已经实现。证据见",
         "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`；逐项目标见 manifest 内 `acceptance_contract`。",
         "",
@@ -764,11 +804,13 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
         "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|",
     ]
     for mechanism in mechanisms:
+        status = implementation_status(mechanism.id)
         lines.append(
             f"| {mechanism.id:03d} | {mechanism.title_cn} | {mechanism.group_code} | "
             f"{mechanism.priority} | `{mechanism.profile}` | `zg361m.{mechanism.id}` | "
             f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | "
-            "complete | fixture-live | fixture-live | not-implemented | partial |"
+            f"complete | fixture-live | fixture-live | {status['domain_runtime']} | "
+            f"{status['player_visible_loop']} |"
         )
     digest = hashlib.sha256(
         json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")

@@ -64,6 +64,36 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         ]
         self.assertEqual(stale, [])
 
+    def test_phase2_case_updates_follow_frozen_owner_and_cycle(self) -> None:
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        phase2 = effects.split(
+            "# Current scope = player official after witnessed/acknowledged 3.25 settlement.",
+            1,
+        )[1]
+        for effect in (
+            "zg361_update_settled_325_scoreboard_slots_effect",
+            "zg361_update_regraded_scoreboard_slots_effect",
+        ):
+            self.assertIn(effect, phase2)
+        self.assertIn("var:zg361_result_case_owner = {", phase2)
+        self.assertIn("zg361_scoreboard_managed_cycle_serial", phase2)
+        self.assertIn("zg361_scoreboard_received_cycle_serial", phase2)
+        self.assertIn(
+            "var:zg361_scoreboard_received_owner = var:zg361_result_case_owner",
+            phase2,
+        )
+        self.assertNotIn("\tliege = {", phase2)
+        self.assertNotIn("\tevery_vassal = {", phase2)
+        self.assertEqual(
+            phase2.count("scope:zg361_scoreboard_case_entry.var:zg361_streak_bottom"),
+            SLOT_COUNT * 2,
+        )
+
     def test_eighty_row_cap_is_explicitly_reported_as_shown_over_full(self) -> None:
         product_effects = (
             MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"

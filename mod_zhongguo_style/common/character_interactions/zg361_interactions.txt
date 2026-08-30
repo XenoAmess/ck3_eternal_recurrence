@@ -16,10 +16,14 @@ zg361_appeal_interaction = {
 
 	is_shown = {
 		has_game_rule = zg361_on
-	scope:actor = {
+		scope:actor = {
 			has_character_modifier = zg361_grade_325
-			zg361_is_current_liege_review_record_trigger = yes
-			liege = scope:recipient
+			has_variable = zg361_result_case_owner
+			var:zg361_result_case_owner = scope:recipient
+			has_variable = zg361_result_case_state
+			var:zg361_result_case_state = 3
+			has_variable = zg361_result_appeal_open
+			var:zg361_result_appeal_open = 1
 		}
 		scope:recipient = {
 			zg361_is_celestial_liege_trigger = yes
