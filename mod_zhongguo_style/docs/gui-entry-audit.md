@@ -6,7 +6,7 @@
 
 目标版本：CK3 1.19.0.6
 
-当前审计对象：`gui/zg361_scoreboard.gui`，SHA-256 `DECB98240A4FE328E2A5FB18606713C88760A13343D337312A62A7667C1BDB5C`。
+当前审计对象：`gui/zg361_scoreboard.gui`，SHA-256 `EA2A0D88578DFB676DDDAA27D0C3178C576264935C2CE32EF3D62DDD3BE3693E`。
 
 状态：当前精确字节仅为 `static-ready`。对 41 份保留的实机 runtime 副本逐一计算 SHA-256，命中当前 SHA 的副本为 **0**；下文旧 SHA 的实机结果仅作历史诊断证据，不能继承为当前字节的 L3 或整批 GREEN。
 
@@ -137,7 +137,7 @@ F1–F5 应尽量放进一次 2560×1440、1.30 启动；若游戏允许可靠�
 
 ### 5.1 旧字节候选运行历史（仅作诊断证据）
 
-当时的新布局已经随当时的正式候选进入 CK3 合批验收。该候选实机证据证明右侧原生抽屉打开时入口会被正确抑制；完整“关闭抽屉 → 安全区重现 → 打开榜单 → 切页/关闭”链仍以首次全绿报告为准，不能用中途 RED 冒充，也不能外推到当前 `DECB9824…` 字节。
+当时的新布局已经随当时的正式候选进入 CK3 合批验收。该候选实机证据证明右侧原生抽屉打开时入口会被正确抑制；完整“关闭抽屉 → 安全区重现 → 打开榜单 → 切页/关闭”链仍以首次全绿报告为准，不能用中途 RED 冒充，也不能外推到其后的 `DECB9824…` 候选，更不能外推到当前 `EA2A0D88…` 字节。
 
 截至 `zga_20260829_133619_5fbed52`，该历史合批只承诺已经发生的常驻入口、右窗抑制、原生决议抽屉标题 X、所辖页和页签点击。榜单自身标题 X、模态背景与人物行的代表性点击链是在该 RED 之后才接入 runner，当时只能称 static-ready；必须以对应 artifact 中的 `08_gui_audit_*` 截图和报告字段为准。即使一条人物行通过，也只证明同一生成结构的代表样本，绝不称作 160 条逐项 L3。
 
@@ -175,10 +175,27 @@ F1–F5 应尽量放进一次 2560×1440、1.30 启动；若游戏允许可靠�
 
 权威生成器随后作了最小修复：增加 ledger-only 第三个互斥入口并默认打开 `system` 页；modal 可由 managed、received 或 ledger 任一状态维持；显示门补齐 `struggle` 与 `hide_ui_main_tabs`；两处 shortcut 改为原版无引号形式。生成投影与九项静态测试曾通过。Escape 的根因虽然与原版语法差异高度吻合，但在当前精确字节完成 CK3 同批复验前仍只标 `static-ready`，不能提前写成 L3。
 
-### 7.1 2026-08-30 当前精确字节边界
+### 7.1 2026-08-30 前一候选的精确字节边界
 
-- 当前生成投影 SHA-256：`DECB98240A4FE328E2A5FB18606713C88760A13343D337312A62A7667C1BDB5C`；权威生成器 `tools/gen_scoreboard_snapshot.py` SHA-256：`162EF4731DD011D0B409540670ED7C006D697B7A9173C95E9EFBCD223C054752`。
-- 从 `Z:\ck3_mod_rewrite_process_assets\zg361` 扫描到 41 份保留的 `mod-content/zhongguo_361/gui/zg361_scoreboard.gui` runtime 副本；其 SHA 只有五种旧值，命中当前 `DECB9824…` 的数量为 **0**。因此当前字节的 GUI L3 次数为 **0**。
+- 该候选生成投影 SHA-256：`DECB98240A4FE328E2A5FB18606713C88760A13343D337312A62A7667C1BDB5C`；当时的权威生成器 `tools/gen_scoreboard_snapshot.py` SHA-256：`162EF4731DD011D0B409540670ED7C006D697B7A9173C95E9EFBCD223C054752`。
+- 从 `Z:\ck3_mod_rewrite_process_assets\zg361` 扫描到 41 份保留的 `mod-content/zhongguo_361/gui/zg361_scoreboard.gui` runtime 副本；其 SHA 只有五种更旧值，命中 `DECB9824…` 的数量为 **0**。因此该候选字节的 GUI L3 次数为 **0**。
 - `B50D3122… → DECB9824…` 的产品差异包括：新增 `struggle`/`hide_ui_main_tabs` 两门、第三个 ledger-only 入口、modal 的 ledger availability，以及两处 shortcut 从有引号改为无引号。它们恰好覆盖入口、可见性和关闭行为，不能用旧字节的 X/backdrop/managed 行结果推定当前字节仍通过。
-- 当前静态结构是三个入口变体、`167` 个直接按钮、包含 inherited 标题 X 共 `168`；这只是源码/生成投影事实，不是 168 个控件的逐项实点。
-- 当前字节仍须覆盖：三个入口变体、三个页签、managed/received 代表行、深滚动、ledger-only、精确 Escape、七项 HUD 门的关闭态与打开态、玩家切换/继承状态转换、正常产品事件叠层，以及 1920×1080 和低分辨率/高缩放几何。通过前不得写 GUI GREEN。
+- 该候选静态结构是三个入口变体、`167` 个直接按钮、包含 inherited 标题 X 共 `168`；这只是源码/生成投影事实，不是 168 个控件的逐项实点。
+- 该候选仍须覆盖：三个入口变体、三个页签、managed/received 代表行、深滚动、ledger-only、精确 Escape、七项 HUD 门的关闭态与打开态、玩家切换/继承状态转换、正常产品事件叠层，以及 1920×1080 和低分辨率/高缩放几何。通过前不得写 GUI GREEN。
+
+## 8. 2026-08-30 冻结案卷详情候选
+
+本轮把榜单的角色行扩展为冻结案卷入口，并增加事实、互评、配额与审计四个面板内页；仍只保留原有
+`zg361_scoreboard_toggle`、`zg361_scoreboard_window` 与同一 modal，不增加 HUD 按钮、顶层 window 或 scripted-widget 注册。
+入口锚点继续是 `position = { -60 90 }`，七项 HUD 显示门与 modal 阻塞门也继续共用同一生成常量。
+
+- 当前 GUI SHA-256：`EA2A0D88578DFB676DDDAA27D0C3178C576264935C2CE32EF3D62DDD3BE3693E`；生成器 SHA-256：`75774D129B146D444C9CB62562422C0F2DF050651B48AAEB51AD14F0F7FAF330`。
+- managed selector 与本人 received selector 都要求冻结人物、case owner、cycle serial 与 case serial 完整；详情打开时再次比对同一组身份，拒绝旧槽或跨上司案卷。
+- 详情页只读取发布时冻结字段；received 侧使用单独本人缓冲区，未公开的互评作者、原始评语和回避身份不写入该缓冲区。
+- backdrop、标题 X、Escape、外层页签、内层页签和新一次发布都会把详情状态退回安全初值，避免关闭重开后保留旧人物案卷。
+- 静态验收为 scoreboard `16/16`、phase-2 wiring `12/12`、本地生成器 `--check` 与 `validate_local.py` GREEN；官方 CI `33315435546` GREEN。它们只证明生成与绑定合同，不是 CK3 GUI 实机 GREEN。
+
+当前精确字节的 GUI L3 次数仍为 **0**。正式批次必须优先通过 MCP named-widget 状态/动作/冻结案卷查询完成
+入口矩形、七项 HUD 门的开关两态、modal 阻塞、四个详情页、managed/received ACL、关闭重开、玩家切换与
+1366×768、1920×1080、2560×1440 几何审计。MCP 能力未接通前，OCR 只允许在状态真值闭合后截取最终素材，
+不得承担导航或 GREEN 判定。
