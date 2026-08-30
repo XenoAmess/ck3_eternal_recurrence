@@ -38,6 +38,7 @@ NATIVE_SESSION_CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 NATIVE_SESSION_CHECKPOINT_LOAD_NAME = "xar_checkpoint"
 NATIVE_SESSION_EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
 NATIVE_SESSION_EPISODE_SEED_LOAD_NAME = "xar_episode_seed"
+NATIVE_SESSION_EPISODE_SEED_METADATA_FILENAME = "episode-seed.json"
 NATIVE_DRIVER_STATE_FILENAME = "driver-state.json"
 
 
@@ -766,6 +767,75 @@ def validate_cold_start_checkpoint_for_pipe(
         "sha256": digest,
         "saved_date_raw": saved_date_raw,
         "history_index": history_index,
+    }
+
+
+def validate_episode_seed_for_state(
+    spec: EnvironmentSpec,
+) -> dict[str, object]:
+    """Resolve the immutable next-episode seed without launching CK3."""
+    metadata_path = (
+        spec.state_dir
+        / NATIVE_SESSION_QUEUE_DIRNAME
+        / NATIVE_SESSION_EPISODE_SEED_METADATA_FILENAME
+    )
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(
+            f"episode seed metadata is unavailable: {metadata_path}: {error}"
+        ) from error
+    expected_path = (
+        spec.profile_dir
+        / "save games"
+        / NATIVE_SESSION_EPISODE_SEED_FILENAME
+    ).resolve()
+    size = metadata.get("size") if isinstance(metadata, dict) else None
+    digest = metadata.get("sha256") if isinstance(metadata, dict) else None
+    date_raw = (
+        metadata.get("date_raw") if isinstance(metadata, dict) else None
+    )
+    character_id = (
+        metadata.get("character_id") if isinstance(metadata, dict) else None
+    )
+    source_run_id = (
+        metadata.get("source_run_id") if isinstance(metadata, dict) else None
+    )
+    if (
+        not isinstance(metadata, dict)
+        or metadata.get("format_version") != 1
+        or metadata.get("name") != NATIVE_SESSION_EPISODE_SEED_FILENAME
+        or metadata.get("immutable") is not True
+        or Path(str(metadata.get("path", ""))).resolve() != expected_path
+        or isinstance(size, bool)
+        or not isinstance(size, int)
+        or size <= 0
+        or not isinstance(digest, str)
+        or len(digest) != 64
+        or any(character not in "0123456789abcdef" for character in digest)
+        or isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or isinstance(character_id, bool)
+        or not isinstance(character_id, int)
+        or not isinstance(source_run_id, str)
+        or not source_run_id
+    ):
+        raise AgentError("episode seed metadata is incomplete")
+    try:
+        actual_size = expected_path.stat().st_size
+    except OSError as error:
+        raise AgentError(
+            f"episode seed is unavailable: {expected_path}: {error}"
+        ) from error
+    actual_digest = _sha256_file(expected_path)
+    if actual_size != size or actual_digest != digest:
+        raise AgentError("episode seed bytes differ from immutable metadata")
+    return {
+        **metadata,
+        "path": str(expected_path),
+        "size": actual_size,
+        "sha256": actual_digest,
+        "metadata_path": str(metadata_path.resolve()),
     }
 
 

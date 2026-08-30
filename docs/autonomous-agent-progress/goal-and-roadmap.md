@@ -75,6 +75,16 @@ tactical sentinel 正常 stop 前从 episode CharacterID 切到继承人；同�
 GREEN attempt 为 `20260830T073735Z-g2-terminal-boundary-date-drift-retry`：`10/10` turns、`1` terminal、settlement/cleanup
 全绿。该结果只关闭 GEN-032；runner 在 `episode_complete` 返回，没有执行 `start-next-episode`，故完整 G2 仍未完成。
 
+随后严格 `native-next-episode` runner 从死亡前 durable checkpoint 正式闭合 GEN-009。attempt 01
+`20260830T101417Z-next-episode-1f7afbf7` 暴露同一 one-life terminal 在显式暂停期间可从“死亡角色帧”演化为“继承人已接管帧”；
+最小修复只保留 bridge/connection/episode owner pins，不再要求这个终局表面像普通 event identity 一样完全不变。attempt 02
+`20260830T102101Z-next-episode-77c4006e` 因并行 ZhongGuo 验收持有全局 CK3 lock 在 0 turn 退出，是保留的 harness RED。
+attempt 03 `20260830T102401Z-next-episode-23c58fa1` 为 `7/7` turns、`next_episode_checkpointed / qualified`：旧 PID
+`57484` 终局后以 `start-next-episode` 重启为 PID `33200`，connection generation `1→2`，逐字节载入 immutable seed
+`E3B4A97D...C5D91`，得到新 run ID `native-29829-fffa4ba935f6`，完成一次可见 gameplay，并在 `date_raw=53211576`
+保存绑定该新 run ID 的 checkpoint `BB4CD2B5...DC235`。全部 15 项 gate 与 managed cleanup 为 GREEN，`first_blocker=null`。
+这是首个固定 seed 的 G2 跨 episode production-live loop；尚不证明第二个完整寿命或跨不同 seed 的泛化。
+
 历史主线 `7a89c58`、`4b82d5b`、`e23abe2`、`0848d61`、`726a1c0`、`75c67d2`、`aff784d`、`3bd8934`、
 `8efa23f` 均已 push；本轮施工起点 `origin/master` 为 `f41c12a`，G1/GEN-032 的 scoped delivery 在本轮收口推送。其中
 `726a1c0` 冻结最终结算合同：自然死亡后必须等琉焰卿 committed scoring；
@@ -107,17 +117,18 @@ GREEN attempt 为 `20260830T073735Z-g2-terminal-boundary-date-drift-retry`：`10
 | 一代结算 | `production-live loop`（固定 G1 episode） | 自然死亡后等待 matching committed settlement；本次实读 `ready=true / commit_serial=1 / source=29829`，三处人生分数均为 `14.8`，record persistence 与零继承人 gameplay 全绿。 | 普通 campaign 跨继承与更多 seed 尚未完成。 |
 | 一代人严格 runner | `production-live loop`（G1 qualified） | 从归档 exact cold seed 持续 OODA 到自然死亡、Mod committed settlement 和 managed cleanup；最终 run 为 `155/155` turns、`53` gameplay、`15` checkpoints、`1` terminal。 | 只完成一个固定 production seed；跨继承 G2、更多 ruler/government/DLC 与通用高质量策略仍未完成。 |
 | tactical sentinel 的 one-life terminal | `production-live loop`（GEN-032 resolved） | native stop 前发生玩家死亡/切换时，稳定同 episode terminal、显式暂停、执行 `death-terminal` 并观察 settlement；attempt 03 为 `10/10`。 | 不证明 `start-next-episode`、新 episode gameplay 或完整 G2。 |
+| 跨 episode 生命周期 | `production-live loop`（首个 G2 gate） | 从旧 episode committed terminal 提交 `start-next-episode`，新 PID/connection 精确重载 immutable seed，生成新 run ID，完成可见 gameplay 后保存绑定新 episode 的 durable checkpoint。 | 只覆盖同一冻结 seed 的一次跨局；不证明第二个完整寿命、不同角色/政府/DLC 或长期重复自治。 |
 
 已有 managed war run 的已记录量化里程碑为 `210/210` 成功回合、78 个可见 gameplay 回合和 75 个游戏日；这是既有战争
 checkpoint 的稳定性证据，不是全游戏覆盖率。
 
 最终 strict one-generation report 已 finalized：`status=episode_complete / outcome=qualified / ok=true`；report SHA-256
-`FF689E88...EFB3`，terminal sidecar SHA-256 `D26744BF...850E`。G1 stage 与 GEN-032 已完成；当前最靠前的续作仍是
-`GEN-009` 的跨 episode lifecycle，以普通 campaign 方式验证 G2。
+`FF689E88...EFB3`，terminal sidecar SHA-256 `D26744BF...850E`。G1、GEN-032 与首个 GEN-009/G2 gate 均已完成；G2 report
+SHA-256 为 `22F54519...E565`，next-episode sidecar 为 `AC085365...B626`。
 
-当前受管 state 已补齐并验证 `xar_episode_seed.ck3`：`76,980,533` bytes、SHA-256 `E3B4A97D...C5D91`，metadata
-绑定 `date_raw=53211552 / CharacterID=29829`。余下债务不是“文件缺失”，而是尚无 live 证据证明
-`start-next-episode → seed reload → 新 episode ID → 新局 gameplay/checkpoint`；strict wrapper 仍不能声称已完成跨局重绑。
+当前受管 state 的 `xar_episode_seed.ck3` 为 `76,980,533` bytes、SHA-256 `E3B4A97D...C5D91`，metadata 绑定
+`date_raw=53211552 / CharacterID=29829`；该 exact seed 已在新 PID 上实读重绑并推进至 `53211576` 的新 episode checkpoint。
+余下债务转为第二个完整寿命、不同 seed/ruler/government/DLC 的 G2 重复矩阵与 G3 broadened，不再把 GEN-009 写成未实测。
 
 ## 当前事件能力的精确状态
 
@@ -245,11 +256,11 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 
 1. 冻结并保留 G1 `1f934571` 的 qualified report、terminal sidecar 与人生分数 `14.8`；不重复同 seed canary；
 2. 保留 GEN-032 attempts 01/02 RED 与 attempt 03 GREEN；该 blocker 已关闭，不重复同 checkpoint 验证；
-3. 从合并后的 master 继续 `GEN-009` 跨 episode lifecycle，并以普通 campaign 方式验证
-   `start-next-episode → seed reload → 新 episode ID → 新局 gameplay/checkpoint`；
-4. G2 若出现新的真实 B0/B1，保留 artifact，先更新对应 exact-build 原生树，再做最小合法 blocker-removal；
+3. 冻结 GEN-009 的 capability RED、并发锁 harness RED 与 G2 GREEN；不重复同 seed 的同一跨局 gate；
+4. 继续第二个完整寿命或选择新 seed/ruler 扩展 G2 重复矩阵；若出现新的真实 B0/B1，保留 artifact，先更新对应
+   exact-build 原生树，再做最小合法 blocker-removal；
 5. 完整 effects、reinforcement/join、terminal 剩余分支、forecast、智能宣战及 P4–P10 通用玩法域若未成为真实 blocker，继续按
-   B2/B3 账本排序，不抢占首次 G1。
+   B2/B3 账本排序，不以重复审计取代可见玩法与完整 OODA。
 
 真实 run 出现更高优先级的观测阻点时，可以调整相邻工作包，但不得通过重复返回 `unknown/unavailable` 代替补观测口。
 

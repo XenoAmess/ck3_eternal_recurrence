@@ -118,9 +118,11 @@ def native_auto_run(
         route_contact_timeline_speed,
         allow_high_speed_ab=allow_route_contact_high_speed_ab,
     )
-    if completion_contract not in {"bounded", "one_generation"}:
+    strict_completion_contracts = {"one_generation", "next_episode"}
+    if completion_contract not in {"bounded", *strict_completion_contracts}:
         raise AgentError(
-            "completion_contract must be 'bounded' or 'one_generation'"
+            "completion_contract must be 'bounded', 'one_generation', or "
+            "'next_episode'"
         )
     config = (
         native_bridge_launch_config_from_environment()
@@ -133,15 +135,16 @@ def native_auto_run(
             "native-auto-run requires --bridge-mode native-headless; "
             f"selected mode is {selected!r}"
         )
-    if completion_contract == "one_generation" and not cold_start_checkpoint:
+    if completion_contract in strict_completion_contracts and not cold_start_checkpoint:
         raise AgentError(
-            "one_generation completion requires an exact cold-start checkpoint"
+            f"{completion_contract} completion requires an exact cold-start "
+            "checkpoint"
         )
 
     ensure_state_path_safe(spec.state_dir)
     fixed_seed = (
         validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
-        if completion_contract == "one_generation"
+        if completion_contract in strict_completion_contracts
         else None
     )
     started_wall = utc_now()
@@ -174,6 +177,10 @@ def native_auto_run(
     terminal_pending = False
     modal_decision_pending = False
     terminal_proof: dict[str, object] | None = None
+    next_episode_transition: dict[str, object] | None = None
+    post_transition_visible_gameplay_turns = 0
+    post_transition_last_gameplay_turn_index: int | None = None
+    post_transition_checkpoint: dict[str, object] | None = None
     initial_episode: dict[str, object] | None = None
     same_episode_binding = True
     status = "starting"
@@ -345,7 +352,7 @@ def native_auto_run(
             "episode_run_id": readiness.get("episode_run_id"),
             "date_raw": readiness.get("date_raw"),
         }
-        if completion_contract == "one_generation":
+        if completion_contract in strict_completion_contracts:
             try:
                 _verify_one_generation_binding(readiness, initial_episode)
             except AgentError as error:
@@ -392,9 +399,16 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
-            if completion_contract == "one_generation":
+            if completion_contract in strict_completion_contracts:
                 try:
-                    _verify_one_generation_binding(before, initial_episode)
+                    if next_episode_transition is None:
+                        _verify_one_generation_binding(
+                            before, initial_episode
+                        )
+                    else:
+                        _verify_next_episode_binding(
+                            before, next_episode_transition
+                        )
                 except AgentError as error:
                     same_episode_binding = False
                     capture_first_failure(
@@ -445,11 +459,16 @@ def native_auto_run(
                         allow_terminal=True,
                     )
                     current_attempt["before"] = _public_binding(before)
-                    if completion_contract == "one_generation":
+                    if completion_contract in strict_completion_contracts:
                         try:
-                            _verify_one_generation_binding(
-                                before, initial_episode
-                            )
+                            if next_episode_transition is None:
+                                _verify_one_generation_binding(
+                                    before, initial_episode
+                                )
+                            else:
+                                _verify_next_episode_binding(
+                                    before, next_episode_transition
+                                )
                         except AgentError as binding_error:
                             same_episode_binding = False
                             capture_first_failure(
@@ -520,19 +539,21 @@ def native_auto_run(
                         evidence=[],
                     )
                 )
-                if completion_contract == "one_generation":
+                if completion_contract in strict_completion_contracts:
                     status = "terminal_preexisting"
                     capture_first_failure(
                         stage="readiness",
                         kind="preexisting_terminal",
                         message=(
-                            "one-generation completion requires death-terminal "
-                            "to be executed and verified by this run"
+                            f"{completion_contract} completion requires "
+                            "death-terminal to be executed and verified by "
+                            "this run"
                         ),
                     )
                     raise AgentError(
-                        "one-generation completion requires death-terminal "
-                        "to be executed and verified by this run"
+                        f"{completion_contract} completion requires "
+                        "death-terminal to be executed and verified by this "
+                        "run"
                     )
                 status = "terminal_preexisting"
                 break
@@ -653,6 +674,37 @@ def native_auto_run(
                     war_termination_result.get("status")
                     == "submitted_pending"
                 )
+            if completion_contract in strict_completion_contracts:
+                try:
+                    if (
+                        completion_contract == "next_episode"
+                        and step == "start-next-episode"
+                    ):
+                        next_episode_transition = (
+                            _verify_next_episode_transition(
+                                outcome.get("result"),
+                                snapshot=after_snapshot,
+                                binding=after,
+                                initial_episode=initial_episode,
+                            )
+                        )
+                    elif next_episode_transition is None:
+                        _verify_one_generation_binding(
+                            after, initial_episode
+                        )
+                    else:
+                        _verify_next_episode_binding(
+                            after, next_episode_transition
+                        )
+                except AgentError as error:
+                    same_episode_binding = False
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="identity_violation",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise
             counts[turn_class] += 1
             if (
                 turn_class == "gameplay"
@@ -660,6 +712,9 @@ def native_auto_run(
                 and not white_peace_submission_pending
             ):
                 visible_gameplay_turns += 1
+                if next_episode_transition is not None:
+                    post_transition_visible_gameplay_turns += 1
+                    post_transition_last_gameplay_turn_index = turn_index
                 dirty_gameplay_since_checkpoint = True
             turns.append(
                 _turn_record(
@@ -672,18 +727,6 @@ def native_auto_run(
                     evidence=evidence,
                 )
             )
-            if completion_contract == "one_generation":
-                try:
-                    _verify_one_generation_binding(after, initial_episode)
-                except AgentError as error:
-                    same_episode_binding = False
-                    capture_first_failure(
-                        stage="postcondition",
-                        kind="identity_violation",
-                        message=str(error),
-                        error=error,
-                    )
-                    raise
             if step == "death-terminal":
                 try:
                     terminal_proof = _verify_one_generation_terminal(
@@ -807,10 +850,35 @@ def native_auto_run(
                         "periodic checkpoint"
                     )
 
-            if step == "death-terminal":
-                status = "episode_complete"
+            if (
+                completion_contract == "next_episode"
+                and next_episode_transition is not None
+                and post_transition_visible_gameplay_turns > 0
+                and post_transition_last_gameplay_turn_index is not None
+                and checkpoints
+                and _checkpoint_proves_next_episode_ooda(
+                    checkpoints[-1],
+                    transition=next_episode_transition,
+                    last_gameplay_turn_index=(
+                        post_transition_last_gameplay_turn_index
+                    ),
+                )
+            ):
+                post_transition_checkpoint = copy.deepcopy(checkpoints[-1])
+                status = "next_episode_checkpointed"
                 break
+            if step == "death-terminal":
+                if completion_contract == "next_episode":
+                    status = "next_episode_pending"
+                else:
+                    status = "episode_complete"
+                    break
             if step in _TERMINAL_STEPS:
+                if (
+                    completion_contract == "next_episode"
+                    and step == "death-terminal"
+                ):
+                    continue
                 status = "terminal_non_death_step"
                 break
         else:
@@ -887,6 +955,21 @@ def native_auto_run(
             current_attempt["stage"] = "checkpoint_complete"
             eligible_since_checkpoint = 0
             dirty_gameplay_since_checkpoint = False
+            if (
+                completion_contract == "next_episode"
+                and next_episode_transition is not None
+                and post_transition_visible_gameplay_turns > 0
+                and post_transition_last_gameplay_turn_index is not None
+                and _checkpoint_proves_next_episode_ooda(
+                    checkpoints[-1],
+                    transition=next_episode_transition,
+                    last_gameplay_turn_index=(
+                        post_transition_last_gameplay_turn_index
+                    ),
+                )
+            ):
+                post_transition_checkpoint = copy.deepcopy(checkpoints[-1])
+                status = "next_episode_checkpointed"
             if time.monotonic() >= run_deadline:
                 status = "timeout"
                 capture_first_failure(
@@ -1035,10 +1118,39 @@ def native_auto_run(
         ),
         "cleanup_proven": cleanup.get("ok") is True,
     }
+    if completion_contract == "next_episode":
+        qualification_gates.update(
+            {
+                "next_episode_started": bool(
+                    isinstance(next_episode_transition, dict)
+                    and next_episode_transition.get("status") == "verified"
+                ),
+                "new_episode_run_id": bool(
+                    isinstance(next_episode_transition, dict)
+                    and next_episode_transition.get("new_run_identity") is True
+                ),
+                "episode_seed_reloaded": bool(
+                    isinstance(next_episode_transition, dict)
+                    and next_episode_transition.get("seed_reloaded") is True
+                ),
+                "post_transition_visible_gameplay": (
+                    post_transition_visible_gameplay_turns > 0
+                ),
+                "post_transition_checkpoint": (
+                    post_transition_checkpoint is not None
+                ),
+            }
+        )
     if completion_contract == "one_generation":
         qualified = bool(
             primary_error is None
             and status == "episode_complete"
+            and all(qualification_gates.values())
+        )
+    elif completion_contract == "next_episode":
+        qualified = bool(
+            primary_error is None
+            and status == "next_episode_checkpointed"
             and all(qualification_gates.values())
         )
     else:
@@ -1074,7 +1186,7 @@ def native_auto_run(
         else (
             (
                 "bounded_incomplete"
-                if completion_contract == "one_generation"
+                if completion_contract in strict_completion_contracts
                 else "not_qualified"
             )
             if primary_error is None and cleanup.get("ok") is True
@@ -1134,6 +1246,20 @@ def native_auto_run(
         },
         "checkpoints": checkpoints,
         "terminal": terminal_proof,
+        "next_episode": (
+            {
+                "transition": next_episode_transition,
+                "visible_gameplay_turns": (
+                    post_transition_visible_gameplay_turns
+                ),
+                "last_gameplay_turn_index": (
+                    post_transition_last_gameplay_turn_index
+                ),
+                "checkpoint": post_transition_checkpoint,
+            }
+            if completion_contract == "next_episode"
+            else None
+        ),
         "qualification_gates": qualification_gates,
         "first_blocker": first_blocker,
         "session": _compact_session_report(session_report),
@@ -1400,6 +1526,207 @@ def _verify_one_generation_binding(
             "one-generation episode run changed before settlement: "
             f"{binding.get('episode_run_id')!r} != {expected_run_id!r}"
         )
+
+
+def _verify_next_episode_binding(
+    binding: dict[str, object],
+    transition: dict[str, object],
+) -> None:
+    """Keep every post-relaunch turn on the newly bound seed episode."""
+    expected_character_id = transition.get("episode_character_id")
+    expected_run_id = transition.get("episode_run_id")
+    if (
+        isinstance(expected_character_id, bool)
+        or not isinstance(expected_character_id, int)
+        or not isinstance(expected_run_id, str)
+        or not expected_run_id
+    ):
+        raise AgentError("next-episode transition identity is malformed")
+    if (
+        binding.get("episode_character_id") != expected_character_id
+        or binding.get("episode_run_id") != expected_run_id
+        or binding.get("played_character_id") != expected_character_id
+        or binding.get("played_character_alive") is not True
+        or binding.get("one_life_terminal") is True
+        or binding.get("one_life_terminal_reason") is not None
+        or binding.get("map_ready") is not True
+        or binding.get("paused") is not True
+        or binding.get("episode_binding_state") != "active_new"
+        or binding.get("driver_state_restore_kind")
+        != "new_episode_seed"
+    ):
+        raise AgentError(
+            "next-episode binding changed before its gameplay checkpoint"
+        )
+
+
+def _verify_next_episode_transition(
+    result: object,
+    *,
+    snapshot: dict[str, object],
+    binding: dict[str, object],
+    initial_episode: dict[str, object] | None,
+) -> dict[str, object]:
+    """Require a fresh run identity loaded from the immutable episode seed."""
+    if not isinstance(initial_episode, dict):
+        raise AgentError("next-episode initial identity is unavailable")
+    source_character_id = initial_episode.get("episode_character_id")
+    source_run_id = initial_episode.get("episode_run_id")
+    if (
+        isinstance(source_character_id, bool)
+        or not isinstance(source_character_id, int)
+        or not isinstance(source_run_id, str)
+        or not source_run_id
+        or not isinstance(result, dict)
+    ):
+        raise AgentError("next-episode source identity or result is malformed")
+    episode_seed = result.get("episode_seed")
+    lifecycle = result.get("lifecycle")
+    lifecycle_seed = (
+        lifecycle.get("episode_seed")
+        if isinstance(lifecycle, dict)
+        else None
+    )
+    cross_run_plan = result.get("cross_run_plan_used")
+    new_character_id = result.get("episode_character_id")
+    new_run_id = result.get("episode_run_id")
+    seed_size = (
+        episode_seed.get("size") if isinstance(episode_seed, dict) else None
+    )
+    seed_sha256 = (
+        episode_seed.get("sha256")
+        if isinstance(episode_seed, dict)
+        else None
+    )
+    seed_date_raw = (
+        episode_seed.get("date_raw")
+        if isinstance(episode_seed, dict)
+        else None
+    )
+    seed_character_id = (
+        episode_seed.get("character_id")
+        if isinstance(episode_seed, dict)
+        else None
+    )
+    previous_generation = (
+        lifecycle.get("previous_connection_generation")
+        if isinstance(lifecycle, dict)
+        else None
+    )
+    connection_generation = (
+        lifecycle.get("connection_generation")
+        if isinstance(lifecycle, dict)
+        else None
+    )
+    previous_pid = (
+        lifecycle.get("previous_pid")
+        if isinstance(lifecycle, dict)
+        else None
+    )
+    current_pid = (
+        lifecycle.get("pid") if isinstance(lifecycle, dict) else None
+    )
+    played = snapshot.get("played_character")
+    digest_valid = bool(
+        isinstance(seed_sha256, str)
+        and len(seed_sha256) == 64
+        and all(character in "0123456789abcdef" for character in seed_sha256)
+    )
+    if (
+        result.get("step") != "start-next-episode"
+        or result.get("accepted") is not True
+        or result.get("status") != "started"
+        or result.get("lifecycle_intent") != "new_episode"
+        or result.get("source_run_id") != source_run_id
+        or not isinstance(new_run_id, str)
+        or not new_run_id
+        or new_run_id == source_run_id
+        or isinstance(new_character_id, bool)
+        or not isinstance(new_character_id, int)
+        or result.get("same_character_id") is not True
+        or not isinstance(episode_seed, dict)
+        or episode_seed.get("name") != "xar_episode_seed.ck3"
+        or episode_seed.get("immutable") is not True
+        or isinstance(seed_size, bool)
+        or not isinstance(seed_size, int)
+        or seed_size <= 0
+        or not digest_valid
+        or isinstance(seed_date_raw, bool)
+        or not isinstance(seed_date_raw, int)
+        or isinstance(seed_character_id, bool)
+        or not isinstance(seed_character_id, int)
+        or seed_character_id != new_character_id
+        or not isinstance(cross_run_plan, dict)
+        or not isinstance(lifecycle, dict)
+        or lifecycle.get("status") != "relaunched"
+        or lifecycle.get("lifecycle_intent") != "new_episode"
+        or lifecycle.get("continue_last_save") is not False
+        or lifecycle.get("load_save_name") != "xar_episode_seed"
+        or not isinstance(lifecycle_seed, dict)
+        or lifecycle_seed.get("name") != episode_seed.get("name")
+        or lifecycle_seed.get("size") != seed_size
+        or lifecycle_seed.get("sha256") != seed_sha256
+        or lifecycle_seed.get("date_raw") != seed_date_raw
+        or lifecycle_seed.get("character_id") != seed_character_id
+        or isinstance(previous_generation, bool)
+        or not isinstance(previous_generation, int)
+        or isinstance(connection_generation, bool)
+        or not isinstance(connection_generation, int)
+        or connection_generation <= previous_generation
+        or isinstance(previous_pid, bool)
+        or not isinstance(previous_pid, int)
+        or isinstance(current_pid, bool)
+        or not isinstance(current_pid, int)
+        or current_pid == previous_pid
+        or binding.get("bridge_pid") != current_pid
+        or binding.get("connection_generation") != connection_generation
+        or snapshot.get("episode_character_id") != new_character_id
+        or snapshot.get("episode_run_id") != new_run_id
+        or snapshot.get("date_raw") != seed_date_raw
+        or not isinstance(played, dict)
+        or played.get("character_id") != new_character_id
+        or played.get("alive") is not True
+        or snapshot.get("one_life_terminal") is True
+        or snapshot.get("one_life_terminal_reason") is not None
+    ):
+        raise AgentError(
+            "start-next-episode did not prove a fresh immutable-seed run"
+        )
+    proof = {
+        "status": "verified",
+        "source_character_id": source_character_id,
+        "source_run_id": source_run_id,
+        "episode_character_id": new_character_id,
+        "episode_run_id": new_run_id,
+        "new_run_identity": True,
+        "seed_reloaded": True,
+        "episode_seed": copy.deepcopy(episode_seed),
+        "cross_run_plan_used": copy.deepcopy(cross_run_plan),
+        "lifecycle": copy.deepcopy(lifecycle),
+        "initial_binding": copy.deepcopy(initial_episode),
+        "new_binding": _public_binding(binding),
+    }
+    _verify_next_episode_binding(binding, proof)
+    return proof
+
+
+def _checkpoint_proves_next_episode_ooda(
+    checkpoint: dict[str, object],
+    *,
+    transition: dict[str, object],
+    last_gameplay_turn_index: int,
+) -> bool:
+    turn_index = checkpoint.get("turn_index")
+    return bool(
+        checkpoint.get("status") == "saved"
+        and checkpoint.get("episode_character_id")
+        == transition.get("episode_character_id")
+        and checkpoint.get("episode_run_id")
+        == transition.get("episode_run_id")
+        and isinstance(turn_index, int)
+        and not isinstance(turn_index, bool)
+        and turn_index >= last_gameplay_turn_index
+    )
 
 
 def _verify_one_generation_terminal(
@@ -1688,7 +2015,8 @@ def _first_blocker_report(
     latest_before = latest.get("before") if isinstance(latest, dict) else None
     latest_after = latest.get("after") if isinstance(latest, dict) else None
     cleanup_failed_after_completion = bool(
-        status == "episode_complete" and cleanup.get("ok") is not True
+        status in {"episode_complete", "next_episode_checkpointed"}
+        and cleanup.get("ok") is not True
     )
     if status == "blocked":
         stage, kind = "planning", "planner_blocked"
@@ -1702,6 +2030,8 @@ def _first_blocker_report(
         stage, kind = "readiness", "preexisting_terminal"
     elif status == "terminal_non_death_step":
         stage, kind = "planning", "non_death_terminal_step"
+    elif status == "next_episode_pending":
+        stage, kind = "lifecycle", "next_episode_not_started"
     elif status == "timeout":
         stage, kind = "bound", "wall_clock_bound_exhausted"
     elif status == "session_exit":
@@ -1733,6 +2063,10 @@ def _first_blocker_report(
             ),
             "terminal_non_death_step": (
                 "a non-death terminal planner step ended the loop"
+            ),
+            "next_episode_pending": (
+                "the source episode settled but the next episode was not "
+                "started and checkpointed"
             ),
         }.get(status, f"run ended without qualification: {status}")
     error_type = None

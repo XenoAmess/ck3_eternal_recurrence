@@ -5,8 +5,9 @@
 [`docs/ck3-native-ai/`](../ck3-native-ai/README.md) 与
 [`docs/testing-workflow.md`](../testing-workflow.md)。
 
-当前 headline（2026-08-30）：固定 production seed 的 G1 已完整 GREEN，GEN-032 terminal-sentinel blocker 也已由
-两次保留 RED 后实机关闭；完整 G2 仍缺 `start-next-episode → 新 episode gameplay/checkpoint`，不得标记完成。
+当前 headline（2026-08-30）：固定 production seed 的 G1 已完整 GREEN；首个严格 G2 跨 episode gate 也已完成
+`death-terminal → start-next-episode → exact seed reload → 新 episode gameplay → durable checkpoint`。这只证明同一冻结
+production seed 的可重复跨局生命周期，不代表第二个完整寿命、更多 ruler/政府/DLC 或全游戏自治已经完成。
 
 ## 导航
 

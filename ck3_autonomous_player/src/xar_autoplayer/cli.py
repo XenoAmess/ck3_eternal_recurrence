@@ -17,6 +17,7 @@ from .environment import (
 )
 from .errors import AgentError
 from .locking import exclusive_state_lock
+from .next_episode_run import NEXT_EPISODE_CHECKPOINT_CADENCE
 from .one_generation_run import ONE_GENERATION_CHECKPOINT_CADENCE
 from .runtime import (
     DEFAULT_NATIVE_BRIDGE_PIPE,
@@ -273,6 +274,62 @@ def parser() -> argparse.ArgumentParser:
             "default"
         ),
     )
+    next_episode_parser = commands.add_parser(
+        "native-next-episode",
+        help=(
+            "settle the current native episode, reload its immutable seed, "
+            "execute visible gameplay, and save a new-run checkpoint"
+        ),
+    )
+    next_episode_parser.add_argument(
+        "--max-turns",
+        type=int,
+        required=True,
+        help=(
+            "hard planner-turn bound; exhausting it before the new-run "
+            "checkpoint is incomplete"
+        ),
+    )
+    next_episode_parser.add_argument("--timeout", type=float, default=21600)
+    next_episode_parser.add_argument(
+        "--readiness-timeout",
+        type=float,
+        default=300,
+        help="maximum seconds to wait for a stable paused native map",
+    )
+    next_episode_parser.add_argument(
+        "--checkpoint-every-advances",
+        type=int,
+        default=NEXT_EPISODE_CHECKPOINT_CADENCE,
+        help=(
+            "eligible verified new-episode advances before its checkpoint "
+            f"(default: {NEXT_EPISODE_CHECKPOINT_CADENCE})"
+        ),
+    )
+    next_episode_parser.add_argument(
+        "--route-contact-speed",
+        type=int,
+        choices=(1, 2, 3, 4, 5),
+        default=3,
+        help=(
+            "timeline speed for proof-bound route/contact and stationary "
+            "objective sentinels (default: 3)"
+        ),
+    )
+    next_episode_parser.add_argument(
+        "--allow-route-contact-high-speed-ab",
+        action="store_true",
+        help="admit explicit speed 4..5 route/contact A/B arms",
+    )
+    next_episode_parser.add_argument(
+        "--allow-stationary-objective-hold-sentinel-canary",
+        action="store_true",
+        help=(
+            "deprecated compatibility flag; the bounded seven-day speed-3 "
+            "stationary objective-hold sentinel is production-enabled by "
+            "default"
+        ),
+    )
     one_generation_preflight_parser = commands.add_parser(
         "native-one-generation-preflight",
         help=(
@@ -369,7 +426,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if (
             args.command
-            in {"native-session", "native-auto-run", "native-one-generation"}
+            in {
+                "native-session",
+                "native-auto-run",
+                "native-one-generation",
+                "native-next-episode",
+            }
             and args.bridge_mode != "native-headless"
         ):
             raise AgentError(
@@ -483,6 +545,25 @@ def main(argv: list[str] | None = None) -> int:
                     args.allow_stationary_objective_hold_sentinel_canary
                 ),
             )
+        elif args.command == "native-next-episode":
+            from .next_episode_run import native_next_episode_run
+
+            result = native_next_episode_run(
+                spec,
+                max_turns=args.max_turns,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                checkpoint_every_eligible_advances=(
+                    args.checkpoint_every_advances
+                ),
+                route_contact_timeline_speed=args.route_contact_speed,
+                allow_route_contact_high_speed_ab=(
+                    args.allow_route_contact_high_speed_ab
+                ),
+                allow_stationary_objective_hold_sentinel_canary=(
+                    args.allow_stationary_objective_hold_sentinel_canary
+                ),
+            )
         elif args.command == "native-one-generation-preflight":
             from .one_generation_preflight import (
                 native_one_generation_preflight,
@@ -524,6 +605,7 @@ def main(argv: list[str] | None = None) -> int:
         in {
             "native-auto-run",
             "native-one-generation",
+            "native-next-episode",
             "native-one-generation-preflight",
         }
         and result.get("ok") is not True

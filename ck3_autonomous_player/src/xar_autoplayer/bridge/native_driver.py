@@ -11613,12 +11613,16 @@ def _same_battle_sentinel_player_decision_boundary(
     )
     if terminal_boundary:
         # A one-life terminal is monotonic for the bound episode.  CK3 may
-        # advance one or more daily ticks between observing the changed/dead
-        # player on a running frame and servicing the explicit pause request.
-        # Keep every owner/identity pin, but do not mistake that bounded date
-        # drift for a different terminal boundary.
+        # advance one or more daily ticks and finish switching from the dead
+        # character to the heir between observing the terminal on a running
+        # frame and servicing the explicit pause request.  Keep every
+        # episode/connection owner pin, but do not mistake that bounded date
+        # and played-character surface evolution for a different terminal
+        # boundary.
         binding_fields = tuple(
-            field for field in binding_fields if field != "observed_date_raw"
+            field
+            for field in binding_fields
+            if field not in {"observed_date_raw", "played_character_id"}
         )
     same_kind_identity = bool(
         isinstance(before, dict)
@@ -11627,10 +11631,8 @@ def _same_battle_sentinel_player_decision_boundary(
             (
                 before.get("kind") == "one_life_terminal"
                 and after.get("kind") == "one_life_terminal"
-                and before.get("terminal_reason")
-                == after.get("terminal_reason")
-                and before.get("played_character_alive")
-                == after.get("played_character_alive")
+                and isinstance(before.get("terminal_reason"), str)
+                and isinstance(after.get("terminal_reason"), str)
             )
             or (
                 before.get("kind") != "one_life_terminal"
@@ -11715,6 +11717,12 @@ def _fresh_battle_sentinel_player_decision_boundary(
         "episode_run_id",
         "played_character_id",
     )
+    if terminal_boundary:
+        stable_binding_fields = tuple(
+            field
+            for field in stable_binding_fields
+            if field != "played_character_id"
+        )
     before_date_raw = before_binding.get("observed_date_raw")
     after_date_raw = after_binding.get("observed_date_raw")
     return bool(

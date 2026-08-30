@@ -811,11 +811,63 @@ CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，
    1 terminal`；`episode_complete / qualified / ok=true`，final `date_raw=53287296 / played=38822 / episode=29829 /
    settlement ready`，`first_blocker=null`，cleanup 全 GREEN。
 
-修复合同只对 `one_life_terminal` 生效：同 bridge PID、connection generation、episode CharacterID/run ID、当前玩家与 terminal
-reason 必须保持一致；显式 pause 服务期间日期可以单调前进。active event 与 pending interaction 继续要求原 exact-date identity，
-战争/终战偏好没有变化。回归为 `438 passed + 283 subtests`，另有 `py_compile` GREEN。
+这一步当时只允许同 bridge PID、connection generation、episode CharacterID/run ID、当前玩家与 terminal reason 下的日期单调前进。
+后续 formal G2 又实证 terminal surface 可在显式 pause 服务期间从死亡角色帧演化为继承人已接管帧；最终合同见下一节：owner pins
+保持不变，但不再要求 played-character/alive/reason 表面完全相等。active event 与 pending interaction 继续要求原 exact identity，
+战争/终战偏好没有变化。
 
 受管 state 的 episode seed 也已逐字节验证：`76,980,533` bytes、SHA-256
 `E3B4A97D6B4E00BD4C3FF3E350FA9D883033712C939455446B0A5BC5719C5D91`、`date_raw=53211552 /
-CharacterID=29829`。但是第三次 runner 在 `episode_complete` 返回，没有执行 `start-next-episode`、产生新 episode ID 或新局
-gameplay/checkpoint；所以 GEN-032 complete，完整 G2 / GEN-009 仍未闭合。
+CharacterID=29829`。GEN-032 第三次 runner 在 `episode_complete` 返回，因此该时点只能关闭 GEN-032；随后 GEN-009/G2 由下述
+严格 runner 单独验收，不能倒写早期 artifact 的能力边界。
+
+## G2：`start-next-episode` 到新 episode checkpoint（2026-08-30）
+
+正式命令（运行时另设置本 worktree 的 Git safe-directory 临时环境，不修改全局配置）：
+
+```powershell
+& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" ck3_autonomous_player\agent.py `
+  --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" `
+  --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" `
+  --bridge-mode native-headless --bridge-pipe "\\.\pipe\xar_ck3_restore_exact2_7aff1d0" `
+  --bridge-dll "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge.dll" `
+  --bridge-injector "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge_injector.exe" `
+  native-next-episode --max-turns 30 --timeout 1800 --readiness-timeout 300 `
+  --checkpoint-every-advances 1 --route-contact-speed 3
+```
+
+三次 artifact 均独立保留：
+
+1. `20260830T101417Z-next-episode-1f7afbf7`：turn 9 capability RED。sentinel 真实推进 4 天并观察
+   `played_character 29829→38822 / one_life_terminal=played_character_changed`，但普通 decision-boundary stabilization 拒绝
+   terminal surface 演化；cleanup GREEN，最后 durable checkpoint 可恢复。
+2. `20260830T102101Z-next-episode-77c4006e`：0-turn harness RED。另一个正式 ZhongGuo runner 持有 CK3 install owner lock；
+   没有启动第二个 CK3，也没有抢占/结束已存在进程。
+3. `20260830T102401Z-next-episode-23c58fa1`：`next_episode_checkpointed / qualified / ok=true`，`7/7` turns，
+   `3 query / 2 gameplay / 1 checkpoint / 1 recovery / 1 terminal`，墙钟 `118.968s`，`first_blocker=null`。
+
+GREEN 的权威链：
+
+- source terminal 为 episode `native-29829-ee172aa720db`，score `14.8`；`start-next-episode` durable ACK request
+  `next-episode-4de95f5265044abeb766a4af97a21919` 返回 `status=relaunched`。
+- CK3 PID `57484→33200`，connection generation `1→2`；`continue_last_save=false`，明确加载
+  `xar_episode_seed`。seed 为 `76,980,533` bytes、SHA-256 `E3B4A97D...C5D91`、`date_raw=53211552 /
+  CharacterID=29829`。
+- 新 binding 为 `active_new / driver_state_restore_kind=new_episode_seed`，run ID
+  `native-29829-fffa4ba935f6`，不是 source run ID；在新 episode 完成一次可见 committed-route gameplay，日期推进
+  `53211552→53211576`。
+- gameplay 后 checkpoint 为 `76,979,955` bytes、SHA-256 `BB4CD2B5...DC235`、`history_index=4`，显式绑定新 run ID；
+  15 项 qualification gate 全 true。
+- cleanup 的 session report、shutdown、tree-gone、cleanup-proven、driver-close 全 true，结束后 CK3=0。两个 PID 的目标 UI
+  thread 均逐次证明并保持 US English HKL `0x04090409`；证据是 artifact 内 `keyboard-initial.json` 与
+  `keyboard-next-episode.json`，没有使用 OCR。
+- `report.json` 为 `1,080,001` bytes、SHA-256 `22F54519F4FB52E9D0D633240D618DD8423847F1FF61A231FE71EA8A0F93E565`；
+  `next-episode.json` SHA-256 `AC085365800EB5DE7963647FC49B3FEFB6C65C95145EA4B6414073880702B626`。
+
+实机教训：one-life terminal 是 episode-scoped 的单调边界，不是普通 event identity。CK3 可在 runner 观察终局和显式 pause
+稳定帧之间完成死亡角色到继承人的切换，因此只固定 bridge PID、connection generation、episode CharacterID/run ID；允许
+played-character、alive 与 `played_character_dead→played_character_changed` 表面演化。paused/map-ready/fresh revision、同 episode
+owner、合法 terminal identity 与后续 settlement 仍必须逐项验证。该放宽不得复用于 active event 或 pending interaction。
+
+该 GREEN 只证明同一冻结 seed 的首个跨 episode OODA 与 checkpoint，不证明第二个完整寿命、多 seed/ruler/government/DLC 或
+全游戏自治。

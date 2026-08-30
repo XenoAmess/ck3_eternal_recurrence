@@ -1,6 +1,6 @@
 # 一代人自治：阻塞与能力债账本
 
-状态：**G1 于 2026-08-30 完成；能力债继续，下一 gate 为 G2**
+状态：**G1 与首个固定-seed G2 跨 episode gate 均于 2026-08-30 完成；能力债与扩展矩阵继续**
 
 所有者指令时间：2026-08-27 09:47（Asia/Shanghai）
 
@@ -14,7 +14,8 @@
 2026-08-30 最终 run `20260830T070223Z-one-generation-1f934571` 已取得首次 G1 GREEN：`155/155` turns，CharacterID
 `29829` 自然终止后等到 `commit_serial=1` 的 committed settlement，三处人生分数均为 `14.8`，record/no-heir/cleanup 全绿。
 report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。下表保留全部历史 RED 与能力债；GEN-001/006
-现已关闭。G2 前探又关闭了 GEN-032 的 terminal-sentinel blocker，但 `start-next-episode` 尚未执行，GEN-009 仍是 G2 gate。
+现已关闭。G2 前探关闭 GEN-032 后，严格 runner 又以三次独立 attempt 完成 GEN-009；其中 capability RED 与 harness RED 均保留，
+最终 GREEN 已实走 `start-next-episode`、新 run ID、新 episode gameplay 与 durable checkpoint。
 
 ## 分级
 
@@ -37,7 +38,7 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 | GEN-006 | B1 | 自然死亡与结算 | `1f934571` 死亡后没有立即停止；等到 `ready=true / commit_serial=1 / source_character_id=29829`。顶层、settlement 与 recorded episode 分数均为 `14.8`；record persisted，`continue_as_heir_after_death=false / heir_gameplay_actions=0`，cleanup 全绿 | 已满足；terminal sidecar `D26744BF...850E` 与 report `FF689E88...EFB3` 冻结保留 | 2026-08-30 resolved；fixed G1 episode production-live loop |
 | GEN-007 | B2/B3 | 战斗质量与吞吐 | ordinary active combat、committed route 与 baseline 已选定的 stationary objective 均以 speed 3 production-live；`6421f80c` 的完整 turn-loop 为 `165d / 156.566s = 63.232 日/分钟`。`a2c81a0 / 95a466b` 将 typed speed 1–5 与严格策略中立替换合同合入 production；`9186bfa3` 再次实机走通 stationary/route speed 3，但短 run 含冷启和事件，不作为吞吐样本 | speed 3 已重复越过 `>=60 日/分钟` hard gate；G1 保留已验证 speed 3。继续在完全相同战争合同下做 speed-4/5 matrix、碾压局零暂停和 120 stretch 预研；不得改变宣战、参战、目标、投降、议和或终战偏好 | speed-3 全部目标类型 production-live；60 hard GREEN；120 stretch 与 speed-4/5 live gate 未完成 |
 | GEN-008 | B0（环境） | 执行会话曾无法启动 CK3 live acceptance | 旧 `CodexSandboxOffline / WinSta0\\CodexSandboxDesktop-*` 启动崩溃仍作为历史环境 RED 保留；当前宿主已是 `xenoa / console session 1 / WinSta0\\Default`，连续完成 white-peace、冷恢复、pending reply 与长跑，证明不再是当前 blocker | 无；未来环境切回隔离 desktop 时按相同 host guard 拒绝，不改 gameplay source 掩盖 | 2026-08-27 resolved |
-| GEN-009 | B1（G2） | 死亡后启动下一代 | 受管 state 现已有匹配 metadata 的 `profile/save games/xar_episode_seed.ck3`：`76,980,533` bytes、SHA `E3B4A97D...C5D91`、`date_raw=53211552 / CharacterID=29829`。GEN-032 GREEN 已再次走到 `death-terminal`，但 bounded `native-auto-run` 按当前合同在 `episode_complete` 返回，没有执行 `start-next-episode`、生成新 episode ID 或新局 gameplay | 从已合并 master 走正规跨局 owner：提交并验证 `start-next-episode`，从上述 seed 载入新 episode，要求新 run ID、seed date/character、至少一次可见 gameplay 与 durable checkpoint；失败保留独立 artifact | seed 文件债已解除；完整 G2 仍未闭合 |
+| GEN-009 | B1（G2） | 死亡后启动下一 episode | immutable seed 为 `76,980,533` bytes、SHA `E3B4A97D...C5D91`、`date_raw=53211552 / CharacterID=29829`。formal attempt 01 在 terminal-inside-sentinel 后置误判 RED；attempt 02 因并行 CK3 owner lock 为 0-turn harness RED；attempt 03 从旧 PID `57484` 重启到 `33200`、connection `1→2`，新 run ID `native-29829-fffa4ba935f6`，精确 seed reload 后完成一次 visible gameplay，并保存 `date_raw=53211576 / history=4 / BB4CD2B5...DC235` 的新 episode checkpoint | 已满足首个 fixed-seed G2 gate；保留三次 attempt、ACK、输入/输出 checkpoint、driver state、logs 与 sidecars。下一步是第二个完整寿命及不同 seed/ruler/government/DLC 矩阵，不重复本 gate | 2026-08-30 resolved；cross-episode production-live loop，report `22F54519...E565` |
 | GEN-010 | B1→B2 | 和平态存在合法宣战项，但完整 war-entry evidence 未齐 | 原生 declaration tree 与 native power 已先冻结/实读；旧 planner 因 forecast/cost/exit 缺失 `selected_step=None`。现以 `war-entry-minimal-defer-v1` 记录完整缺口并选择 `NO_DECLARE→life-advance`，即使 declare literal 可达也绝不宣战 | G1 已解除；后续补 participant arrival、combat forecast、campaign cost、exit assessment 与 calibrated utility 后才允许智能宣战 | continuation production-live；智能 war entry B2 |
 | GEN-011 | B3 | checkpoint 仍有未命中的尾部形状 | 当前 live 的 pending white-peace→WarID 消失→残军 disband 已有即时战后 checkpoint；但“终止动作直接 applied 且无残军”、restore 前历史 anchor 未按最新 restore epoch 截断、以及 generic dirty gameplay 后立刻 planner-blocked 的尾部保存仍未实机触发 | 只有真实 production 路径出现进度丢失时升为 B0/B1；首次 G1 前不为理论形状扩 runner | 记账观察 |
 | GEN-012 | B1 | `life-advance` 暂停收尾被连续 public revision 饿死 | `aff784d` 与 `3bd8934` 分别实证一次 fresh retry 仍可 race、public-CAS convergence 可在 speed-five 帧流中饥饿；exact DLL `51fe8cf` 证明 native `pause-map` 自己 fresh-read 并幂等提交。`8efa23f` 仅让 composite owner 绕过该冗余 public gate；正式 run 已从 `578B...5C38` cold restore 跨过旧超时并持续到 `history=2380/date=53203800`，保存 25 个新 checkpoint | 已满足：一次请求、一次 ACK、同 deadline 验证 paused；direct primitive/query/其它 action 保持原 gate。保留两轮 immutable RED，后续只在同故障复发时重开 | 2026-08-27 resolved；blocker-removal production-live |
@@ -61,7 +62,7 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 | GEN-029 | B1 harness + 吞吐 P0 | stationary sentinel 漏接 ordinary player-decision boundary，导致事件已阻断日期却继续空等 | 历史 RED `90d3cf79 / 71e3b7c1 / e8cec411` 将根因固定为 `53267040` 的 event 47。最小包新增 generation-bound cancel、独立 player-decision stop、一次 fresh-bound pause 与 modal checkpoint 延迟，并撤销专用 60 秒 wait。cold live `6421f80c` 在同日捕获 event 47，下一回合选择 option 1、随后才保存 checkpoint，再继续到 `53270568`；`100/100`、cleanup/tree-gone GREEN | 已满足：事件/pending 立即交回既有 policy；不伪造 sentinel terminal，不改变战争意愿；同代 cancel/status、paused decision identity、零 modal save 与后续继续均有 live 证据 | 2026-08-28 resolved；blocker-removal production-live，report `DC66418A...732C1C` |
 | GEN-030 | B1 harness | player decision 与 native sentinel 在 deadline 同日转移状态时仍盲目 cancel | 历史 RED `cbbd3fab` 在 `53278752` 同时观察 event 51 与七日 deadline。`9186bfa3` 的 turn 8 精确重现同日边界：generation 2 为正常 `triggered`，`date_deadline / ticks=7 / intermediate pause=0 / overshoot=0`；composite 没有 cancel，返回 `player_decision`，随后 query 并选择 event option 1，旧 event 消失且日期不变 | 已满足：同代 armed 走 cancel→idle；同代正常 triggered 保留完整 stop 证明后免 cancel；failed/无证明 idle 仍拒绝；事件优先级与战争策略均未改变 | 2026-08-28 resolved；exact same-day blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-031 | B1 native capability | war-termination options query 未绑定已发布 paused revision | 历史 RED `33876238` 在 `53278752 / native:25 / revision=26` 的第二个 WarID query 发生 row mismatch。`fc0f878` 让 native handler 消费 expected revision，并在 admission/completion 进行完整 snapshot sandwich；只在稳定成功后推进 query sequence。Python 只把明确 stale/admission-changed/completion-changed 的零写入拒绝映射为既有一次 whole-turn replan，真实四字段 mismatch 继续硬 RED并留最小 diff | `9186bfa3` turn 11/12 已在同一 paused native revision 26 连续成功查询 WarID `83886203 / 134217852`，跨过原失败边界；后续查询至 turn 20 持续成功，cleanup 全绿 | 2026-08-28 resolved；`fc0f878` blocker-removal production-live，report `2C764FEC...6C83` |
-| GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | attempt 01 `20260830T071626Z-g2-seed-smoke` 在 `53287200→53287296` 看到玩家 `29829→38822`，却超时等待 native sentinel pause；attempt 02 `20260830T072905Z-g2-terminal-boundary-retry` 已识别 `one_life_terminal=played_character_changed`，但 explicit-pause stable-frame 仍因 terminal 日期漂移 RED。最小修复只把同 bridge/connection/episode/current-player/terminal reason 的 one-life terminal 视为单调边界；event/pending interaction 的 exact-date 合同不变 | attempt 03 `20260830T073735Z-g2-terminal-boundary-date-drift-retry` 为 `10/10`、`6 query / 3 gameplay / 1 terminal`、`first_blocker=null`；final `53287296 / settlement ready`，cleanup 全绿。定向回归 `438 passed + 283 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；不等于 G2 complete |
+| GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | 三次早期 attempt 先关闭 terminal 识别与日期漂移；formal G2 attempt 01 又证明同一 bound episode 的 terminal surface 在 pause 服务期间可从死亡角色演化为继承人。最终合同只固定 bridge/connection/episode owner；played-character、alive 与 `dead→changed` terminal reason 可单调演化。event/pending interaction 的 exact identity 不变 | formal G2 attempt 03 已在相同生产边界返回 `death-terminal`，随后继续完成 GEN-009；driver 回归 `196 passed + 212 subtests`，相关聚合 `468 passed + 287 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；边界由 G2 live 再校准 |
 
 ## Degraded heuristic 纪律
 
@@ -78,10 +79,11 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 
 1. `G0 runner-ready`：统一循环、终止条件、artifact 和 blocker 输出可运行。
 2. `G1 one-generation GREEN`：一个固定 production seed 无人工游戏输入走到自然死亡/结算。
-3. `G2 repeatable`：同一合同至少再跑一轮，checkpoint 恢复后仍能继续。
+3. `G2 repeatable`：同一合同至少跨入一个新 episode，精确 seed 重载后完成可见 gameplay 与 durable checkpoint。首个 fixed-seed gate
+   已 GREEN；第二个完整寿命和多 seed/ruler 矩阵仍待扩展。
 4. `G3 broadened`：增加 ruler、政府、战争/和平起点与 enabled-feature 代表场景。
 
-本周最高优先级是尽快取得 G1；G2/G3 与策略质量持续推进，但不得反过来阻塞首个 G1。
+本周的 G1 与首个 G2 gate 已取得；后续按真实 blocker 扩展第二寿命与 G3 场景，不重复同 seed 验证来替代玩法增量。
 
 ## 2026-08-27 11:56：G0 static-ready
 

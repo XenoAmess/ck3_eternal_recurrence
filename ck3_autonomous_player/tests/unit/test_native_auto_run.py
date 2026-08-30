@@ -92,6 +92,16 @@ class _NativeAutoRunHarness:
         self.heartbeat_lag_capability_reads = 0
         self.terminal = False
         self.episode_character_id = 707
+        self.episode_run_id = "native-707-test-run"
+        self.bridge_pid = 4242
+        self.connection_generation = 1
+        self.driver_state_restored = cold_start
+        self.driver_state_restore_kind = (
+            "cold_checkpoint" if cold_start else "new_episode"
+        )
+        self.episode_binding_state = (
+            "active_resumed" if cold_start else "active_new"
+        )
         self.settlement: dict[str, object] | None = None
         self.active_event_id = (
             900
@@ -189,14 +199,10 @@ class _NativeAutoRunHarness:
             "diagnostics": diagnostics,
             "native_session_control": {
                 "configured": True,
-                "driver_state_restored": self.cold_start,
+                "driver_state_restored": self.driver_state_restored,
                 "driver_state_error": None,
-                "driver_state_restore_kind": (
-                    "cold_checkpoint" if self.cold_start else "new_episode"
-                ),
-                "episode_binding_state": (
-                    "active_resumed" if self.cold_start else "active_new"
-                ),
+                "driver_state_restore_kind": self.driver_state_restore_kind,
+                "episode_binding_state": self.episode_binding_state,
                 "cold_candidate_rejection": None,
             },
             "checkpoint_materialization": {
@@ -228,11 +234,11 @@ class _NativeAutoRunHarness:
             "map_ready": map_ready,
             "paused": True,
             "played_character": {
-                "character_id": 707,
+                "character_id": self.episode_character_id,
                 "alive": not self.terminal,
             },
             "episode_character_id": self.episode_character_id,
-            "episode_run_id": "native-707-test-run",
+            "episode_run_id": self.episode_run_id,
             "episode_identity_pending": False,
             "one_life_terminal": self.terminal,
             "one_life_terminal_reason": (
@@ -542,7 +548,7 @@ class _NativeAutoRunHarness:
                     "outcome": "white_peace",
                     "submitted_date_raw": starting_date_raw,
                     "observed_date_raw": self.date_raw,
-                    "episode_run_id": "native-707-test-run",
+                    "episode_run_id": self.episode_run_id,
                     "starting_snapshot_id": starting_snapshot_id,
                     "observed_snapshot_id": f"native:{self.native_revision}",
                     "command_acknowledged": True,
@@ -557,6 +563,91 @@ class _NativeAutoRunHarness:
                     "target_title_ids": [2_388],
                     "remaining_active_war": remaining,
                 }
+        elif action == "start_next_episode":
+            if not self.terminal or self.settlement is None:
+                raise AssertionError(
+                    "start-next-episode action lacks a completed terminal"
+                )
+            step = "start-next-episode"
+            source_run_id = self.episode_run_id
+            previous_pid = self.bridge_pid
+            previous_generation = self.connection_generation
+            seed = {
+                "format_version": 1,
+                "name": "xar_episode_seed.ck3",
+                "path": str(
+                    self.spec.profile_dir
+                    / "save games"
+                    / "xar_episode_seed.ck3"
+                ),
+                "size": 1024,
+                "sha256": "a" * 64,
+                "date_raw": 53_168_784,
+                "character_id": 707,
+                "source_run_id": source_run_id,
+                "source_checkpoint_name": "xar_checkpoint.ck3",
+                "immutable": True,
+            }
+            self.terminal = False
+            self.settlement = None
+            self.date_raw = int(seed["date_raw"])
+            self.heartbeat_date_raw = self.date_raw
+            self.episode_character_id = int(seed["character_id"])
+            self.episode_run_id = "native-707-next-test-run"
+            self.bridge_pid = 4343
+            self.connection_generation += 1
+            self.driver_state_restored = False
+            self.driver_state_restore_kind = "new_episode_seed"
+            self.episode_binding_state = "active_new"
+            self.native_revision += 1
+            self.public_revision += 1
+            self.history = []
+            lifecycle_seed = {
+                "name": seed["name"],
+                "load_save_name": "xar_episode_seed",
+                "path": seed["path"],
+                "size": seed["size"],
+                "sha256": seed["sha256"],
+                "date_raw": seed["date_raw"],
+                "character_id": seed["character_id"],
+                "source_run_id": seed["source_run_id"],
+                "immutable": True,
+            }
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "started",
+                "backend_id": "native-headless",
+                "source": "native-session-lifecycle-queue",
+                "lifecycle_intent": "new_episode",
+                "source_run_id": source_run_id,
+                "episode_run_id": self.episode_run_id,
+                "episode_character_id": self.episode_character_id,
+                "same_character_id": True,
+                "episode_seed": seed,
+                "cross_run_plan_used": {
+                    "policy": "one-life-visible-outcomes-v1",
+                    "continue_as_heir_after_death": False,
+                },
+                "lifecycle": {
+                    "status": "relaunched",
+                    "previous_pid": previous_pid,
+                    "pid": self.bridge_pid,
+                    "mode": "native-headless",
+                    "pipe": r"\\.\pipe\native-auto-run-test",
+                    "continue_last_save": False,
+                    "load_save_name": "xar_episode_seed",
+                    "lifecycle_intent": "new_episode",
+                    "episode_seed": lifecycle_seed,
+                    "request_id": "next-episode-fixture",
+                    "previous_connection_generation": previous_generation,
+                    "connection_generation": self.connection_generation,
+                },
+                "map_ready": True,
+                "paused": True,
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+            }
         elif action in {
             "death_terminal",
             "death_terminal_source_mismatch",
@@ -597,7 +688,7 @@ class _NativeAutoRunHarness:
                 "terminal": True,
                 "terminal_kind": "native_played_character_dead",
                 "terminal_reason": "played_character_dead",
-                "episode_character_id": 707,
+                "episode_character_id": self.episode_character_id,
                 "settlement_status": settlement_status,
                 "settlement_unavailable": (
                     settlement_status == "settlement_unavailable"
@@ -613,7 +704,7 @@ class _NativeAutoRunHarness:
                 },
                 "cross_run_strategy": {
                     "recorded_episode": {
-                        "run_id": "native-707-test-run",
+                        "run_id": self.episode_run_id,
                         "score": score,
                         "continue_as_heir_after_death": False,
                         "heir_gameplay_actions": 0,
@@ -688,8 +779,8 @@ class _NativeAutoRunHarness:
             "overwrite_confirmed": False,
             "strategy": "native-autosave-command-v1",
             "history_index": history_index,
-            "episode_character_id": 707,
-            "episode_run_id": "native-707-test-run",
+            "episode_character_id": self.episode_character_id,
+            "episode_run_id": self.episode_run_id,
         }
         result = {
             "step": "save-checkpoint",
@@ -720,14 +811,14 @@ class _NativeAutoRunHarness:
             "protocol_version": 1,
             "pipe_name": r"\\.\pipe\native-auto-run-test",
             "connected": True,
-            "connection_generation": 1,
-            "bridge_pid": 4242,
+            "connection_generation": self.connection_generation,
+            "bridge_pid": self.bridge_pid,
             "semantic_state_available": True,
             "transport_fatal_error": None,
             "hello": {
                 "type": "hello",
                 "protocol_version": 1,
-                "pid": 4242,
+                "pid": self.bridge_pid,
                 "bridge_version": "0.1.0-test",
                 "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
                 "game_adapter_status": "ready",
@@ -832,7 +923,8 @@ class NativeAutoRunTests(unittest.TestCase):
             self.spec,
             actions,
             initial_unready_snapshot=initial_unready_snapshot,
-            cold_start=completion_contract == "one_generation",
+            cold_start=completion_contract
+            in {"one_generation", "next_episode"},
             session_exits_immediately=session_exits_immediately,
             fail_save_checkpoint=fail_save_checkpoint,
         )
@@ -875,7 +967,8 @@ class NativeAutoRunTests(unittest.TestCase):
                     checkpoint_every_eligible_advances
                 ),
                 cold_start_checkpoint=(
-                    completion_contract == "one_generation"
+                    completion_contract
+                    in {"one_generation", "next_episode"}
                 ),
                 completion_contract=completion_contract,
                 allow_stationary_objective_hold_sentinel_canary=(
@@ -940,6 +1033,29 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(
             args.allow_stationary_objective_hold_sentinel_canary
         )
+
+    def test_parser_exposes_strict_next_episode_runner(self) -> None:
+        args = cli.parser().parse_args(
+            [
+                "--bridge-mode",
+                "native-headless",
+                "native-next-episode",
+                "--max-turns",
+                "30",
+                "--timeout",
+                "1800",
+                "--readiness-timeout",
+                "300",
+            ]
+        )
+
+        self.assertEqual(args.command, "native-next-episode")
+        self.assertEqual(args.max_turns, 30)
+        self.assertEqual(args.timeout, 1800)
+        self.assertEqual(args.readiness_timeout, 300)
+        self.assertEqual(args.checkpoint_every_advances, 1)
+        self.assertEqual(args.route_contact_speed, 3)
+        self.assertFalse(args.allow_route_contact_high_speed_ab)
 
     def test_high_speed_route_contact_arm_requires_explicit_ab_admission(
         self,
@@ -1954,6 +2070,54 @@ class NativeAutoRunTests(unittest.TestCase):
             ["life-advance", "life-advance", "death-terminal"],
         )
         self.assertNotIn("start-next-episode", harness.events)
+
+    def test_next_episode_requires_seed_reload_gameplay_and_checkpoint(self) -> None:
+        report, harness = self._run(
+            [
+                "terminal_advance",
+                "death_terminal",
+                "start_next_episode",
+                "advance",
+            ],
+            completion_contract="next_episode",
+            checkpoint_every_eligible_advances=1,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "next_episode_checkpointed")
+        self.assertEqual(report["outcome"], "qualified")
+        self.assertEqual(report["completion_contract"], "next_episode")
+        self.assertEqual(report["terminal"]["status"], "verified")
+        next_episode = report["next_episode"]
+        transition = next_episode["transition"]
+        self.assertEqual(transition["status"], "verified")
+        self.assertEqual(
+            transition["source_run_id"], "native-707-test-run"
+        )
+        self.assertEqual(
+            transition["episode_run_id"], "native-707-next-test-run"
+        )
+        self.assertTrue(transition["new_run_identity"])
+        self.assertTrue(transition["seed_reloaded"])
+        self.assertEqual(next_episode["visible_gameplay_turns"], 1)
+        self.assertEqual(
+            next_episode["checkpoint"]["episode_run_id"],
+            "native-707-next-test-run",
+        )
+        self.assertEqual(
+            next_episode["checkpoint"]["date_raw"], 53_168_785
+        )
+        self.assertTrue(all(report["qualification_gates"].values()))
+        self.assertEqual(harness.events.count("save_checkpoint"), 1)
+        self.assertEqual(
+            [row["selected_step"] for row in report["auto_run"]["turns"]],
+            [
+                "life-advance",
+                "death-terminal",
+                "start-next-episode",
+                "life-advance",
+            ],
+        )
 
     def test_one_generation_bound_is_incomplete_and_checkpointed(self) -> None:
         report, _harness = self._run(

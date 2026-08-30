@@ -14835,7 +14835,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                                     else None
                                 ),
                                 played_character=(
-                                    terminal_played
+                                    {
+                                        "character_id": 707,
+                                        "alive": False,
+                                    }
                                     if decision_kind == "one_life_terminal"
                                     else played
                                 ),

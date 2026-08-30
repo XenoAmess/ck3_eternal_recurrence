@@ -22,6 +22,7 @@ from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.native_session import (  # noqa: E402
     _native_session_locked,
     native_session,
+    validate_episode_seed_for_state,
 )
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
 
@@ -103,6 +104,43 @@ class NativeSessionLifecycleTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_episode_seed_preflight_binds_metadata_to_exact_bytes(self) -> None:
+        payload = b"immutable next episode seed"
+        seed_path = (
+            self.spec.profile_dir / "save games" / "xar_episode_seed.ck3"
+        )
+        seed_path.parent.mkdir(parents=True)
+        seed_path.write_bytes(payload)
+        metadata_path = (
+            self.spec.state_dir / "native-session" / "episode-seed.json"
+        )
+        write_json_atomic(
+            metadata_path,
+            {
+                "format_version": 1,
+                "name": "xar_episode_seed.ck3",
+                "path": str(seed_path.resolve()),
+                "size": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "date_raw": 53_168_784,
+                "character_id": 707,
+                "source_run_id": "native-707-source",
+                "source_checkpoint_name": "xar_checkpoint.ck3",
+                "immutable": True,
+            },
+        )
+
+        seed = validate_episode_seed_for_state(self.spec)
+
+        self.assertEqual(seed["path"], str(seed_path.resolve()))
+        self.assertEqual(seed["metadata_path"], str(metadata_path.resolve()))
+        self.assertEqual(seed["size"], len(payload))
+        self.assertEqual(seed["date_raw"], 53_168_784)
+
+        seed_path.write_bytes(payload + b" changed")
+        with self.assertRaisesRegex(AgentError, "immutable metadata"):
+            validate_episode_seed_for_state(self.spec)
 
     def test_status_then_stop_uses_native_launch_and_tracked_cleanup(self) -> None:
         process = mock.Mock()
