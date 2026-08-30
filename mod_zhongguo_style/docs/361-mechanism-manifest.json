@@ -8,9 +8,9 @@
     "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
     "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
     "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
-    "domain_runtime": "275 mechanisms have at least a committed partial CK3 product projection; 86 still have no CK3 domain runtime. Partial does not mean complete.",
+    "domain_runtime": "321 mechanisms have at least a committed partial CK3 product projection; 40 still have no CK3 domain runtime. Partial does not mean complete.",
     "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; static or central wiring does not by itself complete the per-ID player loop.",
-    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 275 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
+    "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 321 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live."
   },
   "acceptance": {
     "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -33,29 +33,29 @@
     ],
     "exclusive_counts": {
       "design-only": 0,
-      "python-l0": 86,
-      "ck3-static-ready": 213,
+      "python-l0": 40,
+      "ck3-static-ready": 259,
       "central-wired": 58,
       "ck3-live": 4
     },
     "cumulative_counts": {
       "design-only": 361,
       "python-l0": 361,
-      "ck3-static-ready": 275,
+      "ck3-static-ready": 321,
       "central-wired": 62,
       "ck3-live": 4
     },
     "exclusive_ranges": {
       "design-only": "",
-      "python-l0": "146-191, 242-277, 355-356, 360-361",
-      "ck3-static-ready": "019-036, 054-068, 082-134, 192-241, 278-354",
+      "python-l0": "242-277, 355-356, 360-361",
+      "ck3-static-ready": "019-036, 054-068, 082-134, 146-241, 278-354",
       "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
       "ck3-live": "001, 018, 069, 357"
     },
     "cumulative_ranges": {
       "design-only": "001-361",
       "python-l0": "001-361",
-      "ck3-static-ready": "001-145, 192-241, 278-354, 357-359",
+      "ck3-static-ready": "001-241, 278-354, 357-359",
       "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
       "ck3-live": "001, 018, 069, 357"
     },
@@ -213,6 +213,52 @@
       143,
       144,
       145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
       192,
       193,
       194,
@@ -344,7 +390,7 @@
       358,
       359
     ],
-    "count": 275,
+    "count": 321,
     "evidence": "at-least-ck3-static-ready",
     "source": "tools/zg361_readiness_data.py",
     "tests": "tools/test_zg361_readiness_data.py",
@@ -21182,23 +21228,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -21325,23 +21372,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -21468,23 +21516,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -21609,23 +21658,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -21750,23 +21800,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -21894,23 +21945,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22038,23 +22090,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22182,23 +22235,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22326,23 +22380,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22467,23 +22522,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22611,23 +22667,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22755,23 +22812,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -22900,23 +22958,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23045,23 +23104,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23190,23 +23250,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23335,23 +23396,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23480,23 +23542,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23624,23 +23687,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23769,23 +23833,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -23914,23 +23979,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24059,23 +24125,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24204,23 +24271,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24349,23 +24417,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24493,23 +24562,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24637,23 +24707,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24781,23 +24852,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -24925,23 +24997,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25069,23 +25142,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25213,23 +25287,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25357,23 +25432,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25501,23 +25577,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25645,23 +25722,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25789,23 +25867,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -25933,23 +26012,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26077,23 +26157,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "career-panel-python-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_phase2_career_model.py",
-          "tools/test_zg361_phase2_career_model.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26223,23 +26304,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26369,23 +26451,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26517,23 +26600,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26663,23 +26747,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26809,23 +26894,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -26955,23 +27041,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -27101,23 +27188,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -27247,23 +27335,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -27393,23 +27482,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -27539,23 +27629,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }
@@ -27683,23 +27774,24 @@
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": "partial",
         "player_visible_loop": "partial",
-        "runtime_evidence": "python-l0"
+        "runtime_evidence": "static-ready"
       },
       "readiness": {
-        "highest_level": "python-l0",
-        "ordinal": 1,
-        "package": "b2-reference-model-remainder",
+        "highest_level": "ck3-static-ready",
+        "ordinal": 2,
+        "package": "feedback-promotion-pip-ck3-runtime",
         "evidence": [
-          "tools/zg361_b2_runtime_data.py",
-          "tools/test_zg361_b2_runtime.py"
+          "tools/gen_361_feedback_promotion_pip_runtime.py",
+          "tools/test_zg361_feedback_promotion_pip_runtime.py",
+          "docs/361-feedback-promotion-pip-ck3-runtime-spec.md"
         ],
-        "note": "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
+        "note": "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
         "cumulative_gates": {
           "design-only": true,
           "python-l0": true,
-          "ck3-static-ready": false,
+          "ck3-static-ready": true,
           "central-wired": false,
           "ck3-live": false
         }

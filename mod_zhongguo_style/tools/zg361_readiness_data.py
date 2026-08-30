@@ -151,24 +151,15 @@ CLAIMS: Final[tuple[ReadinessClaim, ...]] = (
         "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
     ),
     ReadinessClaim(
-        mechanism_ids(range(146, 157), range(181, 192)),
-        ReadinessLevel.PYTHON_L0,
-        "b2-reference-model-remainder",
+        mechanism_ids(range(146, 192)),
+        ReadinessLevel.CK3_STATIC_READY,
+        "feedback-promotion-pip-ck3-runtime",
         (
-            "tools/zg361_b2_runtime_data.py",
-            "tools/test_zg361_b2_runtime.py",
+            "tools/gen_361_feedback_promotion_pip_runtime.py",
+            "tools/test_zg361_feedback_promotion_pip_runtime.py",
+            "docs/361-feedback-promotion-pip-ck3-runtime-spec.md",
         ),
-        "B2 reference contracts exist, but these IDs have no committed CK3 product projection.",
-    ),
-    ReadinessClaim(
-        mechanism_ids(range(157, 181)),
-        ReadinessLevel.PYTHON_L0,
-        "career-panel-python-model-remainder",
-        (
-            "tools/zg361_phase2_career_model.py",
-            "tools/test_zg361_phase2_career_model.py",
-        ),
-        "Promotion-panel Python semantics exist, but these IDs have no committed CK3 product projection.",
+        "Generated CK3 effects/events and L0 contracts exist; no central hook or live claim is counted.",
     ),
     ReadinessClaim(
         mechanism_ids(range(19, 26), range(92, 129)),
@@ -338,8 +329,8 @@ CUMULATIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
 EXPECTED_EXCLUSIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
     {
         "design-only": "",
-        "python-l0": "146-191, 242-277, 355-356, 360-361",
-        "ck3-static-ready": "019-036, 054-068, 082-134, 192-241, 278-354",
+        "python-l0": "242-277, 355-356, 360-361",
+        "ck3-static-ready": "019-036, 054-068, 082-134, 146-241, 278-354",
         "central-wired": "002-017, 037-053, 070-081, 135-145, 358-359",
         "ck3-live": "001, 018, 069, 357",
     }
@@ -348,7 +339,7 @@ EXPECTED_CUMULATIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
     {
         "design-only": "001-361",
         "python-l0": "001-361",
-        "ck3-static-ready": "001-145, 192-241, 278-354, 357-359",
+        "ck3-static-ready": "001-241, 278-354, 357-359",
         "central-wired": "001-018, 037-053, 069-081, 135-145, 357-359",
         "ck3-live": "001, 018, 069, 357",
     }
@@ -356,8 +347,8 @@ EXPECTED_CUMULATIVE_RANGES: Final[Mapping[str, str]] = MappingProxyType(
 EXPECTED_EXCLUSIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
     {
         "design-only": 0,
-        "python-l0": 86,
-        "ck3-static-ready": 213,
+        "python-l0": 40,
+        "ck3-static-ready": 259,
         "central-wired": 58,
         "ck3-live": 4,
     }
@@ -366,7 +357,7 @@ EXPECTED_CUMULATIVE_COUNTS: Final[Mapping[str, int]] = MappingProxyType(
     {
         "design-only": 361,
         "python-l0": 361,
-        "ck3-static-ready": 275,
+        "ck3-static-ready": 321,
         "central-wired": 62,
         "ck3-live": 4,
     }
