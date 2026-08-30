@@ -1,0 +1,10 @@
+﻿l_russian:
+ zg361b1.200.t:0 "Sealed Self-Review"
+ zg361b1.200.desc:0 "The evidence window is closing. Your statement will be sealed beside the mid-cycle record. It may explain visibility, but it cannot rewrite the hard facts."
+ zg361b1.200.a:0 "State the record as it stands."
+ zg361b1.200.b:0 "Present the strongest possible account."
+ zg361b1.200.c:0 "Understate my own contribution."
+ zg361b1.201.t:0 "Non-Final Shadow Grade"
+ zg361b1.201.desc:0 "Your manager has opened a shadow grade for response. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded evidence packet for calibration; the frozen KPI will not change."
+ zg361b1.201.a:0 "Accept the shadow record."
+ zg361b1.201.b:0 "Submit supplementary evidence."

@@ -25,11 +25,117 @@ def generated(text: str) -> bytes:
     return BOM + (HEADER + text.strip() + "\n").encode("utf-8")
 
 
+def localized(text: str) -> bytes:
+    return BOM + (text.strip() + "\n").encode("utf-8")
+
+
+def render_peer_slot_consumer(slot: int) -> str:
+    """Render one sealed peer slot without relying on dynamic variable names."""
+
+    reciprocal_checks = "\n".join(
+        f'''\t\t\t\t\tAND = {{
+\t\t\t\t\t\thas_variable = zg361_b1_peer_slot_{other}_evaluator
+\t\t\t\t\t\thas_variable = zg361_b1_peer_slot_{other}_raw
+\t\t\t\t\t\ttrigger_if = {{
+\t\t\t\t\t\t\tlimit = {{
+\t\t\t\t\t\t\t\thas_variable = zg361_b1_peer_slot_{other}_evaluator
+\t\t\t\t\t\t\t\thas_variable = zg361_b1_peer_slot_{other}_raw
+\t\t\t\t\t\t\t}}
+\t\t\t\t\t\t\tvar:zg361_b1_peer_slot_{other}_raw > 0
+\t\t\t\t\t\t\tvar:zg361_b1_peer_slot_{other}_evaluator = scope:zg361_b1_peer_subject
+\t\t\t\t\t\t}}
+\t\t\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\t\t}}'''
+        for other in (1, 2, 3)
+    )
+    return f'''zg361_b1_consume_peer_slot_{slot}_effect = {{
+\tif = {{
+\t\tlimit = {{
+\t\t\tvar:zg361_b1_peer_slot_{slot}_filled = 1
+\t\t\thas_variable = zg361_b1_peer_slot_{slot}_evaluator
+\t\t}}
+\t\tsave_scope_as = zg361_b1_peer_subject
+\t\tset_variable = {{ name = zg361_b1_peer_slot_{slot}_reciprocal value = 0 }}
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\thas_variable = zg361_b1_peer_slot_{slot}_evaluator
+\t\t\t\tvar:zg361_b1_peer_slot_{slot}_raw > 0
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{
+\t\t\t\t\t\tOR = {{
+{reciprocal_checks}
+\t\t\t\t\t\t}}
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t\tset_variable = {{ name = zg361_b1_peer_slot_{slot}_reciprocal value = 1 }}
+\t\t\t\tset_variable = {{ name = zg361_b1_peer_reciprocity_risk value = 1 }}
+\t\t\t\tset_variable = {{
+\t\t\t\t\tname = zg361_b1_peer_slot_{slot}_weight
+\t\t\t\t\tvalue = {{ value = var:zg361_b1_peer_slot_{slot}_weight multiply = 0.5 floor = yes min = 10 }}
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}
+\t\tchange_variable = {{ name = zg361_b1_peer_n add = 1 }}
+\t\tchange_variable = {{ name = zg361_b1_peer_raw_sum add = var:zg361_b1_peer_slot_{slot}_raw }}
+\t\tchange_variable = {{ name = zg361_b1_peer_credit_total add = var:zg361_b1_peer_slot_{slot}_weight }}
+\t\tset_variable = {{
+\t\t\tname = zg361_b1_peer_slot_{slot}_weighted
+\t\t\tvalue = {{ value = var:zg361_b1_peer_slot_{slot}_raw multiply = var:zg361_b1_peer_slot_{slot}_weight }}
+\t\t}}
+\t\tchange_variable = {{ name = zg361_b1_peer_weighted_sum add = var:zg361_b1_peer_slot_{slot}_weighted }}
+\t\tset_variable = {{
+\t\t\tname = zg361_b1_peer_slot_{slot}_square
+\t\t\tvalue = {{ value = var:zg361_b1_peer_slot_{slot}_raw multiply = var:zg361_b1_peer_slot_{slot}_raw }}
+\t\t}}
+\t\tchange_variable = {{ name = zg361_b1_peer_sum_squares add = var:zg361_b1_peer_slot_{slot}_square }}
+\t\tset_variable = {{ name = zg361_b1_peer_slot_{slot}_sealed_serial value = var:zg361_b1_case_serial }}
+\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{
+\t\t\tif = {{
+\t\t\t\tlimit = {{ NOT = {{ has_variable = zg361_b1_evaluator_credit }} }}
+\t\t\t\tset_variable = {{ name = zg361_b1_evaluator_credit value = 100 }}
+\t\t\t\tset_variable = {{ name = zg361_b1_evaluator_sample_n value = 0 }}
+\t\t\t}}
+\t\t\tchange_variable = {{ name = zg361_b1_evaluator_sample_n add = 1 }}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_b1_peer_slot_{slot}_raw >= 0 }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:zg361_b1_evidence_late >= 0 }}
+\t\t\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{ change_variable = {{ name = zg361_b1_evaluator_credit add = 2 }} }}
+\t\t\t}}
+\t\t\telse = {{ var:zg361_b1_peer_slot_{slot}_evaluator = {{ change_variable = {{ name = zg361_b1_evaluator_credit add = -5 }} }} }}
+\t\t}}
+\t\telse = {{
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:zg361_b1_evidence_late < 0 }}
+\t\t\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{ change_variable = {{ name = zg361_b1_evaluator_credit add = 2 }} }}
+\t\t\t}}
+\t\t\telse = {{ var:zg361_b1_peer_slot_{slot}_evaluator = {{ change_variable = {{ name = zg361_b1_evaluator_credit add = -5 }} }} }}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ var:zg361_b1_peer_slot_{slot}_reciprocal = 1 }}
+\t\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{ change_variable = {{ name = zg361_b1_evaluator_credit add = -3 }} }}
+\t\t}}
+\t\tvar:zg361_b1_peer_slot_{slot}_evaluator = {{
+\t\t\tset_variable = {{
+\t\t\t\tname = zg361_b1_evaluator_credit
+\t\t\t\tvalue = {{ value = var:zg361_b1_evaluator_credit max = 125 min = 25 }}
+\t\t\t}}
+\t\t}}
+\t}}
+}}'''
+
+
 def render_effects() -> bytes:
     bindings = "\n".join(
         f"# {row.mechanism_id:03d} {row.stage} {row.scope}: "
         f"{row.meaningful_write} -> {row.consumer}"
         for row in B1_BINDINGS
+    )
+    peer_slot_consumers = "\n\n".join(
+        render_peer_slot_consumer(slot) for slot in (1, 2, 3)
     )
     body = r'''
 # ZhongGuo 361 B1 — persistent performance season and pooled quota kernel
@@ -76,18 +182,59 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_opportunity_grant value = 0 }
 	set_variable = { name = zg361_b1_self_submitted value = 0 }
 	set_variable = { name = zg361_b1_self_score value = 0 }
+	set_variable = { name = zg361_b1_self_choice value = 0 }
+	set_variable = { name = zg361_b1_self_gap value = 0 }
+	set_variable = { name = zg361_b1_self_visibility_adjustment value = 0 }
 	set_variable = { name = zg361_b1_peer_slot_1_filled value = 0 }
 	set_variable = { name = zg361_b1_peer_slot_2_filled value = 0 }
 	set_variable = { name = zg361_b1_peer_slot_3_filled value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_raw value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_raw value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_raw value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_weight value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_weight value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_weight value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_cycle value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_cycle value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_cycle value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_submitted_year value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_submitted_year value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_submitted_year value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_reciprocal value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_reciprocal value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_reciprocal value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_1_sealed_serial value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_2_sealed_serial value = 0 }
+	set_variable = { name = zg361_b1_peer_slot_3_sealed_serial value = 0 }
+	remove_variable = zg361_b1_peer_slot_1_evaluator
+	remove_variable = zg361_b1_peer_slot_2_evaluator
+	remove_variable = zg361_b1_peer_slot_3_evaluator
+	remove_variable = zg361_b1_peer_slot_1_subject
+	remove_variable = zg361_b1_peer_slot_2_subject
+	remove_variable = zg361_b1_peer_slot_3_subject
 	set_variable = { name = zg361_b1_peer_used value = 0 }
 	set_variable = { name = zg361_b1_peer_cap value = 3 }
 	set_variable = { name = zg361_b1_peer_fatigue value = 0 }
+	set_variable = { name = zg361_b1_peer_over_cap value = 0 }
+	set_variable = { name = zg361_b1_peer_submission_weight value = 100 }
 	set_variable = { name = zg361_b1_peer_n value = 0 }
 	set_variable = { name = zg361_b1_peer_raw_sum value = 0 }
+	set_variable = { name = zg361_b1_peer_weighted_sum value = 0 }
+	set_variable = { name = zg361_b1_peer_credit_total value = 0 }
+	set_variable = { name = zg361_b1_peer_sum_squares value = 0 }
+	set_variable = { name = zg361_b1_peer_mean value = 0 }
+	set_variable = { name = zg361_b1_peer_variance value = 0 }
 	set_variable = { name = zg361_b1_peer_normalized_score value = 0 }
 	set_variable = { name = zg361_b1_peer_shape value = 0 }
+	set_variable = { name = zg361_b1_peer_reciprocity_risk value = 0 }
+	set_variable = { name = zg361_b1_peer_calibration_adjustment value = 0 }
 	set_variable = { name = zg361_b1_peer_sealed value = 0 }
 	set_variable = { name = zg361_b1_peer_timely_n value = 0 }
+	if = {
+		limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+		set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+		set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+	}
 	set_variable = { name = zg361_b1_evidence_early value = zg361_kpi_value }
 	set_variable = { name = zg361_b1_evidence_mid value = 0 }
 	set_variable = { name = zg361_b1_evidence_late value = 0 }
@@ -96,6 +243,11 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_fact_closed_year value = 0 }
 	set_variable = { name = zg361_b1_shadow_grade value = 0 }
 	set_variable = { name = zg361_b1_shadow_evidence_delta value = 0 }
+	set_variable = { name = zg361_b1_shadow_response_state value = 0 }
+	set_variable = { name = zg361_b1_shadow_notice_year value = 0 }
+	set_variable = { name = zg361_b1_shadow_response_year value = 0 }
+	set_variable = { name = zg361_b1_calibration_score value = 0 }
+	set_variable = { name = zg361_b1_calibration_score_before_shadow value = 0 }
 	set_variable = { name = zg361_b1_quota_snapshot value = 0 }
 	set_variable = { name = zg361_b1_forced_down value = 0 }
 	set_variable = { name = zg361_b1_final_grade value = 0 }
@@ -106,6 +258,10 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_pending_milestone value = 0 }
 	set_variable = { name = zg361_b1_newcomer_route value = 0 }
 	set_variable = { name = zg361_b1_peer_use_mode value = root.var:zg361_b1_peer_use_mode }
+	if = {
+		limit = { var:zg361_b1_peer_use_mode = 0 }
+		set_variable = { name = zg361_b1_peer_cap value = 0 }
+	}
 	remove_variable = zg361_pending_grade
 	remove_variable = zg361_rank
 
@@ -306,6 +462,121 @@ zg361_b1_midcycle_dispatcher_effect = {
 	set_variable = { name = zg361_b1_cycle_state value = 2 }
 }
 
+zg361_b1_finalize_self_review_effect = {
+	set_variable = { name = zg361_b1_self_submitted value = 1 }
+	set_variable = { name = zg361_b1_self_submitted_year value = current_year }
+	set_variable = {
+		name = zg361_b1_self_gap
+		value = { value = var:zg361_b1_self_score subtract = var:zg361_b1_evidence_mid max = 15 min = -15 }
+	}
+	set_variable = { name = zg361_b1_m004_receipt_serial value = var:zg361_b1_case_serial }
+}
+
+zg361_b1_record_self_honest_effect = {
+	set_variable = { name = zg361_b1_self_choice value = 1 }
+	set_variable = { name = zg361_b1_self_score value = var:zg361_b1_evidence_mid }
+	zg361_b1_finalize_self_review_effect = yes
+}
+
+zg361_b1_record_self_exaggerated_effect = {
+	set_variable = { name = zg361_b1_self_choice value = 2 }
+	set_variable = {
+		name = zg361_b1_self_score
+		value = { value = var:zg361_b1_evidence_mid add = 15 max = 100 min = -100 }
+	}
+	zg361_b1_finalize_self_review_effect = yes
+}
+
+zg361_b1_record_self_conservative_effect = {
+	set_variable = { name = zg361_b1_self_choice value = 3 }
+	set_variable = {
+		name = zg361_b1_self_score
+		value = { value = var:zg361_b1_evidence_mid subtract = 15 max = 100 min = -100 }
+	}
+	zg361_b1_finalize_self_review_effect = yes
+}
+
+zg361_b1_submit_self_honest_ticket_effect = {
+	if = {
+		limit = {
+			exists = scope:zg361_b1_self_ticket_owner
+			exists = scope:zg361_b1_self_ticket_subject
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+		}
+		if = {
+			limit = {
+				this = scope:zg361_b1_self_ticket_subject
+				var:zg361_b1_case_owner = scope:zg361_b1_self_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_self_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_self_ticket_case
+				var:zg361_b1_case_state = scope:zg361_b1_self_ticket_state
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_self_submitted = 0
+			}
+			zg361_b1_record_self_honest_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale honest self-review ticket ignored" }
+	}
+	else = { debug_log = "ZG361B1: incomplete honest self-review ticket ignored" }
+}
+
+zg361_b1_submit_self_exaggerated_ticket_effect = {
+	if = {
+		limit = {
+			exists = scope:zg361_b1_self_ticket_owner
+			exists = scope:zg361_b1_self_ticket_subject
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+		}
+		if = {
+			limit = {
+				this = scope:zg361_b1_self_ticket_subject
+				var:zg361_b1_case_owner = scope:zg361_b1_self_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_self_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_self_ticket_case
+				var:zg361_b1_case_state = scope:zg361_b1_self_ticket_state
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_self_submitted = 0
+			}
+			zg361_b1_record_self_exaggerated_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale exaggerated self-review ticket ignored" }
+	}
+	else = { debug_log = "ZG361B1: incomplete exaggerated self-review ticket ignored" }
+}
+
+zg361_b1_submit_self_conservative_ticket_effect = {
+	if = {
+		limit = {
+			exists = scope:zg361_b1_self_ticket_owner
+			exists = scope:zg361_b1_self_ticket_subject
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+		}
+		if = {
+			limit = {
+				this = scope:zg361_b1_self_ticket_subject
+				var:zg361_b1_case_owner = scope:zg361_b1_self_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_self_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_self_ticket_case
+				var:zg361_b1_case_state = scope:zg361_b1_self_ticket_state
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_self_submitted = 0
+			}
+			zg361_b1_record_self_conservative_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale conservative self-review ticket ignored" }
+	}
+	else = { debug_log = "ZG361B1: incomplete conservative self-review ticket ignored" }
+}
+
 zg361_b1_peer_window_dispatcher_effect = {
 	every_in_list = {
 		variable = zg361_b1_subjects
@@ -317,10 +588,20 @@ zg361_b1_peer_window_dispatcher_effect = {
 					var:zg361_b1_case_state = 2
 				}
 				set_variable = { name = zg361_b1_case_state value = 3 }
-				set_variable = { name = zg361_b1_self_submitted value = 1 }
-				set_variable = { name = zg361_b1_m004_receipt_serial value = var:zg361_b1_case_serial }
 				set_variable = { name = zg361_b1_m007_receipt_serial value = var:zg361_b1_case_serial }
 				set_variable = { name = zg361_b1_m048_receipt_serial value = var:zg361_b1_case_serial }
+				if = {
+					limit = { is_ai = yes }
+					zg361_b1_record_self_honest_effect = yes
+				}
+				else = {
+					var:zg361_b1_case_owner = { save_scope_as = zg361_b1_self_ticket_owner }
+					save_scope_as = zg361_b1_self_ticket_subject
+					save_scope_value_as = { name = zg361_b1_self_ticket_cycle value = var:zg361_b1_cycle_serial }
+					save_scope_value_as = { name = zg361_b1_self_ticket_case value = var:zg361_b1_case_serial }
+					save_scope_value_as = { name = zg361_b1_self_ticket_state value = var:zg361_b1_case_state }
+					trigger_event = { id = zg361b1.200 days = 1 }
+				}
 			}
 		}
 	}
@@ -337,16 +618,63 @@ zg361_b1_prepare_facts_effect = {
 					var:zg361_b1_case_owner = root
 					var:zg361_b1_case_state = 3
 				}
+				# A missing player response is closed honestly at the evidence deadline.
+				# A stale visible event can no longer alter the sealed case afterwards.
+				if = {
+					limit = { var:zg361_b1_self_submitted = 0 }
+					zg361_b1_record_self_honest_effect = yes
+				}
+				set_variable = { name = zg361_b1_evidence_late value = zg361_kpi_value }
+				set_variable = { name = zg361_b1_peer_n value = 0 }
+				set_variable = { name = zg361_b1_peer_raw_sum value = 0 }
+				set_variable = { name = zg361_b1_peer_weighted_sum value = 0 }
+				set_variable = { name = zg361_b1_peer_credit_total value = 0 }
+				set_variable = { name = zg361_b1_peer_sum_squares value = 0 }
+				set_variable = { name = zg361_b1_peer_mean value = 0 }
+				set_variable = { name = zg361_b1_peer_variance value = 0 }
 				set_variable = { name = zg361_b1_peer_normalized_score value = 0 }
+				set_variable = { name = zg361_b1_peer_shape value = 0 }
+				set_variable = { name = zg361_b1_peer_reciprocity_risk value = 0 }
+				zg361_b1_consume_peer_slot_1_effect = yes
+				zg361_b1_consume_peer_slot_2_effect = yes
+				zg361_b1_consume_peer_slot_3_effect = yes
 				if = {
 					limit = { var:zg361_b1_peer_n >= 1 }
 					set_variable = {
-						name = zg361_b1_peer_normalized_score
+						name = zg361_b1_peer_mean
 						value = { value = var:zg361_b1_peer_raw_sum divide = var:zg361_b1_peer_n max = 10 min = -15 }
 					}
+					set_variable = {
+						name = zg361_b1_peer_variance
+						value = {
+							value = var:zg361_b1_peer_sum_squares
+							divide = var:zg361_b1_peer_n
+							subtract = { value = var:zg361_b1_peer_mean multiply = var:zg361_b1_peer_mean }
+							min = 0
+						}
+					}
+					if = {
+						limit = { var:zg361_b1_peer_credit_total >= 1 }
+						set_variable = {
+							name = zg361_b1_peer_normalized_score
+							value = { value = var:zg361_b1_peer_weighted_sum divide = var:zg361_b1_peer_credit_total max = 10 min = -15 }
+						}
+					}
+					if = {
+						limit = { var:zg361_b1_peer_variance >= 100 }
+						set_variable = { name = zg361_b1_peer_shape value = 4 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_peer_mean >= 5 }
+						set_variable = { name = zg361_b1_peer_shape value = 1 }
+					}
+					else_if = {
+						limit = { var:zg361_b1_peer_mean <= -5 }
+						set_variable = { name = zg361_b1_peer_shape value = 3 }
+					}
+					else = { set_variable = { name = zg361_b1_peer_shape value = 2 } }
 				}
 				set_variable = { name = zg361_b1_peer_sealed value = 1 }
-				set_variable = { name = zg361_b1_evidence_late value = zg361_kpi_value }
 				set_variable = { name = zg361_b1_evidence_late_frozen value = 1 }
 				set_variable = { name = zg361_b1_m008_receipt_serial value = var:zg361_b1_case_serial }
 				set_variable = { name = zg361_b1_m049_receipt_serial value = var:zg361_b1_case_serial }
@@ -355,6 +683,84 @@ zg361_b1_prepare_facts_effect = {
 			}
 		}
 	}
+}
+
+zg361_b1_record_shadow_accept_effect = {
+	if = {
+		limit = { var:zg361_b1_shadow_response_state = 0 }
+		set_variable = { name = zg361_b1_shadow_response_state value = 1 }
+		set_variable = { name = zg361_b1_shadow_evidence_delta value = 0 }
+		set_variable = { name = zg361_b1_shadow_response_year value = current_year }
+	}
+}
+
+zg361_b1_record_shadow_supplement_effect = {
+	if = {
+		limit = { var:zg361_b1_shadow_response_state = 0 }
+		set_variable = { name = zg361_b1_shadow_response_state value = 2 }
+		set_variable = { name = zg361_b1_shadow_evidence_delta value = 10 }
+		set_variable = { name = zg361_b1_shadow_response_year value = current_year }
+		# Supplementary evidence is a bounded calibration input. It never writes
+		# zg361_kpi, zg361_absolute_grade or the already frozen shadow grade.
+		set_variable = {
+			name = zg361_b1_calibration_score
+			value = { value = var:zg361_b1_calibration_score add = 10 }
+		}
+	}
+}
+
+zg361_b1_submit_shadow_accept_ticket_effect = {
+	if = {
+		limit = {
+			exists = scope:zg361_b1_shadow_ticket_owner
+			exists = scope:zg361_b1_shadow_ticket_subject
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+		}
+		if = {
+			limit = {
+				this = scope:zg361_b1_shadow_ticket_subject
+				var:zg361_b1_case_owner = scope:zg361_b1_shadow_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_shadow_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_shadow_ticket_case
+				var:zg361_b1_case_state = scope:zg361_b1_shadow_ticket_state
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_shadow_response_state = 0
+			}
+			zg361_b1_record_shadow_accept_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale shadow-accept ticket ignored" }
+	}
+	else = { debug_log = "ZG361B1: incomplete shadow-accept ticket ignored" }
+}
+
+zg361_b1_submit_shadow_supplement_ticket_effect = {
+	if = {
+		limit = {
+			exists = scope:zg361_b1_shadow_ticket_owner
+			exists = scope:zg361_b1_shadow_ticket_subject
+			has_variable = zg361_b1_case_owner
+			has_variable = zg361_b1_cycle_serial
+			has_variable = zg361_b1_case_serial
+			has_variable = zg361_b1_case_state
+		}
+		if = {
+			limit = {
+				this = scope:zg361_b1_shadow_ticket_subject
+				var:zg361_b1_case_owner = scope:zg361_b1_shadow_ticket_owner
+				var:zg361_b1_cycle_serial = scope:zg361_b1_shadow_ticket_cycle
+				var:zg361_b1_case_serial = scope:zg361_b1_shadow_ticket_case
+				var:zg361_b1_case_state = scope:zg361_b1_shadow_ticket_state
+				var:zg361_b1_case_state = 5
+				var:zg361_b1_shadow_response_state = 0
+			}
+			zg361_b1_record_shadow_supplement_effect = yes
+		}
+		else = { debug_log = "ZG361B1: stale shadow-supplement ticket ignored" }
+	}
+	else = { debug_log = "ZG361B1: incomplete shadow-supplement ticket ignored" }
 }
 
 zg361_b1_open_shadow_effect = {
@@ -376,6 +782,42 @@ zg361_b1_open_shadow_effect = {
 					set_variable = { name = zg361_b1_fact_closed_year value = current_year }
 					set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
 					set_variable = { name = zg361_b1_shadow_grade value = var:zg361_pending_grade }
+					set_variable = { name = zg361_b1_shadow_notice_year value = current_year }
+					set_variable = { name = zg361_b1_shadow_response_state value = 0 }
+					set_variable = { name = zg361_b1_shadow_evidence_delta value = 0 }
+					set_variable = {
+						name = zg361_b1_self_visibility_adjustment
+						value = { value = var:zg361_b1_self_gap multiply = 0.2 round = yes max = 3 min = -3 }
+					}
+					set_variable = { name = zg361_b1_peer_calibration_adjustment value = 0 }
+					if = {
+						limit = { var:zg361_b1_peer_use_mode = 2 }
+						set_variable = {
+							name = zg361_b1_peer_calibration_adjustment
+							value = { value = var:zg361_b1_peer_normalized_score multiply = 0.2 round = yes max = 2 min = -3 }
+						}
+						if = {
+							limit = { var:zg361_b1_peer_shape = 4 }
+							change_variable = { name = zg361_b1_peer_calibration_adjustment add = -2 }
+						}
+						if = {
+							limit = { var:zg361_b1_peer_reciprocity_risk = 1 }
+							change_variable = { name = zg361_b1_peer_calibration_adjustment add = -2 }
+						}
+						set_variable = {
+							name = zg361_b1_peer_calibration_adjustment
+							value = { value = var:zg361_b1_peer_calibration_adjustment max = 2 min = -5 }
+						}
+					}
+					set_variable = {
+						name = zg361_b1_calibration_score
+						value = {
+							value = var:zg361_kpi
+							add = var:zg361_b1_self_visibility_adjustment
+							add = var:zg361_b1_peer_calibration_adjustment
+						}
+					}
+					set_variable = { name = zg361_b1_calibration_score_before_shadow value = var:zg361_b1_calibration_score }
 					set_variable = { name = zg361_b1_forced_down value = 0 }
 					if = {
 						limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
@@ -391,6 +833,18 @@ zg361_b1_open_shadow_effect = {
 					set_variable = { name = zg361_b1_m135_receipt_serial value = var:zg361_b1_case_serial }
 					set_variable = { name = zg361_b1_m140_receipt_serial value = var:zg361_b1_case_serial }
 					set_variable = { name = zg361_b1_m357_receipt_serial value = var:zg361_b1_case_serial }
+					if = {
+						limit = { is_ai = yes }
+						zg361_b1_record_shadow_accept_effect = yes
+					}
+					else = {
+						var:zg361_b1_case_owner = { save_scope_as = zg361_b1_shadow_ticket_owner }
+						save_scope_as = zg361_b1_shadow_ticket_subject
+						save_scope_value_as = { name = zg361_b1_shadow_ticket_cycle value = var:zg361_b1_cycle_serial }
+						save_scope_value_as = { name = zg361_b1_shadow_ticket_case value = var:zg361_b1_case_serial }
+						save_scope_value_as = { name = zg361_b1_shadow_ticket_state value = var:zg361_b1_case_state }
+						trigger_event = { id = zg361b1.201 days = 1 }
+					}
 				}
 			}
 		}
@@ -474,7 +928,106 @@ zg361_b1_register_common_superior_bank_effect = {
 	}
 }
 
+zg361_b1_rebuild_local_quota_effect = {
+	# Preserve the already frozen policy counts; only the post-shadow ordering
+	# changes. Newcomers remain eligible for top/middle but never for bottom.
+	set_variable = { name = zg361_b1_local_top_slots value = var:zg361_pending_375_n }
+	set_variable = { name = zg361_b1_local_bottom_slots value = var:zg361_pending_325_n }
+	set_variable = { name = zg361_b1_local_candidate_n value = 0 }
+	every_in_list = {
+		variable = zg361_b1_subjects
+		if = {
+			limit = {
+				has_variable = zg361_b1_case_owner
+				var:zg361_b1_case_owner = root
+				var:zg361_b1_case_state = 5
+				has_variable = zg361_pending_grade
+				has_variable = zg361_b1_calibration_score
+			}
+			add_to_list = zg361_b1_local_candidates
+			root = { change_variable = { name = zg361_b1_local_candidate_n add = 1 } }
+		}
+	}
+	if = {
+		limit = { var:zg361_b1_local_candidate_n >= 1 }
+		set_variable = { name = zg361_b1_local_rank_cursor value = 0 }
+		ordered_in_list = {
+			list = zg361_b1_local_candidates
+			order_by = var:zg361_b1_calibration_score
+			max = list_size:zg361_b1_local_candidates
+			root = { change_variable = { name = zg361_b1_local_rank_cursor add = 1 } }
+			set_variable = { name = zg361_rank value = root.var:zg361_b1_local_rank_cursor }
+			set_variable = { name = zg361_b1_local_rank value = root.var:zg361_b1_local_rank_cursor }
+			set_variable = { name = zg361_pending_grade value = 2 }
+			if = {
+				limit = { var:zg361_b1_local_rank <= root.var:zg361_b1_local_top_slots }
+				set_variable = { name = zg361_pending_grade value = 3 }
+			}
+		}
+		set_variable = { name = zg361_b1_local_bottom_candidate_n value = 0 }
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
+			add_to_list = zg361_b1_local_bottom_candidates
+			root = { change_variable = { name = zg361_b1_local_bottom_candidate_n add = 1 } }
+		}
+		set_variable = { name = zg361_b1_local_bottom_cursor value = 0 }
+		if = {
+			limit = {
+				var:zg361_b1_local_bottom_slots >= 1
+				var:zg361_b1_local_bottom_candidate_n >= 1
+			}
+			ordered_in_list = {
+				list = zg361_b1_local_bottom_candidates
+				order_by = var:zg361_b1_local_rank
+				max = list_size:zg361_b1_local_bottom_candidates
+				if = {
+					limit = { root.var:zg361_b1_local_bottom_cursor < root.var:zg361_b1_local_bottom_slots }
+					set_variable = { name = zg361_pending_grade value = 1 }
+				}
+				root = { change_variable = { name = zg361_b1_local_bottom_cursor add = 1 } }
+			}
+		}
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+			set_variable = {
+				name = zg361_b1_shadow_to_quota_delta
+				value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade }
+			}
+			set_variable = { name = zg361_b1_forced_down value = 0 }
+			if = {
+				limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+				set_variable = { name = zg361_b1_forced_down value = 1 }
+			}
+		}
+		# Recount the actual writes instead of claiming nominal targets. Under the
+		# frozen roster/newcomer policy these equal the pre-shadow counts; the
+		# explicit recount also keeps an old/malformed save honest.
+		set_variable = { name = zg361_pending_375_n value = 0 }
+		set_variable = { name = zg361_pending_35_n value = 0 }
+		set_variable = { name = zg361_pending_325_n value = 0 }
+		every_in_list = {
+			list = zg361_b1_local_candidates
+			if = {
+				limit = { var:zg361_pending_grade = 3 }
+				root = { change_variable = { name = zg361_pending_375_n add = 1 } }
+			}
+			else_if = {
+				limit = { var:zg361_pending_grade = 1 }
+				root = { change_variable = { name = zg361_pending_325_n add = 1 } }
+			}
+			else = { root = { change_variable = { name = zg361_pending_35_n add = 1 } } }
+		}
+		set_variable = { name = zg361_top_cut value = var:zg361_b1_local_top_slots }
+		set_variable = { name = zg361_top_cut_next value = { value = var:zg361_b1_local_top_slots add = 1 } }
+		set_variable = { name = zg361_bottom_slots value = var:zg361_b1_local_bottom_slots }
+		debug_log = "ZG361B1: local quota reranked by bounded post-shadow calibration score"
+	}
+}
+
 zg361_b1_submit_quota_book_effect = {
+	zg361_b1_rebuild_local_quota_effect = yes
 	if = {
 		limit = { has_variable = zg361_b1_bank_superior }
 		save_temporary_scope_as = zg361_b1_ready_manager
@@ -540,12 +1093,17 @@ zg361_b1_close_common_superior_bank_effect = {
 					var:zg361_b1_case_owner = scope:zg361_b1_pool_manager
 					var:zg361_b1_case_state = 5
 					has_variable = zg361_pending_grade
+					has_variable = zg361_b1_calibration_score
 				}
 				add_to_list = zg361_b1_pool_candidates
 				root = { change_variable = { name = zg361_b1_pool_n add = 1 } }
 			}
 		}
 	}
+	set_variable = { name = zg361_b1_pool_top_slots value = 0 }
+	set_variable = { name = zg361_b1_pool_bottom_slots value = 0 }
+	if = {
+		limit = { var:zg361_b1_pool_n >= 1 }
 	set_variable = {
 		name = zg361_b1_pool_top_slots
 		value = { value = var:zg361_b1_pool_n multiply = 0.3 round = yes min = 1 }
@@ -560,7 +1118,7 @@ zg361_b1_close_common_superior_bank_effect = {
 	}
 	ordered_in_list = {
 		list = zg361_b1_pool_candidates
-		order_by = var:zg361_kpi
+		order_by = var:zg361_b1_calibration_score
 		max = { value = list_size:zg361_b1_pool_candidates max = 80 }
 		root = { change_variable = { name = zg361_b1_pool_cursor add = 1 } }
 		set_variable = { name = zg361_rank value = root.var:zg361_b1_pool_cursor }
@@ -573,21 +1131,43 @@ zg361_b1_close_common_superior_bank_effect = {
 		set_variable = { name = zg361_last_reviewer value = var:zg361_b1_case_owner }
 		set_variable = { name = zg361_last_review_serial value = var:zg361_b1_cycle_serial }
 	}
+	set_variable = { name = zg361_b1_pool_bottom_candidate_n value = 0 }
 	every_in_list = {
 		list = zg361_b1_pool_candidates
 		limit = { NOT = { has_character_flag = zg361_newcomer_this_cycle } }
 		add_to_list = zg361_b1_pool_bottom_candidates
+		root = { change_variable = { name = zg361_b1_pool_bottom_candidate_n add = 1 } }
 	}
 	set_variable = { name = zg361_b1_pool_bottom_cursor value = 0 }
-	ordered_in_list = {
-		list = zg361_b1_pool_bottom_candidates
-		order_by = var:zg361_b1_pool_rank
-		max = { value = list_size:zg361_b1_pool_bottom_candidates max = 80 }
-		if = {
-			limit = { root.var:zg361_b1_pool_bottom_cursor < root.var:zg361_b1_pool_bottom_slots }
-			set_variable = { name = zg361_pending_grade value = 1 }
+	if = {
+		limit = {
+			var:zg361_b1_pool_bottom_slots >= 1
+			var:zg361_b1_pool_bottom_candidate_n >= 1
 		}
-		root = { change_variable = { name = zg361_b1_pool_bottom_cursor add = 1 } }
+		ordered_in_list = {
+			list = zg361_b1_pool_bottom_candidates
+			order_by = var:zg361_b1_pool_rank
+			max = { value = list_size:zg361_b1_pool_bottom_candidates max = 80 }
+			if = {
+				limit = { root.var:zg361_b1_pool_bottom_cursor < root.var:zg361_b1_pool_bottom_slots }
+				set_variable = { name = zg361_pending_grade value = 1 }
+			}
+			root = { change_variable = { name = zg361_b1_pool_bottom_cursor add = 1 } }
+		}
+	}
+	every_in_list = {
+		list = zg361_b1_pool_candidates
+		set_variable = { name = zg361_b1_quota_snapshot value = var:zg361_pending_grade }
+		set_variable = {
+			name = zg361_b1_shadow_to_quota_delta
+			value = { value = var:zg361_pending_grade subtract = var:zg361_b1_shadow_grade }
+		}
+		set_variable = { name = zg361_b1_forced_down value = 0 }
+		if = {
+			limit = { var:zg361_pending_grade < var:zg361_absolute_grade }
+			set_variable = { name = zg361_b1_forced_down value = 1 }
+		}
+	}
 	}
 	every_in_list = {
 		variable = zg361_b1_ready_managers
@@ -720,32 +1300,139 @@ zg361_b1_submit_peer_recommendation_effect = {
 
 zg361_b1_submit_peer_positive_effect = {
 	if = {
-		limit = { var:zg361_b1_peer_used < var:zg361_b1_peer_cap }
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_peer_used
+					has_variable = zg361_b1_peer_cap
+					has_variable = zg361_b1_peer_fatigue
+					has_variable = zg361_b1_peer_use_mode
+					scope:recipient = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_peer_slot_1_filled
+						has_variable = zg361_b1_peer_slot_2_filled
+						has_variable = zg361_b1_peer_slot_3_filled
+					}
+				}
+				NOT = { this = scope:recipient }
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_peer_use_mode != 0
+				var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+				var:zg361_b1_case_owner = {
+					trigger_if = {
+						limit = { has_variable_list = zg361_b1_subjects }
+						is_target_in_variable_list = {
+							name = zg361_b1_subjects
+							target = scope:recipient
+						}
+					}
+					trigger_else = { always = no }
+				}
+				scope:recipient = {
+					var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+					var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+					var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
+					var:zg361_b1_case_state = 3
+					OR = {
+						var:zg361_b1_peer_slot_1_filled = 0
+						var:zg361_b1_peer_slot_2_filled = 0
+						var:zg361_b1_peer_slot_3_filled = 0
+					}
+					NOT = {
+						OR = {
+						AND = {
+							var:zg361_b1_peer_slot_1_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+								var:zg361_b1_peer_slot_1_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_2_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+								var:zg361_b1_peer_slot_2_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_3_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+								var:zg361_b1_peer_slot_3_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						}
+					}
+				}
+			}
+			trigger_else = { always = no }
+		}
+		if = {
+			limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+			set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+			set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+		}
+		set_variable = {
+			name = zg361_b1_peer_submission_weight
+			value = {
+				value = var:zg361_b1_evaluator_credit
+				subtract = var:zg361_b1_peer_fatigue
+				max = 100
+				min = 25
+			}
+		}
 		if = {
 			limit = { scope:recipient.var:zg361_b1_peer_slot_1_filled = 0 }
 			scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_1_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_1_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_1_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_1_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_1_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_1_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_1_submitted_year value = current_year }
 			}
 		}
 		else_if = {
 			limit = { scope:recipient.var:zg361_b1_peer_slot_2_filled = 0 }
-			scope:recipient = {
+				scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_2_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_2_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_2_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_2_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_2_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_2_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_2_submitted_year value = current_year }
 			}
 		}
 		else_if = {
 			limit = { scope:recipient.var:zg361_b1_peer_slot_3_filled = 0 }
-			scope:recipient = {
+				scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_3_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_3_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_3_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_3_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_3_raw value = 10 }
+				set_variable = { name = zg361_b1_peer_slot_3_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_3_submitted_year value = current_year }
 			}
 		}
 		change_variable = { name = zg361_b1_peer_used add = 1 }
+		change_variable = { name = zg361_b1_peer_fatigue add = 15 }
+		set_variable = {
+			name = zg361_b1_peer_fatigue
+			value = { value = var:zg361_b1_peer_fatigue max = 60 }
+		}
 		scope:recipient = {
 			change_variable = { name = zg361_b1_peer_n add = 1 }
 			change_variable = { name = zg361_b1_peer_raw_sum add = 10 }
@@ -753,17 +1440,126 @@ zg361_b1_submit_peer_positive_effect = {
 		}
 		debug_log = "ZG361B1: sealed positive peer record submitted"
 	}
+	else = {
+		if = {
+			limit = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_peer_used
+						has_variable = zg361_b1_peer_cap
+					}
+					var:zg361_b1_peer_used >= var:zg361_b1_peer_cap
+				}
+				trigger_else = { always = no }
+			}
+			change_variable = { name = zg361_b1_peer_over_cap add = 1 }
+		}
+	}
 }
 
 zg361_b1_submit_peer_negative_effect = {
 	if = {
-		limit = { var:zg361_b1_peer_used < var:zg361_b1_peer_cap }
+		limit = {
+			trigger_if = {
+				limit = {
+					has_variable = zg361_b1_case_owner
+					has_variable = zg361_b1_cycle_serial
+					has_variable = zg361_b1_case_serial
+					has_variable = zg361_b1_case_state
+					has_variable = zg361_b1_peer_used
+					has_variable = zg361_b1_peer_cap
+					has_variable = zg361_b1_peer_fatigue
+					has_variable = zg361_b1_peer_use_mode
+					scope:recipient = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_state
+						has_variable = zg361_b1_peer_slot_1_filled
+						has_variable = zg361_b1_peer_slot_2_filled
+						has_variable = zg361_b1_peer_slot_3_filled
+					}
+				}
+				NOT = { this = scope:recipient }
+				var:zg361_b1_case_state = 3
+				var:zg361_b1_peer_use_mode != 0
+				var:zg361_b1_peer_used < var:zg361_b1_peer_cap
+				var:zg361_b1_case_owner = {
+					trigger_if = {
+						limit = { has_variable_list = zg361_b1_subjects }
+						is_target_in_variable_list = {
+							name = zg361_b1_subjects
+							target = scope:recipient
+						}
+					}
+					trigger_else = { always = no }
+				}
+				scope:recipient = {
+					var:zg361_b1_case_owner = scope:actor.var:zg361_b1_case_owner
+					var:zg361_b1_cycle_serial = scope:actor.var:zg361_b1_cycle_serial
+					var:zg361_b1_case_serial = scope:actor.var:zg361_b1_case_serial
+					var:zg361_b1_case_state = 3
+					OR = {
+						var:zg361_b1_peer_slot_1_filled = 0
+						var:zg361_b1_peer_slot_2_filled = 0
+						var:zg361_b1_peer_slot_3_filled = 0
+					}
+					NOT = {
+						OR = {
+						AND = {
+							var:zg361_b1_peer_slot_1_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_1_evaluator }
+								var:zg361_b1_peer_slot_1_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_2_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_2_evaluator }
+								var:zg361_b1_peer_slot_2_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						AND = {
+							var:zg361_b1_peer_slot_3_filled = 1
+							trigger_if = {
+								limit = { has_variable = zg361_b1_peer_slot_3_evaluator }
+								var:zg361_b1_peer_slot_3_evaluator = scope:actor
+							}
+							trigger_else = { always = no }
+						}
+						}
+					}
+				}
+			}
+			trigger_else = { always = no }
+		}
+		if = {
+			limit = { NOT = { has_variable = zg361_b1_evaluator_credit } }
+			set_variable = { name = zg361_b1_evaluator_credit value = 100 }
+			set_variable = { name = zg361_b1_evaluator_sample_n value = 0 }
+		}
+		set_variable = {
+			name = zg361_b1_peer_submission_weight
+			value = {
+				value = var:zg361_b1_evaluator_credit
+				subtract = var:zg361_b1_peer_fatigue
+				max = 100
+				min = 25
+			}
+		}
 		if = {
 			limit = { scope:recipient.var:zg361_b1_peer_slot_1_filled = 0 }
 			scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_1_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_1_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_1_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_1_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_1_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_1_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_1_submitted_year value = current_year }
 			}
 		}
 		else_if = {
@@ -771,7 +1567,11 @@ zg361_b1_submit_peer_negative_effect = {
 			scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_2_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_2_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_2_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_2_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_2_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_2_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_2_submitted_year value = current_year }
 			}
 		}
 		else_if = {
@@ -779,10 +1579,19 @@ zg361_b1_submit_peer_negative_effect = {
 			scope:recipient = {
 				set_variable = { name = zg361_b1_peer_slot_3_filled value = 1 }
 				set_variable = { name = zg361_b1_peer_slot_3_evaluator value = scope:actor }
+				set_variable = { name = zg361_b1_peer_slot_3_subject value = scope:recipient }
+				set_variable = { name = zg361_b1_peer_slot_3_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_peer_slot_3_raw value = -15 }
+				set_variable = { name = zg361_b1_peer_slot_3_weight value = scope:actor.var:zg361_b1_peer_submission_weight }
+				set_variable = { name = zg361_b1_peer_slot_3_submitted_year value = current_year }
 			}
 		}
 		change_variable = { name = zg361_b1_peer_used add = 1 }
+		change_variable = { name = zg361_b1_peer_fatigue add = 15 }
+		set_variable = {
+			name = zg361_b1_peer_fatigue
+			value = { value = var:zg361_b1_peer_fatigue max = 60 }
+		}
 		scope:recipient = {
 			change_variable = { name = zg361_b1_peer_n add = 1 }
 			change_variable = { name = zg361_b1_peer_raw_sum add = -15 }
@@ -790,14 +1599,69 @@ zg361_b1_submit_peer_negative_effect = {
 		}
 		debug_log = "ZG361B1: sealed negative peer record submitted"
 	}
+	else = {
+		if = {
+			limit = {
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_peer_used
+						has_variable = zg361_b1_peer_cap
+					}
+					var:zg361_b1_peer_used >= var:zg361_b1_peer_cap
+				}
+				trigger_else = { always = no }
+			}
+			change_variable = { name = zg361_b1_peer_over_cap add = 1 }
+		}
+	}
 }
 '''
-    return generated(bindings + "\n\n" + body)
+    return generated(bindings + "\n\n" + body + "\n\n" + peer_slot_consumers)
 
 
 def render_events() -> bytes:
     return generated(r'''
 namespace = zg361b1
+
+# Player subject: one sealed self-review response. Each option revalidates the
+# owner/subject/cycle/case/state ticket before writing the subject-owned case.
+zg361b1.200 = {
+	type = character_event
+	theme = vassal
+	title = zg361b1.200.t
+	desc = zg361b1.200.desc
+
+	option = {
+		name = zg361b1.200.a
+		zg361_b1_submit_self_honest_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.200.b
+		zg361_b1_submit_self_exaggerated_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.200.c
+		zg361_b1_submit_self_conservative_ticket_effect = yes
+	}
+}
+
+# Player subject: accept the non-final shadow grade or add one bounded evidence
+# packet. Neither route mutates the already frozen KPI/absolute-grade facts.
+zg361b1.201 = {
+	type = character_event
+	theme = vassal
+	title = zg361b1.201.t
+	desc = zg361b1.201.desc
+
+	option = {
+		name = zg361b1.201.a
+		zg361_b1_submit_shadow_accept_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.201.b
+		zg361_b1_submit_shadow_supplement_ticket_effect = yes
+	}
+}
 
 # Common-superior season synchronization. The delayed character event resets
 # ROOT to each sibling manager; the cycle-open guard makes replays harmless.
@@ -908,6 +1772,18 @@ zg361b1.103 = {
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 5
 				}
+				every_in_list = {
+					variable = zg361_b1_subjects
+					if = {
+						limit = {
+							has_variable = zg361_b1_case_owner
+							var:zg361_b1_case_owner = root
+							var:zg361_b1_case_state = 5
+							var:zg361_b1_shadow_response_state = 0
+						}
+						zg361_b1_record_shadow_accept_effect = yes
+					}
+				}
 				set_variable = { name = zg361_b1_cycle_state value = 6 }
 				zg361_b1_submit_quota_book_effect = yes
 			}
@@ -987,12 +1863,65 @@ zg361b1.111 = {
 ''')
 
 
+def render_english_localization() -> bytes:
+    return localized(r'''
+l_english:
+ zg361b1.200.t:0 "Sealed Self-Review"
+ zg361b1.200.desc:0 "The evidence window is closing. Your statement will be sealed beside the mid-cycle record. It may explain visibility, but it cannot rewrite the hard facts."
+ zg361b1.200.a:0 "State the record as it stands."
+ zg361b1.200.b:0 "Present the strongest possible account."
+ zg361b1.200.c:0 "Understate my own contribution."
+ zg361b1.201.t:0 "Non-Final Shadow Grade"
+ zg361b1.201.desc:0 "Your manager has opened a shadow grade for response. It grants no reward and occupies no final quota yet. You may accept it or submit one bounded evidence packet for calibration; the frozen KPI will not change."
+ zg361b1.201.a:0 "Accept the shadow record."
+ zg361b1.201.b:0 "Submit supplementary evidence."
+''')
+
+
+def render_simp_chinese_localization() -> bytes:
+    return localized(r'''
+l_simp_chinese:
+ zg361b1.200.t:0 "封存自评"
+ zg361b1.200.desc:0 "证据窗口将闭。你的陈述会与期中记录一同封存：它可以说明成果为何未被看见，却不能改写已经发生的硬事实。"
+ zg361b1.200.a:0 "据实陈述，不增不减。"
+ zg361b1.200.b:0 "把最耀眼的一面写进案卷。"
+ zg361b1.200.c:0 "收敛锋芒，保守自陈。"
+ zg361b1.201.t:0 "非最终影子档"
+ zg361b1.201.desc:0 "直属上司已开放影子档供你回应。此档尚不发放奖惩，也不占用最终配额。你可以接受，或补交一份有界证据供校准参考；已经封存的事实 KPI 不会改变。"
+ zg361b1.201.a:0 "接受这份影子记录。"
+ zg361b1.201.b:0 "补交证据，交由校准复核。"
+''')
+
+
+def render_english_placeholder_localization(language: str) -> bytes:
+    english = render_english_localization().decode("utf-8-sig")
+    return localized(english.replace("l_english:", f"l_{language}:", 1))
+
+
 def outputs() -> dict[Path, bytes]:
     validate_b1_bindings()
-    return {
+    rendered = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_b1_runtime_effects.txt": render_effects(),
         MOD_ROOT / "events" / "zg361_b1_runtime_events.txt": render_events(),
+        MOD_ROOT / "localization" / "english" / "zg361_b1_l_english.yml": render_english_localization(),
+        MOD_ROOT / "localization" / "simp_chinese" / "zg361_b1_l_simp_chinese.yml": render_simp_chinese_localization(),
     }
+    for language in (
+        "french",
+        "german",
+        "japanese",
+        "korean",
+        "polish",
+        "russian",
+        "spanish",
+    ):
+        rendered[
+            MOD_ROOT
+            / "localization"
+            / language
+            / f"zg361_b1_l_{language}.yml"
+        ] = render_english_placeholder_localization(language)
+    return rendered
 
 
 def main() -> int:

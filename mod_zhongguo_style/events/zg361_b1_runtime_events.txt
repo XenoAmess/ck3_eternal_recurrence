@@ -1,6 +1,46 @@
 ﻿# GENERATED FILE — edit tools/gen_361_b1_runtime.py
 namespace = zg361b1
 
+# Player subject: one sealed self-review response. Each option revalidates the
+# owner/subject/cycle/case/state ticket before writing the subject-owned case.
+zg361b1.200 = {
+	type = character_event
+	theme = vassal
+	title = zg361b1.200.t
+	desc = zg361b1.200.desc
+
+	option = {
+		name = zg361b1.200.a
+		zg361_b1_submit_self_honest_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.200.b
+		zg361_b1_submit_self_exaggerated_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.200.c
+		zg361_b1_submit_self_conservative_ticket_effect = yes
+	}
+}
+
+# Player subject: accept the non-final shadow grade or add one bounded evidence
+# packet. Neither route mutates the already frozen KPI/absolute-grade facts.
+zg361b1.201 = {
+	type = character_event
+	theme = vassal
+	title = zg361b1.201.t
+	desc = zg361b1.201.desc
+
+	option = {
+		name = zg361b1.201.a
+		zg361_b1_submit_shadow_accept_ticket_effect = yes
+	}
+	option = {
+		name = zg361b1.201.b
+		zg361_b1_submit_shadow_supplement_ticket_effect = yes
+	}
+}
+
 # Common-superior season synchronization. The delayed character event resets
 # ROOT to each sibling manager; the cycle-open guard makes replays harmless.
 zg361b1.90 = {
@@ -109,6 +149,18 @@ zg361b1.103 = {
 					var:zg361_b1_case_serial = scope:zg361_b1_ticket_case
 					var:zg361_b1_cycle_state = scope:zg361_b1_ticket_state
 					var:zg361_b1_cycle_state = 5
+				}
+				every_in_list = {
+					variable = zg361_b1_subjects
+					if = {
+						limit = {
+							has_variable = zg361_b1_case_owner
+							var:zg361_b1_case_owner = root
+							var:zg361_b1_case_state = 5
+							var:zg361_b1_shadow_response_state = 0
+						}
+						zg361_b1_record_shadow_accept_effect = yes
+					}
 				}
 				set_variable = { name = zg361_b1_cycle_state value = 6 }
 				zg361_b1_submit_quota_book_effect = yes
