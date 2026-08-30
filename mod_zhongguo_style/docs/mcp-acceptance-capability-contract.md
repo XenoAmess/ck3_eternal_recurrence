@@ -3,6 +3,30 @@
 状态：需求合同，**只写能力边界，不在本工作包实现 MCP/native bridge**。二期测试优先 MCP；OCR 仅允许在 native 状态已经闭合后
 制作最终截图，不参与导航、状态真值或 GREEN 判定。
 
+## 当前实现盘点（2026-08-31，exact repository source）
+
+当前 `ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py` 已注册并可供既有 G1/G2 runner 使用的相关语义入口包括：
+
+- `ck3_take_snapshot`、`ck3_wait_for_change`；
+- `ck3_save_checkpoint`、`ck3_restore_checkpoint`；
+- `ck3_query_campaign_root_context_v1`、`ck3_query_loaded_feature_manifest_v1`；
+- `ck3_query_current_event_window_context_v1`、`ck3_select_event_option`、`ck3_resolve_active_event`；
+- `ck3_center_map_on_landed_title_v1`。
+
+这些能力足以在不使用 OCR 的情况下识别/操作当前原生事件、绑定玩家与构建、等待独立 revision，并保存或恢复测试现场；它们**不能**
+因此被扩写成二期领域验收已经可用。对照下文合同，当前 MCP 注册面仍没有：
+
+- allowlisted ZhongGuo case/receipt/deadline snapshot；
+- 产品 decision 枚举与 stable-key 执行；
+- 任意受评者的个人金币、直属上司国库、modifier、opinion pair 与来源快照；
+- named scripted widget 查询、activate/close/reopen 与 scoreboard ACL 数据投影；
+- AI-owned ZhongGuo case snapshot；
+- B4–B8 的 vacancy/position/project/incident/workforce/cross-cycle domain-object 查询。
+
+因此当前可先复用 native event context 做“看到哪张产品事件、选择了哪个真实选项、是否产生新 revision”的部分闭环；但凡验收条件涉及案卷
+五元组、双付款守恒、hidden deadline、考核榜内页/ACL、AI 后台案或跨周期 lineage，仍是 **MCP capability RED**。这些 RED 必须交由
+MCP/native bridge 层按下文 allowlist 实现，mod runner 不得用坐标/OCR、测试决议或任意变量写入伪造 GREEN。
+
 ## 一、B1 前置能力
 
 ### 1. Allowlisted mod case snapshot
