@@ -11,6 +11,15 @@ import unittest
 
 from gen_scoreboard_snapshot import (
     BASE_FIELDS,
+    B1_DISCLOSURE_A_OBJECT_FIELDS,
+    B1_DISCLOSURE_B_OBJECT_FIELDS,
+    B1_DISCLOSURE_C_LEGACY_OBJECT_FIELDS,
+    B1_MANAGER_OBJECT_FIELDS,
+    B1_OBJECT_CONTRACTS,
+    B1_OBJECT_FIELDS,
+    B1_SELF_OBJECT_FIELDS_BY_ROUTE,
+    B1_TEAM_PUBLIC_FIELDS,
+    B1ObjectFieldSpec,
     CASE_FIELDS,
     DETAIL_CLEAR_ACTION,
     DETAIL_CLEAR_GUI,
@@ -45,6 +54,7 @@ from gen_scoreboard_snapshot import (
     TOGGLE_SIZE,
     disclosure_case_is_current,
     disclosure_policy_is_current,
+    b1_disclosed_object_fields,
     disclosed_case_fields,
     outputs,
     received_case_fields,
@@ -62,6 +72,9 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         )
         self.assertTrue(all(isinstance(field, FieldSpec) for field in BASE_FIELDS))
         self.assertTrue(all(isinstance(field, FieldSpec) for field in CASE_FIELDS))
+        self.assertTrue(
+            all(isinstance(field, B1ObjectFieldSpec) for field in B1_OBJECT_FIELDS)
+        )
         self.assertEqual(
             {field.page for field in CASE_FIELDS},
             {"facts", "peer", "quota", "audit"},
@@ -72,6 +85,12 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 f"name = {field.source_var}",
                 product_effects,
                 f"detail field {field.name} is not backed by a written product variable",
+            )
+        for field in B1_OBJECT_FIELDS:
+            self.assertIn(
+                f"name = {field.source_var}",
+                product_effects,
+                f"B1 detail field {field.name} is not backed by a written product variable",
             )
         self.assertTrue(
             SENSITIVE_RECEIVED_FIELDS.isdisjoint(
@@ -169,6 +188,14 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 self.assertIn(f"zg361_sb_self_{field.name}", effects)
             else:
                 self.assertNotIn(f"name = zg361_sb_self_{field.name}", effects)
+            self.assertNotIn(f"zg361_sb_r_01_{field.name}", effects)
+            if field.visible:
+                self.assertIn(f"zg361_sb_detail_{field.name}", slot_guis)
+            else:
+                self.assertNotIn(f"zg361_sb_detail_{field.name}", slot_guis)
+        for field in B1_OBJECT_FIELDS:
+            self.assertIn(f"zg361_sb_m_01_{field.name}", effects)
+            self.assertIn(f"zg361_sb_self_{field.name}", effects)
             self.assertNotIn(f"zg361_sb_r_01_{field.name}", effects)
             self.assertIn(f"zg361_sb_detail_{field.name}", slot_guis)
         for sensitive in SENSITIVE_RECEIVED_FIELDS:
@@ -355,6 +382,125 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             self.assertTrue(names.isdisjoint(internal_quota_trade))
             self.assertTrue(names.isdisjoint(SENSITIVE_RECEIVED_FIELDS))
 
+    def test_b1_object_schema_is_independent_and_acl_intersection_is_default_deny(self) -> None:
+        b1_names = {field.name for field in B1_OBJECT_FIELDS}
+        self.assertTrue(b1_names.isdisjoint({field.name for field in CASE_FIELDS}))
+        self.assertTrue(
+            b1_names.isdisjoint({field.name for field in RECEIVED_CASE_FIELDS})
+        )
+        self.assertEqual(B1_MANAGER_OBJECT_FIELDS, B1_OBJECT_FIELDS)
+        self.assertEqual(B1_DISCLOSURE_A_OBJECT_FIELDS, B1_OBJECT_FIELDS)
+        self.assertEqual(B1_DISCLOSURE_B_OBJECT_FIELDS, ())
+        self.assertEqual(B1_DISCLOSURE_C_LEGACY_OBJECT_FIELDS, ())
+        self.assertEqual(B1_TEAM_PUBLIC_FIELDS, ())
+        for mechanism_id, route in B1_SELF_OBJECT_FIELDS_BY_ROUTE:
+            expected = B1_SELF_OBJECT_FIELDS_BY_ROUTE[(mechanism_id, route)]
+            self.assertEqual(
+                b1_disclosed_object_fields(
+                    mechanism_id=mechanism_id,
+                    route=route,
+                    disclosure_acl_mode=3,
+                ),
+                expected,
+            )
+            for acl_mode in (0, 1, 2):
+                self.assertEqual(
+                    b1_disclosed_object_fields(
+                        mechanism_id=mechanism_id,
+                        route=route,
+                        disclosure_acl_mode=acl_mode,
+                    ),
+                    (),
+                )
+        forbidden_identity_or_money = re.compile(
+            r"(?:evaluator|reviewer|dissenter|attendee|raw|recusal|swap|"
+            r"gold|treasury|salary|bonus|reward)",
+            re.I,
+        )
+        forbidden_binding_suffix = re.compile(r"_(?:owner|subject|case|state)$")
+        for field in B1_OBJECT_FIELDS:
+            self.assertIsNone(forbidden_identity_or_money.search(field.name))
+            self.assertIsNone(forbidden_identity_or_money.search(field.source_var))
+            self.assertIsNone(forbidden_binding_suffix.search(field.name))
+            self.assertIsNone(forbidden_binding_suffix.search(field.source_var))
+        final_grade = next(field for field in CASE_FIELDS if field.name == "final_grade")
+        self.assertEqual(final_grade.source_var, "zg361_result_grade")
+        self.assertNotIn("final_grade", b1_names)
+
+    def test_b1_objects_use_strict_five_tuple_gates_and_no_received_team_slots(self) -> None:
+        effects = outputs()[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        for contract in B1_OBJECT_CONTRACTS:
+            marker = f"# B1_OBJECT_{contract.mechanism_id}_{contract.route}_BEGIN"
+            self.assertIn(marker, effects)
+            section = effects.split(marker, 1)[1].split(
+                f"# B1_OBJECT_{contract.mechanism_id}_{contract.route}_END", 1
+            )[0]
+            for binding in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"{contract.prefix}_{binding}", section)
+            self.assertIn("var:zg361_b1_case_owner", section)
+            self.assertIn("var:zg361_b1_case_subject = this", section)
+            self.assertIn("var:zg361_b1_cycle_serial", section)
+            self.assertIn("var:zg361_b1_case_serial", section)
+            self.assertIn("var:zg361_b1_case_state", section)
+        self.assertIn(
+            "var:zg361_b1_band_order_object_case = "
+            "var:zg361_b1_m145_receipt_serial",
+            effects,
+        )
+        for field in B1_OBJECT_FIELDS:
+            self.assertNotRegex(
+                effects,
+                re.compile(rf"zg361_sb_r_\d{{2}}_{re.escape(field.name)}"),
+            )
+
+    def test_b1_post_mark_patch_is_one_shot_and_preserves_publish_before_elimination(self) -> None:
+        rendered = outputs()
+        effects = rendered[
+            MOD_ROOT
+            / "common"
+            / "scripted_effects"
+            / "zg361_generated_scoreboard_snapshots.txt"
+        ].decode("utf-8-sig")
+        patch = effects.split("zg361_patch_scoreboard_b1_post_mark_effect = {", 1)[1]
+        for token in (
+            "var:zg361_b1_cycle_state = 8",
+            "NOT = { has_character_flag = zg361_b1_cycle_active }",
+            "zg361_scoreboard_b1_post_mark_patch_serial",
+            "variable = zg361_b1_subjects",
+            "var:zg361_b1_case_state = 8",
+            "var:zg361_result_case_owner",
+            "var:zg361_result_cycle_serial",
+            "var:zg361_result_case_serial",
+            "var:zg361_sb_self_disclosure_acl_mode = 3",
+        ):
+            self.assertIn(token, patch)
+        self.assertIn("zg361_sb_m_01_b1_141_review_outcome", patch)
+        for mechanism_id in (142, 143, 144, 145):
+            self.assertNotIn(f"zg361_sb_m_01_b1_{mechanism_id}_", patch)
+        core = (
+            MOD_ROOT / "common" / "scripted_effects" / "zg361_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        settlement = core.split("zg361_apply_pending_grades_effect = {", 1)[1].split(
+            "\n}\n\n", 1
+        )[0]
+        ordered = (
+            "zg361_publish_scoreboard_effect = yes",
+            "zg361_process_elimination_effect = yes",
+            "zg361_b1_mark_published_effect = yes",
+            "zg361_patch_scoreboard_b1_post_mark_effect = yes",
+            "remove_character_flag = zg361_review_in_progress",
+        )
+        self.assertTrue(all(token in settlement for token in ordered))
+        self.assertEqual(
+            [settlement.index(token) for token in ordered],
+            sorted(settlement.index(token) for token in ordered),
+        )
+
     def test_generated_received_copy_freezes_policy_and_applies_a_b_c(self) -> None:
         rendered = outputs()
         effects = rendered[
@@ -406,7 +552,11 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         def destinations(body: str) -> set[str]:
             return set(re.findall(r"name = zg361_sb_self_([a-z0-9_]+)", body))
 
-        self.assertEqual(destinations(a), DISCLOSURE_A_FIELD_NAMES)
+        self.assertEqual(
+            destinations(a),
+            DISCLOSURE_A_FIELD_NAMES
+            | {field.name for field in B1_DISCLOSURE_A_OBJECT_FIELDS},
+        )
         self.assertEqual(destinations(b), DISCLOSURE_B_FIELD_NAMES)
         self.assertEqual(
             destinations(c),
@@ -422,7 +572,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "zg361_b1_forced_down",
         ):
             self.assertNotIn(internal, a + b)
-        # The manager projection remains the existing CASE_FIELDS schema.
+        # The manager projection remains separate from the frozen #013 policy.
         self.assertNotIn("zg361_sb_m_01_disclosure_", effects)
 
     def test_mutable_updates_cannot_widen_the_frozen_disclosure_route(self) -> None:
@@ -493,7 +643,8 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         )
         self.assertEqual(
             set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", a)),
-            DISCLOSURE_A_FIELD_NAMES,
+            DISCLOSURE_A_FIELD_NAMES
+            | {field.name for field in B1_DISCLOSURE_A_OBJECT_FIELDS},
         )
         self.assertEqual(
             set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", b)),
@@ -501,7 +652,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         )
         self.assertEqual(
             set(re.findall(r"name = zg361_sb_detail_([a-z0-9_]+)", c)),
-            {field.name for field in RECEIVED_CASE_FIELDS},
+            {field.name for field in RECEIVED_CASE_FIELDS if field.visible},
         )
         self.assertIn("zg361_sb_detail_binding_owner", selector)
         self.assertIn("zg361_sb_detail_binding_cycle_serial", selector)
@@ -509,7 +660,11 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
         # Managed details retain missing-value placeholders; received details
         # remove any row whose field was not copied by the frozen ACL.
-        for field in ("grade_reason", "quota_snapshot", "b1_case_serial"):
+        for field in (
+            "grade_reason",
+            "quota_snapshot",
+            "b1_141_review_outcome",
+        ):
             gate = (
                 "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui')."
                 "IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), "
@@ -518,6 +673,20 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             )
             self.assertIn(f'hbox = {{ visible = "{gate}"', gui)
             self.assertIn(f'text = "zg361_scoreboard_detail_field_{field}"', gui)
+        for binding in (
+            "case_owner",
+            "cycle_serial",
+            "case_serial",
+            "case_state",
+            "b1_case_owner",
+            "b1_cycle_serial",
+            "b1_case_serial",
+            "b1_case_state",
+        ):
+            self.assertNotIn(
+                f'text = "zg361_scoreboard_detail_field_{binding}"', gui
+            )
+            self.assertNotIn(f"zg361_sb_detail_{binding}_available_gui", slot_guis)
 
     def test_received_binding_accepts_independent_cases_and_rejects_stale_owner_cycle_policy(self) -> None:
         current = dict(
@@ -787,7 +956,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 phase2,
             )
         self.assertIn(
-            "var:zg361_sb_detail_case_serial = "
+            "var:zg361_sb_detail_binding_case_serial = "
             "scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
             phase2,
         )

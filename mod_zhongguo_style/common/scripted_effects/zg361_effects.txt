@@ -564,6 +564,7 @@ zg361_apply_pending_grades_effect = {
 	}
 	zg361_refresh_org_climate_effect = yes
 	zg361_b1_mark_published_effect = yes
+	zg361_patch_scoreboard_b1_post_mark_effect = yes
 	remove_character_flag = zg361_review_in_progress
 	zg361_p2c_on_review_published_effect = yes
 }

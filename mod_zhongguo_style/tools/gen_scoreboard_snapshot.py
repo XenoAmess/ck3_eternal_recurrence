@@ -133,6 +133,7 @@ class FieldSpec:
     kind: str = "number"
     mutable: bool = False
     received: bool = True
+    visible: bool = True
 
 
 BASE_FIELDS = (
@@ -151,9 +152,11 @@ BASE_FIELDS = (
 # records are aggregate-only: evaluator identity, free-form comments and
 # recusal identity are deliberately excluded from the received-self ACL.
 CASE_FIELDS = (
-    FieldSpec("case_owner", "zg361_result_case_owner", "audit", "character"),
-    FieldSpec("cycle_serial", "zg361_result_cycle_serial", "audit"),
-    FieldSpec("case_serial", "zg361_result_case_serial", "audit"),
+    FieldSpec(
+        "case_owner", "zg361_result_case_owner", "audit", "character", visible=False
+    ),
+    FieldSpec("cycle_serial", "zg361_result_cycle_serial", "audit", visible=False),
+    FieldSpec("case_serial", "zg361_result_case_serial", "audit", visible=False),
     FieldSpec("kpi_frozen", "zg361_result_kpi_frozen", "facts"),
     FieldSpec("values_frozen", "zg361_result_values_frozen", "facts"),
     FieldSpec("evidence_governance", "zg361_result_evidence_governance", "facts"),
@@ -211,7 +214,14 @@ CASE_FIELDS = (
     ),
     FieldSpec("quota_snapshot", "zg361_b1_quota_snapshot", "quota", "grade"),
     FieldSpec("forced_down", "zg361_b1_forced_down", "quota"),
-    FieldSpec("case_state", "zg361_result_case_state", "audit", "number", True),
+    FieldSpec(
+        "case_state",
+        "zg361_result_case_state",
+        "audit",
+        "number",
+        True,
+        visible=False,
+    ),
     FieldSpec(
         "delivery_method", "zg361_result_delivery_method", "audit", "number", True
     ),
@@ -250,10 +260,12 @@ CASE_FIELDS = (
     FieldSpec(
         "merit_refunded", "zg361_result_merit_refunded", "audit", "number", True
     ),
-    FieldSpec("b1_case_owner", "zg361_b1_case_owner", "audit", "character"),
-    FieldSpec("b1_cycle_serial", "zg361_b1_cycle_serial", "audit"),
-    FieldSpec("b1_case_serial", "zg361_b1_case_serial", "audit"),
-    FieldSpec("b1_case_state", "zg361_b1_case_state", "audit"),
+    FieldSpec(
+        "b1_case_owner", "zg361_b1_case_owner", "audit", "character", visible=False
+    ),
+    FieldSpec("b1_cycle_serial", "zg361_b1_cycle_serial", "audit", visible=False),
+    FieldSpec("b1_case_serial", "zg361_b1_case_serial", "audit", visible=False),
+    FieldSpec("b1_case_state", "zg361_b1_case_state", "audit", visible=False),
     FieldSpec("b1_fact_sheet_serial", "zg361_b1_fact_sheet_serial", "audit"),
     FieldSpec("b1_peer_sealed", "zg361_b1_peer_sealed", "audit"),
     FieldSpec(
@@ -269,6 +281,293 @@ CASE_FIELDS = (
         "b1_band_receipt_serial", "zg361_b1_m145_receipt_serial", "audit"
     ),
 )
+
+
+@dataclass(frozen=True)
+class B1ObjectFieldSpec:
+    """One safe #141-#145 projection field, separate from legacy dossiers."""
+
+    name: str
+    source_var: str
+    page: str
+    mechanism_id: int
+    routes: tuple[int, ...]
+    kind: str = "number"
+
+
+@dataclass(frozen=True)
+class B1ObjectContract:
+    """Five-tuple gate for one frozen mechanism route."""
+
+    mechanism_id: int
+    route: int
+    available_var: str
+    prefix: str
+    terminal_states: tuple[int, ...]
+    case_binding: str = "current"
+
+
+# This schema is intentionally independent from CASE_FIELDS.  Adding a B1
+# object field can never silently widen RECEIVED_CASE_FIELDS or legacy #013 C.
+# It contains only non-identity, non-raw, non-compensation payloads.  Final
+# grade remains the generic immutable zg361_result_grade field above.
+B1_OBJECT_FIELDS = (
+    B1ObjectFieldSpec(
+        "b1_141_must_review_marker",
+        "zg361_b1_must_review_object_available",
+        "audit",
+        141,
+        (1, 2),
+    ),
+    B1ObjectFieldSpec(
+        "b1_141_agenda_reason",
+        "zg361_b1_must_review_reason_fact",
+        "audit",
+        141,
+        (1, 2),
+    ),
+    B1ObjectFieldSpec(
+        "b1_141_review_outcome",
+        "zg361_b1_must_review_judgment_result",
+        "audit",
+        141,
+        (1, 2),
+    ),
+    B1ObjectFieldSpec(
+        "b1_142_pending_marker",
+        "zg361_b1_pending_self_safe_marker",
+        "audit",
+        142,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_142_milestone",
+        "zg361_b1_pending_self_safe_milestone",
+        "audit",
+        142,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_142_deadline_cycle",
+        "zg361_b1_pending_self_safe_deadline_cycle",
+        "audit",
+        142,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_142_current_final_unchanged",
+        "zg361_b1_pending_self_safe_current_final_unchanged",
+        "audit",
+        142,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_142_next_cycle_evidence",
+        "zg361_b1_pending_self_safe_next_cycle_evidence",
+        "audit",
+        142,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_143_reopen_result",
+        "zg361_b1_reopen_self_a_result",
+        "audit",
+        143,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_143_reason_code",
+        "zg361_b1_reopen_self_a_reason",
+        "audit",
+        143,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_143_next_cycle_evidence",
+        "zg361_b1_reopen_self_b_next_cycle_evidence",
+        "audit",
+        143,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_143_target_cycle",
+        "zg361_b1_reopen_self_b_target_cycle",
+        "audit",
+        143,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_144_dissent_marker",
+        "zg361_b1_dissent_self_safe_evidence",
+        "audit",
+        144,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_144_fact_reason",
+        "zg361_b1_dissent_reason_fact",
+        "audit",
+        144,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_144_review_outcome",
+        "zg361_b1_dissent_final_result",
+        "audit",
+        144,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_144_consensus_marker",
+        "zg361_b1_consensus_sealed",
+        "audit",
+        144,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_formal_band",
+        "zg361_b1_band_formal_band",
+        "quota",
+        145,
+        (1, 2),
+        "grade",
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_within_middle_order",
+        "zg361_b1_band_self_public_within_middle_order",
+        "quota",
+        145,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_opportunity_capacity",
+        "zg361_b1_band_self_public_opportunity_capacity",
+        "quota",
+        145,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_opportunity_selected",
+        "zg361_b1_band_self_public_opportunity_selected",
+        "quota",
+        145,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_coaching_selected",
+        "zg361_b1_band_self_public_coaching_selected",
+        "quota",
+        145,
+        (1,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_own_opportunity_selected",
+        "zg361_b1_band_self_private_opportunity_selected",
+        "quota",
+        145,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_appeal_evidence_available",
+        "zg361_b1_band_self_appeal_evidence",
+        "quota",
+        145,
+        (2,),
+    ),
+    B1ObjectFieldSpec(
+        "b1_145_blackbox_audit",
+        "zg361_b1_band_order_blackbox_risk",
+        "quota",
+        145,
+        (2,),
+    ),
+)
+
+B1_OBJECT_CONTRACTS = (
+    B1ObjectContract(
+        141, 1, "zg361_b1_must_review_object_available", "zg361_b1_must_review_object", (2, 3)
+    ),
+    B1ObjectContract(
+        141, 2, "zg361_b1_must_review_object_available", "zg361_b1_must_review_object", (2, 3)
+    ),
+    B1ObjectContract(
+        142, 1, "zg361_b1_pending_object_available", "zg361_b1_pending_object", (2, 3, 5)
+    ),
+    B1ObjectContract(
+        142,
+        2,
+        "zg361_b1_pending_next_cycle_object_available",
+        "zg361_b1_pending_next_cycle_object",
+        (1,),
+        "next",
+    ),
+    B1ObjectContract(
+        143, 1, "zg361_b1_reopen_self_a_available", "zg361_b1_reopen_self_a", (2,)
+    ),
+    B1ObjectContract(
+        143, 2, "zg361_b1_reopen_self_b_available", "zg361_b1_reopen_self_b", (2,)
+    ),
+    B1ObjectContract(
+        144, 1, "zg361_b1_dissent_object_available", "zg361_b1_dissent_object", (2, 3)
+    ),
+    B1ObjectContract(
+        144, 2, "zg361_b1_consensus_object_available", "zg361_b1_consensus", (2,)
+    ),
+    B1ObjectContract(
+        145,
+        1,
+        "zg361_b1_band_order_object_available",
+        "zg361_b1_band_order_object",
+        (1,),
+        "receipt",
+    ),
+    B1ObjectContract(
+        145,
+        2,
+        "zg361_b1_band_order_object_available",
+        "zg361_b1_band_order_object",
+        (1,),
+        "receipt",
+    ),
+)
+
+B1_MANAGER_OBJECT_FIELDS = B1_OBJECT_FIELDS
+B1_SELF_OBJECT_FIELDS_BY_ROUTE = {
+    (mechanism_id, route): tuple(
+        field
+        for field in B1_OBJECT_FIELDS
+        if field.mechanism_id == mechanism_id and route in field.routes
+    )
+    for mechanism_id, route in (
+        (141, 1),
+        (141, 2),
+        (142, 1),
+        (142, 2),
+        (143, 1),
+        (143, 2),
+        (144, 1),
+        (144, 2),
+        (145, 1),
+        (145, 2),
+    )
+}
+# Frozen #013 A is the only configured disclosure route that admits dossier
+# detail beyond final grade.  B remains final-grade-only; explicit/legacy C
+# cannot acquire fields that did not exist in its historical allowlist.
+B1_DISCLOSURE_A_OBJECT_FIELDS = B1_OBJECT_FIELDS
+B1_DISCLOSURE_B_OBJECT_FIELDS: tuple[B1ObjectFieldSpec, ...] = ()
+B1_DISCLOSURE_C_LEGACY_OBJECT_FIELDS: tuple[B1ObjectFieldSpec, ...] = ()
+B1_TEAM_PUBLIC_FIELDS: tuple[B1ObjectFieldSpec, ...] = ()
+def b1_disclosed_object_fields(
+    *, mechanism_id: int, route: int, disclosure_acl_mode: int
+) -> tuple[B1ObjectFieldSpec, ...]:
+    """Intersect the mechanism route with the already-frozen #013 ACL."""
+
+    if disclosure_acl_mode != 3:
+        return ()
+    return B1_SELF_OBJECT_FIELDS_BY_ROUTE.get((mechanism_id, route), ())
+
+
 MUTABLE_CASE_FIELDS = tuple(field for field in CASE_FIELDS if field.mutable)
 
 
@@ -422,7 +721,7 @@ def append_self_field_projection(
     lines: list[str],
     *,
     indent: str,
-    fields: tuple[FieldSpec, ...],
+    fields: tuple[FieldSpec | B1ObjectFieldSpec, ...],
     destination_prefix: str,
     source_prefix: str,
 ) -> None:
@@ -433,6 +732,147 @@ def append_self_field_projection(
             f"{indent}if = {{ limit = {{ has_variable = {fixed_var(source_prefix, field.name)} }} "
             f"set_variable = {{ name = {fixed_var(destination_prefix, field.name)} "
             f"value = var:{fixed_var(source_prefix, field.name)} }} }}"
+        )
+
+
+def _b1_contract_conditions(
+    contract: B1ObjectContract, *, expected_owner: str
+) -> list[str]:
+    """Return one strict subject-case plus object five-tuple gate."""
+
+    prefix = contract.prefix
+    conditions = [
+        "has_variable = zg361_b1_case_owner",
+        "has_variable = zg361_b1_case_subject",
+        "has_variable = zg361_b1_cycle_serial",
+        "has_variable = zg361_b1_case_serial",
+        "has_variable = zg361_b1_case_state",
+        f"has_variable = {contract.available_var}",
+        f"has_variable = {prefix}_owner",
+        f"has_variable = {prefix}_subject",
+        f"has_variable = {prefix}_cycle",
+        f"has_variable = {prefix}_case",
+        f"has_variable = {prefix}_state",
+        f"var:zg361_b1_case_owner = {expected_owner}",
+        "var:zg361_b1_case_subject = this",
+        "var:zg361_b1_cycle_serial >= 1",
+        "var:zg361_b1_case_serial >= 1",
+        "OR = { var:zg361_b1_case_state = 7 var:zg361_b1_case_state = 8 }",
+        f"var:{contract.available_var} = 1",
+        f"var:{prefix}_owner = {expected_owner}",
+        f"var:{prefix}_subject = this",
+    ]
+    if contract.case_binding in {"current", "receipt"}:
+        conditions.append(f"var:{prefix}_cycle = var:zg361_b1_cycle_serial")
+        if contract.case_binding == "current":
+            conditions.append(f"var:{prefix}_case = var:zg361_b1_case_serial")
+        else:
+            conditions.extend(
+                [
+                    "has_variable = zg361_b1_m145_receipt_serial",
+                    f"var:{prefix}_case = var:zg361_b1_m145_receipt_serial",
+                ]
+            )
+    else:
+        # #142 B's business object is genuinely next-cycle.  Its frozen due
+        # field and strict greater-than relation prevent an old open object
+        # from being rebound to a later publication.
+        conditions.extend(
+            [
+                f"var:{prefix}_cycle > var:zg361_b1_cycle_serial",
+                f"var:zg361_b1_pending_next_cycle_due = var:{prefix}_cycle",
+                "has_variable = zg361_b1_m142_receipt_serial",
+                f"var:{prefix}_case = var:zg361_b1_m142_receipt_serial",
+            ]
+        )
+    if len(contract.terminal_states) == 1:
+        conditions.append(f"var:{prefix}_state = {contract.terminal_states[0]}")
+    else:
+        conditions.append(
+            "OR = { "
+            + " ".join(
+                f"var:{prefix}_state = {state}"
+                for state in contract.terminal_states
+            )
+            + " }"
+        )
+    route_var = {
+        141: "zg361_b1_must_review_route",
+        142: "zg361_b1_pending_projection_route",
+        145: "zg361_b1_band_order_use_mode",
+    }.get(contract.mechanism_id)
+    if route_var:
+        conditions.extend(
+            [f"has_variable = {route_var}", f"var:{route_var} = {contract.route}"]
+        )
+    return conditions
+
+
+def append_b1_object_projection(
+    lines: list[str],
+    *,
+    indent: str,
+    destination_prefix: str,
+    source_scope: str,
+    expected_owner: str,
+    slot: int | None = None,
+    self_acl_mode: int | None = None,
+    mechanism_ids: frozenset[int] | None = None,
+) -> None:
+    """Copy only fields admitted by a valid frozen object and viewer ACL."""
+
+    for contract in B1_OBJECT_CONTRACTS:
+        if mechanism_ids is not None and contract.mechanism_id not in mechanism_ids:
+            continue
+        fields = tuple(
+            field
+            for field in B1_MANAGER_OBJECT_FIELDS
+            if field.mechanism_id == contract.mechanism_id
+            and contract.route in field.routes
+        )
+        if self_acl_mode is not None:
+            fields = b1_disclosed_object_fields(
+                mechanism_id=contract.mechanism_id,
+                route=contract.route,
+                disclosure_acl_mode=self_acl_mode,
+            )
+        if not fields:
+            continue
+        conditions = _b1_contract_conditions(
+            contract, expected_owner=expected_owner
+        )
+        lines.extend(
+            [
+                f"{indent}# B1_OBJECT_{contract.mechanism_id}_{contract.route}_BEGIN",
+                f"{indent}if = {{",
+                f"{indent}\tlimit = {{",
+            ]
+        )
+        if source_scope:
+            lines.append(f"{indent}\t\t{source_scope} = {{")
+            lines.extend(f"{indent}\t\t\t{condition}" for condition in conditions)
+            lines.append(f"{indent}\t\t}}")
+        else:
+            lines.extend(f"{indent}\t\t{condition}" for condition in conditions)
+        lines.append(f"{indent}\t}}")
+        for field in fields:
+            destination = (
+                var(destination_prefix, slot, field.name)
+                if slot is not None
+                else fixed_var(destination_prefix, field.name)
+            )
+            append_field_copy(
+                lines,
+                indent=f"{indent}\t",
+                destination=destination,
+                field=field,
+                source_scope=source_scope,
+            )
+        lines.extend(
+            [
+                f"{indent}}}",
+                f"{indent}# B1_OBJECT_{contract.mechanism_id}_{contract.route}_END",
+            ]
         )
 
 
@@ -548,6 +988,8 @@ def render_effects() -> bytes:
         lines.append(f"\tremove_variable = {fixed_var('detail', name)}")
     for field in CASE_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('detail', field.name)}")
+    for field in B1_OBJECT_FIELDS:
+        lines.append(f"\tremove_variable = {fixed_var('detail', field.name)}")
     lines.extend(
         [
             "}",
@@ -562,6 +1004,8 @@ def render_effects() -> bytes:
         lines.append(f"\tremove_variable = {fixed_var('self', name)}")
     for field in CASE_FIELDS:
         lines.append(f"\tremove_variable = {fixed_var('self', field.name)}")
+    for field in B1_OBJECT_FIELDS:
+        lines.append(f"\tremove_variable = {fixed_var('self', field.name)}")
     lines.extend(["}", ""])
 
     for prefix in ("m", "r"):
@@ -575,6 +1019,8 @@ def render_effects() -> bytes:
                 lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
             if prefix == "m":
                 for field in CASE_FIELDS:
+                    lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
+                for field in B1_OBJECT_FIELDS:
                     lines.append(f"\tremove_variable = {var(prefix, slot, field.name)}")
         lines.extend(["}", ""])
 
@@ -635,6 +1081,14 @@ def render_effects() -> bytes:
                 field=field,
                 source_scope="scope:zg361_scoreboard_snapshot_entry",
             )
+        append_b1_object_projection(
+            lines,
+            indent="\t\t\t",
+            destination_prefix="m",
+            source_scope="scope:zg361_scoreboard_snapshot_entry",
+            expected_owner="root",
+            slot=slot,
+        )
         lines.append("\t\t}")
     lines.extend(["\t}", "}", ""])
 
@@ -758,6 +1212,14 @@ def render_effects() -> bytes:
             destination=fixed_var("self", field.name),
             field=field,
         )
+    append_b1_object_projection(
+        lines,
+        indent="\t\t\t\t",
+        destination_prefix="self",
+        source_scope="",
+        expected_owner="scope:zg361_scoreboard_source",
+        self_acl_mode=3,
+    )
     lines.extend(
         [
             "\t\t\t}",
@@ -860,10 +1322,10 @@ def render_effects() -> bytes:
                 f"\t\t\t\thas_variable = {fixed_var('detail', 'valid')}",
                 f"\t\t\t\thas_variable = {fixed_var('detail', 'char')}",
                 f"\t\t\t\tvar:{fixed_var('detail', 'char')} = scope:zg361_scoreboard_case_entry",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'cycle_serial')}",
-                f"\t\t\t\tvar:{fixed_var('detail', 'cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
-                f"\t\t\t\thas_variable = {fixed_var('detail', 'case_serial')}",
-                f"\t\t\t\tvar:{fixed_var('detail', 'case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+                f"\t\t\t\thas_variable = {fixed_var('detail', 'binding_cycle_serial')}",
+                f"\t\t\t\tvar:{fixed_var('detail', 'binding_cycle_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_cycle_serial",
+                f"\t\t\t\thas_variable = {fixed_var('detail', 'binding_case_serial')}",
+                f"\t\t\t\tvar:{fixed_var('detail', 'binding_case_serial')} = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
                 "\t\t\t}",
             ]
         )
@@ -999,6 +1461,129 @@ def render_effects() -> bytes:
         streak="0",
         pip=0,
     )
+
+    lines.extend(
+        [
+            "# Called exactly once immediately after B1 mark-published.  The public",
+            "# roster was already frozen before elimination; this strict patch adds only",
+            "# state-8 #141-#145 object payloads to matching immutable slots.",
+            "zg361_patch_scoreboard_b1_post_mark_effect = {",
+            "\tif = {",
+            "\t\tlimit = {",
+            "\t\t\tvar:zg361_b1_cycle_state = 8",
+            "\t\t\tNOT = { has_character_flag = zg361_b1_cycle_active }",
+            "\t\t\thas_variable = zg361_review_serial",
+            "\t\t\thas_variable = zg361_scoreboard_managed_owner",
+            "\t\t\thas_variable = zg361_scoreboard_managed_cycle_serial",
+            "\t\t\tvar:zg361_scoreboard_managed_owner = this",
+            "\t\t\tvar:zg361_scoreboard_managed_cycle_serial = var:zg361_review_serial",
+            "\t\t\ttrigger_if = {",
+            "\t\t\t\tlimit = { has_variable = zg361_scoreboard_b1_post_mark_patch_serial }",
+            "\t\t\t\tNOT = { var:zg361_scoreboard_b1_post_mark_patch_serial = var:zg361_review_serial }",
+            "\t\t\t}",
+            "\t\t\ttrigger_else = { always = yes }",
+            "\t\t}",
+            "\t\tset_variable = { name = zg361_scoreboard_b1_post_mark_patch_serial value = var:zg361_review_serial }",
+            "\t\tsave_temporary_scope_as = zg361_scoreboard_post_mark_manager",
+            "\t\tevery_in_list = {",
+            "\t\t\tvariable = zg361_b1_subjects",
+            "\t\t\tlimit = {",
+            "\t\t\t\thas_variable = zg361_b1_case_owner",
+            "\t\t\t\thas_variable = zg361_b1_case_subject",
+            "\t\t\t\thas_variable = zg361_b1_cycle_serial",
+            "\t\t\t\thas_variable = zg361_b1_case_serial",
+            "\t\t\t\thas_variable = zg361_b1_case_state",
+            "\t\t\t\thas_variable = zg361_result_case_owner",
+            "\t\t\t\thas_variable = zg361_result_cycle_serial",
+            "\t\t\t\thas_variable = zg361_result_case_serial",
+            "\t\t\t\tvar:zg361_b1_case_owner = scope:zg361_scoreboard_post_mark_manager",
+            "\t\t\t\tvar:zg361_b1_case_subject = this",
+            "\t\t\t\tvar:zg361_b1_cycle_serial = scope:zg361_scoreboard_post_mark_manager.var:zg361_review_serial",
+            "\t\t\t\tvar:zg361_b1_case_state = 8",
+            "\t\t\t\tvar:zg361_result_case_owner = scope:zg361_scoreboard_post_mark_manager",
+            "\t\t\t\tvar:zg361_result_cycle_serial = scope:zg361_scoreboard_post_mark_manager.var:zg361_review_serial",
+            "\t\t\t}",
+            "\t\t\tsave_temporary_scope_as = zg361_scoreboard_post_mark_subject",
+            "\t\t\troot = {",
+        ]
+    )
+    for slot in range(1, SLOT_COUNT + 1):
+        lines.extend(
+            [
+                "\t\t\t\tif = {",
+                "\t\t\t\t\tlimit = {",
+                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'char')}",
+                f"\t\t\t\t\t\tvar:{var('m', slot, 'char')} = scope:zg361_scoreboard_post_mark_subject",
+                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'case_owner')}",
+                f"\t\t\t\t\t\tvar:{var('m', slot, 'case_owner')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_owner",
+                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'cycle_serial')}",
+                f"\t\t\t\t\t\tvar:{var('m', slot, 'cycle_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_cycle_serial",
+                f"\t\t\t\t\t\thas_variable = {var('m', slot, 'case_serial')}",
+                f"\t\t\t\t\t\tvar:{var('m', slot, 'case_serial')} = scope:zg361_scoreboard_post_mark_subject.var:zg361_result_case_serial",
+                "\t\t\t\t\t}",
+            ]
+        )
+        for field in B1_OBJECT_FIELDS:
+            if field.mechanism_id != 141:
+                continue
+            lines.append(f"\t\t\t\t\tremove_variable = {var('m', slot, field.name)}")
+        append_b1_object_projection(
+            lines,
+            indent="\t\t\t\t\t",
+            destination_prefix="m",
+            source_scope="scope:zg361_scoreboard_post_mark_subject",
+            expected_owner="root",
+            slot=slot,
+            mechanism_ids=frozenset({141}),
+        )
+        lines.append("\t\t\t\t}")
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t\tif = {",
+            "\t\t\t\tlimit = {",
+            "\t\t\t\t\tis_ai = no",
+            f"\t\t\t\t\thas_variable = {fixed_var('self', 'char')}",
+            f"\t\t\t\t\tvar:{fixed_var('self', 'char')} = this",
+            f"\t\t\t\t\thas_variable = {fixed_var('self', DISCLOSURE_ACL_MODE)}",
+            f"\t\t\t\t\tvar:{fixed_var('self', DISCLOSURE_ACL_MODE)} = 3",
+            "\t\t\t\t\thas_variable = zg361_scoreboard_received_owner",
+            "\t\t\t\t\tvar:zg361_scoreboard_received_owner = scope:zg361_scoreboard_post_mark_manager",
+            "\t\t\t\t\thas_variable = zg361_scoreboard_received_cycle_serial",
+            "\t\t\t\t\tvar:zg361_scoreboard_received_cycle_serial = var:zg361_result_cycle_serial",
+            "\t\t\t\t\thas_variable = zg361_scoreboard_received_case_serial",
+            "\t\t\t\t\tvar:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
+            f"\t\t\t\t\thas_variable = {fixed_var('self', 'case_owner')}",
+            f"\t\t\t\t\tvar:{fixed_var('self', 'case_owner')} = var:zg361_result_case_owner",
+            f"\t\t\t\t\thas_variable = {fixed_var('self', 'cycle_serial')}",
+            f"\t\t\t\t\tvar:{fixed_var('self', 'cycle_serial')} = var:zg361_result_cycle_serial",
+            f"\t\t\t\t\thas_variable = {fixed_var('self', 'case_serial')}",
+            f"\t\t\t\t\tvar:{fixed_var('self', 'case_serial')} = var:zg361_result_case_serial",
+            "\t\t\t\t}",
+        ]
+    )
+    for field in B1_OBJECT_FIELDS:
+        if field.mechanism_id != 141:
+            continue
+        lines.append(f"\t\t\t\tremove_variable = {fixed_var('self', field.name)}")
+    append_b1_object_projection(
+        lines,
+        indent="\t\t\t\t",
+        destination_prefix="self",
+        source_scope="",
+        expected_owner="scope:zg361_scoreboard_post_mark_manager",
+        self_acl_mode=3,
+        mechanism_ids=frozenset({141}),
+    )
+    lines.extend(
+        [
+            "\t\t\t}",
+            "\t\t}",
+            "\t}",
+            "}",
+            "",
+        ]
+    )
     return encoded("\n".join(lines))
 
 
@@ -1049,7 +1634,7 @@ def render_scripted_guis() -> bytes:
     )
     append_received_identity_gate(lines, indent="\t\t")
     lines.extend(["\t}", "}", ""])
-    for field in CASE_FIELDS:
+    for field in tuple(field for field in CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
         lines.extend(
             [
                 f"zg361_sb_detail_{field.name}_available_gui = {{",
@@ -1107,6 +1692,9 @@ def render_scripted_guis() -> bytes:
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'source')} value = 1 }}",
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'slot')} value = {slot} }}",
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'char')} value = var:{var('m', slot, 'char')} }}",
+                f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_owner')} value = var:{var('m', slot, 'case_owner')} }}",
+                f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_cycle_serial')} value = var:{var('m', slot, 'cycle_serial')} }}",
+                f"\t\tset_variable = {{ name = {fixed_var('detail', 'binding_case_serial')} value = var:{var('m', slot, 'case_serial')} }}",
                 "\t\tif = {",
                 f"\t\t\tlimit = {{ has_variable = {var('m', slot, 'title')} }}",
                 f"\t\t\tset_variable = {{ name = {fixed_var('detail', 'title')} value = var:{var('m', slot, 'title')} }}",
@@ -1114,7 +1702,7 @@ def render_scripted_guis() -> bytes:
                 f"\t\tset_variable = {{ name = {fixed_var('detail', 'rank')} value = var:{var('m', slot, 'rank')} }}",
             ]
         )
-        for field in CASE_FIELDS:
+        for field in tuple(field for field in CASE_FIELDS if field.visible) + B1_OBJECT_FIELDS:
             lines.append(
                 f"\t\tif = {{ limit = {{ has_variable = {var('m', slot, field.name)} }} "
                 f"set_variable = {{ name = {fixed_var('detail', field.name)} value = var:{var('m', slot, field.name)} }} }}"
@@ -1177,6 +1765,13 @@ def render_scripted_guis() -> bytes:
         destination_prefix="detail",
         source_prefix="self",
     )
+    append_self_field_projection(
+        lines,
+        indent="\t\t\t",
+        fields=B1_DISCLOSURE_A_OBJECT_FIELDS,
+        destination_prefix="detail",
+        source_prefix="self",
+    )
     lines.extend(
         [
             "\t\t}",
@@ -1204,7 +1799,7 @@ def render_scripted_guis() -> bytes:
     append_self_field_projection(
         lines,
         indent="\t\t\t",
-        fields=RECEIVED_CASE_FIELDS,
+        fields=tuple(field for field in RECEIVED_CASE_FIELDS if field.visible),
         destination_prefix="detail",
         source_prefix="self",
     )
@@ -1354,7 +1949,7 @@ def tab_gui(prefix: str) -> list[str]:
     return lines
 
 
-def detail_field_row(field: FieldSpec) -> list[str]:
+def detail_field_row(field: FieldSpec | B1ObjectFieldSpec) -> list[str]:
     available = f"zg361_sb_detail_{field.name}_available_gui"
     value_var = fixed_var("detail", field.name)
     row_visible = (
@@ -1387,7 +1982,11 @@ def detail_field_row(field: FieldSpec) -> list[str]:
 
 
 def detail_page_gui(page: str) -> list[str]:
-    fields = tuple(field for field in CASE_FIELDS if field.page == page)
+    fields = tuple(
+        field
+        for field in CASE_FIELDS + B1_OBJECT_FIELDS
+        if field.page == page and getattr(field, "visible", True)
+    )
     lines = [
         "vbox = {",
         f"\tname = \"zg361_scoreboard_detail_page_{page}\"",

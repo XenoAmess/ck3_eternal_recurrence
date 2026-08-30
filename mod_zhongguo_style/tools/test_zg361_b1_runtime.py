@@ -1759,6 +1759,13 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_b1_pending_carried_adjustment", initialize)
         self.assertIn("zg361_b1_pending_self_safe_current_final_unchanged", opened)
         self.assertIn("zg361_b1_pending_self_safe_next_cycle_evidence", opened)
+        self.assertIn(
+            "name = zg361_b1_pending_open_date value = current_date", opened
+        )
+        self.assertIn(
+            "name = zg361_b1_pending_deadline_days value = 30", opened
+        )
+        self.assertNotIn("zg361_b1_pending_due_date", opened)
         watchdog = top_level_block(self.events, "zg361b1.125")
         for field in ("owner", "subject", "cycle", "case", "state"):
             self.assertIn(f"zg361_b1_pending_object_{field}", watchdog)
@@ -1803,6 +1810,39 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertNotEqual(
             "zg361_b1_pending_next_cycle_object", "zg361_b1_reopen_next_cycle_object"
         )
+        projection_a = top_level_block(
+            self.effects, "zg361_b1_materialize_reopen_a_self_safe_effect"
+        )
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_reopen_self_a_{field}", projection_a)
+        self.assertIn(
+            "name = zg361_b1_reopen_self_a_case value = var:zg361_b1_case_serial",
+            projection_a,
+        )
+        self.assertIn("zg361_b1_reopen_self_a_result", projection_a)
+        self.assertIn("zg361_b1_reopen_self_a_reason", projection_a)
+        self.assertEqual(
+            resolve.count("zg361_b1_materialize_reopen_a_self_safe_effect = yes"),
+            1,
+        )
+        symmetric = top_level_block(
+            self.effects, "zg361_b1_apply_symmetric_reopen_effect"
+        )
+        self.assertEqual(
+            symmetric.count("zg361_b1_materialize_reopen_a_self_safe_effect = yes"),
+            1,
+        )
+        for field in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b1_reopen_self_b_{field}", callback)
+        self.assertIn(
+            "name = zg361_b1_reopen_self_b_case value = var:zg361_b1_case_serial",
+            callback,
+        )
+        self.assertIn(
+            "name = zg361_b1_reopen_self_b_next_cycle_evidence value = 1",
+            callback,
+        )
+        self.assertIn("zg361_b1_reopen_self_b_target_cycle", callback)
 
     def test_144_independent_review_and_consensus_freeze_real_identities(self) -> None:
         record = top_level_block(
@@ -1831,6 +1871,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
 
     def test_145_only_middle_receives_finite_non_compensation_consumers(self) -> None:
         band = top_level_block(self.effects, "zg361_b1_freeze_band_order_effect")
+        policy = top_level_block(
+            self.effects, "zg361_b1_freeze_135_145_policy_effect"
+        )
         midcycle = top_level_block(self.effects, "zg361_b1_midcycle_dispatcher_effect")
         for field in ("owner", "subject", "cycle", "case", "state"):
             self.assertIn(f"zg361_b1_band_order_batch_{field}", band)
@@ -1850,6 +1893,21 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("var:zg361_b1_previous_band_order_use_mode = 2", midcycle)
         self.assertIn("name = zg361_b1_opportunity_project_available value = 1", midcycle)
         self.assertIn("name = zg361_b1_previous_band_object_state value = 2", midcycle)
+        self.assertIn("has_variable = zg361_mechanism_145_choice", policy)
+        self.assertIn(
+            "name = zg361_b1_m145_mode value = var:zg361_mechanism_145_choice",
+            policy,
+        )
+        self.assertIn(
+            "name = zg361_b1_band_order_mode value = var:zg361_b1_m145_mode",
+            band,
+        )
+        self.assertNotIn("zg361_mechanism_145_choice", band)
+        open_cycle = top_level_block(self.effects, "zg361_b1_open_cycle_effect")
+        self.assertLess(
+            open_cycle.index("zg361_b1_freeze_135_145_policy_effect = yes"),
+            open_cycle.index("zg361_b1_initialize_subject_case_effect = yes"),
+        )
         forbidden = re.compile(
             r"(?i)(?:add_gold|gold\s*=|salary|compensation|bonus|dividend|reward)"
         )

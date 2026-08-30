@@ -51,16 +51,47 @@ SCOREBOARD_B1_DETAIL_SOURCES = {
     "shadow_to_quota_delta": "zg361_b1_shadow_to_quota_delta",
     "quota_snapshot": "zg361_b1_quota_snapshot",
     "forced_down": "zg361_b1_forced_down",
-    "b1_case_owner": "zg361_b1_case_owner",
-    "b1_cycle_serial": "zg361_b1_cycle_serial",
-    "b1_case_serial": "zg361_b1_case_serial",
     "b1_fact_sheet_serial": "zg361_b1_fact_sheet_serial",
     "b1_peer_sealed": "zg361_b1_peer_sealed",
     "b1_self_receipt_serial": "zg361_b1_m004_receipt_serial",
     "b1_peer_receipt_serial": "zg361_b1_m008_receipt_serial",
     "b1_shadow_receipt_serial": "zg361_b1_m001_receipt_serial",
     "b1_band_receipt_serial": "zg361_b1_m145_receipt_serial",
+    "b1_141_must_review_marker": "zg361_b1_must_review_object_available",
+    "b1_141_agenda_reason": "zg361_b1_must_review_reason_fact",
+    "b1_141_review_outcome": "zg361_b1_must_review_judgment_result",
+    "b1_142_pending_marker": "zg361_b1_pending_self_safe_marker",
+    "b1_142_milestone": "zg361_b1_pending_self_safe_milestone",
+    "b1_142_deadline_cycle": "zg361_b1_pending_self_safe_deadline_cycle",
+    "b1_142_current_final_unchanged": "zg361_b1_pending_self_safe_current_final_unchanged",
+    "b1_142_next_cycle_evidence": "zg361_b1_pending_self_safe_next_cycle_evidence",
+    "b1_143_reopen_result": "zg361_b1_reopen_self_a_result",
+    "b1_143_reason_code": "zg361_b1_reopen_self_a_reason",
+    "b1_143_next_cycle_evidence": "zg361_b1_reopen_self_b_next_cycle_evidence",
+    "b1_143_target_cycle": "zg361_b1_reopen_self_b_target_cycle",
+    "b1_144_dissent_marker": "zg361_b1_dissent_self_safe_evidence",
+    "b1_144_fact_reason": "zg361_b1_dissent_reason_fact",
+    "b1_144_review_outcome": "zg361_b1_dissent_final_result",
+    "b1_144_consensus_marker": "zg361_b1_consensus_sealed",
+    "b1_145_formal_band": "zg361_b1_band_formal_band",
+    "b1_145_within_middle_order": "zg361_b1_band_self_public_within_middle_order",
+    "b1_145_opportunity_capacity": "zg361_b1_band_self_public_opportunity_capacity",
+    "b1_145_opportunity_selected": "zg361_b1_band_self_public_opportunity_selected",
+    "b1_145_coaching_selected": "zg361_b1_band_self_public_coaching_selected",
+    "b1_145_own_opportunity_selected": "zg361_b1_band_self_private_opportunity_selected",
+    "b1_145_appeal_evidence_available": "zg361_b1_band_self_appeal_evidence",
+    "b1_145_blackbox_audit": "zg361_b1_band_order_blackbox_risk",
 }
+SCOREBOARD_HIDDEN_BINDINGS = (
+    "case_owner",
+    "cycle_serial",
+    "case_serial",
+    "case_state",
+    "b1_case_owner",
+    "b1_cycle_serial",
+    "b1_case_serial",
+    "b1_case_state",
+)
 SCOREBOARD_RECEIVED_FORBIDDEN = frozenset(
     {
         "evaluator_id",
@@ -542,6 +573,11 @@ def check_runtime_invariants() -> None:
             )
             if token not in haystack:
                 err(f"scoreboard B1 {surface} missing {field}: {token}")
+    for binding in SCOREBOARD_HIDDEN_BINDINGS:
+        if f"zg361_sb_detail_{binding}_available_gui" in slot_guis:
+            err(f"scoreboard binding must not expose availability GUI: {binding}")
+        if f"zg361_scoreboard_detail_field_{binding}" in scoreboard_gui:
+            err(f"scoreboard binding must not expose detail row: {binding}")
     for sensitive in SCOREBOARD_RECEIVED_FORBIDDEN:
         if sensitive in copy_self:
             err(f"received-self ACL copies sensitive peer field: {sensitive}")
@@ -552,7 +588,7 @@ def check_runtime_invariants() -> None:
     for token in (
         "var:zg361_sb_m_01_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
         "var:zg361_sb_m_80_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
-        "var:zg361_sb_detail_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
+        "var:zg361_sb_detail_binding_case_serial = scope:zg361_scoreboard_case_entry.var:zg361_result_case_serial",
         "var:zg361_scoreboard_received_case_serial = var:zg361_result_case_serial",
     ):
         if token not in phase2_updates:

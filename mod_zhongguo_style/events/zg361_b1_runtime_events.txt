@@ -392,6 +392,17 @@ zg361b1.122 = {
 					set_variable = { name = zg361_b1_reopen_next_cycle_object_state value = 1 }
 					set_variable = { name = zg361_b1_reopen_next_cycle_due value = var:zg361_b1_reopen_next_cycle_object_cycle }
 					set_variable = { name = zg361_b1_reopen_next_cycle_delta value = { value = var:zg361_b1_reopen_late_evidence_delta max = 2 min = -2 } }
+					# A separate terminal projection tuple binds the visible promise to
+					# this published subject/cycle.  The business object above remains
+					# NEXT_OPEN and is consumed only by next-cycle evidence ingestion.
+					set_variable = { name = zg361_b1_reopen_self_b_available value = 1 }
+					set_variable = { name = zg361_b1_reopen_self_b_owner value = var:zg361_b1_reopen_object_owner }
+					set_variable = { name = zg361_b1_reopen_self_b_subject value = this }
+					set_variable = { name = zg361_b1_reopen_self_b_cycle value = var:zg361_b1_reopen_object_cycle }
+					set_variable = { name = zg361_b1_reopen_self_b_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_reopen_self_b_state value = 2 }
+					set_variable = { name = zg361_b1_reopen_self_b_next_cycle_evidence value = 1 }
+					set_variable = { name = zg361_b1_reopen_self_b_target_cycle value = var:zg361_b1_reopen_next_cycle_object_cycle }
 				}
 				}
 				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }

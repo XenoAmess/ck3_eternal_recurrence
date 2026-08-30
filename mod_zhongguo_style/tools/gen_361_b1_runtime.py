@@ -954,6 +954,8 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_pending_observation_recorded value = 0 }
 	set_variable = { name = zg361_b1_pending_observed_score value = 0 }
 	set_variable = { name = zg361_b1_pending_target_score value = 0 }
+	remove_variable = zg361_b1_pending_open_date
+	set_variable = { name = zg361_b1_pending_deadline_days value = 0 }
 	remove_variable = zg361_b1_pending_fallback_subject
 	remove_variable = zg361_b1_pending_reserved_for_subject
 	set_variable = { name = zg361_b1_pending_reservation_state value = 0 }
@@ -969,8 +971,29 @@ zg361_b1_initialize_subject_case_effect = {
 	set_variable = { name = zg361_b1_pending_self_safe_deadline_cycle value = 0 }
 	set_variable = { name = zg361_b1_pending_self_safe_current_final_unchanged value = 0 }
 	set_variable = { name = zg361_b1_pending_self_safe_next_cycle_evidence value = 0 }
+	set_variable = { name = zg361_b1_pending_projection_route value = 0 }
 	set_variable = { name = zg361_b1_pending_late_to_next_cycle value = 0 }
 	set_variable = { name = zg361_b1_pending_deferred_projection_state value = 0 }
+	# #143 owns two distinct subject-local projection objects.  They deliberately
+	# do not reuse the batch/probe or next-cycle business tuples: the projection
+	# tuple binds exactly one published subject/cycle while its visible payload
+	# remains limited to result/reason (A) or evidence/target-cycle (B).
+	set_variable = { name = zg361_b1_reopen_self_a_available value = 0 }
+	remove_variable = zg361_b1_reopen_self_a_owner
+	remove_variable = zg361_b1_reopen_self_a_subject
+	set_variable = { name = zg361_b1_reopen_self_a_cycle value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_a_case value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_a_state value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_a_result value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_a_reason value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_b_available value = 0 }
+	remove_variable = zg361_b1_reopen_self_b_owner
+	remove_variable = zg361_b1_reopen_self_b_subject
+	set_variable = { name = zg361_b1_reopen_self_b_cycle value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_b_case value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_b_state value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_b_next_cycle_evidence value = 0 }
+	set_variable = { name = zg361_b1_reopen_self_b_target_cycle value = 0 }
 	set_variable = { name = zg361_b1_reopen_observation_recorded value = 0 }
 	set_variable = { name = zg361_b1_reopen_observed_score value = 0 }
 	set_variable = { name = zg361_b1_post_cutoff_event_id value = 0 }
@@ -5102,6 +5125,12 @@ zg361_b1_open_pending_slots_effect = {
 				set_variable = { name = zg361_b1_pending_fallback_band value = 2 }
 				set_variable = { name = zg361_b1_pending_milestone value = 1 }
 				set_variable = { name = zg361_b1_pending_verifier value = scope:zg361_b1_pending_manager }
+				# CK3 stores current_date as a typed date variable (vanilla
+				# travel_start_events).  Date-plus-days assignment has no frozen
+				# exact-build syntax contract yet, so persist the exact open date and
+				# the independently scheduled 30-day duration for strict providers.
+				set_variable = { name = zg361_b1_pending_open_date value = current_date }
+				set_variable = { name = zg361_b1_pending_deadline_days value = 30 }
 				set_variable = { name = zg361_b1_pending_deadline_cycle value = var:zg361_b1_cycle_serial }
 				set_variable = { name = zg361_b1_pending_deadline_year value = current_year }
 				set_variable = { name = zg361_b1_pending_baseline_score value = var:zg361_b1_evidence_late }
@@ -5184,6 +5213,7 @@ zg361_b1_open_pending_slots_effect = {
 		every_in_list = {
 			variable = zg361_b1_processing_subjects
 			limit = { var:zg361_b1_case_owner = root var:zg361_b1_case_state = 7 var:zg361_b1_case_active = 1 }
+			set_variable = { name = zg361_b1_pending_projection_route value = root.var:zg361_b1_m142_mode }
 			set_variable = { name = zg361_b1_pending_self_safe_available value = 1 }
 			set_variable = { name = zg361_b1_pending_partial_publish_state value = 1 }
 			set_variable = { name = zg361_b1_pending_partial_final_unchanged value = 1 }
@@ -5514,6 +5544,74 @@ zg361_b1_prepare_reopen_gate_effect = {
 	}
 }
 
+zg361_b1_materialize_reopen_a_self_safe_effect = {
+	if = {
+		limit = {
+			var:zg361_b1_m143_mode = 1
+			var:zg361_b1_reopen_batch_object_available = 1
+			var:zg361_b1_reopen_batch_owner = this
+			var:zg361_b1_reopen_batch_subject = this
+			var:zg361_b1_reopen_batch_cycle = var:zg361_b1_cycle_serial
+			var:zg361_b1_reopen_batch_case = var:zg361_b1_case_serial
+			var:zg361_b1_reopen_batch_state = 2
+			OR = {
+				var:zg361_b1_reopen_batch_result = 1
+				var:zg361_b1_reopen_batch_result = 2
+			}
+		}
+		save_temporary_scope_as = zg361_b1_reopen_projection_manager
+		every_in_list = {
+			variable = zg361_b1_processing_subjects
+			limit = {
+				var:zg361_b1_case_owner = scope:zg361_b1_reopen_projection_manager
+				var:zg361_b1_case_subject = this
+				var:zg361_b1_cycle_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_cycle_serial
+				var:zg361_b1_case_serial = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_case_serial
+				var:zg361_b1_case_state = 7
+				var:zg361_b1_reopen_object_available = 1
+				has_variable = zg361_b1_reopen_object_id
+				var:zg361_b1_reopen_object_owner = scope:zg361_b1_reopen_projection_manager
+				var:zg361_b1_reopen_object_subject = this
+				var:zg361_b1_reopen_object_cycle = var:zg361_b1_cycle_serial
+				var:zg361_b1_reopen_object_case = var:zg361_b1_case_serial
+				OR = {
+					var:zg361_b1_reopen_object_state = 2
+					var:zg361_b1_reopen_object_state = 3
+				}
+			}
+			set_variable = { name = zg361_b1_reopen_self_a_available value = 1 }
+			set_variable = { name = zg361_b1_reopen_self_a_owner value = scope:zg361_b1_reopen_projection_manager }
+			set_variable = { name = zg361_b1_reopen_self_a_subject value = this }
+			set_variable = { name = zg361_b1_reopen_self_a_cycle value = var:zg361_b1_cycle_serial }
+			set_variable = { name = zg361_b1_reopen_self_a_case value = var:zg361_b1_case_serial }
+			set_variable = { name = zg361_b1_reopen_self_a_state value = 2 }
+			# 1=reopened self; 2=no qualifying observation anywhere; 3=another
+			# cohort member won the unique reopen.  Reason 1/2 preserves the
+			# selected observation's sign; 3/4 are bounded non-identity reasons.
+			set_variable = { name = zg361_b1_reopen_self_a_result value = 2 }
+			set_variable = { name = zg361_b1_reopen_self_a_reason value = 3 }
+			if = {
+				limit = {
+					scope:zg361_b1_reopen_projection_manager.var:zg361_b1_reopen_batch_result = 1
+					scope:zg361_b1_reopen_projection_manager = { has_variable = zg361_b1_reopen_receipt_subject }
+					this = scope:zg361_b1_reopen_projection_manager.var:zg361_b1_reopen_receipt_subject
+				}
+				set_variable = { name = zg361_b1_reopen_self_a_result value = 1 }
+				set_variable = { name = zg361_b1_reopen_self_a_reason value = 1 }
+				if = {
+					limit = { scope:zg361_b1_reopen_projection_manager.var:zg361_b1_reopen_polarity < 0 }
+					set_variable = { name = zg361_b1_reopen_self_a_reason value = 2 }
+				}
+			}
+			else_if = {
+				limit = { scope:zg361_b1_reopen_projection_manager.var:zg361_b1_reopen_batch_result = 1 }
+				set_variable = { name = zg361_b1_reopen_self_a_result value = 3 }
+				set_variable = { name = zg361_b1_reopen_self_a_reason value = 4 }
+			}
+		}
+	}
+}
+
 zg361_b1_resolve_reopen_batch_effect = {
 	if = {
 		limit = {
@@ -5566,6 +5664,7 @@ zg361_b1_resolve_reopen_batch_effect = {
 			set_variable = { name = zg361_b1_reopen_batch_result_processed_n value = var:zg361_b1_reopen_processed_n }
 			set_variable = { name = zg361_b1_reopen_batch_result_cancelled_n value = var:zg361_b1_reopen_cancelled_n }
 			set_variable = { name = zg361_b1_m143_receipt_serial value = var:zg361_b1_reopen_batch_case }
+			zg361_b1_materialize_reopen_a_self_safe_effect = yes
 			zg361_b1_finish_calibration_effect = yes
 		}
 	}
@@ -5653,6 +5752,7 @@ zg361_b1_apply_symmetric_reopen_effect = {
 		set_variable = { name = zg361_b1_reopen_receipt_serial value = var:zg361_b1_case_serial }
 		set_variable = { name = zg361_b1_closure_state value = 3 }
 		set_variable = { name = zg361_b1_m143_receipt_serial value = var:zg361_b1_reopen_batch_case }
+		zg361_b1_materialize_reopen_a_self_safe_effect = yes
 		debug_log = "ZG361B1: symmetric positive/negative late evidence reopened and resealed once"
 	}
 	zg361_b1_finish_calibration_effect = yes
@@ -6436,16 +6536,15 @@ zg361_b1_prepare_skip_level_return_effect = {
 }
 
 zg361_b1_freeze_band_order_effect = {
-	set_variable = { name = zg361_b1_band_order_mode value = 1 }
+	# #145 is frozen with the manager case at D+0.  Never re-read the live card
+	# here: changing a policy after case creation must not rewrite this cohort's
+	# private/public order route.
+	set_variable = { name = zg361_b1_band_order_mode value = var:zg361_b1_m145_mode }
 	set_variable = { name = zg361_b1_band_order_batch_available value = 0 }
 	set_variable = { name = zg361_b1_band_order_batch_state value = 0 }
 	set_variable = { name = zg361_b1_band_order_batch_result value = 0 }
 	set_variable = { name = zg361_b1_band_opportunity_capacity value = 0 }
 	set_variable = { name = zg361_b1_band_coaching_capacity value = 0 }
-	if = {
-		limit = { has_variable = zg361_mechanism_145_choice }
-		set_variable = { name = zg361_b1_band_order_mode value = var:zg361_mechanism_145_choice }
-	}
 	# Clear every current subject first.  A former MIDDLE who moved to TOP or
 	# BOTTOM must not retain last cycle's order, appeal, blackbox or opportunity.
 	set_variable = { name = zg361_b1_band_middle_n value = 0 }
@@ -7871,6 +7970,17 @@ zg361b1.122 = {
 					set_variable = { name = zg361_b1_reopen_next_cycle_object_state value = 1 }
 					set_variable = { name = zg361_b1_reopen_next_cycle_due value = var:zg361_b1_reopen_next_cycle_object_cycle }
 					set_variable = { name = zg361_b1_reopen_next_cycle_delta value = { value = var:zg361_b1_reopen_late_evidence_delta max = 2 min = -2 } }
+					# A separate terminal projection tuple binds the visible promise to
+					# this published subject/cycle.  The business object above remains
+					# NEXT_OPEN and is consumed only by next-cycle evidence ingestion.
+					set_variable = { name = zg361_b1_reopen_self_b_available value = 1 }
+					set_variable = { name = zg361_b1_reopen_self_b_owner value = var:zg361_b1_reopen_object_owner }
+					set_variable = { name = zg361_b1_reopen_self_b_subject value = this }
+					set_variable = { name = zg361_b1_reopen_self_b_cycle value = var:zg361_b1_reopen_object_cycle }
+					set_variable = { name = zg361_b1_reopen_self_b_case value = var:zg361_b1_case_serial }
+					set_variable = { name = zg361_b1_reopen_self_b_state value = 2 }
+					set_variable = { name = zg361_b1_reopen_self_b_next_cycle_evidence value = 1 }
+					set_variable = { name = zg361_b1_reopen_self_b_target_cycle value = var:zg361_b1_reopen_next_cycle_object_cycle }
 				}
 				}
 				change_variable = { name = zg361_b1_reopen_pending_n add = -1 }
@@ -8088,6 +8198,30 @@ l_english:
  zg361_scoreboard_detail_field_b1_peer_receipt_serial:0 "B1 Peer-Seal Receipt Serial"
  zg361_scoreboard_detail_field_b1_shadow_receipt_serial:0 "B1 Shadow-Open Receipt Serial"
  zg361_scoreboard_detail_field_b1_band_receipt_serial:0 "B1 Band-Order Receipt Serial"
+ zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "#141 Superior Review Required"
+ zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "#141 Frozen Agenda Reason"
+ zg361_scoreboard_detail_field_b1_141_review_outcome:0 "#141 Review Outcome (1 Aligned / 2 Diverged)"
+ zg361_scoreboard_detail_field_b1_142_pending_marker:0 "#142 Pending Review Marker"
+ zg361_scoreboard_detail_field_b1_142_milestone:0 "#142 Pending Milestone"
+ zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "#142 Pending Deadline Cycle"
+ zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "#142 Current Result Unchanged"
+ zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "#142 Evidence Queued for Next Cycle"
+ zg361_scoreboard_detail_field_b1_143_reopen_result:0 "#143 Reopen Result (1 Self / 2 None / 3 Another)"
+ zg361_scoreboard_detail_field_b1_143_reason_code:0 "#143 Reopen Reason Code"
+ zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "#143 Evidence Queued for Next Cycle"
+ zg361_scoreboard_detail_field_b1_143_target_cycle:0 "#143 Evidence Target Cycle"
+ zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "#144 Named Dissent Recorded"
+ zg361_scoreboard_detail_field_b1_144_fact_reason:0 "#144 Dissent Fact Reason"
+ zg361_scoreboard_detail_field_b1_144_review_outcome:0 "#144 Dissent Review Outcome"
+ zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "#144 Consensus Sealed"
+ zg361_scoreboard_detail_field_b1_145_formal_band:0 "#145 Formal Rating Band"
+ zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "#145 Position Within Middle Band"
+ zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "#145 Opportunity Capacity"
+ zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "#145 Opportunity Selected"
+ zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "#145 Coaching Selected"
+ zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "#145 Own Opportunity Selected"
+ zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "#145 Appeal Evidence Available"
+ zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "#145 Black-Box Audit Marker"
 ''')
 
 
@@ -8138,6 +8272,30 @@ l_simp_chinese:
  zg361_scoreboard_detail_field_b1_peer_receipt_serial:0 "B1 互评封存收据序号"
  zg361_scoreboard_detail_field_b1_shadow_receipt_serial:0 "B1 影子档开启收据序号"
  zg361_scoreboard_detail_field_b1_band_receipt_serial:0 "B1 排档收据序号"
+ zg361_scoreboard_detail_field_b1_141_must_review_marker:0 "#141 上级复核必经项"
+ zg361_scoreboard_detail_field_b1_141_agenda_reason:0 "#141 冻结议题理由"
+ zg361_scoreboard_detail_field_b1_141_review_outcome:0 "#141 复核结果（1 一致 / 2 分歧）"
+ zg361_scoreboard_detail_field_b1_142_pending_marker:0 "#142 待定评审标记"
+ zg361_scoreboard_detail_field_b1_142_milestone:0 "#142 待定里程碑"
+ zg361_scoreboard_detail_field_b1_142_deadline_cycle:0 "#142 待定截止轮次"
+ zg361_scoreboard_detail_field_b1_142_current_final_unchanged:0 "#142 本轮终评未改动"
+ zg361_scoreboard_detail_field_b1_142_next_cycle_evidence:0 "#142 证据已排入下轮"
+ zg361_scoreboard_detail_field_b1_143_reopen_result:0 "#143 重开结果（1 本人 / 2 无人 / 3 他人）"
+ zg361_scoreboard_detail_field_b1_143_reason_code:0 "#143 重开理由码"
+ zg361_scoreboard_detail_field_b1_143_next_cycle_evidence:0 "#143 证据已排入下轮"
+ zg361_scoreboard_detail_field_b1_143_target_cycle:0 "#143 证据目标轮次"
+ zg361_scoreboard_detail_field_b1_144_dissent_marker:0 "#144 具名异议已记录"
+ zg361_scoreboard_detail_field_b1_144_fact_reason:0 "#144 异议事实理由"
+ zg361_scoreboard_detail_field_b1_144_review_outcome:0 "#144 异议复核结果"
+ zg361_scoreboard_detail_field_b1_144_consensus_marker:0 "#144 共识已封存"
+ zg361_scoreboard_detail_field_b1_145_formal_band:0 "#145 正式绩效档位"
+ zg361_scoreboard_detail_field_b1_145_within_middle_order:0 "#145 中档内部次序"
+ zg361_scoreboard_detail_field_b1_145_opportunity_capacity:0 "#145 机会名额"
+ zg361_scoreboard_detail_field_b1_145_opportunity_selected:0 "#145 已获机会名额"
+ zg361_scoreboard_detail_field_b1_145_coaching_selected:0 "#145 已入辅导名单"
+ zg361_scoreboard_detail_field_b1_145_own_opportunity_selected:0 "#145 本人是否获机会"
+ zg361_scoreboard_detail_field_b1_145_appeal_evidence_available:0 "#145 申诉证据可用"
+ zg361_scoreboard_detail_field_b1_145_blackbox_audit:0 "#145 黑箱审计标记"
 ''')
 
 

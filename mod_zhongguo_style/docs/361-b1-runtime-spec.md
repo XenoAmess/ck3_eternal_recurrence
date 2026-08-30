@@ -261,6 +261,8 @@ CK3 画面中可见的声明**。
   quota count、hash 与结算 receipt；这些字段只供 manager/audit 的里程碑验证、配额守恒和一次性结算 consumer 使用。
   **本人公开投影的精确白名单只有** `pending_marker`、`milestone`、`deadline`；不得投影 held/fallback/provisional band、
   verifier identity、冻结/释放/到期/已支付 reward、reserved peer、quota count、hash 或内部终态分支。
+- A 在 pending 创建时持久化 typed `open_date=current_date` 与独立的 `deadline_days=30`。当前 exact-build 尚未冻结可靠的
+  date-plus-days 赋值语法，因此不伪造 exact due-date 变量；provider 必须用这两个字段严格计算，轮次 deadline 继续独立保存。
 - B 不创建 pending、不持有 held/fallback slot、不冻结或支付 reward，也不重写当期榜。它创建独立的次周期对象
   `(direct_manager, subject, next_cycle, deferred_case, DEFERRED_OPEN)`，由下一周期证据入口一次消费后置为 `CONSUMED`；
   stale/调任/死亡走 `CANCELLED`。**本人公开投影的精确白名单只有** `current_final_unchanged`、
@@ -284,6 +286,8 @@ CK3 画面中可见的声明**。
   selected/no-qualifying、old/new seals/versions 与 consumption receipt。A 的 `received/self` 白名单：`reopen_result`、
   `own_final_band`、`reason_code`；B 的 `received/self` 白名单：`next_cycle_evidence`、`target_cycle`。team/public 为空，且任何本人
   投影都不得包含其他 cohort identity、severity、排序键、账本 seal 或 reward ledger。
+- GUI 不直接消费 batch/probe 或 next-cycle 业务对象。A/B 各物化一个 subject-local、完整五元组的终态投影：A 仅带
+  `reopen_result/reason_code`，B 仅带 `next_cycle_evidence/target_cycle`。
 
 #### #144：独立复阅、attention receipt 与真实共识身份
 
@@ -298,7 +302,8 @@ CK3 画面中可见的声明**。
 - manager/audit 白名单：上述五元组、dissenter/reviewer/attendee identities、事实理由、advocated/original/final band、attention
   reservation/receipt、review/consensus outcome、credit 与 procedural risk。A 的 `received/self` 白名单：`dissent_marker`、
   `fact_reason`、`review_outcome`、`own_final_band`；B 的 `received/self` 白名单：`consensus_marker`、`own_final_band`。
-  team/public 只允许 B 的 `consensus_marker`、`final_band`，不得出现 dissenter、reviewer、attendee identity、attention 或信用账。
+  本批 GUI 的 team/public 为空；`consensus_marker/final_band` 只进入符合 #013 A 的 received-self，不得出现
+  dissenter、reviewer、attendee identity、attention 或信用账。未来若新增 team/public，必须单独冻结并验收 ACL，不得自动继承。
 
 #### #145：仅 3.5、有限机会、私排申诉，永不接薪酬
 
@@ -307,7 +312,7 @@ CK3 画面中可见的声明**。
   `MIDDLE=3.5`；TOP=3.75、BOTTOM=3.25、shadow/pending grade 均不得进入。通用 rerank order 不能冒充 #145 order。
 - 排序键固定为校准分降序、冻结 roster order 升序、object case 升序。机会/辅导 capacity 必须是有限整数
   `1..cohort_size-1`；不足两名 MIDDLE 时状态为 `NO_COHORT`，不创建假排序或假机会。
-- A 的唯一 consumer 是公开的有限机会/辅导分配；不改变任何正式档位。team/public 与 `received/self` 的精确白名单为
+- A 的唯一 consumer 是有限机会/辅导分配；不改变任何正式档位。本批 team/public 为空，`received/self` 的精确白名单为
   `formal_band=3.5`、`within_middle_order`、`opportunity_capacity`、`opportunity_selected`、`coaching_selected`。
 - B 的完整 order 与 selection 只进 manager/audit。team/public 为空；**每一名**冻结 MIDDLE 成员，无论是否入选机会，都必须获得
   本人投影，精确白名单为 `formal_band=3.5`、`own_opportunity_selected`、`appeal_evidence_available`、`blackbox_audit`。
@@ -316,14 +321,18 @@ CK3 画面中可见的声明**。
 - #145 在所有路线都没有且永远不得新增 compensation consumer：不得读写 personal gold、国库、俸禄、工资、奖金、bonus、
   reward、分红或其他物质 payout；不得复用 reward ledger，也不得被 band/grade writer 读取。它只能分配有限机会/辅导并生成
   appeal/blackbox audit。出现任何 pay/reward/bonus 写入即为 RED。
+- #145 route 在 D+0 manager case 创建前冻结到 `zg361_b1_m145_mode`；后续 band-order consumer 只能读取该冻结 route，禁止回读
+  live `zg361_mechanism_145_choice`。
 
-#### GUI binder 尚未施工的可见性边界
+#### GUI binder 的 static-ready 可见性边界
 
-上述字段目前只是冻结 runtime/projection ABI。仓库尚未为 #141–#145 完成把这些白名单字段绑定到考核榜 named widgets 的 GUI
-binder，也没有对应的 MCP named-widget snapshot 与真实 CK3 可见 artifact。脚本变量、projection marker 或静态测试 GREEN 都不会自行
-渲染成玩家可见界面。因此在 binder、ACL 同源过滤、关闭重开清理和 MCP-first 实机证据闭合以前，只能称
-`ABI-frozen/static-ready`；不得称“游戏中可见”、`fixture-live`、`production-live` 或完成。未来 binder 必须只消费本节允许的冻结
-projection snapshot，不能直接绑定 manager/audit 内部账或人物 live 变量。
+仓库现已用独立 `B1_OBJECT_FIELDS` schema 把上述安全字段接入既有考核榜四内页。managed 只冻结该 manager 自有对象；
+received-self 再与冻结 #013 A 取交集；B、C/旧存档与 team/public 均不会因新增字段扩权。binding、identity、raw、recusal、swap
+和薪酬字段不生成详情行。榜单仍先于淘汰发布；mark state 8 后用同轮一次性 strict patch 补 #141 最终结果而不改行序、分页或数量。
+
+这只把 binder 与 ACL 提升到 `static-ready`。尚无对应的 MCP named-widget snapshot 与真实 CK3 可见 artifact；在 MCP-first 实机证据
+闭合以前，不得称“游戏中已验证”、`fixture-live`、`production-live` 或完成。简体中文与英文是本批原创文案，其他七语仅英文结构
+占位，不是发布翻译。
 
 ### #357：跨域事实→配额适配器
 
