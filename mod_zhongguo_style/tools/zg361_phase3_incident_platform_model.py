@@ -122,8 +122,144 @@ class Behavior:
     title_cn: str
     behavior_key: str
     invariant_key: str
+    object_type: str
+    consumer_method: str
+    resource_books: tuple[str, ...]
+    deadline_cycles: int
     readiness: str = READINESS
     ck3_wiring: str = CK3_WIRING
+
+
+OBJECT_TYPES: Final[dict[int, str]] = {
+    192: "on_call_rotation",
+    193: "on_call_compensation_claim",
+    194: "workload_relief",
+    195: "alert_quality_snapshot",
+    196: "incident_severity_assessment",
+    197: "incident_credit_split",
+    198: "firefighting_credit_netting",
+    199: "prevention_observation",
+    200: "temporary_authority_grant",
+    201: "immutable_incident_timeline",
+    202: "postmortem_action_set",
+    203: "repeat_incident_liability",
+    204: "reliability_budget_decision",
+    205: "toil_snapshot",
+    206: "technical_debt_item",
+    207: "debt_capacity_budget",
+    208: "repair_route_plan",
+    209: "hazard_allowance_claim",
+    210: "maintenance_ownership_transfer",
+    211: "runbook_acceptance",
+    212: "automation_savings_observation",
+    213: "review_contribution",
+    214: "quality_scope_snapshot",
+    215: "legacy_retirement_plan",
+    216: "handover_bundle",
+    217: "platform_adoption_policy",
+    218: "platform_dual_score",
+    219: "platform_value_snapshot",
+    220: "platform_chargeback_ledger",
+    221: "migration_cost_allocation",
+    222: "dual_run_plan",
+    223: "duplicate_solution_scan",
+    224: "solution_merger",
+    225: "legitimate_platform_fork",
+    226: "inner_source_submission",
+    227: "platform_role_credit_ledger",
+    228: "blast_radius_liability",
+}
+
+CONSUMER_METHODS: Final[dict[int, str]] = {
+    192: "configure_rotation",
+    193: "compensate_on_call",
+    194: "grant_target_relief",
+    195: "record_alert",
+    196: "classify_severity",
+    197: "allocate_incident_credit",
+    198: "net_firefighting_credit",
+    199: "award_prevention_credit",
+    200: "grant_temporary_authority",
+    201: "freeze_timeline",
+    202: "open_postmortem_actions",
+    203: "assign_repeat_liability",
+    204: "consume_reliability_budget",
+    205: "freeze_toil",
+    206: "register_debt",
+    207: "freeze_debt_budget",
+    208: "choose_repair_route",
+    209: "pay_hazard_allowance",
+    210: "rotate_maintenance_owner",
+    211: "validate_runbook",
+    212: "settle_automation_credit",
+    213: "record_review_credit",
+    214: "record_quality_scope",
+    215: "retire_legacy_service",
+    216: "complete_handover",
+    217: "decide_adoption",
+    218: "freeze_dual_score",
+    219: "freeze_value_metrics",
+    220: "charge_platform_cost",
+    221: "allocate_migration_cost",
+    222: "start_dual_run",
+    223: "record_duplicate_scan",
+    224: "merge_solutions",
+    225: "create_fork",
+    226: "settle_inner_source",
+    227: "freeze_role_credit",
+    228: "allocate_blast_liability",
+}
+
+RESOURCE_BOOKS: Final[dict[int, tuple[str, ...]]] = {
+    192: ("incident_roster",),
+    193: ("capacity", "treasury"),
+    194: ("capacity", "target"),
+    195: ("alert", "capacity"),
+    196: ("incident_facts",),
+    197: ("credit",),
+    198: ("credit", "root_cause"),
+    199: ("observation", "credit"),
+    200: ("authority",),
+    201: ("timeline",),
+    202: ("capacity", "action"),
+    203: ("liability", "action"),
+    204: ("reliability_budget",),
+    205: ("capacity",),
+    206: ("technical_debt",),
+    207: ("capacity", "technical_debt"),
+    208: ("capacity", "technical_debt"),
+    209: ("treasury", "capacity"),
+    210: ("workforce", "handover"),
+    211: ("runbook", "capacity"),
+    212: ("capacity", "credit"),
+    213: ("capacity", "credit"),
+    214: ("quality", "risk"),
+    215: ("capacity", "hc"),
+    216: ("handover", "capacity"),
+    217: ("platform_adoption",),
+    218: ("platform_score",),
+    219: ("platform_value", "capacity"),
+    220: ("treasury", "chargeback"),
+    221: ("platform_capacity", "user_capacity", "reform_capacity"),
+    222: ("user_capacity", "deadline"),
+    223: ("platform_registry",),
+    224: ("platform_capacity", "credit"),
+    225: ("user_capacity", "fork_budget"),
+    226: ("credit", "maintenance_capacity"),
+    227: ("credit", "history"),
+    228: ("liability", "loss"),
+}
+
+# A/B create the exact object above. C never creates it; it creates a policy
+# debt due in the next cycle. A zero here means the A/B object is an immutable
+# snapshot with no independent maturity clock.
+DEADLINE_CYCLES: Final[dict[int, int]] = {
+    mechanism_id: (1 if mechanism_id in {
+        193, 194, 199, 200, 202, 204, 207, 208, 209, 210, 212, 215, 216,
+        217, 220, 221, 222, 225, 228,
+    } else 0)
+    for mechanism_id in range(192, 229)
+}
 
 
 def _behavior(
@@ -133,7 +269,17 @@ def _behavior(
     behavior_key: str,
     invariant_key: str,
 ) -> Behavior:
-    return Behavior(mechanism_id, domain, title_cn, behavior_key, invariant_key)
+    return Behavior(
+        mechanism_id,
+        domain,
+        title_cn,
+        behavior_key,
+        invariant_key,
+        OBJECT_TYPES[mechanism_id],
+        CONSUMER_METHODS[mechanism_id],
+        RESOURCE_BOOKS[mechanism_id],
+        DEADLINE_CYCLES[mechanism_id],
+    )
 
 
 BEHAVIORS: Final[dict[int, Behavior]] = {
@@ -178,6 +324,96 @@ BEHAVIORS: Final[dict[int, Behavior]] = {
 
 EXPECTED_IDS: Final[frozenset[int]] = frozenset(range(192, 229))
 
+# The reference lifecycle is semantic rather than numeric.  In particular,
+# incident credit (#197) consumes the immutable timeline (#201), so sorting by
+# public mechanism id would execute the consumer before its source.  The CK3
+# projection can consume this authority without having to rediscover the order.
+DOMAIN_EXECUTION_ORDER: Final[dict[str, tuple[int, ...]]] = {
+    "X": (192, 195, 196, 200, 201, 197, 198, 199, 193, 194, 202, 203, 204),
+    "Y": tuple(range(205, 217)),
+    "Z": tuple(range(217, 229)),
+}
+
+MECHANISM_ALLOWED_STATES: Final[dict[int, frozenset[str]]] = {
+    192: frozenset({"on-call"}),
+    193: frozenset({"on-call", "reviewed"}),
+    194: frozenset({"reviewed"}),
+    195: frozenset({"on-call"}),
+    196: frozenset({"alerted"}),
+    197: frozenset({"timeline-frozen"}),
+    198: frozenset({"reviewed"}),
+    199: frozenset({"reviewed"}),
+    200: frozenset({"classified"}),
+    201: frozenset({"commanded"}),
+    202: frozenset({"reviewed"}),
+    203: frozenset({"actions-open"}),
+    204: frozenset({"actions-open"}),
+    205: frozenset({"registered"}),
+    206: frozenset({"registered"}),
+    207: frozenset({"owned"}),
+    208: frozenset({"funded"}),
+    209: frozenset({"worked"}),
+    210: frozenset({"worked"}),
+    211: frozenset({"worked"}),
+    212: frozenset({"worked"}),
+    213: frozenset({"worked"}),
+    214: frozenset({"worked"}),
+    215: frozenset({"worked"}),
+    216: frozenset({"accepted"}),
+    217: frozenset({"proposed"}),
+    218: frozenset({"adopted"}),
+    219: frozenset({"adopted"}),
+    220: frozenset({"adopted"}),
+    221: frozenset({"adopted"}),
+    222: frozenset({"migrating"}),
+    223: frozenset({"dual-running"}),
+    224: frozenset({"dual-running"}),
+    225: frozenset({"dual-running"}),
+    226: frozenset({"dual-running"}),
+    227: frozenset({"dual-running"}),
+    228: frozenset({"valued"}),
+}
+
+MECHANISM_DEPENDENCIES: Final[dict[int, tuple[int, ...]]] = {
+    192: (),
+    195: (192,),
+    196: (195,),
+    200: (196,),
+    201: (200,),
+    197: (201,),
+    198: (197,),
+    199: (198,),
+    193: (192,),
+    194: (193,),
+    202: (201, 197, 198, 199, 193, 194),
+    203: (202,),
+    204: (203,),
+    205: (),
+    206: (205,),
+    207: (206,),
+    208: (207,),
+    209: (208,),
+    210: (209,),
+    211: (210,),
+    212: (211,),
+    213: (212,),
+    214: (213,),
+    215: (214,),
+    216: (215,),
+    217: (),
+    218: (217,),
+    219: (218,),
+    220: (219,),
+    221: (220,),
+    222: (221,),
+    223: (222,),
+    224: (223,),
+    225: (224,),
+    226: (225,),
+    227: (226,),
+    228: (227,),
+}
+
 
 def validate_behavior_registry() -> None:
     if set(BEHAVIORS) != EXPECTED_IDS:
@@ -185,12 +421,37 @@ def validate_behavior_registry() -> None:
     keys = [row.behavior_key for row in BEHAVIORS.values()]
     if len(keys) != len(set(keys)):
         raise ModelRed(RedCode.DUPLICATE_ID, "behavior_key", "must be unique")
+    if set(OBJECT_TYPES) != EXPECTED_IDS or len(set(OBJECT_TYPES.values())) != len(EXPECTED_IDS):
+        raise ModelRed(RedCode.INVARIANT_BREACH, "object_type", "must be exact and unique")
+    if set(CONSUMER_METHODS) != EXPECTED_IDS or set(RESOURCE_BOOKS) != EXPECTED_IDS:
+        raise ModelRed(RedCode.INVARIANT_BREACH, "semantic_binding", "must cover every mechanism")
+    if set(DEADLINE_CYCLES) != EXPECTED_IDS:
+        raise ModelRed(RedCode.INVARIANT_BREACH, "deadline_cycles", "must cover every mechanism")
+    flattened_order = tuple(
+        mechanism_id
+        for domain in ("X", "Y", "Z")
+        for mechanism_id in DOMAIN_EXECUTION_ORDER[domain]
+    )
+    if len(flattened_order) != len(set(flattened_order)) or set(flattened_order) != EXPECTED_IDS:
+        raise ModelRed(RedCode.INVARIANT_BREACH, "execution_order", "must cover every mechanism once")
+    if set(MECHANISM_ALLOWED_STATES) != EXPECTED_IDS or set(MECHANISM_DEPENDENCIES) != EXPECTED_IDS:
+        raise ModelRed(RedCode.INVARIANT_BREACH, "lifecycle", "state/dependency maps must cover every mechanism")
+    order_index = {mechanism_id: index for index, mechanism_id in enumerate(flattened_order)}
+    for mechanism_id, dependencies in MECHANISM_DEPENDENCIES.items():
+        if any(order_index[dependency] >= order_index[mechanism_id] for dependency in dependencies):
+            raise ModelRed(RedCode.INVARIANT_BREACH, "dependency", f"{mechanism_id} has a non-prior dependency")
+        if any(BEHAVIORS[dependency].domain != BEHAVIORS[mechanism_id].domain for dependency in dependencies):
+            raise ModelRed(RedCode.INVARIANT_BREACH, "dependency", f"{mechanism_id} crosses a domain")
     for mechanism_id, row in BEHAVIORS.items():
         expected_domain = "X" if mechanism_id <= 204 else "Y" if mechanism_id <= 216 else "Z"
         if row.mechanism_id != mechanism_id or row.domain != expected_domain:
             raise ModelRed(RedCode.INVARIANT_BREACH, "behavior", f"bad mapping for {mechanism_id}")
         if row.readiness != READINESS or row.ck3_wiring != CK3_WIRING:
             raise ModelRed(RedCode.INVARIANT_BREACH, "readiness", "readiness inflation")
+        if not row.object_type or not row.consumer_method or not row.resource_books:
+            raise ModelRed(RedCode.INVARIANT_BREACH, "semantic_binding", f"empty binding for {mechanism_id}")
+        if row.deadline_cycles not in (0, 1):
+            raise ModelRed(RedCode.INVARIANT_BREACH, "deadline_cycles", f"bad deadline for {mechanism_id}")
 
 
 @dataclass(frozen=True)
@@ -306,6 +567,25 @@ class AtomicCase:
                 NoOpCode.STALE_TOKEN.value,
                 previous,
                 self.state,
+            )
+        allowed_states = MECHANISM_ALLOWED_STATES[mechanism_id]
+        if self.state not in allowed_states:
+            raise ModelRed(
+                RedCode.ILLEGAL_STATE,
+                "state",
+                f"mechanism {mechanism_id} requires {sorted(allowed_states)}, got {self.state}",
+            )
+        completed = {receipt.mechanism_id for receipt in self.provenance}
+        missing = tuple(
+            dependency
+            for dependency in MECHANISM_DEPENDENCIES[mechanism_id]
+            if dependency not in completed
+        )
+        if missing:
+            raise ModelRed(
+                RedCode.ILLEGAL_STATE,
+                "dependencies",
+                f"mechanism {mechanism_id} is missing {missing}",
             )
         frozen_sources = tuple(sources)
         if not frozen_sources:
@@ -498,6 +778,7 @@ class PostmortemAction:
 class ReliabilityBudget:
     opening: int
     remaining: int = field(init=False)
+    overrun: int = field(default=0, init=False)
     consumed_by_incident: dict[str, int] = field(default_factory=dict)
     frozen_projects: set[str] = field(default_factory=set)
     override_owner: dict[str, str] = field(default_factory=dict)
@@ -506,17 +787,32 @@ class ReliabilityBudget:
         self.opening = _integer("opening", self.opening, minimum=0)
         self.remaining = self.opening
 
-    def prepare_consume(self, incident_id: str, amount: int) -> tuple[str, int, int]:
+    @property
+    def consumed(self) -> int:
+        return sum(self.consumed_by_incident.values())
+
+    def prepare_consume(self, incident_id: str, amount: int) -> tuple[str, int, int, int]:
         incident_id = _text("incident_id", incident_id)
         amount = _integer("amount", amount, minimum=0)
         if incident_id in self.consumed_by_incident:
             raise ModelRed(RedCode.DUPLICATE_ID, "incident_id", "budget already consumed")
-        return incident_id, amount, max(0, self.remaining - amount)
+        consumed = self.consumed + amount
+        return incident_id, amount, max(0, self.opening - consumed), max(0, consumed - self.opening)
 
-    def commit_consume(self, prepared: tuple[str, int, int]) -> None:
-        incident_id, amount, remaining = prepared
+    def commit_consume(self, prepared: tuple[str, int, int, int]) -> None:
+        incident_id, amount, remaining, overrun = prepared
         self.consumed_by_incident[incident_id] = amount
         self.remaining = remaining
+        self.overrun = overrun
+        self.assert_conserved()
+
+    def assert_conserved(self) -> None:
+        if self.opening + self.overrun != self.remaining + self.consumed:
+            raise ModelRed(
+                RedCode.INVARIANT_BREACH,
+                "reliability_budget",
+                "opening + overrun != remaining + consumed",
+            )
 
 
 @dataclass
@@ -546,6 +842,7 @@ class IncidentCase(AtomicCase):
     incident_credit: dict[str, int] = field(default_factory=dict)
     role_nodes: dict[str, tuple[str, ...]] = field(default_factory=dict)
     net_firefighting_credits: dict[str, int] = field(default_factory=dict)
+    firefighting_credit_components: dict[str, dict[str, object]] = field(default_factory=dict)
     prevention_credit: dict[str, int] = field(default_factory=dict)
     postmortem_actions: dict[str, PostmortemAction] = field(default_factory=dict)
     repeat_liability: dict[str, str] = field(default_factory=dict)
@@ -788,7 +1085,15 @@ class IncidentCase(AtomicCase):
             self.role_nodes = data["nodes"]  # type: ignore[assignment]
             return (f"credit:{self.identity.case_serial}",)
 
-        return self.apply(197, token, action_serial, sources=sources, prepare=prepare, commit=commit)
+        return self.apply(
+            197,
+            token,
+            action_serial,
+            sources=sources,
+            prepare=prepare,
+            commit=commit,
+            next_state=IncidentState.REVIEWED.value,
+        )
 
     def net_firefighting_credit(
         self,
@@ -808,12 +1113,23 @@ class IncidentCase(AtomicCase):
             negligence = _boolean("negligent", negligent)
             if actor in self.net_firefighting_credits:
                 raise ModelRed(RedCode.DUPLICATE_ID, "actor_id", "already netted")
+            if actor not in self.incident_credit:
+                raise ModelRed(RedCode.INVALID_VALUE, "actor_id", "actor has no frozen incident credit")
+            if gross != self.incident_credit[actor]:
+                raise ModelRed(RedCode.INVARIANT_BREACH, "gross_credit", "must equal frozen incident credit")
             if not negligence and penalty:
                 raise ModelRed(RedCode.INVARIANT_BREACH, "root_penalty", "normal failure cannot be arson")
-            return {"actor": actor, "net": gross - penalty}
+            return {
+                "actor": actor,
+                "gross": gross,
+                "penalty": penalty,
+                "negligent": negligence,
+                "net": max(0, gross - penalty),
+            }
 
         def commit(data: dict[str, object]) -> Sequence[str]:
             self.net_firefighting_credits[data["actor"]] = data["net"]  # type: ignore[index]
+            self.firefighting_credit_components[data["actor"]] = data.copy()  # type: ignore[index]
             return (f"net-credit:{data['actor']}",)
 
         return self.apply(198, token, action_serial, sources=sources, prepare=prepare, commit=commit)
@@ -1135,7 +1451,7 @@ class MaintenanceCase(AtomicCase):
     knowledge_concentration: int = 0
     runbooks: dict[tuple[str, int], RunbookVersion] = field(default_factory=dict)
     automation_credit: dict[str, int] = field(default_factory=dict)
-    review_records: dict[str, dict[str, int]] = field(default_factory=dict)
+    review_records: dict[str, dict[str, object]] = field(default_factory=dict)
     quality_records: dict[str, dict[str, object]] = field(default_factory=dict)
     retired_services: set[str] = field(default_factory=set)
     released_hc: set[str] = field(default_factory=set)
@@ -1241,6 +1557,12 @@ class MaintenanceCase(AtomicCase):
             approver = None if diversion == 0 else _text("approver_id", approver_id)
             final_debt = debt - diversion
             final_business = business + diversion
+            if final_debt + final_business > self.capacity.available_hours:
+                raise ModelRed(
+                    RedCode.RESOURCE_EXHAUSTED,
+                    "capacity",
+                    "combined debt and business budgets exceed unreserved hours",
+                )
             plans = (
                 self.capacity.prepare_allocate("debt-budget", final_debt),
                 self.capacity.prepare_allocate("business-budget", final_business),
@@ -1302,6 +1624,8 @@ class MaintenanceCase(AtomicCase):
         work_hours: int,
         exit_condition: str,
         sources: Iterable[SourceRef],
+        debt_id: str | None = None,
+        repayment_hours: int | None = None,
     ) -> ActionOutcome:
         def prepare() -> dict[str, object]:
             selected = RepairRoute(route)
@@ -1310,14 +1634,68 @@ class MaintenanceCase(AtomicCase):
             exit_rule = _text("exit_condition", exit_condition)
             if any(existing_version == version for existing_version, _ in self.route_history):
                 raise ModelRed(RedCode.DUPLICATE_ID, "route_version", "already exists")
-            allocation = self.capacity.prepare_allocate(f"repair-route-v{version}", hours)
-            return {"route": selected, "version": version, "exit": exit_rule, "allocation": allocation}
+            if (debt_id is None) != (repayment_hours is None):
+                raise ModelRed(
+                    RedCode.INVALID_VALUE,
+                    "repayment",
+                    "debt_id and repayment_hours must be supplied together",
+                )
+            if debt_id is None:
+                # Compatibility mode for callers predating the atomic #208
+                # contract.  New callers should bind a debt and settle it from
+                # the already-reserved debt budget below.
+                allocation = self.capacity.prepare_allocate(f"repair-route-v{version}", hours)
+                return {
+                    "route": selected,
+                    "version": version,
+                    "exit": exit_rule,
+                    "allocation": allocation,
+                    "debt": None,
+                    "repayment": 0,
+                }
+            debt_key = _text("debt_id", debt_id)
+            repayment = _integer("repayment_hours", repayment_hours, minimum=0)
+            try:
+                debt = self.debts[debt_key]
+            except KeyError as exc:
+                raise ModelRed(RedCode.INVALID_VALUE, "debt_id", "unknown") from exc
+            budget = self.debt_budget.get("debt")
+            if budget is None:
+                raise ModelRed(RedCode.ILLEGAL_STATE, "debt_budget", "must freeze budget first")
+            if repayment != hours:
+                raise ModelRed(
+                    RedCode.INVARIANT_BREACH,
+                    "repayment_hours",
+                    "repair work and debt reduction must conserve one-for-one",
+                )
+            if self.debt_work_used + repayment > budget:
+                raise ModelRed(RedCode.RESOURCE_EXHAUSTED, "debt_budget", "repayment exceeds frozen work")
+            if repayment > debt.outstanding:
+                raise ModelRed(RedCode.INVARIANT_BREACH, "repayment_hours", "cannot repay beyond balance")
+            return {
+                "route": selected,
+                "version": version,
+                "exit": exit_rule,
+                "allocation": None,
+                "debt": debt_key,
+                "repayment": repayment,
+            }
 
         def commit(data: dict[str, object]) -> Sequence[str]:
-            self.capacity.commit_allocate(data["allocation"])  # type: ignore[arg-type]
+            if data["debt"] is None:
+                self.capacity.commit_allocate(data["allocation"])  # type: ignore[arg-type]
+                result_ids = (f"repair-route:v{data['version']}",)
+            else:
+                debt = self.debts[data["debt"]]  # type: ignore[index]
+                debt.repaid += data["repayment"]  # type: ignore[operator]
+                self.debt_work_used += data["repayment"]  # type: ignore[operator]
+                result_ids = (
+                    f"repair-route:v{data['version']}",
+                    f"debt-repayment:{data['debt']}",
+                )
             self.repair_route = data["route"]  # type: ignore[assignment]
             self.route_history.append((data["version"], data["route"]))  # type: ignore[arg-type]
-            return (f"repair-route:v{data['version']}",)
+            return result_ids
 
         return self.apply(
             208,
@@ -1449,8 +1827,9 @@ class MaintenanceCase(AtomicCase):
             review = _text("review_id", review_id)
             if review in self.review_records:
                 raise ModelRed(RedCode.DUPLICATE_ID, "review_id", "already recorded")
-            _text("reviewer_id", reviewer_id)
+            reviewer = _text("reviewer_id", reviewer_id)
             return {
+                "reviewer_id": reviewer,
                 "review_hours": _integer("review_hours", review_hours, minimum=0),
                 "blocking_hours": _integer("blocking_hours", blocking_hours, minimum=0),
                 "quality_credit": _integer("validated_catches", validated_catches, minimum=0),
@@ -1528,7 +1907,15 @@ class MaintenanceCase(AtomicCase):
             self.released_hc.add(data["slot"])  # type: ignore[arg-type]
             return (f"retired:{data['service']}", f"released-hc:{data['slot']}")
 
-        return self.apply(215, token, action_serial, sources=sources, prepare=prepare, commit=commit)
+        return self.apply(
+            215,
+            token,
+            action_serial,
+            sources=sources,
+            prepare=prepare,
+            commit=commit,
+            next_state=MaintenanceState.ACCEPTED.value,
+        )
 
     def complete_handover(
         self,
@@ -1695,6 +2082,7 @@ class PlatformCase(AtomicCase):
     user_capacity: CapacityLedger = field(default_factory=lambda: CapacityLedger(100))
     reform_capacity: CapacityLedger = field(default_factory=lambda: CapacityLedger(100))
     adoption: dict[str, AdoptionDecision] = field(default_factory=dict)
+    mandatory_interface_only: bool | None = None
     customer_score: float | None = None
     foundation_score: float | None = None
     customer_weights: dict[str, int] = field(default_factory=dict)
@@ -1737,18 +2125,20 @@ class PlatformCase(AtomicCase):
         mandatory_interface_only: bool,
         sources: Iterable[SourceRef],
     ) -> ActionOutcome:
-        def prepare() -> dict[str, AdoptionDecision]:
-            _boolean("mandatory_interface_only", mandatory_interface_only)
+        def prepare() -> dict[str, object]:
+            mandatory = _boolean("mandatory_interface_only", mandatory_interface_only)
             normalized = {item.team_id: item for item in decisions}
             if not normalized or len(normalized) != len(decisions):
                 raise ModelRed(RedCode.DUPLICATE_ID, "team_id", "one adoption state per team")
             if set(normalized).intersection(self.adoption):
                 raise ModelRed(RedCode.DUPLICATE_ID, "team_id", "already decided")
-            return normalized
+            return {"decisions": normalized, "mandatory_interface_only": mandatory}
 
-        def commit(data: dict[str, AdoptionDecision]) -> Sequence[str]:
-            self.adoption.update(data)
-            return tuple(f"adoption:{team_id}" for team_id in sorted(data))
+        def commit(data: dict[str, object]) -> Sequence[str]:
+            decisions_by_team = data["decisions"]  # type: ignore[assignment]
+            self.adoption.update(decisions_by_team)
+            self.mandatory_interface_only = data["mandatory_interface_only"]  # type: ignore[assignment]
+            return tuple(f"adoption:{team_id}" for team_id in sorted(decisions_by_team))
 
         return self.apply(
             217,
@@ -2214,6 +2604,18 @@ class PlatformCase(AtomicCase):
 
 def validate_model() -> None:
     validate_behavior_registry()
+    classes = {
+        "X": IncidentCase,
+        "Y": MaintenanceCase,
+        "Z": PlatformCase,
+    }
+    for mechanism_id, behavior in BEHAVIORS.items():
+        if not hasattr(classes[behavior.domain], behavior.consumer_method):
+            raise ModelRed(
+                RedCode.INVARIANT_BREACH,
+                "consumer_method",
+                f"{mechanism_id} -> {behavior.consumer_method}",
+            )
 
 
 validate_model()

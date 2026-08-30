@@ -28,6 +28,17 @@ Python `Behavior.ck3_wiring` 仍保留 `not-implemented`：它描述的是该参
 - 行为键不可重复；
 - readiness 必须保持 `python-l0-only`，CK3 wiring 必须保持 `not-implemented`。
 
+每项同时冻结唯一 `object_type`、实际 Python `consumer_method`、非空 `resource_books` 与
+`deadline_cycles`。对象不是 X/Y/Z 三个泛化标签：例如 #193 是
+`on_call_compensation_claim`，#206 是 `technical_debt_item`，#220 是
+`platform_chargeback_ledger`，#228 是 `blast_radius_liability`。导入时还会确认 consumer
+确实存在于对应的 `IncidentCase` / `MaintenanceCase` / `PlatformCase`，避免“字符串写了一个消费者名”
+冒充可执行闭环。
+
+模型还冻结每域语义执行顺序、每编号允许状态与前序 receipt 依赖。X 不按编号排序：#201 先冻结不可变
+时间线，#197 才能据此分功，#198 再结算根因净额；CK3 生成器直接读取同一份
+`DOMAIN_EXECUTION_ORDER`，避免模型与投影各自维护两套顺序。
+
 ## 状态与原子命令
 
 三个对象分别采用原生领域阶段：
@@ -103,6 +114,10 @@ opening_gold = available_gold + recipient_credits
 - 高覆盖率最多贡献部分质量分，关键风险漏测可反转虚荣分；
 - 平台客户体验与战略底座分开冻结，单个客户不能覆盖底座分；
 - 爆炸半径总损失按责任份额只分配一次，舍入余数也进入同一冻结账。
+- 可靠性预算显式保存 `overrun`，满足 `opening + overrun = remaining + consumed`；累计预留会在
+  commit 前对同一本容量账做合并预检，避免两笔分别合法、合计透支。
+- 根因净额只能读取已冻结的事故毛功，最低为零，并保存 gross/penalty/negligence 三项 provenance；
+  审阅记录保存 reviewer 身份，平台采用对象保存“只强制接口”策略来源。
 
 ## 端到端证据
 
@@ -114,6 +129,9 @@ opening_gold = available_gold + recipient_credits
 
 三案合并后的 provenance 精确触达 192–228 全部 37 个 ID。除此之外，还动态注册
 37 个独立 `test_mechanism_NNN`，逐项检查对应业务结果，而非只检查 receipt 存在。
+合同测试另逐项核对 exact object、callable consumer、资源账与期限；这仍然是 Python L0，不能替代 CK3 实机。
+CK3 静态投影中的跨编号读链另有 current-case guard：前序对象缺失、走 C 或来自旧案时，后继在写 receipt 前
+级联为 C，不读取历史残留字段。
 
 ## CK3 接线现状与待办
 
@@ -132,6 +150,9 @@ opening_gold = available_gold + recipient_credits
 3. 考核榜中的事故时间线、积弊账和平台分账页面；
 4. MCP 角色/头衔/国库/变量/时间查询与 paused snapshot；
 5. fixture-live、production-live 或实机 CK3 GREEN。
+
+CK3 投影的 C 路目前只登记带期限的 policy debt；尚未提供统一到期偿债 consumer。这一缺口不影响
+Python L0 的对象合同，但阻止把静态 C 路称为跨期债务闭环。
 
 静态生成文件存在不等于 live。只有完成统一接线、MCP-first CK3 批次并保存真实 paused artifact 后，
 才能再次提升 readiness。

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Static contract tests for the X/Y/Z CK3 runtime projection."""
 
@@ -64,7 +64,7 @@ class SourceDataTests(unittest.TestCase):
 
     def test_shared_stage_partition_matches_frozen_domain_graph(self) -> None:
         expected = {
-            "X": ((192, 193), (194, 195), (196, 197), (198, 199), (200, 201), (202, 203), (204,)),
+            "X": ((192, 195), (196, 200), (201, 197), (198, 199), (193, 194), (202, 203), (204,)),
             "Y": ((205, 206, 207), (208, 209), (210, 211, 212), (213, 214), (215, 216)),
             "Z": ((217, 218, 219), (220, 221), (222, 223, 224), (225, 226), (227, 228)),
         }
@@ -179,10 +179,96 @@ class GeneratedFileTests(unittest.TestCase):
                 body,
             )
             self.assertIn(f"set_variable = {{ name = zg361_ip_{domain.slug}_last_consumer value = {mechanism_id} }}", body)
+            self.assertTrue(gen._special_consumer(mechanism_id), mechanism_id)
         for domain in gen.DOMAINS:
             finalizer = block(self.effects, f"zg361_ip_finalize_{domain.slug}_effect")
             self.assertIn(f"divide = var:zg361_ip_{domain.slug}_evidence_n", finalizer)
             self.assertIn("change_variable = { name = zg361_kpi_value", finalizer)
+
+    def test_every_id_has_exact_object_consumer_resource_and_deadline_projection(self) -> None:
+        for mechanism_id, behavior in gen.BEHAVIORS.items():
+            prefix = f"zg361_ip_m{mechanism_id:03d}"
+            route = gen._route_assignment(mechanism_id)
+            effect = block(self.effects, f"{prefix}_apply_effect")
+            self.assertIn(f"{prefix}_object_{behavior.object_type} value = 1", route)
+            self.assertIn(f"{prefix}_object_type_code value = {mechanism_id}", route)
+            self.assertIn(f"{prefix}_consumer_contract value = {mechanism_id}", route)
+            for name in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"{prefix}_object_{name}", route)
+            for resource_book in behavior.resource_books:
+                self.assertIn(f"{prefix}_resource_{resource_book} value = 1", route)
+            if behavior.deadline_cycles:
+                self.assertIn(f"{prefix}_object_due_cycle", route)
+            self.assertIn(f"{prefix}_consumer_{behavior.consumer_method} value = 1", effect)
+            self.assertIn(f"{prefix}_object_consumed value = 1", effect)
+
+    def test_route_c_creates_only_due_policy_debt_not_a_business_object(self) -> None:
+        for mechanism_id in range(192, 229):
+            prefix = f"zg361_ip_m{mechanism_id:03d}"
+            projection = gen._route_assignment(mechanism_id)
+            route_c = projection.rsplit("\t\telse = {", 1)[1]
+            self.assertIn(f"{prefix}_business_object_created value = 0", route_c)
+            self.assertIn(f"{prefix}_debt_due_cycle", route_c)
+            self.assertIn(f"{prefix}_debt_open value = 1", route_c)
+            self.assertNotIn(f"{prefix}_object_type_code", route_c)
+            for semantic_field in gen.ASSIGNMENTS[mechanism_id]:
+                self.assertNotIn(f"{prefix}_{semantic_field}", route_c)
+            body = block(self.effects, f"{prefix}_apply_effect")
+            self.assertIn(f"{prefix}_debt_visible_to_settlement value = 1", body)
+
+    def test_dependent_consumers_reject_stale_or_deferred_predecessor_objects(self) -> None:
+        expected = {
+            194: (193,), 197: (201,), 198: (197,), 202: (201,), 203: (202,), 204: (196,),
+            207: (206,), 208: (206, 207), 211: (210,), 214: (213,), 215: (214,),
+            216: (215,), 218: (217,), 219: (218,), 220: (219,), 221: (220,),
+            222: (221,), 223: (222,), 224: (223,), 225: (224,), 226: (225,),
+            227: (226,), 228: (227,),
+        }
+        self.assertEqual(expected, gen.CURRENT_OBJECT_DEPENDENCIES)
+        for mechanism_id, dependencies in expected.items():
+            body = block(self.effects, f"zg361_ip_m{mechanism_id:03d}_apply_effect")
+            receipt = body.index("zg361_case_kernel_record_operation_effect")
+            for source_id in dependencies:
+                source = f"zg361_ip_m{source_id:03d}"
+                source_behavior = gen.BEHAVIORS[source_id]
+                source_state = gen.DOMAIN_BY_ID[source_id].stage_for(source_id)
+                for fragment in (
+                    f"has_variable = {source}_object_type_code",
+                    f"has_variable = {source}_object_owner",
+                    f"has_variable = {source}_object_subject",
+                    f"has_variable = {source}_object_cycle",
+                    f"has_variable = {source}_object_case",
+                    f"has_variable = {source}_consumer_{source_behavior.consumer_method}",
+                    f"var:{source}_object_type_code = {source_id}",
+                    f"var:{source}_object_owner = $TICKET_OWNER$",
+                    f"var:{source}_object_subject = $TICKET_SUBJECT$",
+                    f"var:{source}_object_cycle = $TICKET_CYCLE$",
+                    f"var:{source}_object_case = $TICKET_CASE$",
+                    f"var:{source}_object_state = {source_state}",
+                    f"var:{source}_consumer_contract = {source_id}",
+                    f"var:{source}_object_consumed = 1",
+                    f"var:{source}_consumer_{source_behavior.consumer_method} = 1",
+                ):
+                    self.assertIn(fragment, body, (source_id, mechanism_id, fragment))
+                self.assertLess(body.index(f"has_variable = {source}_object_case"), receipt)
+            self.assertIn(f"zg361_ip_m{mechanism_id:03d}_prerequisite_deferred value = 1", body)
+
+    def test_semantic_execution_order_and_full_done_identity_are_frozen(self) -> None:
+        self.assertEqual(
+            (192, 195, 196, 200, 201, 197, 198, 199, 193, 194, 202, 203, 204),
+            gen.EXECUTION_ORDER["X"],
+        )
+        self.assertLess(gen.EXECUTION_ORDER["X"].index(201), gen.EXECUTION_ORDER["X"].index(197))
+        stage_three = block(self.effects, "zg361_ip_x_dispatch_03_effect")
+        self.assertLess(stage_three.index("zg361_ip_m201_apply_effect"), stage_three.index("zg361_ip_m197_apply_effect"))
+        credit = block(self.effects, "zg361_ip_m197_apply_effect")
+        self.assertIn("timeline_revision_used value = var:zg361_ip_m201_timeline_revision", credit)
+        for mechanism_id in range(192, 229):
+            body = block(self.effects, f"zg361_ip_m{mechanism_id:03d}_apply_effect")
+            for name in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"zg361_ip_m{mechanism_id:03d}_done_{name}", body)
+            self.assertIn("$TICKET_OWNER$", body)
+            self.assertIn("$TICKET_SUBJECT$", body)
 
     def test_all_stages_have_one_dispatch_transition_and_bound_deadline(self) -> None:
         for domain in gen.DOMAINS:

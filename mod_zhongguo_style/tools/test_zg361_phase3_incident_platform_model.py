@@ -20,6 +20,62 @@ def source(mechanism_id: int, suffix: str = "facts") -> tuple[model.SourceRef, .
     return (model.SourceRef("frozen-case-fact", f"m{mechanism_id}:{suffix}", 1),)
 
 
+def incident_before_credit_netting(case_serial: int = 990) -> model.IncidentCase:
+    """Build the shortest legal X lifecycle through the frozen #197 split."""
+
+    case = model.IncidentCase(
+        identity(case_serial, subject="incident-credit-audit"),
+        model.IncidentState.ON_CALL.value,
+    )
+    case.configure_rotation(
+        case.token(),
+        "audit-m192",
+        members=("actor", "backup"),
+        on_call_id="actor",
+        sources=source(192),
+    )
+    case.record_alert(
+        case.token(),
+        "audit-m195",
+        source_id="alert",
+        owner_id="alert-owner",
+        total=1,
+        false_alerts=0,
+        misses=0,
+        version=1,
+        sources=source(195),
+    )
+    case.classify_severity(
+        case.token(),
+        "audit-m196",
+        reported=1,
+        loss=1,
+        scope=1,
+        recovery_hours=1,
+        sources=source(196),
+    )
+    case.grant_temporary_authority(
+        case.token(),
+        "audit-m200",
+        model.AuthorityGrant("grant", "actor", "manager-10", 1, 2, frozenset({"rollback"})),
+        sources=source(200),
+    )
+    case.freeze_timeline(
+        case.token(),
+        "audit-m201",
+        (model.TimelineNode("node", 1, "actor", "action", "fixed"),),
+        sources=source(201),
+    )
+    case.allocate_incident_credit(
+        case.token(),
+        "audit-m197",
+        {"actor": 1, "backup": 99},
+        {"actor": ("node",), "backup": ("node",)},
+        sources=source(197),
+    )
+    return case
+
+
 def run_incident() -> model.IncidentCase:
     case = model.IncidentCase(
         identity(192, subject="incident-team"),
@@ -207,7 +263,6 @@ def run_maintenance() -> model.MaintenanceCase:
         approver_id=None,
         sources=source(207, "cycle-capacity"),
     )
-    case.repay_debt("debt-206", work_hours=10)
     case.choose_repair_route(
         case.token(),
         "m208",
@@ -216,6 +271,8 @@ def run_maintenance() -> model.MaintenanceCase:
         work_hours=10,
         exit_condition="risk below 2",
         sources=source(208, "route-decision"),
+        debt_id="debt-206",
+        repayment_hours=10,
     )
     case.pay_hazard_allowance(
         case.token(),
@@ -485,6 +542,8 @@ def assert_197(tc: unittest.TestCase, raw: DomainCase) -> None:
 
 def assert_198(tc: unittest.TestCase, raw: DomainCase) -> None:
     tc.assertEqual(raw.net_firefighting_credits["responder-b"], 30)  # type: ignore[union-attr]
+    tc.assertEqual(raw.firefighting_credit_components["responder-b"]["gross"], 40)  # type: ignore[union-attr]
+    tc.assertEqual(raw.firefighting_credit_components["responder-b"]["penalty"], 10)  # type: ignore[union-attr]
 
 
 def assert_199(tc: unittest.TestCase, raw: DomainCase) -> None:
@@ -514,6 +573,8 @@ def assert_203(tc: unittest.TestCase, raw: DomainCase) -> None:
 
 def assert_204(tc: unittest.TestCase, raw: DomainCase) -> None:
     tc.assertEqual(raw.reliability.remaining, 0)  # type: ignore[union-attr]
+    tc.assertEqual(raw.reliability.overrun, 2)  # type: ignore[union-attr]
+    raw.reliability.assert_conserved()  # type: ignore[union-attr]
     tc.assertEqual(raw.reliability.frozen_projects, {"feature-project"})  # type: ignore[union-attr]
     tc.assertEqual(raw.state, model.IncidentState.RESOLVED.value)
 
@@ -534,12 +595,13 @@ def assert_206(tc: unittest.TestCase, raw: DomainCase) -> None:
 
 def assert_207(tc: unittest.TestCase, raw: DomainCase) -> None:
     tc.assertEqual(raw.debt_budget, {"debt": 30, "business": 50, "remaining": 20})  # type: ignore[union-attr]
-    tc.assertEqual(raw.capacity.available_hours, 10)  # type: ignore[union-attr]
+    tc.assertEqual(raw.capacity.available_hours, 20)  # type: ignore[union-attr]
 
 
 def assert_208(tc: unittest.TestCase, raw: DomainCase) -> None:
     tc.assertEqual(raw.repair_route, model.RepairRoute.INCREMENTAL)  # type: ignore[union-attr]
     tc.assertEqual(raw.route_history, [(1, model.RepairRoute.INCREMENTAL)])  # type: ignore[union-attr]
+    tc.assertEqual(raw.debt_work_used, 10)  # type: ignore[union-attr]
 
 
 def assert_209(tc: unittest.TestCase, raw: DomainCase) -> None:
@@ -564,6 +626,7 @@ def assert_212(tc: unittest.TestCase, raw: DomainCase) -> None:
 
 def assert_213(tc: unittest.TestCase, raw: DomainCase) -> None:
     record = raw.review_records["review-213"]  # type: ignore[union-attr]
+    tc.assertEqual(record["reviewer_id"], "reviewer")
     tc.assertEqual(record["quality_credit"], 2)
     tc.assertEqual((record["review_hours"], record["blocking_hours"]), (3, 1))
 
@@ -589,6 +652,7 @@ def assert_216(tc: unittest.TestCase, raw: DomainCase) -> None:
 def assert_217(tc: unittest.TestCase, raw: DomainCase) -> None:
     tc.assertEqual(raw.adoption["team-a"].state, model.AdoptionState.ADOPTED)  # type: ignore[union-attr]
     tc.assertEqual(raw.adoption["team-b"].state, model.AdoptionState.APPROVED_EXCEPTION)  # type: ignore[union-attr]
+    tc.assertIs(raw.mandatory_interface_only, True)  # type: ignore[union-attr]
 
 
 def assert_218(tc: unittest.TestCase, raw: DomainCase) -> None:
@@ -717,6 +781,23 @@ class ContractTests(unittest.TestCase):
             self.assertEqual(behavior.readiness, "python-l0-only")
             self.assertEqual(behavior.ck3_wiring, "not-implemented")
 
+    def test_each_id_binds_an_exact_object_consumer_resource_and_deadline(self) -> None:
+        self.assertEqual(model.EXPECTED_IDS, frozenset(model.OBJECT_TYPES))
+        self.assertEqual(37, len(set(model.OBJECT_TYPES.values())))
+        classes = {
+            "X": model.IncidentCase,
+            "Y": model.MaintenanceCase,
+            "Z": model.PlatformCase,
+        }
+        for mechanism_id, behavior in model.BEHAVIORS.items():
+            self.assertEqual(model.OBJECT_TYPES[mechanism_id], behavior.object_type)
+            self.assertEqual(model.CONSUMER_METHODS[mechanism_id], behavior.consumer_method)
+            self.assertEqual(model.RESOURCE_BOOKS[mechanism_id], behavior.resource_books)
+            self.assertEqual(model.DEADLINE_CYCLES[mechanism_id], behavior.deadline_cycles)
+            self.assertTrue(behavior.resource_books)
+            self.assertIn(behavior.deadline_cycles, (0, 1))
+            self.assertTrue(hasattr(classes[behavior.domain], behavior.consumer_method))
+
     def test_five_field_stale_guards_are_no_op(self) -> None:
         case = model.IncidentCase(
             identity(900, subject="incident"),
@@ -790,6 +871,13 @@ class ContractTests(unittest.TestCase):
             model.IncidentState.ON_CALL.value,
             treasury=model.MoneyLedger(2),
         )
+        case.configure_rotation(
+            case.token(),
+            "rotation-before-compensation",
+            members=("worker", "backup"),
+            on_call_id="worker",
+            sources=source(192),
+        )
         before = copy.deepcopy(case.__dict__)
         with self.assertRaises(model.ModelRed) as caught:
             case.compensate_on_call(
@@ -811,6 +899,24 @@ class ContractTests(unittest.TestCase):
         case = model.MaintenanceCase(
             identity(904, subject="maintenance"),
             model.MaintenanceState.REGISTERED.value,
+        )
+        case.freeze_toil(
+            case.token(),
+            "toil-before-budget",
+            total_hours=100,
+            toil_hours=20,
+            remedy=None,
+            cap_percent=40,
+            sources=source(205),
+        )
+        case.register_debt(
+            case.token(),
+            "debt-before-budget",
+            model.DebtItem("debt-before-budget", "owner", "owner", 1, 20),
+            elapsed_cycles=0,
+            interest_percent=0,
+            hidden=False,
+            sources=source(206),
         )
         before = copy.deepcopy(case.__dict__)
         with self.assertRaises(model.ModelRed) as caught:
@@ -834,6 +940,31 @@ class ContractTests(unittest.TestCase):
             central_treasury=model.MoneyLedger(100),
             team_treasuries={"team": model.MoneyLedger(100)},
         )
+        case.decide_adoption(
+            case.token(),
+            "adoption-before-cost",
+            (model.AdoptionDecision("team", model.AdoptionState.ADOPTED, pilot_id="pilot"),),
+            mandatory_interface_only=True,
+            sources=source(217),
+        )
+        case.freeze_dual_score(
+            case.token(),
+            "score-before-cost",
+            customer_scores={"team": 80},
+            customer_weights={"team": 100},
+            foundation_score=80,
+            customer_floor=60,
+            foundation_floor=60,
+            sources=source(218),
+        )
+        case.freeze_value_metrics(
+            case.token(),
+            "metrics-before-cost",
+            (model.PlatformMetric("team", 80, 10, True),),
+            outcome_metric="saving",
+            counter_metric="migration-cost",
+            sources=source(219),
+        )
         before = copy.deepcopy(case.__dict__)
         with self.assertRaises(model.ModelRed) as caught:
             case.charge_platform_cost(
@@ -847,6 +978,202 @@ class ContractTests(unittest.TestCase):
             )
         self.assertEqual(caught.exception.code, model.RedCode.INVARIANT_BREACH)
         self.assertEqual(case.__dict__, before)
+
+    def test_semantic_execution_order_and_dependencies_are_total(self) -> None:
+        flattened = tuple(
+            mechanism_id
+            for domain in ("X", "Y", "Z")
+            for mechanism_id in model.DOMAIN_EXECUTION_ORDER[domain]
+        )
+        self.assertEqual(set(flattened), model.EXPECTED_IDS)
+        self.assertEqual(len(flattened), len(set(flattened)))
+        self.assertLess(flattened.index(201), flattened.index(197))
+        self.assertEqual(set(model.MECHANISM_ALLOWED_STATES), model.EXPECTED_IDS)
+        self.assertEqual(set(model.MECHANISM_DEPENDENCIES), model.EXPECTED_IDS)
+        order_index = {mechanism_id: index for index, mechanism_id in enumerate(flattened)}
+        for mechanism_id, dependencies in model.MECHANISM_DEPENDENCIES.items():
+            self.assertTrue(all(order_index[item] < order_index[mechanism_id] for item in dependencies))
+
+    def test_correct_token_cannot_bypass_lifecycle_or_dependencies(self) -> None:
+        incident = model.IncidentCase(
+            identity(907, subject="incident-order"),
+            model.IncidentState.ON_CALL.value,
+        )
+        before = copy.deepcopy(incident.__dict__)
+        with self.assertRaises(model.ModelRed) as caught:
+            incident.consume_reliability_budget(
+                incident.token(),
+                "close-before-open",
+                incident_id="incident",
+                amount=1,
+                projects_to_freeze=(),
+                override_signer_id="manager",
+                sources=source(204),
+            )
+        self.assertEqual(caught.exception.code, model.RedCode.ILLEGAL_STATE)
+        self.assertEqual(incident.__dict__, before)
+        with self.assertRaises(model.ModelRed) as missing:
+            incident.compensate_on_call(
+                incident.token(),
+                "compensate-without-rotation",
+                shift_id="shift",
+                worker_id="worker",
+                verified_hours=1,
+                gold_hours=0,
+                time_off_hours=1,
+                gold_per_hour=1,
+                annual_hour_cap=1,
+                sources=source(193),
+            )
+        self.assertEqual(missing.exception.field_name, "dependencies")
+
+        platform = model.PlatformCase(
+            identity(908, subject="platform-order"),
+            model.PlatformState.PROPOSED.value,
+        )
+        with self.assertRaises(model.ModelRed) as merge:
+            platform.merge_solutions(
+                platform.token(),
+                "merge-before-scan",
+                solution_a="a",
+                solution_b="b",
+                sample_id="sample",
+                rubric_id="rubric",
+                scores={"a": 2, "b": 1},
+                contributions={"a": (), "b": ()},
+                reconstruction_hours=1,
+                sources=source(224),
+            )
+        self.assertEqual(merge.exception.code, model.RedCode.ILLEGAL_STATE)
+
+    def test_firefighting_net_credit_never_goes_negative(self) -> None:
+        case = incident_before_credit_netting()
+        outcome = case.net_firefighting_credit(
+            case.token(),
+            "audit-m198",
+            actor_id="actor",
+            gross_credit=1,
+            root_penalty=5,
+            negligent=True,
+            sources=source(198),
+        )
+        self.assertTrue(outcome.applied)
+        self.assertEqual(case.net_firefighting_credits["actor"], 0)
+        self.assertEqual(case.firefighting_credit_components["actor"]["penalty"], 5)
+
+    def test_reliability_overrun_is_explicit_and_conserved(self) -> None:
+        budget = model.ReliabilityBudget(5)
+        budget.commit_consume(budget.prepare_consume("incident-a", 7))
+        self.assertEqual((budget.remaining, budget.overrun, budget.consumed), (0, 2, 7))
+        budget.assert_conserved()
+        budget.commit_consume(budget.prepare_consume("incident-b", 3))
+        self.assertEqual((budget.remaining, budget.overrun, budget.consumed), (0, 5, 10))
+        budget.assert_conserved()
+
+    def test_debt_budget_cumulative_precheck_prevents_partial_commit(self) -> None:
+        capacity = model.CapacityLedger(100)
+        capacity.commit_allocate(("preexisting", 40))
+        case = model.MaintenanceCase(
+            identity(909, subject="maintenance-cumulative"),
+            model.MaintenanceState.REGISTERED.value,
+            capacity=capacity,
+        )
+        case.freeze_toil(
+            case.token(),
+            "cumulative-m205",
+            total_hours=100,
+            toil_hours=20,
+            remedy=None,
+            cap_percent=40,
+            sources=source(205),
+        )
+        case.register_debt(
+            case.token(),
+            "cumulative-m206",
+            model.DebtItem("cumulative-debt", "owner", "owner", 1, 50),
+            elapsed_cycles=0,
+            interest_percent=0,
+            hidden=False,
+            sources=source(206),
+        )
+        before = copy.deepcopy(case.__dict__)
+        with self.assertRaises(model.ModelRed) as caught:
+            case.freeze_debt_budget(
+                case.token(),
+                "cumulative-m207",
+                debt_hours=50,
+                business_hours=20,
+                remaining_hours=30,
+                approved_diversion_hours=0,
+                approver_id=None,
+                sources=source(207),
+            )
+        self.assertEqual(caught.exception.code, model.RedCode.RESOURCE_EXHAUSTED)
+        self.assertEqual(case.__dict__, before)
+
+    def test_atomic_repair_route_repayment_is_all_or_nothing(self) -> None:
+        case = model.MaintenanceCase(
+            identity(910, subject="maintenance-repair"),
+            model.MaintenanceState.REGISTERED.value,
+        )
+        case.freeze_toil(
+            case.token(),
+            "repair-m205",
+            total_hours=100,
+            toil_hours=20,
+            remedy=None,
+            cap_percent=40,
+            sources=source(205),
+        )
+        case.register_debt(
+            case.token(),
+            "repair-m206",
+            model.DebtItem("repair-debt", "owner", "owner", 1, 10),
+            elapsed_cycles=0,
+            interest_percent=0,
+            hidden=False,
+            sources=source(206),
+        )
+        case.freeze_debt_budget(
+            case.token(),
+            "repair-m207",
+            debt_hours=10,
+            business_hours=70,
+            remaining_hours=20,
+            approved_diversion_hours=0,
+            approver_id=None,
+            sources=source(207),
+        )
+        before = copy.deepcopy(case.__dict__)
+        with self.assertRaises(model.ModelRed) as caught:
+            case.choose_repair_route(
+                case.token(),
+                "repair-too-large",
+                route=model.RepairRoute.INCREMENTAL,
+                route_version=1,
+                work_hours=20,
+                exit_condition="done",
+                sources=source(208),
+                debt_id="repair-debt",
+                repayment_hours=20,
+            )
+        self.assertEqual(caught.exception.code, model.RedCode.RESOURCE_EXHAUSTED)
+        self.assertEqual(case.__dict__, before)
+        applied = case.choose_repair_route(
+            case.token(),
+            "repair-valid",
+            route=model.RepairRoute.INCREMENTAL,
+            route_version=1,
+            work_hours=10,
+            exit_condition="done",
+            sources=source(208),
+            debt_id="repair-debt",
+            repayment_hours=10,
+        )
+        self.assertTrue(applied.applied)
+        self.assertEqual(case.debts["repair-debt"].outstanding, 0)
+        self.assertEqual(case.debt_work_used, 10)
+        self.assertEqual(case.capacity.available_hours, 20)
 
     def test_bool_is_not_accepted_as_integer(self) -> None:
         with self.assertRaises(model.ModelRed) as caught:
@@ -887,6 +1214,7 @@ class EndToEndTests(unittest.TestCase):
         incident, maintenance, platform = run_all_domains()
         incident.capacity.assert_conserved()
         incident.treasury.assert_conserved()
+        incident.reliability.assert_conserved()
         maintenance.capacity.assert_conserved()
         maintenance.treasury.assert_conserved()
         platform.central_treasury.assert_conserved()

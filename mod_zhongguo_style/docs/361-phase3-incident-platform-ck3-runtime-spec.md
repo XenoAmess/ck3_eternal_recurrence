@@ -1,4 +1,4 @@
-# 361 三期事故、积弊与共享平台 CK3 运行时
+﻿# 361 三期事故、积弊与共享平台 CK3 运行时
 
 状态：`ck3-static-ready`
 
@@ -63,7 +63,8 @@ Z: proposed -> adopted -> migrating -> dual_running -> valued -> settled
 1. 共享 deadline helper 比较 owner、subject、cycle、case、expected_state；
 2. 过期成功后清除 pending ticket；
 3. 同阶段的全部编号 operation 写完各自回执；
-4. dispatcher 确认该阶段所有编号都有本案 `done_cycle + done_case`；
+4. dispatcher 确认该阶段所有编号都有本案完整
+   `done_owner + done_subject + done_cycle + done_case + done_state`；
 5. 共享 transition helper 只推进一次，再预约下一阶段；
 6. 终态冻结结果并只结算一次。
 
@@ -77,9 +78,13 @@ source-derived 结论，尚待 CK3 实机日志验证；若实机行为不同，
 
 - 完整五元 ticket；
 - 共享 operation receipt，以及独立 owner/subject/cycle/case/state/choice 回执；
-- 同一案同一编号只执行一次的 `done_cycle + done_case` 闸门；
+- 同一案同一编号只执行一次的 `done_owner + done_subject + done_cycle + done_case + done_state` 闸门；
 - A（证据充分）、B（快速强推）、C（延期并背政策债）三条路线；
-- 至少一个冻结业务字段；
+- A/B 冻结逐编号唯一业务对象类型、object id、五元身份、consumer contract、资源账标记与适用期限；
+- C 不再写 A/B 业务字段或运行其业务消费者，只写五元 policy debt、`due_cycle=current+1` 与负向结果；
+- 读取前序对象的 22 项机制必须逐项证明前序 exact object 的类型、consumer contract、owner、subject、cycle、case、state
+  均属于本案，并且业务对象与指定 consumer 都已执行；前序走 C、缺失或属于旧轮时，
+  本项在 receipt 之前级联为 C，禁止偷读上一轮残留变量；
 - `result_score -> domain score_delta -> averaged final_score -> zg361_kpi_value` 的真实消费者；
 - 必要时再被后续编号读取，不能只写一枚永远没人看的 flag。
 
@@ -97,6 +102,9 @@ source-derived 结论，尚待 CK3 实机日志验证；若实机行为不同，
 - 204 读取冻结严重度，结算可靠性预算并产生停止上线 gate。
 
 终态把 13 条结果平均为 `zg361_ip_x_final_score`，只影响下一轮 KPI，不回写已冻结的旧考核档位。
+
+X 的执行顺序是语义顺序而非编号排序：先冻结 #201 时间线，再由 #197 读取该版本完成指挥/救火分功，随后
+#198 才做根因净额。这个顺序由 Python 模型的 `DOMAIN_EXECUTION_ORDER` 单点定义并被 CK3 生成器直接读取。
 
 ## Y205–216：积弊、维护、交接
 
@@ -145,7 +153,7 @@ py tools/gen_361_incident_platform_runtime.py --check
 py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 ```
 
-静态测试覆盖 exact 37 ID、A/B/C、五元回执、阶段唯一推进、14 个 deadline、三张玩家结案事件、
+静态测试覆盖 exact 37 ID、A/B/C、逐项 exact object/consumer/resource/deadline、C 无业务对象、完整五元 done/operation/object 身份、阶段唯一推进、14 个 deadline、三张玩家结案事件、
 写到 KPI 的消费者、双付款原子预检、容量/份额守恒、九语 key 集以及“零新增 GUI/decision/interaction/on_action”。
 
 仍需由统一批次完成：
@@ -155,5 +163,8 @@ py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 3. 通过 MCP 查询 owner/subject/cycle/case/state、每编号 receipt、金币/国库、终态 KPI revision；
 4. 在一次启动中覆盖 X/Y/Z 正常、stale、重复调用、资金不足、玩家/AI、伯爵/男爵 subject；
 5. 保存 paused artifact 后才升级 readiness。
+
+此外，C 路当前会产生可见且带 `due_cycle` 的 policy debt，但本包尚无统一的到期偿债/升级 consumer；在该 consumer
+及其跨存档实机证据出现前，不能把“已登记债务”写成债务闭环。
 
 OCR 只可在 native/MCP 状态已经闭合后截取最终画面，不可承担导航、状态真值或 GREEN 判定。
