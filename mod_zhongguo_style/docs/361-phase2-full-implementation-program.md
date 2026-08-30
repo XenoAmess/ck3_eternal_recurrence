@@ -59,6 +59,12 @@ audit open/resolve、timeline append、feedback project、relationship apply 与
 不得携带任意 CK3 脚本文本。A/B/C 三路都必须经过 registry：C 是本机制自己的 `policy.defer`、明确复议期限和制度债案件，
 不能只加共享总账。
 
+这里的逐号 `tools/mechanism_acceptance/acceptance_*.json` 是 C 路业务边界的权威来源。领域 CK3 细表或
+生成器若把 C 另写成会创建、修改或结算 A/B 业务对象的“第三条正常业务路线”，属于实现漂移，必须改回
+“在任何业务对象与资源写之前分流，只登记本机制五元制度债与期限”。除非逐号验收合同本身先经设计审阅
+明确变更，否则不得用次级 runtime spec、事件文案或现有生成结果反向覆盖这条规则；静态测试也必须逐项
+断言 C 不产生业务对象、资源 receipt 或 A/B consumer 后果。
+
 ### 2. 真机制最低门槛
 
 每个编号必须同时具备：
