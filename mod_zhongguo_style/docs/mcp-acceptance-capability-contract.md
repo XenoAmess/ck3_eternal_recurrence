@@ -110,3 +110,23 @@ paused/date/player identity。动作 ACK 只能证明命令被产品路径接受
 4. OCR 只在所有字段已闭合后生成最终截图，不参与导航和断言；
 5. RED artifact、request/response、ACK、revision 和 cleanup 证据全部保留；
 6. MCP 缺能力时更新本合同并交给 MCP 层施工，mod 侧不得用 OCR 或 acceptance-only 后门永久绕过。
+
+## 五、启动门与合批拓扑
+
+正式二期 runner 在进入昂贵的长局前必须先读取 runtime `ck3_get_capabilities`，逐项核对本合同的 allowlisted case、产品动作、
+资源/关系、hidden deadline、named widget、AI case 与 B4–B8 domain-object 能力。源码中注册过工具不等于当前 exact-build DLL/consumer
+已经提供；缺任一必需能力时应立即产出 `MCP capability RED`，不得启动旧 OCR/坐标/测试决议路径继续跑完整 CK3 长局。
+
+现有 `ck3_restore_checkpoint` 的合同与实现语义是重启受管 pure-native CK3 session，而不是在原 PID 内载入。因此“真实存读档证明”与
+“整份验收严格单 PID”不能同时作为门禁。最低成本且诚实的正式拓扑是：
+
+1. 一份 acceptance attempt 下启动第一个 CK3 进程，冻结真实角色、案卷、资源、期限和 GUI digest，只保存一次；
+2. 调用一次受控 restore，要求 connection generation 与 PID 改变，同时逐字段证明 date/player/case/deadline/receipt/policy 恢复一致；
+3. 在第二个 CK3 进程内连续完成 D+7/30/90/180/300/365、三周期、权限、AI 与主 GUI 批次，除此之外不再重启；
+4. 主长局只跑一个代表性显示配置；若 provider 不能可靠热切分辨率/UI scale，则 3×3 几何矩阵拆为九个短 GUI cell，不能重复九次
+   完整三周期链，也不能声称一次 PID 覆盖了未切换的配置。
+
+361 项不应逐项重启或逐卡点击。逐号证明由 allowlisted case/query 批量核对；A/B/C 与 typed negative 按 38 个共享领域 recipe 合批。
+每个动作统一遵守：paused snapshot → stable product action + nonce/expected revision → 独立 ACK → 等待新 revision →
+case/resource/widget/visible-feedback 独立查询。最终 artifact 至少保存 capability manifest、真实角色 roster、action journal、
+001–361 case matrix、38 域 A/B/C matrix、资源/期限账、save/restore proof、scoreboard ACL、widget blocking、三周期 lineage、守恒与清理证明。
