@@ -1149,8 +1149,16 @@ def product_source_errors() -> list[str]:
             errors.append(f"personal result snapshot contract missing {token}")
     if effects_text.count("zg361_snapshot_player_result_effect = yes") != 3:
         errors.append("all three player grades must freeze their result payload")
+    # Only the legacy delayed result trio (.2/.3/.4) is forbidden from
+    # rebuilding its payload from live review variables. Phase-two events
+    # deliberately bind the already-frozen result case to saved event scopes;
+    # scanning the whole file would reject that immutable read model.
+    legacy_result_event_text = event_text.split(
+        "# 玩家封臣：3.25 正式送达、见证送达、申诉时钟与个人清算单",
+        1,
+    )[0]
     if any(
-        token in event_text
+        token in legacy_result_event_text
         for token in (
             "save_scope_as = zg361_reviewing_superior",
             "name = zg361_result_kpi",

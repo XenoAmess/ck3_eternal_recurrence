@@ -15,19 +15,46 @@ import prepare_release_localization as release_loc  # noqa: E402
 
 
 class ReleaseLocalizationTests(unittest.TestCase):
-    def test_batches_cover_two_thousand_and_eight_keys_once(self) -> None:
+    def test_batches_cover_two_thousand_and_forty_eight_keys_once(self) -> None:
         batches = release_loc.build_batches()
-        self.assertEqual(17, len(batches))
+        self.assertEqual(18, len(batches))
         core = [key for batch in batches if batch.source == "core" for key in batch.keys]
         mechanisms = [
             key for batch in batches if batch.source == "mechanisms" for key in batch.keys
         ]
-        self.assertEqual(160, len(core))
+        self.assertEqual(200, len(core))
         self.assertEqual(1848, len(mechanisms))
         self.assertEqual(len(core), len(set(core)))
         self.assertEqual(len(mechanisms), len(set(mechanisms)))
-        self.assertEqual(168, len(batches[2].keys))
+        self.assertEqual(40, len(batches[2].keys))
+        self.assertEqual(168, len(batches[3].keys))
         self.assertEqual(55, len(batches[-1].keys))
+
+    def test_merge_raw_yml_appends_only_a_source_order_suffix(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sample.yml"
+            path.write_bytes(b'\xef\xbb\xbfl_french:\n one:0 "Old"\n')
+            merged = release_loc.merge_raw_yml(
+                path,
+                {"one": "Un", "two": "Deux"},
+            )
+        self.assertEqual(
+            b'\xef\xbb\xbfl_french:\n one:0 "Un"\n two:0 "Deux"\n',
+            merged,
+        )
+
+    def test_merge_raw_yml_rejects_non_prefix_key_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sample.yml"
+            path.write_bytes(b'\xef\xbb\xbfl_french:\n two:0 "Deux"\n')
+            with self.assertRaisesRegex(
+                release_loc.ReleaseLocalizationError,
+                "target yml key/order mismatch",
+            ):
+                release_loc.merge_raw_yml(
+                    path,
+                    {"one": "Un", "two": "Deux"},
+                )
 
     def test_raw_yml_decode_is_inverse_of_generator_escaping(self) -> None:
         self.assertEqual("line\\nnext", release_loc.decode_raw_yml_value("line\\\\nnext"))

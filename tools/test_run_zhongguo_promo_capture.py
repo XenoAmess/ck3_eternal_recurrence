@@ -857,6 +857,32 @@ def main() -> int:
     assert quoted_gui != authoritative_gui
     original_read_text = Path.read_text
 
+    # Phase-two case events may bind their already-frozen case owner, while
+    # the legacy delayed result trio must still reject a live review read.
+    events_path = capture.SOURCE / "events" / "zg361_events.txt"
+    authoritative_events = events_path.read_text(encoding="utf-8-sig")
+    phase2_marker = "# 玩家封臣：3.25 正式送达、见证送达、申诉时钟与个人清算单"
+    assert phase2_marker in authoritative_events
+    legacy_live_read = authoritative_events.replace(
+        phase2_marker,
+        "save_scope_as = zg361_reviewing_superior\n" + phase2_marker,
+        1,
+    )
+
+    def read_text_with_legacy_live_read(
+        path: Path, *args: object, **kwargs: object
+    ) -> str:
+        if path.resolve() == events_path.resolve():
+            return legacy_live_read
+        return original_read_text(path, *args, **kwargs)
+
+    with mock.patch.object(Path, "read_text", read_text_with_legacy_live_read):
+        legacy_live_read_errors = capture.product_source_errors()
+    assert (
+        "delayed result events must not re-read live review data"
+        in legacy_live_read_errors
+    ), legacy_live_read_errors
+
     def read_text_with_quoted_scoreboard(
         path: Path, *args: object, **kwargs: object
     ) -> str:

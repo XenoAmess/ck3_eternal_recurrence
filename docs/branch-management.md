@@ -1,0 +1,103 @@
+# Branch management and frozen evidence
+
+状态：2026-08-30 起生效。`origin/master` 是唯一集成真相；删除 branch ref 永远不等于删除 worktree、clone、构建目录、
+录像、日志或 artifact。
+
+## 默认工作方式
+
+1. 默认从最新 `origin/master` 直接开发、测试、提交和推送。开始前先 `git fetch origin`，记录 exact base SHA。
+2. 只有下列具体理由才建分支：需要隔离尚未成品的功能、与另一项真实并行施工冲突，或高风险 live/runtime 实验必须冻结独立
+   source。单纯“以后可能有用”、方便堆提交或保存证据都不是理由。
+3. 活跃开发分支使用 `wip/<short-topic>`；只有发布平台或版本流程确实要求独立线时才使用
+   `release/<product>-<version>`。`release/` 不是长期开发分支。
+4. 每个分支必须在下方 ledger 记录：reason、base SHA、owner、acceptance、merge deadline 和 status。成品一旦通过本地门，立即
+   合入 master；等待该 master SHA 的官方 CI terminal GREEN 后，删除本地和远端 ref。
+5. 禁止 force-push。并发直接推送前重新 fetch 并比较 `ls-remote`；远端已移动时停止当前 push，把自己的提交 rebase 到新的
+   `origin/master`，复测后再以普通 fast-forward push 提交。不得覆盖他人的提交。
+
+## 分支状态
+
+| 状态 | 含义 |
+|---|---|
+| `active` | 有明确 owner、交付和期限，正在施工。 |
+| `ready-to-merge` | 成品提交与本地 acceptance 已闭合，等待合入 master。 |
+| `merged-ci-pending` | 已进入 master，但该 master SHA 的官方 CI 尚未 terminal GREEN。 |
+| `retired` | master CI GREEN，关联 checkout 已 detach，local/remote ref 已删除。 |
+| `frozen-exception` | 仅为保全脏现场暂留，不允许新提交；应尽快 detach 并删除 ref。 |
+
+`already-contained`、patch-equivalent 和 superseded 不是活跃状态；它们只能进入 retirement ledger，不能继续开发。
+
+## 冻结证据不是开发分支
+
+历史 live source、失败复现、benchmark 或 release checkout 默认使用 detached HEAD。每个新冻结 checkout/clone 根目录必须有
+`.xar-frozen-evidence.json`：
+
+```json
+{
+  "schema_version": 1,
+  "source_sha": "40-hex commit",
+  "purpose": "why this checkout is retained",
+  "owner": "person or task",
+  "do_not_develop": true,
+  "artifact_refs": ["absolute or repo-relative evidence paths"],
+  "retention_state": "retained",
+  "cleanup_state": "branch-ref-retired; files-preserved",
+  "branch_ref_cleanup_at": "ISO-8601 timestamp with timezone",
+  "created_at": "ISO-8601 timestamp with timezone"
+}
+```
+
+marker 是 sidecar，不进入产品 staging；它不得替代 artifact 自身的 manifest/hash。若脏现场暂时无法 detach，只允许建立
+`frozen/<short-purpose>` **本地分支**，同时登记 `frozen-exception`：禁止 push、禁止新 commit，待 dirty bytes/hash 已记录后立即
+detach、写 marker、删除 ref。删除 ref 时禁止 prune/remove worktree，也禁止删除或搬移 process assets。
+
+## Exhaustive ref audit
+
+一次 common-dir 内的 `git branch --all` 看不到独立 clone 的 branch。声称“分支已清理”前必须：
+
+1. 对当前仓库执行 `git rev-parse --git-common-dir`、`git for-each-ref refs/heads refs/remotes/origin` 和
+   `git worktree list --porcelain`；
+2. 枚举已知 workspace/process roots，以及 `%TEMP%` 直属 `xar*` 目录；读取 `.git/config`，只纳入 remote URL 指向本项目的
+   repository；
+3. 对每个 repository 取得 `--git-common-dir`，按 resolved common-dir 去重；同一 common-dir 的多个 worktree 只审一次 refs，
+   但逐个检查 dirty status 与关联 branch；
+4. 对独立 clone 分别 fetch current master，记录 tip、ancestry、`git cherry` 和 dirty state；不能用另一个 clone 的
+   `origin/master` 猜它已同步；
+5. 最终再重复枚举，确认只剩 `master`、ledger 中的 active `wip/`/必要 `release/`，以及明确记录的临时 exception。
+
+PowerShell 的最小发现入口：
+
+```powershell
+Get-ChildItem $env:TEMP -Directory -Filter 'xar*' | ForEach-Object {
+  $repo = $_.FullName
+  if (Test-Path (Join-Path $repo '.git\config')) {
+    git -c "safe.directory=$repo" -C $repo config --get remote.origin.url
+    git -c "safe.directory=$repo" -C $repo rev-parse --git-common-dir
+  }
+}
+```
+
+冻结 clone 可能因历史 object pack 不完整而 fetch 报 `unresolved deltas` / `invalid index-pack output`。这属于冻结环境事实，
+不是 capability RED；不得为让清理表变绿而修复、重打包或删除证据 clone。正确做法是在健康 audit repository 中临时 fetch 该
+clone 的 local tip（不留 persistent ref），再与当前 master 做 ancestry/patch/content 对照，同时把损坏事实写进 inventory。
+
+## 当前 ledger（2026-08-30 consolidation）
+
+| branch / checkout | reason / base | owner | acceptance / deadline | status |
+|---|---|---|---|---|
+| `wip/zhongguo-phase2-v0.4`（迁移前名 `mod-zhongguo-style-phase2-v0.4`） | 二期 MCP-first 批量实机；静态 milestone `b5a0b0e` 已合入 master | ZhongGuo phase2 | 保留两份未提交 acceptance 文件；本 L1 slice GREEN 后立即 merge，且必须早于第二个 slice 开工 | `active` |
+| `wip/g2-next-episode`（迁移前名 `agent-mainline-20260827`） | G2 `start-next-episode → gameplay/checkpoint`；base `388cf37` | autonomous G2 | 保留 4 modified + 1 untracked；next-episode 端到端 gate GREEN 后立即 merge，且必须早于任何无关 G2 milestone | `active` |
+| `Z:\ck3_mod_rewrite` | 一期 WIP tip `17dc506` 上的用户脏现场 | owner | detach 后写 frozen marker；绝不删除 36 tracked / 12,600 untracked | `frozen-exception`，本轮退休 ref |
+| 旧 agent/runtime/release checkout | 已合入、patch-equivalent 或 superseded 的 live 证据 | consolidation | master CI GREEN 后 detach + marker；目录永不随 ref 删除 | `merged-ci-pending` |
+
+## 合并与清理 checklist
+
+- [ ] base SHA、owner、reason、acceptance、deadline 和 status 已进 ledger；
+- [ ] 成品 diff 不含另一条 WIP 或测试素材泄漏；本地相关门 GREEN；
+- [ ] push 前 `ls-remote` 与预期 master 一致，无 force；
+- [ ] exact master SHA 的全部 required Actions terminal GREEN；
+- [ ] 每个关联 worktree/clone 在相同 tip detach，dirty 文件数量与 SHA 前后不变；
+- [ ] frozen checkout 已写 `.xar-frozen-evidence.json`，`do_not_develop=true`；
+- [ ] 删除的是 local/remote branch ref，不是 worktree、clone、artifact 或 process directory；
+- [ ] 已枚举并按 common-dir 去重所有 workspace、worktree 与独立 `%TEMP%` clone；
+- [ ] 最终 ref 清单只剩 master、ledger 中 active `wip/`/必要 `release/` 和明确 exception。

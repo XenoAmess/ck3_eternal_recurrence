@@ -766,8 +766,8 @@ def build_batches() -> tuple[Batch, ...]:
     covered = tuple(key for batch in batches if batch.source == "mechanisms" for key in batch.keys)
     if covered != mechanism:
         raise ReleaseLocalizationError("mechanism localization batching changed source key order")
-    if len(batches) != 17:
-        raise ReleaseLocalizationError(f"expected 17 translation batches, got {len(batches)}")
+    if len(batches) != 18:
+        raise ReleaseLocalizationError(f"expected 18 translation batches, got {len(batches)}")
     return tuple(batches)
 
 
@@ -2692,7 +2692,7 @@ def merge_raw_yml(path: Path, translations: dict[str, str]) -> bytes:
     if not data.startswith(b"\xef\xbb\xbf"):
         raise ReleaseLocalizationError(f"target yml lacks UTF-8 BOM: {path}")
     lines = data.decode("utf-8-sig").splitlines()
-    seen: list[str] = []
+    target_keys: list[str] = []
     output: list[str] = []
     for key, value in translations.items():
         if ENTRY.fullmatch(f' {key}:0 "{value}"') is None:
@@ -2701,14 +2701,24 @@ def merge_raw_yml(path: Path, translations: dict[str, str]) -> bytes:
             )
     for line in lines:
         match = ENTRY.fullmatch(line)
-        if match and match.group("key") in translations:
+        if match:
             key = match.group("key")
-            output.append(match.group("prefix") + translations[key] + match.group("suffix"))
-            seen.append(key)
+            target_keys.append(key)
+            if key in translations:
+                output.append(
+                    match.group("prefix")
+                    + translations[key]
+                    + match.group("suffix")
+                )
+            else:
+                output.append(line)
         else:
             output.append(line)
-    if tuple(seen) != tuple(translations):
+    translation_keys = tuple(translations)
+    if tuple(target_keys) != translation_keys[: len(target_keys)]:
         raise ReleaseLocalizationError(f"target yml key/order mismatch while merging: {path}")
+    for key in translation_keys[len(target_keys) :]:
+        output.append(f' {key}:0 "{translations[key]}"')
     return b"\xef\xbb\xbf" + ("\n".join(output) + "\n").encode("utf-8")
 
 

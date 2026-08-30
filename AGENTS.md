@@ -137,6 +137,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 - **每次任务执行完成后，默认 `git commit` + `git push`**（无需另行确认，也不要等人工验证，直接提交推送）
 - 提交信息用英文，简明描述改动
+- `origin/master` 是唯一集成真相，默认从最新 master 直接开发。只有具体隔离、真实并发或高风险 live 理由才建
+  `wip/<topic>`；必要发布线才用 `release/<product>-<version>`。分支必须登记 reason/base/owner/acceptance/deadline，
+  成品及时合入，等待 exact master SHA 官方 CI GREEN 后删除 local + remote ref。
+- 禁止 force-push。并发推送先 fetch/复核 remote master；远端移动时停止 push，rebase 到新 master、复测后普通 fast-forward push。
+- 冻结 evidence 使用 detached HEAD 与根目录 `.xar-frozen-evidence.json`；不得把历史 runtime clone 当开发线。删除 branch ref
+  绝不授权删除 worktree、clone、构建目录或 process assets。完整规则与跨 common-dir/独立 clone 清单见
+  `docs/branch-management.md`。
 
 ## 自动游玩 Agent 进度报告
 

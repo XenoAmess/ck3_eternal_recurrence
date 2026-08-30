@@ -3,6 +3,7 @@
 本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”“未查明”或“架构预研”的项目外，结论均经过 1.19.0.6 日志或游戏内验证；预研文档以各自声明的证据等级为准，不受这项默认实测声明覆盖。
 
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
+- [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
 
 ## 机制篇
 

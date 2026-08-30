@@ -766,6 +766,16 @@ CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑
 4. 对照原版/成熟 mod（POD）的同类写法是最快的验证手段
 
+## 分支与冻结 runtime clone 的验收边界（2026-08-30）
+
+- `git branch --all` 只覆盖当前 Git common-dir。runtime/live 实验常是独立 clone，不会出现在主仓的 branch/worktree 清单里；
+  全量收口必须枚举 workspace/process roots 与 `%TEMP%` 直属 `xar*` repository config，取得各自 `--git-common-dir` 后去重，
+  再分别检查 refs、worktrees 和 dirty state。只扫一个 common-dir 不得声称“所有分支已审计/清理”。
+- 冻结 clone 若在 fetch 时报告 `unresolved deltas` / `invalid index-pack output`，记录为该证据环境的 object-store RED，
+  不把它升级为产品/capability RED，也不修复或删除现场来消除错误。在健康 audit repo 中无持久 ref 地读入该 local tip，
+  再用 ancestry、patch-id 与逐文件内容证明它已被 master 等价或更强实现覆盖。branch ref 退休后仍保留 clone 与 marker；详见
+  [branch-management.md](branch-management.md)。
+
 ## G1 一代人 production 终局（2026-08-30）
 
 正式 run：
