@@ -11258,6 +11258,50 @@ def _battle_sentinel_player_decision_boundary(
             "revision": snapshot.get("revision"),
             "native_revision": snapshot.get("native_revision"),
         }
+    played_character = snapshot.get("played_character")
+    played_character_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    played_character_alive = (
+        played_character.get("alive")
+        if isinstance(played_character, dict)
+        else None
+    )
+    episode_character_id = snapshot.get("episode_character_id")
+    terminal_reason = snapshot.get("one_life_terminal_reason")
+    inferred_terminal = bool(
+        isinstance(episode_character_id, int)
+        and not isinstance(episode_character_id, bool)
+        and episode_character_id > 0
+        and (
+            played_character_alive is False
+            or (
+                isinstance(played_character_id, int)
+                and not isinstance(played_character_id, bool)
+                and played_character_id > 0
+                and played_character_id != episode_character_id
+            )
+        )
+    )
+    if isinstance(terminal_reason, str) or inferred_terminal:
+        return {
+            **binding,
+            "kind": "one_life_terminal",
+            "instance_id": None,
+            "terminal_reason": (
+                terminal_reason
+                if isinstance(terminal_reason, str)
+                else "played_character_dead"
+                if played_character_alive is False
+                else "played_character_changed"
+            ),
+            "played_character_alive": played_character_alive,
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+        }
     return None
 
 
@@ -11292,6 +11336,12 @@ def _same_battle_sentinel_player_decision_boundary(
     before: object,
     after: object,
 ) -> bool:
+    terminal_boundary = bool(
+        isinstance(before, dict)
+        and isinstance(after, dict)
+        and before.get("kind") == "one_life_terminal"
+        and after.get("kind") == "one_life_terminal"
+    )
     binding_fields = (
         "observed_date_raw",
         "bridge_pid",
@@ -11300,11 +11350,39 @@ def _same_battle_sentinel_player_decision_boundary(
         "episode_run_id",
         "played_character_id",
     )
+    if terminal_boundary:
+        # A one-life terminal is monotonic for the bound episode.  CK3 may
+        # advance one or more daily ticks between observing the changed/dead
+        # player on a running frame and servicing the explicit pause request.
+        # Keep every owner/identity pin, but do not mistake that bounded date
+        # drift for a different terminal boundary.
+        binding_fields = tuple(
+            field for field in binding_fields if field != "observed_date_raw"
+        )
+    same_kind_identity = bool(
+        isinstance(before, dict)
+        and isinstance(after, dict)
+        and (
+            (
+                before.get("kind") == "one_life_terminal"
+                and after.get("kind") == "one_life_terminal"
+                and before.get("terminal_reason")
+                == after.get("terminal_reason")
+                and before.get("played_character_alive")
+                == after.get("played_character_alive")
+            )
+            or (
+                before.get("kind") != "one_life_terminal"
+                and before.get("kind") == after.get("kind")
+                and before.get("instance_id")
+                == after.get("instance_id")
+            )
+        )
+    )
     return bool(
         isinstance(before, dict)
         and isinstance(after, dict)
-        and before.get("kind") == after.get("kind")
-        and before.get("instance_id") == after.get("instance_id")
+        and same_kind_identity
         and all(before.get(field) == after.get(field) for field in binding_fields)
     )
 
@@ -11324,8 +11402,12 @@ def _battle_sentinel_player_decision_is_new(
         "connection_generation",
         "episode_character_id",
         "episode_run_id",
-        "played_character_id",
     )
+    if not (
+        isinstance(current_boundary, dict)
+        and current_boundary.get("kind") == "one_life_terminal"
+    ):
+        owner_fields += ("played_character_id",)
     return bool(
         current_boundary is not None
         and (
@@ -11357,6 +11439,23 @@ def _fresh_battle_sentinel_player_decision_boundary(
     before_native_revision = before_pause.get("native_revision")
     after_native_revision = after_pause.get("native_revision")
     boundary = _battle_sentinel_player_decision_boundary(after_pause)
+    terminal_boundary = bool(
+        isinstance(boundary, dict)
+        and boundary.get("kind") == "one_life_terminal"
+        and isinstance(expected_boundary, dict)
+        and expected_boundary.get("kind") == "one_life_terminal"
+    )
+    before_binding = _battle_sentinel_frame_binding(before_pause)
+    after_binding = _battle_sentinel_frame_binding(after_pause)
+    stable_binding_fields = (
+        "bridge_pid",
+        "connection_generation",
+        "episode_character_id",
+        "episode_run_id",
+        "played_character_id",
+    )
+    before_date_raw = before_binding.get("observed_date_raw")
+    after_date_raw = after_binding.get("observed_date_raw")
     return bool(
         after_pause.get("paused") is True
         and after_pause.get("map_ready") is True
@@ -11370,8 +11469,21 @@ def _fresh_battle_sentinel_player_decision_boundary(
         and isinstance(after_native_revision, int)
         and not isinstance(after_native_revision, bool)
         and after_native_revision >= before_native_revision
-        and _battle_sentinel_frame_binding(before_pause)
-        == _battle_sentinel_frame_binding(after_pause)
+        and (
+            before_binding == after_binding
+            or (
+                terminal_boundary
+                and isinstance(before_date_raw, int)
+                and not isinstance(before_date_raw, bool)
+                and isinstance(after_date_raw, int)
+                and not isinstance(after_date_raw, bool)
+                and after_date_raw >= before_date_raw
+                and all(
+                    before_binding.get(field) == after_binding.get(field)
+                    for field in stable_binding_fields
+                )
+            )
+        )
         and boundary is not None
         and (
             expected_boundary is None
@@ -11425,8 +11537,7 @@ def _battle_sentinel_stationary_objective_hold_state(
         and snapshot.get("map_ready") is True
     )
     result["player_decision_clear"] = bool(
-        snapshot.get("active_event") is None
-        and snapshot.get("pending_character_interaction") is None
+        _battle_sentinel_player_decision_boundary(snapshot) is None
     )
     armies = snapshot.get("player_armies")
     wars = snapshot.get("active_wars")
@@ -11852,10 +11963,28 @@ def _validate_tactical_daily_sentinel_decision_boundary(
     raw_delta = ending_date_raw - starting_date_raw
     completed_ticks = status.get("completed_daily_ticks")
     last_observed_date_raw = status.get("last_observed_date_raw")
+    boundary_kind = player_decision_boundary.get("kind")
+    boundary_identity_valid = bool(
+        (
+            boundary_kind
+            in {"active_event", "pending_character_interaction"}
+            and player_decision_boundary.get("instance_id") is not None
+        )
+        or (
+            boundary_kind == "one_life_terminal"
+            and isinstance(
+                player_decision_boundary.get("terminal_reason"), str
+            )
+            and (
+                player_decision_boundary.get("played_character_alive")
+                is False
+                or player_decision_boundary.get("played_character_id")
+                != player_decision_boundary.get("episode_character_id")
+            )
+        )
+    )
     if not (
-        player_decision_boundary.get("kind")
-        in {"active_event", "pending_character_interaction"}
-        and player_decision_boundary.get("instance_id") is not None
+        boundary_identity_valid
         and player_decision_boundary.get("observed_date_raw")
         == ending_date_raw
         and raw_delta >= 0
@@ -11974,6 +12103,7 @@ def _battle_sentinel_step_result(
     )
     diagnostics = ending.get("diagnostics")
     played_character = ending.get("played_character")
+    one_life_terminal_reason = ending.get("one_life_terminal_reason")
     result: dict[str, object] = {
         "step": step,
         "backend_id": "native-headless",
@@ -12004,6 +12134,10 @@ def _battle_sentinel_step_result(
             else "decision_epoch"
         ),
         "terminal_reached": terminal_observed,
+        "one_life_terminal": bool(
+            isinstance(one_life_terminal_reason, str)
+        ),
+        "one_life_terminal_reason": one_life_terminal_reason,
         "trigger_reasons": trigger_reasons,
         "sentinel_generation": (
             sentinel_status.get("generation")
@@ -12063,6 +12197,7 @@ def _battle_sentinel_step_result(
             if ending.get("paused") is True
             and ending.get("active_event") is None
             and ending.get("pending_character_interaction") is None
+            and not isinstance(one_life_terminal_reason, str)
             else None
         ),
         "snapshot_id": ending.get("snapshot_id"),
@@ -12082,6 +12217,11 @@ def _battle_sentinel_step_result(
         "episode_run_id": ending.get("episode_run_id"),
         "played_character_id": (
             played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        ),
+        "played_character_alive": (
+            played_character.get("alive")
             if isinstance(played_character, dict)
             else None
         ),

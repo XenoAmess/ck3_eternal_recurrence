@@ -14708,6 +14708,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             ("active_event", False, 1),
             ("active_event", True, 0),
             ("pending_character_interaction", False, 1),
+            ("one_life_terminal", False, 1),
         )
         for decision_kind, already_paused, expected_pause_count in cases:
             with self.subTest(
@@ -14744,6 +14745,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "sender_character_id": 808,
                     "auto_accept_notification": False,
                 }
+                terminal_played = {"character_id": 808, "alive": True}
                 endpoint.publish(
                     _snapshot(
                         1,
@@ -14832,7 +14834,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                                     == "pending_character_interaction"
                                     else None
                                 ),
-                                played_character=played,
+                                played_character=(
+                                    terminal_played
+                                    if decision_kind == "one_life_terminal"
+                                    else played
+                                ),
                                 active_wars=[war],
                                 player_armies=[player],
                             )
@@ -14841,7 +14847,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         endpoint.publish(
                             _snapshot(
                                 4,
-                                date_raw=stop,
+                                date_raw=(
+                                    stop + 24
+                                    if decision_kind == "one_life_terminal"
+                                    else stop
+                                ),
                                 speed=3,
                                 paused=True,
                                 active_event=(
@@ -14855,7 +14865,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                                     == "pending_character_interaction"
                                     else None
                                 ),
-                                played_character=played,
+                                played_character=(
+                                    terminal_played
+                                    if decision_kind == "one_life_terminal"
+                                    else played
+                                ),
                                 active_wars=[war],
                                 player_armies=[player],
                             )
@@ -14903,10 +14917,27 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     self.assertIsNone(result["pending_character_interaction"])
                 else:
                     self.assertIsNone(result["active_event"])
-                    self.assertEqual(
-                        result["pending_character_interaction"]["instance_id"],
-                        _SIGNED_PENDING_ID,
-                    )
+                    if decision_kind == "pending_character_interaction":
+                        self.assertEqual(
+                            result["pending_character_interaction"][
+                                "instance_id"
+                            ],
+                            _SIGNED_PENDING_ID,
+                        )
+                    else:
+                        self.assertIsNone(
+                            result["pending_character_interaction"]
+                        )
+                        self.assertTrue(result["one_life_terminal"])
+                        self.assertEqual(
+                            result["one_life_terminal_reason"],
+                            "played_character_changed",
+                        )
+                        self.assertEqual(
+                            result["player_decision_boundary"]["kind"],
+                            "one_life_terminal",
+                        )
+                        self.assertEqual(result["played_character_id"], 808)
                 self.assertEqual(result["bridge_pid"], 4242)
                 self.assertIsNotNone(result["episode_run_id"])
                 validation = _battle_sentinel_advance_validation(result)

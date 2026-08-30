@@ -746,3 +746,47 @@ CK3 build label 上移，版本 OCR ROI 必须覆盖多行 footer。反过来，
 2. 报错要看完整调用栈（"while building tooltip/description" 这类后缀说明评估时机）
 3. 怀疑优先级：目录名 > BOM > 注册 > scope 类型 > 求值时机（并发/延迟）> 逻辑
 4. 对照原版/成熟 mod（POD）的同类写法是最快的验证手段
+
+## G1 一代人 production 终局（2026-08-30）
+
+正式 run：
+`C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260830T070223Z-one-generation-1f934571`。
+
+- 从 frozen checkpoint `0DF9CB66...69C` 冷恢复 CharacterID `29829` / episode
+  `native-29829-ee172aa720db`，按 `50000 / 604800 / cadence 3 / speed 3` 运行；没有人工 gameplay。
+- `155/155` turns 全成功：`101` query、`53` gameplay、`15` checkpoints、`1` terminal；墙钟 `424.216s`，
+  `first_blocker=null`。
+- 角色自然终止后 runner 继续等待到琉焰卿 committed settlement：`ready=true / commit_serial=1 /
+  source_character_id=29829`；顶层、settlement、recorded episode 三处人生分数均为 `14.8`。
+- cross-run record 已持久化到 `tutorial.txt`（lesson `xar_hs_ge_14`，两次稳定观测）；
+  `continue_as_heir_after_death=false / heir_gameplay_actions=0 / no_heir_gameplay=true`。
+- 全部 qualification gates 为 true；cleanup 的 session report、shutdown、tree-gone、driver close 均 GREEN。
+- `report.json`：`2,515,261` bytes，SHA-256
+  `FF689E88ED2C728D21BDF3AB66853E95435002D27979D37702C8A5D13E7BEFB3`。
+- `terminal-settlement.json`：`274,412` bytes，SHA-256
+  `D26744BFC619374A91499DAC6DDA178BD65B3666D5EF25A40DAD1433A41E850E`。
+
+该 artifact 只证明 fixed production seed 的 G1 完整一生 OODA；不证明普通 campaign 跨继承或全游戏自治。
+
+## GEN-032：死亡先于 tactical sentinel stop（2026-08-30）
+
+同一 checkpoint `date_raw=53286864 / history=6320 / C2A5E6F4...C122A` 的三次 bounded production-native 尝试：
+
+1. `20260830T071626Z-g2-seed-smoke`：`8/9` turns。第三个 stationary sentinel 期间，日期
+   `53287200→53287296`、玩家 `29829→38822`，但 native sentinel 尚未发布 stop；旧 Python 只认 event/pending
+   interaction，最终超时等待 pause。capability RED，cleanup GREEN。
+2. `20260830T072905Z-g2-terminal-boundary-retry`：`8/9` turns。driver 已发布
+   `one_life_terminal=true / played_character_changed`，但 explicit-pause stabilization 仍把同一 terminal 的日期漂移判成
+   不同 boundary。capability RED，cleanup GREEN；checkpoint 未变。
+3. `20260830T073735Z-g2-terminal-boundary-date-drift-retry`：最小修复后 `10/10` turns，`6 query / 3 gameplay /
+   1 terminal`；`episode_complete / qualified / ok=true`，final `date_raw=53287296 / played=38822 / episode=29829 /
+   settlement ready`，`first_blocker=null`，cleanup 全 GREEN。
+
+修复合同只对 `one_life_terminal` 生效：同 bridge PID、connection generation、episode CharacterID/run ID、当前玩家与 terminal
+reason 必须保持一致；显式 pause 服务期间日期可以单调前进。active event 与 pending interaction 继续要求原 exact-date identity，
+战争/终战偏好没有变化。回归为 `438 passed + 283 subtests`，另有 `py_compile` GREEN。
+
+受管 state 的 episode seed 也已逐字节验证：`76,980,533` bytes、SHA-256
+`E3B4A97D6B4E00BD4C3FF3E350FA9D883033712C939455446B0A5BC5719C5D91`、`date_raw=53211552 /
+CharacterID=29829`。但是第三次 runner 在 `episode_complete` 返回，没有执行 `start-next-episode`、产生新 episode ID 或新局
+gameplay/checkpoint；所以 GEN-032 complete，完整 G2 / GEN-009 仍未闭合。

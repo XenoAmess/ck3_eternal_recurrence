@@ -2126,9 +2126,8 @@ def _battle_sentinel_player_decision_validation(
     kind = boundary.get("kind") if isinstance(boundary, dict) else None
     active_event = advance_result.get("active_event")
     pending = advance_result.get("pending_character_interaction")
-    decision_identity_matches = bool(
+    common_boundary_identity_matches = bool(
         isinstance(boundary, dict)
-        and boundary.get("instance_id") is not None
         and boundary.get("observed_date_raw") == end
         and boundary.get("snapshot_id") == advance_result.get("snapshot_id")
         and boundary.get("revision") == advance_result.get("revision")
@@ -2143,18 +2142,39 @@ def _battle_sentinel_player_decision_validation(
         == advance_result.get("episode_run_id")
         and boundary.get("played_character_id")
         == advance_result.get("played_character_id")
+    )
+    decision_identity_matches = bool(
+        common_boundary_identity_matches
         and (
             (
                 kind == "active_event"
+                and boundary.get("instance_id") is not None
                 and isinstance(active_event, dict)
                 and active_event.get("instance_id")
                 == boundary.get("instance_id")
             )
             or (
                 kind == "pending_character_interaction"
+                and boundary.get("instance_id") is not None
                 and isinstance(pending, dict)
                 and pending.get("instance_id")
                 == boundary.get("instance_id")
+            )
+            or (
+                kind == "one_life_terminal"
+                and advance_result.get("one_life_terminal") is True
+                and isinstance(
+                    advance_result.get("one_life_terminal_reason"), str
+                )
+                and boundary.get("terminal_reason")
+                == advance_result.get("one_life_terminal_reason")
+                and boundary.get("played_character_alive")
+                == advance_result.get("played_character_alive")
+                and (
+                    advance_result.get("played_character_alive") is False
+                    or advance_result.get("played_character_id")
+                    != advance_result.get("episode_character_id")
+                )
             )
         )
     )

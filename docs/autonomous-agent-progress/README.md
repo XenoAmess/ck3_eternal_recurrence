@@ -5,6 +5,9 @@
 [`docs/ck3-native-ai/`](../ck3-native-ai/README.md) 与
 [`docs/testing-workflow.md`](../testing-workflow.md)。
 
+当前 headline（2026-08-30）：固定 production seed 的 G1 已完整 GREEN，GEN-032 terminal-sentinel blocker 也已由
+两次保留 RED 后实机关闭；完整 G2 仍缺 `start-next-episode → 新 episode gameplay/checkpoint`，不得标记完成。
+
 ## 导航
 
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
@@ -12,10 +15,12 @@
 - [G1 一代人全寿命 production 续跑交接（2026-08-28）](g1-production-handoff-2026-08-28.md)
 - [一代人 20-turn production canary 交接（历史）](one-generation-canary-handoff.md)
 - [日/周计划会制度与模板](meetings/README.md)
+- [2026-08-30 早会（补录）](meetings/daily/2026-08-30.md)
 - [2026-08-29 早会（补录）](meetings/daily/2026-08-29.md)
 - [2026-08-28 早会](meetings/daily/2026-08-28.md)
 - [2026-08-27 早会（补录）](meetings/daily/2026-08-27.md)
 - [2026-W35 周计划会（补录）](meetings/weekly/2026-W35.md)
+- [2026-08-30 日报（滚动）](daily/2026-08-30.md)
 - [2026-08-29 日报](daily/2026-08-29.md)
 - [2026-08-28 日报](daily/2026-08-28.md)
 - [2026-08-27 日报](daily/2026-08-27.md)

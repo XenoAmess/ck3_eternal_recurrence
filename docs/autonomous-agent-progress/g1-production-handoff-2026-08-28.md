@@ -1,14 +1,57 @@
 # G1 一代人全寿命 production 续跑交接（2026-08-28）
 
+> **完成更新（2026-08-30 15:09，Asia/Shanghai）：G1 已 GREEN。不要再执行本文的旧续跑命令。**
+>
+> `20260830T070223Z-one-generation-1f934571` 已从本文冻结的 `0DF9CB66...69C` 恢复同一 episode，完成
+> `155/155` turns，在 CharacterID `29829` 自然终止后等待到琉焰卿 committed settlement。权威人生分数为 **14.8**，
+> 与顶层 `score`、`one_life_settlement.final_score`、`recorded_episode.score` 三处一致；record、零继承人 gameplay 与
+> cleanup 全绿。下面正文保留为当时可复核的历史交接，不再代表当前待执行状态。
+
 更新时间：**2026-08-29 22:40（Asia/Shanghai；新增零启动恢复前检，G1 仍未完成）**
 
 这是一份可执行交接，不是 G1 完成声明。当前角色 `29829` 仍然存活；最新 bounded cold run 只用于验证刚修复的
 GEN-030/031 边界并生成更晚的 durable checkpoint。接手者的首要工作是从该 checkpoint 继续同一 episode 的正式
 `native-one-generation` 长跑，直到自然死亡，并在死亡后继续等待琉焰卿 Mod 提交算分结果。
 
-## 当前结论
+## 2026-08-30 最终完成 artifact
 
-- G1：**未完成**。CharacterID `29829`、episode `native-29829-ee172aa720db` 仍保持不变，角色仍存活。
+- no-launch preflight：`20260830T070204Z-one-generation-preflight-c2d902c7`，`status=ready / ok=true`；report
+  size `2,695` bytes，SHA-256 `82A355DD5CB4852F98655279721E6301798CC624307C48815EDF69986DED018F`。
+- production run：
+  `C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state\runs\20260830T070223Z-one-generation-1f934571`。
+  `status=episode_complete / outcome=qualified / finalized=true / ok=true`；`155/155` successful turns，`101` query、
+  `53` gameplay、`15` checkpoints、`1` terminal，墙钟 `424.216s`，`first_blocker=null`。
+- terminal：`date_raw=53287368`；原 CharacterID `29829` 已结束，final binding 的当前玩家变为 `38822`，但
+  `continue_as_heir_after_death=false / heir_gameplay_actions=0 / no_heir_gameplay=true`。
+- committed settlement：`ready=true / commit_serial=1 / source_character_id=29829`；人生分数三处均为 `14.8`；
+  `record_persistence.status=persisted`，lesson `xar_hs_ge_14`，`stable_observations=2`。
+- report：size `2,515,261` bytes，SHA-256
+  `FF689E88ED2C728D21BDF3AB66853E95435002D27979D37702C8A5D13E7BEFB3`。
+- `terminal-settlement.json`：size `274,412` bytes，SHA-256
+  `D26744BFC619374A91499DAC6DDA178BD65B3666D5EF25A40DAD1433A41E850E`。
+- 全部 qualification gates 为 true；cleanup 的 `session_report_ok / shutdown_ok / tree_gone / cleanup_proven /
+  driver_closed` 全为 true。CK3、runner 与 watchdog 进程树已退出。
+
+G1 已完成。2026-08-30 的 G2 前探又确认 episode seed 文件已存在并关闭 GEN-032 terminal-sentinel blocker；但
+`start-next-episode`、新 episode ID 与新局 gameplay/checkpoint 仍未发生。不得把本次固定 seed 单寿命 GREEN 或 GEN-032
+terminal GREEN 外推为普通 campaign 跨继承或全游戏自治完成。
+
+### G2 前探 / GEN-032 收口
+
+- episode seed：`76,980,533` bytes，SHA-256
+  `E3B4A97D6B4E00BD4C3FF3E350FA9D883033712C939455446B0A5BC5719C5D91`；metadata 绑定
+  `date_raw=53211552 / CharacterID=29829`。
+- attempt 01 `20260830T071626Z-g2-seed-smoke`：玩家在 native sentinel stop 前由 `29829` 变为 `38822`，旧 driver
+  超时等待 pause，capability RED；cleanup GREEN。
+- attempt 02 `20260830T072905Z-g2-terminal-boundary-retry`：terminal identity 已可见，但 explicit-pause
+  stable-frame 对同一 terminal 的日期漂移仍 RED；cleanup GREEN。
+- attempt 03 `20260830T073735Z-g2-terminal-boundary-date-drift-retry`：`10/10` turns、`6 query / 3 gameplay /
+  1 terminal`，`episode_complete / qualified / ok=true`，final `53287296 / settlement ready`，`first_blocker=null`，
+  cleanup GREEN。GEN-032 完成；完整 G2 仍由 GEN-009 接管。
+
+## 历史开跑前结论（已由上方最终 artifact 覆盖）
+
+- G1：当时仍未完成；现已由 `1f934571` 正式完成，本条只保留 2026-08-29 handoff 的历史起点。
 - GEN-030：**resolved / production-live**。event 51 与七日 deadline 同日出现时，generation 2 已是正常
   `triggered`；composite 没有再错误 cancel，而是保留 date/ticks/trigger/pause/zero-overshoot 证明并优先处理事件。
 - GEN-031：**resolved / production-live**。此前发生 mismatch 的 WarID `134217852` 已在同一 paused frame 中与
