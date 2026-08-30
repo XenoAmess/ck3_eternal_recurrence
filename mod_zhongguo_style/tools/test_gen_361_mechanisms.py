@@ -22,6 +22,12 @@ from zg361_mechanism_data import (
     mechanism_deltas,
 )
 from zg361_phase2_runtime_data import PHASE2_RUNTIME_SPECS
+from zg361_readiness_data import (
+    CUMULATIVE_COUNTS,
+    READINESS_BY_ID,
+    ReadinessLevel,
+    ids_at_least,
+)
 
 
 def valid_acceptance_payload(mechanism_id: int) -> dict[str, object]:
@@ -256,25 +262,13 @@ class MechanismGenerationTests(unittest.TestCase):
     def test_machine_manifest_maps_every_id(self) -> None:
         manifest_path = MOD_ROOT / "docs" / "361-mechanism-manifest.json"
         manifest = json.loads(self.rendered[manifest_path].decode("utf-8"))
-        self.assertEqual(manifest["schema"], 4)
+        self.assertEqual(manifest["schema"], 5)
         self.assertEqual(manifest["mechanism_count"], 361)
         self.assertEqual(manifest["runtime_plan"]["coverage"], 361)
         self.assertEqual(manifest["runtime_plan"]["domain_count"], 38)
         self.assertIn("does not change domain_runtime", manifest["runtime_plan"]["claim_boundary"])
         self.assertEqual([item["id"] for item in manifest["items"]], list(range(1, 362)))
         self.assertEqual({item["live_wave"] for item in manifest["items"]}, {1, 2, 3, 4})
-        legacy_status = {
-            "catalogue": "complete",
-            "policy_configuration": "fixture-live",
-            "ledger_projection": "fixture-live",
-            "domain_runtime": "not-implemented",
-            "player_visible_loop": "partial",
-        }
-        phase2_status = {
-            **legacy_status,
-            "domain_runtime": "partial",
-            "runtime_evidence": "static-ready",
-        }
         phase2_ids = {int(mechanism_id) for mechanism_id in PHASE2_RUNTIME_SPECS}
         mechanisms_by_id = {mechanism.id: mechanism for mechanism in self.mechanisms}
         for item in manifest["items"]:
@@ -287,8 +281,22 @@ class MechanismGenerationTests(unittest.TestCase):
             )
             self.assertEqual(set(item["runtime_plan"]["choice_transitions"]), {"a", "b", "c"})
             self.assertIn("not a claim", item["runtime_plan"]["claim_boundary"])
-            expected_status = phase2_status if item["id"] in phase2_ids else legacy_status
-            self.assertEqual(item["status"], expected_status)
+            record = READINESS_BY_ID[item["id"]]
+            expected_evidence = {
+                ReadinessLevel.DESIGN_ONLY: "none",
+                ReadinessLevel.PYTHON_L0: "python-l0",
+                ReadinessLevel.CK3_STATIC_READY: "static-ready",
+                ReadinessLevel.CENTRAL_WIRED: "static-ready",
+                ReadinessLevel.CK3_LIVE: "fixture-live",
+            }[record.level]
+            self.assertEqual(
+                item["status"]["domain_runtime"],
+                "partial"
+                if record.level >= ReadinessLevel.CK3_STATIC_READY
+                else "not-implemented",
+            )
+            self.assertEqual(item["status"]["runtime_evidence"], expected_evidence)
+            self.assertEqual(item["readiness"], record.manifest_payload())
             self.assertNotIsInstance(item["status"], str)
             if item["id"] in phase2_ids:
                 self.assertIsInstance(item["runtime_contract"], dict)
@@ -308,7 +316,6 @@ class MechanismGenerationTests(unittest.TestCase):
                 )
             else:
                 self.assertNotIn("runtime_contract", item)
-                self.assertNotIn("runtime_evidence", item["status"])
             self.assertEqual(
                 tuple(item["acceptance_contract"]), ACCEPTANCE_FIELDS
             )
@@ -324,9 +331,21 @@ class MechanismGenerationTests(unittest.TestCase):
             "1083",
             manifest["acceptance"]["claim_boundary"],
         )
-        self.assertEqual(manifest["phase2_static"]["mechanism_ids"], [1, 18, 69, 357])
-        self.assertEqual(manifest["phase2_static"]["evidence"], "static-ready")
-        self.assertIn("do not prove CK3", manifest["phase2_static"]["claim_boundary"])
+        static_ids = list(ids_at_least(ReadinessLevel.CK3_STATIC_READY))
+        self.assertEqual(manifest["phase2_static"]["mechanism_ids"], static_ids)
+        self.assertEqual(manifest["phase2_static"]["count"], 193)
+        self.assertEqual(
+            manifest["phase2_static"]["evidence"],
+            "at-least-ck3-static-ready",
+        )
+        self.assertEqual(
+            manifest["readiness"]["cumulative_counts"],
+            dict(CUMULATIVE_COUNTS),
+        )
+        self.assertIn(
+            "do not prove complete semantics",
+            manifest["phase2_static"]["claim_boundary"],
+        )
 
     def test_checked_in_projection_is_current(self) -> None:
         stale = [

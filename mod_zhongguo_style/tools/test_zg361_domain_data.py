@@ -156,7 +156,7 @@ class DomainRuntimePlanTests(unittest.TestCase):
             )
         self.assertEqual(ids, list(range(1, 362)))
 
-    def test_plan_does_not_inflate_ck3_runtime_readiness(self) -> None:
+    def test_plan_and_runtime_readiness_remain_separate(self) -> None:
         manifest = json.loads(
             outputs(self.mechanisms)[
                 MOD_ROOT / "docs" / "361-mechanism-manifest.json"
@@ -168,11 +168,21 @@ class DomainRuntimePlanTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "partial" for item in manifest["items"]),
-            4,
+            193,
         )
         self.assertEqual(
             sum(item["status"]["domain_runtime"] == "not-implemented" for item in manifest["items"]),
-            357,
+            168,
+        )
+        self.assertEqual(
+            manifest["readiness"]["exclusive_counts"],
+            {
+                "design-only": 0,
+                "python-l0": 168,
+                "ck3-static-ready": 131,
+                "central-wired": 58,
+                "ck3-live": 4,
+            },
         )
 
     def test_domain_lookup_matches_catalogue_group(self) -> None:

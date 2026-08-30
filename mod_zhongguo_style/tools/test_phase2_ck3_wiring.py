@@ -213,21 +213,23 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         self.assertNotIn("\tliege = {", phase2)
         self.assertNotIn("\tevery_vassal = {", phase2)
 
-    def test_manifest_upgrades_exactly_four_items_to_static_ready(self) -> None:
+    def test_manifest_keeps_exactly_four_first_slice_contracts_live(self) -> None:
         manifest = json.loads(read("docs/361-mechanism-manifest.json"))
-        upgraded = {
+        live = {
             item["id"]
             for item in manifest["items"]
-            if item["status"].get("runtime_evidence") == "static-ready"
+            if item["readiness"]["highest_level"] == "ck3-live"
         }
-        self.assertEqual(upgraded, {1, 18, 69, 357})
-        for item in manifest["items"]:
-            if item["id"] in upgraded:
-                self.assertEqual(item["status"]["domain_runtime"], "partial")
-            else:
-                self.assertEqual(item["status"]["domain_runtime"], "not-implemented")
-                self.assertNotIn("runtime_evidence", item["status"])
-                self.assertNotIn("runtime_contract", item)
+        contracts = {
+            item["id"] for item in manifest["items"] if "runtime_contract" in item
+        }
+        self.assertEqual(live, {1, 18, 69, 357})
+        self.assertEqual(contracts, {1, 18, 69, 357})
+        self.assertEqual(manifest["phase2_static"]["count"], 193)
+        self.assertEqual(
+            manifest["readiness"]["partial_live_notes"]["018"],
+            "receipt/refund is fixture-live; reopening zg361.53 remains static-ready",
+        )
 
     def test_all_product_script_files_keep_utf8_bom(self) -> None:
         paths = (

@@ -24,6 +24,21 @@ from zg361_domain_data import (
     build_runtime_plans,
 )
 from zg361_operation_registry import primitive_recipe_for
+from zg361_readiness_data import (
+    CENTRAL_WIRING_BOUNDARY,
+    CUMULATIVE_COUNTS,
+    EXPECTED_CUMULATIVE_RANGES,
+    EXPECTED_EXCLUSIVE_RANGES,
+    EXCLUSIVE_COUNTS,
+    LEVELS,
+    LIVE_BOUNDARY,
+    MECHANISM_COUNT as READINESS_MECHANISM_COUNT,
+    READINESS_BY_ID,
+    ReadinessLevel,
+    format_ranges,
+    ids_at_least,
+    ids_at_level,
+)
 
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
@@ -688,20 +703,28 @@ def wave_for(mechanism_id: int) -> int:
 
 
 def implementation_status(mechanism_id: int) -> dict[str, str]:
-    """Expose per-item evidence without inflating the other 357 mechanisms."""
-    status = {
+    """Project the ordered readiness ledger into the legacy status fields."""
+
+    record = READINESS_BY_ID[mechanism_id]
+    runtime_evidence = {
+        ReadinessLevel.DESIGN_ONLY: "none",
+        ReadinessLevel.PYTHON_L0: "python-l0",
+        ReadinessLevel.CK3_STATIC_READY: "static-ready",
+        ReadinessLevel.CENTRAL_WIRED: "static-ready",
+        ReadinessLevel.CK3_LIVE: "fixture-live",
+    }[record.level]
+    return {
         "catalogue": "complete",
         "policy_configuration": "fixture-live",
         "ledger_projection": "fixture-live",
-        "domain_runtime": "not-implemented",
+        "domain_runtime": (
+            "partial"
+            if record.level >= ReadinessLevel.CK3_STATIC_READY
+            else "not-implemented"
+        ),
         "player_visible_loop": "partial",
+        "runtime_evidence": runtime_evidence,
     }
-    spec = PHASE2_RUNTIME_SPECS.get(f"{mechanism_id:03d}")
-    if spec is not None:
-        status["domain_runtime"] = spec.domain_runtime
-        status["player_visible_loop"] = spec.player_visible_loop
-        status["runtime_evidence"] = spec.runtime_evidence
-    return status
 
 
 def runtime_contract(mechanism_id: int) -> dict[str, object] | None:
@@ -799,13 +822,14 @@ def manifest_payload(
                 ),
             },
             "status": implementation_status(mechanism.id),
+            "readiness": READINESS_BY_ID[mechanism.id].manifest_payload(),
         }
         contract = runtime_contract(mechanism.id)
         if contract is not None:
             item["runtime_contract"] = contract
         items.append(item)
     return {
-        "schema": 4,
+        "schema": 5,
         "mechanism_count": MECHANISM_COUNT,
         "source": "docs/361-expansion-options.md",
         "acceptance_contract_source": "tools/mechanism_acceptance/acceptance_*.json",
@@ -814,9 +838,9 @@ def manifest_payload(
             "policy_configuration": "Every reference choice ran in the frozen CK3 fixture.",
             "ledger_projection": "Choice variables, aggregate ledgers, checksum, and idempotence ran in the frozen CK3 fixture.",
             "runtime_plan": "All 361 mechanisms have a validated domain/hook/typed-operation/deadline/transaction/feedback/acceptance contract; this is design coverage, not CK3 implementation readiness.",
-            "domain_runtime": "Mechanisms 001/018/069/357 have a partial first-slice runtime; the other 357 typed domain runtimes remain not implemented.",
-            "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; the first slice adds a partial personal evidence/service/statement loop.",
-            "runtime_evidence": "001/018/069/357 are static-ready only: source model, generated manifest, script and localization checks; no CK3 fixture or live claim yet.",
+            "domain_runtime": "193 mechanisms have at least a committed partial CK3 product projection; 168 still have no CK3 domain runtime. Partial does not mean complete.",
+            "player_visible_loop": "Generic policy cards and ledger climate feedback remain partial; static or central wiring does not by itself complete the per-ID player loop.",
+            "runtime_evidence": "The ordered tools/zg361_readiness_data.py ledger is authoritative: 361 Python L0, 193 CK3 static, 62 central-hook reachable, and 4 bounded fixture-live.",
         },
         "acceptance": {
             "scope": "legacy reference-choice configuration and aggregate-ledger fixture only",
@@ -826,12 +850,29 @@ def manifest_payload(
             "report_sha256": "DCCF8B87D990BA3ED3074FAE3391E5004E6CD8B07A5C80750BC344E7F9024C25",
             "claim_boundary": "fixture-live applies only to policy_configuration and ledger_projection; it does not prove the 361 domain runtimes, player-visible semantic loops, or all 1083 A/B/C branches",
         },
+        "readiness": {
+            "schema": 1,
+            "authority": "tools/zg361_readiness_data.py",
+            "mechanism_count": READINESS_MECHANISM_COUNT,
+            "ordered_levels": [level.key for level in LEVELS],
+            "exclusive_counts": dict(EXCLUSIVE_COUNTS),
+            "cumulative_counts": dict(CUMULATIVE_COUNTS),
+            "exclusive_ranges": dict(EXPECTED_EXCLUSIVE_RANGES),
+            "cumulative_ranges": dict(EXPECTED_CUMULATIVE_RANGES),
+            "central_wiring_boundary": CENTRAL_WIRING_BOUNDARY,
+            "live_boundary": LIVE_BOUNDARY,
+            "legacy_fixture_boundary": "The 361 generic policy cards and aggregate ledger fixture do not promote domain readiness.",
+            "partial_live_notes": {
+                "018": "receipt/refund is fixture-live; reopening zg361.53 remains static-ready",
+            },
+        },
         "phase2_static": {
-            "mechanism_ids": [1, 18, 69, 357],
-            "evidence": "static-ready",
-            "source": "tools/zg361_phase2_runtime_data.py",
-            "tests": "tools/test_zg361_phase2_runtime.py",
-            "claim_boundary": "Static model and L0 checks do not prove CK3 load, fixture behavior, UI rendering, timed delivery, receipts, or appeal outcomes.",
+            "mechanism_ids": list(ids_at_least(ReadinessLevel.CK3_STATIC_READY)),
+            "count": CUMULATIVE_COUNTS[ReadinessLevel.CK3_STATIC_READY.key],
+            "evidence": "at-least-ck3-static-ready",
+            "source": "tools/zg361_readiness_data.py",
+            "tests": "tools/test_zg361_readiness_data.py",
+            "claim_boundary": "CK3 static and central wiring do not prove complete semantics or live behavior; only four explicitly bounded slices have fixture evidence.",
         },
         "runtime_plan": {
             "schema": RUNTIME_PLAN_SCHEMA,
@@ -905,31 +946,95 @@ def render_manifest_md(mechanisms: list[Mechanism], payload: dict[str, object]) 
     lines = [
         "# 361 机制实现映射",
         "",
-        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, `tools/zg361_domain_data.py`, or `tools/zg361_phase2_runtime_data.py`.",
+        "> GENERATED FILE — edit the numbered design document, reviewed choice JSON, acceptance-contract JSON, domain data, or `tools/zg361_readiness_data.py`.",
         "",
         "状态口径：361 项目录文案为 `complete`；参考政策配置和共享账本投影为 `fixture-live`；",
         "361/361 已有 `contract-complete` 的领域/状态/操作/期限/事务/反馈设计合同；这不等于游戏实现。",
-        "#001/#018/#069/#357 的首个领域纵切为 `partial / static-ready`；其余357项领域状态机仍为 `not-implemented`。",
-        "旧实机证据只证明配置变量、共享账本、校验和及幂等性，不证明 361 项领域玩法已经实现。证据见",
-        "`docs/testing-report-2026-08-29.md`，run `zga_20260829_061314_ea5f04ad`；逐项目标见 manifest 内 `acceptance_contract`。",
+        "当前累计门为 Python L0 `361/361`、CK3 static `193/361`、central-wired `62/361`、bounded fixture-live `4/361`。",
+        "`central-wired` 只表示中央产品 hook 可达，不表示逐号语义完整；#018 只有 receipt/refund 为 fixture-live，`.53` 重开仍为 static-ready。",
+        "旧 361 政策卡与共享账本 fixture 只证明配置投影，不得提升领域运行时。完整分层见 `361-phase2-coverage-ledger.md`。",
         "",
-        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 运行设计 | 领域 | 玩家闭环 |",
-        "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|---|",
+        "| ID | 机制 | 组 | P | Profile | 玩家入口 | AI 入口 | 同批逻辑组 | 目录 | 配置 | 账本 | 运行设计 | 领域 | 玩家闭环 | 最高证据 |",
+        "|---:|---|---|---|---|---|---|---:|---|---|---|---|---|---|---|",
     ]
     for mechanism in mechanisms:
         status = implementation_status(mechanism.id)
+        readiness = READINESS_BY_ID[mechanism.id]
         lines.append(
             f"| {mechanism.id:03d} | {mechanism.title_cn} | {mechanism.group_code} | "
             f"{mechanism.priority} | `{mechanism.profile}` | `zg361m.{mechanism.id}` | "
             f"`zg361_mechanism_{mechanism.id:03d}_ai_effect` | {wave_for(mechanism.id)} | "
             f"complete | fixture-live | fixture-live | contract-complete | {status['domain_runtime']} | "
-            f"{status['player_visible_loop']} |"
+            f"{status['player_visible_loop']} | `{readiness.level.key}` |"
         )
     digest = hashlib.sha256(
         json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
     ).hexdigest()
     lines.extend(["", f"Manifest semantic SHA-256: `{digest}`", ""])
     return ("\n".join(lines)).encode("utf-8")
+
+
+def render_readiness_ledger(mechanisms: list[Mechanism]) -> bytes:
+    """Render the human-readable projection of the unique readiness source."""
+
+    mechanism_by_id = {mechanism.id: mechanism for mechanism in mechanisms}
+    all_ids = set(range(1, MECHANISM_COUNT + 1))
+    lines = [
+        "# 361 二期实现覆盖账本",
+        "",
+        "> GENERATED FILE — edit only `tools/zg361_readiness_data.py`, then run `py tools/gen_361_mechanisms.py`.",
+        "",
+        "本账本记录每个编号当前达到的最高证据层。五层严格有序且互斥；累计门表示达到该层或更高层的编号数。",
+        "旧 361 张政策卡与共享组织账的 fixture-live 不属于领域运行时证据，不进入下列升级计数。",
+        "",
+        f"- `{CENTRAL_WIRING_BOUNDARY}`。",
+        f"- `{LIVE_BOUNDARY}`。",
+        "- #018 只有 receipt/refund 达到 fixture-live；关闭后重开 `zg361.53` 仍为 static-ready。",
+        "",
+        "## 最高状态（互斥）",
+        "",
+        "| 状态 | 数量 | 精确 ID ranges |",
+        "|---|---:|---|",
+    ]
+    for level in LEVELS:
+        lines.append(
+            f"| `{level.key}` | {EXCLUSIVE_COUNTS[level.key]} | "
+            f"{format_ranges(ids_at_level(level)) or '无'} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 累计证据门",
+            "",
+            "| 证据门 | 已达到 | 尚缺 | 已达到 ranges | 尚缺 ranges |",
+            "|---|---:|---:|---|---|",
+        ]
+    )
+    for level in LEVELS:
+        reached = set(ids_at_least(level))
+        missing = all_ids - reached
+        lines.append(
+            f"| `{level.key}` | {len(reached)} | {len(missing)} | "
+            f"{format_ranges(reached)} | {format_ranges(missing) or '无'} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 逐号状态",
+            "",
+            "| ID | 机制 | 最高状态 | 包 | 证据 | 边界说明 |",
+            "|---:|---|---|---|---|---|",
+        ]
+    )
+    for mechanism_id, record in READINESS_BY_ID.items():
+        mechanism = mechanism_by_id[mechanism_id]
+        evidence = "<br>".join(f"`{path}`" for path in record.evidence)
+        lines.append(
+            f"| {mechanism_id:03d} | {mechanism.title_cn} | `{record.level.key}` | "
+            f"`{record.package}` | {evidence} | {record.note} |"
+        )
+    lines.append("")
+    return BOM + ("\n".join(lines)).encode("utf-8")
 
 
 def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
@@ -964,6 +1069,9 @@ def outputs(mechanisms: list[Mechanism]) -> dict[Path, bytes]:
             / language
             / f"zg361_mechanisms_l_{language}.yml"
         ] = render_localization(mechanisms, language)
+    result[MOD_ROOT / "docs" / "361-phase2-coverage-ledger.md"] = (
+        render_readiness_ledger(mechanisms)
+    )
     payload["generated_files"] = sorted(
         path.relative_to(MOD_ROOT).as_posix() for path in result
     )
