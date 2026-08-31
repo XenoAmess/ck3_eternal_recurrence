@@ -31,6 +31,7 @@ enum VariableIndex : std::size_t {
   probe_source,
   probe_consequence,
   probe_subject_gold,
+  probe_manager_treasury,
   probe_capital_control,
   final_applicable,
   final_kpi_staged,
@@ -74,9 +75,9 @@ enum VariableIndex : std::size_t {
   kpi_consumed_incident_serial,
 };
 
-using RawRows = std::array<ZhongguoIncidentRawVariableV1, 49>;
+using RawRows = std::array<ZhongguoIncidentRawVariableV1, 50>;
 
-const std::array<std::string_view, 49> &Allowlist(
+const std::array<std::string_view, 50> &Allowlist(
     game::ZhongguoIncidentProfileV1 profile) noexcept {
   switch (profile) {
   case game::ZhongguoIncidentProfileV1::x:
@@ -527,12 +528,10 @@ void DecodeProbe(const ZhongguoIncidentNativeEnvironmentV1 &environment,
   DecodeInteger(rows[probe_consequence], output.probe.consequence_kind);
   DecodeQ100000(rows[probe_subject_gold],
                 output.resources.subject_personal_gold_q100000);
+  DecodeQ100000(rows[probe_manager_treasury],
+                output.resources.manager_treasury_q100000);
   DecodeQ100000(rows[probe_capital_control],
                 output.resources.capital_control_q100000);
-  // The current mod producer does not freeze the manager treasury value.  It
-  // is intentionally not inferred from source_kind=4 and never defaulted to 0.
-  SetUnavailable(output.resources.manager_treasury_q100000,
-                 "not_recorded_by_mod");
 }
 
 bool DecodeAndValidateNa(

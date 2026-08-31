@@ -105,6 +105,12 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_case_snapshot_v1.cpp
   src/zhongguo_case_snapshot_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1_serializer.cpp
+  src/zhongguo_b2_pip_snapshot_v1.cpp
+  src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp
+  src/zhongguo_b2_pip_snapshot_v1_serializer.cpp
+  src/zhongguo_incident_snapshot_v1.cpp
+  src/zhongguo_incident_snapshot_v1_mailbox.cpp
+  src/zhongguo_incident_snapshot_v1_serializer.cpp
   src/zhongguo_result_case_snapshot_v1.cpp
   src/zhongguo_result_case_snapshot_v1_mailbox.cpp
   src/zhongguo_result_case_snapshot_v1_serializer.cpp
@@ -266,6 +272,10 @@ if(BUILD_TESTING)
     src/war_entry_assessments_v1.cpp
     src/zhongguo_case_snapshot_v1.cpp
     src/zhongguo_case_snapshot_v1_mailbox.cpp
+    src/zhongguo_b2_pip_snapshot_v1.cpp
+    src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp
+    src/zhongguo_incident_snapshot_v1.cpp
+    src/zhongguo_incident_snapshot_v1_mailbox.cpp
     src/zhongguo_result_case_snapshot_v1.cpp
     src/zhongguo_result_case_snapshot_v1_mailbox.cpp
     src/game_adapter_test.cpp
@@ -757,6 +767,138 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_zhongguo_result_case_snapshot_v1
     COMMAND xar_ck3_zhongguo_result_case_snapshot_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_b2_pip_snapshot_v1_test
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_b2_pip_snapshot_v1.cpp
+    src/zhongguo_b2_pip_snapshot_v1_serializer.cpp
+    src/zhongguo_b2_pip_snapshot_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_b2_pip_snapshot_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_b2_pip_snapshot_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_b2_pip_snapshot_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_b2_pip_snapshot_v1
+    COMMAND xar_ck3_zhongguo_b2_pip_snapshot_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_b2_pip_snapshot_v1_mailbox_test
+    src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp
+    src/zhongguo_b2_pip_snapshot_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_b2_pip_snapshot_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_b2_pip_snapshot_v1_mailbox_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_b2_pip_snapshot_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_b2_pip_snapshot_v1_mailbox
+    COMMAND xar_ck3_zhongguo_b2_pip_snapshot_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_zhongguo_b2_pip_snapshot_v1_source_contract_test
+    src/zhongguo_b2_pip_snapshot_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_b2_pip_snapshot_v1_source_contract_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_b2_pip_snapshot_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_b2_pip_snapshot_v1_source_contract
+    COMMAND xar_ck3_zhongguo_b2_pip_snapshot_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/zhongguo_b2_pip_snapshot_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_b2_pip_snapshot_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_b2_pip_snapshot_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_b2_pip_snapshot_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_b2_pip_snapshot_v1_source_contract.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/tools/gen_361_b2_runtime.py
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/zhongguo-b2-pip-snapshot-v1.md
+  )
+
+  add_executable(xar_ck3_zhongguo_incident_snapshot_v1_test
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_incident_snapshot_v1.cpp
+    src/zhongguo_incident_snapshot_v1_serializer.cpp
+    src/zhongguo_incident_snapshot_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_incident_snapshot_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_incident_snapshot_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_incident_snapshot_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_incident_snapshot_v1
+    COMMAND xar_ck3_zhongguo_incident_snapshot_v1_test
+  )
+
+  add_executable(xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test
+    src/zhongguo_incident_snapshot_v1_mailbox.cpp
+    src/zhongguo_incident_snapshot_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_incident_snapshot_v1_mailbox
+    COMMAND xar_ck3_zhongguo_incident_snapshot_v1_mailbox_test
+  )
+
+  add_executable(xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test
+    src/zhongguo_incident_snapshot_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_zhongguo_incident_snapshot_v1_source_contract
+    COMMAND xar_ck3_zhongguo_incident_snapshot_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/zhongguo_incident_snapshot_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_incident_snapshot_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_incident_snapshot_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/zhongguo_incident_snapshot_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/zhongguo_incident_snapshot_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/zhongguo_incident_snapshot_v1_source_contract.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../mod_zhongguo_style/common/scripted_effects/zg361_incident_platform_runtime_effects.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ck3-native-ai/zhongguo-incident-snapshot-v1.md
   )
 
   add_executable(xar_ck3_zhongguo_result_case_snapshot_v1_mailbox_test

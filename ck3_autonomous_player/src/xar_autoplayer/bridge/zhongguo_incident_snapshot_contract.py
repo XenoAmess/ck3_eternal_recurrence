@@ -131,7 +131,7 @@ _PROVENANCE_VALUES: Final = {
     "variable_identifier_lookup_rva": "0x3B97020",
     "variable_identifier_name_rva": "0x3B97090",
     "character_storage_slot_rva": "0x570C130",
-    "manager_treasury_source": "not_recorded_by_mod",
+    "manager_treasury_source": "zg361_ip_probe_manager_treasury",
 }
 _FRAME_KEYS: Final = {
     "schema_version",
@@ -201,7 +201,6 @@ _FIELD_REASONS: Final = {
     "variable_absent",
     "value_type_mismatch",
     "value_out_of_range",
-    "not_recorded_by_mod",
     "terminal_not_selected",
     "not_applicable",
     "kpi_not_staged",
@@ -550,16 +549,6 @@ def normalize_native_zhongguo_incident_snapshot_v1(
     resource_ready = _all_available(resources)
     if readiness["resource_snapshot_ready"] is not resource_ready:
         raise ValueError("resource readiness disagrees with typed resources")
-    # Current producer gap is explicit.  A future mod producer must update the
-    # provenance and contract; this field can never silently become zero.
-    manager = resources["manager_treasury_q100000"]
-    if _available(manager):
-        raise ValueError(
-            "manager treasury cannot be available under not-recorded provenance"
-        )
-    if manager["unavailable_reason"] != "not_recorded_by_mod":
-        raise ValueError("manager treasury gap is not explicitly typed")
-
     kind = terminal["kind"]
     na: dict[str, dict[str, object]] | None = None
     incident: dict[str, dict[str, object]] | None = None

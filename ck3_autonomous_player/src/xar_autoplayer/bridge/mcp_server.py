@@ -230,6 +230,36 @@ def _ck3_query_zhongguo_result_case_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_b2_pip_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+    owner_character_id: int,
+) -> dict[str, object]:
+    """Observe the player's strict B2 PIP state without generic variables."""
+    return service.query_zhongguo_b2_pip_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+        owner_character_id=owner_character_id,
+    )
+
+
+def _ck3_query_zhongguo_incident_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+    owner_character_id: int,
+    profile: str,
+) -> dict[str, object]:
+    """Observe one strict X/Y/Z incident projection for the player."""
+    return service.query_zhongguo_incident_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+        owner_character_id=owner_character_id,
+        profile=profile,
+    )
+
+
 def _ck3_center_map_on_landed_title_v1(
     service: GameplayBridgeService,
     title_key: str,
@@ -688,6 +718,36 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_b2_pip_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+        owner_character_id: int,
+    ) -> dict[str, object]:
+        """Read the player's fixed-allowlist B2 PIP projection."""
+        return _ck3_query_zhongguo_b2_pip_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+            owner_character_id,
+        )
+
+    @server.tool()
+    def ck3_query_zhongguo_incident_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+        owner_character_id: int,
+        profile: str,
+    ) -> dict[str, object]:
+        """Read the player's fixed-allowlist X/Y/Z incident projection."""
+        return _ck3_query_zhongguo_incident_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+            owner_character_id,
+            profile,
+        )
+
+    @server.tool()
     def ck3_center_map_on_landed_title_v1(
         title_key: str,
         expected_revision: int,
@@ -903,6 +963,12 @@ def create_server(driver: GameplayBridgeDriver):
 
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_result_case_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_b2_pip_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_incident_snapshot_v1"
     )
     return server
 

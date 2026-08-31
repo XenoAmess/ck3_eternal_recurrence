@@ -185,12 +185,13 @@ inline constexpr std::string_view kZhongguoIncidentSnapshotV1AllowlistId =
 
 // The three lists are deliberately explicit.  Profile is an enum selector;
 // no caller supplied variable name ever reaches the engine reader.
-inline constexpr std::array<std::string_view, 49>
+inline constexpr std::array<std::string_view, 50>
     kZhongguoIncidentSnapshotV1XAllowlist{
         "zg361_ip_probe_owner", "zg361_ip_probe_subject",
         "zg361_ip_probe_cycle", "zg361_ip_probe_serial",
         "zg361_ip_probe_result", "zg361_ip_probe_source_kind",
         "zg361_ip_probe_consequence_kind", "zg361_ip_probe_subject_gold",
+        "zg361_ip_probe_manager_treasury",
         "zg361_ip_probe_capital_control", "zg361_ip_x_final_applicable",
         "zg361_ip_x_final_kpi_staged", "zg361_ip_x_final_na_owner",
         "zg361_ip_x_final_na_subject", "zg361_ip_x_final_na_cycle",
@@ -217,12 +218,13 @@ inline constexpr std::array<std::string_view, 49>
         "zg361_ip_x_kpi_consumed_case", "zg361_ip_x_kpi_consumed_score",
         "zg361_ip_x_kpi_consumed_incident_serial"};
 
-inline constexpr std::array<std::string_view, 49>
+inline constexpr std::array<std::string_view, 50>
     kZhongguoIncidentSnapshotV1YAllowlist{
         "zg361_ip_probe_owner", "zg361_ip_probe_subject",
         "zg361_ip_probe_cycle", "zg361_ip_probe_serial",
         "zg361_ip_probe_result", "zg361_ip_probe_source_kind",
         "zg361_ip_probe_consequence_kind", "zg361_ip_probe_subject_gold",
+        "zg361_ip_probe_manager_treasury",
         "zg361_ip_probe_capital_control", "zg361_ip_y_final_applicable",
         "zg361_ip_y_final_kpi_staged", "zg361_ip_y_final_na_owner",
         "zg361_ip_y_final_na_subject", "zg361_ip_y_final_na_cycle",
@@ -249,12 +251,13 @@ inline constexpr std::array<std::string_view, 49>
         "zg361_ip_y_kpi_consumed_case", "zg361_ip_y_kpi_consumed_score",
         "zg361_ip_y_kpi_consumed_incident_serial"};
 
-inline constexpr std::array<std::string_view, 49>
+inline constexpr std::array<std::string_view, 50>
     kZhongguoIncidentSnapshotV1ZAllowlist{
         "zg361_ip_probe_owner", "zg361_ip_probe_subject",
         "zg361_ip_probe_cycle", "zg361_ip_probe_serial",
         "zg361_ip_probe_result", "zg361_ip_probe_source_kind",
         "zg361_ip_probe_consequence_kind", "zg361_ip_probe_subject_gold",
+        "zg361_ip_probe_manager_treasury",
         "zg361_ip_probe_capital_control", "zg361_ip_z_final_applicable",
         "zg361_ip_z_final_kpi_staged", "zg361_ip_z_final_na_owner",
         "zg361_ip_z_final_na_subject", "zg361_ip_z_final_na_cycle",

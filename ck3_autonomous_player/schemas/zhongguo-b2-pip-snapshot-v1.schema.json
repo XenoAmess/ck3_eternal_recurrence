@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-b2-pip-snapshot-v1.schema.json",
+  "title": "ZhongGuo received-self B2 PIP snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "case_kind", "request_nonce",
+    "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "subject_character_id", "requested_owner_character_id", "gate", "pip",
+    "response", "support", "budget_ledger", "d180_ticket", "d365_ticket",
+    "midpoint", "outcome", "next_cycle_evidence", "pip_modifier_present",
+    "readiness", "unavailable_reason", "provenance", "build", "source",
+    "binding"
+  ],
+  "$defs": {
+    "fieldUnavailableReason": {
+      "enum": [
+        "case_unavailable", "variable_absent", "value_type_mismatch",
+        "value_out_of_range", "case_binding_mismatch",
+        "product_not_persisted", "native_observation_unavailable",
+        "not_applicable"
+      ]
+    },
+    "topLevelUnavailableReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "case_not_found", "case_inconsistent",
+        "owner_filter_mismatch", "not_received_self",
+        "variable_identifier_unavailable",
+        "variable_context_unavailable", "state_changed", "internal_error"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {
+              "type": "integer", "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+            },
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {
+              "$ref": "#/$defs/fieldUnavailableReason"
+            }
+          }
+        }
+      ]
+    },
+    "typedBoolean": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {
+              "$ref": "#/$defs/fieldUnavailableReason"
+            }
+          }
+        }
+      ]
+    },
+    "ticket": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "owner_character_id", "subject_character_id", "cycle_serial",
+        "case_serial", "expected_state", "due_date_raw"
+      ],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "expected_state": {"$ref": "#/$defs/typedInteger"},
+        "due_date_raw": {"$ref": "#/$defs/typedInteger"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "case_kind": {"const": "zhongguo.b2.pip"},
+    "request_nonce": {
+      "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+    },
+    "snapshot_revision": {
+      "type": "integer", "minimum": 1,
+      "maximum": 18446744073709551615
+    },
+    "date_raw": {
+      "type": "integer", "minimum": -2147483648, "maximum": 2147483647
+    },
+    "paused": {"const": true},
+    "player_character_id": {
+      "type": "integer", "minimum": 1, "maximum": 2147483647
+    },
+    "subject_character_id": {
+      "type": "integer", "minimum": 1, "maximum": 2147483647
+    },
+    "requested_owner_character_id": {
+      "type": "integer", "minimum": 1, "maximum": 2147483647
+    },
+    "gate": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "owner_character_id", "subject_character_id", "cycle_serial",
+        "case_serial", "threshold", "negative_component_count",
+        "evidence_complete", "status", "result_case_serial", "result_grade",
+        "absolute_grade", "kpi_frozen_q100000", "governance_q100000",
+        "capability_q100000", "growth_q100000", "superior_q100000",
+        "values_q100000", "collaboration_q100000", "jingcha_q100000",
+        "organization_q100000"
+      ],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "threshold": {"$ref": "#/$defs/typedInteger"},
+        "negative_component_count": {"$ref": "#/$defs/typedInteger"},
+        "evidence_complete": {"$ref": "#/$defs/typedBoolean"},
+        "status": {"$ref": "#/$defs/typedInteger"},
+        "result_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "result_grade": {"$ref": "#/$defs/typedInteger"},
+        "absolute_grade": {"$ref": "#/$defs/typedInteger"},
+        "kpi_frozen_q100000": {"$ref": "#/$defs/typedInteger"},
+        "governance_q100000": {"$ref": "#/$defs/typedInteger"},
+        "capability_q100000": {"$ref": "#/$defs/typedInteger"},
+        "growth_q100000": {"$ref": "#/$defs/typedInteger"},
+        "superior_q100000": {"$ref": "#/$defs/typedInteger"},
+        "values_q100000": {"$ref": "#/$defs/typedInteger"},
+        "collaboration_q100000": {"$ref": "#/$defs/typedInteger"},
+        "jingcha_q100000": {"$ref": "#/$defs/typedInteger"},
+        "organization_q100000": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "pip": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "owner_character_id", "subject_character_id", "cycle_serial",
+        "case_serial", "state", "task_kind", "task_controllable",
+        "policy_route"
+      ],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "task_kind": {"$ref": "#/$defs/typedInteger"},
+        "task_controllable": {"$ref": "#/$defs/typedBoolean"},
+        "policy_route": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "response": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "subject_response", "response_case_serial",
+        "response_author_character_id", "acknowledgement_receipt_serial",
+        "goal_revision_used", "refusal_receipt_serial"
+      ],
+      "properties": {
+        "subject_response": {"$ref": "#/$defs/typedInteger"},
+        "response_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "response_author_character_id": {"$ref": "#/$defs/typedInteger"},
+        "acknowledgement_receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "goal_revision_used": {"$ref": "#/$defs/typedBoolean"},
+        "refusal_receipt_serial": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "support": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "capacity_reserved", "owner_capacity_used", "support_absent",
+        "hours", "attention_units", "mentor_character_id",
+        "budget_owner_character_id", "treasury_budget_allocated",
+        "treasury_budget_spent", "support_receipt_serial", "released",
+        "withheld", "atomic_shortfall"
+      ],
+      "properties": {
+        "capacity_reserved": {"$ref": "#/$defs/typedBoolean"},
+        "owner_capacity_used": {"$ref": "#/$defs/typedInteger"},
+        "support_absent": {"$ref": "#/$defs/typedBoolean"},
+        "hours": {"$ref": "#/$defs/typedInteger"},
+        "attention_units": {"$ref": "#/$defs/typedInteger"},
+        "mentor_character_id": {"$ref": "#/$defs/typedInteger"},
+        "budget_owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "treasury_budget_allocated": {"$ref": "#/$defs/typedInteger"},
+        "treasury_budget_spent": {"$ref": "#/$defs/typedInteger"},
+        "support_receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "released": {"$ref": "#/$defs/typedBoolean"},
+        "withheld": {"$ref": "#/$defs/typedBoolean"},
+        "atomic_shortfall": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "budget_ledger": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "result_case_serial", "treasury_penalty_paid",
+        "personal_gold_penalty_paid", "support_treasury_allocated",
+        "support_treasury_spent"
+      ],
+      "properties": {
+        "result_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "treasury_penalty_paid": {"$ref": "#/$defs/typedInteger"},
+        "personal_gold_penalty_paid": {"$ref": "#/$defs/typedInteger"},
+        "support_treasury_allocated": {"$ref": "#/$defs/typedInteger"},
+        "support_treasury_spent": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "d180_ticket": {"$ref": "#/$defs/ticket"},
+    "d365_ticket": {"$ref": "#/$defs/ticket"},
+    "midpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "receipt_serial", "resource_delivery_valid", "progress_status",
+        "progress_red_code", "state"
+      ],
+      "properties": {
+        "receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "resource_delivery_valid": {"$ref": "#/$defs/typedBoolean"},
+        "progress_status": {"$ref": "#/$defs/typedInteger"},
+        "progress_red_code": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "code", "settlement_receipt_serial", "result_cycle_serial",
+        "result_case_serial", "result_grade", "stability_days_observed",
+        "independent_review_status", "independent_review_red_code",
+        "graduation_receipt_serial", "failure_receipt_serial",
+        "no_support_liability"
+      ],
+      "properties": {
+        "code": {"$ref": "#/$defs/typedInteger"},
+        "settlement_receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "result_cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "result_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "result_grade": {"$ref": "#/$defs/typedInteger"},
+        "stability_days_observed": {"$ref": "#/$defs/typedInteger"},
+        "independent_review_status": {"$ref": "#/$defs/typedInteger"},
+        "independent_review_red_code": {"$ref": "#/$defs/typedInteger"},
+        "graduation_receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "failure_receipt_serial": {"$ref": "#/$defs/typedInteger"},
+        "no_support_liability": {"$ref": "#/$defs/typedBoolean"}
+      }
+    },
+    "next_cycle_evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "status", "owner_character_id", "subject_character_id",
+        "source_cycle_serial", "source_case_serial", "due_cycle_serial",
+        "delta", "consumed_cycle_serial", "consumed_case_serial"
+      ],
+      "properties": {
+        "status": {"$ref": "#/$defs/typedInteger"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "source_cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "source_case_serial": {"$ref": "#/$defs/typedInteger"},
+        "due_cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "delta": {"$ref": "#/$defs/typedInteger"},
+        "consumed_cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "consumed_case_serial": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "pip_modifier_present": {"$ref": "#/$defs/typedBoolean"},
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "player_subject_binding_ready", "owner_binding_ready", "gate_ready",
+        "gate_evidence_ready", "pip_identity_ready", "response_ready",
+        "support_ready", "budget_ledger_ready", "midpoint_ready",
+        "outcome_ready", "next_cycle_evidence_ready",
+        "d180_ticket_observation_ready", "d365_ticket_observation_ready",
+        "modifier_observation_ready", "same_frame_ready", "ready"
+      ],
+      "properties": {
+        "player_subject_binding_ready": {"type": "boolean"},
+        "owner_binding_ready": {"type": "boolean"},
+        "gate_ready": {"type": "boolean"},
+        "gate_evidence_ready": {"type": "boolean"},
+        "pip_identity_ready": {"type": "boolean"},
+        "response_ready": {"type": "boolean"},
+        "support_ready": {"type": "boolean"},
+        "budget_ledger_ready": {"type": "boolean"},
+        "midpoint_ready": {"type": "boolean"},
+        "outcome_ready": {"type": "boolean"},
+        "next_cycle_evidence_ready": {"type": "boolean"},
+        "d180_ticket_observation_ready": {"const": false},
+        "d365_ticket_observation_ready": {"const": false},
+        "modifier_observation_ready": {"const": false},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "unavailable_reason": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/topLevelUnavailableReason"}
+      ]
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "game_version", "executable_sha256", "backend_id", "consumer_id",
+        "allowlist_id", "variable_context_for_scope_rva",
+        "variable_identifier_table_rva", "variable_identifier_lookup_rva",
+        "variable_identifier_name_rva", "character_storage_slot_rva"
+      ],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-b2-pip-snapshot-v1"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-b2-pip-snapshot-v1"},
+        "allowlist_id": {"const": "zg361-b2-pip-received-self-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"},
+        "variable_identifier_table_rva": {"const": "0x3B971A0"},
+        "variable_identifier_lookup_rva": {"const": "0x3B97020"},
+        "variable_identifier_name_rva": {"const": "0x3B97090"},
+        "character_storage_slot_rva": {"const": "0x570C130"}
+      }
+    },
+    "build": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "exe_sha256"],
+      "properties": {
+        "version": {"const": "1.19.0.6"},
+        "exe_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "bridge_version", "game_adapter_id", "backend_id", "consumer_id",
+        "connection_generation", "snapshot_id", "revision",
+        "native_revision", "date_raw", "paused", "player_character_id"
+      ],
+      "properties": {
+        "bridge_version": {"const": "0.1.0"},
+        "game_adapter_id": {"const": "ck3-1.19.0.6-msvc-x64"},
+        "backend_id": {"const": "native-headless"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-b2-pip-snapshot-v1"},
+        "connection_generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615},
+        "native_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+        "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+        "paused": {"const": true},
+        "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "request_nonce", "snapshot_id", "revision", "native_revision",
+        "connection_generation", "date_raw", "paused",
+        "player_character_id", "subject_character_id", "owner_character_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615},
+        "native_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+        "connection_generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+        "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+        "paused": {"const": true},
+        "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "owner_character_id": {"type": ["integer", "null"], "minimum": 1, "maximum": 2147483647},
+        "expected_revision": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "available"}}},
+      "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+      "else": {
+        "properties": {
+          "unavailable_reason": {
+            "$ref": "#/$defs/topLevelUnavailableReason"
+          }
+        }
+      }
+    }
+  ]
+}

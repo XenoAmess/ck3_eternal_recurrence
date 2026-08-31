@@ -1,10 +1,10 @@
 # 天朝 361 Incident X/Y/Z 原生观测口 v1
 
-状态：`static_and_fixture_ready`、`shared-integration-pending`、`not-live`
+状态：`static-ready`、`shared-protocol-integrated`、`not-live`
 
 本观测口服务于天朝二期 Incident X/Y/Z 的一次启动批量验收。它只读取暂停帧中的玩家角色，并把请求里的
 `owner_character_id` 当作相等性过滤器；调用方不能指定 subject、scope 或变量名。`profile` 只能是
-`x | y | z`，分别选择三份编译期固定的 49 项 allowlist，不做字符串拼接式变量读取。
+`x | y | z`，分别选择三份编译期固定的 50 项 allowlist，不做字符串拼接式变量读取。
 
 权威实现与合同：
 
@@ -23,7 +23,7 @@
 
 ## 查询与权限边界
 
-能力名为 `game.command.query-zhongguo-incident-snapshot-v1`。共享层接线后的 MCP 公开参数必须精确为：
+能力名为 `game.command.query-zhongguo-incident-snapshot-v1`。MCP 公开参数精确为：
 
 ```text
 request_nonce
@@ -34,7 +34,7 @@ profile = x | y | z
 
 禁止增加 `subject_character_id`、`case_kind`、`variable_name(s)`、`scope_character_id` 或任意透传字段。
 subject 恒为 same-frame `played_character_id`；reader 只为该角色构造 kind-4 event target。probe 中实际冻结的
-owner 必须等于请求 owner 且不能等于玩家自己。前后帧必须相同，49 项 raw row 必须连续读取两遍且逐项相同。
+owner 必须等于请求 owner 且不能等于玩家自己。前后帧必须相同，50 项 raw row 必须连续读取两遍且逐项相同。
 
 ## 严格终态 union
 
@@ -54,31 +54,33 @@ KPI 也采用严格状态：N/A 只能是 `not_staged`；正案只能是 `pendin
 owner/subject/origin/due/consumed-cycle/case/score/incident join。旧轮、错 owner、错案或 collision 后残留 tuple
 都不能过 readiness。
 
-## 已确认的 mod producer 缺口
+## 管理者国库 producer 已闭合
 
-当前 `zg361_ip_capture_real_incident_effect` 已在受评者 scope 冻结：
+commit `9441742` 中的 `zg361_ip_capture_real_incident_effect` 已在显式
+`government_has_flag = government_has_treasury` 能力守卫下，把同一 probe 帧的三项资源冻结在受评者 scope：
 
-- `zg361_ip_probe_subject_gold`
-- `zg361_ip_probe_capital_control`
+- `zg361_ip_probe_subject_gold = gold`
+- `zg361_ip_probe_manager_treasury = root.treasury`
+- `zg361_ip_probe_capital_control = capital_county.county_control`
 
-它会用管理者国库负数判定 source kind 4，却没有把当刻的国库余额冻结到受评者案卷。因此 v1 scaffold 将
-`resources.manager_treasury_q100000` 明确序列化为：
+complete-cache guard 同时要求三项变量存在；没有零值兜底。provider 将
+`zg361_ip_probe_manager_treasury` 纳入 X/Y/Z 三份固定 allowlist，并像另外两项资源一样保留 kind-1 原始 payload，
+按 Q100000 解码。provenance 的 `manager_treasury_source` 精确固定为该 mod variable。
+
+如果任一实际帧缺少该变量，字段必须保持：
 
 ```json
-{"status":"unavailable","value":null,"unavailable_reason":"not_recorded_by_mod"}
+{"status":"unavailable","value":null,"unavailable_reason":"variable_absent"}
 ```
 
-同时 `resource_snapshot_ready=false`、总 `ready=false`。禁止从 `source_kind=4` 推断余额为 0，禁止把缺字段补 0，
-也禁止为填这个字段开放 caller-selected owner scope reader。
-
-共享接线前必须先在 `tools/gen_361_incident_platform_runtime.py` 的真实 probe producer 中，用经 CK3 parser
-和实机 paused snapshot 验证的 scope/value 写法，把管理者当刻国库余额冻结为受评者变量
-`zg361_ip_probe_manager_treasury`。随后需要同步：三份 allowlist 从 49 增至 50、reader 解码、provenance 从
-`not_recorded_by_mod` 改为明确 mod variable、Python 合同/schema/ABI/fixture/测试。不能只改 provider。
+此时 `resource_snapshot_ready=false`、总 `ready=false`。禁止从 `source_kind=4` 推断余额为 0，禁止把缺字段补 0，
+也禁止为填这个字段开放 caller-selected owner scope reader。合法的真实国库余额可以恰好为 0；是否可用由 typed
+status 而不是数值本身决定。
 
 ## 共享层精确插入合同
 
-以下项目必须在当前 B2/Manager 并行接线收口后按一次原子提交完成；本 scaffold 刻意没有抢写这些共享文件。
+共享层现已按下表精确接入。Incident 独占第十七个固定只读槽
+`permitted_executor_septendenary`；它不复用 B2 的 sequence/result key，也没有进入 planner action space。
 
 | 文件 | 稳定锚点 | 必须插入的内容 |
 |---|---|---|
@@ -94,8 +96,8 @@ owner/subject/origin/due/consumed-cycle/case/score/incident join。旧轮、错 
 | `tests/unit/test_repository_contracts.py` | schema/contract 精确集合与数量 | 加入本 schema/contract；显式更新计数，不能用放宽断言规避 |
 | provider 专属 integration test | result provider bridge test 模式 | 覆盖 native-driver request exactness、pause/revision/capability/connection drift、service signature、MCP schema 拒绝 subject/variable alias |
 
-共享层接线后还必须更新 ABI fixture 中的 `integration_status`，但在 fresh build、CTest 与 CK3 实机前仍只能写
-`static-ready`，不能写 live。
+ABI fixture 的 `integration_status` 已更新为 `shared_protocol_static_ready`。这仍只代表静态接线与 fixture；
+没有 paused CK3 artifact 前不能写 production-live。
 
 ## 批量实机验收合同
 
@@ -112,10 +114,26 @@ owner/subject/origin/due/consumed-cycle/case/score/incident join。旧轮、错 
 
 ## 当前验证
 
-- Python 合同与 source scaffold：normal 14/14、`-O` 14/14。
+- 合并 B2 PIP 与 Incident 后，从空目录生成的 MSVC 19.51 / C++20 Release 构建通过；
+  全量 CTest 56/56 通过，其中包含 Incident reader、mailbox 与 source-contract 三个专项。
+  最终外部构建目录为
+  `C:\Users\xenoa\AppData\Local\Temp\xar-provider-integration-final-20260831T1620`；
+  source fingerprint 为 `670A9E9C093EA2ACF7826724ED7BE8CC0BAE1855A64FDAA268FEB5BFA09C84A4`，
+  DLL SHA-256 为 `3FBB8D2645C4C16C7AC4EA13A889990B79454FC88340891BDA0BF4E5EAAF5E73`。
+- 合并后的 native driver、service、MCP、ZhongGuo case/result/B2/Incident 相关 Python 回归：
+  normal 492/492、`-O` 492/492，包含公开 schema 精确集合合同。
+- mailbox/B2/Incident 的 8 份 ABI、source fixture 与公开 schema 均已重新解析；
+  `git diff --check -- ck3_autonomous_player docs/ck3-native-ai` 通过。
 - MSVC 19.51、C++20、`/W4 /WX`：reader、serializer、mailbox 均独立编译通过。
-- 离线 C++ fixture：N/A 与 Y incident-pending 均通过；可执行文件保存在
-  `C:\Users\xenoa\AppData\Local\Temp\xar-incident-scaffold-20260831T1535Z\incident_fixture_test.exe`，
-  SHA-256 `75A07AF89C15A5D73FFB7A12E1FC8761A70A265EB2213ECEFFC1433295604F0B`。
+- 离线 C++ fixture：完整资源 N/A、manager treasury 缺失 typed unavailable、Y incident-pending 均通过；
+  可执行文件保存在
+  `C:\Users\xenoa\AppData\Local\Temp\xar-incident-scaffold-20260831T1615Z\incident_fixture_test.exe`，
+  SHA-256 `828F8628C60A3E08C9871D598DEA9A3289EBF57787827610BFE953EB49FB590A`。
 
-这些证据不包含 shared integration、fresh full bridge build 或 CK3 live，不能越级宣称完成。
+直接调用 MSVC 编译这组 standalone fixture 时必须带 `/DNOMINMAX`，否则 `windows.h` 的 `max` 宏会破坏
+`std::numeric_limits<...>::max()`，并在 `/WX` 下失败。编译工作目录必须放在仓库外的 artifact 目录；早期一次误在
+仓库根生成的 `zhongguo_case_snapshot_v1.obj`、`zhongguo_incident_snapshot_v1.obj`、
+`zhongguo_incident_snapshot_v1_serializer.obj`、`zhongguo_incident_snapshot_v1_test.obj` 已作为过程素材保留，
+不得把它们当作当前 50-key fixture 产物。
+
+这些证据仍不包含 CK3 live，不能越级宣称 production-live 完成。

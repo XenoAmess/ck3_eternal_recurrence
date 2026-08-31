@@ -50,10 +50,10 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
         }
         for profile, keys in lists.items():
             with self.subTest(profile=profile):
-                self.assertEqual(len(keys), 49)
-                self.assertEqual(len(set(keys)), 49)
+                self.assertEqual(len(keys), 50)
+                self.assertEqual(len(set(keys)), 50)
                 self.assertEqual(
-                    keys[:9],
+                    keys[:10],
                     [
                         "zg361_ip_probe_owner",
                         "zg361_ip_probe_subject",
@@ -63,6 +63,7 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
                         "zg361_ip_probe_source_kind",
                         "zg361_ip_probe_consequence_kind",
                         "zg361_ip_probe_subject_gold",
+                        "zg361_ip_probe_manager_treasury",
                         "zg361_ip_probe_capital_control",
                     ],
                 )
@@ -79,21 +80,48 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
                         for key in keys
                     )
                 )
-        self.assertEqual(lists["x"][:9], lists["y"][:9])
-        self.assertEqual(lists["x"][:9], lists["z"][:9])
+        self.assertEqual(lists["x"][:10], lists["y"][:10])
+        self.assertEqual(lists["x"][:10], lists["z"][:10])
 
-    def test_manager_treasury_gap_is_explicit_not_a_hidden_allowlist_read(self) -> None:
-        self.assertNotIn("zg361_ip_probe_manager_treasury", self.header)
-        self.assertNotIn("zg361_ip_probe_manager_treasury", self.effects)
-        for source in (self.reader, self.serializer):
-            self.assertIn("not_recorded_by_mod", source)
-        self.assertIsNone(self.abi["manager_treasury_gap"]["current_mod_producer"])
+    def test_manager_treasury_uses_exact_same_frame_mod_variable(self) -> None:
+        self.assertIn("zg361_ip_probe_manager_treasury", self.header)
+        self.assertIn(
+            "DecodeQ100000(rows[probe_manager_treasury]", self.reader
+        )
+        self.assertNotIn("not_recorded_by_mod", self.reader)
+        self.assertNotIn("not_recorded_by_mod", self.serializer)
+        self.assertIn(
+            "manager_treasury_source\\\":\\\"zg361_ip_probe_manager_treasury",
+            self.serializer,
+        )
+        producer = self.abi["manager_treasury_binding"]
+        self.assertEqual(
+            producer["mod_variable"], "zg361_ip_probe_manager_treasury"
+        )
+        self.assertEqual(producer["value_source"], "root.treasury")
+        self.assertEqual(
+            producer["producer_capability_guard"],
+            "government_has_flag = government_has_treasury",
+        )
         self.assertTrue(
-            self.abi["manager_treasury_gap"]["forbidden_inference"]
+            producer["complete_cache_requires_variable"]
         )
         self.assertEqual(
-            self.fixture["mod_producer_gap"]["typed_reason"],
-            "not_recorded_by_mod",
+            self.fixture["mod_producer_binding"]["missing_typed_reason"],
+            "variable_absent",
+        )
+        self.assertRegex(
+            self.effects,
+            r"set_variable\s*=\s*\{\s*name\s*=\s*"
+            r"zg361_ip_probe_manager_treasury\s+value\s*=\s*root\.treasury\s*\}",
+        )
+        self.assertRegex(
+            self.effects,
+            r"has_variable\s*=\s*zg361_ip_probe_manager_treasury",
+        )
+        self.assertRegex(
+            self.effects,
+            r"government_has_flag\s*=\s*government_has_treasury",
         )
 
     def test_reader_is_same_frame_played_subject_only(self) -> None:
@@ -132,12 +160,20 @@ class ZhongguoIncidentSnapshotScaffoldTests(unittest.TestCase):
             self.mailbox_header,
         )
 
-    def test_fixture_and_abi_remain_honest_about_integration(self) -> None:
-        self.assertEqual(self.abi["allowlist"]["count_per_profile"], 49)
-        self.assertEqual(self.fixture["allowlist_count_per_profile"], 49)
+    def test_fixture_and_abi_record_static_shared_integration(self) -> None:
+        self.assertEqual(self.abi["allowlist"]["count_per_profile"], 50)
+        self.assertEqual(self.fixture["allowlist_count_per_profile"], 50)
         self.assertEqual(
             self.fixture["integration_status"],
-            "not_added_to_shared_build_or_protocol_surfaces",
+            "shared_protocol_static_ready",
+        )
+        self.assertEqual(
+            self.fixture["mailbox_fixed_slot"],
+            "permitted_executor_septendenary",
+        )
+        self.assertEqual(
+            self.abi["mailbox_fixed_slot"],
+            "permitted_executor_septendenary",
         )
         self.assertIn("production_live_acceptance", self.abi["unsupported_claims"])
 

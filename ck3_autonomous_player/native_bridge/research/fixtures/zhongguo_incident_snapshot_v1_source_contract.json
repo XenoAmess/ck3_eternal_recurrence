@@ -4,7 +4,19 @@
   "step": "query-zhongguo-incident-snapshot-v1",
   "case_kind": "zhongguo.incident.subject-self",
   "profiles": ["x", "y", "z"],
-  "allowlist_count_per_profile": 49,
+  "allowlist_count_per_profile": 50,
+  "common_allowlist": [
+    "zg361_ip_probe_owner",
+    "zg361_ip_probe_subject",
+    "zg361_ip_probe_cycle",
+    "zg361_ip_probe_serial",
+    "zg361_ip_probe_result",
+    "zg361_ip_probe_source_kind",
+    "zg361_ip_probe_consequence_kind",
+    "zg361_ip_probe_subject_gold",
+    "zg361_ip_probe_manager_treasury",
+    "zg361_ip_probe_capital_control"
+  ],
   "request_fields": [
     "request_nonce",
     "expected_revision",
@@ -12,6 +24,7 @@
     "profile"
   ],
   "mailbox_executor": "ExecuteZhongguoIncidentSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "permitted_executor_septendenary",
   "result_payload_key": "zhongguo_incident_snapshot",
   "required_source_properties": [
     "played_character_is_only_subject",
@@ -25,6 +38,7 @@
     "na_positive_receipt_never_empty_case",
     "pending_or_consumed_kpi_union",
     "resource_payloads_retain_q100000",
+    "manager_treasury_uses_exact_mod_variable",
     "manager_treasury_missing_is_typed_unavailable"
   ],
   "forbidden_request_fields": [
@@ -40,11 +54,16 @@
     "y": "zg361_ip_y_",
     "z": "zg361_ip_z_"
   },
-  "mod_producer_gap": {
-    "missing_key": "zg361_ip_probe_manager_treasury",
-    "typed_reason": "not_recorded_by_mod",
+  "mod_producer_binding": {
+    "key": "zg361_ip_probe_manager_treasury",
+    "producer_effect": "zg361_ip_capture_real_incident_effect",
+    "storage_scope": "assessed_subject",
+    "producer_capability_guard": "government_has_flag = government_has_treasury",
+    "value_source": "root.treasury",
+    "wire": "Q100000",
+    "missing_typed_reason": "variable_absent",
     "must_not_zero_fill": true
   },
-  "integration_status": "not_added_to_shared_build_or_protocol_surfaces",
-  "readiness": "static_and_fixture_ready_integration_pending_not_live"
+  "integration_status": "shared_protocol_static_ready",
+  "readiness": "static_and_fixture_ready_shared_protocol_not_live"
 }

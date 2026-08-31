@@ -47,9 +47,9 @@ bool AppendNumber(std::string &output, Value value) {
 }
 
 bool ValidFieldReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 9> reasons{
+  constexpr std::array<std::string_view, 8> reasons{
       "snapshot_unavailable", "variable_absent", "value_type_mismatch",
-      "value_out_of_range", "not_recorded_by_mod", "terminal_not_selected",
+      "value_out_of_range", "terminal_not_selected",
       "not_applicable", "kpi_not_staged", "not_yet_consumed"};
   return std::find(reasons.begin(), reasons.end(), reason) != reasons.end();
 }
@@ -317,7 +317,7 @@ void AppendProvenance(std::string &output) {
       "\"variable_identifier_lookup_rva\":\"0x3B97020\","
       "\"variable_identifier_name_rva\":\"0x3B97090\","
       "\"character_storage_slot_rva\":\"0x570C130\","
-      "\"manager_treasury_source\":\"not_recorded_by_mod\"}";
+      "\"manager_treasury_source\":\"zg361_ip_probe_manager_treasury\"}";
 }
 
 } // namespace

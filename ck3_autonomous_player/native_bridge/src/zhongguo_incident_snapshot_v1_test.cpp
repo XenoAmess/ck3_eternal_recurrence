@@ -63,6 +63,7 @@ void AddProbe(Fixture &fixture, bool incident) {
   fixture.rows["zg361_ip_probe_source_kind"] = Integer(incident ? 3 : 0);
   fixture.rows["zg361_ip_probe_consequence_kind"] = Integer(incident ? 2 : 0);
   fixture.rows["zg361_ip_probe_subject_gold"] = Q100000(-125'000);
+  fixture.rows["zg361_ip_probe_manager_treasury"] = Q100000(-900'000);
   fixture.rows["zg361_ip_probe_capital_control"] = Q100000(4'500'000);
 }
 
@@ -107,12 +108,38 @@ bool CheckNa() {
   return result == game::ReadZhongguoIncidentSnapshotResultV1::available &&
          output.terminal_kind == game::ZhongguoIncidentTerminalKindV1::na &&
          output.readiness.terminal_ready && output.readiness.kpi_state_ready &&
-         !output.readiness.resource_snapshot_ready &&
-         !output.resources.manager_treasury_q100000.available &&
-         output.resources.manager_treasury_q100000.unavailable_reason ==
-             "not_recorded_by_mod" &&
+         output.readiness.resource_snapshot_ready && output.readiness.ready &&
+         output.resources.manager_treasury_q100000.available &&
+         output.resources.manager_treasury_q100000.value == -900'000 &&
          wire.find("\"kind\":\"na\"") != std::string::npos &&
+         wire.find("\"manager_treasury_source\":\"zg361_ip_probe_manager_treasury\"") !=
+             std::string::npos &&
          wire.find("\"value\":0") != std::string::npos;
+}
+
+bool CheckMissingTreasury() {
+  Fixture fixture;
+  AddProbe(fixture, false);
+  fixture.rows.erase("zg361_ip_probe_manager_treasury");
+  fixture.rows["zg361_ip_x_final_applicable"] = Integer(0);
+  fixture.rows["zg361_ip_x_final_kpi_staged"] = Integer(0);
+  fixture.rows["zg361_ip_x_final_na_owner"] = Character(kOwner);
+  fixture.rows["zg361_ip_x_final_na_subject"] = Character(kSubject);
+  fixture.rows["zg361_ip_x_final_na_cycle"] = Integer(7);
+  fixture.rows["zg361_ip_x_final_na_reason"] = Integer(1);
+  fixture.rows["zg361_ip_x_final_na_probe_serial"] = Integer(12);
+  fixture.rows["zg361_ip_x_final_na_receipt"] = Integer(3);
+  game::ZhongguoIncidentSnapshotV1 output;
+  const auto result = ck3_11906::ReadZhongguoIncidentSnapshotV1(
+      Environment(), Access(fixture), Request(game::ZhongguoIncidentProfileV1::x),
+      output);
+  return result == game::ReadZhongguoIncidentSnapshotResultV1::available &&
+         !output.resources.manager_treasury_q100000.available &&
+         !output.resources.manager_treasury_q100000.value.has_value() &&
+         output.resources.manager_treasury_q100000.unavailable_reason ==
+             "variable_absent" &&
+         !output.readiness.resource_snapshot_ready &&
+         !output.readiness.ready;
 }
 
 bool CheckIncidentPending() {
@@ -153,14 +180,14 @@ bool CheckIncidentPending() {
              game::ZhongguoIncidentTerminalKindV1::incident &&
          output.kpi.disposition ==
              game::ZhongguoIncidentKpiDispositionV1::pending &&
-         output.readiness.kpi_state_ready &&
+         output.readiness.kpi_state_ready && output.readiness.ready &&
          wire.find("\"disposition\":\"pending\"") != std::string::npos;
 }
 
 } // namespace
 
 int main() {
-  if (!CheckNa() || !CheckIncidentPending()) {
+  if (!CheckNa() || !CheckMissingTreasury() || !CheckIncidentPending()) {
     std::cerr << "ZhongGuo incident snapshot fixture failed\n";
     return 1;
   }

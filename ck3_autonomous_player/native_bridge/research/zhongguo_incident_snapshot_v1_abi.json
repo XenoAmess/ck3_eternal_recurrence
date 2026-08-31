@@ -1,12 +1,13 @@
 {
   "contract": "zhongguo_incident_snapshot_v1",
-  "status": "static_and_fixture_ready_integration_pending_not_live",
+  "status": "static_ready_shared_protocol_not_live",
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "capability": "game.command.query-zhongguo-incident-snapshot-v1",
   "step": "query-zhongguo-incident-snapshot-v1",
   "case_kind": "zhongguo.incident.subject-self",
   "mailbox_executor": "ExecuteZhongguoIncidentSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "permitted_executor_septendenary",
   "request": {
     "public_inputs": [
       "request_nonce",
@@ -46,7 +47,7 @@
     "resource_wire": "retain_exact_kind_1_payload_as_q100000"
   },
   "allowlist": {
-    "count_per_profile": 49,
+    "count_per_profile": 50,
     "common": [
       "zg361_ip_probe_owner",
       "zg361_ip_probe_subject",
@@ -56,6 +57,7 @@
       "zg361_ip_probe_source_kind",
       "zg361_ip_probe_consequence_kind",
       "zg361_ip_probe_subject_gold",
+      "zg361_ip_probe_manager_treasury",
       "zg361_ip_probe_capital_control"
     ],
     "profile_template": [
@@ -101,20 +103,25 @@
       "zg361_ip_{profile}_kpi_consumed_incident_serial"
     ]
   },
-  "manager_treasury_gap": {
-    "requested_field": "resources.manager_treasury_q100000",
-    "current_mod_producer": null,
-    "current_wire": {
+  "manager_treasury_binding": {
+    "field": "resources.manager_treasury_q100000",
+    "mod_variable": "zg361_ip_probe_manager_treasury",
+    "producer_effect": "zg361_ip_capture_real_incident_effect",
+    "storage_scope": "assessed_subject",
+    "value_source": "root.treasury",
+    "wire": "exact_kind_1_payload_as_q100000",
+    "complete_cache_requires_variable": true,
+    "producer_capability_guard": "government_has_flag = government_has_treasury",
+    "missing_wire": {
       "status": "unavailable",
       "value": null,
-      "unavailable_reason": "not_recorded_by_mod"
+      "unavailable_reason": "variable_absent"
     },
     "forbidden_inference": [
       "source_kind_4_means_treasury_zero",
       "missing_means_zero",
       "read_current_owner_scope_through_caller_selected_scope"
-    ],
-    "required_mod_followup": "freeze zg361_ip_probe_manager_treasury on the assessed subject in the same probe effect, then add that exact key to all three compiled allowlists and update provenance"
+    ]
   },
   "atomicity": {
     "query_thread": "paused_application_main_mailbox",
@@ -142,11 +149,9 @@
     "actual_owner_differs_from_expected": "owner_filter_mismatch",
     "actual_owner_equals_player": "not_received_self",
     "double_read_or_frame_drift": "state_changed",
-    "manager_treasury_missing": "field unavailable/not_recorded_by_mod and resource_snapshot_ready=false"
+    "manager_treasury_missing": "field unavailable/variable_absent and resource_snapshot_ready=false"
   },
   "unsupported_claims": [
-    "manager_treasury_value",
-    "complete_readiness_before_the_mod_producer_exists",
     "arbitrary_ai_owned_subject_query",
     "per_mechanism_192_228_receipts",
     "production_live_acceptance"
