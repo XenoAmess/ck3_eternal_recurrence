@@ -21,6 +21,7 @@ import time
 import traceback
 import unicodedata
 import uuid
+from collections.abc import Callable
 from pathlib import Path
 
 import run_acceptance as acceptance
@@ -72,6 +73,11 @@ from xar_autoplayer.bridge.zhongguo_incident_action_cell import (
     IncidentActionCellError,
     run_incident_xyz_gameplay_action_cell,
 )
+from zg361_phase2_b2_action_cell import (
+    B2_PIP_EVENT_DEFINITION_KEY,
+    B2PipActionCellError,
+    run_b2_pip_gameplay_action_cell,
+)
 from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
     QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1,
@@ -118,6 +124,7 @@ NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
 NATIVE_LOADER_READINESS_TIMEOUT_S = 300.0
 NATIVE_LOADER_STABLE_OBSERVATIONS = 3
 PHASE2_PAUSED_READINESS_TIMEOUT_S = 300.0
+PHASE2_B2_PROMPT_TIMEOUT_S = 120.0
 PHASE2_SUPERVISOR_READINESS_TIMEOUT_S = 300.0
 PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S = 21600.0
 LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
@@ -435,7 +442,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
             "zhongguo_b2_pip_snapshot_v1_query_supported"
         ),
         "observation_only": True,
-        "gameplay_action_complete": False,
+        "gameplay_action_complete": True,
     },
     "incident_xyz_snapshot_query_matrix": {
         "implementation": "wired",
@@ -479,7 +486,6 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
     },
 }
 PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
-    "b2_pip_gameplay_action_and_postcondition_matrix",
     "workforce_collective_gameplay_action_and_postcondition_matrix",
     "ai_owned_case_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
@@ -5101,6 +5107,38 @@ def run_phase2_incident_gameplay_action_cell(
     return evidence
 
 
+def run_phase2_b2_pip_gameplay_action_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    owner_character_id: int,
+) -> dict[str, object]:
+    """Accept the real B2 prompt and preserve the provider postcondition."""
+
+    evidence_path = artifacts / "05_phase2_b2_pip_gameplay_action_cell.json"
+    try:
+        evidence = run_b2_pip_gameplay_action_cell(
+            service,
+            owner_character_id=owner_character_id,
+            action="accept",
+        )
+    except B2PipActionCellError as error:
+        write_json(evidence_path, error.evidence)
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP accept gameplay action cell RED: "
+            f"{error}"
+        ) from error
+    if not isinstance(evidence, dict) or evidence.get("result") != "GREEN":
+        if isinstance(evidence, dict):
+            write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP accept gameplay action cell returned a "
+            "non-GREEN result"
+        )
+    write_json(evidence_path, evidence)
+    return evidence
+
+
 def wait_for_phase2_paused_snapshot(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -5169,13 +5207,192 @@ def wait_for_phase2_paused_snapshot(
         ) from error
 
 
+def wait_for_phase2_b2_pip_prompt(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    baseline_binding: dict[str, int | str],
+    timeout_s: float = PHASE2_B2_PROMPT_TIMEOUT_S,
+    poll_interval_s: float = 0.1,
+) -> dict[str, object]:
+    """Advance only an event-free map until the exact B2 prompt is paused."""
+
+    evidence_path = artifacts / "05_phase2_b2_pip_prompt_readiness.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_b2_prompt_mcp_only_readiness",
+        "expected_event_definition_key": B2_PIP_EVENT_DEFINITION_KEY,
+        "baseline_binding": baseline_binding,
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "test_decision_used": False,
+        "observations": [],
+        "submissions": [],
+        "event_identity": None,
+        "binding": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("phase-two B2 prompt readiness timing is invalid")
+
+    expected_pid = int(baseline_binding["bridge_pid"])
+    expected_generation = int(baseline_binding["connection_generation"])
+    expected_player = int(baseline_binding["player_character_id"])
+    starting_date = int(baseline_binding["date_raw"])
+    deadline = time.monotonic() + timeout_s
+
+    def fail(reason: str) -> None:
+        raise acceptance.RunnerError(reason)
+
+    def accepted_submission(value: object, step: str) -> None:
+        if not (
+            isinstance(value, dict)
+            and value.get("accepted") is True
+            and value.get("status") == "submitted"
+        ):
+            fail(f"phase-two B2 prompt {step} ACK was not accepted")
+
+    try:
+        while time.monotonic() < deadline:
+            snapshot = service.snapshot()
+            if not isinstance(snapshot, dict):
+                fail("phase-two B2 prompt snapshot is not an object")
+            revision = snapshot.get("revision")
+            date_raw = snapshot.get("date_raw")
+            played_character = snapshot.get("played_character")
+            player = (
+                played_character.get("character_id")
+                if isinstance(played_character, dict)
+                else None
+            )
+            diagnostics = snapshot.get("diagnostics")
+            pid = (
+                diagnostics.get("bridge_pid")
+                if isinstance(diagnostics, dict)
+                else None
+            )
+            generation = (
+                diagnostics.get("connection_generation")
+                if isinstance(diagnostics, dict)
+                else None
+            )
+            active_event = snapshot.get("active_event")
+            event_instance_id = (
+                active_event.get("instance_id")
+                if isinstance(active_event, dict)
+                else None
+            )
+            observation = {
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": date_raw,
+                "paused": snapshot.get("paused"),
+                "speed": snapshot.get("speed"),
+                "player_character_id": player,
+                "bridge_pid": pid,
+                "connection_generation": generation,
+                "active_event_instance_id": event_instance_id,
+                "active_event_option_count": (
+                    active_event.get("option_count")
+                    if isinstance(active_event, dict)
+                    else None
+                ),
+            }
+            observations = evidence["observations"]
+            assert isinstance(observations, list)
+            observations.append(observation)
+            if (
+                isinstance(revision, bool)
+                or not isinstance(revision, int)
+                or revision < 0
+                or isinstance(date_raw, bool)
+                or not isinstance(date_raw, int)
+                or date_raw < starting_date
+                or date_raw > starting_date + 7
+                or player != expected_player
+                or pid != expected_pid
+                or generation != expected_generation
+                or snapshot.get("map_ready") is not True
+            ):
+                fail(
+                    "phase-two B2 prompt escaped its frozen date/player/PID binding"
+                )
+
+            if isinstance(active_event, dict):
+                if snapshot.get("paused") is not True:
+                    submission = service.execute_step(
+                        "pause-map", expected_revision=revision
+                    )
+                    accepted_submission(submission, "pause-map")
+                    submissions = evidence["submissions"]
+                    assert isinstance(submissions, list)
+                    submissions.append(submission)
+                    if poll_interval_s:
+                        time.sleep(poll_interval_s)
+                    continue
+                identity = query_event_definition_identity(service, snapshot)
+                evidence["event_identity"] = identity
+                if (
+                    identity.get("event_definition_key")
+                    != B2_PIP_EVENT_DEFINITION_KEY
+                ):
+                    fail(
+                        "phase-two B2 readiness encountered an unexpected real "
+                        f"event: {identity.get('event_definition_key')!r}"
+                    )
+                binding = _phase2_paused_binding(
+                    snapshot, label="phase-two B2 prompt readiness"
+                )
+                evidence["binding"] = binding
+                evidence["result"] = "GREEN"
+                evidence["failure_reason"] = None
+                write_json(evidence_path, evidence)
+                return snapshot
+
+            if snapshot.get("speed") != 1:
+                submission = service.execute_step(
+                    "set-speed-1", expected_revision=revision
+                )
+                accepted_submission(submission, "set-speed-1")
+                submissions = evidence["submissions"]
+                assert isinstance(submissions, list)
+                submissions.append(submission)
+            elif snapshot.get("paused") is True:
+                submission = service.execute_step(
+                    "resume-map", expected_revision=revision
+                )
+                accepted_submission(submission, "resume-map")
+                submissions = evidence["submissions"]
+                assert isinstance(submissions, list)
+                submissions.append(submission)
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        fail("phase-two MCP timed out before the exact zg361b2.40 prompt")
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two B2 prompt readiness failed: {error}"
+        ) from error
+    raise AssertionError("unreachable")
+
+
 def run_phase2_save_restore_lineage(
     service: GameplayBridgeService,
     artifacts: Path,
     *,
     tracked_ck3_pid: int,
+    checkpointed_gameplay_action: Callable[[], dict[str, object]] | None = None,
 ) -> dict[str, object]:
-    """Prove the one-save/one-restore two-PID topology without visual input."""
+    """Prove one frozen checkpoint/action/restore topology without visual input."""
 
     evidence_path = artifacts / "06_phase2_save_restore_lineage.json"
     evidence: dict[str, object] = {
@@ -5188,6 +5405,8 @@ def run_phase2_save_restore_lineage(
         "coordinates_used": False,
         "before": None,
         "after_save": None,
+        "checkpointed_gameplay_action": None,
+        "before_restore": None,
         "after_restore": None,
         "save_result": None,
         "restore_result": None,
@@ -5255,8 +5474,34 @@ def run_phase2_save_restore_lineage(
                 "MCP capability RED: restore-checkpoint did not materialize after save"
             )
 
+        before_restore = after_save
+        if checkpointed_gameplay_action is not None:
+            action_evidence = checkpointed_gameplay_action()
+            evidence["checkpointed_gameplay_action"] = action_evidence
+            if not (
+                isinstance(action_evidence, dict)
+                and action_evidence.get("result") == "GREEN"
+            ):
+                raise acceptance.RunnerError(
+                    "checkpointed gameplay action returned a non-GREEN result"
+                )
+            # The action helper proves its own product postcondition.  Take a
+            # new paused binding so restore is revision-bound to the state
+            # that actually follows the action, never to the pre-action ACK.
+            before_restore_snapshot = service.snapshot()
+            if not isinstance(before_restore_snapshot, dict):
+                raise acceptance.RunnerError(
+                    "phase-two pre-restore snapshot is not an object"
+                )
+            before_restore = _phase2_paused_binding(
+                before_restore_snapshot,
+                label="phase-two checkpointed-action postcondition",
+            )
+        evidence["before_restore"] = before_restore
+        write_json(evidence_path, evidence)
+
         restore_result = service.restore_checkpoint(
-            expected_revision=int(after_save["revision"])
+            expected_revision=int(before_restore["revision"])
         )
         evidence["restore_result"] = restore_result
         if not isinstance(restore_result, dict):
@@ -5302,6 +5547,28 @@ def run_phase2_save_restore_lineage(
                 "connection_generation"
             ]
             == before["connection_generation"],
+            "checkpointed_action_green": (
+                checkpointed_gameplay_action is None
+                or (
+                    isinstance(
+                        evidence.get("checkpointed_gameplay_action"), dict
+                    )
+                    and evidence["checkpointed_gameplay_action"].get("result")
+                    == "GREEN"
+                )
+            ),
+            "action_stayed_on_first_pid": before_restore["bridge_pid"]
+            == before["bridge_pid"],
+            "action_stayed_on_first_generation": before_restore[
+                "connection_generation"
+            ]
+            == before["connection_generation"],
+            "action_stayed_on_player": before_restore[
+                "player_character_id"
+            ]
+            == before["player_character_id"],
+            "action_date_did_not_advance": before_restore["date_raw"]
+            == before["date_raw"],
             "second_pid_is_distinct": after_restore["bridge_pid"]
             != before["bridge_pid"],
             "lifecycle_previous_pid_matches": lifecycle.get("previous_pid")
@@ -10358,6 +10625,9 @@ def run_phase2_live_scenario(
         "domain_cell_registry": PHASE2_DOMAIN_CELL_REGISTRY,
         "domain_owner_contract": None,
         "incident_gameplay_action_cell": None,
+        "b2_pip_gameplay_action_cell": None,
+        "post_incident_paused_binding": None,
+        "b2_pip_prompt_readiness": None,
         "completed_gameplay_action_cells": [],
         "pre_restore_domain_queries": None,
         "save_restore_lineage": None,
@@ -10421,21 +10691,80 @@ def run_phase2_live_scenario(
         ]
         evidence["gameplay_acceptance_executed"] = True
         write_json(evidence_path, evidence)
+
+        # Incident advances the game through real events.  Never reuse the
+        # seed-load revision for later provider queries or the B2 checkpoint.
+        post_incident_snapshot = service.snapshot()
+        if not isinstance(post_incident_snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two post-Incident checkpoint baseline is not an object"
+            )
+        post_incident_binding = _phase2_paused_binding(
+            post_incident_snapshot,
+            label="phase-two post-Incident checkpoint baseline",
+        )
+        if (
+            post_incident_binding["bridge_pid"] != tracked_ck3_pid
+            or post_incident_binding["connection_generation"]
+            != paused_binding["connection_generation"]
+            or post_incident_binding["player_character_id"]
+            != paused_binding["player_character_id"]
+        ):
+            raise acceptance.RunnerError(
+                "phase-two post-Incident baseline escaped its first-PID/player binding"
+            )
+        evidence["post_incident_paused_binding"] = post_incident_binding
+        b2_prompt_snapshot = wait_for_phase2_b2_pip_prompt(
+            service,
+            artifacts,
+            baseline_binding=post_incident_binding,
+        )
+        b2_prompt_binding = _phase2_paused_binding(
+            b2_prompt_snapshot,
+            label="phase-two B2 prompt checkpoint baseline",
+        )
+        evidence["b2_pip_prompt_readiness"] = {
+            "result": "GREEN",
+            "artifact": "05_phase2_b2_pip_prompt_readiness.json",
+            "binding": b2_prompt_binding,
+        }
         pre_restore_queries = run_phase2_domain_query_stage(
             service,
             artifacts,
             stage="pre_restore",
-            binding=paused_binding,
+            binding=b2_prompt_binding,
             owner_contract=owner_contract,
         )
         evidence["pre_restore_domain_queries"] = pre_restore_queries
+
+        def run_checkpointed_b2_accept() -> dict[str, object]:
+            return run_phase2_b2_pip_gameplay_action_cell(
+                service,
+                artifacts,
+                owner_character_id=owner_contract[
+                    "b2_pip_owner_character_id"
+                ],
+            )
 
         lineage = run_phase2_save_restore_lineage(
             service,
             artifacts,
             tracked_ck3_pid=tracked_ck3_pid,
+            checkpointed_gameplay_action=run_checkpointed_b2_accept,
         )
         evidence["save_restore_lineage"] = lineage
+        b2_action = lineage.get("checkpointed_gameplay_action")
+        if not (
+            isinstance(b2_action, dict)
+            and b2_action.get("result") == "GREEN"
+        ):
+            raise acceptance.RunnerError(
+                "phase-two save/restore lineage lacks its GREEN B2 action"
+            )
+        evidence["b2_pip_gameplay_action_cell"] = b2_action
+        evidence["completed_gameplay_action_cells"].append(
+            "b2_pip_gameplay_action_and_postcondition_matrix"
+        )
         restored_binding = lineage.get("after_restore")
         if not isinstance(restored_binding, dict):
             raise acceptance.RunnerError(
@@ -10462,13 +10791,14 @@ def run_phase2_live_scenario(
         write_json(evidence_path, evidence)
 
         # All four frozen domain providers now run as real pre/restore/post
-        # read-only matrices, and the Incident product action has been proven.
-        # The remaining four product cells are still absent, so the batch must
-        # remain RED instead of inflating one completed cell into phase-two.
+        # read-only matrices, and the Incident plus B2 product actions have
+        # been proven.  The remaining three product cells are still absent,
+        # so the batch must remain RED instead of inflating two completed
+        # cells into phase-two.
         raise acceptance.RunnerError(
-            "phase-two MCP matrix RED: Incident gameplay action and "
+            "phase-two MCP matrix RED: Incident and B2 gameplay actions and "
             "B2/Incident/Workforce/AI-owned observations passed, but the "
-            "remaining B2/Workforce/AI-owned/scoreboard gameplay action "
+            "remaining Workforce/AI-owned/scoreboard gameplay action "
             "cells are unimplemented"
         )
     except BaseException as error:
@@ -10486,6 +10816,29 @@ def run_phase2_live_scenario(
                     evidence["gameplay_acceptance_executed"] = bool(
                         isinstance(submissions, list) and submissions
                     )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
+        b2_path = artifacts / "05_phase2_b2_pip_gameplay_action_cell.json"
+        if b2_path.is_file():
+            try:
+                b2_value = json.loads(b2_path.read_text(encoding="utf-8"))
+                if isinstance(b2_value, dict):
+                    evidence["b2_pip_gameplay_action_cell"] = b2_value
+                    submission = b2_value.get("selection_submission")
+                    evidence["gameplay_acceptance_executed"] = bool(
+                        evidence["gameplay_acceptance_executed"]
+                        or isinstance(submission, dict)
+                    )
+                    completed = evidence["completed_gameplay_action_cells"]
+                    if (
+                        b2_value.get("result") == "GREEN"
+                        and isinstance(completed, list)
+                        and "b2_pip_gameplay_action_and_postcondition_matrix"
+                        not in completed
+                    ):
+                        completed.append(
+                            "b2_pip_gameplay_action_and_postcondition_matrix"
+                        )
             except (OSError, ValueError, json.JSONDecodeError):
                 pass
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"

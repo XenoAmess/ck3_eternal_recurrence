@@ -2647,6 +2647,7 @@ def main() -> int:
                 second_generation: int = 5,
                 restored_sha256: str = "a" * 64,
                 restored_player: int = 9001,
+                action_revision: int | None = None,
             ) -> None:
                 self.second_pid = second_pid
                 self.second_generation = second_generation
@@ -2654,13 +2655,24 @@ def main() -> int:
                 self.snapshots = [
                     phase2_snapshot(pid=4321, generation=4, revision=10),
                     phase2_snapshot(pid=4321, generation=4, revision=11),
+                ]
+                if action_revision is not None:
+                    self.snapshots.append(
+                        phase2_snapshot(
+                            pid=4321,
+                            generation=4,
+                            revision=action_revision,
+                        )
+                    )
+                self.snapshots.append(
                     phase2_snapshot(
                         pid=second_pid,
                         generation=second_generation,
                         revision=20,
                         player=restored_player,
-                    ),
-                ]
+                    )
+                )
+                self.expected_restore_revision = action_revision or 11
                 self.snapshot_index = 0
                 self.capabilities_index = 0
 
@@ -2698,7 +2710,7 @@ def main() -> int:
             def restore_checkpoint(
                 self, *, expected_revision: int
             ) -> dict[str, object]:
-                assert expected_revision == 11
+                assert expected_revision == self.expected_restore_revision
                 return {
                     "accepted": True,
                     "status": "restored",
@@ -2736,6 +2748,44 @@ def main() -> int:
             ).read_text(encoding="utf-8")
         ) == lineage
 
+        checkpointed_action_evidence = {
+            "schema_version": 1,
+            "cell": "zg361.phase2.b2.pip-response-action",
+            "result": "GREEN",
+            "selection_submission": {
+                "accepted": True,
+                "status": "submitted",
+                "event_instance_id": 601,
+                "option_number": 1,
+            },
+            "postcondition_query_green": True,
+        }
+        checkpointed_action_calls: list[str] = []
+
+        def checkpointed_action() -> dict[str, object]:
+            checkpointed_action_calls.append("b2-accept")
+            return copy.deepcopy(checkpointed_action_evidence)
+
+        action_lineage_artifacts = (
+            temporary_root / "phase2-checkpointed-action-lineage-green"
+        )
+        action_lineage_artifacts.mkdir()
+        action_lineage = capture.run_phase2_save_restore_lineage(
+            Phase2RestoreService(action_revision=14),
+            action_lineage_artifacts,
+            tracked_ck3_pid=4321,
+            checkpointed_gameplay_action=checkpointed_action,
+        )
+        assert checkpointed_action_calls == ["b2-accept"]
+        assert action_lineage["result"] == "GREEN"
+        assert action_lineage["before_restore"]["revision"] == 14
+        assert action_lineage["checkpointed_gameplay_action"] == (
+            checkpointed_action_evidence
+        )
+        assert action_lineage["checks"]["checkpointed_action_green"] is True
+        assert action_lineage["checks"]["action_stayed_on_first_pid"] is True
+        assert action_lineage["checks"]["action_date_did_not_advance"] is True
+
         lineage_red_cases = {
             "second_pid_is_distinct": {"second_pid": 4321},
             "connection_generation_advanced": {"second_generation": 4},
@@ -2765,6 +2815,132 @@ def main() -> int:
             )
             assert persisted_red["result"] == "RED"
             assert persisted_red["checks"][failed_check] is False
+
+        class Phase2B2PromptService:
+            def __init__(self, event_key: str = "zg361b2.40") -> None:
+                self.state = "baseline"
+                self.event_key = event_key
+                self.calls: list[tuple[object, ...]] = []
+
+            def snapshot(self) -> dict[str, object]:
+                if self.state == "baseline":
+                    value = phase2_snapshot(
+                        pid=4321, generation=4, revision=30
+                    )
+                    value["speed"] = 0
+                    return value
+                if self.state == "speed-one":
+                    value = phase2_snapshot(
+                        pid=4321, generation=4, revision=31
+                    )
+                    value["speed"] = 1
+                    return value
+                value = phase2_snapshot(
+                    pid=4321, generation=4, revision=32
+                )
+                value["date_raw"] = 779
+                value["speed"] = 1
+                value["active_event"] = {
+                    "instance_id": 601,
+                    "option_count": 3,
+                }
+                self.state = "event"
+                return value
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.calls.append((step, expected_revision))
+                if step == "set-speed-1":
+                    assert self.state == "baseline"
+                    assert expected_revision == 30
+                    self.state = "speed-one"
+                elif step == "resume-map":
+                    assert self.state == "speed-one"
+                    assert expected_revision == 31
+                    self.state = "resumed"
+                else:
+                    raise AssertionError(f"unexpected step: {step}")
+                return {
+                    "accepted": True,
+                    "status": "submitted",
+                    "step": step,
+                }
+
+            def query_current_event_window_context_v1(
+                self, event_instance_id: int, *, expected_revision: int
+            ) -> dict[str, object]:
+                assert event_instance_id == 601
+                assert expected_revision == 32
+                self.calls.append(("current-event", event_instance_id))
+                return {
+                    "status": "available",
+                    "current_event_window_context": {
+                        "event_definition_key": self.event_key,
+                        "readiness": {
+                            "event_definition_identity_ready": True,
+                        },
+                    },
+                }
+
+        prompt_baseline_snapshot = phase2_snapshot(
+            pid=4321, generation=4, revision=30
+        )
+        prompt_baseline_binding = capture._phase2_paused_binding(
+            prompt_baseline_snapshot,
+            label="test B2 prompt baseline",
+        )
+        prompt_artifacts = temporary_root / "phase2-b2-prompt-green"
+        prompt_artifacts.mkdir()
+        prompt_service = Phase2B2PromptService()
+        prompt_snapshot = capture.wait_for_phase2_b2_pip_prompt(
+            prompt_service,
+            prompt_artifacts,
+            baseline_binding=prompt_baseline_binding,
+            timeout_s=0.1,
+            poll_interval_s=0.0,
+        )
+        assert prompt_snapshot["active_event"]["instance_id"] == 601
+        assert prompt_service.calls == [
+            ("set-speed-1", 30),
+            ("resume-map", 31),
+            ("current-event", 601),
+        ]
+        prompt_evidence = json.loads(
+            (
+                prompt_artifacts
+                / "05_phase2_b2_pip_prompt_readiness.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert prompt_evidence["result"] == "GREEN"
+        assert prompt_evidence["event_identity"][
+            "event_definition_key"
+        ] == "zg361b2.40"
+        assert prompt_evidence["ocr_used"] is False
+        assert prompt_evidence["coordinates_used"] is False
+
+        wrong_prompt_artifacts = temporary_root / "phase2-b2-prompt-red"
+        wrong_prompt_artifacts.mkdir()
+        try:
+            capture.wait_for_phase2_b2_pip_prompt(
+                Phase2B2PromptService("unrelated.999"),
+                wrong_prompt_artifacts,
+                baseline_binding=prompt_baseline_binding,
+                timeout_s=0.1,
+                poll_interval_s=0.0,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "unexpected real event" in str(error)
+        else:
+            raise AssertionError("B2 readiness accepted an unrelated event")
+        wrong_prompt_evidence = json.loads(
+            (
+                wrong_prompt_artifacts
+                / "05_phase2_b2_pip_prompt_readiness.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert wrong_prompt_evidence["result"] == "RED"
+        assert "unrelated.999" in wrong_prompt_evidence["failure_reason"]
 
         def rebind_domain_response(
             value: dict[str, object],
@@ -3011,6 +3187,27 @@ def main() -> int:
                     "zhongguo_ai_owned_case_snapshot_v1_query_supported": True,
                 }
 
+            def snapshot(self) -> dict[str, object]:
+                return {
+                    "snapshot_id": self.binding["snapshot_id"],
+                    "revision": self.binding["revision"],
+                    "native_revision": self.binding["native_revision"],
+                    "date_raw": self.binding["date_raw"],
+                    "paused": True,
+                    "map_ready": True,
+                    "played_character": {
+                        "character_id": self.binding["player_character_id"],
+                        "alive": True,
+                    },
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": self.binding["bridge_pid"],
+                        "connection_generation": self.binding[
+                            "connection_generation"
+                        ],
+                    },
+                }
+
             def query_loaded_feature_manifest_v1(
                 self, *, expected_revision: int
             ) -> dict[str, object]:
@@ -3215,7 +3412,13 @@ def main() -> int:
             ] is True
             assert capture.PHASE2_DOMAIN_CELL_REGISTRY[cell_id][
                 "gameplay_action_complete"
-            ] is (cell_id == "incident_xyz_snapshot_query_matrix")
+            ] is (
+                cell_id
+                in {
+                    "b2_pip_snapshot_query_matrix",
+                    "incident_xyz_snapshot_query_matrix",
+                }
+            )
 
         domain_service = Phase2DomainService()
         pre_domain_artifacts = temporary_root / "phase2-domain-pre-green"
@@ -3791,6 +3994,25 @@ def main() -> int:
                 "z": {"kind": "incident"},
             },
         }
+        b2_action_evidence = {
+            "schema_version": 1,
+            "cell": "zg361.phase2.b2.pip-response-action",
+            "action": "accept",
+            "result": "GREEN",
+            "mcp_only": True,
+            "selection_submission": {
+                "accepted": True,
+                "status": "submitted",
+                "event_instance_id": 601,
+                "option_number": 1,
+            },
+            "postcondition": {
+                "same_immutable_case": True,
+                "expected_state_transition": [1, 2],
+            },
+            "ack_is_postcondition": False,
+            "postcondition_query_green": True,
+        }
 
         def fake_incident_action(
             _service: object,
@@ -3804,19 +4026,41 @@ def main() -> int:
             wired_service.calls.append(("incident-action", 4))
             return copy.deepcopy(incident_action_evidence)
 
+        def fake_b2_action(
+            _service: object,
+            *,
+            owner_character_id: int,
+            action: str,
+        ) -> dict[str, object]:
+            assert _service is wired_service
+            assert owner_character_id == domain_owner_contract[
+                "b2_pip_owner_character_id"
+            ]
+            assert action == "accept"
+            wired_service.calls.append(("b2-action", 4))
+            return copy.deepcopy(b2_action_evidence)
+
         def fake_domain_lineage(
             _service: object,
             _artifacts: Path,
             *,
             tracked_ck3_pid: int,
+            checkpointed_gameplay_action: object,
         ) -> dict[str, object]:
             assert _service is wired_service
             assert _artifacts == wired_scenario_artifacts
             assert tracked_ck3_pid == 4321
-            wired_service.calls.append(("lineage", 4, 5))
+            assert callable(checkpointed_gameplay_action)
+            wired_service.calls.append(("lineage-save", 4))
+            action_evidence = checkpointed_gameplay_action()
+            assert action_evidence == b2_action_evidence
+            wired_service.calls.append(("lineage-restore", 4, 5))
             wired_service.binding = post_domain_binding
             return {
                 "result": "GREEN",
+                "checkpointed_gameplay_action": copy.deepcopy(
+                    action_evidence
+                ),
                 "after_restore": copy.deepcopy(post_domain_binding),
                 "pid_lineage": [4321, 5432],
                 "connection_generation_lineage": [4, 5],
@@ -3830,6 +4074,11 @@ def main() -> int:
             ),
             mock.patch.object(
                 capture,
+                "wait_for_phase2_b2_pip_prompt",
+                return_value=pre_domain_snapshot,
+            ),
+            mock.patch.object(
+                capture,
                 "run_phase2_save_restore_lineage",
                 side_effect=fake_domain_lineage,
             ),
@@ -3837,6 +4086,11 @@ def main() -> int:
                 capture,
                 "run_incident_xyz_gameplay_action_cell",
                 side_effect=fake_incident_action,
+            ),
+            mock.patch.object(
+                capture,
+                "run_b2_pip_gameplay_action_cell",
+                side_effect=fake_b2_action,
             ),
         ):
             try:
@@ -3847,10 +4101,10 @@ def main() -> int:
                     seed_contract=wired_seed_contract,
                 )
             except capture.acceptance.RunnerError as error:
-                assert "Incident gameplay action" in str(error)
+                assert "Incident and B2 gameplay actions" in str(error)
             else:
                 raise AssertionError(
-                    "one Incident action cell claimed the full batch GREEN"
+                    "Incident+B2 action cells claimed the full batch GREEN"
                 )
         wired_scenario = json.loads(
             (
@@ -3863,8 +4117,12 @@ def main() -> int:
         assert wired_scenario["incident_gameplay_action_cell"] == (
             incident_action_evidence
         )
+        assert wired_scenario["b2_pip_gameplay_action_cell"] == (
+            b2_action_evidence
+        )
         assert wired_scenario["completed_gameplay_action_cells"] == [
-            "incident_xyz_gameplay_action_and_postcondition_matrix"
+            "incident_xyz_gameplay_action_and_postcondition_matrix",
+            "b2_pip_gameplay_action_and_postcondition_matrix",
         ]
         assert wired_scenario["completed_observation_only_cells"] == [
             "b2_pip_snapshot_query_matrix",
@@ -3882,6 +4140,10 @@ def main() -> int:
             "incident_xyz_gameplay_action_and_postcondition_matrix"
             not in wired_scenario["missing_gameplay_action_cells"]
         )
+        assert (
+            "b2_pip_gameplay_action_and_postcondition_matrix"
+            not in wired_scenario["missing_gameplay_action_cells"]
+        )
         preserved_action = json.loads(
             (
                 wired_scenario_artifacts
@@ -3889,6 +4151,13 @@ def main() -> int:
             ).read_text(encoding="utf-8")
         )
         assert preserved_action == incident_action_evidence
+        preserved_b2_action = json.loads(
+            (
+                wired_scenario_artifacts
+                / "05_phase2_b2_pip_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert preserved_b2_action == b2_action_evidence
         assert wired_scenario["pre_restore_domain_queries"]["result"] == (
             "GREEN"
         )
@@ -3904,14 +4173,25 @@ def main() -> int:
             for index, call in enumerate(wired_service.calls)
             if call[0] == "b2" and call[1] == 4
         )
-        lineage_call = wired_service.calls.index(("lineage", 4, 5))
+        lineage_save_call = wired_service.calls.index(("lineage-save", 4))
+        b2_action_call = wired_service.calls.index(("b2-action", 4))
+        lineage_restore_call = wired_service.calls.index(
+            ("lineage-restore", 4, 5)
+        )
         first_post_query = next(
             index
             for index, call in enumerate(wired_service.calls)
             if call[0] == "b2" and call[1] == 5
         )
         action_call = wired_service.calls.index(("incident-action", 4))
-        assert action_call < first_pre_query < lineage_call < first_post_query
+        assert (
+            action_call
+            < first_pre_query
+            < lineage_save_call
+            < b2_action_call
+            < lineage_restore_call
+            < first_post_query
+        )
 
         incident_red_artifacts = temporary_root / "phase2-incident-action-red"
         incident_red_artifacts.mkdir()
@@ -3949,6 +4229,48 @@ def main() -> int:
                 / "05_phase2_incident_xyz_gameplay_action_cell.json"
             ).read_text(encoding="utf-8")
         ) == incident_red_evidence
+
+        b2_red_artifacts = temporary_root / "phase2-b2-action-red"
+        b2_red_artifacts.mkdir()
+        b2_red_evidence = {
+            "schema_version": 1,
+            "cell": "zg361.phase2.b2.pip-response-action",
+            "action": "accept",
+            "result": "RED",
+            "selection_submission": {
+                "accepted": True,
+                "status": "submitted",
+                "event_instance_id": 888,
+                "option_number": 1,
+            },
+            "postcondition_query_green": False,
+            "failure_reason": "fixture B2 postcondition mismatch",
+        }
+        with mock.patch.object(
+            capture,
+            "run_b2_pip_gameplay_action_cell",
+            side_effect=capture.B2PipActionCellError(
+                "fixture B2 postcondition mismatch", b2_red_evidence
+            ),
+        ):
+            try:
+                capture.run_phase2_b2_pip_gameplay_action_cell(
+                    wired_service,
+                    b2_red_artifacts,
+                    owner_character_id=domain_owner_contract[
+                        "b2_pip_owner_character_id"
+                    ],
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "fixture B2 postcondition mismatch" in str(error)
+            else:
+                raise AssertionError("B2 RED evidence was accepted")
+        assert json.loads(
+            (
+                b2_red_artifacts
+                / "05_phase2_b2_pip_gameplay_action_cell.json"
+            ).read_text(encoding="utf-8")
+        ) == b2_red_evidence
 
         class MissingLoaderSnapshotService(LoaderReadinessService):
             def snapshot(self) -> dict[str, object]:

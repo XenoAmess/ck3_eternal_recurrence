@@ -1,9 +1,9 @@
 # 361 B2/PIP MCP-first gameplay action cell
 
-状态：2026-08-31 `static-ready`。本文件记录独立 helper
+状态：2026-09-01 `static-ready / runner-wired`。本文件记录独立 helper
 [`tools/zg361_phase2_b2_action_cell.py`](../../tools/zg361_phase2_b2_action_cell.py)
-的调用合同；12 项离线测试已通过，但尚未取得 CK3 paused live artifact，不能写成
-`fixture-live` 或 `production-live`。
+的调用合同及 batch runner 接线；helper 与 runner 的普通、`-O` 离线测试已通过，但尚未取得
+CK3 paused live artifact，不能写成 `fixture-live` 或 `production-live`。
 
 ## 结论：不需要新增 action MCP
 
@@ -72,9 +72,24 @@ run_b2_pip_gameplay_action_cell(
 
 helper 不自行存档、恢复或推进日期。三项产品 effect 都在事件选择时立即执行；在同一暂停日期读取
 provider 是更强的原子后置条件，额外 `life-advance` 反而会混入不相干日结算。正式 batch runner
-应在外层复用已有 `save-checkpoint → action cell → restore-checkpoint` 生命周期，或在一次性 userdir
-的末尾执行动作；若还要在同一基线验证另外两条选择，应每条路线各自从冻结 checkpoint 恢复，禁止在
-已经消费的 PIP 上重放第二项。
+现已在外层实现 `save-checkpoint → accept action cell → postcondition snapshot → restore-checkpoint`：
+
+批次按现有产品事件链先完成 Incident action，再等待 B2 prompt；恢复 B2 基线后继续 post-restore
+Incident/B2/Workforce/AI-owned 只读观测，而不是在已经推进过的 seed revision 上查询。
+
+- 动作前先运行只读 domain matrix，再冻结含待回应 PIP 的基线；
+- runner 只在 event-free map 通过 MCP `set-speed-1` / `resume-map` 等待，并用
+  `query-current-event-window-context-v1` 锁定 exact `zg361b2.40`；若先出现其他事件则原样 RED，
+  不猜测也不自动关闭；readiness 落在 `05_phase2_b2_pip_prompt_readiness.json`；
+- restore 的 `expected_revision` 绑定动作及 provider 后置条件之后的新 paused revision，不复用
+  pre-action revision；
+- `05_phase2_b2_pip_gameplay_action_cell.json` 原样保存 helper 的 pre/action/post 或 RED sidecar；
+- `06_phase2_save_restore_lineage.json` 保存 checkpointed action、动作后的第一 PID binding、恢复后的
+  第二 PID binding 与存档 SHA；恢复后继续同一组只读 domain matrix 并比较语义投影。
+
+若还要在同一基线验证另外两条选择，应每条路线各自从冻结 checkpoint 恢复，禁止在已经消费的 PIP
+上重放第二项。本批只接 `accept`；Workforce、AI-owned case 与 scoreboard named-widget 三项产品
+动作仍缺失，因此 phase-two 总结果必须继续为 RED/incomplete。
 
 ## 离线验收
 
@@ -84,6 +99,7 @@ py -O tools/test_zg361_phase2_b2_action_cell.py
 ```
 
 测试覆盖三条正确路线、简中/英文 option 语义、错误事件、文本漂移、scope/五元身份漂移、拒绝
-ACK、ACK-only 假阳性、旧窗口不退出、provider unavailable、换案与超时。下一步是由
-`run_zhongguo_acceptance.py` 在真实 paused `zg361b2.40` 帧调用 helper，保存 pre/action/post 与
-restore artifact；在此之前不得提升 live readiness。
+ACK、ACK-only 假阳性、旧窗口不退出、provider unavailable、换案与超时；runner 静态/fake MCP
+测试另覆盖 checkpoint/action/restore 顺序、动作后 revision 绑定、B2 RED sidecar 原样保存，以及
+成功后只从缺失动作表移除 B2。下一步是在 G2 释放实机槽后运行真实 paused `zg361b2.40` batch，
+取得上述两个 artifact；在此之前不得提升 live readiness。
