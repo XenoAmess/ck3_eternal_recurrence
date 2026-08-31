@@ -309,7 +309,61 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             body = block(self.effects, f"zg361_p2c_stage_0{stage}_{domain}_effect")
             self.assertEqual(body.count(f"zg361_ip_open_{domain}_case_effect ="), 1)
             self.assertIn(f"var:zg361_ip_{domain}_final_state = {terminal}", body)
+            self.assertIn(f"var:zg361_ip_{domain}_final_applicable = 1", body)
+            self.assertIn(f"var:zg361_ip_{domain}_final_incident_serial > 0", body)
+            self.assertIn(f"var:zg361_ip_{domain}_final_source_kind > 0", body)
+            self.assertIn(f"var:zg361_ip_{domain}_final_consequence_kind > 0", body)
+            self.assertIn(f"var:zg361_ip_{domain}_final_kpi_staged = 1", body)
             self.assertNotIn("zg361_ip_open_portfolio_effect", body)
+
+    def test_incident_na_requires_the_full_zero_probe_and_receipt_tuple(self) -> None:
+        for stage, domain in ((4, "x"), (5, "y"), (6, "z")):
+            body = block(self.effects, f"zg361_p2c_stage_0{stage}_{domain}_effect")
+            for token in (
+                f"has_variable = zg361_ip_{domain}_final_na_owner",
+                f"has_variable = zg361_ip_{domain}_final_na_subject",
+                f"has_variable = zg361_ip_{domain}_final_na_cycle",
+                f"has_variable = zg361_ip_{domain}_final_na_probe_serial",
+                f"has_variable = zg361_ip_{domain}_final_na_receipt",
+                f"has_variable = zg361_ip_{domain}_na_receipt_serial",
+                f"var:zg361_ip_{domain}_final_applicable = 0",
+                f"var:zg361_ip_{domain}_final_na_owner = root",
+                f"var:zg361_ip_{domain}_final_na_subject = this",
+                f"var:zg361_ip_{domain}_final_na_cycle = root.var:zg361_p2c_cycle",
+                f"var:zg361_ip_{domain}_final_na_reason = 1",
+                f"var:zg361_ip_{domain}_final_na_probe_serial = var:zg361_ip_probe_serial",
+                f"var:zg361_ip_{domain}_final_na_receipt = var:zg361_ip_{domain}_na_receipt_serial",
+                f"var:zg361_ip_{domain}_final_na_probe_serial > 0",
+                f"var:zg361_ip_{domain}_final_na_receipt > 0",
+                f"var:zg361_ip_{domain}_na_receipt_serial > 0",
+                "var:zg361_ip_probe_result = 0",
+                "var:zg361_ip_probe_source_kind = 0",
+                "var:zg361_ip_probe_consequence_kind = 0",
+                "var:zg361_ip_probe_serial > 0",
+            ):
+                self.assertIn(token, body, (stage, token))
+            self.assertGreaterEqual(body.count("STATUS = 3"), 2)
+
+        # Contract truth table: neither missing evidence nor an arbitrary zero
+        # can be promoted to N/A. Only a complete, identity-bound zero probe is.
+        required = {
+            "applicable", "owner", "subject", "cycle", "reason",
+            "probe_serial", "receipt", "receipt_serial", "probe_owner",
+            "probe_subject", "probe_cycle", "probe_result", "source",
+            "consequence",
+        }
+        accepts = lambda present, applicable, result, source, consequence, serial: (
+            present == required
+            and applicable == 0
+            and result == source == consequence == 0
+            and serial > 0
+        )
+        self.assertTrue(accepts(required, 0, 0, 0, 0, 1))
+        self.assertFalse(accepts(required - {"receipt"}, 0, 0, 0, 0, 1))
+        self.assertFalse(accepts(required, 1, 0, 0, 0, 1))
+        self.assertFalse(accepts(required, 0, 1, 0, 0, 1))
+        self.assertFalse(accepts(required, 0, 0, 1, 0, 1))
+        self.assertFalse(accepts(required, 0, 0, 0, 0, 0))
 
     def test_p3_and_compensation_wait_for_delivered_result(self) -> None:
         for key in (

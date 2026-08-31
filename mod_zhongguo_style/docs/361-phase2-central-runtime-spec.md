@@ -28,7 +28,7 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 | 1 | Career/HC | `zg361_career_hc_open_portfolio_effect` | manager completed cycle + 同一 subject closed |
 | 2 | Compensation/LTI | `zg361_comp_portfolio_open_next_effect` | exact result snapshot + completed cycle；每域 ACK 后重复 pump |
 | 3 | Feedback/Promotion/PIP | `zg361_pp_manager_portfolio_adapter_effect` | T→U→V→W→complete，五次单 adapter pump |
-| 4–6 | Incident X/Y/Z | 三个 public domain opener | 严格 X→Y→Z；禁止 all-domain opener |
+| 4–6 | Incident X/Y/Z | 三个 public domain opener | 严格 X→Y→Z；正案必须携带真实事故与后果、next-KPI staged receipt；无事故只认 exact probe/N/A tuple 并记 status 3；禁止 all-domain opener |
 | 7 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、closed、conservation OK |
 | 8 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
 | 9 | Career/Learning | `zg361_cl_dispatch_direct_reports_effect` | expected/completed 全齐；玩家 digest 已 ACK |
@@ -41,6 +41,7 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - 公示后 D+2 才开首域；领域 terminal 后再 D+2 才进下一域，给 D+1 完成卡留出 ACK 时间。
 - PP 的 queue lock、Compensation 的 active flag、Career/Learning 的 digest pending 都是中央真实等待条件。
+- Incident X/Y/Z 的 success 额外要求 `applicable=1`、positive incident/source/consequence 与 `final_kpi_staged=1`；N/A 必须同时冻结 owner/subject/cycle、reason=1、probe/receipt serial，并回指同周期 `probe_result/source/consequence=0/0/0`。缺字段或任意旧零值都不能冒充 N/A。
 - Career/HC、Compensation、PP 的 manager-only ABI 会先按各自同一筛选器预选；只有候选仍等于 frozen primary 才调用，防止资格漂移在别人身上留下 active orphan。
 - Career/Learning 冻结直属 cohort/count，AH/AI expected 必须各自等于该 count；partial open 等已开案终态后记 RED。Manager/Governance 同样核对 frozen cohort 的 exact F/AK started/active/terminal，failed open 不会无限轮询。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。

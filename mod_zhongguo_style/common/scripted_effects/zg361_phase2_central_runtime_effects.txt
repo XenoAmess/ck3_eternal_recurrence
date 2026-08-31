@@ -590,15 +590,68 @@ zg361_p2c_stage_04_x_effect = {
                 has_variable = zg361_ip_x_final_cycle
                 has_variable = zg361_ip_x_final_case
                 has_variable = zg361_ip_x_final_state
+                has_variable = zg361_ip_x_final_applicable
+                has_variable = zg361_ip_x_final_incident_serial
+                has_variable = zg361_ip_x_final_source_kind
+                has_variable = zg361_ip_x_final_consequence_kind
+                has_variable = zg361_ip_x_final_kpi_staged
                 var:zg361_ip_x_final_owner = root
                 var:zg361_ip_x_final_subject = this
                 var:zg361_ip_x_final_cycle = root.var:zg361_p2c_cycle
                 var:zg361_ip_x_final_state = 8
+                var:zg361_ip_x_final_applicable = 1
+                var:zg361_ip_x_final_incident_serial > 0
+                var:zg361_ip_x_final_source_kind > 0
+                var:zg361_ip_x_final_consequence_kind > 0
+                var:zg361_ip_x_final_kpi_staged = 1
                 var:zg361_case_x_active = 0
                 var:zg361_ip_x_final_case = var:zg361_case_x_case_serial
             }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_04_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                has_variable = zg361_ip_x_final_applicable
+                has_variable = zg361_ip_x_final_na_owner
+                has_variable = zg361_ip_x_final_na_subject
+                has_variable = zg361_ip_x_final_na_cycle
+                has_variable = zg361_ip_x_final_na_reason
+                has_variable = zg361_ip_x_final_na_probe_serial
+                has_variable = zg361_ip_x_final_na_receipt
+                has_variable = zg361_ip_x_na_receipt_serial
+                has_variable = zg361_ip_x_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_x_final_applicable = 0
+                var:zg361_ip_x_final_na_owner = root
+                var:zg361_ip_x_final_na_subject = this
+                var:zg361_ip_x_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_x_final_na_reason = 1
+                var:zg361_ip_x_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_x_final_na_receipt = var:zg361_ip_x_na_receipt_serial
+                var:zg361_ip_x_final_na_probe_serial > 0
+                var:zg361_ip_x_final_na_receipt > 0
+                var:zg361_ip_x_na_receipt_serial > 0
+                var:zg361_ip_x_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_x_active } var:zg361_case_x_active = 0 }
+                trigger_else = { always = yes }
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_04_status }
     }
     else_if = {
         limit = {
@@ -637,6 +690,49 @@ zg361_p2c_stage_04_x_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
+        else_if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    has_variable = zg361_ip_x_final_applicable
+                has_variable = zg361_ip_x_final_na_owner
+                has_variable = zg361_ip_x_final_na_subject
+                has_variable = zg361_ip_x_final_na_cycle
+                has_variable = zg361_ip_x_final_na_reason
+                has_variable = zg361_ip_x_final_na_probe_serial
+                has_variable = zg361_ip_x_final_na_receipt
+                has_variable = zg361_ip_x_na_receipt_serial
+                has_variable = zg361_ip_x_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_x_final_applicable = 0
+                var:zg361_ip_x_final_na_owner = root
+                var:zg361_ip_x_final_na_subject = this
+                var:zg361_ip_x_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_x_final_na_reason = 1
+                var:zg361_ip_x_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_x_final_na_receipt = var:zg361_ip_x_na_receipt_serial
+                var:zg361_ip_x_final_na_probe_serial > 0
+                var:zg361_ip_x_final_na_receipt > 0
+                var:zg361_ip_x_na_receipt_serial > 0
+                var:zg361_ip_x_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_x_active } var:zg361_case_x_active = 0 }
+                trigger_else = { always = yes }
+                }
+            }
+            zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_04_status }
+        }
         else = { zg361_p2c_record_red_effect = { CODE = 404 STAGE_VAR = zg361_p2c_stage_04_status } }
     }
     else = { zg361_p2c_record_red_effect = { CODE = 454 STAGE_VAR = zg361_p2c_stage_04_status } }
@@ -653,15 +749,68 @@ zg361_p2c_stage_05_y_effect = {
                 has_variable = zg361_ip_y_final_cycle
                 has_variable = zg361_ip_y_final_case
                 has_variable = zg361_ip_y_final_state
+                has_variable = zg361_ip_y_final_applicable
+                has_variable = zg361_ip_y_final_incident_serial
+                has_variable = zg361_ip_y_final_source_kind
+                has_variable = zg361_ip_y_final_consequence_kind
+                has_variable = zg361_ip_y_final_kpi_staged
                 var:zg361_ip_y_final_owner = root
                 var:zg361_ip_y_final_subject = this
                 var:zg361_ip_y_final_cycle = root.var:zg361_p2c_cycle
                 var:zg361_ip_y_final_state = 6
+                var:zg361_ip_y_final_applicable = 1
+                var:zg361_ip_y_final_incident_serial > 0
+                var:zg361_ip_y_final_source_kind > 0
+                var:zg361_ip_y_final_consequence_kind > 0
+                var:zg361_ip_y_final_kpi_staged = 1
                 var:zg361_case_y_active = 0
                 var:zg361_ip_y_final_case = var:zg361_case_y_case_serial
             }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_05_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                has_variable = zg361_ip_y_final_applicable
+                has_variable = zg361_ip_y_final_na_owner
+                has_variable = zg361_ip_y_final_na_subject
+                has_variable = zg361_ip_y_final_na_cycle
+                has_variable = zg361_ip_y_final_na_reason
+                has_variable = zg361_ip_y_final_na_probe_serial
+                has_variable = zg361_ip_y_final_na_receipt
+                has_variable = zg361_ip_y_na_receipt_serial
+                has_variable = zg361_ip_y_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_y_final_applicable = 0
+                var:zg361_ip_y_final_na_owner = root
+                var:zg361_ip_y_final_na_subject = this
+                var:zg361_ip_y_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_y_final_na_reason = 1
+                var:zg361_ip_y_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_y_final_na_receipt = var:zg361_ip_y_na_receipt_serial
+                var:zg361_ip_y_final_na_probe_serial > 0
+                var:zg361_ip_y_final_na_receipt > 0
+                var:zg361_ip_y_na_receipt_serial > 0
+                var:zg361_ip_y_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_y_active } var:zg361_case_y_active = 0 }
+                trigger_else = { always = yes }
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_05_status }
     }
     else_if = {
         limit = {
@@ -700,6 +849,49 @@ zg361_p2c_stage_05_y_effect = {
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
         }
+        else_if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    has_variable = zg361_ip_y_final_applicable
+                has_variable = zg361_ip_y_final_na_owner
+                has_variable = zg361_ip_y_final_na_subject
+                has_variable = zg361_ip_y_final_na_cycle
+                has_variable = zg361_ip_y_final_na_reason
+                has_variable = zg361_ip_y_final_na_probe_serial
+                has_variable = zg361_ip_y_final_na_receipt
+                has_variable = zg361_ip_y_na_receipt_serial
+                has_variable = zg361_ip_y_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_y_final_applicable = 0
+                var:zg361_ip_y_final_na_owner = root
+                var:zg361_ip_y_final_na_subject = this
+                var:zg361_ip_y_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_y_final_na_reason = 1
+                var:zg361_ip_y_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_y_final_na_receipt = var:zg361_ip_y_na_receipt_serial
+                var:zg361_ip_y_final_na_probe_serial > 0
+                var:zg361_ip_y_final_na_receipt > 0
+                var:zg361_ip_y_na_receipt_serial > 0
+                var:zg361_ip_y_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_y_active } var:zg361_case_y_active = 0 }
+                trigger_else = { always = yes }
+                }
+            }
+            zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_05_status }
+        }
         else = { zg361_p2c_record_red_effect = { CODE = 405 STAGE_VAR = zg361_p2c_stage_05_status } }
     }
     else = { zg361_p2c_record_red_effect = { CODE = 455 STAGE_VAR = zg361_p2c_stage_05_status } }
@@ -716,15 +908,68 @@ zg361_p2c_stage_06_z_effect = {
                 has_variable = zg361_ip_z_final_cycle
                 has_variable = zg361_ip_z_final_case
                 has_variable = zg361_ip_z_final_state
+                has_variable = zg361_ip_z_final_applicable
+                has_variable = zg361_ip_z_final_incident_serial
+                has_variable = zg361_ip_z_final_source_kind
+                has_variable = zg361_ip_z_final_consequence_kind
+                has_variable = zg361_ip_z_final_kpi_staged
                 var:zg361_ip_z_final_owner = root
                 var:zg361_ip_z_final_subject = this
                 var:zg361_ip_z_final_cycle = root.var:zg361_p2c_cycle
                 var:zg361_ip_z_final_state = 6
+                var:zg361_ip_z_final_applicable = 1
+                var:zg361_ip_z_final_incident_serial > 0
+                var:zg361_ip_z_final_source_kind > 0
+                var:zg361_ip_z_final_consequence_kind > 0
+                var:zg361_ip_z_final_kpi_staged = 1
                 var:zg361_case_z_active = 0
                 var:zg361_ip_z_final_case = var:zg361_case_z_case_serial
             }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_06_status }
+    }
+    else_if = {
+        limit = {
+            var:zg361_p2c_subject = {
+                has_variable = zg361_ip_z_final_applicable
+                has_variable = zg361_ip_z_final_na_owner
+                has_variable = zg361_ip_z_final_na_subject
+                has_variable = zg361_ip_z_final_na_cycle
+                has_variable = zg361_ip_z_final_na_reason
+                has_variable = zg361_ip_z_final_na_probe_serial
+                has_variable = zg361_ip_z_final_na_receipt
+                has_variable = zg361_ip_z_na_receipt_serial
+                has_variable = zg361_ip_z_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_z_final_applicable = 0
+                var:zg361_ip_z_final_na_owner = root
+                var:zg361_ip_z_final_na_subject = this
+                var:zg361_ip_z_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_z_final_na_reason = 1
+                var:zg361_ip_z_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_z_final_na_receipt = var:zg361_ip_z_na_receipt_serial
+                var:zg361_ip_z_final_na_probe_serial > 0
+                var:zg361_ip_z_final_na_receipt > 0
+                var:zg361_ip_z_na_receipt_serial > 0
+                var:zg361_ip_z_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_z_active } var:zg361_case_z_active = 0 }
+                trigger_else = { always = yes }
+            }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_06_status }
     }
     else_if = {
         limit = {
@@ -762,6 +1007,49 @@ zg361_p2c_stage_06_z_effect = {
             set_variable = { name = zg361_p2c_stage_status value = 1 }
             zg361_p2c_mark_lane_busy_effect = yes
             zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+        }
+        else_if = {
+            limit = {
+                var:zg361_p2c_subject = {
+                    has_variable = zg361_ip_z_final_applicable
+                has_variable = zg361_ip_z_final_na_owner
+                has_variable = zg361_ip_z_final_na_subject
+                has_variable = zg361_ip_z_final_na_cycle
+                has_variable = zg361_ip_z_final_na_reason
+                has_variable = zg361_ip_z_final_na_probe_serial
+                has_variable = zg361_ip_z_final_na_receipt
+                has_variable = zg361_ip_z_na_receipt_serial
+                has_variable = zg361_ip_z_final_kpi_staged
+                has_variable = zg361_ip_probe_owner
+                has_variable = zg361_ip_probe_subject
+                has_variable = zg361_ip_probe_cycle
+                has_variable = zg361_ip_probe_serial
+                has_variable = zg361_ip_probe_result
+                has_variable = zg361_ip_probe_source_kind
+                has_variable = zg361_ip_probe_consequence_kind
+                var:zg361_ip_z_final_applicable = 0
+                var:zg361_ip_z_final_na_owner = root
+                var:zg361_ip_z_final_na_subject = this
+                var:zg361_ip_z_final_na_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_z_final_na_reason = 1
+                var:zg361_ip_z_final_na_probe_serial = var:zg361_ip_probe_serial
+                var:zg361_ip_z_final_na_receipt = var:zg361_ip_z_na_receipt_serial
+                var:zg361_ip_z_final_na_probe_serial > 0
+                var:zg361_ip_z_final_na_receipt > 0
+                var:zg361_ip_z_na_receipt_serial > 0
+                var:zg361_ip_z_final_kpi_staged = 0
+                var:zg361_ip_probe_owner = root
+                var:zg361_ip_probe_subject = this
+                var:zg361_ip_probe_cycle = root.var:zg361_p2c_cycle
+                var:zg361_ip_probe_result = 0
+                var:zg361_ip_probe_source_kind = 0
+                var:zg361_ip_probe_consequence_kind = 0
+                var:zg361_ip_probe_serial > 0
+                trigger_if = { limit = { has_variable = zg361_case_z_active } var:zg361_case_z_active = 0 }
+                trigger_else = { always = yes }
+                }
+            }
+            zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_06_status }
         }
         else = { zg361_p2c_record_red_effect = { CODE = 406 STAGE_VAR = zg361_p2c_stage_06_status } }
     }

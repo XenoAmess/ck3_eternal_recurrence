@@ -2,14 +2,14 @@
 
 状态：`python-l0-reference-complete`
 
-CK3 运行时：`static-ready; central-hook-and-live-pending`
+CK3 运行时：`static-ready; central-stages-wired; one-shot-hook-and-live-pending`
 
 权威代码：`tools/zg361_phase3_incident_platform_model.py`
 
 高密度测试：`tools/test_zg361_phase3_incident_platform_model.py`
 
 Python `Behavior.ck3_wiring` 仍保留 `not-implemented`：它描述的是该参考模型自身不执行 CK3 接线，
-不得因为旁路生成了一份尚未中央接线、尚未实机验证的投影而抬高 L0 模型声明。
+不得因为旁路生成了一份已做静态中央适配、但尚未实机验证的投影而抬高 L0 模型声明。
 
 ## 精确范围
 
@@ -140,24 +140,34 @@ CK3 静态投影中的跨编号读链另有 current-case guard：前序对象缺
 
 - X/Y/Z 共 37 个编号 operation、A/B/C、五元回执和写→消费者已投影；
 - 7/5/5 阶段由 14 个身份绑定的 hidden event 推进；
-- 国库与管理者个人金币双付款、份额/容量守恒和下一轮 KPI consumer 已落地；
+- 中央 stages 4–6 已逐域接入；无真实事故时以完整 N/A tuple 冻结 `status=3`，不创建空案；
+- 唯一 applicability producer 只读取战时且低控制、受评者赤字、天朝国库赤字或低控制等 CK3 事实；
+  普通管理者战争不构成事故，且 producer 不使用 random/chance；
+- 国库与管理者个人金币双付款、份额/容量守恒、下一轮 organization-evidence pending/value/consumer 已生成；
 - 玩家与获授权 AI 的公爵及以上管理入口、伯爵/男爵 subject-only 边界由共享 case kernel 执行。
 
 仍未完成：
 
-1. 把独立 `zg361_ip_open_portfolio_effect` 接入中央正式考核链；
-2. CK3 中角色、战争/灾害/财政急务、原生岗位、团队与国库的 exact-build 实机互证；
+1. 在共享 `zg361_compute_kpi_effect` 冻结 organization evidence 与总 KPI 后恰好调用一次
+   `zg361_ip_consume_due_kpi_inputs_effect = yes`；共享文件并行占用期间不得抢写；
+2. CK3 中角色、复合战争/低控制、财政赤字、团队与国库的 exact-build 实机互证；
 3. 考核榜中的事故时间线、积弊账和平台分账页面；
 4. MCP 角色/头衔/国库/变量/时间查询与 paused snapshot；
 5. fixture-live、production-live 或实机 CK3 GREEN。
 
 CK3 投影的 C 路现为 37 个逐编号、身份绑定的到期 consumer。每笔债务冻结
-`owner/subject/cycle/case/state/type/id/consumer_contract/due`；consumer 只有在该元组与原业务写入完全一致时
-才允许结算。到期且 subject 仍有真实 KPI 时，扣 1 点 KPI 并同步减少 1 点 policy debt；缺少可消费 KPI 时，
-最多两次向仍具资格且有真实 KPI 的原 manager 升级扣分并顺延。第三次容量失败保持债务 open、写明 blocked
-reason，不以布尔占位伪造偿债。已关闭重放幂等，跨 owner/case/cycle 或 type/id 不一致一律 fail closed。
-这闭合了产品内可持久化的跨期债务对象，但仍只是静态合同：没有真实存档中的到期、升级、保存/读取证据时，
+`owner/subject/cycle/case/state/type/id/consumer_contract/due` 与 incident provenance；consumer 只有在该元组
+与原业务写入完全一致时才允许结算。到期后每笔 `-1` 先聚合进 subject-owned policy KPI pending，staging
+成功才关闭债务，不再由 delayed event 直接修改 mutable KPI，也不把扣分升级给 manager。aggregate 与 X/Y/Z
+终态分只由下一次官方考核的第八项组织证据读取；post-freeze consumer 负责一次性写
+`pending=0/consumed=1` 和 receipt。已关闭重放幂等，跨 owner/case/cycle、type/id 或 incident provenance
+不一致一律 fail closed。共享冻结点的一行调用尚待合并；没有真实存档中的到期、保存/读取和一次性消费证据时，
 不得把它提升为 fixture-live 或 production-live。
+
+跨期口径不是单纯比较两枚当前变量：B1 在 freeze 前已有当前 cycle serial，按 `current >= due`；legacy
+在 freeze 后才递增 review serial，按 `review >= origin` 读取 prospective next cycle。两路都要求 producer
+冻结 `due=origin+1/offset=1`。policy aggregate 也先把债务到期轮冻结为新 origin，再生成下一轮 due，
+复用同一双分支，避免同轮偷跑或 legacy 多等一年。
 
 静态生成文件存在不等于 live。只有完成统一接线、MCP-first CK3 批次并保存真实 paused artifact 后，
 才能再次提升 readiness。

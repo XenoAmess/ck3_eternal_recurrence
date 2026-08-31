@@ -31,6 +31,7 @@ HEADER = "# GENERATED FILE — edit tools/gen_361_incident_platform_runtime.py\n
 
 EFFECTS_PATH = MOD_ROOT / "common/scripted_effects/zg361_incident_platform_runtime_effects.txt"
 EVENTS_PATH = MOD_ROOT / "events/zg361_incident_platform_runtime_events.txt"
+VALUES_PATH = MOD_ROOT / "common/script_values/zg361_incident_platform_runtime_values.txt"
 LOC_BASENAME = "zg361_incident_platform_l_{language}.yml"
 
 LANGUAGES: Final[tuple[str, ...]] = (
@@ -197,6 +198,42 @@ def _case_prefix(domain: Domain) -> str:
     return f"zg361_case_{domain.slug}"
 
 
+def _incident_input_guard(domain: Domain) -> str:
+    """Freeze every numbered operation to one observed external incident.
+
+    The probe is deliberately separate from the incident serial.  A peaceful,
+    solvent, controlled realm receives a probe result of zero and never gets an
+    incident serial or an X/Y/Z business case.
+    """
+
+    dp = _domain_prefix(domain)
+    return f'''has_variable = zg361_ip_incident_active
+			has_variable = zg361_ip_incident_owner
+			has_variable = zg361_ip_incident_subject
+			has_variable = zg361_ip_incident_cycle
+			has_variable = zg361_ip_incident_serial
+			has_variable = zg361_ip_incident_source_kind
+			has_variable = zg361_ip_incident_consequence_kind
+			has_variable = {dp}_input_owner
+			has_variable = {dp}_input_subject
+			has_variable = {dp}_input_cycle
+			has_variable = {dp}_input_incident_serial
+			has_variable = {dp}_input_source_kind
+			has_variable = {dp}_input_consequence_kind
+			var:zg361_ip_incident_active = 1
+			var:zg361_ip_incident_owner = $TICKET_OWNER$
+			var:zg361_ip_incident_subject = $TICKET_SUBJECT$
+			var:zg361_ip_incident_cycle = $TICKET_CYCLE$
+			var:zg361_ip_incident_source_kind > 0
+			var:zg361_ip_incident_consequence_kind > 0
+			var:{dp}_input_owner = $TICKET_OWNER$
+			var:{dp}_input_subject = $TICKET_SUBJECT$
+			var:{dp}_input_cycle = $TICKET_CYCLE$
+			var:{dp}_input_incident_serial = var:zg361_ip_incident_serial
+			var:{dp}_input_source_kind = var:zg361_ip_incident_source_kind
+			var:{dp}_input_consequence_kind = var:zg361_ip_incident_consequence_kind'''
+
+
 def _ticket_args(domain: Domain, state: int, *, source: str = "core") -> str:
     prefix = _case_prefix(domain)
     if source == "deadline":
@@ -216,6 +253,162 @@ def _ticket_args(domain: Domain, state: int, *, source: str = "core") -> str:
         f"\t\tTICKET_CASE = {case}\n"
         f"\t\tTICKET_STATE = {state}"
     )
+
+
+def render_real_incident_capture() -> str:
+    """Render the sole producer for X/Y/Z applicability.
+
+    It observes CK3 state; it never rolls a random outage.  The per-cycle probe
+    is frozen even when the result is zero, so a later war cannot retroactively
+    turn an already-N/A portfolio into an incident.
+    """
+
+    return r'''# Real incident producer.  Source kinds: 1 subject wartime control
+# collapse, 3 subject deficit, 4 celestial treasury deficit, 5 capital control
+# loss.  Source kind 2 is deliberately unused: an ordinary manager war is too
+# broad to establish that this subject had an incident.
+# Consequence kinds: 1 world war, 2 real resource deficit, 3 world control loss.
+zg361_ip_capture_real_incident_effect = {
+	set_variable = { name = zg361_ip_capture_status value = 0 }
+	if = {
+		limit = {
+			root = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			has_variable = zg361_ip_probe_owner
+			has_variable = zg361_ip_probe_subject
+			has_variable = zg361_ip_probe_cycle
+			has_variable = zg361_ip_probe_serial
+			has_variable = zg361_ip_probe_result
+			has_variable = zg361_ip_probe_source_kind
+			has_variable = zg361_ip_probe_consequence_kind
+			var:zg361_ip_probe_owner = root
+			var:zg361_ip_probe_subject = this
+			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
+		}
+		set_variable = { name = zg361_ip_capture_status value = var:zg361_ip_probe_result }
+	}
+	else_if = {
+		limit = {
+			root = {
+				has_game_rule = zg361_on
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+		}
+		if = { limit = { NOT = { has_variable = zg361_ip_probe_serial } } set_variable = { name = zg361_ip_probe_serial value = 0 } }
+		change_variable = { name = zg361_ip_probe_serial add = 1 }
+		set_variable = { name = zg361_ip_probe_owner value = root }
+		set_variable = { name = zg361_ip_probe_subject value = this }
+		set_variable = { name = zg361_ip_probe_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_ip_probe_result value = 0 }
+		set_variable = { name = zg361_ip_probe_source_kind value = 0 }
+		set_variable = { name = zg361_ip_probe_consequence_kind value = 0 }
+		set_variable = { name = zg361_ip_probe_world_consequence value = 0 }
+		set_variable = { name = zg361_ip_probe_resource_consequence value = 0 }
+		set_variable = { name = zg361_ip_probe_subject_gold value = gold }
+		set_variable = { name = zg361_ip_probe_capital_control value = capital_county.county_control }
+		if = {
+			limit = {
+				is_at_war = yes
+				capital_county = { county_control <= 50 }
+			}
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 1 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 1 }
+			set_variable = { name = zg361_ip_probe_world_consequence value = 1 }
+		}
+		else_if = {
+			limit = { gold < 0 }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 3 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 2 }
+			set_variable = { name = zg361_ip_probe_resource_consequence value = 1 }
+		}
+		else_if = {
+			limit = { root = { government_has_flag = government_has_treasury treasury < 0 } }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 4 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 2 }
+			set_variable = { name = zg361_ip_probe_resource_consequence value = 1 }
+		}
+		else_if = {
+			limit = { capital_county = { county_control <= 50 } }
+			set_variable = { name = zg361_ip_probe_result value = 1 }
+			set_variable = { name = zg361_ip_probe_source_kind value = 5 }
+			set_variable = { name = zg361_ip_probe_consequence_kind value = 3 }
+			set_variable = { name = zg361_ip_probe_world_consequence value = 1 }
+		}
+		set_variable = { name = zg361_ip_capture_status value = var:zg361_ip_probe_result }
+		if = {
+			limit = {
+				var:zg361_ip_probe_result = 1
+				var:zg361_ip_probe_source_kind > 0
+				var:zg361_ip_probe_consequence_kind > 0
+			}
+			if = { limit = { NOT = { has_variable = zg361_ip_incident_serial } } set_variable = { name = zg361_ip_incident_serial value = 0 } }
+			change_variable = { name = zg361_ip_incident_serial add = 1 }
+			set_variable = { name = zg361_ip_incident_active value = 1 }
+			set_variable = { name = zg361_ip_incident_owner value = root }
+			set_variable = { name = zg361_ip_incident_subject value = this }
+			set_variable = { name = zg361_ip_incident_cycle value = root.var:zg361_review_serial }
+			set_variable = { name = zg361_ip_incident_probe_serial value = var:zg361_ip_probe_serial }
+			set_variable = { name = zg361_ip_incident_source_kind value = var:zg361_ip_probe_source_kind }
+			set_variable = { name = zg361_ip_incident_consequence_kind value = var:zg361_ip_probe_consequence_kind }
+			set_variable = { name = zg361_ip_incident_world_consequence value = var:zg361_ip_probe_world_consequence }
+			set_variable = { name = zg361_ip_incident_resource_consequence value = var:zg361_ip_probe_resource_consequence }
+			set_variable = { name = zg361_ip_incident_subject_gold value = var:zg361_ip_probe_subject_gold }
+			set_variable = { name = zg361_ip_incident_capital_control value = var:zg361_ip_probe_capital_control }
+			set_variable = { name = zg361_ip_incident_open_year value = current_year }
+			debug_log = "ZG361IP: observed CK3 world/resource incident receipt"
+		}
+		else = { debug_log = "ZG361IP: no observed incident; X/Y/Z remain N/A" }
+	}
+}'''
+
+
+def render_not_applicable(domain: Domain) -> str:
+    dp = _domain_prefix(domain)
+    return f'''# Exact N/A receipt.  It is an applicability probe, not an incident case.
+zg361_ip_mark_{domain.slug}_not_applicable_effect = {{
+	if = {{
+		limit = {{
+			root = {{ has_game_rule = zg361_on zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial }}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			has_variable = zg361_ip_probe_owner
+			has_variable = zg361_ip_probe_subject
+			has_variable = zg361_ip_probe_cycle
+			has_variable = zg361_ip_probe_serial
+			has_variable = zg361_ip_probe_result
+			has_variable = zg361_ip_probe_source_kind
+			has_variable = zg361_ip_probe_consequence_kind
+			var:zg361_ip_probe_owner = root
+			var:zg361_ip_probe_subject = this
+			var:zg361_ip_probe_cycle = root.var:zg361_review_serial
+			var:zg361_ip_probe_result = 0
+			var:zg361_ip_probe_source_kind = 0
+			var:zg361_ip_probe_consequence_kind = 0
+		}}
+		if = {{ limit = {{ NOT = {{ has_variable = {dp}_na_receipt_serial }} }} set_variable = {{ name = {dp}_na_receipt_serial value = 0 }} }}
+		change_variable = {{ name = {dp}_na_receipt_serial add = 1 }}
+		set_variable = {{ name = {dp}_final_applicable value = 0 }}
+		set_variable = {{ name = {dp}_final_na_owner value = root }}
+		set_variable = {{ name = {dp}_final_na_subject value = this }}
+		set_variable = {{ name = {dp}_final_na_cycle value = root.var:zg361_review_serial }}
+		set_variable = {{ name = {dp}_final_na_reason value = 1 }}
+		set_variable = {{ name = {dp}_final_na_probe_serial value = var:zg361_ip_probe_serial }}
+		set_variable = {{ name = {dp}_final_na_receipt value = var:{dp}_na_receipt_serial }}
+		set_variable = {{ name = {dp}_final_kpi_staged value = 0 }}
+		debug_log = "ZG361IP: {domain.code} N/A because no observed incident exists"
+	}}
+}}'''
 
 
 def _route_assignment(mechanism_id: int) -> str:
@@ -251,6 +444,9 @@ def _route_assignment(mechanism_id: int) -> str:
             f"\t\t\tset_variable = {{ name = {prefix}_object_cycle value = $TICKET_CYCLE$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_object_case value = $TICKET_CASE$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_object_state value = $TICKET_STATE$ }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_object_incident_serial value = var:zg361_ip_incident_serial }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_object_incident_source_kind value = var:zg361_ip_incident_source_kind }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_object_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }}",
             f"\t\t\tset_variable = {{ name = {prefix}_object_id value = {{ value = $TICKET_CYCLE$ multiply = 1000000 add = {{ value = $TICKET_CASE$ multiply = 1000 }} add = {mechanism_id} }} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_consumer_contract value = {mechanism_id} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_object_consumed value = 0 }}",
@@ -274,6 +470,9 @@ def _route_assignment(mechanism_id: int) -> str:
             f"\t\t\tset_variable = {{ name = {prefix}_debt_cycle value = $TICKET_CYCLE$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_case value = $TICKET_CASE$ }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_state value = $TICKET_STATE$ }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_incident_serial value = var:zg361_ip_incident_serial }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_incident_source_kind value = var:zg361_ip_incident_source_kind }}",
+            f"\t\t\tset_variable = {{ name = {prefix}_debt_incident_consequence_kind value = var:zg361_ip_incident_consequence_kind }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_type_code value = {mechanism_id} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_id value = {{ value = $TICKET_CYCLE$ multiply = 1000000 add = {{ value = $TICKET_CASE$ multiply = 1000 }} add = {mechanism_id} }} }}",
             f"\t\t\tset_variable = {{ name = {prefix}_debt_consumer_contract value = {mechanism_id} }}",
@@ -520,6 +719,7 @@ def render_mechanism_effect(mechanism_id: int) -> str:
 \t}}
 \tif = {{
 \t\tlimit = {{
+{_incident_input_guard(domain)}
 \t\t\ttrigger_if = {{
 \t\t\t\tlimit = {{ has_variable = {prefix}_done_owner has_variable = {prefix}_done_subject has_variable = {prefix}_done_cycle has_variable = {prefix}_done_case has_variable = {prefix}_done_state }}
 \t\t\t\tOR = {{
@@ -674,14 +874,36 @@ zg361_ip_{domain.slug}_dispatch_{stage:02d}_effect = {{
 def render_finalize(domain: Domain) -> str:
     dp = _domain_prefix(domain)
     case = _case_prefix(domain)
-    return f'''# {domain.code} closure: average all numbered outputs and affect the next review.
+    return f'''# {domain.code} closure: average all numbered outputs and stage one
+# exact input for the next official KPI. It never mutates the current KPI.
 zg361_ip_finalize_{domain.slug}_effect = {{
 \tif = {{
 \t\tlimit = {{
+\t\t\thas_variable = {case}_owner
+\t\t\thas_variable = {case}_subject
+\t\t\thas_variable = {case}_cycle_serial
+\t\t\thas_variable = {case}_case_serial
 \t\t\thas_variable = {case}_state
 \t\t\thas_variable = {case}_active
+\t\t\thas_variable = {dp}_input_owner
+\t\t\thas_variable = {dp}_input_subject
+\t\t\thas_variable = {dp}_input_cycle
+\t\t\thas_variable = {dp}_input_incident_serial
+\t\t\thas_variable = {dp}_input_source_kind
+\t\t\thas_variable = {dp}_input_consequence_kind
+\t\t\thas_variable = zg361_ip_incident_serial
+\t\t\thas_variable = zg361_ip_incident_source_kind
+\t\t\thas_variable = zg361_ip_incident_consequence_kind
 \t\t\tvar:{case}_state = {domain.final_state}
 \t\t\tvar:{case}_active = 0
+\t\t\tvar:{dp}_input_owner = var:{case}_owner
+\t\t\tvar:{dp}_input_subject = var:{case}_subject
+\t\t\tvar:{dp}_input_cycle = var:{case}_cycle_serial
+\t\t\tvar:{dp}_input_incident_serial = var:zg361_ip_incident_serial
+\t\t\tvar:{dp}_input_source_kind = var:zg361_ip_incident_source_kind
+\t\t\tvar:{dp}_input_consequence_kind = var:zg361_ip_incident_consequence_kind
+\t\t\tvar:{dp}_input_source_kind > 0
+\t\t\tvar:{dp}_input_consequence_kind > 0
 \t\t\ttrigger_if = {{
 \t\t\t\tlimit = {{ has_variable = {dp}_final_case }}
 \t\t\t\tNOT = {{ var:{dp}_final_case = var:{case}_case_serial }}
@@ -693,23 +915,48 @@ zg361_ip_finalize_{domain.slug}_effect = {{
 \t\t\tlimit = {{ var:{dp}_evidence_n > 0 }}
 \t\t\tset_variable = {{ name = {dp}_final_score value = {{ value = var:{dp}_score_delta divide = var:{dp}_evidence_n round = yes max = 4 min = -4 }} }}
 \t\t}}
-\t\tif = {{
-\t\t\tlimit = {{ has_variable = zg361_kpi_value }}
-\t\t\tchange_variable = {{ name = zg361_kpi_value add = var:{dp}_final_score }}
-\t\t}}
-\t\telse = {{ set_variable = {{ name = zg361_kpi_value value = var:{dp}_final_score }} }}
+\t\tset_variable = {{ name = {dp}_final_applicable value = 1 }}
 \t\tset_variable = {{ name = {dp}_final_owner value = var:{case}_owner }}
 \t\tset_variable = {{ name = {dp}_final_subject value = var:{case}_subject }}
 \t\tset_variable = {{ name = {dp}_final_cycle value = var:{case}_cycle_serial }}
 \t\tset_variable = {{ name = {dp}_final_case value = var:{case}_case_serial }}
 \t\tset_variable = {{ name = {dp}_final_state value = {domain.final_state} }}
 \t\tset_variable = {{ name = {dp}_final_revision value = var:{case}_revision }}
+\t\tset_variable = {{ name = {dp}_final_incident_serial value = var:{dp}_input_incident_serial }}
+\t\tset_variable = {{ name = {dp}_final_source_kind value = var:{dp}_input_source_kind }}
+\t\tset_variable = {{ name = {dp}_final_consequence_kind value = var:{dp}_input_consequence_kind }}
+\t\tset_variable = {{ name = {dp}_final_kpi_staged value = 0 }}
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = {dp}_kpi_pending has_variable = {dp}_kpi_consumed }}
+\t\t\t\t\tOR = {{ var:{dp}_kpi_pending = 0 var:{dp}_kpi_consumed = 1 }}
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = yes }}
+\t\t\t}}
+\t\t\tset_variable = {{ name = {dp}_kpi_pending value = 1 }}
+\t\t\tset_variable = {{ name = {dp}_kpi_consumed value = 0 }}
+\t\t\tset_variable = {{ name = {dp}_kpi_owner value = var:{case}_owner }}
+\t\t\tset_variable = {{ name = {dp}_kpi_subject value = var:{case}_subject }}
+\t\t\tset_variable = {{ name = {dp}_kpi_origin_cycle value = var:{case}_cycle_serial }}
+\t\t\tset_variable = {{ name = {dp}_kpi_case value = var:{case}_case_serial }}
+\t\t\tset_variable = {{ name = {dp}_kpi_state value = {domain.final_state} }}
+\t\t\tset_variable = {{ name = {dp}_kpi_score value = var:{dp}_final_score }}
+\t\t\tset_variable = {{ name = {dp}_kpi_due_cycle value = var:{case}_cycle_serial }}
+\t\t\tchange_variable = {{ name = {dp}_kpi_due_cycle add = 1 }}
+\t\t\tset_variable = {{ name = {dp}_kpi_due_offset value = 1 }}
+\t\t\tset_variable = {{ name = {dp}_kpi_incident_serial value = var:{dp}_input_incident_serial }}
+\t\t\tset_variable = {{ name = {dp}_kpi_source_kind value = var:{dp}_input_source_kind }}
+\t\t\tset_variable = {{ name = {dp}_kpi_consequence_kind value = var:{dp}_input_consequence_kind }}
+\t\t\tset_variable = {{ name = {dp}_final_kpi_staged value = 1 }}
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {dp}_kpi_collision value = 1 }} }}
 \t\tsave_scope_as = zg361_ip_result_subject
 \t\tif = {{
 \t\t\tlimit = {{ var:{case}_owner = {{ is_alive = yes is_ai = no }} }}
 \t\t\tvar:{case}_owner = {{ trigger_event = {{ id = zg361ip.{domain.result_event} }} }}
 \t\t}}
-\t\tdebug_log = "ZG361IP: {domain.code} case closed and next-cycle KPI consumed"
+\t\tdebug_log = "ZG361IP: {domain.code} case closed and next-cycle KPI staged"
 \t}}
 }}'''
 
@@ -718,27 +965,60 @@ def render_open_on_subject(domain: Domain) -> str:
     dp = _domain_prefix(domain)
     case = _case_prefix(domain)
     return f'''# Subject-scope entry; ROOT must be the eligible direct manager.
+# A case is opened only from the exact positive world/resource probe. A zero
+# probe writes a separate N/A receipt and never calls the case kernel.
 zg361_ip_open_{domain.slug}_case_on_subject_effect = {{
 \tif = {{ limit = {{ has_variable = {dp}_final_score }} set_variable = {{ name = {dp}_previous_final_score value = var:{dp}_final_score }} }}
-\tzg361_case_{domain.slug}_open_effect = yes
+\tzg361_ip_capture_real_incident_effect = yes
 \tif = {{
-\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
+\t\tlimit = {{
+\t\t\thas_variable = zg361_ip_capture_status
+\t\t\tvar:zg361_ip_capture_status = 1
+\t\t\thas_variable = zg361_ip_incident_active
+\t\t\thas_variable = zg361_ip_incident_owner
+\t\t\thas_variable = zg361_ip_incident_subject
+\t\t\thas_variable = zg361_ip_incident_cycle
+\t\t\thas_variable = zg361_ip_incident_serial
+\t\t\thas_variable = zg361_ip_incident_source_kind
+\t\t\thas_variable = zg361_ip_incident_consequence_kind
+\t\t\tvar:zg361_ip_incident_active = 1
+\t\t\tvar:zg361_ip_incident_owner = root
+\t\t\tvar:zg361_ip_incident_subject = this
+\t\t\tvar:zg361_ip_incident_cycle = root.var:zg361_review_serial
+\t\t\tvar:zg361_ip_incident_source_kind > 0
+\t\t\tvar:zg361_ip_incident_consequence_kind > 0
+\t\t}}
+\t\tset_variable = {{ name = {dp}_input_owner value = root }}
+\t\tset_variable = {{ name = {dp}_input_subject value = this }}
+\t\tset_variable = {{ name = {dp}_input_cycle value = root.var:zg361_review_serial }}
+\t\tset_variable = {{ name = {dp}_input_incident_serial value = var:zg361_ip_incident_serial }}
+\t\tset_variable = {{ name = {dp}_input_source_kind value = var:zg361_ip_incident_source_kind }}
+\t\tset_variable = {{ name = {dp}_input_consequence_kind value = var:zg361_ip_incident_consequence_kind }}
+\t\tset_variable = {{ name = {dp}_final_applicable value = 1 }}
+\t\tzg361_case_{domain.slug}_open_effect = yes
 \t\tif = {{
-\t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
-\t\t\tset_variable = {{ name = {dp}_score_delta value = 0 }}
-\t\t\tset_variable = {{ name = {dp}_evidence_n value = 0 }}
-\t\t\tset_variable = {{ name = {dp}_last_consumer value = 0 }}
-\t\t\tif = {{ limit = {{ NOT = {{ has_variable = {dp}_policy_debt }} }} set_variable = {{ name = {dp}_policy_debt value = 0 }} }}
-\t\t\tset_variable = {{ name = {dp}_deadline_pending value = 0 }}
-\t\t\tset_variable = {{ name = {dp}_deadline_expired value = 0 }}
-\t\t\tzg361_ip_{domain.slug}_dispatch_01_effect = {{
-\t\t\t\tTICKET_OWNER = var:{case}_owner
-\t\t\t\tTICKET_SUBJECT = var:{case}_subject
-\t\t\t\tTICKET_CYCLE = var:{case}_cycle_serial
-\t\t\t\tTICKET_CASE = var:{case}_case_serial
-\t\t\t\tTICKET_STATE = 1
+\t\t\tlimit = {{ has_variable = zg361_case_kernel_applied }}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ var:zg361_case_kernel_applied = 1 }}
+\t\t\t\tset_variable = {{ name = {dp}_score_delta value = 0 }}
+\t\t\t\tset_variable = {{ name = {dp}_evidence_n value = 0 }}
+\t\t\t\tset_variable = {{ name = {dp}_last_consumer value = 0 }}
+\t\t\t\tif = {{ limit = {{ NOT = {{ has_variable = {dp}_policy_debt }} }} set_variable = {{ name = {dp}_policy_debt value = 0 }} }}
+\t\t\t\tset_variable = {{ name = {dp}_deadline_pending value = 0 }}
+\t\t\t\tset_variable = {{ name = {dp}_deadline_expired value = 0 }}
+\t\t\t\tzg361_ip_{domain.slug}_dispatch_01_effect = {{
+\t\t\t\t\tTICKET_OWNER = var:{case}_owner
+\t\t\t\t\tTICKET_SUBJECT = var:{case}_subject
+\t\t\t\t\tTICKET_CYCLE = var:{case}_cycle_serial
+\t\t\t\t\tTICKET_CASE = var:{case}_case_serial
+\t\t\t\t\tTICKET_STATE = 1
+\t\t\t\t}}
 \t\t\t}}
 \t\t}}
+\t}}
+\telse_if = {{
+\t\tlimit = {{ has_variable = zg361_ip_capture_status var:zg361_ip_capture_status = 0 }}
+\t\tzg361_ip_mark_{domain.slug}_not_applicable_effect = yes
 \t}}
 }}
 
@@ -783,6 +1063,239 @@ def render_due_effect(domain: Domain, state: int) -> str:
 }}'''
 
 
+def _kpi_due_guard(domain: Domain) -> str:
+    dp = _domain_prefix(domain)
+    return f'''\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\ttrigger_if = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\thas_variable = {dp}_kpi_pending
+\t\t\t\t\thas_variable = {dp}_kpi_consumed
+\t\t\t\t\thas_variable = {dp}_kpi_owner
+\t\t\t\t\thas_variable = {dp}_kpi_subject
+\t\t\t\t\thas_variable = {dp}_kpi_origin_cycle
+\t\t\t\t\thas_variable = {dp}_kpi_case
+\t\t\t\t\thas_variable = {dp}_kpi_state
+\t\t\t\t\thas_variable = {dp}_kpi_score
+\t\t\t\t\thas_variable = {dp}_kpi_due_cycle
+\t\t\t\t\thas_variable = {dp}_kpi_due_offset
+\t\t\t\t\thas_variable = {dp}_kpi_incident_serial
+\t\t\t\t\thas_variable = {dp}_kpi_source_kind
+\t\t\t\t\thas_variable = {dp}_kpi_consequence_kind
+\t\t\t\t}}
+\t\t\t\tvar:{dp}_kpi_pending = 1
+\t\t\t\tvar:{dp}_kpi_consumed = 0
+\t\t\t\tvar:{dp}_kpi_owner = liege
+\t\t\t\tvar:{dp}_kpi_subject = this
+\t\t\t\tvar:{dp}_kpi_due_offset = 1
+\t\t\t\tvar:{dp}_kpi_due_cycle > var:{dp}_kpi_origin_cycle
+\t\t\t\tvar:{dp}_kpi_incident_serial > 0
+\t\t\t\tvar:{dp}_kpi_source_kind > 0
+\t\t\t\tvar:{dp}_kpi_consequence_kind > 0
+\t\t\t\tOR = {{
+\t\t\t\t\tAND = {{
+\t\t\t\t\t\tliege = {{ has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }}
+\t\t\t\t\t\tliege = {{ var:zg361_b1_cycle_serial >= prev.var:{dp}_kpi_due_cycle }}
+\t\t\t\t\t}}
+\t\t\t\t\tAND = {{
+\t\t\t\t\t\tliege = {{ NOT = {{ has_character_flag = zg361_b1_cycle_active }} has_variable = zg361_review_serial }}
+\t\t\t\t\t\tliege = {{ var:zg361_review_serial >= prev.var:{dp}_kpi_origin_cycle }}
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t}}
+\t\t\ttrigger_else = {{ always = no }}'''
+
+
+def _policy_kpi_guard() -> str:
+    return '''\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\ttrigger_if = {
+\t\t\t\tlimit = {
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_pending
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_consumed
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_owner
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_subject
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_origin_cycle
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_due_cycle
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_due_offset
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_score
+\t\t\t\t\thas_variable = zg361_ip_policy_kpi_entry_count
+\t\t\t\t}
+\t\t\t\tvar:zg361_ip_policy_kpi_pending = 1
+\t\t\t\tvar:zg361_ip_policy_kpi_consumed = 0
+\t\t\t\tvar:zg361_ip_policy_kpi_owner = liege
+\t\t\t\tvar:zg361_ip_policy_kpi_subject = this
+\t\t\t\tvar:zg361_ip_policy_kpi_due_offset = 1
+\t\t\t\tvar:zg361_ip_policy_kpi_due_cycle > var:zg361_ip_policy_kpi_origin_cycle
+\t\t\t\tvar:zg361_ip_policy_kpi_score < 0
+\t\t\t\tvar:zg361_ip_policy_kpi_entry_count > 0
+\t\t\t\tOR = {
+\t\t\t\t\tAND = {
+\t\t\t\t\t\tliege = { has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
+\t\t\t\t\t\tliege = { var:zg361_b1_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle }
+\t\t\t\t\t}
+\t\t\t\t\tAND = {
+\t\t\t\t\t\tliege = { NOT = { has_character_flag = zg361_b1_cycle_active } has_variable = zg361_review_serial }
+\t\t\t\t\t\tliege = { var:zg361_review_serial >= prev.var:zg361_ip_policy_kpi_origin_cycle }
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t}
+\t\t\ttrigger_else = { always = no }'''
+
+
+def render_kpi_runtime_effects() -> str:
+    domain_consumers = []
+    for domain in DOMAINS:
+        dp = _domain_prefix(domain)
+        domain_consumers.append(f'''\tif = {{
+\t\tlimit = {{
+{_kpi_due_guard(domain)}
+\t\t\thas_variable = zg361_ip_kpi_consumer_cycle
+\t\t\tvar:zg361_ip_kpi_consumer_cycle >= var:{dp}_kpi_due_cycle
+\t\t}}
+\t\tif = {{ limit = {{ NOT = {{ has_variable = {dp}_kpi_receipt_serial }} }} set_variable = {{ name = {dp}_kpi_receipt_serial value = 0 }} }}
+\t\tchange_variable = {{ name = {dp}_kpi_receipt_serial add = 1 }}
+\t\tset_variable = {{ name = {dp}_kpi_pending value = 0 }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed value = 1 }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_owner value = var:{dp}_kpi_owner }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_subject value = var:{dp}_kpi_subject }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_origin_cycle value = var:{dp}_kpi_origin_cycle }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_due_cycle value = var:{dp}_kpi_due_cycle }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_cycle value = var:zg361_ip_kpi_consumer_cycle }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_case value = var:{dp}_kpi_case }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_score value = var:{dp}_kpi_score }}
+\t\tset_variable = {{ name = {dp}_kpi_consumed_incident_serial value = var:{dp}_kpi_incident_serial }}
+\t}}''')
+    return r'''# Route-C policy debts stage into one subject-owned aggregate.  Every debt has
+# its own consumed bit; this aggregate is read and cleared once by an official
+# KPI computation, never by a delayed event directly mutating a KPI variable.
+zg361_ip_stage_policy_debt_kpi_effect = {
+	set_variable = { name = zg361_ip_policy_kpi_stage_status value = 0 }
+	if = {
+		limit = {
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = $DEBT_OWNER$
+			$DEBT_OWNER$ = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= $DEBT_DUE_CYCLE$
+			}
+			$DEBT_DUE_CYCLE$ > $DEBT_CYCLE$
+			OR = {
+				AND = {
+					has_variable = zg361_ip_policy_kpi_pending
+					has_variable = zg361_ip_policy_kpi_consumed
+					has_variable = zg361_ip_policy_kpi_owner
+					has_variable = zg361_ip_policy_kpi_subject
+					has_variable = zg361_ip_policy_kpi_origin_cycle
+					has_variable = zg361_ip_policy_kpi_due_cycle
+					has_variable = zg361_ip_policy_kpi_due_offset
+					var:zg361_ip_policy_kpi_pending = 1
+					var:zg361_ip_policy_kpi_consumed = 0
+					var:zg361_ip_policy_kpi_owner = $DEBT_OWNER$
+					var:zg361_ip_policy_kpi_subject = this
+					var:zg361_ip_policy_kpi_origin_cycle = $DEBT_DUE_CYCLE$
+					var:zg361_ip_policy_kpi_due_offset = 1
+					var:zg361_ip_policy_kpi_due_cycle > var:zg361_ip_policy_kpi_origin_cycle
+				}
+				trigger_if = {
+					limit = { has_variable = zg361_ip_policy_kpi_pending has_variable = zg361_ip_policy_kpi_consumed }
+					OR = { var:zg361_ip_policy_kpi_pending = 0 var:zg361_ip_policy_kpi_consumed = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+		}
+		if = {
+			limit = {
+				trigger_if = {
+					limit = { has_variable = zg361_ip_policy_kpi_pending has_variable = zg361_ip_policy_kpi_consumed }
+					OR = { var:zg361_ip_policy_kpi_pending = 0 var:zg361_ip_policy_kpi_consumed = 1 }
+				}
+				trigger_else = { always = yes }
+			}
+			set_variable = { name = zg361_ip_policy_kpi_pending value = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_consumed value = 0 }
+			set_variable = { name = zg361_ip_policy_kpi_owner value = $DEBT_OWNER$ }
+			set_variable = { name = zg361_ip_policy_kpi_subject value = this }
+			set_variable = { name = zg361_ip_policy_kpi_origin_cycle value = $DEBT_DUE_CYCLE$ }
+			set_variable = { name = zg361_ip_policy_kpi_due_cycle value = $DEBT_DUE_CYCLE$ }
+			change_variable = { name = zg361_ip_policy_kpi_due_cycle add = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_due_offset value = 1 }
+			set_variable = { name = zg361_ip_policy_kpi_score value = 0 }
+			set_variable = { name = zg361_ip_policy_kpi_entry_count value = 0 }
+		}
+		change_variable = { name = zg361_ip_policy_kpi_score add = -1 }
+		change_variable = { name = zg361_ip_policy_kpi_entry_count add = 1 }
+		set_variable = { name = zg361_ip_policy_kpi_last_mechanism value = $MECHANISM_ID$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_cycle value = $DEBT_CYCLE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_due_cycle value = $DEBT_DUE_CYCLE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_case value = $DEBT_CASE$ }
+		set_variable = { name = zg361_ip_policy_kpi_last_incident_serial value = $INCIDENT_SERIAL$ }
+		set_variable = { name = zg361_ip_policy_kpi_stage_status value = 1 }
+	}
+}
+
+# Integration contract: call exactly once in subject scope immediately after
+# zg361_compute_kpi_effect freezes zg361_evidence_organization and zg361_kpi.
+zg361_ip_consume_due_kpi_inputs_effect = {
+	remove_variable = zg361_ip_kpi_consumer_cycle
+	if = {
+		limit = {
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = { zg361_is_celestial_liege_trigger = yes has_character_flag = zg361_b1_cycle_active has_variable = zg361_b1_cycle_serial }
+		}
+		set_variable = { name = zg361_ip_kpi_consumer_cycle value = liege.var:zg361_b1_cycle_serial }
+	}
+	else_if = {
+		limit = { zg361_is_reviewable_vassal_trigger = yes liege = { zg361_is_celestial_liege_trigger = yes has_variable = zg361_review_serial } }
+		set_variable = { name = zg361_ip_kpi_consumer_cycle value = liege.var:zg361_review_serial }
+		change_variable = { name = zg361_ip_kpi_consumer_cycle add = 1 }
+	}
+''' + "\n\n".join(domain_consumers) + f'''
+\tif = {{
+\t\tlimit = {{
+{_policy_kpi_guard()}
+\t\t\thas_variable = zg361_ip_kpi_consumer_cycle
+\t\t\tvar:zg361_ip_kpi_consumer_cycle >= var:zg361_ip_policy_kpi_due_cycle
+\t\t}}
+\t\tif = {{ limit = {{ NOT = {{ has_variable = zg361_ip_policy_kpi_receipt_serial }} }} set_variable = {{ name = zg361_ip_policy_kpi_receipt_serial value = 0 }} }}
+\t\tchange_variable = {{ name = zg361_ip_policy_kpi_receipt_serial add = 1 }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_pending value = 0 }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed value = 1 }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed_score value = var:zg361_ip_policy_kpi_score }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed_entries value = var:zg361_ip_policy_kpi_entry_count }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed_origin_cycle value = var:zg361_ip_policy_kpi_origin_cycle }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed_due_cycle value = var:zg361_ip_policy_kpi_due_cycle }}
+\t\tset_variable = {{ name = zg361_ip_policy_kpi_consumed_cycle value = var:zg361_ip_kpi_consumer_cycle }}
+\t}}
+\tremove_variable = zg361_ip_kpi_consumer_cycle
+}}'''
+
+
+def render_values() -> bytes:
+    domain_inputs = []
+    for domain in DOMAINS:
+        dp = _domain_prefix(domain)
+        domain_inputs.append(f'''\tif = {{
+\t\tlimit = {{
+{_kpi_due_guard(domain)}
+\t\t}}
+\t\tadd = var:{dp}_kpi_score
+\t}}''')
+    body = r'''# Exact next-cycle inputs for the eighth, organization-evidence KPI component.
+# This scripted value is read-only; the post-freeze consumer effect owns the
+# one-shot state transition.
+zg361_ip_next_cycle_kpi_value = {
+	value = 0
+''' + "\n".join(domain_inputs) + f'''
+\tif = {{
+\t\tlimit = {{
+{_policy_kpi_guard()}
+\t\t}}
+\t\tadd = var:zg361_ip_policy_kpi_score
+\t}}
+}}'''
+    return generated(body)
+
+
 def render_policy_debt_consumer(mechanism_id: int) -> str:
     """Render a due-cycle consumer for one exact route-C debt."""
 
@@ -808,6 +1321,9 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 			has_variable = {p}_debt_cycle
 			has_variable = {p}_debt_case
 			has_variable = {p}_debt_state
+			has_variable = {p}_debt_incident_serial
+			has_variable = {p}_debt_incident_source_kind
+			has_variable = {p}_debt_incident_consequence_kind
 			has_variable = {p}_debt_type_code
 			has_variable = {p}_debt_id
 			has_variable = {p}_debt_consumer_contract
@@ -828,6 +1344,9 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 			var:{p}_debt_type_code = {mechanism_id}
 			var:{p}_debt_consumer_contract = {mechanism_id}
 			var:{p}_debt_state = {state}
+			var:{p}_debt_incident_serial > 0
+			var:{p}_debt_incident_source_kind > 0
+			var:{p}_debt_incident_consequence_kind > 0
 			var:{p}_debt_owner = var:{p}_done_owner
 			var:{p}_debt_subject = this
 			var:{p}_debt_subject = var:{p}_done_subject
@@ -842,33 +1361,49 @@ def render_policy_debt_consumer(mechanism_id: int) -> str:
 		}}
 		if = {{
 			limit = {{
-				has_variable = zg361_kpi_value
 				var:{dp}_policy_debt >= 1
 				var:{p}_debt_owner = {{ zg361_is_celestial_liege_trigger = yes }}
+				zg361_is_reviewable_vassal_trigger = yes
+				liege = var:{p}_debt_owner
 			}}
-			change_variable = {{ name = zg361_kpi_value add = -1 }}
-			change_variable = {{ name = {dp}_policy_debt add = -1 }}
-			set_variable = {{ name = {p}_debt_open value = 0 }}
-			set_variable = {{ name = {p}_debt_consumed value = 1 }}
-			set_variable = {{ name = {p}_debt_resolution value = 1 }}
-			set_variable = {{ name = {p}_debt_settled_cycle value = var:{p}_debt_due_cycle }}
-			set_variable = {{ name = {p}_debt_kpi_cost value = 1 }}
-			set_variable = {{ name = zg361_ip_debt_status value = 1 }}
+			zg361_ip_stage_policy_debt_kpi_effect = {{
+				DEBT_OWNER = var:{p}_debt_owner
+				DEBT_CYCLE = var:{p}_debt_cycle
+				DEBT_DUE_CYCLE = var:{p}_debt_due_cycle
+				DEBT_CASE = var:{p}_debt_case
+				MECHANISM_ID = {mechanism_id}
+				INCIDENT_SERIAL = var:{p}_debt_incident_serial
+			}}
+			if = {{
+				limit = {{ has_variable = zg361_ip_policy_kpi_stage_status var:zg361_ip_policy_kpi_stage_status = 1 }}
+				change_variable = {{ name = {dp}_policy_debt add = -1 }}
+				set_variable = {{ name = {p}_debt_open value = 0 }}
+				set_variable = {{ name = {p}_debt_consumed value = 1 }}
+				set_variable = {{ name = {p}_debt_resolution value = 1 }}
+				set_variable = {{ name = {p}_debt_settled_cycle value = var:{p}_debt_due_cycle }}
+				set_variable = {{ name = {p}_debt_kpi_cost value = 1 }}
+				set_variable = {{ name = {p}_debt_kpi_staged value = 1 }}
+				set_variable = {{ name = zg361_ip_debt_status value = 1 }}
+			}}
+			else = {{
+				set_variable = {{ name = {p}_debt_kpi_staged value = 0 }}
+				set_variable = {{ name = {p}_debt_resolution value = 2 }}
+				set_variable = {{ name = zg361_ip_debt_status value = 5 }}
+				trigger_event = {{ id = zg361ip.{event_id} days = 90 }}
+			}}
 		}}
 		else_if = {{
 			limit = {{
 				var:{p}_debt_escalation_count < 2
 				var:{p}_debt_owner = {{
 					zg361_is_celestial_liege_trigger = yes
-					has_variable = zg361_kpi_value
 				}}
 			}}
 			change_variable = {{ name = {p}_debt_escalation_count add = 1 }}
 			change_variable = {{ name = {p}_debt_due_cycle add = 1 }}
 			set_variable = {{ name = {p}_debt_resolution value = 2 }}
 			set_variable = {{ name = {p}_debt_escalated_cycle value = var:{p}_debt_due_cycle }}
-			var:{p}_debt_owner = {{ change_variable = {{ name = zg361_kpi_value add = -1 }} }}
-			set_variable = {{ name = zg361_ip_debt_status value = 1 }}
+			set_variable = {{ name = zg361_ip_debt_status value = 5 }}
 			trigger_event = {{ id = zg361ip.{event_id} days = 365 }}
 		}}
 		else = {{
@@ -903,6 +1438,9 @@ def render_effects() -> bytes:
         "# Public entries are zg361_ip_open_{x,y,z}_case_effect and\n"
         "# zg361_ip_open_portfolio_effect. No GUI/on_action/interactions are added."
     ]
+    sections.append(render_real_incident_capture())
+    sections.extend(render_not_applicable(domain) for domain in DOMAINS)
+    sections.append(render_kpi_runtime_effects())
     sections.extend(render_mechanism_effect(mechanism_id) for mechanism_id in range(192, 229))
     sections.extend(render_policy_debt_consumer(mechanism_id) for mechanism_id in range(192, 229))
     for domain in DOMAINS:
@@ -929,6 +1467,7 @@ zg361_ip_open_portfolio_effect = {
 		ordered_vassal = {
 			limit = { zg361_is_reviewable_vassal_trigger = yes }
 			order_by = stewardship
+			position = 0
 			zg361_ip_open_x_case_on_subject_effect = yes
 			zg361_ip_open_y_case_on_subject_effect = yes
 			zg361_ip_open_z_case_on_subject_effect = yes
@@ -1014,7 +1553,11 @@ def render_localization(language: str) -> bytes:
 
 
 def outputs() -> dict[Path, bytes]:
-    rendered = {EFFECTS_PATH: render_effects(), EVENTS_PATH: render_events()}
+    rendered = {
+        EFFECTS_PATH: render_effects(),
+        EVENTS_PATH: render_events(),
+        VALUES_PATH: render_values(),
+    }
     for language in LANGUAGES:
         rendered[
             MOD_ROOT / "localization" / language / LOC_BASENAME.format(language=language)

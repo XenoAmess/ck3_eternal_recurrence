@@ -26,7 +26,10 @@ def text(path: Path) -> str:
 
 
 def block(source: str, name: str) -> str:
-    match = re.search(rf"(?m)^{re.escape(name)}", source)
+    # Older callers passed the assignment token as part of ``name``.  Match
+    # the exact left-hand symbol either way so prefix names cannot collide.
+    symbol = re.sub(r"\s*=\s*$", "", name)
+    match = re.search(rf"(?m)^{re.escape(symbol)}\s*=", source)
     if match is None:
         raise AssertionError(f"missing block: {name}")
     start = match.start()
@@ -147,6 +150,8 @@ class GeneratedFileTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.effects = text(gen.EFFECTS_PATH)
         cls.events = text(gen.EVENTS_PATH)
+        cls.values = text(gen.VALUES_PATH)
+        cls.core_values = text(MOD_ROOT / "common/script_values/zg361_values.txt")
 
     def test_generator_check_and_utf8_bom(self) -> None:
         gen.write_outputs(check=True)
@@ -164,9 +169,185 @@ class GeneratedFileTests(unittest.TestCase):
         self.assertIn("debt_id = scope:zg361_ip_expected_debt_id", due)
 
     def test_balanced_effect_and_event_braces(self) -> None:
-        for source in (self.effects, self.events):
+        for source in (self.effects, self.events, self.values):
             without_strings = re.sub(r'"(?:\\.|[^"\\])*"', "", source)
             self.assertEqual(without_strings.count("{"), without_strings.count("}"))
+
+    def test_only_observed_world_or_resource_facts_create_an_incident(self) -> None:
+        capture = block(self.effects, "zg361_ip_capture_real_incident_effect")
+        for fact in (
+            "is_at_war = yes",
+            "gold < 0",
+            "government_has_flag = government_has_treasury treasury < 0",
+            "capital_county = { county_control <= 50 }",
+        ):
+            self.assertIn(fact, capture)
+        for token in (
+            "zg361_ip_probe_result value = 0",
+            "zg361_ip_probe_source_kind value = 0",
+            "zg361_ip_probe_consequence_kind value = 0",
+            "zg361_ip_probe_world_consequence",
+            "zg361_ip_probe_resource_consequence",
+            "zg361_ip_incident_serial add = 1",
+        ):
+            self.assertIn(token, capture)
+        self.assertNotIn("random", capture.lower())
+        self.assertNotIn("chance", capture.lower())
+        self.assertNotIn("root = { is_at_war = yes }", capture)
+        self.assertRegex(
+            capture,
+            r"limit = \{\s*is_at_war = yes\s*"
+            r"capital_county = \{ county_control <= 50 \}\s*\}",
+        )
+
+    def test_no_incident_is_exact_na_and_never_opens_a_case(self) -> None:
+        for domain in gen.DOMAINS:
+            entry = block(self.effects, f"zg361_ip_open_{domain.slug}_case_on_subject_effect")
+            capture_at = entry.index("zg361_ip_capture_real_incident_effect = yes")
+            open_at = entry.index(f"zg361_case_{domain.slug}_open_effect = yes")
+            na_at = entry.index(f"zg361_ip_mark_{domain.slug}_not_applicable_effect = yes")
+            self.assertLess(capture_at, open_at)
+            self.assertLess(open_at, na_at)
+            self.assertIn("var:zg361_ip_capture_status = 1", entry[:open_at])
+            self.assertIn("var:zg361_ip_capture_status = 0", entry[open_at:na_at])
+            na = block(self.effects, f"zg361_ip_mark_{domain.slug}_not_applicable_effect")
+            self.assertNotIn(f"zg361_case_{domain.slug}_open_effect", na)
+            self.assertNotIn("zg361_case_kernel", na)
+            for exact_zero in (
+                "var:zg361_ip_probe_result = 0",
+                "var:zg361_ip_probe_source_kind = 0",
+                "var:zg361_ip_probe_consequence_kind = 0",
+                f"name = zg361_ip_{domain.slug}_final_applicable value = 0",
+                f"name = zg361_ip_{domain.slug}_final_kpi_staged value = 0",
+            ):
+                self.assertIn(exact_zero, na)
+
+    def test_all_37_operations_require_the_same_real_incident_tuple(self) -> None:
+        for mechanism_id in range(192, 229):
+            domain = gen.DOMAIN_BY_ID[mechanism_id]
+            body = block(self.effects, f"zg361_ip_m{mechanism_id:03d}_apply_effect")
+            receipt_at = body.index("zg361_case_kernel_record_operation_effect")
+            guard = body[:receipt_at]
+            for token in (
+                "var:zg361_ip_incident_active = 1",
+                "var:zg361_ip_incident_owner = $TICKET_OWNER$",
+                "var:zg361_ip_incident_subject = $TICKET_SUBJECT$",
+                "var:zg361_ip_incident_cycle = $TICKET_CYCLE$",
+                f"var:zg361_ip_{domain.slug}_input_incident_serial = var:zg361_ip_incident_serial",
+                f"var:zg361_ip_{domain.slug}_input_source_kind = var:zg361_ip_incident_source_kind",
+                f"var:zg361_ip_{domain.slug}_input_consequence_kind = var:zg361_ip_incident_consequence_kind",
+            ):
+                self.assertIn(token, guard, (mechanism_id, token))
+
+    def test_business_objects_and_policy_debts_keep_incident_provenance(self) -> None:
+        for mechanism_id in range(192, 229):
+            prefix = f"zg361_ip_m{mechanism_id:03d}"
+            route = gen._route_assignment(mechanism_id)
+            for lane in ("object", "debt"):
+                self.assertIn(f"{prefix}_{lane}_incident_serial", route)
+                self.assertIn(f"{prefix}_{lane}_incident_source_kind", route)
+                self.assertIn(f"{prefix}_{lane}_incident_consequence_kind", route)
+
+    def test_next_cycle_kpi_is_read_only_staged_and_consumed_once(self) -> None:
+        value = block(self.values, "zg361_ip_next_cycle_kpi_value")
+        consumer = block(self.effects, "zg361_ip_consume_due_kpi_inputs_effect")
+        self.assertNotIn("set_variable", value)
+        self.assertNotIn("change_variable", value)
+        self.assertNotIn("zg361_kpi_value", self.effects)
+        for domain in gen.DOMAINS:
+            dp = f"zg361_ip_{domain.slug}"
+            finalizer = block(self.effects, f"zg361_ip_finalize_{domain.slug}_effect")
+            self.assertEqual(value.count(f"add = var:{dp}_kpi_score"), 1)
+            self.assertIn(f"var:{dp}_kpi_pending = 1", value)
+            self.assertIn(f"var:{dp}_kpi_consumed = 0", value)
+            self.assertIn(f"has_variable = {dp}_kpi_due_offset", value)
+            self.assertIn(f"var:{dp}_kpi_due_offset = 1", value)
+            self.assertIn(f"var:{dp}_kpi_due_cycle > var:{dp}_kpi_origin_cycle", value)
+            self.assertIn(
+                f"var:zg361_b1_cycle_serial >= prev.var:{dp}_kpi_due_cycle",
+                value,
+            )
+            self.assertIn(
+                f"var:zg361_review_serial >= prev.var:{dp}_kpi_origin_cycle",
+                value,
+            )
+            self.assertIn(
+                f"name = {dp}_kpi_due_cycle value = var:zg361_case_{domain.slug}_cycle_serial",
+                finalizer,
+            )
+            self.assertIn(f"name = {dp}_kpi_due_cycle add = 1", finalizer)
+            self.assertIn(f"name = {dp}_kpi_due_offset value = 1", finalizer)
+            self.assertIn(f"name = {dp}_kpi_pending value = 0", consumer)
+            self.assertIn(f"name = {dp}_kpi_consumed value = 1", consumer)
+            self.assertIn(f"name = {dp}_kpi_receipt_serial add = 1", consumer)
+            self.assertIn(f"name = {dp}_kpi_consumed_score value = var:{dp}_kpi_score", consumer)
+            self.assertIn(f"name = {dp}_kpi_consumed_due_cycle value = var:{dp}_kpi_due_cycle", consumer)
+
+        organization = block(self.core_values, "zg361_kpi_organization_evidence_value")
+        authoritative = block(self.core_values, "zg361_kpi_value")
+        self.assertEqual(organization.count("add = zg361_ip_next_cycle_kpi_value"), 1)
+        self.assertNotIn("zg361_ip_next_cycle_kpi_value", authoritative)
+        expected_components = (
+            "governance", "capability", "growth", "superior", "values",
+            "collaboration", "jingcha", "organization",
+        )
+        self.assertEqual(
+            re.findall(r"\badd\s*=\s*zg361_kpi_([a-z_]+)_evidence_value", authoritative),
+            list(expected_components),
+        )
+
+        # The official legacy review serial is incremented only after KPI
+        # freeze, so review_serial == origin means the prospective cycle is
+        # origin+1.  Active B1 already exposes that prospective serial.
+        def eligible(*, b1: bool, b1_cycle: int, review: int, origin: int, due: int) -> bool:
+            exact_next = due == origin + 1
+            return exact_next and (b1_cycle >= due if b1 else review >= origin)
+
+        self.assertFalse(eligible(b1=True, b1_cycle=7, review=7, origin=7, due=8))
+        self.assertTrue(eligible(b1=True, b1_cycle=8, review=7, origin=7, due=8))
+        self.assertFalse(eligible(b1=False, b1_cycle=0, review=6, origin=7, due=8))
+        self.assertTrue(eligible(b1=False, b1_cycle=0, review=7, origin=7, due=8))
+        self.assertFalse(eligible(b1=False, b1_cycle=0, review=7, origin=7, due=7))
+        self.assertFalse(eligible(b1=False, b1_cycle=0, review=8, origin=7, due=9))
+
+    def test_route_c_penalties_stage_an_exact_aggregate_instead_of_mutating_kpi(self) -> None:
+        stage = block(self.effects, "zg361_ip_stage_policy_debt_kpi_effect")
+        consumer = block(self.effects, "zg361_ip_consume_due_kpi_inputs_effect")
+        value = block(self.values, "zg361_ip_next_cycle_kpi_value")
+        self.assertIn("zg361_is_reviewable_vassal_trigger = yes", stage)
+        self.assertIn("liege = $DEBT_OWNER$", stage)
+        self.assertIn("var:zg361_review_serial >= $DEBT_DUE_CYCLE$", stage)
+        self.assertIn("$DEBT_DUE_CYCLE$ > $DEBT_CYCLE$", stage)
+        self.assertIn("zg361_ip_policy_kpi_origin_cycle value = $DEBT_DUE_CYCLE$", stage)
+        self.assertIn("zg361_ip_policy_kpi_due_cycle value = $DEBT_DUE_CYCLE$", stage)
+        self.assertIn("zg361_ip_policy_kpi_due_cycle add = 1", stage)
+        self.assertIn("zg361_ip_policy_kpi_due_offset value = 1", stage)
+        self.assertIn("var:zg361_ip_policy_kpi_origin_cycle = $DEBT_DUE_CYCLE$", stage)
+        self.assertIn("zg361_ip_policy_kpi_score add = -1", stage)
+        self.assertIn("zg361_ip_policy_kpi_entry_count add = 1", stage)
+        self.assertEqual(value.count("add = var:zg361_ip_policy_kpi_score"), 1)
+        self.assertIn("has_variable = zg361_ip_policy_kpi_origin_cycle", value)
+        self.assertIn("has_variable = zg361_ip_policy_kpi_due_cycle", value)
+        self.assertIn("has_variable = zg361_ip_policy_kpi_due_offset", value)
+        self.assertIn("var:zg361_ip_policy_kpi_due_offset = 1", value)
+        self.assertIn("var:zg361_ip_policy_kpi_due_cycle > var:zg361_ip_policy_kpi_origin_cycle", value)
+        self.assertIn(
+            "var:zg361_b1_cycle_serial >= prev.var:zg361_ip_policy_kpi_due_cycle",
+            value,
+        )
+        self.assertIn(
+            "var:zg361_review_serial >= prev.var:zg361_ip_policy_kpi_origin_cycle",
+            value,
+        )
+        self.assertIn("zg361_ip_policy_kpi_pending value = 0", consumer)
+        self.assertIn("zg361_ip_policy_kpi_consumed value = 1", consumer)
+        self.assertIn("zg361_ip_policy_kpi_receipt_serial add = 1", consumer)
+        self.assertIn(
+            "var:zg361_ip_kpi_consumer_cycle >= var:zg361_ip_policy_kpi_due_cycle",
+            consumer,
+        )
+        self.assertIn("zg361_ip_policy_kpi_consumed_origin_cycle", consumer)
+        self.assertIn("zg361_ip_policy_kpi_consumed_due_cycle", consumer)
 
     def test_every_id_is_one_typed_five_field_operation(self) -> None:
         operation_ids: list[int] = []
@@ -196,7 +377,10 @@ class GeneratedFileTests(unittest.TestCase):
         for domain in gen.DOMAINS:
             finalizer = block(self.effects, f"zg361_ip_finalize_{domain.slug}_effect")
             self.assertIn(f"divide = var:zg361_ip_{domain.slug}_evidence_n", finalizer)
-            self.assertIn("change_variable = { name = zg361_kpi_value", finalizer)
+            self.assertNotIn("zg361_kpi_value", finalizer)
+            self.assertIn(f"name = zg361_ip_{domain.slug}_kpi_pending value = 1", finalizer)
+            self.assertIn(f"name = zg361_ip_{domain.slug}_kpi_due_cycle", finalizer)
+            self.assertIn(f"name = zg361_ip_{domain.slug}_final_kpi_staged value = 1", finalizer)
 
     def test_every_id_has_exact_object_consumer_resource_and_deadline_projection(self) -> None:
         for mechanism_id, behavior in gen.BEHAVIORS.items():
@@ -303,14 +487,13 @@ class GeneratedFileTests(unittest.TestCase):
         for domain in gen.DOMAINS:
             case = f"zg361_case_{domain.slug}"
             entry = block(self.effects, f"zg361_ip_open_{domain.slug}_case_on_subject_effect")
-            expected_call = f"""zg361_ip_{domain.slug}_dispatch_01_effect = {{
-\t\t\t\tTICKET_OWNER = var:{case}_owner
-\t\t\t\tTICKET_SUBJECT = var:{case}_subject
-\t\t\t\tTICKET_CYCLE = var:{case}_cycle_serial
-\t\t\t\tTICKET_CASE = var:{case}_case_serial
-\t\t\t\tTICKET_STATE = 1
-\t\t\t}}"""
-            self.assertIn(expected_call, entry, domain.code)
+            dispatch_at = entry.index(f"zg361_ip_{domain.slug}_dispatch_01_effect")
+            dispatch = entry[dispatch_at : dispatch_at + 500]
+            self.assertIn(f"TICKET_OWNER = var:{case}_owner", dispatch, domain.code)
+            self.assertIn(f"TICKET_SUBJECT = var:{case}_subject", dispatch, domain.code)
+            self.assertIn(f"TICKET_CYCLE = var:{case}_cycle_serial", dispatch, domain.code)
+            self.assertIn(f"TICKET_CASE = var:{case}_case_serial", dispatch, domain.code)
+            self.assertIn("TICKET_STATE = 1", dispatch, domain.code)
             dispatcher = block(self.effects, f"zg361_ip_{domain.slug}_dispatch_01_effect")
             self.assertIn("_done_state = $TICKET_STATE$", dispatcher, domain.code)
 
@@ -344,7 +527,11 @@ class GeneratedFileTests(unittest.TestCase):
             self.assertIn(f"{prefix}_debt_subject = var:{prefix}_done_subject", due)
             self.assertIn(f"{prefix}_debt_cycle = var:{prefix}_done_cycle", due)
             self.assertIn(f"{prefix}_debt_case = var:{prefix}_done_case", due)
-            self.assertIn("change_variable = { name = zg361_kpi_value add = -1 }", due)
+            self.assertNotIn("zg361_kpi_value", due)
+            self.assertIn("zg361_ip_stage_policy_debt_kpi_effect", due)
+            self.assertIn(f"MECHANISM_ID = {mechanism_id}", due)
+            self.assertIn(f"DEBT_DUE_CYCLE = var:{prefix}_debt_due_cycle", due)
+            self.assertIn(f"{prefix}_debt_kpi_staged value = 1", due)
             self.assertIn(f"change_variable = {{ name = zg361_ip_{domain.slug}_policy_debt add = -1 }}", due)
             self.assertIn(f"{prefix}_debt_open value = 0", due)
             self.assertIn(f"{prefix}_debt_consumed value = 1", due)
