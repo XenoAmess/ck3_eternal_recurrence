@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import inspect
 import json
 from pathlib import Path
 import subprocess
@@ -41,6 +42,50 @@ def _config(root: Path, mode: str = "native-headless") -> NativeBridgeLaunchConf
 
 
 class NativeSessionModeTests(unittest.TestCase):
+    def test_profile_verification_defaults_true(self) -> None:
+        self.assertIs(
+            inspect.signature(native_session).parameters[
+                "verify_prepared_profile"
+            ].default,
+            True,
+        )
+        self.assertIs(
+            inspect.signature(_native_session_locked).parameters[
+                "verify_prepared_profile"
+            ].default,
+            True,
+        )
+
+    def test_explicit_profile_verification_opt_out_reaches_locked_owner(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-native-session-opt-out-") as temporary:
+            root = Path(temporary)
+            config = _config(root)
+            spec = SimpleNamespace(
+                state_dir=root / "state",
+                game_exe=root / "ck3.exe",
+            )
+            with mock.patch(
+                "xar_autoplayer.native_session.exclusive_launch_lock",
+                return_value=mock.MagicMock(),
+            ), mock.patch(
+                "xar_autoplayer.native_session.exclusive_state_lock",
+                return_value=mock.MagicMock(),
+            ), mock.patch(
+                "xar_autoplayer.native_session._native_session_locked",
+                return_value={"ok": True},
+            ) as locked:
+                report = native_session(
+                    spec,
+                    timeout_seconds=1,
+                    native_bridge=config,
+                    verify_prepared_profile=False,
+                )
+
+        self.assertEqual(report, {"ok": True})
+        self.assertIs(locked.call_args.kwargs["verify_prepared_profile"], False)
+
     def test_parser_exposes_native_session(self) -> None:
         args = cli.parser().parse_args(
             [
@@ -215,6 +260,46 @@ class NativeSessionLifecycleTests(unittest.TestCase):
 
         stop_mock.assert_called_once_with(handle, require_running=False)
         self.assertEqual(report["exit_reason"], "stop")
+        self.assertTrue(report["ok"])
+
+    def test_profile_verification_opt_out_only_changes_initial_launch(self) -> None:
+        process = mock.Mock()
+        process.pid = 4244
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        shutdown = {"ok": True, "contract_errors": []}
+        config = NativeBridgeLaunchConfig(
+            mode="native-headless",
+            pipe_name=r"\\.\pipe\native-session-profile-opt-out",
+            dll_path=Path("bridge.dll"),
+            injector_path=Path("injector.exe"),
+        )
+        stop_event = threading.Event()
+        stop_event.set()
+
+        with mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked", return_value=shutdown
+        ):
+            report = _native_session_locked(
+                self.spec,
+                config,
+                1.0,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.001,
+                stop_event=stop_event,
+                verify_prepared_profile=False,
+            )
+
+        launch_mock.assert_called_once_with(
+            self.spec,
+            native_bridge=config,
+            continue_last_save=True,
+            verify_prepared_profile=False,
+        )
+        self.assertEqual(report["restart_count"], 0)
         self.assertTrue(report["ok"])
 
     def test_explicit_cold_start_launches_exact_xar_checkpoint(self) -> None:

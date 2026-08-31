@@ -197,12 +197,28 @@ Workforce collective + 三周期、AI-owned case、scoreboard named-widget state
 `MCP capability RED`，且总报告强制 `gameplay_green_claimed=false`。即使测试替身伪造 cell `result=GREEN`，只要缺少完整的
 MCP-only scenario proof，总结果也会降为 RED。
 
-启动门还显式列出两项 `runner_not_wired`，避免未来 provider 一到位就误入不可达长局：隔离 userdir 尚无经过验证的二期 seed/
-checkpoint，也没有从主菜单进入 paused map 的 MCP-only frontend start 路径；phase2 当前仍由 direct launcher 持有进程，并非会消费
-restore lifecycle queue 的 `native_session` supervisor。这两项闭合前同样必须 pre-start RED，不能等待 300 秒后才报 paused timeout。
+启动门还显式保留一项 `runner_not_wired`，避免未来 provider 一到位就误入不可达长局：隔离 userdir 尚无经过验证的二期 seed/
+checkpoint，也没有从主菜单进入 paused map 的 MCP-only frontend start 路径。它闭合前同样必须 pre-start RED，不能等待 300 秒后
+才报 paused timeout。
 
 save/restore helper 已冻结一次保存、保存后动态出现 `restore-checkpoint`、一次 restore 和两 PID lineage 的静态合同：第一 PID/
 generation 在保存期间不变，restore lifecycle 的 previous/new PID 必须分别等于前后 snapshot，第二 PID 必须不同，generation 必须
-增长，checkpoint size/SHA、date 与 player identity 必须恢复一致。该 helper 目前只有 focused fake-service 正负测试，不是 live 证据。
-正式能力门解除前还必须把 phase2 launch ownership 切换到生产 `native_session` supervisor；当前 runner 的 direct-launch owner 不消费
-restore lifecycle queue，因此不得把 helper 的静态测试写成可达的实机 save/reload GREEN。
+恰好增长一代，checkpoint size/SHA、date 与 player identity 必须恢复一致。该 helper 目前只有 focused fake-service 正负测试，不是
+live 证据。
+
+### Runner P1 lifecycle ownership（2026-08-31）
+
+phase2 launch ownership 已迁到生产 `native_session` supervisor：pipe driver 先创建，非 daemon supervisor thread 自己持有 launch/state
+锁并消费 restore lifecycle queue；停止顺序固定为 stop event → 等 supervisor 完整退出并取得 session report → 验证旧/新 PID cleanup →
+关闭 driver。普通 acceptance、loader-smoke 与 promo 仍沿用原 direct-launch/`stop_tracked` 路径，未改变。
+
+通用 `native_session` 的 `verify_prepared_profile` 新参数默认严格保持 `True`；只有 ZhongGuo phase2 显式传 `False`。原因不是跳过验证，
+而是通用 `verify_profile()` 的 schema 固定绑定 Eternal Recurrence singleton descriptor/production manifest，无法表达 zg361 的双 mount
+隔离 profile；zg361 runner 已在启动前独立验证 bootstrap tree、runtime/workshop identity，启动后再验证 MCP exact binary、error.log 和
+mount inventory。restore relaunch 原本就固定使用 `verify_prepared_profile=False`，此改动没有放宽其他 caller。
+
+`09_phase2_native_session_cleanup.json` 现在要求 session kind/mode/pipe、save ACK 推导出的 restore 必要性、`restart_count=1`、唯一旧 PID
+shutdown、恰好两个不同 PID、generation 恰加一、restore source/intent/request ID、restore 后 raw capability binding，以及旧 PID 与最终
+PID 各自的 Job/tree/global inventory/watchdog/control-file/contract-error 清理合取。若在 save ACK 前因 capability/paused/manifest RED
+退出，则允许并严格证明单 PID、零 restart 的清理；不能由“进入 scenario”这个手工布尔值伪造两 PID 预期。上述 P1 仍只有
+fake-supervisor/static 证据；seed 与领域 provider RED 解除并取得 exact-build artifact 前，不得写 production-live。

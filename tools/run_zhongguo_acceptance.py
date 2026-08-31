@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import unicodedata
@@ -57,8 +58,9 @@ from xar_autoplayer.bridge.zhongguo_result_case_snapshot_contract import (
     QUERY_ZHONGGUO_RESULT_CASE_SNAPSHOT_V1_CAPABILITY,
     ZHONGGUO_RESULT_CASE_KIND_V1,
 )
-from xar_autoplayer.environment import make_spec
+from xar_autoplayer.environment import EnvironmentSpec, make_spec
 from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
+from xar_autoplayer.native_session import native_session
 from xar_autoplayer.runtime import (
     NativeBridgeLaunchConfig,
     launch as launch_native_ck3,
@@ -88,6 +90,8 @@ NATIVE_TITLE_READINESS_TIMEOUT_S = 60.0
 NATIVE_LOADER_READINESS_TIMEOUT_S = 300.0
 NATIVE_LOADER_STABLE_OBSERVATIONS = 3
 PHASE2_PAUSED_READINESS_TIMEOUT_S = 300.0
+PHASE2_SUPERVISOR_READINESS_TIMEOUT_S = 300.0
+PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S = 21600.0
 LOADER_ERROR_LOG_MINIMUM_QUIET_S = 16.0
 LOADER_ERROR_LOG_TIMEOUT_S = 45.0
 NATIVE_TITLE_PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_zg361_"
@@ -372,9 +376,6 @@ PHASE2_UNFROZEN_REQUIREMENTS = {
 PHASE2_PENDING_RUNNER_REQUIREMENTS = {
     "verified_paused_phase2_seed_or_native_frontend_start": (
         "MCP-only map-entry path not wired"
-    ),
-    "managed_native_session_restore_supervisor": (
-        "phase-two launch owner does not yet consume restore lifecycle requests"
     ),
 }
 
@@ -2566,11 +2567,472 @@ def native_loader_smoke_readiness(
         ) from error
 
 
+def start_phase2_native_session_supervisor(
+    spec: EnvironmentSpec,
+    native_bridge: NativeBridgeLaunchConfig,
+) -> dict[str, object]:
+    """Start the production pure-native lifecycle owner for phase two only."""
+
+    stop_event = threading.Event()
+    session_done = threading.Event()
+    session_state: dict[str, object] = {"report": None, "error": None}
+
+    def supervise() -> None:
+        try:
+            session_state["report"] = native_session(
+                spec,
+                timeout_seconds=PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
+                native_bridge=native_bridge,
+                input_stream=None,
+                output_stream=None,
+                poll_interval_seconds=0.05,
+                cold_start_checkpoint=False,
+                stop_event=stop_event,
+                # ZhongGuo owns an independent bootstrap/runtime identity/mount
+                # gate.  The generic verifier is intentionally bound to the
+                # Eternal Recurrence singleton profile; restore relaunches were
+                # already unconditionally verified-prepared-profile=False.
+                verify_prepared_profile=False,
+            )
+        except BaseException as error:
+            session_state["error"] = f"{type(error).__name__}: {error}"
+        finally:
+            session_done.set()
+
+    session_thread = threading.Thread(
+        target=supervise,
+        name="zg361-phase2-native-session",
+        daemon=False,
+    )
+    session_thread.start()
+    return {
+        "stop_event": stop_event,
+        "session_done": session_done,
+        "session_state": session_state,
+        "session_thread": session_thread,
+    }
+
+
+def wait_for_phase2_native_session_binding(
+    service: GameplayBridgeService,
+    supervisor: dict[str, object],
+    artifacts: Path,
+    *,
+    timeout_s: float = PHASE2_SUPERVISOR_READINESS_TIMEOUT_S,
+    poll_interval_s: float = 0.05,
+) -> dict[str, object]:
+    """Discover the first managed PID through MCP without visual navigation."""
+
+    evidence_path = artifacts / "00_phase2_native_session_start.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_managed_native_session_start",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "binding": None,
+        "last_capabilities": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("phase-two supervisor readiness timing is invalid")
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    session_thread = supervisor.get("session_thread")
+    if not (
+        isinstance(session_done, threading.Event)
+        and isinstance(session_state, dict)
+        and isinstance(session_thread, threading.Thread)
+    ):
+        raise ValueError("phase-two supervisor handle is malformed")
+    deadline = time.monotonic() + timeout_s
+    last_error = "native bridge has not published a connected PID"
+    try:
+        while time.monotonic() < deadline:
+            if session_done.is_set():
+                raise acceptance.RunnerError(
+                    "phase-two native_session exited before MCP binding: "
+                    + str(
+                        session_state.get("error")
+                        or session_state.get("report")
+                        or "no session report"
+                    )
+                )
+            try:
+                capabilities = service.capabilities()
+                if not isinstance(capabilities, dict):
+                    raise TypeError("capabilities response is not an object")
+                evidence["last_capabilities"] = capabilities
+                diagnostics_value = capabilities.get("diagnostics")
+                diagnostics = (
+                    diagnostics_value
+                    if isinstance(diagnostics_value, dict)
+                    else {}
+                )
+                bridge_pid = diagnostics.get("bridge_pid")
+                connection_generation = diagnostics.get(
+                    "connection_generation"
+                )
+                checks = {
+                    "supervisor_thread_alive": session_thread.is_alive(),
+                    "native_headless_mode": capabilities.get("mode")
+                    == NATIVE_BRIDGE_MODE,
+                    "native_headless_backend": capabilities.get("backend_id")
+                    == NATIVE_BRIDGE_MODE,
+                    "visual_fallback_disabled": capabilities.get(
+                        "visual_fallback"
+                    )
+                    is False,
+                    "connected": diagnostics.get("connected") is True,
+                    "positive_bridge_pid": isinstance(bridge_pid, int)
+                    and not isinstance(bridge_pid, bool)
+                    and bridge_pid > 0,
+                    "initial_connection_generation_one": isinstance(
+                        connection_generation, int
+                    )
+                    and not isinstance(connection_generation, bool)
+                    and connection_generation == 1,
+                }
+                if all(checks.values()):
+                    binding = {
+                        "bridge_pid": bridge_pid,
+                        "connection_generation": connection_generation,
+                        "checks": checks,
+                    }
+                    evidence["result"] = "GREEN"
+                    evidence["binding"] = binding
+                    write_json(evidence_path, evidence)
+                    return binding
+                last_error = ", ".join(
+                    label for label, passed in checks.items() if not passed
+                )
+            except Exception as error:
+                last_error = f"{type(error).__name__}: {error}"
+            if poll_interval_s:
+                time.sleep(poll_interval_s)
+        raise acceptance.RunnerError(
+            "phase-two native_session MCP binding timed out: " + last_error
+        )
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two native_session binding failed: {error}"
+        ) from error
+
+
+def _phase2_shutdown_checks(
+    value: object,
+    *,
+    expected_pid: int | None,
+    prefix: str,
+) -> dict[str, bool]:
+    shutdown = value if isinstance(value, dict) else {}
+    inventory_value = shutdown.get("final_ck3_inventory")
+    inventory = inventory_value if isinstance(inventory_value, dict) else {}
+    processes = inventory.get("processes")
+    control_value = shutdown.get("control_files_absent")
+    control_files = control_value if isinstance(control_value, dict) else {}
+    contract_errors = shutdown.get("contract_errors")
+    return {
+        f"{prefix}_object": isinstance(value, dict),
+        f"{prefix}_pid_matches": expected_pid is not None
+        and shutdown.get("ck3_pid") == expected_pid,
+        f"{prefix}_ok": shutdown.get("ok") is True,
+        f"{prefix}_cleanup_proven": shutdown.get("cleanup_proven") is True,
+        f"{prefix}_tree_gone": shutdown.get("tree_gone") is True,
+        f"{prefix}_job_empty": shutdown.get("job_active_processes_final") == 0,
+        f"{prefix}_global_inventory_empty": isinstance(processes, list)
+        and not processes,
+        f"{prefix}_watchdog_absent": shutdown.get("watchdog_state_after")
+        == "absent",
+        f"{prefix}_control_files_absent": bool(control_files)
+        and all(item is True for item in control_files.values()),
+        f"{prefix}_contract_errors_empty": isinstance(contract_errors, list)
+        and not contract_errors,
+    }
+
+
+def phase2_restore_queue_required(scenario_evidence: object) -> bool:
+    """Return true only after a durable save ACK makes restore mandatory."""
+
+    scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
+    lineage_value = scenario.get("save_restore_lineage")
+    lineage = lineage_value if isinstance(lineage_value, dict) else {}
+    save_value = lineage.get("save_result")
+    save_result = save_value if isinstance(save_value, dict) else {}
+    checkpoint_value = save_result.get("checkpoint")
+    checkpoint = checkpoint_value if isinstance(checkpoint_value, dict) else {}
+    return (
+        save_result.get("accepted") is True
+        and checkpoint.get("status") == "saved"
+        and isinstance(checkpoint.get("size"), int)
+        and not isinstance(checkpoint.get("size"), bool)
+        and checkpoint.get("size", 0) > 0
+        and isinstance(checkpoint.get("sha256"), str)
+        and re.fullmatch(r"[0-9A-Fa-f]{64}", checkpoint["sha256"])
+        is not None
+    )
+
+
+def prove_phase2_native_session_cleanup(
+    session_report: object,
+    artifacts: Path,
+    *,
+    initial_pid: int | None,
+    initial_generation: int | None,
+    expected_pipe: str,
+    scenario_evidence: object,
+    final_capabilities: object,
+    session_error: object = None,
+    supervisor_stopped: bool,
+) -> dict[str, object]:
+    """Prove either one clean PID or the exact save/restore two-PID topology."""
+
+    evidence_path = artifacts / "09_phase2_native_session_cleanup.json"
+    report = session_report if isinstance(session_report, dict) else {}
+    scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
+    restore_expected = phase2_restore_queue_required(scenario)
+    lineage_value = scenario.get("save_restore_lineage")
+    lineage = lineage_value if isinstance(lineage_value, dict) else {}
+    restore_value = lineage.get("restore_result")
+    restore_result = restore_value if isinstance(restore_value, dict) else {}
+    lifecycle_value = restore_result.get("lifecycle")
+    lifecycle = lifecycle_value if isinstance(lifecycle_value, dict) else {}
+    restart_value = report.get("restart_shutdowns")
+    restart_shutdowns = restart_value if isinstance(restart_value, list) else []
+    second_pid_value = lineage.get("second_pid")
+    second_pid = (
+        second_pid_value
+        if isinstance(second_pid_value, int)
+        and not isinstance(second_pid_value, bool)
+        and second_pid_value > 0
+        else None
+    )
+    second_generation_value = lineage.get("second_connection_generation")
+    second_generation = (
+        second_generation_value
+        if isinstance(second_generation_value, int)
+        and not isinstance(second_generation_value, bool)
+        and second_generation_value > 0
+        else None
+    )
+    final_capabilities_value = (
+        final_capabilities if isinstance(final_capabilities, dict) else {}
+    )
+    final_diagnostics_value = final_capabilities_value.get("diagnostics")
+    final_diagnostics = (
+        final_diagnostics_value
+        if isinstance(final_diagnostics_value, dict)
+        else {}
+    )
+    expected_final_pid = second_pid if restore_expected else initial_pid
+    expected_final_generation = (
+        second_generation if restore_expected else initial_generation
+    )
+    checks: dict[str, bool] = {
+        "supervisor_stopped": supervisor_stopped is True,
+        "session_error_absent": session_error is None,
+        "session_report_object": isinstance(session_report, dict),
+        "session_kind": report.get("kind") == "ck3_native_headless_session",
+        "session_mode": report.get("mode") == NATIVE_BRIDGE_MODE,
+        "session_pipe": report.get("pipe") == expected_pipe,
+        "session_report_ok": report.get("ok") is True,
+        "session_exit_reason_stop": report.get("exit_reason") == "stop",
+        "session_process_exit_code_clean": report.get("process_exit_code")
+        in (None, 0),
+        "initial_pid_positive": isinstance(initial_pid, int)
+        and not isinstance(initial_pid, bool)
+        and initial_pid > 0,
+        "initial_generation_positive": isinstance(initial_generation, int)
+        and not isinstance(initial_generation, bool)
+        and initial_generation > 0,
+        "final_capabilities_object": isinstance(final_capabilities, dict),
+        "final_capabilities_connected": final_diagnostics.get("connected")
+        is True,
+        "final_capabilities_pid_matches": final_diagnostics.get("bridge_pid")
+        == expected_final_pid,
+        "final_capabilities_generation_matches": final_diagnostics.get(
+            "connection_generation"
+        )
+        == expected_final_generation,
+    }
+    restart_count = report.get("restart_count")
+    if restore_expected:
+        checks.update(
+            {
+                "lineage_green": lineage.get("result") == "GREEN",
+                "lineage_two_pid_proven": lineage.get(
+                    "two_pid_lineage_proven"
+                )
+                is True,
+                "lineage_first_pid_matches": lineage.get("first_pid")
+                == initial_pid,
+                "lineage_pid_pair_exact": lineage.get("pid_lineage")
+                == [initial_pid, second_pid]
+                and len({initial_pid, second_pid}) == 2,
+                "lineage_second_pid_distinct": second_pid is not None
+                and second_pid != initial_pid,
+                "lineage_first_generation_matches": lineage.get(
+                    "first_connection_generation"
+                )
+                == initial_generation,
+                "lineage_generation_advanced_once": second_generation
+                == initial_generation + 1
+                if isinstance(initial_generation, int)
+                else False,
+                "lineage_generation_pair_exact": lineage.get(
+                    "connection_generation_lineage"
+                )
+                == [initial_generation, second_generation],
+                "restore_acknowledged": restore_result.get("accepted") is True
+                and restore_result.get("status") == "restored"
+                and restore_result.get("source")
+                == "native-session-lifecycle-queue",
+                "restore_lifecycle_pid_pair_matches": lifecycle.get(
+                    "previous_pid"
+                )
+                == initial_pid
+                and lifecycle.get("pid") == second_pid,
+                "restore_lifecycle_intent": lifecycle.get(
+                    "lifecycle_intent"
+                )
+                == "restore",
+                "restore_request_id_present": isinstance(
+                    lifecycle.get("request_id"), str
+                )
+                and bool(lifecycle.get("request_id")),
+                "restore_queue_consumed_once": restart_count == 1
+                and len(restart_shutdowns) == 1,
+                "restart_count_exactly_one": restart_count == 1,
+                "one_old_pid_shutdown": len(restart_shutdowns) == 1,
+                "session_last_pid_matches_second": report.get("pid")
+                == second_pid,
+                "final_capabilities_bound_second_pid": isinstance(
+                    lineage.get("checks"), dict
+                )
+                and lineage["checks"].get(
+                    "final_capabilities_bind_second_pid"
+                )
+                is True,
+            }
+        )
+        old_shutdown = restart_shutdowns[0] if len(restart_shutdowns) == 1 else None
+        checks.update(
+            _phase2_shutdown_checks(
+                old_shutdown,
+                expected_pid=initial_pid,
+                prefix="old_pid_shutdown",
+            )
+        )
+        checks.update(
+            _phase2_shutdown_checks(
+                report.get("shutdown"),
+                expected_pid=second_pid,
+                prefix="new_pid_shutdown",
+            )
+        )
+    else:
+        checks.update(
+            {
+                "prestart_restart_count_zero": restart_count == 0,
+                "prestart_restart_shutdowns_empty": not restart_shutdowns,
+                "session_last_pid_matches_initial": report.get("pid")
+                == initial_pid,
+            }
+        )
+        checks.update(
+            _phase2_shutdown_checks(
+                report.get("shutdown"),
+                expected_pid=initial_pid,
+                prefix="initial_pid_shutdown",
+            )
+        )
+    failed = [label for label, passed in checks.items() if passed is not True]
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "GREEN" if not failed else "RED",
+        "scope": "phase2_managed_native_session_cleanup",
+        "mcp_only": True,
+        "restore_expected": restore_expected,
+        "initial_pid": initial_pid,
+        "initial_generation": initial_generation,
+        "second_pid": second_pid,
+        "second_generation": second_generation,
+        "expected_pipe": expected_pipe,
+        "final_capabilities": (
+            final_capabilities if isinstance(final_capabilities, dict) else None
+        ),
+        "checks": checks,
+        "failed_checks": failed,
+        "session_error": session_error,
+        "session_report": report if isinstance(session_report, dict) else None,
+        "failure_reason": (
+            None
+            if not failed
+            else "phase-two native_session cleanup RED: " + ", ".join(failed)
+        ),
+    }
+    write_json(evidence_path, evidence)
+    if failed:
+        raise acceptance.RunnerError(str(evidence["failure_reason"]))
+    return evidence
+
+
+def stop_phase2_native_session_supervisor(
+    supervisor: dict[str, object],
+    artifacts: Path,
+    *,
+    initial_pid: int | None,
+    initial_generation: int | None,
+    expected_pipe: str,
+    scenario_evidence: object,
+    final_capabilities: object,
+) -> dict[str, object]:
+    """Stop the managed owner and turn its session report into cleanup proof."""
+
+    stop_event = supervisor.get("stop_event")
+    session_done = supervisor.get("session_done")
+    session_state = supervisor.get("session_state")
+    session_thread = supervisor.get("session_thread")
+    if not (
+        isinstance(stop_event, threading.Event)
+        and isinstance(session_done, threading.Event)
+        and isinstance(session_state, dict)
+        and isinstance(session_thread, threading.Thread)
+    ):
+        raise ValueError("phase-two supervisor handle is malformed")
+    stop_event.set()
+    # native_session owns bounded stop_tracked calls for both the retired PID
+    # and the final PID.  Do not close the shared driver or return while that
+    # non-daemon lifecycle owner still holds its process/lock cleanup proof.
+    session_thread.join()
+    supervisor_stopped = not session_thread.is_alive() and session_done.is_set()
+    return prove_phase2_native_session_cleanup(
+        session_state.get("report"),
+        artifacts,
+        initial_pid=initial_pid,
+        initial_generation=initial_generation,
+        expected_pipe=expected_pipe,
+        scenario_evidence=scenario_evidence,
+        final_capabilities=final_capabilities,
+        session_error=session_state.get("error"),
+        supervisor_stopped=supervisor_stopped,
+    )
+
+
 def phase2_runtime_capability_preflight(
     service: GameplayBridgeService,
     artifacts: Path,
     *,
     tracked_ck3_pid: int,
+    managed_restore_supervisor: bool = False,
 ) -> dict[str, object]:
     """Fail before navigation unless the complete phase-two MCP surface exists."""
 
@@ -2580,6 +3042,7 @@ def phase2_runtime_capability_preflight(
         "result": "RED",
         "scope": "complete_phase2_mcp_capability_profile",
         "tracked_ck3_pid": tracked_ck3_pid,
+        "managed_restore_supervisor": managed_restore_supervisor,
         "mcp_only": True,
         "ocr_used": False,
         "image_used": False,
@@ -2702,6 +3165,9 @@ def phase2_runtime_capability_preflight(
             # the post-save gate below must require the concrete restore step.
             "restore_lifecycle_configured": native_session.get("configured")
             is True,
+            "restore_lifecycle_supervisor_running": (
+                managed_restore_supervisor is True
+            ),
         }
         evidence["checks"] = checks
         for label, passed in checks.items():
@@ -3020,7 +3486,7 @@ def run_phase2_save_restore_lineage(
             "connection_generation_advanced": after_restore[
                 "connection_generation"
             ]
-            > before["connection_generation"],
+            == before["connection_generation"] + 1,
             "final_capabilities_bind_second_pid": isinstance(
                 final_diagnostics, dict
             )
@@ -3088,6 +3554,102 @@ def run_phase2_save_restore_lineage(
             raise
         raise acceptance.RunnerError(
             f"phase-two save/restore lineage failed: {error}"
+        ) from error
+
+
+def phase2_native_session_liveness_gate(
+    service: GameplayBridgeService,
+    supervisor: dict[str, object],
+    artifacts: Path,
+    *,
+    scenario_evidence: object,
+) -> dict[str, object]:
+    """Bind the still-running supervisor and MCP driver to restored PID two."""
+
+    evidence_path = artifacts / "08_phase2_native_session_liveness.json"
+    scenario = scenario_evidence if isinstance(scenario_evidence, dict) else {}
+    lineage_value = scenario.get("save_restore_lineage")
+    lineage = lineage_value if isinstance(lineage_value, dict) else {}
+    expected_pid = lineage.get("second_pid")
+    expected_generation = lineage.get("second_connection_generation")
+    session_done = supervisor.get("session_done")
+    session_thread = supervisor.get("session_thread")
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_post_restore_supervisor_liveness",
+        "mcp_only": True,
+        "expected_pid": expected_pid,
+        "expected_connection_generation": expected_generation,
+        "capabilities": None,
+        "snapshot": None,
+        "binding": None,
+        "checks": {},
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        capabilities = service.capabilities()
+        snapshot = service.snapshot()
+        if not isinstance(capabilities, dict) or not isinstance(snapshot, dict):
+            raise acceptance.RunnerError(
+                "phase-two liveness queries returned a non-object"
+            )
+        binding = _phase2_paused_binding(
+            snapshot, label="phase-two post-restore liveness"
+        )
+        diagnostics_value = capabilities.get("diagnostics")
+        diagnostics = (
+            diagnostics_value if isinstance(diagnostics_value, dict) else {}
+        )
+        checks = {
+            "supervisor_handle_valid": isinstance(session_done, threading.Event)
+            and isinstance(session_thread, threading.Thread),
+            "supervisor_not_done": isinstance(session_done, threading.Event)
+            and not session_done.is_set(),
+            "supervisor_thread_alive": isinstance(
+                session_thread, threading.Thread
+            )
+            and session_thread.is_alive(),
+            "lineage_green": lineage.get("result") == "GREEN",
+            "lineage_two_pid_proven": lineage.get(
+                "two_pid_lineage_proven"
+            )
+            is True,
+            "capabilities_connected": diagnostics.get("connected") is True,
+            "capabilities_pid_matches_second": diagnostics.get("bridge_pid")
+            == expected_pid,
+            "capabilities_generation_matches_second": diagnostics.get(
+                "connection_generation"
+            )
+            == expected_generation,
+            "snapshot_pid_matches_second": binding["bridge_pid"]
+            == expected_pid,
+            "snapshot_generation_matches_second": binding[
+                "connection_generation"
+            ]
+            == expected_generation,
+        }
+        evidence["capabilities"] = capabilities
+        evidence["snapshot"] = snapshot
+        evidence["binding"] = binding
+        evidence["checks"] = checks
+        failed = [label for label, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two supervisor liveness RED: " + ", ".join(failed)
+            )
+        evidence["result"] = "GREEN"
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two supervisor liveness failed: {error}"
         ) from error
 
 
@@ -3294,6 +3856,7 @@ def run_loader_gate(
     *,
     tracked_ck3_pid: int,
     phase2_live_batch: bool,
+    managed_restore_supervisor: bool = False,
 ) -> dict[str, object]:
     """Run the native/log/mount loader gate and persist every RED boundary."""
 
@@ -3340,6 +3903,7 @@ def run_loader_gate(
                 service,
                 artifacts,
                 tracked_ck3_pid=tracked_ck3_pid,
+                managed_restore_supervisor=managed_restore_supervisor,
             )
             evidence["phase2_capability_preflight"] = phase2_capabilities
             write_json(evidence_path, evidence)
@@ -8019,6 +8583,16 @@ def run_phase2_live_scenario(
             "Workforce/three-cycle, AI and named-widget cells are not implemented"
         )
     except BaseException as error:
+        lineage_path = artifacts / "06_phase2_save_restore_lineage.json"
+        if lineage_path.is_file():
+            try:
+                lineage_value = json.loads(
+                    lineage_path.read_text(encoding="utf-8")
+                )
+                if isinstance(lineage_value, dict):
+                    evidence["save_restore_lineage"] = lineage_value
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
         evidence["result"] = "RED"
         evidence["phase2_acceptance_complete"] = False
         evidence["gameplay_acceptance_executed"] = False
@@ -8299,15 +8873,14 @@ def run_cell(
     loader_gate_enabled = loader_smoke or phase2_live_batch
     loader_gate_evidence: dict[str, object] | None = None
     gameplay_acceptance_executed = False
+    phase2_supervisor: dict[str, object] | None = None
+    phase2_initial_binding: dict[str, object] | None = None
+    phase2_final_capabilities: dict[str, object] | None = None
     try:
         if executable_before != EXPECTED_EXE_SHA256:
             raise acceptance.RunnerError(
                 f"CK3 executable SHA-256 drifted before launch: {executable_before}"
             )
-        lock_stack.enter_context(exclusive_launch_lock(spec.game_exe))
-        lock_stack.enter_context(
-            exclusive_state_lock(spec.state_dir, "zhongguo-361-acceptance")
-        )
         native_driver = NativeHeadlessGameplayDriver(
             native_bridge.pipe_name,
             state_dir=spec.state_dir,
@@ -8315,19 +8888,39 @@ def run_cell(
             command_timeout_seconds=NATIVE_TITLE_COMMAND_TIMEOUT_S,
         )
         title_navigation_service = GameplayBridgeService(native_driver)
-        session_handle = launch_native_ck3(
-            spec,
-            native_bridge=native_bridge,
-            verify_prepared_profile=False,
-        )
-        process = session_handle.process
-        watchdog_pid = session_handle.watchdog_pid
-        tracked_ck3_pid = process.pid
-        acceptance.ACTIVE_CK3_PID = process.pid
-        log(
-            "launched suspended/injected/resumed tracked CK3 "
-            f"PID {process.pid} on {native_bridge.pipe_name}"
-        )
+        if phase2_live_batch:
+            phase2_supervisor = start_phase2_native_session_supervisor(
+                spec, native_bridge
+            )
+            phase2_initial_binding = wait_for_phase2_native_session_binding(
+                title_navigation_service,
+                phase2_supervisor,
+                artifacts,
+            )
+            tracked_ck3_pid = int(phase2_initial_binding["bridge_pid"])
+            acceptance.ACTIVE_CK3_PID = tracked_ck3_pid
+            log(
+                "started managed phase-two native_session supervisor on CK3 "
+                f"PID {tracked_ck3_pid} and {native_bridge.pipe_name}"
+            )
+        else:
+            lock_stack.enter_context(exclusive_launch_lock(spec.game_exe))
+            lock_stack.enter_context(
+                exclusive_state_lock(spec.state_dir, "zhongguo-361-acceptance")
+            )
+            session_handle = launch_native_ck3(
+                spec,
+                native_bridge=native_bridge,
+                verify_prepared_profile=False,
+            )
+            process = session_handle.process
+            watchdog_pid = session_handle.watchdog_pid
+            tracked_ck3_pid = process.pid
+            acceptance.ACTIVE_CK3_PID = process.pid
+            log(
+                "launched suspended/injected/resumed tracked CK3 "
+                f"PID {process.pid} on {native_bridge.pipe_name}"
+            )
         if loader_gate_enabled:
             loader_gate_evidence = run_loader_gate(
                 title_navigation_service,
@@ -8336,6 +8929,7 @@ def run_cell(
                 bootstrap,
                 tracked_ck3_pid=tracked_ck3_pid,
                 phase2_live_batch=phase2_live_batch,
+                managed_restore_supervisor=phase2_supervisor is not None,
             )
             native_readiness = loader_gate_evidence["native_readiness"]
             error_scan = loader_gate_evidence["loader_error_log_scan"]
@@ -8441,6 +9035,17 @@ def run_cell(
                 preflight_bridge_identity=bridge_identity,
             )
             evidence["keyboard_layout"] = keyboard_layout_evidence
+        if phase2_live_batch:
+            liveness = phase2_native_session_liveness_gate(
+                title_navigation_service,
+                phase2_supervisor,
+                artifacts,
+                scenario_evidence=evidence,
+            )
+            evidence["native_session_liveness"] = liveness
+            capabilities_value = liveness.get("capabilities")
+            if isinstance(capabilities_value, dict):
+                phase2_final_capabilities = capabilities_value
         new_diagnostics, new_warnings = project_diagnostics(
             userdir, artifacts, "10_runtime"
         )
@@ -8448,7 +9053,7 @@ def run_cell(
         observed_engine_warnings.extend(new_warnings)
         if diagnostics:
             raise acceptance.RunnerError(diagnostics[-1])
-        if process.poll() is not None:
+        if not phase2_live_batch and process.poll() is not None:
             raise acceptance.RunnerError(
                 f"CK3 PID {process.pid} exited before controlled shutdown"
             )
@@ -8476,7 +9081,56 @@ def run_cell(
                 error_reason = (
                     f"{error_reason}; {reason}" if error_reason else reason
                 )
-        if session_handle is not None:
+        if phase2_supervisor is not None:
+            try:
+                scenario_path = artifacts / "05_phase2_live_scenario.json"
+                if scenario_path.is_file():
+                    scenario_value = json.loads(
+                        scenario_path.read_text(encoding="utf-8")
+                    )
+                    if isinstance(scenario_value, dict):
+                        evidence = scenario_value
+                if phase2_final_capabilities is None:
+                    try:
+                        final_capabilities_value = (
+                            title_navigation_service.capabilities()
+                        )
+                        if isinstance(final_capabilities_value, dict):
+                            phase2_final_capabilities = final_capabilities_value
+                    except Exception:
+                        phase2_final_capabilities = None
+                native_cleanup = stop_phase2_native_session_supervisor(
+                    phase2_supervisor,
+                    artifacts,
+                    initial_pid=tracked_ck3_pid,
+                    initial_generation=(
+                        int(phase2_initial_binding["connection_generation"])
+                        if isinstance(phase2_initial_binding, dict)
+                        else None
+                    ),
+                    expected_pipe=native_bridge.pipe_name,
+                    scenario_evidence=evidence,
+                    final_capabilities=phase2_final_capabilities,
+                )
+            except Exception as error:
+                cleanup_path = (
+                    artifacts / "09_phase2_native_session_cleanup.json"
+                )
+                if cleanup_path.is_file():
+                    try:
+                        cleanup_value = json.loads(
+                            cleanup_path.read_text(encoding="utf-8")
+                        )
+                        if isinstance(cleanup_value, dict):
+                            native_cleanup = cleanup_value
+                    except (OSError, ValueError, json.JSONDecodeError):
+                        pass
+                result = "RED"
+                reason = f"managed phase-two native_session stop failed: {error}"
+                error_reason = (
+                    f"{error_reason}; {reason}" if error_reason else reason
+                )
+        elif session_handle is not None:
             try:
                 native_cleanup = stop_tracked(
                     session_handle,
@@ -8633,7 +9287,11 @@ def run_cell(
         "debug_mode": False,
         "isolated_userdir": True,
         "canonical_native_runtime": True,
-        "native_launch_sequence": "suspended_inject_resume",
+        "native_launch_sequence": (
+            "managed_native_session_supervisor"
+            if phase2_live_batch
+            else "suspended_inject_resume"
+        ),
         "native_bridge_pipe": native_bridge.pipe_name,
         "native_title_command_timeout_seconds": (
             NATIVE_TITLE_COMMAND_TIMEOUT_S
@@ -8679,6 +9337,34 @@ def run_cell(
         "userdir_removed_after_run": userdir_removed,
         "process_watchdog_pid": watchdog_pid,
         "native_cleanup": native_cleanup,
+        "phase2_native_session": (
+            {
+                "startup": phase2_initial_binding,
+                "final_binding": (
+                    phase2_final_capabilities.get("diagnostics")
+                    if isinstance(phase2_final_capabilities, dict)
+                    else None
+                ),
+                "pid_lineage": [
+                    native_cleanup.get("initial_pid"),
+                    native_cleanup.get("second_pid"),
+                ],
+                "connection_generation_lineage": [
+                    native_cleanup.get("initial_generation"),
+                    native_cleanup.get("second_generation"),
+                ],
+                "restart_count": (
+                    native_cleanup.get("session_report", {}).get(
+                        "restart_count"
+                    )
+                    if isinstance(native_cleanup.get("session_report"), dict)
+                    else None
+                ),
+                "cleanup": native_cleanup,
+            }
+            if phase2_live_batch
+            else None
+        ),
         "native_driver_closed": driver_closed,
         "native_runtime_locks_released": locks_released,
         "environment": {

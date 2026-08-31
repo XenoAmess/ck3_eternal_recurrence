@@ -11,6 +11,7 @@ import json
 import re
 import sys
 import tempfile
+import threading
 import types
 from types import SimpleNamespace
 from unittest import mock
@@ -2030,6 +2031,7 @@ def main() -> int:
                 Phase2CapabilityService(complete_phase2_capabilities()),
                 phase2_capability_artifacts,
                 tracked_ck3_pid=4321,
+                managed_restore_supervisor=True,
             )
         except capture.acceptance.RunnerError as error:
             assert "MCP capability RED" in str(error)
@@ -2076,6 +2078,7 @@ def main() -> int:
                     Phase2CapabilityService(missing_capabilities),
                     missing_dir,
                     tracked_ck3_pid=4321,
+                    managed_restore_supervisor=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2105,6 +2108,7 @@ def main() -> int:
                     Phase2CapabilityService(missing_flag_capabilities),
                     missing_dir,
                     tracked_ck3_pid=4321,
+                    managed_restore_supervisor=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2123,6 +2127,7 @@ def main() -> int:
                     Phase2CapabilityService(missing_step_capabilities),
                     missing_dir,
                     tracked_ck3_pid=4321,
+                    managed_restore_supervisor=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2184,6 +2189,7 @@ def main() -> int:
                     Phase2CapabilityService(missing_runtime),
                     missing_dir,
                     tracked_ck3_pid=4321,
+                    managed_restore_supervisor=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2200,6 +2206,32 @@ def main() -> int:
                 row["kind"] == "runtime_check" and row["label"] == label
                 for row in persisted_missing["missing_requirements"]
             )
+
+        missing_supervisor_dir = temporary_root / "phase2-runtime-red-supervisor"
+        missing_supervisor_dir.mkdir()
+        try:
+            capture.phase2_runtime_capability_preflight(
+                Phase2CapabilityService(complete_phase2_capabilities()),
+                missing_supervisor_dir,
+                tracked_ck3_pid=4321,
+                managed_restore_supervisor=False,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "MCP capability RED" in str(error)
+        else:
+            raise AssertionError(
+                "phase-two preflight accepted a missing restore supervisor"
+            )
+        missing_supervisor = json.loads(
+            (
+                missing_supervisor_dir / "02_phase2_mcp_capabilities.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert any(
+            row["kind"] == "runtime_check"
+            and row["label"] == "restore_lifecycle_supervisor_running"
+            for row in missing_supervisor["missing_requirements"]
+        )
 
         def phase2_snapshot(
             *, pid: int, generation: int, revision: int, player: int = 9001
@@ -2282,6 +2314,7 @@ def main() -> int:
                 return {
                     "accepted": True,
                     "status": "restored",
+                    "source": "native-session-lifecycle-queue",
                     "checkpoint": {
                         "status": "restored",
                         "size": 123456,
@@ -2293,6 +2326,8 @@ def main() -> int:
                         "pid": self.second_pid,
                         "previous_connection_generation": 4,
                         "connection_generation": self.second_generation,
+                        "lifecycle_intent": "restore",
+                        "request_id": "phase2-restore-1",
                     },
                 }
 
@@ -2342,6 +2377,285 @@ def main() -> int:
             )
             assert persisted_red["result"] == "RED"
             assert persisted_red["checks"][failed_check] is False
+
+        def phase2_shutdown(pid: int) -> dict[str, object]:
+            return {
+                "ck3_pid": pid,
+                "ok": True,
+                "cleanup_proven": True,
+                "tree_gone": True,
+                "job_active_processes_final": 0,
+                "final_ck3_inventory": {"processes": []},
+                "watchdog_state_after": "absent",
+                "control_files_absent": {
+                    "pid": True,
+                    "ready": True,
+                    "watchdog_error": True,
+                    "unsafe": True,
+                },
+                "contract_errors": [],
+            }
+
+        supervisor_pipe = native_config.pipe_name
+        two_pid_session_report = {
+            "kind": "ck3_native_headless_session",
+            "mode": "native-headless",
+            "pipe": supervisor_pipe,
+            "pid": 5432,
+            "exit_reason": "stop",
+            "process_exit_code": None,
+            "shutdown": phase2_shutdown(5432),
+            "restart_count": 1,
+            "restart_shutdowns": [phase2_shutdown(4321)],
+            "ok": True,
+        }
+        two_pid_scenario = {"save_restore_lineage": lineage}
+        second_pid_capabilities = {
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": 5432,
+                "connection_generation": 5,
+            }
+        }
+        cleanup_artifacts = temporary_root / "phase2-supervisor-cleanup-green"
+        cleanup_artifacts.mkdir()
+        cleanup_green = capture.prove_phase2_native_session_cleanup(
+            copy.deepcopy(two_pid_session_report),
+            cleanup_artifacts,
+            initial_pid=4321,
+            initial_generation=4,
+            expected_pipe=supervisor_pipe,
+            scenario_evidence=copy.deepcopy(two_pid_scenario),
+            final_capabilities=copy.deepcopy(second_pid_capabilities),
+            session_error=None,
+            supervisor_stopped=True,
+        )
+        assert cleanup_green["result"] == "GREEN"
+        assert cleanup_green["restore_expected"] is True
+        assert cleanup_green["checks"]["restore_queue_consumed_once"] is True
+        assert cleanup_green["checks"]["old_pid_shutdown_cleanup_proven"] is True
+        assert cleanup_green["checks"]["new_pid_shutdown_cleanup_proven"] is True
+
+        single_pid_report = copy.deepcopy(two_pid_session_report)
+        single_pid_report.update(
+            {
+                "pid": 4321,
+                "shutdown": phase2_shutdown(4321),
+                "restart_count": 0,
+                "restart_shutdowns": [],
+            }
+        )
+        single_pid_artifacts = temporary_root / "phase2-prestart-cleanup-green"
+        single_pid_artifacts.mkdir()
+        single_pid_cleanup = capture.prove_phase2_native_session_cleanup(
+            single_pid_report,
+            single_pid_artifacts,
+            initial_pid=4321,
+            initial_generation=4,
+            expected_pipe=supervisor_pipe,
+            scenario_evidence={},
+            final_capabilities={
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                }
+            },
+            session_error=None,
+            supervisor_stopped=True,
+        )
+        assert single_pid_cleanup["result"] == "GREEN"
+        assert single_pid_cleanup["restore_expected"] is False
+
+        fake_supervisor_artifacts = temporary_root / "phase2-fake-supervisor-green"
+        fake_supervisor_artifacts.mkdir()
+        fake_supervisor_entered = threading.Event()
+        fake_supervisor_scenario = copy.deepcopy(two_pid_scenario)
+        fake_supervisor_lineage = fake_supervisor_scenario[
+            "save_restore_lineage"
+        ]
+        fake_supervisor_lineage["first_connection_generation"] = 1
+        fake_supervisor_lineage["second_connection_generation"] = 2
+        fake_supervisor_lineage["connection_generation_lineage"] = [1, 2]
+        fake_supervisor_final_capabilities = {
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": 5432,
+                "connection_generation": 2,
+            }
+        }
+
+        def fake_native_session(
+            _spec: object,
+            **kwargs: object,
+        ) -> dict[str, object]:
+            assert kwargs["native_bridge"] == native_config
+            assert kwargs["verify_prepared_profile"] is False
+            stop_event = kwargs["stop_event"]
+            assert isinstance(stop_event, threading.Event)
+            fake_supervisor_entered.set()
+            if not stop_event.wait(timeout=2.0):
+                raise RuntimeError("fake supervisor did not receive stop event")
+            return copy.deepcopy(two_pid_session_report)
+
+        with mock.patch.object(
+            capture, "native_session", side_effect=fake_native_session
+        ) as native_session_call:
+            fake_supervisor = capture.start_phase2_native_session_supervisor(
+                SimpleNamespace(), native_config
+            )
+            if not fake_supervisor_entered.wait(timeout=1.0):
+                raise AssertionError("fake phase-two supervisor did not start")
+            fake_thread = fake_supervisor["session_thread"]
+            assert isinstance(fake_thread, threading.Thread)
+            assert fake_thread.daemon is False
+            fake_start_binding = capture.wait_for_phase2_native_session_binding(
+                Phase2CapabilityService(
+                    {
+                        "mode": "native-headless",
+                        "backend_id": "native-headless",
+                        "visual_fallback": False,
+                        "diagnostics": {
+                            "connected": True,
+                            "bridge_pid": 4321,
+                            "connection_generation": 1,
+                        },
+                    }
+                ),
+                fake_supervisor,
+                fake_supervisor_artifacts,
+                timeout_s=1.0,
+                poll_interval_s=0.0,
+            )
+            assert fake_start_binding["bridge_pid"] == 4321
+            assert fake_start_binding["connection_generation"] == 1
+
+            class Phase2LivenessService:
+                def capabilities(self) -> dict[str, object]:
+                    return copy.deepcopy(fake_supervisor_final_capabilities)
+
+                def snapshot(self) -> dict[str, object]:
+                    return phase2_snapshot(
+                        pid=5432, generation=2, revision=20
+                    )
+
+            fake_liveness = capture.phase2_native_session_liveness_gate(
+                Phase2LivenessService(),
+                fake_supervisor,
+                fake_supervisor_artifacts,
+                scenario_evidence=fake_supervisor_scenario,
+            )
+            assert fake_liveness["result"] == "GREEN"
+            assert fake_liveness["binding"]["bridge_pid"] == 5432
+            fake_cleanup = capture.stop_phase2_native_session_supervisor(
+                fake_supervisor,
+                fake_supervisor_artifacts,
+                initial_pid=4321,
+                initial_generation=1,
+                expected_pipe=supervisor_pipe,
+                scenario_evidence=copy.deepcopy(fake_supervisor_scenario),
+                final_capabilities=copy.deepcopy(
+                    fake_supervisor_final_capabilities
+                ),
+            )
+        assert native_session_call.call_count == 1
+        assert fake_thread.is_alive() is False
+        assert fake_cleanup["result"] == "GREEN"
+
+        queue_not_consumed_scenario = copy.deepcopy(two_pid_scenario)
+        pending_lineage = queue_not_consumed_scenario["save_restore_lineage"]
+        pending_lineage["result"] = "RED"
+        pending_lineage["restore_result"] = None
+        pending_lineage.pop("second_pid", None)
+        pending_lineage.pop("second_connection_generation", None)
+        supervisor_red_cases = {
+            "queue_not_consumed": (
+                single_pid_report,
+                queue_not_consumed_scenario,
+                {
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": 4321,
+                        "connection_generation": 4,
+                    }
+                },
+                "restore_queue_consumed_once",
+            ),
+            "old_pid_cleanup_failed": (
+                {
+                    **copy.deepcopy(two_pid_session_report),
+                    "restart_shutdowns": [
+                        {
+                            **phase2_shutdown(4321),
+                            "ok": False,
+                            "cleanup_proven": False,
+                        }
+                    ],
+                },
+                two_pid_scenario,
+                second_pid_capabilities,
+                "old_pid_shutdown_cleanup_proven",
+            ),
+            "restart_count_not_one": (
+                {
+                    **copy.deepcopy(two_pid_session_report),
+                    "restart_count": 2,
+                    "restart_shutdowns": [
+                        phase2_shutdown(4321),
+                        phase2_shutdown(4999),
+                    ],
+                },
+                two_pid_scenario,
+                second_pid_capabilities,
+                "restart_count_exactly_one",
+            ),
+            "new_pid_binding_mismatch": (
+                two_pid_session_report,
+                two_pid_scenario,
+                {
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": 9999,
+                        "connection_generation": 5,
+                    }
+                },
+                "final_capabilities_pid_matches",
+            ),
+        }
+        for label, (
+            session_report,
+            scenario_value,
+            capabilities_value,
+            failed_check,
+        ) in supervisor_red_cases.items():
+            red_dir = temporary_root / f"phase2-supervisor-red-{label}"
+            red_dir.mkdir()
+            try:
+                capture.prove_phase2_native_session_cleanup(
+                    copy.deepcopy(session_report),
+                    red_dir,
+                    initial_pid=4321,
+                    initial_generation=4,
+                    expected_pipe=supervisor_pipe,
+                    scenario_evidence=copy.deepcopy(scenario_value),
+                    final_capabilities=copy.deepcopy(capabilities_value),
+                    session_error=None,
+                    supervisor_stopped=True,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "native_session cleanup RED" in str(error)
+                assert failed_check in str(error)
+            else:
+                raise AssertionError(
+                    f"phase-two supervisor accepted RED case {label}"
+                )
+            cleanup_red = json.loads(
+                (red_dir / "09_phase2_native_session_cleanup.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            assert cleanup_red["result"] == "RED"
+            assert cleanup_red["checks"][failed_check] is False
 
         scenario_artifacts = temporary_root / "phase2-independent-scenario-red"
         scenario_artifacts.mkdir()
@@ -3128,7 +3442,10 @@ def main() -> int:
         "native_bridge=native_bridge",
         "verify_prepared_profile=False",
         "stop_tracked(",
-        '"native_launch_sequence": "suspended_inject_resume"',
+        '"managed_native_session_supervisor"',
+        'else "suspended_inject_resume"',
+        "start_phase2_native_session_supervisor(",
+        "stop_phase2_native_session_supervisor(",
     ):
         assert token in camera_probe_cell, token
     loader_gate_source = inspect.getsource(capture.run_loader_gate)

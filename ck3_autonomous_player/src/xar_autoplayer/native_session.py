@@ -163,6 +163,7 @@ def native_session(
     poll_interval_seconds: float = 0.05,
     cold_start_checkpoint: bool = False,
     stop_event: threading.Event | None = None,
+    verify_prepared_profile: bool = True,
 ) -> dict[str, object]:
     """Launch/inject CK3 and supervise it without any visual fallback path."""
     if (
@@ -174,6 +175,8 @@ def native_session(
         raise AgentError("native-session timeout must be finite and positive")
     if poll_interval_seconds <= 0:
         raise AgentError("native-session poll interval must be positive")
+    if not isinstance(verify_prepared_profile, bool):
+        raise AgentError("native-session verify_prepared_profile must be boolean")
 
     config = (
         native_bridge_launch_config_from_environment()
@@ -199,6 +202,7 @@ def native_session(
                 poll_interval_seconds=float(poll_interval_seconds),
                 cold_start_checkpoint=cold_start_checkpoint,
                 stop_event=stop_event,
+                verify_prepared_profile=verify_prepared_profile,
             )
 
 
@@ -212,6 +216,7 @@ def _native_session_locked(
     poll_interval_seconds: float,
     cold_start_checkpoint: bool = False,
     stop_event: threading.Event | None = None,
+    verify_prepared_profile: bool = True,
 ) -> dict[str, object]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -248,18 +253,21 @@ def _native_session_locked(
     try:
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
+        initial_launch_options: dict[str, object] = {"native_bridge": config}
         if initial_checkpoint is None:
-            handle = launch(
-                spec,
-                native_bridge=config,
-                continue_last_save=True,
-            )
+            initial_launch_options["continue_last_save"] = True
         else:
-            handle = launch(
-                spec,
-                native_bridge=config,
-                load_save_name=NATIVE_SESSION_CHECKPOINT_LOAD_NAME,
+            initial_launch_options["load_save_name"] = (
+                NATIVE_SESSION_CHECKPOINT_LOAD_NAME
             )
+        # Default callers retain the production environment-manifest gate and
+        # the historical launch call shape.  ZhongGuo phase-two is the sole
+        # opt-out: its runner already freezes its own isolated bootstrap,
+        # runtime identity and mount inventory, while this generic verifier is
+        # hard-bound to the Eternal Recurrence singleton profile.
+        if not verify_prepared_profile:
+            initial_launch_options["verify_prepared_profile"] = False
+        handle = launch(spec, **initial_launch_options)
         pid = int(handle.process.pid)
         last_pid = pid
         _emit(
