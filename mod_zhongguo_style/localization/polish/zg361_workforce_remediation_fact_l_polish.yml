@@ -1,0 +1,5 @@
+﻿l_polish:
+ zg361workforceremediationfact.1.t:0 "The Vacancy Still Remembers"
+ zg361workforceremediationfact.1.desc:0 "Thirty days have passed since the offer was refused. The held position may be released only if you record what the refusal exposed and whether that exact condition was actually corrected. A plan, a promise, or an empty checkbox is not a completion receipt."
+ zg361workforceremediationfact.1.complete:0 "Record the corrective action as completed and verified"
+ zg361workforceremediationfact.1.fail:0 "Record that the corrective action failed"

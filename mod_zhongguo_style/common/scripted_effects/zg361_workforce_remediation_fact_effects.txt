@@ -1,0 +1,582 @@
+﻿# GENERATED FILE — edit tools/zg361_workforce_remediation_fact_gen.py
+# Public subject-scope ABI.  It accepts no caller-authored identity or result:
+# all source facts are joined directly from the committed Workforce #275-B
+# business object and its frozen future-consumer tuple.
+zg361_workforce_remediation_fact_open_effect = {
+	remove_variable = zg361_workforce_remediation_fact_runtime_status
+	remove_variable = zg361_workforce_remediation_fact_last_red_code
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			has_variable = zg361_we_m275_business_object_created
+			var:zg361_we_m275_business_object_created = 1
+			has_variable = zg361_we_m275_object_owner
+			has_variable = zg361_we_m275_object_subject
+			has_variable = zg361_we_m275_object_cycle
+			has_variable = zg361_we_m275_object_case
+			has_variable = zg361_we_m275_object_state
+			has_variable = zg361_we_m275_object_consumed
+			has_variable = zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275
+			var:zg361_we_m275_object_subject = this
+			var:zg361_we_m275_object_state = 4
+			var:zg361_we_m275_object_consumed = 1
+			var:zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+			has_variable = zg361_we_m275_write_owner
+			has_variable = zg361_we_m275_write_subject
+			has_variable = zg361_we_m275_write_cycle
+			has_variable = zg361_we_m275_write_case
+			has_variable = zg361_we_m275_write_state
+			has_variable = zg361_we_m275_receipt_owner
+			has_variable = zg361_we_m275_receipt_subject
+			has_variable = zg361_we_m275_receipt_cycle
+			has_variable = zg361_we_m275_receipt_case
+			has_variable = zg361_we_m275_receipt_state
+			has_variable = zg361_we_m275_receipt_choice
+			var:zg361_we_m275_write_subject = this
+			var:zg361_we_m275_write_owner = var:zg361_we_m275_receipt_owner
+			var:zg361_we_m275_write_subject = var:zg361_we_m275_receipt_subject
+			var:zg361_we_m275_write_cycle = var:zg361_we_m275_receipt_cycle
+			var:zg361_we_m275_write_case = var:zg361_we_m275_receipt_case
+			var:zg361_we_m275_write_state = var:zg361_we_m275_receipt_state
+			var:zg361_we_m275_receipt_state = 4
+			var:zg361_we_m275_receipt_choice = 2
+			var:zg361_we_m275_object_owner = var:zg361_we_m275_write_owner
+			var:zg361_we_m275_object_cycle = var:zg361_we_m275_write_cycle
+			var:zg361_we_m275_object_case = var:zg361_we_m275_write_case
+			has_variable = zg361_we_m275_refusal
+			var:zg361_we_m275_refusal = 1
+			has_variable = zg361_we_m275_not_applicable_hired
+			var:zg361_we_m275_not_applicable_hired = 0
+			has_variable = zg361_we_m275_hold_pending
+			var:zg361_we_m275_hold_pending = 1
+			has_variable = zg361_we_m275_reason_remediated
+			var:zg361_we_m275_reason_remediated = 0
+			has_variable = zg361_we_m275_refusal_reason_id
+			var:zg361_we_m275_refusal_reason_id > 0
+			has_variable = zg361_we_m275_hold_due_cycle
+			var:zg361_we_m275_hold_due_cycle > var:zg361_we_m275_write_cycle
+			var:zg361_we_m275_write_cycle > 0
+			var:zg361_we_m275_write_case > 0
+			var:zg361_we_m275_write_owner = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= prev.var:zg361_we_m275_write_cycle
+			}
+			trigger_if = {
+				limit = { has_variable = zg361_workforce_remediation_fact_status }
+				AND = {
+					has_variable = zg361_workforce_remediation_fact_status
+					has_variable = zg361_workforce_remediation_fact_owner
+					has_variable = zg361_workforce_remediation_fact_cycle
+					has_variable = zg361_workforce_remediation_fact_case
+					has_variable = zg361_workforce_remediation_fact_receipt_status
+					has_variable = zg361_workforce_remediation_fact_pending
+					has_variable = zg361_workforce_remediation_fact_consumed
+					var:zg361_workforce_remediation_fact_receipt_status = 1
+					OR = {
+						AND = {
+							var:zg361_workforce_remediation_fact_status = 2
+							var:zg361_workforce_remediation_fact_pending = 0
+							var:zg361_workforce_remediation_fact_consumed = 1
+						}
+						AND = {
+							var:zg361_workforce_remediation_fact_status = 3
+							var:zg361_workforce_remediation_fact_pending = 0
+							var:zg361_workforce_remediation_fact_consumed = 0
+						}
+					}
+					OR = {
+						NOT = { var:zg361_workforce_remediation_fact_cycle = var:zg361_we_m275_write_cycle }
+						NOT = { var:zg361_workforce_remediation_fact_case = var:zg361_we_m275_write_case }
+						NOT = { var:zg361_workforce_remediation_fact_owner = var:zg361_we_m275_write_owner }
+					}
+				}
+			}
+			trigger_else = { always = yes }
+		}
+		# Preserve the previous terminal receipt as a last-receipt audit slot before
+		# opening a later real #275 case.  No pending case can be overwritten.
+		if = {
+			# The outer guard proves any existing slot is an exact terminal receipt
+			# that is safe to archive (failure, or completion already consumed).
+			limit = { has_variable = zg361_workforce_remediation_fact_status }
+			if = {
+				limit = { NOT = { has_variable = zg361_workforce_remediation_fact_archive_count } }
+				set_variable = { name = zg361_workforce_remediation_fact_archive_count value = 1 }
+			}
+			else = { change_variable = { name = zg361_workforce_remediation_fact_archive_count add = 1 } }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_owner value = var:zg361_workforce_remediation_fact_receipt_owner }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_subject value = var:zg361_workforce_remediation_fact_receipt_subject }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_cycle value = var:zg361_workforce_remediation_fact_receipt_cycle }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_case value = var:zg361_workforce_remediation_fact_receipt_case }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_result value = var:zg361_workforce_remediation_fact_receipt_result }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_serial value = var:zg361_workforce_remediation_fact_receipt_serial }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_receipt_id value = var:zg361_workforce_remediation_fact_receipt_id }
+			set_variable = { name = zg361_workforce_remediation_fact_archive_last_receipt_hash value = var:zg361_workforce_remediation_fact_receipt_hash }
+		}
+		remove_variable = zg361_we_ad_external_m275_remediation_receipt
+		remove_variable = zg361_we_ad_external_m275_remediated_reason_id
+		remove_variable = zg361_workforce_remediation_fact_result
+		remove_variable = zg361_workforce_remediation_fact_result_actor
+		remove_variable = zg361_workforce_remediation_fact_result_cycle
+		remove_variable = zg361_workforce_remediation_fact_result_case
+		remove_variable = zg361_workforce_remediation_fact_receipt_status
+		remove_variable = zg361_workforce_remediation_fact_receipt_id
+		remove_variable = zg361_workforce_remediation_fact_receipt_hash
+		remove_variable = zg361_workforce_remediation_fact_receipt_owner
+		remove_variable = zg361_workforce_remediation_fact_receipt_subject
+		remove_variable = zg361_workforce_remediation_fact_receipt_cycle
+		remove_variable = zg361_workforce_remediation_fact_receipt_case
+		remove_variable = zg361_workforce_remediation_fact_receipt_result
+		remove_variable = zg361_workforce_remediation_fact_receipt_reason_id
+		remove_variable = zg361_workforce_remediation_fact_receipt_requirement_id
+		remove_variable = zg361_workforce_remediation_fact_receipt_serial
+		remove_variable = zg361_workforce_remediation_fact_pending
+		remove_variable = zg361_workforce_remediation_fact_consumed
+		# Compute every consumer of the next serial from the previously committed
+		# counter.  Never initialize/change the counter and then read it again in
+		# this effect: event-option tooltip pre-evaluation does not guarantee such
+		# read-after-write ordering.
+		if = {
+			limit = { NOT = { has_variable = zg361_workforce_remediation_fact_serial_counter } }
+			save_scope_value_as = { name = zg361_workforce_remediation_fact_ticket_requirement value = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_serial value = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_requirement_id value = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_serial_counter value = 1 }
+		}
+		else = {
+			save_scope_value_as = { name = zg361_workforce_remediation_fact_ticket_requirement value = { value = var:zg361_workforce_remediation_fact_serial_counter add = 1 } }
+			set_variable = { name = zg361_workforce_remediation_fact_serial value = { value = var:zg361_workforce_remediation_fact_serial_counter add = 1 } }
+			set_variable = { name = zg361_workforce_remediation_fact_requirement_id value = { value = var:zg361_workforce_remediation_fact_serial_counter add = 1 } }
+			set_variable = { name = zg361_workforce_remediation_fact_serial_counter value = { value = var:zg361_workforce_remediation_fact_serial_counter add = 1 } }
+		}
+		set_variable = { name = zg361_workforce_remediation_fact_status value = 1 }
+		set_variable = { name = zg361_workforce_remediation_fact_owner value = var:zg361_we_m275_write_owner }
+		set_variable = { name = zg361_workforce_remediation_fact_subject value = this }
+		set_variable = { name = zg361_workforce_remediation_fact_cycle value = var:zg361_we_m275_write_cycle }
+		set_variable = { name = zg361_workforce_remediation_fact_case value = var:zg361_we_m275_write_case }
+		set_variable = { name = zg361_workforce_remediation_fact_source_state value = 4 }
+		set_variable = { name = zg361_workforce_remediation_fact_reason_id value = var:zg361_we_m275_refusal_reason_id }
+		# IDs are subject-local monotonic serials.  Global identity is always the
+		# frozen owner/subject/cycle/case tuple plus this serial.
+		set_variable = { name = zg361_workforce_remediation_fact_requirement_code value = 1 }
+		set_variable = { name = zg361_workforce_remediation_fact_requirement_status value = 1 }
+		set_variable = { name = zg361_workforce_remediation_fact_requirement_due_cycle value = var:zg361_we_m275_hold_due_cycle }
+		set_variable = { name = zg361_workforce_remediation_fact_result value = 0 }
+		set_variable = { name = zg361_workforce_remediation_fact_pending value = 0 }
+		set_variable = { name = zg361_workforce_remediation_fact_consumed value = 0 }
+		set_variable = { name = zg361_workforce_remediation_fact_awaiting_player value = 0 }
+		set_variable = { name = zg361_workforce_remediation_fact_blocked_reason value = 0 }
+		save_scope_as = zg361_workforce_remediation_fact_ticket_subject
+		var:zg361_we_m275_write_owner = { save_scope_as = zg361_workforce_remediation_fact_ticket_owner }
+		save_scope_value_as = { name = zg361_workforce_remediation_fact_ticket_cycle value = var:zg361_we_m275_write_cycle }
+		save_scope_value_as = { name = zg361_workforce_remediation_fact_ticket_case value = var:zg361_we_m275_write_case }
+		save_scope_value_as = { name = zg361_workforce_remediation_fact_ticket_reason value = var:zg361_we_m275_refusal_reason_id }
+		if = {
+			limit = { var:zg361_we_m275_write_owner = { is_ai = no } }
+			set_variable = { name = zg361_workforce_remediation_fact_awaiting_player value = 1 }
+			var:zg361_we_m275_write_owner = { trigger_event = { id = zg361workforceremediationfact.1 days = 30 } }
+		}
+		else = {
+			# No observed AI remediation source exists.  Keep the requirement open and
+			# publish no terminal fact or legacy alias.
+			set_variable = { name = zg361_workforce_remediation_fact_blocked_reason value = 1 }
+			debug_log = "ZG361WRF: AI-owned remediation remains open; no result was fabricated"
+		}
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_workforce_remediation_fact_status
+			var:zg361_workforce_remediation_fact_owner = var:zg361_we_m275_write_owner
+			var:zg361_workforce_remediation_fact_subject = this
+			var:zg361_workforce_remediation_fact_cycle = var:zg361_we_m275_write_cycle
+			var:zg361_workforce_remediation_fact_case = var:zg361_we_m275_write_case
+			var:zg361_workforce_remediation_fact_reason_id = var:zg361_we_m275_refusal_reason_id
+		}
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 2 }
+	}
+	else = {
+		set_variable = { name = zg361_workforce_remediation_fact_last_red_code value = 27521 }
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 4 }
+	}
+}
+
+# Internal subject-scope terminal write.  RESULT=1 means the owner explicitly
+# confirmed completion; RESULT=2 means the owner explicitly recorded failure.
+# The receipt is written once, after the result, and never by the open path.
+zg361_workforce_remediation_fact_settle_effect = {
+	save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_requested_result value = $RESULT$ }
+	save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_expected_terminal_status value = { value = $RESULT$ add = 1 } }
+	save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_expected_receipt_id value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10 add = $RESULT$ } }
+	save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_expected_receipt_hash value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10000000 add = { value = $RESULT$ multiply = 1000000 } add = { value = var:zg361_workforce_remediation_fact_cycle multiply = 10000 } add = { value = var:zg361_workforce_remediation_fact_case multiply = 100 } add = { value = var:zg361_workforce_remediation_fact_reason_id multiply = 10 } add = $RESULT$ } }
+	remove_variable = zg361_workforce_remediation_fact_runtime_status
+	remove_variable = zg361_workforce_remediation_fact_last_red_code
+	if = {
+		limit = {
+			OR = {
+				scope:zg361_workforce_remediation_fact_requested_result = 1
+				scope:zg361_workforce_remediation_fact_requested_result = 2
+			}
+			has_variable = zg361_workforce_remediation_fact_status
+			var:zg361_workforce_remediation_fact_status = 1
+			has_variable = zg361_workforce_remediation_fact_requirement_status
+			var:zg361_workforce_remediation_fact_requirement_status = 1
+			has_variable = zg361_workforce_remediation_fact_owner
+			has_variable = zg361_workforce_remediation_fact_subject
+			has_variable = zg361_workforce_remediation_fact_cycle
+			has_variable = zg361_workforce_remediation_fact_case
+			has_variable = zg361_workforce_remediation_fact_source_state
+			has_variable = zg361_workforce_remediation_fact_reason_id
+			has_variable = zg361_workforce_remediation_fact_requirement_id
+			has_variable = zg361_workforce_remediation_fact_requirement_code
+			has_variable = zg361_workforce_remediation_fact_requirement_due_cycle
+			has_variable = zg361_workforce_remediation_fact_serial
+			has_variable = zg361_workforce_remediation_fact_serial_counter
+			var:zg361_workforce_remediation_fact_source_state = 4
+			var:zg361_workforce_remediation_fact_reason_id > 0
+			var:zg361_workforce_remediation_fact_requirement_id = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_requirement_code = 1
+			var:zg361_workforce_remediation_fact_serial > 0
+			var:zg361_workforce_remediation_fact_serial_counter = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_subject = this
+			$ACTOR$ = var:zg361_workforce_remediation_fact_owner
+			$ACTOR$ = {
+				is_ai = no
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= prev.var:zg361_workforce_remediation_fact_cycle
+			}
+			has_variable = zg361_we_m275_hold_pending
+			var:zg361_we_m275_hold_pending = 1
+			has_variable = zg361_we_m275_reason_remediated
+			var:zg361_we_m275_reason_remediated = 0
+			has_variable = zg361_we_m266_hc_reservation_active
+			var:zg361_we_m266_hc_reservation_active = 1
+			has_variable = zg361_we_m266_hc_receipt
+			has_variable = zg361_we_m275_hc_lineage_receipt
+			var:zg361_we_m266_hc_receipt = var:zg361_we_m275_hc_lineage_receipt
+			var:zg361_we_m275_hc_lineage_receipt = var:zg361_workforce_remediation_fact_case
+			has_variable = zg361_ch_hc_reserved
+			var:zg361_ch_hc_reserved >= 1
+			has_variable = zg361_we_m275_business_object_created
+			has_variable = zg361_we_m275_object_owner
+			has_variable = zg361_we_m275_object_subject
+			has_variable = zg361_we_m275_object_cycle
+			has_variable = zg361_we_m275_object_case
+			has_variable = zg361_we_m275_object_state
+			has_variable = zg361_we_m275_object_consumed
+			has_variable = zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275
+			var:zg361_we_m275_business_object_created = 1
+			var:zg361_we_m275_object_owner = var:zg361_workforce_remediation_fact_owner
+			var:zg361_we_m275_object_subject = this
+			var:zg361_we_m275_object_cycle = var:zg361_workforce_remediation_fact_cycle
+			var:zg361_we_m275_object_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_we_m275_object_state = 4
+			var:zg361_we_m275_object_consumed = 1
+			var:zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+			has_variable = zg361_we_m275_write_owner
+			has_variable = zg361_we_m275_write_subject
+			has_variable = zg361_we_m275_write_cycle
+			has_variable = zg361_we_m275_write_case
+			has_variable = zg361_we_m275_write_state
+			has_variable = zg361_we_m275_receipt_choice
+			has_variable = zg361_we_m275_receipt_state
+			var:zg361_we_m275_receipt_choice = 2
+			var:zg361_we_m275_write_owner = var:zg361_workforce_remediation_fact_owner
+			var:zg361_we_m275_write_subject = this
+			var:zg361_we_m275_write_cycle = var:zg361_workforce_remediation_fact_cycle
+			var:zg361_we_m275_write_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_we_m275_write_state = 4
+			var:zg361_we_m275_receipt_state = 4
+			has_variable = zg361_we_m275_hold_due_cycle
+			var:zg361_workforce_remediation_fact_requirement_due_cycle = var:zg361_we_m275_hold_due_cycle
+			has_variable = zg361_we_m275_refusal_reason_id
+			var:zg361_we_m275_refusal_reason_id = var:zg361_workforce_remediation_fact_reason_id
+			var:zg361_workforce_remediation_fact_owner = {
+				has_variable = zg361_we_ad_hc_flight_pending
+				var:zg361_we_ad_hc_flight_pending = 1
+				has_variable = zg361_we_ad_hc_flight_subject
+				has_variable = zg361_we_ad_hc_flight_cycle
+				has_variable = zg361_we_ad_hc_flight_case
+				var:zg361_we_ad_hc_flight_subject = prev
+				var:zg361_we_ad_hc_flight_cycle = prev.var:zg361_workforce_remediation_fact_cycle
+				var:zg361_we_ad_hc_flight_case = prev.var:zg361_workforce_remediation_fact_case
+			}
+			NOT = { has_variable = zg361_workforce_remediation_fact_receipt_status }
+		}
+		set_variable = { name = zg361_workforce_remediation_fact_result value = scope:zg361_workforce_remediation_fact_requested_result }
+		set_variable = { name = zg361_workforce_remediation_fact_result_actor value = $ACTOR$ }
+		set_variable = { name = zg361_workforce_remediation_fact_result_cycle value = var:zg361_workforce_remediation_fact_owner.var:zg361_review_serial }
+		set_variable = { name = zg361_workforce_remediation_fact_result_case value = var:zg361_workforce_remediation_fact_case }
+		set_variable = { name = zg361_workforce_remediation_fact_requirement_status value = { value = scope:zg361_workforce_remediation_fact_requested_result add = 1 } }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_serial value = var:zg361_workforce_remediation_fact_serial }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_id value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10 add = scope:zg361_workforce_remediation_fact_requested_result } }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_hash value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10000000 add = { value = scope:zg361_workforce_remediation_fact_requested_result multiply = 1000000 } add = { value = var:zg361_workforce_remediation_fact_cycle multiply = 10000 } add = { value = var:zg361_workforce_remediation_fact_case multiply = 100 } add = { value = var:zg361_workforce_remediation_fact_reason_id multiply = 10 } add = scope:zg361_workforce_remediation_fact_requested_result } }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_owner value = var:zg361_workforce_remediation_fact_owner }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_subject value = this }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_cycle value = var:zg361_workforce_remediation_fact_cycle }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_case value = var:zg361_workforce_remediation_fact_case }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_result value = scope:zg361_workforce_remediation_fact_requested_result }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_reason_id value = var:zg361_workforce_remediation_fact_reason_id }
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_requirement_id value = var:zg361_workforce_remediation_fact_requirement_id }
+		set_variable = { name = zg361_workforce_remediation_fact_awaiting_player value = 0 }
+		if = {
+			limit = { scope:zg361_workforce_remediation_fact_requested_result = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_status value = 2 }
+			set_variable = { name = zg361_workforce_remediation_fact_pending value = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_consumed value = 0 }
+		}
+		else = {
+			set_variable = { name = zg361_workforce_remediation_fact_status value = 3 }
+			set_variable = { name = zg361_workforce_remediation_fact_pending value = 0 }
+			set_variable = { name = zg361_workforce_remediation_fact_consumed value = 0 }
+		}
+		if = {
+			limit = { scope:zg361_workforce_remediation_fact_requested_result = 1 }
+			set_variable = { name = zg361_we_ad_external_m275_remediation_receipt value = 1 }
+			set_variable = { name = zg361_we_ad_external_m275_remediated_reason_id value = var:zg361_workforce_remediation_fact_reason_id }
+		}
+		else = {
+			remove_variable = zg361_we_ad_external_m275_remediation_receipt
+			remove_variable = zg361_we_ad_external_m275_remediated_reason_id
+		}
+		# Final constant commit marker: every detailed result/receipt field and the
+		# corresponding completion aliases (or explicit failure removals) precede it.
+		set_variable = { name = zg361_workforce_remediation_fact_receipt_status value = 1 }
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 1 }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_workforce_remediation_fact_status
+			has_variable = zg361_workforce_remediation_fact_requirement_status
+			has_variable = zg361_workforce_remediation_fact_owner
+			has_variable = zg361_workforce_remediation_fact_subject
+			has_variable = zg361_workforce_remediation_fact_cycle
+			has_variable = zg361_workforce_remediation_fact_case
+			has_variable = zg361_workforce_remediation_fact_reason_id
+			has_variable = zg361_workforce_remediation_fact_requirement_id
+			has_variable = zg361_workforce_remediation_fact_serial
+			has_variable = zg361_workforce_remediation_fact_result
+			has_variable = zg361_workforce_remediation_fact_result_actor
+			has_variable = zg361_workforce_remediation_fact_result_cycle
+			has_variable = zg361_workforce_remediation_fact_result_case
+			has_variable = zg361_workforce_remediation_fact_receipt_status
+			has_variable = zg361_workforce_remediation_fact_receipt_owner
+			has_variable = zg361_workforce_remediation_fact_receipt_subject
+			has_variable = zg361_workforce_remediation_fact_receipt_cycle
+			has_variable = zg361_workforce_remediation_fact_receipt_case
+			has_variable = zg361_workforce_remediation_fact_receipt_result
+			has_variable = zg361_workforce_remediation_fact_receipt_reason_id
+			has_variable = zg361_workforce_remediation_fact_receipt_requirement_id
+			has_variable = zg361_workforce_remediation_fact_receipt_serial
+			has_variable = zg361_workforce_remediation_fact_receipt_id
+			has_variable = zg361_workforce_remediation_fact_receipt_hash
+			var:zg361_workforce_remediation_fact_receipt_status = 1
+			var:zg361_workforce_remediation_fact_status = scope:zg361_workforce_remediation_fact_expected_terminal_status
+			var:zg361_workforce_remediation_fact_requirement_status = scope:zg361_workforce_remediation_fact_expected_terminal_status
+			var:zg361_workforce_remediation_fact_subject = this
+			$ACTOR$ = var:zg361_workforce_remediation_fact_owner
+			$ACTOR$ = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= prev.var:zg361_workforce_remediation_fact_result_cycle
+			}
+			var:zg361_workforce_remediation_fact_result = scope:zg361_workforce_remediation_fact_requested_result
+			var:zg361_workforce_remediation_fact_result_actor = $ACTOR$
+			var:zg361_workforce_remediation_fact_result_cycle >= var:zg361_workforce_remediation_fact_cycle
+			var:zg361_workforce_remediation_fact_result_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_workforce_remediation_fact_receipt_owner = $ACTOR$
+			var:zg361_workforce_remediation_fact_receipt_subject = this
+			var:zg361_workforce_remediation_fact_receipt_cycle = var:zg361_workforce_remediation_fact_cycle
+			var:zg361_workforce_remediation_fact_receipt_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_workforce_remediation_fact_receipt_result = scope:zg361_workforce_remediation_fact_requested_result
+			var:zg361_workforce_remediation_fact_receipt_reason_id = var:zg361_workforce_remediation_fact_reason_id
+			var:zg361_workforce_remediation_fact_receipt_requirement_id = var:zg361_workforce_remediation_fact_requirement_id
+			var:zg361_workforce_remediation_fact_receipt_serial = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_receipt_id = scope:zg361_workforce_remediation_fact_expected_receipt_id
+			var:zg361_workforce_remediation_fact_receipt_hash = scope:zg361_workforce_remediation_fact_expected_receipt_hash
+		}
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 2 }
+	}
+	else = {
+		set_variable = { name = zg361_workforce_remediation_fact_last_red_code value = 27522 }
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 4 }
+	}
+}
+
+# Optional second integration point, called in subject scope only after the
+# Workforce due consumer really released the exact HC lineage.  This turns the
+# producer slot from pending to consumed; it cannot manufacture completion.
+zg361_workforce_remediation_fact_consume_effect = {
+	remove_variable = zg361_workforce_remediation_fact_runtime_status
+	remove_variable = zg361_workforce_remediation_fact_last_red_code
+	if = {
+		limit = {
+			has_variable = zg361_workforce_remediation_fact_serial
+			has_variable = zg361_workforce_remediation_fact_cycle
+			has_variable = zg361_workforce_remediation_fact_case
+			has_variable = zg361_workforce_remediation_fact_reason_id
+		}
+		save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_consume_expected_receipt_id value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10 add = 1 } }
+		save_temporary_scope_value_as = { name = zg361_workforce_remediation_fact_consume_expected_receipt_hash value = { value = var:zg361_workforce_remediation_fact_serial multiply = 10000000 add = 1000000 add = { value = var:zg361_workforce_remediation_fact_cycle multiply = 10000 } add = { value = var:zg361_workforce_remediation_fact_case multiply = 100 } add = { value = var:zg361_workforce_remediation_fact_reason_id multiply = 10 } add = 1 } }
+		if = {
+			limit = {
+			has_variable = zg361_workforce_remediation_fact_pending
+			has_variable = zg361_workforce_remediation_fact_consumed
+			has_variable = zg361_workforce_remediation_fact_status
+			var:zg361_workforce_remediation_fact_status = 2
+			OR = {
+				AND = {
+					var:zg361_workforce_remediation_fact_pending = 1
+					var:zg361_workforce_remediation_fact_consumed = 0
+				}
+				AND = {
+					var:zg361_workforce_remediation_fact_pending = 0
+					var:zg361_workforce_remediation_fact_consumed = 1
+				}
+			}
+			has_variable = zg361_workforce_remediation_fact_owner
+			has_variable = zg361_workforce_remediation_fact_subject
+			has_variable = zg361_workforce_remediation_fact_cycle
+			has_variable = zg361_workforce_remediation_fact_case
+			has_variable = zg361_workforce_remediation_fact_source_state
+			has_variable = zg361_workforce_remediation_fact_reason_id
+			has_variable = zg361_workforce_remediation_fact_requirement_id
+			has_variable = zg361_workforce_remediation_fact_requirement_code
+			has_variable = zg361_workforce_remediation_fact_requirement_status
+			has_variable = zg361_workforce_remediation_fact_requirement_due_cycle
+			has_variable = zg361_workforce_remediation_fact_serial
+			has_variable = zg361_workforce_remediation_fact_serial_counter
+			has_variable = zg361_workforce_remediation_fact_result
+			has_variable = zg361_workforce_remediation_fact_result_actor
+			has_variable = zg361_workforce_remediation_fact_result_cycle
+			has_variable = zg361_workforce_remediation_fact_result_case
+			var:zg361_workforce_remediation_fact_subject = this
+			var:zg361_workforce_remediation_fact_source_state = 4
+			var:zg361_workforce_remediation_fact_reason_id > 0
+			var:zg361_workforce_remediation_fact_requirement_id = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_requirement_code = 1
+			var:zg361_workforce_remediation_fact_requirement_status = 2
+			var:zg361_workforce_remediation_fact_serial_counter = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_result = 1
+			var:zg361_workforce_remediation_fact_result_actor = var:zg361_workforce_remediation_fact_owner
+			var:zg361_workforce_remediation_fact_result_cycle >= var:zg361_workforce_remediation_fact_cycle
+			var:zg361_workforce_remediation_fact_result_case = var:zg361_workforce_remediation_fact_case
+			has_variable = zg361_workforce_remediation_fact_receipt_status
+			var:zg361_workforce_remediation_fact_receipt_status = 1
+			has_variable = zg361_workforce_remediation_fact_receipt_owner
+			has_variable = zg361_workforce_remediation_fact_receipt_subject
+			has_variable = zg361_workforce_remediation_fact_receipt_cycle
+			has_variable = zg361_workforce_remediation_fact_receipt_case
+			has_variable = zg361_workforce_remediation_fact_receipt_result
+			has_variable = zg361_workforce_remediation_fact_receipt_reason_id
+			has_variable = zg361_workforce_remediation_fact_receipt_requirement_id
+			has_variable = zg361_workforce_remediation_fact_receipt_serial
+			has_variable = zg361_workforce_remediation_fact_receipt_id
+			has_variable = zg361_workforce_remediation_fact_receipt_hash
+			var:zg361_workforce_remediation_fact_receipt_owner = var:zg361_workforce_remediation_fact_owner
+			has_variable = zg361_we_m275_write_owner
+			has_variable = zg361_we_m275_write_subject
+			has_variable = zg361_we_m275_write_cycle
+			has_variable = zg361_we_m275_write_case
+			has_variable = zg361_we_m275_write_state
+			has_variable = zg361_we_m275_receipt_owner
+			has_variable = zg361_we_m275_receipt_subject
+			has_variable = zg361_we_m275_receipt_cycle
+			has_variable = zg361_we_m275_receipt_case
+			has_variable = zg361_we_m275_receipt_state
+			has_variable = zg361_we_m275_receipt_choice
+			var:zg361_workforce_remediation_fact_owner = var:zg361_we_m275_write_owner
+			var:zg361_workforce_remediation_fact_cycle = var:zg361_we_m275_write_cycle
+			var:zg361_workforce_remediation_fact_case = var:zg361_we_m275_write_case
+			var:zg361_we_m275_write_subject = this
+			var:zg361_we_m275_write_state = 4
+			var:zg361_we_m275_write_owner = var:zg361_we_m275_receipt_owner
+			var:zg361_we_m275_write_subject = var:zg361_we_m275_receipt_subject
+			var:zg361_we_m275_write_cycle = var:zg361_we_m275_receipt_cycle
+			var:zg361_we_m275_write_case = var:zg361_we_m275_receipt_case
+			var:zg361_we_m275_receipt_state = 4
+			var:zg361_we_m275_receipt_choice = 2
+			has_variable = zg361_we_m275_business_object_created
+			has_variable = zg361_we_m275_object_owner
+			has_variable = zg361_we_m275_object_subject
+			has_variable = zg361_we_m275_object_cycle
+			has_variable = zg361_we_m275_object_case
+			has_variable = zg361_we_m275_object_state
+			has_variable = zg361_we_m275_object_consumed
+			has_variable = zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275
+			var:zg361_we_m275_business_object_created = 1
+			var:zg361_we_m275_object_owner = var:zg361_workforce_remediation_fact_owner
+			var:zg361_we_m275_object_subject = this
+			var:zg361_we_m275_object_cycle = var:zg361_workforce_remediation_fact_cycle
+			var:zg361_we_m275_object_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_we_m275_object_state = 4
+			var:zg361_we_m275_object_consumed = 1
+			var:zg361_we_m275_consumer_resolve_offer_refusal_hc_hold_275 = 1
+			has_variable = zg361_we_m275_refusal_reason_id
+			var:zg361_workforce_remediation_fact_receipt_subject = this
+			var:zg361_workforce_remediation_fact_receipt_cycle = var:zg361_workforce_remediation_fact_cycle
+			var:zg361_workforce_remediation_fact_receipt_case = var:zg361_workforce_remediation_fact_case
+			var:zg361_workforce_remediation_fact_receipt_result = 1
+			var:zg361_workforce_remediation_fact_receipt_reason_id = var:zg361_workforce_remediation_fact_reason_id
+			var:zg361_workforce_remediation_fact_receipt_requirement_id = var:zg361_workforce_remediation_fact_requirement_id
+			var:zg361_workforce_remediation_fact_receipt_serial = var:zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_receipt_id = scope:zg361_workforce_remediation_fact_consume_expected_receipt_id
+			var:zg361_workforce_remediation_fact_receipt_hash = scope:zg361_workforce_remediation_fact_consume_expected_receipt_hash
+			var:zg361_we_m275_refusal_reason_id = var:zg361_workforce_remediation_fact_reason_id
+			has_variable = zg361_we_m275_hold_due_cycle
+			var:zg361_we_m275_hold_due_cycle = var:zg361_workforce_remediation_fact_requirement_due_cycle
+			has_variable = zg361_we_m275_hold_pending
+			var:zg361_we_m275_hold_pending = 0
+			has_variable = zg361_we_m275_reason_remediated
+			var:zg361_we_m275_reason_remediated = 1
+			has_variable = zg361_we_m275_hold_released
+			var:zg361_we_m275_hold_released = 1
+			has_variable = zg361_we_m266_hc_reservation_active
+			var:zg361_we_m266_hc_reservation_active = 0
+			has_variable = zg361_we_m266_hc_receipt
+			has_variable = zg361_we_m275_hc_lineage_receipt
+			var:zg361_we_m266_hc_receipt = var:zg361_we_m275_hc_lineage_receipt
+			var:zg361_we_m275_hc_lineage_receipt = var:zg361_workforce_remediation_fact_case
+			has_variable = zg361_we_ad_external_m275_remediation_receipt
+			has_variable = zg361_we_ad_external_m275_remediated_reason_id
+			var:zg361_we_ad_external_m275_remediation_receipt = 1
+			var:zg361_we_ad_external_m275_remediated_reason_id = var:zg361_workforce_remediation_fact_receipt_reason_id
+			var:zg361_workforce_remediation_fact_owner = {
+				has_variable = zg361_review_serial
+				var:zg361_review_serial >= prev.var:zg361_workforce_remediation_fact_result_cycle
+				has_variable = zg361_we_ad_hc_flight_pending
+				var:zg361_we_ad_hc_flight_pending = 0
+				has_variable = zg361_we_ad_hc_flight_subject
+				has_variable = zg361_we_ad_hc_flight_cycle
+				has_variable = zg361_we_ad_hc_flight_case
+				var:zg361_we_ad_hc_flight_subject = prev
+				var:zg361_we_ad_hc_flight_cycle = prev.var:zg361_workforce_remediation_fact_cycle
+				var:zg361_we_ad_hc_flight_case = prev.var:zg361_workforce_remediation_fact_case
+			}
+		}
+		if = {
+			limit = {
+				var:zg361_workforce_remediation_fact_pending = 1
+				var:zg361_workforce_remediation_fact_consumed = 0
+			}
+			set_variable = { name = zg361_workforce_remediation_fact_pending value = 0 }
+			set_variable = { name = zg361_workforce_remediation_fact_consumed value = 1 }
+			set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 1 }
+		}
+		else = {
+			# Idempotent ACK is available only behind the same exact tuple and HC
+			# release postcondition as the first consume.
+			set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 2 }
+		}
+		}
+		else = {
+			set_variable = { name = zg361_workforce_remediation_fact_last_red_code value = 27523 }
+			set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 4 }
+		}
+	}
+	else = {
+		set_variable = { name = zg361_workforce_remediation_fact_last_red_code value = 27523 }
+		set_variable = { name = zg361_workforce_remediation_fact_runtime_status value = 4 }
+	}
+}

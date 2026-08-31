@@ -1,0 +1,50 @@
+﻿# GENERATED FILE — edit tools/zg361_workforce_remediation_fact_gen.py
+namespace = zg361workforceremediationfact
+
+# The only visible producer is the exact owner of the frozen #275 refusal.
+# A missing/stale ticket prevents the event; it never falls back to a default.
+zg361workforceremediationfact.1 = {
+	type = character_event
+	theme = stewardship
+	title = zg361workforceremediationfact.1.t
+	desc = zg361workforceremediationfact.1.desc
+	trigger = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		exists = scope:zg361_workforce_remediation_fact_ticket_owner
+		exists = scope:zg361_workforce_remediation_fact_ticket_subject
+		exists = scope:zg361_workforce_remediation_fact_ticket_cycle
+		exists = scope:zg361_workforce_remediation_fact_ticket_case
+		exists = scope:zg361_workforce_remediation_fact_ticket_reason
+		exists = scope:zg361_workforce_remediation_fact_ticket_requirement
+		this = scope:zg361_workforce_remediation_fact_ticket_owner
+		scope:zg361_workforce_remediation_fact_ticket_subject = {
+			has_variable = zg361_workforce_remediation_fact_status
+			has_variable = zg361_workforce_remediation_fact_requirement_id
+			has_variable = zg361_workforce_remediation_fact_serial
+			var:zg361_workforce_remediation_fact_status = 1
+			var:zg361_workforce_remediation_fact_owner = root
+			var:zg361_workforce_remediation_fact_subject = this
+			var:zg361_workforce_remediation_fact_cycle = scope:zg361_workforce_remediation_fact_ticket_cycle
+			var:zg361_workforce_remediation_fact_case = scope:zg361_workforce_remediation_fact_ticket_case
+			var:zg361_workforce_remediation_fact_reason_id = scope:zg361_workforce_remediation_fact_ticket_reason
+			var:zg361_workforce_remediation_fact_requirement_id = scope:zg361_workforce_remediation_fact_ticket_requirement
+			var:zg361_workforce_remediation_fact_serial = scope:zg361_workforce_remediation_fact_ticket_requirement
+			has_variable = zg361_we_m275_hold_pending
+			var:zg361_we_m275_hold_pending = 1
+			var:zg361_we_m275_receipt_choice = 2
+		}
+	}
+	option = {
+		name = zg361workforceremediationfact.1.complete
+		scope:zg361_workforce_remediation_fact_ticket_subject = {
+			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 1 }
+		}
+	}
+	option = {
+		name = zg361workforceremediationfact.1.fail
+		scope:zg361_workforce_remediation_fact_ticket_subject = {
+			zg361_workforce_remediation_fact_settle_effect = { ACTOR = root RESULT = 2 }
+		}
+	}
+}
