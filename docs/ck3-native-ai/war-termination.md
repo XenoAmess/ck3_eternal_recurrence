@@ -1582,3 +1582,90 @@ fresh Release build 位于
 `direct-2052-utf8`，公共 header 依赖门通过，fresh CTest `50/50` GREEN。Python dedicated contract 与 gameplay/native-driver
 在 normal / `-O` 下分别 `6/6`、`418/418` GREEN。尚未启动第二局 CK3；下一次 loader 之后必须用上述冻结 checkpoint 做
 same-frame MCP query，先验收 partial wire，再继续补 actual dynamic reader。
+
+### 下一施工包：Raiktor 六域 dynamic terms static design
+
+[static design / not implemented / not live] 本节冻结下一次施工边界，不把设计状态提升为 fixture 或 production readiness。目标是把
+`raiktor_claim_cb` 的 attacker-defeat partial 扩成一个独立的
+`supported_slice=raiktor_claim_cb_surrender_terms_v1`；普通
+`supported_slice=claim_cb_claim_disposition` 的 schema、字段顺序、三结局语义和 readiness 必须保持不变。旧的 broad
+`ReadWarTerminationExitTerms` 仍须在任何 preview 调用前返回
+`loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`，不得因 Raiktor 施工重新启用。
+
+本窄 slice 的 decision terms 只包含已经由当前 G2 blocker 明确要求的六域；faction/opinion/house-feud/Mandala、LAAMP actual
+settlement 等 broad side effects 继续逐名留在 `non_decision_broad_effects` / `unobserved_dynamic_effects`，不冒充已观测，也不进入本窄
+`dynamic_terms_ready` 的合取。该边界取代上图中把 `R` 直接接入 decision gate 的旧施工草图；它不是宣称这些 broad effects 永远无价值，
+而是把当前可解除的 Raiktor surrender blocker 与后续完整 outcome utility 分开。
+
+| 六域 | exact-build 复用入口 | 本次输出与 fail-closed 条件 | 当前缺口 |
+|---|---|---|---|
+| gold | 原始 attacker-defeat root `CB+0xA28`、`0x3380170`、真实 preview collector、已有 gold-transfer vtable；`ReadPrimaryExitResources` 与 monthly evaluator `0x28DBE90` | 唯一 `primary attacker → primary defender` final Q100000 row、双方 current gold 与 authoritative monthly income；缺失、重复、反向或负 amount 均 unavailable | 无新 ABI；待专用 reader/fixture/live |
+| F / prestige | `CaptureWarExitPrestigeFactor` 读取 `wrapper+0x18` 的唯一 identifier `82` final row；已有 prestige callback | 发布 `cb_prestige_factor` 与 attacker prestige delta，并验证 `max(-10F,-1000×100000)`；tag、重复、overflow 或公式不符均 unavailable | 无新 ABI；待专用 materializer/fixture/live |
+| truce | 已绑定 `EvaluateTruceDurationDays=0x3373000`，duration script value 位于 CAddTruce `+0x108` | 只解析 attacker→defender 的 CAddTruce pointer；同帧 evaluator 双读一致，检查非负天数与 `date_raw+24×days` int32 边界 | 一次 pointer-only Raiktor loaded-root shape probe；不得执行 ContextEffect |
+| PoW | `ReadWarParticipantIds`、`ReadPrimaryAndSuccessors`、`AppendPrisonerReleases`、`ReadWarExitPrisonerReleases` | 双方 primary 与前三继承人中实际由对方参与者关押的 generation-safe release pairs；前后重读必须一致 | 无新 ABI；待接入 Raiktor wire/live |
+| favor hook | 原脚本的 `claimant != attacker && attacker.can_add_hook(favor_hook, claimant)` 及 `add_hook` | claimant=attacker 时精确 false；否则完整原始 root preview 中 exact attacker→claimant/favor row 为 true，完整 traversal 无 row 为 false；错 scope/type/重复均 unavailable | **reverse gap 1**：闭合 `add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；不得套用 interaction-only `0x334C510` |
+| war-bound army | 现有 generation-safe CUnit↔CArmy↔CRegiment backlink、regiment storage 与 native soldier helper | 完整 storage scan 后按 `bound WarID + source=norman_highwaymen + keep=false` 选来源 regiments；发布当前 RegimentID、合并后的 Army/CUnit grouping 与 current soldiers lost | **reverse gap 2**：从 `spawn_army` factory/execute 和 save serializer 闭合持久 origin/war-lifetime 字段 |
+
+Gold/F/hook 的 preview 必须新增独立 `DryPreviewRaiktorAttackerDefeatVisibleRoot`：它在真实 WarEffectContext 中遍历**原始** loaded
+root，所有 callback 继续 forward 给 stock collector；它绝不调用 `ResolveWarExitHiddenTrucePath`、
+`BuildWarExitHiddenTruceProjection` 或 production-disabled broad reader。原始 WarOverview 路径会自然跳过 hidden truce，因此 truce
+只用 pointer walker 加直接 evaluator。这个隔离是两次真实 `0x334C668` crash 后的必要回归边界，不是理论性防御。
+
+War-bound 军队不能用 ArmyID、owner 是战争参与者、军队名称或脚本初始 `6×500=3000` 猜。军队可合并且 public CArmy ID
+可能消失，来源 regiment 仍存在；空结果也只有在完整 storage scan 成功后才是合法零。当前 snapshot 的 public ArmyID
+`150995107 / 167772444` 因而不能被直接认作 Raiktor event army。
+
+建议的 native helper 边界如下；名称是施工合同，不表示已经实现：
+
+```text
+HasRaiktorSurrenderDynamicBindings
+ReadRaiktorSurrenderDynamicTerms
+DryPreviewRaiktorAttackerDefeatVisibleRoot
+CaptureRaiktorSurrenderPreviewRow
+MaterializeRaiktorGoldAndFame
+ProbeRaiktorDefeatShape
+ResolveRaiktorDefeatTruceNode
+ReadFavorHookPresence
+ReadRaiktorWarBoundRegiments
+```
+
+`HasWarTerminationTermsBindings` 不得被新增 Raiktor ABI 扩大，否则一个 hook/army reverse gap 会令普通 `claim_cb` 回归为 unavailable。
+只有 exact CB key=`raiktor_claim_cb`、玩家是 primary attacker 时才调用六域 reader。完成前后必须重读 paused snapshot、War pointer/ID、
+CB pointer/index/key、primary IDs/pointers、claimant、target order、claim rows、finance、PoW 与 regiment rows，任何 generation/date/identity
+漂移都令输出 unavailable。
+
+Raiktor readiness 固定为：
+
+```text
+dynamic_terms_ready =
+  identity_ready && targets_ready && claim_rows_ready && static_formula_ready &&
+  finance_ready && gold_ready && fame_factor_ready &&
+  attacker_prestige_delta_ready && truce_ready &&
+  prisoner_release_ready && favor_hook_ready &&
+  war_bound_armies_ready && same_frame_stable
+
+decision_terms_ready = dynamic_terms_ready
+ready = decision_terms_ready
+```
+
+Native terms 不得单独发布 `automatic_surrender_ready=true`。自动动作还必须由 Python 在同一 paused frame 合取 options 的 exact CB/WarID、
+player primary-attacker、surrender context/validator/available、`hostage_variant=none`、typed final recipient response，以及独立的
+continue-vs-surrender policy。terms readiness 只证明“条款可用于决策”，不等于“应当投降”。
+
+### Raiktor 六域 fixture 与一次启动实机矩阵
+
+[static design / pending execution] 离线 fixture 必须先锁定：普通 `claim_cb` 既有 normalized JSON 与 reader 调用路径不变；Raiktor happy
+path；六域逐项缺失/重复/错 scope/错 generation；F tag/公式/overflow；truce shape/vtable/双读/expiry；PoW succession/jailer；hook
+false/true/type/scope；war-origin/keep/bound-WarID/regiment backlink/merge/full-scan；collector/context ctor/dtor 成对；零 game-object write。
+另加 source contract，证明 Raiktor production path 不引用 hidden-truce projection，且 production-disabled broad reader 仍在 preview 前退出。
+
+实机只跑一次批量矩阵，复用 CharacterID `29829` / WarID `50331699` 的冻结 checkpoint，MCP-first、英文 HKL、不用 OCR：
+
+1. 同一次启动查询 options 与新 terms 两遍，绑定相同 PID、snapshot/revision/native revision、date、connection、episode 与 full WarID；
+   两份 terms payload 必须一致。
+2. 任一六域未 ready 时，`action_steps` 不得出现 `surrender-war-50331699`；保存 pre-surrender checkpoint 与原始 MCP artifact。
+3. 策略门另行满足后才提交 typed surrender；ACK 只记 `submitted_pending`，优先在同一 paused `date_raw` 等待 command 应用。
+4. WarID 消失后逐项核对冻结预测：gold/prestige delta、declared claims 移除、attacker→defender truce days/expiry、PoW pairs 释放、
+   favor hook 存在性、全部 war-bound source RegimentID 消失；普通或非 war-bound 军队不得被误算。
+5. 如果只能跨日才观察 applied，日收入与 truce 起算日可能污染精确 delta；此时记 capability RED 并补 action-boundary observer，不能只用
+   WarID 消失冒充六域 postcondition GREEN。保存 postwar checkpoint 后才继续 G2 turns。

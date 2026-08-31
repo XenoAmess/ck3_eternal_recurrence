@@ -447,3 +447,61 @@ production6b 目前只有旧字段 live：played `29829`、WarID `16777290`、at
 v1 terms，历史 strong claim 不能跨帧复用。因此这里只能预测 T1 options → T2 same-frame v1 → T3 offer →（若 pending）T4
 life advance，不能称新门 production-live。固定 G1 source `480f287` + 旧 DLL 是独立 legacy 组合；新 strict source 必须配套新 DLL
 另跑 canary，二者不得混配。
+
+## 2026-08-31 Raiktor primary-attacker surrender：六域策略合同
+
+[static design / not implemented / not live] G2 当前实例已经由 paused native options 证明：WarID `50331699`、玩家
+CharacterID `29829` 是 primary attacker、CB=`raiktor_claim_cb`、战争 1281 日、战分 `-50`，surrender 的 context、validator、
+available、auto-accept 与 `would_accept_now` 均为真。它只证明 surrender 是合法且会被接受的候选，不证明该候选优于继续战争。
+现有 typed partial 只发布 claimant/targets/claims 与原版 formula，`ready=false`；因此当前仍不得广告或执行 surrender literal。
+
+本窄策略的 structured decision terms 固定为六域：actual gold、`cb_prestige_factor` 与 attacker prestige delta、truce days/expiry、实际
+PoW release pairs、conditional favor-hook application、当前 war-bound source regiments/armies lost。原生 reader、readiness、两个 reverse
+gap 和一次启动验收矩阵见 [war-termination.md](war-termination.md)。“六域 terms ready”只解除 CB-specific 条款观测 blocker；
+faction/opinion/feud/Mandala/LAAMP 等 broad rows 继续作为显式能力债，不得从 payload 中悄悄删除或伪装成零。
+
+### Readiness 与动作分层
+
+Native 只允许发布 `decision_terms_ready`，不能发布或暗示 `automatic_surrender_ready`。Python 的
+`_raiktor_surrender_readiness(snapshot, WarID)` 至少还要在同一 paused frame 验证：
+
+1. options 与 terms 的 snapshot/revision/native revision/date/connection/episode/full WarID 完全相同，active CB key/index 相同；
+2. 玩家仍是 primary attacker，claimant/targets/claims 与 active-war row 完整一致，`allow_hostages=no` / hostage variant=`none`；
+3. surrender context constructed、native validator、available、typed final response 与 `would_accept_now` 全真；
+4. 六域 `decision_terms_ready=true`，且输出不含重复、漂移或 overflow；
+5. 独立 continue-vs-surrender policy 已明确选择 surrender，且同 WarID 没有 pending submission/cooldown。
+
+只有前四项满足时，策略才拥有一个**可评估**的 surrender 候选；第五项满足后才投影
+`surrender-war-<WarID>`。不能因为当前战分为 `-50`、战争已久、AI auto-accept 或 terms reader 已 ready 就直接把第五项写死为 true。
+如为解除当前 G2 blocker 采用更窄的 deterministic policy，必须另行写明分数/期限/军事状态/损失预算和替换入口，并继续声明
+`native_ai_equivalent=false / semantic_optimal=false`。
+
+普通 `claim_cb` 的 GEN-004 white-peace 例外完全不变：仍是 options → claim-disposition v1 →
+`offer-white-peace-<WarID>`，不调用 Raiktor 六域 helper，也不因 favor-hook 或 regiment-origin reverse gap 变为 unavailable。执行入口必须把
+当前 blanket surrender reject 改成两个互斥分支，而不是放宽现有 claim rule：普通 claim 只走白和 gate；exact Raiktor 才走新 surrender gate；
+其它 CB、side 或非 primary 继续 fail closed。
+
+### 提交与 postcondition
+
+Surrender queue ACK 仍只表示 `submitted_pending`。同一 paused snapshot 不能同时提交白和与投降，也不能在 pending 时重复提交。应用验收
+不仅要求旧 WarID 消失，还必须与提交前冻结的六域预测逐项匹配：
+
+- attacker/defender gold 与 attacker prestige delta；
+- declared-target claims 移除；
+- attacker→defender truce 与 expiry；
+- exact PoW pairs 不再被对方 participants 关押；
+- favor hook 存在 iff `will_apply=true`；
+- 所有冻结的 war-bound source RegimentID 消失，非 war-bound army 不受误判。
+
+优先让 command 在同一 paused `date_raw` 的消息泵内完成；如果必须推进一天，日收入、其它当日 effect 和 truce 起算日会令余额差不再是
+干净的 action postcondition。没有 action-boundary observer 时应记 capability RED，不能把 WarID 消失升级为六域 GREEN。当前仓库还没有
+通用 truce/hook post-state observer；它们是实机验收依赖，不是以 OCR 读取 tooltip 的理由。
+
+### 离线与实机门
+
+- 离线：普通 `claim_cb` golden JSON、action projection 和 GEN-004 tests 不变；Raiktor 覆盖 options/terms 不同帧、CB/role/generation
+  漂移、六域逐项 unavailable、policy false、pending duplicate 与 typed submit ACK。
+- Native crash 回归：旧 `ReadWarTerminationExitTerms` 继续在 preview 前返回
+  `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`；Raiktor visible-root reader 不得引用 hidden-truce projection。
+- 实机：一次 CK3 启动内完成两次同帧 MCP options+terms、未 ready 时 literal 隐藏、ready 后一次 typed surrender、六域 applied
+  postcondition、postwar checkpoint 与继续 G2。不得用 OCR，也不得为每一域分别重启 CK3。

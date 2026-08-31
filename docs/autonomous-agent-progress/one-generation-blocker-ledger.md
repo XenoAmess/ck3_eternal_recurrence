@@ -16,8 +16,9 @@
 report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。下表保留全部历史 RED 与能力债；GEN-001/006
 现已关闭。G2 前探关闭 GEN-032 后，严格 runner 又以三次独立 attempt 完成 GEN-009；其中 capability RED 与 harness RED 均保留，
 最终 GREEN 已实走 `start-next-episode`、新 run ID、新 episode gameplay 与 durable checkpoint。
-截至 2026-08-31，第二角色已继续到 `date_raw=53292072 / history=2103`；signed battle identity 的真实 blocker 已闭合，
-但第二角色仍存活，完整第二寿命与结算仍未完成。
+截至 2026-08-31，同一冻结 seed 的第二完整寿命、结算与再次跨 episode loop 已完成；当前 broadened G2 continuation 的新 blocker 是
+WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 typed partial，尚缺六域 dynamic terms，不能把合法且 auto-accepted
+的 surrender 直接当成已可决策或已可执行。
 
 ## 分级
 
@@ -66,6 +67,7 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
 | GEN-031 | B1 native capability | war-termination options query 未绑定已发布 paused revision | 历史 RED `33876238` 在 `53278752 / native:25 / revision=26` 的第二个 WarID query 发生 row mismatch。`fc0f878` 让 native handler 消费 expected revision，并在 admission/completion 进行完整 snapshot sandwich；只在稳定成功后推进 query sequence。Python 只把明确 stale/admission-changed/completion-changed 的零写入拒绝映射为既有一次 whole-turn replan，真实四字段 mismatch 继续硬 RED并留最小 diff | `9186bfa3` turn 11/12 已在同一 paused native revision 26 连续成功查询 WarID `83886203 / 134217852`，跨过原失败边界；后续查询至 turn 20 持续成功，cleanup 全绿 | 2026-08-28 resolved；`fc0f878` blocker-removal production-live，report `2C764FEC...6C83` |
 | GEN-032 | B1 | 玩家自然死亡先于 tactical sentinel 正常 stop，terminal 边界不能稳定化 | 三次早期 attempt 先关闭 terminal 识别与日期漂移；formal G2 attempt 01 又证明同一 bound episode 的 terminal surface 在 pause 服务期间可从死亡角色演化为继承人。最终合同只固定 bridge/connection/episode owner；played-character、alive 与 `dead→changed` terminal reason 可单调演化。event/pending interaction 的 exact identity 不变 | formal G2 attempt 03 已在相同生产边界返回 `death-terminal`，随后继续完成 GEN-009；driver 回归 `196 passed + 212 subtests`，相关聚合 `468 passed + 287 subtests` | 2026-08-30 resolved；terminal sentinel blocker-removal production-live；边界由 G2 live 再校准 |
 | GEN-033 | B1（G2） | 新接触战斗的 full CombatID/BattleResultID 为负，被旧 consumer 当成未物化 | attempts 08/09 在 `53291904` 分别报 `active_combat_identity_failed` / `subject_combat_id_invalid`；attempt10 唯一一次 `+24h` 后仍因“缺 positive CombatID”停止。exact-build 证明两类 ID 均为 opaque signed full dword、low24 仅选槽、`-1` 唯一 missing。attempt11 先穿过 CombatID 后暴露 BattleResultID，同一修复后 attempt12 双查询稳定读到 `-2147483647 / -2046820351` | signed identity 原样贯穿 reader、wire、contracts、planner literal、battle action/transition/terminal journal 与 sentinel；同 checkpoint 做真实 action 后 paused requery 并保存 durable checkpoint | 2026-08-31 resolved；attempt16 production-live loop slice，完整 G2 第二寿命仍进行中 |
+| GEN-034 | B1（G2） | Raiktor 特殊战争可合法投降，但 CB-specific actual terms 不可观测 | frozen continuation 的 CharacterID `29829` / WarID `50331699` 为 primary attacker，`raiktor_claim_cb`、1281 日、战分 `-50`；surrender validator/available/auto-accept/`would_accept_now` 全真。`05ae0bf` 只发布 claimant/targets/claims 与静态 formula，dynamic/decision/action readiness 全 false | 实现 gold、F/prestige、truce、PoW、favor hook、war-bound army 六域 same-frame reader；静态闭合 add-hook preview 与 regiment origin/lifetime 两个 reverse gap；普通 `claim_cb` 不变，旧 crash reader 继续禁用；一次 CK3 启动完成双查询、typed surrender、六域 postcondition、postwar checkpoint | static design complete；implementation/fixture/live pending |
 
 ## Degraded heuristic 纪律
 
@@ -666,3 +668,38 @@ report SHA-256 为 `FF689E88...EFB3`，terminal sidecar 为 `D26744BF...850E`。
   纠正并留在 `0x04090409`；五分钟中间证据为全程英文。本轮不用 OCR。
 - readiness 现提升为“同一冻结 seed 的 G2 第二完整寿命、结算及再次跨 episode production-live loop”。G1 `155/155`
   formal GREEN 不变；下一项不再重复该 seed，而是不同 seed/ruler/government/DLC 的泛化矩阵。
+
+## 2026-08-31：GEN-034 Raiktor surrender 六域 blocker
+
+- [production-live input] `xar-g2-post-call-ally-continuation-07acdfe-20260831T0425Z` 的 25/25-turn continuation 将 WarID
+  `50331699` 从战分 `-48` 推进到 `-50`，最终 checkpoint SHA-256
+  `60108A5DA03DC3A8315A3E79897D9CF2F49763910A8AA15A462E7DD0B6AAF164`。同一 paused 状态证明玩家是 primary attacker、
+  CB=`raiktor_claim_cb`、战争 1281 日，surrender 的 validator/available/auto-accept/`would_accept_now` 全真。继续重复跑局不会补出
+  缺失的 CB-specific terms；下一施工项是 native/MCP 只读观测。
+- [fixture-confirmed partial / pending-live] `05ae0bf` 把旧 `unsupported` 提升为 distinct typed partial：真实 claimant、target order、claim
+  rows，以及 source-authored gold/F/truce/PoW/hook formula、legitimacy/influence 精确零、hostages=false。actual gold、prestige/F、truce、
+  PoW、hook 与 war-bound current losses 均仍 unavailable，`dynamic_deltas_ready=false / decision_ready=false /
+  automatic_surrender_ready=false / ready=false`；它不授权 surrender literal。
+- [static design] GEN-034 的最小解除范围固定为六域：actual gold；`cb_prestige_factor` 与 attacker prestige delta；truce days/expiry；
+  实际 PoW release pairs；conditional favor-hook application；按来源 regiment 读取的 current war-bound army losses。faction/opinion/feud/
+  Mandala/LAAMP 留作显式 broad 能力债，不伪装为零，也不阻塞这个窄 `decision_terms_ready`。完整 reader 与策略合同分别见
+  [war-termination.md](../ck3-native-ai/war-termination.md) 和
+  [player-war-exit-policy.md](../ck3-native-ai/player-war-exit-policy.md)。
+- [static design] gold/F/PoW 可复用既有 exact ABI；truce 复用 `0x3373000`，只差一次 pointer-only Raiktor root shape probe，并且绝不执行
+  ContextEffect。剩余两个 reverse gap 是：（1）`add_hook` effect vtable、preview callback/collector slot 与 favor-hook type identity；
+  （2）`spawn_army war=scope:war` 在 CRegiment/special-troop 对象上的持久 origin、bound-WarID、keep=false 字段及 serializer。
+  ArmyID、参战方、名称或初始 3000 人都不能替代来源字段；合并后的军队必须按 surviving regiment 追踪。
+- [non-regression] 普通 `claim_cb_claim_disposition` 的 schema、JSON、readiness、GEN-004 white-peace 路径不得改变，也不得被新增 Raiktor
+  binding 反向门禁。历史 broad `ReadWarTerminationExitTerms` 继续在任何 preview 前返回
+  `loaded_effect_preview_disabled_after_live_crash_rva_0x334C668`；Raiktor 新 reader 只遍历原始 visible root，hidden truce 只做
+  pointer walk 与 direct duration evaluator，禁止重用导致两次实机 crash 的 projection。
+- [fixture gate] 覆盖普通 claim golden 不变、Raiktor happy path、六域逐项缺失/重复/错 scope/generation、F formula/overflow、truce shape/
+  stability/expiry、PoW jailer/succession、hook true/false/type、regiment origin/merge/full scan、collector/context teardown 和零 game-object
+  write。另锁定 production-disabled reader 与“Raiktor path 不引用 hidden projection”的 source contract。
+- [single-launch live matrix] MCP-first、英文 HKL、禁止 OCR；复用 frozen CharacterID `29829` / WarID `50331699` checkpoint。一次 CK3
+  启动内完成：同帧 options+terms 两次且 payload 相同；任一六域未 ready 时 surrender literal 不可见；保存 pre-surrender checkpoint；
+  策略门满足后只提交一次 typed surrender，ACK 仅记 `submitted_pending`；旧 WarID 消失后核对 gold/prestige、claims、truce、PoW、hook、
+  war-bound source regiments 和非目标军队；保存 postwar checkpoint 并继续 G2。
+- [postcondition boundary] 优先在同一 paused `date_raw` 完成 command 应用。如果必须跨日，日收入、其它 effect 与 truce 起算会污染精确
+  delta；没有 action-boundary observer 时该臂记 capability RED，不能只用 WarID 消失冒充六域 GREEN。GEN-034 只有 implementation、
+  fixture 与上述一次启动 live matrix 全部完成后才能关闭。
