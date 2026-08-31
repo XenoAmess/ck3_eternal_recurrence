@@ -68,4 +68,3 @@ evidence = run_incident_xyz_gameplay_action_cell(
 
 这些都是 fixture 证据，尚不提升 CK3 live readiness。首次正式集成必须保存 paused snapshot、三域 response、
 wrong-owner response、两次 option materialization 与最终 runner report。
-
