@@ -326,7 +326,7 @@ def render_fixed_dual_payment(
         }}
         var:{row["owner"]} = {{
             remove_treasury = {treasury_amount}
-            add_gold = {{ value = 0 subtract = {personal_amount} }}
+            remove_short_term_gold = {personal_amount}
         }}
         add_gold = {total}
         {freeze_cash_identities(prefix, domain, state)}
@@ -371,7 +371,7 @@ def render_dynamic_dual_payment(
         }}
         var:{row["owner"]} = {{
             remove_treasury = {{ value = {treasury_scope} }}
-            add_gold = {{ value = 0 subtract = {personal_scope} }}
+            remove_short_term_gold = {personal_scope}
         }}
         add_gold = {{ value = {gross_scope} }}
         {freeze_cash_identities(prefix, domain, state)}
@@ -1511,7 +1511,7 @@ def render_bonus_financial_helpers() -> str:
             }}
             var:{owner} = {{
                 remove_treasury = {treasury_total}
-                add_gold = {{ value = 0 subtract = {personal_total} }}
+                remove_short_term_gold = {personal_total}
             }}
             add_gold = {immediate_gross}
             {freeze_cash_identities("zg361_comp_bonus_immediate_receipt", "l", 1)}
@@ -1569,7 +1569,7 @@ zg361_comp_l_clawback_bonus_effect = {{
             gold >= 2
             var:{owner} = {{ has_treasury = yes }}
         }}
-        add_gold = {{ value = 0 subtract = 2 }}
+        remove_short_term_gold = 2
         var:{owner} = {{
             add_treasury = 1
             add_gold = 1
@@ -2078,10 +2078,20 @@ zg361_comp_af_consume_buyback_effect = {{
     remove_variable = zg361_comp_financial_applied
     if = {{
         limit = {{
+            has_variable = {owner}
+            var:{owner} = {{ has_variable = zg361_comp_af_queue_head }}
+        }}
+        save_temporary_scope_value_as = {{
+            name = zg361_comp_af_expected_request_serial
+            value = {{ value = var:{owner}.var:zg361_comp_af_queue_head add = 1 }}
+        }}
+    }}
+    if = {{
+        limit = {{
             {full_guard("af", 5, owner=f"var:{owner}")}
             var:zg361_comp_af_request_state = 1
             var:zg361_comp_af_vested_units >= 10
-            var:zg361_comp_af_request_serial = {{ value = var:{owner}.var:zg361_comp_af_queue_head add = 1 }}
+            var:zg361_comp_af_request_serial = scope:zg361_comp_af_expected_request_serial
             var:{owner} = {{ has_treasury = yes treasury >= 7 gold >= 3 }}
             var:zg361_comp_af_treasury_available >= 7
             var:zg361_comp_af_personal_available >= 3
@@ -2103,7 +2113,7 @@ zg361_comp_af_consume_buyback_effect = {{
             {full_guard("af", 5, owner=f"var:{owner}")}
             var:zg361_comp_af_request_state = 1
             var:zg361_comp_af_vested_units >= 10
-            var:zg361_comp_af_request_serial = {{ value = var:{owner}.var:zg361_comp_af_queue_head add = 1 }}
+            var:zg361_comp_af_request_serial = scope:zg361_comp_af_expected_request_serial
         }}
         # The delayed request reaches a terminal insufficient-funds outcome.
         # No balance or unit moved; advancing the FIFO releases later cases.

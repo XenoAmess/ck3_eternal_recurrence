@@ -38,6 +38,15 @@ LANGUAGES = (
 )
 PLACEHOLDER_LANGUAGES = LANGUAGES[2:]
 FIVE_FIELDS = ("OWNER", "SUBJECT", "CYCLE", "CASE", "STATE")
+ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
+    r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
+    r"\s*(?:=|>=|<=|>|<)\s*\{\s*value\s*="
+)
+NEGATIVE_ADD_GOLD = re.compile(
+    r"\badd_gold\s*=\s*(?:-\s*\d+|\{[^\r\n}]*\bsubtract\s*=)"
+)
+BARE_REMOVE_GOLD = re.compile(r"(?m)^\s*remove_gold\s*=")
+SHORT_TERM_GOLD_DEBIT = re.compile(r"(?m)^\s*remove_short_term_gold\s*=")
 
 
 def top_level_block(text: str, name: str) -> str:
@@ -119,6 +128,23 @@ class CompensationRuntimeTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.effects = EFFECTS_PATH.read_text(encoding="utf-8-sig")
         cls.events = EVENTS_PATH.read_text(encoding="utf-8-sig")
+
+    def test_trigger_arithmetic_never_uses_a_value_block_rhs(self) -> None:
+        self.assertIsNone(
+            ILLEGAL_TRIGGER_ARITHMETIC_RHS.search(self.effects),
+            "CK3 scripted-effect loader treats RHS value/add as triggers",
+        )
+
+    def test_personal_gold_debits_use_the_ck3_11906_positive_value_effect(self) -> None:
+        self.assertIsNone(
+            NEGATIVE_ADD_GOLD.search(self.effects),
+            "CK3 1.19.0.6 rejects negative add_gold values",
+        )
+        self.assertIsNone(
+            BARE_REMOVE_GOLD.search(self.effects),
+            "CK3 1.19.0.6 does not register a bare remove_gold effect",
+        )
+        self.assertEqual(len(SHORT_TERM_GOLD_DEBIT.findall(self.effects)), 14)
 
     def test_exact_33_ids_and_frozen_l_ae_af_stage_partitions(self) -> None:
         expected_ids = tuple((*range(82, 92), *range(278, 301)))
@@ -502,7 +528,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                 self.assertIn(f"var:{prefix}_treasury_status = 2", source)
                 self.assertIn(f"var:{prefix}_personal_status = 2", source)
                 self.assertIn(f"remove_treasury = {treasury}", source)
-                self.assertIn(f"add_gold = {{ value = 0 subtract = {personal} }}", source)
+                self.assertIn(f"remove_short_term_gold = {personal}", source)
                 self.assertIn(f"add_gold = {gross}", source)
                 self.assertLess(
                     source.index(f"var:{prefix}_personal_status = 2"),
@@ -525,11 +551,11 @@ class CompensationRuntimeTests(unittest.TestCase):
         for token in (
             "scope:zg361_comp_route = 1",
             "remove_treasury = 14",
-            "value = 0 subtract = 6",
+            "remove_short_term_gold = 6",
             "add_gold = 14",
             "scope:zg361_comp_route = 2",
             "remove_treasury = 11",
-            "value = 0 subtract = 5",
+            "remove_short_term_gold = 5",
             "add_gold = 10",
             "name = zg361_comp_bonus_deferred_treasury_funded",
             "name = zg361_comp_bonus_deferred_personal_funded",
@@ -542,7 +568,7 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("value = var:zg361_comp_m084_reserve_receipt", deferred)
         clawback = top_level_block(self.effects, "zg361_comp_l_clawback_bonus_effect")
         self.assertIn("gold >= 2", clawback)
-        self.assertIn("add_gold = { value = 0 subtract = 2 }", clawback)
+        self.assertIn("remove_short_term_gold = 2", clawback)
         self.assertIn("value = var:zg361_comp_bonus_immediate_receipt_serial", clawback)
 
     def test_deferred_statement_freezes_amount_and_both_payer_shares_before_deadline(self) -> None:
@@ -805,7 +831,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                 self.assertIn(f"var:{prefix}_treasury_status = 2", source)
                 self.assertIn(f"var:{prefix}_personal_status = 2", source)
                 self.assertIn("remove_treasury = 7", source)
-                self.assertIn("add_gold = { value = 0 subtract = 3 }", source)
+                self.assertIn("remove_short_term_gold = 3", source)
                 self.assertIn("add_gold = 10", source)
                 self.assertLess(
                     source.index(f"var:{prefix}_personal_status = 2"),
@@ -830,7 +856,11 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_comp_af_buyback_90_deadline", consumer)
         delayed = top_level_block(self.effects, "zg361_comp_af_consume_buyback_effect")
         self.assertIn(
-            "var:zg361_comp_af_request_serial = { value = var:zg361_case_af_owner.var:zg361_comp_af_queue_head add = 1 }",
+            "name = zg361_comp_af_expected_request_serial",
+            delayed,
+        )
+        self.assertIn(
+            "var:zg361_comp_af_request_serial = scope:zg361_comp_af_expected_request_serial",
             delayed,
         )
         self.assertIn("treasury >= 7", delayed)

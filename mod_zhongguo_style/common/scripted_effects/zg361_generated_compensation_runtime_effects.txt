@@ -1032,7 +1032,7 @@ zg361_comp_l_reserve_bonus_effect = {
             }
             var:zg361_case_l_owner = {
                 remove_treasury = 14
-                add_gold = { value = 0 subtract = 6 }
+                remove_short_term_gold = 6
             }
             add_gold = 14
             set_variable = { name = zg361_comp_bonus_immediate_receipt_treasury_payer value = var:zg361_case_l_owner }
@@ -1252,7 +1252,7 @@ zg361_comp_l_reserve_bonus_effect = {
             }
             var:zg361_case_l_owner = {
                 remove_treasury = 11
-                add_gold = { value = 0 subtract = 5 }
+                remove_short_term_gold = 5
             }
             add_gold = 10
             set_variable = { name = zg361_comp_bonus_immediate_receipt_treasury_payer value = var:zg361_case_l_owner }
@@ -1292,7 +1292,7 @@ zg361_comp_l_clawback_bonus_effect = {
             gold >= 2
             var:zg361_case_l_owner = { has_treasury = yes }
         }
-        add_gold = { value = 0 subtract = 2 }
+        remove_short_term_gold = 2
         var:zg361_case_l_owner = {
             add_treasury = 1
             add_gold = 1
@@ -1652,7 +1652,7 @@ zg361_comp_l_pay_spot_effect = {
         }
         var:zg361_case_l_owner = {
             remove_treasury = 7
-            add_gold = { value = 0 subtract = 3 }
+            remove_short_term_gold = 3
         }
         add_gold = 10
         set_variable = { name = zg361_comp_m090_pay_treasury_payer value = var:zg361_case_l_owner }
@@ -1770,7 +1770,7 @@ zg361_comp_l_pay_spot_bounded_effect = {
         }
         var:zg361_case_l_owner = {
             remove_treasury = 4
-            add_gold = { value = 0 subtract = 2 }
+            remove_short_term_gold = 2
         }
         add_gold = 6
         set_variable = { name = zg361_comp_m090_bounded_treasury_payer value = var:zg361_case_l_owner }
@@ -1888,7 +1888,7 @@ zg361_comp_ae_pay_due_now_effect = {
         }
         var:zg361_case_ae_owner = {
             remove_treasury = { value = scope:zg361_comp_due_treasury }
-            add_gold = { value = 0 subtract = scope:zg361_comp_due_personal }
+            remove_short_term_gold = scope:zg361_comp_due_personal
         }
         add_gold = { value = scope:zg361_comp_due_gross }
         set_variable = { name = zg361_comp_ae_due_now_treasury_payer value = var:zg361_case_ae_owner }
@@ -2006,7 +2006,7 @@ zg361_comp_ae_pay_due_later_effect = {
         }
         var:zg361_case_ae_owner = {
             remove_treasury = { value = scope:zg361_comp_due_treasury }
-            add_gold = { value = 0 subtract = scope:zg361_comp_due_personal }
+            remove_short_term_gold = scope:zg361_comp_due_personal
         }
         add_gold = { value = scope:zg361_comp_due_gross }
         set_variable = { name = zg361_comp_ae_due_later_treasury_payer value = var:zg361_case_ae_owner }
@@ -2124,7 +2124,7 @@ zg361_comp_ae_pay_backpay_effect = {
         }
         var:zg361_case_ae_owner = {
             remove_treasury = 3
-            add_gold = { value = 0 subtract = 1 }
+            remove_short_term_gold = 1
         }
         add_gold = 4
         set_variable = { name = zg361_comp_m282_pay_treasury_payer value = var:zg361_case_ae_owner }
@@ -2242,7 +2242,7 @@ zg361_comp_ae_pay_appeal_effect = {
         }
         var:zg361_case_ae_owner = {
             remove_treasury = 3
-            add_gold = { value = 0 subtract = 1 }
+            remove_short_term_gold = 1
         }
         add_gold = 4
         set_variable = { name = zg361_comp_m289_pay_treasury_payer value = var:zg361_case_ae_owner }
@@ -2360,7 +2360,7 @@ zg361_comp_af_pay_cash_alternative_effect = {
         }
         var:zg361_case_af_owner = {
             remove_treasury = 7
-            add_gold = { value = 0 subtract = 3 }
+            remove_short_term_gold = 3
         }
         add_gold = 10
         set_variable = { name = zg361_comp_m292_cash_treasury_payer value = var:zg361_case_af_owner }
@@ -2478,7 +2478,7 @@ zg361_comp_af_pay_conversion_remainder_effect = {
         }
         var:zg361_case_af_owner = {
             remove_treasury = 4
-            add_gold = { value = 0 subtract = 2 }
+            remove_short_term_gold = 2
         }
         add_gold = 6
         set_variable = { name = zg361_comp_m293_cash6_treasury_payer value = var:zg361_case_af_owner }
@@ -2596,7 +2596,7 @@ zg361_comp_af_pay_unconverted_bonus_effect = {
         }
         var:zg361_case_af_owner = {
             remove_treasury = 7
-            add_gold = { value = 0 subtract = 3 }
+            remove_short_term_gold = 3
         }
         add_gold = 10
         set_variable = { name = zg361_comp_m293_cash10_treasury_payer value = var:zg361_case_af_owner }
@@ -2714,7 +2714,7 @@ zg361_comp_af_pay_buyback_now_effect = {
         }
         var:zg361_case_af_owner = {
             remove_treasury = 7
-            add_gold = { value = 0 subtract = 3 }
+            remove_short_term_gold = 3
         }
         add_gold = 10
         set_variable = { name = zg361_comp_m300_buyback_treasury_payer value = var:zg361_case_af_owner }
@@ -2832,7 +2832,7 @@ zg361_comp_af_pay_buyback_later_effect = {
         }
         var:zg361_case_af_owner = {
             remove_treasury = 7
-            add_gold = { value = 0 subtract = 3 }
+            remove_short_term_gold = 3
         }
         add_gold = 10
         set_variable = { name = zg361_comp_af_buyback_later_treasury_payer value = var:zg361_case_af_owner }
@@ -3334,6 +3334,16 @@ zg361_comp_af_consume_buyback_effect = {
     remove_variable = zg361_comp_financial_applied
     if = {
         limit = {
+            has_variable = zg361_case_af_owner
+            var:zg361_case_af_owner = { has_variable = zg361_comp_af_queue_head }
+        }
+        save_temporary_scope_value_as = {
+            name = zg361_comp_af_expected_request_serial
+            value = { value = var:zg361_case_af_owner.var:zg361_comp_af_queue_head add = 1 }
+        }
+    }
+    if = {
+        limit = {
             zg361_case_kernel_full_guard_trigger = {
                 OWNER_VAR = zg361_case_af_owner
                 SUBJECT_VAR = zg361_case_af_subject
@@ -3349,7 +3359,7 @@ zg361_comp_af_consume_buyback_effect = {
             }
             var:zg361_comp_af_request_state = 1
             var:zg361_comp_af_vested_units >= 10
-            var:zg361_comp_af_request_serial = { value = var:zg361_case_af_owner.var:zg361_comp_af_queue_head add = 1 }
+            var:zg361_comp_af_request_serial = scope:zg361_comp_af_expected_request_serial
             var:zg361_case_af_owner = { has_treasury = yes treasury >= 7 gold >= 3 }
             var:zg361_comp_af_treasury_available >= 7
             var:zg361_comp_af_personal_available >= 3
@@ -3383,7 +3393,7 @@ zg361_comp_af_consume_buyback_effect = {
             }
             var:zg361_comp_af_request_state = 1
             var:zg361_comp_af_vested_units >= 10
-            var:zg361_comp_af_request_serial = { value = var:zg361_case_af_owner.var:zg361_comp_af_queue_head add = 1 }
+            var:zg361_comp_af_request_serial = scope:zg361_comp_af_expected_request_serial
         }
         # The delayed request reaches a terminal insufficient-funds outcome.
         # No balance or unit moved; advancing the FIFO releases later cases.
