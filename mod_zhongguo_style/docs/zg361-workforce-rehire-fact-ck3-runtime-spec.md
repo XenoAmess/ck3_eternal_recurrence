@@ -86,8 +86,10 @@ zg361_workforce_rehire_fact_finalize_m276_effect
   `state=3 / outcome_code=1 / result_grade in {2,3}` 以及完整 case/closure ID/hash。失败 PIP 永远不能降格；
 - `misconduct_present` 原样保存；若为 1，receipt 必须同时提供旧 misconduct case/evidence ID/hash；若为 0，
   四项引用必须不存在，任何路径都不得凭空创造；
-- #075 当前仅声称 `source_hc_release_claimed=1`，实际 Workforce `hc_ledger_settled=0`，occupied/frozen 快照
-  未变化。本包保留这个差异，绝不把源布尔冒充真实 HC 释放。
+- #075 的 `source_hc_release_claimed=1` 仍不能单独作为证据；normal-exit producer 必须先把正式 HC 从
+  `occupied` 迁移到 `frozen`，再在 D+1 重读六分区并证明总量守恒。`capture_exit` 只接受
+  `hc_ledger_settled=1 / hc_destination_frozen=1 / hc_conservation_verified=1`，以及完整六分区 before/after 和
+  `formal_hc_active 1->0` lineage；任何旧版 `hc_ledger_settled=0` receipt 都 fail-closed。
 
 producer 还冻结 `exit_year`；本包只建立跨年顺序，不伪装日级精度。共享 caller 已接线；若具体对象缺任一
 canonical 条件，游戏路径仍得到 typed RED 27611，而不是用 #277 降级成功。
@@ -132,12 +134,15 @@ post-settlement `capture_growth`、#276 前置 prepare + D+1 audit、route A/B �
 下一段退出事实。
 
 本轮已解除的 blocker：probation 不再把旧 owner tombstone 当作唯一不可复用单槽；三代 ledger 在不删除历史 receipt 的前提下
-提供第二雇主与回旧雇主两个新 generation。仍待验收/后续项：
+提供第二雇主与回旧雇主两个新 generation；normal-exit 也已完成真实 `occupied -> frozen` 迁移与 D+1 恒等式审计，rehire
+会把这组 settled HC provenance 复制到不可变 `exit_hc_*` 历史。仍待验收项：
 
 1. 新 loader、MCP-first paused snapshot、存读档与至少两个自然考核周期仍需证明 generation 1 archive、generation 2
    growth 和 generation 3 回旧 owner 均在 CK3 实机加载；静态 GREEN 不等于 live；
-2. 若产品语义要求 #075 真正释放编制，必须作为独立后续单元补 HC partition 的真实迁移与恒等式审计，不能改写 receipt 中
-   `hc_ledger_settled=0` 来假装完成。
+2. `zhongguo_workforce_normal_exit_snapshot_v1` provider 已完成 native application-main、driver、service 与 MCP
+   接线，并能在同一 received-self 投影观察 normal-exit receipt、六分区 before/after、formal HC、
+   settled/conservation 位及 rehire 的 `exit_hc_*` 复制结果；当前只有 static/fixture 证据，ACK、fixture 或 OCR
+   都不能把这条链提升为 live。
 
 不能把 materialize → route → finalize 压在同一 effect 内读取刚写变量。接线完成后仍需新的 loader、
 MCP-first paused snapshot、存读档与至少两个自然考核周期证明，方可提升 readiness。现有 failed-PIP #277 路径

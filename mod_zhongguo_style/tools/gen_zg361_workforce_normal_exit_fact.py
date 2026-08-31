@@ -42,6 +42,7 @@ DISPATCH_EVENT_ID: Final[int] = 9100
 AUDIT_EVENT_ID: Final[int] = 9101
 FINALIZE_EVENT_ID: Final[int] = 9102
 CAPTURE_EVENT_ID: Final[int] = 9103
+HC_AUDIT_EVENT_ID: Final[int] = 9104
 NOTICE_EVENT_ID: Final[int] = 1
 REHIRE_CAPTURE_EXIT_EFFECT: Final[str] = "zg361_workforce_rehire_fact_capture_exit_effect"
 
@@ -126,8 +127,23 @@ RECEIPT_ALWAYS_FIELDS: Final[tuple[str, ...]] = (
     "actual_exit",
     "source_hc_release_claimed",
     "hc_ledger_settled",
+    "hc_authorized_before",
+    "hc_available_before",
+    "hc_reserved_before",
     "hc_occupied_before",
     "hc_frozen_before",
+    "hc_reclaimed_before",
+    "hc_authorized_after",
+    "hc_available_after",
+    "hc_reserved_after",
+    "hc_occupied_after",
+    "hc_frozen_after",
+    "hc_reclaimed_after",
+    "hc_destination_frozen",
+    "hc_conservation_verified",
+    "formal_hc_active_before",
+    "formal_hc_active_after",
+    "formal_hc_case",
     "exit_year",
     "former_slot_id",
     "position_type_id",
@@ -237,8 +253,13 @@ def render_effects() -> bytes:
         remove_variable = @P@_pending_appointment_receipt_id
         remove_variable = @P@_pending_appointment_receipt_hash
         remove_variable = @P@_pending_displaced_hours
+        remove_variable = @P@_pending_hc_authorized_before
+        remove_variable = @P@_pending_hc_available_before
+        remove_variable = @P@_pending_hc_reserved_before
         remove_variable = @P@_pending_hc_occupied_before
         remove_variable = @P@_pending_hc_frozen_before
+        remove_variable = @P@_pending_hc_reclaimed_before
+        remove_variable = @P@_pending_hc_migration_authorized
         remove_variable = @P@_pending_cost_receipt
         remove_variable = @P@_pending_cost_hash
         remove_variable = @P@_pending_cost_amount
@@ -398,9 +419,25 @@ def render_effects() -> bytes:
                 var:zg361_we_hours_governance >= 0
                 var:zg361_we_formal_hc_active = 1
                 var:zg361_we_formal_hc_active_case = var:@S@_slot_case
+                has_variable = zg361_ch_hc_authorized
+                has_variable = zg361_ch_hc_available
+                has_variable = zg361_ch_hc_reserved
                 has_variable = zg361_ch_hc_occupied
                 has_variable = zg361_ch_hc_frozen
+                has_variable = zg361_ch_hc_reclaimed
+                var:zg361_ch_hc_authorized >= 1
+                var:zg361_ch_hc_available >= 0
+                var:zg361_ch_hc_reserved >= 0
                 var:zg361_ch_hc_occupied >= 1
+                var:zg361_ch_hc_frozen >= 0
+                var:zg361_ch_hc_reclaimed >= 0
+                var:zg361_ch_hc_authorized = {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
             }
             set_variable = { name = @P@_pending value = 1 }
             set_variable = { name = @P@_pending_owner value = var:@M@_owner }
@@ -451,8 +488,12 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_pending_appointment_receipt_id value = var:@S@_slot_appointment_receipt_id }
             set_variable = { name = @P@_pending_appointment_receipt_hash value = var:@S@_slot_appointment_receipt_hash }
             set_variable = { name = @P@_pending_displaced_hours value = { value = var:zg361_we_hours_output add = var:zg361_we_hours_on_call add = var:zg361_we_hours_meeting add = var:zg361_we_hours_governance } }
+            set_variable = { name = @P@_pending_hc_authorized_before value = var:zg361_ch_hc_authorized }
+            set_variable = { name = @P@_pending_hc_available_before value = var:zg361_ch_hc_available }
+            set_variable = { name = @P@_pending_hc_reserved_before value = var:zg361_ch_hc_reserved }
             set_variable = { name = @P@_pending_hc_occupied_before value = var:zg361_ch_hc_occupied }
             set_variable = { name = @P@_pending_hc_frozen_before value = var:zg361_ch_hc_frozen }
+            set_variable = { name = @P@_pending_hc_reclaimed_before value = var:zg361_ch_hc_reclaimed }
             set_variable = { name = @P@_pending_cost_amount value = 50 }
             set_variable = { name = @P@_pending_cost_receipt value = { value = var:@M@_receipt_serial multiply = 1000 add = 75 } }
             set_variable = { name = @P@_pending_cost_hash value = { value = var:@S@_slot_appointment_receipt_hash multiply = 100000 add = { value = var:@M@_receipt_serial multiply = 100 } add = 75 } }
@@ -583,9 +624,11 @@ def render_effects() -> bytes:
         }
     }
 
-    # Final frame: the native callback and #075 business object must both be
-    # committed.  Only now is a consumed immutable normal-exit receipt sealed.
-    @P@_finalize_receipt_effect = {
+    # D+1 #075 audit and the only HC mutation point.  A normal departure turns
+    # one occupied position into a frozen vacancy, matching #277 semantics;
+    # it does not make the vacancy automatically recruitable.  Receipt sealing
+    # waits for a later frame to observe the committed partition.
+    @P@_migrate_hc_partition_effect = {
         remove_variable = @P@_status
         remove_variable = @P@_red_code
         if = {
@@ -629,10 +672,144 @@ def render_effects() -> bytes:
                 var:zg361_result_case_state = var:@P@_pending_result_state
                 var:zg361_result_settlement_posted_serial = var:@P@_pending_result_settlement_receipt
                 var:zg361_result_grade = 1
+                var:@P@_pending_hc_authorized_before >= 1
+                var:@P@_pending_hc_available_before >= 0
+                var:@P@_pending_hc_reserved_before >= 0
+                var:@P@_pending_hc_occupied_before >= 1
+                var:@P@_pending_hc_frozen_before >= 0
+                var:@P@_pending_hc_reclaimed_before >= 0
+                var:@P@_pending_hc_authorized_before = {
+                    value = var:@P@_pending_hc_available_before
+                    add = var:@P@_pending_hc_reserved_before
+                    add = var:@P@_pending_hc_occupied_before
+                    add = var:@P@_pending_hc_frozen_before
+                    add = var:@P@_pending_hc_reclaimed_before
+                }
                 var:zg361_we_formal_hc_active = 1
                 var:zg361_we_formal_hc_active_case = var:@P@_pending_slot_case
+                var:zg361_ch_hc_authorized = var:@P@_pending_hc_authorized_before
+                var:zg361_ch_hc_available = var:@P@_pending_hc_available_before
+                var:zg361_ch_hc_reserved = var:@P@_pending_hc_reserved_before
                 var:zg361_ch_hc_occupied = var:@P@_pending_hc_occupied_before
                 var:zg361_ch_hc_frozen = var:@P@_pending_hc_frozen_before
+                var:zg361_ch_hc_reclaimed = var:@P@_pending_hc_reclaimed_before
+                OR = { NOT = { has_variable = @P@_receipt_active } var:@P@_receipt_active = 0 }
+            }
+            set_variable = { name = @P@_pending_hc_migration_authorized value = 1 }
+            change_variable = { name = zg361_ch_hc_occupied add = -1 }
+            change_variable = { name = zg361_ch_hc_frozen add = 1 }
+            set_variable = { name = zg361_we_formal_hc_active value = 0 }
+            set_variable = { name = @P@_state value = 3 }
+            set_variable = { name = @P@_status value = 5 }
+            trigger_event = { id = @N@.@HC_AUDIT@ days = 1 }
+            debug_log = "ZG361WNEF: #075 exit migrated occupied HC into a frozen vacancy; awaiting D+1 conservation audit"
+        }
+        else_if = {
+            limit = {
+                var:@P@_receipt_active = 1
+                var:@P@_receipt_sealed = 1
+                var:@P@_receipt_published = 1
+                var:@P@_receipt_consumed = 1
+                var:@P@_receipt_consumed_operation = @SOURCE_KIND@
+                var:@P@_receipt_subject = this
+            }
+            set_variable = { name = @P@_status value = 2 }
+        }
+        else = {
+            set_variable = { name = @P@_status value = 4 }
+            set_variable = { name = @P@_red_code value = 27654 }
+            debug_log = "ZG361WNEF RED 27654: #075 poststate or pre-migration HC partition was not exact"
+        }
+    }
+
+    # D+1 partition audit and receipt seal.  No receipt can exist until every
+    # formal HC bin is observed in its expected post-migration state and the
+    # authorized total is conserved.  The former active-case marker remains as
+    # lineage, while formal_hc_active itself must be zero.
+    @P@_audit_hc_then_finalize_receipt_effect = {
+        remove_variable = @P@_status
+        remove_variable = @P@_red_code
+        if = {
+            limit = {
+                var:@P@_state = 3
+                var:@P@_pending = 1
+                var:@P@_pending_subject = this
+                var:@P@_pending_hc_migration_authorized = 1
+                var:@P@_native_callback_verified = 1
+                var:@P@_native_end_reason = 1
+                var:@P@_exit_observed_year > 0
+                var:@P@_exit_observed_year <= current_year
+                var:@S@_slot_active = 0
+                NOT = { has_court_position = @POSITION@ }
+                var:@M@_owner = var:@P@_pending_owner
+                var:@M@_subject = this
+                var:@M@_cycle = var:@P@_pending_cycle
+                var:@M@_case = var:@P@_pending_case
+                var:@M@_state = 3
+                var:@M@_route = 1
+                var:@M@_offer_gold = 50
+                var:@M@_receipt_serial = var:@P@_pending_source_receipt_serial
+                var:@M@_treasury_paid = 50
+                var:@M@_personal_received = 50
+                var:@M@_neutral_record = 1
+                var:@M@_actual_exit = 1
+                var:@M@_hc_released = 1
+                var:@M@_object_owner = var:@P@_pending_owner
+                var:@M@_object_subject = this
+                var:@M@_object_cycle = var:@P@_pending_cycle
+                var:@M@_object_receipt_case = var:@P@_pending_case
+                var:@M@_object_route = 1
+                var:@M@_object_active = 0
+                var:@M@_object_consumed = 1
+                var:@M@_consumer_receipt_case = var:@P@_pending_case
+                var:zg361_result_case_owner = var:@P@_pending_result_owner
+                var:zg361_result_cycle_serial = var:@P@_pending_result_cycle
+                var:zg361_result_case_serial = var:@P@_pending_result_case
+                var:zg361_result_case_state = var:@P@_pending_result_state
+                var:zg361_result_settlement_posted_serial = var:@P@_pending_result_settlement_receipt
+                var:zg361_result_grade = 1
+                has_variable = @P@_pending_hc_authorized_before
+                has_variable = @P@_pending_hc_available_before
+                has_variable = @P@_pending_hc_reserved_before
+                has_variable = @P@_pending_hc_occupied_before
+                has_variable = @P@_pending_hc_frozen_before
+                has_variable = @P@_pending_hc_reclaimed_before
+                has_variable = zg361_ch_hc_authorized
+                has_variable = zg361_ch_hc_available
+                has_variable = zg361_ch_hc_reserved
+                has_variable = zg361_ch_hc_occupied
+                has_variable = zg361_ch_hc_frozen
+                has_variable = zg361_ch_hc_reclaimed
+                has_variable = zg361_we_formal_hc_active
+                has_variable = zg361_we_formal_hc_active_case
+                var:@P@_pending_hc_authorized_before >= 1
+                var:@P@_pending_hc_available_before >= 0
+                var:@P@_pending_hc_reserved_before >= 0
+                var:@P@_pending_hc_occupied_before >= 1
+                var:@P@_pending_hc_frozen_before >= 0
+                var:@P@_pending_hc_reclaimed_before >= 0
+                var:@P@_pending_hc_authorized_before = {
+                    value = var:@P@_pending_hc_available_before
+                    add = var:@P@_pending_hc_reserved_before
+                    add = var:@P@_pending_hc_occupied_before
+                    add = var:@P@_pending_hc_frozen_before
+                    add = var:@P@_pending_hc_reclaimed_before
+                }
+                var:zg361_ch_hc_authorized = var:@P@_pending_hc_authorized_before
+                var:zg361_ch_hc_available = var:@P@_pending_hc_available_before
+                var:zg361_ch_hc_reserved = var:@P@_pending_hc_reserved_before
+                var:zg361_ch_hc_occupied = { value = var:@P@_pending_hc_occupied_before subtract = 1 }
+                var:zg361_ch_hc_frozen = { value = var:@P@_pending_hc_frozen_before add = 1 }
+                var:zg361_ch_hc_reclaimed = var:@P@_pending_hc_reclaimed_before
+                var:zg361_ch_hc_authorized = {
+                    value = var:zg361_ch_hc_available
+                    add = var:zg361_ch_hc_reserved
+                    add = var:zg361_ch_hc_occupied
+                    add = var:zg361_ch_hc_frozen
+                    add = var:zg361_ch_hc_reclaimed
+                }
+                var:zg361_we_formal_hc_active = 0
+                var:zg361_we_formal_hc_active_case = var:@P@_pending_slot_case
                 OR = { NOT = { has_variable = @P@_receipt_active } var:@P@_receipt_active = 0 }
             }
             if = {
@@ -661,9 +838,24 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_receipt_neutral_record value = 1 }
             set_variable = { name = @P@_receipt_actual_exit value = 1 }
             set_variable = { name = @P@_receipt_source_hc_release_claimed value = 1 }
-            set_variable = { name = @P@_receipt_hc_ledger_settled value = 0 }
+            set_variable = { name = @P@_receipt_hc_ledger_settled value = 1 }
+            set_variable = { name = @P@_receipt_hc_authorized_before value = var:@P@_pending_hc_authorized_before }
+            set_variable = { name = @P@_receipt_hc_available_before value = var:@P@_pending_hc_available_before }
+            set_variable = { name = @P@_receipt_hc_reserved_before value = var:@P@_pending_hc_reserved_before }
             set_variable = { name = @P@_receipt_hc_occupied_before value = var:@P@_pending_hc_occupied_before }
             set_variable = { name = @P@_receipt_hc_frozen_before value = var:@P@_pending_hc_frozen_before }
+            set_variable = { name = @P@_receipt_hc_reclaimed_before value = var:@P@_pending_hc_reclaimed_before }
+            set_variable = { name = @P@_receipt_hc_authorized_after value = var:zg361_ch_hc_authorized }
+            set_variable = { name = @P@_receipt_hc_available_after value = var:zg361_ch_hc_available }
+            set_variable = { name = @P@_receipt_hc_reserved_after value = var:zg361_ch_hc_reserved }
+            set_variable = { name = @P@_receipt_hc_occupied_after value = var:zg361_ch_hc_occupied }
+            set_variable = { name = @P@_receipt_hc_frozen_after value = var:zg361_ch_hc_frozen }
+            set_variable = { name = @P@_receipt_hc_reclaimed_after value = var:zg361_ch_hc_reclaimed }
+            set_variable = { name = @P@_receipt_hc_destination_frozen value = 1 }
+            set_variable = { name = @P@_receipt_hc_conservation_verified value = 1 }
+            set_variable = { name = @P@_receipt_formal_hc_active_before value = 1 }
+            set_variable = { name = @P@_receipt_formal_hc_active_after value = 0 }
+            set_variable = { name = @P@_receipt_formal_hc_case value = var:@P@_pending_slot_case }
             set_variable = { name = @P@_receipt_exit_year value = var:@P@_exit_observed_year }
             set_variable = { name = @P@_receipt_former_slot_id value = var:@P@_pending_slot_id }
             set_variable = { name = @P@_receipt_position_type_id value = var:@P@_pending_position_type_id }
@@ -712,7 +904,7 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_status value = 1 }
             trigger_event = { id = @N@.@CAPTURE@ days = 1 }
             if = { limit = { is_ai = no } trigger_event = { id = @N@.@NOTICE@ days = 1 } }
-            debug_log = "ZG361WNEF: canonical funded #075 normal-exit receipt sealed"
+            debug_log = "ZG361WNEF: canonical funded #075 normal-exit receipt sealed after HC conservation audit"
         }
         else_if = {
             limit = {
@@ -722,13 +914,15 @@ def render_effects() -> bytes:
                 var:@P@_receipt_consumed = 1
                 var:@P@_receipt_consumed_operation = @SOURCE_KIND@
                 var:@P@_receipt_subject = this
+                var:@P@_receipt_hc_ledger_settled = 1
+                var:@P@_receipt_hc_conservation_verified = 1
             }
             set_variable = { name = @P@_status value = 2 }
         }
         else = {
             set_variable = { name = @P@_status value = 4 }
-            set_variable = { name = @P@_red_code value = 27654 }
-            debug_log = "ZG361WNEF RED 27654: #075 poststate did not confirm a funded neutral actual exit"
+            set_variable = { name = @P@_red_code value = 27655 }
+            debug_log = "ZG361WNEF RED 27655: post-migration HC partition failed D+1 conservation or lineage audit"
         }
     }
     '''
@@ -746,6 +940,7 @@ def render_effects() -> bytes:
         "DISPATCH": str(DISPATCH_EVENT_ID),
         "AUDIT": str(AUDIT_EVENT_ID),
         "FINALIZE": str(FINALIZE_EVENT_ID),
+        "HC_AUDIT": str(HC_AUDIT_EVENT_ID),
         "CAPTURE": str(CAPTURE_EVENT_ID),
         "NOTICE": str(NOTICE_EVENT_ID),
         "M075_HAS": _has(M075_PREFIX, M075_PRE_FIELDS, 16),
@@ -795,7 +990,20 @@ def render_events() -> bytes:
                 var:{PREFIX}_pending_subject = this
                 var:{PREFIX}_state = 2
             }}
-            immediate = {{ {PREFIX}_finalize_receipt_effect = yes }}
+            immediate = {{ {PREFIX}_migrate_hc_partition_effect = yes }}
+        }}
+
+        {NAMESPACE}.{HC_AUDIT_EVENT_ID} = {{
+            type = character_event
+            hidden = yes
+            trigger = {{
+                has_variable = {PREFIX}_pending
+                var:{PREFIX}_pending = 1
+                var:{PREFIX}_pending_subject = this
+                var:{PREFIX}_pending_hc_migration_authorized = 1
+                var:{PREFIX}_state = 3
+            }}
+            immediate = {{ {PREFIX}_audit_hc_then_finalize_receipt_effect = yes }}
         }}
 
         {NAMESPACE}.{CAPTURE_EVENT_ID} = {{

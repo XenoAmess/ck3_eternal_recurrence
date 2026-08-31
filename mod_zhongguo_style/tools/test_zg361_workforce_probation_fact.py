@@ -668,7 +668,7 @@ class WorkforceProbationFactTests(unittest.TestCase):
                 self.effects,
             )
 
-    def test_32_spec_records_bounded_chain_and_hc_as_separate_followup(self) -> None:
+    def test_32_spec_records_bounded_chain_and_separately_settled_hc(self) -> None:
         for token in (
             "三代有界 ledger",
             "活动投影 + 两个 append-only archive",
@@ -677,7 +677,9 @@ class WorkforceProbationFactTests(unittest.TestCase):
             "RED 1003",
             "不删除任何 `ledger_slot_1_*` 或 `ledger_slot_2_*`",
             "HC partition",
-            "独立后续单元",
+            "occupied -> frozen",
+            "hc_ledger_settled=1",
+            "static-ready",
         ):
             self.assertIn(token, self.spec)
 

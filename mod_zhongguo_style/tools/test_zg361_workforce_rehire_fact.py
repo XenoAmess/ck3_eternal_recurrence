@@ -166,11 +166,26 @@ class WorkforceRehireFactTests(unittest.TestCase):
             "receipt_exit_reason_code = 1",
             "receipt_neutral_record = 1",
             "receipt_actual_exit = 1",
-            "receipt_hc_ledger_settled = 0",
+            "receipt_hc_ledger_settled = 1",
+            "receipt_hc_destination_frozen = 1",
+            "receipt_hc_conservation_verified = 1",
+            "receipt_formal_hc_active_before = 1",
+            "receipt_formal_hc_active_after = 0",
             "receipt_native_end_reason = 1",
             "receipt_native_callback_seen = 1",
         ):
             self.assertIn(token, capture)
+        for field in ("authorized", "available", "reserved", "occupied", "frozen", "reclaimed"):
+            self.assertIn(f"receipt_hc_{field}_before", capture)
+            self.assertIn(f"receipt_hc_{field}_after", capture)
+            self.assertIn(
+                f"exit_hc_{field}_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_{field}_before",
+                capture,
+            )
+            self.assertIn(
+                f"exit_hc_{field}_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_{field}_after",
+                capture,
+            )
 
     def test_06_normal_exit_requires_old_325_and_conditional_pip_history(self) -> None:
         capture = block(self.effects, "zg361_workforce_rehire_fact_capture_exit_effect")
@@ -463,13 +478,15 @@ class WorkforceRehireFactTests(unittest.TestCase):
             "失败 PIP 撤职",
             "不是正常离职",
             "B2 #075 route A",
-            "hc_ledger_settled=0",
+            "hc_ledger_settled=1",
+            "occupied -> frozen",
+            "exit_hc_*",
             "probation 三代有界 ledger",
             "不同 owner growth → 回旧 owner #276",
             "ledger_slot_1_*",
             "ledger_slot_2_*",
             "第四代容量不足明确 RED",
-            "独立后续单元",
+            "settled HC provenance",
             "不得 `remove_variable` 清洗旧案",
             "current ticket cycle + 1",
             "route C",

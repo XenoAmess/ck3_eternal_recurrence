@@ -41,8 +41,13 @@ zg361_workforce_normal_exit_fact_clear_pending_effect = {
     remove_variable = zg361_workforce_normal_exit_fact_pending_appointment_receipt_id
     remove_variable = zg361_workforce_normal_exit_fact_pending_appointment_receipt_hash
     remove_variable = zg361_workforce_normal_exit_fact_pending_displaced_hours
+    remove_variable = zg361_workforce_normal_exit_fact_pending_hc_authorized_before
+    remove_variable = zg361_workforce_normal_exit_fact_pending_hc_available_before
+    remove_variable = zg361_workforce_normal_exit_fact_pending_hc_reserved_before
     remove_variable = zg361_workforce_normal_exit_fact_pending_hc_occupied_before
     remove_variable = zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+    remove_variable = zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+    remove_variable = zg361_workforce_normal_exit_fact_pending_hc_migration_authorized
     remove_variable = zg361_workforce_normal_exit_fact_pending_cost_receipt
     remove_variable = zg361_workforce_normal_exit_fact_pending_cost_hash
     remove_variable = zg361_workforce_normal_exit_fact_pending_cost_amount
@@ -226,9 +231,25 @@ zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = {
             var:zg361_we_hours_governance >= 0
             var:zg361_we_formal_hc_active = 1
             var:zg361_we_formal_hc_active_case = var:zg361_workforce_exit_fact_slot_case
+            has_variable = zg361_ch_hc_authorized
+            has_variable = zg361_ch_hc_available
+            has_variable = zg361_ch_hc_reserved
             has_variable = zg361_ch_hc_occupied
             has_variable = zg361_ch_hc_frozen
+            has_variable = zg361_ch_hc_reclaimed
+            var:zg361_ch_hc_authorized >= 1
+            var:zg361_ch_hc_available >= 0
+            var:zg361_ch_hc_reserved >= 0
             var:zg361_ch_hc_occupied >= 1
+            var:zg361_ch_hc_frozen >= 0
+            var:zg361_ch_hc_reclaimed >= 0
+            var:zg361_ch_hc_authorized = {
+                value = var:zg361_ch_hc_available
+                add = var:zg361_ch_hc_reserved
+                add = var:zg361_ch_hc_occupied
+                add = var:zg361_ch_hc_frozen
+                add = var:zg361_ch_hc_reclaimed
+            }
         }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending value = 1 }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_owner value = var:zg361_b2_m075_owner }
@@ -279,8 +300,12 @@ zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect = {
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_appointment_receipt_id value = var:zg361_workforce_exit_fact_slot_appointment_receipt_id }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_appointment_receipt_hash value = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_displaced_hours value = { value = var:zg361_we_hours_output add = var:zg361_we_hours_on_call add = var:zg361_we_hours_meeting add = var:zg361_we_hours_governance } }
+        set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_authorized_before value = var:zg361_ch_hc_authorized }
+        set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_available_before value = var:zg361_ch_hc_available }
+        set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_reserved_before value = var:zg361_ch_hc_reserved }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_occupied_before value = var:zg361_ch_hc_occupied }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_frozen_before value = var:zg361_ch_hc_frozen }
+        set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before value = var:zg361_ch_hc_reclaimed }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_cost_amount value = 50 }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_cost_receipt value = { value = var:zg361_b2_m075_receipt_serial multiply = 1000 add = 75 } }
         set_variable = { name = zg361_workforce_normal_exit_fact_pending_cost_hash value = { value = var:zg361_workforce_exit_fact_slot_appointment_receipt_hash multiply = 100000 add = { value = var:zg361_b2_m075_receipt_serial multiply = 100 } add = 75 } }
@@ -411,9 +436,11 @@ zg361_workforce_normal_exit_fact_audit_native_then_accept_m075_effect = {
     }
 }
 
-# Final frame: the native callback and #075 business object must both be
-# committed.  Only now is a consumed immutable normal-exit receipt sealed.
-zg361_workforce_normal_exit_fact_finalize_receipt_effect = {
+# D+1 #075 audit and the only HC mutation point.  A normal departure turns
+# one occupied position into a frozen vacancy, matching #277 semantics;
+# it does not make the vacancy automatically recruitable.  Receipt sealing
+# waits for a later frame to observe the committed partition.
+zg361_workforce_normal_exit_fact_migrate_hc_partition_effect = {
     remove_variable = zg361_workforce_normal_exit_fact_status
     remove_variable = zg361_workforce_normal_exit_fact_red_code
     if = {
@@ -457,10 +484,144 @@ zg361_workforce_normal_exit_fact_finalize_receipt_effect = {
             var:zg361_result_case_state = var:zg361_workforce_normal_exit_fact_pending_result_state
             var:zg361_result_settlement_posted_serial = var:zg361_workforce_normal_exit_fact_pending_result_settlement_receipt
             var:zg361_result_grade = 1
+            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before >= 1
+            var:zg361_workforce_normal_exit_fact_pending_hc_available_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before >= 1
+            var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before = {
+                value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            }
             var:zg361_we_formal_hc_active = 1
             var:zg361_we_formal_hc_active_case = var:zg361_workforce_normal_exit_fact_pending_slot_case
+            var:zg361_ch_hc_authorized = var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before
+            var:zg361_ch_hc_available = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+            var:zg361_ch_hc_reserved = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
             var:zg361_ch_hc_occupied = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
             var:zg361_ch_hc_frozen = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+            var:zg361_ch_hc_reclaimed = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            OR = { NOT = { has_variable = zg361_workforce_normal_exit_fact_receipt_active } var:zg361_workforce_normal_exit_fact_receipt_active = 0 }
+        }
+        set_variable = { name = zg361_workforce_normal_exit_fact_pending_hc_migration_authorized value = 1 }
+        change_variable = { name = zg361_ch_hc_occupied add = -1 }
+        change_variable = { name = zg361_ch_hc_frozen add = 1 }
+        set_variable = { name = zg361_we_formal_hc_active value = 0 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_state value = 3 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_status value = 5 }
+        trigger_event = { id = zg361workforcenormalexitfact.9104 days = 1 }
+        debug_log = "ZG361WNEF: #075 exit migrated occupied HC into a frozen vacancy; awaiting D+1 conservation audit"
+    }
+    else_if = {
+        limit = {
+            var:zg361_workforce_normal_exit_fact_receipt_active = 1
+            var:zg361_workforce_normal_exit_fact_receipt_sealed = 1
+            var:zg361_workforce_normal_exit_fact_receipt_published = 1
+            var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
+            var:zg361_workforce_normal_exit_fact_receipt_consumed_operation = 75
+            var:zg361_workforce_normal_exit_fact_receipt_subject = this
+        }
+        set_variable = { name = zg361_workforce_normal_exit_fact_status value = 2 }
+    }
+    else = {
+        set_variable = { name = zg361_workforce_normal_exit_fact_status value = 4 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_red_code value = 27654 }
+        debug_log = "ZG361WNEF RED 27654: #075 poststate or pre-migration HC partition was not exact"
+    }
+}
+
+# D+1 partition audit and receipt seal.  No receipt can exist until every
+# formal HC bin is observed in its expected post-migration state and the
+# authorized total is conserved.  The former active-case marker remains as
+# lineage, while formal_hc_active itself must be zero.
+zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect = {
+    remove_variable = zg361_workforce_normal_exit_fact_status
+    remove_variable = zg361_workforce_normal_exit_fact_red_code
+    if = {
+        limit = {
+            var:zg361_workforce_normal_exit_fact_state = 3
+            var:zg361_workforce_normal_exit_fact_pending = 1
+            var:zg361_workforce_normal_exit_fact_pending_subject = this
+            var:zg361_workforce_normal_exit_fact_pending_hc_migration_authorized = 1
+            var:zg361_workforce_normal_exit_fact_native_callback_verified = 1
+            var:zg361_workforce_normal_exit_fact_native_end_reason = 1
+            var:zg361_workforce_normal_exit_fact_exit_observed_year > 0
+            var:zg361_workforce_normal_exit_fact_exit_observed_year <= current_year
+            var:zg361_workforce_exit_fact_slot_active = 0
+            NOT = { has_court_position = zg361_workforce_exit_fact_career_slot_court_position }
+            var:zg361_b2_m075_owner = var:zg361_workforce_normal_exit_fact_pending_owner
+            var:zg361_b2_m075_subject = this
+            var:zg361_b2_m075_cycle = var:zg361_workforce_normal_exit_fact_pending_cycle
+            var:zg361_b2_m075_case = var:zg361_workforce_normal_exit_fact_pending_case
+            var:zg361_b2_m075_state = 3
+            var:zg361_b2_m075_route = 1
+            var:zg361_b2_m075_offer_gold = 50
+            var:zg361_b2_m075_receipt_serial = var:zg361_workforce_normal_exit_fact_pending_source_receipt_serial
+            var:zg361_b2_m075_treasury_paid = 50
+            var:zg361_b2_m075_personal_received = 50
+            var:zg361_b2_m075_neutral_record = 1
+            var:zg361_b2_m075_actual_exit = 1
+            var:zg361_b2_m075_hc_released = 1
+            var:zg361_b2_m075_object_owner = var:zg361_workforce_normal_exit_fact_pending_owner
+            var:zg361_b2_m075_object_subject = this
+            var:zg361_b2_m075_object_cycle = var:zg361_workforce_normal_exit_fact_pending_cycle
+            var:zg361_b2_m075_object_receipt_case = var:zg361_workforce_normal_exit_fact_pending_case
+            var:zg361_b2_m075_object_route = 1
+            var:zg361_b2_m075_object_active = 0
+            var:zg361_b2_m075_object_consumed = 1
+            var:zg361_b2_m075_consumer_receipt_case = var:zg361_workforce_normal_exit_fact_pending_case
+            var:zg361_result_case_owner = var:zg361_workforce_normal_exit_fact_pending_result_owner
+            var:zg361_result_cycle_serial = var:zg361_workforce_normal_exit_fact_pending_result_cycle
+            var:zg361_result_case_serial = var:zg361_workforce_normal_exit_fact_pending_result_case
+            var:zg361_result_case_state = var:zg361_workforce_normal_exit_fact_pending_result_state
+            var:zg361_result_settlement_posted_serial = var:zg361_workforce_normal_exit_fact_pending_result_settlement_receipt
+            var:zg361_result_grade = 1
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_authorized_before
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_available_before
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+            has_variable = zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            has_variable = zg361_ch_hc_authorized
+            has_variable = zg361_ch_hc_available
+            has_variable = zg361_ch_hc_reserved
+            has_variable = zg361_ch_hc_occupied
+            has_variable = zg361_ch_hc_frozen
+            has_variable = zg361_ch_hc_reclaimed
+            has_variable = zg361_we_formal_hc_active
+            has_variable = zg361_we_formal_hc_active_case
+            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before >= 1
+            var:zg361_workforce_normal_exit_fact_pending_hc_available_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before >= 1
+            var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before >= 0
+            var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before = {
+                value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before
+                add = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            }
+            var:zg361_ch_hc_authorized = var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before
+            var:zg361_ch_hc_available = var:zg361_workforce_normal_exit_fact_pending_hc_available_before
+            var:zg361_ch_hc_reserved = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before
+            var:zg361_ch_hc_occupied = { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }
+            var:zg361_ch_hc_frozen = { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }
+            var:zg361_ch_hc_reclaimed = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before
+            var:zg361_ch_hc_authorized = {
+                value = var:zg361_ch_hc_available
+                add = var:zg361_ch_hc_reserved
+                add = var:zg361_ch_hc_occupied
+                add = var:zg361_ch_hc_frozen
+                add = var:zg361_ch_hc_reclaimed
+            }
+            var:zg361_we_formal_hc_active = 0
+            var:zg361_we_formal_hc_active_case = var:zg361_workforce_normal_exit_fact_pending_slot_case
             OR = { NOT = { has_variable = zg361_workforce_normal_exit_fact_receipt_active } var:zg361_workforce_normal_exit_fact_receipt_active = 0 }
         }
         if = {
@@ -489,9 +650,24 @@ zg361_workforce_normal_exit_fact_finalize_receipt_effect = {
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_neutral_record value = 1 }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_actual_exit value = 1 }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_source_hc_release_claimed value = 1 }
-        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled value = 0 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_authorized_before value = var:zg361_workforce_normal_exit_fact_pending_hc_authorized_before }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_available_before value = var:zg361_workforce_normal_exit_fact_pending_hc_available_before }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_reserved_before value = var:zg361_workforce_normal_exit_fact_pending_hc_reserved_before }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_occupied_before value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_frozen_before value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before value = var:zg361_workforce_normal_exit_fact_pending_hc_reclaimed_before }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_authorized_after value = var:zg361_ch_hc_authorized }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_available_after value = var:zg361_ch_hc_available }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_reserved_after value = var:zg361_ch_hc_reserved }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_occupied_after value = var:zg361_ch_hc_occupied }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_frozen_after value = var:zg361_ch_hc_frozen }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after value = var:zg361_ch_hc_reclaimed }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_before value = 1 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after value = 0 }
+        set_variable = { name = zg361_workforce_normal_exit_fact_receipt_formal_hc_case value = var:zg361_workforce_normal_exit_fact_pending_slot_case }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_exit_year value = var:zg361_workforce_normal_exit_fact_exit_observed_year }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_former_slot_id value = var:zg361_workforce_normal_exit_fact_pending_slot_id }
         set_variable = { name = zg361_workforce_normal_exit_fact_receipt_position_type_id value = var:zg361_workforce_normal_exit_fact_pending_position_type_id }
@@ -540,7 +716,7 @@ zg361_workforce_normal_exit_fact_finalize_receipt_effect = {
         set_variable = { name = zg361_workforce_normal_exit_fact_status value = 1 }
         trigger_event = { id = zg361workforcenormalexitfact.9103 days = 1 }
         if = { limit = { is_ai = no } trigger_event = { id = zg361workforcenormalexitfact.1 days = 1 } }
-        debug_log = "ZG361WNEF: canonical funded #075 normal-exit receipt sealed"
+        debug_log = "ZG361WNEF: canonical funded #075 normal-exit receipt sealed after HC conservation audit"
     }
     else_if = {
         limit = {
@@ -550,12 +726,14 @@ zg361_workforce_normal_exit_fact_finalize_receipt_effect = {
             var:zg361_workforce_normal_exit_fact_receipt_consumed = 1
             var:zg361_workforce_normal_exit_fact_receipt_consumed_operation = 75
             var:zg361_workforce_normal_exit_fact_receipt_subject = this
+            var:zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled = 1
+            var:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
         }
         set_variable = { name = zg361_workforce_normal_exit_fact_status value = 2 }
     }
     else = {
         set_variable = { name = zg361_workforce_normal_exit_fact_status value = 4 }
-        set_variable = { name = zg361_workforce_normal_exit_fact_red_code value = 27654 }
-        debug_log = "ZG361WNEF RED 27654: #075 poststate did not confirm a funded neutral actual exit"
+        set_variable = { name = zg361_workforce_normal_exit_fact_red_code value = 27655 }
+        debug_log = "ZG361WNEF RED 27655: post-migration HC partition failed D+1 conservation or lineage audit"
     }
 }

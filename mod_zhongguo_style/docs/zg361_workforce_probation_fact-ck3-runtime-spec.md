@@ -242,8 +242,10 @@ caller 不再被旧 owner 单槽挡住。ordinary #269 直接消费 detailed fac
 attribution cancel receipt 清槽。没有先冻结普通 3.25 result 与真实三维签署归因时，PIP handoff 仍只会 no-op，不能凭 B2
 settlement 反向制造试用期事实。
 
-正常离职当前仍如实记录 `hc_ledger_settled=0`。若产品要求 #075 真正释放 HC，必须实现 HC partition 的真实迁移与守恒审计；
-这是独立后续单元，不属于本轮 probation 多代 ledger，也不得通过改 receipt 布尔值假装完成。
+正常离职的独立 HC partition 单元已于 2026-09-01 补齐：#075 在真实 funded/native poststate 后执行
+`occupied -> frozen`，并在 D+1 重新读取六分区、formal HC 与 lineage；只有守恒成立才签发
+`hc_ledger_settled=1 / hc_conservation_verified=1` receipt。该逻辑不属于 probation 多代 ledger，本包只保留其
+immutable provenance；仍须 MCP-first paused snapshot、存读档和自然多周期实机验收，不能把 static-ready 写成 live。
 
 下一步仍必须用新 loader 证明旧 12 个 `used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
 重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。

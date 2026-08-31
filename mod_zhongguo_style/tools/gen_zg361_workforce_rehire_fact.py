@@ -80,8 +80,23 @@ NORMAL_EXIT_REQUIRED_FIELDS = (
     "receipt_actual_exit",
     "receipt_source_hc_release_claimed",
     "receipt_hc_ledger_settled",
+    "receipt_hc_authorized_before",
+    "receipt_hc_available_before",
+    "receipt_hc_reserved_before",
     "receipt_hc_occupied_before",
     "receipt_hc_frozen_before",
+    "receipt_hc_reclaimed_before",
+    "receipt_hc_authorized_after",
+    "receipt_hc_available_after",
+    "receipt_hc_reserved_after",
+    "receipt_hc_occupied_after",
+    "receipt_hc_frozen_after",
+    "receipt_hc_reclaimed_after",
+    "receipt_hc_destination_frozen",
+    "receipt_hc_conservation_verified",
+    "receipt_formal_hc_active_before",
+    "receipt_formal_hc_active_after",
+    "receipt_formal_hc_case",
     "receipt_exit_year",
     "receipt_former_slot_id",
     "receipt_position_type_id",
@@ -284,9 +299,38 @@ def render_effects() -> bytes:
                 var:@E@_receipt_neutral_record = 1
                 var:@E@_receipt_actual_exit = 1
                 var:@E@_receipt_source_hc_release_claimed = 1
-                var:@E@_receipt_hc_ledger_settled = 0
+                var:@E@_receipt_hc_ledger_settled = 1
+                var:@E@_receipt_hc_authorized_before >= 1
+                var:@E@_receipt_hc_available_before >= 0
+                var:@E@_receipt_hc_reserved_before >= 0
                 var:@E@_receipt_hc_occupied_before >= 1
                 var:@E@_receipt_hc_frozen_before >= 0
+                var:@E@_receipt_hc_reclaimed_before >= 0
+                var:@E@_receipt_hc_authorized_after = var:@E@_receipt_hc_authorized_before
+                var:@E@_receipt_hc_available_after = var:@E@_receipt_hc_available_before
+                var:@E@_receipt_hc_reserved_after = var:@E@_receipt_hc_reserved_before
+                var:@E@_receipt_hc_occupied_after = { value = var:@E@_receipt_hc_occupied_before subtract = 1 }
+                var:@E@_receipt_hc_frozen_after = { value = var:@E@_receipt_hc_frozen_before add = 1 }
+                var:@E@_receipt_hc_reclaimed_after = var:@E@_receipt_hc_reclaimed_before
+                var:@E@_receipt_hc_authorized_before = {
+                    value = var:@E@_receipt_hc_available_before
+                    add = var:@E@_receipt_hc_reserved_before
+                    add = var:@E@_receipt_hc_occupied_before
+                    add = var:@E@_receipt_hc_frozen_before
+                    add = var:@E@_receipt_hc_reclaimed_before
+                }
+                var:@E@_receipt_hc_authorized_after = {
+                    value = var:@E@_receipt_hc_available_after
+                    add = var:@E@_receipt_hc_reserved_after
+                    add = var:@E@_receipt_hc_occupied_after
+                    add = var:@E@_receipt_hc_frozen_after
+                    add = var:@E@_receipt_hc_reclaimed_after
+                }
+                var:@E@_receipt_hc_destination_frozen = 1
+                var:@E@_receipt_hc_conservation_verified = 1
+                var:@E@_receipt_formal_hc_active_before = 1
+                var:@E@_receipt_formal_hc_active_after = 0
+                var:@E@_receipt_formal_hc_case > 0
                 var:@E@_receipt_source_object_consumed = 1
                 var:@E@_receipt_source_receipt_serial = var:@E@_receipt_case
                 var:@E@_receipt_exit_year > 0
@@ -398,6 +442,23 @@ def render_effects() -> bytes:
             set_variable = { name = @P@_exit_position_type_id value = var:@E@_receipt_position_type_id }
             set_variable = { name = @P@_exit_appointment_receipt_id value = var:@E@_receipt_appointment_receipt_id }
             set_variable = { name = @P@_exit_appointment_receipt_hash value = var:@E@_receipt_appointment_receipt_hash }
+            set_variable = { name = @P@_exit_hc_authorized_before value = var:@E@_receipt_hc_authorized_before }
+            set_variable = { name = @P@_exit_hc_available_before value = var:@E@_receipt_hc_available_before }
+            set_variable = { name = @P@_exit_hc_reserved_before value = var:@E@_receipt_hc_reserved_before }
+            set_variable = { name = @P@_exit_hc_occupied_before value = var:@E@_receipt_hc_occupied_before }
+            set_variable = { name = @P@_exit_hc_frozen_before value = var:@E@_receipt_hc_frozen_before }
+            set_variable = { name = @P@_exit_hc_reclaimed_before value = var:@E@_receipt_hc_reclaimed_before }
+            set_variable = { name = @P@_exit_hc_authorized_after value = var:@E@_receipt_hc_authorized_after }
+            set_variable = { name = @P@_exit_hc_available_after value = var:@E@_receipt_hc_available_after }
+            set_variable = { name = @P@_exit_hc_reserved_after value = var:@E@_receipt_hc_reserved_after }
+            set_variable = { name = @P@_exit_hc_occupied_after value = var:@E@_receipt_hc_occupied_after }
+            set_variable = { name = @P@_exit_hc_frozen_after value = var:@E@_receipt_hc_frozen_after }
+            set_variable = { name = @P@_exit_hc_reclaimed_after value = var:@E@_receipt_hc_reclaimed_after }
+            set_variable = { name = @P@_exit_hc_destination_frozen value = 1 }
+            set_variable = { name = @P@_exit_hc_conservation_verified value = 1 }
+            set_variable = { name = @P@_exit_formal_hc_active_before value = 1 }
+            set_variable = { name = @P@_exit_formal_hc_active_after value = 0 }
+            set_variable = { name = @P@_exit_formal_hc_case value = var:@E@_receipt_formal_hc_case }
             set_variable = { name = @P@_old_result_owner value = var:@E@_receipt_prior_result_owner }
             set_variable = { name = @P@_old_result_cycle value = var:@E@_receipt_prior_result_cycle }
             set_variable = { name = @P@_old_result_case value = var:@E@_receipt_prior_result_case }
@@ -455,6 +516,23 @@ def render_effects() -> bytes:
                 var:@P@_exit_receipt_id = var:@E@_receipt_id
                 var:@P@_exit_receipt_hash = var:@E@_receipt_hash
                 var:@P@_exit_class = 1
+                var:@P@_exit_hc_authorized_before = var:@E@_receipt_hc_authorized_before
+                var:@P@_exit_hc_available_before = var:@E@_receipt_hc_available_before
+                var:@P@_exit_hc_reserved_before = var:@E@_receipt_hc_reserved_before
+                var:@P@_exit_hc_occupied_before = var:@E@_receipt_hc_occupied_before
+                var:@P@_exit_hc_frozen_before = var:@E@_receipt_hc_frozen_before
+                var:@P@_exit_hc_reclaimed_before = var:@E@_receipt_hc_reclaimed_before
+                var:@P@_exit_hc_authorized_after = var:@E@_receipt_hc_authorized_after
+                var:@P@_exit_hc_available_after = var:@E@_receipt_hc_available_after
+                var:@P@_exit_hc_reserved_after = var:@E@_receipt_hc_reserved_after
+                var:@P@_exit_hc_occupied_after = var:@E@_receipt_hc_occupied_after
+                var:@P@_exit_hc_frozen_after = var:@E@_receipt_hc_frozen_after
+                var:@P@_exit_hc_reclaimed_after = var:@E@_receipt_hc_reclaimed_after
+                var:@P@_exit_hc_destination_frozen = 1
+                var:@P@_exit_hc_conservation_verified = 1
+                var:@P@_exit_formal_hc_active_before = 1
+                var:@P@_exit_formal_hc_active_after = 0
+                var:@P@_exit_formal_hc_case = var:@E@_receipt_formal_hc_case
                 var:@P@_old_result_case = var:@E@_receipt_prior_result_case
                 var:@P@_old_result_hash = var:@E@_receipt_prior_result_hash
                 var:@P@_exit_pip_present = var:@E@_receipt_prior_pip_present
@@ -564,12 +642,54 @@ def render_effects() -> bytes:
                 has_variable = @P@_exit_history_hash
                 has_variable = @P@_exit_observed_year
                 has_variable = @P@_exit_class
+                has_variable = @P@_exit_hc_authorized_before
+                has_variable = @P@_exit_hc_available_before
+                has_variable = @P@_exit_hc_reserved_before
+                has_variable = @P@_exit_hc_occupied_before
+                has_variable = @P@_exit_hc_frozen_before
+                has_variable = @P@_exit_hc_reclaimed_before
+                has_variable = @P@_exit_hc_authorized_after
+                has_variable = @P@_exit_hc_available_after
+                has_variable = @P@_exit_hc_reserved_after
+                has_variable = @P@_exit_hc_occupied_after
+                has_variable = @P@_exit_hc_frozen_after
+                has_variable = @P@_exit_hc_reclaimed_after
+                has_variable = @P@_exit_hc_destination_frozen
+                has_variable = @P@_exit_hc_conservation_verified
+                has_variable = @P@_exit_formal_hc_active_before
+                has_variable = @P@_exit_formal_hc_active_after
+                has_variable = @P@_exit_formal_hc_case
                 has_variable = @P@_pip_history_retained
                 has_variable = @P@_misconduct_present
                 has_variable = @P@_misconduct_history_retained
                 var:@P@_state = 1
                 var:@P@_subject = this
                 var:@P@_exit_class = 1
+                var:@P@_exit_hc_authorized_before = var:@P@_exit_hc_authorized_after
+                var:@P@_exit_hc_available_before = var:@P@_exit_hc_available_after
+                var:@P@_exit_hc_reserved_before = var:@P@_exit_hc_reserved_after
+                var:@P@_exit_hc_occupied_after = { value = var:@P@_exit_hc_occupied_before subtract = 1 }
+                var:@P@_exit_hc_frozen_after = { value = var:@P@_exit_hc_frozen_before add = 1 }
+                var:@P@_exit_hc_reclaimed_before = var:@P@_exit_hc_reclaimed_after
+                var:@P@_exit_hc_authorized_before = {
+                    value = var:@P@_exit_hc_available_before
+                    add = var:@P@_exit_hc_reserved_before
+                    add = var:@P@_exit_hc_occupied_before
+                    add = var:@P@_exit_hc_frozen_before
+                    add = var:@P@_exit_hc_reclaimed_before
+                }
+                var:@P@_exit_hc_authorized_after = {
+                    value = var:@P@_exit_hc_available_after
+                    add = var:@P@_exit_hc_reserved_after
+                    add = var:@P@_exit_hc_occupied_after
+                    add = var:@P@_exit_hc_frozen_after
+                    add = var:@P@_exit_hc_reclaimed_after
+                }
+                var:@P@_exit_hc_destination_frozen = 1
+                var:@P@_exit_hc_conservation_verified = 1
+                var:@P@_exit_formal_hc_active_before = 1
+                var:@P@_exit_formal_hc_active_after = 0
+                var:@P@_exit_formal_hc_case > 0
                 var:@P@_normal_exit_verified = 1
                 var:@P@_old_result_grade = 1
                 var:@P@_pip_history_retained = 1

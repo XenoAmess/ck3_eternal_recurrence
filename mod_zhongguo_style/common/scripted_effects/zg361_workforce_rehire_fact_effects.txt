@@ -34,8 +34,23 @@ zg361_workforce_rehire_fact_capture_exit_effect = {
             has_variable = zg361_workforce_normal_exit_fact_receipt_actual_exit
             has_variable = zg361_workforce_normal_exit_fact_receipt_source_hc_release_claimed
             has_variable = zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_authorized_before
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_available_before
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
             has_variable = zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
             has_variable = zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_authorized_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_available_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen
+            has_variable = zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified
+            has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_before
+            has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after
+            has_variable = zg361_workforce_normal_exit_fact_receipt_formal_hc_case
             has_variable = zg361_workforce_normal_exit_fact_receipt_exit_year
             has_variable = zg361_workforce_normal_exit_fact_receipt_former_slot_id
             has_variable = zg361_workforce_normal_exit_fact_receipt_position_type_id
@@ -83,9 +98,38 @@ zg361_workforce_rehire_fact_capture_exit_effect = {
             var:zg361_workforce_normal_exit_fact_receipt_neutral_record = 1
             var:zg361_workforce_normal_exit_fact_receipt_actual_exit = 1
             var:zg361_workforce_normal_exit_fact_receipt_source_hc_release_claimed = 1
-            var:zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled = 0
+            var:zg361_workforce_normal_exit_fact_receipt_hc_ledger_settled = 1
+            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before >= 1
+            var:zg361_workforce_normal_exit_fact_receipt_hc_available_before >= 0
+            var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before >= 0
             var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before >= 1
             var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before >= 0
+            var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before >= 0
+            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before
+            var:zg361_workforce_normal_exit_fact_receipt_hc_available_after = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
+            var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
+            var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after = { value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before subtract = 1 }
+            var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after = { value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before add = 1 }
+            var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before = {
+                value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            }
+            var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after = {
+                value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
+                add = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+            }
+            var:zg361_workforce_normal_exit_fact_receipt_hc_destination_frozen = 1
+            var:zg361_workforce_normal_exit_fact_receipt_hc_conservation_verified = 1
+            var:zg361_workforce_normal_exit_fact_receipt_formal_hc_active_before = 1
+            var:zg361_workforce_normal_exit_fact_receipt_formal_hc_active_after = 0
+            var:zg361_workforce_normal_exit_fact_receipt_formal_hc_case > 0
             var:zg361_workforce_normal_exit_fact_receipt_source_object_consumed = 1
             var:zg361_workforce_normal_exit_fact_receipt_source_receipt_serial = var:zg361_workforce_normal_exit_fact_receipt_case
             var:zg361_workforce_normal_exit_fact_receipt_exit_year > 0
@@ -197,6 +241,23 @@ zg361_workforce_rehire_fact_capture_exit_effect = {
         set_variable = { name = zg361_workforce_rehire_fact_exit_position_type_id value = var:zg361_workforce_normal_exit_fact_receipt_position_type_id }
         set_variable = { name = zg361_workforce_rehire_fact_exit_appointment_receipt_id value = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_id }
         set_variable = { name = zg361_workforce_rehire_fact_exit_appointment_receipt_hash value = var:zg361_workforce_normal_exit_fact_receipt_appointment_receipt_hash }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_authorized_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_available_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_reserved_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_occupied_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_frozen_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_reclaimed_before value = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_authorized_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_available_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_reserved_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_occupied_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_frozen_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_reclaimed_after value = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_destination_frozen value = 1 }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_hc_conservation_verified value = 1 }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_formal_hc_active_before value = 1 }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_formal_hc_active_after value = 0 }
+        set_variable = { name = zg361_workforce_rehire_fact_exit_formal_hc_case value = var:zg361_workforce_normal_exit_fact_receipt_formal_hc_case }
         set_variable = { name = zg361_workforce_rehire_fact_old_result_owner value = var:zg361_workforce_normal_exit_fact_receipt_prior_result_owner }
         set_variable = { name = zg361_workforce_rehire_fact_old_result_cycle value = var:zg361_workforce_normal_exit_fact_receipt_prior_result_cycle }
         set_variable = { name = zg361_workforce_rehire_fact_old_result_case value = var:zg361_workforce_normal_exit_fact_receipt_prior_result_case }
@@ -254,6 +315,23 @@ zg361_workforce_rehire_fact_capture_exit_effect = {
             var:zg361_workforce_rehire_fact_exit_receipt_id = var:zg361_workforce_normal_exit_fact_receipt_id
             var:zg361_workforce_rehire_fact_exit_receipt_hash = var:zg361_workforce_normal_exit_fact_receipt_hash
             var:zg361_workforce_rehire_fact_exit_class = 1
+            var:zg361_workforce_rehire_fact_exit_hc_authorized_before = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_before
+            var:zg361_workforce_rehire_fact_exit_hc_available_before = var:zg361_workforce_normal_exit_fact_receipt_hc_available_before
+            var:zg361_workforce_rehire_fact_exit_hc_reserved_before = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_before
+            var:zg361_workforce_rehire_fact_exit_hc_occupied_before = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_before
+            var:zg361_workforce_rehire_fact_exit_hc_frozen_before = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_before
+            var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_before
+            var:zg361_workforce_rehire_fact_exit_hc_authorized_after = var:zg361_workforce_normal_exit_fact_receipt_hc_authorized_after
+            var:zg361_workforce_rehire_fact_exit_hc_available_after = var:zg361_workforce_normal_exit_fact_receipt_hc_available_after
+            var:zg361_workforce_rehire_fact_exit_hc_reserved_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reserved_after
+            var:zg361_workforce_rehire_fact_exit_hc_occupied_after = var:zg361_workforce_normal_exit_fact_receipt_hc_occupied_after
+            var:zg361_workforce_rehire_fact_exit_hc_frozen_after = var:zg361_workforce_normal_exit_fact_receipt_hc_frozen_after
+            var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after = var:zg361_workforce_normal_exit_fact_receipt_hc_reclaimed_after
+            var:zg361_workforce_rehire_fact_exit_hc_destination_frozen = 1
+            var:zg361_workforce_rehire_fact_exit_hc_conservation_verified = 1
+            var:zg361_workforce_rehire_fact_exit_formal_hc_active_before = 1
+            var:zg361_workforce_rehire_fact_exit_formal_hc_active_after = 0
+            var:zg361_workforce_rehire_fact_exit_formal_hc_case = var:zg361_workforce_normal_exit_fact_receipt_formal_hc_case
             var:zg361_workforce_rehire_fact_old_result_case = var:zg361_workforce_normal_exit_fact_receipt_prior_result_case
             var:zg361_workforce_rehire_fact_old_result_hash = var:zg361_workforce_normal_exit_fact_receipt_prior_result_hash
             var:zg361_workforce_rehire_fact_exit_pip_present = var:zg361_workforce_normal_exit_fact_receipt_prior_pip_present
@@ -363,12 +441,54 @@ zg361_workforce_rehire_fact_capture_growth_effect = {
             has_variable = zg361_workforce_rehire_fact_exit_history_hash
             has_variable = zg361_workforce_rehire_fact_exit_observed_year
             has_variable = zg361_workforce_rehire_fact_exit_class
+            has_variable = zg361_workforce_rehire_fact_exit_hc_authorized_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_available_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_reserved_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_occupied_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_frozen_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_reclaimed_before
+            has_variable = zg361_workforce_rehire_fact_exit_hc_authorized_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_available_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_reserved_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_occupied_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_frozen_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+            has_variable = zg361_workforce_rehire_fact_exit_hc_destination_frozen
+            has_variable = zg361_workforce_rehire_fact_exit_hc_conservation_verified
+            has_variable = zg361_workforce_rehire_fact_exit_formal_hc_active_before
+            has_variable = zg361_workforce_rehire_fact_exit_formal_hc_active_after
+            has_variable = zg361_workforce_rehire_fact_exit_formal_hc_case
             has_variable = zg361_workforce_rehire_fact_pip_history_retained
             has_variable = zg361_workforce_rehire_fact_misconduct_present
             has_variable = zg361_workforce_rehire_fact_misconduct_history_retained
             var:zg361_workforce_rehire_fact_state = 1
             var:zg361_workforce_rehire_fact_subject = this
             var:zg361_workforce_rehire_fact_exit_class = 1
+            var:zg361_workforce_rehire_fact_exit_hc_authorized_before = var:zg361_workforce_rehire_fact_exit_hc_authorized_after
+            var:zg361_workforce_rehire_fact_exit_hc_available_before = var:zg361_workforce_rehire_fact_exit_hc_available_after
+            var:zg361_workforce_rehire_fact_exit_hc_reserved_before = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
+            var:zg361_workforce_rehire_fact_exit_hc_occupied_after = { value = var:zg361_workforce_rehire_fact_exit_hc_occupied_before subtract = 1 }
+            var:zg361_workforce_rehire_fact_exit_hc_frozen_after = { value = var:zg361_workforce_rehire_fact_exit_hc_frozen_before add = 1 }
+            var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+            var:zg361_workforce_rehire_fact_exit_hc_authorized_before = {
+                value = var:zg361_workforce_rehire_fact_exit_hc_available_before
+                add = var:zg361_workforce_rehire_fact_exit_hc_reserved_before
+                add = var:zg361_workforce_rehire_fact_exit_hc_occupied_before
+                add = var:zg361_workforce_rehire_fact_exit_hc_frozen_before
+                add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_before
+            }
+            var:zg361_workforce_rehire_fact_exit_hc_authorized_after = {
+                value = var:zg361_workforce_rehire_fact_exit_hc_available_after
+                add = var:zg361_workforce_rehire_fact_exit_hc_reserved_after
+                add = var:zg361_workforce_rehire_fact_exit_hc_occupied_after
+                add = var:zg361_workforce_rehire_fact_exit_hc_frozen_after
+                add = var:zg361_workforce_rehire_fact_exit_hc_reclaimed_after
+            }
+            var:zg361_workforce_rehire_fact_exit_hc_destination_frozen = 1
+            var:zg361_workforce_rehire_fact_exit_hc_conservation_verified = 1
+            var:zg361_workforce_rehire_fact_exit_formal_hc_active_before = 1
+            var:zg361_workforce_rehire_fact_exit_formal_hc_active_after = 0
+            var:zg361_workforce_rehire_fact_exit_formal_hc_case > 0
             var:zg361_workforce_rehire_fact_normal_exit_verified = 1
             var:zg361_workforce_rehire_fact_old_result_grade = 1
             var:zg361_workforce_rehire_fact_pip_history_retained = 1

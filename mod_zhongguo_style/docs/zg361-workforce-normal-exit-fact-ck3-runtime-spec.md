@@ -22,7 +22,7 @@ actual_exit=1 / object_consumed=1`。
 normal-exit begin 直接 fail-closed。#075 route B、coercion、procedural redundancy、reclassification、拒绝和超时
 同样不能产生正常离职 receipt。
 
-## 2. 为什么必须分三次隔帧
+## 2. 为什么必须把写入与观察隔帧
 
 当前 `zg361_b2_m075_accept_exit_offer_effect` 在支付和消费业务对象后调用
 `force_step_down_landed_titles`。若先执行它，长期职业槽可能因资格变化走 invalidated，而不是可证明的
@@ -34,7 +34,9 @@ native revoke callback。因此正常链固定为：
   -> D+1 dispatch：revoke_court_position(long-lived career slot)
   -> D+1 audit：slot_active 1->0 + END_REASON=1 + owner/subject + no holder
   -> 同一 audit 尾部：执行真实 zg361_b2_m075_accept_exit_offer_effect
-  -> D+1 finalize：验收 #075 funded poststate 和 consumed business object，再 seal receipt
+  -> D+1 migrate：验收 #075 funded poststate 和 consumed business object；occupied -1、frozen +1
+  -> D+1 HC audit：重新读取六分区、formal HC 与 lineage；守恒成立后才 seal receipt
+  -> D+1 capture：把已结算 receipt 交给 rehire producer
 ```
 
 producer 复用已有 `zg361_workforce_exit_fact_career_slot_court_position`，不创建第二份岗位。该岗位的统一
@@ -45,14 +47,15 @@ reason/owner/subject + no-longer-holder”的精确 join。
 
 ## 3. 无参数 ABI 与不可变 receipt
 
-四个 effect 都在 subject scope 以 `= yes` 调用；caller 不得传 owner、subject、cycle、case、原因、ID、hash、
+五个 effect 都在 subject scope 以 `= yes` 调用；caller 不得传 owner、subject、cycle、case、原因、ID、hash、
 布尔或 callback 结果：
 
 ```text
 zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect
 zg361_workforce_normal_exit_fact_dispatch_native_revoke_effect
 zg361_workforce_normal_exit_fact_audit_native_then_accept_m075_effect
-zg361_workforce_normal_exit_fact_finalize_receipt_effect
+zg361_workforce_normal_exit_fact_migrate_hc_partition_effect
+zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect
 ```
 
 receipt 的 ID/hash 由已冻结的 #075 case、旧 result、appointment hash 与 subject-local serial 推导。seal 后
@@ -83,16 +86,31 @@ consumed tombstone 追加到 immutable slot 1，使不同 owner growth 使用新
 
 ## 5. HC 与成本的诚实口径
 
-#075 的 `hc_released=1` 只是源业务对象自己的声明。现有 #075 effect 没有修改 Workforce HC partition，故本包
-要求 finalize 时 `formal_hc_active=1`、`occupied/frozen` 与 begin 快照完全相同，并明确写：
+#075 的 `hc_released=1` 仍只是源业务对象自己的声明，不能单独当作 HC 证据。本包先冻结完整六分区：
+`authorized / available / reserved / occupied / frozen / reclaimed`，要求 begin 时各分区非负且总和等于
+`authorized`。在 #075 funded poststate 与真实 native 撤任都成立后，唯一 mutation point 执行：
+
+```text
+occupied_after = occupied_before - 1
+frozen_after   = frozen_before + 1
+available/reserved/reclaimed/authorized 不变
+formal_hc_active: 1 -> 0
+formal_hc_active_case 保留为旧岗位 lineage
+```
+
+离职形成的是“冻结空缺”，不是自动开放招聘名额；这与 #277 的 vacancy 语义一致。mutation 后必须再隔一日观察，只有
+六分区逐项符合预期、全非负、总和仍等于 `authorized`、旧 owner/subject/cycle/case/slot lineage 未漂移时才写：
 
 ```text
 receipt_source_hc_release_claimed = 1
-receipt_hc_ledger_settled = 0
+receipt_hc_ledger_settled = 1
+receipt_hc_destination_frozen = 1
+receipt_hc_conservation_verified = 1
 ```
 
-这不是 HC ledger 已释放的证明。50 金成本只有在真实 `treasury_paid=50` 与 `personal_received=50` poststate
-成立后才封存；本包自身不重复扣国库或增加个人金币，也不直接调用 title step-down。
+receipt 同时永久保存六分区 before/after、formal HC before/after/case。任何 stale/collision/partial poststate 都落
+RED 27654/27655，不能 seal receipt，也不能再次迁移。50 金成本只有在真实 `treasury_paid=50` 与
+`personal_received=50` poststate 成立后才封存；本包自身不重复扣国库或增加个人金币，也不直接调用 title step-down。
 
 ## 6. 已接 caller 与精确 residual blocker
 
@@ -102,11 +120,14 @@ receipt seal 后由独立 D+1 event 调 `zg361_workforce_rehire_fact_capture_exi
 落 `unexpected_native_end_seen=1`，而 audit 额外要求本包专属 callback tuple。
 
 已解除的原 blocker：probation 的活动投影 + 两个 append-only archive 允许第二雇主与回旧雇主自然 arm，且不删除旧
-receipt。仍有一个独立功能缺口和一组 live 验收项：
+receipt；#075 normal exit 现也真实执行 `occupied -> frozen` 并在 D+1 审计后才产生 settled receipt。剩余的是 live 验收，
+不是另一个脚本功能占位：
 
-1. #075 仍未把真实 HC ledger 从 occupied 迁移到明确的离职 partition；receipt 继续如实保留
-   `source_hc_release_claimed=1 / hc_ledger_settled=0`。HC partition 作为下一独立单元处理；
-2. 新 ledger、normal-exit 与 rehire 全链仍须 loader、MCP-first paused snapshot、存读档和多考核周期实机证明。
+1. 新 ledger、normal-exit 与 rehire 全链仍须 loader、MCP-first paused snapshot、存读档和多考核周期实机证明；
+2. `zhongguo_workforce_normal_exit_snapshot_v1` provider 已在第 21 个 application-main 固定槽完成 native driver、
+   service 与 MCP 接线；它直接返回六分区 before/after、formal HC、receipt identity、D+1
+   settled/conservation 位及 rehire capture。该接线当前仅为 static/fixture-ready，尚未取得 paused CK3 artifact，
+   因而不能用 ACK、OCR 或 `source_hc_release_claimed` 冒充 live 观察。
 
 仍须跑新 loader、MCP-first paused snapshot、存读档与多考核周期实机，逐帧验证 intent、native revoke callback、
 #075 payment/object poststate、HC ledger 和 delayed rehire capture；这些完成前不得从 not live 提升 readiness。

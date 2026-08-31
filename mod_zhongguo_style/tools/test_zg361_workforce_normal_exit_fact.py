@@ -117,7 +117,8 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
                 "zg361_workforce_normal_exit_fact_begin_from_m075_offer_effect",
                 "zg361_workforce_normal_exit_fact_dispatch_native_revoke_effect",
                 "zg361_workforce_normal_exit_fact_audit_native_then_accept_m075_effect",
-                "zg361_workforce_normal_exit_fact_finalize_receipt_effect",
+                "zg361_workforce_normal_exit_fact_migrate_hc_partition_effect",
+                "zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect",
             },
         )
 
@@ -176,7 +177,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
 
     def test_08_prior_pip_is_conditional_history_not_eligibility(self) -> None:
         begin = block(self.effects, f"{generator.PREFIX}_begin_from_m075_offer_effect")
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         for token in (
             "pip_state = 0",
             "pending_pip_present value = 0",
@@ -249,7 +250,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
 
     def test_14_m075_poststate_is_read_only_on_later_frame(self) -> None:
         audit = block(self.effects, f"{generator.PREFIX}_audit_native_then_accept_m075_effect")
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        migrate = block(self.effects, f"{generator.PREFIX}_migrate_hc_partition_effect")
         self.assertIn(f"id = {generator.NAMESPACE}.{generator.FINALIZE_EVENT_ID} days = 1", audit)
         for token in (
             "m075_state = 3",
@@ -261,19 +262,31 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             "m075_object_active = 0",
             "m075_object_consumed = 1",
         ):
-            self.assertIn(token, finalize)
+            self.assertIn(token, migrate)
             self.assertNotIn(token, audit)
 
-    def test_15_hc_claim_is_not_misreported_as_physical_settlement(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+    def test_15_hc_claim_is_sealed_only_after_real_partition_settlement(self) -> None:
+        migrate = block(self.effects, f"{generator.PREFIX}_migrate_hc_partition_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
+        self.assertIn("change_variable = { name = zg361_ch_hc_occupied add = -1 }", migrate)
+        self.assertIn("change_variable = { name = zg361_ch_hc_frozen add = 1 }", migrate)
+        self.assertIn("we_formal_hc_active value = 0", migrate)
+        self.assertIn(f"id = {generator.NAMESPACE}.{generator.HC_AUDIT_EVENT_ID} days = 1", migrate)
+        self.assertNotIn("receipt_active value = 1", migrate)
         self.assertIn("receipt_source_hc_release_claimed value = 1", finalize)
-        self.assertIn("receipt_hc_ledger_settled value = 0", finalize)
-        self.assertIn("ch_hc_occupied = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before", finalize)
-        self.assertIn("ch_hc_frozen = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before", finalize)
-        self.assertNotIn("change_variable = { name = zg361_ch_hc_", self.effects)
+        self.assertIn("receipt_hc_ledger_settled value = 1", finalize)
+        self.assertIn("receipt_hc_destination_frozen value = 1", finalize)
+        self.assertIn("receipt_hc_conservation_verified value = 1", finalize)
+        self.assertIn("receipt_formal_hc_active_before value = 1", finalize)
+        self.assertIn("receipt_formal_hc_active_after value = 0", finalize)
+        self.assertIn("ch_hc_occupied = { value = var:zg361_workforce_normal_exit_fact_pending_hc_occupied_before subtract = 1 }", finalize)
+        self.assertIn("ch_hc_frozen = { value = var:zg361_workforce_normal_exit_fact_pending_hc_frozen_before add = 1 }", finalize)
+        for field in ("authorized", "available", "reserved", "occupied", "frozen", "reclaimed"):
+            self.assertIn(f"receipt_hc_{field}_before", finalize)
+            self.assertIn(f"receipt_hc_{field}_after", finalize)
 
     def test_16_receipt_freezes_normal_reason_and_source(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         for token in (
             "receipt_consumed_operation value = 75",
             "receipt_exit_source_kind value = 75",
@@ -290,7 +303,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             self.assertIn(token, finalize)
 
     def test_17_receipt_freezes_result_slot_cost_and_optional_pip(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         for token in (
             "receipt_prior_result_grade value = 1",
             "receipt_prior_result_hash value = var:zg361_workforce_normal_exit_fact_pending_result_hash",
@@ -302,14 +315,14 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             self.assertIn(token, finalize)
 
     def test_18_ids_hashes_and_reason_are_producer_derived(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         self.assertIn("next_receipt_serial", finalize)
         self.assertIn("receipt_id value = {", finalize)
         self.assertIn("receipt_hash value = {", finalize)
         self.assertNotRegex(self.effects, r"\$[^$]*(?:ID|HASH|REASON|SUCCESS|CALLBACK)[^$]*\$")
 
     def test_19_clean_misconduct_history_does_not_invent_references(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         self.assertIn("receipt_misconduct_present value = 0", finalize)
         self.assertNotIn("receipt_misconduct_case_id", self.effects)
         self.assertNotIn("receipt_misconduct_case_hash", self.effects)
@@ -338,6 +351,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             generator.DISPATCH_EVENT_ID,
             generator.AUDIT_EVENT_ID,
             generator.FINALIZE_EVENT_ID,
+            generator.HC_AUDIT_EVENT_ID,
             generator.CAPTURE_EVENT_ID,
         ):
             event = block(self.events, f"{generator.NAMESPACE}.{event_id}")
@@ -347,7 +361,7 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
         self.assertNotIn("hidden = yes", notice)
 
     def test_22a_sealed_exit_is_captured_by_rehire_on_d_plus_one(self) -> None:
-        finalize = block(self.effects, f"{generator.PREFIX}_finalize_receipt_effect")
+        finalize = block(self.effects, f"{generator.PREFIX}_audit_hc_then_finalize_receipt_effect")
         capture = block(self.events, f"{generator.NAMESPACE}.{generator.CAPTURE_EVENT_ID}")
         self.assertIn(
             f"id = {generator.NAMESPACE}.{generator.CAPTURE_EVENT_ID} days = 1",
@@ -391,10 +405,14 @@ class WorkforceNormalExitFactTests(unittest.TestCase):
             "capture_exit_effect",
             "force_step_down_landed_titles",
             "HC ledger",
+            "occupied -> frozen",
+            "receipt_hc_ledger_settled = 1",
+            "audit_hc_then_finalize_receipt_effect",
             "MCP-first paused snapshot",
             "not live",
         ):
             self.assertIn(token, self.spec)
+        self.assertNotIn("hc_ledger_settled=0", self.spec)
 
 
 if __name__ == "__main__":

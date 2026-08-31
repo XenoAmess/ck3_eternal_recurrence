@@ -34,7 +34,20 @@ zg361workforcenormalexitfact.9102 = {
         var:zg361_workforce_normal_exit_fact_pending_subject = this
         var:zg361_workforce_normal_exit_fact_state = 2
     }
-    immediate = { zg361_workforce_normal_exit_fact_finalize_receipt_effect = yes }
+    immediate = { zg361_workforce_normal_exit_fact_migrate_hc_partition_effect = yes }
+}
+
+zg361workforcenormalexitfact.9104 = {
+    type = character_event
+    hidden = yes
+    trigger = {
+        has_variable = zg361_workforce_normal_exit_fact_pending
+        var:zg361_workforce_normal_exit_fact_pending = 1
+        var:zg361_workforce_normal_exit_fact_pending_subject = this
+        var:zg361_workforce_normal_exit_fact_pending_hc_migration_authorized = 1
+        var:zg361_workforce_normal_exit_fact_state = 3
+    }
+    immediate = { zg361_workforce_normal_exit_fact_audit_hc_then_finalize_receipt_effect = yes }
 }
 
 zg361workforcenormalexitfact.9103 = {
