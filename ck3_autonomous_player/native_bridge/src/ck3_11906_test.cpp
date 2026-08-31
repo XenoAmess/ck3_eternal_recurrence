@@ -9033,6 +9033,346 @@ int main() {
   }
   reset_raiktor_hook_fixture();
 
+  // GEN-034 war-bound troop identity is the owner-scoped persistent
+  // CRegimentID plus the exact full WarID and keep=false. It is deliberately
+  // not a Raiktor/event provenance claim: group names, public ArmyIDs and the
+  // authored 3,000-soldier total are absent from this fixture and API.
+  constexpr std::int32_t persistent_regiment_a_id = 0x03000001;
+  constexpr std::int32_t persistent_regiment_b_id = 0x04000002;
+  constexpr std::int32_t other_war_regiment_id = 0x05000003;
+  constexpr std::int32_t kept_regiment_id = 0x06000004;
+  constexpr std::int32_t same_slot_stale_persistent_id = 0x07000001;
+  constexpr std::int32_t current_regiment_a0_id = 0x11000001;
+  constexpr std::int32_t current_regiment_a3_id = 0x12000002;
+  constexpr std::int32_t current_regiment_b6_id = 0x13000003;
+  constexpr std::int32_t same_slot_stale_current_id = 0x14000002;
+  constexpr std::int32_t merged_carmy_id = 0x21000001;
+  constexpr std::int32_t split_carmy_id = 0x22000002;
+  constexpr std::int32_t same_slot_stale_carmy_id = 0x23000001;
+  constexpr std::int32_t same_slot_other_war_id = 0x02000001;
+
+  std::array<std::byte, 0x40> persistent_regiment_storage{};
+  std::array<std::byte, 5 * 0x10> persistent_regiment_slots{};
+  std::array<std::byte, 0x150> persistent_regiment_a{};
+  std::array<std::byte, 0x150> persistent_regiment_b{};
+  std::array<std::byte, 0x150> other_war_regiment{};
+  std::array<std::byte, 0x150> kept_regiment{};
+  std::array<std::byte, 0x40> current_regiment_storage{};
+  std::array<std::byte, 4 * 0x10> current_regiment_slots{};
+  std::array<std::byte, 0x150> current_regiment_a0{};
+  std::array<std::byte, 0x150> current_regiment_a3{};
+  std::array<std::byte, 0x150> current_regiment_b6{};
+  std::array<std::byte, 0x40> war_bound_carmy_storage{};
+  std::array<std::byte, 3 * 0x10> war_bound_carmy_slots{};
+  std::array<std::byte, 0x50> merged_carmy{};
+  std::array<std::byte, 0x50> split_carmy{};
+  std::array<std::int32_t, 2> merged_carmy_regiment_ids{
+      current_regiment_a0_id, current_regiment_a3_id};
+  std::array<std::int32_t, 1> split_carmy_regiment_ids{
+      current_regiment_b6_id};
+  std::array<std::byte, 0x2A0> war_bound_military_state{};
+  std::array<std::byte, 2 * 0x38> war_bound_groups{};
+  std::array<std::int32_t, 2> war_bound_group_0_ids{
+      persistent_regiment_a_id, other_war_regiment_id};
+  std::array<std::int32_t, 3> war_bound_group_1_ids{
+      persistent_regiment_b_id, kept_regiment_id,
+      persistent_regiment_a_id};
+
+  const auto initialize_persistent_regiment =
+      [](auto &regiment, std::int32_t regiment_id,
+         std::int32_t bound_war_id, std::uint8_t keep) {
+        Store(regiment, 0x10, regiment_id);
+        Store(regiment, 0x13C, bound_war_id);
+        Store(regiment, 0x142, keep);
+        for (std::int32_t index = 0;
+             index < static_cast<std::int32_t>(
+                         xar::ck3_11906::
+                             kWarBoundRegimentCompositionRowCount);
+             ++index) {
+          const auto row_offset =
+              std::size_t{0x18} + static_cast<std::size_t>(index) * 0x24;
+          Store(regiment, row_offset + 0x08, regiment_id);
+          Store(regiment, row_offset + 0x0C, index);
+          Store(regiment, row_offset + 0x10, std::int32_t{-1});
+        }
+      };
+  initialize_persistent_regiment(
+      persistent_regiment_a, persistent_regiment_a_id, active_war_id, 0);
+  initialize_persistent_regiment(
+      persistent_regiment_b, persistent_regiment_b_id, active_war_id, 0);
+  initialize_persistent_regiment(
+      other_war_regiment, other_war_regiment_id,
+      same_slot_other_war_id, 0);
+  initialize_persistent_regiment(
+      kept_regiment, kept_regiment_id, active_war_id, 1);
+  Store(persistent_regiment_a, 0x18 + 0 * 0x24 + 0x10,
+        current_regiment_a0_id);
+  Store(persistent_regiment_a, 0x18 + 3 * 0x24 + 0x10,
+        current_regiment_a3_id);
+  Store(persistent_regiment_b, 0x18 + 6 * 0x24 + 0x10,
+        current_regiment_b6_id);
+
+  Store(persistent_regiment_slots, 0x18,
+        static_cast<void *>(persistent_regiment_a.data()));
+  Store(persistent_regiment_slots, 0x28,
+        static_cast<void *>(persistent_regiment_b.data()));
+  Store(persistent_regiment_slots, 0x38,
+        static_cast<void *>(other_war_regiment.data()));
+  Store(persistent_regiment_slots, 0x48,
+        static_cast<void *>(kept_regiment.data()));
+  Store(persistent_regiment_storage, 0x20,
+        static_cast<void *>(persistent_regiment_slots.data()));
+  Store(persistent_regiment_storage, 0x2C, std::int32_t{5});
+
+  const auto initialize_current_regiment =
+      [](auto &regiment, std::int32_t regiment_id,
+         std::int32_t carmy_id) {
+        Store(regiment, 0x10, regiment_id);
+        Store(regiment, 0x140, carmy_id);
+      };
+  initialize_current_regiment(current_regiment_a0,
+                              current_regiment_a0_id,
+                              merged_carmy_id);
+  initialize_current_regiment(current_regiment_a3,
+                              current_regiment_a3_id,
+                              merged_carmy_id);
+  initialize_current_regiment(current_regiment_b6,
+                              current_regiment_b6_id,
+                              split_carmy_id);
+  Store(current_regiment_slots, 0x18,
+        static_cast<void *>(current_regiment_a0.data()));
+  Store(current_regiment_slots, 0x28,
+        static_cast<void *>(current_regiment_a3.data()));
+  Store(current_regiment_slots, 0x38,
+        static_cast<void *>(current_regiment_b6.data()));
+  Store(current_regiment_storage, 0x20,
+        static_cast<void *>(current_regiment_slots.data()));
+  Store(current_regiment_storage, 0x2C, std::int32_t{4});
+
+  Store(merged_carmy, 0x10, merged_carmy_id);
+  Store(merged_carmy, 0x38,
+        static_cast<void *>(merged_carmy_regiment_ids.data()));
+  Store(merged_carmy, 0x40, std::int32_t{2});
+  Store(merged_carmy, 0x44, std::int32_t{2});
+  Store(split_carmy, 0x10, split_carmy_id);
+  Store(split_carmy, 0x38,
+        static_cast<void *>(split_carmy_regiment_ids.data()));
+  Store(split_carmy, 0x40, std::int32_t{1});
+  Store(split_carmy, 0x44, std::int32_t{1});
+  Store(war_bound_carmy_slots, 0x18,
+        static_cast<void *>(merged_carmy.data()));
+  Store(war_bound_carmy_slots, 0x28,
+        static_cast<void *>(split_carmy.data()));
+  Store(war_bound_carmy_storage, 0x20,
+        static_cast<void *>(war_bound_carmy_slots.data()));
+  Store(war_bound_carmy_storage, 0x2C, std::int32_t{3});
+
+  Store(war_bound_groups, 0x20,
+        static_cast<void *>(war_bound_group_0_ids.data()));
+  Store(war_bound_groups, 0x28, std::int32_t{2});
+  Store(war_bound_groups, 0x2C, std::int32_t{2});
+  Store(war_bound_groups, 0x38 + 0x20,
+        static_cast<void *>(war_bound_group_1_ids.data()));
+  Store(war_bound_groups, 0x38 + 0x28, std::int32_t{3});
+  Store(war_bound_groups, 0x38 + 0x2C, std::int32_t{3});
+  Store(war_bound_military_state, 0x290,
+        static_cast<void *>(war_bound_groups.data()));
+  Store(war_bound_military_state, 0x298, std::int32_t{2});
+  Store(war_bound_military_state, 0x29C, std::int32_t{2});
+
+  void *persistent_regiment_storage_pointer =
+      persistent_regiment_storage.data();
+  void *current_regiment_storage_pointer = current_regiment_storage.data();
+  void *war_bound_carmy_storage_pointer = war_bound_carmy_storage.data();
+  Bindings war_bound_bindings = bindings;
+  war_bound_bindings.persistent_regiment_storage_slot =
+      &persistent_regiment_storage_pointer;
+  war_bound_bindings.regiment_storage_slot =
+      &current_regiment_storage_pointer;
+  war_bound_bindings.army_internal_storage_slot =
+      &war_bound_carmy_storage_pointer;
+  const auto previous_military_state =
+      LoadBytes<void *>(g_played_character.data(), 0x1B8);
+  Store(g_played_character, 0x1B8,
+        static_cast<void *>(war_bound_military_state.data()));
+  g_submit_called = false;
+
+  xar::ck3_11906::WarBoundRegimentObservation war_bound{};
+  const auto absent_current =
+      xar::ck3_11906::WarBoundRegimentCurrentRow{};
+  if (!xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, active_war_id, played_character_id,
+          war_bound) ||
+      war_bound.provenance !=
+          xar::ck3_11906::WarBoundRegimentProvenance::
+              war_bound_not_event_specific ||
+      war_bound.owner_character_id != played_character_id ||
+      war_bound.war_id != active_war_id ||
+      war_bound.regiments.size() != 2 ||
+      war_bound.regiments[0].persistent_regiment_id !=
+          persistent_regiment_a_id ||
+      war_bound.regiments[0].bound_war_id != active_war_id ||
+      war_bound.regiments[0].war_keep_on_attacker_victory ||
+      war_bound.regiments[0].current_rows[0] !=
+          xar::ck3_11906::WarBoundRegimentCurrentRow{
+              current_regiment_a0_id, merged_carmy_id} ||
+      war_bound.regiments[0].current_rows[1] != absent_current ||
+      war_bound.regiments[0].current_rows[3] !=
+          xar::ck3_11906::WarBoundRegimentCurrentRow{
+              current_regiment_a3_id, merged_carmy_id} ||
+      war_bound.regiments[1].persistent_regiment_id !=
+          persistent_regiment_b_id ||
+      war_bound.regiments[1].current_rows[5] != absent_current ||
+      war_bound.regiments[1].current_rows[6] !=
+          xar::ck3_11906::WarBoundRegimentCurrentRow{
+              current_regiment_b6_id, split_carmy_id}) {
+    return Fail(
+        "war-bound regiment observer lost full identity, seven rows or merge state");
+  }
+
+  const auto rejects_war_bound_drift =
+      [&](auto configure, auto restore, std::string_view case_name) {
+        configure();
+        xar::ck3_11906::WarBoundRegimentObservation observed = war_bound;
+        const bool returned =
+            xar::ck3_11906::
+                ReadPrimaryAttackerWarBoundRegimentObservation(
+                war_bound_bindings, active_war_id,
+                played_character_id, observed);
+        restore();
+        if (returned ||
+            observed != xar::ck3_11906::WarBoundRegimentObservation{}) {
+          std::cerr << "War-bound regiment drift accepted: "
+                    << case_name << '\n';
+          return false;
+        }
+        return true;
+      };
+  if (!rejects_war_bound_drift(
+          [&] {
+            war_bound_group_0_ids[0] =
+                same_slot_stale_persistent_id;
+          },
+          [&] {
+            war_bound_group_0_ids[0] = persistent_regiment_a_id;
+          },
+          "persistent_generation") ||
+      !rejects_war_bound_drift(
+          [&] {
+            Store(persistent_regiment_a,
+                  0x18 + 3 * 0x24 + 0x10,
+                  same_slot_stale_current_id);
+          },
+          [&] {
+            Store(persistent_regiment_a,
+                  0x18 + 3 * 0x24 + 0x10,
+                  current_regiment_a3_id);
+          },
+          "current_generation") ||
+      !rejects_war_bound_drift(
+          [&] {
+            Store(current_regiment_a0, 0x140,
+                  same_slot_stale_carmy_id);
+          },
+          [&] {
+            Store(current_regiment_a0, 0x140, merged_carmy_id);
+          },
+          "carmy_generation") ||
+      !rejects_war_bound_drift(
+          [&] { Store(merged_carmy, 0x44, std::int32_t{1}); },
+          [&] { Store(merged_carmy, 0x44, std::int32_t{2}); },
+          "carmy_membership") ||
+      !rejects_war_bound_drift(
+          [&] {
+            Store(war_bound_military_state, 0x29C,
+                  std::int32_t{3});
+          },
+          [&] {
+            Store(war_bound_military_state, 0x29C,
+                  std::int32_t{2});
+          },
+          "group_header") ||
+      !rejects_war_bound_drift(
+          [&] { Store(war_bound_groups, 0x2C, std::int32_t{3}); },
+          [&] { Store(war_bound_groups, 0x2C, std::int32_t{2}); },
+          "nested_header") ||
+      !rejects_war_bound_drift(
+          [&] {
+            Store(persistent_regiment_a, 0x18 + 0x08,
+                  persistent_regiment_b_id);
+          },
+          [&] {
+            Store(persistent_regiment_a, 0x18 + 0x08,
+                  persistent_regiment_a_id);
+          },
+          "row_owner") ||
+      !rejects_war_bound_drift(
+          [&] {
+            Store(persistent_regiment_b,
+                  0x18 + 6 * 0x24 + 0x0C, std::int32_t{5});
+          },
+          [&] {
+            Store(persistent_regiment_b,
+                  0x18 + 6 * 0x24 + 0x0C, std::int32_t{6});
+          },
+          "row_ordinal") ||
+      !rejects_war_bound_drift(
+          [&] { Store(kept_regiment, 0x142, std::uint8_t{2}); },
+          [&] { Store(kept_regiment, 0x142, std::uint8_t{1}); },
+          "keep_boolean") ||
+      !rejects_war_bound_drift(
+          [&] {
+            war_bound_bindings.persistent_regiment_storage_slot =
+                nullptr;
+          },
+          [&] {
+            war_bound_bindings.persistent_regiment_storage_slot =
+                &persistent_regiment_storage_pointer;
+          },
+          "persistent_storage_binding")) {
+    return Fail("war-bound regiment observer accepted stale native state");
+  }
+
+  war_bound = {};
+  if (xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, active_war_id, enemy_character_id,
+          war_bound) ||
+      war_bound != xar::ck3_11906::WarBoundRegimentObservation{}) {
+    return Fail("war-bound regiment observer accepted a non-attacker owner");
+  }
+  if (xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, active_war_id,
+          std::int32_t{0x02000002}, war_bound) ||
+      war_bound != xar::ck3_11906::WarBoundRegimentObservation{}) {
+    return Fail("war-bound regiment observer accepted a stale owner generation");
+  }
+  if (xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, same_slot_other_war_id,
+          played_character_id, war_bound) ||
+      war_bound != xar::ck3_11906::WarBoundRegimentObservation{}) {
+    return Fail("war-bound regiment observer accepted a stale War generation");
+  }
+  Store(g_war, 0x358, static_cast<void *>(g_war.data()));
+  if (xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, active_war_id, played_character_id,
+          war_bound) ||
+      war_bound != xar::ck3_11906::WarBoundRegimentObservation{}) {
+    return Fail("war-bound regiment observer accepted an ended War");
+  }
+  Store(g_war, 0x358, static_cast<void *>(nullptr));
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (xar::ck3_11906::ReadPrimaryAttackerWarBoundRegimentObservation(
+          war_bound_bindings, active_war_id, played_character_id,
+          war_bound) ||
+      war_bound != xar::ck3_11906::WarBoundRegimentObservation{}) {
+    return Fail("war-bound regiment observer read a running frame");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  Store(g_played_character, 0x1B8, previous_military_state);
+  if (g_submit_called) {
+    return Fail("war-bound regiment observer submitted a native command");
+  }
+
   const auto exit_terms_result =
       xar::ck3_11906::ReadWarTerminationExitTermsForOfflineReFixture(
           bindings, active_war_id, exit_terms);

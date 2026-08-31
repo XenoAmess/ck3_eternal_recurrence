@@ -1059,6 +1059,7 @@
     "unit_state_code": "0xC7AAB0",
     "army_internal_storage_slot": "0x570C730",
     "regiment_storage_slot": "0x57BF4C8",
+    "persistent_regiment_storage_slot": "0x570CC88",
     "army_current_soldiers_from_regiment_array": "0x27BD9E0",
     "army_maximum_soldiers": "0x226F350",
     "combat_storage_slot": "0x570C758",
@@ -1851,6 +1852,13 @@
       "add_hook_type_reference": "ordinary node stores its hook wrapper at +0x60: resolved SHookType* +0x00, interned symbol ID +0x08 and mode byte +0x0C (node+0x6C). The closed Raiktor preview row requires mode=2 and node+0x60 pointer equality with the resolved favor_hook type; mode alone is insufficient.",
       "favor_hook_identity": "Use pure stable-key hash 0x3B8B000 and loaded lookup 0x288D350 against DB slot module+0x57C9B48; reject null and fallback module+0x57C78E0, require SHookType primary vtable 0x43F69F0, object+0x14 equal to the runtime hash and canonical MSVC string at +0x18 equal to favor_hook, then repeat DB/fallback/type lookup after traversal. 0x4F5E02C2 is a diagnostic fingerprint, never the sole identity.",
       "raiktor_favor_hook_read_boundary": "The isolated helper traverses only the original visible loaded root with a stack-cloned stock collector vtable, replaces and forwards only collector slot1, and accepts exactly zero or one primary ordinary add_hook row plus at most one same-node theocracy row. It never calls add_hook execution slot22 0x2E83710, generic trigger evaluator 0x334C510, hidden-truce projection, command submission or any world mutation; the production-disabled broad exit reader remains unchanged."
+    },
+    "WarBoundRegimentObservation": {
+      "persistent_cregiment_identity": "Persistent CRegiment RTTI .?AVCRegiment@@ TD 0x54A21A0, primary vtable 0x4305EE8, ctor 0x23933F0, factory 0x27BEE20 -> 0x27BECE0, serializer 0x2393510 and loader 0x2393A30. Exact storage pointer slot is module+0x570CC88; engine invalid/fallback slot module+0x570CC68 is forbidden.",
+      "current_carmyregiment_identity": "Raised/current CArmyRegiment RTTI .?AVCArmyRegiment@@ TD 0x54A2370, primary vtable 0x4306118, ctor 0x239B4F0 and factory 0x27BEF60. Exact storage pointer slot is module+0x57BF4C8; engine invalid/fallback slot module+0x57BF4C0 is forbidden. Existing legacy anchor names that say CRegiment for this store refer to the raised class.",
+      "identity": "Primary-attacker owner CCharacter full-generation ID resolves through the exact character storage and must equal CWar+0x288. Enumerate only that owner's CCharacter+0x1B8 military state, +0x290 vector of 0x38 special-troop groups, and each group+0x20 native full CRegimentID vector. Resolve persistent CRegiment IDs through module+0x570CC88 and re-read CRegiment+0x10; select only exact CRegiment+0x13C full WarID equality and +0x142 keep=false. The selector never reads group display name, public ArmyID, or soldier totals and is explicitly war-bound, not event-specific.",
+      "current_rows": "Persistent CRegiment has seven 0x24 composition rows at +0x18. Each row must re-read owner full CRegimentID at row+0x08 and ordinal at +0x0C. row+0x10 is current CArmyRegimentID or -1; present IDs resolve through module+0x57BF4C8 with identity at CArmyRegiment+0x10, then +0x140 yields the current full CArmyID resolved through module+0x570C730 with identity at CArmy+0x10. The current CArmy +0x38/+0x44 member array must contain the exact current CArmyRegimentID. Reading every row and grouping by current CArmyID handles merges without relying on original ArmyID.",
+      "postwar_boundary": "This active-war observation freezes full persistent/current/army generations before termination. It does not itself prove postwar cleanup once ResolveWar no longer succeeds; the caller needs a separate frozen-ID post-check and must not treat war_not_found alone as regiment destruction proof."
     },
     "ArmyStrengthQuery": {
       "scope": "one paused ReadSnapshot; stable first-seen union of player_armies, then each active war's allied_armies and enemy_armies. Full public CUnitID dedupe; role priority player > active_war_ally > active_war_enemy; WarIDs union in snapshot order",

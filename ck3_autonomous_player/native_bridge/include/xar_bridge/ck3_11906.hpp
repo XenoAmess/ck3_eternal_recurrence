@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_contract.hpp"
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <span>
@@ -281,6 +282,7 @@ struct Bindings {
   void **army_storage_slot = nullptr;
   void **army_internal_storage_slot = nullptr;
   void **regiment_storage_slot = nullptr;
+  void **persistent_regiment_storage_slot = nullptr;
   void **combat_storage_slot = nullptr;
   void **battle_result_storage_slot = nullptr;
   void **battle_result_fallback_slot = nullptr;
@@ -480,6 +482,45 @@ using game::WarTerminationTermsSnapshot;
 using game::WarTerminationExitTermsSnapshot;
 using game::PauseSubmitResult;
 using game::ResumeSubmitResult;
+
+inline constexpr std::size_t kWarBoundRegimentCompositionRowCount = 7;
+
+enum class WarBoundRegimentProvenance : std::uint8_t {
+  unavailable = 0,
+  war_bound_not_event_specific = 1,
+};
+
+struct WarBoundRegimentCurrentRow {
+  std::int32_t current_army_regiment_id = -1;
+  std::int32_t raised_carmy_id = -1;
+
+  friend bool operator==(const WarBoundRegimentCurrentRow &,
+                         const WarBoundRegimentCurrentRow &) = default;
+};
+
+struct WarBoundPersistentRegimentSnapshot {
+  std::int32_t persistent_regiment_id = -1;
+  std::int32_t bound_war_id = -1;
+  bool war_keep_on_attacker_victory = false;
+  std::array<WarBoundRegimentCurrentRow,
+             kWarBoundRegimentCompositionRowCount>
+      current_rows{};
+
+  friend bool operator==(const WarBoundPersistentRegimentSnapshot &,
+                         const WarBoundPersistentRegimentSnapshot &) =
+      default;
+};
+
+struct WarBoundRegimentObservation {
+  WarBoundRegimentProvenance provenance =
+      WarBoundRegimentProvenance::unavailable;
+  std::int32_t owner_character_id = -1;
+  std::int32_t war_id = -1;
+  std::vector<WarBoundPersistentRegimentSnapshot> regiments;
+
+  friend bool operator==(const WarBoundRegimentObservation &,
+                         const WarBoundRegimentObservation &) = default;
+};
 
 // The generic registry hashes the process image once and passes an exact-match
 // decision into the selected version adapter. False returns disabled bindings.
@@ -779,6 +820,18 @@ using game::ReadWarTerminationExitTermsResult;
 ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationExitTermsSnapshot &output) noexcept;
+
+// Exact-build, primary-attacker-owner observation of persistent regiments
+// bound to one full-generation active WarID with keep=false. Each of the seven
+// persistent composition rows is generation-resolved to its current
+// CArmyRegiment and current CArmy when present, so army merges do not erase
+// identity. CK3 stores no event/source provenance on these objects; successful
+// output therefore says only war_bound_not_event_specific and never infers
+// Raiktor identity from a display name, public ArmyID or initial soldier total.
+bool ReadPrimaryAttackerWarBoundRegimentObservation(
+    const Bindings &bindings, std::int32_t war_id,
+    std::int32_t owner_character_id,
+    WarBoundRegimentObservation &output) noexcept;
 
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 // Offline-only entry point for the exact-build loaded-effect fixtures.  The

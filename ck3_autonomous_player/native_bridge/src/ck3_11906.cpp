@@ -72,6 +72,7 @@ constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
 constexpr std::uintptr_t kArmyStorageSlotRva = 0x570CC80;
 constexpr std::uintptr_t kArmyInternalStorageSlotRva = 0x570C730;
 constexpr std::uintptr_t kRegimentStorageSlotRva = 0x57BF4C8;
+constexpr std::uintptr_t kPersistentRegimentStorageSlotRva = 0x570CC88;
 constexpr std::uintptr_t kCombatStorageSlotRva = 0x570C758;
 constexpr std::uintptr_t kBattleResultFallbackSlotRva = 0x57C0320;
 constexpr std::uintptr_t kBattleResultStorageSlotRva = 0x57C0328;
@@ -315,6 +316,8 @@ constexpr std::size_t kCharacterLegitimacyDataOffset = 0x1C0;
 constexpr std::size_t kCharacterKnightLinkRegimentIdOffset = 0xF8;
 constexpr std::size_t kCharacterFamilyDataOffset = 0x1A0;
 constexpr std::size_t kCharacterLandStatusObjectOffset = 0x1B8;
+constexpr std::size_t kCharacterMilitaryStateOffset =
+    kCharacterLandStatusObjectOffset;
 constexpr std::size_t kCharacterDeathDataOffset = 0x1C8;
 constexpr std::size_t kFamilyBetrothedCharacterIdOffset = 0x10;
 constexpr std::size_t kFamilyPrimarySpouseCharacterIdOffset = 0x14;
@@ -406,6 +409,17 @@ constexpr std::size_t kRegimentCounterTargetClassOffset = 0x00;
 constexpr std::size_t kRegimentCounterTargetEffectivenessOffset = 0x08;
 constexpr std::size_t kRegimentKnightCharacterIdOffset = 0x148;
 constexpr std::size_t kRegimentArmyIdOffset = 0x140;
+constexpr std::size_t kPersistentRegimentIdOffset = 0x10;
+constexpr std::size_t kPersistentRegimentCompositionRowsOffset = 0x18;
+constexpr std::size_t kPersistentRegimentCompositionRowStride = 0x24;
+constexpr std::size_t kPersistentRegimentRowOwnerIdOffset = 0x08;
+constexpr std::size_t kPersistentRegimentRowOrdinalOffset = 0x0C;
+constexpr std::size_t kPersistentRegimentRowCurrentRegimentIdOffset = 0x10;
+constexpr std::size_t kPersistentRegimentBoundWarIdOffset = 0x13C;
+constexpr std::size_t kPersistentRegimentWarKeepOffset = 0x142;
+constexpr std::size_t kSpecialTroopGroupsOffset = 0x290;
+constexpr std::size_t kSpecialTroopGroupStride = 0x38;
+constexpr std::size_t kSpecialTroopGroupRegimentIdsOffset = 0x20;
 constexpr std::size_t kDatabaseObjectKeyOffset = 0x18;
 constexpr std::size_t kDatabaseObjectStableHashOffset = 0x14;
 constexpr std::size_t kAddHookTypePointerOffset = 0x60;
@@ -4539,6 +4553,163 @@ void *ResolveStoredComponent(void **storage_slot, std::int32_t component_id,
   return component;
 }
 
+bool ReadWarBoundRegimentObservationOnce(
+    const Bindings &bindings, void *game_state, void *war, void *owner,
+    std::int32_t war_id, std::int32_t owner_character_id,
+    WarBoundRegimentObservation &output) noexcept {
+  output = {};
+  if (game_state == nullptr || war == nullptr || owner == nullptr ||
+      bindings.persistent_regiment_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      ResolveTermsCharacter(bindings, owner_character_id) != owner ||
+      LoadAt<std::int32_t>(war,
+                           kWarPrimaryAttackerCharacterIdOffset) !=
+          owner_character_id) {
+    return false;
+  }
+
+  void *const military_state =
+      LoadAt<void *>(owner, kCharacterMilitaryStateOffset);
+  if (military_state == nullptr) {
+    return false;
+  }
+  const void *const group_vector =
+      static_cast<const std::byte *>(military_state) +
+      kSpecialTroopGroupsOffset;
+  void *const groups =
+      LoadAt<void *>(group_vector, kNativeArrayDataOffset);
+  const auto group_capacity =
+      LoadAt<std::int32_t>(group_vector, kNativeArrayCapacityOffset);
+  const auto group_count =
+      LoadAt<std::int32_t>(group_vector, kNativeArrayCountOffset);
+  if (group_capacity < 0 || group_count < 0 ||
+      group_count > group_capacity || group_count > kMaximumArmyRegiments ||
+      (group_count > 0 && groups == nullptr)) {
+    return false;
+  }
+
+  std::vector<std::int32_t> persistent_regiment_ids;
+  persistent_regiment_ids.reserve(
+      static_cast<std::size_t>(group_count));
+  for (std::int32_t group_index = 0; group_index < group_count;
+       ++group_index) {
+    const void *const group =
+        static_cast<const std::byte *>(groups) +
+        static_cast<std::size_t>(group_index) * kSpecialTroopGroupStride;
+    std::vector<std::int32_t> group_regiment_ids;
+    if (!ReadNativeIntArray(
+            static_cast<const std::byte *>(group) +
+                kSpecialTroopGroupRegimentIdsOffset,
+            group_regiment_ids, kMaximumArmyRegiments) ||
+        group_regiment_ids.size() >
+            static_cast<std::size_t>(kMaximumArmyRegiments) -
+                persistent_regiment_ids.size()) {
+      return false;
+    }
+    for (const auto persistent_regiment_id : group_regiment_ids) {
+      if (std::find(persistent_regiment_ids.begin(),
+                    persistent_regiment_ids.end(),
+                    persistent_regiment_id) ==
+          persistent_regiment_ids.end()) {
+        persistent_regiment_ids.push_back(persistent_regiment_id);
+      }
+    }
+  }
+
+  WarBoundRegimentObservation observed{};
+  observed.provenance =
+      WarBoundRegimentProvenance::war_bound_not_event_specific;
+  observed.owner_character_id = owner_character_id;
+  observed.war_id = war_id;
+  observed.regiments.reserve(persistent_regiment_ids.size());
+  for (const auto persistent_regiment_id : persistent_regiment_ids) {
+    void *const persistent_regiment = ResolveStoredComponent(
+        bindings.persistent_regiment_storage_slot, persistent_regiment_id,
+        kPersistentRegimentIdOffset);
+    if (persistent_regiment == nullptr) {
+      return false;
+    }
+    const auto bound_war_id = LoadAt<std::int32_t>(
+        persistent_regiment, kPersistentRegimentBoundWarIdOffset);
+    if (bound_war_id != war_id) {
+      continue;
+    }
+    const auto keep_raw = LoadAt<std::uint8_t>(
+        persistent_regiment, kPersistentRegimentWarKeepOffset);
+    if (keep_raw > 1) {
+      return false;
+    }
+    if (keep_raw != 0) {
+      continue;
+    }
+
+    WarBoundPersistentRegimentSnapshot row{};
+    row.persistent_regiment_id = persistent_regiment_id;
+    row.bound_war_id = bound_war_id;
+    row.war_keep_on_attacker_victory = false;
+    for (std::size_t composition_index = 0;
+         composition_index < kWarBoundRegimentCompositionRowCount;
+         ++composition_index) {
+      const void *const composition_row =
+          static_cast<const std::byte *>(persistent_regiment) +
+          kPersistentRegimentCompositionRowsOffset +
+          composition_index * kPersistentRegimentCompositionRowStride;
+      if (LoadAt<std::int32_t>(
+              composition_row, kPersistentRegimentRowOwnerIdOffset) !=
+              persistent_regiment_id ||
+          LoadAt<std::int32_t>(
+              composition_row, kPersistentRegimentRowOrdinalOffset) !=
+              static_cast<std::int32_t>(composition_index)) {
+        return false;
+      }
+      auto &current = row.current_rows[composition_index];
+      current.current_army_regiment_id = LoadAt<std::int32_t>(
+          composition_row,
+          kPersistentRegimentRowCurrentRegimentIdOffset);
+      if (current.current_army_regiment_id == -1) {
+        continue;
+      }
+      void *const current_regiment = ResolveStoredComponent(
+          bindings.regiment_storage_slot,
+          current.current_army_regiment_id, kRegimentIdOffset);
+      if (current_regiment == nullptr) {
+        return false;
+      }
+      current.raised_carmy_id =
+          LoadAt<std::int32_t>(current_regiment, kRegimentArmyIdOffset);
+      void *const current_army = ResolveStoredComponent(
+          bindings.army_internal_storage_slot, current.raised_carmy_id,
+          kInternalArmyIdOffset);
+      std::vector<std::int32_t> current_army_regiment_ids;
+      if (current_army == nullptr ||
+          !ReadNativeIntArray(
+              static_cast<const std::byte *>(current_army) +
+                  kInternalArmyRegimentIdsOffset,
+              current_army_regiment_ids, kMaximumArmyRegiments) ||
+          std::find(current_army_regiment_ids.begin(),
+                    current_army_regiment_ids.end(),
+                    current.current_army_regiment_id) ==
+              current_army_regiment_ids.end() ||
+          ResolveStoredComponent(bindings.regiment_storage_slot,
+                                 current.current_army_regiment_id,
+                                 kRegimentIdOffset) != current_regiment ||
+          LoadAt<std::int32_t>(current_regiment,
+                               kRegimentArmyIdOffset) !=
+              current.raised_carmy_id ||
+          ResolveStoredComponent(bindings.army_internal_storage_slot,
+                                 current.raised_carmy_id,
+                                 kInternalArmyIdOffset) != current_army) {
+        return false;
+      }
+    }
+    observed.regiments.push_back(std::move(row));
+  }
+  output = std::move(observed);
+  return true;
+}
+
 bool CheckedAddNonnegative(std::int64_t &sum,
                            std::int32_t value) noexcept {
   if (value < 0 ||
@@ -6372,6 +6543,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       reinterpret_cast<void **>(module + kArmyInternalStorageSlotRva);
   result.regiment_storage_slot =
       reinterpret_cast<void **>(module + kRegimentStorageSlotRva);
+  result.persistent_regiment_storage_slot =
+      reinterpret_cast<void **>(module + kPersistentRegimentStorageSlotRva);
   result.combat_storage_slot =
       reinterpret_cast<void **>(module + kCombatStorageSlotRva);
   result.battle_result_fallback_slot =
@@ -13286,6 +13459,56 @@ ReadWarTerminationExitTermsResult ReadWarTerminationExitTerms(
   g_last_war_termination_exit_terms_unavailable_reason =
       "loaded_effect_preview_disabled_after_live_crash_rva_0x334C668";
   return ReadWarTerminationExitTermsResult::unavailable;
+}
+
+bool ReadPrimaryAttackerWarBoundRegimentObservation(
+    const Bindings &bindings, std::int32_t war_id,
+    std::int32_t owner_character_id,
+    WarBoundRegimentObservation &output) noexcept {
+  output = {};
+  if (!bindings.enabled || war_id == -1 || owner_character_id == -1 ||
+      bindings.game_state_slot == nullptr ||
+      bindings.jomini_state_slot == nullptr ||
+      bindings.character_storage_slot == nullptr ||
+      bindings.persistent_regiment_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.army_internal_storage_slot == nullptr) {
+    return false;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const jomini_state = *bindings.jomini_state_slot;
+  if (game_state == nullptr || jomini_state == nullptr ||
+      LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 1) {
+    return false;
+  }
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  void *const owner = ResolveTermsCharacter(bindings, owner_character_id);
+  if (war == nullptr || owner == nullptr ||
+      LoadAt<std::int32_t>(war,
+                           kWarPrimaryAttackerCharacterIdOffset) !=
+          owner_character_id ||
+      LoadAt<void *>(owner, kCharacterMilitaryStateOffset) == nullptr) {
+    return false;
+  }
+
+  WarBoundRegimentObservation first{};
+  WarBoundRegimentObservation second{};
+  if (!ReadWarBoundRegimentObservationOnce(
+          bindings, game_state, war, owner, war_id, owner_character_id,
+          first) ||
+      *bindings.game_state_slot != game_state ||
+      *bindings.jomini_state_slot != jomini_state ||
+      LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 1 ||
+      ResolveWar(bindings, game_state, war_id) != war ||
+      ResolveTermsCharacter(bindings, owner_character_id) != owner ||
+      !ReadWarBoundRegimentObservationOnce(
+          bindings, game_state, war, owner, war_id, owner_character_id,
+          second) ||
+      first != second) {
+    return false;
+  }
+  output = std::move(second);
+  return true;
 }
 
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
