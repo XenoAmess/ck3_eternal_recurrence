@@ -233,6 +233,7 @@ zg361_kpi_organization_evidence_value = {
 		limit = { has_variable = zg361_mechanism_configured_n }
 		add = zg361_manager_mechanism_kpi_value
 	}
+	add = zg361_mg_due_organization_kpi_value
 	# Incident/maintenance/platform results are staged after their real cases
 	# close and become eligible only in a later official review. They remain in
 	# this eighth component; the authoritative KPI still has exactly eight rows.

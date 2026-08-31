@@ -161,7 +161,7 @@ CK3 投影的 C 路现为 37 个逐编号、身份绑定的到期 consumer。每
 成功才关闭债务，不再由 delayed event 直接修改 mutable KPI，也不把扣分升级给 manager。aggregate 与 X/Y/Z
 终态分只由下一次官方考核的第八项组织证据读取；post-freeze consumer 负责一次性写
 `pending=0/consumed=1` 和 receipt。已关闭重放幂等，跨 owner/case/cycle、type/id 或 incident provenance
-不一致一律 fail closed。共享冻结点的一行调用尚待合并；没有真实存档中的到期、保存/读取和一次性消费证据时，
+不一致一律 fail closed。共享冻结点的一行调用已经合并；没有真实存档中的到期、保存/读取和一次性消费证据时，
 不得把它提升为 fixture-live 或 production-live。
 
 跨期口径不是单纯比较两枚当前变量：B1 在 freeze 前已有当前 cycle serial，按 `current >= due`；legacy

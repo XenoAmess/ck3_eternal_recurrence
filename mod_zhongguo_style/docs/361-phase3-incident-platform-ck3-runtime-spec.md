@@ -7,7 +7,7 @@
 本包把 Python L0 参考模型中的 X192–204、Y205–216、Z217–228 共 37 条机制投影为实际
 Paradox scripted effects 与 character events。中央 phase-two stages 4–6 已逐域接入 X/Y/Z，并能把
 “确有事故”和“本轮无事故，N/A”分开收口；下一轮组织证据的只读输入也已接入权威八分项 KPI。
-共享考核 effect 中的一次性消费调用仍待合并，且尚无 CK3 实机证据，因此不得写成 `fixture-live`、
+共享考核 effect 中的一次性消费调用已经合并，但尚无 CK3 实机证据，因此不得写成 `fixture-live`、
 `production-live` 或 `complete`。
 
 ## 文件与所有权
@@ -221,7 +221,7 @@ policy-debt 到期事件、完整五元 done/operation/object/debt 身份、阶�
 
    必须先冻结，后消费：script value 读取 pending，consumer 随后将 `pending=0`、`consumed=1`，并保存
    owner/subject/origin cycle/current cycle/case/score/incident receipt；提前调用会吞掉本轮分值，漏调用会让
-   pending 跨轮重复计入。该共享文件目前由另一施工包占用，所以本包只交付此 exact insertion contract。
+   pending 跨轮重复计入。该调用现已在共享冻结点合并，并由 normal/`-O` 静态测试锁定。
 2. 用 CK3 parser/error.log 排除 Paradox 语法和 scope 误判；
 3. 通过 MCP 查询 applicability probe、N/A/incident tuple、owner/subject/cycle/case/state、每编号 receipt、
    金币/国库、pending 与 consumed receipt；

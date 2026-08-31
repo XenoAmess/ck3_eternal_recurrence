@@ -235,11 +235,13 @@ zg361_compute_kpi_effect = {
 	set_variable = { name = zg361_evidence_jingcha value = zg361_kpi_jingcha_evidence_value }
 	set_variable = { name = zg361_evidence_organization value = zg361_kpi_organization_evidence_value }
 	set_variable = { name = zg361_kpi value = zg361_kpi_value }
+	zg361_ip_consume_due_kpi_inputs_effect = yes
 	# A terminal B2 PIP receipt contributes once to the next eligible real KPI
 	# computation. The unique B2 settlement owns the amount and source case.
 	zg361_b2_consume_pip_performance_evidence_effect = yes
 	# B2 management/fairness debt is consumed only by this next real KPI write.
 	zg361_b2_consume_management_debt_effect = yes
+	zg361_mg_settle_due_organization_kpi_effect = yes
 	# #357 最小事实层：先按冻结 KPI 得出绝对档，再由排名/配额/校准决定终档。
 	# 3/2/1 分别映射 3.75/3.5/3.25；二者的差异理由在结算案卷中冻结。
 	if = {
@@ -334,7 +336,7 @@ zg361_rank_cohort_effect = {
 	# 阈值落领主变量：头部名额、末位名额与头部边界后一名。
 	set_variable = { name = zg361_top_cut value = zg361_top_slots_value }
 	set_variable = { name = zg361_top_cut_next value = { value = var:zg361_top_cut add = 1 } }
-	set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }
+	zg361_mg_set_bottom_slots_effect = yes
 	# #359 next-cycle quota debt changes an actual allocation input once.
 	zg361_b2_apply_due_quota_debt_effect = yes
 }

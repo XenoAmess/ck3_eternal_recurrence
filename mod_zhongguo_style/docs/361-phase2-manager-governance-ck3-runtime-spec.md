@@ -29,13 +29,13 @@
 zg361_mg_dispatch_subordinate_managers_effect
 ```
 
-本轮仍有三处由共享文件 owner 合并的精确 hook；生成器不抢写这两份 dirty shared files：
+三处共享 hook 已由共享文件 owner 合并，并由运行时测试锁定：
 
 1. `common/script_values/zg361_values.txt`：在 `zg361_kpi_organization_evidence_value` 内、现有 `zg361_manager_mechanism_kpi_value` 分支之后添加 `add = zg361_mg_due_organization_kpi_value`。它属于官方第 8 分项，不得向 `zg361_kpi_value` 添加第 9 个 addend。
 2. `common/scripted_effects/zg361_effects.txt`：紧跟唯一的 `zg361_b2_consume_management_debt_effect = yes` 添加 `zg361_mg_settle_due_organization_kpi_effect = yes`。此时八分项与总分已冻结，settler 只结清本次已读 token。
 3. 同一 shared effects：把 `zg361_rank_cohort_effect` 内唯一的 `set_variable = { name = zg361_bottom_slots value = zg361_bottom_slots_value }` 替换为 `zg361_mg_set_bottom_slots_effect = yes`。adapter 先保留 core 值，仅在本轮确实消费到 F035 token 时改用 10/5/0 冻结值。
 
-`tools/test_zg361_manager_governance_runtime.py` 会锁住三个唯一 anchor、包内 adapter、官方 KPI 仍恰好八项以及新值不在总分顶层。共享 owner 合并上述 hook 并完成 MCP-first 实机以前，不得把本包写成 live；不用 OCR 或测试决议伪造通过。
+`tools/test_zg361_manager_governance_runtime.py` 会锁住三个唯一 anchor、包内 adapter、官方 KPI 仍恰好八项以及新值不在总分顶层。完成 MCP-first 实机以前不得把本包写成 live；不用 OCR 或测试决议伪造通过。
 
 ## 二、角色权限
 
@@ -223,4 +223,4 @@ py -O tools/test_zg361_manager_governance_runtime.py
 L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate、归一化 route 冲突、输入 fingerprint 冲突、successor/stale、owner drift、route-C 债创建/到期/一次消费，以及 Q 八项三路线只读投影；同时锁住 F 与 AK 的上游 C / 下游 A-B 混合组合，不允许旧值穿透。京察回归另断言 `zg361.40.b -> zg361_mg_refuse_jingcha_exact_effect` 的正式直连、清理前冻结四元业务身份、直属上司 -25 与合格考核上司下轮 -50。CK3 静态层另锁住 351 的两个
 `ordered_vassal position = 0/1` 和显式 manager scope，防止再次把第 0 位经理漏掉或在 vassal scope 误读 `root.var`。这些仍只是 L0，不替代下一段的 MCP-first 实机矩阵。
 
-下一步先由 shared owner 合并第一节的三处精确 hook，再通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。没有这批 paused snapshot 与日志之前，状态保持 `static-ready`。
+下一步通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。没有这批 paused snapshot 与日志之前，状态保持 `static-ready`。
