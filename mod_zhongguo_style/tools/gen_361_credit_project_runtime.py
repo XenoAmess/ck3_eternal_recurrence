@@ -18,6 +18,8 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_credit_project_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
+DEFER_ROUTE_EN = "Defer this mechanism and open one next-cycle policy debt."
+DEFER_ROUTE_CN = "延期本机制，并登记一笔下周期制度债。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -70,8 +72,13 @@ def m(
         title_cn,
         desc_en,
         desc_cn,
-        (a_en, b_en, c_en),
-        (a_cn, b_cn, c_cn),
+        # The acceptance/runtime program is authoritative: route C is the
+        # mechanism-specific policy.defer control route, never a third
+        # business payload.  The legacy per-item C copy remains accepted by
+        # this helper only so the data table stays reviewable while generated
+        # player copy and runtime semantics use the canonical defer wording.
+        (a_en, b_en, DEFER_ROUTE_EN),
+        (a_cn, b_cn, DEFER_ROUTE_CN),
     )
 
 
@@ -328,6 +335,11 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         f"has_variable = zg361_cp_{d}_operation_used",
         f"var:zg361_cp_{d}_operation_used < var:zg361_cp_{d}_operation_total",
     ]
+    # C is a pure control-plane defer.  It must remain available when an A/B
+    # business prerequisite or finite resource is absent, and it may not read
+    # a business object merely to manufacture a debt receipt.
+    if choice == 3:
+        return checks
     if mid != 30:
         checks += [
             "has_variable = zg361_cp_project_object_manager",
@@ -426,6 +438,8 @@ def atomic_precheck(spec: Mechanism, choice: int) -> str:
 
 
 def business_effects(spec: Mechanism, choice: int) -> list[str]:
+    if choice not in (1, 2):
+        raise ValueError("route C is policy.defer and has no business payload")
     mid, d = spec.mid, spec.domain
     lines = [
         f"set_variable = {{ name = zg361_cp_{spec.field} value = {choice} }}",
@@ -923,6 +937,145 @@ zg361_cp_m{mid}_consume_effect = {{
 }}"""
 
 
+def debt_effects(spec: Mechanism) -> list[str]:
+    """Freeze exactly one route-C debt identity; never write business state."""
+
+    mid, d = spec.mid, spec.domain
+    stem = f"zg361_cp_m{mid}_debt"
+    return [
+        f"set_variable = {{ name = zg361_cp_{spec.field} value = 3 }}",
+        f"change_variable = {{ name = zg361_cp_{d}_operation_used add = 1 }}",
+        f"set_variable = {{ name = {stem}_owner value = $TICKET_OWNER$ }}",
+        f"set_variable = {{ name = {stem}_subject value = $TICKET_SUBJECT$ }}",
+        f"set_variable = {{ name = {stem}_cycle value = $TICKET_CYCLE$ }}",
+        f"set_variable = {{ name = {stem}_case value = $TICKET_CASE$ }}",
+        f"set_variable = {{ name = {stem}_state value = {spec.state} }}",
+        f"set_variable = {{ name = {stem}_mechanism value = {mid} }}",
+        f"set_variable = {{ name = {stem}_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}",
+        f"set_variable = {{ name = {stem}_status value = 1 }}",
+        f"set_variable = {{ name = {stem}_audit_state value = 1 }}",
+        f"set_variable = {{ name = {stem}_business_object_created value = 0 }}",
+        "set_variable = { name = zg361_cp_portfolio_deferred value = 1 }",
+        "set_variable = { name = zg361_cp_deferred_cleanup_status value = 1 }",
+        "change_variable = { name = zg361_cp_policy_debt_open_n add = 1 }",
+    ]
+
+
+def render_due_debt_consumer(spec: Mechanism) -> str:
+    """Settle one exact debt once through the current central-adapter root."""
+
+    mid = spec.mid
+    stem = f"zg361_cp_m{mid}_debt"
+    receipt = f"zg361_cp_m{mid}_receipt"
+    red_code = 60000 + mid
+    return f"""# #{mid:03d} next-cycle policy-debt consumer.  The frozen source owner
+# remains immutable; settled_by records the exact manager who discharged it.
+zg361_cp_m{mid}_consume_due_policy_debt_effect = {{
+	if = {{
+		limit = {{
+			has_variable = {stem}_owner
+			has_variable = {stem}_subject
+			has_variable = {stem}_cycle
+			has_variable = {stem}_case
+			has_variable = {stem}_state
+			has_variable = {stem}_mechanism
+			has_variable = {stem}_due_cycle
+			has_variable = {stem}_status
+			has_variable = {stem}_audit_state
+			has_variable = {stem}_business_object_created
+			has_variable = {receipt}_owner
+			has_variable = {receipt}_subject
+			has_variable = {receipt}_cycle
+			has_variable = {receipt}_case
+			has_variable = {receipt}_state
+			has_variable = {receipt}_choice
+			root = {{
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:{stem}_status = 1
+			var:{stem}_audit_state = 1
+			var:{stem}_business_object_created = 0
+			var:{stem}_mechanism = {mid}
+			var:{stem}_owner = root
+			var:{stem}_subject = this
+			var:{receipt}_owner = var:{stem}_owner
+			var:{receipt}_subject = var:{stem}_subject
+			var:{receipt}_cycle = var:{stem}_cycle
+			var:{receipt}_case = var:{stem}_case
+			var:{receipt}_state = var:{stem}_state
+			var:{receipt}_choice = 3
+			root.var:zg361_review_serial = var:{stem}_due_cycle
+		}}
+		root = {{ change_variable = {{ name = zg361_b2_management_debt add = 1 }} }}
+		set_variable = {{ name = {stem}_status value = 2 }}
+		set_variable = {{ name = {stem}_audit_state value = 3 }}
+		set_variable = {{ name = {stem}_settled_by value = root }}
+		set_variable = {{ name = {stem}_settled_cycle value = root.var:zg361_review_serial }}
+		set_variable = {{ name = {stem}_performance_sink value = 1 }}
+		set_variable = {{ name = {stem}_consumer_status value = 1 }}
+		change_variable = {{ name = zg361_cp_policy_debt_open_n add = -1 }}
+		change_variable = {{ name = zg361_cp_policy_debt_settled_n add = 1 }}
+	}}
+	else_if = {{
+		# Exact settled replay is audit-only and never reaches the KPI sink again.
+		limit = {{
+			has_variable = {stem}_status
+			has_variable = {stem}_settled_by
+			has_variable = {stem}_settled_cycle
+			var:{stem}_status = 2
+			var:{stem}_settled_by = root
+			root = {{ has_variable = zg361_review_serial }}
+			root.var:zg361_review_serial >= var:{stem}_settled_cycle
+		}}
+		set_variable = {{ name = {stem}_consumer_status value = 2 }}
+	}}
+	else_if = {{
+		# A complete exact debt that is not due is future input, never current work.
+		limit = {{
+			has_variable = {stem}_owner
+			has_variable = {stem}_subject
+			has_variable = {stem}_due_cycle
+			has_variable = {stem}_status
+			var:{stem}_status = 1
+			var:{stem}_owner = root
+			var:{stem}_subject = this
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			root = {{ has_variable = zg361_review_serial }}
+			root.var:zg361_review_serial < var:{stem}_due_cycle
+		}}
+		set_variable = {{ name = {stem}_consumer_status value = 5 }}
+		set_variable = {{ name = zg361_cp_policy_debt_consumer_blocked value = 1 }}
+	}}
+	else_if = {{
+		# Pending but non-exact means stale/cross-owner/corrupt identity: fail closed.
+		limit = {{ has_variable = {stem}_status var:{stem}_status = 1 }}
+		set_variable = {{ name = {stem}_consumer_status value = 3 }}
+		set_variable = {{ name = zg361_cp_policy_debt_consumer_blocked value = 1 }}
+		set_variable = {{ name = zg361_cp_last_red_code value = {red_code} }}
+	}}
+}}"""
+
+
+def render_due_debt_aggregate() -> str:
+    calls = "\n".join(
+        f"\tzg361_cp_m{spec.mid}_consume_due_policy_debt_effect = yes"
+        for spec in MECHANISMS
+    )
+    return f"""# The public portfolio adapter is the sole package-owned due pass.
+zg361_cp_consume_due_policy_debts_effect = {{
+	remove_variable = zg361_cp_policy_debt_consumer_blocked
+{calls}
+	if = {{
+		limit = {{ NOT = {{ has_variable = zg361_cp_policy_debt_consumer_blocked }} }}
+		zg361_cp_settle_deferred_portfolio_effect = yes
+	}}
+}}"""
+
+
 def final_domain_action(domain: str) -> str:
     next_domain = NEXT_DOMAIN[domain]
     if next_domain:
@@ -938,7 +1091,21 @@ def render_route(spec: Mechanism, choice: int) -> str:
     guard = tuple_guard(spec)
     receipts = any_receipt(spec)
     precheck = atomic_precheck(spec, choice)
-    business = "\n".join(business_effects(spec, choice))
+    if choice == 3:
+        # Control-plane route: the shared kernel still freezes the exact
+        # receipt and advances the case, but no business payload, resource,
+        # write ticket or business consumer is reachable.
+        payload = "\n".join(debt_effects(spec))
+    else:
+        business = "\n".join(business_effects(spec, choice))
+        payload = business + f"""
+set_variable = {{ name = zg361_cp_m{mid}_write_owner value = $TICKET_OWNER$ }}
+set_variable = {{ name = zg361_cp_m{mid}_write_subject value = $TICKET_SUBJECT$ }}
+set_variable = {{ name = zg361_cp_m{mid}_write_cycle value = $TICKET_CYCLE$ }}
+set_variable = {{ name = zg361_cp_m{mid}_write_case value = $TICKET_CASE$ }}
+set_variable = {{ name = zg361_cp_m{mid}_write_state value = {spec.state} }}
+set_variable = {{ name = zg361_cp_m{mid}_provenance_choice value = {choice} }}
+zg361_cp_m{mid}_consume_effect = yes"""
     advance = ""
     if mid in STAGE_LAST[d]:
         edge = STAGE_LAST[d][mid]
@@ -981,14 +1148,7 @@ zg361_cp_m{mid}_route_{letter}_effect = {{
 \t\t\t\t}}
 \t\t\t\ttrigger_else = {{ always = no }}
 \t\t\t}}
-{indent(business, 3)}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_write_owner value = $TICKET_OWNER$ }}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_write_subject value = $TICKET_SUBJECT$ }}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_write_cycle value = $TICKET_CYCLE$ }}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_write_case value = $TICKET_CASE$ }}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_write_state value = {spec.state} }}
-\t\t\tset_variable = {{ name = zg361_cp_m{mid}_provenance_choice value = {choice} }}
-\t\t\tzg361_cp_m{mid}_consume_effect = yes
+{indent(payload, 3)}
 \t\t\tset_variable = {{ name = zg361_cp_runtime_applied value = 1 }}
 \t\t\tset_variable = {{ name = zg361_cp_runtime_status value = 1 }}
 {advance.rstrip()}
@@ -1053,8 +1213,15 @@ zg361_cp_{domain}_subject_read_effect = {{
 
 
 def ai_choice(mid: int) -> str:
+    d = by_id()[mid].domain
+    defer = f"""zg361_cp_m{mid}_route_c_effect = {{
+\tTICKET_OWNER = scope:zg361_cp_{d}_owner
+\tTICKET_SUBJECT = scope:zg361_cp_{d}_subject
+\tTICKET_CYCLE = scope:zg361_cp_{d}_cycle
+\tTICKET_CASE = scope:zg361_cp_{d}_case
+}}"""
     if mid == 64:
-        return """if = {
+        ordinary = """if = {
 \tlimit = {
 \t\ttrigger_if = {
 \t\t\tlimit = { has_variable = zg361_cp_successor_valid }
@@ -1077,12 +1244,25 @@ else = {
 \t\tTICKET_CASE = scope:zg361_cp_j_case
 \t}
 }"""
-    d = by_id()[mid].domain
-    return f"""zg361_cp_m{mid}_route_a_effect = {{
+    else:
+        ordinary = f"""zg361_cp_m{mid}_route_a_effect = {{
 \tTICKET_OWNER = scope:zg361_cp_{d}_owner
 \tTICKET_SUBJECT = scope:zg361_cp_{d}_subject
 \tTICKET_CYCLE = scope:zg361_cp_{d}_cycle
 \tTICKET_CASE = scope:zg361_cp_{d}_case
+}}"""
+    return f"""if = {{
+\tlimit = {{
+\t\ttrigger_if = {{
+\t\t\tlimit = {{ has_variable = zg361_cp_portfolio_deferred }}
+\t\t\tvar:zg361_cp_portfolio_deferred = 1
+\t\t}}
+\t\ttrigger_else = {{ always = no }}
+\t}}
+{indent(defer)}
+}}
+else = {{
+{indent(ordinary)}
 }}"""
 
 
@@ -1174,6 +1354,7 @@ zg361_cp_initialize_portfolio_effect = {
 	set_variable = { name = zg361_cp_capacity_spent value = 0 }
 	set_variable = { name = zg361_cp_project_slot_total value = 1 }
 	set_variable = { name = zg361_cp_project_slot_used value = 0 }
+	set_variable = { name = zg361_cp_project_active value = 0 }
 	set_variable = { name = zg361_cp_delivery_hours value = 0 }
 	set_variable = { name = zg361_cp_report_hours value = 0 }
 	set_variable = { name = zg361_cp_relationship_hours value = 0 }
@@ -1185,16 +1366,103 @@ zg361_cp_initialize_portfolio_effect = {
 	set_variable = { name = zg361_cp_promotion_slot_total value = 1 }
 	set_variable = { name = zg361_cp_promotion_slot_free value = 1 }
 	set_variable = { name = zg361_cp_promotion_slot_used value = 0 }
+	set_variable = { name = zg361_cp_claimed_share_total value = 0 }
+	set_variable = { name = zg361_cp_portfolio_deferred value = 0 }
+	if = {
+		limit = { NOT = { has_variable = zg361_cp_policy_debt_open_n } }
+		set_variable = { name = zg361_cp_policy_debt_open_n value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_cp_policy_debt_settled_n } }
+		set_variable = { name = zg361_cp_policy_debt_settled_n value = 0 }
+	}
 	set_variable = { name = zg361_cp_portfolio_closed value = 0 }
+}
+
+# Due-cycle lifecycle settlement is deliberately separate from route C.
+# It may close an A/B project left open in the prior deferred portfolio only
+# after every exact mechanism debt has settled and the frozen cycle is due.
+zg361_cp_settle_deferred_portfolio_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_cp_portfolio_deferred
+			has_variable = zg361_cp_deferred_cleanup_status
+			has_variable = zg361_cp_policy_debt_open_n
+			has_variable = zg361_cp_portfolio_closed
+			has_variable = zg361_cp_historical_owner
+			has_variable = zg361_cp_portfolio_subject
+			has_variable = zg361_cp_portfolio_cycle
+			has_variable = zg361_cp_project_active
+			has_variable = zg361_cp_capacity_available
+			has_variable = zg361_cp_capacity_remaining
+			has_variable = zg361_cp_capacity_reserved
+			has_variable = zg361_cp_capacity_spent
+			has_variable = zg361_cp_project_slot_used
+			has_variable = zg361_cp_final_deferred
+			has_variable = zg361_cp_final_conservation_ok
+			has_variable = zg361_cp_final_deferred_capacity_check
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_cp_portfolio_deferred = 1
+			var:zg361_cp_deferred_cleanup_status = 1
+			var:zg361_cp_policy_debt_open_n = 0
+			var:zg361_cp_portfolio_closed = 1
+			var:zg361_cp_historical_owner = root
+			var:zg361_cp_portfolio_subject = this
+			var:zg361_cp_final_deferred = 1
+			var:zg361_cp_final_conservation_ok = 1
+			var:zg361_cp_final_deferred_capacity_check = 100
+			root.var:zg361_review_serial = { value = var:zg361_cp_portfolio_cycle add = 1 }
+			trigger_if = {
+				limit = { var:zg361_cp_project_active = 1 }
+				has_variable = zg361_cp_project_object_status
+				var:zg361_cp_project_object_status = 1
+				var:zg361_cp_project_slot_used = 1
+			}
+			trigger_else = {
+				var:zg361_cp_project_active = 0
+				var:zg361_cp_project_slot_used = 0
+			}
+		}
+		if = {
+			limit = { var:zg361_cp_project_active = 1 }
+			change_variable = { name = zg361_cp_capacity_available add = var:zg361_cp_capacity_remaining }
+			set_variable = { name = zg361_cp_capacity_remaining value = 0 }
+			set_variable = { name = zg361_cp_capacity_reserved value = var:zg361_cp_capacity_spent }
+			set_variable = { name = zg361_cp_project_active value = 0 }
+			set_variable = { name = zg361_cp_project_slot_used value = 0 }
+			set_variable = { name = zg361_cp_project_object_status value = 3 }
+		}
+		set_variable = { name = zg361_cp_deferred_cleanup_status value = 2 }
+		set_variable = { name = zg361_cp_deferred_cleanup_settled_by value = root }
+		set_variable = { name = zg361_cp_deferred_cleanup_settled_cycle value = root.var:zg361_review_serial }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_cp_deferred_cleanup_status
+			var:zg361_cp_deferred_cleanup_status = 1
+		}
+		set_variable = { name = zg361_cp_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_cp_last_red_code value = 60999 }
+	}
 }
 
 # Public manager-scope ABI. Counts and barons may be $SUBJECT$, never ROOT.
 zg361_cp_open_portfolio_effect = {
+	# The existing central stage-8 adapter doubles as the package-owned due
+	# scheduler.  Consume the frozen prior-cycle debts before opening or
+	# overwriting any new portfolio state.
+	$SUBJECT$ = { zg361_cp_consume_due_policy_debts_effect = yes }
 	if = {
 		limit = {
 			has_game_rule = zg361_on
 			zg361_is_celestial_liege_trigger = yes
 			has_variable = zg361_review_serial
+			$SUBJECT$ = { NOT = { has_variable = zg361_cp_policy_debt_consumer_blocked } }
 			$SUBJECT$ = { zg361_is_reviewable_vassal_trigger = yes liege = root }
 			# Cross-department evidence needs a distinct reviewer: another direct
 			# official, or this manager's own eligible manager.
@@ -1243,11 +1511,28 @@ zg361_cp_finalize_portfolio_effect = {
 	set_variable = { name = zg361_cp_final_capacity_spent value = var:zg361_cp_capacity_spent }
 	set_variable = { name = zg361_cp_final_share_total value = var:zg361_cp_claimed_share_total }
 	set_variable = { name = zg361_cp_final_capacity_check value = { value = var:zg361_cp_capacity_available add = var:zg361_cp_capacity_spent } }
+	set_variable = { name = zg361_cp_final_deferred_capacity_check value = { value = var:zg361_cp_capacity_available add = var:zg361_cp_capacity_spent add = var:zg361_cp_capacity_remaining } }
 	set_variable = { name = zg361_cp_final_attention_check value = { value = var:zg361_cp_attention_free add = var:zg361_cp_attention_used } }
 	set_variable = { name = zg361_cp_final_promotion_check value = { value = var:zg361_cp_promotion_slot_free add = var:zg361_cp_promotion_slot_used } }
 	set_variable = { name = zg361_cp_final_conservation_ok value = 0 }
+	set_variable = { name = zg361_cp_final_deferred value = 0 }
 	if = {
 		limit = {
+			var:zg361_cp_portfolio_deferred = 1
+			var:zg361_cp_final_deferred_capacity_check = 100
+			var:zg361_cp_final_attention_check = 2
+			var:zg361_cp_final_promotion_check = 1
+			OR = {
+				var:zg361_cp_project_slot_used = 0
+				var:zg361_cp_project_slot_used = 1
+			}
+		}
+		set_variable = { name = zg361_cp_final_deferred value = 1 }
+		set_variable = { name = zg361_cp_final_conservation_ok value = 1 }
+	}
+	else_if = {
+		limit = {
+			var:zg361_cp_portfolio_deferred = 0
 			var:zg361_cp_final_capacity_check = 100
 			var:zg361_cp_final_attention_check = 2
 			var:zg361_cp_final_promotion_check = 1
@@ -1275,6 +1560,8 @@ def render_effects() -> bytes:
         "# Stable status: 1=applied, 2=idempotent no-op, 3=stale no-op, 4=typed RED.",
         render_portfolio_entries(),
     ]
+    sections.extend(render_due_debt_consumer(spec) for spec in MECHANISMS)
+    sections.append(render_due_debt_aggregate())
     for domain in ("e", "i", "j", "r"):
         sections += [render_domain_init(domain), render_subject_read(domain), render_ai(domain), render_launch(domain)]
     for spec in MECHANISMS:
@@ -1329,30 +1616,43 @@ def render_option(spec: Mechanism, choice: int, next_mid: int | None) -> str:
 \t\ttrigger_event = {{ id = zg361cp.{next_mid} days = 1 }}
 \t}}"""
     option_trigger = ""
-    if spec.mid == 54:
+    business_checks: list[str] = []
+    if choice in (1, 2):
+        # Once any control-plane defer is chosen, later A/B business routes
+        # are unavailable because their prerequisite objects may deliberately
+        # not exist.  C remains available and carries the case to closure.
+        business_checks += [
+            "trigger_if = {",
+            "\tlimit = { has_variable = zg361_cp_portfolio_deferred }",
+            "\tvar:zg361_cp_portfolio_deferred = 0",
+            "}",
+            "trigger_else = { always = no }",
+        ]
+    if spec.mid == 54 and choice in (1, 2):
         policy_hours = (1, 4, 1)[choice - 1]
+        business_checks += [
+            "trigger_if = {",
+            "\tlimit = { has_variable = zg361_cp_report_policy has_variable = zg361_cp_report_policy_hours }",
+            f"\tvar:zg361_cp_report_policy = {choice}",
+            f"\tvar:zg361_cp_report_policy_hours = {policy_hours}",
+            "}",
+            "trigger_else = { always = no }",
+        ]
+    elif spec.mid == 64 and choice == 1:
+        business_checks += [
+            "trigger_if = {",
+            "\tlimit = { has_variable = zg361_cp_successor_valid }",
+            "\tvar:zg361_cp_successor_valid = 1",
+            "}",
+            "trigger_else = { always = no }",
+        ]
+    if business_checks:
         option_trigger = f"""
 \ttrigger = {{
-\t\tscope:zg361_cp_i_subject = {{
-\t\t\ttrigger_if = {{
-\t\t\t\tlimit = {{ has_variable = zg361_cp_report_policy has_variable = zg361_cp_report_policy_hours }}
-\t\t\t\tvar:zg361_cp_report_policy = {choice}
-\t\t\t\tvar:zg361_cp_report_policy_hours = {policy_hours}
-\t\t\t}}
-\t\t\ttrigger_else = {{ always = no }}
+\t\tscope:zg361_cp_{d}_subject = {{
+{indent(chr(10).join(business_checks), 3)}
 \t\t}}
 \t}}"""
-    elif spec.mid == 64 and choice == 1:
-        option_trigger = """
-\ttrigger = {
-\t\tscope:zg361_cp_j_subject = {
-\t\t\ttrigger_if = {
-\t\t\t\tlimit = { has_variable = zg361_cp_successor_valid }
-\t\t\t\tvar:zg361_cp_successor_valid = 1
-\t\t\t}
-\t\t\ttrigger_else = { always = no }
-\t\t}
-\t}"""
     return f"""option = {{
 \tname = zg361cp.{mid}.{letter}
 {option_trigger}

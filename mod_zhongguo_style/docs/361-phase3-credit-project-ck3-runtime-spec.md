@@ -14,6 +14,16 @@
 
 Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包没有修改该模型、B1、B2、scoreboard、shared case kernel、on_action 或任何中央派发文件。
 
+## 语义权威与冲突裁决
+
+本包逐号路线的权威优先级是：
+
+1. `tools/mechanism_acceptance/acceptance_*.json` 中每个编号的 acceptance/runtime program；
+2. `docs/361-phase2-full-implementation-program.md` 第 59 行规定的 `C = mechanism-specific policy.defer`；
+3. 本规格、生成器及其生成投影。
+
+因此，旧细粒度设计表或旧文案中把 C 写成第三条业务方案的内容不再是运行时权威。下列 27 项的 **C 全部是纯 `policy.defer`**，不能因为机制标题涉及抢功、汇报、PIP、止损等主题，就在 C 中偷偷创建相应业务对象。A/B 保留原有业务语义。
+
 ## 精确范围与状态图
 
 本包精确 CK3-wires 27 项，不多号、不漏号：
@@ -25,9 +35,9 @@ Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包�
 | J 矩阵与交接 | 062–068 | `063 @1 → 062,065 @2 → 064 @3 → 066,067,068 @4 → closed` |
 | R 项目治理 | 129–134 | `131 @1 → 129,134 @2 → 130 @3 → 132 @4 → 133 @5 → closed` |
 
-四案卷按 `E → I → J → R` 串行打开，使项目资源先被冻结，再允许汇报消耗、战略取消和止损结算。每个 stage 只有该 stage 全部机制留下当前五元收执后才能调用 shared kernel 的唯一 advance edge。
+四案卷按 `E → I → J → R` 串行打开。每个 stage 只有该 stage 的全部机制留下当前五元 receipt 后，才能调用 shared kernel 的唯一 advance edge。
 
-## 角色与入口
+## 角色与公开入口
 
 公开入口是 manager-scope scripted effect：
 
@@ -35,48 +45,81 @@ Python 参考合同仍为 `tools/zg361_phase3_credit_project_model.py`；本包�
 zg361_cp_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 ```
 
-这是本包**唯一**暴露给未来 central dispatcher 的 manager-scope portfolio adapter。adapter 本身只在后台冻结 manager/subject/cycle 与有限资源，并打开 E 的首个编号事件；同一 manager 同一 `zg361_review_serial` 只能开一份 portfolio，重放不会重置另一名 subject 或已在途案卷。
+这是本包唯一暴露给 central dispatcher 的 manager-scope portfolio adapter。每次调用时，它先在 `SUBJECT` 上执行本包唯一 due-debt aggregate，再决定能否打开新 portfolio；任何 future、stale、cross-owner 或损坏的 pending debt 都会置 fail-closed 标记，阻止本次新案覆盖旧债。
 
-ROOT 必须通过既有 `zg361_is_celestial_liege_trigger`，也就是在世、有地、天朝制、公爵及以上。玩家 ROOT 收到 27 张顺序决策卡；符合相同门槛的 AI ROOT 只走后台确定路线，不打开 GUI。`SUBJECT` 必须是其直属、在世、有地官员；伯爵和男爵可以作为 SUBJECT，但本包没有任何 subject-side open、reserve、allocation 或 assess 入口。四个 `*_subject_read_effect` 只允许本人读取可见 revision。
+ROOT 必须通过既有 `zg361_is_celestial_liege_trigger`，也就是在世、有地、天朝制、公爵及以上。玩家 ROOT 收到顺序决策卡；符合相同门槛的 AI ROOT 只走后台确定路线，不打开 GUI。`SUBJECT` 必须是其直属、在世、有地官员；伯爵和男爵可以作为 SUBJECT，但本包没有任何 subject-side open、reserve、allocation 或 assess 入口。四个 `*_subject_read_effect` 只允许本人读取可见 revision。
 
 玩家只会在首案打开时收到第一张卡。每个编号的下一张卡均通过 `days = 1` 排队；E→I、I→J、J→R 三条跨案卷边使用带完整关闭身份校验的 hidden D+1 queue event。故 adapter 不会在同一游戏日弹出 27 个窗口；AI 仍只有无 GUI 的后台队列。
 
-本包不新增 on_action 或中央调度，因此“谁在何时调用公开入口”仍是集成层前置；这不影响本包内的 CK3 effect/event 状态机静态可执行性，也不得冒充 live 闭环。
+本包不新增 on_action 或中央调度；中央现已通过同一个公开 adapter 调用本包，包内只拥有一次 due pass，避免多入口重复扣分。
 
-## 五元身份、事务与收执
+## 五元身份、receipt 与 A/B 事务
 
 每次操作冻结并核对：
 
 `owner + subject + cycle + case + state`
 
-每个编号只有一组互斥 receipt：`receipt_owner/subject/cycle/case/state/choice`。route 先执行完整身份与资源预检，再调用 `zg361_case_kernel_record_operation_effect`；只有 kernel 返回 applied 后才写业务、资源及 provenance，随后立刻调用该编号的 downstream consumer。状态码固定为：
+每个编号只有一组互斥 receipt：`receipt_owner/subject/cycle/case/state/choice`。A/B route 依次执行完整身份与资源预检、`zg361_case_kernel_record_operation_effect`、业务与资源写、五元 write ticket、provenance，随后立刻调用该编号的 downstream consumer。状态码固定为：
 
 - `1 applied`
 - `2 idempotent no-op`
 - `3 stale no-op`
 - `4 typed RED`（不得留下 receipt、业务写或资源写）
 
-每个 consumer 再次核对 write tuple 与当前案卷 tuple，冻结 `consumed_*` 和对玩家/后续机制可读的具体结果。单纯 binding、事件标题、receipt 或字段存在均不计作机制实现。
+每个 A/B consumer 再次核对 write tuple 与当前案卷 tuple，冻结 `consumed_*` 和对玩家/后续机制可读的具体结果。单纯 binding、事件标题、receipt 或字段存在均不计作业务机制实现。
 
-## 守恒与跨机制消费
+## C：纯延期，不创建业务事实
 
-- #030 成功后创建唯一稳定项目对象，冻结 manager、业务 owner、subject、制度 cycle、E 案 origin case、version、截止周期与状态；其余 26 项必须先验证对象身份再提交，并且每次 applied 恰好把 version 加一。#054 另建独立汇报对象，冻结 I 案 identity、version、截止周期及项目 origin case；签字、路由、阅读、风险和创意仲裁沿同一对象递增版本。
-- 27 个 consumer 均发布项目身份、version、deadline 与 active/cancelled/stopped 状态；I 域七个材料 consumer 还发布汇报 identity/version/deadline。receipt 只负责幂等，不能替代这些业务对象或可见投影。
+C 与 A/B 共用完整五元 guard、互斥 receipt 和 stage barrier，但其 applied payload 仅做以下事情：
 
-- 项目总容量为 100、项目席位为 1。#030 只产生一个赢家并预留 40/60/80；#026 与 #054 从同一剩余容量扣账，汇报不增加 `hard_output`；#066 或 #132 只把未花容量释放一次。
-- #027 的 subject/manager/cross-department 签字贡献严格合计 10000 bp。#028 抢功转移和审计回拨各自净零且不改写 signed baseline；#056 从 claimed ledger 建立 report ledger，截功仍净零；#057 只签署合计 10000 bp 的版本。
-- 跨部门证据不是装饰字段：portfolio 冻结独立 reviewer；其身份参与 #027 三方签名、#056 附件、#058 抄送、#060 创意来源、#067 岗位归属与 #134 shared metric 依赖消费。
-- #058 只写 routed recipients，并把 `seen_count` 保持为 0；#055 才从两个 attention slots 中真实扣账并增加可见度。
-- #063 的实线/虚线权重严格合计 100；#064 只有新旧上司双签且 successor 合法时才改变 future active manager，`historical_owner` 永远只读。
-- #129 的晋升槽位上限为 1；#130 隐瞒 PIP 且试用失败会把责任写回 source manager；#131 在结果前锁定 exploration/commitment；#132 的 business stop 与 individual judgement 分账；#133 的学习消费与具名责任分账；#134 只写一个最终 owner。
-- #068 只读取既有 B2 `zg361_b2_pip_state` 判断是否携带未结 PIP，不写任何 B2 字段；历史记录不占本期 quota。
+- 把本机制的 semantic choice 锁为 `3`，并消耗该案卷一个 operation slot；
+- 精确冻结一笔五元债：`debt_owner/debt_subject/debt_cycle/debt_case/debt_state`；
+- 同时冻结 `debt_mechanism`、`debt_due_cycle = cycle + 1`、`debt_status = pending`、`debt_audit_state = opened` 和 `debt_business_object_created = 0`；
+- 把 portfolio 标记为 deferred、把跨周期 cleanup 状态标记为 pending，并把 open-debt 计数恰好增加一次。
 
-最终 conservation 同时要求容量、注意力、晋升槽与 10000 bp 贡献账守恒，项目槽释放，项目对象 version 精确为 27、状态为 cancelled/stopped，汇报对象 version 精确为 7。该断言仍是静态脚本合同，不是 CK3 实机证据。
+C 不读取业务对象作为造债前置，不创建或修改项目、汇报、功劳、注意力、HC、晋升等业务对象或资源，不写 `write_*`/business provenance，也不调用 A/B downstream consumer。相同 receipt 的重放只得到 `idempotent no-op`，不会再开第二笔债。不同 choice 也不能覆盖已经存在的 receipt。
 
-## 本地化与证据边界
+## 下周期债务消费与绩效后果
 
-简体中文和英文为日常开发文案。法、德、日、韩、波、俄、西文件使用英文结构占位，只证明 key 结构可加载，不是发布翻译。
+`zg361_cp_consume_due_policy_debts_effect` 是包内唯一 aggregate；公开 adapter 每次调用它一次，并逐号调用 27 个固定 consumer 各一次。单债 consumer 必须同时验证：
 
-本包没有启动 CK3，没有 parser 输出、paused snapshot、MCP、fixture 或生产实机证据。因此最高状态只能是 `static-ready`，不能标记 `fixture-live`、`production-live` 或 `complete`。正式集成后仍需中央调用点、游戏内玩家/AI 双路线和存读档实测。
+- 五元 debt、`mechanism/due/status/audit/business_object_created` 全部存在且值合法；
+- 原 C receipt 的五元身份逐字段等于 debt，且 `receipt_choice = 3`；
+- 当前 `root` 正是冻结 owner、当前 `this` 正是冻结 subject；
+- `root.zg361_review_serial` **恰好等于** `debt_due_cycle`。
 
-当前生成运行时专测为 40 项，Python 参考模型专测为 38 项；两者都必须同时在普通模式与 `-O` 模式通过。测试数量不改变上述 readiness 边界。
+只有 exact due 才会结算。成功路径仅一次向冻结 owner 的既有 `zg361_b2_management_debt` 加一，作为下一轮 KPI/绩效计算的真实组织后果；然后写 `status = settled`、`audit_state = consumed`、`settled_by = root`、`settled_cycle = root.review_serial` 与 `performance_sink = 1`，并把 open/settled 计数各移动一次。它不补做被延期的业务对象。
+
+已经 settled 且 `settled_by/settled_cycle` 匹配的精确重放只写 audit-only consumer status，不再触达 B2 sink。当前周期小于 due 是 future，当前周期大于 due 是 stale；cross-owner、cross-subject、receipt 身份不符、字段缺失或其他损坏 pending 也均 fail closed。上述路径都不能结算、不能重写 owner、不能开新 portfolio。初始化新 portfolio 只把当期 `portfolio_deferred` 清零，不抹掉累计 open/settled debt 账。
+
+aggregate 只有在逐号消费结束后仍无 blocked 标记、open-debt 已归零、portfolio 确实 deferred 且 cleanup 仍为 pending 时，才调用一次 `zg361_cp_settle_deferred_portfolio_effect`。该 effect 是跨周期清理旧 portfolio 的唯一入口：它释放确实存在的旧 project remainder、关闭确实存在的旧 active project，并把 cleanup 标成 settled。重复 adapter 调用因 cleanup 状态已经终结而 no-op；缺失项目时也不会创建身份、version 或 deadline。由此，C 当期没有间接修改业务对象或资源，清理发生在所有制度债于下周期 exact due 结清之后。
+
+## 首次延期后的确定性闭合
+
+首次 C 之后，本 portfolio 的后续路线必须继续 C：
+
+- 玩家事件的 A/B option 变为不可用，C 始终保留；
+- authorized AI 检查 deferred flag 后确定性调用 C；
+- C 仍留下合法 receipt，因此 stage barrier 和 E→I→J→R 队列可以正常闭合，而不会因缺少项目/汇报对象让后续 A/B 进入死锁。
+
+同周期 finalizer 不释放容量、不关闭项目，也不写任何项目或汇报对象。它为 deferred portfolio 使用 `available + spent + remaining = 100` 的冻结守恒式（保留旧 reservation），同时验证注意力和晋升槽账，并显式写 `final_deferred = 1`。真正释放由下一周期 exact-due aggregate 在全部制度债结清后一次性完成。若 C 在 #030 就发生、项目从未存在，跨周期 cleanup 不伪造 owner、identity、version、deadline 或 report object；它也不会拿缺失业务对象冒充完整 A/B portfolio。
+
+## A/B 业务守恒与跨机制消费
+
+- #030 的 A/B 创建唯一稳定项目对象并分别预留 40/60 容量；其余 A/B 必须先验证对象身份再提交，并递增 version。#054 的 A/B 另建独立汇报对象；其后 A/B 签字、路由、阅读、风险和创意仲裁沿同一对象递增版本。
+- 27 个业务 consumer 只服务 A/B，发布项目身份、version、deadline 与 active/cancelled/stopped 状态；I 域材料 consumer 还发布汇报 identity/version/deadline。receipt 不能替代这些业务对象或可见投影。
+- #027 的 A/B subject/manager/cross-department 签字贡献严格合计 10000 bp；#028 的 A/B 抢功转移和审计回拨净零；#056 的 A/B 从 claimed ledger 建立 report ledger；#057 的 A/B 只签署合计 10000 bp 的版本。
+- 跨部门 reviewer 的身份参与 A/B 的三方签名、附件、抄送、创意来源、岗位归属与 shared metric 依赖消费。#058 A/B 只写 routed recipients，#055 A/B 才真实扣 attention。
+- #063 A/B 权重分别为 70/30 与 50/50，均严格合计 100；#064 A 只有新旧上司双签且 successor 合法时才改变 future active manager，`historical_owner` 永远只读。
+- #129 B 最多消耗一个晋升槽；#130 A/B 的调岗披露与角色证据有具名 source/destination manager；#131 A/B 在结果前锁定项目轨道；#132 A/B 的 business stop 与 individual judgement 分账；#133 A/B 的学习消费与具名责任分账；#134 A/B 只写一个最终 owner。
+- #068 A/B 只读取既有 B2 `zg361_b2_pip_state` 判断历史 PIP，不写任何 B2 字段。只有 due-debt consumer 可写本包唯一授权的 `zg361_b2_management_debt` sink。
+
+未发生 C 时，正常 final conservation 同时要求容量、注意力、晋升槽与 10000 bp 贡献账守恒，项目槽释放，项目对象 version 精确为 27、状态为 cancelled/stopped，汇报对象 version 精确为 7。
+
+## 本地化、测试与证据边界
+
+简体中文和英文为日常开发文案。所有 27 项 C 使用统一的 `policy.defer` 文案；法、德、日、韩、波、俄、西文件使用英文结构占位，只证明 key 结构可加载，不是发布翻译。
+
+静态专测覆盖精确 ID、A/B 旧业务、C 无业务写、五元债、exact-due 单次 sink、settled duplicate、future/stale/cross-owner fail-closed、public adapter ordering、玩家/AI deferred cascade 与最终守恒；普通模式和 `python -O` 必须同时通过。
+
+本包没有启动 CK3，没有 parser 输出、paused snapshot、MCP、fixture 或生产实机证据。因此最高状态只能是 `static-ready`，不能标记 `fixture-live`、`production-live` 或 `complete`。静态 GREEN 不能替代中央调用、玩家/AI 双路线、跨周期消费、存读档和实机日志验收。

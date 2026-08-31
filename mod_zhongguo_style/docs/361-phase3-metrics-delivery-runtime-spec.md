@@ -8,14 +8,14 @@
 
 当前 static-ready 投影分为两层，必须分开陈述：
 
-- **35/35 已实现的共同层**：每项都有独立 A/B/C route、同一组六字段 receipt、五元 write ticket、显式 provenance、独立 consumer 与可见 revision；consumer 不再只投影 route enum，而会存在性门控并发布该项的 4–10 个业务事实。
-- **四类稳定业务对象**：AA229 创建唯一指标对象，AG301 创建重组对象，AJ334 创建需求对象，AJ340 从需求派生独立交付对象。对象各自冻结 owner/subject/cycle/case/version；后续 route 必须同时通过 case kernel 五元身份和对象身份，receipt 不能冒充对象。
-- **已实现的宽领域层**：样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签名、期限、WIP、跨期容量与价值 credit 均有真实写入和读侧投影。AJ344 对已验收交付按 `上线 → 采用 → 价值` 写顺序 1/2/3；拒收或 N/A 可以正常闭案，但 10000 bp 全部留在 `unallocated`，不会凭空发奖。
-- **唯一 manager-scope portfolio adapter**：未来中央调度只允许调用 `zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }`。adapter 读取并冻结当前制度周期与已交付结果案卷，只打开 AA 首案；AA→AG→AJ 依靠带完整冻结身份复核的 D+1 hidden queue 串行交接。
+- **35/35 已实现的共同层**：每项都有独立 A/B/C route 与同一组六字段 receipt。A/B 冻结五元 write ticket、显式 provenance，调用独立 consumer 并发布可见 revision；C 是统一的 acceptance 纯延期，不创建或修改业务对象、业务字段与资源，只冻结唯一五元 policy debt、`due_cycle`、`status` 及其控制面审计元数据。
+- **四类稳定业务对象（仅 A/B）**：AA229 创建唯一指标对象，AG301 创建重组对象，AJ334 创建需求对象，AJ340 从需求派生独立交付对象。对象各自冻结 owner/subject/cycle/case/version；后续 A/B route 必须同时通过 case kernel 五元身份和对象身份，receipt 不能冒充对象。
+- **已实现的宽领域层（仅 A/B）**：样本、份额、矩阵权重、HC、管理容量、历史 owner、紧急槽、签名、期限、WIP、跨期容量与价值 credit 均有真实写入和读侧投影。AJ344 的 A/B 对已验收交付按 `上线 → 采用 → 价值` 写顺序 1/2/3；AJ344-C 不铸造 value ledger，finalizer 只凭冻结的 choice-3 receipt 闭案。
+- **唯一 manager-scope portfolio adapter**：中央调度只允许调用 `zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }`。adapter 先消费该受评人恰好到期的上一周期 C 债，再只打开 AA 首案；AA→AG→AJ 依靠带完整冻结身份复核的 D+1 hidden queue 串行交接。
 
-后文机制表的“consumer 必须发布”列描述该机制最终面向案卷/考核榜/MCP 的丰富查询合同；尚未列入上述两层的细字段不能据此冒充当前已经写入 CK3。当前静态包完成的是可加载目录中的 write→consumer 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
+后文机制表的 A/B 与“consumer 必须发布”列描述该机制面向案卷/考核榜/MCP 的丰富查询合同；C 列只保留玩家为何选择延期的业务语境，不授权执行该格描述的任何业务写入。当前静态包完成的是 A/B 的 write→consumer 主链、C 的 debt→next-cycle sink 主链及上述专门字段，查询键、GUI 和 live 证据仍在 readiness 边界之外。
 
-Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 48 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
+Python 参考模型同步冻结需求与交付对象的 identity/version/deadline、提出者/执行者/受益方三角色、WIP reservation 和价值成熟度。替换签名、重复开工、拒收后领 credit、stale revision、command collision 与资源超额均是原子 RED；当前模型专测为 48 项，生成运行时专测为 51 项，均同时以普通模式和 `-O` 模式执行。该数字只说明 L0 合同覆盖，不提升 live readiness。
 
 ## 权威来源与产物边界
 
@@ -47,7 +47,7 @@ Python 参考模型同步冻结需求与交付对象的 identity/version/deadlin
 
 - 管理者必须通过 `zg361_case_kernel_can_open_trigger`：天朝制、在任、有地、公爵及以上，并且受评人是其可考核直属封臣。
 - 玩家管理者使用 A/B/C 事件链作选择。
-- AI 管理者仅适用项目所有者明确授权的“361 第二 AI 例外”：同样必须是天朝制公爵及以上，静默采用确定性的默认 A 路线。该例外只属于本 mod 的 361 管理链，不得外推到其他 mod 或无关 AI 行为。
+- AI 管理者仅适用项目所有者明确授权的“361 第二 AI 例外”：同样必须是天朝制公爵及以上；正常 portfolio 静默采用确定性的默认 A 路线，一旦同一 portfolio 已选择 C 并进入 deferred 状态，后续项目确定性走 C 闭合，不能再混入 A/B 业务写。该例外只属于本 mod 的 361 管理链，不得外推到其他 mod 或无关 AI 行为。
 - 伯爵和男爵可以成为 `subject`、读取并消费绑定给自己的可见结果；他们不能开案、选择路线、推进阶段、分配样本/HC/WIP、替他人考核或调用管理者入口。
 - 受评人读取必须通过 `zg361_case_kernel_subject_self_guard_trigger`；该入口只发布自己的结果，不授予任何管理能力。
 - 管理事件以管理者为事件 `ROOT`，用已保存的 named scope 指向受评人；所有业务写入发生在受评人 scope，`owner` 永远显式传入，禁止依赖跨事件的隐式 `PREV`。
@@ -73,9 +73,9 @@ Python 参考模型同步冻结需求与交付对象的 identity/version/deadlin
 1. 五元 full guard；
 2. 对同一 ID 依次检查 choice 1、2、3 是否已有当前 receipt；
 3. 任一 choice 已提交，则本次无论重放同路线还是改选另一条路线都为 idempotent no-op；
-4. 做全部 typed RED 与资源预检；
+4. A/B 做全部 typed RED 与业务资源预检；C 只检查 domain operation slot 和该 ID 没有尚未结算的 open debt；
 5. 调用 `zg361_case_kernel_record_operation_effect` 写唯一 receipt；
-6. 仅当内核确认本次 operation applied，才写业务字段、冻结 write ticket、调用 consumer，并在 stage barrier 调用对应 dispatcher。
+6. 仅当内核确认本次 operation applied：A/B 才写业务字段、冻结 write ticket 并调用 consumer；C 只冻结债务五元、`due_cycle/status` 及控制面审计/生命周期记账；三条路线都按同一 stage barrier 调用 dispatcher。
 
 因此，网络/界面重复提交不会二次扣资源，玩家也不能先选 A 再点 B 把同一事项结算两遍。operation receipt 与 stage transition 仍是两种权限：机制 wrapper 不能自行改共享 state，只能在本规格列出的 barrier 调用 AA/AG/AJ 的公开 `advance` effect。
 
@@ -83,13 +83,13 @@ Python 参考模型同步冻结需求与交付对象的 identity/version/deadlin
 
 `zg361_p3_last_red_code` 是稳定、可查询的数值类型。当前编码为 `ID × 10 + route`，其中 A/B/C 分别为 1/2/3；例如 AA240-B 的原子预检失败写 `2402`。调用方可无歧义地还原失败机制与路线，且不能把 stale、replay 和资源 RED 混为一类：`runtime_status = 3/2/4` 分别表示 stale no-op、idempotent no-op、typed RED。
 
-当前每项都先检查该 domain 的 operation slot；专门资源预检还覆盖 AA240 样本槽、AG309 管理容量、AJ335 紧急槽、AJ337 当期容量/灾害豁免、AJ340 当期容量/WIP、AJ341 当期 reservation/下期容量、AJ344 剩余 value credit。签字、份额与 HC 由生成器写入固定守恒组合，当前不是由外部任意参数输入，所以不会生成不平衡组合；未来若开放 MCP 参数化输入，必须先扩展 typed RED 类别再开放写口。
+当前每项都先检查该 domain 的 operation slot；A/B 的专门资源预检还覆盖 AA240 样本槽、AG309 管理容量、AJ335 紧急槽、AJ337 当期容量、AJ340 当期容量/WIP、AJ341 当期 reservation/下期容量、AJ344 剩余 value credit。C 不读取这些业务资源，只检查同 ID 的 `debt_status` 不为 open。签字、份额与 HC 由生成器写入固定守恒组合，当前不是由外部任意参数输入，所以不会生成不平衡组合；未来若开放 MCP 参数化输入，必须先扩展 typed RED 类别再开放写口。
 
 所有可能失败的检查必须发生在 `record_operation` 之前。尤其禁止“先写 receipt，再发现没容量”；否则重试将永久变成 no-op，并留下未执行却不可再执行的假成功。
 
 ## Write → consumer 合同
 
-仅写一个 choice 或 receipt 不算机制完成。每个 ID 必须有独立业务字段与独立 consumer：
+仅写一个 choice 或 receipt 不算 A/B 机制完成。每个 ID 的 A/B 必须有独立业务字段与独立 consumer：
 
 - applied 路线写入该 ID 的 semantic value，并同时冻结 `write_owner/write_subject/write_cycle/write_case/write_state`；
 - consumer 先 existence-gate，再把 write 五元与当前案卷五元逐项比对；
@@ -98,15 +98,29 @@ Python 参考模型同步冻结需求与交付对象的 identity/version/deadlin
 - stale write、别人的 write 或前一周期 write 只能 no-op，绝不能“取最近一条”误投到当前考核；
 - 伯爵/男爵的 self-consumer 只读取 `visible_<ID>`，不能反向写 choice、receipt、资源或 stage。
 
-consumer 的下游结果必须是可用于案卷/考核榜/MCP 后续查询的业务事实，例如“样本排队”“WIP 隐瞒债”“旧目标未改写”，而不是仅返回“按钮已点击”。
+consumer 的下游结果必须是可用于案卷/考核榜/MCP 后续查询的业务事实，而不是仅返回“按钮已点击”。C 不调用这些即时 consumer，也不伪造“样本排队”“WIP 隐瞒债”等业务结果。
+
+## Route C：唯一五元债与下一周期消费
+
+35 项 C 共用同一合同，不存在按文案热词分别加债的例外：
+
+- applied C 的业务有效载荷仅有内核 receipt、domain operation 计数、stage barrier，以及该 ID 的 `debt_owner/debt_subject/debt_cycle/debt_case/debt_state/debt_due_cycle/debt_status`；`due_cycle = debt_cycle + 1`，`status = 1` 表示 open。另写 `mechanism/audit_state/business_object_created/performance_sink/consumer_status`、portfolio deferred/cleanup 状态及 open-debt 计数作为控制面审计和生命周期记账；其中 `business_object_created = 0`、`performance_sink = 0` 明确证明本周期没有创建业务对象或兑现绩效。
+- 每个 ID 只有一个 open debt slot。若旧债仍为 `status = 1`，新 C 在写 receipt 前 typed RED；initializer 不删除或归零这些债务字段，不能用开新 portfolio 擦债。
+- C 不写 semantic value、`write_*`、provenance、稳定业务对象、样本/HC/管理容量/WIP/交付容量/value credit，也不调用即时业务 consumer。domain operation 计数和 stage barrier 只是完成本轮案卷的技术记账，不是业务或资源履约。
+- 唯一 aggregate consumer 是 `zg361_p3_consume_due_policy_debts_effect`。它只由公开 `zg361_p3_open_portfolio_effect` 在 `SUBJECT` scope 调用一次，并且严格位于新 AA launch 之前；self-read、domain runner、事件和 initializer 不得另设消费入口。
+- 每个 per-ID consumer 必须 existence-gate 债务核心七字段、`mechanism/audit_state/business_object_created` 三个控制字段、原 receipt 六字段及 `root.zg361_review_serial`，再逐项验证债务五元等于 receipt 五元、receipt choice 为 3、债务 owner 是当前 `ROOT`、subject 是当前 `this`，且 `due_cycle = debt_cycle + 1 = ROOT.review_serial`。
+- 唯一业务副作用是在冻结 `debt_owner` scope 对既有 `zg361_b2_management_debt` 增加 1；随后写 `status = 2`、`audit_state = settled`、`settled_by = ROOT`、`settled_cycle = ROOT.review_serial`、consumer/sink 审计位，并守恒更新 open/settled 计数。该 B2 sink 在后续真实 KPI 结算时消费，不在本包复制 KPI 算法。
+- exact duplicate 因 `status != 1` 对业务和 settlement no-op；过期债（`due_cycle < review_serial`）、未来债（`due_cycle > review_serial`）、跨 owner、跨 subject、五元或 receipt 不一致全部 fail closed，既不写 sink，也不改 settlement metadata，但允许写 `consumer_status`、blocked 位和 RED code 作为诊断审计。
 
 ## 资源账与守恒
 
+以下资源守恒只描述 A/B；C 在这些账本上必须是零写入。
+
 ### AA：指标与实验
 
-- `zg361_p3_aa_sample_used` 始终满足 `0 <= used <= total`。AA240 A/B 的活跃实验各消费一个槽；C 排队不消费槽。
+- `zg361_p3_aa_sample_used` 始终满足 `0 <= used <= total`。AA240 A/B 的活跃实验各消费一个槽；C 既不消费样本槽，也不创建样本队列。
 - 指标分母和时间窗按版本冻结；新版本只能向后生效，旧奖励不得重算。
-- AA241 每条路线的建设者、运营者、继任者收益份额合计 10000 bp；延迟成本使用相同三方、相同份额和相同 case provenance，不能只领长尾收益、不背长尾成本。
+- AA241 A/B 的建设者、运营者、继任者收益份额合计 10000 bp；延迟成本使用相同三方、相同份额和相同 case provenance，不能只领长尾收益、不背长尾成本。
 - 暂记 credit、学习分和虚荣指标追回必须分账；失败实验学习分不得伪装成成功 KPI。
 
 ### AG：业务周期与重组
@@ -123,7 +137,7 @@ consumer 的下游结果必须是可用于案卷/考核榜/MCP 后续查询的�
 - `current_capacity_reserved <= current_capacity_total`，`next_capacity_reserved <= next_capacity_total`。
 - 活跃 WIP 不得超过 `wip_limit + signed_or_hidden_exception_count`；隐藏超限必须形成可见绩效债，不能成为免费第四路线。
 - 跨周期时先释放当期 reservation，再按未完工量占用下期容量；取消路线精确释放，不得重复退款。
-- AJ344 的上线、采用、价值 credit 累计不超过 10000 bp，成熟度只能向前，不能跳过前置阶段或重复领奖。
+- AJ344 A/B 的上线、采用、价值 credit 累计不超过 10000 bp，成熟度只能向前，不能跳过前置阶段或重复领奖。AJ344-C 没有 value ledger；finalizer 以 choice-3 receipt 作为纯延期闭案条件。
 
 ## Stage 图与 barrier
 
@@ -152,9 +166,9 @@ consumer 的下游结果必须是可用于案卷/考核榜/MCP 后续查询的�
 
 ## AA229–241：数据口径与实验
 
-表内 A/B/C 均是有代价的可执行路线，不是同一结果的三段文案。consumer 列是必须落地的受评人可见业务结果。
+表内 A/B 是有代价的可执行业务路线。所有 C 格仅说明“为什么延期”的 acceptance 文案语境；其运行时结果一律由上文纯延期合同覆盖，不执行该格所述业务动作、不创建隐藏业务结果。consumer 列只约束 A/B 的受评人可见业务结果。
 
-| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 路线 | consumer 必须发布 |
+| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 延期理由（仅文案） | consumer 必须发布 |
 |---|---|---|---|---|---|---|
 | AA | 229 / 1 | 指标字典与唯一口径 owner | 冻结唯一 owner、定义、来源、频率、范围、分母和 provenance；治理最强 | 联合起草但仍指定一名最终 owner；增加协调成本 | 快速临时口径，仍指定唯一 owner；记口径债与较低置信度 | 口径版本、最终 owner、数据来源与口径债，不只显示“已定义” |
 | AA | 230 / 1 | 多数据源对账 | 选择权威源；速度快，但权威源 owner 背误差责任 | 多方联合取一致/折中值；更稳健但增加校准成本 | 延迟结算；保留冲突值，不伪造确定结果 | 路线、resolved value 或 pending、责任源和 provenance |
@@ -174,7 +188,9 @@ AA 的 stage 顺序特意把 240 放在 238/239 之前：先冻结实际运行�
 
 ## AG301–311：业务周期与重组折算
 
-| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 路线 | consumer 必须发布 |
+本表 C 格同样只是延期理由；不得据此绕过统一 policy-debt 合同写业务对象、资源或专门债种。
+
+| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 延期理由（仅文案） | consumer 必须发布 |
 |---|---|---|---|---|---|---|
 | AG | 301 / 1 | 核心业务光环折算 | 强证据下按顺风、资源和规模难度校正，调整有上限 | 保留更多 raw outcome，同时列明资源优势债 | 弱证据采用保守小上限，避免“核心业务天然满绩效” | raw outcome、personal increment、adjustment 与 cap |
 | AG | 302 / 1 | 衰退业务的逆风责任 | 公开基线，按少跌多少奖励高质量防守 | 批准转守/止损计划，成果与 sponsor 责任分账 | 隐瞒逆风或只报绝对下跌，追加 integrity penalty | expected/actual decline、avoided decline、防守质量与披露状态 |
@@ -190,7 +206,9 @@ AA 的 stage 顺序特意把 240 放在 238/239 之前：先冻结实际运行�
 
 ## AJ334–344：需求入口与交付价值
 
-| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 路线 | consumer 必须发布 |
+本表 C 格同样只是延期理由；例如“queue debt”“waiver”“hidden WIP”都不是 C 当场创建的业务字段，唯一落点仍是下一周期管理债 sink。
+
+| Domain | ID / stage | 业务语义 | A 路线 | B 路线 | C 延期理由（仅文案） | consumer 必须发布 |
 |---|---|---|---|---|---|---|
 | AJ | 334 / 1 | 统一需求入口与来源标签 | 上司/战略需求，冻结 sponsor | 属地/用户需求，冻结受益方 | 故障/跨部门需求，冻结提出者与紧急来源 | demand ID、source、source owner、proposer、queue sequence、provenance |
 | AJ | 335 / 1 | 紧急插单预算 | 使用预留 emergency slot；有槽才可选 | 等量换出旧范围，不消耗 emergency slot | 拒绝紧急标签，保留普通队列顺序并记 queue debt | 是否耗槽、scope trade、queue debt 与槽位余额 |
@@ -219,11 +237,13 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 - 结果案卷 owner 等于当前管理者、cycle 等于管理者当前 review serial，且 state 至少为 3（已交付/结算）；
 - 受评人本周期尚未有 portfolio，且 AA、AG、AJ 均无活跃案卷。
 
-成功打开 AA 后，initializer 一次性冻结 portfolio owner/subject/cycle 和结果案卷 owner/subject/cycle/case/state，并在管理者侧写同周期 marker。相同管理者或相同受评人在同一制度周期重放入口均为 no-op；不得重置账本、另开第二条长链或覆盖旧案卷。AA/AG/AJ 的 `launch_effect` 是包内 domain 入口，不是供 central、GUI 或 MCP 绕过 adapter 调用的公开 ABI。
+入口 limit 全部通过后，adapter 先在 `SUBJECT` scope 调用唯一 C 债 aggregate consumer，再调用 AA launch。只有 `due_cycle` 恰好等于当前 review serial 且五元、owner、subject 与原 choice-3 receipt 全部一致的 open debt 才会写冻结 owner 的 B2 management-debt sink；过期、未来、跨 owner、跨 subject 或重复调用均 no-op。
+
+成功打开 AA 后，initializer 一次性冻结 portfolio owner/subject/cycle 和结果案卷 owner/subject/cycle/case/state，并在管理者侧写同周期 marker。相同管理者或相同受评人在同一制度周期重放入口均为 no-op；不得重置账本、债务字段、另开第二条长链或覆盖旧案卷。AA/AG/AJ 的 `launch_effect` 是包内 domain 入口，不是供 central、GUI 或 MCP 绕过 adapter 调用的公开 ABI。
 
 窗口节流合同如下：
 
-- adapter 只同步打开 AA，并且玩家当日只收到 AA 第一张业务卡；不会同时打开 AG 或 AJ。
+- adapter 只在 AA launch 前同步消费一次恰好到期的 C 债 aggregate，并只打开 AA；玩家当日只收到 AA 第一张业务卡，不会同时打开 AG 或 AJ。
 - 玩家选择某卡且 route 真正 `applied = 1` 后，同 domain 下一张卡统一使用 `days = 1`；typed RED、stale 或 receipt no-op 不排后续卡。
 - AA 和 AG 的最后一个 barrier 关闭本案后，只给冻结 owner 排一个 `days = 1` hidden queue event。hidden event 必须重新核对刚关闭案卷的 owner/subject/cycle/case/state、`active = 0`、管理者制度周期，以及冻结结果案卷五元；全部匹配才分别打开 AG、AJ 首案。
 - 因此，一个 portfolio 在同一游戏日最多产生一个可见业务窗口。hidden queue 本身没有 title、desc 或 option，不计作可见业务窗。
@@ -251,16 +271,17 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 
 1. 生成器 `--check` 可复现且全部产物 UTF-8 BOM；
 2. ID 集合严格等于 229–241、301–311、334–344，无漏号、多号或空壳 wrapper；
-3. 每 ID 有 A/B/C 三路线、共享 receipt、full guard、独立 semantic write 和独立 consumer；
+3. 每 ID 有 A/B/C 三路线、共享 receipt 与 full guard；A/B 有独立 semantic write/provenance/consumer，C 没有这些业务写入，只冻结唯一五元 debt、`due_cycle = cycle + 1`、open status 及控制面审计/生命周期记账；
 4. 任一路线 receipt 存在时，另外两路线同样 no-op；
-5. 所有资源预检文本位于 `record_operation` 之前，RED 后无 receipt/业务/资源副作用；
+5. A/B 的所有资源预检位于 `record_operation` 之前；C 只预检 operation slot 与无旧 open debt，且 35 条 C 均不含稳定业务对象或资源写入；RED 后无 receipt/业务/资源副作用；
 6. 三个 stage 图、barrier 与共享内核公开 `advance` effect 一致；
-7. AA240、AA241、AG304、AG306、AG308、AG309、AJ335、AJ337、AJ340、AJ341、AJ344 的守恒断言存在；
-8. 玩家 A/B/C 事件链和授权 AI 默认 A 路线复用同一 wrapper；
-9. 只有一个 manager-scope portfolio adapter；它读取已交付结果案卷、冻结制度周期与结果五元、同周期重放 no-op，且只打开 AA；
+7. AA240、AA241、AG304、AG306、AG308、AG309、AJ335、AJ337、AJ340、AJ341、AJ344 的 A/B 守恒断言存在，C 对应业务账为零写入；
+8. 玩家 A/B/C 事件链和授权 AI 复用同一 wrapper；正常 AI portfolio 默认 A，first-C 后 deferred portfolio 的后续 A/B 不可用，AI runner 确定性走 C；
+9. 只有一个 manager-scope portfolio adapter；唯一 debt aggregate 只在其中调用一次并位于 AA launch 前，每 ID due consumer 只对 exact next-cycle/frozen owner/frozen subject/five-tuple/choice-3 写 B2 sink 和 settlement metadata；duplicate、stale、future、cross-owner 对业务与 settlement no-op，诊断审计可写；
 10. 玩家同 domain 后续卡与 AA→AG→AJ 跨案交接全部是 D+1；hidden queue 逐项复核关闭案卷与冻结 portfolio，静态数据流中同日最多一个可见业务窗；
 11. AI domain runner 不含 `trigger_event`，跨案 queue 全部 `hidden = yes`；管理入口要求天朝制公爵及以上，伯爵/男爵只有 subject self-consumer；
-12. 九语 key parity、中文/英文原创集合、七语英文结构占位和 BOM 均通过。
+12. AJ344-C 无 value ledger 时仍可由 choice-3 receipt 通过 finalizer，且不能铸造 value credit；
+13. 九语 key parity、中文/英文原创集合、七语英文结构占位和 BOM 均通过。
 
 这些测试只证明生成结构与静态合同，不证明 CK3 实际解析、事件作用域、存读档或 UI 呈现。
 

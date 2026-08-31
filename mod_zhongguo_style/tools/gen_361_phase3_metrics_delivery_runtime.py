@@ -18,6 +18,8 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_phase3_metrics_delivery_runtime.py\n"
 READINESS = "ck3-script-static-ready-not-live"
+DEFER_ROUTE_EN = "Defer this mechanism and open one next-cycle policy debt."
+DEFER_ROUTE_CN = "延期本机制，并登记一笔下周期制度债。"
 LANGUAGES = (
     "english",
     "simp_chinese",
@@ -63,7 +65,9 @@ def m(
 ) -> Mechanism:
     return Mechanism(
         mid, domain, state, field, title_en, title_cn, desc_en, desc_cn,
-        (a_en, b_en, c_en), (a_cn, b_cn, c_cn),
+        # Runtime authority is uniform: legacy per-item C copy remains only as
+        # research context; generated player copy is canonical policy.defer.
+        (a_en, b_en, DEFER_ROUTE_EN), (a_cn, b_cn, DEFER_ROUTE_CN),
     )
 
 
@@ -344,7 +348,9 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
     checks = [
         f"has_variable = zg361_p3_{d}_operation_total",
         f"has_variable = zg361_p3_{d}_operation_used",
+        "has_variable = zg361_p3_portfolio_deferred",
         f"var:zg361_p3_{d}_operation_used < var:zg361_p3_{d}_operation_total",
+        "var:zg361_p3_portfolio_deferred = 0",
     ]
     if 230 <= mid <= 241:
         checks += [
@@ -474,6 +480,34 @@ def atomic_precheck(spec: Mechanism, choice: int) -> str:
     return "trigger_if = {\n\tlimit = {\n" + indent("\n".join(existence), 2) + "\n\t}\n" + indent("\n".join(reads)) + "\n}\ntrigger_else = { always = no }"
 
 
+def defer_precheck(spec: Mechanism) -> str:
+    """Route C needs only case capacity and a free per-ID debt slot.
+
+    It deliberately does not inspect or create the metric/reorg/demand/delivery
+    objects required by A/B.  An older open debt is never overwritten: until
+    its exact owner consumes it through the next-cycle portfolio adapter, a new
+    C attempt for the same mechanism fails closed.
+    """
+
+    d, mid = spec.domain, spec.mid
+    return f"""trigger_if = {{
+\tlimit = {{
+\t\thas_variable = zg361_p3_{d}_operation_total
+\t\thas_variable = zg361_p3_{d}_operation_used
+\t\thas_variable = zg361_p3_policy_debt_open_n
+\t\thas_variable = zg361_p3_policy_debt_settled_n
+\t\thas_variable = zg361_p3_portfolio_deferred
+\t}}
+\tvar:zg361_p3_{d}_operation_used < var:zg361_p3_{d}_operation_total
+\ttrigger_if = {{
+\t\tlimit = {{ has_variable = zg361_p3_m{mid}_debt_status }}
+\t\tvar:zg361_p3_m{mid}_debt_status != 1
+\t}}
+\ttrigger_else = {{ always = yes }}
+}}
+trigger_else = {{ always = no }}"""
+
+
 def stage_barrier(spec: Mechanism) -> str:
     """Require every receipt in this stage before the sole stage dispatcher."""
     same_stage = [
@@ -485,6 +519,9 @@ def stage_barrier(spec: Mechanism) -> str:
 
 def business_effects(spec: Mechanism, choice: int) -> list[str]:
     d, mid = spec.domain, spec.mid
+
+    if choice not in (1, 2):
+        raise ValueError("route C is a pure defer and must not render business/resource writes")
 
     def setv(name: str, value: str | int) -> str:
         return f"set_variable = {{ name = {name} value = {value} }}"
@@ -504,7 +541,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
     elif choice == 2:
         lines += [addv(f"zg361_p3_{d}_quality", 1), addv(f"zg361_p3_{d}_management_debt", 1)]
     else:
-        lines += [addv(f"zg361_p3_{d}_throughput", 1), addv(f"zg361_p3_{d}_management_debt", 2)]
+        raise AssertionError("unreachable route choice")
 
     # AA: one stable metric object.  Every later record points back to the
     # frozen metric cycle/case/version rather than treating its route receipt
@@ -1177,6 +1214,273 @@ zg361_p3_m{mid}_consume_effect = {{
 }}"""
 
 
+def render_due_debt_consumer(spec: Mechanism) -> str:
+    """Settle one exact debt once; classify every other pending state."""
+
+    mid = spec.mid
+    p = f"zg361_p3_m{mid}"
+    identity = ("owner", "subject", "cycle", "case", "state")
+    debt_fields = (*identity, "mechanism", "due_cycle", "status", "audit_state", "business_object_created")
+    exact_required = "\n".join(f"\t\t\thas_variable = {p}_debt_{name}" for name in debt_fields)
+    receipt_required = "\n".join(
+        f"\t\t\thas_variable = {p}_receipt_{name}" for name in (*identity, "choice")
+    )
+    tuple_compare = "\n".join(
+        f"\t\tvar:{p}_debt_{name} = var:{p}_receipt_{name}" for name in identity
+    )
+    future_required = exact_required.replace("\t\t\t", "\t\t\t")
+    return f"""# #{mid:03d} next-cycle route-C debt consumer.  The exact frozen
+# owner receives the KPI sink; every other pending state blocks new lifecycle work.
+{p}_consume_due_debt_effect = {{
+\tif = {{
+\t\tlimit = {{
+{exact_required}
+{receipt_required}
+\t\t\thas_variable = zg361_p3_policy_debt_open_n
+\t\t\thas_variable = zg361_p3_policy_debt_settled_n
+\t\t\troot = {{
+\t\t\t\tzg361_is_celestial_liege_trigger = yes
+\t\t\t\thas_variable = zg361_review_serial
+\t\t\t}}
+\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\tliege = root
+\t\t\tvar:{p}_debt_status = 1
+\t\t\tvar:{p}_debt_audit_state = 1
+\t\t\tvar:{p}_debt_business_object_created = 0
+\t\t\tvar:{p}_debt_mechanism = {mid}
+\t\t\tvar:zg361_p3_policy_debt_open_n >= 1
+\t\t\tvar:{p}_debt_owner = root
+\t\t\tvar:{p}_debt_subject = this
+{tuple_compare}
+\t\t\tvar:{p}_receipt_choice = 3
+\t\t\tvar:{p}_debt_due_cycle = {{ value = var:{p}_debt_cycle add = 1 }}
+\t\t\troot.var:zg361_review_serial = var:{p}_debt_due_cycle
+\t\t}}
+\t\tvar:{p}_debt_owner = {{
+\t\t\tchange_variable = {{ name = zg361_b2_management_debt add = 1 }}
+\t\t}}
+\t\tset_variable = {{ name = {p}_debt_status value = 2 }}
+\t\tset_variable = {{ name = {p}_debt_audit_state value = 3 }}
+\t\tset_variable = {{ name = {p}_debt_settled_by value = root }}
+\t\tset_variable = {{ name = {p}_debt_settled_cycle value = root.var:zg361_review_serial }}
+\t\tset_variable = {{ name = {p}_debt_performance_sink value = 1 }}
+\t\tset_variable = {{ name = {p}_debt_consumer_status value = 1 }}
+\t\tchange_variable = {{ name = zg361_p3_policy_debt_open_n add = -1 }}
+\t\tchange_variable = {{ name = zg361_p3_policy_debt_settled_n add = 1 }}
+\t}}
+\telse_if = {{
+\t\t# Exact settled replay is audit-only and never reaches the KPI sink again.
+\t\tlimit = {{
+\t\t\thas_variable = {p}_debt_owner
+\t\t\thas_variable = {p}_debt_subject
+\t\t\thas_variable = {p}_debt_status
+\t\t\thas_variable = {p}_debt_audit_state
+\t\t\thas_variable = {p}_debt_settled_by
+\t\t\thas_variable = {p}_debt_settled_cycle
+\t\t\troot = {{
+\t\t\t\tzg361_is_celestial_liege_trigger = yes
+\t\t\t\thas_variable = zg361_review_serial
+\t\t\t}}
+\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\tliege = root
+\t\t\tvar:{p}_debt_owner = root
+\t\t\tvar:{p}_debt_subject = this
+\t\t\tvar:{p}_debt_status = 2
+\t\t\tvar:{p}_debt_audit_state = 3
+\t\t\tvar:{p}_debt_settled_by = root
+\t\t\troot.var:zg361_review_serial >= var:{p}_debt_settled_cycle
+\t\t}}
+\t\tset_variable = {{ name = {p}_debt_consumer_status value = 2 }}
+\t}}
+\telse_if = {{
+\t\t# Complete exact input whose due cycle is later is future, never current work.
+\t\tlimit = {{
+{future_required}
+{receipt_required}
+\t\t\troot = {{
+\t\t\t\tzg361_is_celestial_liege_trigger = yes
+\t\t\t\thas_variable = zg361_review_serial
+\t\t\t}}
+\t\t\tzg361_is_reviewable_vassal_trigger = yes
+\t\t\tliege = root
+\t\t\tvar:{p}_debt_status = 1
+\t\t\tvar:{p}_debt_audit_state = 1
+\t\t\tvar:{p}_debt_business_object_created = 0
+\t\t\tvar:{p}_debt_mechanism = {mid}
+\t\t\tvar:{p}_debt_owner = root
+\t\t\tvar:{p}_debt_subject = this
+{tuple_compare}
+\t\t\tvar:{p}_receipt_choice = 3
+\t\t\tvar:{p}_debt_due_cycle = {{ value = var:{p}_debt_cycle add = 1 }}
+\t\t\troot.var:zg361_review_serial < var:{p}_debt_due_cycle
+\t\t}}
+\t\tset_variable = {{ name = {p}_debt_consumer_status value = 5 }}
+\t\tset_variable = {{ name = zg361_p3_policy_debt_consumer_blocked value = 1 }}
+\t}}
+\telse_if = {{
+\t\t# Pending stale/cross-owner/corrupt identity: fail closed.
+\t\tlimit = {{
+\t\t\tOR = {{
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = {p}_debt_status }}
+\t\t\t\t\tvar:{p}_debt_status = 1
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t\ttrigger_if = {{
+\t\t\t\t\tlimit = {{ has_variable = {p}_receipt_choice }}
+\t\t\t\t\tvar:{p}_receipt_choice = 3
+\t\t\t\t}}
+\t\t\t\ttrigger_else = {{ always = no }}
+\t\t\t}}
+\t\t}}
+\t\tset_variable = {{ name = {p}_debt_consumer_status value = 3 }}
+\t\tset_variable = {{ name = zg361_p3_policy_debt_consumer_blocked value = 1 }}
+\t\tset_variable = {{ name = zg361_p3_last_red_code value = {60000 + mid} }}
+\t}}
+}}"""
+
+
+def render_due_debt_aggregate() -> str:
+    calls = "\n".join(
+        f"\tzg361_p3_m{spec.mid}_consume_due_debt_effect = yes"
+        for spec in MECHANISMS
+    )
+    return f"""# The sole next-cycle debt route.  It is called once by the public
+# portfolio adapter before a new AA case can overwrite any per-ID history.
+zg361_p3_consume_due_policy_debts_effect = {{
+\tif = {{
+\t\tlimit = {{ NOT = {{ has_variable = zg361_p3_policy_debt_open_n }} }}
+\t\tset_variable = {{ name = zg361_p3_policy_debt_open_n value = 0 }}
+\t}}
+\tif = {{
+\t\tlimit = {{ NOT = {{ has_variable = zg361_p3_policy_debt_settled_n }} }}
+\t\tset_variable = {{ name = zg361_p3_policy_debt_settled_n value = 0 }}
+\t}}
+\tremove_variable = zg361_p3_policy_debt_consumer_blocked
+{calls}
+\tif = {{
+\t\tlimit = {{ NOT = {{ has_variable = zg361_p3_policy_debt_consumer_blocked }} }}
+\t\tzg361_p3_settle_deferred_portfolio_effect = yes
+\t}}
+}}"""
+
+
+def render_deferred_portfolio_cleanup() -> str:
+    """Release only AJ340 current-cycle reservation/WIP after all debts settle."""
+
+    return """# Lifecycle cleanup is deliberately separate from route C and its
+# same-cycle finalizer.  It releases only a prior AJ340 reservation/WIP after
+# every exact C debt settled, with no blocked consumer and an exact due tuple.
+zg361_p3_settle_deferred_portfolio_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_p3_portfolio_deferred
+			has_variable = zg361_p3_deferred_cleanup_status
+			has_variable = zg361_p3_policy_debt_open_n
+			has_variable = zg361_p3_policy_debt_settled_n
+			has_variable = zg361_p3_portfolio_closed
+			has_variable = zg361_p3_portfolio_owner
+			has_variable = zg361_p3_portfolio_subject
+			has_variable = zg361_p3_portfolio_cycle
+			has_variable = zg361_p3_final_owner
+			has_variable = zg361_p3_final_subject
+			has_variable = zg361_p3_final_cycle
+			has_variable = zg361_p3_final_case
+			has_variable = zg361_p3_final_deferred
+			has_variable = zg361_p3_final_conservation_ok
+			has_variable = zg361_p3_final_current_capacity_check
+			has_variable = zg361_p3_aj_capacity_total
+			has_variable = zg361_p3_aj_capacity_remaining
+			has_variable = zg361_p3_aj_capacity_reserved
+			has_variable = zg361_p3_aj_wip_used
+			root = {
+				zg361_is_celestial_liege_trigger = yes
+				has_variable = zg361_review_serial
+			}
+			zg361_is_reviewable_vassal_trigger = yes
+			liege = root
+			var:zg361_p3_portfolio_deferred = 1
+			var:zg361_p3_deferred_cleanup_status = 1
+			var:zg361_p3_policy_debt_open_n = 0
+			var:zg361_p3_policy_debt_settled_n >= 1
+			var:zg361_p3_portfolio_closed = 1
+			var:zg361_p3_portfolio_owner = root
+			var:zg361_p3_portfolio_subject = this
+			var:zg361_p3_final_owner = root
+			var:zg361_p3_final_subject = this
+			var:zg361_p3_final_cycle = var:zg361_p3_portfolio_cycle
+			var:zg361_p3_final_deferred = 1
+			var:zg361_p3_final_conservation_ok = 1
+			var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
+			root.var:zg361_review_serial = { value = var:zg361_p3_portfolio_cycle add = 1 }
+			trigger_if = {
+				limit = {
+					OR = {
+						var:zg361_p3_aj_capacity_reserved > 0
+						var:zg361_p3_aj_wip_used > 0
+					}
+				}
+				has_variable = zg361_p3_demand_object_owner
+				has_variable = zg361_p3_demand_object_subject
+				has_variable = zg361_p3_demand_object_cycle
+				has_variable = zg361_p3_demand_object_case
+				has_variable = zg361_p3_delivery_object_owner
+				has_variable = zg361_p3_delivery_object_subject
+				has_variable = zg361_p3_delivery_object_cycle
+				has_variable = zg361_p3_delivery_object_case
+				has_variable = zg361_p3_demand_active
+				has_variable = zg361_p3_demand_reserved_hours
+				has_variable = zg361_p3_delivery_reserved_hours
+				has_variable = zg361_p3_delivery_wip_slots
+				var:zg361_p3_demand_object_owner = root
+				var:zg361_p3_demand_object_subject = this
+				var:zg361_p3_demand_object_cycle = var:zg361_p3_portfolio_cycle
+				var:zg361_p3_demand_object_case = var:zg361_p3_final_case
+				var:zg361_p3_delivery_object_owner = root
+				var:zg361_p3_delivery_object_subject = this
+				var:zg361_p3_delivery_object_cycle = var:zg361_p3_portfolio_cycle
+				var:zg361_p3_delivery_object_case = var:zg361_p3_final_case
+				var:zg361_p3_demand_active = 1
+				var:zg361_p3_aj_capacity_reserved > 0
+				var:zg361_p3_aj_wip_used > 0
+				var:zg361_p3_demand_reserved_hours = var:zg361_p3_aj_capacity_reserved
+				var:zg361_p3_delivery_wip_slots = var:zg361_p3_aj_wip_used
+			}
+			trigger_else = {
+				var:zg361_p3_aj_capacity_reserved = 0
+				var:zg361_p3_aj_wip_used = 0
+			}
+		}
+		set_variable = { name = zg361_p3_deferred_cleanup_released_capacity value = var:zg361_p3_aj_capacity_reserved }
+		set_variable = { name = zg361_p3_deferred_cleanup_released_wip value = var:zg361_p3_aj_wip_used }
+		if = {
+			limit = {
+				var:zg361_p3_aj_capacity_reserved > 0
+				var:zg361_p3_aj_wip_used > 0
+			}
+			change_variable = { name = zg361_p3_aj_capacity_remaining add = var:zg361_p3_aj_capacity_reserved }
+			set_variable = { name = zg361_p3_aj_capacity_reserved value = 0 }
+			set_variable = { name = zg361_p3_aj_wip_used value = 0 }
+			set_variable = { name = zg361_p3_demand_reserved_hours value = 0 }
+			set_variable = { name = zg361_p3_delivery_reserved_hours value = 0 }
+			set_variable = { name = zg361_p3_delivery_wip_slots value = 0 }
+			set_variable = { name = zg361_p3_demand_active value = 0 }
+		}
+		set_variable = { name = zg361_p3_deferred_cleanup_status value = 2 }
+		set_variable = { name = zg361_p3_deferred_cleanup_settled_by value = root }
+		set_variable = { name = zg361_p3_deferred_cleanup_settled_cycle value = root.var:zg361_review_serial }
+	}
+	else_if = {
+		limit = {
+			has_variable = zg361_p3_deferred_cleanup_status
+			var:zg361_p3_deferred_cleanup_status = 1
+		}
+		set_variable = { name = zg361_p3_policy_debt_consumer_blocked value = 1 }
+		set_variable = { name = zg361_p3_last_red_code value = 60999 }
+	}
+}"""
+
+
 def final_domain_action(domain: str) -> str:
     next_domain = NEXT_DOMAIN[domain]
     if next_domain is not None:
@@ -1191,8 +1495,7 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     letter = "abc"[choice - 1]
     guard = tuple_guard(spec)
     receipts = any_receipt(spec)
-    checks = atomic_precheck(spec, choice)
-    business = "\n".join(business_effects(spec, choice))
+    checks = defer_precheck(spec) if choice == 3 else atomic_precheck(spec, choice)
     advance = ""
     if mid in STAGE_LAST[d]:
         barrier = stage_barrier(spec)
@@ -1224,7 +1527,43 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\t}}
 """
     red_code = spec.mid * 10 + choice
-    return f"""# #{mid:03d} route {letter.upper()}: full guard + mutually exclusive receipt + atomic resource precheck.
+    if choice == 3:
+        applied_writes = f"""\t\t\tchange_variable = {{ name = zg361_p3_{d}_operation_used add = 1 }}
+\t\t\tremove_variable = zg361_p3_m{mid}_debt_settled_by
+\t\t\tremove_variable = zg361_p3_m{mid}_debt_settled_cycle
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_owner value = $TICKET_OWNER$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_subject value = $TICKET_SUBJECT$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_cycle value = $TICKET_CYCLE$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_case value = $TICKET_CASE$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_state value = {spec.state} }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_mechanism value = {mid} }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_due_cycle value = {{ value = $TICKET_CYCLE$ add = 1 }} }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_status value = 1 }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_audit_state value = 1 }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_business_object_created value = 0 }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_performance_sink value = 0 }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_debt_consumer_status value = 0 }}
+\t\t\tset_variable = {{ name = zg361_p3_portfolio_deferred value = 1 }}
+\t\t\tset_variable = {{ name = zg361_p3_deferred_cleanup_status value = 1 }}
+\t\t\tchange_variable = {{ name = zg361_p3_policy_debt_open_n add = 1 }}
+\t\t\tset_variable = {{ name = zg361_p3_runtime_status value = 1 }}
+{advance.rstrip()}"""
+        route_comment = "pure defer; no business object or resource write"
+    else:
+        business = "\n".join(business_effects(spec, choice))
+        applied_writes = f"""{indent(business, 3)}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_owner value = $TICKET_OWNER$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_subject value = $TICKET_SUBJECT$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_cycle value = $TICKET_CYCLE$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_case value = $TICKET_CASE$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_state value = {spec.state} }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_provenance_case value = $TICKET_CASE$ }}
+\t\t\tset_variable = {{ name = zg361_p3_m{mid}_provenance_choice value = {choice} }}
+\t\t\tzg361_p3_m{mid}_consume_effect = yes
+\t\t\tset_variable = {{ name = zg361_p3_runtime_status value = 1 }}
+{advance.rstrip()}"""
+        route_comment = "full guard + mutually exclusive receipt + atomic resource precheck"
+    return f"""# #{mid:03d} route {letter.upper()}: {route_comment}.
 zg361_p3_m{mid}_route_{letter}_effect = {{
 \tremove_variable = zg361_p3_runtime_applied
 \tremove_variable = zg361_p3_last_red_code
@@ -1240,17 +1579,7 @@ zg361_p3_m{mid}_route_{letter}_effect = {{
 \t\tif = {{
 \t\t\tlimit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 }}
 \t\t\tset_variable = {{ name = zg361_p3_runtime_applied value = 1 }}
-{indent(business, 3)}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_owner value = $TICKET_OWNER$ }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_subject value = $TICKET_SUBJECT$ }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_cycle value = $TICKET_CYCLE$ }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_case value = $TICKET_CASE$ }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_write_state value = {spec.state} }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_provenance_case value = $TICKET_CASE$ }}
-\t\t\tset_variable = {{ name = zg361_p3_m{mid}_provenance_choice value = {choice} }}
-\t\t\tzg361_p3_m{mid}_consume_effect = yes
-\t\t\tset_variable = {{ name = zg361_p3_runtime_status value = 1 }}
-{advance.rstrip()}
+{applied_writes}
 \t\t}}
 \t}}
 \telse_if = {{
@@ -1356,11 +1685,23 @@ def render_ai(domain: str) -> str:
     calls = []
     for mid in DOMAIN_ORDER[domain]:
         spec = specs[mid]
-        calls.append(f"""zg361_p3_m{mid}_route_a_effect = {{
-\tTICKET_OWNER = scope:zg361_p3_{domain}_owner
-\tTICKET_SUBJECT = scope:zg361_p3_{domain}_subject
-\tTICKET_CYCLE = scope:zg361_p3_{domain}_cycle
-\tTICKET_CASE = scope:zg361_p3_{domain}_case
+        ticket = f"""TICKET_OWNER = scope:zg361_p3_{domain}_owner
+TICKET_SUBJECT = scope:zg361_p3_{domain}_subject
+TICKET_CYCLE = scope:zg361_p3_{domain}_cycle
+TICKET_CASE = scope:zg361_p3_{domain}_case"""
+        calls.append(f"""if = {{
+\tlimit = {{
+\t\thas_variable = zg361_p3_portfolio_deferred
+\t\tvar:zg361_p3_portfolio_deferred = 1
+\t}}
+\tzg361_p3_m{mid}_route_c_effect = {{
+{indent(ticket, 2)}
+\t}}
+}}
+else = {{
+\tzg361_p3_m{mid}_route_a_effect = {{
+{indent(ticket, 2)}
+\t}}
 }}""")
     return f"""zg361_p3_{domain}_run_authorized_ai_effect = {{
 \t# The project owner's second AI exception is background-only and still
@@ -1387,6 +1728,15 @@ zg361_p3_initialize_portfolio_effect = {
 	set_variable = { name = zg361_p3_portfolio_result_state value = var:zg361_result_case_state }
 	set_variable = { name = zg361_p3_portfolio_opened_domain value = 1 }
 	set_variable = { name = zg361_p3_portfolio_closed value = 0 }
+	set_variable = { name = zg361_p3_portfolio_deferred value = 0 }
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_open_n } }
+		set_variable = { name = zg361_p3_policy_debt_open_n value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = zg361_p3_policy_debt_settled_n } }
+		set_variable = { name = zg361_p3_policy_debt_settled_n value = 0 }
+	}
 	set_variable = { name = zg361_p3_cross_reviewer value = root }
 	set_variable = { name = zg361_p3_cross_reviewer_valid value = 0 }
 	root = {
@@ -1417,6 +1767,9 @@ zg361_p3_initialize_portfolio_effect = {
 # Public manager-scope portfolio adapter. Counts/barons may be $SUBJECT$, never
 # the manager ROOT. Replay in the same frozen review cycle is a strict no-op.
 zg361_p3_open_portfolio_effect = {
+	# The package-owned due pass always runs before any new portfolio state can
+	# overwrite debt receipts.  A blocked or nonzero-open result forbids launch.
+	$SUBJECT$ = { zg361_p3_consume_due_policy_debts_effect = yes }
 	if = {
 		limit = {
 			has_game_rule = zg361_on
@@ -1435,6 +1788,9 @@ zg361_p3_open_portfolio_effect = {
 			}
 			trigger_else = { always = yes }
 			$SUBJECT$ = {
+				NOT = { has_variable = zg361_p3_policy_debt_consumer_blocked }
+				has_variable = zg361_p3_policy_debt_open_n
+				var:zg361_p3_policy_debt_open_n = 0
 				zg361_is_reviewable_vassal_trigger = yes
 				liege = root
 				trigger_if = {
@@ -1465,7 +1821,9 @@ zg361_p3_open_portfolio_effect = {
 		}
 		# The adapter opens only AA.  AG and AJ are reachable solely through the
 		# frozen D+1 queue edges emitted after their predecessor closes.
-		$SUBJECT$ = { zg361_p3_aa_launch_effect = yes }
+		$SUBJECT$ = {
+			zg361_p3_aa_launch_effect = yes
+		}
 	}
 }
 
@@ -1477,7 +1835,11 @@ zg361_p3_finalize_portfolio_effect = {
 	set_variable = { name = zg361_p3_final_cycle value = var:zg361_case_aj_cycle_serial }
 	set_variable = { name = zg361_p3_final_case value = var:zg361_case_aj_case_serial }
 	set_variable = { name = zg361_p3_final_state value = var:zg361_case_aj_state }
+	set_variable = { name = zg361_p3_final_current_capacity_check value = { value = var:zg361_p3_aj_capacity_remaining add = var:zg361_p3_aj_capacity_reserved } }
+	set_variable = { name = zg361_p3_final_wip_outstanding value = var:zg361_p3_aj_wip_used }
+	set_variable = { name = zg361_p3_final_wip_limit_check value = { value = var:zg361_p3_aj_wip_limit add = var:zg361_p3_aj_wip_exception_count } }
 	set_variable = { name = zg361_p3_final_conservation_ok value = 0 }
+	set_variable = { name = zg361_p3_final_deferred value = 0 }
 	if = {
 		limit = {
 			trigger_if = {
@@ -1493,9 +1855,15 @@ zg361_p3_finalize_portfolio_effect = {
 					has_variable = zg361_p3_ag_hc_total
 					has_variable = zg361_p3_ag_management_capacity_used
 					has_variable = zg361_p3_ag_management_capacity_total
+					has_variable = zg361_p3_portfolio_deferred
+					has_variable = zg361_p3_policy_debt_open_n
+					has_variable = zg361_p3_aj_capacity_total
+					has_variable = zg361_p3_aj_capacity_remaining
 					has_variable = zg361_p3_aj_capacity_reserved
 					has_variable = zg361_p3_aj_wip_used
-					has_variable = zg361_p3_m344_ledger_total
+					has_variable = zg361_p3_aj_wip_limit
+					has_variable = zg361_p3_aj_wip_exception_count
+					has_variable = zg361_p3_m344_receipt_choice
 				}
 				var:zg361_p3_aa_operation_used = 13
 				var:zg361_p3_ag_operation_used = 11
@@ -1506,11 +1874,42 @@ zg361_p3_finalize_portfolio_effect = {
 				var:zg361_p3_aa_sample_used <= var:zg361_p3_aa_sample_total
 				var:zg361_p3_ag_hc_total = 100
 				var:zg361_p3_ag_management_capacity_used <= var:zg361_p3_ag_management_capacity_total
-				var:zg361_p3_aj_capacity_reserved = 0
-				var:zg361_p3_aj_wip_used = 0
-				var:zg361_p3_m344_ledger_total = 10000
+				trigger_if = {
+					limit = { var:zg361_p3_portfolio_deferred = 1 }
+					has_variable = zg361_p3_deferred_cleanup_status
+					var:zg361_p3_deferred_cleanup_status = 1
+					var:zg361_p3_policy_debt_open_n >= 1
+					var:zg361_p3_final_current_capacity_check = var:zg361_p3_aj_capacity_total
+					var:zg361_p3_aj_wip_used <= var:zg361_p3_final_wip_limit_check
+					var:zg361_p3_m344_receipt_choice = 3
+					OR = {
+						AND = {
+							var:zg361_p3_aj_capacity_reserved = 0
+							var:zg361_p3_aj_wip_used = 0
+						}
+						AND = {
+							var:zg361_p3_aj_capacity_reserved > 0
+							var:zg361_p3_aj_wip_used > 0
+						}
+					}
+				}
+				trigger_else = {
+					var:zg361_p3_portfolio_deferred = 0
+					var:zg361_p3_policy_debt_open_n = 0
+					var:zg361_p3_aj_capacity_reserved = 0
+					var:zg361_p3_aj_wip_used = 0
+					trigger_if = {
+						limit = { has_variable = zg361_p3_m344_ledger_total }
+						var:zg361_p3_m344_ledger_total = 10000
+					}
+					trigger_else = { always = no }
+				}
 			}
 			trigger_else = { always = no }
+		}
+		if = {
+			limit = { var:zg361_p3_portfolio_deferred = 1 }
+			set_variable = { name = zg361_p3_final_deferred value = 1 }
 		}
 		set_variable = { name = zg361_p3_final_conservation_ok value = 1 }
 	}
@@ -1553,10 +1952,13 @@ def render_effects() -> bytes:
         "# Public entry: zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }.\n"
         "# Stable status: 1=applied, 2=idempotent no-op, 3=stale no-op, 4=typed RED.\n",
         render_portfolio_entries(),
+        render_due_debt_aggregate(),
+        render_deferred_portfolio_cleanup(),
     ]
     for domain in ("aa", "ag", "aj"):
         sections += [render_init(domain), render_subject_read(domain), render_ai(domain), render_launch(domain)]
     for spec in MECHANISMS:
+        sections.append(render_due_debt_consumer(spec))
         sections.append(render_consumer(spec))
         for choice in (1, 2, 3):
             sections.append(render_route_effect(spec, choice))

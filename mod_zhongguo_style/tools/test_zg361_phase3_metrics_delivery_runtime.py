@@ -183,7 +183,7 @@ class GeneratorContractTests(unittest.TestCase):
 
     def test_operation_order_is_atomic(self) -> None:
         for spec in gen.MECHANISMS:
-            for letter in "abc":
+            for letter in "ab":
                 with self.subTest(mid=spec.mid, route=letter):
                     route = block(self.effects, f"zg361_p3_m{spec.mid}_route_{letter}_effect")
                     precheck = route.index(f"var:zg361_p3_{spec.domain}_operation_used <")
@@ -195,6 +195,18 @@ class GeneratorContractTests(unittest.TestCase):
                     self.assertLess(semantic, consumer)
                     if spec.mid in gen.STAGE_LAST[spec.domain]:
                         self.assertLess(consumer, route.index(f"zg361_case_{spec.domain}_advance_"))
+
+            with self.subTest(mid=spec.mid, route="c"):
+                route = block(self.effects, f"zg361_p3_m{spec.mid}_route_c_effect")
+                precheck = route.index(f"var:zg361_p3_{spec.domain}_operation_used <")
+                record = route.index("zg361_case_kernel_record_operation_effect")
+                debt = route.index(f"name = zg361_p3_m{spec.mid}_debt_owner")
+                self.assertLess(precheck, record)
+                self.assertLess(record, debt)
+                self.assertNotIn(f"name = zg361_p3_{spec.field}", route)
+                self.assertNotIn(f"zg361_p3_m{spec.mid}_consume_effect = yes", route)
+                if spec.mid in gen.STAGE_LAST[spec.domain]:
+                    self.assertLess(debt, route.index(f"zg361_case_{spec.domain}_advance_"))
 
     def test_typed_red_idempotent_and_stale_are_explicit(self) -> None:
         for spec in gen.MECHANISMS:
@@ -208,13 +220,158 @@ class GeneratorContractTests(unittest.TestCase):
 
     def test_every_write_has_frozen_tuple_and_provenance(self) -> None:
         for spec in gen.MECHANISMS:
-            for choice, letter in enumerate("abc", 1):
+            for choice, letter in enumerate("ab", 1):
                 route = block(self.effects, f"zg361_p3_m{spec.mid}_route_{letter}_effect")
                 with self.subTest(mid=spec.mid, route=letter):
                     for name in ("owner", "subject", "cycle", "case", "state"):
                         self.assertIn(f"name = zg361_p3_m{spec.mid}_write_{name}", route)
                     self.assertIn(f"name = zg361_p3_m{spec.mid}_provenance_case", route)
                     self.assertIn(f"name = zg361_p3_m{spec.mid}_provenance_choice value = {choice}", route)
+
+    def test_every_route_c_is_pure_defer_and_freezes_one_debt(self) -> None:
+        for spec in gen.MECHANISMS:
+            route = block(self.effects, f"zg361_p3_m{spec.mid}_route_c_effect")
+            prefix = f"zg361_p3_m{spec.mid}_debt_"
+            with self.subTest(mid=spec.mid):
+                self.assertIn(
+                    f"# #{spec.mid:03d} route C: pure defer; no business object or resource write.",
+                    self.effects,
+                )
+                values = {
+                    "owner": "$TICKET_OWNER$",
+                    "subject": "$TICKET_SUBJECT$",
+                    "cycle": "$TICKET_CYCLE$",
+                    "case": "$TICKET_CASE$",
+                    "state": str(spec.state),
+                }
+                for name, value in values.items():
+                    self.assertEqual(route.count(f"set_variable = {{ name = {prefix}{name} value = {value} }}"), 1)
+                self.assertEqual(
+                    route.count(
+                        f"set_variable = {{ name = {prefix}due_cycle "
+                        "value = { value = $TICKET_CYCLE$ add = 1 } }"
+                    ),
+                    1,
+                )
+                self.assertEqual(route.count(f"set_variable = {{ name = {prefix}status value = 1 }}"), 1)
+                for name, value in {
+                    "mechanism": spec.mid,
+                    "audit_state": 1,
+                    "business_object_created": 0,
+                    "performance_sink": 0,
+                    "consumer_status": 0,
+                }.items():
+                    self.assertEqual(
+                        route.count(f"set_variable = {{ name = {prefix}{name} value = {value} }}"),
+                        1,
+                    )
+                for name in ("portfolio_deferred", "deferred_cleanup_status"):
+                    self.assertEqual(route.count(f"name = zg361_p3_{name} value = 1"), 1)
+                self.assertEqual(route.count("name = zg361_p3_policy_debt_open_n add = 1"), 1)
+                self.assertIn(f"remove_variable = {prefix}settled_by", route)
+                self.assertIn(f"remove_variable = {prefix}settled_cycle", route)
+                self.assertIn("CHOICE = 3", route)
+                self.assertNotIn(f"name = zg361_p3_{spec.field}", route)
+                self.assertNotIn(f"zg361_p3_m{spec.mid}_write_", route)
+                self.assertNotIn(f"zg361_p3_m{spec.mid}_provenance_", route)
+                self.assertNotIn(f"zg361_p3_m{spec.mid}_consume_effect = yes", route)
+
+                writes = set(re.findall(r"(?:set|change)_variable = \{ name = ([a-z0-9_]+)", route))
+                allowed_writes = {
+                    "zg361_p3_runtime_applied",
+                    "zg361_p3_runtime_status",
+                    "zg361_p3_last_red_code",
+                    f"zg361_p3_{spec.domain}_operation_used",
+                    *(f"{prefix}{name}" for name in (
+                        "owner",
+                        "subject",
+                        "cycle",
+                        "case",
+                        "state",
+                        "mechanism",
+                        "due_cycle",
+                        "status",
+                        "audit_state",
+                        "business_object_created",
+                        "performance_sink",
+                        "consumer_status",
+                    )),
+                    "zg361_p3_portfolio_deferred",
+                    "zg361_p3_deferred_cleanup_status",
+                    "zg361_p3_policy_debt_open_n",
+                }
+                self.assertLessEqual(writes, allowed_writes)
+                removed = set(re.findall(r"remove_variable = ([a-z0-9_]+)", route))
+                self.assertLessEqual(
+                    removed,
+                    {
+                        "zg361_p3_runtime_applied",
+                        "zg361_p3_last_red_code",
+                        f"{prefix}settled_by",
+                        f"{prefix}settled_cycle",
+                    },
+                )
+                for token in (
+                    "zg361_p3_metric_object_",
+                    "zg361_p3_reorg_object_",
+                    "zg361_p3_demand_object_",
+                    "zg361_p3_delivery_object_",
+                    "zg361_p3_aa_sample_used",
+                    "zg361_p3_ag_hc_",
+                    "zg361_p3_ag_management_capacity_",
+                    "zg361_p3_aj_capacity_",
+                    "zg361_p3_aj_wip_",
+                    "zg361_p3_aj_value_credit_",
+                ):
+                    self.assertNotIn(token, route)
+
+    def test_due_debt_consumers_are_exact_next_cycle_and_fail_closed(self) -> None:
+        definitions = re.findall(r"^zg361_p3_m(\d+)_consume_due_debt_effect = \{$", self.effects, re.MULTILINE)
+        self.assertEqual(len(definitions), 35)
+        self.assertEqual({int(mid) for mid in definitions}, EXPECTED_IDS)
+        for spec in gen.MECHANISMS:
+            consumer = block(self.effects, f"zg361_p3_m{spec.mid}_consume_due_debt_effect")
+            prefix = f"zg361_p3_m{spec.mid}"
+            with self.subTest(mid=spec.mid):
+                for name in ("owner", "subject", "cycle", "case", "state", "due_cycle", "status"):
+                    self.assertIn(f"has_variable = {prefix}_debt_{name}", consumer)
+                for name in ("mechanism", "audit_state", "business_object_created"):
+                    self.assertIn(f"has_variable = {prefix}_debt_{name}", consumer)
+                for name in ("owner", "subject", "cycle", "case", "state", "choice"):
+                    self.assertIn(f"has_variable = {prefix}_receipt_{name}", consumer)
+                self.assertIn(f"var:{prefix}_debt_status = 1", consumer)
+                self.assertIn(f"var:{prefix}_debt_mechanism = {spec.mid}", consumer)
+                self.assertIn(f"var:{prefix}_debt_audit_state = 1", consumer)
+                self.assertIn(f"var:{prefix}_debt_business_object_created = 0", consumer)
+                self.assertIn(f"var:{prefix}_debt_owner = root", consumer)
+                self.assertIn(f"var:{prefix}_debt_subject = this", consumer)
+                for name in ("owner", "subject", "cycle", "case", "state"):
+                    self.assertIn(f"var:{prefix}_debt_{name} = var:{prefix}_receipt_{name}", consumer)
+                self.assertIn(f"var:{prefix}_receipt_choice = 3", consumer)
+                self.assertIn(
+                    f"var:{prefix}_debt_due_cycle = {{ value = var:{prefix}_debt_cycle add = 1 }}",
+                    consumer,
+                )
+                self.assertIn(f"root.var:zg361_review_serial = var:{prefix}_debt_due_cycle", consumer)
+                self.assertNotIn(f"var:{prefix}_debt_due_cycle <= root.var:zg361_review_serial", consumer)
+                self.assertEqual(consumer.count("change_variable = { name = zg361_b2_management_debt add = 1 }"), 1)
+                self.assertIn(f"var:{prefix}_debt_owner = {{", consumer)
+                self.assertIn(f"name = {prefix}_debt_status value = 2", consumer)
+                self.assertIn(f"name = {prefix}_debt_audit_state value = 3", consumer)
+                self.assertIn(f"name = {prefix}_debt_settled_by value = root", consumer)
+                self.assertIn(f"name = {prefix}_debt_settled_cycle value = root.var:zg361_review_serial", consumer)
+                self.assertIn(f"name = {prefix}_debt_performance_sink value = 1", consumer)
+                self.assertIn(f"name = {prefix}_debt_consumer_status value = 1", consumer)
+                self.assertEqual(consumer.count("name = zg361_p3_policy_debt_open_n add = -1"), 1)
+                self.assertEqual(consumer.count("name = zg361_p3_policy_debt_settled_n add = 1"), 1)
+                for forbidden in (
+                    "trigger_event",
+                    "record_operation",
+                    f"zg361_case_{spec.domain}_advance_",
+                    f"name = zg361_p3_{spec.field}",
+                    f"{prefix}_write_",
+                ):
+                    self.assertNotIn(forbidden, consumer)
 
     def test_each_consumer_is_guarded_and_idempotent(self) -> None:
         for spec in gen.MECHANISMS:
@@ -269,10 +426,37 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertIn("$SUBJECT$ = {", adapter)
         self.assertIn("zg361_is_reviewable_vassal_trigger = yes", adapter)
         self.assertIn("liege = root", adapter)
+        self.assertEqual(adapter.count("zg361_p3_consume_due_policy_debts_effect = yes"), 1)
         self.assertEqual(adapter.count("zg361_p3_aa_launch_effect = yes"), 1)
+        self.assertLess(
+            adapter.index("zg361_p3_consume_due_policy_debts_effect = yes"),
+            adapter.index("zg361_p3_aa_launch_effect = yes"),
+        )
         self.assertNotIn("zg361_p3_ag_launch_effect", adapter)
         self.assertNotIn("zg361_p3_aj_launch_effect", adapter)
         self.assertNotIn("trigger_event", adapter)
+
+    def test_due_debt_aggregate_has_one_call_per_id_and_one_caller(self) -> None:
+        aggregate = block(self.effects, "zg361_p3_consume_due_policy_debts_effect")
+        calls = re.findall(r"zg361_p3_m(\d+)_consume_due_debt_effect = yes", aggregate)
+        self.assertEqual([int(mid) for mid in calls], [spec.mid for spec in gen.MECHANISMS])
+        self.assertEqual(len(calls), 35)
+        self.assertEqual(self.effects.count("zg361_p3_consume_due_policy_debts_effect = yes"), 1)
+        for domain in gen.DOMAIN_ORDER:
+            self.assertNotIn(
+                "zg361_p3_consume_due_policy_debts_effect",
+                block(self.effects, f"zg361_p3_{domain}_subject_read_effect"),
+            )
+            self.assertNotIn(
+                "zg361_p3_consume_due_policy_debts_effect",
+                block(self.effects, f"zg361_p3_{domain}_run_authorized_ai_effect"),
+            )
+        initializers = "\n".join(
+            [block(self.effects, "zg361_p3_initialize_portfolio_effect")]
+            + [block(self.effects, f"zg361_p3_{domain}_initialize_effect") for domain in gen.DOMAIN_ORDER]
+        )
+        for mid in EXPECTED_IDS:
+            self.assertNotIn(f"zg361_p3_m{mid}_debt_", initializers)
 
     def test_portfolio_adapter_freezes_delivered_case_and_replay_is_noop(self) -> None:
         adapter = block(self.effects, "zg361_p3_open_portfolio_effect")
@@ -392,6 +576,14 @@ class GeneratorContractTests(unittest.TestCase):
                 self.assertNotIn("trigger_event", ai)
                 for mid in gen.DOMAIN_ORDER[domain]:
                     self.assertEqual(ai.count(f"zg361_p3_m{mid}_route_a_effect"), 1)
+                    self.assertEqual(ai.count(f"zg361_p3_m{mid}_route_c_effect"), 1)
+                    for letter in "ab":
+                        route = block(self.effects, f"zg361_p3_m{mid}_route_{letter}_effect")
+                        self.assertIn("var:zg361_p3_portfolio_deferred = 0", route)
+                    route_c = block(self.effects, f"zg361_p3_m{mid}_route_c_effect")
+                    self.assertIn("name = zg361_p3_portfolio_deferred value = 1", route_c)
+                self.assertIn("has_variable = zg361_p3_portfolio_deferred", ai)
+                self.assertIn("var:zg361_p3_portfolio_deferred = 1", ai)
 
     def test_counts_and_barons_have_assessed_only_adapter(self) -> None:
         forbidden = ("_open_effect", "record_operation", "_advance_", "reserve", "PIP", "hc_slot", "calibrat")
@@ -420,17 +612,21 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertIn("zg361_p3_aa_sample_used add = 1", route)
         route_c = block(self.effects, "zg361_p3_m240_route_c_effect")
         self.assertNotIn("zg361_p3_aa_sample_used add = 1", route_c)
-        self.assertIn("zg361_p3_aa_sample_queue add = 1", route_c)
+        self.assertNotIn("zg361_p3_aa_sample_queue", route_c)
 
     def test_basis_point_splits_are_conserved(self) -> None:
         for mid in (234, 235, 238, 241, 342, 344):
-            for letter in "abc":
+            for letter in "ab":
                 with self.subTest(mid=mid, route=letter):
                     route = block(self.effects, f"zg361_p3_m{mid}_route_{letter}_effect")
                     self.assertRegex(route, rf"m{mid}_(?:share_total|blocker_total) value = 10000")
+            self.assertNotRegex(
+                block(self.effects, f"zg361_p3_m{mid}_route_c_effect"),
+                rf"m{mid}_(?:share_total|blocker_total)",
+            )
 
     def test_ag_matrix_weights_and_hc_are_conserved(self) -> None:
-        for letter in "abc":
+        for letter in "ab":
             dual = block(self.effects, f"zg361_p3_m304_route_{letter}_effect")
             hats = block(self.effects, f"zg361_p3_m306_route_{letter}_effect")
             hc = block(self.effects, f"zg361_p3_m308_route_{letter}_effect")
@@ -439,6 +635,8 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertIn("m304_dual_signature value = 1", dual)
             self.assertIn("m306_weight_total value = 100", hats)
             self.assertIn("zg361_p3_ag_hc_total value = 100", hc)
+        for mid, token in ((304, "m304_parent_weight_total"), (306, "m306_weight_total"), (308, "zg361_p3_ag_hc_total")):
+            self.assertNotIn(token, block(self.effects, f"zg361_p3_m{mid}_route_c_effect"))
 
     def test_ag_visibility_consumes_only_management_capacity(self) -> None:
         for letter in "ab":
@@ -447,16 +645,22 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertIn("management_capacity_remaining subtract = 10", route)
             self.assertIn("visibility_gain value = 10", route)
         route_c = block(self.effects, "zg361_p3_m309_route_c_effect")
-        self.assertIn("visibility_debt add = 10", route_c)
+        self.assertNotIn("visibility_debt", route_c)
+        self.assertNotIn("management_capacity", route_c)
+        self.assertNotIn("visibility_gain", route_c)
 
     def test_reorg_history_owner_does_not_drift(self) -> None:
-        for letter in "abc":
+        for letter in "ab":
             route = block(self.effects, f"zg361_p3_m310_route_{letter}_effect")
             self.assertIn("m310_historical_owner value = var:zg361_p3_portfolio_result_owner", route)
             self.assertIn("m310_mapped_owner value = var:zg361_p3_reorg_object_owner", route)
             self.assertIn("m310_bridge_signature_count value = 2", route)
             self.assertIn("m310_bridge_dual_signed value = 1", route)
             self.assertNotIn("m310_historical_owner value = $TICKET_OWNER$", route)
+        route_c = block(self.effects, "zg361_p3_m310_route_c_effect")
+        self.assertNotIn("m310_historical_owner", route_c)
+        self.assertNotIn("m310_mapped_owner", route_c)
+        self.assertNotIn("reorg_object_version", route_c)
         self.assertIn("m311_old_target_locked value = 1", block(self.effects, "zg361_p3_m311_route_a_effect"))
 
     def test_aj_emergency_and_change_tax_prechecks_are_atomic(self) -> None:
@@ -468,8 +672,10 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertLess(change.index("capacity_remaining >= 10"), change.index("record_operation"))
             self.assertIn("capacity_remaining subtract = 10", change)
         waiver = block(self.effects, "zg361_p3_m337_route_c_effect")
-        self.assertLess(waiver.index("disaster_waiver_used = 0"), waiver.index("record_operation"))
-        self.assertIn("policy_debt add = 10", waiver)
+        self.assertNotIn("disaster_waiver", waiver)
+        self.assertNotIn("capacity_remaining", waiver)
+        self.assertNotIn("zg361_p3_aj_policy_debt", waiver)
+        self.assertNotIn("zg361_p3_m337_policy_debt", waiver)
 
     def test_aj_wip_and_capacity_conserve(self) -> None:
         normal = block(self.effects, "zg361_p3_m340_route_a_effect")
@@ -477,7 +683,6 @@ class GeneratorContractTests(unittest.TestCase):
         for letter, slots, capacity_source in (
             ("a", 1, "demand_estimated_hours"),
             ("b", 2, "demand_estimated_plus_exception"),
-            ("c", 2, "demand_estimated_plus_exception"),
         ):
             route = block(self.effects, f"zg361_p3_m340_route_{letter}_effect")
             self.assertLess(route.index(f"capacity_remaining >= var:zg361_p3_{capacity_source}"), route.index("record_operation"))
@@ -486,10 +691,12 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertIn(f"wip_used add = {slots}", route)
             self.assertIn(f"delivery_wip_slots value = {slots}", route)
         self.assertIn("exception_signed value = 1", block(self.effects, "zg361_p3_m340_route_b_effect"))
-        self.assertIn("hidden_wip_debt add = 2", block(self.effects, "zg361_p3_m340_route_c_effect"))
+        route_c = block(self.effects, "zg361_p3_m340_route_c_effect")
+        for token in ("capacity_remaining", "capacity_reserved", "wip_used", "delivery_wip_slots", "hidden_wip_debt"):
+            self.assertNotIn(token, route_c)
 
     def test_aj_carryover_is_net_zero_current_and_charges_next(self) -> None:
-        expected = {"a": 10, "b": 5, "c": 0}
+        expected = {"a": 10, "b": 5}
         for letter, carry_hours in expected.items():
             route = block(self.effects, f"zg361_p3_m341_route_{letter}_effect")
             with self.subTest(route=letter):
@@ -503,9 +710,12 @@ class GeneratorContractTests(unittest.TestCase):
                 else:
                     self.assertNotIn("next_capacity_remaining subtract", route)
                     self.assertNotIn("next_capacity_reserved add", route)
+        route_c = block(self.effects, "zg361_p3_m341_route_c_effect")
+        for token in ("capacity_reserved", "capacity_remaining", "m341_transfer_hours", "next_capacity"):
+            self.assertNotIn(token, route_c)
 
     def test_aj_signatures_and_value_credit(self) -> None:
-        for letter in "abc":
+        for letter in "ab":
             triangle = block(self.effects, f"zg361_p3_m338_route_{letter}_effect")
             accept = block(self.effects, f"zg361_p3_m343_route_{letter}_effect")
             value = block(self.effects, f"zg361_p3_m344_route_{letter}_effect")
@@ -515,6 +725,14 @@ class GeneratorContractTests(unittest.TestCase):
             self.assertLess(value.index("value_credit_remaining = 10000"), value.index("record_operation"))
             self.assertIn("m344_share_total value = 10000", value)
             self.assertIn("value_credit_remaining value = 0", value)
+        for mid, tokens in (
+            (338, ("m338_tradeoff_signed",)),
+            (343, ("m343_proposer_signed", "m343_executor_signed", "m343_acceptor_signed")),
+            (344, ("value_credit_remaining", "m344_share_total")),
+        ):
+            route_c = block(self.effects, f"zg361_p3_m{mid}_route_c_effect")
+            for token in tokens:
+                self.assertNotIn(token, route_c)
 
     def test_stable_metric_reorg_demand_and_delivery_objects_are_not_receipts(self) -> None:
         creators = {
@@ -545,15 +763,25 @@ class GeneratorContractTests(unittest.TestCase):
                     self.assertIn(f"has_variable = {source}", consumer)
                     self.assertIn(f"visible_{visible} value = var:{source}", consumer)
 
-    def test_rejected_and_not_applicable_delivery_close_without_minting_credit(self) -> None:
-        rejected = block(self.effects, "zg361_p3_m344_route_c_effect")
-        self.assertLess(rejected.index("demand_acceptance_outcome = 3"), rejected.index("record_operation"))
-        self.assertIn("m344_unallocated_share value = 10000", rejected)
-        self.assertIn("m344_ledger_total value = 10000", rejected)
-        self.assertIn("m344_share_total value = 0", rejected)
-        self.assertIn("m344_launch_order value = 1", rejected)
-        self.assertLess(rejected.index("m344_launch_order value = 1"), rejected.index("m344_adoption_order value = 2"))
-        self.assertLess(rejected.index("m344_adoption_order value = 2"), rejected.index("m344_value_order value = 3"))
+    def test_route_c_delivery_can_finalize_without_minting_value(self) -> None:
+        deferred = block(self.effects, "zg361_p3_m344_route_c_effect")
+        for token in (
+            "demand_acceptance_outcome",
+            "m344_unallocated_share",
+            "m344_ledger_total",
+            "m344_share_total",
+            "m344_launch_order",
+            "m344_adoption_order",
+            "m344_value_order",
+        ):
+            self.assertNotIn(token, deferred)
+        finalizer = block(self.effects, "zg361_p3_finalize_portfolio_effect")
+        self.assertIn("has_variable = zg361_p3_m344_receipt_choice", finalizer)
+        choice_c = finalizer.index("var:zg361_p3_m344_receipt_choice = 3")
+        ledger_exists = finalizer.index("has_variable = zg361_p3_m344_ledger_total")
+        ledger_value = finalizer.index("var:zg361_p3_m344_ledger_total = 10000")
+        self.assertLess(choice_c, ledger_exists)
+        self.assertLess(ledger_exists, ledger_value)
 
     def test_localization_has_nine_language_key_parity(self) -> None:
         rows = {
@@ -587,6 +815,11 @@ class GeneratorContractTests(unittest.TestCase):
         self.assertIn("同一游戏日最多产生一个可见业务窗口", self.spec)
         self.assertIn("D+1 hidden queue", self.spec)
         self.assertIn("AI domain runner 不含 `trigger_event`", self.spec)
+        self.assertIn("35 项 C 共用同一合同", self.spec)
+        self.assertIn("`due_cycle = debt_cycle + 1 = ROOT.review_serial`", self.spec)
+        self.assertIn("`zg361_b2_management_debt`", self.spec)
+        self.assertIn("过期债", self.spec)
+        self.assertIn("未来债", self.spec)
         self.assertIn("没有中央 `on_action`", self.spec)
         self.assertIn("没有 MCP named action/query", self.spec)
         self.assertIn("没有 CK3 parser/error.log", self.spec)
