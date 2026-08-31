@@ -73,6 +73,9 @@ class B2CK3RuntimeTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.effects = read("common/scripted_effects/zg361_b2_runtime_effects.txt")
         cls.events = read("events/zg361_b2_runtime_events.txt")
+        cls.probation_effects = read(
+            "common/scripted_effects/zg361_workforce_probation_fact_effects.txt"
+        )
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.core_events = read("events/zg361_events.txt")
         cls.interactions = read(
@@ -717,7 +720,6 @@ class B2CK3RuntimeTests(unittest.TestCase):
         ):
             self.assertIn(guard, producer)
         for hash_component in (
-            "value = var:zg361_b2_workforce_pip_case_hash",
             "value = var:zg361_b2_pip_outcome_result_case multiply = 100000",
             "value = var:zg361_b2_pip_outcome_result_cycle multiply = 1000",
             "value = var:zg361_b2_pip_outcome_code multiply = 100",
@@ -725,6 +727,14 @@ class B2CK3RuntimeTests(unittest.TestCase):
             "add = 17",
         ):
             self.assertIn(hash_component, producer)
+        self.assertNotIn(
+            "value = var:zg361_b2_workforce_pip_case_hash",
+            producer,
+        )
+        self.assertGreaterEqual(
+            producer.count("value = var:zg361_b2_pip_case"),
+            2,
+        )
         self.assertNotIn("zg361_we_", producer)
         for forbidden in (
             "zg361_eliminate_",
@@ -734,23 +744,187 @@ class B2CK3RuntimeTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, producer)
 
+        # The B2 source writer must not read the source it just wrote.  CK3's
+        # same-effect read visibility is not a usable sequencing boundary.
+        self.assertIn("trigger_event = { id = zg361b2.103 days = 1 }", producer)
+        for ticket in (
+            "save_scope_as = zg361_b2_probation_handoff_owner",
+            "save_scope_as = zg361_b2_probation_handoff_subject",
+            "name = zg361_b2_probation_handoff_cycle",
+            "name = zg361_b2_probation_handoff_case",
+        ):
+            self.assertIn(ticket, producer)
+        self.assertNotIn(
+            "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
+            producer,
+        )
+        self.assertNotIn(
+            "zg361_b2_replay_workforce_probation_fact_handoff_effect = yes",
+            producer,
+        )
+
         settlement = top_level_block(
             self.effects, "zg361_b2_settle_pip_outcome_effect"
         )
-        self.assertEqual(
-            settlement.count(
-                "zg361_b2_publish_workforce_pip_settlement_effect = yes"
-            ),
-            1,
+        self.assertNotIn(
+            "zg361_b2_publish_workforce_pip_settlement_effect = yes",
+            settlement,
         )
         self.assertLess(
             settlement.index(
                 "zg361_b2_pip_settlement_receipt value = var:zg361_b2_pip_case"
             ),
-            settlement.index(
+            settlement.index("trigger_event = { id = zg361b2.102 days = 1 }"),
+        )
+        for ticket in (
+            "save_scope_as = zg361_b2_source_publish_owner",
+            "save_scope_as = zg361_b2_source_publish_subject",
+            "name = zg361_b2_source_publish_cycle",
+            "name = zg361_b2_source_publish_case",
+        ):
+            self.assertIn(ticket, settlement)
+
+        source_event = top_level_block(self.events, "zg361b2.102")
+        self.assertEqual(
+            source_event.count(
                 "zg361_b2_publish_workforce_pip_settlement_effect = yes"
             ),
+            1,
         )
+        for suffix in ("owner", "subject", "cycle", "case"):
+            self.assertIn(f"zg361_b2_source_publish_{suffix}", source_event)
+        self.assertIn("stale Workforce source publication ticket ignored", source_event)
+
+    def test_probation_pip_handoff_has_committed_first_read_and_bounded_replay(self) -> None:
+        handoff = top_level_block(
+            self.effects,
+            "zg361_b2_replay_workforce_probation_fact_handoff_effect",
+        )
+        for source in (
+            "zg361_b2_pip_owner",
+            "zg361_b2_pip_subject",
+            "zg361_b2_pip_cycle",
+            "zg361_b2_pip_case",
+            "zg361_b2_pip_state",
+            "zg361_b2_pip_policy_route",
+            "zg361_b2_pip_task_kind",
+            "zg361_b2_pip_settlement_receipt",
+            "zg361_b2_pip_outcome_code",
+            "zg361_b2_pip_outcome_result_cycle",
+            "zg361_b2_pip_outcome_result_case",
+            "zg361_b2_pip_outcome_result_grade",
+        ):
+            self.assertIn(f"has_variable = {source}", handoff)
+        for source in (
+            "pending",
+            "consumed",
+            "owner",
+            "subject",
+            "cycle",
+            "case",
+            "state",
+            "case_id",
+            "case_hash",
+            "closure_receipt_id",
+            "closure_receipt_hash",
+        ):
+            self.assertIn(f"has_variable = zg361_b2_workforce_pip_{source}", handoff)
+        for exact in (
+            "var:zg361_b2_workforce_pip_pending = 1",
+            "var:zg361_b2_workforce_pip_consumed = 0",
+            "var:zg361_b2_workforce_pip_owner = var:zg361_b2_pip_owner",
+            "var:zg361_b2_workforce_pip_subject = this",
+            "var:zg361_b2_workforce_pip_cycle = var:zg361_b2_pip_cycle",
+            "var:zg361_b2_workforce_pip_case = var:zg361_b2_pip_case",
+            "var:zg361_b2_workforce_pip_state = var:zg361_b2_pip_state",
+            "var:zg361_workforce_probation_fact_owner = var:zg361_b2_pip_owner",
+            "var:zg361_workforce_probation_fact_subject = this",
+            "var:zg361_workforce_probation_fact_state = 2",
+            "var:zg361_workforce_probation_fact_awaiting_pip = 1",
+            "var:zg361_workforce_probation_fact_source_result_cycle = var:zg361_b2_pip_cycle",
+            "var:zg361_workforce_probation_fact_state >= 3",
+            "var:zg361_workforce_probation_fact_source_kind = 2",
+            "var:zg361_workforce_probation_fact_source_pip_policy_route = var:zg361_b2_pip_policy_route",
+            "var:zg361_workforce_probation_fact_source_pip_task_kind = var:zg361_b2_pip_task_kind",
+        ):
+            self.assertIn(exact, handoff)
+        self.assertEqual(
+            handoff.count(
+                "zg361_workforce_probation_fact_publish_from_pip_settlement_effect = {"
+            ),
+            1,
+        )
+        self.assertIn("OWNER = var:zg361_b2_pip_owner", handoff)
+        for forbidden in (
+            "zg361_workforce_probation_fact_publish_from_result_effect",
+            "ATTRIBUTION_BPS_2",
+            "ATTRIBUTION_BPS_3",
+            "set_variable = { name = zg361_b2_workforce_pip_",
+            "set_variable = { name = zg361_workforce_probation_fact_outcome_",
+            "3333",
+            "3334",
+        ):
+            self.assertNotIn(forbidden, handoff)
+
+        first = top_level_block(self.events, "zg361b2.103")
+        replay = top_level_block(self.events, "zg361b2.104")
+        for event in (first, replay):
+            self.assertIn("hidden = yes", event)
+            self.assertEqual(
+                event.count(
+                    "zg361_b2_replay_workforce_probation_fact_handoff_effect = yes"
+                ),
+                1,
+            )
+            self.assertNotIn("zg361_b2_publish_workforce_pip_settlement_effect", event)
+            self.assertNotIn("set_variable = { name = zg361_b2_workforce_pip_", event)
+        for suffix in ("owner", "subject", "cycle", "case"):
+            self.assertIn(f"zg361_b2_probation_handoff_{suffix}", first)
+            self.assertIn(f"zg361_b2_probation_replay_{suffix}", replay)
+        self.assertIn("stale probation handoff ticket ignored", first)
+        self.assertIn("stale probation handoff replay ignored", replay)
+        for ticket in (
+            "save_scope_as = zg361_b2_probation_replay_owner",
+            "save_scope_as = zg361_b2_probation_replay_subject",
+            "name = zg361_b2_probation_replay_cycle",
+            "name = zg361_b2_probation_replay_case",
+        ):
+            self.assertIn(ticket, first)
+        self.assertIn("trigger_event = { id = zg361b2.104 days = 1 }", first)
+        self.assertNotIn("trigger_event = { id = zg361b2.104", replay)
+
+        probation = top_level_block(
+            self.probation_effects,
+            "zg361_workforce_probation_fact_publish_from_pip_settlement_effect",
+        )
+        # First call may commit exactly once from state 2; the actually
+        # reachable second call sees state >= 3 and takes the exact-key replay
+        # branch.  It cannot execute another canonical signer.
+        self.assertIn("var:zg361_workforce_probation_fact_state = 2", probation)
+        self.assertIn("var:zg361_workforce_probation_fact_state >= 3", probation)
+        self.assertIn("var:zg361_workforce_probation_fact_source_kind = 2", probation)
+        self.assertIn("adapter_status value = 2", probation)
+        self.assertEqual(
+            probation.count(
+                "zg361_workforce_probation_fact_publish_canonical_effect = yes"
+            ),
+            1,
+        )
+        self.assertNotIn("owner_outcome_serial add = 1", probation)
+        signer = top_level_block(
+            self.probation_effects,
+            "zg361_workforce_probation_fact_publish_canonical_effect",
+        )
+        self.assertEqual(signer.count("owner_outcome_serial add = 1"), 1)
+
+    def test_b2_does_not_fake_the_blocked_ordinary_result_attribution_hook(self) -> None:
+        combined = self.effects + self.events
+        self.assertNotIn(
+            "zg361_workforce_probation_fact_publish_from_result_effect",
+            combined,
+        )
+        self.assertNotIn("ATTRIBUTION_BPS_2", combined)
+        self.assertNotIn("ATTRIBUTION_BPS_3", combined)
 
     def test_workforce_adapter_reads_but_never_fabricates_357_359_sources(self) -> None:
         adapter = top_level_block(
@@ -924,8 +1098,19 @@ class B2CK3RuntimeTests(unittest.TestCase):
         )
         resolve = top_level_block(self.effects, "zg361_b2_resolve_pip_due_effect")
         self.assertIn("zg361_result_cycle_serial > var:zg361_b2_pip_cycle", resolve)
-        self.assertIn("zg361_b2_settle_pip_outcome_effect = yes", resolve)
+        self.assertNotIn("zg361_b2_settle_pip_outcome_effect = yes", resolve)
+        self.assertIn("trigger_event = { id = zg361b2.101 days = 1 }", resolve)
+        for suffix in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b2_terminal_settlement_{suffix}", resolve)
         self.assertNotIn("zg361_b2_pip_graduation_receipt", resolve)
+        terminal_event = top_level_block(self.events, "zg361b2.101")
+        self.assertEqual(
+            terminal_event.count("zg361_b2_settle_pip_outcome_effect = yes"),
+            1,
+        )
+        for suffix in ("owner", "subject", "cycle", "case", "state"):
+            self.assertIn(f"zg361_b2_terminal_settlement_{suffix}", terminal_event)
+        self.assertIn("stale terminal settlement ticket ignored", terminal_event)
         settlement = top_level_block(
             self.effects, "zg361_b2_settle_pip_outcome_effect"
         )

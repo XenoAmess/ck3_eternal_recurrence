@@ -1143,7 +1143,14 @@ zg361_b2_resolve_pip_due_effect = {
 				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
 			}
 		}
-		set_variable = { name = zg361_b2_pip_outcome_code value = 2 }
+		# Freeze the still-active identity before writing the terminal outcome.
+		# The D+1 event is the commit boundary for outcome_code; settlement must
+		# never read a value written earlier in this same effect chain.
+		var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_terminal_settlement_owner }
+		save_scope_as = zg361_b2_terminal_settlement_subject
+		save_scope_value_as = { name = zg361_b2_terminal_settlement_cycle value = var:zg361_b2_pip_cycle }
+		save_scope_value_as = { name = zg361_b2_terminal_settlement_case value = var:zg361_b2_pip_case }
+		save_scope_value_as = { name = zg361_b2_terminal_settlement_state value = var:zg361_b2_pip_state }
 		if = {
 			limit = {
 			has_variable = zg361_result_cycle_serial
@@ -1153,7 +1160,8 @@ zg361_b2_resolve_pip_due_effect = {
 		}
 			set_variable = { name = zg361_b2_pip_outcome_code value = 1 }
 		}
-		zg361_b2_settle_pip_outcome_effect = yes
+		else = { set_variable = { name = zg361_b2_pip_outcome_code value = 2 } }
+		trigger_event = { id = zg361b2.101 days = 1 }
 	}
 	else = { debug_log = "ZG361B2: duplicate or stale PIP settlement ignored" }
 }
@@ -1191,11 +1199,21 @@ zg361_b2_publish_workforce_pip_settlement_effect = {
 				var:zg361_b2_pip_outcome_code = 1
 				var:zg361_b2_pip_outcome_code = 2
 			}
+			has_variable = zg361_b2_pip_outcome_result_grade
 			var:zg361_b2_pip_outcome_result_cycle > 0
 			var:zg361_b2_pip_outcome_result_case > 0
 			OR = {
-				var:zg361_b2_pip_state = 3
-				var:zg361_b2_pip_state = 4
+				AND = {
+					var:zg361_b2_pip_state = 3
+					var:zg361_b2_pip_outcome_code = 1
+					var:zg361_b2_pip_outcome_result_grade >= 2
+					var:zg361_b2_pip_outcome_result_grade <= 3
+				}
+				AND = {
+					var:zg361_b2_pip_state = 4
+					var:zg361_b2_pip_outcome_code = 2
+					var:zg361_b2_pip_outcome_result_grade = 1
+				}
 			}
 			trigger_if = {
 				limit = { has_variable = zg361_b2_workforce_pip_pending }
@@ -1232,7 +1250,14 @@ zg361_b2_publish_workforce_pip_settlement_effect = {
 		set_variable = {
 			name = zg361_b2_workforce_pip_closure_receipt_hash
 			value = {
-				value = var:zg361_b2_workforce_pip_case_hash
+				# Repeat the immutable case formula directly.  Reading the case hash
+				# written just above would be another unsupported same-chain read.
+				value = var:zg361_b2_pip_case
+				multiply = 100000
+				add = { value = var:zg361_b2_pip_cycle multiply = 1000 }
+				add = { value = var:zg361_b2_pip_policy_route multiply = 100 }
+				add = { value = var:zg361_b2_pip_task_kind multiply = 10 }
+				add = var:zg361_b2_pip_state
 				add = { value = var:zg361_b2_pip_outcome_result_case multiply = 100000 }
 				add = { value = var:zg361_b2_pip_outcome_result_cycle multiply = 1000 }
 				add = { value = var:zg361_b2_pip_outcome_code multiply = 100 }
@@ -1243,6 +1268,123 @@ zg361_b2_publish_workforce_pip_settlement_effect = {
 		debug_log = "ZG361B2: real PIP settlement published for Workforce #277"
 	}
 	else = { debug_log = "ZG361B2: unconsumed Workforce #277 PIP settlement conserved" }
+	# CK3 does not provide a reliable read-after-write boundary inside one effect
+	# chain.  Freeze only the long-lived PIP identity (which predates this
+	# settlement), then defer every source read until the B2 writes have committed.
+	if = {
+		limit = {
+			has_variable = zg361_b2_pip_owner
+			has_variable = zg361_b2_pip_subject
+			has_variable = zg361_b2_pip_cycle
+			has_variable = zg361_b2_pip_case
+			var:zg361_b2_pip_subject = this
+		}
+		var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_probation_handoff_owner }
+		save_scope_as = zg361_b2_probation_handoff_subject
+		save_scope_value_as = { name = zg361_b2_probation_handoff_cycle value = var:zg361_b2_pip_cycle }
+		save_scope_value_as = { name = zg361_b2_probation_handoff_case value = var:zg361_b2_pip_case }
+		trigger_event = { id = zg361b2.103 days = 1 }
+	}
+}
+
+# Cross-package handoff for the probation outcome fact.  The external ROOT is
+# irrelevant: current scope is proven to be the real PIP subject and OWNER is
+# taken from B2's frozen PIP object.  A missing probation slot is an ordinary
+# no-op, which keeps non-Workforce B2 cases and the still-unwired result/bps
+# producer fail-closed without emitting a false collision.
+zg361_b2_replay_workforce_probation_fact_handoff_effect = {
+	if = {
+		limit = {
+			has_variable = zg361_b2_pip_owner
+			has_variable = zg361_b2_pip_subject
+			has_variable = zg361_b2_pip_cycle
+			has_variable = zg361_b2_pip_case
+			has_variable = zg361_b2_pip_state
+			has_variable = zg361_b2_pip_policy_route
+			has_variable = zg361_b2_pip_task_kind
+			has_variable = zg361_b2_pip_settlement_receipt
+			has_variable = zg361_b2_pip_outcome_code
+			has_variable = zg361_b2_pip_outcome_result_cycle
+			has_variable = zg361_b2_pip_outcome_result_case
+			has_variable = zg361_b2_pip_outcome_result_grade
+			var:zg361_b2_pip_subject = this
+			var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case
+			OR = {
+				AND = {
+					var:zg361_b2_pip_state = 3
+					var:zg361_b2_pip_outcome_code = 1
+					var:zg361_b2_pip_outcome_result_grade >= 2
+					var:zg361_b2_pip_outcome_result_grade <= 3
+				}
+				AND = {
+					var:zg361_b2_pip_state = 4
+					var:zg361_b2_pip_outcome_code = 2
+					var:zg361_b2_pip_outcome_result_grade = 1
+				}
+			}
+			has_variable = zg361_b2_workforce_pip_pending
+			has_variable = zg361_b2_workforce_pip_consumed
+			has_variable = zg361_b2_workforce_pip_owner
+			has_variable = zg361_b2_workforce_pip_subject
+			has_variable = zg361_b2_workforce_pip_cycle
+			has_variable = zg361_b2_workforce_pip_case
+			has_variable = zg361_b2_workforce_pip_state
+			has_variable = zg361_b2_workforce_pip_case_id
+			has_variable = zg361_b2_workforce_pip_case_hash
+			has_variable = zg361_b2_workforce_pip_closure_receipt_id
+			has_variable = zg361_b2_workforce_pip_closure_receipt_hash
+			var:zg361_b2_workforce_pip_pending = 1
+			var:zg361_b2_workforce_pip_consumed = 0
+			var:zg361_b2_workforce_pip_owner = var:zg361_b2_pip_owner
+			var:zg361_b2_workforce_pip_subject = this
+			var:zg361_b2_workforce_pip_cycle = var:zg361_b2_pip_cycle
+			var:zg361_b2_workforce_pip_case = var:zg361_b2_pip_case
+			var:zg361_b2_workforce_pip_state = var:zg361_b2_pip_state
+			var:zg361_b2_workforce_pip_case_id > 0
+			var:zg361_b2_workforce_pip_case_hash > 0
+			var:zg361_b2_workforce_pip_closure_receipt_id > 0
+			var:zg361_b2_workforce_pip_closure_receipt_hash > 0
+			has_variable = zg361_workforce_probation_fact_state
+			has_variable = zg361_workforce_probation_fact_owner
+			has_variable = zg361_workforce_probation_fact_subject
+			var:zg361_workforce_probation_fact_owner = var:zg361_b2_pip_owner
+			var:zg361_workforce_probation_fact_subject = this
+			OR = {
+				AND = {
+					var:zg361_workforce_probation_fact_state = 2
+					var:zg361_workforce_probation_fact_awaiting_pip = 1
+					var:zg361_workforce_probation_fact_source_result_cycle = var:zg361_b2_pip_cycle
+				}
+				AND = {
+					var:zg361_workforce_probation_fact_state >= 3
+					var:zg361_workforce_probation_fact_source_kind = 2
+					var:zg361_workforce_probation_fact_source_pip_owner = var:zg361_b2_pip_owner
+					var:zg361_workforce_probation_fact_source_pip_subject = this
+					var:zg361_workforce_probation_fact_source_pip_cycle = var:zg361_b2_pip_cycle
+					var:zg361_workforce_probation_fact_source_pip_case = var:zg361_b2_pip_case
+					var:zg361_workforce_probation_fact_source_pip_state = var:zg361_b2_pip_state
+					var:zg361_workforce_probation_fact_source_pip_policy_route = var:zg361_b2_pip_policy_route
+					var:zg361_workforce_probation_fact_source_pip_task_kind = var:zg361_b2_pip_task_kind
+					var:zg361_workforce_probation_fact_source_pip_settlement_receipt = var:zg361_b2_pip_settlement_receipt
+					var:zg361_workforce_probation_fact_source_pip_outcome_code = var:zg361_b2_pip_outcome_code
+					var:zg361_workforce_probation_fact_source_pip_result_cycle = var:zg361_b2_pip_outcome_result_cycle
+					var:zg361_workforce_probation_fact_source_pip_result_case = var:zg361_b2_pip_outcome_result_case
+					var:zg361_workforce_probation_fact_source_pip_result_grade = var:zg361_b2_pip_outcome_result_grade
+					var:zg361_workforce_probation_fact_source_pip_case_receipt_id = var:zg361_b2_workforce_pip_case_id
+					var:zg361_workforce_probation_fact_source_pip_case_receipt_hash = var:zg361_b2_workforce_pip_case_hash
+					var:zg361_workforce_probation_fact_source_pip_closure_receipt_id = var:zg361_b2_workforce_pip_closure_receipt_id
+					var:zg361_workforce_probation_fact_source_pip_closure_receipt_hash = var:zg361_b2_workforce_pip_closure_receipt_hash
+				}
+			}
+		}
+		zg361_workforce_probation_fact_publish_from_pip_settlement_effect = {
+			OWNER = var:zg361_b2_pip_owner
+		}
+		# Do not read adapter_status in this same effect chain.  The adapter writes
+		# its own typed ACK/RED, while this B2 source remains independently
+		# conserved until its real Workforce consumer acknowledges it.
+		debug_log = "ZG361B2: real probation fact handoff offered"
+	}
 }
 
 zg361_b2_settle_pip_outcome_effect = {
@@ -1261,6 +1403,12 @@ zg361_b2_settle_pip_outcome_effect = {
 				NOT = { var:zg361_b2_pip_settlement_receipt = var:zg361_b2_pip_case }
 			}
 		}
+		# This identity predates the terminal writes below.  Event .102 will read
+		# the committed state/settlement/result tuple and publish the B2 source.
+		var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_source_publish_owner }
+		save_scope_as = zg361_b2_source_publish_subject
+		save_scope_value_as = { name = zg361_b2_source_publish_cycle value = var:zg361_b2_pip_cycle }
+		save_scope_value_as = { name = zg361_b2_source_publish_case value = var:zg361_b2_pip_case }
 		set_variable = { name = zg361_b2_pip_settlement_receipt value = var:zg361_b2_pip_case }
 		set_variable = { name = zg361_b2_pip_outcome_result_cycle value = var:zg361_result_cycle_serial }
 		set_variable = { name = zg361_b2_pip_outcome_result_case value = var:zg361_result_case_serial }
@@ -1300,7 +1448,7 @@ zg361_b2_settle_pip_outcome_effect = {
 		zg361_b2_m016_consume_business_object_effect = yes
 		zg361_b2_m017_open_disposition_effect = yes
 		}
-		zg361_b2_publish_workforce_pip_settlement_effect = yes
+		trigger_event = { id = zg361b2.102 days = 1 }
 		zg361_b2_publish_pip_performance_evidence_effect = yes
 	}
 }
@@ -3260,6 +3408,100 @@ zg361b2.100 = {
 			zg361_b2_resolve_pip_due_effect = yes
 		}
 		else = { debug_log = "ZG361B2: stale PIP D+365 ticket ignored" }
+	}
+}
+
+# Commit boundary 1: outcome_code was selected by .100/resolve on the previous
+# day.  This event binds the exact active PIP ticket before the terminal writer.
+zg361b2.101 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_terminal_settlement_owner
+				exists = scope:zg361_b2_terminal_settlement_subject
+				this = scope:zg361_b2_terminal_settlement_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_terminal_settlement_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_terminal_settlement_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_terminal_settlement_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_terminal_settlement_case
+				var:zg361_b2_pip_state = scope:zg361_b2_terminal_settlement_state
+				var:zg361_b2_pip_state = 2
+			}
+			zg361_b2_settle_pip_outcome_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale terminal settlement ticket ignored" }
+	}
+}
+
+# Commit boundary 2: the terminal writer ran on the previous day.  Only this
+# exact ticket may publish the immutable Workforce B2 source.
+zg361b2.102 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_source_publish_owner
+				exists = scope:zg361_b2_source_publish_subject
+				this = scope:zg361_b2_source_publish_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_source_publish_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_source_publish_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_source_publish_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_source_publish_case
+			}
+			zg361_b2_publish_workforce_pip_settlement_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale Workforce source publication ticket ignored" }
+	}
+}
+
+# Commit boundary 3: the source publisher has completed.  The first event
+# offers the real source to probation; the second is one bounded, actually
+# reachable replay over that same conserved source.  Neither republishes B2.
+zg361b2.103 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_probation_handoff_owner
+				exists = scope:zg361_b2_probation_handoff_subject
+				this = scope:zg361_b2_probation_handoff_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_probation_handoff_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_probation_handoff_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_probation_handoff_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_probation_handoff_case
+			}
+			zg361_b2_replay_workforce_probation_fact_handoff_effect = yes
+			var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_probation_replay_owner }
+			save_scope_as = zg361_b2_probation_replay_subject
+			save_scope_value_as = { name = zg361_b2_probation_replay_cycle value = var:zg361_b2_pip_cycle }
+			save_scope_value_as = { name = zg361_b2_probation_replay_case value = var:zg361_b2_pip_case }
+			trigger_event = { id = zg361b2.104 days = 1 }
+		}
+		else = { debug_log = "ZG361B2: stale probation handoff ticket ignored" }
+	}
+}
+
+zg361b2.104 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_probation_replay_owner
+				exists = scope:zg361_b2_probation_replay_subject
+				this = scope:zg361_b2_probation_replay_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_probation_replay_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_probation_replay_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_probation_replay_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_probation_replay_case
+			}
+			zg361_b2_replay_workforce_probation_fact_handoff_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale probation handoff replay ignored" }
 	}
 }
 

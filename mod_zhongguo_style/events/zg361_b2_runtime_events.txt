@@ -155,6 +155,100 @@ zg361b2.100 = {
 	}
 }
 
+# Commit boundary 1: outcome_code was selected by .100/resolve on the previous
+# day.  This event binds the exact active PIP ticket before the terminal writer.
+zg361b2.101 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_terminal_settlement_owner
+				exists = scope:zg361_b2_terminal_settlement_subject
+				this = scope:zg361_b2_terminal_settlement_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_terminal_settlement_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_terminal_settlement_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_terminal_settlement_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_terminal_settlement_case
+				var:zg361_b2_pip_state = scope:zg361_b2_terminal_settlement_state
+				var:zg361_b2_pip_state = 2
+			}
+			zg361_b2_settle_pip_outcome_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale terminal settlement ticket ignored" }
+	}
+}
+
+# Commit boundary 2: the terminal writer ran on the previous day.  Only this
+# exact ticket may publish the immutable Workforce B2 source.
+zg361b2.102 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_source_publish_owner
+				exists = scope:zg361_b2_source_publish_subject
+				this = scope:zg361_b2_source_publish_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_source_publish_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_source_publish_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_source_publish_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_source_publish_case
+			}
+			zg361_b2_publish_workforce_pip_settlement_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale Workforce source publication ticket ignored" }
+	}
+}
+
+# Commit boundary 3: the source publisher has completed.  The first event
+# offers the real source to probation; the second is one bounded, actually
+# reachable replay over that same conserved source.  Neither republishes B2.
+zg361b2.103 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_probation_handoff_owner
+				exists = scope:zg361_b2_probation_handoff_subject
+				this = scope:zg361_b2_probation_handoff_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_probation_handoff_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_probation_handoff_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_probation_handoff_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_probation_handoff_case
+			}
+			zg361_b2_replay_workforce_probation_fact_handoff_effect = yes
+			var:zg361_b2_pip_owner = { save_scope_as = zg361_b2_probation_replay_owner }
+			save_scope_as = zg361_b2_probation_replay_subject
+			save_scope_value_as = { name = zg361_b2_probation_replay_cycle value = var:zg361_b2_pip_cycle }
+			save_scope_value_as = { name = zg361_b2_probation_replay_case value = var:zg361_b2_pip_case }
+			trigger_event = { id = zg361b2.104 days = 1 }
+		}
+		else = { debug_log = "ZG361B2: stale probation handoff ticket ignored" }
+	}
+}
+
+zg361b2.104 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_b2_probation_replay_owner
+				exists = scope:zg361_b2_probation_replay_subject
+				this = scope:zg361_b2_probation_replay_subject
+				var:zg361_b2_pip_owner = scope:zg361_b2_probation_replay_owner
+				var:zg361_b2_pip_subject = scope:zg361_b2_probation_replay_subject
+				var:zg361_b2_pip_cycle = scope:zg361_b2_probation_replay_cycle
+				var:zg361_b2_pip_case = scope:zg361_b2_probation_replay_case
+			}
+			zg361_b2_replay_workforce_probation_fact_handoff_effect = yes
+		}
+		else = { debug_log = "ZG361B2: stale probation handoff replay ignored" }
+	}
+}
+
 # #017 bounded post-PIP disposition; any active appeal observation still passes
 # through the common adverse-action gate in the four core disposition effects.
 zg361b2.110 = {

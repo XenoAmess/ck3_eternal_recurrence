@@ -1,6 +1,6 @@
 # Workforce probation/PIP 结局事实 CK3 运行合同
 
-状态：**CK3 script static-ready，尚未接入三个外部调用点，尚无 loader / paused snapshot / 实机证据**。
+状态：**CK3 script static-ready；B2 PIP settlement 已接入，#274 arm 与普通 result attribution 仍未接入；尚无 loader / paused snapshot / 实机证据**。
 生成器常量固定为 `ck3-script-static-ready-not-live`；本包不得写成 fixture-live、production-live 或完整 #269。
 
 ## 1. 独立文件与责任边界
@@ -123,9 +123,11 @@ owner / subject / hire cycle / hire case
 
 同键重放不发新 outcome ID；任何字段变化都 RED 2001，不能覆盖已冻结结果。
 
-### 3.3 待接 hook 2：B2 PIP settlement
+### 3.3 已接 hook 2：B2 PIP settlement
 
-待在 `zg361_b2_publish_workforce_pip_settlement_effect` 成功之后接入：
+`zg361_b2_publish_workforce_pip_settlement_effect` 现已接入。完整提交链分成四个 D+1 边界：`zg361b2.101` 只在
+`outcome_code` 已提交后执行 terminal settlement；`zg361b2.102` 只在 terminal tuple 已提交后发布/守恒 B2 source；`zg361b2.103` 只在
+source 已提交后首读并调用：
 
 ```text
 # current scope = PIP subject = hired subject
@@ -133,6 +135,13 @@ zg361_workforce_probation_fact_publish_from_pip_settlement_effect = {
     OWNER = <zg361_b2_pip_owner>
 }
 ```
+
+不能在 resolver / terminal writer / source writer 的同一 effect 链里读取各自刚写入的字段；CK3 对这种读后写顺序没有可靠提交
+边界。`zg361b2.103` 完成首读并安排 `zg361b2.104`；后者是一个有界且真实可达的次日重放 caller，只重放同一 handoff，
+不重新调用 B2 publisher、不补字段，也不重签 B2 receipt。若 #277 已消费 source，`pending=1/consumed=0` guard 使重放静默
+失效；若 source 仍被守恒，probation adapter 只接受相同完整幂等键，不能签发第二个 outcome。两次 delayed event 还分别冻结并
+复核 owner/subject/cycle/case；`.101` 另冻结 state=2。旧票据不能在新 PIP 上借壳执行。closure hash 直接从已提交的 underlying
+PIP tuple 重算，不读取 source writer 同链刚写的 case hash。
 
 它只接受 state 2 中已经冻结的同 owner/subject 3.25 result，并严格 join B2 的 underlying PIP 五元组、policy route、task kind、
 唯一 settlement、`outcome_result_cycle/case/grade`，以及尚未被 #277 消费的 Workforce PIP case/closure ID/hash。四个 receipt
@@ -186,13 +195,17 @@ source 保留、state 不推进；hidden event 只重试消费，不发布或补
 
 ## 6. 仍需接线与验收
 
-当前三个调用点都尚未改入其共享所有者文件，因此本包是**可加载的 producer/consumer API 与事件链，不是已经可达的业务链**：
+当前 B2 PIP hook 已改入其共享所有者，并通过跨事件首读与一次有界重放到达；其余两个入口仍未闭合，因此本包仍只是
+**部分可达的 producer/consumer API 与事件链，不是完整业务链**：
 
 1. #274 成功点调用 arm；
-2. canonical result settlement 调 result hook，并从真实面试归因 producer 提供 bps_2/3；
-3. B2 唯一 PIP settlement 发布后调用 PIP hook。
+2. canonical result settlement 调 result hook，并从真实面试归因 producer 提供 bps_2/3。当前没有真实
+   `ATTRIBUTION_BPS_2/3` producer，必须继续明确阻塞；禁止写 3333/3333、全零或从档位反推伪值。
 
-缺任一接线时，12 alias 保持不存在，旧 #269 继续等待并 fail-closed。接线后还必须用新 loader 证明 12 个
+已闭合的 B2 调用点不改变这一 blocker：没有先冻结普通 3.25 result 与真实三维归因时，PIP handoff 只会 no-op，不能凭
+B2 settlement 反向制造试用期事实。缺任一剩余接线时，12 alias 保持不存在，旧 #269 继续等待并 fail-closed。
+
+全部接线后还必须用新 loader 证明 12 个
 `used but never set` 告警归零，再做 MCP-first paused snapshot：普通 pass、3.25 等待、PIP graduation、PIP failure、
 重放幂等、错 tuple RED、一次消费和 alias 清理。本文没有替代这些 live 证据。
 

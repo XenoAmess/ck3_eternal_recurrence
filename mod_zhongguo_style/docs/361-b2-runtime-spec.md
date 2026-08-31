@@ -154,8 +154,16 @@ FAILED / RELAPSED → 新案号二次 PIP | 真实空缺转岗 | 有成本 recei
 - D+365 resolver 只判定 outcome，`zg361_b2_settle_pip_outcome_effect` 是唯一毕业/失败 writer：它一次性移除 modifier、释放支持、消费 #015/#016，并在失败时打开 #017。独立复核尚无真实 producer，保持 `independent_review_status=0/red_code=2`，不能用经理选择硬编码通过。
 - 同一真实 settlement 落地且 `state=3/4` 后，B2 只发布一格 Workforce #277 source：
   `pending/consumed + owner/subject/cycle/case/state + case_id/case_hash/closure_receipt_id/closure_receipt_hash`。case truth 来自 PIP object，
-  closure truth 来自 settlement receipt 并显式绑定 `outcome_result_cycle/case`，四项都大于零且两组不复用；未消费旧 source 必须守恒。B2 不调用 Workforce、不开退出、
-  不改 HC，后续消费者必须另取独立 native exit/position receipt。
+  closure truth 来自 settlement receipt 并显式绑定 `outcome_result_cycle/case`，四项都大于零且两组不复用；未消费旧 source 必须守恒。
+- D+365 后的写/读分为四个提交边界：resolver 写 `outcome_code` 后由 `.101` 复核冻结的 owner/subject/cycle/case/state=2 再
+  terminal settle；terminal writer 由 `.102` 在下一日发布 source；source writer 由 `.103` 在下一日调用 probation PIP adapter；
+  `.103` 再安排唯一一次 `.104` D+1 handoff replay。每个 delayed ticket 都复核冻结身份，旧票据不能命中新 PIP。
+- source writer 不读取同链刚写的 `zg361_b2_workforce_pip_*`：closure hash 直接从已提交 underlying tuple 重算，不引用刚写的
+  case hash。`.103/.104` 都只读同一 `pending=1/consumed=0` source，不重新调用 publisher、不重签 B2 receipt、不写 HC/退出。
+  adapter 的完整 PIP tuple 与 outcome idempotency key 负责阻止第二次 canonical outcome；若 #277 已消费，replay 直接 no-op。
+- 该接线不伪造普通 probation result：B2 文件不调用 `publish_from_result`，也不提供 `ATTRIBUTION_BPS_2/3`。当前缺少真实
+  面试归因 producer，此入口继续明确阻塞；未先形成同 owner/subject 的冻结 3.25 result 时，B2 handoff 不会反向制造事实。
+  B2 仍不开退出、不改 HC；后续 #277 消费者必须另取独立 native exit/position receipt。
 - `no_support_liability` 只在“支持确实缺失且最终失败”时写入，不能在开案时预判。
 - 毕业、失败、本人拒绝分别发布 `+10/-10/-15` 的唯一 next-cycle performance evidence；下一次真实 KPI 计算只消费一次并同步进入 growth/KPI。该证据不回写旧档位，也不能在同周期重复处罚。
 - 毕业后只观察一个周期；同类别复发才升级原链，不同类别必须另建新问题案。
