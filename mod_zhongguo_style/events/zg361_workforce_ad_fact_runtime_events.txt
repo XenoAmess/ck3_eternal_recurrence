@@ -1,0 +1,196 @@
+﻿# GENERATED FILE — edit tools/gen_361_workforce_ad_fact_runtime.py
+# readiness: ck3-script-static-ready-unwired-to-workforce-core
+
+namespace = zg361wad
+
+zg361wad.1 = {
+	type = character_event
+	title = zg361wad.referral.t
+	desc = zg361wad.referral.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_wad_referral_subject_scope
+		exists = scope:zg361_wad_referral_actor_scope
+		this = scope:zg361_wad_referral_actor_scope
+		scope:zg361_wad_referral_subject_scope = {
+			var:zg361_wad_referral_flow_active = 1
+			var:zg361_wad_referral_source_referrer = root
+		}
+	}
+	option = {
+		name = zg361wad.referral.submit
+		scope:zg361_wad_referral_subject_scope = {
+			zg361_wad_submit_referral_effect = {
+				TICKET_OWNER = var:zg361_wad_referral_source_owner TICKET_SUBJECT = this
+				TICKET_CYCLE = var:zg361_wad_referral_source_cycle TICKET_CASE = var:zg361_wad_referral_source_case
+				REFERRER = scope:zg361_wad_referral_actor_scope
+			}
+		}
+	}
+	option = {
+		name = zg361wad.referral.decline
+		scope:zg361_wad_referral_subject_scope = {
+			zg361_wad_decline_referral_effect = { REFERRER = scope:zg361_wad_referral_actor_scope }
+		}
+	}
+}
+
+zg361wad.11 = {
+	type = character_event
+	title = zg361wad.vote.t
+	desc = zg361wad.vote.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_wad_panel_subject_scope
+		exists = scope:zg361_wad_panel_actor_scope
+		this = scope:zg361_wad_panel_actor_scope
+		scope:zg361_wad_panel_subject_scope = {
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_vote_count = 0
+			var:zg361_wad_panel_source_interviewer_1 = root
+		}
+	}
+
+option = {
+	name = zg361wad.vote.a
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_1_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 3
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.b
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_1_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 2
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.c
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_1_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 1
+		}
+	}
+}
+}
+
+zg361wad.12 = {
+	type = character_event
+	title = zg361wad.vote.t
+	desc = zg361wad.vote.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_wad_panel_subject_scope
+		exists = scope:zg361_wad_panel_actor_scope
+		this = scope:zg361_wad_panel_actor_scope
+		scope:zg361_wad_panel_subject_scope = {
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_vote_count = 1
+			var:zg361_wad_panel_source_interviewer_2 = root
+		}
+	}
+
+option = {
+	name = zg361wad.vote.a
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_2_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 3
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.b
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_2_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 2
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.c
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_2_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 1
+		}
+	}
+}
+}
+
+zg361wad.13 = {
+	type = character_event
+	title = zg361wad.vote.t
+	desc = zg361wad.vote.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_wad_panel_subject_scope
+		exists = scope:zg361_wad_panel_actor_scope
+		this = scope:zg361_wad_panel_actor_scope
+		scope:zg361_wad_panel_subject_scope = {
+			var:zg361_wad_panel_active = 1
+			var:zg361_wad_panel_vote_count = 2
+			var:zg361_wad_panel_source_interviewer_3 = root
+		}
+	}
+
+option = {
+	name = zg361wad.vote.a
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_3_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 3
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.b
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_3_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 2
+		}
+	}
+}
+option = {
+	name = zg361wad.vote.c
+	scope:zg361_wad_panel_subject_scope = {
+		zg361_wad_submit_panel_vote_3_effect = {
+			TICKET_OWNER = var:zg361_wad_panel_source_owner TICKET_SUBJECT = this
+			TICKET_CYCLE = var:zg361_wad_panel_source_cycle TICKET_CASE = var:zg361_wad_panel_source_case
+			VOTER = scope:zg361_wad_panel_actor_scope VOTE = 1
+		}
+	}
+}
+}
+
+zg361wad.20 = {
+	type = character_event
+	title = zg361wad.offer.t
+	desc = zg361wad.offer.desc
+	trigger = {
+		is_ai = no
+		var:zg361_wad_offer_flow_active = 1
+		var:zg361_wad_offer_source_subject = this
+		var:zg361_wad_offer_source_state = 4
+	}
+	option = { name = zg361wad.offer.accept zg361_wad_accept_offer_effect = { RESPONDENT = this } }
+	option = { name = zg361wad.offer.refuse_pay zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 1 } }
+	option = { name = zg361wad.offer.refuse_role zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 2 } }
+	option = { name = zg361wad.offer.refuse_move zg361_wad_refuse_offer_effect = { RESPONDENT = this REASON = 3 } }
+}
