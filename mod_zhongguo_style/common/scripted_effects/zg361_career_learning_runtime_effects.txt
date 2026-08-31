@@ -111,10 +111,40 @@ zg361_cl_open_ah_case_effect = {
             set_variable = { name = zg361_cl_ah_s06_deadline_pending value = 0 }
             set_variable = { name = zg361_cl_ah_s06_deadline_expired value = 0 }
             remove_variable = zg361_cl_m314_subject_response
+            remove_variable = zg361_cl_m314_prompt_pending
+            remove_variable = zg361_cl_m314_prompt_owner
+            remove_variable = zg361_cl_m314_prompt_subject
+            remove_variable = zg361_cl_m314_prompt_cycle
+            remove_variable = zg361_cl_m314_prompt_case
+            remove_variable = zg361_cl_m314_prompt_state
             remove_variable = zg361_cl_m315_subject_response
+            remove_variable = zg361_cl_m315_prompt_pending
+            remove_variable = zg361_cl_m315_prompt_owner
+            remove_variable = zg361_cl_m315_prompt_subject
+            remove_variable = zg361_cl_m315_prompt_cycle
+            remove_variable = zg361_cl_m315_prompt_case
+            remove_variable = zg361_cl_m315_prompt_state
             remove_variable = zg361_cl_m318_subject_response
+            remove_variable = zg361_cl_m318_prompt_pending
+            remove_variable = zg361_cl_m318_prompt_owner
+            remove_variable = zg361_cl_m318_prompt_subject
+            remove_variable = zg361_cl_m318_prompt_cycle
+            remove_variable = zg361_cl_m318_prompt_case
+            remove_variable = zg361_cl_m318_prompt_state
             remove_variable = zg361_cl_m319_subject_response
+            remove_variable = zg361_cl_m319_prompt_pending
+            remove_variable = zg361_cl_m319_prompt_owner
+            remove_variable = zg361_cl_m319_prompt_subject
+            remove_variable = zg361_cl_m319_prompt_cycle
+            remove_variable = zg361_cl_m319_prompt_case
+            remove_variable = zg361_cl_m319_prompt_state
             remove_variable = zg361_cl_m321_subject_response
+            remove_variable = zg361_cl_m321_prompt_pending
+            remove_variable = zg361_cl_m321_prompt_owner
+            remove_variable = zg361_cl_m321_prompt_subject
+            remove_variable = zg361_cl_m321_prompt_cycle
+            remove_variable = zg361_cl_m321_prompt_case
+            remove_variable = zg361_cl_m321_prompt_state
             zg361_cl_schedule_ah_stage_01_effect = yes
             if = {
                 limit = { var:zg361_case_kernel_applied = 1 }
@@ -151,6 +181,12 @@ zg361_cl_open_ai_case_effect = {
             set_variable = { name = zg361_cl_ai_s05_deadline_pending value = 0 }
             set_variable = { name = zg361_cl_ai_s05_deadline_expired value = 0 }
             remove_variable = zg361_cl_m333_subject_response
+            remove_variable = zg361_cl_m333_prompt_pending
+            remove_variable = zg361_cl_m333_prompt_owner
+            remove_variable = zg361_cl_m333_prompt_subject
+            remove_variable = zg361_cl_m333_prompt_cycle
+            remove_variable = zg361_cl_m333_prompt_case
+            remove_variable = zg361_cl_m333_prompt_state
             zg361_cl_schedule_ai_stage_01_effect = yes
             if = {
                 limit = { var:zg361_case_kernel_applied = 1 }
@@ -488,7 +524,22 @@ zg361_cl_m312_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 312 }
     }
     else_if = {
@@ -513,15 +564,37 @@ zg361_cl_m312_core_effect = {
             } } }
         zg361_cl_set_red_effect = { CODE = 4 MECHANISM = 312 }
     }
-    else_if = {
-        limit = { NOT = { always = yes } }
-        zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 312 }
-    }
     else = {
-        set_variable = { name = zg361_cl_m312_dual_payment_ready value = 1 }
+        set_variable = { name = zg361_cl_m312_mobility_policy_debt value = 0 }
+            remove_variable = zg361_transfer_cl_applied
+            if = {
+                limit = { scope:zg361_cl_route = 1 }
+                zg361_career_hc_claim_cl_transfer_vacancy_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else = { set_variable = { name = zg361_transfer_cl_applied value = 1 } }
+            if = {
+                limit = { NOT = { var:zg361_transfer_cl_applied = 1 } }
+                # A missing/stale vacancy, invalid receiver, war, or broken HC
+                # reserve becomes an explicit policy debt.  No liege/title
+                # mutation has occurred on these adapter RED paths.
+                save_temporary_scope_value_as = { name = zg361_cl_route value = 3 }
+                set_variable = { name = zg361_cl_m312_mobility_policy_debt value = 1 }
+                set_variable = { name = zg361_cl_m312_mobility_red_code value = var:zg361_transfer_cl_red_code }
+            }
         if = {
-            limit = { var:zg361_cl_m312_dual_payment_ready = 1 }
-            zg361_case_kernel_record_operation_effect = {
+            limit = { NOT = { always = yes } }
+            zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 312 }
+        }
+        else = {
+            set_variable = { name = zg361_cl_m312_dual_payment_ready value = 1 }
+            if = {
+                limit = { var:zg361_cl_m312_dual_payment_ready = 1 }
+                zg361_case_kernel_record_operation_effect = {
                 OWNER_VAR = zg361_case_ah_owner
                 SUBJECT_VAR = zg361_case_ah_subject
                 CYCLE_VAR = zg361_case_ah_cycle_serial
@@ -547,15 +620,15 @@ zg361_cl_m312_core_effect = {
                 CHOICE = scope:zg361_cl_route
                 OPERATION_ID = 312
             }
-            if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
-                set_variable = { name = zg361_cl_m312_route value = scope:zg361_cl_route }
-                set_variable = { name = zg361_cl_m312_consumed value = 0 }
-                set_variable = { name = zg361_cl_m312_deferred value = 0 }
+                if = {
+                    limit = { var:zg361_case_kernel_applied = 1 }
+                    set_variable = { name = zg361_cl_m312_route value = scope:zg361_cl_route }
+                    set_variable = { name = zg361_cl_m312_consumed value = 0 }
+                    set_variable = { name = zg361_cl_m312_deferred value = 0 }
 
-                # A receipt now owns one typed object identity.  A/B activate
-                # the business object; C activates only a due governance debt.
-                set_variable = { name = zg361_cl_m312_object_kind_id value = 1 }
+                    # A receipt now owns one typed object identity.  A/B activate
+                    # the business object; C activates only a due governance debt.
+                    set_variable = { name = zg361_cl_m312_object_kind_id value = 1 }
                 set_variable = { name = zg361_cl_m312_object_serial value = $TICKET_CASE$ }
                 set_variable = { name = zg361_cl_m312_object_owner value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m312_object_subject value = $TICKET_SUBJECT$ }
@@ -586,7 +659,7 @@ zg361_cl_m312_core_effect = {
                     }
                     else = { set_variable = { name = zg361_cl_m312_acl_class value = 2 } }
                 }
-                if = {
+                    if = {
                     limit = { scope:zg361_cl_route = 1 }
                     set_variable = { name = zg361_cl_m312_obligation_pending value = 1 }
                     set_variable = { name = zg361_cl_m312_obligation_days value = 30 }
@@ -623,20 +696,28 @@ zg361_cl_m312_core_effect = {
                     set_variable = { name = zg361_cl_m312_obligation_pending value = 0 }
                     set_variable = { name = zg361_cl_m312_obligation_days value = 0 }
                 }
-                if = {
-                    limit = { scope:zg361_cl_route = 3 }
-                    set_variable = { name = zg361_cl_m312_deferred value = 1 }
-                    set_variable = { name = zg361_cl_m312_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
-                    set_variable = { name = zg361_cl_m312_consumer_value value = 0 }
+                    if = {
+                        limit = { scope:zg361_cl_route = 3 }
+                        set_variable = { name = zg361_cl_m312_deferred value = 1 }
+                        set_variable = { name = zg361_cl_m312_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
+                        set_variable = { name = zg361_cl_m312_consumer_value value = 0 }
+                    }
+                    else = { zg361_cl_m312_consume_effect = yes }
                 }
-                else = { zg361_cl_m312_consume_effect = yes }
-            }
-            else = {
+                else = {
 
-                zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 312 }
+                    zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 312 }
+                }
             }
+            else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 312 } }
         }
-        else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 312 } }
+        if = {
+            limit = {
+                var:zg361_cl_m312_mobility_policy_debt = 1
+                var:zg361_cl_m312_mobility_red_code > 0
+            }
+            zg361_cl_set_red_effect = { CODE = 6 MECHANISM = 312 }
+        }
     }
 }
 
@@ -661,6 +742,10 @@ zg361_cl_m312_consume_effect = {
             NOT = { var:zg361_cl_m312_route = 3 }
         }
         set_variable = { name = zg361_cl_m312_legal_hc value = 1 }
+            set_variable = { name = zg361_cl_m312_vacancy_id value = var:zg361_transfer_cl_vacancy }
+            set_variable = { name = zg361_cl_m312_target_manager value = var:zg361_transfer_cl_receiver }
+            set_variable = { name = zg361_cl_m312_vacancy_title value = var:zg361_transfer_cl_title }
+            set_variable = { name = zg361_cl_m312_hc_reserved value = var:zg361_transfer_hc_reserved }
             set_variable = { name = zg361_cl_m312_reporting_line_frozen value = 1 }
             set_variable = { name = zg361_cl_m312_pay_band_frozen value = 4 }
             set_variable = { name = zg361_cl_m312_goal_frozen value = 1 }
@@ -793,7 +878,22 @@ zg361_cl_m313_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 313 }
     }
     else_if = {
@@ -1107,7 +1207,22 @@ zg361_cl_m314_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 314 }
     }
     else_if = {
@@ -1132,8 +1247,39 @@ zg361_cl_m314_core_effect = {
             } } }
         zg361_cl_set_red_effect = { CODE = 4 MECHANISM = 314 }
     }
-    else_if = {
-        limit = { NOT = { trigger_if = {
+    else = {
+        set_variable = { name = zg361_cl_m314_mobility_policy_debt value = 0 }
+            remove_variable = zg361_transfer_cl_applied
+            if = {
+                limit = { scope:zg361_cl_route = 1 }
+                zg361_career_hc_accept_cl_transfer_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_route = 2 }
+                zg361_career_hc_decline_cl_transfer_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else = { set_variable = { name = zg361_transfer_cl_applied value = 1 } }
+            if = {
+                limit = { NOT = { var:zg361_transfer_cl_applied = 1 } }
+                # A missing/stale vacancy, invalid receiver, war, or broken HC
+                # reserve becomes an explicit policy debt.  No liege/title
+                # mutation has occurred on these adapter RED paths.
+                save_temporary_scope_value_as = { name = zg361_cl_route value = 3 }
+                set_variable = { name = zg361_cl_m314_mobility_policy_debt value = 1 }
+                set_variable = { name = zg361_cl_m314_mobility_red_code value = var:zg361_transfer_cl_red_code }
+            }
+        if = {
+            limit = { NOT = { trigger_if = {
                 limit = { OR = {
                     scope:zg361_cl_route = 1
                 } }
@@ -1144,10 +1290,10 @@ zg361_cl_m314_core_effect = {
                 }
             }
             trigger_else = { always = yes } } }
-        zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 314 }
-    }
-    else = {
-        set_variable = { name = zg361_cl_m314_dual_payment_ready value = 0 }
+            zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 314 }
+        }
+        else = {
+            set_variable = { name = zg361_cl_m314_dual_payment_ready value = 0 }
     if = {
         limit = { OR = {
                     scope:zg361_cl_route = 1
@@ -1318,9 +1464,9 @@ zg361_cl_m314_core_effect = {
     else = {
         set_variable = { name = zg361_cl_m314_dual_payment_ready value = 1 }
     }
-        if = {
-            limit = { var:zg361_cl_m314_dual_payment_ready = 1 }
-            zg361_case_kernel_record_operation_effect = {
+            if = {
+                limit = { var:zg361_cl_m314_dual_payment_ready = 1 }
+                zg361_case_kernel_record_operation_effect = {
                 OWNER_VAR = zg361_case_ah_owner
                 SUBJECT_VAR = zg361_case_ah_subject
                 CYCLE_VAR = zg361_case_ah_cycle_serial
@@ -1346,12 +1492,12 @@ zg361_cl_m314_core_effect = {
                 CHOICE = scope:zg361_cl_route
                 OPERATION_ID = 314
             }
-            if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
-                set_variable = { name = zg361_cl_m314_route value = scope:zg361_cl_route }
-                set_variable = { name = zg361_cl_m314_consumed value = 0 }
-                set_variable = { name = zg361_cl_m314_deferred value = 0 }
                 if = {
+                    limit = { var:zg361_case_kernel_applied = 1 }
+                    set_variable = { name = zg361_cl_m314_route value = scope:zg361_cl_route }
+                    set_variable = { name = zg361_cl_m314_consumed value = 0 }
+                    set_variable = { name = zg361_cl_m314_deferred value = 0 }
+                    if = {
                 limit = { OR = {
                     scope:zg361_cl_route = 1
                 } }
@@ -1368,9 +1514,9 @@ zg361_cl_m314_core_effect = {
                 set_variable = { name = zg361_cl_m314_dual_payment_settled value = 0 }
                 set_variable = { name = zg361_cl_m314_total_cost value = 0 }
             }
-                # A receipt now owns one typed object identity.  A/B activate
-                # the business object; C activates only a due governance debt.
-                set_variable = { name = zg361_cl_m314_object_kind_id value = 3 }
+                    # A receipt now owns one typed object identity.  A/B activate
+                    # the business object; C activates only a due governance debt.
+                    set_variable = { name = zg361_cl_m314_object_kind_id value = 3 }
                 set_variable = { name = zg361_cl_m314_object_serial value = $TICKET_CASE$ }
                 set_variable = { name = zg361_cl_m314_object_owner value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m314_object_subject value = $TICKET_SUBJECT$ }
@@ -1384,7 +1530,7 @@ zg361_cl_m314_core_effect = {
                 set_variable = { name = zg361_cl_m314_obligation_resolved value = 0 }
                 set_variable = { name = zg361_cl_m314_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m314_relation_official value = $TICKET_SUBJECT$ }
-                set_variable = { name = zg361_cl_m314_target_manager value = var:zg361_cl_m314_object_owner }
+                set_variable = { name = zg361_cl_m314_target_manager value = var:zg361_transfer_cl_receiver }
                 set_variable = { name = zg361_cl_m314_offered_official value = var:zg361_cl_m314_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }
@@ -1401,7 +1547,7 @@ zg361_cl_m314_core_effect = {
                     }
                     else = { set_variable = { name = zg361_cl_m314_acl_class value = 2 } }
                 }
-                if = {
+                    if = {
                     limit = { scope:zg361_cl_route = 1 }
                     set_variable = { name = zg361_cl_m314_obligation_pending value = 1 }
                     set_variable = { name = zg361_cl_m314_obligation_days value = 190 }
@@ -1427,16 +1573,16 @@ zg361_cl_m314_core_effect = {
                     set_variable = { name = zg361_cl_m314_obligation_pending value = 0 }
                     set_variable = { name = zg361_cl_m314_obligation_days value = 0 }
                 }
-                if = {
-                    limit = { scope:zg361_cl_route = 3 }
-                    set_variable = { name = zg361_cl_m314_deferred value = 1 }
-                    set_variable = { name = zg361_cl_m314_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
-                    set_variable = { name = zg361_cl_m314_consumer_value value = 0 }
+                    if = {
+                        limit = { scope:zg361_cl_route = 3 }
+                        set_variable = { name = zg361_cl_m314_deferred value = 1 }
+                        set_variable = { name = zg361_cl_m314_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
+                        set_variable = { name = zg361_cl_m314_consumer_value value = 0 }
+                    }
+                    else = { zg361_cl_m314_consume_effect = yes }
                 }
-                else = { zg361_cl_m314_consume_effect = yes }
-            }
-            else = {
-                # The shadow journals settled before the business receipt.  If the
+                else = {
+                    # The shadow journals settled before the business receipt.  If the
                 # receipt unexpectedly loses its frozen guard, undo both journals;
                 # no CK3 gold has been deducted yet and the same ticket may retry.
                 if = {
@@ -1493,10 +1639,18 @@ zg361_cl_m314_core_effect = {
                     RECEIPT_STATUS_VAR = zg361_cl_m314_manager_status
                 }
             }
-                zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 314 }
+                    zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 314 }
+                }
             }
+            else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 314 } }
         }
-        else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 314 } }
+        if = {
+            limit = {
+                var:zg361_cl_m314_mobility_policy_debt = 1
+                var:zg361_cl_m314_mobility_red_code > 0
+            }
+            zg361_cl_set_red_effect = { CODE = 6 MECHANISM = 314 }
+        }
     }
 }
 
@@ -1521,6 +1675,8 @@ zg361_cl_m314_consume_effect = {
             NOT = { var:zg361_cl_m314_route = 3 }
         }
         set_variable = { name = zg361_cl_m314_accepted value = 0 }
+            set_variable = { name = zg361_cl_m314_vacancy_id value = var:zg361_transfer_cl_vacancy }
+            set_variable = { name = zg361_cl_m314_target_manager value = var:zg361_transfer_cl_receiver }
             set_variable = { name = zg361_cl_m314_declined value = 0 }
             set_variable = { name = zg361_cl_m314_response_once value = 1 }
             set_variable = { name = zg361_cl_m314_lump_sum value = 10 }
@@ -1626,6 +1782,7 @@ zg361_cl_m314_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m314_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -1654,6 +1811,7 @@ zg361_cl_m314_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m314_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ah_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 314 once"
     }
@@ -1699,7 +1857,22 @@ zg361_cl_m315_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 315 }
     }
     else_if = {
@@ -1724,15 +1897,46 @@ zg361_cl_m315_core_effect = {
             } } }
         zg361_cl_set_red_effect = { CODE = 4 MECHANISM = 315 }
     }
-    else_if = {
-        limit = { NOT = { always = yes } }
-        zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 315 }
-    }
     else = {
-        set_variable = { name = zg361_cl_m315_dual_payment_ready value = 1 }
+        set_variable = { name = zg361_cl_m315_mobility_policy_debt value = 0 }
+            remove_variable = zg361_transfer_cl_applied
+            if = {
+                limit = { scope:zg361_cl_route = 1 }
+                zg361_career_hc_start_cl_transfer_trial_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_route = 2 }
+                zg361_career_hc_decline_cl_transfer_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else = { set_variable = { name = zg361_transfer_cl_applied value = 1 } }
+            if = {
+                limit = { NOT = { var:zg361_transfer_cl_applied = 1 } }
+                # A missing/stale vacancy, invalid receiver, war, or broken HC
+                # reserve becomes an explicit policy debt.  No liege/title
+                # mutation has occurred on these adapter RED paths.
+                save_temporary_scope_value_as = { name = zg361_cl_route value = 3 }
+                set_variable = { name = zg361_cl_m315_mobility_policy_debt value = 1 }
+                set_variable = { name = zg361_cl_m315_mobility_red_code value = var:zg361_transfer_cl_red_code }
+            }
         if = {
-            limit = { var:zg361_cl_m315_dual_payment_ready = 1 }
-            zg361_case_kernel_record_operation_effect = {
+            limit = { NOT = { always = yes } }
+            zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 315 }
+        }
+        else = {
+            set_variable = { name = zg361_cl_m315_dual_payment_ready value = 1 }
+            if = {
+                limit = { var:zg361_cl_m315_dual_payment_ready = 1 }
+                zg361_case_kernel_record_operation_effect = {
                 OWNER_VAR = zg361_case_ah_owner
                 SUBJECT_VAR = zg361_case_ah_subject
                 CYCLE_VAR = zg361_case_ah_cycle_serial
@@ -1758,15 +1962,15 @@ zg361_cl_m315_core_effect = {
                 CHOICE = scope:zg361_cl_route
                 OPERATION_ID = 315
             }
-            if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
-                set_variable = { name = zg361_cl_m315_route value = scope:zg361_cl_route }
-                set_variable = { name = zg361_cl_m315_consumed value = 0 }
-                set_variable = { name = zg361_cl_m315_deferred value = 0 }
+                if = {
+                    limit = { var:zg361_case_kernel_applied = 1 }
+                    set_variable = { name = zg361_cl_m315_route value = scope:zg361_cl_route }
+                    set_variable = { name = zg361_cl_m315_consumed value = 0 }
+                    set_variable = { name = zg361_cl_m315_deferred value = 0 }
 
-                # A receipt now owns one typed object identity.  A/B activate
-                # the business object; C activates only a due governance debt.
-                set_variable = { name = zg361_cl_m315_object_kind_id value = 4 }
+                    # A receipt now owns one typed object identity.  A/B activate
+                    # the business object; C activates only a due governance debt.
+                    set_variable = { name = zg361_cl_m315_object_kind_id value = 4 }
                 set_variable = { name = zg361_cl_m315_object_serial value = $TICKET_CASE$ }
                 set_variable = { name = zg361_cl_m315_object_owner value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m315_object_subject value = $TICKET_SUBJECT$ }
@@ -1780,7 +1984,7 @@ zg361_cl_m315_core_effect = {
                 set_variable = { name = zg361_cl_m315_obligation_resolved value = 0 }
                 set_variable = { name = zg361_cl_m315_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m315_relation_official value = $TICKET_SUBJECT$ }
-                set_variable = { name = zg361_cl_m315_trial_target_manager value = var:zg361_cl_m315_object_owner }
+                set_variable = { name = zg361_cl_m315_trial_target_manager value = var:zg361_transfer_cl_receiver }
                 set_variable = { name = zg361_cl_m315_trial_official value = var:zg361_cl_m315_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }
@@ -1797,7 +2001,7 @@ zg361_cl_m315_core_effect = {
                     }
                     else = { set_variable = { name = zg361_cl_m315_acl_class value = 2 } }
                 }
-                if = {
+                    if = {
                     limit = { scope:zg361_cl_route = 1 }
                     set_variable = { name = zg361_cl_m315_obligation_pending value = 1 }
                     set_variable = { name = zg361_cl_m315_obligation_days value = 90 }
@@ -1834,20 +2038,28 @@ zg361_cl_m315_core_effect = {
                     set_variable = { name = zg361_cl_m315_obligation_pending value = 0 }
                     set_variable = { name = zg361_cl_m315_obligation_days value = 0 }
                 }
-                if = {
-                    limit = { scope:zg361_cl_route = 3 }
-                    set_variable = { name = zg361_cl_m315_deferred value = 1 }
-                    set_variable = { name = zg361_cl_m315_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
-                    set_variable = { name = zg361_cl_m315_consumer_value value = 0 }
+                    if = {
+                        limit = { scope:zg361_cl_route = 3 }
+                        set_variable = { name = zg361_cl_m315_deferred value = 1 }
+                        set_variable = { name = zg361_cl_m315_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
+                        set_variable = { name = zg361_cl_m315_consumer_value value = 0 }
+                    }
+                    else = { zg361_cl_m315_consume_effect = yes }
                 }
-                else = { zg361_cl_m315_consume_effect = yes }
-            }
-            else = {
+                else = {
 
-                zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 315 }
+                    zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 315 }
+                }
             }
+            else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 315 } }
         }
-        else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 315 } }
+        if = {
+            limit = {
+                var:zg361_cl_m315_mobility_policy_debt = 1
+                var:zg361_cl_m315_mobility_red_code > 0
+            }
+            zg361_cl_set_red_effect = { CODE = 6 MECHANISM = 315 }
+        }
     }
 }
 
@@ -1872,6 +2084,9 @@ zg361_cl_m315_consume_effect = {
             NOT = { var:zg361_cl_m315_route = 3 }
         }
         set_variable = { name = zg361_cl_m315_trial_days value = 90 }
+            set_variable = { name = zg361_cl_m315_vacancy_id value = var:zg361_transfer_cl_vacancy }
+            set_variable = { name = zg361_cl_m315_source_manager value = var:zg361_transfer_cl_owner }
+            set_variable = { name = zg361_cl_m315_target_manager value = var:zg361_transfer_cl_receiver }
             set_variable = { name = zg361_cl_m315_source_credit_share value = 40 }
             set_variable = { name = zg361_cl_m315_target_credit_share value = 60 }
             set_variable = { name = zg361_cl_m315_credit_sum value = 100 }
@@ -1976,6 +2191,7 @@ zg361_cl_m315_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m315_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -2004,6 +2220,7 @@ zg361_cl_m315_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m315_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ah_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 315 once"
     }
@@ -2049,7 +2266,22 @@ zg361_cl_m316_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 316 }
     }
     else_if = {
@@ -2344,7 +2576,22 @@ zg361_cl_m317_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 317 }
     }
     else_if = {
@@ -2645,7 +2892,22 @@ zg361_cl_m318_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 318 }
     }
     else_if = {
@@ -2899,6 +3161,7 @@ zg361_cl_m318_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m318_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -2927,6 +3190,7 @@ zg361_cl_m318_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m318_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ah_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 318 once"
     }
@@ -2972,7 +3236,22 @@ zg361_cl_m319_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 319 }
     }
     else_if = {
@@ -2997,15 +3276,46 @@ zg361_cl_m319_core_effect = {
             } } }
         zg361_cl_set_red_effect = { CODE = 4 MECHANISM = 319 }
     }
-    else_if = {
-        limit = { NOT = { always = yes } }
-        zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 319 }
-    }
     else = {
-        set_variable = { name = zg361_cl_m319_dual_payment_ready value = 1 }
+        set_variable = { name = zg361_cl_m319_mobility_policy_debt value = 0 }
+            remove_variable = zg361_transfer_cl_applied
+            if = {
+                limit = { scope:zg361_cl_route = 1 }
+                zg361_career_hc_authorize_cl_transfer_release_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_route = 2 }
+                zg361_career_hc_decline_cl_transfer_effect = {
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$
+                }
+            }
+            else = { set_variable = { name = zg361_transfer_cl_applied value = 1 } }
+            if = {
+                limit = { NOT = { var:zg361_transfer_cl_applied = 1 } }
+                # A missing/stale vacancy, invalid receiver, war, or broken HC
+                # reserve becomes an explicit policy debt.  No liege/title
+                # mutation has occurred on these adapter RED paths.
+                save_temporary_scope_value_as = { name = zg361_cl_route value = 3 }
+                set_variable = { name = zg361_cl_m319_mobility_policy_debt value = 1 }
+                set_variable = { name = zg361_cl_m319_mobility_red_code value = var:zg361_transfer_cl_red_code }
+            }
         if = {
-            limit = { var:zg361_cl_m319_dual_payment_ready = 1 }
-            zg361_case_kernel_record_operation_effect = {
+            limit = { NOT = { always = yes } }
+            zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 319 }
+        }
+        else = {
+            set_variable = { name = zg361_cl_m319_dual_payment_ready value = 1 }
+            if = {
+                limit = { var:zg361_cl_m319_dual_payment_ready = 1 }
+                zg361_case_kernel_record_operation_effect = {
                 OWNER_VAR = zg361_case_ah_owner
                 SUBJECT_VAR = zg361_case_ah_subject
                 CYCLE_VAR = zg361_case_ah_cycle_serial
@@ -3031,15 +3341,15 @@ zg361_cl_m319_core_effect = {
                 CHOICE = scope:zg361_cl_route
                 OPERATION_ID = 319
             }
-            if = {
-                limit = { var:zg361_case_kernel_applied = 1 }
-                set_variable = { name = zg361_cl_m319_route value = scope:zg361_cl_route }
-                set_variable = { name = zg361_cl_m319_consumed value = 0 }
-                set_variable = { name = zg361_cl_m319_deferred value = 0 }
+                if = {
+                    limit = { var:zg361_case_kernel_applied = 1 }
+                    set_variable = { name = zg361_cl_m319_route value = scope:zg361_cl_route }
+                    set_variable = { name = zg361_cl_m319_consumed value = 0 }
+                    set_variable = { name = zg361_cl_m319_deferred value = 0 }
 
-                # A receipt now owns one typed object identity.  A/B activate
-                # the business object; C activates only a due governance debt.
-                set_variable = { name = zg361_cl_m319_object_kind_id value = 8 }
+                    # A receipt now owns one typed object identity.  A/B activate
+                    # the business object; C activates only a due governance debt.
+                    set_variable = { name = zg361_cl_m319_object_kind_id value = 8 }
                 set_variable = { name = zg361_cl_m319_object_serial value = $TICKET_CASE$ }
                 set_variable = { name = zg361_cl_m319_object_owner value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m319_object_subject value = $TICKET_SUBJECT$ }
@@ -3054,6 +3364,7 @@ zg361_cl_m319_core_effect = {
                 set_variable = { name = zg361_cl_m319_relation_manager value = $TICKET_OWNER$ }
                 set_variable = { name = zg361_cl_m319_relation_official value = $TICKET_SUBJECT$ }
                 set_variable = { name = zg361_cl_m319_releasing_manager value = var:zg361_cl_m319_object_owner }
+                set_variable = { name = zg361_cl_m319_target_manager value = var:zg361_transfer_cl_receiver }
                 set_variable = { name = zg361_cl_m319_released_official value = var:zg361_cl_m319_object_subject }
                 if = {
                     limit = { scope:zg361_cl_route = 3 }
@@ -3070,7 +3381,7 @@ zg361_cl_m319_core_effect = {
                     }
                     else = { set_variable = { name = zg361_cl_m319_acl_class value = 2 } }
                 }
-                if = {
+                    if = {
                     limit = { scope:zg361_cl_route = 1 }
                     set_variable = { name = zg361_cl_m319_obligation_pending value = 1 }
                     set_variable = { name = zg361_cl_m319_obligation_days value = 30 }
@@ -3107,20 +3418,28 @@ zg361_cl_m319_core_effect = {
                     set_variable = { name = zg361_cl_m319_obligation_pending value = 0 }
                     set_variable = { name = zg361_cl_m319_obligation_days value = 0 }
                 }
-                if = {
-                    limit = { scope:zg361_cl_route = 3 }
-                    set_variable = { name = zg361_cl_m319_deferred value = 1 }
-                    set_variable = { name = zg361_cl_m319_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
-                    set_variable = { name = zg361_cl_m319_consumer_value value = 0 }
+                    if = {
+                        limit = { scope:zg361_cl_route = 3 }
+                        set_variable = { name = zg361_cl_m319_deferred value = 1 }
+                        set_variable = { name = zg361_cl_m319_debt_due_cycle value = { value = var:zg361_case_ah_cycle_serial add = 1 } }
+                        set_variable = { name = zg361_cl_m319_consumer_value value = 0 }
+                    }
+                    else = { zg361_cl_m319_consume_effect = yes }
                 }
-                else = { zg361_cl_m319_consume_effect = yes }
-            }
-            else = {
+                else = {
 
-                zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 319 }
+                    zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 319 }
+                }
             }
+            else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 319 } }
         }
-        else = { zg361_cl_set_red_effect = { CODE = 5 MECHANISM = 319 } }
+        if = {
+            limit = {
+                var:zg361_cl_m319_mobility_policy_debt = 1
+                var:zg361_cl_m319_mobility_red_code > 0
+            }
+            zg361_cl_set_red_effect = { CODE = 6 MECHANISM = 319 }
+        }
     }
 }
 
@@ -3145,6 +3464,8 @@ zg361_cl_m319_consume_effect = {
             NOT = { var:zg361_cl_m319_route = 3 }
         }
         set_variable = { name = zg361_cl_m319_counteroffer_count value = 1 }
+            set_variable = { name = zg361_cl_m319_vacancy_id value = var:zg361_transfer_cl_vacancy }
+            set_variable = { name = zg361_cl_m319_target_manager value = var:zg361_transfer_cl_receiver }
             set_variable = { name = zg361_cl_m319_counteroffer_limit value = 1 }
             set_variable = { name = zg361_cl_m319_release_deadline_days value = 30 }
             set_variable = { name = zg361_cl_m319_promise_deadline_days value = 90 }
@@ -3211,7 +3532,13 @@ zg361_cl_m319_resolve_obligation_effect = {
         set_variable = { name = zg361_cl_m319_object_state value = 4 }
     }
     else = {
-        set_variable = { name = zg361_cl_m319_obligation_pending value = 0 }
+        if = {
+            limit = { var:zg361_cl_m319_object_route = 1 }
+            zg361_career_hc_settle_cl_transfer_effect = yes
+            if = {
+                limit = { var:zg361_transfer_cl_applied = 1 }
+                zg361_cl_m312_hire_once_effect = yes
+                set_variable = { name = zg361_cl_m319_obligation_pending value = 0 }
             set_variable = { name = zg361_cl_m319_obligation_resolved value = 1 }
             set_variable = { name = zg361_cl_m319_object_resolved value = 1 }
             set_variable = { name = zg361_cl_m319_object_state value = 3 }
@@ -3235,6 +3562,45 @@ zg361_cl_m319_resolve_obligation_effect = {
                 set_variable = { name = zg361_cl_m319_obligation_positive_outcome value = 1 }
                 add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m319_object_owner opinion = 5 }
             }
+            }
+            else = {
+                # Invalid receiver/war/HC joins reclaim the reserved seat and
+                # close as policy debt without any scripted liege mutation.
+                zg361_cl_set_red_effect = { CODE = 6 MECHANISM = 319 }
+                set_variable = { name = zg361_cl_m319_obligation_pending value = 0 }
+                set_variable = { name = zg361_cl_m319_obligation_resolved value = 1 }
+                set_variable = { name = zg361_cl_m319_object_resolved value = 1 }
+                set_variable = { name = zg361_cl_m319_object_state value = 4 }
+                set_variable = { name = zg361_cl_m319_debt_active value = 1 }
+                set_variable = { name = zg361_cl_m319_debt_overdue value = 1 }
+                set_variable = { name = zg361_cl_m319_mobility_settlement_failed value = 1 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m319_object_owner opinion = -5 }
+            }
+        }
+        else = { set_variable = { name = zg361_cl_m319_obligation_pending value = 0 }
+            set_variable = { name = zg361_cl_m319_obligation_resolved value = 1 }
+            set_variable = { name = zg361_cl_m319_object_resolved value = 1 }
+            set_variable = { name = zg361_cl_m319_object_state value = 3 }
+            set_variable = { name = zg361_cl_m319_release_or_promise_checked value = 1 }
+            if = {
+                limit = { var:zg361_cl_m319_route = 2 }
+                set_variable = { name = zg361_cl_m319_promise_pending value = 0 }
+                set_variable = { name = zg361_cl_m319_manager_talent_delta value = -20 }
+            }
+            if = {
+                limit = { var:zg361_cl_m319_object_route = 3 }
+                set_variable = { name = zg361_cl_m319_debt_overdue value = 1 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m319_object_owner opinion = -5 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m319_object_route = 2 }
+                set_variable = { name = zg361_cl_m319_obligation_negative_outcome value = 1 }
+                add_opinion = { modifier = angry_opinion target = var:zg361_cl_m319_object_owner opinion = -5 }
+            }
+            else = {
+                set_variable = { name = zg361_cl_m319_obligation_positive_outcome value = 1 }
+                add_opinion = { modifier = friendliness_opinion target = var:zg361_cl_m319_object_owner opinion = 5 }
+            } }
         debug_log = "ZG361CL: resolved 319 release_obligation obligation"
     }
 }
@@ -3252,6 +3618,7 @@ zg361_cl_m319_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m319_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -3280,6 +3647,7 @@ zg361_cl_m319_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m319_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ah_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 319 once"
     }
@@ -3325,7 +3693,22 @@ zg361_cl_m320_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 320 }
     }
     else_if = {
@@ -3631,7 +4014,22 @@ zg361_cl_m321_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 321 }
     }
     else_if = {
@@ -4146,6 +4544,7 @@ zg361_cl_m321_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m321_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -4174,6 +4573,7 @@ zg361_cl_m321_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m321_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ah_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 321 once"
     }
@@ -4219,7 +4619,22 @@ zg361_cl_m322_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 322 }
     }
     else_if = {
@@ -4532,7 +4947,22 @@ zg361_cl_m323_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 323 }
     }
     else_if = {
@@ -5093,7 +5523,22 @@ zg361_cl_m324_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 324 }
     }
     else_if = {
@@ -5396,7 +5841,22 @@ zg361_cl_m325_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 325 }
     }
     else_if = {
@@ -5700,7 +6160,22 @@ zg361_cl_m326_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 326 }
     }
     else_if = {
@@ -6258,7 +6733,22 @@ zg361_cl_m327_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 327 }
     }
     else_if = {
@@ -6573,7 +7063,22 @@ zg361_cl_m328_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 328 }
     }
     else_if = {
@@ -6877,7 +7382,22 @@ zg361_cl_m329_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 329 }
     }
     else_if = {
@@ -7219,7 +7739,22 @@ zg361_cl_m330_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 330 }
     }
     else_if = {
@@ -7790,7 +8325,22 @@ zg361_cl_m331_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 331 }
     }
     else_if = {
@@ -8113,7 +8663,22 @@ zg361_cl_m332_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 332 }
     }
     else_if = {
@@ -8428,7 +8993,22 @@ zg361_cl_m333_core_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 333 }
     }
     else_if = {
@@ -8989,6 +9569,7 @@ zg361_cl_m333_manager_apply_effect = {
 
 # Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m333_subject_response_effect = {
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = { name = zg361_cl_subject_route value = $ROUTE$ }
     if = {
         limit = {
@@ -9017,6 +9598,7 @@ zg361_cl_m333_subject_response_effect = {
             }
         }
         set_variable = { name = zg361_cl_m333_subject_response value = scope:zg361_cl_subject_route }
+        set_variable = { name = zg361_cl_subject_response_applied value = 1 }
         change_variable = { name = zg361_case_ai_feedback_revision add = 1 }
         debug_log = "ZG361CL: assessed subject answered 333 once"
     }
@@ -9044,11 +9626,27 @@ zg361_cl_run_ah_stage_01_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 312 }
         zg361_cl_schedule_ah_stage_01_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m312_receipt_owner
@@ -9064,19 +9662,7 @@ zg361_cl_run_ah_stage_01_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m312_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m312_subject_response }
-                zg361_cl_m312_core_effect = {
-                    ROUTE = var:zg361_cl_m312_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m312_core_effect = {
+            zg361_cl_m312_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9084,7 +9670,6 @@ zg361_cl_run_ah_stage_01_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -9101,19 +9686,7 @@ zg361_cl_run_ah_stage_01_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m313_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m313_subject_response }
-                zg361_cl_m313_core_effect = {
-                    ROUTE = var:zg361_cl_m313_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m313_core_effect = {
+            zg361_cl_m313_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9121,7 +9694,6 @@ zg361_cl_run_ah_stage_01_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -9201,11 +9773,27 @@ zg361_cl_run_ah_stage_02_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 314 }
         zg361_cl_schedule_ah_stage_02_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m314_receipt_owner
@@ -9232,7 +9820,8 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m314_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -9241,6 +9830,21 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m314_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m314_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m314_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m314_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m314_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m314_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m314_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.314 days = 1 }
             }
         }
     if = {
@@ -9269,7 +9873,8 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m315_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -9278,6 +9883,21 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m315_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m315_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m315_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m315_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m315_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m315_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m315_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.315 days = 1 }
             }
         }
     if = {
@@ -9306,7 +9926,8 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m318_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -9315,6 +9936,21 @@ zg361_cl_run_ah_stage_02_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m318_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m318_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m318_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m318_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m318_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m318_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m318_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.318 days = 1 }
             }
         }
 
@@ -9409,11 +10045,27 @@ zg361_cl_run_ah_stage_03_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 316 }
         zg361_cl_schedule_ah_stage_03_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m316_receipt_owner
@@ -9429,19 +10081,7 @@ zg361_cl_run_ah_stage_03_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m316_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m316_subject_response }
-                zg361_cl_m316_core_effect = {
-                    ROUTE = var:zg361_cl_m316_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m316_core_effect = {
+            zg361_cl_m316_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9449,7 +10089,6 @@ zg361_cl_run_ah_stage_03_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -9466,19 +10105,7 @@ zg361_cl_run_ah_stage_03_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m317_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m317_subject_response }
-                zg361_cl_m317_core_effect = {
-                    ROUTE = var:zg361_cl_m317_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m317_core_effect = {
+            zg361_cl_m317_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9486,7 +10113,6 @@ zg361_cl_run_ah_stage_03_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -9566,11 +10192,27 @@ zg361_cl_run_ah_stage_04_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 319 }
         zg361_cl_schedule_ah_stage_04_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m319_receipt_owner
@@ -9597,7 +10239,8 @@ zg361_cl_run_ah_stage_04_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m319_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -9606,6 +10249,21 @@ zg361_cl_run_ah_stage_04_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m319_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m319_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m319_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m319_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m319_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m319_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m319_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.319 days = 1 }
             }
         }
 
@@ -9672,11 +10330,27 @@ zg361_cl_run_ah_stage_05_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 320 }
         zg361_cl_schedule_ah_stage_05_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m320_receipt_owner
@@ -9692,19 +10366,7 @@ zg361_cl_run_ah_stage_05_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m320_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m320_subject_response }
-                zg361_cl_m320_core_effect = {
-                    ROUTE = var:zg361_cl_m320_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m320_core_effect = {
+            zg361_cl_m320_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9712,7 +10374,6 @@ zg361_cl_run_ah_stage_05_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -9740,7 +10401,8 @@ zg361_cl_run_ah_stage_05_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m321_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -9749,6 +10411,21 @@ zg361_cl_run_ah_stage_05_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m321_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m321_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m321_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m321_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m321_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m321_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m321_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.321 days = 1 }
             }
         }
 
@@ -9829,11 +10506,27 @@ zg361_cl_run_ah_stage_06_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ah_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ah_owner } }
+            OR = {
+                liege = var:zg361_case_ah_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ah_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 322 }
         zg361_cl_schedule_ah_stage_06_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m322_receipt_owner
@@ -9849,19 +10542,7 @@ zg361_cl_run_ah_stage_06_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m322_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m322_subject_response }
-                zg361_cl_m322_core_effect = {
-                    ROUTE = var:zg361_cl_m322_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m322_core_effect = {
+            zg361_cl_m322_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9869,7 +10550,6 @@ zg361_cl_run_ah_stage_06_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -9935,11 +10615,27 @@ zg361_cl_run_ai_stage_01_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 323 }
         zg361_cl_schedule_ai_stage_01_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m323_receipt_owner
@@ -9955,19 +10651,7 @@ zg361_cl_run_ai_stage_01_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m323_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m323_subject_response }
-                zg361_cl_m323_core_effect = {
-                    ROUTE = var:zg361_cl_m323_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m323_core_effect = {
+            zg361_cl_m323_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -9975,7 +10659,6 @@ zg361_cl_run_ai_stage_01_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -9992,19 +10675,7 @@ zg361_cl_run_ai_stage_01_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m324_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m324_subject_response }
-                zg361_cl_m324_core_effect = {
-                    ROUTE = var:zg361_cl_m324_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m324_core_effect = {
+            zg361_cl_m324_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10012,7 +10683,6 @@ zg361_cl_run_ai_stage_01_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -10029,19 +10699,7 @@ zg361_cl_run_ai_stage_01_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m325_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m325_subject_response }
-                zg361_cl_m325_core_effect = {
-                    ROUTE = var:zg361_cl_m325_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m325_core_effect = {
+            zg361_cl_m325_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10049,7 +10707,6 @@ zg361_cl_run_ai_stage_01_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -10143,11 +10800,27 @@ zg361_cl_run_ai_stage_02_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 326 }
         zg361_cl_schedule_ai_stage_02_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m326_receipt_owner
@@ -10163,19 +10836,7 @@ zg361_cl_run_ai_stage_02_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m326_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m326_subject_response }
-                zg361_cl_m326_core_effect = {
-                    ROUTE = var:zg361_cl_m326_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m326_core_effect = {
+            zg361_cl_m326_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10183,7 +10844,6 @@ zg361_cl_run_ai_stage_02_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -10200,19 +10860,7 @@ zg361_cl_run_ai_stage_02_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m327_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m327_subject_response }
-                zg361_cl_m327_core_effect = {
-                    ROUTE = var:zg361_cl_m327_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m327_core_effect = {
+            zg361_cl_m327_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10220,7 +10868,6 @@ zg361_cl_run_ai_stage_02_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -10300,11 +10947,27 @@ zg361_cl_run_ai_stage_03_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 328 }
         zg361_cl_schedule_ai_stage_03_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m328_receipt_owner
@@ -10320,19 +10983,7 @@ zg361_cl_run_ai_stage_03_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m328_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m328_subject_response }
-                zg361_cl_m328_core_effect = {
-                    ROUTE = var:zg361_cl_m328_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m328_core_effect = {
+            zg361_cl_m328_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10340,7 +10991,6 @@ zg361_cl_run_ai_stage_03_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -10357,19 +11007,7 @@ zg361_cl_run_ai_stage_03_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m329_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m329_subject_response }
-                zg361_cl_m329_core_effect = {
-                    ROUTE = var:zg361_cl_m329_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m329_core_effect = {
+            zg361_cl_m329_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10377,7 +11015,6 @@ zg361_cl_run_ai_stage_03_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
 
     if = {
@@ -10457,11 +11094,27 @@ zg361_cl_run_ai_stage_04_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 330 }
         zg361_cl_schedule_ai_stage_04_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m330_receipt_owner
@@ -10477,19 +11130,7 @@ zg361_cl_run_ai_stage_04_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m330_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m330_subject_response }
-                zg361_cl_m330_core_effect = {
-                    ROUTE = var:zg361_cl_m330_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m330_core_effect = {
+            zg361_cl_m330_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10497,7 +11138,6 @@ zg361_cl_run_ai_stage_04_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -10515,18 +11155,6 @@ zg361_cl_run_ai_stage_04_effect = {
         EXPECTED_CHOICE = var:zg361_cl_m331_receipt_choice
     } } }
             if = {
-                limit = { has_variable = zg361_cl_m331_subject_response }
-                zg361_cl_m331_core_effect = {
-                    ROUTE = var:zg361_cl_m331_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                if = {
                     limit = {
                         OR = {
                             is_at_war = yes
@@ -10554,7 +11182,6 @@ zg361_cl_run_ai_stage_04_effect = {
                     TICKET_STATE = $TICKET_STATE$
                     }
                 }
-            }
         }
 
     if = {
@@ -10634,11 +11261,27 @@ zg361_cl_run_ai_stage_05_effect = {
     else_if = {
         limit = { NOT = { var:zg361_case_ai_owner = { zg361_is_celestial_liege_trigger = yes }
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:zg361_case_ai_owner } }
+            OR = {
+                liege = var:zg361_case_ai_owner
+                AND = {
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:zg361_case_ai_owner
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = { holder = this }
+                }
+            } } }
         zg361_cl_set_red_effect = { CODE = 1 MECHANISM = 332 }
         zg361_cl_schedule_ai_stage_05_effect = yes
     }
     else = {
+    save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 0 }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
         RECEIPT_OWNER_VAR = zg361_cl_m332_receipt_owner
@@ -10654,19 +11297,7 @@ zg361_cl_run_ai_stage_05_effect = {
         EXPECTED_STATE = $TICKET_STATE$
         EXPECTED_CHOICE = var:zg361_cl_m332_receipt_choice
     } } }
-            if = {
-                limit = { has_variable = zg361_cl_m332_subject_response }
-                zg361_cl_m332_core_effect = {
-                    ROUTE = var:zg361_cl_m332_subject_response
-                    TICKET_OWNER = $TICKET_OWNER$
-                    TICKET_SUBJECT = $TICKET_SUBJECT$
-                    TICKET_CYCLE = $TICKET_CYCLE$
-                    TICKET_CASE = $TICKET_CASE$
-                    TICKET_STATE = $TICKET_STATE$
-                }
-            }
-            else = {
-                zg361_cl_m332_core_effect = {
+            zg361_cl_m332_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
                     TICKET_SUBJECT = $TICKET_SUBJECT$
@@ -10674,7 +11305,6 @@ zg361_cl_run_ai_stage_05_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
-            }
         }
     if = {
             limit = { NOT = { zg361_case_kernel_receipt_is_current_trigger = {
@@ -10702,7 +11332,8 @@ zg361_cl_run_ai_stage_05_effect = {
                     TICKET_STATE = $TICKET_STATE$
                 }
             }
-            else = {
+            else_if = {
+                limit = { is_ai = yes }
                 zg361_cl_m333_core_effect = {
                     ROUTE = 1
                     TICKET_OWNER = $TICKET_OWNER$
@@ -10711,6 +11342,21 @@ zg361_cl_run_ai_stage_05_effect = {
                     TICKET_CASE = $TICKET_CASE$
                     TICKET_STATE = $TICKET_STATE$
                 }
+            }
+            else_if = {
+                limit = { var:zg361_cl_m333_prompt_pending = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+            }
+            else_if = {
+                limit = { scope:zg361_cl_prompt_gate = 0 }
+                set_variable = { name = zg361_cl_m333_prompt_owner value = $TICKET_OWNER$ }
+                set_variable = { name = zg361_cl_m333_prompt_subject value = $TICKET_SUBJECT$ }
+                set_variable = { name = zg361_cl_m333_prompt_cycle value = $TICKET_CYCLE$ }
+                set_variable = { name = zg361_cl_m333_prompt_case value = $TICKET_CASE$ }
+                set_variable = { name = zg361_cl_m333_prompt_state value = $TICKET_STATE$ }
+                set_variable = { name = zg361_cl_m333_prompt_pending value = 1 }
+                save_temporary_scope_value_as = { name = zg361_cl_prompt_gate value = 1 }
+                trigger_event = { id = zg361cl.333 days = 1 }
             }
         }
 
@@ -10822,15 +11468,18 @@ zg361_cl_m312_hire_once_effect = {
     RECEIPT_CASE_VAR = zg361_cl_m312_receipt_case
     RECEIPT_STATE_VAR = zg361_cl_m312_receipt_state
     RECEIPT_CHOICE_VAR = zg361_cl_m312_receipt_choice
-    EXPECTED_OWNER = var:zg361_case_ah_owner
-    EXPECTED_SUBJECT = this
-    EXPECTED_CYCLE = var:zg361_case_ah_cycle_serial
-    EXPECTED_CASE = var:zg361_case_ah_case_serial
+    EXPECTED_OWNER = var:zg361_cl_m312_object_owner
+    EXPECTED_SUBJECT = var:zg361_cl_m312_object_subject
+    EXPECTED_CYCLE = var:zg361_cl_m312_object_cycle
+    EXPECTED_CASE = var:zg361_cl_m312_object_case
     EXPECTED_STATE = 1
-    EXPECTED_CHOICE = var:zg361_cl_m312_receipt_choice
+    EXPECTED_CHOICE = var:zg361_cl_m312_object_route
 }
             var:zg361_cl_m312_legal_hc = 1
             var:zg361_cl_m312_vacancy_filled_n = 0
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 3
+            var:zg361_transfer_cl_phase = 6
         }
         set_variable = { name = zg361_cl_m312_vacancy_filled_n value = 1 }
         set_variable = { name = zg361_cl_m312_hired_subject value = this }

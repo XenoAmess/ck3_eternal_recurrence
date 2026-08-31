@@ -494,7 +494,88 @@ def live_permission_trigger(row: Mechanism) -> str:
     owner = case_vars(row.domain)["owner"]
     return f'''var:{owner} = {{ zg361_is_celestial_liege_trigger = yes }}
             zg361_is_reviewable_vassal_trigger = yes
-            liege = var:{owner}'''
+            OR = {{
+                liege = var:{owner}
+                AND = {{
+                    # AH and AI cases open in parallel.  Once #319 really
+                    # moves the subject, both frozen cases may finish only
+                    # under this exact settled vacancy/title postcondition.
+                    var:zg361_transfer_consumer_kind = 2
+                    var:zg361_transfer_vacancy_status = 3
+                    var:zg361_transfer_cl_phase = 6
+                    var:zg361_transfer_cl_owner = var:{owner}
+                    var:zg361_transfer_cl_subject = this
+                    liege = var:zg361_transfer_cl_receiver
+                    primary_title = var:zg361_transfer_cl_title
+                    var:zg361_transfer_cl_title = {{ holder = this }}
+                }}
+            }}'''
+
+
+def render_mobility_preaction(row: Mechanism) -> str:
+    if row.mechanism_id not in {312, 314, 315, 319}:
+        return ""
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    ticket = '''
+                    TICKET_OWNER = $TICKET_OWNER$
+                    TICKET_SUBJECT = $TICKET_SUBJECT$
+                    TICKET_CYCLE = $TICKET_CYCLE$
+                    TICKET_CASE = $TICKET_CASE$'''
+    if row.mechanism_id == 312:
+        action = f'''if = {{
+                limit = {{ scope:zg361_cl_route = 1 }}
+                zg361_career_hc_claim_cl_transfer_vacancy_effect = {{{ticket}
+                }}
+            }}
+            else = {{ set_variable = {{ name = zg361_transfer_cl_applied value = 1 }} }}'''
+    elif row.mechanism_id == 314:
+        action = f'''if = {{
+                limit = {{ scope:zg361_cl_route = 1 }}
+                zg361_career_hc_accept_cl_transfer_effect = {{{ticket}
+                }}
+            }}
+            else_if = {{
+                limit = {{ scope:zg361_cl_route = 2 }}
+                zg361_career_hc_decline_cl_transfer_effect = {{{ticket}
+                }}
+            }}
+            else = {{ set_variable = {{ name = zg361_transfer_cl_applied value = 1 }} }}'''
+    elif row.mechanism_id == 315:
+        action = f'''if = {{
+                limit = {{ scope:zg361_cl_route = 1 }}
+                zg361_career_hc_start_cl_transfer_trial_effect = {{{ticket}
+                }}
+            }}
+            else_if = {{
+                limit = {{ scope:zg361_cl_route = 2 }}
+                zg361_career_hc_decline_cl_transfer_effect = {{{ticket}
+                }}
+            }}
+            else = {{ set_variable = {{ name = zg361_transfer_cl_applied value = 1 }} }}'''
+    else:
+        action = f'''if = {{
+                limit = {{ scope:zg361_cl_route = 1 }}
+                zg361_career_hc_authorize_cl_transfer_release_effect = {{{ticket}
+                }}
+            }}
+            else_if = {{
+                limit = {{ scope:zg361_cl_route = 2 }}
+                zg361_career_hc_decline_cl_transfer_effect = {{{ticket}
+                }}
+            }}
+            else = {{ set_variable = {{ name = zg361_transfer_cl_applied value = 1 }} }}'''
+    return f'''set_variable = {{ name = {p}_mobility_policy_debt value = 0 }}
+            remove_variable = zg361_transfer_cl_applied
+            {action}
+            if = {{
+                limit = {{ NOT = {{ var:zg361_transfer_cl_applied = 1 }} }}
+                # A missing/stale vacancy, invalid receiver, war, or broken HC
+                # reserve becomes an explicit policy debt.  No liege/title
+                # mutation has occurred on these adapter RED paths.
+                save_temporary_scope_value_as = {{ name = zg361_cl_route value = 3 }}
+                set_variable = {{ name = {p}_mobility_policy_debt value = 1 }}
+                set_variable = {{ name = {p}_mobility_red_code value = var:zg361_transfer_cl_red_code }}
+            }}'''
 
 
 def semantic_precheck(row: Mechanism) -> str:
@@ -529,6 +610,10 @@ def payload(mechanism_id: int) -> str:
     p = f"zg361_cl_m{mechanism_id:03d}"
     payloads = {
         312: f'''set_variable = {{ name = {p}_legal_hc value = 1 }}
+            set_variable = {{ name = {p}_vacancy_id value = var:zg361_transfer_cl_vacancy }}
+            set_variable = {{ name = {p}_target_manager value = var:zg361_transfer_cl_receiver }}
+            set_variable = {{ name = {p}_vacancy_title value = var:zg361_transfer_cl_title }}
+            set_variable = {{ name = {p}_hc_reserved value = var:zg361_transfer_hc_reserved }}
             set_variable = {{ name = {p}_reporting_line_frozen value = 1 }}
             set_variable = {{ name = {p}_pay_band_frozen value = 4 }}
             set_variable = {{ name = {p}_goal_frozen value = 1 }}
@@ -549,6 +634,8 @@ def payload(mechanism_id: int) -> str:
             if = {{ limit = {{ var:{p}_route = 2 }} set_variable = {{ name = {p}_omitted_material value = 1 }} set_variable = {{ name = {p}_retaliatory_whisper value = 1 }} set_variable = {{ name = {p}_whitewash_audit value = 1 }} set_variable = {{ name = {p}_anti_retaliation_audit value = 1 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_whitewash_audit }}''',
         314: f'''set_variable = {{ name = {p}_accepted value = 0 }}
+            set_variable = {{ name = {p}_vacancy_id value = var:zg361_transfer_cl_vacancy }}
+            set_variable = {{ name = {p}_target_manager value = var:zg361_transfer_cl_receiver }}
             set_variable = {{ name = {p}_declined value = 0 }}
             set_variable = {{ name = {p}_response_once value = 1 }}
             set_variable = {{ name = {p}_lump_sum value = 10 }}
@@ -561,6 +648,9 @@ def payload(mechanism_id: int) -> str:
             else = {{ set_variable = {{ name = {p}_declined value = 1 }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_accepted }}''',
         315: f'''set_variable = {{ name = {p}_trial_days value = 90 }}
+            set_variable = {{ name = {p}_vacancy_id value = var:zg361_transfer_cl_vacancy }}
+            set_variable = {{ name = {p}_source_manager value = var:zg361_transfer_cl_owner }}
+            set_variable = {{ name = {p}_target_manager value = var:zg361_transfer_cl_receiver }}
             set_variable = {{ name = {p}_source_credit_share value = 40 }}
             set_variable = {{ name = {p}_target_credit_share value = 60 }}
             set_variable = {{ name = {p}_credit_sum value = 100 }}
@@ -599,6 +689,8 @@ def payload(mechanism_id: int) -> str:
             set_variable = {{ name = {p}_formal_remaining value = {{ value = 2 subtract = var:{p}_formal_used }} }}
             set_variable = {{ name = {p}_consumer_value value = var:{p}_formal_remaining }}''',
         319: f'''set_variable = {{ name = {p}_counteroffer_count value = 1 }}
+            set_variable = {{ name = {p}_vacancy_id value = var:zg361_transfer_cl_vacancy }}
+            set_variable = {{ name = {p}_target_manager value = var:zg361_transfer_cl_receiver }}
             set_variable = {{ name = {p}_counteroffer_limit value = 1 }}
             set_variable = {{ name = {p}_release_deadline_days value = 30 }}
             set_variable = {{ name = {p}_promise_deadline_days value = 90 }}
@@ -765,12 +857,12 @@ def render_typed_relations(row: Mechanism) -> str:
     relations = {
         312: (("reporting_manager", owner), ("vacancy_candidate", subject)),
         313: (("source_manager", owner), ("reference_candidate", subject)),
-        314: (("target_manager", owner), ("offered_official", subject)),
-        315: (("trial_target_manager", owner), ("trial_official", subject)),
+        314: (("target_manager", "var:zg361_transfer_cl_receiver"), ("offered_official", subject)),
+        315: (("trial_target_manager", "var:zg361_transfer_cl_receiver"), ("trial_official", subject)),
         316: (("pay_owner", owner), ("mapped_official", subject)),
         317: (("acl_owner", owner), ("applicant", subject)),
         318: (("quota_owner", owner), ("applicant", subject)),
-        319: (("releasing_manager", owner), ("released_official", subject)),
+        319: (("releasing_manager", owner), ("target_manager", "var:zg361_transfer_cl_receiver"), ("released_official", subject)),
         320: (("aggregate_owner", owner), ("exit_official", subject)),
         321: (("relationship_owner", owner), ("alumnus", subject)),
         322: (("returnee_owner", owner), ("returnee", subject)),
@@ -910,7 +1002,9 @@ zg361_cl_m{row.mechanism_id:03d}_consume_effect = {{
 }}'''
 
 
-def render_core(row: Mechanism) -> str:
+def render_standard_core(row: Mechanism) -> str:
+    """Keep the unchanged 18 mechanisms byte-stable."""
+
     p = f"zg361_cl_m{row.mechanism_id:03d}"
     v = case_vars(row.domain)
     prepare = (
@@ -997,6 +1091,111 @@ zg361_cl_m{row.mechanism_id:03d}_core_effect = {{
 }}'''
 
 
+def render_core(row: Mechanism) -> str:
+    if row.mechanism_id not in {312, 314, 315, 319}:
+        return render_standard_core(row)
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    v = case_vars(row.domain)
+    prepare = (
+        render_dual_prepare(row)
+        if row.mechanism_id in DUAL_COSTS
+        else f"set_variable = {{ name = {p}_dual_payment_ready value = 1 }}"
+    )
+    apply_cost = render_dual_apply(row) if row.mechanism_id in DUAL_COSTS else ""
+    rollback = (
+        f'''# The shadow journals settled before the business receipt.  If the
+                # receipt unexpectedly loses its frozen guard, undo both journals;
+                # no CK3 gold has been deducted yet and the same ticket may retry.
+                {transaction_refund(row, "treasury")}
+                {transaction_refund(row, "manager")}'''
+        if row.mechanism_id in DUAL_COSTS
+        else ""
+    )
+    mobility = render_mobility_preaction(row)
+    mobility_red = (
+        f'''if = {{
+            limit = {{
+                var:{p}_mobility_policy_debt = 1
+                var:{p}_mobility_red_code > 0
+            }}
+            zg361_cl_set_red_effect = {{ CODE = 6 MECHANISM = {row.mechanism_id} }}
+        }}'''
+        if row.mechanism_id in {312, 314, 315, 319}
+        else ""
+    )
+    return f'''# {row.mechanism_id:03d} {row.operation}
+zg361_cl_m{row.mechanism_id:03d}_core_effect = {{
+    save_temporary_scope_value_as = {{ name = zg361_cl_route value = $ROUTE$ }}
+    zg361_cl_clear_red_effect = yes
+    if = {{
+        limit = {{ {receipt_current(row, ticket=True)} }}
+        zg361_cl_set_red_effect = {{ CODE = 3 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{ NOT = {{ {kernel_guard(row.domain, row.state, ticket=True)} }} }}
+        zg361_cl_set_red_effect = {{ CODE = 2 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{ NOT = {{ {live_permission_trigger(row)} }} }}
+        zg361_cl_set_red_effect = {{ CODE = 1 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{
+            NOT = {{
+                OR = {{
+                    scope:zg361_cl_route = 1
+                    scope:zg361_cl_route = 2
+                    scope:zg361_cl_route = 3
+                }}
+            }}
+        }}
+        zg361_cl_set_red_effect = {{ CODE = 4 MECHANISM = {row.mechanism_id} }}
+    }}
+    else_if = {{
+        limit = {{ NOT = {{ {semantic_precheck(row)} }} }}
+        zg361_cl_set_red_effect = {{ CODE = 4 MECHANISM = {row.mechanism_id} }}
+    }}
+    else = {{
+        {mobility}
+        if = {{
+            limit = {{ NOT = {{ {resource_precheck(row)} }} }}
+            zg361_cl_set_red_effect = {{ CODE = 5 MECHANISM = {row.mechanism_id} }}
+        }}
+        else = {{
+            {prepare}
+            if = {{
+                limit = {{ var:{p}_dual_payment_ready = 1 }}
+                {record_operation(row)}
+                if = {{
+                    limit = {{ var:zg361_case_kernel_applied = 1 }}
+                    set_variable = {{ name = {p}_route value = scope:zg361_cl_route }}
+                    set_variable = {{ name = {p}_consumed value = 0 }}
+                    set_variable = {{ name = {p}_deferred value = 0 }}
+                    {apply_cost}
+                    # A receipt now owns one typed object identity.  A/B activate
+                    # the business object; C activates only a due governance debt.
+                    {render_object_open(row)}
+                    {render_obligation_schedule(row)}
+                    if = {{
+                        limit = {{ scope:zg361_cl_route = 3 }}
+                        set_variable = {{ name = {p}_deferred value = 1 }}
+                        set_variable = {{ name = {p}_debt_due_cycle value = {{ value = var:{v["cycle"]} add = 1 }} }}
+                        set_variable = {{ name = {p}_consumer_value value = 0 }}
+                    }}
+                    else = {{ zg361_cl_m{row.mechanism_id:03d}_consume_effect = yes }}
+                }}
+                else = {{
+                    {rollback}
+                    zg361_cl_set_red_effect = {{ CODE = 2 MECHANISM = {row.mechanism_id} }}
+                }}
+            }}
+            else = {{ zg361_cl_set_red_effect = {{ CODE = 5 MECHANISM = {row.mechanism_id} }} }}
+        }}
+        {mobility_red}
+    }}
+}}'''
+
+
 def render_manager_entry(row: Mechanism) -> str:
     return f'''zg361_cl_m{row.mechanism_id:03d}_manager_apply_effect = {{
     zg361_cl_m{row.mechanism_id:03d}_core_effect = {{
@@ -1016,6 +1215,7 @@ def render_subject_response(row: Mechanism) -> str:
     p = f"zg361_cl_m{row.mechanism_id:03d}"
     return f'''# Assessed count/baron self-response.  It grants no manager or case authority.
 zg361_cl_m{row.mechanism_id:03d}_subject_response_effect = {{
+    remove_variable = zg361_cl_subject_response_applied
     save_temporary_scope_value_as = {{ name = zg361_cl_subject_route value = $ROUTE$ }}
     if = {{
         limit = {{
@@ -1032,6 +1232,7 @@ zg361_cl_m{row.mechanism_id:03d}_subject_response_effect = {{
             }}
         }}
         set_variable = {{ name = {p}_subject_response value = scope:zg361_cl_subject_route }}
+        set_variable = {{ name = zg361_cl_subject_response_applied value = 1 }}
         change_variable = {{ name = zg361_case_{row.domain}_feedback_revision add = 1 }}
         debug_log = "ZG361CL: assessed subject answered {row.mechanism_id:03d} once"
     }}
@@ -1118,7 +1319,31 @@ def render_obligation_finalize(row: Mechanism) -> str:
 def render_obligation_resolver(row: Mechanism) -> str:
     p = f"zg361_cl_m{row.mechanism_id:03d}"
     finalizer = render_obligation_finalize(row)
-    if row.mechanism_id == 333:
+    if row.mechanism_id == 319:
+        resolve_body = f'''if = {{
+            limit = {{ var:{p}_object_route = 1 }}
+            zg361_career_hc_settle_cl_transfer_effect = yes
+            if = {{
+                limit = {{ var:zg361_transfer_cl_applied = 1 }}
+                zg361_cl_m312_hire_once_effect = yes
+                {finalizer}
+            }}
+            else = {{
+                # Invalid receiver/war/HC joins reclaim the reserved seat and
+                # close as policy debt without any scripted liege mutation.
+                zg361_cl_set_red_effect = {{ CODE = 6 MECHANISM = 319 }}
+                set_variable = {{ name = {p}_obligation_pending value = 0 }}
+                set_variable = {{ name = {p}_obligation_resolved value = 1 }}
+                set_variable = {{ name = {p}_object_resolved value = 1 }}
+                set_variable = {{ name = {p}_object_state value = 4 }}
+                set_variable = {{ name = {p}_debt_active value = 1 }}
+                set_variable = {{ name = {p}_debt_overdue value = 1 }}
+                set_variable = {{ name = {p}_mobility_settlement_failed value = 1 }}
+                add_opinion = {{ modifier = angry_opinion target = var:{p}_object_owner opinion = -5 }}
+            }}
+        }}
+        else = {{ {finalizer} }}'''
+    elif row.mechanism_id == 333:
         resolve_body = f'''if = {{
             limit = {{ var:{p}_object_route = 2 }}
             zg361_cl_m333_layoff_exemption_effect = yes
@@ -1286,7 +1511,8 @@ def render_stage_runner(domain: str, state: int, ids: tuple[int, ...]) -> str:
             default_call = f'''zg361_cl_m{mechanism_id:03d}_core_effect = {{
                 ROUTE = 1{ticket_args}
             }}'''
-        calls.append(f'''if = {{
+        if mechanism_id in SUBJECT_RESPONSE_IDS:
+            calls.append(f'''if = {{
         limit = {{ NOT = {{ {receipt_current(row, ticket=True)} }} }}
         if = {{
             limit = {{ has_variable = {p}_subject_response }}
@@ -1294,9 +1520,30 @@ def render_stage_runner(domain: str, state: int, ids: tuple[int, ...]) -> str:
                 ROUTE = var:{p}_subject_response{ticket_args}
             }}
         }}
-        else = {{
+        else_if = {{
+            limit = {{ is_ai = yes }}
             {default_call}
         }}
+        else_if = {{
+            limit = {{ var:{p}_prompt_pending = 1 }}
+            save_temporary_scope_value_as = {{ name = zg361_cl_prompt_gate value = 1 }}
+        }}
+        else_if = {{
+            limit = {{ scope:zg361_cl_prompt_gate = 0 }}
+            set_variable = {{ name = {p}_prompt_owner value = $TICKET_OWNER$ }}
+            set_variable = {{ name = {p}_prompt_subject value = $TICKET_SUBJECT$ }}
+            set_variable = {{ name = {p}_prompt_cycle value = $TICKET_CYCLE$ }}
+            set_variable = {{ name = {p}_prompt_case value = $TICKET_CASE$ }}
+            set_variable = {{ name = {p}_prompt_state value = $TICKET_STATE$ }}
+            set_variable = {{ name = {p}_prompt_pending value = 1 }}
+            save_temporary_scope_value_as = {{ name = zg361_cl_prompt_gate value = 1 }}
+            trigger_event = {{ id = zg361cl.{mechanism_id} days = 1 }}
+        }}
+    }}''')
+        else:
+            calls.append(f'''if = {{
+        limit = {{ NOT = {{ {receipt_current(row, ticket=True)} }} }}
+        {default_call}
     }}''')
         receipts.append(receipt_current(row, indent=3, ticket=True))
     all_receipts = "\n".join(receipts)
@@ -1328,6 +1575,7 @@ def render_stage_runner(domain: str, state: int, ids: tuple[int, ...]) -> str:
         zg361_cl_schedule_{domain}_stage_{state:02d}_effect = yes
     }}
     else = {{
+    save_temporary_scope_value_as = {{ name = zg361_cl_prompt_gate value = 0 }}
 {joined_calls}
     {before_transition}
     if = {{
@@ -1368,11 +1616,22 @@ def reset_deadlines(domain: str) -> str:
 
 
 def reset_subject_responses(domain: str) -> str:
-    lines = [
-        f"remove_variable = zg361_cl_m{mechanism_id:03d}_subject_response"
-        for mechanism_id in sorted(SUBJECT_RESPONSE_IDS)
-        if next(row for row in MECHANISMS if row.mechanism_id == mechanism_id).domain == domain
-    ]
+    lines: list[str] = []
+    for mechanism_id in sorted(SUBJECT_RESPONSE_IDS):
+        if next(row for row in MECHANISMS if row.mechanism_id == mechanism_id).domain != domain:
+            continue
+        p = f"zg361_cl_m{mechanism_id:03d}"
+        lines.extend(
+            (
+                f"remove_variable = {p}_subject_response",
+                f"remove_variable = {p}_prompt_pending",
+                f"remove_variable = {p}_prompt_owner",
+                f"remove_variable = {p}_prompt_subject",
+                f"remove_variable = {p}_prompt_cycle",
+                f"remove_variable = {p}_prompt_case",
+                f"remove_variable = {p}_prompt_state",
+            )
+        )
     return "\n            ".join(lines)
 
 
@@ -1554,9 +1813,12 @@ zg361_cl_queue_owner_digest_effect = {{
 zg361_cl_m312_hire_once_effect = {{
     if = {{
         limit = {{
-            {receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 312))}
+            {object_receipt_current(next(row for row in MECHANISMS if row.mechanism_id == 312))}
             var:zg361_cl_m312_legal_hc = 1
             var:zg361_cl_m312_vacancy_filled_n = 0
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 3
+            var:zg361_transfer_cl_phase = 6
         }}
         set_variable = {{ name = zg361_cl_m312_vacancy_filled_n value = 1 }}
         set_variable = {{ name = zg361_cl_m312_hired_subject value = this }}
@@ -1653,6 +1915,70 @@ def render_obligation_event(row: Mechanism) -> str:
 }}'''
 
 
+def render_subject_response_event(row: Mechanism) -> str:
+    p = f"zg361_cl_m{row.mechanism_id:03d}"
+    v = case_vars(row.domain)
+    prompt_guard = f'''zg361_case_kernel_full_guard_trigger = {{
+            OWNER_VAR = {v["owner"]}
+            SUBJECT_VAR = {v["subject"]}
+            CYCLE_VAR = {v["cycle"]}
+            CASE_VAR = {v["case"]}
+            STATE_VAR = {v["state"]}
+            ACTIVE_VAR = {v["active"]}
+            EXPECTED_OWNER = var:{p}_prompt_owner
+            EXPECTED_SUBJECT = var:{p}_prompt_subject
+            EXPECTED_CYCLE = var:{p}_prompt_cycle
+            EXPECTED_CASE = var:{p}_prompt_case
+            EXPECTED_STATE = var:{p}_prompt_state
+        }}'''
+
+    def option(route: int) -> str:
+        return f'''option = {{
+        name = {p}_route_{"a" if route == 1 else "b"}
+        zg361_cl_m{row.mechanism_id:03d}_subject_response_effect = {{
+            ROUTE = {route}
+            TICKET_OWNER = var:{p}_prompt_owner
+            TICKET_SUBJECT = var:{p}_prompt_subject
+            TICKET_CYCLE = var:{p}_prompt_cycle
+            TICKET_CASE = var:{p}_prompt_case
+            TICKET_STATE = var:{p}_prompt_state
+        }}
+        if = {{
+            limit = {{
+                var:zg361_cl_subject_response_applied = 1
+                var:{p}_subject_response = {route}
+            }}
+            remove_variable = {p}_prompt_pending
+            zg361_cl_run_{row.domain}_stage_{row.state:02d}_effect = {{
+                TICKET_OWNER = var:{p}_prompt_owner
+                TICKET_SUBJECT = var:{p}_prompt_subject
+                TICKET_CYCLE = var:{p}_prompt_cycle
+                TICKET_CASE = var:{p}_prompt_case
+                TICKET_STATE = var:{p}_prompt_state
+            }}
+        }}
+        else = {{
+            remove_variable = {p}_prompt_pending
+            zg361_cl_set_red_effect = {{ CODE = 2 MECHANISM = {row.mechanism_id} }}
+        }}
+    }}'''
+
+    return f'''# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.{row.mechanism_id} = {{
+    type = character_event
+    title = {p}_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {{
+        is_ai = no
+        var:{p}_prompt_pending = 1
+        {prompt_guard}
+    }}
+    {option(1)}
+    {option(2)}
+}}'''
+
+
 def render_events() -> bytes:
     stage_hidden = "\n\n".join(
         render_hidden_event(domain, state)
@@ -1660,6 +1986,11 @@ def render_events() -> bytes:
         for state in range(1, len(STAGES[domain]) + 1)
     )
     obligation_hidden = "\n\n".join(render_obligation_event(row) for row in MECHANISMS)
+    subject_visible = "\n\n".join(
+        render_subject_response_event(row)
+        for row in MECHANISMS
+        if row.mechanism_id in SUBJECT_RESPONSE_IDS
+    )
     body = f'''
 namespace = zg361cl
 
@@ -1667,8 +1998,10 @@ namespace = zg361cl
 
 {obligation_hidden}
 
-# The only visible event in this package.  It is one owner digest, never one
-# event per mechanism or subordinate.  Authorized AI owners never enter it.
+{subject_visible}
+
+# One manager digest remains batched; assessed-player responses above are the
+# six intentional exceptions.  Authorized AI owners never enter this card.
 zg361cl.390 = {{
     type = character_event
     title = zg361_cl_digest_title
@@ -1693,6 +2026,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                 ("zg361_cl_digest_desc", "这次没有二十二封弹窗排队敲门。内部流动案 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，学习案 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件，已按收据、期限与资源账本收口。"),
                 ("zg361_cl_digest_ack", "很好，至少日报只写一封。"),
                 ("zg361_cl_route_defer", "先记制度债，下轮再议"),
+                ("zg361_cl_subject_prompt_desc", "这是关于你本人的内部流动或学习安排。你可以接受，也可以明确拒绝；回应不会让你获得考核他人的权限。"),
             )
         )
     else:
@@ -1702,6 +2036,7 @@ def localization_entries(chinese: bool) -> list[tuple[str, str]]:
                 ("zg361_cl_digest_desc", "Twenty-two popups did not line up at the door. [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] mobility cases and [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] learning cases closed through receipts, deadlines, and conserved resources."),
                 ("zg361_cl_digest_ack", "Good. One status mail is enough."),
                 ("zg361_cl_route_defer", "Record policy debt and revisit next cycle"),
+                ("zg361_cl_subject_prompt_desc", "This internal-mobility or learning choice concerns you. Accept or decline explicitly; answering grants no authority to review anyone else."),
             )
         )
     for row in MECHANISMS:

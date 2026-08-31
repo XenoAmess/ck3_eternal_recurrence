@@ -18,6 +18,7 @@ from zg361_career_learning_semantic_model import (
     CareerLearningRuntime,
     CaseIdentity,
     DualLedger,
+    InternalTransferVacancy,
     RedundancyEvidence,
     ResultCode,
     Route,
@@ -34,6 +35,83 @@ def runtime(**kwargs: object) -> CareerLearningRuntime:
 
 
 class CareerLearningSemanticModelTests(unittest.TestCase):
+    def test_internal_transfer_joins_312_314_315_319_and_settles_real_world(self) -> None:
+        vacancy = InternalTransferVacancy(
+            "vacancy-p114-7",
+            IDENTITY.owner_id,
+            IDENTITY.subject_id,
+            "receiving-duke",
+            "c_assessed_county",
+            IDENTITY.cycle_serial,
+        )
+        self.assertTrue(vacancy.claim(IDENTITY))
+        self.assertTrue(vacancy.accept(Route.A))
+        self.assertTrue(vacancy.trial(Route.A))
+        self.assertTrue(vacancy.authorize_release(Route.A))
+        self.assertEqual(vacancy.current_liege_id, IDENTITY.owner_id)
+        self.assertTrue(vacancy.settle())
+        self.assertEqual(vacancy.current_liege_id, "receiving-duke")
+        self.assertEqual(vacancy.title_holder_id, IDENTITY.subject_id)
+        self.assertEqual((vacancy.hc_reserved, vacancy.hc_settled, vacancy.hc_reclaimed), (0, 1, 0))
+        vacancy.assert_conserved()
+
+    def test_invalid_transfer_receiver_war_and_hc_paths_are_debt_without_world_mutation(self) -> None:
+        for field in ("receiver_valid", "at_war", "hc_reserved"):
+            vacancy = InternalTransferVacancy(
+                f"invalid-{field}",
+                IDENTITY.owner_id,
+                IDENTITY.subject_id,
+                "receiving-duke",
+                "c_assessed_county",
+                IDENTITY.cycle_serial,
+            )
+            if field == "receiver_valid":
+                vacancy.receiver_valid = False
+            elif field == "at_war":
+                vacancy.at_war = True
+            else:
+                vacancy.hc_reserved = 0
+                vacancy.hc_reclaimed = 1
+            before_world = (vacancy.current_liege_id, vacancy.title_holder_id)
+            self.assertFalse(vacancy.claim(IDENTITY))
+            self.assertEqual((vacancy.current_liege_id, vacancy.title_holder_id), before_world)
+            self.assertEqual(vacancy.policy_debts, [312])
+            vacancy.assert_conserved()
+
+        late_war = InternalTransferVacancy(
+            "late-war",
+            IDENTITY.owner_id,
+            IDENTITY.subject_id,
+            "receiving-duke",
+            "c_assessed_county",
+            IDENTITY.cycle_serial,
+        )
+        self.assertTrue(late_war.claim(IDENTITY))
+        self.assertTrue(late_war.accept(Route.A))
+        self.assertTrue(late_war.trial(Route.A))
+        self.assertTrue(late_war.authorize_release(Route.A))
+        late_war.at_war = True
+        before_world = (late_war.current_liege_id, late_war.title_holder_id)
+        self.assertFalse(late_war.settle())
+        self.assertEqual((late_war.current_liege_id, late_war.title_holder_id), before_world)
+        self.assertEqual((late_war.hc_reserved, late_war.hc_settled, late_war.hc_reclaimed), (0, 0, 1))
+        self.assertIn(319, late_war.policy_debts)
+
+    def test_decline_or_trial_exit_reclaims_the_same_single_hc(self) -> None:
+        decline = InternalTransferVacancy(
+            "decline",
+            IDENTITY.owner_id,
+            IDENTITY.subject_id,
+            "receiving-duke",
+            "c_assessed_county",
+            IDENTITY.cycle_serial,
+        )
+        self.assertTrue(decline.claim(IDENTITY))
+        self.assertTrue(decline.accept(Route.B))
+        self.assertTrue(decline.trial(Route.B))
+        self.assertEqual((decline.hc_reserved, decline.hc_reclaimed), (0, 1))
+        decline.assert_conserved()
+
     def test_registry_is_exact_unique_and_honest(self) -> None:
         validate_specs()
         self.assertEqual(tuple(SPECS), EXPECTED_IDS)

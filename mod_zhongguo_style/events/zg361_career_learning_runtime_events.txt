@@ -573,8 +573,506 @@ zg361cl.833 = {
     }
 }
 
-# The only visible event in this package.  It is one owner digest, never one
-# event per mechanism or subordinate.  Authorized AI owners never enter it.
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.314 = {
+    type = character_event
+    title = zg361_cl_m314_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m314_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ah_owner
+            SUBJECT_VAR = zg361_case_ah_subject
+            CYCLE_VAR = zg361_case_ah_cycle_serial
+            CASE_VAR = zg361_case_ah_case_serial
+            STATE_VAR = zg361_case_ah_state
+            ACTIVE_VAR = zg361_case_ah_active
+            EXPECTED_OWNER = var:zg361_cl_m314_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m314_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m314_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m314_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m314_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m314_route_a
+        zg361_cl_m314_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m314_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m314_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m314_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m314_prompt_case
+            TICKET_STATE = var:zg361_cl_m314_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m314_subject_response = 1
+            }
+            remove_variable = zg361_cl_m314_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m314_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m314_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m314_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m314_prompt_case
+                TICKET_STATE = var:zg361_cl_m314_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m314_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 314 }
+        }
+    }
+    option = {
+        name = zg361_cl_m314_route_b
+        zg361_cl_m314_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m314_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m314_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m314_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m314_prompt_case
+            TICKET_STATE = var:zg361_cl_m314_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m314_subject_response = 2
+            }
+            remove_variable = zg361_cl_m314_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m314_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m314_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m314_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m314_prompt_case
+                TICKET_STATE = var:zg361_cl_m314_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m314_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 314 }
+        }
+    }
+}
+
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.315 = {
+    type = character_event
+    title = zg361_cl_m315_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m315_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ah_owner
+            SUBJECT_VAR = zg361_case_ah_subject
+            CYCLE_VAR = zg361_case_ah_cycle_serial
+            CASE_VAR = zg361_case_ah_case_serial
+            STATE_VAR = zg361_case_ah_state
+            ACTIVE_VAR = zg361_case_ah_active
+            EXPECTED_OWNER = var:zg361_cl_m315_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m315_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m315_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m315_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m315_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m315_route_a
+        zg361_cl_m315_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m315_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m315_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m315_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m315_prompt_case
+            TICKET_STATE = var:zg361_cl_m315_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m315_subject_response = 1
+            }
+            remove_variable = zg361_cl_m315_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m315_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m315_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m315_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m315_prompt_case
+                TICKET_STATE = var:zg361_cl_m315_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m315_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 315 }
+        }
+    }
+    option = {
+        name = zg361_cl_m315_route_b
+        zg361_cl_m315_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m315_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m315_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m315_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m315_prompt_case
+            TICKET_STATE = var:zg361_cl_m315_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m315_subject_response = 2
+            }
+            remove_variable = zg361_cl_m315_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m315_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m315_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m315_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m315_prompt_case
+                TICKET_STATE = var:zg361_cl_m315_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m315_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 315 }
+        }
+    }
+}
+
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.318 = {
+    type = character_event
+    title = zg361_cl_m318_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m318_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ah_owner
+            SUBJECT_VAR = zg361_case_ah_subject
+            CYCLE_VAR = zg361_case_ah_cycle_serial
+            CASE_VAR = zg361_case_ah_case_serial
+            STATE_VAR = zg361_case_ah_state
+            ACTIVE_VAR = zg361_case_ah_active
+            EXPECTED_OWNER = var:zg361_cl_m318_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m318_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m318_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m318_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m318_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m318_route_a
+        zg361_cl_m318_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m318_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m318_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m318_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m318_prompt_case
+            TICKET_STATE = var:zg361_cl_m318_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m318_subject_response = 1
+            }
+            remove_variable = zg361_cl_m318_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m318_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m318_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m318_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m318_prompt_case
+                TICKET_STATE = var:zg361_cl_m318_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m318_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 318 }
+        }
+    }
+    option = {
+        name = zg361_cl_m318_route_b
+        zg361_cl_m318_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m318_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m318_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m318_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m318_prompt_case
+            TICKET_STATE = var:zg361_cl_m318_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m318_subject_response = 2
+            }
+            remove_variable = zg361_cl_m318_prompt_pending
+            zg361_cl_run_ah_stage_02_effect = {
+                TICKET_OWNER = var:zg361_cl_m318_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m318_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m318_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m318_prompt_case
+                TICKET_STATE = var:zg361_cl_m318_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m318_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 318 }
+        }
+    }
+}
+
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.319 = {
+    type = character_event
+    title = zg361_cl_m319_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m319_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ah_owner
+            SUBJECT_VAR = zg361_case_ah_subject
+            CYCLE_VAR = zg361_case_ah_cycle_serial
+            CASE_VAR = zg361_case_ah_case_serial
+            STATE_VAR = zg361_case_ah_state
+            ACTIVE_VAR = zg361_case_ah_active
+            EXPECTED_OWNER = var:zg361_cl_m319_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m319_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m319_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m319_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m319_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m319_route_a
+        zg361_cl_m319_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m319_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m319_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m319_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m319_prompt_case
+            TICKET_STATE = var:zg361_cl_m319_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m319_subject_response = 1
+            }
+            remove_variable = zg361_cl_m319_prompt_pending
+            zg361_cl_run_ah_stage_04_effect = {
+                TICKET_OWNER = var:zg361_cl_m319_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m319_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m319_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m319_prompt_case
+                TICKET_STATE = var:zg361_cl_m319_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m319_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 319 }
+        }
+    }
+    option = {
+        name = zg361_cl_m319_route_b
+        zg361_cl_m319_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m319_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m319_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m319_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m319_prompt_case
+            TICKET_STATE = var:zg361_cl_m319_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m319_subject_response = 2
+            }
+            remove_variable = zg361_cl_m319_prompt_pending
+            zg361_cl_run_ah_stage_04_effect = {
+                TICKET_OWNER = var:zg361_cl_m319_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m319_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m319_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m319_prompt_case
+                TICKET_STATE = var:zg361_cl_m319_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m319_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 319 }
+        }
+    }
+}
+
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.321 = {
+    type = character_event
+    title = zg361_cl_m321_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m321_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ah_owner
+            SUBJECT_VAR = zg361_case_ah_subject
+            CYCLE_VAR = zg361_case_ah_cycle_serial
+            CASE_VAR = zg361_case_ah_case_serial
+            STATE_VAR = zg361_case_ah_state
+            ACTIVE_VAR = zg361_case_ah_active
+            EXPECTED_OWNER = var:zg361_cl_m321_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m321_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m321_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m321_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m321_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m321_route_a
+        zg361_cl_m321_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m321_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m321_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m321_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m321_prompt_case
+            TICKET_STATE = var:zg361_cl_m321_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m321_subject_response = 1
+            }
+            remove_variable = zg361_cl_m321_prompt_pending
+            zg361_cl_run_ah_stage_05_effect = {
+                TICKET_OWNER = var:zg361_cl_m321_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m321_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m321_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m321_prompt_case
+                TICKET_STATE = var:zg361_cl_m321_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m321_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 321 }
+        }
+    }
+    option = {
+        name = zg361_cl_m321_route_b
+        zg361_cl_m321_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m321_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m321_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m321_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m321_prompt_case
+            TICKET_STATE = var:zg361_cl_m321_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m321_subject_response = 2
+            }
+            remove_variable = zg361_cl_m321_prompt_pending
+            zg361_cl_run_ah_stage_05_effect = {
+                TICKET_OWNER = var:zg361_cl_m321_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m321_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m321_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m321_prompt_case
+                TICKET_STATE = var:zg361_cl_m321_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m321_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 321 }
+        }
+    }
+}
+
+# Player assessed-subject response; count/baron need no manager gate.
+zg361cl.333 = {
+    type = character_event
+    title = zg361_cl_m333_title
+    desc = zg361_cl_subject_prompt_desc
+    theme = stewardship
+    trigger = {
+        is_ai = no
+        var:zg361_cl_m333_prompt_pending = 1
+        zg361_case_kernel_full_guard_trigger = {
+            OWNER_VAR = zg361_case_ai_owner
+            SUBJECT_VAR = zg361_case_ai_subject
+            CYCLE_VAR = zg361_case_ai_cycle_serial
+            CASE_VAR = zg361_case_ai_case_serial
+            STATE_VAR = zg361_case_ai_state
+            ACTIVE_VAR = zg361_case_ai_active
+            EXPECTED_OWNER = var:zg361_cl_m333_prompt_owner
+            EXPECTED_SUBJECT = var:zg361_cl_m333_prompt_subject
+            EXPECTED_CYCLE = var:zg361_cl_m333_prompt_cycle
+            EXPECTED_CASE = var:zg361_cl_m333_prompt_case
+            EXPECTED_STATE = var:zg361_cl_m333_prompt_state
+        }
+    }
+    option = {
+        name = zg361_cl_m333_route_a
+        zg361_cl_m333_subject_response_effect = {
+            ROUTE = 1
+            TICKET_OWNER = var:zg361_cl_m333_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m333_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m333_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m333_prompt_case
+            TICKET_STATE = var:zg361_cl_m333_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m333_subject_response = 1
+            }
+            remove_variable = zg361_cl_m333_prompt_pending
+            zg361_cl_run_ai_stage_05_effect = {
+                TICKET_OWNER = var:zg361_cl_m333_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m333_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m333_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m333_prompt_case
+                TICKET_STATE = var:zg361_cl_m333_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m333_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 333 }
+        }
+    }
+    option = {
+        name = zg361_cl_m333_route_b
+        zg361_cl_m333_subject_response_effect = {
+            ROUTE = 2
+            TICKET_OWNER = var:zg361_cl_m333_prompt_owner
+            TICKET_SUBJECT = var:zg361_cl_m333_prompt_subject
+            TICKET_CYCLE = var:zg361_cl_m333_prompt_cycle
+            TICKET_CASE = var:zg361_cl_m333_prompt_case
+            TICKET_STATE = var:zg361_cl_m333_prompt_state
+        }
+        if = {
+            limit = {
+                var:zg361_cl_subject_response_applied = 1
+                var:zg361_cl_m333_subject_response = 2
+            }
+            remove_variable = zg361_cl_m333_prompt_pending
+            zg361_cl_run_ai_stage_05_effect = {
+                TICKET_OWNER = var:zg361_cl_m333_prompt_owner
+                TICKET_SUBJECT = var:zg361_cl_m333_prompt_subject
+                TICKET_CYCLE = var:zg361_cl_m333_prompt_cycle
+                TICKET_CASE = var:zg361_cl_m333_prompt_case
+                TICKET_STATE = var:zg361_cl_m333_prompt_state
+            }
+        }
+        else = {
+            remove_variable = zg361_cl_m333_prompt_pending
+            zg361_cl_set_red_effect = { CODE = 2 MECHANISM = 333 }
+        }
+    }
+}
+
+# One manager digest remains batched; assessed-player responses above are the
+# six intentional exceptions.  Authorized AI owners never enter this card.
 zg361cl.390 = {
     type = character_event
     title = zg361_cl_digest_title

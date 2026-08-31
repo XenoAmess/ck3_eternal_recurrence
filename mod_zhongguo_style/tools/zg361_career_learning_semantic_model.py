@@ -348,6 +348,159 @@ class OperationRecord:
 
 
 @dataclass(slots=True)
+class InternalTransferVacancy:
+    """Pure model of the Career/HC-owned vacancy consumed by CL 312/314/315/319."""
+
+    vacancy_id: str
+    owner_id: str
+    subject_id: str
+    receiver_id: str
+    title_id: str
+    maturity_cycle: int
+    current_liege_id: str = field(init=False)
+    title_holder_id: str = field(init=False)
+    status: str = "prepared"
+    phase: str = "prepared"
+    hc_authorized: int = 1
+    hc_reserved: int = 1
+    hc_settled: int = 0
+    hc_reclaimed: int = 0
+    receiver_valid: bool = True
+    at_war: bool = False
+    cl_identity: CaseIdentity | None = None
+    policy_debts: list[int] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        for value in (
+            self.vacancy_id,
+            self.owner_id,
+            self.subject_id,
+            self.receiver_id,
+            self.title_id,
+        ):
+            if not value:
+                raise SemanticError("transfer vacancy identities must be non-empty")
+        if self.owner_id in {self.subject_id, self.receiver_id} or self.receiver_id == self.subject_id:
+            raise SemanticError("transfer owner, subject and receiver must be distinct")
+        if self.maturity_cycle < 1:
+            raise SemanticError("transfer maturity cycle must be positive")
+        self.current_liege_id = self.owner_id
+        self.title_holder_id = self.subject_id
+        self.assert_conserved()
+
+    def _exact(self, identity: CaseIdentity) -> bool:
+        return (
+            identity.owner_id == self.owner_id
+            and identity.subject_id == self.subject_id
+            and identity.cycle_serial >= self.maturity_cycle
+        )
+
+    def _live_valid(self) -> bool:
+        return (
+            self.receiver_valid
+            and not self.at_war
+            and self.current_liege_id == self.owner_id
+            and self.title_holder_id == self.subject_id
+            and self.hc_authorized == 1
+            and self.hc_reserved == 1
+        )
+
+    def _debt(self, mechanism_id: int) -> bool:
+        self.policy_debts.append(mechanism_id)
+        return False
+
+    def claim(self, identity: CaseIdentity) -> bool:
+        if self.status != "prepared" or not self._exact(identity) or not self._live_valid():
+            return self._debt(312)
+        self.cl_identity = identity
+        self.status = "claimed"
+        self.phase = "claimed"
+        return True
+
+    def accept(self, route: Route) -> bool:
+        if self.cl_identity is None or self.status != "claimed" or self.phase != "claimed":
+            return self._debt(314)
+        if route is Route.A:
+            self.phase = "accepted"
+            return True
+        if route is Route.B:
+            self.phase = "declined"
+            self._reclaim()
+            return True
+        return self._debt(314)
+
+    def trial(self, route: Route) -> bool:
+        if route is Route.B and self.phase == "declined" and self.status == "reclaimed":
+            return True
+        if self.status != "claimed" or self.phase != "accepted":
+            return self._debt(315)
+        if route is Route.A:
+            self.phase = "trial"
+            return True
+        if route is Route.B:
+            self.phase = "declined"
+            self._reclaim()
+            return True
+        return self._debt(315)
+
+    def authorize_release(self, route: Route) -> bool:
+        if route is Route.B:
+            if self.status == "claimed" and self.phase == "trial":
+                self.phase = "withheld"
+                self._reclaim()
+                return True
+            if self.status == "reclaimed" and self.phase in {"declined", "withheld"}:
+                return True
+            return self._debt(319)
+        if route is not Route.A or self.status != "claimed" or self.phase != "trial":
+            return self._debt(319)
+        self.phase = "release-authorized"
+        return True
+
+    def settle(self) -> bool:
+        before_world = (self.current_liege_id, self.title_holder_id)
+        if self.status != "claimed" or self.phase != "release-authorized" or not self._live_valid():
+            if self.status == "claimed" and self.hc_reserved == 1:
+                self._reclaim()
+            if (self.current_liege_id, self.title_holder_id) != before_world:
+                raise SemanticError("invalid transfer mutated CK3 world state")
+            return self._debt(319)
+        self.current_liege_id = self.receiver_id
+        if self.title_holder_id != self.subject_id:
+            raise SemanticError("primary-title holder drifted during transfer")
+        self.status = "settled"
+        self.phase = "settled"
+        self.hc_reserved -= 1
+        self.hc_settled += 1
+        self.assert_conserved()
+        return True
+
+    def _reclaim(self) -> None:
+        if self.hc_reserved != 1:
+            raise SemanticError("transfer HC can be reclaimed only once")
+        self.hc_reserved -= 1
+        self.hc_reclaimed += 1
+        self.status = "reclaimed"
+        self.assert_conserved()
+
+    def assert_conserved(self) -> None:
+        if self.hc_authorized != self.hc_reserved + self.hc_settled + self.hc_reclaimed:
+            raise SemanticError("transfer HC partition is not conserved")
+
+    def snapshot(self) -> tuple[object, ...]:
+        return (
+            self.status,
+            self.phase,
+            self.current_liege_id,
+            self.title_holder_id,
+            self.hc_reserved,
+            self.hc_settled,
+            self.hc_reclaimed,
+            tuple(self.policy_debts),
+        )
+
+
+@dataclass(slots=True)
 class CareerLearningRuntime:
     identity: CaseIdentity
     now_day: int = 100

@@ -6,7 +6,7 @@
 - MCP evidence: `none`
 - CK3 live evidence: `none`
 - 精确范围：AH `312–322` 与 AI `323–333`，共 22 项。
-- 本包已生成可加载的 effect/event/localization，并以静态测试和专用 Python 语义模型证明收据、对象、期限、资源、ACL、关系和消费者合同；尚未接中央生命周期，也没有真实 CK3 paused snapshot，因此不得写成 live 或发版签核。
+- 本包已生成可加载的 effect/event/localization，中央 stage 9 已调用唯一 portfolio adapter；静态测试和专用 Python 语义模型证明收据、对象、期限、资源、ACL、关系、本人响应和 Career/HC 转封合同。尚无真实 CK3 paused snapshot，因此不得写成 live 或发版签核。
 
 ## 一、独立产物与唯一接缝
 
@@ -16,23 +16,23 @@
 - `events/zg361_career_learning_runtime_events.txt`
 - 简中、英文和七份 English structural placeholders，共九份本地化。
 
-测试为 `tools/test_zg361_career_learning_runtime.py`。本包不写 B1、B2、manager/governance、scoreboard、shared case kernel、中央 effects/events/interactions，也没有 no top-level GUI 或新增 GUI 按钮。唯一供后续中央结算 hook 调用的 manager-scope portfolio adapter 是：
+测试为 `tools/test_zg361_career_learning_runtime.py`。本包不写 B1、B2、manager/governance、scoreboard、shared case kernel、中央 effects/events/interactions，也保持 no top-level GUI、没有新增 GUI 按钮。中央结算 hook 已调用的唯一 manager-scope portfolio adapter 是：
 
 ```text
 zg361_cl_dispatch_direct_reports_effect
 ```
 
-入口冻结当前 `review_serial`，分别记录**成功打开且首个 deadline 已成功排队**的 AH/AI case 数与完成数。开案失败的受评者不进入 expected，因而不会把摘要队列永久挂死。重复调用同一轮不会重置现场；新 `review_serial` 才建立新 portfolio。当前文件不自行修改中央 caller。
+入口冻结当前 `review_serial`，分别记录**成功打开且首个 deadline 已成功排队**的 AH/AI case 数与完成数。开案失败的受评者不进入 expected，因而不会把摘要队列永久挂死。重复调用同一轮不会重置现场；新 `review_serial` 才建立新 portfolio。本文件不另写第二个中央 caller。
 
 每个逐项 manager callable 都显式要求 caller 传入冻结的 `TICKET_OWNER / TICKET_SUBJECT / TICKET_CYCLE / TICKET_CASE / TICKET_STATE`；绝不在执行时从当前 case 自读一组值再与自身比较。中央接线只应调用 portfolio adapter，不应另造 22 个入口。
 
-纯 Python 权威语义层为 `tools/zg361_career_learning_semantic_model.py` 与 `tools/test_zg361_career_learning_semantic_model.py`。它逐号建模 22 种不同的 typed object、22 个不同的 named consumer、A/B/C 三路线、双付款和容量守恒、期限 resolve、ACL、岗位/导师/继任关系，以及 duplicate/stale/negative no-mutation。它的诚实边界是 `python-l0-model`，不能冒充 CK3 wiring 或 live evidence。
+纯 Python 权威语义层为 `tools/zg361_career_learning_semantic_model.py` 与 `tools/test_zg361_career_learning_semantic_model.py`。它逐号建模 22 种不同的 typed object、22 个不同的 named consumer、A/B/C 三路线、双付款和容量守恒、期限 resolve、ACL、岗位/导师/继任关系，以及 duplicate/stale/negative no-mutation；`InternalTransferVacancy` 另建模 #312→#314→#315→#319 的同票据、单 HC、真实 liege/title-holder 后置状态。它的诚实边界是 `python-l0-model`，不能冒充 CK3 wiring 或 live evidence。
 
 ## 二、权限与第二 AI 例外
 
 1. portfolio owner 必须通过 `zg361_is_celestial_liege_trigger`：天朝制、在任、有地、公爵及以上。
 2. 玩家与项目所有者明确授权的第二 AI 例外共用同一 manager effect。合格 AI 只走 hidden event 和 debug receipt，不弹可见事件。
-3. 伯爵、男爵仍可作为 `zg361_is_reviewable_vassal_trigger` 的受评者，并可对 314、315、318、319、321、333 做一次本人响应；这些 response effect 只用 subject-self guard，不含 open、advance、manager trigger 或 HC 权限。
+3. 伯爵、男爵仍可作为 `zg361_is_reviewable_vassal_trigger` 的受评者，并可在六张真实 subject-scope 玩家事件中对 314、315、318、319、321、333 做一次本人响应；同 stage 的 314→315→318 串行出现。response effect 只用 subject-self guard，不含 open、advance、manager trigger 或 HC 权限。
 4. 伯爵、男爵调用任何 `*_manager_apply_effect` 都得到 typed RED 1；不能借“本人响应”变成考核者。
 
 ## 三、两个权威状态机
@@ -66,14 +66,14 @@ budgeted(1):           323 + 324 + 325
 
 | ID | operation | 运行时写入 | 消费/后果 |
 |---:|---|---|---|
-| 312 | `market.publish_real_vacancy` | legal HC、直属汇报线、薪酬带、目标、可见范围、一次录用上限 | 假挂牌 `market trust -2`；`hire_once` 第二次 typed duplicate |
+| 312 | `market.publish_real_vacancy` | 只认领 Career/HC 已成熟 P#114 vacancy，冻结 vacancy/receiver/title 与守恒的单 HC reserve | 无真实 vacancy、接收者失效、战争或 HC 不足转 typed RED 6 + 制度债且零世界变更；#319 真转封后 `hire_once` 结清 |
 | 313 | `market.freeze_structured_reference` | 成果、风险、PIP、交接四栏冻结 | 遗漏重大事实进洗绩效审计；泄露/报复进反报复审计 |
-| 314 | `market.offer_relocation_package` | 本人一次响应、10/6/4 金币分项、190 日津贴截止 | 接受才扣组织国库 15 + 经理个人 5；拒绝不收费且绩效增量为 0 |
-| 315 | `market.run_bilateral_trial` | 90 日、员工/源经理/目标经理三方退出权、40/60 分功 | 分功恒等于 100；失败回原岗，`failed_is_low_grade=0` |
+| 314 | `market.offer_relocation_package` | 本人事件一次响应，同一 vacancy 的真实 receiver，10/6/4 金币分项、190 日津贴截止 | 接受才把 CL phase 推进为 accepted 并扣组织国库 15 + 经理个人 5；拒绝不收费、回收同一 HC |
+| 315 | `market.run_bilateral_trial` | 同一 vacancy 的 source/target、90 日、员工/源经理/目标经理三方退出权、40/60 分功 | 接受进入 trial 但不提前改 liege；退出回收同一 HC，`failed_is_low_grade=0` |
 | 316 | `market.freeze_pay_mapping` | 专业底薪 30、原/新津贴 10/5、38→36→35 分期 | 历史实付只读；强制即时降档另记 route，不回写历史 |
 | 317 | `market.project_stage_acl` | stage ACL、viewer 数和每次访问日志 | 提前泄露且无新证据降评触发反报复审计 |
 | 318 | `market.consume_application_slot` | 正式上限 2、撤回仍占、探索不占 | 经理超时归还名额并重新计算 remaining |
-| 319 | `market.counteroffer_then_release` | counteroffer limit=1、30 日放行、90 日承诺期限 | 卡人或承诺未兑现写经理人才输出 `-20`，重复结算不再扣 |
+| 319 | `market.counteroffer_then_release` | 同一 vacancy 的 release authorization、counteroffer limit=1、30 日放行、90 日承诺期限 | A 的 D+30 resolver 才执行原版三段式转封并回读 liege/title/holder 后结清 HC；卡人回收 HC 并写经理人才输出 `-20` |
 | 320 | `market.aggregate_exit_voice` | 实名/匿名/拒答分栏、同类最小样本 2 | 达样本才审计；匿名隐藏身份；重分类保留原始理由 |
 | 321 | `market.maintain_alumni_relationship` | consent、每周期一次维护、lead 幂等、羞辱史冻结 | 同意才扣国库 4 + 经理 2；删除联系投影不删除 `talent reputation -10` |
 | 322 | `market.open_returnee_case` | 两个旧案、离职原因、旧舞弊、外部证据、新 cohort | 同一人一个活动流程；洗历史尝试显式 blocked |
@@ -97,7 +97,7 @@ budgeted(1):           323 + 324 + 325
 
 `OBJECT_KINDS` 精确映射 22 种对象：vacancy、reference、transfer offer、trial assignment、pay mapping、application ACL/quota、release obligation、exit signal、alumni relation、returnee case、learning budget/progress、competence assessment、conference adoption、teaching attribution、community artifact、mentor match、reskill case、protected-time loan、succession drill、training commitment。
 
-这些对象有可消费语义：#312 的合法 vacancy 冻结 HC、汇报线、候选人与一次录用 consumer；#314/#315/#319 冻结 offer、trial、release 的负责经理/本人关系和独立到期日；#317 冻结 ACL class 与访问日志；#323 同时消费学习金币池与受保护工时；#324 冻结 completion/application/outcome 三阶段；#332 冻结 incumbent=owner、candidate=subject 的安全继任演练，失败仍保持 `real_incident=0` 和 `automatic_low_grade=0`。
+这些对象有可消费语义：#312 不自产 HC，而是冻结 Career/HC vacancy 的 `vacancy_id/owner/subject/receiver/title/maturity` 与单单位 reserve；#314/#315/#319 的 offer、trial、release 都回链该 tuple。#319 route A 的 D+30 resolver 严格 join 四份 receipt，随后在旧 owner scope 依次执行 `create_title_and_vassal_change → change_liege → resolve_title_and_vassal_change`，并回读新 liege、原 primary title 与 holder；三项全真才 `reserved→settled`。#317 冻结 ACL class 与访问日志；#323 同时消费学习金币池与受保护工时；#324 冻结 completion/application/outcome 三阶段；#332 冻结 incumbent=owner、candidate=subject 的安全继任演练，失败仍保持 `real_incident=0` 和 `automatic_low_grade=0`。
 
 #329 会从 owner 的其他直属受评者中选择与本人不同的真实 mentor scope；找不到时写 `mentor_missing/match_failed`，不得把 owner 或本人伪装成跨团队导师。导师信用只在应用窗口结算后产生。关系类 consumer 使用真实 CK3 opinion mutation，而不是只写字符串。#333 的提前离开追缴只在 D+90 obligation resolver 执行，不能为了关 AI stage 在同日提前追缴。
 
@@ -108,8 +108,9 @@ budgeted(1):           323 + 324 + 325
 ```text
 frozen-ticket receipt identity -> duplicate RED
 owner + subject + cycle + case + expected state against frozen ticket -> stale RED
-real-time celestial owner + direct-liege relationship -> permission RED
+real-time celestial owner + direct-liege relationship（#319 已结算后，尚未收口的 AH/AI 并行案只允许精确 frozen receiver/title 后置关系） -> permission RED
 route/semantic invariant -> invariant RED
+Career/HC vacancy/receiver/war/HC preflight（312/314/315/319） -> RED 6 + policy debt
 full CK3 resource precheck -> resource RED
 both shadow journals reserve/settle -> business receipt -> real CK3 debits
 typed object + obligation -> domain consumer -> stage transition
@@ -117,7 +118,7 @@ typed object + obligation -> domain consumer -> stage transition
 
 receipt 字段为 owner、subject、cycle、case、state、choice。重复或 stale 调用发生在 `record_operation`、金币扣除和领域变量以前。旧 deadline 先走 `zg361_case_kernel_expire_deadline_effect`；过期成功后，resolver 继续携带 deadline 冻结的五元 ticket，重新验证 owner 仍为合格天朝制公爵以上领主、subject 仍为其直属可受评封臣。该 gate 位于 stage runner 最外层，因此即使同段 receipt 已由 manager callable 提前写齐、所有 core 都被跳过，也不能绕过权限直接 transition。身份、状态或实时权限任一失效都不能形成新业务 receipt 或推进 state。
 
-typed RED 固定为：1 permission、2 stale identity/state、3 duplicate receipt、4 invariant/route、5 resource exhausted。
+typed RED 固定为：1 permission、2 stale identity/state、3 duplicate receipt、4 invariant/route、5 resource exhausted、6 external mobility blocked/policy debt。
 
 每项还有独立的 post-receipt obligation pending latch。旧对象 unresolved 时，新 cycle 即使拿到不同 case ticket，也会在 record/payment/object mutation 以前得到 typed invariant RED，不能覆盖旧 owner/subject/deadline。到期 resolver 固定顺序为 duplicate → immutable receipt/object identity → 实时天朝制公爵以上 owner → domain resolution；错误 owner、subject、cycle 或 case 不得结算。若冻结 owner 已失去天朝制公爵以上资格，resolver 写 permission RED 与 `obligation_orphaned` 终态并释放 pending，既不替他结算业务，也不让永久失权的旧对象卡死以后所有轮次。
 
@@ -129,9 +130,9 @@ typed RED 固定为：1 permission、2 stale identity/state、3 duplicate receip
 
 学习金币池与保护工时池分账；结课标签不能兑换绩效。331 的借用保持 `100 = 94 delivery + 6 remaining protected` 的投影，并把补回期限固定到下一 cycle。
 
-## 八、有序事件队列与唯一可见摘要
+## 八、有序事件队列、本人响应与唯一经理摘要
 
-AH 六段、AI 五段各自只排一个 stage hidden deadline，共 11 个 stage event。每个编号另有一个 post-receipt business/debt obligation hidden event，共 22 个；整个包合计 33 个 hidden event。业务期限事件只消费已经冻结的对象，不生成逐编号窗口，也不阻塞 case stage 结案。唯一可见事件仍是 portfolio digest `zg361cl.390`。
+AH 六段、AI 五段各自只排一个 stage hidden deadline，共 11 个 stage event。每个编号另有一个 post-receipt business/debt obligation hidden event，共 22 个；整个包合计 33 个 hidden event。另有六张真实受评人事件 `zg361cl.314/.315/.318/.319/.321/.333`：只给 `is_ai=no` 的 subject，冻结五元 prompt ticket，一次成功回应后才重跑同 stage；prompt gate 保证同一 stage 同时只排一张。AI subject 走后台默认 A。经理侧仍只有 portfolio digest `zg361cl.390`，不会收到逐下属 22 连弹。
 
 manager-scope portfolio 在 owner 上分别冻结 `ah_expected` 与 `ai_expected`，且只在对应开案和首个 deadline 都成功后累加。每个 AH/AI case 关闭后，先在 subject scope 冻结 completion cycle，再切到 owner；只有该 cycle 等于 owner 当前 portfolio cycle 才累加 completion。至少一域 expected 非零、两域各自 completion 达到各自 expected，且本轮 `digest_shown=0`，才排 `zg361cl.390`。因此玩家每个 portfolio/review serial 最多收到一张可见摘要。合格 AI owner 永远只留后台日志。
 
@@ -151,11 +152,11 @@ py tools/test_zg361_case_kernel.py
 py tools/validate_local.py
 ```
 
-测试还检查：22/22 精确覆盖、22 种对象/consumer 唯一、11 个 stage deadline + 22 个 object obligation event、冻结 ticket 逐层透传、deadline 实时权限重验、pending 防覆盖、transition 同段重试、共享状态迁移、重复/stale 在业务写入前、六笔双付款 journal→receipt→真实扣款次序与 rollback、66 条 A/B/C L0 路径、容量/金币守恒、ACL negative、岗位一次录用、真实独立 mentor、继任关系、333 D+90 追缴与重试、成功开案分域 expected、331 战争事实、333 B2 #074 裁撤事实、本人响应权限、玩家单摘要/AI 静默、九语 key parity、UTF-8 BOM 和生成器可复现。
+测试还检查：22/22 精确覆盖、22 种对象/consumer 唯一、11 个 stage deadline + 22 个 object obligation event、仅六个合法 subject-response 读端及其真实 event setter、同 stage 串行 prompt、冻结 ticket 逐层透传、deadline 实时权限重验、pending 防覆盖、transition 同段重试、共享状态迁移、重复/stale 在业务写入前、六笔双付款 journal→receipt→真实扣款次序与 rollback、66 条 A/B/C L0 路径、容量/金币守恒、Career/HC 四 receipt join、原版三段式 change-liege 次序及后置回读、invalid receiver/war/HC 的零世界变更制度债、ACL negative、岗位一次录用、真实独立 mentor、继任关系、333 D+90 追缴与重试、成功开案分域 expected、331 战争事实、333 B2 #074 裁撤事实、伯爵/男爵只响应不管理、玩家单摘要/AI 静默、九语 key parity、UTF-8 BOM 和生成器可复现。
 
 ## 十一、后续
 
-1. 由中央结算生命周期调用唯一 portfolio adapter；不得另开 22 个 caller。
-2. MCP 必须直接查询 owner/subject/cycle/case/state、receipt、deadline、双付款余额/流水、关键消费者字段与 portfolio completion；禁止优先 OCR。
-3. 一次 CK3 启动批量验证玩家公爵、授权 AI 公爵、伯爵/男爵只受评、资源不足、重复、stale、存读档和完整 271 日队列。
+1. 中央生命周期继续只调用唯一 portfolio adapter；不得另开 22 个 caller。
+2. MCP 尚缺 AH 四项 receipt、Career/HC vacancy/HC、subject immediate liege/primary title/holder、receiver tier/capacity/war 与 settle/reclaim 的同 paused-revision 查询；正式 live 验收必须补该只读 provider，禁止用 OCR 或脚本变量猜测冒充。
+3. 一次 CK3 启动批量验证玩家公爵、授权 AI 公爵、伯爵/男爵六类本人响应、无 vacancy/战争/HC RED、真实 D+30 转封、重复、stale、存读档和完整队列。
 4. 获得 paused snapshot、debug receipt 与可重复实机报告后，才逐项提升 readiness。

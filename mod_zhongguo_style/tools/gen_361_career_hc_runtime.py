@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Generate the D/M/N/O/P/Q career and headcount CK3 runtime.
 
@@ -966,6 +966,376 @@ zg361_career_hc_reclaim_transfer_hc_effect = {
 }'''
 
 
+def render_cl_transfer_adapter() -> str:
+    """Render the strict Career/Learning consumer of a real transfer vacancy.
+
+    The vacancy and its one-unit HC reserve remain owned by Career/HC.  CL may
+    claim one matured P#114 vacancy, record acceptance/trial/release phases, and
+    finally invoke the same vanilla title/vassal primitive without fabricating
+    any PP#190 request fields.
+    """
+
+    return '''# CL #312/#314/#315/#319 consumer of the Career/HC vacancy ledger.
+# consumer_kind: 1 PP, 2 CL.  cl_phase: 1 claimed, 2 accepted, 3 trial,
+# 4 release authorized, 5 declined/withheld, 6 native settlement complete.
+# RED: 1 live vacancy/receiver invalid, 2 exact duplicate, 3 stale identity,
+# 4 native postcondition failed, 5 HC reserve invalid.
+zg361_career_hc_claim_cl_transfer_vacancy_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 1
+            var:zg361_transfer_vacancy_owner = $TICKET_OWNER$
+            var:zg361_transfer_vacancy_subject = this
+            var:zg361_transfer_vacancy_maturity_cycle <= $TICKET_CYCLE$
+            liege = $TICKET_OWNER$
+            primary_title = var:zg361_transfer_vacancy_title
+            var:zg361_transfer_vacancy_title = { holder = this }
+            var:zg361_transfer_vacancy_receiver = {
+                is_landed = yes
+                NOT = { has_trait = gallivanter }
+                zg361_is_celestial_liege_trigger = yes
+                liege = root.var:zg361_transfer_vacancy_owner
+                primary_title.tier > root.primary_title.tier
+                vassal_count < vassal_limit
+                NOT = { is_at_war_with = root.var:zg361_transfer_vacancy_owner }
+                NOT = { is_at_war_with = root }
+            }
+            NOT = { is_at_war_with = var:zg361_transfer_vacancy_receiver }
+            var:zg361_transfer_hc_authorized = 1
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_partition = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_consumer_kind value = 2 }
+        set_variable = { name = zg361_transfer_vacancy_status value = 2 }
+        set_variable = { name = zg361_transfer_cl_phase value = 1 }
+        set_variable = { name = zg361_transfer_cl_owner value = $TICKET_OWNER$ }
+        set_variable = { name = zg361_transfer_cl_subject value = this }
+        set_variable = { name = zg361_transfer_cl_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_transfer_cl_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_transfer_cl_vacancy value = var:zg361_transfer_vacancy_id }
+        set_variable = { name = zg361_transfer_cl_receiver value = var:zg361_transfer_vacancy_receiver }
+        set_variable = { name = zg361_transfer_cl_title value = var:zg361_transfer_vacancy_title }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_phase = 1
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_hc_reserved = 1
+            NOT = { var:zg361_transfer_hc_conserved = 1 }
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 5 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 1 } }
+}
+
+zg361_career_hc_accept_cl_transfer_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_phase = 1
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+            var:zg361_transfer_cl_vacancy = var:zg361_transfer_vacancy_id
+            var:zg361_transfer_cl_receiver = var:zg361_transfer_vacancy_receiver
+            var:zg361_transfer_cl_title = var:zg361_transfer_vacancy_title
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_cl_phase value = 2 }
+        set_variable = { name = zg361_transfer_cl_accept_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_transfer_cl_accept_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_cl_phase = 2
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 3 } }
+}
+
+zg361_career_hc_decline_cl_transfer_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_cl_phase value = 5 }
+        zg361_career_hc_reclaim_transfer_hc_effect = yes
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 4
+            var:zg361_transfer_cl_phase = 5
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 3 } }
+}
+
+zg361_career_hc_start_cl_transfer_trial_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_phase = 2
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_cl_phase value = 3 }
+        set_variable = { name = zg361_transfer_cl_trial_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_transfer_cl_trial_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_cl_phase = 3
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 3 } }
+}
+
+zg361_career_hc_authorize_cl_transfer_release_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_phase = 3
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        set_variable = { name = zg361_transfer_cl_phase value = 4 }
+        set_variable = { name = zg361_transfer_cl_release_cycle value = $TICKET_CYCLE$ }
+        set_variable = { name = zg361_transfer_cl_release_case value = $TICKET_CASE$ }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_cl_phase = 4
+            var:zg361_transfer_cl_owner = $TICKET_OWNER$
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = $TICKET_CYCLE$
+            var:zg361_transfer_cl_case = $TICKET_CASE$
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 3 } }
+}
+
+zg361_career_hc_settle_cl_transfer_effect = {
+    remove_variable = zg361_transfer_cl_applied
+    set_variable = { name = zg361_transfer_cl_red_code value = 0 }
+    if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_active = 1
+            var:zg361_transfer_vacancy_status = 2
+            var:zg361_transfer_cl_phase = 4
+            var:zg361_transfer_cl_owner = var:zg361_cl_m319_object_owner
+            var:zg361_transfer_cl_subject = this
+            var:zg361_transfer_cl_cycle = var:zg361_cl_m319_object_cycle
+            var:zg361_transfer_cl_case = var:zg361_cl_m319_object_case
+            var:zg361_transfer_cl_vacancy = var:zg361_transfer_vacancy_id
+            var:zg361_transfer_cl_receiver = var:zg361_transfer_vacancy_receiver
+            var:zg361_transfer_cl_title = var:zg361_transfer_vacancy_title
+            var:zg361_transfer_cl_accept_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_transfer_cl_accept_case = var:zg361_transfer_cl_case
+            var:zg361_transfer_cl_trial_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_transfer_cl_trial_case = var:zg361_transfer_cl_case
+            var:zg361_transfer_cl_release_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_transfer_cl_release_case = var:zg361_transfer_cl_case
+            var:zg361_cl_m312_vacancy_id = var:zg361_transfer_cl_vacancy
+            var:zg361_cl_m312_target_manager = var:zg361_transfer_cl_receiver
+            var:zg361_cl_m312_vacancy_title = var:zg361_transfer_cl_title
+            var:zg361_cl_m312_hc_reserved = 1
+            var:zg361_cl_m314_vacancy_id = var:zg361_transfer_cl_vacancy
+            var:zg361_cl_m314_target_manager = var:zg361_transfer_cl_receiver
+            var:zg361_cl_m315_vacancy_id = var:zg361_transfer_cl_vacancy
+            var:zg361_cl_m315_source_manager = var:zg361_transfer_cl_owner
+            var:zg361_cl_m315_target_manager = var:zg361_transfer_cl_receiver
+            var:zg361_cl_m319_vacancy_id = var:zg361_transfer_cl_vacancy
+            var:zg361_cl_m319_target_manager = var:zg361_transfer_cl_receiver
+            var:zg361_cl_m312_receipt_owner = var:zg361_transfer_cl_owner
+            var:zg361_cl_m312_receipt_subject = this
+            var:zg361_cl_m312_receipt_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_cl_m312_receipt_case = var:zg361_transfer_cl_case
+            var:zg361_cl_m312_receipt_choice = 1
+            var:zg361_cl_m314_receipt_owner = var:zg361_transfer_cl_owner
+            var:zg361_cl_m314_receipt_subject = this
+            var:zg361_cl_m314_receipt_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_cl_m314_receipt_case = var:zg361_transfer_cl_case
+            var:zg361_cl_m314_receipt_choice = 1
+            var:zg361_cl_m315_receipt_owner = var:zg361_transfer_cl_owner
+            var:zg361_cl_m315_receipt_subject = this
+            var:zg361_cl_m315_receipt_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_cl_m315_receipt_case = var:zg361_transfer_cl_case
+            var:zg361_cl_m315_receipt_choice = 1
+            var:zg361_cl_m319_receipt_owner = var:zg361_transfer_cl_owner
+            var:zg361_cl_m319_receipt_subject = this
+            var:zg361_cl_m319_receipt_cycle = var:zg361_transfer_cl_cycle
+            var:zg361_cl_m319_receipt_case = var:zg361_transfer_cl_case
+            var:zg361_cl_m319_receipt_choice = 1
+            var:zg361_transfer_hc_authorized = 1
+            var:zg361_transfer_hc_reserved = 1
+            var:zg361_transfer_hc_partition = 1
+            var:zg361_transfer_hc_conserved = 1
+        }
+        if = {
+            limit = {
+                liege = var:zg361_transfer_vacancy_owner
+                primary_title = var:zg361_transfer_vacancy_title
+                var:zg361_transfer_vacancy_title = { holder = this }
+                var:zg361_transfer_vacancy_receiver = {
+                    is_landed = yes
+                    NOT = { has_trait = gallivanter }
+                    zg361_is_celestial_liege_trigger = yes
+                    liege = root.var:zg361_transfer_vacancy_owner
+                    primary_title.tier > root.primary_title.tier
+                    vassal_count < vassal_limit
+                    NOT = { is_at_war_with = root.var:zg361_transfer_vacancy_owner }
+                    NOT = { is_at_war_with = root }
+                }
+                NOT = { is_at_war_with = var:zg361_transfer_vacancy_receiver }
+            }
+            save_temporary_scope_as = zg361_transfer_cl_settle_subject
+            var:zg361_transfer_vacancy_owner = { save_temporary_scope_as = zg361_transfer_cl_settle_owner }
+            var:zg361_transfer_vacancy_receiver = { save_temporary_scope_as = zg361_transfer_cl_settle_receiver }
+            var:zg361_transfer_vacancy_title = { save_temporary_scope_as = zg361_transfer_cl_settle_title }
+            scope:zg361_transfer_cl_settle_owner = {
+                create_title_and_vassal_change = {
+                    type = granted
+                    save_scope_as = zg361_transfer_cl_title_change
+                    add_claim_on_loss = no
+                }
+                scope:zg361_transfer_cl_settle_subject = {
+                    change_liege = {
+                        liege = scope:zg361_transfer_cl_settle_receiver
+                        change = scope:zg361_transfer_cl_title_change
+                    }
+                }
+                resolve_title_and_vassal_change = scope:zg361_transfer_cl_title_change
+            }
+            if = {
+                limit = {
+                    liege = scope:zg361_transfer_cl_settle_receiver
+                    primary_title = scope:zg361_transfer_cl_settle_title
+                    scope:zg361_transfer_cl_settle_title.holder = this
+                }
+                set_variable = { name = zg361_transfer_vacancy_active value = 0 }
+                set_variable = { name = zg361_transfer_vacancy_status value = 3 }
+                set_variable = { name = zg361_transfer_cl_phase value = 6 }
+                change_variable = { name = zg361_transfer_hc_reserved add = -1 }
+                change_variable = { name = zg361_transfer_hc_settled add = 1 }
+                set_variable = { name = zg361_transfer_hc_partition value = var:zg361_transfer_hc_available }
+                change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reserved }
+                change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_settled }
+                change_variable = { name = zg361_transfer_hc_partition add = var:zg361_transfer_hc_reclaimed }
+                set_variable = { name = zg361_transfer_hc_conserved value = 0 }
+                if = { limit = { var:zg361_transfer_hc_partition = var:zg361_transfer_hc_authorized } set_variable = { name = zg361_transfer_hc_conserved value = 1 } }
+                scope:zg361_transfer_cl_settle_receiver = {
+                    set_variable = { name = zg361_received_transfer_vacancy value = root.var:zg361_transfer_vacancy_id }
+                    set_variable = { name = zg361_received_transfer_subject value = root }
+                    set_variable = { name = zg361_received_transfer_title value = scope:zg361_transfer_cl_settle_title }
+                }
+                scope:zg361_transfer_cl_settle_owner = {
+                    set_variable = { name = zg361_last_settled_transfer_vacancy value = root.var:zg361_transfer_vacancy_id }
+                    set_variable = { name = zg361_last_settled_transfer_subject value = root }
+                }
+                set_variable = { name = zg361_transfer_cl_applied value = 1 }
+            }
+            else = {
+                set_variable = { name = zg361_transfer_cl_red_code value = 4 }
+                zg361_career_hc_reclaim_transfer_hc_effect = yes
+            }
+        }
+        else = {
+            set_variable = { name = zg361_transfer_cl_red_code value = 1 }
+            zg361_career_hc_reclaim_transfer_hc_effect = yes
+        }
+    }
+    else_if = {
+        limit = {
+            var:zg361_transfer_consumer_kind = 2
+            var:zg361_transfer_vacancy_status = 3
+            var:zg361_transfer_cl_phase = 6
+            var:zg361_transfer_cl_subject = this
+        }
+        set_variable = { name = zg361_transfer_cl_red_code value = 2 }
+        set_variable = { name = zg361_transfer_cl_applied value = 1 }
+    }
+    else = { set_variable = { name = zg361_transfer_cl_red_code value = 3 } }
+}'''
+
+
 def render_manager_entry(mechanism_id: int, domain: str, state: int) -> str:
     row = domain_vars(domain)
     q_subject = "\n            zg361_is_celestial_liege_trigger = yes" if domain == "q" else ""
@@ -1766,8 +2136,9 @@ def render_effects() -> bytes:
     sections = [
         "# ZhongGuo 361 career/HC runtime: D/M/N/O/P/Q, 44 numbered mechanisms.",
         "# Routes: 1 = evidence-led; 2 = political/extractive; 3 = bounded defer.",
-        "# Public surfaces: central open plus the strict PP transfer adapters.",
+        "# Public surfaces: central open plus strict PP and CL transfer adapters.",
         render_transfer_vacancy_adapter(),
+        render_cl_transfer_adapter(),
         render_portfolio_adapter(),
     ]
     for domain in DOMAINS:

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """L0 contracts for the generated D/M/N/O/P/Q CK3 runtime.
 
@@ -594,6 +594,54 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_career_hc_prepare_transfer_vacancy_effect = yes", p_queue)
         retry = block(self.events, "zg361ch.990")
         self.assertIn("zg361_career_hc_settle_pp_transfer_effect = yes", retry)
+
+    def test_cl_transfer_adapter_claims_one_real_vacancy_without_pp_forgery(self) -> None:
+        claim = block(
+            self.effects,
+            "zg361_career_hc_claim_cl_transfer_vacancy_effect",
+        )
+        for token in (
+            "zg361_transfer_vacancy_status = 1",
+            "zg361_transfer_vacancy_maturity_cycle <= $TICKET_CYCLE$",
+            "primary_title = var:zg361_transfer_vacancy_title",
+            "zg361_transfer_hc_authorized = 1",
+            "zg361_transfer_hc_reserved = 1",
+            "zg361_transfer_hc_conserved = 1",
+            "zg361_transfer_consumer_kind value = 2",
+            "zg361_transfer_cl_phase value = 1",
+            "zg361_transfer_cl_vacancy value = var:zg361_transfer_vacancy_id",
+        ):
+            self.assertIn(token, claim)
+        self.assertNotIn("zg361_pp_", claim)
+        self.assertNotIn("change_liege", claim)
+
+        for effect, phase in (
+            ("zg361_career_hc_accept_cl_transfer_effect", 2),
+            ("zg361_career_hc_start_cl_transfer_trial_effect", 3),
+            ("zg361_career_hc_authorize_cl_transfer_release_effect", 4),
+        ):
+            source = block(self.effects, effect)
+            self.assertIn(f"zg361_transfer_cl_phase value = {phase}", source)
+            self.assertNotIn("change_liege", source)
+            self.assertNotIn("zg361_pp_", source)
+
+        settle = block(self.effects, "zg361_career_hc_settle_cl_transfer_effect")
+        for mechanism_id in (312, 314, 315, 319):
+            self.assertIn(f"zg361_cl_m{mechanism_id:03d}_receipt_owner", settle)
+            self.assertIn(f"zg361_cl_m{mechanism_id:03d}_receipt_choice = 1", settle)
+        create_at = settle.index("create_title_and_vassal_change")
+        change_at = settle.index("change_liege", create_at)
+        resolve_at = settle.index("resolve_title_and_vassal_change", change_at)
+        post_at = settle.index("liege = scope:zg361_transfer_cl_settle_receiver", resolve_at)
+        settled_at = settle.index("zg361_transfer_vacancy_status value = 3", post_at)
+        self.assertLess(create_at, change_at)
+        self.assertLess(change_at, resolve_at)
+        self.assertLess(resolve_at, post_at)
+        self.assertLess(post_at, settled_at)
+        self.assertIn("name = zg361_transfer_hc_reserved add = -1", settle)
+        self.assertIn("name = zg361_transfer_hc_settled add = 1", settle)
+        self.assertIn("zg361_career_hc_reclaim_transfer_hc_effect = yes", settle)
+        self.assertNotIn("zg361_pp_", settle)
 
     def test_new_case_resets_stage_deadline_latches(self) -> None:
         for domain in generator.DOMAINS:

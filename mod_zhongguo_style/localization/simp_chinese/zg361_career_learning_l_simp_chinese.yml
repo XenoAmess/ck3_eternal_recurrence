@@ -3,6 +3,7 @@
  zg361_cl_digest_desc:0 "这次没有二十二封弹窗排队敲门。内部流动案 [ROOT.Var('zg361_cl_portfolio_ah_completed')|0] 件，学习案 [ROOT.Var('zg361_cl_portfolio_ai_completed')|0] 件，已按收据、期限与资源账本收口。"
  zg361_cl_digest_ack:0 "很好，至少日报只写一封。"
  zg361_cl_route_defer:0 "先记制度债，下轮再议"
+ zg361_cl_subject_prompt_desc:0 "这是关于你本人的内部流动或学习安排。你可以接受，也可以明确拒绝；回应不会让你获得考核他人的权限。"
  zg361_cl_m312_title:0 "这岗位真的存在"
  zg361_cl_m312_route_a:0 "公开真实编制与条款"
  zg361_cl_m312_route_b:0 "挂一个空气岗位"

@@ -93,6 +93,9 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             "common/scripted_effects/zg361_career_learning_runtime_effects.txt"
         )
         cls.events = read("events/zg361_career_learning_runtime_events.txt")
+        cls.career_effects = read(
+            "common/scripted_effects/zg361_career_hc_runtime_effects.txt"
+        )
         cls.case_effects = read("common/scripted_effects/zg361_case_kernel_effects.txt")
         cls.case_triggers = read("common/scripted_triggers/zg361_case_kernel_triggers.txt")
         cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
@@ -377,15 +380,27 @@ class CareerLearningRuntimeTests(unittest.TestCase):
         self.assertIn("trigger = { is_ai = no }", digest)
         self.assertIn("eligible AI career/learning portfolio advanced silently", queue)
 
-    def test_only_one_visible_event_and_hidden_work_is_queued(self) -> None:
+    def test_six_subject_prompts_and_one_batched_digest_are_visible(self) -> None:
         hidden_expected = sum(len(stages) for stages in generator.STAGES.values()) + len(
             generator.MECHANISMS
         )
         self.assertEqual(self.events.count("hidden = yes"), hidden_expected)
         event_ids = re.findall(r"(?m)^(zg361cl\.\d+)\s*=\s*\{", self.events)
-        self.assertEqual(len(event_ids), hidden_expected + 1)
+        self.assertEqual(
+            len(event_ids), hidden_expected + len(generator.SUBJECT_RESPONSE_IDS) + 1
+        )
         self.assertEqual(event_ids.count("zg361cl.390"), 1)
-        self.assertEqual(self.events.count("title = "), 1)
+        self.assertEqual(self.events.count("title = "), len(generator.SUBJECT_RESPONSE_IDS) + 1)
+        for mechanism_id in generator.SUBJECT_RESPONSE_IDS:
+            event = block(self.events, f"zg361cl.{mechanism_id}")
+            self.assertIn("is_ai = no", event)
+            self.assertIn("zg361_case_kernel_full_guard_trigger", event)
+            self.assertNotIn("zg361_is_celestial_liege_trigger", event)
+            self.assertIn(
+                f"zg361_cl_m{mechanism_id:03d}_subject_response_effect", event
+            )
+            self.assertEqual(event.count("ROUTE = 1"), 1)
+            self.assertEqual(event.count("ROUTE = 2"), 1)
         self.assertIn("Twenty-two popups did not line up", self.loc_en)
         self.assertIn("没有二十二封弹窗排队敲门", self.loc_zh)
 
@@ -457,6 +472,112 @@ class CareerLearningRuntimeTests(unittest.TestCase):
             self.assertNotIn("_open_", source)
             self.assertNotIn("_advance_", source)
             self.assertNotIn("_core_effect", source)
+
+    def test_only_six_legal_response_variables_are_read_and_really_produced(self) -> None:
+        reads = {
+            int(value)
+            for value in re.findall(
+                r"has_variable = zg361_cl_m(\d{3})_subject_response", self.effects
+            )
+        }
+        self.assertEqual(reads, set(generator.SUBJECT_RESPONSE_IDS))
+        self.assertFalse(reads & (set(generator.EXPECTED_IDS) - set(generator.SUBJECT_RESPONSE_IDS)))
+        for mechanism_id in generator.SUBJECT_RESPONSE_IDS:
+            event = block(self.events, f"zg361cl.{mechanism_id}")
+            response = block(
+                self.effects, f"zg361_cl_m{mechanism_id:03d}_subject_response_effect"
+            )
+            self.assertIn("remove_variable = zg361_cl_subject_response_applied", response)
+            self.assertIn("zg361_cl_subject_response_applied value = 1", response)
+            self.assertEqual(
+                event.count(f"zg361_cl_m{mechanism_id:03d}_subject_response_effect"),
+                2,
+            )
+            other_events = self.events.replace(event, "")
+            self.assertNotIn(
+                f"zg361_cl_m{mechanism_id:03d}_subject_response_effect", other_events
+            )
+
+    def test_player_subject_prompts_are_serial_and_ai_uses_background_default(self) -> None:
+        stage2 = block(self.effects, "zg361_cl_run_ah_stage_02_effect")
+        self.assertIn("zg361_cl_prompt_gate value = 0", stage2)
+        for mechanism_id in (314, 315, 318):
+            self.assertIn(f"zg361_cl_m{mechanism_id:03d}_prompt_pending", stage2)
+            self.assertIn(f"trigger_event = {{ id = zg361cl.{mechanism_id} days = 1 }}", stage2)
+        self.assertLess(
+            stage2.index("id = zg361cl.314"),
+            stage2.index("id = zg361cl.315"),
+        )
+        self.assertLess(
+            stage2.index("id = zg361cl.315"),
+            stage2.index("id = zg361cl.318"),
+        )
+        self.assertGreaterEqual(stage2.count("limit = { is_ai = yes }"), 3)
+        for mechanism_id in generator.SUBJECT_RESPONSE_IDS:
+            event = block(self.events, f"zg361cl.{mechanism_id}")
+            for suffix in ("owner", "subject", "cycle", "case", "state"):
+                self.assertIn(f"var:zg361_cl_m{mechanism_id:03d}_prompt_{suffix}", event)
+            self.assertIn("var:zg361_cl_subject_response_applied = 1", event)
+
+    def test_real_internal_transfer_reuses_career_hc_vacancy_and_native_settlement(self) -> None:
+        expected_calls = {
+            312: "zg361_career_hc_claim_cl_transfer_vacancy_effect",
+            314: "zg361_career_hc_accept_cl_transfer_effect",
+            315: "zg361_career_hc_start_cl_transfer_trial_effect",
+            319: "zg361_career_hc_authorize_cl_transfer_release_effect",
+        }
+        for mechanism_id, call in expected_calls.items():
+            core = block(self.effects, f"zg361_cl_m{mechanism_id:03d}_core_effect")
+            self.assertIn(call, core)
+            self.assertIn("zg361_transfer_cl_applied", core)
+            self.assertIn("zg361_cl_route value = 3", core)
+            self.assertIn(f"CODE = 6 MECHANISM = {mechanism_id}", core)
+
+        claim = block(
+            self.career_effects,
+            "zg361_career_hc_claim_cl_transfer_vacancy_effect",
+        )
+        for token in (
+            "zg361_transfer_vacancy_status = 1",
+            "zg361_transfer_vacancy_maturity_cycle <= $TICKET_CYCLE$",
+            "zg361_transfer_hc_reserved = 1",
+            "zg361_transfer_hc_conserved = 1",
+            "zg361_transfer_consumer_kind value = 2",
+        ):
+            self.assertIn(token, claim)
+        self.assertNotIn("zg361_pp_", claim)
+
+        settle = block(
+            self.career_effects,
+            "zg361_career_hc_settle_cl_transfer_effect",
+        )
+        for mechanism_id in (312, 314, 315, 319):
+            self.assertIn(f"zg361_cl_m{mechanism_id:03d}_receipt_owner", settle)
+            self.assertIn(f"zg361_cl_m{mechanism_id:03d}_receipt_choice = 1", settle)
+        create_at = settle.index("create_title_and_vassal_change")
+        change_at = settle.index("change_liege", create_at)
+        resolve_at = settle.index("resolve_title_and_vassal_change", change_at)
+        post_at = settle.index("liege = scope:zg361_transfer_cl_settle_receiver", resolve_at)
+        self.assertLess(create_at, change_at)
+        self.assertLess(change_at, resolve_at)
+        self.assertLess(resolve_at, post_at)
+        self.assertIn("zg361_transfer_hc_settled add = 1", settle)
+        self.assertIn("zg361_career_hc_reclaim_transfer_hc_effect = yes", settle)
+        self.assertNotIn("zg361_pp_", settle)
+
+        resolver = block(self.effects, "zg361_cl_m319_resolve_obligation_effect")
+        self.assertIn("zg361_career_hc_settle_cl_transfer_effect = yes", resolver)
+        self.assertIn("zg361_cl_m312_hire_once_effect = yes", resolver)
+        self.assertIn("mobility_settlement_failed", resolver)
+        hire = block(self.effects, "zg361_cl_m312_hire_once_effect")
+        self.assertIn("EXPECTED_OWNER = var:zg361_cl_m312_object_owner", hire)
+        self.assertIn("zg361_transfer_vacancy_status = 3", hire)
+        # AH and AI cases are parallel; a real #319 move cannot strand the
+        # still-frozen AI stages under their former direct-liege check.
+        ai_after_move = block(self.effects, "zg361_cl_m333_core_effect")
+        self.assertIn("zg361_transfer_consumer_kind = 2", ai_after_move)
+        self.assertIn("zg361_transfer_vacancy_status = 3", ai_after_move)
+        self.assertIn("liege = var:zg361_transfer_cl_receiver", ai_after_move)
 
     def test_count_barons_are_reviewable_but_cannot_manage(self) -> None:
         celestial = block(self.triggers, "zg361_is_celestial_liege_trigger")
@@ -733,7 +854,7 @@ class CareerLearningRuntimeTests(unittest.TestCase):
 
     def test_localization_has_identical_nine_language_structure(self) -> None:
         expected_keys = loc_keys(self.loc_en)
-        self.assertEqual(len(expected_keys), 4 + 22 * 4)
+        self.assertEqual(len(expected_keys), 5 + 22 * 4)
         self.assertEqual(expected_keys, loc_keys(self.loc_zh))
         for folder, _header in generator.LANGUAGES:
             path = (

@@ -1,4 +1,4 @@
-# 361 职业、编制、继任与经理认证 CK3 运行时
+﻿# 361 职业、编制、继任与经理认证 CK3 运行时
 
 状态：**CK3 script static-ready；尚无实机解析、MCP snapshot 或玩家操作证据**
 
@@ -204,6 +204,24 @@ transfer_hc_authorized
 准备时从零直接建立一张 `authorized=reserved=1` 的外部转岗票据；PP #190 接受请求会再冻结一份不可替代的 `PP owner/subject/cycle/case/vacancy/receiver` receipt，只把 vacancy `status 1→2`，不提前结清 HC。settlement 必须让 request 与 receipt 六项逐一相等。D+30 ACL audit 调用 Career/HC 的 settlement consumer；中央 phase-2 lane 仍活动时返回 external-blocked RED=6、保留预留并在 D+30 重试。lane 空闲后才使用原版 `create_title_and_vassal_change → change_liege → resolve_title_and_vassal_change` 改变真实封臣岗位，并回读 `new liege + unchanged primary-title holder`。两项后置条件都成立才写 `status=3`、`reserved→settled`；no-vacancy 或 native postcondition 失败写 typed RED 并 `reserved→reclaimed`。duplicate/stale 只返回 RED，绝不改动现存票据或 HC 账。
 
 这里没有使用 `appoint_court_position`：原版接口明确要求受任者以任命者为 liege，而本产品的 subject 在案卷期间必须是原经理的直属有地封臣。强行调用会制造错误日志或假成功。当前可执行路径因此是正式 title/character 转封；不满足该 exact API 前置条件时保持 external blocked/RED。
+
+### Career/HC ↔ CL #312/#314/#315/#319
+
+CL 不得调用或伪填 PP #190 字段。Career/HC 另提供五个专用入口：
+
+```text
+zg361_career_hc_claim_cl_transfer_vacancy_effect
+zg361_career_hc_accept_cl_transfer_effect
+zg361_career_hc_start_cl_transfer_trial_effect
+zg361_career_hc_authorize_cl_transfer_release_effect
+zg361_career_hc_settle_cl_transfer_effect
+```
+
+#312 只认领本包已经发布、`status=1`、到达 `maturity_cycle` 且 owner/subject 精确相等的真实 P#114 vacancy；它不另造人物、头衔、receiver 或 HC。认领后 `consumer_kind=2` 隔离 CL 与 PP，冻结 `cl_owner/subject/cycle/case/vacancy/receiver/title`，vacancy 保持同一单位 `authorized=reserved=partition=1`。没有票据、receiver 失效、战争或 HC 守恒失败只返回 CL RED/制度债，绝不调用 `change_liege`。
+
+#314 本人接受才把 `cl_phase 1→2`；拒绝立即 `reserved→reclaimed`。#315 接受只把 `phase 2→3` 并冻结试岗，不提前改直属关系；退出同样回收该单位。#319 route A 只冻结 release authorization；D+30 obligation resolver 才严格 join #312/#314/#315/#319 四份同 owner/subject/cycle/case 且 choice=A 的 receipt，然后执行原版三段式转封。route B 卡人/反 Offer 只回收 HC 并留下人才治理后果，世界零变更。
+
+CL settlement 的成功后置必须同时满足：subject 的 `liege=receiver`、`primary_title=frozen title`、`title.holder=subject`。三项全真才写 `status=3`、`cl_phase=6`、`reserved--/settled++` 并重算 partition；实时 receiver/战争/HC 前置失效会在世界变更前 reclaim，native postcondition 失败则 typed RED 4，不能伪造 settled receipt。原版静态证据与尚缺的 MCP paused 查询见 `docs/ck3-native-ai/title-vassal-transfer.md`。
 
 ### 双付款
 
