@@ -51,9 +51,28 @@ from xar_autoplayer.bridge.loaded_feature_manifest_contract import (
 )
 from xar_autoplayer.bridge.zhongguo_b2_pip_snapshot_contract import (
     QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+    ZHONGGUO_B2_PIP_CASE_KIND_V1,
+    ZhongguoB2PipQueryV1,
+    normalize_zhongguo_b2_pip_snapshot_v1_response,
+)
+from xar_autoplayer.bridge.zhongguo_ai_owned_case_snapshot_contract import (
+    QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
+    ZHONGGUO_AI_OWNED_CASE_BACKGROUND_ROUTE_V1,
+    ZHONGGUO_AI_OWNED_CASE_KIND_V1,
+    ZhongguoAiOwnedCaseQueryV1,
+    normalize_zhongguo_ai_owned_case_snapshot_v1_response,
 )
 from xar_autoplayer.bridge.zhongguo_incident_snapshot_contract import (
     QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+    ZHONGGUO_INCIDENT_KIND_V1,
+    ZhongguoIncidentQueryV1,
+    normalize_zhongguo_incident_snapshot_v1_response,
+)
+from xar_autoplayer.bridge.zhongguo_workforce_collective_snapshot_contract import (
+    QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
+    ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1,
+    ZhongguoWorkforceCollectiveQueryV1,
+    normalize_zhongguo_workforce_collective_snapshot_v1_response,
 )
 from xar_autoplayer.bridge.zhongguo_scoreboard_state_contract import (
     QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
@@ -351,11 +370,23 @@ PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     "b2_pip_snapshot": QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
     "incident_snapshot": QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+    "workforce_collective_snapshot": (
+        QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
+    ),
+    "ai_owned_case_snapshot": (
+        QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
+    ),
     "scoreboard_state_acl": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
 }
 PHASE2_REQUIRED_QUERY_FLAGS = {
     "b2_pip_snapshot": "zhongguo_b2_pip_snapshot_v1_query_supported",
     "incident_snapshot": "zhongguo_incident_snapshot_v1_query_supported",
+    "workforce_collective_snapshot": (
+        "zhongguo_workforce_collective_snapshot_v1_query_supported"
+    ),
+    "ai_owned_case_snapshot": (
+        "zhongguo_ai_owned_case_snapshot_v1_query_supported"
+    ),
     "scoreboard_state_acl": (
         "zhongguo_scoreboard_state_v1_query_supported"
     ),
@@ -369,25 +400,81 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     "save_checkpoint": "save-checkpoint",
     "loaded_feature_manifest": QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
 }
-# These are requirement rows rather than invented capability strings.  Their
-# exact ABI names remain owned by the provider contract.  Keeping them here as
-# explicit RED rows prevents a current-runtime capability set from being
-# mistaken for complete phase-two readiness before those ABIs are frozen.
-PHASE2_UNFROZEN_REQUIREMENTS = {
-    "workforce_collective_snapshot_and_three_cycle": (
-        "ABI/provider capability not frozen"
-    ),
-    "ai_owned_case_snapshot": "ABI/provider capability not frozen",
-    "scoreboard_named_widget_action_and_geometry": (
-        "fixed state/ACL query is frozen; action, enabled, focus, modal, "
-        "geometry and scroll ABI still require exact-build live proof"
-    ),
-}
+# Provider readiness and gameplay completion are separate gates.  Every frozen
+# read-only provider belongs to the capability preflight below; the missing
+# named-widget action and product mutations stay explicit in
+# ``PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`` so they cannot make an observation
+# cell GREEN claim that the whole phase-two batch is complete.
+PHASE2_UNFROZEN_REQUIREMENTS: dict[str, str] = {}
 # The runner-side map-entry path is now wired through a strict seed contract.
 # Immutable source/provenance drift remains a pre-launch RED.  A source-tree
 # hash differing from the current same-mod-ID projection is provenance, not a
 # failure; the new runtime is verified by mount/manifest/snapshot after load.
 PHASE2_PENDING_RUNNER_REQUIREMENTS: dict[str, str] = {}
+
+# The registry is deliberately data-only.  A future provider becomes runnable
+# by changing exactly one row to ``wired`` and registering its handler in
+# ``run_phase2_domain_query_stage``; the batch report can therefore distinguish
+# a missing provider cell from the two observation cells that are already
+# implemented.  Read-only observation is never treated as a gameplay action.
+PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
+    "b2_pip_snapshot_query_matrix": {
+        "implementation": "wired",
+        "required_capability": QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+        "required_query_flag": (
+            "zhongguo_b2_pip_snapshot_v1_query_supported"
+        ),
+        "observation_only": True,
+        "gameplay_action_complete": False,
+    },
+    "incident_xyz_snapshot_query_matrix": {
+        "implementation": "wired",
+        "required_capability": QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+        "required_query_flag": (
+            "zhongguo_incident_snapshot_v1_query_supported"
+        ),
+        "observation_only": True,
+        "gameplay_action_complete": False,
+    },
+    "workforce_collective_and_three_cycle_matrix": {
+        "implementation": "wired",
+        "required_capability": (
+            QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY
+        ),
+        "required_query_flag": (
+            "zhongguo_workforce_collective_snapshot_v1_query_supported"
+        ),
+        "observation_only": True,
+        "gameplay_action_complete": False,
+    },
+    "ai_owned_case_matrix": {
+        "implementation": "wired",
+        "required_capability": (
+            QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
+        ),
+        "required_query_flag": (
+            "zhongguo_ai_owned_case_snapshot_v1_query_supported"
+        ),
+        "observation_only": True,
+        "gameplay_action_complete": False,
+    },
+    "scoreboard_named_widget_and_acl_matrix": {
+        "implementation": "provider_pending",
+        "required_capability": QUERY_ZHONGGUO_SCOREBOARD_STATE_V1_CAPABILITY,
+        "required_query_flag": (
+            "zhongguo_scoreboard_state_v1_query_supported"
+        ),
+        "observation_only": False,
+        "gameplay_action_complete": False,
+    },
+}
+PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+    "b2_pip_gameplay_action_and_postcondition_matrix",
+    "incident_xyz_gameplay_action_and_postcondition_matrix",
+    "workforce_collective_gameplay_action_and_postcondition_matrix",
+    "ai_owned_case_gameplay_action_and_postcondition_matrix",
+    "scoreboard_named_widget_action_and_postcondition_matrix",
+)
 
 
 def log(message: str) -> None:
@@ -3946,6 +4033,934 @@ def _phase2_paused_binding(
         "bridge_pid": bridge_pid,
         "connection_generation": connection_generation,
     }
+
+
+def _phase2_unimplemented_domain_cells() -> list[str]:
+    return [
+        cell_id
+        for cell_id, registration in PHASE2_DOMAIN_CELL_REGISTRY.items()
+        if registration.get("implementation") != "wired"
+    ]
+
+
+def _phase2_domain_query_contract(
+    seed_contract: dict[str, object], *, player_character_id: int
+) -> dict[str, int]:
+    """Read only the frozen selectors required by all wired domain cells."""
+
+    value = seed_contract.get("domain_query_matrix")
+    expected_keys = {
+        "schema_version",
+        "b2_pip_owner_character_id",
+        "incident_owner_character_id",
+        "workforce_owner_character_id",
+        "ai_owned_case_owner_character_id",
+        "ai_owned_case_subject_character_id",
+    }
+    if not isinstance(value, dict) or set(value) != expected_keys:
+        raise acceptance.RunnerError(
+            "phase-two domain matrix RED: contract is absent or malformed; expected "
+            "schema_version plus B2, Incident, Workforce and AI-owned-case "
+            "selectors"
+        )
+    if value.get("schema_version") != 1:
+        raise acceptance.RunnerError(
+            "phase-two domain matrix RED: contract schema_version must be 1"
+        )
+    result: dict[str, int] = {}
+    for key in (
+        "b2_pip_owner_character_id",
+        "incident_owner_character_id",
+        "workforce_owner_character_id",
+        "ai_owned_case_owner_character_id",
+        "ai_owned_case_subject_character_id",
+    ):
+        character_id = value.get(key)
+        if (
+            isinstance(character_id, bool)
+            or not isinstance(character_id, int)
+            or not 1 <= character_id <= 2**31 - 1
+        ):
+            raise acceptance.RunnerError(
+                f"phase-two domain matrix RED: {key} is not a positive "
+                "CharacterID"
+            )
+        result[key] = character_id
+    for key in (
+        "b2_pip_owner_character_id",
+        "incident_owner_character_id",
+        "workforce_owner_character_id",
+        "ai_owned_case_owner_character_id",
+    ):
+        if result[key] == player_character_id:
+            raise acceptance.RunnerError(
+                f"phase-two domain matrix RED: {key} must not be the played "
+                "CharacterID"
+            )
+    if (
+        result["ai_owned_case_owner_character_id"]
+        == result["ai_owned_case_subject_character_id"]
+    ):
+        raise acceptance.RunnerError(
+            "phase-two domain matrix RED: AI-owned owner and subject must differ"
+        )
+    return result
+
+
+def _phase2_wrong_owner_character_id(
+    owner_character_id: int,
+    player_character_id: int,
+    *excluded_character_ids: int,
+) -> int:
+    excluded = {
+        owner_character_id,
+        player_character_id,
+        *excluded_character_ids,
+    }
+    for candidate in (
+        owner_character_id + 1,
+        owner_character_id - 1,
+        player_character_id + 1,
+        player_character_id - 1,
+        1,
+    ):
+        if (
+            1 <= candidate <= 2**31 - 1
+            and candidate not in excluded
+        ):
+            return candidate
+    raise acceptance.RunnerError(
+        "phase-two domain matrix could not construct a distinct ACL owner filter"
+    )
+
+
+def _phase2_semantic_query_projection(
+    response: dict[str, object],
+) -> dict[str, object]:
+    """Remove only request/transport identity before restore comparison."""
+
+    return {
+        key: value
+        for key, value in response.items()
+        if key not in {"request_nonce", "snapshot_revision", "source", "binding"}
+    }
+
+
+def _phase2_normalize_b2_query(
+    response: object,
+    *,
+    nonce: str,
+    owner_character_id: int,
+    binding: dict[str, int | str],
+) -> dict[str, object]:
+    try:
+        return normalize_zhongguo_b2_pip_snapshot_v1_response(
+            response,
+            expected_query=ZhongguoB2PipQueryV1(owner_character_id, nonce),
+            expected_snapshot_id=str(binding["snapshot_id"]),
+            expected_revision=int(binding["revision"]),
+            expected_native_revision=int(binding["native_revision"]),
+            expected_connection_generation=int(binding["connection_generation"]),
+            expected_date_raw=int(binding["date_raw"]),
+            expected_player_character_id=int(binding["player_character_id"]),
+        )
+    except (TypeError, ValueError, KeyError) as error:
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP query returned a partial or malformed tuple: "
+            f"{error}"
+        ) from error
+
+
+def _phase2_normalize_incident_query(
+    response: object,
+    *,
+    nonce: str,
+    owner_character_id: int,
+    profile: str,
+    binding: dict[str, int | str],
+) -> dict[str, object]:
+    try:
+        return normalize_zhongguo_incident_snapshot_v1_response(
+            response,
+            expected_query=ZhongguoIncidentQueryV1(
+                owner_character_id, profile, nonce
+            ),
+            expected_snapshot_id=str(binding["snapshot_id"]),
+            expected_revision=int(binding["revision"]),
+            expected_native_revision=int(binding["native_revision"]),
+            expected_connection_generation=int(binding["connection_generation"]),
+            expected_date_raw=int(binding["date_raw"]),
+            expected_player_character_id=int(binding["player_character_id"]),
+        )
+    except (TypeError, ValueError, KeyError) as error:
+        raise acceptance.RunnerError(
+            "phase-two Incident query returned a partial or malformed tuple: "
+            f"{error}"
+        ) from error
+
+
+def _phase2_normalize_workforce_query(
+    response: object,
+    *,
+    nonce: str,
+    owner_character_id: int,
+    binding: dict[str, int | str],
+) -> dict[str, object]:
+    try:
+        return normalize_zhongguo_workforce_collective_snapshot_v1_response(
+            response,
+            expected_query=ZhongguoWorkforceCollectiveQueryV1(
+                owner_character_id, nonce
+            ),
+            expected_snapshot_id=str(binding["snapshot_id"]),
+            expected_revision=int(binding["revision"]),
+            expected_native_revision=int(binding["native_revision"]),
+            expected_connection_generation=int(binding["connection_generation"]),
+            expected_date_raw=int(binding["date_raw"]),
+            expected_player_character_id=int(binding["player_character_id"]),
+        )
+    except (TypeError, ValueError, KeyError) as error:
+        raise acceptance.RunnerError(
+            "phase-two Workforce collective query returned a partial or "
+            f"malformed tuple: {error}"
+        ) from error
+
+
+def _phase2_normalize_ai_owned_case_query(
+    response: object,
+    *,
+    nonce: str,
+    owner_character_id: int,
+    subject_character_id: int,
+    binding: dict[str, int | str],
+) -> dict[str, object]:
+    try:
+        return normalize_zhongguo_ai_owned_case_snapshot_v1_response(
+            response,
+            expected_query=ZhongguoAiOwnedCaseQueryV1(
+                owner_character_id,
+                subject_character_id,
+                nonce,
+            ),
+            expected_snapshot_id=str(binding["snapshot_id"]),
+            expected_revision=int(binding["revision"]),
+            expected_native_revision=int(binding["native_revision"]),
+            expected_connection_generation=int(binding["connection_generation"]),
+            expected_date_raw=int(binding["date_raw"]),
+            expected_player_character_id=int(binding["player_character_id"]),
+        )
+    except (TypeError, ValueError, KeyError) as error:
+        raise acceptance.RunnerError(
+            "phase-two AI-owned case query returned a partial or malformed "
+            f"tuple: {error}"
+        ) from error
+
+
+def _phase2_typed_unavailable(
+    value: object, *, reason: str | None = None
+) -> bool:
+    return (
+        isinstance(value, dict)
+        and set(value) == {"status", "value", "unavailable_reason"}
+        and value.get("status") == "unavailable"
+        and value.get("value") is None
+        and (
+            reason is None
+            or value.get("unavailable_reason") == reason
+        )
+    )
+
+
+def _phase2_typed_available(value: object, expected: object) -> bool:
+    return (
+        isinstance(value, dict)
+        and set(value) == {"status", "value", "unavailable_reason"}
+        and value.get("status") == "available"
+        and value.get("value") == expected
+        and value.get("unavailable_reason") is None
+    )
+
+
+def _phase2_query_b2_pip_cell(
+    service: GameplayBridgeService,
+    *,
+    stage: str,
+    binding: dict[str, int | str],
+    owner_character_id: int,
+) -> dict[str, object]:
+    player_character_id = int(binding["player_character_id"])
+    wrong_owner = _phase2_wrong_owner_character_id(
+        owner_character_id, player_character_id
+    )
+    positive_nonce = f"zg361.phase2.{stage}.b2.positive"
+    acl_nonce = f"zg361.phase2.{stage}.b2.acl"
+    positive = _phase2_normalize_b2_query(
+        service.query_zhongguo_b2_pip_snapshot_v1(
+            positive_nonce,
+            expected_revision=int(binding["revision"]),
+            owner_character_id=owner_character_id,
+        ),
+        nonce=positive_nonce,
+        owner_character_id=owner_character_id,
+        binding=binding,
+    )
+    readiness = positive.get("readiness")
+    if not (
+        positive.get("status") == "available"
+        and positive.get("case_kind") == ZHONGGUO_B2_PIP_CASE_KIND_V1
+        and positive.get("unavailable_reason") is None
+        and isinstance(readiness, dict)
+        and readiness.get("player_subject_binding_ready") is True
+        and readiness.get("owner_binding_ready") is True
+        and readiness.get("gate_ready") is True
+        and readiness.get("gate_evidence_ready") is True
+        and readiness.get("pip_identity_ready") is True
+        and readiness.get("same_frame_ready") is True
+        and readiness.get("ready") is True
+    ):
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP positive cell is not a ready received-self case"
+        )
+    typed_unavailable_count = 0
+    for ticket_name in ("d180_ticket", "d365_ticket"):
+        ticket = positive.get(ticket_name)
+        if not isinstance(ticket, dict) or not ticket:
+            raise acceptance.RunnerError(
+                f"phase-two B2 PIP {ticket_name} is a partial tuple"
+            )
+        for field_name, field in ticket.items():
+            expected_reason = (
+                "product_not_persisted"
+                if field_name == "due_date_raw"
+                else "native_observation_unavailable"
+            )
+            if not _phase2_typed_unavailable(field, reason=expected_reason):
+                raise acceptance.RunnerError(
+                    f"phase-two B2 PIP {ticket_name}.{field_name} fabricated "
+                    "an unimplemented observation"
+                )
+            typed_unavailable_count += 1
+    if not _phase2_typed_unavailable(
+        positive.get("pip_modifier_present"),
+        reason="native_observation_unavailable",
+    ):
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP modifier observation is not typed unavailable"
+        )
+    typed_unavailable_count += 1
+
+    acl = _phase2_normalize_b2_query(
+        service.query_zhongguo_b2_pip_snapshot_v1(
+            acl_nonce,
+            expected_revision=int(binding["revision"]),
+            owner_character_id=wrong_owner,
+        ),
+        nonce=acl_nonce,
+        owner_character_id=wrong_owner,
+        binding=binding,
+    )
+    acl_binding = acl.get("binding")
+    acl_readiness = acl.get("readiness")
+    if not (
+        acl.get("status") == "unavailable"
+        and acl.get("unavailable_reason") == "owner_filter_mismatch"
+        and isinstance(acl_binding, dict)
+        and acl_binding.get("owner_character_id") is None
+        and isinstance(acl_readiness, dict)
+        and acl_readiness.get("same_frame_ready") is True
+        and acl_readiness.get("ready") is False
+    ):
+        raise acceptance.RunnerError(
+            "phase-two B2 PIP wrong-owner ACL did not return a wiped typed RED"
+        )
+    return {
+        "result": "GREEN",
+        "observation_only": True,
+        "gameplay_action_executed": False,
+        "gameplay_action_complete": False,
+        "owner_character_id": owner_character_id,
+        "wrong_owner_character_id": wrong_owner,
+        "positive_response": positive,
+        "acl_response": acl,
+        "typed_unavailable_leaf_count": typed_unavailable_count,
+        "semantic_projection": {
+            "positive": _phase2_semantic_query_projection(positive),
+            "acl": _phase2_semantic_query_projection(acl),
+        },
+    }
+
+
+def _phase2_query_incident_cell(
+    service: GameplayBridgeService,
+    *,
+    stage: str,
+    binding: dict[str, int | str],
+    owner_character_id: int,
+) -> dict[str, object]:
+    player_character_id = int(binding["player_character_id"])
+    wrong_owner = _phase2_wrong_owner_character_id(
+        owner_character_id, player_character_id
+    )
+    profiles: dict[str, dict[str, object]] = {}
+    acl_profiles: dict[str, dict[str, object]] = {}
+    terminal_kinds: list[str] = []
+    typed_unavailable_count = 0
+    for profile in ("x", "y", "z"):
+        positive_nonce = f"zg361.phase2.{stage}.incident.{profile}.positive"
+        response = _phase2_normalize_incident_query(
+            service.query_zhongguo_incident_snapshot_v1(
+                positive_nonce,
+                expected_revision=int(binding["revision"]),
+                owner_character_id=owner_character_id,
+                profile=profile,
+            ),
+            nonce=positive_nonce,
+            owner_character_id=owner_character_id,
+            profile=profile,
+            binding=binding,
+        )
+        readiness = response.get("readiness")
+        terminal = response.get("terminal")
+        terminal_kind = (
+            terminal.get("kind") if isinstance(terminal, dict) else None
+        )
+        if not (
+            response.get("status") == "available"
+            and response.get("case_kind") == ZHONGGUO_INCIDENT_KIND_V1
+            and response.get("profile") == profile
+            and response.get("unavailable_reason") is None
+            and isinstance(readiness, dict)
+            and readiness.get("ready") is True
+            and terminal_kind in {"na", "incident"}
+        ):
+            raise acceptance.RunnerError(
+                f"phase-two Incident {profile} is not a complete N/A/positive tuple"
+            )
+        terminal_kinds.append(str(terminal_kind))
+        for group_name in ("probe", "resources", "kpi"):
+            group = response.get(group_name)
+            if not isinstance(group, dict):
+                raise acceptance.RunnerError(
+                    f"phase-two Incident {profile} {group_name} is partial"
+                )
+            typed_unavailable_count += sum(
+                1 for field in group.values() if _phase2_typed_unavailable(field)
+            )
+        profiles[profile] = response
+
+        acl_nonce = f"zg361.phase2.{stage}.incident.{profile}.acl"
+        acl = _phase2_normalize_incident_query(
+            service.query_zhongguo_incident_snapshot_v1(
+                acl_nonce,
+                expected_revision=int(binding["revision"]),
+                owner_character_id=wrong_owner,
+                profile=profile,
+            ),
+            nonce=acl_nonce,
+            owner_character_id=wrong_owner,
+            profile=profile,
+            binding=binding,
+        )
+        acl_binding = acl.get("binding")
+        acl_readiness = acl.get("readiness")
+        if not (
+            acl.get("status") == "unavailable"
+            and acl.get("unavailable_reason") == "owner_filter_mismatch"
+            and isinstance(acl_binding, dict)
+            and acl_binding.get("owner_character_id") is None
+            and isinstance(acl_readiness, dict)
+            and acl_readiness.get("ready") is False
+        ):
+            raise acceptance.RunnerError(
+                f"phase-two Incident {profile} wrong-owner ACL leaked a tuple"
+            )
+        acl_profiles[profile] = acl
+
+    if set(terminal_kinds) != {"na", "incident"}:
+        raise acceptance.RunnerError(
+            "phase-two Incident X/Y/Z matrix must contain both an exact N/A "
+            "receipt and a positive incident"
+        )
+    if typed_unavailable_count <= 0:
+        raise acceptance.RunnerError(
+            "phase-two Incident X/Y/Z matrix did not preserve any typed "
+            "unavailable leaf"
+        )
+    return {
+        "result": "GREEN",
+        "observation_only": True,
+        "gameplay_action_executed": False,
+        "gameplay_action_complete": False,
+        "owner_character_id": owner_character_id,
+        "wrong_owner_character_id": wrong_owner,
+        "profiles": profiles,
+        "acl_profiles": acl_profiles,
+        "terminal_kind_counts": {
+            "na": terminal_kinds.count("na"),
+            "incident": terminal_kinds.count("incident"),
+        },
+        "typed_unavailable_leaf_count": typed_unavailable_count,
+        "semantic_projection": {
+            "profiles": {
+                profile: _phase2_semantic_query_projection(response)
+                for profile, response in profiles.items()
+            },
+            "acl_profiles": {
+                profile: _phase2_semantic_query_projection(response)
+                for profile, response in acl_profiles.items()
+            },
+        },
+    }
+
+
+def _phase2_query_workforce_collective_cell(
+    service: GameplayBridgeService,
+    *,
+    stage: str,
+    binding: dict[str, int | str],
+    owner_character_id: int,
+) -> dict[str, object]:
+    player_character_id = int(binding["player_character_id"])
+    wrong_owner = _phase2_wrong_owner_character_id(
+        owner_character_id, player_character_id
+    )
+    positive_nonce = f"zg361.phase2.{stage}.workforce.positive"
+    acl_nonce = f"zg361.phase2.{stage}.workforce.acl"
+    positive = _phase2_normalize_workforce_query(
+        service.query_zhongguo_workforce_collective_snapshot_v1(
+            positive_nonce,
+            expected_revision=int(binding["revision"]),
+            owner_character_id=owner_character_id,
+        ),
+        nonce=positive_nonce,
+        owner_character_id=owner_character_id,
+        binding=binding,
+    )
+    readiness = positive.get("readiness")
+    history = positive.get("history")
+    al_case = positive.get("al_case")
+    receipt = positive.get("m360_receipt")
+    if not (
+        positive.get("status") == "available"
+        and positive.get("case_kind")
+        == ZHONGGUO_WORKFORCE_COLLECTIVE_CASE_KIND_V1
+        and positive.get("unavailable_reason") is None
+        and positive.get("subject_character_id") == player_character_id
+        and positive.get("requested_owner_character_id")
+        == owner_character_id
+        and isinstance(readiness, dict)
+        and readiness.get("same_frame_ready") is True
+        and readiness.get("collective_lifecycle_ready") is True
+        and readiness.get("history_ledger_ready") is True
+        and readiness.get("history_order_ready") is True
+        and readiness.get("three_cycle_ready") is True
+        and readiness.get("charter_gate_lifecycle_ready") is True
+        and readiness.get("ready") is True
+        and isinstance(history, dict)
+        and history.get("status") == "three_cycle"
+        and history.get("effective_count") == 3
+        and _phase2_typed_available(history.get("count"), 3)
+        and isinstance(history.get("slots"), list)
+        and len(history["slots"]) == 3
+        and isinstance(al_case, dict)
+        and _phase2_typed_available(
+            al_case.get("owner_character_id"), owner_character_id
+        )
+        and _phase2_typed_available(
+            al_case.get("subject_character_id"), player_character_id
+        )
+        and isinstance(receipt, dict)
+        and _phase2_typed_available(
+            receipt.get("owner_character_id"), owner_character_id
+        )
+        and _phase2_typed_available(
+            receipt.get("subject_character_id"), player_character_id
+        )
+    ):
+        raise acceptance.RunnerError(
+            "phase-two Workforce collective positive cell lacks its received-self "
+            "three-cycle proof"
+        )
+
+    acl = _phase2_normalize_workforce_query(
+        service.query_zhongguo_workforce_collective_snapshot_v1(
+            acl_nonce,
+            expected_revision=int(binding["revision"]),
+            owner_character_id=wrong_owner,
+        ),
+        nonce=acl_nonce,
+        owner_character_id=wrong_owner,
+        binding=binding,
+    )
+    acl_binding = acl.get("binding")
+    acl_readiness = acl.get("readiness")
+    if not (
+        acl.get("status") == "unavailable"
+        and acl.get("unavailable_reason") == "owner_filter_mismatch"
+        and isinstance(acl_binding, dict)
+        and acl_binding.get("owner_character_id") is None
+        and isinstance(acl_readiness, dict)
+        and not any(acl_readiness.values())
+    ):
+        raise acceptance.RunnerError(
+            "phase-two Workforce wrong-owner ACL leaked a collective tuple"
+        )
+    return {
+        "result": "GREEN",
+        "observation_only": True,
+        "gameplay_action_executed": False,
+        "gameplay_action_complete": False,
+        "owner_character_id": owner_character_id,
+        "wrong_owner_character_id": wrong_owner,
+        "positive_response": positive,
+        "acl_response": acl,
+        "three_cycle_receipt_count": 3,
+        "semantic_projection": {
+            "positive": _phase2_semantic_query_projection(positive),
+            "acl": _phase2_semantic_query_projection(acl),
+        },
+    }
+
+
+def _phase2_query_ai_owned_case_cell(
+    service: GameplayBridgeService,
+    *,
+    stage: str,
+    binding: dict[str, int | str],
+    owner_character_id: int,
+    subject_character_id: int,
+) -> dict[str, object]:
+    player_character_id = int(binding["player_character_id"])
+    wrong_owner = _phase2_wrong_owner_character_id(
+        owner_character_id,
+        player_character_id,
+        subject_character_id,
+    )
+    positive_nonce = f"zg361.phase2.{stage}.ai-owned.positive"
+    acl_nonce = f"zg361.phase2.{stage}.ai-owned.acl"
+    positive = _phase2_normalize_ai_owned_case_query(
+        service.query_zhongguo_ai_owned_case_snapshot_v1(
+            owner_character_id,
+            subject_character_id,
+            positive_nonce,
+            expected_revision=int(binding["revision"]),
+        ),
+        nonce=positive_nonce,
+        owner_character_id=owner_character_id,
+        subject_character_id=subject_character_id,
+        binding=binding,
+    )
+    readiness = positive.get("readiness")
+    eligibility = positive.get("owner_eligibility")
+    case = positive.get("case")
+    route = positive.get("route")
+    if not (
+        positive.get("status") == "available"
+        and positive.get("case_kind") == ZHONGGUO_AI_OWNED_CASE_KIND_V1
+        and positive.get("unavailable_reason") is None
+        and positive.get("requested_owner_character_id")
+        == owner_character_id
+        and positive.get("subject_character_id") == subject_character_id
+        and isinstance(readiness, dict)
+        and readiness.get("owner_eligibility_ready") is True
+        and readiness.get("case_identity_ready") is True
+        and readiness.get("route_ready") is True
+        and readiness.get("same_frame_ready") is True
+        and readiness.get("ready") is True
+        and isinstance(eligibility, dict)
+        and _phase2_typed_available(
+            eligibility.get("owner_character_id"), owner_character_id
+        )
+        and _phase2_typed_available(eligibility.get("owner_alive"), True)
+        and _phase2_typed_available(eligibility.get("owner_is_ai"), True)
+        and _phase2_typed_available(
+            eligibility.get("government_key"), "celestial_government"
+        )
+        and _phase2_typed_available(
+            eligibility.get("subject_immediate_liege_character_id"),
+            owner_character_id,
+        )
+        and _phase2_typed_available(
+            eligibility.get("subject_is_direct_subject"), True
+        )
+        and _phase2_typed_available(eligibility.get("authorized"), True)
+        and isinstance(case, dict)
+        and _phase2_typed_available(
+            case.get("owner_character_id"), owner_character_id
+        )
+        and _phase2_typed_available(
+            case.get("subject_character_id"), subject_character_id
+        )
+        and isinstance(route, dict)
+        and _phase2_typed_available(
+            route.get("kind"), ZHONGGUO_AI_OWNED_CASE_BACKGROUND_ROUTE_V1
+        )
+        and _phase2_typed_available(
+            route.get("visible_event_allowed"), False
+        )
+        and _phase2_typed_available(route.get("owner_is_ai"), True)
+        and _phase2_typed_available(route.get("manager_eligible"), True)
+        and _phase2_typed_available(
+            route.get("direct_subject_eligible"), True
+        )
+    ):
+        raise acceptance.RunnerError(
+            "phase-two AI-owned case positive cell lacks an authorized AI "
+            "background route"
+        )
+
+    acl = _phase2_normalize_ai_owned_case_query(
+        service.query_zhongguo_ai_owned_case_snapshot_v1(
+            wrong_owner,
+            subject_character_id,
+            acl_nonce,
+            expected_revision=int(binding["revision"]),
+        ),
+        nonce=acl_nonce,
+        owner_character_id=wrong_owner,
+        subject_character_id=subject_character_id,
+        binding=binding,
+    )
+    acl_readiness = acl.get("readiness")
+    if not (
+        acl.get("status") == "unavailable"
+        and acl.get("unavailable_reason") == "owner_filter_mismatch"
+        and isinstance(acl_readiness, dict)
+        and acl_readiness.get("same_frame_ready") is True
+        and acl_readiness.get("ready") is False
+    ):
+        raise acceptance.RunnerError(
+            "phase-two AI-owned wrong-owner ACL leaked a case tuple"
+        )
+    return {
+        "result": "GREEN",
+        "observation_only": True,
+        "gameplay_action_executed": False,
+        "gameplay_action_complete": False,
+        "owner_character_id": owner_character_id,
+        "subject_character_id": subject_character_id,
+        "wrong_owner_character_id": wrong_owner,
+        "positive_response": positive,
+        "acl_response": acl,
+        "semantic_projection": {
+            "positive": _phase2_semantic_query_projection(positive),
+            "acl": _phase2_semantic_query_projection(acl),
+        },
+    }
+
+
+def run_phase2_domain_query_stage(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    *,
+    stage: str,
+    binding: dict[str, int | str],
+    owner_contract: dict[str, int],
+) -> dict[str, object]:
+    """Run all currently wired read-only domain cells on one paused frame."""
+
+    if stage not in {"pre_restore", "post_restore"}:
+        raise ValueError("phase-two domain query stage must be pre/post_restore")
+    evidence_path = artifacts / (
+        "05a_phase2_domain_queries_pre_restore.json"
+        if stage == "pre_restore"
+        else "07_phase2_domain_queries_post_restore.json"
+    )
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "stage": stage,
+        "scope": "phase2_available_mcp_read_only_domain_cells",
+        "mcp_only": True,
+        "ocr_used": False,
+        "image_used": False,
+        "coordinates_used": False,
+        "gameplay_action_executed": False,
+        "gameplay_green_claimed": False,
+        "binding": binding,
+        "owner_contract": owner_contract,
+        "cell_registry": PHASE2_DOMAIN_CELL_REGISTRY,
+        "implemented_cells": [],
+        "unimplemented_domain_cells": _phase2_unimplemented_domain_cells(),
+        "cells": {},
+        "capabilities": None,
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        capabilities = service.capabilities()
+        if not isinstance(capabilities, dict):
+            raise acceptance.RunnerError(
+                "phase-two domain query capabilities are not an object"
+            )
+        evidence["capabilities"] = capabilities
+        advertised = capabilities.get("bridge_capabilities")
+        advertised_set = (
+            {item for item in advertised if isinstance(item, str)}
+            if isinstance(advertised, list)
+            else set()
+        )
+        implemented = [
+            cell_id
+            for cell_id, registration in PHASE2_DOMAIN_CELL_REGISTRY.items()
+            if registration.get("implementation") == "wired"
+        ]
+        for cell_id in implemented:
+            registration = PHASE2_DOMAIN_CELL_REGISTRY[cell_id]
+            capability = registration.get("required_capability")
+            query_flag = registration.get("required_query_flag")
+            if (
+                not isinstance(capability, str)
+                or capability not in advertised_set
+                or not isinstance(query_flag, str)
+                or capabilities.get(query_flag) is not True
+            ):
+                raise acceptance.RunnerError(
+                    f"phase-two domain cell {cell_id} lacks its runtime "
+                    "capability/query flag"
+                )
+
+        handlers = {
+            "b2_pip_snapshot_query_matrix": lambda: _phase2_query_b2_pip_cell(
+                service,
+                stage=stage,
+                binding=binding,
+                owner_character_id=owner_contract[
+                    "b2_pip_owner_character_id"
+                ],
+            ),
+            "incident_xyz_snapshot_query_matrix": (
+                lambda: _phase2_query_incident_cell(
+                    service,
+                    stage=stage,
+                    binding=binding,
+                    owner_character_id=owner_contract[
+                        "incident_owner_character_id"
+                    ],
+                )
+            ),
+            "workforce_collective_and_three_cycle_matrix": (
+                lambda: _phase2_query_workforce_collective_cell(
+                    service,
+                    stage=stage,
+                    binding=binding,
+                    owner_character_id=owner_contract[
+                        "workforce_owner_character_id"
+                    ],
+                )
+            ),
+            "ai_owned_case_matrix": lambda: _phase2_query_ai_owned_case_cell(
+                service,
+                stage=stage,
+                binding=binding,
+                owner_character_id=owner_contract[
+                    "ai_owned_case_owner_character_id"
+                ],
+                subject_character_id=owner_contract[
+                    "ai_owned_case_subject_character_id"
+                ],
+            ),
+        }
+        cells = evidence["cells"]
+        assert isinstance(cells, dict)
+        for cell_id in implemented:
+            handler = handlers.get(cell_id)
+            if handler is None:
+                raise acceptance.RunnerError(
+                    f"phase-two wired cell {cell_id} has no runner handler"
+                )
+            cells[cell_id] = handler()
+            implemented_cells = evidence["implemented_cells"]
+            if not isinstance(implemented_cells, list):
+                raise acceptance.RunnerError(
+                    "phase-two implemented-cell evidence changed type"
+                )
+            implemented_cells.append(cell_id)
+            write_json(evidence_path, evidence)
+        evidence["result"] = "GREEN"
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two {stage} domain query matrix failed: {error}"
+        ) from error
+
+
+def compare_phase2_domain_query_stages(
+    before: dict[str, object],
+    after: dict[str, object],
+    artifacts: Path,
+) -> dict[str, object]:
+    """Require every observation-only domain payload to survive restore."""
+
+    evidence_path = artifacts / "07b_phase2_domain_restore_consistency.json"
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "scope": "phase2_read_only_domain_payload_restore_consistency",
+        "mcp_only": True,
+        "gameplay_action_executed": False,
+        "gameplay_green_claimed": False,
+        "checks": {},
+        "failure_reason": None,
+    }
+    write_json(evidence_path, evidence)
+    try:
+        before_binding = before.get("binding")
+        after_binding = after.get("binding")
+        before_cells = before.get("cells")
+        after_cells = after.get("cells")
+        checks = {
+            "both_query_stages_green": before.get("result") == "GREEN"
+            and after.get("result") == "GREEN",
+            "same_player": isinstance(before_binding, dict)
+            and isinstance(after_binding, dict)
+            and before_binding.get("player_character_id")
+            == after_binding.get("player_character_id"),
+            "same_date": isinstance(before_binding, dict)
+            and isinstance(after_binding, dict)
+            and before_binding.get("date_raw") == after_binding.get("date_raw"),
+            "same_implemented_cells": before.get("implemented_cells")
+            == after.get("implemented_cells"),
+            "same_unimplemented_cells": before.get("unimplemented_domain_cells")
+            == after.get("unimplemented_domain_cells"),
+            "domain_payloads_restored": isinstance(before_cells, dict)
+            and isinstance(after_cells, dict)
+            and {
+                cell_id: cell.get("semantic_projection")
+                for cell_id, cell in before_cells.items()
+                if isinstance(cell, dict)
+            }
+            == {
+                cell_id: cell.get("semantic_projection")
+                for cell_id, cell in after_cells.items()
+                if isinstance(cell, dict)
+            },
+        }
+        evidence["checks"] = checks
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            raise acceptance.RunnerError(
+                "phase-two domain restore consistency RED: "
+                + ", ".join(failed)
+            )
+        evidence["result"] = "GREEN"
+        write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["result"] = "RED"
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        write_json(evidence_path, evidence)
+        if isinstance(error, acceptance.RunnerError):
+            raise
+        raise acceptance.RunnerError(
+            f"phase-two domain restore consistency failed: {error}"
+        ) from error
 
 
 def wait_for_phase2_paused_snapshot(
@@ -9202,14 +10217,17 @@ def run_phase2_live_scenario(
         "paused_readiness": None,
         "seed_load_proof": None,
         "loaded_feature_manifest": None,
+        "domain_cell_registry": PHASE2_DOMAIN_CELL_REGISTRY,
+        "domain_owner_contract": None,
+        "pre_restore_domain_queries": None,
         "save_restore_lineage": None,
-        "unimplemented_domain_cells": [
-            "b2_pip_action_and_postcondition_matrix",
-            "incident_xyz_action_and_postcondition_matrix",
-            "workforce_collective_and_three_cycle_matrix",
-            "ai_owned_case_matrix",
-            "scoreboard_named_widget_and_acl_matrix",
-        ],
+        "post_restore_domain_queries": None,
+        "domain_restore_consistency": None,
+        "completed_observation_only_cells": [],
+        "missing_gameplay_action_cells": list(
+            PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
+        ),
+        "unimplemented_domain_cells": _phase2_unimplemented_domain_cells(),
         "failure_reason": None,
     }
     write_json(evidence_path, evidence)
@@ -9245,22 +10263,59 @@ def run_phase2_live_scenario(
                 "phase-two loaded-feature manifest is not actionable"
             )
 
+        owner_contract = _phase2_domain_query_contract(
+            seed_contract,
+            player_character_id=int(paused_binding["player_character_id"]),
+        )
+        evidence["domain_owner_contract"] = owner_contract
+        pre_restore_queries = run_phase2_domain_query_stage(
+            service,
+            artifacts,
+            stage="pre_restore",
+            binding=paused_binding,
+            owner_contract=owner_contract,
+        )
+        evidence["pre_restore_domain_queries"] = pre_restore_queries
+
         lineage = run_phase2_save_restore_lineage(
             service,
             artifacts,
             tracked_ck3_pid=tracked_ck3_pid,
         )
         evidence["save_restore_lineage"] = lineage
+        restored_binding = lineage.get("after_restore")
+        if not isinstance(restored_binding, dict):
+            raise acceptance.RunnerError(
+                "phase-two save/restore lineage lacks its restored paused binding"
+            )
+        post_restore_queries = run_phase2_domain_query_stage(
+            service,
+            artifacts,
+            stage="post_restore",
+            binding=restored_binding,
+            owner_contract=owner_contract,
+        )
+        evidence["post_restore_domain_queries"] = post_restore_queries
+        evidence["domain_restore_consistency"] = (
+            compare_phase2_domain_query_stages(
+                pre_restore_queries,
+                post_restore_queries,
+                artifacts,
+            )
+        )
+        evidence["completed_observation_only_cells"] = list(
+            pre_restore_queries.get("implemented_cells", [])
+        )
         write_json(evidence_path, evidence)
 
-        # P0 intentionally stops here.  The full capability gate prevents this
-        # function from running while the future providers are absent; once
-        # they exist, each domain still needs its own pre/post query matrix.
-        # Returning GREEN from only manifest + restore would recreate the false
-        # phase-two claim this split is designed to remove.
+        # All four frozen domain providers now run as real pre/restore/post
+        # read-only matrices.  No product action was executed, however, and the
+        # named-widget action remains absent.  Returning GREEN here would still
+        # turn observation into a false gameplay-completion claim.
         raise acceptance.RunnerError(
-            "phase-two MCP domain matrix RED: independent B2, Incident, "
-            "Workforce/three-cycle, AI and named-widget cells are not implemented"
+            "phase-two MCP domain matrix RED: B2/Incident/Workforce/AI-owned "
+            "observation-only queries passed, but real gameplay actions and "
+            "the safe scoreboard named-widget action remain unimplemented"
         )
     except BaseException as error:
         lineage_path = artifacts / "06_phase2_save_restore_lineage.json"
@@ -10289,8 +11344,8 @@ if __name__ == "__main__":
         action="store_true",
         help=(
             "run the strict MCP-only phase-two capability gate and independent "
-            "scenario; missing collective/AI/widget providers fail before any "
-            "OCR or legacy phase-one navigation"
+            "scenario; four frozen read-only domain providers run before the "
+            "still-missing named-widget/gameplay actions force RED"
         ),
     )
     parser.add_argument(

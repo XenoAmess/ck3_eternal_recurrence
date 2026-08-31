@@ -275,6 +275,13 @@ def main() -> int:
     sys.path.insert(0, str(ROOT / "tools"))
     import run_zhongguo_acceptance as capture
 
+    sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "tests" / "unit"))
+    import test_zhongguo_ai_owned_case_snapshot_contract as ai_owned_snapshot_fixture
+    import test_zhongguo_b2_pip_snapshot_v1_bridge as b2_snapshot_fixture
+    import test_zhongguo_incident_snapshot_contract as incident_snapshot_fixture
+    import test_zhongguo_workforce_collective_snapshot_v1_bridge as workforce_bridge_fixture
+    import test_zhongguo_workforce_collective_snapshot_v1_contract as workforce_snapshot_fixture
+
     arm_source = inspect.getsource(capture.arm_native_speed_one)
     for token in (
         'service.execute_step("set-speed-1")',
@@ -2261,46 +2268,53 @@ def main() -> int:
                 return copy.deepcopy(self.value)
 
         phase2_capability_artifacts = (
-            temporary_root / "phase2-current-profile-explicit-red"
+            temporary_root / "phase2-provider-profile-green"
         )
         phase2_capability_artifacts.mkdir()
-        try:
-            capture.phase2_runtime_capability_preflight(
-                Phase2CapabilityService(complete_phase2_capabilities()),
-                phase2_capability_artifacts,
-                tracked_ck3_pid=4321,
-                managed_restore_supervisor=True,
-            )
-        except capture.acceptance.RunnerError as error:
-            assert "MCP capability RED" in str(error)
-        else:
-            raise AssertionError(
-                "phase-two preflight accepted unfrozen provider requirements"
-            )
-        phase2_current_red = json.loads(
+        phase2_capability_green = capture.phase2_runtime_capability_preflight(
+            Phase2CapabilityService(complete_phase2_capabilities()),
+            phase2_capability_artifacts,
+            tracked_ck3_pid=4321,
+            managed_restore_supervisor=True,
+        )
+        assert phase2_capability_green["result"] == "GREEN"
+        phase2_persisted_green = json.loads(
             (
                 phase2_capability_artifacts
                 / "02_phase2_mcp_capabilities.json"
             ).read_text(encoding="utf-8")
         )
-        assert phase2_current_red["result"] == "RED"
-        assert phase2_current_red["mcp_only"] is True
-        assert phase2_current_red["legacy_scenario_used"] is False
-        assert {
-            row["label"]
-            for row in phase2_current_red["missing_requirements"]
-            if row["kind"] == "abi_not_frozen"
-        } == set(capture.PHASE2_UNFROZEN_REQUIREMENTS)
-        assert {
-            row["label"]: row["value"]
-            for row in phase2_current_red["missing_requirements"]
-            if row["kind"] == "abi_not_frozen"
-        } == capture.PHASE2_UNFROZEN_REQUIREMENTS
+        assert phase2_persisted_green == phase2_capability_green
+        assert phase2_persisted_green["mcp_only"] is True
+        assert phase2_persisted_green["legacy_scenario_used"] is False
+        assert phase2_persisted_green["missing_requirements"] == []
+        assert capture.PHASE2_UNFROZEN_REQUIREMENTS == {}
         assert (
-            "scoreboard_named_widget_state_action_and_acl"
-            not in capture.PHASE2_UNFROZEN_REQUIREMENTS
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+                "workforce_collective_snapshot"
+            ]
+            == "game.command.query-zhongguo-workforce-collective-snapshot-v1"
         )
-        assert "scoreboard_named_widget_action_and_geometry" in (
+        assert (
+            capture.PHASE2_REQUIRED_QUERY_FLAGS[
+                "workforce_collective_snapshot"
+            ]
+            == "zhongguo_workforce_collective_snapshot_v1_query_supported"
+        )
+        assert (
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+                "ai_owned_case_snapshot"
+            ]
+            == "game.command.query-zhongguo-ai-owned-case-snapshot-v1"
+        )
+        assert (
+            capture.PHASE2_REQUIRED_QUERY_FLAGS["ai_owned_case_snapshot"]
+            == "zhongguo_ai_owned_case_snapshot_v1_query_supported"
+        )
+        assert "workforce_collective_snapshot_and_three_cycle" not in (
+            capture.PHASE2_UNFROZEN_REQUIREMENTS
+        )
+        assert "ai_owned_case_snapshot" not in (
             capture.PHASE2_UNFROZEN_REQUIREMENTS
         )
         assert capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
@@ -2311,7 +2325,7 @@ def main() -> int:
         ] == "zhongguo_scoreboard_state_v1_query_supported"
         assert {
             row["label"]
-            for row in phase2_current_red["missing_requirements"]
+            for row in phase2_persisted_green["missing_requirements"]
             if row["kind"] == "runner_not_wired"
         } == set(capture.PHASE2_PENDING_RUNNER_REQUIREMENTS)
 
@@ -2680,6 +2694,645 @@ def main() -> int:
             assert persisted_red["result"] == "RED"
             assert persisted_red["checks"][failed_check] is False
 
+        def rebind_domain_response(
+            value: dict[str, object],
+            *,
+            binding: dict[str, int | str],
+            nonce: str,
+            requested_owner: int,
+            old_player: int,
+            old_owner: int,
+            old_subject: int | None = None,
+            subject_character_id: int | None = None,
+            retain_unavailable_owner_binding: bool = False,
+            profile: str | None = None,
+        ) -> dict[str, object]:
+            response = copy.deepcopy(value)
+            player = int(binding["player_character_id"])
+            target_subject = (
+                player
+                if subject_character_id is None
+                else subject_character_id
+            )
+            source_subject = old_player if old_subject is None else old_subject
+
+            def rewrite_typed_character_ids(
+                node: object, parent_key: str | None = None
+            ) -> None:
+                if isinstance(node, list):
+                    for child in node:
+                        rewrite_typed_character_ids(child, parent_key)
+                    return
+                if not isinstance(node, dict):
+                    return
+                if set(node) == {"status", "value", "unavailable_reason"}:
+                    if node.get("status") != "available":
+                        return
+                    if parent_key in {
+                        "subject_character_id",
+                        "consumed_subject_character_id",
+                    } and node.get("value") == source_subject:
+                        node["value"] = target_subject
+                    if parent_key in {
+                        "owner_character_id",
+                        "budget_owner_character_id",
+                        "consumed_owner_character_id",
+                        "subject_immediate_liege_character_id",
+                    } and node.get("value") == old_owner:
+                        node["value"] = requested_owner
+                    return
+                for key, child in node.items():
+                    rewrite_typed_character_ids(child, key)
+
+            rewrite_typed_character_ids(response)
+            response.update(
+                {
+                    "request_nonce": nonce,
+                    "snapshot_revision": binding["native_revision"],
+                    "date_raw": binding["date_raw"],
+                    "paused": True,
+                    "player_character_id": player,
+                    "subject_character_id": target_subject,
+                    "requested_owner_character_id": requested_owner,
+                }
+            )
+            if profile is not None:
+                response["profile"] = profile
+            source = response["source"]
+            assert isinstance(source, dict)
+            source.update(
+                {
+                    "connection_generation": binding[
+                        "connection_generation"
+                    ],
+                    "snapshot_id": binding["snapshot_id"],
+                    "revision": binding["revision"],
+                    "native_revision": binding["native_revision"],
+                    "date_raw": binding["date_raw"],
+                    "paused": True,
+                    "player_character_id": player,
+                }
+            )
+            response_binding = response["binding"]
+            assert isinstance(response_binding, dict)
+            response_binding.update(
+                {
+                    "request_nonce": nonce,
+                    "snapshot_id": binding["snapshot_id"],
+                    "revision": binding["revision"],
+                    "native_revision": binding["native_revision"],
+                    "connection_generation": binding[
+                        "connection_generation"
+                    ],
+                    "date_raw": binding["date_raw"],
+                    "paused": True,
+                    "player_character_id": player,
+                    "subject_character_id": target_subject,
+                    "owner_character_id": (
+                        requested_owner
+                        if response.get("status") == "available"
+                        or retain_unavailable_owner_binding
+                        else None
+                    ),
+                    "expected_revision": binding["revision"],
+                }
+            )
+            if profile is not None:
+                response_binding["profile"] = profile
+            return response
+
+        def incident_acl_frame(profile: str) -> dict[str, object]:
+            frame = incident_snapshot_fixture.na_frame(profile)
+            frame["status"] = "unavailable"
+            frame["unavailable_reason"] = "owner_filter_mismatch"
+            frame["probe"] = {
+                key: incident_snapshot_fixture.unavailable(
+                    "snapshot_unavailable"
+                )
+                for key in incident_snapshot_fixture.PROBE_KEYS
+            }
+            frame["resources"] = {
+                key: incident_snapshot_fixture.unavailable(
+                    "snapshot_unavailable"
+                )
+                for key in incident_snapshot_fixture.RESOURCE_KEYS
+            }
+            frame["terminal"] = {
+                "kind": "unavailable",
+                "na": None,
+                "incident": None,
+            }
+            frame["kpi"] = {
+                "disposition": "unavailable",
+                **{
+                    key: incident_snapshot_fixture.unavailable(
+                        "snapshot_unavailable"
+                    )
+                    for key in incident_snapshot_fixture.KPI_KEYS
+                },
+            }
+            frame["readiness"] = {
+                key: key == "same_frame_ready"
+                for key in frame["readiness"]
+            }
+            return frame
+
+        pre_domain_snapshot = phase2_snapshot(
+            pid=4321, generation=4, revision=10
+        )
+        post_domain_snapshot = phase2_snapshot(
+            pid=5432, generation=5, revision=20
+        )
+        pre_domain_binding = capture._phase2_paused_binding(
+            pre_domain_snapshot, label="test pre-domain binding"
+        )
+        post_domain_binding = capture._phase2_paused_binding(
+            post_domain_snapshot, label="test post-domain binding"
+        )
+        domain_owner_contract = {
+            "b2_pip_owner_character_id": 9100,
+            "incident_owner_character_id": 9200,
+            "workforce_owner_character_id": 9300,
+            "ai_owned_case_owner_character_id": 9400,
+            "ai_owned_case_subject_character_id": 9500,
+        }
+        domain_seed = {
+            "domain_query_matrix": {
+                "schema_version": 1,
+                **domain_owner_contract,
+            }
+        }
+        assert capture._phase2_domain_query_contract(
+            domain_seed,
+            player_character_id=9001,
+        ) == domain_owner_contract
+        incomplete_domain_seed = copy.deepcopy(domain_seed)
+        incomplete_domain_seed["domain_query_matrix"].pop(
+            "ai_owned_case_subject_character_id"
+        )
+        try:
+            capture._phase2_domain_query_contract(
+                incomplete_domain_seed,
+                player_character_id=9001,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "Workforce and AI-owned-case selectors" in str(error)
+        else:
+            raise AssertionError(
+                "phase-two domain contract accepted a missing AI subject"
+            )
+        player_owned_domain_seed = copy.deepcopy(domain_seed)
+        player_owned_domain_seed["domain_query_matrix"][
+            "workforce_owner_character_id"
+        ] = 9001
+        try:
+            capture._phase2_domain_query_contract(
+                player_owned_domain_seed,
+                player_character_id=9001,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "must not be the played CharacterID" in str(error)
+        else:
+            raise AssertionError(
+                "phase-two domain contract accepted player as Workforce owner"
+            )
+        self_owned_ai_seed = copy.deepcopy(domain_seed)
+        self_owned_ai_seed["domain_query_matrix"][
+            "ai_owned_case_subject_character_id"
+        ] = self_owned_ai_seed["domain_query_matrix"][
+            "ai_owned_case_owner_character_id"
+        ]
+        try:
+            capture._phase2_domain_query_contract(
+                self_owned_ai_seed,
+                player_character_id=9001,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "AI-owned owner and subject must differ" in str(error)
+        else:
+            raise AssertionError(
+                "phase-two domain contract accepted identical AI owner/subject"
+            )
+
+        class Phase2DomainService:
+            def __init__(self) -> None:
+                self.binding = pre_domain_binding
+                self.calls: list[tuple[object, ...]] = []
+                self.missing_b2_flag = False
+                self.partial_b2 = False
+                self.partial_workforce = False
+                self.partial_ai_owned = False
+
+            def capabilities(self) -> dict[str, object]:
+                return {
+                    "bridge_capabilities": [
+                        capture.QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
+                        capture.QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
+                        capture.QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
+                        capture.QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
+                    ],
+                    "zhongguo_b2_pip_snapshot_v1_query_supported": (
+                        not self.missing_b2_flag
+                    ),
+                    "zhongguo_incident_snapshot_v1_query_supported": True,
+                    "zhongguo_workforce_collective_snapshot_v1_query_supported": True,
+                    "zhongguo_ai_owned_case_snapshot_v1_query_supported": True,
+                }
+
+            def query_loaded_feature_manifest_v1(
+                self, *, expected_revision: int
+            ) -> dict[str, object]:
+                assert expected_revision == int(self.binding["revision"])
+                self.calls.append(("manifest", expected_revision))
+                return {"loaded_feature_manifest_ready": True}
+
+            def query_zhongguo_b2_pip_snapshot_v1(
+                self,
+                nonce: str,
+                *,
+                expected_revision: int,
+                owner_character_id: int,
+            ) -> dict[str, object]:
+                assert expected_revision == int(self.binding["revision"])
+                self.calls.append(
+                    (
+                        "b2",
+                        int(self.binding["connection_generation"]),
+                        owner_character_id,
+                    )
+                )
+                actual_owner = domain_owner_contract[
+                    "b2_pip_owner_character_id"
+                ]
+                if owner_character_id == actual_owner:
+                    value = b2_snapshot_fixture._response(
+                        b2_snapshot_fixture._pending_frame()
+                    )
+                else:
+                    value = b2_snapshot_fixture._response(
+                        b2_snapshot_fixture._unavailable_frame(
+                            "owner_filter_mismatch"
+                        )
+                    )
+                rebound = rebind_domain_response(
+                    value,
+                    binding=self.binding,
+                    nonce=nonce,
+                    requested_owner=owner_character_id,
+                    old_player=b2_snapshot_fixture.PLAYER_CHARACTER_ID,
+                    old_owner=b2_snapshot_fixture.OWNER_CHARACTER_ID,
+                )
+                if self.partial_b2 and owner_character_id == actual_owner:
+                    rebound["pip"].pop("case_serial")
+                return rebound
+
+            def query_zhongguo_incident_snapshot_v1(
+                self,
+                nonce: str,
+                *,
+                expected_revision: int,
+                owner_character_id: int,
+                profile: str,
+            ) -> dict[str, object]:
+                assert expected_revision == int(self.binding["revision"])
+                self.calls.append(
+                    (
+                        "incident",
+                        int(self.binding["connection_generation"]),
+                        profile,
+                        owner_character_id,
+                    )
+                )
+                actual_owner = domain_owner_contract[
+                    "incident_owner_character_id"
+                ]
+                if owner_character_id != actual_owner:
+                    frame = incident_acl_frame(profile)
+                elif profile == "x":
+                    frame = incident_snapshot_fixture.na_frame(profile)
+                elif profile == "y":
+                    frame = incident_snapshot_fixture.incident_frame(
+                        profile, "pending"
+                    )
+                else:
+                    frame = incident_snapshot_fixture.incident_frame(
+                        profile, "consumed"
+                    )
+                value = incident_snapshot_fixture.response(frame, profile)
+                return rebind_domain_response(
+                    value,
+                    binding=self.binding,
+                    nonce=nonce,
+                    requested_owner=owner_character_id,
+                    old_player=incident_snapshot_fixture.PLAYER,
+                    old_owner=incident_snapshot_fixture.OWNER,
+                    profile=profile,
+                )
+
+            def query_zhongguo_workforce_collective_snapshot_v1(
+                self,
+                nonce: str,
+                *,
+                expected_revision: int,
+                owner_character_id: int,
+            ) -> dict[str, object]:
+                assert expected_revision == int(self.binding["revision"])
+                self.calls.append(
+                    (
+                        "workforce",
+                        int(self.binding["connection_generation"]),
+                        owner_character_id,
+                    )
+                )
+                actual_owner = domain_owner_contract[
+                    "workforce_owner_character_id"
+                ]
+                if owner_character_id == actual_owner:
+                    value = workforce_snapshot_fixture.response(
+                        workforce_snapshot_fixture.frame(
+                            history_count=(
+                                2 if self.partial_workforce else 3
+                            )
+                        )
+                    )
+                else:
+                    unavailable = workforce_bridge_fixture._frame()
+                    unavailable["unavailable_reason"] = (
+                        "owner_filter_mismatch"
+                    )
+                    value = workforce_snapshot_fixture.response(
+                        workforce_snapshot_fixture.frame()
+                    )
+                    for key, item in unavailable.items():
+                        value[key] = copy.deepcopy(item)
+                return rebind_domain_response(
+                    value,
+                    binding=self.binding,
+                    nonce=nonce,
+                    requested_owner=owner_character_id,
+                    old_player=workforce_snapshot_fixture.PLAYER,
+                    old_owner=workforce_snapshot_fixture.OWNER,
+                )
+
+            def query_zhongguo_ai_owned_case_snapshot_v1(
+                self,
+                owner_character_id: int,
+                subject_character_id: int,
+                nonce: str,
+                *,
+                expected_revision: int | None = None,
+            ) -> dict[str, object]:
+                assert expected_revision == int(self.binding["revision"])
+                self.calls.append(
+                    (
+                        "ai_owned",
+                        int(self.binding["connection_generation"]),
+                        owner_character_id,
+                        subject_character_id,
+                    )
+                )
+                actual_owner = domain_owner_contract[
+                    "ai_owned_case_owner_character_id"
+                ]
+                actual_subject = domain_owner_contract[
+                    "ai_owned_case_subject_character_id"
+                ]
+                if (
+                    owner_character_id == actual_owner
+                    and subject_character_id == actual_subject
+                ):
+                    value = ai_owned_snapshot_fixture._response()
+                    if self.partial_ai_owned:
+                        value["route"].pop("kind")
+                else:
+                    value = ai_owned_snapshot_fixture._response(
+                        ai_owned_snapshot_fixture._unavailable_frame(
+                            "owner_filter_mismatch"
+                        )
+                    )
+                return rebind_domain_response(
+                    value,
+                    binding=self.binding,
+                    nonce=nonce,
+                    requested_owner=owner_character_id,
+                    old_player=ai_owned_snapshot_fixture.PLAYER,
+                    old_owner=ai_owned_snapshot_fixture.OWNER,
+                    old_subject=ai_owned_snapshot_fixture.SUBJECT,
+                    subject_character_id=subject_character_id,
+                    retain_unavailable_owner_binding=True,
+                )
+
+        assert list(capture.PHASE2_DOMAIN_CELL_REGISTRY) == [
+            "b2_pip_snapshot_query_matrix",
+            "incident_xyz_snapshot_query_matrix",
+            "workforce_collective_and_three_cycle_matrix",
+            "ai_owned_case_matrix",
+            "scoreboard_named_widget_and_acl_matrix",
+        ]
+        assert capture._phase2_unimplemented_domain_cells() == [
+            "scoreboard_named_widget_and_acl_matrix",
+        ]
+        for cell_id in (
+            "b2_pip_snapshot_query_matrix",
+            "incident_xyz_snapshot_query_matrix",
+            "workforce_collective_and_three_cycle_matrix",
+            "ai_owned_case_matrix",
+        ):
+            assert capture.PHASE2_DOMAIN_CELL_REGISTRY[cell_id][
+                "observation_only"
+            ] is True
+            assert capture.PHASE2_DOMAIN_CELL_REGISTRY[cell_id][
+                "gameplay_action_complete"
+            ] is False
+
+        domain_service = Phase2DomainService()
+        pre_domain_artifacts = temporary_root / "phase2-domain-pre-green"
+        pre_domain_artifacts.mkdir()
+        pre_domain = capture.run_phase2_domain_query_stage(
+            domain_service,
+            pre_domain_artifacts,
+            stage="pre_restore",
+            binding=pre_domain_binding,
+            owner_contract=domain_owner_contract,
+        )
+        assert pre_domain["result"] == "GREEN"
+        assert pre_domain["gameplay_green_claimed"] is False
+        assert pre_domain["implemented_cells"] == [
+            "b2_pip_snapshot_query_matrix",
+            "incident_xyz_snapshot_query_matrix",
+            "workforce_collective_and_three_cycle_matrix",
+            "ai_owned_case_matrix",
+        ]
+        b2_cell = pre_domain["cells"]["b2_pip_snapshot_query_matrix"]
+        assert b2_cell["result"] == "GREEN"
+        assert b2_cell["gameplay_action_complete"] is False
+        assert b2_cell["typed_unavailable_leaf_count"] > 0
+        assert b2_cell["acl_response"]["unavailable_reason"] == (
+            "owner_filter_mismatch"
+        )
+        incident_cell = pre_domain["cells"][
+            "incident_xyz_snapshot_query_matrix"
+        ]
+        assert incident_cell["terminal_kind_counts"] == {
+            "na": 1,
+            "incident": 2,
+        }
+        assert incident_cell["typed_unavailable_leaf_count"] > 0
+        assert all(
+            response["unavailable_reason"] == "owner_filter_mismatch"
+            for response in incident_cell["acl_profiles"].values()
+        )
+        workforce_cell = pre_domain["cells"][
+            "workforce_collective_and_three_cycle_matrix"
+        ]
+        assert workforce_cell["three_cycle_receipt_count"] == 3
+        assert workforce_cell["positive_response"]["readiness"][
+            "three_cycle_ready"
+        ] is True
+        assert workforce_cell["acl_response"]["unavailable_reason"] == (
+            "owner_filter_mismatch"
+        )
+        ai_owned_cell = pre_domain["cells"]["ai_owned_case_matrix"]
+        assert ai_owned_cell["positive_response"]["route"]["kind"][
+            "value"
+        ] == capture.ZHONGGUO_AI_OWNED_CASE_BACKGROUND_ROUTE_V1
+        assert ai_owned_cell["positive_response"]["route"][
+            "visible_event_allowed"
+        ]["value"] is False
+        assert ai_owned_cell["acl_response"]["unavailable_reason"] == (
+            "owner_filter_mismatch"
+        )
+
+        domain_service.binding = post_domain_binding
+        post_domain_artifacts = temporary_root / "phase2-domain-post-green"
+        post_domain_artifacts.mkdir()
+        post_domain = capture.run_phase2_domain_query_stage(
+            domain_service,
+            post_domain_artifacts,
+            stage="post_restore",
+            binding=post_domain_binding,
+            owner_contract=domain_owner_contract,
+        )
+        consistency_artifacts = temporary_root / "phase2-domain-restore-green"
+        consistency_artifacts.mkdir()
+        consistency = capture.compare_phase2_domain_query_stages(
+            pre_domain, post_domain, consistency_artifacts
+        )
+        assert consistency["result"] == "GREEN"
+        assert consistency["checks"]["domain_payloads_restored"] is True
+        assert [call[1] for call in domain_service.calls if call[0] == "b2"] == [
+            4,
+            4,
+            5,
+            5,
+        ]
+        assert [
+            call[1]
+            for call in domain_service.calls
+            if call[0] == "workforce"
+        ] == [4, 4, 5, 5]
+        assert [
+            call[1]
+            for call in domain_service.calls
+            if call[0] == "ai_owned"
+        ] == [4, 4, 5, 5]
+
+        missing_domain_service = Phase2DomainService()
+        missing_domain_service.missing_b2_flag = True
+        missing_domain_artifacts = temporary_root / "phase2-domain-capability-red"
+        missing_domain_artifacts.mkdir()
+        try:
+            capture.run_phase2_domain_query_stage(
+                missing_domain_service,
+                missing_domain_artifacts,
+                stage="pre_restore",
+                binding=pre_domain_binding,
+                owner_contract=domain_owner_contract,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "lacks its runtime capability/query flag" in str(error)
+        else:
+            raise AssertionError("domain matrix accepted a missing B2 capability")
+        missing_domain_gate = json.loads(
+            (
+                missing_domain_artifacts
+                / "05a_phase2_domain_queries_pre_restore.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert missing_domain_gate["result"] == "RED"
+
+        partial_domain_service = Phase2DomainService()
+        partial_domain_service.partial_b2 = True
+        partial_domain_artifacts = temporary_root / "phase2-domain-partial-red"
+        partial_domain_artifacts.mkdir()
+        try:
+            capture.run_phase2_domain_query_stage(
+                partial_domain_service,
+                partial_domain_artifacts,
+                stage="pre_restore",
+                binding=pre_domain_binding,
+                owner_contract=domain_owner_contract,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "partial or malformed tuple" in str(error)
+        else:
+            raise AssertionError("domain matrix accepted a partial B2 tuple")
+
+        partial_workforce_service = Phase2DomainService()
+        partial_workforce_service.partial_workforce = True
+        partial_workforce_artifacts = (
+            temporary_root / "phase2-domain-workforce-two-cycle-red"
+        )
+        partial_workforce_artifacts.mkdir()
+        try:
+            capture.run_phase2_domain_query_stage(
+                partial_workforce_service,
+                partial_workforce_artifacts,
+                stage="pre_restore",
+                binding=pre_domain_binding,
+                owner_contract=domain_owner_contract,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "three-cycle proof" in str(error)
+        else:
+            raise AssertionError(
+                "domain matrix accepted an incomplete Workforce history"
+            )
+
+        partial_ai_service = Phase2DomainService()
+        partial_ai_service.partial_ai_owned = True
+        partial_ai_artifacts = temporary_root / "phase2-domain-ai-partial-red"
+        partial_ai_artifacts.mkdir()
+        try:
+            capture.run_phase2_domain_query_stage(
+                partial_ai_service,
+                partial_ai_artifacts,
+                stage="pre_restore",
+                binding=pre_domain_binding,
+                owner_contract=domain_owner_contract,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "partial or malformed tuple" in str(error)
+        else:
+            raise AssertionError(
+                "domain matrix accepted a partial AI-owned case tuple"
+            )
+
+        drifted_post = copy.deepcopy(post_domain)
+        drifted_post["cells"]["b2_pip_snapshot_query_matrix"][
+            "semantic_projection"
+        ]["positive"]["date_raw"] += 1
+        drift_artifacts = temporary_root / "phase2-domain-restore-red"
+        drift_artifacts.mkdir()
+        try:
+            capture.compare_phase2_domain_query_stages(
+                pre_domain, drifted_post, drift_artifacts
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "domain_payloads_restored" in str(error)
+        else:
+            raise AssertionError("domain restore comparison accepted payload drift")
+
         def phase2_shutdown(pid: int) -> dict[str, object]:
             return {
                 "ck3_pid": pid,
@@ -3039,6 +3692,103 @@ def main() -> int:
         assert scenario_red["mcp_only"] is True
         assert scenario_red["legacy_run_scenario_used"] is False
         assert scenario_red["test_decision_used"] is False
+
+        wired_scenario_artifacts = (
+            temporary_root / "phase2-b2-incident-pre-post-wired-red"
+        )
+        wired_scenario_artifacts.mkdir()
+        wired_seed_contract = copy.deepcopy(ready_seed_contract)
+        wired_seed_contract["domain_query_matrix"] = {
+            "schema_version": 1,
+            **domain_owner_contract,
+        }
+        wired_service = Phase2DomainService()
+
+        def fake_domain_lineage(
+            _service: object,
+            _artifacts: Path,
+            *,
+            tracked_ck3_pid: int,
+        ) -> dict[str, object]:
+            assert _service is wired_service
+            assert _artifacts == wired_scenario_artifacts
+            assert tracked_ck3_pid == 4321
+            wired_service.calls.append(("lineage", 4, 5))
+            wired_service.binding = post_domain_binding
+            return {
+                "result": "GREEN",
+                "after_restore": copy.deepcopy(post_domain_binding),
+                "pid_lineage": [4321, 5432],
+                "connection_generation_lineage": [4, 5],
+            }
+
+        with (
+            mock.patch.object(
+                capture,
+                "wait_for_phase2_paused_snapshot",
+                return_value=pre_domain_snapshot,
+            ),
+            mock.patch.object(
+                capture,
+                "run_phase2_save_restore_lineage",
+                side_effect=fake_domain_lineage,
+            ),
+        ):
+            try:
+                capture.run_phase2_live_scenario(
+                    wired_service,
+                    wired_scenario_artifacts,
+                    tracked_ck3_pid=4321,
+                    seed_contract=wired_seed_contract,
+                )
+            except capture.acceptance.RunnerError as error:
+                assert "observation-only queries passed" in str(error)
+            else:
+                raise AssertionError(
+                    "read-only B2/Incident matrices claimed gameplay GREEN"
+                )
+        wired_scenario = json.loads(
+            (
+                wired_scenario_artifacts / "05_phase2_live_scenario.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert wired_scenario["result"] == "RED"
+        assert wired_scenario["gameplay_green_claimed"] is False
+        assert wired_scenario["gameplay_acceptance_executed"] is False
+        assert wired_scenario["completed_observation_only_cells"] == [
+            "b2_pip_snapshot_query_matrix",
+            "incident_xyz_snapshot_query_matrix",
+            "workforce_collective_and_three_cycle_matrix",
+            "ai_owned_case_matrix",
+        ]
+        assert wired_scenario["unimplemented_domain_cells"] == [
+            "scoreboard_named_widget_and_acl_matrix",
+        ]
+        assert wired_scenario["missing_gameplay_action_cells"] == list(
+            capture.PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
+        )
+        assert wired_scenario["pre_restore_domain_queries"]["result"] == (
+            "GREEN"
+        )
+        assert wired_scenario["save_restore_lineage"]["result"] == "GREEN"
+        assert wired_scenario["post_restore_domain_queries"]["result"] == (
+            "GREEN"
+        )
+        assert wired_scenario["domain_restore_consistency"]["result"] == (
+            "GREEN"
+        )
+        first_pre_query = next(
+            index
+            for index, call in enumerate(wired_service.calls)
+            if call[0] == "b2" and call[1] == 4
+        )
+        lineage_call = wired_service.calls.index(("lineage", 4, 5))
+        first_post_query = next(
+            index
+            for index, call in enumerate(wired_service.calls)
+            if call[0] == "b2" and call[1] == 5
+        )
+        assert first_pre_query < lineage_call < first_post_query
 
         class MissingLoaderSnapshotService(LoaderReadinessService):
             def snapshot(self) -> dict[str, object]:
