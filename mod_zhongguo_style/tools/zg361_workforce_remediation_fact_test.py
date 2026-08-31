@@ -478,7 +478,7 @@ class WorkforceRemediationFactTests(unittest.TestCase):
         for language in set(gen.LANGUAGES) - {"english", "simp_chinese"}:
             self.assertEqual(bodies[language].splitlines()[1:], english_values)
 
-    def test_13_spec_is_honest_about_static_readiness_and_pending_core_abi(self) -> None:
+    def test_13_spec_is_honest_about_static_readiness_and_wired_core_abi(self) -> None:
         self.assertIn("ck3-script-static-ready-not-live", self.spec)
         self.assertIn("zg361_workforce_remediation_fact_open_effect = yes", self.spec)
         self.assertIn("zg361_workforce_remediation_fact_consume_effect = yes", self.spec)
@@ -487,8 +487,11 @@ class WorkforceRemediationFactTests(unittest.TestCase):
         self.assertIn("最终常量 commit marker", self.spec)
         self.assertIn("exact HC release postcondition", self.spec)
         self.assertIn("refusal_reason_id", self.spec)
-        self.assertIn("不直接修改", self.spec)
-        self.assertIn("不得在接线或实机前", self.spec)
+        self.assertIn("本包自身不拥有", self.spec)
+        self.assertIn("zg361we.5276", self.spec)
+        self.assertIn("zg361we.5277", self.spec)
+        self.assertIn("core-wired static-ready", self.spec)
+        self.assertIn("不得在实机前", self.spec)
         self.assertNotIn("production-live primitive", self.spec)
         self.assertNotIn("fixture-live", self.spec)
 

@@ -117,6 +117,10 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
 - #266 建立 owner-scope AD HC flight；它阻止同一 owner 换 subject 再占一个槽。#274 正式雇用后清掉该
   flight。#275 A 在到期时保留原 HC lineage 并打开 runner-up pending；#275 B 只有拿到与冻结拒绝理由一致的
   remediation receipt 后才 `reserved→available` 并清 flight。没有证据就继续等待，不能因计时到期自动释放。
+  route B 提交后由 D+1 subject event 调用独立 remediation producer 打开真实整改 requirement；due consumer
+  完成 HC 释放、`reason_remediated=1` 与 owner flight 清除后，再由另一个 D+1 subject event 精确消费同一
+  detailed receipt。两处调用都在已提交边界读取，不用同 effect 链写后读；当前仅为 core-wired static-ready，
+  仍待 loader、paused snapshot 与实机事件点击证明。
 - #269 只结算 probation outcome、归因和 referral 金币，不拥有 HC release。相同 outcome id 不能重复结算；
   `outcome_id` 已出现但字段不完整时写 typed future RED，尚无 `outcome_id` 才重排。candidate/hire case、三位责任面试官与
   最终批准人从本案 #267/#269/#272 重导；第一份 attribution bps 由 `10000-bps_2-bps_3` 守恒推导。真实录用的 #269 A/B 在 future consumer 完成前不推进

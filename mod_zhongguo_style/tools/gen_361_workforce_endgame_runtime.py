@@ -128,6 +128,8 @@ FUTURE_EVENT = {
     356: 5356,
     361: 5361,
 }
+REMEDIATION_OPEN_EVENT = 5276
+REMEDIATION_CONSUME_EVENT = 5277
 FUTURE_PENDING = {
     257: "m257_conversion_pending",
     262: "m262_review_pending",
@@ -1714,7 +1716,10 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         if choice == 1:
             refusal_lines += [_set("m275_runner_up", f"var:{PREFIX}_ad_external_runner_up"), _set("m275_runner_up_evidence", f"var:{PREFIX}_ad_external_runner_up_evidence"), _set("m275_runner_reopen_pending", 0)]
         else:
-            refusal_lines += [_set("m275_reason_remediated", 0)]
+            refusal_lines += [
+                _set("m275_reason_remediated", 0),
+                f"trigger_event = {{ id = {NAMESPACE}.{REMEDIATION_OPEN_EVENT} days = 1 }}",
+            ]
         refusal_lines += [_change("gold_reserved", -15), _change("gold_available", 15), _change("offer_gold_reserved", -15), _change("offer_gold_refunded", 15), _set("candidate_active", 0), f"if = {{ limit = {{ has_variable = {PREFIX}_referral_gold_reserved var:{PREFIX}_referral_gold_reserved >= 5 has_variable = {PREFIX}_m271_reward_escrowed var:{PREFIX}_m271_reward_escrowed = 1 }} change_variable = {{ name = {PREFIX}_referral_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_reserved add = -5 }} change_variable = {{ name = {PREFIX}_gold_available add = 5 }} set_variable = {{ name = {PREFIX}_m271_reward_refunded value = 1 }} set_variable = {{ name = {PREFIX}_m271_reward_escrowed value = 0 }} var:zg361_case_{d}_owner = {{ add_gold = 5 }} }}"]
         hired_lines = [
             _set("m275_refusal", 0),
@@ -3150,6 +3155,7 @@ def render_future_consumers() -> str:
 \t\t\tset_variable = {{ name = {PREFIX}_m275_hold_released value = 1 }}
 \t\t\tset_variable = {{ name = {PREFIX}_m275_old_attempt_reopened value = 0 }}
 \t\t\tvar:{PREFIX}_m275_write_owner = {{ set_variable = {{ name = {PREFIX}_ad_hc_flight_pending value = 0 }} }}
+\t\t\ttrigger_event = {{ id = {NAMESPACE}.{REMEDIATION_CONSUME_EVENT} days = 1 }}
 \t\t}}
 \t}}
 \telse_if = {{
@@ -5527,6 +5533,45 @@ def render_future_event(mid: int) -> str:
 }}"""
 
 
+def render_remediation_handoff_events() -> str:
+    return f"""# D+1 commit boundaries for the real #275-B remediation fact.
+{NAMESPACE}.{REMEDIATION_OPEN_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{
+\t\tzg361_workforce_remediation_fact_open_effect = yes
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tOR = {{
+\t\t\t\t\tvar:zg361_workforce_remediation_fact_runtime_status = 1
+\t\t\t\t\tvar:zg361_workforce_remediation_fact_runtime_status = 2
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tdebug_log = "ZG361WE: #275 remediation requirement opened from committed route B"
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_future_red_code value = 2752 }} }}
+\t}}
+}}
+
+{NAMESPACE}.{REMEDIATION_CONSUME_EVENT} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{
+\t\tzg361_workforce_remediation_fact_consume_effect = yes
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tOR = {{
+\t\t\t\t\tvar:zg361_workforce_remediation_fact_runtime_status = 1
+\t\t\t\t\tvar:zg361_workforce_remediation_fact_runtime_status = 2
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tdebug_log = "ZG361WE: #275 remediation receipt consumed after committed HC release"
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_future_red_code value = 2753 }} }}
+\t}}
+}}"""
+
+
 def render_debt_event(mid: int) -> str:
     return f"""{NAMESPACE}.{DEBT_EVENT[mid]} = {{
 	type = character_event
@@ -5607,6 +5652,7 @@ def render_events() -> bytes:
             sections.append(render_deadline_event(domain, state))
     for mid in FUTURE_EVENT:
         sections.append(render_future_event(mid))
+    sections.append(render_remediation_handoff_events())
     for mid in sorted(DEBT_EVENT):
         sections.append(render_debt_event(mid))
     return generated("\n\n".join(sections))

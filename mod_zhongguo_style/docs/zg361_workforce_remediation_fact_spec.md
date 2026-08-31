@@ -1,7 +1,7 @@
 <!-- GENERATED FILE — edit tools/zg361_workforce_remediation_fact_gen.py -->
 # Workforce #275 remediation fact 独立生产者合同
 
-状态：`ck3-script-static-ready-not-live`。本包只负责旧 Workforce #275-B remediation 两字段债务；不修改 Workforce core、#360、runner、CK3 1.19.0.6 bridge/provider 或共享 external-producer ledger。
+状态：`ck3-script-static-ready-not-live`。本包只负责旧 Workforce #275-B remediation 两字段债务；本包自身不拥有 Workforce core、#360、runner、CK3 1.19.0.6 bridge/provider 或共享 external-producer ledger。master 的 Workforce core 已在独立集成提交中调用本包公开 ABI，但尚无 loader/paused/live 证据。
 
 ## 1. 所有权与入口
 
@@ -12,7 +12,7 @@
 - 测试：`tools/zg361_workforce_remediation_fact_test.py`
 - 两个公开 ABI 都在 subject scope：`zg361_workforce_remediation_fact_open_effect = yes` 打开真实 requirement；`zg361_workforce_remediation_fact_consume_effect = yes` 只在 Workforce 已释放 exact HC 后确认消费。
 
-调用点必须位于 `zg361_we_m275_route_b_effect` 成功、`zg361_we_runtime_applied=1` **已经提交后的下一事件/帧**，不能在写 #275 tuple 的同一 effect 链里立即读取；入口不接收 caller 自报的 owner/subject/cycle/case/reason/result，而是直接 join 已提交的 #275 business object、future write/receipt tuple、`choice=2`、真实 hold 与 refusal reason。当前独立包不修改 Workforce generator，所以中央接线前仍是 static-ready，不能声称 production reachable。
+调用点必须位于 `zg361_we_m275_route_b_effect` 成功、`zg361_we_runtime_applied=1` **已经提交后的下一事件/帧**，不能在写 #275 tuple 的同一 effect 链里立即读取；入口不接收 caller 自报的 owner/subject/cycle/case/reason/result，而是直接 join 已提交的 #275 business object、future write/receipt tuple、`choice=2`、真实 hold 与 refusal reason。master 现已由 `zg361we.5276` 在 #275 route B 的 D+1 subject event 调用 open，并由 `zg361we.5277` 在 due consumer 真正释放 HC 后的 D+1 subject event 调用 consume；这只把状态提升到 core-wired static-ready，不能声称 production reachable。
 
 ## 2. 真实整改事实
 
@@ -38,17 +38,17 @@ zg361_we_ad_external_m275_remediated_reason_id
 
 只有 `RESULT=1` 成功落下一次性 detailed receipt 时才投影 `receipt=1`，并把 reason alias 写成冻结的同案 refusal reason；所有详细字段与 alias 都写完后才落最终常量 commit marker。`RESULT=2` 先写完整失败 receipt、明确移除两 alias，再落同一 marker。代码中不存在用零值、计划、排队、AI 默认或超时冒充整改完成的路径。
 
-## 4. Readiness 与待接 ABI
+## 4. Readiness 与已接 ABI
 
 静态测试只证明生成可复现、BOM/九语结构、真实 source guard、玩家 owner 两个终态、receipt 一次性与 legacy alias 只在完成分支写入。它没有 CK3 parser、事件点击、30 日 scheduler、存读档或 paused snapshot 证据。
 
-集成者需从 #275 route B 成功分支排入下一事件/帧，并在该已提交边界的 subject scope 调用：
+master 集成已从 #275 route B 成功分支排入 D+1 事件，并在该已提交边界的 subject scope 调用：
 
 ```text
 zg361_workforce_remediation_fact_open_effect = yes
 ```
 
-并在 #275 due consumer 已实际完成 `reserved→available`、`hold_pending=0`、`reason_remediated=1` 后调用：
+并在 #275 due consumer 已实际完成 `reserved→available`、`hold_pending=0`、`reason_remediated=1`、owner flight 清除后排入 D+1 事件调用：
 
 ```text
 zg361_workforce_remediation_fact_consume_effect = yes
@@ -60,6 +60,6 @@ zg361_workforce_remediation_fact_consume_effect = yes
 
 然后运行新 loader 差集与 MCP-first paused acceptance：验证玩家 owner 完成会在到期 consumer 释放 exact HC lineage；失败、AI、缺事件响应与 stale ticket 都保持 hold 且不产生 alias。OCR 不参与真值或 GREEN 判定。
 
-## 5. 建议 shared ledger 更新（本包不直接修改）
+## 5. Shared ledger 集成状态
 
-把 Career/HC remediation 2 项从“缺 producer”改为“独立真实 producer static-ready，等待 Workforce 成功分支接 ABI 与 loader/live 证明”；不得在接线或实机前从剩余债务数字中扣除，也不得把 alias setter 的静态存在称为完成整改。
+Career/HC remediation 2 项现为“独立真实 producer + Workforce core ABI 已接，static-ready，等待 loader/live 证明”；不得在实机前把它计成 production-live，也不得把 alias setter 的静态存在称为完成整改。

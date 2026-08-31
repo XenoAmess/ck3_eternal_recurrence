@@ -1195,6 +1195,37 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_ch_hc_reserved add = -1", due)
         self.assertIn("zg361_ch_hc_available add = 1", due)
         self.assertIn("ad_hc_flight_pending value = 0", due)
+        open_dispatch = (
+            f"trigger_event = {{ id = zg361we.{gen.REMEDIATION_OPEN_EVENT} days = 1 }}"
+        )
+        consume_dispatch = (
+            f"trigger_event = {{ id = zg361we.{gen.REMEDIATION_CONSUME_EVENT} days = 1 }}"
+        )
+        self.assertNotIn(open_dispatch, refusal)
+        self.assertEqual(1, indefinite.count(open_dispatch))
+        self.assertEqual(1, due.count(consume_dispatch))
+        self.assertLess(due.index("m275_reason_remediated value = 1"), due.index(consume_dispatch))
+        self.assertLess(due.index("ad_hc_flight_pending value = 0"), due.index(consume_dispatch))
+
+        open_event = block(
+            self.events, f"zg361we.{gen.REMEDIATION_OPEN_EVENT}"
+        )
+        consume_event = block(
+            self.events, f"zg361we.{gen.REMEDIATION_CONSUME_EVENT}"
+        )
+        self.assertIn("type = character_event", open_event)
+        self.assertIn("hidden = yes", open_event)
+        self.assertIn(
+            "zg361_workforce_remediation_fact_open_effect = yes", open_event
+        )
+        self.assertIn("future_red_code value = 2752", open_event)
+        self.assertIn("type = character_event", consume_event)
+        self.assertIn("hidden = yes", consume_event)
+        self.assertIn(
+            "zg361_workforce_remediation_fact_consume_effect = yes",
+            consume_event,
+        )
+        self.assertIn("future_red_code value = 2753", consume_event)
 
     def test_69_collective_precheck_is_complete_before_receipt_or_cost(self) -> None:
         for letter in ("a", "b"):

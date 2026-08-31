@@ -251,8 +251,9 @@ zg361_we_ad_external_m275_remediation_receipt
 zg361_we_ad_external_m275_remediated_reason_id
 ```
 
-独立 remediation fact package 已把布尔 sentinel 升级为 exact 五元 receipt/reason producer，但尚未接入 #275 B 的到期
-consumer；所以本表仍按 core-unwired 计，不把独立包测试冒充业务闭环。
+独立 remediation fact package 已把布尔 sentinel 升级为 exact 五元 receipt/reason producer。Workforce core
+现已在 #275 B 提交后的 D+1 打开 requirement，并在 due consumer 真正完成 HC 释放后的 D+1 消费同一 detailed
+receipt；因此记为 core-wired static-ready。尚无 loader/paused/live 证据，不把静态接线冒充业务闭环。
 
 Career/HC rehire history（7）：
 

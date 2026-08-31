@@ -8215,6 +8215,7 @@ zg361_we_m275_hold_due_effect = {
 			set_variable = { name = zg361_we_m275_hold_released value = 1 }
 			set_variable = { name = zg361_we_m275_old_attempt_reopened value = 0 }
 			var:zg361_we_m275_write_owner = { set_variable = { name = zg361_we_ad_hc_flight_pending value = 0 } }
+			trigger_event = { id = zg361we.5277 days = 1 }
 		}
 	}
 	else_if = {
@@ -58075,6 +58076,7 @@ zg361_we_m275_route_b_effect = {
 				set_variable = { name = zg361_we_m275_policy_breach_indefinite_requested value = 1 }
 				trigger_event = { id = zg361we.5275 days = 365 }
 				set_variable = { name = zg361_we_m275_reason_remediated value = 0 }
+				trigger_event = { id = zg361we.5276 days = 1 }
 				change_variable = { name = zg361_we_gold_reserved add = -15 }
 				change_variable = { name = zg361_we_gold_available add = 15 }
 				change_variable = { name = zg361_we_offer_gold_reserved add = -15 }
