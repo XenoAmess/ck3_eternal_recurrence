@@ -1,0 +1,91 @@
+{
+  "contract": "zhongguo_manager_governance_snapshot_v1",
+  "status": "static_and_fixture_ready_not_integrated_not_live",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-zhongguo-manager-governance-snapshot-v1",
+  "step": "query-zhongguo-manager-governance-snapshot-v1",
+  "case_kind": "zhongguo.manager-governance",
+  "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "requires_new_fixed_slot_after_permitted_executor_quindenary",
+  "request": {
+    "public_inputs": [
+      "request_nonce",
+      "expected_revision",
+      "subject_character_id",
+      "owner_character_id"
+    ],
+    "forbidden_inputs": [
+      "case_kind",
+      "variable_name",
+      "manager_is_ai",
+      "manager_is_celestial",
+      "manager_rank",
+      "manager_is_direct_vassal",
+      "arbitrary_extra_field"
+    ]
+  },
+  "subject_acl": {
+    "played_character_path": "subject_equals_paused_played_character_and_owner_is_expected_filter",
+    "ai_path": "owner_must_equal_paused_player_and_subject_must_be_admitted_by_typed_native_dependency",
+    "typed_dependency": "zg361-bounded-ai-direct-manager-selection-v1",
+    "dependency_proof": [
+      "subject_is_direct_vassal_of_player",
+      "subject_is_ai_controlled",
+      "subject_is_celestial_government",
+      "subject_is_landed",
+      "subject_rank_is_duke_or_higher"
+    ],
+    "caller_assertion_accepted": false,
+    "third_party_arbitrary_subject_read": false
+  },
+  "native_variable_abi": {
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "numeric_kind": 1,
+    "character_kind": 4,
+    "fixed_scale": 100000
+  },
+  "allowlist_count": 77,
+  "allowlist_groups": {
+    "f_case_identity_state_revision": 7,
+    "team_snapshot_identity_revision_n_plus_seven_aggregates": 15,
+    "f035_receipt_and_distribution_lifecycle": 33,
+    "f032_receipt_score_and_component8_lifecycle": 22
+  },
+  "semantic_projection": {
+    "team_snapshot": "composite_owner_subject_cycle_case_identity_plus_producer_revision_and_exact_seven_aggregates",
+    "f035": "route_and_rule_source_30_percent_top_remainder_middle_10_or_5_or_0_bottom_conservation_plus_next_cycle_pending_to_settled_policy",
+    "actual_bottom_slots": "core_zg361_bottom_slots_bound_to_effective_mode_and_current_zg361_cohort_n",
+    "f032": "typed_receipt_exact_manager_sum_and_mode_plus_official_component_8_pending_to_settled_token",
+    "route_c": "typed_not_applicable_and_stale_prior_business_values_are_wiped"
+  },
+  "atomicity": {
+    "query_thread": "paused_application_main_mailbox",
+    "two_complete_allowlist_reads": true,
+    "frame_before_after_equal": true,
+    "raw_rows_first_second_equal": true,
+    "engine_pointers_retained": false
+  },
+  "integration_state": {
+    "provider_specific_header_source_serializer_mailbox_fixture": "present",
+    "python_contract_schema_tests": "present",
+    "shared_mailbox_slot": "not_yet_added",
+    "bridge_dispatch_and_capability": "not_yet_added",
+    "game_adapter_step_binding": "not_yet_added",
+    "native_driver_service_mcp": "not_yet_added",
+    "production_live_artifact": null
+  },
+  "unsupported_claims": [
+    "arbitrary_character_variable_read",
+    "caller_supplied_ai_or_eligibility_proof",
+    "grandchild_character_identity",
+    "raw_per_vassal_result_rows",
+    "AK345_to_354_policy_cases",
+    "production_live_acceptance"
+  ]
+}

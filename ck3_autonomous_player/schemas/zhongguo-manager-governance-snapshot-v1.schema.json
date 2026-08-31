@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-manager-governance-snapshot-v1.schema.json",
+  "title": "ZhongGuo manager-governance snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "case_kind", "request_nonce",
+    "snapshot_revision", "date_raw", "paused", "player_character_id",
+    "subject_character_id", "requested_owner_character_id",
+    "subject_binding", "f_case", "team_snapshot", "f035", "f032",
+    "readiness", "unavailable_reason", "provenance", "build", "source",
+    "binding"
+  ],
+  "$defs": {
+    "fieldReason": {
+      "enum": [
+        "case_unavailable", "variable_absent", "value_type_mismatch",
+        "value_out_of_range", "not_applicable", "lifecycle_not_reached",
+        "receipt_not_recorded"
+      ]
+    },
+    "topReason": {
+      "enum": [
+        "unsupported_build", "requires_application_main", "requires_paused",
+        "map_not_ready", "case_not_found", "case_inconsistent",
+        "ai_manager_owner_not_player",
+        "bounded_ai_manager_dependency_unavailable",
+        "subject_not_bounded_ai_manager", "owner_filter_mismatch",
+        "variable_identifier_unavailable", "variable_context_unavailable",
+        "state_changed", "internal_error"
+      ]
+    },
+    "typedInteger": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldReason"}
+          }
+        }
+      ]
+    },
+    "typedBoolean": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "boolean"},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldReason"}
+          }
+        }
+      ]
+    },
+    "typedString": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "string", "minLength": 1, "maxLength": 128},
+            "unavailable_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "value", "unavailable_reason"],
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "unavailable_reason": {"$ref": "#/$defs/fieldReason"}
+          }
+        }
+      ]
+    },
+    "receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "choice"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "choice": {"$ref": "#/$defs/typedInteger"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "case_kind": {"const": "zhongguo.manager-governance"},
+    "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "snapshot_revision": {"type": "integer", "minimum": 1},
+    "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "paused": {"type": "boolean"},
+    "player_character_id": {"type": "integer", "minimum": -1, "maximum": 2147483647},
+    "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "requested_owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "subject_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "manager_character_id", "owner_character_id", "bounded_ai_manager_dependency"],
+      "properties": {
+        "kind": {"enum": ["unavailable", "played_character", "bounded_ai_direct_manager"]},
+        "manager_character_id": {"$ref": "#/$defs/typedInteger"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "bounded_ai_manager_dependency": {"$ref": "#/$defs/typedString"}
+      }
+    },
+    "f_case": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "state", "active", "revision"],
+      "properties": {
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "state": {"$ref": "#/$defs/typedInteger"},
+        "active": {"$ref": "#/$defs/typedBoolean"},
+        "revision": {"$ref": "#/$defs/typedInteger"}
+      }
+    },
+    "team_snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "owner_character_id", "subject_character_id", "cycle_serial", "case_serial", "revision", "source_cycle", "cohort_n", "aggregates"],
+      "properties": {
+        "status": {"$ref": "#/$defs/typedInteger"},
+        "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+        "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+        "cycle_serial": {"$ref": "#/$defs/typedInteger"},
+        "case_serial": {"$ref": "#/$defs/typedInteger"},
+        "revision": {"$ref": "#/$defs/typedInteger"},
+        "source_cycle": {"$ref": "#/$defs/typedInteger"},
+        "cohort_n": {"$ref": "#/$defs/typedInteger"},
+        "aggregates": {
+          "type": "object", "additionalProperties": false,
+          "required": ["targets", "jingcha", "calibration", "pip_success", "appeal_overturn", "retention", "hc_efficiency"],
+          "properties": {
+            "targets": {"$ref": "#/$defs/typedInteger"},
+            "jingcha": {"$ref": "#/$defs/typedInteger"},
+            "calibration": {"$ref": "#/$defs/typedInteger"},
+            "pip_success": {"$ref": "#/$defs/typedInteger"},
+            "appeal_overturn": {"$ref": "#/$defs/typedInteger"},
+            "retention": {"$ref": "#/$defs/typedInteger"},
+            "hc_efficiency": {"$ref": "#/$defs/typedInteger"}
+          }
+        }
+      }
+    },
+    "f035": {
+      "type": "object", "additionalProperties": false,
+      "required": ["receipt", "snapshot", "next_cycle_policy", "effective"],
+      "properties": {
+        "receipt": {"$ref": "#/$defs/receipt"},
+        "snapshot": {
+          "type": "object", "additionalProperties": false,
+          "required": ["available", "mode", "rule_source", "top_slots", "middle_slots", "bottom_slots", "conserved_slots"],
+          "properties": {
+            "available": {"$ref": "#/$defs/typedBoolean"},
+            "mode": {"$ref": "#/$defs/typedInteger"},
+            "rule_source": {"$ref": "#/$defs/typedInteger"},
+            "top_slots": {"$ref": "#/$defs/typedInteger"},
+            "middle_slots": {"$ref": "#/$defs/typedInteger"},
+            "bottom_slots": {"$ref": "#/$defs/typedInteger"},
+            "conserved_slots": {"$ref": "#/$defs/typedInteger"}
+          }
+        },
+        "next_cycle_policy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "owner_character_id", "subject_character_id", "source_reviewer_character_id", "source_cycle", "source_case", "source_revision", "input_revision", "mode", "rule_source", "due_cycle"],
+          "properties": {
+            "status": {"$ref": "#/$defs/typedInteger"},
+            "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+            "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+            "source_reviewer_character_id": {"$ref": "#/$defs/typedInteger"},
+            "source_cycle": {"$ref": "#/$defs/typedInteger"},
+            "source_case": {"$ref": "#/$defs/typedInteger"},
+            "source_revision": {"$ref": "#/$defs/typedInteger"},
+            "input_revision": {"$ref": "#/$defs/typedInteger"},
+            "mode": {"$ref": "#/$defs/typedInteger"},
+            "rule_source": {"$ref": "#/$defs/typedInteger"},
+            "due_cycle": {"$ref": "#/$defs/typedInteger"}
+          }
+        },
+        "effective": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mode", "cycle", "source_cycle", "source_case", "input_revision", "settled_cycle", "settlement_receipt", "actual_cohort_n", "actual_bottom_slots"],
+          "properties": {
+            "mode": {"$ref": "#/$defs/typedInteger"},
+            "cycle": {"$ref": "#/$defs/typedInteger"},
+            "source_cycle": {"$ref": "#/$defs/typedInteger"},
+            "source_case": {"$ref": "#/$defs/typedInteger"},
+            "input_revision": {"$ref": "#/$defs/typedInteger"},
+            "settled_cycle": {"$ref": "#/$defs/typedInteger"},
+            "settlement_receipt": {"$ref": "#/$defs/typedInteger"},
+            "actual_cohort_n": {"$ref": "#/$defs/typedInteger"},
+            "actual_bottom_slots": {"$ref": "#/$defs/typedInteger"}
+          }
+        }
+      }
+    },
+    "f032": {
+      "type": "object", "additionalProperties": false,
+      "required": ["receipt", "manager_score", "component8"],
+      "properties": {
+        "receipt": {"$ref": "#/$defs/receipt"},
+        "manager_score": {
+          "type": "object", "additionalProperties": false,
+          "required": ["sum", "mode"],
+          "properties": {
+            "sum": {"$ref": "#/$defs/typedInteger"},
+            "mode": {"$ref": "#/$defs/typedInteger"}
+          }
+        },
+        "component8": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "owner_character_id", "subject_character_id", "source_cycle", "source_case", "source_revision", "input_revision", "component", "value", "due_cycle", "settled_by_owner_character_id", "settled_cycle", "settled_value", "settlement_receipt"],
+          "properties": {
+            "status": {"$ref": "#/$defs/typedInteger"},
+            "owner_character_id": {"$ref": "#/$defs/typedInteger"},
+            "subject_character_id": {"$ref": "#/$defs/typedInteger"},
+            "source_cycle": {"$ref": "#/$defs/typedInteger"},
+            "source_case": {"$ref": "#/$defs/typedInteger"},
+            "source_revision": {"$ref": "#/$defs/typedInteger"},
+            "input_revision": {"$ref": "#/$defs/typedInteger"},
+            "component": {"$ref": "#/$defs/typedInteger"},
+            "value": {"$ref": "#/$defs/typedInteger"},
+            "due_cycle": {"$ref": "#/$defs/typedInteger"},
+            "settled_by_owner_character_id": {"$ref": "#/$defs/typedInteger"},
+            "settled_cycle": {"$ref": "#/$defs/typedInteger"},
+            "settled_value": {"$ref": "#/$defs/typedInteger"},
+            "settlement_receipt": {"$ref": "#/$defs/typedInteger"}
+          }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["subject_binding_ready", "bounded_ai_dependency_ready", "case_identity_ready", "team_snapshot_ready", "f035_receipt_ready", "distribution_snapshot_ready", "distribution_conservation_ready", "next_cycle_policy_ready", "effective_distribution_ready", "distribution_settlement_ready", "actual_bottom_slots_ready", "distribution_lifecycle_ready", "f032_receipt_ready", "manager_score_ready", "component8_token_ready", "component8_settlement_ready", "component8_lifecycle_ready", "same_frame_ready", "ready"],
+      "properties": {
+        "subject_binding_ready": {"type": "boolean"},
+        "bounded_ai_dependency_ready": {"type": "boolean"},
+        "case_identity_ready": {"type": "boolean"},
+        "team_snapshot_ready": {"type": "boolean"},
+        "f035_receipt_ready": {"type": "boolean"},
+        "distribution_snapshot_ready": {"type": "boolean"},
+        "distribution_conservation_ready": {"type": "boolean"},
+        "next_cycle_policy_ready": {"type": "boolean"},
+        "effective_distribution_ready": {"type": "boolean"},
+        "distribution_settlement_ready": {"type": "boolean"},
+        "actual_bottom_slots_ready": {"type": "boolean"},
+        "distribution_lifecycle_ready": {"type": "boolean"},
+        "f032_receipt_ready": {"type": "boolean"},
+        "manager_score_ready": {"type": "boolean"},
+        "component8_token_ready": {"type": "boolean"},
+        "component8_settlement_ready": {"type": "boolean"},
+        "component8_lifecycle_ready": {"type": "boolean"},
+        "same_frame_ready": {"type": "boolean"},
+        "ready": {"type": "boolean"}
+      }
+    },
+    "unavailable_reason": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/topReason"}]},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["game_version", "executable_sha256", "backend_id", "consumer_id", "allowlist_id", "variable_context_for_scope_rva", "variable_identifier_table_rva", "variable_identifier_lookup_rva", "variable_identifier_name_rva", "character_storage_slot_rva"],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-zhongguo-manager-governance-snapshot-v1"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-manager-governance-snapshot-v1"},
+        "allowlist_id": {"const": "zg361-manager-governance-v1"},
+        "variable_context_for_scope_rva": {"const": "0x3329A40"},
+        "variable_identifier_table_rva": {"const": "0x3B971A0"},
+        "variable_identifier_lookup_rva": {"const": "0x3B97020"},
+        "variable_identifier_name_rva": {"const": "0x3B97090"},
+        "character_storage_slot_rva": {"const": "0x570C130"}
+      }
+    },
+    "build": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "exe_sha256"],
+      "properties": {
+        "version": {"const": "1.19.0.6"},
+        "exe_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bridge_version", "game_adapter_id", "backend_id", "consumer_id", "connection_generation", "snapshot_id", "revision", "native_revision", "date_raw", "paused", "player_character_id"],
+      "properties": {
+        "bridge_version": {"const": "0.1.0"},
+        "game_adapter_id": {"const": "ck3-1.19.0.6-msvc-x64"},
+        "backend_id": {"const": "native-headless"},
+        "consumer_id": {"const": "xar-autoplayer-zhongguo-manager-governance-snapshot-v1"},
+        "connection_generation": {"type": "integer", "minimum": 1},
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {"type": "integer", "minimum": 0},
+        "native_revision": {"type": "integer", "minimum": 1},
+        "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+        "paused": {"const": true},
+        "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_nonce", "snapshot_id", "revision", "native_revision", "connection_generation", "date_raw", "paused", "player_character_id", "subject_character_id", "owner_character_id", "subject_binding_kind", "bounded_ai_manager_dependency", "expected_revision"],
+      "properties": {
+        "request_nonce": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+        "snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "revision": {"type": "integer", "minimum": 0},
+        "native_revision": {"type": "integer", "minimum": 1},
+        "connection_generation": {"type": "integer", "minimum": 1},
+        "date_raw": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+        "paused": {"const": true},
+        "player_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "subject_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "owner_character_id": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "subject_binding_kind": {"enum": ["played_character", "bounded_ai_direct_manager"]},
+        "bounded_ai_manager_dependency": {"oneOf": [{"type": "null"}, {"const": "zg361-bounded-ai-direct-manager-selection-v1"}]},
+        "expected_revision": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "available"}}},
+      "then": {"properties": {"unavailable_reason": {"type": "null"}}},
+      "else": {"properties": {"unavailable_reason": {"$ref": "#/$defs/topReason"}}}
+    }
+  ]
+}

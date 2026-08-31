@@ -1,0 +1,40 @@
+{
+  "fixture": "zhongguo_manager_governance_snapshot_v1_source_contract",
+  "capability": "game.command.query-zhongguo-manager-governance-snapshot-v1",
+  "step": "query-zhongguo-manager-governance-snapshot-v1",
+  "case_kind": "zhongguo.manager-governance",
+  "allowlist_count": 77,
+  "request_fields": [
+    "request_nonce",
+    "expected_revision",
+    "subject_character_id",
+    "owner_character_id"
+  ],
+  "mailbox_executor": "ExecuteZhongguoManagerGovernanceSnapshotMailboxQueryV1",
+  "mailbox_fixed_slot": "requires_new_fixed_slot_after_permitted_executor_quindenary",
+  "result_payload_key": "zhongguo_manager_governance_snapshot",
+  "required_source_properties": [
+    "fixed_case_kind",
+    "fixed_77_variable_allowlist",
+    "two_allowlist_reads",
+    "before_after_frame_equality",
+    "raw_row_equality",
+    "played_subject_or_typed_bounded_ai_direct_manager_only",
+    "f035_distribution_conservation",
+    "f035_actual_bottom_slots_bound_to_effective_mode",
+    "f032_component_is_exactly_8",
+    "pending_to_settled_receipts_are_not_zero_filled",
+    "route_c_wipes_stale_prior_business_values"
+  ],
+  "forbidden_request_fields": [
+    "case_kind",
+    "variable_name",
+    "manager_is_ai",
+    "manager_is_celestial",
+    "manager_rank",
+    "manager_is_direct_vassal",
+    "unknown_field"
+  ],
+  "typed_ai_dependency": "zg361-bounded-ai-direct-manager-selection-v1",
+  "readiness": "static_and_fixture_ready_not_integrated_not_live"
+}
