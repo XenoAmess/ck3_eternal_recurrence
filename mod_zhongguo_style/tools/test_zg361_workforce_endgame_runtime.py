@@ -19,6 +19,7 @@ MOD_ROOT = Path(__file__).resolve().parents[1]
 EFFECTS_PATH = MOD_ROOT / "common" / "scripted_effects" / "zg361_workforce_endgame_runtime_effects.txt"
 EVENTS_PATH = MOD_ROOT / "events" / "zg361_workforce_endgame_runtime_events.txt"
 SPEC_PATH = MOD_ROOT / "docs" / "361-workforce-endgame-ck3-runtime-spec.md"
+LEDGER_PATH = MOD_ROOT / "docs" / "361-workforce-external-producer-ledger-2026-08-31.md"
 EXPECTED_IDS = set(range(242, 278)) | {355, 356, 360, 361}
 ILLEGAL_TRIGGER_ARITHMETIC_RHS = re.compile(
     r"(?:\b(?:root\.)?var:[^\s{}=<>]+|\bscope:[^\s{}=<>]+|\$[A-Z0-9_]+\$)"
@@ -63,6 +64,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         cls.effects = read(EFFECTS_PATH)
         cls.events = read(EVENTS_PATH)
         cls.spec_text = read(SPEC_PATH)
+        cls.ledger_text = read(LEDGER_PATH)
         cls.specs = gen.by_id()
 
     def test_01_readiness_is_honest(self) -> None:
@@ -124,7 +126,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("GREEN: 11", result.stdout)
 
     def test_06_all_owned_text_files_have_bom(self) -> None:
-        paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, *gen.outputs()]
+        paths = [Path(gen.__file__), Path(__file__), SPEC_PATH, LEDGER_PATH, *gen.outputs()]
         for path in paths:
             with self.subTest(path=path):
                 self.assertTrue(path.read_bytes().startswith(gen.BOM))
@@ -669,6 +671,11 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             for mid in EXPECTED_IDS
             for key in (f"zg361we.{mid}.t", f"zg361we.{mid}.desc", f"zg361we.{mid}.a", f"zg361we.{mid}.b", f"zg361we.{mid}.c")
         }
+        expected.update(
+            f"zg361we.handoff.{step}.{suffix}"
+            for step in (1, 2, 3)
+            for suffix in ("t", "desc", "complete", "refuse")
+        )
         for language, mapping in rows.items():
             self.assertEqual(expected, set(mapping), language)
         self.assertNotEqual(rows["english"], rows["simp_chinese"])
@@ -761,13 +768,14 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_review_serial >= root.var:zg361_we_m263_extension_due_cycle", due)
         self.assertIn("m263_terminal_choice value = 1", due)
         self.assertIn("zg361_case_ac_advance_05_effect", due)
-        self.assertIn("id = zg361we.264", due)
+        self.assertIn("zg361_we_m264_begin_handoff_effect", due)
+        self.assertNotIn("id = zg361we.264", due)
 
     def test_52_handoff_a_pays_b_refunds_and_both_release_shadow_slot(self) -> None:
         pay = block(self.effects, "zg361_we_m264_route_a_effect")
         terminate = block(self.effects, "zg361_we_m264_route_b_effect")
-        self.assertIn("m264_payee value = var:zg361_we_ac_external_handoff_payee", pay)
-        self.assertIn("m264_accepted_by value = var:zg361_we_ac_external_handoff_accepted_by", pay)
+        self.assertIn("m264_payee value = var:zg361_we_m254_vendor_id", pay)
+        self.assertIn("m264_accepted_by value = $TICKET_OWNER$", pay)
         self.assertIn("m264_payment_settled value = 1", pay)
         self.assertIn("remove_short_term_gold = 20", pay)
         self.assertIn("add_gold = 20", pay)
@@ -777,8 +785,12 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         for route in (pay, terminate):
             self.assertIn("shadow_hc_active add = -1", route)
             self.assertIn("shadow_hc_available add = 1", route)
-            self.assertIn("ac_external_handoff_consumed value = 1", route)
-            self.assertIn("ac_external_handoff_ready value = 0", route)
+            self.assertIn("m264_handoff_flow_consumed value = 1", route)
+            self.assertIn("m264_handoff_flow_active value = 0", route)
+        self.assertEqual(1, pay.count("remove_short_term_gold = 20"))
+        self.assertEqual(1, pay.count("add_gold = 20"))
+        self.assertEqual(1, terminate.count("m264_payment_refunded value = 20"))
+        self.assertNotIn("add_gold = 20", terminate)
 
     def test_53_fraud_recovery_requires_prior_evidence_and_frozen_payee(self) -> None:
         audit = block(self.effects, "zg361_we_m265_route_a_effect")
@@ -1248,17 +1260,12 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn(f"id = zg361we.{gen.DEBT_EVENT[mid]} days = 365", route)
             self.assertIn(f"zg361we.{gen.DEBT_EVENT[mid]}", self.events)
 
-    def test_82_external_fact_adapters_freeze_real_264_274_275_276_277_objects(self) -> None:
-        handoff = block(self.effects, "zg361_we_submit_m264_handoff_fact_effect")
+    def test_82_external_fact_adapters_freeze_real_274_275_276_277_objects(self) -> None:
         appointment = block(self.effects, "zg361_we_submit_ad_appointment_receipt_effect")
         runner = block(self.effects, "zg361_we_consume_m275_runner_reopen_effect")
         rehire = block(self.effects, "zg361_we_submit_m276_rehire_history_effect")
         pip_exit = block(self.effects, "zg361_we_submit_m277_closed_pip_exit_effect")
-        self.assertIn("$SUNSET_CYCLE$", handoff)
-        self.assertIn("$WAIVER_APPROVER$ = { zg361_is_celestial_liege_trigger = yes }", handoff)
-        for artifact in ("DOCUMENTATION", "SHADOWING", "PRACTICAL"):
-            self.assertIn(f"${artifact}_ID$ > 0", handoff)
-            self.assertIn(f"${artifact}_HASH$ > 0", handoff)
+        self.assertNotIn("zg361_we_submit_m264_handoff_fact_effect", self.effects)
         self.assertIn("$APPOINTMENT_CONFIRMED$ = 1", appointment)
         self.assertIn("$APPOINTED_CHARACTER$ = $TICKET_SUBJECT$", appointment)
         self.assertIn("ad_external_position_receipt_hash", appointment)
@@ -1270,8 +1277,79 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("$PIP_CLOSED$ = 1", pip_exit)
         self.assertIn("$EXIT_CONFIRMED$ = 1", pip_exit)
         self.assertIn("$EXITED_CHARACTER$ = $TICKET_SUBJECT$", pip_exit)
-        for code, adapter in ((2641, handoff), (2741, appointment), (2752, runner), (2761, rehire), (2771, pip_exit)):
+        for code, adapter in ((2741, appointment), (2752, runner), (2761, rehire), (2771, pip_exit)):
             self.assertIn(f"adapter_blocked_reason value = {code}", adapter)
+
+    def test_82a_m262_real_host_selector_accepts_count_subject_but_not_count_manager(self) -> None:
+        selector = block(self.effects, "zg361_we_ac_freeze_m262_host_manager_effect")
+        route_a = block(self.effects, "zg361_we_m262_route_a_effect")
+        route_b = block(self.effects, "zg361_we_m262_route_b_effect")
+        route_c = block(self.effects, "zg361_we_m262_route_c_effect")
+        self.assertIn("$TICKET_SUBJECT$ = this", selector)
+        self.assertNotIn("$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }", selector)
+        self.assertIn("$TICKET_OWNER$ = { zg361_is_celestial_liege_trigger = yes }", selector)
+        self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes", selector)
+        self.assertIn("ordered_vassal = {", selector)
+        self.assertIn("limit = { zg361_is_celestial_liege_trigger = yes", selector)
+        self.assertIn("NOT = { this = scope:zg361_we_m262_host_subject_scope }", selector)
+        self.assertIn("m262_host_selection_blocked_reason value = 2621", selector)
+        for route in (route_a, route_b):
+            self.assertIn("zg361_we_ac_freeze_m262_host_manager_effect", route)
+        self.assertNotIn("zg361_we_ac_freeze_m262_host_manager_effect", route_c)
+
+    def test_82b_m264_player_milestones_are_serial_real_receipts(self) -> None:
+        begin = block(self.effects, "zg361_we_m264_begin_handoff_effect")
+        documentation = block(self.effects, "zg361_we_m264_complete_documentation_effect")
+        shadowing = block(self.effects, "zg361_we_m264_complete_shadowing_effect")
+        practical = block(self.effects, "zg361_we_m264_complete_practical_effect")
+        refusal = block(self.effects, "zg361_we_m264_refuse_handoff_effect")
+        self.assertIn("EXPECTED_STATE = 6", begin)
+        for mid in (254, 256, 261, 262, 263):
+            self.assertIn(f"m{mid}_object_case = $TICKET_CASE$", begin)
+            self.assertIn(f"m{mid}_object_consumed = 1", begin)
+        self.assertIn("m264_handoff_step value = 1", begin)
+        self.assertIn("m264_documentation_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2641 }", documentation)
+        self.assertIn("m264_handoff_documentation_source_object value = var:zg361_we_m261_object_id", documentation)
+        self.assertIn("id = zg361we.52650 days = 30", documentation)
+        self.assertIn("m264_shadowing_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2642 }", shadowing)
+        self.assertIn("m264_handoff_shadowing_source_object value = var:zg361_we_m263_object_id", shadowing)
+        self.assertIn("id = zg361we.52651 days = 30", shadowing)
+        self.assertIn("m264_practical_receipt_id value = { value = var:zg361_we_m264_handoff_case multiply = 10000 add = 2643 }", practical)
+        self.assertIn("m264_handoff_practical_source_object value = var:zg361_we_m256_object_id", practical)
+        self.assertIn("m264_handoff_response value = 1", practical)
+        self.assertIn("m264_handoff_refusal_reason value = $EXPECTED_STEP$", refusal)
+        self.assertNotIn("_hash", "\n".join((begin, documentation, shadowing, practical, refusal)))
+        for step, event_id, effect_name in (
+            (1, 52640, "zg361_we_m264_complete_documentation_effect"),
+            (2, 52641, "zg361_we_m264_complete_shadowing_effect"),
+            (3, 52642, "zg361_we_m264_complete_practical_effect"),
+        ):
+            event = block(self.events, f"zg361we.{event_id}")
+            self.assertIn("option = {", event)
+            self.assertIn("is_ai = no", event)
+            self.assertIn("this = scope:zg361_we_m264_handoff_subject_scope", event)
+            self.assertIn("this = scope:zg361_we_m264_handoff_owner_scope", event)
+            self.assertIn(effect_name, event)
+            self.assertIn(f"EXPECTED_STEP = {step}", event)
+
+    def test_82c_m264_dispatch_never_sends_visible_event_to_ai(self) -> None:
+        for step, event_id in ((1, 52640), (2, 52641), (3, 52642)):
+            dispatch = block(self.effects, f"zg361_we_m264_dispatch_handoff_step_{step}_effect")
+            self.assertIn(f"if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = zg361we.{event_id} }} }}", dispatch)
+            self.assertIn("else_if = { limit = { var:zg361_we_m264_handoff_owner = { is_ai = no } }", dispatch)
+            self.assertIn(f"else = {{ zg361_we_m264_complete_", dispatch)
+            self.assertLess(
+                dispatch.index(f"if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = zg361we.{event_id} }} }}"),
+                dispatch.index("else_if = { limit = { var:zg361_we_m264_handoff_owner = { is_ai = no } }"),
+                "a human assessed subject must receive their own event before any manager proxy branch",
+            )
+        owner_review = block(self.effects, "zg361_we_m264_queue_owner_review_effect")
+        self.assertIn("limit = { var:zg361_we_m264_handoff_owner = { is_ai = yes } }", owner_review)
+        self.assertIn("else = { var:zg361_we_m264_handoff_owner = { trigger_event = { id = zg361we.264 } } }", owner_review)
+
+    def test_82d_all_old_ac_handoff_reads_are_eliminated(self) -> None:
+        self.assertNotIn("zg361_we_ac_external_handoff_", self.effects)
+        self.assertNotIn("zg361_we_ac_external_handoff_", self.events)
 
     def test_83_collective_submission_is_exact_three_cohorts_append_only_then_sealed(self) -> None:
         begin = block(self.effects, "zg361_we_begin_al_three_cohort_collective_effect")
@@ -1322,6 +1400,18 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("already-confirmed appointment receipt", self.effects)
         self.assertNotIn("appoint_court_position", route)
         self.assertIn("adapter_blocked_reason value = 2741", receipt)
+
+    def test_86_loader_external_producer_ledger_is_exact_and_honest(self) -> None:
+        self.assertIn("538134E409393CC1CAF7BC0736B385594D2344B55E2502C5D6D4A5BBDDBD9512", self.ledger_text)
+        ac = set(re.findall(r"zg361_we_ac_external_[a-z0-9_]+", self.ledger_text))
+        ad = set(re.findall(r"zg361_we_ad_external_[a-z0-9_]+", self.ledger_text))
+        self.assertEqual(20, len(ac))
+        self.assertEqual(80, len(ad))
+        self.assertIn("3×(14+36)+17=167", self.ledger_text)
+        self.assertIn("AD 80 + AL collective 167 +", self.ledger_text)
+        self.assertIn("AL charter 28", self.ledger_text)
+        self.assertIn("仍余 275", self.ledger_text)
+        self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
 
 
 if __name__ == "__main__":

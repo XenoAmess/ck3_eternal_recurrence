@@ -1659,10 +1659,6 @@ zg361we.263 = {
 				TICKET_CASE = scope:zg361_we_ac_case
 			}
 		}
-		if = {
-			limit = { scope:zg361_we_ac_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ac_state = 6 } }
-			trigger_event = { id = zg361we.264 }
-		}
 	}
 	option = {
 		name = zg361we.263.b
@@ -1673,10 +1669,6 @@ zg361we.263 = {
 				TICKET_CYCLE = scope:zg361_we_ac_cycle
 				TICKET_CASE = scope:zg361_we_ac_case
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ac_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ac_state = 6 } }
-			trigger_event = { id = zg361we.264 }
 		}
 	}
 	option = {
@@ -1689,10 +1681,6 @@ zg361we.263 = {
 				TICKET_CASE = scope:zg361_we_ac_case
 				TICKET_STATE = 5
 			}
-		}
-		if = {
-			limit = { scope:zg361_we_ac_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_ac_state = 6 } }
-			trigger_event = { id = zg361we.264 }
 		}
 	}
 }
@@ -1729,6 +1717,12 @@ zg361we.264 = {
 	}
 	option = {
 		name = zg361we.264.a
+		trigger = {
+			scope:zg361_we_ac_subject = {
+				has_variable = zg361_we_m264_handoff_response
+				var:zg361_we_m264_handoff_response = 1
+			}
+		}
 		scope:zg361_we_ac_subject = {
 			zg361_we_m264_route_a_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -1744,6 +1738,12 @@ zg361we.264 = {
 	}
 	option = {
 		name = zg361we.264.b
+		trigger = {
+			scope:zg361_we_ac_subject = {
+				has_variable = zg361_we_m264_handoff_response
+				var:zg361_we_m264_handoff_response = 2
+			}
+		}
 		scope:zg361_we_ac_subject = {
 			zg361_we_m264_route_b_effect = {
 				TICKET_OWNER = scope:zg361_we_ac_owner
@@ -3161,6 +3161,108 @@ zg361we.361 = {
 			}
 		}
 	}
+}
+
+zg361we.52640 = {
+	type = character_event
+	theme = stewardship
+	title = zg361we.handoff.1.t
+	desc = zg361we.handoff.1.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_we_m264_handoff_subject_scope
+		exists = scope:zg361_we_m264_handoff_owner_scope
+		OR = {
+			this = scope:zg361_we_m264_handoff_subject_scope
+			this = scope:zg361_we_m264_handoff_owner_scope
+		}
+		scope:zg361_we_m264_handoff_subject_scope = {
+			has_variable = zg361_we_m264_handoff_flow_active
+			var:zg361_we_m264_handoff_flow_active = 1
+			var:zg361_we_m264_handoff_flow_consumed = 0
+			var:zg361_we_m264_handoff_step = 1
+		}
+	}
+	option = {
+		name = zg361we.handoff.1.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_documentation_effect = yes }
+	}
+	option = {
+		name = zg361we.handoff.1.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 1 } }
+	}
+}
+
+zg361we.52641 = {
+	type = character_event
+	theme = stewardship
+	title = zg361we.handoff.2.t
+	desc = zg361we.handoff.2.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_we_m264_handoff_subject_scope
+		exists = scope:zg361_we_m264_handoff_owner_scope
+		OR = {
+			this = scope:zg361_we_m264_handoff_subject_scope
+			this = scope:zg361_we_m264_handoff_owner_scope
+		}
+		scope:zg361_we_m264_handoff_subject_scope = {
+			has_variable = zg361_we_m264_handoff_flow_active
+			var:zg361_we_m264_handoff_flow_active = 1
+			var:zg361_we_m264_handoff_flow_consumed = 0
+			var:zg361_we_m264_handoff_step = 2
+		}
+	}
+	option = {
+		name = zg361we.handoff.2.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_shadowing_effect = yes }
+	}
+	option = {
+		name = zg361we.handoff.2.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 2 } }
+	}
+}
+
+zg361we.52642 = {
+	type = character_event
+	theme = stewardship
+	title = zg361we.handoff.3.t
+	desc = zg361we.handoff.3.desc
+	trigger = {
+		is_ai = no
+		exists = scope:zg361_we_m264_handoff_subject_scope
+		exists = scope:zg361_we_m264_handoff_owner_scope
+		OR = {
+			this = scope:zg361_we_m264_handoff_subject_scope
+			this = scope:zg361_we_m264_handoff_owner_scope
+		}
+		scope:zg361_we_m264_handoff_subject_scope = {
+			has_variable = zg361_we_m264_handoff_flow_active
+			var:zg361_we_m264_handoff_flow_active = 1
+			var:zg361_we_m264_handoff_flow_consumed = 0
+			var:zg361_we_m264_handoff_step = 3
+		}
+	}
+	option = {
+		name = zg361we.handoff.3.complete
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_complete_practical_effect = yes }
+	}
+	option = {
+		name = zg361we.handoff.3.refuse
+		scope:zg361_we_m264_handoff_subject_scope = { zg361_we_m264_refuse_handoff_effect = { EXPECTED_STEP = 3 } }
+	}
+}
+
+zg361we.52650 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m264_dispatch_handoff_step_2_effect = yes }
+}
+
+zg361we.52651 = {
+	type = character_event
+	hidden = yes
+	immediate = { zg361_we_m264_dispatch_handoff_step_3_effect = yes }
 }
 
 zg361we.4201 = {

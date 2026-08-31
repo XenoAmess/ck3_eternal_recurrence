@@ -13,6 +13,7 @@
 - `common/scripted_effects/zg361_workforce_endgame_runtime_effects.txt`
 - `events/zg361_workforce_endgame_runtime_events.txt`
 - `localization/*/zg361_workforce_endgame_l_*.yml`
+- `docs/361-workforce-external-producer-ledger-2026-08-31.md`（303 项 loader 告警责任账本）
 
 它复用共享 case kernel 的五元 guard、operation receipt、stage dispatcher 与 exact deadline ABI，但不修改
 kernel。本包只有一个对中央层公开的 manager-scope adapter：
@@ -108,6 +109,22 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
   未录用才展示 #275 A/B/C。真实拒绝后内部写 #269 `no_hire=1` disposition，不创建 probation watch，也不展示
   延迟质量回写窗。这两种 disposition 是可追溯的同案业务结论，不是 C debt，且资源变化为零。
 
+### AC #262/#264 的真实人物与交接 vertical
+
+#262 A/B 不再等待 caller 提交 host character。route 在业务 precheck 前从真实人物树冻结一个与 owner/subject
+都不同的天朝制公爵及以上 host manager：优先 owner 的 eligible liege，否则取其其他 eligible manager vassal；
+没有候选就 typed RED `2621`。subject 只要求是本案直属受评者，所以伯爵和男爵可以外派，但绝不能被当作 host
+manager。#262 C 不读取或伪造 host。
+
+#263 真实 return/extension 终结并推进到 state 6 后，产品自己启动 #264 handoff。玩家依次完成“文档签收 →
+30 日 → 跟岗 → 30 日 → 实操验收”；subject 是玩家时，每一步只由 subject 本人的玩家事件选项生成本案
+receipt，manager 不得代签；receipt 分别绑定已经消费的 #261、#263、#256 exact object。任一步拒绝都会冻结
+该 step 为 refusal reason，只开放 #264 B；三步全部完成才开放 A。只有 subject 是 AI 而 owner 是玩家时才由
+玩家 manager 选择；双方都是 AI 时只走项目已授权的后台 AI 路径，绝不向 AI 发送玩家事件。A 路一次性由
+owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退款最多一次。
+旧 `ac_external_handoff_*` caller adapter、三个无来源 hash 与提前 settlement waiver 已删除，sunset 仍取 #254
+权威周期。当前只有静态生成/测试证据，必须用新 loader 和 paused snapshot 复验。
+
 ## 4. 40 项显式 write→consumer 映射
 
 表内 state 是 shared domain case 的 expected state；所有 “consumer” 同时落可见 revision/provenance。
@@ -135,8 +152,8 @@ CK3 delayed event 本身不能携带任意动态值；共享 kernel 的同 event
 | AC | 259 | 3 | per-incident responsibility bps → exact 10000bp SLA allocation |
 | AC | 257 | 4 | 消费已验收 #256，conversion/effective cycle → next-cycle formal reserved→occupied、shadow active→available |
 | AC | 262 | 4 | home/host weights/cost/due → A/B 建 real secondment，`created+1` 后重开 deadline 并排 #263；C 只登记 debt |
-| AC | 263 | 5 | real #262 + due + return/extend → A 终结；B 取消旧 deadline、`created+1` 后才终结推进；C debt；A/B 要求 subject celestial manager |
-| AC | 264 | 6 | handoff artifacts/acceptor/payee → A 验收付款、B 退款不付款；两路释放剩余 shadow slot |
+| AC | 263 | 5 | real #262 + due + return/extend → A 终结；B 取消旧 deadline、`created+1` 后才终结推进；C debt；伯爵/男爵可为 subject，只有 host 要求 celestial manager |
+| AC | 264 | 6 | 三次真实玩家交接选项 + #261/#263/#256 对象回执 → A 验收付款、B 拒绝退款；两路释放剩余 shadow slot |
 | AC | 265 | 6 | A 只凭既有 incident/executor/payment evidence 冻结 actor/payee 并精确反向追偿；B 仅记录 suspicion/investigation，零追回 |
 | AD | 266 | 1 | vacancy/bar/urgency/HC receipt → shared available→reserved，一岗一槽并建立 owner-scope single flight |
 | AD | 273 | 1 | 消费同案 #266，unique candidate owner/allocation/credit split → 10000bp ownership；不再扣 HC |
@@ -244,11 +261,16 @@ RED `9098`。
    核对五元身份、顺序、唯一性、守恒与持久化链，不能单独证明外部哈希来源。
 4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
    `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
-5. C debt 到期 consumer 与 #264 sunset/waiver/三类 artifact adapter 已落地；仍需 CK3 存读档/跨周期实机证明
-   scheduler、资源守恒和有界升级没有 scope 漂移。
+5. C debt 到期 consumer 已落地；#264 已改为产品自有三步玩家交接链，不再有 caller-supplied waiver/hash
+   adapter。仍需 CK3 存读档/跨周期实机证明 30+30 日 scheduler、玩家/AI 分流、一次支付/退款、资源守恒和
+   有界升级没有 scope 漂移。
 6. 运行本机 CK3 parser、error.log、玩家事件队列、AI 后台、跨期 hidden event、存读档和 paused snapshot
    验收，再决定是否提升 readiness。2026-08-31 接线前 loader 日志中，本桥最终态的 8 个字段
    `al_external_stage_receipts_verified`、`al_external_receipt_{owner,subject,cycle,case,state,count}`、
    `al_external_last_operation` 均报 used-never-set；本次生产调用链让它们的 setter 可达，但必须用新一轮 loader 日志确认
    这 8 条确实归零，不能以静态可达性代替实机结论。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
+8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
+   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20 项；另有既存 AL stage
+   8 项待复验。AD 80、AL collective 167、AL charter 28 仍必须由真实同域/跨域/native producer 闭合；#361
+   首个三周期历史 receipt 启动环是明确 blocker，禁止用假 receipt/hash 绕过。

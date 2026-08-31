@@ -90,7 +90,12 @@ CURRENT_OBJECT_DEPENDENCIES = {
     259: (254, 260, 261),
     257: (254, 256),
     263: (262,),
-    264: (254, 256, 261),
+    # #264 is now a product-owned, subject-response handoff flow.  Its three
+    # milestones are anchored to real current-case objects: supplier quality
+    # (#256), executor-chain documentation (#261), and the completed
+    # secondment/return chain (#262/#263).  No caller-supplied artifact hash is
+    # accepted.
+    264: (254, 256, 261, 262, 263),
     265: (259, 261, 264),
     273: (266,),
     271: (266, 273),
@@ -141,6 +146,8 @@ FUTURE_CHOICES = {
 }
 DEBT_EVENT = {mid: 6000 + mid for mid in EXPECTED_MECHANISM_IDS}
 MAX_COLLECTIVE_OUTCOMES = 6
+HANDOFF_EVENT = {1: 52640, 2: 52641, 3: 52642}
+HANDOFF_RELAY_EVENT = {2: 52650, 3: 52651}
 NONMANAGER_NA_IDS = frozenset({360, 361})
 NONMANAGER_OPERATION_COUNT = len(EXPECTED_MECHANISM_IDS - NONMANAGER_NA_IDS)
 
@@ -811,52 +818,49 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
                 f"trigger_else = {{ has_variable = {PREFIX}_shadow_hc_active "
                 f"var:{PREFIX}_shadow_hc_active >= 1 }}"
             ),
-            f"has_variable = {PREFIX}_ac_external_handoff_ready",
-            f"has_variable = {PREFIX}_ac_external_handoff_consumed",
-            f"has_variable = {PREFIX}_ac_external_handoff_owner",
-            f"has_variable = {PREFIX}_ac_external_handoff_subject",
-            f"has_variable = {PREFIX}_ac_external_handoff_cycle",
-            f"has_variable = {PREFIX}_ac_external_handoff_case",
-            f"has_variable = {PREFIX}_ac_external_handoff_state",
-            f"has_variable = {PREFIX}_ac_external_handoff_contract_id",
-            f"has_variable = {PREFIX}_ac_external_handoff_sunset_cycle",
-            f"has_variable = {PREFIX}_ac_external_handoff_outcome",
-            f"var:{PREFIX}_ac_external_handoff_ready = 1",
-            f"var:{PREFIX}_ac_external_handoff_consumed = 0",
-            f"var:{PREFIX}_ac_external_handoff_owner = $TICKET_OWNER$",
-            f"var:{PREFIX}_ac_external_handoff_subject = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_ac_external_handoff_cycle = $TICKET_CYCLE$",
-            f"var:{PREFIX}_ac_external_handoff_case = $TICKET_CASE$",
-            f"var:{PREFIX}_ac_external_handoff_state = 6",
-            f"var:{PREFIX}_ac_external_handoff_contract_id = var:{PREFIX}_m254_contract_id",
-            f"var:{PREFIX}_ac_external_handoff_sunset_cycle = var:{PREFIX}_m254_sunset_cycle",
+            f"has_variable = {PREFIX}_m264_handoff_flow_active",
+            f"has_variable = {PREFIX}_m264_handoff_flow_consumed",
+            f"has_variable = {PREFIX}_m264_handoff_owner",
+            f"has_variable = {PREFIX}_m264_handoff_subject",
+            f"has_variable = {PREFIX}_m264_handoff_cycle",
+            f"has_variable = {PREFIX}_m264_handoff_case",
+            f"has_variable = {PREFIX}_m264_handoff_contract_id",
+            f"has_variable = {PREFIX}_m264_handoff_response",
+            f"var:{PREFIX}_m264_handoff_flow_active = 1",
+            f"var:{PREFIX}_m264_handoff_flow_consumed = 0",
+            f"var:{PREFIX}_m264_handoff_owner = $TICKET_OWNER$",
+            f"var:{PREFIX}_m264_handoff_subject = $TICKET_SUBJECT$",
+            f"var:{PREFIX}_m264_handoff_cycle = $TICKET_CYCLE$",
+            f"var:{PREFIX}_m264_handoff_case = $TICKET_CASE$",
+            f"var:{PREFIX}_m264_handoff_contract_id = var:{PREFIX}_m254_contract_id",
+            f"var:zg361_case_{d}_owner = {{ has_variable = zg361_review_serial var:zg361_review_serial >= scope:{PREFIX}_{d}_subject.var:{PREFIX}_m254_sunset_cycle }}",
         ]
         if choice == 1:
             checks += [
                 f"var:zg361_case_{d}_owner = {{ gold >= 20 }}",
-                f"var:{PREFIX}_ac_external_handoff_outcome = 1",
-                f"has_variable = {PREFIX}_ac_external_handoff_accepted_by",
-                f"has_variable = {PREFIX}_ac_external_handoff_payee",
-                f"has_variable = {PREFIX}_ac_external_handoff_documentation_id",
-                f"has_variable = {PREFIX}_ac_external_handoff_documentation_hash",
-                f"has_variable = {PREFIX}_ac_external_handoff_shadowing_id",
-                f"has_variable = {PREFIX}_ac_external_handoff_shadowing_hash",
-                f"has_variable = {PREFIX}_ac_external_handoff_practical_id",
-                f"has_variable = {PREFIX}_ac_external_handoff_practical_hash",
-                f"var:{PREFIX}_ac_external_handoff_accepted_by = $TICKET_OWNER$",
-                f"var:{PREFIX}_ac_external_handoff_payee = $TICKET_SUBJECT$",
-                f"var:{PREFIX}_ac_external_handoff_documentation_id > 0",
-                f"var:{PREFIX}_ac_external_handoff_documentation_hash > 0",
-                f"var:{PREFIX}_ac_external_handoff_shadowing_id > 0",
-                f"var:{PREFIX}_ac_external_handoff_shadowing_hash > 0",
-                f"var:{PREFIX}_ac_external_handoff_practical_id > 0",
-                f"var:{PREFIX}_ac_external_handoff_practical_hash > 0",
+                f"var:{PREFIX}_m264_handoff_response = 1",
+                f"has_variable = {PREFIX}_m264_documentation_receipt_id",
+                f"has_variable = {PREFIX}_m264_shadowing_receipt_id",
+                f"has_variable = {PREFIX}_m264_practical_receipt_id",
+                f"has_variable = {PREFIX}_m264_handoff_documentation_source_object",
+                f"has_variable = {PREFIX}_m264_handoff_shadowing_source_object",
+                f"has_variable = {PREFIX}_m264_handoff_practical_source_object",
+                f"var:{PREFIX}_m264_documentation_receipt_id > 0",
+                f"var:{PREFIX}_m264_shadowing_receipt_id > 0",
+                f"var:{PREFIX}_m264_practical_receipt_id > 0",
+                f"var:{PREFIX}_m264_handoff_documentation_source_object = var:{PREFIX}_m261_object_id",
+                f"var:{PREFIX}_m264_handoff_shadowing_source_object = var:{PREFIX}_m263_object_id",
+                f"var:{PREFIX}_m264_handoff_practical_source_object = var:{PREFIX}_m256_object_id",
+                f"NOT = {{ var:{PREFIX}_m264_documentation_receipt_id = var:{PREFIX}_m264_shadowing_receipt_id }}",
+                f"NOT = {{ var:{PREFIX}_m264_documentation_receipt_id = var:{PREFIX}_m264_practical_receipt_id }}",
+                f"NOT = {{ var:{PREFIX}_m264_shadowing_receipt_id = var:{PREFIX}_m264_practical_receipt_id }}",
             ]
         else:
             checks += [
-                f"var:{PREFIX}_ac_external_handoff_outcome = 2",
-                f"has_variable = {PREFIX}_ac_external_handoff_rejection_reason",
-                f"var:{PREFIX}_ac_external_handoff_rejection_reason > 0",
+                f"var:{PREFIX}_m264_handoff_response = 2",
+                f"has_variable = {PREFIX}_m264_handoff_refusal_reason",
+                f"var:{PREFIX}_m264_handoff_refusal_reason >= 1",
+                f"var:{PREFIX}_m264_handoff_refusal_reason <= 3",
             ]
     if mid == 265 and choice == 1:
         checks += [
@@ -1308,14 +1312,13 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             lines += [_set("m263_return_choice", 0), _set("m263_prior_identity_preserved", 1), _set("m263_extension_terminal", 0), _set("m263_terminal_choice", 0), _set("m263_resolved_choice", 0), _set("m263_extension_due_cycle", "{ value = $TICKET_CYCLE$ add = 1 }"), _set("m263_extension_pending", 1), _set("m263_extension_count", 1), _set("ac_s05_deadline_pending", 0), f"trigger_event = {{ id = {NAMESPACE}.{FUTURE_EVENT[263]} days = 365 }}"]
     elif mid == 264:
         lines += [
-            _set("m264_accepted_by", f"var:{PREFIX}_ac_external_handoff_accepted_by"),
-            _set("m264_payee", f"var:{PREFIX}_ac_external_handoff_payee"),
+            _set("m264_accepted_by", "$TICKET_OWNER$"),
+            _set("m264_payee", f"var:{PREFIX}_m254_vendor_id"),
             _set("m264_vendor_identity", f"var:{PREFIX}_m254_vendor_id"),
-            _set("m264_contract_id", f"var:{PREFIX}_ac_external_handoff_contract_id"),
-            _set("m264_sunset_cycle", f"var:{PREFIX}_ac_external_handoff_sunset_cycle"),
-            _set("m264_waiver_id", f"var:{PREFIX}_ac_external_handoff_waiver_id"),
-            _set("m264_waiver_approver", f"var:{PREFIX}_ac_external_handoff_waiver_approver"),
-            _set("m264_handoff_outcome", f"var:{PREFIX}_ac_external_handoff_outcome"),
+            _set("m264_contract_id", f"var:{PREFIX}_m254_contract_id"),
+            _set("m264_sunset_cycle", f"var:{PREFIX}_m254_sunset_cycle"),
+            _set("m264_early_waiver_used", 0),
+            _set("m264_handoff_outcome", choice),
             _set("m264_accepted_by_frozen", 1),
         ]
         if choice == 1:
@@ -1323,12 +1326,12 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
                 _change("gold_reserved", -20), _change("gold_paid", 20),
                 _change("contract_gold_reserved", -20), _change("contract_gold_paid", 20),
                 _set("m264_artifact_count", 3),
-                _set("m264_documentation_id", f"var:{PREFIX}_ac_external_handoff_documentation_id"),
-                _set("m264_documentation_hash", f"var:{PREFIX}_ac_external_handoff_documentation_hash"),
-                _set("m264_shadowing_id", f"var:{PREFIX}_ac_external_handoff_shadowing_id"),
-                _set("m264_shadowing_hash", f"var:{PREFIX}_ac_external_handoff_shadowing_hash"),
-                _set("m264_practical_id", f"var:{PREFIX}_ac_external_handoff_practical_id"),
-                _set("m264_practical_hash", f"var:{PREFIX}_ac_external_handoff_practical_hash"),
+                _set("m264_documentation_id", f"var:{PREFIX}_m264_documentation_receipt_id"),
+                _set("m264_shadowing_id", f"var:{PREFIX}_m264_shadowing_receipt_id"),
+                _set("m264_practical_id", f"var:{PREFIX}_m264_practical_receipt_id"),
+                _set("m264_documentation_source_object", f"var:{PREFIX}_m264_handoff_documentation_source_object"),
+                _set("m264_shadowing_source_object", f"var:{PREFIX}_m264_handoff_shadowing_source_object"),
+                _set("m264_practical_source_object", f"var:{PREFIX}_m264_handoff_practical_source_object"),
                 _set("m264_documentation_accepted", 1), _set("m264_shadowing_accepted", 1),
                 _set("m264_practical_acceptance", 1), _set("m264_payment_settled", 1),
                 f"var:zg361_case_{d}_owner = {{ remove_short_term_gold = 20 }}", "add_gold = 20",
@@ -1337,7 +1340,7 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
             lines += [
                 _change("gold_reserved", -20), _change("gold_available", 20),
                 _change("contract_gold_reserved", -20), _set("m264_artifact_count", 0),
-                _set("m264_rejection_reason", f"var:{PREFIX}_ac_external_handoff_rejection_reason"),
+                _set("m264_rejection_reason", f"var:{PREFIX}_m264_handoff_refusal_reason"),
                 _set("m264_documentation_accepted", 0), _set("m264_shadowing_accepted", 0),
                 _set("m264_practical_acceptance", 0), _set("m264_payment_settled", 0),
                 _set("m264_payment_refunded", 20),
@@ -1345,8 +1348,8 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
         lines += [
             f"if = {{ limit = {{ trigger_if = {{ limit = {{ has_variable = {PREFIX}_m257_conversion_settled }} NOT = {{ var:{PREFIX}_m257_conversion_settled = 1 }} }} trigger_else = {{ always = yes }} }} change_variable = {{ name = {PREFIX}_shadow_hc_active add = -1 }} change_variable = {{ name = {PREFIX}_shadow_hc_available add = 1 }} }}",
             _set("m264_shadow_hc_released", 1),
-            _set("ac_external_handoff_consumed", 1),
-            _set("ac_external_handoff_ready", 0),
+            _set("m264_handoff_flow_consumed", 1),
+            _set("m264_handoff_flow_active", 0),
         ]
     elif mid == 265:
         if choice == 1:
@@ -1726,6 +1729,14 @@ def render_timeout(domain: str, state: int) -> str:
 
 def _after_advance(spec: Mechanism) -> str:
     d, mid, state = spec.domain, spec.mid, spec.state
+    if d == "ac" and mid == 263:
+        return f"""{PREFIX}_ac_schedule_stage_06_deadline_effect = yes
+{PREFIX}_m264_begin_handoff_effect = {{
+	TICKET_OWNER = var:zg361_case_ac_owner
+	TICKET_SUBJECT = this
+	TICKET_CYCLE = var:zg361_case_ac_cycle_serial
+	TICKET_CASE = var:zg361_case_ac_case_serial
+}}"""
     if d == "al" and mid == 356:
         return f"""if = {{
 	limit = {{ NOT = {{ zg361_is_celestial_liege_trigger = yes }} }}
@@ -1833,10 +1844,18 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     checks = atomic_precheck(spec, choice)
     business = "\n".join(business_effects(spec, choice))
     value_prelude = ""
+    if mid == 262 and choice in (1, 2):
+        value_prelude = f"""{PREFIX}_ac_freeze_m262_host_manager_effect = {{
+	TICKET_OWNER = $TICKET_OWNER$
+	TICKET_SUBJECT = $TICKET_SUBJECT$
+	TICKET_CYCLE = $TICKET_CYCLE$
+	TICKET_CASE = $TICKET_CASE$
+}}
+"""
     if mid == 360:
-        value_prelude = indent(_collective_persistent_prelude()) + "\n"
+        value_prelude += indent(_collective_persistent_prelude()) + "\n"
     elif mid == 361:
-        value_prelude = indent(_ticket_next_cycle_prelude()) + "\n"
+        value_prelude += indent(_ticket_next_cycle_prelude()) + "\n"
     advance = ""
     # #263 route B and a real #269 hire outcome are future-settled.  Their
     # delayed consumers, rather than the write-side receipt, advance the case.
@@ -2329,8 +2348,6 @@ def render_future_consumers() -> str:
 \t\tif = {{
 \t\t\tlimit = {{ var:{PREFIX}_m262_write_owner = {{ is_ai = yes }} }}
 \t\t\t{PREFIX}_m263_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
-\t\t\t{PREFIX}_m264_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
-\t\t\t{PREFIX}_m265_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m262_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m262_write_cycle TICKET_CASE = var:{PREFIX}_m262_write_case }}
 \t\t}}
 \t\telse = {{ var:{PREFIX}_m262_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.263 }} }} }}
 \t}}
@@ -2367,12 +2384,7 @@ def render_future_consumers() -> str:
 \t\t\tsave_scope_as = {PREFIX}_ac_subject
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_ac_cycle value = var:{PREFIX}_m263_write_cycle }}
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_ac_case value = var:{PREFIX}_m263_write_case }}
-\t\t\tif = {{
-\t\t\t\tlimit = {{ var:{PREFIX}_m263_write_owner = {{ is_ai = yes }} }}
-\t\t\t\t{PREFIX}_m264_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m263_write_cycle TICKET_CASE = var:{PREFIX}_m263_write_case }}
-\t\t\t\t{PREFIX}_m265_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m263_write_cycle TICKET_CASE = var:{PREFIX}_m263_write_case }}
-\t\t\t}}
-\t\t\telse = {{ var:{PREFIX}_m263_write_owner = {{ trigger_event = {{ id = {NAMESPACE}.264 }} }} }}
+\t\t\t{PREFIX}_m264_begin_handoff_effect = {{ TICKET_OWNER = var:{PREFIX}_m263_write_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m263_write_cycle TICKET_CASE = var:{PREFIX}_m263_write_case }}
 \t\t}}
 \t}}
 \telse_if = {{
@@ -3266,14 +3278,101 @@ def render_al_357_359_receipt_bridge() -> str:
 }}"""
 
 
-def render_external_fact_adapters() -> str:
-    """Strict product-owned adapters for facts that CK3 must not fabricate."""
+def render_ac_real_fact_producers() -> str:
+    """Produce #262/#264 facts from real characters, events and case objects."""
 
-    return f"""# #264 handoff evidence producer.  OUTCOME=1 is accepted; 2 is a
-# rejected handoff.  An early settlement requires a distinct celestial waiver.
-{PREFIX}_submit_m264_handoff_fact_effect = {{
-	remove_variable = {PREFIX}_adapter_status
-	remove_variable = {PREFIX}_adapter_blocked_reason
+    current_handoff_objects = "\n".join(_current_object_checks(by_id()[264]))
+    return f"""# #262 freezes one real host manager.  Prefer the owner's own
+# eligible celestial liege, then the strongest other eligible manager-vassal.
+# No candidate means typed blocked; this effect never invents a character.
+{PREFIX}_ac_freeze_m262_host_manager_effect = {{
+	remove_variable = {PREFIX}_m262_host_selection_status
+	remove_variable = {PREFIX}_m262_host_selection_blocked_reason
+	if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ac_owner SUBJECT_VAR = zg361_case_ac_subject
+				CYCLE_VAR = zg361_case_ac_cycle_serial CASE_VAR = zg361_case_ac_case_serial
+				STATE_VAR = zg361_case_ac_state ACTIVE_VAR = zg361_case_ac_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
+			$TICKET_SUBJECT$ = this
+			has_variable = {PREFIX}_m262_host_owner
+			has_variable = {PREFIX}_m262_host_subject
+			has_variable = {PREFIX}_m262_host_cycle
+			has_variable = {PREFIX}_m262_host_case
+			has_variable = {PREFIX}_ac_external_secondment_host_manager
+			var:{PREFIX}_m262_host_owner = $TICKET_OWNER$
+			var:{PREFIX}_m262_host_subject = $TICKET_SUBJECT$
+			var:{PREFIX}_m262_host_cycle = $TICKET_CYCLE$
+			var:{PREFIX}_m262_host_case = $TICKET_CASE$
+			var:{PREFIX}_ac_external_secondment_host_manager = {{ zg361_is_celestial_liege_trigger = yes }}
+			NOT = {{ var:{PREFIX}_ac_external_secondment_host_manager = $TICKET_OWNER$ }}
+			NOT = {{ var:{PREFIX}_ac_external_secondment_host_manager = $TICKET_SUBJECT$ }}
+		}}
+		set_variable = {{ name = {PREFIX}_m262_host_selection_status value = 2 }}
+	}}
+	else_if = {{
+		limit = {{
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_ac_owner SUBJECT_VAR = zg361_case_ac_subject
+				CYCLE_VAR = zg361_case_ac_cycle_serial CASE_VAR = zg361_case_ac_case_serial
+				STATE_VAR = zg361_case_ac_state ACTIVE_VAR = zg361_case_ac_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
+			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
+			$TICKET_SUBJECT$ = this
+		}}
+		remove_variable = {PREFIX}_ac_external_secondment_host_manager
+		remove_variable = {PREFIX}_m262_host_owner
+		remove_variable = {PREFIX}_m262_host_subject
+		remove_variable = {PREFIX}_m262_host_cycle
+		remove_variable = {PREFIX}_m262_host_case
+		save_temporary_scope_as = {PREFIX}_m262_host_subject_scope
+		$TICKET_OWNER$ = {{
+			save_temporary_scope_as = {PREFIX}_m262_host_owner_scope
+			if = {{
+				limit = {{ exists = liege liege = {{ zg361_is_celestial_liege_trigger = yes NOT = {{ this = scope:{PREFIX}_m262_host_subject_scope }} }} }}
+				liege = {{ save_temporary_scope_as = {PREFIX}_m262_host_candidate_scope }}
+			}}
+			if = {{
+				limit = {{ NOT = {{ exists = scope:{PREFIX}_m262_host_candidate_scope }} }}
+				ordered_vassal = {{
+					limit = {{ zg361_is_celestial_liege_trigger = yes NOT = {{ this = scope:{PREFIX}_m262_host_subject_scope }} }}
+					order_by = stewardship
+					position = 0
+					save_temporary_scope_as = {PREFIX}_m262_host_candidate_scope
+				}}
+			}}
+		}}
+		if = {{
+			limit = {{ exists = scope:{PREFIX}_m262_host_candidate_scope }}
+			set_variable = {{ name = {PREFIX}_ac_external_secondment_host_manager value = scope:{PREFIX}_m262_host_candidate_scope }}
+			set_variable = {{ name = {PREFIX}_m262_host_owner value = $TICKET_OWNER$ }}
+			set_variable = {{ name = {PREFIX}_m262_host_subject value = $TICKET_SUBJECT$ }}
+			set_variable = {{ name = {PREFIX}_m262_host_cycle value = $TICKET_CYCLE$ }}
+			set_variable = {{ name = {PREFIX}_m262_host_case value = $TICKET_CASE$ }}
+			set_variable = {{ name = {PREFIX}_m262_host_selection_status value = 1 }}
+		}}
+		else = {{
+			set_variable = {{ name = {PREFIX}_m262_host_selection_status value = 4 }}
+			set_variable = {{ name = {PREFIX}_m262_host_selection_blocked_reason value = 2621 }}
+		}}
+	}}
+	else = {{
+		set_variable = {{ name = {PREFIX}_m262_host_selection_status value = 4 }}
+		set_variable = {{ name = {PREFIX}_m262_host_selection_blocked_reason value = 2622 }}
+	}}
+}}
+
+# #263 completion opens a genuine subject-owned handoff.  When either actor is
+# human, each milestone receipt is generated only by that player's explicit
+# response option.  The authorized AI exception executes the same guarded
+# milestones in the background and never receives a visible player event.
+{PREFIX}_m264_begin_handoff_effect = {{
+	remove_variable = {PREFIX}_m264_handoff_status
 	if = {{
 		limit = {{
 			zg361_case_kernel_full_guard_trigger = {{
@@ -3283,66 +3382,150 @@ def render_external_fact_adapters() -> str:
 				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
 				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 6
 			}}
-			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
 			$TICKET_SUBJECT$ = this
-			{_zero_or_missing(f'{PREFIX}_ac_external_handoff_ready')}
-			has_variable = {PREFIX}_m254_contract_id
-			has_variable = {PREFIX}_m254_sunset_cycle
-			has_variable = {PREFIX}_m254_object_consumed
-			var:{PREFIX}_m254_object_consumed = 1
-			var:{PREFIX}_m254_contract_id = $CONTRACT_ID$
-			var:{PREFIX}_m254_sunset_cycle = $SUNSET_CYCLE$
-			OR = {{
-				$TICKET_OWNER$ = {{ has_variable = zg361_review_serial var:zg361_review_serial >= root.var:{PREFIX}_m254_sunset_cycle }}
-				AND = {{
-					$TICKET_OWNER$ = {{ has_variable = zg361_review_serial var:zg361_review_serial < root.var:{PREFIX}_m254_sunset_cycle }}
-					$WAIVER_ID$ > 0
-					$WAIVER_APPROVER$ = {{ zg361_is_celestial_liege_trigger = yes }}
-					NOT = {{ $WAIVER_APPROVER$ = $PAYEE$ }}
-				}}
-			}}
-			OR = {{
-				AND = {{
-					$OUTCOME$ = 1
-					$ACCEPTED_BY$ = $TICKET_OWNER$
-					$PAYEE$ = $TICKET_SUBJECT$
-					$DOCUMENTATION_ID$ > 0 $DOCUMENTATION_HASH$ > 0
-					$SHADOWING_ID$ > 0 $SHADOWING_HASH$ > 0
-					$PRACTICAL_ID$ > 0 $PRACTICAL_HASH$ > 0
-					NOT = {{ $DOCUMENTATION_ID$ = $SHADOWING_ID$ }}
-					NOT = {{ $DOCUMENTATION_ID$ = $PRACTICAL_ID$ }}
-					NOT = {{ $SHADOWING_ID$ = $PRACTICAL_ID$ }}
-				}}
-				AND = {{ $OUTCOME$ = 2 $REJECTION_REASON$ > 0 }}
-			}}
+			{_zero_or_missing(f'{PREFIX}_m264_handoff_flow_active')}
+{indent(current_handoff_objects, 3)}
 		}}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_ready value = 1 }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_state value = 6 }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_contract_id value = $CONTRACT_ID$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_sunset_cycle value = $SUNSET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_waiver_id value = $WAIVER_ID$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_waiver_approver value = $WAIVER_APPROVER$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_outcome value = $OUTCOME$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_accepted_by value = $ACCEPTED_BY$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_payee value = $PAYEE$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_documentation_id value = $DOCUMENTATION_ID$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_documentation_hash value = $DOCUMENTATION_HASH$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_shadowing_id value = $SHADOWING_ID$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_shadowing_hash value = $SHADOWING_HASH$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_practical_id value = $PRACTICAL_ID$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_practical_hash value = $PRACTICAL_HASH$ }}
-		set_variable = {{ name = {PREFIX}_ac_external_handoff_rejection_reason value = $REJECTION_REASON$ }}
-		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+		remove_variable = {PREFIX}_m264_documentation_receipt_id
+		remove_variable = {PREFIX}_m264_shadowing_receipt_id
+		remove_variable = {PREFIX}_m264_practical_receipt_id
+		remove_variable = {PREFIX}_m264_handoff_documentation_source_object
+		remove_variable = {PREFIX}_m264_handoff_shadowing_source_object
+		remove_variable = {PREFIX}_m264_handoff_practical_source_object
+		remove_variable = {PREFIX}_m264_handoff_refusal_reason
+		set_variable = {{ name = {PREFIX}_m264_handoff_flow_active value = 1 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_flow_consumed value = 0 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_owner value = $TICKET_OWNER$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_subject value = $TICKET_SUBJECT$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_cycle value = $TICKET_CYCLE$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_case value = $TICKET_CASE$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_contract_id value = var:{PREFIX}_m254_contract_id }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_step value = 1 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_response value = 0 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_status value = 1 }}
+		{PREFIX}_m264_dispatch_handoff_step_1_effect = yes
 	}}
-	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 2641 }} }}
+	else = {{ set_variable = {{ name = {PREFIX}_m264_handoff_status value = 4 }} }}
 }}
 
-# Native court-position assignment remains external.  This adapter accepts only
+{PREFIX}_m264_dispatch_handoff_step_1_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 1 }}
+		save_scope_as = {PREFIX}_m264_handoff_subject_scope
+		var:{PREFIX}_m264_handoff_owner = {{ save_scope_as = {PREFIX}_m264_handoff_owner_scope }}
+		if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[1]} }} }}
+		else_if = {{ limit = {{ var:{PREFIX}_m264_handoff_owner = {{ is_ai = no }} }} var:{PREFIX}_m264_handoff_owner = {{ trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[1]} }} }} }}
+		else = {{ {PREFIX}_m264_complete_documentation_effect = yes }}
+	}}
+}}
+
+{PREFIX}_m264_dispatch_handoff_step_2_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 2 }}
+		save_scope_as = {PREFIX}_m264_handoff_subject_scope
+		var:{PREFIX}_m264_handoff_owner = {{ save_scope_as = {PREFIX}_m264_handoff_owner_scope }}
+		if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[2]} }} }}
+		else_if = {{ limit = {{ var:{PREFIX}_m264_handoff_owner = {{ is_ai = no }} }} var:{PREFIX}_m264_handoff_owner = {{ trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[2]} }} }} }}
+		else = {{ {PREFIX}_m264_complete_shadowing_effect = yes }}
+	}}
+}}
+
+{PREFIX}_m264_dispatch_handoff_step_3_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 3 }}
+		save_scope_as = {PREFIX}_m264_handoff_subject_scope
+		var:{PREFIX}_m264_handoff_owner = {{ save_scope_as = {PREFIX}_m264_handoff_owner_scope }}
+		if = {{ limit = {{ is_ai = no }} trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[3]} }} }}
+		else_if = {{ limit = {{ var:{PREFIX}_m264_handoff_owner = {{ is_ai = no }} }} var:{PREFIX}_m264_handoff_owner = {{ trigger_event = {{ id = {NAMESPACE}.{HANDOFF_EVENT[3]} }} }} }}
+		else = {{ {PREFIX}_m264_complete_practical_effect = yes }}
+	}}
+}}
+
+{PREFIX}_m264_queue_owner_review_effect = {{
+	if = {{
+		limit = {{
+			has_variable = {PREFIX}_m264_handoff_flow_active
+			has_variable = {PREFIX}_m264_handoff_flow_consumed
+			has_variable = {PREFIX}_m264_handoff_owner
+			has_variable = {PREFIX}_m264_handoff_subject
+			has_variable = {PREFIX}_m264_handoff_cycle
+			has_variable = {PREFIX}_m264_handoff_case
+			has_variable = {PREFIX}_m264_handoff_response
+			var:{PREFIX}_m264_handoff_flow_active = 1
+			var:{PREFIX}_m264_handoff_flow_consumed = 0
+			var:{PREFIX}_m264_handoff_subject = this
+			OR = {{ var:{PREFIX}_m264_handoff_response = 1 var:{PREFIX}_m264_handoff_response = 2 }}
+			var:zg361_case_ac_active = 1
+			var:zg361_case_ac_state = 6
+			var:zg361_case_ac_owner = var:{PREFIX}_m264_handoff_owner
+			var:zg361_case_ac_subject = this
+			var:zg361_case_ac_cycle_serial = var:{PREFIX}_m264_handoff_cycle
+			var:zg361_case_ac_case_serial = var:{PREFIX}_m264_handoff_case
+		}}
+		var:{PREFIX}_m264_handoff_owner = {{ save_scope_as = {PREFIX}_ac_owner }}
+		save_scope_as = {PREFIX}_ac_subject
+		save_scope_value_as = {{ name = {PREFIX}_ac_cycle value = var:{PREFIX}_m264_handoff_cycle }}
+		save_scope_value_as = {{ name = {PREFIX}_ac_case value = var:{PREFIX}_m264_handoff_case }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_owner_queued value = 1 }}
+		if = {{
+			limit = {{ var:{PREFIX}_m264_handoff_owner = {{ is_ai = yes }} }}
+			if = {{
+				limit = {{ var:{PREFIX}_m264_handoff_response = 1 }}
+				{PREFIX}_m264_route_a_effect = {{ TICKET_OWNER = var:{PREFIX}_m264_handoff_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m264_handoff_cycle TICKET_CASE = var:{PREFIX}_m264_handoff_case }}
+			}}
+			else = {{ {PREFIX}_m264_route_b_effect = {{ TICKET_OWNER = var:{PREFIX}_m264_handoff_owner TICKET_SUBJECT = this TICKET_CYCLE = var:{PREFIX}_m264_handoff_cycle TICKET_CASE = var:{PREFIX}_m264_handoff_case }} }}
+			if = {{ limit = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 }} {PREFIX}_m265_route_a_effect = {{ TICKET_OWNER = var:zg361_case_ac_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_ac_cycle_serial TICKET_CASE = var:zg361_case_ac_case_serial }} }}
+		}}
+		else = {{ var:{PREFIX}_m264_handoff_owner = {{ trigger_event = {{ id = {NAMESPACE}.264 }} }} }}
+	}}
+}}
+
+{PREFIX}_m264_complete_documentation_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 1 has_variable = {PREFIX}_m261_object_id var:{PREFIX}_m261_object_consumed = 1 }}
+		set_variable = {{ name = {PREFIX}_m264_documentation_receipt_id value = {{ value = var:{PREFIX}_m264_handoff_case multiply = 10000 add = 2641 }} }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_documentation_source_object value = var:{PREFIX}_m261_object_id }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_step value = 2 }}
+		trigger_event = {{ id = {NAMESPACE}.{HANDOFF_RELAY_EVENT[2]} days = 30 }}
+	}}
+}}
+
+{PREFIX}_m264_complete_shadowing_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 2 has_variable = {PREFIX}_m264_documentation_receipt_id has_variable = {PREFIX}_m263_object_id var:{PREFIX}_m263_object_consumed = 1 }}
+		set_variable = {{ name = {PREFIX}_m264_shadowing_receipt_id value = {{ value = var:{PREFIX}_m264_handoff_case multiply = 10000 add = 2642 }} }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_shadowing_source_object value = var:{PREFIX}_m263_object_id }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_step value = 3 }}
+		trigger_event = {{ id = {NAMESPACE}.{HANDOFF_RELAY_EVENT[3]} days = 30 }}
+	}}
+}}
+
+{PREFIX}_m264_complete_practical_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_step = 3 has_variable = {PREFIX}_m264_shadowing_receipt_id has_variable = {PREFIX}_m256_object_id var:{PREFIX}_m256_object_consumed = 1 }}
+		set_variable = {{ name = {PREFIX}_m264_practical_receipt_id value = {{ value = var:{PREFIX}_m264_handoff_case multiply = 10000 add = 2643 }} }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_practical_source_object value = var:{PREFIX}_m256_object_id }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_step value = 4 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_response value = 1 }}
+		{PREFIX}_m264_queue_owner_review_effect = yes
+	}}
+}}
+
+{PREFIX}_m264_refuse_handoff_effect = {{
+	if = {{
+		limit = {{ var:{PREFIX}_m264_handoff_flow_active = 1 var:{PREFIX}_m264_handoff_flow_consumed = 0 var:{PREFIX}_m264_handoff_subject = this var:{PREFIX}_m264_handoff_response = 0 var:{PREFIX}_m264_handoff_step = $EXPECTED_STEP$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_refusal_reason value = $EXPECTED_STEP$ }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_step value = 5 }}
+		set_variable = {{ name = {PREFIX}_m264_handoff_response value = 2 }}
+		{PREFIX}_m264_queue_owner_review_effect = yes
+	}}
+}}"""
+
+
+def render_external_fact_adapters() -> str:
+    """Strict product-owned adapters for facts that CK3 must not fabricate."""
+
+    return f"""# Native court-position assignment remains external.  This adapter accepts only
 # an already-confirmed appointment receipt bound to the live offer tuple.
 {PREFIX}_submit_ad_appointment_receipt_effect = {{
 	remove_variable = {PREFIX}_adapter_status
@@ -3762,6 +3945,7 @@ def render_effects() -> bytes:
         render_al_357_359_receipt_bridge(),
         render_collective_producer(),
         render_completed_cycle_ledger(),
+        render_ac_real_fact_producers(),
         render_external_fact_adapters(),
         render_future_consumers(),
         render_due_debt_consumers(),
@@ -3899,15 +4083,26 @@ def render_option(spec: Mechanism, choice: int) -> str:
 		}}
 		else = {{ trigger_event = {{ id = {NAMESPACE}.269 }} }}
 	}}"""
-    elif next_mid is not None and not (mid == 262 and choice in (1, 2)):
+    elif next_mid is not None and not (
+        (mid == 262 and choice in (1, 2)) or mid == 263
+    ):
         next_state = by_id()[next_mid].state
         next_event = f"""
 \tif = {{
 \t\tlimit = {{ scope:{PREFIX}_{d}_subject = {{ has_variable = {PREFIX}_runtime_applied var:{PREFIX}_runtime_applied = 1 var:zg361_case_{d}_state = {next_state} }} }}
 \t\ttrigger_event = {{ id = {NAMESPACE}.{next_mid} }}
 \t}}"""
+    option_trigger = ""
+    if mid == 264 and choice in (1, 2):
+        option_trigger = f"""
+\ttrigger = {{
+\t\tscope:{PREFIX}_{d}_subject = {{
+\t\t\thas_variable = {PREFIX}_m264_handoff_response
+\t\t\tvar:{PREFIX}_m264_handoff_response = {choice}
+\t\t}}
+\t}}"""
     return f"""option = {{
-\tname = {NAMESPACE}.{mid}.{letter}
+\tname = {NAMESPACE}.{mid}.{letter}{option_trigger}
 \tscope:{PREFIX}_{d}_subject = {{
 \t\t{PREFIX}_m{mid}_route_{letter}_effect = {{
 \t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
@@ -4021,6 +4216,56 @@ def render_debt_event(mid: int) -> str:
 }}"""
 
 
+def render_handoff_events() -> str:
+    """Three real player choices with two engine-enforced 30-day gaps."""
+
+    step_effect = {
+        1: f"{PREFIX}_m264_complete_documentation_effect",
+        2: f"{PREFIX}_m264_complete_shadowing_effect",
+        3: f"{PREFIX}_m264_complete_practical_effect",
+    }
+    visible: list[str] = []
+    for step in (1, 2, 3):
+        visible.append(f"""{NAMESPACE}.{HANDOFF_EVENT[step]} = {{
+\ttype = character_event
+\ttheme = stewardship
+\ttitle = {NAMESPACE}.handoff.{step}.t
+\tdesc = {NAMESPACE}.handoff.{step}.desc
+\ttrigger = {{
+\t\tis_ai = no
+\t\texists = scope:{PREFIX}_m264_handoff_subject_scope
+\t\texists = scope:{PREFIX}_m264_handoff_owner_scope
+\t\tOR = {{
+\t\t\tthis = scope:{PREFIX}_m264_handoff_subject_scope
+\t\t\tthis = scope:{PREFIX}_m264_handoff_owner_scope
+\t\t}}
+\t\tscope:{PREFIX}_m264_handoff_subject_scope = {{
+\t\t\thas_variable = {PREFIX}_m264_handoff_flow_active
+\t\t\tvar:{PREFIX}_m264_handoff_flow_active = 1
+\t\t\tvar:{PREFIX}_m264_handoff_flow_consumed = 0
+\t\t\tvar:{PREFIX}_m264_handoff_step = {step}
+\t\t}}
+\t}}
+\toption = {{
+\t\tname = {NAMESPACE}.handoff.{step}.complete
+\t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {step_effect[step]} = yes }}
+\t}}
+\toption = {{
+\t\tname = {NAMESPACE}.handoff.{step}.refuse
+\t\tscope:{PREFIX}_m264_handoff_subject_scope = {{ {PREFIX}_m264_refuse_handoff_effect = {{ EXPECTED_STEP = {step} }} }}
+\t}}
+}}""")
+    relays = [
+        f"""{NAMESPACE}.{HANDOFF_RELAY_EVENT[step]} = {{
+\ttype = character_event
+\thidden = yes
+\timmediate = {{ {PREFIX}_m264_dispatch_handoff_step_{step}_effect = yes }}
+}}"""
+        for step in (2, 3)
+    ]
+    return "\n\n".join([*visible, *relays])
+
+
 def render_events() -> bytes:
     validate_specs()
     sections = [f"namespace = {NAMESPACE}"]
@@ -4037,6 +4282,7 @@ def render_events() -> bytes:
 \t}}
 {indent(options)}
 }}""")
+    sections.append(render_handoff_events())
     for domain in ("ab", "ac", "ad", "al"):
         for state in sorted(set(STAGE_LAST[domain].values())):
             sections.append(render_deadline_event(domain, state))
@@ -4065,6 +4311,54 @@ def render_localization(language: str) -> bytes:
             f' {NAMESPACE}.{spec.mid}.t:0 "{esc(title)}"',
             f' {NAMESPACE}.{spec.mid}.desc:0 "{esc(desc)}"',
             *(f' {NAMESPACE}.{spec.mid}.{letter}:0 "{esc(text)}"' for letter, text in zip("abc", routes)),
+        ]
+    handoff_cn = {
+        1: (
+            "交接第一关：文档不是空气",
+            "交接进入文档签收。只有现在明确提交，系统才会生成绑定本案执行链的真实回执；一句“都在群里”不算知识库。",
+            "提交可核验文档，生成签收回执",
+            "文档？让下个人自己悟",
+        ),
+        2: (
+            "交接第二关：跟岗不是群里 @ 一下",
+            "三十日已经过去。要么完成一轮真实跟岗并留下回执，要么承认这场所谓交接只是把人拉进了群。",
+            "完成跟岗，留下第二张回执",
+            "拉群已经很给面子了",
+        ),
+        3: (
+            "交接第三关：PPT 不能替系统跑",
+            "又过三十日，轮到实操验收。只有把既有交付与现场操作对上，尾款才有资格进入审批。",
+            "完成实操验收，提交尾款审批",
+            "演示到此为止，拒绝实操",
+        ),
+    }
+    handoff_en = {
+        1: (
+            "Handoff I: Documentation Is Not Air",
+            "The documentation checkpoint is due. Only an explicit submission creates a receipt bound to this case's executor chain; saying 'it is in chat' does not count.",
+            "Submit verifiable documentation",
+            "Let the next person figure it out",
+        ),
+        2: (
+            "Handoff II: Shadowing Is More Than an @ Mention",
+            "Thirty days have passed. Complete real shadowing and leave a receipt, or admit that the handoff was only an invitation to a group chat.",
+            "Complete shadowing",
+            "The group invitation was enough",
+        ),
+        3: (
+            "Handoff III: Slides Do Not Run the System",
+            "Another thirty days have passed. Practical acceptance must match the existing delivery record before final payment can be reviewed.",
+            "Complete practical acceptance",
+            "End the demo and refuse practice",
+        ),
+    }
+    for step in (1, 2, 3):
+        title, desc, complete, refuse = (handoff_cn if chinese else handoff_en)[step]
+        rows += [
+            f' {NAMESPACE}.handoff.{step}.t:0 "{esc(title)}"',
+            f' {NAMESPACE}.handoff.{step}.desc:0 "{esc(desc)}"',
+            f' {NAMESPACE}.handoff.{step}.complete:0 "{esc(complete)}"',
+            f' {NAMESPACE}.handoff.{step}.refuse:0 "{esc(refuse)}"',
         ]
     return localized(f"l_{language}:\n" + "\n".join(rows))
 
