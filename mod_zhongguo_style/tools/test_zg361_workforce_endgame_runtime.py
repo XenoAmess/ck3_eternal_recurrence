@@ -327,11 +327,18 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn("zg361_we_awaiting_al_357_359", route)
             self.assertIn("portfolio_status value = 5", route)
         entry = block(self.effects, "zg361_we_open_portfolio_effect")
-        self.assertIn("OR = { var:zg361_case_al_state = 4 var:zg361_case_al_state = 5 }", entry)
+        self.assertIn("var:zg361_case_al_state = 5", entry)
+        self.assertNotIn("var:zg361_case_al_state = 4", entry)
+        self.assertNotIn("zg361we.360", entry)
+        self.assertNotIn("resume_m360_from_central_source_effect", entry)
         self.assertNotIn("name = zg361_we_al_external_stage_receipts_verified", entry)
         for name in ("owner", "subject", "cycle", "case", "state", "count"):
             self.assertIn(f"has_variable = zg361_we_al_external_receipt_{name}", entry)
         self.assertIn("var:zg361_we_al_external_last_operation = 359", entry)
+        resume = block(self.effects, "zg361_we_resume_m360_from_central_source_effect")
+        self.assertIn("EXPECTED_STATE = 4", resume)
+        self.assertIn("zg361_p2c_m360_source_status = 1", resume)
+        self.assertIn("trigger_event = { id = zg361we.360 }", resume)
 
     def test_19_every_owned_stage_has_exact_kernel_deadline(self) -> None:
         expected = sum(len(states) for states in gen.STAGE_LAST.values())
@@ -635,8 +642,7 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
             self.assertIn("m360_quota value = var:zg361_we_al_external_collective_total_quota", route)
             self.assertIn("m360_quota_partition value = var:zg361_we_al_external_collective_total_quota", route)
             self.assertIn("m360_agenda_equals_authoritative_cohort value = 1", route)
-            self.assertIn("m360_manager_cost_direction value = { value = 0 subtract = var:zg361_we_al_external_collective_manager_cost_total }", route)
-            self.assertEqual(3, route.count("manager_score add = { value = 0 subtract = scope:zg361_we_al_subject.var:zg361_we_al_external_collective_"))
+            self.assertNotIn("zg361_we_manager_score", route)
             for slot in (1, 2, 3):
                 self.assertIn(
                     f"al_external_collective_{slot}_member_hash = var:zg361_we_al_external_collective_{slot}_agenda_hash",
@@ -644,16 +650,47 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
                 )
                 self.assertIn(f"m360_cohort_{slot}_manager value = var:zg361_we_al_external_collective_{slot}_manager", route)
                 self.assertIn(f"m360_cohort_{slot}_quota value = var:zg361_we_al_external_collective_{slot}_quota", route)
+                self.assertIn(f"zg361_mg_m360_collective_cost_c{slot}_can_apply_trigger", route)
+                self.assertEqual(
+                    1,
+                    route.count(f"zg361_mg_m360_apply_collective_cost_c{slot}_effect"),
+                )
             self.assertNotIn("m360_quota_partition value = 2", route)
             self.assertNotIn("set_variable = { name = zg361_we_al_external_collective_1_cohort_id", route)
             self.assertIn("al_external_collective_submission_consumed value = 1", route)
             self.assertIn("al_external_collective_submission_active value = 0", route)
         self.assertIn(
-            "al_external_collective_reform_effective_cycle = scope:zg361_we_expected_ticket_next_cycle",
+            "m360_manager_cost_direction value = { value = 0 subtract = var:zg361_we_al_external_collective_manager_cost_total }",
             exception,
         )
-        self.assertIn("m360_reform_proposal_id value = var:zg361_we_al_external_collective_reform_proposal_id", exception)
+        self.assertEqual(
+            1,
+            exception.count("change_variable = { name = zg361_we_realm_trust"),
+        )
+        self.assertNotIn("external_collective_reform_", exception)
+        self.assertIn("m360_manager_cost_direction value = 0", forced)
+        self.assertNotIn("change_variable = { name = zg361_we_realm_trust", forced)
         for slot in (1, 2, 3):
+            for field in gen.M360_MG_RECEIPT_FIELDS:
+                self.assertIn(
+                    f"m360_cohort_{slot}_manager_cost_receipt_{field} value = "
+                    f"var:zg361_we_al_external_collective_{slot}_manager.var:"
+                    f"zg361_mg_m360_cost_receipt_{field}",
+                    exception,
+                )
+            self.assertIn(
+                f"m360_cohort_{slot}_manager_cost_receipt_present value = 1",
+                exception,
+            )
+            self.assertIn(
+                f"m360_cohort_{slot}_manager_cost_receipt_present value = 0",
+                forced,
+            )
+            for field in gen.M360_MG_RECEIPT_FIELDS:
+                self.assertNotIn(
+                    f"m360_cohort_{slot}_manager_cost_receipt_{field} value = 0",
+                    forced,
+                )
             self.assertIn(f"var:zg361_we_al_external_collective_{slot}_exception_count = 0", forced)
             self.assertIn(
                 f"var:zg361_we_al_external_collective_{slot}_forced_count = var:zg361_we_al_external_collective_{slot}_quota",
@@ -1041,20 +1078,50 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("ad_hc_flight_pending value = 0", due)
 
     def test_69_collective_precheck_is_complete_before_receipt_or_cost(self) -> None:
-        route = block(self.effects, "zg361_we_m360_route_a_effect")
-        receipt = route.index("zg361_case_kernel_record_operation_effect")
-        first_cost = route.index("manager_score add")
-        for slot in (1, 2, 3):
-            base = f"zg361_we_al_external_collective_{slot}"
-            for name in (
-                "cohort_id", "manager", "member_count", "member_hash", "agenda_count",
-                "agenda_hash", "quota", "all_meet_evidence_id", "forced_count",
-                "exception_count", "approver", "manager_cost", "partition_verified",
-                "approval_verified",
-            ):
-                self.assertLess(route.index(f"has_variable = {base}_{name}"), receipt)
-            self.assertGreater(route.index(f"m360_cohort_{slot}_cohort_id value"), receipt)
-        self.assertLess(receipt, first_cost)
+        for letter in ("a", "b"):
+            route = block(self.effects, f"zg361_we_m360_route_{letter}_effect")
+            receipt = route.index("zg361_case_kernel_record_operation_effect")
+            apply_positions = []
+            for slot in (1, 2, 3):
+                base = f"zg361_we_al_external_collective_{slot}"
+                for name in (
+                    "cohort_id", "manager", "member_count", "member_hash",
+                    "agenda_count", "agenda_hash", "quota",
+                    "all_meet_evidence_id", "forced_count", "exception_count",
+                    "approver", "manager_cost", "partition_verified",
+                    "approval_verified", "mg_cycle", "mg_case",
+                    "mg_snapshot_source_serial", "mg_snapshot_revision",
+                    "b1_cycle", "b1_case", "b1_source_id", "b1_source_hash",
+                ):
+                    self.assertLess(route.index(f"has_variable = {base}_{name}"), receipt)
+                self.assertLess(
+                    route.index(
+                        f"zg361_mg_m360_collective_cost_c{slot}_can_apply_trigger"
+                    ),
+                    receipt,
+                )
+                apply_position = route.index(
+                    f"zg361_mg_m360_apply_collective_cost_c{slot}_effect"
+                )
+                apply_positions.append(apply_position)
+                self.assertGreater(apply_position, receipt)
+                self.assertGreater(
+                    route.index(f"m360_cohort_{slot}_cohort_id value"),
+                    apply_position,
+                )
+            if letter == "a":
+                receipt_copy = route.index(
+                    "m360_cohort_1_manager_cost_receipt_id value"
+                )
+                trust = route.index(
+                    "change_variable = { name = zg361_we_realm_trust"
+                )
+                self.assertGreater(receipt_copy, max(apply_positions))
+                self.assertGreater(trust, receipt_copy)
+            else:
+                self.assertNotIn(
+                    "change_variable = { name = zg361_we_realm_trust", route
+                )
 
     def test_70_charter_uses_real_rolling_receipts_and_monotonic_product_ids(self) -> None:
         route = block(self.effects, "zg361_we_m361_route_a_effect")
@@ -1084,27 +1151,46 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
 
     def test_71_collective_capacity_and_identity_slots_are_explicit(self) -> None:
         self.assertEqual(6, gen.MAX_COLLECTIVE_OUTCOMES)
-        route = block(self.effects, "zg361_we_m360_route_a_effect")
-        self.assertIn("al_external_collective_total_quota <= 6", route)
-        for cohort in (1, 2, 3):
-            base = f"zg361_we_al_external_collective_{cohort}"
-            for kind in ("forced", "exception"):
+        for letter, kind, inactive in (
+            ("a", "exception", "forced"),
+            ("b", "forced", "exception"),
+        ):
+            route = block(self.effects, f"zg361_we_m360_route_{letter}_effect")
+            materialize = block(
+                self.effects,
+                f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
+            )
+            self.assertIn("al_external_collective_total_quota <= 6", route)
+            for cohort in (1, 2, 3):
+                base = f"zg361_we_al_external_collective_{cohort}"
                 for slot in range(1, gen.MAX_COLLECTIVE_OUTCOMES + 1):
                     identity = f"{base}_{kind}_{slot}"
                     self.assertIn(f"var:{base}_{kind}_count >= {slot}", route)
                     self.assertIn(f"has_variable = {identity}_character", route)
                     self.assertIn(f"var:{identity}_cohort_id = var:{base}_cohort_id", route)
-                    self.assertIn(f"m360_cohort_{cohort}_{kind}_{slot}_character", route)
-                    self.assertIn(f"m360_cohort_{cohort}_{kind}_{slot}_cohort_id", route)
-                    self.assertIn(f"m360_cohort_{cohort}_{kind}_{slot}_member_evidence_receipt", route)
-        self.assertIn(
-            "NOT = { var:zg361_we_al_external_collective_1_forced_1_character = var:zg361_we_al_external_collective_2_forced_1_character }",
-            route,
-        )
-        self.assertIn(
-            "NOT = { var:zg361_we_al_external_collective_1_forced_1_character = var:zg361_we_al_external_collective_1_exception_1_character }",
-            route,
-        )
+                    for field in (
+                        "character", "cohort_id", "member_evidence_receipt",
+                        "member_evidence_id", "member_evidence_hash",
+                        "processing_order", "b1_owner", "b1_subject", "b1_cycle",
+                        "b1_case", "result_owner", "result_subject",
+                        "result_cycle", "result_case",
+                    ):
+                        self.assertIn(
+                            f"m360_cohort_{cohort}_{kind}_{slot}_{field}", route
+                        )
+                    self.assertIn(
+                        f"zg361_b1_m360_source_forced_{slot}_m357_receipt_id",
+                        materialize,
+                    )
+                    self.assertNotIn(
+                        f"has_variable = {base}_{inactive}_{slot}_character",
+                        route,
+                    )
+            self.assertIn(
+                f"NOT = {{ var:zg361_we_al_external_collective_1_{kind}_1_character = "
+                f"var:zg361_we_al_external_collective_2_{kind}_1_character }}",
+                route,
+            )
 
     def test_72_bool_values_never_stand_in_for_numeric_slots_or_counts(self) -> None:
         for name in (
@@ -1472,25 +1558,80 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertNotIn("zg361_we_ac_external_handoff_", self.effects)
         self.assertNotIn("zg361_we_ac_external_handoff_", self.events)
 
-    def test_83_collective_submission_is_exact_three_cohorts_append_only_then_sealed(self) -> None:
-        begin = block(self.effects, "zg361_we_begin_al_three_cohort_collective_effect")
-        seal = block(self.effects, "zg361_we_seal_al_three_cohort_collective_effect")
-        self.assertIn("EXPECTED_STATE = 4", begin)
-        self.assertIn("al_external_collective_cohort_count value = 3", begin)
-        self.assertIn("NOT = { $C1_COHORT_ID$ = $C2_COHORT_ID$ }", begin)
-        self.assertIn("NOT = { $C1_MANAGER$ = $C2_MANAGER$ }", begin)
-        self.assertIn("$TOTAL_QUOTA$ <= 6", begin)
-        for cohort in (1, 2, 3):
-            for kind in ("forced", "exception"):
-                for slot in range(1, gen.MAX_COLLECTIVE_OUTCOMES + 1):
-                    appender = block(self.effects, f"zg361_we_append_al_collective_{cohort}_{kind}_{slot}_effect")
-                    identity = f"al_external_collective_{cohort}_{kind}_{slot}"
-                    self.assertIn(f"{identity}_character value = $CHARACTER$", appender)
-                    self.assertIn(f"{identity}_member_evidence_id value = $MEMBER_EVIDENCE_ID$", appender)
-                    self.assertIn(f"{identity}_member_evidence_hash value = $MEMBER_EVIDENCE_HASH$", appender)
-                    self.assertIn("adapter_status value = 2", appender)
-        self.assertIn("al_external_collective_submission_sealed value = 1", seal)
-        self.assertIn("adapter_blocked_reason value = 3603", seal)
+    def test_83_collective_is_product_materialized_from_central_b1_and_mg(self) -> None:
+        for retired in (
+            "zg361_we_begin_al_three_cohort_collective_effect",
+            "zg361_we_seal_al_three_cohort_collective_effect",
+            "zg361_we_append_al_collective_",
+        ):
+            self.assertNotIn(retired, self.effects)
+        resume = block(self.effects, "zg361_we_resume_m360_from_central_source_effect")
+        mark = block(self.effects, "zg361_we_mark_central_m360_source_consumed_effect")
+        for field in gen.M360_CENTRAL_GLOBAL_FIELDS:
+            self.assertIn(f"zg361_p2c_m360_source_{field}", resume)
+        self.assertIn("zg361_p2c_m360_source_status = 1", resume)
+        self.assertIn("limit = { $TICKET_OWNER$ = { is_ai = yes } }", resume)
+        self.assertIn("materialize_m360_route_a_from_central_effect", resume)
+        self.assertIn("m360_event_queued value = 1", resume)
+        self.assertIn("trigger_event = { id = zg361we.360 }", resume)
+        for letter in ("a", "b"):
+            materialize = block(
+                self.effects,
+                f"zg361_we_materialize_m360_route_{letter}_from_central_effect",
+            )
+            self.assertIn("EXPECTED_STATE = 4", materialize)
+            self.assertIn("zg361_p2c_m360_source_cohort_count = 3", materialize)
+            self.assertIn("al_external_collective_cohort_count value = 3", materialize)
+            self.assertIn("al_external_collective_submission_sealed value = 1", materialize)
+            self.assertIn("save_scope_as = zg361_we_m360_cost_subject", materialize)
+            self.assertIn("save_scope_as = zg361_we_m360_cost_owner", materialize)
+            first_success = materialize.index("adapter_status value = 1")
+            for cohort in (1, 2, 3):
+                preflight = f"zg361_mg_m360_collective_cost_c{cohort}_can_apply_trigger"
+                self.assertIn(preflight, materialize)
+                self.assertLess(materialize.index(preflight), first_success)
+            # A failed global preflight erases the draft seal and releases the
+            # player queue so Central can resume instead of stranding #360.
+            self.assertGreaterEqual(
+                materialize.count(
+                    "remove_variable = zg361_we_al_external_collective_submission_sealed"
+                ),
+                2,
+            )
+            self.assertIn("m360_event_queued value = 0", materialize)
+            for cohort in (1, 2, 3):
+                for field in gen.M360_CENTRAL_COHORT_FIELDS:
+                    self.assertIn(
+                        f"zg361_p2c_m360_source_c{cohort}_{field}", materialize
+                    )
+                self.assertIn(
+                    f"zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota",
+                    materialize,
+                )
+        self.assertIn("zg361_we_m360_object_consumed = 1", mark)
+        self.assertIn("zg361_we_m360_debt_open = 1", mark)
+        self.assertLess(
+            mark.index("zg361_we_m360_object_consumed = 1"),
+            mark.index("zg361_p2c_m360_source_status value = 2"),
+        )
+
+    def test_83a_route_c_and_structural_na_never_seal_or_fake_360(self) -> None:
+        route_c = block(self.effects, "zg361_we_m360_route_c_effect")
+        event = block(self.events, "zg361we.360")
+        na = block(self.effects, "zg361_we_finalize_manager_collective_na_effect")
+        self.assertNotIn("materialize_m360_route_", event.split("name = zg361we.360.c", 1)[1])
+        self.assertNotIn("submission_sealed value = 1", route_c)
+        self.assertIn("remove_variable = zg361_we_al_external_collective_submission_sealed", route_c)
+        self.assertIn("m360_business_object_created value = 0", route_c)
+        self.assertIn("TICKET_STATE = 4", route_c)
+        self.assertIn("$REASON$ = 360362", na)
+        self.assertIn("zg361_p2c_m360_source_status = 7", na)
+        self.assertIn("TICKET_STATE = 4 NEXT_STATE = 7", na)
+        self.assertIn("portfolio_terminal_skipped_manager_only value = 2", na)
+        self.assertIn("portfolio_status value = 7", na)
+        self.assertNotIn("m360_receipt_owner value", na)
+        self.assertNotIn("m361_receipt_owner value", na)
+        self.assertNotIn("submission_sealed value = 1", na)
 
     def test_84_three_cycle_history_is_internal_identity_bound_and_gates_361(self) -> None:
         bridge = block(self.effects, "zg361_we_submit_al_357_359_receipts_effect")
@@ -1557,9 +1698,51 @@ class WorkforceEndgameRuntimeTests(unittest.TestCase):
         self.assertIn("35 项旧 external alias", self.ledger_text)
         self.assertIn("3×(14+36)+17=167", self.ledger_text)
         self.assertIn("AL charter 28 项", self.ledger_text)
-        self.assertIn("20+8+28+35=91", self.ledger_text)
-        self.assertIn("仍余 212：AD 45 + AL collective 167", self.ledger_text)
+        self.assertIn("20+8+167+28+35=258", self.ledger_text)
+        self.assertIn("剩余 45：全部是 AD 45", self.ledger_text)
         self.assertIn("尚无变更后的 loader/live 证据", self.ledger_text)
+
+        cohort_fields = (
+            "agenda_count", "agenda_hash", "all_meet_evidence_id",
+            "approval_verified", "approver", "cohort_id", "exception_count",
+            "forced_count", "manager", "manager_cost", "member_count",
+            "member_hash", "partition_verified", "quota",
+        )
+        old_collective_fields = []
+        for cohort in (1, 2, 3):
+            old_collective_fields.extend(
+                f"zg361_we_al_external_collective_{cohort}_{field}"
+                for field in cohort_fields
+            )
+            old_collective_fields.extend(
+                f"zg361_we_al_external_collective_{cohort}_{kind}_{slot}_{field}"
+                for kind in ("forced", "exception")
+                for slot in range(1, 7)
+                for field in ("character", "cohort_id", "member_evidence_receipt")
+            )
+        self.assertEqual(150, len(old_collective_fields))
+        for field in old_collective_fields:
+            self.assertIn(f"set_variable = {{ name = {field} ", self.effects, field)
+        shared_setters = (
+            "case", "cohort_count", "exception_count", "forced_count",
+            "manager_cost_total", "settlement_id", "submission_case",
+            "submission_cycle", "submission_owner", "submission_sealed",
+            "submission_state", "submission_subject", "submitted_cycle",
+            "total_members", "total_quota",
+        )
+        self.assertEqual(15, len(shared_setters))
+        for suffix in shared_setters:
+            field = f"zg361_we_al_external_collective_{suffix}"
+            self.assertIn(f"set_variable = {{ name = {field} ", self.effects, field)
+        for retired in (
+            "zg361_we_al_external_collective_reform_effective_cycle",
+            "zg361_we_al_external_collective_reform_proposal_id",
+        ):
+            self.assertNotRegex(
+                self.effects,
+                rf"(?<!name = )(?<!remove_variable = ){retired}",
+                retired,
+            )
 
 
 if __name__ == "__main__":

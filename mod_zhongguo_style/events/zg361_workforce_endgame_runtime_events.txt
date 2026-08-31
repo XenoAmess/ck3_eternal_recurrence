@@ -3017,6 +3017,71 @@ zg361we.360 = {
 			has_variable = zg361_we_al_external_stage_receipts_verified
 			var:zg361_we_al_external_stage_receipts_verified = 1
 		}
+		scope:zg361_we_al_owner = {
+			has_variable = zg361_p2c_m360_source_status
+			has_variable = zg361_p2c_m360_source_reason
+			has_variable = zg361_p2c_m360_source_owner
+			has_variable = zg361_p2c_m360_source_subject
+			has_variable = zg361_p2c_m360_source_p2c_cycle
+			has_variable = zg361_p2c_m360_source_p2c_case
+			has_variable = zg361_p2c_m360_source_al_cycle
+			has_variable = zg361_p2c_m360_source_al_case
+			has_variable = zg361_p2c_m360_source_cohort_count
+			has_variable = zg361_p2c_m360_source_total_quota
+			var:zg361_p2c_m360_source_status = 1
+			var:zg361_p2c_m360_source_reason = 0
+			var:zg361_p2c_m360_source_owner = this
+			var:zg361_p2c_m360_source_subject = scope:zg361_we_al_subject
+			var:zg361_p2c_m360_source_p2c_cycle = scope:zg361_we_al_cycle
+			var:zg361_p2c_m360_source_al_cycle = scope:zg361_we_al_cycle
+			var:zg361_p2c_m360_source_al_case = scope:zg361_we_al_case
+			var:zg361_p2c_m360_source_cohort_count = 3
+			var:zg361_p2c_m360_source_total_quota >= 1
+			var:zg361_p2c_m360_source_total_quota <= 6
+			has_variable = zg361_p2c_m360_source_c1_manager
+			has_variable = zg361_p2c_m360_source_c1_b1_cycle
+			has_variable = zg361_p2c_m360_source_c1_b1_case
+			has_variable = zg361_p2c_m360_source_c1_b1_source_id
+			has_variable = zg361_p2c_m360_source_c1_b1_source_hash
+			has_variable = zg361_p2c_m360_source_c1_quota
+			has_variable = zg361_p2c_m360_source_c1_mg_cycle
+			has_variable = zg361_p2c_m360_source_c1_mg_case
+			has_variable = zg361_p2c_m360_source_c1_mg_snapshot_source_serial
+			has_variable = zg361_p2c_m360_source_c1_mg_snapshot_revision
+			has_variable = zg361_p2c_m360_source_c2_manager
+			has_variable = zg361_p2c_m360_source_c2_b1_cycle
+			has_variable = zg361_p2c_m360_source_c2_b1_case
+			has_variable = zg361_p2c_m360_source_c2_b1_source_id
+			has_variable = zg361_p2c_m360_source_c2_b1_source_hash
+			has_variable = zg361_p2c_m360_source_c2_quota
+			has_variable = zg361_p2c_m360_source_c2_mg_cycle
+			has_variable = zg361_p2c_m360_source_c2_mg_case
+			has_variable = zg361_p2c_m360_source_c2_mg_snapshot_source_serial
+			has_variable = zg361_p2c_m360_source_c2_mg_snapshot_revision
+			has_variable = zg361_p2c_m360_source_c3_manager
+			has_variable = zg361_p2c_m360_source_c3_b1_cycle
+			has_variable = zg361_p2c_m360_source_c3_b1_case
+			has_variable = zg361_p2c_m360_source_c3_b1_source_id
+			has_variable = zg361_p2c_m360_source_c3_b1_source_hash
+			has_variable = zg361_p2c_m360_source_c3_quota
+			has_variable = zg361_p2c_m360_source_c3_mg_cycle
+			has_variable = zg361_p2c_m360_source_c3_mg_case
+			has_variable = zg361_p2c_m360_source_c3_mg_snapshot_source_serial
+			has_variable = zg361_p2c_m360_source_c3_mg_snapshot_revision
+			var:zg361_p2c_m360_source_c1_manager = scope:zg361_we_al_subject
+			NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c2_manager }
+			NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c3_manager }
+			NOT = { var:zg361_p2c_m360_source_c2_manager = var:zg361_p2c_m360_source_c3_manager }
+		}
+		scope:zg361_we_al_subject = {
+			has_variable = zg361_we_m360_event_queued
+			var:zg361_we_m360_event_queued = 1
+			var:zg361_we_m360_event_owner = scope:zg361_we_al_owner
+			var:zg361_we_m360_event_subject = this
+			var:zg361_we_m360_event_cycle = scope:zg361_we_al_cycle
+			var:zg361_we_m360_event_case = scope:zg361_we_al_case
+			trigger_if = { limit = { has_variable = zg361_we_al_external_collective_submission_active } var:zg361_we_al_external_collective_submission_active = 0 } trigger_else = { always = yes }
+		}
 		scope:zg361_we_al_subject = {
 			zg361_case_kernel_full_guard_trigger = {
 				OWNER_VAR = zg361_case_al_owner
@@ -3036,12 +3101,22 @@ zg361we.360 = {
 	option = {
 		name = zg361we.360.a
 		scope:zg361_we_al_subject = {
-			zg361_we_m360_route_a_effect = {
+			zg361_we_materialize_m360_route_a_from_central_effect = {
 				TICKET_OWNER = scope:zg361_we_al_owner
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
 			}
+			if = {
+				limit = { OR = { var:zg361_we_adapter_status = 1 var:zg361_we_adapter_status = 2 } }
+				zg361_we_m360_route_a_effect = {
+					TICKET_OWNER = scope:zg361_we_al_owner
+					TICKET_SUBJECT = scope:zg361_we_al_subject
+					TICKET_CYCLE = scope:zg361_we_al_cycle
+					TICKET_CASE = scope:zg361_we_al_case
+				}
+			}
+			else = { set_variable = { name = zg361_we_m360_event_queued value = 0 } set_variable = { name = zg361_we_runtime_status value = 4 } }
 		}
 		if = {
 			limit = { scope:zg361_we_al_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_al_state = 5 } }
@@ -3051,12 +3126,22 @@ zg361we.360 = {
 	option = {
 		name = zg361we.360.b
 		scope:zg361_we_al_subject = {
-			zg361_we_m360_route_b_effect = {
+			zg361_we_materialize_m360_route_b_from_central_effect = {
 				TICKET_OWNER = scope:zg361_we_al_owner
 				TICKET_SUBJECT = scope:zg361_we_al_subject
 				TICKET_CYCLE = scope:zg361_we_al_cycle
 				TICKET_CASE = scope:zg361_we_al_case
 			}
+			if = {
+				limit = { OR = { var:zg361_we_adapter_status = 1 var:zg361_we_adapter_status = 2 } }
+				zg361_we_m360_route_b_effect = {
+					TICKET_OWNER = scope:zg361_we_al_owner
+					TICKET_SUBJECT = scope:zg361_we_al_subject
+					TICKET_CYCLE = scope:zg361_we_al_cycle
+					TICKET_CASE = scope:zg361_we_al_case
+				}
+			}
+			else = { set_variable = { name = zg361_we_m360_event_queued value = 0 } set_variable = { name = zg361_we_runtime_status value = 4 } }
 		}
 		if = {
 			limit = { scope:zg361_we_al_subject = { has_variable = zg361_we_runtime_applied var:zg361_we_runtime_applied = 1 var:zg361_case_al_state = 5 } }

@@ -146,6 +146,28 @@ FUTURE_CHOICES = {
 }
 DEBT_EVENT = {mid: 6000 + mid for mid in EXPECTED_MECHANISM_IDS}
 MAX_COLLECTIVE_OUTCOMES = 6
+M360_CENTRAL_GLOBAL_FIELDS = (
+    "status", "reason", "owner", "subject", "p2c_cycle", "p2c_case",
+    "al_cycle", "al_case", "cohort_count", "total_quota",
+)
+M360_CENTRAL_COHORT_FIELDS = (
+    "manager", "b1_cycle", "b1_case", "b1_source_id", "b1_source_hash",
+    "quota", "mg_cycle", "mg_case", "mg_snapshot_source_serial",
+    "mg_snapshot_revision",
+)
+M360_B1_SLOT_FIELDS = (
+    "character", "processing_order", "m357_receipt_id", "m357_receipt_hash",
+    "b1_owner", "b1_subject", "b1_cycle", "b1_case", "result_owner",
+    "result_subject", "result_cycle", "result_case",
+)
+M360_MG_RECEIPT_FIELDS = (
+    "status", "id", "hash", "owner", "al_subject", "al_cycle", "al_case",
+    "settlement_id", "settlement_hash", "cohort_id", "ordinal", "manager",
+    "mg_cycle", "mg_case", "mg_snapshot_source_serial",
+    "mg_snapshot_revision", "b1_cycle", "b1_case", "b1_source_id",
+    "b1_source_hash", "route", "quota", "exception_count", "cost",
+    "score_before", "score_after", "score_delta",
+)
 HANDOFF_EVENT = {1: 52640, 2: 52641, 3: 52642}
 HANDOFF_RELAY_EVENT = {2: 52650, 3: 52651}
 NONMANAGER_NA_IDS = frozenset({360, 361})
@@ -445,66 +467,288 @@ def _debt_id_prelude(mid: int) -> str:
 }}"""
 
 
-def _collective_external_checks(choice: int) -> list[str]:
-    """Fixed three-cohort projection of the model's #360 mapping ABI."""
+def _m360_cost_scope_prelude() -> str:
+    """Restore the two scopes consumed by the MG #360 public ABI."""
+
+    return f"""save_scope_as = {PREFIX}_m360_cost_subject
+$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_cost_owner }}"""
+
+
+def _central_m360_quota_prelude() -> str:
+    """Compute Central's frozen quota sum outside trigger grammar."""
+
+    save = _save_temp_value(
+        f"{PREFIX}_expected_central_m360_total_quota",
+        "scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c1_quota "
+        "add = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c2_quota "
+        "add = scope:zg361_we_m360_materialize_owner.var:zg361_p2c_m360_source_c3_quota",
+    )
+    return f"""if = {{
+\tlimit = {{
+\t\tscope:{PREFIX}_m360_materialize_owner = {{
+\t\t\thas_variable = zg361_p2c_m360_source_c1_quota
+\t\t\thas_variable = zg361_p2c_m360_source_c2_quota
+\t\t\thas_variable = zg361_p2c_m360_source_c3_quota
+\t\t}}
+\t}}
+{indent(save)}
+}}"""
+
+
+def _central_m360_owner_checks(
+    status: int = 1, *, verify_quota_sum: bool = True
+) -> list[str]:
+    """Validate Central's frozen route-neutral envelope from owner scope."""
+
+    common_fields = tuple(
+        field for field in M360_CENTRAL_GLOBAL_FIELDS
+        if field not in ("cohort_count", "total_quota")
+    )
     checks = [
-        f"has_variable = {PREFIX}_al_external_collective_case",
-        f"has_variable = {PREFIX}_al_external_collective_submitted_cycle",
-        f"has_variable = {PREFIX}_al_external_collective_cohort_count",
-        f"has_variable = {PREFIX}_al_external_collective_total_members",
-        f"has_variable = {PREFIX}_al_external_collective_total_quota",
-        f"has_variable = {PREFIX}_al_external_collective_settlement_id",
-        f"has_variable = {PREFIX}_al_external_collective_settled",
-        f"has_variable = {PREFIX}_al_external_collective_forced_count",
-        f"has_variable = {PREFIX}_al_external_collective_exception_count",
-        f"has_variable = {PREFIX}_al_external_collective_manager_cost_total",
+        *(f"has_variable = zg361_p2c_m360_source_{field}" for field in common_fields),
+        "has_variable = zg361_p2c_subject",
+        "has_variable = zg361_p2c_cycle",
+        "has_variable = zg361_p2c_case_serial",
+        f"var:zg361_p2c_m360_source_status = {status}",
+        "var:zg361_p2c_m360_source_owner = this",
+        "var:zg361_p2c_m360_source_subject = $TICKET_SUBJECT$",
+        "var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject",
+        "var:zg361_p2c_m360_source_p2c_cycle = $TICKET_CYCLE$",
+        "var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle",
+        "var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial",
+        "var:zg361_p2c_m360_source_al_cycle = $TICKET_CYCLE$",
+        "var:zg361_p2c_m360_source_al_case = $TICKET_CASE$",
+    ]
+    if status == 1:
+        checks += [
+            "has_variable = zg361_p2c_m360_source_cohort_count",
+            "has_variable = zg361_p2c_m360_source_total_quota",
+            "var:zg361_p2c_m360_source_reason = 0",
+            "NOT = { has_variable = zg361_p2c_m360_source_upstream_reason }",
+            "var:zg361_p2c_m360_source_cohort_count = 3",
+            "var:zg361_p2c_m360_source_total_quota >= 1",
+            f"var:zg361_p2c_m360_source_total_quota <= {MAX_COLLECTIVE_OUTCOMES}",
+        ]
+        for cohort in (1, 2, 3):
+            base = f"zg361_p2c_m360_source_c{cohort}"
+            checks += [
+                *(f"has_variable = {base}_{field}" for field in M360_CENTRAL_COHORT_FIELDS),
+                f"var:{base}_manager = {{ zg361_is_celestial_liege_trigger = yes liege = scope:{PREFIX}_m360_materialize_owner }}",
+                f"var:{base}_b1_cycle > 0",
+                f"var:{base}_b1_case > 0",
+                f"var:{base}_b1_source_id > 0",
+                f"var:{base}_b1_source_hash > 0",
+                f"var:{base}_quota >= 1",
+                f"var:{base}_quota <= {MAX_COLLECTIVE_OUTCOMES}",
+                f"var:{base}_mg_cycle > 0",
+                f"var:{base}_mg_case > 0",
+                f"var:{base}_mg_snapshot_source_serial > 0",
+                f"var:{base}_mg_snapshot_revision > 0",
+            ]
+        checks += [
+            "var:zg361_p2c_m360_source_c1_manager = $TICKET_SUBJECT$",
+            "NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c2_manager }",
+            "NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c3_manager }",
+            "NOT = { var:zg361_p2c_m360_source_c2_manager = var:zg361_p2c_m360_source_c3_manager }",
+        ]
+        if verify_quota_sum:
+            checks.append(
+                f"var:zg361_p2c_m360_source_total_quota = scope:{PREFIX}_expected_central_m360_total_quota"
+            )
+    else:
+        checks += [
+            "var:zg361_p2c_m360_source_reason >= 360421",
+            "var:zg361_p2c_m360_source_reason <= 360425",
+            "NOT = { has_variable = zg361_p2c_m360_source_cohort_count }",
+            "NOT = { has_variable = zg361_p2c_m360_source_total_quota }",
+            "trigger_if = { limit = { var:zg361_p2c_m360_source_reason = 360424 } has_variable = zg361_p2c_m360_source_upstream_reason var:zg361_p2c_m360_source_upstream_reason > 0 } trigger_else = { NOT = { has_variable = zg361_p2c_m360_source_upstream_reason } }",
+        ]
+    return checks
+
+
+def _central_m360_live_manager_checks(cohort: int) -> list[str]:
+    """Rejoin one frozen Central cohort to its current immutable B1/MG source."""
+
+    central = f"zg361_p2c_m360_source_c{cohort}"
+    checks = [
+        "zg361_is_celestial_liege_trigger = yes",
+        f"liege = scope:{PREFIX}_m360_materialize_owner",
+        "has_variable = zg361_b1_m360_source_available",
+        "has_variable = zg361_b1_m360_source_sealed",
+        "has_variable = zg361_b1_m360_source_status",
+        "has_variable = zg361_b1_m360_source_manager",
+        "has_variable = zg361_b1_m360_source_cycle",
+        "has_variable = zg361_b1_m360_source_case",
+        "has_variable = zg361_b1_m360_source_state",
+        "has_variable = zg361_b1_m360_source_id",
+        "has_variable = zg361_b1_m360_source_hash",
+        "has_variable = zg361_b1_m360_source_member_count",
+        "has_variable = zg361_b1_m360_source_member_hash",
+        "has_variable = zg361_b1_m360_source_agenda_count",
+        "has_variable = zg361_b1_m360_source_agenda_hash",
+        "has_variable = zg361_b1_m360_source_quota",
+        "has_variable = zg361_b1_m360_source_all_meet_receipt_serial",
+        "has_variable = zg361_b1_m360_source_forced_count",
+        "var:zg361_b1_m360_source_available = 1",
+        "var:zg361_b1_m360_source_sealed = 1",
+        "var:zg361_b1_m360_source_status = 1",
+        "var:zg361_b1_m360_source_manager = this",
+        f"var:zg361_b1_m360_source_cycle = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_cycle",
+        f"var:zg361_b1_m360_source_case = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_case",
+        "var:zg361_b1_m360_source_state = 8",
+        f"var:zg361_b1_m360_source_id = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_id",
+        f"var:zg361_b1_m360_source_hash = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_hash",
+        "var:zg361_b1_m360_source_member_count >= 1",
+        "var:zg361_b1_m360_source_member_hash > 0",
+        "var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count",
+        "var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash",
+        f"var:zg361_b1_m360_source_quota = scope:{PREFIX}_m360_materialize_owner.var:{central}_quota",
+        "var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota",
+        "var:zg361_b1_m360_source_all_meet_receipt_serial > 0",
+        "has_variable = zg361_mg_team_snapshot_status",
+        "has_variable = zg361_mg_team_snapshot_owner",
+        "has_variable = zg361_mg_team_snapshot_subject",
+        "has_variable = zg361_mg_team_snapshot_cycle",
+        "has_variable = zg361_mg_team_snapshot_case",
+        "has_variable = zg361_mg_team_snapshot_revision",
+        "has_variable = zg361_mg_snapshot_source_serial",
+        "has_variable = zg361_mg_team_snapshot_b1_available",
+        "has_variable = zg361_mg_team_snapshot_b1_manager",
+        "has_variable = zg361_mg_team_snapshot_b1_cycle",
+        "has_variable = zg361_mg_team_snapshot_b1_case",
+        "has_variable = zg361_mg_team_snapshot_b1_id",
+        "has_variable = zg361_mg_team_snapshot_b1_hash",
+        "var:zg361_mg_team_snapshot_status = 1",
+        f"var:zg361_mg_team_snapshot_owner = scope:{PREFIX}_m360_materialize_owner",
+        "var:zg361_mg_team_snapshot_subject = this",
+        f"var:zg361_mg_team_snapshot_cycle = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_cycle",
+        f"var:zg361_mg_team_snapshot_case = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_case",
+        f"var:zg361_mg_snapshot_source_serial = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_source_serial",
+        f"var:zg361_mg_team_snapshot_revision = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_revision",
+        "var:zg361_mg_team_snapshot_b1_available = 1",
+        "var:zg361_mg_team_snapshot_b1_manager = this",
+        f"var:zg361_mg_team_snapshot_b1_cycle = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_cycle",
+        f"var:zg361_mg_team_snapshot_b1_case = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_case",
+        f"var:zg361_mg_team_snapshot_b1_id = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_id",
+        f"var:zg361_mg_team_snapshot_b1_hash = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_hash",
+    ]
+    for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
+        source = f"zg361_b1_m360_source_forced_{slot}"
+        checks.append(
+            f"trigger_if = {{ limit = {{ var:zg361_b1_m360_source_quota >= {slot} }} "
+            + " ".join(f"has_variable = {source}_{field}" for field in M360_B1_SLOT_FIELDS)
+            + f" var:{source}_processing_order >= 1"
+            + f" var:{source}_processing_order <= var:zg361_b1_m360_source_member_count"
+            + f" var:{source}_m357_receipt_id > 0 var:{source}_m357_receipt_hash > 0"
+            + f" var:{source}_b1_owner = this var:{source}_b1_subject = var:{source}_character"
+            + f" var:{source}_b1_cycle = var:zg361_b1_m360_source_cycle var:{source}_b1_case = var:zg361_b1_m360_source_case"
+            + f" var:{source}_result_owner = this var:{source}_result_subject = var:{source}_character"
+            + f" var:{source}_result_cycle = var:zg361_b1_m360_source_cycle var:{source}_result_case > 0 }}"
+            + " trigger_else = { always = yes }"
+        )
+    return checks
+
+
+def _collective_external_checks(choice: int) -> list[str]:
+    """Validate the product-owned three-cohort object before any mutation."""
+
+    if choice not in (1, 2):
+        raise ValueError("collective facts exist only for #360 route A/B")
+    checks = [
+        *(f"has_variable = {PREFIX}_al_external_collective_{field}" for field in (
+            "case", "submitted_cycle", "cohort_count", "total_members",
+            "total_quota", "settlement_id", "settlement_hash", "settled",
+            "forced_count", "exception_count", "manager_cost_total", "route",
+            "submission_active", "submission_sealed", "submission_consumed",
+            "submission_owner", "submission_subject", "submission_cycle",
+            "submission_case", "submission_state",
+        )),
         f"var:{PREFIX}_al_external_collective_submitted_cycle = $TICKET_CYCLE$",
         f"var:{PREFIX}_al_external_collective_cohort_count = 3",
         f"var:{PREFIX}_al_external_collective_case = $TICKET_CASE$",
         f"var:{PREFIX}_al_external_collective_settled = 0",
+        f"var:{PREFIX}_al_external_collective_route = {choice}",
+        f"var:{PREFIX}_al_external_collective_submission_active = 1",
+        f"var:{PREFIX}_al_external_collective_submission_sealed = 1",
+        f"var:{PREFIX}_al_external_collective_submission_consumed = 0",
+        f"var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$",
+        f"var:{PREFIX}_al_external_collective_submission_state = 4",
         f"var:{PREFIX}_al_external_receipt_owner = $TICKET_OWNER$",
         f"var:{PREFIX}_al_external_receipt_subject = $TICKET_SUBJECT$",
         f"var:{PREFIX}_al_external_receipt_cycle = $TICKET_CYCLE$",
         f"var:{PREFIX}_al_external_receipt_case = $TICKET_CASE$",
         f"var:{PREFIX}_al_external_receipt_state = 4",
     ]
-    for slot in (1, 2, 3):
-        base = f"{PREFIX}_al_external_collective_{slot}"
+    identity_slots: list[tuple[int, int, str, str]] = []
+    active_kind = "exception" if choice == 1 else "forced"
+    inactive_kind = "forced" if choice == 1 else "exception"
+    for cohort in (1, 2, 3):
+        base = f"{PREFIX}_al_external_collective_{cohort}"
         for name in (
             "cohort_id", "manager", "member_count", "member_hash",
             "agenda_count", "agenda_hash", "quota", "all_meet_evidence_id",
-            "forced_count", "exception_count", "approver",
-            "manager_cost", "partition_verified",
-            "approval_verified",
+            "forced_count", "exception_count", "approver", "manager_cost",
+            "partition_verified", "approval_verified", "mg_cycle", "mg_case",
+            "mg_snapshot_source_serial", "mg_snapshot_revision", "b1_cycle",
+            "b1_case", "b1_source_id", "b1_source_hash",
         ):
             checks.append(f"has_variable = {base}_{name}")
         checks += [
             f"var:{base}_member_count = var:{base}_agenda_count",
             f"var:{base}_member_hash = var:{base}_agenda_hash",
             f"var:{base}_member_count >= 1",
-            f"var:{base}_quota >= 0",
+            f"var:{base}_member_hash > 0",
+            f"var:{base}_quota >= 1",
             f"var:{base}_quota <= var:{base}_member_count",
-            f"var:{base}_forced_count >= 0",
-            f"var:{base}_exception_count >= 0",
-            f"var:{base}_manager_cost >= 0",
-            f"var:{base}_quota = scope:zg361_we_expected_collective_{slot}_quota",
-            f"var:{base}_manager_cost = var:{base}_exception_count",
             f"var:{base}_partition_verified = 1",
-            f"var:{base}_manager = {{ zg361_is_celestial_liege_trigger = yes has_variable = {PREFIX}_manager_score var:{PREFIX}_manager_score >= scope:{PREFIX}_al_subject.var:{base}_manager_cost }}",
-            (
-                f"trigger_if = {{ limit = {{ var:{base}_exception_count > 0 }} "
-                f"NOT = {{ var:{base}_approver = var:{base}_manager }} "
-                f"var:{base}_approver = {{ zg361_is_celestial_liege_trigger = yes }} "
-                f"var:{base}_manager = {{ liege = scope:{PREFIX}_al_subject.var:{base}_approver }} "
-                f"var:{base}_approval_verified = 1 }} "
-                f"trigger_else = {{ var:{base}_approver = 0 var:{base}_approval_verified = 0 }}"
-            ),
+            f"var:{base}_manager = {{ zg361_is_celestial_liege_trigger = yes liege = scope:{PREFIX}_m360_cost_owner }}",
+            f"var:{base}_manager = {{ zg361_mg_m360_collective_cost_c{cohort}_can_apply_trigger = yes }}",
         ]
-        if choice == 2:
+        if choice == 1:
             checks += [
-                f"var:{base}_exception_count = 0",
-                f"var:{base}_forced_count = var:{base}_quota",
+                f"var:{base}_forced_count = 0",
+                f"var:{base}_exception_count = var:{base}_quota",
+                f"var:{base}_manager_cost = var:{base}_quota",
+                f"var:{base}_approver = $TICKET_OWNER$",
+                f"var:{base}_approval_verified = 1",
             ]
+        else:
+            checks += [
+                f"var:{base}_forced_count = var:{base}_quota",
+                f"var:{base}_exception_count = 0",
+                f"var:{base}_manager_cost = 0",
+                f"var:{base}_approver = 0",
+                f"var:{base}_approval_verified = 0",
+            ]
+        for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
+            identity = f"{base}_{active_kind}_{slot}"
+            identity_slots.append((cohort, slot, f"{base}_{active_kind}_count", identity))
+            active_fields = (
+                "character", "cohort_id", "member_evidence_receipt",
+                "member_evidence_id", "member_evidence_hash", "processing_order",
+                "b1_owner", "b1_subject", "b1_cycle", "b1_case",
+                "result_owner", "result_subject", "result_cycle", "result_case",
+            )
+            checks.append(
+                f"trigger_if = {{ limit = {{ var:{base}_{active_kind}_count >= {slot} }} "
+                + " ".join(f"has_variable = {identity}_{field}" for field in active_fields)
+                + f" var:{identity}_cohort_id = var:{base}_cohort_id"
+                + f" var:{identity}_member_evidence_receipt = 1"
+                + f" var:{identity}_member_evidence_id > 0 var:{identity}_member_evidence_hash > 0"
+                + f" var:{identity}_processing_order >= 1 var:{identity}_processing_order <= var:{base}_member_count"
+                + f" var:{identity}_b1_owner = var:{base}_manager var:{identity}_b1_subject = var:{identity}_character"
+                + f" var:{identity}_b1_cycle = var:{base}_b1_cycle var:{identity}_b1_case = var:{base}_b1_case"
+                + f" var:{identity}_result_owner = var:{base}_manager var:{identity}_result_subject = var:{identity}_character"
+                + f" var:{identity}_result_cycle = var:{base}_b1_cycle var:{identity}_result_case > 0 }}"
+                + " trigger_else = { always = yes }"
+            )
+            checks.append(
+                f"trigger_if = {{ limit = {{ var:{base}_{inactive_kind}_count >= {slot} }} always = no }} "
+                f"trigger_else = {{ always = yes }}"
+            )
     checks += [
         f"NOT = {{ var:{PREFIX}_al_external_collective_1_cohort_id = var:{PREFIX}_al_external_collective_2_cohort_id }}",
         f"NOT = {{ var:{PREFIX}_al_external_collective_1_cohort_id = var:{PREFIX}_al_external_collective_3_cohort_id }}",
@@ -518,65 +762,45 @@ def _collective_external_checks(choice: int) -> list[str]:
         f"var:{PREFIX}_al_external_collective_exception_count = scope:zg361_we_expected_collective_exception_count",
         f"var:{PREFIX}_al_external_collective_manager_cost_total = scope:zg361_we_expected_collective_manager_cost_total",
         f"var:{PREFIX}_al_external_collective_total_members >= 3",
-        f"var:{PREFIX}_al_external_collective_total_quota >= 0",
+        f"var:{PREFIX}_al_external_collective_total_quota >= 1",
         f"var:{PREFIX}_al_external_collective_total_quota <= {MAX_COLLECTIVE_OUTCOMES}",
-        f"var:zg361_case_al_owner = {{ var:{PREFIX}_realm_trust >= scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_collective_manager_cost_total }}",
     ]
-    if choice == 2:
-        checks.append(f"var:{PREFIX}_al_external_collective_exception_count = 0")
+    if choice == 1:
+        checks += [
+            f"var:{PREFIX}_al_external_collective_forced_count = 0",
+            f"var:{PREFIX}_al_external_collective_exception_count = var:{PREFIX}_al_external_collective_total_quota",
+            f"var:{PREFIX}_al_external_collective_manager_cost_total = var:{PREFIX}_al_external_collective_total_quota",
+            f"$TICKET_OWNER$ = {{ has_variable = {PREFIX}_realm_trust var:{PREFIX}_realm_trust >= scope:{PREFIX}_m360_cost_subject.var:{PREFIX}_al_external_collective_manager_cost_total }}",
+        ]
     else:
-        checks.append(
-            f"trigger_if = {{ limit = {{ var:{PREFIX}_al_external_collective_exception_count = 0 }} "
-            f"has_variable = {PREFIX}_al_external_collective_reform_proposal_id "
-            f"has_variable = {PREFIX}_al_external_collective_reform_effective_cycle "
-            f"var:{PREFIX}_al_external_collective_reform_effective_cycle = scope:zg361_we_expected_ticket_next_cycle }} "
-            f"trigger_else = {{ always = yes }}"
-        )
-    # Outcome identities are partitioned by cohort rather than accepted from a
-    # global bag.  Each active local slot is tied to its cohort id, therefore
-    # the declared per-cohort forced/exception count is the exact number of
-    # identities that can be consumed for that cohort.
-    identity_slots: dict[str, list[tuple[int, int, str, str]]] = {
-        "forced": [],
-        "exception": [],
-    }
-    for cohort in (1, 2, 3):
-        base = f"{PREFIX}_al_external_collective_{cohort}"
-        for kind in ("forced", "exception"):
-            count = f"{base}_{kind}_count"
-            for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
-                identity = f"{base}_{kind}_{slot}"
-                identity_slots[kind].append((cohort, slot, count, identity))
-                checks.append(
-                    f"trigger_if = {{ limit = {{ var:{count} >= {slot} }} "
-                    f"has_variable = {identity}_character "
-                    f"has_variable = {identity}_cohort_id "
-                    f"has_variable = {identity}_member_evidence_receipt "
-                    f"var:{identity}_cohort_id = var:{base}_cohort_id "
-                    f"var:{identity}_member_evidence_receipt = 1 }} "
-                    f"trigger_else = {{ always = yes }}"
-                )
-    # One character can occupy at most one active outcome slot globally.
-    for kind, slots in identity_slots.items():
-        for left_index, (_, left_slot, left_count, left) in enumerate(slots):
-            for _, right_slot, right_count, right in slots[left_index + 1:]:
-                checks.append(
-                    f"trigger_if = {{ limit = {{ var:{left_count} >= {left_slot} var:{right_count} >= {right_slot} }} "
-                    f"NOT = {{ var:{left}_character = var:{right}_character }} }} "
-                    f"trigger_else = {{ always = yes }}"
-                )
-    for _, forced_slot, forced_count, forced in identity_slots["forced"]:
-        for _, exception_slot, exception_count, exception in identity_slots["exception"]:
+        checks += [
+            f"var:{PREFIX}_al_external_collective_forced_count = var:{PREFIX}_al_external_collective_total_quota",
+            f"var:{PREFIX}_al_external_collective_exception_count = 0",
+            f"var:{PREFIX}_al_external_collective_manager_cost_total = 0",
+        ]
+    # One B1 candidate can occupy exactly one active route-local slot globally.
+    for left_index, (_, left_slot, left_count, left) in enumerate(identity_slots):
+        for _, right_slot, right_count, right in identity_slots[left_index + 1:]:
             checks.append(
-                f"trigger_if = {{ limit = {{ var:{forced_count} >= {forced_slot} var:{exception_count} >= {exception_slot} }} "
-                f"NOT = {{ var:{forced}_character = var:{exception}_character }} }} "
+                f"trigger_if = {{ limit = {{ var:{left_count} >= {left_slot} var:{right_count} >= {right_slot} }} "
+                f"NOT = {{ var:{left}_character = var:{right}_character }} }} "
                 f"trigger_else = {{ always = yes }}"
             )
     return checks
 
 
 def _collective_business_writes(choice: int) -> list[str]:
+    if choice not in (1, 2):
+        raise ValueError("collective settlement exists only for #360 route A/B")
     lines = [
+        _m360_cost_scope_prelude(),
+    ]
+    for slot in (1, 2, 3):
+        base = f"{PREFIX}_al_external_collective_{slot}"
+        lines.append(
+            f"var:{base}_manager = {{ zg361_mg_m360_apply_collective_cost_c{slot}_effect = yes }}"
+        )
+    lines += [
         _set("m360_collective_case", f"var:{PREFIX}_al_external_collective_case"),
         _set("m360_submitted_cycle", f"var:{PREFIX}_al_external_collective_submitted_cycle"),
         _set("m360_settlement_id", f"var:{PREFIX}_al_external_collective_settlement_id"),
@@ -604,37 +828,63 @@ def _collective_business_writes(choice: int) -> list[str]:
         ):
             lines.append(_set(f"m360_cohort_{slot}_{name}", f"var:{base}_{name}"))
         lines.append(_set(f"m360_cohort_{slot}_response", choice))
-        lines.append(
-            f"var:{base}_manager = {{ change_variable = {{ name = {PREFIX}_manager_score add = {{ value = 0 subtract = scope:{PREFIX}_al_subject.var:{base}_manager_cost }} }} }}"
-        )
+        if choice == 1:
+            for field in M360_MG_RECEIPT_FIELDS:
+                lines.append(
+                    _set(
+                        f"m360_cohort_{slot}_manager_cost_receipt_{field}",
+                        f"var:{base}_manager.var:zg361_mg_m360_cost_receipt_{field}",
+                    )
+                )
+            lines += [
+                _set(f"m360_cohort_{slot}_manager_cost_applicable", 1),
+                _set(f"m360_cohort_{slot}_manager_cost_receipt_present", 1),
+            ]
+        else:
+            lines += [
+                *(
+                    f"remove_variable = {PREFIX}_m360_cohort_{slot}_manager_cost_receipt_{field}"
+                    for field in M360_MG_RECEIPT_FIELDS
+                ),
+                _set(f"m360_cohort_{slot}_manager_cost_applicable", 0),
+                _set(f"m360_cohort_{slot}_manager_cost_receipt_present", 0),
+            ]
     for cohort in (1, 2, 3):
         base = f"{PREFIX}_al_external_collective_{cohort}"
         for kind in ("forced", "exception"):
             for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
                 source = f"{base}_{kind}_{slot}"
-                lines.append(
-                    f"if = {{ limit = {{ var:{base}_{kind}_count >= {slot} }} "
-                    f"set_variable = {{ name = {PREFIX}_m360_cohort_{cohort}_{kind}_{slot}_character value = var:{source}_character }} "
-                    f"set_variable = {{ name = {PREFIX}_m360_cohort_{cohort}_{kind}_{slot}_cohort_id value = var:{source}_cohort_id }} "
-                    f"set_variable = {{ name = {PREFIX}_m360_cohort_{cohort}_{kind}_{slot}_member_evidence_receipt value = var:{source}_member_evidence_receipt }} }}"
+                copy_fields = (
+                    "character", "cohort_id", "member_evidence_receipt",
+                    "member_evidence_id", "member_evidence_hash", "processing_order",
+                    "b1_owner", "b1_subject", "b1_cycle", "b1_case",
+                    "result_owner", "result_subject", "result_cycle", "result_case",
                 )
+                copies = " ".join(
+                    f"set_variable = {{ name = {PREFIX}_m360_cohort_{cohort}_{kind}_{slot}_{field} value = var:{source}_{field} }}"
+                    for field in copy_fields
+                )
+                lines.append(
+                    f"if = {{ limit = {{ var:{base}_{kind}_count >= {slot} }} {copies} }}"
+                )
+    if choice == 1:
+        lines += [
+            f"$TICKET_OWNER$ = {{ change_variable = {{ name = {PREFIX}_realm_trust add = {{ value = 0 subtract = scope:{PREFIX}_m360_cost_subject.var:{PREFIX}_al_external_collective_manager_cost_total }} }} }}",
+            _set("m360_realm_trust_delta", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
+            _set("m360_manager_cost_direction", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
+        ]
+    else:
+        lines += [
+            _set("m360_realm_trust_delta", 0),
+            _set("m360_manager_cost_direction", 0),
+        ]
     lines += [
-        f"var:zg361_case_al_owner = {{ change_variable = {{ name = {PREFIX}_realm_trust add = {{ value = 0 subtract = scope:{PREFIX}_al_subject.var:{PREFIX}_al_external_collective_manager_cost_total }} }} }}",
-        _set("m360_realm_trust_delta", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
-        _set("m360_manager_cost_direction", f"{{ value = 0 subtract = var:{PREFIX}_al_external_collective_manager_cost_total }}"),
         _set("m360_settled", 1),
         _set("al_external_collective_settled", 1),
         _set("al_external_collective_submission_consumed", 1),
         _set("al_external_collective_submission_active", 0),
+        _set("m360_event_queued", 0),
     ]
-    if choice == 1:
-        lines.append(
-            f"if = {{ limit = {{ has_variable = {PREFIX}_al_external_collective_reform_proposal_id has_variable = {PREFIX}_al_external_collective_reform_effective_cycle }} "
-            f"set_variable = {{ name = {PREFIX}_m360_reform_proposal_id value = var:{PREFIX}_al_external_collective_reform_proposal_id }} "
-            f"set_variable = {{ name = {PREFIX}_m360_reform_effective_cycle value = var:{PREFIX}_al_external_collective_reform_effective_cycle }} }}"
-        )
-    else:
-        lines += [_set("m360_reform_proposal_id", 0), _set("m360_reform_effective_cycle", 0)]
     return lines
 
 
@@ -1181,28 +1431,16 @@ def resource_checks(spec: Mechanism, choice: int) -> list[str]:
         checks += _gold_check(10) + [f"var:zg361_case_{d}_owner = {{ gold >= 10 }}"]
     if mid == 360:
         checks += [
-            f"has_variable = {PREFIX}_manager_score",
             f"has_variable = {PREFIX}_al_external_stage_receipts_verified",
             f"var:{PREFIX}_al_external_stage_receipts_verified = 1",
-            f"has_variable = {PREFIX}_al_external_collective_submission_active",
-            f"has_variable = {PREFIX}_al_external_collective_submission_sealed",
-            f"has_variable = {PREFIX}_al_external_collective_submission_consumed",
-            f"has_variable = {PREFIX}_al_external_collective_submission_owner",
-            f"has_variable = {PREFIX}_al_external_collective_submission_subject",
-            f"has_variable = {PREFIX}_al_external_collective_submission_cycle",
-            f"has_variable = {PREFIX}_al_external_collective_submission_case",
-            f"has_variable = {PREFIX}_al_external_collective_submission_state",
-            f"var:{PREFIX}_al_external_collective_submission_active = 1",
-            f"var:{PREFIX}_al_external_collective_submission_sealed = 1",
-            f"var:{PREFIX}_al_external_collective_submission_consumed = 0",
-            f"var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$",
-            f"var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$",
-            f"var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$",
-            f"var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$",
-            f"var:{PREFIX}_al_external_collective_submission_state = 4",
-            f"var:zg361_case_{d}_owner = {{ has_variable = {PREFIX}_realm_trust }}",
-            *_collective_external_checks(choice),
         ]
+        if choice in (1, 2):
+            checks += _collective_external_checks(choice)
+        else:
+            checks += [
+                f"{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}",
+                f"$TICKET_OWNER$ = {{\n{indent(chr(10).join(_central_m360_owner_checks(1)))}\n}}",
+            ]
     if mid == 361:
         checks += _gold_check(5 if choice == 1 else 10) + [
             f"has_variable = {PREFIX}_al_external_stage_receipts_verified",
@@ -1278,6 +1516,13 @@ def business_effects(spec: Mechanism, choice: int) -> list[str]:
                 _set("m361_evidence_ready", 0),
                 _set("m361_evidence_consumed", 0),
                 _set("m361_evidence_deferred", 1),
+            ]
+        if mid == 360:
+            lines += [
+                f"remove_variable = {PREFIX}_al_external_collective_submission_sealed",
+                f"remove_variable = {PREFIX}_al_external_collective_submission_consumed",
+                f"remove_variable = {PREFIX}_al_external_collective_route",
+                _set("m360_event_queued", 0),
             ]
         return lines
 
@@ -1886,6 +2131,15 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
     receipts = any_receipt(spec)
     checks = atomic_precheck(spec, choice)
     business = "\n".join(business_effects(spec, choice))
+    post_consume = ""
+    if mid == 360:
+        post_consume = f"""
+\t\t\t{PREFIX}_mark_central_m360_source_consumed_effect = {{
+\t\t\t\tTICKET_OWNER = $TICKET_OWNER$
+\t\t\t\tTICKET_SUBJECT = $TICKET_SUBJECT$
+\t\t\t\tTICKET_CYCLE = $TICKET_CYCLE$
+\t\t\t\tTICKET_CASE = $TICKET_CASE$
+\t\t\t}}"""
     value_prelude = ""
     if mid == 262 and choice in (1, 2):
         value_prelude = f"""{PREFIX}_ac_freeze_m262_host_manager_effect = {{
@@ -1896,7 +2150,16 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 }}
 """
     if mid == 360:
-        value_prelude += indent(_collective_persistent_prelude()) + "\n"
+        value_prelude += (
+            indent(_m360_cost_scope_prelude())
+            + "\n"
+            + f"\tsave_scope_as = {PREFIX}_m360_materialize_subject\n"
+            + f"\t$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_materialize_owner }}\n"
+            + indent(_central_m360_quota_prelude())
+            + "\n"
+        )
+        if choice in (1, 2):
+            value_prelude += indent(_collective_persistent_prelude()) + "\n"
     elif mid == 361:
         value_prelude += indent(_ticket_next_cycle_prelude()) + "\n"
     advance = ""
@@ -1981,7 +2244,7 @@ def render_route_effect(spec: Mechanism, choice: int) -> str:
 \t\t\tset_variable = {{ name = {PREFIX}_m{mid}_write_state value = {spec.state} }}
 \t\t\tset_variable = {{ name = {PREFIX}_m{mid}_provenance_case value = $TICKET_CASE$ }}
 \t\t\tset_variable = {{ name = {PREFIX}_m{mid}_provenance_choice value = {choice} }}
-\t\t\t{PREFIX}_m{mid}_consume_effect = yes
+\t\t\t{PREFIX}_m{mid}_consume_effect = yes{post_consume}
 \t\t\tset_variable = {{ name = {PREFIX}_runtime_status value = 1 }}
 {advance.rstrip()}
 \t\t}}
@@ -2197,7 +2460,8 @@ trigger_else = {{ always = yes }}"""
 \tremove_variable = {PREFIX}_runtime_applied
 \tremove_variable = {PREFIX}_last_red_code
 \tif = {{
-\t\t# Resume #360/#361 only after external #357-359 advanced AL to state 4/5.
+\t\t# Recovery opener is #361-only.  Central's READY-gated public resume is
+\t\t# the sole path that may expose #360.
 \t\tlimit = {{
 \t\t\thas_game_rule = zg361_on
 \t\t\tzg361_is_celestial_liege_trigger = yes
@@ -2210,7 +2474,7 @@ trigger_else = {{ always = yes }}"""
 \t\t\t\tvar:zg361_case_al_owner = root
 \t\t\t\tvar:zg361_case_al_subject = this
 \t\t\t\tvar:zg361_case_al_cycle_serial = root.var:zg361_review_serial
-\t\t\t\tOR = {{ var:zg361_case_al_state = 4 var:zg361_case_al_state = 5 }}
+\t\t\t\tvar:zg361_case_al_state = 5
 \t\t\t\thas_variable = {PREFIX}_al_external_stage_receipts_verified
 \t\t\t\tvar:{PREFIX}_al_external_stage_receipts_verified = 1
 \t\t\t\thas_variable = {PREFIX}_al_external_receipt_owner
@@ -2247,15 +2511,6 @@ trigger_else = {{ always = yes }}"""
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_al_cycle value = var:zg361_case_al_cycle_serial }}
 \t\t\tsave_scope_value_as = {{ name = {PREFIX}_al_case value = var:zg361_case_al_case_serial }}
 \t\t\tif = {{
-\t\t\t\tlimit = {{ var:zg361_case_al_state = 4 }}
-\t\t\t\t{PREFIX}_al_schedule_stage_04_deadline_effect = yes
-\t\t\t\tif = {{
-\t\t\t\t\tlimit = {{ root = {{ is_ai = yes }} }}
-\t\t\t\t\t{PREFIX}_m360_route_a_effect = {{ TICKET_OWNER = var:zg361_case_al_owner TICKET_SUBJECT = this TICKET_CYCLE = var:zg361_case_al_cycle_serial TICKET_CASE = var:zg361_case_al_case_serial }}
-\t\t\t\t}}
-\t\t\t\telse = {{ root = {{ trigger_event = {{ id = {NAMESPACE}.360 }} }} }}
-\t\t\t}}
-\t\t\telse_if = {{
 \t\t\t\tlimit = {{ var:zg361_case_al_state = 5 }}
 \t\t\t\t{PREFIX}_al_schedule_stage_05_deadline_effect = yes
 \t\t\t\tif = {{
@@ -2864,193 +3119,385 @@ def render_due_debt_consumers() -> str:
 
 
 def render_collective_producer() -> str:
-    """Render #360's three-cohort submission, outcome append and seal ABI."""
+    """Render the only real #360 producer: Central -> B1/MG -> Workforce."""
 
-    cohort_checks: list[str] = []
-    cohort_writes: list[str] = []
-    cleanup: list[str] = []
+    shared_fields = (
+        "submission_active", "submission_sealed", "submission_consumed",
+        "submission_owner", "submission_subject", "submission_cycle",
+        "submission_case", "submission_state", "case", "submitted_cycle",
+        "cohort_count", "settlement_id", "settlement_hash", "settled", "route",
+        "total_members", "total_quota", "forced_count", "exception_count",
+        "manager_cost_total", "reform_proposal_id", "reform_effective_cycle",
+    )
+    cohort_fields = (
+        "cohort_id", "manager", "member_count", "member_hash", "agenda_count",
+        "agenda_hash", "quota", "all_meet_evidence_id", "forced_count",
+        "exception_count", "approver", "manager_cost", "partition_verified",
+        "approval_verified", "mg_cycle", "mg_case", "mg_snapshot_source_serial",
+        "mg_snapshot_revision", "b1_cycle", "b1_case", "b1_source_id",
+        "b1_source_hash",
+    )
+    identity_fields = (
+        "character", "cohort_id", "member_evidence_receipt", "member_evidence_id",
+        "member_evidence_hash", "processing_order", "b1_owner", "b1_subject",
+        "b1_cycle", "b1_case", "result_owner", "result_subject", "result_cycle",
+        "result_case",
+    )
+    cleanup = [
+        *(f"remove_variable = {PREFIX}_al_external_collective_{field}" for field in shared_fields),
+        *(
+            f"remove_variable = {PREFIX}_al_external_collective_{cohort}_{field}"
+            for cohort in (1, 2, 3) for field in cohort_fields
+        ),
+        *(
+            f"remove_variable = {PREFIX}_al_external_collective_{cohort}_{kind}_{slot}_{field}"
+            for cohort in (1, 2, 3) for kind in ("forced", "exception")
+            for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1)
+            for field in identity_fields
+        ),
+    ]
+
+    central_checks = _central_m360_owner_checks(1)
     for cohort in (1, 2, 3):
-        macro = f"C{cohort}"
-        base = f"{PREFIX}_al_external_collective_{cohort}"
-        cohort_checks += [
-            f"${macro}_COHORT_ID$ > 0",
-            f"${macro}_MANAGER$ = {{ zg361_is_celestial_liege_trigger = yes }}",
-            f"${macro}_MEMBER_COUNT$ >= 1",
-            f"${macro}_MEMBER_HASH$ > 0",
-            f"${macro}_AGENDA_COUNT$ = ${macro}_MEMBER_COUNT$",
-            f"${macro}_AGENDA_HASH$ = ${macro}_MEMBER_HASH$",
-            f"${macro}_QUOTA$ >= 0",
-            f"${macro}_QUOTA$ <= ${macro}_MEMBER_COUNT$",
-            f"${macro}_FORCED_COUNT$ >= 0",
-            f"${macro}_EXCEPTION_COUNT$ >= 0",
-            f"${macro}_QUOTA$ = scope:zg361_we_expected_c{cohort}_quota",
-            f"${macro}_ALL_MEET_EVIDENCE_ID$ > 0",
-            f"${macro}_MANAGER_COST$ = ${macro}_EXCEPTION_COUNT$",
-            (
-                f"trigger_if = {{ limit = {{ ${macro}_EXCEPTION_COUNT$ > 0 }} "
-                f"NOT = {{ ${macro}_APPROVER$ = ${macro}_MANAGER$ }} "
-                f"${macro}_APPROVER$ = {{ zg361_is_celestial_liege_trigger = yes }} "
-                f"${macro}_MANAGER$ = {{ liege = ${macro}_APPROVER$ }} }} "
-                f"trigger_else = {{ ${macro}_APPROVER$ = 0 }}"
-            ),
-        ]
-        fields = (
-            "cohort_id", "manager", "member_count", "member_hash",
-            "agenda_count", "agenda_hash", "quota", "all_meet_evidence_id",
-            "forced_count", "exception_count", "approver", "manager_cost",
+        central = f"zg361_p2c_m360_source_c{cohort}_manager"
+        central_checks.append(
+            f"var:{central} = {{\n{indent(chr(10).join(_central_m360_live_manager_checks(cohort)))}\n}}"
         )
-        for field in fields:
-            cohort_writes.append(
-                f"set_variable = {{ name = {base}_{field} value = ${macro}_{field.upper()}$ }}"
+    candidate_slots = [
+        (cohort, slot)
+        for cohort in (1, 2, 3)
+        for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1)
+    ]
+    for left_index, (lc, ls) in enumerate(candidate_slots):
+        for rc, rs in candidate_slots[left_index + 1:]:
+            central_checks.append(
+                f"trigger_if = {{ limit = {{ var:zg361_p2c_m360_source_c{lc}_quota >= {ls} "
+                f"var:zg361_p2c_m360_source_c{rc}_quota >= {rs} }} "
+                f"NOT = {{ var:zg361_p2c_m360_source_c{lc}_manager.var:zg361_b1_m360_source_forced_{ls}_character = "
+                f"var:zg361_p2c_m360_source_c{rc}_manager.var:zg361_b1_m360_source_forced_{rs}_character }} }} "
+                f"trigger_else = {{ always = yes }}"
             )
-        cohort_writes += [
-            f"set_variable = {{ name = {base}_partition_verified value = 1 }}",
-            f"if = {{ limit = {{ ${macro}_EXCEPTION_COUNT$ > 0 }} set_variable = {{ name = {base}_approval_verified value = 1 }} }}",
-            f"else = {{ set_variable = {{ name = {base}_approval_verified value = 0 }} }}",
+
+    def route_materializer(choice: int) -> str:
+        letter = "a" if choice == 1 else "b"
+        active_kind = "exception" if choice == 1 else "forced"
+        writes = [
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_active value = 1 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_sealed value = 1 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_consumed value = 0 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_owner value = $TICKET_OWNER$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_subject value = $TICKET_SUBJECT$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_cycle value = $TICKET_CYCLE$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_case value = $TICKET_CASE$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submission_state value = 4 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_case value = $TICKET_CASE$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_submitted_cycle value = $TICKET_CYCLE$ }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_cohort_count value = 3 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_settlement_id value = {{ value = $TICKET_CASE$ multiply = 1000 add = 360 }} }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_settlement_hash value = {{ value = var:{PREFIX}_al_external_collective_settlement_id multiply = 100000 add = scope:{PREFIX}_m360_materialize_owner.var:zg361_p2c_m360_source_c1_b1_source_hash add = scope:{PREFIX}_m360_materialize_owner.var:zg361_p2c_m360_source_c2_b1_source_hash add = scope:{PREFIX}_m360_materialize_owner.var:zg361_p2c_m360_source_c3_b1_source_hash }} }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_settled value = 0 }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_route value = {choice} }}",
         ]
-        for kind in ("forced", "exception"):
+        for cohort in (1, 2, 3):
+            base = f"{PREFIX}_al_external_collective_{cohort}"
+            central = f"zg361_p2c_m360_source_c{cohort}"
+            manager = f"scope:{PREFIX}_m360_materialize_owner.var:{central}_manager"
+            values = {
+                "cohort_id": f"{{ value = var:{PREFIX}_al_external_collective_settlement_id multiply = 10 add = {cohort} }}",
+                "manager": manager,
+                "member_count": f"{manager}.var:zg361_b1_m360_source_member_count",
+                "member_hash": f"{manager}.var:zg361_b1_m360_source_member_hash",
+                "agenda_count": f"{manager}.var:zg361_b1_m360_source_agenda_count",
+                "agenda_hash": f"{manager}.var:zg361_b1_m360_source_agenda_hash",
+                "quota": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_quota",
+                "all_meet_evidence_id": f"{manager}.var:zg361_b1_m360_source_all_meet_receipt_serial",
+                "forced_count": "0" if choice == 1 else f"scope:{PREFIX}_m360_materialize_owner.var:{central}_quota",
+                "exception_count": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_quota" if choice == 1 else "0",
+                "approver": f"scope:{PREFIX}_m360_materialize_owner" if choice == 1 else "0",
+                "manager_cost": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_quota" if choice == 1 else "0",
+                "partition_verified": "1",
+                "approval_verified": "1" if choice == 1 else "0",
+                "mg_cycle": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_cycle",
+                "mg_case": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_case",
+                "mg_snapshot_source_serial": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_source_serial",
+                "mg_snapshot_revision": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_revision",
+                "b1_cycle": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_cycle",
+                "b1_case": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_case",
+                "b1_source_id": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_id",
+                "b1_source_hash": f"scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_hash",
+            }
+            writes.extend(
+                f"set_variable = {{ name = {base}_{field} value = {value} }}"
+                for field, value in values.items()
+            )
             for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
-                identity = f"{base}_{kind}_{slot}"
-                cleanup += [
-                    f"remove_variable = {identity}_character",
-                    f"remove_variable = {identity}_cohort_id",
-                    f"remove_variable = {identity}_member_evidence_receipt",
-                    f"remove_variable = {identity}_member_evidence_id",
-                    f"remove_variable = {identity}_member_evidence_hash",
-                ]
-
-    begin = f"""# Begin exactly one #360 submission.  The immutable member and
-# agenda hashes are caller evidence; this module never invents cohort members.
-{PREFIX}_begin_al_three_cohort_collective_effect = {{
+                identity = f"{base}_{active_kind}_{slot}"
+                source = f"{manager}.var:zg361_b1_m360_source_forced_{slot}"
+                source_values = {
+                    "character": f"{source}_character",
+                    "cohort_id": f"var:{base}_cohort_id",
+                    "member_evidence_receipt": "1",
+                    "member_evidence_id": f"{source}_m357_receipt_id",
+                    "member_evidence_hash": f"{source}_m357_receipt_hash",
+                    "processing_order": f"{source}_processing_order",
+                    "b1_owner": f"{source}_b1_owner",
+                    "b1_subject": f"{source}_b1_subject",
+                    "b1_cycle": f"{source}_b1_cycle",
+                    "b1_case": f"{source}_b1_case",
+                    "result_owner": f"{source}_result_owner",
+                    "result_subject": f"{source}_result_subject",
+                    "result_cycle": f"{source}_result_cycle",
+                    "result_case": f"{source}_result_case",
+                }
+                slot_writes = " ".join(
+                    f"set_variable = {{ name = {identity}_{field} value = {value} }}"
+                    for field, value in source_values.items()
+                )
+                writes.append(
+                    f"if = {{ limit = {{ scope:{PREFIX}_m360_materialize_owner.var:{central}_quota >= {slot} }} {slot_writes} }}"
+                )
+        writes += [
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_total_members value = {{ value = var:{PREFIX}_al_external_collective_1_member_count add = var:{PREFIX}_al_external_collective_2_member_count add = var:{PREFIX}_al_external_collective_3_member_count }} }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_total_quota value = scope:{PREFIX}_m360_materialize_owner.var:zg361_p2c_m360_source_total_quota }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_forced_count value = {'0' if choice == 1 else f'var:{PREFIX}_al_external_collective_total_quota'} }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_exception_count value = {f'var:{PREFIX}_al_external_collective_total_quota' if choice == 1 else '0'} }}",
+            f"set_variable = {{ name = {PREFIX}_al_external_collective_manager_cost_total value = {f'var:{PREFIX}_al_external_collective_total_quota' if choice == 1 else '0'} }}",
+        ]
+        main_checks = [
+            f"zg361_case_kernel_full_guard_trigger = {{ OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$ EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4 }}",
+            "$TICKET_SUBJECT$ = this",
+            "$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }",
+            f"{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}",
+            f"$TICKET_OWNER$ = {{\n{indent(chr(10).join(central_checks))}\n}}",
+        ]
+        return f"""# Route {letter.upper()} materializes only product-owned Central/B1 facts.
+{PREFIX}_materialize_m360_route_{letter}_from_central_effect = {{
 	remove_variable = {PREFIX}_adapter_status
 	remove_variable = {PREFIX}_adapter_blocked_reason
-{indent(_collective_argument_prelude())}
+	remove_variable = {PREFIX}_runtime_applied
+	save_scope_as = {PREFIX}_m360_materialize_subject
+	$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_materialize_owner }}
+{indent(_m360_cost_scope_prelude())}
+{indent(_central_m360_quota_prelude())}
+{indent(_collective_persistent_prelude())}
 	if = {{
 		limit = {{
-			zg361_case_kernel_full_guard_trigger = {{
-				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
-				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
-				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
-				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
-				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+{indent(chr(10).join(main_checks), 3)}
+		}}
+{indent(chr(10).join(cleanup), 2)}
+{indent(chr(10).join(writes), 2)}
+{indent(_collective_persistent_prelude(), 2)}
+		# Do not expose the draft as committed until all three MG managers and
+		# the owner trust book pass the same global preflight used by the route.
+		if = {{
+			limit = {{
+{indent(chr(10).join(_collective_external_checks(choice)), 4)}
 			}}
-			$TICKET_OWNER$ = {{ zg361_is_celestial_liege_trigger = yes }}
-			$TICKET_SUBJECT$ = {{ zg361_is_celestial_liege_trigger = yes }}
-			$TICKET_SUBJECT$ = this
-			{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}
-			$SETTLEMENT_ID$ > 0 $SETTLEMENT_HASH$ > 0
-{indent(chr(10).join(cohort_checks), 3)}
-			NOT = {{ $C1_COHORT_ID$ = $C2_COHORT_ID$ }}
-			NOT = {{ $C1_COHORT_ID$ = $C3_COHORT_ID$ }}
-			NOT = {{ $C2_COHORT_ID$ = $C3_COHORT_ID$ }}
-			NOT = {{ $C1_MANAGER$ = $C2_MANAGER$ }}
-			NOT = {{ $C1_MANAGER$ = $C3_MANAGER$ }}
-			NOT = {{ $C2_MANAGER$ = $C3_MANAGER$ }}
-			$C1_QUOTA$ = scope:zg361_we_expected_c1_quota
-			$C2_QUOTA$ = scope:zg361_we_expected_c2_quota
-			$C3_QUOTA$ = scope:zg361_we_expected_c3_quota
-			$TOTAL_QUOTA$ = scope:zg361_we_expected_collective_total_quota
-			$TOTAL_QUOTA$ <= {MAX_COLLECTIVE_OUTCOMES}
-			$REFORM_PROPOSAL_ID$ > 0
-			$REFORM_EFFECTIVE_CYCLE$ = scope:zg361_we_expected_ticket_next_cycle
+			set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 		}}
-{indent(chr(10).join(cleanup))}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_active value = 1 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_sealed value = 0 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_consumed value = 0 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_owner value = $TICKET_OWNER$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_subject value = $TICKET_SUBJECT$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_state value = 4 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_case value = $TICKET_CASE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submitted_cycle value = $TICKET_CYCLE$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_cohort_count value = 3 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_settlement_id value = $SETTLEMENT_ID$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_settlement_hash value = $SETTLEMENT_HASH$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_settled value = 0 }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_reform_proposal_id value = $REFORM_PROPOSAL_ID$ }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_reform_effective_cycle value = $REFORM_EFFECTIVE_CYCLE$ }}
-{indent(chr(10).join(cohort_writes))}
-		set_variable = {{ name = {PREFIX}_al_external_collective_total_members value = {{ value = $C1_MEMBER_COUNT$ add = $C2_MEMBER_COUNT$ add = $C3_MEMBER_COUNT$ }} }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_total_quota value = {{ value = $C1_QUOTA$ add = $C2_QUOTA$ add = $C3_QUOTA$ }} }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_forced_count value = {{ value = $C1_FORCED_COUNT$ add = $C2_FORCED_COUNT$ add = $C3_FORCED_COUNT$ }} }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_exception_count value = {{ value = $C1_EXCEPTION_COUNT$ add = $C2_EXCEPTION_COUNT$ add = $C3_EXCEPTION_COUNT$ }} }}
-		set_variable = {{ name = {PREFIX}_al_external_collective_manager_cost_total value = {{ value = $C1_MANAGER_COST$ add = $C2_MANAGER_COST$ add = $C3_MANAGER_COST$ }} }}
-		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
-	}}
-	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3601 }} }}
-}}"""
-
-    appenders: list[str] = []
-    for cohort in (1, 2, 3):
-        for kind in ("forced", "exception"):
-            for slot in range(1, MAX_COLLECTIVE_OUTCOMES + 1):
-                base = f"{PREFIX}_al_external_collective_{cohort}"
-                identity = f"{base}_{kind}_{slot}"
-                appenders.append(f"""{PREFIX}_append_al_collective_{cohort}_{kind}_{slot}_effect = {{
-	remove_variable = {PREFIX}_adapter_status
-	remove_variable = {PREFIX}_adapter_blocked_reason
-	if = {{
-		limit = {{
-			has_variable = {PREFIX}_al_external_collective_submission_active
-			var:{PREFIX}_al_external_collective_submission_active = 1
-			var:{PREFIX}_al_external_collective_submission_sealed = 0
-			var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$
-			var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$
-			var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$
-			var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$
-			var:{PREFIX}_al_external_collective_submission_state = 4
-			var:{base}_{kind}_count >= {slot}
-			$COHORT_ID$ = var:{base}_cohort_id
-			$CHARACTER$ = {{ always = yes }}
-			$MEMBER_EVIDENCE_ID$ > 0 $MEMBER_EVIDENCE_HASH$ > 0
-			NOT = {{ has_variable = {identity}_character }}
+		else = {{
+{indent(chr(10).join(cleanup), 3)}
+			set_variable = {{ name = {PREFIX}_m360_event_queued value = 0 }}
+			set_variable = {{ name = {PREFIX}_adapter_status value = 4 }}
+			set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }}
 		}}
-		set_variable = {{ name = {identity}_character value = $CHARACTER$ }}
-		set_variable = {{ name = {identity}_cohort_id value = $COHORT_ID$ }}
-		set_variable = {{ name = {identity}_member_evidence_receipt value = 1 }}
-		set_variable = {{ name = {identity}_member_evidence_id value = $MEMBER_EVIDENCE_ID$ }}
-		set_variable = {{ name = {identity}_member_evidence_hash value = $MEMBER_EVIDENCE_HASH$ }}
-		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
 	}}
 	else_if = {{
-		limit = {{ has_variable = {identity}_character var:{identity}_character = $CHARACTER$ var:{identity}_member_evidence_id = $MEMBER_EVIDENCE_ID$ var:{identity}_member_evidence_hash = $MEMBER_EVIDENCE_HASH$ }}
+		limit = {{
+			$TICKET_SUBJECT$ = this
+{indent(chr(10).join(_collective_external_checks(choice)), 3)}
+		}}
 		set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
 	}}
-	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3602 }} }}
-}}""")
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = {3604 + choice} }} }}
+}}"""
 
-    seal_checks = [
-        f"has_variable = {PREFIX}_al_external_collective_submission_active",
-        f"var:{PREFIX}_al_external_collective_submission_active = 1",
-        f"var:{PREFIX}_al_external_collective_submission_sealed = 0",
-        f"var:{PREFIX}_al_external_collective_submission_consumed = 0",
+    m360_spec = by_id()[360]
+    committed_ab_checks = [
+        *(f"has_variable = {PREFIX}_al_external_collective_{field}" for field in (
+            "submission_active", "submission_sealed", "submission_consumed",
+            "submission_owner", "submission_subject", "submission_cycle",
+            "submission_case", "submission_state", "settled", "route",
+            "cohort_count", "total_quota", "settlement_id", "settlement_hash",
+        )),
+        f"var:{PREFIX}_al_external_collective_submission_active = 0",
+        f"var:{PREFIX}_al_external_collective_submission_sealed = 1",
+        f"var:{PREFIX}_al_external_collective_submission_consumed = 1",
         f"var:{PREFIX}_al_external_collective_submission_owner = $TICKET_OWNER$",
         f"var:{PREFIX}_al_external_collective_submission_subject = $TICKET_SUBJECT$",
         f"var:{PREFIX}_al_external_collective_submission_cycle = $TICKET_CYCLE$",
         f"var:{PREFIX}_al_external_collective_submission_case = $TICKET_CASE$",
         f"var:{PREFIX}_al_external_collective_submission_state = 4",
-        *_collective_external_checks(1),
+        f"var:{PREFIX}_al_external_collective_settled = 1",
+        f"var:{PREFIX}_al_external_collective_cohort_count = 3",
+        f"var:{PREFIX}_al_external_collective_total_quota = scope:{PREFIX}_m360_materialize_owner.var:zg361_p2c_m360_source_total_quota",
+        f"var:{PREFIX}_al_external_collective_settlement_id > 0",
+        f"var:{PREFIX}_al_external_collective_settlement_hash > 0",
+        f"has_variable = {PREFIX}_m360_business_object_created",
+        f"has_variable = {PREFIX}_m360_object_consumed",
+        f"has_variable = {PREFIX}_m360_object_owner",
+        f"has_variable = {PREFIX}_m360_object_subject",
+        f"has_variable = {PREFIX}_m360_object_cycle",
+        f"has_variable = {PREFIX}_m360_object_case",
+        f"var:{PREFIX}_m360_business_object_created = 1",
+        f"var:{PREFIX}_m360_object_consumed = 1",
+        f"var:{PREFIX}_m360_object_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m360_object_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m360_object_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m360_object_case = $TICKET_CASE$",
+        "OR = {\n"
+        + indent(
+            "AND = {\n"
+            + indent(receipt_guard(m360_spec, 1))
+            + f"\n\tvar:{PREFIX}_al_external_collective_route = 1\n}}"
+        )
+        + "\n"
+        + indent(
+            "AND = {\n"
+            + indent(receipt_guard(m360_spec, 2))
+            + f"\n\tvar:{PREFIX}_al_external_collective_route = 2\n}}"
+        )
+        + "\n}",
     ]
-    # The generic semantic validator above already proves global uniqueness
-    # and every active identity.  The seal is the commit marker consumed by
-    # either #360 A or B; route B adds the no-exception restriction itself.
-    seal = f"""{PREFIX}_seal_al_three_cohort_collective_effect = {{
-	remove_variable = {PREFIX}_adapter_status
-	remove_variable = {PREFIX}_adapter_blocked_reason
-{indent(_collective_persistent_prelude())}
+    for cohort in (1, 2, 3):
+        base = f"{PREFIX}_al_external_collective_{cohort}"
+        central = f"zg361_p2c_m360_source_c{cohort}"
+        committed_ab_checks += [
+            *(f"has_variable = {base}_{field}" for field in (
+                "manager", "quota", "b1_cycle", "b1_case", "b1_source_id",
+                "b1_source_hash", "mg_cycle", "mg_case",
+                "mg_snapshot_source_serial", "mg_snapshot_revision",
+            )),
+            f"var:{base}_manager = scope:{PREFIX}_m360_materialize_owner.var:{central}_manager",
+            f"var:{base}_quota = scope:{PREFIX}_m360_materialize_owner.var:{central}_quota",
+            f"var:{base}_b1_cycle = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_cycle",
+            f"var:{base}_b1_case = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_case",
+            f"var:{base}_b1_source_id = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_id",
+            f"var:{base}_b1_source_hash = scope:{PREFIX}_m360_materialize_owner.var:{central}_b1_source_hash",
+            f"var:{base}_mg_cycle = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_cycle",
+            f"var:{base}_mg_case = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_case",
+            f"var:{base}_mg_snapshot_source_serial = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_source_serial",
+            f"var:{base}_mg_snapshot_revision = scope:{PREFIX}_m360_materialize_owner.var:{central}_mg_snapshot_revision",
+        ]
+    committed_c_checks = [
+        receipt_guard(m360_spec, 3),
+        f"{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}",
+        f"NOT = {{ has_variable = {PREFIX}_al_external_collective_submission_sealed }}",
+        f"has_variable = {PREFIX}_m360_choice",
+        f"has_variable = {PREFIX}_m360_business_object_created",
+        f"has_variable = {PREFIX}_m360_debt_owner",
+        f"has_variable = {PREFIX}_m360_debt_subject",
+        f"has_variable = {PREFIX}_m360_debt_cycle",
+        f"has_variable = {PREFIX}_m360_debt_case",
+        f"has_variable = {PREFIX}_m360_debt_state",
+        f"has_variable = {PREFIX}_m360_debt_open",
+        f"has_variable = {PREFIX}_m360_debt_consumed",
+        f"var:{PREFIX}_m360_choice = 3",
+        f"var:{PREFIX}_m360_business_object_created = 0",
+        f"var:{PREFIX}_m360_debt_owner = $TICKET_OWNER$",
+        f"var:{PREFIX}_m360_debt_subject = $TICKET_SUBJECT$",
+        f"var:{PREFIX}_m360_debt_cycle = $TICKET_CYCLE$",
+        f"var:{PREFIX}_m360_debt_case = $TICKET_CASE$",
+        f"var:{PREFIX}_m360_debt_state = 4",
+        f"var:{PREFIX}_m360_debt_open = 1",
+        f"var:{PREFIX}_m360_debt_consumed = 0",
+    ]
+    committed_route_checks = (
+        "trigger_if = {\n"
+        "\tlimit = {\n"
+        + indent(
+            "OR = {\n"
+            + indent(receipt_guard(m360_spec, 1))
+            + "\n"
+            + indent(receipt_guard(m360_spec, 2))
+            + "\n}",
+            2,
+        )
+        + "\n\t}\n"
+        + indent(chr(10).join(committed_ab_checks))
+        + "\n}\ntrigger_else = {\n"
+        + indent(chr(10).join(committed_c_checks))
+        + "\n}"
+    )
+
+    mark = f"""# Central source changes READY -> consumed only after Workforce has
+# committed the exact AL tuple.  No other Central field is rewritten.
+{PREFIX}_mark_central_m360_source_consumed_effect = {{
+	save_scope_as = {PREFIX}_m360_materialize_subject
+	$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_materialize_owner }}
+{indent(_central_m360_quota_prelude())}
 	if = {{
 		limit = {{
-{indent(chr(10).join(seal_checks), 3)}
+			$TICKET_SUBJECT$ = this
+			$TICKET_OWNER$ = {{
+{indent(chr(10).join(_central_m360_owner_checks(1)), 4)}
+			}}
+{indent(committed_route_checks, 3)}
 		}}
-		set_variable = {{ name = {PREFIX}_al_external_collective_submission_sealed value = 1 }}
-		set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+		$TICKET_OWNER$ = {{ set_variable = {{ name = zg361_p2c_m360_source_status value = 2 }} }}
 	}}
-	else_if = {{ limit = {{ has_variable = {PREFIX}_al_external_collective_submission_sealed var:{PREFIX}_al_external_collective_submission_sealed = 1 }} set_variable = {{ name = {PREFIX}_adapter_status value = 2 }} }}
-	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3603 }} }}
 }}"""
-    return "\n\n".join([begin, *appenders, seal])
+
+    resume_checks = [
+        f"zg361_case_kernel_full_guard_trigger = {{ OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$ EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4 }}",
+        "$TICKET_SUBJECT$ = this",
+        "$TICKET_SUBJECT$ = { zg361_is_celestial_liege_trigger = yes }",
+        f"$TICKET_OWNER$ = {{\n{indent(chr(10).join(central_checks))}\n}}",
+    ]
+    resume = f"""# Public Central resume.  Human managers receive a route-neutral
+# event; authorized AI materializes and consumes route A through the same ABI.
+{PREFIX}_resume_m360_from_central_source_effect = {{
+	remove_variable = {PREFIX}_adapter_status
+	remove_variable = {PREFIX}_adapter_blocked_reason
+	save_scope_as = {PREFIX}_m360_materialize_subject
+	$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_materialize_owner }}
+{indent(_central_m360_quota_prelude())}
+	if = {{
+		limit = {{
+{indent(chr(10).join(resume_checks), 3)}
+		}}
+		$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_al_owner }}
+		save_scope_as = {PREFIX}_al_subject
+		save_scope_value_as = {{ name = {PREFIX}_al_cycle value = $TICKET_CYCLE$ }}
+		save_scope_value_as = {{ name = {PREFIX}_al_case value = $TICKET_CASE$ }}
+		{PREFIX}_al_schedule_stage_04_deadline_effect = yes
+		if = {{
+			limit = {{ $TICKET_OWNER$ = {{ is_ai = yes }} }}
+			{PREFIX}_materialize_m360_route_a_from_central_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			if = {{
+				limit = {{ OR = {{ var:{PREFIX}_adapter_status = 1 var:{PREFIX}_adapter_status = 2 }} }}
+				{PREFIX}_m360_route_a_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+			}}
+		}}
+		else_if = {{
+			limit = {{ has_variable = {PREFIX}_m360_event_queued var:{PREFIX}_m360_event_queued = 1 var:{PREFIX}_m360_event_owner = $TICKET_OWNER$ var:{PREFIX}_m360_event_subject = $TICKET_SUBJECT$ var:{PREFIX}_m360_event_cycle = $TICKET_CYCLE$ var:{PREFIX}_m360_event_case = $TICKET_CASE$ }}
+			set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+		}}
+		else = {{
+			set_variable = {{ name = {PREFIX}_m360_event_queued value = 1 }}
+			set_variable = {{ name = {PREFIX}_m360_event_owner value = $TICKET_OWNER$ }}
+			set_variable = {{ name = {PREFIX}_m360_event_subject value = $TICKET_SUBJECT$ }}
+			set_variable = {{ name = {PREFIX}_m360_event_cycle value = $TICKET_CYCLE$ }}
+			set_variable = {{ name = {PREFIX}_m360_event_case value = $TICKET_CASE$ }}
+			set_variable = {{ name = {PREFIX}_adapter_status value = 1 }}
+			$TICKET_OWNER$ = {{ trigger_event = {{ id = {NAMESPACE}.360 }} }}
+		}}
+	}}
+	else_if = {{
+		limit = {{
+			$TICKET_SUBJECT$ = this
+{indent(any_receipt(m360_spec), 3)}
+		}}
+		{PREFIX}_mark_central_m360_source_consumed_effect = {{ TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$ TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$ }}
+		if = {{
+			limit = {{ $TICKET_OWNER$ = {{ has_variable = zg361_p2c_m360_source_status var:zg361_p2c_m360_source_status = 2 }} }}
+			set_variable = {{ name = {PREFIX}_adapter_status value = 2 }}
+		}}
+		else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3604 }} }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_adapter_status value = 4 }} set_variable = {{ name = {PREFIX}_adapter_blocked_reason value = 3604 }} }}
+}}"""
+    return "\n\n".join((route_materializer(1), route_materializer(2), mark, resume))
 
 
 def render_completed_cycle_ledger() -> str:
@@ -4239,6 +4686,140 @@ def render_nonmanager_na_finalize() -> str:
 }}"""
 
 
+def render_manager_collective_na_finalize() -> str:
+    """Close a manager AL case when Central proved three cohorts impossible."""
+
+    return f"""# Public Central structural-N/A seam.  It writes neither #360 nor
+# #361 receipt/business object and never creates a sealed collective.
+{PREFIX}_finalize_manager_collective_na_effect = {{
+	remove_variable = {PREFIX}_runtime_applied
+	remove_variable = {PREFIX}_last_red_code
+	save_scope_as = {PREFIX}_m360_materialize_subject
+	$TICKET_OWNER$ = {{ save_scope_as = {PREFIX}_m360_materialize_owner }}
+	if = {{
+		limit = {{
+			$REASON$ = 360362
+			zg361_is_celestial_liege_trigger = yes
+			zg361_case_kernel_full_guard_trigger = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+				EXPECTED_OWNER = $TICKET_OWNER$ EXPECTED_SUBJECT = $TICKET_SUBJECT$
+				EXPECTED_CYCLE = $TICKET_CYCLE$ EXPECTED_CASE = $TICKET_CASE$ EXPECTED_STATE = 4
+			}}
+			$TICKET_SUBJECT$ = this
+			{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}
+			$TICKET_OWNER$ = {{
+				zg361_is_celestial_liege_trigger = yes
+{indent(chr(10).join(_central_m360_owner_checks(7)), 4)}
+			}}
+			has_variable = {PREFIX}_operation_total
+			has_variable = {PREFIX}_operation_used
+			has_variable = {PREFIX}_gold_total
+			has_variable = {PREFIX}_gold_available
+			has_variable = {PREFIX}_gold_reserved
+			has_variable = {PREFIX}_gold_paid
+			has_variable = {PREFIX}_hours_total
+			has_variable = {PREFIX}_hours_available
+			has_variable = {PREFIX}_hours_output
+			has_variable = {PREFIX}_hours_on_call
+			has_variable = {PREFIX}_hours_meeting
+			has_variable = {PREFIX}_hours_leave
+			has_variable = {PREFIX}_hours_governance
+			has_variable = {PREFIX}_shadow_hc_total
+			has_variable = {PREFIX}_shadow_hc_available
+			has_variable = {PREFIX}_shadow_hc_active
+			has_variable = zg361_ch_hc_authorized
+			has_variable = zg361_ch_hc_available
+			has_variable = zg361_ch_hc_reserved
+			has_variable = zg361_ch_hc_occupied
+			has_variable = zg361_ch_hc_frozen
+			has_variable = zg361_ch_hc_reclaimed
+			var:{PREFIX}_operation_total = 40
+			var:{PREFIX}_operation_used = {NONMANAGER_OPERATION_COUNT}
+		}}
+		set_variable = {{ name = {PREFIX}_portfolio_closed value = 0 }}
+		set_variable = {{ name = {PREFIX}_portfolio_status value = 4 }}
+		set_variable = {{ name = {PREFIX}_final_operation_check value = var:{PREFIX}_operation_used }}
+		set_variable = {{ name = {PREFIX}_final_gold_check value = var:{PREFIX}_gold_available }}
+		change_variable = {{ name = {PREFIX}_final_gold_check add = var:{PREFIX}_gold_reserved }}
+		change_variable = {{ name = {PREFIX}_final_gold_check add = var:{PREFIX}_gold_paid }}
+		set_variable = {{ name = {PREFIX}_final_hours_check value = var:{PREFIX}_hours_available }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_output }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_on_call }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_meeting }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_leave }}
+		change_variable = {{ name = {PREFIX}_final_hours_check add = var:{PREFIX}_hours_governance }}
+		set_variable = {{ name = {PREFIX}_final_shadow_hc_check value = var:{PREFIX}_shadow_hc_available }}
+		change_variable = {{ name = {PREFIX}_final_shadow_hc_check add = var:{PREFIX}_shadow_hc_active }}
+		set_variable = {{ name = {PREFIX}_final_formal_hc_check value = var:zg361_ch_hc_available }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_reserved }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_occupied }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_frozen }}
+		change_variable = {{ name = {PREFIX}_final_formal_hc_check add = var:zg361_ch_hc_reclaimed }}
+		set_variable = {{ name = {PREFIX}_final_conservation_ok value = 0 }}
+		if = {{
+			limit = {{
+				var:{PREFIX}_final_operation_check = {NONMANAGER_OPERATION_COUNT}
+				var:{PREFIX}_gold_available >= 0
+				var:{PREFIX}_gold_reserved >= 0
+				var:{PREFIX}_gold_paid >= 0
+				var:{PREFIX}_final_gold_check = var:{PREFIX}_gold_total
+				var:{PREFIX}_hours_available >= 0
+				var:{PREFIX}_hours_output >= 0
+				var:{PREFIX}_hours_on_call >= 0
+				var:{PREFIX}_hours_meeting >= 0
+				var:{PREFIX}_hours_leave >= 0
+				var:{PREFIX}_hours_governance >= 0
+				var:{PREFIX}_final_hours_check = var:{PREFIX}_hours_total
+				var:{PREFIX}_shadow_hc_available >= 0
+				var:{PREFIX}_shadow_hc_active >= 0
+				var:{PREFIX}_final_shadow_hc_check = var:{PREFIX}_shadow_hc_total
+				var:zg361_ch_hc_available >= 0
+				var:zg361_ch_hc_reserved >= 0
+				var:zg361_ch_hc_occupied >= 0
+				var:zg361_ch_hc_frozen >= 0
+				var:zg361_ch_hc_reclaimed >= 0
+				var:{PREFIX}_final_formal_hc_check = var:zg361_ch_hc_authorized
+			}}
+			zg361_case_kernel_transition_effect = {{
+				OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+				CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+				STATE_VAR = zg361_case_al_state REVISION_VAR = zg361_case_al_revision
+				ACTIVE_VAR = zg361_case_al_active TIMELINE_VAR = zg361_case_al_timeline_serial
+				FEEDBACK_VAR = zg361_case_al_feedback_revision LAST_HOOK_VAR = zg361_case_al_last_hook
+				TICKET_OWNER = $TICKET_OWNER$ TICKET_SUBJECT = $TICKET_SUBJECT$
+				TICKET_CYCLE = $TICKET_CYCLE$ TICKET_CASE = $TICKET_CASE$
+				TICKET_STATE = 4 NEXT_STATE = 7 HOOK_ID = 9363 CLOSE_CASE = yes
+			}}
+			if = {{
+				limit = {{ has_variable = zg361_case_kernel_applied var:zg361_case_kernel_applied = 1 var:zg361_case_al_active = 0 var:zg361_case_al_state = 7 }}
+				set_variable = {{ name = {PREFIX}_final_conservation_ok value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_na value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_reason value = $REASON$ }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_owned_operations value = {NONMANAGER_OPERATION_COUNT} }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_skipped_manager_only value = 2 }}
+				set_variable = {{ name = {PREFIX}_portfolio_terminal_success value = 0 }}
+				set_variable = {{ name = {PREFIX}_awaiting_al_357_359 value = 0 }}
+				set_variable = {{ name = {PREFIX}_m360_event_queued value = 0 }}
+				set_variable = {{ name = {PREFIX}_portfolio_closed value = 1 }}
+				set_variable = {{ name = {PREFIX}_portfolio_status value = 7 }}
+				set_variable = {{ name = {PREFIX}_runtime_applied value = 1 }}
+				set_variable = {{ name = {PREFIX}_runtime_status value = 1 }}
+				debug_log = "ZG361WE: manager portfolio closed structural N/A without #360/#361"
+			}}
+			else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 9096 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+		}}
+		else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 9096 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+	}}
+	else_if = {{
+		limit = {{ has_variable = {PREFIX}_portfolio_terminal_na var:{PREFIX}_portfolio_terminal_na = 1 var:{PREFIX}_portfolio_terminal_reason = $REASON$ var:{PREFIX}_portfolio_closed = 1 var:{PREFIX}_portfolio_status = 7 var:zg361_case_al_active = 0 }}
+		set_variable = {{ name = {PREFIX}_runtime_status value = 2 }}
+	}}
+	else = {{ set_variable = {{ name = {PREFIX}_last_red_code value = 9096 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
+}}"""
+
+
 def render_finalize() -> str:
     return f"""{PREFIX}_finalize_portfolio_effect = {{
 \tset_variable = {{ name = {PREFIX}_portfolio_closed value = 0 }}
@@ -4318,6 +4899,7 @@ def render_effects() -> bytes:
         render_due_debt_consumers(),
         render_abandoned_resource_release(),
         render_nonmanager_na_finalize(),
+        render_manager_collective_na_finalize(),
         render_finalize(),
     ]
     for domain in ("ab", "ac", "ad", "al"):
@@ -4348,6 +4930,46 @@ scope:{PREFIX}_{d}_subject = {{
 \thas_variable = {PREFIX}_al_external_stage_receipts_verified
 \tvar:{PREFIX}_al_external_stage_receipts_verified = 1
 }}"""
+    m360_ready = ""
+    if spec.mid == 360:
+        owner_checks = [
+            *(f"has_variable = zg361_p2c_m360_source_{field}" for field in M360_CENTRAL_GLOBAL_FIELDS),
+            "var:zg361_p2c_m360_source_status = 1",
+            "var:zg361_p2c_m360_source_reason = 0",
+            "var:zg361_p2c_m360_source_owner = this",
+            f"var:zg361_p2c_m360_source_subject = scope:{PREFIX}_{d}_subject",
+            f"var:zg361_p2c_m360_source_p2c_cycle = scope:{PREFIX}_{d}_cycle",
+            f"var:zg361_p2c_m360_source_al_cycle = scope:{PREFIX}_{d}_cycle",
+            f"var:zg361_p2c_m360_source_al_case = scope:{PREFIX}_{d}_case",
+            "var:zg361_p2c_m360_source_cohort_count = 3",
+            "var:zg361_p2c_m360_source_total_quota >= 1",
+            f"var:zg361_p2c_m360_source_total_quota <= {MAX_COLLECTIVE_OUTCOMES}",
+        ]
+        for cohort in (1, 2, 3):
+            base = f"zg361_p2c_m360_source_c{cohort}"
+            owner_checks.extend(
+                f"has_variable = {base}_{field}"
+                for field in M360_CENTRAL_COHORT_FIELDS
+            )
+        owner_checks += [
+            f"var:zg361_p2c_m360_source_c1_manager = scope:{PREFIX}_{d}_subject",
+            "NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c2_manager }",
+            "NOT = { var:zg361_p2c_m360_source_c1_manager = var:zg361_p2c_m360_source_c3_manager }",
+            "NOT = { var:zg361_p2c_m360_source_c2_manager = var:zg361_p2c_m360_source_c3_manager }",
+        ]
+        m360_ready = f"""
+scope:{PREFIX}_{d}_owner = {{
+{indent(chr(10).join(owner_checks))}
+}}
+scope:{PREFIX}_{d}_subject = {{
+	has_variable = {PREFIX}_m360_event_queued
+	var:{PREFIX}_m360_event_queued = 1
+	var:{PREFIX}_m360_event_owner = scope:{PREFIX}_{d}_owner
+	var:{PREFIX}_m360_event_subject = this
+	var:{PREFIX}_m360_event_cycle = scope:{PREFIX}_{d}_cycle
+	var:{PREFIX}_m360_event_case = scope:{PREFIX}_{d}_case
+	{_zero_or_missing(f'{PREFIX}_al_external_collective_submission_active')}
+}}"""
     completed = ""
     if spec.mid == 361:
         completed = f"""
@@ -4371,7 +4993,7 @@ exists = scope:{PREFIX}_{d}_subject
 exists = scope:{PREFIX}_{d}_cycle
 exists = scope:{PREFIX}_{d}_case
 this = scope:{PREFIX}_{d}_owner
-zg361_is_celestial_liege_trigger = yes{top_gate}{dependency}{completed}
+zg361_is_celestial_liege_trigger = yes{top_gate}{dependency}{m360_ready}{completed}
 scope:{PREFIX}_{d}_subject = {{
 \tzg361_case_kernel_full_guard_trigger = {{
 \t\tOWNER_VAR = zg361_case_{d}_owner
@@ -4475,7 +5097,8 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t\t\tvar:{PREFIX}_m264_handoff_response = {choice}
 \t\t}}
 \t}}"""
-    return f"""option = {{
+    if not (mid == 360 and choice in (1, 2)):
+        return f"""option = {{
 \tname = {NAMESPACE}.{mid}.{letter}{option_trigger}
 \tscope:{PREFIX}_{d}_subject = {{
 \t\t{PREFIX}_m{mid}_route_{letter}_effect = {{
@@ -4484,6 +5107,27 @@ def render_option(spec: Mechanism, choice: int) -> str:
 \t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
 \t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case{ticket_state}
 \t\t}}
+\t}}{next_event}
+}}"""
+    return f"""option = {{
+\tname = {NAMESPACE}.{mid}.{letter}{option_trigger}
+\tscope:{PREFIX}_{d}_subject = {{
+\t\t{PREFIX}_materialize_m360_route_{letter}_from_central_effect = {{
+\t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
+\t\t\tTICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+\t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ OR = {{ var:{PREFIX}_adapter_status = 1 var:{PREFIX}_adapter_status = 2 }} }}
+\t\t\t{PREFIX}_m360_route_{letter}_effect = {{
+\t\t\t\tTICKET_OWNER = scope:{PREFIX}_{d}_owner
+\t\t\t\tTICKET_SUBJECT = scope:{PREFIX}_{d}_subject
+\t\t\t\tTICKET_CYCLE = scope:{PREFIX}_{d}_cycle
+\t\t\t\tTICKET_CASE = scope:{PREFIX}_{d}_case
+\t\t\t}}
+\t\t}}
+\t\telse = {{ set_variable = {{ name = {PREFIX}_m360_event_queued value = 0 }} set_variable = {{ name = {PREFIX}_runtime_status value = 4 }} }}
 \t}}{next_event}
 }}"""
 

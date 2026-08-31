@@ -44,6 +44,203 @@ STAGES = (
     (11, "workforce_endgame", "zg361_we_open_portfolio_effect"),
 )
 
+M360_FREEZE_GLOBAL_FIELDS = (
+    "status",
+    "reason",
+    "upstream_reason",
+    "owner",
+    "subject",
+    "p2c_cycle",
+    "p2c_case",
+    "al_cycle",
+    "al_case",
+    "cohort_count",
+    "total_quota",
+)
+
+M360_FREEZE_COHORT_FIELDS = (
+    "manager",
+    "b1_cycle",
+    "b1_case",
+    "b1_source_id",
+    "b1_source_hash",
+    "quota",
+    "mg_cycle",
+    "mg_case",
+    "mg_snapshot_source_serial",
+    "mg_snapshot_revision",
+)
+
+M360_SOURCE_STATUS = {
+    "none": 0,
+    "ready": 1,
+    "consumed": 2,
+    "red": 4,
+    "wait": 5,
+    "structural_na": 7,
+}
+
+
+def m360_slot_guard(slot: int) -> str:
+    """Return one conditional proof for a READY B1 forced-C slot."""
+
+    base = f"zg361_b1_m360_source_forced_{slot}"
+    return f'''trigger_if = {{
+    limit = {{ var:zg361_b1_m360_source_quota >= {slot} }}
+    has_variable = {base}_character
+    has_variable = {base}_processing_order
+    has_variable = {base}_m357_receipt_id
+    has_variable = {base}_m357_receipt_hash
+    has_variable = {base}_b1_owner
+    has_variable = {base}_b1_subject
+    has_variable = {base}_b1_cycle
+    has_variable = {base}_b1_case
+    has_variable = {base}_result_owner
+    has_variable = {base}_result_subject
+    has_variable = {base}_result_cycle
+    has_variable = {base}_result_case
+    var:{base}_processing_order >= 1
+    var:{base}_processing_order <= var:zg361_b1_m360_source_member_count
+    var:{base}_m357_receipt_id > 0
+    var:{base}_m357_receipt_hash > 0
+    var:{base}_b1_owner = this
+    var:{base}_b1_subject = var:{base}_character
+    var:{base}_b1_cycle = var:zg361_b1_m360_source_cycle
+    var:{base}_b1_case = var:zg361_b1_m360_source_case
+    var:{base}_result_owner = this
+    var:{base}_result_subject = var:{base}_character
+    var:{base}_result_cycle = var:zg361_b1_m360_source_cycle
+    var:{base}_result_case > 0
+}}
+trigger_else = {{ always = yes }}'''
+
+
+def render_m360_triggers() -> str:
+    """Render Central's exact B1+MG candidate and frozen-drift guards."""
+
+    slot_guards = "\n".join(m360_slot_guard(slot) for slot in range(1, 7))
+    return HEADER + f'''# Route-neutral #360 source validation.  Central freezes only product-owned
+# manager/source identities; Workforce later materializes the route-specific
+# partition after A/B is selected.
+
+zg361_p2c_m360_candidate_ready_trigger = {{
+    zg361_is_celestial_liege_trigger = yes
+    liege = $EXPECTED_OWNER$
+    has_variable = zg361_p2c_mg_frozen_owner
+    has_variable = zg361_p2c_mg_frozen_cycle
+    has_variable = zg361_p2c_mg_frozen_case
+    has_variable = zg361_p2c_mg_frozen_order
+    var:zg361_p2c_mg_frozen_owner = $EXPECTED_OWNER$
+    var:zg361_p2c_mg_frozen_cycle = $EXPECTED_P2C_CYCLE$
+    var:zg361_p2c_mg_frozen_case = $EXPECTED_P2C_CASE$
+    var:zg361_p2c_mg_frozen_order >= 1
+
+    has_variable = zg361_b1_m360_source_status
+    has_variable = zg361_b1_m360_source_available
+    has_variable = zg361_b1_m360_source_sealed
+    has_variable = zg361_b1_m360_source_manager
+    has_variable = zg361_b1_m360_source_cycle
+    has_variable = zg361_b1_m360_source_case
+    has_variable = zg361_b1_m360_source_state
+    has_variable = zg361_b1_m360_source_id
+    has_variable = zg361_b1_m360_source_hash
+    has_variable = zg361_b1_m360_source_member_count
+    has_variable = zg361_b1_m360_source_member_hash
+    has_variable = zg361_b1_m360_source_agenda_count
+    has_variable = zg361_b1_m360_source_agenda_hash
+    has_variable = zg361_b1_m360_source_quota
+    has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+    has_variable = zg361_b1_m360_source_forced_count
+    var:zg361_b1_m360_source_status = 1
+    var:zg361_b1_m360_source_available = 1
+    var:zg361_b1_m360_source_sealed = 1
+    var:zg361_b1_m360_source_manager = this
+    var:zg361_b1_m360_source_cycle > 0
+    var:zg361_b1_m360_source_case > 0
+    var:zg361_b1_m360_source_state = 8
+    var:zg361_b1_m360_source_id > 0
+    var:zg361_b1_m360_source_hash > 0
+    var:zg361_b1_m360_source_member_count >= 1
+    var:zg361_b1_m360_source_member_hash > 0
+    var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count
+    var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash
+    var:zg361_b1_m360_source_quota >= 1
+    var:zg361_b1_m360_source_quota <= 6
+    var:zg361_b1_m360_source_quota <= var:zg361_b1_m360_source_member_count
+    var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+    var:zg361_b1_m360_source_all_meet_receipt_serial > 0
+{slot_guards.replace(chr(10), chr(10) + '    ')}
+
+    has_variable = zg361_case_f_owner
+    has_variable = zg361_case_f_subject
+    has_variable = zg361_case_f_cycle_serial
+    has_variable = zg361_case_f_case_serial
+    has_variable = zg361_case_f_state
+    has_variable = zg361_case_f_active
+    var:zg361_case_f_owner = $EXPECTED_OWNER$
+    var:zg361_case_f_subject = this
+    var:zg361_case_f_cycle_serial = $EXPECTED_P2C_CYCLE$
+    var:zg361_case_f_case_serial > 0
+    var:zg361_case_f_state = 5
+    var:zg361_case_f_active = 0
+    has_variable = zg361_mg_team_snapshot_status
+    has_variable = zg361_mg_team_snapshot_owner
+    has_variable = zg361_mg_team_snapshot_subject
+    has_variable = zg361_mg_team_snapshot_cycle
+    has_variable = zg361_mg_team_snapshot_case
+    has_variable = zg361_mg_team_snapshot_revision
+    has_variable = zg361_mg_snapshot_source_serial
+    has_variable = zg361_mg_team_snapshot_b1_available
+    has_variable = zg361_mg_team_snapshot_b1_manager
+    has_variable = zg361_mg_team_snapshot_b1_cycle
+    has_variable = zg361_mg_team_snapshot_b1_case
+    has_variable = zg361_mg_team_n
+    has_variable = zg361_mg_team_bottom_n
+    var:zg361_mg_team_snapshot_status = 1
+    var:zg361_mg_team_snapshot_owner = $EXPECTED_OWNER$
+    var:zg361_mg_team_snapshot_subject = this
+    var:zg361_mg_team_snapshot_cycle = var:zg361_case_f_cycle_serial
+    var:zg361_mg_team_snapshot_case = var:zg361_case_f_case_serial
+    var:zg361_mg_team_snapshot_revision > 0
+    var:zg361_mg_snapshot_source_serial = var:zg361_b1_m360_source_cycle
+    var:zg361_mg_team_snapshot_b1_available = 1
+    var:zg361_mg_team_snapshot_b1_manager = this
+    var:zg361_mg_team_snapshot_b1_cycle = var:zg361_b1_m360_source_cycle
+    var:zg361_mg_team_snapshot_b1_case = var:zg361_b1_m360_source_case
+    var:zg361_mg_team_n = var:zg361_b1_m360_source_member_count
+    var:zg361_mg_team_bottom_n = var:zg361_b1_m360_source_quota
+    has_variable = zg361_mg_m036_receipt_owner
+    has_variable = zg361_mg_m036_receipt_subject
+    has_variable = zg361_mg_m036_receipt_cycle
+    has_variable = zg361_mg_m036_receipt_case
+    has_variable = zg361_mg_m036_receipt_state
+    has_variable = zg361_mg_m036_receipt_choice
+    var:zg361_mg_m036_receipt_owner = $EXPECTED_OWNER$
+    var:zg361_mg_m036_receipt_subject = this
+    var:zg361_mg_m036_receipt_cycle = var:zg361_case_f_cycle_serial
+    var:zg361_mg_m036_receipt_case = var:zg361_case_f_case_serial
+    var:zg361_mg_m036_receipt_state = 4
+    OR = {{ var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }}
+}}
+
+zg361_p2c_m360_frozen_manager_exact_trigger = {{
+    zg361_p2c_m360_candidate_ready_trigger = {{
+        EXPECTED_OWNER = $EXPECTED_OWNER$
+        EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$
+        EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$
+    }}
+    var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$
+    var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$
+    var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$
+    var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$
+    var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$
+    var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$
+    var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$
+    var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$
+    var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$
+}}
+'''
+
 
 def incident_na_guard(domain: str) -> str:
     """Return the exact no-incident receipt accepted as stage status 3."""
@@ -179,12 +376,339 @@ zg361_p2c_stage_{stage:02d}_{domain}_effect = {{
 """
 
 
+def m360_clear_source_lines() -> str:
+    fields = [
+        *(f"zg361_p2c_m360_source_{field}" for field in M360_FREEZE_GLOBAL_FIELDS),
+        *(
+            f"zg361_p2c_m360_source_c{cohort}_{field}"
+            for cohort in (1, 2, 3)
+            for field in M360_FREEZE_COHORT_FIELDS
+        ),
+    ]
+    return "\n".join(f"remove_variable = {field}" for field in fields)
+
+
+def m360_freeze_cohort_lines(cohort: int, source: str) -> str:
+    """Freeze one manager's route-neutral B1/MG identity on Central owner."""
+
+    mapping = {
+        "manager": source,
+        "b1_cycle": f"{source}.var:zg361_b1_m360_source_cycle",
+        "b1_case": f"{source}.var:zg361_b1_m360_source_case",
+        "b1_source_id": f"{source}.var:zg361_b1_m360_source_id",
+        "b1_source_hash": f"{source}.var:zg361_b1_m360_source_hash",
+        "quota": f"{source}.var:zg361_b1_m360_source_quota",
+        "mg_cycle": f"{source}.var:zg361_case_f_cycle_serial",
+        "mg_case": f"{source}.var:zg361_case_f_case_serial",
+        "mg_snapshot_source_serial": f"{source}.var:zg361_mg_snapshot_source_serial",
+        "mg_snapshot_revision": f"{source}.var:zg361_mg_team_snapshot_revision",
+    }
+    return "\n".join(
+        f"set_variable = {{ name = zg361_p2c_m360_source_c{cohort}_{field} value = {value} }}"
+        for field, value in mapping.items()
+    )
+
+
+def m360_frozen_manager_call(cohort: int) -> str:
+    return f'''var:zg361_p2c_m360_source_c{cohort}_manager = {{
+    zg361_p2c_m360_frozen_manager_exact_trigger = {{
+        EXPECTED_OWNER = root
+        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_m360_source_p2c_cycle
+        EXPECTED_P2C_CASE = root.var:zg361_p2c_m360_source_p2c_case
+        EXPECTED_B1_CYCLE = root.var:zg361_p2c_m360_source_c{cohort}_b1_cycle
+        EXPECTED_B1_CASE = root.var:zg361_p2c_m360_source_c{cohort}_b1_case
+        EXPECTED_B1_SOURCE_ID = root.var:zg361_p2c_m360_source_c{cohort}_b1_source_id
+        EXPECTED_B1_SOURCE_HASH = root.var:zg361_p2c_m360_source_c{cohort}_b1_source_hash
+        EXPECTED_QUOTA = root.var:zg361_p2c_m360_source_c{cohort}_quota
+        EXPECTED_MG_CYCLE = root.var:zg361_p2c_m360_source_c{cohort}_mg_cycle
+        EXPECTED_MG_CASE = root.var:zg361_p2c_m360_source_c{cohort}_mg_case
+        EXPECTED_MG_SOURCE_SERIAL = root.var:zg361_p2c_m360_source_c{cohort}_mg_snapshot_source_serial
+        EXPECTED_MG_REVISION = root.var:zg361_p2c_m360_source_c{cohort}_mg_snapshot_revision
+    }}
+}}'''
+
+
+def render_m360_source_effects() -> str:
+    """Render Central's route-neutral selection/freeze state machine."""
+
+    clear = m360_clear_source_lines()
+    freeze_c1 = m360_freeze_cohort_lines(1, "var:zg361_p2c_subject")
+    freeze_c2 = m360_freeze_cohort_lines(2, "scope:zg361_p2c_m360_candidate_2")
+    freeze_c3 = m360_freeze_cohort_lines(3, "scope:zg361_p2c_m360_candidate_3")
+    frozen_guards = "\n".join(m360_frozen_manager_call(cohort) for cohort in (1, 2, 3))
+    return f'''# Clear only Central-owned #360 route-neutral identity.  Product B1/MG
+# sources and Workforce business objects remain immutable in their own scopes.
+zg361_p2c_clear_m360_source_effect = {{
+{clear.replace(chr(10), chr(10) + '    ')}
+    set_variable = {{ name = zg361_p2c_m360_source_status value = 0 }}
+    set_variable = {{ name = zg361_p2c_m360_source_reason value = 0 }}
+}}
+
+# Bind every terminal pre-materialization result to the same Central/AL case.
+# A structural N/A or pre-freeze RED must not be replayed against a newer AL
+# case merely because no cohort payload was produced.
+zg361_p2c_freeze_m360_source_envelope_effect = {{
+    set_variable = {{ name = zg361_p2c_m360_source_owner value = this }}
+    set_variable = {{ name = zg361_p2c_m360_source_subject value = var:zg361_p2c_subject }}
+    set_variable = {{ name = zg361_p2c_m360_source_p2c_cycle value = var:zg361_p2c_cycle }}
+    set_variable = {{ name = zg361_p2c_m360_source_p2c_case value = var:zg361_p2c_case_serial }}
+    set_variable = {{ name = zg361_p2c_m360_source_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }}
+    set_variable = {{ name = zg361_p2c_m360_source_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }}
+}}
+
+# Freeze C1 as the primary assessed manager, then the first viable ordered C2/C3
+# pair from stage 10's immutable manager list.  A pair over the six-slot product
+# cap is skipped as a whole; no quota or member list is truncated.
+zg361_p2c_prepare_m360_source_effect = {{
+    if = {{
+        limit = {{
+            has_variable = zg361_p2c_m360_source_status
+            var:zg361_p2c_m360_source_status = 1
+        }}
+        if = {{
+            limit = {{
+                has_variable = zg361_p2c_m360_source_owner
+                has_variable = zg361_p2c_m360_source_subject
+                has_variable = zg361_p2c_m360_source_p2c_cycle
+                has_variable = zg361_p2c_m360_source_p2c_case
+                has_variable = zg361_p2c_m360_source_al_cycle
+                has_variable = zg361_p2c_m360_source_al_case
+                has_variable = zg361_p2c_m360_source_cohort_count
+                has_variable = zg361_p2c_m360_source_total_quota
+                var:zg361_p2c_m360_source_owner = this
+                var:zg361_p2c_m360_source_subject = var:zg361_p2c_subject
+                var:zg361_p2c_m360_source_p2c_cycle = var:zg361_p2c_cycle
+                var:zg361_p2c_m360_source_p2c_case = var:zg361_p2c_case_serial
+                var:zg361_p2c_m360_source_al_cycle = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial
+                var:zg361_p2c_m360_source_al_case = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+                var:zg361_p2c_m360_source_cohort_count = 3
+                var:zg361_p2c_m360_source_total_quota >= 1
+                var:zg361_p2c_m360_source_total_quota <= 6
+{frozen_guards.replace(chr(10), chr(10) + '                ')}
+            }}
+            # Exact READY replay is a no-op.
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 0 }}
+        }}
+        else = {{
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 4 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360495 }}
+            debug_log = "ZG361P2C RED: frozen M360 manager/source tuple drifted"
+        }}
+    }}
+    else_if = {{
+        limit = {{
+            has_variable = zg361_p2c_m360_source_status
+            OR = {{
+                var:zg361_p2c_m360_source_status = 2
+                var:zg361_p2c_m360_source_status = 4
+                var:zg361_p2c_m360_source_status = 7
+            }}
+        }}
+        # Consumed, RED and structural N/A are terminal and never reselect.
+    }}
+    else_if = {{
+        limit = {{
+            var:zg361_p2c_subject = {{
+                zg361_case_kernel_full_guard_trigger = {{
+                    OWNER_VAR = zg361_case_al_owner SUBJECT_VAR = zg361_case_al_subject
+                    CYCLE_VAR = zg361_case_al_cycle_serial CASE_VAR = zg361_case_al_case_serial
+                    STATE_VAR = zg361_case_al_state ACTIVE_VAR = zg361_case_al_active
+                    EXPECTED_OWNER = root EXPECTED_SUBJECT = this
+                    EXPECTED_CYCLE = root.var:zg361_p2c_cycle
+                    EXPECTED_CASE = var:zg361_case_al_case_serial EXPECTED_STATE = 4
+                }}
+                has_variable = zg361_we_al_external_stage_receipts_verified
+                var:zg361_we_al_external_stage_receipts_verified = 1
+                var:zg361_we_al_external_receipt_owner = root
+                var:zg361_we_al_external_receipt_subject = this
+                var:zg361_we_al_external_receipt_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_al_external_receipt_case = var:zg361_case_al_case_serial
+                var:zg361_we_al_external_receipt_state = 4
+                var:zg361_we_al_external_receipt_count = 3
+                var:zg361_we_al_external_last_operation = 359
+            }}
+        }}
+        set_variable = {{ name = zg361_p2c_m360_probe_primary_in_frozen value = 0 }}
+        set_variable = {{ name = zg361_p2c_m360_probe_valid_n value = 0 }}
+        set_variable = {{ name = zg361_p2c_m360_probe_structural_na_n value = 0 }}
+        set_variable = {{ name = zg361_p2c_m360_probe_wait_n value = 0 }}
+        set_variable = {{ name = zg361_p2c_m360_probe_invalid_n value = 0 }}
+        every_in_list = {{
+            variable = zg361_p2c_mg_subjects
+            if = {{
+                limit = {{ this = root.var:zg361_p2c_subject }}
+                root = {{ set_variable = {{ name = zg361_p2c_m360_probe_primary_in_frozen value = 1 }} }}
+            }}
+            if = {{
+                limit = {{
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 3
+                }}
+                root = {{ change_variable = {{ name = zg361_p2c_m360_probe_invalid_n add = 1 }} }}
+            }}
+            else_if = {{
+                limit = {{
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 2
+                }}
+                root = {{ change_variable = {{ name = zg361_p2c_m360_probe_structural_na_n add = 1 }} }}
+            }}
+            else_if = {{
+                limit = {{
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 1
+                }}
+                if = {{
+                    limit = {{
+                        zg361_p2c_m360_candidate_ready_trigger = {{
+                            EXPECTED_OWNER = root
+                            EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                            EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                        }}
+                    }}
+                    root = {{ change_variable = {{ name = zg361_p2c_m360_probe_valid_n add = 1 }} }}
+                }}
+                else = {{ root = {{ change_variable = {{ name = zg361_p2c_m360_probe_invalid_n add = 1 }} }} }}
+            }}
+            else_if = {{
+                limit = {{
+                    has_variable = zg361_b1_cycle_state
+                    has_variable = zg361_b1_closure_state
+                    var:zg361_b1_cycle_state = 8
+                    var:zg361_b1_closure_state = 4
+                }}
+                root = {{ change_variable = {{ name = zg361_p2c_m360_probe_invalid_n add = 1 }} }}
+            }}
+            else = {{ root = {{ change_variable = {{ name = zg361_p2c_m360_probe_wait_n add = 1 }} }} }}
+        }}
+        if = {{
+            limit = {{
+                var:zg361_p2c_subject = {{ NOT = {{ zg361_is_celestial_liege_trigger = yes }} }}
+            }}
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 7 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360421 }}
+        }}
+        else_if = {{
+            limit = {{ var:zg361_p2c_m360_probe_primary_in_frozen = 0 }}
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 7 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360422 }}
+        }}
+        else_if = {{
+            limit = {{ var:zg361_p2c_m360_probe_invalid_n > 0 }}
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 4 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360492 }}
+        }}
+        else_if = {{
+            limit = {{
+                var:zg361_p2c_subject = {{
+                    has_variable = zg361_b1_m360_source_status
+                    var:zg361_b1_m360_source_status = 2
+                }}
+            }}
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 7 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360424 }}
+            set_variable = {{ name = zg361_p2c_m360_source_upstream_reason value = var:zg361_p2c_subject.var:zg361_b1_m360_source_reason }}
+        }}
+        else_if = {{
+            limit = {{ var:zg361_p2c_m360_probe_wait_n > 0 }}
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 5 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360410 }}
+        }}
+        else_if = {{
+            limit = {{ var:zg361_p2c_m360_probe_valid_n < 3 }}
+            zg361_p2c_freeze_m360_source_envelope_effect = yes
+            set_variable = {{ name = zg361_p2c_m360_source_status value = 7 }}
+            set_variable = {{ name = zg361_p2c_m360_source_reason value = 360423 }}
+        }}
+        else = {{
+            set_variable = {{ name = zg361_p2c_m360_selection_found value = 0 }}
+            ordered_in_list = {{
+                variable = zg361_p2c_mg_subjects
+                order_by = {{ value = var:zg361_p2c_mg_frozen_order multiply = -1 }}
+                max = {{ value = var:zg361_p2c_mg_expected max = 80 }}
+                if = {{
+                    limit = {{
+                        root.var:zg361_p2c_m360_selection_found = 0
+                        NOT = {{ this = root.var:zg361_p2c_subject }}
+                        zg361_p2c_m360_candidate_ready_trigger = {{
+                            EXPECTED_OWNER = root
+                            EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                            EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                        }}
+                    }}
+                    save_temporary_scope_as = zg361_p2c_m360_candidate_2
+                    root = {{
+                        save_scope_value_as = {{
+                            name = zg361_p2c_m360_remaining_quota
+                            value = {{ value = 6 subtract = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota subtract = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_quota }}
+                        }}
+                        ordered_in_list = {{
+                            variable = zg361_p2c_mg_subjects
+                            order_by = {{ value = var:zg361_p2c_mg_frozen_order multiply = -1 }}
+                            max = {{ value = var:zg361_p2c_mg_expected max = 80 }}
+                            if = {{
+                                limit = {{
+                                    root.var:zg361_p2c_m360_selection_found = 0
+                                    NOT = {{ this = root.var:zg361_p2c_subject }}
+                                    NOT = {{ this = scope:zg361_p2c_m360_candidate_2 }}
+                                    var:zg361_b1_m360_source_quota <= scope:zg361_p2c_m360_remaining_quota
+                                    zg361_p2c_m360_candidate_ready_trigger = {{
+                                        EXPECTED_OWNER = root
+                                        EXPECTED_P2C_CYCLE = root.var:zg361_p2c_cycle
+                                        EXPECTED_P2C_CASE = root.var:zg361_p2c_case_serial
+                                    }}
+                                }}
+                                save_temporary_scope_as = zg361_p2c_m360_candidate_3
+                                root = {{
+{freeze_c1.replace(chr(10), chr(10) + '                                    ')}
+{freeze_c2.replace(chr(10), chr(10) + '                                    ')}
+{freeze_c3.replace(chr(10), chr(10) + '                                    ')}
+                                    set_variable = {{ name = zg361_p2c_m360_source_status value = 1 }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_reason value = 0 }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_owner value = this }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_subject value = var:zg361_p2c_subject }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_p2c_cycle value = var:zg361_p2c_cycle }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_p2c_case value = var:zg361_p2c_case_serial }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_al_cycle value = var:zg361_p2c_subject.var:zg361_case_al_cycle_serial }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_al_case value = var:zg361_p2c_subject.var:zg361_case_al_case_serial }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_cohort_count value = 3 }}
+                                    set_variable = {{ name = zg361_p2c_m360_source_total_quota value = {{ value = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota add = scope:zg361_p2c_m360_candidate_2.var:zg361_b1_m360_source_quota add = scope:zg361_p2c_m360_candidate_3.var:zg361_b1_m360_source_quota }} }}
+                                    set_variable = {{ name = zg361_p2c_m360_selection_found value = 1 }}
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }}
+            if = {{
+                limit = {{ var:zg361_p2c_m360_selection_found = 0 }}
+                zg361_p2c_freeze_m360_source_envelope_effect = yes
+                set_variable = {{ name = zg361_p2c_m360_source_status value = 7 }}
+                set_variable = {{ name = zg361_p2c_m360_source_reason value = 360425 }}
+            }}
+        }}
+    }}
+    else = {{
+        set_variable = {{ name = zg361_p2c_m360_source_status value = 4 }}
+        set_variable = {{ name = zg361_p2c_m360_source_reason value = 360491 }}
+        debug_log = "ZG361P2C RED: M360 preparation lost the exact AL tuple"
+    }}
+}}
+'''
+
+
 def render_effects() -> str:
     incidents = "".join(
         incident_stage(stage, domain, terminal)
         for stage, domain, terminal in ((4, "x", 8), (5, "y", 6), (6, "z", 6))
     )
-    return HEADER + r'''# Zhongguo 361 phase-two central runtime: serial adapters only.
+    return HEADER + render_m360_source_effects() + r'''
+
+# Zhongguo 361 phase-two central runtime: serial adapters only.
 # Status: 0 unopened, 1 running, 2 success, 3 not-applicable,
 # 4 typed RED, 5 external dependency.  Managers are celestial dukes+;
 # counts/barons remain valid assessed subjects but can never be ROOT.
@@ -432,6 +956,7 @@ zg361_p2c_on_review_published_effect = {
                 set_variable = { name = zg361_p2c_external_n value = 0 }
                 remove_variable = zg361_p2c_last_red_code
                 remove_variable = zg361_p2c_summary_pending
+                zg361_p2c_clear_m360_source_effect = yes
                 if = { limit = { has_variable_list = zg361_p2c_mg_subjects } clear_variable_list = zg361_p2c_mg_subjects }
                 set_variable = { name = zg361_p2c_mg_expected value = 0 }
                 set_variable = { name = zg361_p2c_mg_completed value = 0 }
@@ -996,6 +1521,7 @@ zg361_p2c_stage_10_manager_governance_effect = {
         limit = { var:zg361_p2c_stage_status = 0 }
         if = { limit = { has_variable_list = zg361_p2c_mg_subjects } clear_variable_list = zg361_p2c_mg_subjects }
         set_variable = { name = zg361_p2c_mg_expected value = 0 }
+        set_variable = { name = zg361_p2c_mg_frozen_order_cursor value = 0 }
         every_vassal = {
             limit = {
                 zg361_is_celestial_liege_trigger = yes
@@ -1005,9 +1531,14 @@ zg361_p2c_stage_10_manager_governance_effect = {
             }
             save_temporary_scope_as = zg361_p2c_mg_subject_to_store
             root = {
+                change_variable = { name = zg361_p2c_mg_frozen_order_cursor add = 1 }
                 add_to_variable_list = { name = zg361_p2c_mg_subjects target = scope:zg361_p2c_mg_subject_to_store }
                 change_variable = { name = zg361_p2c_mg_expected add = 1 }
             }
+            set_variable = { name = zg361_p2c_mg_frozen_owner value = root }
+            set_variable = { name = zg361_p2c_mg_frozen_cycle value = root.var:zg361_p2c_cycle }
+            set_variable = { name = zg361_p2c_mg_frozen_case value = root.var:zg361_p2c_case_serial }
+            set_variable = { name = zg361_p2c_mg_frozen_order value = root.var:zg361_p2c_mg_frozen_order_cursor }
         }
         if = {
             limit = { var:zg361_p2c_mg_expected = 0 }
@@ -1181,6 +1712,36 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 var:zg361_we_final_conservation_ok = 1
             }
         }
+        if = {
+            limit = { var:zg361_p2c_m360_source_status = 1 }
+            set_variable = { name = zg361_p2c_m360_source_status value = 2 }
+        }
+        zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
+    }
+    else_if = {
+        # Cycles one/two (and a non-top third cycle) have genuinely consumed
+        # #360 but do not yet expose #361.  Status 8 is a valid
+        # history-accruing close, not RED and not fabricated success.
+        limit = {
+            var:zg361_p2c_subject = {
+                var:zg361_we_portfolio_closed = 1
+                var:zg361_we_portfolio_status = 8
+                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                var:zg361_we_portfolio_terminal_history_accruing = 1
+                var:zg361_we_portfolio_history_cycle_count >= 1
+                var:zg361_we_portfolio_history_cycle_count <= 3
+                var:zg361_we_portfolio_terminal_owned_operations = 39
+                var:zg361_we_portfolio_terminal_skipped_charter = 1
+                var:zg361_we_portfolio_terminal_success = 0
+                var:zg361_we_final_conservation_ok = 1
+                var:zg361_case_al_active = 0
+                var:zg361_case_al_state = 8
+            }
+        }
+        if = {
+            limit = { var:zg361_p2c_m360_source_status = 1 }
+            set_variable = { name = zg361_p2c_m360_source_status value = 2 }
+        }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
     }
     else_if = {
@@ -1193,7 +1754,10 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 var:zg361_we_portfolio_status = 7
                 var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
                 var:zg361_we_portfolio_terminal_na = 1
-                var:zg361_we_portfolio_terminal_reason = 360361
+                OR = {
+                    var:zg361_we_portfolio_terminal_reason = 360361
+                    var:zg361_we_portfolio_terminal_reason = 360362
+                }
                 var:zg361_we_portfolio_terminal_owned_operations = 38
                 var:zg361_we_portfolio_terminal_skipped_manager_only = 2
                 var:zg361_we_portfolio_terminal_success = 0
@@ -1226,8 +1790,9 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 }
             }
         }
-        # If exact external receipts already advanced AL to 4/5, call the public
-        # resume seam once.  Otherwise remain external and keep the UI lane free.
+        # Once exact external receipts advance AL to state 4, Central freezes a
+        # route-neutral three-manager source.  It never calls the old opener,
+        # because that opener could expose #360 before this source is READY.
         if = {
             limit = {
                 var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }
@@ -1242,10 +1807,49 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                     OR = { var:zg361_case_al_state = 4 var:zg361_case_al_state = 5 }
                 }
             }
-            zg361_p2c_call_workforce_adapter_effect = yes
-            set_variable = { name = zg361_p2c_stage_status value = 1 }
-            zg361_p2c_mark_lane_busy_effect = yes
-            zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+            zg361_p2c_prepare_m360_source_effect = yes
+            if = {
+                limit = { var:zg361_p2c_m360_source_status = 1 }
+                zg361_we_resume_m360_from_central_source_effect = {
+                    TICKET_OWNER = root
+                    TICKET_SUBJECT = var:zg361_p2c_subject
+                    TICKET_CYCLE = var:zg361_p2c_cycle
+                    TICKET_CASE = var:zg361_p2c_subject.var:zg361_case_al_case_serial
+                }
+                set_variable = { name = zg361_p2c_stage_status value = 1 }
+                zg361_p2c_mark_lane_busy_effect = yes
+                zg361_p2c_schedule_pump_effect = { DAYS = 2 }
+            }
+            else_if = {
+                limit = { var:zg361_p2c_m360_source_status = 5 }
+                zg361_p2c_mark_external_wait_effect = { REASON = 360410 STAGE_VAR = zg361_p2c_stage_11_status }
+            }
+            else_if = {
+                limit = { var:zg361_p2c_m360_source_status = 7 }
+                var:zg361_p2c_subject = {
+                    zg361_we_finalize_manager_collective_na_effect = {
+                        TICKET_OWNER = root
+                        TICKET_SUBJECT = this
+                        TICKET_CYCLE = root.var:zg361_p2c_cycle
+                        TICKET_CASE = var:zg361_case_al_case_serial
+                        REASON = 360362
+                    }
+                }
+                if = {
+                    limit = {
+                        var:zg361_p2c_subject = {
+                            var:zg361_we_portfolio_closed = 1
+                            var:zg361_we_portfolio_status = 7
+                            var:zg361_we_portfolio_terminal_reason = 360362
+                            var:zg361_we_final_conservation_ok = 1
+                            var:zg361_case_al_active = 0
+                        }
+                    }
+                    zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_11_status }
+                }
+                else = { zg361_p2c_record_red_effect = { CODE = 1192 STAGE_VAR = zg361_p2c_stage_11_status } }
+            }
+            else = { zg361_p2c_record_red_effect = { CODE = 1191 STAGE_VAR = zg361_p2c_stage_11_status } }
         }
         else_if = {
             # #360/#361 are manager-only by contract.  Without a Workforce
@@ -1483,6 +2087,10 @@ CK3 live evidence: `none`
 - 伯爵和男爵可以作为直属受评 subject，但永远不能成为中央 manager。
 - B1 公示后，从本轮已冻结结果 cohort 里按 `stewardship / position = 0` 冻结一个 primary subject。
 - 中央案固定 `manager + B1 cycle/case + review cycle + subject + result case`；死亡、调任、换 owner/cycle/case 都 typed RED，绝不换人续跑。
+- #360 的 C1 必须就是该 primary subject 且其本人为天朝制公爵以上经理；C2/C3 只能从 stage 10 已冻结的
+  `zg361_p2c_mg_subjects` 按冻结序号选择。首个三人总 quota 在 1..6 的完整组合被冻结；超限组合整体跳过，绝不截断 quota 或成员。
+- #360 只冻结 manager 以及 B1/MG source identity，不预先决定 forced/exception partition。A/B 选项提交后才由
+  Workforce 产品 wrapper 读取三组真实 source 并 materialize；C 不 begin、不 append、不 seal。
 
 ## 2. 两阶段 hook
 
@@ -1503,8 +2111,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 | 7 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、closed、conservation OK |
 | 8 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
 | 9 | Career/Learning | `zg361_cl_dispatch_direct_reports_effect` | expected/completed 全齐；玩家 digest 已 ACK |
-| 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 冻结 strict-lag manager cohort 全部 F/AK terminal；空集 N/A |
-| 11 | Workforce/Endgame | `zg361_we_open_portfolio_effect` | success 只认 closed=1/status=6；非 manager 的 closed=1/status=7 为 N/A；status=5 是 357–359 外部等待 |
+| 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 冻结带 owner/cycle/case/order 的 strict-lag manager cohort，全部 F/AK terminal；空集 N/A |
+| 11 | Workforce/Endgame | 初始 `zg361_we_open_portfolio_effect`；#360 `zg361_we_resume_m360_from_central_source_effect` | status 6 success；status 8 为真实 history-accruing terminal；status 7 为 count/baron 或 manager structural N/A；status 5 是外部等待 |
 
 每次中央 pump 的 `if/else_if` 只进入一个 stage；每个 stage 每次最多调用一个 public adapter/domain opener。玩家与 AI 走同一业务 ABI 和同一顺序，差异仅是玩家 UI lane 与最终摘要；AI 后台静默。
 
@@ -1515,31 +2123,48 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - Incident X/Y/Z 的 success 额外要求 `applicable=1`、positive incident/source/consequence 与 `final_kpi_staged=1`；N/A 必须同时冻结 owner/subject/cycle、reason=1、probe/receipt serial，并回指同周期 `probe_result/source/consequence=0/0/0`。缺字段或任意旧零值都不能冒充 N/A。
 - Career/HC、Compensation、PP 的 manager-only ABI 会先按各自同一筛选器预选；只有候选仍等于 frozen primary 才调用，防止资格漂移在别人身上留下 active orphan。
 - Career/Learning 冻结直属 cohort/count，AH/AI expected 必须各自等于该 count；partial open 等已开案终态后记 RED。Manager/Governance 同样核对 frozen cohort 的 exact F/AK started/active/terminal，failed open 不会无限轮询。
+- #360 source status 严格分为 READY=1、consumed=2、RED=4、WAIT=5、structural N/A=7。B1 status 2 的 route C、
+  zero quota、absolute-grade C、单 cohort quota>6 只排除该 manager；B1 status 3 的 agenda/member/#137/#357/
+  result/hash/quota 不一致是 RED，禁止换一组经理掩盖。未发布且合法流程仍 active 才是 WAIT；同轮 B1 已 terminal
+  却没有 diagnostic status 同样是 RED。
+- READY 同时要求每名 manager 的 exact B1 source、六槽以内真实 #357 candidate，以及同一 Central cycle 的 MG F/m036
+  terminal snapshot；`team_n/member_count`、`team_bottom_n/quota` 与 snapshot 的 B1 source serial 必须一致。冻结后任一
+  manager、B1 source id/hash/quota 或 MG case/revision 漂移立即 RED，绝不重选。
 - delayed poll 带 `manager + cycle + central case + stage + ticket serial`；新 ticket 使旧事件 strict no-op。
 - 新一轮 B1 公示若撞上旧中央案，会先把旧 immutable tuple 记为 typed RED，给旧摘要 D+1 ACK 窗口，再在 D+2 精确初始化新案；禁止原地覆盖或清掉旧摘要。
 - P3、Credit/Project 与 Workforce 的 D+1 域切换空档只轮询同一 portfolio tuple，不会误判 RED。
 - 3.25 state 1/2 以及 Workforce status 5 都记录 external wait，绝不伪装 success。manager 的 status 5 会先调用
   `zg361_b2_submit_completed_al_receipts_effect`：它只读取 B1 #357 与 B2 #358/#359 已由真实 consumer 发布的来源票据，中央不能
-  传入 receipt ID/hash；strict bridge 验证成功后才调用既有 resume seam。
+  传入 receipt ID/hash；strict bridge 验证成功后才准备 route-neutral source。只有 READY 才调用新的 gated resume seam；
+  WAIT 不弹窗，structural N/A 调用不造 collective 的 manager N/A close seam，RED 不再 resume。
+- `zg361_we_portfolio_status=8` 必须同时带 history-accruing、39 owned operations、skipped-charter、success=0、守恒和
+  closed AL state 8；中央把它当合法完成推进，而不是误落 `RED 1161`。
 - 最终每名玩家 manager 只收到一张中央聚合摘要；AI 不收到中央可见事件。
 
 ## 5. 已知外部依赖
 
 - Workforce 357–359 的 B1/B2 真实来源、产品 adapter 与中央调用已经接线；但同案 receipt 尚未到达（例如没有已裁决申诉、
   翻案后尚未完成配额回流，或走 policy route C）时，本中央案仍会诚实停在 stage 11/status 5，不会生成完成标记。
+- Central 已冻结 `zg361_p2c_m360_source_*` route-neutral ABI，并引用两个同批 Workforce public ABI：
+  `zg361_we_resume_m360_from_central_source_effect` 与 `zg361_we_finalize_manager_collective_na_effect`。它们必须由 Workforce
+  生成器在同一集成批次实现后，本候选树才可称为可加载；旧 opener 不得承担 #360 READY resume，以免提前弹玩家事件。
 - Workforce runtime 的初始 AB/AC/AD 必须允许普通 assessed count/baron；只有 #360/#361 resume 才可追加 manager 条件。中央层已经按此权限合同调用 public seam，但不修改该并发领域文件。
 - 普通 count/baron 的 N/A-close seam 必须冻结 `terminal_na=1/reason=360361/owned_operations=38/skipped_manager_only=2/success=0`、`final_conservation_ok=1`、清 AL active 并写 closed=1/status=7；中央据此把 stage 11 记为 N/A。旧 runtime 若没有该 seam，中央仍以 `terminal_state=5` 外部阻点暂停：不调用无权限 ABI、不写 completed-cycle、不伪造 Workforce success，也不每两日永久重试。
 - 所有结论目前只是生成可复现、静态语法/结构测试证据；尚未经过 MCP-first CK3 paused snapshot、存读档或多轮实机验收。
 
 ## 6. 测试口径
 
-`tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 两套公示证明的 mode 互斥与混用反例、D+2 初始化、exact 3.25 wake、单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、Workforce 来源 adapter→verified→resume 顺序与 status 5 等待、AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
+`tools/test_zg361_phase2_central_runtime.py` 静态证明：两处 hook 顺序、M013 proof 互斥、D+2 初始化、exact 3.25 wake、
+单 opener、PP/Incident 顺序、权限边界、stale ticket、CP N/A、CL digest、MG strict lag、#360 frozen-order 组合、
+B1 diagnostic WAIT/N/A/RED、B1+MG exact source、READY-only gated resume、manager structural-N/A、status 8 history terminal、
+AI/玩家共同业务路径、BOM 与生成可复现。它不构成 fixture-live 或 production-live 证据。
 """
 
 
 def outputs() -> dict[Path, str]:
     rendered = {
         MOD_ROOT / "common/scripted_effects/zg361_phase2_central_runtime_effects.txt": render_effects(),
+        MOD_ROOT / "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt": render_m360_triggers(),
         MOD_ROOT / "events/zg361_phase2_central_runtime_events.txt": render_events(),
         MOD_ROOT / "docs/361-phase2-central-runtime-spec.md": render_spec(),
     }

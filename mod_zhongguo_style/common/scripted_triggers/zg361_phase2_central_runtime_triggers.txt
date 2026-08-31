@@ -1,0 +1,288 @@
+﻿# GENERATED FILE — edit tools/gen_361_phase2_central_runtime.py
+# Route-neutral #360 source validation.  Central freezes only product-owned
+# manager/source identities; Workforce later materializes the route-specific
+# partition after A/B is selected.
+
+zg361_p2c_m360_candidate_ready_trigger = {
+    zg361_is_celestial_liege_trigger = yes
+    liege = $EXPECTED_OWNER$
+    has_variable = zg361_p2c_mg_frozen_owner
+    has_variable = zg361_p2c_mg_frozen_cycle
+    has_variable = zg361_p2c_mg_frozen_case
+    has_variable = zg361_p2c_mg_frozen_order
+    var:zg361_p2c_mg_frozen_owner = $EXPECTED_OWNER$
+    var:zg361_p2c_mg_frozen_cycle = $EXPECTED_P2C_CYCLE$
+    var:zg361_p2c_mg_frozen_case = $EXPECTED_P2C_CASE$
+    var:zg361_p2c_mg_frozen_order >= 1
+
+    has_variable = zg361_b1_m360_source_status
+    has_variable = zg361_b1_m360_source_available
+    has_variable = zg361_b1_m360_source_sealed
+    has_variable = zg361_b1_m360_source_manager
+    has_variable = zg361_b1_m360_source_cycle
+    has_variable = zg361_b1_m360_source_case
+    has_variable = zg361_b1_m360_source_state
+    has_variable = zg361_b1_m360_source_id
+    has_variable = zg361_b1_m360_source_hash
+    has_variable = zg361_b1_m360_source_member_count
+    has_variable = zg361_b1_m360_source_member_hash
+    has_variable = zg361_b1_m360_source_agenda_count
+    has_variable = zg361_b1_m360_source_agenda_hash
+    has_variable = zg361_b1_m360_source_quota
+    has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+    has_variable = zg361_b1_m360_source_forced_count
+    var:zg361_b1_m360_source_status = 1
+    var:zg361_b1_m360_source_available = 1
+    var:zg361_b1_m360_source_sealed = 1
+    var:zg361_b1_m360_source_manager = this
+    var:zg361_b1_m360_source_cycle > 0
+    var:zg361_b1_m360_source_case > 0
+    var:zg361_b1_m360_source_state = 8
+    var:zg361_b1_m360_source_id > 0
+    var:zg361_b1_m360_source_hash > 0
+    var:zg361_b1_m360_source_member_count >= 1
+    var:zg361_b1_m360_source_member_hash > 0
+    var:zg361_b1_m360_source_agenda_count = var:zg361_b1_m360_source_member_count
+    var:zg361_b1_m360_source_agenda_hash = var:zg361_b1_m360_source_member_hash
+    var:zg361_b1_m360_source_quota >= 1
+    var:zg361_b1_m360_source_quota <= 6
+    var:zg361_b1_m360_source_quota <= var:zg361_b1_m360_source_member_count
+    var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+    var:zg361_b1_m360_source_all_meet_receipt_serial > 0
+trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 1 }
+        has_variable = zg361_b1_m360_source_forced_1_character
+        has_variable = zg361_b1_m360_source_forced_1_processing_order
+        has_variable = zg361_b1_m360_source_forced_1_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_1_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_1_b1_owner
+        has_variable = zg361_b1_m360_source_forced_1_b1_subject
+        has_variable = zg361_b1_m360_source_forced_1_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_1_b1_case
+        has_variable = zg361_b1_m360_source_forced_1_result_owner
+        has_variable = zg361_b1_m360_source_forced_1_result_subject
+        has_variable = zg361_b1_m360_source_forced_1_result_cycle
+        has_variable = zg361_b1_m360_source_forced_1_result_case
+        var:zg361_b1_m360_source_forced_1_processing_order >= 1
+        var:zg361_b1_m360_source_forced_1_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_1_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_1_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_1_b1_owner = this
+        var:zg361_b1_m360_source_forced_1_b1_subject = var:zg361_b1_m360_source_forced_1_character
+        var:zg361_b1_m360_source_forced_1_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_1_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_1_result_owner = this
+        var:zg361_b1_m360_source_forced_1_result_subject = var:zg361_b1_m360_source_forced_1_character
+        var:zg361_b1_m360_source_forced_1_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_1_result_case > 0
+    }
+    trigger_else = { always = yes }
+    trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 2 }
+        has_variable = zg361_b1_m360_source_forced_2_character
+        has_variable = zg361_b1_m360_source_forced_2_processing_order
+        has_variable = zg361_b1_m360_source_forced_2_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_2_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_2_b1_owner
+        has_variable = zg361_b1_m360_source_forced_2_b1_subject
+        has_variable = zg361_b1_m360_source_forced_2_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_2_b1_case
+        has_variable = zg361_b1_m360_source_forced_2_result_owner
+        has_variable = zg361_b1_m360_source_forced_2_result_subject
+        has_variable = zg361_b1_m360_source_forced_2_result_cycle
+        has_variable = zg361_b1_m360_source_forced_2_result_case
+        var:zg361_b1_m360_source_forced_2_processing_order >= 1
+        var:zg361_b1_m360_source_forced_2_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_2_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_2_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_2_b1_owner = this
+        var:zg361_b1_m360_source_forced_2_b1_subject = var:zg361_b1_m360_source_forced_2_character
+        var:zg361_b1_m360_source_forced_2_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_2_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_2_result_owner = this
+        var:zg361_b1_m360_source_forced_2_result_subject = var:zg361_b1_m360_source_forced_2_character
+        var:zg361_b1_m360_source_forced_2_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_2_result_case > 0
+    }
+    trigger_else = { always = yes }
+    trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 3 }
+        has_variable = zg361_b1_m360_source_forced_3_character
+        has_variable = zg361_b1_m360_source_forced_3_processing_order
+        has_variable = zg361_b1_m360_source_forced_3_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_3_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_3_b1_owner
+        has_variable = zg361_b1_m360_source_forced_3_b1_subject
+        has_variable = zg361_b1_m360_source_forced_3_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_3_b1_case
+        has_variable = zg361_b1_m360_source_forced_3_result_owner
+        has_variable = zg361_b1_m360_source_forced_3_result_subject
+        has_variable = zg361_b1_m360_source_forced_3_result_cycle
+        has_variable = zg361_b1_m360_source_forced_3_result_case
+        var:zg361_b1_m360_source_forced_3_processing_order >= 1
+        var:zg361_b1_m360_source_forced_3_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_3_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_3_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_3_b1_owner = this
+        var:zg361_b1_m360_source_forced_3_b1_subject = var:zg361_b1_m360_source_forced_3_character
+        var:zg361_b1_m360_source_forced_3_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_3_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_3_result_owner = this
+        var:zg361_b1_m360_source_forced_3_result_subject = var:zg361_b1_m360_source_forced_3_character
+        var:zg361_b1_m360_source_forced_3_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_3_result_case > 0
+    }
+    trigger_else = { always = yes }
+    trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 4 }
+        has_variable = zg361_b1_m360_source_forced_4_character
+        has_variable = zg361_b1_m360_source_forced_4_processing_order
+        has_variable = zg361_b1_m360_source_forced_4_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_4_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_4_b1_owner
+        has_variable = zg361_b1_m360_source_forced_4_b1_subject
+        has_variable = zg361_b1_m360_source_forced_4_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_4_b1_case
+        has_variable = zg361_b1_m360_source_forced_4_result_owner
+        has_variable = zg361_b1_m360_source_forced_4_result_subject
+        has_variable = zg361_b1_m360_source_forced_4_result_cycle
+        has_variable = zg361_b1_m360_source_forced_4_result_case
+        var:zg361_b1_m360_source_forced_4_processing_order >= 1
+        var:zg361_b1_m360_source_forced_4_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_4_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_4_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_4_b1_owner = this
+        var:zg361_b1_m360_source_forced_4_b1_subject = var:zg361_b1_m360_source_forced_4_character
+        var:zg361_b1_m360_source_forced_4_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_4_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_4_result_owner = this
+        var:zg361_b1_m360_source_forced_4_result_subject = var:zg361_b1_m360_source_forced_4_character
+        var:zg361_b1_m360_source_forced_4_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_4_result_case > 0
+    }
+    trigger_else = { always = yes }
+    trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 5 }
+        has_variable = zg361_b1_m360_source_forced_5_character
+        has_variable = zg361_b1_m360_source_forced_5_processing_order
+        has_variable = zg361_b1_m360_source_forced_5_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_5_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_5_b1_owner
+        has_variable = zg361_b1_m360_source_forced_5_b1_subject
+        has_variable = zg361_b1_m360_source_forced_5_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_5_b1_case
+        has_variable = zg361_b1_m360_source_forced_5_result_owner
+        has_variable = zg361_b1_m360_source_forced_5_result_subject
+        has_variable = zg361_b1_m360_source_forced_5_result_cycle
+        has_variable = zg361_b1_m360_source_forced_5_result_case
+        var:zg361_b1_m360_source_forced_5_processing_order >= 1
+        var:zg361_b1_m360_source_forced_5_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_5_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_5_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_5_b1_owner = this
+        var:zg361_b1_m360_source_forced_5_b1_subject = var:zg361_b1_m360_source_forced_5_character
+        var:zg361_b1_m360_source_forced_5_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_5_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_5_result_owner = this
+        var:zg361_b1_m360_source_forced_5_result_subject = var:zg361_b1_m360_source_forced_5_character
+        var:zg361_b1_m360_source_forced_5_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_5_result_case > 0
+    }
+    trigger_else = { always = yes }
+    trigger_if = {
+        limit = { var:zg361_b1_m360_source_quota >= 6 }
+        has_variable = zg361_b1_m360_source_forced_6_character
+        has_variable = zg361_b1_m360_source_forced_6_processing_order
+        has_variable = zg361_b1_m360_source_forced_6_m357_receipt_id
+        has_variable = zg361_b1_m360_source_forced_6_m357_receipt_hash
+        has_variable = zg361_b1_m360_source_forced_6_b1_owner
+        has_variable = zg361_b1_m360_source_forced_6_b1_subject
+        has_variable = zg361_b1_m360_source_forced_6_b1_cycle
+        has_variable = zg361_b1_m360_source_forced_6_b1_case
+        has_variable = zg361_b1_m360_source_forced_6_result_owner
+        has_variable = zg361_b1_m360_source_forced_6_result_subject
+        has_variable = zg361_b1_m360_source_forced_6_result_cycle
+        has_variable = zg361_b1_m360_source_forced_6_result_case
+        var:zg361_b1_m360_source_forced_6_processing_order >= 1
+        var:zg361_b1_m360_source_forced_6_processing_order <= var:zg361_b1_m360_source_member_count
+        var:zg361_b1_m360_source_forced_6_m357_receipt_id > 0
+        var:zg361_b1_m360_source_forced_6_m357_receipt_hash > 0
+        var:zg361_b1_m360_source_forced_6_b1_owner = this
+        var:zg361_b1_m360_source_forced_6_b1_subject = var:zg361_b1_m360_source_forced_6_character
+        var:zg361_b1_m360_source_forced_6_b1_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_6_b1_case = var:zg361_b1_m360_source_case
+        var:zg361_b1_m360_source_forced_6_result_owner = this
+        var:zg361_b1_m360_source_forced_6_result_subject = var:zg361_b1_m360_source_forced_6_character
+        var:zg361_b1_m360_source_forced_6_result_cycle = var:zg361_b1_m360_source_cycle
+        var:zg361_b1_m360_source_forced_6_result_case > 0
+    }
+    trigger_else = { always = yes }
+
+    has_variable = zg361_case_f_owner
+    has_variable = zg361_case_f_subject
+    has_variable = zg361_case_f_cycle_serial
+    has_variable = zg361_case_f_case_serial
+    has_variable = zg361_case_f_state
+    has_variable = zg361_case_f_active
+    var:zg361_case_f_owner = $EXPECTED_OWNER$
+    var:zg361_case_f_subject = this
+    var:zg361_case_f_cycle_serial = $EXPECTED_P2C_CYCLE$
+    var:zg361_case_f_case_serial > 0
+    var:zg361_case_f_state = 5
+    var:zg361_case_f_active = 0
+    has_variable = zg361_mg_team_snapshot_status
+    has_variable = zg361_mg_team_snapshot_owner
+    has_variable = zg361_mg_team_snapshot_subject
+    has_variable = zg361_mg_team_snapshot_cycle
+    has_variable = zg361_mg_team_snapshot_case
+    has_variable = zg361_mg_team_snapshot_revision
+    has_variable = zg361_mg_snapshot_source_serial
+    has_variable = zg361_mg_team_snapshot_b1_available
+    has_variable = zg361_mg_team_snapshot_b1_manager
+    has_variable = zg361_mg_team_snapshot_b1_cycle
+    has_variable = zg361_mg_team_snapshot_b1_case
+    has_variable = zg361_mg_team_n
+    has_variable = zg361_mg_team_bottom_n
+    var:zg361_mg_team_snapshot_status = 1
+    var:zg361_mg_team_snapshot_owner = $EXPECTED_OWNER$
+    var:zg361_mg_team_snapshot_subject = this
+    var:zg361_mg_team_snapshot_cycle = var:zg361_case_f_cycle_serial
+    var:zg361_mg_team_snapshot_case = var:zg361_case_f_case_serial
+    var:zg361_mg_team_snapshot_revision > 0
+    var:zg361_mg_snapshot_source_serial = var:zg361_b1_m360_source_cycle
+    var:zg361_mg_team_snapshot_b1_available = 1
+    var:zg361_mg_team_snapshot_b1_manager = this
+    var:zg361_mg_team_snapshot_b1_cycle = var:zg361_b1_m360_source_cycle
+    var:zg361_mg_team_snapshot_b1_case = var:zg361_b1_m360_source_case
+    var:zg361_mg_team_n = var:zg361_b1_m360_source_member_count
+    var:zg361_mg_team_bottom_n = var:zg361_b1_m360_source_quota
+    has_variable = zg361_mg_m036_receipt_owner
+    has_variable = zg361_mg_m036_receipt_subject
+    has_variable = zg361_mg_m036_receipt_cycle
+    has_variable = zg361_mg_m036_receipt_case
+    has_variable = zg361_mg_m036_receipt_state
+    has_variable = zg361_mg_m036_receipt_choice
+    var:zg361_mg_m036_receipt_owner = $EXPECTED_OWNER$
+    var:zg361_mg_m036_receipt_subject = this
+    var:zg361_mg_m036_receipt_cycle = var:zg361_case_f_cycle_serial
+    var:zg361_mg_m036_receipt_case = var:zg361_case_f_case_serial
+    var:zg361_mg_m036_receipt_state = 4
+    OR = { var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }
+}
+
+zg361_p2c_m360_frozen_manager_exact_trigger = {
+    zg361_p2c_m360_candidate_ready_trigger = {
+        EXPECTED_OWNER = $EXPECTED_OWNER$
+        EXPECTED_P2C_CYCLE = $EXPECTED_P2C_CYCLE$
+        EXPECTED_P2C_CASE = $EXPECTED_P2C_CASE$
+    }
+    var:zg361_b1_m360_source_cycle = $EXPECTED_B1_CYCLE$
+    var:zg361_b1_m360_source_case = $EXPECTED_B1_CASE$
+    var:zg361_b1_m360_source_id = $EXPECTED_B1_SOURCE_ID$
+    var:zg361_b1_m360_source_hash = $EXPECTED_B1_SOURCE_HASH$
+    var:zg361_b1_m360_source_quota = $EXPECTED_QUOTA$
+    var:zg361_case_f_cycle_serial = $EXPECTED_MG_CYCLE$
+    var:zg361_case_f_case_serial = $EXPECTED_MG_CASE$
+    var:zg361_mg_snapshot_source_serial = $EXPECTED_MG_SOURCE_SERIAL$
+    var:zg361_mg_team_snapshot_revision = $EXPECTED_MG_REVISION$
+}

@@ -83,6 +83,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.effects = read("common/scripted_effects/zg361_phase2_central_runtime_effects.txt")
+        cls.triggers = read("common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt")
         cls.events = read("events/zg361_phase2_central_runtime_events.txt")
         cls.core = read("common/scripted_effects/zg361_effects.txt")
         cls.b1 = read("common/scripted_effects/zg361_b1_runtime_effects.txt")
@@ -98,9 +99,10 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), 12)
+        self.assertEqual(len(rendered), 13)
         allowed = {
             "common/scripted_effects/zg361_phase2_central_runtime_effects.txt",
+            "common/scripted_triggers/zg361_phase2_central_runtime_triggers.txt",
             "events/zg361_phase2_central_runtime_events.txt",
             "docs/361-phase2-central-runtime-spec.md",
             *{
@@ -116,6 +118,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_generated_script_braces_and_event_namespace(self) -> None:
         assert_balanced(self, self.effects, "central effects")
+        assert_balanced(self, self.triggers, "central triggers")
         assert_balanced(self, self.events, "central events")
         self.assertIn("namespace = zg361p2c", self.events)
         self.assertEqual(len(re.findall(r"(?m)^zg361p2c\.\d+\s*=", self.events)), 3)
@@ -402,6 +405,95 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_p2c_mg_open_failed", mg)
         self.assertIn("CODE = 1011", mg)
 
+    def test_m360_stage10_freezes_ordered_manager_identity(self) -> None:
+        mg = block(self.effects, "zg361_p2c_stage_10_manager_governance_effect")
+        for token in (
+            "zg361_p2c_mg_frozen_order_cursor",
+            "zg361_p2c_mg_frozen_owner value = root",
+            "zg361_p2c_mg_frozen_cycle value = root.var:zg361_p2c_cycle",
+            "zg361_p2c_mg_frozen_case value = root.var:zg361_p2c_case_serial",
+            "zg361_p2c_mg_frozen_order value = root.var:zg361_p2c_mg_frozen_order_cursor",
+        ):
+            self.assertIn(token, mg)
+
+    def test_m360_candidate_requires_exact_b1_and_mg_sources(self) -> None:
+        ready = block(self.triggers, "zg361_p2c_m360_candidate_ready_trigger")
+        for token in (
+            "var:zg361_b1_m360_source_status = 1",
+            "var:zg361_b1_m360_source_available = 1",
+            "var:zg361_b1_m360_source_sealed = 1",
+            "var:zg361_b1_m360_source_id > 0",
+            "var:zg361_b1_m360_source_hash > 0",
+            "var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota",
+            "var:zg361_mg_team_snapshot_owner = $EXPECTED_OWNER$",
+            "var:zg361_mg_snapshot_source_serial = var:zg361_b1_m360_source_cycle",
+            "var:zg361_mg_team_n = var:zg361_b1_m360_source_member_count",
+            "var:zg361_mg_team_bottom_n = var:zg361_b1_m360_source_quota",
+            "var:zg361_mg_m036_receipt_state = 4",
+        ):
+            self.assertIn(token, ready)
+        for slot in range(1, 7):
+            self.assertIn(f"var:zg361_b1_m360_source_quota >= {slot}", ready)
+            self.assertIn(f"zg361_b1_m360_source_forced_{slot}_m357_receipt_id > 0", ready)
+            self.assertIn(f"zg361_b1_m360_source_forced_{slot}_m357_receipt_hash > 0", ready)
+
+    def test_m360_source_diagnostics_are_wait_na_red_not_interchangeable(self) -> None:
+        prepare = block(self.effects, "zg361_p2c_prepare_m360_source_effect")
+        self.assertIn("var:zg361_b1_m360_source_status = 3", prepare)
+        self.assertIn("zg361_p2c_m360_probe_invalid_n add = 1", prepare)
+        self.assertIn("var:zg361_b1_m360_source_status = 2", prepare)
+        self.assertIn("zg361_p2c_m360_probe_structural_na_n add = 1", prepare)
+        self.assertIn("var:zg361_p2c_m360_probe_wait_n > 0", prepare)
+        self.assertIn("zg361_p2c_m360_source_status value = 5", prepare)
+        self.assertIn("zg361_p2c_m360_source_status value = 7", prepare)
+        self.assertIn("zg361_p2c_m360_source_status value = 4", prepare)
+        self.assertIn("zg361_p2c_m360_source_reason value = 360492", prepare)
+        self.assertIn("zg361_p2c_m360_source_reason value = 360424", prepare)
+        self.assertIn("zg361_p2c_m360_source_reason value = 360410", prepare)
+        self.assertNotEqual(generator.M360_SOURCE_STATUS["wait"], generator.M360_SOURCE_STATUS["structural_na"])
+        self.assertNotEqual(generator.M360_SOURCE_STATUS["wait"], generator.M360_SOURCE_STATUS["red"])
+
+    def test_m360_first_viable_pair_is_frozen_without_truncation_or_reselection(self) -> None:
+        prepare = block(self.effects, "zg361_p2c_prepare_m360_source_effect")
+        self.assertEqual(prepare.count("ordered_in_list = {"), 2)
+        self.assertEqual(prepare.count("order_by = { value = var:zg361_p2c_mg_frozen_order multiply = -1 }"), 2)
+        self.assertIn("var:zg361_b1_m360_source_quota <= scope:zg361_p2c_m360_remaining_quota", prepare)
+        self.assertIn("value = 6 subtract = var:zg361_p2c_subject.var:zg361_b1_m360_source_quota", prepare)
+        self.assertIn("zg361_p2c_m360_selection_found = 0", prepare)
+        self.assertIn("zg361_p2c_m360_selection_found value = 1", prepare)
+        self.assertIn("zg361_p2c_m360_source_c1_manager value = var:zg361_p2c_subject", prepare)
+        self.assertNotIn("min = 6", prepare)
+        self.assertNotIn("max = 6", prepare)
+        terminal_prefix = prepare.split("# Consumed, RED and structural N/A are terminal", 1)[1]
+        self.assertNotIn("ordered_in_list", terminal_prefix.split("else_if = {", 1)[0])
+
+    def test_m360_ready_only_uses_gated_workforce_resume(self) -> None:
+        body = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")
+        prepared = body.index("zg361_p2c_prepare_m360_source_effect = yes")
+        ready = body.index("var:zg361_p2c_m360_source_status = 1", prepared)
+        resume = body.index("zg361_we_resume_m360_from_central_source_effect = {", ready)
+        self.assertLess(prepared, ready)
+        self.assertLess(ready, resume)
+        self.assertNotIn("zg361_p2c_call_workforce_adapter_effect = yes", body[prepared:resume])
+        self.assertIn("zg361_we_finalize_manager_collective_na_effect = {", body)
+        self.assertIn("REASON = 360362", body)
+        self.assertIn("REASON = 360410", body)
+
+    def test_workforce_history_accruing_status8_is_legitimate_terminal(self) -> None:
+        body = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")
+        history = body.index("var:zg361_we_portfolio_status = 8")
+        red = body.rindex("CODE = 1161")
+        self.assertLess(history, red)
+        for token in (
+            "var:zg361_we_portfolio_terminal_history_accruing = 1",
+            "var:zg361_we_portfolio_terminal_owned_operations = 39",
+            "var:zg361_we_portfolio_terminal_skipped_charter = 1",
+            "var:zg361_we_portfolio_terminal_success = 0",
+            "var:zg361_case_al_state = 8",
+            "STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status",
+        ):
+            self.assertIn(token, body[history:red])
+
     def test_d1_transition_gaps_poll_same_tuple_instead_of_red(self) -> None:
         p3 = block(self.effects, "zg361_p2c_stage_07_metrics_delivery_effect")
         self.assertIn("var:zg361_p2c_stage_status = 1", p3)
@@ -433,12 +525,14 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
             "var:zg361_we_al_external_stage_receipts_verified = 1",
             external,
         )
+        prepared = body.index("zg361_p2c_prepare_m360_source_effect = yes", verified)
         resume = body.index(
-            "zg361_p2c_call_workforce_adapter_effect = yes",
-            verified,
+            "zg361_we_resume_m360_from_central_source_effect = {",
+            prepared,
         )
         self.assertLess(producer, verified)
-        self.assertLess(verified, resume)
+        self.assertLess(verified, prepared)
+        self.assertLess(prepared, resume)
         producer_prefix = body[external:producer]
         self.assertIn(
             "var:zg361_p2c_subject = { zg361_is_celestial_liege_trigger = yes }",

@@ -1,0 +1,774 @@
+﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
+# Manager-scope preflight for #360 cohort 1.  Route B is a
+# validated zero-cost N/A and deliberately needs no manager-score variable.
+zg361_mg_m360_collective_cost_c1_receipt_is_current_trigger = {
+	has_variable = zg361_mg_m360_cost_receipt_status
+	has_variable = zg361_mg_m360_cost_receipt_id
+	has_variable = zg361_mg_m360_cost_receipt_hash
+	has_variable = zg361_mg_m360_cost_receipt_owner
+	has_variable = zg361_mg_m360_cost_receipt_al_subject
+	has_variable = zg361_mg_m360_cost_receipt_al_cycle
+	has_variable = zg361_mg_m360_cost_receipt_al_case
+	has_variable = zg361_mg_m360_cost_receipt_settlement_id
+	has_variable = zg361_mg_m360_cost_receipt_settlement_hash
+	has_variable = zg361_mg_m360_cost_receipt_cohort_id
+	has_variable = zg361_mg_m360_cost_receipt_ordinal
+	has_variable = zg361_mg_m360_cost_receipt_manager
+	has_variable = zg361_mg_m360_cost_receipt_mg_cycle
+	has_variable = zg361_mg_m360_cost_receipt_mg_case
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_revision
+	has_variable = zg361_mg_m360_cost_receipt_b1_cycle
+	has_variable = zg361_mg_m360_cost_receipt_b1_case
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_id
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_hash
+	has_variable = zg361_mg_m360_cost_receipt_route
+	has_variable = zg361_mg_m360_cost_receipt_quota
+	has_variable = zg361_mg_m360_cost_receipt_exception_count
+	has_variable = zg361_mg_m360_cost_receipt_cost
+	has_variable = zg361_mg_m360_cost_receipt_score_before
+	has_variable = zg361_mg_m360_cost_receipt_score_after
+	has_variable = zg361_mg_m360_cost_receipt_score_delta
+	var:zg361_mg_m360_cost_receipt_status = 1
+	var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 }
+	var:zg361_mg_m360_cost_receipt_hash = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route multiply = 10 } add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost }
+	var:zg361_mg_m360_cost_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m360_cost_receipt_al_subject = scope:zg361_we_m360_cost_subject
+	var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+	var:zg361_mg_m360_cost_receipt_al_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+	var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+	var:zg361_mg_m360_cost_receipt_settlement_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash
+	var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id
+	var:zg361_mg_m360_cost_receipt_ordinal = 1
+	var:zg361_mg_m360_cost_receipt_manager = this
+	var:zg361_mg_m360_cost_receipt_mg_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle
+	var:zg361_mg_m360_cost_receipt_mg_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_snapshot_source_serial
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_revision = var:zg361_mg_team_snapshot_revision
+	var:zg361_mg_m360_cost_receipt_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_cycle
+	var:zg361_mg_m360_cost_receipt_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_case
+	var:zg361_mg_m360_cost_receipt_b1_source_id = var:zg361_b1_m360_source_id
+	var:zg361_mg_m360_cost_receipt_b1_source_hash = var:zg361_b1_m360_source_hash
+	var:zg361_mg_m360_cost_receipt_route = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route
+	var:zg361_mg_m360_cost_receipt_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_quota
+	var:zg361_mg_m360_cost_receipt_exception_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_exception_count
+	var:zg361_mg_m360_cost_receipt_cost = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost
+	var:zg361_mg_m360_cost_receipt_score_after = { value = var:zg361_mg_m360_cost_receipt_score_before subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost }
+	var:zg361_mg_m360_cost_receipt_score_delta = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost }
+}
+
+zg361_mg_m360_collective_cost_c1_can_apply_trigger = {
+	exists = scope:zg361_we_m360_cost_owner
+	exists = scope:zg361_we_m360_cost_subject
+	zg361_is_celestial_liege_trigger = yes
+	liege = scope:zg361_we_m360_cost_owner
+	scope:zg361_we_m360_cost_owner = { zg361_is_celestial_liege_trigger = yes }
+	scope:zg361_we_m360_cost_subject = {
+		has_variable = zg361_we_al_external_collective_submission_owner
+		has_variable = zg361_we_al_external_collective_submission_subject
+		has_variable = zg361_we_al_external_collective_submission_cycle
+		has_variable = zg361_we_al_external_collective_submission_case
+		has_variable = zg361_we_al_external_collective_submission_state
+		has_variable = zg361_we_al_external_collective_submission_active
+		has_variable = zg361_we_al_external_collective_submission_sealed
+		has_variable = zg361_we_al_external_collective_submission_consumed
+		has_variable = zg361_we_al_external_collective_settlement_id
+		has_variable = zg361_we_al_external_collective_settlement_hash
+		has_variable = zg361_we_al_external_collective_route
+		has_variable = zg361_we_al_external_collective_settled
+		has_variable = zg361_we_al_external_collective_1_cohort_id
+		has_variable = zg361_we_al_external_collective_1_manager
+		has_variable = zg361_we_al_external_collective_1_member_count
+		has_variable = zg361_we_al_external_collective_1_member_hash
+		has_variable = zg361_we_al_external_collective_1_agenda_count
+		has_variable = zg361_we_al_external_collective_1_agenda_hash
+		has_variable = zg361_we_al_external_collective_1_quota
+		has_variable = zg361_we_al_external_collective_1_all_meet_evidence_id
+		has_variable = zg361_we_al_external_collective_1_forced_count
+		has_variable = zg361_we_al_external_collective_1_exception_count
+		has_variable = zg361_we_al_external_collective_1_approver
+		has_variable = zg361_we_al_external_collective_1_manager_cost
+		has_variable = zg361_we_al_external_collective_1_partition_verified
+		has_variable = zg361_we_al_external_collective_1_approval_verified
+		has_variable = zg361_we_al_external_collective_1_mg_cycle
+		has_variable = zg361_we_al_external_collective_1_mg_case
+		has_variable = zg361_we_al_external_collective_1_mg_snapshot_source_serial
+		has_variable = zg361_we_al_external_collective_1_b1_cycle
+		has_variable = zg361_we_al_external_collective_1_b1_case
+		var:zg361_we_al_external_collective_submission_owner = scope:zg361_we_m360_cost_owner
+		var:zg361_we_al_external_collective_submission_subject = this
+		var:zg361_we_al_external_collective_submission_state = 4
+		var:zg361_we_al_external_collective_submission_active = 1
+		var:zg361_we_al_external_collective_submission_sealed = 1
+		var:zg361_we_al_external_collective_submission_consumed = 0
+		var:zg361_we_al_external_collective_settled = 0
+		var:zg361_we_al_external_collective_settlement_id > 0
+		var:zg361_we_al_external_collective_settlement_hash > 0
+		var:zg361_we_al_external_collective_route >= 1
+		var:zg361_we_al_external_collective_route <= 2
+		var:zg361_we_al_external_collective_1_manager = root
+		var:zg361_we_al_external_collective_1_cohort_id = { value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = 1 }
+		var:zg361_we_al_external_collective_1_member_count >= 1
+		var:zg361_we_al_external_collective_1_member_count = var:zg361_we_al_external_collective_1_agenda_count
+		var:zg361_we_al_external_collective_1_member_hash = var:zg361_we_al_external_collective_1_agenda_hash
+		var:zg361_we_al_external_collective_1_member_hash > 0
+		var:zg361_we_al_external_collective_1_quota >= 1
+		var:zg361_we_al_external_collective_1_quota <= 6
+		var:zg361_we_al_external_collective_1_quota <= var:zg361_we_al_external_collective_1_member_count
+		var:zg361_we_al_external_collective_1_all_meet_evidence_id > 0
+		var:zg361_we_al_external_collective_1_partition_verified = 1
+		var:zg361_we_al_external_collective_1_mg_cycle > 0
+		var:zg361_we_al_external_collective_1_mg_case > 0
+		var:zg361_we_al_external_collective_1_mg_snapshot_source_serial > 0
+		var:zg361_we_al_external_collective_1_b1_cycle > 0
+		var:zg361_we_al_external_collective_1_b1_case > 0
+		OR = { AND = { var:zg361_we_al_external_collective_route = 1 var:zg361_we_al_external_collective_1_forced_count = 0 var:zg361_we_al_external_collective_1_exception_count = var:zg361_we_al_external_collective_1_quota var:zg361_we_al_external_collective_1_manager_cost = var:zg361_we_al_external_collective_1_quota var:zg361_we_al_external_collective_1_approver = scope:zg361_we_m360_cost_owner var:zg361_we_al_external_collective_1_approval_verified = 1 } AND = { var:zg361_we_al_external_collective_route = 2 var:zg361_we_al_external_collective_1_forced_count = var:zg361_we_al_external_collective_1_quota var:zg361_we_al_external_collective_1_exception_count = 0 var:zg361_we_al_external_collective_1_manager_cost = 0 var:zg361_we_al_external_collective_1_approver = 0 var:zg361_we_al_external_collective_1_approval_verified = 0 } }
+	}
+	has_variable = zg361_case_f_owner
+	has_variable = zg361_case_f_subject
+	has_variable = zg361_case_f_cycle_serial
+	has_variable = zg361_case_f_case_serial
+	has_variable = zg361_case_f_state
+	has_variable = zg361_case_f_active
+	var:zg361_case_f_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_case_f_subject = this
+	var:zg361_case_f_cycle_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle
+	var:zg361_case_f_case_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case
+	var:zg361_case_f_state = 5
+	var:zg361_case_f_active = 0
+	has_variable = zg361_mg_team_snapshot_status
+	has_variable = zg361_mg_team_snapshot_owner
+	has_variable = zg361_mg_team_snapshot_subject
+	has_variable = zg361_mg_team_snapshot_cycle
+	has_variable = zg361_mg_team_snapshot_case
+	has_variable = zg361_mg_team_snapshot_revision
+	has_variable = zg361_mg_snapshot_source_serial
+	has_variable = zg361_mg_team_snapshot_b1_available
+	has_variable = zg361_mg_team_snapshot_b1_manager
+	has_variable = zg361_mg_team_snapshot_b1_cycle
+	has_variable = zg361_mg_team_snapshot_b1_case
+	has_variable = zg361_mg_team_snapshot_b1_id
+	has_variable = zg361_mg_team_snapshot_b1_hash
+	var:zg361_mg_team_snapshot_status = 1
+	var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_team_snapshot_subject = this
+	var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle
+	var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case
+	var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_snapshot_source_serial
+	var:zg361_review_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_snapshot_source_serial
+	var:zg361_mg_team_snapshot_b1_available = 1
+	var:zg361_mg_team_snapshot_b1_manager = this
+	var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_cycle
+	var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_case
+	has_variable = zg361_b1_m360_source_available
+	has_variable = zg361_b1_m360_source_status
+	has_variable = zg361_b1_m360_source_sealed
+	has_variable = zg361_b1_m360_source_id
+	has_variable = zg361_b1_m360_source_hash
+	has_variable = zg361_b1_m360_source_manager
+	has_variable = zg361_b1_m360_source_cycle
+	has_variable = zg361_b1_m360_source_case
+	has_variable = zg361_b1_m360_source_state
+	has_variable = zg361_b1_m360_source_member_count
+	has_variable = zg361_b1_m360_source_member_hash
+	has_variable = zg361_b1_m360_source_agenda_count
+	has_variable = zg361_b1_m360_source_agenda_hash
+	has_variable = zg361_b1_m360_source_quota
+	has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+	has_variable = zg361_b1_m360_source_forced_count
+	var:zg361_b1_m360_source_available = 1
+	var:zg361_b1_m360_source_status = 1
+	var:zg361_b1_m360_source_sealed = 1
+	var:zg361_b1_m360_source_id > 0
+	var:zg361_b1_m360_source_hash > 0
+	var:zg361_b1_m360_source_id = var:zg361_mg_team_snapshot_b1_id
+	var:zg361_b1_m360_source_hash = var:zg361_mg_team_snapshot_b1_hash
+	var:zg361_b1_m360_source_manager = this
+	var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_cycle
+	var:zg361_b1_m360_source_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_b1_case
+	var:zg361_b1_m360_source_state = 8
+	var:zg361_b1_m360_source_member_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_member_count
+	var:zg361_b1_m360_source_member_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_member_hash
+	var:zg361_b1_m360_source_agenda_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_agenda_count
+	var:zg361_b1_m360_source_agenda_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_agenda_hash
+	var:zg361_b1_m360_source_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_quota
+	var:zg361_b1_m360_source_all_meet_receipt_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_all_meet_evidence_id
+	var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+	has_variable = zg361_mg_m036_receipt_owner
+	has_variable = zg361_mg_m036_receipt_subject
+	has_variable = zg361_mg_m036_receipt_cycle
+	has_variable = zg361_mg_m036_receipt_case
+	has_variable = zg361_mg_m036_receipt_state
+	has_variable = zg361_mg_m036_receipt_choice
+	var:zg361_mg_m036_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_receipt_subject = this
+	var:zg361_mg_m036_receipt_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle
+	var:zg361_mg_m036_receipt_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case
+	var:zg361_mg_m036_receipt_state = 4
+	OR = { var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }
+	has_variable = zg361_mg_m036_object_owner
+	has_variable = zg361_mg_m036_object_subject
+	has_variable = zg361_mg_m036_object_cycle
+	has_variable = zg361_mg_m036_object_case
+	has_variable = zg361_mg_m036_object_state
+	var:zg361_mg_m036_object_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_object_subject = this
+	var:zg361_mg_m036_object_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_cycle
+	var:zg361_mg_m036_object_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_mg_case
+	var:zg361_mg_m036_object_state = 4
+	OR = {
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost = 0
+		}
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost > 0
+			has_variable = zg361_mg_report_score_available
+			var:zg361_mg_report_score_available = 1
+			has_variable = zg361_mg_report_manager_score
+			has_variable = zg361_mg_manager_score
+			OR = {
+				zg361_mg_m360_collective_cost_c1_receipt_is_current_trigger = yes
+				AND = {
+					OR = {
+						NOT = { has_variable = zg361_mg_m360_cost_receipt_status }
+						AND = {
+							has_variable = zg361_mg_m360_cost_receipt_status
+							var:zg361_mg_m360_cost_receipt_status = 1
+							has_variable = zg361_mg_m360_cost_receipt_al_cycle
+							has_variable = zg361_mg_m360_cost_receipt_al_case
+							has_variable = zg361_mg_m360_cost_receipt_id
+							OR = {
+								var:zg361_mg_m360_cost_receipt_al_cycle < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+								AND = {
+									var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+									var:zg361_mg_m360_cost_receipt_al_case < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+								}
+							}
+							NOT = { var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_cohort_id multiply = 1000 add = 360 } }
+						}
+					}
+					var:zg361_mg_manager_score = var:zg361_mg_report_manager_score
+					var:zg361_mg_manager_score >= scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_1_manager_cost
+				}
+			}
+		}
+	}
+}
+
+# Manager-scope preflight for #360 cohort 2.  Route B is a
+# validated zero-cost N/A and deliberately needs no manager-score variable.
+zg361_mg_m360_collective_cost_c2_receipt_is_current_trigger = {
+	has_variable = zg361_mg_m360_cost_receipt_status
+	has_variable = zg361_mg_m360_cost_receipt_id
+	has_variable = zg361_mg_m360_cost_receipt_hash
+	has_variable = zg361_mg_m360_cost_receipt_owner
+	has_variable = zg361_mg_m360_cost_receipt_al_subject
+	has_variable = zg361_mg_m360_cost_receipt_al_cycle
+	has_variable = zg361_mg_m360_cost_receipt_al_case
+	has_variable = zg361_mg_m360_cost_receipt_settlement_id
+	has_variable = zg361_mg_m360_cost_receipt_settlement_hash
+	has_variable = zg361_mg_m360_cost_receipt_cohort_id
+	has_variable = zg361_mg_m360_cost_receipt_ordinal
+	has_variable = zg361_mg_m360_cost_receipt_manager
+	has_variable = zg361_mg_m360_cost_receipt_mg_cycle
+	has_variable = zg361_mg_m360_cost_receipt_mg_case
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_revision
+	has_variable = zg361_mg_m360_cost_receipt_b1_cycle
+	has_variable = zg361_mg_m360_cost_receipt_b1_case
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_id
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_hash
+	has_variable = zg361_mg_m360_cost_receipt_route
+	has_variable = zg361_mg_m360_cost_receipt_quota
+	has_variable = zg361_mg_m360_cost_receipt_exception_count
+	has_variable = zg361_mg_m360_cost_receipt_cost
+	has_variable = zg361_mg_m360_cost_receipt_score_before
+	has_variable = zg361_mg_m360_cost_receipt_score_after
+	has_variable = zg361_mg_m360_cost_receipt_score_delta
+	var:zg361_mg_m360_cost_receipt_status = 1
+	var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 }
+	var:zg361_mg_m360_cost_receipt_hash = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route multiply = 10 } add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost }
+	var:zg361_mg_m360_cost_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m360_cost_receipt_al_subject = scope:zg361_we_m360_cost_subject
+	var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+	var:zg361_mg_m360_cost_receipt_al_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+	var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+	var:zg361_mg_m360_cost_receipt_settlement_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash
+	var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id
+	var:zg361_mg_m360_cost_receipt_ordinal = 2
+	var:zg361_mg_m360_cost_receipt_manager = this
+	var:zg361_mg_m360_cost_receipt_mg_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle
+	var:zg361_mg_m360_cost_receipt_mg_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_snapshot_source_serial
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_revision = var:zg361_mg_team_snapshot_revision
+	var:zg361_mg_m360_cost_receipt_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_cycle
+	var:zg361_mg_m360_cost_receipt_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_case
+	var:zg361_mg_m360_cost_receipt_b1_source_id = var:zg361_b1_m360_source_id
+	var:zg361_mg_m360_cost_receipt_b1_source_hash = var:zg361_b1_m360_source_hash
+	var:zg361_mg_m360_cost_receipt_route = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route
+	var:zg361_mg_m360_cost_receipt_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_quota
+	var:zg361_mg_m360_cost_receipt_exception_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_exception_count
+	var:zg361_mg_m360_cost_receipt_cost = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost
+	var:zg361_mg_m360_cost_receipt_score_after = { value = var:zg361_mg_m360_cost_receipt_score_before subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost }
+	var:zg361_mg_m360_cost_receipt_score_delta = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost }
+}
+
+zg361_mg_m360_collective_cost_c2_can_apply_trigger = {
+	exists = scope:zg361_we_m360_cost_owner
+	exists = scope:zg361_we_m360_cost_subject
+	zg361_is_celestial_liege_trigger = yes
+	liege = scope:zg361_we_m360_cost_owner
+	scope:zg361_we_m360_cost_owner = { zg361_is_celestial_liege_trigger = yes }
+	scope:zg361_we_m360_cost_subject = {
+		has_variable = zg361_we_al_external_collective_submission_owner
+		has_variable = zg361_we_al_external_collective_submission_subject
+		has_variable = zg361_we_al_external_collective_submission_cycle
+		has_variable = zg361_we_al_external_collective_submission_case
+		has_variable = zg361_we_al_external_collective_submission_state
+		has_variable = zg361_we_al_external_collective_submission_active
+		has_variable = zg361_we_al_external_collective_submission_sealed
+		has_variable = zg361_we_al_external_collective_submission_consumed
+		has_variable = zg361_we_al_external_collective_settlement_id
+		has_variable = zg361_we_al_external_collective_settlement_hash
+		has_variable = zg361_we_al_external_collective_route
+		has_variable = zg361_we_al_external_collective_settled
+		has_variable = zg361_we_al_external_collective_2_cohort_id
+		has_variable = zg361_we_al_external_collective_2_manager
+		has_variable = zg361_we_al_external_collective_2_member_count
+		has_variable = zg361_we_al_external_collective_2_member_hash
+		has_variable = zg361_we_al_external_collective_2_agenda_count
+		has_variable = zg361_we_al_external_collective_2_agenda_hash
+		has_variable = zg361_we_al_external_collective_2_quota
+		has_variable = zg361_we_al_external_collective_2_all_meet_evidence_id
+		has_variable = zg361_we_al_external_collective_2_forced_count
+		has_variable = zg361_we_al_external_collective_2_exception_count
+		has_variable = zg361_we_al_external_collective_2_approver
+		has_variable = zg361_we_al_external_collective_2_manager_cost
+		has_variable = zg361_we_al_external_collective_2_partition_verified
+		has_variable = zg361_we_al_external_collective_2_approval_verified
+		has_variable = zg361_we_al_external_collective_2_mg_cycle
+		has_variable = zg361_we_al_external_collective_2_mg_case
+		has_variable = zg361_we_al_external_collective_2_mg_snapshot_source_serial
+		has_variable = zg361_we_al_external_collective_2_b1_cycle
+		has_variable = zg361_we_al_external_collective_2_b1_case
+		var:zg361_we_al_external_collective_submission_owner = scope:zg361_we_m360_cost_owner
+		var:zg361_we_al_external_collective_submission_subject = this
+		var:zg361_we_al_external_collective_submission_state = 4
+		var:zg361_we_al_external_collective_submission_active = 1
+		var:zg361_we_al_external_collective_submission_sealed = 1
+		var:zg361_we_al_external_collective_submission_consumed = 0
+		var:zg361_we_al_external_collective_settled = 0
+		var:zg361_we_al_external_collective_settlement_id > 0
+		var:zg361_we_al_external_collective_settlement_hash > 0
+		var:zg361_we_al_external_collective_route >= 1
+		var:zg361_we_al_external_collective_route <= 2
+		var:zg361_we_al_external_collective_2_manager = root
+		var:zg361_we_al_external_collective_2_cohort_id = { value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = 2 }
+		var:zg361_we_al_external_collective_2_member_count >= 1
+		var:zg361_we_al_external_collective_2_member_count = var:zg361_we_al_external_collective_2_agenda_count
+		var:zg361_we_al_external_collective_2_member_hash = var:zg361_we_al_external_collective_2_agenda_hash
+		var:zg361_we_al_external_collective_2_member_hash > 0
+		var:zg361_we_al_external_collective_2_quota >= 1
+		var:zg361_we_al_external_collective_2_quota <= 6
+		var:zg361_we_al_external_collective_2_quota <= var:zg361_we_al_external_collective_2_member_count
+		var:zg361_we_al_external_collective_2_all_meet_evidence_id > 0
+		var:zg361_we_al_external_collective_2_partition_verified = 1
+		var:zg361_we_al_external_collective_2_mg_cycle > 0
+		var:zg361_we_al_external_collective_2_mg_case > 0
+		var:zg361_we_al_external_collective_2_mg_snapshot_source_serial > 0
+		var:zg361_we_al_external_collective_2_b1_cycle > 0
+		var:zg361_we_al_external_collective_2_b1_case > 0
+		OR = { AND = { var:zg361_we_al_external_collective_route = 1 var:zg361_we_al_external_collective_2_forced_count = 0 var:zg361_we_al_external_collective_2_exception_count = var:zg361_we_al_external_collective_2_quota var:zg361_we_al_external_collective_2_manager_cost = var:zg361_we_al_external_collective_2_quota var:zg361_we_al_external_collective_2_approver = scope:zg361_we_m360_cost_owner var:zg361_we_al_external_collective_2_approval_verified = 1 } AND = { var:zg361_we_al_external_collective_route = 2 var:zg361_we_al_external_collective_2_forced_count = var:zg361_we_al_external_collective_2_quota var:zg361_we_al_external_collective_2_exception_count = 0 var:zg361_we_al_external_collective_2_manager_cost = 0 var:zg361_we_al_external_collective_2_approver = 0 var:zg361_we_al_external_collective_2_approval_verified = 0 } }
+	}
+	has_variable = zg361_case_f_owner
+	has_variable = zg361_case_f_subject
+	has_variable = zg361_case_f_cycle_serial
+	has_variable = zg361_case_f_case_serial
+	has_variable = zg361_case_f_state
+	has_variable = zg361_case_f_active
+	var:zg361_case_f_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_case_f_subject = this
+	var:zg361_case_f_cycle_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle
+	var:zg361_case_f_case_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case
+	var:zg361_case_f_state = 5
+	var:zg361_case_f_active = 0
+	has_variable = zg361_mg_team_snapshot_status
+	has_variable = zg361_mg_team_snapshot_owner
+	has_variable = zg361_mg_team_snapshot_subject
+	has_variable = zg361_mg_team_snapshot_cycle
+	has_variable = zg361_mg_team_snapshot_case
+	has_variable = zg361_mg_team_snapshot_revision
+	has_variable = zg361_mg_snapshot_source_serial
+	has_variable = zg361_mg_team_snapshot_b1_available
+	has_variable = zg361_mg_team_snapshot_b1_manager
+	has_variable = zg361_mg_team_snapshot_b1_cycle
+	has_variable = zg361_mg_team_snapshot_b1_case
+	has_variable = zg361_mg_team_snapshot_b1_id
+	has_variable = zg361_mg_team_snapshot_b1_hash
+	var:zg361_mg_team_snapshot_status = 1
+	var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_team_snapshot_subject = this
+	var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle
+	var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case
+	var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_snapshot_source_serial
+	var:zg361_review_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_snapshot_source_serial
+	var:zg361_mg_team_snapshot_b1_available = 1
+	var:zg361_mg_team_snapshot_b1_manager = this
+	var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_cycle
+	var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_case
+	has_variable = zg361_b1_m360_source_available
+	has_variable = zg361_b1_m360_source_status
+	has_variable = zg361_b1_m360_source_sealed
+	has_variable = zg361_b1_m360_source_id
+	has_variable = zg361_b1_m360_source_hash
+	has_variable = zg361_b1_m360_source_manager
+	has_variable = zg361_b1_m360_source_cycle
+	has_variable = zg361_b1_m360_source_case
+	has_variable = zg361_b1_m360_source_state
+	has_variable = zg361_b1_m360_source_member_count
+	has_variable = zg361_b1_m360_source_member_hash
+	has_variable = zg361_b1_m360_source_agenda_count
+	has_variable = zg361_b1_m360_source_agenda_hash
+	has_variable = zg361_b1_m360_source_quota
+	has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+	has_variable = zg361_b1_m360_source_forced_count
+	var:zg361_b1_m360_source_available = 1
+	var:zg361_b1_m360_source_status = 1
+	var:zg361_b1_m360_source_sealed = 1
+	var:zg361_b1_m360_source_id > 0
+	var:zg361_b1_m360_source_hash > 0
+	var:zg361_b1_m360_source_id = var:zg361_mg_team_snapshot_b1_id
+	var:zg361_b1_m360_source_hash = var:zg361_mg_team_snapshot_b1_hash
+	var:zg361_b1_m360_source_manager = this
+	var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_cycle
+	var:zg361_b1_m360_source_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_b1_case
+	var:zg361_b1_m360_source_state = 8
+	var:zg361_b1_m360_source_member_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_member_count
+	var:zg361_b1_m360_source_member_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_member_hash
+	var:zg361_b1_m360_source_agenda_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_agenda_count
+	var:zg361_b1_m360_source_agenda_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_agenda_hash
+	var:zg361_b1_m360_source_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_quota
+	var:zg361_b1_m360_source_all_meet_receipt_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_all_meet_evidence_id
+	var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+	has_variable = zg361_mg_m036_receipt_owner
+	has_variable = zg361_mg_m036_receipt_subject
+	has_variable = zg361_mg_m036_receipt_cycle
+	has_variable = zg361_mg_m036_receipt_case
+	has_variable = zg361_mg_m036_receipt_state
+	has_variable = zg361_mg_m036_receipt_choice
+	var:zg361_mg_m036_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_receipt_subject = this
+	var:zg361_mg_m036_receipt_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle
+	var:zg361_mg_m036_receipt_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case
+	var:zg361_mg_m036_receipt_state = 4
+	OR = { var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }
+	has_variable = zg361_mg_m036_object_owner
+	has_variable = zg361_mg_m036_object_subject
+	has_variable = zg361_mg_m036_object_cycle
+	has_variable = zg361_mg_m036_object_case
+	has_variable = zg361_mg_m036_object_state
+	var:zg361_mg_m036_object_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_object_subject = this
+	var:zg361_mg_m036_object_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_cycle
+	var:zg361_mg_m036_object_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_mg_case
+	var:zg361_mg_m036_object_state = 4
+	OR = {
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost = 0
+		}
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost > 0
+			has_variable = zg361_mg_report_score_available
+			var:zg361_mg_report_score_available = 1
+			has_variable = zg361_mg_report_manager_score
+			has_variable = zg361_mg_manager_score
+			OR = {
+				zg361_mg_m360_collective_cost_c2_receipt_is_current_trigger = yes
+				AND = {
+					OR = {
+						NOT = { has_variable = zg361_mg_m360_cost_receipt_status }
+						AND = {
+							has_variable = zg361_mg_m360_cost_receipt_status
+							var:zg361_mg_m360_cost_receipt_status = 1
+							has_variable = zg361_mg_m360_cost_receipt_al_cycle
+							has_variable = zg361_mg_m360_cost_receipt_al_case
+							has_variable = zg361_mg_m360_cost_receipt_id
+							OR = {
+								var:zg361_mg_m360_cost_receipt_al_cycle < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+								AND = {
+									var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+									var:zg361_mg_m360_cost_receipt_al_case < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+								}
+							}
+							NOT = { var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_cohort_id multiply = 1000 add = 360 } }
+						}
+					}
+					var:zg361_mg_manager_score = var:zg361_mg_report_manager_score
+					var:zg361_mg_manager_score >= scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_2_manager_cost
+				}
+			}
+		}
+	}
+}
+
+# Manager-scope preflight for #360 cohort 3.  Route B is a
+# validated zero-cost N/A and deliberately needs no manager-score variable.
+zg361_mg_m360_collective_cost_c3_receipt_is_current_trigger = {
+	has_variable = zg361_mg_m360_cost_receipt_status
+	has_variable = zg361_mg_m360_cost_receipt_id
+	has_variable = zg361_mg_m360_cost_receipt_hash
+	has_variable = zg361_mg_m360_cost_receipt_owner
+	has_variable = zg361_mg_m360_cost_receipt_al_subject
+	has_variable = zg361_mg_m360_cost_receipt_al_cycle
+	has_variable = zg361_mg_m360_cost_receipt_al_case
+	has_variable = zg361_mg_m360_cost_receipt_settlement_id
+	has_variable = zg361_mg_m360_cost_receipt_settlement_hash
+	has_variable = zg361_mg_m360_cost_receipt_cohort_id
+	has_variable = zg361_mg_m360_cost_receipt_ordinal
+	has_variable = zg361_mg_m360_cost_receipt_manager
+	has_variable = zg361_mg_m360_cost_receipt_mg_cycle
+	has_variable = zg361_mg_m360_cost_receipt_mg_case
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial
+	has_variable = zg361_mg_m360_cost_receipt_mg_snapshot_revision
+	has_variable = zg361_mg_m360_cost_receipt_b1_cycle
+	has_variable = zg361_mg_m360_cost_receipt_b1_case
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_id
+	has_variable = zg361_mg_m360_cost_receipt_b1_source_hash
+	has_variable = zg361_mg_m360_cost_receipt_route
+	has_variable = zg361_mg_m360_cost_receipt_quota
+	has_variable = zg361_mg_m360_cost_receipt_exception_count
+	has_variable = zg361_mg_m360_cost_receipt_cost
+	has_variable = zg361_mg_m360_cost_receipt_score_before
+	has_variable = zg361_mg_m360_cost_receipt_score_after
+	has_variable = zg361_mg_m360_cost_receipt_score_delta
+	var:zg361_mg_m360_cost_receipt_status = 1
+	var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 }
+	var:zg361_mg_m360_cost_receipt_hash = { value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route multiply = 10 } add = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost }
+	var:zg361_mg_m360_cost_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m360_cost_receipt_al_subject = scope:zg361_we_m360_cost_subject
+	var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+	var:zg361_mg_m360_cost_receipt_al_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+	var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+	var:zg361_mg_m360_cost_receipt_settlement_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash
+	var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id
+	var:zg361_mg_m360_cost_receipt_ordinal = 3
+	var:zg361_mg_m360_cost_receipt_manager = this
+	var:zg361_mg_m360_cost_receipt_mg_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle
+	var:zg361_mg_m360_cost_receipt_mg_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_snapshot_source_serial
+	var:zg361_mg_m360_cost_receipt_mg_snapshot_revision = var:zg361_mg_team_snapshot_revision
+	var:zg361_mg_m360_cost_receipt_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_cycle
+	var:zg361_mg_m360_cost_receipt_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_case
+	var:zg361_mg_m360_cost_receipt_b1_source_id = var:zg361_b1_m360_source_id
+	var:zg361_mg_m360_cost_receipt_b1_source_hash = var:zg361_b1_m360_source_hash
+	var:zg361_mg_m360_cost_receipt_route = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route
+	var:zg361_mg_m360_cost_receipt_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_quota
+	var:zg361_mg_m360_cost_receipt_exception_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_exception_count
+	var:zg361_mg_m360_cost_receipt_cost = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost
+	var:zg361_mg_m360_cost_receipt_score_after = { value = var:zg361_mg_m360_cost_receipt_score_before subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost }
+	var:zg361_mg_m360_cost_receipt_score_delta = { value = 0 subtract = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost }
+}
+
+zg361_mg_m360_collective_cost_c3_can_apply_trigger = {
+	exists = scope:zg361_we_m360_cost_owner
+	exists = scope:zg361_we_m360_cost_subject
+	zg361_is_celestial_liege_trigger = yes
+	liege = scope:zg361_we_m360_cost_owner
+	scope:zg361_we_m360_cost_owner = { zg361_is_celestial_liege_trigger = yes }
+	scope:zg361_we_m360_cost_subject = {
+		has_variable = zg361_we_al_external_collective_submission_owner
+		has_variable = zg361_we_al_external_collective_submission_subject
+		has_variable = zg361_we_al_external_collective_submission_cycle
+		has_variable = zg361_we_al_external_collective_submission_case
+		has_variable = zg361_we_al_external_collective_submission_state
+		has_variable = zg361_we_al_external_collective_submission_active
+		has_variable = zg361_we_al_external_collective_submission_sealed
+		has_variable = zg361_we_al_external_collective_submission_consumed
+		has_variable = zg361_we_al_external_collective_settlement_id
+		has_variable = zg361_we_al_external_collective_settlement_hash
+		has_variable = zg361_we_al_external_collective_route
+		has_variable = zg361_we_al_external_collective_settled
+		has_variable = zg361_we_al_external_collective_3_cohort_id
+		has_variable = zg361_we_al_external_collective_3_manager
+		has_variable = zg361_we_al_external_collective_3_member_count
+		has_variable = zg361_we_al_external_collective_3_member_hash
+		has_variable = zg361_we_al_external_collective_3_agenda_count
+		has_variable = zg361_we_al_external_collective_3_agenda_hash
+		has_variable = zg361_we_al_external_collective_3_quota
+		has_variable = zg361_we_al_external_collective_3_all_meet_evidence_id
+		has_variable = zg361_we_al_external_collective_3_forced_count
+		has_variable = zg361_we_al_external_collective_3_exception_count
+		has_variable = zg361_we_al_external_collective_3_approver
+		has_variable = zg361_we_al_external_collective_3_manager_cost
+		has_variable = zg361_we_al_external_collective_3_partition_verified
+		has_variable = zg361_we_al_external_collective_3_approval_verified
+		has_variable = zg361_we_al_external_collective_3_mg_cycle
+		has_variable = zg361_we_al_external_collective_3_mg_case
+		has_variable = zg361_we_al_external_collective_3_mg_snapshot_source_serial
+		has_variable = zg361_we_al_external_collective_3_b1_cycle
+		has_variable = zg361_we_al_external_collective_3_b1_case
+		var:zg361_we_al_external_collective_submission_owner = scope:zg361_we_m360_cost_owner
+		var:zg361_we_al_external_collective_submission_subject = this
+		var:zg361_we_al_external_collective_submission_state = 4
+		var:zg361_we_al_external_collective_submission_active = 1
+		var:zg361_we_al_external_collective_submission_sealed = 1
+		var:zg361_we_al_external_collective_submission_consumed = 0
+		var:zg361_we_al_external_collective_settled = 0
+		var:zg361_we_al_external_collective_settlement_id > 0
+		var:zg361_we_al_external_collective_settlement_hash > 0
+		var:zg361_we_al_external_collective_route >= 1
+		var:zg361_we_al_external_collective_route <= 2
+		var:zg361_we_al_external_collective_3_manager = root
+		var:zg361_we_al_external_collective_3_cohort_id = { value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = 3 }
+		var:zg361_we_al_external_collective_3_member_count >= 1
+		var:zg361_we_al_external_collective_3_member_count = var:zg361_we_al_external_collective_3_agenda_count
+		var:zg361_we_al_external_collective_3_member_hash = var:zg361_we_al_external_collective_3_agenda_hash
+		var:zg361_we_al_external_collective_3_member_hash > 0
+		var:zg361_we_al_external_collective_3_quota >= 1
+		var:zg361_we_al_external_collective_3_quota <= 6
+		var:zg361_we_al_external_collective_3_quota <= var:zg361_we_al_external_collective_3_member_count
+		var:zg361_we_al_external_collective_3_all_meet_evidence_id > 0
+		var:zg361_we_al_external_collective_3_partition_verified = 1
+		var:zg361_we_al_external_collective_3_mg_cycle > 0
+		var:zg361_we_al_external_collective_3_mg_case > 0
+		var:zg361_we_al_external_collective_3_mg_snapshot_source_serial > 0
+		var:zg361_we_al_external_collective_3_b1_cycle > 0
+		var:zg361_we_al_external_collective_3_b1_case > 0
+		OR = { AND = { var:zg361_we_al_external_collective_route = 1 var:zg361_we_al_external_collective_3_forced_count = 0 var:zg361_we_al_external_collective_3_exception_count = var:zg361_we_al_external_collective_3_quota var:zg361_we_al_external_collective_3_manager_cost = var:zg361_we_al_external_collective_3_quota var:zg361_we_al_external_collective_3_approver = scope:zg361_we_m360_cost_owner var:zg361_we_al_external_collective_3_approval_verified = 1 } AND = { var:zg361_we_al_external_collective_route = 2 var:zg361_we_al_external_collective_3_forced_count = var:zg361_we_al_external_collective_3_quota var:zg361_we_al_external_collective_3_exception_count = 0 var:zg361_we_al_external_collective_3_manager_cost = 0 var:zg361_we_al_external_collective_3_approver = 0 var:zg361_we_al_external_collective_3_approval_verified = 0 } }
+	}
+	has_variable = zg361_case_f_owner
+	has_variable = zg361_case_f_subject
+	has_variable = zg361_case_f_cycle_serial
+	has_variable = zg361_case_f_case_serial
+	has_variable = zg361_case_f_state
+	has_variable = zg361_case_f_active
+	var:zg361_case_f_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_case_f_subject = this
+	var:zg361_case_f_cycle_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle
+	var:zg361_case_f_case_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case
+	var:zg361_case_f_state = 5
+	var:zg361_case_f_active = 0
+	has_variable = zg361_mg_team_snapshot_status
+	has_variable = zg361_mg_team_snapshot_owner
+	has_variable = zg361_mg_team_snapshot_subject
+	has_variable = zg361_mg_team_snapshot_cycle
+	has_variable = zg361_mg_team_snapshot_case
+	has_variable = zg361_mg_team_snapshot_revision
+	has_variable = zg361_mg_snapshot_source_serial
+	has_variable = zg361_mg_team_snapshot_b1_available
+	has_variable = zg361_mg_team_snapshot_b1_manager
+	has_variable = zg361_mg_team_snapshot_b1_cycle
+	has_variable = zg361_mg_team_snapshot_b1_case
+	has_variable = zg361_mg_team_snapshot_b1_id
+	has_variable = zg361_mg_team_snapshot_b1_hash
+	var:zg361_mg_team_snapshot_status = 1
+	var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_team_snapshot_subject = this
+	var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle
+	var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case
+	var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_snapshot_source_serial
+	var:zg361_review_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_snapshot_source_serial
+	var:zg361_mg_team_snapshot_b1_available = 1
+	var:zg361_mg_team_snapshot_b1_manager = this
+	var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_cycle
+	var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_case
+	has_variable = zg361_b1_m360_source_available
+	has_variable = zg361_b1_m360_source_status
+	has_variable = zg361_b1_m360_source_sealed
+	has_variable = zg361_b1_m360_source_id
+	has_variable = zg361_b1_m360_source_hash
+	has_variable = zg361_b1_m360_source_manager
+	has_variable = zg361_b1_m360_source_cycle
+	has_variable = zg361_b1_m360_source_case
+	has_variable = zg361_b1_m360_source_state
+	has_variable = zg361_b1_m360_source_member_count
+	has_variable = zg361_b1_m360_source_member_hash
+	has_variable = zg361_b1_m360_source_agenda_count
+	has_variable = zg361_b1_m360_source_agenda_hash
+	has_variable = zg361_b1_m360_source_quota
+	has_variable = zg361_b1_m360_source_all_meet_receipt_serial
+	has_variable = zg361_b1_m360_source_forced_count
+	var:zg361_b1_m360_source_available = 1
+	var:zg361_b1_m360_source_status = 1
+	var:zg361_b1_m360_source_sealed = 1
+	var:zg361_b1_m360_source_id > 0
+	var:zg361_b1_m360_source_hash > 0
+	var:zg361_b1_m360_source_id = var:zg361_mg_team_snapshot_b1_id
+	var:zg361_b1_m360_source_hash = var:zg361_mg_team_snapshot_b1_hash
+	var:zg361_b1_m360_source_manager = this
+	var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_cycle
+	var:zg361_b1_m360_source_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_b1_case
+	var:zg361_b1_m360_source_state = 8
+	var:zg361_b1_m360_source_member_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_member_count
+	var:zg361_b1_m360_source_member_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_member_hash
+	var:zg361_b1_m360_source_agenda_count = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_agenda_count
+	var:zg361_b1_m360_source_agenda_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_agenda_hash
+	var:zg361_b1_m360_source_quota = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_quota
+	var:zg361_b1_m360_source_all_meet_receipt_serial = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_all_meet_evidence_id
+	var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota
+	has_variable = zg361_mg_m036_receipt_owner
+	has_variable = zg361_mg_m036_receipt_subject
+	has_variable = zg361_mg_m036_receipt_cycle
+	has_variable = zg361_mg_m036_receipt_case
+	has_variable = zg361_mg_m036_receipt_state
+	has_variable = zg361_mg_m036_receipt_choice
+	var:zg361_mg_m036_receipt_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_receipt_subject = this
+	var:zg361_mg_m036_receipt_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle
+	var:zg361_mg_m036_receipt_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case
+	var:zg361_mg_m036_receipt_state = 4
+	OR = { var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }
+	has_variable = zg361_mg_m036_object_owner
+	has_variable = zg361_mg_m036_object_subject
+	has_variable = zg361_mg_m036_object_cycle
+	has_variable = zg361_mg_m036_object_case
+	has_variable = zg361_mg_m036_object_state
+	var:zg361_mg_m036_object_owner = scope:zg361_we_m360_cost_owner
+	var:zg361_mg_m036_object_subject = this
+	var:zg361_mg_m036_object_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_cycle
+	var:zg361_mg_m036_object_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_mg_case
+	var:zg361_mg_m036_object_state = 4
+	OR = {
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost = 0
+		}
+		AND = {
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost > 0
+			has_variable = zg361_mg_report_score_available
+			var:zg361_mg_report_score_available = 1
+			has_variable = zg361_mg_report_manager_score
+			has_variable = zg361_mg_manager_score
+			OR = {
+				zg361_mg_m360_collective_cost_c3_receipt_is_current_trigger = yes
+				AND = {
+					OR = {
+						NOT = { has_variable = zg361_mg_m360_cost_receipt_status }
+						AND = {
+							has_variable = zg361_mg_m360_cost_receipt_status
+							var:zg361_mg_m360_cost_receipt_status = 1
+							has_variable = zg361_mg_m360_cost_receipt_al_cycle
+							has_variable = zg361_mg_m360_cost_receipt_al_case
+							has_variable = zg361_mg_m360_cost_receipt_id
+							OR = {
+								var:zg361_mg_m360_cost_receipt_al_cycle < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+								AND = {
+									var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+									var:zg361_mg_m360_cost_receipt_al_case < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+								}
+							}
+							NOT = { var:zg361_mg_m360_cost_receipt_id = { value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_cohort_id multiply = 1000 add = 360 } }
+						}
+					}
+					var:zg361_mg_manager_score = var:zg361_mg_report_manager_score
+					var:zg361_mg_manager_score >= scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_3_manager_cost
+				}
+			}
+		}
+	}
+}

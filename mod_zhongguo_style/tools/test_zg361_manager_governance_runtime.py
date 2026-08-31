@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from gen_361_manager_governance_runtime import (
     BINDINGS,
+    COLLECTIVE_COST_ORDINALS,
     INPUT_FINGERPRINT_GUARDS,
     INPUT_FINGERPRINT_OPAQUE_VARS,
     INPUT_FINGERPRINT_RAW_VALUES,
@@ -103,6 +104,9 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         cls.effects = read(
             "common/scripted_effects/zg361_manager_governance_runtime_effects.txt"
         )
+        cls.manager_triggers = read(
+            "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt"
+        )
         cls.events = read("events/zg361_manager_governance_runtime_events.txt")
         cls.case_effects = read("common/scripted_effects/zg361_case_kernel_effects.txt")
         cls.case_triggers = read("common/scripted_triggers/zg361_case_kernel_triggers.txt")
@@ -147,9 +151,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_generated_outputs_are_current_bom_and_isolated(self) -> None:
         rendered = outputs()
-        self.assertEqual(len(rendered), 12)
+        self.assertEqual(len(rendered), 13)
         allowed_roots = {
             "common/scripted_effects/zg361_manager_governance_runtime_effects.txt",
+            "common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt",
             "common/script_values/zg361_manager_governance_runtime_values.txt",
             "events/zg361_manager_governance_runtime_events.txt",
         }
@@ -183,10 +188,12 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
 
     def test_ck3_files_are_balanced_and_top_level_keys_unique(self) -> None:
         assert_balanced(self, self.effects, "effects")
+        assert_balanced(self, self.manager_triggers, "manager_triggers")
         assert_balanced(self, self.events, "events")
         assert_balanced(self, self.manager_values, "manager_values")
         for text, label in (
             (self.effects, "effects"),
+            (self.manager_triggers, "manager_triggers"),
             (self.events, "events"),
             (self.manager_values, "manager_values"),
         ):
@@ -1028,6 +1035,149 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                 self.assertIn(f"var:zg361_case_{domain}_state = {state}", block)
                 self.assertIn("stale", block)
                 self.assertIn("ignored", block)
+
+    def test_m360_snapshot_freezes_exact_b1_source_identity(self) -> None:
+        snapshot = top_level_block(self.effects, "zg361_mg_build_team_snapshot_effect")
+        self.assertIn("zg361_mg_team_snapshot_b1_available value = 0", snapshot)
+        self.assertIn("var:zg361_b1_m360_source_available = 1", snapshot)
+        self.assertIn("var:zg361_b1_m360_source_manager = this", snapshot)
+        self.assertIn("var:zg361_b1_m360_source_state = 8", snapshot)
+        for field in ("manager", "cycle", "case"):
+            self.assertIn(
+                f"zg361_mg_team_snapshot_b1_{field} value = var:zg361_b1_m360_source_{field}",
+                snapshot,
+            )
+        for field in ("id", "hash"):
+            self.assertIn(
+                f"zg361_mg_team_snapshot_b1_{field} value = var:zg361_b1_m360_source_{field}",
+                snapshot,
+            )
+        for token in ("status = 1", "sealed = 1", "id > 0", "hash > 0"):
+            self.assertIn(f"var:zg361_b1_m360_source_{token}", snapshot)
+
+    def test_m360_three_cohort_preflights_join_sealed_al_mg_and_b1(self) -> None:
+        self.assertEqual(COLLECTIVE_COST_ORDINALS, (1, 2, 3))
+        for ordinal in COLLECTIVE_COST_ORDINALS:
+            with self.subTest(cohort=ordinal):
+                block = top_level_block(
+                    self.manager_triggers,
+                    f"zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger",
+                )
+                base = f"zg361_we_al_external_collective_{ordinal}"
+                for token in (
+                    "submission_owner",
+                    "submission_subject",
+                    "submission_cycle",
+                    "submission_case",
+                    "submission_state",
+                    "submission_active",
+                    "submission_sealed",
+                    "submission_consumed",
+                    "settlement_id",
+                    "settlement_hash",
+                    "route",
+                ):
+                    self.assertIn(f"zg361_we_al_external_collective_{token}", block)
+                self.assertIn(
+                    f"var:{base}_cohort_id = {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }}",
+                    block,
+                )
+                for proof in (
+                    "mg_cycle",
+                    "mg_case",
+                    "mg_snapshot_source_serial",
+                    "b1_cycle",
+                    "b1_case",
+                ):
+                    self.assertIn(f"{base}_{proof}", block)
+                for source in (
+                    "zg361_mg_team_snapshot_b1_available = 1",
+                    "zg361_b1_m360_source_available = 1",
+                    "zg361_b1_m360_source_status = 1",
+                    "zg361_b1_m360_source_sealed = 1",
+                    "zg361_b1_m360_source_state = 8",
+                    "zg361_mg_m036_receipt_state = 4",
+                    "zg361_mg_m036_object_state = 4",
+                ):
+                    self.assertIn(source, block)
+                self.assertIn("var:zg361_mg_m036_receipt_choice = 1", block)
+                self.assertIn("var:zg361_mg_m036_receipt_choice = 2", block)
+
+    def test_m360_route_a_costs_real_score_and_route_b_needs_no_score(self) -> None:
+        for ordinal in COLLECTIVE_COST_ORDINALS:
+            with self.subTest(cohort=ordinal):
+                base = f"zg361_we_al_external_collective_{ordinal}"
+                preflight = top_level_block(
+                    self.manager_triggers,
+                    f"zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger",
+                )
+                route_b, route_a = preflight.split("\n\t\tAND = {", 2)[1:]
+                self.assertIn("zg361_we_al_external_collective_route = 2", route_b)
+                self.assertIn(f"{base}_manager_cost = 0", route_b)
+                self.assertNotIn("zg361_mg_manager_score", route_b)
+                self.assertIn("zg361_we_al_external_collective_route = 1", route_a)
+                self.assertIn("zg361_mg_report_score_available", route_a)
+                self.assertIn("var:zg361_mg_manager_score = var:zg361_mg_report_manager_score", route_a)
+                self.assertIn(
+                    f"var:zg361_mg_manager_score >= scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
+                    route_a,
+                )
+                effect = top_level_block(
+                    self.effects,
+                    f"zg361_mg_m360_apply_collective_cost_c{ordinal}_effect",
+                )
+                self.assertEqual(
+                    effect.count("change_variable = { name = zg361_mg_manager_score add ="),
+                    1,
+                )
+                route_b_effect = effect.split("\n\telse_if =", 1)[0]
+                self.assertIn("manager cost is N/A on route B", route_b_effect)
+                self.assertNotIn("zg361_mg_m360_cost_receipt_status value = 1", route_b_effect)
+                self.assertNotIn("change_variable = { name = zg361_mg_manager_score", route_b_effect)
+        self.assertNotIn("zg361_we_manager_score", self.effects + self.manager_triggers)
+
+    def test_m360_receipt_is_product_minted_exact_and_idempotent(self) -> None:
+        receipt_fields = {
+            "status", "id", "hash", "owner", "al_subject", "al_cycle", "al_case",
+            "settlement_id", "settlement_hash", "cohort_id", "ordinal", "manager",
+            "mg_cycle", "mg_case", "mg_snapshot_source_serial", "mg_snapshot_revision",
+            "b1_cycle", "b1_case", "b1_source_id", "b1_source_hash", "route",
+            "quota", "exception_count", "cost",
+            "score_before", "score_after", "score_delta",
+        }
+        for ordinal in COLLECTIVE_COST_ORDINALS:
+            with self.subTest(cohort=ordinal):
+                replay = top_level_block(
+                    self.manager_triggers,
+                    f"zg361_mg_m360_collective_cost_c{ordinal}_receipt_is_current_trigger",
+                )
+                for field in receipt_fields:
+                    self.assertIn(f"zg361_mg_m360_cost_receipt_{field}", replay)
+                self.assertIn("cohort_id multiply = 1000 add = 360", replay)
+                self.assertIn("receipt_id multiply = 100", replay)
+                self.assertIn("score_before subtract", replay)
+                effect = top_level_block(
+                    self.effects,
+                    f"zg361_mg_m360_apply_collective_cost_c{ordinal}_effect",
+                )
+                replay_branch = effect.split("\n\telse_if =", 2)[1]
+                self.assertIn("receipt_is_current_trigger = yes", replay_branch)
+                self.assertIn("last_result value = 2", replay_branch)
+                self.assertNotIn("change_variable = { name = zg361_mg_manager_score", replay_branch)
+                self.assertIn("CODE = 2 MECHANISM = 360", effect)
+                self.assertIn("CODE = 4 MECHANISM = 360", effect)
+
+    def test_m360_cost_contract_is_documented_without_claiming_live(self) -> None:
+        for token in (
+            "zg361_mg_m360_collective_cost_c1_can_apply_trigger",
+            "zg361_mg_m360_apply_collective_cost_c1_effect",
+            "cost = exception_count = quota",
+            "Route B",
+            "N/A",
+            "zg361_mg_manager_score",
+            "static-ready",
+        ):
+            self.assertIn(token, self.spec)
 
     def test_no_gold_charge_in_non_gold_slice_and_capacity_refunds_exist(self) -> None:
         # Manifest/L0 contracts give these 15 IDs only capacity-hours.  The

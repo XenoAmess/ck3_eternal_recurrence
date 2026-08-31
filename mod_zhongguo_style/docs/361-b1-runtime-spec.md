@@ -358,6 +358,34 @@ result case / final reason frozen
 ID/hash 从这两个真实案卷确定性派生。它只是一张后续 Workforce 可消费的不可变来源票据，不直接调用 Workforce bridge，
 也不写任何 readiness 布尔；缺失真实配额写入或错 result case 时保持无票据。该接线仍只有 L0 静态证据，尚未升级 live readiness。
 
+### #360：B1 真实 cohort 来源投影
+
+`zg361_b1_mark_published_effect` 在所有 subject 已经写完 state 8 与 #357 来源票后，调用
+`zg361_b1_publish_m360_cohort_source_effect`。该 effect 只发布本经理已经完成的 B1 cohort，不接受 Central、Workforce 或测试 caller
+传入成员、档位、票据或哈希。经理侧固定 ABI 为：
+
+- `zg361_b1_m360_source_{status,reason,manager,cycle,case,state}`；当前 manager/cycle/case 的 mark 前没有 exact status，表示 upstream
+  WAIT（上一轮不可变 source 即使仍保留也不能匹配新 tuple）；mark 后
+  `status=1/2/3` 分别表示 READY / STRUCTURAL_NA / INVALID_DRIFT；
+- READY 独有 `zg361_b1_m360_source_{available,sealed,id,hash}`，严格为 `available=1, sealed=1` 且 ID/hash 为正；ID 由
+  cycle/case/#360 派生，hash 还绑定成员/议程 hash、C quota、all-meet 收据和所有入槽 #357 receipt hash；
+- `zg361_b1_m360_source_{member_count,member_hash,agenda_count,agenda_hash,quota,all_meet_receipt_serial,forced_count}`；
+- 最多六个 `zg361_b1_m360_source_forced_{1..6}_*` 槽。每槽冻结真实 character、`processing_order`、#357 receipt ID/hash，
+  以及 B1/result 各自的 owner/subject/cycle/case tuple。
+
+来源门不是“有一名 C 就算完成”。它重新遍历完整 `processing_subjects`，用冻结 roster order × processing order 独立重算 member hash，
+并要求 `member_count=agenda_count`、`member_hash=agenda_new_hash=agenda_hash`。每名成员必须恰好属于当前 manager/cycle/case、已经关闭为
+state 8、absolute grade 至少为 3.5、具有同案 #137 议程收据，以及与 B1/result adapter 完全一致的真实 #357 来源票。最终
+`final_grade=3.25 && forced_down=1` 的人数必须恰等于本账实际 `pending_325_n`，并按 processing order 稳定写入六个有界槽。
+
+旧 payload 总是先清除。#137 route C、零个最终 C、存在 absolute 3.25、总配额超过 Workforce 当前六槽容量分别写
+`status=2, reason=1/2/3/4`；议程不完整、成员字段缺失、B1/result/#137/#357 tuple 漂移、重算成员 count/hash 不等、forced C
+与最终配额不守恒分别写 `status=3, reason=101/102/103/104/105`。N/A/INVALID 只保留精确 manager/cycle/case/state 与诊断，
+不生成 business ID/hash/payload。不得写 `available=0`、零 quota、零 receipt 或任意默认 character 冒充失败结果。Central 负责从
+三个互异经理来源派生三个互异 cohort ID、选择 collective route 并调用 Workforce；B1 不越权生成 exception、approver、
+manager cost、realm-trust 或结算结果。本节仍是 static-ready，
+等待同一批 MCP-first CK3 paused/live 验收后才能升级状态。
+
 ## 四、共同上司 barrier
 
 #037/#038/#011/#136/#141/#144 需要多个真实 manager；不得用一个 manager 的多个本地变量伪造会议。

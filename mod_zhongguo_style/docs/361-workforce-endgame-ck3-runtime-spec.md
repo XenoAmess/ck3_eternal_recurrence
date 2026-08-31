@@ -16,13 +16,19 @@
 - `docs/361-workforce-external-producer-ledger-2026-08-31.md`（旧现场 303 项 loader 告警责任与消债账本）
 
 它复用共享 case kernel 的五元 guard、operation receipt、stage dispatcher 与 exact deadline ABI，但不修改
-kernel。本包只有一个对中央层公开的 manager-scope adapter：
+kernel。本包向中央层公开一个初始 opener 和两个 #360 continuation/finalizer seam：
 
 ```text
 zg361_we_open_portfolio_effect = { SUBJECT = <直属受评对象> }
+zg361_we_resume_m360_from_central_source_effect = {
+  TICKET_OWNER / TICKET_SUBJECT / TICKET_CYCLE / TICKET_CASE
+}
+zg361_we_finalize_manager_collective_na_effect = {
+  TICKET_OWNER / TICKET_SUBJECT / TICKET_CYCLE / TICKET_CASE / REASON=360362
+}
 ```
 
-调用者必须是 landed、天朝制、公爵及以上 manager。直属的伯爵或男爵可以作为 `$SUBJECT$` 进入新的
+初始 opener 的调用者必须是 landed、天朝制、公爵及以上 manager。直属的伯爵或男爵可以作为 `$SUBJECT$` 进入新的
 AB/AC/AD 受评案；入口不得用 duke gate 把他们整体挡掉。#262/#263 的外派对象仍可为伯爵或男爵，A/B
 另行冻结一个不同于 home owner 和 subject 的天朝制公爵及以上 host manager。只有续跑 AL #360/#361 时，
 subject 才必须也是 celestial duke+。伯爵、男爵只受评，不作为 manager/HC 批准人、host manager 或宪章制定人。
@@ -40,8 +46,9 @@ charter version）、object id、五元身份、consumer callable、资源账与
 任何 A/B 对前序事实的读取还必须命中**同案、同周期且已被其指定 consumer 消费**的 exact object；旧周期残留
 变量、未消费对象及前序 C debt 都不能冒充业务前置。缺业务前置时 A/B 在 receipt 前 typed RED，C 仍只登记本项 debt。
 
-当前没有中央 `on_action`、decision、interaction、GUI 或 scoreboard 接线；没有 CK3 parser/error.log；没有
-paused snapshot；没有 MCP named action/query；没有 CK3 实机事件点击、存读档或 Steam build 证据。因此
+中央、B1、Manager/Governance 与 Workforce 之间现已有静态生成的 #360 调用链，但当前没有中央 `on_action`、
+decision、interaction、GUI 或 scoreboard 接线；没有 CK3 parser/error.log；没有 paused snapshot；没有 MCP named action/query；
+没有 CK3 实机事件点击、存读档或 Steam build 证据。因此
 不得写成 fixture-live、production-live primitive、production-live loop 或 complete。
 
 日常本地化只正式创作英文和简体中文；其余七语是英文结构占位，不能称作发布级翻译。
@@ -69,6 +76,13 @@ full_guard
 以 `available_hours -2 / governance_hours +2 / policy_debt -1` 等量偿债；容量不足时只对冻结且仍有管理资格的
 owner 扣 2 分并延后一周期，最多两次。第三次仍失败时 debt 保持 open 并写 `70000+ID` blocked reason；
 已结清重入为 status 2，错案/串 owner 为 status 3，均不重复改资源。
+
+#360 A/B 在通用顺序之外增加一层跨三名 manager 的原子预检：先把 Central、B1、MG 的冻结身份与全部活动
+候选槽重新联结，再同时调用三份 MG `can_apply` trigger；三份全部可应用后，才允许写 case operation receipt、
+调用三个 MG apply effect、复制真实成本回执并写 Workforce 业务对象。A 最后只扣一次 owner realm trust；B 不扣
+manager 分、不生成零值成本回执；C 不 materialize、不 seal collective，只登记 policy debt。Central source 的
+`status=2` 必须在 Workforce #360 consumer 已成功后才写，重入时可凭同一已消费对象修复这一步，不能先消费来源再
+赌后续写入成功。
 
 portfolio 重放闸门保存在 subject scope，并绑定该 subject 的 review serial；同一 manager 因而可以在同一周期
 分别考核多个直属 subject，而同一 subject/同一周期不能重复开案。
@@ -173,7 +187,7 @@ owner 支付 subject 20 金；B 路只退款；`flow_consumed` 保证支付/退�
 | AD | 277 | 6 | B2 pending 11-tuple + 独立 exit receipt + 内部 position/HC lineage → occupied→frozen vacancy；只在成功 A/B 消费 B2，不回 available、不铸 HC |
 | AL | 355 | 1 | prior 100/actual 150/repeatable 20/windfall 30 → limited 120 或 PEAK 150+risk |
 | AL | 356 | 1 | completion/report/cutoff/timestamp/actual → actual-cycle credit 与 duplicate reversal |
-| AL | 360 | 4 | 3 个 cohort 的 manager/member/agenda/quota/evidence/exception/forced-C → 逐 cohort agenda=members、exception+forced=quota、真实 manager/trust 成本 |
+| AL | 360 | 4 | Central route-neutral READY + 3 个 B1/MG cohort + 最多 6 个真实候选 → A 逐 manager 真实成本回执并单扣 realm trust；B 强制末位且成本 N/A；C 只写 debt |
 | AL | 361 | 5 | 最近三个 distinct 周期的真实 #357/#358/#359 receipt → 产品生成 report/charter serial、单调版本与 next-cycle defaults |
 
 ## 5. AL receipt bridge、三 cohort producer 与最高领主门
@@ -198,23 +212,34 @@ al_external_last_operation = 359
 来源票据并把当前 AL 五元组提交给本包 strict bridge，不能由中央传入 receipt ID/hash。policy route C、未裁决申诉、未发生配额
 回流仍保持等待。该接线尚未经过新一轮 CK3 paused/live 验收，因此不改变本包 readiness。
 
-#360 由本包的 `begin → append outcome slot → seal` producer ABI 提交一个未结算的 collective
-case/settlement receipt 和**恰好三个**互异 cohort。
-每个 cohort 完整冻结
-`cohort_id/manager/member_count/member_hash/agenda_count/agenda_hash/quota/all_meet_evidence_id/forced_count/
-exception_count/approver/manager_cost/partition_verified/approval_verified`。member 与 agenda 的 count/hash 必须相等；
-quota 必须等于 forced+exception；有 exception 时 approver 必须是 manager 的 eligible celestial 直属上级且不是
-manager。三个 manager 互异，实际分别扣自己的 `manager_score`；owner 的 realm trust 同方向扣 collective 总
-成本。A 可消费已批准例外，零例外时必须带 `current_cycle+1` reform；B 强制每 cohort `exception=0` 且
-`forced=quota`。
+#360 不再暴露无人调用的 `begin → append → seal` caller ABI。Central 在 owner scope 冻结 route-neutral
+`zg361_p2c_m360_source_*`：`status=1` 才是 READY，`2` 是 Workforce 已消费，`4/5/7` 分别为 RED/WAIT/结构性
+N/A；READY 必须带 owner/subject、P2C 与 AL 两套 cycle/case、`cohort_count=3`、`total_quota=1..6`，并为
+`c1..c3` 带 manager、B1 source identity/quota 与 MG snapshot identity。c1 必须是当前 AL subject；三个 manager
+必须是 owner 的互异直属天朝制公爵及以上领主。Workforce 的 resume seam 会独立复核全部冻结字段和当前
+B1/MG immutable facts，不能只信 Central 的 READY 布尔。
 
-每个 cohort/kind 都有 6 个可寻址 identity slot，但只有其 `forced_count`/`exception_count` 个前缀槽会被消费；
-每个活动槽必须携带 character/cohort/evidence，且 cohort id 必须精确等于该槽所属 cohort。三 cohort 的 total
-quota ≤ 6，所以 forced+exception 的**活动槽总数**至多 6；所有活动 identity 全局互异。这个 cohort-local
-partition 防止把 cohort 1 声明的两个 forced 结果全部伪标到 cohort 2。超过容量的 collective action 必须由
-上游调用者拆分或拒绝，本包不会截断。producer 只持久化调用者提交的真实角色/成员证据，不会推测 cohort；
-#360 route 在所有语义预检通过后写自己的 `m360_*` receipt，并只把 submission 标成 consumed/settled，
-不改写已冻结的 cohort 身份。
+玩家只在 READY 且同案 #360 尚未排队时收到 `zg361we.360`；AI 走已授权第二例外，直接 materialize A 并在后台
+消费。玩家选 A/B 后才按 route materialize 一个产品自有、未结算且立即 sealed 的 collective；C 从不调用
+materializer，并先清除任何 stale submission 字段。A/B 都必须恰好投影三个 cohort，逐 cohort 保留
+`cohort_id/manager/member_count/member_hash/agenda_count/agenda_hash/quota/all_meet_evidence_id` 以及冻结的
+B1/MG identity。每个活动候选还复制 B1 的 character、processing order、#357 receipt id/hash、B1/result 两套
+owner/subject/cycle/case 与 member evidence；三 cohort 合计只消费 quota 个前缀槽，最多 6 名且全局人物互异，
+不会截断、补零或把一个 cohort 的候选挪给另一个 cohort。
+
+A 把每个 cohort 的 quota 个候选 materialize 为 exception，forced 为 0，manager cost=quota；B 恰好相反，全部
+materialize 为 forced，exception 为 0，manager cost=0。route 开始时先对三个 manager 全局调用 MG
+`zg361_mg_m360_collective_cost_c{1,2,3}_can_apply_trigger`，任何一个失败都在 case receipt 和资源写之前 RED。
+只有三份都通过，A 才调用对应 apply effect，逐 cohort 原样复制 MG 的 27 字段真实成本回执，然后对 owner 的
+realm trust 按总 quota 只扣一次；B 仍调用三份 MG apply 以取得权威 N/A 结论，但只写
+`manager_cost_receipt_present=0`，不复制回执、不写伪零回执，也不读取旧 `zg361_we_manager_score`。A/B consumer
+成功后才把 submission 记为 consumed/settled；随后 exact identity mark 才把 Central source 改为 `status=2`。
+若中断发生在 consumer 与 Central mark 之间，同一 receipt 重入只修复 mark，不重复收费、重复推进或重写历史。
+
+Central `status=7` 时调用 structural-N/A seam（固定 `REASON=360362`）。它只在 exact AL state 4、三本 Workforce
+账和 shared formal HC 守恒、owned operation=38 且没有 active submission 时关闭为 status 7；不伪造 #360/#361
+receipt、collective 或 operation 39/40。Central 的细分原因 360421–360425 原样保留；只有 360424 允许携带正的
+`upstream_reason`。
 
 #361 不再读取调用者预填的 28 个 `al_external_charter/completed/long_report` 字段。每次 strict bridge 真正
 消费 #357/#358/#359 并从 state 2 经两个 kernel ACK 到达 state 4 后，产品立即调用
@@ -232,7 +257,7 @@ owner / subject / cycle / case
 status 2，其他同周期碰撞在 advance 前 RED。rolling ledger 满三项后才保持最近三个严格递增 cycle；每个 slot
 都保留 owner/subject/case 与三来源票据，而不是把整轮历史压成一个无法追责的 caller hash。
 
-#360 的 sealed collective 被 route A/B/C 真实消费并推进到 state 5 后，`after_m360_history_gate` 才决定终态：
+#360 的 A/B sealed collective 或 C policy debt 被真实消费并推进到 state 5 后，`after_m360_history_gate` 才决定终态：
 
 - ledger 只有 1 或 2 个 distinct 周期：按 39 个 owned operation 做完整 gold/hours/shadow-HC/formal-HC
   守恒，以 state 8、`portfolio_status=8`、`terminal_success=0` 关闭；不写 #361 receipt/object，也不弹 #361。
@@ -275,14 +300,17 @@ RED `9098`。
 
 ## 6. 仍需完成的 CK3/live 工作
 
-1. 中央层选择真实 assessed subject 并调用唯一 portfolio adapter；本包不自行弹窗。
+1. 中央层选择真实 assessed subject 并调用初始 portfolio adapter；#360 只允许走本节冻结的 resume/N/A seam，
+   旧 opener 不会提前排 `zg361we.360`。
 2. AD 已提供严格 adapter：#274 只消费外部已确认的 position receipt，角色直接绑定当前 subject；#276 只接受旧
    cycle/旧 case 的 rehire history，candidate 同样绑定当前 subject；#277 直接 join B2 已提交的 11 字段 PIP settlement
    槽与独立 exit receipt，不再让 caller 复述 PIP/position/HC lineage。仍需原生岗位 provider 真正执行并证明
    court-position 任命/离任；没有 provider 时分别以 2741/2771 blocked，绝不伪造角色或职位。
-3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；仍需 MCP-first CK3 paused/live 证明三张来源
-   确实在可达业务路径生成并推进 AL。#360 cohort 成员仍需对应业务 producer；#361 report/charter 已改为本包从三轮
-   原始 receipt ledger 生成 serial，不再有外部 report/hash producer。必须实机证明前两轮只落 state 8、第三轮才弹 #361。
+3. 357–359 已有 B1/B2 真实业务 producer、中央调用与本包 strict bridge 接线；#360 也已有 Central route-neutral
+   source、B1 三 cohort/候选来源、MG 三 manager cost ABI 与 Workforce materializer/consumer 的静态接线。仍需
+   MCP-first CK3 paused/live 证明三张来源和三份 cohort 在可达业务路径生成、玩家只在 READY 收到事件、AI 静默走 A、
+   A 的三份真实成本回执/单次 trust 扣减、B 的 N/A、C 的无 seal，以及重试不重复收费。#361 report/charter 已改为
+   本包从三轮原始 receipt ledger 生成 serial；必须实机证明前两轮只落 state 8、第三轮才弹 #361。
 4. #275 A 已有 `consume_m275_runner_reopen`，只有中央招聘返回 distinct new requisition case、receipt/hash 且
    `CENTRAL_REQUISITION_OPENED=1` 才关闭 pending；中央招聘本身与真实任命仍是外部调用者责任。
 5. C debt 到期 consumer 已落地；#264 已改为产品自有三步玩家交接链，不再有 caller-supplied waiver/hash
@@ -295,6 +323,6 @@ RED `9098`。
    这 8 条确实归零，不能以静态可达性代替实机结论。
 7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
 8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
-   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。本包静态预期消掉 AC 20、AL stage 8、已删除的
-   AL charter 28 与 AD 35 个重复 alias，共 91 项；仍余 AD 45 + AL collective 167 = 212 项。该数字必须由新 loader artifact 复验，
-   不能把静态可达性称为 live GREEN。
+   `docs/361-workforce-external-producer-ledger-2026-08-31.md`。静态预期已消掉 AC 20、AL stage 8、AL collective
+   167、已删除的 AL charter 28 与 AD 35 个重复 alias，共 `20+8+167+28+35=258` 项；仍余 AD 45 项。该数字必须由
+   新 loader artifact 复验，不能把静态可达性称为 live GREEN。

@@ -1840,6 +1840,161 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertNotIn("zg361_we_submit_al_357_359_receipts_effect", publish)
         self.assertNotIn("external_stage_receipts_verified", publish)
 
+    def test_360_source_requires_full_published_agenda_and_exact_357_receipts(self) -> None:
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        producer_call = "zg361_b1_publish_m360_cohort_source_effect = yes"
+        self.assertIn(producer_call, publish)
+        self.assertGreater(
+            publish.index(producer_call),
+            publish.index(
+                "set_variable = { name = zg361_b1_m357_external_receipt_hash"
+            ),
+        )
+        self.assertLess(
+            publish.index(producer_call),
+            publish.index("remove_character_flag = zg361_b1_cycle_active"),
+        )
+
+        source = top_level_block(
+            self.effects, "zg361_b1_publish_m360_cohort_source_effect"
+        )
+        for required in (
+            "has_variable_list = zg361_b1_processing_subjects",
+            "var:zg361_b1_cycle_state = 8",
+            "var:zg361_b1_closure_state = 4",
+            "var:zg361_b1_processing_n = var:zg361_b1_agenda_n",
+            "var:zg361_b1_agenda_hash = var:zg361_b1_agenda_new_hash",
+            "var:zg361_b1_agenda_mode != 3",
+            "var:zg361_b1_agenda_header_state = 2",
+            "var:zg361_b1_m360_work_agenda_closed_n = var:zg361_b1_agenda_n",
+            "var:zg361_b1_quota_conservation_valid = 1",
+            "var:zg361_b1_quota_recount_bottom = var:zg361_pending_325_n",
+            "var:zg361_pending_325_n >= 1",
+            "var:zg361_pending_325_n <= 6",
+            "var:zg361_b1_case_state = 8",
+            "var:zg361_b1_case_active = 0",
+            "limit = { var:zg361_b1_absolute_grade < 2 }",
+            "var:zg361_b1_m137_receipt_serial = var:zg361_b1_case_serial",
+            "var:zg361_b1_m357_external_receipt_state = 8",
+            "var:zg361_b1_m357_external_receipt_id > 0",
+            "var:zg361_b1_m357_external_receipt_hash > 0",
+            "var:zg361_b1_m357_external_result_case = var:zg361_b1_result_adapter_result_case",
+            "var:zg361_b1_result_adapter_result_cycle = var:zg361_b1_cycle_serial",
+            "var:zg361_b1_result_adapter_b1_state = 8",
+            "var:zg361_b1_m360_work_forced_count = var:zg361_pending_325_n",
+            "var:zg361_b1_m360_work_abs_c = 0",
+        ):
+            self.assertIn(required, source)
+
+        self.assertIn(
+            "value = { value = var:zg361_b1_case_serial multiply = 1000 }",
+            source,
+        )
+        self.assertIn(
+            "add = { value = prev.var:zg361_b1_roster_frozen_order multiply = prev.var:zg361_b1_processing_order }",
+            source,
+        )
+        self.assertIn(
+            "var:zg361_b1_m360_work_member_hash = var:zg361_b1_agenda_new_hash",
+            source,
+        )
+        self.assertIn(
+            "name = zg361_b1_m360_source_member_hash value = var:zg361_b1_m360_work_member_hash",
+            source,
+        )
+        self.assertIn(
+            "name = zg361_b1_m360_source_agenda_hash value = var:zg361_b1_agenda_new_hash",
+            source,
+        )
+        self.assertIn(
+            "name = zg361_b1_m360_source_all_meet_receipt_serial value = var:zg361_b1_case_serial",
+            source,
+        )
+        self.assertIn("name = zg361_b1_m360_source_id", source)
+        self.assertIn("name = zg361_b1_m360_source_hash", source)
+        self.assertIn("add = var:zg361_b1_m360_work_m357_hash_sum", source)
+        self.assertIn(
+            "order_by = { value = var:zg361_b1_processing_order multiply = -1 }",
+            source,
+        )
+
+    def test_360_source_has_six_bounded_exact_forced_c_slots_without_defaults(self) -> None:
+        source = top_level_block(
+            self.effects, "zg361_b1_publish_m360_cohort_source_effect"
+        )
+        self.assertIn(
+            "limit = { var:zg361_b1_final_grade = 1 var:zg361_b1_forced_down = 1 }",
+            source,
+        )
+        slot_fields = (
+            "character",
+            "processing_order",
+            "m357_receipt_id",
+            "m357_receipt_hash",
+            "b1_owner",
+            "b1_subject",
+            "b1_cycle",
+            "b1_case",
+            "result_owner",
+            "result_subject",
+            "result_cycle",
+            "result_case",
+        )
+        for slot in range(1, 7):
+            with self.subTest(slot=slot):
+                self.assertIn(
+                    f"limit = {{ root.var:zg361_b1_m360_work_slot = {slot} }}",
+                    source,
+                )
+                for field in slot_fields:
+                    self.assertIn(
+                        f"name = zg361_b1_m360_source_forced_{slot}_{field}",
+                        source,
+                    )
+                    self.assertIn(
+                        f"remove_variable = zg361_b1_m360_source_forced_{slot}_{field}",
+                        source,
+                    )
+        self.assertEqual(
+            source.count("name = zg361_b1_m360_source_available value = 1"), 1
+        )
+        self.assertEqual(
+            source.count("name = zg361_b1_m360_source_sealed value = 1"), 1
+        )
+        self.assertNotIn("name = zg361_b1_m360_source_available value = 0", source)
+        self.assertNotIn("name = zg361_b1_m360_source_quota value = 0", source)
+        self.assertNotIn("name = zg361_b1_m360_source_forced_count value = 0", source)
+
+    def test_360_source_distinguishes_wait_ready_na_and_invalid_without_fake_payload(self) -> None:
+        source = top_level_block(
+            self.effects, "zg361_b1_publish_m360_cohort_source_effect"
+        )
+        publish = top_level_block(self.effects, "zg361_b1_mark_published_effect")
+        # Status does not exist before the mark call; the caller sees WAIT by
+        # absence rather than by a made-up status or business tuple.
+        self.assertNotIn("zg361_b1_m360_source_status", publish.split(
+            "zg361_b1_publish_m360_cohort_source_effect = yes", 1
+        )[0])
+        self.assertIn("name = zg361_b1_m360_source_status value = 1", source)
+        self.assertIn("name = zg361_b1_m360_source_status value = 2", source)
+        self.assertIn("name = zg361_b1_m360_source_status value = 3", source)
+        for reason in (1, 2, 3, 4, 101, 102, 103, 104, 105):
+            self.assertIn(
+                f"name = zg361_b1_m360_source_reason value = {reason}", source
+            )
+        self.assertIn("var:zg361_b1_agenda_mode = 3", source)
+        self.assertIn("var:zg361_pending_325_n = 0", source)
+        self.assertIn("var:zg361_pending_325_n > 6", source)
+        self.assertIn("name = zg361_b1_m360_work_missing_fields value = 1", source)
+        self.assertIn("name = zg361_b1_m360_work_tuple_mismatch value = 1", source)
+        self.assertIn("remove_variable = zg361_b1_m360_source_reason", source)
+        # Only READY materializes product IDs and business payload.
+        self.assertEqual(source.count("name = zg361_b1_m360_source_id"), 1)
+        self.assertEqual(source.count("name = zg361_b1_m360_source_hash"), 1)
+        self.assertEqual(
+            source.count("name = zg361_b1_m360_source_available value = 1"), 1
+        )
+
     def test_band_order_and_feedback_debt_have_next_cycle_consumers(self) -> None:
         band = top_level_block(self.effects, "zg361_b1_freeze_band_order_effect")
         self.assertIn("var:zg361_pending_grade = 2", band)

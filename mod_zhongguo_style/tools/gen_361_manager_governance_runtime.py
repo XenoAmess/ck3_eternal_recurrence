@@ -102,6 +102,7 @@ BINDINGS: tuple[MechanismBinding, ...] = (
 )
 TARGET_IDS = tuple(row.mechanism_id for row in BINDINGS)
 Q_PROJECTION_IDS = tuple(range(121, 129))
+COLLECTIVE_COST_ORDINALS = (1, 2, 3)
 
 # Numeric facts that can change the business result of one manager/governance
 # operation.  The generated CK3 adapter folds presence + value into a frozen
@@ -291,6 +292,8 @@ def validate_bindings() -> None:
         raise ValueError("this generator must not claim live readiness")
     if Q_PROJECTION_IDS != tuple(range(121, 129)):
         raise ValueError("manager-certification projection coverage drift")
+    if COLLECTIVE_COST_ORDINALS != (1, 2, 3):
+        raise ValueError("collective-cost cohort coverage drift")
     if set(INPUT_FINGERPRINT_VARS) != set(TARGET_IDS):
         raise ValueError("manager input-fingerprint coverage drift")
     if set(INPUT_FINGERPRINT_OPAQUE_VARS) != set(TARGET_IDS):
@@ -940,6 +943,389 @@ zg361_mg_set_bottom_slots_effect = {
     )
 
 
+def collective_cost_receipt_guard(ordinal: int) -> str:
+    """Exact replay identity for one already-applied #360 manager cost."""
+
+    base = f"zg361_we_al_external_collective_{ordinal}"
+    required = (
+        "status", "id", "hash", "owner", "al_subject", "al_cycle", "al_case",
+        "settlement_id", "settlement_hash", "cohort_id", "ordinal", "manager",
+        "mg_cycle", "mg_case", "mg_snapshot_source_serial",
+        "mg_snapshot_revision", "b1_cycle", "b1_case", "b1_source_id",
+        "b1_source_hash", "route", "quota",
+        "exception_count", "cost", "score_before", "score_after", "score_delta",
+    )
+    lines = [f"has_variable = zg361_mg_m360_cost_receipt_{field}" for field in required]
+    lines += [
+        "var:zg361_mg_m360_cost_receipt_status = 1",
+        f"var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }}",
+        (
+            "var:zg361_mg_m360_cost_receipt_hash = { value = "
+            "var:zg361_mg_m360_cost_receipt_id multiply = 100 add = { value = "
+            "scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route "
+            f"multiply = 10 }} add = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        ),
+        "var:zg361_mg_m360_cost_receipt_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_mg_m360_cost_receipt_al_subject = scope:zg361_we_m360_cost_subject",
+        "var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle",
+        "var:zg361_mg_m360_cost_receipt_al_case = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case",
+        "var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id",
+        "var:zg361_mg_m360_cost_receipt_settlement_hash = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash",
+        f"var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id",
+        f"var:zg361_mg_m360_cost_receipt_ordinal = {ordinal}",
+        "var:zg361_mg_m360_cost_receipt_manager = this",
+        f"var:zg361_mg_m360_cost_receipt_mg_cycle = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle",
+        f"var:zg361_mg_m360_cost_receipt_mg_case = scope:zg361_we_m360_cost_subject.var:{base}_mg_case",
+        f"var:zg361_mg_m360_cost_receipt_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:{base}_mg_snapshot_source_serial",
+        "var:zg361_mg_m360_cost_receipt_mg_snapshot_revision = var:zg361_mg_team_snapshot_revision",
+        f"var:zg361_mg_m360_cost_receipt_b1_cycle = scope:zg361_we_m360_cost_subject.var:{base}_b1_cycle",
+        f"var:zg361_mg_m360_cost_receipt_b1_case = scope:zg361_we_m360_cost_subject.var:{base}_b1_case",
+        "var:zg361_mg_m360_cost_receipt_b1_source_id = var:zg361_b1_m360_source_id",
+        "var:zg361_mg_m360_cost_receipt_b1_source_hash = var:zg361_b1_m360_source_hash",
+        "var:zg361_mg_m360_cost_receipt_route = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route",
+        f"var:zg361_mg_m360_cost_receipt_quota = scope:zg361_we_m360_cost_subject.var:{base}_quota",
+        f"var:zg361_mg_m360_cost_receipt_exception_count = scope:zg361_we_m360_cost_subject.var:{base}_exception_count",
+        f"var:zg361_mg_m360_cost_receipt_cost = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost",
+        (
+            "var:zg361_mg_m360_cost_receipt_score_after = { value = "
+            "var:zg361_mg_m360_cost_receipt_score_before subtract = "
+            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        ),
+        (
+            "var:zg361_mg_m360_cost_receipt_score_delta = { value = 0 subtract = "
+            f"scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}"
+        ),
+    ]
+    return "\n\t".join(lines)
+
+
+def collective_cost_source_guard(ordinal: int) -> str:
+    """Validate sealed AL input against the manager's frozen MG/B1 source."""
+
+    base = f"zg361_we_al_external_collective_{ordinal}"
+    subject_required = (
+        "submission_owner", "submission_subject", "submission_cycle",
+        "submission_case", "submission_state", "submission_active",
+        "submission_sealed", "submission_consumed", "settlement_id",
+        "settlement_hash", "route", "settled",
+    )
+    cohort_required = (
+        "cohort_id", "manager", "member_count", "member_hash", "agenda_count",
+        "agenda_hash", "quota", "all_meet_evidence_id", "forced_count",
+        "exception_count", "approver", "manager_cost", "partition_verified",
+        "approval_verified", "mg_cycle", "mg_case", "mg_snapshot_source_serial",
+        "b1_cycle", "b1_case",
+    )
+    subject_lines = [
+        *(f"has_variable = zg361_we_al_external_collective_{field}" for field in subject_required),
+        *(f"has_variable = {base}_{field}" for field in cohort_required),
+        "var:zg361_we_al_external_collective_submission_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_we_al_external_collective_submission_subject = this",
+        "var:zg361_we_al_external_collective_submission_state = 4",
+        "var:zg361_we_al_external_collective_submission_active = 1",
+        "var:zg361_we_al_external_collective_submission_sealed = 1",
+        "var:zg361_we_al_external_collective_submission_consumed = 0",
+        "var:zg361_we_al_external_collective_settled = 0",
+        "var:zg361_we_al_external_collective_settlement_id > 0",
+        "var:zg361_we_al_external_collective_settlement_hash > 0",
+        "var:zg361_we_al_external_collective_route >= 1",
+        "var:zg361_we_al_external_collective_route <= 2",
+        f"var:{base}_manager = root",
+        f"var:{base}_cohort_id = {{ value = var:zg361_we_al_external_collective_settlement_id multiply = 10 add = {ordinal} }}",
+        f"var:{base}_member_count >= 1",
+        f"var:{base}_member_count = var:{base}_agenda_count",
+        f"var:{base}_member_hash = var:{base}_agenda_hash",
+        f"var:{base}_member_hash > 0",
+        f"var:{base}_quota >= 1",
+        f"var:{base}_quota <= 6",
+        f"var:{base}_quota <= var:{base}_member_count",
+        f"var:{base}_all_meet_evidence_id > 0",
+        f"var:{base}_partition_verified = 1",
+        f"var:{base}_mg_cycle > 0",
+        f"var:{base}_mg_case > 0",
+        f"var:{base}_mg_snapshot_source_serial > 0",
+        f"var:{base}_b1_cycle > 0",
+        f"var:{base}_b1_case > 0",
+        (
+            "OR = { "
+            "AND = { var:zg361_we_al_external_collective_route = 1 "
+            f"var:{base}_forced_count = 0 var:{base}_exception_count = var:{base}_quota "
+            f"var:{base}_manager_cost = var:{base}_quota "
+            f"var:{base}_approver = scope:zg361_we_m360_cost_owner var:{base}_approval_verified = 1 }} "
+            "AND = { var:zg361_we_al_external_collective_route = 2 "
+            f"var:{base}_forced_count = var:{base}_quota var:{base}_exception_count = 0 "
+            f"var:{base}_manager_cost = 0 var:{base}_approver = 0 var:{base}_approval_verified = 0 }} }}"
+        ),
+    ]
+    manager_lines = [
+        "exists = scope:zg361_we_m360_cost_owner",
+        "exists = scope:zg361_we_m360_cost_subject",
+        "zg361_is_celestial_liege_trigger = yes",
+        "liege = scope:zg361_we_m360_cost_owner",
+        "scope:zg361_we_m360_cost_owner = { zg361_is_celestial_liege_trigger = yes }",
+        "scope:zg361_we_m360_cost_subject = {",
+        *(f"\t{line}" for line in subject_lines),
+        "}",
+        "has_variable = zg361_case_f_owner",
+        "has_variable = zg361_case_f_subject",
+        "has_variable = zg361_case_f_cycle_serial",
+        "has_variable = zg361_case_f_case_serial",
+        "has_variable = zg361_case_f_state",
+        "has_variable = zg361_case_f_active",
+        "var:zg361_case_f_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_case_f_subject = this",
+        f"var:zg361_case_f_cycle_serial = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle",
+        f"var:zg361_case_f_case_serial = scope:zg361_we_m360_cost_subject.var:{base}_mg_case",
+        "var:zg361_case_f_state = 5",
+        "var:zg361_case_f_active = 0",
+        "has_variable = zg361_mg_team_snapshot_status",
+        "has_variable = zg361_mg_team_snapshot_owner",
+        "has_variable = zg361_mg_team_snapshot_subject",
+        "has_variable = zg361_mg_team_snapshot_cycle",
+        "has_variable = zg361_mg_team_snapshot_case",
+        "has_variable = zg361_mg_team_snapshot_revision",
+        "has_variable = zg361_mg_snapshot_source_serial",
+        "has_variable = zg361_mg_team_snapshot_b1_available",
+        "has_variable = zg361_mg_team_snapshot_b1_manager",
+        "has_variable = zg361_mg_team_snapshot_b1_cycle",
+        "has_variable = zg361_mg_team_snapshot_b1_case",
+        "has_variable = zg361_mg_team_snapshot_b1_id",
+        "has_variable = zg361_mg_team_snapshot_b1_hash",
+        "var:zg361_mg_team_snapshot_status = 1",
+        "var:zg361_mg_team_snapshot_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_mg_team_snapshot_subject = this",
+        f"var:zg361_mg_team_snapshot_cycle = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle",
+        f"var:zg361_mg_team_snapshot_case = scope:zg361_we_m360_cost_subject.var:{base}_mg_case",
+        f"var:zg361_mg_snapshot_source_serial = scope:zg361_we_m360_cost_subject.var:{base}_mg_snapshot_source_serial",
+        f"var:zg361_review_serial = scope:zg361_we_m360_cost_subject.var:{base}_mg_snapshot_source_serial",
+        "var:zg361_mg_team_snapshot_b1_available = 1",
+        "var:zg361_mg_team_snapshot_b1_manager = this",
+        f"var:zg361_mg_team_snapshot_b1_cycle = scope:zg361_we_m360_cost_subject.var:{base}_b1_cycle",
+        f"var:zg361_mg_team_snapshot_b1_case = scope:zg361_we_m360_cost_subject.var:{base}_b1_case",
+        "has_variable = zg361_b1_m360_source_available",
+        "has_variable = zg361_b1_m360_source_status",
+        "has_variable = zg361_b1_m360_source_sealed",
+        "has_variable = zg361_b1_m360_source_id",
+        "has_variable = zg361_b1_m360_source_hash",
+        "has_variable = zg361_b1_m360_source_manager",
+        "has_variable = zg361_b1_m360_source_cycle",
+        "has_variable = zg361_b1_m360_source_case",
+        "has_variable = zg361_b1_m360_source_state",
+        "has_variable = zg361_b1_m360_source_member_count",
+        "has_variable = zg361_b1_m360_source_member_hash",
+        "has_variable = zg361_b1_m360_source_agenda_count",
+        "has_variable = zg361_b1_m360_source_agenda_hash",
+        "has_variable = zg361_b1_m360_source_quota",
+        "has_variable = zg361_b1_m360_source_all_meet_receipt_serial",
+        "has_variable = zg361_b1_m360_source_forced_count",
+        "var:zg361_b1_m360_source_available = 1",
+        "var:zg361_b1_m360_source_status = 1",
+        "var:zg361_b1_m360_source_sealed = 1",
+        "var:zg361_b1_m360_source_id > 0",
+        "var:zg361_b1_m360_source_hash > 0",
+        "var:zg361_b1_m360_source_id = var:zg361_mg_team_snapshot_b1_id",
+        "var:zg361_b1_m360_source_hash = var:zg361_mg_team_snapshot_b1_hash",
+        "var:zg361_b1_m360_source_manager = this",
+        f"var:zg361_b1_m360_source_cycle = scope:zg361_we_m360_cost_subject.var:{base}_b1_cycle",
+        f"var:zg361_b1_m360_source_case = scope:zg361_we_m360_cost_subject.var:{base}_b1_case",
+        "var:zg361_b1_m360_source_state = 8",
+        f"var:zg361_b1_m360_source_member_count = scope:zg361_we_m360_cost_subject.var:{base}_member_count",
+        f"var:zg361_b1_m360_source_member_hash = scope:zg361_we_m360_cost_subject.var:{base}_member_hash",
+        f"var:zg361_b1_m360_source_agenda_count = scope:zg361_we_m360_cost_subject.var:{base}_agenda_count",
+        f"var:zg361_b1_m360_source_agenda_hash = scope:zg361_we_m360_cost_subject.var:{base}_agenda_hash",
+        f"var:zg361_b1_m360_source_quota = scope:zg361_we_m360_cost_subject.var:{base}_quota",
+        f"var:zg361_b1_m360_source_all_meet_receipt_serial = scope:zg361_we_m360_cost_subject.var:{base}_all_meet_evidence_id",
+        "var:zg361_b1_m360_source_forced_count = var:zg361_b1_m360_source_quota",
+        "has_variable = zg361_mg_m036_receipt_owner",
+        "has_variable = zg361_mg_m036_receipt_subject",
+        "has_variable = zg361_mg_m036_receipt_cycle",
+        "has_variable = zg361_mg_m036_receipt_case",
+        "has_variable = zg361_mg_m036_receipt_state",
+        "has_variable = zg361_mg_m036_receipt_choice",
+        "var:zg361_mg_m036_receipt_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_mg_m036_receipt_subject = this",
+        f"var:zg361_mg_m036_receipt_cycle = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle",
+        f"var:zg361_mg_m036_receipt_case = scope:zg361_we_m360_cost_subject.var:{base}_mg_case",
+        "var:zg361_mg_m036_receipt_state = 4",
+        "OR = { var:zg361_mg_m036_receipt_choice = 1 var:zg361_mg_m036_receipt_choice = 2 }",
+        "has_variable = zg361_mg_m036_object_owner",
+        "has_variable = zg361_mg_m036_object_subject",
+        "has_variable = zg361_mg_m036_object_cycle",
+        "has_variable = zg361_mg_m036_object_case",
+        "has_variable = zg361_mg_m036_object_state",
+        "var:zg361_mg_m036_object_owner = scope:zg361_we_m360_cost_owner",
+        "var:zg361_mg_m036_object_subject = this",
+        f"var:zg361_mg_m036_object_cycle = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle",
+        f"var:zg361_mg_m036_object_case = scope:zg361_we_m360_cost_subject.var:{base}_mg_case",
+        "var:zg361_mg_m036_object_state = 4",
+    ]
+    return "\n\t".join(manager_lines)
+
+
+def collective_cost_new_receipt_guard(ordinal: int) -> str:
+    """A new receipt may only supersede an older AL case for this manager."""
+
+    base = f"zg361_we_al_external_collective_{ordinal}"
+    return f"""OR = {{
+	NOT = {{ has_variable = zg361_mg_m360_cost_receipt_status }}
+	AND = {{
+		has_variable = zg361_mg_m360_cost_receipt_status
+		var:zg361_mg_m360_cost_receipt_status = 1
+		has_variable = zg361_mg_m360_cost_receipt_al_cycle
+		has_variable = zg361_mg_m360_cost_receipt_al_case
+		has_variable = zg361_mg_m360_cost_receipt_id
+		OR = {{
+			var:zg361_mg_m360_cost_receipt_al_cycle < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+			AND = {{
+				var:zg361_mg_m360_cost_receipt_al_cycle = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle
+				var:zg361_mg_m360_cost_receipt_al_case < scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case
+			}}
+		}}
+		NOT = {{ var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }} }}
+	}}
+}}"""
+
+
+def render_collective_cost_triggers() -> bytes:
+    """Preflight all three managers before Workforce mutates any resource."""
+
+    blocks: list[str] = []
+    for ordinal in COLLECTIVE_COST_ORDINALS:
+        base = f"zg361_we_al_external_collective_{ordinal}"
+        receipt = collective_cost_receipt_guard(ordinal)
+        blocks.append(
+            f"""# Manager-scope preflight for #360 cohort {ordinal}.  Route B is a
+# validated zero-cost N/A and deliberately needs no manager-score variable.
+zg361_mg_m360_collective_cost_c{ordinal}_receipt_is_current_trigger = {{
+	{receipt}
+}}
+
+zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger = {{
+	{collective_cost_source_guard(ordinal)}
+	OR = {{
+		AND = {{
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+			scope:zg361_we_m360_cost_subject.var:{base}_manager_cost = 0
+		}}
+		AND = {{
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+			scope:zg361_we_m360_cost_subject.var:{base}_manager_cost > 0
+			has_variable = zg361_mg_report_score_available
+			var:zg361_mg_report_score_available = 1
+			has_variable = zg361_mg_report_manager_score
+			has_variable = zg361_mg_manager_score
+			OR = {{
+				zg361_mg_m360_collective_cost_c{ordinal}_receipt_is_current_trigger = yes
+				AND = {{
+					{collective_cost_new_receipt_guard(ordinal).replace(chr(10), chr(10) + chr(9) * 5)}
+					var:zg361_mg_manager_score = var:zg361_mg_report_manager_score
+					var:zg361_mg_manager_score >= scope:zg361_we_m360_cost_subject.var:{base}_manager_cost
+				}}
+			}}
+		}}
+	}}
+}}"""
+        )
+    return generated("\n\n".join(blocks))
+
+
+def render_collective_cost_effects() -> str:
+    """Apply one real A-route score cost or return replay/N/A/typed RED."""
+
+    blocks: list[str] = []
+    for ordinal in COLLECTIVE_COST_ORDINALS:
+        base = f"zg361_we_al_external_collective_{ordinal}"
+        collision = f"""has_variable = zg361_mg_m360_cost_receipt_status
+			var:zg361_mg_m360_cost_receipt_status = 1
+			OR = {{
+				AND = {{
+					has_variable = zg361_mg_m360_cost_receipt_id
+					var:zg361_mg_m360_cost_receipt_id = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }}
+				}}
+				AND = {{
+					has_variable = zg361_mg_m360_cost_receipt_settlement_id
+					has_variable = zg361_mg_m360_cost_receipt_cohort_id
+					var:zg361_mg_m360_cost_receipt_settlement_id = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id
+					var:zg361_mg_m360_cost_receipt_cohort_id = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id
+				}}
+			}}"""
+        writes = [
+            "set_variable = { name = zg361_mg_m360_cost_receipt_owner value = scope:zg361_we_m360_cost_owner }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_al_subject value = scope:zg361_we_m360_cost_subject }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_al_cycle value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_cycle }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_al_case value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_submission_case }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_settlement_id value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_id }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_settlement_hash value = scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_settlement_hash }",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_cohort_id value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_ordinal value = {ordinal} }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_manager value = this }",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_mg_cycle value = scope:zg361_we_m360_cost_subject.var:{base}_mg_cycle }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_mg_case value = scope:zg361_we_m360_cost_subject.var:{base}_mg_case }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_mg_snapshot_source_serial value = scope:zg361_we_m360_cost_subject.var:{base}_mg_snapshot_source_serial }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_mg_snapshot_revision value = var:zg361_mg_team_snapshot_revision }",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_b1_cycle value = scope:zg361_we_m360_cost_subject.var:{base}_b1_cycle }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_b1_case value = scope:zg361_we_m360_cost_subject.var:{base}_b1_case }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_id value = var:zg361_b1_m360_source_id }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_b1_source_hash value = var:zg361_b1_m360_source_hash }",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_route value = 1 }",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_quota value = scope:zg361_we_m360_cost_subject.var:{base}_quota }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_exception_count value = scope:zg361_we_m360_cost_subject.var:{base}_exception_count }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_cost value = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_id value = {{ value = scope:zg361_we_m360_cost_subject.var:{base}_cohort_id multiply = 1000 add = 360 }} }}",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_hash value = {{ value = var:zg361_mg_m360_cost_receipt_id multiply = 100 add = 10 add = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }} }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_score_before value = var:zg361_mg_manager_score }",
+            f"change_variable = {{ name = zg361_mg_manager_score add = {{ value = 0 subtract = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }} }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_score_after value = var:zg361_mg_manager_score }",
+            f"set_variable = {{ name = zg361_mg_m360_cost_receipt_score_delta value = {{ value = 0 subtract = scope:zg361_we_m360_cost_subject.var:{base}_manager_cost }} }}",
+            "set_variable = { name = zg361_mg_m360_cost_receipt_status value = 1 }",
+            "set_variable = { name = zg361_mg_m360_collective_cost_last_result value = 1 }",
+        ]
+        blocks.append(
+            f"""zg361_mg_m360_apply_collective_cost_c{ordinal}_effect = {{
+	zg361_mg_clear_red_effect = yes
+	remove_variable = zg361_mg_m360_collective_cost_last_result
+	set_variable = {{ name = zg361_mg_m360_collective_cost_last_ordinal value = {ordinal} }}
+	if = {{
+		limit = {{
+			zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 2
+		}}
+		# Route B has no approved exception and therefore no cost receipt.
+		set_variable = {{ name = zg361_mg_m360_collective_cost_last_result value = 3 }}
+		debug_log = "ZG361MG: mechanism 360 cohort {ordinal} manager cost is N/A on route B"
+	}}
+	else_if = {{
+		limit = {{
+			zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger = yes
+			zg361_mg_m360_collective_cost_c{ordinal}_receipt_is_current_trigger = yes
+		}}
+		set_variable = {{ name = zg361_mg_m360_collective_cost_last_result value = 2 }}
+		debug_log = "ZG361MG: mechanism 360 cohort {ordinal} exact manager-cost replay"
+	}}
+	else_if = {{
+		limit = {{
+			zg361_mg_m360_collective_cost_c{ordinal}_can_apply_trigger = yes
+			scope:zg361_we_m360_cost_subject.var:zg361_we_al_external_collective_route = 1
+		}}
+		{chr(10).join(writes).replace(chr(10), chr(10) + chr(9) * 2)}
+		debug_log = "ZG361MG: mechanism 360 cohort {ordinal} real manager score cost applied"
+	}}
+	else_if = {{
+		limit = {{
+			{collision}
+		}}
+		set_variable = {{ name = zg361_mg_m360_collective_cost_last_result value = 4 }}
+		zg361_mg_set_red_effect = {{ CODE = 2 MECHANISM = 360 }}
+	}}
+	else = {{
+		set_variable = {{ name = zg361_mg_m360_collective_cost_last_result value = 4 }}
+		zg361_mg_set_red_effect = {{ CODE = 4 MECHANISM = 360 }}
+	}}
+}}"""
+        )
+    return "\n\n".join(blocks)
+
+
 def render_effects() -> bytes:
     bindings = "\n".join(
         f"# {row.mechanism_id:03d} {row.operation}: {row.effect} -> {row.consumer}"
@@ -969,6 +1355,11 @@ zg361_mg_clear_red_effect = {{
 {render_q_projection_adapter()}
 
 {render_shared_hook_adapters()}
+
+# MG-owned side of #360.  Workforce owns the collective business object and
+# realm-trust transaction; this bridge owns only validation and the real
+# per-manager score mutation/receipt.
+{render_collective_cost_effects()}
 
 # The existing Jingcha is free/default-mandatory.  Its explicit player-refusal
 # option calls this product effect directly.  Freeze the mandate business token
@@ -1129,6 +1520,41 @@ zg361_mg_build_team_snapshot_effect = {{
 	change_variable = {{ name = zg361_mg_team_snapshot_revision add = 1 }}
 	set_variable = {{ name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }}
 	set_variable = {{ name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }}
+	# Freeze the exact published B1 cohort source that can later authorize a
+	# #360 manager-cost receipt.  A later B1 cycle cannot be substituted for
+	# the cohort that this manager review actually scored.
+	set_variable = {{ name = zg361_mg_team_snapshot_b1_available value = 0 }}
+	remove_variable = zg361_mg_team_snapshot_b1_manager
+	remove_variable = zg361_mg_team_snapshot_b1_cycle
+	remove_variable = zg361_mg_team_snapshot_b1_case
+	remove_variable = zg361_mg_team_snapshot_b1_id
+	remove_variable = zg361_mg_team_snapshot_b1_hash
+	if = {{
+		limit = {{
+			has_variable = zg361_b1_m360_source_available
+			var:zg361_b1_m360_source_available = 1
+			has_variable = zg361_b1_m360_source_status
+			var:zg361_b1_m360_source_status = 1
+			has_variable = zg361_b1_m360_source_sealed
+			var:zg361_b1_m360_source_sealed = 1
+			has_variable = zg361_b1_m360_source_id
+			var:zg361_b1_m360_source_id > 0
+			has_variable = zg361_b1_m360_source_hash
+			var:zg361_b1_m360_source_hash > 0
+			has_variable = zg361_b1_m360_source_manager
+			var:zg361_b1_m360_source_manager = this
+			has_variable = zg361_b1_m360_source_cycle
+			has_variable = zg361_b1_m360_source_case
+			has_variable = zg361_b1_m360_source_state
+			var:zg361_b1_m360_source_state = 8
+		}}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_available value = 1 }}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_manager value = var:zg361_b1_m360_source_manager }}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_cycle value = var:zg361_b1_m360_source_cycle }}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_case value = var:zg361_b1_m360_source_case }}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_id value = var:zg361_b1_m360_source_id }}
+		set_variable = {{ name = zg361_mg_team_snapshot_b1_hash value = var:zg361_b1_m360_source_hash }}
+	}}
 	set_variable = {{ name = zg361_mg_team_n value = 0 }}
 	set_variable = {{ name = zg361_mg_team_top_n value = 0 }}
 	set_variable = {{ name = zg361_mg_team_middle_n value = 0 }}
@@ -2784,6 +3210,7 @@ def outputs() -> dict[Path, bytes]:
     validate_bindings()
     rendered = {
         MOD_ROOT / "common" / "scripted_effects" / "zg361_manager_governance_runtime_effects.txt": render_effects(),
+        MOD_ROOT / "common" / "scripted_triggers" / "zg361_manager_governance_runtime_triggers.txt": render_collective_cost_triggers(),
         MOD_ROOT / "common" / "script_values" / "zg361_manager_governance_runtime_values.txt": render_values(),
         MOD_ROOT / "events" / "zg361_manager_governance_runtime_events.txt": render_events(),
         MOD_ROOT / "localization" / "english" / "zg361_manager_governance_l_english.yml": render_english_localization(),

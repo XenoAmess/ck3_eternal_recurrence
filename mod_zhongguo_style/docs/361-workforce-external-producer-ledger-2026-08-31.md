@@ -1,6 +1,6 @@
 ﻿# Workforce external producer 责任账本（2026-08-31）
 
-状态：**逐字段分类完成；AC #264 与 AL #361 同域 vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
+状态：**逐字段分类完成；AC #264、AL #360 与 AL #361 product vertical 为 CK3 script static-ready；尚无变更后的 loader/live 证据。**
 
 ## 1. 冻结证据与分类规则
 
@@ -280,7 +280,7 @@ zg361_we_al_external_stage_receipts_verified
 B1/B2 357–359 真实 receipt bridge 已使这 8 个 setter 可达，但该变更发生在旧 artifact 之后；责任状态是
 “已有真实 caller，待新 loader”，不是本 AC vertical 的新增成果。
 
-### 4.2 #360 collective：167，需中央/B1/native 真实 cohort producer
+### 4.2 #360 collective：旧 167 项已有 Central/B1/MG/Workforce 静态 producer chain，待新 loader
 
 167 项的精确展开式如下，不以省略号改变字段集合：
 
@@ -313,9 +313,32 @@ zg361_we_al_external_collective_total_members
 zg361_we_al_external_collective_total_quota
 ```
 
-精确计数为 `3×(14+36)+17=167`。真实 producer 必须提供三组互异 manager、真实 member/cohort identity、
-agenda、quota、例外批准与 forced outcome evidence；没有 cohort 时应 N/A/延后。现有 begin/append/seal ABI 没有
-caller，不应为了消 warning 自调用。
+精确计数为 `3×(14+36)+17=167`。本批没有用默认值或自调用旧 ABI 压日志，而是删除无人调用的
+`begin/append/seal` public surface，并接通四个产品的真实静态链：
+
+1. Central 在 owner scope 冻结 route-neutral `zg361_p2c_m360_source_*`。READY 固定 status 1、三名互异直属
+   天朝制 manager、c1=当前 AL subject、三个 B1 source identity/quota、三个 MG snapshot identity，total quota
+   为 1..6；WAIT/RED/结构性 N/A 分别保留 5/4/7，不能冒充 READY。
+2. Workforce resume 独立复核 Central envelope 与 live B1/MG immutable facts；玩家只在 READY 排一次事件，AI
+   直接 materialize A。A/B 选项才 materialize 恰好三个 cohort 和 quota 个（最多六个）全局互异真实 B1 candidate，
+   每个候选复制 exact #357/B1/result tuple。C 不 materialize、不 seal。
+3. A/B 在任何 case/resource/business write 前全局预检三个 MG `can_apply`；A 调用三份 apply、复制每份 27 字段
+   真实成本回执，再对 owner realm trust 只扣一次；B 取得 MG 的 N/A 结果但不复制成本回执、不写伪零回执，也不读
+   旧 Workforce `manager_score`。consumer 成功后才 exact-match 把 Central status 改为 2；重入只修复漏掉的 mark。
+4. Central status 7 调用固定 reason 360362 的 Workforce structural-N/A seam；它不写 #360/#361 receipt、sealed
+   submission 或假 operation count。
+
+对旧 167 项逐字段核对后的静态结论：
+
+- 150 个 cohort/identity 字段全部由 route A/B materializer 显式 `set_variable`；此外还冻结 processing order、
+  #357 receipt id/hash、B1/result 五元来源与 member evidence id/hash，这些扩展字段不计入旧 167。
+- 17 个 shared 字段中，15 个有产品 setter；旧
+  `zg361_we_al_external_collective_reform_effective_cycle` 与
+  `zg361_we_al_external_collective_reform_proposal_id` 已从生产 read 退役，只保留 cleanup，不把 `remove_variable`
+  冒充 setter。A 的真实例外授权和成本由 B1/MG facts 证明，不再使用 caller 自报 reform。
+
+因此 AL collective 167 的责任现为“静态 producer/read-retirement 已闭合，待新 loader/paused live 证明”，不是
+“仍缺 producer”，更不是 loader-live GREEN。
 
 ### 4.3 #361 charter：旧 28 项 read 已退役，由真实三周期产品账本闭环
 
@@ -370,9 +393,10 @@ portfolio”当作历史 receipt 的前置条件，又把三张历史 receipt �
 
 ## 5. 收口数字与下一步
 
-- 本包累计静态改动目标：AC 20 项、AL charter 28 项和 AD 35 项旧 external alias，精确名单见 §2、§3、§4.3。
+- 本包累计静态改动目标：AC 20 项、AL collective 167 项、AL charter 28 项和 AD 35 项旧 external alias，
+  精确名单见 §2、§3、§4.2、§4.3。
 - 另有既存、待复验的 AL stage 8 项，见 §4.1。
-- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+28+35=91`，仍余 212：AD 45 + AL collective 167。
-- 这 212 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
+- 若新 loader 与静态可达性一致，原 303 项中预期消掉 `20+8+167+28+35=258`，剩余 45：全部是 AD 45。
+- 这 45 项不能通过补默认值、假 hash、假人物或无人调用的 adapter 合同消除。
 - 下一轮实机必须 MCP-first：先看 loader 唯一字段差集，再用 paused snapshot 验 #262 real host、#264 三次玩家
   选项、两个 30 日 gap、一次支付/退款、AI 无玩家事件。OCR 不是首选路径。

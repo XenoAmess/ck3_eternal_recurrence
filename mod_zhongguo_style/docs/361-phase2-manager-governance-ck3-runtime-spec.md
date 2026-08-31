@@ -14,6 +14,7 @@
 唯一生成器是 `tools/gen_361_manager_governance_runtime.py`，生成：
 
 - `common/scripted_effects/zg361_manager_governance_runtime_effects.txt`
+- `common/scripted_triggers/zg361_manager_governance_runtime_triggers.txt`
 - `common/script_values/zg361_manager_governance_runtime_values.txt`
 - `events/zg361_manager_governance_runtime_events.txt`
 - 简中、英文及七份英文结构占位本地化，共九份 yml。
@@ -153,6 +154,51 @@ AK 的 stage barrier 同样 route-aware：347C 以“未做覆盖天然保持 qu
 - snapshot 自身绑定 F owner/subject/cycle/case 并递增 producer-owned revision；同一 F token replay 直接复用，不二次读取/消费。346、347、354 各自把 revision 与 source identity 冻结为 pending(1)，唯一 consumer 改为 settled(2)，C 改为 discarded(3)。
 - F032 A/B 产生 `organization_input_status=1`、source identity/revision、`component=8` 与严格验证的 `due_cycle=source+1`。active B1 在 KPI 前已经推进 `b1_cycle_serial`，所以 value 与 settler 都用 `b1_cycle_serial >= due_cycle`；legacy/no-B1 在 compute 后才推进 `review_serial`，所以用 `review_serial >= source_cycle`。二者由 generator 的同一段 guard 逐字注入 value/settler，防止一个读到而另一个不结清。下轮 official organization value 读取后 setter 改为 2；旧 token 因 status 不再贡献。
 - F035 使用同一 active-B1/legacy 双周期规则。rank adapter 每次先把 `applied_this_rank=0`，只有本次真正消费 due token 才置 1 并覆盖 bottom slots，随后删除瞬时 flag；历史 effective mode 因而不能在晚一轮或重放时漏入。
+
+### #360 的 MG-owned 经理成本桥
+
+本包不接管 Workforce 的 #360 collective 案卷、三 cohort 分区或 owner realm-trust 事务，只拥有三名经理的真实分数成本。为让
+Workforce 能先对三人做全局预检、再在同一同步 effect 内原子结算，生成器提供三组无动态变量名的固定入口：
+
+```text
+zg361_mg_m360_collective_cost_c1_can_apply_trigger
+zg361_mg_m360_collective_cost_c2_can_apply_trigger
+zg361_mg_m360_collective_cost_c3_can_apply_trigger
+
+zg361_mg_m360_apply_collective_cost_c1_effect
+zg361_mg_m360_apply_collective_cost_c2_effect
+zg361_mg_m360_apply_collective_cost_c3_effect
+```
+
+调用时 `this` 必须是相应 cohort 的 frozen manager，且调用者先保存
+`scope:zg361_we_m360_cost_owner`（AL owner）与 `scope:zg361_we_m360_cost_subject`（持有 sealed collective 的 AL subject）。
+adapter 不接受调用者传入 score、cost、receipt ID 或 hash；它只读 sealed collective 的 owner/subject/cycle/case/state、
+settlement、route 与相应 cohort，并要求 `cohort_id = settlement_id * 10 + ordinal`。每个 cohort 还必须冻结
+`mg_cycle/mg_case/mg_snapshot_source_serial/b1_cycle/b1_case`，供 MG 反查真实来源。
+
+manager review snapshot 现在同时冻结当时可用的 B1 #360 source manager/cycle/case。预检逐字段核对：
+
+- F 已以同 owner/manager/mg cycle/mg case 到达 `state=5, active=0`；team snapshot 的 owner/subject/cycle/case 和
+  `snapshot_source_serial` 全部一致；
+- #036 receipt 与 object 均为同一 F tuple、state 4，choice 只能是 A/B，不能拿 C 的“无报告”路线冒充真实经理案卷；
+- 当前 B1 source 与 snapshot 冻结的 B1 manager/cycle/case 完全一致，state 8；member/agenda count+hash、quota 与
+  all-meet receipt 必须逐项等于 sealed collective；还必须是 `status=1, sealed=1`，且产品生成的 source ID/hash
+  与 MG snapshot 冻结值相等。换一轮 B1、换一名经理或换一个 cohort 都不能通过。
+
+当前 producer 的路线合同是确定的。Route A 把该 cohort 的全部真实 C 候选作为获批例外，因此
+`forced_count=0` 且 **`cost = exception_count = quota`**；approver 必须是这名经理的合格天朝制直属上司。正成本还要求
+`report_score_available=1`、真实 `zg361_mg_manager_score` 存在、首次结算前等于冻结 report baseline 且余额足够。
+apply 记录 before，向真实 `zg361_mg_manager_score` 直接加 `-cost`，再记录 after/delta；不修改已经结案的
+`zg361_mg_report_manager_score`、#036 object 或十年历史。Route B 强制 `forced_count=quota, exception_count=0, cost=0`，
+不要求 manager score 或 report availability，也不创建伪造的零值 cost receipt；它返回 N/A，由 Workforce 记录
+`manager_cost_required=0 / verified=1 / receipt=N/A`。
+
+Route A 的正成本 receipt 由 MG 自己生成 `id = cohort_id * 1000 + 360`，hash 由 ID、route、cost 派生，并冻结
+owner、AL subject/cycle/case、settlement ID/hash、cohort/ordinal/manager、MG snapshot identity+revision、B1 cycle/case/source ID/hash、
+route/quota/exception/cost 与 score before/after/delta。完全相同的 receipt 重放返回 result 2，绝不再次扣分；同 receipt ID
+或同 settlement+cohort 却有任一 tuple/cost 漂移写 typed RED 2 且零业务写入。只有更晚的 AL cycle/case 才能覆盖 manager
+scope 的 latest receipt。任何其他来源不完整或不变量失败写 typed RED 4。这里不读取、更不维护旧的
+`zg361_we_manager_score`；Workforce 只能复制 MG receipt 作为当前 #360 的证据。
 
 ### Q121–128 只读投影边界
 
